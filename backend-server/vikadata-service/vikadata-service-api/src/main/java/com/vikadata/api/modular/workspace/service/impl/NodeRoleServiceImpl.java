@@ -70,14 +70,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
-/**
- * <p>
- * 工作台-节点-角色表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-18
- */
 @Service
 @Slf4j
 public class NodeRoleServiceImpl implements INodeRoleService {
@@ -128,12 +120,12 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     @Transactional(rollbackFor = Exception.class)
     public void enableNodeRole(Long userId, String spaceId, String nodeId, boolean includeExtend) {
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 开启节点指定权限，将当前成员组织单元角色设置为 Owner
+        // Enable the node to specify permissions and set the current member organization unit role to Owner
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
-        log.info("「{}」开启节点「{}」指定权限，并设置组织单元「{}」角色为「{}」", userId, nodeId, unitId, Node.OWNER);
-        // 创建权限控制单元
+        log.info("「{}」open node「{}」specify permissions，and set up units「{}」role「{}」", userId, nodeId, unitId, Node.OWNER);
+        // create a permission control unit
         iControlService.create(userId, spaceId, nodeId, ControlType.NODE);
-        // 创建控制单元角色
+        // create a control unit role
         iControlRoleService.addControlRole(userId, nodeId, Collections.singletonList(unitId), Node.OWNER);
         if (includeExtend) {
             addExtendNodeRole(userId, spaceId, nodeId);
@@ -142,19 +134,19 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public void disableNodeRole(Long userId, Long memberId, String nodeId) {
-        log.info("「{}」关闭节点「{}」指定权限", userId, nodeId);
-        // 删除权限控制单元
+        log.info("[{}] close node [{}] Specify permissions", userId, nodeId);
+        // delete permission control unit
         iControlService.removeControl(userId, Collections.singletonList(nodeId), false);
     }
 
     @Override
     public void addNodeRole(Long userId, String nodeId, String role, List<Long> unitIds) {
-        log.info("「{}」在节点「{}」添加组织单元「{}」的权限角色为「{}」", userId, nodeId, unitIds, role);
-        // 不能指定修改为节点拥有者
+        log.info("[{}] add the permission role of organization unit [{}] to node [{}] as [{}]", userId, nodeId, unitIds, role);
+        // cannot specify modification to node owner
         ExceptionUtil.isFalse(role.equals(Node.OWNER), PermissionException.ADD_NODE_ROLE_ERROR);
-        // 过滤组织单元，如果已存在的则修改，未存在的则添加
+        // Filter organizational units, modify those that already exist, and add those that do not exist.
         List<ControlRoleEntity> controlRoles = iControlRoleService.getByControlId(nodeId);
-        // 无已存在的组织单元，全部新增
+        // No existing organizational units, all new
         if (CollUtil.isEmpty(controlRoles)) {
             iControlRoleService.addControlRole(userId, nodeId, unitIds, role);
             return;
@@ -165,11 +157,11 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         List<Long> updateIds = new ArrayList<>();
         for (Long unitId : unitIds) {
             if (!unitRoleMap.containsKey(unitId)) {
-                // 不存在，新增此组织单元的角色
+                // Does not exist, add the role of this organizational unit
                 addUnitIds.add(unitId);
             }
             else if (!unitRoleMap.get(unitId).getRoleCode().equals(role)) {
-                // 存在且角色不一样，修改此组织单元的角色
+                // exists and the roles are different, modify the roles of this organizational unit
                 updateIds.add(unitRoleMap.get(unitId).getId());
             }
         }
@@ -177,21 +169,21 @@ public class NodeRoleServiceImpl implements INodeRoleService {
             iControlRoleService.addControlRole(userId, nodeId, addUnitIds, role);
         }
         if (CollUtil.isNotEmpty(updateIds)) {
-            // 指定表ID 修改，避免修改了文件管理员
+            // Specify table ID modification to avoid file administrator modification
             iControlRoleService.editControlRole(userId, updateIds, role);
         }
     }
 
     @Override
     public void updateNodeRole(Long userId, String nodeId, String role, List<Long> unitIds) {
-        log.info("「{}」在节点「{}」修改组织单元「{}」的权限角色为「{}」", userId, nodeId, unitIds, role);
-        // 不能指定修改为节点拥有者
+        log.info("[{}] Modify the permission role of organizational unit [{}] at node [{}] to [{}]", userId, nodeId, unitIds, role);
+        // cannot specify modification to node owner
         ExceptionUtil.isFalse(role.equals(Node.OWNER), PermissionException.UPDATE_NODE_ROLE_ERROR);
         iControlRoleService.editControlRole(userId, nodeId, unitIds, role);
         Map<Long, String> unitIdToRoleCode = iControlRoleService.getUnitIdToRoleCodeMapWithoutOwnerRole(nodeId, unitIds);
         List<String> oldRoles = new ArrayList<>(unitIds.size());
         unitIds.forEach(unitId -> oldRoles.add(unitIdToRoleCode.getOrDefault(unitId, StrUtil.EMPTY)));
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.UNIT_IDS, unitIds);
         info.set(AuditConstants.OLD_ROLE, oldRoles);
@@ -202,18 +194,18 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public void deleteNodeRole(Long userId, String nodeId, Long unitId) {
-        log.info("删除节点「{}」组织单元「{}」的权限角色", nodeId, unitId);
-        // 获取组织单元原来的角色信息
+        log.info("Delete the permission role of node [{}] organizational unit [{}]", nodeId, unitId);
+        // Get the original role information of the organizational unit
         List<ControlRoleEntity> controlRoles = iControlRoleService.getByControlIdAndUnitId(nodeId, unitId);
         ExceptionUtil.isNotEmpty(controlRoles, PermissionException.DELETE_NODE_ROLE_ERROR);
-        // 过滤节点拥有者
+        // filter node owner
         List<Long> ids = controlRoles.stream().filter(controlRole -> !controlRole.getRoleCode().equals(Node.OWNER)).map(ControlRoleEntity::getId).collect(Collectors.toList());
         if (CollUtil.isEmpty(ids)) {
             return;
         }
-        // 指定表ID 删除，避免删除了文件管理员
+        // The specified table ID is deleted to avoid deleting the file administrator.
         iControlRoleService.removeByIds(ids);
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.UNIT_ID, unitId);
         info.set(AuditConstants.OLD_ROLE, controlRoles.stream().filter(controlRole -> !controlRole.getRoleCode().equals(Node.OWNER))
@@ -224,10 +216,10 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public List<ControlRoleInfo> deleteNodeRoles(String nodeId, List<Long> unitIds) {
-        log.info("删除节点「{}」组织单元「{}」的权限角色", nodeId, unitIds);
-        // 获取组织单元原来的角色信息
+        log.info("Delete the permission role of node [{}] organizational unit [{}]", nodeId, unitIds);
+        // Get the original role information of the organizational unit
         List<ControlRoleInfo> exitControlRole = iControlRoleService.getUnitRoleByControlIdAndUnitIds(nodeId, unitIds);
-        // 过滤节点拥有者
+        // filter node owner
         List<ControlRoleInfo> controlRoles = exitControlRole.stream().filter(controlRole -> !controlRole.getRole().equals(Node.OWNER)).collect(toList());
         List<Long> exitUnitIds = controlRoles.stream().map(ControlRoleInfo::getUnitId).collect(toList());
         iControlRoleService.removeByControlIdAndUnitIds(nodeId, exitUnitIds);
@@ -235,10 +227,10 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     }
 
     /**
-     * 获取节点的负责人
+     * get the owner of the node
      *
-     * @param nodeId 节点ID
-     * @return 负责人组织单元ID
+     * @param nodeId node id
+     * @return Principal organization unit ID
      */
     private Long getNodeOwnerId(String nodeId) {
         Long ownerUnitId = iControlRoleService.getUnitIdByControlIdAndRoleCode(nodeId, Node.OWNER);
@@ -247,7 +239,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public UnitMemberVo getNodeOwner(String nodeId) {
-        log.info("查询节点的负责人");
+        log.info("query the owner of the node");
         Long ownerId = getNodeOwnerId(nodeId);
         if (ownerId != null) {
             String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
@@ -272,7 +264,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public void deleteByNodeId(Long userId, List<String> nodeIds) {
-        log.info("删除节点所有角色");
+        log.info("delete all roles of the node");
         List<String> existedControlIds = iControlService.getExistedControlId(nodeIds);
         if (existedControlIds.isEmpty()) {
             return;
@@ -282,26 +274,26 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public String getClosestEnabledRoleNode(String nodeId) {
-        log.info("获取节点");
+        log.info("get node");
         boolean assignMode = this.getNodeRoleIfEnabled(nodeId);
-        // 节点非继承模式，直接返回
+        // Node non-inherited mode, directly returns
         if (assignMode) {
             return nodeId;
         }
-        // 获取节点所继承的节点ID
+        // Gets the node ID inherited by the node
         return getNodeExtendNodeId(nodeId);
     }
 
     @Override
     public String getNodeExtendNodeId(String nodeId) {
-        log.info("获取节点所继承的节点ID");
-        // 查询节点对应的父级节点ID,为了提高性能，一次性查询所有父级节点，得出当前节点的上级树形结构
+        log.info("Gets the node ID inherited by the node");
+        // Query the parent node ID corresponding to the node. In order to improve performance, query all parent nodes at one time to obtain the parent tree structure of the current node.
         List<SimpleNodeInfo> nodeList = nodeMapper.selectAllParentNodeIdsByNodeIds(Collections.singletonList(nodeId), false);
-        // 查询父级目录是否存在指定模式
+        // Query whether the parent directory has the specified mode
         SimpleNodeInfo node = findNode(nodeList, nodeId);
         SimpleNodeInfo parent = findParentRolesExtend(nodeList, node);
         if (parent == null) {
-            // 上级节点都没有继承权限，直接返回null
+            // None of the parent nodes have the right to inherit, and return null directly.
             return null;
         }
         return parent.getNodeId();
@@ -311,13 +303,13 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     public boolean getNodeRoleIfEnabled(String nodeId) {
         AtomicReference<Boolean> assign = new AtomicReference<>(false);
         iControlService.checkControlStatus(nodeId, assign::set);
-        log.info("节点权限是否为指定模式: [{}]", assign.get());
+        log.info("Whether node permissions are in the specified mode: [{}]", assign.get());
         return assign.get();
     }
 
     private Map<String, List<ControlRoleUnitDTO>> groupRoleByNodeId(String nodeId) {
         List<ControlRoleUnitDTO> controlRoles = iControlRoleService.getControlRolesUnitDtoByControlId(nodeId);
-        // 以角色分组
+        // group by role
         return controlRoles.stream().filter(t -> !t.getRole().equals(Node.OWNER)).sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseNodeRole(t.getRole()).getBits()).reversed()).collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
     }
 
@@ -339,9 +331,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public List<NodeRoleUnit> getNodeRoleUnitList(String nodeId) {
-        log.info("查询指定节点的角色所分配组织单元列表");
+        log.info("Query the list of organizational units assigned by the role of the specified node");
         String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
-        // 以角色分组
+        // group by role
         Map<String, List<ControlRoleUnitDTO>> roleUnitMap = groupRoleByNodeId(nodeId);
         List<NodeRoleUnit> roleUnits = new ArrayList<>();
         Map<Long, NodeRoleUnit> unitIdToFieldRoleMap = new HashMap<>(16);
@@ -354,7 +346,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 unit.setRole(nodeRoleDto.getRole());
                 unit.setUnitId(nodeRoleDto.getUnitId());
                 unit.setUnitType(nodeRoleDto.getUnitType());
-                // 保存组织单元和角色信息
+                // save organizational unit and role information
                 unitIdToFieldRoleMap.putIfAbsent(nodeRoleDto.getUnitId(), unit);
                 UnitType unitType = UnitType.toEnum(nodeRoleDto.getUnitType());
                 if (unitType == UnitType.TEAM) {
@@ -367,7 +359,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                     roleIds.add(nodeRoleDto.getUnitRefId());
                 }
             }
-            // 批量查询补充组织单元信息
+            // Batch query supplementary organizational unit information
             if (!teamIds.isEmpty()) {
                 List<UnitTeamVo> teamVos = iOrganizationService.findUnitTeamVo(spaceId, teamIds);
                 for (UnitTeamVo team : teamVos) {
@@ -410,11 +402,11 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public List<NodeRoleMemberVo> getNodeRoleMembers(String spaceId) {
-        log.info("加载空间站所有成员");
+        log.info("load all members of the space");
         List<Long> memberIds = iMemberService.getMemberIdsBySpaceId(spaceId);
         List<NodeRoleMemberVo> results = memberMapper.selectNodeRoleMemberByIds(memberIds);
 
-        // 赋予权限值
+        // give permission value
         ControlRole defaultControlRole = new DefaultWorkbenchRole();
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         results.forEach(result -> {
@@ -427,10 +419,10 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
     @Override
     public List<NodeRoleMemberVo> getNodeRoleMembers(String spaceId, String nodeId) {
-        // 管理员
+        // administrator
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         Long ownerId = this.getNodeOwnerId(nodeId);
-        // 按角色分组
+        // group by role
         Map<String, List<ControlRoleUnitDTO>> roleUnitMap = groupRoleByNodeId(nodeId);
         Map<String, List<Long>> roleMemberMap = new LinkedHashMap<>(roleUnitMap.size());
         roleMemberMap.put(Node.MANAGER, (List<Long>) CollUtil.union(admins, Collections.singletonList(ownerId)));
@@ -470,7 +462,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
             }
         }
 
-        // 过滤重复的权限
+        // filter duplicate permissions
         Map<Long, String> memberRoleMap = new LinkedHashMap<>();
         for (Map.Entry<String, List<Long>> entry : roleMemberMap.entrySet()) {
             if (CollUtil.isNotEmpty(entry.getValue())) {
@@ -484,7 +476,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
         List<NodeRoleMemberVo> results = memberMapper.selectNodeRoleMemberByIds(memberRoleMap.keySet());
 
-        // 赋予权限值
+        // give permission value
         results.forEach(result -> {
             result.setRole(memberRoleMap.get(result.getMemberId()));
             result.setIsAdmin(admins.contains(result.getMemberId()));
@@ -496,15 +488,15 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void copyExtendNodeRoleIfExtend(Long userId, String spaceId, Long memberId, Collection<String> nodeIds) {
-        log.info("复制继承节点的角色");
+        log.info("copy the role of the inheritance node");
         Long unitId = unitMapper.selectUnitIdByRefId(memberId);
         for (String nodeId : nodeIds) {
             boolean assignMode = this.getNodeRoleIfEnabled(nodeId);
-            // 节点非继承模式，跳过
+            // node non inheritance mode skip
             if (assignMode) {
                 continue;
             }
-            // 复制继承节点的非负责人角色
+            // copy the non owner role of the inherited node
             String extendNodeId = getNodeExtendNodeId(nodeId);
             if (extendNodeId == null) {
                 continue;
@@ -512,17 +504,17 @@ public class NodeRoleServiceImpl implements INodeRoleService {
             List<ControlRoleInfo> controlRoleInfos = iControlRoleService.getUnitRoleByControlId(extendNodeId);
             Map<Long, String> unitRoleMap = new HashMap<>(controlRoleInfos.size() + 1);
             for (ControlRoleInfo controlRoleInfo : controlRoleInfos) {
-                // 操作者原来的指定权限、原来的负责人，不保留跳过
+                // The operator's original designated authority and the original person in charge are not reserved for skipping.
                 if (controlRoleInfo.getUnitId().equals(unitId) || controlRoleInfo.getRole().equals(Node.OWNER)) {
                     continue;
                 }
                 unitRoleMap.put(controlRoleInfo.getUnitId(), controlRoleInfo.getRole());
             }
-            // 将操作者设置为负责人角色
+            // set the operator as the person in charge role
             unitRoleMap.put(unitId, Node.OWNER);
-            // 创建权限控制单元
+            // create a permission control unit
             iControlService.create(userId, spaceId, nodeId, ControlType.NODE);
-            // 创建控制单元角色
+            // create a control unit role
             iControlRoleService.addControlRole(userId, nodeId, unitRoleMap);
         }
     }
@@ -537,7 +529,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
         else {
             String parentNodeId = getNodeExtendNodeId(nodeId);
             if (parentNodeId == null) {
-                // 没有父节点开启了权限，默认工作台角色，加载根部门信息
+                // No parent node has enabled permissions, default workbench role, load root department information
                 ControlRoleUnitDTO defaultWorkbenchRoleUnit = new ControlRoleUnitDTO();
                 defaultWorkbenchRoleUnit.setRole(Node.MANAGER);
                 Long rootTeamUnitId = iTeamService.getRootTeamUnitId(spaceId);
@@ -545,7 +537,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
                 controlRoleUnits = CollUtil.newArrayList(defaultWorkbenchRoleUnit);
             }
             else {
-                // 加载父节点角色
+                // load parent node role
                 controlRoleUnits = iControlRoleService.getControlRolesUnitDtoByControlId(parentNodeId);
             }
         }
@@ -568,7 +560,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
 
 
     private void addExtendNodeRole(Long userId, String spaceId, String nodeId) {
-        // 添加默认继承的角色
+        // add default inherited roles
         Map<String, Set<Long>> roleToUnitIds = getRoleToUnitIds(true, spaceId, nodeId);
         roleToUnitIds.forEach((role, unitIds) -> {
             if (Node.OWNER.equals(role)) {

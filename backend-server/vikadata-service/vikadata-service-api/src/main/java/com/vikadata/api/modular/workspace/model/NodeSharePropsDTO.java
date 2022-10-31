@@ -4,31 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>
- * 节点分享设置参数
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/10/16 11:25
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class NodeSharePropsDTO {
 
     /**
-     * 仅分享给他人查看
+     * only share it with others
      */
     private Boolean onlyRead;
 
     /**
-     * 分享给他人进行协作编辑
+     * share with others for collaborative editing
      */
     private Boolean canBeEdited;
 
     /**
-     * 分享给他人另存为副本
+     * share with others save as a copy
      */
     private Boolean canBeStored;
 }

@@ -35,15 +35,13 @@ import com.vikadata.entity.DatasheetRecordEntity;
 import com.vikadata.entity.NodeEntity;
 
 /**
- * CSV 数据解析监听器
- * @author Shawn Deng
- * @date 2021-11-29 15:31:04
+ * CSV data parser listener.
  */
 @Slf4j
 public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>> {
 
     /**
-     * 每隔100条存储数据库，然后清理，方便内存回收
+     * Store the database every 100, and then clean it up to facilitate memory recovery.
      */
     private static final int BATCH_COUNT = 100;
 
@@ -85,29 +83,29 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        log.info("解析到头部信息");
+        log.info("parse to header information");
         initHead(headMap, context);
     }
 
     private void initHead(Map<Integer, String> headMap, AnalysisContext context) {
-        // 列长度，可能为0
+        // Column length, possibly 0
         int headSize = headMap.size();
         meta = new Meta(headSize);
 
         sheetHeadMap = new LinkedHashMap<>(headSize);
 
-        // 首个默认视图的有序列定义顺序,
+        // The sequence definition order for the first default view,
         View view = new View(headSize, 0);
         view.id = IdUtil.createViewId();
         view.name = VikaStrings.t("default_view");
         view.type = ViewType.GRID.getType();
         view.frozenColumnCount = 1;
 
-        // 按序遍历列
+        // traverse columns in order
         headMap.forEach((index, cellValue) -> {
-            String fieldName = StrUtil.isBlank(cellValue) ? String.format("第%d列", index + 1) : cellValue;
+            String fieldName = StrUtil.isBlank(cellValue) ? String.format("the %d col", index + 1) : cellValue;
             String fieldId = IdUtil.createFieldId();
-            // 存储列ID
+            // storage column id
             sheetHeadMap.put(index, fieldId);
             meta.fieldMap.putOnce(fieldId,
                     FieldMapRo.builder()
@@ -116,10 +114,10 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                             .type(FieldType.TEXT.getFieldType())
                             .build()
             );
-            // 视图列
+            // view column
             Column column = new Column(fieldId);
             if (index == 0) {
-                // 首列添加统计记录总数
+                // Add the total number of statistical records in the first column
                 column.statType = 1;
             }
             view.columns.add(column);
@@ -131,11 +129,11 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         if (MapUtil.isEmpty(sheetHeadMap)) {
-            // 列头为空，根据当前行数补齐所有列
+            // The column header is empty, and all columns are filled according to the current number of rows.
             if (!data.isEmpty()) {
                 sheetHeadMap = new LinkedHashMap<>(data.size());
                 for (int index = 0; index < data.size(); index++) {
-                    String fieldName = String.format("第%d列", index + 1);
+                    String fieldName = String.format("the %d col", index + 1);
                     String fieldId = IdUtil.createFieldId();
                     sheetHeadMap.put(index, fieldId);
                     meta.fieldMap.putOnce(fieldId,
@@ -145,10 +143,10 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                                     .type(FieldType.TEXT.getFieldType())
                                     .build()
                     );
-                    // 视图列
+                    // view column
                     Column column = new Column(fieldId);
                     if (index == 0) {
-                        // 首列添加统计记录总数
+                        // Add the total number of statistical records in the first column
                         column.statType = 1;
                     }
                     meta.views.get(0).columns.add(column);
@@ -158,11 +156,12 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
         else {
             if (!data.isEmpty()) {
                 if (sheetHeadMap.size() < data.size()) {
-                    // invokeHeadMap 解析到的列数量比这个少
-                    // 如果每一行数据真实是5列，而列头在只有前3列有定义值，
-                    // 比如: 0 -> 第1列, 1-> 第2列, 2 -> 第3列，那么后面的列需要补全，
+                    // invokeHeadMap the number of columns resolved is less than this
+                    // If each row of data is actually 5 columns, and the column header has defined values in only the first 3 columns,
+                    // such as: 0 -> the first column, 1-> the second column, 2 -> the third column.
+                    // then the following columns need to be complete，
                     for (int index = sheetHeadMap.size(); index < data.size(); index++) {
-                        String fieldName = String.format("第%d列", index + 1);
+                        String fieldName = String.format("the %d col", index + 1);
                         String fieldId = IdUtil.createFieldId();
                         sheetHeadMap.put(index, fieldId);
                         meta.fieldMap.putOnce(fieldId,
@@ -172,7 +171,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                                         .type(FieldType.TEXT.getFieldType())
                                         .build()
                         );
-                        // 视图列
+                        // view column
                         meta.views.get(0).columns.add(new Column(fieldId));
                     }
                 }
@@ -207,13 +206,13 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
     }
 
     public void saveRecords() {
-        log.info("分批保存行记录");
+        log.info("save line records in batches");
         iNodeService.batchSaveDstRecords(recordEntities);
     }
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        log.info("======================解析完成==============================");
+        log.info("======================analysis completed==============================");
 
         if (meta == null) {
             initHead(MapUtil.of(0, "标题"), context);
@@ -254,14 +253,14 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                 .updatedBy(userId)
                 .build());
 
-        log.info("开始执行批量插入");
+        log.info("start bulk insertion");
         long begin = System.currentTimeMillis();
         iNodeService.batchCreateDataSheet(
                 new NodeData(null, retNodeId, null, null, parentNodeId),
                 nodeEntities, datasheetEntities, metaEntities, recordEntities
         );
         long end = System.currentTimeMillis();
-        log.info("插入完成: {}", Duration.ofMillis(end - begin).getSeconds());
+        log.info("insert complete: {}", Duration.ofMillis(end - begin).getSeconds());
     }
 
     public String getRetNodeId() {

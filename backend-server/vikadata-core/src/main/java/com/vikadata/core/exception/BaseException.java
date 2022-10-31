@@ -2,23 +2,20 @@ package com.vikadata.core.exception;
 
 /**
  * <p>
- * 基础异常规范接口
+ * Interface: Base Exception Convention
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/9/4 16:38
  */
 public interface BaseException {
 
     /**
-     * 异常状态码
+     * Exception Status Code
      *
      * @return Integer
      */
     Integer getCode();
 
     /**
-     * 异常信息
+     * Exception Message
      *
      * @return String
      */

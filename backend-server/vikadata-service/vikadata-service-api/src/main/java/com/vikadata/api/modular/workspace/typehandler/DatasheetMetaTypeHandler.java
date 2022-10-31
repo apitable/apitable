@@ -15,9 +15,9 @@ import org.apache.ibatis.type.MappedTypes;
 import com.vikadata.api.modular.workspace.model.DatasheetSnapshot.Meta;
 
 /**
- * datasheet meta解析
- * @author Shawn Deng
- * @date 2021-04-01 21:22:27
+ * datasheet meta analysis
+ * 
+ * 
  */
 
 @MappedTypes(Meta.class)

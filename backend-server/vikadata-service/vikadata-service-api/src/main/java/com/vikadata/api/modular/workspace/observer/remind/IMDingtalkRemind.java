@@ -19,11 +19,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * Im-钉钉提醒，自动根据开启状态注册订阅主题
+ * im- dingtalk，automatically register subscription topics according to the open status
  * </p>
- *
- * @author Pengap
- * @date 2021/10/9 13:42:28
  */
 @Slf4j
 @Component
@@ -43,7 +40,7 @@ public class IMDingtalkRemind extends AbstractRemind {
 
     @Override
     public void notifyMemberAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅第三方IM「钉钉」提醒=>@成员字段");
+        log.info("[remind notification]-user subscribe third party im dingtalk remind=>@member");
         String notifyUrl = meta.imRemindParameter.notifyUrl;
         String fromMemberName = meta.imRemindParameter.fromMemberName;
         String nodeName = meta.imRemindParameter.nodeName;
@@ -65,7 +62,7 @@ public class IMDingtalkRemind extends AbstractRemind {
 
     @Override
     public void notifyCommentAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅第三方IM「钉钉」提醒=>评论消息");
+        log.info("[remind notification]-user subscribe third party im dingtalk remind=>comments");
         String notifyUrl = meta.imRemindParameter.notifyUrl;
         String fromMemberName = meta.imRemindParameter.fromMemberName;
         String nodeName = meta.imRemindParameter.nodeName;

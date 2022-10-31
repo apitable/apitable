@@ -30,9 +30,10 @@ public class AutomationTriggerServiceImpl extends ServiceImpl<AutomationTriggerM
     }
 
     /**
-     * 将trigger 将内容转化为Trigger格式
-     * @param input
-     * @return
+     * Convert content to the trigger format.
+     *
+     * @param input input data
+     * @return json object
      */
     @Override
     public JSONObject transformInput(JSONObject input) {

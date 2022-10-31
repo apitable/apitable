@@ -60,7 +60,7 @@ public class AutomationRobotServiceImpl extends ServiceImpl<AutomationRobotMappe
     public ResponseData<AutomationTriggerCreateVo> upsert(AutomationApiTriggerCreateRo data,String xServiceToken) {
         AutomationTriggerCreateVo automationTriggerCreateVo = new AutomationTriggerCreateVo();
 
-        //1、创建机器人
+        //1、Creating a robot.
         String robotId = IdUtil.createAutomationRobotId();
         AutomationRobotEntity robot = AutomationRobotEntity.builder()
             .name(data.getRobot().getName())
@@ -82,10 +82,10 @@ public class AutomationRobotServiceImpl extends ServiceImpl<AutomationRobotMappe
         try{
             iAutomationRobotService.save(robot);
         }catch (Exception e){
-            //当执行过插入,调整为更新形式
+            // When an insert is performed, adjust to update form.
             List<AutomationTriggerDto> automationTriggerDtoList = iAutomationTriggerService.getTriggersBySeqId(data.getSeqId(), data.getRobot().getResourceId());
             if (automationTriggerDtoList.size()>0){
-                //更新己存在的机器人
+                // Update existing robots.
                 automationTriggerDtoList.stream().forEach(i->{
                     automationTriggerCreateVo.setTriggerId(i.getTriggerId());
                     automationTriggerCreateVo.setRobotId(i.getRobotId());
@@ -99,16 +99,16 @@ public class AutomationRobotServiceImpl extends ServiceImpl<AutomationRobotMappe
                 return ResponseData.success(automationTriggerCreateVo);
             }
             logger.info("create robot fail , err:{}",e.getMessage());
-            return ResponseData.status(false,602,"请勿重复创建").data(automationTriggerCreateVo);
+            return ResponseData.status(false,602,"Do not repeat the creation.").data(automationTriggerCreateVo);
         }
 
-        //2、创建trigger触发器
+        //2、Creating a trigger.
 
         String triggerId = IdUtil.createAutomationTriggerId();
         trigger.setTriggerId(triggerId);
         iAutomationTriggerService.save(trigger);
 
-        //3、创建action执行动作
+        //3、Create an action to perform the action.
         iAutomationActionService.createRequestAction(robotId,triggerId,"POST","Content-Type: application/json", data.getWebhookUrl());
         automationTriggerCreateVo.setRobotId(robotId);
         automationTriggerCreateVo.setTriggerId(triggerId);

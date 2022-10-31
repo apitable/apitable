@@ -9,10 +9,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * <p>
- * 日期时间工具类 test
+ *  date time util's test
  * </p>
- * @author 刘斌华
- * @date 2022-07-18 11:37:58
  */
 class DateTimeUtilTests {
 

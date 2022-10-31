@@ -42,15 +42,13 @@ import static com.vikadata.api.enums.exception.ActionException.COLUMN_EXCEED_LIM
 import static com.vikadata.api.enums.exception.ActionException.ROW_EXCEED_LIMIT;
 
 /**
- * 多表格解析监听器
- * @author Shawn Deng
- * @date 2021-11-29 17:51:08
+ * multi table analysis listener
  */
 @Slf4j
 public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, String>> {
 
     /**
-     * 每隔100条存储数据库，然后清理，方便内存回收
+     * Store the database every 100, and then clean it up to facilitate memory recovery.
      */
     private static final int BATCH_COUNT = 100;
 
@@ -97,16 +95,16 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        // 1. 解析头部(如果是空白sheet，这里将不会被调用)
+        // 1. Parse header (if it is a blank sheet, it will not be called here)
         initHead(headMap, context);
     }
 
     private void initHead(Map<Integer, String> headMap, AnalysisContext context) {
         Integer sheetNo = context.readSheetHolder().getSheetNo();
         String sheetName = context.readSheetHolder().getSheetName();
-        log.info("解析到头部信息, SheetNo:" + sheetNo + ", Sheet: " + sheetName + ", 列数：" + headMap.size());
+        log.info("parse to header information, SheetNo:" + sheetNo + ", Sheet: " + sheetName + ", col：" + headMap.size());
         int totalSheetSize = context.readWorkbookHolder().getParameterSheetDataList().size();
-        // 是否多个Sheet
+        // is there more than one sheet
         if (totalSheetSize > 1) {
             if (retNodeData == null) {
                 retNodeData = new NodeData(NodeType.FOLDER, IdUtil.createNodeId(), fileName, null, parentNodeId);
@@ -121,14 +119,14 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
             }
         }
 
-        // 列长度，可能为0
+        // Column length, possibly 0
         int headSize = headMap.size();
 
-        // 考虑删除，耗内存
+        // Consider deleting, consuming memory
         Map<Integer, String> headerMap = new LinkedHashMap<>(headSize);
         Meta meta = new Meta(headSize);
 
-        // 首个默认视图的有序列定义顺序,
+        // The sequence definition order for the first default view,
         int totalRow = context.readSheetHolder().getApproximateTotalRowNumber() != null ? context.readSheetHolder().getApproximateTotalRowNumber() : 0;
         View view = new View(headSize, totalRow);
         view.id = IdUtil.createViewId();
@@ -136,11 +134,11 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
         view.type = ViewType.GRID.getType();
         view.frozenColumnCount = 1;
 
-        // 按序遍历列
+        // traverse columns in order
         headMap.forEach((index, cellValue) -> {
-            String fieldName = StrUtil.isBlank(cellValue) ? String.format("第%d列", index + 1) : cellValue;
+            String fieldName = StrUtil.isBlank(cellValue) ? String.format("the %d col", index + 1) : cellValue;
             String fieldId = IdUtil.createFieldId();
-            // 存储列ID
+            // storage column id
             headerMap.put(index, fieldId);
             meta.fieldMap.putOnce(fieldId,
                     FieldMapRo.builder()
@@ -149,10 +147,10 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
                             .type(FieldType.TEXT.getFieldType())
                             .build()
             );
-            // 视图列
+            // view column
             Column column = new Column(fieldId);
             if (index == 0) {
-                // 首列添加统计记录总数
+                // Add the total number of statistical records in the first column
                 column.statType = 1;
             }
             view.columns.add(column);
@@ -166,27 +164,27 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
 
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
-        // 2. 一行行解析数据（如果是空白sheet，这里将不会被调用）
+        // 2. One line parsing data (if it is a blank sheet, it will not be called here)
         String sheetName = context.readSheetHolder().getSheetName();
         Map<Integer, String> headerMap = sheetHeadMap.get(sheetName);
         Meta meta = metaMap.get(sheetName);
 
-        // 超过5万行不允许写入数表
+        // More than 50,000 rows are not allowed to write to the number table.
         Integer totalRowsIncludingHeader = context.readSheetHolder().getApproximateTotalRowNumber();
-        log.info("实际总行数(包含表头): {}", totalRowsIncludingHeader);
+        log.info("Actual total number of rows (including header): {}", totalRowsIncludingHeader);
         if (totalRowsIncludingHeader != null) {
             ExceptionUtil.isTrue(totalRowsIncludingHeader - 1 <= limitProperties.getMaxRowCount(), ROW_EXCEED_LIMIT);
         }
 
         if (headerMap.isEmpty()) {
-            // 跳过空行不存
+            // skip blank lines without saving
             if (data.isEmpty()) {
                 return;
             }
-            // 列头为空，根据当前行数补齐所有列
+            // The column header is empty, and all columns are filled according to the current number of rows.
             headerMap = new LinkedHashMap<>(data.size());
             for (int index = 0; index < data.size(); index++) {
-                String fieldName = String.format("第%d列", index + 1);
+                String fieldName = String.format("the %d col", index + 1);
                 String fieldId = IdUtil.createFieldId();
                 headerMap.put(index, fieldId);
                 meta.fieldMap.putOnce(fieldId,
@@ -196,10 +194,10 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
                                 .type(FieldType.TEXT.getFieldType())
                                 .build()
                 );
-                // 视图列
+                // view column
                 Column column = new Column(fieldId);
                 if (index == 0) {
-                    // 首列添加统计记录总数
+                    // Add the total number of statistical records in the first column
                     column.statType = 1;
                 }
                 meta.views.get(0).columns.add(column);
@@ -207,16 +205,17 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
             sheetHeadMap.put(sheetName, headerMap);
         }
         else {
-            // 跳过空行不存
+            // skip blank lines without saving
             if (data.isEmpty()) {
                 return;
             }
             if (headerMap.size() < data.size()) {
-                // invokeHeadMap 解析到的列数量比这个少
-                // 如果每一行数据真实是5列，而列头在只有前3列有定义值，
-                // 比如: 0 -> 第1列, 1-> 第2列, 2 -> 第3列，那么后面的列需要补全，
+                // invokeHeadMap the number of columns resolved is less than this
+                // If each row of data is actually 5 columns, and the column header has defined values in only the first 3 columns,
+                // such as: 0 -> the first column, 1-> the second column, 2 -> the third column.
+                // then the following columns need to be complete，
                 for (int index = headerMap.size(); index < data.size(); index++) {
-                    String fieldName = String.format("第%d列", index + 1);
+                    String fieldName = String.format("the %d col", index + 1);
                     String fieldId = IdUtil.createFieldId();
                     headerMap.put(index, fieldId);
                     meta.fieldMap.putOnce(fieldId,
@@ -226,7 +225,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
                                     .type(FieldType.TEXT.getFieldType())
                                     .build()
                     );
-                    // 视图列
+                    // view column
                     meta.views.get(0).columns.add(new Column(fieldId));
                 }
                 sheetHeadMap.put(sheetName, headerMap);
@@ -262,26 +261,26 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        // 3. 当前sheet解析完成
-        log.info("======================解析完成==============================");
+        // 3. the current sheet resolution is complete
+        log.info("======================analysis completed==============================");
 
-        // sheet解析完之后是空表格，那么就创建一个默认列默认行
+        // After the sheet is parsed, an empty table is created, then a default column default row is created.
         String sheetName = context.readSheetHolder().getSheetName();
         if (!sheetHeadMap.containsKey(sheetName) && !metaMap.containsKey(sheetName) && !nodeMap.containsKey(sheetName)) {
-            // 没有解析到列头，那这个sheet是空的，初始化数据
-            // 初始化一个空表格
+            // If it is not parsed to the column header, then this sheet is empty and initializes the data.
+            // initialize an empty table
             initHead(MapUtil.of(0, "标题"), context);
         }
 
-        // 超过200列不允许写入数表
-        log.info("实际总列数: {}", sheetHeadMap.get(sheetName).size());
+        // More than 200 columns are not allowed to write to the number table.
+        log.info("actual total number of columns: {}", sheetHeadMap.get(sheetName).size());
         ExceptionUtil.isTrue(sheetHeadMap.get(sheetName).size() <= limitProperties.getMaxColumnCount(), COLUMN_EXCEED_LIMIT);
 
         int currentSheetIndex = context.readSheetHolder().getSheetNo() + 1;
         int totalSheetSize = context.readWorkbookHolder().getParameterSheetDataList().size();
         if (currentSheetIndex == totalSheetSize) {
-            // 已经全部解析完成，执行批量插入数据
-            log.info("全部解析完成，执行插入数据");
+            // All parsing has been completed, and batch data insertion is performed.
+            log.info("Complete parsing and insert data ");
             saveData(context.readWorkbookHolder().getParameterSheetDataList());
         }
     }
@@ -346,7 +345,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
             metaEntities.add(metaEntity);
         });
 
-        log.info("开始执行批量插入");
+        log.info("start bulk insertion");
         StopWatch stopWatch = new StopWatch("Batch Insert Data");
         stopWatch.start();
         iNodeService.batchCreateDataSheet(
@@ -354,13 +353,13 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
                 nodeEntities, datasheetEntities, metaEntities, recordEntities
         );
         stopWatch.stop();
-        log.info("插入完成: {}", stopWatch.prettyPrint());
+        log.info("Insert complete: {}", stopWatch.prettyPrint());
     }
 
     public void saveRecords() {
-        log.info("分批保存行记录");
+        log.info("save line records in batches");
         iNodeService.batchSaveDstRecords(recordEntities);
-        log.info("存储成功");
+        log.info("storage successfully");
     }
 
     public NodeData getRetNodeData() {

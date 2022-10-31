@@ -1,17 +1,12 @@
 package com.vikadata.api.modular.space.model;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Data;
 
-/**
- * <p>
- * invitation user dto
- * </p>
- * @author zoe zheng
- * @date 2022/9/1 11:25
- */
 @Data
 @Builder(toBuilder = true)
+@ApiModel("Invitation User")
 public class InvitationUserDTO {
 
     /**

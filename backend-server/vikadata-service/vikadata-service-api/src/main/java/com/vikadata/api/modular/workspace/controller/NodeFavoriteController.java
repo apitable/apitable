@@ -26,16 +26,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <p>
- * 工作台模块_节点收藏管理接口
- * </p>
- *
- * @author Chambers
- * @date 2020/8/15
- */
 @RestController
-@Api(tags = "工作台模块_节点收藏管理接口")
+@Api(tags = "Workbench - Node Favorite Api")
 @ApiResource(path = "/node/favorite")
 public class NodeFavoriteController {
 
@@ -43,8 +35,8 @@ public class NodeFavoriteController {
     private INodeFavoriteService iNodeFavoriteService;
 
     @GetResource(path = "/list")
-    @ApiOperation(value = "查询收藏的节点列表")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Get favorite nodes")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<List<FavoriteNodeInfo>> list() {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
@@ -52,8 +44,8 @@ public class NodeFavoriteController {
     }
 
     @PostResource(path = "/move")
-    @ApiOperation(value = "移动收藏节点位置")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Move favorite node")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<Void> move(@RequestBody @Valid MarkNodeMoveRo ro) {
         Long memberId = LoginContext.me().getMemberId();
         iNodeFavoriteService.move(memberId, ro.getNodeId(), ro.getPreNodeId());
@@ -62,11 +54,11 @@ public class NodeFavoriteController {
 
     @Notification(templateId = NotificationTemplateId.NODE_FAVORITE)
     @PostResource(path = "/updateStatus/{nodeId}")
-    @ApiOperation(value = "更改节点收藏状态")
+    @ApiOperation(value = "Change favorite status")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl"),
-        @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fod8mXUeiXyVo")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl"),
+        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "fod8mXUeiXyVo")
     })
     public ResponseData<Void> updateStatus(@PathVariable("nodeId") String nodeId) {
         String spaceId = LoginContext.me().getSpaceId();

@@ -10,26 +10,18 @@ import com.vikadata.core.support.serializer.IBaseEnum;
 
 import static com.vikadata.api.enums.exception.OrganizationException.DELETE_ACTION_ERROR;
 
-/**
- * <p>
- * 删除类型
- * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/21 15:18
- */
 @Getter
 public enum DeleteMemberType implements IBaseEnum{
 
     /**
-     * 本部门删除
+     * deleted from department
      */
-    FROM_TEAM(0, "本部门删除"),
+    FROM_TEAM(0, "deleted from department"),
 
     /**
-     * 组织删除
+     * deleted from organization
      */
-    FROM_SPACE(1, "组织删除");
+    FROM_SPACE(1, "deleted from organization");
 
     private final int value;
 

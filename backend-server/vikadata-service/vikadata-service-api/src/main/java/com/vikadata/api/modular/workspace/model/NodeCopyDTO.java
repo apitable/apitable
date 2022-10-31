@@ -7,14 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-/**
- * <p>
- * 节点复制 DTO
- * </p>
- *
- * @author Chambers
- * @date 2021/1/20
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -6,22 +6,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- * 第三方订单同步
- * </p>
- * @author zoe zheng
- * @date 2022/4/6 16:20
- */
 @Data
-@ApiModel("第三方订单同步")
+@ApiModel("Social Order Migrate Ro")
 public class SocialOrderMigrateRo {
 
-    @NotBlank(message = "第三方平台")
-    @ApiModelProperty(value = "第三方平台1:企业微信,2:钉钉 3:飞书 ", required = true, example = "2", position = 1)
+    @NotBlank(message = "third party board")
+    @ApiModelProperty(value = "1: wecom 2: dingtalk 3: feishu", required = true, example = "2", position = 1)
     private Integer platformType;
 
 
-    @ApiModelProperty(value = "空间站ID ", example = "spc***", position = 2)
+    @ApiModelProperty(value = "space id ", example = "spc***", position = 2)
     private String spaceId;
 }

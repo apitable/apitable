@@ -14,21 +14,18 @@ import com.vikadata.core.exception.BusinessException;
 
 /**
  * <p>
- * 业务异常工具类
+ * Business Exception Tool
+ *
  * </p>
  *
- * @author Shawn Deng
- * @date 2018/10/17 18:37
  */
 public class ExceptionUtil {
 
     /**
-     * 断定目标值为true.为false则抛出业务异常
+     * if expression is false, throw exception.
      *
-     * @param expression 表达式
-     * @param e          异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:23
+     * @param expression    if expression is false, throw exception.
+     * @param e             will be wrapped business exception
      */
     public static void isTrue(boolean expression, BaseException e) {
         if (!expression) {
@@ -37,12 +34,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 断定目标值为false.为true则抛出业务异常
+     * if expression is true, throw exception.
      *
-     * @param expression 表达式
-     * @param e          异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:23
+     * @param expression    if expression is true, throw exception.
+     * @param e             will be wrapped business exception
      */
     public static void isFalse(boolean expression, BaseException e) {
         if (expression) {
@@ -51,12 +46,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 断定目标值为null.不为null则抛出业务异常
+     * if obj is not null, throw exception.
      *
-     * @param obj 对象
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param obj   the object to check
+     * @param e     will be wrapped business exception
      */
     public static void isNull(Object obj, BaseException e) {
         if (ObjectUtil.isNotNull(obj)) {
@@ -65,12 +58,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 断定目标值不为null.为null则抛出业务异常
+     * if obj is null, throw exception.
      *
-     * @param obj 对象
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param obj   the object to check
+     * @param e     will be wrapped business exception
      */
     public static void isNotNull(Object obj, BaseException e) {
         if (ObjectUtil.isNull(obj)) {
@@ -79,15 +70,14 @@ public class ExceptionUtil {
     }
 
     /**
-     * 字符串是否为空，空的定义如下:<br>
-     * 1、为null <br>
-     * 2、为""<br>
-     * 为空抛出业务异常
+     * if the string is no empty, throw exception.
      *
-     * @param str 被检测的字符串
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * empty is defined as follows:<br>
+     * 1、str object is null <br>
+     * 2、str equal to ""<br>
+     *
+     * @param str   the string to check
+     * @param e     will be wrapped business exception
      */
     public static void isEmpty(CharSequence str, BaseException e) {
         if (StrUtil.isNotEmpty(str)) {
@@ -96,15 +86,14 @@ public class ExceptionUtil {
     }
 
     /**
-     * 字符串是否为非空白 空白的定义如下： <br>
-     * 1、不为null <br>
-     * 2、不为""<br>
-     * 为空抛出业务异常
+     * if the string is empty, throw exception.
      *
-     * @param str 被检测的字符串
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * empty is defined as follows:<br>
+     * 1、str object is null <br>
+     * 2、str equal to ""<br>
+     *
+     * @param str   the string to check
+     * @param e     will be wrapped business exception
      */
     public static void isNotEmpty(CharSequence str, BaseException e) {
         if (StrUtil.isEmpty(str)) {
@@ -113,16 +102,16 @@ public class ExceptionUtil {
     }
 
     /**
-     * 字符串是否为空白 空白的定义如下： <br>
-     * 1、为null <br>
-     * 2、为不可见字符（如空格）<br>
-     * 3、""<br>
-     * 不为空白抛出业务异常
      *
-     * @param str 被检测的字符串
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * if the string is no blank, throw exception.
+     *
+     * blank is defined as follows:<br>
+     * 1、str object is null <br>
+     * 2、str equal to ""<br>
+     * 3、invisible characters (such as spaces)
+     *
+     * @param str   the string to check
+     * @param e     will be wrapped business exception
      */
     public static void isBlank(CharSequence str, BaseException e) {
         if (StrUtil.isNotBlank(str)) {
@@ -131,16 +120,15 @@ public class ExceptionUtil {
     }
 
     /**
-     * 字符串是否为非空白 空白的定义如下： <br>
-     * 1、不为null <br>
-     * 2、不为不可见字符（如空格）<br>
-     * 3、不为""<br>
-     * 为空白抛出业务异常
+     * if the string is blank, throw exception.
      *
-     * @param str 被检测的字符串
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * blank is defined as follows:<br>
+     * 1、str object is null <br>
+     * 2、str equal to ""<br>
+     * 3、invisible characters (such as spaces)
+     *
+     * @param str   the string to check
+     * @param e     will be wrapped business exception
      */
     public static void isNotBlank(CharSequence str, BaseException e) {
         if (StrUtil.isBlank(str)) {
@@ -149,13 +137,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 集合是否不为空
-     * 为空抛出业务异常
+     * if the collection is empty, throw exception.
      *
-     * @param collection 集合
-     * @param e          异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param collection    collection
+     * @param e             exception
      */
     public static void isNotEmpty(Collection<?> collection, BaseException e) {
         if (CollUtil.isEmpty(collection)) {
@@ -164,13 +149,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 集合是否不为空
-     * 为空抛出业务异常
+     * if the map is empty, throw exception.
      *
-     * @param map 集合
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param map   map
+     * @param e     exception
      */
     public static void isNotEmpty(Map<?, ?> map, BaseException e) {
         if (CollUtil.isEmpty(map)) {
@@ -179,13 +161,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * Iterable是否不为空
-     * 为空抛出业务异常
+     * if iterable is empty, throw exception.
      *
-     * @param iterable Iterable对象
-     * @param e        异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param iterable  iterable object
+     * @param e         exception
      */
     public static void isNotEmpty(Iterable<?> iterable, BaseException e) {
         if (CollUtil.isEmpty(iterable)) {
@@ -194,13 +173,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * Iterator是否不为空
-     * 为空抛出业务异常
+     * if iterator is empty, throw exception.
      *
-     * @param iterator Iterator对象
-     * @param e        异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param iterator  iterator object
+     * @param e         exception
      */
     public static void isNotEmpty(Iterator<?> iterator, BaseException e) {
         if (CollUtil.isNotEmpty(iterator)) {
@@ -209,13 +185,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * Enumeration是否不为空
-     * 为空抛出业务异常
+     * if enumeration is empty, throw exception.
      *
-     * @param enumeration Enumeration对象
-     * @param e           异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param enumeration   enumeration object
+     * @param e             exception
      */
     public static void isNotEmpty(Enumeration<?> enumeration, BaseException e) {
         if (CollUtil.isNotEmpty(enumeration)) {
@@ -224,13 +197,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 集合是否为空
-     * 不为空抛出业务异常
+     * if the collection is no empty, throw exception.
      *
-     * @param collection 集合
-     * @param e          异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param collection    collection
+     * @param e             exception
      */
     public static void isEmpty(Collection<?> collection, BaseException e) {
         if (CollUtil.isNotEmpty(collection)) {
@@ -239,13 +209,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * 集合是否为空
-     * 不为空抛出业务异常
+     * if the map is no empty, throw exception.
      *
-     * @param map 集合
-     * @param e   异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param map   map
+     * @param e     exception
      */
     public static void isEmpty(Map<?, ?> map, BaseException e) {
         if (CollUtil.isNotEmpty(map)) {
@@ -254,13 +221,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * Iterable是否为空
-     * 不为空抛出业务异常
+     * if iterable is no empty, throw exception.
      *
-     * @param iterable Iterable对象
-     * @param e        异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param iterable  iterable object
+     * @param e         exception
      */
     public static void isEmpty(Iterable<?> iterable, BaseException e) {
         if (CollUtil.isNotEmpty(iterable)) {
@@ -269,13 +233,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * Iterator是否为空
-     * 不为空抛出业务异常
+     * if iterator is no empty, throw exception.
      *
-     * @param iterator Iterator对象
-     * @param e        异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param iterator  iterator object
+     * @param e         exception
      */
     public static void isEmpty(Iterator<?> iterator, BaseException e) {
         if (CollUtil.isNotEmpty(iterator)) {
@@ -284,13 +245,10 @@ public class ExceptionUtil {
     }
 
     /**
-     * Enumeration是否为空
-     * 不为空抛出业务异常
+     * if enumeration is no empty, throw exception.
      *
-     * @param enumeration Enumeration对象
-     * @param e           异常枚举
-     * @author Shawn Deng
-     * @date 2018/10/17 18:26
+     * @param enumeration   enumeration object
+     * @param e             exception
      */
     public static void isEmpty(Enumeration<?> enumeration, BaseException e) {
         if (CollUtil.isNotEmpty(enumeration)) {

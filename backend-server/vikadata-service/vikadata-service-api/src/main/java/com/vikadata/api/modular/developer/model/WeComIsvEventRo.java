@@ -6,18 +6,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- * 手动执行企微服务商事件
- * </p>
- * @author 刘斌华
- * @date 2022-06-07 18:32:05
- */
 @Data
-@ApiModel("手动执行企微服务商事件")
+@ApiModel("We ComIsv Event Ro")
 public class WeComIsvEventRo {
 
-    @ApiModelProperty("事件 ID")
+    @ApiModelProperty("event ID")
     @NotNull
     private Long eventId;
 

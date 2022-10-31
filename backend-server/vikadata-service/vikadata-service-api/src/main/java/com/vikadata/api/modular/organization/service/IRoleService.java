@@ -9,13 +9,6 @@ import com.vikadata.api.model.vo.organization.RoleVo;
 import com.vikadata.api.modular.organization.model.RoleBaseInfoDto;
 import com.vikadata.entity.UnitEntity;
 
-/**
- * <p>
- *     organization module - role service.
- * </p>
- *
- * @author tao
- */
 public interface IRoleService {
 
     /**

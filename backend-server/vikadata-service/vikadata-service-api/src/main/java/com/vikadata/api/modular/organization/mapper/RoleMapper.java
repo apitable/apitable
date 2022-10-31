@@ -9,13 +9,6 @@ import com.vikadata.api.modular.organization.model.RoleBaseInfoDto;
 import com.vikadata.api.modular.organization.model.RoleInfoDTO;
 import com.vikadata.entity.RoleEntity;
 
-/**
- * <p>
- *     organization module - unit role table Mapper
- * </p>
- *
- * @author tao
- */
 public interface RoleMapper extends ExpandBaseMapper<RoleEntity> {
 
     /**

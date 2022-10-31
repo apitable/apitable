@@ -52,14 +52,6 @@ import org.springframework.stereotype.Service;
 
 import static com.vikadata.api.constants.AuditConstants.UNIT_IDS;
 
-/**
- * <p>
- * 空间审计 服务实现类
- * </p>
- *
- * @author Chambers
- * @date 2022/6/7
- */
 @Slf4j
 @Service
 public class SpaceAuditServiceImpl implements ISpaceAuditService {
@@ -85,7 +77,6 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
 
     @Override
     public PageInfo<SpaceAuditPageVO> getSpaceAuditPageVO(String spaceId, SpaceAuditPageParam param) {
-        // 构建查询
         Criteria criteria = Criteria.where("spaceId").is(spaceId);
         if (CollUtil.isNotEmpty(param.getMemberIds())) {
             criteria.and("memberId").in(param.getMemberIds());
@@ -97,11 +88,11 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
             criteria.and("action").in(showAudits);
         }
 
-        // 获取空间订阅计划的审计可查询天数
+        // Gets the number of days the space subscription plan is available for audit query
         long queryDays = iSpaceSubscriptionService.getPlanAuditQueryDays(spaceId);
         LocalDateTime today = LocalDateTimeUtil.beginOfDay(LocalDateTime.now());
         LocalDateTime beginTime = param.getBeginTime();
-        // 校验开始时间
+        // check start time
         if (beginTime != null) {
             long between = LocalDateTimeUtil.between(beginTime, today, ChronoUnit.DAYS);
             ExceptionUtil.isTrue(queryDays >= between, SubscribeFunctionException.AUDIT_LIMIT);
@@ -109,7 +100,7 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
         else {
             beginTime = today.plusDays(1 - queryDays);
         }
-        // 校验结束时间
+        // check end time
         if (param.getEndTime() != null) {
             ExceptionUtil.isFalse(LocalDateTimeUtil.between(beginTime, param.getEndTime()).isNegative(), ParameterException.INCORRECT_ARG);
             criteria.and("createdAt").gte(beginTime).lte(param.getEndTime());
@@ -118,31 +109,30 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
             criteria.and("createdAt").gte(beginTime);
         }
 
-        // 文件搜索
+        // file search
         String likeName = StrUtil.trim(param.getKeyword());
         if (StrUtil.isNotBlank(likeName)) {
-            // 模糊搜索节点
+            // fuzzy search node
             List<String> nodeIds = nodeMapper.selectNodeIdBySpaceIdAndNodeNameLikeIncludeDeleted(spaceId, likeName);
-            // 结果为空，结束返回
+            // The result is empty, ending the return
             if (nodeIds.isEmpty()) {
                 return PageHelper.build(param.getPageNo(), param.getPageSize(), 0, new ArrayList<>());
             }
             criteria.and("info.nodeId").in(nodeIds);
         }
 
-        // 查询总数
+        // the total number of queries
         Query query = new Query(criteria);
         long count = mongoTemplate.count(query, AuditSpaceSchema.class);
-        // 结果为空，结束返回
+        // The result is empty, ending the return
         if (count == 0) {
             return PageHelper.build(param.getPageNo(), param.getPageSize(), 0, new ArrayList<>());
         }
-        // 查询分页结果
+        // Querying Paging Results
         Pageable pageable = PageRequest.of(param.getPageNo() - 1, param.getPageSize(), Direction.DESC, "_id");
         query.with(pageable);
         List<AuditSpaceSchema> auditSpaceSchemas = mongoTemplate.find(query, AuditSpaceSchema.class);
 
-        // 构建分页视图
         List<SpaceAuditPageVO> records = auditSpaceSchemas.isEmpty() ? new ArrayList<>() : this.buildSpaceAuditPageVO(spaceId, auditSpaceSchemas);
         return PageHelper.build(param.getPageNo(), param.getPageSize(), (int) count, records);
     }
@@ -154,23 +144,23 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
         Set<Long> unitIds = new HashSet<>();
         Set<String> nodeIds = new HashSet<>();
         for (AuditSpaceSchema schema : schemas) {
-            // 记录操作者成员ID
+            // add operator's member id
             operatorMemberIds.add(schema.getMemberId());
             JSONObject info = JSONUtil.parseObj(schema.getInfo());
-            // 记录组织单元ID
+            // add unit id
             if (info.containsKey(AuditConstants.UNIT_IDS)) {
                 unitIds.addAll(info.getJSONArray(UNIT_IDS).toList(Long.class));
             }
             else if (info.containsKey(AuditConstants.UNIT_ID)) {
                 unitIds.add(info.getLong(AuditConstants.UNIT_ID));
             }
-            // 记录节点ID
+            // add node id
             if (info.containsKey(AuditConstants.NODE_ID)) {
                 nodeIds.add(info.getStr(AuditConstants.NODE_ID));
             }
         }
 
-        // 批量查询成员、组织单元和节点等信息
+        // Batch querying information about members, organization units, and nodes
         List<MemberBaseInfoDTO> members = memberMapper.selectBaseInfoDTOByIds(operatorMemberIds);
         Map<Long, MemberBaseInfoDTO> memberIdToDTOMap = members.stream().collect(Collectors.toMap(MemberBaseInfoDTO::getId, dto -> dto));
         Map<Long, UnitInfoVo> unitMap = new HashMap<>();
@@ -184,17 +174,17 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
             nodeMap = nodeEntities.stream().collect(Collectors.toMap(NodeEntity::getNodeId, node -> node));
         }
 
-        // 构建分页视图对象
+        // paging search
         for (AuditSpaceSchema schema : schemas) {
             SpaceAuditPageVO vo = new SpaceAuditPageVO();
             vo.setCreatedAt(schema.getCreatedAt());
             vo.setAction(schema.getAction());
-            // 构建操作人信息
+            // build operator info
             SpaceAuditPageVO.Operator operator = new SpaceAuditPageVO.Operator();
             BeanUtil.copyProperties(memberIdToDTOMap.get(schema.getMemberId()), operator);
             operator.setMemberId(schema.getMemberId());
             vo.setOperator(operator);
-            // 构建审计内容
+            // build audit info
             SpaceAuditPageVO.AuditContent content = new SpaceAuditPageVO.AuditContent();
             JSONObject info = JSONUtil.parseObj(schema.getInfo());
             AuditSpaceCategory category = AuditSpaceCategory.toEnum(schema.getCategory());
@@ -214,7 +204,7 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
                     node.setCurrentNodeIcon(nodeEntity.getIcon());
                     node.setCurrentNodeName(nodeEntity.getNodeName());
                     content.setNode(node);
-                    // 组织单元信息
+                    // unit info
                     if (info.containsKey(AuditConstants.UNIT_IDS) || info.containsKey(AuditConstants.UNIT_ID)) {
                         List<Long> ids = info.containsKey(AuditConstants.UNIT_IDS) ? info.getJSONArray(UNIT_IDS).toList(Long.class) : Collections.singletonList(info.getLong(AuditConstants.UNIT_ID));
                         List<SpaceAuditPageVO.Unit> units = new ArrayList<>();

@@ -36,14 +36,11 @@ import static com.vikadata.api.enums.exception.DeveloperException.INVALID_DEVELO
 
 /**
  * <p>
- * 用于vika-cli命令行工具，直接调用的API命令
+ *  vika-cli command line tool, directly call API commands
  * </p>
- *
- * @author Kelly Chen
- * @date 2020/4/7 14:55
  */
 @RestController
-@Api(tags = "Cli 授权接口")
+@Api(tags = "Cli Authorization API")
 @ApiResource(path = "/developer")
 @Slf4j
 public class CliController {
@@ -58,7 +55,7 @@ public class CliController {
     private SpaceMapper spaceMapper;
 
     @PostResource(path = "/auth/login", requiredLogin = false)
-    @ApiOperation(value = "登录授权，使用开发者的ApiKey")
+    @ApiOperation(value = "Login authorization, using the developer's Api Key.")
     public ResponseData<DevelopUserVo> authLogin(@RequestParam("api_key") String apiKey) {
         Long userId = developerMapper.selectUserIdByApiKey(apiKey);
         ExceptionUtil.isNotNull(userId, INVALID_DEVELOPER_TOKEN);
@@ -69,9 +66,9 @@ public class CliController {
     }
 
     @GetResource(path = "/new/token")
-    @ApiOperation(value = "创建个Developer Token", notes = "传入developer_token进行登录，联网验证token是否有效，返回用户名，并在本地做缓存。\n一般来说，这个API不是vika-cli用的，而是给Web端网页操作的。", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Create Developer Token", notes = "The developer token is passed for login. The network verifies whether the token is valid. The user name is returned and cached locally. \n Generally speaking, this API is not used by vika-cli, but for Web side web page operations.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "user_session_token", value = "用户的正常登录Session Token", required = true, dataTypeClass = String.class, paramType = "query", example = "AAABBB"),
+        @ApiImplicitParam(name = "user_session_token", value = "Normal login Session Token of the user.", required = true, dataTypeClass = String.class, paramType = "query", example = "AAABBB"),
     })
     public ResponseData<DeveloperVo> newToken() {
 
@@ -85,7 +82,7 @@ public class CliController {
     }
 
     @GetResource(path = "/show/spaces", requiredPermission = false)
-    @ApiOperation(value = "列出空间站", notes = "列出用户所拥有的空间。", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "space list", notes = "List the space owned by the user.", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<List<SpaceShowcaseVo>> showSpaces() {
         Long userId = SessionContext.getUserId();
         List<SpaceShowcaseVo> spaceList = new ArrayList<>();
@@ -103,10 +100,10 @@ public class CliController {
     }
 
     @GetResource(path = "/show/applets")
-    @ApiOperation(value = "列出云程序", notes = "列出指定Space里的所有云程序", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Listing cloud applications", notes = "Lists all cloud applications in the specified space.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
     })
     public ResponseData<String> showApplets(String spaceId) {
         // String userId = developerService.getUserFromRequest();
@@ -116,9 +113,9 @@ public class CliController {
     }
 
     @GetResource(path = "/show/webhooks")
-    @ApiOperation(value = "列出云钩子", notes = "列出指定applet里的所有云钩子", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Listing cloud hooks", notes = "Lists all cloud hooks in the specified applet.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<String> showWebhooks(String appletId) {
 
@@ -129,45 +126,45 @@ public class CliController {
     }
 
     @GetResource(path = "/new/applet")
-    @ApiOperation(value = "新建云程序", notes = "在指定的space新建云程序", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "New Cloud application", notes = "Create a new cloud application in the specified space.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<String> newApplet(String spaceId) {
         return null;
     }
 
     @GetResource(path = "/new/webhook")
-    @ApiOperation(value = "新建云钩子", notes = "在指定的applet创建云钩子", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Creating a Cloud Hook", notes = "Creates a cloud hook in the specified applet.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<String> newWebhook() {
         return null;
     }
 
     @GetResource(path = "/upload/plugin")
-    @ApiOperation(value = "上传插件", notes = "指定applet上传插件", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Upload plug-ins", notes = "Specifies the applet upload plug-in.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<String> uploadPlugin() {
         return null;
     }
 
     @GetResource(path = "/publish/applet")
-    @ApiOperation(value = "发布云程序", notes = "指定applet发布到市场", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Publish cloud applications", notes = "Specifies that the applet is published to the marketplace.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<String> publishApplet() {
         return null;
     }
 
     @GetResource(path = "/graphql")
-    @ApiOperation(value = "GraphQL查询", notes = "使用GraphQL进行查询", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "GraphQL Query", notes = "Query using Graph QL", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "Developer-Token", value = "开发者Token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+        @ApiImplicitParam(name = "Developer-Token", value = "developer token", required = true, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<String> graphql() {
         return null;

@@ -4,23 +4,20 @@ import java.util.Map;
 
 /**
  * <p>
- * 业务异常
+ * Business Exception
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/9/4 16:31
  */
 public class BusinessException extends RuntimeException {
 
     private static final long serialVersionUID = 6018501357401552444L;
 
     /**
-     * 错误代码
+     * Business Exception Status Code
      */
     private Integer code;
 
     /**
-     * 固定枚举编码，用于i18n国际化识别
+     * Fixed enumeration encoding for i18n internationalization recognition
      */
     private String fixedCode;
 

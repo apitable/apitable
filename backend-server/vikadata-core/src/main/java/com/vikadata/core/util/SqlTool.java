@@ -1,17 +1,9 @@
 package com.vikadata.core.util;
 
-/**
- * <p>
- * SQL 工具类
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/3 20:08
- */
 public class SqlTool {
 
     /**
-     * 返回SelectCount执行结果
+     * return the execution result of SelectCount
      *
      * @param result ignore
      * @return int

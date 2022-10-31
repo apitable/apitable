@@ -5,23 +5,11 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.entity.WidgetPackageAuthSpaceEntity;
 
-/**
- * <p>
- * 工作台-组件授权空间 Mapper 接口
- * </p>
- *
- * @author Pengap
- * @date 2021/7/9
- */
 public interface WidgetPackageAuthSpaceMapper extends BaseMapper<WidgetPackageAuthSpaceEntity> {
 
     /**
-     * 查询小组件绑定空间Id
-     *
-     * @param packageId 小组件包Id
-     * @return 组件绑定的空间Id
-     * @author Pengap
-     * @date 2021/7/9
+     * @param packageId widget package id
+     * @return the space id bound by the widget package id
      */
     String selectSpaceIdByPackageId(@Param("packageId") String packageId);
 

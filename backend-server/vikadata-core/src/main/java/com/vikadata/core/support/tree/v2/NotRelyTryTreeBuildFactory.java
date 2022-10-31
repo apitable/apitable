@@ -13,11 +13,9 @@ import static com.vikadata.core.support.tree.v2.DefaultTreeBuildFactory.ROOT_PAR
 
 /**
  * <p>
- * V2 无依赖尝试构建树节点，注意：使用使请在外部排序List，是传入进来的List是有序的
+ *  V2 Try to build tree nodes without dependencies
+ *  Note: sort the List externally, the incoming List is ordered
  * </p>
- *
- * @author Pengap
- * @date 2021/8/9 15:18:21
  */
 public class NotRelyTryTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFactory<T> {
 
@@ -27,8 +25,8 @@ public class NotRelyTryTreeBuildFactory<T extends Tree> extends AbstractTreeBuil
 
     @Override
     protected List<T> beforeBuild(List<T> nodes) {
-        // 默认不进行前置处理,直接返回
-        // 为了重复构建树不破坏原有数据结构
+        // By default, no preprocessing before build.
+        // no destroying the original data structure to repeatedly build the tree.
         return ObjectUtil.cloneByStream(nodes);
     }
 
@@ -39,14 +37,14 @@ public class NotRelyTryTreeBuildFactory<T extends Tree> extends AbstractTreeBuil
 
     @Override
     protected List<T> afterBuild(List<T> nodes) {
-        // 默认不进行后置处理,直接返回
+        // By default, no preprocessing after build.
         return nodes;
     }
 
     /**
-     * 树构建
+     * build tree
      *
-     * @param totalNodes 源数据集合
+     * @param totalNodes the node list
      */
     private List<T> build(List<T> totalNodes) {
         if (null == totalNodes || totalNodes.isEmpty()) {
@@ -59,7 +57,7 @@ public class NotRelyTryTreeBuildFactory<T extends Tree> extends AbstractTreeBuil
             eTreeMap.put(totalNode.getId(), totalNode);
         }
 
-        // 默认使用第一个元素父Id当做第一个匹配
+        // By default, using the first element parent id as the first match
         Entry<String, T> next = eTreeMap.entrySet().iterator().next();
         String basisParentId = null == next ? ROOT_PARENT_ID : next.getValue().getParentId();
 
@@ -67,7 +65,7 @@ public class NotRelyTryTreeBuildFactory<T extends Tree> extends AbstractTreeBuil
         String parentId;
         for (Entry<String, T> entry : eTreeMap.entrySet()) {
             T node = entry.getValue();
-            // 没有子节点时，构建一个空对象
+            // When no children, building an empty object
             if (CollUtil.isEmpty(node.getChildren())) {
                 node.setChildren(new ArrayList<>());
             }
@@ -83,7 +81,7 @@ public class NotRelyTryTreeBuildFactory<T extends Tree> extends AbstractTreeBuil
                 parentNode.addChildren(node);
             }
             else {
-                // 如果没有匹配节点，替换条件进行下一轮匹配
+                // If no matching node, the replacement condition is used for the next round of matching
                 basisParentId = parentId;
                 rootTreeList.add(node);
             }

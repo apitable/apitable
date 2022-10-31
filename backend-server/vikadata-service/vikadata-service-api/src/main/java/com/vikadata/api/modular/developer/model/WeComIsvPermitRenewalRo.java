@@ -12,26 +12,19 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- * 企微服务商下单续期接口许可
- * </p>
- * @author 刘斌华
- * @date 2022-07-04 16:02:03
- */
 @Data
-@ApiModel("企微服务商下单续期接口许可")
+@ApiModel("WeCom Isv Permit Renewal Ro")
 public class WeComIsvPermitRenewalRo {
 
-    @ApiModelProperty("要续期接口许可的空间站 ID")
+    @ApiModelProperty("the renewal space")
     @NotBlank
     private String spaceId;
 
-    @ApiModelProperty("要续期的企微用户 ID 列表")
+    @ApiModelProperty("wecom users who want to renew")
     @NotEmpty
     private List<String> cpUserIds;
 
-    @ApiModelProperty("续期时长的月数。以 31 天为一个月，最多 36 个月")
+    @ApiModelProperty("the number of months to purchase the account. take 31 days as a month, max 36 months")
     @NotNull
     @Min(1)
     @Max(36)

@@ -70,16 +70,8 @@ import static com.vikadata.api.enums.exception.PermissionException.FIELD_PERMISS
 import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATION_DENIED;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_IN_SPACE;
 
-/**
- * <p>
- * 工作台模块-数表字段权限管理接口
- * </p>
- *
- * @author Chambers
- * @date 2021/3/29
- */
 @RestController
-@Api(tags = "工作台模块_字段权限管理接口")
+@Api(tags = "Workbench - Field Role API")
 @ApiResource
 @Validated
 public class FieldRoleController {
@@ -106,29 +98,29 @@ public class FieldRoleController {
     private INodeShareService iNodeShareService;
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/permission/enable", requiredPermission = false)
-    @ApiOperation(value = "开启字段权限")
+    @ApiOperation(value = "Enable field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> enableRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId,
         @RequestBody(required = false) RoleControlOpenRo roleControlOpenRo) {
-        // 列操作权限前置检查
+        // column operation permission pre check
         iFieldRoleService.checkFieldPermissionBeforeEnable(dstId, fieldId);
-        // 在节点的权限必须是可管理以上
+        // The permissions at the node must be above manageable.
         controlTemplate.checkNodePermission(MemberHolder.get(), dstId, NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 字段是否已经开启，预防重复操作
+        // Whether the field is enabled to prevent repeated operations.
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         iControlService.checkControlStatus(controlId.toString(),
             status -> ExceptionUtil.isFalse(status, FIELD_PERMISSION_HAS_ENABLE));
-        // 开启权限
-        // 判断用户开启字段权限事是否继承默认
+        // enable role
+        // Determine whether the user's open field permission inherits the default
         boolean includeExtend = ObjectUtil.isNotNull(roleControlOpenRo)
                 && BooleanUtil.isTrue(roleControlOpenRo.getIncludeExtend());
         iFieldRoleService.enableFieldRole(SessionContext.getUserId(), dstId, fieldId, includeExtend);
-        // 发布事件，远程调用 Socket 广播
+        // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_ENABLE).datasheetId(dstId).fieldId(fieldId)
             .uuid(LoginContext.me().getLoginUser().getUuid()).includeExtend(includeExtend)
             .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
@@ -137,20 +129,20 @@ public class FieldRoleController {
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/permission/disable", requiredPermission = false)
-    @ApiOperation(value = "关闭字段权限")
+    @ApiOperation(value = "Disable field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> disableRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId) {
-        // 字段是否已经是关闭，预防重复操作
+        // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
-        // 检查操作者是否可以操作字段角色变更，只有管理员和创建者可以
+        // Check whether the operator can operate the field role change, only the administrator and creator can
         iFieldRoleService.checkFieldHasOperation(controlId.toString(), MemberHolder.get());
-        // 关闭字段权限
+        // disable role
         iControlService.removeControl(SessionContext.getUserId(), controlId.getControlIds(), true);
-        // 发布事件，远程调用 Socket 广播
+        // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_DISABLE).datasheetId(dstId).fieldId(fieldId)
             .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
@@ -158,36 +150,35 @@ public class FieldRoleController {
     }
 
     @GetResource(path = "/datasheet/{dstId}/field/{fieldId}/listRole", requiredPermission = false)
-    @ApiOperation(value = "获取数表指定字段角色信息", notes = "根据指定的数表中字段的角色信息")
+    @ApiOperation(value = "Gets the field role infos in datasheet.")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<FieldCollaboratorVO> listRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId) {
-        // 获取数表的所有字段权限
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(dstId, fieldId);
         return ResponseData.success(fieldCollaboratorVO);
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/addRole", requiredPermission = false)
-    @ApiOperation(value = "新增字段角色")
+    @ApiOperation(value = "Add field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> addRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId,
         @Valid @RequestBody FieldRoleCreateRo data) {
-        // 字段是否已经是关闭，预防重复操作
+        // whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
-        // 检查操作者是否可以操作字段角色变更，只有管理员和创建者可以
+        // check whether the operator can operate the field role change, only the administrator and creator can
         iFieldRoleService.checkFieldHasOperation(controlId.toString(), MemberHolder.get());
-        // 检查添加的组织单元ID是否存在当前空间
+        // check whether the added organizational unit id has the current space
         iUnitService.checkInSpace(SpaceHolder.get(), data.getUnitIds());
-        // 添加角色
+        // add field role
         iFieldRoleService.addFieldRole(SessionContext.getUserId(), controlId.toString(), data.getUnitIds(), data.getRole());
-        // 发布事件，远程调用 Socket 广播
+        // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId)
             .role(data.getRole()).changedUnitIds(data.getUnitIds())
             .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
@@ -196,10 +187,10 @@ public class FieldRoleController {
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/editRole", requiredPermission = false)
-    @ApiOperation(value = "修改字段角色")
+    @ApiOperation(value = "Edit field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     @Deprecated
     public ResponseData<Void> editRole(@PathVariable("dstId") @NodeMatch String dstId,
@@ -212,23 +203,23 @@ public class FieldRoleController {
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/batchEditRole", requiredPermission = false)
-    @ApiOperation(value = "批量修改字段角色")
+    @ApiOperation(value = "Batch edit field role")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-            @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> batchEditRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId,
         @RequestBody @Valid BatchFieldRoleEditRo data) {
-        // 字段权限是否已经是关闭，预防操作错误
+        // Whether the field permission is already closed to prevent operation errors
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
-        // 检查操作者是否可以操作字段角色变更，只有管理员和创建者可以
+        // Check whether the operator can operate the field role change, only the administrator and creator can
         iFieldRoleService.checkFieldHasOperation(controlId.toString(), MemberHolder.get());
-        // 检查添加的组织单元ID是否存在当前空间
+        // Check whether the added organizational unit id has the current space
         iUnitService.checkInSpace(SpaceHolder.get(), data.getUnitIds());
-        // 编辑角色
+        // edit role
         iFieldRoleService.editFieldRole(SessionContext.getUserId(), controlId.toString(), data.getUnitIds(), data.getRole());
-        // 发布事件，远程调用 Socket 广播
+        // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId)
             .role(data.getRole()).changedUnitIds(data.getUnitIds())
             .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
@@ -237,23 +228,23 @@ public class FieldRoleController {
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/deleteRole", method = RequestMethod.DELETE, requiredPermission = false)
-    @ApiOperation(value = "删除字段角色")
+    @ApiOperation(value = "Delete field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> deleteRole(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId,
         @RequestBody @Valid FieldRoleDeleteRo data) {
-        // 字段是否已经是关闭，预防重复操作
+        // whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
-        // 检查操作者是否可以操作字段角色变更，只有管理员和创建者可以
+        // check whether the operator can operate the field role change, only the administrator and creator can
         iFieldRoleService.checkFieldHasOperation(controlId.toString(), MemberHolder.get());
-        // 检查添加的组织单元ID是否存在当前空间
+        // check whether the added organizational unit id has the current space
         iUnitService.checkInSpace(SpaceHolder.get(), Collections.singletonList(data.getUnitId()));
-        // 删除指定单元的角色
+        // deletes the role of the specified unit
         String role = iFieldRoleService.deleteFieldRole(controlId.toString(), dstId, data.getUnitId());
-        // 发布事件，远程调用 Socket 广播
+        // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId).delUnitIds(CollUtil.newArrayList(data.getUnitId()))
             .role(role).operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
@@ -261,24 +252,24 @@ public class FieldRoleController {
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/batchDeleteRole", method = RequestMethod.DELETE, requiredPermission = false)
-    @ApiOperation(value = "批量删除字段角色")
+    @ApiOperation(value = "Batch delete role")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-            @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> batchDeleteRole(@PathVariable("dstId") @NodeMatch String dstId,
             @PathVariable("fieldId") @FieldMatch String fieldId,
             @RequestBody @Valid BatchFieldRoleDeleteRo data) {
-        // 字段是否已经是关闭，预防重复操作
+        // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
-        // 检查操作者是否可以操作字段角色变更，只有管理员和创建者可以
+        // Check whether the operator can operate the field role change, only the administrator and creator can
         iFieldRoleService.checkFieldHasOperation(controlId.toString(), MemberHolder.get());
-        // 检查添加的组织单元ID是否存在当前空间
+        // check whether the added organizational unit id has the current space
         iUnitService.checkInSpace(SpaceHolder.get(), data.getUnitIds());
-        // 删除指定单元的角色
+        // deletes the role of the specified unit
         Map<String, List<Long>> roleToUnitIds = iFieldRoleService.deleteFieldRoles(controlId.toString(), data.getUnitIds());
         roleToUnitIds.forEach((role, unitIds) -> {
-            // 发布事件，远程调用 Socket 广播
+            // publish events, remotely call socket broadcast
             Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId).delUnitIds(unitIds)
                     .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
             SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
@@ -287,21 +278,21 @@ public class FieldRoleController {
     }
 
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/updateRoleSetting", requiredPermission = false)
-    @ApiOperation(value = "更新字段角色设置")
+    @ApiOperation(value = "Update field role setting")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "字段ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> updateRoleSetting(@PathVariable("dstId") @NodeMatch String dstId,
         @PathVariable("fieldId") @FieldMatch String fieldId,
         @RequestBody @Valid FieldControlProp prop) {
-        // 字段是否已经是关闭，预防重复操作
+        // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
-        // 检查操作者是否可以操作字段角色变更，只有管理员和创建者可以
+        // Check whether the operator can operate the field role change, only the administrator and creator can
         iFieldRoleService.checkFieldHasOperation(controlId.toString(), MemberHolder.get());
-        // 更新设置
+        // update settings
         iFieldRoleService.updateFieldRoleProp(SessionContext.getUserId(), controlId.toString(), prop);
-        // 发布事件，远程调用 Socket 广播
+        // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_SETTING_CHANGE).datasheetId(dstId).fieldId(fieldId).setting(prop)
             .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
@@ -309,27 +300,27 @@ public class FieldRoleController {
     }
 
     @GetResource(path = "/datasheet/field/permission", requiredLogin = false)
-    @ApiOperation(value = "获取多个数表的字段权限集")
+    @ApiOperation(value = "Get multi datasheet field permission")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstIds", value = "数表ID列表", required = true, dataTypeClass = String.class, paramType = "query", example = "dstCgcfixAKyeeNsaP,dstGxznHFXf9pvF1LZ"),
-        @ApiImplicitParam(name = "shareId", value = "分享ID", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
+        @ApiImplicitParam(name = "dstIds", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "query", example = "dstCgcfixAKyeeNsaP,dstGxznHFXf9pvF1LZ"),
+        @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
     })
     public ResponseData<List<FieldPermissionView>> getMultiDatasheetFieldPermission(@RequestParam("dstIds") List<String> dstIds,
         @RequestParam(value = "shareId", required = false) String shareId) {
         Long memberId = null;
         if (StrUtil.isBlank(shareId)) {
-            // 站内
+            // inside the station
             String spaceId = iNodeService.getSpaceIdByNodeId(dstIds.stream().findFirst().orElseThrow(() -> new BusinessException(NO_ARG)));
             memberId = iMemberService.getMemberIdByUserIdAndSpaceId(SessionContext.getUserId(), spaceId);
             ExceptionUtil.isNotNull(memberId, NOT_IN_SPACE);
         }
         else {
-            // 站外分享
+            // off site sharing
             iNodeShareService.checkShareIfExist(shareId);
         }
         List<FieldPermissionView> views = new ArrayList<>(dstIds.size());
         for (String dstId : dstIds) {
-            // 获取数表所有字段的权限
+            // get permissions for all fields in datasheet
             Map<String, FieldPermissionInfo> fieldPermissionMap = iFieldRoleService.getFieldPermissionMap(memberId, dstId, shareId);
             if (MapUtil.isNotEmpty(fieldPermissionMap)) {
                 views.add(new FieldPermissionView(dstId, dstId, fieldPermissionMap));

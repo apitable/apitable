@@ -46,16 +46,8 @@ import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
 import static com.vikadata.api.constants.NotificationConstants.APPLY_ID;
 import static com.vikadata.api.constants.NotificationConstants.APPLY_STATUS;
 
-/**
- * <p>
- * 空间加入申请接口
- * </p>
- *
- * @author Chambers
- * @date 2020/10/29
- */
 @RestController
-@Api(tags = "空间模块_空间加入申请接口")
+@Api(tags = "Space - Apply Joining Space Api")
 @ApiResource(path = "/space/apply")
 public class SpaceApplyController {
 
@@ -79,15 +71,14 @@ public class SpaceApplyController {
 
     @Notification(templateId = NotificationTemplateId.SPACE_JOIN_APPLY)
     @PostResource(path = "/join", requiredPermission = false)
-    @ApiOperation(value = "申请加入空间")
+    @ApiOperation(value = "Applying to join the space")
     public ResponseData<Void> apply(@RequestBody @Valid SpaceJoinApplyRo ro) {
         Long userId = SessionContext.getUserId();
-        // 生成申请记录
+        // generate application records
         Long applyId = iSpaceApplyService.create(userId, ro.getSpaceId());
-        // 通知需要字段
+        // generate and send notifications
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().spaceId(ro.getSpaceId()).bodyExtras(
             Dict.create().set(APPLY_ID, applyId).set(APPLY_STATUS, SpaceApplyStatus.PENDING.getStatus())).fromUserId(userId).build());
-        // 邮件通知
         List<Long> memberIds = spaceMemberRoleRelService.getMemberId(ro.getSpaceId(),
             ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
         memberIds.add(spaceMapper.selectSpaceMainAdmin(ro.getSpaceId()));
@@ -109,7 +100,7 @@ public class SpaceApplyController {
     }
 
     @PostResource(path = "/process", requiredPermission = false)
-    @ApiOperation(value = "处理申请")
+    @ApiOperation(value = "Process joining application")
     public ResponseData<Void> process(@RequestBody @Valid SpaceJoinProcessRo ro) {
         Long userId = SessionContext.getUserId();
         iSpaceApplyService.process(userId, ro.getNotifyId(), ro.getAgree());

@@ -1,9 +1,8 @@
 package com.vikadata.core.support;
 
 /**
- * 默认响应内容构造器
- * @author Shawn Deng
- * @date 2021-03-16 14:15:21
+ * default response data builder
+ *
  */
 public class DefaultResponseDataBuilder implements ResponseDataBuilder {
 

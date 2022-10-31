@@ -104,15 +104,8 @@ import static com.vikadata.api.enums.exception.OrganizationException.NOT_EXIST_M
 import static com.vikadata.api.enums.exception.ParameterException.NO_ARG;
 import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 
-/**
- * <p>
- * 通讯录-成员模块接口
- * </p>
- *
- * @author Shawn Deng
- */
 @RestController
-@Api(tags = "通讯录管理_成员管理接口")
+@Api(tags = "Contact Member Api")
 @ApiResource(path = "/org/member")
 @Slf4j
 public class MemberController {
@@ -164,12 +157,12 @@ public class MemberController {
 
     @GetResource(path = "/search")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "className", value = "高亮样式", dataTypeClass = String.class, paramType = "query", example = "highLight"),
-            @ApiImplicitParam(name = "filter", value = "是否过滤未加入成员", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-            @ApiImplicitParam(name = "keyword", value = "搜索词", required = true, dataTypeClass = String.class, paramType = "query", example = "张")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = "className", value = "the highlighting style", dataTypeClass = String.class, paramType = "query", example = "highLight"),
+            @ApiImplicitParam(name = "filter", value = "whether to filter unadded members", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+            @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "Luck")
     })
-    @ApiOperation(value = "模糊搜索成员", notes = "模糊搜索成员")
+    @ApiOperation(value = "Fuzzy Search Members", notes = "Fuzzy Search Members")
     public ResponseData<List<SearchMemberVo>> getMembers(@RequestParam(name = "keyword") String keyword,
             @RequestParam(value = "filter", required = false, defaultValue = "true") Boolean filter,
             @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
@@ -186,17 +179,17 @@ public class MemberController {
     }
 
     @GetResource(path = "/list")
-    @ApiOperation(value = "查询指定部门的成员列表", notes = "根据部门查询部门下所有成员，包括子部门的成员，查询根部门可以不传输teamId，teamId默认为0", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Query the team's members", notes = "Query all the members of the department, including the members of the sub department.if root team can lack teamId, teamId default 0.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "teamId", value = "部门ID，根部门可不填,默认为0", dataTypeClass = String.class, paramType = "query", example = "0")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = "teamId", value = "team id. if root team can lack teamId, teamId default 0.", dataTypeClass = String.class, paramType = "query", example = "0")
     })
     public ResponseData<List<MemberInfoVo>> getMemberList(@RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         SpaceHolder.setGlobalFeature(feature);
         if (teamId == 0) {
-            //查询根部门的成员
+            // query the members of the root department
             List<MemberInfoVo> resultList = memberMapper.selectMembersByRootTeamId(spaceId);
             if (CollUtil.isNotEmpty(resultList)) {
                 // handle member's team name, get full hierarchy team names
@@ -204,7 +197,7 @@ public class MemberController {
             }
             return ResponseData.success(resultList);
         }
-        //查询所有子部门ID的成员数
+        // query the ids of all sub departments
         List<Long> teamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
         List<MemberInfoVo> resultList = memberMapper.selectMembersByTeamId(teamIds);
         if (CollUtil.isNotEmpty(resultList)) {
@@ -215,12 +208,12 @@ public class MemberController {
     }
 
     @GetResource(path = "/page")
-    @ApiOperation(value = "分页查询指定部门的成员列表", notes = "根据部门查询部门下所有成员，包括子部门的成员，查询根部门可以不传输teamId，teamId默认为0，必须分页查询，不能全量查询。\n" + PAGE_DESC, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Page query the team's member", notes = "Query all the members of the department, including the members of the sub department. The query must be paging not full query.\n" + PAGE_DESC, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "teamId", value = "部门ID，根部门可不填", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "isActive", value = "过滤已加入或者未加入成员，不填则所有。0：未加入；1：已加入", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = "teamId", value = "team id. if root team can lack teamId, teamId default 0.", dataTypeClass = String.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "isActive", value = "whether to filter unadded members", dataTypeClass = String.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "page's parameter", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<MemberPageVo>> readPage(
@@ -229,7 +222,7 @@ public class MemberController {
             @PageObjectParam Page page) {
         String spaceId = LoginContext.me().getSpaceId();
         if (teamId == 0) {
-            //查询根部门的成员
+            // query the members of the root department
             IPage<MemberPageVo> pageResult = teamMapper.selectMembersByRootTeamId(page, spaceId, isActive);
             if (ObjectUtil.isNotNull(pageResult)) {
                 // handle member's team name, get full hierarchy team names
@@ -248,10 +241,10 @@ public class MemberController {
 
     @Deprecated
     @GetResource(path = "/checkEmail")
-    @ApiOperation(value = "判断空间内成员邮箱是否存在", notes = "判断空间内成员邮箱是否存在", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Check whether email in space", notes = "Check whether email in space", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "email", value = "邮箱地址", dataTypeClass = String.class, required = true, paramType = "query", example = "xxx@admin.com")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = "email", value = "email", dataTypeClass = String.class, required = true, paramType = "query", example = "xxx@admin.com")
     })
     public ResponseData<Boolean> checkEmailInSpace(@RequestParam("email") String email) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -260,11 +253,11 @@ public class MemberController {
     }
 
     @GetResource(path = "/read")
-    @ApiOperation(value = "获取成员详情", notes = "根据成员ID或用户ID查询成员详情", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Get member's detail info", notes = "Get member's detail info", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = "memberId", value = "成员ID", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "uuid", value = "用户UUID", dataTypeClass = String.class, paramType = "query", example = "1")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = "memberId", value = "member id", dataTypeClass = String.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "uuid", value = "user uuid", dataTypeClass = String.class, paramType = "query", example = "1")
     })
     public ResponseData<MemberInfoVo> read(@RequestParam(value = "memberId", required = false) Long memberId,
             @RequestParam(value = "uuid", required = false) String uuid) {
@@ -286,8 +279,8 @@ public class MemberController {
     }
 
     @GetResource(path = "/units")
-    @ApiOperation(value = "查询在空间内所属组织单元列表", notes = "获取成员所属组织单元列表，包括自己", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Query the units which a user belongs in space", notes = "Query the units which a user belongs, include self", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<MemberUnitsVo> getUnits() {
         Long memberId = LoginContext.me().getMemberId();
         List<Long> unitIds = iMemberService.getUnitsByMember(memberId);
@@ -296,11 +289,11 @@ public class MemberController {
     }
 
     @PostResource(path = "/sendInvite", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "发送邮件邀请成员",
-            notes = "提供邮箱地址，自动发送邮件邀请加入，邮箱自动绑定平台用户，被邀请的成员将是待激活状态，一直到用户自主激活才能正式生效",
+    @ApiOperation(value = "Send an email to invite members",
+            notes = "Send an email to invite. The email is automatically bound to the platform user. The invited member will be in the state to be activated, and will not take effect until the user self activates.",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<MemberUnitsVo> inviteMember(@RequestBody @Valid InviteRo data) {
         // human verification
         afsCheckService.noTraceCheck(data.getData());
@@ -321,26 +314,26 @@ public class MemberController {
             // without email, response success directly
             return ResponseData.success(unitsVo);
         }
-        // 邀请新成员
+        // invite new members
         List<Long> unitIds = iMemberService.emailInvitation(userId, spaceId, inviteEmails);
         unitsVo.setUnitIds(unitIds);
         return ResponseData.success(unitsVo);
     }
 
     @PostResource(path = "/sendInviteSingle", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "再次发送邮件邀请成员", notes = "成员未激活状态下，无论邀请是否过期，都可以再次发送邀请，发送成功后，上一次发送的邀请链接将失效", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Again send an email to invite members", notes = "If a member is not activated, it can send an invitation again regardless of whether the invitation has expired. After the invitation is successfully sent, the invitation link sent last time will be invalid.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> inviteMemberSingle(@RequestBody @Valid InviteMemberAgainRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        // 恶意空间校验
+        // check black space
         iBlackListService.checkBlackSpace(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        //再次发送邮件邀请成员
+        // Again send an email to invite members
         MemberEntity member = memberMapper.selectBySpaceIdAndEmail(spaceId, data.getEmail());
         ExceptionUtil.isNotNull(member, INVITE_EMAIL_NOT_FOUND);
         ExceptionUtil.isFalse(member.getIsActive(), INVITE_EMAIL_HAS_ACTIVE);
         Long memberId = LoginContext.me().getMemberId();
-        //限制发送频率10分钟
+        // Limit the frequency for 10 minutes
         String lockKey = StrUtil.format(GENERAL_LOCKED, "invite:email", data.getEmail());
         BoundValueOperations<String, String> ops = redisTemplate.boundValueOps(lockKey);
         ExceptionUtil.isNull(ops.get(), INVITE_TOO_OFTEN);
@@ -368,8 +361,8 @@ public class MemberController {
 
     @Notification(templateId = NotificationTemplateId.ASSIGNED_TO_GROUP)
     @PostResource(path = "/addMember", tags = "ADD_MEMBER")
-    @ApiOperation(value = "添加成员", notes = "添加新成员时，只能从组织架构内部选择，可以以部门为单位传递", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Add member", notes = "When adding new members, they can only be selected from within the organization structure and can be transferred by department", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> addMember(@RequestBody @Valid TeamAddMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
@@ -378,8 +371,8 @@ public class MemberController {
     }
 
     @PostResource(path = "/update")
-    @ApiOperation(value = "编辑自己成员信息", notes = "编辑自己成员信息", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Edit self member information", notes = "Edit self member information", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> update(@RequestBody @Valid UpdateMemberOpRo opRo) {
         Long memberId = LoginContext.me().getMemberId();
         String spaceId = LoginContext.me().getSpaceId();
@@ -389,8 +382,8 @@ public class MemberController {
     }
 
     @PostResource(path = "/updateInfo", tags = "UPDATE_MEMBER")
-    @ApiOperation(value = "编辑成员信息", notes = "编辑成员信息", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Edit member info", notes = "Edit member info", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateInfo(@RequestBody @Valid UpdateMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
@@ -399,8 +392,8 @@ public class MemberController {
     }
 
     @PostResource(path = "/updateMemberTeam", tags = "UPDATE_MEMBER")
-    @ApiOperation(value = "分配小组成员", notes = "分配成员所属部门", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Update team", notes = "assign members to departments", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateTeam(@RequestBody @Valid UpdateMemberTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
@@ -411,29 +404,29 @@ public class MemberController {
     }
 
     @PostResource(path = "/delete", method = { RequestMethod.DELETE }, tags = "DELETE_MEMBER")
-    @ApiOperation(value = "单个删除成员", notes = "action参数提供两种方式删除，1.彻底从组织架构里删除成员。2.只从本部门删除", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Delete a Member", notes = "action provides two deletion modes，1.delete from organization 2. delete from team", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> deleteMember(@RequestBody @Valid DeleteMemberRo data) {
         DeleteMemberType type = DeleteMemberType.getByValue(data.getAction());
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = data.getMemberId();
-        // 检查成员是否存在
+        // check whether the member exists
         MemberEntity member = iMemberService.getById(memberId);
         ExceptionUtil.isNotNull(member, NOT_EXIST_MEMBER);
         if (type == DeleteMemberType.FROM_TEAM) {
             iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
-            //从部门删除
+            // delete member from department
             ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L), DELETE_MEMBER_PARAM_ERROR);
             iMemberService.batchDeleteMemberFromTeam(spaceId, Collections.singletonList(memberId), data.getTeamId());
         }
         else if (type == DeleteMemberType.FROM_SPACE) {
             iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-            //从空间里删除
+            // delete from space
             Long administrator = spaceMapper.selectSpaceMainAdmin(spaceId);
-            //检查管理员不能被删除
+            // an administrator cannot be deleted
             ExceptionUtil.isFalse(memberId.equals(administrator), DELETE_SPACE_ADMIN_ERROR);
             iMemberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(data.getMemberId()), true);
-            // 给自己的通知
+            // notice self
             Long userId = SessionContext.getUserId();
             TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_ADMIN, null, userId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, ListUtil.toList(memberId))));
             TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_USER, ListUtil.toList(memberId), userId, spaceId, null));
@@ -443,29 +436,29 @@ public class MemberController {
     }
 
     @PostResource(path = "/deleteBatch", method = { RequestMethod.DELETE }, tags = "DELETE_MEMBER")
-    @ApiOperation(value = "批量删除成员", notes = "action参数提供两种方式删除，1.彻底从组织架构里删除成员。2.只从本部门删除", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Delete members", notes = "action provides two deletion modes，1.delete from organization 2. delete from team", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> deleteBatchMember(@RequestBody @Valid DeleteBatchMemberRo data) {
         DeleteMemberType type = DeleteMemberType.getByValue(data.getAction());
         String spaceId = LoginContext.me().getSpaceId();
         List<Long> memberIds = data.getMemberId();
-        // 检查成员是否存在
+        // check whether the member exists
         List<MemberEntity> members = iMemberService.listByIds(memberIds);
         ExceptionUtil.isNotEmpty(members, NOT_EXIST_MEMBER);
         if (type == DeleteMemberType.FROM_TEAM) {
             iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
-            //从部门批量删除成员
+            //delete members from a department in batches
             ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L), DELETE_MEMBER_PARAM_ERROR);
             iMemberService.batchDeleteMemberFromTeam(spaceId, data.getMemberId(), data.getTeamId());
         }
         else if (type == DeleteMemberType.FROM_SPACE) {
             iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-            //从空间里批量删除成员
+            // delete members in bulk from space
             Long administrator = spaceMapper.selectSpaceMainAdmin(spaceId);
-            //检查管理员不能被删除
+            // administrator cannot be deleted
             ExceptionUtil.isFalse(memberIds.contains(administrator), DELETE_SPACE_ADMIN_ERROR);
             iMemberService.batchDeleteMemberFromSpace(spaceId, data.getMemberId(), true);
-            // 给自己的通知
+            // notice self
             Long userId = SessionContext.getUserId();
             TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_ADMIN, null, userId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, data.getMemberId())));
             TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.REMOVE_FROM_SPACE_TO_USER, data.getMemberId(), userId, spaceId, null));
@@ -475,13 +468,13 @@ public class MemberController {
     }
 
     @GetResource(path = "/downloadTemplate", requiredPermission = false)
-    @ApiOperation(value = "下载通讯录模板", notes = "下载通讯录制作模板")
+    @ApiOperation(value = "Download contact template", notes = "Download contact template")
     public void downloadTemplate(HttpServletResponse response) {
-        log.info("生成下载模板");
+        log.info("generate download template");
         try {
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            // fileName是弹出下载对话框的文件名，中文需自行编码
+            // fileName is the name of the file that displays the download dialog box
             String name = "员工信息模板";
             String fileName = URLEncoder.encode(name, "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
@@ -501,23 +494,22 @@ public class MemberController {
             inputStream.close();
         }
         catch (Exception e) {
-            // 重置 response
+            // reset response
             response.reset();
-            throw new BusinessException("下载文件失败", e);
+            throw new BusinessException("download template failure", e);
         }
     }
 
     @PostResource(path = "/uploadExcel", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "上传员工信息表", notes = "上传员工信息表文件，并解析同步返回结果")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Upload employee sheet", notes = "Upload employee sheet，then parse it.")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<UploadParseResultVO> uploadExcel(UploadMemberTemplateRo data) {
-        // 人机验证
+        // human verification
         afsCheckService.noTraceCheck(data.getData());
         String spaceId = LoginContext.me().getSpaceId();
-        // 恶意空间校验
+        // check black space
         iBlackListService.checkBlackSpace(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        // 解析上传文件的数据
         UploadParseResultVO resultVo = iMemberService.parseExcelFile(spaceId, data.getFile());
         return ResponseData.success(resultVo);
     }

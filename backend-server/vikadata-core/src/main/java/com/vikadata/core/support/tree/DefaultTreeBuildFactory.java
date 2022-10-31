@@ -7,16 +7,14 @@ import java.util.List;
 
 /**
  * <p>
- * 默认递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
+ *     default recursive tool, used to traverse nodes that have parent-child relationships.
+ *     such as menu trees, dictionary trees, and so on.
  * </p>
- *
- * @author Shawn Deng
- * @date 2018/10/25 20:28
  */
 public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFactory<T> {
 
     /**
-     * 顶级节点的父节点id
+     * the root node's id
      */
     public static final String ROOT_PARENT_ID = "0";
 
@@ -30,11 +28,11 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
 	}
 
 	/**
-     * 查询子节点的集合
+     * query a collection of child nodes
      *
-     * @param totalNodes     所有节点的集合
-     * @param node           被查询节点的id
-     * @param childNodeLists 被查询节点的子节点集合
+     * @param totalNodes     the list of all nodes
+     * @param node           node to be queried
+     * @param childNodeLists the child nodes of the queried node
      */
     private void buildChildNodes(List<T> totalNodes, T node, List<T> childNodeLists) {
         if (totalNodes == null || node == null) {
@@ -54,10 +52,10 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
     }
 
     /**
-     * 获取子一级节点的集合
+     * gets the node's child nodes
      *
-     * @param list 所有节点的集合
-     * @param node 被查询节点的model
+     * @param list  the list of nodes
+     * @param node  the node to be queried
      */
     private List<T> getSubChildLevelOne(List<T> list, T node) {
         List<T> nodeList = new ArrayList<>();
@@ -71,7 +69,7 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
 
     @Override
     protected List<T> beforeBuild(List<T> nodes) {
-        //默认不进行前置处理,直接返回
+        // By default, no preprocessing before build.
         return nodes;
     }
 
@@ -86,7 +84,7 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
     @Override
     protected List<T> afterBuild(List<T> nodes) {
 
-        //去掉所有的二级节点
+        //remove all secondary nodes
         ArrayList<T> results = new ArrayList<>();
         for (T node : nodes) {
             if (node.getNodeParentId().equals(rootNode)) {

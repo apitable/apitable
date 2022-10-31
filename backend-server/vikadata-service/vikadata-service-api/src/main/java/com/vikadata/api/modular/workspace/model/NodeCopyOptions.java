@@ -10,14 +10,11 @@ import lombok.Data;
 
 /**
  * <p>
- * 节点拷贝选项
- * 1. 是否拷贝数据
- * 2. 拷贝节点的后缀
- * 3. 是否目标节点下方
+ * node copy options
+ * 1. whether to copy data
+ * 2. copy the suffix of the node
+ * 3. whether below the target node
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/26 17:10
  */
 @Data
 @AllArgsConstructor
@@ -25,62 +22,62 @@ import lombok.Data;
 public class NodeCopyOptions implements Serializable {
 
     /**
-     * 是否拷贝节点的数据
+     * whether to copy node data
      */
     protected boolean copyData;
 
     /**
-     * 是否在关联表增加一列
+     * whether to add a column to the association table
      */
     private boolean addColumn;
 
     /**
-     * 是否保留 RecordMeta
+     * whether keep RecordMeta
      */
     private boolean retainRecordMeta;
 
     /**
-     * 是否校验节点数
+     * whether to check the number of nodes
      */
     private boolean verifyNodeCount;
 
     /**
-     * 是否是生成为模板
+     * is it a template
      */
     private boolean template;
 
     /**
-     * 指定过滤、不复制的节点ID 集合
+     * specify the ids of the node that is filtered and not copied.
      */
     private List<String> filterNodeIds;
 
     /**
-     * 是否过滤开启列权限的字段
+     * whether to filter fields that enable column permissions
      */
     private boolean filterPermissionField;
 
     /**
-     * 数表及对应开启列权限的字段集
+     * the datasheet and the fields which the column permission is enabled.
      */
     private Map<String, List<String>> dstPermissionFieldsMap;
 
     /**
-     * 提前生成的的节点ID，用于异步任务
+     * node id generated in advance for asynchronous tasks
      */
     private String nodeId;
 
     /**
-     * 指定生成的节点名称
+     * specify the generated node name
      */
     private String nodeName;
 
     /**
-     * 钉钉搭--模版ID
+     * dingtalk--teamplate id
      */
     private String dingTalkDaTemplateKey;
 
     /**
-     * 来源templateId
+     * source templateId
      */
     private String sourceTemplateId;
 

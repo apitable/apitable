@@ -4,22 +4,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- * Openapi小程序Vo视图
- * </p>
- *
- * @author Pengap
- * @date 2022/5/6 11:36:30
- */
 @Data
-@ApiModel("Openapi小程序Vo视图")
+@ApiModel("Widget Info Vo")
 public class WidgetInfoVo {
 
-    @ApiModelProperty(value = "小程序名称")
+    @ApiModelProperty(value = "widget name")
     private String widgetName;
 
-    @ApiModelProperty(value = "小程序描述")
+    @ApiModelProperty(value = "widget description")
     private String widgetDescription;
 
 }

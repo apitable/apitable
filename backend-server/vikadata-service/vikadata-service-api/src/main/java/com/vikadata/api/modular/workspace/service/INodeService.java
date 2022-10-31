@@ -41,517 +41,448 @@ import com.vikadata.entity.DatasheetMetaEntity;
 import com.vikadata.entity.DatasheetRecordEntity;
 import com.vikadata.entity.NodeEntity;
 
-/**
- * <p>
- * 数据表格表 服务类
- * </p>
- *
- * @author Chambers
- * @since 2019-10-07
- */
 public interface INodeService extends IService<NodeEntity> {
 
     /**
-     * 获取根节点ID
      *
-     * @param spaceId 空间ID
-     * @return 根节点ID
+     * @param spaceId space id
+     * @return root node id
      */
     String getRootNodeIdBySpaceId(String spaceId);
 
     /**
-     * 获取指定空间、指定节点类型的节点ID
+     * Gets the node ID of the specified space and the specified node type.
      *
-     * @param spaceId 空间ID
-     * @param type 节点类型
-     * @return 节点ID
+     * @param spaceId space id
+     * @param type node type
+     * @return node ids
      */
     List<String> getNodeIdBySpaceIdAndType(String spaceId, Integer type);
 
     /**
-     * 获取节点实体
-     *
-     * @param nodeId 节点ID
+     * @param nodeId node id
      * @return NodeEntity
      */
     NodeEntity getByNodeId(String nodeId);
 
     /**
-     * 获取存在的节点ID
+     * gets the id of the existing node
      *
-     * @param nodeIds 节点ID列表
+     * @param nodeIds nodeIds
      * @return ExistNodeIds
      */
     List<String> getExistNodeIdsBySelf(List<String> nodeIds);
 
     /**
-     * 获取节点类型
-     *
-     * @param nodeId 节点ID
+     * @param nodeId node id
      * @return NodeType
      */
     NodeType getTypeByNodeId(String nodeId);
 
     /**
-     * 获取节点所在的空间ID
-     *
-     * @param nodeId 节点ID
-     * @return 空间ID
+     * @param nodeId node id
+     * @return space ids
      */
     String getSpaceIdByNodeId(String nodeId);
 
     /**
-     * 获取所有节点所在的空间ID（多个空间触发异常）
+     * Gets the space ID of all nodes (multiple spaces trigger exceptions)
      *
-     * @param nodeIds 节点ID列表
-     * @return 空间ID
+     * @param nodeIds node ids
+     * @return space id
      */
     String getSpaceIdByNodeIds(List<String> nodeIds);
 
     /**
-     * 获取包含删除在内的节点所在的空间ID
+     * Gets the ID of the space where the node is deleted.
      *
-     * @param nodeId 节点ID
-     * @return 空间ID
+     * @param nodeId node id
+     * @return space id
      */
     String getSpaceIdByNodeIdIncludeDeleted(String nodeId);
 
     /**
-     * 获取节点是否属于模板
+     * gets whether the node belongs to a template
      *
-     * @param nodeIds 节点ID列表
-     * @return 是否属于模板标志
+     * @param nodeIds node ids
+     * @return is it a template flag
      */
     Boolean getIsTemplateByNodeIds(List<String> nodeIds);
 
     /**
-     * 获取父节点ID
-     *
-     * @param nodeId 节点ID
-     * @return 父节点ID
+     * @param nodeId node id
+     * @return parent node id
      */
     String getParentIdByNodeId(String nodeId);
 
     /**
-     * 获取节点名称
-     *
-     * @param nodeId 节点ID
-     * @return 节点名称
+     * @param nodeId node id
+     * @return node name
      */
     String getNodeNameByNodeId(String nodeId);
 
     /**
-     * 获取节点路径的节点ID
-     * 顺序：第一层级节点 -> 节点自身
+     * obtain the node id of the node path
+     * Order: first-level node-> node itself
      *
-     * @param nodeId 节点ID
-     * @return 节点路径列表
+     * @param nodeId node id
+     * @return node path
      */
     List<String> getPathParentNode(String nodeId);
 
     /**
-     * 获取节点信息视图
-     *
-     * @param nodeIds 节点ID 集合
+     * @param nodeIds node ids
      * @return NodeInfos
      */
     List<NodeInfo> getNodeInfoByNodeIds(Collection<String> nodeIds);
 
     /**
-     * 查询节点包括下面的所有节点的关联节点
+     * The query node includes the associated nodes of all the following nodes
      *
-     * @param nodeId 节点ID
-     * @return BaseNodeInfo 集合
+     * @param nodeId node id
+     * @return BaseNodeInfo
      */
     List<BaseNodeInfo> getForeignSheet(String nodeId);
 
     /**
-     * 检查节点是否存在
-     *
-     * @param spaceId 空间ID(校验是否跨空间，非必须)
-     * @param nodeId 节点ID
+     * @param spaceId space id
+     * @param nodeId node id
      * @return spaceId
      */
     String checkNodeIfExist(String spaceId, String nodeId);
 
     /**
-     * 检查源表
+     * check the source table
      *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param type 节点类型
-     * @param extra 节点关联参数
+     * @param spaceId space id
+     * @param memberId member id
+     * @param type node type
+     * @param extra node correlation parameters
      */
     void checkSourceDatasheet(String spaceId, Long memberId, Integer type, NodeRelRo extra);
 
     /**
-     * 获取用户ID
-     *
-     * @param userId 用户ID
-     * @param nodeId 节点ID
+     * @param userId user id
+     * @param nodeId node id
      * @return MemberId
      */
     Long getMemberIdByUserIdAndNodeId(Long userId, String nodeId);
 
     /**
-     * 搜索节点结果视图
-     *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param keyword 关键词
-     * @return result 集合
+     * @param spaceId space id
+     * @param memberId member id
+     * @param keyword keyword
+     * @return result
      */
     List<NodeSearchResult> searchNode(String spaceId, Long memberId, String keyword);
 
     /**
-     * 查询节点树
-     *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param nodeId 节点ID
-     * @param depth 递归深度，最小为1
+     * @param spaceId space id
+     * @param memberId member id
+     * @param nodeId node id
+     * @param depth recursive depth, min 1
      * @return NodeInfoTreeVo
      */
     NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth);
 
     /**
-     * 查询子节点信息
+     * query child node information
      *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param nodeId 节点ID
+     * @param spaceId space id
+     * @param memberId member id
+     * @param nodeId node id
      * @param nodeType node type 1:folder,2:datasheet
-     * @return NodeInfoVo 列表
+     * @return NodeInfoVos
      */
     List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId, NodeType nodeType);
 
     /**
-     * 获取节点父级路径
-     * 包含根节点
+     * gets the node parent path
+     * contains root node
      *
-     * @param spaceId 空间ID
-     * @param nodeId 节点ID
-     * @return 父级路径
+     * @param spaceId space id
+     * @param nodeId node id
+     * @return parent path
      */
     List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId);
 
     /**
-     * 定位节点
-     *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param nodeId 节点ID
-     * @return 节点到根节点的树
+     * @param spaceId space id
+     * @param memberId member id
+     * @param nodeId node id
+     * @return tree from node to root node
      */
     NodeInfoTreeVo position(String spaceId, Long memberId, String nodeId);
 
     /**
-     * 根据节点ID查询节点视图
-     *
-     * @param spaceId 空间ID
-     * @param nodeId 节点ID
-     * @param role 节点控制单元角色
+     * @param spaceId space id
+     * @param nodeId node id
+     * @param role node control unit role
      * @return NodeInfoVo
      */
     NodeInfoVo getNodeInfoByNodeId(String spaceId, String nodeId, ControlRole role);
 
     /**
-     * 查询多个节点的视图信息
-     *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param nodeIds 节点ID列表
-     * @return NodeInfoVo 列表
+     * @param spaceId space id
+     * @param memberId member id
+     * @param nodeIds node id list
+     * @return NodeInfoVos
      */
     List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId, List<String> nodeIds);
 
     /**
-     * 查询多个节点的视图信息
-     *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param nodeIds 节点ID列表
-     * @return NodeInfoVo 列表
+     * @param spaceId space id
+     * @param memberId member id
+     * @param nodeIds node id list
+     * @return NodeInfoVo
      */
     NodeInfoTreeVo getNodeInfoTreeByNodeIds(String spaceId, Long memberId, List<String> nodeIds);
 
     /**
-     * 业务新增节点
-     *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
-     * @param nodeOpRo 请求参数
-     * @return 节点ID
+     * @param userId user id
+     * @param spaceId space id
+     * @param nodeOpRo request parameters
+     * @return node id
      */
     String createNode(Long userId, String spaceId, NodeOpRo nodeOpRo);
 
     /**
-     * 创建表单，添加图片(如果需要)
+     * Create forms and add pictures (if needed)
      *
-     * @param spaceId 空间ID
-     * @param createDatasheetRo 请求参数
-     * @return 表单ID
+     * @param spaceId space id
+     * @param createDatasheetRo request parameters
+     * @return form id
      */
     String createDatasheetWithDesc(String spaceId, Long userId, CreateDatasheetRo createDatasheetRo);
 
     /**
-     * 提供对象新增节点
-     *
-     * @param userId 用户ID
-     * @param dto 参数
-     * @return 节点ID
+     * @param userId user id
+     * @param dto parameters
+     * @return node id
      */
     String createChildNode(Long userId, CreateNodeDto dto);
 
     /**
-     * 批量新增节点
-     *
-     * @param nodeList 节点实体列表
-     * @param dstCount 数表数量，为空时遍历实体列表
+     * @param nodeList nodeList
+     * @param dstCount the datasheet amount
      */
     void insertBatch(List<NodeEntity> nodeList, Integer dstCount);
 
     /**
-     * 编辑节点
-     *
-     * @param userId 用户ID
-     * @param nodeId 节点自定义ID
-     * @param opRo 请求参数
+     * @param userId user id
+     * @param nodeId node custom id
+     * @param opRo request parameters
      */
     void edit(Long userId, String nodeId, NodeUpdateOpRo opRo);
 
     /**
-     * 移动节点
-     *
-     * @param userId 用户ID
-     * @param opRo 请求参数
-     * @return 数据有变化的节点
+     * @param userId user id
+     * @param opRo request parameters
+     * @return nodes with data changes
      */
     List<String> move(Long userId, NodeMoveOpRo opRo);
 
     /**
-     * 删除节点
-     *
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @param ids 自定义节点ids
+     * @param spaceId space id
+     * @param memberId member id
+     * @param ids custom node ids
      */
     void deleteById(String spaceId, Long memberId, String... ids);
 
     /**
-     * 删除模板映射节点
+     * delete template mapping node
      *
-     * @param userId 用户ID
-     * @param nodeIds 节点ids
+     * @param userId user id
+     * @param nodeIds nodeIds
      */
     void delTemplateRefNode(Long userId, String... nodeIds);
 
     /**
-     * 复制节点
-     *
-     * @param userId 用户ID
-     * @param opRo 请求参数
-     * @return 复制完成新的节点ID
+     * @param userId user id
+     * @param opRo request parameters
+     * @return copy the new node id
      */
     NodeCopyEffectDTO copy(Long userId, NodeCopyOpRo opRo);
 
     /**
-     * 复制节点（包含所有子后代）到指定空间
+     * Copy node (including all child descendants) to the specified space
      *
-     * @param userId 用户ID
-     * @param destSpaceId 目标空间ID
-     * @param destParentId 目标位置父节点ID（非必须）
-     * @param sourceNodeId 原节点ID
-     * @param options 拷贝属性
-     * @return 新节点ID
+     * @param userId user id
+     * @param destSpaceId target space id
+     * @param destParentId target location parent node id（not necessary）
+     * @param sourceNodeId original node id
+     * @param options copy attribute
+     * @return new node id
      */
     String copyNodeToSpace(Long userId, String destSpaceId, String destParentId, String sourceNodeId, NodeCopyOptions options);
 
     /**
-     * 数表导入
-     *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
-     * @param opRo 请求参数
-     * @return 节点vo
+     * @param userId user id
+     * @param spaceId space id
+     * @param opRo request parameters
+     * @return data
      * @throws IOException io exception
      */
     @Deprecated
     String importExcel(Long userId, String spaceId, ImportExcelOpRo opRo) throws IOException;
 
     /**
-     * 多个数表导入
      *
-     * @param excelReader Excel读取解析器
-     * @param sheetsDataListener Excel监听器
-     * @param readSheets 数表对象数组
-     * @return excel数据对象
+     * @param excelReader Excel read listener
+     * @param sheetsDataListener Excel listener
+     * @param readSheets array of sheet objects
+     * @return excel data
      */
     Map<String, List<List<Object>>> importMultipleSheetsByEasyExcel(ExcelReader excelReader, ExcelSheetsDataListener sheetsDataListener, List<ReadSheet> readSheets);
 
     /**
-     * 单个数表导入
-     *
-     * @param excelReader Excel读取监听器
-     * @param sheetsDataListener Excel监听器
-     * @param readSheet 数表对象
-     * @return excel数据对象
+     * @param excelReader Excel read listener
+     * @param sheetsDataListener Excel listener
+     * @param readSheet datasheet
+     * @return excel data
      */
     List<List<Object>> importSingleSheetByEasyExcel(ExcelReader excelReader, ExcelSheetsDataListener sheetsDataListener, ReadSheet readSheet);
 
     /**
-     * 封禁或解封节点
-     *
-     * @param nodeId 节点ID
-     * @param status 是否封禁(0:否,1:是)
+     * @param nodeId node id
+     * @param status is baned
      */
     void updateNodeBanStatus(String nodeId, Integer status);
 
     /**
-     * 重复名称修改
+     * duplicate name modification
      *
-     * @param parentId 父节点ID
-     * @param nodeType 节点类型
-     * @param nodeName 节点原名称
-     * @param nodeId 剔除的节点（修改时本身）
-     * @return 修改后的名称
+     * @param parentId parentId
+     * @param nodeType nodeType
+     * @param nodeName original node name
+     * @param nodeId eliminate nodes（when modifying itself）
+     * @return modified name
      */
     String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId);
 
     /**
-     * 判断节点以及所有子后代节点，是否包含成员字段
+     * Determine whether the node and all child and descendant nodes contain member fields.
      *
-     * @param nodeId 节点ID
+     * @param nodeId node id
      * @return boolean
      */
     boolean judgeAllSubNodeContainMemberFld(String nodeId);
 
     /**
-     * 校验所有子后代节点的权限
+     * Verify the permissions of all child and descendant nodes
      *
-     * @param memberId 成员ID
-     * @param nodeId 节点ID
-     * @param role 要求的节点角色
+     * @param memberId member id
+     * @param nodeId node id
+     * @param role required node roles
      * @return AllSubNodeId
      */
     List<String> checkSubNodePermission(Long memberId, String nodeId, ControlRole role);
 
     /**
-     * 数表节点复制之后的后续步骤，补齐link字段的属性和内容
+     * The next step after the table node is copied, complete the attributes and contents of the link field.
      *
-     * @param effect 节点复制的影响字段收集dto
+     * @param effect impact field collection for node replication
      */
     void nodeCopyChangeset(NodeCopyEffectDTO effect);
 
     /**
-     * 数表节点删除之后的后续步骤，将未删除的关联分列转换成文本字段
+     * The next step after the deletion of the table node converts the undeleted association into a text field.
      *
-     * @param nodeIds 删除的节点ID
+     * @param nodeIds deleted node id
      */
     void nodeDeleteChangeset(List<String> nodeIds);
 
     /**
-     * 解析Excel文件
      *
-     * @param userId 用户
-     * @param uuid 用户外部id
-     * @param spaceId 空间id
-     * @param memberId 成员id
-     * @param parentNodeId 父节点
-     * @param fileName 文件名
-     * @param fileSuffix 文件后缀
-     * @param inputStream 文件流
-     * @return 节点id
+     * @param userId user id
+     * @param uuid user external id
+     * @param spaceId space id
+     * @param memberId member id
+     * @param parentNodeId parentNodeId
+     * @param fileName filename
+     * @param fileSuffix file name suffix
+     * @param inputStream file
+     * @return node id
      */
     String parseExcel(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId, String fileName, String fileSuffix, InputStream inputStream);
 
     /**
-     * 解析CSV文件
-     *
-     * @param userId 用户
-     * @param uuid 用户外部id
-     * @param spaceId 空间id
-     * @param memberId 成员id
-     * @param parentNodeId 父节点
-     * @param fileName 文件名
-     * @param inputStream 文件流
-     * @return 节点id
+     * @param userId user id
+     * @param uuid user external id
+     * @param spaceId space id
+     * @param memberId member id
+     * @param parentNodeId parentNodeId
+     * @param fileName file name
+     * @param inputStream file
+     * @return node id
      */
     String parseCsv(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId, String fileName, InputStream inputStream);
 
     /**
-     * 特殊批量保存操作
-     * 由Excel组装好数据，一次性事务全部提交数据库
+     * special batch save operation
+     * The data is assembled by Excel, and all one-time transactions are submitted to the database.
      *
-     * @param metaEntities 实体列表
+     * @param data data
+     * @param nodeEntities nodes
+     * @param metaEntities metadata
+     * @param datasheetEntities datasheet
+     * @param recordEntities records
      */
     void batchCreateDataSheet(NodeData data, List<NodeEntity> nodeEntities, List<DatasheetEntity> datasheetEntities, List<DatasheetMetaEntity> metaEntities, List<DatasheetRecordEntity> recordEntities);
 
     /**
-     * 批量保存数表记录
-     *
-     * @param recordEntities 数表记录实体列表
+     * @param recordEntities record
      */
     void batchSaveDstRecords(List<DatasheetRecordEntity> recordEntities);
 
     /**
-     * 获取节点额外信息
-     *
-     * @param nodeId 节点ID
-     * @param spaceId 空间ID
-     * @param extras 节点额外信息
+     * @param nodeId node id
+     * @param spaceId space id
+     * @param extras node additional information
      * @return ShowcaseVo.NodeExtra
      */
     ShowcaseVo.NodeExtra getNodeExtras(String nodeId, @Nullable String spaceId, @Nullable String extras);
 
     /**
-     * 获取文件信息窗信息
-     *
-     * @param nodeId 节点ID
+     * @param nodeId nodeId
      * @return NodeInfoWindowVo
      */
     NodeInfoWindowVo getNodeWindowInfo(String nodeId);
 
     /**
-     * 根据节点Id查询空间站信息
-     *
-     * @param nodeId 节点ID
-     * @return 空间信息
+     * @param nodeId nodeId
+     * @return NodeFromSpaceVo
      */
     NodeFromSpaceVo nodeFromSpace(String nodeId);
 
     /**
-     * 根据节点和用户id查询节点名称
-     *
-     * @param nodeId 节点ID
-     * @param userId 用户id
-     * @return 节点名称
+     * @param nodeId nodeId
+     * @param userId user id
+     * @return node name
      */
     Optional<String> getNodeName(String nodeId, Long userId);
 
     /**
-     * 如果节点是根节点，检查用户对根目录的操作是否符合全局安全设置-根目录管理的要求。
+     * If the node is a root node, check whether the user's operations on the root directory meet the requirements of global security settings-root directory management.
      *
-     * @param memberId 用户成员id
-     * @param spaceId 空间站id
-     * @param nodeId 节点id
+     * @param memberId member id
+     * @param spaceId space id
+     * @param nodeId nodeId
      */
     void checkEnableOperateNodeBySpaceFeature(Long memberId, String spaceId, String nodeId);
 
     /**
-     * 检查用户对根目录的操作是否符合全局安全设置-根目录管理的要求。
+     * Check whether the user's operation on the root directory meets the requirements of global security settings-root directory management.
      *
-     * @param memberId 用户成员id
-     * @param spaceId 空间站id
+     * @param memberId member id
+     * @param spaceId space id
      */
     void checkEnableOperateRootNodeBySpaceFeature(Long memberId, String spaceId);
 
     /**
-     * 节点是否在根目录中
-     *
-     * @param spaceId   空间ID
-     * @param nodeId    节点ID
-     * @return 节点是否在根目录中
+     * @param spaceId space id
+     * @param nodeId    nodeId
+     * @return is the node in the root directory
      */
     boolean isNodeBelongRootFolder(String spaceId, String nodeId);
 

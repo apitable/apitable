@@ -12,25 +12,27 @@ import java.util.List;
 
 public interface IAutomationRobotService extends IService<AutomationRobotEntity> {
     /**
-     * 通过资源 ID 查询该资源下的 automation 列表
+     * Query the automation list under the resource by the resource id.
      *
-     * @param resourceId
+     * @param resourceId    resource id
      */
     List<AutomationRobotDto> getRobotListByResourceId(String resourceId);
 
     /**
-     * 批量删除机器人
-     * @param robotIds 机器人ID列表
+     * Batch delete robot.
+     *
+     * @param robotIds  robot ids
      */
     void delete(List<String> robotIds);
 
     void updateByRobotId(AutomationRobotEntity robot);
 
     /**
-     * 创建或更新机器人信息
-     * @param data
-     * @param xServiceToken
-     * @return
+     * Create or update robot info.
+     *
+     * @param data          trigger info
+     * @param xServiceToken service token
+     * @return automation trigger
      */
     ResponseData<AutomationTriggerCreateVo> upsert(AutomationApiTriggerCreateRo data,String xServiceToken );
 

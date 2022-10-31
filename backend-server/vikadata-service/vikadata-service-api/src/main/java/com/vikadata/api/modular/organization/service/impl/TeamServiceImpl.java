@@ -64,14 +64,6 @@ import static com.vikadata.api.enums.exception.OrganizationException.DELETE_TEAM
 import static com.vikadata.api.enums.exception.OrganizationException.GET_TEAM_ERROR;
 import static com.vikadata.api.enums.exception.OrganizationException.UPDATE_TEAM_NAME_ERROR;
 
-/**
- * <p>
- * 组织架构-部门表 服务实现类
- * </p>
- *
- * @author Chambers
- * @since 2019-11-06
- */
 @Service
 @Slf4j
 public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> implements ITeamService {
@@ -111,13 +103,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public Set<Long> getTeamIdsByMemberId(String spaceId, Long memberId) {
-        log.info("查询成员的所属部门ID，包括所有父级部门");
+        log.info("query the member's team includes all parent team.");
         List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
         List<TeamEntity> allTeams = baseMapper.selectAllBySpaceId(spaceId);
         Set<Long> resultList = new HashSet<>();
         for (Long teamId : teamIds) {
             TeamEntity team = CollUtil.findOne(allTeams, entity -> entity.getId().equals(teamId));
-            //查所有父级ID
+            // check all parent ids
             Set<Long> allTeamIds = inverseRecursive(allTeams, team);
             resultList.addAll(allTeamIds);
         }
@@ -125,7 +117,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     /**
-     * 反遍历查询所有父级
+     * reverse traversal queries all parent levels
      */
     private Set<Long> inverseRecursive(List<TeamEntity> teamList, TeamEntity node) {
         Set<Long> resultList = new HashSet<>();
@@ -143,23 +135,23 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public MemberIsolatedInfo checkMemberIsolatedBySpaceId(String spaceId, Long memberId) {
-        log.info("检查成员是否被通讯录隔离");
+        log.info("check whether members are isolated from contacts");
         MemberIsolatedInfo memberIsolatedInfo = new MemberIsolatedInfo();
-        // 获取当前空间站的全局属性
+        // Gets the global properties of the current space
         SpaceGlobalFeature features = iSpaceService.getSpaceGlobalFeature(spaceId);
-        // 获取空间站主管理员Id
+        // obtain the id of the primary administrator
         Long spaceMainAdminId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
-        // 判断是否开启通讯录隔离
+        // determine whether to enable address book isolation
         if (Boolean.TRUE.equals(features.getOrgIsolated()) && Boolean.FALSE.equals(spaceMainAdminId.equals(memberId))) {
-            // 获取管理员信息
+            // obtaining administrator information
             SpaceRoleDetailVo spaceRoleDetailVo = iSpaceRoleService.getRoleDetail(spaceId, memberId);
-            // 判断是否拥有通讯录管理权限
+            // Check whether you have the contact management permission
             if (Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_MEMBER")) && Boolean.FALSE.equals(spaceRoleDetailVo.getResources().contains("MANAGE_TEAM"))) {
-                // 获取空间站的根部门ID
+                // obtain the root department id of the space
                 Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
-                // 获取成员所属部门ID
+                // Obtain the id of the department to which a member belongs
                 List<Long> teamIds = memberMapper.selectTeamIdsByMemberId(memberId);
-                // 判断成员是否直属根部门
+                // Determine whether the member is directly affiliated to the root department
                 if (Boolean.FALSE.equals(teamIds.contains(rootTeamId))) {
                     memberIsolatedInfo.setIsolated(true);
                     memberIsolatedInfo.setTeamIds(teamIds);
@@ -173,7 +165,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public boolean checkHasSubUnitByTeamId(String spaceId, Long teamId) {
-        log.info("检查部门下是否存在成员或部门");
+        log.info("Check whether the team has members or teams");
         List<Long> subTeamIds = baseMapper.selectTeamIdsByParentId(spaceId, teamId);
         int subMemberCount = SqlTool.retCount(teamMemberRelMapper.countByTeamId(Collections.singletonList(teamId)));
         return CollUtil.isNotEmpty(subTeamIds) || subMemberCount > 0;
@@ -181,14 +173,14 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public int countMemberCountByParentId(Long teamId) {
-        log.info("统计部门以下所有成员人数，");
+        log.info("count the team's members, includes the sub teams' members.");
         List<Long> allSubTeamIds = baseMapper.selectAllSubTeamIdsByParentId(teamId, true);
         return CollUtil.isNotEmpty(allSubTeamIds) ? SqlTool.retCount(teamMemberRelMapper.countByTeamId(allSubTeamIds)) : 0;
     }
 
     @Override
     public int getMemberCount(List<Long> teamIds) {
-        //获取部门下所有成员数
+        // obtain the number of all members in a department
         return SqlTool.retCount(teamMemberRelMapper.countByTeamId(teamIds));
     }
 
@@ -211,7 +203,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<Long> getUnitsByTeam(Long teamId) {
-        log.info("获取部门及所有父级部门的组织单元");
+        log.info("Gets the organizational unit for the team and all parent teams.");
         List<Long> teamIds = baseMapper.selectAllParentTeamIds(teamId, true);
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(teamId);
         return iUnitService.getUnitIdsByRefIds(CollUtil.addAll(teamIds, roleIds));
@@ -236,7 +228,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createRootTeam(String spaceId, String spaceName) {
-        log.info("创建根部门:{}", spaceName);
+        log.info("create root team:{}", spaceName);
         TeamEntity rootTeam = new TeamEntity();
         rootTeam.setSpaceId(spaceId);
         rootTeam.setTeamName(spaceName);
@@ -268,7 +260,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createSubTeam(String spaceId, String name, Long parentId) {
-        log.info("创建子部门:{}", name);
+        log.info("create sub team:{}", name);
         int max = getMaxSequenceByParentId(parentId);
         TeamEntity team = new TeamEntity();
         team.setSpaceId(spaceId);
@@ -285,22 +277,22 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public List<Long> createBatchByTeamName(String spaceId, Long rootTeamId, List<String> teamNames) {
         List<Long> teamIds = new ArrayList<>();
-        //取最后的索引,也可能是只有一个部门层级
+        // Take the last index, or there may be only one department level
         int lastIndex = teamNames.size() - 1;
         Long parentId = rootTeamId;
         for (int i = 0; i < teamNames.size(); i++) {
             String name = teamNames.get(i);
-            // 查找部门名称，并且父级部门对齐
+            // Find the department name and align the parent departments
             TeamEntity findTeam = baseMapper.selectBySpaceIdAndName(spaceId, name, parentId);
             if (findTeam != null) {
-                // 存在，不创建
+                // Existing, not created
                 parentId = findTeam.getId();
                 if (i == lastIndex) {
                     teamIds.add(findTeam.getId());
                 }
             }
             else {
-                // 不存在，创建新部门
+                // No, create a new department
                 parentId = createSubTeam(spaceId, name, parentId);
                 if (i == lastIndex) {
                     teamIds.add(parentId);
@@ -312,18 +304,17 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public Long getByTeamNamePath(String spaceId, List<String> teamNames) {
-        // 保证进入这里之前是合法数据
+        // Make sure it's legitimate data before get in here
         String lastTeamName = CollUtil.getLast(teamNames);
         if (StrUtil.isBlank(lastTeamName)) {
             return null;
         }
-        // 根据部门查询部门层级路径
+        // query the department level path by department
         List<TeamEntity> teamEntities = baseMapper.selectTreeByTeamName(spaceId, lastTeamName);
-        // 部门名称业务会重复，分割成树形，并且利用树查找
+        // The department name service is repeated, split into a tree, and searched using the tree
         Map<String, Long> teamPathName = buildTreeTeamList(teamEntities, lastTeamName);
-        // 重新组合部门层次字符串,保险起见，去除了每个部门之间的空格
+        // recombine department level strings. To be on the safe side, remove the space between each department.
         String withoutBlankTeamNamePath = CollUtil.join(teamNames, "-");
-        // 比较是否存在
         return teamPathName.getOrDefault(withoutBlankTeamNamePath, null);
     }
 
@@ -352,14 +343,14 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public TeamInfoVo getTeamInfoById(String spaceId, Long teamId) {
-        log.info("根据部门ID查询部门信息");
+        log.info("get team info by id");
         Long rootTeamId = baseMapper.selectRootIdBySpaceId(spaceId);
         ExceptionUtil.isNotNull(rootTeamId, GET_TEAM_ERROR);
         SpaceEntity spaceEntity = spaceMapper.selectBySpaceId(spaceId);
         ExceptionUtil.isNotNull(spaceEntity, GET_TEAM_ERROR);
         TeamInfoVo teamInfo = new TeamInfoVo();
         if (teamId == 0) {
-            // 查询根部门信息，根部门为0
+            // query root team，default root team is 0.
             teamInfo.setTeamId(0L);
             teamInfo.setTeamName(spaceEntity.getName());
             teamInfo.setSequence(1);
@@ -367,15 +358,15 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             if (CollUtil.isNotEmpty(subTeamIds)) {
                 teamInfo.setHasChildren(true);
             }
-            // 查询总人数
+            // total number of enquiries
             int memberCount = SqlTool.retCount(memberMapper.selectCountBySpaceId(spaceId));
             teamInfo.setMemberCount(memberCount);
-            // 查询已激活成员数
+            //  query the number of active members
             int activateMemberCount = SqlTool.retCount(memberMapper.selectActiveMemberCountBySpaceId(spaceId));
             teamInfo.setActivateMemberCount(activateMemberCount);
             return teamInfo;
         }
-        // 查询非根部门信息
+        // Query information about non-root departments
         TeamEntity teamEntity = baseMapper.selectById(teamId);
         ExceptionUtil.isNotNull(teamEntity, GET_TEAM_ERROR);
         teamInfo.setTeamId(teamId);
@@ -392,11 +383,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         }
         List<Long> subTeamIds = baseMapper.selectTeamIdsByParentId(spaceId, teamId);
         if (CollUtil.isNotEmpty(subTeamIds)) {
-            // 获取包含子部门人数
+            // get the number of people in the sub departments
             teamInfo.setHasChildren(true);
             List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamIds(subTeamIds);
             teamInfo.setMemberCount(memberIds.isEmpty() ? 0 : new HashSet<>(memberIds).size());
-            // 获取子部门中已激活的人数
+            // Gets the number of activated people in sub departments
             List<Long> activeMemberIds = teamMemberRelMapper.selectActiveMemberIdsByTeamIds(subTeamIds);
             teamInfo.setActivateMemberCount(memberIds.isEmpty() ? 0 : new HashSet<>(activeMemberIds).size());
         }
@@ -410,7 +401,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateTeamName(Long teamId, String teamName) {
-        log.info("修改部门名称");
+        log.info("update team name");
         TeamEntity update = new TeamEntity();
         update.setId(teamId);
         update.setTeamName(teamName);
@@ -421,7 +412,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateTeamParent(Long teamId, String teamName, Long parentId) {
-        log.info("调整部门层级");
+        log.info("adjust the team hierarchy");
         TeamEntity update = new TeamEntity();
         update.setId(teamId);
         update.setTeamName(teamName);
@@ -436,35 +427,35 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteTeam(Long teamId) {
-        log.info("删除部门");
+        log.info("delete team");
         iRoleMemberService.removeByRoleMemberIds(CollUtil.newArrayList(teamId));
         boolean flag = removeById(teamId);
         ExceptionUtil.isTrue(flag, DELETE_TEAM_ERROR);
         iUnitService.removeByTeamId(teamId);
-        //删除部门，同时删除公开链接
+        // delete the department and remove the public link
         iSpaceInviteLinkService.deleteByTeamId(teamId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteTeam(Collection<Long> teamIds) {
-        log.info("批量删除部门");
+        log.info("batch delete team");
         if (CollUtil.isEmpty(teamIds)) {
             return;
         }
         iRoleMemberService.removeByRoleMemberIds(teamIds);
         boolean flag = removeByIds(teamIds);
         ExceptionUtil.isTrue(flag, DELETE_TEAM_ERROR);
-        // 删除部门关联
+        // deleting a department association
         iTeamMemberRelService.removeByTeamIds(teamIds);
-        // 批量删除部门，同时删除公开链接
+        // Delete departments in batches and delete public links
         iSpaceInviteLinkService.deleteByTeamIds(teamIds);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteSubTeam(String spaceId, Long teamId) {
-        log.info("删除子部门");
+        log.info("delete sub team");
         List<Long> subTeamIds = baseMapper.selectAllSubTeamIdsByParentId(teamId, false);
         if (CollUtil.isEmpty(subTeamIds)) {
             return;
@@ -472,9 +463,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         iRoleMemberService.removeByRoleMemberIds(subTeamIds);
         boolean flag = removeByIds(subTeamIds);
         ExceptionUtil.isTrue(flag, DELETE_TEAM_ERROR);
-        // 删除组织部门
+        // deleting organization departments
         iUnitService.batchRemoveByTeamId(subTeamIds);
-        // 批量删除部门，同时删除公开链接
+        // Delete departments in batches and delete public links
         iSpaceInviteLinkService.deleteByTeamIds(subTeamIds);
     }
 
@@ -543,12 +534,12 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<TeamTreeVo> getMemberTeamTree(String spaceId, List<Long> teamIds) {
-        log.info("构建成员被隔离后所属部门组织树");
-        // 获取成员所属部门及所有子级部门VO
+        log.info("Builds the department organization tree to which a member belongs after being isolated");
+        // Gets a member's department and all sub-departments.
         List<TeamTreeVo> allTeamsVO = this.getMemberAllTeamsVO(spaceId, teamIds);
-        // 成员所属部门及所有子级部门ID
+        //  Gets a member's department's and all sub-departments' id
         List<Long> teamIdList = allTeamsVO.stream().map(TeamTreeVo::getTeamId).collect(Collectors.toList());
-        // 将父级部门ID设置为0. 相当于提高直属部门层级至一级部门位置
+        // Setting the id of the parent department to 0 is equivalent to raising the level of the directly affiliated department to the first-level department
         for (TeamTreeVo teamVO : allTeamsVO) {
             if (teamIds.contains(teamVO.getTeamId()) && !teamIdList.contains(teamVO.getParentId()) && teamVO.getParentId() != 0) {
                 teamVO.setParentId(0L);
@@ -559,27 +550,26 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<TeamTreeVo> getMemberAllTeamsVO(String spaceId, List<Long> teamIds) {
-        log.info("获取成员所属部门及所有子级部门VO");
-        // 获取所属部门以及所属部门子部门ID
+        log.info("Gets a member's department and all sub-departments.");
+        // Gets a member's department's and all sub-departments' id
         List<TeamCteInfo> allTeamIds = teamMapper.selectChildTreeByTeamIds(spaceId, teamIds);
-        // 获取成员所属部门及所有子级部门VO
         return this.buildTree(spaceId, allTeamIds.stream().map(TeamCteInfo::getId).collect(Collectors.toList()));
     }
 
     @Override
     public List<TeamTreeVo> loadMemberTeamTree(String spaceId, Long memberId) {
-        log.info("加载成员部门组织树");
-        // 判断成员是否被通讯录隔离
+        log.info("load the organization tree of member departments");
+        // check whether members are isolated from contacts
         MemberIsolatedInfo memberIsolatedInfo = this.checkMemberIsolatedBySpaceId(spaceId, memberId);
         if (Boolean.TRUE.equals(memberIsolatedInfo.isIsolated())) {
-            // 获取部门组织树
+            // get the department organization tree
             return this.getMemberTeamTree(spaceId, memberIsolatedInfo.getTeamIds());
         }
-        // 统计空间站下所有部门
+        // statistical space under all departments
         List<TeamTreeVo> treeList = this.build(spaceId, null);
-        // 构建默认加载的组织树
+        // build the default loaded organization tree
         List<TeamTreeVo> teamTreeVoList = new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(treeList);
-        // 将根部门ID处理为0
+        // root team id is deal with 0
         for (TeamTreeVo teamTreeVo : teamTreeVoList) {
             if (teamTreeVo.getParentId() == 0) {
                 teamTreeVo.setTeamId(0L);
@@ -714,11 +704,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     /**
-     * 递归处理
+     * recursive processing
      *
-     * @param resultList 列表
-     * @param node       接口
-     * @param memberIds  成员ID
+     * @param resultList list
+     * @param node       node
+     * @param memberIds  member id
      */
     private void recurse(List<TeamMemberDto> resultList, TeamMemberDto node, List<Long> memberIds) {
         List<TeamMemberDto> subChildren = getChildNode(resultList, node);
@@ -731,11 +721,11 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     /**
-     * 获取子节点
+     * get child nodes
      *
-     * @param resultList 总列表
-     * @param node       节点
-     * @return 子节点列表
+     * @param resultList list
+     * @param node       node
+     * @return child nodes
      */
     private List<TeamMemberDto> getChildNode(List<TeamMemberDto> resultList, TeamMemberDto node) {
         List<TeamMemberDto> nodeList = new ArrayList<>();

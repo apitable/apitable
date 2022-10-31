@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>
  * Product Operation System API
  * </p>
- *
- * @author Chambers
- * @date 2022/8/15
  */
 @Slf4j
 @RestController

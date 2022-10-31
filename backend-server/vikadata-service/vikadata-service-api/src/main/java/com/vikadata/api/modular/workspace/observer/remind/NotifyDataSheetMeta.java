@@ -15,11 +15,8 @@ import com.vikadata.api.model.ro.datasheet.RemindExtraRo;
 
 /**
  * <p>
- * 树表操作通知源数据
+ *  datasheet operation notification source data
  * </p>
- *
- * @author Pengap
- * @date 2021/10/9 12:03:15
  */
 @Getter
 @Setter
@@ -57,7 +54,7 @@ public class NotifyDataSheetMeta {
     String socialAppId;
 
     /**
-     * 应用类型(1: 企业内部应用, 2: 独立服务商)
+     * app type(1: internal, 2: isv)
      */
     Integer appType;
 

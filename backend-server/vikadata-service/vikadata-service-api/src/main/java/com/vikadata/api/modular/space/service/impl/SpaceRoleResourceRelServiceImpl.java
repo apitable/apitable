@@ -19,21 +19,13 @@ import static com.vikadata.api.enums.exception.PermissionException.CREATE_SUB_AD
 import static com.vikadata.api.enums.exception.PermissionException.DELETE_ROLE_ERROR;
 import static com.vikadata.api.enums.exception.PermissionException.UPDATE_ROLE_ERROR;
 
-/**
- * <p>
- * 工作空间-角色权限资源关联表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 @Service
 @Slf4j
 public class SpaceRoleResourceRelServiceImpl extends ServiceImpl<SpaceRoleResourceRelMapper, SpaceRoleResourceRelEntity> implements ISpaceRoleResourceRelService {
 
     @Override
     public void createBatch(List<String> roleCodes, List<String> resourceCodes) {
-        log.info("批量插入角色权限关联");
+        log.info("Batch insert the role permission association.");
         List<SpaceRoleResourceRelEntity> entityList = new ArrayList<>();
         for (String roleCode : roleCodes) {
             for (String resourceCode : resourceCodes) {
@@ -50,14 +42,14 @@ public class SpaceRoleResourceRelServiceImpl extends ServiceImpl<SpaceRoleResour
 
     @Override
     public void delete(String roleCode) {
-        log.info("删除角色权限");
+        log.info("Delete role permission");
         boolean flag = SqlHelper.retBool(baseMapper.deleteByRoleCode(roleCode));
         ExceptionUtil.isTrue(flag, DELETE_ROLE_ERROR);
     }
 
     @Override
     public void deleteBatch(String roleCode, List<String> resourceCodes) {
-        log.info("批量删除角色权限关联");
+        log.info("Batch deleting role permission");
         boolean flag = SqlHelper.retBool(baseMapper.deleteByRoleCodeAndResourceCodes(roleCode, resourceCodes));
         ExceptionUtil.isTrue(flag, UPDATE_ROLE_ERROR);
     }

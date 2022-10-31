@@ -9,28 +9,20 @@ import lombok.Data;
 
 import com.vikadata.core.support.deserializer.StringArrayToLongArrayDeserializer;
 
-/**
- * <p>
- * 指定用户活动状态的请求参数
- * </p>
- *
- * @author Chambers
- * @date 2021/9/22
- */
 @Data
-@ApiModel("指定用户活动状态的请求参数")
+@ApiModel("User Activity Assign Ro")
 public class UserActivityAssignRo {
 
-    @ApiModelProperty(value = "引导ID", example = "7", position = 1)
+    @ApiModelProperty(value = "wizard id", example = "7", position = 1)
     private Integer wizardId;
 
-    @ApiModelProperty(value = "指定引导ID 的赋值", example = "7", position = 2)
+    @ApiModelProperty(value = "specifies the value of the wizard id", example = "7", position = 2)
     private Integer value;
 
-    @ApiModelProperty(value = "指定用户ID 列表（同测试手机号二选一）", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 3)
+    @ApiModelProperty(value = "specifying user id list（choose one of the two phone numbers with the test）", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 3)
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> userIds;
 
-    @ApiModelProperty(value = "测试帐号手机号", example = "1340000", position = 4)
+    @ApiModelProperty(value = "mobile phone number of the test account", example = "1340000", position = 4)
     private String testMobile;
 }

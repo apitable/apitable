@@ -7,11 +7,8 @@ import com.vikadata.api.modular.workspace.observer.remind.NotifyDataSheetMeta;
 
 /**
  * <p>
- * 可观察者，空间站@成员、评论成员主题
+ * remind observer, space @members, commenting.
  * </p>
- *
- * @author Pengap
- * @date 2021/10/9 11:41:28
  */
 public class RemindMemberOpSubject implements DatasheetObservable {
 
@@ -46,7 +43,7 @@ public class RemindMemberOpSubject implements DatasheetObservable {
 
     public void sendNotify(NotifyDataSheetMeta meta) {
         this.meta = meta;
-        // 发送消息
+        // send message
         this.notifyObserver();
     }
 

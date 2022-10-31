@@ -56,16 +56,8 @@ import static com.vikadata.api.enums.exception.NodeException.SHARE_EXPIRE;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_IN_SPACE;
 import static java.util.stream.Collectors.toList;
 
-/**
- * <p>
- * 通讯录-组织单元接口
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/20 13:01
- */
 @RestController
-@Api(tags = "通讯录管理_组织资源接口")
+@Api(tags = "Contact Organization Api")
 @ApiResource(path = "/org")
 @Slf4j
 public class OrganizationController {
@@ -97,18 +89,18 @@ public class OrganizationController {
     @Resource
     private ITeamService iTeamService;
 
-    @GetResource(path = "/search", name = "全局搜索")
-    @ApiOperation(value = "全局搜索", notes = "模糊搜索部门或者成员", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(path = "/search", name = "Global search")
+    @ApiOperation(value = "Global search", notes = "fuzzy search department or members", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "keyword", value = "搜索词", required = true, dataTypeClass = String.class, paramType = "query", example = "设计"),
-        @ApiImplicitParam(name = "className", value = "高亮样式", dataTypeClass = String.class, paramType = "query", example = "highLight")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "design"),
+        @ApiImplicitParam(name = "className", value = "the highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight")
     })
     public ResponseData<SearchResultVo> searchTeamInfo(@RequestParam("keyword") String keyword,
             @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
         String spaceId = LoginContext.me().getSpaceId();
         SearchResultVo result = new SearchResultVo();
-        //模糊搜索部门
+        // fuzzy search department
         List<SearchTeamResultVo> teams = teamMapper.selectByTeamName(spaceId, keyword);
         if (CollUtil.isNotEmpty(teams)) {
             CollUtil.filter(teams, (Editor<SearchTeamResultVo>) vo -> {
@@ -118,25 +110,25 @@ public class OrganizationController {
             });
             result.setTeams(teams);
         }
-        //模糊搜索成员
+        // fuzzy search members
         List<SearchMemberResultVo> searchMemberResultVos = memberService.getByName(spaceId, keyword, className);
         result.setMembers(searchMemberResultVos);
 
         return ResponseData.success(result);
     }
 
-    @GetResource(path = "/search/unit", name = "搜索部门或成员")
-    @ApiOperation(value = "搜索部门或成员（未来将废弃，组织资源管理接口里新接口替代）", notes = "模糊搜索组织单元资源", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(path = "/search/unit", name = "search for departments or members")
+    @ApiOperation(value = "Search departments or members（it will be abandoned）", notes = "fuzzy search unit", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "keyword", value = "搜索词", required = true, dataTypeClass = String.class, paramType = "query", example = "设计"),
-        @ApiImplicitParam(name = "className", value = "高亮样式", dataTypeClass = String.class, paramType = "query", example = "highLight")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "design"),
+        @ApiImplicitParam(name = "className", value = "the highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight")
     })
     public ResponseData<List<OrganizationUnitVo>> searchSubTeamAndMembers(@RequestParam("keyword") String keyword,
             @RequestParam(value = "className", required = false, defaultValue = "highLight") String className) {
         String spaceId = LoginContext.me().getSpaceId();
         List<OrganizationUnitVo> resList = new ArrayList<>();
-        //模糊搜索部门
+        // fuzzy search department
         List<SearchTeamResultVo> teams = teamMapper.selectByTeamName(spaceId, keyword);
         CollUtil.forEach(teams.iterator(), (team, index) -> {
             OrganizationUnitVo vo = new OrganizationUnitVo();
@@ -149,7 +141,7 @@ public class OrganizationController {
             vo.setHasChildren(team.getHasChildren());
             resList.add(vo);
         });
-        //模糊搜索成员
+        // fuzzy search members
         List<SearchMemberDto> members = memberMapper.selectByName(spaceId, keyword);
         CollUtil.forEach(members.iterator(), (member, index) -> {
             OrganizationUnitVo vo = new OrganizationUnitVo();
@@ -169,12 +161,12 @@ public class OrganizationController {
     }
 
     @GetResource(path = "/searchUnit", requiredLogin = false)
-    @ApiOperation(value = "搜索组织资源", notes = "提供输入词模糊搜索组织资源")
+    @ApiOperation(value = "search organization resources", notes = "Provide input word fuzzy search organization resources")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "linkId", value = "关联ID：节点分享ID、模板ID", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG"),
-        @ApiImplicitParam(name = "className", value = "高亮样式", dataTypeClass = String.class, paramType = "query", example = "highLight"),
-        @ApiImplicitParam(name = "keyword", value = "关键词", required = true, dataTypeClass = String.class, paramType = "query", example = "设计")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "linkId", value = "link id: node share id | template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG"),
+        @ApiImplicitParam(name = "className", value = "the highlight style", dataTypeClass = String.class, paramType = "query", example = "highLight"),
+        @ApiImplicitParam(name = "keyword", value = "keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "design")
     })
     public ResponseData<UnitSearchResultVo> search(@RequestParam(name = "keyword") String keyword,
             @RequestParam(value = "linkId", required = false) String linkId,
@@ -187,46 +179,45 @@ public class OrganizationController {
     }
 
     @GetResource(path = "/getSubUnitList", requiredLogin = false)
-    @ApiOperation(value = "查询部门下的子部门和成员", notes = "查询指定部门下的组织单元资源,teamId如果不传，则默认查询根组织下面的组织单元", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Query the sub departments and members of department", notes = "Query the sub departments and members of department. if team id lack, default is 0", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "teamId", value = "部门ID", defaultValue = "0", dataTypeClass = String.class, paramType = "query", example = "0"),
-        @ApiImplicitParam(name = "linkId", value = "关联ID：节点分享ID、模板ID", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "teamId", value = "team id", defaultValue = "0", dataTypeClass = String.class, paramType = "query", example = "0"),
+        @ApiImplicitParam(name = "linkId", value = "link id: node share id | template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
     })
     public ResponseData<SubUnitResultVo> getSubUnitList(@RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId,
             @RequestParam(value = "linkId", required = false) String linkId) {
-        // 获取成员所属空间站ID
+        // get the link id's space
         String spaceId = this.getSpaceId(linkId);
-        // 获取操作用户在空间的成员ID
         Long memberId = LoginContext.me().getMemberId();
-        // 判断部门ID是否为0
+        // determine whether the team id is 0
         if (teamId == 0) {
-            // 判断成员是否被通讯录隔离
+            // check whether members are isolated from contacts
             MemberIsolatedInfo memberIsolatedInfo = iTeamService.checkMemberIsolatedBySpaceId(spaceId, memberId);
             if (Boolean.TRUE.equals(memberIsolatedInfo.isIsolated())) {
-                // 加载成员所属部门中的首层部门
+                // Load the first-layer department in the member's department
                 SubUnitResultVo resultVo = iOrganizationService.loadMemberFirstTeams(spaceId, memberIsolatedInfo.getTeamIds());
                 return ResponseData.success(resultVo);
             }
         }
-        // 加载默认返回值
+        // load the default return value
         SubUnitResultVo subUnitResultVo = iOrganizationService.findSubUnit(spaceId, teamId);
         return ResponseData.success(subUnitResultVo);
     }
 
     @GetResource(path = "/loadOrSearch", requiredLogin = false)
-    @ApiOperation(value = "加载/搜索部门和成员", notes = "未搜索时默认加载最近选择的成员和部门，未选择过加载同小组最近加入的成员，加载数量上限均为十个")
+    @ApiOperation(value = "Load/search departments and members", notes = "The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "linkId", value = "关联ID：节点分享ID、模板ID", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG"),
-        @ApiImplicitParam(name = "keyword", value = "搜索词", dataTypeClass = String.class, paramType = "query", example = "张三"),
-        @ApiImplicitParam(name = "unitIds", value = "组织单元ID 列表", dataTypeClass = String.class, paramType = "query", example = "1271,1272"),
-        @ApiImplicitParam(name = "filterIds", value = "指定过滤的组织单元", dataTypeClass = String.class, paramType = "query", example = "123,124"),
-        @ApiImplicitParam(name = "all", value = "是否加载全部部门和成员", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query"),
-        @ApiImplicitParam(name = "searchEmail", value = "是否搜索邮件", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+        @ApiImplicitParam(name = "linkId", value = "link id: node share id | template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG"),
+        @ApiImplicitParam(name = "keyword", value = "keyword", dataTypeClass = String.class, paramType = "query", example = "Lili"),
+        @ApiImplicitParam(name = "unitIds", value = "unitIds", dataTypeClass = String.class, paramType = "query", example = "1271,1272"),
+        @ApiImplicitParam(name = "filterIds", value = "specifies the organizational unit to filter", dataTypeClass = String.class, paramType = "query", example = "123,124"),
+        @ApiImplicitParam(name = "all", value = "whether to load all departments and members", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query"),
+        @ApiImplicitParam(name = "searchEmail", value = "whether to search for emails", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query")
     })
     public ResponseData<List<UnitInfoVo>> loadOrSearch(@Valid LoadSearchDTO params) {
-        // 分享节点/模板 未登录用户调用处理
+        // sharing node/template: unlogin users invoke processing
         Long userId = null;
         String spaceId;
         Long sharer = null;
@@ -236,16 +227,16 @@ public class OrganizationController {
             spaceId = LoginContext.me().getSpaceId();
         }
         else if (linkId.startsWith(IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
-            // 节点分享
+            // the sharing nodes
             NodeShareDTO nodeShare = nodeShareSettingMapper.selectDtoByShareId(linkId);
             ExceptionUtil.isNotNull(nodeShare, SHARE_EXPIRE);
             spaceId = nodeShare.getSpaceId();
             sharer = nodeShare.getOperator();
         }
         else {
-            // 模板
+            // the template
             String templateSpaceId = iTemplateService.getSpaceId(linkId);
-            // 要求是官方模板，或者用户在该空间内
+            // requirements are official templates, or user in the space
             if (!constProperties.getTemplateSpace().contains(templateSpaceId)) {
                 userId = SessionContext.getUserId();
                 Long memberId = memberMapper.selectIdByUserIdAndSpaceId(userId, templateSpaceId);
@@ -259,8 +250,8 @@ public class OrganizationController {
     }
 
     @PostResource(path = "/searchUnitInfoVo", requiredLogin = false)
-    @ApiOperation(value = "精准查询部门和成员", notes = "场景：字段转换（数据量较大时，若使用GET请求内容会超限）")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "accurately query departments and members", notes = "scenario:field conversion（If the amount of data is large, the content requested by GET will exceed the limit.）")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<List<UnitInfoVo>> searchUnitInfoVo(@RequestBody @Valid SearchUnitRo ro) {
         String spaceId = this.getSpaceId(ro.getLinkId());
         List<UnitInfoVo> vos = iOrganizationService.accurateSearch(spaceId, StrUtil.splitTrim(ro.getNames(), ','));
@@ -271,7 +262,7 @@ public class OrganizationController {
         if (StrUtil.isBlank(linkId)) {
             return LoginContext.me().getSpaceId();
         }
-        // 站外访问
+        // non-official website access
         return iSpaceService.getSpaceIdByLinkId(linkId);
     }
 }

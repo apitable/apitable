@@ -78,14 +78,6 @@ import static com.vikadata.api.enums.exception.NodeException.SHARE_NODE_STORE_FA
 import static com.vikadata.api.enums.exception.OrganizationException.INVITE_TOO_OFTEN;
 import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 
-/**
- * <p>
- * 节点分享 服务接口实现
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 19:55
- */
 @Service
 @Slf4j
 public class NodeShareServiceImpl implements INodeShareService {
@@ -119,7 +111,7 @@ public class NodeShareServiceImpl implements INodeShareService {
 
     @Override
     public NodeShareSettingInfoVO getNodeShareSettings(String nodeId) {
-        log.info("获取节点分享设置信息");
+        log.info("Obtain node sharing settings");
         NodeShareSettingInfoVO settingInfoVO = new NodeShareSettingInfoVO();
         NodeBaseInfoDTO baseNodeInfo = nodeMapper.selectNodeBaseInfoByNodeId(nodeId);
         settingInfoVO.setNodeId(baseNodeInfo.getNodeId());
@@ -130,7 +122,7 @@ public class NodeShareServiceImpl implements INodeShareService {
             settingInfoVO.setShareId(setting.getShareId());
             settingInfoVO.setShareOpened(true);
             settingInfoVO.setProps(JSONUtil.toBean(setting.getProps(), NodeShareSettingPropsVO.class));
-            // 开启分享者
+            // turn on sharers
             String spaceId = nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
             MemberDto dto = memberMapper.selectDtoByUserIdAndSpaceId(setting.getUpdatedBy(), spaceId);
             // compatible member no longer in space station
@@ -139,46 +131,46 @@ public class NodeShareServiceImpl implements INodeShareService {
                 return settingInfoVO;
             }
             settingInfoVO.setShareOpenOperator(dto.getMemberName());
-            // 获取分享者的节点权限
+            // Obtain the node permissions of the sharer
             ControlRoleDict roleDict = controlTemplate.fetchNodeRole(dto.getId(), Collections.singletonList(nodeId));
             if (roleDict.isEmpty()) {
                 settingInfoVO.setOperatorHasPermission(false);
             }
             else {
-                // 若开启了分享可编辑，校验分享者是否拥有节点可编辑或以上权限
+                // If sharing editable is enabled, check whether the sharer has node editable or above permissions.
                 JSONObject props = JSONUtil.parseObj(setting.getProps());
                 String roleCole = props.getBool("canBeEdited", false) ? Node.EDITOR : Node.READER;
                 ControlRole requireRole = ControlRoleManager.parseNodeRole(roleCole);
                 settingInfoVO.setOperatorHasPermission(roleDict.get(nodeId).isGreaterThanOrEqualTo(requireRole));
             }
         }
-        // 查询关联表信息
+        // Query association table information
         List<BaseNodeInfo> linkNodes = iNodeService.getForeignSheet(nodeId);
         if (CollUtil.isNotEmpty(linkNodes)) {
             settingInfoVO.setLinkNodes(CollUtil.getFieldValues(linkNodes, "nodeName", String.class));
         }
-        // 查询分享的节点（包括子后代）是否包含了成员字段
+        // Query whether the shared node (including child descendants) contains member fields
         settingInfoVO.setContainMemberFld(iNodeService.judgeAllSubNodeContainMemberFld(nodeId));
         return settingInfoVO;
     }
 
     @Override
     public String updateShareSetting(Long userId, String nodeId, NodeSharePropsDTO props) {
-        log.info("更改分享配置选项");
+        log.info("Change sharing configuration options");
         JSONObject propsJson = JSONUtil.parseObj(props);
-        // 只能存在一个参数
+        // There can only be one parameter
         if (propsJson.size() > 1) {
             throw new BusinessException(ParameterException.INCORRECT_ARG);
         }
         if (BooleanUtil.isFalse(propsJson.getBool(CollUtil.getFirst(propsJson.keySet())))) {
-            // 传递参数只能存在一个为true
+            // Only one pass parameter can exist as true
             throw new BusinessException(ParameterException.INCORRECT_ARG);
         }
         String lockKey = StrUtil.format(GENERAL_LOCKED, "node:share", nodeId);
         BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(lockKey);
         Boolean result = ops.setIfAbsent("", 5, TimeUnit.SECONDS);
         ExceptionUtil.isTrue(BooleanUtil.isTrue(result), INVITE_TOO_OFTEN);
-        // 查询节点分享设置,前提是已设置开启
+        // Query node sharing settings, provided that it is enabled
         NodeShareSettingEntity setting = nodeShareSettingMapper.selectByNodeId(nodeId);
         AuditSpaceAction action = AuditSpaceAction.UPDATE_NODE_SHARE_SETTING;
         JSONObject info = JSONUtil.createObj();
@@ -190,23 +182,23 @@ public class NodeShareServiceImpl implements INodeShareService {
             info.set(AuditConstants.SHARE_PROPS, propsJson);
         }
         if (setting == null) {
-            // 节点校验，仪表盘不允许单独分享
+            // Node verification. Dashboards are not allowed to be shared separately.
             NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
             ExceptionUtil.isFalse(nodeType.equals(NodeType.ROOT), NOT_ALLOW);
             ExceptionUtil.isFalse(nodeType.equals(NodeType.DASHBOARD), OPEN_SHARE_ERROR);
-            // 开启分享，设置新的分享链接
+            // Open sharing and set up a new sharing link
             setting = new NodeShareSettingEntity();
             setting.setNodeId(nodeId);
             setting.setShareId(IdUtil.createShareId());
         }
-        // 设置选项
+        // Setting options
         setting.setProps(propsJson.toString());
         setting.setIsEnabled(true);
         setting.setUpdatedBy(userId);
         boolean flag = iNodeShareSettingService.saveOrUpdate(setting);
         ExceptionUtil.isTrue(flag, OPEN_SHARE_ERROR);
         redisTemplate.delete(lockKey);
-        // 发布空间审计事件
+        // Publish Space Audit Events
         info.set(AuditConstants.SHARE_ID, setting.getShareId());
         AuditSpaceArg arg = AuditSpaceArg.builder().action(action).userId(userId).nodeId(nodeId).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -215,28 +207,28 @@ public class NodeShareServiceImpl implements INodeShareService {
 
     @Override
     public NodeShareInfoVO getNodeShareInfo(String shareId) {
-        log.info("获取节点分享信息");
+        log.info("Obtain node sharing information");
         NodeShareInfoVO nodeShareInfoVo = new NodeShareInfoVO();
-        // 查找分享设置信息，不存在则失效
+        // Find the sharing setting information, if it does not exist, it will be invalid.
         NodeShareSettingEntity setting = nodeShareSettingMapper.selectByShareId(shareId);
         ExceptionUtil.isTrue(setting != null && setting.getIsEnabled(), SHARE_EXPIRE);
-        // 设置
+        // settings
         nodeShareInfoVo.setShareId(shareId);
-        // 查找节点是否存在
+        // find if a node exists
         NodeEntity node = nodeMapper.selectByNodeId(setting.getNodeId());
         ExceptionUtil.isNotNull(node, SHARE_EXPIRE);
-        // 校验是否是根节点，保证分享准确
+        // Check whether it is the root node to ensure accurate sharing.
         ExceptionUtil.isTrue(node.getType() != NodeType.ROOT.getNodeType(), SHARE_EXPIRE);
-        // 设置
+        // settings
         nodeShareInfoVo.setSpaceId(node.getSpaceId());
-        // 校验空间是否已删除
+        // Check whether the space has been deleted
         SpaceEntity space = spaceMapper.selectBySpaceId(node.getSpaceId());
         ExceptionUtil.isFalse(Objects.isNull(space) || !Objects.isNull(space.getPreDeletionTime()), SHARE_EXPIRE);
         SpaceGlobalFeature feature = JSONUtil.toBean(space.getProps(), SpaceGlobalFeature.class);
-        // 如果关闭『允许分享文件』，则失效已公开的链接
+        // If "Allow file sharing" is closed, the public link will become invalid
         Boolean fileSharable = feature.getFileSharable();
         ExceptionUtil.isTrue(Objects.isNull(fileSharable) || fileSharable, SHARE_EXPIRE);
-        // 设置
+        // settings
         Boolean allowApply = feature.getJoinable();
         nodeShareInfoVo.setAllowApply(allowApply);
         Boolean allowCopyDataToExternal = feature.getAllowCopyDataToExternal();
@@ -248,8 +240,8 @@ public class NodeShareServiceImpl implements INodeShareService {
         nodeShareInfoVo.setShareNodeName(node.getNodeName());
         nodeShareInfoVo.setShareNodeType(node.getType());
         nodeShareInfoVo.setShareNodeIcon(node.getIcon());
-        // 实验性功能
-        // 目前只有一个，直接查询单个，后面有了多个需求，扩展一下
+        // laboratory feature
+        // At present, there is only one, which directly queries a single one, and there are multiple requirements behind it. Expand it
         LabsApplicantEntity spaceLabs = iLabsApplicantService.getApplicantByApplicantAndFeatureKey(node.getSpaceId(), LabsFeatureEnum.VIEW_MANUAL_SAVE.name());
         nodeShareInfoVo.setFeatureViewManualSave(Objects.nonNull(spaceLabs));
 
@@ -258,14 +250,14 @@ public class NodeShareServiceImpl implements INodeShareService {
             nodeShareInfoVo.setAllowSaved(props.getBool("canBeStored", false));
             nodeShareInfoVo.setAllowEdit(props.getBool("canBeEdited", false));
         }
-        // 获取最后的操作者，判断是否不存在
+        // Get the last operator to determine if it does not exist.
         Long memberId = memberMapper.selectIdByUserIdAndSpaceId(setting.getUpdatedBy(), node.getSpaceId());
         ExceptionUtil.isNotNull(memberId, SHARE_EXPIRE);
         MemberDto member = memberMapper.selectDtoByMemberId(memberId);
         nodeShareInfoVo.setLastModifiedBy(member.getMemberName());
         nodeShareInfoVo.setLastModifiedAvatar(member.getAvatar());
         nodeShareInfoVo.setHasLogin(HttpContextUtil.hasSession());
-        // 如果是目录节点，查询分享者的权限，排除没有权限的子节点
+        // If it is a directory node, query the permissions of the sharer and exclude child nodes without permissions.
         List<String> nodeIds = CollUtil.newArrayList(node.getNodeId());
         boolean hasChildren = nodeMapper.selectHasChildren(node.getNodeId());
         nodeShareInfoVo.setIsFolder(hasChildren);
@@ -278,15 +270,15 @@ public class NodeShareServiceImpl implements INodeShareService {
 
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), SHARE_EXPIRE);
-        // 过滤节点，若允许他人编辑，需可编辑以上权限，节点才可以展示，否则仅需要可查看权限
+        // Filter nodes. If you allow others to edit the nodes, you need to edit the above permissions before you can display the nodes. Otherwise, you only need to view the permissions.
         ControlRole requireRole = ControlRoleManager.parseNodeRole(nodeShareInfoVo.getAllowEdit() ? Node.EDITOR : Node.READER);
         List<String> filterNodeIds = roleDict.entrySet().stream()
                 .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(requireRole))
                 .map(Map.Entry::getKey).collect(Collectors.toList());
         ExceptionUtil.isNotEmpty(filterNodeIds, SHARE_EXPIRE);
-        // 查询分享节点树
+        // query sharing node tree
         List<NodeShareTree> list = nodeMapper.selectShareTree(filterNodeIds);
-        // 节点切换成内存自定义排序
+        // node switches to memory custom sort
         CollectionUtil.customSequenceSort(list, NodeShareTree::getNodeId, new ArrayList<>(filterNodeIds));
         List<NodeShareTree> treeList = new DefaultTreeBuildFactory<NodeShareTree>(node.getNodeId()).doTreeBuild(list);
         nodeShareInfoVo.setNodeTree(treeList);
@@ -308,7 +300,7 @@ public class NodeShareServiceImpl implements INodeShareService {
 
     @Override
     public void checkNodeHasShare(String dstId) {
-        log.info("检查数表是否分享");
+        log.info("Check whether the number table is shared");
         List<String> nodes = iNodeService.getPathParentNode(dstId);
         boolean hasShare = false;
         for (String node : nodes) {
@@ -324,7 +316,7 @@ public class NodeShareServiceImpl implements INodeShareService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void disableNodeShare(Long userId, String nodeId) {
-        log.info("关闭节点分享");
+        log.info("Turn off node sharing");
         NodeShareSettingEntity setting = nodeShareSettingMapper.selectByNodeId(nodeId);
         ExceptionUtil.isNotNull(setting, CLOSE_SHARE_ERROR);
         JSONObject oldProps = JSONUtil.parseObj(setting.getProps());
@@ -333,9 +325,9 @@ public class NodeShareServiceImpl implements INodeShareService {
         setting.setUpdatedBy(userId);
         boolean flag = iNodeShareSettingService.updateById(setting);
         ExceptionUtil.isTrue(flag, CLOSE_SHARE_ERROR);
-        // 发布节点分享关闭事件
+        // Publish node sharing shutdown event
         SpringContextHolder.getApplicationContext().publishEvent(new NodeShareDisableEvent(this, Collections.singletonList(nodeId)));
-        // 发布空间审计事件
+        // Publish Space Audit Events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.SHARE_ID, setting.getShareId());
         info.set(AuditConstants.OLD_SHARE_PROPS, oldProps);
@@ -351,7 +343,7 @@ public class NodeShareServiceImpl implements INodeShareService {
         if (nodeIds.size() > 0) {
             int res = nodeShareSettingMapper.disableByNodeIds(nodeIds);
             ExceptionUtil.isTrue(res > 0, CLOSE_SHARE_ERROR);
-            // 发布节点分享关闭事件
+            // Publish node sharing shutdown event
             SpringContextHolder.getApplicationContext().publishEvent(new NodeShareDisableEvent(this, nodeIds));
         }
     }
@@ -359,19 +351,19 @@ public class NodeShareServiceImpl implements INodeShareService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String storeShareData(Long userId, String spaceId, String shareId) {
-        log.info("转存分享节点");
+        log.info("Transfer sharing node");
         NodeShareSettingEntity nodeSetting = nodeShareSettingMapper.selectByShareId(shareId);
         ExceptionUtil.isNotNull(nodeSetting, SHARE_NODE_STORE_FAIL);
         ExceptionUtil.isTrue(!JSONUtil.isNull(nodeSetting.getProps()) && JSONUtil.parseObj(nodeSetting.getProps()).getBool("canBeStored", false), SHARE_NODE_DISABLE_SAVE);
-        // 查询分享所在的空间
+        // Query the space where the sharing is located
         String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeSetting.getNodeId());
         ExceptionUtil.isNotNull(nodeSpaceId, SHARE_EXPIRE);
-        // 获取最后的操作者，判断是否不存在
+        // Get the last operator to determine if it does not exist.
         Long memberId = memberMapper.selectIdByUserIdAndSpaceId(nodeSetting.getUpdatedBy(), nodeSpaceId);
         ExceptionUtil.isNotNull(memberId, SHARE_EXPIRE);
-        // 获取节点及子后代的节点ID
+        // Obtain the node ID of the node and its child descendants.
         List<String> nodeIds = nodeMapper.selectBatchAllSubNodeIds(Collections.singletonList(nodeSetting.getNodeId()), false);
-        // 过滤节点要求的权限，同步分享节点树的展示逻辑
+        // Filter the required permissions of the node and share the display logic of the node tree synchronously.
         ControlRoleDict roleDict = controlTemplate.fetchShareNodeTree(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), SHARE_EXPIRE);
         NodeCopyOptions options = NodeCopyOptions.builder().copyData(true).verifyNodeCount(true).filterPermissionField(true).build();
@@ -379,7 +371,7 @@ public class NodeShareServiceImpl implements INodeShareService {
             List<String> filterNodeIds = CollUtil.subtractToList(nodeIds, roleDict.keySet());
             options.setFilterNodeIds(filterNodeIds);
         }
-        // 审计变量，记录变更值
+        // Audit variables, record change values
         AuditFieldHolder.set(AuditInfoField.builder().sourceNodeId(nodeSetting.getNodeId()).build());
         return iNodeService.copyNodeToSpace(userId, spaceId, null, nodeSetting.getNodeId(), options);
     }

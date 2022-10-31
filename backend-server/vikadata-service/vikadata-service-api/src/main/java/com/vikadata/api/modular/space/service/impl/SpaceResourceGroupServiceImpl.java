@@ -7,14 +7,6 @@ import com.vikadata.api.modular.space.service.ISpaceResourceGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-/**
- * <p>
- * 工作空间-权限资源分组表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 @Service
 @Slf4j
 public class SpaceResourceGroupServiceImpl extends ServiceImpl<SpaceResourceGroupMapper, SpaceResourceGroupEntity> implements ISpaceResourceGroupService {

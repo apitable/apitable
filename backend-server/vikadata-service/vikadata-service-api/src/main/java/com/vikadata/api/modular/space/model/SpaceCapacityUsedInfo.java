@@ -1,14 +1,10 @@
 package com.vikadata.api.modular.space.model;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-/**
- * space capacity info
- *
- * @author liuzijing
- * @date 2022/8/31
- */
 @Data
+@ApiModel("space capacity info")
 public class SpaceCapacityUsedInfo {
 
     /**

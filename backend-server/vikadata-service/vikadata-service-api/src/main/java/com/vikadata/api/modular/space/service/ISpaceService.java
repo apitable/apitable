@@ -19,395 +19,297 @@ import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
 
-/**
- * <p>
- * 空间表 服务类
- * </p>
- *
- * @author Chambers
- * @since 2019-10-07
- */
 public interface ISpaceService extends IService<SpaceEntity> {
 
     /**
-     * 根据空间ID查询空间信息
-     *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return SpaceEntity
      */
     SpaceEntity getBySpaceId(String spaceId);
 
     /**
-     * 检查空间是否存在
-     * @param spaceId 空间ID
+     * check whether the space exists
+     * @param spaceId space id
      */
     void checkExist(String spaceId);
 
     /**
-     * 根据空间ID查询空间信息，包括已删除的空间站
-     *
-     * @param spaceId 空间站 ID
-     * @return 空间站信息
-     * @author 刘斌华
-     * @date 2022-06-16 16:20:59
+     * @param spaceId space id
+     * @return SpaceEntity
      */
     SpaceEntity getBySpaceIdIgnoreDeleted(String spaceId);
 
     /**
-     * 批量获取空间信息
-     *
-     * @param spaceIds 空间ID集合
+     * @param spaceIds space ids
      * @return SpaceEntity List
      */
     List<SpaceEntity> getBySpaceIds(List<String> spaceIds);
 
     /**
-     * 用户创建空间
+     * user creation space
      *
-     * @param user    用户
-     * @param spaceName 空间名称
-     * @return 空间ID
-     * @author Shawn Deng
-     * @date 2020/8/25 15:26
+     * @param user    user
+     * @param spaceName spaceName
+     * @return space id
      */
     String createSpace(UserEntity user, String spaceName);
 
     /**
-     * 创建一个不包含用户信息的空间站
+     * Create a space that does not contain user information
      *
-     * @param spaceName 空间站名称
+     * @param spaceName spaceName
      * @return {@link SpaceEntity}
-     * @author 刘斌华
-     * @date 2022-01-06 17:29:01
      */
     SpaceEntity createWeComIsvSpaceWithoutUser(String spaceName);
 
     /**
-     * 编辑空间
-     *
-     * @param userId    用户ID
-     * @param spaceId   空间id
-     * @param spaceOpRo 请求参数
+     * @param userId userId
+     * @param spaceId space id
+     * @param spaceOpRo SpaceUpdateOpRo
      */
     void updateSpace(Long userId, String spaceId, SpaceUpdateOpRo spaceOpRo);
 
     /**
-     * 预删除
-     *
-     * @param userId  用户id
-     * @param spaceId 空间id
+     * @param userId userId
+     * @param spaceId space id
      */
     void preDeleteById(Long userId, String spaceId);
 
     /**
-     * 删除空间
-     *
-     * @param spaceIds  空间ID列表
-     * @author Chambers
-     * @date 2022/1/18
+     * @param spaceIds space ids
      */
     void deleteSpace(Long userId, List<String> spaceIds);
 
     /**
-     * 撤销删除
+     * cancel the delete
      *
-     * @param userId  用户ID
-     * @param spaceId 空间id
+     * @param userId userId
+     * @param spaceId space id
      */
     void cancelDelByIds(Long userId, String spaceId);
 
     /**
-     * 退出空间
+     * quit space
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
+     * @param spaceId space id
+     * @param memberId memberId
      */
     void quit(String spaceId, Long memberId);
 
     /**
-     * 查询用户拥有的空间列表
+     * query the list of space owned by a user
      *
-     * @param userId    用户ID
-     * @param condition 查询条件
+     * @param userId userId
+     * @param condition query condition
      * @return SpaceVO List
-     * @author Shawn Deng
-     * @date 2020/12/22 17:44
      */
     List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition);
 
     /**
-     * 获取空间信息
-     *
-     * @param spaceId 空间ID
-     * @return 空间信息
-     * @author Chambers
-     * @date 2019/11/29
+     * @param spaceId space id
+     * @return SpaceInfoVO
      */
     SpaceInfoVO getSpaceInfo(String spaceId);
 
     /**
      * get space capacity used sizes information
      *
-     * @param spaceId          space ID
+     * @param spaceId space id
      * @param capacityUsedSize space capacity used sizes
      * @return SpaceCapacityUsedInfo space capacity used information
-     * @author liuzijing
-     * @date 2022/8/31
      */
     SpaceCapacityUsedInfo getSpaceCapacityUsedInfo(String spaceId, Long capacityUsedSize);
 
     /**
-     * 获取空间的用量信息
-     * 内部接口
+     * gets the amount of space used
+     * the internal interface
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return InternalSpaceUsageVo
-     * @author Chambers
-     * @date 2021/9/23
      */
     InternalSpaceUsageVo getInternalSpaceUsageVo(String spaceId);
 
     /**
-     * 获取空间的附件容量信息
-     * 内部接口
+     * the internal interface
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return InternalSpaceCapacityVo
-     * @author Chambers
-     * @date 2020/9/12
      */
     InternalSpaceCapacityVo getSpaceCapacityVo(String spaceId);
 
     /**
-     * 更换主管理员
-     *
-     * @param spaceId  空间ID
-     * @param memberId 新主管理员的成员ID
-     * @return 新管理员的用户ID
-     * @author Chambers
-     * @date 2020/1/21
+     * @param spaceId space id
+     * @param memberId memberId
+     * @return new main admin user id
      */
     Long changeMainAdmin(String spaceId, Long memberId);
 
     /**
-     * 移除主管理员
+     * remove main admin
      *
-     * @param spaceId 空间站 ID
-     * @author 刘斌华
-     * @date 2022-01-12 18:48:33
+     * @param spaceId space id
      */
     void removeMainAdmin(String spaceId);
 
     /**
-     * 获取空间主管理员的成员ID
-     *
-     * @param spaceId 空间ID
-     * @return 用户ID
-     * @author Shawn Deng
-     * @date 2020/12/14 17:44
+     * @param spaceId space id
+     * @return main admin member id
      */
     Long getSpaceMainAdminMemberId(String spaceId);
 
     /**
-     * 获取空间主管理员的用户ID
-     *
-     * @param spaceId 空间ID
-     * @return 用户ID
-     * @author Shawn Deng
-     * @date 2020/12/14 17:44
+     * @param spaceId space id
+     * @return main admin user id
      */
     Long getSpaceMainAdminUserId(String spaceId);
 
     /**
-     * 检查成员不是空间的主管理员
-     * 如果是则报错
+     * Check that the member is not the master administrator of the space
+     * If yes, throwing a exception
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/13 22:21
+     * @param spaceId space id
+     * @param memberId memberId
      */
     void checkMemberIsMainAdmin(String spaceId, Long memberId);
 
     /**
-     * 批量检查成员不是空间的主管理员
-     * 如果是则报错
+     * Check that the members is not the master administrator of the space
+     * If yes, throwing a exception
      *
-     * @param spaceId   空间ID
-     * @param memberIds 成员ID列表
-     * @author Shawn Deng
-     * @date 2020/2/13 22:21
+     * @param spaceId space id
+     * @param memberIds memberIds
      */
     void checkMembersIsMainAdmin(String spaceId, List<Long> memberIds);
 
     /**
-     * 查询成员是否在空间内
+     * queries whether a member is in a space
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/13 22:21
+     * @param spaceId space id
+     * @param memberId memberId
      */
     void checkMemberInSpace(String spaceId, Long memberId);
 
     /**
-     * 批量查询成员是否在空间内
+     * batch queries whether a member is in a space
      *
-     * @param spaceId   空间ID
-     * @param memberIds 成员ID列表
-     * @author Shawn Deng
-     * @date 2020/2/13 22:21
+     * @param spaceId space id
+     * @param memberIds memberIds
      */
     void checkMembersInSpace(String spaceId, List<Long> memberIds);
 
     /**
-     * 获取空间权限资源
-     *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
+     * @param userId userId
+     * @param spaceId space id
      * @return UserSpaceVo
-     * @author Shawn Deng
-     * @date 2020/2/15 19:14
      */
     UserSpaceVo getUserSpaceResource(Long userId, String spaceId);
 
     /**
-     * 获取空间全局属性
-     *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return SpaceGlobalFeature
-     * @author Chambers
-     * @date 2021/4/8
      */
     SpaceGlobalFeature getSpaceGlobalFeature(@Param("spaceId") String spaceId);
 
     /**
-     * 更改空间属性状态
+     * change the space feature
      *
-     * @param userId    用户ID
-     * @param spaceId   空间ID
-     * @param feature   修改的属性
-     * @author Chambers
-     * @date 2021/4/8
+     * @param userId userId
+     * @param spaceId space id
+     * @param feature   feature
      */
     void switchSpacePros(Long userId, String spaceId, SpaceGlobalFeature feature);
 
     /**
-     * 校验是否允许操作空间资源
+     * Check whether space resources are allowed to be manipulated
      *
-     * @param spaceId 空间ID
-     * @author Shawn Deng
-     * @date 2020/12/17 18:52
+     * @param spaceId space id
      */
     void checkCanOperateSpaceUpdate(String spaceId);
 
     /**
-     * 校验是否允许操作空间数据，member,team
+     * Check whether spatial data is allowed to be manipulated，member,team
      *
-     * @param spaceId 空间ID
-     * @param spaceUpdateOperates 操作
-     * @author zoe zheng
-     * @date 2021/9/24 15:32
+     * @param spaceId space id
+     * @param spaceUpdateOperates spaceUpdateOperates
      */
     void checkCanOperateSpaceUpdate(String spaceId, SpaceUpdateOperate spaceUpdateOperates);
 
     /**
-     * 校验是否允许操作空间资源
+     * Check whether space resources are allowed to be manipulated
      *
-     * @param spaceId                空间ID
-     * @param opMemberId             操作成员Id
-     * @param acceptMemberId         接受操作成员Id（被安排）
-     * @param spaceUpdateOperates    操作集合
-     * @author Pengap
-     * @date 2021/9/7 17:33:58
+     * @param spaceId                space id
+     * @param opMemberId             opMemberId
+     * @param acceptMemberId         the accept action member id
+     * @param spaceUpdateOperates    spaceUpdateOperates
      */
     void checkCanOperateSpaceUpdate(String spaceId, Long opMemberId, Long acceptMemberId, SpaceUpdateOperate[] spaceUpdateOperates);
 
     /**
-     * 获取关联信息的空间ID
-     *
-     * @param linkId 关联ID（分享ID 或模板ID）
+     * @param linkId linkId（sharing id or template id）
      * @return spaceId
-     * @author Chambers
-     * @date 2021/1/25
      */
     String getSpaceIdByLinkId(String linkId);
 
     /**
-     * 是否正在同步通讯录
-     * @param spaceId 空间站ID
+     * Check whether the contact is being synchronized
+     * 
+     * @param spaceId space id
      * @return Boolean
-     * @author zoe zheng
-     * @date 2021/11/29 7:04 下午
      */
     Boolean isContactSyncing(String spaceId);
 
     /**
-     * 标记空间正在同步通讯录
+     * the label space is synchronizing the contact
      *
-     * @param spaceId 空间站ID
-     * @author zoe zheng
-     * @date 2021/11/29 7:06 下午
+     * @param spaceId space id
      */
     void setContactSyncing(String spaceId, String value);
 
     /**
-     * 标记空间同步通讯录完成
+     * the space synchronization contact is marked
      *
-     * @param spaceId 空间站ID
-     * @author zoe zheng
-     * @date 2021/11/29 7:06 下午
+     * @param spaceId space id
      */
     void contactFinished(String spaceId);
 
     /**
-     * 获取空间名称
-     * @param spaceId 空间ID
-     * @return 空间名称
-     * @author zoe zheng
-     * @date 2022/2/23 15:39
+     * @param spaceId space id
+     * @return space name
      */
     String getNameBySpaceId(String spaceId);
 
     /**
-     * 获取空间主管理员的userId
-     * @param spaceId 空间ID
-     * @return 主管理员的userId
-     * @author zoe zheng
-     * @date 2022/3/1 14:49
+     * @param spaceId space id
+     * @return main admin's userId
      */
     Long getSpaceOwnerUserId(String spaceId);
 
     /**
-     * 验证空间是否已经认证过了
+     * verify whether the space has been authenticated
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return boolean
-     * @author zoe zheng
-     * @date 2022/4/7 14:23
      */
     boolean isCertified(String spaceId);
 
     /**
-     * 切换空间站
+     * switch space
      *
-     * @param userId    用户ID
-     * @param spaceId   切换到的空间站ID
-     * @author Pengap
-     * @date 2022/4/21 14:19:12
+     * @param userId userId
+     * @param spaceId space id
      */
     void switchSpace(Long userId, String spaceId);
 
     /**
      * check space available
-     * @param spaceId
+     * @param spaceId spaceId
      */
     void isSpaceAvailable(String spaceId);
 
     /**
      *  Check whether the user is in space
      * @param userId    user id
-     * @param spaceId   space id
+     * @param spaceId space id
      * @param consumer  callback
      */
     void checkUserInSpace(Long userId, String spaceId, Consumer<Boolean> consumer);

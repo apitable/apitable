@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 public class CreateEntitlementWithAddOn {
 
-    @NotBlank(message = "空间ID不能为空")
+    @NotBlank(message = "the space id cannot be empty")
     private String spaceId;
 
-    @NotBlank(message = "附加计划ID不能为空")
+    @NotBlank(message = "the additional plan id cannot be empty")
     private String planId;
 
     private String startDate;

@@ -2,7 +2,7 @@ server:
   port: 8082
   shutdown: graceful
 
-# SpringBoot框架配置
+# SpringBoot config
 spring:
   application:
     name: private-aider-service

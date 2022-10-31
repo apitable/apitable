@@ -121,10 +121,6 @@ import static com.vikadata.api.enums.exception.WidgetException.SUBMIT_FAIL_VERSI
 import static com.vikadata.api.enums.exception.WidgetException.WIDGET_BANNED;
 import static com.vikadata.api.enums.exception.WidgetException.WIDGET_NOT_EXIST;
 
-/**
- * @author Shawn Deng
- * @date 2021-01-09 16:22:05
- */
 @Slf4j
 @Service
 public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, WidgetPackageEntity> implements IWidgetPackageService {
@@ -170,8 +166,8 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public void checkWidgetPackIfExist(String widgetPackageId, List<Integer> status) {
-        log.info("检查组件安装包是否存在, widgetPackageId:{}，status:{}", widgetPackageId, status);
-        // 判断组件包是否存在
+        log.info("check if the component installation package exists, widgetPackageId:{}，status:{}", widgetPackageId, status);
+        // determine if a component package exists
         Integer packageStatus = baseMapper.selectStatusByPackageId(widgetPackageId);
         ExceptionUtil.isTrue(packageStatus != null && status.contains(packageStatus),
                 WidgetException.WIDGET_PACKAGE_NOT_EXIST);
@@ -179,23 +175,23 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public boolean checkCustomPackageId(String customPackageId) {
-        log.info("检查组件自定义ID：{}，是否唯一", customPackageId);
+        log.info("check component custom id：{}，Is it unique", customPackageId);
         return baseMapper.countNumByPackageId(customPackageId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public WidgetReleaseCreateVo createWidget(Long opUserId, WidgetPackageCreateRo widget) {
-        log.info("创建小程序");
-        // 检查小程序包类型
+        log.info("create widget");
+        // check widget package type
         WidgetPackageType packageType = WidgetPackageType.toEnum(widget.getPackageType());
-        // 检查小程序发布类型
+        // check widget publishing type
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(widget.getReleaseType());
-        // 检查开发人员权限
+        // check developer permissions
         this.checkDeveloperUserIfSpaceOrGm(opUserId, widget.getSpaceId(), releaseType);
         String packageId = widget.getPackageId();
         if (StrUtil.isNotBlank(packageId)) {
-            // 检查自定义packageId
+            // check custom package id
             boolean packageIdIsExist = this.checkCustomPackageId(widget.getPackageId());
             ExceptionUtil.isFalse(packageIdIsExist, CREATE_FAIL_CUSTOM_PACKAGEID_REPEAT);
         }
@@ -206,7 +202,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         String i18nNameStr;
         try {
             i18nName = objectMapper.readValue(widget.getName(), I18nField.class);
-            // 英文参数不能为空
+            // english parameter cannot be empty
             ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
             i18nNameStr = i18nName.toJson();
         }
@@ -214,16 +210,16 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
             throw new BusinessException("The JSON format of widget name or description is incorrect");
         }
 
-        // 查询最新的组件包顺序
+        // query the latest component package order
         int maxSort = baseMapper.selectMaxWidgetSort(releaseType.getValue(), widget.getSpaceId());
 
-        // 创建小程序包，并且绑定空间
+        // create a widget package and bind the space
         WidgetPackageEntity saveObj = new WidgetPackageEntity()
                 .setPackageId(packageId)
                 .setI18nName(i18nNameStr)
                 .setPackageType(packageType.getValue())
                 .setReleaseType(releaseType.getValue())
-                // 空间站小程序默认生效，全局小程序默认不生效
+                // The space station widget takes effect by default, and the global widget does not take effect by default.
                 .setIsEnabled(WidgetReleaseType.SPACE == releaseType)
                 .setIsTemplate(BooleanUtil.isTrue(widget.getIsTemplate()))
                 .setStatus(WidgetPackageStatus.DEVELOP.getValue())
@@ -238,7 +234,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         boolean flag = this.save(saveObj) && SqlHelper.retBool(widgetPackageAuthSpaceMapper.insert(saveJoinObj));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
 
-        // 返回结果
+        // return result
         WidgetReleaseCreateVo result = new WidgetReleaseCreateVo();
         result.setPackageId(saveObj.getPackageId());
         return result;
@@ -247,35 +243,35 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean releaseWidget(Long opUserId, WidgetPackageReleaseRo widget) {
-        log.info("发布小程序");
-        // 发布小程序必填参数检查
+        log.info("release widget");
+        // release widget required parameter check
         boolean validField = StrUtil.hasBlank(widget.getDescription());
         validField |= ObjectUtil.hasNull(widget.getIcon(), widget.getCover(), widget.getAuthorIcon(), widget.getReleaseCodeBundle());
         ExceptionUtil.isFalse(validField, RELEASES_FAIL_INCOMPLETE_PARAME);
 
-        // 检查发布版本号
+        // check release number
         ExceptionUtil.isTrue(WidgetReleaseVersionUtils.checkVersion(widget.getVersion()), RELEASES_FAIL_VERSION_NUM_ERROR);
-        // 检查小程序是否存在
+        // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(widget.getPackageId());
         ExceptionUtil.isFalse(Objects.equals(wpk.getStatus(), WidgetPackageStatus.BANNED.getValue()), RELEASES_FAIL_WIDGET_DISABLED);
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(wpk.getReleaseType());
-        // 空间站小程序允许不绑定 作者名称，作者邮箱，作者链接
+        // Space station widget allows not binding author name, author mailbox, author link
         if (WidgetReleaseType.GLOBAL == releaseType) {
             validField = StrUtil.hasBlank(widget.getAuthorName(), widget.getAuthorLink(), widget.getAuthorEmail());
             ExceptionUtil.isFalse(validField, RELEASES_FAIL_INCOMPLETE_PARAME);
         }
 
-        // 检查开发人员权限
+        // check developer permissions
         if (!opUserId.equals(wpk.getOwner())) {
             this.checkDeveloperUserIfSpaceOrGm(opUserId, widget.getSpaceId(), releaseType);
         }
-        // 生成versionSHA
+        // generate versionSHA
         String versionSHA = WidgetReleaseVersionUtils.createVersionSHA(wpk.getPackageId(), widget.getVersion());
 
-        // 生成安装环境编码
+        // generate installation environment code
         String installEnvsCodes = InstallEnvType.getInstallEnvCode(widget.getInstallEnv());
 
-        // 生成运行环境编码
+        // generate runtime environment code
         String runtimeEnvsCodes = RuntimeEnvType.getRuntimeEnvCode(widget.getRuntimeEnv());
 
         I18nField i18nName, i18nDesc;
@@ -283,26 +279,26 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         try {
             i18nName = objectMapper.readValue(StrUtil.blankToDefault(widget.getName(), wpk.getI18nName()), I18nField.class);
             i18nDesc = objectMapper.readValue(widget.getDescription(), I18nField.class);
-            // 检查小程序发布名称，可以为空，为空发布不修改小程序名称
+            // Check the widget release name. It can be empty. If it is empty, the release does not modify the widget name.
             if (null != i18nName) {
-                // 英文参数不能为空
+                // english parameter cannot be empty
                 ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
                 i18nNameStr = i18nName.toJson();
             }
-            // 英文参数不能为空
+            // english parameter cannot be empty
             ExceptionUtil.isNotBlank(i18nDesc.getEnUS(), EN_US_REQUIRED);
-            // 检查发布版本SAH是否唯一，每个包下版本号唯一
+            // Check whether the release version SAH is unique and the version number under each package is unique.
             ExceptionUtil.isNull(widgetPackageReleaseMapper.selectReleaseShaToId(versionSHA, null), RELEASES_FAIL_VERSION_NUM_REPEAT);
             i18nDescStr = i18nDesc.toJson();
-            // 上传cover
+            // upload cover
             coverToken = this.uploadDeveloperTmpFile(widget.getCover());
-            // 上传icon
+            // upload icon
             iconToken = this.uploadDeveloperTmpFile(widget.getIcon());
-            // 上传authorIcon
+            // upload authorIcon
             authorIconToken = this.uploadDeveloperTmpFile(widget.getAuthorIcon());
-            // 上传releaseCodeBundle
+            // upload releaseCodeBundle
             releaseCodeBundleToken = this.uploadReleaseCodeSourceFile(widget.getReleaseCodeBundle(), wpk.getPackageId(), widget.getVersion(), opUserId);
-            // 上传sourceCodeBundle
+            // upload sourceCodeBundle
             if (Objects.nonNull(widget.getSourceCodeBundle())) {
                 sourceCodeBundleToken = this.uploadReleaseCodeSourceFile(widget.getSourceCodeBundle(), wpk.getPackageId(), widget.getVersion(), opUserId);
             }
@@ -314,7 +310,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
             throw new BusinessException(e.getMessage());
         }
 
-        // 创建发布版本记录
+        // create release record
         WidgetPackageReleaseEntity saveWpr = new WidgetPackageReleaseEntity()
                 .setPackageId(wpk.getPackageId())
                 .setVersion(widget.getVersion())
@@ -328,11 +324,11 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
                 .setRuntimeEnvCode(runtimeEnvsCodes)
                 .setStatus(WidgetReleaseStatus.PASS_REVIEW.getValue());
 
-        // 保存发布版本记录
+        // save release record
         boolean flag = SqlHelper.retBool(widgetPackageReleaseMapper.insert(saveWpr));
-        // 修改组件包状态
+        // modify component package status
         String[] oldAssetList = { wpk.getCover(), wpk.getIcon(), wpk.getAuthorIcon() };
-        // 修改发布信息
+        // modify publishing information
         wpk.setReleaseId(saveWpr.getId())
                 .setI18nName(i18nNameStr)
                 .setI18nDescription(i18nDescStr)
@@ -348,22 +344,22 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         flag &= SqlHelper.retBool(baseMapper.updateById(wpk));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
 
-        // 删除云端临时文件
+        // delete temporary files in the cloud
         this.deleteDeveloperTmpFile(oldAssetList);
 
         List<Long> toPlayerIds = new ArrayList<>();
-        // 小程序管理权限
+        // widget management permissions
         List<Long> memberAdminIds = iSpaceMemberRoleRelService.getMemberId(widget.getSpaceId(), ListUtil.toList("MANAGE_WIDGET"));
-        // 主管理员
+        // master administrator
         memberAdminIds.add(spaceMapper.selectSpaceMainAdmin(widget.getSpaceId()));
         if (CollUtil.isNotEmpty(memberAdminIds)) {
-            // 查询用户UserId
+            // query user user id
             List<Long> userAdminIds = memberMapper.selectUserIdsByMemberIds(memberAdminIds);
             if (CollUtil.isNotEmpty(userAdminIds)) {
                 toPlayerIds.addAll(userAdminIds);
             }
         }
-        // 发送通知
+        // send notification
         TaskManager.me().execute(() -> NotificationManager.me().playerNotify(
                 NotificationTemplateId.NEW_SPACE_WIDGET_NOTIFY,
                 toPlayerIds,
@@ -375,22 +371,22 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public List<WidgetReleaseListVo> releaseListWidget(Long opUserId, String packageId, Page<WidgetReleaseListVo> page) {
-        log.info("获取小程序发布历史列表");
-        // 检查小程序是否存在
+        log.info("get a list of widget publishing history");
+        // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(packageId);
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(wpk.getReleaseType());
-        // 查询小程序归属空间站
+        // query widget s home space station
         String spaceId = widgetPackageAuthSpaceMapper.selectSpaceIdByPackageId(wpk.getPackageId());
-        // 检查回滚操作人是否作者，不是作者在校验小程序管理权限
+        // Check whether the rollback operator is the author, not the author checking widget management permissions
         if (!opUserId.equals(wpk.getOwner())) {
-            // 检查用户是否主管理员
+            // check whether the user is the master administrator
             this.checkDeveloperUserIfSpaceOrGm(opUserId, spaceId, releaseType);
         }
 
-        // 查询发布历史
+        // query publishing history
         page.setSearchCount(false);
         page.setSize(-1);
-        // 目前关闭分页查询
+        // paging query is currently closed
         IPage<WidgetReleaseListVo> pageResult = widgetPackageReleaseMapper.selectReleasePage(page, packageId);
         pageResult.convert(wr -> {
             wr.setCurrentVersion(wpk.getReleaseId().equals(wr.getReleaseId()));
@@ -401,28 +397,28 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public boolean rollbackWidget(Long opUserId, WidgetPackageRollbackRo widget) {
-        log.info("回滚小程序");
-        // 检查回滚版本号
+        log.info("rollback widget");
+        // check rollback version number
         ExceptionUtil.isTrue(WidgetReleaseVersionUtils.checkVersion(widget.getVersion()), ROLLBACK_FAIL_VERSION_NUM_ERROR);
-        // 检查小程序是否存在
+        // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(widget.getPackageId());
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(wpk.getReleaseType());
-        // 查询小程序归属空间站
+        // query widget s home space station
         String spaceId = widgetPackageAuthSpaceMapper.selectSpaceIdByPackageId(wpk.getPackageId());
         /*
-         * 1.检查回滚操作人是否作者，不是作者再校验小程序管理权限
-         * 2.全局小组件回滚，必须校验GM权限
+         * 1.Check whether the rollback operator is the author, not the author, and then check the widget management authority.
+         * 2.Global widget rollback, GM permissions must be verified
          */
         if (!opUserId.equals(wpk.getOwner()) || WidgetReleaseType.GLOBAL == releaseType) {
-            // 检查用户是否主管理员
+            // check whether the user is the master administrator
             this.checkDeveloperUserIfSpaceOrGm(opUserId, spaceId, releaseType);
         }
-        // 检查发布版本SAH是否存在，只能回滚到审核通过的版本
+        // Check whether the released version SAH exists and can only be rolled back to the approved version.
         String versionSHA = WidgetReleaseVersionUtils.createVersionSHA(wpk.getPackageId(), widget.getVersion());
-        // 待回滚版本Id
+        // version id to be rolled back
         Long waitRollbackReleaseId;
         ExceptionUtil.isNotNull(waitRollbackReleaseId = widgetPackageReleaseMapper.selectReleaseShaToId(versionSHA, WidgetReleaseStatus.PASS_REVIEW.getValue()), ROLLBACK_FAIL_SELECT_VERSION_ERROR);
-        // 回滚版本
+        // rollback version
         boolean flag = SqlHelper.retBool(baseMapper.updateStatusAndReleaseIdByPackageId(WidgetPackageStatus.ONLINE.getValue(), waitRollbackReleaseId, wpk.getPackageId(), opUserId));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return true;
@@ -430,22 +426,22 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public boolean unpublishWidget(Long opUserId, WidgetPackageUnpublishRo widget) {
-        log.info("下架小程序");
-        // 检查小程序是否存在，封禁的小程序不允许下架
+        log.info("unpublish widget");
+        // Check whether the widget exists. Blocked widgets are not allowed to be removed from the shelves.
         WidgetPackageEntity wpk = this.getByPackageId(widget.getPackageId(), true);
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(wpk.getReleaseType());
-        // 查询小程序归属空间站
+        // Query widget's home space station
         String spaceId = widgetPackageAuthSpaceMapper.selectSpaceIdByPackageId(wpk.getPackageId());
-        // 检查下架操作人是否作者，不是作者在校验小程序管理权限
+        // Check whether the removed operator is the author, not the author checking widget management permissions
         if (!opUserId.equals(wpk.getOwner())) {
-            // 检查用户是否主管理员
+            // check whether the user is the master administrator
             this.checkWidgetPermission(opUserId, spaceId, releaseType, Collections.singletonList(ResourceCode.UNPUBLISH_WIDGET));
         }
-        // 已下架直接返回，避免重复操作
+        // It has been removed from the shelf and returned directly to avoid repeated operations.
         if (WidgetPackageStatus.UNPUBLISH.getValue().equals(wpk.getStatus())) {
             return true;
         }
-        // 下架
+        // unpush
         boolean flag = SqlHelper.retBool(baseMapper.updateStatusAndReleaseIdByPackageId(WidgetPackageStatus.UNPUBLISH.getValue(), null, wpk.getPackageId(), opUserId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
 
@@ -455,16 +451,16 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public boolean banWindget(Long opUserId, WidgetPackageBanRo widget) {
-        log.info("禁封/解禁小程序");
-        // 检查小程序是否存在
+        log.info("ban/unban widget");
+        // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(widget.getPackageId());
         boolean flag;
         if (widget.getUnban()) {
-            // 解禁
+            // ban
             flag = SqlHelper.retBool(baseMapper.updateStatusAndReleaseIdByPackageId(WidgetPackageStatus.UNPUBLISH.getValue(), null, wpk.getPackageId(), opUserId));
         }
         else {
-            // 封禁，封禁后解除发布版本Id关联
+            // unban, release the release version Id association after the ban
             flag = SqlHelper.retBool(baseMapper.updateStatusAndReleaseIdByPackageId(WidgetPackageStatus.BANNED.getValue(), null, wpk.getPackageId(), opUserId));
         }
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -473,41 +469,41 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @Override
     public WidgetPackageInfoVo getWidgetPackageInfo(String packageId) {
-        log.info("获取单个小程序包信息");
+        log.info("get information about a single widget package");
         String userLocale = LoginContext.me().getLocaleStr();
         return CollUtil.getFirst(baseMapper.selectWidgetPackageInfoByPackageIdOrSpaceId(packageId, null, userLocale));
     }
 
     @Override
     public List<WidgetPackageInfoVo> getWidgetPackageListInfo(String spaceId) {
-        log.info("获取小程序商店信息");
+        log.info("get widget store information");
         String userLocale = LoginContext.me().getLocaleStr();
         return baseMapper.selectWidgetPackageInfoByPackageIdOrSpaceId(null, spaceId, userLocale);
     }
 
     @Override
     public void transferWidgetOwner(Long opUserId, WidgetTransferOwnerRo transferOwnerRo) {
-        log.info("小程序转移Owner");
-        // 检查小程序是否存在
+        log.info("widget transfer owner");
+        // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(transferOwnerRo.getPackageId());
-        // 查询小程序归属空间站
+        // Query widget's home space station
         String spaceId = widgetPackageAuthSpaceMapper.selectSpaceIdByPackageId(wpk.getPackageId());
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(wpk.getReleaseType());
         if (WidgetReleaseType.GLOBAL.equals(releaseType)) {
-            // 全局小程序不允许转移拥有者
-            throw new BusinessException("权限不足");
+            // global widget does not allow transfer of owners
+            throw new BusinessException("insufficient permissions");
         }
-        // 检查小程序转移Owner操作人是否作者，不是作者在校验小程序管理权限
+        // Check whether the widget transfer owner operator is the author, not the author checking widget management permissions
         if (!opUserId.equals(wpk.getOwner())) {
-            // 检查用户是否主管理员
+            // check whether the user is the master administrator
             this.checkWidgetPermission(opUserId, spaceId, releaseType, Collections.singletonList(ResourceCode.TRANSFER_WIDGET));
         }
-        // 检查转移人员是否存在小程序归属空间站
+        // Check the transfer for the presence of widget attribution to the space station
         MemberEntity transferMember = iMemberService.getById(transferOwnerRo.getTransferMemberId());
         ExceptionUtil.isNotNull(transferMember, NOT_EXIST_MEMBER);
         ExceptionUtil.isNotNull(transferMember.getUserId(), NOT_EXIST_MEMBER);
         ExceptionUtil.isTrue(StrUtil.equals(transferMember.getSpaceId(), spaceId), NOT_EXIST_MEMBER);
-        // 修改小程序Owner
+        // modify widget owner
         WidgetPackageEntity updateEntity = WidgetPackageEntity.builder().id(wpk.getId()).owner(transferMember.getUserId()).build();
         boolean flag = super.updateById(updateEntity);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
@@ -523,9 +519,9 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void globalWidgetDbDataRefresh(String nodeId) {
-        // 当前为分页，后期数据多了可以考虑使用分页
+        // Currently, it is paging. If there is more data in the later period, you can consider using paging.
         List<GlobalWidgetInfo> globalWidgetDatas = getGlobalWidgetPackageConfiguration(nodeId);
-        // 为了批量操作分成两批Sql
+        // Divide into two batches of SQL for batch operations.
         if (CollUtil.isNotEmpty(globalWidgetDatas)) {
             for (GlobalWidgetInfo globalWidgetData : globalWidgetDatas) {
                 baseMapper.singleUpdateGlobalAndTemplateConfig(globalWidgetData);
@@ -544,7 +540,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         for (int i = 0; i < globalWidgetPackage.size(); i++) {
             globalWidgetSort.put(globalWidgetPackage.get(i).getPackageId(), i + 1);
         }
-        // 查询小程序是否改变顺序
+        // query whether widget changes order
         Integer newWidgetSort = globalWidgetSort.get(body.getPackageId());
         Integer oldWidgetSort = baseMapper.selectGlobalWidgetSort(body.getPackageId());
         ExceptionUtil.isNotNull(oldWidgetSort, WIDGET_NOT_EXIST);
@@ -552,7 +548,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         GlobalWidgetInfo updateWpk;
         BeanUtil.copyProperties(body, updateWpk = new GlobalWidgetInfo(), CopyOptions.create().ignoreError());
         if (!Objects.equals(newWidgetSort, oldWidgetSort)) {
-            // 小程序循序改变，兑换对应的顺序
+            // Widget changes in sequence, the corresponding order of exchange
             String oldPackageId = MapUtil.inverse(globalWidgetSort).get(oldWidgetSort);
 
             GlobalWidgetInfo updateWpkSort = new GlobalWidgetInfo();
@@ -570,29 +566,29 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     @SneakyThrows(JsonProcessingException.class)
     @Transactional(rollbackFor = Exception.class)
     public boolean submitWidget(Long opUserId, WidgetPackageSubmitRo widget) {
-        log.info("提交全局小程序审核");
-        // 发布小程序必填参数检查
+        log.info("submit global widget review");
+        // release widget required parameter check
         boolean validField = StrUtil.hasBlank(widget.getDescription(), widget.getAuthorName(), widget.getAuthorLink(), widget.getAuthorEmail());
         validField |= ObjectUtil.hasNull(widget.getIcon(), widget.getCover(), widget.getAuthorIcon(), widget.getReleaseCodeBundle());
         ExceptionUtil.isFalse(validField, SUBMIT_FAIL_INCOMPLETE_PARAME);
 
-        // 检查发布版本号
+        // check release number
         ExceptionUtil.isTrue(WidgetReleaseVersionUtils.checkVersion(widget.getVersion()), SUBMIT_FAIL_VERSION_NUM_ERROR);
-        // 检查小程序是否存在
+        // check if the widget exists
         WidgetPackageEntity wpk = this.getByPackageId(widget.getPackageId(), true);
 
         WidgetReleaseType releaseType = WidgetReleaseType.toEnum(wpk.getReleaseType());
         ExceptionUtil.isFalse(WidgetReleaseType.SPACE == releaseType, SUBMIT_FAIL_NO_SUBMIT_METHOD);
 
-        // 生成versionSHA
+        // generate versionSHA
         String versionSHA = WidgetReleaseVersionUtils.createVersionSHA(wpk.getPackageId(), widget.getVersion());
-        // 检查发布版本SAH是否唯一，每个包下版本号唯一
+        // Check whether the release version SAH is unique and the version number under each package is unique.
         ExceptionUtil.isNull(widgetPackageReleaseMapper.selectReleaseShaToId(versionSHA, null), SUBMIT_FAIL_VERSION_NUM_REPEAT);
 
-        // 生成安装环境编码
+        // generate installation environment code
         String installEnvsCodes = InstallEnvType.getInstallEnvCode(widget.getInstallEnv());
 
-        // 生成运行环境编码
+        // generate runtime environment code
         String runtimeEnvsCodes = RuntimeEnvType.getRuntimeEnvCode(widget.getRuntimeEnv());
 
         I18nField i18nName, i18nDesc;
@@ -600,24 +596,24 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
         try {
             i18nName = I18nField.toBean(StrUtil.blankToDefault(widget.getName(), wpk.getI18nName()));
             i18nDesc = I18nField.toBean(widget.getDescription());
-            // 检查小程序发布名称，可以为空，为空发布不修改小程序名称
+            // Check the widget release name. It can be empty. If it is empty, the release does not modify the widget name.
             if (null != i18nName) {
-                // 英文参数不能为空
+                // english parameter cannot be empty
                 ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
                 i18nNameStr = i18nName.toJson();
             }
-            // 英文参数不能为空
+            // english parameter cannot be empty
             ExceptionUtil.isNotBlank(i18nDesc.getEnUS(), EN_US_REQUIRED);
             i18nDescStr = i18nDesc.toJson();
-            // 上传cover
+            // upload cover
             coverToken = this.uploadDeveloperTmpFile(widget.getCover());
-            // 上传icon
+            // upload icon
             iconToken = this.uploadDeveloperTmpFile(widget.getIcon());
-            // 上传authorIcon
+            // upload authorIcon
             authorIconToken = this.uploadDeveloperTmpFile(widget.getAuthorIcon());
-            // 上传releaseCodeBundle
+            // upload releaseCodeBundle
             releaseCodeBundleToken = this.uploadReleaseCodeSourceFile(widget.getReleaseCodeBundle(), wpk.getPackageId(), widget.getVersion(), opUserId);
-            // 上传sourceCodeBundle
+            // upload sourceCodeBundle
             if (Objects.nonNull(widget.getSourceCodeBundle())) {
                 sourceCodeBundleToken = this.uploadReleaseCodeSourceFile(widget.getSourceCodeBundle(), wpk.getPackageId(), widget.getVersion(), opUserId);
             }
@@ -629,7 +625,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
             throw new BusinessException(e.getMessage());
         }
 
-        // 多次submit直接覆盖，删除最后一次submit记录
+        // multiple submit directly overwrite, delete the last submit record
         LastSubmitWidgetVersionDTO lastSubmitWidget = widgetPackageReleaseMapper.selectLastWidgetVersionInfoByFatherWidgetId(wpk.getPackageId());
         boolean flag = true;
         if (null != lastSubmitWidget) {
@@ -638,7 +634,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
             flag &= SqlHelper.retBool(widgetPackageAuthSpaceMapper.deleteById(lastSubmitWidget.getLastPackageAuthSpaceId()));
         }
 
-        // ===>>> 构建submit需要的待审核镜像记录
+        // ===>>> build the pending image record required by submit
         String auditMirrorWidgetId = IdUtil.createWidgetPackageId();
         WidgetPackageReleaseEntity auditMirrorWidgetRelease = new WidgetPackageReleaseEntity()
                 .setPackageId(auditMirrorWidgetId)
@@ -679,20 +675,20 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
                 .setUpdatedBy(opUserId);
         WidgetPackageAuthSpaceEntity auditMirrorWidgetAuth = new WidgetPackageAuthSpaceEntity()
                 .setPackageId(auditMirrorWidgetId)
-                // 全局小程序空间站Id可以为 ""
+                // the global widget space station id can be
                 .setSpaceId("")
                 .setType(WidgetPackageAuthType.BOUND_SPACE.getValue());
 
         flag &= this.save(auditMirrorWidget) && SqlHelper.retBool(widgetPackageAuthSpaceMapper.insert(auditMirrorWidgetAuth));
-        // ===>>> end 构建submit需要的待审核镜像记录
+        // ===>>> end build the pending image record required by submit
 
-        // 关联发布历史记录Id，到主小程序；
+        // Associate the release history Id to the main widget;
         WidgetBodyDTO widgetBody = WidgetBodyDTO.toBean(wpk.getWidgetBody());
         List<Long> oldHistoryVersion = Optional.ofNullable(widgetBody.getHistoryReleaseVersion()).orElseGet(ArrayList::new);
         oldHistoryVersion.add(auditMirrorWidgetRelease.getId());
         widgetBody.setHistoryReleaseVersion(oldHistoryVersion);
 
-        // 修改扩展参数
+        // modify extension parameters
         wpk.setWidgetBody(widgetBody.toJson());
         flag &= SqlHelper.retBool(baseMapper.updateById(wpk));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -711,7 +707,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     }
 
     /**
-     * 检查开发人员是否存在空间站，开发小程序人员基本要求
+     * Check if developers have space stations, basic requirements for development widget personnel
      */
     private void checkDeveloperUserIfSpaceOrGm(Long userId, String spaceId, WidgetReleaseType releaseType) {
         this.checkWidgetPermission(userId, spaceId, releaseType, false, null);
@@ -972,7 +968,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     private String getI18nNameStr(String name,String defaultI18nName) throws JsonProcessingException {
         I18nField i18nName;
         i18nName = I18nField.toBean(StrUtil.blankToDefault(name, defaultI18nName));
-        // 检查小程序发布名称，可以为空，为空发布不修改小程序名称
+        // Check the widget release name. It can be empty. If it is empty, the release does not modify the widget name.
         if (null != i18nName) {
             // the en' name is necessary
             ExceptionUtil.isNotBlank(i18nName.getEnUS(), EN_US_REQUIRED);
@@ -1004,34 +1000,34 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
 
     /**
-     * <p>检查开发人员权限，所有操作Gm都可以干预</p>
+     * <p>Check developer permissions, all operations Gm can intervene <p>
      *
-     * @param userId                        用户ID
-     * @param spaceId                       空间ID
-     * @param releaseType                   发布类型
-     * @param resourceCodes                 权限资源编码
-     * @author Pengap
-     * @date 2021/10/27 14:55:43
+     * @param userId user id
+     * @param spaceId space id
+     * @param releaseType publishingType
+     * @param resourceCodes permission resource code
+     * 
+     * 
      */
     private void checkWidgetPermission(Long userId, String spaceId, WidgetReleaseType releaseType, List<ResourceCode> resourceCodes) {
         this.checkWidgetPermission(userId, spaceId, releaseType, true, resourceCodes);
     }
 
     /**
-     * <p>检查开发人员权限，所有操作Gm都可以干预</p>
+     * <p>Check developer permissions, all operations Gm can intervene <p>
      *
-     * @param userId                        用户ID
-     * @param spaceId                       空间ID
-     * @param releaseType                   发布类型
-     * @param checkPermission               是否校验权限
-     * @param resourceCodes                 权限资源编码
-     * @author Pengap
-     * @date 2021/7/8
+     * @param userId user id
+     * @param spaceId space id
+     * @param releaseType publishing type
+     * @param checkPermission whether to verify permissions
+     * @param resourceCodes permission resource code
+     * 
+     * 
      */
     private void checkWidgetPermission(Long userId, String spaceId, WidgetReleaseType releaseType, boolean checkPermission, List<ResourceCode> resourceCodes) {
-        log.info("检查小程序开发人员权限");
+        log.info("Check widget developer permissions ");
         if (WidgetReleaseType.GLOBAL == releaseType) {
-            // 目前没有审核流程，全局小组建只能官方GM才能操控
+            // At present, there is no audit process, and the global small-size organization can only be controlled by the official GM.
             iGmService.validPermission(userId, GmAction.WIDGET_MANAGE);
         }
         else {
@@ -1039,16 +1035,16 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
             try {
                 UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
                 if (!checkPermission || userSpace.isMainAdmin()) {
-                    // 不校验权限，上层入口判断是否owner，这里多加一个主管理员
+                    // Do not check the permissions, the upper-level entrance to determine whether the owner, here to add a master administrator
                     isExist = true;
                 }
                 else if (CollUtil.containsAny(userSpace.getResourceCodes(), resourceCodes) || userSpace.isMainAdmin()) {
-                    // 校验权限，判断操作用户权限组或者操作用户是否主管理员
+                    // Check permissions to determine whether the operation user permission group or the operation user is the master administrator.
                     isExist = true;
                 }
             }
             catch (Exception e) {
-                throw new BusinessException("权限不足");
+                throw new BusinessException("Insufficient authority ");
             }
             finally {
                 if (!isExist) {
@@ -1059,15 +1055,15 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     }
 
     /**
-     * 开发者临时文件上传
+     * developer temporary file upload
      * <p>
-     * 上传完成后，会手动替换以前的文件资源
+     * After the upload is completed, the previous file resources will be manually replaced.
      * </p>
      *
-     * @param file 待上传文件
-     * @return 上传文件Token
-     * @author Pengap
-     * @date 2021/7/21
+     * @param file file to be uploaded
+     * @return upload file token
+     * 
+     * 
      */
     private String uploadDeveloperTmpFile(MultipartFile file) throws IOException {
         if (null == file) {
@@ -1078,37 +1074,33 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     }
 
     /**
-     * 删除开发者临时文件
+     * delete temporary developer files
      *
-     * @param cloudPaths 云端路径
-     * @author Pengap
-     * @date 2021/7/21
+     * @param cloudPaths cloud path
      */
     private void deleteDeveloperTmpFile(String... cloudPaths) {
         for (String cloudPath : cloudPaths) {
             if (StrUtil.isNotBlank(cloudPath) && StrUtil.startWith(cloudPath, PUBLIC_PREFIX)) {
-                //删除云端原文件
+                // delete cloud original file
                 iAssetService.delete(cloudPath);
             }
         }
     }
 
     /**
-     * 发布文件源码上传
+     * upload the source code of the published file
      *
-     * @param file 待上传文件
-     * @param packageId 小程序Id
-     * @param version 发布版本号
-     * @param releaseCreatedBy 发布人
-     * @return 上传文件Token
-     * @author Pengap
-     * @date 2021/7/21
+     * @param file file to be uploaded
+     * @param packageId widgetId
+     * @param version release version number
+     * @param releaseCreatedBy publisher
+     * @return upload file token
      */
     private String uploadReleaseCodeSourceFile(MultipartFile file, String packageId, String version, Long releaseCreatedBy) throws IOException {
         if (null == file) {
             return null;
         }
-        // 声明一个自定义上传目录 {开发者文件前缀} / {开发者上传类型：小程序} / {小程序ID} / {版本号} / {UUID.文件后缀}
+        // declare a custom upload directory {developer file prefix} / {developer upload type：widget} / {widgetID} / {version number} / {UUID.file suffix}
         String paht = StrUtil.format("{}/{}/{}/{}/{}.{}", DEVELOP_PREFIX, DeveloperAssetType.WIDGET.name().toLowerCase(), packageId, version, ObjectId.next(), FileUtil.extName(file.getOriginalFilename()));
         AssetUploadResult assetUploadResult = iAssetService.uploadFileInDeveloper(file.getInputStream(), paht, file.getOriginalFilename(), file.getSize(), file.getContentType(), releaseCreatedBy, DeveloperAssetType.WIDGET);
         return assetUploadResult.getToken();
@@ -1117,7 +1109,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
     @SneakyThrows(JsonProcessingException.class)
     private void sendUnpublishWidgetNotify(WidgetPackageEntity wpk, String spaceId, Long opUserId) {
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
-        // 通知holder
+        // notify holder
         String widgetName = I18nField.toBean(wpk.getI18nName()).getString(defaultLang);
 
         Dict dict = Dict.create();
@@ -1135,14 +1127,14 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
             subjectType = MailPropConstants.SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY;
         }
         else {
-            // 发送系统通知
+            // send system notification
             TaskManager.me().execute(() -> NotificationManager.me().playerNotify(
                     NotificationTemplateId.ADMIN_UNPUBLISH_SPACE_WIDGET_NOTIFY,
                     toPlayerIds,
                     opUserId,
                     spaceId,
                     Dict.create().set(WIDGET_NAME, widgetName)));
-            // 发送通知邮件
+            // send notification email
             String spaceName = spaceMapper.selectSpaceNameBySpaceId(spaceId);
             dict.set("SPACE_NAME", spaceName);
 
@@ -1156,11 +1148,11 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
 
     @SneakyThrows(JsonProcessingException.class)
     private void sendTransferWidgetNotify(WidgetPackageEntity wpk, String spaceId, Long opUserId, MemberEntity transferMember) {
-        // 通知holder
+        // notify holder
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         String widgetName = I18nField.toBean(wpk.getI18nName()).getString(defaultLang);
 
-        // 发送通知
+        // send notification
         List<Long> toPlayerIds = ListUtil.toList(wpk.getOwner());
         TaskManager.me().execute(() -> NotificationManager.me().playerNotify(
                 NotificationTemplateId.ADMIN_TRANSFER_SPACE_WIDGET_NOTIFY,
@@ -1169,7 +1161,7 @@ public class WidgetPackageServiceImpl extends ServiceImpl<WidgetPackageMapper, W
                 spaceId,
                 Dict.create().set(WIDGET_NAME, widgetName).set(INVOLVE_MEMBER_ID, ListUtil.toList(transferMember.getId()))));
 
-        // 发送通知邮件
+        // send notification email
         String spaceName = spaceMapper.selectSpaceNameBySpaceId(spaceId);
         List<String> emails = userMapper.selectEmailByUserIds(toPlayerIds);
         Dict dict = Dict.create();

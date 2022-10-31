@@ -9,11 +9,8 @@ import com.vikadata.entity.ControlEntity;
 
 /**
  * <p>
- * 工作台-节点权限设置表 Mapper 接口
+ * workbench - node permission mapper
  * </p>
- *
- * @author Chambers
- * @date 2020/3/12
  */
 public interface NodePermissionMapper {
 

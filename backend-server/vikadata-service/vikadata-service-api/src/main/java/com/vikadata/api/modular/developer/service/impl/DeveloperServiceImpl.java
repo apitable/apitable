@@ -15,14 +15,6 @@ import javax.annotation.Resource;
 
 import static com.vikadata.api.enums.exception.DeveloperException.GENERATE_API_KEY_ERROR;
 
-/**
- * <p>
- * 开发者配置 服务接口实现
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/5/27 15:22
- */
 @Service
 @Slf4j
 public class DeveloperServiceImpl implements IDeveloperService {
@@ -48,12 +40,12 @@ public class DeveloperServiceImpl implements IDeveloperService {
         UserEntity user = userMapper.selectById(userId);
         return user != null
                 && !user.getIsDeleted()
-                && !user.getIsPaused(); // 已注销/注销冷静期用户的API KEY也失效
+                && !user.getIsPaused(); // the user is paused or deleted, his api key is invalid.
     }
 
     @Override
     public String createApiKey(Long userId) {
-        log.info("用户创建开发者访问令牌");
+        log.info("user [{}] create api key", userId);
         String apiKey = DeveloperUtil.createKey();
         DeveloperEntity developer = new DeveloperEntity();
         developer.setUserId(userId);
@@ -65,7 +57,7 @@ public class DeveloperServiceImpl implements IDeveloperService {
 
     @Override
     public String refreshApiKey(Long userId) {
-        log.info("用户刷新开发者访问令牌");
+        log.info("user [{}] refresh api key", userId);
         String apiKey = DeveloperUtil.createKey();
         boolean flag = SqlHelper.retBool(developerMapper.updateApiKeyByUserId(userId, apiKey));
         ExceptionUtil.isTrue(flag, GENERATE_API_KEY_ERROR);

@@ -12,19 +12,16 @@ import cn.hutool.core.util.ReflectUtil;
 
 /**
  * <p>
- * 树形结构工具类
+ * tree tool
  * </p>
- *
- * @author Pengap
- * @date 2021/8/9 15:14:03
  */
 @SuppressWarnings("unchecked")
 public class TreeUtil {
 
     /**
-     * 使用默认的构建工厂，构建树
+     * build the tree by default tree builder factory
      *
-     * @param totalNodes 树形数据
+     * @param totalNodes the tree node list
      * @return List
      */
     public static <T extends Tree> List<T> build(List<T> totalNodes) {
@@ -32,10 +29,10 @@ public class TreeUtil {
     }
 
     /**
-     * 使用默认的构建工厂，构建树
+     * build the tree by default factory
      *
-     * @param totalNodes 树形数据
-     * @param rootId     最顶层父id值 一般为 0 之类
+     * @param totalNodes the tree node list
+     * @param rootId     the root node id, generally 0
      * @return List
      */
     public static <T extends Tree> List<T> build(List<T> totalNodes, String rootId) {
@@ -43,11 +40,11 @@ public class TreeUtil {
     }
 
     /**
-     * 构建树
+     * build tree
      *
-     * @param totalNodes        树形数据
-     * @param rootId            最顶层父id值 一般为 0 之类
-     * @param abstractTreeBuild 构建工厂
+     * @param totalNodes        the tree node list
+     * @param rootId            the root node id, generally 0
+     * @param abstractTreeBuild tree builder factory
      * @return List
      */
     public static <T extends Tree> List<T> build(List<T> totalNodes, String rootId, AbstractTreeBuildFactory<T> abstractTreeBuild) {
@@ -55,10 +52,10 @@ public class TreeUtil {
     }
 
     /**
-     * 根据节点ID查找
+     * select node by node id in node list
      *
-     * @param treeList 树形数据
-     * @param id       树形节点
+     * @param treeList the tree node list
+     * @param id       the node id
      * @return T
      */
     public static <T extends Tree> T find(Collection<T> treeList, String id) {
@@ -82,48 +79,48 @@ public class TreeUtil {
     }
 
     /**
-     * 将tree结构数据转成List结构，不破坏原集合
+     * tree to list, but not destroy the original list
      */
     public static <T extends Tree> List<T> treeToList(T node) {
         return treeToList(node, 0, null);
     }
 
     /**
-     * 将tree结构数据转成List结构，不破坏原集合
+     * tree to list, but not destroy the original list
      */
     public static <T extends Tree> List<T> treeToList(T node, int deep, Integer maxDeep) {
         return treeToList(Collections.singletonList(node), deep, maxDeep);
     }
 
     /**
-     * 将tree结构数据转成List结构，不破坏原集合
+     * tree to list, but not destroy the original list
      */
     public static <T extends Tree> List<T> treeToList(List<T> nodes) {
         return treeToList(nodes, 0, null);
     }
 
     /**
-     * 将tree结构数据转成List结构，不破坏原集合
+     * tree to list, but not destroy the original list
      *
-     * @param nodes   树形接口集合
-     * @param deep    已递归深度
-     * @param maxDeep 最大递归深度 可能为null即不限制
-     * @return 树结构初始列表
+     * @param nodes   the tree node list
+     * @param deep    the recursion's deep
+     * @param maxDeep the recursion's maximum deep. may be null, meaning no limit
+     * @return the initial tree node list
      */
     public static <T extends Tree> List<T> treeToList(List<T> nodes, int deep, Integer maxDeep) {
         List<T> result = new ArrayList<>();
 
-        // maxDeep 可能为空
+        // maxDeep may be null
         if (maxDeep != null && deep >= maxDeep) {
             return new ArrayList<>();
         }
 
-        // 遍历递归子节点
+        // children node's traversal & recursion
         for (T node : nodes) {
             T tNode;
             BeanUtil.copyProperties(node, tNode = (T) ReflectUtil.newInstance(node.getClass()), CopyOptions.create().ignoreError());
-
-            tNode.setChildren(null); // 清空子集
+            // clear children
+            tNode.setChildren(null);
             result.add(tNode);
 
             if (CollUtil.isNotEmpty(node.getChildren())) {

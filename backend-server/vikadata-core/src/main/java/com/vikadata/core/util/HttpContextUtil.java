@@ -22,11 +22,8 @@ import static org.springframework.http.HttpHeaders.ORIGIN;
 
 /**
  * <p>
- * 快捷操作HttpServletRequest,HttpServletResponse相关内容
+ *  HttpServletRequest & HttpServletResponse shortcut actions
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/9/16 16:03
  */
 public class HttpContextUtil {
 
@@ -55,7 +52,7 @@ public class HttpContextUtil {
     public static final int MAX_IP_LENGTH = 15;
 
     /**
-     * 获取当前请求的HttpServletRequest
+     * get the current request's HttpServletRequest Object
      *
      * @return HttpServletRequest
      */
@@ -64,7 +61,7 @@ public class HttpContextUtil {
     }
 
     /**
-     * 获取当前请求的HttpServletResponse
+     * get the current request's HttpServletResponse Object
      *
      * @return HttpServletResponse
      */
@@ -73,7 +70,7 @@ public class HttpContextUtil {
     }
 
     /**
-     * 是否有 cookies 会话
+     * Whether there is a cookies session
      * @return true | false
      */
     public static boolean hasSession() {
@@ -85,9 +82,11 @@ public class HttpContextUtil {
     }
 
     /**
-     * 获取当前HttpSession，create决定是否自动创建会话
+     * Returns the current HttpSession associated with this request or,
+     * if there is no current session and create is true, returns a new session.
      *
-     * @param create 不存在时是否创建新会话
+     * @param create    true to create a new session for this request if necessary;
+     *                  false to return null if there's no current session
      * @return HttpSession
      */
     public static HttpSession getSession(boolean create) {
@@ -99,12 +98,10 @@ public class HttpContextUtil {
     }
 
     /**
-     * 获取远程IP地址
+     * get the remote IP address
      *
-     * @param request servlet请求
-     * @return 请求IP地址
-     * @author Shawn Deng
-     * @date 2019/11/12 17:51
+     * @param request servlet's request
+     * @return the request's IP address
      */
     public static String getRemoteAddr(HttpServletRequest request) {
         String ipAddress = request.getHeader(X_REAL_IP);
@@ -129,19 +126,21 @@ public class HttpContextUtil {
         if (StrUtil.isEmpty(ipAddress) || UNKNOWN.equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
             if (LOCALHOST_IP.equals(ipAddress) || LOCALHOST_IP_16.equals(ipAddress)) {
-                //根据网卡取本机配置的IP
+                // get the IP address configured on the local PC by the NIC
                 InetAddress inet;
                 try {
                     inet = InetAddress.getLocalHost();
                 }
                 catch (UnknownHostException e) {
-                    throw new IllegalStateException(String.format("获取IP地址, 出现异常: %s", e.getMessage()), e);
+                    throw new IllegalStateException(String.format("get IP address, exception: %s", e.getMessage()), e);
                 }
                 assert inet != null;
                 ipAddress = inet.getHostAddress();
             }
         }
-        // 对于通过多个代理的情况, 第一个IP为客户端真实IP,多个IP按照','分割 //"***.***.***.***".length() = 15
+        // In the case of multiple proxies, the first IP is the real IP of the client.
+        //  Multiple IP addresses are separated by ','.
+        //  "****.****.****.****".length() = 15
         if (ipAddress != null && ipAddress.length() > MAX_IP_LENGTH) {
             if (ipAddress.indexOf(Symbol.COMMA) > 0) {
                 ipAddress = ipAddress.substring(0, ipAddress.indexOf(Symbol.COMMA));
@@ -151,12 +150,10 @@ public class HttpContextUtil {
     }
 
     /**
-     * 获取远程域名
+     * get the remote domain name
      *
-     * @param request servlet请求
-     * @return 请求域名
-     * @author Pengap
-     * @date 2021/8/25 20:55:33
+     * @param request servlet's request
+     * @return the request's domain name
      */
     public static String getRemoteHost(HttpServletRequest request) {
         String requestHost;
@@ -181,16 +178,14 @@ public class HttpContextUtil {
     }
 
     /**
-     * 获取Scheme
+     * get scheme
      *
-     * @param request servlet请求
-     * @return 请求Scheme
-     * @author Pengap
-     * @date 2022/6/16 17:20:38
+     * @param request servlet request
+     * @return request's scheme
      */
     public static String getScheme(HttpServletRequest request) {
         String scheme = request.getHeader(X_FORWARDED_PROTO);
-        // 为空获取ServletRequest的
+        // if scheme is null, get ServletRequest's scheme
         if (StrUtil.isEmpty(scheme)) {
             scheme = request.getScheme();
         }
@@ -239,12 +234,12 @@ public class HttpContextUtil {
     }
 
     /**
-     * 设置响应
+     * response
      *
      * @param response    HttpServletResponse
      * @param contentType content-type
-     * @param status      http状态码
-     * @param value       响应内容
+     * @param status      http status code
+     * @param value       response body
      * @throws IOException IOException
      */
     public static void makeResponse(HttpServletResponse response, String contentType,
@@ -256,7 +251,7 @@ public class HttpContextUtil {
 
     public static String getBody(HttpServletRequest request) throws IOException {
         BufferedReader reader = request.getReader();
-        // 获得 http body 内容
+        // get http body content
         StringBuilder buffer = new StringBuilder();
         String string;
         while ((string = reader.readLine()) != null) {

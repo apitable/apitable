@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Vika Bundle data文件
+ * Vika Bundle data file
  * </p>
- *
- * @author Chambers
- * @date 2020/5/9
  */
 @Data
 @NoArgsConstructor

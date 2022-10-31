@@ -21,32 +21,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 开放型接口，一般用于不重要且不明感的数据
+ * An open interface, typically used for unimportant and ambiguous data.
  * </p>
- *
- * @author Pengap
- * @date 2022/5/6 11:09:14
  */
 @RestController
-@Api(tags = "OpenApi接口", hidden = true)
+@Api(tags = "Open Api", hidden = true)
 @ApiResource(path = "/openapi")
 public class OpenApiController {
 
-    // 开放接口简单使用单机限流方式
+    // Open api Use single machine current limiting mode.
     private static final RateLimiter RATE_LIMITER = RateLimiter.create(5);
 
     @Resource
     private IWidgetPackageService iWidgetPackageService;
 
     @GetResource(path = "/widgetInfo/{widgetId}", requiredPermission = false)
-    @ApiOperation(value = "获取小程序可以公开的信息", notes = "获取小程序可以公开的信息")
+    @ApiOperation(value = "Get information that the applet can expose", notes = "Get information that the applet can expose")
     public ResponseData<WidgetInfoVo> validateApiKey(@PathVariable("widgetId") String widgetId) {
         if (RATE_LIMITER.tryAcquire()) {
             WidgetPackageEntity widget = iWidgetPackageService.getByPackageId(widgetId);
             return ResponseData.success(this.widgetInfoVoWrapper(widget));
         }
         else {
-            throw new BusinessException("接口繁忙请稍后再试...");
+            throw new BusinessException("The interface is busy. Please try again later...");
         }
     }
 

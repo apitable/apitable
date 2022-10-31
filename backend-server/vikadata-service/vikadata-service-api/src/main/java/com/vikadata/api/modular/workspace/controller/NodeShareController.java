@@ -3,6 +3,7 @@ package com.vikadata.api.modular.workspace.controller;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import cn.binarywang.wx.miniapp.constant.WxMaApiUrlConstants.Share;
 import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -48,16 +49,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATION_DENIED;
 
-/**
- * <p>
- * 节点特性接口
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 13:56
- */
 @RestController
-@Api(tags = "工作台模块_节点分享接口")
+@Api(tags = "Workbench - Node Share Api")
 @ApiResource(path = "/node")
 public class NodeShareController {
 
@@ -73,25 +66,25 @@ public class NodeShareController {
     @Resource
     private UserSpaceService userSpaceService;
 
-    private static final String SHARE_PARAM_DESC = "stringObjectParams分享设置参数说明: <br/> " +
-            "分享设置有三个选项参数，三者只能选择设置一个为true，不能同时设置两个以上为true。<br/>" +
-            "onlyRead: 布尔型，是否设置分享仅给他人查看。<br/>" +
-            "canBeEdited: 布尔型，是否设置分享给他人进行协作编辑。<br/>" +
-            "canBeStored: 布尔型，是否设置分享给他人另存为副本。<br/>" +
-            "示例：设置《分享仅给他人查看》，参数：{\"onlyRead\": true}";
+    private static final String SHARE_PARAM_DESC = "stringObjectParams share setting parameter description: <br/> " +
+            "There are three option parameters for sharing settings. Only one can be set true, and more than two cannot be set to true at the same time.<br/>" +
+            "onlyRead: Bool, whether to set sharing only for others to view.<br/>" +
+            "canBeEdited: Bool, whether to set up sharing to others for collaborative editing.<br/>" +
+            "canBeStored: Bool, whether to set up sharing to others and save as a copy.<br/>" +
+            "Example: Set <Share Only for Others to View>, parameters:{\"onlyRead\": true}";
 
     @GetResource(path = "/shareSettings/{nodeId}", requiredPermission = false)
-    @ApiOperation(value = "获取节点分享设置", notes = "获取节点分享设置")
+    @ApiOperation(value = "Get node share info")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9")
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9")
     })
     public ResponseData<NodeShareSettingInfoVO> nodeShareInfo(@PathVariable("nodeId") String nodeId) {
-        // 获取操作者的信息
+        // get operator information
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 校验权限
+        // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         NodeShareSettingInfoVO settingsVO = iNodeShareService.getNodeShareSettings(nodeId);
@@ -100,17 +93,17 @@ public class NodeShareController {
 
     @Notification(templateId = NotificationTemplateId.NODE_SHARE)
     @PostResource(path = "/updateShare/{nodeId}", requiredPermission = false, requiredAccessDomain = true)
-    @ApiOperation(value = "更改节点分享设置", notes = "更改节点分享设置 \n" + SHARE_PARAM_DESC)
+    @ApiOperation(value = "Update node share setting", notes = "Update node share setting \n" + SHARE_PARAM_DESC)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9"),
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9"),
     })
     public ResponseData<ShareBaseInfoVo> updateNodeShare(@PathVariable("nodeId") String nodeId, @RequestBody @Valid UpdateNodeShareSettingRo body) {
-        // 获取操作者的信息
+        // get operator information
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 校验权限
+        // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         ExceptionUtil.isTrue(JSONUtil.isJson(body.getProps()), ParameterException.INCORRECT_ARG);
@@ -119,7 +112,6 @@ public class NodeShareController {
             propsDTO = JSONUtil.toBean(body.getProps(), NodeSharePropsDTO.class);
         }
         catch (Exception e) {
-            // 转换异常
             throw new BusinessException(ParameterException.INCORRECT_ARG);
         }
         String shareId = iNodeShareService.updateShareSetting(userId, nodeId, propsDTO);
@@ -128,17 +120,17 @@ public class NodeShareController {
 
     @Notification(templateId = NotificationTemplateId.NODE_SHARE)
     @PostResource(path = "/disableShare/{nodeId}", requiredPermission = false)
-    @ApiOperation(value = "关闭节点分享", notes = "关闭节点分享设置")
+    @ApiOperation(value = "Disable node sharing")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9")
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "nodRTGSy43DJ9")
     })
     public ResponseData<Void> disableShare(@PathVariable("nodeId") String nodeId) {
-        // 获取操作者的信息
+        // get operator information
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 校验权限
+        // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         iNodeShareService.disableNodeShare(userId, nodeId);
@@ -147,20 +139,19 @@ public class NodeShareController {
 
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/storeShareData", requiredPermission = false)
-    @ApiOperation(value = "转存分享节点", notes = "转存分享节点")
-    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @ApiOperation(value = "Sotre share data")
+    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     public ResponseData<StoreNodeInfoVO> storeShareData(@RequestBody @Valid StoreShareNodeRo params) {
         Long userId = SessionContext.getUserId();
         String spaceId = params.getSpaceId();
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
         iNodeService.checkEnableOperateRootNodeBySpaceFeature(memberId, spaceId);
         String newNodeId = iNodeShareService.storeShareData(userId, params.getSpaceId(), params.getShareId());
         StoreNodeInfoVO infoVO = new StoreNodeInfoVO();
         infoVO.setNodeId(newNodeId);
-        // 通知需要字段
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().spaceId(params.getSpaceId()).build());
-        // 发布空间审计事件
+        // publish space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.STORE_SHARE_NODE).userId(userId).nodeId(newNodeId)
                 .info(JSONUtil.createObj().set(AuditConstants.SHARE_ID, params.getShareId())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -168,8 +159,8 @@ public class NodeShareController {
     }
 
     @GetResource(path = "/readShareInfo/{shareId}", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取分享节点信息", notes = "根据shareId获取分享内容")
-    @ApiImplicitParam(name = "shareId", value = "分享ID", required = true, dataTypeClass = String.class, paramType = "path", example = "shrRTGSy43DJ9")
+    @ApiOperation(value = "Get share node info", notes = "get shared content according to share id")
+    @ApiImplicitParam(name = "shareId", value = "share id", required = true, dataTypeClass = String.class, paramType = "path", example = "shrRTGSy43DJ9")
     public ResponseData<NodeShareInfoVO> readShareInfo(@PathVariable("shareId") String shareId) {
         NodeShareInfoVO nodeShareInfoVo = iNodeShareService.getNodeShareInfo(shareId);
         return ResponseData.success(nodeShareInfoVo);

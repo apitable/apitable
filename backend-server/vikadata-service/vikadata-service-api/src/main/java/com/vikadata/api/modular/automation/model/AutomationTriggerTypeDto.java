@@ -5,37 +5,28 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
-/**
- * <p>
- * 自动化- 触发器原型 Dto
- * </p>
- *
- * @author Mayne
- * @date 2021/08/04
- */
 @Data
 @ApiModel("AutomationTriggerType")
 public class AutomationTriggerTypeDto {
-    @ApiModelProperty(value = "原型ID", example = "attxxxxxxxx")
+    @ApiModelProperty(value = "trigger type id", example = "attxxxxxxxx")
     private String triggerTypeId;
 
-    @ApiModelProperty(value = "名称", example = "当表单提交时")
+    @ApiModelProperty(value = "name", example = "form submit")
     private String name;
 
-    @ApiModelProperty(value = "描述", example = "当指定的表单有新的提交时，这个触发器将被触发。")
+    @ApiModelProperty(value = "description", example = " This trigger is fired when there is a new submission for the specified form.")
     private String description;
 
     @ApiModelProperty(value = "endpoint", example = "form_submitted")
     private String endpoint;
 
-    @ApiModelProperty(value = "输入值的 JSON 范式", example = "")
+    @ApiModelProperty(value = "input data's json scheme", example = "")
     private JSONObject inputJsonSchema;
 
-    @ApiModelProperty(value = "输出值的 JSON 范式", example = "")
+    @ApiModelProperty(value = "output data's json scheme", example = "")
     private JSONObject outputJsonSchema;
 
-    @ApiModelProperty(value = "所属服务ID")
+    @ApiModelProperty(value = "service")
     private AutomationServiceDto service;
 }
 

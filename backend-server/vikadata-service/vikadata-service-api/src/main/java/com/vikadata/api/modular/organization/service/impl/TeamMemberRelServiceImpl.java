@@ -23,14 +23,6 @@ import org.springframework.stereotype.Service;
 
 import static com.vikadata.api.enums.exception.OrganizationException.UPDATE_MEMBER_TEAM_ERROR;
 
-/**
- * <p>
- * 组织架构-部门成员关联表 服务实现类
- * </p>
- *
- * @author Chambers
- * @since 2019-11-06
- */
 @Service
 @Slf4j
 public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMapper, TeamMemberRelEntity> implements ITeamMemberRelService {
@@ -39,7 +31,7 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
 
     @Override
     public void addMemberTeams(List<Long> memberIds, List<Long> teamIds) {
-        log.info("成员批量添加归属部门");
+        log.info("member associated team");
         if (CollUtil.isEmpty(memberIds) || CollUtil.isEmpty(teamIds)) {
             return;
         }
@@ -52,7 +44,7 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
             entities.add(dmr);
         }));
 
-        //执行插入
+        // execute insertion
         if (CollUtil.isNotEmpty(entities)) {
             boolean flag = SqlHelper.retBool(baseMapper.insertBatch(entities));
             ExceptionUtil.isTrue(flag, UPDATE_MEMBER_TEAM_ERROR);
@@ -89,18 +81,8 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     }
 
     @Override
-    public void removeByRootTeamId(Long rootTeamId) {
-        log.info("删除成员部门绑定关系");
-        List<Long> subTeamIds = teamMapper.selectAllSubTeamIdsByParentId(rootTeamId, true);
-        if (CollUtil.isEmpty(subTeamIds)) {
-            return;
-        }
-        baseMapper.deleteByTeamIds(subTeamIds);
-    }
-
-    @Override
     public void removeByTeamId(Long teamId) {
-        log.info("删除成员部门绑定关系");
+        log.info("Delete the binding relationship between member and department");
         List<Long> subTeamIds = teamMapper.selectAllSubTeamIdsByParentId(teamId, true);
         subTeamIds.add(teamId);
         baseMapper.deleteByTeamIds(subTeamIds);
@@ -108,7 +90,7 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
 
     @Override
     public void removeByTeamIds(Collection<Long> teamIds) {
-        log.info("删除成员部门绑定关系");
+        log.info("Delete the binding relationships between member and department");
         baseMapper.deleteByTeamIds(teamIds);
     }
 }

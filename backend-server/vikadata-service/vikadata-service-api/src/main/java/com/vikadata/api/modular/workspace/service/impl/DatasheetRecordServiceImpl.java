@@ -40,14 +40,6 @@ import com.vikadata.entity.DatasheetRecordEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <p>
- * 数表记录表 服务实现类
- * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-23
- */
 @Slf4j
 @Service
 public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMapper, DatasheetRecordEntity> implements IDatasheetRecordService {
@@ -89,7 +81,6 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
                     .build();
             recordList.add(recordEntity);
         }
-        // 分批量插入
         List<List<DatasheetRecordEntity>> split = CollUtil.split(recordList, 1000);
         for (List<DatasheetRecordEntity> entities : split) {
             baseMapper.insertBatch(entities);
@@ -98,7 +89,7 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
 
     @Override
     public void copyRecords(Long userId, String oDstId, String nDstId, NodeCopyDTO nodeCopyDTO, boolean retain) {
-        log.info("复制数表记录");
+        log.info("Copy records");
         List<DatasheetRecordVo> voList = baseMapper.selectListByDstId(oDstId);
         if (CollUtil.isEmpty(voList)) {
             return;
@@ -110,7 +101,7 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
         List<DatasheetRecordEntity> list = new ArrayList<>(voList.size());
         voList.forEach(vo -> {
             JSONObject data = vo.getData();
-            // 删除指定字段数据
+            // delete specified field data
             if (CollUtil.isNotEmpty(delFieldIds) && !data.isEmpty()) {
                 data.keySet().removeIf(delFieldIds::contains);
             }
@@ -127,7 +118,7 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
                 fieldUpdatedInfo = recordMeta.toString();
             }
             else {
-                // 不保留全部 recordMeta 的情况下，仍要保留自增数字的值
+                // Keep the value of the self-increasing number without keeping all recordMeta.
                 JSONObject fieldUpdatedMap = this.copyFieldUpdatedMap(vo.getRecordMeta(), autoNumberFieldIds);
                 fieldUpdatedInfo = recordMeta.set("fieldUpdatedMap", fieldUpdatedMap).toString();
             }
@@ -136,7 +127,6 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
             entity.setUpdatedBy(userId);
             list.add(entity);
         });
-        // 分批量插入
         List<List<DatasheetRecordEntity>> split = CollUtil.split(list, 1000);
         for (List<DatasheetRecordEntity> entities : split) {
             baseMapper.insertBatch(entities);
@@ -145,7 +135,7 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
 
     @Override
     public void copyFieldData(String dstId, String oFieldId, String nFieldId) {
-        log.info("复制某一列的数据到新的一列");
+        log.info("Copy data from a column to a new column");
         List<DataSheetRecordDto> voList = baseMapper.selectDtoByDstId(dstId);
         List<DatasheetRecordEntity> list = new ArrayList<>();
         voList.forEach(vo -> {
@@ -166,7 +156,7 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DatasheetRecordMapVo delFieldData(String dstId, List<String> delFieldIds, boolean saveDb) {
-        log.info("删除数表记录中指定字段的数据");
+        log.info("Deletes the data of the specified field in the datasheet record.");
         if (CollUtil.isNotEmpty(delFieldIds)) {
             List<DataSheetRecordDto> voList = baseMapper.selectDtoByDstId(dstId);
             List<DatasheetRecordEntity> list = new ArrayList<>();
@@ -189,10 +179,9 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
 
     @Override
     public List<DatasheetRecordMapVo> findMapByDstIds(Collection<String> dstIds) {
-        log.info("获取多个数表的recordMap");
+        log.info("Get the recordMap of multiple datasheet.");
         List<DatasheetRecordMapVo> recordMapVos = new ArrayList<>();
         List<DataSheetRecordGroupDto> dtoList = new ArrayList<>();
-        // 分批次查询
         double size = 5.0;
         for (int i = 0; i < Math.ceil(dstIds.size() / size); i++) {
             List<String> split = dstIds.stream().skip((long) (i * size)).limit((long) size).collect(Collectors.toList());
@@ -209,22 +198,22 @@ public class DatasheetRecordServiceImpl extends ServiceImpl<DatasheetRecordMappe
     }
 
     /**
-     * 处理记录
+     * processing records
      */
     private DatasheetRecordMapVo processRecordMapVo(List<DatasheetRecordVo> list) {
-        log.info("处理大批量record begin：{}", DateUtil.now());
+        log.info("handle large records begin：{}", DateUtil.now());
         if (CollUtil.isEmpty(list)) {
             return new DatasheetRecordMapVo();
         }
         Map<String, DatasheetRecordVo> map = list.stream()
                 .collect(Collectors.toMap(DatasheetRecordVo::getId, record -> record));
         JSONObject recordMap = JSONUtil.parseObj(map);
-        log.info("处理大批量record end：{}", DateUtil.now());
+        log.info("handle large records end：{}", DateUtil.now());
         return DatasheetRecordMapVo.builder().recordMap(recordMap).build();
     }
 
     /**
-     * 获取初始化的 RecordMeta
+     * gets the initialized recordmeta
      */
     private JSONObject getInitRecordMeta(Long userId) {
         String uuid = userMapper.selectUuidById(userId);

@@ -8,25 +8,17 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-/**
- * <p>
- * DevelopUserVo
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/6/22 16:29
- */
 @Data
-@ApiModel("空间列表信息")
+@ApiModel("Space Info")
 public class SpaceShowcaseVo {
 
-    @ApiModelProperty(value = "空间ID", example = "小明", position = 1, required = true)
+    @ApiModelProperty(value = "space id", example = "spcxxx", position = 1, required = true)
     private String spaceId;
 
-    @ApiModelProperty(value = "空间名称", example = "小明", position = 2, required = true)
+    @ApiModelProperty(value = "space name", example = "space", position = 2, required = true)
     private String spaceName;
 
-    @ApiModelProperty(value = "创建时间", example = "小明", position = 3, required = true)
+    @ApiModelProperty(value = "creation time", example = "2020/10/10", position = 3, required = true)
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime createdAt;
 }

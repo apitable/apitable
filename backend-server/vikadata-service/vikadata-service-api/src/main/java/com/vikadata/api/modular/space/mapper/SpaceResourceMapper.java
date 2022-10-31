@@ -11,95 +11,64 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * <p>
- * 工作空间-权限资源表 Mapper 接口
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 public interface SpaceResourceMapper extends BaseMapper<SpaceResourceEntity> {
 
 	/**
-	 * 查询所有权限资源
-	 * 主管理员
-	 *
-	 * @return 结果集视图
-	 * @author Shawn Deng
-	 * @date 2020/2/14 02:44
+	 * @return all space resources
 	 */
     @InterceptorIgnore(illegalSql = "true")
 	List<SpaceResourceDto> selectAllResource();
 
 	/**
-	 * 查询指定成员的权限资源
-	 *
-	 * @param memberId 成员ID
-	 * @return 结果集视图
-	 * @author Shawn Deng
-	 * @date 2020/2/14 02:44
+	 * @param memberId member id
+	 * @return space resources
 	 */
     @InterceptorIgnore(illegalSql = "true")
 	List<SpaceResourceDto> selectResourceByMemberId(@Param("memberId") Long memberId);
 
 	/**
-	 * 查询可分配的资源编码
+	 * Query the resource code amount that can be assigned
 	 *
-	 * @param resourceCodes 资源编码
-	 * @return 总数
-	 * @author Shawn Deng
-	 * @date 2020/2/13 23:01
+	 * @param resourceCodes resource codes
+	 * @return amount resource code
 	 */
 	Integer selectAssignableCountInResourceCode(@Param("resourceCodes") List<String> resourceCodes);
 
 	/**
-	 * 查询所有可分配的资源分组视图
+	 * Query all resource groups that can be allocated
 	 *
-	 * @return 结果集视图
-	 * @author Shawn Deng
-	 * @date 2020/2/15 00:16
+	 * @return resource groups
 	 */
     @InterceptorIgnore(illegalSql = "true")
 	List<SpaceGroupResourceDto> selectGroupResource();
 
 	/**
-	 * 查询所有菜单资源视图
+	 * query all menu resources
 	 *
-	 * @return 结果集视图
-	 * @author Shawn Deng
-	 * @date 2020/2/15 13:22
+	 * @return space menu resources
 	 */
     @InterceptorIgnore(illegalSql = "true")
 	List<SpaceMenuResourceDto> selectMenuResource();
 
 	/**
-	 * 根据分组编码查询资源编码集合
-	 *
-	 * @param groupCodes 分组编码
-	 * @return 资源编码集合
-	 * @author Shawn Deng
-	 * @date 2020/2/15 22:15
+	 * @param groupCodes group codes
+	 * @return resource codes
 	 */
 	List<String> selectResourceCodesByGroupCode(@Param("groupCodes") List<String> groupCodes);
 
 	/**
-	 * 查询成员的角色对应资源编码集合
+	 * Query the resource code set corresponding to the role of a member
 	 *
-	 * @param memberId 成员ID
-	 * @return 资源编码列表
-	 * @author Shawn Deng
-	 * @date 2020/2/16 14:31
+	 * @param memberId member ids
+	 * @return resource codes
 	 */
 	List<String> selectResourceCodesByMemberId(@Param("memberId") Long memberId);
 
     /**
-     * 获取成员和其角色对应资源编码集合
+     * Gets a collection of resource codes corresponding to a member and its role
      *
-     * @param memberIds 成员ID列表
-     * @return dto列表
-     * @author Chambers
-     * @date 2020/3/25
+     * @param memberIds member ids
+     * @return space member resources
      */
     List<SpaceMemberResourceDto> selectMemberResource(@Param("list") List<Long> memberIds);
 }

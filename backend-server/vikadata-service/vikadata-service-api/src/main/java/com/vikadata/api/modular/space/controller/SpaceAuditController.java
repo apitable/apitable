@@ -29,33 +29,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.vikadata.api.constants.DateFormatConstants.TIME_SIMPLE_PATTERN;
 
-/**
- * <p>
- * 空间审计接口
- * </p>
- *
- * @author Chambers
- * @date 2022/5/19
- */
 @RestController
 @ApiResource(path = "/space")
-@Api(tags = "空间管理_空间审计相关接口")
+@Api(tags = "Space - Audit Api")
 public class SpaceAuditController {
 
     @Resource
     private ISpaceAuditService iSpaceAuditService;
 
     @GetResource(path = "/{spaceId}/audit", requiredPermission = false)
-    @ApiOperation(value = "分页查询空间审计日志")
+    @ApiOperation(value = "Query space audit logs in pages")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo"),
-            @ApiImplicitParam(name = "beginTime", value = "开始时间（格式：yyyy-MM-dd HH:mm:ss）", dataTypeClass = LocalDateTime.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "endTime", value = "结束时间（格式：yyyy-MM-dd HH:mm:ss）", dataTypeClass = LocalDateTime.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "memberIds", value = "成员ID列表", dataTypeClass = String.class, paramType = "query", example = "1,3,5"),
-            @ApiImplicitParam(name = "actions", value = "动作类型列表", dataTypeClass = String.class, paramType = "query", example = "create_node,rename_node"),
-            @ApiImplicitParam(name = "keyword", value = "搜索关键词", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "pageNo", value = "页码（默认为1）", dataTypeClass = Integer.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页大小（默认为20，最大值100）", dataTypeClass = Integer.class, paramType = "query", example = "20"),
+            @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo"),
+            @ApiImplicitParam(name = "beginTime", value = "beginTime（format：yyyy-MM-dd HH:mm:ss）", dataTypeClass = LocalDateTime.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "endTime", value = "endTime（format：yyyy-MM-dd HH:mm:ss）", dataTypeClass = LocalDateTime.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "memberIds", value = "member ids", dataTypeClass = String.class, paramType = "query", example = "1,3,5"),
+            @ApiImplicitParam(name = "actions", value = "actions", dataTypeClass = String.class, paramType = "query", example = "create_node,rename_node"),
+            @ApiImplicitParam(name = "keyword", value = "keyword", dataTypeClass = String.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "pageNo", value = "page no（default 1）", dataTypeClass = Integer.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "page size（default 20，max 100）", dataTypeClass = Integer.class, paramType = "query", example = "20"),
     })
     public ResponseData<PageInfo<SpaceAuditPageVO>> audit(@PathVariable("spaceId") String spaceId,
             @RequestParam(name = "beginTime", required = false) @DateTimeFormat(pattern = TIME_SIMPLE_PATTERN) LocalDateTime beginTime,
@@ -65,9 +57,9 @@ public class SpaceAuditController {
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(value = "pageNo", defaultValue = "1") @Valid @Min(1) Integer pageNo,
             @RequestParam(value = "pageSize", defaultValue = "20") @Valid @Min(5) @Max(100) Integer pageSize) {
-        // 校验是否跨空间
+        // check whether it is cross space
         LoginContext.me().getUserSpaceDto(spaceId);
-        // 获取空间审计分页信息
+        // get spatial audit paging information
         SpaceAuditPageParam param = SpaceAuditPageParam.builder()
                 .beginTime(beginTime)
                 .endTime(endTime)

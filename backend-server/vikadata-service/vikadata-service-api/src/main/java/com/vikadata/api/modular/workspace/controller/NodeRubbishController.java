@@ -46,16 +46,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATION_DENIED;
 
-/**
- * <p>
- * 工作台模块_节点回收站管理接口
- * </p>
- *
- * @author Chambers
- * @date 2020/8/15
- */
 @RestController
-@Api(tags = "工作台模块_节点回收站管理接口")
+@Api(tags = "Workbench - Node Rubbish Api")
 @ApiResource(path = "/node/rubbish")
 public class NodeRubbishController {
 
@@ -72,12 +64,12 @@ public class NodeRubbishController {
     private SpaceCapacityCacheService spaceCapacityCacheService;
 
     @GetResource(path = "/list")
-    @ApiOperation(value = "查询回收舱的节点列表", notes = "若传入末位节点ID，返回业务状态码422，代表该节点已不在回收舱，定位失效，可取上一个末位的节点重新请求")
+    @ApiOperation(value = "Get node in rubbish", notes = "If the last node id is passed in, the service status code 422 is returned.It means that the node is no longer in the recovery compartment, the positioning fails, and the last node can be requested again.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "isOverLimit", value = "是否请求超限节点（默认FALSE）", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-            @ApiImplicitParam(name = "size", value = "期望加载数量（可能因为总数或权限不够数）", dataTypeClass = Integer.class, paramType = "query", example = "15"),
-            @ApiImplicitParam(name = "lastNodeId", value = "已加载列表中最后一个节点的ID", dataTypeClass = String.class, paramType = "query", example = "dstM5qG7")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+            @ApiImplicitParam(name = "isOverLimit", value = "whether to request an overrun node（default FALSE）", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+            @ApiImplicitParam(name = "size", value = "expected load quantity（May be because the total number or permissions are not enough）", dataTypeClass = Integer.class, paramType = "query", example = "15"),
+            @ApiImplicitParam(name = "lastNodeId", value = "id of the last node in the loaded list", dataTypeClass = String.class, paramType = "query", example = "dstM5qG7")
     })
     public ResponseData<List<RubbishNodeVo>> list(@RequestParam(value = "size", defaultValue = "20") @Valid @Min(5) @Max(100) Integer size,
             @RequestParam(value = "isOverLimit", defaultValue = "false") Boolean isOverLimit,
@@ -90,18 +82,18 @@ public class NodeRubbishController {
 
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/recover")
-    @ApiOperation(value = "恢复节点")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Recover node")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<NodeInfoVo> recover(@RequestBody @Valid NodeRecoverRo ro) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
-        // 检查回收站节点是否存在、成员是否有权限
+        // Check whether the recycle bin node exists and whether the members have permissions.
         iNodeRubbishService.checkRubbishNode(spaceId, memberId, ro.getNodeId());
         String parentId = ro.getParentId();
         if (StrUtil.isNotBlank(parentId)) {
-            // 检查节点是否存在
+            // check if the node exists
             iNodeService.checkNodeIfExist(spaceId, parentId);
-            // 校验父级节点是否有指定操作权限
+            // Verify that the parent node has the specified operation permissions
             controlTemplate.checkNodePermission(memberId, ro.getParentId(), NodePermission.CREATE_NODE,
                     status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         }
@@ -110,31 +102,31 @@ public class NodeRubbishController {
         }
         Long userId = SessionContext.getUserId();
         iNodeRubbishService.recoverRubbishNode(userId, ro.getNodeId(), parentId);
-        // 删除空间容量缓存
+        // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
-        // 发布空间审计事件
+        // publish space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.RECOVER_RUBBISH_NODE).userId(userId).nodeId(ro.getNodeId()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success(iNodeService.getNodeInfoByNodeId(spaceId, ro.getNodeId(), ControlRoleManager.parseNodeRole(Node.MANAGER)));
     }
 
     @PostResource(path = "/delete/{nodeId}", method = { RequestMethod.DELETE, RequestMethod.POST })
-    @ApiOperation(value = "删除回收站的节点")
+    @ApiOperation(value = "Delete node in rubbish")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fod8mXUeiXyVo")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "fod8mXUeiXyVo")
     })
     public ResponseData<Void> delete(@PathVariable("nodeId") String nodeId) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
-        // 检查回收站节点是否存在、成员是否有权限
+        // Check whether the recycle bin node exists and whether the members have permissions.
         iNodeRubbishService.checkRubbishNode(spaceId, memberId, nodeId);
-        // 删除回收站节点
+        // Delete node in rubbish
         Long userId = SessionContext.getUserId();
         iNodeRubbishService.delRubbishNode(userId, nodeId);
-        // 删除空间容量缓存
+        // delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
-        // 发布空间审计事件
+        // publish space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_RUBBISH_NODE).userId(userId).nodeId(nodeId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();

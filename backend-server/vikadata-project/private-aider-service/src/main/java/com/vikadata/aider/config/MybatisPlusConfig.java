@@ -15,11 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * <p>
- * Mybatis-plus 配置
+ *  Mybatis-plus Config
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/9/16 16:16
  */
 @Slf4j
 @EnableTransactionManagement
@@ -35,7 +32,7 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * MyBatis 配置
+     * MyBatis Config
      */
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
@@ -46,7 +43,7 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * Mybatis Plus 配置
+     * Mybatis Plus Config
      */
     @Bean
     public MybatisPlusPropertiesCustomizer mybatisPlusPropertiesCustomizer() {

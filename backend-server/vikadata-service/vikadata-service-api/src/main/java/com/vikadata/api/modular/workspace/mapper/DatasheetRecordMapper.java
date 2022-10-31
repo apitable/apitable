@@ -12,128 +12,92 @@ import com.vikadata.api.model.dto.datasheet.DataSheetRecordGroupDto;
 import com.vikadata.api.model.vo.datasheet.DatasheetRecordVo;
 import com.vikadata.entity.DatasheetRecordEntity;
 
-/**
- * <p>
- * 数表记录表 Mapper 接口
- * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-23
- */
 public interface DatasheetRecordMapper extends BaseMapper<DatasheetRecordEntity> {
 
     /**
-     * 获取record列表
-     *
-     * @param dstId 表格ID
-     * @return List
+     * @param dstId datasheet id
+     * @return DatasheetRecordVos
      */
     List<DatasheetRecordVo> selectListByDstId(@Param("dstId") String dstId);
 
     /**
-     * 获取指定多条record列表
-     *
-     * @param dstId 表格ID
-     * @param ids   记录ID列表
-     * @return List
+     * @param dstId datasheet id
+     * @param ids   record id
+     * @return records
      */
     List<DatasheetRecordVo> selectListByIds(@Param("dstId") String dstId, @Param("recordList") Set<String> ids);
 
     /**
-     * 统计空间内总记录数
-     *
-     * @param spaceId 空间ID
-     * @return 记录数量
-     * @author Chambers
-     * @date 2019/11/29
+     * @param spaceId space id
+     * @return the records' total amount in the space
      */
     Long countBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 统计数表的记录数
-     *
-     * @param dstId 数表ID
-     * @return 记录数量
-     * @author Chambers
-     * @date 2019/12/18
+     * @param dstId datasheet id
+     * @return the records' total amount in the datasheet
      */
     Integer countByDstId(@Param("dstId") String dstId);
 
     /**
-     * 批量新增多个记录
-     *
-     * @param entities 记录列表
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2019/12/19
+     * @param entities records
+     * @return affected rows
      */
     int insertBatch(@Param("entities") List<DatasheetRecordEntity> entities);
 
     /**
-     * 根据dstId和recordId获取单个recordEntity，可查询已删除的record
-     * 场景：用于删除记录后，使用Undo操作进行恢复记录数据
+     * it can query deleted record
+     * Scenario: used to restore record data after deleting records.
      *
-     * @param dstId    表格ID
-     * @param recordId 记录ID
+     * @param dstId datasheet id
+     * @param recordId record id
      * @return DatasheetRecordEntity
      */
     DatasheetRecordEntity selectByConditionAndDeleted(@Param("dstId") String dstId, @Param("recordId") String recordId);
 
     /**
-     * 根据dstId和recordId获取单个recordVo
-     *
-     * @param dstId    表格ID
-     * @param recordId 记录ID
+     * @param dstId datasheet id
+     * @param recordId record id
      * @return DatasheetRecordEntity
      */
     List<DatasheetRecordVo> selectRecordVoByConditions(@Param("dstId") String dstId, @Param("recordId") String recordId);
 
     /**
-     * 更新单条数表记录，支持传入is_deleted参数，即可恢复数据
+     * Update a single table record and support that pass in the is_deleted parameter to restore data.
      *
-     * @param userId 用户ID
-     * @param record 记录实体参数
+     * @param userId user id
+     * @param record record
      * @return boolean
      */
     boolean updateByConditions(@Param("userId") Long userId, @Param("record") DatasheetRecordEntity record);
 
     /**
-     * 查询数表的记录数
-     *
-     * @param dstId 数表ID
-     * @return 记录总数
-     * @author Shawn Deng
-     * @date 2020/2/26 15:20
+     * @param dstId datasheet id
+     * @return datasheet records amount
      */
     Integer selectCountByDstId(@Param("dstId") String dstId);
 
     /**
-     * 获取表ID、数据列表
+     * get datasheet records.
      *
-     * @param dstId 数表ID
-     * @return dto
-     * @author Chambers
-     * @date 2020/3/31
+     * @param dstId datasheet id
+     * @return DataSheetRecordDto
      */
     List<DataSheetRecordDto> selectDtoByDstId(@Param("dstId") String dstId);
 
     /**
-     * 获取记录信息
+     * get datasheet records.
      *
-     * @param dstIds 数表ID列表
-     * @return dto 列表
-     * @author Chambers
-     * @date 2020/6/12
+     * @param dstIds datasheet ids
+     * @return DataSheetRecordDtos
      */
     List<DataSheetRecordDto> selectDtoByDstIds(@Param("list") Collection<String> dstIds);
 
     /**
-     * 获取数表ID、及对应的记录ID、数据列表
+     * get datasheet records.
      *
-     * @param dstIds 数表ID列表
-     * @return dto
-     * @author Chambers
-     * @date 2020/4/30
+     * @param dstIds datasheet ids
+     * @return DataSheetRecordGroupDto
      */
     List<DataSheetRecordGroupDto> selectGroupDtoByDstIds(@Param("list") Collection<String> dstIds);
 }

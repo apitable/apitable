@@ -31,14 +31,11 @@ import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATIO
 
 /**
  * <p>
- * 用于vika-cli命令行工具中的GM指令（全局小组件）
+ * Used for GM command in vika-cli command line tool.(the global widget)
  * </p>
- *
- * @author Pengap
- * @date 2021/9/30 11:50:01
  */
 @RestController
-@Api(tags = "小组件接口", hidden = true)
+@Api(tags = "GM Widget API", hidden = true)
 @ApiResource(path = "/gm")
 @Slf4j
 public class GmGlobalWidgetController {
@@ -56,32 +53,30 @@ public class GmGlobalWidgetController {
     private ControlTemplate controlTemplate;
 
     @PostResource(path = "/widget/global/list", requiredPermission = false)
-    @ApiOperation(value = "获取全局小组件商店列表")
+    @ApiOperation(value = "Gets a list of global widget stores")
     public ResponseData<List<GlobalWidgetInfo>> globalWidgetList(@RequestBody @Valid GlobalWidgetListRo globalWidgetRo) {
         Long userId = SessionContext.getUserId();
         String nodeId = globalWidgetRo.getNodeId();
-        // 获取空间ID，方法包含判断模板是否存在
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
-        // 校验用户是否在此空间
+        // Verify whether the user exist the space.
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-        // 校验是否有权限查看
+        // Check whether the user have permission to view the information
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         return ResponseData.success(iWidgetPackageService.getGlobalWidgetPackageConfiguration(nodeId));
     }
 
     @PostResource(path = "/widget/global/refresh/db", requiredPermission = false)
-    @ApiOperation(value = "刷新全局小组件DB数据")
+    @ApiOperation(value = "Refresh the global component DB data")
     public ResponseData<Void> globalWidgetDbDataRefresh(@RequestBody @Valid GlobalWidgetListRo globalWidgetRo) {
         Long userId = SessionContext.getUserId();
         String nodeId = globalWidgetRo.getNodeId();
-        // 获取空间ID，方法包含判断模板是否存在
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
-        // 校验用户是否在此空间
+        // Verify whether the user exist the space.
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-        // 校验是否有权限查看
+        // Check whether the user have permission to view the information
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         iWidgetPackageService.globalWidgetDbDataRefresh(nodeId);
@@ -89,16 +84,15 @@ public class GmGlobalWidgetController {
     }
 
     @PostResource(path = "/widget/global/refresh/single", requiredPermission = false)
-    @ApiOperation(value = "刷新单个小组件数据，机器人调用", hidden = true)
+    @ApiOperation(value = "Refresh the data of a single widget(the robot calls)", hidden = true)
     public ResponseData<Void> singleGlobalWidgetRefresh(@RequestBody @Valid SingleGlobalWidgetRo body) {
         Long userId = SessionContext.getUserId();
         String nodeId = body.getNodeId();
-        // 获取空间ID，方法包含判断模板是否存在
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
-        // 校验用户是否在此空间
+        // Verify whether the user exist the space.
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-        // 校验是否有权限查看
+        // Check whether the user have permission to view the information
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         iWidgetPackageService.singleGlobalWidgetRefresh(body);

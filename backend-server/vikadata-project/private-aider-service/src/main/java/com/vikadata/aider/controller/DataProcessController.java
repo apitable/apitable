@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 数据处理 Controller
+ *  Data Processor Controller
  * </p>
- *
- * @author Chambers
- * @date 2021/12/3
  */
 @RestController
 @RequestMapping(value = "/data")

@@ -44,14 +44,6 @@ import static com.vikadata.api.constants.NodeDescConstants.FORM_DESC_DESCRIPTION
 import static com.vikadata.api.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_TEXT_PREFIX;
 import static com.vikadata.api.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_PREFIX;
 
-/**
- * <p>
- * 资源元数据 服务实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/12/18
- */
 @Slf4j
 @Service
 public class ResourceMetaServiceImpl implements IResourceMetaService {
@@ -71,7 +63,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void copyBatch(Long userId, Collection<String> originResourceId, Map<String, String> newResourceMap) {
-        log.info("批量复制资源元数据，userId:{},originResourceId:{},newResourceMap:{}", userId, originResourceId, newResourceMap);
+        log.info("batch copy resource metadata，userId:{},originResourceId:{},newResourceMap:{}", userId, originResourceId, newResourceMap);
         List<ResourceMetaEntity> entities = resourceMetaMapper.selectByResourceIds(originResourceId);
         if (CollUtil.isEmpty(entities)) {
             return;
@@ -95,7 +87,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(Long userId, String resourceId, Integer resourceType, String metaData) {
-        log.info("创建资源元数据，userId:{},resourceId:{},resourceType:{},metaData:{}", userId, resourceId, resourceType, metaData);
+        log.info("create resource metadata，userId:{},resourceId:{},resourceType:{},metaData:{}", userId, resourceId, resourceType, metaData);
         ResourceMetaEntity entity = ResourceMetaEntity.builder()
                 .id(IdWorker.getId())
                 .resourceId(resourceId)
@@ -111,22 +103,22 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void copyResourceMeta(Long userId, String spaceId, String originRscId, String destRscId, ResourceType type) {
-        log.info("「{}」复制资源「{}」的元数据配置到新资源「{}」", userId, originRscId, destRscId);
+        log.info("[{}] copy metadata configuration of resource [{}] to new resource [{}]", userId, originRscId, destRscId);
         String metaData = resourceMetaMapper.selectMetaDataByResourceId(originRscId);
         Map<String, String> newWidgetIdMap = new HashMap<>(8);
-        // 组装新的资源元数据
+        // assemble new resource metadata
         String meta = this.generateResourceMeta(metaData, newWidgetIdMap, type);
-        // 保存新的资源元数据
+        // save new resource metadata
         this.create(userId, destRscId, type.getValue(), meta);
         if (newWidgetIdMap.size() == 0) {
             return;
         }
-        // 查询数表组件关联信息
+        // Query number table component association information
         List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstIdMap = datasheetWidgetDTOList.stream()
                 .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()),
                         dto -> new DatasheetWidgetDTO(dto.getDstId(), type == ResourceType.DASHBOARD ? dto.getSourceId() : destRscId)));
-        // 批量生成新的组件
+        // batch generation of new components
         Map<String, String> newNodeMap = new HashMap<>(1);
         newNodeMap.put(originRscId, destRscId);
         iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstIdMap);
@@ -134,7 +126,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
 
     @Override
     public void batchCopyResourceMeta(Long userId, String spaceId, List<String> originRscIds, Map<String, String> newNodeMap, ResourceType type) {
-        log.info("「{}」批量复制资源「{}」的元数据", userId, originRscIds);
+        log.info("batch copy the metadata of resource", userId, originRscIds);
         List<ResourceMetaEntity> entities = resourceMetaMapper.selectByResourceIds(originRscIds);
         if (CollUtil.isEmpty(entities)) {
             return;
@@ -142,7 +134,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
         Map<String, String> newWidgetIdMap = new HashMap<>(8);
         List<ResourceMetaEntity> insertEntities = new ArrayList<>(entities.size());
         for (ResourceMetaEntity entity : entities) {
-            // 组装新的资源元数据
+            // assemble new resource metadata
             String meta = this.generateResourceMeta(entity.getMetaData(), newWidgetIdMap, type);
             ResourceMetaEntity resourceMeta = ResourceMetaEntity.builder()
                     .id(IdWorker.getId())
@@ -154,16 +146,16 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                     .build();
             insertEntities.add(resourceMeta);
         }
-        // 保存新的仪表盘资源元数据
+        // save new dashboard resource metadata
         boolean flag = SqlHelper.retBool(resourceMetaMapper.insertBatch(insertEntities));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
 
         if (newWidgetIdMap.size() == 0) {
             return;
         }
-        // 查询数表组件关联信息
+        // Query number table component association information
         List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
-        // 数据源数表也在转存之列的，才保留与组件构成新的引用关系
+        // The data source number table is also listed in the dump, and the new reference relationship with the component is retained.
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap = datasheetWidgetDTOList.stream()
                 .filter(dto -> newNodeMap.containsKey(dto.getDstId()))
                 .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()), dto -> {
@@ -172,7 +164,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                     return new DatasheetWidgetDTO(dstId, sourceId);
                 }));
 
-        // 批量生成新的组件
+        // batch generation of new components
         iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
     }
 
@@ -233,7 +225,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
         String meta;
         switch (type) {
             case DASHBOARD:
-                // 解析仪表盘元数据
+                // parsing dashboard metadata
                 meta = this.parseDashboardMeta(metaData, newWidgetIdMap);
                 break;
             case MIRROR:
@@ -242,7 +234,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                 meta = widgetPanels.size() == 0 ? JSONUtil.createObj().toString() : JSONUtil.createObj().set("widgetPanels", widgetPanels).toString();
                 break;
             default:
-                throw new BusinessException("尚未处理的资源类型");
+                throw new BusinessException("Types of resources that have not yet been processed.");
         }
         return meta;
     }

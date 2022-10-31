@@ -43,12 +43,6 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-/**
- * <p>
- *     organization module - role service impl.
- * </p>
- * @author tao
- */
 @Slf4j
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> implements IRoleService {

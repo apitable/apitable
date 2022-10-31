@@ -5,20 +5,11 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.entity.InvitationEntity;
 
-/**
- * <p>
- * workbench--invitation mapper
- * </p>
- * @author zoe zheng
- * @date 2022/8/30 15:37
- */
 public interface InvitationMapper extends BaseMapper<InvitationEntity> {
     /**
      * find by token
      * @param inviteToken invitation token
      * @return InvitationEntity
-     * @author zoe zheng
-     * @date 2022/8/31 18:23
      */
     InvitationEntity selectByInviteToken(@Param("inviteToken") String inviteToken);
 
@@ -28,8 +19,8 @@ public interface InvitationMapper extends BaseMapper<InvitationEntity> {
      * @param spaceId space id
      * @param status status(0:inactivated, 1:activation)
      * @return number of rows affected
-     * @author zoe zheng
-     * @date 2022/8/30 17:08
+     * 
+     * 
      */
     int updateStatusBySpaceIdAndNodeIdNotEmpty(@Param("spaceId") String spaceId, @Param("status") Boolean status);
 
@@ -39,8 +30,8 @@ public interface InvitationMapper extends BaseMapper<InvitationEntity> {
      * @param nodeId node id
      * @param memberId the creator member id
      * @return InvitationEntity
-     * @author zoe zheng
-     * @date 2022/8/30 16:00
+     * 
+     * 
      */
     InvitationEntity selectByMemberIdAndSpaceIdAndNodeId(@Param("memberId") Long memberId,
             @Param("spaceId") String spaceId, @Param("nodeId") String nodeId);
@@ -51,8 +42,6 @@ public interface InvitationMapper extends BaseMapper<InvitationEntity> {
      *
      * @param inviteToken invitation token
      * @return number of rows affected
-     * @author zoe zheng
-     * @date 2022/9/1 10:42
      */
     int updateInviteNumByInviteToken(@Param("inviteToken") String inviteToken);
 

@@ -4,14 +4,6 @@ import java.time.LocalDateTime;
 
 import lombok.Data;
 
-/**
- * <p>
- * NodeRoleDto
- * </p>
- *
- * @author Chambers
- * @date 2021/5/26
- */
 @Data
 public class NodeRoleDto {
 

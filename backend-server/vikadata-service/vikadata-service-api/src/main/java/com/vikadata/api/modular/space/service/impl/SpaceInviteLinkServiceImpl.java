@@ -62,14 +62,6 @@ import static com.vikadata.api.enums.exception.SpaceException.NOT_IN_SPACE;
 import static com.vikadata.api.enums.exception.SpaceException.NO_ALLOW_OPERATE;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
 
-/**
- * <p>
- * 工作空间-公开邀请链接 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-03-17
- */
 @Slf4j
 @Service
 public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMapper, SpaceInviteLinkEntity> implements ISpaceInviteLinkService {

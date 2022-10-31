@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
  * <p>
  * Vika Bundle Manifest
  * </p>
- *
- * @author Chambers
- * @date 2020/4/28
  */
 @Data
 @NoArgsConstructor
@@ -19,23 +16,17 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class Manifest {
 
-    /**
-     * 版本
-     */
     private String version;
 
     /**
-     * 加密模式，password/null/...
+     * encryption，password/null/...
      */
     private String encryption;
 
-    /**
-     * 密码
-     */
     private String password;
 
     /**
-     * 文件树的根节点
+     * the root node of the file tree
      */
     private NodeFileTree root;
 }

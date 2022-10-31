@@ -6,14 +6,6 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * <p>
- * Vika Bundle 节点文件树
- * </p>
- *
- * @author Chambers
- * @date 2020/4/29
- */
 @Data
 public class NodeFileTree implements Tree {
 
@@ -30,12 +22,12 @@ public class NodeFileTree implements Tree {
     private String cover;
 
     /**
-     * 数据文件名称，映射data/里的文件
+     * data file name，map files in `/data`
      */
     private String data;
 
     /**
-     * 子节点
+     * child node
      */
     private List<NodeFileTree> child;
 

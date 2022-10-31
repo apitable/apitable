@@ -19,14 +19,6 @@ import com.vikadata.entity.MemberEntity;
 
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * <p>
- * 组织架构-成员表 服务类
- * </p>
- *
- * @author Chambers
- * @since 2019-11-06
- */
 public interface IMemberService extends IService<MemberEntity> {
 
     /**
@@ -37,127 +29,127 @@ public interface IMemberService extends IService<MemberEntity> {
     String getMemberNameById(Long memberId);
 
     /**
-     * 获取成员ID
+     * get member id
      *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
+     * @param userId user id
+     * @param spaceId space id
      * @return MemberId
      */
     Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId);
 
     /**
-     * 获取成员信息
+     * getuser info
      *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
+     * @param userId user id
+     * @param spaceId space id
      * @return MemberId
      */
     MemberEntity getByUserIdAndSpaceId(Long userId, String spaceId);
 
     /**
-     * 获取成员信息
+     * getuser info
      *
-     * @param userIds 用户ID
-     * @param spaceId 空间ID
+     * @param userIds user id
+     * @param spaceId space id
      * @return MemberId
      */
     List<MemberEntity> getByUserIdsAndSpaceId(List<Long> userIds, String spaceId);
 
     /**
-     * 检查用户是否在空间内
+     * check whether user exists space
      *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
+     * @param userId user id
+     * @param spaceId space id
      */
     void checkUserIfInSpace(Long userId, String spaceId);
 
     /**
-     * 设置主管理员
+     * set the main admin
      *
-     * @param memberId 成员ID
+     * @param memberId  member id
      */
     void setMemberMainAdmin(Long memberId);
 
     /**
-     * 取消主管理员
+     * cancel the main admin
      *
-     * @param memberId 成员ID
+     * @param memberId  member id
      */
     void cancelMemberMainAdmin(Long memberId);
 
     /**
-     * 获取成员所在的空间站ID
+     * get member's space id
      *
-     * @param memberId 成员ID
-     * @return 空间ID
+     * @param memberId  member id
+     * @return space id
      */
     String getSpaceIdByMemberId(Long memberId);
 
     /**
-     * 获取成员归属的所有组织单元ID
+     * get member's unit id
      *
-     * @param memberId 成员ID
+     * @param memberId  member id
      * @return Unit id List
      */
     List<Long> getUnitsByMember(Long memberId);
 
     /**
-     * 获取空间绑定第三方用户的成员
+     * get the space's users who binds third party
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return MemberEntity List
      */
     List<MemberEntity> getSocialMemberBySpaceId(String spaceId, long offset, int limit);
 
     /**
-     * 获取空间的成员ID
+     * get space's member id
      *
-     * @param spaceId 空间ID
-     * @return 成员ID
+     * @param spaceId space id
+     * @return  member id
      */
     List<Long> getMemberIdsBySpaceId(String spaceId);
 
     /**
-     * 获取空间的所有成员
+     * get space's member id
      *
-     * @param spaceId 空间ID
-     * @param ignoreDeleted 是否忽略删除
+     * @param spaceId space id
+     * @param ignoreDeleted whether is deleted
      * @return MemberEntity List
      */
     List<MemberEntity> getMembersBySpaceId(String spaceId, boolean ignoreDeleted);
 
     /**
-     * 获取成员ID
+     * get member id
      *
-     * @param spaceId 空间ID
-     * @param openId 第三方平台用户OPEN_ID
-     * @return 成员ID
+     * @param spaceId space id
+     * @param openId the third-party platform user's open id
+     * @return  member id
      */
     Long getMemberIdBySpaceIdAndOpenId(String spaceId, String openId);
 
     /**
-     * 获取空间内的成员
+     * get space's member's info by open id
      *
-     * @param spaceId 空间ID
-     * @param openId 第三方平台用户OPEN_ID
+     * @param spaceId space id
+     * @param openId the third-party platform user's open id
      * @return MemberEntity
      */
     MemberEntity getBySpaceIdAndOpenId(String spaceId, String openId);
 
     /**
-     * 获取空间内的成员
+     * get space's members' info by open id
      *
-     * @param spaceId 空间ID
-     * @param openIds 第三方平台用户OPEN_ID
+     * @param spaceId space id
+     * @param openIds the third-party platform user's open id
      * @return MemberEntity
      */
     List<MemberEntity> getBySpaceIdAndOpenIds(String spaceId, List<String> openIds);
 
     /**
-     * 获取空间内存在此邮箱的成员
+     * get whether email exist the space.
      *
-     * @param spaceId 空间ID
-     * @param email 邮箱
+     * @param spaceId space id
+     * @param email email
      * @return MemberEntity
      */
     MemberEntity getBySpaceIdAndEmail(String spaceId, String email);
@@ -179,150 +171,149 @@ public interface IMemberService extends IService<MemberEntity> {
     List<MemberEntity> getBySpaceIdAndEmailsIgnoreDeleted(String spaceId, List<String> emails);
 
     /**
-     * 获取空间站的主管理员
+     * get space's main admin
      *
-     * @param spaceId 空间站 ID
-     * @return 成员信息
+     * @param spaceId space id
+     * @return user info
      */
     MemberEntity getAdminBySpaceId(String spaceId);
 
     /**
-     * 获取空间站的主管理员列表。该方法用于修复之前设置管理员的 BUG，正常只有一个主管理员
+     * get space's main admins.
+     * This method is used to fix the BUG of setting the admin. Normally, there is only one main admin.
      *
-     * @param spaceId 空间站 ID
-     * @return 成员信息
+     * @param spaceId space id
+     * @return user info
      */
     List<MemberEntity> getAdminListBySpaceId(String spaceId);
 
     /**
-     * 获取成员对应的OPEN_ID
+     * get member's OPEN_ID
      *
-     * @param memberId 成员ID
+     * @param memberId  member id
      * @return openId
      */
     String getOpenIdByMemberId(Long memberId);
 
     /**
-     * 获取成员ID
-     * 逻辑删除也要获取到
+     * get member id even if he was deleted.
      *
-     * @param spaceId 空间ID
-     * @param openId 第三方平台用户OPEN_ID
-     * @return 成员ID
+     * @param spaceId space id
+     * @param openId the third-party platform user's open id
+     * @return  member id
      */
     Long getMemberIdByOpenIdIgnoreDelete(String spaceId, String openId);
 
     /**
-     * 查询成员
-     * 忽略逻辑删除标记，慎用
+     * !!! query member, even if he was deleted !!!
      *
-     * @param memberId 成员ID
+     * @param memberId  member id
      * @return MemberEntity
      */
     MemberEntity getByIdIgnoreDelete(Long memberId);
 
     /**
-     * 获取用户所有空间的成员信息
+     * get user's all spaces' member info
      *
-     * @param userId 用户ID
+     * @param userId user id
      * @return MemberEntity List
      */
     List<MemberEntity> getByUserId(Long userId);
 
     /**
-     * 获取用户所有空间的ID
+     * get all user's spaces' id.
      *
-     * @param userId 用户ID
-     * @return 空间ID
+     * @param userId user id
+     * @return space id
      */
     List<String> getSpaceIdByUserId(Long userId);
 
     /**
-     * 获取用户所在空间里未修改过站内昵称的空间ID
+     * get all id of user's spaces which user never modify his member's nickname. 
      *
-     * @param userId 用户ID
-     * @return 空间ID列表
+     * @param userId user id
+     * @return space ids
      */
     List<String> getSpaceIdWithoutNameModifiedByUserId(Long userId);
 
     /**
-     * 获取邮箱未激活的成员
+     * get inactive member by email
      *
-     * @param email 邮箱地址
+     * @param email email
      * @return MemberDto List
      */
     List<MemberDto> getInactiveMemberByEmails(String email);
 
     /**
-     * 更改用户所有空间站的昵称
+     * update the user's member name in all spaces
      *
-     * @param userId 用户ID
-     * @param memberName 成员昵称
+     * @param userId user id
+     * @param memberName member name
      */
     void updateMemberNameByUserId(Long userId, String memberName);
 
     /**
-     * 更新用户所在空间的手机号
+     * update the user's phone in all spaces
      *
-     * @param userId 用户ID
-     * @param mobile 手机号码
+     * @param userId user id
+     * @param mobile phone number
      */
     void updateMobileByUserId(Long userId, String mobile);
 
     /**
-     * 重置用户所在空间的手机号
+     * reset user's phone in all space.
      *
-     * @param userId 用户ID
+     * @param userId user id
      */
     void resetMobileByUserId(Long userId);
 
     /**
-     * 更新用户所在空间的邮箱地址
+     * update user's email in all space.
      *
-     * @param userId 用户ID
-     * @param email 邮箱地址
+     * @param userId user id
+     * @param email email
      */
     void updateEmailByUserId(Long userId, String email);
 
     /**
-     * 重置用户所在空间的邮箱地址
+     * reset user's email in all space.
      *
-     * @param userId 用户ID
+     * @param userId user id
      */
     void resetEmailByUserId(Long userId);
 
     /**
-     * 获取成员列表的基本信息
+     * get member brief info
      *
-     * @param memberIds 成员 ID 列表
-     * @return 成员的基本信息
+     * @param memberIds member ids
+     * @return MemberBriefInfo
      */
     List<MemberBriefInfoVo> getMemberBriefInfo(List<Long> memberIds);
 
     /**
-     * 批量创建成员
-     * 每个成员的主键ID必须指定
-     * 已绑定根部门
+     * create members in batches.
+     * the primary key ID for each member must be specified
+     * the root department has been bound
      *
-     * @param spaceId 空间ID
-     * @param entities 实体类集合
+     * @param spaceId space id
+     * @param entities members
      */
     void batchCreate(String spaceId, List<MemberEntity> entities);
 
     /**
-     * 邮箱邀请成员
+     * email invitate member
      *
-     * @param spaceId 空间ID
-     * @param teamId 部门ID
-     * @param emails 邀请邮箱列表
+     * @param spaceId space id
+     * @param teamId team id
+     * @param emails emails
      */
     @Deprecated
     List<Long> userInvitation(String spaceId, Long teamId, List<String> emails);
 
     /**
-     * 恢复成员
+     * recovery member
      *
-     * @param member 实体
+     * @param member member info
      */
     void restoreMember(MemberEntity member);
 
@@ -336,20 +327,20 @@ public interface IMemberService extends IService<MemberEntity> {
     List<Long> emailInvitation(Long inviteUserId, String spaceId, List<String> emails);
 
     /**
-     * 发送单个邀请邮件到邮箱地址
+     * send invite email to email
      *
-     * @param spaceId 空间ID
-     * @param fromMemberId 邀请成员ID
-     * @param email 邮件
+     * @param spaceId space id
+     * @param fromMemberId the member who invite user
+     * @param email email
      */
     void sendInviteEmail(String lang, String spaceId, Long fromMemberId, String email);
 
     /**
-     * 发送邀请空间通知邮件
+     * send an invitation space notification email
      *
-     * @param spaceId 空间ID
-     * @param fromMemberId 来自成员ID
-     * @param email 邮箱地址
+     * @param spaceId space id
+     * @param fromMemberId the member who invite user
+     * @param email email
      */
     void sendUserInvitationNotifyEmail(String lang, String spaceId, Long fromMemberId, String email);
 
@@ -364,241 +355,242 @@ public interface IMemberService extends IService<MemberEntity> {
     void sendUserInvitationEmail(String lang, String spaceId, Long inviter, String inviteUrl, String emailAddress);
 
     /**
-     * 部门关联成员
+     * the team's member
      *
-     * @param spaceId 空间ID
-     * @param data 请求参数
+     * @param spaceId space id
+     * @param data member info
      */
     void addTeamMember(String spaceId, TeamAddMemberRo data);
 
     /**
-     * 编辑成员信息
+     * update user info
      *
-     * @param memberId 成员ID
-     * @param opRo 请求参数
+     * @param memberId  member id
+     * @param opRo member info
      */
     void updateMember(Long memberId, UpdateMemberOpRo opRo);
 
     /**
-     * 编辑成员信息
+     * update user info
      *
-     * @param data 请求参数
+     * @param data member info
      */
     void updateMember(UpdateMemberRo data);
 
     /**
-     * 批量更新成员所属部门
+     * batch update member departments
      *
-     * @param spaceId 空间ID
-     * @param memberIds 成员ID集合
-     * @param teamIds 追加的部门
+     * @param spaceId space id
+     * @param memberIds  member ids
+     * @param teamIds team ids
      */
     void updateMemberByTeamId(String spaceId, List<Long> memberIds, List<Long> teamIds);
 
     /**
-     * 从指定部门批量删除指定成员
+     * department deletes members in batches
      *
-     * @param spaceId 空间ID
-     * @param memberIds 成员ID集合
-     * @param teamId 部门ID
+     * @param spaceId space id
+     * @param memberIds  member ids
+     * @param teamId team id
      */
     void batchDeleteMemberFromTeam(String spaceId, List<Long> memberIds, Long teamId);
 
     /**
-     * 根据成员ID逻辑删除
+     * logic delete by member id
      *
-     * @param memberIds 成员ID列表
+     * @param memberIds  member ids
      */
     void removeByMemberIds(List<Long> memberIds);
 
     /**
-     * 删除空间站内的所有成员
+     * delete all members of the space.
      *
-     * @param spaceId 空间站 ID
+     * @param spaceId space id
      */
     void removeAllMembersBySpaceId(String spaceId);
 
     /**
-     * 从空间里彻底删除指定成员
+     * delete members completely from the space
      *
-     * @param spaceId 空间ID
-     * @param memberIds 成员ID集合
-     * @param mailNotify 是否发送邮件通知
+     * @param spaceId space id
+     * @param memberIds  member ids
+     * @param mailNotify whether to send email notification
      */
     void batchDeleteMemberFromSpace(String spaceId, List<Long> memberIds, boolean mailNotify);
 
     /**
-     * 将指定的空间更改为活跃状态
+     * the space is changed to active
      *
-     * @param spaceId 空间ID
-     * @param userId 用户ID
+     * @param spaceId space id
+     * @param userId user id
      */
     void updateActiveStatus(String spaceId, Long userId);
 
     /**
-     * 将空间内除了主管理员外的成员删除（保留部门成员关联）
+     * Space deletes members except the main admin（reserving department association）
      *
-     * @param spaceId 空间ID
-     * @param userId 主管理员对应的用户ID
+     * @param spaceId space id
+     * @param userId mian admin's user id
      */
     void preDelBySpaceId(String spaceId, Long userId);
 
     /**
-     * 处理解析文件
+     * processing parse files
      *
-     * @param spaceId 空间ID
-     * @param multipartFile 待解析文件
+     * @param spaceId space id
+     * @param multipartFile file to parse
      * @return UploadParseResultVo
      */
     UploadParseResultVO parseExcelFile(String spaceId, MultipartFile multipartFile);
 
     /**
-     * 保存上传数据
+     * save uploaded data
      *
-     * @param spaceId 空间ID
-     * @param uploadData 上传数据
-     * @param inviteEmails 邀请列表，回传
-     * @param notifyEmails 通知列表，回传
-     * @param teamCreatable 操作是否可以创建部门
-     * @return 修改数
+     * @param spaceId space id
+     * @param uploadData uploadData
+     * @param inviteEmails inviteEmails, callback
+     * @param notifyEmails notifyEmails，callback
+     * @param teamCreatable whether a department can be created
+     * @return modified num
      */
     Long saveUploadData(String spaceId, UploadDataDto uploadData, List<String> inviteEmails, List<String> notifyEmails, boolean teamCreatable);
 
     /**
-     * 发送邮箱邀请的用户通知
+     * send invite notification
      *
-     * @param fromUserId 邀请人
-     * @param invitedMemberIds 邀请的用户
-     * @param spaceId 空间
-     * @param isToFromUser 是否发送给邀请人
+     * @param fromUserId Inviter
+     * @param invitedMemberIds invited users
+     * @param spaceId space
+     * @param isToFromUser whether to send to the inviter
      */
     void sendInviteNotification(Long fromUserId, List<Long> invitedMemberIds, String spaceId, Boolean isToFromUser);
 
     /**
-     * 创建成员
+     * create member
      *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
-     * @param teamId 关联部门ID（非必须）
+     * @param userId user id
+     * @param spaceId space id
+     * @param teamId team id（not a must）
      * @return Member Id
      */
     Long createMember(Long userId, String spaceId, Long teamId);
 
     /**
-     * 批量更新
-     * 不管是否逻辑删除
+     * batch update members, even if his was deleted logically.
      *
-     * @param entities 实体集合
+     * @param entities members
      */
     void updatePartPropertyBatchByMemberId(String spaceId, List<MemberEntity> entities);
 
     /**
-     * 根据spaceId获取Member List
+     * get space's members
      *
-     * @param spaceId 空间Id
+     * @param spaceId space id
      * @return Member List
      */
     List<TenantMemberDto> getMemberOpenIdListBySpaceId(String spaceId);
 
     /**
-     * 获取随机的成员
+     * get a random member
      *
-     * @param spaceId 空间ID
-     * @param excludeMemberId 排除的成员ID
-     * @return 成员ID
+     * @param spaceId space id
+     * @param excludeMemberId exclude member id
+     * @return  member id
      */
     Long getRandomMemberId(String spaceId, Long excludeMemberId);
 
     /**
-     * 获取空间的成员总数
+     * get space's member amount.
      *
-     * @param spaceId 空间ID
-     * @return 总数
+     * @param spaceId space id
+     * @return member amount
      */
     int getTotalMemberCountBySpaceId(String spaceId);
 
     /**
-     * 预删除成员信息，逻辑删除，支持注销冷静期内账号撤销注销
+     * pre delete user info.
+     * logic to delete.
+     * Account logout can be cancelled during the cooling-off period.
      *
-     * @param memberIds 成员ID列表
+     * @param memberIds  member ids
      */
     void preDelByMemberIds(List<Long> memberIds);
 
     /**
-     * 取消成员信息删除
+     * cancel user info's deleted
      *
-     * @param userId 用户ID
+     * @param userId user id
      */
     void cancelPreDelByUserId(Long userId);
 
     /**
-     * 清理openId
+     * clear open id
      *
-     * @param memberId 成员ID
+     * @param memberId  member id
      */
     void clearOpenIdById(Long memberId);
 
     /**
-     * 根据userId获取openId
+     * get open ids by user ids
      *
-     * @param userIds 用户的userId
+     * @param userIds userId
      * @return openId
      */
     List<String> getOpenIdByUserIds(List<Long> userIds);
 
     /**
-     * 根据Id获取openId
+     * get openId by member ids
      *
-     * @param memberIds 成员ID
+     * @param memberIds  member ids
      * @return openId
      */
     List<String> getOpenIdByIds(List<Long> memberIds);
 
     /**
-     * 通过空间站ID和用户ID查询成员名称
+     * get member name by space id and user id.
      *
-     * @param spaceId 空间站ID
-     * @param userId 用户的ID
-     * @return 成员名称
+     * @param spaceId space id
+     * @param userId user id
+     * @return member name
      */
     String getMemberNameByUserIdAndSpaceId(Long userId, String spaceId);
 
     /**
-     * 根据手机号获取未激活的空间
+     * get inactive space by mobile
      *
-     * @param mobile 手机号
+     * @param mobile phone number
      * @return MemberDto List
      */
     List<MemberDto> getInactiveMemberDtoByMobile(String mobile);
 
     /**
-     * 根据邮箱获取未激活的空间
+     * get inactive space by email
      *
-     * @param email 邮箱地址
+     * @param email email
      * @return MemberDto List
      */
     List<MemberDto> getInactiveMemberDtoByEmail(String email);
 
     /**
-     * 获取用户所在空间数量
+     * get the user's space's amount
      *
-     * @param userId 用户ID
-     * @return 总数
+     * @param userId user id
+     * @return the user's space's amount
      */
     int getSpaceCountByUserId(Long userId);
 
     /**
-     * 检查用户是否已经在其中一个空间修改过昵称
+     * Check whether the user has already changed the nickname in one of the spaces
      *
-     * @param userId 用户ID
+     * @param userId user id
      * @return true | false
      */
     boolean checkUserHasModifyNameInSpace(Long userId);
 
     /**
-     * 批量更新成员的名称，openId和删除字段
+     * batch update member name, open id and delete field.
      *
-     * @param updateEntities 批量更新成员数据
+     * @param updateEntities members' update data
      */
     void batchUpdateNameAndOpenIdAndIsDeletedByIds(List<MemberEntity> updateEntities);
 
@@ -610,33 +602,33 @@ public interface IMemberService extends IService<MemberEntity> {
     void batchResetIsDeletedAndUserIdByIds(List<Long> ids);
 
     /**
-     * 从空间恢复成员
+     * restores a member from space
      *
-     * @param spaceId 空间站ID
-     * @param memberIds 成员ID
+     * @param spaceId space id
+     * @param memberIds  member id
      */
     void batchRecoveryMemberFromSpace(String spaceId, List<Long> memberIds);
 
     /**
-     * 根据名称模糊查询成员列表
+     * fuzzy query member by keyword
      *
-     * @param spaceId 空间ID
-     * @param keyword 关键词
-     * @param highlightClassName 高亮的样式名称
-     * @return 搜索结果
+     * @param spaceId space id
+     * @param keyword keywrod
+     * @param highlightClassName the highlight style
+     * @return SearchMemberResultVo
      */
     List<SearchMemberResultVo> getByName(String spaceId, String keyword, String highlightClassName);
 
     /**
-     * 按成员名称模糊搜索成员
+     * fuzzy query member by member name
      *
-     * @param spaceId 空间ID
-     * @param keyword 关键词
-     * @param filter  是否过滤未加入成员
-     * @param highlightClassName 高亮的样式名称
-     * @return SearchMemberVo 集合
-     * @author 刘斌华
-     * @date 2022-04-12 11:56:17
+     * @param spaceId space id
+     * @param keyword keywrod
+     * @param filter  whether to filter unadded members
+     * @param highlightClassName the highlight style
+     * @return SearchMemberVos
+     * space id
+     * 
      */
     List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter, String highlightClassName);
 

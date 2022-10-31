@@ -7,8 +7,6 @@ import lombok.Data;
 /**
  * query user contact information request param
  *
- * @author liuzijing
- * @date 2022/9/1
  */
 @Data
 @ApiModel("query user contact information request param")

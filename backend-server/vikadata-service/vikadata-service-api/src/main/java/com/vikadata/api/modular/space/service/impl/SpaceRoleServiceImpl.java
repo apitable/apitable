@@ -61,14 +61,6 @@ import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN
 import static com.vikadata.api.enums.exception.PermissionException.OP_MEMBER_IS_SUB_ADMIN;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_IN_SPACE;
 
-/**
- * <p>
- * 工作空间-角色表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 @Service
 @Slf4j
 public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRoleEntity> implements ISpaceRoleService {
@@ -111,7 +103,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Override
     public List<Long> getSpaceAdminsWithWorkbenchManage(String spaceId) {
-        log.info("获取空间站拥有工作台管理权限的所有管理员，包含主管理员");
+        log.info("Queries all space administrators who have workbench permission，including the main admin.");
         List<Long> admins = new ArrayList<>();
         Long superAdmin = spaceMapper.selectSpaceMainAdmin(spaceId);
         if (superAdmin != null) {
@@ -161,7 +153,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Override
     public SpaceRoleEntity create(String spaceId) {
-        log.info("创建子管理员角色");
+        log.info("Create a sub-administrator role");
         SpaceRoleEntity spaceRole = new SpaceRoleEntity();
         spaceRole.setRoleCode(RoleBuildUtil.createRoleCode(spaceId));
         spaceRole.setRoleName(RoleBuildUtil.createRoleName(spaceId));
@@ -173,30 +165,27 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createRole(String spaceId, AddSpaceRoleRo data) {
-        log.info("创建管理员角色");
-        //检查前置条件
+        log.info("Create an administrator role");
         this.checkBeforeCreate(spaceId, data.getMemberIds());
-        //分配的权限
+        // assign permissions
         List<String> resourceCodes = spaceResourceMapper.selectResourceCodesByGroupCode(CollUtil.distinct(data.getResourceCodes()));
-        //检查是否包含了可分配的权限,排除不合理的权限分配
+        // Check whether assignable permissions are included to exclude unreasonable permission assignments
         iSpaceResourceService.checkResourceAssignable(resourceCodes);
-        //检查当前分配的权限列表是否拥有
+        // Check whether the currently assigned permission list is owned
         LoginContext.me().checkSpaceResource(resourceCodes);
 
-        // 分别为成员创建角色、角色与成员关联
+        // create space role and the ref of space role and member
         List<SpaceRoleEntity> spaceRoleEntities = new ArrayList<>();
         List<SpaceMemberRoleRelEntity> spaceMemberRoleRelEntities = new ArrayList<>();
         List<String> roleCodes = new ArrayList<>();
         for (Long memberId : data.getMemberIds()) {
             String roleCode = RoleBuildUtil.createRoleCode(spaceId);
             roleCodes.add(roleCode);
-            // 子管理员角色
             SpaceRoleEntity spaceRole = new SpaceRoleEntity();
             spaceRole.setId(IdWorker.getId());
             spaceRole.setRoleCode(roleCode);
             spaceRole.setRoleName(RoleBuildUtil.createRoleName(spaceId));
             spaceRoleEntities.add(spaceRole);
-            // 角色与成员关联
             SpaceMemberRoleRelEntity spaceMemberRoleRel = new SpaceMemberRoleRelEntity();
             spaceMemberRoleRel.setId(IdWorker.getId());
             spaceMemberRoleRel.setSpaceId(spaceId);
@@ -204,59 +193,44 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
             spaceMemberRoleRel.setRoleCode(roleCode);
             spaceMemberRoleRelEntities.add(spaceMemberRoleRel);
         }
-        // 保存角色
         boolean flag = saveBatch(spaceRoleEntities);
         ExceptionUtil.isTrue(flag, CREATE_SUB_ADMIN_ERROR);
-        // 保存角色与成员关联
         boolean relFlag = iSpaceMemberRoleRelService.saveBatch(spaceMemberRoleRelEntities);
         ExceptionUtil.isTrue(relFlag, CREATE_SUB_ADMIN_ERROR);
-        // 保存角色与权限关联
+        // save the ref space role and resource code.
         iSpaceRoleResourceRelService.createBatch(roleCodes, CollUtil.distinct(resourceCodes));
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().playerIds(data.getMemberIds()).build());
     }
 
     @Override
     public void checkIsNotSubAdmin(String spaceId, Long memberId) {
-        log.info("检查成员是否不是子管理员");
+        log.info("check whether member is not sub admin");
         boolean exist = SqlTool.retCount(spaceMemberRoleRelMapper.selectCountBySpaceIdAndMemberId(spaceId, memberId)) > 0;
         ExceptionUtil.isFalse(exist, OP_MEMBER_IS_SUB_ADMIN);
     }
 
     public void checkIsNotSubAdmin(String spaceId, List<Long> memberIds) {
-        log.info("检查成员是否不是子管理员");
+        log.info("check whether members is not sub admin");
         boolean exist = SqlTool.retCount(spaceMemberRoleRelMapper.selectCountBySpaceIdAndMemberIds(spaceId, memberIds)) > 0;
         ExceptionUtil.isFalse(exist, OP_MEMBER_IS_SUB_ADMIN);
     }
 
     @Override
-    public void checkIsSubAdmin(String spaceId, Long memberId) {
-        log.info("检查成员是否是管理员");
-        boolean exist = SqlTool.retCount(spaceMemberRoleRelMapper.selectCountBySpaceIdAndMemberId(spaceId, memberId)) > 0;
-        ExceptionUtil.isTrue(exist, OP_MEMBER_IS_SUB_ADMIN);
-    }
-
-    @Override
     public void checkBeforeCreate(String spaceId, Long memberId) {
-        //校验空间内是否存在此成员，并且非主管理员
         iSpaceService.checkMemberInSpace(spaceId, memberId);
-        //选择成员必须非主管理员
         iSpaceService.checkMemberIsMainAdmin(spaceId, memberId);
-        //是否不是子管理员
         this.checkIsNotSubAdmin(spaceId, memberId);
     }
 
     public void checkBeforeCreate(String spaceId, List<Long> memberIds) {
-        //校验空间内是否存在此成员，并且非主管理员
         iSpaceService.checkMembersInSpace(spaceId, memberIds);
-        //选择成员必须非主管理员
         iSpaceService.checkMembersIsMainAdmin(spaceId, memberIds);
-        //是否不是子管理员
         this.checkIsNotSubAdmin(spaceId, memberIds);
     }
 
     @Override
     public SpaceRoleDetailVo getRoleDetail(String spaceId, Long memberId) {
-        log.info("获取管理员信息");
+        log.info("get admin info");
         MemberEntity memberEntity = memberMapper.selectMemberIdAndSpaceId(spaceId, memberId);
         ExceptionUtil.isNotNull(memberEntity, MEMBER_NOT_IN_SPACE);
         SpaceRoleDetailVo spaceRoleDetailVo = new SpaceRoleDetailVo();
@@ -278,37 +252,37 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(String spaceId, UpdateSpaceRoleRo data) {
-        log.info("编辑管理员");
-        // 查询当前成员和成员关联对象
+        log.info("edit admin");
         SpaceMemberRoleRelEntity memberRole = iSpaceMemberRoleRelService.findById(data.getId());
         ExceptionUtil.isTrue(memberRole.getSpaceId().equals(spaceId), NOT_IN_SPACE);
         boolean replace = !memberRole.getMemberId().equals(data.getMemberId());
         if (replace) {
-            //重新选择成员，必须检查新成员条件
+            // To re-select a member, you must check the new member criteria
             this.checkBeforeCreate(spaceId, data.getMemberId());
             iSpaceMemberRoleRelService.updateMemberIdById(data.getId(), data.getMemberId());
         }
-        //分配的权限
+        // assigned permissions
         List<String> resourceCodes = spaceResourceMapper.selectResourceCodesByGroupCode(CollUtil.distinct(data.getResourceCodes()));
-        //检查是否包含了可分配的权限,排除不合理的权限分配
+        // Check whether assignable permissions are included to exclude unreasonable permission assignments
         iSpaceResourceService.checkResourceAssignable(resourceCodes);
-        //检查当前分配的权限列表是否拥有
+        // Check whether the currently assigned permission list is owned
         LoginContext.me().checkSpaceResource(resourceCodes);
 
-        //更新角色权限
+        // updating role permisions
         List<String> originCodes = baseMapper.selectResourceCodesById(data.getId());
         List<String> unionCodes = (List<String>) CollUtil.union(originCodes, resourceCodes);
         List<String> addList = (List<String>) CollUtil.disjunction(unionCodes, originCodes);
-        log.info("新增列表:{}", addList);
+        log.info("add:{}", addList);
         if (CollUtil.isNotEmpty(addList)) {
             iSpaceRoleResourceRelService.createBatch(Collections.singletonList(memberRole.getRoleCode()), addList);
         }
         List<String> removeList = (List<String>) CollUtil.disjunction(unionCodes, resourceCodes);
-        log.info("删除列表:{}", removeList);
+        log.info("remove:{}", removeList);
         if (CollUtil.isNotEmpty(removeList)) {
             iSpaceRoleResourceRelService.deleteBatch(memberRole.getRoleCode(), removeList);
         }
-        //若原拥有邀请成员的权限，替换了管理员或者原管理员该权限被删除，且该空间全员可邀请成员的开关处于关闭时，原管理员生成的空间公开邀请链接均失效
+        // When the function of inviting all members of the space is turned off,
+        // all public invitation links generated by the original main administrator become invalid.
         String tag = "INVITE_MEMBER";
         if (originCodes.contains(tag)) {
             if (replace) {
@@ -323,10 +297,10 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteRole(String spaceId, Long memberId) {
-        log.info("删除管理员");
+        log.info("delete role");
         String roleCode = spaceMemberRoleRelMapper.selectRoleCodeByMemberId(spaceId, memberId);
 
-        // 如果角色还绑定别人，不能删除角色
+        // If a role is bound to someone else, you cannot delete the role
         List<Long> memberIds = spaceMemberRoleRelMapper.selectMemberIdBySpaceIdAndRoleCodes(spaceId, Collections.singletonList(roleCode));
         if (CollUtil.isEmpty(memberIds)) {
             boolean roleFlag = SqlHelper.retBool(baseMapper.deleteByRoleCode(roleCode));
@@ -346,7 +320,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
         List<String> roleCodes = spaceMemberRoleRelMapper.selectRoleCodeByMemberIds(spaceId, memberIds);
         spaceMemberRoleRelMapper.batchDeleteByMemberIds(memberIds);
         if (CollUtil.isNotEmpty(roleCodes)) {
-            // 查询仍存在的角色编码。如果角色还绑定别人，不能删除角色
+            // Query for role codes that still exist. If a role is bound to someone else, you cannot delete the role
             List<String> existRoleCodes = spaceMemberRoleRelMapper.selectRoleCodesBySpaceIdAndRoleCodes(spaceId, roleCodes);
             if (roleCodes.size() == existRoleCodes.size()) {
                 return;
@@ -373,7 +347,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Override
     public void checkAdminResourceChangeAllow(String spaceId, List<String> operateResourceCodes) {
-        log.info("第三方集成开启情况下，检查子管理员的变更权限是否存在无法操作的权限");
+        log.info("In the third party integration is enabled，check whether the sub-administrator has permissions to change permission");
         List<String> disableRoleGroupCodes = iSocialService.getSocialDisableRoleGroupCode(spaceId);
         if (CollUtil.isNotEmpty(disableRoleGroupCodes)) {
             ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, disableRoleGroupCodes), SpaceException.NO_ALLOW_OPERATE);

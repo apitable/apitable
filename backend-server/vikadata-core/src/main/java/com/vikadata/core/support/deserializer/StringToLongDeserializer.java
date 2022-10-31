@@ -11,11 +11,9 @@ import java.util.OptionalLong;
 
 /**
  * <p>
- * 字符串转Long
+ * String to Long
  * </p>
  *
- * @author Shawn Deng
- * @date 2019/12/9 18:33
  */
 public class StringToLongDeserializer extends JsonDeserializer<Long> {
 

@@ -4,45 +4,36 @@ import java.util.List;
 
 /**
  * <p>
- * 构造树节点的接口规范
+ * interface: the tree node's behavior
  * </p>
- *
- * @author Shawn Deng
- * @date 2018/10/25 20:24
  */
 public interface Tree {
 
     /**
-     * 获取节点id
+     * get the node's id
      *
-     * @return 节点id
-     * @author Shawn Deng
-     * @date 2018/10/25 20:25
+     * @return  node id
      */
     String getNodeId();
 
     /**
-     * 获取节点父id
+     * get the parent node's id
      *
-     * @return 父节点ID
-     * @author Shawn Deng
-     * @date 2018/10/25 20:25
+     * @return  the parent node id
      */
     String getNodeParentId();
 
     /**
-     * 获取子节点数据
+     * get the child nodes
      *
-     * @return 子节点
+     * @return  the list of children nodes
      */
      List getChildrenNodes();
 
     /**
-     * 设置children
+     * set children node
      *
-     * @param childrenNodes 子节点
-     * @author Shawn Deng
-     * @date 2018/10/25 20:26
+     * @param childrenNodes the list of children nodes
      */
     void setChildrenNodes(List childrenNodes);
 }

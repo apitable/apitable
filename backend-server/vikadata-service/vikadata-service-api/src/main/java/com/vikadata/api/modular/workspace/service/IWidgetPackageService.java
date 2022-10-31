@@ -20,207 +20,140 @@ import com.vikadata.api.model.vo.widget.WidgetReleaseListVo;
 import com.vikadata.api.modular.developer.model.SingleGlobalWidgetRo;
 import com.vikadata.entity.WidgetPackageEntity;
 import com.vikadata.integration.vika.model.GlobalWidgetInfo;
-
-/**
- * @author Shawn Deng
- * @date 2021-01-09 16:21:40
- */
 public interface IWidgetPackageService extends IService<WidgetPackageEntity> {
 
     /**
-     * 检查组件安装包是否存在
+     * check if the component installation package exists
      *
-     * @param widgetPackageId 安装包ID
-     * @param status          安装包状态
-     * @author Chambers
-     * @date 2021/1/25
+     * @param widgetPackageId widget id
+     * @param status          installation package status
      */
     void checkWidgetPackIfExist(String widgetPackageId, List<Integer> status);
 
     /**
-     * 检查自定义小组件Id是否存在
-     *
-     * @param customPackageId 自定义包Id
-     * @return 包Id是否存在
-     * @author Pengap
-     * @date 2021/7/8
+     * @param customPackageId custom widget id
+     * @return whether widget exist
      */
     boolean checkCustomPackageId(String customPackageId);
 
     /**
-     * 创建小组件包
-     *
-     * @param opUserId  操作用户
-     * @param widget 创建小组件包请求参数
-     * @return 创建的组件包ID
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param widget create widget package request parameters
+     * @return widget id
      */
     WidgetReleaseCreateVo createWidget(Long opUserId, WidgetPackageCreateRo widget);
 
     /**
-     * 发布小组件
-     *
-     * @param opUserId  操作用户
-     * @param widget    发布小组件请求参数
-     * @return 发布操作状态
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param widget    publish widget request parameters
+     * @return release operation status
      */
     boolean releaseWidget(Long opUserId, WidgetPackageReleaseRo widget);
 
     /**
-     * 获取发布历史列表
+     * get a list of publishing history
      *
-     * @param opUserId  操作用户
-     * @param packageId 小组件包Id
-     * @param page 分页请求对象
-     * @return 发布列表
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param packageId widget id
+     * @param page page object
+     * @return publish list
      */
     List<WidgetReleaseListVo> releaseListWidget(Long opUserId, String packageId, Page<WidgetReleaseListVo> page);
 
     /**
-     * 回滚小组件
-     *
-     * @param opUserId  操作用户
-     * @param widget 回滚小组件请求参数
-     * @return 回滚操作状态
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param widget rollback widget request parameters
+     * @return rollback operation status
      */
     boolean rollbackWidget(Long opUserId, WidgetPackageRollbackRo widget);
 
     /**
-     * 下架小组件
-     *
-     * @param opUserId  操作用户
-     * @param widget    下架小组件请求参数
-     * @return 下架小组件状态
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param widget    unpublish widget request parameters
+     * @return unpublish widget status
      */
     boolean unpublishWidget(Long opUserId, WidgetPackageUnpublishRo widget);
 
     /**
-     * 禁封/解封小组件
-     *
-     * @param opUserId  操作用户
-     * @param widget 禁封/解封请求参数
-     * @return 禁封/解封小组件操作状态
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param widget prohibited and unblocked request parameters
+     * @return operation status of forbidden and unsealed widgets
      */
     boolean banWindget(Long opUserId, WidgetPackageBanRo widget);
 
     /**
-     * 获取小组件包信息
      *
-     * @param packageId 小组件包Id
-     * @return 小组件包信息
-     * @author Pengap
-     * @date 2021/7/8
+     * @param packageId widget id
+     * @return WidgetPackageInfoVo
      */
     WidgetPackageInfoVo getWidgetPackageInfo(String packageId);
 
     /**
-     * 获取小组件商店信息
-     *
-     * @param spaceId 空间站Id
-     * @return 小组件包信息
-     * @author Pengap
-     * @date 2021/7/8
+     * @param spaceId space id
+     * @return WidgetPackageInfoVo
      */
     List<WidgetPackageInfoVo> getWidgetPackageListInfo(String spaceId);
+
     /**
-     * 转移小组件拥有者
-     *
-     * @param opUserId          用户Id
-     * @param transferOwnerRo   请求转移小组件参数
-     * @author Pengap
-     * @date 2021/9/28 17:49:11
+     * @param opUserId          opUserId
+     * @param transferOwnerRo   request to transfer widget parameters
      */
     void transferWidgetOwner(Long opUserId, WidgetTransferOwnerRo transferOwnerRo);
 
     /**
-     * 获取全局小组件配置
-     *
-     * @param nodeId 节点Id
-     * @return vika外网空间配置的全局小组件信息
-     * @author Pengap
-     * @date 2021/9/29 16:13:57
+     * @param nodeId node id
+     * @return Global widget information for external network space configuration
      */
     List<GlobalWidgetInfo> getGlobalWidgetPackageConfiguration(String nodeId);
 
     /**
-     * 刷新全局小组件DB数据
+     * refresh global widget db data
      *
-     * @param nodeId 节点Id
-     * @author Pengap
-     * @date 2021/9/30 11:55:25
+     * @param nodeId node id
      */
     void globalWidgetDbDataRefresh(String nodeId);
 
     /**
-     * 单个小组件数据刷新
+     * single widget data refresh
      *
-     * @param body  请求体
-     * @author Pengap
-     * @date 2021/11/10 16:45:37
+     * @param body  requestor
      */
     void singleGlobalWidgetRefresh(SingleGlobalWidgetRo body);
 
     /**
-     * 提交全局小组件审核
-     *
-     * @param opUserId  操作用户
-     * @param widget    发布小组件请求参数
-     * @return 提交操作状态
-     * @author Pengap
-     * @date 2022/3/7 22:43:51
+     * @param opUserId  opUserId
+     * @param widget    publish widget request parameters
+     * @return submit operation status
      */
     boolean submitWidget(Long opUserId, WidgetPackageSubmitRo widget);
 
     /**
-     * 查询小程序基本信息
-     *
-     * @param packageId 小程序Id
-     * @param checkBan  检查小程序是否禁用
-     * @return 小程序包信息
-     * @author Pengap
-     * @date 2022/3/16 18:39:12
+     * @param packageId widget id
+     * @param checkBan  check if the widget is disabled
+     * @return WidgetPackageEntity
      */
     WidgetPackageEntity getByPackageId(String packageId, boolean checkBan);
 
     /**
-     * 查询小程序基本信息，不检查是否封禁
+     * Query the basic information of the applet without checking whether it is blocked
      *
-     * @param packageId 小程序Id
+     * @param packageId packageId
      */
     default WidgetPackageEntity getByPackageId(String packageId) {
         return getByPackageId(packageId, false);
     }
 
     /**
-     * 发布小组件
-     *
-     * @param opUserId  操作用户
-     * @param widget    发布小组件请求参数
-     * @return 发布操作状态
-     * @author Pengap
-     * @date 2021/7/8
+     * @param opUserId  opUserId
+     * @param widget    publish widget request parameters
+     * @return release operation status
      */
     boolean releaseWidget(Long opUserId, WidgetPackageReleaseV2Ro widget);
 
     /**
-     * 提交全局小组件审核
-     *
-     * @param opUserId  操作用户
-     * @param widget    发布小组件请求参数
-     * @return 提交操作状态
-     * @author Pengap
-     * @date 2022/3/7 22:43:51
+     * @param opUserId  opUserId
+     * @param widget    publish widget request parameters
+     * @return submit operation status
      */
     boolean submitWidget(Long opUserId, WidgetPackageSubmitV2Ro widget);
 }

@@ -53,14 +53,6 @@ import static com.vikadata.api.constants.NotificationConstants.ACTION_NAME;
 import static com.vikadata.api.constants.NotificationConstants.ACTIVITY_NAME;
 import static com.vikadata.api.constants.NotificationConstants.COUNT;
 
-/**
- * <p>
- * 积分 接口实现类
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/16 11:24
- */
 @Service
 @Slf4j
 public class IntegralServiceImpl implements IIntegralService {
@@ -100,22 +92,22 @@ public class IntegralServiceImpl implements IIntegralService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void trigger(String action, IntegralAlterType alterType, Long by, JSONObject parameter) {
-        log.info("触发积分操作：{}", action);
-        log.info("============ 初始化用户积分奖励锁 ============");
+        log.info("trigger integral operation：{}", action);
+        log.info("============ init user integral reward lock ============");
         Lock lock = redisLockRegistry.obtain(by.toString());
         try {
-            // 获取锁成功返回true，如果获取失败，等待2秒，规定时间内还是没有获得锁，那么就返回false
-            log.info("============ 尝试用户积分奖励锁 ============");
+            log.info("============ try get user integral reward lock ============");
+            // get lock return true. if failure, waiting 2 seconds. if timeout, return false.
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    log.info("============ 锁住用户积分奖励成功 ============");
-                    // 查找触发者的原积分值
+                    log.info("============ lock in successfully ============");
+                    // find the original integral value of the trigger
                     int beforeTotalIntegralValue = getTotalIntegralValueByUserId(by);
-                    // 查找积分规则
+                    // find integral rule
                     IntegralRule rule = SystemConfigManager.getConfig().getIntegral().getRule().get(action);
-                    // 变更积分值
+                    // change integral value
                     int alterIntegralValue = rule.getIntegralValue();
-                    // 记录积分值
+                    // record integral value
                     this.createHistory(by, action, alterType, beforeTotalIntegralValue, alterIntegralValue, parameter);
                     if (rule.isNotify()) {
                         TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.INTEGRAL_INCOME_NOTIFY, Collections.singletonList(by),
@@ -123,22 +115,22 @@ public class IntegralServiceImpl implements IIntegralService {
                     }
                 }
                 catch (Exception e) {
-                    log.error("用户奖励积分失败", e);
+                    log.error("failed to reward the user integral", e);
                     throw e;
                 }
                 finally {
-                    log.info("============ 用户积分解锁 ============");
+                    log.info("============ unlock ============");
                     lock.unlock();
                 }
             }
             else {
-                log.error("用户操作积分太频繁");
+                log.error("the user operates integral are too frequent");
                 throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
             }
         }
         catch (InterruptedException e) {
-            log.error("用户操作积分太频繁", e);
-            // 获取锁被中断
+            log.error("users operates integral are too frequent", e);
+            // acquire lock was interrupted
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
@@ -146,44 +138,44 @@ public class IntegralServiceImpl implements IIntegralService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void alterIntegral(String actionCode, IntegralAlterType alterType, int alterIntegral, Long by, JSONObject parameter) {
-        log.info("变更积分");
-        log.info("============ 初始化用户积分锁 ============");
+        log.info("Change integral");
+        log.info("============ init user integral lock ============");
         Lock lock = redisLockRegistry.obtain(by.toString());
         try {
-            // 获取锁成功返回true，如果获取失败，等待2秒，规定时间内还是没有获得锁，那么就返回false
-            log.info("============ 尝试用户积分锁 ============");
+            // get lock return true. if failure, waiting 2 seconds. if timeout, return false.
+            log.info("============ try get user integral lock ============");
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    log.info("============ 锁住用户积分奖励成功 ============");
-                    // 查找触发者的原积分值
+                    log.info("============ get user integral lock ============");
+                    // find the original integral value of the trigger
                     int beforeTotalIntegralValue = getTotalIntegralValueByUserId(by);
-                    // 记录积分值
+                    // record integral value
                     this.createHistory(by, actionCode, alterType, beforeTotalIntegralValue, alterIntegral, parameter);
                 }
                 catch (Exception e) {
-                    log.error("用户「{}」奖励积分失败", by, e);
+                    log.error("failed to reward the user「{}」 integral", by, e);
                     throw e;
                 }
                 finally {
-                    log.info("============ 用户积分解锁 ============");
+                    log.info("============ unlocking ============");
                     lock.unlock();
                 }
             }
             else {
-                log.error("用户「{}」操作积分太频繁", by);
+                log.error("User「{}」operate integral too frequently", by);
                 throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
             }
         }
         catch (InterruptedException e) {
-            log.error("用户「{}」操作积分太频繁", by, e);
-            // 获取锁被中断
+            log.error("User「{}」operate integral too frequently", by, e);
+            // acquire lock was interrupted
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
 
     @Override
     public Long createHistory(Long userId, String actionCode, IntegralAlterType alterType, Integer oldIntegralValue, Integer alterIntegralValue, JSONObject parameter) {
-        // 创建积分记录，代表计算用户积分
+        // create integral, stands for calculating user integral.
         IntegralHistoryEntity historyEntity = new IntegralHistoryEntity();
         historyEntity.setUserId(userId);
         historyEntity.setActionCode(actionCode);
@@ -220,21 +212,21 @@ public class IntegralServiceImpl implements IIntegralService {
         if (rewardInfos.isEmpty()) {
             throw new BusinessException("There are no records that meet the conditions.");
         }
-        // 收集不同类型的方法目标
+        // collect different types of method targets
         Map<String, IntegralRewardInfo> emailTargetMap = new HashMap<>();
         Map<String, List<IntegralRewardInfo>> areaCodeToInfosMap = new HashMap<>();
         for (IntegralRewardInfo info : rewardInfos) {
-            // 邮箱目标对象
+            // target is email address
             if (Validator.isEmail(info.getTarget())) {
                 emailTargetMap.put(info.getTarget(), info);
                 continue;
             }
-            // 手机号目标对象。若不存在区号，信息不正确
+            // target is phone number. if area code is null, info is lack.
             if (info.getAreaCode() == null) {
-                vikaOperations.updateIntegralRewardResult(split[0], split[1], split[2], info.getRecordId(), "填写信息有误", processor);
+                vikaOperations.updateIntegralRewardResult(split[0], split[1], split[2], info.getRecordId(), "Incorrect information filled in", processor);
                 continue;
             }
-            // 以区号分组
+            // group by area code.
             if (areaCodeToInfosMap.containsKey(info.getAreaCode())) {
                 areaCodeToInfosMap.get(info.getAreaCode()).add(info);
             }
@@ -244,12 +236,12 @@ public class IntegralServiceImpl implements IIntegralService {
                 areaCodeToInfosMap.put(info.getAreaCode(), targets);
             }
         }
-        // 积分发放
+        // deliver integral
         if (!emailTargetMap.isEmpty()) {
             List<UserEntity> userEntities = iUserService.getByEmails(emailTargetMap.keySet());
             Map<String, Long> emailToUserIdMap = userEntities.stream().collect(Collectors.toMap(UserEntity::getEmail, UserEntity::getId));
             for (Entry<String, IntegralRewardInfo> entry : emailTargetMap.entrySet()) {
-                // 发放奖励
+                // deliver integral
                 this.deliver(entry.getValue(), emailToUserIdMap, processor, split);
             }
         }
@@ -258,46 +250,46 @@ public class IntegralServiceImpl implements IIntegralService {
             List<UserEntity> userEntities = iUserService.getByCodeAndMobilePhones(entry.getKey(), mobilePhones);
             Map<String, Long> mobileToUserIdMap = userEntities.stream().collect(Collectors.toMap(UserEntity::getMobilePhone, UserEntity::getId));
             for (IntegralRewardInfo info : entry.getValue()) {
-                // 发放奖励
+                // deliver integral
                 this.deliver(info, mobileToUserIdMap, processor, split);
             }
         }
     }
 
     private void deliver(IntegralRewardInfo info, Map<String, Long> targetToUserIdMap, String processor, String[] split) {
-        // 邮箱用户不存在
+        // the email user does not exist
         if (!targetToUserIdMap.containsKey(info.getTarget())) {
-            vikaOperations.updateIntegralRewardResult(split[0], split[1], split[2], info.getRecordId(), "未发放，帐号未注册", processor);
+            vikaOperations.updateIntegralRewardResult(split[0], split[1], split[2], info.getRecordId(), "not to deliver，because the account is not registered.", processor);
             return;
         }
         Long userId = targetToUserIdMap.get(info.getTarget());
         this.alterIntegral(WALLET_ACTIVITY_REWARD, IntegralAlterType.INCOME, info.getCount(), userId, JSONUtil.createObj().set("name", info.getActivityName()));
         try {
-            vikaOperations.updateIntegralRewardResult(split[0], split[1], split[2], info.getRecordId(), "已发放", processor);
+            vikaOperations.updateIntegralRewardResult(split[0], split[1], split[2], info.getRecordId(), "delivered", processor);
         }
         catch (Exception e) {
-            throw new BusinessException(StrUtil.format("「{}」奖励已发放，回写维格表失败。msg:{}", info.getTarget(), e.getMessage()));
+            throw new BusinessException(StrUtil.format("「{}」integral was delivered，rewrite datasheet failure. msg:{}", info.getTarget(), e.getMessage()));
         }
-        // 发送通知
+        // send notification
         TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.ACTIVITY_INTEGRAL_INCOME_NOTIFY,
                 Collections.singletonList(userId), 0L, null, Dict.create().set(COUNT, info.getCount()).set(ACTIVITY_NAME, info.getActivityName())));
     }
 
     /**
-     * 根据变更类型计算积分值
+     * calculate integral by alter type.
      *
-     * @param alterType          变更类型（收入、支出）
-     * @param oldIntegralValue   原积分值
-     * @param alterIntegralValue 变更积分值
-     * @return 计算后的积分值
+     * @param alterType          alterType（INCOME、EXPENSES）
+     * @param oldIntegralValue   oldIntegralValue
+     * @param alterIntegralValue alterIntegralValue
+     * @return the calculated integral value
      */
     private Integer determineIntegralValue(IntegralAlterType alterType, Integer oldIntegralValue, Integer alterIntegralValue) {
         if (alterType == IntegralAlterType.INCOME) {
-            // 收入类型，增加积分
+            // type income，increase the integral
             return oldIntegralValue + alterIntegralValue;
         }
         if (alterType == IntegralAlterType.EXPENSES) {
-            // 支出类型，扣减积分
+            // type expense，deducting the integral
             int integral = oldIntegralValue - alterIntegralValue;
             if (integral < 0) {
                 throw new BusinessException("Not enough integral.");

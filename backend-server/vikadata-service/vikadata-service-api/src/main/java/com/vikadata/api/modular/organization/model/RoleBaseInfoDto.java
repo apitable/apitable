@@ -2,9 +2,6 @@ package com.vikadata.api.modular.organization.model;
 
 import lombok.Data;
 
-/**
- * @author tao
- */
 @Data
 public class RoleBaseInfoDto {
 

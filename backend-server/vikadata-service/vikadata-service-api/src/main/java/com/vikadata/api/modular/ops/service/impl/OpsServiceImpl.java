@@ -18,9 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * Product Operation System Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2022/8/15
  */
 @Service
 public class OpsServiceImpl implements IOpsService {

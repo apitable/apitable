@@ -6,42 +6,35 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- * GM 命令单个小组件发布请求参数
- * </p>
- * @author Pengap
- * @date 2021/9/29 18:55:41
- */
 @Data
-@ApiModel("单个小组件发布请求参数")
+@ApiModel("Single widget release RO")
 public class SingleGlobalWidgetRo {
 
     @NotBlank
-    @ApiModelProperty(value = "节点Id", hidden = true)
+    @ApiModelProperty(value = "the node id", hidden = true)
     private String nodeId;
 
     @NotBlank
-    @ApiModelProperty(value = "小组件包Id")
+    @ApiModelProperty(value = "the widget id")
     private String packageId;
 
-    @ApiModelProperty(value = "是否生效")
+    @ApiModelProperty(value = "Whether to take effect")
     private Boolean isEnabled;
 
-    @ApiModelProperty(value = "是否模版")
+    @ApiModelProperty(value = "Whether the template")
     private Boolean isTemplate;
 
-    @ApiModelProperty(value = "模版小组件源码地址")
+    @ApiModelProperty(value = "template component source address")
     private String openSourceAddres;
 
-    @ApiModelProperty(value = "模版小组件扩展封面图")
+    @ApiModelProperty(value = "template widget extension cover")
     private String templateCover;
 
-    @ApiModelProperty(value = "官方小组网站")
+    @ApiModelProperty(value = "official widget website")
     private String website;
 
     @NotBlank
-    @ApiModelProperty(value = "记录Id", hidden = true)
+    @ApiModelProperty(value = "record id", hidden = true)
     private String recordId;
 
 }

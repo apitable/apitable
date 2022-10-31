@@ -27,12 +27,11 @@ import com.vikadata.entity.MemberEntity;
 
 /**
  * <p>
- * 模板数据处理
- * 千万不要交给Spring管理，因为每次使用都要new，处理服务类可以传递进来使用
- * </p>
+ * template data processor
  *
- * @author Shawn Deng
- * @date 2019/12/16 18:35
+ * Don't leave it to Spring to manage.
+ * Because you need new every time you use it, and the processing service class can be passed in for use.
+ * </p>
  */
 @Slf4j
 public class UploadDataListener extends AnalysisEventListener<Map<Integer, String>> {
@@ -48,43 +47,40 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
     private final List<Long> memberIds = new ArrayList<>();
 
     /**
-     * 是否具备《管理小组》权限
+     * whether user have the permission "CREATE_TEAM"
      */
     private boolean teamCreatable;
 
     /**
-     * 默认最大成员总数
+     * default maximum number of members
      */
     private final long defaultMaxMemberCount;
 
     /**
-     * 当前成员总数
+     * total current members
      */
     private final int currentMemberCount;
 
     /**
-     * 行数
+     * row count
      */
     private int rowCount;
 
     /**
-     * 成功总数
+     * success count
      */
     private int successCount;
 
     /**
-     * 错误总数
+     * error count
      */
     private int errorCount;
 
     /**
-     * 空间ID
+     * space id
      */
     private final String spaceId;
 
-    /**
-     * 成员服务
-     */
     private final IMemberService iMemberService;
 
     public UploadDataListener(String spaceId, IMemberService iMemberService, long defaultMaxMemberCount, int currentMemberCount) {
@@ -107,74 +103,74 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
     }
 
     /**
-     * 这个每一条数据解析都会来调用
+     * This method is called for every data parse
      *
-     * @param data    行数据
-     * @param context 上下文信息，类似一个holder
+     * @param data    a row data
+     * @param context handle context
      */
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         int currentRowIndex = context.readRowHolder().getRowIndex();
         int totalDataRow = context.readSheetHolder().getApproximateTotalRowNumber();
-        log.info("总行数：{}, 当前行：{}, 解析到数据：{}", totalDataRow, currentRowIndex, JSONUtil.toJsonStr(data));
-        //转换对象
-        log.info("索引列：{}", JSONUtil.toJsonStr(fields));
+        log.info("Total rows：{}, current row：{}, parsed data：{}", totalDataRow, currentRowIndex, JSONUtil.toJsonStr(data));
+        // convert object
+        log.info("index row：{}", JSONUtil.toJsonStr(fields));
         Map<String, String> fieldData = new LinkedHashMap<>(fields.size());
         CollUtil.forEach(fields, (key, value, index) -> fieldData.put(value, MapUtil.getStr(data, key)));
-        log.info("转换对象：{}", JSONUtil.toJsonStr(fieldData));
+        log.info("convert object：{}", JSONUtil.toJsonStr(fieldData));
         UploadDataDto rowData = BeanUtil.toBean(fieldData, UploadDataDto.class);
         this.validLimit(currentRowIndex, rowData);
-        // 属性校验
+        // validate fields
         boolean memberExist = validField(currentRowIndex, rowData);
         try {
-            // 存储数据
+            // data storage
             if (!memberExist) {
                 Long memberId = iMemberService.saveUploadData(spaceId, rowData, sendInviteEmails, sendNotifyEmails, teamCreatable);
                 memberIds.add(memberId);
             }
             successCount++;
-            log.info("存储数据成功!");
+            log.info("Data storage success!");
         }
         catch (Exception e) {
             errorCount++;
-            throw new ExcelDataValidateException(currentRowIndex, rowData, "数据有误，无法保存");
+            throw new ExcelDataValidateException(currentRowIndex, rowData, "the data is incorrect and cannot be saved");
         }
         finally {
             rowCount++;
-            // 打印处理进度
+            // print processing progress
             this.printProgress(totalDataRow, currentRowIndex);
         }
     }
 
     private void validLimit(int rowIndex, UploadDataDto rowData) {
-        log.info("空间原成员数：{}, 已成功处理的数量: {}，最大数量限制：{}", currentMemberCount, successCount, defaultMaxMemberCount);
+        log.info("the space original member number：{}, the number of successful processes: {}，max member number：{}", currentMemberCount, successCount, defaultMaxMemberCount);
         if (defaultMaxMemberCount == -1) {
             return;
         }
         if (currentMemberCount + successCount == defaultMaxMemberCount) {
-            throw new ExcelDataValidateException(rowIndex, rowData, "成员数量已达到上限");
+            throw new ExcelDataValidateException(rowIndex, rowData, "The maximum number of members has been reached");
         }
     }
 
     /**
-     * 校验列
+     * check column
      *
-     * @param rowIndex 行索引
-     * @param rowData  行数据
+     * @param rowIndex row index
+     * @param rowData  row data
      */
     private boolean validField(int rowIndex, UploadDataDto rowData) {
         if (StrUtil.isBlank(rowData.getEmail())) {
-            throw new ExcelDataValidateException(rowIndex, rowData, "邮箱未填写");
+            throw new ExcelDataValidateException(rowIndex, rowData, "email not filled in");
         }
-        // 校验邮箱格式
+        // verifying email format
         if (!Validator.isEmail(rowData.getEmail().trim())) {
-            throw new ExcelDataValidateException(rowIndex, rowData, "邮箱格式不正确");
+            throw new ExcelDataValidateException(rowIndex, rowData, "the email format is incorrect");
         }
-        // 校验邮箱重复
+        // verifying email duplication
         MemberEntity member = iMemberService.getBySpaceIdAndEmail(spaceId, rowData.getEmail());
         if (member != null) {
             if (BooleanUtil.isTrue(member.getIsActive())) {
-                throw new ExcelDataValidateException(rowIndex, rowData, "邮箱已存在当前空间站");
+                throw new ExcelDataValidateException(rowIndex, rowData, "The email already exist in the current space");
             }
             else {
                 sendInviteEmails.add(rowData.getEmail());
@@ -186,61 +182,61 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
     }
 
     /**
-     * 打印处理进度
+     * print processing progress
      *
-     * @param totalDataRow    总行数
-     * @param currentRowIndex 当前行
+     * @param totalDataRow    row data
+     * @param currentRowIndex current row index
      */
     private void printProgress(int totalDataRow, int currentRowIndex) {
         NumberFormat numberFormat = NumberFormat.getInstance();
-        //计算解析进度
+        // compute parsing progress
         numberFormat.setMaximumFractionDigits(2);
         String format = numberFormat.format(((float) (currentRowIndex - 2) / (totalDataRow - 3)) * 100).concat("%");
-        log.info("解析进度: {}", format);
+        log.info("analytical progress: {}", format);
     }
 
     /**
-     * 这里会一行行的返回头
+     * handle head row
      *
-     * @param headMap 头部Map
-     * @param context 上下文信息，类似一个holder
+     * @param headMap head row map
+     * @param context context
      */
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        log.info("解析到一条头数据:{}", JSONUtil.toJsonStr(headMap));
+        log.info("parse to a header:{}", JSONUtil.toJsonStr(headMap));
     }
 
     /**
-     * 所有数据解析完成了 都会来调用
+     * This method is called when all data parsing is complete
      *
-     * @param context 上下文信息，类似一个holder
+     * @param context processing context
      */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        log.info("所有数据解析完成，确保最后遗留的数据也存储到数据库");
+        log.info("All data parsing is complete. Make sure the last remaining data is also stored in the database");
     }
 
     /**
-     * 处理数据转换异常
+     * Handle data conversion exceptions
      *
-     * @param exception 异常
-     * @param context   上下文信息，类似一个holder
+     * @param exception exception
+     * @param context   handle context
      */
     @Override
     public void onException(Exception exception, AnalysisContext context) {
-        log.warn("解析或校验失败，但是继续解析下一行：{}", exception.getMessage());
+        log.warn("parsing or validation failed，continue next row：{}", exception.getMessage());
         if (exception instanceof ExcelDataConvertException) {
-            // 如果是某一个单元格的转换异常 能获取到具体行号
-            // 如果要获取头的信息 配合invokeHeadMap使用
-            // 数据转换异常，我们都是String接收，这是不可能发生的
+            // If one of the cell conversion exception, get the row number。
+            // If get header information, please use invokeHeadMap
+            // Data conversion exception, which cannot happen.
             ExcelDataConvertException excelDataConvertException = (ExcelDataConvertException) exception;
-            log.warn("第{}行，第{}列解析异常", excelDataConvertException.getRowIndex(), excelDataConvertException.getColumnIndex());
+            log.warn("the number {} row，the number {} col parsing exceptions", excelDataConvertException.getRowIndex(), excelDataConvertException.getColumnIndex());
         }
         else if (exception instanceof ExcelDataValidateException) {
-            // 构造失败列表
+            // construct failure list
             ExcelDataValidateException validateException = (ExcelDataValidateException) exception;
             String errorMessage = exception.getMessage();
-            log.warn("第{}行的数据校验不合法，行数据: [{}], 原因:{}",
+            log.warn("the {} row data illegal，data: [{}], reason:{}",
                     validateException.getRowIndex(),
                     JSONUtil.toJsonStr(validateException.getRowData()),
                     errorMessage);

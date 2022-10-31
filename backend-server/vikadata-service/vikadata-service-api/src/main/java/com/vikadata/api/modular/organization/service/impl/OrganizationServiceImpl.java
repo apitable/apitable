@@ -48,14 +48,6 @@ import com.vikadata.entity.SocialTenantEntity;
 
 import org.springframework.stereotype.Service;
 
-/**
- * <p>
- * 组织单元 服务接口实现
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/1/10 14:20
- */
 @Slf4j
 @Service
 public class OrganizationServiceImpl implements IOrganizationService {
@@ -104,11 +96,11 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord, String highlightClassName) {
-        log.info("搜索组织单元");
+        log.info("search organizational unit");
         UnitSearchResultVo unitSearchResultVo = new UnitSearchResultVo();
         String all = "*";
         if (CharSequenceUtil.isNotBlank(likeWord) && !CharSequenceUtil.equals(likeWord, all)) {
-            //模糊搜索部门
+            // fuzzy search department
             List<Long> teamIds = teamMapper.selectTeamIdsLikeName(spaceId, likeWord);
             if (CollUtil.isNotEmpty(teamIds)) {
                 List<UnitTeamVo> unitTeamVoList = this.findUnitTeamVo(spaceId, teamIds);
@@ -118,7 +110,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
                 });
                 unitSearchResultVo.setTeams(unitTeamVoList);
             }
-            //模糊搜索成员
+            //fuzzy search members
             List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
             if (CollUtil.isNotEmpty(memberIds)) {
                 List<UnitMemberVo> unitMemberList = findUnitMemberVo(memberIds);
@@ -142,7 +134,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
             if (Objects.nonNull(socialTenantEntity)
                     && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
                     && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-                // 如果是企业微信服务商绑定的空间站，需要查询企微通讯录中符合条件的用户
+                // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
                 String suiteId = socialTenantEntity.getAppId();
                 String authCorpId = socialTenantEntity.getTenantId();
                 Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
@@ -151,13 +143,13 @@ public class OrganizationServiceImpl implements IOrganizationService {
                     WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, likeWord, 1);
                     List<String> cpUserIds = queryResult.getUser().getUserid();
                     if (CollUtil.isNotEmpty(cpUserIds)) {
-                        // 将其中未改名的成员填充至返回结果
+                        // Populate the returned result with the un-renamed members
                         List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, cpUserIds);
                         if (CollUtil.isNotEmpty(socialMemberIds)) {
                             List<UnitMemberVo> unitMemberList = findUnitMemberVo(socialMemberIds);
                             unitMemberList.forEach(member -> {
                                 member.setOriginName(member.getMemberName());
-                                // 企微用户名称需要前端渲染，搜索结果不返回高亮
+                                // Wecom user names need to be front-end rendered, and search results do not return highlighting
                                 member.setMemberName(member.getMemberName());
                             });
 
@@ -180,16 +172,16 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public SubUnitResultVo findSubUnit(String spaceId, Long teamId) {
-        log.info("查询部门下的组织单元资源");
+        log.info("query units in the team.");
         SubUnitResultVo subUnitResultVo = new SubUnitResultVo();
-        //获取直属子部门列表
+        // obtain a list of directly subordinate departments
         List<Long> subTeamIds = teamMapper.selectTeamIdsByParentId(spaceId, teamId);
-        //获取子部门列表
+        // obtain the list of sub departments
         if (CollUtil.isNotEmpty(subTeamIds)) {
             List<UnitTeamVo> unitTeamVoList = this.findUnitTeamVo(spaceId, subTeamIds);
             subUnitResultVo.setTeams(unitTeamVoList);
         }
-        //获取成员列表
+        // getting a member list
         if (teamId != null && teamId != 0) {
             List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamId(teamId);
             if (CollUtil.isNotEmpty(memberIds)) {
@@ -202,31 +194,31 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public UnitTeamVo findUnitTeamVo(String spaceId, Long teamId) {
-        log.info("获取部门组织单元视图列表");
+        log.info("query the team's unit info.");
         UnitTeamVo unitTeam = teamMapper.selectUnitTeamVoByTeamId(spaceId, teamId);
-        //统计人数
+        // the number of statistics
         unitTeam.setMemberCount(iTeamService.countMemberCountByParentId(teamId));
-        //查询是否有子组织单元（部门或成员）
+        // query whether there are sub-organizational units（team or member）
         unitTeam.setHasChildren(iTeamService.checkHasSubUnitByTeamId(spaceId, teamId));
         return unitTeam;
     }
 
     @Override
     public List<UnitTeamVo> findUnitTeamVo(String spaceId, List<Long> teamIds) {
-        log.info("批量获取部门组织单元视图列表");
+        log.info("query the teams' unit info.");
         List<UnitTeamVo> unitTeamList = teamMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
         CollUtil.filter(unitTeamList, (Editor<UnitTeamVo>) unitTeamVo -> {
-            //统计人数
+            // the number of statistics
             int memberCount = iTeamService.countMemberCountByParentId(unitTeamVo.getTeamId());
             unitTeamVo.setMemberCount(memberCount);
-            // 查询是否有子部门
+            // query whether sub-departments exist
             List<Long> subTeamIds = teamMapper.selectTeamIdsByParentId(spaceId, unitTeamVo.getTeamId());
             if (CollUtil.isNotEmpty(subTeamIds)) {
                 unitTeamVo.setHasChildren(true);
                 unitTeamVo.setHasChildrenTeam(true);
                 return unitTeamVo;
             }
-            // 查询部门是否有成员
+            // query whether the department has members
             unitTeamVo.setHasChildren(memberCount > 0);
             return unitTeamVo;
         });
@@ -240,7 +232,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<UnitMemberVo> findUnitMemberVo(List<Long> memberIds) {
-        log.info("批量获取成员组织单元视图列表");
+        log.info("query the members' unit info.");
         if (CollUtil.isEmpty(memberIds)) {
             return new ArrayList<>();
         }
@@ -260,7 +252,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params, Long sharer) {
-        log.info("加载/搜索 组织单元信息视图");
+        log.info("load or search unit");
         List<Long> unitIds = new ArrayList<>();
         if (CollUtil.isEmpty(params.getUnitIds())) {
             if (BooleanUtil.isTrue(params.getAll())) {
@@ -270,17 +262,17 @@ public class OrganizationServiceImpl implements IOrganizationService {
                 List<Long> refIds = new ArrayList<>();
                 String likeWord = CharSequenceUtil.trim(params.getKeyword());
                 if (CharSequenceUtil.isNotBlank(likeWord)) {
-                    // 模糊搜索部门
+                    // fuzzy search department
                     List<Long> teamIds = teamMapper.selectTeamIdsLikeName(spaceId, likeWord);
                     refIds.addAll(teamIds);
-                    // 模糊搜索成员
+                    // fuzzy search members
                     List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
                     refIds.addAll(memberIds);
-                    // 模糊搜索邮件
+                    // fuzzy search email
                     if (BooleanUtil.isTrue(params.getSearchEmail())) {
                         refIds.addAll(memberMapper.selectIdsBySpaceIdAndEmailKeyword(spaceId, likeWord));
                     }
-                    // 模糊搜索角色
+                    // fuzzy search role
                     List<Long> roleIds = iRoleService.getRoleIdsByKeyWord(spaceId, likeWord);
                     refIds.addAll(roleIds);
                     SocialTenantEntity socialTenantEntity = Optional.ofNullable(socialTenantBindService.getBySpaceId(spaceId))
@@ -289,7 +281,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
                     if (Objects.nonNull(socialTenantEntity)
                             && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
                             && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-                        // 如果是企业微信服务商绑定的空间站，需要查询企微通讯录中符合条件的用户
+                        // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
                         String suiteId = socialTenantEntity.getAppId();
                         String authCorpId = socialTenantEntity.getTenantId();
                         Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
@@ -298,7 +290,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
                             WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, likeWord, 1);
                             List<String> cpUserIds = queryResult.getUser().getUserid();
                             if (CollUtil.isNotEmpty(cpUserIds)) {
-                                // 将其中未改名的成员填充至返回结果
+                                // Populate the returned result with the un-renamed members
                                 List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, cpUserIds);
                                 refIds.addAll(socialMemberIds);
                             }
@@ -310,14 +302,14 @@ public class OrganizationServiceImpl implements IOrganizationService {
                 }
                 else {
                     if (sharer != null) {
-                        // 节点分享的分享者
+                        // a sharer of node sharing
                         refIds.add(sharer);
                     } else if (userId != null) {
-                        // 加载最近选择的成员和部门
+                        // Load the most recently selected members and departments
                         unitIds = userSpaceRemindRecordService.getRemindUnitIds(userId, spaceId);
                         Integer loadCount = limitProperties.getMemberFieldMaxLoadCount();
                         if (CollUtil.isEmpty(unitIds) || unitIds.size() < loadCount) {
-                            // 获取该成员最晚加入的小组的同组成员
+                            // Gets the group members of the latest group that the member joined
                             Long memberId = userSpaceService.getMemberId(userId, spaceId);
                             List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
                             if (CollUtil.isNotEmpty(teamIds)) {
@@ -333,7 +325,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
                 }
             }
         }
-        // 指定过滤的组织单元ID
+        // Specifies the ID of the organizational unit to filter
         if (CollUtil.isNotEmpty(params.getFilterIds())) {
             unitIds.removeAll(params.getFilterIds());
         }
@@ -345,19 +337,18 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<UnitInfoVo> accurateSearch(String spaceId, List<String> names) {
-        log.info("精准查询组织单元名称,spaceId:{},names:{}", spaceId, names);
+        log.info("accurate search unit by spaceId:{} and names:{}", spaceId, names);
         if (CollUtil.isEmpty(names)) {
             return new ArrayList<>();
         }
-        // 搜索部门
+        // search team
         List<Long> refIds = teamMapper.selectIdBySpaceIdAndNames(spaceId, names);
-        // 搜索成员
+        // search member
         List<Long> memberIds = memberMapper.selectIdBySpaceIdAndNames(spaceId, names);
         refIds.addAll(memberIds);
         if (CollUtil.isEmpty(refIds)) {
             return new ArrayList<>();
         }
-        // 获取组织单元ID
         List<Long> unitIds = unitMapper.selectIdsByRefIds(refIds);
         if (CollUtil.isEmpty(unitIds)) {
             return new ArrayList<>();
@@ -367,11 +358,10 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public SubUnitResultVo loadMemberFirstTeams(String spaceId, List<Long> teamIds) {
-        log.info("加载成员所属部门首层部门信息");
+        log.info("Load the first department of the organization tree to which a member belongs");
         List<Long> loadTeamIds = this.loadMemberFirstTeamIds(spaceId, teamIds);
-        // 获取所需加载部门UnitTeamVo
+        // get the required load department UnitTeamVo
         List<UnitTeamVo> unitTeamVoList = this.findUnitTeamVo(spaceId, loadTeamIds);
-        // 构建返回值
         SubUnitResultVo subUnitResultVo = new SubUnitResultVo();
         subUnitResultVo.setTeams(unitTeamVoList);
         return subUnitResultVo;
@@ -379,12 +369,12 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds) {
-        log.info("加载成员所属部门首层部门ID");
-        // 成员所属部门及所有子级部门Id和parentId
+        log.info("Load the first department id of the organization tree to which a member belongs");
+        // Member's department's and all sub-departments' id and parentId
         List<TeamCteInfo> teamsInfo = teamMapper.selectChildTreeByTeamIds(spaceId, teamIds);
-        // 成员所属部门及所有子级部门Id
+        // the member's team and all sub-teams' id
         List<Long> teamIdList = teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
-        // 过滤掉不需要加载的部门
+        // Filter out the departments that do not need to be loaded
         return teamsInfo.stream()
             .filter(teamInfo -> !teamIdList.contains(teamInfo.getParentId()))
             .map(TeamCteInfo::getId).collect(Collectors.toList());

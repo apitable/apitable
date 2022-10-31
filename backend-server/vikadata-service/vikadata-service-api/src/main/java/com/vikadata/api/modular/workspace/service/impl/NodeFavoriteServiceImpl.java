@@ -32,14 +32,6 @@ import static com.vikadata.api.enums.exception.NodeException.FAVORITE_NODE_NOT_E
 import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATION_DENIED;
 
-/**
- * <p>
- * 节点收藏表 服务实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/9/1
- */
 @Slf4j
 @Service
 public class NodeFavoriteServiceImpl implements INodeFavoriteService {
@@ -60,17 +52,17 @@ public class NodeFavoriteServiceImpl implements INodeFavoriteService {
 
     @Override
     public List<FavoriteNodeInfo> getFavoriteNodeList(String spaceId, Long memberId) {
-        log.info("获取收藏的节点列表");
+        log.info("get favorite node list");
         List<String> nodeIds = nodeFavoriteMapper.selectOrderNodeIdByMemberId(memberId);
         if (CollUtil.isEmpty(nodeIds)) {
             return new ArrayList<>();
         }
-        // 查询节点视图信息
+        // query node view information
         List<NodeInfoVo> nodeInfoVos = iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
         if (CollUtil.isEmpty(nodeInfoVos)) {
             return new ArrayList<>();
         }
-        // 输出收藏节点的顺序
+        // the order in which the collection nodes are output
         Map<String, String> nodeIdToPreNodeIdMap = new HashMap<>(nodeIds.size() - 1);
         for (int i = 1; i < nodeIds.size(); i++) {
             nodeIdToPreNodeIdMap.put(nodeIds.get(i), nodeIds.get(i - 1));
@@ -88,11 +80,11 @@ public class NodeFavoriteServiceImpl implements INodeFavoriteService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void move(Long memberId, String nodeId, String preNodeId) {
-        log.info("移动收藏节点的位置");
+        log.info("move favorite node position");
         List<String> nodeIds = nodeFavoriteMapper.selectNodeIdByMemberId(memberId);
         ExceptionUtil.isTrue(nodeIds.contains(nodeId), FAVORITE_NODE_NOT_EXIST);
         ExceptionUtil.isFalse(nodeId.equals(preNodeId), INCORRECT_ARG);
-        // 空字符串处理为null
+        // empty string is processed as null
         preNodeId = StrUtil.isBlank(preNodeId) ? null : preNodeId;
         ExceptionUtil.isTrue(preNodeId == null || nodeIds.contains(preNodeId), FAVORITE_NODE_NOT_EXIST);
         String originPreNodeId = nodeFavoriteMapper.selectPreNodeIdByMemberIdAndNodeId(memberId, nodeId);
@@ -100,9 +92,9 @@ public class NodeFavoriteServiceImpl implements INodeFavoriteService {
         if (same) {
             return;
         }
-        // 原位置的后一个节点指向该节点的前置节点 (A <- B <- C  =>  A <- C)
+        // The next node in the original position points to the front node of the node (A <- B <- C => A <- C)
         nodeFavoriteMapper.updatePreNodeIdByMemberIdAndPreNodeId(originPreNodeId, nodeId, memberId);
-        // 新位置的后一个节点指向该节点、该节点指向新的前置节点 (D <- E  =>  D <- B <- E)
+        // The next node of the new location points to the node, and the node points to the new front node (D <- E => D <- B <- E)
         nodeFavoriteMapper.updatePreNodeIdByMemberIdAndPreNodeId(nodeId, preNodeId, memberId);
         boolean flag = SqlHelper.retBool(nodeFavoriteMapper.updatePreNodeIdByMemberIdAndNodeId(preNodeId, memberId, nodeId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
@@ -111,22 +103,22 @@ public class NodeFavoriteServiceImpl implements INodeFavoriteService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateFavoriteStatus(String spaceId, Long memberId, String nodeId) {
-        log.info("更改节点的收藏状态");
-        // 查询该节点是否已收藏
+        log.info("update favorite status");
+        // query whether the node is collected
         boolean exist = SqlTool.retCount(nodeFavoriteMapper.countByMemberIdAndNodeId(memberId, nodeId)) > 0;
         if (exist) {
-            // 已收藏，取消收藏该节点，将后一个节点指向该节点的前置节点 (A <- B <- C  =>  A <- C)
+            // Collected, uncollect the node, point the latter node to the front node of the node (A <- B <- C => A <- C)
             String preNodeId = nodeFavoriteMapper.selectPreNodeIdByMemberIdAndNodeId(memberId, nodeId);
             nodeFavoriteMapper.updatePreNodeIdByMemberIdAndPreNodeId(preNodeId, nodeId, memberId);
             boolean flag = SqlHelper.retBool(nodeFavoriteMapper.deleteByMemberIdAndNodeId(memberId, nodeId));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         } else {
-            // 校验节点是否存在
+            // check whether the node exists
             iNodeService.checkNodeIfExist(spaceId, nodeId);
-            // 校验节点是否有指定操作权限
+            // Check whether the node has the specified operation permission
             controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                     status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-            // 收藏该节点并置于首位，将原首位节点的前置节点指向该节点 (B  =>  A <- B)
+            // Collect the node and place it in the first place, and point the front node of the original first node to the node (B => A <- B)
             nodeFavoriteMapper.updatePreNodeIdByMemberIdAndPreNodeId(nodeId, null, memberId);
             NodeFavoriteEntity entity = NodeFavoriteEntity.builder()
                 .spaceId(spaceId)

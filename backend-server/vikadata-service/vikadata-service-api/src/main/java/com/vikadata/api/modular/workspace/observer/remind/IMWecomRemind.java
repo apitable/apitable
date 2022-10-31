@@ -25,11 +25,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * Im-企业微信提醒，自动根据开启状态注册订阅主题
+ * Im-wecom reminder，automatically register subscription topics according to the open status.
  * </p>
- *
- * @author Pengap
- * @date 2021/10/9 13:42:47
  */
 @Slf4j
 @Component
@@ -50,7 +47,7 @@ public class IMWecomRemind extends AbstractRemind {
 
     @Override
     public void notifyMemberAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅第三方IM「企业微信」提醒=>@成员字段");
+        log.info("[remind notification]-user subscribe third party im wecom remind=>@member");
         String notifyUrl = meta.imRemindParameter.notifyUrl;
         String fromMemberName = meta.imRemindParameter.fromMemberName;
         Boolean fromMemberNameModified = meta.imRemindParameter.fromMemberNameModified;
@@ -61,13 +58,13 @@ public class IMWecomRemind extends AbstractRemind {
         if (Objects.nonNull(appType) && appType == SocialAppType.ISV.getType()) {
             SocialTenantEntity tenantEntity = socialTenantService.getByAppIdAndTenantId(meta.socialAppId, meta.socialTenantId);
             Agent agent = JSONUtil.toBean(tenantEntity.getContactAuthScope(), Agent.class);
-            // 没有修改成员名称的，需要开启 openId -> 名称转译
+            // If the member name is not modified, you need to open openId -> name translation
             WxCpMessage recordRemindMemberMsg = WeComIsvCardFactory.createRecordRemindMemberCardMsg(agent.getAgentId(),
                     meta.recordTitle, fromMemberName, fromMemberNameModified, nodeName, notifyUrl);
             try {
                 socialCpIsvService.sendMessageToUser(tenantEntity, meta.spaceId, recordRemindMemberMsg, sendOpenIds);
             } catch (WxErrorException ex) {
-                log.error("企业微信第三方服务商消息发送失败", ex);
+                log.error("wecom third-party service provider failed to send messages.", ex);
             }
         } else {
             WxCpMessage recordRemindMemberMsg = WeComCardFactory.createRecordRemindMemberCardMsg(Integer.valueOf(meta.socialAppId),
@@ -79,7 +76,7 @@ public class IMWecomRemind extends AbstractRemind {
 
     @Override
     public void notifyCommentAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅第三方IM「企业微信」提醒=>评论消息");
+        log.info("[remind notification]-user subscribe third party im wecom remind=>comments");
         String notifyUrl = meta.imRemindParameter.notifyUrl;
         String fromMemberName = meta.imRemindParameter.fromMemberName;
         Boolean fromMemberNameModified = meta.imRemindParameter.fromMemberNameModified;
@@ -91,13 +88,13 @@ public class IMWecomRemind extends AbstractRemind {
         if (Objects.nonNull(appType) && appType == SocialAppType.ISV.getType()) {
             SocialTenantEntity tenantEntity = socialTenantService.getByAppIdAndTenantId(meta.socialAppId, meta.socialTenantId);
             Agent agent = JSONUtil.toBean(tenantEntity.getContactAuthScope(), Agent.class);
-            // 没有修改成员名称的，需要开启 openId -> 名称转译
+            // If the member name is not modified, you need to open openId -> name translation
             WxCpMessage recordRemindMemberMsg = WeComIsvCardFactory.createCommentRemindCardMsg(agent.getAgentId(),
                     meta.recordTitle, commentContentHtml, fromMemberName, fromMemberNameModified, nodeName, notifyUrl);
             try {
                 socialCpIsvService.sendMessageToUser(tenantEntity, meta.spaceId, recordRemindMemberMsg, sendOpenIds);
             } catch (WxErrorException ex) {
-                log.error("企业微信第三方服务商消息发送失败", ex);
+                log.error("wecom third-party service provider failed to send messages.", ex);
             }
         } else {
             WxCpMessage commentRemindMsg = WeComCardFactory.createCommentRemindCardMsg(Integer.valueOf(meta.socialAppId),

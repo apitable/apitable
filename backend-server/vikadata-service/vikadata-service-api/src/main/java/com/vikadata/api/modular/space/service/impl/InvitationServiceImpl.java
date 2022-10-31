@@ -44,14 +44,6 @@ import org.springframework.stereotype.Service;
 import static com.vikadata.api.enums.exception.OrganizationException.INVITE_EXPIRE;
 import static com.vikadata.api.enums.exception.SpaceException.NO_ALLOW_OPERATE;
 
-/**
- * <p>
- * space--invitation service implementation
- * </p>
- *
- * @author Chambers
- * @since 2020-03-06
- */
 @Slf4j
 @Service
 public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, InvitationEntity> implements IInvitationService {

@@ -57,8 +57,7 @@ public class AutomationActionServiceImpl extends ServiceImpl<AutomationActionMap
 
 
     /**
-     * 创建 Action 请求体
-     * @return
+     * Create the action request body.
      */
     private JSONObject buildAutomationApiAction(String triggerId,String method,String webhookUrl){
         JSONObject actionObject = new JSONObject();

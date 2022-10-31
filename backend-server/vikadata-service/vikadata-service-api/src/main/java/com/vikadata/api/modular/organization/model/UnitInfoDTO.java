@@ -4,14 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>
- * 组织单元信息DTO
- * </p>
- *
- * @author Chambers
- * @date 2022/6/6
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

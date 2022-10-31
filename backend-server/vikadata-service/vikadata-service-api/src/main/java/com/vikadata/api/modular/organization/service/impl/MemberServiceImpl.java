@@ -127,14 +127,6 @@ import static com.vikadata.api.enums.exception.OrganizationException.UPDATE_MEMB
 import static com.vikadata.api.enums.exception.OrganizationException.UPDATE_MEMBER_TEAM_ERROR;
 import static com.vikadata.api.enums.exception.PermissionException.SET_MAIN_ADMIN_FAIL;
 
-/**
- * <p>
- * 组织架构-成员表 服务实现类
- * </p>
- *
- * @author Chambers
- * @since 2019-11-06
- */
 @Service
 @Slf4j
 public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEntity> implements IMemberService {
@@ -259,7 +251,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public List<Long> getUnitsByMember(Long memberId) {
-        log.info("获取成员归属的所有组织单元ID");
+        log.info("Gets all unit ids for the member");
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
         List<Long> teamIds = teamMemberRelMapper.selectAllTeamIdByMemberId(memberId);
         unitRefIds.addAll(teamIds);
@@ -402,7 +394,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 .collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId, (k1, k2) -> k2));
 
         List<MemberEntity> memberEntities = listByIds(memberIds);
-        // 将 member、unit 组合成最终的返回结果
+        // integrate member's and unit's information
         return memberEntities.stream()
                 .map(member -> {
                     MemberBriefInfoVo item = new MemberBriefInfoVo();
@@ -421,12 +413,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchCreate(String spaceId, List<MemberEntity> entities) {
-        log.info("批量创建成员");
+        log.info("Batch create members.");
         if (CollUtil.isEmpty(entities)) {
             return;
         }
         saveBatch(entities);
-        // 创建组织单元
+        // create units
         List<UnitEntity> unitEntities = new ArrayList<>();
         for (MemberEntity member : entities) {
             UnitEntity unit = new UnitEntity();
@@ -454,18 +446,19 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         }
         List<MemberEntity> memberEntities = new LinkedList<>();
         List<Long> memberIds = new ArrayList<>();
-        // 查询邮箱绑定的用户
+        // query user by email
         List<String> distinctEmails = CollUtil.distinct(emails);
         List<UserEntity> userEntities = iUserService.getByEmails(distinctEmails);
         if (CollUtil.isNotEmpty(userEntities)) {
             List<Long> restoreMemberIds = new ArrayList<>();
-            // 查询用户是否已经加入过该空间
+            // Query whether a user has joined the space.
             List<Long> userIds = userEntities.stream().map(UserEntity::getId).collect(Collectors.toList());
             List<MemberDto> members = baseMapper.selectDtoBySpaceIdAndUserIds(spaceId, userIds);
             Map<Long, Long> userToMemberIdMap = members.stream().collect(Collectors.toMap(MemberDto::getUserId, MemberDto::getId));
             for (UserEntity user : userEntities) {
                 distinctEmails.remove(user.getEmail());
-                // 用户已激活空间数量到达上限的，受邀空间归入未激活空间列表
+                // If the number of activated spaces reaches the upper limit.
+                // the invited space will be included in the list of inactive spaces
                 MemberEntity member = new MemberEntity();
                 member.setUserId(user.getId());
                 member.setSpaceId(spaceId);
@@ -479,7 +472,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 member.setIsSocialNameModified(SocialNameModified.NO_SOCIAL.getValue());
                 member.setIsAdmin(false);
                 Long memberId = userToMemberIdMap.get(user.getId());
-                // 恢复的历史成员
+                // the restored history member
                 if (memberId != null) {
                     memberIds.add(memberId);
                     restoreMemberIds.add(memberId);
@@ -487,20 +480,20 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     restoreMember(member);
                     continue;
                 }
-                // 绑定用户、激活的新成员
+                // bind user and activate new member
                 Long id = IdWorker.getId();
                 member.setId(id);
                 memberEntities.add(member);
                 memberIds.add(id);
             }
             if (CollUtil.isNotEmpty(restoreMemberIds)) {
-                // 恢复组织单元
+                // recovery unit
                 iUnitService.restoreMemberUnit(spaceId, restoreMemberIds);
             }
-            // 令主动加入空间的申请失效
+            // the application for joining space is invalid
             spaceApplyMapper.invalidateTheApply(userIds, spaceId, InviteType.EMAIL_INVITE.getType());
         }
-        // 无绑定用户、未激活的新成员
+        // no bind user and inactive new member
         distinctEmails.forEach(email -> {
             MemberEntity member = new MemberEntity();
             Long id = IdWorker.getId();
@@ -510,11 +503,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             memberEntities.add(member);
         });
 
-        //添加成员
+        // add members
         if (CollUtil.isNotEmpty(memberEntities)) {
             this.batchCreate(spaceId, memberEntities);
         }
-        // 部门绑定
+        // member bind team
         iTeamMemberRelService.addMemberTeams(memberIds, Collections.singletonList(teamId));
         return iUnitService.getUnitIdsByRefIds(memberIds);
     }
@@ -648,8 +641,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sendInviteEmail(String lang, String spaceId, Long fromMemberId, String email) {
-        log.info("发送邀请邮件");
-        //当前空间的对应邮箱其他邀请链接失效
+        log.info("send Invite email");
+        // Other invitation links of the mailbox corresponding to the current space are invalid
         spaceInviteRecordMapper.expireBySpaceIdAndEmail(Collections.singletonList(spaceId), email);
         // create user invitation link
         String inviteToken = IdUtil.fastSimpleUUID();
@@ -680,7 +673,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     public void sendUserInvitationNotifyEmail(String lang, String spaceId, Long fromMemberId, String email) {
         try {
             log.info("Begin send user invitation notify email :{}", DateUtil.now());
-            //渲染邮件HTML正文
+            //  email HTML main body
             String inviteUrl = StrUtil.format(constProperties.getServerDomain() + "/space/{}/workbench", spaceId);
             this.sendUserInvitationEmail(lang, spaceId, fromMemberId, inviteUrl, email);
             log.info("End send user invitation notify email :{}", DateUtil.now());
@@ -707,22 +700,22 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void addTeamMember(String spaceId, TeamAddMemberRo data) {
-        log.info("部门添加成员");
+        log.info("team add member");
         Long teamId = data.getTeamId();
         ExceptionUtil.isNotNull(teamId != 0L, GET_TEAM_ERROR);
         if (ObjectUtil.isNotNull(teamId)) {
             TeamEntity team = iTeamService.getById(teamId);
             ExceptionUtil.isNotNull(team, GET_TEAM_ERROR);
         }
-        //组织单元列表，部门或成员
+        // unit list, member or team
         List<OrgUnitRo> unitList = data.getUnitList();
         List<Long> memberIds = new ArrayList<>();
         int teamType = 1, memberType = 2;
         CollUtil.forEach(unitList.iterator(), (value, index) -> {
             if (value.getType().equals(teamType)) {
-                //部门单位，查询所有子部门，查询所属成员
+                // Department Unit. Query all subdepartments and their members
                 if (value.getId() == 0L) {
-                    //根部门，查询空间站所有成员
+                    // Root team, check all members of the space
                     List<Long> members = baseMapper.selectMemberIdsBySpaceId(spaceId);
                     memberIds.addAll(members);
                 }
@@ -733,26 +726,24 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 }
             }
             else if (value.getType().equals(memberType)) {
-                //成员单位
                 memberIds.add(value.getId());
             }
         });
-        //查询部门的所属成员，排重，防止重复插入
+        // query the team's members. distanct, Prevent repeated insertions
         List<Long> originMemberIds = teamMemberRelMapper.selectMemberIdsByTeamId(teamId);
         List<Long> distinctIds = CollUtil.filter(memberIds, (Filter<Long>) memberId -> !originMemberIds.contains(memberId));
-        //应该是干净的数据插入
+        // it should be a clean data insert
         iTeamMemberRelService.addMemberTeams(CollUtil.distinct(distinctIds), Collections.singletonList(teamId));
-        //成员关联根部门关系移除
+        // member remover from root team.
         Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
         teamMemberRelMapper.deleteBatchMemberByTeams(distinctIds, rootTeamId);
-        // 发送通知渲染字段
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().playerIds(distinctIds).bodyExtras(
                 Dict.create().set(TEAM_NAME, teamMapper.selectTeamNameById(teamId)).set(TEAM_ID, teamId)).build());
     }
 
     @Override
     public void updateMember(Long memberId, UpdateMemberOpRo opRo) {
-        log.info("编辑成员信息");
+        log.info("update member");
         MemberEntity member = new MemberEntity();
         member.setId(memberId);
         member.setMemberName(opRo.getMemberName());
@@ -760,7 +751,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         member.setIsSocialNameModified(SocialNameModified.YES.getValue());
         boolean memUpdate = updateById(member);
         ExceptionUtil.isTrue(memUpdate, UPDATE_MEMBER_ERROR);
-        //删除缓存
+        // delete cache
         TaskManager.me().execute(() -> {
             MemberEntity entity = this.getById(memberId);
             if (entity.getUserId() == null) {
@@ -773,7 +764,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMember(UpdateMemberRo data) {
-        log.info("编辑成员信息");
+        log.info("update member");
         Long memberId = data.getMemberId();
         MemberEntity member = getById(memberId);
         ExceptionUtil.isNotNull(member, NOT_EXIST_MEMBER);
@@ -782,7 +773,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         }
         List<Long> teamIds = data.getTeamIds();
         if (CollUtil.isNotEmpty(teamIds)) {
-            //传递过空，判断是否当前成员有所属部门
+            // Check whether the current member belongs to a department
             ExceptionUtil.isFalse(data.getTeamIds().contains(0L), UPDATE_MEMBER_TEAM_ERROR);
         }
         else {
@@ -790,13 +781,13 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             Long rootTeamId = teamMapper.selectRootIdBySpaceId(member.getSpaceId());
             teamIds.add(rootTeamId);
         }
-        //成员原归属部门列表,包含根部门
+        // List of the original departments of the member, including the root department
         List<Long> originTeams = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
-        //并集，下面过滤出真实操作的ID
+        // unionSet，The following displays the ID of the actual operation
         List<Long> unionTeamList = (List<Long>) CollUtil.union(teamIds, originTeams);
-        //新增集合,差集
+        // the new collection, difference set
         List<Long> addTeamList = (List<Long>) CollUtil.disjunction(unionTeamList, originTeams);
-        //删除集合,差集
+        // delete the collection, difference set
         List<Long> removeTeamList = (List<Long>) CollUtil.disjunction(unionTeamList, teamIds);
         if (CollUtil.isNotEmpty(addTeamList)) {
             iTeamMemberRelService.addMemberTeams(Collections.singletonList(memberId), addTeamList);
@@ -810,15 +801,15 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMemberByTeamId(String spaceId, List<Long> memberIds, List<Long> teamIds) {
-        log.info("根组织下分配成员小组");
-        //检查调整后的部门是否有重复的，重复的则排除掉
+        log.info("assign member groups to the root organization");
+        // Check if there are duplicates in the adjusted departments, and eliminate the duplicates
         Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
         teamMemberRelMapper.deleteBatchMemberByTeams(memberIds, rootTeamId);
-        //查询成员所属部门，包括根部门
+        // Query the departments to which a member belongs, including the root department
         List<TeamMemberRelEntity> tmrList = teamMemberRelMapper.selectByMemberIds(memberIds);
         Map<Long, List<Long>> toAddMap = new LinkedHashMap<>(memberIds.size());
         memberIds.forEach(memberId -> {
-            //成员已关联的部门
+            // member indicates an associated department
             List<TeamMemberRelEntity> memTeamList = tmrList.stream().filter(e -> e.getMemberId().equals(memberId)).collect(Collectors.toList());
             if (CollUtil.isNotEmpty(memTeamList)) {
                 Set<Long> belongTeamIds = memTeamList.stream().collect(Collectors.groupingBy(TeamMemberRelEntity::getTeamId)).keySet();
@@ -829,7 +820,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 toAddMap.put(memberId, teamIds);
             }
         });
-        //过滤不冗余的数据，包括成员与部门的重复关联插入
+        // Filters non-redundant data, including repeated association insertions of members and departments
         CollUtil.forEach(toAddMap, (key, value, index) -> {
             if (CollUtil.isNotEmpty(value)) {
                 iTeamMemberRelService.addMemberTeams(Collections.singletonList(key), CollUtil.newArrayList(value));
@@ -840,8 +831,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchDeleteMemberFromTeam(String spaceId, List<Long> memberIds, Long teamId) {
-        log.info("指定部门批量删除成员");
-        //如果成员没有所属部门，则重新关联根部门
+        log.info("Delete members from the specified department in batches");
+        //If the member does not belong to a department, associate the root department again
         List<TeamMemberRelEntity> tmrEntities = teamMemberRelMapper.selectByMemberIds(memberIds);
         List<Long> needRelateRoots = new ArrayList<>();
         for (Long memberId : memberIds) {
@@ -854,7 +845,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         boolean flag = SqlHelper.retBool(teamMemberRelMapper.deleteBatchMemberByTeams(memberIds, teamId));
         ExceptionUtil.isTrue(flag, DELETE_MEMBER_ERROR);
         if (CollUtil.isNotEmpty(needRelateRoots)) {
-            //关联根部门
+            // Associating the root team
             Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
             iTeamMemberRelService.addMemberTeams(needRelateRoots, Collections.singletonList(rootTeamId));
         }
@@ -866,7 +857,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Transactional(rollbackFor = Exception.class)
     public void removeByMemberIds(List<Long> memberIds) {
         baseMapper.deleteBatchByIds(memberIds);
-        // 从组织单元逻辑删除成员单位
+        // Logically deletes a member unit from an organizational unit
         iUnitService.removeByMemberId(memberIds);
     }
 
@@ -885,8 +876,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (CollUtil.isEmpty(memberIds)) {
             return;
         }
-        log.info("从空间里批量彻底删除成员");
-        //删除缓存
+        log.info("Delete members completely from the space in batches");
+        // delete cache
         List<Long> userIds = baseMapper.selectUserIdsByMemberIds(memberIds);
         if (CollUtil.isNotEmpty(userIds)) {
             for (Long userId : userIds) {
@@ -895,18 +886,18 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     userSpaceService.delete(userId, spaceId);
                 }
             }
-            // 分享过的节点分享链接收回，关闭分享
+            // The sharing link of the shared node is withdrawn, and the sharing is closed
             List<String> nodeIds = nodeShareSettingMapper.selectNodeIdsByUpdatersAndSpaceId(userIds, spaceId);
             if (CollUtil.isNotEmpty(nodeIds)) {
-                // 禁用节点分享
+                // disabling node sharing
                 nodeShareSettingMapper.disableByNodeIds(nodeIds);
-                // 发布节点分享关闭事件
+                // publish the node share shutdown event
                 SpringContextHolder.getApplicationContext().publishEvent(new NodeShareDisableEvent(this, nodeIds));
                 TaskManager.me().execute(() -> NotificationManager.me().nodeShareNotify(spaceId, nodeIds, false));
             }
         }
         List<MemberEntity> memberEntities = baseMapper.selectBatchIds(memberIds);
-        //邀请链接失效，并且一并删除其创建的公开链接
+        // The invitation link is invalid and the public link it created is deleted
         if (CollUtil.isNotEmpty(memberEntities)) {
             List<String> deleteMails = new ArrayList<>();
             for (MemberEntity filter : memberEntities) {
@@ -919,15 +910,15 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             }
         }
         spaceInviteLinkMapper.updateByCreators(memberIds);
-        // 删除成员关联部门
+        // The associated department of a member is deleted
         iTeamMemberRelService.removeByMemberIds(memberIds);
         // delete the associated role
         iRoleMemberService.removeByRoleMemberIds(memberIds);
-        // 删除成员
+        // delete members
         removeByMemberIds(memberIds);
-        // 从空间管理角色里删除
+        // Removed from the space management role
         iSpaceRoleService.batchRemoveByMemberIds(spaceId, memberIds);
-        // 发送通知邮件
+        // sending a notification email
         if (mailNotify) {
             String spaceName = iSpaceService.getNameBySpaceId(spaceId);
             List<String> emails = baseMapper.selectEmailByBatchMemberId(memberIds);
@@ -948,13 +939,13 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateActiveStatus(String spaceId, Long userId) {
-        log.info("将指定的空间更改为活跃状态");
-        // 最近活跃空间一致则直接返回
+        log.info("change the space to active");
+        // If the most recent active space is consistent, return directly
         String activeSpaceId = baseMapper.selectActiveSpaceByUserId(userId);
         if (spaceId.equals(activeSpaceId)) {
             return;
         }
-        // 修改空间的活跃状态
+        // Change the active state of a space
         baseMapper.updateInactiveStatusByUserId(userId);
         baseMapper.updateActiveStatusByUserIdAndSpaceId(userId, spaceId);
     }
@@ -962,7 +953,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void preDelBySpaceId(String spaceId, Long userId) {
-        log.info("将空间内除了主管理员外的成员删除");
+        log.info("Delete all members of the space except the master administrator");
         List<Long> userIds = baseMapper.selectUserIdBySpaceIds(Collections.singletonList(spaceId));
         if (CollUtil.isNotEmpty(userIds)) {
             userIds.remove(userId);
@@ -978,25 +969,25 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UploadParseResultVO parseExcelFile(String spaceId, MultipartFile multipartFile) {
-        // 订阅限制
+        // subscribe to the limit
         // iSubscriptionService.checkSeat(spaceId);
-        // 操作用户在空间的信息
+        // manipulate user information in space
         UserSpaceDto userSpaceDto = LoginContext.me().getUserSpaceDto(spaceId);
         UploadParseResultVO resultVo = new UploadParseResultVO();
         try {
-            // 获取统计数量
+            // obtaining statistics
             int currentMemberCount = (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
-            // 使用对象一行行读取数据，设置表头行数，第4行开始读取数据，异步读取
+            // Use the object to read data row by row, set the number of rows in the table header, and start reading data at line 4, asynchronous reading.
             UploadDataListener listener = new UploadDataListener(spaceId, this, -1, currentMemberCount)
                     .resources(userSpaceDto.getResourceCodes());
             EasyExcel.read(multipartFile.getInputStream(), listener).sheet().headRowNumber(3).doRead();
-            // 获取解析存储记录
+            // gets the parse store record
             resultVo.setRowCount(listener.getRowCount());
             resultVo.setSuccessCount(listener.getSuccessCount());
             resultVo.setErrorCount(listener.getErrorCount());
             resultVo.setErrorList(listener.getErrorList());
-            // 保存错误信息到数据库
+            // save the error message to the database
             AuditUploadParseRecordEntity record = new AuditUploadParseRecordEntity();
             record.setSpaceId(spaceId);
             record.setRowSize(listener.getRowCount());
@@ -1004,35 +995,33 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             record.setErrorCount(listener.getErrorCount());
             record.setErrorMsg(JSONUtil.toJsonStr(listener.getErrorList()));
             auditUploadParseRecordMapper.insert(record);
-            // 发送邀请邮件
+            // send an invitation email
             this.batchSendInviteEmailOnUpload(spaceId, userSpaceDto.getMemberId(), listener.getSendInviteEmails());
-            // 发送通知邮件
             this.batchSendInviteNotifyEmailOnUpload(spaceId, userSpaceDto.getMemberId(), listener.getSendNotifyEmails());
-            // 发送邀请通知，异步操作
             Long userId = userSpaceDto.getUserId();
             TaskManager.me().execute(() -> this.sendInviteNotification(userId, listener.getMemberIds(), spaceId, false));
         }
         catch (IOException e) {
             e.printStackTrace();
-            log.error("无法读取文件", e);
+            log.error("file cannot be read", e);
             throw new BusinessException(EXCEL_CAN_READ_ERROR);
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new BusinessException("解析文件失败，请下载模板导入");
+            throw new BusinessException("Failed to parse the file. Download the template and import it");
         }
         return resultVo;
     }
 
     /**
-     * 批量发送邀请邮箱到指定邮箱地址
+     * Send invitation email addresses to specified email addresses in batches
      *
-     * @param spaceId 空间ID
-     * @param fromMemberId 发送者（成员ID）
-     * @param inviteEmails 邮箱地址
+     * @param spaceId space id
+     * @param fromMemberId sender
+     * @param inviteEmails email
      */
     private void batchSendInviteEmailOnUpload(String spaceId, Long fromMemberId, List<String> inviteEmails) {
-        // 发送邀请邮件
+        // send invitation emails
         if (CollUtil.isNotEmpty(inviteEmails)) {
             String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
             List<UserLangDTO> emailsWithLang = iUserService.getLangByEmails(defaultLang, inviteEmails);
@@ -1043,14 +1032,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     /**
-     * 批量发送邀请通知邮箱到指定邮箱地址
+     * send invitation notification emails in batches
      *
-     * @param spaceId 空间ID
-     * @param fromMemberId 发送者（成员ID）
-     * @param notifyEmails 邮箱地址
+     * @param spaceId space id
+     * @param fromMemberId sender（member id）
+     * @param notifyEmails email
      */
     private void batchSendInviteNotifyEmailOnUpload(String spaceId, Long fromMemberId, List<String> notifyEmails) {
-        // 发送邀请告知邮件
+        // send an invitation notification email
         if (CollUtil.isNotEmpty(notifyEmails)) {
             String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
             List<UserLangDTO> emailsWithLang = iUserService.getLangByEmails(defaultLang, notifyEmails);
@@ -1064,7 +1053,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Transactional(rollbackFor = Exception.class)
     public Long saveUploadData(String spaceId, UploadDataDto uploadData, List<String> inviteEmails,
             List<String> notifyEmails, boolean teamCreatable) {
-        log.info("保存模板数据:{}", JSONUtil.toJsonStr(uploadData));
+        log.info("saving template data:{}", JSONUtil.toJsonStr(uploadData));
         Long memberId = IdWorker.getId();
         MemberEntity member = new MemberEntity();
         member.setId(memberId);
@@ -1077,55 +1066,54 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         member.setIsAdmin(false);
         member.setNameModified(false);
         member.setIsSocialNameModified(SocialNameModified.NO_SOCIAL.getValue());
-        // 查询是否存在用户绑定此邮箱
+        // query whether a user is bound to this mailbox
         UserEntity user = iUserService.getByEmail(uploadData.getEmail());
         boolean historyMember = false;
         if (user != null) {
-            // 通知邮件
+            // notification email
             notifyEmails.add(uploadData.getEmail());
-            // 邮箱绑定了用户，直接激活成员
+            // The mailbox is bound to the user and directly activates the member
             Long userId = user.getId();
             member.setUserId(userId);
             member.setMemberName(StrUtil.isBlank(uploadData.getName()) ? user.getNickName() : StrUtil.subWithLength(uploadData.getName(), 0, 32));
             member.setIsActive(true);
-            // 是否用户已在空间
+            // whether the user is already in space
             MemberEntity existInSpace = baseMapper.selectByUserIdAndSpaceIdIgnoreDelete(userId, spaceId);
             if (existInSpace != null) {
                 memberId = existInSpace.getId();
                 member.setId(existInSpace.getId());
                 historyMember = true;
             }
-            // 令主动加入空间的申请失效
+            // the application for adding space is invalid
             spaceApplyMapper.invalidateTheApply(ListUtil.toList(userId), spaceId, InviteType.FILE_IMPORT.getType());
         }
         else {
-            // 邮箱没有绑定任何用户，未激活状态，待用户接受邀请注册进入空间
-            member.setMemberName(StrUtil.isBlank(uploadData.getName()) ? "未命名" : StrUtil.subWithLength(uploadData.getName(), 0, 32));
+            // The mailbox is not bound to any user and is inactive. The mailbox is waiting for the user to accept the invitation and register to enter the space
+            member.setMemberName(StrUtil.isBlank(uploadData.getName()) ? "unnamed" : StrUtil.subWithLength(uploadData.getName(), 0, 32));
             member.setIsActive(false);
-            // 邀请邮件
+            // invitation email
             inviteEmails.add(uploadData.getEmail());
         }
         if (historyMember) {
-            // 逻辑删除恢复
+            // logical deletion restoration
             restoreMember(member);
-            // 恢复组织单元
+            // recovery team unit
             iUnitService.restoreMemberUnit(spaceId, Collections.singletonList(member.getId()));
         }
         else {
             this.batchCreate(spaceId, Collections.singletonList(member));
         }
-        // 处理关联部门
+        // Deal with related departments
         if (StrUtil.isNotBlank(uploadData.getTeam())) {
-            // 填写了部门
             List<TeamMemberRelEntity> dmrEntities = new ArrayList<>();
-            // 逗号截取部门
+            // comma intercept department
             List<String> teamNamePaths = StrUtil.splitTrim(Convert.toDBC(uploadData.getTeam().trim()), ',');
-            // 根部门
+            // root team
             Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
-            // 遍历查找是否存在
+            // traverse to see if it exists
             for (String teamNamePath : teamNamePaths) {
                 if (StrUtil.isBlank(teamNamePath)) {
-                    // 空值直接跳过，关联到根部门下
+                    // Null values are directly skipped and associated under the root team
                     TeamMemberRelEntity dmr = new TeamMemberRelEntity();
                     dmr.setId(IdWorker.getId());
                     dmr.setMemberId(memberId);
@@ -1133,14 +1121,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     dmrEntities.add(dmr);
                     continue;
                 }
-                log.debug("截取前:{}", teamNamePath);
-                // 截取是有序的，一级-二级-三级
+                log.debug("before the intercept:{}", teamNamePath);
+                // Interception is in order. First - second - third
                 List<String> teamNames = StrUtil.splitTrim(teamNamePath, '-');
-                log.info("截取后:{}", teamNames);
-                // 根据部门路径查找部门是否存在
+                log.info("after  the intercept:{}", teamNames);
+                // Check whether the department exists based on the department path
                 Long teamId = iTeamService.getByTeamNamePath(spaceId, teamNames);
                 if (teamId != null) {
-                    // 存在，直接关联上
+                    // There is, directly related to
                     TeamMemberRelEntity dmr = new TeamMemberRelEntity();
                     dmr.setId(IdWorker.getId());
                     dmr.setMemberId(memberId);
@@ -1148,9 +1136,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     dmrEntities.add(dmr);
                 }
                 else {
-                    // 不存在，如果有管理小组权限则创建，没有则关联到根部门下
+                    // Does not exist. Create if have administrative team permission，if not it is related to the root team.
                     if (teamCreatable) {
-                        // 有权限，创建小组并关联员工
+                        // Have permission, create team and associate members
                         List<Long> teamIds = iTeamService.createBatchByTeamName(spaceId, rootTeamId, teamNames);
                         for (Long id : teamIds) {
                             TeamMemberRelEntity dmr = new TeamMemberRelEntity();
@@ -1174,7 +1162,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             }
         }
         else {
-            // 没填部门，直接绑定到根部门下
+            // no department directly tied to the root door
             Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
             iTeamMemberRelService.addMemberTeams(Collections.singletonList(memberId), Collections.singletonList(rootTeamId));
         }
@@ -1183,7 +1171,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void sendInviteNotification(Long fromUserId, List<Long> invitedMemberIds, String spaceId, Boolean isToFromUser) {
-        // 发送消息通知
+        // sending message notification
         if (ObjectUtil.isNotEmpty(invitedMemberIds)) {
             NotificationManager.me().playerNotify(NotificationTemplateId.INVITE_MEMBER_TO_ADMIN, invitedMemberIds, fromUserId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, invitedMemberIds));
             NotificationManager.me().playerNotify(NotificationTemplateId.INVITE_MEMBER_TO_USER, invitedMemberIds, fromUserId, spaceId, Dict.create().set(INVOLVE_MEMBER_ID, invitedMemberIds));
@@ -1196,7 +1184,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createMember(Long userId, String spaceId, Long teamId) {
-        log.info("创建成员");
+        log.info("Create member");
         UserEntity user = iUserService.getById(userId);
         MemberEntity member = new MemberEntity();
         member.setUserId(userId);
@@ -1210,24 +1198,24 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         member.setNameModified(false);
         member.setIsSocialNameModified(SocialNameModified.NO_SOCIAL.getValue());
         member.setIsAdmin(false);
-        // 查询用户是否曾加入过该空间
+        // Query whether the user has been added to the space
         MemberEntity historyMember = baseMapper.selectByUserIdAndSpaceIdIgnoreDelete(userId, spaceId);
         if (historyMember != null && historyMember.getIsDeleted()) {
-            // 恢复历史成员
+            // restoring history member
             member.setId(historyMember.getId());
             restoreMember(member);
-            // 恢复组织单元
+            // recovery unit
             iUnitService.restoreMemberUnit(spaceId, Collections.singletonList(member.getId()));
         }
         else {
-            // 首次加入，创建成员
+            // For the first time, create a member
             member.setId(IdWorker.getId());
             this.batchCreate(spaceId, Collections.singletonList(member));
         }
         if (teamId == null) {
             teamId = teamMapper.selectRootIdBySpaceId(spaceId);
         }
-        // 创建部门与成员绑定
+        // bind a department to a member
         iTeamMemberRelService.addMemberTeams(Collections.singletonList(member.getId()), Collections.singletonList(teamId));
         return member.getId();
     }
@@ -1321,7 +1309,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public List<SearchMemberResultVo> getByName(String spaceId, String keyword, String highlightClassName) {
 
-        // 查询本地符合条件的成员
+        // Query the local member that meets the conditions
         List<SearchMemberDto> searchMembers = baseMapper.selectByName(spaceId, keyword);
         List<SearchMemberResultVo> results = searchMembers.stream()
                 .map(searchMember -> {
@@ -1347,7 +1335,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (Objects.nonNull(socialTenantEntity)
                 && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
                 && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-            // 如果是企业微信服务商绑定的空间站，需要查询企微通讯录中符合条件的用户
+            // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
             String suiteId = socialTenantEntity.getAppId();
             String authCorpId = socialTenantEntity.getTenantId();
             Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
@@ -1356,14 +1344,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, keyword, 1);
                 List<String> cpUserIds = queryResult.getUser().getUserid();
                 if (CollUtil.isNotEmpty(cpUserIds)) {
-                    // 将其中未改名的成员填充至返回结果
+                    // Populate the returned result with the un-renamed members
                     List<SearchMemberDto> socialMembers = baseMapper.selectByNameAndOpenIds(spaceId, cpUserIds);
                     List<SearchMemberResultVo> socialResults = socialMembers.stream()
                             .map(socialMember -> {
                                 SearchMemberResultVo result = new SearchMemberResultVo();
                                 result.setMemberId(socialMember.getMemberId());
                                 result.setOriginName(socialMember.getMemberName());
-                                // 企微用户名称需要前端渲染，搜索结果不返回高亮
+                                // Wecom user names need to be front-end rendered, and search results do not return highlighting
                                 result.setMemberName(socialMember.getMemberName());
                                 result.setAvatar(socialMember.getAvatar());
                                 if (CollUtil.isNotEmpty(socialMember.getTeam())) {
@@ -1415,21 +1403,21 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchRecoveryMemberFromSpace(String spaceId, List<Long> memberIds) {
-        log.info("空间站恢复成员");
+        log.info("Recovery member from space");
         if (CollUtil.isEmpty(memberIds)) {
             return;
         }
-        // 恢复成员
+        // recovery member
         batchResetIsDeletedAndUserIdByIds(memberIds);
-        // todo 恢复部门迁移到此处？
-        // 从组织单元恢复成员
+        // todo is the recovery department migrated here？
+        // restore a member from an organizational unit
         iUnitService.batchUpdateIsDeletedBySpaceIdAndRefId(spaceId, memberIds, UnitType.MEMBER, false);
     }
 
     @Override
     public List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter, String highlightClassName) {
 
-        // 查询本地符合条件的成员
+        // Query the local member that meets the conditions
         List<SearchMemberVo> searchMembers = baseMapper.selectLikeMemberName(spaceId, keyword, filter);
         searchMembers.forEach(vo -> {
             vo.setOriginName(vo.getMemberName());
@@ -1444,7 +1432,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (Objects.nonNull(socialTenantEntity)
                 && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
                 && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-            // 如果是企业微信服务商绑定的空间站，需要查询企微通讯录中符合条件的用户
+            // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
             String suiteId = socialTenantEntity.getAppId();
             String authCorpId = socialTenantEntity.getTenantId();
             Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
@@ -1453,11 +1441,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, keyword, 1);
                 List<String> cpUserIds = queryResult.getUser().getUserid();
                 if (CollUtil.isNotEmpty(cpUserIds)) {
-                    // 将其中未改名的成员填充至返回结果
+                    // Populate the returned result with the un-renamed members
                     List<SearchMemberVo> socialMembers = baseMapper.selectLikeMemberNameByOpenIds(spaceId, cpUserIds, filter);
                     socialMembers.forEach(vo -> {
                         vo.setOriginName(vo.getMemberName());
-                        // 企微用户名称需要前端渲染，搜索结果不返回高亮
+                        // The wecom user name of the company needs front-end rendering, and the search result does not return highlighting
                         vo.setMemberName(vo.getMemberName());
                     });
 

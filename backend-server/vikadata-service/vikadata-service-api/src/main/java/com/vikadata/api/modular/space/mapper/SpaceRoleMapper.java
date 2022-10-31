@@ -9,55 +9,35 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * <p>
- * 工作空间-角色表 Mapper 接口
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 public interface SpaceRoleMapper extends BaseMapper<SpaceRoleEntity> {
 
     /**
-     * 分页查询
-     *
-     * @param page    分页请求对象
-     * @param spaceId 空间ID
-     * @return 分页结果集
-     * @author Shawn Deng
-     * @date 2020/2/12 22:41
+     * @param page    page object
+     * @param spaceId space id
+     * @return space role page
      */
     @InterceptorIgnore(illegalSql = "true")
     IPage<SpaceRoleVo> selectSpaceRolePage(IPage<SpaceRoleVo> page, @Param("spaceId") String spaceId);
 
     /**
-     * 根据角色编码删除角色
+     * delete a role based on the role code
      *
-     * @param roleCode 角色编码
-     * @return 结果数
-     * @author Shawn Deng
-     * @date 2020/2/16 15:28
+     * @param roleCode role code
+     * @return affected rows
      */
     int deleteByRoleCode(@Param("roleCode") String roleCode);
 
     /**
-     * 查询角色对应资源编码集合
+     * Query the resource code set corresponding to a role
      *
-     * @param id 成员ID
-     * @return 资源编码列表
-     * @author Shawn Deng
-     * @date 2020/2/16 14:31
+     * @param id id
+     * @return resource codes
      */
     List<String> selectResourceCodesById(@Param("id") Long id);
 
     /**
-     * (批量)根据角色编码删除角色
-     *
-     * @param roleCodes 角色编码
-     * @return 结果数
-     * @author Shawn Deng
-     * @date 2020/2/16 15:28
+     * @param roleCodes role codes
+     * @return affected rows
      */
     int batchDeleteByRoleCode(@Param("roleCodes") List<String> roleCodes);
 

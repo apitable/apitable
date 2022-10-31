@@ -13,66 +13,42 @@ import com.vikadata.api.model.vo.widget.WidgetReleaseListVo;
 import com.vikadata.api.model.vo.widget.WidgetStoreListInfo;
 import com.vikadata.entity.WidgetPackageReleaseEntity;
 
-/**
- * <p>
- * 工作台-组件发布历史 Mapper 接口
- * </p>
- *
- * @author Pengap
- * @date 2021/7/9
- */
 public interface WidgetPackageReleaseMapper extends BaseMapper<WidgetPackageReleaseEntity> {
 
     /**
-     * 查询发布版本SHA是否存在
+     * query whether the published version sha exists
      *
-     * @param releaseSha 发布版本SHA
-     * @param releaseStatus 发布状态
-     * @return 发布版本数据Id
-     * @author Pengap
-     * @date 2021/7/9
+     * @param releaseSha release version sha
+     * @param releaseStatus release status
+     * @return release version data id
      */
     Long selectReleaseShaToId(@Param("releaseSha") String releaseSha, @Param("releaseStatus") Integer releaseStatus);
 
     /**
-     * 分页查询
-     *
-     * @param page      分页请求对象
-     * @param packageId 小组件包Id
-     * @return 分页结果集
-     * @author Pengap
-     * @date 2021/7/9
+     * @param page      page object
+     * @param packageId widget package ids
+     * @return page result
      */
     IPage<WidgetReleaseListVo> selectReleasePage(Page<WidgetReleaseListVo> page, @Param("packageId") String packageId);
 
     /**
-     * 查询待审核列表
-     *
-     * @param condition 条件
-     * @return 待审核列表
-     * @author Pengap
-     * @date 2022/3/9 02:58:44
+     * @param condition condition
+     * @return list to be reviewed
      */
     List<WidgetStoreListInfo> selectWaitReviewWidgetList(@Param("condition") WidgetStoreListRo condition);
 
     /**
-     * 根据父级小程序ID查询最后提交小程序版本信息
+     * Query the last submitted applet version information according to the parent applet ID.
      *
-     * @param fatherWidgetId 父级小程序Id
+     * @param fatherWidgetId fatherWidgetId
      * @return LastSubmitWidgetVersionDTO
-     * @author Pengap
-     * @date 2022/3/9 23:31:50
      */
     LastSubmitWidgetVersionDTO selectLastWidgetVersionInfoByFatherWidgetId(@Param("fatherWidgetId") String fatherWidgetId);
 
     /**
-     * 根据父级小程序Id，submitVersion
-     *
-     * @param fatherWidgetId 父级小程序Id
-     * @param version        版本号
-     * @return 待审核小程序版本
-     * @author Pengap
-     * @date 2022/3/16 10:58:47
+     * @param fatherWidgetId father widget id
+     * @param version        version
+     * @return pending approval widget version
      */
     WidgetPackageReleaseEntity selectByFatherWidgetIdAndVersion(@Param("fatherWidgetId") String fatherWidgetId, @Param("version") String version);
 

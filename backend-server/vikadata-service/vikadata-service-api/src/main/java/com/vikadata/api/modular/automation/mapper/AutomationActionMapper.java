@@ -4,20 +4,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vikadata.entity.AutomationActionEntity;
 import org.apache.ibatis.annotations.Param;
 
-
-/**
- * <p>
- * Automation 机器人 Mapper 接口
- * </p>
- */
 public interface AutomationActionMapper extends BaseMapper<AutomationActionEntity> {
 
     /**
-     * 更新 action 输入（json）
+     * Update the data(json) that action input.
      *
-     * @param actionId
-     * @param input
-     * @return
+     * @param actionId  custom action id
+     * @param input     data that action input
      */
     void updateInput(@Param("actionId") String actionId, @Param("input") String input);
 

@@ -23,14 +23,6 @@ import static com.vikadata.api.enums.exception.PermissionException.CREATE_SUB_AD
 import static com.vikadata.api.enums.exception.PermissionException.ROLE_NOT_EXIST;
 import static com.vikadata.api.enums.exception.PermissionException.UPDATE_ROLE_ERROR;
 
-/**
- * <p>
- * 工作空间-角色权限关联表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 @Service
 @Slf4j
 public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRelMapper, SpaceMemberRoleRelEntity> implements ISpaceMemberRoleRelService {
@@ -43,7 +35,7 @@ public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRe
 
     @Override
     public void create(String spaceId, List<Long> memberIds, String roleCode) {
-        log.info("创建成员与角色关联");
+        log.info("Create the ref of member and space role.");
         List<SpaceMemberRoleRelEntity> entities = new ArrayList<>();
         memberIds.forEach(memberId -> {
             SpaceMemberRoleRelEntity spaceMemberRoleRel = new SpaceMemberRoleRelEntity();
@@ -60,7 +52,7 @@ public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRe
 
     @Override
     public SpaceMemberRoleRelEntity findById(Long memberRoleId) {
-        log.info("根据ID查询成员与角色关联ID");
+        log.info("query role by id");
         SpaceMemberRoleRelEntity entity = getById(memberRoleId);
         ExceptionUtil.isNotNull(entity, ROLE_NOT_EXIST);
         return entity;
@@ -68,7 +60,7 @@ public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRe
 
     @Override
     public void updateMemberIdById(Long memberRoleId, Long memberId) {
-        log.info("更新角色关联成员");
+        log.info("change the member id of the space role");
         SpaceMemberRoleRelEntity update = new SpaceMemberRoleRelEntity();
         update.setId(memberRoleId);
         update.setMemberId(memberId);
@@ -78,17 +70,14 @@ public class SpaceMemberRoleRelServiceImpl extends ServiceImpl<SpaceMemberRoleRe
     
     @Override
     public List<Long> getMemberId(String spaceId, List<String> resourceGroupCodes) {
-        // 获取权限资源编码
         List<String> resourceCodes = spaceResourceMapper.selectResourceCodesByGroupCode(resourceGroupCodes);
         if (resourceCodes.isEmpty()) {
             return new ArrayList<>();
         }
-        // 获取角色编码
         List<String> roleCodes = spaceRoleResourceRelMapper.selectRoleCodeByResourceCodes(resourceCodes);
         if (roleCodes.isEmpty()) {
             return new ArrayList<>();
         }
-        // 根据角色编码获取成员ID
         return this.baseMapper.selectMemberIdBySpaceIdAndRoleCodes(spaceId, roleCodes);
     }
 }

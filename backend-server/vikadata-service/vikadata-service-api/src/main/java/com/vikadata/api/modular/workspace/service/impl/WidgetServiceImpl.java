@@ -111,14 +111,14 @@ public class WidgetServiceImpl implements IWidgetService {
     @Override
     public List<WidgetStoreListInfo> widgetStoreList(Long userId, String spaceId, WidgetStoreListRo storeListRo) {
         if (null != storeListRo && WidgetReleaseType.WAIT_REVIEW.getValue().equals(storeListRo.getType())) {
-            // 展示待审核全局小组件列表
+            // show a list of global widgets to be reviewed
             return iWidgetAuditService.waitReviewWidgetList(storeListRo);
         }
         List<WidgetStoreListInfo> datas = widgetPackageMapper.selectWidgetStoreList(userId, spaceId, storeListRo);
         for (WidgetStoreListInfo widgetInfo : datas) {
             widgetInfo.setInstallEnv(InstallEnvType.toValueList(widgetInfo.getInstallEnvCode()));
             widgetInfo.setRuntimeEnv(RuntimeEnvType.toValueList(widgetInfo.getRuntimeEnvCode()));
-            // 替换空间站小组件作者名称
+            // replace space station widget author name
             if (WidgetReleaseType.SPACE.getValue().equals(widgetInfo.getReleaseType())) {
                 WidgetSpaceByDTO byDTO = widgetPackageMapper.selectWidgetSpaceBy(widgetInfo.getWidgetPackageId());
                 if (null != byDTO) {
@@ -134,13 +134,13 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Override
     public List<WidgetInfo> getWidgetInfoList(String spaceId, Long memberId, Integer count) {
-        log.info("获取指定空间下的组件信息");
-        // 仅加载数表内的组件
+        log.info("Gets the component information in the specified space.");
+        // load only the components in the datasheet
         List<WidgetInfo> widgetInfos = widgetMapper.selectInfoBySpaceIdAndNodeType(spaceId, NodeType.DATASHEET.getNodeType());
         if (CollUtil.isEmpty(widgetInfos)) {
             return new ArrayList<>();
         }
-        // 过滤源数表权限
+        // filter source datasheet permissions
         List<String> datasheetIds = widgetInfos.stream().map(WidgetInfo::getDatasheetId).collect(Collectors.toList());
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, datasheetIds);
         if (CollUtil.isEmpty(roleDict)) {
@@ -166,7 +166,7 @@ public class WidgetServiceImpl implements IWidgetService {
         List<Integer> checkStatus = CollUtil.newArrayList(WidgetPackageStatus.DEVELOP.getValue(), WidgetPackageStatus.UNPUBLISHED.getValue(), WidgetPackageStatus.ONLINE.getValue());
         iWidgetPackageService.checkWidgetPackIfExist(widget.getWidgetPackageId(), checkStatus);
         String widgetId = IdUtil.createWidgetId();
-        // 如果是数表内组件，则创建数表组件；如果是仪表盘内组件，需校验数量上限
+        // if it is a widget in the data datasheet, create a widget in the data datasheet. if it is a widget in the dashboard, check the maximum number
         NodeType nodeType = iNodeService.getTypeByNodeId(widget.getNodeId());
         switch (nodeType) {
             case DATASHEET:
@@ -238,7 +238,7 @@ public class WidgetServiceImpl implements IWidgetService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void copyBatch(Long userId, String destSpaceId, Map<String, String> newNodeMap, Map<String, String> newWidgetIdMap, Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap) {
-        // 批量生成新的组件
+        // batch generation of new widgets
         List<WidgetBaseInfo> widgetBaseInfos = widgetMapper.selectWidgetBaseInfoByWidgetIds(newWidgetIdMap.keySet());
         if (widgetBaseInfos.isEmpty()) {
             return;
@@ -247,10 +247,10 @@ public class WidgetServiceImpl implements IWidgetService {
         List<DatasheetWidgetEntity> datasheetWidgets = new ArrayList<>(newWidgetIdToDstMap.size());
         for (WidgetBaseInfo widgetInfo : widgetBaseInfos) {
             String widgetId = newWidgetIdMap.get(widgetInfo.getWidgetId());
-            // 无数据源时，将组件存储配置重置
+            // Reset the widget storage configuration when there is no data source.
             boolean hasDataSource = newWidgetIdToDstMap.containsKey(widgetId);
             String storage = hasDataSource ? widgetInfo.getStorage() : JSONUtil.createObj().toString();
-            // 构建组件实体
+            // build widget entity
             WidgetEntity widgetEntity = WidgetEntity.builder()
                     .id(IdWorker.getId())
                     .spaceId(destSpaceId)
@@ -267,7 +267,7 @@ public class WidgetServiceImpl implements IWidgetService {
                 continue;
             }
             DatasheetWidgetDTO datasheetWidgetDTO = newWidgetIdToDstMap.get(widgetId);
-            // 构建数表与组件的关联实体
+            // Build the associated entity of the datasheet and the widget.
             DatasheetWidgetEntity datasheetWidget = DatasheetWidgetEntity.builder()
                     .id(IdWorker.getId())
                     .spaceId(destSpaceId)
@@ -280,11 +280,11 @@ public class WidgetServiceImpl implements IWidgetService {
         boolean flag = SqlHelper.retBool(widgetMapper.insertBatch(entities));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         if (CollUtil.isNotEmpty(datasheetWidgets)) {
-            // 批量创建数表与组件的关联
+            // Batch Create Association between datasheet and widget
             flag = SqlHelper.retBool(datasheetWidgetMapper.insertBatch(datasheetWidgets));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         }
-        // 组件包累计安装次数
+        // cumulative installation times of widget package
         TaskManager.me().execute(() -> {
             Map<String, List<WidgetBaseInfo>> packageIdToInfosMap = widgetBaseInfos.stream()
                     .collect(Collectors.groupingBy(WidgetBaseInfo::getWidgetPackageId));
@@ -295,7 +295,7 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Override
     public String checkByWidgetIds(List<String> widgetIds) {
-        // 组件空间校验，必须都在同一空间中
+        // widget space verification, all must be in the same space
         List<String> spaceIds = widgetMapper.selectSpaceIdByWidgetIds(widgetIds);
         ExceptionUtil.isTrue(CollUtil.isNotEmpty(spaceIds) && spaceIds.size() == 1, WidgetException.WIDGET_SPACE_ERROR);
         return spaceIds.get(0);
@@ -303,7 +303,7 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Override
     public WidgetPack getWidgetPack(String widgetId) {
-        log.info("获取组件包信息，widgetId:{}", widgetId);
+        log.info("get widget package information，widgetId:{}", widgetId);
         List<WidgetPack> widgetPackList = this.getWidgetPackList(Collections.singletonList(widgetId));
         if (CollUtil.isEmpty(widgetPackList)) {
             return new WidgetPack();
@@ -313,7 +313,7 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Override
     public List<WidgetPack> getWidgetPackList(Collection<String> widgetIds) {
-        log.info("获取组件包信息集合");
+        log.info("get the widget package information collection");
         if (CollUtil.isEmpty(widgetIds)) {
             return new ArrayList<>();
         }
@@ -321,18 +321,18 @@ public class WidgetServiceImpl implements IWidgetService {
         if (CollUtil.isEmpty(widgetBaseInfos)) {
             return new ArrayList<>();
         }
-        // 统一查询数据源数表
+        // unified query data source datasheet
         List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(widgetIds);
         Map<String, DatasheetWidgetDTO> widgetIdToDstMap = datasheetWidgetDTOList.stream()
                 .collect(Collectors.toMap(DatasheetWidgetDTO::getWidgetId, dto -> dto));
 
-        // 统一查询组件安装包信息内容
+        // Unified query widget installation package information content
         Set<String> packageIds = widgetBaseInfos.stream().map(WidgetBaseInfo::getWidgetPackageId).collect(Collectors.toSet());
         List<WidgetPackageDTO> packageEntities = widgetPackageMapper.selectByPackageIdsIncludeDelete(packageIds, LoginContext.me().getLocaleStr());
         Map<String, WidgetPackageDTO> widgetPackageMap = packageEntities.stream()
                 .collect(Collectors.toMap(WidgetPackageDTO::getPackageId, widgetPackage -> widgetPackage));
 
-        // 构建组件包信息
+        // build widget package information
         List<WidgetPack> widgetPacks = new ArrayList<>(widgetBaseInfos.size());
 
         widgetBaseInfos.forEach(widget -> {
@@ -342,7 +342,7 @@ public class WidgetServiceImpl implements IWidgetService {
             }
             catch (JsonProcessingException ignored) {
             }
-            // 组装小程序快照信息
+            // assembly widget snapshot information
             WidgetSnapshot snapshot = WidgetSnapshot.builder()
                     .widgetName(widget.getName())
                     .storage(snapshotStorage)
@@ -372,7 +372,7 @@ public class WidgetServiceImpl implements IWidgetService {
                     .installEnv(InstallEnvType.toValueList(widgetPackage.getInstallEnvCode()))
                     .runtimeEnv(RuntimeEnvType.toValueList(widgetPackage.getRuntimeEnvCode()))
                     .build();
-            // 替换空间站小组件作者名称
+            // Replace the name of the author of the small widget of the space station.
             if (WidgetReleaseType.SPACE.getValue().equals(widgetPack.getReleaseType())) {
                 WidgetSpaceByDTO byDTO = widgetPackageMapper.selectWidgetSpaceBy(widgetPack.getWidgetPackageId());
                 if (null != byDTO) {
@@ -383,7 +383,7 @@ public class WidgetServiceImpl implements IWidgetService {
             else {
                 widgetPack.setAuthorName(widgetPackage.getAuthorName());
                 widgetPack.setAuthorIcon(widgetPackage.getAuthorIcon());
-                // 待审核组件渲染父级小程序Id
+                // to be audited widget rendering parent widget id
                 if (WidgetReleaseType.WAIT_REVIEW.getValue().equals(widgetPack.getReleaseType())) {
                     widgetPack.setFatherWidgetPackageId(widgetPackage.getFatherWidgetId());
                 }

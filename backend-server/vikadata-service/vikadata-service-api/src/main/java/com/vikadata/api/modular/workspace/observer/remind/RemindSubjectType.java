@@ -4,11 +4,11 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 
 /**
  * <p>
- * 订阅提醒类型
+ * subscription reminder type
  * </p>
  *
- * @author Pengap
- * @date 2021/10/9 14:17:56
+ * 
+ * 
  */
 public final class RemindSubjectType {
 
@@ -42,7 +42,7 @@ public final class RemindSubjectType {
     public static String IM_WECOM = "IMWecomRemind";
 
     /**
-     * 集成平台类型转换为Im订阅主题类型
+     * integration platform type converts to im subscription topic type.
      */
     public static String transform2ImSubject(SocialPlatformType platform) {
         if (platform == SocialPlatformType.FEISHU) {

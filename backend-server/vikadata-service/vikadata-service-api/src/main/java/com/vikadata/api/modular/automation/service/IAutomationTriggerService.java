@@ -14,8 +14,8 @@ public interface IAutomationTriggerService extends IService<AutomationTriggerEnt
     List<AutomationTriggerDto> getTriggersBySeqId(String seqId, String resourceId);
 
     /**
-     *  通过triggerId 更新trigger
-     * @param trigger
+     *  Update trigger by trigger id.
+     * @param trigger trigger
      */
     void updateTriggerById(AutomationTriggerEntity trigger);
 

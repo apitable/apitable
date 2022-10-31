@@ -80,14 +80,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
 import static com.vikadata.api.enums.exception.SpaceException.DELETE_SPACE_ERROR;
 
-/**
- * 空间接口
- *
- * @author Chambers
- * @since 2019/10/8
- */
 @RestController
-@Api(tags = "空间模块_空间接口")
+@Api(tags = "Space - Space Api")
 @ApiResource(path = "/space")
 @Slf4j
 public class SpaceController {
@@ -117,8 +111,8 @@ public class SpaceController {
     private IUserService iUserService;
 
     @GetResource(path = "/capacity", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "获取空间的附件容量信息")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Get space capacity info")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<InternalSpaceCapacityVo> capacity() {
         String spaceId = LoginContext.me().getSpaceId();
         InternalSpaceCapacityVo vo = iSpaceService.getSpaceCapacityVo(spaceId);
@@ -127,33 +121,31 @@ public class SpaceController {
     }
 
     @GetResource(path = "/capacity/detail", requiredPermission = false)
-    @ApiOperation(value = "获取空间的附件容量明细")
+    @ApiOperation(value = "Get space capacity detail info")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "isExpire", value = "附件容量是否过期，默认未过期", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-        @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+        @ApiImplicitParam(name = "isExpire", value = "Whether the attachment capacity has expired. By default, it has not expired", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+        @ApiImplicitParam(name = PAGE_PARAM, value = "paging parameter", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     public ResponseData<PageInfo<SpaceCapacityPageVO>> getCapacityDetail(@RequestParam(name = "isExpire", defaultValue = "false") Boolean isExpire, @PageObjectParam Page page) {
-        // 获取空间站ID
         String spaceId = LoginContext.me().getSpaceId();
-        // 返回空间附件容量信息分页结果
         return ResponseData.success(PageHelper.build(iSpaceSubscriptionService.getSpaceCapacityDetail(spaceId, isExpire, page)));
     }
 
     @GetResource(path = "/resource", requiredPermission = false)
-    @ApiOperation(value = "获取个人在空间对应的权限资源", notes = "获取个人在空间对应的权限资源")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Get user space resource")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<UserSpaceVo> getSpaceResource() {
         String spaceId = LoginContext.me().getSpaceId();
-        //获取在指定空间的权限资源
+        // gets permission resources in the specified space
         Long userId = SessionContext.getUserId();
         UserSpaceVo userSpaceVo = iSpaceService.getUserSpaceResource(userId, spaceId);
         return ResponseData.success(userSpaceVo);
     }
 
     @GetResource(path = "/features", requiredPermission = false)
-    @ApiOperation(value = "获取空间站的设置", notes = "获取空间站的设置")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Get space feature")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<SpaceGlobalFeature> feature() {
         String spaceId = LoginContext.me().getSpaceId();
         SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
@@ -161,9 +153,9 @@ public class SpaceController {
     }
 
     @GetResource(path = "/list", requiredPermission = false)
-    @ApiOperation(value = "获取空间列表", notes = "获取空间列表")
+    @ApiOperation(value = "Get space list")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "onlyManageable", value = "是否只查询自己管理的空间列表，可不传递，默认不包含", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+            @ApiImplicitParam(name = "onlyManageable", value = "Whether to query only the managed space list. By default, not include", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
     })
     public ResponseData<List<SpaceVO>> list(@RequestParam(name = "onlyManageable", required = false, defaultValue = "false") Boolean onlyManageable) {
         Long userId = SessionContext.getUserId();
@@ -173,37 +165,36 @@ public class SpaceController {
     }
 
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "创建空间")
+    @ApiOperation(value = "Create space")
     public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         String spaceId = iSpaceService.createSpace(user, spaceOpRo.getName());
-        // 发布空间审计事件
+        // release space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_SPACE).userId(userId).spaceId(spaceId)
                 .info(JSONUtil.createObj().set(AuditConstants.SPACE_NAME, spaceOpRo.getName())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
-        // 缓存用户最后操作激活的空间
+        // Cache the space where the user's last action was active
         TaskManager.me().execute(() -> userActiveSpaceService.save(userId, spaceId));
         return ResponseData.success(CreateSpaceResultVo.builder().spaceId(spaceId).build());
     }
 
     @PostResource(path = "/update", tags = "UPDATE_SPACE")
-    @ApiOperation(value = "编辑空间", notes = "name和logo至少有一项")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Update space", notes = "at least one item is name and logo")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> update(@RequestBody @Valid SpaceUpdateOpRo spaceOpRo) {
         String spaceId = LoginContext.me().getSpaceId();
         ExceptionUtil.isTrue(StrUtil.isNotBlank(spaceOpRo.getName()) || StrUtil.isNotBlank(spaceOpRo.getLogo()), ParameterException.NO_ARG);
-        // 修改空间信息
         iSpaceService.updateSpace(SessionContext.getUserId(), spaceId, spaceOpRo);
         return ResponseData.success();
     }
 
     @Notification(templateId = NotificationTemplateId.SPACE_DELETED)
     @PostResource(path = "/delete/{spaceId}", method = { RequestMethod.DELETE }, tags = "DELETE_SPACE")
-    @ApiOperation(value = "删除空间", notes = "删除空间")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "Delete space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<Void> delete(@PathVariable("spaceId") String spaceId, @RequestBody @Valid SpaceDeleteRo param) {
-        // 绑定第三方情况下不允许操作
+        // This operation cannot be performed when binding to a third party
         iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
         if (param.getType() == ValidateType.EMAIL_CODE) {
@@ -217,34 +208,34 @@ public class SpaceController {
                     .validate(target, param.getCode(), true, CodeValidateScope.DEL_SPACE);
         }
         else {
-            // 帐号同时未绑定手机、邮箱，才允许跳过验证码校验
+            // Verification code can be skipped only when the account is not bound to a mobile phone or email.
             ExceptionUtil.isTrue(StrUtil.isBlank(loginUserDto.getEmail())
                     && StrUtil.isBlank(loginUserDto.getMobile()), DELETE_SPACE_ERROR);
         }
         Long userId = loginUserDto.getUserId();
-        // 预删除
+        // pre delete
         iSpaceService.preDeleteById(userId, spaceId);
-        // 删除缓存
+        // delete cache
         userSpaceService.delete(userId, spaceId);
-        // 发布空间审计事件
+        // release space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_SPACE).userId(userId).spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }
 
     @PostResource(path = "/del", method = { RequestMethod.DELETE }, tags = "DELETE_SPACE")
-    @ApiOperation(value = "立即删除空间")
+    @ApiOperation(value = "Delete space immediately")
     public ResponseData<Void> del() {
         String spaceId = LoginContext.me().getSpaceId();
-        // 绑定第三方情况下不允许操作
+        // This operation cannot be performed when binding to a third party
         iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
-        // 判断空间是否处于预删除状态
+        // Check whether the space is in the pre-deleted state
         int count = SqlTool.retCount(spaceMapper.countBySpaceId(spaceId, true));
         ExceptionUtil.isTrue(count > 0, SpaceException.NOT_DELETED);
-        // 删除空间
+        // delete the space
         Long userId = SessionContext.getUserId();
         iSpaceService.deleteSpace(userId, Collections.singletonList(spaceId));
-        // 发布空间审计事件
+        // release space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.ACTUAL_DELETE_SPACE).userId(userId).spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
@@ -252,18 +243,18 @@ public class SpaceController {
 
     @Notification(templateId = NotificationTemplateId.SPACE_RECOVER)
     @PostResource(path = "/cancel/{spaceId}", tags = "DELETE_SPACE")
-    @ApiOperation(value = "撤销删除空间", notes = "撤销删除空间")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "Undo delete space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<Void> cancel(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
-        // 绑定第三方情况下不允许操作
+        // This operation cannot be performed when binding to a third party
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         iSpaceService.cancelDelByIds(userId, spaceId);
-        // 删除缓存
+        // delete the cache
         userSpaceService.delete(userId, spaceId);
-        // 通知holder
+        // noitfy holder
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().fromUserId(userId).build());
-        // 发布空间审计事件
+        // release space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.CANCEL_DELETE_SPACE).userId(userId).spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
@@ -272,27 +263,26 @@ public class SpaceController {
     @Notification(templateId = NotificationTemplateId.QUIT_SPACE)
     @AuditAction(value = "user_leave_space", spaceIdLoc = ParamLocation.PATH)
     @PostResource(path = "/quit/{spaceId}", requiredPermission = false)
-    @ApiOperation(value = "退出空间", notes = "退出空间")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "Quit space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<Void> quit(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
-        // 绑定第三方情况下不允许操作
+        // This operation cannot be performed when binding to a third party
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        //空间列表上的操作，不能取LoginContext.me()当前空间的成员ID
+        // don't user LoginContext.me()
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
         iSpaceService.quit(spaceId, memberId);
-        //删除相关缓存
+        // delete the relevant cache
         userSpaceOpenedSheetService.delete(userId, spaceId);
         userActiveSpaceService.delete(userId);
         userSpaceService.delete(userId, spaceId);
-        // 通知需要字段
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().spaceId(spaceId).fromUserId(userId).build());
         return ResponseData.success();
     }
 
     @GetResource(path = "/info/{spaceId}", requiredPermission = false)
-    @ApiOperation(value = "空间信息", notes = "空间信息")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "Get space info")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<SpaceInfoVO> info(@PathVariable("spaceId") String spaceId) {
         SpaceInfoVO vo = iSpaceService.getSpaceInfo(spaceId);
         return ResponseData.success(vo);
@@ -300,20 +290,20 @@ public class SpaceController {
 
     @Deprecated
     @PostResource(path = "/remove/{spaceId}", requiredPermission = false)
-    @ApiOperation(value = "消除红点", notes = "场景：消除未激活空间的红点")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "Remove hot point in space", notes = "Scenario: Remove the red dot in the inactive space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<Void> remove(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
-        //查询空间内是否存在此用户，空间列表上的操作，不能取LoginContext.me()当前空间的成员ID
+        // don't use LoginContext.me()
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        //消除空间列表上的红点
+        // remove hot point
         memberMapper.updateIsPointById(memberId);
         return ResponseData.success();
     }
 
     @PostResource(path = "/{spaceId}/switch", requiredPermission = false)
-    @ApiOperation(value = "切换空间站", notes = "切换空间站")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "switch space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<Void> switchSpace(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         iSpaceService.switchSpace(userId, spaceId);
@@ -321,15 +311,12 @@ public class SpaceController {
     }
 
     /**
-     * 此接口的功能已移至『更改权限与安全设置』接口中
-     * 遗留代码将在迭代稳定后移除
-     *
-     * Edit By 胡海平
+     * @see #updateSecuritySetting(SpaceSecuritySettingRo)
      * */
     @Deprecated
     @PostResource(path = "/updateWorkbenchSetting", tags = "MANAGE_WORKBENCH_SETTING")
-    @ApiOperation(value = "更改工作台设置")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Update workbench setting")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<Void> updateWorkbenchSetting(@RequestBody @Valid SpaceWorkbenchSettingRo data) {
         Long userId = SessionContext.getUserId();
         String spaceId = LoginContext.me().getSpaceId();
@@ -340,20 +327,17 @@ public class SpaceController {
     }
 
     /**
-     * 此接口的功能已移至『更改权限与安全设置』接口中
-     * 遗留代码将在迭代稳定后移除
-     *
-     * Edit By 胡海平
+     * @see #updateSecuritySetting(SpaceSecuritySettingRo)
      * */
     @Deprecated
     @PostResource(path = "/updateMemberSetting", tags = "MANAGE_MEMBER_SETTING")
-    @ApiOperation(value = "更改成员设置")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Update member setting")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<Void> updateMemberSetting(@RequestBody @Valid SpaceMemberSettingRo data) {
         Long userId = SessionContext.getUserId();
         String spaceId = LoginContext.me().getSpaceId();
         if (data.getInvitable() != null || data.getJoinable() != null) {
-            // 绑定第三方情况下不允许操作
+            // This operation cannot be performed when binding to a third party
             iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         }
         SpaceGlobalFeature feature = new SpaceGlobalFeature();
@@ -363,13 +347,13 @@ public class SpaceController {
     }
 
     @PostResource(path = "/updateSecuritySetting", tags = { "MANAGE_SHARE_SETTING", "MANAGE_FILE_SETTING", "MANAGE_ADVANCE_SETTING" })
-    @ApiOperation(value = "更改权限与安全设置")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Update security setting")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<Void> updateSecuritySetting(@RequestBody @Valid SpaceSecuritySettingRo data) {
         Long userId = SessionContext.getUserId();
         String spaceId = LoginContext.me().getSpaceId();
         if (data.getInvitable() != null || data.getJoinable() != null) {
-            // 绑定第三方情况下不允许操作
+            // This operation cannot be performed when binding to a third party
             iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         }
         SpaceGlobalFeature feature = new SpaceGlobalFeature();
@@ -379,8 +363,8 @@ public class SpaceController {
     }
 
     @GetResource(path = "/subscribe/{spaceId}", requiredPermission = false)
-    @ApiOperation(value = "获取空间的订阅信息")
-    @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
+    @ApiOperation(value = "Gets subscription information for the space")
+    @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<SpaceSubscribeVo> subscribe(@PathVariable("spaceId") String spaceId) {
         SpaceSubscribeVo result = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
         return ResponseData.success(result);

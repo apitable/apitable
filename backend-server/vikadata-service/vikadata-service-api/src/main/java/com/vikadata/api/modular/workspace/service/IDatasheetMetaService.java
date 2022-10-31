@@ -11,100 +11,68 @@ import com.vikadata.api.model.vo.datasheet.DatasheetMetaVo;
 import com.vikadata.api.modular.workspace.model.DatasheetSnapshot;
 import com.vikadata.entity.DatasheetMetaEntity;
 
-/**
- * <p>
- * 数表元数据表 服务类
- * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-23
- */
 public interface IDatasheetMetaService {
 
     /**
-     * 批量保存
-     * @param metaEntities 实体列表
+     * @param metaEntities meta
      */
     void batchSave(List<DatasheetMetaEntity> metaEntities);
 
     /**
-     * 查询详细
-     *
-     * @param dstId 数表ID
+     * @param dstId datasheet id
      * @return DatasheetMetaVo
-     * @author Benson Cheung
-     * @date 2019/09/20 16:17
      */
     DatasheetMetaVo findByDstId(String dstId);
 
     /**
-     * 批量获取数表元数据
-     *
-     * @param dstIds 数表 ID 列表
+     * @param dstIds datasheet ids
      * @return DatasheetMetaDTO
-     * @author Chambers
-     * @date 2021/7/7
      */
     List<DatasheetMetaDTO> findMetaDtoByDstIds(@Param("list") List<String> dstIds);
 
     /**
-     * 创建
-     *
-     * @param userId   用户ID
-     * @param dstId    数表ID
-     * @param metaData 元数据
-     * @author Chambers
-     * @date 2019/12/19
+     * @param userId user id
+     * @param dstId datasheet id
+     * @param metaData
      */
     void create(Long userId, String dstId, String metaData);
 
     /**
-     * 编辑
-     *
-     * @param userId 用户ID
-     * @param dstId  数表ID
-     * @param meta   请求参数
-     * @author Benson Cheung
-     * @date 2019/09/20 16:17
+     * @param userId user id
+     * @param dstId datasheet id
+     * @param meta   request parameters
      */
     void edit(Long userId, String dstId, MetaOpRo meta);
 
     /**
-     * 检查数表指定视图是否存在
+     * Check whether the specified view of the number table exists.
      *
-     * @param dstId  数表ID
-     * @param viewId 视图ID
-     * @author Chambers
-     * @date 2020/11/10
+     * @param dstId datasheet id
+     * @param viewId view id
      */
     void checkViewIfExist(String dstId, String viewId);
 
     /**
-     * 获取数据表源信息
-     * @param dstId 数表ID
+     * get data datasheet source information
+     * @param dstId datasheet id
      * @return DatasheetSnapshot
-     * @author Shawn Deng
-     * @date 2021/4/2 17:25
      */
     DatasheetSnapshot getMetaByDstId(String dstId);
 
     /**
-     * 检查字段是否存在表内
-     * @param dstId 数表ID
-     * @param fieldId 字段ID
-     * @author Shawn Deng
-     * @date 2021/4/2 17:25
+     * Check if the field exists in the table
+     *
+     * @param dstId datasheet id
+     * @param fieldId fieldId
      */
     void checkFieldIfExist(String dstId, String fieldId);
 
     /**
-     * 根据数表ID查询和字段名称查询字段属性
+     * Query field properties based on the number table ID query and field name.
      *
-     * @param dstId 数表ID
-     * @param fieldName 字段名称
-     * @return 字段属性
-     * @author zoe zheng
-     * @date 2021/8/3 5:49 下午
+     * @param dstId datasheet id
+     * @param fieldName fieldName
+     * @return field properties
      */
     JSONObject getFieldPropertyByDstIdAndFieldName(String dstId, String fieldName);
 }

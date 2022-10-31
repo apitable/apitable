@@ -173,14 +173,6 @@ import static com.vikadata.api.enums.exception.SpaceException.NOT_IN_SPACE;
 import static com.vikadata.api.enums.exception.TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT;
 import static com.vikadata.api.util.NodeUtil.sortNode;
 
-/**
- * <p>
- * 数据表格表 服务实现类
- * </p>
- *
- * @author Chambers
- * @since 2019-10-07
- */
 @Service
 @Slf4j
 public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> implements INodeService {
@@ -274,13 +266,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
-        log.info("查询空间「{}」的根节点ID", spaceId);
+        log.info("The root node ID of the query space [{}]", spaceId);
         return nodeMapper.selectRootNodeIdBySpaceId(spaceId);
     }
 
     @Override
     public List<String> getNodeIdBySpaceIdAndType(String spaceId, Integer type) {
-        log.info("查询空间「{}」节点类型为「{}」的节点ID", spaceId, type);
+        log.info("The ID of the query space [{}] node type [{}]", spaceId, type);
         return nodeMapper.selectNodeIdBySpaceIdAndType(spaceId, type);
     }
 
@@ -293,7 +285,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public NodeEntity getByNodeId(String nodeId) {
-        log.info("查询节点:{}", nodeId);
+        log.info("Query node: {}", nodeId);
         NodeEntity nodeEntity = nodeMapper.selectByNodeId(nodeId);
         ExceptionUtil.isNotNull(nodeEntity, PermissionException.NODE_NOT_EXIST);
         return nodeEntity;
@@ -305,7 +297,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private List<NodeEntity> getByNodeIds(Collection<String> nodeIds) {
-        log.info("批量查询节点:{}", nodeIds);
+        log.info("Batch query node:{}", nodeIds);
         List<NodeEntity> nodeEntities = nodeMapper.selectByNodeIds(nodeIds);
         ExceptionUtil.isNotEmpty(nodeEntities, PermissionException.NODE_NOT_EXIST);
         return nodeEntities;
@@ -313,7 +305,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public String getSpaceIdByNodeId(String nodeId) {
-        log.info("查询节点所在空间ID");
+        log.info("The id of the space where the query node is located.");
         String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
         ExceptionUtil.isNotNull(spaceId, PermissionException.NODE_NOT_EXIST);
         return spaceId;
@@ -328,13 +320,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public String getSpaceIdByNodeIdIncludeDeleted(String nodeId) {
-        log.info("查询包含删除在内的节点「{}」所在的空间ID", nodeId);
+        log.info("Query the space ID of the node [{}] including deletion", nodeId);
         return nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
     }
 
     @Override
     public Boolean getIsTemplateByNodeIds(List<String> nodeIds) {
-        log.info("查询节点「{}」是否都属于模板", nodeIds);
+        log.info("Query whether all nodes [{}] belong to templates", nodeIds);
         List<Boolean> result = nodeMapper.selectIsTemplateByNodeId(nodeIds);
         ExceptionUtil.isTrue(result.size() > 0, PermissionException.NODE_NOT_EXIST);
         ExceptionUtil.isTrue(result.size() == 1, ParameterException.INCORRECT_ARG);
@@ -343,34 +335,34 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public String getParentIdByNodeId(String nodeId) {
-        log.info("查询节点「{}」的父级节点ID", nodeId);
+        log.info("The id of the parent node of the query node [{}]", nodeId);
         return nodeMapper.selectParentIdByNodeId(nodeId);
     }
 
     @Override
     public String getNodeNameByNodeId(String nodeId) {
-        log.info("查询节点「{}」的节点名称", nodeId);
+        log.info("Query the node name of node [{}]", nodeId);
         return nodeMapper.selectNodeNameByNodeId(nodeId);
     }
 
     @Override
     public List<String> getPathParentNode(String nodeId) {
-        log.info("查询节点「{}」的节点路径", nodeId);
+        log.info("Query the node path of node [{}]", nodeId);
         return nodeMapper.selectParentNodePath(nodeId);
     }
 
     @Override
     public List<NodeInfo> getNodeInfoByNodeIds(Collection<String> nodeIds) {
-        log.info("批量查询「{}」的节点信息视图", nodeIds);
+        log.info("Node information view of batch query [{}]", nodeIds);
         return nodeMapper.selectInfoByNodeIds(nodeIds);
     }
 
     @Override
     public String checkNodeIfExist(String spaceId, String nodeId) {
-        log.info("检查节点是否存在");
+        log.info("Check if the node exists");
         String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
         ExceptionUtil.isNotNull(nodeSpaceId, PermissionException.NODE_NOT_EXIST);
-        // spaceId不为空时，校验是否跨空间
+        // When the space Id is not empty, check whether the space is cross-space.
         ExceptionUtil.isTrue(StrUtil.isBlank(spaceId) || nodeSpaceId.equals(spaceId), NOT_IN_SPACE);
         return nodeSpaceId;
     }
@@ -383,13 +375,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             case MIRROR:
                 ExceptionUtil.isTrue(extra != null && StrUtil.isNotBlank(extra.getDatasheetId()) &&
                         StrUtil.isNotBlank(extra.getViewId()), ParameterException.INCORRECT_ARG);
-                // 判断数表是否不存在或跨空间访问
+                // Determine whether the datasheet does not exist or is accessed across space.
                 this.checkNodeIfExist(spaceId, extra.getDatasheetId());
-                // 检查数表指定视图是否存在
+                // Check whether the specified view of the datasheet exists.
                 iDatasheetMetaService.checkViewIfExist(extra.getDatasheetId(), extra.getViewId());
-                // 收集表要求源表的可编辑权限，mirror 要求可管理
+                // The form requires the editable permission of the source datasheet and the mirror requires the management.
                 NodePermission permission = nodeType.equals(NodeType.FORM) ? NodePermission.EDIT_NODE : NodePermission.MANAGE_NODE;
-                // 校验数表是否有指定操作权限
+                // Check whether the datasheet has the specified operation permission
                 controlTemplate.checkNodePermission(memberId, extra.getDatasheetId(), permission,
                         status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
                 break;
@@ -410,11 +402,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeSearchResult> searchNode(String spaceId, Long memberId, String keyword) {
-        log.info("模糊搜索节点");
+        log.info("Fuzzy search node");
         if (StrUtil.isBlank(StrUtil.trim(keyword))) {
             return new ArrayList<>();
         }
-        //模糊搜索结果
+        // fuzzy search results
         List<String> nodeIds = nodeMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
         return formatNodeSearchResults(spaceId, nodeInfos);
@@ -422,40 +414,40 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth) {
-        log.info("查询节点树");
+        log.info("Query node tree ");
         List<String> nodeIds = nodeMapper.selectSubNodesByOrder(spaceId, nodeId, depth);
         return this.getNodeInfoTreeByNodeIds(spaceId, memberId, nodeIds);
     }
 
     @Override
     public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId, NodeType nodeType) {
-        log.info("查询子节点列表");
-        // 获取直属子节点
+        log.info("Query the list of child nodes ");
+        // Get a direct child node
         List<String> subNodeIds = nodeMapper.selectOrderSubNodeIds(nodeId, nodeType);
         return this.getNodeInfoByNodeIds(spaceId, memberId, subNodeIds);
     }
 
     @Override
     public List<NodePathVo> getParentPathByNodeId(String spaceId, String nodeId) {
-        log.info("获取节点父级路径");
+        log.info("Get the node parent path ");
         return nodeMapper.selectParentNodeListByNodeId(spaceId, nodeId);
     }
 
     @Override
     public NodeInfoTreeVo position(String spaceId, Long memberId, String nodeId) {
-        log.info("定位节点");
-        // 获取节点的所有父级节点, 假设节点结构如下
+        log.info("positioning node ");
+        // Get all parent nodes of the node, assuming the node structure is as follows
         // root
         // -- a
         // ---- b
         // ------ c
-        // 此时获取c节点时，应该返回[c,b,a]
+        // At this time, when obtaining node c, it should return [c, b, a]
         List<String> parentNodeIds = nodeMapper.selectParentNodePath(nodeId);
-        // 没有父节点应该要报错，但定位节点可不需要，直接返回空
+        // No parent node should report an error, but the location node does not need to return empty directly.
         if (parentNodeIds.isEmpty()) {
             return null;
         }
-        // 校验父节点权限是否有权限访问，否则不予定位
+        // Check whether the parent node has permission to access, otherwise it will not be located.
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, parentNodeIds);
         if (roleDict.isEmpty()) {
             return null;
@@ -465,11 +457,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 return null;
             }
         }
-        // 查询根节点
+        // Query root node
         String rootNodeId = getRootNodeIdBySpaceId(spaceId);
-        // 查询根节点下的第一层节点
+        // Query the first layer node under the root node
         List<String> firstLevelNodes = nodeMapper.selectSubNodeIds(rootNodeId);
-        // 父节点补充树节点加载
+        // The parent node supplements the tree node load.
         List<String> viewNodeIds = new ArrayList<>(firstLevelNodes);
         viewNodeIds.add(rootNodeId);
         for (int i = 0; i < parentNodeIds.size() - 1; i++) {
@@ -483,7 +475,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public NodeInfoVo getNodeInfoByNodeId(String spaceId, String nodeId, ControlRole role) {
-        log.info("查询节点信息");
+        log.info("Query node information ");
         NodeInfoVo nodeInfo = nodeMapper.selectNodeInfoByNodeId(nodeId);
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         nodeInfo.setRole(role.getRoleTag());
@@ -493,7 +485,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeInfoVo> getNodeInfoByNodeIds(String spaceId, Long memberId, List<String> nodeIds) {
-        log.info("查询多个节点的视图信息");
+        log.info("Query the view information of multiple nodes ");
         if (CollUtil.isEmpty(nodeIds)) {
             return new ArrayList<>();
         }
@@ -501,7 +493,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (roleDict.isEmpty()) {
             return new ArrayList<>();
         }
-        // 批量查询节点信息
+        // Batch query node information
         List<NodeInfoVo> infos = nodeMapper.selectNodeInfoByNodeIds(roleDict.keySet(), memberId);
         // Node switches to memory custom sorting
         CollectionUtil.customSequenceSort(infos, NodeInfoVo::getNodeId, new ArrayList<>(roleDict.keySet()));
@@ -512,12 +504,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public NodeInfoTreeVo getNodeInfoTreeByNodeIds(String spaceId, Long memberId, List<String> nodeIds) {
-        log.info("查询多个节点的视图并构造成树形结构");
-        // 构造树形需要数据结构支持才能构造树形，先把树形构造出来，再整合删除
+        log.info("Query the views of multiple nodes and construct a tree structure ");
+        // Constructing a tree requires data structure support to construct a tree, first construct the tree, and then integrate and delete it.
         ControlRoleDict roleDict = controlTemplate.fetchNodeTreeNode(memberId, nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), PermissionException.NODE_ACCESS_DENIED);
         List<NodeInfoTreeVo> treeList = nodeMapper.selectNodeInfoTreeByNodeIds(roleDict.keySet(), memberId);
-        // 节点切换成内存自定义排序
+        // Node switches to memory custom sort
         CollectionUtil.customSequenceSort(treeList, NodeInfoTreeVo::getNodeId, new ArrayList<>(roleDict.keySet()));
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         setRole(treeList, roleDict, feature);
@@ -535,18 +527,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createNode(Long userId, String spaceId, NodeOpRo nodeOpRo) {
-        log.info("新增节点");
+        log.info("Add node ");
         // if (nodeOpRo.getType() != NodeType.FOLDER.getNodeType()) {
-        //     //验证节点数量是否到达上限
+        //     // Verify that the number of nodes reaches the upper limit
         //     iSubscriptionService.checkSheetNums(spaceId, 1);
         // }
-        //parent_id和space_id必须是匹配，父节点是属于这个空间的，防止跨空间跨节点操作行为
+        //The parent id and space id must match. The parent node belongs to this space to prevent cross-space and cross-node operations.
         this.checkNodeIfExist(spaceId, nodeOpRo.getParentId());
         String name = duplicateNameModify(nodeOpRo.getParentId(), nodeOpRo.getType(), nodeOpRo.getNodeName(), null);
         String nodeId = IdUtil.createNodeId(nodeOpRo.getType());
-        // 新增节点若是文件，对应创建数表/收集表
+        // If the new node is a file, it corresponds to the creation of a datasheet form.
         this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra());
-        //防止传入空字符串，前置节点不为null时，若被删除或不在parentId下，移动失败
+        // When an empty string is not passed in, if the pre-node is deleted or not under the parent Id, the move fails.
         String preNodeId = this.verifyPreNodeId(nodeOpRo.getPreNodeId(), nodeOpRo.getParentId());
         NodeEntity nodeEntity = NodeEntity.builder()
                 .parentId(nodeOpRo.getParentId())
@@ -556,7 +548,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 .type(nodeOpRo.getType())
                 .nodeId(nodeId)
                 .build();
-        // 将后一位节点的前置节点ID改为新增节点ID(A <- C  =>  B <- C)
+        // Change the front node ID of the next node to the new node ID(A <- C => B <- C)
         nodeMapper.updatePreNodeIdBySelf(nodeId, preNodeId, nodeOpRo.getParentId());
         boolean flag = save(nodeEntity);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -568,10 +560,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public String createDatasheetWithDesc(String spaceId, Long userId, CreateDatasheetRo ro) {
         NodeOpRo nodeOpRo = ro.tranferToNodeOpRo();
         nodeOpRo.setParentId(ro.getFolderId());
-        // 创建节点
+        // Create node
         String nodeId = createNode(userId, spaceId, nodeOpRo);
 
-        // 添加描述信息
+        // Add description information
         if (ro.needToInsertDesc()) {
             NodeDescEntity descEntity = NodeDescEntity.builder().id(IdWorker.getId())
                     .nodeId(nodeId).description(ro.getDescription()).build();
@@ -603,7 +595,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public void insertBatch(List<NodeEntity> nodeList, Integer dstCount) {
-        log.info("批量新增节点");
+        log.info("Batch add nodes ");
         if (CollUtil.isNotEmpty(nodeList)) {
             if (dstCount == null) {
                 dstCount = 0;
@@ -613,7 +605,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     }
                 }
             }
-            // 验证节点数量是否到达上限
+            // Verify that the number of nodes reaches the upper limit
             // iSubscriptionService.checkSheetNums(nodeList.get(0).getSpaceId(), dstCount);
             boolean flag = SqlHelper.retBool(nodeMapper.insertBatch(nodeList));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -623,19 +615,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(Long userId, String nodeId, NodeUpdateOpRo opRo) {
-        log.info("编辑节点");
+        log.info("Edit node ");
         NodeEntity nodeEntity = this.getByNodeId(nodeId);
         ExceptionUtil.isFalse(nodeEntity.getType().equals(NodeType.ROOT.getNodeType()), NOT_ALLOW);
-        // 修改名称
+        // modify name
         this.updateNodeName(userId, nodeId, opRo.getNodeName(), nodeEntity);
 
-        // 修改图标
+        // modify icon
         this.updateNodeIcon(userId, nodeId, opRo.getIcon(), nodeEntity.getIcon());
 
-        // 修改封面图
+        // revised the cover picture
         this.updateNodeCover(userId, nodeId, opRo.getCover(), nodeEntity.getCover());
 
-        // 修改是否展示记录的历史
+        // Modify whether to display the history of the record
         if (ObjectUtil.isNotNull(opRo.getShowRecordHistory()) && nodeEntity.getType() == NodeType.DATASHEET.getNodeType()) {
             boolean flag;
             String newValue = JSONUtil.toJsonStr(Dict.create().set(NodeExtraConstants.SHOW_RECORD_HISTORY, opRo.getShowRecordHistory()));
@@ -653,15 +645,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isBlank(name)) {
             return;
         }
-        // 防止同级目录，重复名称修改
+        // Prevent peer directory, duplicate name modification
         String nodeName = duplicateNameModify(entity.getParentId(), entity.getType(), name, nodeId);
         boolean flag = SqlHelper.retBool(nodeMapper.updateNameByNodeId(nodeId, nodeName));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 数表节点，对应修改
+        // The datasheet node, corresponding to the modification.
         if (entity.getType() == NodeType.DATASHEET.getNodeType()) {
             iDatasheetService.updateDstName(userId, nodeId, nodeName);
         }
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_NAME, StrUtil.nullToEmpty(entity.getNodeName()));
         info.set(AuditConstants.NODE_NAME, nodeName);
@@ -673,13 +665,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (icon == null) {
             return;
         }
-        // 图标重置
+        // icon reset
         if (icon.trim().equals(StrUtil.EMPTY)) {
             icon = StrUtil.EMPTY;
         }
         boolean flag = SqlHelper.retBool(nodeMapper.updateIconByNodeId(nodeId, icon));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_ICON, StrUtil.nullToEmpty(oldNodeIcon));
         info.set(AuditConstants.NODE_ICON, icon);
@@ -691,17 +683,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isBlank(cover)) {
             return;
         }
-        // 可以重置封面图为空
+        // you can reset the cover map to empty
         if ("null".equalsIgnoreCase(cover) || "undefined".equalsIgnoreCase(cover)) {
             cover = null;
         }
         boolean flag = SqlHelper.retBool(nodeMapper.updateCoverByNodeId(nodeId, cover));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 旧封面图降低引用数
+        // the old cover map reduces the number of references
         if (StrUtil.startWith(oldNodeCover, SPACE_PREFIX)) {
             spaceAssetMapper.updateCiteByNodeIdAndToken(nodeId, oldNodeCover, -1);
         }
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_NODE_COVER, StrUtil.nullToEmpty(oldNodeCover));
         info.set(AuditConstants.NODE_COVER, StrUtil.nullToEmpty(cover));
@@ -712,13 +704,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<String> move(Long userId, NodeMoveOpRo opRo) {
-        log.info("移动节点");
+        log.info("Move node");
         NodeEntity nodeEntity = this.getByNodeId(opRo.getNodeId());
         ExceptionUtil.isFalse(nodeEntity.getType().equals(NodeType.ROOT.getNodeType()), NOT_ALLOW);
-        //传入参数，节点ID与前置节点ID相同
+        // The input parameter. The node ID is the same as the pre-node ID.
         ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getPreNodeId()), ParameterException.INCORRECT_ARG);
         ExceptionUtil.isFalse(nodeEntity.getNodeId().equals(opRo.getParentId()), ParameterException.INCORRECT_ARG);
-        //该节点是文件夹时，防止移入到子后代节点里
+        // When this node is a folder, it is prevented from moving into child and descendant nodes.
         if (nodeEntity.getType().equals(NodeType.FOLDER.getNodeType())) {
             List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeEntity.getNodeId());
             ExceptionUtil.isFalse(CollUtil.isNotEmpty(subNodeIds) && subNodeIds.contains(opRo.getParentId()), NodeException.MOVE_FAILURE);
@@ -728,42 +720,42 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         info.set(AuditConstants.OLD_PRE_NODE_ID, StrUtil.nullToEmpty(nodeEntity.getPreNodeId()));
         String name = nodeEntity.getNodeName();
         String parentId = nodeEntity.getParentId();
-        //记录数据有变化的节点（前端要求）
+        // Nodes that record changes in data (front-end requirements)
         List<String> nodeIds = CollUtil.newArrayList(nodeEntity.getNodeId());
         if (!nodeEntity.getParentId().equals(opRo.getParentId())) {
-            //跨文件夹移动
+            // move across folders
             parentId = opRo.getParentId();
-            //校验新的父级节点是否存在以及在同一个空间中
+            // Check whether the new parent node exists and is in the same space
             this.checkNodeIfExist(nodeEntity.getSpaceId(), parentId);
             name = this.duplicateNameModify(parentId, nodeEntity.getType(), nodeEntity.getNodeName(), null);
-            //节点是数表，名称发生改变对应修改
+            // The node is a datasheet, and the name changes corresponding to the modification.
             if (nodeEntity.getType() == NodeType.DATASHEET.getNodeType() && !nodeEntity.getNodeName().equals(name)) {
                 iDatasheetService.updateDstName(userId, nodeEntity.getNodeId(), name);
             }
-            //记录新旧位置的父级节点
+            // Parent nodes that record new and old locations
             nodeIds.add(nodeEntity.getParentId());
             nodeIds.add(opRo.getParentId());
             info.set(AuditConstants.OLD_PARENT_ID, nodeEntity.getParentId());
         }
         else {
-            //同级排序，新旧前置节点相同，即未发生移动
+            // Sort at the same level, the old and new front nodes are the same, that is, no movement has occurred.
             if (Optional.ofNullable(opRo.getPreNodeId()).orElse("").equals(Optional.ofNullable(nodeEntity.getPreNodeId()).orElse(""))) {
                 return new ArrayList<>();
             }
             action = AuditSpaceAction.SORT_NODE;
         }
-        //防止传入空字符串，前置节点不为null时，若被删除或不在parentId下，移动失败
+        // When an empty string is not passed in, if the pre-node is deleted or not under the parent Id, the move fails.
         String preNodeId = this.verifyPreNodeId(opRo.getPreNodeId(), parentId);
-        //记录新旧位置的后一个节点
+        // The next node that records the old and new locations
         List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(CollUtil.newArrayList(nodeEntity.getNodeId(), preNodeId));
         nodeIds.addAll(suffixNodeIds);
-        //将后一个节点的前置节点更新为该节点的前节点 (A <- B <- C  =>  A <- C)
+        // Update the front node of the latter node to the front node of the node (A <- B <- C => A <- C)
         nodeMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(), nodeEntity.getNodeId(), nodeEntity.getParentId());
-        //更新移动后前后节点顺序关系 (D <- E  =>  D <- B <- E)
+        // Update the sequence relationship of nodes before and after the move (D <- E => D <- B <- E)
         nodeMapper.updatePreNodeIdBySelf(nodeEntity.getNodeId(), preNodeId, parentId);
-        //更新该节点的信息（前一个节点ID可能更新为null，故不使用updateById）
+        // Update the information of this node (the ID of the previous node may be updated to null, so update By Id is not used)
         nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
-        // 发布空间审计事件
+        // Publish Space Audit Events
         info.set(AuditConstants.MOVE_EFFECT_SUFFIX_NODES, CollUtil.emptyIfNull(suffixNodeIds));
         AuditSpaceArg arg = AuditSpaceArg.builder().action(action).userId(userId).nodeId(opRo.getNodeId()).info(info).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -773,38 +765,39 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String spaceId, Long memberId, String... ids) {
-        log.info("删除节点");
+        log.info("Delete node ");
         Long userId = memberMapper.selectUserIdByMemberId(memberId);
         List<String> idList = Arrays.asList(ids);
         List<NodeEntity> list = this.getByNodeIds(new HashSet<>(idList));
-        // 校验根节点
+        // verify root node
         long count = list.stream().filter(node -> node.getType().equals(NodeType.ROOT.getNodeType())).count();
         ExceptionUtil.isFalse(count > 0, NOT_ALLOW);
-        // 获取上级路径
+        // get the superior path
         List<String> parentIds = list.stream().map(NodeEntity::getParentId).collect(Collectors.toList());
         Map<String, String> parentIdToPathMap = this.getSuperiorPathByParentIds(spaceId, parentIds);
-        // 赋予删除节点角色
+        // give delete node role
         iNodeRoleService.copyExtendNodeRoleIfExtend(userId, spaceId, memberId, new HashSet<>(idList));
-        //获取节点及子后代的节点ID和对应的数表ID集合
+        // Obtain the node ID and the corresponding datasheet ID set of the node and its child descendants.
         List<String> nodeIds = nodeMapper.selectBatchAllSubNodeIds(idList, false);
-        // 删除节点及子后代所有节点
+        // delete all nodes and child descendants
         if (CollUtil.isNotEmpty(nodeIds)) {
             this.nodeDeleteChangeset(nodeIds);
             iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
             boolean flag = SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
             ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
-            // 禁用节点分享
+            // disable node sharing
             nodeShareSettingMapper.disableByNodeIds(nodeIds);
-            // 删除节点的空间附件资源
+            // delete the spatial attachment resource of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(nodeIds, true);
         }
         list.forEach(nodeEntity -> {
-            // 更新 后一个节点对应的前节点（大表处理时间较长，nodeEntity.getPreNodeId()可能已发生变化，故不直接使用 updatePreNodeIdBySelf）
+            // The previous node corresponding to the updated node
+            // (Large datasheet processing takes a long time, nodeEntity.getPreNodeId() may have changed, so updatePreNodeIdBySelf is not used directly)
             nodeMapper.updatePreNodeIdByJoinSelf(nodeEntity.getNodeId(), nodeEntity.getParentId());
-            // 保存删除时的路径，指定删除的节点挂靠在父节点-1
+            // Save the path of the deletion. Specify that the deleted node is attached to the parent node -1.
             String delPath = MapUtil.isNotEmpty(parentIdToPathMap) ? parentIdToPathMap.get(nodeEntity.getParentId()) : null;
             nodeMapper.updateDeletedPathByNodeId(nodeEntity.getNodeId(), delPath);
-            // 发布空间审计事件
+            // publish space audit events
             AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_NODE).userId(userId).nodeId(nodeEntity.getNodeId()).build();
             SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         });
@@ -813,15 +806,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delTemplateRefNode(Long userId, String... nodeIds) {
-        log.info("删除模板映射节点");
-        // 获取节点及子后代的节点ID
+        log.info("Delete template mapping node ");
+        // Obtain the node ID of the node and its child descendants.
         List<String> subNodeIds = nodeMapper.selectBatchAllSubNodeIds(Arrays.asList(nodeIds), false);
         if (CollUtil.isNotEmpty(subNodeIds)) {
-            // 删除节点、数表信息
+            // delete node and datasheet information
             boolean flag = SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, subNodeIds, true));
             ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
             iDatasheetService.updateIsDeletedStatus(userId, subNodeIds, true);
-            // 删除节点的空间附件资源
+            // delete the spatial attachment resource of the node
             iSpaceAssetService.updateIsDeletedByNodeIds(subNodeIds, true);
         }
     }
@@ -829,13 +822,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public NodeCopyEffectDTO copy(Long userId, NodeCopyOpRo opRo) {
-        log.info("复制节点");
+        log.info("Copy node ");
         NodeEntity copyNode = this.getByNodeId(opRo.getNodeId());
         NodeType nodeType = NodeType.toEnum(copyNode.getType());
-        // 限制复制根节点、文件夹
+        // Restrict replication of root nodes and folders
         ExceptionUtil.isFalse(nodeType.equals(NodeType.ROOT), NOT_ALLOW);
         ExceptionUtil.isFalse(nodeType.equals(NodeType.FOLDER), NODE_COPY_FOLDER_ERROR);
-        // 验证节点数量是否到达上限
+        // Verify that the number of nodes reaches the upper limit
         // iSubscriptionService.checkSheetNums(copyNode.getSpaceId(), 1);
 
         Map<String, Object> param = new HashMap<>(1);
@@ -854,42 +847,42 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 .cover(copyNode.getCover())
                 .extra(copyNode.getExtra())
                 .build();
-        // 将后一个节点的前节点更新为复制出来的节点 (A <- B  =>  A <- A' <- B)
+        // Update the former node of the latter node to the copied node (A <- B => A <- A' <- B)
         nodeMapper.updatePreNodeIdBySelf(createNodeDto.getNewNodeId(), opRo.getNodeId(), copyNode.getParentId());
-        // 保存节点
+        // save node
         String copyNodeId = createChildNode(userId, createNodeDto);
-        // 组成节点ID Map
+        // component node id map
         Map<String, String> newNodeMap = new HashMap<>(1);
         newNodeMap.put(copyNode.getNodeId(), copyNodeId);
         NodeCopyEffectDTO copyEffect = NodeCopyEffectDTO.builder().nodeId(opRo.getNodeId()).copyNodeId(copyNodeId).build();
-        // 不同类型节点处理
+        // different types of node processing
         switch (nodeType) {
             case FORM:
-                // 复制收集表
+                // copy form
                 iNodeRelService.copy(userId, opRo.getNodeId(), copyNodeId);
                 iResourceMetaService.copyBatch(userId, Collections.singletonList(opRo.getNodeId()), newNodeMap);
                 iSpaceAssetService.copyBatch(newNodeMap, copyNode.getSpaceId());
                 return copyEffect;
             case DASHBOARD:
-                // 复制仪表盘
+                // copy dashboard
                 iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(), opRo.getNodeId(), copyNodeId, ResourceType.DASHBOARD);
                 return copyEffect;
             case MIRROR:
-                // 复制镜像
+                // copy mirror
                 iNodeRelService.copy(userId, opRo.getNodeId(), copyNodeId);
                 iResourceMetaService.copyResourceMeta(userId, copyNode.getSpaceId(), opRo.getNodeId(), copyNodeId, ResourceType.MIRROR);
                 return copyEffect;
             default:
                 break;
         }
-        //复制对应的数表、meta和record
+        // Copy the corresponding datasheet, meta, and record.
         boolean copyData = BooleanUtil.isTrue(opRo.getData());
         NodeCopyOptions options = NodeCopyOptions.create(copyData, true);
-        // 获取数表所有字段的权限
+        // get permissions for all fields in a datasheet
         Long memberId = memberMapper.selectIdByUserIdAndSpaceId(userId, copyNode.getSpaceId());
         Map<String, FieldPermissionInfo> fieldPermissionMap = iFieldRoleService.getFieldPermissionMap(memberId, copyNode.getNodeId(), null);
         if (MapUtil.isNotEmpty(fieldPermissionMap)) {
-            // 过滤无字段权限的字段
+            // filter fields without field permissions
             List<String> fieldIds = fieldPermissionMap.entrySet().stream()
                     .filter(entry -> !Boolean.TRUE.equals(entry.getValue().getHasRole()))
                     .map(Entry::getKey).collect(Collectors.toList());
@@ -903,10 +896,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> linkFieldIds = iDatasheetService.copy(userId, copyNode.getSpaceId(), copyNode.getNodeId(),
                 createNodeDto.getNewNodeId(), createNodeDto.getNodeName(), options, newNodeMap);
         if (copyData) {
-            //选择复制数据时，同时复制节点引用的空间附件资源
+            // When you select to copy data, copy the spatial attachment resources referenced by the node at the same time.
             iSpaceAssetService.copyBatch(newNodeMap, copyNode.getSpaceId());
         }
-        // 复制节点描述
+        // copy node description
         iNodeDescService.copyBatch(newNodeMap);
         copyEffect.setLinkFieldIds(linkFieldIds);
         return copyEffect;
@@ -914,20 +907,20 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<BaseNodeInfo> getForeignSheet(String nodeId) {
-        log.info("查询节点的关联数表信息");
-        //无论是文件夹还是数表，如果有关联数表，需全部查询出来
+        log.info("Query the associated datasheet information of the node ");
+        // Whether it is a folder or a datasheet, if the datasheet is related, it needs to be fully queried.
         NodeType nodeType = NodeType.toEnum(SqlTool.retCount(nodeMapper.selectNodeTypeByNodeId(nodeId)));
         ExceptionUtil.isTrue(nodeType != NodeType.ROOT, ROOT_NODE_CAN_NOT_SHARE);
         List<BaseNodeInfo> nodes = new ArrayList<>();
         if (nodeType == NodeType.FOLDER) {
-            //文件夹
+            // folder
             List<String> subNodeIds = nodeMapper.selectAllSubNodeIdsByNodeType(nodeId, NodeType.DATASHEET.getNodeType());
             if (CollUtil.isNotEmpty(subNodeIds)) {
                 getForeignDstIdsFilterSelf(nodes, subNodeIds);
             }
         }
         else if (nodeType == NodeType.DATASHEET) {
-            //数表
+            // datasheet
             getForeignDstIdsFilterSelf(nodes, Collections.singletonList(nodeId));
         }
         return nodes;
@@ -936,22 +929,22 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String copyNodeToSpace(Long userId, String spaceId, String destParentId, String sourceNodeId, NodeCopyOptions options) {
-        log.info("复制节点到空间");
-        // 未指定父节点，取根节点作为父节点
+        log.info("Copy node to space ");
+        // No parent node is specified, take the root node as the parent node
         if (StrUtil.isBlank(destParentId)) {
             destParentId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
         }
         NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
         String name = StrUtil.isNotBlank(options.getNodeName()) ? options.getNodeName() : shareNode.getNodeName();
         String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId()) ? options.getNodeId() : IdUtil.createNodeId(shareNode.getType());
-        // 组成节点ID Map
+        // component node id map
         Map<String, String> newNodeMap = CollUtil.newHashMap();
         newNodeMap.put(sourceNodeId, toSaveNodeId);
 
         if (!options.isTemplate()) {
-            // 检查重名
+            // check for the same name
             name = duplicateNameModify(destParentId, shareNode.getType(), name, null);
-            // 更新原首位的节点，位置后移一位，即设置前置节点是转存的分享节点
+            // update the original first node, and move the position one bit later, that is, the pre-node is the shared node that is transferred.
             nodeMapper.updatePreNodeIdBySelf(toSaveNodeId, null, destParentId);
         }
 
@@ -964,11 +957,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 break;
             case DATASHEET:
                 // if (options.isVerifyNodeCount()) {
-                //     // 验证节点数量是否到达上限
+                //     // Verify that the number of nodes reaches the upper limit
                 //     // iSubscriptionService.checkSheetNums(spaceId, 1);
                 // }
                 if (options.isFilterPermissionField()) {
-                    // 获取开启列权限的字段
+                    // Obtain the field that has the permission to enable the column.
                     List<String> permissionFieldIds = iFieldRoleService.getPermissionFieldIds(sourceNodeId);
                     if (!permissionFieldIds.isEmpty()) {
                         Map<String, List<String>> dstPermissionFieldsMap = new HashMap<>(1);
@@ -976,7 +969,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                         options.setDstPermissionFieldsMap(dstPermissionFieldsMap);
                     }
                 }
-                // 复制数表数据
+                // copyTableData
                 iDatasheetService.copy(userId, spaceId, sourceNodeId, toSaveNodeId, name, options, newNodeMap);
                 break;
             case FORM:
@@ -998,7 +991,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject extraObj = JSONUtil.parseObj(shareNode.getExtra());
         if (StrUtil.isNotBlank(options.getSourceTemplateId())) {
             extraObj.set(NodeExtraConstants.SOURCE_TEMPLATE_ID, options.getSourceTemplateId());
-            // 保存缓存用于在客户端展示tips
+            // The save cache is used to display tips on the client side.
             redisTemplate.opsForValue().set(RedisConstants.getTemplateQuoteKey(spaceId, toSaveNodeId),
                     options.getSourceTemplateId(), 2, TimeUnit.MINUTES);
         }
@@ -1010,7 +1003,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             extraObj.set(NodeExtraConstants.DING_TALK_DA_TEMPLATE_KEY, options.getDingTalkDaTemplateKey());
         }
         else {
-            // 为了防止别人转存share的钉钉搭模版
+            // In order to prevent others from transferring share DingTalk to build a template
             extraObj.remove(NodeExtraConstants.DING_TALK_DA_STATUS);
             extraObj.remove(NodeExtraConstants.DING_TALK_DA_TEMPLATE_KEY);
         }
@@ -1018,9 +1011,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         toSaveNode.setCreatedBy(userId);
         toSaveNode.setUpdatedBy(userId);
         this.save(toSaveNode);
-        // 批量复制节点描述
+        // description of batch replication nodes
         iNodeDescService.copyBatch(newNodeMap);
-        // 批量复制节点引用的空间附件资源
+        // Batch copy of spatial attachment resources referenced by nodes
         if (ObjectUtil.isNotNull(options) && options.isCopyData()) {
             iSpaceAssetService.copyBatch(newNodeMap, spaceId);
         }
@@ -1033,22 +1026,22 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (CollUtil.isEmpty(subTrees)) {
             return;
         }
-        // 按节点类型分组
+        // grouping by node type
         Map<Integer, List<NodeShareTree>> nodeTypeToNodeIdsMap = subTrees.stream()
                 .collect(Collectors.groupingBy(NodeShareTree::getType));
-        // 需要过滤的节点ID 集合
+        // set of node ids to be filtered
         List<String> filterNodeIds = CollUtil.isEmpty(options.getFilterNodeIds()) ? new ArrayList<>() : options.getFilterNodeIds();
-        // 收集表、镜像预处理，过滤跳过转存的部分
+        // Collect tables and image preprocessing, and filter the parts that are skipped.
         this.processNodeHasSourceDatasheet(NodeType.FORM.getNodeType(), filterNodeIds, nodeTypeToNodeIdsMap);
         this.processNodeHasSourceDatasheet(NodeType.MIRROR.getNodeType(), filterNodeIds, nodeTypeToNodeIdsMap);
 
-        // 验证节点数量是否到达上限
+        // Verify that the number of nodes reaches the upper limit
         // if (options.isVerifyNodeCount()) {
         //     int subCount;
         //     if (nodeTypeToNodeIdsMap.containsKey(NodeType.FOLDER.getNodeType())) {
         //         List<String> fodIds = nodeTypeToNodeIdsMap.get(NodeType.FOLDER.getNodeType()).stream()
         //                 .map(NodeShareTree::getNodeId).collect(Collectors.toList());
-        //         // 取去重并集，避免部分文件夹已在过滤之列
+        //         // Take out the double union to avoid some folders already in the filtered list.
         //         subCount = CollUtil.unionDistinct(fodIds, filterNodeIds).size();
         //     }
         //     else {
@@ -1058,11 +1051,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         //         iSubscriptionService.checkSheetNums(spaceId, subTrees.size() - subCount);
         //     }
         // }
-        // 原节点 -> 前置节点 MAP
+        // Original node-> front node MAP
         Map<String, String> originNodeToPreNodeMap = new HashMap<>(subTrees.size());
         subTrees.forEach(sub -> {
             originNodeToPreNodeMap.put(sub.getNodeId(), sub.getPreNodeId());
-            // 补充原节点、新节点ID 映射关系
+            // Supplement the ID mapping relationship between the original node and the new node
             if (!filterNodeIds.contains(sub.getNodeId())) {
                 newNodeMap.put(sub.getNodeId(), IdUtil.createNodeId(sub.getType()));
             }
@@ -1079,7 +1072,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             node.setNodeId(newNodeMap.get(shareTree.getNodeId()));
             node.setNodeName(shareTree.getNodeName());
             if (shareTree.getPreNodeId() != null) {
-                // 原前置节点ID，若在过滤之列，向前递归直至找到转存的节点或到首位结束
+                // The original pre-node ID, if it is in the filter column, recursively until the transferred node is found or ends in the first place.
                 String preNodeId = shareTree.getPreNodeId();
                 while (preNodeId != null && filterNodeIds.contains(preNodeId)) {
                     preNodeId = originNodeToPreNodeMap.get(preNodeId);
@@ -1098,13 +1091,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (storeEntities.size() == 0) {
             return;
         }
-        // 批量插入节点
         boolean flag = SqlHelper.retBool(nodeMapper.insertBatch(storeEntities));
         ExceptionUtil.isTrue(flag, SHARE_NODE_STORE_FAIL);
-        // 复制数表处理
+        // Copy datasheet processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
             if (options.isFilterPermissionField()) {
-                // 获取数表及对应开启列权限的字段集
+                // Obtain the datasheet and the field set of the corresponding column permission
                 Map<String, List<String>> dstPermissionFieldsMap = new HashMap<>(16);
                 nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()).stream()
                         .filter(subNode -> !filterNodeIds.contains(subNode.getNodeId()))
@@ -1123,7 +1115,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iDatasheetService.copy(userId, spaceId, subNode.getNodeId(), newNodeMap.get(subNode.getNodeId()), subNode.getNodeName(), options, newNodeMap);
             }
         }
-        // 复制收集表处理
+        // Copy form processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.FORM.getNodeType())) {
             List<String> formIds = nodeTypeToNodeIdsMap.get(NodeType.FORM.getNodeType()).stream()
                     .map(NodeShareTree::getNodeId)
@@ -1133,7 +1125,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iResourceMetaService.copyBatch(userId, formIds, newNodeMap);
             }
         }
-        // 复制仪表盘处理
+        // Copy dashboard processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DASHBOARD.getNodeType())) {
             List<String> dashboardIds = nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()).stream()
                     .map(NodeShareTree::getNodeId)
@@ -1143,7 +1135,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iResourceMetaService.batchCopyResourceMeta(userId, spaceId, dashboardIds, newNodeMap, ResourceType.DASHBOARD);
             }
         }
-        // 复制镜像处理
+        // Copy mirror processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.MIRROR.getNodeType())) {
             List<String> mirrorIds = nodeTypeToNodeIdsMap.get(NodeType.MIRROR.getNodeType()).stream()
                     .map(NodeShareTree::getNodeId)
@@ -1161,31 +1153,31 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         List<String> allFormIds = nodeTypeToNodeIdsMap.get(nodeType).stream()
                 .map(NodeShareTree::getNodeId).collect(Collectors.toList());
-        // 取所有 收集表/镜像 和过滤节点的差集
+        // Take the difference set of all form images and filter nodes
         List<String> nodeIds = CollUtil.subtractToList(allFormIds, filterNodeIds);
-        // 若差集为空，即所有 收集表/镜像 全部已被过滤
+        // If the difference set is empty, all form images have been filtered.
         if (CollUtil.isEmpty(nodeIds)) {
             nodeTypeToNodeIdsMap.remove(nodeType);
             return;
         }
-        // 若转存文件中无数表，即 收集表/镜像 全部跳过转存
+        // If numerous tables in the file are transferred, all the collected datasheet images are skipped for transfer.
         if (!nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
             filterNodeIds.addAll(nodeIds);
             return;
         }
         List<String> dstIds = nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()).stream()
                 .map(NodeShareTree::getNodeId).collect(Collectors.toList());
-        // 全部数表都在过滤之列，同理 收集表/镜像 全部跳过转存
+        // All the datasheets are in the filter list. Similarly, all the images of the forms are skipped for transfer.
         if (filterNodeIds.containsAll(dstIds)) {
             filterNodeIds.addAll(nodeIds);
             nodeTypeToNodeIdsMap.remove(NodeType.DATASHEET.getNodeType());
             return;
         }
-        // 获取 收集表/镜像 及映射的数表 MAP
+        // Obtain the collected datasheet image and the mapped datasheet MAP.
         Map<String, String> nodeIdToSourceDatasheetIdMap = iNodeRelService.getRelNodeToMainNodeMap(nodeIds);
         for (String nodeId : nodeIds) {
             String datasheet = nodeIdToSourceDatasheetIdMap.get(nodeId);
-            // 映射的数表在过滤之列，或者不在转存文件中，该 收集表/镜像 跳过转存
+            // The mapped datasheet is in the filter column or not in the dump file, and the form image skips the dump.
             if (filterNodeIds.contains(datasheet) || !dstIds.contains(datasheet)) {
                 filterNodeIds.add(nodeId);
             }
@@ -1194,34 +1186,34 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public String importExcel(Long userId, String spaceId, ImportExcelOpRo opRo) throws IOException {
-        log.info("导入新节点");
-        // 验证节点数量是否到达上限
+        log.info("Import new node ");
+        // Verify that the number of nodes reaches the upper limit
         // iSubscriptionService.checkSheetNums(spaceId, 1);
         MultipartFile file = opRo.getFile();
         ExceptionUtil.isNotNull(file, FILE_EMPTY);
         ExceptionUtil.isNotBlank(file.getOriginalFilename(), FILE_EMPTY);
         ExceptionUtil.isTrue(file.getSize() <= limitProperties.getMaxFileSize(), ActionException.FILE_EXCEED_LIMIT);
-        // 文件名称
+        // fileName
         String mainName = cn.hutool.core.io.FileUtil.mainName(file.getOriginalFilename());
         if (StrUtil.isBlank(mainName)) {
-            throw new BusinessException("文件名为空");
+            throw new BusinessException("File name is empty ");
         }
         mainName = duplicateNameModify(opRo.getParentId(), NodeType.DATASHEET.getNodeType(), mainName, null);
-        //文件类型后缀
+        // file type suffix
         String fileSuffix = cn.hutool.core.io.FileUtil.extName(file.getOriginalFilename());
         if (StrUtil.isBlank(fileSuffix)) {
-            throw new BusinessException("文件名为空");
+            throw new BusinessException("File name is empty ");
         }
-        // 导入节点时，上传文件为CSV格式
+        // When importing a node, the uploaded file is in CSV format.
         if (fileSuffix.equals(FileSuffixConstants.CSV)) {
-            //识别文件编码
+            // identification file code
             String charset = FileTool.identifyCoding(file.getInputStream());
             Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT.withNullString("").parse(
                     new InputStreamReader(file.getInputStream(), charset)
             );
             List<List<Object>> readAll = new ArrayList<>();
             for (CSVRecord csvRecord : csvRecords) {
-                // 创建csvRow存储每行数据
+                // create csv row to store data per row
                 List<Object> csvRow = new ArrayList<>();
                 for (int i = 0; i < csvRecord.size(); i++) {
                     String value = csvRecord.get(i);
@@ -1236,22 +1228,22 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             }
             return this.processExcel(readAll, opRo.getParentId(), spaceId, userId, mainName);
         }
-        // 导入节点时，上传文件为XLS或者XLSX格式
+        // When importing a node, the uploaded file is in XLS or XLSX format.
         if (fileSuffix.equals(FileSuffixConstants.XLS) || fileSuffix.equals(FileSuffixConstants.XLSX)) {
             ExcelReader excelReader = null;
             try {
-                // Excel监听器（不能交给spring容器管理）
+                // ExcelListener (cannot be handed over to spring container management)
                 ExcelSheetsDataListener sheetsDataListener = new ExcelSheetsDataListener();
                 excelReader = EasyExcel.read(file.getInputStream(), null, sheetsDataListener).build();
                 List<ReadSheet> readSheets = excelReader.excelExecutor().sheetList();
-                // 如果存在WPS隐藏表格，移除不做处理
+                // If there is a WPS hidden table, the removal will not be processed.
                 readSheets.removeIf(readSheet -> "WpsReserved_CellImgList".equals(readSheet.getSheetName()));
-                // Excel只包含一个工作表
+                // Excel contains only one worksheet
                 if (readSheets.size() == 1) {
                     List<List<Object>> read = this.importSingleSheetByEasyExcel(excelReader, sheetsDataListener, readSheets.get(0));
                     return this.processExcel(read, opRo.getParentId(), spaceId, userId, mainName);
                 }
-                // Excel包含多个工作表
+                // Excel contains multiple worksheets
                 Map<String, List<List<Object>>> readAll = this.importMultipleSheetsByEasyExcel(excelReader, sheetsDataListener, readSheets);
                 return this.processExcels(readAll, opRo.getParentId(), spaceId, userId, mainName);
             }
@@ -1272,17 +1264,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public Map<String, List<List<Object>>> importMultipleSheetsByEasyExcel(ExcelReader excelReader, ExcelSheetsDataListener sheetsDataListener, List<ReadSheet> readSheets) {
         Map<String, List<List<Object>>> readAll = new LinkedHashMap<>(readSheets.size());
-        // 反转Excel Sheet
+        // inverse Excel Sheet
         Collections.reverse(readSheets);
         for (ReadSheet readSheet : readSheets) {
-            // 逐个工作表读取
+            // read by worksheet
             excelReader.read(readSheet);
-            // 读取表头
+            // read header
             List<Object> sheetHeader = sheetsDataListener.getSheetHeader();
-            // 读取表格数据
+            // read table data
             List<List<Object>> sheetsData = sheetsDataListener.getSheetData();
             List<List<Object>> assembleData = new ArrayList<>();
-            // 组装表头和表格数据
+            // assemble header and table data
             if (CollectionUtils.isNotEmpty(sheetHeader)) {
                 assembleData.add(sheetHeader);
             }
@@ -1290,7 +1282,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 assembleData.addAll(sheetsData);
             }
             readAll.put(readSheet.getSheetName(), assembleData);
-            // 清空监听器中的表头和表格对象，读取下一张工作表
+            // Empty the header and table objects in the listener and read the next worksheet.
             sheetsDataListener.setSheetHeader(new ArrayList<>());
             sheetsDataListener.setSheetData(new ArrayList<>());
         }
@@ -1314,20 +1306,20 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public void updateNodeBanStatus(String nodeId, Integer status) {
-        log.info("封禁或解封节点");
+        log.info("Ban or unban nodes ");
         boolean flag = SqlHelper.retBool(nodeMapper.updateNodeBanStatus(nodeId, status));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
 
     /**
-     * 处理Excel数据
+     * processing excel data
      */
     private String processExcel(List<List<Object>> readAll, String parentId, String spaceId, Long userId, String name) {
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
         checkEnableOperateNodeBySpaceFeature(memberId, spaceId, parentId);
         // long maxRowLimit = iSubscriptionService.getPlanMaxRows(spaceId);
         // ExceptionUtil.isTrue(readAll != null && readAll.size() <= maxRowLimit + 1, SubscribeFunctionException.ROW_LIMIT);
-        //如果表格为空，创建一个初始化表格
+        // If the table is empty, create an initialization table
         if (readAll.size() == 0) {
             return this.createNode(userId, spaceId, NodeOpRo.builder()
                     .type(NodeType.DATASHEET.getNodeType())
@@ -1344,9 +1336,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             JSONArray rows = JSONUtil.createArray();
             List<String> fieldIds = null;
             List<String> fldNameList = new ArrayList<>();
-            //遍历行、首行作为field属性
+            // Traverse row, first row as field attribute
             for (List<Object> list : readAll) {
-                //处理excel格式问题导致的末尾空字符列
+                // Handling Empty Character Columns at the End Caused by excel Format Problems
                 if (ObjectUtil.isNull(CollUtil.getLast(list)) || CollUtil.getLast(list) == "") {
                     int i;
                     for (i = list.size() - 1; i >= 0; i--) {
@@ -1373,12 +1365,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                             .frozenColumnCount(1)
                             .build();
                     if (readAll.size() == 1) {
-                        //只有一行充当字段情况、填补一行空行
+                        // Only one line acts as a field condition and fills a blank line.
                         this.addRecord(recordMap, rows, null, null, null, null, null, fldNameList);
                     }
                 }
                 else {
-                    //处理record
+                    // processing record
                     this.addRecord(recordMap, rows, list, fieldIds, columns, fieldMap, viewMapRo, fldNameList);
                 }
             }
@@ -1387,9 +1379,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             views.add(viewMapRo);
             MetaMapRo metaMapRo = MetaMapRo.builder().fieldMap(fieldMap).views(views).build();
             String nodeId = IdUtil.createDstId();
-            //将原首位节点的前置节点ID改为导入的节点ID
+            // Change the pre-node ID of the original first node to the imported node ID
             nodeMapper.updatePreNodeIdBySelf(nodeId, null, parentId);
-            //创建节点数表
+            // create node datasheet
             this.createChildNode(userId, CreateNodeDto.builder()
                     .spaceId(spaceId)
                     .parentId(parentId)
@@ -1402,7 +1394,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * 增加记录
+     * add records
      */
     private void addRecord(JSONObject recordMap, JSONArray rows, List<Object> list, List<String> fieldIds, JSONArray columns, JSONObject fieldMap, ViewMapRo viewMapRo, List<String> fldNameList) {
         String recordId = IdUtil.createRecordId();
@@ -1414,7 +1406,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             int i = 0;
             for (Object text : list) {
                 if (i >= fieldIds.size()) {
-                    //列数超过首行列表，填补field
+                    // The number of columns exceeds the first row list, fill the field
                     this.addField(fieldIds, columns, fieldMap, null, i + 1, fldNameList);
                     viewMapRo.setColumns(columns);
                 }
@@ -1430,7 +1422,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * 增加字段
+     * add field
      */
     private void addField(List<String> fieldIds, JSONArray columns, JSONObject fieldMap, String fieldName, int i, List<String> fldNameList) {
         String fieldId = IdUtil.createFieldId();
@@ -1438,14 +1430,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         JSONObject fieldJson = JSONUtil.createObj();
         fieldJson.set("fieldId", fieldId);
         if (i == 1) {
-            // 首列添加统计记录总数
+            // Add the total number of statistical records in the first column
             fieldJson.set("statType", 1);
         }
         columns.add(fieldJson);
         if (StrUtil.isBlank(fieldName)) {
             fieldName = "Field " + i;
         }
-        // 保证字段名称唯一
+        // ensure that the field name is unique
         int j = 2;
         String name = fieldName;
         while (fldNameList.contains(fieldName)) {
@@ -1460,7 +1452,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * 重复名称修改
+     * duplicate name modification
      */
     @Override
     public String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId) {
@@ -1480,14 +1472,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         ExceptionUtil.isTrue(nodeType != NodeType.ROOT, ROOT_NODE_CAN_NOT_SHARE);
         String keyword = "\"type\": 13";
         if (nodeType == NodeType.FOLDER) {
-            // 文件夹
+            // folder
             List<String> subNodeIds = nodeMapper.selectAllSubNodeIdsByNodeType(nodeId, NodeType.DATASHEET.getNodeType());
             if (CollUtil.isNotEmpty(subNodeIds)) {
                 return SqlTool.retCount(datasheetMetaMapper.countByMetaData(subNodeIds, keyword)) > 0;
             }
         }
         else if (nodeType == NodeType.DATASHEET) {
-            // 数表
+            // datasheet
             return SqlTool.retCount(datasheetMetaMapper.countByMetaData(Collections.singletonList(nodeId), keyword)) > 0;
         }
         return false;
@@ -1499,7 +1491,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (!hasChildren) {
             return null;
         }
-        // 校验所有子后代的节点权限
+        // Check the node permissions of all children and descendants
         List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeId);
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, subNodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), SUB_NODE_PERMISSION_INSUFFICIENT);
@@ -1523,7 +1515,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     .build();
             BasicResult result = grpcClientService.nodeCopyChangeset(nodeCopyRo);
             if (!result.getSuccess()) {
-                log.error("复制节点错误[{}]", result);
+                log.error("Copy node error [{}]", result);
             }
             ExceptionUtil.isTrue(result.getSuccess(), NodeException.COPY_NODE_LINK__FIELD_ERROR);
         }
@@ -1532,7 +1524,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public void nodeDeleteChangeset(List<String> nodeIds) {
-        // 删除数表的关联数表若不在删除之列，则把关联数表中对应的关联列转换为文本字段
+        // If the associated datasheet of the deleted datasheet is not in the deleted column, the corresponding associated column in the linked datasheet is converted to a text field.
         Map<String, List<String>> map = iDatasheetService.getForeignDstIds(nodeIds, true);
         if (MapUtil.isNotEmpty(map)) {
             List<String> linkNodeId =
@@ -1543,18 +1535,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     .setUuid(user.getUuid())
                     .addAllDeleteNodeId(map.keySet())
                     .addAllLinkNodeId(linkNodeId).build();
-            // 中间层删除失败继续删除节点
+            // Middle tier deletion failed to continue to delete nodes
             this.grpcClientService.nodeDeleteChangeset(nodeDeleteRo);
         }
 
     }
 
     /**
-     * 创建收集表和映射数表的关联
+     * Create an association between a form and a mapping datasheet
      */
     private void createNodeRel(Long userId, String nodeId, NodeRelRo extra) {
         NodeRelRo relExtra = new NodeRelRo(extra.getViewId());
-        // 创建节点关联关系
+        // create node association relationship
         iNodeRelService.create(userId, extra.getDatasheetId(), nodeId, JSONUtil.toJsonStr(relExtra));
     }
 
@@ -1564,9 +1556,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iDatasheetService.create(spaceId, nodeId, name, userId);
                 break;
             case FORM:
-                // 创建节点关联关系
+                // create node association relationship
                 this.createNodeRel(userId, nodeId, nodeRel);
-                // 创建资源元数据
+                // create resource metadata
                 String extra = JSONUtil.createObj().set("title", name).set("fillAnonymous", true).toString();
                 iResourceMetaService.create(userId, nodeId, ResourceType.FROM.getValue(), extra);
                 break;
@@ -1574,7 +1566,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 iResourceMetaService.create(userId, nodeId, ResourceType.DASHBOARD.getValue(), JSONUtil.createObj().toString());
                 break;
             case MIRROR:
-                // 创建节点关联关系
+                // create node association relationship
                 this.createNodeRel(userId, nodeId, nodeRel);
                 iResourceMetaService.create(userId, nodeId, ResourceType.MIRROR.getValue(), JSONUtil.createObj().toString());
                 break;
@@ -1584,7 +1576,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * 校验前置节点非空时，在指定父级节点下是否存在
+     * Check whether the pre-node exists under the specified parent node when it is non-empty.
      */
     private String verifyPreNodeId(String preNodeId, String parentId) {
         if (StrUtil.isBlank(preNodeId)) {
@@ -1610,14 +1602,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * 操作多个excel的sheet
+     * operate multiple excel sheet
      *
-     * @param readAll 全部记录
-     * @param parentId 父节点ID
-     * @param spaceId 空间ID
-     * @param userId 用户ID
-     * @param name 节点名称
-     * @return 节点ID
+     * @param readAll all records
+     * @param parentId parent node id
+     * @param spaceId space id
+     * @param userId user id
+     * @param name node name
+     * @return node id
      */
     private String processExcels(Map<String, List<List<Object>>> readAll, String parentId, String spaceId, Long userId, String name) {
         String nodeId = this.createNode(userId, spaceId, NodeOpRo.builder()
@@ -1630,10 +1622,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     /**
-     * 获取上级路径，已"/"分割，不保留根节点
+     * Get the superior path, split by "/", do not retain the root node
      */
     private Map<String, String> getSuperiorPathByParentIds(String spaceId, List<String> parentIds) {
-        // 获取非根节点之外的所有上级节点
+        // gets all parent nodes other than the non root node
         List<NodeBaseInfoDTO> parentNodes = nodeMapper.selectParentNodeByNodeIds(spaceId, parentIds);
         if (CollUtil.isEmpty(parentNodes)) {
             return null;
@@ -1644,7 +1636,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             if (nodeIdToPathMap.get(nodeId) != null) {
                 continue;
             }
-            // 从下向上获取节点名称
+            // get the node name from bottom up
             List<String> pathList = new ArrayList<>();
             String node = nodeId;
             while (nodeIdToInfoMap.get(node) != null) {
@@ -1655,7 +1647,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             if (CollUtil.isEmpty(pathList)) {
                 continue;
             }
-            // 逆向输出路径
+            // reverse output path
             String path = StrUtil.join(" / ", CollUtil.reverse(pathList));
             nodeIdToPathMap.put(nodeId, StrUtil.addPrefixIfNot(path, "/ "));
         }
@@ -1682,7 +1674,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         finally {
             if (excelReader != null) {
-                // 这里千万别忘记关闭，读的时候会创建临时文件，到时磁盘会崩的
+                // Don't forget to close it here. Temporary files will be created when reading, and the disk will collapse.
                 excelReader.finish();
             }
         }
@@ -1703,7 +1695,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         finally {
             if (excelReader != null) {
-                // 这里千万别忘记关闭，读的时候会创建临时文件，到时磁盘会崩的
+                // Don't forget to close it here. Temporary files will be created when reading, and the disk will collapse.
                 excelReader.finish();
             }
         }
@@ -1759,11 +1751,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public NodeInfoWindowVo getNodeWindowInfo(String nodeId) {
-        // 获取节点实体
         NodeEntity node = getByNodeId(nodeId);
-        // 查询节点创建人基础信息
+        // query node creator basic information
         MemberDto memberDto = memberMapper.selectMemberDtoByUserIdAndSpaceId(node.getCreatedBy(), node.getSpaceId());
-        // 构造节点信息窗对象
+        // construct node information window objects
         MemberInfo memberInfo = MemberInfo.builder()
                 .time(node.getCreatedAt())
                 .build();
@@ -1783,17 +1774,17 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private MemberInfo getNodeLastUpdateInfo(NodeEntity node) {
-        // 查询节点的数表信息
+        // query the datasheet information of the node
         DatasheetEntity datasheet = datasheetMapper.selectByDstId(node.getNodeId());
-        // 取节点信息最新的那个，获取成员ID
+        // get the latest node information and the member id
         Long memberId = node.getUpdatedAt().isAfter(datasheet.getUpdatedAt()) ?
                 node.getUpdatedBy() : datasheet.getUpdatedBy();
-        // 获取最新修改时间
+        // get the latest modification time
         LocalDateTime modifyDateTime = node.getUpdatedAt().isAfter(datasheet.getUpdatedAt()) ?
                 node.getUpdatedAt() : datasheet.getUpdatedAt();
-        // 查询成员信息
+        // query member information
         MemberDto memberDto = memberMapper.selectMemberDtoByUserIdAndSpaceId(memberId, node.getSpaceId());
-        // 构造成员信息对象
+        // construct member information objects
         return MemberInfo.builder()
                 .memberName(memberDto.getMemberName())
                 .avatar(memberDto.getAvatar())
@@ -1807,15 +1798,15 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public NodeFromSpaceVo nodeFromSpace(String nodeId) {
         NodeFromSpaceVo result = new NodeFromSpaceVo();
         if (StrUtil.startWithIgnoreEquals(nodeId, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
-            // 分享ID
+            // share id
             result.setSpaceId(nodeShareSettingMapper.selectSpaceIdByShareIdIncludeDeleted(nodeId));
         }
         else if (StrUtil.startWithIgnoreEquals(nodeId, IdRulePrefixEnum.WIDGET.getIdRulePrefixEnum())) {
-            // 组件ID
+            // widget id
             result.setSpaceId(widgetMapper.selectSpaceIdByWidgetIdIncludeDeleted(nodeId));
         }
         else {
-            // 其余情况都查询节点Id
+            // all other condition query node id
             result.setSpaceId(this.getSpaceIdByNodeIdIncludeDeleted(nodeId));
         }
         result.setNodeId(nodeId);
@@ -1824,7 +1815,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public Optional<String> getNodeName(String nodeId, Long userId) {
-        // 1. 查询节点所在空间id和节点名称。
+        // 1. query the space id and node name of the node
         UrlNodeInfoDTO urlNodeInfo = nodeMapper.selectSpaceIdAndNodeNameByNodeId(nodeId);
 
         if (ObjectUtil.isNull(urlNodeInfo)) {
@@ -1832,11 +1823,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
 
         try {
-            // 2. 根据用户id查询在空间下的memberId。
-            // 获取成员ID，方法包含判断用户是否在此空间
+            // 2. Query the member Id in the space based on the user id.
+            // Gets the member ID by determining whether the user is in this space.
             Long memberId = LoginContext.me().getMemberId(userId, urlNodeInfo.getSpaceId());
-            // 3. 根据memberId查询对应空间下用户是否对节点有权限。
-            // 校验节点下是否有权限
+            // 3. Query whether the user has permissions on the node in the corresponding space according to the member Id.
+            // check whether there is permission under the node
             controlTemplate.fetchNodeRole(memberId, nodeId);
             return Optional.ofNullable(urlNodeInfo.getNodeName());
         }
@@ -1849,7 +1840,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public void checkEnableOperateNodeBySpaceFeature(Long memberId, String spaceId, String nodeId) {
         Integer nodeType = nodeMapper.selectNodeTypeByNodeId(nodeId);
-        // 1. 节点是否为根节点
+        // 1. whether the node is the root node
         if (NodeType.toEnum(nodeType) != NodeType.ROOT) {
             return;
         }
@@ -1860,12 +1851,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public void checkEnableOperateRootNodeBySpaceFeature(Long memberId, String spaceId) {
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         Boolean rootManageable = feature.rootManageableOrDefault();
-        // 1. 安全设置是否开启普通成员根目录可操作权限控制
+        // 1. Whether the security settings turn on the normal member root directory operable permission control
         if (rootManageable) {
             return;
         }
         List<Long> adminsWithWorkbench = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
-        // 2. 用户是否有工作台权限的管理权限
+        // 2. Whether the user has the administrative permission of the workbench permission
         ExceptionUtil.isTrue(CollUtil.contains(adminsWithWorkbench, memberId), ROOT_NODE_OP_DENIED);
     }
 

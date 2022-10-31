@@ -8,148 +8,121 @@ import com.vikadata.api.model.vo.node.FieldPermissionInfo;
 import com.vikadata.api.model.vo.node.FieldPermissionView;
 import com.vikadata.api.modular.control.model.FieldControlProp;
 
-/**
- * 字段角色服务接口
- * @author Shawn Deng
- * @date 2021-04-01 19:27:46
- */
 public interface IFieldRoleService {
 
     /**
-     * 操作列权限的前置检查
-     * 1. 字段必须存在
-     * 2. 字段不能是首列
-     * @param dstId 数表ID
-     * @param fieldId 字段ID
-     * @author Shawn Deng
-     * @date 2021/4/2 17:42
+     * pre check of operation column permissions
+     * 1. field must exist
+     * 2. the field cannot be the first column
+     * @param dstId datasheet id
+     * @param fieldId field id
      */
     void checkFieldPermissionBeforeEnable(String dstId, String fieldId);
 
     /**
-     * 字段角色权限变更之前的检查
-     * @param controlId 检查控制单元ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2021/6/9 21:37
+     * check before field role permission change
+     * @param controlId controlId
+     * @param memberId member id
      */
     void checkFieldHasOperation(String controlId, Long memberId);
 
     /**
-     * 获取字段角色：
-     * 如果字段没有开启权限，默认角色组织单元列表。
-     * 默认角色组织单元列表：所在数表，或所在数表父级节点，或根部门的角色组织单元。
+     * get field role：
+     * If the field is not enabled, the default role organization unit list.
+     * Default role organization unit list: the datasheet, the parent node of the datasheet, or the role organization unit of the root department.
      *
-     * @param datasheetId   数表ID
-     * @param fieldId       字段ID
+     * @param datasheetId   datasheet id
+     * @param fieldId       file id
      * @return FieldCollaboratorVO
-     * @author Chambers
-     * @date 2021/4/27
+     * 
+     * 
      */
     FieldCollaboratorVO getFieldRoles(String datasheetId, String fieldId);
 
     /**
-     * 开启字段权限
+     * open field permissions
      *
-     * includeExtend 开启字段权限后，是否继承默认角色组织单元列表。
-     * 默认角色组织单元列表：所在数表，或所在数表父级节点，或根部门的角色组织单元。
+     * includeExtend Whether to inherit the default role organization unit list after field permissions are enabled.
+     * Default role organization unit list: the datasheet, the parent node of the datasheet, or the role organization unit of the root department.
      *
-     * @param userId        用户ID
-     * @param dstId         数表ID
-     * @param fldId         字段ID
-     * @param includeExtend 是否继承默认角色组织单元列表
-     * @author Chambers
-     * @date 2021/4/27
+     * @param userId user id
+     * @param dstId datasheet id
+     * @param fldId         field id
+     * @param includeExtend Whether to inherit the list of default role organization units
      */
     void enableFieldRole(Long userId, String dstId, String fldId, boolean includeExtend);
 
     /**
-     * 添加字段权限角色
+     * add field permission role
      *
-     * @param userId        用户ID
-     * @param controlId     控制单元ID
-     * @param unitIds       组织单元ID 列表
-     * @param role          添加的角色
-     * @author Chambers
-     * @date 2021/4/27
+     * @param userId user id
+     * @param controlId     controlId
+     * @param unitIds       unitIds
+     * @param role          role
      */
     void addFieldRole(Long userId, String controlId, List<Long> unitIds, String role);
 
     /**
-     * 修改字段权限角色
+     * modify field permission role
      *
-     * @param userId    用户ID
-     * @param controlId 控制单元ID
-     * @param unitIds    组织单元ID
-     * @param role      修改后的角色
-     * @author Chambers
-     * @date 2021/4/27
+     * @param userId user id
+     * @param controlId controlId
+     * @param unitIds    unitIds
+     * @param role      role
      */
     void editFieldRole(Long userId, String controlId, List<Long> unitIds, String role);
 
     /**
-     * 删除字段角色
+     * delete field role
      *
-     * @param controlId     控制单元ID
-     * @param datasheetId   数表ID
-     * @param unitId        组织单元ID
-     * @return 角色编码
-     * @author Chambers
-     * @date 2021/4/17
+     * @param controlId     controlId
+     * @param datasheetId   datasheetId
+     * @param unitId        unitId
+     * @return role code
      */
     String deleteFieldRole(String controlId, String datasheetId, Long unitId);
 
     /**
-     * 修改字段权限设置
+     * modify field permission settings
      *
-     * @param userId    用户ID
-     * @param controlId 控制单元ID
-     * @param prop      修改后的属性
-     * @author Chambers
-     * @date 2021/4/27
+     * @param userId user id
+     * @param controlId controlId
+     * @param prop      update prop
      */
     void updateFieldRoleProp(Long userId, String controlId, FieldControlProp prop);
 
     /**
-     * 获取字段权限视图信息
+     * get field permission view information
      *
-     * @param memberId      成员ID
-     * @param nodeId        节点ID
-     * @param shareId       分享ID
+     * @param memberId member id
+     * @param nodeId node id
+     * @param shareId       shareId
      * @return FieldPermissionView
-     * @author Chambers
-     * @date 2021/12/13
      */
     FieldPermissionView getFieldPermissionView(Long memberId, String nodeId, String shareId);
 
     /**
-     * 获取数表所有字段的权限
+     * get permissions for all fields in a table
      *
-     * @param memberId      成员ID
-     * @param nodeId        节点ID
-     * @param shareId       分享ID
+     * @param memberId member id
+     * @param nodeId node id
+     * @param shareId       shareId
      * @return FieldId -> FieldPermissionInfo Map
-     * @author Chambers
-     * @date 2021/4/19
      */
     Map<String, FieldPermissionInfo> getFieldPermissionMap(Long memberId, String nodeId, String shareId);
 
     /**
-     * 获取开启列权限的字段ID
+     * obtain the field id of the column permission
      *
-     * @param datasheetId 数表ID
+     * @param datasheetId datasheetId
      * @return fieldIds
-     * @author Chambers
-     * @date 2021/5/6
      */
     List<String> getPermissionFieldIds(String datasheetId);
 
     /**
-     * 批量删除字段角色
-     *
-     * @param controlId     控制单元ID
-     * @param unitIds        组织单元ID集
-     * @return 角色编码对应单元集
+     * @param controlId     controlId
+     * @param unitIds        unitIds
+     * @return role code corresponding unit
      */
     Map<String, List<Long>> deleteFieldRoles(String controlId, List<Long> unitIds);
 }

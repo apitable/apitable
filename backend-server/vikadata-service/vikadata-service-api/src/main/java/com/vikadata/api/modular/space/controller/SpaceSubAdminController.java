@@ -42,16 +42,8 @@ import static com.vikadata.api.constants.PageConstants.PAGE_DESC;
 import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
 import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
-/**
- * <p>
- * 权限管理-主管理员 控制器
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/11 21:00
- */
 @RestController
-@Api(tags = "空间管理_子管理员相关接口")
+@Api(tags = "Space - Sub Admin Api")
 @ApiResource(path = "/space")
 public class SpaceSubAdminController {
 
@@ -65,10 +57,10 @@ public class SpaceSubAdminController {
     private ISpaceInviteLinkService iSpaceInviteLinkService;
 
     @GetResource(path = "/listRole", tags = "READ_SUB_ADMIN")
-    @ApiOperation(value = "查询管理员列表", notes = "分页查询子管理员列表\n" + PAGE_DESC)
+    @ApiOperation(value = "Query admins", notes = "Page query sub admin." + PAGE_DESC)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "paging parameters", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<SpaceRoleVo>> listRole(@PageObjectParam Page page) {
@@ -78,8 +70,8 @@ public class SpaceSubAdminController {
     }
 
     @GetResource(path = { "/getRoleDetail" }, tags = "UPDATE_SUB_ADMIN")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    @ApiOperation(value = "获取管理员信息", notes = "获取管理员信息")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "query admin detail")
     @SuppressWarnings("unchecked")
     public ResponseData<SpaceRoleDetailVo> getRoleDetail(@RequestParam(name = "memberId") Long memberId) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -89,50 +81,48 @@ public class SpaceSubAdminController {
 
     @Notification(templateId = NotificationTemplateId.ADD_SUB_ADMIN)
     @PostResource(path = "/addRole", tags = "CREATE_SUB_ADMIN")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    @ApiOperation(value = "添加管理员", notes = "添加管理员")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Create space role")
     @SuppressWarnings("rawtypes")
     public ResponseData addRole(@RequestBody @Valid AddSpaceRoleRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        // 检查资源是否被禁止
+        // check whether the resource is disabled
         iSpaceRoleService.checkAdminResourceChangeAllow(spaceId, data.getResourceCodes());
-        // 查找限制
+        // to find the limit
         // iSubscriptionService.checkSubAdmins(spaceId);
-        //创建管理员
         iSpaceRoleService.createRole(spaceId, data);
-        //删除相关缓存
+        // delete the relevant cache
         TaskManager.me().execute(() -> userSpaceService.delete(spaceId, data.getMemberIds()));
         return ResponseData.success();
     }
 
     @PostResource(path = "/editRole", tags = "UPDATE_SUB_ADMIN")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    @ApiOperation(value = "编辑管理员", notes = "编辑管理员")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Edite space role")
     @SuppressWarnings("rawtypes")
     public ResponseData editRole(@RequestBody @Valid UpdateSpaceRoleRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        // 检查资源是否被禁止
+        // check whether the resource is disabled
         iSpaceRoleService.checkAdminResourceChangeAllow(spaceId, data.getResourceCodes());
-        //更新角色权限
         iSpaceRoleService.edit(spaceId, data);
-        //删除相关缓存
+        // delete the relevant cache
         TaskManager.me().execute(() -> userSpaceService.delete(spaceId, CollUtil.newArrayList(data.getMemberId())));
         return ResponseData.success();
     }
 
     @Notification(templateId = NotificationTemplateId.CHANGE_ORDINARY_USER)
     @PostResource(path = "/deleteRole/{memberId}", method = RequestMethod.DELETE, tags = "DELETE_SUB_ADMIN")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
-    @ApiOperation(value = "删除管理员", notes = "删除管理员")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "delete admin", notes = "delete admin")
     @SuppressWarnings("rawtypes")
     public ResponseData deleteRole(@PathVariable("memberId") Long memberId) {
         String spaceId = LoginContext.me().getSpaceId();
         iSpaceRoleService.deleteRole(spaceId, memberId);
-        //删除相关缓存
+        // delete the relevant cache
         TaskManager.me().execute(() -> userSpaceService.delete(spaceId, CollUtil.newArrayList(memberId)));
-        //该空间全员可邀请成员的开关处于关闭时，该成员生成的空间公开邀请链接均失效
+        // If the switch of inviting all members in this space is turned off, all public invitation links generated by this member become invalid
         TaskManager.me().execute(() -> iSpaceInviteLinkService.delByMemberIdIfNotInvite(spaceId, memberId));
-        // 通知变量
+        // send notification
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().playerIds(ListUtil.toList(memberId)).build());
         return ResponseData.success();
     }

@@ -6,14 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>
- * NodeInfo
- * <p>
- *
- * @author liuzijing
- * @date 2022/2/8 3:40 PM
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

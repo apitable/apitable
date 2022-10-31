@@ -49,16 +49,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATION_DENIED;
 
-/**
- * <p>
- * 工作台模块_小程序管理接口
- * </p>
- *
- * @author Chambers
- * @date 2020/12/23
- */
 @RestController
-@Api(tags = "工作台模块_小程序管理接口")
+@Api(tags = "Widget SDK - Widget Api")
 @ApiResource(path = "/")
 public class WidgetController {
 
@@ -84,24 +76,23 @@ public class WidgetController {
     private WidgetMapper widgetMapper;
 
     @GetResource(path = "/widget/package/list", requiredPermission = false)
-    @ApiOperation(value = "获取组件包列表 - 即将废弃", notes = "获取小组件包列表（标记为废弃的-升级0.8.2版本后可删除）")
+    @ApiOperation(value = "Get widget package - will abandoned", notes = "api can be deleted after upgrading version 0.8.2")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "filter", value = "是否过滤未发布的小组件", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query", example = "true")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+            @ApiImplicitParam(name = "filter", value = "whether to filter unpublished widgets", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query", example = "true")
     })
     @Deprecated
     public ResponseData<List<WidgetPackageInfo>> findPackageList(@RequestParam(name = "filter", required = false, defaultValue = "false") Boolean filter) {
         Long userId = SessionContext.getUserId();
         String spaceId = LoginContext.me().getSpaceId();
         String userLocale = LocaleContextHolder.getLocale().toLanguageTag();
-        // 小组包列表，看是否需要分页
         List<WidgetPackageInfo> infos = widgetPackageMapper.selectWidgetPackageList(userId, spaceId, filter, userLocale);
         return ResponseData.success(infos);
     }
 
     @PostResource(path = "/widget/package/store/list", requiredPermission = false)
-    @ApiOperation(value = "获取小程序包商店列表", notes = "获取小程序包商店列表")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Get widget store")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<List<WidgetStoreListInfo>> widgetStoreList(@RequestBody @Valid WidgetStoreListRo storeListRo) {
         Long userId = SessionContext.getUserId();
         String spaceId = LoginContext.me().getSpaceId();
@@ -112,10 +103,10 @@ public class WidgetController {
     }
 
     @GetResource(path = "/space/{spaceId}/widget", requiredPermission = false)
-    @ApiOperation(value = "获取空间的小程序信息", notes = "获取整个空间下的小程序")
+    @ApiOperation(value = "Get the space widgets", notes = "get the widgets under the entire space")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "spaceId", value = "空间ID", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "count", value = "加载数量", dataTypeClass = Integer.class, paramType = "query", example = "10")
+            @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spczJrh2i3tLW"),
+            @ApiImplicitParam(name = "count", value = "load quantity", dataTypeClass = Integer.class, paramType = "query", example = "10")
     })
     public ResponseData<List<WidgetInfo>> findWidgetInfoBySpaceId(@PathVariable("spaceId") String spaceId,
             @RequestParam(value = "count", required = false, defaultValue = "10") Integer count) {
@@ -126,14 +117,14 @@ public class WidgetController {
     }
 
     @GetResource(path = "/node/{nodeId}/widget", requiredPermission = false)
-    @ApiOperation(value = "获取节点的小程序信息", notes = "获取节点的小程序信息")
-    @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstJ2oRZxsh2yld4MA")
+    @ApiOperation(value = "get the widget information of the node")
+    @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstJ2oRZxsh2yld4MA")
     public ResponseData<List<WidgetInfo>> findWidgetInfoByNodeId(@PathVariable("nodeId") String nodeId) {
         Long userId = SessionContext.getUserId();
-        // 判断节点是否不存在或跨空间访问
+        // Determine whether the node does not exist or cross-spatial access
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 校验权限
+        // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         List<WidgetInfo> infos = widgetMapper.selectInfoByNodeId(nodeId);
@@ -141,39 +132,38 @@ public class WidgetController {
     }
 
     @GetResource(path = "/node/{nodeId}/widgetPack", requiredLogin = false)
-    @ApiOperation(value = "获取节点下所有的小程序包信息", notes = "获取节点下所有的小程序包信息，节点类型仅限于仪表盘和数表")
+    @ApiOperation(value = "Get the node widget package", notes = "Node types are limited to dashboards and datasheet")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstJ2oRZxsh2yld4MA"),
-            @ApiImplicitParam(name = "linkId", value = "关联ID：节点分享ID、模板ID", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstJ2oRZxsh2yld4MA"),
+            @ApiImplicitParam(name = "linkId", value = "association id：node share id、template id", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
     })
     public ResponseData<List<WidgetPack>> findWidgetPackByNodeId(@PathVariable("nodeId") String nodeId,
             @RequestParam(value = "linkId", required = false) String linkId) {
-        // 判断节点是否不存在或跨空间访问
+        // Determine whether the node does not exist or cross-spatial access
         String nodeSpaceId = iNodeService.checkNodeIfExist(null, nodeId);
         if (StrUtil.isBlank(linkId)) {
-            // 校验权限
+            // check permission
             Long userId = SessionContext.getUserId();
             Long memberId = userSpaceService.getMemberId(userId, nodeSpaceId);
             controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
                     status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         }
         else {
-            // 站外访问
+            // out of station access
             String spaceId = iSpaceService.getSpaceIdByLinkId(linkId);
             ExceptionUtil.isTrue(nodeSpaceId.equals(spaceId), WidgetException.WIDGET_SPACE_ERROR);
         }
-        // 获取节点下所有的组件
+        // get all components under the node
         List<String> widgetIds = widgetMapper.selectWidgetIdsByNodeId(nodeId);
-        // 返回组件包信息
         return ResponseData.success(iWidgetService.getWidgetPackList(widgetIds));
     }
 
     @GetResource(path = "/widget/get", requiredLogin = false)
-    @ApiOperation(value = "根据小程序ID获取小程序实例信息", notes = "获取小程序实例信息")
+    @ApiOperation(value = "Get widget info", notes = "get widget info by widget id")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "widgetIds", value = "小程序ID 集合", required = true, dataTypeClass = String.class, paramType = "query", example = "wdtlMDweJzTsbSJAFY,wdt923ZpvvRhD8kVLs"),
-            @ApiImplicitParam(name = "linkId", value = "关联ID：节点分享ID、模板ID", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
+            @ApiImplicitParam(name = "widgetIds", value = "widget ids", required = true, dataTypeClass = String.class, paramType = "query", example = "wdtlMDweJzTsbSJAFY,wdt923ZpvvRhD8kVLs"),
+            @ApiImplicitParam(name = "linkId", value = "Association ID: node sharing ID and template ID", dataTypeClass = String.class, paramType = "query", example = "shr8T8vAfehg3yj3McmDG")
     })
     public ResponseData<List<WidgetPack>> findWidgetPackByWidgetIds(@RequestParam("widgetIds") List<String> widgetIds,
             @RequestParam(value = "linkId", required = false) String linkId) {
@@ -181,53 +171,51 @@ public class WidgetController {
         String widgetSpaceId = iWidgetService.checkByWidgetIds(widgetIds);
         if (StrUtil.isBlank(linkId)) {
             Long userId = SessionContext.getUserId();
-            // 防止访问未加入的空间
+            // prevent access to unadded spaces
             userSpaceService.getMemberId(userId, widgetSpaceId);
         }
         else {
-            // 站外访问
+            // out of station access
             String spaceId = iSpaceService.getSpaceIdByLinkId(linkId);
             ExceptionUtil.isTrue(widgetSpaceId.equals(spaceId), WidgetException.WIDGET_SPACE_ERROR);
         }
-        // 返回组件包信息
         return ResponseData.success(iWidgetService.getWidgetPackList(widgetIds));
     }
 
     @PostResource(path = "/widget/create", requiredPermission = false)
-    @ApiOperation(value = "创建小程序", notes = "场景：1、仪表盘新建小程序(无关联数表)；2、数表小程序面板新建小程序")
+    @ApiOperation(value = "Create widget", notes = "Scenario:1、dashboard new applet 2、datasheet widget panel new widget")
     public ResponseData<WidgetPack> createWidget(@RequestBody @Valid WidgetCreateRo widget) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(widget.getNodeId());
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // 校验权限
+        // check permission
         controlTemplate.checkNodePermission(memberId, widget.getNodeId(), NodePermission.MANAGE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 创建组件
+        // create widget
         String widgetId = iWidgetService.create(userId, spaceId, widget);
         return ResponseData.success(iWidgetService.getWidgetPack(widgetId));
     }
 
     @PostResource(path = "/widget/copy", requiredPermission = false)
-    @ApiOperation(value = "复制小程序", notes = "场景：1、仪表盘导入小程序；2、小程序面板发送小程序到仪表盘")
+    @ApiOperation(value = "Copy widget", notes = "Scenario: 1、dashboard import widget 2、the widget panel sends applets to the dashboard")
     public ResponseData<List<WidgetPack>> copyWidget(@RequestBody @Valid WidgetCopyRo widgetRo) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(widgetRo.getDashboardId());
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
-        // 校验权限
+        // check permission
         controlTemplate.checkNodePermission(memberId, widgetRo.getDashboardId(), NodePermission.MANAGE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 复制组件
+        // copy widget
         Collection<String> widgetIds = iWidgetService.copyToDashboard(userId, spaceId, widgetRo.getDashboardId(), widgetRo.getWidgetIds());
-        // 返回组件包信息
         return ResponseData.success(iWidgetService.getWidgetPackList(widgetIds));
     }
 
     @GetResource(path = "/widget/template/package/list", requiredPermission = false)
-    @ApiOperation(value = "获取小程序模版列表", notes = "获取小程序模版列表")
+    @ApiOperation(value = "Get package teamplates")
     public ResponseData<List<WidgetTemplatePackageInfo>> findTemplatePackageList() {
         String userLocale = LocaleContextHolder.getLocale().toLanguageTag();
         List<WidgetTemplatePackageInfo> data = widgetPackageMapper.selectWidgetTemplatePackageList(userLocale);

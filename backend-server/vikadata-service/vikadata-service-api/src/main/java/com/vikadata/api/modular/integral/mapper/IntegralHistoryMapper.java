@@ -11,80 +11,60 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.api.model.vo.integral.IntegralRecordVO;
 import com.vikadata.entity.IntegralHistoryEntity;
 
-/**
- * <p>
- * 积分历史记录 Mapper
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/16 11:21
- */
 public interface IntegralHistoryMapper extends BaseMapper<IntegralHistoryEntity> {
 
     /**
-     * 查找用户最大积分值
+     * query user's maximum integral value
      *
-     * @param userId 用户ID
-     * @return 积分值
-     * @author Shawn Deng
-     * @date 2020/9/16 15:00
+     * @param userId    user id
+     * @return integral value
      */
     Integer selectTotalIntegralValueByUserId(@Param("userId") Long userId);
 
     /**
-     * 分页查询积分变更记录
+     * page query user's integral change record.
      *
-     * @param page   分页请求对象
-     * @param userId 用户ID
-     * @return 积分变更记录分页结果集
-     * @author Shawn Deng
-     * @date 2020/9/16 16:08
+     * @param page   page object
+     * @param userId user id
+     * @return change records
      */
     IPage<IntegralRecordVO> selectPageByUserId(Page<IntegralRecordVO> page, @Param("userId") Long userId);
 
     /**
-     * 查询指定用户、存在指定键值对的数量
+     * query the user's the amount of key and value.
      *
-     * @param userId 用户ID
-     * @param key    参数key
-     * @param val    参数value
+     * @param userId userId
+     * @param key    key
+     * @param val    val
      * @return count
-     * @author Chambers
-     * @date 2020/12/1
      */
     @InterceptorIgnore(illegalSql = "true")
     Integer selectCountByUserIdAndKeyValue(@Param("userId") Long userId, @Param("key") String key, @Param("val") Object val);
 
     /**
-     * 修改参数体
+     * modify parameter body
      *
-     * @param id        记录ID
-     * @param parameter 参数体
-     * @return 执行成功条数
-     * @author Shawn Deng
-     * @date 2020/9/18 17:49
+     * @param id        id
+     * @param parameter parameter
+     * @return affected row
      */
     int updateParameterById(@Param("id") Long id, @Param("parameter") String parameter);
 
     /**
-     * 获取用户参加活动次数
+     * query the number of activities the user participated in
      *
-     * @param userId        操作用户
-     * @param actionCode    积分动作标识
-     * @return 参与次数
-     * @author Pengap
-     * @date 2021/10/21 10:33:05
+     * @param userId        user id
+     * @param actionCode    integral action identifier
+     * @return the amount of participated in
      */
     Integer selectCountByUserIdAndActionCode(@Param("userId") Long userId, @Param("actionCode") String actionCode);
 
     /**
-     * 获取用户参加活动次数
+     * query the number of activities the user participated in
      *
-     * @param userId        操作用户
-     * @param actionCodes    积分动作标识
-     * @return 参与次数
-     * @author Pengap
-     * @date 2021/10/21 10:33:05
+     * @param userId        user id
+     * @param actionCodes   integral action identifier set
+     * @return the amount of participated in
      */
     Integer selectCountByUserIdAndActionCodes(@Param("userId") Long userId, @Param("actionCodes") Collection<String> actionCodes);
 }

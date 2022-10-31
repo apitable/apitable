@@ -11,15 +11,13 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
- * V2 默认递归工具类，用于遍历有父子关系的节点，例如菜单树，字典树等等
+ * V2 default recursive tool, used to traverse nodes that have parent-child relationships.
+ *     such as menu trees, dictionary trees, and so on.
  * </p>
- *
- * @author Pengap
- * @date 2021/8/9 15:18:21
  */
 public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFactory<T> {
     /**
-     * 顶级节点的父节点id
+     * the root node's id
      */
     public static final String ROOT_PARENT_ID = "0";
 
@@ -34,8 +32,8 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
 
     @Override
     protected List<T> beforeBuild(List<T> nodes) {
-        // 默认不进行前置处理,直接返回
-        // 为了重复构建树不破坏原有数据结构
+        // By default, no preprocessing before build.
+        // no destroying the original data structure to repeatedly build the tree.
         return ObjectUtil.cloneByStream(nodes);
     }
 
@@ -46,15 +44,15 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
 
     @Override
     protected List<T> afterBuild(List<T> nodes) {
-        // 默认不进行前置处理,直接返回
+        // By default, no preprocessing after build.
         return nodes;
     }
 
     /**
-     * 树构建
+     * build tree
      *
-     * @param totalNodes 源数据集合
-     * @param rootId     最顶层父id值 一般为 0 之类
+     * @param totalNodes the node list
+     * @param rootId     the root node id, generally 0
      */
     private List<T> build(List<T> totalNodes, String rootId) {
         if (null == totalNodes || null == rootId) {
@@ -70,7 +68,7 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
         List<T> rootTreeList = CollUtil.newArrayList();
         String parentId;
         for (T node : eTreeMap.values()) {
-            // 没有子节点时，构建一个空对象
+            // When no children, building an empty object
             if (CollUtil.isEmpty(node.getChildren())) {
                 node.setChildren(new ArrayList<>());
             }

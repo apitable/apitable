@@ -10,10 +10,8 @@ import java.util.Objects;
 
 /**
  * <p>
- * 日期时间工具类
+ * date time tool
  * </p>
- * @author 刘斌华
- * @date 2022-05-10 09:21:31
  */
 public class DateTimeUtil {
 
@@ -28,53 +26,45 @@ public class DateTimeUtil {
     public static final DateTimeFormatter HOUR_MINUTE_SECOND_ZONE = DateTimeFormatter.ofPattern("HH:mm:ssZ");
 
     /**
-     * 获取当前时间的 {@link LocalTime}
+     * gets the current time's {@link LocalTime}
      *
-     * @param zoneOffset 时区 offset
-     * @return 当前时间
-     * @author 刘斌华
-     * @date 2022-08-01 16:24:42
+     * @param zoneOffset time zone offset
+     * @return the current time
      */
     public static LocalTime localTimeNow(int zoneOffset) {
         return LocalTime.now(ZoneOffset.ofHours(zoneOffset));
     }
 
     /**
-     * 字符串转换为 {@link LocalTime}
+     * string to {@link LocalTime}
      *
-     * @param source 时间字符串
-     * @param formatter 格式
-     * @return 字符串对应的 {@link LocalTime}
-     * @author 刘斌华
-     * @date 2022-08-01 16:27:30
+     * @param source    the datetime string
+     * @param formatter format of the datetime string
+     * @return {@link LocalTime}
      */
     public static LocalTime localTimeFromSource(String source, DateTimeFormatter formatter) {
         return LocalTime.parse(source, formatter);
     }
 
     /**
-     * 获取当前时间的 {@link LocalDateTime}
+     * gets the current time's {@link LocalDateTime}
      *
-     * @param zoneOffset 时区 offset
-     * @return 当前时间
-     * @author 刘斌华
-     * @date 2022-05-10 11:24:40
+     * @param zoneOffset time zone offset
+     * @return the current time
      */
     public static LocalDateTime localDateTimeNow(int zoneOffset) {
         return LocalDateTime.now(ZoneOffset.ofHours(zoneOffset));
     }
 
     /**
-     * 获取当前偏移的时间 {@link LocalDateTime}
+     * Gets the time's {@link LocalDateTime} of the current offset
      *
-     * @param zoneOffset 时区 offset
-     * @param plusDays 偏移的天数
-     * @param plusHours 偏移的小时数
-     * @param plusMinutes 偏移的分钟数
-     * @param plusSeconds 偏移的秒数
-     * @return 偏移后的时间
-     * @author 刘斌华
-     * @date 2022-05-10 11:31:29
+     * @param zoneOffset    time zone offset
+     * @param plusDays      offset days
+     * @param plusHours     offset hours
+     * @param plusMinutes   offset minutes
+     * @param plusSeconds   offset seconds
+     * @return the offset datetime
      */
     public static LocalDateTime localDateTimeFromNow(int zoneOffset, int plusDays, int plusHours, int plusMinutes, int plusSeconds) {
         LocalDateTime now = localDateTimeNow(zoneOffset);
@@ -95,27 +85,23 @@ public class DateTimeUtil {
     }
 
     /**
-     * 将 Unix 时间戳转换为 {@link LocalDateTime}
+     * the unix timestamp to {@link LocalDateTime}
      *
-     * @param epochSeconds Unix 时间戳。单位：秒
-     * @param zoneOffset 转换后时区 offset
-     * @return 转换后的时间
-     * @author 刘斌华
-     * @date 2022-05-10 09:27:05
+     * @param epochSeconds  Unix timestamp. unit：second
+     * @param zoneOffset    the offset time zone
+     * @return the converted time
      */
     public static LocalDateTime localDateTimeFromSeconds(Long epochSeconds, int zoneOffset) {
         return localDateTimeFromSeconds(epochSeconds, zoneOffset, false);
     }
 
     /**
-     * 将 Unix 时间戳转换为 {@link LocalDateTime}
+     * the unix timestamp to  {@link LocalDateTime}
      *
-     * @param epochSeconds Unix 时间戳。单位：秒
-     * @param zoneOffset 转换后时区 offset
-     * @param allowZero 为 false 时若传过来的时间戳为 0 则作为 null 处理
-     * @return 转换后的时间
-     * @author 刘斌华
-     * @date 2022-05-10 09:27:05
+     * @param epochSeconds  Unix timestamp. unit：second
+     * @param zoneOffset    the offset time zone
+     * @param allowZero     if false, when epochSeconds is 0, return null.
+     * @return the converted time
      */
     public static LocalDateTime localDateTimeFromSeconds(Long epochSeconds, int zoneOffset, boolean allowZero) {
         if (Objects.isNull(epochSeconds) || epochSeconds == 0L && !allowZero) {
@@ -126,14 +112,12 @@ public class DateTimeUtil {
     }
 
     /**
-     * 计算两个自然时间的相差值
+     * calculate the difference between two natural times
      *
-     * @param startTime 开始时间
-     * @param endTime 结束事件
-     * @param field 计算差值的单位
-     * @return long 自然时间的相差值
-     * @author 刘斌华
-     * @date 2022-08-11 18:50:39
+     * @param startTime starting time
+     * @param endTime   ending time
+     * @param field     the unit for calculating the difference
+     * @return long     the difference in natural time
      */
     public static long between(TemporalAccessor startTime, TemporalAccessor endTime, ChronoField field) {
         return endTime.getLong(field) - startTime.getLong(field);

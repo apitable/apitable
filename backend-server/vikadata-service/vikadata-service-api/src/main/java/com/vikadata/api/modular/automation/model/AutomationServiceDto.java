@@ -8,13 +8,13 @@ import lombok.Data;
 @ApiModel("AutomationService")
 public class AutomationServiceDto {
 
-    @ApiModelProperty(value = "服务ID", example = "asvxxxxxxxx")
+    @ApiModelProperty(value = "service id", example = "asvxxxxxxxx")
     private String serviceId;
 
-    @ApiModelProperty(value = "服务名称", example = "asvxxxxxxxx")
+    @ApiModelProperty(value = "service name", example = "asvxxxxxxxx")
     private String name;
 
-    @ApiModelProperty(value = "服务唯一标识", example = "vika")
+    @ApiModelProperty(value = "service unique identifier", example = "vika")
     private String slug;
 
 

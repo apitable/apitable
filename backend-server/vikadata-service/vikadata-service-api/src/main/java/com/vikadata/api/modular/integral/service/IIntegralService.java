@@ -10,122 +10,99 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vikadata.api.model.vo.integral.IntegralRecordVO;
 import com.vikadata.api.modular.integral.enums.IntegralAlterType;
 
-/**
- * <p>
- * 积分 服务接口
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/16 11:23
- */
 public interface IIntegralService {
 
     /**
-     * 根据积分触发动作获取积分值
+     * get integral by action code
      *
-     * @param actionCode 积分动作标识
-     * @return 积分值
-     * @author Shawn Deng
-     * @date 2020/12/31 19:36
+     * @param actionCode integral action identifier
+     * @return integral
      */
     BigDecimal getCreditByActionCode(String actionCode);
 
     /**
-     * 获取用户总积分值
+     * get the total user integral
      *
-     * @param userId 用户ID
-     * @return 积分值
-     * @author Shawn Deng
-     * @date 2020/12/31 20:19
+     * @param userId    user id
+     * @return integral
      */
     int getTotalIntegralValueByUserId(Long userId);
 
     /**
-     * 获取积分变更记录
+     * get integral's change records.
      *
-     * @param page      分页参数
-     * @param userId    用户ID
+     * @param page      page
+     * @param userId    user id
      * @return IntegralRecordVO
-     * @author Chambers
-     * @date 2021/6/16
      */
     IPage<IntegralRecordVO> getIntegralRecordPageByUserId(Page<IntegralRecordVO> page, Long userId);
 
     /**
-     * 触发积分操作
+     * trigger integral operation
      *
-     * @param action    积分动作标识
-     * @param alterType 变更类型
-     * @param by        操作者
-     * @param parameter 参数体
-     * @author Shawn Deng
-     * @date 2020/9/17 13:15
+     * @param action    integral action identifier
+     * @param alterType alterType
+     * @param by        operator
+     * @param parameter parameter
      */
     void trigger(String action, IntegralAlterType alterType, Long by, JSONObject parameter);
 
     /**
-     * 变更积分
+     * change integral
      *
-     * @param actionCode    积分动作标识
-     * @param alterType     变更类型
-     * @param alterIntegral 变更积分值
-     * @param by            操作用户
-     * @param parameter     参数体
-     * @author Shawn Deng
-     * @date 2020/9/17 13:15
+     * @param actionCode    integral action identifier
+     * @param alterType     alterType
+     * @param alterIntegral alterIntegral
+     * @param by            operator
+     * @param parameter     parameter
      */
     void alterIntegral(String actionCode, IntegralAlterType alterType, int alterIntegral, Long by, JSONObject parameter);
 
     /**
-     * 创建积分记录
+     * create integral
      *
-     * @param userId             操作用户
-     * @param actionCode         积分动作标识
-     * @param alterType          变更类型
-     * @param oldIntegralValue   用户变更前积分值
-     * @param alterIntegralValue 本次变更的值
-     * @param parameter          参数体
-     * @return 记录ID
-     * @author Shawn Deng
-     * @date 2020/9/17 13:16
+     * @param userId             userId
+     * @param actionCode         integral action identifier
+     * @param alterType          alterType
+     * @param oldIntegralValue   oldIntegralValue
+     * @param alterIntegralValue alterIntegralValue
+     * @param parameter          parameter
+     * @return record id
      */
     Long createHistory(Long userId, String actionCode, IntegralAlterType alterType, Integer oldIntegralValue, Integer alterIntegralValue, JSONObject parameter);
 
     /**
-     * 修改参数体
+     * modify parameter
      *
-     * @param recordId      积分历史表ID
-     * @param parameter     参数体
+     * @param recordId      id of the integral history table
+     * @param parameter     parameter
      * @author Chambers
      * @date 2021/6/16
      */
     void updateParameterById(Long recordId, String parameter);
 
     /**
-     * 获取参与活动次数（添加积分记录次数）
+     * get the number of participating activities（the number of add integral）
      *
-     * @param userId        操作用户
-     * @param actionCode    积分动作标识
+     * @param userId        userId
+     * @param actionCode    integral action identifier
      * @return int
-     * @author Pengap
-     * @date 2021/10/21 10:29:03
      */
     int getCountByUserIdAndActionCode(Long userId, String actionCode);
 
     /**
-     * 是否参与过指定活动
-     * @param userId 操作用户
-     * @param actionCodes 积分动作标识
+     * Whether user have participated in specified activities
+     *
+     * @param userId        userId
+     * @param actionCodes   integral action identifier
      * @return true | false
      */
     boolean checkByUserIdAndActionCodes(Long userId, Collection<String> actionCodes);
 
     /**
-     * 活动积分奖励
+     * activity integral bonus
      *
-     * @param processor 操作者
-     * @author Chambers
-     * @date 2022/6/24
+     * @param processor the operator
      */
     void activityReward(String processor);
 }

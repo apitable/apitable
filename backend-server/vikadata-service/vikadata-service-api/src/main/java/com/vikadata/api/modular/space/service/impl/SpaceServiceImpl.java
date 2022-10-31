@@ -139,14 +139,6 @@ import static com.vikadata.api.enums.exception.SpaceException.NO_ALLOW_OPERATE;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_QUIT_FAILURE;
 
-/**
- * <p>
- * 空间表 服务实现类
- * </p>
- *
- * @author Chambers
- * @since 2019-10-07
- */
 @Service
 @Slf4j
 public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> implements ISpaceService {
@@ -267,16 +259,16 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createSpace(UserEntity user, String spaceName) {
-        log.info("创建工作空间");
+        log.info("Create space");
         Long userId = user.getId();
-        // 检查用户是否到达空间数量上限
+        // Check whether the user reaches the upper limit
         boolean limit = this.checkSpaceNumber(userId);
         ExceptionUtil.isFalse(limit, SpaceException.NUMBER_LIMIT);
         String spaceId = IdUtil.createSpaceId();
         memberMapper.updateInactiveStatusByUserId(userId);
         MemberEntity member = new MemberEntity();
         member.setSpaceId(spaceId);
-        //同步用户信息
+        // synchronize user information
         member.setUserId(userId);
         member.setMemberName(user.getNickName());
         member.setMobile(user.getMobilePhone());
@@ -284,10 +276,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         member.setStatus(UserSpaceStatus.ACTIVE.getStatus());
         member.setIsAdmin(true);
         member.setIsActive(true);
-        // 空间的创建者
+        // the creator of space
         boolean addMember = iMemberService.save(member);
         ExceptionUtil.isTrue(addMember, CREATE_MEMBER_ERROR);
-        // 创建组织单元
+        // create unit
         iUnitService.create(spaceId, UnitType.MEMBER, member.getId());
         String props = JSONUtil.parseObj(SpaceGlobalFeature.builder()
                 .fileSharable(true)
@@ -310,20 +302,20 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 .build();
         boolean addSpace = save(space);
         ExceptionUtil.isTrue(addSpace, SpaceException.CREATE_SPACE_ERROR);
-        // 新增根节点
+        // add root node
         String rootNodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
                 .spaceId(space.getSpaceId())
                 .newNodeId(IdUtil.createNodeId())
                 .type(NodeType.ROOT.getNodeType()).build());
-        // 创建根部门
+        // create root department
         Long rootTeamId = iTeamService.createRootTeam(spaceId, spaceName);
         iUnitService.create(spaceId, UnitType.TEAM, rootTeamId);
-        //创建根部门与成员绑定
+        //  create root department and member binding
         iTeamMemberRelService.addMemberTeams(Collections.singletonList(member.getId()), Collections.singletonList(rootTeamId));
-        // 获取新空间默认引用模板的节点ID
+        // gets the node id of the default reference template for the new space.
         String templateNodeId = iTemplateService.getDefaultTemplateNodeId();
         if (StrUtil.isNotBlank(templateNodeId)) {
-            // 转存节点方法，包含GRPC调用，放置最后
+            // the dump node method, contains grpc calls, placing the last.
             iNodeService.copyNodeToSpace(userId, spaceId, rootNodeId, templateNodeId, NodeCopyOptions.create());
         }
         return spaceId;
@@ -337,7 +329,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         SpaceEntity space = SocialFactory.createSocialBindBindSpaceInfo(spaceId, spaceName, null, null, null);
         boolean isSaved = save(space);
         ExceptionUtil.isTrue(isSaved, SpaceException.CREATE_SPACE_ERROR);
-        // 创建根部门
+        // create root department
         Long rootTeamId = iTeamService.createRootTeam(spaceId, spaceName);
         iUnitService.create(spaceId, UnitType.TEAM, rootTeamId);
 
@@ -348,34 +340,34 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateSpace(Long userId, String spaceId, SpaceUpdateOpRo spaceOpRo) {
-        log.info("编辑空间信息");
+        log.info("edit space information");
         SpaceEntity entity = this.getBySpaceId(spaceId);
         String spaceName = spaceOpRo.getName();
-        // 修改空间名称
+        // modify space name
         this.updateSpaceName(userId, spaceId, spaceName, entity);
-        // 修改空间Logo
+        // modify spatial logo
         this.updateSpaceLogo(userId, spaceId, spaceOpRo.getLogo(), entity);
-        // 删除缓存
+        // delete cache
         TaskManager.me().execute(() -> userSpaceService.delete(spaceId));
     }
 
     private void updateSpaceName(Long userId, String spaceId, String spaceName, SpaceEntity entity) {
-        // 传入空间名称为空，或者同数据库的值一致，结束
+        // The name of the incoming space is empty or the same as the value of the database.
         if (StrUtil.isBlank(spaceName) || spaceName.equals(entity.getName())) {
             return;
         }
-        // 数据库变更
+        // database change
         SpaceEntity space = SpaceEntity.builder().id(entity.getId()).build();
         space.setName(spaceName);
         boolean flag = updateById(space);
         ExceptionUtil.isTrue(flag, SpaceException.UPDATE_SPACE_INFO_FAIL);
-        // 根部门同步修改
+        // synchronous modification of root department
         Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
         iTeamService.updateTeamName(rootTeamId, spaceName);
-        // 发送修改名字通知
+        // send name modification notification
         NotificationManager.me().playerNotify(NotificationTemplateId.SPACE_NAME_CHANGE, null, userId, spaceId, Dict.create().set(OLD_SPACE_NAME, entity.getName()).set(NEW_SPACE_NAME, spaceName));
 
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_SPACE_NAME, entity.getName());
         info.set(AuditConstants.SPACE_NAME, spaceName);
@@ -384,22 +376,22 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     }
 
     private void updateSpaceLogo(Long userId, String spaceId, String spaceLogo, SpaceEntity entity) {
-        // 传入空间Logo为空，或者同数据库的值一致，结束
+        // The incoming space Logo is empty or the same as the database value. End
         if (StrUtil.isBlank(spaceLogo) || spaceLogo.equals(entity.getLogo())) {
             return;
         }
-        // 数据库变更
+        // database change
         SpaceEntity space = SpaceEntity.builder().id(entity.getId()).build();
         space.setLogo(spaceLogo);
         boolean flag = updateById(space);
         ExceptionUtil.isTrue(flag, SpaceException.UPDATE_SPACE_INFO_FAIL);
 
-        // 删除云端原logo文件
+        // delete the original logo file in the cloud
         if (StrUtil.isNotBlank(entity.getLogo())) {
             TaskManager.me().execute(() -> iAssetService.delete(entity.getLogo()));
         }
 
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         info.set(AuditConstants.OLD_SPACE_LOGO, StrUtil.nullToEmpty(entity.getLogo()));
         info.set(AuditConstants.SPACE_LOGO, spaceLogo);
@@ -409,45 +401,47 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void preDeleteById(Long userId, String spaceId) {
-        log.info("预删除空间");
+        log.info("pre delete space");
         boolean flag = SqlHelper.retBool(baseMapper.updatePreDeletionTimeBySpaceId(LocalDateTime.now(), spaceId, userId));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
-        // 除主管理员外，其他成员无法再进入该空间
+        // Except for the main administrator, other members can no longer enter the space
         iMemberService.preDelBySpaceId(spaceId, userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteSpace(Long userId, List<String> spaceIds) {
-        log.info("用户「{}」删除空间「{}」", userId, spaceIds);
-        // 逻辑删除空间
+        log.info("user「{}」delete space「{}」", userId, spaceIds);
+        // logical delete space
         baseMapper.updateIsDeletedBySpaceIdIn(spaceIds);
-        // 删除活跃空间缓存（空间预删除之后，仅有主管理的成员数据未逻辑删除，产品逻辑若有变化需把所有未逻辑删除的成员查询出来清除缓存）
+        // delete active space cache
+        // （After the space is pre-deleted, only the member data of the master management is not logically deleted.
+        // If the product logic changes, all members that have not been logically deleted need to be queried to clear the cache.)
         userActiveSpaceService.delete(userId);
         spaceIds.forEach(spaceId -> userSpaceService.delete(userId, spaceId));
-        // 删除成员（必须在查询 userIds 之后）
+        // delete member（must be after deleting user）
         memberMapper.delBySpaceIds(spaceIds, null);
-        // 删除空间站专属域名
+        // delete space exclusive domain name
         iSocialTenantDomainService.removeDomain(spaceIds);
     }
 
     @Override
     public void cancelDelByIds(Long userId, String spaceId) {
-        log.info("撤销删除空间");
+        log.info("undo delete space");
         boolean flag = SqlHelper.retBool(baseMapper.updatePreDeletionTimeBySpaceId(null, spaceId, userId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        //恢复其他成员
+        //restore other members
         memberMapper.cancelPreDelBySpaceId(spaceId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void quit(String spaceId, Long memberId) {
-        log.info("退出空间");
-        //删除对应成员、组织和成员关系
+        log.info("quit space.");
+        // Delete corresponding members, the organizations and member relationships
         if (ObjectUtil.isNotNull(memberId)) {
             SpaceEntity entity = this.getBySpaceId(spaceId);
-            // 主管理员不能直接退出
+            // the masin administrator cannot exit directly
             ExceptionUtil.isFalse(entity.getOwner().equals(memberId), SPACE_QUIT_FAILURE);
             iMemberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(memberId), false);
         }
@@ -461,11 +455,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         }
         Map<String, SpaceVO> spaceMaps = list.stream().collect(Collectors.toMap(SpaceVO::getSpaceId, v -> v, (k1, k2) -> k1));
         List<String> spaceIds = new ArrayList<>(spaceMaps.keySet());
-        // 获取空间站域名
+        // get space domains
         Map<String, String> spaceDomains = iSocialTenantDomainService.getSpaceDomainBySpaceIdsToMap(spaceIds);
-        // 批量获取订阅
+        // batch query subscriptions
         Map<String, BillingPlanFeature> spacePlanFeatureMap = iSpaceSubscriptionService.getSubscriptionFeatureBySpaceIds(spaceIds);
-        // 设置信息
+        // setting information
         spaceMaps.forEach((spaceId, spaceVO) -> {
             BillingPlanFeature planFeature = spacePlanFeatureMap.get(spaceId);
             spaceVO.setMaxSeat(planFeature.getMaxSeats());
@@ -484,23 +478,23 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     public SpaceInfoVO getSpaceInfo(String spaceId) {
         SpaceEntity entity = getBySpaceId(spaceId);
-        // 人数统计
+        // numbers statistics
         long memberNumber = iStaticsService.getMemberTotalCountBySpaceId(spaceId);
-        // 部门数量统计
+        // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
-        // 管理员数量
+        // admin statistics
         long adminCount = iStaticsService.getAdminTotalCountBySpaceId(spaceId);
-        // 总记录数统计
+        // record statistics
         long recordCount = iStaticsService.getDatasheetRecordTotalCountBySpaceId(spaceId);
-        // 已用空间统计
+        // used space statistics
         long capacityUsedSize = spaceCapacityCacheService.getSpaceCapacity(spaceId);
-        // API用量统计
+        // APIusage statistics
         long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId);
-        // 字段权限设置数量
+        // file control amount
         ControlStaticsVO controlStaticsVO = iStaticsService.getFieldRoleTotalCountBySpaceId(spaceId);
         long nodeRoleNums = controlStaticsVO != null ? controlStaticsVO.getNodeRoleCount() : 0L;
         long fieldRoleNums = controlStaticsVO != null ? controlStaticsVO.getFieldRoleCount() : 0L;
-        // 节点统计
+        // node statistics
         List<NodeTypeStatics> nodeTypeStatics = iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
         long sheetNums = nodeTypeStatics.stream()
                 .filter(condition -> NodeType.toEnum(condition.getType()).isFileNode())
@@ -511,7 +505,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
         Map<Integer, Integer> typeStaticsMap = nodeTypeStatics.stream().collect(Collectors.toMap(NodeTypeStatics::getType, NodeTypeStatics::getTotal));
         long formViewNums = typeStaticsMap.containsKey(NodeType.FORM.getNodeType()) ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
-        // 表格视图统计
+        // table view statistics
         DatasheetStaticsVO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         SpaceInfoVO vo = SpaceInfoVO.builder()
                 .spaceName(entity.getName())
@@ -533,11 +527,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 .ganttViewNums(viewVO.getGanttViews())
                 .mirrorNums(mirrorNums)
                 .build();
-        // 空间附件容量用量信息
+        // space attachment capacity usage information
         SpaceCapacityUsedInfo spaceCapacityUsedInfo = this.getSpaceCapacityUsedInfo(spaceId, capacityUsedSize);
         vo.setCurrentBundleCapacityUsedSizes(spaceCapacityUsedInfo.getCurrentBundleCapacityUsedSizes());
         vo.setGiftCapacityUsedSizes(spaceCapacityUsedInfo.getGiftCapacityUsedSizes());
-        // 拥有者信息
+        // owner info
         if (entity.getOwner() != null) {
             MemberDto ownerMember = memberMapper.selectDtoByMemberId(entity.getOwner());
             if (ownerMember != null) {
@@ -564,7 +558,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         if (ObjectUtil.isNotNull(entity.getPreDeletionTime())) {
             vo.setDelTime(entity.getPreDeletionTime().plusDays(7));
         }
-        // 获取第三方信息
+        // obtain third party information
         TenantBindDTO tenantBindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
         SpaceSocialConfig bindInfo = new SpaceSocialConfig();
         if (ObjectUtil.isNotNull(tenantBindInfo)) {
@@ -575,7 +569,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                     bindInfo.setPlatform(socialTenant.getPlatform());
                     bindInfo.setAppType(socialTenant.getAppType());
                     bindInfo.setAuthMode(socialTenant.getAuthMode());
-                    // 是否正在同步通讯录
+                    // is it synchronizing the contact
                     bindInfo.setContactSyncing(isContactSyncing(spaceId));
                 }
             }
@@ -588,24 +582,25 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     public SpaceCapacityUsedInfo getSpaceCapacityUsedInfo(String spaceId, Long capacityUsedSize) {
         SpaceCapacityUsedInfo spaceCapacityUsedInfo = new SpaceCapacityUsedInfo();
-        // 空间订阅计划附件容量
+        // space subscription plan attachment capacity
         Long currentBundleCapacity = iSpaceSubscriptionService.getSpaceSubscription(spaceId).getSubscriptionCapacity();
-        // 如果已使用附件容量小于空间订阅计划容量，那么当前已用附件容量即为当前套餐已用容量
+        // If the used attachment capacity is less than the space subscription plan capacity, the current used attachment capacity is the current package used capacity.
         if (capacityUsedSize <= currentBundleCapacity) {
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
-            // 因为优先使用套餐容量的缘故，所以已使用赠送附件容量为0
+            // Because the package capacity is preferred, the complimentary attachment capacity has been used to be 0.
             spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
         }
         else {
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
-            // 赠送的附件容量
+            // complimentary attachment capacity
             Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
-            // 如果附件容量使用超量，已用赠送附件容量等于赠送的附件容量大小
+            // If the attachment capacity is used in excess,
+            // the used complimentary attachment capacity is equal to the size of the complimentary assert capacity.
             if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
             }
             else {
-                // 未超量情况
+                // no excess
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(capacityUsedSize - currentBundleCapacity);
             }
         }
@@ -614,12 +609,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public InternalSpaceUsageVo getInternalSpaceUsageVo(String spaceId) {
-        log.info("获取空间「{}」的用量信息", spaceId);
+        log.info("Get the usage information of the space {}", spaceId);
         InternalSpaceUsageVo vo = new InternalSpaceUsageVo();
-        // 总记录数统计
+        // statistics of total records
         long recordNums = iStaticsService.getDatasheetRecordTotalCountBySpaceId(spaceId);
         vo.setRecordNums(recordNums);
-        // 表格视图统计
+        // table view statistics
         DatasheetStaticsVO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         vo.setGalleryViewNums(viewVO.getGalleryViews());
         vo.setKanbanViewNums(viewVO.getKanbanViews());
@@ -630,14 +625,14 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public InternalSpaceCapacityVo getSpaceCapacityVo(String spaceId) {
-        log.info("获取空间的附件容量信息");
-        // 已用空间统计
+        log.info("Obtain the capacity information of the space");
+        // used space statistics
         Long usedCapacity = spaceCapacityCacheService.getSpaceCapacity(spaceId);
-        // 空间订阅计划附件容量
+        // space subscription plan attachment capacity
         Long currentBundleCapacity = iSpaceSubscriptionService.getPlanMaxCapacity(spaceId);
-        // 赠送的附件容量
+        // complimentary attachment capacity
         Long unExpireGiftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
-        // 空间附件总容量
+        // total capacity of space assert
         Long totalCapacity = currentBundleCapacity + unExpireGiftCapacity;
         return InternalSpaceCapacityVo.builder()
                 .usedCapacity(usedCapacity)
@@ -650,39 +645,39 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long changeMainAdmin(String spaceId, Long memberId) {
-        log.info("更换主管理员");
-        // 校验新的成员
+        log.info("Change main admin");
+        // Verifying new members
         Long userId = memberMapper.selectUserIdByMemberId(memberId);
         ExceptionUtil.isNotNull(userId, NOT_EXIST_MEMBER);
-        // 检查新主管理员对应的用户，是否到达空间数量上限
+        // Check whether the space of the user corresponding to the new active administrator has reached the upper limit
         boolean limit = this.checkSpaceNumber(userId);
         ExceptionUtil.isFalse(limit, SpaceException.USER_ADMIN_SPACE_LIMIT);
-        //获取主管理员信息
+        // Obtain the information about the main administrator
         SpaceAdminInfoDto dto = baseMapper.selectAdminInfoDto(spaceId);
         ExceptionUtil.isNotNull(dto, SPACE_NOT_EXIST);
         ExceptionUtil.isFalse(dto.getMemberId().equals(memberId), TRANSFER_SELF);
         if (dto.getMobile() != null) {
-            // 校验是否已通过短信验证码
+            // check whether the mobile phone verification code is passed
             ValidateTarget target = ValidateTarget.create(dto.getMobile(), dto.getAreaCode());
             ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS).verifyIsPass(target.getRealTarget());
         }
         else if (dto.getEmail() != null) {
-            // 校验是否已通过邮件验证码
+            // check whether the sms verification code is passed
             ValidateTarget target = ValidateTarget.create(dto.getEmail());
             ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL).verifyIsPass(target.getRealTarget());
         }
-        // 更新空间、成员信息
+        // Update space and member information
         boolean flag = SqlHelper.retBool(baseMapper.updateSpaceOwnerId(spaceId, memberId, SessionContext.getUserId()));
         ExceptionUtil.isTrue(flag, SET_MAIN_ADMIN_FAIL);
         iMemberService.cancelMemberMainAdmin(dto.getMemberId());
         iMemberService.setMemberMainAdmin(memberId);
-        // 若新管理员原本是子管理员，删除原权限
+        // If the new administrator is a sub-administrator, delete the original permission
         int count = SqlTool.retCount(spaceMemberRoleRelMapper.selectCountBySpaceIdAndMemberId(spaceId, memberId));
         if (count > 0) {
             iSpaceRoleService.deleteRole(spaceId, memberId);
         }
         MemberEntity newMember = memberMapper.selectById(memberId);
-        // 给新的主管理员发送邮箱通知
+        // Send email notification to the new main administrator
         if (ObjectUtil.isNotNull(newMember) && StrUtil.isNotBlank(newMember.getEmail())) {
             Dict dict = Dict.create();
             dict.set("USER_NAME", dto.getMemberName());
@@ -717,7 +712,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void checkMemberIsMainAdmin(String spaceId, Long memberId) {
-        log.info("检查指定成员是否主管理员");
+        log.info("checks whether specified member is main admin");
         Long owner = baseMapper.selectSpaceMainAdmin(spaceId);
         boolean isMainAdmin = owner != null && owner.equals(memberId);
         ExceptionUtil.isFalse(isMainAdmin, CAN_OP_MAIN_ADMIN);
@@ -725,7 +720,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void checkMembersIsMainAdmin(String spaceId, List<Long> memberIds) {
-        log.info("批量检查指定成员是否主管理员");
+        log.info("Batch checks whether specified members are main admin");
         Long owner = baseMapper.selectSpaceMainAdmin(spaceId);
         boolean haveMainAdmin = CollUtil.contains(memberIds, owner);
         ExceptionUtil.isFalse(haveMainAdmin, CAN_OP_MAIN_ADMIN);
@@ -733,21 +728,21 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void checkMemberInSpace(String spaceId, Long memberId) {
-        log.info("检查指定成员是否在空间内");
+        log.info("checks whether the specified member is in space");
         MemberEntity member = memberMapper.selectMemberIdAndSpaceId(spaceId, memberId);
         ExceptionUtil.isNotNull(member, MEMBER_NOT_IN_SPACE);
     }
 
     @Override
     public void checkMembersInSpace(String spaceId, List<Long> memberIds) {
-        log.info("批量检查指定成员是否在空间内");
+        log.info("Batch checks whether specified members are in space");
         int count = SqlTool.retCount(memberMapper.selectCountByMemberIds(memberIds));
         ExceptionUtil.isTrue(count == memberIds.size(), MEMBER_NOT_IN_SPACE);
     }
 
     @Override
     public UserSpaceVo getUserSpaceResource(Long userId, String spaceId) {
-        log.info("获取空间资源权限");
+        log.info("obtain the space resource permission");
         UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, spaceId);
         UserSpaceVo userSpaceVo = new UserSpaceVo();
         userSpaceVo.setSpaceName(userSpaceDto.getSpaceName());
@@ -765,7 +760,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public SpaceGlobalFeature getSpaceGlobalFeature(String spaceId) {
-        log.info("获取空间全局属性，spaceId:{}", spaceId);
+        log.info("gets space global properties，spaceId:{}", spaceId);
         String props = baseMapper.selectPropsBySpaceId(spaceId);
         ExceptionUtil.isNotNull(props, SpaceException.SPACE_NOT_EXIST);
 
@@ -774,19 +769,20 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void switchSpacePros(Long userId, String spaceId, SpaceGlobalFeature feature) {
-        log.info("切换空间属性状态，userId:{},spaceId:{}", userId, spaceId);
+        log.info("switch space pros，userId:{},spaceId:{}", userId, spaceId);
         JSONObject json = JSONUtil.parseObj(feature);
         if (json.size() == 0) {
             return;
         }
         List<MapDTO> features = new ArrayList<>(json.size());
         for (Entry<String, Object> entry : json.entrySet()) {
-            log.info("切换属性状态，key:{},value:{}", entry.getKey(), entry.getValue());
+            log.info("switch space pros，key:{},value:{}", entry.getKey(), entry.getValue());
             features.add(new MapDTO(entry.getKey(), entry.getValue()));
         }
         boolean flag = SqlHelper.retBool(baseMapper.updateProps(userId, spaceId, features));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 关闭邀请成员开关后，没有成员管理权限的成员，生成的空间公开邀请链接均失效
+        // When the function of inviting all members of the space is turned off,
+        // all public invitation links generated by the original main administrator become invalid.
         if (Boolean.FALSE.equals(feature.getInvitable())) {
             TaskManager.me().execute(() -> iSpaceInviteLinkService.delNoPermitMemberLink(spaceId));
             TaskManager.me().execute(() -> iInvitationService.closeMemberInvitationBySpaceId(spaceId));
@@ -805,7 +801,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         if (spaceUpdateOperate == null) {
             ExceptionUtil.isTrue(bindInfo == null, NO_ALLOW_OPERATE);
         }
-        // 过滤钉钉第三方集成
+        // filter dingtalk
         if (bindInfo != null && bindInfo.getAppId() != null) {
             SocialTenantEntity entity = iSocialTenantService.getByAppIdAndTenantId(bindInfo.getAppId(),
                     bindInfo.getTenantId());
@@ -825,7 +821,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
                 return;
             }
             if (spaceUpdateOperate == SpaceUpdateOperate.DELETE_SPACE) {
-                // 飞书第三方不允许删除空间站
+                // feishu space cannot be deleted
                 ExceptionUtil.isFalse(SocialPlatformType.FEISHU.getValue().equals(entity.getPlatform())
                         && SocialAppType.ISV.equals(SocialAppType.of(entity.getAppType())), NO_ALLOW_OPERATE);
                 ExceptionUtil.isFalse(entity.getStatus(), NO_ALLOW_OPERATE);
@@ -837,31 +833,32 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void checkCanOperateSpaceUpdate(String spaceId, Long opMemberId, Long acceptMemberId, SpaceUpdateOperate[] spaceUpdateOperates) {
-        log.info("检查可以操作空间更新，空间站：{}，操作：{}", spaceId, spaceUpdateOperates);
+        log.info("check that user can operate space updates，space：{}，operation：{}", spaceId, spaceUpdateOperates);
         SpaceBindTenantInfoDTO spaceBindTenant = iSocialTenantBindService.getSpaceBindTenantInfoByPlatform(spaceId, null, null);
         if (null == spaceBindTenant) {
             return;
         }
         ExceptionUtil.isFalse(ArrayUtil.isEmpty(spaceUpdateOperates), NO_ALLOW_OPERATE);
         ExceptionUtil.isTrue(spaceBindTenant.getStatus(), NO_ALLOW_OPERATE);
-        // 钉钉isv和自建都允许修改主管理员
+        // Dingtalk and feishu all allow to modify the master administrator
         if (SocialPlatformType.DINGTALK.getValue().equals(spaceBindTenant.getPlatform())
                 || SocialPlatformType.FEISHU.getValue().equals(spaceBindTenant.getPlatform())) {
             return;
         }
         if (SocialPlatformType.WECOM.getValue().equals(spaceBindTenant.getPlatform()) &&
                 ArrayUtil.contains(spaceUpdateOperates, SpaceUpdateOperate.UPDATE_MAIN_ADMIN)) {
-            // 检查操作成员是否存在企业微信可见区域
+            // Check whether the operation member has a visible area of wecom
             String opOpenId = iMemberService.getOpenIdByMemberId(opMemberId);
             String acceptOpenId = iMemberService.getOpenIdByMemberId(acceptMemberId);
-            log.info("校验绑定企业微信空间站「{}」，更换主管理员操作，原主管理员：{}，申请变更主管理员：{}", spaceId, opMemberId, acceptMemberId);
+            log.info("verify binding wecpm space「{}」，replace main administrator operation，original administrator：{}，change administrator：{}", spaceId, opMemberId, acceptMemberId);
             try {
                 if (SocialAppType.ISV.getType() == spaceBindTenant.getAppType()) {
-                    // 企业微信服务商管理员授权模式才判断，因为成员授权没有可见范围
+                    // The administrator authorization mode of the wecom  provider is only judged.
+                    // because there is no visible scope for member authorization.
                     if (SocialTenantAuthMode.ADMIN.getValue() == spaceBindTenant.getAuthMode()) {
                         SocialTenantEntity socialTenantEntity = iSocialTenantService
                                 .getByAppIdAndTenantId(spaceBindTenant.getAppId(), spaceBindTenant.getTenantId());
-                        // 如果需要，先刷新 access_token
+                        // If necessary, refresh access_token first
                         socialCpIsvService.refreshAccessToken(spaceBindTenant.getAppId(), spaceBindTenant.getTenantId(), socialTenantEntity.getPermanentCode());
                         Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
                         Privilege privilege = agent.getPrivilege();
@@ -899,13 +896,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public String getSpaceIdByLinkId(String linkId) {
-        log.info("获取关联信息的空间ID，linkId：{}", linkId);
+        log.info("gets the space id of the association information，linkId：{}", linkId);
         if (linkId.startsWith(IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
-            // 节点分享
+            // sharing node
             return iNodeShareSettingService.getSpaceId(linkId);
         }
         else {
-            // 模板
+            // template
             return iTemplateService.getSpaceId(linkId);
         }
     }
@@ -917,14 +914,14 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void setContactSyncing(String spaceId, String value) {
-        // 标记空间正在同步空间站通讯录
+        // the label space is synchronizing the contact
         redisTemplate.opsForValue().set(RedisConstants.getSocialContactLockKey(spaceId), value, 3600, TimeUnit.SECONDS);
     }
 
     @Override
     public void contactFinished(String spaceId) {
         String contactLockKey = RedisConstants.getSocialContactLockKey(spaceId);
-        // 处理通讯录完成，将之前的锁删掉
+        // Contact processing completed, delete the previous lock
         if (Boolean.TRUE.equals(redisTemplate.hasKey(contactLockKey))) {
             redisTemplate.delete(contactLockKey);
         }
@@ -952,11 +949,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void switchSpace(Long userId, String spaceId) {
-        // 防止访问未加入的空间
+        // Prevents access to unjoined spaces
         userSpaceService.getMemberId(userId, spaceId);
-        // 数据库保存激活状态
+        // The database saves the activation state
         iMemberService.updateActiveStatus(spaceId, userId);
-        // 缓存用户最后操作激活的空间
+        // Cache the space where the user's last action was active
         userActiveSpaceService.save(userId, spaceId);
     }
 
@@ -967,7 +964,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     }
 
     private boolean checkSpaceNumber(Long userId) {
-        log.info("检查用户是否到达空间数量上限");
+        log.info("Check whether the user reaches the upper limit");
         if (constProperties.getUserWhiteList().contains(userId.toString())) {
             return false;
         }

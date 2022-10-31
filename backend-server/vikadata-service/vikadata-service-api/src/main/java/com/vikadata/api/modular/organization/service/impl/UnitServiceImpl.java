@@ -45,14 +45,6 @@ import static com.vikadata.api.enums.exception.DatabaseException.DELETE_ERROR;
 import static com.vikadata.api.enums.exception.DatabaseException.INSERT_ERROR;
 import static com.vikadata.api.enums.exception.PermissionException.ORG_UNIT_NOT_EXIST;
 
-/**
- * <p>
- * 组织单元 服务接口实现
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/1/10 14:20
- */
 @Slf4j
 @Service
 public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> implements IUnitService {
@@ -85,26 +77,26 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Override
     public List<Long> getUnitIdsByRefIds(Collection<Long> refIds) {
-        log.info("根据关联ID集合获取组织单元ID集合");
+        log.info("get unit ids by ref ids");
         return baseMapper.selectIdsByRefIds(refIds);
     }
 
     @Override
     public List<UnitEntity> getByRefIds(Collection<Long> refIds) {
-        log.info("根据关联ID集合批量获取组织单元");
+        log.info("get unit by ref ids");
         return baseMapper.selectByRefIds(refIds);
     }
 
     @Override
     public void checkInSpace(String spaceId, List<Long> unitIds) {
-        log.info("检查组织是否在空间内");
+        log.info("check if the unit is in space.");
         int result = SqlTool.retCount(baseMapper.selectCountBySpaceIdAndIds(spaceId, unitIds));
         ExceptionUtil.isTrue(result == unitIds.size(), ORG_UNIT_NOT_EXIST);
     }
 
     @Override
     public Long create(String spaceId, UnitType unitType, Long unitRefId) {
-        log.info("创建组织单元，单元类型:{}, 单元ID:{}", unitType, unitRefId);
+        log.info("create unit，unit type:{}, unit id:{}", unitType, unitRefId);
         UnitEntity unit = new UnitEntity();
         unit.setSpaceId(spaceId);
         unit.setUnitType(unitType.getType());
@@ -116,13 +108,13 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Override
     public boolean createBatch(List<UnitEntity> unitEntities) {
-        log.info("批量创建组织单元");
+        log.info("Batch create unit.");
         return saveBatch(unitEntities);
     }
 
     @Override
     public void restoreMemberUnit(String spaceId, Collection<Long> memberIds) {
-        log.info("恢复成员组织单元");
+        log.info("Restore member unit");
         List<Long> restores = new ArrayList<>();
         List<UnitEntity> unitEntities = baseMapper.selectByRefIds(memberIds);
         for (UnitEntity unitEntity : unitEntities) {
@@ -137,7 +129,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeByTeamId(Long teamId) {
-        log.info("删除组织单元(部门)，部门ID：{}", teamId);
+        log.info("Delete an organizational Unit(team)，team id：{}", teamId);
         removeByRefId(teamId);
     }
 
@@ -147,31 +139,31 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
         Long unitId = baseMapper.selectUnitIdByRefId(refId);
         boolean flag = removeById(unitId);
         ExceptionUtil.isTrue(flag, DELETE_ERROR);
-        // 删除节点权限、字段权限（若有）
+        // delete node role or field role
         iControlRoleService.removeByUnitIds(Collections.singletonList(unitId));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchRemoveByTeamId(List<Long> teamIds) {
-        log.info("批量删除组织单元(部门)，部门ID：{}", teamIds);
+        log.info("Batch delete an organizational Unit(team)，team ids：[{}]", teamIds);
         List<Long> unitIds = baseMapper.selectIdsByRefIds(teamIds);
         boolean flag = removeByIds(unitIds);
         ExceptionUtil.isTrue(flag, DELETE_ERROR);
-        // 删除节点权限、字段权限（若有）
+        // delete node role or field role
         iControlRoleService.removeByUnitIds(unitIds);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeByMemberId(List<Long> memberIds) {
-        log.info("删除组织单元(成员)，成员ID：{}", memberIds);
+        log.info("Batch delete an organizational Unit(member)，member ids：[{}]", memberIds);
         List<Long> unitIds = getUnitIdsByRefIds(memberIds);
         if (CollUtil.isEmpty(unitIds)) {
             return;
         }
         removeByIds(unitIds);
-        // 删除节点权限、字段权限（若有）
+        //delete node role or field role
         iControlRoleService.removeByUnitIds(unitIds);
     }
 
@@ -191,24 +183,24 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
             UnitType typeEnum = UnitType.toEnum(unitType);
             List<Long> refIds = units.stream().map(UnitEntity::getUnitRefId).collect(Collectors.toList());
             if (typeEnum == UnitType.MEMBER) {
-                // 加载成员必要信息
+                // load the required member information
                 List<MemberBaseInfoDTO> memberBaseInfoDTOList = memberMapper.selectBaseInfoDTOByIds(refIds);
                 memberBaseInfoDTOList.forEach(info -> memberInfoMap.put(info.getId(), info));
             }
             else if (typeEnum == UnitType.TEAM) {
-                // 加载部门必要信息
+                // load the required team information
                 List<TeamBaseInfoDTO> teamBaseInfoDTOList = teamMapper.selectBaseInfoDTOByIds(refIds);
                 teamBaseInfoDTOList.forEach(info -> teamBaseInfoMap.put(info.getId(), info));
             }
             else if (typeEnum == UnitType.ROLE) {
-                // 加载角色必要信息
+                // load required role information
                 List<RoleBaseInfoDto> roleBaseInfoDtoList = iRoleService.getBaseInfoDtoByRoleIds(refIds);
                 roleBaseInfoDtoList.forEach(info -> roleBaseInfoMap.put(info.getId(), info));
             }
         });
         // handle member's team name, get full hierarchy team name
         Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(new ArrayList<>(memberInfoMap.keySet()), spaceId);
-        // 按序插入数据
+        // insert data in order
         for (Long unitId : unitIds) {
             UnitEntity unitEntity = unitEntityMap.get(unitId);
             if (unitEntity == null) {
@@ -235,7 +227,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
                         unitInfoVo.setTeamData(memberToTeamPathInfoMap.get(unitEntity.getUnitRefId()));
                     }
                 }
-                // 冷静期/已注销用户
+                // cooling-off-period/cancelled user
                 if (baseInfo == null || !baseInfo.getIsPaused()) {
                     unitInfoList.add(unitInfoVo);
                 }
@@ -267,7 +259,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Override
     public List<Long> getMembersIdByUnitIds(Collection<Long> unitIds) {
-        log.info("获取组织单元下所有的成员ID");
+        log.info("get the unit's ref members.");
         List<UnitEntity> entities = baseMapper.selectByUnitIds(unitIds);
         if (CollUtil.isEmpty(entities)) {
             return new ArrayList<>();
@@ -310,9 +302,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
     @Override
     public List<UnitInfoDTO> getUnitInfoDTOByUnitIds(List<Long> unitIds) {
         List<UnitInfoDTO> unitInfoList = new ArrayList<>();
-        // 查询组织单元信息
+        // Query information about an organization unit
         List<UnitEntity> unitEntities = baseMapper.selectByUnitIds(unitIds);
-        // 以类型分组，批量查询同一个类型的关联对象信息
+        // grouping by unit type
         Map<Integer, List<UnitEntity>> groupUnitMap = unitEntities.stream()
                 .collect(Collectors.groupingBy(UnitEntity::getUnitType));
         groupUnitMap.forEach((unitType, units) -> {
@@ -320,12 +312,12 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
             Map<Long, Long> refIdToUnitIdMap = units.stream().collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
             Set<Long> refIds = refIdToUnitIdMap.keySet();
             if (typeEnum == UnitType.MEMBER) {
-                // 查询成员信息
+                // querying member information
                 List<MemberEntity> members = memberMapper.selectByMemberIdsIgnoreDelete(refIds);
                 members.forEach(member -> unitInfoList.add(new UnitInfoDTO(refIdToUnitIdMap.get(member.getId()), member.getMemberName())));
             }
             else if (typeEnum == UnitType.TEAM) {
-                // 查询部门信息
+                // querying department information
                 List<TeamEntity> teams = teamMapper.selectByTeamIdsIgnoreDelete(refIds);
                 teams.forEach(team -> unitInfoList.add(new UnitInfoDTO(refIdToUnitIdMap.get(team.getId()), team.getTeamName())));
             }
@@ -335,7 +327,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity> i
 
     @Override
     public List<Long> getRelUserIdsByUnitIds(List<Long> unitIds) {
-        // 获取组织单元下所有的成员ID
+        // gets all the user ids associated with the units
         List<Long> membersIds = this.getMembersIdByUnitIds(unitIds);
         if (membersIds.isEmpty()) {
             return new ArrayList<>();

@@ -20,23 +20,20 @@ import com.vikadata.api.util.CollectionUtil;
 
 /**
  * <p>
- * Excel工作表数据监听器（不能交给spring容器管理）
+ * Excel worksheet data listener（can't be handed over to spring container management）
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/11/16 16:45:59
  */
 @Slf4j
 @Setter
 @Getter
 public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, String>> {
     /**
-     * Excel工作表表头
+     * Excel worksheet header
      * */
     private List<Object> sheetHeader;
 
     /**
-     * Excel工作表数据
+     * Excel worksheet data
      * */
     private List<List<Object>> sheetData;
 
@@ -46,7 +43,7 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
     }
 
     /**
-     * 逐行解析Excel工作表数据
+     * analyzing excel worksheet data line by line
      * */
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
@@ -61,11 +58,11 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
                 tempSheetData.add(dataValue);
             }
         });
-        // 过滤Excel空行
+        // filter excel blank lines
         if (isBlankRow(tempSheetData)) {
             return;
         }
-        // 导入表头为空的数据，去掉前面的空列
+        // Import data with empty header and remove the empty column in front of it.
         if (CollectionUtil.isEmpty(sheetHeader)) {
             sheetData.add(removeBlankColumns(tempSheetData));
         } else {
@@ -74,15 +71,15 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
     }
 
     /**
-     * 所有Excel数据行解析完成后的操作
+     * operations after all excel data rows are parsed
      * */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        log.info("解析{}完成...", context.readSheetHolder().getSheetName());
+        log.info("finish to parse {}...", context.readSheetHolder().getSheetName());
     }
 
     /**
-     * 解析每个工作表的表头信息，每个工作表只执行一次
+     * Parses the header information of each worksheet, and each worksheet is executed only once.
      * */
     @Override
     public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
@@ -92,11 +89,11 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
         Integer[] headerKeyArr = headMap.keySet().toArray(new Integer[0]);
         int sum = headerKeyArr[headerKeyArr.length - 1] + 1;
         if (sum == headMap.size()) {
-            // 先赋值后清空数据的单元格类型为EMPTY，直接根据单元格类型判断
+            // The cell type that is assigned first and then cleared is EMPTY, which is directly judged according to the cell type.
             headMap.forEach((index, cellData) -> {
                 if (CellDataTypeEnum.EMPTY.equals(cellData.getType())) {
                     cellData.setColumnIndex(index + 1);
-                    sheetHeader.add(String.format("第%s列", cellData.getColumnIndex()));
+                    sheetHeader.add(String.format("the %s col", cellData.getColumnIndex()));
                 }
                 if (CellDataTypeEnum.STRING.equals(cellData.getType())) {
                     sheetHeader.add(cellData.getStringValue());
@@ -106,20 +103,20 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
                 }
             });
         } else {
-            // 从未赋值数据的单元格会忽略空单元格，按照最后一个索引值的长度生成表头
+            // Cells that never assign data ignore empty cells and generate headers according to the length of the last index value
             Object[] tmpHeaderArr = new Object[sum];
             int i = 0;
-            // 按照索引值把不为空的表头数据写进tmpArr
+            // Write non-empty header data into tmpHeaderArr according to index value
             while (i < headerKeyArr.length) {
                 int index = headerKeyArr[i];
                 ReadCellData<?> readCellData = headMap.get(index);
                 tmpHeaderArr[index] = readCellData.getStringValue();
                 i++;
             }
-            // 给所有为空的元素生成一个单元格数据
+            // generate a cell data for all empty elements
             for (int j = 0; j < tmpHeaderArr.length; j++) {
                 if (Objects.isNull(tmpHeaderArr[j])) {
-                    tmpHeaderArr[j] = String.format("第%s列", j + 1);
+                    tmpHeaderArr[j] = String.format("the %s col", j + 1);
                 }
             }
             sheetHeader.addAll(Arrays.asList(tmpHeaderArr));

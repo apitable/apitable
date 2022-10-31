@@ -150,13 +150,11 @@ import static com.vikadata.define.constants.RedisConstants.ERROR_PWD_NUM_DIR;
 
 /**
  * <p>
- * 用于vika-cli命令行工具中的GM指令
+ *  Used for GM command in vika-cli command line tool
  * </p>
- *
- * @author Kelly Chen
  */
 @RestController
-@Api(tags = "Cli 总部控制接口", hidden = true)
+@Api(tags = "Cli Office GM API", hidden = true)
 @ApiResource(path = "/gm")
 @Slf4j
 public class GmController {
@@ -231,24 +229,24 @@ public class GmController {
     private IBundleService iBundleService;
 
     @PostResource(path = "/permission/update", requiredPermission = false)
-    @ApiOperation(value = "更新GM权限配置")
+    @ApiOperation(value = "Update GM permission config")
     public ResponseData<Void> updatePermission(@RequestBody ConfigDatasheetRo ro) {
         iGmService.updateGmPermissionConfig(SessionContext.getUserId(), ro.getDatasheetId());
         return ResponseData.success();
     }
 
     @PostResource(path = "/new/user", requiredPermission = false)
-    @ApiOperation(value = "新建用户(不正规的马甲号，用于测试)", notes = "新建一个用户，传入username和password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Create user(Irregular vest number, used for testing)", notes = "create a user by username and password.", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<HqAddUserVo> createUser(@RequestBody @Valid HqAddUserRo ro) {
-        // 限制邮箱范围
+        // Limit mailbox range.
         if (!ro.getUsername().endsWith("@vikadata.com") || !ro.getUsername().startsWith("test")) {
-            throw new BusinessException("请使用以【test】开头的【@vikadata.com】测试邮箱！如：test001@vikadata.com");
+            throw new BusinessException("Please use the [@vikadata.com] test email starting with [test]! Such as: test001@vikadata.com");
         }
-        // 限制手机号范围
+        // Limit phone number range.
         if (StrUtil.isNotBlank(ro.getPhone()) && !ro.getPhone().startsWith(constProperties.getTestMobilePre())) {
-            throw new BusinessException("测试手机号请以【" + constProperties.getTestMobilePre() + "】开头！");
+            throw new BusinessException("Test phone number please begin with " + constProperties.getTestMobilePre());
         }
-        // 创建用户
+        // Create a user.
         userService.createUserByCli(ro.getUsername(), ro.getPassword(), ro.getPhone());
         HqAddUserVo vo = new HqAddUserVo();
         vo.setUsername(ro.getUsername());
@@ -258,18 +256,18 @@ public class GmController {
     }
 
     @PostResource(path = "/new/users", requiredLogin = false)
-    @ApiOperation(value = "批量新建用户(不正规的马甲号，用于测试)", notes = "新建一个用户，传入username和password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Batch Create user(Irregular vest number, used for testing)", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> createUsers() {
-        //创建用户
+        // Create a user
         userService.createUsersByCli();
         return ResponseData.success();
     }
 
     @PostResource(path = "/lock", requiredPermission = false)
-    @ApiOperation(value = "验证锁定")
+    @ApiOperation(value = "Lock verification")
     public ResponseData<Void> lock(@RequestBody @Valid UnlockRo ro) {
-        log.info("操作者「{}」对目标「{}」进行类型「{}」的验证锁定", SessionContext.getUserId(), ro.getTarget(), ro.getType());
-        // 校验权限
+        log.info("The operator [{}] lock type [{}] verification for target [{}].", SessionContext.getUserId(), ro.getTarget(), ro.getType());
+        // Verify permissions
         iGmService.validPermission(SessionContext.getUserId(), GmAction.VALIDATION_LOCK);
         Integer type = ro.getType();
         String lockedKey = this.getLockedKey(ro.getTarget(), type);
@@ -278,10 +276,10 @@ public class GmController {
     }
 
     @PostResource(path = "/unlock", requiredPermission = false)
-    @ApiOperation(value = "验证解锁")
+    @ApiOperation(value = "Unlock verification                                        ")
     public ResponseData<Void> unlock(@RequestBody @Valid UnlockRo ro) {
-        log.info("操作者「{}」对目标「{}」进行型「{}」的验证解锁", SessionContext.getUserId(), ro.getTarget(), ro.getType());
-        // 校验权限
+        log.info("The operator [{}] unlock type [{}] verification for target [{}]", SessionContext.getUserId(), ro.getTarget(), ro.getType());
+        // Verify permissions
         iGmService.validPermission(SessionContext.getUserId(), GmAction.VALIDATION_UNLOCK);
         String lockedKey = this.getLockedKey(ro.getTarget(), ro.getType());
         redisTemplate.delete(lockedKey);
@@ -307,48 +305,48 @@ public class GmController {
     }
 
     @PostResource(path = "/reset/activity", requiredPermission = false)
-    @ApiOperation(value = "重置用户的活动状态")
+    @ApiOperation(value = "Reset the active state of the user")
     public ResponseData<Void> resetActivity(@RequestBody(required = false) UserActivityRo ro) {
         Long userId = SessionContext.getUserId();
         if (ro != null && ro.getWizardId() != null) {
-            // 删除指定的活动状态值
+            // Deletes the specified active state value
             String key = StrUtil.format("\"{}\"", ro.getWizardId());
             playerActivityMapper.updateActionsRemoveByUserId(userId, key);
         }
         else {
-            // 重置全部的活动状态记录
+            // Reset all active state records
             playerActivityMapper.updateActionsByUserId(userId, new JSONObject().toString());
         }
-        // 删除缓存
+        // Delete the cache
         userLinkInfoService.delete(userId);
         return ResponseData.success();
     }
 
     @PostResource(path = "/assign/activity", requiredPermission = false)
-    @ApiOperation(value = "指定用户的活动状态")
+    @ApiOperation(value = "Specifies the active state of the user")
     public ResponseData<Void> assignActivity(@RequestBody UserActivityAssignRo ro) {
-        log.info("操作者「{}」对用户「{}/{}」进行指定活动状态设置", SessionContext.getUserId(), ro.getTestMobile(), ro.getUserIds());
-        // 校验权限
+        log.info("The operator「{}」specifies the active state of the user [{}/{}].", SessionContext.getUserId(), ro.getTestMobile(), ro.getUserIds());
+        // Verify permissions.
         iGmService.validPermission(SessionContext.getUserId(), GmAction.USER_ACTIVITY_ASSIGN);
-        // 参数校验
+        // Verify parameters.
         ExceptionUtil.isTrue(ro.getWizardId() != null && ro.getValue() != null, ParameterException.INCORRECT_ARG);
         String key = StrUtil.format("\"{}\"", ro.getWizardId());
-        // 优先取测试手机号
+        // The test phone number is preferred.
         if (ro.getTestMobile() != null) {
             Long userId = userMapper.selectIdByMobile(ro.getTestMobile());
             ExceptionUtil.isNotNull(userId, USER_NOT_EXIST);
             boolean flag = SqlHelper.retBool(playerActivityMapper.updateActionsByJsonSet(Collections.singletonList(userId), key, ro.getValue()));
             ExceptionUtil.isTrue(flag, EDIT_ERROR);
-            // 删除缓存
+            // Delete the cache
             userLinkInfoService.delete(userId);
         }
         else {
             ExceptionUtil.isNotEmpty(ro.getUserIds(), ParameterException.INCORRECT_ARG);
-            // 分批插入
+            // Partial insert
             List<List<Long>> split = CollUtil.split(ro.getUserIds(), 100);
             for (List<Long> userIds : split) {
                 playerActivityMapper.updateActionsByJsonSet(userIds, key, ro.getValue());
-                // 删除缓存
+                // Delete the cache
                 userIds.forEach(userId -> userLinkInfoService.delete(userId));
             }
         }
@@ -356,19 +354,19 @@ public class GmController {
     }
 
     @PostResource(path = "/new/player/notify", requiredPermission = false)
-    @ApiOperation(value = "新建一条player通知", notes = "添加系统通知", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Create a player notification", notes = "Adding system notification.", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> addPlayerNotify(@RequestBody @Valid NotificationCreateRo ro) {
-        log.info("操作者「{}」发布了一条系统通知", SessionContext.getUserId());
-        // 校验权限
+        log.info("The operator「{}」issue a system notification ", SessionContext.getUserId());
+        // Verify permissions.
         iGmService.validPermission(SessionContext.getUserId(), GmAction.SYSTEM_NOTIFICATION_PUBLISH);
         NotificationTemplate template =
                 notificationFactory.getTemplateById(ro.getTemplateId());
         if (ObjectUtil.isNull(template)) {
-            throw new BusinessException("模版ID不存在");
+            throw new BusinessException("The template id does not exist");
         }
-        // 目前只允许撤销系统通知
+        // Currently, only system notifications can be revoked
         if (!"system".equals(template.getNotificationsType())) {
-            throw new BusinessException("目前不支持添加非系统消息");
+            throw new BusinessException("Adding non-system messages is not currently supported");
         }
         String lockedKey = RedisConstants.getNotificationLockedKey(ro.getTemplateId(), "");
         Object extras = ro.getBody().get(BODY_EXTRAS);
@@ -382,7 +380,7 @@ public class GmController {
         }
         Boolean lock = redisTemplate.opsForValue().setIfAbsent(lockedKey, 1);
         if (BooleanUtil.isFalse(lock)) {
-            throw new BusinessException("不允许多次发布消息");
+            throw new BusinessException("Multiple messages are not allowed to be published");
         }
         try {
             ro.setBody(JSONUtil.createObj().putOnce(BODY_EXTRAS, extras));
@@ -399,26 +397,26 @@ public class GmController {
             }
         }
         catch (Exception e) {
-            log.error("发送消息失败", e);
+            log.error("Sending a message failed.", e);
         }
         redisTemplate.delete(lockedKey);
-        throw new BusinessException("发送消息失败");
+        throw new BusinessException("Sending a message failed.");
     }
 
     @PostResource(path = "/revoke/player/notify", requiredPermission = false)
-    @ApiOperation(value = "撤销一条player通知", notes = "撤销系统通知，从通知中心删除", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Cancel a player notification", notes = "Cancel a player notification, deleted from the notification center", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> revokePlayerNotify(@RequestBody @Valid NotificationRevokeRo ro) {
-        log.info("操作者「{}」撤销了一条系统通知", SessionContext.getUserId());
-        // 校验权限
+        log.info("The operator「{}」cancels a player notification", SessionContext.getUserId());
+        // Verify permission.
         iGmService.validPermission(SessionContext.getUserId(), GmAction.SYSTEM_NOTIFICATION_REVOKE);
         NotificationTemplate template =
                 notificationFactory.getTemplateById(ro.getTemplateId());
         if (ObjectUtil.isNull(template)) {
-            throw new BusinessException("模版ID不存在");
+            throw new BusinessException("The template id does not exist");
         }
-        // 目前只允许撤销系统通知
+        // Currently, only system notifications can be revoked
         if (!"system".equals(template.getNotificationsType())) {
-            throw new BusinessException("目前不支持撤销非系统消息");
+            throw new BusinessException("Undoing non-system messages is not currently supported.");
         }
         String lockedKey = RedisConstants.getNotificationLockedKey(ro.getTemplateId(), "");
         if (StrUtil.isNotBlank(ro.getVersion())) {
@@ -428,71 +426,71 @@ public class GmController {
             lockedKey = RedisConstants.getNotificationLockedKey(ro.getTemplateId(), ro.getExpireAt());
         }
         if (BooleanUtil.isFalse(redisTemplate.hasKey(lockedKey))) {
-            throw new BusinessException("消息不存在,不支持撤销");
+            throw new BusinessException("The message does not exist. Undoing is not supported.");
         }
         if (BooleanUtil.isTrue(redisTemplate.hasKey(lockedKey)) && redisTemplate.opsForValue().get(lockedKey) != null && Objects.equals(redisTemplate.opsForValue().get(lockedKey), ro.getRevokeType())) {
-            throw new BusinessException("消息已经撤销, 请不要重复撤销");
+            throw new BusinessException("The message has been revoked. Please do not undo it again.");
         }
         boolean result = playerNotificationService.revokeNotification(ro);
         if (result) {
             redisTemplate.opsForValue().set(lockedKey, ro.getRevokeType());
             return ResponseData.success();
         }
-        throw new BusinessException("撤销消息失败");
+        throw new BusinessException("Failed to undo the message.");
     }
 
     @GetResource(path = "/getCaptcha/{target}", requiredPermission = false)
-    @ApiOperation(value = "获取验证码", hidden = true)
+    @ApiOperation(value = "Get captcha", hidden = true)
     public ResponseData<String> getCaptcha(@PathVariable("target") String target,
             @RequestParam(name = "type", required = false, defaultValue = "2") Integer type) {
-        log.info("操作者「{}」获取目标「{}」类型「{}」的验证码", SessionContext.getUserId(), target, type);
-        // 校验权限
+        log.info("The operator「{}」get type [{}]captcha for target [{}]", SessionContext.getUserId(), target, type);
+        // Verify permission.
         iGmService.validPermission(SessionContext.getUserId(), GmAction.TEST_CAPTCHA);
         ValidateCodeType codeType;
         CodeValidateScope scope;
         if (Validator.isMobile(target)) {
-            // 获取手机验证码
+            // Obtain the mobile phone verification code
             if (!target.startsWith(constProperties.getTestMobilePre())) {
-                throw new BusinessException("测试手机号请以【" + constProperties.getTestMobilePre() + "】开头！");
+                throw new BusinessException("Please the test mobile phone number begin [" + constProperties.getTestMobilePre() + "]");
             }
             codeType = ValidateCodeType.SMS;
             scope = CodeValidateScope.fromName(SmsCodeType.fromName(type).name());
             target = StrUtil.addPrefixIfNot(target, "+86");
         }
         else if (Validator.isEmail(target)) {
-            // 获取邮箱验证码
+            // Obtain the email verification code
             if (!target.endsWith("@vikadata.com") || !target.startsWith("test")) {
-                throw new BusinessException("请使用以【test】开头的【@vikadata.com】测试邮箱！如：test001@vikadata.com");
+                throw new BusinessException("Please use the [@vikadata.com] test email starting with [test]!such as: test001@vikadata.com");
             }
             codeType = ValidateCodeType.EMAIL;
             scope = CodeValidateScope.fromName(EmailCodeType.fromName(type).name());
         }
         else {
-            throw new BusinessException("请输出指定格式的手机号或邮箱！");
+            throw new BusinessException("Please output the specified format of mobile phone number or email!");
         }
         String randomCode = RandomUtil.randomNumbers(6);
         ValidateCode validateCode = new ValidateCode(randomCode, scope.name().toLowerCase(), 600);
-        // 存储验证码
+        // storage verification code.
         validateCodeRepository.save(codeType.toString().toLowerCase(), validateCode, target, 600);
-        // 存储验证码业务类型
+        // storage verification code service type.
         String scopeKey = RedisConstants.getCaptchaScopeKey(codeType.toString().toLowerCase(), target);
         redisTemplate.opsForValue().set(scopeKey, scope.name().toLowerCase(), 10, TimeUnit.MINUTES);
         return ResponseData.success(randomCode);
     }
 
     @PostResource(path = "/labs/features", requiredPermission = false)
-    @ApiOperation(value = "创建实验性功能")
+    @ApiOperation(value = "Create laboratory feature")
     public ResponseData<GmLabFeatureVo> createLabsFeature(@RequestBody @Valid GmLabsFeatureCreatorRo gmLabsFeatureCreatorRo) {
-        log.info("操作者「{}」创建实验性功能「{}」", SessionContext.getUserId(), gmLabsFeatureCreatorRo.getKey());
-        //校验权限
+        log.info("The operator「{}」laboratory feature「{}」", SessionContext.getUserId(), gmLabsFeatureCreatorRo.getKey());
+        // Verify permissions
         iGmService.validPermission(SessionContext.getUserId(), GmAction.LAB_FEATURE_CREATE);
-        // 校验实验性功能唯一标识
+        // Verify the laboratory feature unique identifier.
         LabsFeatureEnum featureEnum = ofLabsFeature(gmLabsFeatureCreatorRo.getKey());
         ExceptionUtil.isFalse(Objects.equals(featureEnum, UNKNOWN_LAB_FEATURE), FEATURE_KEY_IS_NOT_EXIST);
-        // 校验实验性功能作用域
+        // Verify the laboratory feature scope.
         LabsFeatureScopeEnum scopeEnum = ofLabsFeatureScope(gmLabsFeatureCreatorRo.getScope());
         ExceptionUtil.isFalse(Objects.equals(scopeEnum, UNKNOWN_SCOPE), FEATURE_SCOPE_IS_NOT_EXIST);
-        // 校验实验性功能类型
+        // Verify the laboratory feature type.
         LabsFeatureTypeEnum labsFeatureTypeEnum = ofLabsFeatureType(gmLabsFeatureCreatorRo.getType());
         ExceptionUtil.isFalse(Objects.equals(labsFeatureTypeEnum, UNKNOWN_LABS_FEATURE_TYPE), FEATURE_TYPE_IS_NOT_EXIST);
 
@@ -529,27 +527,27 @@ public class GmController {
     }
 
     @PostResource(path = "/labs/updateAttribute", requiredPermission = false)
-    @ApiOperation(value = "修改实验室功能属性")
+    @ApiOperation(value = "Modify laboratory feature attribute")
     public ResponseData<Void> updateLabsFeaturesAttribute(@RequestBody GmLabsFeatureCreatorRo gmLabsFeatureCreatorRo) {
-        log.info("操作者「{}」修改实验性功能「{}」", SessionContext.getUserId(), gmLabsFeatureCreatorRo.getKey());
-        // 校验权限
+        log.info("The operator「{}」Modify laboratory feature「{}」", SessionContext.getUserId(), gmLabsFeatureCreatorRo.getKey());
+        // Verify permissions
         iGmService.validPermission(SessionContext.getUserId(), GmAction.LAB_FEATURE_EDIT);
         iLabsFeatureService.updateLabsFeatureAttribute(gmLabsFeatureCreatorRo);
         return ResponseData.success();
     }
 
     @PostResource(path = "/labs", requiredPermission = false)
-    @ApiOperation(value = "为申请者开通实验室功能")
+    @ApiOperation(value = "Open laboratory feature for applicants")
     public ResponseData<Void> applyLabsFeature(@RequestBody @Valid GmApplyFeatureRo applyFeatureRo) {
         Long applyUser = userMapper.selectIdByUuid(applyFeatureRo.getApplyUserId());
         ExceptionUtil.isNotNull(applyUser, USER_NOT_EXIST);
         String applicant = StrUtil.isNotBlank(applyFeatureRo.getSpaceId()) ?
                 applyFeatureRo.getSpaceId() :
                 String.valueOf(applyUser);
-        // 校验spaceId，如果违法不允许开通
+        // Verify the space id. If the space id is illegal, it cannot be opened
         SpaceEntity applyVikaSpace = spaceMapper.selectBySpaceId(applyFeatureRo.getSpaceId());
         ExceptionUtil.isNotNull(applyVikaSpace, SPACE_NOT_EXIST);
-        // 如果featureKey错误，不允许申请开通；
+        // If the feature Key is incorrect, the application for opening is not allowed.
         String featureKey = ofLabsFeature(applyFeatureRo.getFeatureKey()).name();
         ExceptionUtil.isFalse(featureKey.equals(UNKNOWN_LAB_FEATURE.name()), FEATURE_KEY_IS_NOT_EXIST);
         int applicantType = StrUtil.isNotBlank(applyFeatureRo.getSpaceId()) ?
@@ -563,21 +561,21 @@ public class GmController {
                     .createdBy(applyUser)
                     .build());
             ExceptionUtil.isTrue(saveOrUpdated, INSERT_ERROR);
-            // 开通成功后发送站内通知(除申请者以外的其他成员)
+            // Send space notification after successful opening.(members except applicant)
             iLabsApplicantService.sendNotification(NotificationTemplateId.APPLY_SPACE_BETA_FEATURE_SUCCESS_NOTIFY_ALL,
                     Collections.singletonList(applyUser), applyUser, applyFeatureRo);
-            // 开通成功后发送站内通知(申请者自己)
+            // Send space notification after successful opening. (applicant)
             iLabsApplicantService.sendNotification(NotificationTemplateId.APPLY_SPACE_BETA_FEATURE_SUCCESS_NOTIFY_ME,
                     Collections.singletonList(applyUser), 0L, applyFeatureRo);
             return ResponseData.success();
         }
-        // 开启内测功能
+        // Enable the private test function
         if (applyFeatureRo.getEnable()) {
             iLabsApplicantService.openApplicantFeature(existLabsApplicant.getId());
-            // 开通成功后发送站内通知(除申请者以外的其他成员)
+            // Send space notification after successful opening.(members except applicant)
             iLabsApplicantService.sendNotification(NotificationTemplateId.APPLY_SPACE_BETA_FEATURE_SUCCESS_NOTIFY_ALL,
                     Collections.singletonList(applyUser), applyUser, applyFeatureRo);
-            // 开通成功后发送站内通知(申请者自己)
+            // Send space notification after successful opening. (applicant)
             iLabsApplicantService.sendNotification(NotificationTemplateId.APPLY_SPACE_BETA_FEATURE_SUCCESS_NOTIFY_ME,
                     Collections.singletonList(applyUser), 0L, applyFeatureRo);
         }
@@ -585,56 +583,52 @@ public class GmController {
     }
 
     @PostResource(path = "/labs/features/{featureKey}/delete", requiredPermission = false)
-    @ApiOperation(value = "删除实验性功能")
-    @ApiImplicitParam(name = "featureKey", value = "实验性功能唯一标识", dataTypeClass = String.class, required = true, example = "render_prompt|async_compute|robot|widget_center")
+    @ApiOperation(value = "Remove laboratory feature")
+    @ApiImplicitParam(name = "featureKey", value = "laboratory feature unique identifier", dataTypeClass = String.class, required = true, example = "render_prompt|async_compute|robot|widget_center")
     public ResponseData<Void> deleteLabsFeature(@PathVariable("featureKey") String featureKey) {
-        log.info("操作者「{}」删除实验性功能「{}」", SessionContext.getUserId(), featureKey);
-        // 校验权限
+        log.info("The operator「{}」delete laboratory feature「{}」", SessionContext.getUserId(), featureKey);
         iGmService.validPermission(SessionContext.getUserId(), GmAction.LAB_FEATURE_DELETE);
         LabsFeaturesEntity existLabsFeature = iLabsFeatureService.getExistLabsFeature(ofLabsFeature(featureKey).name());
         if (Objects.isNull(existLabsFeature)) {
-            return ResponseData.error(String.format("%s不存在，无法删除", featureKey));
+            return ResponseData.error(String.format("%s does not exist and cannot be deleted", featureKey));
         }
         int count = iLabsFeatureService.deleteLabsFeature(existLabsFeature.getId());
         return count > 0 ?
                 ResponseData.success() :
-                ResponseData.error("删除实验性功能失败...");
+                ResponseData.error("Failed to delete the laboratory feature...");
     }
 
     @PostResource(path = "/users/{uuid}/close", requiredPermission = false)
-    @ApiOperation(value = "关闭注销冷静期账号")
+    @ApiOperation(value = "Close paused account")
     public ResponseData<Void> closeAccountDirectly(@PathVariable(name = "uuid") String userUuid) {
-        log.info("操作者「{}」关闭注销冷静期账号「{}」", SessionContext.getUserId(), userUuid);
-        // 校验权限
+        log.info("The operator「{}」close paused account「{}」", SessionContext.getUserId(), userUuid);
         iGmService.validPermission(SessionContext.getUserId(), GmAction.PAUSED_ACCOUNT_CLOSE);
-        // 查询当前用户
         Long logoutUserId = userMapper.selectIdByUuid(userUuid);
         UserEntity user = userMapper.selectById(logoutUserId);
-        // 该账号不存在或已注销
+        // The account does not exist or has been logged out
         if (user == null) {
-            return ResponseData.error("该帐号不存在或已注销");
+            return ResponseData.error("The account does not exist or has been logged out.");
         }
-        // 账号没有处在注销冷静期, 返回异常.
+        // An exception is displayed if the account is not in the logout cooling-off period.
         if (!user.getIsPaused()) {
-            return ResponseData.error("该帐号未发起注销请求，无法删除账号");
+            return ResponseData.error("The account cannot be deleted because it does not send a logout request.");
         }
-        // 关闭账号，清除账号数据
+        // Close the account and clear the account data
         userService.closeAccount(user);
 
-        // 清除该用户的cookie信息
+        // Clear the cookie information of the user
         iUserService.closeMultiSession(logoutUserId, false);
         return ResponseData.success();
     }
 
     @PostResource(path = "/operateBlacklist", requiredPermission = false)
-    @ApiOperation(value = "设置空间黑名单", hidden = true)
+    @ApiOperation(value = "Set blacklist", hidden = true)
     public ResponseData<Void> setBlacklist(@RequestBody SpaceBlacklistRo ro) {
-        log.info("操作者「{}」对空间「{}」进行黑名单设置", SessionContext.getUserId(), ro.getSpaceIds());
-        // 校验权限
+        log.info("The operator「{}」add space「{}」into blacklist", SessionContext.getUserId(), ro.getSpaceIds());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.BLACK_SPACE_SET);
         List<BaseSpaceInfoDto> spaceInfos = spaceMapper.selectBaseSpaceInfo(ro.getSpaceIds());
         if (CollUtil.isEmpty(spaceInfos)) {
-            throw new BusinessException("空间不存在");
+            throw new BusinessException("Space not exist.");
         }
 
         for (BaseSpaceInfoDto info : spaceInfos) {
@@ -645,22 +639,20 @@ public class GmController {
     }
 
     @PostResource(path = "/space/certification", requiredPermission = false)
-    @ApiOperation(value = "空间站认证", hidden = true)
+    @ApiOperation(value = "Authenticate space", hidden = true)
     public ResponseData<Void> spaceCertification(@RequestBody SpaceCertificationRo ro) {
-        log.info("操作者「{}」对空间「{}」进行认证", SessionContext.getUserId(), ro.getSpaceId());
+        log.info("Operator [{}] authenticates the space [{}]", SessionContext.getUserId(), ro.getSpaceId());
         SpaceCertification certification = SpaceCertification.toEnum(ro.getCertification());
         ExceptionUtil.isTrue(certification != null, UPDATE_SPACE_INFO_FAIL);
-        // 校验权限
         iGmService.validPermission(SessionContext.getUserId(), GmAction.SPACE_CERTIFY);
-        // 空间站认证
         iGmService.spaceCertification(ro.getSpaceId(), ro.getUuid(), certification);
         return ResponseData.success();
     }
 
     @PostResource(path = "/wecom/isv/event", requiredPermission = false)
-    @ApiOperation(value = "手动执行企微服务商事件", hidden = true)
+    @ApiOperation(value = "Manually execute wecom isv event", hidden = true)
     public ResponseData<String> postWecomIsvEvent(@RequestBody @Validated WeComIsvEventRo request) {
-        log.info("操作者「{}」手动执行企微服务商事件「{}」", SessionContext.getUserId(), request.getEventId());
+        log.info("The operator「{}」manually execute wecom isv event「{}」", SessionContext.getUserId(), request.getEventId());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_EVENT);
 
         SocialCpIsvMessageEntity messageEntity = socialCpIsvMessageService.getById(request.getEventId());
@@ -680,9 +672,9 @@ public class GmController {
     }
 
     @PostResource(path = "/wecom/isv/newSpace", requiredPermission = false)
-    @ApiOperation(value = "为手动删除了空间站的企微服务商重新创建空间站", hidden = true)
+    @ApiOperation(value = "Recreate wecom isv space", hidden = true)
     public ResponseData<Void> postWecomIsvNewSpace(@RequestBody @Validated WeComIsvNewSpaceRo request) {
-        log.info("操作者「{}」手动为租户「{}」重新创建空间站", SessionContext.getUserId(), request.getAuthCorpId());
+        log.info("The operator「{}」manually recreate space for tenant「{}」.", SessionContext.getUserId(), request.getAuthCorpId());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_NEW_SPACE);
 
         socialCpIsvService.createNewSpace(request.getSuiteId(), request.getAuthCorpId());
@@ -691,9 +683,9 @@ public class GmController {
     }
 
     @PostResource(path = "/wecom/isv/permit/newOrder", requiredPermission = false)
-    @ApiOperation(value = "企微服务商下单购买接口许可", hidden = true)
+    @ApiOperation(value = "Permit wecom isv new order", hidden = true)
     public ResponseData<WeComIsvPermitNewOrderVo> postWecomIsvPermitNewOrder(@RequestBody @Validated WeComIsvPermitNewOrderRo request) {
-        log.info("操作者「{}」手动执行为空间站「{}」下单购买接口许可", SessionContext.getUserId(), request.getSpaceId());
+        log.info("The operator「{}」manually permits wecom isv new order for space「{}」.", SessionContext.getUserId(), request.getSpaceId());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_PERMIT_NEW_ORDER);
 
         SocialWecomPermitOrderEntity orderWecomEntity = socialCpIsvPermitService.createNewOrder(request.getSpaceId(), request.getDurationMonths());
@@ -709,8 +701,6 @@ public class GmController {
      *
      * @param request Request body
      * @return Response body
-     * @author Codeman
-     * @date 2022-09-02 11:32:33
      */
     @PostResource(path = "/wecom/isv/order/migrate", requiredPermission = false)
     @ApiOperation(value = "Migrate wecom isv orders to billing", hidden = true)
@@ -780,9 +770,9 @@ public class GmController {
     }
 
     @PostResource(path = "/wecom/isv/permit/activate", requiredPermission = false)
-    @ApiOperation(value = "企微服务商激活接口许可", hidden = true)
+    @ApiOperation(value = "Permit wecom isv activate", hidden = true)
     public ResponseData<Void> postWecomIsvPermitActivate(@RequestBody @Validated WeComIsvPermitActivateRo request) {
-        log.info("操作者「{}」手动执行为订单「{}」激活接口许可", SessionContext.getUserId(), request.getOrderId());
+        log.info("Operator「{}」manually permit wecom isv activate for order「{}」", SessionContext.getUserId(), request.getOrderId());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_PERMIT_ACTIVATE);
 
         socialCpIsvPermitService.activateOrder(request.getOrderId());
@@ -791,9 +781,9 @@ public class GmController {
     }
 
     @PostResource(path = "/wecom/isv/permit/renewal", requiredPermission = false)
-    @ApiOperation(value = "企微服务商下单续期接口许可", hidden = true)
+    @ApiOperation(value = "Permit wecom isv renewal", hidden = true)
     public ResponseData<WeComIsvPermitRenewalVo> postWecomIsvPermitRenewal(@RequestBody @Validated WeComIsvPermitRenewalRo request) {
-        log.info("操作者「{}」手动执行为空间站「{}」续期接口许可", SessionContext.getUserId(), request.getSpaceId());
+        log.info("Operator「{}」manually permit wecom isv renewal for space「{}」.", SessionContext.getUserId(), request.getSpaceId());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_PERMIT_RENEWAL);
 
         SocialWecomPermitOrderEntity orderWecomEntity = socialCpIsvPermitService.renewalCpUser(request.getSpaceId(), request.getCpUserIds(), request.getDurationMonths());
@@ -805,9 +795,9 @@ public class GmController {
     }
 
     @PostResource(path = "/wecom/isv/permit/ensureAll", requiredPermission = false)
-    @ApiOperation(value = "企微服务商确认订单及其企业下所有账号的最新信息", hidden = true)
+    @ApiOperation(value = "Ensure wecom isv account info", hidden = true)
     public ResponseData<Void> postWecomIsvPermitEnsureAll(@RequestBody @Validated WeComIsvPermitEnsureAllRo request) {
-        log.info("操作者「{}」手动执行为订单「{}」确认账号信息", SessionContext.getUserId(), request.getOrderId());
+        log.info("Operator「{}」manually ensure wecom isv account info for order「{}」", SessionContext.getUserId(), request.getOrderId());
         iGmService.validPermission(SessionContext.getUserId(), GmAction.WECOM_ISV_PERMIT_ENSURE_ALL);
 
         socialCpIsvPermitService.ensureOrderAndAllActiveCodes(request.getOrderId());
@@ -816,26 +806,26 @@ public class GmController {
     }
 
     @PostResource(path = "/social/tenant/{tenantId}/event", requiredPermission = false)
-    @ApiOperation(value = "手动执行补偿飞书事件")
+    @ApiOperation(value = "Manually execute compensation of feishu event")
     public ResponseData<Void> feishuTenantEvent(@PathVariable("tenantId") String tenantId) {
-        log.info("操作者「{}」手动执行补偿租户「{}」的飞书事件", SessionContext.getUserId(), tenantId);
+        log.info("Operator「{}」Manually execute compensation of feishu event for tenant[{}].", SessionContext.getUserId(), tenantId);
         iGmService.validPermission(SessionContext.getUserId(), GmAction.FEISHU_EVENT_COMPENSATE);
         iGmService.handleFeishuEvent(tenantId);
         return ResponseData.success();
     }
 
     @PostResource(path = "/idaas/tenant/create", requiredLogin = false)
-    @ApiOperation(value = "玉符 IDaaS 私有化部署创建租户及管理员", hidden = true)
+    @ApiOperation(value = "IDaaS privatization deployment create tenant", hidden = true)
     public ResponseData<IdaasTenantCreateVo> idaasTenantCreate(@RequestBody IdaasTenantCreateRo request) {
-        log.info("玉符 IDaaS 私有化部署创建租户及管理员：" + JSONUtil.toJsonStr(request));
+        log.info("IDaaS privatization deployment create tenant:" + JSONUtil.toJsonStr(request));
         IdaasTenantCreateVo idaasTenantCreateVo = idaasTenantService.createTenant(request);
         return ResponseData.success(idaasTenantCreateVo);
     }
 
     @PostResource(path = "/idaas/app/bind", requiredLogin = false)
-    @ApiOperation(value = "玉符 IDaaS 私有化部署绑定应用和空间站", hidden = true)
+    @ApiOperation(value = "IDaaS privatization deployment bind app", hidden = true)
     public ResponseData<IdaasAppBindVo> idaasAppBind(@RequestBody IdaasAppBindRo request) {
-        log.info("玉符 IDaaS 私有化部署绑定应用和空间站：" + JSONUtil.toJsonStr(request));
+        log.info("IDaaS privatization deployment bind app: " + JSONUtil.toJsonStr(request));
         IdaasAppBindVo idaasAppBindVo = idaasAppBindService.bindTenantApp(request);
         return ResponseData.success(idaasAppBindVo);
     }

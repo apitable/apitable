@@ -7,11 +7,6 @@ import cn.hutool.json.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 数表快照
- * @author Shawn Deng
- * @date 2021-04-01 20:59:39
- */
 @Setter
 @Getter
 public class DatasheetSnapshot {

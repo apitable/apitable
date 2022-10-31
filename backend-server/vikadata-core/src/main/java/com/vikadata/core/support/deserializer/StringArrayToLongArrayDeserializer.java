@@ -14,11 +14,9 @@ import java.util.List;
 
 /**
  * <p>
- * 字符串数组转Long数组
+ *  String array to Long array
  * </p>
  *
- * @author Shawn Deng
- * @date 2019/12/9 18:33
  */
 public class StringArrayToLongArrayDeserializer extends JsonDeserializer<List<Long>> {
 

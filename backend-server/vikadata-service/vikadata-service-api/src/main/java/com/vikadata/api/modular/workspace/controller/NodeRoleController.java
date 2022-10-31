@@ -60,15 +60,7 @@ import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATIO
 import static com.vikadata.api.enums.exception.PermissionException.NODE_ROLE_HAS_DISABLE_EXTEND;
 import static java.util.stream.Collectors.toList;
 
-/**
- * <p>
- * 工作台模块-节点权限管理接口
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/19 00:09
- */
-@Api(tags = "工作台模块_节点权限管理接口")
+@Api(tags = "Workbench - Node Role Api")
 @RestController
 @ApiResource(path = "/node")
 public class NodeRoleController {
@@ -101,68 +93,68 @@ public class NodeRoleController {
     private UserSpaceService userSpaceService;
 
     @GetResource(path = "/listRole")
-    @ApiOperation(value = "查询节点角色列表", notes = "根据节点查询节点角色列表")
+    @ApiOperation(value = "Get node roles")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = "includeAdmin", value = "是否包含主管理员，可不传递，默认包含", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-        @ApiImplicitParam(name = "includeSelf", value = "是否获取自己，可不传递，默认包含", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-        @ApiImplicitParam(name = "includeExtend", value = "包含上级继承权限，默认不包含", dataTypeClass = Boolean.class, paramType = "query", example = "false")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
+        @ApiImplicitParam(name = "includeAdmin", value = "Whether to include the master administrator, can not be passed, the default includes", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+        @ApiImplicitParam(name = "includeSelf", value = "Whether to get userself, do not pass, the default contains", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
+        @ApiImplicitParam(name = "includeExtend", value = "Contains superior inherited permissions. By default, it does not include", dataTypeClass = Boolean.class, paramType = "query", example = "false")
     })
     public ResponseData<NodeCollaboratorsVo> listRole(@RequestParam(name = "nodeId") String nodeId,
         @RequestParam(name = "includeAdmin", defaultValue = "true") Boolean includeAdmin,
         @RequestParam(name = "includeSelf", defaultValue = "true") Boolean includeSelf,
         @RequestParam(name = "includeExtend", defaultValue = "false") Boolean includeExtend) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 校验是否有权限查看
+        // check whether you have permission to view
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
         NodeCollaboratorsVo collaboratorsVo = new NodeCollaboratorsVo();
-        // 查询节点的权限模式
+        // query the permission mode of the node
         iControlService.checkControlStatus(nodeId, status -> collaboratorsVo.setExtend(!status));
         if (includeAdmin) {
-            //查询节点管理员视图
+            // query node administrator view
             List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
             collaboratorsVo.setAdmins(iOrganizationService.findAdminsVo(admins, spaceId));
         }
         if (includeSelf) {
-            // 查询自己
+            // query user self
             List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(Collections.singletonList(memberId));
             collaboratorsVo.setSelf(CollUtil.isNotEmpty(unitMemberVos) ? CollUtil.getFirst(unitMemberVos) : null);
         }
-        //查询节点角色视图
+        // query node role view
         if (includeExtend) {
-            // 查继承角色
+            // check inherited roles
             String parentNodeId = iNodeRoleService.getNodeExtendNodeId(nodeId);
             if (parentNodeId == null) {
-                // 没有父节点开启了权限，默认工作台角色，加载根部门信息
+                // No parent node has enabled permissions, default workbench role, load root department information
                 collaboratorsVo.setRoleUnits(Collections.singletonList(iNodeRoleService.getRootNodeRoleUnit(spaceId)));
                 collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId));
             }
             else {
-                // 加载父节点角色
+                // load parent node role
                 collaboratorsVo.setOwner(iNodeRoleService.getNodeOwner(parentNodeId));
                 collaboratorsVo.setRoleUnits(iNodeRoleService.getNodeRoleUnitList(parentNodeId));
                 collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId, parentNodeId));
             }
         }
         else {
-            // 自动查询节点权限模式下的角色
+            // automatically query roles in node permission mode
             if (collaboratorsVo.getExtend()) {
-                // 查询继承模式的角色
+                // query the role of inheritance mode
                 String parentNodeId = iNodeRoleService.getNodeExtendNodeId(nodeId);
                 if (parentNodeId == null) {
-                    // 没有继承父节点的权限
+                    // there is no permission to inherit the parent node
                     collaboratorsVo.setRoleUnits(Collections.singletonList(iNodeRoleService.getRootNodeRoleUnit(spaceId)));
                     collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId));
                     collaboratorsVo.setExtendNodeName(spaceMapper.selectSpaceNameBySpaceId(spaceId));
                 }
                 else {
-                    // 加载父节点角色
+                    // load parent node role
                     collaboratorsVo.setOwner(iNodeRoleService.getNodeOwner(parentNodeId));
                     collaboratorsVo.setRoleUnits(iNodeRoleService.getNodeRoleUnitList(parentNodeId));
                     collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId, parentNodeId));
@@ -170,8 +162,8 @@ public class NodeRoleController {
                 }
             }
             else {
-                // 查询指定模式的节点角色
-                // 查询负责人
+                // query the node role in the specified mode
+                // inquire the person in charge
                 collaboratorsVo.setOwner(iNodeRoleService.getNodeOwner(nodeId));
                 collaboratorsVo.setRoleUnits(iNodeRoleService.getNodeRoleUnitList(nodeId));
                 collaboratorsVo.setMembers(iNodeRoleService.getNodeRoleMembers(spaceId, nodeId));
@@ -183,34 +175,34 @@ public class NodeRoleController {
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/disableRoleExtend")
-    @ApiOperation(value = "关闭节点继承模式", notes = "关闭节点继承模式")
+    @ApiOperation(value = "Disable role extend")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
+        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     public ResponseData<Void> disableRoleExtend(@RequestParam(name = "nodeId") String nodeId,
             @RequestBody(required = false) RoleControlOpenRo roleControlOpenRo) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 不能操作根节点
+        // the root node cannot be operated
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(rootNodeId.equals(nodeId), NODE_OPERATION_DENIED);
-        // 校验是否有权限
+        // check whether user have permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.ASSIGN_NODE_ROLE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验节点的权限模式，关闭之前必须是继承模式
+        // The permission mode of the check node must be inherited before it is turned off.
         iControlService.checkControlStatus(nodeId,
             status -> ExceptionUtil.isFalse(status, NODE_ROLE_HAS_DISABLE_EXTEND));
-        // 开启节点权限是否继承默认角色组织单元列表
+        // Enable whether node permissions inherit the default role organization unit list
         boolean includeExtend = ObjectUtil.isNotNull(roleControlOpenRo)
                 && BooleanUtil.isTrue(roleControlOpenRo.getIncludeExtend());
         iNodeRoleService.enableNodeRole(userId, spaceId, nodeId, includeExtend);
-        // 发布空间审计事件
+        // publish space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.ENABLE_NODE_ROLE).userId(userId).nodeId(nodeId)
                 .info(JSONUtil.createObj().set(AuditConstants.INCLUDE_EXTEND, BooleanUtil.isTrue(includeExtend))).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -219,31 +211,31 @@ public class NodeRoleController {
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/enableRoleExtend")
-    @ApiOperation(value = "开启节点继承模式", notes = "开启节点继承模式")
+    @ApiOperation(value = "Enable role extend")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "nodRTGSy43DJ9"),
+        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     public ResponseData<Void> enableRoleExtend(@RequestParam(name = "nodeId") String nodeId) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 不能操作根节点
+        // the root node cannot be operated
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(rootNodeId.equals(nodeId), NODE_OPERATION_DENIED);
-        // 校验是否有权限
+        // check whether user have permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.ASSIGN_NODE_ROLE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验节点的权限模式，关闭之前必须是指定模式
+        // The permission mode of the check node must be specified before it is turned off.
         iControlService.checkControlStatus(nodeId,
             status -> ExceptionUtil.isTrue(status, NODE_ROLE_HAS_DISABLE_EXTEND));
-        // 关闭节点指定权限
+        // close the node to specify permissions
         iNodeRoleService.disableNodeRole(userId, memberId, nodeId);
-        // 发布空间审计事件
+        // publish space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DISABLE_NODE_ROLE).userId(userId).nodeId(nodeId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
@@ -251,32 +243,32 @@ public class NodeRoleController {
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/addRole")
-    @ApiOperation(value = "添加节点指定角色的组织单元", notes = "添加节点指定角色的组织单元")
+    @ApiOperation(value = "Create node role", notes = "Add the organizational unit of the node specified role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     public ResponseData<Void> createRole(@RequestBody @Valid AddNodeRoleRo data) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // =The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(data.getNodeId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 不能操作根节点
+        // the root node cannot be operated
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(rootNodeId.equals(data.getNodeId()), NODE_OPERATION_DENIED);
-        // 校验是否有权限
+        // check whether user have permission
         controlTemplate.checkNodePermission(memberId, data.getNodeId(), NodePermission.ASSIGN_NODE_ROLE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验节点的权限模式，必须是指定模式
+        // The permission mode of the check node, which must be the specified mode.
         iControlService.checkControlStatus(data.getNodeId(),
                 status -> ExceptionUtil.isTrue(status, NODE_ROLE_HAS_DISABLE_EXTEND));
-        // 检查添加的组织单元ID是否存在当前空间
+        // Check whether the added organizational unit ID has the current space
         iUnitService.checkInSpace(spaceId, data.getUnitIds());
-        // 添加角色
+        // add node role
         iNodeRoleService.addNodeRole(userId, data.getNodeId(), data.getRole(), data.getUnitIds());
-        // 发布空间审计事件
+        // publish space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.ADD_NODE_ROLE).userId(userId).nodeId(data.getNodeId())
                 .info(JSONUtil.createObj().set(AuditConstants.UNIT_IDS, data.getUnitIds()).set(AuditConstants.ROLE, data.getRole())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -285,10 +277,10 @@ public class NodeRoleController {
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/editRole")
-    @ApiOperation(value = "修改节点的组织单元所属角色", notes = "修改节点的组织单元所属角色")
+    @ApiOperation(value = "Edit node role", notes = "Modify the role of the organizational unit of the node")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     @Deprecated
     public ResponseData<Void> editRole(@RequestBody @Valid ModifyNodeRoleRo data) {
@@ -301,92 +293,92 @@ public class NodeRoleController {
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/batchEditRole")
-    @ApiOperation(value = "批量修改节点的组织单元所属角色", notes = "修改节点的组织单元所属角色")
+    @ApiOperation(value = "Batch edit role", notes = "Batch modify the role of the organizational unit of the node")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     public ResponseData<Void> batchEditRole(@RequestBody @Valid BatchModifyNodeRoleRo data) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(data.getNodeId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 不能操作根节点
+        // the root node cannot be operated
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(rootNodeId.equals(data.getNodeId()), NODE_OPERATION_DENIED);
-        // 校验是否有权限
+        // check whether user have permission
         controlTemplate.checkNodePermission(memberId, data.getNodeId(), NodePermission.ASSIGN_NODE_ROLE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验节点的权限模式，必须是指定模式
+        // The permission mode of the check node, which must be the specified mode.
         iControlService.checkControlStatus(data.getNodeId(),
                 status -> ExceptionUtil.isTrue(status, NODE_ROLE_HAS_DISABLE_EXTEND));
-        // 检查添加的组织单元ID是否存在当前空间
+        // Check whether the added organizational unit ID has the current space
         iUnitService.checkInSpace(spaceId, data.getUnitIds());
-        // 修改角色
+        // modify role
         iNodeRoleService.updateNodeRole(userId, data.getNodeId(), data.getRole(), data.getUnitIds());
         return ResponseData.success();
     }
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/deleteRole", method = RequestMethod.DELETE)
-    @ApiOperation(value = "删除节点角色", notes = "删除节点角色")
+    @ApiOperation(value = "Delete role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+        @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     public ResponseData<Void> deleteRole(@RequestBody @Valid DeleteNodeRoleRo data) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(data.getNodeId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 不能操作根节点
+        // the root node cannot be operated
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(rootNodeId.equals(data.getNodeId()), NODE_OPERATION_DENIED);
-        // 校验是否有权限
+        // check whether you have permission
         controlTemplate.checkNodePermission(memberId, data.getNodeId(), NodePermission.ASSIGN_NODE_ROLE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验节点的权限模式，必须是指定模式
+        // The permission mode of the check node, which must be the specified mode.
         iControlService.checkControlStatus(data.getNodeId(),
                 status -> ExceptionUtil.isTrue(status, NODE_ROLE_HAS_DISABLE_EXTEND));
-        // 检查添加的组织单元ID是否存在当前空间
+        // Check whether the added organizational unit ID has the current space
         iUnitService.checkInSpace(spaceId, Collections.singletonList(data.getUnitId()));
-        // 删除节点的指定组织单元
+        // Deletes the specified organizational unit of the node
         iNodeRoleService.deleteNodeRole(userId, data.getNodeId(), data.getUnitId());
         return ResponseData.success();
     }
 
     @Notification(templateId = NotificationTemplateId.NODE_UPDATE_ROLE)
     @PostResource(path = "/batchDeleteRole", method = RequestMethod.DELETE)
-    @ApiOperation(value = "删除节点角色", notes = "删除节点角色")
+    @ApiOperation(value = "Batch delete node role")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
-            @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
+            @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     })
     public ResponseData<Void> batchDeleteRole(@RequestBody @Valid BatchDeleteNodeRoleRo data) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(data.getNodeId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // The method includes determining whether the user is in this space.
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 不能操作根节点
+        // the root node cannot be operated
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         ExceptionUtil.isFalse(rootNodeId.equals(data.getNodeId()), NODE_OPERATION_DENIED);
-        // 校验是否有权限
+        // check whether you have permission
         controlTemplate.checkNodePermission(memberId, data.getNodeId(), NodePermission.ASSIGN_NODE_ROLE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验节点的权限模式，必须是指定模式
+        // The permission mode of the check node, which must be the specified mode.
         iControlService.checkControlStatus(data.getNodeId(),
                 status -> ExceptionUtil.isTrue(status, NODE_ROLE_HAS_DISABLE_EXTEND));
-        // 检查添加的组织单元ID是否存在当前空间
+        // Check whether the added organizational unit ID has the current space
         iUnitService.checkInSpace(spaceId, data.getUnitIds());
-        // 删除节点的指定组织单元
+        // Deletes the specified organizational unit of the node
         List<ControlRoleInfo> controlRoles = iNodeRoleService.deleteNodeRoles(data.getNodeId(), data.getUnitIds());
-        // 发布空间审计事件
+        // publish space audit events
         JSONObject info = JSONUtil.createObj();
         List<Long> unitIds = controlRoles.stream().map(ControlRoleInfo::getUnitId).collect(toList());
         List<String> oldRoles = controlRoles.stream().map(ControlRoleInfo::getRole).collect(toList());

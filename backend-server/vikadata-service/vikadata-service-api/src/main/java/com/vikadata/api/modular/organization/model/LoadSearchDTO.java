@@ -6,10 +6,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 成员/部门查找参数
+ * parameter for searching member or department
  * </p>
- * @author zoe zheng
- * @date 2022/8/23 17:37
  */
 @Data
 public class LoadSearchDTO {
@@ -25,7 +23,7 @@ public class LoadSearchDTO {
     private Boolean all;
 
     /**
-     * 是否搜索邮件
+     * whether to search for emails
      */
     private Boolean searchEmail;
 }

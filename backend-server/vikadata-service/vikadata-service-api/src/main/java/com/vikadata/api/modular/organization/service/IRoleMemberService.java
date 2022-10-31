@@ -12,12 +12,6 @@ import com.vikadata.api.model.ro.organization.RoleMemberUnitRo;
 import com.vikadata.api.model.vo.organization.RoleMemberVo;
 import com.vikadata.api.modular.organization.model.RoleMemberInfoDTO;
 
-/**
- * <p>
- *     organization module - role member service.
- * </p>
- * @author tao
- */
 public interface IRoleMemberService {
 
     /**

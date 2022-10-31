@@ -30,14 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.enums.exception.DataSheetException.FIELD_NOT_EXIST;
 
-/**
- * <p>
- * 数表元数据表 服务实现类
- * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-23
- */
 @Slf4j
 @Service
 public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
@@ -55,7 +47,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
 
     @Override
     public DatasheetMetaVo findByDstId(String dstId) {
-        log.info("根据ID查询数表");
+        log.info("Query the datasheet by ID");
         DatasheetMetaVo meta = datasheetMetaMapper.selectByNodeId(dstId);
         ExceptionUtil.isNotNull(meta, DatabaseException.QUERY_EMPTY_BY_ID);
         return meta;
@@ -64,7 +56,6 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @Override
     public List<DatasheetMetaDTO> findMetaDtoByDstIds(List<String> dstIds) {
         List<DatasheetMetaDTO> dtoList = new ArrayList<>();
-        // 分批次查询
         double size = 5.0;
         for (int i = 0; i < Math.ceil(dstIds.size() / size); i++) {
             List<String> split = dstIds.stream().skip((long) (i * size)).limit((long) size).collect(Collectors.toList());
@@ -97,7 +88,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void checkViewIfExist(String dstId, String viewId) {
-        log.info("检查数表指定视图是否存在，dstId:{},viewId:{}", dstId, viewId);
+        log.info("Check whether the specified view of the datasheet exists.，dstId:{},viewId:{}", dstId, viewId);
         DatasheetSnapshot snapshot = this.getMetaByDstId(dstId);
         ExceptionUtil.isNotNull(snapshot, DataSheetException.DATASHEET_NOT_EXIST);
         ExceptionUtil.isNotNull(snapshot.getMeta(), DataSheetException.DATASHEET_NOT_EXIST);

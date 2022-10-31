@@ -59,13 +59,6 @@ import static com.vikadata.api.enums.exception.WidgetException.ISSUED_GLOBAL_ID_
 import static com.vikadata.api.enums.exception.WidgetException.WIDGET_AUTH_DATA_AUDIT_FAIL;
 import static com.vikadata.api.enums.exception.WidgetException.WIDGET_VERSION_DATA_AUDIT_FAIL;
 
-/**
- * <p>
- * 小程序申请 服务实现类
- * </p>
- * @author Pengap
- * @date 2022/3/8 16:04:32
- */
 @Slf4j
 @Service
 public class WidgetAuditServiceImpl implements IWidgetAuditService {
@@ -89,7 +82,7 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
     @SneakyThrows(JsonProcessingException.class)
     @Transactional(rollbackFor = Exception.class)
     public String issuedGlobalId(Long opUserId, WidgetAuditGlobalIdRo body) {
-        log.info("{},发行全局ID,结果:{}", opUserId, body.getAuditResult());
+        log.info("{},Issue global ID, result:{}", opUserId, body.getAuditResult());
 
         int countGlobalId = widgetPackageMapper.countByIssuedIdArchive(body.getDstId(), body.getRecordId());
         ExceptionUtil.isFalse(countGlobalId > 0, WIDGET_AUTH_DATA_AUDIT_FAIL);
@@ -156,7 +149,7 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
     @Override
     public List<WidgetStoreListInfo> waitReviewWidgetList(WidgetStoreListRo body) {
         List<WidgetStoreListInfo> widgetStoreListInfos = widgetPackageReleaseMapper.selectWaitReviewWidgetList(body);
-        // 处理小程序安装、运行环境类型
+        // Handling applet installation and running environment types
         for (WidgetStoreListInfo widgetStoreListInfo : widgetStoreListInfos){
             widgetStoreListInfo.setInstallEnv(InstallEnvType.toValueList(widgetStoreListInfo.getInstallEnvCode()));
             widgetStoreListInfo.setRuntimeEnv(RuntimeEnvType.toValueList(widgetStoreListInfo.getRuntimeEnvCode()));
@@ -168,14 +161,14 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
     @SneakyThrows(JsonProcessingException.class)
     @Transactional(rollbackFor = Exception.class)
     public void auditSubmitData(Long opUserId, WidgetAuditSubmitDataRo body) {
-        log.info("{},审核Id:{},结果:{}", opUserId, body.getGlobalPackageId(), body.getAuditResult());
+        log.info("{},audit Id :{}, results:{}", opUserId, body.getGlobalPackageId(), body.getAuditResult());
 
-        // 校验小程序ID是否有效
+        // verify that the applet id is valid
         WidgetPackageEntity fatherWpk = iWidgetPackageService.getByPackageId(body.getGlobalPackageId(), true);
-        // 校验审核结果，防止数据重复生效
+        // Verify the audit results to prevent duplicate data from taking effect.
         int countAuditResult = widgetPackageMapper.countByAuditSubmitResultArchive(body.getDstId(), body.getRecordId());
         ExceptionUtil.isFalse(countAuditResult > 0, WIDGET_VERSION_DATA_AUDIT_FAIL);
-        // 校验审核submit version信息
+        // verify audit submit version information
         WidgetPackageEntity submitWidgetPackage = widgetPackageMapper.selectByFatherWidgetIdAndVersion(body.getGlobalPackageId(), body.getSubmitVersion());
         ExceptionUtil.isNotNull(submitWidgetPackage, AUDIT_SUBMIT_VERSION_NOT_EXIST);
         WidgetPackageReleaseEntity submitWidgetRelease = widgetPackageReleaseMapper.selectByFatherWidgetIdAndVersion(body.getGlobalPackageId(), body.getSubmitVersion());
@@ -190,7 +183,7 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
         dict.set("WIDGET_NAME", widgetName);
         dict.set("WIDGET_VERSION", widgetVersion);
         if (body.getAuditResult()) {
-            // 创建发布版本记录
+            // create release record
             WidgetPackageReleaseEntity saveWpr = new WidgetPackageReleaseEntity()
                     .setPackageId(fatherWpk.getPackageId())
                     .setStatus(WidgetReleaseStatus.PASS_REVIEW.getValue());
@@ -199,16 +192,16 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
                     .ignoreError();
             BeanUtil.copyProperties(submitWidgetRelease, saveWpr, copyOptions);
 
-            // 保存发布版本记录
+            // save release record
             boolean flag = SqlHelper.retBool(widgetPackageReleaseMapper.insert(saveWpr));
 
-            // 更新扩展信息（增量）
+            // Update Extension Information (Increment)
             WidgetBodyDTO fatherWpkBody = WidgetBodyDTO.toBean(fatherWpk.getWidgetBody());
             fatherWpkBody.setWebsite(submitWidgetBody.getWebsite())
                     .setTemplateCover(submitWidgetBody.getTemplateCover())
                     .setWidgetOpenSource(submitWidgetBody.getWidgetOpenSource());
 
-            // 更新发布信息
+            // update release information
             fatherWpk.setReleaseId(saveWpr.getId())
                     .setI18nName(submitWidgetPackage.getI18nName())
                     .setI18nDescription(submitWidgetPackage.getI18nDescription())
@@ -225,7 +218,7 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
                     .setOwner(submitWidgetPackage.getCreatedBy())
                     .setUpdatedBy(submitWidgetPackage.getUpdatedBy());
             if (fatherWpk.getCreatedBy() == -1) {
-                // 只更新一次
+                // update only once
                 fatherWpk.setCreatedBy(submitWidgetPackage.getCreatedBy());
             }
             flag &= SqlHelper.retBool(widgetPackageMapper.updateById(fatherWpk));
@@ -244,13 +237,13 @@ public class WidgetAuditServiceImpl implements IWidgetAuditService {
         }
         dict.set("YEARS", LocalDate.now().getYear());
 
-        // 对Submit审核记录进行存档
+        // archive submit audit records
         submitWidgetBody.setAuditSubmitResultArchive(new DataArchive(body.getDstId(), body.getRecordId(), opUserId));
         submitWidgetPackage.setWidgetBody(submitWidgetBody.toJson());
         widgetPackageMapper.updateById(submitWidgetPackage);
         widgetPackageReleaseMapper.updateById(submitWidgetRelease);
 
-        // 查询 Submit Owner 语言信息发送结果邮件
+        // query submit owner language information and send result mail
         UserLangDTO userLangDto = CollUtil.getFirst(iUserService.getLangAndEmailByIds(Collections.singletonList(fatherWpk.getOwner()), LanguageManager.me().getDefaultLanguageTag()));
         if (Objects.nonNull(userLangDto) && StrUtil.isNotBlank(userLangDto.getEmail())) {
             List<String> to = Collections.singletonList(userLangDto.getEmail());

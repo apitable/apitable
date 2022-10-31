@@ -2,36 +2,33 @@ package com.vikadata.api.modular.space.model;
 
 /**
  * <p>
- * 修改空间操作（使用在已集成第三方IM的空间）
+ * Modify space operations (using space integrated with third-party IM)
  * </p>
- *
- * @author Pengap
- * @date 2021/9/7 18:32:26
  */
 public enum SpaceUpdateOperate {
 
     /**
-     * 更新主管理操作
+     * update the main administration operation
      */
     UPDATE_MAIN_ADMIN,
     /**
-     * 修改成员信息
+     * modify member info
      */
     UPDATE_MEMBER,
     /**
-     * 添加小组
+     * add team
      */
     ADD_TEAM,
     /**
-     * 编辑小组
+     * update team info
      */
     UPDATE_TEAM,
     /**
-     * 删除小组
+     * delete team
      */
     DELETE_TEAM,
     /**
-     * 删除空间
+     * delete space
      */
     DELETE_SPACE;
 

@@ -32,16 +32,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <p>
- * 空间公开邀请链接接口
- * </p>
- *
- * @author Chambers
- * @date 2020/3/21
- */
 @RestController
-@Api(tags = "空间管理_公开邀请链接相关接口")
+@Api(tags = "Space - Invite Link Api")
 @ApiResource(path = "/space/link")
 public class SpaceLinkController {
 
@@ -58,8 +50,8 @@ public class SpaceLinkController {
     private IInvitationService iInvitationService;
 
     @GetResource(path = "/list", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "获取链接列表")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Get a list of links")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<List<SpaceLinkVo>> list() {
         Long memberId = LoginContext.me().getMemberId();
         List<SpaceLinkVo> vo = spaceInviteLinkMapper.selectLinkVo(memberId);
@@ -67,8 +59,8 @@ public class SpaceLinkController {
     }
 
     @PostResource(path = "/generate", tags = "INVITE_MEMBER")
-    @ApiOperation(value = "生成/刷新链接", notes = "返回token，前端拼接../invite/link?token=:token")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    @ApiOperation(value = "Generate or refresh link", notes = "return token，the front stitch ../invite/link?token=:token")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
     public ResponseData<String> generate(@RequestBody @Valid SpaceLinkOpRo opRo) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
@@ -84,8 +76,8 @@ public class SpaceLinkController {
     }
 
     @PostResource(path = "/delete", method = { RequestMethod.DELETE }, tags = "INVITE_MEMBER")
-    @ApiOperation(value = "删除链接")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+    @ApiOperation(value = "Delete link")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> delete(@RequestBody @Valid SpaceLinkOpRo opRo) {
         Long memberId = LoginContext.me().getMemberId();
         Long teamId = opRo.getTeamId();
@@ -97,8 +89,8 @@ public class SpaceLinkController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "邀请链接令牌校验", path = "/valid", requiredLogin = false)
-    @ApiOperation(value = "邀请链接令牌校验", notes = "邀请链接令牌校验，校验成功后即可获取相关邀请信息")
+    @PostResource(name = "Valid invite link token", path = "/valid", requiredLogin = false)
+    @ApiOperation(value = "Valid invite link token", notes = "After the verification is successful, it can obtain related invitation information")
     public ResponseData<SpaceLinkInfoVo> valid(@RequestBody @Valid InviteValidRo data) {
         SpaceLinkInfoVo vo;
         if (StrUtil.isNotBlank(data.getNodeId())) {
@@ -111,8 +103,8 @@ public class SpaceLinkController {
         return ResponseData.success(vo);
     }
 
-    @PostResource(name = "公开链接加入空间站", path = "/join", requiredPermission = false)
-    @ApiOperation(value = "公开链接加入空间站", notes = "状态码返回201未授权跳转至登陆页面")
+    @PostResource(name = "Join the space using the public link", path = "/join", requiredPermission = false)
+    @ApiOperation(value = "Join the space using the public link", notes = "If return code status 201, the user redirects to the login page due to unauthorized。")
     public ResponseData<Void> join(@RequestBody @Valid InviteValidRo data) {
         Long userId = SessionContext.getUserId();
         iSpaceInviteLinkService.join(userId, data.getToken(), data.getNodeId());

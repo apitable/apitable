@@ -8,11 +8,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * <p>
- * Automation 机器人 Mapper 接口
- * </p>
- */
 public interface AutomationRobotMapper extends BaseMapper<AutomationRobotEntity> {
 
     List<AutomationRobotDto> getRobotsByResourceId(@Param("resourceId") String resourceId);

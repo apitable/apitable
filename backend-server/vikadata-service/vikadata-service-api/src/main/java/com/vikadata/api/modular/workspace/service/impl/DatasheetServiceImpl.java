@@ -111,14 +111,6 @@ import static com.vikadata.api.constants.NotificationConstants.BODY_EXTRAS;
 import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 import static java.util.stream.Collectors.toList;
 
-/**
- * <p>
- * 数据表格表 服务实现类
- * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-20
- */
 @Service
 @Slf4j
 public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, DatasheetEntity> implements IDatasheetService {
@@ -195,7 +187,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(String spaceId, String dstId, String dstName, Long creator) {
-        log.info("创建数表");
+        log.info("Create datasheet");
         DatasheetEntity datasheet = DatasheetEntity.builder()
                 .spaceId(spaceId)
                 .nodeId(dstId)
@@ -206,11 +198,11 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 .build();
         boolean flag = this.save(datasheet);
         ExceptionUtil.isTrue(flag, DataSheetException.CREATE_FAIL);
-        //初始化数表信息
+        // Initialize datasheet information
         SnapshotMapRo snapshot = initialize();
-        //保存Meta信息
+        // Save Meta information
         datasheetMetaService.create(creator, datasheet.getDstId(), JSONUtil.parseObj(snapshot.getMeta()).toString());
-        //保存Record信息
+        // Save record information
         datasheetRecordService.saveBatch(creator, snapshot.getRecordMap(), datasheet.getDstId());
     }
 
@@ -223,10 +215,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 .nodeId(nodeId)
                 .spaceId(spaceId)
                 .build();
-        //保存Meta信息
+        // Save Meta information
         datasheetMetaService.create(userId, datasheet.getDstId(), JSONUtil.parseObj(metaMapRo).toString());
         if (recordMap.size() > 0) {
-            //保存record信息
+            // Save record information
             datasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
 
@@ -237,7 +229,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     public void updateDstName(Long userId, String dstId, String dstName) {
         ExceptionUtil.isTrue(StrUtil.isNotBlank(dstId) && StrUtil.isNotBlank(dstName), INCORRECT_ARG);
-        log.info("编辑数表名称");
+        log.info("Edit datasheet name");
         boolean flag = SqlHelper.retBool(baseMapper.updateNameByDstId(userId, dstId, dstName));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
@@ -245,21 +237,21 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateIsDeletedStatus(Long userId, List<String> nodeIds, Boolean isDel) {
-        log.info("更改数表和meta的逻辑删除状态");
+        log.info("Change the logical deletion status of the datasheet and meta");
         baseMapper.updateIsDeletedByNodeIds(userId, nodeIds, isDel);
         datasheetMetaMapper.updateIsDeletedByNodeId(userId, nodeIds, isDel);
     }
 
     private SnapshotMapRo initialize() {
-        // 获取语言
+        // get language
         Locale currentLang = LocaleContextHolder.getLocale();
-        //调用模板获取Snapshot
+        // call the template to get the snapshot
         Map<String, Object> metaMap = MapUtil.newHashMap();
 
         int initLength = 4;
         for (int i = 0; i < initLength; i++) {
             String fieldId = IdUtil.createFieldId();
-            //模板绑定动态参数
+            // template binding dynamic parameters
             metaMap.put("fieldId" + i, fieldId);
             String recordId = IdUtil.createRecordId();
             metaMap.put("recordId" + i, recordId);
@@ -267,16 +259,16 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
         String viewId = IdUtil.createViewId();
         metaMap.put("viewId", viewId);
-        // 国际化-元素
-        // 视图名称
+        // internationalization elements
+        // view name
         metaMap.put("defaultView", VikaStrings.t("default_view", currentLang));
-        // Datasheet标题列
+        // Datasheet title column
         metaMap.put("defaultDatasheetTitle", VikaStrings.t("default_datasheet_title", currentLang));
-        // Datasheet选项列
+        // Datasheet options column
         metaMap.put("defaultDatasheetOptions", VikaStrings.t("default_datasheet_options", currentLang));
-        // Datasheet附件列
+        // Datasheet attachments column
         metaMap.put("defaultDatasheetAttachments", VikaStrings.t("default_datasheet_attachments", currentLang));
-        // 国际化-元素
+        // internationalization elements
         String snapshotJson = beetlTemplate.render("datasheet-meta-blank-tpl.btl", metaMap);
         return new JSONObject(snapshotJson).toBean(SnapshotMapRo.class);
     }
@@ -285,8 +277,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Transactional(rollbackFor = Exception.class)
     public List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId, String destDstName,
             NodeCopyOptions options, Map<String, String> newNodeMap) {
-        log.info("复制数表");
-        //复制对应的数表、meta和record
+        log.info("Copy datasheet");
+        // Copy the datasheet, meta, and record.
         DatasheetEntity datasheet = DatasheetEntity.builder()
                 .dstName(destDstName)
                 .dstId(destDstId)
@@ -296,15 +288,15 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 .updatedBy(userId)
                 .build();
         this.save(datasheet);
-        //处理metaData
+        // handle metaData
         NodeCopyDTO nodeCopyDTO = this.processMeta(userId, spaceId, sourceDstId, destDstId, options, newNodeMap);
         MetaMapRo metaMapRo = nodeCopyDTO.getMetaMapRo();
-        //保存record
+        // save record
         if (ObjectUtil.isNotNull(options) && options.isCopyData()) {
             datasheetRecordService.copyRecords(userId, sourceDstId, datasheet.getDstId(), nodeCopyDTO, options.isRetainRecordMeta());
         }
         else {
-            //移除各个视图rows内的原来recordId、填补一行空行
+            // Remove the original record Id in each view rows and fill in a blank line.
             JSONArray rows = JSONUtil.createArray();
             String recordId = IdUtil.createRecordId();
             JSONObject recordJson = JSONUtil.createObj();
@@ -317,9 +309,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 views.add(viewMapRo);
             });
             metaMapRo.setViews(views);
-            //保存record信息
+            // save record information
             JSONObject recordMap = JSONUtil.createObj();
-            // 补充这一行中的自增字段数据
+            // Supplement the self-increasing field data in this row.
             RecordMapRo recordMapRo = RecordMapRo.builder().id(recordId).data(JSONUtil.createObj()).build();
             if (!nodeCopyDTO.getAutoNumberFieldIds().isEmpty()) {
                 JSONObject fieldUpdatedMap = JSONUtil.createObj();
@@ -333,7 +325,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             recordMap.set(recordId, recordMapRo);
             datasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
-        //保存Meta信息
+        // Save Meta information
         datasheetMetaService.create(userId, datasheet.getDstId(), JSONUtil.parseObj(metaMapRo).toString());
         return nodeCopyDTO.getLinkFieldIds();
     }
@@ -341,13 +333,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private NodeCopyDTO processMeta(Long userId, String spaceId, String sourceDstId, String destDstId, NodeCopyOptions options, Map<String, String> newNodeMap) {
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
-        // 获取原节点对应数表信息
+        // Obtain the information of the original node correspondence datasheet.
         DatasheetMetaVo metaVo = datasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
-        // 获取原节点所属的空间ID，若与复制/转存后的空间不一致，则需清除成员字段相关的数据
+        // gets the space id of the original node.
+        // If it is inconsistent with the space after replication and storage, you need to clear the data related to the member field.
         String sourceSpaceId = nodeMapper.selectSpaceIdByNodeId(sourceDstId);
         boolean sameSpace = spaceId.equals(sourceSpaceId);
-        // 开始处理
+        // start processing
         List<String> delFieldIdsInView = new ArrayList<>();
         List<String> linkFieldIds = new ArrayList<>();
         boolean filterPermissionField = options.isFilterPermissionField() && MapUtil.isNotEmpty(options.getDstPermissionFieldsMap());
@@ -355,7 +348,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         String uuid = userMapper.selectUuidById(userId);
         for (Object field : metaMapRo.getFieldMap().values()) {
             FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-            // 判断本表字段是否开启了列权限，若是过滤删除该字段
+            // Determine whether column permissions are enabled for a field in this datasheet.
             if (filterPermissionField) {
                 List<String> permissionFieldIds = options.getDstPermissionFieldsMap().get(sourceDstId);
                 if (permissionFieldIds != null && permissionFieldIds.contains(fieldMapRo.getId())) {
@@ -370,7 +363,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
                     if (ObjectUtil.isNotNull(newNodeMap) && ObjectUtil.isNotNull(newNodeMap.get(foreignDstId))) {
-                        // 判断关联表对应的关联字段是否开启了列权限，若是过滤删除该字段
+                        // Determine whether column permissions are enabled for the associated field corresponding to the associated datasheet.
                         if (filterPermissionField) {
                             List<String> permissionFieldIds = options.getDstPermissionFieldsMap().get(foreignDstId);
                             if (permissionFieldIds != null && permissionFieldIds.contains(property.getBrotherFieldId())) {
@@ -379,22 +372,22 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                 continue;
                             }
                         }
-                        // 关联表一起转存，关联的数表ID替换成复制出来的关联表ID
+                        // The associated datasheet is stored together, and the associated datasheet ID is replaced with the copied associated datasheet ID.
                         property.setForeignDatasheetId(newNodeMap.get(foreignDstId));
                     }
                     else if (ObjectUtil.isNotNull(options) && options.isAddColumn()) {
-                        // 判断关联表的列是否超出限制
+                        // Determine whether the columns of the associated datasheet exceed the limit.
                         DatasheetMetaVo meta = datasheetMetaService.findByDstId(foreignDstId);
                         MetaMapRo mapRo = meta.getMeta().toBean(MetaMapRo.class);
-                        // 校验关联表的列数是否超过 200列限制
+                        // Check whether the number of columns in the associated datasheet exceeds the 200 column limit
                         ExceptionUtil.isTrue(mapRo.getFieldMap().size() < limitProperties.getMaxColumnCount(), NodeException.LINK_DATASHEET_COLUMN_EXCEED_LIMIT);
-                        // 转换成文本，放room-server去修改列,并且填入数据
+                        // Convert to text, put room-server to modify columns, and fill in data
                         fieldMapRo.setType(FieldType.TEXT.getFieldType());
                         linkFieldIds.add(fieldMapRo.getId());
                         property = null;
                     }
                     else {
-                        // 关联表未一起转存，删除该关联列
+                        // The associated datasheet is not saved together. Delete the associated column.
                         delFieldIds.add(fieldMapRo.getId());
                         delFieldIdsInView.add(fieldMapRo.getId());
                         continue;
@@ -417,7 +410,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         fieldMapRo.getProperty().set("datasheetId", newNodeMap.get(originDstId.toString()));
                     }
                     if (!options.isCopyData()) {
-                        // 未复制记录数据时，自动填补一行空行，所以自增字段下一个值为2
+                        // When the record data is not copied, a blank line is automatically filled, so the next value of the self-increment field is 2.
                         fieldMapRo.getProperty().set("nextId", 2);
                     }
                     break;
@@ -451,22 +444,22 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             fieldMap.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo1));
         }
         metaMapRo.setFieldMap(fieldMap);
-        // 若存在删除列，视图中columns对应删除处理
+        // If there is a delete column, the corresponding delete processing is columns in the view.
         this.delViewFieldId(metaMapRo, delFieldIdsInView, delFieldIds);
-        // 复制组件面板
+        // copy panel
         this.copyWidgetPanels(userId, spaceId, destDstId, metaMapRo, newNodeMap);
         return new NodeCopyDTO(metaMapRo, delFieldIds, autoNumberFieldIds, linkFieldIds);
     }
 
     /**
-     * 在数表增加列处理
+     * add column processing to the datasheet
      */
     private void addColumn(MetaMapRo metaMapRo, FieldMapRo fieldMapRo) {
-        // filedMap处理
+        // processing filedMap
         JSONObject fieldMap1 = metaMapRo.getFieldMap();
         fieldMap1.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo));
         metaMapRo.setFieldMap(fieldMap1);
-        // 视图中columns处理
+        // columns processing in view
         JSONObject fieldJson = JSONUtil.createObj();
         fieldJson.set("fieldId", fieldMapRo.getId());
         JSONArray views = JSONUtil.createArray();
@@ -481,17 +474,17 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * 删除视图中，包含指定的fieldId的属性信息
+     * Deletes the view that contains the attribute information of the specified field Id
      */
     private void delViewFieldId(MetaMapRo metaMapRo, List<String> delFieldIds, List<String> delFieldIdsInFilter) {
         if (CollUtil.isNotEmpty(delFieldIds) || CollUtil.isNotEmpty(delFieldIdsInFilter)) {
             JSONArray views = JSONUtil.createArray();
             metaMapRo.getViews().jsonIter().forEach(view -> {
                 ViewMapRo viewMapRo = JSONUtil.toBean(view, ViewMapRo.class);
-                // columns处理
+                // columns processing
                 JSONArray columns = delInfoIfExistFieldId(delFieldIds, viewMapRo.getColumns());
                 viewMapRo.setColumns(columns);
-                // filterInfo处理
+                // filterInfo processing
                 JSONObject filterInfo = viewMapRo.getFilterInfo();
                 if (!JSONUtil.isNull(filterInfo)) {
                     JSONArray array = JSONUtil.parseArray(filterInfo.get("conditions").toString());
@@ -504,13 +497,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         viewMapRo.setFilterInfo(null);
                     }
                 }
-                // sortInfo处理
+                // sortInfo processing
                 JSONArray sortInfo = delInfoIfExistFieldId(delFieldIds, viewMapRo.getSortInfo());
                 viewMapRo.setSortInfo(sortInfo);
-                // groupInfo处理
+                // groupInfo processing
                 JSONArray groupInfo = delInfoIfExistFieldId(delFieldIds, viewMapRo.getGroupInfo());
                 viewMapRo.setGroupInfo(groupInfo);
-                //style处理
+                //style processing
                 JSONObject style = viewMapRo.getStyle();
                 if(!JSONUtil.isNull(style)){
                     Object object = style.get("coverFieldId");
@@ -546,7 +539,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * 删除对象数组中，包含指定fieldId的对象
+     * Deletes the object containing the specified field Id from the object array
      */
     private JSONArray delInfoIfExistFieldId(List<String> delFieldIds, JSONArray filterInfo) {
         if (!JSONUtil.isNull(filterInfo)) {
@@ -563,29 +556,29 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * 复制组件面板
+     * copy panel
      */
     private void copyWidgetPanels(Long userId, String spaceId, String destDstId, MetaMapRo metaMapRo, Map<String, String> newNodeMap) {
-        // 构造新的组件面板
+        // construct a new component panel
         Map<String, String> newWidgetIdMap = new HashMap<>(8);
         JSONArray newWidgetPanels = this.generateWidgetPanels(metaMapRo.getWidgetPanels(), newWidgetIdMap);
         if (newWidgetIdMap.isEmpty()) {
             return;
         }
 
-        // 新创建组件ID-数据源数表ID MAP
+        // Newly Created Component ID-Data Source datasheet ID MAP
         DatasheetWidgetDTO datasheetWidgetDTO = new DatasheetWidgetDTO(destDstId, destDstId);
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap = newWidgetIdMap.values().stream()
                 .collect(Collectors.toMap(id -> id, id -> datasheetWidgetDTO));
 
         metaMapRo.setWidgetPanels(newWidgetPanels);
-        // 批量生成新的组件
+        // batch generation of new components
         iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
     }
 
     @Override
     public JSONArray generateWidgetPanels(JSONArray widgetPanels, Map<String, String> newWidgetIdMap) {
-        // 构造新的组件面板
+        // construct a new component panel
         JSONArray newWidgetPanels = JSONUtil.createArray();
         if (widgetPanels == null || widgetPanels.size() == 0) {
             return newWidgetPanels;
@@ -596,7 +589,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 newWidgetPanels.add(widgetPanel);
                 continue;
             }
-            // 构造新的组件信息
+            // construct new component information
             JSONArray newWidgets = JSONUtil.createArray();
             for (JSONObject widget : widgets.jsonIter()) {
                 String widgetId = widget.getStr("id");
@@ -604,7 +597,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     newWidgets.add(widget);
                     continue;
                 }
-                // 记录旧组件ID 与新组件ID 映射
+                // Record the mapping between the old component ID and the new component ID.
                 String newWidgetId = IdUtil.createWidgetId();
                 newWidgetIdMap.put(widgetId, newWidgetId);
                 widget.set("id", newWidgetId);
@@ -618,7 +611,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public Map<String, List<String>> getForeignDstIds(List<String> dstIdList, boolean filter) {
-        log.info("查询关联数表ID");
+        log.info("Query the associated datasheet ID ");
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIdList);
         if (CollUtil.isNotEmpty(metaList)) {
             Map<String, List<String>> map = new HashMap<>(metaList.size());
@@ -629,7 +622,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
                         LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
-                        // 是否过滤dstIdList
+                        // whether to filter dst id list
                         if (filter) {
                             if (!dstIdList.contains(property.getForeignDatasheetId())) {
                                 dstIds.add(property.getForeignDatasheetId());
@@ -652,13 +645,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     @Transactional(rollbackFor = Exception.class)
     public SnapshotMapRo delFieldIfLinkDstId(Long userId, String dstId, List<String> linkDstIds, boolean saveDb) {
-        log.info("删除指定关联数表的字段");
+        log.info("Delete the field of the specified association datasheet ");
         if (CollUtil.isNotEmpty(linkDstIds)) {
-            // 获取数表信息
+            // get datasheet information
             DatasheetMetaVo meta = datasheetMetaService.findByDstId(dstId);
             MetaMapRo metaMapRo = meta.getMeta().toBean(MetaMapRo.class);
             List<String> delFieldIds = new ArrayList<>();
-            // 找到关联数表的字段ID
+            // find the field id of the associated datasheet
             metaMapRo.getFieldMap().values().forEach(field -> {
                 FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                 if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
@@ -669,15 +662,15 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     }
                 }
             });
-            // fieldMap处理
+            // fieldMap processing
             delFieldIds.forEach(fieldId -> metaMapRo.getFieldMap().remove(fieldId));
-            // view的属性处理
+            // view attribute processing
             this.delViewFieldId(metaMapRo, delFieldIds, delFieldIds);
             if (saveDb && CollUtil.isNotEmpty(delFieldIds)) {
-                // 保存更改
+                // save changes
                 datasheetMetaService.edit(userId, dstId, MetaOpRo.builder().meta(JSONUtil.parseObj(metaMapRo)).build());
             }
-            // record处理
+            // record processing
             DatasheetRecordMapVo recordMapVo = datasheetRecordService.delFieldData(dstId, delFieldIds, saveDb);
             return SnapshotMapRo.builder().meta(JSONUtil.parseObj(metaMapRo)).recordMap(recordMapVo.getRecordMap()).build();
         }
@@ -686,7 +679,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public Map<String, SnapshotMapRo> findSnapshotMapByDstIds(List<String> dstIds, boolean hasRecordMap) {
-        log.info("获取多个数表及对应的snapshot");
+        log.info("Get multiple datasheets and corresponding snapshot ");
         List<SnapshotDto> dtoList = new ArrayList<>();
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIds);
         if (CollUtil.isNotEmpty(metaList)) {
@@ -698,7 +691,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             }
             Map<String, JSONObject> finalDstIdToRecordMapMap = dstIdToRecordMapMap;
             dstIdToMetaMap.keySet().forEach(dstId -> {
-                // 获取snapshot
+                // get snapshot
                 JSONObject recordMap = finalDstIdToRecordMapMap.get(dstId);
                 SnapshotMapRo snapshotMapRo = SnapshotMapRo.builder()
                         .meta(JSONUtil.parseObj(dstIdToMetaMap.get(dstId)))
@@ -712,7 +705,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public List<String> replaceFieldDstId(Long userId, boolean sameSpace, MetaMapRo metaMapRo, Map<String, String> newNodeIdMap) {
-        log.info("替换字段属性中的数表ID");
+        log.info("Replace the datasheet ID in the field attribute ");
         JSONObject fieldMap = JSONUtil.createObj();
         List<String> delFieldIds = new ArrayList<>();
         List<String> delFieldIdsInView = new ArrayList<>();
@@ -726,7 +719,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     String foreignDstId = property.getForeignDatasheetId();
                     String nodeId = newNodeIdMap.get(foreignDstId);
                     if (nodeId == null) {
-                        // 找不到可替换的，删除列
+                        // cannot find replaceable delete column
                         delFieldIds.add(fieldMapRo.getId());
                         delFieldIdsInView.add(fieldMapRo.getId());
                         continue;
@@ -763,14 +756,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             fieldMap.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo));
         }
         metaMapRo.setFieldMap(fieldMap);
-        // 若存在删除列，视图中columns对应删除处理
+        // If there is a delete column, the corresponding delete processing is columns in the view.
         this.delViewFieldId(metaMapRo, delFieldIdsInView, delFieldIds);
         return delFieldIds;
     }
 
     @Override
     public void remindMemberRecOp(Long userId, String spaceId, RemindMemberRo ro) {
-        log.info("成员字段提及他人记录操作");
+        log.info("Member field mentions other people's record operation");
         boolean notify = BooleanUtil.isTrue(ro.getIsNotify());
         if (notify) {
             ExceptionUtil.isTrue(StrUtil.isNotBlank(ro.getNodeId()) && StrUtil.isNotBlank(ro.getViewId()), INCORRECT_ARG);
@@ -782,23 +775,23 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         });
         List<UnitEntity> units = unitMapper.selectBatchIds(unitIds);
         units.stream().filter(unit -> unit.getSpaceId().equals(spaceId)).findFirst()
-                .orElseThrow(() -> new BusinessException("跨空间提交数据"));
-        // 刷新提及的成员记录缓存
+                .orElseThrow(() -> new BusinessException("submit data across spaces"));
+        // refresh the mentioned member record cache
         userSpaceRemindRecordService.refresh(userId, spaceId, CollUtil.newArrayList(unitIds));
         if (notify) {
             // split roles into members and teams
             Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
-            // 自己无须发送通知，过滤
+            // You self don't need to send notifications, filter
             Long memberId = userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
-            // 获取成员类型的组织单元，对应的成员
+            // Gets the organizational unit of the member type, the corresponding member.
             Map<Long, Long> unitIdToMemberIdMap = units.stream()
                     .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
                             && unit.getSpaceId().equals(spaceId) && !unit.getUnitRefId().equals(memberId))
-                    // 对节点拥有读取权限的成员才发送通知
+                    // Only members with read permission to the node send notifications
                     .filter(unitEntity -> controlTemplate.hasNodePermission(unitEntity.getUnitRefId(), ro.getNodeId(), NodePermission.READ_NODE))
                     .collect(Collectors.toMap(UnitEntity::getId, UnitEntity::getUnitRefId));
             List<Long> memberIds = new ArrayList<>(unitIdToMemberIdMap.values());
-            // 获取部门类型的组织单元，对应的成员列表
+            // Obtain the organizational unit of the department type and the list of members.
             Map<Long, List<Long>> unitIdToMemberIdsMap = MapUtil.newHashMap();
             Map<Long, Long> teamIdToUnitIdMap = units.stream().filter(unit -> unit.getUnitType().equals(UnitType.TEAM.getType())
                     && unit.getSpaceId().equals(spaceId)).collect(Collectors.toMap(UnitEntity::getUnitRefId, UnitEntity::getId));
@@ -807,7 +800,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 List<TeamMemberRelEntity> teamMemberRelEntities = teamMemberRelMapper.selectByTeamIds(teamIds);
                 teamMemberRelEntities.stream()
                         .filter(rel -> !rel.getMemberId().equals(memberId))
-                        // 对节点拥有读取权限的成员才发送通知
+                        // Only members with read permission to the node send notifications
                         .filter(rel -> controlTemplate.hasNodePermission(rel.getMemberId(), ro.getNodeId(), NodePermission.READ_NODE))
                         .forEach(rel -> {
                             Long unitId = teamIdToUnitIdMap.get(rel.getTeamId());
@@ -829,7 +822,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             if (CollUtil.isEmpty(memberIds)) {
                 return;
             }
-            // 去重，构建通知消息
+            // distinct, build notification message
             List<Long> distinctMemberIds = CollUtil.distinct(memberIds);
             List<Long> userIds = memberMapper.selectUserIdsByMemberIds(distinctMemberIds);
             CollUtil.removeNull(userIds);
@@ -855,17 +848,17 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                             .set("viewId", ro.getViewId())
                             .set("recordIds", remindUnitRecRo.getRecordIds());
                     if (null != ro.getExtra() && null != ro.getExtra().getContent()) {
-                        // 评论内容
+                        // comments
                         extras.set("commentContent", HtmlUtil.unescape(HtmlUtil.cleanHtmlTag(ro.getExtra().getContent())));
                     }
                     body.set(BODY_EXTRAS, extras);
-                    // 发送通知
+                    // send notification
                     NotificationCreateRo notifyRo = new NotificationCreateRo();
                     notifyRo.setToMemberId(ListUtil.toList(Convert.toStrArray(toMemberIds)));
                     notifyRo.setFromUserId(userId == null ? "-2" : userId.toString());
                     notifyRo.setNodeId(ro.getNodeId());
                     notifyRo.setSpaceId(spaceId);
-                    // 用于标记邮件跳转已读
+                    // used to mark message jump read
                     String notifyId = cn.hutool.core.util.IdUtil.simpleUUID();
                     notifyRo.setNotifyId(notifyId);
                     String templateId;
@@ -880,7 +873,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     }
                     notifyRo.setTemplateId(templateId);
                     notifyRo.setBody(body);
-                    // 保存通知记录
+                    // save notification record
                     playerNotificationService.batchCreateNotify(CollUtil.newArrayList(notifyRo));
                     NotifyDataSheetMeta meta = new NotifyDataSheetMeta()
                             .setRemindType(RemindType.of(ro.getType()))
@@ -898,28 +891,28 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                             .setRecordTitle(recordTitle);
 
                     RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
-                    // 默认 - 订阅邮件通知
+                    // Default-Subscribe to Mail Notifications
                     if (!templateId.equals(NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
                         remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(RemindSubjectType.EMIL));
                     }
-                    // 检查空间是否绑定第三方集成
+                    // Check whether the space is bound to third-party integration
                     TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(meta.getSpaceId());
                     if (bindInfo != null) {
                         String appId = bindInfo.getAppId();
                         if (StrUtil.isBlank(appId)) {
-                            log.warn("[提及通知]-第三方IM配置缺失，TenantId：{}，缺失AppId请检查!", bindInfo.getTenantId());
+                            log.warn("[remind notification]-third party im configuration missing，TenantId：{}，please check for missing app id", bindInfo.getTenantId());
                         }
                         else {
                             SocialTenantEntity tenantEntity = iSocialTenantService.getByAppIdAndTenantId(appId, bindInfo.getTenantId());
                             SocialPlatformType platform = tenantEntity != null ? SocialPlatformType.toEnum(tenantEntity.getPlatform()) : null;
                             String remindSubjectType = RemindSubjectType.transform2ImSubject(platform);
                             if (StrUtil.isBlank(remindSubjectType)) {
-                                log.warn("[提及通知]-第三方IM「{}」未订阅推送服务", platform);
+                                log.warn("[remind notification]- third-party IM [{}] does not subscribe to push service", platform);
                             }
                             else {
                                 DatasheetObserver observer = datasheetRemindObservers.get(remindSubjectType);
                                 if (null == observer) {
-                                    log.warn("[提及通知]-第三方IM「{}」订阅推送服务未启用", platform);
+                                    log.warn("[remind notification]- third-party IM [{}] subscription push service is not enabled", platform);
                                 }
                                 else {
                                     meta.setSocialTenantId(bindInfo.getTenantId())
@@ -927,13 +920,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                             .setAppType(Optional.ofNullable(tenantEntity)
                                                     .map(SocialTenantEntity::getAppType)
                                                     .orElse(null));
-                                    // 订阅第三方IM通知
+                                    // subscribe to third party im notifications
                                     remindMemberOpSubject.registerObserver(observer);
                                 }
                             }
                         }
                     }
-                    // 推送给观察者消息
+                    // message pushed to observer
                     remindMemberOpSubject.sendNotify(meta);
                 }
             });
@@ -972,15 +965,18 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void transformDeletedLinkField(Long userId, Map<String, List<String>> dstIdToDelDstIdsMap) {
-        log.info("转换被删除的关联字段");
+        log.info("convert the deleted associated field");
         if (MapUtil.isNotEmpty(dstIdToDelDstIdsMap)) {
-            // 获取所有数表的snapshot
+            // gets the snapshot of all datasheets
             List<String> nodeIds = CollUtil.newArrayList(dstIdToDelDstIdsMap.keySet());
             Map<String, SnapshotMapRo> snapshotMap = this.findSnapshotMapByDstIds(nodeIds, false);
-            // snapshot 的 recordMap 不带记录表ID，更改需要，分开获取
+            // The snapshot recordMap does not have the record datasheet ID, and the change needs to be obtained separately.
             List<DataSheetRecordDto> dataSheetRecordDtoList = datasheetRecordMapper.selectDtoByDstIds(nodeIds);
             Map<String, List<DataSheetRecordDto>> recordDtoMap = dataSheetRecordDtoList.stream().collect(Collectors.groupingBy(DataSheetRecordDto::getDstId));
-            // 处理数表，获得各数表的关联字段映射关联表ID的关系，各数表需要修改的记录行集合；各关联表，对应被使用的记录行集合
+            // process the datasheet.
+            // Obtain the relationship between the associated fields of each datasheet and the associated datasheet ID.
+            // The set of record rows that need to be modified for each datasheet.
+            // Each association datasheet corresponds to the set of records to be used.
             Map<String, Map<String, String>> dstIdToFldLinkDstIdMap = MapUtil.newHashMap();
             Map<String, Set<String>> dstIdToUpdateRecIdsMap = MapUtil.newHashMap();
             Map<String, Set<String>> linkDstIdToRecIdsMap = MapUtil.newHashMap();
@@ -988,20 +984,20 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 String dstId = entry.getKey();
                 List<String> linkDstIds = entry.getValue();
                 SnapshotMapRo snapshotMapRo = snapshotMap.get(dstId);
-                // 防止脏数据，造成删除失败
+                // prevent dirty data and delete failure
                 if (snapshotMapRo == null) {
                     continue;
                 }
                 MetaMapRo metaMapRo = JSONUtil.parseObj(snapshotMapRo.getMeta()).toBean(MetaMapRo.class);
                 Map<String, String> fldIdToLinkDstIdMap = MapUtil.newHashMap();
-                // 找到关联数表的字段ID
+                // find the field id of the associated datasheet
                 metaMapRo.getFieldMap().values().forEach(field -> {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
                         LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         String foreignDstId = property.getForeignDatasheetId();
                         if (linkDstIds.contains(foreignDstId)) {
-                            // 记录该列对应的关联数表，将该列转换为文本字段
+                            // Record the associated number table corresponding to the column and convert the column to a text field.
                             fldIdToLinkDstIdMap.put(fieldMapRo.getId(), foreignDstId);
                             FieldMapRo fieldMapRo1 = FieldMapRo.builder()
                                     .id(fieldMapRo.getId())
@@ -1012,12 +1008,13 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                         }
                     }
                 });
-                // 保存更改
+                // save changes
                 datasheetMetaService.edit(userId, dstId, MetaOpRo.builder().meta(JSONUtil.parseObj(metaMapRo)).build());
-                // 遍历recordMap，记录数表对应需要修改的recordId 集合、关联表对应被使用的 recordId 集合
+                // traversal record map.
+                // The record datasheet corresponds to the set of recordId that needs to be modified, and the associated datasheet corresponds to the set of recordId that is used.
                 Set<String> updateRecIds = new HashSet<>();
                 List<DataSheetRecordDto> recordMap = recordDtoMap.get(dstId);
-                // 本表没有记录，无需要转换的单元格数据
+                // There is no record in this datasheet and there is no cell data to be converted.
                 if (CollUtil.isEmpty(recordMap)) {
                     continue;
                 }
@@ -1040,25 +1037,25 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     dstIdToFldLinkDstIdMap.put(dstId, fldIdToLinkDstIdMap);
                 }
             }
-            // 处理被删除的关联字段列数据
+            // process deleted associated field column data
             this.processDeletedLinkFieldData(recordDtoMap, dstIdToFldLinkDstIdMap, dstIdToUpdateRecIdsMap, linkDstIdToRecIdsMap);
         }
     }
 
     /**
-     * 处理被删除的关联字段列数据
+     * process deleted associated field column data
      *
-     * @param recordDtoMap           数表 -> recordDto 集合
-     * @param dstIdToFldLinkDstIdMap 数表 -> (关联字段 -> 关联表ID)
-     * @param dstIdToUpdateRecIdsMap 数表 -> 需要修改的recordId 集合
-     * @param linkDstIdToRecIdsMap   关联表 -> 被使用的recordId 集合
+     * @param recordDtoMap           datasheet-> recordDto set
+     * @param dstIdToFldLinkDstIdMap datasheet-> (association field-> association datasheet ID)
+     * @param dstIdToUpdateRecIdsMap datasheet-> set of recordId to be modified
+     * @param linkDstIdToRecIdsMap   Association datasheet-> used recordId collection
      */
     private void processDeletedLinkFieldData(Map<String, List<DataSheetRecordDto>> recordDtoMap, Map<String, Map<String, String>> dstIdToFldLinkDstIdMap,
             Map<String, Set<String>> dstIdToUpdateRecIdsMap, Map<String, Set<String>> linkDstIdToRecIdsMap) {
         if (MapUtil.isEmpty(linkDstIdToRecIdsMap)) {
             return;
         }
-        // 关联字段存在关联数据，处理获得各关联表对应被使用的记录映射数据的关系
+        // The associated field has associated data, and the processing obtains the relationship between the corresponding record mapping data used by each associated datasheet.
         Map<String, Map<String, String>> linkDstIdToRecValMap = new HashMap<>(linkDstIdToRecIdsMap.size());
         List<String> linkDstIds = CollUtil.newArrayList(linkDstIdToRecIdsMap.keySet());
         Map<String, SnapshotMapRo> linkSnapshotMap = this.findSnapshotMapByDstIds(linkDstIds, true);
@@ -1069,14 +1066,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             if (snapshotMapRo == null) {
                 continue;
             }
-            // 从视图的属性中，找出首列字段ID
+            // Find the field ID of the first column from the properties of the view.
             MetaMapRo metaMapRo = JSONUtil.parseObj(snapshotMapRo.getMeta()).toBean(MetaMapRo.class);
             ViewMapRo viewMapRo = JSONUtil.parseObj(metaMapRo.getViews().get(0)).toBean(ViewMapRo.class);
             String firstColumnId = JSONUtil.parseObj(viewMapRo.getColumns().get(0)).get("fieldId").toString();
-            // 获取首列字段的属性
+            // Gets the properties of the first column field
             FieldMapRo fieldMapRo = JSONUtil.parseObj(metaMapRo.getFieldMap().get(firstColumnId)).toBean(FieldMapRo.class);
             FieldType fieldType = FieldType.create(fieldMapRo.getType());
-            // 遍历被使用的 recordId 集合，组成记录ID和数据的MAP
+            // Traversing the set of recordId used to make up the MAP of the record ID and data.
             Map<String, String> recIdToValMap = MapUtil.newHashMap();
             JSONObject recordMap = snapshotMapRo.getRecordMap();
             recIds.forEach(recId -> {
@@ -1090,7 +1087,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             });
             linkDstIdToRecValMap.put(linkDstId, recIdToValMap);
         }
-        // 替换原数表关联列中的单元格数据
+        // Replace cell data in the associated column of the original datasheet
         List<DatasheetRecordEntity> entities = new ArrayList<>();
         dstIdToUpdateRecIdsMap.forEach((dstId, recIds) -> {
             Map<String, String> fldIdToLinkDstIdMap = dstIdToFldLinkDstIdMap.get(dstId);
@@ -1111,7 +1108,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                 strBuilder.append(",");
                             }
                             if (MapUtil.isEmpty(recIdToValMap) || recIdToValMap.get(cellRecId) == null) {
-                                strBuilder.append("未命名记录");
+                                strBuilder.append("Unnamed record ");
                             }
                             else {
                                 strBuilder.append(recIdToValMap.get(cellRecId));
@@ -1132,7 +1129,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 }
             });
         });
-        // 保存更改
+        // save changes
         if (CollUtil.isNotEmpty(entities)) {
             datasheetRecordService.updateBatchById(entities, entities.size());
         }
@@ -1140,7 +1137,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public String parseCellData(FieldType fieldType, JSONObject property, Object cellVal) {
-        log.info("解析数表的单元格数据");
+        log.info("Analyze the cell data of the datasheet ");
         if (cellVal != null) {
             switch (fieldType) {
                 case AUTO_NUMBER:
@@ -1182,21 +1179,21 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Override
     public Map<String, List<String>> getForeignFieldNames(List<String> dstIdList) {
-        // 批量获取数表元数据
+        // batch acquisition of datasheet metadata
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIdList);
         if (CollUtil.isNotEmpty(metaList)) {
-            // 遍历数表元数据
+            // traversal datasheet metadata
             for (DatasheetMetaDTO meta : metaList) {
-                // 构建返回体，节点ID和关联字段名称
+                // Build the return body, node ID, and associated field name.
                 Map<String, List<String>> map = new HashMap<>();
                 List<String> foreignFieldNames = new ArrayList<>();
                 MetaMapRo metaMapRo = JSONUtil.parseObj(meta.getMetaData()).toBean(MetaMapRo.class);
                 for (Object field : metaMapRo.getFieldMap().values()) {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-                    // 判断是否存在关联字段
+                    // determine if there is an associated field
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())) {
                         LinkFieldProperty property = fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
-                        // 判断关联字段是否关联外表
+                        // Determine whether the associated field is associated with the appearance.
                         if (!dstIdList.contains(property.getForeignDatasheetId())) {
                             foreignFieldNames.add(fieldMapRo.getName());
                         }

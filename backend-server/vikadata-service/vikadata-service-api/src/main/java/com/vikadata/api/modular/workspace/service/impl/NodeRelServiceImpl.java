@@ -30,14 +30,6 @@ import com.vikadata.entity.NodeRelEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <p>
- * 节点关联 服务实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/11/11
- */
 @Slf4j
 @Service
 public class NodeRelServiceImpl implements INodeRelService {
@@ -54,7 +46,7 @@ public class NodeRelServiceImpl implements INodeRelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(Long userId, String mainNodeId, String relNodeId, String extra) {
-        log.info("创建节点关联，userId:{},mainNodeId:{},relNodeId:{},extra:{}", userId, mainNodeId, relNodeId, extra);
+        log.info("create node association，userId:{},mainNodeId:{},relNodeId:{},extra:{}", userId, mainNodeId, relNodeId, extra);
         NodeRelEntity nodeRelEntity = NodeRelEntity.builder()
                 .id(IdWorker.getId())
                 .mainNodeId(mainNodeId)
@@ -68,7 +60,7 @@ public class NodeRelServiceImpl implements INodeRelService {
 
     @Override
     public void copy(Long userId, String sourceRelNodeId, String destRelNodeId) {
-        log.info("复制节点关联关系，userId:{},sourceRelNodeId:{},destRelNodeId:{}", userId, sourceRelNodeId, destRelNodeId);
+        log.info("copy node association，userId:{},sourceRelNodeId:{},destRelNodeId:{}", userId, sourceRelNodeId, destRelNodeId);
         NodeRelEntity entity = nodeRelMapper.selectByRelNodeId(sourceRelNodeId);
         ExceptionUtil.isNotNull(entity, DatabaseException.QUERY_EMPTY_BY_ID);
         this.create(userId, entity.getMainNodeId(), destRelNodeId, entity.getExtra());
@@ -77,7 +69,7 @@ public class NodeRelServiceImpl implements INodeRelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void copyBatch(Long userId, Collection<String> relNodeIds, Map<String, String> newNodeMap) {
-        log.info("批量复制节点关联关系，userId:{},reNodeIds:{},newNodeMap:{}", userId, relNodeIds, newNodeMap);
+        log.info("batch replication node association relationship，userId:{},reNodeIds:{},newNodeMap:{}", userId, relNodeIds, newNodeMap);
         List<NodeRelEntity> entities = nodeRelMapper.selectByRelNodeIds(relNodeIds);
         if (CollUtil.isEmpty(entities)) {
             return;
@@ -99,7 +91,7 @@ public class NodeRelServiceImpl implements INodeRelService {
 
     @Override
     public Map<String, String> getRelNodeToMainNodeMap(Collection<String> relNodeIds) {
-        log.info("获取关联节点及对应的主节点，relNodeIds:{}", relNodeIds);
+        log.info("Obtain the associated node and the corresponding master node.，relNodeIds:{}", relNodeIds);
         List<NodeRelEntity> entities = nodeRelMapper.selectByRelNodeIds(relNodeIds);
         return entities.stream().collect(Collectors.toMap(NodeRelEntity::getRelNodeId, NodeRelEntity::getMainNodeId));
     }
@@ -109,9 +101,9 @@ public class NodeRelServiceImpl implements INodeRelService {
         List<NodeRelDTO> nodeRelList = nodeRelMapper.selectNodeRelDTO(nodeId);
         List<String> relNodeIds = nodeRelList.stream()
                 .filter(nodeRel -> {
-                    // 可选性指定关联节点类型
+                    // optional specifies the type of associated node
                     boolean typeRequire = nodeType == null || nodeType.equals(nodeRel.getType());
-                    // 可选性指定视图
+                    // optional specify view
                     if (!typeRequire || viewId == null) {
                         return typeRequire;
                     }
@@ -121,7 +113,7 @@ public class NodeRelServiceImpl implements INodeRelService {
         if (CollUtil.isEmpty(relNodeIds)) {
             return new ArrayList<>();
         }
-        // 可选性要求成员对关联节点的权限
+        // Optional requires members to have permissions on associated nodes
         if (memberId == null) {
             return nodeMapper.selectInfoByNodeIds(relNodeIds);
         }
@@ -134,7 +126,7 @@ public class NodeRelServiceImpl implements INodeRelService {
 
     @Override
     public NodeRelEntity getByRelNodeId(String relNodeId) {
-        log.info("获取关联节点为「{}」的节点关联关系", relNodeId);
+        log.info("Gets the node association relationship with the associated node [{}]", relNodeId);
         return nodeRelMapper.selectByRelNodeId(relNodeId);
     }
 }

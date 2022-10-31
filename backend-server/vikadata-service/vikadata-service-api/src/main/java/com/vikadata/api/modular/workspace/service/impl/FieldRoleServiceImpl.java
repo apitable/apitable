@@ -93,11 +93,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
-/**
- * 字段角色服务接口 实现
- * @author Shawn Deng
- * @date 2021-04-01 19:28:00
- */
 @Service
 @Slf4j
 public class FieldRoleServiceImpl implements IFieldRoleService {
@@ -155,24 +150,24 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void checkFieldPermissionBeforeEnable(String dstId, String fieldId) {
-        log.info("检查字段可用性。dstId:{},fieldId:{}", dstId, fieldId);
-        // 获取数表快照
+        log.info("check field availabilitydstId:{},fieldId:{}", dstId, fieldId);
+        // get a snapshot of a datasheet
         DatasheetSnapshot snapshot = iDatasheetMetaService.getMetaByDstId(dstId);
         ExceptionUtil.isNotNull(snapshot, DataSheetException.DATASHEET_NOT_EXIST);
         ExceptionUtil.isNotNull(snapshot.getMeta(), DataSheetException.DATASHEET_NOT_EXIST);
-        // 检查字段是否存在
+        // check if the field exists
         ExceptionUtil.isNotEmpty(snapshot.getMeta().getFieldMap(), DataSheetException.FIELD_NOT_EXIST);
         ExceptionUtil.isTrue(snapshot.getMeta().getFieldMap().containsKey(fieldId), FIELD_NOT_EXIST);
-        // 检查字段是否是首列
+        // check whether the field is the first column
         List<View> views = snapshot.getMeta().getViews();
         ExceptionUtil.isNotEmpty(views, VIEW_NOT_EXIST);
-        // 取出视图
+        // remove view
         Optional<View> indexView = views.stream().findFirst();
         ExceptionUtil.isTrue(indexView.isPresent(), VIEW_NOT_EXIST);
-        // 取出视图的列属性
+        // remove the column properties of the view
         List<Column> columns = indexView.get().getColumns();
         ExceptionUtil.isNotEmpty(columns, VIEW_NOT_EXIST);
-        // 取出首列字段ID
+        // take out the field id of the first column
         Optional<Column> column = columns.stream().findFirst();
         ExceptionUtil.isTrue(column.isPresent(), VIEW_NOT_EXIST);
         String indexFieldId = column.get().getFieldId();
@@ -181,7 +176,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void checkFieldHasOperation(String controlId, Long memberId) {
-        log.info("检查字段角色变更操作是否允许");
+        log.info("Check whether the field role change operation is allowed");
         ControlEntity controlEntity = iControlService.getByControlId(controlId);
         ExceptionUtil.isNotNull(controlEntity, FIELD_PERMISSION_NOT_OPEN);
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(controlEntity.getSpaceId());
@@ -198,11 +193,11 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public FieldCollaboratorVO getFieldRoles(String datasheetId, String fieldId) {
-        log.info("加载字段角色信息: {} {}", datasheetId, fieldId);
+        log.info("load field role information: {} {}", datasheetId, fieldId);
         ControlId controlId = ControlIdBuilder.fieldId(datasheetId, fieldId);
         FieldCollaboratorVO fieldCollaboratorVO = new FieldCollaboratorVO();
         String spaceId = iNodeService.getSpaceIdByNodeId(datasheetId);
-        // 字段权限是否打开
+        // is field permission open
         iControlService.checkControlStatus(controlId.toString(), fieldCollaboratorVO::setEnabled);
         if (BooleanUtil.isFalse(fieldCollaboratorVO.getEnabled())) {
             Map<Long, String> memberRoleMap = new LinkedHashMap<>(16);
@@ -212,10 +207,10 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             fieldCollaboratorVO.setRoles(roles);
             return fieldCollaboratorVO;
         }
-        // 加载权限属性配置
+        // load permission attribute configuration
         ControlSettingEntity controlSetting = iControlSettingService.getByControlId(controlId.toString());
         fieldCollaboratorVO.setSetting(JSONUtil.toBean(controlSetting.getProps(), FieldRoleSetting.class));
-        // 1、空间工作台管理员 + Owner
+        // 1、space workbench administrator + Owner
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spaceId);
         List<Long> managerMemberIds = new ArrayList<>(admins);
         // owner
@@ -223,7 +218,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         if (owner != null) {
             managerMemberIds.add(owner);
         }
-        // 记载所有成员对应角色
+        // record the corresponding roles of all members
         Map<Long, String> memberRoleMap = new LinkedHashMap<>(16);
         Map<Long, FieldRole> unitIdToFieldRoleMap = new LinkedHashMap<>(16);
         List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(managerMemberIds);
@@ -231,7 +226,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         Map<Long, List<MemberTeamPathInfo>> memberToTeamNameMap = iTeamService.batchGetFullHierarchyTeamNames(managerMemberIds, spaceId);
         for (UnitMemberVo member : unitMemberVos) {
             boolean isOwner = member.getMemberId().equals(owner);
-            // 防止 Owner 属于工作台管理员，重复构建 FieldRole
+            // prevent owner from belonging to workbench administrator and repeatedly build fieldrole
             if (isOwner && memberRoleMap.containsKey(owner)) {
                 continue;
             }
@@ -244,7 +239,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             unitIdToFieldRoleMap.put(role.getUnitId(), role);
             memberRoleMap.put(member.getMemberId(), Field.EDITOR);
         }
-        // 2、数表字段指定角色的组织单元
+        // 2、The datasheet field specifies the organizational unit of the role.
         List<ControlRoleUnitDTO> controlRoles = iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
         Map<String, List<ControlRoleUnitDTO>> fieldRoleControlMap = controlRoles.stream()
                 .sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(t.getRole()).getBits()).reversed())
@@ -278,7 +273,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 role.setCanRemove(true);
                 unitIdToFieldRoleMap.putIfAbsent(control.getUnitId(), role);
             }
-            // 批量查询补充组织单元信息
+            // Batch query supplementary organizational unit information
             if (!memberIds.isEmpty()) {
                 List<UnitMemberVo> memberVos = iOrganizationService.findUnitMemberVo(memberIds);
                 // handle member's team name, get full hierarchy team name
@@ -342,7 +337,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fldId);
         String spaceId = iNodeService.getSpaceIdByNodeId(dstId);
         iControlService.create(userId, spaceId, controlId.toString(), controlId.getControlType());
-        // 初始化字段权限设置
+        // initialize field permission settings
         iControlSettingService.create(userId, controlId.toString());
         if (includeExtend) {
             addExtendFieldRole(userId, dstId, fldId);
@@ -351,10 +346,10 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void addFieldRole(Long userId, String controlId, List<Long> unitIds, String role) {
-        log.info("添加字段权限角色。userId:{},controlId:{},role:{},unitIds:{}", userId, controlId, role, unitIds);
-        // 过滤组织单元，如果已存在的则修改，未存在的则添加
+        log.info("Add field role. userId:{},controlId:{},role:{},unitIds:{}", userId, controlId, role, unitIds);
+        // Filter organizational units, modify those that already exist, and add those that do not exist.
         List<ControlRoleEntity> controlRoles = iControlRoleService.getByControlId(controlId);
-        // 无已存在的组织单元，全部新增
+        // no existing organizational units all new
         if (CollUtil.isEmpty(controlRoles)) {
             iControlRoleService.addControlRole(userId, controlId, unitIds, role);
             return;
@@ -365,11 +360,11 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         List<Long> updateUnitIds = new ArrayList<>();
         for (Long unitId : unitIds) {
             if (!unitRoleMap.containsKey(unitId)) {
-                // 不存在，新增此组织单元的角色
+                // Does not exist, add the role of this organizational unit
                 addUnitIds.add(unitId);
             }
             else if (!unitRoleMap.get(unitId).equals(role)) {
-                // 存在且角色不一样，修改此组织单元的角色
+                // exists and the roles are different, modify the roles of this organizational unit
                 updateUnitIds.add(unitId);
             }
         }
@@ -383,8 +378,8 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void editFieldRole(Long userId, String controlId, List<Long> unitIds, String role) {
-        log.info("更新字段「{}」下组织单元「{}」的角色权限「{}」", controlId, unitIds, role);
-        // 原组织单元在列的角色
+        log.info("Update the role permission [{}] of the unit [{}] under the field [{}]", controlId, unitIds, role);
+        // The role of the original organizational unit in the column
         Map<Long, String> unitIdToRoleCode = iControlRoleService.getUnitIdToRoleCodeMapWithoutOwnerRole(controlId, unitIds);
         if (unitIdToRoleCode.keySet().size() != unitIds.size()) {
             throw new BusinessException(PermissionException.FIELD_ROLE_NOT_EXIST);
@@ -392,13 +387,13 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         List<Long> subUnitIds = unitIds.stream()
                 .filter(unitId -> !role.equals(unitIdToRoleCode.get(unitId)))
                 .collect(toList());
-        // 修改
+        // revised
         iControlRoleService.editControlRole(userId, controlId, subUnitIds, role);
     }
 
     @Override
     public String deleteFieldRole(String controlId, String datasheetId, Long unitId) {
-        log.info("删除字段「{}」权限角色「{}」", controlId, unitId);
+        log.info("Delete field [{}] permission role [{}]", controlId, unitId);
         String roleCode = iControlRoleService.getRoleCodeByControlIdAndUnitId(controlId, unitId);
         if (roleCode == null) {
             throw new BusinessException(PermissionException.FIELD_ROLE_NOT_EXIST);
@@ -409,7 +404,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public void updateFieldRoleProp(Long userId, String controlId, FieldControlProp prop) {
-        log.info("更改控制权限的设置");
+        log.info("change the settings for control permissions");
         ControlSettingEntity controlSetting = iControlSettingService.getByControlId(controlId);
         String propJson = controlSetting.getProps();
         try {
@@ -421,7 +416,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                 updater.setProps(objectMapper.writeValueAsString(newProps));
                 updater.setUpdatedBy(userId);
                 iControlSettingService.updateById(updater);
-                log.info("更新配置成功");
+                log.info("configuration update successful");
             }
         }
         catch (JsonProcessingException e) {
@@ -432,7 +427,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     @Override
     public FieldPermissionView getFieldPermissionView(Long memberId, String nodeId, String shareId) {
-        log.info("成员「{}」获取节点「{}」的字段权限，分享ID:「{}」", memberId, nodeId, shareId);
+        log.info("The member [{}] obtains the field permission of the node [{}] and shares the ID: [{}]", memberId, nodeId, shareId);
         NodeType type = iNodeService.getTypeByNodeId(nodeId);
         String datasheetId;
         switch (type) {
@@ -456,9 +451,9 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         }
         Map<String, String> controlIdToFieldIdMap = controlIds.stream()
                 .collect(Collectors.toMap(String::toString, controlId -> controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1)));
-        // 在分享中加载字段权限
+        // load field permissions in sharing
         if (StrUtil.isNotBlank(shareId)) {
-            // 非收集表的情景，直接返回已设置了权限的字段
+            // If the datasheet is not collected, directly return the field with the permission set.
             if (type != NodeType.FORM) {
                 Map<String, FieldPermissionInfo> permissionInfoMap = controlIdToFieldIdMap.values().stream()
                         .collect(Collectors.toMap(String::toString, fieldId -> FieldPermissionInfo.builder()
@@ -467,7 +462,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                                 .build()));
                 return new FieldPermissionView(nodeId, datasheetId, permissionInfoMap);
             }
-            // 收集表，增加返回字段权限配置属性
+            // collect the datasheet and add the permission configuration attribute of the returned field.
             List<ControlSettingEntity> controlSettingEntities = iControlSettingService.getBatchByControlIds(controlIds);
             Map<String, ControlSettingEntity> controlSettingEntityMap = controlSettingEntities.stream()
                     .collect(Collectors.toMap(ControlSettingEntity::getControlId, Function.identity()));
@@ -479,10 +474,10 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                             .build()));
             return new FieldPermissionView(nodeId, datasheetId, permissionInfoMap);
         }
-        // 站内加载
-        // 获取权限角色集
+        // in station loading
+        // get the permission role set
         ControlRoleDict roleDict = controlTemplate.fetchFieldRole(memberId, datasheetId, ListUtil.list(true, controlIdToFieldIdMap.values()));
-        // 获取权限配置属性
+        // get permission configuration properties
         List<ControlSettingEntity> controlSettingEntities = iControlSettingService.getBatchByControlIds(controlIds);
         Map<String, String> controlIdToPropsMap = controlSettingEntities.stream()
                 .collect(Collectors.toMap(ControlSettingEntity::getControlId, ControlSettingEntity::getProps));
@@ -498,7 +493,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
                         ControlRole role = roleDict.get(entry.getValue());
                         fieldPermissionInfo.setHasRole(true);
                         fieldPermissionInfo.setRole(role.getRoleTag());
-                        // 新增当前用户是否可管理这个权限
+                        // Add whether the current user can manage this permission
                         fieldPermissionInfo.setManageable(role.isAdmin() || controlId2Creator.get(entry.getKey()).equals(userId));
                         fieldPermissionInfo.setPermission(role.permissionToBean(FieldPermission.class));
                     }
@@ -536,7 +531,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         if (CollUtil.isEmpty(unitIds)) {
             return CollUtil.newHashMap();
         }
-        log.info("删除字段「{}」权限角色「{}」", controlId, unitIds);
+        log.info("delete field [{}] permission role [{}]", controlId, unitIds);
         List<ControlRoleInfo> controlRole = iControlRoleService.getUnitRoleByControlIdAndUnitIds(controlId, unitIds);
         Map<String, List<Long>> roleToUnitIds = controlRole.stream()
                 .collect(groupingBy(ControlRoleInfo::getRole, mapping(ControlRoleInfo::getUnitId, toList())));
@@ -553,7 +548,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fldId);
         Map<String, List<Long>> fieldRoleToUnitIdsMap = getDefaultFiledRoleToUnitIdsMap(spaceId, dstId);
         fieldRoleToUnitIdsMap.forEach((role, unitIds) -> {
-            // 添加角色
+            // add role
             addFieldRole(userId, controlId.toString(), unitIds, role);
         });
     }
@@ -584,7 +579,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
 
     private List<FieldRole> getDefaultFieldRoles(String spcId, String dstId, Map<Long, String> memberRoleMap) {
         List<Long> admins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(spcId);
-        // 记载所有成员对应角色
+        // record the corresponding roles of all members
         List<FieldRole> fieldRoles = new ArrayList<>(16);
         List<UnitMemberVo> unitMemberVos = iOrganizationService.findUnitMemberVo(admins);
         // handle member's team name, get full hierarchy team name
@@ -601,7 +596,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
             fieldRoles.add(role);
             memberRoleMap.put(member.getMemberId(), Field.EDITOR);
         }
-        // 获取字段所在数表而来的继承角色
+        // Gets the inherited role from the datasheet where the field is located.
         fieldRoles.addAll(getDefaultExtendRole(spcId, dstId, adminIds, memberRoleMap));
         return fieldRoles;
     }

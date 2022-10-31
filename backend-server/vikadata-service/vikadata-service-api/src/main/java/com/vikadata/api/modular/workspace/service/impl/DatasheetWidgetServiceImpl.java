@@ -11,8 +11,8 @@ import com.vikadata.entity.DatasheetWidgetEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Shawn Deng
- * @date 2021-01-09 16:08:22
+ * 
+ * 
  */
 @Service
 public class DatasheetWidgetServiceImpl extends ServiceImpl<DatasheetWidgetMapper, DatasheetWidgetEntity> implements IDatasheetWidgetService {

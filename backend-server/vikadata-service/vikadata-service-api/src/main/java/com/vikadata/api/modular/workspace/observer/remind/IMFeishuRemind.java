@@ -41,11 +41,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- *  Im-飞书提醒，自动根据开启状态注册订阅主题
+ *  Im-Feishu reminder, automatically register subscription topics according to the open status
  * </p>
- *
- * @author Pengap
- * @date 2021/10/9 13:41:59
  */
 @Slf4j
 @Component
@@ -68,13 +65,13 @@ public class IMFeishuRemind extends AbstractRemind {
 
     @Override
     public void notifyMemberAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅第三方IM「飞书」提醒=>@成员字段");
+        log.info("[remind notification]-user subscribe third party im feishu remind=>@member");
         sendImCardMessage(false, meta);
     }
 
     @Override
     public void notifyCommentAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅第三方IM「飞书」提醒=>评论消息");
+        log.info("[remind notification]-user subscribe third party im feishu remind=>comments");
         sendImCardMessage(true, meta);
     }
 
@@ -82,16 +79,16 @@ public class IMFeishuRemind extends AbstractRemind {
         String spaceId = meta.spaceId;
         List<SocialTenantEntity> feishuTenants = iSocialTenantBindService.getFeishuTenantsBySpaceId(spaceId);
         if (CollUtil.isEmpty(feishuTenants)) {
-            log.warn("空间未绑定任何飞书企业");
+            log.warn("space is not bound to any feishu");
             return;
         }
-        // 根据appId和tenantId查询出指定的租户
+        // Query the specified tenant according to app Id and tenant Id
         SocialTenantEntity feishuTenant = feishuTenants.stream()
                 .filter(tenant -> tenant.getAppId().equals(meta.getSocialAppId())
                         && tenant.getTenantId().equals(meta.getSocialTenantId()))
                 .findFirst().orElse(null);
         if (feishuTenant == null) {
-            log.warn("空间没绑定飞书企业租户: {}", spaceId);
+            log.warn("space is not bound to the tenant of feishu: {}", spaceId);
             return;
         }
         String entryUrl = null;
@@ -101,24 +98,24 @@ public class IMFeishuRemind extends AbstractRemind {
             iFeishuService.switchDefaultContext();
         }
         else if (appType == SocialAppType.INTERNAL) {
-            // 飞书自建应用，查询应用对应的实例ID
+            // feishu self-built application, query the instance id of the application.
             AppInstanceEntity instance = iAppInstanceService.getInstanceBySpaceIdAndAppType(spaceId, AppType.LARK);
             if (instance == null) {
-                log.warn("空间的飞书应用实例不存在");
+                log.warn("space feishu app no exist.");
                 return;
             }
             LarkInstanceConfig instanceConfig = LarkInstanceConfig.fromJsonString(instance.getConfig());
             LarkInstanceConfigProfile profile = (LarkInstanceConfigProfile) instanceConfig.getProfile();
             if (StrUtil.isBlank(profile.getAppKey())) {
-                log.warn("配置为空，不发送");
+                log.warn("config is null，don't send");
                 return;
             }
             if (!profile.getAppKey().equals(feishuTenant.getAppId())) {
-                log.warn("配置应用Key不匹配，不发送");
+                log.warn("config  mismatch app key，don't send");
                 return;
             }
             entryUrl = LarkConstants.formatInternalEntryUrl(instance.getAppInstanceId());
-            // 切换上下文
+            // toggle context
             iFeishuService.switchContextIfAbsent(profile.buildConfigStorage());
         }
 
@@ -128,21 +125,21 @@ public class IMFeishuRemind extends AbstractRemind {
         List<String> sendOpenIds = meta.imRemindParameter.sendOpenIds;
         Message cardMessage;
         if (isCommentAction) {
-            // 评论通知
+            // comment notification
             String commentContentHtml = super.unescapeHtml(meta.extra.getContent());
             cardMessage = createRemindFromCommentCardMsg(meta.socialAppId, entryUrl, meta.recordTitle, commentContentHtml, fromOpenId, nodeName, notifyUrl);
         }
         else {
-            // 提及通知
+            // remind notification
             cardMessage = createRemindMemberCardMsg(meta.socialAppId, entryUrl, meta.recordTitle, fromOpenId, nodeName, notifyUrl);
         }
         try {
             BatchSendChatMessageResult result = iFeishuService.batchSendCardMessage(feishuTenant.getTenantId(), sendOpenIds, cardMessage);
-            log.info("[提及通知]-飞书消息ID: {}", result.getMessageId());
-            log.warn("[提及通知]-飞书无法送到的用户: {}", result.getInvalidOpenIds());
+            log.info("[remind notification]-feishu message id: {}", result.getMessageId());
+            log.warn("[remind notification]-users whose feishu cannot be delivered: {}", result.getInvalidOpenIds());
         }
         catch (Exception e) {
-            log.error("[提及通知]-发送消息卡片失败", e);
+            log.error("[remind notification]-failed to send message card", e);
         }
     }
 
@@ -179,9 +176,9 @@ public class IMFeishuRemind extends AbstractRemind {
     }
 
     private Message create(Header header, Module[] modules) {
-        // 创建卡片
+        // create a card
         Card card = new Card(new Config(false), header);
-        // 设置内容元素
+        // set content elements
         card.setModules(Arrays.asList(modules));
         return new CardMessage(card.toObj());
     }

@@ -42,12 +42,6 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-/**
- * <p>
- *     organization module - role member service impl.
- * </p>
- * @author tao
- */
 @Slf4j
 @Service
 public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMemberEntity> implements IRoleMemberService {

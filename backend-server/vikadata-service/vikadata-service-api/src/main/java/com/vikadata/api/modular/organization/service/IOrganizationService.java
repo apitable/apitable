@@ -9,124 +9,98 @@ import com.vikadata.api.model.vo.organization.UnitSearchResultVo;
 import com.vikadata.api.model.vo.organization.UnitTeamVo;
 import com.vikadata.api.modular.organization.model.LoadSearchDTO;
 
-/**
- * <p>
- * 组织单元 服务接口
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/1/10 14:19
- */
 public interface IOrganizationService {
 
     /**
-     * 搜索组织单元
+     * search unit.
      *
-     * @param spaceId  空间ID
-     * @param likeWord 搜索词
-     * @param highlightClassName 高亮样式名称
+     * @param spaceId space id
+     * @param likeWord key wrod
+     * @param highlightClassName the highlighted style
      * @return UnitSearchResultVo
-     * @author Shawn Deng
-     * @date 2020/2/21 01:58
      */
     UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord, String highlightClassName);
 
     /**
-     * 查询部门下的组织单元资源
+     * query units in the the team.
      *
-     * @param spaceId 空间ID
-     * @param teamId  部门ID
-     * @return SubUnitResultVo视图
-     * @author Shawn Deng
-     * @date 2020/2/24 15:28
+     * @param spaceId space id
+     * @param teamId team id
+     * @return SubUnitResultVo
      */
     SubUnitResultVo findSubUnit(String spaceId, Long teamId);
 
     /**
-     * 查询部门类型组织单元视图
+     * query the team's unit info.
      *
-     * @param spaceId 空间ID
-     * @param teamId  部门ID
+     * @param spaceId space id
+     * @param teamId team id
      * @return UnitTeamVo
-     * @author Shawn Deng
-     * @date 2020/7/16 11:17
      */
     UnitTeamVo findUnitTeamVo(String spaceId, Long teamId);
 
     /**
-     * 查询部门类型组织单元视图
+     * query the teams' unit info.
      *
-     * @param spaceId 空间ID
-     * @param teamIds 部门ID列表
+     * @param spaceId space id
+     * @param teamIds team ids
      * @return UnitTeamVo List
-     * @author Shawn Deng
-     * @date 2020/2/28 17:07
      */
     List<UnitTeamVo> findUnitTeamVo(String spaceId, List<Long> teamIds);
 
     UnitMemberVo finUnitMemberVo(Long memberId);
 
     /**
-     * 查询成员类型组织单元视图
+     * query the members' unit info.
      *
-     * @param memberIds 成员ID列表
+     * @param memberIds member ids
      * @return UnitMemberVo List
-     * @author Shawn Deng
-     * @date 2020/2/28 17:07
      */
     List<UnitMemberVo> findUnitMemberVo(List<Long> memberIds);
 
     /**
      * query admins information
      *
-     * @param memberIds member's id
-     * @param spaceId space's id
+     * @param memberIds member ids
+     * @param spaceId space id
      * @return admins information
      */
     List<UnitMemberVo> findAdminsVo(List<Long> memberIds, String spaceId);
 
     /**
-     * 加载/搜索 组织单元信息视图
+     * load or search unit
      *
-     * @param userId    用户ID
-     * @param spaceId   空间ID
-     * @param params  搜索条件
+     * @param userId    user id
+     * @param spaceId space id
+     * @param params  search key
      * @return UnitInfoVo
-     * @author Chambers
-     * @date 2020/5/27
      */
     List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params, Long sharer);
 
     /**
-     * 精准查询组织单元名称
+     * accurate search
      *
-     * @param spaceId 空间ID
-     * @param names   名称
+     * @param spaceId space id
+     * @param names   unit names
      * @return UnitInfoVo
-     * @author Chambers
-     * @date 2020/10/12
      */
     List<UnitInfoVo> accurateSearch(String spaceId, List<String> names);
 
     /**
-     * 加载成员所属部门组织树首级部门
+     * Load the first department of the organization tree to which a member belongs
      *
-     * @param spaceId 空间ID
-     * @param teamIds 部门ID
+     * @param spaceId space id
+     * @param teamIds team ids
      * @return SubUnitResultVo
-     * @author liuzijing
-     * @date 2022/5/12
      */
     SubUnitResultVo loadMemberFirstTeams(String spaceId, List<Long> teamIds);
 
     /**
-     * 加载成员所属部门组织树首级部门ID
+     * Load the first department id of the organization tree to which a member belongs
      *
-     * @param spaceId 空间ID
-     * @param teamIds 部门ID
-     * @return teamIds 部门ID
-     * @author liuzijing
-     * @date 2022/5/12
+     * @param spaceId space id
+     * @param teamIds team ids
+     * @return teamIds
      */
     List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds);
 }

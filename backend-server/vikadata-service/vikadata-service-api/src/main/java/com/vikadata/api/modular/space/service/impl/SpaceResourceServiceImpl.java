@@ -14,21 +14,13 @@ import java.util.List;
 
 import static com.vikadata.api.enums.exception.SpacePermissionException.NO_RESOURCE_ASSIGNABLE;
 
-/**
- * <p>
- * 工作空间-权限资源表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 @Service
 @Slf4j
 public class SpaceResourceServiceImpl extends ServiceImpl<SpaceResourceMapper, SpaceResourceEntity> implements ISpaceResourceService {
 
     @Override
     public void checkResourceAssignable(List<String> resourceCodes) {
-        log.info("检查资源是否可分配");
+        log.info("check whether resource assignable");
         int count = SqlTool.retCount(baseMapper.selectAssignableCountInResourceCode(resourceCodes));
         ExceptionUtil.isTrue(resourceCodes.size() == count, NO_RESOURCE_ASSIGNABLE);
     }

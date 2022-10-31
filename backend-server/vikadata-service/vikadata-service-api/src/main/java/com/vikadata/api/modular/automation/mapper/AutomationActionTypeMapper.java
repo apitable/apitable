@@ -5,13 +5,13 @@ import com.vikadata.entity.AutomationActionTypeEntity;
 
 import java.util.List;
 
-
-/**
- * <p>
- * Automation 机器人 Mapper 接口
- * </p>
- */
 public interface AutomationActionTypeMapper extends BaseMapper<AutomationActionTypeEntity> {
 
+    /**
+     * get action type by endpoint.
+     * @param endpoint  invocation interface
+     * @return action type
+     */
     String getActionTypeIdByEndpoint(String endpoint);
+
 }

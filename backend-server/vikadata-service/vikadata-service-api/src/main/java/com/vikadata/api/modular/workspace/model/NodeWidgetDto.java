@@ -2,27 +2,21 @@ package com.vikadata.api.modular.workspace.model;
 
 import lombok.Data;
 
-/**
- * 节点小程序信息视图
- *
- * @author liuzijing
- * @date 2022/7/29
- */
 @Data
 public class NodeWidgetDto {
 
     /**
-     * 小程序名称
+     * widget name
      */
     private String widgetName;
 
     /**
-     * 小程序引用数表ID
+     * widget reference datasheet
      */
     private String dstId;
 
     /**
-     * 节点ID
+     * node id
      */
     private String nodeId;
 }

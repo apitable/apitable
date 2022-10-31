@@ -4,14 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-/**
- * <p>
- * 小程序相关 mapper
- * </p>
- *
- * @author Chambers
- * @date 2022/1/28
- */
 public interface WidgetMapper {
 
     int addDatasheetWidgetSourceData();

@@ -3,17 +3,12 @@ package com.vikadata.api.modular.space.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.vikadata.api.support.serializer.ImageSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
+
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-/**
- * <p>
- *     被邀请用户信息
- * </p>
- *
- * @author liuzijing
- * @date 2022/8/23
- */
 @Data
+@ApiModel("Invited User")
 public class InviteUserInfo {
 
     /**

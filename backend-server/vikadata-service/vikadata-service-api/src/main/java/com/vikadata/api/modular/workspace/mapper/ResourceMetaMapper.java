@@ -7,43 +7,23 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.entity.ResourceMetaEntity;
 
-/**
- * <p>
- * 工作台-资源元数据表 Mapper 接口
- * </p>
- *
- * @author Chambers
- * @date 2020/12/18
- */
 public interface ResourceMetaMapper {
 
     /**
-     * 查询实体列表
-     *
-     * @param resourceIds 资源 ID 列表
-     * @return entities
-     * @author Chambers
-     * @date 2020/12/18
+     * @param resourceIds resource ids
+     * @return metas
      */
     List<ResourceMetaEntity> selectByResourceIds(@Param("list") Collection<String> resourceIds);
 
     /**
-     * 查询元数据
-     *
-     * @param resourceId 资源ID
+     * @param resourceId resource id
      * @return meta
-     * @author Chambers
-     * @date 2021/1/27
      */
     String selectMetaDataByResourceId(@Param("resourceId") String resourceId);
 
     /**
-     * 批量新增资源元数据
-     *
-     * @param entities 实体列表
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2020/12/18
+     * @param entities resource metas
+     * @return affected rows
      */
     int insertBatch(@Param("entities") Collection<ResourceMetaEntity> entities);
 

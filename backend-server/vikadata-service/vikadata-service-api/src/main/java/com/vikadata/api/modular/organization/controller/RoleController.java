@@ -54,15 +54,8 @@ import static com.vikadata.api.enums.exception.OrganizationException.ROLE_EXIST_
 import static com.vikadata.api.enums.exception.OrganizationException.SPACE_EXIST_ROLES;
 import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN_SPACE;
 
-/**
- * <p>
- *      Contacts - role module's controller.
- * </p>
- *
- * @author wuyitao
- */
 @RestController
-@Api(tags = "Contacts - role module")
+@Api(tags = "Contacts Role Api")
 @ApiResource(path = "/org")
 @Slf4j
 public class RoleController {
@@ -95,7 +88,7 @@ public class RoleController {
     @PostResource(path = "/roles/{roleId}", method = RequestMethod.PATCH, name = "update role information", tags = "UPDATE_ROLE")
     @ApiOperation(value = "update role information", notes = "update role information", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     })
     public ResponseData<Void> updateRole(@PathVariable("roleId") Long roleId, @RequestBody @Valid UpdateRoleRo data) {
         String spaceId = LoginContext.me().getSpaceId();

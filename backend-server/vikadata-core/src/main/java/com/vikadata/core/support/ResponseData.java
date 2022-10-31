@@ -9,33 +9,31 @@ import static com.vikadata.core.constants.ResponseExceptionConstants.DEFAULT_SUC
 
 /**
  * <p>
- * 响应结果包装
+ *  response result wrapper
  * </p>
  *
- * @author Shawn Deng
- * @date 2019/9/4 14:59
  */
 public class ResponseData<T> implements Serializable {
 
     private static final long serialVersionUID = 6941456238190558441L;
 
     /**
-     * 请求是否成功
+     * Is request successful?
      */
     private Boolean success;
 
     /**
-     * 响应状态码
+     * response status code
      */
     private Integer code;
 
     /**
-     * 响应信息
+     * response status code's message
      */
     private String message;
 
     /**
-     * 响应对象
+     * response object
      */
     private T data;
 

@@ -10,8 +10,6 @@ import lombok.Data;
  * <p>
  * Migrate wecom isv orders to billing
  * </p>
- * @author Codeman
- * @date 2022-09-02 11:30:24
  */
 @Data
 @ApiModel("Migrate wecom isv orders to billing")

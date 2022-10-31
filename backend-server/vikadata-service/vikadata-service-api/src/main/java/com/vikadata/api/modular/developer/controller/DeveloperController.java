@@ -36,14 +36,11 @@ import static com.vikadata.api.enums.exception.DeveloperException.USER_DEVELOPER
 
 /**
  * <p>
- * 开发者配置中心Web界面的接口
+ *  Api for the developer configuration interface.
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/5/27 15:19
  */
 @RestController
-@Api(tags = "开发者配置接口")
+@Api(tags = "Developer Config API")
 @ApiResource(path = "/user")
 public class DeveloperController {
 
@@ -57,14 +54,14 @@ public class DeveloperController {
     private UserMapper userMapper;
 
     @GetResource(path = "/valid/{apiKey}", requiredLogin = false)
-    @ApiOperation(value = "校验访问令牌", notes = "提供中间层校验访问令牌")
+    @ApiOperation(value = "Verify the access token", notes = "Provides a mid-tier validation access token.")
     public ResponseData<Boolean> validateApiKey(@PathVariable("apiKey") String apiKey) {
         boolean valid = iDeveloperService.validateApiKey(apiKey);
         return ResponseData.success(valid);
     }
 
     @PostResource(path = "/createApiKey", requiredPermission = false)
-    @ApiOperation(value = "创建开发者访问令牌", notes = "创建开发者访问令牌，访问开放平台功能")
+    @ApiOperation(value = "Create the developer access token", notes = "Create developer access tokens to access open platform functionality.")
     public ResponseData<DeveloperInfoVo> createApiKey() {
         Long userId = SessionContext.getUserId();
         boolean hasCreate = iDeveloperService.checkHasCreate(userId);
@@ -72,36 +69,36 @@ public class DeveloperController {
         String apiKey = iDeveloperService.createApiKey(userId);
         DeveloperInfoVo developerInfoVo = new DeveloperInfoVo();
         developerInfoVo.setApiKey(apiKey);
-        // 删除缓存
+        // Delete the cache.
         userLinkInfoService.delete(userId);
         return ResponseData.success(developerInfoVo);
     }
 
     @PostResource(path = "/refreshApiKey", requiredPermission = false)
-    @ApiOperation(value = "刷新开发者访问令牌", notes = "刷新开发者访问令牌，验证手机号，若无验证邮箱，再无免校验")
+    @ApiOperation(value = "Refresh the developer access token", notes = "Refresh developer access token before verifying phone number.If there is no verification mailbox, skip verification.")
     public ResponseData<DeveloperInfoVo> refreshApiKey(@RequestBody @Valid RefreshApiKeyRo data) {
         Long userId = SessionContext.getUserId();
         UserEntity userEntity = userMapper.selectById(userId);
         ExceptionUtil.isNotNull(userEntity, UserException.USER_NOT_EXIST);
         if (data.getType() == ValidateType.EMAIL_CODE) {
-            // 校验邮件验证码
+            // Verify the email verification code.
             ValidateTarget target = ValidateTarget.create(userEntity.getEmail());
             ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL)
                     .validate(target, data.getCode(), true, CodeValidateScope.COMMON_VERIFICATION);
         } else if (data.getType() == ValidateType.SMS_CODE) {
-            // 校验短信验证码
+            // Verify the sms verification code.
             ValidateTarget target = ValidateTarget.create(userEntity.getMobilePhone(), userEntity.getCode());
             ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS)
                     .validate(target, data.getCode(), true, CodeValidateScope.RESET_API_KEY);
         } else {
-            // 帐号同时未绑定手机、邮箱，才允许跳过验证码校验
+            // Verification code verification can be skipped only when the account is not bound to a mobile phone or email address.
             ExceptionUtil.isTrue(StrUtil.isBlank(userEntity.getEmail())
                     && StrUtil.isBlank(userEntity.getMobilePhone()), GENERATE_API_KEY_ERROR);
         }
         boolean hasCreate = iDeveloperService.checkHasCreate(userId);
         ExceptionUtil.isTrue(hasCreate, USER_DEVELOPER_NOT_FOUND);
         String apiKey = iDeveloperService.refreshApiKey(userId);
-        // 删除缓存
+        // Delete the cache.
         userLinkInfoService.delete(userId);
         DeveloperInfoVo developerInfoVo = new DeveloperInfoVo();
         developerInfoVo.setApiKey(apiKey);

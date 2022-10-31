@@ -46,14 +46,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 
-/**
- * <p>
- * 抽象的提醒类
- * </p>
- *
- * @author Pengap
- * @date 2021/10/10 20:45:16
- */
 @Slf4j
 public abstract class AbstractRemind implements DatasheetRemindObserver {
 
@@ -84,55 +76,55 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     @Override
     public void sendNotify(NotifyDataSheetMeta meta) {
         if (meta.fromMemberId == null && meta.fromUserId == null) {
-            log.info("[提及通知]-meta:fromMemberId｜fromUserId为空不发送消息");
+            log.info("[remind notification]-meta:fromMemberId｜fromUserId is null, do not send messages.");
             return;
         }
         if (CollUtil.isEmpty(meta.toMemberIds)) {
-            log.info("[提及通知]-meta:toMemberIds为空不发送消息");
+            log.info("[remind notification]-meta:toMemberIds is null, do not send messages.");
             return;
         }
-        // 构建参数
+        // build parameters
         this.buildExtraParameter(meta);
-        // 判断是否发送
+        // determine whether to send
         if (!isSend(meta)) {
             return;
         }
-        // 成员
+        // member
         if (meta.remindType == RemindType.MEMBER) {
             this.notifyMemberAction(meta);
         }
-        // 评论
+        // comment
         if (meta.remindType == RemindType.COMMENT) {
             this.notifyCommentAction(meta);
         }
     }
 
     /**
-     * 获取发送订阅类型
+     * get the send subscription type
      */
     public abstract RemindSubjectEnum getRemindType();
 
     /**
-     * 通知@成员操作
+     * notify @member actions
      */
     public abstract void notifyMemberAction(NotifyDataSheetMeta meta);
 
     /**
-     * 通知评论操作
+     * notify comments actions
      */
     public abstract void notifyCommentAction(NotifyDataSheetMeta meta);
 
     /**
-     * 构建额外的通知参数
+     * build additional notification parameters
      */
     private NotifyDataSheetMeta buildExtraParameter(NotifyDataSheetMeta meta) {
         String nodeName = getNodeName(meta.nodeId);
 
         if (getRemindType() == RemindSubjectEnum.EMIL) {
-            // 发送Email时需要使用的参数
+            // parameters to use when sending email
             List<Long> sendMemberIds = new ArrayList<>();
             meta.toMemberIds.forEach(id -> {
-                // 15秒内限发一次
+                // limit one time in 15 seconds
                 String lockKey = StrUtil.format(GENERAL_LOCKED, "datasheet:remind", StrUtil.format("{}to{}in{}", meta.fromMemberId, id, meta.nodeId));
                 BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(lockKey);
                 Boolean result = ops.setIfAbsent("", 15, TimeUnit.SECONDS);
@@ -140,7 +132,7 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
                     sendMemberIds.add(id);
                 }
             });
-            log.warn("[提及通知]-发送用户mail地址 - sendMemberIds：{}", sendMemberIds);
+            log.warn("[remind notification] - send user mail - sendMemberIds：{}", sendMemberIds);
             if (CollUtil.isNotEmpty(sendMemberIds)) {
                 List<String> sendEmails = CollUtil.removeBlank(memberMapper.selectEmailByBatchMemberId(sendMemberIds));
                 String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
@@ -148,37 +140,37 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
                 List<MailWithLang> tos = emailsWithLang.stream()
                         .map(emailWithLang -> new MailWithLang(emailWithLang.getLocale(), emailWithLang.getEmail()))
                         .collect(Collectors.toList());
-                log.warn("[提及通知]-发送用户mail地址 - sendEmails：{}", sendEmails);
+                log.warn("[remind notification] - send user mail - sendEmails：{}", sendEmails);
                 if (CollUtil.isNotEmpty(sendEmails)) {
                     MailRemindParameter mailRemindParameter = new MailRemindParameter();
-                    // 发送Email集合
+                    // send email collection
                     mailRemindParameter.setSendEmails(tos);
-                    // 发送者名称
+                    // sender name
                     mailRemindParameter.setFromMemberName(getMemberName(meta.fromMemberId, meta.fromUserId));
-                    // 空间站名称
+                    // space name
                     mailRemindParameter.setSpaceName(getSpaceName(meta.spaceId));
-                    // 节点名称
+                    // node name
                     mailRemindParameter.setNodeName(nodeName);
-                    // 通知Url
+                    // notify url
                     mailRemindParameter.setNotifyUrl(buildNotifyUrl(meta, true));
                     meta.setMailRemindParameter(mailRemindParameter);
                 }
             }
         }
         else if (ArrayUtil.contains(RemindSubjectEnum.getImSubject(), getRemindType())) {
-            // 发送Im时需要使用的参数
-            // 查询成员的第三方集成用户标识
+            // parameters to use when sending im
+            // Query the third-party integrated user identity of the member
             String fromOpenId = memberMapper.selectOpenIdByMemberId(meta.fromMemberId);
             List<String> sendOpenIds = memberMapper.selectOpenIdByMemberIds(meta.toMemberIds);
             sendOpenIds = CollUtil.removeEmpty(sendOpenIds);
-            log.warn("[提及通知]-发送用户Im信息 - fromOpenId：{} - sendOpenIds：{}", fromOpenId, sendOpenIds);
+            log.warn("[remind notification]- send user im information - fromOpenId：{} - sendOpenIds：{}", fromOpenId, sendOpenIds);
             if (StrUtil.isNotBlank(fromOpenId) && CollUtil.isNotEmpty(sendOpenIds)) {
                 IMRemindParameter iMRemindParameter = new IMRemindParameter();
-                // 发送者
+                // sender
                 iMRemindParameter.setFromOpenId(fromOpenId);
-                // 发送OpenIds
+                // send to OpenIds
                 iMRemindParameter.setSendOpenIds(sendOpenIds);
-                // 发送者名称
+                // sender name
                 Integer appType = meta.getAppType();
                 if (Objects.nonNull(appType) && appType == SocialAppType.ISV.getType()) {
                     MemberEntity memberEntity = getMember(meta.getFromMemberId());
@@ -188,9 +180,9 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
                 } else {
                     iMRemindParameter.setFromMemberName(getMemberName(meta.fromMemberId));
                 }
-                // 节点名称
+                // node name
                 iMRemindParameter.setNodeName(nodeName);
-                // 通知Url
+                // notify url
                 iMRemindParameter.setNotifyUrl(buildNotifyUrl(meta, false));
                 meta.setImRemindParameter(iMRemindParameter);
             }
@@ -199,20 +191,20 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     }
 
     /**
-     * 是否发送
+     * whether to send
      */
     private boolean isSend(NotifyDataSheetMeta meta) {
         if (getRemindType() == RemindSubjectEnum.EMIL) {
             MailRemindParameter mailRemindParameter = meta.getMailRemindParameter();
             if (null == mailRemindParameter || CollUtil.isEmpty(mailRemindParameter.getSendEmails())) {
-                log.warn("[提及通知]-spaceId:{},用户mail地址不存在,不发送消息 - fromMemberId：{} - toMemberIds：{}", meta.getSpaceId(), meta.getFromMemberId(), meta.getToMemberIds());
+                log.warn("[remind notification]-spaceId:{}, the user's mail address does not exist and does not send messages. - fromMemberId：{} - toMemberIds：{}", meta.getSpaceId(), meta.getFromMemberId(), meta.getToMemberIds());
                 return false;
             }
         }
         else if (ArrayUtil.contains(RemindSubjectEnum.getImSubject(), getRemindType())) {
             IMRemindParameter iMRemindParameter = meta.getImRemindParameter();
             if (null == iMRemindParameter || StrUtil.isBlank(iMRemindParameter.getFromOpenId()) || CollUtil.isEmpty(iMRemindParameter.getSendOpenIds())) {
-                log.warn("[提及通知]-spaceId:{},用户Im信息不存在,不发送消息 - fromMemberId：{} - toMemberIds：{}", meta.getSpaceId(), meta.getFromMemberId(), meta.getToMemberIds());
+                log.warn("[remind notification]-spaceId:{}, the user's im info does not exist and does not send messages. - fromMemberId：{} - toMemberIds：{}", meta.getSpaceId(), meta.getFromMemberId(), meta.getToMemberIds());
                 return false;
             }
         }
@@ -220,20 +212,20 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     }
 
     /**
-     * 构建通知Url
+     * build notification url
      *
-     * 通知Url构建格式：
+     * notification url build format
      * </p>
      * {ServerDomain}/workbench/{mirrorId}/{nodeId}/{viewId}/{recordId}?comment=1&notifyId={notifyId}
      * </p>
-     * Url参数：
+     * Url parameters:
      * </p>
-     * ServerDomain：当前服务域名（可选）</br>
-     * mirrorId：镜像节点Id（可能为空）</br>
-     * nodeId：数表Id </br>
-     * viewId：数表视图Id </br>
-     * recordId：行记录Id </br>
-     * notifyId：通知Id </br>
+     * ServerDomain：current service domain name (optional)</br>
+     * mirrorId：mirror node Id (maybe empty)</br>
+     * nodeId：datasheet id </br>
+     * viewId：datasheet view Id </br>
+     * recordId：rowId </br>
+     * notifyId：nofityId </br>
      */
     protected String buildNotifyUrl(NotifyDataSheetMeta meta, boolean falgServerDomain) {
         StringBuilder notifyUr = new StringBuilder();
@@ -241,10 +233,10 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
             notifyUr.append(constProperties.getServerDomain());
         }
 
-        // 路径
+        // path
         UrlPath notifyPath = UrlPath.of("workbench", CharsetUtil.CHARSET_UTF_8);
         notifyPath.add(meta.nodeId);
-        // 判断节点是否是镜像
+        // determine whether the node is a mirror
         if (meta.getNodeId().startsWith(IdRulePrefixEnum.MIRROR.getIdRulePrefixEnum())) {
             // DataSheetId
             NodeRelEntity mainNode = nodeRelMapper.selectByRelNodeId(meta.getNodeId());
@@ -254,9 +246,9 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
         notifyPath.add(meta.viewId).add(meta.recordId);
         notifyUr.append(notifyPath.build(CharsetUtil.CHARSET_UTF_8));
 
-        // 参数
+        // query parameters
         UrlQuery notifyQuery = meta.remindType == RemindType.MEMBER ? new UrlQuery() : UrlQuery.of("comment=1", CharsetUtil.CHARSET_UTF_8);
-        // notifyId需要将消息标记为已读
+        // notifyId need to mark the message as read
         notifyQuery.add("notifyId", meta.notifyId);
         notifyUr.append('?').append(notifyQuery.build(CharsetUtil.CHARSET_UTF_8));
 
@@ -280,7 +272,7 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     }
 
     /**
-     * 获取成员名称，memberId == null，查询defaultUserId
+     * get member name. if memberId == null, query defaultUserId
      */
     protected String getMemberName(Long memberId, Long defaultUserId) {
         if (null != memberId) {

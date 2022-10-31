@@ -8,68 +8,65 @@ import cn.hutool.core.util.ArrayUtil;
 
 /**
  * <p>
- * V2 构造树节点的接口规范
+ * V2 interface: the tree node's behavior
  * </p>
- *
- * @author Pengap
- * @date 2021/8/9 15:18:21
  */
 @SuppressWarnings("unchecked")
 public interface Tree extends Serializable {
 
     /**
-     * 获取节点id
+     * get the node's id
      *
-     * @return 节点id
+     * @return node id
      */
     String getId();
 
     /**
-     * 获取节点父id
+     * get the parent node's id
      *
-     * @return 父节点ID
+     * @return the parent node id
      */
     String getParentId();
 
     /**
-     * 设置父节点ID
+     * set the parent node's id
      *
-     * @parentId 父节点ID
+     * @param parentId  the parent node id
      */
     void setParentId(String parentId);
 
     /**
-     * 获取子节点数据
+     * get the child nodes
      *
-     * @return 子节点
+     * @return the list of children nodes
      */
     List getChildren();
 
     /**
-     * 设置children
+     * set the child nodes
      *
-     * @param children 子节点
+     * @param children the list of children nodes
      */
     void setChildren(List children);
 
     /**
-     * 设置树层级
+     * set the tree level
      *
-     * @param level 树层级
+     * @param level the tree level
      */
     void setLevel(int level);
 
     /**
-     * 获取树层级
+     * get the tree level
      *
-     * @return 树层级
+     * @return the tree level
      */
     int getLevel();
 
     /**
-     * 增加子节点，同时关联子节点的父节点为当前节点
+     * add child node，and set the child node's parent node is this node
      *
-     * @param children 子节点列表
+     * @param children the list of children nodes
      * @return this
      */
     default Tree addChildren(Tree... children) {

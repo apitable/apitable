@@ -72,14 +72,6 @@ import static com.vikadata.api.enums.exception.ActionException.FILE_EMPTY;
 import static com.vikadata.api.enums.exception.ActionException.FILE_ERROR_CONTENT;
 import static com.vikadata.api.enums.exception.ActionException.FILE_ERROR_PASSWORD;
 
-/**
- * <p>
- * Vika Bundle 服务实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/4/15
- */
 @Slf4j
 @Service
 public class VikaBundleServiceImpl implements VikaBundleService {
@@ -116,15 +108,15 @@ public class VikaBundleServiceImpl implements VikaBundleService {
 
     @Override
     public void generate(String nodeId, boolean saveData, String password) {
-        log.info("生成vika文件");
-        // 校验节点是否存在
+        log.info("generate bundle file");
+        // check whether the node exists
         NodeEntity node = nodeMapper.selectByNodeId(nodeId);
         ExceptionUtil.isNotNull(node, PermissionException.NODE_ACCESS_DENIED);
-        // 创建随机临时目录，避免同节点被同时使用
+        // Create random temporary directories to avoid simultaneous use of the same node.
         String dir = RandomExtendUtil.randomString(6);
         Digester md5 = new Digester(DigestAlgorithm.MD5);
         List<File> files = new ArrayList<>();
-        // 向下遍历所有节点
+        // traverse all nodes down
         List<String> nodeIds = CollUtil.newArrayList(nodeId);
         Map<String, String> nodeIdToFileNameMap = CollUtil.newHashMap();
         List<NodeShareTree> childrenList = new ArrayList<>();
@@ -135,19 +127,19 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                 nodeIds.addAll(ids);
             }
         }
-        // 构建资源文件
+        // build resource files
         List<NodeAssetDto> nodeAssetDtoList = spaceAssetMapper.selectNodeAssetDto(nodeIds);
         if (CollUtil.isNotEmpty(nodeAssetDtoList)) {
             String jsonArrStrEncode = Base64.encode(JSONUtil.parseArray(nodeAssetDtoList).toString());
             File assets = FileUtil.writeUtf8String(jsonArrStrEncode, StrUtil.format("{}/{}--{}", dir, ASSET_DIR, md5.digestHex(jsonArrStrEncode)));
             files.add(assets);
         }
-        // 构建数据文件
+        // build data files
         Map<String, String> nodeIdToDescMap = iNodeDescService.getNodeIdToDescMap(nodeIds);
         Map<String, List<String>> foreignDstIdsMap = iDatasheetService.getForeignDstIds(nodeIds, true);
         if (MapUtil.isNotEmpty(foreignDstIdsMap)) {
             nodeIds = (List<String>) CollUtil.subtract(nodeIds, foreignDstIdsMap.keySet());
-            // 处理关联数表
+            // processing correlation table
             foreignDstIdsMap.forEach((dstId, foreignDstIds) -> {
                 SnapshotMapRo snapshotMapRo = iDatasheetService.delFieldIfLinkDstId(null, dstId, foreignDstIds, false);
                 if (!saveData) {
@@ -157,12 +149,12 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             });
         }
         if (CollUtil.isNotEmpty(nodeIds)) {
-            // 获取snapshot
+            // get snapshot
             Map<String, SnapshotMapRo> snapshotMap = iDatasheetService.findSnapshotMapByDstIds(nodeIds, saveData);
             nodeIds.stream().filter(id -> snapshotMap.get(id) != null || nodeIdToDescMap.get(id) != null).forEach(
                 id -> createDataFile(dir, md5, nodeIdToFileNameMap, files, id, snapshotMap.get(id), nodeIdToDescMap.get(id)));
         }
-        // 构建文件树，生成manifest
+        // build a file tree and generate manifest
         NodeFileTree root = new NodeFileTree(null, nodeId, node.getNodeName(), node.getIcon(), node.getType(), node.getCover(), nodeIdToFileNameMap.get(nodeId));
         if (CollUtil.isNotEmpty(childrenList)) {
             List<NodeFileTree> childList = new ArrayList<>();
@@ -194,7 +186,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             ExportUtil.exportBytes(IoUtil.readBytes(new FileInputStream(zipFile)),
                 URLEncoder.encode(zipFile.getName(), StandardCharsets.UTF_8.name()), "application/zip");
         } catch (IOException e) {
-            log.error("生成 VikaBundle 失败", e);
+            log.error("generation bundle failed", e);
         } finally {
             FileUtil.del(dir);
         }
@@ -203,10 +195,10 @@ public class VikaBundleServiceImpl implements VikaBundleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void analyze(MultipartFile file, String password, String parentId, String preNodeId, Long userId) {
-        log.info("解析vika文件");
+        log.info("parse bundle file");
         ExceptionUtil.isNotNull(file, FILE_EMPTY);
         ExceptionUtil.isTrue(StrUtil.isNotBlank(parentId) || StrUtil.isNotBlank(preNodeId), ParameterException.INCORRECT_ARG);
-        // 校验前置节点是否在父节点下，若不是保存在父节点首位
+        // Check whether the pre-node is under the parent node, if not saved in the first place of the parent node
         if (StrUtil.isNotBlank(preNodeId)) {
             String nodeParentId = nodeMapper.selectParentIdByNodeId(preNodeId);
             if (StrUtil.isBlank(parentId)) {
@@ -220,7 +212,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
         iNodeService.checkEnableOperateNodeBySpaceFeature(memberId, spaceId, parentId);
         String manifestStr = null;
         String assetsContent = null;
-        // 获取文件
+        // get file
         Map<String, String> fileNameToContentMap = MapUtil.newHashMap();
         try (ZipInputStream zip = new ZipInputStream(file.getInputStream())) {
             ZipEntry entry;
@@ -241,33 +233,33 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                 }
             }
         } catch (IOException e) {
-            log.info("解析 Vika Bundle 失败");
+            log.info("parsing bundle file failed");
             throw new BusinessException(FILE_ERROR_CONTENT);
         }
         ExceptionUtil.isNotBlank(manifestStr, FILE_ERROR_CONTENT);
-        // 文件解析
+        // file parsing
         try {
             Manifest manifest = JSONUtil.parseObj(manifestStr).toBean(Manifest.class);
-            // 校验解析密码
+            // verify parsing password
             ExceptionUtil.isTrue(StrUtil.isBlank(manifest.getEncryption()) ||
                 (StrUtil.isNotBlank(password) && passwordEncoder.matches(password, manifest.getPassword())), FILE_ERROR_PASSWORD);
-            // 处理文件树
+            // processing file tree
             List<NodeEntity> nodeList = new ArrayList<>();
             Map<String, String> newNodeIdMap = MapUtil.newHashMap();
             Map<String, List<DataSheetCreateRo>> fileNameToNodeMap = MapUtil.newHashMap();
             NodeFileTree root = manifest.getRoot();
-            // 如果导出的是根节点，修改为文件夹类型
+            // If the export is a root node, modify it to folder type
             if (root.getType() == NodeType.ROOT.getNodeType()) {
                 root.setType(NodeType.FOLDER.getNodeType());
             }
-            // 同级重复名称修改
+            // duplicate name modification at the same level
             String name = iNodeService.duplicateNameModify(parentId, root.getType(), root.getNodeName(), null);
             root.setNodeName(name);
             this.processNode(userId, spaceId, parentId, preNodeId, root, nodeList, newNodeIdMap, fileNameToNodeMap);
-            // 处理data文件
+            // processing data files
             if (MapUtil.isNotEmpty(fileNameToNodeMap)) {
                 ExceptionUtil.isTrue(fileNameToNodeMap.size() == fileNameToContentMap.size(), FILE_ERROR_CONTENT);
-                // 获取原节点所属的空间ID，若与保存的空间不一致，则需清除成员字段相关的数据
+                // Obtain the ID of the space to which the original node belongs. If it is inconsistent with the saved space, you need to clear the data related to the member field.
                 String sourceSpaceId = nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(root.getNodeId());
                 boolean same = spaceId.equals(sourceSpaceId);
                 List<NodeDescEntity> nodeDescList = new ArrayList<>();
@@ -293,10 +285,10 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                 });
                 iNodeDescService.insertBatch(nodeDescList);
             }
-            // 更新原前置节点后的节点，位置后移一位
+            // The node after the original front node is updated, and the position is moved back by one bit.
             nodeMapper.updatePreNodeIdBySelf(newNodeIdMap.get(root.getNodeId()), preNodeId, parentId);
             iNodeService.insertBatch(nodeList, null);
-            // 处理资源文件
+            // processing resource files
             if (StrUtil.isNotBlank(assetsContent)) {
                 List<NodeAssetDto> list = JSONUtil.parseArray(Base64.decodeStr(assetsContent)).toList(NodeAssetDto.class);
                 iSpaceAssetService.processNodeAssets(newNodeIdMap, spaceId, list);
@@ -330,14 +322,14 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             List<DataSheetCreateRo> roList = fileNameToNodeMap.get(fileName);
             DataSheetCreateRo ro = DataSheetCreateRo.builder().nodeId(nodeId).name(node.getNodeName()).build();
             if (CollUtil.isNotEmpty(roList)) {
-                // 多个文件夹描述相同的情况，指向同一个数据文件
+                // Multiple folders describe the same situation and point to the same data file.
                 roList.add(ro);
             } else {
                 fileNameToNodeMap.put(fileName, CollUtil.newArrayList(ro));
             }
         }
         if (!isDst && CollUtil.isNotEmpty(node.getChild())) {
-            // 处理子节点
+            // processing child nodes
             this.processChildList(userId, spaceId, nodeId, node.getChild(), nodeList, newNodeIdMap, fileNameToNodeMap);
         }
     }
@@ -354,7 +346,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
         NodeDataFile dataFile = new NodeDataFile(nodeDesc, snapshotMapRo);
         String jsonStrEncode = Base64.encode(JSONUtil.parseObj(dataFile).toString());
         String fileName = StrUtil.join(".", md5.digestHex(jsonStrEncode), "vikadata");
-        // 已存在相同文件不重复生成（情景：文件夹描述相同）
+        // The same file already exists and is not generated repeatedly (scenario: folder description is the same)
         if (!nodeIdToFileNameMap.containsValue(fileName)) {
             File file = FileUtil.writeUtf8String(jsonStrEncode, StrUtil.format("{}/{}--{}", dir, DATA_DIR, fileName));
             files.add(file);

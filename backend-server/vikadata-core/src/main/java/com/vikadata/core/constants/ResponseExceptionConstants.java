@@ -2,11 +2,8 @@ package com.vikadata.core.constants;
 
 /**
  * <p>
- * 核心响应异常
+ * Core Response Exceptions
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/12/30 13:13
  */
 public class ResponseExceptionConstants {
 

@@ -3,23 +3,17 @@ package com.vikadata.api.modular.space.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>
- * 空间审计分页参数
- * </p>
- *
- * @author Chambers
- * @date 2022/6/8
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@ApiModel("Space Audit Page")
 public class SpaceAuditPageParam {
 
     private LocalDateTime beginTime;

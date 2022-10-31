@@ -22,14 +22,6 @@ import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.stereotype.Component;
 
-/**
- * <p>
- * 邮件提醒
- * </p>
- *
- * @author Pengap
- * @date 2021/10/9 13:40:49
- */
 @Slf4j
 @Component
 public class MailRemind extends AbstractRemind {
@@ -41,15 +33,16 @@ public class MailRemind extends AbstractRemind {
 
     @Override
     public void notifyMemberAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅邮件提醒=>@成员字段");
+        log.info("[remind notification]-user subscribe email remind=>@member");
         Dict dict = createDict(meta).set("FIELD_NAME", meta.fieldName);
         if (CollUtil.isEmpty(meta.mailRemindParameter.sendEmails)) {
             return;
         }
-        // 当发件人是匿名时，对不同语种的收件人分批，发件人名称填充对应语言的匿名者
+        // When the sender is anonymous, the recipients in different languages are batched,
+        // and the sender name is filled with the anonymous person in the corresponding language.
         if (meta.mailRemindParameter.fromMemberName == null) {
             Map<String, List<MailWithLang>> map = meta.mailRemindParameter.sendEmails.stream().collect(Collectors.groupingBy(MailWithLang::getLocale));
-            // 分批发送
+            // batch send
             for (Map.Entry<String, List<MailWithLang>> entry : map.entrySet()) {
                 Locale locale = Locale.forLanguageTag(entry.getKey());
                 Dict mapDict = Dict.create().set("MEMBER_NAME", VikaStrings.t("anonymous", locale));
@@ -64,8 +57,7 @@ public class MailRemind extends AbstractRemind {
 
     @Override
     public void notifyCommentAction(NotifyDataSheetMeta meta) {
-        log.info("[提及通知]-用户订阅邮件提醒=>评论消息");
-
+        log.info("[remind notification]-user subscribe email remind=>comment");
         Dict dict = createDict(meta)
                 .set("CONTENT", HtmlUtil.unescape(HtmlUtil.filter(meta.extra.getContent())))
                 .set("CREATED_AT", meta.extra.getCreatedAt());
@@ -74,10 +66,10 @@ public class MailRemind extends AbstractRemind {
     }
 
     /**
-     * 创建发送邮件基础参数
+     * create basic parameters for sending messages
      */
     private Dict createDict(NotifyDataSheetMeta meta) {
-        Assert.notNull(meta.mailRemindParameter, () -> new BusinessException("[提及通知]-邮件通知参数不完整"));
+        Assert.notNull(meta.mailRemindParameter, () -> new BusinessException("[remind notification]-incomplete email notification parameters"));
         return Dict.create()
                 .set("MEMBER_NAME", meta.mailRemindParameter.fromMemberName)
                 .set("SPACE_NAME", meta.mailRemindParameter.spaceName)

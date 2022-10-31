@@ -11,11 +11,8 @@ import java.util.Collection;
 
 /**
  * <p>
- * Number列表转字符串列表
+ * Number List to String List
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/4/13 14:57
  */
 public class NumberListToStringListSerializer extends JsonSerializer<Collection<Number>> {
 

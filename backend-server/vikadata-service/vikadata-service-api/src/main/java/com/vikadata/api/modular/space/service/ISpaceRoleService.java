@@ -13,145 +13,103 @@ import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
 import com.vikadata.api.model.vo.space.SpaceRoleVo;
 import com.vikadata.entity.SpaceRoleEntity;
 
-/**
- * <p>
- * 工作空间-角色表 服务类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-02-07
- */
 public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
 
     /**
-     * 查询空间站拥有工作台管理权限的所有管理员
-     * 包括空间主管理员
+     * Queries all space station administrators who have workbench administration
+     * including the main administrator
      *
-     * @param spaceId 空间ID
-     * @return 成员ID集合
-     * @author Shawn Deng
-     * @date 2020/5/15 11:55
+     * @param spaceId space id
+     * @return member ids
      */
     List<Long> getSpaceAdminsWithWorkbenchManage(String spaceId);
 
     /**
-     * 分页查询管理员列表
+     * paging query administrators
      *
-     * @param spaceId 空间ID
-     * @param page    分页参数
-     * @return 分页结果
-     * @author Shawn Deng
-     * @date 2020/2/16 19:12
+     * @param spaceId space id
+     * @param page    paging parameter
+     * @return paging result
      */
     PageInfo<SpaceRoleVo> roleList(String spaceId, IPage<SpaceRoleVo> page);
 
     /**
-     * 创建新角色
+     * creating an administrator
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return SpaceRoleEntity
-     * @author Shawn Deng
-     * @date 2020/2/13 21:26
      */
     SpaceRoleEntity create(String spaceId);
 
     /**
-     * 添加角色
+     * create space role
      *
-     * @param spaceId 空间ID
-     * @param data    请求参数
-     * @author Shawn Deng
-     * @date 2020/2/13 19:58
+     * @param spaceId space id
+     * @param data    request parameters
      */
     void createRole(String spaceId, AddSpaceRoleRo data);
 
     /**
-     * 检查成员在空间内是否不是子管理员
+     * Check whether the member is not a sub-administrator in the space
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/14 00:36
+     * @param spaceId space id
+     * @param memberId memberId
      */
     void checkIsNotSubAdmin(String spaceId, Long memberId);
 
     /**
-     * 检查成员在空间内是否是子管理员
+     * Check the prerequisites for adding an administrator
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/14 00:36
-     */
-    void checkIsSubAdmin(String spaceId, Long memberId);
-
-    /**
-     * 检查添加新管理员前置条件
-     *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/19 16:06
+     * @param spaceId space id
+     * @param memberId memberId
      */
     void checkBeforeCreate(String spaceId, Long memberId);
 
     /**
-     * 获取管理员信息
+     * get space's sub admin info
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
+     * @param spaceId space id
+     * @param memberId memberId
      * @return SpaceRoleDetailVo
-     * @author Shawn Deng
-     * @date 2020/2/15 23:50
      */
     SpaceRoleDetailVo getRoleDetail(String spaceId, Long memberId);
 
     /**
-     * 编辑管理员
+     * edit admin
      *
-     * @param spaceId 空间ID
-     * @param data    请求参数
-     * @author Shawn Deng
-     * @date 2020/2/19 16:13
+     * @param spaceId space id
+     * @param data    request parameters
      */
     void edit(String spaceId, UpdateSpaceRoleRo data);
 
     /**
-     * 删除角色
+     * delete space role
      *
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/16 22:26
+     * @param spaceId space id
+     * @param memberId memberId
      */
     void deleteRole(String spaceId, Long memberId);
 
     /**
-     * 根据成员ID删除
+     * delete space role
      *
-     * @param spaceId   空间ID
-     * @param memberIds 成员ID集合
-     * @author Shawn Deng
-     * @date 2020/6/20 11:03
+     * @param spaceId space id
+     * @param memberIds memberIds
      */
     void batchRemoveByMemberIds(String spaceId, List<Long> memberIds);
 
     /**
-     * 删除空间的子管理员
+     * delete space sub admin
      *
-     * @param spaceId 空间ID
-     * @author Shawn Deng
-     * @date 2020/12/18 12:34
+     * @param spaceId space id
      */
     void deleteBySpaceId(String spaceId);
 
     /**
-     * 检查资源权限赋予子管理员是否包含禁用权限
+     * Check whether the resource permission granted to the sub-administrator contains the disabled permission
      *
-     * @param spaceId              空间ID
-     * @param operateResourceCodes 变更的资源编码
-     * @author Shawn Deng
-     * @date 2020/12/18 12:27
+     * @param spaceId space id
+     * @param operateResourceCodes changed resource code
      */
     void checkAdminResourceChangeAllow(String spaceId, List<String> operateResourceCodes);
 

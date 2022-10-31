@@ -4,61 +4,50 @@ import java.util.List;
 
 /**
  * <p>
- * 树构建的抽象类，定义构建tree的基本步骤
+ *  the tree builder's abstract class, defined the base step of building tree.
  * </p>
- *
- * @author Shawn Deng
- * @date 2018/10/25 20:27
  */
 public abstract class AbstractTreeBuildFactory<T> {
 
     /**
-     * 树节点构建整体过程
+     * the process of building the tree
      *
-     * @param nodes 节点集合
+     * @param nodes the list of nodes
      * @return List
-     * @author Shawn Deng
-     * @date 2018/10/25 20:27
      */
     public List<T> doTreeBuild(List<T> nodes) {
 
-        //构建之前的节点处理工作
+        // the node processing work before building tree
         List<T> readyToBuild = beforeBuild(nodes);
 
-        //具体构建的过程
+        // the main process of building tree
         List<T> buildProcess = executeBuilding(readyToBuild);
 
-        //构建之后的处理工作
+        // the post of processing step
         return afterBuild(buildProcess);
     }
 
     /**
-     * 构建之前的处理工作
+     * Processing before the build
      *
-     * @param nodes 节点集合
+     * @param nodes the list of nodes
      * @return List
-     * @author Shawn Deng
-     * @date 2018/10/25 20:27
      */
     protected abstract List<T> beforeBuild(List<T> nodes);
 
     /**
-     * 构建过程
+     * the build process
      *
-     * @param nodes 节点集合
+     * @param nodes the list of nodes
      * @return List
-     * @author Shawn Deng
-     * @date 2018/10/25 20:27
      */
     protected abstract List<T> executeBuilding(List<T> nodes);
 
     /**
-     * 构建之后的处理工作
+     * processing after the build
      *
-     * @param nodes 节点集合
+     * @param nodes the list of nodes
      * @return List
-     * @author Shawn Deng
-     * @date 2018/10/25 20:28
      */
     protected abstract List<T> afterBuild(List<T> nodes);
 }

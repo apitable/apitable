@@ -6,12 +6,6 @@ import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.TeamEntity;
 import com.vikadata.entity.TeamMemberRelEntity;
 
-/**
- * 通讯录工厂类
- *
- * @author Shawn Deng
- * @date 2020-12-25 15:44:33
- */
 public class OrganizationFactory {
 
     public static MemberEntity createMember(String spaceId, Long userId, String memberName) {

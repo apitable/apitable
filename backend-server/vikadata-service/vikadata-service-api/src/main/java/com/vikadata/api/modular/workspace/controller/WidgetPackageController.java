@@ -44,16 +44,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
 import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
-/**
- * <p>
- * 小程序SDK模块_小程序管理接口
- * </p>
- *
- * @author Pengap
- * @date 2021/7/7
- */
 @RestController
-@Api(tags = "小程序SDK模块_小程序管理接口")
+@Api(tags = "Widget SDK - Pacakge Api")
 @ApiResource(path = "/widget/package")
 public class WidgetPackageController {
 
@@ -64,19 +56,19 @@ public class WidgetPackageController {
     private IGmService iGmService;
 
     @PostResource(path = "/auth", requiredPermission = false)
-    @ApiOperation(value = "小程序开发鉴权校验", notes = "widget-cli小程序开发鉴权校验")
+    @ApiOperation(value = "Auth widget", notes = "widget-cli widget development authentication verification")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
     })
     public ResponseData<Void> widgetAuth(@RequestBody @Valid WidgetPackageAuthRo widget) {
-        // 上层有统一拦截器校验
+        // There is a unified interceptor check in the upper layer.
         return ResponseData.success();
     }
 
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "小程序创建", notes = "widget-cli初始化创建小程序")
+    @ApiOperation(value = "Create widget", notes = "widget-cli initialization create widget")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
     })
     public ResponseData<WidgetReleaseCreateVo> createWidget(@RequestBody @Valid WidgetPackageCreateRo widget) {
         Long userId = SessionContext.getUserId();
@@ -84,9 +76,9 @@ public class WidgetPackageController {
     }
 
     @PostResource(path = "/release", requiredPermission = false)
-    @ApiOperation(value = "小程序发布", notes = "widget-cli发布小程序", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "Release widget", notes = "widget-cli release widget", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC")
     })
     public ResponseData<Void> releaseWidget(@Valid WidgetPackageReleaseRo widget) {
         Long userId = SessionContext.getUserId();
@@ -95,11 +87,11 @@ public class WidgetPackageController {
     }
 
     @GetResource(path = "/release/history/{packageId}", requiredPermission = false)
-    @ApiOperation(value = "获取小程序发布历史版本", notes = "widget-cli获取发布小程序历史版本")
+    @ApiOperation(value = "Get widget release history")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
-            @ApiImplicitParam(name = "packageId", value = "小程序包Id", required = true, dataTypeClass = Integer.class, paramType = "path", example = "wpkAbc"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = "packageId", value = "widget id", required = true, dataTypeClass = Integer.class, paramType = "path", example = "wpkAbc"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "page", dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     public ResponseData<List<WidgetReleaseListVo>> releaseListWidget(@PathVariable(name = "packageId") String packageId, @PageObjectParam(required = false) Page page) {
         Long userId = SessionContext.getUserId();
@@ -107,9 +99,9 @@ public class WidgetPackageController {
     }
 
     @PostResource(path = "/rollback", requiredPermission = false)
-    @ApiOperation(value = "小程序回滚", notes = "widget-cli回滚小程序")
+    @ApiOperation(value = "Rollback widget")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<Void> rollbackWidget(@RequestBody @Valid WidgetPackageRollbackRo widget) {
         Long userId = SessionContext.getUserId();
@@ -118,9 +110,9 @@ public class WidgetPackageController {
     }
 
     @PostResource(path = "/unpublish", requiredPermission = false)
-    @ApiOperation(value = "小程序下架", notes = "widget-cli下架小程序")
+    @ApiOperation(value = "Unpublish widget")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<Void> unpublishWidget(@RequestBody @Valid WidgetPackageUnpublishRo widget) {
         Long userId = SessionContext.getUserId();
@@ -129,43 +121,43 @@ public class WidgetPackageController {
     }
 
     @PostResource(path = "/ban", requiredPermission = false)
-    @ApiOperation(value = "小程序「封禁/解封」", notes = "widget-cli「封禁/解封」小程序")
+    @ApiOperation(value = "Ban/Unban widget", notes = "widget-cli ban/unban widget")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
     })
     public ResponseData<Void> banWidget(@RequestBody @Valid WidgetPackageBanRo widget) {
         Long userId = SessionContext.getUserId();
-        // 校验操作权限
+        // verify operation permissions
         iGmService.validPermission(userId, Boolean.TRUE.equals(widget.getUnban()) ? GmAction.WIDGET_UNBAN : GmAction.WIDGET_BAN);
         iWidgetPackageService.banWindget(userId, widget);
         return ResponseData.success();
     }
 
     @GetResource(path = "/{packageId}", requiredPermission = false)
-    @ApiOperation(value = "获取单个小程序包信息", notes = "widget-cli获取单个小程序包信息")
+    @ApiOperation(value = "Get widget package info", notes = "widget-cli get widget package info")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
-            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "developer's language", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
     })
     public ResponseData<WidgetPackageInfoVo> getWidgetPackageInfo(@PathVariable("packageId") String packageId) {
         return ResponseData.success(iWidgetPackageService.getWidgetPackageInfo(packageId));
     }
 
     @GetResource(path = "/store", requiredPermission = false)
-    @ApiOperation(value = "获取小程序商店信息", notes = "widget-cli获取小程序商店信息")
+    @ApiOperation(value = "Get widget store information", notes = "widget-cli get widget store information")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
-            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "developer's language", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
     })
     public ResponseData<List<WidgetPackageInfoVo>> getWidgetPackageListInfo(@RequestParam("spaceId") String spaceId) {
         return ResponseData.success(iWidgetPackageService.getWidgetPackageListInfo(spaceId));
     }
 
     @PostResource(path = "/transfer/owner", requiredPermission = false)
-    @ApiOperation(value = "小程序转移拥有者", notes = "widget-cli小程序转移拥有者")
+    @ApiOperation(value = "Transfer widget owner", notes = "widget-cli transfer widget owner")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
-            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "developer's language", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
     })
     public ResponseData<Void> transferWidgetOwner(@RequestBody @Valid WidgetTransferOwnerRo transferOwnerRo) {
         Long userId = SessionContext.getUserId();
@@ -174,10 +166,10 @@ public class WidgetPackageController {
     }
 
     @PostResource(path = "/submit", requiredPermission = false)
-    @ApiOperation(value = "小程序提交审核", notes = "widget-cli小程序提交审核", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "Submit widget audit", notes = "widget-cli submit widget audit", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "开发者Token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
-            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "接受语言", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
+            @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "developer token", required = false, dataTypeClass = String.class, paramType = "header", example = "AABBCC"),
+            @ApiImplicitParam(name = HttpHeaders.ACCEPT_LANGUAGE, value = "developer's language", dataTypeClass = String.class, paramType = "header", example = "「en-US/zh-CN」")
     })
     public ResponseData<Void> submitWidget(@Valid WidgetPackageSubmitRo widget) {
         Long userId = SessionContext.getUserId();

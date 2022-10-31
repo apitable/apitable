@@ -9,22 +9,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- * 企微服务商下单购买接口许可
- * </p>
- * @author 刘斌华
- * @date 2022-06-24 09:49:27
- */
 @Data
-@ApiModel("企微服务商下单购买接口许可")
+@ApiModel("WeCom Isv Permit New Order Ro")
 public class WeComIsvPermitNewOrderRo {
 
-    @ApiModelProperty("要购买接口许可的空间站 ID")
+    @ApiModelProperty("license space to activate")
     @NotBlank
     private String spaceId;
 
-    @ApiModelProperty("购买账号时长的月数。以 31 天为一个月，最多 36 个月")
+    @ApiModelProperty("the number of months to purchase the account. take 31 days as a month, max 36 months")
     @NotNull
     @Min(1)
     @Max(36)

@@ -39,13 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.enums.exception.AutomationException.DST_ROBOT_LIMIT;
 import static com.vikadata.api.enums.exception.PermissionException.NODE_OPERATION_DENIED;
 
-/**
- * <p>
- * Automation OpenAPI 控制器
- * </p>
- */
 @RestController
-@Api(tags = "自动化机器人开放接口")
+@Api(tags = "Automation - Open API")
 @ApiResource(path = "/automation/open/triggers")
 @Slf4j
 public class AutomationOpenApiController {
@@ -63,54 +58,54 @@ public class AutomationOpenApiController {
     @Resource
     private LimitProperties limitProperties;
 
-    @PostResource(name = "创建/更新触发器与机器人", path = "/createOrUpdate", requiredPermission = false)
-    @ApiOperation(value = "创建/更新触发器与机器人", notes = "创建/更新触发器与机器人")
-    @ApiImplicitParam(name = ParamsConstants.X_SERVICE_TOKEN, value = "服务商认证Token", dataTypeClass = String.class, paramType = "header", example = "asvDsF724qvkLdd83J")
+    @PostResource(name = "Create/Update trigger and robot", path = "/createOrUpdate", requiredPermission = false)
+    @ApiOperation(value = "Create/Update trigger and robot", notes = "Create/Update trigger and robot")
+    @ApiImplicitParam(name = ParamsConstants.X_SERVICE_TOKEN, value = "Service Provider Auth Token", dataTypeClass = String.class, paramType = "header", example = "asvDsF724qvkLdd83J")
     public ResponseData<AutomationTriggerCreateVo> createOrUpdateTrigger(@RequestBody @Valid AutomationApiTriggerCreateRo data,
                                                                  @RequestHeader(name = ParamsConstants.X_SERVICE_TOKEN,required = false) String xServiceToken ) {
 
-        // todo: 服务商认证Token有效性验证
+        // todo: verify Service Provider Auth Token
         if (StrUtil.isEmpty(xServiceToken)){
-            return ResponseData.status(false,500,"X-Service-Token 不允许为空").data(null);
+            return ResponseData.status(false,500,"X-Service-Token no allow null").data(null);
         }
-        // 判断 是否该用户有管理权限，在该维格表创建机器人
+        // Whether the user has management permission.
         String spaceId = iNodeService.getSpaceIdByNodeId(data.getRobot().getResourceId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // Method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getUserSpaceDto(spaceId).getMemberId();
-        // 校验节点下是否有指定操作权限
+        // Verify whether the user has the specified node operation permission.
         controlTemplate.checkNodePermission(memberId, data.getRobot().getResourceId(), NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        //超过单表机器人数量则不允许创建
+        // The robot cannot be created if the number of robots in a datasheet more than limitations.
         List<AutomationRobotDto> automationRobotDtoList = iAutomationRobotService.getRobotListByResourceId(data.getRobot().getResourceId());
         ExceptionUtil.isFalse(automationRobotDtoList.size() >= limitProperties.getDstRobotMaxCount(),DST_ROBOT_LIMIT);
 
         return iAutomationRobotService.upsert(data,xServiceToken);
     }
 
-    @PostResource(name = "删除触发器与机器人", path = "/datasheets/{datasheetId}/robots", requiredPermission = false,method = RequestMethod.DELETE)
-    @ApiOperation(value = "删除触发器与机器人", notes = "删除触发器与机器人")
-    @ApiImplicitParam(name = ParamsConstants.X_SERVICE_TOKEN, value = "服务商认证Token", dataTypeClass = String.class, paramType = "header", example = "asvDsF724qvkLdd83J")
+    @PostResource(name = "Delete trigger and robot", path = "/datasheets/{datasheetId}/robots", requiredPermission = false,method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete trigger and robot", notes = "Delete trigger and robot")
+    @ApiImplicitParam(name = ParamsConstants.X_SERVICE_TOKEN, value = "Service Provider Auth Token", dataTypeClass = String.class, paramType = "header", example = "asvDsF724qvkLdd83J")
     public ResponseData<String> deleteTrigger(@PathVariable(name = "datasheetId") String datasheetId,
                                               @RequestParam(name = "robotIds") String[] robotIds) {
-        // todo: 服务商认证Token有效性验证
+        // todo: verify Service Provider Auth Token
         if ( robotIds.length == 0 ) {
-            return ResponseData.success("robotIds[] 不能为空");
+            return ResponseData.success("robotIds[] no allow null");
         }
-        // 权限校验
-        // 获取空间ID，方法包含判断节点是否存在
+        // Verify permission.
+        // Method includes determining whether the node is in this space.
         String spaceId = iNodeService.getSpaceIdByNodeId(datasheetId);
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // Method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getUserSpaceDto(spaceId).getMemberId();
-        // 校验节点下是否有指定操作权限
+        // Verify whether the user has the specified node operation permission.
         controlTemplate.checkNodePermission(memberId, datasheetId, NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
 
-        //查询己创建机器人
+        // Query the existing robots.
         List<AutomationRobotDto> automationRobotDtoList =  iAutomationRobotService.getRobotListByResourceId(datasheetId);
         if (automationRobotDtoList == null || automationRobotDtoList.size() == 0 ){
-            return ResponseData.success("datasheetId 表无robot");
+            return ResponseData.success("Datasheet hasn't robots.");
         }
         List<String> robotList = automationRobotDtoList.stream().map(AutomationRobotDto::getRobotId).collect(Collectors.toList());
         robotList.retainAll(Arrays.asList(robotIds));

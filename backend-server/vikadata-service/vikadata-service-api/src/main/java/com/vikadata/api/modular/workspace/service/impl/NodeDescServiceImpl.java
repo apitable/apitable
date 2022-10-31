@@ -36,21 +36,13 @@ import static com.vikadata.api.constants.NodeDescConstants.DESC_JSON_DATA_TEXT_C
 import static com.vikadata.api.enums.exception.DatabaseException.EDIT_ERROR;
 import static com.vikadata.api.enums.exception.NodeException.DESCRIPTION_TOO_LONG;
 
-/**
- * <p>
- * 工作台-节点描述表 服务实现类
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-03-17
- */
 @Slf4j
 @Service
 public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEntity> implements INodeDescService {
 
     @Override
     public void edit(String nodeId, String desc) {
-        log.info("编辑节点描述");
+        log.info("edit node description");
         if (StrUtil.isEmpty(desc)) {
             baseMapper.updateDescByNodeId(nodeId, desc);
             return;
@@ -65,7 +57,7 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
 
     @Override
     public void copyBatch(Map<String, String> newNodeMap) {
-        log.info("复制节点描述");
+        log.info("copy node description");
         if (MapUtil.isEmpty(newNodeMap)) {
             return;
         }
@@ -88,7 +80,7 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
 
     @Override
     public Map<String, String> getNodeIdToDescMap(List<String> nodeIds) {
-        log.info("获取节点及对应描述");
+        log.info("obtain node and corresponding description");
         if (CollUtil.isNotEmpty(nodeIds)) {
             List<NodeDescDTO> dtoList = baseMapper.selectByNodeIds(nodeIds);
             return dtoList.stream().collect(Collectors.toMap(NodeDescDTO::getNodeId, NodeDescDTO::getDescription));
@@ -98,7 +90,7 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
 
     @Override
     public void insertBatch(List<NodeDescEntity> nodeDescList) {
-        log.info("批量新增节点描述");
+        log.info("batch add node description");
         if (CollUtil.isNotEmpty(nodeDescList)) {
             boolean flag = SqlHelper.retBool(baseMapper.insertBatch(nodeDescList));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -106,12 +98,10 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
     }
 
     /**
-     * 解析节点的描述desc
+     * desc of parsing node
      *
-     * @param destDstId 节点ID
+     * @param destDstId node id
      * @return NodeDescParseDto
-     * @author zoe zheng
-     * @date 2020/5/19 3:17 下午
      */
     @Override
     public NodeDescParseDTO parseNodeDescByNodeId(String destDstId) {
@@ -120,7 +110,7 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
         String nodeDesc = baseMapper.selectDescriptionByNodeId(destDstId);
         if (StrUtil.isNotBlank(nodeDesc)) {
             Object desc = JSONUtil.getByPath(JSONUtil.parse(nodeDesc), NodeDescConstants.DESC_JSON_DATA_PREFIX);
-            // 兼容旧数据node的描述和datasheet的描述json存入格式不统一
+            // The description of compatible old data node and the description of datasheet json are not in the same format.
             JSONArray descJsonArray = ObjectUtil.isNotNull(desc) ? JSONUtil.parseArray(desc) : JSONUtil
                     .parseArray(JSONUtil.getByPath(JSONUtil.parse(nodeDesc), NodeDescConstants.DESC_JSON_RENDER_PREFIX));
             if (ObjectUtil.isNotEmpty(descJsonArray) && !CollUtil.hasNull(descJsonArray)) {
@@ -134,7 +124,7 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
                         }
                     }
                     else {
-                        // 获取image的标签
+                        // gets the label of the image
                         Object imageObj =
                                 JSONUtil.parse(descText).getByPath(NodeDescConstants.DESC_JSON_DATA_IMAGE_PREFIX);
                         if (null != imageObj) {
@@ -144,9 +134,9 @@ public class NodeDescServiceImpl extends ServiceImpl<NodeDescMapper, NodeDescEnt
                 }
             }
             else {
-                // 兼容现在的数据
+                // compatible with current data
                 Object newDesc = JSONUtil.getByPath(JSONUtil.parseObj(nodeDesc), DESC_JSON_DATA_NEW_FOD_PREFIX);
-                // 兼容文件夹描述
+                // compatible folder description
                 if (ObjectUtil.isNull(newDesc)) {
                     newDesc = JSONUtil.getByPath(JSONUtil.parseObj(nodeDesc), DESC_JSON_DATA_NEW_PREFIX);
                 }

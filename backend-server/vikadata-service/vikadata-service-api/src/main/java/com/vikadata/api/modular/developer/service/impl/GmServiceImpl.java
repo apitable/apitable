@@ -59,14 +59,6 @@ import static com.vikadata.api.enums.exception.SpaceException.SPACE_ALREADY_CERT
 import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
 import static com.vikadata.api.enums.exception.UserException.USER_NOT_EXIST;
 
-/**
- * <p>
- * GM 接口实现类
- * </p>
- *
- * @author Chambers
- * @date 2020/7/27
- */
 @Slf4j
 @Service
 public class GmServiceImpl implements IGmService {
@@ -112,16 +104,16 @@ public class GmServiceImpl implements IGmService {
 
     @Override
     public void validPermission(Long userId, GmAction action) {
-        log.info("校验用户「{}」的「{}」GM权限", userId, action.name());
+        log.info("valid user「{}」 「{}」GM permission.", userId, action.name());
         this.getGmConfigAfterCheckUserPermission(userId, action);
     }
 
     @Override
     public void updateGmPermissionConfig(Long userId, String dstId) {
-        log.info("「{}」更新GM权限配置", userId);
-        // 获取现有的权限配置
+        log.info("「{}」update gm permission config", userId);
+        // gets the existing permission configuration
         String config = this.getGmConfigAfterCheckUserPermission(userId, GmAction.PERMISSION_CONFIG);
-        // 获取更新的权限配置信息
+        // gets the updated permission configuration
         List<GmPermissionInfo> gmPermissionInfos = vikaOperations.getGmPermissionConfiguration(dstId);
         if (gmPermissionInfos.isEmpty()) {
             throw new BusinessException("NO UPDATES!");
@@ -140,11 +132,11 @@ public class GmServiceImpl implements IGmService {
 
     private String getGmConfigAfterCheckUserPermission(Long userId, GmAction action) {
         List<Long> unitIds = new ArrayList<>();
-        // 环境变量的GM配置组织单元
+        // the environment variable's GM config unit
         if (constProperties.getGmConfigUnit() != null) {
             unitIds.add(constProperties.getGmConfigUnit());
         }
-        // 系统配置的授权组织单元
+        // Authorized organization unit configured by the system
         String config = iSystemConfigService.findConfig(SystemConfigType.GM_PERMISSION_CONFIG, null);
         if (config != null && JSONUtil.parseObj(config).containsKey(action.name())) {
             unitIds.addAll(JSONUtil.parseObj(config).getJSONArray(action.name()).toList(Long.class));
@@ -152,7 +144,7 @@ public class GmServiceImpl implements IGmService {
         if (unitIds.isEmpty()) {
             throw new BusinessException("PERMISSION CONFIG UNIT IS NULL.");
         }
-        // 获取组织单元相关联的所有用户ID
+        // Gets all the user ids associated with the organization unit
         List<Long> userIds = iUnitService.getRelUserIdsByUnitIds(unitIds);
         if (CollUtil.isEmpty(userIds) || !userIds.contains(userId)) {
             throw new BusinessException("INSUFFICIENT PERMISSIONS!");
@@ -162,20 +154,20 @@ public class GmServiceImpl implements IGmService {
 
     @Override
     public void spaceCertification(String spaceId, String operatorUserUuid, SpaceCertification certification) {
-        // 验证提交人是否存在
+        // verify whether the submitter exists
         Long userId = iUserService.getUserIdByUuid(operatorUserUuid);
         ExceptionUtil.isNotNull(userId, USER_NOT_EXIST);
-        // 空间是否存在
+        // verify whether the space exists
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         if (StrUtil.isBlank(spaceName)) {
             sendSpaceCertifyFailedNotice(userId, spaceId);
             throw new BusinessException(SPACE_NOT_EXIST);
         }
-        // 空间站是否可以认证
+        // whether the space station can be certified
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        // 验证空间是否已经开通认证
+        // verify that the space has been authenticated
         ExceptionUtil.isFalse(iSpaceService.isCertified(spaceId), SPACE_ALREADY_CERTIFIED);
-        // 验证成员
+        // verify the member
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         if (null == memberId) {
             sendSpaceCertifyFailedNotice(userId, spaceId);
@@ -186,15 +178,15 @@ public class GmServiceImpl implements IGmService {
             sendSpaceCertifyFailedNotice(userId, spaceId);
             throw new BusinessException(NOT_SPACE_ADMIN);
         }
-        // 开通企业认证
+        // open enterprise certification
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().certification(certification.getLevel()).build();
         iSpaceService.switchSpacePros(userId, spaceId, feature);
-        // 发送认证成功通知
+        // send certificate success notice
         sendSpaceCertifiedNotice(userId, spaceId, certification);
     }
 
     private void sendSpaceCertifiedNotice(Long userId, String spaceId, SpaceCertification certification) {
-        // 发送通知
+        // send notification
         TaskManager.me().execute(() -> {
             Dict extra = new Dict();
             if (SpaceCertification.BASIC.equals(certification)) {
@@ -220,9 +212,9 @@ public class GmServiceImpl implements IGmService {
         iFeishuService.switchDefaultContext();
         MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = iFeishuTenantContactService.fetchTenantContact(tenantId);
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(iFeishuService.getIsvAppId(), tenantId);
-        // 处理授权变更范围,先同步部门，再同步员工
+        //  handle authorization change scope. synchronize departments first then employees。
         iFeishuEventService.handleTenantContactData(iFeishuService.getIsvAppId(), tenantId, spaceId, contactMap);
-        // 处理未绑定空间的订阅信息
+        // Handles subscription information for unbound spaces.
         iFeishuEventService.handleTenantOrders(tenantId, iFeishuService.getIsvAppId());
     }
 

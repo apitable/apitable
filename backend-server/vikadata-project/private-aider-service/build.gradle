@@ -16,7 +16,7 @@ configurations {
   }
 }
 
-// 打包环境
+// packaging environment
 def profile = System.getProperty("profile") ?: "local"
 
 System.out.println("Build Profile:" + profile)
