@@ -2,12 +2,12 @@ import { DynamicModule, Global, Module } from '@nestjs/common';
 import {
   IZipkinModuleAsyncOptions,
   IZipkinModuleOptions,
-} from './zipkin.interface';
+} from '../shared/services/zipkin/zipkin.interface';
 import {
   createZipkinOptionAsyncProviders,
   createZipkinOptionProviders,
-} from './zipkin.providers';
-import { ZipkinService } from './zipkin.service';
+} from '../shared/services/zipkin/zipkin.providers';
+import { ZipkinService } from '../shared/services/zipkin/zipkin.service';
 
 @Global()
 @Module({

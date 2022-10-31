@@ -28,7 +28,7 @@ export class OPEventRecordCreated extends IAtomEventType<IRecordCreated> {
         context: null
       };
     }
-    // fill 阶段会覆盖 diffFields
+    // fill phase will overwrite diffFields
     const diffFields = Object.keys(action['oi'].data);
     return {
       pass,
@@ -42,7 +42,7 @@ export class OPEventRecordCreated extends IAtomEventType<IRecordCreated> {
     };
   }
   /**
-   * 补全事件上下文
+   * Complete event context
    */
   fill(events: IEventInstance<IOPEvent>[], state: IReduxState) {
     return events.map(event => {
@@ -60,7 +60,7 @@ export class OPEventRecordCreated extends IAtomEventType<IRecordCreated> {
         });
         event.context.eventFields = eventFields;
         event.context.fields = fields;
-        // 新增记录时，从无到有，所有字段都变更了。这个的 diffFields 应该包含全部字段。
+        // When a new record is added, all fields are changed from scratch. This diffFields should contain all fields.
         event.context.diffFields = fieldKeys;
       }
       return event;

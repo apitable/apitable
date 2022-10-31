@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WidgetRepository } from '../repositories/widget.repository';
-import { WidgetService } from '../services/widget/widget.service';
+import { WidgetRepository } from '../database/repositories/widget.repository';
+import { WidgetService } from '../database/services/widget/widget.service';
 
 @Module({
   imports: [

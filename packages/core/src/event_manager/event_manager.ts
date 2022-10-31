@@ -8,17 +8,17 @@ import {
 import { isEqual } from 'lodash';
 
 /**
- * 管理事件监听
+ * Manage event monitoring
  */
 export class EventManager implements IEventManager {
-  // 维护注册事件和绑定动作的映射关系
+  // Maintain the mapping relationship between registered events and binding actions
   eventListenerMap: IEventListenerMap = {};
 
   /**
-   * 监听事件
-   * @param event 事件名
-   * @param actionFunc 动作函数
-   */
+    * Listen for events
+    * @param event event name
+    * @param actionFunc action function
+    */
   addEventListener(eventName: OPEventNameEnums, actionFunc: (context: any) => void, _options: IEventListenerOptions = defaultEventListenerOptions) {
     const options = { ...defaultEventListenerOptions, ..._options };
     const eventListener = {
@@ -33,7 +33,7 @@ export class EventManager implements IEventManager {
   }
 
   /**
-   * 取消事件监听
+   * Cancel event listener
    * @param event 
    * @param actionFunc 
    * @param options 
@@ -64,7 +64,7 @@ export class EventManager implements IEventManager {
   }
 
   /**
-   * 触发事件，op 流会自动触发事件，也可以手动触发。
+   * Trigger the event, the op stream will automatically trigger the event, or it can be triggered manually.
    * @param event 
    * @param context 
    */

@@ -9,7 +9,7 @@ export abstract class IAtomEventType<T> {
   abstract realType: EventRealTypeEnums;
   abstract scope: ResourceType;
   atomType = EventAtomTypeEnums.ATOM;
-  // 测试 op 是否符合事件特征
+  // Test if op matches the event characteristics
   abstract test(opContext: IOPBaseContext, sourceType?: EventSourceTypeEnums.ALL): IEventTestResult<T>;
 }
 
@@ -17,7 +17,7 @@ export abstract class ICombEventType {
   abstract eventName: OPEventNameEnums;
   abstract realType: EventRealTypeEnums;
   abstract scope: ResourceType;
-  // 这个复合事件接受如下原子事件做聚合。
+  // This composite event accepts the following atomic events for aggregation.
   abstract acceptEventNames: OPEventNameEnums[];
   atomType = EventAtomTypeEnums.COMB;
   abstract comb(events: IEventInstance<IAtomEvent>[]): IEventInstance<IOPEvent>[];

@@ -9,23 +9,24 @@ export interface IEventListenerMap {
 }
 
 export interface IEventListenerOptions {
-  // 事件来源
+  // event source
   sourceType?: EventSourceTypeEnums,
-  // 事件的真实性
+  // the authenticity of the event
   realType?: EventRealTypeEnums;
-  // 每个事件的变更都会应用到对于的 state 树中，是在应用之前触发事件回掉还是在应用之后触发。
+  // The change of each event will be applied to the corresponding state tree, 
+  // whether the event callback is triggered before the application or after the application.
   beforeApply?: boolean;
 }
 
 export interface IEventManager {
-  // 监听事件的维护
+  // maintenance of listening events
   eventListenerMap: IEventListenerMap;
-  // 注册事件监听器
+  // register event listener
   addEventListener(eventName: string, actionFunc: Function, options?: IEventListenerOptions): void;
-  // 移除事件监听器
+  // remove event listener
   removeEventListener(eventName: string, actionFunc: Function): void;
-  // 分发事件
+  // dispatch event
   dispatchEvent(event: IEventInstance<IOPEvent>, beforeApply: boolean, context?: any): void;
-  // 接收事件流
+  // receive event stream
   handleEvents(events: IEventInstance<IOPEvent>[], beforeApply: boolean, context?: any): void;
 }

@@ -29,7 +29,7 @@ export class OP2Event implements IOP2Event {
   getOpsResources(events: IEventInstance<IOPEvent>[]): IEventResourceMap {
     const res: IEventResourceMap = new Map();
     events.forEach(event => {
-      // 数表资源
+      // datasheet resources
       if (event.scope === ResourceType.Datasheet) {
         const { datasheetId, recordId } = event.context;
         if (res.has(datasheetId)) {
@@ -53,12 +53,12 @@ export class OP2Event implements IOP2Event {
   }
 
   makeVirtualEvents(events: IEventInstance<IRealAtomEvent>[], state: IReduxState): IEventInstance<IVirtualAtomEvent>[] {
-    // 例如：字段 A 的更新，引起了字段 B 的更新
+    // For example: an update of field A causes an update of field B
     const virtualEvents: IEventInstance<IVirtualAtomEvent>[] = [];
     Object.keys(this.eventNameClsInstanceMap).forEach((eventName: OPEventNameEnums) => {
       const eventClsInstance = this.eventNameClsInstanceMap[eventName];
       const _events = events.filter(event => event.eventName === eventName);
-      // 字段更新这个事件才有计算事件的处理逻辑
+      // The field update event only has the processing logic of the calculation event
       if (eventName === OPEventNameEnums.CellUpdated) {
         virtualEvents.push(...(eventClsInstance as OPEventCellUpdated).computeEvent(_events, state));
       }
@@ -89,7 +89,7 @@ export class OP2Event implements IOP2Event {
   }
 
   /**
-   * op转真实原子事件
+   * op to real atomic event
    */
   parseOp2Event(op: IOperation, resourceId: string, resourceType: ResourceType): IEventInstance<IRealAtomEvent>[] {
     const events: IEventInstance<IRealAtomEvent>[] = [];

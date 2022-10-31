@@ -9,7 +9,8 @@ import { getWidget } from '../store/selector/resource/widget';
 import { ResourceType } from '../types/resource_types';
 
 /**
- * 注册事件原型装饰器
+ * Register event prototype decorator
+ * 
  * @EventMeta("RecordUpdated","ATOM")
  * class EventRecordUpdated {
  *  test(){
@@ -114,8 +115,10 @@ export const transformOpFields = (props: ITransformOpFieldsProps) => {
   Object.keys(snapshot?.meta.fieldMap).forEach(fieldId => {
     const field = snapshot.meta.fieldMap[fieldId];
     let cellValue = recordData[fieldId];
-    // FIXME: 只填充没有的，这里有个问题。op 的change to 是最新的，查库出来的可能是旧的。以 op 为准
-    // recordData 里面没有字段值，表明是计算字段，不管是更新还是创建，都需要更新重新计算一遍。
+    // FIXME: Only fill in what is not, there is a problem here. 
+    // The change to of op is the latest, and the one obtained from the database search may be old. subject to op
+    // There is no field value in recordData, indicating that it is a calculated field. 
+    // Whether it is updated or created, it needs to be updated and recalculated.
     if (!recordData.hasOwnProperty(fieldId)) {
       cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       newFields[fieldId] = cellValue;

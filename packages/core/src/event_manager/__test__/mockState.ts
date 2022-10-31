@@ -7,7 +7,7 @@ export const state = {
       syncing: false,
       datasheet: {
         id: 'dst2CXiPKQRdfgZBsa',
-        name: '基础表',
+        name: 'Basic Table',
         description: '{}',
         parentId: 'fodUZJvqc76aC',
         icon: '',
@@ -69,7 +69,7 @@ export const state = {
             views: [
               {
                 id: 'viwjtHpVDnJaq',
-                name: '维格视图',
+                name: 'Grid View',
                 rows: [
                   {
                     recordId: 'recFD450czfVo'
@@ -464,8 +464,8 @@ export const state = {
         collaborators: [
           {
             socketId: '/room#dKl2AohM_Fvo1FwYANVT',
-            userName: '网上好邻居蜘蛛侠',
-            memberName: '网上好邻居蜘蛛侠',
+            userName: 'Clark Mophie',
+            memberName: 'Clark Mophie Yuro',
             avatar: 'https://s1.vika.cn/image/2020/02/05/RTWB7/3m6e9bmDIlbYNrwA==.jpeg',
             userId: 'eeb620a54e2248c69c25de68e6eb668c',
             createTime: 1463493227

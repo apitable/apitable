@@ -7,23 +7,23 @@ import { IEventManager } from './event_manager.interface';
 export interface IOPEventManagerOptions {
   op2Event: OP2Event;
   /**
-   * 如何获取 state
+   * How to get state
    */
   getState: (resourceMap?: any) => IReduxState | Promise<IReduxState>;
   options: {
-    // 是否开启虚拟事件
+    // Whether to enable virtual events
     enableVirtualEvent?: boolean;
-    // 是否开启组合事件
+    // Whether to enable combined events
     enableCombEvent?: boolean;
-    // 是否开启事件补全
+    // Whether to enable event completion
     enableEventComplete?: boolean;
   }
 }
-
 type IEvents = IEventInstance<IOPEvent>[];
 export interface IOPEventManager extends IEventManager {
-  // 下面2个方法是一样的处理逻辑，不同的是在 getState 时
-  // room 层需要异步查库；前端则是直接同步操作，否者状态会不一致。
+  // The following two methods have the same processing logic, the difference is when getState
+  // The room layer needs to check the database asynchronously; 
+  // the front end is a direct synchronous operation, otherwise the state will be inconsistent.
   asyncHandleChangesets(changesets: Omit<IChangeset, 'messageId'>[]): Promise<IEvents>
   handleChangesets(changesets: Omit<IChangeset, 'messageId'>[]): IEvents
 }

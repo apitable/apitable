@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { CommandOptionsService } from 'database/services/command/impl/command.options.service';
-import { CommandService } from '../services/command/impl/command.service';
+import { CommandService } from '../database/services/command/impl/command.service';
 
 /**
  * <p>

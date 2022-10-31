@@ -2,13 +2,13 @@ import { IChangeset } from 'engine/ot/interface';
 import { IReduxState } from 'store';
 import { IAtomEvent, ICombEvent, IOPEvent, IEventInstance, IRealAtomEvent, IVirtualAtomEvent } from './../interface';
 
-// 表格id: recordId[]
+// table id: recordId[]
 export type IEventResourceMap = Map<string, string[]>;
 export interface IOP2EventOptions {
-  // 是否开启虚拟事件
-  enableVirtualEvent?: boolean;
-  // 是否开启组合事件
-  enableCombEvent?: boolean;
+   // Whether to enable virtual events
+   enableVirtualEvent?: boolean;
+   // Whether to enable combined events
+   enableCombEvent?: boolean;
 }
 export interface IOP2Event {
   parseOps2Events(changesets: IChangeset[]): IEventInstance<IRealAtomEvent>[];

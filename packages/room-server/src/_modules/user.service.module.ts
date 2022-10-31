@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UserService } from '../services/user/user.service';
-import { RestModule } from '../../shared/services/rest/rest.module';
+import { UserService } from '../database/services/user/user.service';
+import { RestModule } from './rest.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../database/repositories/user.repository';
 
 @Module({
   imports: [RestModule, TypeOrmModule.forFeature([UserRepository])],

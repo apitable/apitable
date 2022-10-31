@@ -5,13 +5,13 @@ import { OPEventRecordDeleted } from './record_deleted';
 import { OPEventRecordCommentUpdated, OPEventRecordMetaUpdated, OPEventRecordUpdated } from './record_updated';
 
 export const datasheetEvent = {
-  // 单元格
+  // Cell
   OPEventCellUpdated,
   // OPEventMemberCellAdd,
   // OPEventMemberCellUpdate,
-  // 字段
+  // field
   OPEventFieldUpdated,
-  // 记录
+  // Record
   OPEventRecordDeleted,
   OPEventRecordUpdated,
   OPEventRecordCommentUpdated,

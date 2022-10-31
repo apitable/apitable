@@ -62,7 +62,7 @@ export class OPEventRecordUpdated extends ICombEventType {
     });
     Object.keys(groupEvents).forEach(dstRecordId => {
       const [datasheetId, recordId] = dstRecordId.split('-');
-      // 记录的所有单元格更新事件
+      // log all cell update events
       const events = groupEvents[dstRecordId];
       const recordChange = {};
       const diffFields: string[] = [];
@@ -82,7 +82,7 @@ export class OPEventRecordUpdated extends ICombEventType {
           diffFields
         },
         scope: this.scope,
-        realType: this.realType as any, // FIXME: 类型
+        realType: this.realType as any, // FIXME: type
         atomType: this.atomType,
         sourceType: EventSourceTypeEnums.ALL,
       });
@@ -90,7 +90,7 @@ export class OPEventRecordUpdated extends ICombEventType {
     return res;
   }
   /**
-   * 通过 op 生成 event 时，部分字段需要借助 state 上下文才能补全。在这里补全事件上下文
+   * When generating events through op, some fields need to be completed with the help of state context. Complete the event context here
    */
   fill(events: IEventInstance<IOPEvent>[], state: IReduxState) {
     return events.map(event => {
@@ -104,9 +104,9 @@ export class OPEventRecordUpdated extends ICombEventType {
           datasheetId,
           recordId
         });
-        // 这个 fields 给 trigger filter 校验用的，这里 fieldValue 是 op 过来的 cellValue
+        // This fields are used for trigger filter verification, where fieldValue is the cellValue from op
         event.context.fields = fields;
-        // 这个 eventFields 给 trigger output 用的，这里 fieldValue 是经过 cv 转化的 eventCV
+        // This eventFields is used for trigger output, where fieldValue is eventCV converted by cv
         event.context.eventFields = eventFields;
       }
       return event;

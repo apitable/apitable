@@ -40,7 +40,7 @@ export const createRecordOps = [
   }
 ];
 
-// 创建并且带字段数据。
+// Create with field data.
 export const duplicateRecordOps = [
   {
     messageId: 'CXduhfHP1AWVOWpLtWNe',

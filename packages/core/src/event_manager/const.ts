@@ -2,7 +2,7 @@ import { datasheetEvent } from './events/datasheet';
 import { IEventListenerOptions } from './interface/event_manager.interface';
 
 /**
- * 定义新事件前，先在下面声明
+ * Before defining a new event, declare it below
  */
 export enum OPEventNameEnums {
   FieldUpdated = 'FieldUpdated',
@@ -33,7 +33,8 @@ export enum EventSourceTypeEnums {
 }
 
 /**
- * 监听事件时，可以传入选项参数。默认订阅全部事件，并且是在事件 op apply 到 store 之后才触发事件。
+ * When listening for events, you can pass in option parameters. 
+ * By default, all events are subscribed, and the event is triggered after the event op apply to the store.
  */
 export const defaultEventListenerOptions: IEventListenerOptions = {
   realType: EventRealTypeEnums.ALL,
@@ -49,7 +50,7 @@ export const DEFAULT_EVENT_MANAGER_OPTIONS = {
   enableEventComplete: false
 };
 
-// 事件名和事件定义类之间的映射关系
+// Mapping relationship between event name and event definition class
 export const EventNameClsMap = {
   // cell
   [OPEventNameEnums.CellUpdated]: datasheetEvent.OPEventCellUpdated,

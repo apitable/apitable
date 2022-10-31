@@ -2,7 +2,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { enableQueueWorker } from 'app.environment';
-import { QueueSenderService } from './queue.sender.service';
+import { QueueSenderService } from '../shared/services/queue/queue.sender.service';
 
 @Module({
   imports: [

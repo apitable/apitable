@@ -16,10 +16,10 @@ import {
 import { NodeRepository } from '../../database/repositories/node.repository';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { DatasheetServiceModule } from '../../database/_modules/datasheet.service.module';
+import { DatasheetServiceModule } from '../../_modules/datasheet.service.module';
 import { DeveloperService } from 'database/services/developer/developer.service';
-import { DeveloperServiceModule } from '../../database/_modules/developer.service.module';
-import { ResourceServiceModule } from '../../database/_modules/resource.service.module';
+import { DeveloperServiceModule } from '../../_modules/developer.service.module';
+import { ResourceServiceModule } from '../../_modules/resource.service.module';
 
 export const initSwagger = (app: INestApplication) => {
   // wouldn't be enabled in production

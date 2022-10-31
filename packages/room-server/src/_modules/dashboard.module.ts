@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ResourceMetaRepository } from '../repositories/resource.meta.repository';
-import { DashboardService } from '../services/dashboard/dashboard.service';
+import { ResourceMetaRepository } from '../database/repositories/resource.meta.repository';
+import { DashboardService } from '../database/services/dashboard/dashboard.service';
 import { NodeServiceModule } from './node.service.module';
-import { RestModule } from '../../shared/services/rest/rest.module';
+import { RestModule } from './rest.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({

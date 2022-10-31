@@ -8,17 +8,19 @@ import { EnvConfigModule } from 'shared/services/config/env.config.module';
 import { DatabaseConfigService } from './shared/services/config/database.config.service';
 import { LoggerConfigService } from './shared/services/config/logger.config.service';
 import { ZipkinConfigService } from './shared/services/config/zipkin.config.service';
-import { ControllerModule } from './shared/controller.module';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
 import { LoggerModule } from 'shared/logger/winston.module';
-import { QueueWorkerModule } from 'shared/services/queue/queue.worker.module';
-import { SchedTaskModule } from 'shared/services/sched_task/sched.task.module';
-import { SocketModule } from 'shared/services/socket/socket.module';
+import { QueueWorkerModule } from './_modules/queue.worker.module';
+import { SchedTaskModule } from './_modules/sched.task.module';
+import { SocketModule } from './_modules/socket.module';
 import { I18nModule } from 'nestjs-i18n';
 import { RedisModule, RedisModuleOptions } from '@vikadata/nestjs-redis';
 import path, { resolve } from 'path';
 import environmentConfig from './shared/services/config/environment.config';
-import { ZipkinModule } from './shared/services/zipkin/zipkin.module';
+import { ZipkinModule } from './_modules/zipkin.module';
+import { ActuatorModule } from 'actuator/actuator.module';
+import { FusionApiModule } from 'fusion/fusion.api.module';
+import { InternalModule } from '_modules/internal.module';
 
 // 初始化环境，本地开发为development，部署线上则需要指定NODE_ENV，非开发环境可选值[integration, staging, production]
 // 环境已经使用app.environment设置了
@@ -26,50 +28,49 @@ import { ZipkinModule } from './shared/services/zipkin/zipkin.module';
 
 @Module({
   imports: [
-    // 环境配置
-    ConfigModule.forRoot({
-      envFilePath: resolve(process.cwd(), 'dist/env/.env.defaults'),
-      encoding: 'utf-8',
-      isGlobal: true,
-      expandVariables: true,
-      load: [environmentConfig],
+// 环境配置
+  ConfigModule.forRoot({
+    envFilePath: resolve(process.cwd(), 'dist/env/.env.defaults'),
+    encoding: 'utf-8',
+    isGlobal: true,
+    expandVariables: true,
+    load: [environmentConfig],
     }),
-    // 数据库配置
-    TypeOrmModule.forRootAsync({
-      useClass: DatabaseConfigService,
+// 数据库配置
+  TypeOrmModule.forRootAsync({
+    useClass: DatabaseConfigService,
     }),
-    // Redis配置
-    RedisModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return redisModuleOptions(configService);
-      },
+// Redis配置
+  RedisModule.forRootAsync({
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => {
+    return redisModuleOptions(configService);
+    },
     }),
-    // 日志配置
-    LoggerModule.forRootAsync({
-      useClass: LoggerConfigService,
+// 日志配置
+  LoggerModule.forRootAsync({
+    useClass: LoggerConfigService,
     }),
-    // Zipkin 配置
-    ZipkinModule.forRootAsync({
-      useClass: ZipkinConfigService,
+// Zipkin 配置
+  ZipkinModule.forRootAsync({
+    useClass: ZipkinConfigService,
     }),
-    SocketModule,
-    MiddlewareModule,
-    ControllerModule,
-    EnvConfigModule,
-    I18nModule.forRoot({
-      fallbackLanguage: DEFAULT_LANGUAGE,
-      parser: I18nJsonParser as any,
-      parserOptions: {
-        path: path.join(__dirname, '/i18n/'),
-      },
+  SocketModule,
+  MiddlewareModule,
+  EnvConfigModule,
+  I18nModule.forRoot({
+    fallbackLanguage: DEFAULT_LANGUAGE,
+    parser: I18nJsonParser as any,
+    parserOptions: {
+    path: path.join(__dirname, '/i18n/'),
+    },
     }),
-    ScheduleModule.forRoot(),
-    SchedTaskModule.register(enableScheduler),
-    QueueWorkerModule,
-
+  ScheduleModule.forRoot(),
+  SchedTaskModule.register(enableScheduler),
+  QueueWorkerModule,
+  ActuatorModule, FusionApiModule, InternalModule
   ],
-})
+  })
 export class AppModule {
 }
 
