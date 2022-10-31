@@ -1,5 +1,5 @@
 import { Skeleton } from '@vikadata/components';
-import { Strings, t } from '@vikadata/core';
+import { Strings, t } from '@apitable/core';
 import { Trial } from 'pc/components/space_manage/log/trial';
 import { showUpgradeContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { getEnvVariables } from 'pc/utils/env';
