@@ -6,10 +6,8 @@ import lombok.Data;
 
 /**
  * <p>
- * Bill配置
+ * Billing Config
  * </p>
- *
- * @author Shawn Deng
  */
 @Data
 public class BillingConfig {

@@ -14,11 +14,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *
+ * Black List Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2022/4/26
  */
 @Service
 public class BlackListServiceImpl implements IBlackListService {
@@ -33,16 +30,15 @@ public class BlackListServiceImpl implements IBlackListService {
     public void checkBlackUser(Long userId) {
         UserEntity entity = iUserService.getById(userId);
         if (entity != null && InternalConstants.BAN_ACCOUNT_REMARK.equals(entity.getRemark())) {
-            throw new BusinessException("帐号已被封禁，解封请联系客服");
+            throw new BusinessException("The account has been banned, please contact customer service to unblock it.");
         }
     }
 
     @Override
     public void checkBlackSpace(String spaceId) {
-        // 恶意空间校验
         SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
         if (Boolean.TRUE.equals(spaceGlobalFeature.getBan())) {
-            throw new BusinessException("空间已被封禁，解封请联系客服");
+            throw new BusinessException("The space has been banned, please contact customer service to unblock it.");
         }
     }
 }

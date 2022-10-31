@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * <p>
- * 企微服务商接口许可延时任务
+ * WeCom Permit Delay Job Handler
  * </p>
  */
 @Component
@@ -32,7 +32,7 @@ public class WeComPermitDelayJobHandler {
         String url = internalProperties.getDomain() + internalProperties.getBatchProcessSocialWecomPermitDelayUrl();
         ResponseDataDto<?> response = restTemplate.postForObject(url, null, ResponseDataDto.class);
         if (Objects.isNull(response) || Boolean.FALSE.equals(response.getSuccess())) {
-            XxlJobHelper.log("调用批量处理企微接口许可延时接口失败");
+            XxlJobHelper.log("Failed to call batch processing enterprise micro interface license delay interface");
         }
     }
 

@@ -16,11 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：通知中心-通知记录表测试
+ * Player Notification Mapper Test
  * </p>
- *
- * @author wuyitao
- * @date 2022/4/4 3:08 PM
  */
 @Disabled
 public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {

@@ -10,15 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -28,26 +25,18 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.cache.service.SpaceCapacityCacheService;
-import com.vikadata.api.component.TaskManager;
-import com.vikadata.api.component.notification.NotificationManager;
-import com.vikadata.api.component.notification.NotificationTemplateId;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.config.properties.BillingProperties;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.SelfHostProperties;
 import com.vikadata.api.constants.DateFormatConstants;
-import com.vikadata.api.constants.MailPropConstants;
-import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.exception.BillingException;
-import com.vikadata.api.enums.exception.SubscribeFunctionException;
 import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.CapacityType;
 import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.SpaceCertification;
-import com.vikadata.api.component.notification.NotifyMailFactory;
-import com.vikadata.api.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.modular.finance.core.Bundle;
 import com.vikadata.api.modular.finance.core.Subscription;
@@ -56,30 +45,21 @@ import com.vikadata.api.modular.finance.service.IBundleService;
 import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
 import com.vikadata.api.modular.finance.service.ISubscriptionService;
 import com.vikadata.api.modular.internal.model.InternalSpaceSubscriptionVo;
-import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
-import com.vikadata.api.modular.space.mapper.SpaceAssetMapper;
-import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.model.InviteUserInfo;
 import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
 import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
 import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.modular.space.service.ISpaceService;
-import com.vikadata.api.modular.statics.model.NodeStaticsVO;
-import com.vikadata.api.modular.statics.service.IStaticsService;
 import com.vikadata.api.modular.user.mapper.UserMapper;
-import com.vikadata.api.modular.user.model.UserLangDTO;
-import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.model.BillingPlanFeature;
 import com.vikadata.api.util.billing.model.ProductCategory;
 import com.vikadata.api.util.billing.model.ProductChannel;
 import com.vikadata.api.util.billing.model.SubscribePlanInfo;
-import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.BundleEntity;
 import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.system.config.BillingWhiteListConfig;
@@ -89,48 +69,23 @@ import com.vikadata.system.config.billing.Feature;
 import com.vikadata.system.config.billing.Plan;
 import com.vikadata.system.config.billing.Product;
 
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.redis.core.BoundValueOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import static com.vikadata.api.enums.exception.SubscribeFunctionException.NODE_LIMIT;
 import static com.vikadata.api.util.billing.BillingConfigManager.buildPlanFeature;
 import static com.vikadata.api.util.billing.BillingConfigManager.getBillingConfig;
 import static com.vikadata.api.util.billing.BillingConfigManager.getFreePlan;
 import static com.vikadata.api.util.billing.BillingUtil.channelDefaultSubscription;
 import static com.vikadata.api.util.billing.BillingUtil.legacyPlanId;
 import static com.vikadata.api.util.billing.model.BillingConstants.CATALOG_VERSION;
-import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 
 /**
  * <p>
- * 空间站订阅 服务接口实现
+ * Space Subscription Service Implement Class
  * </p>
- *
- * @author Shawn Deng
  */
 @Service
 @Slf4j
 public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
-
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
-
-    @Resource
-    private SpaceCapacityCacheService spaceCapacityCacheService;
-
-    @Resource
-    private SpaceAssetMapper spaceAssetMapper;
-
-    @Resource
-    private SpaceMapper spaceMapper;
-
-    @Resource
-    private MemberMapper memberMapper;
-
-    @Resource
-    private IStaticsService iStaticsService;
 
     @Resource
     private ISocialTenantService iSocialTenantService;
@@ -140,9 +95,6 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
 
     @Resource
     private ISpaceService iSpaceService;
-
-    @Resource
-    private IUserService userService;
 
     @Resource
     private SelfHostProperties selfHostProperties;
@@ -189,9 +141,9 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
 
     @Override
     public SubscribePlanInfo getPlanInfoBySpaceId(String spaceId) {
-        log.info("获取空间的订阅计划");
+        log.info("Get a subscription plan for space「{}」", spaceId);
+        // Proprietary cloud version is open, all spaces are flagship version
         if (BooleanUtil.isTrue(selfHostProperties.getEnabled())) {
-            // 专有云版本开启，所有空间都是旗舰版
             SubscribePlanInfo planInfo = Optional.ofNullable(channelDefaultSubscription(ProductChannel.PRIVATE))
                     .orElse(channelDefaultSubscription(ProductChannel.VIKA));
             if (StrUtil.isBlank(selfHostProperties.getExpiredAt())) {
@@ -203,19 +155,19 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         }
         Bundle bundle = iBundleService.getPossibleBundleBySpaceId(spaceId);
         if (bundle == null) {
-            // 返回默认的免费订阅方案
+            // Return to default free subscription plan
             return defaultPlanInfo(spaceId);
         }
-        // 基础订阅
+        // Basic subscription
         Subscription baseSubscription = bundle.getBaseSubscription();
         LocalDate baseExpireDate = baseSubscription.getExpireDate().toLocalDate();
         LocalDate now = ClockManager.me().getLocalDateNow();
         boolean isBaseEntitlementExpire = bundle.isBaseForFree() || now.compareTo(baseExpireDate) > 0;
-        // 增值计划暂不支持第三方集成空间
+        // The value-added plan does not currently support third-party integration spaces
         Plan basePlan = isBaseEntitlementExpire ? getFreePlan(billingProperties.getChannel()) : getBillingConfig().getPlans().get(legacyPlanId(baseSubscription.getPlanId()));
         Product baseProduct = getBillingConfig().getProducts().get(basePlan.getProduct());
         LocalDate deadline = isBaseEntitlementExpire ? null : baseExpireDate;
-        // 附加订阅
+        // Add-on subscription
         List<Subscription> addOnSubscription = bundle.getAddOnSubscription();
         List<Plan> addOnPlans = addOnSubscription.stream()
                 .filter(subscription -> {
@@ -236,8 +188,8 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     }
 
     private SubscribePlanInfo defaultPlanInfo(String spaceId) {
-        // 如果如果绑定了第三方，isv返回对应的基础版本
-        // 没有权益，返回默认配置
+        // If a third party is bound, isv returns the corresponding base version
+        // No equity, return to default configuration
         return Optional.ofNullable(iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId))
                 .map(bind -> iSocialTenantService.getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId()))
                 .map(tenant -> {
@@ -276,14 +228,14 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
 
         boolean blackSpace = planInfo.isFree() ? ObjectUtil.defaultIfNull(spaceGlobalFeature.getBlackSpace(), Boolean.FALSE) : Boolean.FALSE;
         result.setBlackSpace(blackSpace);
-        // todo 临时方案，新的订阅中删除
+        // todo Temporary plan, removed from new subscriptions
         if (SpaceCertification.BASIC.getLevel().equals(spaceGlobalFeature.getCertification())) {
             result.setMaxCapacitySizeInBytes(constProperties.getSpaceBasicCertificationCapacity() * 1024 * 1024 * 1024L + result.getMaxCapacitySizeInBytes());
         }
         if (SpaceCertification.SENIOR.getLevel().equals(spaceGlobalFeature.getCertification())) {
             result.setMaxCapacitySizeInBytes(constProperties.getSpaceSeniorCertificationCapacity() * 1024 * 1024 * 1024L + result.getMaxCapacitySizeInBytes());
         }
-        // 赠送的附件容量
+        // Complimentary accessory capacity
         Long unExpireGiftCapacity = this.getSpaceUnExpireGiftCapacity(spaceId);
         result.setUnExpireGiftCapacity(unExpireGiftCapacity);
         if (unExpireGiftCapacity != 0) {
@@ -320,122 +272,6 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
     }
 
     @Override
-    public void checkCapacity(String spaceId, long fileSize, String checksum) {
-        log.info("检查空间附件容量");
-        long maxCapacity = getPlanMaxCapacity(spaceId);
-        if (maxCapacity == -1) {
-            log.info("白名单，无限容量");
-            return;
-        }
-        long currentCapacity = spaceCapacityCacheService.getSpaceCapacity(spaceId);
-        ExceptionUtil.isTrue(currentCapacity < maxCapacity, SubscribeFunctionException.CAPACITY_LIMIT);
-        if (currentCapacity + fileSize >= maxCapacity) {
-            // 判断附件是否存在空间中，已存在的附件不计入容量，故只有未上传过的附件会触发通知
-            boolean exist = SqlTool.retCount(spaceAssetMapper.countBySpaceIdAndAssetChecksum(spaceId, checksum)) > 0;
-            if (exist) {
-                return;
-            }
-            // 触发通知后，避免并发请求造成多次通知
-            String lockKey = StrUtil.format(GENERAL_LOCKED, "notify:capacity", spaceId);
-            BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(lockKey);
-            Boolean result = ops.setIfAbsent(fileSize, 10, TimeUnit.SECONDS);
-            if (BooleanUtil.isFalse(result)) {
-                // 第一次超限发送通知，其余并发请求限制上传
-                throw new BusinessException(SubscribeFunctionException.CAPACITY_LIMIT);
-            }
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.CAPACITY_LIMIT, null, 0L, spaceId, null));
-            String spaceName = spaceMapper.selectSpaceNameBySpaceId(spaceId);
-            String capacity = FileUtil.readableFileSize(currentCapacity + fileSize);
-            List<String> allEmails = memberMapper.selectActiveEmailBySpaceId(spaceId);
-            if (allEmails.isEmpty()) {
-                return;
-            }
-            Dict dict = Dict.create();
-            dict.set("SPACE_NAME", spaceName);
-            dict.set("CAPACITY_VALUE", capacity);
-            dict.set("MAX_CAPACITY", FileUtil.readableFileSize(maxCapacity));
-            dict.set("YEARS", LocalDate.now().getYear());
-            final String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
-            List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, allEmails);
-            final List<MailWithLang> tos = emailsWithLang.stream()
-                    .map(emailWithLang -> new MailWithLang(emailWithLang.getLocale(), emailWithLang.getEmail()))
-                    .collect(Collectors.toList());
-            TaskManager.me().execute(() -> NotifyMailFactory.me().sendMail(MailPropConstants.SUBJECT_CAPACITY_FULL, dict, tos));
-        }
-    }
-
-    @Override
-    public long getPlanMaxSheetNums(String spaceId) {
-        BillingPlanFeature planFeature = getPlanFeature(spaceId);
-        long value = planFeature.getMaxSheetNums();
-        ExceptionUtil.isFalse(value == 0L, BillingException.ACCOUNT_BUNDLE_ERROR);
-        return value;
-    }
-
-    @Override
-    public void checkSheetNums(String spaceId, int createSum) {
-        long maxSheetNumber = getPlanMaxSheetNums(spaceId);
-        if (maxSheetNumber == -1) {
-            log.info("白名单，无限成员数量");
-            return;
-        }
-        NodeStaticsVO nodeStaticsVO = iStaticsService.getNodeStaticsBySpaceId(spaceId);
-        long currentNodeCount = nodeStaticsVO.getFileCount();
-        if (currentNodeCount + createSum > maxSheetNumber) {
-            TaskManager.me().execute(() -> NotificationManager.me().playerNotify(NotificationTemplateId.DATASHEET_LIMITED, null, 0L, spaceId, null));
-        }
-        ExceptionUtil.isTrue(currentNodeCount + createSum <= maxSheetNumber, NODE_LIMIT);
-    }
-
-    @Override
-    public long getPlanSeats(String spaceId) {
-        BillingPlanFeature planFeature = getPlanFeature(spaceId);
-        long value = planFeature.getMaxSeats();
-        ExceptionUtil.isFalse(value == 0L, BillingException.ACCOUNT_BUNDLE_ERROR);
-        return value;
-    }
-
-    @Override
-    public void checkSeat(String spaceId) {
-        log.info("检查成员数量上限");
-        long maxSeatNumber = getPlanSeats(spaceId);
-        if (maxSeatNumber == -1) {
-            log.info("白名单，无限成员数量");
-            return;
-        }
-        long currentSeatNumber = iStaticsService.getMemberTotalCountBySpaceId(spaceId);
-        ExceptionUtil.isTrue(currentSeatNumber < maxSeatNumber, SubscribeFunctionException.MEMBER_LIMIT);
-    }
-
-    @Override
-    public long getPlanMaxSubAdmins(String spaceId) {
-        BillingPlanFeature planFeature = getPlanFeature(spaceId);
-        long value = planFeature.getMaxAdminNums();
-        ExceptionUtil.isFalse(value == 0L, BillingException.ACCOUNT_BUNDLE_ERROR);
-        return value;
-    }
-
-    @Override
-    public void checkSubAdmins(String spaceId) {
-        log.info("检查管理员数量上限");
-        long maxSubAdminNumber = getPlanMaxSubAdmins(spaceId);
-        if (maxSubAdminNumber == -1) {
-            log.info("白名单，无限成员数量");
-            return;
-        }
-        long currentNumber = iStaticsService.getAdminTotalCountBySpaceId(spaceId);
-        ExceptionUtil.isTrue(currentNumber < maxSubAdminNumber, SubscribeFunctionException.ADMIN_LIMIT);
-    }
-
-    @Override
-    public long getPlanMaxRows(String spaceId) {
-        BillingPlanFeature planFeature = getPlanFeature(spaceId);
-        long value = planFeature.getMaxRowsInSpace();
-        ExceptionUtil.isFalse(value == 0L, BillingException.ACCOUNT_BUNDLE_ERROR);
-        return value;
-    }
-
-    @Override
     public long getPlanAuditQueryDays(String spaceId) {
         BillingPlanFeature planFeature = getPlanFeature(spaceId);
         Long value = planFeature.getMaxAuditQueryDays();
@@ -467,17 +303,17 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         LocalDateTime nowTime = ClockManager.me().getLocalDateTimeNow();
         List<BundleEntity> bundles = iBundleService.getBySpaceIdAndState(spaceId, BundleState.ACTIVATED);
         bundles.forEach(bundle -> {
-            // 结束时间在当前时间之后，标记为过期
+            // The end time is after the current time, marked as expired
             if (bundle.getEndDate().isBefore(nowTime)) {
                 BundleEntity updatedBundle =
                         BundleEntity.builder().state(BundleState.EXPIRED.name()).updatedBy(bundle.getUpdatedBy()).build();
                 iBundleService.updateByBundleId(bundle.getBundleId(), updatedBundle);
             }
-            // 查询订阅
+            // Query subscription
             List<SubscriptionEntity> subscriptions =
                     iSubscriptionService.getByBundleIdAndState(bundle.getBundleId(), SubscriptionState.ACTIVATED);
             subscriptions.forEach(subscription -> {
-                // 处理过期的订阅
+                // Handling expired subscriptions
                 if (subscription.getExpireDate().isBefore(nowTime)) {
                     SubscriptionEntity entity =
                             SubscriptionEntity.builder().state(SubscriptionState.EXPIRED.name()).updatedBy(subscription.getUpdatedBy()).build();
@@ -496,7 +332,7 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
         LocalDate whiteEndDate = setting.getEndDate();
         LocalDate today = ClockManager.me().getLocalDateNow();
         if (today.compareTo(whiteEndDate) <= 0) {
-            // 追加增值计划
+            // Additional value-added plan
             if (setting.getCapacity() != null) {
                 Long increase = setting.getCapacity() * 1024 * 1024 * 1024L + planFeature.getMaxCapacitySizeInBytes();
                 planFeature.setMaxCapacitySizeInBytes(increase);
@@ -510,37 +346,38 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
 
     @Override
     public Long getSpaceUnExpireGiftCapacity(String spaceId) {
-        log.info("获取空间赠送的未过期附件容量");
-        // 赠送附件容量planId
+        log.info("Get the capacity of unexpired attachments given by space");
+        // Free attachment capacity planId
         String planId = "capacity_300_MB";
-        // 获取赠送附件容量的附加订阅计划数量
+        // Get the number of add-on subscription plans that give away add-on capacity
         Integer planCount = subscriptionMapper.selectUnExpireGiftCapacityBySpaceId(spaceId, planId, SubscriptionState.ACTIVATED);
-        // 获取方案套餐特性
+        // Get plan package features
         Plan plan = BillingConfigManager.getBillingConfig().getPlans().get(planId);
         Feature feature = BillingConfigManager.getBillingConfig().getFeatures().get(plan.getFeatures().stream().filter(e -> e.contains("capacity")).findFirst().get());
-        // 返回赠送的未过期附件容量大小
+        // Returns the size of the gifted unexpired attachments
         return planCount * 1024L * 1024 * feature.getSpecification();
     }
 
     @Override
     public IPage<SpaceCapacityPageVO> getSpaceCapacityDetail(String spaceId, Boolean isExpire, Page page) {
-        log.info("查询附件容量明细信息");
-        // 查询已过期的附件容量
+        log.info("Query attachment capacity details");
+        // Query expired attachment capacity
         if (isExpire) {
-            // 查询已过期附件容量订单信息
+            // Query expired attachment capacity order information
             IPage<SpaceSubscriptionDto> expireList = subscriptionMapper.selectExpireCapacityBySpaceId(spaceId, page);
-            // 返回处理后的视图信息
             return this.handleCapacitySubscription(expireList, page);
         }
-        // 查询未过期附件容量订单信息
+        // Query unexpired attachment capacity order information
         IPage<SpaceSubscriptionDto> unExpirePage = subscriptionMapper.selectUnExpireCapacityBySpaceId(spaceId, page, SubscriptionState.ACTIVATED);
         IPage<SpaceCapacityPageVO> spaceCapacityPageVOIPage = this.handleCapacitySubscription(unExpirePage, page);
-        // 处理官方赠送的附件容量记录，空间基础、高级认证分别获赠5GB、10GB附件容量
+        // Handle the record of the attachment capacity given by the official,
+        // and receive 5GB and 10GB attachment capacity respectively for basic space and advanced certification.
         if (this.checkOfficialGiftCapacity(spaceId) != null) {
             spaceCapacityPageVOIPage.getRecords().add(this.checkOfficialGiftCapacity(spaceId));
             spaceCapacityPageVOIPage.setTotal(spaceCapacityPageVOIPage.getTotal() + 1);
         }
-        // 处理免费订阅计划空间站的附件容量记录,铜级空间站默认1GB附件容量
+        // Handle the attachment capacity record of the free subscription plan space station,
+        // the default 1GB attachment capacity of the bronze-level space station
         Integer number = subscriptionMapper.selectUnExpireBaseProductBySpaceId(spaceId, SubscriptionState.ACTIVATED, ProductCategory.BASE);
         if (number == 0) {
             SpaceCapacityPageVO freeCapacity = new SpaceCapacityPageVO();
@@ -550,21 +387,20 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             spaceCapacityPageVOIPage.getRecords().add(freeCapacity);
             spaceCapacityPageVOIPage.setTotal(spaceCapacityPageVOIPage.getTotal() + 1);
         }
-        // 返回处理后的视图信息
         return spaceCapacityPageVOIPage;
     }
 
     @Override
     public IPage<SpaceCapacityPageVO> handleCapacitySubscription(IPage<SpaceSubscriptionDto> spaceSubscriptionDtoIPage, Page page) {
-        log.info("处理附件容量订单信息");
+        log.info("Process attachment capacity order information");
         String giftSubscriptionPlanId = "capacity_300_MB";
-        // 构建附件容量明细对象集合
+        // Build a collection of attachment capacity detail objects
         List<SpaceCapacityPageVO> spaceCapacityPageVos = new ArrayList<>();
         for (SpaceSubscriptionDto spaceSubscriptionDto : spaceSubscriptionDtoIPage.getRecords()) {
             if (giftSubscriptionPlanId.equals(spaceSubscriptionDto.getPlanId()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())) {
                 continue;
             }
-            // 对planId进行处理，去除_monthly、_biannual、_annual、_v1
+            // Process planId, remove _monthly, _biannual, _annual, _v1
             List<String> removeStrings = CollUtil.newArrayList("_monthly", "_biannual", "_annual", "_v1");
             String planId = spaceSubscriptionDto.getPlanId();
             for (String removeString : removeStrings) {
@@ -572,13 +408,13 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
                     planId = StrUtil.removeAll(planId, removeString);
                 }
             }
-            // 获取方案套餐特性
+            // Get plan package features
             String finalPlanId = planId;
             Plan plan = BillingConfigManager.getBillingConfig().getPlans().values().stream().filter(e -> e.getId().contains(finalPlanId)).findFirst().get();
             Feature feature = BillingConfigManager.getBillingConfig().getFeatures().get(plan.getFeatures().stream().filter(e -> e.contains("capacity")).findFirst().get());
-            // 构建附件容量明细记录
+            // Build Attachment Capacity Detail Record
             SpaceCapacityPageVO spaceCapacityPageVO = new SpaceCapacityPageVO();
-            // 附件容量额度
+            // Attachment capacity quota
             if (feature.getSpecification() == -1) {
                 spaceCapacityPageVO.setQuota("-1");
             }
@@ -588,34 +424,35 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
             else {
                 spaceCapacityPageVO.setQuota(StrUtil.format("{}GB", feature.getSpecification()));
             }
-            // 附件容量额度来源
+            // Accessory capacity quota source
             if (StrUtil.isNotEmpty(spaceSubscriptionDto.getMetadata())) {
-                // 解析metadata信息,包含新用户ID、新用户名称、附件容量类型
+                // Parse metadata information, including new user ID, new user name, attachment capacity type
                 JSONObject metadata = JSONUtil.parseObj(spaceSubscriptionDto.getMetadata());
                 String capacityType = metadata.getStr("capacityType");
-                // 判断附件容量是否是邀请新用户加入空间站所获得的奖励
+                // Determine if attachment capacity is a reward for inviting new users to the space station
                 if (CapacityType.PARTICIPATION_CAPACITY.getName().equals(capacityType)) {
-                    // 通过用户Id获取邀请用户信息，包括用户Id、用户头像
+                    // Obtain invited user information through user ID, including user ID, user avatar
                     Long userId = Long.valueOf(metadata.getStr("userId"));
                     InviteUserInfo inviteUserInfo = userMapper.selectInviteUserInfoByUserId(userId);
                     spaceCapacityPageVO.setQuotaSource(CapacityType.PARTICIPATION_CAPACITY.getName());
-                    // 参与邀请用户赠送附件容量活动，额外返回邀请成员信息
+                    // Participate in the activity of inviting users to give away attachment capacity,
+                    // and additionally return invited member information
                     spaceCapacityPageVO.setInviteUserInfo(inviteUserInfo);
                 }
             }
-            // 订阅套餐附件容量额度来源
+            // Subscription package attachment capacity quota source
             if (ProductCategory.BASE.name().equals(spaceSubscriptionDto.getProductCategory())) {
                 spaceCapacityPageVO.setQuotaSource(CapacityType.SUBSCRIPTION_PACKAGE_CAPACITY.getName());
             }
-            // 商务下单附件容量额度来源
+            // Business order attachment capacity quota source
             if (ProductCategory.ADD_ON.name().equals(spaceSubscriptionDto.getProductCategory()) && StrUtil.isEmpty(spaceSubscriptionDto.getMetadata())) {
                 spaceCapacityPageVO.setQuotaSource(CapacityType.PURCHASE_CAPACITY.getName());
             }
-            // 附件容量过期时间
+            // Attachment capacity expiration time
             spaceCapacityPageVO.setExpireDate(spaceSubscriptionDto.getExpireTime().format(DateTimeFormatter.ofPattern(DateFormatConstants.TIME_SIMPLE_PATTERN)));
             spaceCapacityPageVos.add(spaceCapacityPageVO);
         }
-        // 构建分页返回对象
+        // Build pagination return objects
         IPage<SpaceCapacityPageVO> spaceCapacityPageVOIPage = new Page<>();
         spaceCapacityPageVOIPage.setRecords(spaceCapacityPageVos);
         spaceCapacityPageVOIPage.setCurrent(page.getCurrent());
@@ -626,18 +463,18 @@ public class SpaceSubscriptionServiceImpl implements ISpaceSubscriptionService {
 
     @Override
     public SpaceCapacityPageVO checkOfficialGiftCapacity(String spaceId) {
-        log.info("检验空间站是否认证获得官方附件容量奖励");
+        log.info("Check if the space station is certified to receive the official accessory capacity reward");
         SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
         if (spaceGlobalFeature.getCertification() != null) {
-            // 构建官方赠送附件容量信息
+            // Build official gift attachment capacity information
             SpaceCapacityPageVO officialGiftCapacity = new SpaceCapacityPageVO();
-            // 基础认证5GB容量
+            // Basic certification 5GB capacity
             if (SpaceCertification.BASIC.getLevel().equals(spaceGlobalFeature.getCertification())) {
                 officialGiftCapacity.setQuota(StrUtil.format("{}GB", constProperties.getSpaceBasicCertificationCapacity()));
                 officialGiftCapacity.setQuotaSource(CapacityType.OFFICIAL_GIFT_CAPACITY.getName());
                 officialGiftCapacity.setExpireDate("-1");
             }
-            // 高级认证10GB容量
+            // Premium certified 10GB capacity
             if (SpaceCertification.SENIOR.getLevel().equals(spaceGlobalFeature.getCertification())) {
                 officialGiftCapacity.setQuota(StrUtil.format("{}GB", constProperties.getSpaceSeniorCertificationCapacity()));
                 officialGiftCapacity.setQuotaSource(CapacityType.OFFICIAL_GIFT_CAPACITY.getName());

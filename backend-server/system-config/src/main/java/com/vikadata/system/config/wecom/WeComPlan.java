@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 企业微信付费方案
+ * WeCom Billing Plan
  * </p>
  */
 @Setter
@@ -15,17 +15,17 @@ import lombok.Setter;
 public class WeComPlan {
 
     /**
-     * 企微商品版本 ID
+     * product version ID
      */
     private String id;
 
     /**
-     * 价格列表适用的订阅方案列表
+     * list of subscription plans for which the price list applies
      */
     private List<String> billingPlanId;
 
     /**
-     * 是否为免费试用版本
+     * is it a free trial version
      */
     private boolean trial;
 

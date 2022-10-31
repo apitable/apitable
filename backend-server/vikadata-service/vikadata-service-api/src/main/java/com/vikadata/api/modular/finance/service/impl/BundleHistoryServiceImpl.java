@@ -14,9 +14,9 @@ import com.vikadata.entity.BundleHistoryEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * 订阅套餐历史服务实现
- * @author Shawn Deng
- * @date 2022-06-09 18:34:10
+ * <p>
+ * Bundle History Service Implement Class
+ * </p>
  */
 @Service
 public class BundleHistoryServiceImpl extends ServiceImpl<BundleHistoryMapper, BundleHistoryEntity> implements IBundleHistoryService {

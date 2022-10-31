@@ -9,11 +9,8 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * <p>
- * RestTemplate 配置
+ * RestTemplate Config
  * </p>
- *
- * @author Chambers
- * @date 2020/4/1
  */
 @Configuration(proxyBeanMethods = false)
 public class RestTemplateConfig {

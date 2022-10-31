@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 空间API统计DTO
+ * Space Api Statistics Dto
  * </p>
- *
- * @author Chambers
- * @date 2022/7/20
  */
 @Data
 @NoArgsConstructor

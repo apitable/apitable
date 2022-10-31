@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.cache.bean.LoginUserDto;
 import com.vikadata.api.cache.service.LoginUserService;
 import com.vikadata.api.cache.service.UserActiveSpaceService;
+import com.vikadata.api.config.properties.LimitProperties;
 import com.vikadata.api.context.LoginContext;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.user.ThirdPartyMemberType;
@@ -26,7 +27,6 @@ import com.vikadata.api.modular.user.service.IUserLinkService;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.wechat.service.IWechatMaService;
 import com.vikadata.boot.autoconfigure.wx.miniapp.WxMaProperties;
-import com.vikadata.api.config.properties.LimitProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 
@@ -38,11 +38,8 @@ import static com.vikadata.api.enums.exception.UserException.MOBILE_HAS_BOUND_WE
 
 /**
  * <p>
- * 微信小程序 服务实现类
+ * WeChat Ma Service Implement Class
  * </p>
- *
- * @author Chambers
- * @since 2020-02-22
  */
 @Slf4j
 @Service
@@ -77,16 +74,15 @@ public class WechatMaServiceImpl implements IWechatMaService {
 
     @Override
     public LoginResultVo getLoginResult(Long userId, Long wechatMemberId) {
-        log.info("获取登陆结果");
-        // 保存session
+        log.info("User「{}」 gets login result.", userId);
         SessionContext.setId(userId, wechatMemberId);
-        // 查询用户基本信息
+        // Query basic user information
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
         LoginResultVo vo = LoginResultVo.builder()
-            .isBind(true)
-            .nickName(loginUserDto.getNickName())
-            .build();
-        // 获取用户最近工作的空间ID
+                .isBind(true)
+                .nickName(loginUserDto.getNickName())
+                .build();
+        // Get the space ID of the user's most recent work
         String activeSpaceId = userActiveSpaceService.getLastActiveSpace(userId);
         if (StrUtil.isNotBlank(activeSpaceId)) {
             vo.setNeedCreate(false);
@@ -96,21 +92,21 @@ public class WechatMaServiceImpl implements IWechatMaService {
 
     @Override
     public LoginResultVo login(WxMaJscode2SessionResult result) {
-        log.info("微信小程序授权登录，WxMaJsCode2SessionResult:{}", result);
-        // 查询openId 是否有对应的微信会员，及绑定的用户
+        log.info("WeChat applet authorized login. WxMaJsCode2SessionResult:{}", result);
         if (wxMaProperties == null) {
-            throw new BusinessException("未开启微信小程序组件");
+            throw new BusinessException("WeChat applet component is not enabled");
         }
+        // Query whether openId has corresponding wx members and bound users
         WechatMemberDto dto = thirdPartyMemberMapper.selectWechatMemberDto(ThirdPartyMemberType.WECHAT_MINIAPP.getType(),
-            wxMaProperties.getAppId(), result.getOpenid());
+                wxMaProperties.getAppId(), result.getOpenid());
         Long wechatMemberId;
         LoginResultVo vo = new LoginResultVo();
         if (ObjectUtil.isNotNull(dto)) {
             wechatMemberId = dto.getId();
-            // 更新微信会员session_key
+            // Update wx membership session_key
             iThirdPartyMemberService.editMiniAppMember(wechatMemberId, result, null, null);
+            // If there is a bound user, save the session and return the required information
             if (ObjectUtil.isNotNull(dto.getUserId())) {
-                // 存在绑定的用户，保存会话，返回需要的信息
                 vo = this.getLoginResult(dto.getUserId(), wechatMemberId);
                 vo.setHasUnion(dto.getHasUnion());
                 return vo;
@@ -118,10 +114,8 @@ public class WechatMaServiceImpl implements IWechatMaService {
             vo.setHasUnion(dto.getHasUnion());
         }
         else {
-            // 创建微信会员
             wechatMemberId = iThirdPartyMemberService.createMiniAppMember(wxMaProperties.getAppId(), result);
         }
-        // 保存微信会员ID到Session
         SessionContext.setId(null, wechatMemberId);
         return vo;
     }
@@ -129,33 +123,31 @@ public class WechatMaServiceImpl implements IWechatMaService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public LoginResultVo signIn(Long wechatMemberId, WxMaPhoneNumberInfo phoneNoInfo) {
-        log.info("使用微信手机号的登录处理，WxMaPhoneNumberInfo:{}", phoneNoInfo);
+        log.info("Login processing using WeChat mobile phone number. WxMaPhoneNumberInfo:{}", phoneNoInfo);
         if (wxMaProperties == null) {
-            throw new BusinessException("未开启微信小程序组件");
+            throw new BusinessException("WeChat applet component is not enabled");
         }
-        // 查询手机号对应的用户ID及关联的微信成员ID
+        // Query the user ID corresponding to the mobile phone number and the associated WeChat member ID
         WechatMemberDto dto = thirdPartyMemberMapper.selectUserLinkedWechatMemberDto(wxMaProperties.getAppId(),
-            phoneNoInfo.getPurePhoneNumber());
+                phoneNoInfo.getPurePhoneNumber());
         Long userId;
         if (ObjectUtil.isNull(dto)) {
-            // v0.5 注册加入邀请码，暂时关闭小程序注册
-            throw new BusinessException("手机号尚未注册，请先前往PC端注册");
+            throw new BusinessException("The mobile phone number has not been registered, please go to the PC to register first.");
         }
         else {
             userId = dto.getUserId();
             if (BooleanUtil.isFalse(dto.getHasLink())) {
-                // 与当前微信关联
+                // Automatically create associations
                 iUserLinkService.create(userId, wechatMemberId);
             }
             else if (ObjectUtil.isNotNull(dto.getId())) {
-                // 存在关联的微信，若不是当前微信，提示使用手机号进行登录
+                // It is not the current WeChat that there is an association,
+                // and it prompts to use the mobile phone number to log in
                 ExceptionUtil.isTrue(dto.getId().equals(wechatMemberId), MOBILE_HAS_BOUND_WECHAT);
             }
-            // 更新最后登陆时间
             iUserService.updateLoginTime(userId);
         }
         if (ObjectUtil.isNull(dto) || StrUtil.isBlank(dto.getMobile())) {
-            // 更新微信会员手机信息
             iThirdPartyMemberService.editMiniAppMember(wechatMemberId, null, phoneNoInfo, null);
         }
         LoginResultVo vo = this.getLoginResult(userId, wechatMemberId);
@@ -166,16 +158,15 @@ public class WechatMaServiceImpl implements IWechatMaService {
 
     @Override
     public WechatInfoVo getUserInfo(Long userId) {
-        log.info("获取用户信息");
-        // 查询用户基本信息
+        log.info("Get user「{}」 information.", userId);
         LoginUserDto loginUserDto = loginUserService.getLoginUser(userId);
         WechatInfoVo vo = WechatInfoVo.builder()
-            .nickName(loginUserDto.getNickName())
-            .avatar(loginUserDto.getAvatar())
-            .mobile(StrUtil.replace(loginUserDto.getMobile(), 3, 7, '*'))
-            .email(loginUserDto.getEmail())
-            .build();
-        // 获取用户最近工作的空间ID
+                .nickName(loginUserDto.getNickName())
+                .avatar(loginUserDto.getAvatar())
+                .mobile(StrUtil.replace(loginUserDto.getMobile(), 3, 7, '*'))
+                .email(loginUserDto.getEmail())
+                .build();
+        // Get the space ID of the user's most recent work
         String activeSpaceId = userActiveSpaceService.getLastActiveSpace(loginUserDto.getUserId());
         if (StrUtil.isNotBlank(activeSpaceId)) {
             SpaceInfoVO spaceInfo = iSpaceService.getSpaceInfo(activeSpaceId);

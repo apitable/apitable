@@ -6,11 +6,8 @@ import java.util.List;
 
 /**
  * <p>
- * 目录
+ * Catalog
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/8/31 15:13
  */
 @Data
 public class Catalog {

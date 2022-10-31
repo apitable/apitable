@@ -8,9 +8,8 @@ import com.vikadata.system.config.i18n.I18nTypes;
 
 /**
  * <p>
- * i18n config manager
+ * I18n Config Manager
  * </p>
- * @author Shawn Deng
  */
 public class I18nConfigManager {
 
@@ -23,17 +22,17 @@ public class I18nConfigManager {
 
         private final I18nConfig singleton;
 
-        // JVM保证这个方法绝对只调用一次
+        // JVM guarantee this method is called absolutely only once
         Singleton() {
             try {
                 InputStream resourceAsStream = SystemConfigManager.class.getResourceAsStream("/strings.auto.json");
                 if (resourceAsStream == null) {
-                    throw new IOException("多语言文件未找到");
+                    throw new IOException("I18n file not found!");
                 }
                 singleton = Converter.getObjectMapper().readValue(resourceAsStream, I18nConfig.class);
             }
             catch (IOException e) {
-                throw new RuntimeException("加载多语言配置失败");
+                throw new RuntimeException("Failed to load I18n!");
             }
         }
 

@@ -24,25 +24,21 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * <p>
- * 新世界 Aes 加密文件
+ * Aes Encryption
  * </p>
- *
- * @author Chambers
- * @date 2021/6/19
  */
 public class AesEncryption {
-    private HashMap<String, String> modes = new HashMap<String, String>() {
+    private final HashMap<String, String> modes = new HashMap<String, String>() {
         { put("CBC", "AES/CBC/PKCS5Padding"); };
         { put("CFB", "AES/CFB8/NoPadding"); }
     };
-    private List<Integer> sizes = Arrays.asList(128, 192, 256);
-    private int saltLen = 16;
-    private int ivLen = 16;
-    private int macLen = 32;
-    private int macKeyLen = 32;
 
-    private String mode;
-    private int keyLen;
+    private final int saltLen = 16;
+    private final int ivLen = 16;
+    private final int macLen = 32;
+
+    private final String mode;
+    private final int keyLen;
     private byte[] masterKey;
 
     public int keyIterations = 20000;
@@ -54,13 +50,14 @@ public class AesEncryption {
         this.keyLen = keySize / 8;
 
         if (this.modes.get(this.mode) == null) {
-            throw new IllegalArgumentException(mode + " 加密模式不支持!");
+            throw new IllegalArgumentException("Encryption mode not supported!");
         }
+        List<Integer> sizes = Arrays.asList(128, 192, 256);
         if (!sizes.contains(keySize)) {
-            throw new IllegalArgumentException("密钥大小无效!");
+            throw new IllegalArgumentException("Invalid key size!");
         }
         if (keySize > maxKeyLen()) {
-            throw new IllegalArgumentException("密钥大小不支持!");
+            throw new IllegalArgumentException("Key size not supported!");
         }
     }
 
@@ -120,11 +117,8 @@ public class AesEncryption {
             this.verify(iv_ct, mac, macKey);
 
             Cipher cipher = this.cipher(Cipher.DECRYPT_MODE, aesKey, iv);
-            byte[] plaintext = cipher.doFinal(ciphertext);
-            return plaintext;
-        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-            this.errorHandler(e);
-        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            return cipher.doFinal(ciphertext);
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | IllegalBlockSizeException | BadPaddingException e) {
             this.errorHandler(e);
         }
         return null;
@@ -135,7 +129,7 @@ public class AesEncryption {
     }
 
     public void setMasterKey(byte[] key, boolean... raw) {
-        boolean _raw = (raw.length > 0) ? raw[0] : false;
+        boolean _raw = raw.length > 0 && raw[0];
         try {
             masterKey = (_raw) ? key : Base64.getDecoder().decode(key);
         } catch (IllegalArgumentException e) {
@@ -148,9 +142,9 @@ public class AesEncryption {
     }
 
     public byte[] getMasterKey(boolean... raw) {
-        boolean _raw = (raw != null && raw.length > 0) ? raw[0] : false;
+        boolean _raw = raw != null && raw.length > 0 && raw[0];
         if (this.masterKey == null) {
-            this.errorHandler(new Exception("密钥未设置!"));
+            this.errorHandler(new Exception("Key not set!"));
         } else if (!_raw) {
             return Base64.getEncoder().encode(this.masterKey);
         }
@@ -158,7 +152,7 @@ public class AesEncryption {
     }
 
     public byte[] randomKeyGen(int keyLen, boolean... raw) {
-        boolean _raw = (raw.length > 0) ? raw[0] : false;
+        boolean _raw = raw.length > 0 && raw[0];
         masterKey = this.randomBytes(keyLen);
         return (_raw) ? masterKey : Base64.getEncoder().encode(masterKey);
     }
@@ -168,17 +162,18 @@ public class AesEncryption {
     }
 
     protected void errorHandler(Exception exception) {
-        System.out.println(exception);
+        System.out.println(exception.getMessage());
     }
 
     private SecretKeySpec[] keys(byte[] salt, String... password) throws IllegalArgumentException {
         byte[] dkey;
+        int macKeyLen = 32;
         if (password != null && password.length > 0) {
             dkey = this.pbkdf2Sha512(password[0], salt, keyLen + macKeyLen);
         } else if (this.masterKey != null) {
             dkey = this.hkdfSha256(this.masterKey, salt, keyLen + macKeyLen);
         } else {
-            throw new IllegalArgumentException("密钥未定义!");
+            throw new IllegalArgumentException("Key not define!");
         }
         return new SecretKeySpec[] {
                 new SecretKeySpec(dkey, 0, keyLen, "AES"),
@@ -203,9 +198,7 @@ public class AesEncryption {
             Cipher cipher = Cipher.getInstance(modes.get(mode));
             cipher.init(cipherMode, key, ivSpec);
             return cipher;
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new AssertionError(e);
-        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
             throw new AssertionError(e);
         }
     }
@@ -223,7 +216,7 @@ public class AesEncryption {
     private void verify(byte[] data, byte[] mac, SecretKeySpec key) throws IllegalArgumentException {
         byte[] dataMac = sign(data, key);
         if (!MessageDigest.isEqual(dataMac, mac)) {
-            throw new IllegalArgumentException("MAC检验失败!");
+            throw new IllegalArgumentException("MAC check failed!");
         }
     }
 

@@ -7,11 +7,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 方案套餐 特性
+ * Billing Feature
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/8/31 15:13
  */
 @Data
 public class Feature {

@@ -10,35 +10,35 @@ import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.support.serializer.BigDecimalSerializer;
 
 /**
- * 订单预览
- * @author Shawn Deng
- * @date 2022-05-19 10:23:18
+ * <p>
+ * Order Preview
+ * </p>
  */
 @Data
 public class OrderPreview {
 
-    @ApiModelProperty(value = "空间标识", example = "spc2123s")
+    @ApiModelProperty(value = "space id", example = "spc2123s")
     private String spaceId;
 
-    @ApiModelProperty(value = "订单类型", example = "BUY")
+    @ApiModelProperty(value = "order type", example = "BUY")
     private OrderType orderType;
 
-    @ApiModelProperty(value = "订单金额(单位: 元)", example = "19998.21")
+    @ApiModelProperty(value = "order amount (Unit: Yuan)", example = "19998.21")
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal priceOrigin;
 
-    @ApiModelProperty(value = "优惠金额(单位: 元)", example = "19998.21")
+    @ApiModelProperty(value = "discount amount (unit: yuan)", example = "19998.21")
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal priceDiscount;
 
-    @ApiModelProperty(value = "原方案未使用金额(单位: 元)", example = "19998.21")
+    @ApiModelProperty(value = "unused amount of the original plan (unit: yuan)", example = "19998.21")
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal priceUnusedCalculated;
 
-    @ApiModelProperty(value = "支付金额(单位: 元)", example = "18998.11")
+    @ApiModelProperty(value = "payment amount (unit: yuan)", example = "18998.11")
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal pricePaid;
 
-    @ApiModelProperty(value = "货币代码", example = "CNY")
+    @ApiModelProperty(value = "currency code", example = "CNY")
     private String currency;
 }

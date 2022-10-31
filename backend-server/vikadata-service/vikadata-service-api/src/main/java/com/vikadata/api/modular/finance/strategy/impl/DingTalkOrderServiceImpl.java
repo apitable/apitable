@@ -54,8 +54,6 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
  * ding talk orders service implements
  * handle ding talk order event
  * </p>
- * @author zoe zheng
- * @date 2022/5/18 18:34
  */
 @Service
 @Slf4j
@@ -90,14 +88,14 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
         if (null == context) {
             return null;
         }
-        // 创建订单
+        // Create order
         String orderId = createOrder(context);
-        // 创建订单元数据
+        // Create order metadata
         createOrderMetaData(orderId, OrderChannel.DINGTALK, event);
-        // 升级、续费、新购、续费升级、试用
+        // Upgrade, Renewal, New Purchase, Renewal Upgrade, Trial
         String subscriptionId;
         if (DingTalkOrderType.BUY.getValue().equals(event.getOrderType()) && null == context.getActivatedBundle()) {
-            // 创建订阅集合
+            // Create subscription bundle
             String bundleId = createBundle(context);
             subscriptionId = createSubscription(bundleId, context);
         }
@@ -107,30 +105,31 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
         else {
             subscriptionId = upgradeSubscription(context);
         }
-        // 创建订单项目
+        // Create order item
         createOrderItem(orderId, subscriptionId, context);
-        // 标记钉订单已经处理完成
+        // Mark the order has been processed
         iSocialDingTalkOrderService.updateTenantOrderStatusByOrderId(event.getCorpId(), event.getSuiteId(),
                 event.getOrderId(), 1);
-        // 同步订单事件
+        // Sync order events
         SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
         return orderId;
     }
 
     @Override
     public void retrieveOrderRefundEvent(SyncHttpMarketServiceCloseEvent event) {
-        // 查询订单号对应的订阅
+        // Query the subscription corresponding to the order number
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(event.getSuiteId(), event.getCorpId());
         if (StrUtil.isBlank(spaceId)) {
-            log.error("处理退款失败,钉钉企业还未绑定空间站:{}", event.getCorpId());
+            log.error("Failed to process the refund, DingTalk has not yet bound the space「{}」.", event.getCorpId());
             return;
         }
-        // 获取退款商品对应的订单ID 钉钉活动赠送的服务订单 也需要处理
+        // Obtain the order ID corresponding to the refunded product.
+        // The service order given by the DingTalk event also needs to be processed
         List<String> dingTalkOrderIds =
                 iSocialDingTalkOrderService.getOrderIdsByTenantIdAndAppIdAndItemCode(event.getCorpId(),
                         event.getSuiteId(), event.getItemCode());
         dingTalkOrderIds.forEach(i -> {
-            // 删除订单对应的订阅信息
+            // Delete the subscription information corresponding to the order
             String orderId = iOrderV2Service.getOrderIdByChannelOrderId(spaceId, i);
             List<String> subscriptionIds =
                     iOrderItemService.getSubscriptionIdsByOrderId(orderId).stream().filter(StrUtil::isNotBlank).collect(Collectors.toList());
@@ -148,7 +147,7 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
                 iBundleService.removeBatchByBundleIds(bundleIds);
             }
         });
-        // 退款处理完成
+        // Refund processing completed
         iSocialDingTalkRefundService.updateTenantRefundStatusByOrderId(event.getCorpId(), event.getSuiteId(),
                 event.getOrderId(), 1);
     }
@@ -156,10 +155,10 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void migrateEvent(String spaceId) {
-        // 读取绑定信息
+        // Read binding information
         TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
         if (null == bindInfo) {
-            log.warn("钉钉空间未绑定");
+            log.warn("DingTalk space is not bound.");
             return;
         }
         List<CorpBizDataDto> bizDataList = iDingTalkInternalIsvService.getCorpBizDataByBizTypes(bindInfo.getAppId(),
@@ -167,14 +166,14 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
                 ListUtil.toList(DingTalkBizType.MARKET_ORDER, DingTalkBizType.SUBSCRIPTION_CLOSE));
         bizDataList.forEach(i -> {
             if (DingTalkBizType.MARKET_ORDER.getValue().equals(i.getBizType())) {
-                // 是否已经处理
+                // Check if it has been processed
                 SyncHttpMarketOrderEvent event = JSONUtil.toBean(i.getBizData(), SyncHttpMarketOrderEvent.class);
                 Integer status = iSocialDingTalkOrderService.getStatusByOrderId(bindInfo.getTenantId(), bindInfo.getAppId(),
                         i.getBizId());
                 if (null == status) {
                     iSocialDingTalkOrderService.createOrder(event);
                 }
-                // 未处理
+                // not processed
                 if (!SqlHelper.retBool(status)) {
                     retrieveOrderPaidEvent(event);
                 }
@@ -187,7 +186,7 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
                 if (null == status) {
                     iSocialDingTalkRefundService.createRefund(event);
                 }
-                // 未处理
+                // not processed
                 if (!SqlHelper.retBool(status)) {
                     retrieveOrderRefundEvent(JSONUtil.toBean(i.getBizData(), SyncHttpMarketServiceCloseEvent.class));
                 }
@@ -199,12 +198,12 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
     public SocialOrderContext buildSocialOrderContext(SyncHttpMarketOrderEvent event) {
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(event.getSuiteId(), event.getCorpId());
         if (StrUtil.isBlank(spaceId)) {
-            log.warn("钉钉企业还未收到开通应用事件:{}", event.getCorpId());
+            log.warn("DingTalk enterprise「{}」 has not received the application activation event", event.getCorpId());
             return null;
         }
-        // 订单购买的付费方案
+        // Paid plan for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        // price是null的情况，那么购买的是钉钉基础版
+        // If the price is null, then the basic version of DingTalk is purchased
         Product product = ObjectUtil.isNull(price) ? BillingConfigManager.getCurrentFreeProduct(ProductChannel.DINGTALK)
                 : BillingConfigManager.getBillingConfig().getProducts().get(price.getProduct());
         SubscriptionPhase phase = DingTalkOrderChargeType.TRYOUT.getValue().equals(event.getOrderChargeType()) ?
@@ -228,7 +227,7 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
             orderContext.setDiscountAmount(event.getDiscountFee());
             orderContext.setOriginalAmount(event.getPayFee() + event.getDiscountFee());
         }
-        // 统一为续费
+        // unified for renewal
         if (event.getOrderType().equals(DingTalkOrderType.RENEW_DEGRADE.getValue()) || event.getOrderType().equals(DingTalkOrderType.RENEW_UPGRADE.getValue())) {
             orderContext.setOrderType(OrderType.RENEW);
         }

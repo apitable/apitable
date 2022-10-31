@@ -6,11 +6,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 功能点
+ * Billing Function
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/1 14:47
  */
 @Data
 public class Function {

@@ -14,49 +14,43 @@ import com.vikadata.api.util.billing.model.ProductCategory;
 import com.vikadata.api.util.billing.model.ProductEnum;
 
 /**
- * 空间订阅套餐包视图
- * 通常一个空间拥有的订阅产品将有一个Base产品和N个addOn产品
- * 例如： 黄金级100人(BASE) + 50G附件容量包(ADD_ON) + 20万Api用量包(ADD_ON)
- *
- * @author Shawn Deng
- * @date 2022-05-17 17:34:40
+ * Space Subscription Package View
+ * Usually a subscription product owned by a space will have one Base product and N addOn products
+ * For example: Gold level 100 people (BASE) + 50G accessory capacity package (ADD_ON) + 200,000 Api usage package (ADD_ON)
  */
 @Data
 @Builder
 public class Bundle {
 
-    /**
-     * 空间ID
-     */
     private String spaceId;
 
     /**
-     * 订阅捆绑包标识
+     * subscription bundle ID
      */
     private String bundleId;
 
     /**
-     * 订阅捆绑包状态
+     * subscription bundle state
      */
     private BundleState state;
 
     /**
-     * 开始时间
+     * subscription bundle begin time
      */
     private LocalDateTime bundleStartDate;
 
     /**
-     * 结束时间
+     * subscription bundle end time
      */
     private LocalDateTime bundleEndDate;
 
     /**
-     * 订阅条目
+     * subscription entry
      */
     private List<Subscription> subscriptions;
 
     /**
-     * 获取基础类型产品的订阅
+     * Get subscriptions for base type products
      * @return Base Subscription
      */
     public Subscription getBaseSubscription() {

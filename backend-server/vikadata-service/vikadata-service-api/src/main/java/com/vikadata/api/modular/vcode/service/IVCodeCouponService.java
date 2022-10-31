@@ -11,72 +11,38 @@ import com.vikadata.api.model.vo.vcode.VCodeCouponVo;
 
 /**
  * <p>
- * V 码兑换券模板 服务接口
+ * VCode Coupon Service
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 public interface IVCodeCouponService {
 
     /**
-     * 获取V码兑换券模板信息
-     *
-     * @param keyword   搜索关键词（非必须）
-     * @return VCodeActivityVos
-     * @author Chambers
-     * @date 2022/6/24
+     * Get VCode Voucher Template Information
      */
     List<VCodeCouponVo> getVCodeCouponVo(String keyword);
 
     /**
-     * 获取V码兑换券模板分页视图信息
-     *
-     * @param page      分页请求对象
-     * @param keyword   搜索关键词（非必须）
-     * @return VCodeCouponPageVo
-     * @author Chambers
-     * @date 2022/6/24
+     * Get the page view information of the VCode coupon template
      */
     IPage<VCodeCouponPageVo> getVCodeCouponPageVo(Page<VCodeCouponPageVo> page, String keyword);
 
     /**
-     * 检查兑换券模是否存在
-     *
-     * @param templateId 兑换券模板ID
-     * @author Chambers
-     * @date 2020/8/20
+     * Check whether the voucher model exists
      */
     void checkCouponIfExist(Long templateId);
 
     /**
-     * 创建
-     *
-     * @param ro 请求参数
-     * @return id
-     * @author Chambers
-     * @date 2020/8/14
+     * Create coupon
      */
     Long create(VCodeCouponRo ro);
 
     /**
-     * 编辑
-     *
-     * @param userId     用户ID
-     * @param templateId 兑换券模板ID
-     * @param ro         请求参数
-     * @author Chambers
-     * @date 2020/8/14
+     * Edit coupon
      */
     void edit(Long userId, Long templateId, VCodeCouponRo ro);
 
     /**
-     * 删除V码兑换券模板
-     *
-     * @param userId     用户ID
-     * @param templateId 兑换券模板表ID
-     * @author Chambers
-     * @date 2022/6/24
+     * Delete coupon
      */
     void delete(Long userId, Long templateId);
 }

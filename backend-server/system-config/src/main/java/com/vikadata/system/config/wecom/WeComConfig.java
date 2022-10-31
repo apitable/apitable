@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 企业微信配置
+ * WeCom Config
  * </p>
  */
 @Setter

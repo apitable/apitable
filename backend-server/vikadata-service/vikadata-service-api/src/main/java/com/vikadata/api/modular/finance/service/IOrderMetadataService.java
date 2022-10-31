@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.entity.OrderMetadataEntity;
 
-/** 
-* <p> 
-* 订单metadata数据
-* </p> 
-* @author zoe zheng 
-* @date 2022/5/23 17:43
-*/
+/**
+ * <p>
+ * Order Metadata Service
+ * </p>
+ */
 public interface IOrderMetadataService extends IService<OrderMetadataEntity> {
 }

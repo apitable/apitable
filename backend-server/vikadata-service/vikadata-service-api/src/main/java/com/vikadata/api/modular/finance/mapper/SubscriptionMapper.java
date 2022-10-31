@@ -14,112 +14,85 @@ import com.vikadata.api.util.billing.model.ProductCategory;
 import com.vikadata.entity.SubscriptionEntity;
 
 /**
- * 订阅计费系统-订阅表 Mapper
- * @author Shawn Deng
- * @date 2022-05-13 16:36:42
+ * Subscription Billing System - Subscription Mapper
  */
 public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
 
     /**
-     * 根据订阅条目标识
-     * @param subscriptionId 订阅条目标识
+     * Query by subscription id
+     *
+     * @param subscriptionId subscription id
      * @return subscription entity
      */
     SubscriptionEntity selectBySubscriptionId(@Param("subscriptionId") String subscriptionId);
 
     /**
-     * 根据空间订阅标识查询
-     * @param subscriptionIds 订阅标识列表
+     * Batch query by subscription id
+     *
+     * @param subscriptionIds subscription id list
      * @return bundle list
      */
     List<SubscriptionEntity> selectBySubscriptionIds(@Param("subscriptionIds") List<String> subscriptionIds);
 
     /**
-     * 根据订阅集合查询
-     * @param bundleId 订阅集合标识
+     * Query by bundle id
+     *
+     * @param bundleId  bundle id
      * @return subscription entities
      */
     List<SubscriptionEntity> selectByBundleId(@Param("bundleId") String bundleId);
 
     /**
-     * 批量根据订阅集合查询
-     * @param bundleIds 订阅集合标识列表
+     * Batch query by bundle id
+     *
+     * @param bundleIds bundle id list
      * @return subscription entities
      */
     List<SubscriptionEntity> selectByBundleIds(@Param("bundleIds") Collection<String> bundleIds);
 
     /**
-     * 批量获取订阅
+     * Query by bundle id and state
      *
-     * @param bundleId 订阅集合标识
-     * @param state 订阅状态
+     * @param bundleId  bundle id
+     * @param state     subscription state
      * @return List<FinanceSubscriptionEntity>
-     * @author zoe zheng
-     * @date 2022/5/26 13:24
      */
     List<SubscriptionEntity> selectByBundleIdAndState(@Param("bundleId") String bundleId,
             @Param("state") SubscriptionState state);
 
     /**
-     * 批量更新删除状态
-     * @param subscriptionIds 订阅条目
-     * @param isDeleted 是否删除
-     * @return 影响行数
-     * @author zoe zheng
-     * @date 2022/6/7 10:27
+     * Batch update isDeleted status
+     *
+     * @param subscriptionIds   subscription id list
+     * @param isDeleted         isDeleted status
+     * @return number of rows affected
      */
     Integer updateIsDeletedBySubscriptionIds(@Param("subscriptionIds") List<String> subscriptionIds, @Param(
             "isDeleted") boolean isDeleted);
 
     /**
-     * 查询生效中的附件容量信息
-     *
-     * @param spaceId 空间ID
-     * @param page    分页请求对象
-     * @param state   订阅状态
-     * @return 结果集合
-     * @author liuzijing
-     * @date 2022/8/15
+     * Query the attachment capacity information in effect
      */
     IPage<SpaceSubscriptionDto> selectUnExpireCapacityBySpaceId(@Param("spaceId") String spaceId, Page page, @Param("state") SubscriptionState state);
 
     /**
-     * 查询失效的附件容量信息
-     *
-     * @param spaceId 空间ID
-     * @param page    分页请求对象
-     * @return 结果集合
-     * @author liuzijing
-     * @date 2022/8/15
+     * Query invalid attachment capacity information
      */
     IPage<SpaceSubscriptionDto> selectExpireCapacityBySpaceId(@Param("spaceId") String spaceId, Page page);
 
     /**
-     * 查询赠送的未过期的附件容量数量
-     *
-     * @param spaceId 空间ID
-     * @param planId  产品方案Id
-     * @param state   订阅状态
-     * @return 订阅计划数量
-     * @author liuzijing
-     * @date 2022/8/16
+     * Query the number of gifted unexpired attachment capacity
      */
     Integer selectUnExpireGiftCapacityBySpaceId(@Param("spaceId") String spaceId, @Param("planId") String planId, @Param("state") SubscriptionState state);
 
     /**
-     * 查询空间未过期BASE类型订阅
-     *
-     * @param spaceId 空间Id
-     * @param state   订阅状态
-     * @param category 类型
-     * @author liuzijing
-     * @date 2022/8/25
+     * Query space has not expired BASE type subscription
      */
     Integer selectUnExpireBaseProductBySpaceId(@Param("spaceId") String spaceId, @Param("state") SubscriptionState state, @Param("category") ProductCategory category);
 
-
     /**
-     * Find the last subscription with a smaller ID than the current one
+     * get space subscription_id list
+     *
      * @param spaceId space id
      * @param phase trial,fixedterm
      * @return subscription id
@@ -128,6 +101,7 @@ public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
 
     /**
      * get subscription count by bundle id
+     *
      * @param bundleIds bundle id list
      * @return count
      */
@@ -135,6 +109,7 @@ public interface SubscriptionMapper extends BaseMapper<SubscriptionEntity> {
 
     /**
      * select subscription's bundle id list
+     *
      * @param subscriptionIds subscription id list
      * @return list of bundle id
      */

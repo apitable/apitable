@@ -4,14 +4,14 @@
 
     <select id="findDelSpaceIds" resultType="java.lang.String">
         SELECT space_id FROM vika_space
-        WHERE #{date} &gt;= pre_deletion_time AND is_deleted = 0
+        WHERE #{deadline} &gt;= pre_deletion_time AND is_deleted = 0
     </select>
 
     <update id="updateIsDeletedBySpaceIdIn">
         UPDATE vika_space
         SET is_deleted = 1
         WHERE space_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
             #{item}
         </foreach>
     </update>
@@ -23,11 +23,5 @@
         <if test="isPreDel != null and isPreDel">
             AND pre_deletion_time IS NOT NULL
         </if>
-    </select>
-
-    <select id="selectSpaceMainAdmin" resultType="java.lang.Long">
-        SELECT owner
-        FROM vika_space
-        WHERE space_id = #{spaceId}
     </select>
 </mapper>

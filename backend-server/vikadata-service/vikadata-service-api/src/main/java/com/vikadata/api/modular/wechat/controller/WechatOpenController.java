@@ -69,13 +69,10 @@ import static com.vikadata.api.enums.exception.WechatException.UPDATE_AUTO_REPLY
 
 /**
  * <p>
- * 微信开放平台相关接口
+ * WeChat Open Platform API
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/02/16 20:12
  */
-@Api(tags = "微信模块_微信开放平台相关服务接口")
+@Api(tags = "WeChat Open Platform API")
 @ApiResource(path = "/wechat/open")
 @RestController
 @Slf4j
@@ -103,83 +100,76 @@ public class WechatOpenController {
     private WechatKeywordReplyMapper keywordReplyMapper;
 
 
-    @PostResource(path = "/receiveTicket", name = "获取验证票据，授权事件接收URL", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取验证票据，授权事件接收URL", notes = "获取验证票据，授权事件接收URL，微信服务器每个10分钟会POSTcomponent_verify_ticket到此")
+    @PostResource(path = "/receiveTicket", requiredLogin = false)
+    @ApiOperation(value = "Receive Verification Ticket")
     public String getComponentVerifyTicket(@RequestBody(required = false) String requestBody,
             @RequestParam("timestamp") String timestamp,
             @RequestParam("nonce") String nonce, @RequestParam("signature") String signature,
             @RequestParam(name = "encrypt_type", required = false) String encType,
             @RequestParam(name = "msg_signature", required = false) String msgSignature, HttpServletRequest request) {
-        log.info("RecieveTicket接口接收微信请求：[signature=[{}], encType=[{}], msgSignature=[{}],"
+        log.info("Receive Verification Ticket: [signature=[{}], encType=[{}], msgSignature=[{}],"
                         + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n], remoteAddr=[{}]",
                 signature, encType, msgSignature, timestamp, nonce, requestBody, request.getRemoteAddr());
         if (wxOpenService == null) {
-            throw new BusinessException("未开启微信开放者平台组件");
+            throw new BusinessException("Wechat developer platform components are not enabled");
         }
         ExceptionUtil.isTrue(StrUtil.equalsIgnoreCase("aes", encType), ILLEGAL_REQUEST);
         ExceptionUtil.isTrue(wxOpenService.getWxOpenComponentService().checkSignature(timestamp, nonce, signature), ILLEGAL_REQUEST);
 
-        // aes加密的消息
+        // aes encrypted message
         WxOpenXmlMessage inMessage = WxOpenXmlMessage.fromEncryptedXml(requestBody, wxOpenService.getWxOpenConfigStorage(), timestamp, nonce, msgSignature);
         if (log.isDebugEnabled()) {
-            log.debug("\nreceiveTicket消息解密后内容为：\n{} ", inMessage.toString());
+            log.debug("\nThe decrypted content of the receiveTicket message is：\n{} ", inMessage.toString());
         }
         String out = "success";
         try {
-            //获取ticket放入微信开放平台配置WxOpenConfigStorage中，以redis作为存储方式
             out = wxOpenService.getWxOpenComponentService().route(inMessage);
-            if (log.isDebugEnabled()) {
-                log.debug("\nreceiveTicket组装回复信息：{}", out);
-            }
         }
         catch (WxErrorException e) {
-            if (log.isDebugEnabled()) {
-                log.error("receive_ticket", e);
-            }
+            log.error("receive_ticket", e);
         }
-
-        log.info("receiveTicket组装回复信息：{}", out);
+        log.info("Receive Ticket assembly reply message：{}", out);
         return out;
     }
 
-    @GetResource(path = "/createPreAuthUrl", name = "创建预授权链接", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "创建预授权链接", notes = "创建预授权链接，用于网页端扫码")
+    @GetResource(path = "/createPreAuthUrl", requiredLogin = false)
+    @ApiOperation(value = "Create Pre-authorization URL")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "auth_type", value = "授权账号类型，1、仅展示公众号授权列表，2、仅显示小程序授权列表，3、两种都显示", required = true, dataTypeClass = String.class, paramType = "query", example = "3"),
-            @ApiImplicitParam(name = "component_appid", value = "授权的公众号或小程序AppId", required = true, dataTypeClass = String.class, paramType = "query", example = "wx3ccd2f6264309a7c")
+            @ApiImplicitParam(name = "auth_type", value = "Authorized account type, 1. Only the official account authorization list is displayed, 2. Only the applet authorization list is displayed, 3. Both are displayed", required = true, dataTypeClass = String.class, paramType = "query", example = "3"),
+            @ApiImplicitParam(name = "component_appid", value = "Authorized Official Account or Mini Program AppId", required = true, dataTypeClass = String.class, paramType = "query", example = "wx3ccd2f6264309a7c")
     })
     public ResponseData<String> createPreAuthUrl(@RequestParam(name = "auth_type", required = false) String authType,
             @RequestParam(name = "component_appid") String componentAppid) throws WxErrorException {
         if (wxOpenService == null) {
-            throw new BusinessException("未开启微信开放者平台组件");
+            throw new BusinessException("Wechat developer platform components are not enabled");
         }
         return ResponseData.success(wxOpenService.getWxOpenComponentService().getPreAuthUrl(wxProperties.getOpenRedirectUri(), authType, componentAppid));
     }
 
-    @GetResource(path = "/getQueryAuth", name = "获取授权码获取授权信息", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取授权码获取授权信息", notes = "获取授权成功后回调的授权码获取授权信息")
+    @GetResource(path = "/getQueryAuth", requiredLogin = false)
+    @ApiOperation(value = "Get Authorization Code Get Authorization Information")
     public ResponseData<WechatAuthorizationEntity> getQueryAuth(@RequestParam(name = "auth_code", required = false) String authorizationCode) {
         return ResponseData.success(iWechatOpenService.addAuthInfo(authorizationCode));
     }
 
-    @GetResource(path = "/createAuthorizerInfo", name = "获取授权账号基本信息", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取授权账号基本信息", notes = "获取授权账号基本信息")
+    @GetResource(path = "/createAuthorizerInfo", requiredLogin = false)
+    @ApiOperation(value = "Obtain the basic information of the authorized account")
     public ResponseData<WechatAuthorizationEntity> getAuthorizerInfo(@RequestParam(name = "authorizerAppid", required = false) String authorizerAppid) {
         return ResponseData.success(iWechatOpenService.addAuthorizeInfo(authorizerAppid));
     }
 
-    @GetResource(path = "/getAuthorizerList", name = "获取所有已授权的账号信息", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取所有已授权的账号信息", notes = "获取所有已授权的账号信息")
+    @GetResource(path = "/getAuthorizerList", requiredLogin = false)
+    @ApiOperation(value = "Get All Authorized Account Information")
     public ResponseData<WxOpenAuthorizerListResult> getAuthorizerList() throws WxErrorException {
         if (wxOpenService == null) {
-            throw new BusinessException("未开启微信开放者平台组件");
+            throw new BusinessException("Wechat developer platform components are not enabled");
         }
         WxOpenAuthorizerListResult wxOpenAuthorizerListResult = wxOpenService.getWxOpenComponentService().getAuthorizerList(0, 100);
         return ResponseData.success(wxOpenAuthorizerListResult);
     }
 
-    @PostResource(path = "/callback/{appId}", name = "微信消息推送接口，用于接收微信服务器推送过来的消息", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "微信消息推送接口", notes = "微信消息推送接口，用于接收微信服务器推送过来的消息")
+    @PostResource(path = "/callback/{appId}", requiredLogin = false)
+    @ApiOperation(value = "WeChat Message Push Callback")
     public Object callback(@RequestBody(required = false) String requestBody,
             @PathVariable("appId") String appId,
             @RequestParam("signature") String signature,
@@ -188,71 +178,70 @@ public class WechatOpenController {
             @RequestParam("openid") String openid,
             @RequestParam("encrypt_type") String encType,
             @RequestParam("msg_signature") String msgSignature, HttpServletRequest request) throws WxErrorException {
-        log.info("\n接收微信回调消息请求：[appId=[{}], openid=[{}], signature=[{}], encType=[{}], msgSignature=[{}],"
+        log.info("\nReceive WeChat callback message request. [appId=[{}], openid=[{}], signature=[{}], encType=[{}], msgSignature=[{}],"
                         + " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n], remoteAddr=[{}]",
                 appId, openid, signature, encType, msgSignature, timestamp, nonce, requestBody, request.getRemoteAddr());
 
-        // 请求校验
+        // request verification
         ExceptionUtil.isTrue(StrUtil.equalsIgnoreCase("aes", encType), ILLEGAL_REQUEST);
         ExceptionUtil.isTrue(wxOpenService.getWxOpenComponentService().checkSignature(timestamp, nonce, signature), ILLEGAL_REQUEST);
-        // 微信关键词消息与事件的回复处理
+        // Reply processing of WeChat keyword messages and events
         String out = null;
-        // aes加密的消息
+        // aes encrypted message
         WxMpXmlMessage inMessage = WxOpenXmlMessage.fromEncryptedMpXml(requestBody, wxOpenService.getWxOpenConfigStorage(), timestamp, nonce, msgSignature);
-        log.info("\n消息解密后内容为：\n{} ", inMessage.toString());
-        // 判断是否是自己的公众号
+        log.info("\nThe content of the decrypted message is: \n{} ", inMessage.toString());
+        // Determine whether it is your own public account
         boolean self = appId.equals(wxMpProperties.getAppId());
-        // 文本消息处理
+        // text message processing
         if (StringUtils.equalsIgnoreCase(inMessage.getMsgType(), WechatMessageType.TEXT.name())) {
             if (self) {
                 out = iWechatOpenService.mpTextMessageProcess(appId, openid, inMessage);
             }
         }
         else if (StringUtils.equalsIgnoreCase(inMessage.getMsgType(), WechatMessageType.EVENT.name())) {
-            // 微信事件处理
+            // WeChat event handling
             if (self) {
                 out = iWechatOpenService.mpEventProcess(appId, openid, inMessage);
             }
         }
-        log.info("回复消息内容：" + out);
-        // 对回复的消息进行加密处理
+        log.info("Reply message content: " + out);
+        // Encrypt the reply message
         return StrUtil.isNotBlank(out) ? new WxOpenCryptUtil(wxOpenService.getWxOpenConfigStorage()).encrypt(out) : "success";
     }
 
-    @GetResource(path = "/getWechatIpList", name = "获取微信服务器IP列表", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取微信服务器IP列表", notes = "获取微信服务器IP列表")
+    @GetResource(path = "/getWechatIpList", requiredLogin = false)
+    @ApiOperation(value = "Get WeChat server IP list")
     public ResponseData<List<String>> getWechatIpList(@RequestParam(name = "appId", required = false) String appId) throws WxErrorException {
         WxMpService wxMpService = wxOpenService.getWxOpenComponentService().getWxMpServiceByAppid(appId);
         return ResponseData.success(Arrays.asList(wxMpService.getCallbackIP()));
     }
 
-    @PostResource(path = "/createWxQrCode", name = "微信生成带参数二维码", requiredPermission = false)
-    @ApiOperation(value = "微信生成带参数二维码", notes = "场景值不能都不传，优先使用字符串类型")
+    @PostResource(path = "/createWxQrCode", requiredPermission = false)
+    @ApiOperation(value = "Generates Qrcode", notes = "The scene value cannot be passed at all, and the string type is preferred.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "二维码类型，类型值(临时整型值:QR_SCENE、临时字符串值：QR_STR_SCENE;永久整型值:QR_LIMIT_SCENE、永久字符串值：QR_LIMIT_STR_SCENE)", dataTypeClass = String.class, paramType = "query", example = "QR_LIMIT_STR_SCENE"),
-            @ApiImplicitParam(name = "expireSeconds", value = "该二维码有效时间，以秒为单位。 最大不超过2592000（即30天），默认为30秒。", dataTypeClass = Integer.class, paramType = "query", example = "2592000"),
-            @ApiImplicitParam(name = "sceneId", value = "场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）", dataTypeClass = Integer.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "sceneStr", value = "场景值ID（字符串形式的ID），字符串类型，长度限制为1到64。", dataTypeClass = String.class, paramType = "query", example = "weibo"),
-            @ApiImplicitParam(name = "appId", value = "微信公众号appId", dataTypeClass = String.class, paramType = "query", example = "wx73eb141189")
+            @ApiImplicitParam(name = "type", value = "qrcode type, type value (temporary integer value: QR_SCENE, temporary string value: QR_STR_SCENE; permanent integer value: QR_LIMIT_SCENE, permanent string value: QR_LIMIT_STR_SCENE)", dataTypeClass = String.class, paramType = "query", example = "QR_LIMIT_STR_SCENE"),
+            @ApiImplicitParam(name = "expireSeconds", value = "the valid time of the QR code, in seconds. The maximum is not more than 2592000 (that is, 30 days), and the default is 30 seconds.", dataTypeClass = Integer.class, paramType = "query", example = "2592000"),
+            @ApiImplicitParam(name = "sceneId", value = "scene value ID, a 32-bit non-zero integer for a temporary QR code, and a maximum value of 100000 for a permanent QR code (current parameters only support 1--100000)", dataTypeClass = Integer.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "sceneStr", value = "Scene value ID (ID in string form), string type, length limited from 1 to 64.", dataTypeClass = String.class, paramType = "query", example = "weibo"),
+            @ApiImplicitParam(name = "appId", value = "wechat public account appId", dataTypeClass = String.class, paramType = "query", example = "wx73eb141189")
     })
     public ResponseData<QrCodeVo> createWxQrCode(@RequestParam(name = "type", defaultValue = "QR_LIMIT_STR_SCENE") String type,
             @RequestParam(name = "expireSeconds", required = false) Integer expireSeconds,
             @RequestParam(name = "sceneId", required = false) Integer sceneId,
             @RequestParam(name = "sceneStr", required = false) String sceneStr,
             @RequestParam(name = "appId", required = false) String appId) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.WECHAT_QRCODE__MANAGE);
         if (StrUtil.isBlank(appId)) {
             appId = wxMpProperties.getAppId();
-            // 限制自己的公众号，生成二维码的场景值，对自身扫码登录等业务造成影响
+            // Restrict your own official account, generate the scene value of the Qrcode, and affect your own business such as scanning the code to log in
             if (StrUtil.isNotBlank(sceneStr) && sceneStr.startsWith(MARK_PRE)) {
-                throw new BusinessException(StrUtil.format("场景值请勿以『{}』开头，否则会对扫码登录等场景造成影响", MARK_PRE));
+                throw new BusinessException(StrUtil.format("The scene value should not start with 「{}」, otherwise it will affect scenes such as scan code login.", MARK_PRE));
             }
         }
         WxMpService wxMpService = wxOpenService.getWxOpenComponentService().getWxMpServiceByAppid(appId);
         WxMpQrCodeTicket qrCodeCreateResult;
-        // 判断二维码类型，场景值类型
+        // Determine the type of Qrcode and the type of scene value
         try {
             if (type.equals(WechatMpQrcodeType.QR_LIMIT_STR_SCENE.name())) {
                 qrCodeCreateResult = wxMpService.getQrcodeService().qrCodeCreateLastTicket(sceneStr);
@@ -275,101 +264,97 @@ public class WechatOpenController {
             e.printStackTrace();
             throw new BusinessException(QR_CODE_GET_ERROR);
         }
-        // 保存二维码信息
         iWechatMpQrcodeService.save(appId, type, sceneStr, qrCodeCreateResult);
         QrCodeVo vo = QrCodeVo.builder().image(qrCodeCreateResult.getTicket()).url(qrCodeCreateResult.getUrl()).build();
-        // 生成二维码之后，主动更新关键词自动回复规则
+        // After generating the Qrcode, actively update the keyword automatic reply rules
         this.updateWxReply(appId);
         return ResponseData.success(vo);
     }
 
     @GetResource(path = "/getQrCodePage", requiredPermission = false)
-    @ApiOperation(value = "分页查询二维码列表", notes = PAGE_DESC)
+    @ApiOperation(value = "Query Qrcode pagination list", notes = PAGE_DESC)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "appId", value = "微信公众号appId", dataTypeClass = String.class, paramType = "query", example = "wx73eb141189"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = "appId", value = "wechat public account appId", dataTypeClass = String.class, paramType = "query", example = "wx73eb141189"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "page params", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<QrCodePageVo>> getQrCodePage(@RequestParam(name = "appId", required = false) String appId, @PageObjectParam Page page) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.WECHAT_QRCODE_QUERY);
         return ResponseData.success(PageHelper.build(iWechatMpQrcodeService.getQrCodePageVo(page, Optional.ofNullable(appId).orElse(wxMpProperties.getAppId()))));
     }
 
     @PostResource(path = "/delQrCode", method = { RequestMethod.DELETE, RequestMethod.POST }, requiredPermission = false)
-    @ApiOperation(value = "删除二维码")
+    @ApiOperation(value = "Delete Qrcode")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "qrCodeId", value = "二维码ID", required = true, dataTypeClass = String.class, paramType = "query", example = "12345"),
-            @ApiImplicitParam(name = "appId", value = "微信公众号appId", dataTypeClass = String.class, paramType = "query", example = "wx73eb141189")
+            @ApiImplicitParam(name = "qrCodeId", value = "qrcode ID", required = true, dataTypeClass = String.class, paramType = "query", example = "12345"),
+            @ApiImplicitParam(name = "appId", value = "wechat public account appId", dataTypeClass = String.class, paramType = "query", example = "wx73eb141189")
     })
     public ResponseData<Void> delQrCode(@RequestParam(name = "qrCodeId") Long qrCodeId, @RequestParam(name = "appId", required = false) String appId) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.WECHAT_QRCODE__MANAGE);
-        // 删除
         iWechatMpQrcodeService.delete(userId, qrCodeId, Optional.ofNullable(appId).orElse(wxMpProperties.getAppId()));
         return ResponseData.success();
     }
 
-    @GetResource(path = "/updateWxReply", name = "同步更新微信关键词自动回复规则", requiredPermission = false)
-    @ApiOperation(value = "同步更新微信关键词自动回复规则", notes = "务必在公众号后台先添加关键词回复，此接口同步时先清理，后重新拉取最新的关键词自动回复消息")
+    @GetResource(path = "/updateWxReply", requiredPermission = false)
+    @ApiOperation(value = "Synchronously update WeChat keyword automatic reply rules", notes = "Be sure to add keyword replies first in the background of the official account")
     @Transactional(rollbackFor = Exception.class)
     public ResponseData<Void> updateWxReply(@RequestParam(name = "appId", required = false) String appId) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.WECHAT_REPLY_RULE_REFRESH);
         appId = Optional.ofNullable(appId).orElse(wxMpProperties.getAppId());
         WxMpService wxMpService = wxOpenService.getWxOpenComponentService().getWxMpServiceByAppid(appId);
         try {
-            // 获取当前公众号关键词自动回复规则
+            // Get the current official account keyword automatic reply rules
             WxMpCurrentAutoReplyInfo autoReplyInfo = wxMpService.getCurrentAutoReplyInfo();
             WxMpCurrentAutoReplyInfo.KeywordAutoReplyInfo keywordAutoReplyInfo = autoReplyInfo.getKeywordAutoReplyInfo();
             List<WxMpCurrentAutoReplyInfo.AutoReplyRule> keywordAutoReplyRules = keywordAutoReplyInfo.getList();
             if (keywordAutoReplyRules.size() > 0) {
-                // 1.先删除所有关键词自动回复规则
+                // 1.Delete all keyword auto-reply rules first
                 keywordReplyMapper.deleteKeywordReplies(appId);
 
                 List<WechatKeywordReplyEntity> keywordReplies = new ArrayList<>();
 
-                // 2.遍历自动回复规则
+                // 2.Traverse autoresponder rules
                 String finalAppId = appId;
                 keywordAutoReplyRules.forEach(autoReplyRule -> {
                     List<WxMpCurrentAutoReplyInfo.KeywordInfo> keywordList = autoReplyRule.getKeywordListInfo();
                     List<WxMpCurrentAutoReplyInfo.ReplyInfo> replyListInfo = autoReplyRule.getReplyListInfo();
-                    // 遍历关键词列表与回复内容列表
+                    // Traverse the keyword list and the reply content list
                     keywordList.forEach(keywordInfo ->
-                        replyListInfo.forEach(replyInfo -> {
-                            WechatKeywordReplyEntity reply = new WechatKeywordReplyEntity();
-                            reply.setAppId(finalAppId);
-                            reply.setRuleName(autoReplyRule.getRuleName());
-                            reply.setReplyMode(autoReplyRule.getReplyMode());
-                            reply.setMatchMode(keywordInfo.getMatchMode());
-                            reply.setKeyword(keywordInfo.getContent());
-                            String replyType = replyInfo.getType();
-                            // 转换下图片类型的存储值为：image
-                            if (replyType.equalsIgnoreCase(WechatMessageType.IMG.name())) {
-                                replyType = WechatMessageType.IMAGE.name().toLowerCase();
-                            }
+                            replyListInfo.forEach(replyInfo -> {
+                                WechatKeywordReplyEntity reply = new WechatKeywordReplyEntity();
+                                reply.setAppId(finalAppId);
+                                reply.setRuleName(autoReplyRule.getRuleName());
+                                reply.setReplyMode(autoReplyRule.getReplyMode());
+                                reply.setMatchMode(keywordInfo.getMatchMode());
+                                reply.setKeyword(keywordInfo.getContent());
+                                String replyType = replyInfo.getType();
+                                // The storage value of the image type under conversion is: image
+                                if (replyType.equalsIgnoreCase(WechatMessageType.IMG.name())) {
+                                    replyType = WechatMessageType.IMAGE.name().toLowerCase();
+                                }
 
-                            // 回复类型属于news，则获取newsInfo内容，否则获取content内容
-                            if (replyType.equalsIgnoreCase(WechatMessageType.NEWS.name())) {
-                                reply.setNewsInfo(StrUtil.utf8Str(replyInfo.getNewsInfo()));
-                            } else {
-                                reply.setContent(replyInfo.getContent());
-                            }
+                                // If the reply type is news, get the newsInfo content, otherwise get the content content
+                                if (replyType.equalsIgnoreCase(WechatMessageType.NEWS.name())) {
+                                    reply.setNewsInfo(StrUtil.utf8Str(replyInfo.getNewsInfo()));
+                                }
+                                else {
+                                    reply.setContent(replyInfo.getContent());
+                                }
 
-                            reply.setType(replyType);
-                            keywordReplies.add(reply);
+                                reply.setType(replyType);
+                                keywordReplies.add(reply);
 
-                        })
+                            })
                     );
                 });
-                // 批量插入多条回复记录
                 keywordReplyMapper.insertBatchWechatKeywordReply(appId, keywordReplies);
             }
 
-        } catch (WxErrorException e) {
+        }
+        catch (WxErrorException e) {
             e.printStackTrace();
             throw new BusinessException(UPDATE_AUTO_REPLY_ERROR);
         }

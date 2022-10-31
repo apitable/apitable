@@ -20,10 +20,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-
-/**
- * @author tao
- */
 @Disabled("no assert")
 public class TemplatePropertyServiceImplTest extends AbstractIntegrationTest {
 

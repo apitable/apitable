@@ -9,85 +9,84 @@ import com.vikadata.api.modular.finance.core.Subscription;
 import com.vikadata.entity.SubscriptionEntity;
 
 /**
- * 套餐订阅服务
- * @author Shawn Deng
- * @date 2022-05-16 21:52:39
+ * <p>
+ * Subscription Service
+ * </p>
  */
 public interface ISubscriptionService extends IService<SubscriptionEntity> {
 
     /**
-     * 创建订阅
-     * @param entity 实体
+     * Create subscription
+     *
+     * @param entity entity
      */
     void create(SubscriptionEntity entity);
 
     /**
-     * 批量创建订阅
-     * @param entities 实体
+     * Batch create subscription
+     *
+     * @param entities entities
      */
     void createBatch(List<SubscriptionEntity> entities);
 
     /**
-     * 根据订阅ID查询
-     * @param subscriptionId 订阅ID
+     * Get subscription
+     *
+     * @param subscriptionId subscription id
      * @return SubscriptionEntity
      */
     SubscriptionEntity getBySubscriptionId(String subscriptionId);
 
     /**
-     * 获取订阅捆绑包的订阅集合
-     * @param bundleId 订阅捆绑包标识
-     * @return subscription entities
-     */
-    List<SubscriptionEntity> getByBundleId(String bundleId);
-
-    /**
-     * 批量获取订阅捆绑包的订阅集合
-     * @param bundleIds 订阅捆绑包标识列表
+     * Batch get subscription
+     *
+     * @param bundleIds bundle id list
      * @return subscription entities
      */
     List<SubscriptionEntity> getByBundleIds(List<String> bundleIds);
 
     /**
-     * 批量获取不同订阅捆绑集合的订阅条目
-     * @param bundleIds 订阅捆绑包标识列表
+     * Bulk get subscription entries for different subscription bundle collections
+     *
+     * @param bundleIds bundle id list
      * @return Subscription List
      */
     List<Subscription> getSubscriptionsByBundleIds(List<String> bundleIds);
 
     /**
-     * 更改订阅条目信息
-     * @param subscriptionId 订阅条目标识
-     * @param updatedSubscription 订阅条目对象
+     * Update subscription
+     *
+     * @param subscriptionId        subscription id
+     * @param updatedSubscription   updated subscription
      */
     void updateBySubscriptionId(String subscriptionId, SubscriptionEntity updatedSubscription);
 
     /**
-     * 批量获取订阅捆绑包的订阅集合
-     * @param bundleId 订阅捆绑包标识
-     * @param state 订阅状态
+     * Get subscription collections for subscription bundles in bulk
+     *
+     * @param bundleId  bundle id
+     * @param state     subscription state
      * @return List<FinanceSubscriptionEntity>
-     * @author zoe zheng
-     * @date 2022/5/26 12:09
      */
     List<SubscriptionEntity> getByBundleIdAndState(String bundleId, SubscriptionState state);
 
     /**
-     * 批量删除
-     * @param subscriptionIds 订阅条目
-     * @author zoe zheng
-     * @date 2022/6/7 10:25
+     * Batch remove
+     *
+     * @param subscriptionIds subscription id
      */
     void removeBatchBySubscriptionIds(List<String> subscriptionIds);
 
     /**
      * restore subscription
+     *
      * @param subscriptionId Subscription id
      */
     void restoreBySubscriptionIds(List<String> subscriptionId);
 
     /**
      * Get last subscription id for subscription bundles in bulk
+     *
      * @param spaceId space id
      * @return subscription id
      */
@@ -96,13 +95,15 @@ public interface ISubscriptionService extends IService<SubscriptionEntity> {
 
     /**
      * does the space station have subscription entries
-     * @param bundleIds bundle id
+     *
+     * @param bundleIds bundle id list
      * @return boolean
      */
     boolean bundlesHaveSubscriptions(List<String> bundleIds);
 
     /**
      * get subscriptions bundle id list
+     *
      * @param subscriptionIds subscription id list
      * @return list of bundle id
      */

@@ -12,108 +12,53 @@ import java.util.List;
 
 /**
  * <p>
- * V码系统-V码活动表 Mapper 接口
+ * VCode Activity Mapper
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 public interface VCodeActivityMapper extends BaseMapper<CodeActivityEntity> {
 
     /**
-     * 获取所有活动的场景值
-     *
-     * @return scenes
-     * @author Chambers
-     * @date 2020/8/19
+     * Get all active scene values
      */
     List<String> selectAllScene();
 
     /**
-     * 查询表ID
-     *
-     * @param scene 场景值
-     * @return ID
-     * @author Chambers
-     * @date 2020/8/24
+     * Query table id
      */
     Long selectIdByScene(@Param("scene") String scene);
 
     /**
-     * 修改活动名称
-     *
-     * @param userId 用户ID
-     * @param id     活动表ID
-     * @param name   活动名称
-     * @return 变更数
-     * @author Chambers
-     * @date 2020/8/19
+     * Update name
      */
     int updateNameById(@Param("userId") Long userId, @Param("id") Long id, @Param("name") String name);
 
     /**
-     * 修改活动名称
-     *
-     * @param userId 用户ID
-     * @param id     活动表ID
-     * @param scene  场景值
-     * @return 变更数
-     * @author Chambers
-     * @date 2020/8/19
+     * Update scene
      */
     int updateSceneById(@Param("userId") Long userId, @Param("id") Long id, @Param("scene") String scene);
 
     /**
-     * 逻辑删除
-     *
-     * @param userId 用户ID
-     * @param id     表ID
-     * @return 变更数
-     * @author Chambers
-     * @date 2020/8/14
+     * Update delete status
      */
     int removeById(@Param("userId") Long userId, @Param("id") Long id);
 
     /**
-     * 检查指定活动是否存在
-     *
-     * @param id 表ID
-     * @return count
-     * @author Chambers
-     * @date 2020/8/20
+     * Query count(Check if the specified activity exists)
      */
     Integer countById(@Param("id") Long id);
 
     /**
-     * 获取活动基本信息
-     *
-     * @param keyword 搜索关键词
-     * @return 基本信息
-     * @author Chambers
-     * @date 2020/8/19
+     * Get basic event information
      */
     List<VCodeActivityVo> selectBaseInfo(@Param("keyword") String keyword);
 
     /**
-     * 分页获取活动详细信息
-     *
-     * @param page    分页请求对象
-     * @param keyword 搜索关键词
-     * @param appId   appId
-     * @return 活动视图
-     * @author Chambers
-     * @date 2020/8/19
+     * Paginate to get event details
      */
     IPage<VCodeActivityPageVo> selectDetailInfo(Page<VCodeActivityPageVo> page, @Param("keyword") String keyword, @Param("appId") String appId);
 
     /**
-     * 查询活动对应的二维码数量
-     *
-     * @param id    表ID
-     * @param appId appId
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2020/8/24
+     * Query the number of QR codes corresponding to the activity
      */
     Integer countQrCodeByIdAndAppId(@Param("id") Long id, @Param("appId") String appId);
 }

@@ -2,7 +2,6 @@ package com.vikadata.scheduler.space.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,9 +47,7 @@ import com.vikadata.scheduler.space.handler.ClearOneWayLinkJobHandler;
 import com.vikadata.scheduler.space.handler.ClearOneWayLinkJobHandler.JobParam.RunFunc;
 import com.vikadata.scheduler.space.handler.FixDatasheetDataHandler;
 import com.vikadata.scheduler.space.mapper.workspace.DatasheetMetaMapper;
-import com.vikadata.scheduler.space.mapper.workspace.DatasheetRecordMapper;
 import com.vikadata.scheduler.space.model.DataSheetMetaDto;
-import com.vikadata.scheduler.space.model.DataSheetRecordInfo;
 import com.vikadata.scheduler.space.model.ForeignDataSheetProperty;
 import com.vikadata.scheduler.space.model.ForeignDataSheetProperty.Property;
 import com.vikadata.scheduler.space.model.ForeignDatasheetDto;
@@ -63,20 +60,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 工作台-数表元数据表 服务实现类
+ * Datasheet Meta Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/5/7
  */
 @Service
 public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
 
     @Resource
     private DatasheetMetaMapper datasheetMetaMapper;
-
-    @Resource
-    private DatasheetRecordMapper datasheetRecordMapper;
 
     @Autowired(required = false)
     private OssClientTemplate ossTemplate;
@@ -88,68 +79,6 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     private VikaOperations vikaOperations;
 
     @Override
-    public void change(String nodeId) {
-        List<String> nodeIds;
-        if (StrUtil.isNotBlank(nodeId)) {
-            nodeIds = Collections.singletonList(nodeId);
-        }
-        else {
-            // 查询需要修改的数表
-            nodeIds = datasheetMetaMapper.selectNodeIdByMetaLike("\"type\": 20");
-        }
-        if (CollUtil.isEmpty(nodeIds)) {
-            XxlJobHelper.log("没有数表需要修改");
-            return;
-        }
-        int dateFieldType = 20;
-        List<List<String>> split = CollUtil.split(nodeIds, 10);
-        for (List<String> ids : split) {
-            // 批量获取 meta、record
-            List<DataSheetMetaDto> metaDtoList = datasheetMetaMapper.selectDtoByNodeIds(ids);
-            List<DataSheetRecordInfo> dataSheetRecordInfos = datasheetRecordMapper.selectInfoByNodeIds(ids);
-            Map<String, List<DataSheetRecordInfo>> dstIdToInfosMap = dataSheetRecordInfos.stream()
-                    .collect(Collectors.groupingBy(DataSheetRecordInfo::getDstId));
-            // 处理数表
-            for (DataSheetMetaDto dto : metaDtoList) {
-                // 处理 meta 中的 fieldMap
-                JSONObject meta = JSONUtil.parseObj(dto.getMetaData());
-                JSONObject fieldMap = meta.getJSONObject("fieldMap");
-                if (JSONUtil.isNull(fieldMap)) {
-                    continue;
-                }
-                // 遍历每一列、记录全部未处理的自增字段ID
-                List<String> unProcessFldIds = new ArrayList<>();
-                fieldMap.values().forEach(value -> {
-                    JSONObject field = JSONUtil.parseObj(value);
-                    Integer fieldType = field.getInt("type");
-                    if (fieldType != null && fieldType == dateFieldType) {
-                        String fldId = field.getStr("id");
-                        // 未处理的自增字段，属性中不存在 datasheetId
-                        Object datasheetId = JSONUtil.parseObj(field.get("property")).get("datasheetId");
-                        if (datasheetId == null) {
-                            unProcessFldIds.add(fldId);
-                        }
-                    }
-                });
-                if (CollUtil.isEmpty(unProcessFldIds)) {
-                    continue;
-                }
-                // 向指定字段的 property 新增 datasheetId 值
-                datasheetMetaMapper.updateMetaByJsonInsert(dto.getDstId(), unProcessFldIds);
-                // 处理记录
-                List<DataSheetRecordInfo> infos = dstIdToInfosMap.get(dto.getDstId());
-                // 不存在记录，跳过
-                if (CollUtil.isEmpty(infos)) {
-                    continue;
-                }
-                // 遍历每一行，处理自增字段单元格里的数据
-                this.processRecord(infos, unProcessFldIds);
-            }
-        }
-        XxlJobHelper.log("更改完成");
-    }
-
-    @Override
     public void oneWayLinkDataHandler(ClearOneWayLinkJobHandler.JobParam jobParam) {
         TimeInterval timer = DateUtil.timer();
         List<WaitProcessedOneWayLinkData> oneWayLinkDataList = null;
@@ -157,14 +86,14 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
         if (RunFunc.READ_REMOTE_STREAM == jobParam.getRunFunc()) {
             String readRemoteStreamUrl = jobParam.getReadRemoteStreamUrl();
             if (StrUtil.isBlank(readRemoteStreamUrl)) {
-                XxlJobHelper.log("远端Url为空，跳过处理");
+                XxlJobHelper.log("Remote Url is empty, skip processing.");
                 return;
             }
 
-            XxlJobHelper.log("加载远端数据流-Url：{}...");
+            XxlJobHelper.log("Load remote data stream-Url: {}");
             OssObject object = ossTemplate.getObject(configProperties.getOssBucketName(), readRemoteStreamUrl);
             String content = IoUtil.readUtf8(object.getInputStream());
-            XxlJobHelper.log("远端数据流加载完成!");
+            XxlJobHelper.log("Remote data stream loading completed!");
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -179,7 +108,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
             String activeProfile = SpringContextHolder.getActiveProfile();
 
             if (!"local".equals(activeProfile) && StrUtil.isEmpty(jobParam.getSpaceId())) {
-                XxlJobHelper.log("目前不支持全空间站扫描修复，请指定「空间站ID」");
+                XxlJobHelper.log("Currently does not support full space station scan and repair, please specify space id.");
                 return;
             }
 
@@ -190,20 +119,19 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
             // timer = timer.restart();
 
             if ("local".equals(activeProfile)) {
-                String fileName = "结果.txt";
+                String fileName = "result.txt";
                 String outFile = StrUtil.format("{}/temp/analyzeAssociationData/{}", System.getProperty("user.dir"), fileName);
-                // 对分析结果去除空白元素、去重
+                // Remove blank elements and deduplication from analysis results
                 FileUtil.appendUtf8Lines(CollUtil.removeBlank(oneWayLinkDataList.stream().map(WaitProcessedOneWayLinkData::toDesc).collect(Collectors.toSet())), FileUtil.file(outFile));
-                System.out.println("结果写入「" + outFile + "」完成");
+                System.out.println("Write result「" + outFile + "」finish");
             }
             else {
                 if (CollUtil.isNotEmpty(oneWayLinkDataList) && RunFunc.LIST == jobParam.getRunFunc()) {
                     try {
-                        // 分析结果输出到oss
+                        // The analysis results are output to oss
                         String paht = StrUtil.format("job/analyze/association/result/{}-{}.json", activeProfile, DateUtil.date().toString(DatePattern.PURE_DATETIME_FORMAT));
                         ossTemplate.upload(configProperties.getOssBucketName(), IoUtil.toUtf8Stream(JSONUtil.toJsonStr(oneWayLinkDataList)), paht, MediaType.APPLICATION_JSON_VALUE, null);
-                        System.out.println("结果上传OSS「" + paht + "」完成");
-                        XxlJobHelper.log("结果上传OSS「" + paht + "」完成");
+                        XxlJobHelper.log("Upload the result to OSS「" + paht + "」finish");
                     }
                     catch (IOException e) {
                         e.printStackTrace();
@@ -214,7 +142,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
 
         if (CollUtil.isNotEmpty(oneWayLinkDataList) && RunFunc.LIST != jobParam.getRunFunc()) {
             repairOneWayLinkDataHandle(oneWayLinkDataList, jobParam);
-            String outStr = "修复单向关联数据已完成，总耗时：" + timer.intervalPretty();
+            String outStr = "Repair one-way linked data completed. Total time: " + timer.intervalPretty();
             System.out.println(outStr);
             XxlJobHelper.log(outStr);
         }
@@ -223,12 +151,12 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @Override
     public void fixTemplateViewSortInfo(FixDatasheetDataHandler.JobParam jobParam) {
         if (StrUtil.isBlank(jobParam.getSpaceId())) {
-            XxlJobHelper.log("目前不支持全空间站扫描修复，请指定「空间站ID」");
+            XxlJobHelper.log("Currently does not support full space station scan and repair, please specify space id.");
             return;
         }
 
         List<DataSheetMetaDto> dataSheetMetaDtos = datasheetMetaMapper.selectMetaDataByFixMode(jobParam.getSpaceId(), 1);
-        XxlJobHelper.log("扫描存在排序「模版」数量：{}", CollUtil.size(dataSheetMetaDtos));
+        XxlJobHelper.log("Scan the number of templates that exist sorted. Count: {}", CollUtil.size(dataSheetMetaDtos));
 
         for (DataSheetMetaDto dataSheetMetaDto : dataSheetMetaDtos) {
             String dstId = dataSheetMetaDto.getDstId();
@@ -241,17 +169,15 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                     XxlJobHelper.log("dst_id:{},sortInfo:{}", dstId, sortInfoObject);
                     // Update sql
                     int affectRows = datasheetMetaMapper.updateTemplateViewSortInfo(dstId, i);
-                    XxlJobHelper.log("dst_id:{},执行结果:{}", dstId, affectRows);
+                    XxlJobHelper.log("dst_id:{}. Execute result:{}", dstId, affectRows);
                 }
             });
         }
     }
 
     /**
-     * Plan A，多线程执行分析处理数据
-     *
-     * @author Pengap
-     * @date 2022/2/22 14:16:51
+     * Plan A
+     * Multi-threaded execution of analytical processing data
      */
     private List<WaitProcessedOneWayLinkData> planA(ClearOneWayLinkJobHandler.JobParam jobParam, TimeInterval timer) {
         long newNextId = -1L;
@@ -272,7 +198,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                                                     batchQueryLinkFieldData(jobParam.getSpaceId(), finalNewNextId, finalI, jobParam.getPageSize(), jobParam.getCoreQueryPoolSize())
                                             , queryExs)
                                     .thenApply(left -> {
-                                        String outLog = StrUtil.format("当前ID：{}，执行下标：{}，当前扫描：{}，已扫描：{}，下一个Id：{}", finalNewNextId, finalI, left.getRecordSize(), dataSheetCount.get(), left.getNextId());
+                                        String outLog = StrUtil.format("Current ID: {}. Execute index:{}. Current scan:{}. Scanned:{}. Next id:{}", finalNewNextId, finalI, left.getRecordSize(), dataSheetCount.get(), left.getNextId());
                                         System.out.println(outLog);
                                         XxlJobHelper.log(outLog);
 
@@ -280,7 +206,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                                         if (CollUtil.isNotEmpty(records)) {
                                             ExecutorService analyzeExs = Executors.newFixedThreadPool(jobParam.getCoreAnalyzePoolSize());
 
-                                            // 累加查询数量
+                                            // Cumulative number of queries
                                             dataSheetCount.addAndGet(left.getRecordSize());
 
                                             List<CompletableFuture<List<WaitProcessedOneWayLinkData>>> analyzeCf = new ArrayList<>();
@@ -294,7 +220,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                                                                 })
                                                 );
                                             }
-                                            // 并行Run
+                                            // Execute Run
                                             CompletableFuture.allOf(analyzeCf.toArray(new CompletableFuture[0])).join();
                                             analyzeExs.shutdown();
                                         }
@@ -332,17 +258,15 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
             }
         } while (newNextId != -1L);
 
-        String outStr = StrUtil.format("输出统计...\nDataSheetCount：{}\n「PlanA」总耗时：{}", dataSheetCount.get(), timer.intervalPretty());
+        String outStr = StrUtil.format("Output statistics...\nDataSheetCount：{}\n「PlanA」total time: {}", dataSheetCount.get(), timer.intervalPretty());
         System.out.println(outStr);
         XxlJobHelper.log(outStr);
         return analyzeResult;
     }
 
     /**
-     * Plan B，单线程执行分析处理数据
-     *
-     * @author Pengap
-     * @date 2022/2/22 14:16:51
+     * Plan B.
+     * Single-threaded execution of analytical processing data
      */
     private void planB(TimeInterval timer) {
         long newNextId = -1L;
@@ -361,26 +285,18 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
             );
 
             newNextId = leftAssociationData.getNextId();
-            System.err.println("下一次查询Id：" + newNextId);
+            System.err.println("Next query id：" + newNextId);
         } while (newNextId != -1L);
 
-        System.out.println("输出统计...");
+        System.out.println("Output statistics...");
         System.out.println("DataSheetCount：" + dataSheetCount.get());
         System.out.println("AnalyzeResult：\n" + JSONUtil.toJsonPrettyStr(analyzeResult.stream().map(WaitProcessedOneWayLinkData::toDesc).collect(Collectors.toList())));
 
-        System.err.println("「PlanB」总耗时：" + timer.intervalPretty());
+        System.err.println("「PlanB」total time：" + timer.intervalPretty());
     }
 
     /**
-     * 批量查询关联字段数据
-     *
-     * @param spaceId           指定空间站ID
-     * @param nextId            分页查询下一次Id
-     * @param current           分页页码
-     * @param pageSize          分页条数
-     * @param newIdMaxIndex     刷新下次Id最大分页下标
-     * @author Pengap
-     * @date 2022/2/22 14:13:22
+     * Batch query related field data
      */
     private LeftAssociationData batchQueryLinkFieldData(String spaceId, long nextId, long current, long pageSize, long newIdMaxIndex) {
         Page<ForeignDatasheetDto> page = new Page<>();
@@ -405,11 +321,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     }
 
     /**
-     * 分析单项关联数据
-     *
-     * @param records 待分析数据
-     * @author Pengap
-     * @date 2022/2/22 14:16:14
+     * Analyze single item of linked data
      */
     private List<WaitProcessedOneWayLinkData> analyzeLinkFieldData(List<ForeignDatasheetDto> records) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -426,7 +338,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                                 e.printStackTrace();
                             }
                             return foreignDataSheetProperties.stream()
-                                    // 过滤空对象，过滤非神奇关联对象，并且过滤子关联对象
+                                    // Filters empty objects, filters non-magic related objects, and filters child related objects
                                     .filter(o -> {
                                         Property property = o.getProperty();
                                         if (null != property && null != property.getBrotherFieldId() && null != property.getForeignDatasheetId() && !property.getForeignDatasheetId().equals(dto.getDstId())) {
@@ -439,7 +351,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                                     .collect(Collectors.toList());
                         }
                 )
-                // 对于单表中出现多列神奇关联进行合并操作
+                // Merge operation for multi-column magical associations in a single table
                 .reduce(new ArrayList<>(), (all, item) -> {
                     if (CollUtil.isNotEmpty(item)) {
                         all.addAll(item);
@@ -448,22 +360,22 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                 });
 
         if (CollUtil.isNotEmpty(allAssociationData)) {
-            // 列出关联的数表Id，并且对于引用同一张数表Id去重
+            // List the associated table IDs, and deduplicate references to the same table ID
             List<String> dstIds = allAssociationData.stream().map(o -> o.getProperty().getForeignDatasheetId()).distinct().collect(Collectors.toList());
             List<DataSheetMetaDto> dataSheetMetaDtos = datasheetMetaMapper.selectDtoByNodeIds(dstIds);
 
-            // 对于查询结果根据 dstId 转换成 Map
+            // For query results, convert to Map according to dstId
             // key: dstId
             Map<String, String> metaJsonByDstId = dataSheetMetaDtos.stream().collect(Collectors.toMap(DataSheetMetaDto::getDstId, DataSheetMetaDto::getMetaData));
 
             /*
-             * 查询对应FdstId 对应的数表
-             *  1: 表不存在
-             *      直接转换关联列为文本列
-             *  2: 表存在
-             *      2.1: 关联列不存在
-             *      2.2: 关联列变成非关联列（type：7）
-             *      通过Fusion Api 新增一列
+             * Query the data table corresponding to the FdstId
+             *  1: table does not exist
+             *      Directly convert associated columns to text columns
+             *  2: table exists
+             *      2.1: Associated column does not exist
+             *      2.2: Associative columns become non-associative columns (type: 7)
+             *      Add a new column via Fusion Api
              */
             for (ForeignDataSheetProperty fdsp : allAssociationData) {
                 String foreignDatasheetId = fdsp.getProperty().getForeignDatasheetId();
@@ -510,11 +422,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     }
 
     /**
-     * 修复单向关联数据处理
-     *
-     * @param data 需要处理的数据
-     * @author Pengap
-     * @date 2022/2/24 14:58:53
+     * Fix one-way linked data processing
      */
     private void repairOneWayLinkDataHandle(List<WaitProcessedOneWayLinkData> data, ClearOneWayLinkJobHandler.JobParam jobParam) {
         for (WaitProcessedOneWayLinkData datum : data) {
@@ -528,7 +436,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                         request = CollaCommandFactory.fixOneWayLinkByMultilineText(datum.getDstId(), datum.getFieldId(), datum.getFieldName());
                         break;
                     default:
-                        String outStr = StrUtil.format("{}-{}-{} 当前数据未定义数据修补方案", datum.getDstId(), datum.getFieldId(), datum.getFieldName());
+                        String outStr = StrUtil.format("{}-{}-{}. The current data does not define a data patching scheme", datum.getDstId(), datum.getFieldId(), datum.getFieldName());
                         System.out.println(outStr);
                         XxlJobHelper.log("\n" + outStr);
                         break;
@@ -539,7 +447,7 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                 }
 
                 boolean result = vikaOperations.executeCommand(datum.getDstId(), request);
-                String outStr = StrUtil.format("{}：采用[{}]修复，结果：{}，参数：{}", datum.getDstId(), datum.getFixType(), result, JSONUtil.toJsonStr(request));
+                String outStr = StrUtil.format("{}：Fix with[{}]. Result: {}. Params: {}", datum.getDstId(), datum.getFixType(), result, JSONUtil.toJsonStr(request));
                 System.out.println(outStr);
                 XxlJobHelper.log("\n" + outStr);
                 ThreadUtil.sleep(jobParam.getExecutionInterval());
@@ -548,40 +456,6 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
                 e.printStackTrace();
                 XxlJobHelper.log(e);
             }
-        }
-    }
-
-    private void processRecord(List<DataSheetRecordInfo> infos, List<String> fldIds) {
-        for (DataSheetRecordInfo info : infos) {
-            JSONObject data = JSONUtil.parseObj(info.getData());
-            JSONObject recordMeta = JSONUtil.parseObj(info.getFieldUpdatedInfo());
-            Object fieldUpdatedMap = recordMeta.get("fieldUpdatedMap");
-            JSONObject json = fieldUpdatedMap == null ? JSONUtil.createObj() : JSONUtil.parseObj(fieldUpdatedMap);
-            List<String> modifyFieldIds = new ArrayList<>();
-            for (String fieldId : fldIds) {
-                Integer cellValue = data.getInt(fieldId);
-                // 新结构的 autoNumber 值不会保存在 data
-                if (cellValue == null) {
-                    continue;
-                }
-                modifyFieldIds.add(fieldId);
-                JSONObject fieldMeta = json.getJSONObject(fieldId);
-                if (fieldMeta == null) {
-                    // 无 fieldMeta
-                    json.set(fieldId, JSONUtil.createObj().putOnce("autoNumber", cellValue));
-                    continue;
-                }
-                Object autoNumber = fieldMeta.get("autoNumber");
-                if (autoNumber == null) {
-                    // 无 autoNumber
-                    fieldMeta.set("autoNumber", cellValue);
-                }
-            }
-            if (CollUtil.isEmpty(modifyFieldIds)) {
-                continue;
-            }
-            // 修改 record
-            datasheetRecordMapper.updateMetaByJsonOp(info.getId(), modifyFieldIds, json.toString());
         }
     }
 
@@ -605,51 +479,42 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     @AllArgsConstructor
     public static class WaitProcessedOneWayLinkData {
         enum FixType {
-            // 单向COPY修复
+            // One-way COPY fix
             COPY_FIX,
-            // 转换为文本修复
+            // Convert to text fix
             CONVERT_TEXT_FIX;
         }
 
-        // 数表Id
         private String dstId;
 
-        // 字段Id
         private String fieldId;
 
-        // 字段名称
         private String fieldName;
 
-        // 关联的数表字段Id
         private String brotherFieldId;
 
-        // 关联的数表字段Type
         private Integer brotherFieldType;
 
-        // 关联的数表Id
         private String foreignDstId;
 
-        // 修复类型
         private FixType fixType;
 
-        // 关联字段是否存在
         private boolean brotherExist;
 
-        // 关联表是否存在
         private boolean foreignDstExist;
 
-        // 格式化描述
+        // format description
         public String toDesc() {
             if (this.foreignDstExist) {
                 if (this.brotherExist) {
-                    return StrUtil.format("A表Id：{} - 字段Id：{} - 字段Name：{}，B表Id：{} - 字段Id：{} - 非关联列！当前类型：{}", this.dstId, this.fieldId, this.fieldName, this.foreignDstId, this.brotherFieldId, this.brotherFieldType);
+                    return StrUtil.format("Table A Id: {} - Field Id: {} - Field Name: {}，Table B Id: {} - Field Id: {} - Non-Associated Columns! Current type:{}", this.dstId, this.fieldId, this.fieldName, this.foreignDstId, this.brotherFieldId, this.brotherFieldType);
                 }
                 else {
-                    return StrUtil.format("A表Id：{} - 字段Id：{} - 字段Name：{}，B表Id：{} - 字段Id：{} - 不存在！", this.dstId, this.fieldId, this.fieldName, this.foreignDstId, this.brotherFieldId);
+                    return StrUtil.format("Table A Id: {} - Field Id: {} - Field Name: {}，Table B Id: {} - Field Id: {} - Not Exist!", this.dstId, this.fieldId, this.fieldName, this.foreignDstId, this.brotherFieldId);
                 }
             }
             else {
-                return StrUtil.format("A表Id：{} - 字段Id：{} - 字段Name：{}，B表Id：{} - 不存在！", this.dstId, this.fieldId, this.fieldName, this.foreignDstId);
+                return StrUtil.format("Table A Id: {} - Field Id: {} - Field Name: {}，Table B Id: {} - Not Exist!", this.dstId, this.fieldId, this.fieldName, this.foreignDstId);
             }
         }
     }

@@ -5,9 +5,9 @@ import java.util.Map;
 import lombok.Data;
 
 /**
- * 通知配置
- * @author Shawn Deng
- * @date 2021-11-11 15:37:22
+ * <p>
+ * Notification Config
+ * </p>
  */
 @Data
 public class NotificationConfig {

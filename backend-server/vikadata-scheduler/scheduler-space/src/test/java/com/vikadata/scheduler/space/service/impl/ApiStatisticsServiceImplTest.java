@@ -27,11 +27,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * <p>
- *  API统计服务测试
+ * Api Statistics Service Unit Test
  * <p>
- *
- * @author liuzijing
- * @date 2022/5/26
  */
 @Slf4j
 @SpringBootTest(classes = SchedulerSpaceApplication.class)

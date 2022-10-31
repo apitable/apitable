@@ -11,10 +11,8 @@ import com.vikadata.api.enums.social.SocialPlatformType;
  * <p>
  * third party orders strategy factory
  * </p>
- * @author zoe zheng
- * @date 2022/5/18 18:32
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class SocialOrderStrategyFactory {
 
     private static final Map<Integer, ISocialOrderService> services = new ConcurrentHashMap<>();

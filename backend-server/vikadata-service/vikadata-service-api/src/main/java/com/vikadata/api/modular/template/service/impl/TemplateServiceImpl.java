@@ -16,15 +16,12 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.cache.bean.Banner;
 import com.vikadata.api.cache.bean.CategoryDto;
 import com.vikadata.api.cache.bean.RecommendConfig;
 import com.vikadata.api.cache.bean.RecommendConfig.AlbumGroup;
@@ -34,14 +31,11 @@ import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.LimitProperties;
 import com.vikadata.api.control.role.ControlRoleManager;
 import com.vikadata.api.control.role.RoleConstants.Node;
-import com.vikadata.api.enums.base.SystemConfigType;
-import com.vikadata.api.enums.exception.PermissionException;
 import com.vikadata.api.enums.exception.TemplateException;
 import com.vikadata.api.enums.template.TemplatePropertyType;
 import com.vikadata.api.enums.template.TemplateType;
 import com.vikadata.api.model.dto.template.TemplateDto;
 import com.vikadata.api.model.dto.template.TemplateInfo;
-import com.vikadata.api.model.ro.config.TemplateConfigRo;
 import com.vikadata.api.model.ro.template.CreateTemplateRo;
 import com.vikadata.api.model.vo.node.BaseNodeInfo;
 import com.vikadata.api.model.vo.node.FieldPermissionInfo;
@@ -55,7 +49,6 @@ import com.vikadata.api.model.vo.template.TemplateDirectoryVo;
 import com.vikadata.api.model.vo.template.TemplateGroupVo;
 import com.vikadata.api.model.vo.template.TemplateSearchResult;
 import com.vikadata.api.model.vo.template.TemplateVo;
-import com.vikadata.api.modular.base.service.ISystemConfigService;
 import com.vikadata.api.modular.template.mapper.TemplateMapper;
 import com.vikadata.api.modular.template.model.OnlineTemplateDto;
 import com.vikadata.api.modular.template.model.TemplatePropertyDto;
@@ -81,17 +74,13 @@ import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.define.enums.NodeType;
 import com.vikadata.entity.TemplateEntity;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.model.RecommendTemplateInfo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.enums.exception.DatabaseException.EDIT_ERROR;
 import static com.vikadata.api.enums.exception.NodeException.NOT_ALLOW;
-import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 import static com.vikadata.api.enums.exception.TemplateException.FIELD_PERMISSION_INSUFFICIENT;
 import static com.vikadata.api.enums.exception.TemplateException.FOLDER_DASHBOARD_LINK_FOREIGN_NODE;
 import static com.vikadata.api.enums.exception.TemplateException.FOLDER_FORM_LINK_FOREIGN_NODE;
@@ -106,11 +95,8 @@ import static com.vikadata.api.enums.exception.TemplateException.TEMPLATE_INFO_E
 
 /**
  * <p>
- * 模板中心-模版 服务实现类
+ * Template Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/5/12
  */
 @Slf4j
 @Service
@@ -146,12 +132,6 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     @Resource
     private ITemplateAlbumService iTemplateAlbumService;
 
-    @Autowired(required = false)
-    private VikaOperations vikaOperations;
-
-    @Resource
-    private ISystemConfigService systemConfigService;
-
     @Resource
     private TemplateConfigService templateConfigService;
 
@@ -160,8 +140,8 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public String getSpaceId(String templateId) {
-        log.info("获取空间ID，templateId：{}", templateId);
-        // 校验模板是否存在
+        log.info("Get space id by template id 「{}」", templateId);
+        // Check if the template exists
         String spaceId = baseMapper.selectTypeIdByTempId(templateId);
         ExceptionUtil.isNotNull(spaceId, TEMPLATE_INFO_ERROR);
         return spaceId;
@@ -172,17 +152,17 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
         switch (nodeType) {
             case FOLDER:
-                // 校验所有子后代节点的权限
+                // Check the permissions of all child descendant nodes
                 List<String> subNodeIds = iNodeService.checkSubNodePermission(memberId, nodeId, ControlRoleManager.parseNodeRole(Node.MANAGER));
                 if (subNodeIds == null || subNodeIds.isEmpty()) {
                     break;
                 }
-                // 校验子后代各种类型节点的要求
+                // Requirements for various types of nodes in the descendants of the syndrome
                 this.checkFolderTemplate(subNodeIds, memberId);
                 break;
             case DATASHEET:
                 this.checkDatasheetTemplate(Collections.singletonList(nodeId), false, NODE_LINK_FOREIGN_NODE);
-                // 检验字段权限
+                // Check Field Permissions
                 this.checkFieldPermission(memberId, nodeId);
                 break;
             case FORM:
@@ -198,31 +178,29 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public void checkFolderTemplate(List<String> subNodeIds, Long memberId) {
-        // 校验子后代各种类型节点的要求
+        // Requirements for various types of nodes in the descendants of the syndrome
         List<BaseNodeInfo> nodeInfos = nodeMapper.selectBaseNodeInfoByNodeIds(subNodeIds);
         Map<Integer, List<String>> nodeTypeToNodeIdsMap = nodeInfos.stream()
                 .collect(Collectors.groupingBy(BaseNodeInfo::getType, Collectors.mapping(BaseNodeInfo::getNodeId, Collectors.toList())));
-        // 若存在数表，校验是否关联了外部的数表
+        // If there is a number table, check whether it is associated with an external number table
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
             this.checkDatasheetTemplate(nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()), true, FOLDER_NODE_LINK_FOREIGN_NODE);
-            // 检验字段权限
+            // Check Field Permissions
             for (String subNodeId : nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType())) {
                 this.checkFieldPermission(memberId, subNodeId);
             }
         }
-        // 若存在收集表，校验是否关联了外部的数表
+        // If there is a collection table, check whether it is associated with an external data table
         this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, NodeType.FORM.getNodeType(), FOLDER_FORM_LINK_FOREIGN_NODE);
-        // 若存在仪表盘，校验组件的数据源是否引用了外部的数表
+        // If there is a dashboard, verify whether the data source of the component references an external data table
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DASHBOARD.getNodeType())) {
-            // 批量查询仪表盘包含的组件信息
+            // If there is a dashboard, verify whether the data source of the component references an external data table
             List<NodeWidgetDto> widgetInfos = widgetMapper.selectNodeWidgetDtoByNodeIds(nodeTypeToNodeIdsMap.get(NodeType.DASHBOARD.getNodeType()));
-            // 根据仪表盘nodeId分组
+            // Group by dashboard nodeId
             Map<String, List<NodeWidgetDto>> dashboardNodeMap = widgetInfos.stream().collect(Collectors.groupingBy(NodeWidgetDto::getNodeId));
-            // 遍历仪表盘nodeId
             for (String dashboardNodeId : dashboardNodeMap.keySet()) {
-                // 遍历widget
                 for (NodeWidgetDto widgetInfo : dashboardNodeMap.get(dashboardNodeId)) {
-                    // 如果widget关联外部数表，则抛出异常
+                    // Throws an exception if the widget is associated with an external table
                     if (!subNodeIds.contains(widgetInfo.getDstId())) {
                         Map<String, Object> foreignMap = new HashMap<>();
                         foreignMap.put("NODE_NAME", nodeMapper.selectNodeNameByNodeId(dashboardNodeId));
@@ -232,13 +210,13 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                 }
             }
         }
-        // 若存在镜像，校验是否映射了外部的数表
+        // If there is a mirror, check whether the external data table is mapped
         this.checkFormOrMirrorIsForeignNode(subNodeIds, nodeTypeToNodeIdsMap, NodeType.MIRROR.getNodeType(), FOLDER_MIRROR_LINK_FOREIGN_NODE);
     }
 
     @Override
     public void checkDatasheetTemplate(List<String> nodeIds, Boolean isBuildNodeName, TemplateException templateException) {
-        // 制作模板所包含的数表，若关联了外部的数表，不能创建模板
+        // The number table included in the template is created. If an external number table is associated, the template cannot be created.
         Map<String, List<String>> foreignDstIdsMap = iDatasheetService.getForeignFieldNames(nodeIds);
         if (foreignDstIdsMap != null) {
             for (String foreignNodeId : foreignDstIdsMap.keySet()) {
@@ -255,19 +233,18 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     @Override
     public void checkFormOrMirrorIsForeignNode(List<String> subNodeIds, Map<Integer, List<String>> nodeTypeToNodeIdsMap, int nodeType, TemplateException templateException) {
         if (nodeTypeToNodeIdsMap.containsKey(nodeType)) {
-            // 构建返回对象
             Map<String, Object> foreignMap = new HashMap<>();
             if (!nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
-                // 获取第一个表单id
+                // get the first form id
                 String firstNodeId = nodeTypeToNodeIdsMap.get(nodeType).get(0);
                 foreignMap.put("NODE_NAME", nodeMapper.selectNodeNameByNodeId(firstNodeId));
                 throw new BusinessException(templateException, foreignMap);
             }
-            // 批量查询关联节点对应主节点
+            // Batch query associated nodes corresponding to the master node
             Map<String, String> relNodeToMainNodeMap = iNodeRelService.getRelNodeToMainNodeMap(nodeTypeToNodeIdsMap.get(nodeType));
-            // 遍历从节点
+            // Traverse slave nodes
             for (String relNode : relNodeToMainNodeMap.keySet()) {
-                // 如果关联节点的主节点不在文件夹内，则抛出异常
+                // Throws an exception if the primary node of the associated node is not in the folder
                 if (!subNodeIds.contains(relNodeToMainNodeMap.get(relNode))) {
                     foreignMap.put("NODE_NAME", nodeMapper.selectNodeNameByNodeId(relNode));
                     throw new BusinessException(templateException, foreignMap);
@@ -290,16 +267,16 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String create(Long userId, String spaceId, CreateTemplateRo ro) {
-        log.info("创建模版");
-        // 若有相同名称的模版，覆盖旧模板
+        log.info("User「{}」create template「{}」in space「{}」", userId, ro.getName(), spaceId);
+        // If there is a template with the same name, overwrite the old template
         Long id = baseMapper.selectIdByTypeIdAndName(spaceId, ro.getName());
         TemplateEntity entity = TemplateEntity.builder().id(id).type(TemplateType.SPACE.getType()).typeId(spaceId).name(ro.getName()).build();
-        // 官方模板空间，不做数量校验
+        // Official template space, no quantity verification
         if (constProperties.getTemplateSpace().contains(spaceId)) {
             entity.setType(TemplateType.OFFICIAL.getType());
         }
         else if (id == null) {
-            // 非模板空间，且不是同名覆盖，校验数量上限
+            // Non-template space, and not covered by the same name, the upper limit of the number of checks
             this.verifyNumberLimit(spaceId);
         }
         String tempId;
@@ -311,7 +288,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                 .template(true)
                 .retainRecordMeta(true)
                 .build();
-        // 同名覆盖，删除旧的映射节点
+        // Overwrite with the same name, delete the old map node
         if (id != null) {
             TemplateInfo info = baseMapper.selectInfoById(id);
             iNodeService.delTemplateRefNode(userId, info.getNodeId());
@@ -321,11 +298,11 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
             tempId = IdUtil.createTemplateId();
             entity.setTemplateId(tempId);
         }
-        // 备份原节点，创建映射的模版节点
+        // Back up the original node and create a mapped template node
         entity.setNodeId(nodeId);
         boolean flag = this.saveOrUpdate(entity);
         ExceptionUtil.isTrue(flag, EDIT_ERROR);
-        // 转存节点方法，存在GRPC调用，若非异步调用，需保证最后调用
+        // Dump node method, there is a GRPC call, if it is not an asynchronous call, you need to ensure that the last call
         iNodeService.copyNodeToSpace(userId, spaceId, "template", ro.getNodeId(), options);
         return tempId;
     }
@@ -333,12 +310,12 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long userId, String templateId) {
-        log.info("用户「{}」创建模版「{}」", userId, templateId);
-        // 删除模板映射的节点
+        log.info("User「{}」delete template「{}」", userId, templateId);
+        // delete template mapped node
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
         ExceptionUtil.isNotBlank(nodeId, TEMPLATE_INFO_ERROR);
         iNodeService.delTemplateRefNode(userId, nodeId);
-        // 逻辑删除模板
+        // update template delete status
         baseMapper.updateIsDeletedByTempId(templateId);
     }
 
@@ -427,7 +404,6 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public List<TemplateCategoryMenuVo> getTemplateCategoryList(String lang) {
-        log.info("获取官方模版分类列表");
         List<TemplatePropertyDto> properties =
                 templatePropertyService.getTemplatePropertiesWithLangAndOrder(TemplatePropertyType.CATEGORY, lang);
         List<TemplateCategoryMenuVo> categoryVos = new ArrayList<>();
@@ -454,12 +430,10 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public List<TemplateVo> getTemplateVoList(String spaceId, String categoryCode, List<String> templateIds, Boolean isPrivate) {
-        log.info("获取模板视图列表");
         List<TemplateVo> vos = new ArrayList<>();
 
-        // 官方模版
         if (StrUtil.isNotBlank(categoryCode)) {
-            // 从数据中获取模版ID
+            // Get template id from data
             templateIds = templatePropertyService.getTemplateIdsByPropertyCodeAndType(categoryCode,
                     TemplatePropertyType.CATEGORY);
             if (templateIds.isEmpty()) {
@@ -468,11 +442,11 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         }
         List<TemplateDto> templateDtoList = baseMapper.selectDtoByTypeId(spaceId, templateIds);
         if (CollUtil.isNotEmpty(templateDtoList)) {
-            // 切换成内存自定义排序
+            // Switch to memory custom sorting
             CollectionUtil.customSequenceSort(templateDtoList, TemplateDto::getTemplateId, templateIds);
             List<String> templateIdList = templateDtoList.stream().map(TemplateDto::getTemplateId).collect(Collectors.toList());
             Map<String, List<String>> tags = templatePropertyService.getTemplatesTags(templateIdList);
-            // 获取节点描述
+            // get node description
             List<String> nodeIds = templateDtoList.stream().map(TemplateDto::getNodeId).collect(Collectors.toList());
             Map<String, String> nodeIdToDescMap = iNodeDescService.getNodeIdToDescMap(nodeIds);
             templateDtoList.forEach(dto -> {
@@ -485,7 +459,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                         .description(nodeIdToDescMap.get(dto.getNodeId()))
                         .tags(tags.get(dto.getTemplateId()))
                         .build();
-                // 模板属于空间站，显示创建者信息
+                // The template belongs to the space station and shows the creator information
                 if (BooleanUtil.isTrue(isPrivate)) {
                     vo.setUserId(dto.getUuid());
                     vo.setUuid(dto.getUuid());
@@ -501,7 +475,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public TemplateDirectoryVo getDirectoryVo(String categoryCode, String templateId, Boolean isPrivate, String lang) {
-        log.info("获取模板目录信息");
+        log.info("Get template 「{}」 directory view", templateId);
         TemplateDto templateDto = baseMapper.selectDtoByTempId(templateId);
         ExceptionUtil.isNotNull(templateDto, TEMPLATE_INFO_ERROR);
         NodeShareTree nodeTree = new NodeShareTree();
@@ -521,7 +495,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
                 nodeTree.setChildren(treeList);
             }
         }
-        // 模板属于空间站，显示创建者和空间信息
+        // Template belongs to space station, showing creator and space information
         if (BooleanUtil.isTrue(isPrivate)) {
             vo.setUserId(templateDto.getUuid());
             vo.setUuid(templateDto.getUuid());
@@ -530,121 +504,10 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
             vo.setSpaceName(templateDto.getSpaceName());
         }
         else {
-            // 官方模板，返回模板分类信息
+            // Official template, return template classification information
             this.complementCategoryInfo(categoryCode, templateId, vo, lang);
         }
         return vo;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public String oneClickGenerate(Long userId, String spaceId, Long memberId, String nodeId) {
-        log.info("一键生成模板");
-        List<String> subNodeIds = nodeMapper.selectSubNodeIds(nodeId);
-        if (CollUtil.isEmpty(subNodeIds)) {
-            throw new BusinessException("无子节点");
-        }
-        boolean official = constProperties.getTemplateSpace().contains(spaceId);
-        if (subNodeIds.size() > limitProperties.getTemplateMaxCount() && !official) {
-            throw new BusinessException("超过模板数量上限");
-        }
-        // 获取当前空间的模板，存在同名保留使用 templateId，其余删除
-        List<TemplateInfo> templateInfos = baseMapper.selectInfoByTypeId(spaceId);
-        Map<String, TemplateInfo> tplNameToInfoMap = templateInfos.stream().collect(Collectors.toMap(TemplateInfo::getName, info -> info));
-        // 删除原映射的节点
-        String[] delNodeIds = new String[templateInfos.size()];
-        for (int i = 0; i < templateInfos.size(); i++) {
-            delNodeIds[i] = templateInfos.get(i).getNodeId();
-        }
-        if (ArrayUtil.isNotEmpty(delNodeIds)) {
-            iNodeService.delTemplateRefNode(userId, delNodeIds);
-        }
-        // 开始生成
-        StringBuilder strBuilder = new StringBuilder();
-        Integer type = official ? TemplateType.OFFICIAL.getType() : TemplateType.SPACE.getType();
-        List<BaseNodeInfo> nodeInfos = nodeMapper.selectBaseNodeInfoByNodeIds(subNodeIds);
-        List<TemplateEntity> insertList = new ArrayList<>();
-        for (BaseNodeInfo sub : nodeInfos) {
-            // 校验各种类型节点的要求
-            try {
-                this.checkTemplateForeignNode(memberId, sub.getNodeId());
-            }
-            catch (BusinessException e) {
-                strBuilder.append(sub.getNodeName()).append(e.getMessage());
-                continue;
-            }
-            // 备份原节点，创建映射的模版节点
-            String relatedNodeId = iNodeService.copyNodeToSpace(userId, spaceId, "template", sub.getNodeId(),
-                    NodeCopyOptions.builder().copyData(true).template(true).retainRecordMeta(true).build());
-            String name = sub.getNodeName();
-            TemplateEntity entity = TemplateEntity.builder()
-                    .type(type)
-                    .nodeId(relatedNodeId).build();
-            TemplateInfo templateInfo = tplNameToInfoMap.get(name);
-            if (templateInfo == null) {
-                entity.setTemplateId(IdUtil.createTemplateId());
-                entity.setTypeId(spaceId);
-                entity.setName(name);
-                insertList.add(entity);
-            }
-            else {
-                // 同名覆更新信息
-                entity.setUpdatedBy(userId);
-                baseMapper.updateInfoById(entity, templateInfo.getId());
-                strBuilder.append(" 同名覆盖的模板：").append(name);
-                tplNameToInfoMap.remove(name);
-            }
-        }
-        if (CollUtil.isNotEmpty(insertList)) {
-            this.saveBatch(insertList, insertList.size());
-            strBuilder.append(" 新增部分：").append(insertList.stream().map(TemplateEntity::getName).collect(Collectors.toList()));
-        }
-        if (MapUtil.isNotEmpty(tplNameToInfoMap)) {
-            List<Long> delIds = tplNameToInfoMap.values().stream().map(TemplateInfo::getId).collect(Collectors.toList());
-            removeByIds(delIds);
-            strBuilder.append(" 删除部分：").append(tplNameToInfoMap.keySet());
-        }
-        return strBuilder.toString();
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void config(Long userId, TemplateConfigRo ro) {
-        log.info("生成模板中心相关的配置");
-
-        // 获取节点所在空间站
-        String spaceId = getSpaceIdByNodeId(ro.getNodeId());
-
-        // 所有的官方模板的name为键，id为值存储到map中
-        Map<String, String> nameToTplIdMap = getNameToTplIdMap(spaceId);
-
-        // 根据模版的类型进行配置信息存储
-        if (ro.getType() == 1) {
-
-            // 使用【维格表API】获取模板推荐配置表配置信息
-            List<RecommendTemplateInfo> list = vikaOperations.getRecommendTemplateConfiguration(ro.getNodeId(), ro.getNodeView(), ro.getLang());
-            if (list.size() < 1) {
-                throw new BusinessException("配置表无记录存在");
-            }
-            // 将表信息转为推荐配置对象
-            RecommendConfig recommendConfig = this.configHotRecommend(list, nameToTplIdMap);
-            // 保存推荐配置对象recommendConfig到数据库
-            systemConfigService.saveOrUpdate(userId, SystemConfigType.RECOMMEND_CONFIG, ro.getLang(), JSONUtil.toJsonStr(recommendConfig));
-            // 清除缓存
-            templateConfigService.deleteRecommendConfigCacheByLang(ro.getLang());
-        }
-        else {
-            String categoryDatasheetId = ro.getCategoryDatasheetId();
-            String categoryDatasheetView = ro.getCategoryDatasheetView();
-            if (ObjectUtil.isNull(categoryDatasheetId) || ObjectUtil.isNull(categoryDatasheetView)) {
-                throw new BusinessException("没有传入模板的分类表id或分类视图");
-            }
-            // 使用【维格表API】获取上架模板分类表
-            List<String> templateCategoryNames = vikaOperations.getTemplateCategoryName(categoryDatasheetId, categoryDatasheetView, ro.getLang());
-            templatePropertyService.configOnlineTemplate(ro.getNodeId(), nameToTplIdMap, userId, ro.getLang(), templateCategoryNames);
-            // 清除缓存
-            templateConfigService.deleteCategoriesListConfigCacheByLang(ro.getLang());
-        }
     }
 
     @Override
@@ -655,32 +518,31 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         return baseMapper.selectNodeIdByTempId(constProperties.getQuoteTemplateId());
     }
 
-    @Override
-    public List<TemplateSearchResult> searchTemplate(String keyword, String rawLang) {
-        log.info("模糊搜索模板，keyword:{},lang:{}", keyword, rawLang);
+    private List<TemplateSearchResult> searchTemplate(String keyword, String rawLang) {
+        log.info("Fuzzy Search Template. keyword:{},lang:{}", keyword, rawLang);
         String lang = templatePropertyService.ifNotCategoryReturnDefaultElseRaw(rawLang);
-        // 获取所有上线模板的模板自定义ID
+        // Get template custom IDs of all online templates
         LinkedHashSet<String> templateIds =
                 templatePropertyService.getTemplateIdsByKeyWordAndLang(StrUtil.trim(keyword), lang);
         if (CollUtil.isEmpty(templateIds)) {
             return new ArrayList<>();
         }
-        // 模糊查询模板名称
+        // Fuzzy query template name
         List<OnlineTemplateDto> results = baseMapper.selectByTemplateIds(templateIds);
         if (CollUtil.isEmpty(results)) {
             return new ArrayList<>();
         }
         Map<String, List<OnlineTemplateDto>> onlineTemplateMap =
                 results.stream().collect(Collectors.groupingBy(OnlineTemplateDto::getTemplateId));
-        // 保证顺序
+        // Guaranteed order
         LinkedHashMap<String, TemplateSearchResult> templates = new LinkedHashMap<>(onlineTemplateMap.size());
         for (String templateId : templateIds) {
             TemplateSearchResult searchResult = new TemplateSearchResult();
-            // 获取已经分好组的
+            // Get grouped
             if (templates.containsKey(templateId)) {
                 searchResult = templates.get(templateId);
             }
-            // templateId分组组成的属性列表
+            // A list of properties grouped by templateId
             for (OnlineTemplateDto dto : onlineTemplateMap.get(templateId)) {
                 searchResult.setTemplateId(dto.getTemplateId());
                 searchResult.setTemplateName(dto.getTemplateName());
@@ -740,79 +602,22 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
 
     @Override
     public List<String> getNodeIdsByTemplateId(String templateId) {
-        // 查询模板映射的节点ID
+        // Query the node ID of the template map
         String nodeId = baseMapper.selectNodeIdByTempId(templateId);
         ExceptionUtil.isNotBlank(nodeId, TEMPLATE_INFO_ERROR);
 
         List<String> nodeIds = new ArrayList<>();
         nodeIds.add(nodeId);
-        // 判断节点类型
+        // Determine the node type
         NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
         if (nodeType == NodeType.FOLDER) {
-            // 查找所有的子节点
+            // find all child nodes
             List<String> subNodeIds = nodeMapper.selectAllSubNodeIds(nodeId);
             if (!subNodeIds.isEmpty()) {
                 nodeIds.addAll(subNodeIds);
             }
         }
         return nodeIds;
-    }
-
-    private RecommendConfig configHotRecommend(List<RecommendTemplateInfo> recommends, Map<String, String> nameToTplIdMap) {
-        // 校验模板名称是否在空间有对应的tpcId。
-        for (RecommendTemplateInfo template : recommends) {
-            String templateName = template.getTemplateName();
-            String tplId = nameToTplIdMap.get(templateName);
-            if (ObjectUtil.isNull(tplId)) {
-                throw new BusinessException("模版名称不正确:" + templateName);
-            }
-        }
-
-        // 模板信息列表存储结构转化RecommendConfig。
-        RecommendConfig recommendConfig = templateList2i18nToRecommendConfigMap(recommends, nameToTplIdMap);
-
-        int headerCount = 3;
-        // 校验各语言下top3是否符合标准，自定义分组是否大于1
-        if (recommendConfig.getTop().size() != headerCount) {
-            throw new BusinessException("Top3 分组的配置不足或超过三个");
-        }
-        if (recommendConfig.getCategories().size() < 1) {
-            throw new BusinessException("自定义分组的配置不存在");
-        }
-
-        return recommendConfig;
-    }
-
-    private RecommendConfig templateList2i18nToRecommendConfigMap(List<RecommendTemplateInfo> recommends, Map<String, String> nameToTplIdMap) {
-        RecommendConfig recommendConfig = new RecommendConfig(new ArrayList<>(), new ArrayList<>());
-        // 空间换时间，不需要每次去找template在RecommendConfig哪个类别列表中。
-        Map<String, CategoryDto> categoryNameToCategory = new HashMap<>(2);
-        for (RecommendTemplateInfo template : recommends) {
-
-            // 获取模板所在分类
-            String categoryName = template.getCustomCategory();
-            final String bannerKey = "Top3";
-            if (categoryName.equals(bannerKey)) {
-                // 模板类别属于top3
-                List<Banner> banners = recommendConfig.getTop();
-                String tplId = nameToTplIdMap.get(template.getTemplateName());
-                Banner banner = new Banner(tplId, template.getBanners().get(0).getToken(),
-                        template.getTitle(), template.getDescription(), template.getColor());
-                banners.add(banner);
-            }
-            else {
-                // 模板为普通类别下的模板
-                CategoryDto category = categoryNameToCategory.computeIfAbsent(categoryName, value ->
-                        CategoryDto.builder().categoryName(categoryName).templateIds(new ArrayList<>()).build());
-                String templateName = template.getTemplateName();
-                String tplId = nameToTplIdMap.get(templateName);
-                category.getTemplateIds().add(tplId);
-            }
-        }
-
-        recommendConfig.getCategories().addAll(categoryNameToCategory.values());
-
-        return recommendConfig;
     }
 
     private void complementCategoryInfo(String categoryCode, String templateId, TemplateDirectoryVo vo, String lang) {
@@ -822,21 +627,21 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
         }
         List<CategoryDto> dtoList = JSONUtil.parseArray(val).toList(CategoryDto.class);
         for (CategoryDto category : dtoList) {
-            // 模板若不在分类下，跳过
+            // If the template is not under the category, skip it
             if (!category.getTemplateIds().contains(templateId)) {
                 continue;
             }
-            // 优先取指定分类code的信息
+            // Priority is given to the information of the specified classification code
             if (category.getCategoryCode().equals(categoryCode)) {
                 vo.setCategoryCode(categoryCode);
                 vo.setCategoryName(category.getCategoryName());
                 return;
             }
-            // 再则取第一个分类的信息
+            // Then take the information of the first category
             if (vo.getCategoryName() == null) {
                 vo.setCategoryCode(category.getCategoryCode());
                 vo.setCategoryName(category.getCategoryName());
-                // 无分类code，直接返回
+                // No classification code, return directly
                 if (StrUtil.isBlank(categoryCode)) {
                     return;
                 }
@@ -845,33 +650,10 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     }
 
     /**
-     * 验证模板数量是否到达上限
+     * Verify that the number of templates has reached the limit
      */
     private void verifyNumberLimit(String spaceId) {
         int count = SqlTool.retCount(baseMapper.countByTypeId(spaceId));
         ExceptionUtil.isTrue(count < limitProperties.getTemplateMaxCount(), NUMBER_LIMIT);
     }
-
-
-    private Map<String, String> getNameToTplIdMap(String spaceId) {
-        List<TemplateInfo> templateInfos = baseMapper.selectInfoByTypeId(spaceId);
-        if (templateInfos.size() < 1) {
-            throw new BusinessException("当前空间无模板");
-        }
-        return templateInfos.stream().collect(Collectors.toMap(TemplateInfo::getName, TemplateInfo::getTemplateId));
-    }
-
-    private String getSpaceIdByNodeId(String nodeId) {
-        // 配置表不能为空
-        ExceptionUtil.isNotBlank(nodeId, INCORRECT_ARG);
-        // 配置表需要在某个空间下
-        String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
-        ExceptionUtil.isNotNull(spaceId, PermissionException.NODE_ACCESS_DENIED);
-        // 空间需要是官网指定的配置信息空间
-        if (!constProperties.getTemplateSpace().contains(spaceId)) {
-            throw new BusinessException("当前空间不是模板空间");
-        }
-        return spaceId;
-    }
-
 }

@@ -36,14 +36,6 @@
         WHERE template_id = #{templateId} AND is_deleted = 0
     </select>
 
-    <select id="selectSpaceIdByTemplateIdIncludeDeleted" resultType="java.lang.String">
-        SELECT vn.space_id
-        FROM vika_template vt
-                 JOIN vika_node vn ON vt.node_id = vn.node_id
-        WHERE vt.template_id = #{templateId}
-        LIMIT 0,1
-    </select>
-
     <select id="selectNameByTemplateIdIncludeDelete" resultType="java.lang.String">
         SELECT name
         FROM vika_template
@@ -118,26 +110,10 @@
         WHERE type_id = #{typeId} AND is_deleted = 0
     </select>
 
-    <update id="updateInfoById">
-        UPDATE vika_template
-        SET node_id = #{entity.nodeId}, type = #{entity.type}, updated_by = #{entity.updatedBy}
-        WHERE id = #{id} AND is_deleted = 0
-    </update>
-
     <select id="selectNodeIdByTempIdAndType" resultType="java.lang.String">
         SELECT node_id
         FROM vika_template
         WHERE template_id = #{tempId} AND type = #{type} AND is_deleted = 0
-    </select>
-
-    <select id="selectNodeIdByTemplateIds" resultType="java.lang.String">
-        SELECT node_id
-        FROM vika_template
-        WHERE template_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
     </select>
 
     <select id="selectByTemplateIds" resultType="com.vikadata.api.modular.template.model.OnlineTemplateDto">

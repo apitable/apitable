@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * 通知模版
- * @author Shawn Deng
- * @date 2021-11-11 15:34:16
+ * <p>
+ * Notification Template
+ * </p>
  */
 @Data
 public class NotificationTemplate {

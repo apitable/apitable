@@ -12,7 +12,6 @@ import com.vikadata.define.constants.RedisConstants;
 import com.vikadata.integration.vika.VikaOperations;
 import com.vikadata.integration.vika.model.DingTalkAgentAppInfo;
 import com.vikadata.integration.vika.model.DingTalkDaTemplateInfo;
-import com.vikadata.integration.vika.model.DingTalkGoodsInfo;
 import com.vikadata.scheduler.space.service.IDingTalkConfigService;
 import com.vikadata.social.dingtalk.DingtalkConfig.AgentApp;
 import com.vikadata.social.dingtalk.config.DingTalkConfigStorage;
@@ -23,11 +22,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 附件表 服务实现类
+ * DingTalk App Service Implement Class
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/11/21
  */
 @Service
 @Slf4j
@@ -61,25 +57,13 @@ public class DingTalkConfigServiceImpl implements IDingTalkConfigService {
     }
 
     @Override
-    public void saveDingTalkGoodsConfig(String token, String host, String dstId, String featureDstId) {
-        List<DingTalkGoodsInfo> goodsInfo =
-                vikaOperations.getDingTalkGoodsInfo(token, host, dstId, featureDstId);
-        for (DingTalkGoodsInfo info : goodsInfo) {
-            String value = JSONUtil.toJsonStr(info);
-            redisTemplate.opsForValue().set(RedisConstants.getDingTalkGoodsInfoKey(info.getItemCode(), info.getPeriod()),
-                    value);
-            XxlJobHelper.log("钉钉商品信息保存成功:{} \n", value);
-        }
-    }
-
-    @Override
     public void saveDingTalkDaTemplateConfig(String dstId, String viewId) {
         List<DingTalkDaTemplateInfo> templateInfo = vikaOperations.getDingTalkDaTemplateInfo(dstId, viewId);
         templateInfo.forEach(template -> {
             String cacheKey = RedisConstants.getDingTalkTemplateIconKey(template.getTemplateId());
             if (!Boolean.TRUE.equals(redisTemplate.hasKey(cacheKey))) {
                 redisTemplate.opsForValue().set(cacheKey, JSONUtil.toJsonStr(template));
-                XxlJobHelper.log("保存钉钉搭模版信息:{}", template.getTemplateId());
+                XxlJobHelper.log("Save DingTalk template information. TemplateId: {}", template.getTemplateId());
             }
         });
     }

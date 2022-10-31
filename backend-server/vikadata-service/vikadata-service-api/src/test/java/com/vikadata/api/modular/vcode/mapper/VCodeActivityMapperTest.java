@@ -18,10 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：V码系统-活动及其相关表测试
+ * VCode Activity Mapper Test
  * </p>
- * @author wuyitao
- * @date 2022/4/5 5:37 PM
  */
 @Disabled
 public class VCodeActivityMapperTest extends AbstractMyBatisMapperTest {

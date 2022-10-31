@@ -60,9 +60,6 @@ import org.springframework.transaction.support.TransactionTemplate;
  * <p>
  * Template Center - Template Album Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2022/9/23
  */
 @Slf4j
 @Service

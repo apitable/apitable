@@ -28,12 +28,10 @@ import static com.vikadata.api.util.PingppUtil.PINGPP_SIGNATURE;
 import static com.vikadata.api.util.PingppUtil.parsePingChargeSuccessData;
 
 /**
- * 支付回调模块相关接口
- * @author Shawn Deng
- * @date 2022-05-16 10:13:10
+ * Payment Callback Module API
  */
 @RestController
-@Api(tags = "支付回调模块相关接口")
+@Api(tags = "Payment Callback Module API")
 @ApiResource(path = "/")
 @Slf4j
 public class PaymentCallbackController {
@@ -42,7 +40,7 @@ public class PaymentCallbackController {
     private IOrderPaymentService iOrderPaymentService;
 
     @PostResource(path = "/order/paid/callback", requiredLogin = false)
-    @ApiOperation(value = "支付成功WebHook通知接口", notes = "Ping++", hidden = true)
+    @ApiOperation(value = "Payment Success WebHook Notification", notes = "Ping++", hidden = true)
     public String orderPaid(@RequestHeader HttpHeaders headers, HttpServletRequest request) throws Exception {
         return paySuccessCallback(headers, request);
     }
@@ -54,19 +52,19 @@ public class PaymentCallbackController {
         }
         String requestBody = HttpContextUtil.getBody(request);
         if (StrUtil.isBlank(signature) && JSONUtil.parseObj(requestBody).isEmpty()) {
-            // 验证地址请求，直接返回
+            // Verify the address request and return directly
             return "pingxx:success";
         }
-        // 解析异步通知数据
+        // Parse asynchronous notification data
         Event event = PingppUtil.getEventFromRequest(requestBody, signature);
         if (log.isDebugEnabled()) {
-            log.debug("通知结构体:{}", event.toString());
+            log.debug("Event body:{}", event.toString());
         }
         if (CHARGE_SUCCESS.equals(event.getType())) {
-            // 支付成功
+            // payment successful
             PingChargeSuccess chargeSuccess = parsePingChargeSuccessData(event.getData().getObject().toString());
             String orderId = iOrderPaymentService.retrieveOrderPaidEvent(chargeSuccess);
-            // 同步订单事件
+            // Sync order events
             if (StrUtil.isNotBlank(orderId)) {
                 SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
             }

@@ -19,29 +19,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 应用市场 应用接口
+ * Application Market - Application API
  * </p>
- *
- * @author Benson Cheung
- * @date 2021/03/31
  */
 @RestController
-@Api(tags = "应用市场模块_应用相关服务接口")
-@ApiResource(name = "应用市场接口库", path = "/marketplace/integration")
+@Api(tags = "Application Market - Application API")
+@ApiResource(name = "Application Market API", path = "/marketplace/integration")
 public class MarketplaceAppController {
 
     @Resource
     private IMarketplaceAppService iMarketplaceAppService;
 
     @GetResource(path = "/space/{spaceId}/apps", requiredLogin = false)
-    @ApiOperation(value = "查询内置集成应用列表")
+    @ApiOperation(value = "Query Built-in Integrated Applications")
     @Deprecated
     public ResponseData<List<MarketplaceSpaceAppVo>> getSpaceAppList(@PathVariable("spaceId") String spaceId) {
         return ResponseData.success(iMarketplaceAppService.getSpaceAppList(spaceId));
     }
 
     @PostResource(path = "/space/{spaceId}/app/{appId}/open", requiredPermission = false)
-    @ApiOperation(value = "开启应用")
+    @ApiOperation(value = "Open Application")
     @Deprecated
     public ResponseData<Void> openSpaceApp(@PathVariable("spaceId") String spaceId, @PathVariable(name = "appId") String appId) {
         iMarketplaceAppService.openSpaceApp(spaceId, appId);
@@ -49,7 +46,7 @@ public class MarketplaceAppController {
     }
 
     @PostResource(path = "/space/{spaceId}/app/{appId}/stop", requiredPermission = false)
-    @ApiOperation(value = "停用应用")
+    @ApiOperation(value = "Block Application")
     @Deprecated
     public ResponseData<Void> blockSpaceApp(@PathVariable("spaceId") String spaceId, @PathVariable(name = "appId") String appId) {
         iMarketplaceAppService.stopSpaceApp(spaceId, appId);

@@ -18,10 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：模板中心-模版属性及其相关表测试
+ * Template Property Mapper Test
  * </p>
- * @author wuyitao
- * @date 2022/4/5 5:41 PM
  */
 @Disabled
 public class TemplatePropertyMapperTest extends AbstractMyBatisMapperTest {

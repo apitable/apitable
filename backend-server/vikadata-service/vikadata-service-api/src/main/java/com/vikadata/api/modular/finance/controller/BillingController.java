@@ -35,12 +35,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 运营系统-订阅计费模块
- *
- * @author Shawn Deng
+ * Operating System - Subscription Billing Module
  */
 @RestController
-@Api(tags = "运营系统-订阅计费模块", hidden = true)
+@Api(tags = "Operating System - Subscription Billing Module", hidden = true)
 @ApiResource(path = "/billing")
 @Slf4j
 public class BillingController {
@@ -52,15 +50,14 @@ public class BillingController {
     private IGmService iGmService;
 
     @PostResource(path = "/orders", requiredPermission = false)
-    @ApiOperation(value = "下单", hidden = true)
+    @ApiOperation(value = "Create Order", hidden = true)
     public ResponseData<Void> createOrder(@RequestBody @Valid CreateBusinessOrderRo data) {
         Long userId = SessionContext.getUserId();
-        // 校验操作权限
         iGmService.validPermission(userId, GmAction.BILLING_ORDER_CREATE);
-        // 创建线下订单
+        // Create business order
         OfflineOrderInfo offlineOrderInfo = iBillingOfflineService.createBusinessOrder(data);
         sendMessage(offlineOrderInfo.getMessage());
-        // 同步订单事件
+        // Sync order events
         SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, offlineOrderInfo.getOrderId()));
         return ResponseData.success();
     }
@@ -73,29 +70,27 @@ public class BillingController {
         request.body(JSONUtil.toJsonStr(body), ContentType.JSON.toString());
         try (HttpResponse response = request.execute()) {
             if (!response.isOk()) {
-                log.error("发送订阅消息卡片失败, 响应: {}", response);
+                log.error("Failed to send subscription message card. Response: {}", response);
             }
         }
         catch (Exception exception) {
-            log.error("发送订阅消息卡片异常", exception);
+            log.error("Send subscription message card exception.", exception);
         }
     }
 
     @PostResource(path = "/createEntitlementWithAddOn", requiredPermission = false)
-    @ApiOperation(value = "赠送附加计划", hidden = true)
+    @ApiOperation(value = "Giveaway Add-on Plan", hidden = true)
     public ResponseData<Void> reward(@RequestBody @Valid CreateEntitlementWithAddOn data) {
         Long userId = SessionContext.getUserId();
-        // 校验操作权限
         iGmService.validPermission(userId, GmAction.BILLING_ORDER_CREATE);
         iBillingOfflineService.createSubscriptionWithAddOn(data);
         return ResponseData.success();
     }
 
     @GetResource(path = "/space/{spaceId}/subscription", requiredPermission = false)
-    @ApiOperation(value = "查询空间的订单", hidden = true)
+    @ApiOperation(value = "Query Space for Orders", hidden = true)
     public ResponseData<SpaceSubscriptionVo> fetchSpaceOrder(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
-        // 校验操作权限
         iGmService.validPermission(userId, GmAction.BILLING_ORDER_QUERY);
         return ResponseData.success(iBillingOfflineService.getSpaceSubscription(spaceId));
     }

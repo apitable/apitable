@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * 国际化语言字符串
- * @author Shawn Deng
- * @date 2021-11-11 16:05:05
+ * <p>
+ * I18n Strings
+ * </p>
  */
 @Data
 public class I18nStrings {

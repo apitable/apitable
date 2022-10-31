@@ -37,11 +37,8 @@ import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_MAIN_ADM
 
 /**
  * <p>
- * 应用市场 内置集成应用服务实现类
+ * Marketplace App Service Implement Class
  * </p>
- *
- * @author Benson Cheung
- * @date 2021/03/31
  */
 @Slf4j
 @Service
@@ -70,16 +67,15 @@ public class MarketplaceAppServiceImpl extends ServiceImpl<MarketplaceSpaceAppMa
 
     @Override
     public List<MarketplaceSpaceAppVo> getSpaceAppList(String spaceId) {
-        log.info("查询内置集成应用列表");
-        // 查询官方应用配置表，查询应用的基础信息
+        log.info("Query built-in integrated applications of space 「{}」", spaceId);
         List<MarketplaceSpaceAppVo> list = new ArrayList<>();
-        // 查询当前空间的应用开通记录
+        // Query the application activation record of the current space
         List<String> spaceAppList = getAppIdsBySpaceId(spaceId);
         SystemConfigManager.getConfig().getMarketplace().entrySet().stream()
                 .sorted(Comparator.comparing(entry -> entry.getValue().getDisplayOrder()))
                 .forEachOrdered(entry -> {
                             if (entry.getValue().getAppId().equals(dingTalkService.getVikaDingAppId())) {
-                                // 钉钉另外查询
+                                // DingTalk additional inquiry
                                 MarketplaceSpaceAppVo vo = new MarketplaceSpaceAppVo();
                                 vo.setAppId(entry.getValue().getAppId());
                                 vo.setStatus(socialTenantBindService.getSpaceBindStatusByPlatformType(spaceId, SocialPlatformType.DINGTALK));
@@ -121,8 +117,8 @@ public class MarketplaceAppServiceImpl extends ServiceImpl<MarketplaceSpaceAppMa
 
     @Override
     public void openSpaceApp(String spaceId, String appId) {
-        log.info("空间ID：" + spaceId + "开启内置应用：" + appId);
-        // 空间站是否已开通此应用
+        log.info("Space 「{}」 open built-in integrated applications 「{}」", spaceId, appId);
+        // Check whether the space station has opened this application
         int count = SqlTool.retCount(marketplaceSpaceAppMapper.selectCountBySpaceIdAndAppId(spaceId, appId));
         if (count > 0) {
             return;
@@ -137,14 +133,14 @@ public class MarketplaceAppServiceImpl extends ServiceImpl<MarketplaceSpaceAppMa
 
     @Override
     public void stopSpaceApp(String spaceId, String appId) {
-        log.info("空间ID：" + spaceId + "停用内置应用：" + appId);
-        // 钉钉应用停用逻辑
+        log.info("Space 「{}」 stop built-in integrated applications 「{}」", spaceId, appId);
+        // DingTalk application deactivation logic
         if (appId.equals(dingTalkService.getVikaDingAppId())) {
             Long userId = LoginContext.me().getLoginUser().getUserId();
             Long memberId = memberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-            // 检测停用的空间是否是当前用户的空间
+            // Detect if the deactivated space is the current user's space
             ExceptionUtil.isNotNull(memberId, UNAUTHORIZED);
-            // 检测是否是主管理员
+            // Check if it is the primary administrator
             Long mainMemberId = spaceService.getSpaceMainAdminMemberId(spaceId);
             ExceptionUtil.isTrue(ObjectUtil.equal(memberId, mainMemberId), NOT_SPACE_MAIN_ADMIN);
             socialTenantService.removeSpaceIdSocialBindInfo(spaceId);
@@ -158,12 +154,12 @@ public class MarketplaceAppServiceImpl extends ServiceImpl<MarketplaceSpaceAppMa
                             SocialAppType.ISV.getType() == tenant.getAppType())
                     .orElse(false);
             if (!isWeComIsv) {
-                // 企业微信停用逻辑
+                // Wecom deactivation logic
                 Long userId = LoginContext.me().getLoginUser().getUserId();
                 Long memberId = memberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
-                // 检测停用的空间是否是当前用户的空间
+                // Detect if the deactivated space is the current user's space
                 ExceptionUtil.isNotNull(memberId, UNAUTHORIZED);
-                // 检测是否是主管理员
+                // Check if it is the primary administrator
                 Long mainMemberId = spaceService.getSpaceMainAdminMemberId(spaceId);
                 ExceptionUtil.isTrue(ObjectUtil.equal(memberId, mainMemberId), NOT_SPACE_MAIN_ADMIN);
                 iWeComService.stopWeComApp(spaceId);

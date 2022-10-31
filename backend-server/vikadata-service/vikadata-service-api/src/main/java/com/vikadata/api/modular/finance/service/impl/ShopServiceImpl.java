@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 import static com.vikadata.api.util.billing.BillingConfigManager.getPriceList;
 
 /**
- * 商店产品服务实现类
- *
- * @author Shawn Deng
+ * <p>
+ * Shop Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j

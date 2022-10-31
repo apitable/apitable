@@ -1,57 +1,38 @@
 package com.vikadata.scheduler.space.mapper.space;
 
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- * 空间表 Mapper 接口
+ * Space Mapper
  * </p>
- *
- * @author Chambers
- * @date 2019/11/21
  */
 public interface SpaceMapper {
 
     /**
-     * 获取需要删除的空间ID列表
+     * Get a list of space id that need to be deleted
      *
-     * @param date 删除截止时间
-     * @return 空间ID列表
-     * @author Chambers
-     * @date 2019/11/21
+     * @param deadline deleted deadline
+     * @return space id list
      */
-    List<String> findDelSpaceIds(String date);
+    List<String> findDelSpaceIds(@Param("deadline") String deadline);
 
     /**
-     * 逻辑删除空间
+     * update isDeleted status
      *
-     * @param spaceIds 空间ID列表
-     * @return 修改数
-     * @author Chambers
-     * @date 2019/11/21
+     * @param spaceIds space id list
+     * @return number of execution results
      */
-    int updateIsDeletedBySpaceIdIn(@Param("list") List<String> spaceIds);
+    int updateIsDeletedBySpaceIdIn(@Param("spaceIds") List<String> spaceIds);
 
     /**
-     * 获取数量判断空间是否存在
+     * Get the number to determine whether the space exists
      *
-     * @param spaceId  空间ID
-     * @param isPreDel 是否处于预删除状态（非必须）
-     * @return 数量
-     * @author Chambers
-     * @date 2020/4/1
+     * @param spaceId  space id
+     * @param isPreDel Is it in pre-delete state（no require）
+     * @return count
      */
     Integer countBySpaceId(@Param("spaceId") String spaceId, @Param("isPreDel") Boolean isPreDel);
-
-    /**
-     * 查询空间的主管理员ID
-     *
-     * @param spaceId 空间ID
-     * @return 成员ID
-     * @author Shawn Deng
-     * @date 2020/2/13 22:17
-     */
-    Long selectSpaceMainAdmin(@Param("spaceId") String spaceId);
 }

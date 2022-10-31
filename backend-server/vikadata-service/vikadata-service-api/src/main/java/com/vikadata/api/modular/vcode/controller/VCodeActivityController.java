@@ -38,14 +38,11 @@ import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 /**
  * <p>
- * V码 活动接口
+ * VCode System - Activity API
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 @RestController
-@Api(tags = "V码模块_活动相关服务接口")
+@Api(tags = "VCode - Activity API")
 @ApiResource(path = "/vcode/activity")
 public class VCodeActivityController {
 
@@ -56,33 +53,30 @@ public class VCodeActivityController {
     private IVCodeActivityService iVCodeActivityService;
 
     @GetResource(path = "/list", requiredPermission = false)
-    @ApiOperation(value = "查询活动列表")
-    @ApiImplicitParam(name = "keyword", value = "搜索词", dataTypeClass = String.class, paramType = "query", example = "渠道推广")
+    @ApiOperation(value = "Query Activity List")
+    @ApiImplicitParam(name = "keyword", value = "Keyword", dataTypeClass = String.class, paramType = "query", example = "channel")
     public ResponseData<List<VCodeActivityVo>> list(@RequestParam(name = "keyword", required = false) String keyword) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.ACTIVITY_QUERY);
         return ResponseData.success(iVCodeActivityService.getVCodeActivityVo(keyword));
     }
 
     @GetResource(path = "/page", requiredPermission = false)
-    @ApiOperation(value = "分页查询活动列表", notes = PAGE_DESC)
+    @ApiOperation(value = "Query Activity Page", notes = PAGE_DESC)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "keyword", value = "搜索词", dataTypeClass = String.class, paramType = "query", example = "渠道推广"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = "keyword", value = "Keyword", dataTypeClass = String.class, paramType = "query", example = "channel"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "Page params", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<VCodeActivityPageVo>> page(@RequestParam(name = "keyword", required = false) String keyword, @PageObjectParam Page page) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.ACTIVITY_QUERY);
         return ResponseData.success(PageHelper.build(iVCodeActivityService.getVCodeActivityPageVo(page, keyword)));
     }
 
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "创建活动")
+    @ApiOperation(value = "Create Activity")
     public ResponseData<VCodeActivityVo> create(@RequestBody @Valid VCodeActivityRo ro) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.ACTIVITY_MANAGE);
         Long id = iVCodeActivityService.create(ro);
@@ -90,10 +84,9 @@ public class VCodeActivityController {
     }
 
     @PostResource(path = "/edit/{activityId}", requiredPermission = false)
-    @ApiOperation(value = "修改活动信息")
-    @ApiImplicitParam(name = "activityId", value = "活动ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12369")
+    @ApiOperation(value = "Edit Activity Info")
+    @ApiImplicitParam(name = "activityId", value = "Activity ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12369")
     public ResponseData<Void> edit(@PathVariable("activityId") Long activityId, @RequestBody VCodeActivityRo ro) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.ACTIVITY_MANAGE);
         iVCodeActivityService.edit(userId, activityId, ro);
@@ -101,15 +94,14 @@ public class VCodeActivityController {
     }
 
     @PostResource(path = "/delete/{activityId}", method = { RequestMethod.DELETE, RequestMethod.POST }, requiredPermission = false)
-    @ApiOperation(value = "删除活动")
-    @ApiImplicitParam(name = "activityId", value = "活动ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12369")
+    @ApiOperation(value = "Delete Activity")
+    @ApiImplicitParam(name = "activityId", value = "Activity ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12369")
     public ResponseData<Void> delete(@PathVariable("activityId") Long activityId) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.ACTIVITY_MANAGE);
-        // 检查活动是否存在
+        // Check if activity exists
         iVCodeActivityService.checkActivityIfExist(activityId);
-        // 逻辑删除
+        // Update delete status
         iVCodeActivityService.delete(userId, activityId);
         return ResponseData.success();
     }

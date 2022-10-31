@@ -735,9 +735,9 @@ public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
     public void testCreateGiftCapacityOrder() {
         MockUserSpace mockUserSpace = createSingleUserAndSpace();
         String userName = "testUserName";
-        // 下单300MB附加订阅计划
+        // Order a 300MB add-on subscription plan
         iBillingOfflineService.createGiftCapacityOrder(mockUserSpace.getUserId(), userName, mockUserSpace.getSpaceId());
-        // 查询空间赠送附件容量大小
+        // Query space gift attachment capacity size
         Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(mockUserSpace.getSpaceId());
         assertThat(number).isEqualTo(314572800L);
         IPage<SpaceCapacityPageVO> spaceCapacityPageVOIPage = iSpaceSubscriptionService.getSpaceCapacityDetail(mockUserSpace.getSpaceId(), false, new Page<>());

@@ -5,11 +5,8 @@ import com.vikadata.entity.AuditInviteRecordEntity;
 
 /**
  * <p>
- * 审计-邀请记录 Mapper 接口
+ * Audit Invite Record Mapper
  * </p>
- *
- * @author Shawn Deng
- * @since 2020-03-17
  */
 public interface AuditInviteRecordMapper extends BaseMapper<AuditInviteRecordEntity> {
 

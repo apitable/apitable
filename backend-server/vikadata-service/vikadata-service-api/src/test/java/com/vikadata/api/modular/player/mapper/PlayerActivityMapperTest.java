@@ -11,11 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：玩家系统-活动表测试
+ * Player Activity Mapper Test
  * </p>
- *
- * @author wuyitao
- * @date 2022/4/4 3:07 PM
  */
 public class PlayerActivityMapperTest extends AbstractMyBatisMapperTest {
 

@@ -49,9 +49,6 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
  * <p>
  * Implementation for wecom isv order event
  * </p>
- *
- * @author Codeman
- * @date 2022-08-10 11:03:13
  */
 @Slf4j
 @Service
@@ -178,7 +175,7 @@ public class WeComOrderServiceImpl extends AbstractSocialOrderService<WeComOrder
             log.error("cp not bind space：{}", event.getPaidCorpId());
             return null;
         }
-        // 订单购买的付费方案
+        // Paid plan for order purchase
         Price price = WeComPlanConfigManager.getPriceByWeComEditionIdAndMonth(event.getEditionId(),
                 event.getUserCount(), SocialFactory.getWeComOrderMonth(event.getOrderPeriod()));
         if (Objects.isNull(price)) {

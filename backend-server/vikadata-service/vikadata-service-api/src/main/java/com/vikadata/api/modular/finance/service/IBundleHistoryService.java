@@ -9,23 +9,25 @@ import com.vikadata.entity.BundleEntity;
 import com.vikadata.entity.BundleHistoryEntity;
 
 /**
- * 订阅套餐历史服务
- * @author Shawn Deng
- * @date 2022-06-09 18:33:11
+ * <p>
+ * Bundle History Service
+ * </p>
  */
 public interface IBundleHistoryService extends IService<BundleHistoryEntity> {
 
     /**
-     * 保存历史变更
-     * @param entity bundle记录
-     * @param changeType 变更类型
+     * Save history
+     *
+     * @param entity        bundle entity
+     * @param changeType    change type
      */
     void saveHistory(BundleEntity entity, ChangeType changeType);
 
     /**
-     * 批量保存
-     * @param entities bundle list
-     * @param changeType 变更类型
+     * Batch save history
+     *
+     * @param entities      bundle entities
+     * @param changeType    change type
      */
     void saveBatchHistory(List<BundleEntity> entities, ChangeType changeType);
 }

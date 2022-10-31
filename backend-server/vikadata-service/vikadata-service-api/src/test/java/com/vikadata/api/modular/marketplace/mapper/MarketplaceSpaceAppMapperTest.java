@@ -12,14 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：应用市场-空间与应用开通记录表测试
+ * Marketplace Space App Mapper Test
  * </p>
- *
- * @author wuyitao
- * @date 2022/3/31 3:18 PM
  */
 public class MarketplaceSpaceAppMapperTest extends AbstractMyBatisMapperTest {
-
 
     @Autowired
     MarketplaceSpaceAppMapper marketPlaceSpaceAppMapper;

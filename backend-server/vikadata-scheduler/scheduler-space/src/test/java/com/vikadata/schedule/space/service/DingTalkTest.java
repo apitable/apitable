@@ -11,12 +11,6 @@ import com.vikadata.scheduler.space.service.IDingTalkConfigService;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * test
- *
- * @author Zoe Zheng
- * @date 2021-07-26 20:17:12
- */
 @Disabled("no assertion")
 @Slf4j
 @SpringBootTest(classes = SchedulerSpaceApplication.class)
@@ -26,15 +20,7 @@ public class DingTalkTest {
 
     @Test
     public void testAddDingTalkAgentApps() {
-        // 测试读取配置并添加配置到redis
         dingTalkConfigService.saveDingTalkAgentAppConfig("");
-    }
-
-    @Test
-    public void testAddDingTalkGoodsInfo() {
-        // 测试读取配置并添加配置到redis
-        dingTalkConfigService.saveDingTalkGoodsConfig("usk8qo1Dk9PbecBlaqFIvbb", "https://integration.vika.ltd", "dstSEJ8n5pbw0BRXrz",
-                "dstPk1T9caJRry774J");
     }
 
     @Test

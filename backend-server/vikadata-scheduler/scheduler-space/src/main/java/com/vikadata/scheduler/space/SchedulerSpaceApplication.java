@@ -6,11 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
  * <p>
- * 启动类
+ * Startup Class
  * </p>
- *
- * @author Chambers
- * @date 2019/11/20
  */
 @SpringBootApplication
 @ConfigurationPropertiesScan

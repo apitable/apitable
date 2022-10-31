@@ -10,29 +10,27 @@ import lombok.Data;
 
 /**
  * <p> 
- * 创建订单视图
- * </p> 
- * @author Shawn Deng 
- * @date 2022/2/15 20:46
+ * Create Oder Request Object
+ * </p>
  */
 @Data
-@ApiModel("创建订单视图")
+@ApiModel("Create Oder Request Object")
 public class CreateOrderRo {
 
-    @NotBlank(message = "空间ID不允许为空")
-    @ApiModelProperty(value = "空间标识", example = "spc2123s")
+    @NotBlank(message = "Space id is not allowed to be empty")
+    @ApiModelProperty(value = "space id", example = "spc2123s")
     private String spaceId;
 
-    @NotBlank(message = "产品类型不允许为空")
-    @ApiModelProperty(value = "产品类型", example = "SILVER")
+    @NotBlank(message = "Product type is not allowed to be empty")
+    @ApiModelProperty(value = "product type", example = "SILVER")
     private String product;
 
-    @NotNull(message = "席位数不允许为空")
-    @ApiModelProperty(value = "席位数", example = "10")
+    @NotNull(message = "The number of seats cannot be empty")
+    @ApiModelProperty(value = "seat", example = "10")
     private Integer seat;
 
-    @NotNull(message = "月份不允许为空")
+    @NotNull(message = "Month is not allowed to be empty")
     @Min(1)
-    @ApiModelProperty(value = "月份", example = "6")
+    @ApiModelProperty(value = "month", example = "6")
     private Integer month;
 }

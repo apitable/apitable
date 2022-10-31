@@ -33,45 +33,43 @@ import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
 import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 /**
- * 内容风控接口管理
- * @author Benson Cheung
- * @date 2020/5/7 11:27 上午
+ * Content Risk Control API
  */
 @RestController
-@Api(tags = "内容风控模块接口")
+@Api(tags = "Content Risk Control API")
 @ApiResource(path = "/censor")
 public class CensorController {
 
     @Resource
     private IContentCensorResultService censorResultService;
 
-    @GetResource(name = "分页查询举报信息列表", path = "/reports/page", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "分页查询举报信息列表", notes = "分页查询举报信息列表，每个数表对应一行记录，举报次数自动累加" + PAGE_DESC, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(path = "/reports/page", requiredLogin = false)
+    @ApiOperation(value = "Paging query report information list", notes = "Paging query report information list, each table corresponds to a row of records, and the number of reports is automatically accumulated" + PAGE_DESC, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "status", value = "处理结果，0 未处理，1 封禁，2 正常（解封）", required = true, dataTypeClass = Integer.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = "status", value = "Processing result, 0 unprocessed, 1 banned, 2 normal (unblocked)", required = true, dataTypeClass = Integer.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "Paging parameters, see the interface description for instructions", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     public ResponseData<PageInfo<ContentCensorResultVo>> readReports(@RequestParam(name = "status", defaultValue = "0") Integer status, @PageObjectParam Page page) {
         IPage<ContentCensorResultVo> pageResult = censorResultService.readReports(status, page);
         return ResponseData.success(PageHelper.build(pageResult));
     }
 
-    @PostResource(name = "提交举报信息", path = "/createReports", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "提交举报信息", notes = "提交举报信息")
+    @PostResource(path = "/createReports", requiredLogin = false)
+    @ApiOperation(value = "Submit a report")
     public ResponseData<Void> createReports(@RequestBody ContentCensorReportRo censorReportRo) {
-        //匿名用户，校验cookie，防止恶意提交
+        // If it is an anonymous user, verify the cookie to prevent malicious submission
         censorResultService.createReports(censorReportRo);
         return ResponseData.success();
     }
 
-    @PostResource(name = "管理员处理举报信息", path = "/updateReports", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "管理员处理举报信息（强制在钉钉内打开，自动获取钉钉用户）", notes = "管理员处理举报信息")
+    @PostResource(path = "/updateReports", requiredLogin = false)
+    @ApiOperation(value = "Handling whistleblower information", notes = "Force to open in DingTalk, automatically acquire DingTalk users")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "数表ID", required = true, dataTypeClass = String.class, paramType = "query", example = "dstPv5DSHqXknU6Skp"),
-            @ApiImplicitParam(name = "status", value = "处理结果，0 未处理，1 封禁，2 正常（解封）", required = true, dataTypeClass = Integer.class, paramType = "query", example = "1")
+            @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "query", example = "dstPv5DSHqXknU6Skp"),
+            @ApiImplicitParam(name = "status", value = "Processing result, 0 unprocessed, 1 banned, 2 normal (unblocked)", required = true, dataTypeClass = Integer.class, paramType = "query", example = "1")
     })
     public ResponseData<Void> updateReports(@RequestParam("nodeId") String nodeId, @RequestParam("status") Integer status) {
-        //查询session中的钉钉会员信息
+        // Query the DingTalk member information in the session
         String auditorUserId = SessionContext.getDingtalkUserId();
         ExceptionUtil.isNotNull(auditorUserId, AuthException.UNAUTHORIZED);
         censorResultService.updateReports(nodeId, status);

@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * 第三方应用
- * @author Shawn Deng
- * @date 2021-11-11 15:30:45
+ * <p>
+ * App
+ * </p>
  */
 @Data
 public class App {

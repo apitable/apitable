@@ -6,10 +6,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 价目表
+ * Billing Price
  * </p>
- *
- * @author zoe zheng
  */
 @Data
 public class Price {

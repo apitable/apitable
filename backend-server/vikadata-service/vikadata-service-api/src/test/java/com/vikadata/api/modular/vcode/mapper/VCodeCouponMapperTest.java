@@ -18,10 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：V码系统-兑换券模板表测试
+ * VCode Coupon Mapper Test
  * </p>
- * @author wuyitao
- * @date 2022/4/5 5:38 PM
  */
 @Disabled
 public class VCodeCouponMapperTest extends AbstractMyBatisMapperTest {

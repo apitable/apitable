@@ -14,131 +14,104 @@ import com.vikadata.scheduler.space.model.SpaceApiUsageDto;
 
 /**
  * <p>
- * API用量统计 Mapper 接口
+ * Api Statistics Mapper
  * </p>
- *
- * @author liuzijing
- * @date 2022/6/1
  */
 public interface ApiStatisticsMapper {
 
     /**
-     * 查询API用量表的第一条记录
+     * Query the first record of the API usage meter
      *
      * @return ApiUsageEntity
-     * @author Chambers
-     * @date 2022/7/19
      */
     ApiUsageEntity selectFirstApiUsageRecord();
 
     /**
-     * 查询指定ID和创建时间次日之后的第一条记录
+     * Query the first record after the specified ID and creation time the next day
      *
-     * @param id        表ID
-     * @param createdAt 创建时间
+     * @param id        table id
+     * @param createdAt createdAt
      * @return ApiUsageEntity
-     * @author Chambers
-     * @date 2022/7/19
      */
     ApiUsageEntity selectNextDayFirstRecord(@Param("id") Long id, @Param("createdAt") LocalDateTime createdAt);
 
     /**
-     * 查询日度最大表ID
+     * Query daily maximum table ID
      *
-     * @param statisticsTime 统计时间
+     * @param statisticsTime statistics time
      * @return Long
-     * @author liuzijing
-     * @date 2022/6/8
      */
     Long selectMaxIdDaily(@Param("statisticsTime") String statisticsTime);
 
     /**
-     * 查询月度最大表ID
+     * Query the monthly maximum table ID
      *
-     * @param statisticsTime 统计时间
+     * @param statisticsTime statistics time
      * @return Long
-     * @author liuzijing
-     * @date 2022/6/8
      */
     Long selectMaxIdMonthly(@Param("statisticsTime") String statisticsTime);
 
     /**
-     * 查询API用量表第一条数据
+     * Query the first data of the API usage meter
      *
      * @return ApiRecordDto
-     * @author liuzijing
-     * @date 2022/6/7
      */
     ApiRecordDto selectFirstApiRecord();
 
     /**
-     * 查询每月API用量最小记录ID
+     * Query the minimum record ID of API usage per month
      *
-     * @param id api用量记录ID
-     * @param monthTime 统计时间
+     * @param id        API usage record ID
+     * @param monthTime month time
      * @return id
-     * @author liuzijing
-     * @date 2022/6/2
      */
     Long selectMinIdMonthly(@Param("id") Long id, @Param("monthTime") String monthTime);
 
     /**
-     * 查询空间站每日API用量信息
+     * Querying the daily API usage information of the space station
      *
-     * @param beginId 统计开始ID
-     * @param endId 统计结束ID
+     * @param beginId   Statistics start table id
+     * @param endId     Statistics end table id
      * @return SpaceApiUsageDto
-     * @author liuzijing
-     * @date 2022/5/25
      */
     List<SpaceApiUsageDto> selectSpaceApiUsageDaily(@Param("beginId") Long beginId, @Param("endId") Long endId);
 
     /**
-     * 查询空间站每月API用量信息
+     * Querying the monthly API usage information of the space station
      *
-     * @param beginId 统计开始ID
-     * @param endId 统计结束ID
+     * @param beginId   Statistics start table id
+     * @param endId     Statistics end table id
      * @return SpaceApiUsageDto
-     * @author liuzijing
-     * @date 2022/5/25
      */
     List<SpaceApiUsageDto> selectSpaceApiUsageMonthly(@Param("beginId") Long beginId, @Param("endId") Long endId);
 
     /**
-     * 查询API用量日统计表中最后一条记录
+     * query the last record in the daily API usage statistics table
      *
      * @return ApiStatisticsDailyEntity
-     * @author liuzijing
-     * @date 2022/5/26
      */
     ApiStatisticsDailyEntity selectLastApiUsageDailyRecord();
 
     /**
-     * 查询API用量月统计表中最后一条记录
+     * query the last record in the monthly API usage statistics table
      *
      * @return ApiStatisticsMonthlyEntity
-     * @author liuzijing
-     * @date 2022/5/26
      */
     ApiStatisticsMonthlyEntity selectLastApiUsageMonthlyRecord();
 
     /**
-     * 批量插入API日用量数据
+     * batch insert api usage daily statistics
      *
-     * @param apiStatisticsDailyEntities api日用量实体
-     * @return 影响行数
-     * @author liuzijing
-     * @date 2022/5/26
+     * @param apiStatisticsDailyEntities apiStatisticsDailyEntities
+     * @return number of execution results
      */
     int insertApiUsageDailyInfo(@Param("apiStatisticsDailyEntities") List<ApiStatisticsDailyEntity> apiStatisticsDailyEntities);
 
     /**
-     * 批量插入API月用量数据
+     * batch insert api usage monthly statistics
      *
-     * @param apiStatisticsMonthlyEntities api月用量实体
-     * @return 影响行数
-     * @author liuzijing
-     * @date 2022/5/26
+     * @param apiStatisticsMonthlyEntities apiStatisticsMonthlyEntities
+     * @return number of execution results
      */
     int insertApiUsageMonthlyInfo(@Param("apiStatisticsMonthlyEntities") List<ApiStatisticsMonthlyEntity> apiStatisticsMonthlyEntities);
 }

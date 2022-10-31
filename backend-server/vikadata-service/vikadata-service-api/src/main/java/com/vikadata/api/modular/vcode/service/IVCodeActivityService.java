@@ -11,72 +11,38 @@ import com.vikadata.api.model.vo.vcode.VCodeActivityVo;
 
 /**
  * <p>
- * V 码活动 服务接口
+ * VCod eActivity Service
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 public interface IVCodeActivityService {
 
     /**
-     * 获取活动基本信息
-     *
-     * @param keyword   搜索关键词（非必须）
-     * @return VCodeActivityVos
-     * @author Chambers
-     * @date 2022/6/24
+     * Get basic event information
      */
     List<VCodeActivityVo> getVCodeActivityVo(String keyword);
 
     /**
-     * 获取活动分页视图信息
-     *
-     * @param page      分页请求对象
-     * @param keyword   搜索关键词（非必须）
-     * @return VCodeActivityPageVo
-     * @author Chambers
-     * @date 2022/6/24
+     * Get active pagination view information
      */
     IPage<VCodeActivityPageVo> getVCodeActivityPageVo(Page<VCodeActivityPageVo> page, String keyword);
 
     /**
-     * 检查活动是否存在
-     *
-     * @param activityId 活动ID
-     * @author Chambers
-     * @date 2020/8/20
+     * Check if activity exists
      */
     void checkActivityIfExist(Long activityId);
 
     /**
-     * 创建活动
-     *
-     * @param ro 请求参数
-     * @return id
-     * @author Chambers
-     * @date 2020/8/14
+     * Create Activity
      */
     Long create(VCodeActivityRo ro);
 
     /**
-     * 编辑活动信息
-     *
-     * @param userId     用户ID
-     * @param activityId 活动ID
-     * @param ro         请求参数
-     * @author Chambers
-     * @date 2020/8/14
+     * Edit Activity
      */
     void edit(Long userId, Long activityId, VCodeActivityRo ro);
 
     /**
-     * 删除活动
-     *
-     * @param userId     用户ID
-     * @param activityId 活动ID
-     * @author Chambers
-     * @date 2022/6/24
+     * Delete Activity
      */
     void delete(Long userId, Long activityId);
 

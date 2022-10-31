@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Billing Event Api
- * @author Shawn Deng
  */
 @RestController
 @Api(tags = "Billing Event Api")

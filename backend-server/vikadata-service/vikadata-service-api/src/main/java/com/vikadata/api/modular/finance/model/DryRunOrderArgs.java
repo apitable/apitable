@@ -6,33 +6,26 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p> 
- * 试运行订单参数
- * </p> 
- * @author Shawn Deng 
- * @date 2022/2/15 20:46
- */
 @Data
-@ApiModel("试运行订单参数")
+@ApiModel("Trial order parameters")
 public class DryRunOrderArgs {
 
-    @ApiModelProperty(value = "运行类型", example = "SUBSCRIPTION_ACTION", hidden = true)
+    @ApiModelProperty(value = "run type", example = "SUBSCRIPTION_ACTION", hidden = true)
     private String dryRunType = "SUBSCRIPTION_ACTION";
 
-    @ApiModelProperty(value = "运行类型动作", example = "UPGRADE")
+    @ApiModelProperty(value = "run type action", example = "UPGRADE")
     private String action;
 
-    @NotBlank(message = "空间ID不允许为空")
-    @ApiModelProperty(value = "空间标识", example = "spc2123s")
+    @NotBlank(message = "Space id is not allowed to be empty")
+    @ApiModelProperty(value = "space id", example = "spc2123s")
     private String spaceId;
 
-    @ApiModelProperty(value = "产品类型", example = "SILVER")
+    @ApiModelProperty(value = "production type", example = "SILVER")
     private String product;
 
-    @ApiModelProperty(value = "席位数", example = "10")
+    @ApiModelProperty(value = "seat", example = "10")
     private Integer seat;
 
-    @ApiModelProperty(value = "月份", example = "6")
+    @ApiModelProperty(value = "month", example = "6")
     private Integer month;
 }

@@ -7,8 +7,9 @@ import lombok.Data;
 import com.vikadata.system.config.i18n.I18nStrings;
 
 /**
- * i18n configuration
- * @author Shawn Deng
+ * <p>
+ * I18n Configuration
+ * </p>
  */
 @Data
 public class I18nConfig {

@@ -21,11 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 空间表 服务实现类
+ * Space Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2019/11/21
  */
 @Service
 public class SpaceServiceImpl implements ISpaceService {
@@ -42,16 +39,16 @@ public class SpaceServiceImpl implements ISpaceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delSpace(String spaceId) {
-        XxlJobHelper.log("删除空间,当前时间：{}", LocalDateTime.now(ZoneId.of("+8")));
+        XxlJobHelper.log("Deleting Space. Now：{}", LocalDateTime.now(ZoneId.of("+8")));
         List<String> spaceIds;
         if (StrUtil.isNotBlank(spaceId)) {
-            // 判断空间是否处于预删除状态
+            // Determine whether the space is in the pre-delete state
             int count = SqlTool.retCount(spaceMapper.countBySpaceId(spaceId, true));
             if (count > 0) {
                 spaceIds = CollUtil.newArrayList(spaceId);
             }
             else {
-                XxlJobHelper.log("传入参数：{} 的空间不是预删除状态，不能直接删除", spaceId);
+                XxlJobHelper.log("The space「{}」 is not in a pre-deleted state and cannot be deleted directly", spaceId);
                 return;
             }
         }
@@ -61,14 +58,13 @@ public class SpaceServiceImpl implements ISpaceService {
         }
         if (CollUtil.isNotEmpty(spaceIds)) {
             spaceMapper.updateIsDeletedBySpaceIdIn(spaceIds);
-            // 删除活跃空间缓存
+            // Delete user active space cache
             List<Long> userIds = memberMapper.selectUserIdBySpaceIds(spaceIds);
             if (CollUtil.isNotEmpty(userIds)) {
                 userIds.forEach(id -> redisService.delActiveSpace(id));
             }
-            // 删除成员
             memberMapper.updateIsDeletedBySpaceIds(spaceIds);
-            XxlJobHelper.log(spaceIds + "删除完成");
+            XxlJobHelper.log(spaceIds + "has been deleted.");
         }
     }
 }

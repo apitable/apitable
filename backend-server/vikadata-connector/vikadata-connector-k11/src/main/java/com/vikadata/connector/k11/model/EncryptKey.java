@@ -3,11 +3,8 @@ package com.vikadata.connector.k11.model;
 
 /**
  * <p>
- * 数据加密密钥
+ * Data Encrypt Key
  * </p>
- *
- * @author Chambers
- * @date 2021/6/18
  */
 public class EncryptKey {
 

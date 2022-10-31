@@ -9,40 +9,40 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.OrderEntity;
 
 /**
- * 订阅计费系统-订单表 Mapper
- * @author Shawn Deng
- * @date 2022-05-13 16:29:26
+ * Subscription Billing System - Order Mapper
  */
 public interface OrderMapper extends BaseMapper<OrderEntity> {
 
     /**
-     * 根据订单号查询
-     * @param orderId 订单号
+     * Query by order id
+     *
+     * @param orderId order id
      * @return FinanceOrderEntity
      */
     OrderEntity selectByOrderId(@Param("orderId") String orderId);
 
     /**
-     * 查询渠道订单
-     * @param spaceId 空间ID
-     * @param channelOrderId 渠道订单号
-     * @author zoe zheng
-     * @date 2022/6/7 15:36
+     * Query order id by space id and channel order id
+     *
+     * @param spaceId           space id
+     * @param channelOrderId    channel order id
      */
     String selectOrderBySpaceIdChannelOrderId(@Param("spaceId") String spaceId,
             @Param("channelOrderId") String channelOrderId);
 
     /**
-     * 批量根据订单号查询
-     * @param orderIds 订单号列表
+     * Batch query by oder id list
+     *
+     * @param orderIds order id list
      * @return FinanceOrderEntity
      */
     List<OrderEntity> selectByOrderIds(@Param("orderIds") List<String> orderIds);
 
     /**
-     * 分页查询空间的订单
-     * @param spaceId 空间ID
-     * @param orderType 订单类型
+     * Query space order page
+     *
+     * @param spaceId   space id
+     * @param orderType order type
      * @return page list
      */
     IPage<OrderEntity> selectBySpaceIdAndOrderType(IPage<OrderEntity> page, @Param("spaceId") String spaceId, @Param("orderType") String orderType);

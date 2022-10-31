@@ -13,41 +13,39 @@ import lombok.Data;
 
 /**
  * <p> 
- * 订单详情视图
- * </p> 
- * @author Shawn Deng 
- * @date 2022/2/15 19:13
+ * Order Detail View
+ * </p>
  */
 @Data
-@ApiModel("订单详情视图")
+@ApiModel("Order Detail View")
 public class OrderDetailVo {
 
-    @ApiModelProperty(value = "订单号", example = "20220215185035483353")
+    @ApiModelProperty(value = "order no", example = "20220215185035483353")
     private String orderNo;
 
-    @ApiModelProperty(value = "原价(单位: 元)", example = "19998.21")
+    @ApiModelProperty(value = "original price (unit: yuan)", example = "19998.21")
     private BigDecimal priceOrigin;
 
-    @ApiModelProperty(value = "支付金额(单位: 元)", example = "18998.11")
+    @ApiModelProperty(value = "payment amount (unit: yuan)", example = "18998.11")
     private BigDecimal pricePaid;
 
-    @ApiModelProperty(value = "订单状态", dataType = "java.lang.String", example = "Canceled")
+    @ApiModelProperty(value = "pay status", dataType = "java.lang.String", example = "Canceled")
     private String status;
 
-    @ApiModelProperty(value = "支付渠道类型", dataType = "java.lang.String", example = "wx_pub_qr")
+    @ApiModelProperty(value = "pay channel type", dataType = "java.lang.String", example = "wx_pub_qr")
     private String payChannel;
 
-    @ApiModelProperty(value = "创建时间", dataType = "java.lang.String", example = "2022-02-15 10:25:20")
+    @ApiModelProperty(value = "created time", dataType = "java.lang.String", example = "2022-02-15 10:25:20")
     @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createdTime;
 
-    @ApiModelProperty(value = "支付时间", dataType = "java.lang.String", example = "2022-02-15 10:29:20")
+    @ApiModelProperty(value = "paid time", dataType = "java.lang.String", example = "2022-02-15 10:29:20")
     @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime paidTime;
 
-    @ApiModelProperty(value = "完成时间", dataType = "java.lang.String", example = "2022-02-15 10:29:20")
+    @ApiModelProperty(value = "finish time", dataType = "java.lang.String", example = "2022-02-15 10:29:20")
     @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime finishTime;

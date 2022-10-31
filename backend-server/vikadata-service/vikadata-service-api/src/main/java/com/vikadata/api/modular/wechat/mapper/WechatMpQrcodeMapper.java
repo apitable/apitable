@@ -14,46 +14,24 @@ import com.vikadata.entity.WechatMpQrcodeEntity;
 
 /**
  * <p>
- * 微信公众号二维码信息表 Mapper 接口
+ * WeChat Mp Qrcode Mapper
  * </p>
- *
- * @author Chambers
- * @date 2020/8/18
  */
 public interface WechatMpQrcodeMapper extends BaseMapper<WechatMpQrcodeEntity> {
 
     /**
-     * 查询基本信息
-     *
-     * @param appId appId
-     * @param scene 场景值
-     * @return BaseInfo
-     * @author Chambers
-     * @date 2020/8/24
+     * Query Info
      */
     List<QrCodeBaseInfo> selectBaseInfo(@Param("appId") String appId, @Param("scene") String scene);
 
     /**
-     * 分页查询详细信息
-     *
-     * @param page  分页请求对象
-     * @param appId appId
-     * @return QrCodePageVo
-     * @author Chambers
-     * @date 2020/8/24
+     * Query detail page
      */
     @InterceptorIgnore(illegalSql = "1")
     IPage<QrCodePageVo> selectDetailInfo(Page<QrCodePageVo> page, @Param("appId") String appId);
 
     /**
-     * 逻辑删除
-     *
-     * @param userId 用户ID
-     * @param id     表ID
-     * @param appId  appId
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2020/8/24
+     * Update delete status
      */
     Integer removeByIdAndAppId(@Param("userId") Long userId, @Param("id") Long id, @Param("appId") String appId);
 }

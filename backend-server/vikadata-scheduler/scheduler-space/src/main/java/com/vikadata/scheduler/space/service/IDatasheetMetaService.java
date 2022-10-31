@@ -5,37 +5,22 @@ import com.vikadata.scheduler.space.handler.FixDatasheetDataHandler;
 
 /**
  * <p>
- * 工作台-数表元数据表 服务类
+ * Datasheet Meta Service
  * </p>
- *
- * @author Chambers
- * @date 2020/5/7
  */
 public interface IDatasheetMetaService {
 
     /**
-     * 更改meta
+     * One-way Linked Data Processing
      *
-     * @param nodeId 节点ID
-     */
-    void change(String nodeId);
-
-    /**
-     * 单向关联数据处理
-     *
-     * @param jobParam  定时任务参数
-     * @return java.lang.String
-     * @author Pengap
-     * @date 2022/1/19 18:59:53
+     * @param jobParam  job param
      */
     void oneWayLinkDataHandler(ClearOneWayLinkJobHandler.JobParam jobParam);
 
     /**
-     * 修复「模版」视图排序字段
+     * Fix view sort field
      *
-     * @param jobParam  定时任务参数
-     * @author Pengap
-     * @date 2022/4/14 15:14:39
+     * @param jobParam  job param
      */
     void fixTemplateViewSortInfo(FixDatasheetDataHandler.JobParam jobParam);
 

@@ -12,9 +12,6 @@ import com.vikadata.api.model.vo.template.TemplateSearchResult;
  * <p>
  * Template Search DTO
  * </p>
- *
- * @author Chambers
- * @date 2022/9/28
  */
 @Data
 public class TemplateSearchDTO {

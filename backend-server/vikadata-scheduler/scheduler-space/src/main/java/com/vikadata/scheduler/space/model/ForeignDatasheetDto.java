@@ -4,11 +4,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 神器关联Dto
+ * Foreign Datasheet Dto
  * </p>
- *
- * @author Pengap
- * @date 2022/1/21 17:40:53
  */
 @Data
 public class ForeignDatasheetDto {

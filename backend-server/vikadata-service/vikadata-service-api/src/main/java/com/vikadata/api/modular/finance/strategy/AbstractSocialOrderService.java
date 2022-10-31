@@ -33,10 +33,8 @@ import static com.vikadata.api.enums.finance.BundleState.ACTIVATED;
 
 /**
  * <p>
- * 第三方订单抽象类
+ * Social Order Abstract Class
  * </p>
- * @author zoe zheng
- * @date 2022/5/26 17:12
  */
 public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderService<T, R> {
     @Resource
@@ -82,19 +80,19 @@ public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderSe
 
     @Override
     public void createOrderItem(String orderId, String subscriptionId, SocialOrderContext order) {
-        // 2. 创建订单明细
+        // 2. Create order details
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderItemEntity.setSpaceId(order.getSpaceId());
         orderItemEntity.setOrderId(orderId);
         orderItemEntity.setAmount(order.getAmount().intValue());
         orderItemEntity.setProductName(order.getProduct().getId());
         orderItemEntity.setProductCategory(order.getProduct().getCategory());
-        // 2.1 基础版本没有价格方案，直接读取默认的方案
+        // 2.1 The basic version has no price plan, and directly reads the default plan
         if (null == order.getPrice()) {
             Plan plan = BillingConfigManager.getFreePlan(order.getProductChannel());
             orderItemEntity.setPlanId(plan.getId());
             orderItemEntity.setSeat(plan.getSeats());
-            // 不限制使用时间，永久免费
+            // Unlimited usage time, free forever
             orderItemEntity.setMonths(-1);
         }
         else {
@@ -122,17 +120,17 @@ public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderSe
 
     @Override
     public String createBundle(SocialOrderContext order) {
-        // 基础版本为默认版本，不写入订阅计划中
+        // The basic version is the default version and is not written into the subscription plan
         if (null == order.getPrice()) {
             return null;
         }
         String bundleId = UUID.randomUUID().toString();
-        // 权益开始时间 定义了直接使用 没有定义使用支付时间
+        // Equity start time Direct usage defined No usage payment time defined
         LocalDateTime startDate = ObjectUtil.defaultIfNull(order.getServiceStartTime(), order.getPaidTime());
-        // 权益到期时间 定义了直接使用 没有定义使用价格方案规定的时间
+        // Equity expiry time Defined for direct use No time defined by use price plan
         LocalDateTime endDate = ObjectUtil.defaultIfNull(order.getServiceStopTime(),
                 startDate.plusMonths(order.getPrice().getMonth()));
-        // 创建空间站订阅集合包
+        // Create space subscription bundle
         BundleEntity bundleEntity = new BundleEntity();
         bundleEntity.setBundleId(bundleId);
         bundleEntity.setSpaceId(order.getSpaceId());
@@ -147,13 +145,13 @@ public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderSe
 
     @Override
     public String createSubscription(String bundleId, SocialOrderContext order) {
-        // 基础版本为默认版本，不写入订阅计划中
+        // The basic version is the default version and is not written into the subscription plan
         if (null == order.getPrice() || StrUtil.isBlank(bundleId)) {
             return null;
         }
-        // 权益开始时间 定义了直接使用 没有定义使用支付时间
+        // Equity start time Direct usage defined No usage payment time defined
         LocalDateTime startDate = ObjectUtil.defaultIfNull(order.getServiceStartTime(), order.getPaidTime());
-        // 权益到期时间 定义了直接使用 没有定义使用价格方案规定的时间
+        // Equity expiry time Defined for direct use No time defined by use price plan
         LocalDateTime endDate = ObjectUtil.defaultIfNull(order.getServiceStopTime(),
                 startDate.plusMonths(order.getPrice().getMonth()));
         String subscriptionId = UUID.randomUUID().toString();
@@ -177,37 +175,39 @@ public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderSe
 
     @Override
     public String renewSubscription(SocialOrderContext order) {
-        // 激活的集合不存在或者续费了免费版本 不需要修改 (没有激活的订阅需要新建)
+        // The activated collection does not exist or the free version has been renewed.
+        // No modification is required (subscriptions without activation need to be created)
         if (null == order.getActivatedBundle() || null == order.getPrice()) {
             return null;
         }
-        // 修改集合失效时间
+        // Modify collection expiration time
         updateBundleEndDate(order);
-        // 续费创建新的订阅
+        // Renew to create a new subscription
         return createSubscription(order.getActivatedBundle().getBundleId(), order);
     }
 
     @Override
     public String upgradeSubscription(SocialOrderContext order) {
-        // 激活的集合不存在或者续费了免费版本 不需要修改 (没有激活的订阅需要新建)
+        // The activated collection does not exist or the free version has been renewed.
+        // No modification is required (subscriptions without activation need to be created)
         if (null == order.getActivatedBundle() || null == order.getPrice()) {
             return null;
         }
-        // 修改集合失效时间
+        // Modify collection expiration time
         updateBundleEndDate(order);
-        // 权益开始时间 定义了直接使用 没有定义使用上一条的时间
+        // Equity start time Defined for direct use Does not define the time to use the previous item
         LocalDateTime startDate = ObjectUtil.defaultIfNull(order.getServiceStartTime(), order.getActivatedBundle().getBundleStartDate());
-        // 权益到期时间 定义了直接使用 没有定义使用价格方案规定的时间
+        // Equity expiry time Defined for direct use No time defined by use price plan
         LocalDateTime endDate = ObjectUtil.defaultIfNull(order.getServiceStopTime(),
                 startDate.plusMonths(order.getPrice().getMonth()));
-        // 升级 立即生效(替换上一个订阅的产品) 生效开始时间不变
+        // The upgrade takes effect immediately (replaces the last subscribed product) The effective start time remains the same
         SubscriptionEntity updateSubscription = SubscriptionEntity.builder()
                 .productCategory(order.getProduct().getCategory())
                 .startDate(startDate)
                 .expireDate(endDate)
                 .planId(order.getPrice().getPlanId())
                 .productName(order.getPrice().getProduct())
-                .phase(order.getPhase().getName()) // 试用期内购买也是立即生效
+                .phase(order.getPhase().getName()) // Purchases during the trial period are also effective immediately
                 .updatedBy(-1L)
                 .build();
         Subscription baseSubscription = order.getActivatedBundle().getBaseSubscription();
@@ -217,13 +217,13 @@ public abstract class AbstractSocialOrderService<T, R> implements ISocialOrderSe
 
     @Override
     public void updateBundleEndDate(SocialOrderContext order) {
-        // 权益开始时间 定义了直接使用 没有定义使用支付时间
+        // Equity start time Direct usage defined No usage payment time defined
         LocalDateTime startDate = ObjectUtil.defaultIfNull(order.getServiceStartTime(),
                 order.getActivatedBundle().getBundleStartDate());
-        // 权益到期时间 定义了直接使用 没有定义使用价格方案规定的时间
+        // Equity expiry time Defined for direct use No time defined by use price plan
         LocalDateTime endDate = ObjectUtil.defaultIfNull(order.getServiceStopTime(),
                 startDate.plusMonths(order.getPrice().getMonth()));
-        // 修改bundle的截止时间
+        // Modify the deadline for bundles
         BundleEntity updateBundle = BundleEntity.builder()
                 .bundleId(order.getActivatedBundle().getBundleId())
                 .endDate(endDate)

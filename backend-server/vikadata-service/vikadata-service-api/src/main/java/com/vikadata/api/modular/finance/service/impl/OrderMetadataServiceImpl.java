@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p> 
- * 订单元数据服务
- * </p> 
- * @author zoe zheng 
- * @date 2022/5/23 17:42
+ * Order Metadata Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j

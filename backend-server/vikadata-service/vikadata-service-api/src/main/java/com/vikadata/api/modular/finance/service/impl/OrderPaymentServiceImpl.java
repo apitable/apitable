@@ -49,9 +49,9 @@ import static com.vikadata.api.enums.exception.OrderException.ORDER_NOT_EXIST;
 import static com.vikadata.api.enums.finance.BundleState.ACTIVATED;
 
 /**
- * 支付订单服务实现类
- *
- * @author Shawn Deng
+ * <p>
+ * Order Payment Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j
@@ -86,49 +86,49 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
         String payTransactionId = chargeSuccess.getOrderNo();
         LocalDateTime timePaid = ClockUtil.secondToLocalDateTime(chargeSuccess.getTimePaid(), DEFAULT_TIME_ZONE);
         if (log.isDebugEnabled()) {
-            log.debug("支付时间:{}", timePaid);
+            log.debug("Payment time: {}", timePaid);
         }
         OrderPaymentEntity orderPaymentEntity = getByPayTransactionId(payTransactionId);
         if (orderPaymentEntity == null) {
-            log.error("回调，订单[{}]支付渠道交易号[{}]不存在", payTransactionId, chargeId);
+            log.error("Callback. Payment Channel Transaction ID [{}] of order[{}] does not exist.", chargeId, payTransactionId);
             throw new BusinessException(ORDER_NOT_EXIST);
         }
         if (orderPaymentEntity.getPaymentSuccess()) {
-            // 订单已支付完成，不需要再处理
-            log.warn("order [{}] paid success notify repeatedly, ignore this event", chargeId);
+            // The order has been paid and no further processing is required
+            log.warn("order [{}] paid success notify repeatedly, ignore this event.", chargeId);
             return null;
         }
-        // 查询订单
+        // Query order
         OrderEntity orderEntity = iOrderV2Service.getByOrderId(orderPaymentEntity.getOrderId());
         if (orderEntity == null) {
-            log.error("回调，订单号[{}]不存在", orderPaymentEntity.getOrderId());
+            log.error("Callback. order[{}] does not exist.", orderPaymentEntity.getOrderId());
             throw new BusinessException(ORDER_NOT_EXIST);
         }
         OrderStatus orderStatus = OrderStatus.of(orderEntity.getState());
         if (orderStatus == OrderStatus.FINISHED) {
-            // 订单已支付完成，不需要再处理
+            // The order has been paid and no further processing is required
             return null;
         }
-        // 查询订单项目里的基础产品类型项目
+        // Query the basic product type item in the order item
         OrderItemEntity orderItemEntity = iOrderItemService.getBaseProductInOrder(orderPaymentEntity.getOrderId());
         if (orderItemEntity == null) {
-            // 订单异常，没有基础产品类型项目
-            log.error("订单异常[{}],未包含项目", orderEntity.getOrderId());
+            // The order is abnormal, there is no basic product type item
+            log.error("Order[{}] exception! Item not included.", orderEntity.getOrderId());
             throw new BusinessException(ORDER_EXCEPTION);
         }
-        // 订单购买的付费方案
+        // Paid plan for order purchase
         Plan plan = BillingConfigManager.getPlan(ProductEnum.of(orderItemEntity.getProductName()), orderItemEntity.getSeat());
-        // 设置更新数据库的操作者
+        // Set the operator to update the database
         UserHolder.set(orderPaymentEntity.getCreatedBy());
-        // 根据订单类型，计算订阅开始和结束时间
+        // Calculate subscription start and end times based on order type
         OrderType orderType = OrderType.of(orderEntity.getOrderType());
         LocalDateTime entitlementStartDate = ClockManager.me().getLocalDateTimeNow();
         LocalDateTime entitlementExpiredDate;
         String subscriptionId;
         if (orderType == OrderType.BUY) {
-            // 权益到期时间直接从支付时间当天开始算起
+            // The expiry time of the rights is calculated directly from the date of payment.
             entitlementExpiredDate = entitlementStartDate.plusMonths(orderItemEntity.getMonths());
-            // 创建空间站订阅集合包
+            // Create a space station subscription bundle
             BundleEntity bundleEntity = new BundleEntity();
             bundleEntity.setBundleId(UUID.randomUUID().toString());
             bundleEntity.setSpaceId(orderEntity.getSpaceId());
@@ -137,7 +137,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
             bundleEntity.setEndDate(entitlementExpiredDate);
 
             List<SubscriptionEntity> subscriptionEntities = new ArrayList<>();
-            // 创建基础类型订阅
+            // Create base type subscription
             subscriptionId = UUID.randomUUID().toString();
             SubscriptionEntity base = new SubscriptionEntity();
             base.setSpaceId(orderEntity.getSpaceId());
@@ -152,19 +152,19 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
             base.setExpireDate(entitlementExpiredDate);
             subscriptionEntities.add(base);
 
-            // 新购之前也许已经有(免费订阅+附加订阅)
+            // New purchase may already have (free subscription + additional subscription)
             Bundle activatedBundle = iBundleService.getPossibleBundleBySpaceId(orderEntity.getSpaceId());
             if (activatedBundle != null) {
                 activatedBundle.getAddOnSubscription()
                         .stream()
                         .filter(subscription -> {
-                            // 过滤出未过期的附加订阅
+                            // Filter out unexpired add-on subscriptions
                             LocalDate today = ClockManager.me().getLocalDateNow();
                             LocalDate expireDate = subscription.getExpireDate().toLocalDate();
                             return today.compareTo(expireDate) <= 0;
                         })
                         .forEach(addOnSub -> {
-                            // 转移未失效的附加计划订阅到新的订阅
+                            // Transfer a non-expired add-on plan subscription to a new subscription
                             SubscriptionEntity addOn = new SubscriptionEntity();
                             addOn.setSpaceId(orderEntity.getSpaceId());
                             addOn.setBundleId(bundleEntity.getBundleId());
@@ -178,7 +178,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
                             addOn.setExpireDate(addOnSub.getExpireDate());
                             subscriptionEntities.add(addOn);
                         });
-                // 让之前的订阅过期
+                // expire previous subscriptions
                 BundleEntity updateBundle = new BundleEntity();
                 updateBundle.setState(BundleState.EXPIRED.name());
                 iBundleService.updateByBundleId(activatedBundle.getBundleId(), updateBundle);
@@ -187,17 +187,17 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
             iSubscriptionService.createBatch(subscriptionEntities);
         }
         else {
-            // 非新购都会存在订阅状态开始时间，其他类型订单通通变更空间订阅状态
+            // Non-new purchases will have the subscription status start time, and other types of orders will change the space subscription status
             Bundle activatedBundle = iBundleService.getActivatedBundleBySpaceId(orderEntity.getSpaceId());
             if (activatedBundle == null) {
                 throw new RuntimeException("handle pay success callback error");
             }
             if (orderType == OrderType.RENEW) {
-                // 续订需要延长权益结束日期
+                // Renewal requires extension of benefit end date
                 entitlementStartDate = activatedBundle.getBaseSubscription().getExpireDate();
             }
             entitlementExpiredDate = entitlementStartDate.plusMonths(orderItemEntity.getMonths());
-            // 变更订阅状态
+            // Change subscription status
             BundleEntity updateBundle = new BundleEntity();
             if (orderType == OrderType.UPGRADE) {
                 updateBundle.setStartDate(entitlementStartDate);
@@ -219,7 +219,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
             iSubscriptionService.updateBySubscriptionId(baseSubscription.getSubscriptionId(), updateSubscription);
         }
 
-        // 更新订单状态
+        // Update order status
         OrderEntity updateOrder = new OrderEntity();
         updateOrder.setId(orderEntity.getId());
         updateOrder.setState(OrderStatus.FINISHED.getName());
@@ -228,7 +228,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
         updateOrder.setVersion(orderEntity.getVersion());
         iOrderV2Service.updateById(updateOrder);
 
-        // 更新订单子项目
+        // Update order sub-items
         OrderItemEntity updateOrderItem = new OrderItemEntity();
         updateOrderItem.setId(orderItemEntity.getId());
         updateOrderItem.setSubscriptionId(subscriptionId);
@@ -236,7 +236,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
         updateOrderItem.setEndDate(entitlementExpiredDate);
         iOrderItemService.updateById(updateOrderItem);
 
-        // 更新支付订单状态
+        // Update payment order status
         OrderPaymentEntity updateOrderPayment = new OrderPaymentEntity();
         updateOrderPayment.setId(orderPaymentEntity.getId());
         updateOrderPayment.setPaidTime(timePaid);
@@ -245,7 +245,7 @@ public class OrderPaymentServiceImpl extends ServiceImpl<OrderPaymentMapper, Ord
         updateOrderPayment.setVersion(orderPaymentEntity.getVersion());
         updateById(updateOrderPayment);
 
-        // 发送通知
+        // Send notification
         TaskManager.me().execute(() -> NotificationManager.me().sendSubscribeNotify(orderEntity.getSpaceId(), orderEntity.getCreatedBy(),
                 LocalDateTimeUtil.toEpochMilli(entitlementExpiredDate), updateOrderPayment.getSubject(),
                 orderEntity.getAmount(), OrderType.of(orderEntity.getOrderType())));

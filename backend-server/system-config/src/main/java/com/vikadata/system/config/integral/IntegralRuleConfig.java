@@ -6,11 +6,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 积分规则配置
+ * Integral Rule Config
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/16 12:20
  */
 @Data
 public class IntegralRuleConfig {

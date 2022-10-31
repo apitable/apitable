@@ -26,9 +26,6 @@ import org.springframework.stereotype.Service;
  * <p>
  * Template Center - Template Album Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2022/9/27
  */
 @Slf4j
 @Service

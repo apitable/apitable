@@ -5,9 +5,9 @@ import lombok.Data;
 import com.vikadata.system.config.common.Appendix;
 
 /**
- * 应用商店
- * @author Shawn Deng
- * @date 2022-01-12 16:19:19
+ * <p>
+ * App Store
+ * </p>
  */
 @Data
 public class AppStore {

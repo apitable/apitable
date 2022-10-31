@@ -14,10 +14,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 清理数表单向关联数据
+ * Clear One Way Link Job Handler
  * </p>
- * @author Pengap
- * @date 2022/1/19 18:52:03
  */
 @Component
 public class ClearOneWayLinkJobHandler {
@@ -34,31 +32,34 @@ public class ClearOneWayLinkJobHandler {
         iDatasheetMetaService.oneWayLinkDataHandler(jobParam);
     }
 
+    /**
+     * Online full space station scan and repair is not supported for now,
+     * * because the pressure on the database is a bit large,
+     * * and it can only operate on designated space stations during online operation*
+     */
     @Getter
     @Setter
     public static class JobParam {
-        // 暂不支持线上全空间站扫描修复，因为对数据库压力有点大，线上运行时只能对指定空间站操作
 
         public enum RunFunc {
-            // 列出单向关联异常数据，不做任何处理操作（默认）
+            // List one-way correlation exception data without any processing operation (default)
             LIST,
-            // 清理单向关联数据，对数据清理
+            // Clean up one-way associated data, clean up the data
             HANDLE,
-            // 读取远程数据流，对数据清理
+            // Read the remote data stream and clean the data
             READ_REMOTE_STREAM,
         }
 
-        // 运行模式
+        // run model
         private RunFunc runFunc = RunFunc.LIST;
 
-        // 空间站Id
         private String spaceId;
 
         /*
-         * 远程流Url（七牛云相对地址）
-         * 举个栗子：
-         *  完整URL：https://s1.vika.ltd/job/analyze/association/result/main-2022-02-24%2014%3A28%3A08.json
-         *  需用携带域名：https://s1.vika.ltd/，只用传入：job/analyze/association/result/main-2022-02-24%2014%3A28%3A08.json
+         * remote stream Url(resource relative address)
+         * example：
+         * full URL：https://xxx.com/job/analyze/association/result/main-2022-02-24%2014%3A28%3A08.json
+         * relative address: job/analyze/association/result/main-2022-02-24%2014%3A28%3A08.json
          */
         private String readRemoteStreamUrl;
 
@@ -68,7 +69,10 @@ public class ClearOneWayLinkJobHandler {
 
         private long pageSize = 10000L;
 
-        // 执行间隔，默认500ms
+        /**
+         * execution interval
+         * default:500ms
+         */
         private long executionInterval = 500L;
     }
 

@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 在线模版信息
+ * Online Template Information
  * </p>
- * @author zoe zheng
- * @date 2021/8/4 11:05 上午
  */
 @Data
 @NoArgsConstructor

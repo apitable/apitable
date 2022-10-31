@@ -38,14 +38,11 @@ import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 /**
  * <p>
- * V码 相关接口
+ * VCode System - VCode API
  * </p>
- *
- * @author Chambers
- * @date 2020/8/12
  */
 @RestController
-@Api(tags = "V码模块_V码相关服务接口")
+@Api(tags = "VCode System - VCode API")
 @ApiResource(path = "/vcode")
 public class VCodeController {
 
@@ -56,26 +53,24 @@ public class VCodeController {
     private IGmService iGmService;
 
     @GetResource(path = "/page", requiredPermission = false)
-    @ApiOperation(value = "分页查询列表", notes = PAGE_DESC)
+    @ApiOperation(value = "Query VCode Page", notes = PAGE_DESC)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "类型(0:官方邀请码;2:兑换码)", dataTypeClass = Integer.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "activityId", value = "活动ID", dataTypeClass = String.class, paramType = "query", example = "1296402001573097473"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = "type", value = "Type (0: official invitation code; 2: redemption code)", dataTypeClass = Integer.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "activityId", value = "Activity ID", dataTypeClass = String.class, paramType = "query", example = "1296402001573097473"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "Page Params", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<VCodePageVo>> page(@RequestParam(name = "type", required = false) Integer type,
             @RequestParam(name = "activityId", required = false) Long activityId,
             @PageObjectParam Page page) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_QUERY);
         return ResponseData.success(PageHelper.build(iVCodeService.getVCodePageVo(page, type, activityId)));
     }
 
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "创建V码")
+    @ApiOperation(value = "Create VCode")
     public ResponseData<List<String>> create(@RequestBody @Valid VCodeCreateRo ro) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_MANAGE);
         List<String> codes = iVCodeService.create(userId, ro);
@@ -83,10 +78,9 @@ public class VCodeController {
     }
 
     @PostResource(path = "/edit/{code}", requiredPermission = false)
-    @ApiOperation(value = "编辑V码配置")
-    @ApiImplicitParam(name = "code", value = "V码", required = true, dataTypeClass = String.class, paramType = "path", example = "vc123")
+    @ApiOperation(value = "Edit VCode Setting")
+    @ApiImplicitParam(name = "code", value = "VCode", required = true, dataTypeClass = String.class, paramType = "path", example = "vc123")
     public ResponseData<Void> edit(@PathVariable("code") String code, @RequestBody @Valid VCodeUpdateRo ro) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_MANAGE);
         iVCodeService.edit(userId, code, ro);
@@ -94,25 +88,24 @@ public class VCodeController {
     }
 
     @PostResource(path = "/delete/{code}", method = { RequestMethod.DELETE, RequestMethod.POST }, requiredPermission = false)
-    @ApiOperation(value = "删除V码")
-    @ApiImplicitParam(name = "code", value = "V码", required = true, dataTypeClass = String.class, paramType = "path", example = "vc123")
+    @ApiOperation(value = "Delete VCode")
+    @ApiImplicitParam(name = "code", value = "VCode", required = true, dataTypeClass = String.class, paramType = "path", example = "vc123")
     public ResponseData<Void> delete(@PathVariable("code") String code) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_MANAGE);
-        // 逻辑删除
+        // Update delete status
         iVCodeService.delete(userId, code);
         return ResponseData.success();
     }
 
     @PostResource(path = "/exchange/{code}", requiredPermission = false)
-    @ApiOperation(value = "兑换V码")
-    @ApiImplicitParam(name = "code", value = "V码", required = true, dataTypeClass = String.class, paramType = "path", example = "vc123")
+    @ApiOperation(value = "Exchange VCode")
+    @ApiImplicitParam(name = "code", value = "VCode", required = true, dataTypeClass = String.class, paramType = "path", example = "vc123")
     public ResponseData<Integer> exchange(@PathVariable("code") String code) {
         Long userId = SessionContext.getUserId();
-        // 校验兑换码
+        // Check redemption code
         iVCodeService.checkRedemptionCode(userId, code.toLowerCase());
-        // 使用兑换码
+        // Use redemption code
         Integer integer = iVCodeService.useRedemptionCode(userId, code.toLowerCase());
         return ResponseData.success(integer);
     }

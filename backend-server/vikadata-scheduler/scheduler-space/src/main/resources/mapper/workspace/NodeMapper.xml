@@ -14,15 +14,6 @@
         </if>
     </select>
 
-    <update id="updateIsDeletedBySpaceIds">
-        UPDATE vika_node
-        SET is_rubbish = 1
-        WHERE is_rubbish = 0 AND space_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </update>
-
     <select id="findChangedNodeIds" resultType="com.vikadata.scheduler.space.model.NodeDto">
         SELECT DISTINCT vn.node_id, space_id
         FROM vika_node vn
@@ -30,20 +21,4 @@
         WHERE vn.is_rubbish = 0 AND vdc.id > #{changesetId}
     </select>
 
-    <select id="selectRubbishNodeDto" resultType="com.vikadata.scheduler.space.model.NodeDto">
-        SELECT vn.space_id, vn.node_id, vn.updated_at
-        FROM vika_node vn
-        JOIN vika_space_asset vsa ON vn.node_id = vsa.node_id AND vsa.is_deleted = 0
-        <if test="spaceId != null and spaceId != ''">
-            AND vsa.space_id = #{spaceId}
-        </if>
-        WHERE vn.is_rubbish = 1 AND vn.is_deleted = 0 AND vn.updated_at &lt; #{deadline}
-        GROUP BY vn.node_id
-    </select>
-
-    <select id="selectSpaceIdByNodeId" resultType="java.lang.String">
-        SELECT space_id
-        FROM vika_node
-        WHERE node_id = #{nodeId}
-    </select>
 </mapper>

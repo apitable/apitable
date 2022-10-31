@@ -20,12 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 商店相关接口
- * @author Shawn Deng
- * @date 2022-05-13 22:18:32
+ * Store API
  */
 @RestController
-@Api(tags = "商店模块相关接口")
+@Api(tags = "Store API")
 @ApiResource(path = "/shop")
 @Slf4j
 public class ShopController {
@@ -34,7 +32,7 @@ public class ShopController {
     private IShopService iShopService;
 
     @GetResource(path = "/prices", requiredPermission = false)
-    @ApiOperation(value = "获取产品的价目表", notes = "自营产品价目表")
+    @ApiOperation(value = "Get A Price List for A Product", notes = "Self-operated product price list")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "product", value = "product name", required = true, dataTypeClass = String.class, paramType = "query", example = "SILVER"),
     })

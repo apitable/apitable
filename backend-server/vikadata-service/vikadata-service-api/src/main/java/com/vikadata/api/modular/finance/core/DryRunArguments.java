@@ -6,9 +6,7 @@ import com.vikadata.api.modular.finance.model.DryRunOrderArgs;
 
 
 /**
- * Dry Run 参数
- * @author Shawn Deng
- * @date 2022-05-19 23:39:12
+ * Dry Run Argument
  */
 public class DryRunArguments {
 

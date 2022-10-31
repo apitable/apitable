@@ -6,42 +6,41 @@ import com.vikadata.api.modular.finance.model.OfflineOrderInfo;
 import com.vikadata.api.modular.finance.model.SpaceSubscriptionVo;
 
 /**
- * 财务服务
- * @author Shawn Deng
- * @date 2022-06-05 22:35:57
+ * <p>
+ * Financial Service
+ * </p>
  */
 public interface IBillingOfflineService {
 
     /**
-     * 获取空间的订阅
-     * 供商务同事查看
-     * @param spaceId 空间ID
+     * Get a subscription to a space
+     *
+     * @param spaceId space id
      * @return SpaceSubscriptionVo
      */
     SpaceSubscriptionVo getSpaceSubscription(String spaceId);
 
     /**
-     * 创建商务订单
+     * Create a business order
      *
-     * @param data 请求参数
+     * @param data request data
      * @return Message
      */
     OfflineOrderInfo createBusinessOrder(CreateBusinessOrderRo data);
 
     /**
-     * 创建包含附加计划的订阅
-     * @param data 请求参数
+     * Create a subscription with add-on plans
+     *
+     * @param data request data
      */
     void createSubscriptionWithAddOn(CreateEntitlementWithAddOn data);
 
     /**
-     * 创建赠送附件容量附加订阅计划的订阅
+     * Create a subscription that gives away attachment capacity with an add-on subscription plan
      *
-     * @param userId   用户ID
-     * @param userName 用户名称
-     * @param spaceId  空间ID
-     * @author liuzijing
-     * @date 2022/8/19
+     * @param userId   user id
+     * @param userName user id
+     * @param spaceId  space id
      */
     void createGiftCapacityOrder(Long userId, String userName, String spaceId);
 }

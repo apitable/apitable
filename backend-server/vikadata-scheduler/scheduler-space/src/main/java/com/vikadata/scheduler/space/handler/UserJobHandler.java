@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 public class UserJobHandler {
 
     /**
-     * 冷静期默认天数为30天，超过该时长未撤销注销则关闭账号.
+     * The default number of days for the cooling-off period is 30 days,
+     * and the account will be closed if the cancellation is not cancelled after this period.
      */
     private final static Integer DEFAULT_PAUSE_LIMIT_DAYS = 30;
 
@@ -26,28 +27,18 @@ public class UserJobHandler {
     private IUserService userService;
 
     /**
-     * 关闭冷静期账号
+     * Close the cooling-o`ff account
      */
     @XxlJob(value = "closePausedUserJobHandler")
     public void closePausedUserJobHandler() {
         String param = XxlJobHelper.getJobParam();
         XxlJobHelper.log("param:{}", param);
-        int pausdLimitDays = getPauseLimitDays(param);
-        userService.closePausedUser(pausdLimitDays);
-    }
-
-    /**
-     * 清洗异常V币积分
-     */
-    @XxlJob(value = "integralCleanJobHandler")
-    public void integralCleanJobHandler(){
-        String param = XxlJobHelper.getJobParam();
-        XxlJobHelper.log("param:{}", param);
-        userService.integralClean();
+        int pausedLimitDays = this.getPauseLimitDays(param);
+        userService.closePausedUser(pausedLimitDays);
     }
 
     private int getPauseLimitDays(String param) {
-        if(StrUtil.isNotBlank(param)) {
+        if (StrUtil.isNotBlank(param)) {
             JSONObject obj = JSONUtil.parseObj(param);
             return obj.getInt(PAUSE_LIMIT_DAYS_KEY_NAME, DEFAULT_PAUSE_LIMIT_DAYS);
         }

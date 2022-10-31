@@ -12,155 +12,126 @@ import com.vikadata.entity.PlayerNotificationEntity;
 
 /**
  * <p>
- * 通知Notification表 Mapper 接口
+ * Player Notification Mapper
  * </p>
- *
- * @author Shawn Deng
- * @since 2020-05-12
  */
 public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationEntity> {
+
     /**
-     * 获取通知列表
+     * Get notification list
      *
-     * @param notificationPageRo 参数ro
-     * @param toUser             用户Id
-     * @param totalCount         总条数
-     * @return dto
-     * @author zoe zheng
-     * @date 2020/5/20 11:01 上午
+     * @param notificationPageRo request params
+     * @param toUser             user id
+     * @param totalCount         total count
+     * @return NotificationModelDto List
      */
     List<NotificationModelDto> selectPlayerNotificationPage(
             @Param("notificationPageRo") NotificationPageRo notificationPageRo, @Param("toUser") Long toUser,
             @Param("totalCount") Integer totalCount);
 
     /**
-     * notification批量写入
+     * Batch insert
      *
-     * @param notificationEntities 实体列表
-     * @return 执行结果数
-     * @author zoe zheng
-     * @date 2020/5/23 2:51 下午
+     * @param notificationEntities entities
+     * @return number of execution results
      */
     int insertBatch(@Param("notificationEntities") List<PlayerNotificationEntity> notificationEntities);
 
     /**
-     * 根据ID设置消息已读
+     * Update read status
      *
-     * @param ids ID列表
-     * @return 执行结果
-     * @author zoe zheng
-     * @date 2020/5/25 3:57 下午
+     * @param ids id list
+     * @return execute result
      */
     boolean updateReadIsTrueByIds(@Param("ids") String[] ids);
 
     /**
-     * 将用户的消息全部设置为已读
+     * Set all user's messages as read
      *
-     * @param toUser 接收用户
-     * @return 执行结果
-     * @author zoe zheng
-     * @date 2020/5/25 4:22 下午
+     * @param toUser user id
+     * @return execute result
      */
     boolean updateReadIsTrueByUserId(@Param("toUser") Long toUser);
 
     /**
-     * 根据用户ID,查询isRead=1的条数
+     * Query the number of user notifications that have been read
      *
-     * @param toUser 接收用户
-     * @param isRead 是否已读
+     * @param toUser user id
+     * @param isRead read status
      * @return count
-     * @author zoe zheng
-     * @date 2020/5/25 4:37 下午
      */
     Integer selectCountByUserIdAndIsRead(@Param("toUser") Long toUser, @Param("isRead") Integer isRead);
 
     /**
-     * 根据用户ID，查询总条数
+     * Query user notification count
      *
-     * @param toUser 接收用户
+     * @param toUser user id
      * @return count
-     * @author zoe zheng
-     * @date 2020/5/25 4:43 下午
      */
     Integer selectTotalCountByUserId(@Param("toUser") Long toUser);
 
     /**
-     * 根据消息ID删除消息
+     * Delete notication
      *
-     * @param ids ID列表
-     * @return 执行结果
-     * @author zoe zheng
-     * @date 2020/5/25 4:57 下午
+     * @param ids id list
+     * @return execute result
      */
     boolean deleteNotificationByIds(@Param("ids") String[] ids);
 
     /**
-     * 根据ID查找body
+     * Query notification body
      *
      * @param id ID
      * @return body
-     * @author zoe zheng
-     * @date 2020/5/27 12:01 下午
      */
     String selectNotifyBodyById(@Param("id") Long id);
 
     /**
-     * 更新消息体
+     * Update notification body
      *
      * @param id   ID
-     * @param body 消息体
-     * @return 执行结果
-     * @author zoe zheng
-     * @date 2020/5/27 1:31 下午
+     * @param body notification body
+     * @return execute result
      */
     boolean updateNotifyBodyById(@Param("id") Long id, @Param("body") String body);
 
     /**
-     * 根据request查询总数
+     * Query total count by condition
      *
-     * @param notificationPageRo 用户通知列表参数
-     * @param toUser             接收用户
+     * @param notificationPageRo request params
+     * @param toUser             user id
      * @return count
-     * @author zoe zheng
-     * @date 2020/6/1 7:18 下午
      */
     Integer selectTotalCountByRoAndToUser(@Param("notificationPageRo") NotificationPageRo notificationPageRo,
             @Param("toUser") Long toUser);
 
     /**
-     * 修改消息体，替换指定键对应的值
+     * Modify the message body and replace the value corresponding to the specified key
      *
      * @param id  ID
      * @param key key
      * @param val value
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2020/11/7
+     * @return number of execution results
      */
     Integer updateNotifyBodyByIdAndKey(@Param("id") Long id, @Param("key") String key, @Param("val") Integer val);
 
     /**
-     * 获取消息dto列表
+     * Get notification list
      *
-     * @param type 消息类型
-     * @param isRead 是否已读
-     * @param toUser 用户ID
+     * @param isRead read status
+     * @param toUser user id
      * @return List<NotificationModelDto>
-     * @author zoe zheng
-     * @date 2021/3/1 10:30 上午
      */
     List<NotificationModelDto> selectDtoByTypeAndIsRead(@Param("toUser") Long toUser, @Param("isRead") Integer isRead);
 
     /**
-     *  根据用户ID和templateId批量删除
+     * Batch delete by condition
      *
-     * @param userIds 用户ID
-     * @param notifyType 通知类型
-     * @param templateId 模版ID
-     * @param revokeRo 撤销额外参数
+     * @param userIds       user id
+     * @param notifyType    notification type
+     * @param templateId    tempalte id
+     * @param revokeRo      extra params
      * @return int
-     * @author zoe zheng
-     * @date 2021/3/2 5:50 下午
      */
     int updateBatchByUserIdsAndTemplateId(@Param("userIds") List<Long> userIds,
             @Param("notifyType") String notifyType,

@@ -24,10 +24,8 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.util.CollectionUtils;
 
 /**
- * 数据库沙箱工具类
- * 负责清理数据库，保持单元测试类的隔离性
- * @author Shawn Deng
- * @date 2022-03-25 12:47:45
+ * Database sandbox tool class
+ * Responsible for cleaning up the database and keeping unit test classes isolated
  */
 public class UnitTestUtil {
 
@@ -47,10 +45,11 @@ public class UnitTestUtil {
     public static void clearDB(JdbcTemplate jdbcTemplate, List<String> excludeTables) {
         String catalog = getDbName(jdbcTemplate);
         logger.info("prepare db for unit test, schema: {}", catalog);
-        // 这里是在ci环境下，清理ci中MySQL中的数据库所有表格数据，在本地开发并不会执行，因为指定了vika_test
+        // Here is in the ci environment, clean up all table data in the MySQL database in ci,
+        // and it will not be executed in local development because test is specified
         List<String> tableNames = getTableNames(jdbcTemplate, catalog);
         if (catalog.equals("vikadata")) {
-            // 为了不让开发者连上使用环境或者测试环境，不允许操作相关vikadata字眼的数据库名称
+            // Prevent developers from connecting to the use environment or test environment
             throw new RuntimeException("may be you should be using db name which called 「vikadata」");
         }
         tableNames.removeIf(tableName -> tableName.equals(ASSET_TABLE_NAME));
@@ -92,9 +91,9 @@ public class UnitTestUtil {
     }
 
     private static void filterTableNames(List<String> tableNames, List<String> excludeTables) {
-        // 排除清理某些初始化数据的表格数据
-        logger.info("排除清理的表格:{}", excludeTables);
+        // Exclude tabular data that cleans some initialization data
+        logger.info("Exclude cleaned form: {}", excludeTables);
         tableNames.removeIf(excludeTables::contains);
-        logger.info("排除后清理的表格：{}", tableNames);
+        logger.info("Tables cleaned up after exclusion: {}", tableNames);
     }
 }

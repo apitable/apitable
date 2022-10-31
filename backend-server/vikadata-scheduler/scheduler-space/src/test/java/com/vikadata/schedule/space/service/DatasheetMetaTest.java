@@ -28,14 +28,6 @@ import com.vikadata.scheduler.space.handler.FixDatasheetDataHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Pengap
- * @date 2022/2/7 11:35:26
- */
 @Disabled("no assertion")
 @Slf4j
 @SpringBootTest(classes = SchedulerSpaceApplication.class)
@@ -52,11 +44,11 @@ public class DatasheetMetaTest {
 
     @Test
     public void testClearOneWayLinkJobHandler() {
-        String fileName = "结果.txt";
+        String fileName = "result.txt";
         String aadPath = StrUtil.format("{}/temp/analyzeAssociationData/{}", System.getProperty("user.dir"), fileName);
 
         System.err.println(
-                StrUtil.format("重置文件:{}；OutFile:{}", FileUtil.del(aadPath), FileUtil.touch(aadPath))
+                StrUtil.format("Reset file: {}. OutFile: {}", FileUtil.del(aadPath), FileUtil.touch(aadPath))
         );
 
         try {
@@ -85,7 +77,7 @@ public class DatasheetMetaTest {
         // String dstId = "dst0W5T1ptnXhqaKxW";
         // Map<String, Object> request = CollaCommandFactory.fixOneWayLinkByChangeDstId(dstId, "fldCaqUMp3uAl", "dstsYKEAdG7bipEiLb");
         String dstId = "dstsYKEAdG7bipEiLb";
-        Map<String, Object> request = CollaCommandFactory.fixOneWayLinkByMultilineText(dstId, "fld2QCEyYpEIJ", "2A表 3");
+        Map<String, Object> request = CollaCommandFactory.fixOneWayLinkByMultilineText(dstId, "fld2QCEyYpEIJ", "2A Table 3");
         vikaOperations.executeCommand(dstId, request);
     }
 
@@ -95,7 +87,7 @@ public class DatasheetMetaTest {
         @Test
         @SneakyThrows
         public void testMetaJsonSerialization() {
-            String jsonStr = "[{\"options\": [{\"id\": \"optYQgL1LYfye\", \"name\": \"财务\", \"color\": 0}, {\"id\": \"opt3JxdpGzwSU\", \"name\": \"行政\", \"color\": 1}]}, {\"brotherFieldId\": \"fldDrutmejZp2\", \"foreignDatasheetId\": \"dstV2D0lHmER062Mxm\"}, {\"options\": [{\"id\": \"optWpbdL1mOv8\", \"name\": \"A\", \"color\": 0}, {\"id\": \"optcMRZ53TggL\", \"name\": \"B\", \"color\": 1}]}]";
+            String jsonStr = "[{\"options\": [{\"id\": \"optYQgL1LYfye\", \"name\": \"finance\", \"color\": 0}, {\"id\": \"opt3JxdpGzwSU\", \"name\": \"administrative\", \"color\": 1}]}, {\"brotherFieldId\": \"fldDrutmejZp2\", \"foreignDatasheetId\": \"dstV2D0lHmER062Mxm\"}, {\"options\": [{\"id\": \"optWpbdL1mOv8\", \"name\": \"A\", \"color\": 0}, {\"id\": \"optcMRZ53TggL\", \"name\": \"B\", \"color\": 1}]}]";
 
             // ObjectMapper objectMapper = new ObjectMapper();
             // objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

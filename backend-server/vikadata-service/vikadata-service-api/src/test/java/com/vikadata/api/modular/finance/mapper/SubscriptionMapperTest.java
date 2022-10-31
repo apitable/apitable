@@ -14,10 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *  订阅计费系统-订阅表 测试
+ * Subscription Billing System - Subscription Mapper Test
  * </p>
- *
- * @author liuzijing
  */
 public class SubscriptionMapperTest extends AbstractIntegrationTest {
 

@@ -6,11 +6,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 订阅方案表
+ * Billing Plan
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/8/31 15:13
  */
 @Data
 public class Plan {

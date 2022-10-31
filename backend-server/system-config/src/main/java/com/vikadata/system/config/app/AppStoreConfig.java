@@ -3,11 +3,9 @@ package com.vikadata.system.config.app;
 import java.util.HashMap;
 
 /**
- * <p> 
- * 应用商店配置
- * </p> 
- * @author Shawn Deng 
- * @date 2022/1/12 16:20
+ * <p>
+ * App Store Config
+ * </p>
  */
 public class AppStoreConfig extends HashMap<String, AppStore> {
 

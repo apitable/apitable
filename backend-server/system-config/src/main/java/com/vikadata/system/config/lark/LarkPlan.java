@@ -4,10 +4,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 飞书-付费方案
+ * Lark Billing Plan
  * </p>
- * @author zoe zheng
- * @date 2022/2/25 14:10
  */
 @Data
 public class LarkPlan {

@@ -106,11 +106,8 @@ import static com.vikadata.api.constants.NotificationConstants.VERSION;
 
 /**
  * <p>
- * 通知Notification表 服务实现类
+ * Player Notification Service Implement Class
  * </p>
- *
- * @author Zoe Zheng
- * @since 2020-05-12
  */
 @Service
 @Slf4j
@@ -161,14 +158,6 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     @Resource
     private IMemberService iMemberService;
 
-    /**
-     * 创建通知记录
-     *
-     * @param notificationCreateRoList 创建通知参数
-     * @return 是否创建成功
-     * @author zoe zheng
-     * @date 2020/5/12 4:49 下午
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean batchCreateNotify(List<NotificationCreateRo> notificationCreateRoList) {
@@ -177,50 +166,42 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             return true;
         }
         catch (Exception e) {
-            log.error("批量创建通知异常：", e);
+            log.error("Bulk create notification exception：", e);
             return false;
         }
     }
 
-    /**
-     * 创建通知记录，发送通知
-     *
-     * @param ro 创建通知参数
-     * @return boolean
-     * @author zoe zheng
-     * @date 2021/3/4 4:27 下午
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean createNotify(NotificationCreateRo ro) {
+    public void createNotify(NotificationCreateRo ro) {
         NotificationTemplate template = notificationFactory.getTemplateById(ro.getTemplateId());
         NotificationToTag toTag = NotificationToTag.getValue(template.getToTag());
         ExceptionUtil.isNotNull(toTag, NotificationException.TMPL_TO_TAG_ERROR);
         if (NotificationToTag.toUserTag(toTag)) {
-            return createUserNotify(template, ro);
+            createUserNotify(template, ro);
+            return;
         }
         if (NotificationToTag.toMemberTag(toTag)) {
-            return createMemberNotify(template, ro, toTag);
+            createMemberNotify(template, ro, toTag);
+            return;
         }
         if (NotificationToTag.toAllUserTag(toTag)) {
-            return createAllUserNotify(template, ro);
+            createAllUserNotify(template, ro);
         }
-        return true;
     }
 
     @Override
-    public boolean createUserNotify(NotificationTemplate template, NotificationCreateRo ro) {
+    public void createUserNotify(NotificationTemplate template, NotificationCreateRo ro) {
         List<String> toUserIds = CollUtil.removeBlank(CollUtil.distinct(ro.getToUserId()));
         if (CollUtil.isEmpty(toUserIds)) {
             throw new BusinessException(NotificationException.USER_EMPTY_ERROR);
         }
-        return createNotifyWithoutVerify(ListUtil.toList(Convert.toLongArray(toUserIds)), template, ro);
+        createNotifyWithoutVerify(ListUtil.toList(Convert.toLongArray(toUserIds)), template, ro);
     }
 
     @Override
-    public boolean createMemberNotify(NotificationTemplate template, NotificationCreateRo ro, NotificationToTag toTag) {
+    public void createMemberNotify(NotificationTemplate template, NotificationCreateRo ro, NotificationToTag toTag) {
         List<Long> userIds;
-        // 目前空间用户不多上限500
         if (NotificationTemplateId.spaceDeleteNotify(NotificationTemplateId.getValue(ro.getTemplateId()))) {
             userIds = CollUtil.toList(Convert.toLongArray(ro.getToUserId()));
         }
@@ -237,25 +218,21 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             userIds = getSpaceUserIdByMemberIdAndToTag(ro.getSpaceId(), toMemberIds, toTag);
         }
         ExceptionUtil.isNotEmpty(userIds, NotificationException.USER_EMPTY_ERROR);
-        // 数表成员的通知
+        // Member's notice
         if (NotificationTemplateId.recordNotify(NotificationTemplateId.getValue(ro.getTemplateId()))) {
-            return createMemberMentionedNotify(userIds, template, ro);
+            createMemberMentionedNotify(userIds, template, ro);
+            return;
         }
-        return createNotifyWithoutVerify(userIds, template, ro);
+        createNotifyWithoutVerify(userIds, template, ro);
     }
 
     /**
-     * 创建系统通知
-     * 用了curson游标查询，防止每次查询连接关闭，加上@Transactional控制
-     * @param template 通知模版
-     * @param ro 创建通知参数
-     * @return boolean
-     * @author zoe zheng
-     * @date 2021/3/4 4:40 下午
+     * Create system notifications
+     * Curson cursor query is used to prevent each query from closing the connection, plus @Transactional control
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean createAllUserNotify(NotificationTemplate template, NotificationCreateRo ro) {
+    public void createAllUserNotify(NotificationTemplate template, NotificationCreateRo ro) {
         Cursor<Long> userIdCursor = null;
         try {
             userIdCursor = userMapper.selectAllUserIdByIgnoreDelete(false);
@@ -269,14 +246,12 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     userIds.clear();
                 }
             });
-            // 最终结果小于1000或者开始就小于1000
             if (CollUtil.isNotEmpty(userIds)) {
                 createNotifyWithoutVerify(userIds, template, ro);
             }
         }
         catch (Exception e) {
-            log.error("创建通知异常", e);
-            return false;
+            log.error("Create notification exception", e);
         }
         finally {
             if (ObjectUtil.isNotNull(userIdCursor)) {
@@ -284,30 +259,29 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     userIdCursor.close();
                 }
                 catch (IOException e) {
-                    log.error("创建通知关闭游标异常", e);
+                    log.error("Create notification close cursor exception", e);
                 }
             }
         }
-        return true;
     }
 
     @Override
     public boolean createNotifyWithoutVerify(List<Long> userIds, NotificationTemplate template, NotificationCreateRo ro) {
-        // todo 消息中间键
+        // todo message middle key
         List<PlayerNotificationEntity> creatEntities = new ArrayList<>();
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();
         List<Long> mailUserIds = new ArrayList<>();
         for (Long userId : userIds) {
-            // 记录发送频率，并且判断，这里没有发送成功就记录了是因为数据可恢复--redis删除key
+            // Record the sending frequency, and judge that it is recorded if it is not sent successfully because the data can be recovered --redis delete key
             String nonce = StrUtil.blankToDefault(ro.getSpaceId(), "") + StrUtil.blankToDefault(ro.getNodeId(), "");
             if (!notificationFactory.frequencyLimited(userId, template, DigestUtil.md5Hex(nonce))) {
                 if (ObjectUtil.isNotNull(userId) && !userId.equals(Convert.toLong(ro.getFromUserId()))) {
                     PlayerNotificationEntity entity = getCreateEntity(userId, template, ro);
-                    // 发送通知并且建立记录
+                    // Send notifications and create records
                     if (template.isNotification()) {
                         creatEntities.add(entity);
                     }
-                    // 需要发送邮件
+                    // need to send mail
                     if (template.isMail() && StrUtil.isNotBlank(template.getMailTemplateSubject())) {
                         mailUserIds.add(userId);
                     }
@@ -315,7 +289,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                 }
             }
         }
-        // 异步发送邮件通知
+        // Send email notifications asynchronously
         if (!mailUserIds.isEmpty()) {
             TaskManager.me().execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
         }
@@ -323,16 +297,16 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     }
 
     @Override
-    public boolean createMemberMentionedNotify(List<Long> toUserIds, NotificationTemplate template, NotificationCreateRo ro) {
+    public void createMemberMentionedNotify(List<Long> toUserIds, NotificationTemplate template, NotificationCreateRo ro) {
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();
         Map<Long, String> notifyIdMap = new HashMap<>(toUserIds.size());
         List<Long> mailUserIds = new ArrayList<>();
         for (Long userId : toUserIds) {
             String delayKey = notificationFactory.getDelayLockKey(userId.toString(), ro);
             ExceptionUtil.isNotNull(delayKey, NotificationException.MEMBER_MENTIONED_ERROR);
-            // 满足延迟条件
+            // meet the delay condition
             PlayerNotificationEntity entity = getCreateEntity(userId, template, ro);
-            // 在15s之内，次数+1 不通知 update
+            // Within 15s, the number of times +1 does not notify update
             if (!notificationFactory.delayLock(delayKey, entity.getId())) {
                 Long notifyId = notificationFactory.getNotificationIdFromRedis(delayKey);
                 String notifyBody = NotificationHelper.getMentionBody(baseMapper.selectNotifyBodyById(notifyId), ro.getBody());
@@ -342,30 +316,30 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                 entity.setNotifyBody(NotificationHelper.getMentionBody(JSONUtil.toJsonStr(ro.getBody()), null));
                 notifyEntities.add(entity);
                 notifyIdMap.put(userId, entity.getId().toString());
-                // 需要发送邮件
+                // send mail
                 if (template.isMail() && StrUtil.isNotBlank(template.getMailTemplateSubject())) {
                     mailUserIds.add(userId);
                 }
             }
         }
-        // 需要关联传入ID和数据库中的ID，放入redis中
+        // Need to associate the incoming ID with the ID in the database and put it in redis
         if (StrUtil.isNotBlank(ro.getNotifyId()) && !notifyIdMap.isEmpty()) {
             String key = RedisConstants.getNotifyTemporaryKey(ro.getNotifyId());
             redisTemplate.opsForHash().putAll(key, notifyIdMap);
             redisTemplate.expire(key, 7, TimeUnit.DAYS);
         }
-        // 异步发送邮件通知
+        // Send email notifications asynchronously
         if (!mailUserIds.isEmpty()) {
             TaskManager.me().execute(() -> sendMailNotifyBatch(template, mailUserIds, formatEmailDetailVo(ro)));
         }
-        return createBatch(notifyEntities);
+        createBatch(notifyEntities);
     }
 
     @Override
     public List<NotificationDetailVo> pageList(NotificationPageRo notificationPageRo, LoginUserDto toUser) {
         Integer totalCount = baseMapper.selectTotalCountByRoAndToUser(notificationPageRo, toUser.getUserId()) + 1;
         if (null == notificationPageRo.getRowNo()) {
-            // 倒着排列
+            // reverse order
             notificationPageRo.setRowNo(totalCount);
         }
         List<NotificationModelDto> dtos =
@@ -384,7 +358,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             if (ro.getIsRead() == 1) {
                 return true;
             }
-            // 检查过期
+            // check expired
             JSONObject extraInfo =
                     NotificationHelper.getExtrasFromNotifyBody(dto.getNotifyBody());
             if (ObjectUtil.isNull(extraInfo)) {
@@ -415,15 +389,17 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             return SqlHelper.retBool(baseMapper.updateBatchByUserIdsAndTemplateId(userIds,
                     template.getNotificationsType(), ro.getTemplateId(), ro));
         }
-        // 因为此操作为非并发性操作，所以采用游标查询,返回Cursor对象防止数据量大内存oom
         return revokeAllUserNotification(template, ro);
     }
 
+    /**
+     * Because this operation is a non-concurrent operation, a cursor query is used,
+     * and a Cursor object is returned to prevent a large amount of data and memory oom.
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean revokeAllUserNotification(NotificationTemplate template,
             NotificationRevokeRo ro) {
-        // 因为此操作为非并发性操作，所以采用游标查询,返回Cursor对象防止数据量大内存oom
         Cursor<Long> userIdCursor = null;
         try {
             userIdCursor = userMapper.selectAllUserIdByIgnoreDelete(true);
@@ -438,14 +414,13 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     userIds.clear();
                 }
             });
-            // 最终结果小于1000或者开始就小于1000
             if (CollUtil.isNotEmpty(userIds)) {
                 baseMapper.updateBatchByUserIdsAndTemplateId(userIds,
                         template.getNotificationsType(), ro.getTemplateId(), ro);
             }
         }
         catch (Exception e) {
-            log.error("删除用户通知异常", e);
+            log.error("Delete user notification exception", e);
             return false;
         }
         finally {
@@ -454,7 +429,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     userIdCursor.close();
                 }
                 catch (IOException e) {
-                    log.error("撤销通知关闭游标异常", e);
+                    log.error("Undo notification close cursor exception", e);
                 }
             }
         }
@@ -473,20 +448,11 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         }
     }
 
-    /**
-     * 组装返回给客户端的数据
-     *
-     * @param dtos 通知的基本内容
-     * @param uuid 用户的uuid
-     * @return 消息具体内容
-     * @author zoe zheng
-     * @date 2020/5/23 7:52 下午
-     */
     @Override
-    public List<NotificationDetailVo> formatDetailVos(List<NotificationModelDto> dtos, String uuid) {
+    public List<NotificationDetailVo> formatDetailVos(List<NotificationModelDto> notificationModelDtoList, String uuid) {
         List<NotificationDetailVo> notificationRecordList = new ArrayList<>();
-        NotificationRenderMap renderField = notificationFactory.getRenderList(dtos);
-        dtos.forEach(dto -> {
+        NotificationRenderMap renderField = notificationFactory.getRenderList(notificationModelDtoList);
+        notificationModelDtoList.forEach(dto -> {
             NotificationDetailVo detailVo = NotificationDetailVo.builder().id(dto.getId().toString())
                     .rowNo(dto.getRowNo()).toUserId(uuid).toUuid(uuid).createdAt(dto.getCreatedAt())
                     .updatedAt(dto.getUpdatedAt()).isRead(dto.getIsRead()).notifyType(dto.getNotifyType())
@@ -498,21 +464,12 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         return notificationRecordList;
     }
 
-    /**
-     * 设置通知已读
-     *
-     * @param ids 通知的ID
-     * @param isAll 是否全部
-     * @return 是否成功
-     * @author zoe zheng
-     * @date 2020/5/25 3:52 下午
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean setNotificationIsRead(String[] ids, Integer isAll) {
         Long userId = SessionContext.getUserId();
         if (ArrayUtil.isNotEmpty(ids)) {
-            // 可能是通过邮件跳转,需要在redis中找出具体的ID，再标记为已读
+            // It may be jumped by mail, you need to find the specific ID in redis, and then mark it as read
             String key = RedisConstants.getNotifyTemporaryKey(ids[0]);
             if (Boolean.TRUE.equals(redisTemplate.opsForHash().hasKey(key, userId)) && !NumberUtil.isLong(ids[0])) {
                 Object notifyId = redisTemplate.opsForHash().get(key, userId);
@@ -530,14 +487,6 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         return true;
     }
 
-    /**
-     * 用户消息统计
-     *
-     * @param userId 当前登陆用户ID
-     * @return 统计的信息
-     * @author zoe zheng
-     * @date 2020/5/25 4:52 下午
-     */
     @Override
     public NotificationStatisticsVo statistic(Long userId) {
         Integer readCount = baseMapper.selectCountByUserIdAndIsRead(userId, 1);
@@ -546,14 +495,6 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                 .unReadCount(totalCount - readCount).build();
     }
 
-    /**
-     * 删除消息
-     *
-     * @param ids 消息通知的ID数组
-     * @return 是否成功
-     * @author zoe zheng
-     * @date 2020/5/25 5:01 下午
-     */
     @Override
     public boolean setDeletedIsTrue(String[] ids) {
         return baseMapper.deleteNotificationByIds(ids);
@@ -564,7 +505,8 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             List<PlayerNotificationEntity> createEntities) {
         if (CollUtil.isNotEmpty(notifyEntities)) {
             SpringContextHolder.getApplicationContext().publishEvent(new NotificationCreateEvent(this, notifyEntities));
-            // 先发再存，如果有key就更新，会导致消息条数和总的条数不统一,所以如果有key就不发消息,只是增加条数
+            // Send first and then save. If there is a key, it will be updated, which will cause the number of messages to be inconsistent with the total number of messages.
+            // Therefore, if there is a key, no message will be sent, but the number of messages will be increased.
         }
         if (CollUtil.isNotEmpty(createEntities)) {
             return SqlHelper.retBool(baseMapper.insertBatch(createEntities));
@@ -575,11 +517,6 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     @Override
     public boolean createBatch(List<PlayerNotificationEntity> notifyEntities) {
         return createBatch(notifyEntities, notifyEntities);
-    }
-
-    @Override
-    public boolean modifyMentionTimes(Long id, String notifyBody, JSONObject body) {
-        return baseMapper.updateNotifyBodyById(id, NotificationHelper.getMentionBody(notifyBody, body));
     }
 
     private List<Long> getSpaceUserIdByMemberIdAndToTag(String spaceId,
@@ -625,13 +562,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     }
 
     /**
-     * 组装notifyBody的数据
-     *
-     * @param dto 消息的基本内容
-     * @param renderMap 消息模版渲染的map
-     * @return 通知具体内容的的body
-     * @author zoe zheng
-     * @date 2020/5/23 7:53 下午
+     * Assemble the data of notifyBody
      */
     private NotificationDetailVo.NotifyBody formatNotificationDetailBodyVo(NotificationModelDto dto,
             NotificationRenderMap renderMap) {
@@ -644,12 +575,12 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
         if (ObjectUtil.isNotNull(dto.getSpaceId())) {
             notifyBody.setSpace(notificationFactory.formatSpace(renderMap.getSpaces().get(dto.getSpaceId())));
         }
-        // 模版field
+        // template field
         NotificationTemplate template = notificationFactory.getTemplateById(dto.getTemplateId());
         if (template == null) {
             return notifyBody;
         }
-        // 服务端渲染
+        // server-side rendering
         if (!template.isComponent()) {
             Map<String, Object> templateRenderMap = MapUtil.newHashMap();
             if (ObjectUtil.isNotNull(extras)) {
@@ -667,11 +598,11 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                 templateRenderMap.putAll(BeanUtil.beanToMap(fromPlayer));
             }
             templateRenderMap.put(NotificationConstants.URL_HOST_TAG, clientProperties.getDatasheet().getHost());
-            // 模版str
+            // template str
             String templateStr = NotificationHelper.getTemplateString(template.getFormatString(),
                     NotificationHelper.getUserLanguageType(dto.getToUser(), dto.getFromUser()));
             notifyBody.setTemplate(clientTemplateConfig.render(templateStr, templateRenderMap));
-            // 渲染url
+            // render url
             if (template.getUrl() != null) {
                 notifyBody.setIntent(NotificationDetailVo.Intent.builder()
                         .url(clientTemplateConfig.render(template.getUrl(), templateRenderMap)).build());
@@ -697,7 +628,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             JSONObject extras = NotificationHelper.getExtrasFromNotifyBody(ro.getBody());
             if (extras != null) {
                 extras.forEach((k, v) -> {
-                    // 处理时间戳
+                    // processing timestamp
                     if (StrUtil.endWith(k, "At")) {
                         LocalDateTime dateTime = DateUtil.toLocalDateTime(Instant.ofEpochMilli(Long.parseLong(v.toString())));
                         dict.set(StrUtil.toUnderlineCase(k).toUpperCase(), DateUtil.format(dateTime,
@@ -717,7 +648,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             if (StrUtil.isNotBlank(template.getUrl()) && template.isCanJump()) {
                 StringBuilder notifyUr = new StringBuilder();
                 notifyUr.append(constProperties.getServerDomain());
-                // 路径
+                // path
                 UrlPath notifyPath = UrlPath.of(template.getUrl(), CharsetUtil.CHARSET_UTF_8);
                 notifyPath.add(ro.getNodeId());
                 if (dict.containsKey(EMAIL_RECORD_ID) && dict.containsKey(EMAIL_VIEW_ID)) {

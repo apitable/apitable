@@ -15,8 +15,9 @@ import com.vikadata.system.config.wecom.WeComConfig;
 import com.vikadata.system.config.wizard.GuideConfig;
 
 /**
- * System Config
- * @author Shawn Deng
+ * <p>
+ * System Config Aggregated Object
+ * </p>
  */
 @Data
 public class SystemConfig {

@@ -14,9 +14,7 @@ import static com.vikadata.api.util.billing.OrderUtil.toCurrencyUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 商店服务测试
- *
- * @author Shawn Deng
+ * Shop Service Implement Test
  */
 public class ShopServiceImplTest extends AbstractIntegrationTest {
 
@@ -38,7 +36,7 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     public void testGetBeforeEventDiscountPriceOnSilver() {
         final OffsetDateTime nowTime = OffsetDateTime.of(2022, 10, 23, 17, 0, 0, 0, testTimeZone);
         getClock().setTime(nowTime);
-        // 活动开始之前，优惠价格不存在
+        // The discount price does not exist until the event starts
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
         productPriceVos.forEach(priceVo -> assertThat(priceVo.getPriceDiscount()).isEqualTo(toCurrencyUnit(BigDecimal.ZERO)));
     }
@@ -47,7 +45,7 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     public void testGetExpireEventDiscountPriceOnSilver() {
         final OffsetDateTime nowTime = OffsetDateTime.of(2022, 11, 12, 0, 0, 0, 0, testTimeZone);
         getClock().setTime(nowTime);
-        // 活动过期，优惠价格不存在
+        // The event has expired, and the discount price does not exist
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
         productPriceVos.forEach(priceVo -> assertThat(priceVo.getPriceDiscount()).isEqualTo(toCurrencyUnit(BigDecimal.ZERO)));
     }
@@ -56,7 +54,7 @@ public class ShopServiceImplTest extends AbstractIntegrationTest {
     public void testGetLastEventDateDiscountPriceOnSilver() {
         final OffsetDateTime nowTime = OffsetDateTime.of(2022, 11, 11, 23, 23, 30, 0, testTimeZone);
         getClock().setTime(nowTime);
-        // 活动过期，优惠价格不存在
+        // The event has expired, and the discount price does not exist
         List<ProductPriceVo> productPriceVos = isShopService.getPricesByProduct(ProductEnum.SILVER.name());
         productPriceVos
                 .stream().filter(p -> p.getSeat() != 2 && p.getMonth() != 1)

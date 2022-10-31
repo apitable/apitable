@@ -29,11 +29,8 @@ import static com.vikadata.api.enums.exception.VCodeException.COUPON_TEMPLATE_NO
 
 /**
  * <p>
- * V 码兑换券模板 服务实现类
+ * VCode Coupon Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 @Slf4j
 @Service
@@ -54,14 +51,12 @@ public class VCodeCouponServiceImpl implements IVCodeCouponService {
 
     @Override
     public void checkCouponIfExist(Long templateId) {
-        log.info("检查兑换券模板是否存在");
         int count = SqlTool.retCount(vCodeCouponMapper.countById(templateId));
         ExceptionUtil.isTrue(count > 0, COUPON_TEMPLATE_NOT_EXIST);
     }
 
     @Override
     public Long create(VCodeCouponRo ro) {
-        log.info("创建兑换券模板");
         CodeCouponTemplateEntity entity = CodeCouponTemplateEntity.builder()
                 .totalCount(ro.getCount())
                 .comment(ro.getComment())
@@ -74,16 +69,15 @@ public class VCodeCouponServiceImpl implements IVCodeCouponService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(Long userId, Long templateId, VCodeCouponRo ro) {
-        log.info("编辑兑换券模板信息");
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(ro.getCount()) || StrUtil.isNotBlank(ro.getComment()), ParameterException.NO_ARG);
-        // 检查兑换券模是否存在
+        // Check whether the voucher model exists
         this.checkCouponIfExist(templateId);
         if (ObjectUtil.isNotNull(ro.getCount())) {
             boolean flag = SqlHelper.retBool(vCodeCouponMapper.updateTotalCountById(userId, templateId, ro.getCount()));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
         if (StrUtil.isNotBlank(ro.getComment())) {
-            // 校验场景值是否已被使用
+            // Check if the scene value has been used
             boolean flag = SqlHelper.retBool(vCodeCouponMapper.updateCommentById(userId, templateId, ro.getComment()));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
@@ -91,7 +85,6 @@ public class VCodeCouponServiceImpl implements IVCodeCouponService {
 
     @Override
     public void delete(Long userId, Long templateId) {
-        // 逻辑删除
         boolean flag = SqlHelper.retBool(vCodeCouponMapper.removeById(userId, templateId));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
     }

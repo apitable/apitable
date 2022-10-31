@@ -57,14 +57,11 @@ import static com.vikadata.define.constants.RedisConstants.WECHAT_MINIAPP_CODE_M
 
 /**
  * <p>
- * 微信小程序相关接口
+ * WeChat MiniApp API
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/02/16 20:12
  */
 @RestController
-@Api(tags = "微信模块_微信小程序相关服务接口")
+@Api(tags = "WeChat MiniApp API")
 @ApiResource(path = "/wechat/miniapp")
 @Slf4j
 public class WechatMaController {
@@ -88,21 +85,21 @@ public class WechatMaController {
     private SensorsService sensorsService;
 
     @GetResource(path = "/authorize", requiredLogin = false)
-    @ApiOperation(value = "授权登录(wx.login调用)", notes = "小程序授权登录（静默授权），区别于首页的两种登录方式")
-    @ApiImplicitParam(name = "code", value = "wx.login拿到的微信登录凭证", dataTypeClass = String.class, required = true, paramType = "query")
+    @ApiOperation(value = "Authorized Login(wx.login user)", notes = "Mini Program Authorized Login (Silent Authorization)")
+    @ApiImplicitParam(name = "code", value = "Wechat login credentials obtained by wx.login", dataTypeClass = String.class, required = true, paramType = "query")
     public ResponseData<LoginResultVo> authorize(@RequestParam(value = "code") String code) {
-        log.info("微信用户登录,code:{}", code);
+        log.info("WeChat user login,code:{}", code);
         if (wxMaService == null) {
-            throw new BusinessException("未开启微信小程序组件");
+            throw new BusinessException("WeChat applet component is not enabled.");
         }
-        // 先行获取缓存中的信息，避免code重复使用
+        // Get the information in the cache first to avoid code reuse
         BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(StrUtil.format(WECHAT_MINIAPP_AUTH_RESULT, code));
         WxMaJscode2SessionResult result;
         if (ObjectUtil.isNotNull(ops.get())) {
             result = (WxMaJscode2SessionResult) ops.get();
         }
         else {
-            // 获取微信用户身份
+            // Get WeChat user identity
             try {
                 result = wxMaService.jsCode2SessionInfo(code);
                 ops.set(result, 2, TimeUnit.HOURS);
@@ -112,43 +109,43 @@ public class WechatMaController {
                 throw new BusinessException(ILLEGAL_REQUEST);
             }
         }
-        // 登录处理，若存在绑定的用户自动进入工作台，否则新增或更新微信会员信息
+        // Login processing, if there is a bound user to automatically enter the workbench, otherwise add or update WeChat member information
         LoginResultVo vo = iWechatMaService.login(result);
         return ResponseData.success(vo);
     }
 
     @GetResource(path = "/phone", requiredLogin = false)
-    @ApiOperation(value = "用户授权使用微信手机号", notes = "场景：小程序首页-微信登录；web扫码登录(未绑定维格帐号的微信号)")
+    @ApiOperation(value = "User authorized to use WeChat mobile number")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "mark", value = "小程序码唯一标识(同意web扫码登录须传)", dataTypeClass = String.class, paramType = "query"),
-        @ApiImplicitParam(name = "encryptedData", value = "加密后的数据", dataTypeClass = String.class, required = true, paramType = "query"),
-        @ApiImplicitParam(name = "iv", value = "加密算法的初始向量", dataTypeClass = String.class, required = true, paramType = "query")
+            @ApiImplicitParam(name = "mark", value = "mini program code unique identifier", dataTypeClass = String.class, paramType = "query"),
+            @ApiImplicitParam(name = "encryptedData", value = "encrypted data", dataTypeClass = String.class, required = true, paramType = "query"),
+            @ApiImplicitParam(name = "iv", value = "initial vector for encryption algorithm", dataTypeClass = String.class, required = true, paramType = "query")
     })
     public ResponseData<LoginResultVo> phone(@RequestParam(value = "encryptedData", required = false) String encryptedData,
-        @RequestParam(value = "iv", required = false) String iv,
-        @RequestParam(value = "mark", required = false) String mark) {
+            @RequestParam(value = "iv", required = false) String iv,
+            @RequestParam(value = "mark", required = false) String mark) {
         if (wxMaService == null) {
-            throw new BusinessException("未开启微信小程序组件");
+            throw new BusinessException("WeChat applet component is not enabled");
         }
         ExceptionUtil.isFalse(encryptedData == null || iv == null, NO_ARG);
-        // 获取sessionKey
+        // Get sessionKey
         Long wechatMemberId = SessionContext.getWechatMemberId();
         String sessionKey = thirdPartyMemberMapper.selectSessionKeyById(wechatMemberId);
-        // 解密
+        // decrypt
         WxMaPhoneNumberInfo phoneNoInfo = wxMaService.getUserService().getPhoneNoInfo(sessionKey, encryptedData, iv);
-        // 登录处理
+        // Login processing
         LoginResultVo vo = iWechatMaService.signIn(wechatMemberId, phoneNoInfo);
-        //神策埋点 - 注册/登录
+        // Sensors - Register/Login
         TrackEventType type = vo.isNewUser() ? TrackEventType.REGISTER : TrackEventType.LOGIN;
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-        TaskManager.me().execute(() -> sensorsService.track(vo.getUserId(), type, "微信小程序", origin));
-        // 同意web扫码登录处理
+        TaskManager.me().execute(() -> sensorsService.track(vo.getUserId(), type, "WeChat Applet", origin));
+        // Agree to the web scan code login processing
         if (StrUtil.isNotBlank(mark)) {
-            // 读取小程序码唯一标识缓存
+            // Read the applet code to uniquely identify the cache
             String key = StrUtil.format(WECHAT_MINIAPP_CODE_MARK, mark);
             BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(key);
             ExceptionUtil.isNotNull(opts.get(), MA_CODE_INVALID);
-            // 将绑定的维格帐号ID放入缓存，让web端轮询到结果实现登录
+            // Put the bound Vig account ID into the cache, and let the web side poll the result to log in
             Long userId = SessionContext.getUserId();
             opts.set(userId, Objects.requireNonNull(opts.getExpire()) + 5, TimeUnit.SECONDS);
         }
@@ -156,38 +153,39 @@ public class WechatMaController {
     }
 
     @GetResource(path = "/info", requiredLogin = false)
-    @ApiOperation(value = "同步微信的用户信息")
+    @ApiOperation(value = "Synchronize WeChat User Information")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "signature", value = "签名", dataTypeClass = String.class, required = true, paramType = "query"),
-        @ApiImplicitParam(name = "rawData", value = "数据", dataTypeClass = String.class, required = true, paramType = "query"),
-        @ApiImplicitParam(name = "encryptedData", value = "加密后的数据", dataTypeClass = String.class, required = true, paramType = "query"),
-        @ApiImplicitParam(name = "iv", value = "加密算法的初始向量", dataTypeClass = String.class, required = true, paramType = "query")
+            @ApiImplicitParam(name = "signature", value = "signature", dataTypeClass = String.class, required = true, paramType = "query"),
+            @ApiImplicitParam(name = "rawData", value = "data", dataTypeClass = String.class, required = true, paramType = "query"),
+            @ApiImplicitParam(name = "encryptedData", value = "encrypted data", dataTypeClass = String.class, required = true, paramType = "query"),
+            @ApiImplicitParam(name = "iv", value = "initial vector for encryption algorithm", dataTypeClass = String.class, required = true, paramType = "query")
     })
     public ResponseData<Void> info(@RequestParam(value = "signature", required = false) String signature,
-        @RequestParam(value = "rawData", required = false) String rawData,
-        @RequestParam(value = "encryptedData", required = false) String encryptedData,
-        @RequestParam(value = "iv", required = false) String iv) {
+            @RequestParam(value = "rawData", required = false) String rawData,
+            @RequestParam(value = "encryptedData", required = false) String encryptedData,
+            @RequestParam(value = "iv", required = false) String iv) {
         if (wxMaService == null) {
-            throw new BusinessException("未开启微信小程序组件");
+            throw new BusinessException("WeChat applet component is not enabled");
         }
-        // 获取sessionKey
+        // Get sessionKey
         Long wechatMemberId = SessionContext.getWechatMemberId();
         String sessionKey = thirdPartyMemberMapper.selectSessionKeyById(wechatMemberId);
-        // 用户信息校验
+        // User information verification
         if (!wxMaService.getUserService().checkUserInfo(sessionKey, rawData, signature)) {
             throw new BusinessException(USER_CHECK_FAILED);
         }
-        // 解密用户信息
+        // Decrypt user information
         WxMaUserInfo userInfo = wxMaService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
-        // 信息处理
+        // information processing
         iThirdPartyMemberService.editMiniAppMember(wechatMemberId, null, null, userInfo);
         return ResponseData.success();
     }
 
     @GetResource(path = "/getInfo", requiredPermission = false)
-    @ApiOperation(value = "获取用户信息")
+    @ApiOperation(value = "Get User Information")
     public ResponseData<WechatInfoVo> getInfo() {
-        // 通过微信会员ID实时获取绑定帐号的用户ID，避免会话中的userId已不是绑定帐号
+        // Obtain the user ID of the bound account in real time through the WeChat member ID,
+        // so as to avoid that the userId in the session is no longer the bound account
         Long wechatMemberId = SessionContext.getWechatMemberId();
         Long userId = thirdPartyMemberMapper.selectUserIdByIdAndLinkType(wechatMemberId, LinkType.WECHAT.getType());
         WechatInfoVo vo = iWechatMaService.getUserInfo(userId);
@@ -195,16 +193,16 @@ public class WechatMaController {
     }
 
     @GetResource(path = "/operate", requiredLogin = false)
-    @ApiOperation(value = "小程序码页面的操作", notes = "场景：进入时验证小程序码是否有效；确定登录（绑定维格帐号的微信号，未绑定的需用户授权使用微信手机号）；取消登录；确定绑定帐号")
+    @ApiOperation(value = "The Operation of The Applet Code")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "type", value = "类型(0:进入验证有效性;1:确定登录（绑定维格帐号的微信号）;2:取消登录/绑定帐号;3:确定绑定帐号)", dataTypeClass = Integer.class, required = true, paramType = "query", defaultValue = "0"),
-        @ApiImplicitParam(name = "mark", value = "小程序码唯一标识", dataTypeClass = String.class, required = true, paramType = "query")
+            @ApiImplicitParam(name = "type", value = "type (0: Enter verification validity; 1: Confirm the login (the WeChat account of the Weige account is bound); 2: Cancel the login/bind the account; 3: Confirm the binding account)", dataTypeClass = Integer.class, required = true, paramType = "query", defaultValue = "0"),
+            @ApiImplicitParam(name = "mark", value = "mini program code unique identifier", dataTypeClass = String.class, required = true, paramType = "query")
     })
     public ResponseData<Void> operate(@RequestParam(value = "type", required = false) Integer type,
             @RequestParam(value = "mark", required = false) String mark) {
         ExceptionUtil.isFalse(type == null || mark == null, NO_ARG);
-        log.info("扫码后，小程序码页面的操作，mark:{}，type:{}", mark, type);
-        // 读取小程序码唯一标识缓存
+        log.info("After scanning the code, the operation of the applet code page，mark:{},type:{}", mark, type);
+        // Read the applet code to uniquely identify the cache
         String key = StrUtil.format(WECHAT_MINIAPP_CODE_MARK, mark);
         BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(key);
         Object code = opts.get();
@@ -214,8 +212,8 @@ public class WechatMaController {
                 opts.set(SCAN_SUCCESS.getCode(), Objects.requireNonNull(opts.getExpire()), TimeUnit.SECONDS);
                 break;
             case 1:
-                log.info("扫码授权登录，mark:{}，缓存取得状态值：{}", mark, code);
-                // 确定登录，将绑定的维格帐号ID放入缓存，让web端轮询到结果实现登录
+                log.info("Scan code to authorize login，mark:{}. Cache get status value：{}", mark, code);
+                // Confirm the login, put the bound Vig account ID into the cache, and let the web side poll the result to realize the login
                 ExceptionUtil.isNotNull(code, MA_CODE_INVALID);
                 Long wechatMemberId = SessionContext.getWechatMemberId();
                 Long userId = thirdPartyMemberMapper.selectUserIdByIdAndLinkType(wechatMemberId, LinkType.WECHAT.getType());
@@ -223,18 +221,19 @@ public class WechatMaController {
                 opts.set(userId, Objects.requireNonNull(opts.getExpire()) + 5, TimeUnit.SECONDS);
                 break;
             case 2:
-                // 若还处于有效时间内，更新小程序端取消登录/绑定的状态
+                // If it is still within the valid time, update the status of canceling the login/binding of the applet
                 if (ObjectUtil.isNotNull(code)) {
                     opts.set(CANCEL_OPERATION.getCode(), Objects.requireNonNull(opts.getExpire()), TimeUnit.SECONDS);
                 }
                 break;
             case 3:
-                log.info("绑定帐号，mark:{}，缓存取得状态值：{}", mark, code);
-                // 将微信会员ID放入缓存，让web端轮询到结果与帐号建立关联
+                log.info("Bind account，mark:{}. Cache get status value：{}", mark, code);
+                // Put the WeChat member ID in the cache, and let the web side poll the results to associate with the account
                 wechatMemberId = SessionContext.getWechatMemberId();
                 userId = thirdPartyMemberMapper.selectUserIdByIdAndLinkType(wechatMemberId, LinkType.WECHAT.getType());
                 if (ObjectUtil.isNotNull(userId)) {
-                    // 若微信号已绑定了其他维格帐号，保存结果到缓存让web端也同步提示
+                    // If the WeChat account has been bound to another Weige account,
+                    // save the result to the cache so that the web side can also prompt synchronously
                     opts.set(WECHAT_LINK_OTHER.getCode(), Objects.requireNonNull(opts.getExpire()) + 5, TimeUnit.SECONDS);
                     throw new BusinessException(WECHAT_LINK_OTHER);
                 }

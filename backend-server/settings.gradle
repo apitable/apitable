@@ -41,7 +41,6 @@ include 'vikadata-service:vikadata-mongodb-model'
 include 'vikadata-service:vikadata-service-api'
 
 include 'vikadata-project:api-service'
-include 'vikadata-project:bill-scheduler'
 include 'vikadata-project:space-scheduler'
 include 'vikadata-project:social-service-dingtalk'
 include 'vikadata-project:private-aider-service'

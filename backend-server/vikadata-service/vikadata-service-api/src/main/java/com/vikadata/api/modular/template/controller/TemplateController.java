@@ -1,17 +1,13 @@
 package com.vikadata.api.modular.template.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -52,7 +48,6 @@ import com.vikadata.api.model.vo.template.RecommendVo;
 import com.vikadata.api.model.vo.template.TemplateCategoryContentVo;
 import com.vikadata.api.model.vo.template.TemplateCategoryMenuVo;
 import com.vikadata.api.model.vo.template.TemplateDirectoryVo;
-import com.vikadata.api.model.vo.template.TemplateSearchResult;
 import com.vikadata.api.model.vo.template.TemplateSearchResultVo;
 import com.vikadata.api.model.vo.template.TemplateVo;
 import com.vikadata.api.modular.base.service.SensorsService;
@@ -83,9 +78,6 @@ import static com.vikadata.api.enums.exception.TemplateException.TEMPLATE_INFO_E
  * <p>
  * Template Center - Template API
  * </p>
- *
- * @author Chambers
- * @date 2020/5/12
  */
 @RestController
 @Api(tags = "Template Center - Template API")
@@ -150,44 +142,6 @@ public class TemplateController {
         return ResponseData.success(new TemplateSearchResultVo(result.getAlbums(), result.getTemplates()));
     }
 
-    @Deprecated
-    @GetResource(path = "/template/search", requiredLogin = false)
-    @ApiOperation(value = "Template Search")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "keyword", value = "Search Keyword", required = true, dataTypeClass = String.class, paramType = "query", example = "plan"),
-            @ApiImplicitParam(name = "className", value = "Highlight Style Class Name", dataTypeClass = String.class, paramType = "query", example = "highLight")
-    })
-    public ResponseData<List<TemplateSearchResult>> search(@RequestParam(name = "keyword") String keyword,
-            @RequestParam(value = "className", required = false, defaultValue = "keyword") String className) {
-        String lang = LoginContext.me().getLocaleStrWithUnderLine();
-        List<TemplateSearchResult> results = iTemplateService.searchTemplate(keyword, lang);
-        // replace style of keyword
-        Set<String> resultTemplateNames = new HashSet<>(results.size());
-        Set<String> resultTags = new HashSet<>();
-        results.forEach(result -> {
-            resultTemplateNames.add(result.getTemplateName());
-            result.setTemplateName(InformationUtil.keywordHighlight(result.getTemplateName(), keyword, className));
-            if (result.getTags() != null) {
-                List<String> tags = new ArrayList<>(result.getTags().size());
-                for (String tag : result.getTags()) {
-                    resultTags.add(tag);
-                    tags.add(InformationUtil.keywordHighlight(tag, keyword, className));
-                }
-                result.setTags(tags);
-            }
-        });
-        // sensors data track
-        Long userId = SessionContext.getUserIdWithoutException();
-        ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-        TaskManager.me().execute(() -> {
-            Map<String, Object> properties = new HashMap<>(3);
-            properties.put("keyword", keyword);
-            properties.put("templateName", new ArrayList<>(resultTemplateNames));
-            properties.put("tagName", new ArrayList<>(resultTags));
-            sensorsService.eventTrack(userId, TrackEventType.SEARCH_TEMPLATE, properties, origin);
-        });
-        return ResponseData.success(results);
-    }
 
     @GetResource(path = "/template/recommend", requiredLogin = false)
     @ApiOperation(value = "Get Template Recommend Content")
@@ -222,45 +176,22 @@ public class TemplateController {
         return ResponseData.success(vos);
     }
 
-    @Deprecated
-    @GetResource(path = "/template/list", requiredLogin = false)
-    @ApiOperation(value = "获取模版列表", notes = "场景：1、指定分类(官方模板分类);2、spaceId(空间站全部模板)")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "categoryCode", value = "模版分类code", dataTypeClass = String.class, paramType = "query", example = "tpcEm7VDcbnnr"),
-    })
-    public ResponseData<List<TemplateVo>> list(@RequestParam(name = "categoryCode", required = false) String categoryCode) {
-        String spaceId;
-        Boolean isPrivate = null;
-        if (StrUtil.isNotBlank(categoryCode)) {
-            spaceId = constProperties.getTemplateSpace();
-        }
-        else {
-            spaceId = LoginContext.me().getSpaceId();
-            // 校验用户是否在该空间内
-            LoginContext.me().getUserSpaceDto(spaceId);
-            isPrivate = Boolean.TRUE;
-        }
-        List<TemplateVo> vos = iTemplateService.getTemplateVoList(spaceId, categoryCode, null, isPrivate);
-        return ResponseData.success(vos);
-    }
-
     @GetResource(path = "/template/directory", requiredLogin = false)
-    @ApiOperation(value = "获取模板目录信息", notes = "须为官方模板或者当前所在空间模板")
+    @ApiOperation(value = "Get Template Directory Info")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "categoryCode", value = "模版分类code", dataTypeClass = String.class, paramType = "query", example = "tpcEm7VDcbnnr"),
-            @ApiImplicitParam(name = "templateId", value = "模版ID", required = true, dataTypeClass = String.class, paramType = "query", example = "tplHTbkg7qbNJ"),
-            @ApiImplicitParam(name = "isPrivate", value = "是否属于空间站", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query", example = "true")
+            @ApiImplicitParam(name = "categoryCode", value = "Official Template Category Code", dataTypeClass = String.class, paramType = "query", example = "tpcEm7VDcbnnr"),
+            @ApiImplicitParam(name = "templateId", value = "Template Id", required = true, dataTypeClass = String.class, paramType = "query", example = "tplHTbkg7qbNJ"),
+            @ApiImplicitParam(name = "isPrivate", value = "Whether it is a private template in the space station", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query", example = "true")
     })
     public ResponseData<TemplateDirectoryVo> directory(@RequestParam("templateId") String templateId,
             @RequestParam(name = "categoryCode", required = false) String categoryCode,
             @RequestParam(value = "isPrivate", required = false, defaultValue = "false") Boolean isPrivate) {
-        // 获取空间ID，方法包含判断模板是否存在
+        // Get the space id(the method includes judging whether the template exists)
         String spaceId = iTemplateService.getSpaceId(templateId);
         String lang = LoginContext.me().getLocaleStrWithUnderLine();
-        // 要求是官方模板或者当前所在空间模板
+        // The requirement is the official template or the current space template
         if (!constProperties.getTemplateSpace().contains(spaceId) || Boolean.TRUE.equals(isPrivate)) {
-            // 非官方模板或查看当前空间模板，校验用户是否在该空间内
+            // Unofficial templates or view the current space template to verify whether the user is in the space
             LoginContext.me().getUserSpaceDto(spaceId);
         }
         TemplateDirectoryVo vo = iTemplateService.getDirectoryVo(categoryCode, templateId, isPrivate, lang);
@@ -269,31 +200,31 @@ public class TemplateController {
 
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = "/template/quote", requiredPermission = false)
-    @ApiOperation(value = "引用模板")
-    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "用户socketId", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
+    @ApiOperation(value = "Quote Template")
+    @ApiImplicitParam(name = ParamsConstants.PLAYER_SOCKET_ID, value = "user socket id", dataTypeClass = String.class, paramType = "header", example = "QkKp9XJEl")
     public ResponseData<NodeInfoVo> quote(@RequestBody @Valid QuoteTemplateRo ro) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // Get the space id(the method includes judging whether the node exists)
         String spaceId = iNodeService.getSpaceIdByNodeId(ro.getParentId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // Get the member ID(the method includes judging whether the user is in this space)
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
         iNodeService.checkEnableOperateNodeBySpaceFeature(memberId, spaceId, ro.getParentId());
-        // 校验节点权限
+        // Check node permissions
         controlTemplate.checkNodePermission(memberId, ro.getParentId(), NodePermission.CREATE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验模板是否存在
+        // Check if the template exists
         TemplateInfo info = templateMapper.selectInfoByTempId(ro.getTemplateId());
         ExceptionUtil.isTrue(info != null && (spaceId.equals(info.getTypeId()) ||
                 constProperties.getTemplateSpace().equals(info.getTypeId())), TEMPLATE_INFO_ERROR);
-        // 复制节点到指定空间目录
+        // Copy the node to the specified space directory
         String nodeId = iNodeService.copyNodeToSpace(userId, spaceId, ro.getParentId(), info.getNodeId(),
                 NodeCopyOptions.builder().copyData(BooleanUtil.isTrue(ro.getData())).verifyNodeCount(true).sourceTemplateId(ro.getTemplateId()).build());
-        // 累计模板使用次数
+        // Cumulative template usage times
         TaskManager.me().execute(() -> templateMapper.updateUsedTimesByTempId(ro.getTemplateId(), 1));
-        // 钉钉搭模版应用创建
+        // DingTalk template application creation
         TaskManager.me().execute(() -> iDingTalkDaService.handleTemplateQuoted(spaceId, nodeId, ro.getTemplateId(), memberId));
-        // 发布空间审计事件
+        // Publish space audit event
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.QUOTE_TEMPLATE).userId(userId).spaceId(spaceId).nodeId(nodeId)
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, ro.getTemplateId()).set(AuditConstants.TEMPLATE_NAME, info.getName()).set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -301,10 +232,10 @@ public class TemplateController {
     }
 
     @GetResource(path = "/template/validate")
-    @ApiOperation(value = "校验模版名称是否已存在", notes = "创建模版之前调用，相同名称会覆盖旧模板，需再次确认操作")
+    @ApiOperation(value = "Check if the template name already exists", notes = "Called before creating a template, the same name will overwrite the old template, you need to confirm the operation again")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "空间ID", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-            @ApiImplicitParam(name = "name", value = "模版名称", required = true, dataTypeClass = String.class, paramType = "query", example = "这是一个模板名称")
+            @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "Space Id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
+            @ApiImplicitParam(name = "name", value = "Template Name", required = true, dataTypeClass = String.class, paramType = "query", example = "this is a template")
     })
     public ResponseData<Boolean> validate(@RequestParam("name") String name) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -313,23 +244,23 @@ public class TemplateController {
     }
 
     @PostResource(path = "/template/create", requiredPermission = false)
-    @ApiOperation(value = "创建模版", notes = "创建对象：创建的节点（包括子后代节点）均有可管理权限，且未关联节点之外的数表")
+    @ApiOperation(value = "Create Template", notes = "Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.")
     public ResponseData<String> create(@RequestBody @Valid CreateTemplateRo ro) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断节点是否存在
+        // Get the space id(the method includes judging whether the node exists)
         String spaceId = iNodeService.getSpaceIdByNodeId(ro.getNodeId());
         SpaceHolder.set(spaceId);
-        // 获取成员ID，方法包含判断用户是否在此空间
+        // Get the member ID(the method includes judging whether the user is in this space)
         Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        // 校验节点权限
+        // Check node permissions
         controlTemplate.checkNodePermission(memberId, ro.getNodeId(), NodePermission.MANAGE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
-        // 校验各种类型节点的要求
+        // Requirements for verifying various types of nodes
         iTemplateService.checkTemplateForeignNode(memberId, ro.getNodeId());
         String templateId = iTemplateService.create(userId, spaceId, ro);
-        // 删除空间容量缓存
+        // Delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
-        // 发布空间审计事件
+        // Publish space audit event
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_TEMPLATE).userId(userId).spaceId(spaceId).nodeId(ro.getNodeId())
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId).set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -337,45 +268,32 @@ public class TemplateController {
     }
 
     @PostResource(path = "/template/delete/{templateId}", method = RequestMethod.DELETE, requiredPermission = false)
-    @ApiOperation(value = "删除模版", notes = "删除对象：主管理员、拥有模板权限的子管理员、模板的创建者")
-    @ApiImplicitParam(name = "templateId", value = "模版ID", required = true, dataTypeClass = String.class, paramType = "path", example = "tplHTbkg7qbNJ")
+    @ApiOperation(value = "Delete Template", notes = "Deletion objects: main administrator, sub-admins with template permissions, creator of the template")
+    @ApiImplicitParam(name = "templateId", value = "Template ID", required = true, dataTypeClass = String.class, paramType = "path", example = "tplHTbkg7qbNJ")
     public ResponseData<Void> delete(@PathVariable("templateId") String templateId) {
         Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断模板是否存在
+        // Get the space id(the method includes judging whether the template exists)
         String spaceId = iTemplateService.getSpaceId(templateId);
         SpaceHolder.set(spaceId);
-        // 校验用户是否在此空间
+        // Check if user is in this space
         UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, spaceId);
-        // 判断是否是主管理员，或拥有模板权限的子管理员
+        // Determine whether it is the main administrator, or a sub-admin with template permissions
         boolean isManager = userSpaceDto.isMainAdmin() ||
                 (userSpaceDto.isAdmin() && userSpaceDto.getResourceCodes().contains("DELETE_TEMPLATE"));
         if (!isManager) {
-            // 模板可覆盖，最后修改者即创建者
+            // Templates can be overridden, the last modifier is the creator
             Long creator = templateMapper.selectUpdatersByTempId(templateId);
             ExceptionUtil.isTrue(userId.equals(creator), FORBIDDEN);
         }
-        // 删除模板
+        // Delete template
         iTemplateService.delete(userId, templateId);
-        // 删除空间容量缓存
+        // Delete space capacity cache
         spaceCapacityCacheService.del(spaceId);
-        // 发布空间审计事件
+        // Publish space audit event
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_TEMPLATE).userId(userId).spaceId(spaceId)
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId)).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
-    }
-
-    @PostResource(path = "/template/oneClickGenerate/{nodeId}", requiredPermission = false)
-    @ApiOperation(value = "一键生成模板", notes = "取下级节点作为分类，下下级节点生成模板。例如：目录树 A-B-C，传入A，则创建一个分类为B的模板C")
-    @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "fodj6QjYL0ZGy")
-    public ResponseData<String> oneClickGenerate(@PathVariable("nodeId") String nodeId) {
-        Long userId = SessionContext.getUserId();
-        // 获取空间ID，方法包含判断模板是否存在
-        String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
-        // 获取成员ID，方法包含判断用户是否在此空间
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
-        String result = iTemplateService.oneClickGenerate(userId, spaceId, memberId, nodeId);
-        return ResponseData.success(result);
     }
 
     @PostResource(path = "/template/config", requiredPermission = false)

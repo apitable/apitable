@@ -14,10 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *      数据访问层测试：第三方系统-微信关键词消息自动回复表测试
+ * Wechat Keywrod Reply Mapper Test
  * </p>
- * @author wuyitao
- * @date 2022/4/6 1:26 PM
  */
 public class WechatKeywrodReplyMapperTest extends AbstractMyBatisMapperTest {
 

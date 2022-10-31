@@ -12,10 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *      数据访问层测试：第三方系统-微信第三方平台授权方信息表测试
+ * Authorization Mapper Test
  * </p>
- * @author wuyitao
- * @date 2022/4/6 1:26 PM
  */
 public class AuthorizationMapperTest extends AbstractMyBatisMapperTest {
 

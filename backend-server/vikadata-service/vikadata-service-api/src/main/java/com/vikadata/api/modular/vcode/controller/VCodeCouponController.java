@@ -38,14 +38,11 @@ import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
 /**
  * <p>
- * V码 兑换券模板接口
+ * VCode System - Coupon API
  * </p>
- *
- * @author Chambers
- * @date 2020/8/20
  */
 @RestController
-@Api(tags = "V码模块_V码兑换券模板相关服务接口")
+@Api(tags = "VCode System - Coupon API")
 @ApiResource(path = "/vcode/coupon")
 public class VCodeCouponController {
 
@@ -56,33 +53,30 @@ public class VCodeCouponController {
     private IGmService iGmService;
 
     @GetResource(path = "/list", requiredPermission = false)
-    @ApiOperation(value = "查询兑换券模板列表")
-    @ApiImplicitParam(name = "keyword", value = "搜索词", dataTypeClass = String.class, paramType = "query", example = "渠道推广")
+    @ApiOperation(value = "Query Coupon View List")
+    @ApiImplicitParam(name = "keyword", value = "Keyword", dataTypeClass = String.class, paramType = "query", example = "channel")
     public ResponseData<List<VCodeCouponVo>> list(@RequestParam(name = "keyword", required = false) String keyword) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_COUPON_QUERY);
         return ResponseData.success(iVCodeCouponService.getVCodeCouponVo(keyword));
     }
 
     @GetResource(path = "/page", requiredPermission = false)
-    @ApiOperation(value = "分页查询兑换券模板列表", notes = PAGE_DESC)
+    @ApiOperation(value = "Query Coupon Page", notes = PAGE_DESC)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "keyword", value = "搜索词", dataTypeClass = String.class, paramType = "query", example = "渠道推广"),
-            @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+            @ApiImplicitParam(name = "keyword", value = "Keyword", dataTypeClass = String.class, paramType = "query", example = "channel"),
+            @ApiImplicitParam(name = PAGE_PARAM, value = "Page Params", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     })
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<VCodeCouponPageVo>> page(@RequestParam(name = "keyword", required = false) String keyword, @PageObjectParam Page page) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_COUPON_QUERY);
         return ResponseData.success(PageHelper.build(iVCodeCouponService.getVCodeCouponPageVo(page, keyword)));
     }
 
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "创建兑换券模板")
+    @ApiOperation(value = "Create Coupon Template")
     public ResponseData<VCodeCouponVo> create(@RequestBody @Valid VCodeCouponRo ro) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_COUPON_MANAGE);
         Long templateId = iVCodeCouponService.create(ro);
@@ -90,10 +84,9 @@ public class VCodeCouponController {
     }
 
     @PostResource(path = "/edit/{templateId}", requiredPermission = false)
-    @ApiOperation(value = "编辑兑换券模板")
-    @ApiImplicitParam(name = "templateId", value = "兑换券模板ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12359")
+    @ApiOperation(value = "Edit Coupon Template")
+    @ApiImplicitParam(name = "templateId", value = "Coupon Template ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12359")
     public ResponseData<Void> edit(@PathVariable("templateId") Long templateId, @RequestBody VCodeCouponRo ro) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_COUPON_MANAGE);
         iVCodeCouponService.edit(userId, templateId, ro);
@@ -101,15 +94,14 @@ public class VCodeCouponController {
     }
 
     @PostResource(path = "/delete/{templateId}", method = { RequestMethod.DELETE, RequestMethod.POST }, requiredPermission = false)
-    @ApiOperation(value = "删除兑换券模板")
-    @ApiImplicitParam(name = "templateId", value = "兑换券模板ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12359")
+    @ApiOperation(value = "Delete Coupon Template")
+    @ApiImplicitParam(name = "templateId", value = "Coupon Template ID", required = true, dataTypeClass = String.class, paramType = "path", example = "12359")
     public ResponseData<Void> delete(@PathVariable("templateId") Long templateId) {
-        // 校验权限
         Long userId = SessionContext.getUserId();
         iGmService.validPermission(userId, GmAction.V_CODE_COUPON_MANAGE);
-        // 检查兑换券模是否存在
+        // Verify redemption code
         iVCodeCouponService.checkCouponIfExist(templateId);
-        // 逻辑删除
+        // Update delete status
         iVCodeCouponService.delete(userId, templateId);
         return ResponseData.success();
     }

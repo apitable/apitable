@@ -19,14 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * Activity，动态，包括Comment和Op
+ * Player System - Activity API
  * </p>
- *
- * @author Kelly Chen
- * @date 2020/4/7 14:55
  */
 @RestController
-@Api(tags = "Player模块_活动接口")
+@Api(tags = "Player System - Activity API")
 @ApiResource(path = "/player/activity")
 public class ActivityController {
 
@@ -37,11 +34,11 @@ public class ActivityController {
     private UserLinkInfoService userLinkInfoService;
 
     @PostResource(path = "/triggerWizard", requiredPermission = false)
-    @ApiOperation(value = "触发引导", notes = "场景：触发引导的点击事件后，修改状态或者累计次数")
+    @ApiOperation(value = "Trigger Wizard", notes = "Scene: After triggering the guided click event, modify the state or the cumulative number of times.")
     public ResponseData<Void> triggerWizard(@RequestBody @Valid ActivityStatusRo ro) {
         Long userId = SessionContext.getUserId();
         iPlayerActivityService.changeStatus(userId, ro.getWizardId());
-        // 删除缓存
+        // delete cache
         userLinkInfoService.delete(userId);
         return ResponseData.success();
     }

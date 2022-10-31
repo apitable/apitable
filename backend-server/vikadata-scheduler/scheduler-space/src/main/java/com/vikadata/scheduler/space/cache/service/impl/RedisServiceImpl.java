@@ -26,11 +26,8 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
 
 /**
  * <p>
- * 缓存服务实现类
+ * Redis Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/1/14
  */
 @Service
 public class RedisServiceImpl implements RedisService {
@@ -49,23 +46,17 @@ public class RedisServiceImpl implements RedisService {
         redisTemplate.delete(RedisConstants.getUserActiveSpaceKey(userId));
     }
 
-    @Override
-    public void delOpenedSheet(Long userId, String spaceId) {
-        redisTemplate.delete(RedisConstants.getUserSpaceOpenedSheetKey(userId, spaceId));
-    }
-
-    @Override
-    public void delUserSpace(Long userId, String spaceId) {
-        redisTemplate.delete(RedisConstants.getUserSpaceKey(userId, spaceId));
-    }
-
+    /**
+     * Normally, it is triggered every day, and yesterday's cache should have one hour remaining.
+     * Only update the maximum table ID today if the conditions are met,
+     * to prevent manual triggering of multiple updates of the maximum table ID
+     */
     @Override
     public Long getYesterdayMaxChangeId() {
         String key = StrUtil.format(GENERAL_STATICS, "changeset", "day-max-id");
         Long id = redisTemplate.opsForValue().get(key);
         if (id != null) {
             Long expire = redisTemplate.getExpire(key);
-            // 正常是每天定时触发，昨天的缓存应该剩余一小时，满足才去更新今天最大表ID，防止手动触发多次更新最大表ID
             int timingRemainTime = 3800;
             if (expire == null || expire < timingRemainTime) {
                 this.updateChangesetMaxId(key);
@@ -73,44 +64,15 @@ public class RedisServiceImpl implements RedisService {
             return id;
         }
         this.updateChangesetMaxId(key);
-        // 没有缓存时，查询昨天最小的表ID
+        // when there is no cache, query the smallest table ID from yesterday
         LocalDateTime yesterday = LocalDateTime.now(ZoneId.of("+8")).plusDays(-1);
         return datasheetMetaMapper.selectMinIdAfterCreatedAt(yesterday);
     }
 
     private void updateChangesetMaxId(String key) {
-        // 获取现在最大的表ID，保留 25 小时缓存
+        // get the current largest table ID, keep the cache for 25 hours
         Long id = datasheetMetaMapper.selectMaxId();
         redisTemplate.opsForValue().set(key, id, 25, TimeUnit.HOURS);
-    }
-
-    @Override
-    public String delResourceLock() {
-        String lua = "local result = \"\";" +
-            "local done = false;" +
-            "local cursor = \"0\";" +
-            "repeat" +
-            "    local sr = redis.call(\"SCAN\", cursor, \"MATCH\", \"lock.*\");" +
-            "    cursor = sr[1];" +
-            "    redis.replicate_commands()" +
-            "    for i, key in ipairs(sr[2]) do" +
-            "        if redis.call(\"ttl\", key) == -1 then" +
-            "            redis.call(\"del\", key)" +
-            "            if string.len(result) == 0 then result = key" +
-            "            else result = result..\"\\n\"..key end;" +
-            "        end;" +
-            "    end;" +
-            "    if cursor == \"0\" then" +
-            "        done = true" +
-            "    end;" +
-            "until done;" +
-            "return result;";
-
-        RedisScript<String> script = new DefaultRedisScript<>(lua, String.class);
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-
-        return redisTemplate.execute(script, stringRedisSerializer,
-                stringRedisSerializer, new ArrayList<>());
     }
 
     @Override
@@ -119,14 +81,13 @@ public class RedisServiceImpl implements RedisService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
         String suffix = now.plusMonths(1).format(dateTimeFormatter);
         String nextMonthKey = StrUtil.format(GENERAL_STATICS, "api-usage-min-id", suffix);
-        // 查询最大表ID，更新为下个月的最小表ID
+        // Query the maximum table ID and update it to the minimum table ID of the next month
         Long maxId = statisticsMapper.selectApiUsageMaxId();
         XxlJobHelper.log("maxId: {}", maxId);
         if (maxId == null) {
             return;
         }
-        // 保存到缓存
         redisTemplate.opsForValue().set(nextMonthKey, maxId, 33, TimeUnit.DAYS);
-        XxlJobHelper.log("更新成功");
+        XxlJobHelper.log("Update Success.");
     }
 }

@@ -3,9 +3,7 @@ package com.vikadata.api.modular.finance.core;
 import java.math.BigDecimal;
 
 /**
- * 订单价格
- * @author Shawn Deng
- * @date 2022-05-20 00:29:20
+ * Order Price
  */
 public class OrderPrice {
 

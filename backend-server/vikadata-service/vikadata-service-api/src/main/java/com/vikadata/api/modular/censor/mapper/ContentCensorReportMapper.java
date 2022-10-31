@@ -5,11 +5,8 @@ import com.vikadata.entity.ContentCensorReportEntity;
 
 /**
  * <p>
- * 内容审核-举报记录表 Mapper 接口
+ * Content Censor Report Mapper
  * </p>
- *
- * @author Benson Cheung
- * @since 2020-05-11
  */
 public interface ContentCensorReportMapper extends BaseMapper<ContentCensorReportEntity> {
 

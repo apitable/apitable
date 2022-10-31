@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * <p>
  * System Config Manager
- *
- * @author Shawn Deng
+ * </p>
  */
 public class SystemConfigManager {
 
@@ -23,12 +23,12 @@ public class SystemConfigManager {
             try {
                 InputStream resourceAsStream = SystemConfigManager.class.getResourceAsStream("/system_config.auto.json");
                 if (resourceAsStream == null) {
-                    throw new IOException("config file not found");
+                    throw new IOException("System config file not found!");
                 }
                 singleton = Converter.getObjectMapper().readValue(resourceAsStream, SystemConfig.class);
             }
             catch (IOException e) {
-                throw new RuntimeException("failed to load system configuration", e);
+                throw new RuntimeException("Failed to load system configuration!", e);
             }
         }
 

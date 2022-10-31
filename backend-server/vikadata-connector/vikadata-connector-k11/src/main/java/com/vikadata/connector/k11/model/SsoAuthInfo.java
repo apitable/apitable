@@ -2,11 +2,8 @@ package com.vikadata.connector.k11.model;
 
 /**
  * <p>
- * k11 sso 授权返回信息
+ * K11 SSO Auth Information
  * </p>
- *
- * @author Chambers
- * @date 2021/6/18
  */
 public class SsoAuthInfo {
 
@@ -14,13 +11,10 @@ public class SsoAuthInfo {
 
     private String telephone;
 
-    /**
-     * 用户展示名（姓氏+名）
-     */
     private String userDisplayName;
 
     /**
-     * 员工自增ID，非员工帐号返回 0
+     * employee auto-increment ID, non-employee account returns 0
      */
     private Integer staffId;
 

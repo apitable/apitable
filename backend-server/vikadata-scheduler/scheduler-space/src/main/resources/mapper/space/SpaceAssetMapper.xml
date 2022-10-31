@@ -7,7 +7,7 @@
         FROM vika_space_asset vsa
         JOIN vika_asset va ON vsa.asset_id = va.id
         WHERE vsa.node_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
@@ -24,51 +24,10 @@
     <insert id="insertList">
         INSERT INTO vika_space_asset(id, space_id, node_id, asset_id, asset_checksum, cite, type, file_size, source_name)
         VALUES
-        <foreach collection="list" item="element" index="index" separator=",">
+        <foreach collection="entities" item="element" index="index" separator=",">
             (#{element.id}, #{element.spaceId}, #{element.nodeId}, #{element.assetId}, #{element.assetChecksum},
             #{element.cite}, #{element.type}, #{element.fileSize}, '')
         </foreach>
     </insert>
 
-    <update id="removeByNodeIds">
-        UPDATE vika_space_asset
-        SET is_deleted = 1
-        WHERE node_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
-    </update>
-
-    <select id="selectZeroCiteDtoBySpaceIdAndCreatedAt"
-            resultType="com.vikadata.scheduler.space.model.SpaceAssetBaseDto">
-        SELECT vsa.id, va.checksum, va.file_url, va.bucket
-        FROM vika_space_asset vsa
-        LEFT JOIN vika_asset va ON vsa.asset_checksum = va.checksum
-        <where>
-            <if test="spaceId != null and spaceId != ''">
-                vsa.space_id = #{spaceId}
-            </if>
-            <if test="type != null">
-                AND vsa.type = #{type}
-            </if>
-        </where>
-        AND vsa.cite = 0
-        AND vsa.created_at >= #{startAt}
-        AND vsa.created_at &lt; #{endAt}
-        AND vsa.is_deleted = 0
-        AND va.is_deleted = 0
-        AND vsa.created_at = vsa.updated_at
-    </select>
-
-    <update id="updateIsDeletedByIds">
-        UPDATE vika_space_asset
-        SET is_deleted = 1
-        WHERE id IN
-        <foreach item="item" index="index" collection="ids" open="(" separator=","
-                 close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
-    </update>
 </mapper>

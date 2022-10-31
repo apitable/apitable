@@ -4,11 +4,8 @@ import com.vikadata.connector.k11.model.SsoAuthInfo;
 
 /**
  * <p>
- * 新世界 k11 连接器
+ * K11 Connector
  * </p>
- *
- * @author Chambers
- * @date 2021/6/19
  */
 public interface K11Connector {
 

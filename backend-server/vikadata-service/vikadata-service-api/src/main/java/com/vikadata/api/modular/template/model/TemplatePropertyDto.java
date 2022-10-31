@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Online Template Property
- *
- * @author Zoe Zheng
- * @date 2021-08-02 17:19:35
+ * Template Property Dto
  */
 @Data
 @NoArgsConstructor

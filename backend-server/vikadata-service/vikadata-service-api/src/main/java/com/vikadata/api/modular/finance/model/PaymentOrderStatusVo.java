@@ -6,19 +6,17 @@ import lombok.Data;
 
 /**
  * <p> 
- * 支付订单状态视图
- * </p> 
- * @author Shawn Deng 
- * @date 2022/2/15 19:13
+ * Payment Order Status View
+ * </p>
  */
 @Data
-@ApiModel("支付订单状态视图")
+@ApiModel("Payment Order Status View")
 public class PaymentOrderStatusVo {
 
-    @ApiModelProperty(value = "支付交易号", example = "2022021518503548111")
+    @ApiModelProperty(value = "pay transaction no", example = "2022021518503548111")
     @Deprecated
     private String payTransactionNo;
 
-    @ApiModelProperty(value = "订单状态", example = "Canceled")
+    @ApiModelProperty(value = "order status", example = "Canceled")
     private String status;
 }

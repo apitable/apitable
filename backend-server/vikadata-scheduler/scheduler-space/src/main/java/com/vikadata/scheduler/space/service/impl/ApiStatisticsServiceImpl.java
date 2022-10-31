@@ -33,11 +33,8 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
 
 /**
  * <p>
- * API用量统计接口实现类
+ * Api Usage Statistics Service Implement Class
  * <p>
- *
- * @author liuzijing
- * @date 2022/06/01
  */
 @Service
 public class ApiStatisticsServiceImpl implements IApiStatisticsService {
@@ -51,7 +48,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void syncApiUsageDailyData(List<SpaceApiUsageDto> spaceApiUsageDtoList) {
-        // 构建数据
+        // build data
         LocalDateTime now = LocalDateTime.now();
         List<ApiStatisticsDailyEntity> apiStatisticsDailyEntities = new ArrayList<>();
         for (SpaceApiUsageDto spaceApiUsageInfo : spaceApiUsageDtoList) {
@@ -71,7 +68,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
         if (apiStatisticsDailyEntities.isEmpty()) {
             return;
         }
-        // 同步API日用量数据至日统计表中
+        // Synchronize API daily usage data to the daily statistics table
         List<List<ApiStatisticsDailyEntity>> split = CollUtil.split(apiStatisticsDailyEntities, 1000);
         for (List<ApiStatisticsDailyEntity> list : split) {
             apiStatisticsMapper.insertApiUsageDailyInfo(list);
@@ -81,7 +78,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void syncApiUsageMonthlyData(List<SpaceApiUsageDto> spaceApiUsageDtoList) {
-        // 构建数据
+        // build data
         LocalDateTime now = LocalDateTime.now();
         List<ApiStatisticsMonthlyEntity> apiStatisticsMonthlyEntities = new ArrayList<>();
         for (SpaceApiUsageDto spaceApiUsageInfo : spaceApiUsageDtoList) {
@@ -98,7 +95,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
             apiStatisticsMonthlyEntity.setCreatedAt(now);
             apiStatisticsMonthlyEntities.add(apiStatisticsMonthlyEntity);
         }
-        // 同步API月用量信息到月统计表中
+        // Synchronize API monthly usage information to the monthly statistics table
         List<List<ApiStatisticsMonthlyEntity>> split = CollUtil.split(apiStatisticsMonthlyEntities, 1000);
         for (List<ApiStatisticsMonthlyEntity> list : split) {
             apiStatisticsMapper.insertApiUsageMonthlyInfo(list);
@@ -107,28 +104,30 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
 
     @Override
     public void spaceApiUsageDailyStatistics() {
-        // 获取开始统计的时间和表ID
+        // Get the time and table ID when statistics started
         SpaceApiStatisticsDto beginDto = this.getDailyStatisticsBeginDate();
-        // 信息为空，代表API用量表与统计表都没有数据，直接结束
+        // If the information is empty, it means that there is no data in the API usage meter and statistics table, and end
         if (beginDto == null) {
             return;
         }
         LocalDateTime today = LocalDateTimeUtil.beginOfDay(LocalDateTime.now());
-        // 开始时间等于或晚于今天，直接结束
+        // start time equal to or later than today, and end
         if (!beginDto.getBeginDate().isBefore(today)) {
             return;
         }
 
-        // 统计从开始时间到昨天的数据
+        // Statistics from the start time to yesterday's data
         Long beginId = beginDto.getBeginTableId();
         LocalDateTime endOfDay = LocalDateTimeUtil.endOfDay(beginDto.getBeginDate());
         do {
-            // 查询API用量表的下一个日期（不用次日，中间可能有某几天没有调用记录），对存在记录的日期逐日统计
+            // Query the next date of the API usage meter
+            // (There is no need for the next day, there may be some days in the middle that there is no call record)
+            // Daily statistics for the date when there is a record
             ApiUsageEntity nextDayFirstRecord = apiStatisticsMapper.selectNextDayFirstRecord(beginId, endOfDay);
             boolean flag = nextDayFirstRecord != null;
-            // 聚会查询统计数据
+            // Meetup Query Statistics
             List<SpaceApiUsageDto> spaceApiUsageDtoList = apiStatisticsMapper.selectSpaceApiUsageDaily(beginId, flag ? nextDayFirstRecord.getId() : null);
-            // 同步至API用量日统计表
+            // Synchronized to the daily API usage statistics table
             this.syncApiUsageDailyData(spaceApiUsageDtoList);
             if (flag) {
                 beginId = nextDayFirstRecord.getId();
@@ -142,15 +141,15 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
     }
 
     private SpaceApiStatisticsDto getDailyStatisticsBeginDate() {
-        // 获取API日用量统计表最后一条记录，从第二天开始统计（正常是昨天）
+        // Get the last record of the API daily usage statistics table, and start the statistics from the next day (normally, yesterday)
         ApiStatisticsDailyEntity apiStatisticsDailyEntity = apiStatisticsMapper.selectLastApiUsageDailyRecord();
         if (apiStatisticsDailyEntity != null) {
-            // 倒序查询API用量表，当天最大的表ID
+            // Query API usage tables in reverse order, the largest table ID of the day
             Long lastDayMaxId = apiStatisticsMapper.selectMaxIdDaily(apiStatisticsDailyEntity.getStatisticsTime());
             LocalDateTime dateTime = LocalDateTimeUtil.parse(apiStatisticsDailyEntity.getStatisticsTime(), NORM_DATE_PATTERN).plusDays(1);
             return new SpaceApiStatisticsDto(dateTime, lastDayMaxId + 1);
         }
-        // 查询API用量表第一条记录，从第一天开始统计
+        // Query the first record of the API usage meter, start counting from the first day
         ApiUsageEntity apiUsageEntity = apiStatisticsMapper.selectFirstApiUsageRecord();
         if (apiUsageEntity != null) {
             return new SpaceApiStatisticsDto(LocalDateTimeUtil.beginOfDay(apiUsageEntity.getCreatedAt()), apiUsageEntity.getId());
@@ -160,73 +159,71 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
 
     @Override
     public void spaceApiUsageMonthlyStatistics() throws ParseException {
-        // 获取API月用量统计表最后一条记录
+        // Get the last record of the API monthly usage statistics table
         ApiStatisticsMonthlyEntity apiStatisticsMonthlyLastEntity = apiStatisticsMapper.selectLastApiUsageMonthlyRecord();
-        // 初始化API月用量统计表
+        // Initialize the API monthly usage statistics table
         if (apiStatisticsMonthlyLastEntity == null) {
-            // 查询API用量表第一条记录
+            // Query the first record of the API usage meter
             ApiRecordDto firstRecord = apiStatisticsMapper.selectFirstApiRecord();
-            // 分段查询每月API用量记录最小ID
+            // Query the minimum ID of monthly API usage records in segments
             if (firstRecord == null) {
                 return;
             }
             List<Long> minApiUsageRecordIds = this.spaceApiUsageMinRecordIds(firstRecord);
-            // 分段查询API月用量历史数据
+            // Query API monthly usage historical data in stages
             List<SpaceApiUsageDto> spaceApiUsageHistoryMonthlyList = new ArrayList<>();
             for (int i = 0; i + 1 < minApiUsageRecordIds.size(); i++) {
                 List<SpaceApiUsageDto> spaceApiUsageMonthlyList = apiStatisticsMapper.selectSpaceApiUsageMonthly(minApiUsageRecordIds.get(i), minApiUsageRecordIds.get(i + 1));
                 spaceApiUsageHistoryMonthlyList.addAll(spaceApiUsageMonthlyList);
             }
-            // 同步历史数据至API月用量统计表中
+            // Synchronize historical data to API monthly usage statistics table
             this.syncApiUsageMonthlyData(spaceApiUsageHistoryMonthlyList);
         }
         else {
-            // 获取上一个月月份
+            // Get the month of the previous month
             SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
             String previousMonth = month.format(DateUtil.lastMonth());
-            // 获取月统计表中最后一条数据的统计时间
+            // Get the statistics time of the last data in the monthly statistics table
             String lastApiUsageMonthlyStatisticsTime = apiStatisticsMonthlyLastEntity.getStatisticsTime();
             if (!previousMonth.equals(lastApiUsageMonthlyStatisticsTime)) {
-                // 统计开始月份下一个月最小表ID
+                // The minimum table ID of the next month after the start month of statistics
                 Long beginMinId = this.getNextMonthMinId(month, lastApiUsageMonthlyStatisticsTime);
-                // 统计结束月份下一个月最小表ID
+                // The minimum table ID of the next month after the statistics end month
                 Long endMinId = this.getNextMonthMinId(month, previousMonth);
-                // 获取未统计API月用量信息，补偿数据
+                // Get unstated API monthly usage information and compensation data
                 List<SpaceApiUsageDto> unStatisticsApiUsageMonthlyInfoList = apiStatisticsMapper.selectSpaceApiUsageMonthly(beginMinId, endMinId);
-                // 同步未统计数据至API用量统计月表中
+                // Synchronize unstated data to the monthly API usage statistics table
                 this.syncApiUsageMonthlyData(unStatisticsApiUsageMonthlyInfoList);
             }
         }
     }
 
-    @Override
-    public List<Long> spaceApiUsageMinRecordIds(ApiRecordDto firstRecord) throws ParseException {
-        // 获取当前月份
+    private List<Long> spaceApiUsageMinRecordIds(ApiRecordDto firstRecord) throws ParseException {
+        // get current month
         SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
-        // 第一条记录与当前月份差
+        // Difference between the first record and the current month
         long betweenMonth = DateUtil.betweenMonth(new Date(), month.parse(firstRecord.getMonthTime()), true);
-        // 查询每月最小Api用量记录ID
+        // Query the monthly minimum API usage record ID
         List<Long> minApiUsageRecordIds = new ArrayList<>();
         minApiUsageRecordIds.add(firstRecord.getMinId());
-        // 月最小表ID
+        // Month minimum table ID
         Long minId = firstRecord.getMinId();
         for (int i = 0; i < betweenMonth; i++) {
-            // 下一个月月份日期
+            // next month month date
             String nextMonth = month.format(DateUtil.offsetMonth(month.parse(firstRecord.getMonthTime()), i + 1));
-            // 下一个月最小表ID
+            // Minimum table ID for next month
             minId = apiStatisticsMapper.selectMinIdMonthly(minId, nextMonth);
             minApiUsageRecordIds.add(minId);
         }
         return minApiUsageRecordIds;
     }
 
-    @Override
-    public Long getNextMonthMinId(SimpleDateFormat month, String statistics) throws ParseException {
-        // 从缓存中获取下个月最小表ID
+    private Long getNextMonthMinId(SimpleDateFormat month, String statistics) throws ParseException {
+        // Get the next month's minimum table ID from the cache
         String lastKey = StrUtil.format(GENERAL_STATICS, "api-usage-min-id", DateUtil.offsetMonth(month.parse(statistics), 1));
         Long nextMonthMinId = redisTemplate.opsForValue().get(lastKey);
         if (nextMonthMinId == null) {
-            // 从数据库直接查询月最大表ID
+            // Query the monthly maximum table ID directly from the database
             return apiStatisticsMapper.selectMaxIdMonthly(statistics) + 1;
         }
         return nextMonthMinId;

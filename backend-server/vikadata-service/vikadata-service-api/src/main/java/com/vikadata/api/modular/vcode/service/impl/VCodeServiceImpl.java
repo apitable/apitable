@@ -29,7 +29,6 @@ import com.vikadata.api.model.ro.vcode.VCodeUpdateRo;
 import com.vikadata.api.model.vo.vcode.VCodePageVo;
 import com.vikadata.api.modular.integral.enums.IntegralAlterType;
 import com.vikadata.api.modular.integral.service.IIntegralService;
-import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.user.mapper.ThirdPartyMemberMapper;
 import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.vcode.mapper.VCodeMapper;
@@ -66,11 +65,8 @@ import static com.vikadata.api.enums.exception.VCodeException.TYPE_INFO_ERROR;
 
 /**
  * <p>
- * V 码 接口实现类
+ * VCode Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/8/7
  */
 @Slf4j
 @Service
@@ -98,9 +94,6 @@ public class VCodeServiceImpl implements IVCodeService {
     private UserMapper userMapper;
 
     @Resource
-    private MemberMapper memberMapper;
-
-    @Resource
     private ConstProperties constProperties;
 
     @Resource
@@ -118,13 +111,12 @@ public class VCodeServiceImpl implements IVCodeService {
 
     @Override
     public String getOfficialInvitationCode(String appId, String unionId) {
-        log.info("获取官方邀请码，unionId：{}", unionId);
-        // 查询该微信用户是否已获取过邀请码，是则无需重新生成
+        log.info("Get the official invitation code. UnionId：{}", unionId);
+        // Query whether the WeChat user has obtained an invitation code, if so, there is no need to regenerate
         ThirdPartyMemberInfo info = thirdPartyMemberMapper.selectInfo(appId, unionId, ThirdPartyMemberType.WECHAT_PUBLIC_ACCOUNT.getType());
         String code = vCodeMapper.selectCodeByTypeAndRefId(VCodeType.OFFICIAL_INVITATION_CODE.getType(), info.getId());
         if (code == null) {
             code = this.getUniqueCodeBatch(VCodeType.OFFICIAL_INVITATION_CODE.getType());
-            // 保存记录
             CodeEntity entity = CodeEntity.builder()
                     .type(VCodeType.OFFICIAL_INVITATION_CODE.getType())
                     .refId(info.getId())
@@ -135,7 +127,7 @@ public class VCodeServiceImpl implements IVCodeService {
                     .build();
             boolean flag = SqlHelper.retBool(vCodeMapper.insert(entity));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
-            // 保存领取日志
+            // Save pick up log
             ivCodeUsageService.createUsageRecord(info.getId(), info.getNickName(), VCodeUsageType.ACQUIRE.getType(), code);
         }
         return code;
@@ -143,56 +135,55 @@ public class VCodeServiceImpl implements IVCodeService {
 
     @Override
     public String getActivityCode(Long activityId, String appId, String unionId) {
-        log.info("获取活动的 VCode，activityId：{}，unionId：{}", activityId, unionId);
-        // 查询活动是否有对应的 VCode
+        log.info("Get active VCode，activityId：{}，unionId：{}", activityId, unionId);
+        //Query whether the activity has a corresponding VCode
         int count = SqlTool.retCount(vCodeMapper.countByActivityId(activityId));
         if (count == 0) {
             return null;
         }
-        // 查询操作者是否已领取，是则直接返回
+        // Query whether the operator has received, if yes, return directly
         ThirdPartyMemberInfo info = thirdPartyMemberMapper.selectInfo(appId, unionId, ThirdPartyMemberType.WECHAT_PUBLIC_ACCOUNT.getType());
         String code = vCodeMapper.getAcquiredCode(activityId, info.getId());
         if (code != null) {
             return code;
         }
-        // 获取指定活动可用的 VCode
+        // Get the VCode available for the specified activity
         List<String> availableCodes = vCodeMapper.getAvailableCode(activityId);
         if (CollUtil.isEmpty(availableCodes)) {
-            return "已领完";
+            return "finished";
         }
         code = availableCodes.get(RandomUtil.randomInt(0, availableCodes.size()));
-        // 保存领取日志
+        // Save pick up log
         ivCodeUsageService.createUsageRecord(info.getId(), info.getNickName(), VCodeUsageType.ACQUIRE.getType(), code);
         return code;
     }
 
     @Override
     public List<String> create(Long userId, VCodeCreateRo ro) {
-        log.info("创建 VCode");
-        // 校验过期时间
+        // Check expiration time
         ExceptionUtil.isTrue(ObjectUtil.isNull(ro.getExpireTime()) ||
                 ro.getExpireTime().isAfter(LocalDateTime.now()), EXPIRE_TIME_INCORRECT);
         Long templateId = null;
         if (ro.getType().equals(VCodeType.REDEMPTION_CODE.getType())) {
-            // 类型为兑换码，必须选择兑换模板
+            // The type is redemption code, and a redemption template must be selected
             ExceptionUtil.isNotNull(ro.getTemplateId(), TEMPLATE_EMPTY);
-            // 检查兑换券模板是否存在
+            // Check if the coupon template exists
             ivCodeCouponService.checkCouponIfExist(ro.getTemplateId());
             templateId = ro.getTemplateId();
         }
         else {
-            // 类型需为兑换码或官方邀请码
+            // Type must be redemption code or official invitation code
             ExceptionUtil.isTrue(ro.getType().equals(VCodeType.OFFICIAL_INVITATION_CODE.getType()), TYPE_ERROR);
         }
-        // 检查活动是否存在
+        // Check if activity exists
         ivCodeActivityService.checkActivityIfExist(ro.getActivityId());
-        // 校验指定用户是否存在
+        // Check if the specified user exists
         Long assignUserId = null;
         if (StrUtil.isNotBlank(ro.getMobile())) {
             assignUserId = userMapper.selectIdByMobile(ro.getMobile());
             ExceptionUtil.isNotNull(assignUserId, ACCOUNT_NOT_REGISTER);
         }
-        // 校验V码可使用总数，单人限制使用次数
+        // Check the total number of VCode that can be used, and limit the number of uses by a single person
         ExceptionUtil.isTrue(ro.getAvailableTimes() != 0 && ro.getLimitTimes() != 0, CANNOT_ZERO);
         Integer remainTimes = ro.getAvailableTimes() > 0 ? ro.getAvailableTimes() : null;
         List<CodeEntity> entities = new ArrayList<>(ro.getCount());
@@ -225,25 +216,25 @@ public class VCodeServiceImpl implements IVCodeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(Long userId, String code, VCodeUpdateRo ro) {
-        log.info("编辑 VCode 配置，userId:{}，code:{}，ro:{}", userId, code, ro);
-        // 校验 VCode 是否存在，并且不是个人邀请码类型
+        log.info("Edit VCode setting. UserId:{}. VCode:{}. RO:{}", userId, code, ro);
+        // Verify that VCode exists and is not a personal invitation code type
         Integer type = vCodeMapper.selectTypeByCode(code);
         ExceptionUtil.isNotNull(type, CODE_NOT_EXIST);
         ExceptionUtil.isFalse(VCodeType.PERSONAL_INVITATION_CODE.getType() == type, TYPE_ERROR);
-        // 修改兑换模板ID
+        // Modify redemption template ID
         if (ObjectUtil.isNotNull(ro.getTemplateId())) {
-            // 校验 VCode 是否是兑换券
+            // Check if VCode is a voucher
             ExceptionUtil.isTrue(VCodeType.REDEMPTION_CODE.getType() == type, TYPE_INFO_ERROR);
-            // 检查兑换券模板是否存在
+            // Check if the coupon template exists
             ivCodeCouponService.checkCouponIfExist(ro.getTemplateId());
             boolean flag = SqlHelper.retBool(vCodeMapper.updateRefIdByCode(userId, code, ro.getTemplateId()));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
-        // 修改可使用总数
+        // Modify the total available
         if (ObjectUtil.isNotNull(ro.getAvailableTimes())) {
             ExceptionUtil.isTrue(ro.getAvailableTimes() != 0, CANNOT_ZERO);
             Integer remainTimes = null;
-            // 若不是设置了无限次，统计被使用的次数，计算出剩余次数
+            // If it is not set to infinite times, count the times used, and calculate the remaining times
             if (ro.getAvailableTimes() != -1) {
                 int usageTimes = SqlTool.retCount(vCodeUsageMapper.countByCodeAndType(code, VCodeUsageType.USE.getType(), null));
                 remainTimes = ro.getAvailableTimes() - usageTimes;
@@ -251,13 +242,13 @@ public class VCodeServiceImpl implements IVCodeService {
             boolean flag = SqlHelper.retBool(vCodeMapper.updateAvailableTimesByCode(userId, code, ro.getAvailableTimes(), remainTimes));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
-        // 修改单人限制使用次数
+        // Modify the number of uses for a single person
         if (ObjectUtil.isNotNull(ro.getLimitTimes())) {
             ExceptionUtil.isTrue(ro.getLimitTimes() != 0, CANNOT_ZERO);
             boolean flag = SqlHelper.retBool(vCodeMapper.updateLimitTimesByCode(userId, code, ro.getLimitTimes()));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
-        // 修改过期时间
+        // Modify expiration time
         if (ObjectUtil.isNotNull(ro.getExpireTime())) {
             boolean flag = SqlHelper.retBool(vCodeMapper.updateExpiredAtByCode(userId, code, ro.getExpireTime()));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
@@ -266,29 +257,27 @@ public class VCodeServiceImpl implements IVCodeService {
 
     @Override
     public void delete(Long userId, String code) {
-        // 逻辑删除
         boolean flag = SqlHelper.retBool(vCodeMapper.removeByCode(userId, code));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
     }
 
     @Override
     public void checkInviteCode(String inviteCode) {
-        log.info("校验邀请码");
         ExceptionUtil.isNotBlank(inviteCode, INVITE_CODE_NOT_EXIST);
         CodeEntity entity = vCodeMapper.selectByCode(inviteCode);
-        // 校验邀请码的有效性
+        // Check the validity of the invitation code
         ExceptionUtil.isNotNull(entity, INVITE_CODE_NOT_VALID);
         ExceptionUtil.isNull(entity.getAssignUserId(), INVITE_CODE_NOT_VALID);
         ExceptionUtil.isFalse(entity.getType().equals(VCodeType.REDEMPTION_CODE.getType()), INVITE_CODE_NOT_VALID);
         ExceptionUtil.isTrue(entity.getExpiredAt() == null ||
                 entity.getExpiredAt().isAfter(LocalDateTime.now()), INVITE_CODE_EXPIRE);
-        // 满足可使用总数无限，或者剩余次数足够
+        // Satisfy the total number of available use is unlimited, or the remaining number of times is enough
         ExceptionUtil.isTrue(entity.getAvailableTimes() < 0 || entity.getRemainTimes() > 0, INVITE_CODE_USED);
-        // 官方邀请码
+        // Official invitation code
         if (entity.getType().equals(VCodeType.OFFICIAL_INVITATION_CODE.getType())) {
             return;
         }
-        // 注销冷静期/已注销账号邀请码不可用
+        // Cancellation cooling-off period / Invitation code for cancelled accounts is unavailable
         UserEntity user = userMapper.selectById(entity.getCreatedBy());
         ExceptionUtil.isNotNull(user, INVITE_CODE_NOT_VALID);
         ExceptionUtil.isFalse(user.getIsDeleted() || user.getIsPaused(), INVITE_CODE_NOT_VALID);
@@ -298,17 +287,15 @@ public class VCodeServiceImpl implements IVCodeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void useInviteCode(Long useUserId, String useUserName, String inviteCode) {
-        log.info("使用邀请码");
-        // 更新剩余可用次数
+        // Update remaining availability
         this.updateRemainTimes(inviteCode, INVITE_CODE_NOT_VALID);
-        // 保存使用日志
+        // Save usage logs
         ivCodeUsageService.createUsageRecord(useUserId, useUserName, VCodeUsageType.USE.getType(), inviteCode);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createPersonalInviteCode(Long userId) {
-        log.info("创建个人邀请码");
         String code = this.getUniqueCodeBatch(VCodeType.PERSONAL_INVITATION_CODE.getType());
         CodeEntity entity = CodeEntity.builder()
                 .id(IdWorker.getId())
@@ -327,21 +314,22 @@ public class VCodeServiceImpl implements IVCodeService {
 
     @Override
     public void checkRedemptionCode(Long userId, String redemptionCode) {
-        log.info("校验兑换码，userId:{}，redemption code:{}", userId, redemptionCode);
+        log.info("Check redemption code，userId:{}，redemption code:{}", userId, redemptionCode);
         ExceptionUtil.isNotBlank(redemptionCode, REDEMPTION_CODE_NOT_EXIST);
-        // 校验兑换码的有效性
+        // Verify the validity of the redemption code
         CodeEntity entity = vCodeMapper.selectByCode(redemptionCode);
         ExceptionUtil.isNotNull(entity, REDEMPTION_CODE_NOT_VALID);
         ExceptionUtil.isTrue(entity.getType().equals(VCodeType.REDEMPTION_CODE.getType()), REDEMPTION_CODE_NOT_VALID);
-        // 校验兑换码是否无指定用户，或正是指定用户在使用
+        // Verify that the redemption code has no designated user, or is being used by the designated user
         ExceptionUtil.isTrue(entity.getAssignUserId() == null ||
                 entity.getAssignUserId().equals(userId), REDEMPTION_CODE_NOT_VALID);
-        // 校验有效时间
+        // Check valid time
         ExceptionUtil.isTrue(entity.getExpiredAt() == null ||
                 entity.getExpiredAt().isAfter(LocalDateTime.now()), REDEMPTION_CODE_EXPIRE);
-        // 满足可使用总数无限，或者剩余次数足够
+        // Satisfy the total number of available use is unlimited, or the remaining number of times is enough
         ExceptionUtil.isTrue(entity.getAvailableTimes() < 0 || entity.getRemainTimes() > 0, INVITE_CODE_USED);
-        // 单人限制使用次数有限时，判断当前用户使用该兑换码的总数是否未超过单人限制次数
+        // When the number of times of limited use by a single person is limited,
+        // determine whether the total number of redemption codes used by the current user does not exceed the number of times limited by a single person
         if (entity.getLimitTimes() > 0) {
             int useCount = SqlTool.retCount(vCodeUsageMapper.countByCodeAndType(redemptionCode, VCodeUsageType.USE.getType(), userId));
             ExceptionUtil.isTrue(entity.getLimitTimes() > useCount, REDEMPTION_CODE_USED);
@@ -351,15 +339,15 @@ public class VCodeServiceImpl implements IVCodeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer useRedemptionCode(Long userId, String redemptionCode) {
-        log.info("使用兑换码，userId:{}，redemption code:{}", userId, redemptionCode);
-        // 更新剩余可用次数
+        log.info("Use redemption code. userId:{}. redemption code:{}", userId, redemptionCode);
+        // Update remaining availability
         this.updateRemainTimes(redemptionCode, REDEMPTION_CODE_NOT_VALID);
-        // 保存使用日志
+        // Save usage logs
         ivCodeUsageService.createUsageRecord(userId, userMapper.selectUserNameById(userId), VCodeUsageType.USE.getType(), redemptionCode);
-        // 查询兑换码的V币兑换数
+        // Query the number of V coins exchanged for the exchange code
         Integer integral = vCodeMapper.selectIntegral(redemptionCode);
         ExceptionUtil.isNotNull(integral, REDEMPTION_CODE_NOT_VALID);
-        // 兑换V币
+        // Exchange VCode
         iIntegralService.alterIntegral(REDEMPTION_CODE, IntegralAlterType.INCOME, integral, userId, JSONUtil.createObj());
         return integral;
     }
@@ -367,7 +355,7 @@ public class VCodeServiceImpl implements IVCodeService {
     private void updateRemainTimes(String code, VCodeException exception) {
         Integer times = vCodeMapper.selectAvailableTimesByCode(code);
         ExceptionUtil.isNotNull(times, exception);
-        // 可使用总数无限，剩余次数无需更改
+        // The total number of uses is unlimited, and the remaining times do not need to be changed
         if (times < 0) {
             return;
         }
@@ -384,10 +372,11 @@ public class VCodeServiceImpl implements IVCodeService {
     }
 
     /**
-     * 获取唯一 V码
+     * Get unique VCode
      */
     private String getUniqueCodeBatch(Integer type) {
-        // 判断是否是兑换码，是则使用大小写加数字随机码，否则使用纯数字随机码
+        // Determine whether it is a redemption code. If it is, use uppercase and lowercase plus a digital random code,
+        // otherwise use a pure digital random code.
         boolean isRedemptionCode = type.equals(VCodeType.REDEMPTION_CODE.getType());
         String code;
         boolean exit;

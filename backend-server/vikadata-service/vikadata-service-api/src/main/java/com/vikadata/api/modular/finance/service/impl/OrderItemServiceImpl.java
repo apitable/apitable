@@ -13,9 +13,9 @@ import com.vikadata.entity.OrderItemEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * 订单项目服务实现类
- * @author Shawn Deng
- * @date 2022-05-16 16:13:50
+ * <p>
+ * Order Item Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j

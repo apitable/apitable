@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 国际化语言
- * @author Shawn Deng
- * @date 2021-11-11 16:11:46
+ * <p>
+ * I18n Type
+ * </p>
  */
 @RequiredArgsConstructor
 @Getter
@@ -45,7 +45,7 @@ public enum I18nTypes {
     }
 
     public I18nTypes isBackoff() {
-        // 是否退避的语言，防止出现系统暂时为兼容但是意外返回
+        // Whether to back off the language to prevent the system from being temporarily compatible but unexpectedly returning
         return this.isSupport ? this : I18nTypes.ZH_CN;
     }
 

@@ -10,29 +10,28 @@ import com.vikadata.entity.SocialWecomOrderEntity;
 
 /**
  * <p>
- * 订阅计费系统-企微商店渠道订单
+ * Subscription Billing System - Wecom Order Mapper
  * </p>
- * @date 2022-08-18 18:44:00
  */
 @Mapper
 public interface SocialWecomOrderMapper extends BaseMapper<SocialWecomOrderEntity> {
 
     /**
-     * 查询所有的订单
+     * Query all order
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 授权的企业 ID
-     * @param orderStatuses 查询的订单状态。可以为空
-     * @return 符合条件的所有订单
+     * @param suiteId       suite id
+     * @param paidCorpId    paid corp id
+     * @param orderStatuses order statuses
+     * @return SocialWecomOrderEntity List
      */
     List<SocialWecomOrderEntity> selectAllOrders(@Param("suiteId") String suiteId, @Param("paidCorpId") String paidCorpId,
             @Param("orderStatuses") List<Integer> orderStatuses);
 
     /**
-     * 查询订单信息
+     * Query order
      *
-     * @param orderId 企微订单号
-     * @return 订单信息
+     * @param orderId   order id
+     * @return SocialWecomOrderEntity
      */
     SocialWecomOrderEntity selectByOrderId(@Param("orderId") String orderId);
 
@@ -42,22 +41,21 @@ public interface SocialWecomOrderMapper extends BaseMapper<SocialWecomOrderEntit
      * @param suiteId Wecom isv suite ID
      * @param paidCorpId Paid corporation ID
      * @return Tenant's first paid order
-     * @author Codeman
-     * @date 2022-08-25 17:01:44
      */
     SocialWecomOrderEntity selectFirstPaidOrder(@Param("suiteId") String suiteId, @Param("paidCorpId") String paidCorpId);
 
     /**
-     * 获取租户最后一个支付成功的订单
+     * Get the tenant's last successful payment order
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 授权的企业 ID
-     * @return 租户的最后一个支付成功的订单
+     * @param suiteId       suite id
+     * @param paidCorpId    paid corp id
+     * @return SocialWecomOrderEntity
      */
     SocialWecomOrderEntity selectLastPaidOrder(@Param("suiteId") String suiteId, @Param("paidCorpId") String paidCorpId);
 
     /**
      * query id by order  id
+     *
      * @param orderId order id
      * @return pre order status
      */
@@ -65,6 +63,7 @@ public interface SocialWecomOrderMapper extends BaseMapper<SocialWecomOrderEntit
 
     /**
      * get order status by id
+     *
      * @param id primary key
      * @return id
      */
@@ -73,6 +72,7 @@ public interface SocialWecomOrderMapper extends BaseMapper<SocialWecomOrderEntit
 
     /**
      * modify order status by order id
+     *
      * @param orderId social order id
      * @return number of rows affected
      */

@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 模板搜索结果
+ * Template Search Results
  * </p>
- * @author zoe zheng
- * @date 2021/8/4 11:05 上午
  */
 @Data
 @NoArgsConstructor
@@ -29,12 +27,12 @@ public class TemplateKeyWordSearchDto {
     private Integer propertyType;
 
     /**
-     * 模版名字是否包涵关键字
+     * whether the template name contains keywords
      */
     private Integer nameIndex;
 
     /**
-     * 属性名字是否包涵关键字
+     * whether the attribute name contains keywords
      */
     private Integer propertyNameIndex;
 }

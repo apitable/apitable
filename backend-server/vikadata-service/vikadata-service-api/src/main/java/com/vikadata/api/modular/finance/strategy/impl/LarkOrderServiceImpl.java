@@ -42,8 +42,6 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
  * lark order service
  * handle lark orders
  * </p>
- * @author zoe zheng
- * @date 2022/5/18 18:33
  */
 @Service
 @Slf4j
@@ -57,6 +55,7 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
 
     @Resource
     private ISocialFeishuOrderService iSocialFeishuOrderService;
+
     @Resource
     private ISocialTenantOrderService iSocialTenantOrderService;
 
@@ -67,11 +66,11 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
         if (null == context) {
             return null;
         }
-        // 创建订单
+        // Create order
         String orderId = createOrder(context);
-        // 创建订单元数据
+        // Create order metadata
         createOrderMetaData(orderId, OrderChannel.LARK, event);
-        // 升级、续费、新购、续费升级、试用
+        // Upgrade, Renewal, New Purchase, Renewal Upgrade, Trial
         String subscriptionId;
         if (LarkOrderBuyType.BUY.getType().equals(event.getBuyType()) && null == context.getActivatedBundle()) {
             String bundleId = createBundle(context);
@@ -83,22 +82,22 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
         else {
             subscriptionId = upgradeSubscription(context);
         }
-        // 创建订单项目
+        // Create order item
         createOrderItem(orderId, subscriptionId, context);
-        // 标记飞书订单已经处理完成
+        // Mark Feishu order has been processed
         iSocialFeishuOrderService.updateTenantOrderStatusByOrderId(event.getTenantKey(), event.getAppId(), event.getOrderId(), 1);
         return orderId;
     }
 
     @Override
     public void retrieveOrderRefundEvent(Object event) {
-        // todo 飞书目前是人工退款
+        // todo Feishu is currently refunding manually
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void migrateEvent(String spaceId) {
-        // 读取绑定信息
+        // read binding information
         TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
         List<String> eventList = iSocialTenantOrderService.getOrderDataByTenantIdAndAppId(bindInfo.getTenantId(),
                 bindInfo.getAppId(), SocialPlatformType.FEISHU);
@@ -119,12 +118,12 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
     public SocialOrderContext buildSocialOrderContext(OrderPaidEvent event) {
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(event.getAppId(), event.getTenantKey());
         if (StrUtil.isBlank(spaceId)) {
-            log.warn("飞书企业还未收到开通应用事件:{}", event.getTenantKey());
+            log.warn("Feishu Enterprise「{}」 has not received the application activation event.", event.getTenantKey());
             return null;
         }
-        // 订单购买的付费方案
+        // Paid plan for order purchase
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(event.getPricePlanId());
-        // price是null的情况，那么购买的是飞书基础版
+        // If the price is null, then the basic version of Feishu is purchased
         Product product = ObjectUtil.isNull(price) ? BillingConfigManager.getCurrentFreeProduct(ProductChannel.LARK) : BillingConfigManager.getBillingConfig().getProducts().get(price.getProduct());
         SubscriptionPhase phase = PricePlanType.TRIAL.getType().equals(event.getPricePlanType()) ? SubscriptionPhase.TRIAL : SubscriptionPhase.FIXEDTERM;
         SocialOrderContext context = SocialOrderContext.builder()
@@ -140,9 +139,9 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
                 .orderChannel(OrderChannel.LARK)
                 .activatedBundle(iBundleService.getActivatedBundleBySpaceId(spaceId))
                 .build();
-        // 飞书试用时间15天
+        // Feishu trial period 15 days
         if (SubscriptionPhase.TRIAL.equals(phase)) {
-            // 飞书续费可以试用，试用覆盖试用
+            // Feishu renewal fee can be tried, and the trial covers the trial
             if (null != context.getActivatedBundle() && !SubscriptionPhase.TRIAL.equals(context.getActivatedBundle().getBaseSubscription().getPhase())) {
                 context.setServiceStopTime(context.getActivatedBundle().getBundleEndDate().plusDays(15));
             }
@@ -150,7 +149,7 @@ public class LarkOrderServiceImpl extends AbstractSocialOrderService<OrderPaidEv
                 context.setServiceStopTime(context.getPaidTime().plusDays(15));
             }
         }
-        // 飞书续费为上一个订单结束日期
+        // Feishu renewal is the end date of the previous order
         if (LarkOrderBuyType.RENEW.getType().equals(event.getBuyType()) && null != context.getActivatedBundle()) {
             context.setServiceStartTime(context.getActivatedBundle().getBundleEndDate());
         }

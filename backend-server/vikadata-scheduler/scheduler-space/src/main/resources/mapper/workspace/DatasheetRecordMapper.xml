@@ -13,36 +13,9 @@
         SELECT dst_id, `data`
         FROM vika_datasheet_record
         WHERE dst_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0
     </select>
-
-    <select id="selectInfoByNodeIds" resultType="com.vikadata.scheduler.space.model.DataSheetRecordInfo">
-        SELECT id, dst_id, `data`, field_updated_info
-        FROM vika_datasheet_record
-        WHERE dst_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
-    </select>
-
-    <update id="updateDataById">
-        UPDATE vika_datasheet_record
-        SET data = #{data}
-        WHERE id = #{id} AND is_deleted = 0
-    </update>
-
-    <update id="updateMetaByJsonOp">
-        UPDATE vika_datasheet_record
-        SET data = JSON_REMOVE(data,
-        <foreach item="item" index="index" collection="list" separator=",">
-            CONCAT('$.', #{item})
-        </foreach>),
-        field_updated_info = JSON_SET(field_updated_info, '$.fieldUpdatedMap', CONVERT(#{fieldUpdatedMap}, JSON)),
-        updated_at = updated_at
-        WHERE id = #{id}
-    </update>
 </mapper>

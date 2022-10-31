@@ -7,9 +7,6 @@ import org.springframework.web.client.RestTemplate;
  * <p>
  * ApiBinding
  * </p>
- *
- * @author Chambers
- * @date 2021/6/21
  */
 public abstract class ApiBinding {
 

@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 神奇关联数表属性
+ * Foreign Datasheet Property
  * </p>
- *
- * @author Pengap
- * @date 2022/2/7 14:41:57
  */
 @Data
 @AllArgsConstructor

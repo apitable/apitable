@@ -12,11 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：经济模块-订单表测试
+ * Subscription Billing System - Order Mapper Test
  * </p>
- *
- * @author wuyitao
- * @date 2022/3/30 6:12 PM
  */
 public class OrderMapperTest extends AbstractMyBatisMapperTest {
 

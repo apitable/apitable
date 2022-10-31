@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 空间附件资源dto
+ * Space Asset Dto
  * </p>
- *
- * @author Chambers
- * @date 2020/4/23
  */
 @Data
 @NoArgsConstructor
@@ -20,22 +17,13 @@ import lombok.NoArgsConstructor;
 public class SpaceAssetDto {
 
     /**
-     * 表ID
+     * space asset table id
      */
     private Long id;
 
-    /**
-     * 节点ID
-     */
     private String nodeId;
 
-    /**
-     * 引用次数
-     */
     private Integer cite;
 
-    /**
-     * 云端文件存放路径
-     */
     private String fileUrl;
 }

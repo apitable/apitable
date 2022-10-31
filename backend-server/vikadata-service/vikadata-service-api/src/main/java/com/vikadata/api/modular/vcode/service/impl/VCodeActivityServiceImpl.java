@@ -33,11 +33,8 @@ import static com.vikadata.api.enums.exception.VCodeException.SCENE_EXIST;
 
 /**
  * <p>
- * V 码活动 服务实现类
+ * VCod eActivity Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 @Slf4j
 @Service
@@ -62,16 +59,14 @@ public class VCodeActivityServiceImpl implements IVCodeActivityService {
 
     @Override
     public void checkActivityIfExist(Long activityId) {
-        log.info("检查活动是否存在");
         int count = SqlTool.retCount(vCodeActivityMapper.countById(activityId));
         ExceptionUtil.isTrue(count > 0, ACTIVITY_NOT_EXIST);
     }
 
     @Override
     public Long create(VCodeActivityRo ro) {
-        log.info("创建活动");
         String scene = ro.getScene();
-        // 校验场景值是否已被使用
+        // Check if the scene value has been used
         List<String> scenes = vCodeActivityMapper.selectAllScene();
         ExceptionUtil.isTrue(CollUtil.isEmpty(scenes) || !scenes.contains(scene), SCENE_EXIST);
         CodeActivityEntity entity = CodeActivityEntity.builder()
@@ -86,22 +81,22 @@ public class VCodeActivityServiceImpl implements IVCodeActivityService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(Long userId, Long activityId, VCodeActivityRo ro) {
-        log.info("编辑活动信息");
         ExceptionUtil.isTrue(StrUtil.isNotBlank(ro.getName()) || StrUtil.isNotBlank(ro.getScene()), ParameterException.NO_ARG);
-        // 检查活动是否存在
+        // Check if activity exists
         this.checkActivityIfExist(activityId);
         if (StrUtil.isNotBlank(ro.getName())) {
             boolean flag = SqlHelper.retBool(vCodeActivityMapper.updateNameById(userId, activityId, ro.getName()));
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
         if (StrUtil.isNotBlank(ro.getScene())) {
-            // 校验场景值是否已被使用
+            // Check if the scene value has been used
             List<String> scenes = vCodeActivityMapper.selectAllScene();
             ExceptionUtil.isTrue(CollUtil.isEmpty(scenes) || !scenes.contains(ro.getScene()), SCENE_EXIST);
             if (wxMpProperties == null) {
                 return;
             }
-            // 校验是否已生成二维码，已生成不允许修改，避免活动期间修改造成统计数据不准确
+            // Check whether the qrcode has been generated, and it is not allowed to be modified,
+            // so as to avoid inaccurate statistical data caused by modification during the event
             int qrCodeCount = SqlTool.retCount(vCodeActivityMapper.countQrCodeByIdAndAppId(activityId, wxMpProperties.getAppId()));
             ExceptionUtil.isFalse(qrCodeCount > 0, QR_CODE_EXIST);
             boolean flag = SqlHelper.retBool(vCodeActivityMapper.updateSceneById(userId, activityId, ro.getScene()));
@@ -111,7 +106,6 @@ public class VCodeActivityServiceImpl implements IVCodeActivityService {
 
     @Override
     public void delete(Long userId, Long activityId) {
-        // 逻辑删除
         boolean flag = SqlHelper.retBool(vCodeActivityMapper.removeById(userId, activityId));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
     }

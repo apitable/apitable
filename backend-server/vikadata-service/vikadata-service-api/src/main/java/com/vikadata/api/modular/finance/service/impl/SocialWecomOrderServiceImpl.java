@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 订阅计费系统-企微商店渠道订单
+ * Subscription Billing System - Wecom Order Service Implement Class
  * </p>
  */
 @Service
@@ -41,7 +41,6 @@ public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMap
 
     @Override
     public SocialWecomOrderEntity createOrder(WeComOrderPaidEvent paidEvent) {
-        // 复制数据
         SocialWecomOrderEntity orderEntity = new SocialWecomOrderEntity();
         orderEntity.setOrderId(paidEvent.getOrderId());
         orderEntity.setOrderStatus(paidEvent.getOrderStatus());
@@ -68,25 +67,14 @@ public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMap
         orderEntity.setOrderInfo(JSONUtil.toJsonStr(paidEvent));
         orderEntity.setCreatedBy(-1L);
         orderEntity.setUpdatedBy(-1L);
-        // 保存
         save(orderEntity);
-        // 返回
         return orderEntity;
     }
 
-    @Override
-    public List<SocialWecomOrderEntity> getAllOrders(String suiteId, String paidCorpId, List<Integer> orderStatuses) {
-        return getBaseMapper().selectAllOrders(suiteId, paidCorpId, orderStatuses);
-    }
 
     @Override
     public SocialWecomOrderEntity getByOrderId(String orderId) {
         return getBaseMapper().selectByOrderId(orderId);
-    }
-
-    @Override
-    public SocialWecomOrderEntity getFirstPaidOrder(String suiteId, String paidCorpId) {
-        return getBaseMapper().selectFirstPaidOrder(suiteId, paidCorpId);
     }
 
     @Override

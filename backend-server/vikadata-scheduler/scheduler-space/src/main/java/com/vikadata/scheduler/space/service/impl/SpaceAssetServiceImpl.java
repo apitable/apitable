@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,22 +45,17 @@ import com.vikadata.scheduler.space.model.AssetDto;
 import com.vikadata.scheduler.space.model.DataSheetMetaDto;
 import com.vikadata.scheduler.space.model.DataSheetRecordDto;
 import com.vikadata.scheduler.space.model.NodeDto;
-import com.vikadata.scheduler.space.model.SpaceAssetBaseDto;
 import com.vikadata.scheduler.space.model.SpaceAssetDto;
 import com.vikadata.scheduler.space.model.SpaceAssetKeyDto;
 import com.vikadata.scheduler.space.service.ISpaceAssetService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 空间-附件资源 服务实现类
+ * Space Asset Service Implement Class
  * </p>
- *
- * @author Chambers
- * @since 2020/4/16
  */
 @Service
 public class SpaceAssetServiceImpl implements ISpaceAssetService {
@@ -95,45 +89,48 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
 
     @Override
     public void referenceCounting(String spaceId) {
-        XxlJobHelper.log("空间附件资源引用计数统计,当前时间：{}", LocalDateTime.now(ZoneId.of("+8")));
+        XxlJobHelper.log("Space asset reference count statistics. Now: {}", LocalDateTime.now(ZoneId.of("+8")));
         List<String> nodeIds;
         Map<String, String> nodIdToSpcIdMap = MapUtil.newHashMap();
         if (StrUtil.isNotBlank(spaceId)) {
-            // 判断空间是否存在
+            // Determine if space exists
             int count = SqlTool.retCount(spaceMapper.countBySpaceId(spaceId, null));
             if (count > 0) {
-                // 获取该空间所有的数表
+                // Get all numbers in this space
                 nodeIds = nodeMapper.selectNodeIdBySpaceIds(Collections.singletonList(spaceId), NodeType.DATASHEET.getNodeType());
                 nodeIds.forEach(nodeId -> nodIdToSpcIdMap.put(nodeId, spaceId));
             }
             else {
-                XxlJobHelper.log("指定统计的空间：{} 不存在。", spaceId);
+                XxlJobHelper.log("Space「{}」 does not exist.", spaceId);
                 return;
             }
         }
         else {
-            // 获取过去一天发生数据变化，且未被删除的数表
+            // Get the data table whose data has changed in the past day and has not been deleted
             Long yesterdayMaxChangeId = redisService.getYesterdayMaxChangeId();
             List<NodeDto> nodeDtoList = nodeMapper.findChangedNodeIds(yesterdayMaxChangeId);
             nodeDtoList.forEach(nodeDto -> nodIdToSpcIdMap.put(nodeDto.getNodeId(), nodeDto.getSpaceId()));
             nodeIds = nodeDtoList.stream().map(NodeDto::getNodeId).collect(Collectors.toList());
         }
         if (CollUtil.isEmpty(nodeIds)) {
-            XxlJobHelper.log("没有数表需要统计");
+            XxlJobHelper.log("No table of numbers to count.");
             return;
         }
-        // 找出存在附件字段的数表，组成数表ID-附件字段ID列表的Map
+        // Find out the number table with the attachment field,
+        // and form a Map of the number table ID-attachment field ID list
         Map<String, List<String>> dstIdToFldIdsMap = this.findAttachFieldIds(nodeIds);
         if (MapUtil.isEmpty(dstIdToFldIdsMap)) {
-            XxlJobHelper.log("统计的数表均无附件字段");
+            XxlJobHelper.log("The statistics table has no attachment field.");
             return;
         }
-        // 统计每个附件在数表中的引用次数，与原纪录次数不一致的，组成引用次数-空间附件资源ID列表的Map
+        // Count the number of citations of each attachment in the data table.
+        // If the number of references is inconsistent with the original record,
+        // it is a Map of the number of references-spatial attachment resource ID list.
         Map<Integer, List<Long>> citeToSpcAssetIdsMap = MapUtil.newHashMap();
         Set<String> dstIds = dstIdToFldIdsMap.keySet();
         List<DataSheetRecordDto> recordDtoList = new ArrayList<>();
         List<SpaceAssetDto> spaceAssetDtoList = new ArrayList<>();
-        // 分批次查询
+        // Batch query
         double size = 10.0;
         for (int i = 0; i < Math.ceil(dstIds.size() / size); i++) {
             List<String> split = dstIds.stream().skip((long) (i * size)).limit((long) size).collect(Collectors.toList());
@@ -141,15 +138,15 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
             spaceAssetDtoList.addAll(spaceAssetMapper.selectDtoByNodeIds(split));
         }
         if (CollUtil.isNotEmpty(recordDtoList)) {
-            // 统计引用数，得到需要变更和新增的结果集
+            // Count the number of citations to get the result set that needs to be changed and added
             List<SpaceAssetDto> needCreateList = new ArrayList<>();
-            // 统计引用数，记录变更和新增的结果集
+            // Count citations, record changes and new result sets
             this.statistic(recordDtoList, spaceAssetDtoList, dstIdToFldIdsMap, citeToSpcAssetIdsMap, needCreateList);
-            // 新增原来未记录的空间附件资源
+            // Added previously unrecorded space attachment resources
             this.addRecord(needCreateList, nodIdToSpcIdMap);
         }
         else {
-            // 没有任何数表记录，空间附件资源的引用次数全部置为0
+            // There is no data table record, and the reference times of space attachment resources are all set to 0
             List<Long> ids = spaceAssetDtoList.stream().filter(dto -> dto.getCite() != null && dto.getCite() != 0)
                     .map(SpaceAssetDto::getId).collect(Collectors.toList());
             if (CollUtil.isNotEmpty(ids)) {
@@ -157,52 +154,20 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
             }
         }
         if (MapUtil.isNotEmpty(citeToSpcAssetIdsMap)) {
-            XxlJobHelper.log("没有数据需要更新");
+            XxlJobHelper.log("No data to update.");
         }
-        // 批量修改空间附件资源引用数
+        // Batch modify the number of space attachment resource references
         citeToSpcAssetIdsMap.forEach((key, value) -> spaceAssetMapper.updateCiteByIds(value, key));
-        XxlJobHelper.log("更新完成");
-    }
-
-    @Override
-    public void releaseAsset(String spaceId, LocalDateTime startAt, LocalDateTime endAt) {
-        XxlJobHelper.log("资源修改参数,spaceId={},startAt={},endAt={}", spaceId, startAt, endAt);
-        // TODO 扫描开发者上传表
-        List<SpaceAssetBaseDto> dtoList = spaceAssetMapper.selectZeroCiteDtoBySpaceIdAndCreatedAt(spaceId, 2, startAt, endAt);
-        if (CollUtil.isNotEmpty(dtoList)) {
-            Map<Long, String> assetMap = dtoList.stream().collect(Collectors.toMap(SpaceAssetBaseDto::getId, SpaceAssetBaseDto::getChecksum));
-            XxlJobHelper.log("需要删除数据,count={}", assetMap.size());
-            batchRemoveAssetByIds(assetMap.keySet(), assetMap.values().stream().distinct().collect(Collectors.toList()));
-            dtoList.forEach(dto -> {
-                boolean result = ossTemplate.delete(configProperties.getOssBucketName(), dto.getFileUrl());
-                if (!result) {
-                    XxlJobHelper.log("七牛云删除资源失败={}", dto);
-                }
-            });
-        }
+        XxlJobHelper.log("Update completed.");
     }
 
     /**
-     * 批量删除附件，通过ID
-     *
-     * @param spaceAssetIds space_asset主键
-     * @param checksums assets checksum
-     */
-    @Override
-    @Transactional(rollbackFor = Throwable.class)
-    public void batchRemoveAssetByIds(Set<Long> spaceAssetIds, Collection<String> checksums) {
-        spaceAssetMapper.updateIsDeletedByIds(spaceAssetIds);
-        assetMapper.updateIsDeletedByChecksums(checksums);
-    }
-
-
-    /**
-     * 获取数表ID-附件字段ID列表的Map
+     * Get a Map of Table ID-Attachment Field ID list
      */
     private Map<String, List<String>> findAttachFieldIds(List<String> nodeIds) {
         Map<String, List<String>> dstIdFieldIdsMap = MapUtil.newHashMap();
         List<DataSheetMetaDto> metaDtoList = new ArrayList<>(nodeIds.size());
-        // 分批次查询
+        // Batch query
         double size = 10.0;
         for (int i = 0; i < Math.ceil(nodeIds.size() / size); i++) {
             List<String> split = nodeIds.stream().skip((long) (i * size)).limit((long) size).collect(Collectors.toList());
@@ -230,18 +195,18 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
     }
 
     /**
-     * 统计引用数，记录变更和新增的结果集
+     * Count citations, record changes and new result sets
      */
     private void statistic(List<DataSheetRecordDto> recordDtoList, List<SpaceAssetDto> spaceAssetDtoList,
             Map<String, List<String>> dstIdToFldIdsMap, Map<Integer, List<Long>> citeToSpcAssetIdsMap, List<SpaceAssetDto> needCreateList) {
         Map<SpaceAssetKeyDto, SpaceAssetDto> originCiteMap = new HashMap<>(spaceAssetDtoList.size());
         spaceAssetDtoList.forEach(dto -> originCiteMap.put(new SpaceAssetKeyDto(dto.getNodeId(), dto.getFileUrl()), dto));
-        // 遍历数表的记录数据
+        // Traverse the record data of the number table
         for (DataSheetRecordDto recordDto : recordDtoList) {
             Map<String, Integer> tokenToCiteMap = MapUtil.newHashMap();
             String dstId = recordDto.getDstId();
             List<String> attachFieldIds = dstIdToFldIdsMap.get(dstId);
-            // 遍历每一行中附件单元格里的数据
+            // Iterate over the data in the attachment cells in each row
             recordDto.getDataList().forEach(data -> {
                 JSONObject rowData = JSONUtil.parseObj(data);
                 for (String fieldId : attachFieldIds) {
@@ -250,7 +215,7 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
                         continue;
                     }
                     if (!JSONUtil.isJsonArray(cellData.toString())) {
-                        XxlJobHelper.log("数表：{} 字段：{} 单元格存在错误数据：{}", dstId, fieldId, cellData);
+                        XxlJobHelper.log("Datasheet「{}」 - Field「{}」.The cell has bad data. {}", dstId, fieldId, cellData);
                         continue;
                     }
                     JSONArray val = JSONUtil.parseArray(cellData);
@@ -258,7 +223,7 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
                         continue;
                     }
                     if (!JSONUtil.isJsonObj(val.get(0).toString())) {
-                        XxlJobHelper.log("数表：{} 字段：{} 单元格存在错误数据：{}", dstId, fieldId, cellData);
+                        XxlJobHelper.log("Datasheet「{}」 - Field「{}」.The cell has bad data. {}", dstId, fieldId, cellData);
                         continue;
                     }
                     val.jsonIter().forEach(attach -> {
@@ -272,13 +237,13 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
             if (MapUtil.isEmpty(tokenToCiteMap)) {
                 continue;
             }
-            // 记录变更和新增的结果集
+            // Record changes and new result sets
             tokenToCiteMap.forEach((token, cite) -> {
                 SpaceAssetKeyDto keyDto = new SpaceAssetKeyDto(dstId, token);
                 SpaceAssetDto spaceAssetDto = originCiteMap.get(keyDto);
                 originCiteMap.remove(keyDto);
                 if (spaceAssetDto != null) {
-                    // 记录引用数需要变更的空间附件资源
+                    // Space attachment resources that need to be changed to record the number of references
                     if (!cite.equals(spaceAssetDto.getCite())) {
                         List<Long> list = citeToSpcAssetIdsMap.get(cite);
                         if (CollUtil.isNotEmpty(list)) {
@@ -291,7 +256,7 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
                     }
                 }
                 else {
-                    // 新增原记录不存在的空间附件资源
+                    // Add a space attachment resource that does not exist in the original record
                     SpaceAssetDto dto = SpaceAssetDto.builder().nodeId(dstId).fileUrl(token).cite(cite).build();
                     needCreateList.add(dto);
                 }
@@ -300,7 +265,7 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
         if (MapUtil.isEmpty(originCiteMap)) {
             return;
         }
-        // 原纪录若找不到任何引用，引用次数全部置为0
+        // If no citations are found in the original record, the citation counts are all set to 0
         List<Long> ids = originCiteMap.values().stream()
                 .filter(dto -> dto.getCite() != null && dto.getCite() != 0).map(SpaceAssetDto::getId).collect(Collectors.toList());
         if (CollUtil.isEmpty(ids)) {
@@ -317,13 +282,13 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
     }
 
     /**
-     * 新增原来未记录的空间附件资源
+     * Added previously unrecorded space attachment resources
      */
     private void addRecord(List<SpaceAssetDto> needCreateList, Map<String, String> nodIdToSpcIdMap) {
         if (CollUtil.isEmpty(needCreateList)) {
             return;
         }
-        // 匹配基础附件资源的信息
+        // Information that matches the underlying attachment resource
         List<String> tokenList = needCreateList.stream().map(SpaceAssetDto::getFileUrl).collect(Collectors.toList());
         List<AssetDto> assetDtoList = assetMapper.selectDtoByTokens(tokenList);
         Map<String, AssetDto> assetDtoMap = assetDtoList.stream().collect(Collectors.toMap(AssetDto::getFileUrl, dto -> dto));
@@ -331,11 +296,11 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
         for (SpaceAssetDto dto : needCreateList) {
             AssetDto assetDto = assetDtoMap.get(dto.getFileUrl());
             if (assetDto == null) {
-                XxlJobHelper.log("资源找不到：{}", dto.getFileUrl());
-                // 从云端拉取，新增基础附件记录
+                XxlJobHelper.log("Resource「{}」 not found.", dto.getFileUrl());
+                // Pull from the cloud, add basic attachment records
                 assetDto = this.getObjectFromCloud(dto.getFileUrl());
                 if (assetDto == null) {
-                    XxlJobHelper.log("云端不存在该资源，path：{}", dto.getFileUrl());
+                    XxlJobHelper.log("The resource「{}」 does not exist in the cloud.", dto.getFileUrl());
                     continue;
                 }
                 assetDtoMap.put(dto.getFileUrl(), assetDto);
@@ -354,12 +319,12 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
         }
         if (CollUtil.isNotEmpty(insertList)) {
             spaceAssetMapper.insertList(insertList);
-            XxlJobHelper.log("新增完成");
+            XxlJobHelper.log("Add complete.");
         }
     }
 
     /**
-     * 从云端拉取资源附件
+     * Pull resource attachments from the cloud
      */
     private AssetDto getObjectFromCloud(String path) {
         OssObject object = ossTemplate.getObject(configProperties.getOssBucketName(), path);
@@ -379,7 +344,7 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
             if (StrUtil.isNotBlank(entity.getMimeType())) {
                 entity.setExtensionName(MimeTypeMapping.mimeTypeToExtension(entity.getMimeType()));
             }
-            // 云端可能未返回 md5，使用 InputStream 重新计算
+            // Cloud may not return md5, use InputStream to recalculate
             if (entity.getChecksum() == null) {
                 entity.setChecksum(DigestUtil.md5Hex(streamCache.getInputStream()));
             }
@@ -391,18 +356,17 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
             }
         }
         catch (Exception e) {
-            XxlJobHelper.log("云端资源 {} 解析出错，msg:{}", path, e.getMessage());
+            XxlJobHelper.log("Error parsing cloud resource「{}」. Mes: {}", path, e.getMessage());
         }
         try {
-            // 新增基础附件记录
             boolean flag = SqlHelper.retBool(assetMapper.insertEntity(entity));
             if (!flag) {
-                XxlJobHelper.log("新增基础附件记录失败，path：{}", path);
+                XxlJobHelper.log("Failed to add base attachment record. Path: {}", path);
                 return null;
             }
         }
         catch (Exception e) {
-            XxlJobHelper.log("保存基础附件记录 {} 失败，msg:{}", path, e.getMessage());
+            XxlJobHelper.log("Failed to save base asset record「{}」. Msg: {}", path, e.getMessage());
             return null;
         }
         AssetDto asset = new AssetDto();

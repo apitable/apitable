@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 /**
  * Json Converter
- * @author Shawn Deng
  */
 public class Converter {
 

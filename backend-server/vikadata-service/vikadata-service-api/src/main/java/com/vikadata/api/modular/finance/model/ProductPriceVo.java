@@ -12,33 +12,33 @@ import com.vikadata.api.util.billing.model.BillingPlanPrice;
 import static com.vikadata.api.util.billing.OrderUtil.toCurrencyUnit;
 
 /**
- * 产品方案价格视图
- *
- * @author Shawn Deng
+ * <p>
+ * Product Price View
+ * </p>
  */
 @Data
-@ApiModel("产品方案价格视图")
+@ApiModel("Product Price View")
 public class ProductPriceVo {
 
-    @ApiModelProperty(value = "产品类型", example = "SILVER")
+    @ApiModelProperty(value = "production type", example = "SILVER")
     private String product;
 
-    @ApiModelProperty(value = "产品方案", example = "price_dasx1212cas")
+    @ApiModelProperty(value = "price id", example = "price_dasx1212cas")
     private String priceId;
 
-    @ApiModelProperty(value = "席位数", example = "10")
+    @ApiModelProperty(value = "seat", example = "10")
     private Integer seat;
 
-    @ApiModelProperty(value = "月份", example = "6")
+    @ApiModelProperty(value = "month", example = "6")
     private Integer month;
 
-    @ApiModelProperty(value = "优惠金额(单位: 元)", example = "999.99")
+    @ApiModelProperty(value = "discount amount (unit: yuan)", example = "999.99")
     private BigDecimal priceDiscount;
 
-    @ApiModelProperty(value = "原价(单位: 元)", example = "19998.11")
+    @ApiModelProperty(value = "original price (unit: yuan)", example = "19998.11")
     private BigDecimal priceOrigin;
 
-    @ApiModelProperty(value = "支付金额(单位: 元)", example = "18998.11")
+    @ApiModelProperty(value = "p`ayment amount (unit: yuan)", example = "18998.11")
     private BigDecimal pricePaid;
 
     public static ProductPriceVo fromPrice(BillingPlanPrice planPrice) {

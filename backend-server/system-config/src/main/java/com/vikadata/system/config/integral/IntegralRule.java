@@ -4,11 +4,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 积分规则
+ * Integral Rule
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/16 12:18
  */
 @Data
 public class IntegralRule {

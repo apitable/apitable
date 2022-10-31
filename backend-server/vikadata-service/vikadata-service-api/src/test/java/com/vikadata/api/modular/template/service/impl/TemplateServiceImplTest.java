@@ -35,9 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
 
-/**
- * @author tao
- */
 @Disabled("no assert")
 public class TemplateServiceImplTest extends AbstractIntegrationTest {
 
@@ -143,7 +140,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
     @Test
     void testCheckDatasheetTemplate() {
         Map<String, List<String>> foreignDstMap = new HashMap<>();
-        foreignDstMap.put("dst123", CollUtil.newArrayList("测试字段"));
+        foreignDstMap.put("dst123", CollUtil.newArrayList("test filed"));
         // given
         given(iDatasheetService.getForeignFieldNames(Collections.singletonList("dst123"))).willReturn(foreignDstMap);
         // when
@@ -192,7 +189,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         nodeTypeToNodeIdsMap.put(5, mirrorList);
         nodeTypeToNodeIdsMap.put(3, formList);
         // given
-        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("测试");
+        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("test");
         // when
         boolean isException = false;
         try {
@@ -217,7 +214,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         relNodeToMainNodeMap.put("dst2", "dst");
         // given
         given(iNodeRelService.getRelNodeToMainNodeMap(mirrorList)).willReturn(relNodeToMainNodeMap);
-        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("测试");
+        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("test");
         // when
         boolean isException = false;
         try {
@@ -239,7 +236,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         nodeTypeToNodeIdsMap.put(5, mirrorList);
         nodeTypeToNodeIdsMap.put(3, formList);
         // given
-        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("测试");
+        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("test");
         // when
         boolean isException = false;
         try {

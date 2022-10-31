@@ -2,6 +2,7 @@ server:
   port: 9111
   shutdown: graceful
 
+# Spring
 spring:
   application:
     name: scheduler-space
@@ -19,6 +20,7 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1
+  # Redis
   redis:
     host: ${REDIS_HOST:127.0.0.1}
     username: ${REDIS_USERNAME:}
@@ -31,6 +33,7 @@ config:
   oss-bucket-name: ${VK_ASSETS_LTD_BUCKET:vk-assets-ltd}
   oss-type: ${VK_ASSETS_LTD_TYPE:QNY1}
 
+# vikadata starter
 vikadata-starter:
   job:
     register-address: ${JOB_ADMIN_ADDRESS:http://job.vika.ltd}
@@ -39,7 +42,6 @@ vikadata-starter:
     logpath: ${JOB_EXECUTOR_LOG_PATH:logs/vikadata/job/space}
     logretentiondays: ${JOB_EXECUTOR_LOG_RETENTION_DAYS:7}
     access-token: ${JOB_ACCESS_TOKEN:onJvanLmSE3CqotjNp8hb7WRolpM1pdL}
-  #组件：OSS云对象存储，默认开启：七牛云存储
   oss:
     enabled: ${OSS_ENABLED:false}
     type: ${OSS_TYPE:qiniu}
@@ -64,6 +66,7 @@ vikadata-starter:
     enabled: ${VIKA_ENABLED:false}
     host: ${VIKA_HOST:https://integration.vika.ltd}
     token: ${VIKA_TOKEN:usk8qo1Dk9PbecBlaqFIvbb}
+# internal server
 internal:
   domain: ${BACKEND_URL:http://backend-server:8081}
   getPausedUserHistoryInfoURL: /api/v1/internal/getUserHistories

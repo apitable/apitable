@@ -76,9 +76,9 @@ import static com.vikadata.api.util.billing.BillingConfigManager.getFreePlan;
 import static com.vikadata.api.util.billing.BillingUtil.legacyPlanId;
 
 /**
- * 财务服务实现
- *
- * @author Shawn Deng
+ * <p>
+ * Financial Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j
@@ -124,34 +124,34 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     @Transactional(rollbackFor = Exception.class)
     public OfflineOrderInfo createBusinessOrder(CreateBusinessOrderRo data) {
         String spaceId = data.getSpaceId();
-        // 检查空间是否存在
+        // Check if space exists
         SpaceEntity spaceEntity = iSpaceService.getBySpaceId(spaceId);
-        // 根据订单类型校验空间的订单
+        // Validate the order of the space according to the order type
         OrderType orderType = OrderType.of(data.getType());
         if (orderType == null) {
-            throw new IllegalArgumentException("订单类型不正确");
+            throw new IllegalArgumentException("Incorrect order type.");
         }
         if (orderType == OrderType.BUY || orderType == OrderType.UPGRADE) {
             verifyNonNullOrEmpty(data.getProduct(), "product should be specified");
             verifyNonNullOrEmpty(data.getSeat(), "seat should be specified");
         }
-        // 查询空间的订阅状态
+        // Query the subscription status of a space
         Bundle activeBundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
-        // 检查空间是否存在自营
+        // Check whether the space exists for self-operated
         if (orderType == OrderType.BUY) {
-            // 新购订单重复，不允许操作
+            // Duplicate new purchase order, operation not allowed
             if (activeBundle != null && !activeBundle.isBaseForFree()) {
-                throw new IllegalArgumentException("无法下单，空间站已经有订阅，也许你需要续订和升级");
+                throw new IllegalArgumentException("Can't place an order, the space station already has a subscription, maybe you need to renew and upgrade.");
             }
         }
         else if (orderType == OrderType.RENEW) {
             if (activeBundle == null) {
-                throw new IllegalArgumentException("无法续订，空间站没有订阅");
+                throw new IllegalArgumentException("Unable to renew, space station has no subscription.");
             }
         }
         else if (orderType == OrderType.UPGRADE) {
             if (activeBundle == null) {
-                throw new IllegalArgumentException("无法升级，空间站没有订阅");
+                throw new IllegalArgumentException("Can't upgrade, space station doesn't have a subscription.");
             }
         }
         String inputDate = data.getStartDate();
@@ -187,14 +187,12 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     }
 
     private OfflineOrderInfo createRenewOrder(SpaceEntity space, Bundle bundle, int months, String remark) {
-        // 开始时间
         LocalDateTime startDate = bundle.getBaseSubscription().getExpireDate();
-        // 过期时间
         LocalDateTime endDate = startDate.plusMonths(months);
-        // 更新订阅集合包
+        // Update subscription bundle
         BundleEntity updateBundle = BundleEntity.builder().endDate(endDate).updatedBy(-1L).build();
         iBundleService.updateByBundleId(bundle.getBundleId(), updateBundle);
-        // 更新订阅
+        // Update subscription
         Subscription subscription = bundle.getBaseSubscription();
         String subscriptionId = subscription.getSubscriptionId();
         SubscriptionEntity updateSubscription = SubscriptionEntity.builder().expireDate(endDate).updatedBy(-1L).build();
@@ -207,12 +205,11 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     }
 
     private OfflineOrderInfo createUpgradeOrder(SpaceEntity space, Bundle bundle, String product, int seat, LocalDateTime startDate, int months, String remark) {
-        // 过期时间
         LocalDateTime endDate = startDate.plusMonths(months);
-        // 更新订阅集合包
+        // Update subscription bundle
         BundleEntity updateBundle = BundleEntity.builder().startDate(startDate).endDate(endDate).updatedBy(-1L).build();
         iBundleService.updateByBundleId(bundle.getBundleId(), updateBundle);
-        // 更新订阅
+        // Update subscription
         Subscription subscription = bundle.getBaseSubscription();
         String subscriptionId = subscription.getSubscriptionId();
         Plan plan = BillingConfigManager.getPlan(product, seat);
@@ -229,11 +226,11 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     }
 
     public String createSubscription(String spaceId, Plan plan, LocalDateTime startDate, LocalDateTime endDate) {
-        // 创建空间站订阅集合包
+        // Create a space station subscription bundle
         BundleEntity bundleEntity = createBundle(spaceId, startDate, endDate);
 
         List<SubscriptionEntity> subscriptionEntities = new ArrayList<>();
-        // 创建基础类型订阅
+        // Create base type subscription
         String subscriptionId = UUID.randomUUID().toString();
         SubscriptionEntity baseSubscription = new SubscriptionEntity();
         baseSubscription.setSpaceId(spaceId);
@@ -251,19 +248,19 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
         baseSubscription.setUpdatedBy(-1L);
         subscriptionEntities.add(baseSubscription);
 
-        // 新购之前也许已经有(免费订阅+附加订阅)
+        // New purchase may already have (free subscription + additional subscription)
         Bundle activatedBundle = iBundleService.getPossibleBundleBySpaceId(spaceId);
         if (activatedBundle != null) {
             activatedBundle.getAddOnSubscription()
                     .stream()
                     .filter(subscription -> {
-                        // 过滤出未过期的附加订阅
+                        // Filter out unexpired add-on subscriptions
                         LocalDate today = ClockManager.me().getLocalDateNow();
                         LocalDate expireDate = subscription.getExpireDate().toLocalDate();
                         return today.compareTo(expireDate) <= 0;
                     })
                     .forEach(addOnSub -> {
-                        // 转移未失效的附加计划订阅到新的订阅
+                        // Transfer a non-expired add-on plan subscription to a new subscription
                         SubscriptionEntity addOn = new SubscriptionEntity();
                         addOn.setSpaceId(spaceId);
                         addOn.setBundleId(bundleEntity.getBundleId());
@@ -277,7 +274,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
                         addOn.setExpireDate(addOnSub.getExpireDate());
                         subscriptionEntities.add(addOn);
                     });
-            // 让之前的订阅过期
+            // expire previous subscriptions
             BundleEntity updateBundle = new BundleEntity();
             updateBundle.setState(BundleState.EXPIRED.name());
             iBundleService.updateByBundleId(activatedBundle.getBundleId(), updateBundle);
@@ -289,7 +286,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     }
 
     private String createOrder(String spaceId, OrderType orderType, Plan plan, int months, String subscriptionId, LocalDateTime startDate, LocalDateTime endDate) {
-        // 创建订单
+        // Create order
         String orderId = OrderUtil.createOrderId();
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setSpaceId(spaceId);
@@ -316,7 +313,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
         orderItemEntity.setProductName(plan.getProduct());
         Product product = getBillingConfig().getProducts().get(plan.getProduct());
         orderItemEntity.setProductCategory(product.getCategory());
-        // 线下订单没有固定付费方案，比较灵活的计划组合
+        // There is no fixed payment plan for offline orders, and a more flexible plan combination
         orderItemEntity.setPlanId(plan.getId());
         orderItemEntity.setSeat(plan.getSeats());
         orderItemEntity.setMonths(months);
@@ -333,68 +330,68 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     }
 
     private Message buildNewBuyCard(String spaceId, String spaceName, String productName, int seat, int months, LocalDate startDate, LocalDate endDate, String remark) {
-        Header header = new Header(new Text(Mode.PLAIN_TEXT, "新订单通知", null), TemplateColor.GREEN);
+        Header header = new Header(new Text(Mode.PLAIN_TEXT, "New Order Notification", null), TemplateColor.GREEN);
         Card card = new Card(new Config(true), header);
         List<Module> divList = new LinkedList<>();
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【订单类型】** 新购", null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【客户空间标识】** " + spaceId, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【客户空间名称】** " + spaceName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【产品等级】** " + productName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【席位】** %d人", seat), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【购买月数】** %d个月", months), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【生效日期】** %s", startDate.toString()), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【到期日期】** %s", endDate.toString()), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【备注】** %s", remark), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Order Type】** New Purchase", null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Customer Space ID】** " + spaceId, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Customer Space Name】** " + spaceName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Product Grade】** " + productName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Seat】** %d seat", seat), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Months of Purchase】** %d month", months), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Effective Date】** %s", startDate.toString()), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Date of Expiry】** %s", endDate.toString()), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Remark】** %s", remark), null)));
         divList.add(new Hr());
         List<CardComponent> elements = new ArrayList<>();
-        elements.add(new Text(Text.Mode.LARK_MD, "[查看订单](https://vika.cn/workbench/dstK19iRDHJXbcdGH2/viwGztsufm2BB)", null));
+        elements.add(new Text(Text.Mode.LARK_MD, "[Look over Order](https://vika.cn/workbench/dstK19iRDHJXbcdGH2/viwGztsufm2BB)", null));
         divList.add(new Note(elements));
-        // 设置内容元素
+        // Set content element
         card.setModules(divList);
         return new CardMessage(card.toObj());
     }
 
     private Message buildRenewCard(String spaceId, String spaceName, String productName, int seat, int months, LocalDate startDate, LocalDate endDate, String remark) {
-        Header header = new Header(new Text(Mode.PLAIN_TEXT, "续费订单通知", null), TemplateColor.GREEN);
+        Header header = new Header(new Text(Mode.PLAIN_TEXT, "Renew Order Notification", null), TemplateColor.GREEN);
         Card card = new Card(new Config(true), header);
         List<Module> divList = new LinkedList<>();
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【订单类型】** 续订", null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【客户空间标识】** " + spaceId, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【客户空间名称】** " + spaceName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【续订产品等级】** " + productName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【续订席位】** %d人", seat), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【续订购买月数】** %d个月", months), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【原生效日期】** %s", startDate.toString()), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【续订后到期日期】** %s", endDate.toString()), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【备注】** %s", remark), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Order Type】** Renew", null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Customer Space ID】** " + spaceId, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Customer Space Name】** " + spaceName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Renew Product Grade】** " + productName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Renew Seat】** %d seat", seat), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Renew Purchase Months】** %d month", months), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Original Effective Date】** %s", startDate.toString()), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Expiration Date after Renew】** %s", endDate.toString()), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Remark】** %s", remark), null)));
         divList.add(new Hr());
         List<CardComponent> elements = new ArrayList<>();
-        elements.add(new Text(Text.Mode.LARK_MD, "[查看订单](https://vika.cn/workbench/dstK19iRDHJXbcdGH2/viwGztsufm2BB)", null));
+        elements.add(new Text(Text.Mode.LARK_MD, "[Look over Order](https://vika.cn/workbench/dstK19iRDHJXbcdGH2/viwGztsufm2BB)", null));
         divList.add(new Note(elements));
-        // 设置内容元素
+        // Set content element
         card.setModules(divList);
         return new CardMessage(card.toObj());
     }
 
     private Message buildUpgradeCard(String spaceId, String spaceName, String oldProductName, String newProductName, int seat, int months, LocalDate startDate, LocalDate endDate, String remark) {
-        Header header = new Header(new Text(Mode.PLAIN_TEXT, "升级订单通知", null), TemplateColor.GREEN);
+        Header header = new Header(new Text(Mode.PLAIN_TEXT, "Upgrade Order Notification", null), TemplateColor.GREEN);
         Card card = new Card(new Config(true), header);
         List<Module> divList = new LinkedList<>();
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【订单类型】** 升级", null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【客户空间标识】** " + spaceId, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【客户空间名称】** " + spaceName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【原产品】** " + oldProductName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【升级产品】** " + newProductName, null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【升级席位】** %d人", seat), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【购买月数】** %d个月", months), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【生效日期】** %s", startDate.toString()), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【到期日期】** %s", endDate.toString()), null)));
-        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【备注】** %s", remark), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Order Type】** Upgrade", null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Customer Space ID】** " + spaceId, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Customer Space Name】** " + spaceName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Original Product Grade】** " + oldProductName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, "**【Upgrade Product Grade】** " + newProductName, null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Upgrade Seat】** %d seat", seat), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Months of Purchase】** %d month", months), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Effective Date】** %s", startDate.toString()), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Date of Expiry】** %s", endDate.toString()), null)));
+        divList.add(new Div(new Text(Text.Mode.LARK_MD, String.format("**【Remark】** %s", remark), null)));
         divList.add(new Hr());
         List<CardComponent> elements = new ArrayList<>();
-        elements.add(new Text(Text.Mode.LARK_MD, "[查看订单](https://vika.cn/workbench/dstK19iRDHJXbcdGH2/viwGztsufm2BB)", null));
+        elements.add(new Text(Text.Mode.LARK_MD, "[Look over Order](https://vika.cn/workbench/dstK19iRDHJXbcdGH2/viwGztsufm2BB)", null));
         divList.add(new Note(elements));
-        // 设置内容元素
+        // Set content element
         card.setModules(divList);
         return new CardMessage(card.toObj());
     }
@@ -402,14 +399,14 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createSubscriptionWithAddOn(CreateEntitlementWithAddOn data) {
-        // 检查参数
+        // Check params
         Plan plan = BillingConfigManager.getBillingConfig().getPlans().get(data.getPlanId());
-        verifyNonNullOrEmpty(plan, "附加计划不存在");
+        verifyNonNullOrEmpty(plan, "Additional plan does not exist");
         String spaceId = data.getSpaceId();
-        // 检查空间是否存在
+        // Check if space exists
         iSpaceService.checkExist(spaceId);
         if (isSocialBind(spaceId)) {
-            throw new IllegalArgumentException("不允许赠送第三方绑定集成的空间站");
+            throw new IllegalArgumentException("It is not allowed to give away third-party bundled integrated space stations");
         }
         String inputDate = data.getStartDate();
         LocalDateTime startDate = inputDate == null || inputDate.isEmpty() ?
@@ -417,15 +414,15 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
                 LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
         LocalDateTime endDate = startDate.plusMonths(data.getMonths());
         log.info("request start date: {}, end date: {}", startDate, endDate);
-        // 查询空间的订阅状态
+        // Query the subscription status of a space
         Bundle activeBundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
         if (activeBundle == null) {
-            // 不存在存在订阅，创建附加产品类型
+            // Subscription does not exist, create add-on product type
             BundleEntity bundleEntity = createBundle(spaceId, startDate, endDate);
             iBundleService.create(bundleEntity);
 
             List<SubscriptionEntity> entities = new ArrayList<>();
-            // 创建基础类型订阅
+            // Create base type subscription
             String subscriptionId = UUID.randomUUID().toString();
             SubscriptionEntity baseSubscription = new SubscriptionEntity();
             baseSubscription.setSpaceId(spaceId);
@@ -443,7 +440,7 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
             baseSubscription.setUpdatedBy(-1L);
             entities.add(baseSubscription);
 
-            // 附加类型订阅
+            // Add-on type subscription
             SubscriptionEntity addSubscription = new SubscriptionEntity();
             addSubscription.setSpaceId(spaceId);
             addSubscription.setBundleId(bundleEntity.getBundleId());
@@ -483,19 +480,19 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
 
     @Override
     public void createGiftCapacityOrder(Long userId, String userName, String spaceId) {
-        log.info("下单300MB附加订阅计划，用于邀请用户增容附件容量");
+        log.info("Order a 300MB add-on subscription plan to invite users to increase the capacity of the add-on.");
         CreateEntitlementWithAddOn createEntitlementWithAddOn = new CreateEntitlementWithAddOn();
         createEntitlementWithAddOn.setSpaceId(spaceId);
         createEntitlementWithAddOn.setPlanId("capacity_300_MB");
         createEntitlementWithAddOn.setMonths(12);
-        // 构建请求体中remark备注信息，包括userId、userName、capacityType
+        // Build the remark information in the request body, including userId, userName, capacityType
         Map<String, Object> remarkMap = new HashMap<>();
         remarkMap.put("userId", userId);
         remarkMap.put("userName", userName);
         remarkMap.put("capacityType", CapacityType.PARTICIPATION_CAPACITY.getName());
         String remark = new JSONObject(remarkMap).toString();
         createEntitlementWithAddOn.setRemark(remark);
-        // 附件订阅计划下单
+        // Add-on subscription plan to place an order
         this.createSubscriptionWithAddOn(createEntitlementWithAddOn);
     }
 

@@ -84,9 +84,9 @@ import static com.vikadata.api.util.billing.OrderUtil.yuanToCents;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
- * 订单服务实现类
- *
- * @author Shawn Deng
+ * <p>
+ * Order Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j
@@ -141,14 +141,14 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         OrderPreview orderPreview = new OrderPreview();
         orderPreview.setSpaceId(spaceId);
         orderPreview.setCurrency(Currency.CNY.name());
-        // 查找变更付费方案
+        // Find change paid plans
         Price newPricePlan = BillingConfigManager.getPriceBySeatAndMonth(dryRunArguments.getProduct(), dryRunArguments.getSeat(), dryRunArguments.getMonth());
         if (newPricePlan == null) {
             throw new BusinessException(PLAN_NOT_EXIST);
         }
-        // 获取空间的订阅信息
+        // Get subscription information for a space
         Bundle activeBundle = iBundleService.getActivatedBundleBySpaceId(spaceId);
-        // 设置订单类型
+        // Set order type
         orderPreview.setOrderType(parseOrderType(activeBundle, newPricePlan));
         switch (dryRunArguments.getAction()) {
             case START_BILLING:
@@ -164,7 +164,7 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
                 orderPreview.setPriceUnusedCalculated(toCurrencyUnit(orderPrice.getPriceUnusedCalculated()));
                 orderPreview.setPriceDiscount(toCurrencyUnit(orderPrice.getPriceDiscount()));
                 if (orderPrice.getPricePaid().compareTo(BigDecimal.ZERO) <= 0) {
-                    // 负数代表抵扣金额大于待支付金额,实际是0元
+                    // A negative number means that the deducted amount is greater than the amount to be paid, which is actually 0 yuan
                     orderPreview.setPricePaid(BigDecimal.ZERO);
                 }
                 else {
@@ -182,7 +182,7 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         if (activeBundle == null) {
             throw new RuntimeException("Space has not subscription ");
         }
-        // 即将要改变的订阅
+        // Subscriptions about to change
         Subscription subscriptionForChange = activeBundle.getBaseSubscription();
         List<OrderItemEntity> orderItemEntities = iOrderItemService.getBySubscriptionId(subscriptionForChange.getSubscriptionId());
         if (orderItemEntities.isEmpty()) {
@@ -191,10 +191,10 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         List<String> orderIds = orderItemEntities.stream().map(OrderItemEntity::getOrderId).collect(Collectors.toList());
         List<OrderEntity> orderEntities = getByOrderIds(orderIds);
         int[] findUpgradeOrderItemIndexes = CollectionUtil.findIndex(orderEntities, order -> OrderType.of(order.getOrderType()) == OrderType.UPGRADE);
-        // 原付费方案的总金额
+        // The total amount of the original paid plan
         BigDecimal totalAmount = BigDecimal.ZERO;
         if (findUpgradeOrderItemIndexes.length > 0) {
-            // 从最后游标开始叠加计算订单金额
+            // Calculate the order amount by stacking from the last cursor
             int last = findUpgradeOrderItemIndexes[findUpgradeOrderItemIndexes.length - 1];
             String lastUpgradeOrderId = orderEntities.get(last).getOrderId();
             int[] indexOfAll = CollectionUtil.findIndex(orderItemEntities, orderItem -> orderItem.getOrderId().equals(lastUpgradeOrderId));
@@ -212,73 +212,73 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         if (log.isDebugEnabled()) {
             log.debug("old paid plan amount: {}", totalAmount);
         }
-        // 旧方案期限
+        // old plan term
         LocalDate startDate = activeBundle.getBundleStartDate().toLocalDate();
         LocalDate endDate = activeBundle.getBaseSubscription().getExpireDate().toLocalDate();
-        // 旧方案总天数
+        // Total days of old plan
         long nbTotalDays = DAYS.between(startDate, endDate);
-        // targetDate计算使用天数比例，此方法只有在国内使用，使用中国时区
+        // targetDate calculates the proportion of days in use, this method is only used in China, using the Chinese time zone
         LocalDate targetDate = ClockManager.me().getLocalDateNow();
         BigDecimal usedDaysProrated = calculateProrationBetweenDates(startDate, targetDate, nbTotalDays);
         if (log.isDebugEnabled()) {
             log.debug("used pro-rated: {}", usedDaysProrated);
         }
-        // 旧方案剩余金额
+        // Remaining amount of old plan
         BigDecimal unusedCalculatedAmount = calculateUnusedAmount(totalAmount, usedDaysProrated);
         if (log.isDebugEnabled()) {
             log.debug("unused plan calculated amount: {}", unusedCalculatedAmount);
         }
-        // 变更付费方案的价格(单位：元)
+        // Change the price of the paid plan (unit: yuan)
         BillingPlanPrice planPrice = BillingPlanPrice.of(newPricePlan, ClockManager.me().getLocalDateNow());
         BigDecimal upgradePlanAmount = planPrice.getActual();
         if (log.isDebugEnabled()) {
             log.debug("ready change plan amount: {}", upgradePlanAmount);
         }
-        // 支付金额
+        // Payment amount
         BigDecimal paidAmount = upgradePlanAmount.subtract(unusedCalculatedAmount);
         return new OrderPrice(upgradePlanAmount, unusedCalculatedAmount, unusedCalculatedAmount, paidAmount);
     }
 
     @Override
     public OrderType parseOrderType(Bundle activeBundle, Price newPricePlan) {
-        // 根据请求参数，分析订单类型：新购、续订、升级
+        // According to the request parameters, analyze the order type: new purchase, renewal, upgrade
         OrderType orderType = OrderType.BUY;
         if (activeBundle == null) {
-            // 没有订阅，返回新购类型
+            // No subscription, return new purchase type
             return orderType;
         }
-        // 有激活中的订阅，判断基础类型产品订阅等级，确认是续订还是升级
+        // There is an active subscription, determine the subscription level of the basic type product, and confirm whether to renew or upgrade
         Subscription baseProductSubscription = activeBundle.getBaseSubscription();
-        // 当前空间站的订阅方案
+        // Subscription plans for the current space station
         Plan currentPricePlan = BillingConfigManager.getBillingConfig().getPlans().get(legacyPlanId(baseProductSubscription.getPlanId()));
         ComparableProduct currentProduct = new ComparableProduct(ProductEnum.of(currentPricePlan.getProduct()));
         if (currentProduct.getProduct().isFree()) {
             return orderType;
         }
-        // 请求的订阅方案
+        // Requested subscription plan
         ComparableProduct requestProduct = new ComparableProduct(ProductEnum.of(newPricePlan.getProduct()));
         if (requestProduct.isEqual(currentProduct)) {
-            // 请求产品类型一致，判断方案人数差异
+            // Request the same product type and judge the difference in the number of people in the plan
             if (newPricePlan.getSeat() > currentPricePlan.getSeats()) {
-                // 人数大于当前方案，升级订单
+                // The number of people is larger than the current plan, upgrade the order
                 orderType = OrderType.UPGRADE;
             }
             else if (newPricePlan.getSeat().equals(currentPricePlan.getSeats())) {
-                // 人数相同，续费订单
+                // The same number of people, renew the order
                 orderType = OrderType.RENEW;
             }
             else if (newPricePlan.getSeat() < currentPricePlan.getSeats()) {
-                log.error("不允许请求订阅降级");
+                log.error("Pull subscription downgrades are not allowed");
                 throw new BusinessException(NOT_ALLOW_DOWNGRADE);
             }
         }
         else if (requestProduct.isGreaterThan(currentProduct)) {
-            // 升级请求
+            // Upgrade request
             orderType = OrderType.UPGRADE;
         }
         else if (requestProduct.isLessThan(currentProduct)) {
-            // 不允许降级，拒绝创建订单
-            log.error("不允许请求订阅降级");
+            // Downgrade is not allowed, order creation is refused
+            log.error("Pull subscription downgrades are not allowed");
             throw new BusinessException(NOT_ALLOW_DOWNGRADE);
         }
         return orderType;
@@ -288,22 +288,22 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
     @Transactional(rollbackFor = Exception.class)
     public String createOrder(OrderArguments orderArguments) {
         Price price = orderArguments.getPrice();
-        // 判断方案是否存在，不存在则异常
+        // Judging whether the scheme exists or not, it is abnormal if it does not exist
         if (price == null) {
             throw new BusinessException(PLAN_NOT_EXIST);
         }
-        // 获取空间的订阅信息
+        // Get subscription information for a space
         Bundle activeBundle = iBundleService.getActivatedBundleBySpaceId(orderArguments.getSpaceId());
         OrderType orderType = parseOrderType(activeBundle, price);
         if (orderType == OrderType.BUY) {
-            // 新购场景下，必须当前空间没有基础订阅
+            // In the new purchase scenario, there must be no basic subscription in the current space
             if (activeBundle != null && !activeBundle.isBaseForFree()) {
                 throw new BusinessException(REPEAT_NEW_BUY_ORDER);
             }
         }
         BillingPlanPrice planPrice = BillingPlanPrice.of(price, ClockManager.me().getLocalDateNow());
         OrderPrice orderPrice = new OrderPrice(price.getOriginPrice(), planPrice.getDiscount(), planPrice.getDiscount(), planPrice.getActual());
-        // 自营的0元订单目前只有在升级订阅时会发生
+        // The self-operated 0 yuan order currently only occurs when the subscription is upgraded
         boolean isZeroOrder = false;
         if (orderType == OrderType.UPGRADE) {
             orderPrice = repairOrderPrice(activeBundle, price);
@@ -315,7 +315,7 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         int originalAmount = yuanToCents(orderPrice.getPriceOrigin());
         int discountAmount = yuanToCents(orderPrice.getPriceDiscount());
         int amount = yuanToCents(orderPrice.getPricePaid());
-        // 创建订单
+        // Create order
         String orderId = OrderUtil.createOrderId();
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setSpaceId(orderArguments.getSpaceId());
@@ -328,8 +328,8 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         orderEntity.setAmount(amount);
         LocalDateTime nowDateTime = ClockManager.me().getLocalDateTimeNow();
         if (isZeroOrder) {
-            // 0元直接创建空间订阅
-            // 这里应该统一使用权益服务类管理空间订阅
+            // 0 yuan to create a space subscription directly
+            // Here we should uniformly use the benefit service class to manage space subscriptions
             orderEntity.setState(OrderStatus.FINISHED.getName());
             orderEntity.setIsPaid(true);
             orderEntity.setPaidTime(nowDateTime);
@@ -361,9 +361,9 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         iOrderItemService.save(orderItemEntity);
 
         if (isZeroOrder) {
-            // 过期时间
+            // Expiration
             LocalDateTime entitlementExpiredDate = nowDateTime.plusMonths(orderItemEntity.getMonths());
-            // 变更订阅状态
+            // Change subscription status
             BundleEntity updateBundle = new BundleEntity();
             updateBundle.setEndDate(entitlementExpiredDate);
             iBundleService.updateByBundleId(activeBundle.getBundleId(), updateBundle);
@@ -391,21 +391,21 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
     @Override
     @Transactional(rollbackFor = Exception.class)
     public OrderPaymentVo createOrderPayment(Long userId, String orderId, PayChannel channel) {
-        // 检查订单是否存在
+        // Check if order exists
         OrderEntity orderEntity = getByOrderId(orderId);
         if (orderEntity == null) {
             throw new BusinessException(ORDER_NOT_EXIST);
         }
         if (orderEntity.getAmount() == 0) {
-            // 0元不允许创建支付订单
+            // 0 yuan is not allowed to create payment orders
             throw new BusinessException(ORDER_EXCEPTION);
         }
-        // 检查用户是否在此空间
+        // Check if user is in this space
         iMemberService.checkUserIfInSpace(userId, orderEntity.getSpaceId());
-        // 检查订单是否是未支付状态
+        // Check if the order is unpaid
         OrderStatus orderStatus = OrderStatus.of(orderEntity.getState());
         if (orderStatus != OrderStatus.UNPAID) {
-            // 其他状态不允许支付
+            // Other states do not allow payment
             if (orderStatus == OrderStatus.CANCELED) {
                 throw new BusinessException(ORDER_HAS_CANCELED);
             }
@@ -415,10 +415,9 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         }
         List<OrderItemEntity> orderItemEntities = iOrderItemService.getByOrderId(orderId);
         if (orderItemEntities.isEmpty()) {
-            // 订单信息错误，报异常
             throw new BusinessException(ORDER_EXCEPTION);
         }
-        // 只提供基础产品购买，故只有一个
+        // Only provide basic product purchase, so there is only one
         OrderItemEntity orderItem = orderItemEntities.iterator().next();
         Price price = BillingConfigManager.getPriceBySeatAndMonth(orderItem.getProductName().toUpperCase(Locale.ROOT), orderItem.getSeat(), orderItem.getMonths());
         if (price == null) {
@@ -427,16 +426,16 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
 
         String payTransactionId = OrderUtil.createPayTransactionId();
         int actualAmount = orderEntity.getAmount();
-        // 订单总金额, 人民币单位：分（如订单总金额为 1 元，此处请填 100）
+        // Total order amount, RMB unit: cents (if the total order amount is 1 RMB, please fill in 100 here)
         if (subscriptionProperties.getTestMode()) {
-            // 测试模式下，都是1块钱
+            // In test mode, it is 1 yuan
             actualAmount = 100;
         }
 
-        // 创建Ping++交易请求
+        // Create Ping++ transaction request
         Charge charge = PingppUtil.createCharge(pingProperties.getAppId(), price, channel, payTransactionId, actualAmount);
 
-        // 创建支付订单
+        // Create payment order
         OrderPaymentEntity orderPaymentEntity = new OrderPaymentEntity();
         orderPaymentEntity.setOrderId(orderId);
         orderPaymentEntity.setPaymentTransactionId(payTransactionId);
@@ -446,7 +445,7 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         orderPaymentEntity.setPayChannel(channel.getName());
         orderPaymentEntity.setPayChannelTransactionId(charge.getId());
         iOrderPaymentService.save(orderPaymentEntity);
-        // 返回支付订单视图
+        // Return to payment order view
         OrderPaymentVo paymentVo = new OrderPaymentVo();
         paymentVo.setOrderNo(orderId);
         paymentVo.setPayTransactionNo(payTransactionId);
@@ -461,7 +460,7 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
 
     @Override
     public OrderStatus getOrderStatusByOrderId(String orderId) {
-        // 检查订单是否存在
+        // Check if order exists
         OrderEntity orderEntity = getByOrderId(orderId);
         if (orderEntity == null) {
             throw new BusinessException(ORDER_NOT_EXIST);
@@ -500,10 +499,10 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
         if (!charge.getPaid()) {
             return OrderStatus.UNPAID;
         }
-        // 已经支付成功,存在支付成功延迟通知,立即处理
+        // The payment has been successful, and there is a notification of payment success delay, which will be processed immediately
         PingChargeSuccess chargeSuccess = PingChargeSuccess.build(charge);
         iOrderPaymentService.retrieveOrderPaidEvent(chargeSuccess);
-        // 同步订单事件
+        // Sync order events
         SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
         return OrderStatus.FINISHED;
     }
@@ -513,7 +512,7 @@ public class OrderV2ServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> im
             return Charge.retrieve(chargeId);
         }
         catch (Exception e) {
-            log.error("查询Ping++支付订单失败", e);
+            log.error("Failed to query Ping++ payment order.", e);
             throw new BusinessException(ORDER_EXCEPTION);
         }
     }

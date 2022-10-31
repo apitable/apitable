@@ -14,10 +14,8 @@ import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.developer.GmAction;
 import com.vikadata.api.model.ro.config.ConfigRo;
-import com.vikadata.api.model.ro.config.TemplateConfigRo;
 import com.vikadata.api.modular.base.service.IConfigService;
 import com.vikadata.api.modular.developer.service.IGmService;
-import com.vikadata.api.modular.template.service.ITemplateService;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "Configuration related interfaces")
 @ApiResource(path = "/config")
 public class ConfigController {
-
-    @Resource
-    private ITemplateService iTemplateService;
 
     @Resource
     private IGmService iGmService;
@@ -61,13 +56,4 @@ public class ConfigController {
         return ResponseData.success();
     }
 
-    @Deprecated
-    @PostResource(path = "/template", requiredPermission = false)
-    @ApiOperation(value = "Template configuration", notes = "popular recommendation and listing templates")
-    public ResponseData<Void> template(@RequestBody @Valid TemplateConfigRo ro) {
-        Long userId = SessionContext.getUserId();
-        iGmService.validPermission(userId, GmAction.TEMPLATE_CENTER_CONFIG);
-        iTemplateService.config(userId, ro);
-        return ResponseData.success();
-    }
 }

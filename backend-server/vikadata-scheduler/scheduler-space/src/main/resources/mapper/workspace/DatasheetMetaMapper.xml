@@ -1,47 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.scheduler.space.mapper.workspace.DatasheetMetaMapper">
-    <update id="updateIsDeletedByNodeIds">
-        UPDATE vika_datasheet_meta
-        SET is_deleted = 1
-        WHERE dst_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
-    </update>
 
     <select id="selectDtoByNodeIds" resultType="com.vikadata.scheduler.space.model.DataSheetMetaDto">
         SELECT dst_id, meta_data
         FROM vika_datasheet_meta
         WHERE dst_id IN
-        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0
     </select>
-
-    <select id="selectNodeIdByMetaLike" resultType="java.lang.String">
-        SELECT dst_id
-        FROM vika_datasheet_meta
-        WHERE meta_data LIKE CONCAT('%', #{keyword}, '%') AND is_deleted = 0
-    </select>
-
-    <update id="updateMetaByNodeId">
-        UPDATE vika_datasheet_meta
-        SET meta_data = #{meta}
-        WHERE dst_id = #{nodeId} AND is_deleted = 0
-    </update>
-
-    <update id="updateMetaByJsonInsert">
-        UPDATE vika_datasheet_meta
-        SET meta_data = JSON_INSERT( meta_data,
-        <foreach item="item" index="index" collection="list" separator=",">
-            CONCAT('$.fieldMap.', #{item}, '.property.datasheetId'), #{nodeId}
-        </foreach>),
-        updated_at = updated_at
-        WHERE dst_id = #{nodeId}
-    </update>
 
     <select id="selectMaxId" resultType="java.lang.Long">
         SELECT MAX(id)

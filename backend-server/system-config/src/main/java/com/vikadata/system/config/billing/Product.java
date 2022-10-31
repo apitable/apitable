@@ -7,11 +7,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 产品
+ * Billing Product
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/8/31 15:13
  */
 @Data
 public class Product {

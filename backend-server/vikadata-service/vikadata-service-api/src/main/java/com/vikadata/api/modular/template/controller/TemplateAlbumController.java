@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>
  * Template Center - Template Album API
  * </p>
- *
- * @author Chambers
- * @date 2022/9/16
  */
 @RestController
 @Api(tags = "Template Center - Template Album API")

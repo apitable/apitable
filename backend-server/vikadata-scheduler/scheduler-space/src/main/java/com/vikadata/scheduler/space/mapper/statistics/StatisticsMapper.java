@@ -2,20 +2,15 @@ package com.vikadata.scheduler.space.mapper.statistics;
 
 /**
  * <p>
- *
+ * Statistics Mapper
  * </p>
- *
- * @author Chambers
- * @date 2022/5/25
  */
 public interface StatisticsMapper {
 
     /**
-     * 查询API用量表最大的表ID
+     * Query the table ID with the largest API usage meter
      *
      * @return id
-     * @author Chambers
-     * @date 2022/5/25
      */
     Long selectApiUsageMaxId();
 }

@@ -23,11 +23,8 @@ import org.springframework.web.client.RestClientException;
 
 /**
  * <p>
- * 新世界 k11 连接实现类
+ * K11 Connections Implementation Class
  * </p>
- *
- * @author Chambers
- * @date 2021/6/19
  */
 public class K11Template extends ApiBinding implements K11Connector {
 
@@ -69,11 +66,11 @@ public class K11Template extends ApiBinding implements K11Connector {
                 new HttpEntity<>(map, header), BaseResponse.class);
             assert res != null;
             if (!res.getCode().equals(DEFAULT_SUCCESS_CODE)) {
-                throw new RuntimeException("sso sync-login 认证失败。msg: " + res.getMsg());
+                throw new RuntimeException("Sso sync-login certificate failure! Msg: " + res.getMsg());
             }
             return JSONUtil.parse(res.getData()).toBean(SsoAuthInfo.class);
         } catch (RestClientException e) {
-            throw new RestClientException("sso sync-login 认证请求错误。msg: " + e.getMessage());
+            throw new RestClientException("Sso sync-login certificate request error! Msg: " + e.getMessage());
         }
     }
 
@@ -85,7 +82,7 @@ public class K11Template extends ApiBinding implements K11Connector {
         try {
             Map<String, Object> map = new HashMap<>(3);
             map.put("email", email);
-            // AES-256-CBC 加密
+            // AES-256-CBC encryption
             AesEncryption aes = new AesEncryption("CBC", 256);
             map.put("password", new String(aes.encrypt(password, encryptKey.getEncryptKey())));
             map.put("ticket", encryptKey.getTicket());
@@ -93,11 +90,11 @@ public class K11Template extends ApiBinding implements K11Connector {
                     new HttpEntity<>(map, header), BaseResponse.class);
             assert res != null;
             if (!res.getCode().equals(DEFAULT_SUCCESS_CODE)) {
-                throw new RuntimeException("sso 认证失败。msg: " + res.getMsg());
+                throw new RuntimeException("sso certificate failure! Msg: " + res.getMsg());
             }
             return JSONUtil.parse(res.getData()).toBean(SsoAuthInfo.class);
         } catch (RestClientException e) {
-            throw new RestClientException("sso 认证请求错误。msg: " + e.getMessage());
+            throw new RestClientException("sso certificate request error! Msg: " + e.getMessage());
         }
     }
 
@@ -115,10 +112,10 @@ public class K11Template extends ApiBinding implements K11Connector {
                     new HttpEntity<>(map, this.getHeader()), BaseResponse.class);
             assert res != null;
             if (!res.getCode().equals(DEFAULT_SUCCESS_CODE)) {
-                throw new RuntimeException("发送短信失败。msg: " + res.getMsg());
+                throw new RuntimeException("Failed to send SMS! Msg: " + res.getMsg());
             }
         } catch (RestClientException e) {
-            throw new RestClientException("发送短信接口请求错误。msg: " + e.getMessage());
+            throw new RestClientException("Send SMS API request error! Msg: " + e.getMessage());
         }
     }
 
@@ -128,11 +125,11 @@ public class K11Template extends ApiBinding implements K11Connector {
                     new HttpEntity<>(headers), BaseResponse.class);
             assert res != null;
             if (!res.getCode().equals(DEFAULT_SUCCESS_CODE)) {
-                throw new RuntimeException("获取密钥失败。msg: " + res.getMsg());
+                throw new RuntimeException("Failed to get key! Msg: " + res.getMsg());
             }
             return JSONUtil.parse(res.getData()).toBean(EncryptKey.class);
         } catch (RestClientException e) {
-            throw new RestClientException("获取密钥请求错误。msg: " + e.getMessage());
+            throw new RestClientException("Get key request error! Msg: " + e.getMessage());
         }
     }
 
@@ -143,12 +140,12 @@ public class K11Template extends ApiBinding implements K11Connector {
         long timestamp = Clock.systemDefaultZone().millis()/1000;
         headers.set("timestamp", String.valueOf(timestamp));
 
-        // 升序排序之后 query_string，再 urldecode，最后 sh1 加密并转为大写
+        // after sorting in ascending order query_string, then urldecode, and finally sh1 encrypted and converted to uppercase
         String param = StrUtil.format("app_id={}&app_secret={}&timestamp={}", this.appId,  this.appSecret, timestamp - 3600);
         String sign = SecureUtil.sha1(URLUtil.decode(param)).toUpperCase();
         headers.set("sign", sign);
 
-        // 签名参数加上签名，signParam['sign'] = sign， query_string 之后 md5
+        // signature parameter plus signature, signParam['sign'] = sign, md5 after query_string
         headers.set("access-token", SecureUtil.md5(StrUtil.format("{}&sign={}", param, sign)));
 
         return headers;

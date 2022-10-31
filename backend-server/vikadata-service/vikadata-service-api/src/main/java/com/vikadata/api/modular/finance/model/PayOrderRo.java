@@ -6,19 +6,17 @@ import lombok.Data;
 
 /**
  * <p> 
- * 支付订单视图
- * </p> 
- * @author Shawn Deng 
- * @date 2022/2/15 20:46
+ * Pay Order Request Object
+ * </p>
  */
 @Data
-@ApiModel("支付订单视图")
+@ApiModel("Pay Order Request Object")
 public class PayOrderRo {
 
-    @ApiModelProperty(value = "订单号", example = "SILVER")
+    @ApiModelProperty(value = "order no", example = "SILVER")
     @Deprecated
     private String orderNo;
 
-    @ApiModelProperty(value = "支付渠道类型(wx_pub_qr: 微信Native支付, alipay_pc_direct: 支付宝电脑网站支付)", example = "wx_pub_qr")
+    @ApiModelProperty(value = "payment channel type (wx_pub_qr: WeChat Native payment, alipay_pc_direct: Alipay computer website payment)", example = "wx_pub_qr")
     private String payChannel;
 }

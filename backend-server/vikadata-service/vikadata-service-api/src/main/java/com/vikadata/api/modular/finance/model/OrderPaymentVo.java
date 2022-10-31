@@ -6,24 +6,22 @@ import lombok.Data;
 
 /**
  * <p> 
- * 支付订单详情视图
- * </p> 
- * @author Shawn Deng 
- * @date 2022/2/15 19:13
+ * Order Payment View
+ * </p>
  */
 @Data
-@ApiModel("支付订单详情视图")
+@ApiModel("Order Payment View")
 public class OrderPaymentVo {
 
-    @ApiModelProperty(value = "订单号", example = "20220215185035483353")
+    @ApiModelProperty(value = "order no", example = "20220215185035483353")
     private String orderNo;
 
-    @ApiModelProperty(value = "支付交易号", example = "20220215185035483353")
+    @ApiModelProperty(value = "pay transaction no", example = "20220215185035483353")
     private String payTransactionNo;
 
-    @ApiModelProperty(value = "支付渠道=wx_pub_qr，微信支付的二维码", example = "weixin://wxpay/bizpayurl?pr=qnZDTZm")
+    @ApiModelProperty(value = "payment channel=wx_pub_qr, QR code of WeChat payment", example = "weixin://wxpay/bizpayurl?pr=qnZDTZm")
     private String wxQrCodeLink;
 
-    @ApiModelProperty(value = "支付渠道=alipay_pc_direct，支付宝电脑网站支付的charge对象", example = "weixin://wxpay/bizpayurl?pr=qnZDTZm")
+    @ApiModelProperty(value = "payment channel=alipay_pc_direct, the charge object paid by Alipay computer website", example = "weixin://wxpay/bizpayurl?pr=qnZDTZm")
     private String alipayPcDirectCharge;
 }

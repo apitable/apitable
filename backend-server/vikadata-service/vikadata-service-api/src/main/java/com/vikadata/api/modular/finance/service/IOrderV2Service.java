@@ -18,94 +18,102 @@ import com.vikadata.entity.OrderEntity;
 import com.vikadata.system.config.billing.Price;
 
 /**
- * 订单服务
- * @author Shawn Deng
- * @date 2022-05-16 14:41:27
+ * <p>
+ * Order Service
+ * </p>
  */
 public interface IOrderV2Service extends IService<OrderEntity> {
 
     /**
-     * 根据订单号获取订单
-     * @param orderId 订单
-     * @return 订单实体
+     * Get order
+     *
+     * @param orderId order id
+     * @return entity
      */
     OrderEntity getByOrderId(String orderId);
 
     /**
-     * 批量查询订单
-     * @param orderIds 订单号列表
+     * Batch get order
+     *
+     * @param orderIds order id list
      * @return order list
      */
     List<OrderEntity> getByOrderIds(List<String> orderIds);
 
     /**
-     * 获取订单详情
-     * @param orderId 订单号
-     * @return 订单详情
+     * Get order detail
+     *
+     * @param orderId order id
+     * @return OrderDetailVo
      */
     OrderDetailVo getOrderDetailByOrderId(String orderId);
 
     /**
-     * 试运行订单生成
-     * @param dryRunArguments 参数
+     * Trial run order generation
+     *
+     * @param dryRunArguments arguments
      * @return OrderPreview
      */
     OrderPreview triggerDryRunOrderGeneration(DryRunArguments dryRunArguments);
 
     /**
-     * 修复订单价格
-     * @param actionBundle 空间订阅集合
-     * @param newPricePlan 新计划
+     * Fix order price
+     *
+     * @param actionBundle space subscription bundle
+     * @param newPricePlan new price plan
      * @return OrderPrice
      */
     OrderPrice repairOrderPrice(Bundle actionBundle, Price newPricePlan);
 
     /**
-     * 根据当前空间站解析订单类型
+     * Parse order type based on current space station
      *
-     * @param bundle 空间订阅捆绑包
-     * @param requestPricePlan 请求的付费方案标识
-     * @return 订单类型
+     * @param bundle            space subscription bundle
+     * @param requestPricePlan  Requested payment plan
+     * @return OrderType
      */
     OrderType parseOrderType(Bundle bundle, Price requestPricePlan);
 
     /**
-     * 创建订单
-     * @param orderArguments 订单参数
-     * @return 订单号
+     * Create order
+     *
+     * @param orderArguments order arguments
+     * @return order id
      */
     String createOrder(OrderArguments orderArguments);
 
     /**
-     * 创建支付订单
-     * @param userId 用户ID
-     * @param orderId 订单号
-     * @param channel 支付渠道
+     * Create order payment
+     *
+     * @param userId    user id
+     * @param orderId   order id
+     * @param channel   pay channel
      * @return OrderPaymentVo
      */
     OrderPaymentVo createOrderPayment(Long userId, String orderId, PayChannel channel);
 
     /**
-     * 获取订单的支付状态
-     * @param orderId 订单号
-     * @return 订单状态
+     * Get order status
+     *
+     * @param orderId order id
+     * @return OrderStatus
      */
     OrderStatus getOrderStatusByOrderId(String orderId);
 
     /**
-     * 根据渠道订单号获取系统订单号
-     * @param spaceId 空间ID
-     * @param channelOrderId 渠道订单号
+     * Get order id
+     *
+     * @param spaceId           space id
+     * @param channelOrderId    channel order id
      * @return String
-     * @author zoe zheng
-     * @date 2022/2/27 16:32
      */
     String getOrderIdByChannelOrderId(String spaceId, String channelOrderId);
 
     /**
-     * 检查刷新订单的支付状态
-     * @param orderId 订单号
-     * @return 订单状态
+     * Check the payment status of the refresh order
+     *
+     * @param orderId order id
+     * @return OrderStatus
      */
     OrderStatus checkOrderStatus(String orderId);
 }

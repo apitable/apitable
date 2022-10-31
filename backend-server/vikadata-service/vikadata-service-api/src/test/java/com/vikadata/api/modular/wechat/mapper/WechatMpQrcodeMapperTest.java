@@ -15,10 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：第三方系统-微信公众号二维码信息表测试
+ * Wechat Mp Qrcode Mapper Test
  * </p>
- * @author wuyitao
- * @date 2022/4/6 1:27 PM
  */
 @Disabled
 public class WechatMpQrcodeMapperTest extends AbstractMyBatisMapperTest {

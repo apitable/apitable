@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 
 import com.vikadata.social.feishu.card.Message;
 
-/**
- * @author Shawn Deng
- */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor

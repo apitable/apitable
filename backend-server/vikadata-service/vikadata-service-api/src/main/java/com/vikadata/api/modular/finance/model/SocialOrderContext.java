@@ -18,91 +18,54 @@ import com.vikadata.system.config.billing.Product;
  * <p>
  * the third party orders
  * </p>
- * @author zoe zheng
- * @date 2022/5/18 14:19
  */
 @Data
 @Builder(toBuilder = true)
 public class SocialOrderContext {
-    /**
-     * 商品渠道
-     */
+
     private ProductChannel productChannel;
 
-    /**
-     * 第三方订单ID
-     */
     private String socialOrderId;
 
     /**
-     * 支付金额 单位：分
+     * payment Amount Unit: cents
      */
     private Long amount;
 
     /**
-     * 折扣金额 单位：分
+     * discount amount Unit: cents
      */
     @Default
     private Long discountAmount = 0L;
 
     /**
-     * 原单总价 单位：分
+     * Total price of the original order Unit: cents
      */
     private Long originalAmount;
 
-    /**
-     * 价格方案
-     */
     private Price price;
 
-    /**
-     * 产品
-     */
     private Product product;
 
-    /**
-     * 空间ID
-     */
     private String spaceId;
 
-    /**
-     * 第三方订单支付时间
-     */
     private LocalDateTime paidTime;
 
-    /**
-     * 第三方订单创建时间
-     */
     private LocalDateTime createdTime;
 
-    /**
-     * 计划生效时间
-     */
     private LocalDateTime serviceStartTime;
 
-    /**
-     * 计划失效时间
-     */
     private LocalDateTime serviceStopTime;
 
     /**
-     * 订阅阶段
+     * subscription phase
      */
     @Default
     private SubscriptionPhase phase = SubscriptionPhase.FIXEDTERM;
 
-    /**
-     * 当前激活的订阅集合
-     */
     private Bundle activatedBundle;
 
-    /**
-     * 订单渠道
-     */
     private OrderChannel orderChannel;
 
-    /**
-     * 订单类型
-     */
     private OrderType orderType;
 }

@@ -7,9 +7,9 @@ import com.vikadata.api.modular.finance.service.IEntitlementService;
 import org.springframework.stereotype.Service;
 
 /**
- * 订阅权益服务实现类
- * @author Shawn Deng
- * @date 2021-11-02 21:47:40
+ * <p>
+ * Subscription Entitlement Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j

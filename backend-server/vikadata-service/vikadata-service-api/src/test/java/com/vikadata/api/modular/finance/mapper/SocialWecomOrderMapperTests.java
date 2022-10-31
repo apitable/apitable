@@ -17,10 +17,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 /**
  * <p>
- * 订阅计费系统-企微商店渠道订单
+ * Subscription Billing System - Wecom Order Mapper Test
  * </p>
- * @author Codeman
- * @date 2022-08-29 18:15:44
  */
 class SocialWecomOrderMapperTests extends AbstractMyBatisMapperTest {
 

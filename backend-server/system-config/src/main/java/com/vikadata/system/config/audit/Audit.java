@@ -3,9 +3,9 @@ package com.vikadata.system.config.audit;
 import lombok.Data;
 
 /**
- * 审计
- * @author Shawn Deng
- * @date 2021-11-11 15:08:34
+ * <p>
+ * Audit
+ * </p>
  */
 @Data
 public class Audit {

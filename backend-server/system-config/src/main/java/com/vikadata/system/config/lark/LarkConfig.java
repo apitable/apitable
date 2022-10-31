@@ -6,10 +6,8 @@ import lombok.Data;
 
 /** 
 * <p> 
-* 飞书配置
+* Lark Config
 * </p> 
-* @author zoe zheng 
-* @date 2022/2/25 14:03
 */
 @Data
 public class LarkConfig {

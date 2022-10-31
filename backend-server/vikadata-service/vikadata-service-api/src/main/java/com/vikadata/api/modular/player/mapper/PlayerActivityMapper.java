@@ -9,86 +9,43 @@ import com.vikadata.entity.PlayerActivityEntity;
 
 /**
  * <p>
- * Player - Activity Mapper 接口
+ * Player Activity Mapper
  * </p>
- *
- * @author Chambers
- * @date 2020/6/8
  */
 public interface PlayerActivityMapper extends BaseMapper<PlayerActivityEntity> {
 
     /**
-     * 查询动作集合体
-     *
-     * @param userId 用户ID
-     * @return 动作集合体（json）
-     * @author Chambers
-     * @date 2020/6/9
+     * Query actions
      */
     String selectActionsByUserId(@Param("userId") Long userId);
 
     /**
-     * 查询数量
-     *
-     * @param userId 用户ID
-     * @return count
-     * @author Chambers
-     * @date 2020/6/9
+     * Query count
      */
     Integer countByUserId(@Param("userId") Long userId);
 
     /**
-     * 查询动作集合体中指定键，对应的值
-     *
-     * @param userId 用户ID
-     * @param key    键
-     * @return value
-     * @author Chambers
-     * @date 2020/6/9
+     * Query the specified key and corresponding value in the action aggregate
      */
     Object selectActionsVal(@Param("userId") Long userId, @Param("key") String key);
 
     /**
-     * 更改动作集合体，插入键值对
-     *
-     * @param userIds 用户ID 列表
-     * @param key    键
-     * @param value  值
-     * @return 修改数
-     * @author Chambers
-     * @date 2020/6/9
+     * Change action collection, insert key-value pair
      */
     int updateActionsByJsonSet(@Param("userIds") List<Long> userIds, @Param("key") String key, @Param("value") Object value);
 
     /**
-     * 更改动作集合体，替换指定键对应的值
-     *
-     * @param userId 用户ID
-     * @param key    键
-     * @param value  值
-     * @return 修改数
-     * @author Chambers
-     * @date 2020/6/9
+     * Change the action aggregate, replacing the value corresponding to the specified key
      */
     int updateActionsReplaceByUserId(@Param("userId") Long userId, @Param("key") String key, @Param("value") Object value);
 
     /**
-     * 更改动作集合体，删除指定键对应的值
-     *
-     * @param userId 用户ID
-     * @param key    键
-     * @return 修改数
-     * @author Chambers
-     * @date 2020/9/21
+     * Change the action aggregate and delete the value corresponding to the specified key
      */
     int updateActionsRemoveByUserId(@Param("userId") Long userId, @Param("key") String key);
 
     /**
-     * 更改指定用户记录
-     *
-     * @param userId 用户ID
-     * @param act    动作集合体
-     * @return 修改数
+     * Change user actions
      */
     int updateActionsByUserId(@Param("userId") Long userId, @Param("act") String act);
 }

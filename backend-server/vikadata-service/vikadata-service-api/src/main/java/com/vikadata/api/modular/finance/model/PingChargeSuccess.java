@@ -5,9 +5,7 @@ import com.pingplusplus.model.Charge;
 import lombok.Data;
 
 /**
- * ping++ 支付成功通知
- * @author Shawn Deng
- * @date 2022-02-17 18:37:05
+ * ping++ payment success notification
  */
 @Data
 public class PingChargeSuccess {

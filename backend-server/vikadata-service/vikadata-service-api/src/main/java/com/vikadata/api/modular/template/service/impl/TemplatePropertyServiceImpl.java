@@ -27,7 +27,6 @@ import com.vikadata.api.modular.template.model.TemplateKeyWordSearchDto;
 import com.vikadata.api.modular.template.model.TemplatePropertyDto;
 import com.vikadata.api.modular.template.model.TemplatePropertyRelDto;
 import com.vikadata.api.modular.template.service.ITemplatePropertyService;
-import com.vikadata.api.modular.workspace.service.IDatasheetMetaService;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.TemplatePropertyEntity;
@@ -41,23 +40,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 模板中心-模版属性 服务实现类
+ * Template Property Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/5/12
  */
 @Slf4j
 @Service
 public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMapper, TemplatePropertyEntity> implements ITemplatePropertyService {
+
     @Resource
     private TemplatePropertyRelMapper propertyRelMapper;
 
     @Autowired(required = false)
     private VikaOperations vikaOperations;
-
-    @Resource
-    private IDatasheetMetaService datasheetMetaService;
 
     @Resource
     private TemplatePropertyRelMapper templatePropertyRelMapper;
@@ -69,54 +63,48 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     }
 
     /**
-     *
-     * 沿用之前版本上架模板的配置更新处理：
-     *    1. 只读取某语言的旧配置信息到某容器中
-     *    2. 容器对旧数据进行更新，并添加新配置信息
-     *    3. 删除此语言在数据库中的旧配置
-     *    4. 而后将更新数据和新数据写入数据库中
-     * 兼容之前的迭代版本的思路是利用lang对数据进行隔离。
-     *
-     * @param nodeId 模版配置表ID
-     * @param nameToTplIdMap 模版名字ID对应的map
-     * @param operatorUserId 操作用户ID
-     * @param lang 语言
+     * Follow the configuration update processing of the previous version of the shelf template:
+     * * 1. Only read the old configuration information of a certain language into a container
+     * * 2. The container updates the old data and adds new configuration information
+     * * 3. Delete the old configuration of this language in the database
+     * * 4. Then write the updated data and new data into the database
+     * The idea of compatibility with previous iterations is to use lang to isolate data.
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void configOnlineTemplate(String nodeId, Map<String, String> nameToTplIdMap, Long operatorUserId, String lang, List<String> templateCategoryNames) {
-        // 请求【维格表API】获取上架模板配置表
+        // Get config info
         List<OnlineTemplateInfo> templateConfigList = vikaOperations.getOnlineTemplateConfiguration(nodeId, lang);
 
-        // 更新过程中的上下文
+        // Context during update object
         TemplatePropertyMeta propertyMeta = new TemplatePropertyMeta();
         propertyMeta.operateUserId = operatorUserId;
         propertyMeta.lang = lang;
-        // 获取排序的分类名称集合
+        // Get a sorted collection of taxonomy names
         propertyMeta.categoryNames = templateCategoryNames;
-        // 利用lang，读取旧配置信息。
+        // Use lang to read old configuration information.
         getOldPropertyTableOfSpecifiedLanguage(propertyMeta);
 
-        // 对旧数据进行更新
+        // update old data
         for (OnlineTemplateInfo templateInfo : templateConfigList) {
             String templateName = templateInfo.getTemplateName();
             String templateId = nameToTplIdMap.get(templateName);
             if (templateId == null) {
-                throw new BusinessException("模版名称不正确:" + templateName);
+                throw new BusinessException("Template name 「{}」 is incorrect." + templateName);
             }
-            // 处理模版分类属性
+            // Handling template category attributes
             handleTemplateProperty(nameToTplIdMap.get(templateName), propertyMeta,
                     Arrays.asList(templateInfo.getTemplateCategoryName()), TemplatePropertyType.CATEGORY);
             if (templateInfo.getTemplateTagName() != null) {
-                // 处理模版标签属性
+                // Handling template tag attributes
                 handleTemplateProperty(nameToTplIdMap.get(templateName), propertyMeta,
                         Arrays.asList(templateInfo.getTemplateTagName()), TemplatePropertyType.TAG);
             }
 
         }
-        // 删除此语言在数据库中的旧配置
+        // Delete the old configuration of this language in the database
         propertyMeta.doDelete();
-        // 将新数据写入数据库中
+        // write new data to the database
         propertyMeta.doSaveOrUpdate();
     }
 
@@ -148,10 +136,10 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
 
     @Override
     public LinkedHashSet<String> getTemplateIdsByKeyWordAndLang(String propertyName, String lang) {
-        // 查询出来的时候，property_type=0 表示只有模版名字匹配
+        // When queried, property_type=0 means that only the template name matches
         List<TemplateKeyWordSearchDto> searchDtoList = baseMapper.selectTemplateByPropertyNameAndLang(propertyName, lang);
         int listSize = searchDtoList.size();
-        // 分成三组，名字+tag，名字，tag 分别包含关键字，并且保证模版ID的顺序
+        // Divide into three groups, name+tag, name, tag contain keywords respectively, and ensure the order of template ID
         LinkedHashSet<String> nameLikeTemplateIds = new LinkedHashSet<>(listSize);
         LinkedHashSet<String> nameAndLikeTemplateIds = new LinkedHashSet<>(listSize);
         LinkedHashSet<String> tagLikeTemplateIds = new LinkedHashSet<>(listSize);
@@ -160,14 +148,14 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
                 nameLikeTemplateIds.add(item.getTemplateId());
             }
             else if (item.getNameIndex() > 0 && item.getPropertyNameIndex() > 0) {
-                // 名字和tag都能和关键字匹配
+                // Both names and tags can match keywords
                 nameAndLikeTemplateIds.add(item.getTemplateId());
             }
             else {
                 tagLikeTemplateIds.add(item.getTemplateId());
             }
         });
-        // 保证顺序
+        // Guaranteed order
         nameAndLikeTemplateIds.addAll(nameLikeTemplateIds);
         nameAndLikeTemplateIds.addAll(tagLikeTemplateIds);
         return nameAndLikeTemplateIds;
@@ -199,7 +187,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
         List<TemplatePropertyRelDto> templatePropertyRelList = templatePropertyRelMapper.selectTemplateIdsByPropertyIds(propertyCodes);
         Map<String, List<String>> propertyCode2TemplateId = templatePropertyRelList.stream()
                 .collect(Collectors.groupingBy(TemplatePropertyRelDto::getPropertyCode,
-                Collectors.mapping(TemplatePropertyRelDto::getTemplateId, Collectors.toList())));
+                        Collectors.mapping(TemplatePropertyRelDto::getTemplateId, Collectors.toList())));
         List<CategoryDto> categories = new ArrayList<>(properties.size());
         properties.forEach(property -> {
             CategoryDto category = new CategoryDto();
@@ -222,7 +210,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
             else {
                 propertyId = handleTemplateCategoryProperty(propertyMeta, propertyName);
             }
-            // 处理多对多关联
+            // Handling many-to-many associations
             TemplatePropertyRelEntity relEntity = new TemplatePropertyRelEntity();
             relEntity.setPropertyId(propertyId);
             relEntity.setTemplateId(templateId);
@@ -239,7 +227,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     private Long handleTemplateCategoryProperty(TemplatePropertyMeta propertyMeta, String categoryName) {
         if (!propertyMeta.categoryNameMap.containsKey(categoryName)) {
             TemplatePropertyEntity propertyEntity = new TemplatePropertyEntity();
-            // 已经保存了属性
+            // properties have been saved
             if (propertyMeta.templateCategoryMap.containsKey(categoryName)) {
                 TemplatePropertyDto dto = propertyMeta.templateCategoryMap.get(categoryName);
                 propertyEntity.setId(dto.getPropertyId());
@@ -248,7 +236,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
                 propertyMeta.updateTemplatePropertyEntities.add(propertyEntity);
             }
             else {
-                // 之前没有写入，新增的分类，需要写入数据库
+                // It has not been written before, and the newly added category needs to be written to the database
                 Long propertyId = IdWorker.getId();
                 propertyEntity.setId(propertyId);
                 propertyEntity.setPropertyName(categoryName);
@@ -256,7 +244,6 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
                 propertyEntity.setPropertyType(TemplatePropertyType.CATEGORY.getType());
                 propertyEntity.setI18nName(propertyMeta.lang);
                 propertyEntity.setCreatedBy(propertyMeta.operateUserId);
-                // 新增
                 propertyMeta.templatePropertyEntities.add(propertyEntity);
             }
             propertyMeta.propertyIdToPropertyCode.put(propertyEntity.getId(), propertyEntity.getPropertyCode());
@@ -270,7 +257,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
 
     private Long handleTemplateTagProperty(TemplatePropertyMeta propertyMeta, String tagName) {
         TemplatePropertyEntity propertyEntity = new TemplatePropertyEntity();
-        // 没有操作过
+        // did not operate
         if (!propertyMeta.tagNameMap.containsKey(tagName)) {
             if (propertyMeta.templateTagMap.containsKey(tagName)) {
                 TemplatePropertyDto dto = propertyMeta.templateTagMap.get(tagName);
@@ -280,7 +267,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
                 propertyMeta.updateTemplatePropertyEntities.add(propertyEntity);
             }
             else {
-                // 之前没有写入，新增的分类，需要写入数据库
+                // It has not been written before, and the newly added category needs to be written to the database
                 Long propertyId = IdWorker.getId();
                 propertyEntity.setId(propertyId);
                 propertyEntity.setPropertyName(tagName);
@@ -288,7 +275,6 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
                 propertyEntity.setPropertyType(TemplatePropertyType.TAG.getType());
                 propertyEntity.setCreatedBy(propertyMeta.operateUserId);
                 propertyEntity.setI18nName(propertyMeta.lang);
-                // 新增
                 propertyMeta.templatePropertyEntities.add(propertyEntity);
             }
             propertyMeta.propertyIdToPropertyCode.put(propertyEntity.getId(), propertyEntity.getPropertyCode());
@@ -306,7 +292,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
 
         List<String> categoryNames;
 
-        // 旧数据存放容器
+        // old data storage container
         Map<String, TemplatePropertyDto> templateCategoryMap;
 
         Map<String, TemplatePropertyDto> templateTagMap;
@@ -315,7 +301,7 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
 
         List<Long> oldPropertyIds;
 
-        // 更新或新数据存放容器
+        // Update or new data storage container
         List<TemplatePropertyEntity> updateTemplatePropertyEntities = new ArrayList<>();
 
         List<TemplatePropertyRelEntity> templatePropertyRelEntities = new ArrayList<>();
@@ -342,19 +328,19 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
 
         void doDelete() {
 
-            // 删除之前的关联关系重新写入
+            // Delete the previous relationship and rewrite
             if (CollUtil.isNotEmpty(oldPropertyIds)) {
-                // 删除该语言配置的旧关系
+                // Delete the old relationship for this language configuration
                 propertyRelMapper.deleteBatchIn(oldPropertyIds);
             }
 
-            // 计算出removeIds
+            // Calculate removeIds
             Set<Long> newPropertyIds = new HashSet<>(this.newPropertyIds);
-            // 交集 newMemberIds
+            // intersection newMemberIds
             newPropertyIds.retainAll(oldPropertyIds);
-            // 有交集
+            // have intersection
             if (!newPropertyIds.isEmpty()) {
-                // oldMemberIds 和交集的差集
+                // difference of oldMemberIds and intersection
                 oldPropertyIds.removeAll(newPropertyIds);
             }
             if (!oldPropertyIds.isEmpty()) {
@@ -365,11 +351,11 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     }
 
     /**
-     * 读取某语言的旧配置信息
-     * @param meta 上架模板配置更新过程中的上下文
+     * Read old configuration information for a language
+     * @param meta Context during the listing template configuration update process
      */
     private void getOldPropertyTableOfSpecifiedLanguage(TemplatePropertyMeta meta) {
-        // 组装数据 propertyName -> list<TemplatePropertyDto>
+        // generate propertyName -> list<TemplatePropertyDto>
         List<TemplatePropertyDto> templateProperties = baseMapper.selectTemplatePropertiesWithI18n(meta.lang);
         Map<String, TemplatePropertyDto> categoryMap = new HashMap<>(templateProperties.size());
         Map<String, TemplatePropertyDto> tagMap = new HashMap<>(templateProperties.size());
@@ -383,12 +369,12 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
             }
             oldPropertyIds.add(item.getPropertyId());
         });
-        // tag可能会和分类重名
+        // The tag may have the same name as the category
         // categoryName -> templateProperty
         meta.templateCategoryMap = categoryMap;
         // tagName -> templateProperty
         meta.templateTagMap = tagMap;
-        // 旧templateProperty数据的记录id
+        // old templateProperty table id
         meta.oldPropertyIds = oldPropertyIds;
     }
 }

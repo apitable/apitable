@@ -8,14 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 时钟视图
- * @author Shawn Deng
- * @date 2022-05-25 16:44:04
+ * Clock View
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("时钟视图")
+@ApiModel("Clock View")
 public class ClockVO {
 
     private String currentUtcTime;

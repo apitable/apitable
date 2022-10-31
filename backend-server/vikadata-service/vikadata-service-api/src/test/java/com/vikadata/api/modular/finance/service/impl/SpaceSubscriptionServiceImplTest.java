@@ -51,7 +51,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         String spaceId = IdWorker.get32UUID();
         LocalDateTime endTime = getClock().getNow(testTimeZone).minusMinutes(1).toLocalDateTime();
         String priceId = "price_gold_200_1";
-        // 准备好空间站数据
+        // Get the space station data ready
         prepareSpaceBundleWithSubscription(spaceId, endTime, priceId);
         iSpaceSubscriptionService.handleExpiredSubscription(spaceId);
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
@@ -64,7 +64,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         String spaceId = IdWorker.get32UUID();
         LocalDateTime endTime = getClock().getNow(testTimeZone).plusDays(1).toLocalDateTime();
         String priceId = "price_gold_200_1";
-        // 准备好空间站数据
+        // Get the space station data ready
         prepareSpaceBundleWithSubscription(spaceId, endTime, priceId);
         iSpaceSubscriptionService.handleExpiredSubscription(spaceId);
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
@@ -221,7 +221,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         String spaceId = "spc2ZkYnVQJW2";
         SpaceEntity space = SpaceEntity.builder()
                 .id(IdWorker.getId())
-                .name("测试空间站")
+                .name("Test Space")
                 .spaceId(spaceId)
                 .props("{\"certification\":\"basic\"}")
                 .createdBy(-1L)
@@ -237,7 +237,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         String spaceId = "spc2ZkYnVQJW2";
         SpaceEntity space = SpaceEntity.builder()
                 .id(IdWorker.getId())
-                .name("测试空间站")
+                .name("Test Space")
                 .spaceId(spaceId)
                 .createdBy(-1L)
                 .updatedBy(-1L)
@@ -297,7 +297,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         String spaceId = "spc2ZkYnVQJW2";
         SpaceEntity space = SpaceEntity.builder()
                 .id(IdWorker.getId())
-                .name("测试空间站")
+                .name("Test Space")
                 .spaceId(spaceId)
                 .props("{\"certification\":\"basic\"}")
                 .createdBy(-1L)
@@ -322,7 +322,7 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
         UserEntity user = UserEntity.builder()
                 .id(IdWorker.getId())
                 .nickName("testUser")
-                .avatar("测试头像")
+                .avatar("avatar")
                 .build();
         userMapper.insert(user);
         IPage<SpaceCapacityPageVO> spaceCapacityPageVOIPage = iSpaceSubscriptionService.handleCapacitySubscription(spaceSubscriptionDtoIPage, new Page<>());
@@ -415,8 +415,8 @@ public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
 
 
     private void prepareSpaceData(String spaceId) {
-        // 初始化空间信息
-        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
+        // Initialize space information
+        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("Test Space").build();
         iSpaceService.save(spaceEntity);
     }
 

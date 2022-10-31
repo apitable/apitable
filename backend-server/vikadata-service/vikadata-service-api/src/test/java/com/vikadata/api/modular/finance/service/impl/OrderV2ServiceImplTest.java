@@ -232,7 +232,7 @@ public class OrderV2ServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testCreateOrderOnUpgradeComplexSense() {
-        // 新购-升级-升级
+        // New Purchase-Upgrade-Upgrade
         log.info("initial date on 2019-4-1 00:00:00 +08:00");
         // We take april as it has 30 days (easier to play)
         final OffsetDateTime initialCreateDate = OffsetDateTime.of(2019, 4, 1, 0, 0, 0, 0, testTimeZone);

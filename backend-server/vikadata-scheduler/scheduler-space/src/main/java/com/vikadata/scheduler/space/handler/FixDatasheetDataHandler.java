@@ -14,11 +14,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 修复数表数据相关Handler
+ * Fix Datasheet DataH andler
  * </p>
- *
- * @author Pengap
- * @date 2022/4/14 15:08:47
  */
 @Component
 public class FixDatasheetDataHandler {
@@ -46,7 +43,7 @@ public class FixDatasheetDataHandler {
     @Setter
     public static class JobParam {
         enum FixDataMode {
-            // 修复数表视图排序字段
+            // fix number table view sort field
             FIX_TEMPLATE_VIEW_SORTINFO
         }
 

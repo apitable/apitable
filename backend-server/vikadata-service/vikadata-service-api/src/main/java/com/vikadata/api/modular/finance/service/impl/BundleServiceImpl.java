@@ -32,9 +32,9 @@ import org.springframework.util.MultiValueMap;
 import static java.util.stream.Collectors.groupingBy;
 
 /**
- * 订阅套餐 服务实现类
- *
- * @author Shawn Deng
+ * <p>
+ * Bundle Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j
@@ -77,7 +77,7 @@ public class BundleServiceImpl extends ServiceImpl<BundleMapper, BundleEntity> i
 
     @Override
     public Bundle getActivatedBundleBySpaceId(String spaceId) {
-        // 必须基础类型订阅不过期
+        // The base type subscription must not expire
         Predicate<Bundle> condition = bundle -> {
             if (bundle.getState() != BundleState.ACTIVATED) {
                 return false;
@@ -105,7 +105,7 @@ public class BundleServiceImpl extends ServiceImpl<BundleMapper, BundleEntity> i
                     boolean found = today.compareTo(base.getStartDate().toLocalDate()) >= 0
                             && today.compareTo(base.getExpireDate().toLocalDate()) <= 0;
                     if (!found) {
-                        // 基础订阅过期，但附加订阅未过期，继续查找
+                        // The base subscription has expired, but the add-on subscription has not expired, keep looking
                         found = bundle.getAddOnSubscription().stream().anyMatch(subscription ->
                                 today.compareTo(subscription.getExpireDate().toLocalDate()) <= 0);
                     }
@@ -138,7 +138,7 @@ public class BundleServiceImpl extends ServiceImpl<BundleMapper, BundleEntity> i
                 .map(BundleEntity::getBundleId).collect(Collectors.toList());
         MultiValueMap<String, Subscription> subscriptionMap = new LinkedMultiValueMap<>(bundleIds.size());
         if (!bundleIds.isEmpty()) {
-            // 获取订阅条目列表
+            // Get a list of subscription entries
             List<Subscription> subscriptions = iSubscriptionService.getSubscriptionsByBundleIds(bundleIds);
             subscriptionMap.putAll(subscriptions.stream()
                     .collect(groupingBy(Subscription::getBundleId)));

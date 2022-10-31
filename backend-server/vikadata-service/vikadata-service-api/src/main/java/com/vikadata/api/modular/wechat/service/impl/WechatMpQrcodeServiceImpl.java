@@ -19,11 +19,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 微信公众号二维码信息 服务接口
+ * WeChat Mp Qrcode Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/8/13
  */
 @Slf4j
 @Service
@@ -39,7 +36,7 @@ public class WechatMpQrcodeServiceImpl implements IWechatMpQrcodeService {
 
     @Override
     public void save(String appId, String type, String scene, WxMpQrCodeTicket ticket) {
-        log.info("保存二维码信息，appId:{}，type:{}，scene:{}，WxMpQrCodeTicket:{}", appId, type, scene, ticket);
+        log.info("Save QRcode information. appId:{}，type:{}，scene:{}，WxMpQrCodeTicket:{}", appId, type, scene, ticket);
         WechatMpQrcodeEntity entity = WechatMpQrcodeEntity.builder()
                 .appId(appId)
                 .type(type)
@@ -54,7 +51,6 @@ public class WechatMpQrcodeServiceImpl implements IWechatMpQrcodeService {
 
     @Override
     public void delete(Long userId, Long qrCodeId, String appId) {
-        // 逻辑删除
         boolean flag = SqlHelper.retBool(wechatMpQrcodeMapper.removeByIdAndAppId(userId, qrCodeId, appId));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
     }

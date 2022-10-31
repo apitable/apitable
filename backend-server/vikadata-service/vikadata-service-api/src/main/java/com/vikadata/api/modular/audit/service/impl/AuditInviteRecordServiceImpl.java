@@ -11,11 +11,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 审计-邀请记录 服务实现类
+ * Audit Invite Record Service Implement Class
  * </p>
- *
- * @author Chambers
- * @since 2020-03-25
  */
 @Slf4j
 @Service
@@ -23,7 +20,6 @@ public class AuditInviteRecordServiceImpl extends ServiceImpl<AuditInviteRecordM
 
     @Override
     public void save(String spaceId, Long inviter, Long accepter, Integer type) {
-        log.info("新增记录");
         AuditInviteRecordEntity entity = AuditInviteRecordEntity.builder()
             .spaceId(spaceId)
             .inviter(inviter)

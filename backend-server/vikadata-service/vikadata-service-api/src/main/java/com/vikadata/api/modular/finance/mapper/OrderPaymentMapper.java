@@ -8,22 +8,22 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.OrderPaymentEntity;
 
 /**
- * 订阅计费系统-订单交易表 Mapper
- * @author Shawn Deng
- * @date 2022-05-13 16:34:13
+ * Subscription Billing System - Order Payment Mapper
  */
 public interface OrderPaymentMapper extends BaseMapper<OrderPaymentEntity> {
 
     /**
-     * 根据交易号查询
-     * @param payTransactionId 交易号
+     * Query by payment transaction id
+     *
+     * @param payTransactionId payment transaction id
      * @return EconomicOrderPaymentEntity
      */
     OrderPaymentEntity selectByTransactionId(@Param("payTransactionId") String payTransactionId);
 
     /**
-     * 根据订单号查询
-     * @param orderId 订单号
+     * Query by order id
+     *
+     * @param orderId order id
      * @return order payment list
      */
     List<OrderPaymentEntity> selectByOrderId(@Param("orderId") String orderId);

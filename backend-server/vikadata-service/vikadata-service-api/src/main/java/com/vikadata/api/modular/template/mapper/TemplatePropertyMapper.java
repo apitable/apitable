@@ -12,142 +12,74 @@ import com.vikadata.entity.TemplatePropertyEntity;
 
 /**
  * <p>
- * 模板中心-模版属性 Mapper 接口
+ * Template Property Mapper
  * </p>
- * @author zoe zheng
- * @date 2021/8/2 5:00 下午
  */
 public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntity> {
 
     /**
      * query property names by property codes
-     *
-     * @param propertyCodes property codes
-     * @return PropertyName List
-     * @author Chambers
-     * @date 2022/10/9
      */
     List<String> selectPropertyNameByPropertyCodeIn(@Param("propertyCodes") List<String> propertyCodes);
 
     /**
-     * 获取指定语言在线模版基本信息
-     *
-     * @param lang 特定语言
-     * @return List<OnlineTemplateInfoDto>
-     * @author wuyitao
+     * Query template property dto list by i18n
      */
     List<TemplatePropertyDto> selectTemplatePropertiesWithI18n(@Param("lang") String lang);
 
     /**
-     * 获取排序之后的模版属性的基本信息
-     *
-     * @param type 模版类型
-     * @param lang 语言
-     * @return List<TemplatePropertyDto>
-     * @author zoe zheng
-     * @date 2021/8/3 4:50 下午
+     * Query template property dto list by i18n after order
      */
     List<TemplatePropertyDto> selectTemplatePropertiesWithLangAndOrder(@Param("type") Integer type, @Param("lang") String lang);
 
     /**
      * query all template property
-     *
-     * @return TemplatePropertyDto List
-     * @author Chambers
-     * @date 2022/9/23
      */
     List<TemplatePropertyDto> selectAllTemplatePropertyDto();
 
     /**
      * update updatedBy by ids
-     *
-     * @param propertyCodes Template Property Codes
-     * @param updatedBy     Updater User ID
-     * @return affected rows count
-     * @author Chambers
-     * @date 2022/9/26
      */
     int updateUpdatedByByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes, @Param("updatedBy") Long updatedBy);
 
     /**
      * remove by property codes
-     *
-     * @param propertyCodes Template Property Codes
-     * @param updatedBy     Updater User ID
-     * @return affected rows count
-     * @author Chambers
-     * @date 2022/9/26
      */
     int removeByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes, @Param("updatedBy") Long updatedBy);
 
     /**
-     * 批量写入
-     *
-     * @param entities 实体数据
-     * @return 影响行数
-     * @author zoe zheng
-     * @date 2021/8/2 7:59 下午
+     * Batch insert
      */
     int insertBatch(@Param("entities") List<TemplatePropertyEntity> entities);
 
     /**
-     * 根据ID批量删除
-     *
-     * @param ids 属性ID
-     * @param updatedBy 更新人id
-     * @return 影响行数
-     * @author zoe zheng
-     * @date 2021/8/3 11:50 上午
+     * Batch delete by ids
      */
     int deleteBatchByIds(@Param("ids") List<Long> ids, @Param("updatedBy") Long updatedBy);
 
     /**
-     * 根据code查询属性ID
-     *
-     * @param code 属性code
-     * @param type 属性type
-     * @return 属性Id
-     * @author zoe zheng
-     * @date 2021/8/3 2:48 下午
+     * Query property id by code and type
      */
     Long selectIdByCodeAndType(@Param("code") String code, @Param("type") Integer type);
 
     /**
-     * 根据模版ID和类型查询属性
-     *
-     * @param templateIds 模版ID
-     * @param type 属性类型
-     * @return List<TemplatePropertyDto>
-     * @author zoe zheng
-     * @date 2021/8/3 3:02 下午
+     * Query properties by template id list and type
      */
     List<TemplatePropertyRelDto> selectPropertiesByTemplateIdsAndType(@Param("templateIds") List<String> templateIds,
             @Param("type") Integer type);
 
     /**
-     * 根据模版ID和标签名称搜索模版
-     *
-     * @param keyWord 关键字
-     * @param lang 语言
-     * @return 模版结果
-     * @author zoe zheng
-     * @date 2021/8/4 10:34 上午
+     * Query dto by fuzzy search
      */
     List<TemplateKeyWordSearchDto> selectTemplateByPropertyNameAndLang(@Param("keyWord") String keyWord, @Param("lang") String lang);
 
     /**
-     * 批量删除
-     *
-     * @return 删除条数
-     * @author zoe zheng
-     * @date 2021/8/2 5:06 下午
+     * Batch delete
      */
     int deleteBatch();
 
     /**
-     * 返回某语言下的分类行数
-     * @param lang 语言
-     * @return 行数
+     * Query count by i18n
      */
     int countByI18n(@Param("lang") String lang);
 }

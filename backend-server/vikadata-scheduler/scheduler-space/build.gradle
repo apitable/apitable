@@ -41,17 +41,10 @@ dependencies {
 
 }
 
-def profile = System.getProperty("profile") ?: "local"
-
-println 'Build Profile：' + profile
-
+// set the build environment variables to the files in the resource directory
 processResources {
   filesMatching("**/*.yml") {
-    it.filter(ReplaceTokens, tokens: [
-      profile : profile,
-      revision: revision
-    ])
-    if (it.name != "application-${profile}.yml" && it.name != 'application.yml') {
+    if (it.name != 'application.yml') {
       it.exclude()
     }
   }

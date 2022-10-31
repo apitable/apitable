@@ -23,19 +23,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 测试模块
- * @author Shawn Deng
- * @date 2022-05-25 16:23:28
+ * Test API
  */
 @RestController
-@Api(tags = "测试模块")
+@Api(tags = "Test API")
 @ApiResource(path = "/test")
 public class TestController {
 
     @GetResource(path = "/clock", requiredPermission = false, requiredLogin = false)
     @ApiOperation(value = "Get the current time", response = ClockVO.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "timeZone", value = "时区", dataTypeClass = String.class, paramType = "query", example = "+08:00"),
+            @ApiImplicitParam(name = "timeZone", value = "time zone", dataTypeClass = String.class, paramType = "query", example = "+08:00")
     })
     public ResponseData<ClockVO> getCurrentTime(@RequestParam(name = "timeZone", required = false) String timeZoneStr) {
         // default china zone
@@ -48,8 +46,8 @@ public class TestController {
     @PostResource(path = "/clock", requiredPermission = false, requiredLogin = false)
     @ApiOperation(value = "Set the current time")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "requestedDate", value = "设置时间", dataTypeClass = String.class, paramType = "query", example = "2022-12-14T23:02:15.000Z"),
-            @ApiImplicitParam(name = "timeZone", value = "时区", dataTypeClass = String.class, paramType = "query", example = "+08:00"),
+            @ApiImplicitParam(name = "requestedDate", value = "set time", dataTypeClass = String.class, paramType = "query", example = "2022-12-14T23:02:15.000Z"),
+            @ApiImplicitParam(name = "timeZone", value = "time zone", dataTypeClass = String.class, paramType = "query", example = "+08:00"),
     })
     public ResponseData<ClockVO> setTestClockTime(@RequestParam(name = "requestedDate", required = false) String requestedDate,
             @RequestParam(name = "timeZone", required = false) String timeZoneStr,
@@ -71,11 +69,11 @@ public class TestController {
     @PostResource(path = "/clock", method = RequestMethod.PUT, requiredPermission = false, requiredLogin = false)
     @ApiOperation(value = "Move the current time")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "days", value = "天数", dataTypeClass = String.class, paramType = "query", example = "10"),
-            @ApiImplicitParam(name = "weeks", value = "周数", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "months", value = "月数", dataTypeClass = String.class, paramType = "query", example = "10"),
-            @ApiImplicitParam(name = "years", value = "年数", dataTypeClass = String.class, paramType = "query", example = "1¬"),
-            @ApiImplicitParam(name = "timeZone", value = "时区", dataTypeClass = String.class, paramType = "query", example = "+08:00"),
+            @ApiImplicitParam(name = "days", value = "days", dataTypeClass = String.class, paramType = "query", example = "10"),
+            @ApiImplicitParam(name = "weeks", value = "week number", dataTypeClass = String.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "months", value = "number of months", dataTypeClass = String.class, paramType = "query", example = "10"),
+            @ApiImplicitParam(name = "years", value = "years", dataTypeClass = String.class, paramType = "query", example = "1¬"),
+            @ApiImplicitParam(name = "timeZone", value = "time zone", dataTypeClass = String.class, paramType = "query", example = "+08:00"),
     })
     public ResponseData<ClockVO> updateTestClock(@RequestParam(name = "days", required = false) final Integer addDays,
             @RequestParam(name = "weeks", required = false) final Integer addWeeks,

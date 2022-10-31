@@ -14,9 +14,9 @@ import com.vikadata.entity.SubscriptionHistoryEntity;
 import org.springframework.stereotype.Service;
 
 /**
- *
- * @author Shawn Deng
- * @date 2022-06-13 00:08:59
+ * <p>
+ * Subscription History Service Implement Class
+ * </p>
  */
 @Service
 public class SubscriptionHistoryServiceImpl extends ServiceImpl<SubscriptionHistoryMapper, SubscriptionHistoryEntity> implements ISubscriptionHistoryService {

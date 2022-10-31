@@ -15,14 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.ActiveProfiles;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Pengap
- * @date 2021/11/2 11:24:47
- */
 @Disabled("no assertion")
 @Slf4j
 @SpringBootTest(classes = SchedulerSpaceApplication.class)

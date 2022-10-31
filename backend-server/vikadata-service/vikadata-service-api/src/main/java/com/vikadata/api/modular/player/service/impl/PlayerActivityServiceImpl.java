@@ -35,11 +35,8 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_LOCKED;
 
 /**
  * <p>
- * Player - Activity 服务实现类
+ * Player Activity Service Implement Class
  * </p>
- *
- * @author Chambers
- * @date 2020/6/8
  */
 @Slf4j
 @Service
@@ -60,45 +57,45 @@ public class PlayerActivityServiceImpl implements IPlayerActivityService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void changeStatus(Long userId, Integer wizardId) {
-        log.info("修改状态值");
+        log.info("User「{}」 change wizard 「{}」 status.", userId, wizardId);
         ExceptionUtil.isNotNull(wizardId, NO_ARG);
         boolean exist = SqlTool.retCount(playerActivityMapper.countByUserId(userId)) > 0;
         if (exist) {
-            // 由于是数字原因，若直接当成key，数据库会以为是在查询下标志
+            // Because it is a digital reason, if it is directly used as a key, the database will think that it is marked under the query
             String key = StrUtil.format("\"{}\"", wizardId);
             boolean flag;
             Object val = playerActivityMapper.selectActionsVal(userId, key);
             if (val == null) {
-                // 状态不在动作集合体中，做插入操作
+                // The state is not in the action collection, do the insert operation
                 flag = SqlHelper.retBool(playerActivityMapper.updateActionsByJsonSet(Collections.singletonList(userId), key, 1));
             }
             else {
-                // 已在动作集合体中，累加数量
+                // Already in the action set, accumulating the quantity
                 flag = SqlHelper.retBool(playerActivityMapper.updateActionsReplaceByUserId(userId, key, Integer.parseInt(val.toString()) + 1));
             }
             ExceptionUtil.isTrue(flag, EDIT_ERROR);
         }
         else {
-            // 新增数据
+            // Add data
             JSONObject actions = new JSONObject();
             actions.putOnce(wizardId.toString(), 1);
             PlayerActivityEntity entity = PlayerActivityEntity.builder().userId(userId).actions(actions.toString()).build();
             boolean flag = SqlHelper.retBool(playerActivityMapper.insert(entity));
             ExceptionUtil.isTrue(flag, INSERT_ERROR);
         }
-        // 判断是否触发新手引导奖励
+        // Determine whether to trigger the novice guide reward
         Wizard wizard = SystemConfigManager.getConfig().getGuide().getWizard().get(wizardId.toString());
         if (wizard == null || wizard.getIntegralAction() == null) {
             return;
         }
-        // 避免并发请求造成多次奖励
+        // Avoid concurrent requests causing multiple rewards
         String lockKey = StrUtil.format(GENERAL_LOCKED, "user:wizard:award", StrUtil.format("{}-{}", userId, wizardId));
         BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(lockKey);
         Boolean result = ops.setIfAbsent("", 10, TimeUnit.SECONDS);
         if (BooleanUtil.isFalse(result)) {
             return;
         }
-        // 仅第一次触发后发送奖励
+        // Send rewards only after the first trigger
         String key = "wizardId";
         int count = SqlTool.retCount(integralHistoryMapper.selectCountByUserIdAndKeyValue(userId, key, wizardId));
         if (count > 0) {
@@ -111,7 +108,7 @@ public class PlayerActivityServiceImpl implements IPlayerActivityService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createUserActivityRecord(Long userId) {
-        log.info("创建用户活动记录，userId:{}", userId);
+        log.info("Create user 「{}」 activity record.", userId);
         PlayerActivityEntity entity = PlayerActivityEntity.builder().userId(userId).actions(new JSONObject().toString()).build();
         boolean flag = SqlHelper.retBool(playerActivityMapper.insert(entity));
         ExceptionUtil.isTrue(flag, INSERT_ERROR);

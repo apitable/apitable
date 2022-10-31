@@ -30,61 +30,59 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 通知系统
+ * Player System - Notification API
  * </p>
- *
- * @author Kelly Chen
- * @date 2020/4/7 14:57
  */
 @Slf4j
-@Api(tags = "Player模块_通知中心")
-@ApiResource(path = "/player/notification")
 @RestController
+@Api(tags = "Player System - Notification API")
+@ApiResource(path = "/player/notification")
 public class NotificationController {
 
     @Resource
     private IPlayerNotificationService playerNotificationService;
 
     @GetResource(path = "/page", requiredPermission = false)
-    @ApiOperation(value = "用户分页通知列表", notes = PageConstants.PAGE_DESC)
+    @ApiOperation(value = "Get Notification Page Info", notes = PageConstants.PAGE_DESC)
     public ResponseData<List<NotificationDetailVo>> page(@Valid NotificationPageRo notificationPageRo) {
         List<NotificationDetailVo> pageInfo =
-            playerNotificationService.pageList(notificationPageRo, LoginContext.me().getLoginUser());
+                playerNotificationService.pageList(notificationPageRo, LoginContext.me().getLoginUser());
         return ResponseData.success(pageInfo);
     }
 
     @PostResource(path = "/read", requiredPermission = false)
-    @ApiOperation(value = "标记通知已读", notes = "标记通知已读")
+    @ApiOperation(value = "Mark Notification Read")
     public ResponseData<Boolean> read(@RequestBody NotificationReadRo notificationReadRo) {
         return ResponseData.success(
-            playerNotificationService.setNotificationIsRead(notificationReadRo.getId(), notificationReadRo.getIsAll()));
+                playerNotificationService.setNotificationIsRead(notificationReadRo.getId(), notificationReadRo.getIsAll()));
     }
 
     @PostResource(path = "/delete", requiredPermission = false)
-    @ApiOperation(value = "删除通知", notes = "删除通知")
+    @ApiOperation(value = "Delete Notification")
     public ResponseData<Boolean> delete(@RequestBody NotificationReadRo notificationReadRo) {
         return ResponseData.success(playerNotificationService.setDeletedIsTrue(notificationReadRo.getId()));
     }
 
     @PostResource(path = "/create", requiredPermission = false)
-    @ApiOperation(value = "建立通知", notes = "建立通知")
+    @ApiOperation(value = "Create Notification")
     public ResponseData<Void> create(@Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
         boolean bool = playerNotificationService.batchCreateNotify(notificationCreateRoList);
         if (bool) {
             return ResponseData.success();
-        } else {
+        }
+        else {
             throw new BusinessException("insert error");
         }
     }
 
     @GetResource(path = "/statistics", requiredPermission = false)
-    @ApiOperation(value = "消息统计", notes = "消息统计")
+    @ApiOperation(value = "Get Notification' Statistics")
     public ResponseData<NotificationStatisticsVo> statistics() {
         return ResponseData.success(playerNotificationService.statistic(SessionContext.getUserId()));
     }
 
     @GetResource(path = "/list", requiredPermission = false)
-    @ApiOperation(value = "用户通知列表", notes = "用户通知列表，默认为系统通知")
+    @ApiOperation(value = "Get Notification Detail List", notes = "Default: System Notification")
     public ResponseData<List<NotificationDetailVo>> list(@Valid NotificationListRo notificationListRo) {
         return ResponseData.success(playerNotificationService.list(notificationListRo, LoginContext.me().getLoginUser()));
     }

@@ -21,11 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *
+ * Template Album Mapper Test
  * </p>
- *
- * @author Chambers
- * @date 2022/10/8
  */
 public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
 

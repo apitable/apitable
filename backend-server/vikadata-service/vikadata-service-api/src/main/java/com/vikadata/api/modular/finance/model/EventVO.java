@@ -8,9 +8,6 @@ import lombok.Data;
 
 import com.vikadata.system.config.billing.Event;
 
-/**
- * @author Shawn Deng
- */
 @Data
 public class EventVO {
 

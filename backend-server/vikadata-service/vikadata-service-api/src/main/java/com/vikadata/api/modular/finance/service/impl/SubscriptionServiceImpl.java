@@ -25,9 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 套餐订阅服务实现类
- * @author Shawn Deng
- * @date 2022-05-16 21:55:00
+ * <p>
+ * Subscription Service Implement Class
+ * </p>
  */
 @Service
 @Slf4j
@@ -56,11 +56,6 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
     @Override
     public SubscriptionEntity getBySubscriptionId(String subscriptionId) {
         return baseMapper.selectBySubscriptionId(subscriptionId);
-    }
-
-    @Override
-    public List<SubscriptionEntity> getByBundleId(String bundleId) {
-        return baseMapper.selectByBundleId(bundleId);
     }
 
     @Override

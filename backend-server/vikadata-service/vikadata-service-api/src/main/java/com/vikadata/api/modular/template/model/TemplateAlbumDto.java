@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
  * <p>
  * Template Album DTO
  * </p>
- *
- * @author Chambers
- * @date 2022/9/23
  */
 @Data
 @NoArgsConstructor

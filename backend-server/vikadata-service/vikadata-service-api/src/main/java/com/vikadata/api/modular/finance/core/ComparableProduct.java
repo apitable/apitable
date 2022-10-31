@@ -3,9 +3,7 @@ package com.vikadata.api.modular.finance.core;
 import com.vikadata.api.util.billing.model.ProductEnum;
 
 /**
- * 订阅产品
- * @author Shawn Deng
- * @date 2022-05-13 21:47:31
+ * Subscription Product
  */
 public class ComparableProduct implements Comparable<ComparableProduct> {
 
