@@ -43,7 +43,7 @@ export const SelectUnitPopup: FC<ISelectPopupProps> = props => {
   );
 
   return (
-    <Popup title={t(Strings.choose_a_member)} className={styles.unitPopupWrapper} visible onClose={onCancel} height={'90%'} footer={Footer}>
+    <Popup title={t(Strings.choose_a_member)} className={styles.unitPopupWrapper} open onClose={onCancel} height={'90%'} footer={Footer}>
       <SelectUnitLeft
         isSingleSelect={isSingleSelect}
         source={source}

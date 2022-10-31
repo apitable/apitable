@@ -18,7 +18,7 @@ export const ColorPickerMobile: React.FC<IColorPickerMobileProps> = props => {
     <Popup
       title={t(Strings.please_choose)}
       height='auto'
-      visible={visible}
+      open={visible}
       onClose={e => {
         stopPropagation(e as any);
         props.onClose();

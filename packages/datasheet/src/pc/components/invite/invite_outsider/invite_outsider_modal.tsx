@@ -178,7 +178,7 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
                 </Modal>
               </ComponentDisplay>
               <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-                <Popup title={t(Strings.invite_member)} onClose={close} visible height={'90%'} className={styles.inviteDrawer}>
+                <Popup title={t(Strings.invite_member)} onClose={close} open height={'90%'} className={styles.inviteDrawer}>
                   <InviteOutsiderTabs cancelModal={close} resUpdate={data?.resUpdate} />
                 </Popup>
               </ComponentDisplay>

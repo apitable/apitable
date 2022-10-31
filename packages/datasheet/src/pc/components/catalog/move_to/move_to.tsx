@@ -22,11 +22,11 @@ export const MoveTo: React.FC<{
   const [parentList, setParentList] = useState<IParent[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { nodeName, parentId, nodePermitSet } = useSelector(state => {
-    const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];    
+    const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];
     return { nodeName, parentId, nodePermitSet };
   });
   const currentNodeId = useSelector(state => state.pageParams.nodeId);
-  
+
   const dispatch = useDispatch();
 
   const backPreSelected = () => {
@@ -65,7 +65,7 @@ export const MoveTo: React.FC<{
       Message.error({ content: t(Strings.move_to_error_equal_parent) });
       return;
     }
-    
+
     const move = () => {
       setConfirmLoading(true);
       Api.nodeMove(nodeId, selectedNodeId).then(res => {
@@ -147,7 +147,7 @@ export const MoveTo: React.FC<{
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          visible
+          open
           height="90%"
           onClose={onClose}
           className={classNames(styles.moveTo, styles.moveToMobile)}

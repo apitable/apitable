@@ -64,7 +64,7 @@ export const ShareNode: FC<IShareNodeProps> = ({
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
           className={styles.shareNodeDrawer}
-          visible={visible}
+          open={visible}
           onClose={onClose}
           height="90%"
           title={

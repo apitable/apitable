@@ -39,7 +39,7 @@ export const User: FC = () => {
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          visible={showUserCard}
+          open={showUserCard}
           onClose={() => setShowUserCard(false)}
           height={'100%'}
           className={classNames(styles.drawer, styles.userCenterDrawer)}

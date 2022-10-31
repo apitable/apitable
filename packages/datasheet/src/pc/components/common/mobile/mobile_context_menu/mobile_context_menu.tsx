@@ -23,7 +23,7 @@ export const MobileContextMenu: FC<IMobileContextMenuProps> = (props) => {
     <Popup
       className={styles.mobileContextMenu}
       height={height}
-      visible={visible}
+      open={visible}
       title={title}
       onClose={() => onClose()}
     >

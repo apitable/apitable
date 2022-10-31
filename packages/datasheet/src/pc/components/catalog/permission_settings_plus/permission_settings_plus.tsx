@@ -48,7 +48,7 @@ export const PermissionSettingsPlus: FC<IPermissionSettingsProps> = ({ data, vis
           <Popup
             className={styles.permissionDrawer}
             height="90%"
-            visible={visible}
+            open={visible}
             placement="bottom"
             title={
               <PermissionModalHeader

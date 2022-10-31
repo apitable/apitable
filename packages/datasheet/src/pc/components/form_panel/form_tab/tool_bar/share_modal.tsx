@@ -291,7 +291,7 @@ export const ShareModal: React.FC<IShareModalProps> = props => {
   return (
     <>
       {isMobile ? (
-        <Popup visible={visible} height="90%" onClose={onClose} className={styles.shareDrawer}>
+        <Popup open={visible} height="90%" onClose={onClose} className={styles.shareDrawer}>
           {content}
         </Popup>
       ) : (

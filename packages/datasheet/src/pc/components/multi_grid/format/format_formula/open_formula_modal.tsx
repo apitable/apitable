@@ -58,7 +58,7 @@ export function openFormulaModal(props: { field: IField; expression: string; dat
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup visible onClose={onModalClose} height='90%' title={t(Strings.input_formula)}>
+        <Popup open onClose={onModalClose} height='90%' title={t(Strings.input_formula)}>
           {Content}
         </Popup>
       </ComponentDisplay>

@@ -27,7 +27,7 @@ export const WidgetTool = () => {
       <IconButton className={styles.widgetTool} icon={WidgetOutlined} onClick={togglePanel}/>
       <Popup
         className={styles.widgetToolPopup}
-        visible={isOpenPanel}
+        open={isOpenPanel}
         placement='right'
         width={'100vw'}
         height={'100vh'}

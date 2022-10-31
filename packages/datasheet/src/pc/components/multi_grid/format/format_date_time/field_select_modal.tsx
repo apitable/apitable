@@ -157,7 +157,7 @@ export const FieldSelectModal: React.FC<IFieldSelectModalProps> = (props: IField
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          visible
+          open
           onClose={onCancelHandler}
           title={t(Strings.field_select_modal_title)}
           height="90%"

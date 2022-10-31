@@ -103,7 +103,7 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup title={nodeInfo.nodeName} height={'90%'} visible className={styles.folderShowCaseDrawer} onClose={onClose}>
+        <Popup title={nodeInfo.nodeName} height={'90%'} open className={styles.folderShowCaseDrawer} onClose={onClose}>
           {editorContent}
         </Popup>
       </ComponentDisplay>

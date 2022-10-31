@@ -519,7 +519,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          visible
+          open
           onClose={hideOperateBox}
           height='90%'
           title={t(Strings.choose_type_of_vika_field)}

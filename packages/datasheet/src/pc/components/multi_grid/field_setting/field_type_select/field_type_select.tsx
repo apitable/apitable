@@ -149,7 +149,7 @@ export const FieldTypeSelect: React.FC<IFieldTypeSelectProps> = props => {
 
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             {visible && (
-              <Popup visible={visible} onClose={() => setVisible(false)} height="90%" bodyStyle={{ padding: 0 }}>
+              <Popup open={visible} onClose={() => setVisible(false)} height="90%" bodyStyle={{ padding: 0 }}>
                 <TypeSelect
                   onClick={onTypeSelectClick}
                   currentFieldType={currentField.type}

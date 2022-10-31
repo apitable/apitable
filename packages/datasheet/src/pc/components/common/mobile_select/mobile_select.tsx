@@ -35,7 +35,7 @@ const MobileSelectBase: React.FC<IMobileSelectProps> = props => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   const hasOuterTrigger = Boolean(triggerComponent);
-    
+
   return (
     <>
       {!hasOuterTrigger && (
@@ -64,7 +64,7 @@ const MobileSelectBase: React.FC<IMobileSelectProps> = props => {
       {
         visible &&
         <Popup
-          visible={visible}
+          open={visible}
           title={title || t(Strings.please_choose)}
           height={props.height || '50%'}
           onClose={() => {

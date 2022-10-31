@@ -72,7 +72,7 @@ export const ViewFieldOptionsMobile: React.FC<IViewFieldOptionsMobile> = props =
         />
       </div>
       <Popup
-        visible={optionsVisible}
+        open={optionsVisible}
         title={t(Strings.title_select_sorting_fields)}
         height="50%"
         onClose={onClose}

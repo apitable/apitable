@@ -347,7 +347,7 @@ export const Navigation: FC = () => {
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <Popup
               title={t(Strings.upgrade_guide)}
-              visible={upgradePopup}
+              open={upgradePopup}
               onClose={() => setUpgradePopup(false)}
               height={'500'}
               style={{ backgroundColor: colors.defaultBg }}
@@ -377,7 +377,7 @@ export const Navigation: FC = () => {
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
           title={t(Strings.notification_center)}
-          visible={notice}
+          open={notice}
           onClose={onNoticeClose}
           height={'90%'}
           className={classNames(styles.drawer, styles.notificationDrawer)}

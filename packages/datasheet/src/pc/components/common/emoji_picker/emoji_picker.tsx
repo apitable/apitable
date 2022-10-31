@@ -66,7 +66,7 @@ export const EmojiPickerBase: FC<PropsWithChildren<IEmojiPopoverProps>> = props 
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <Popup
-          visible={visible}
+          open={visible}
           onClose={() => setVisible(false)}
           height="90%"
           title={t(Strings.please_choose)}

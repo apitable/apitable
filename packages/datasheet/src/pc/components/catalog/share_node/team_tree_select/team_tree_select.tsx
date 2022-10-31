@@ -168,7 +168,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
         {renderSelectBtn()}
         <Popup
           className={styles.shareNodeDrawer}
-          visible={drawerVisible}
+          open={drawerVisible}
           onClose={() => setDrawerVisible(false)}
           height="50%"
           title={t(Strings.please_select_org)}

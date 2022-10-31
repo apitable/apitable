@@ -198,7 +198,7 @@ export const Display: React.FC<IDisplay> = props => {
           <Popup
             title={getTitle(type)}
             className={styles.popupWrapper}
-            visible={open}
+            open={open}
             onClose={() => onMenuVisibleChange(false)}
             height={type !== ToolHandleType.Share ? '90%' : 'auto'}
             destroyOnClose

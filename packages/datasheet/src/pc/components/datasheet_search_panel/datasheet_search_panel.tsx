@@ -433,7 +433,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
           document.body,
         )
       ) : (
-        <Popup visible height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel} className={styles.portalContainerDrawer}>
+        <Popup open height="90%" bodyStyle={{ padding: 0 }} onClose={hidePanel} className={styles.portalContainerDrawer}>
           {SearchContainer}
         </Popup>
       )}

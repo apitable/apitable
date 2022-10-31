@@ -1,23 +1,24 @@
-import { FieldType, FilterDuration, FOperator, IDateTimeField, ITimestamp, Selectors, getLanguage } from '@apitable/core';
-import classNames from 'classnames';
-import { DateTimeEditor, DateTimeEditorBase } from 'pc/components/editors/date_time_editor/date_time_editor';
-import { stopPropagation } from 'pc/utils';
-import { useEffect, useRef } from 'react';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
-import styles from '../style.module.less';
-import dayjs, { Dayjs } from 'dayjs';
-import { IFilterDateProps } from '../../interface';
-import { DateDuration, FilterDateDuration } from './filter_date_duration';
+import { FieldType, FilterDuration, FOperator, getLanguage, IDateTimeField, ITimestamp, Selectors } from '@apitable/core';
 import { useClickOutside } from '@huse/click-outside';
-import { useResponsive } from 'pc/hooks';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { DatePicker } from './date_picker';
-import { LocalFormat } from './local_format';
-import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/date_range_picker_mobile';
-import { NumberEditor } from 'pc/components/editors/number_editor';
-import { IEditor } from 'pc/components/editors/interface';
+import classNames from 'classnames';
+import dayjs, { Dayjs } from 'dayjs';
 import debounce from 'lodash/debounce';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { DateTimeEditor, DateTimeEditorBase } from 'pc/components/editors/date_time_editor/date_time_editor';
+import { IEditor } from 'pc/components/editors/interface';
+import { NumberEditor } from 'pc/components/editors/number_editor';
+import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/date_range_picker_mobile';
+import { useResponsive } from 'pc/hooks';
+import { stopPropagation } from 'pc/utils';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
+import { useSelector } from 'react-redux';
+import { IFilterDateProps } from '../../interface';
+import styles from '../style.module.less';
+import { DatePicker } from './date_picker';
+import { DateDuration, FilterDateDuration } from './filter_date_duration';
+import { LocalFormat } from './local_format';
 
 const { RangePicker } = DatePicker;
 
@@ -39,6 +40,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
   }
   let noDateProperty;
   const ref = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);
 
   if (field.type === FieldType.DateTime) {
@@ -139,15 +141,20 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
       return (
         <>
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-            <RangePicker
-              onChange={rangePickerChange}
-              format="YYYY-MM-DD"
-              className={styles.dateRange}
-              allowClear={false}
-              suffixIcon={null}
-              value={dataValue as any}
-              locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
-            />
+            <div ref={divRef}>
+              {
+                divRef.current && ReactDOM.render(<RangePicker
+                  onChange={(value) => {rangePickerChange(value);}}
+                  format='YYYY-MM-DD'
+                  className={styles.dateRange}
+                  allowClear={false}
+                  suffixIcon={null}
+                  value={dataValue as any}
+                  locale={lang === 'en' ? undefined : LocalFormat.getDefinedChineseLocal()}
+                  getPopupContainer={() => divRef.current!}
+                />, divRef.current)
+              }
+            </div>
           </ComponentDisplay>
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <DateRangePickerMobile {...props} rangePickerChange={rangePickerChange} dataValue={dataValue} />

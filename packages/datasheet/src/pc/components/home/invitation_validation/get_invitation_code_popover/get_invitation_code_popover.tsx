@@ -149,7 +149,7 @@ export const GetInvitationCodePopover: FC = ({ children }) => {
         <Popup
           className={styles.invitationCodePopup}
           height="auto"
-          visible={visible}
+          open={visible}
           placement="bottom"
           title={title}
           onClose={() => setVisible(false)}

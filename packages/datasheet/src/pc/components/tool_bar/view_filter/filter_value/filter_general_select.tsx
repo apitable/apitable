@@ -122,7 +122,7 @@ export const FilterGeneralSelect: React.FC<IFilterGeneralSelectProps> = props =>
         <Popup
           title={t(Strings.please_choose)}
           height="90%"
-          visible={visible}
+          open={visible}
           onClose={() => setVisible(false)}
           className={styles.filterGeneralPopupWrapper}
         >

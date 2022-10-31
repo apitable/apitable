@@ -241,7 +241,7 @@ export const Share: FC<IShareProps> = ({ shareSettings, onChange, nodeId }) => {
             </div>
             <Popup
               className={styles.menuDrawer}
-              visible={menuVisible}
+              open={menuVisible}
               title={t(Strings.please_choose)}
               height="50%"
               closeIcon={null}

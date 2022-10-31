@@ -77,7 +77,7 @@ export const FieldPermission: React.FC<IFieldPermissionProps> = props => {
         <Popup
           className={styles.permissionDrawer}
           height="90%"
-          visible
+          open
           placement="bottom"
           title={<Title />}
           onClose={() => onModalClose()}

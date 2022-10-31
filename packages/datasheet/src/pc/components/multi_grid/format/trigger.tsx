@@ -67,7 +67,7 @@ export const MyTrigger: React.FC<ITriggerProps> = memo((props: ITriggerProps) =>
       </ComponentDisplay>
 
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <Popup visible={showPopup} onClose={() => setShowPopup(false)} bodyStyle={{ padding: 0 }} height="90%">
+        <Popup open={showPopup} onClose={() => setShowPopup(false)} bodyStyle={{ padding: 0 }} height="90%">
           {popup}
         </Popup>
         <div onClick={() => setShowPopup(true)}>{trigger}</div>

@@ -64,7 +64,7 @@ export const MembersDetail: FC<IMembersDetailProps> = ({ data, onCancel }) => {
         <Popup
           className={styles.permissionDrawer}
           height="90%"
-          visible
+          open
           placement="bottom"
           title={t(Strings.share_and_permission_member_detail, { count: data.members.length })}
           onClose={close}

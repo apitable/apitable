@@ -265,7 +265,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     return (
       <>
         {editing && (
-          <Popup width="100%" height="90%" visible={editing} onClose={toggleEditing} closable={false} className={style.drawerPopup}>
+          <Popup width="100%" height="90%" open={editing} onClose={toggleEditing} closable={false} className={style.drawerPopup}>
             {PortalChild}
           </Popup>
         )}

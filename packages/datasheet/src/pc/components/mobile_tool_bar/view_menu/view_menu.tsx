@@ -19,7 +19,7 @@ export const ViewMenu: React.FC<IViewMenu> = props => {
     <Popup
       className={styles.viewMenuDrawer}
       title={t(Strings.view_list)}
-      visible={visible}
+      open={visible}
       onClose={onClose}
       height='auto'
       destroyOnClose

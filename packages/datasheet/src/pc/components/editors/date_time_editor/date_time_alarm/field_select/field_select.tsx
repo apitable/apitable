@@ -88,7 +88,7 @@ export const FieldSelect: React.FC<IFieldSelectProps> = props => {
         <Popup
           title={t(Strings.please_choose)}
           height="90%"
-          visible={visible}
+          open={visible}
           onClose={() => setVisible(false)}
           className={styles.filterGeneralPopupWrapper}
         >

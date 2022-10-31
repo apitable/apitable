@@ -53,7 +53,7 @@ const RatingEditorMobileBase: React.FC<IRatingEditorMobileProps> = props => {
       {visible && editable && <Popup
         title={t(Strings.please_choose)}
         height={'50%'}
-        visible={visible && editing}
+        open={visible && editing}
         onClose={() => setVisible(false)}
         className={style.ratingEditorPopupWrapper}
       >

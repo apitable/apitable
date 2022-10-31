@@ -184,7 +184,7 @@ export const showPopupInDingTalk = (modalType: IDingTalkModalType) => {
           height={500}
           style={{ backgroundColor: colorVars.defaultBg }}
           onClose={() => destroy()}
-          visible
+          open
         >
           {config.content}
         </Popup>,
