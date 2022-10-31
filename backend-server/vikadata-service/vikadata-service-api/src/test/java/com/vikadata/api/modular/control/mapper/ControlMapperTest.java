@@ -18,9 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 数据访问层测试：权限控制表测试
- * @author Shawn Deng
- * @date 2022-03-28 11:50:38
+ * Data access layer test: permission control table test
  */
 public class ControlMapperTest extends AbstractMyBatisMapperTest {
 

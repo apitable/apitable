@@ -15,10 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：工作台-权限控制单元设置表测试
+ *     Data access layer test: workbench permission control unit setting table test
  * </p>
- * @author wuyitao
- * @date 2022/3/31 11:22 AM
  */
 public class ControlSettingMapperTest extends AbstractMyBatisMapperTest {
 

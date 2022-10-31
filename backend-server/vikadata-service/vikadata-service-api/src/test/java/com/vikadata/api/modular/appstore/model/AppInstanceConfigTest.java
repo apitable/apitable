@@ -14,9 +14,7 @@ import com.vikadata.api.modular.appstore.enums.AppType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
- * 实例配置
- * @author Shawn Deng
- * @date 2022-01-17 20:50:52
+ * Instance configuration
  */
 public class AppInstanceConfigTest {
 

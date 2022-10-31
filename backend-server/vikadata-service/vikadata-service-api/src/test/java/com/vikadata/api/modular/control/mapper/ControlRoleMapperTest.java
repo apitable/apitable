@@ -17,8 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author wuyitao
- * @date 2022/3/31 10:24 AM
+ * Control Role Mapper Test
  */
 public class ControlRoleMapperTest extends AbstractMyBatisMapperTest {
 

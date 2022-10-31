@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 /**
- * 数据访问层测试：应用实例表测试
- * @author Shawn Deng
- * @date 2022-03-28 11:50:38
+ * Data access layer test: application instance table test
  */
 public class AppInstanceMapperTest extends AbstractMyBatisMapperTest {
 

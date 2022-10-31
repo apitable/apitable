@@ -15,11 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- * 数据访问层测试：客户端版本表测试
+ * Data access layer test: client version table test
  * <p>
- *
- * @author liuzijing
- * @date 2022/2/18 10:28 AM
  */
 class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
 
@@ -29,7 +26,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/client-version-data.sql")
     void testSelectClientEntryDetailByVersion() {
-        // 版本字符串规范跟git tag保持一致
+        // The version string specification is consistent with the git tag
         String selectReleaseVersion = "v0.12.2-release.2";
         ClientEntryDetailDto clientEntryDetailDto = clientReleaseVersionMapper.selectClientEntryDetailByVersion(selectReleaseVersion);
         assertThat(clientEntryDetailDto).isNotNull()
@@ -39,7 +36,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/client-version-data.sql")
     void testSelectClientEntryDetailByErrorVersion() {
-        // 版本字符串规范跟git tag保持一致
+        // The version string specification is consistent with the git tag
         String selectReleaseVersion = "0.12.3";
         ClientEntryDetailDto clientEntryDetailDto = clientReleaseVersionMapper.selectClientEntryDetailByVersion(selectReleaseVersion);
         assertThat(clientEntryDetailDto).isNull();
@@ -48,7 +45,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/client-version-data.sql")
     void testSelectClientEntryDetailByPipelineId() {
-        // 非生产环境存储PipelineId
+        // Non production environment storage pipeline Id
         VikaVersion selectPipelineVersion = new VikaVersion(0, 0, 0, "feature", 7446);
         ClientEntryDetailDto clientEntryDetailDto = clientReleaseVersionMapper.selectClientEntryDetailByVersion(selectPipelineVersion.getBuildMetaVersion());
         assertThat(clientEntryDetailDto).isNotNull()
