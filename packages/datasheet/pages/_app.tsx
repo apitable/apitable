@@ -27,7 +27,6 @@ import { Modal } from 'pc/components/common';
 import 'pc/components/common/button_base/button.less';
 import 'pc/components/common/button_plus/button_plus.less';
 import 'pc/components/common/emoji/emoji.less';
-import 'pc/components/economy/components/paying_modal/style.less';
 import 'pc/components/editors/date_time_editor/date_picker/date_picker.less';
 import 'pc/components/editors/date_time_editor/time_picker_only/time_picker.less';
 import 'pc/components/home/social_platform/components/common.less';
