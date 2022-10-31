@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatasheetChangesetRepository } from '../database/repositories/datasheet.changeset.repository';
 import { ResourceChangesetRepository } from '../database/repositories/resource.changeset.repository';
 import { DatasheetServiceModule } from './datasheet.service.module';
-import { WidgetServiceModule } from './widget.module';
 import { AutomationService } from 'automation/services/automation.service';
 import { NodeRepository } from 'database/repositories/node.repository';
 import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
@@ -16,16 +15,20 @@ import { AutomationRunHistoryRepository } from 'automation/repositories/automati
 import { AutomationServiceRepository } from 'automation/repositories/automation.service.repository';
 import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
 import { AutomationActionTypeRepository } from 'automation/repositories/automation.action.type.repository';
+import { WidgetService } from 'database/services/widget/widget.service';
+import { WidgetRepository } from 'database/repositories/widget.repository';
 
 @Module({
   imports: [
+  TypeOrmModule.forFeature([
+    WidgetRepository,
+    ]),
   TypeOrmModule.forFeature([
     DatasheetChangesetRepository,
     ResourceChangesetRepository,
     ]),
   NodeServiceModule,
   DatasheetServiceModule,
-  WidgetServiceModule,
   TypeOrmModule.forFeature([
     NodeRepository,
     AutomationTriggerRepository,
@@ -36,7 +39,7 @@ import { AutomationActionTypeRepository } from 'automation/repositories/automati
     AutomationActionTypeRepository
     ]),
   ],
-  providers: [ResourceService, MetaService, ChangesetService, AutomationService],
+  providers: [ResourceService, MetaService, ChangesetService, AutomationService, WidgetService,],
   exports: [ResourceService, MetaService, ChangesetService],
   })
 export class ResourceServiceModule {

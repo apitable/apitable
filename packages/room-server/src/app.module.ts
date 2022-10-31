@@ -29,7 +29,6 @@ import { MirrorService } from 'database/services/mirror/mirror.service';
 import { FormService } from 'database/services/form/form.service';
 import { ResourceServiceModule } from '_modules/resource.service.module';
 import { FusionApiServiceModule } from '_modules/fusion.api.service.module';
-import { OtModule } from '_modules/ot.module';
 import { CommandServiceModule } from '_modules/command.service.module';
 import { DatasheetServiceModule } from '_modules/datasheet.service.module';
 import { ResourceMetaRepository } from 'database/repositories/resource.meta.repository';
@@ -37,7 +36,6 @@ import { NodeServiceModule } from '_modules/node.service.module';
 import { UserServiceModule } from '_modules/user.service.module';
 import { DatabaseModule } from 'database/database.module';
 import { RobotModule } from 'automation/robot.module';
-import { GrpcServiceModule } from 'shared/services/grpc/grpc.service.module';
 import { DashboardController } from 'database/controllers/dashboard.controller';
 import { EventService } from 'database/services/event/event.service';
 import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
@@ -51,6 +49,18 @@ import { AutomationServiceRepository } from 'automation/repositories/automation.
 import { AutomationActionTypeRepository } from 'automation/repositories/automation.action.type.repository';
 import { DashboardService } from 'database/services/dashboard/dashboard.service';
 import { RestModule } from '_modules/rest.module';
+import { GrpcSocketService } from 'shared/services/grpc/grpc.socket.service';
+import { OtService } from 'database/services/ot/ot.service';
+import { DatasheetOtService } from 'database/services/ot/datasheet.ot.service';
+import { DashboardOtService } from 'database/services/ot/dashboard.ot.service';
+import { MirrorOtService } from 'database/services/ot/mirror.ot.service';
+import { FormOtService } from 'database/services/ot/form.ot.service';
+import { WidgetOtService } from 'database/services/ot/widget.ot.service';
+import { ResourceChangeHandler } from 'database/services/ot/resource.change.handler';
+import { DatasheetWidgetRepository } from 'database/repositories/datasheet.widget.repository';
+import { GrpcClientModule } from 'proto/client/grpc.client.module';
+import { WidgetRepository } from 'database/repositories/widget.repository';
+import { WidgetService } from 'database/services/widget/widget.service';
 
 // 初始化环境，本地开发为development，部署线上则需要指定NODE_ENV，非开发环境可选值[integration, staging, production]
 // 环境已经使用app.environment设置了
@@ -100,13 +110,12 @@ import { RestModule } from '_modules/rest.module';
   SocketModuleNew.register(true), // TODO: whether or not use socket-module
   QueueWorkerModule,
   ActuatorModule, FusionApiModule,
-  DatabaseModule, RobotModule, OtModule, GrpcServiceModule, NodeServiceModule,
+  DatabaseModule, RobotModule, NodeServiceModule,
   UserServiceModule, 
   NodeServiceModule, 
   TypeOrmModule.forFeature([ResourceMetaRepository]),
   DatasheetServiceModule,
   CommandServiceModule,
-  OtModule,
   FusionApiServiceModule,
   ResourceServiceModule,
   UserServiceModule,
@@ -123,14 +132,52 @@ import { RestModule } from '_modules/rest.module';
     AutomationTriggerTypeRepository,
     AutomationActionTypeRepository
     ]),
+  RestModule,
+
+  TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
+  DatasheetServiceModule,
+  NodeServiceModule,
+  UserServiceModule,
+  ResourceServiceModule,
+  RestModule,
+  GrpcClientModule,
+  DatasheetServiceModule,
+  CommandServiceModule,
+  TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    AutomationTriggerRepository,
+    AutomationRobotRepository,
+    AutomationRunHistoryRepository,
+    AutomationServiceRepository,
+    AutomationTriggerTypeRepository,
+    AutomationActionTypeRepository
+    ]),
   TypeOrmModule.forFeature([ResourceMetaRepository]),
   NodeServiceModule,
   RestModule,
+  TypeOrmModule.forFeature([
+    WidgetRepository,
+    ]),
 
   EntryModule,
   ],
   controllers: [DashboardController, GrpcController, FormController, MirrorController, ResourceController],
-  providers: [DashboardService, EventService, FormService, MirrorService, AutomationService, ],
+  providers: [GrpcSocketService, DashboardService, EventService, FormService, MirrorService, AutomationService, 
+  OtService,
+  DatasheetOtService,
+  DashboardOtService,
+  MirrorOtService,
+  FormOtService,
+  WidgetOtService,
+  ResourceChangeHandler,
+  MirrorService,
+  EventService,
+  AutomationService,
+  DashboardService,
+  WidgetService,
+  
+  ],
   })
 export class AppModule {
 }

@@ -18,8 +18,8 @@ import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { DatasheetServiceModule } from '../../_modules/datasheet.service.module';
 import { DeveloperService } from 'database/services/developer/developer.service';
-import { DeveloperServiceModule } from '../../_modules/developer.service.module';
 import { ResourceServiceModule } from '../../_modules/resource.service.module';
+import { MiddlewareModule } from 'shared/middleware/middleware.module';
 
 export const initSwagger = (app: INestApplication) => {
   // wouldn't be enabled in production
@@ -70,7 +70,7 @@ export const initHttpHook = (app: INestApplication) => {
     request[REQUEST_AT] = Date.now();
     request[REQUEST_ID] = generateRandomString();
     if (request.headers.authorization) {
-      const developerService = app.select(DeveloperServiceModule).get(DeveloperService);
+      const developerService = app.select(MiddlewareModule).get(DeveloperService);
       request[USER_HTTP_DECORATE] = await developerService.getUserInfoByApiKey(request.headers.authorization.substr(AUTHORIZATION_PREFIX.length));
     }
     if (request.params['spaceId']) {

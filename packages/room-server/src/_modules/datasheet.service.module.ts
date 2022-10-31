@@ -13,8 +13,6 @@ import { DatasheetRepository } from '../database/repositories/datasheet.reposito
 import { RecordCommentRepository } from '../database/repositories/record.comment.repository';
 import { RecordCommentService } from 'database/services/datasheet/record.comment.service';
 import { JavaModule } from 'shared/services/java/java.module';
-import { UnitServiceModule } from './unit.service.module';
-import { WidgetServiceModule } from './widget.module';
 import { RestModule } from './rest.module';
 import { NodeServiceModule } from './node.service.module';
 import { UserServiceModule } from './user.service.module';
@@ -28,53 +26,71 @@ import { DatasheetRecordService } from '../database/services/datasheet/datasheet
 import { DatasheetRecordSourceService } from '../database/services/datasheet/datasheet.record.source.service';
 import { DatasheetRecordSubscriptionService } from '../database/services/datasheet/datasheet.record.subscription.service';
 import { DatasheetService } from '../database/services/datasheet/datasheet.service';
+import { UnitService } from 'database/services/unit/unit.service';
+import { UnitMemberService } from 'database/services/unit/unit.member.service';
+import { UnitTagService } from 'database/services/unit/unit.tag.service';
+import { UnitTeamService } from 'database/services/unit/unit.team.service';
+import { UnitRepository } from 'database/repositories/unit.repository';
+import { UnitMemberRepository } from 'database/repositories/unit.member.repository';
+import { UnitTagRepository } from 'database/repositories/unit.tag.repository';
+import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
+import { UserRepository } from 'database/repositories/user.repository';
+import { WidgetRepository } from 'database/repositories/widget.repository';
+import { WidgetService } from 'database/services/widget/widget.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      DatasheetRecordRepository,
-      DatasheetRecordSourceRepository,
-      DatasheetRecordSubscriptionRepository,
-      DatasheetRepository,
-      DatasheetMetaRepository,
-      RecordCommentRepository,
-      DatasheetChangesetRepository,
-      DatasheetChangesetSourceRepository,
-      DatasheetRecordAlarmRepository,
+  TypeOrmModule.forFeature([
+    WidgetRepository,
     ]),
-    forwardRef(() => NodeServiceModule),
-    UnitServiceModule,
-    UserServiceModule,
-    JavaModule,
-    WidgetServiceModule,
-    RestModule,
-    QueueWorkerModule,
+  TypeOrmModule.forFeature([
+    DatasheetRecordRepository,
+    DatasheetRecordSourceRepository,
+    DatasheetRecordSubscriptionRepository,
+    DatasheetRepository,
+    DatasheetMetaRepository,
+    RecordCommentRepository,
+    DatasheetChangesetRepository,
+    DatasheetChangesetSourceRepository,
+    DatasheetRecordAlarmRepository,
+    ]),
+  forwardRef(() => NodeServiceModule),
+  UserServiceModule,
+  JavaModule,
+  RestModule,
+  QueueWorkerModule,
+
+  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
+  UserServiceModule,
   ],
   providers: [
-    DatasheetService,
-    DatasheetMetaService,
-    DatasheetRecordService,
-    RecordCommentService,
-    DatasheetRecordSourceService,
-    DatasheetRecordSubscriptionService,
-    DatasheetFieldHandler,
-    ComputeFieldReferenceManager,
-    DatasheetChangesetService,
-    DatasheetChangesetSourceService,
-    DatasheetRecordAlarmService,
+  DatasheetService,
+  DatasheetMetaService,
+  DatasheetRecordService,
+  RecordCommentService,
+  DatasheetRecordSourceService,
+  DatasheetRecordSubscriptionService,
+  DatasheetFieldHandler,
+  ComputeFieldReferenceManager,
+  DatasheetChangesetService,
+  DatasheetChangesetSourceService,
+  DatasheetRecordAlarmService,
+
+  WidgetService,
+  UnitService, UnitMemberService, UnitTagService, UnitTeamService,
   ],
   exports: [
-    DatasheetService,
-    DatasheetMetaService,
-    DatasheetRecordService,
-    RecordCommentService,
-    DatasheetRecordSourceService,
-    DatasheetRecordSubscriptionService,
-    DatasheetFieldHandler,
-    ComputeFieldReferenceManager,
-    DatasheetChangesetService,
-    DatasheetChangesetSourceService,
-    DatasheetRecordAlarmService,
+  DatasheetService,
+  DatasheetMetaService,
+  DatasheetRecordService,
+  RecordCommentService,
+  DatasheetRecordSourceService,
+  DatasheetRecordSubscriptionService,
+  DatasheetFieldHandler,
+  ComputeFieldReferenceManager,
+  DatasheetChangesetService,
+  DatasheetChangesetSourceService,
+  DatasheetRecordAlarmService,
   ],
-})
+  })
 export class DatasheetServiceModule {}
