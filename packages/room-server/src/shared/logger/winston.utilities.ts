@@ -5,14 +5,16 @@ import dayjs from 'dayjs';
 import { currentAppInstanceId, isDevMode } from 'app.environment';
 import { getSpanId, getTraceId } from '../helpers/fastify.zipkin.plugin';
 
-// 自定义格式
+/**
+ * Custom format
+ */
 const nestLikeConsoleFormat = (appName = 'RoomServer'): Format =>
   format.printf(({ context, level, timestamp, message, ...meta }) => {
-    // 根据级别选择颜色
+    // Select color based on level
     // const color = nestLikeColorScheme[level] || ((text: string): string => text);
     const traceId = getTraceId();
     const spanId = getSpanId();
-    const title = isDevMode ? '「本地日志」' : 'Log';
+    const title = isDevMode ? '<Local Log>' : 'Log';
     return (
       `${title} >>> ${appName} ` +
       `${level.charAt(0).toUpperCase() + level.slice(1)} ` +

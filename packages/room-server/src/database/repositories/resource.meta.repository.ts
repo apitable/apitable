@@ -5,8 +5,7 @@ import { IResourceMeta, IResourceRevision } from '@apitable/core';
 @EntityRepository(ResourceMetaEntity)
 export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
   /**
-   * 查询实体 metaData
-   * @param resourceId 资源ID
+   * Obtain the metadata entity of the given resource.
    */
   public async selectMetaByResourceId(resourceId: string): Promise<IResourceMeta> {
     const meta = await this.findOne({
@@ -17,10 +16,11 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
   }
 
   /**
-   * 更新实体 metaData
-   * @param resourceId 资源ID
-   * @param userId 用户ID
-   * @param metaData 变更后的 metaData
+   * Update the metadata entity.
+   * 
+   * @param resourceId resource ID
+   * @param userId user ID
+   * @param metaData updated metaData
    */
   public async updateMetaDataByResourceId(resourceId: string, userId, metaData: IResourceMeta) {
     const meta = await this.selectMetaByResourceId(resourceId);
@@ -46,8 +46,9 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
   }
 
   /**
-   * 查询多个资源对应的版本号
-   * @param resourceIds 资源ID 数组
+   * Obtain the revision numbers of multiple resources
+   * 
+   * @param resourceIds resource ID array
    */
   async getRevisionByRscIds(resourceIds: string[]): Promise<IResourceRevision[]> {
     const queryRunner = getConnection().createQueryRunner();
@@ -64,8 +65,7 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
   }
 
   /**
-   * 获取资源的版本号
-   * @param resourceId 资源ID
+   * Obtain the revision number of a resource
    */
   selectReversionByResourceId(resourceId: string): Promise<{ revision: number }> {
     return this.findOne({

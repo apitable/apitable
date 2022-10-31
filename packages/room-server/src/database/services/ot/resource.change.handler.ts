@@ -10,9 +10,6 @@ import { DatasheetFieldHandler } from 'database/services/datasheet/datasheet.fie
 import { NodeService } from 'database/services/node/node.service';
 
 /**
- * <p>
- * 资源变更处理器
- * </p>
  * @author Chambers
  * @date 2021/2/2
  */
@@ -41,7 +38,8 @@ export class ResourceChangeHandler {
         case ResourceType.Form:
           break;
         case ResourceType.Widget:
-          // 在仪表盘设置空白组件的引用数表时，数表资源需加入 ROOM
+          // When setting the referenced datasheet of a blank widget in dashboard, this datasheet should be 
+          // joined in room
           if (isDsbRoom && resultSet.updateWidgetDepDatasheetId) {
             await this.roomResourceRelService.createOrUpdateRel(dstId, [resultSet.updateWidgetDepDatasheetId]);
           }
@@ -55,19 +53,19 @@ export class ResourceChangeHandler {
   private async parseDatasheetResultSet(dstId: string, effectMap: Map<string, any>, resultSet: { [key: string]: any }) {
     const addResourceIds: any[] = [];
     let delResourceIds: any[] = [];
-    // 新增组件
+    // New widget
     if (resultSet.addWidgetIds.length) {
       addResourceIds.push(...resultSet.addWidgetIds);
     }
-    // 删除组件
+    // Delete widget
     if (resultSet.deleteWidgetIds.length) {
       delResourceIds.push(...resultSet.deleteWidgetIds);
     }
-    // 公式字段引用更新
+    // Update references in formula fields
     if (resultSet.toChangeFormulaExpressions.length > 0) {
       await this.datasheetFieldHandler.computeFormulaReference(dstId, resultSet.toChangeFormulaExpressions);
     }
-    // 新增关联列
+    // New link field
     if (resultSet.toCreateForeignDatasheetIdMap.size) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.computeLinkFieldReference(dstId, meta, resultSet.toCreateForeignDatasheetIdMap);
@@ -75,7 +73,7 @@ export class ResourceChangeHandler {
         addResourceIds.push(...dstIds);
       }
     }
-    // 删除关联列
+    // Delete link field
     if (resultSet.toDeleteForeignDatasheetIdMap.size) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.deleteLinkFieldReference(dstId, meta, resultSet.toDeleteForeignDatasheetIdMap);
@@ -83,9 +81,10 @@ export class ResourceChangeHandler {
         delResourceIds.push(...dstIds);
       }
     }
-    // 原 LookUp 属性变化仅影响一对一字段引用关系变化，可独立计算不分先后；
-    // 引入过滤后，字段引用形成了一对多关系（类似公式）进行覆盖，为保证重叠的部分字段保持引用关系，删除 LookUp 解析需先进行
-    // 删除 LookUp
+    // Original LookUp prop change only influence 1-to-1 reference relation change, compute individually regardless of order is ok.
+    // After filter was introduced, field references form 1-to-many relation (like formulas) to cover, to make sure overlapped fields maintain
+    // their reference relation, Deleting LookUp analysis should come first
+    // Delete LookUp
     if (resultSet.toDeleteLookUpProperties.length > 0) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.removeLookUpReference(dstId, meta, resultSet.toDeleteLookUpProperties);
@@ -93,7 +92,7 @@ export class ResourceChangeHandler {
         delResourceIds.push(...dstIds);
       }
     }
-    // 新增 LookUp
+    // New LookUp
     if (resultSet.toCreateLookUpProperties.length > 0) {
       const meta = effectMap.get(EffectConstantName.Meta);
       const dstIds = await this.datasheetFieldHandler.computeLookUpReference(dstId, meta, resultSet.toCreateLookUpProperties);
@@ -102,25 +101,25 @@ export class ResourceChangeHandler {
       }
     }
 
-    // 获取该数表的关联节点资源（form、mirror...）
+    // Obtain related node resource (form, mirror, etc) of the datasheet
     const relNodeIds = await this.nodeService.getRelNodeIds(dstId);
     
-    // 创建或更新 Room - Resource 双向关系
+    // Create or update Room - Resource bijection
     if (addResourceIds.length) {
       await this.roomResourceRelService.createOrUpdateRel(dstId, addResourceIds);
-      // 异步更新关联节点资源
+      // Update related node resource asynchronously
       relNodeIds.forEach(nodeId => 
         this.roomResourceRelService.createOrUpdateRel(nodeId, addResourceIds)
       );
     }
-    // 解除 Room - Resource 双向关系
+    // Break Room - Resource bijection
     if (delResourceIds.length) {
       if (addResourceIds.length) {
-        // 避免同时有新增、删除，将数表资源的映射关系解除了
+        // To avoid simultaneous creation and deletion, break mapping relation of datasheet resource
         delResourceIds = difference<string>(delResourceIds, addResourceIds);
       }
       await this.roomResourceRelService.removeRel(dstId, delResourceIds);
-      // 异步更新关联节点资源
+      // Update related node resource asynchronously
       relNodeIds.forEach(nodeId => 
         this.roomResourceRelService.removeRel(nodeId, delResourceIds)
       );
@@ -130,7 +129,7 @@ export class ResourceChangeHandler {
   private async parseDashboardResultSet(dashboardId: string, resultSet: { [key: string]: any }) {
     const addResourceIds: string[] = [];
     let delResourceIds: string[] = [];
-    // 新增组件
+    // New widget
     if (resultSet.addWidgetIds.length) {
       addResourceIds.push(...resultSet.addWidgetIds);
       const dstIds = await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(addResourceIds);
@@ -138,12 +137,12 @@ export class ResourceChangeHandler {
         addResourceIds.push(...dstIds);
       }
     }
-    // 删除组件
+    // Delete widget
     if (resultSet.deleteWidgetIds.length) {
       delResourceIds.push(...resultSet.deleteWidgetIds);
       let dstIds = await this.datasheetWidgetRepository.selectDstIdsByWidgetIds(delResourceIds);
       if (dstIds?.length) {
-        // 排除未删除组件的数据源
+        // Delete data source of undeleted widget
         const reservedDstIds = await this.datasheetWidgetRepository.selectDstIdsByNodeId(dashboardId);
         if (reservedDstIds?.length) {
           dstIds = difference<string>(dstIds, reservedDstIds);
@@ -151,14 +150,14 @@ export class ResourceChangeHandler {
         delResourceIds.push(...dstIds);
       }
     }
-    // 创建或更新 Room - Resource 双向关系
+    // Create or update Room - Resource bijection
     if (addResourceIds.length) {
       await this.roomResourceRelService.createOrUpdateRel(dashboardId, addResourceIds);
     }
-    // 解除 Room - Resource 双向关系
+    // Break Room - Resource bijection
     if (delResourceIds.length) {
       if (addResourceIds.length) {
-        // 避免同时有新增、删除的组件引用同一个数表，将数表资源的映射关系解除了
+        // To avoid new widget and deleted widget referencing the same datasheet, break mapping relation of datasheet resource
         delResourceIds = difference<string>(delResourceIds, addResourceIds);
       }
       await this.roomResourceRelService.removeRel(dashboardId, delResourceIds);

@@ -2,20 +2,18 @@ import { DeveloperEntity } from '../entities/developer.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 /**
- * <p>
- * vika_developer数据库相关操作
- * </p>
+ * Operations on table `vika_developer`
+ * 
  * @author Zoe zheng
- * @date 2020/7/24 3:15 下午
+ * @date 2020/7/24 3:15 PM
  */
 @EntityRepository(DeveloperEntity)
 export class DeveloperRepository extends Repository<DeveloperEntity> {
   /**
-   * 根据apiKay查找userId
-   * @param apiKey 开发者平台唯一令牌
-   * @return user_id
+   * Find the user ID with the given API key
+   * 
    * @author Zoe Zheng
-   * @date 2020/7/24 3:18 下午
+   * @date 2020/7/24 3:18 PM
    */
   selectUserIdByApiKey(apiKey: string): Promise<{ userId: bigint } | undefined> {
     return this.findOne({ where: [{ apiKey }], select: ['userId'] });

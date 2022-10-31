@@ -17,13 +17,13 @@ import { HttpHelper } from '../../helpers';
 import { IAssetDTO } from './rest.interface';
 
 /**
- * RestApi 远程调用服务
+ * RestApi service
  */
 @Injectable()
 export class RestService {
 
-  private GET_ME = 'internal/user/get/me'; // user 基础信息
-  private GET_USER_INFO = 'user/me'; // user 基础信息 + 空间成员信息
+  private GET_ME = 'internal/user/get/me'; // user basic profile
+  private GET_USER_INFO = 'user/me'; // user basic profile + space member profile
   private SESSION = 'internal/user/session';
   private GET_WIDGET = 'widget/get';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
@@ -41,49 +41,49 @@ export class RestService {
   private NODE_DETAIL = 'node/get';
   private NODE_CHILDREN = 'node/children';
 
-  // 附件资源
+  // Get attachment asset
   private GET_UPLOAD_PRESIGNED_URL = 'internal/asset/upload/preSignedUrl';
   private GET_ASSET = 'internal/asset/get';
-  // 数表op附件引用计算
+  // Calculate the references to datasheet OP attachments
   private DST_ATTACH_CITE = 'base/attach/cite';
   private SUBSCRIBE_REMIND = 'internal/subscribe/remind';
-  // 创建通知
+  // Create notification
   private CREATE_NOTIFICATION = 'internal/notification/create';
-  // 列出拥有节点权限的角色信息
+  // List user infos with node permission
   private LIST_NODE_ROLES = 'node/listRole?nodeId=%(nodeId)s';
-  // 列出拥有指定列权限的角色信息
+  // List user infos with the given column permission
   private LIST_FIELD_ROLES = 'datasheet/%(dstId)s/field/%(fieldId)s/listRole';
 
   constructor(
     private readonly httpService: HttpService,
     @InjectLogger() private readonly logger: Logger,
   ) {
-    // 请求拦截
+    // Intercept request
     this.httpService.axiosRef.interceptors.request.use((config) => {
-      this.logger.info('远程调用地址:' + config.url);
+      this.logger.info('Remote call address:' + config.url);
       config.headers['X-Internal-Request'] = 'yes';
       return config;
     }, (error) => {
-      this.logger.error('远程调用异常', error);
+      this.logger.error('Remote call failed', error);
       throw new ServerException(CommonException.SERVER_ERROR);
     });
     this.httpService.axiosRef.interceptors.response.use((res) => {
       const restResponse = res.data as IHttpSuccessResponse<any>;
       if (!restResponse.success) {
-        this.logger.error(`服务器调用失败,错误码:[${restResponse.code}],错误信息:[${restResponse.message}]`);
-        // 403不在此空间
+        this.logger.error(`Server request failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
+        // 403 not in this space
         if (restResponse.code === 201 || restResponse.code === 403) {
           throw new ServerException(CommonException.UNAUTHORIZED);
         }
-        // 不存在节点
+        // node not exist
         if (restResponse.code === 600) {
           throw new ServerException(PermissionException.NODE_NOT_EXIST);
         }
-        // 不允许访问节点
+        // access to node is denied
         if (restResponse.code === 601) {
           throw new ServerException(PermissionException.ACCESS_DENIED);
         }
-        // 不允许操作节点
+        // operation on node is denied
         if (restResponse.code === 602) {
           throw new ServerException(PermissionException.OPERATION_DENIED);
         }
@@ -91,17 +91,15 @@ export class RestService {
       }
       return restResponse;
     }, error => {
-      // 调用失败，可能是网络异常或者HttpException
-      this.logger.error('调用异常，可能是网络异常或服务端异常');
+      // Request failed, may be network issue or HttpException
+      this.logger.error('Request failed, may be network issue or server issue');
       this.logger.error(error);
       throw new ServerException(CommonException.SERVER_ERROR);
     });
   }
 
   /**
-   * 获取指定空间站的用户信息，包含用户基础信息+用户所在空间站的成员信息
-   * @param headers
-   * @param spaceId
+   * Obtain user info of the current user in a given space, including basic info and member info in the space.
    */
   async getUserInfoBySpaceId(headers: IAuthHeader, spaceId: string): Promise<IUserInfo> {
     const response = await this.httpService.get(this.GET_USER_INFO, {
@@ -111,7 +109,7 @@ export class RestService {
       },
     }).toPromise();
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`获取自己所在空间站的信息: ${JSON.stringify(response.data)}`);
+      this.logger.debug(`Obtain self user info in a space : ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -121,7 +119,7 @@ export class RestService {
       headers: HttpHelper.createAuthHeaders(headers),
     }).toPromise();
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`获取自己信息: ${JSON.stringify(response.data)}`);
+      this.logger.debug(`Obtain self own info: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -134,38 +132,35 @@ export class RestService {
   }
 
   async getNodePermission(headers: IAuthHeader, nodeId: string, shareId?: string): Promise<NodePermission> {
-    // 获取数表的角色
     const response = await this.httpService.get(sprintf(this.GET_NODE_PERMISSION, { nodeId }), {
       headers: HttpHelper.createAuthHeaders(headers),
       params: { shareId },
     }).toPromise();
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${nodeId}]获取节点权限: ${JSON.stringify(response.data)}`);
+      this.logger.debug(`[${nodeId}] Obtain node permission: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
 
   async getFieldPermission(headers: IAuthHeader, nodeId: string, shareId?: string): Promise<IFieldPermissionMap> {
-    // 获取字段权限
     const response = await this.httpService.get(sprintf(this.GET_FIELD_PERMISSION, { nodeId }), {
       headers: HttpHelper.createAuthHeaders(headers),
       params: { shareId },
     }).toPromise();
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${nodeId}]获取字段权限: ${JSON.stringify(response.data)}`);
+      this.logger.debug(`[${nodeId}] Obtain field permission: ${JSON.stringify(response.data)}`);
     }
     return response.data?.fieldPermissionMap;
   }
 
   async delFieldPermission(headers: IAuthHeader, dstId: string, fieldIds: string[]) {
-    // 删除字段权限
     await this.httpService.post(sprintf(this.DEL_FIELD_PERMISSION, { dstId }), null,
       { headers: HttpHelper.createAuthHeaders(headers), params: { fieldIds: fieldIds.join(',') }}).toPromise();
   }
 
   async capacityOverLimit(headers: IAuthHeader, spaceId: string): Promise<boolean> {
     const authHeaders = HttpHelper.createAuthHeaders(headers);
-    // 没有头部, 内部调用暂时不涉及附件字段
+    // No headers, internal request does not relate to attachment field temporarily
     if (!authHeaders) {
       return false;
     }
@@ -219,15 +214,16 @@ export class RestService {
   }
 
   /**
-   * 计算数表附件引用数
-   * @param auth 客户端授权信息
-   * @param ro 请求数据
+   * Calculates the number of references of attachments in a datasheet
+   * 
+   * @param auth Authorization info
+   * @param ro request parameters
    * @return
    * @author Zoe Zheng
-   * @date 2021/5/31 2:11 下午
+   * @date 2021/5/31 2:11 PM
    */
   async calDstAttachCite(auth: IAuthHeader, ro: IOpAttachCiteRo) {
-    // 重试一次
+    // retry once
     if (!ro) {
       return null;
     }
@@ -239,13 +235,13 @@ export class RestService {
     for (let i = 0; i <= retryTimes; i++) {
       try {
         const res: any = await this.httpService.post(this.DST_ATTACH_CITE, ro).toPromise();
-        // 返回code处理正常，直接退出，不重试
+        // Successful response, quit retry
         if (res.code && res.code == CommonStatusCode.DEFAULT_SUCCESS_CODE) {
           break;
         }
         error = res.data || res;
       } catch (e) {
-        this.logger.error('数表附件资源计算失败', { stack: e?.stack, code: e?.code, retryTimes: i });
+        this.logger.error('Datasheet attachment reference calculation failed', { stack: e?.stack, code: e?.code, retryTimes: i });
         error = e;
       }
     }
@@ -256,9 +252,10 @@ export class RestService {
   }
 
   /**
-   * 获取指定空间的API用量信息
-   * @param headers 授权信息
-   * @param spaceId 空间站ID
+   * Obtain the capacity info of the given space
+   * 
+   * @param headers Authorization info
+   * @param spaceId space ID
    */
   getApiUsage(headers: IAuthHeader, spaceId: string): Promise<any> {
     return this.httpService.get(sprintf(this.API_USAGES, { spaceId }), {
@@ -266,10 +263,6 @@ export class RestService {
     }).toPromise();
   }
 
-  /**
-   * 获取空间站列表
-   * @param headers
-   */
   async getSpaceList(headers: IAuthHeader): Promise<ISpaceInfo[]> {
     const response = await this.httpService.get(this.SPACE_LIST, {
       headers: HttpHelper.createAuthHeaders(headers),
@@ -277,14 +270,8 @@ export class RestService {
     return response.data;
   }
 
-  /**
-   * 获取文件节点详情
-   * @param headers
-   * @param spaceId
-   * @param nodeId
-   */
   async getNodeDetail(headers: IAuthHeader, nodeId: string, spaceId?: string): Promise<INode> {
-    // 节点详情
+    // node detail
     const nodeInfo = await this.httpService.get<INode>(this.NODE_DETAIL, {
       headers: HttpHelper.withSpaceIdHeader(
         HttpHelper.createAuthHeaders(headers),
@@ -296,7 +283,7 @@ export class RestService {
     }).toPromise();
 
     const res = nodeInfo.data[0];
-    // 文件夹子节点
+    // children nodes of a directory
     if (res.hasChildren) {
       const nodeChildren = await this.httpService.get<INode[]>(this.NODE_CHILDREN, {
         headers: HttpHelper.withSpaceIdHeader(
@@ -312,13 +299,8 @@ export class RestService {
     return res;
   }
 
-  /**
-   * 获取文件路金
-   * @param headers
-   * @param spaceId
-   */
   async getNodeList(headers: IAuthHeader, spaceId: string): Promise<INode[] | undefined> {
-    // 查询 node list
+    // Obtain node list
     const response = await this.httpService.get<INode>(this.NODE_TREE, {
       headers: HttpHelper.withSpaceIdHeader(
         HttpHelper.createAuthHeaders(headers),
@@ -332,7 +314,8 @@ export class RestService {
   }
 
   /**
-   * 获取空间的订阅信息视图
+   * Obtain the subscription view of the space
+   * 
    * @param {string} spaceId
    * @returns {Promise<InternalSpaceSubscriptionView>}
    */
@@ -342,7 +325,8 @@ export class RestService {
   }
 
   /**
-   * @description 获取空间站的详细信息
+   * Obtain the usage view of the space
+   * 
    * @param {string} spaceId
    * @returns {Promise<InternalSpaceUsageView>}
    */
@@ -409,33 +393,35 @@ export class RestService {
   }
 
   /**
-   * 创建消息提醒
+   * Create notification
+   * 
    * @param auth token
-   * @param ro 通知参数
+   * @param ro notification parameters
    * @return boolean
    */
   async createNotification(auth: IAuthHeader, ro: INotificationCreateRo[]) {
     try {
       const res: any = await this.httpService.post(this.CREATE_NOTIFICATION, ro).toPromise();
-      // 返回code处理正常，直接退出，不重试
+      // Successful response, quit retry
       if (res.code && res.code == CommonStatusCode.DEFAULT_SUCCESS_CODE) {
         return true;
       }
     } catch (e) {
-      this.logger.error('创建通知失败', { stack: e?.stack, code: e?.code });
+      this.logger.error('Creating notification failed', { stack: e?.stack, code: e?.code });
     }
     return false;
   }
 
   /**
-   * 创建记录即将超限提醒
-   * @param auth 头信息
-   * @param templateId 通知模版ID
-   * @param toUserId 通知用户ID
-   * @param spaceId 空间ID
-   * @param nodeId 数表ID
-   * @param usage 用量
-   * @param count 总量
+   * Create a notification about that the number of record is about to exceed limit.
+   * 
+   * @param auth authorization
+   * @param templateId notified template ID
+   * @param toUserId notified user ID
+   * @param spaceId space ID
+   * @param nodeId datasheet ID
+   * @param usage usage
+   * @param count usage capacity
    */
   createRecordLimitRemind(auth: IAuthHeader, templateId: string, toUserId: string[],
     spaceId: string, nodeId: string, count: number, usage?: number) {
@@ -455,10 +441,11 @@ export class RestService {
   }
 
   /**
-   * @description 获取指定列的角色信息
+   * Obtain the node rules of the given node
+   * 
    * @param {IAuthHeader} auth header
-   * @param {string} spaceId 空间站ID
-   * @param {string} nodeId 节点ID
+   * @param {string} spaceId space ID
+   * @param {string} nodeId node ID
    * @returns {Promise<INodeRoleMap>}
    */
   async getNodePermissionRoleList(auth: IAuthHeader, spaceId: string, nodeId: string): Promise<INodeRoleMap> {
@@ -471,10 +458,11 @@ export class RestService {
   }
 
   /**
-   * @description 获取指定列的角色信息
+   * Obtain the node rules of the given field
+   * 
    * @param {IAuthHeader} auth header
-   * @param {string} dstId 数表ID
-   * @param {string} fieldId 列ID
+   * @param {string} dstId datasheet ID
+   * @param {string} fieldId field ID
    * @returns {Promise<IFieldPermissionRoleListData>}
    */
   async getFieldPermissionRoleList(auth: IAuthHeader, dstId: string, fieldId: string): Promise<IFieldPermissionRoleListData> {

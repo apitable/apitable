@@ -1,12 +1,12 @@
 ---
-title: 日志模块
+title: Logging Module
 hide_title: true
-sidebar_label: 日志模块
+sidebar_label: Logging Module
 ---
 
-## 使用
+## Usage
 
-同步注册 LoggerModule
+Register LoggerModule synchronously:
 
 ``` typescript
 
@@ -21,7 +21,7 @@ export class AppModule {}
 
 ```
 
-异步注册 LoggerModule
+Register LoggerModule asynchronously:
 
 ``` typescript
 
@@ -37,7 +37,7 @@ export class AppModule {}
 
 ```
 
-在构造函数中注入
+Inject into the constructor:
 
 ``` typescript
 
@@ -61,7 +61,7 @@ export class AppService {
 
 ```
 
-在 nest 上下文中获取
+Obtain the logger from a Nestjs App instance:
 
 ``` typescript
 

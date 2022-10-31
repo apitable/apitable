@@ -6,9 +6,6 @@ import * as util from 'util';
 import { Logger } from 'winston';
 
 /**
- * <p>
- * 计算字段引用映射管理器
- * </p>
  * @author Chambers
  * @date 2021/2/18
  */
@@ -20,20 +17,20 @@ export class ComputeFieldReferenceManager {
   ) { }
 
   /**
-   * 覆盖性创建字段引用映射，原残余部分会解除双向引用关系
-   * @returns 原映射数表:字段集 
+   * Create field reference by covering, original remaining part will break mutual reference
+   * @returns original mapped datasheet : field set
    */
   createReference = async(mainDstId: string, field: string, foreignDstId: string, refFieldIds: string[]): Promise<string[]> => {
-    this.logger.info(`CreateComputeFieldReference: mainDstId: ${mainDstId},field: ${field},Values:【${refFieldIds}】`);
+    this.logger.info(`CreateComputeFieldReference: mainDstId: ${mainDstId},field: ${field},Values: [${refFieldIds}]`);
     const client = this.redisService.getClient();
     const refKeySuf = util.format('%s:%s', mainDstId, field);
-    // 组装引用值
+    // Build reference value
     const refValues = await Promise.all(refFieldIds.map(async fieldId => {
       const refValue = util.format('%s:%s', foreignDstId, fieldId);
-      // 维护反向引用关系
+      // Maintain backward reference
       const reRefKey = util.format(CacheKeys.DATASHEET_FIELD_RE_REF, refValue);
       const exist = await client.sismember(reRefKey, refKeySuf);
-      // 可能被多处引用，仅新增不覆盖
+      // May be referenced in many places, only creation, no covering
       if (!exist) {
         this.logger.info(`CreateComputeFieldReference: Re ${refKeySuf} not exist in ${reRefKey} reRef`);
         await client.sadd(reRefKey, ...[refKeySuf]);
@@ -41,12 +38,13 @@ export class ComputeFieldReferenceManager {
       }
       return refValue;
     }));
-    // 维护正向引用关系（如 A 表 LookUp 字段 a 引用了关联表 B 的某一列 b，则 A-a 与 B-b 构成正向引用，前者依赖后者）
+    // Maintain forward reference relation. Example: LookUp field a in datasheet A references a field b in linked datasheet B, then
+    // A-a and B-b forms forward reference, the former depends on the latter.
     const refKey = util.format(CacheKeys.DATASHEET_FIELD_REF, refKeySuf);
     const members = await client.smembers(refKey);
     if (members.length) {
       this.logger.info(`CreateComputeFieldReference: Re ${refKeySuf} exist`);
-      // 取差集，若存在值则说明残留无效引用，需解除这部分的反向引用关系
+      // Compute difference, if not empty then invalid references exist, needs to break these backward reference
       const diff = difference<string>(members, refValues);
       if (diff.length > 0) {
         await client.del(refKey);
@@ -62,22 +60,22 @@ export class ComputeFieldReferenceManager {
           }
         }
       } else if (members.length === refValues.length) {
-        // 完全一致则不作处理返回，否则全部覆盖
+        // Return without further process if identical, or all covering
         return await this.getRefFieldIds(members);
       }
     }
-    this.logger.info(`CreateComputeFieldReference: 新建或覆盖 Re: ${refKeySuf},Values:【${refValues}】`);
+    this.logger.info(`CreateComputeFieldReference: Create or cover Re: ${refKeySuf},Values: [${refValues}]`);
     await client.sadd(refKey, ...refValues);
     await client.expire(refKey, REF_STORAGE_EXPIRE_TIME);
     return await this.getRefFieldIds(members);
   };
 
   deleteReference = async(mainDstId: string, field: string, foreignDstId: string, refFieldIds: string[]) => {
-    this.logger.info(`CreateComputeFieldReference:deleteReference mainDstId: ${mainDstId},field: ${field},Values:【${refFieldIds}】`);
+    this.logger.info(`CreateComputeFieldReference:deleteReference mainDstId: ${mainDstId},field: ${field},Values: [${refFieldIds}]`);
     const client = this.redisService.getClient();
-    // 正向引用键的后缀既是反向引用的值，反向引用的值既是反向引用键的后缀
+    // Suffix of forward reference key is the value of backward reference, namely suffix of backward reference key
     const refKeySuf = util.format('%s:%s', mainDstId, field);
-    // 组装引用值
+    // Build reference value
     const refValues = await Promise.all(refFieldIds.map(async fieldId => {
       const refValue = util.format('%s:%s', foreignDstId, fieldId);
       const reRefKey = util.format(CacheKeys.DATASHEET_FIELD_RE_REF, refValue);
@@ -85,7 +83,7 @@ export class ComputeFieldReferenceManager {
       if (!exist) {
         return refValue;
       }
-      // 删除反向引用关系
+      // Delete backward reference
       const count = await client.scard(reRefKey);
       if (count === 1) {
         await client.del(reRefKey);
@@ -100,12 +98,12 @@ export class ComputeFieldReferenceManager {
     if (!members.length) {
       return;
     }
-    // 取交集，若存在值则解除这部分的正向引用关系
+    // Get intersection, if not empty then break these forward references
     const inter = intersection<string>(refValues, members);
     if (!inter.length) {
       return;
     }
-    // 全部存在，整个删除，否则仅删除需解除部分
+    // All exists, delete entire references, otherwise only delete those requires breaking
     if (inter.length === members.length) {
       await client.del(refKey);
     }

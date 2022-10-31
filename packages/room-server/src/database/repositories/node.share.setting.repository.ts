@@ -5,14 +5,14 @@ import { EntityRepository, Repository } from 'typeorm';
 export class NodeShareSettingRepository extends Repository<NodeShareSettingEntity> {
 
   /**
-   * 根据分享ID获取分享设置
+   * Obtain the sharing setting with a sharing ID
    */
   selectByShareId(shareId: string): Promise<NodeShareSettingEntity | undefined> {
     return this.findOne({ where: [{ shareId }] });
   }
 
   /**
-   * 根据节点ID获取分享设置
+   * Obtain the sharing setting with a node ID
    */
   selectByNodeId(nodeId: string): Promise<NodeShareSettingEntity | undefined> {
     return this.findOne({ where: [{ nodeId }] });

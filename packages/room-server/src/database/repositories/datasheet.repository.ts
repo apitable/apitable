@@ -5,16 +5,18 @@ import { EntityRepository, Repository } from 'typeorm';
 @EntityRepository(DatasheetEntity)
 export class DatasheetRepository extends Repository<DatasheetEntity> {
   /**
-   * 查询实体
-   * @param dstId 数表ID
+   * Query an entity
+   * 
+   * @param dstId datasheet ID
    */
   public selectById(dstId: string): Promise<DatasheetEntity | undefined> {
     return this.findOne({ where: [{ dstId, isDeleted: false }] });
   }
 
   /**
-   * 获取数表的版本号
-   * @param dstId 数表ID
+   * Query the revision number of a datasheet.
+   * 
+   * @param dstId datasheet ID
    */
   selectRevisionByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
     return this.findOne({
@@ -24,8 +26,9 @@ export class DatasheetRepository extends Repository<DatasheetEntity> {
   }
 
   /**
-   * 查询多个数表对应的版本号
-   * @param dstIds 数表ID 数组
+   * Query the revision numbers of multiple datasheets.
+   * 
+   * @param dstIds datasheet ID array
    */
   selectRevisionByDstIds(dstIds: string[]): Promise<IResourceRevision[]> {
     return this.query(
@@ -39,8 +42,9 @@ export class DatasheetRepository extends Repository<DatasheetEntity> {
   }
 
   /**
-   * 获取数表所在的空间ID
-   * @param dstId 数表ID
+   * Query the ID of the space which the given datasheet belongs to
+   * 
+   * @param dstId datasheet ID
    */
   selectSpaceIdByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
     return this.findOne({

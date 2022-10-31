@@ -4,12 +4,6 @@ import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { IdWorker } from '../../../shared/helpers';
 import { DatasheetRecordSourceRepository } from '../../repositories/datasheet.record.source.repository';
 
-/**
- * Datasheet Record Source 服务
- *
- * @export
- * @class DatasheetRecordService
- */
 @Injectable()
 export class DatasheetRecordSourceService {
   constructor(private repository: DatasheetRecordSourceRepository) {}
@@ -30,7 +24,7 @@ export class DatasheetRecordSourceService {
       .insert()
       .into(DatasheetRecordSourceEntity)
       .values(entities)
-      // 如果不设置为false，插入完成后会执行select语句，严重影响性能
+      // If not set to false, SELECT will be executed after insertion, efficiency is impacted
       .updateEntity(false)
       .execute();
   }

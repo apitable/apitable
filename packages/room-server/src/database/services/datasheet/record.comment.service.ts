@@ -43,12 +43,12 @@ export class RecordCommentService {
         unitId: cur.unitId,
         revision: Number(cur.revision),
       });
-      // 收集用户
+      // Collect users
       mentionedIds.push(cur.unitId);
       mentionedIds.push(...RecordCommentService.getMentionedId(cur.commentMsg));
       return pre;
     }, []);
-    // 去重
+    // Remove duplicates
     const units = await this.unitService.getUnitMemberInfoByIds(Array.from(new Set(mentionedIds)));
     return { comments, units };
   }
@@ -65,7 +65,7 @@ export class RecordCommentService {
       return new ServerException(CommonException.SERVER_ERROR);
     }
     if (!res) return new ServerException(CommonException.SERVER_ERROR);
-    // 封装返回数据
+    // Pack response data
     if (res.code && res.code === JavaService.SUCCESS_CODE) {
       const spacePermissions = res.data.spaceResource.permissions;
       return spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
@@ -84,13 +84,14 @@ export class RecordCommentService {
   }
 
   /**
-   * 获取记录评论的版本号
-   * @param dstId 数表ID
-   * @param recordId 记录ID
-   * @param excludeDeleted 是否排除删除的记录
+   * Obtain revisions of record comments
+   * 
+   * @param dstId datasheet ID
+   * @param recordId record ID
+   * @param excludeDeleted if deleted records are excluded. default to true.
    * @return string[]
    * @author Zoe Zheng
-   * @date 2021/4/21 5:24 下午
+   * @date 2021/4/21 5:24 PM
    */
   async getRecordCommentRevisions(dstId: string, recordId: string, excludeDeleted = true): Promise<string[]> {
     const result = await this.repo.selectReversionsByDstIdAndRecordId(dstId, recordId, excludeDeleted);
@@ -120,9 +121,7 @@ export class RecordCommentService {
   }
 
   /**
-   * @description 解析 Draft.js 的结构，取出数据
-   * @param {*} content
-   * @returns
+   * Parse Draft.js data and get unit IDs of mentioned users
    */
   private static parseDraftContent(content: any) {
     if (content['entityMap']) {
@@ -141,13 +140,13 @@ export class RecordCommentService {
   }
 
   /**
-   * @description 由于存在多种编辑器的可能，不同编辑器的数据结构也不一样，
-   * 需要根据 msg 里的 type 区分处理
+   * As there may be multiple comment editors, their handling are different based on type
+   * 
    * @param {ICommentMsg} msg
-   * @returns {Promise<string[]>}
+   * @returns {string[]}
    */
   private static getMentionedId(msg: ICommentMsg) {
-    // Draft.js 编辑器
+    // Draft.js editor
     if (msg.type === 'dfs' && msg.content) {
       return RecordCommentService.parseDraftContent(msg.content);
     }
@@ -155,20 +154,18 @@ export class RecordCommentService {
   }
 
   /**
-   * 查询单条评论
-   * @param dstId     数表Id
-   * @param recordId  记录Id
-   * @param commentId 评论Id
+   * Get one comment by ID
    */
   async getCommentByCommentId(dstId: string, recordId: string, commentId: string) {
     return await this.repo.selectCommentsByDstIdAndRecordIdAndCommentId(dstId, recordId, commentId);
   }
 
   /**
-   * 获取评论所有的点赞信息
-   * @param dstId     数表Id
-   * @param recordId  记录Id
-   * @param revisions 评论版本号
+   * Get emojis of a comment by revisions
+   * 
+   * @param dstId     datasheet Id
+   * @param recordId  record Id
+   * @param revisions comment revisions
    */
   async getEmojisByRevisions(dstId: string, recordId: string, revisions: number[]) {
     const rows = await this.repo.selectEmojisByRevisions(dstId, recordId, revisions);
@@ -187,17 +184,15 @@ export class RecordCommentService {
   }
 
   /**
-   * 获取评论状态
-   * @param dstId       数表Id
-   * @param recordId    记录Id
-   * @param commentIds  评论ID集合
+   * @param commentIds  comment ID set
    */
   async getCommentStateByCommentIds(dstId: string, recordId: string, commentIds: string[]) {
     return await this.repo.selectCommentStateByCommentIds(dstId, recordId, commentIds);
   }
 
   /**
-   * 从 JOT Action 获取评论内容
+   * Extract comment content from JOT action
+   * 
    * @param action JOT Action
    */
   public extractCommentTextFromAction(action: IListInsertAction) {

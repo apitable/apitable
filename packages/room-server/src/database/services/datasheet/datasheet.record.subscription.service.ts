@@ -24,7 +24,7 @@ import { RecordCommentService } from './record.comment.service';
 @Injectable()
 export class DatasheetRecordSubscriptionService {
 
-  // 将会转为 Mongo CDC 异步处理事件，之后会删除 event handling 相关代码
+  // TODO Delete event handling code after changed Mongo CDC to process events asynchronously
   opEventManager: OPEventManager;
 
   constructor(
@@ -182,7 +182,8 @@ export class DatasheetRecordSubscriptionService {
     const subscriptions = await this.getSubscriptionsByRecordId(datasheetId, recordId);
     if (isEmpty(subscriptions)) return;
 
-    const subscriberUserIds = subscriptions.map((sub) => sub.createdBy).filter((uid: string) => uid !== operatorUserId); // 不通知操作人
+    // Don't notify operator
+    const subscriberUserIds = subscriptions.map((sub) => sub.createdBy).filter((uid: string) => uid !== operatorUserId);
     if (isEmpty(subscriberUserIds)) return;
 
     const subscriptionByUserId = subscriptions.reduce<{ [key: string]: DatasheetRecordSubscriptionEntity }>((acc, cur) => {
@@ -204,22 +205,22 @@ export class DatasheetRecordSubscriptionService {
     let subscriberMemberIds = Object.keys(userIdByMemberId);
     this.logger.info(`datasheets[${datasheetId}].records[${recordId}] subscribers: ${subscriberMemberIds.join()}`);
 
-    // 如果变更列有设置列权限，过滤掉没有该列权限的订阅者
+    // If field permission is set on changed field, filter out subscribers who don't have permission for this field
     const fieldRoleListData = await this.restService.getFieldPermissionRoleList(authHeader, datasheetId, fieldId);
     if (fieldRoleListData.enabled) {
       const allowedMemberIds = fieldRoleListData.members.map((member: IRoleMember) => member.memberId);
       subscriberMemberIds = subscriberMemberIds.filter((memberId => allowedMemberIds.includes(memberId)));
     }
 
-    // 获取涉及的 mirror nodes
+    // Get related mirror nodes
     const involvedMirrorNodes = await this.getSubscriptionInvolvedMirrorNodes(subscriptions);
 
-    // 获取首列值
+    // Get value of primary field
     const recordTitle = this.datasheetRecordService.getRecordTitle(relatedRecord, datasheetMeta, store);
 
-    // 获取改变值
-    let oldDisplayValue = '此字段类型暂不支持显示';
-    let newDisplayValue = '此字段类型暂不支持显示';
+    // Get changed value
+    let oldDisplayValue = '';
+    let newDisplayValue = '';
     if (relatedField.type !== FieldType.Link) {
       const oldRawValue = event.change.from;
       const newRawValue = event.change.to;
@@ -227,7 +228,7 @@ export class DatasheetRecordSubscriptionService {
       newDisplayValue = Field.bindContext(relatedField, state).cellValueToString(newRawValue) || '';
     }
 
-    // 消息 Extra payload
+    // message extra payload
     const msgTemplate = 'subscribed_record_cell_updated';
     const msgExtras = {
       recordTitle: truncateText(recordTitle),
@@ -238,12 +239,12 @@ export class DatasheetRecordSubscriptionService {
       viewId: datasheetMeta.views[0].id,
     };
 
-    // 经过列权限过滤后的订阅者，判断订阅来源 (datasheet or mirror)
+    // Subscribers after filtering by field permission, check subscription source (datasheet of mirror)
     const nodeRoleListData = await this.restService.getNodePermissionRoleList(authHeader, spaceId, datasheetId);
     const datasheetMemberIds = nodeRoleListData.members.map((member) => member.memberId);
     this.logger.info(`datasheets[${datasheetId}].records[${recordId}] subscribers(with permission): ${datasheetMemberIds.join()}`);
 
-    // 镜像缓存
+    // mirror cache
     const mirrorIdToViewIdMap: { [key: string]: string } = {};
     const mirrorVisibleRecordIds: { [key: string]: string[] } = {};
 
@@ -252,7 +253,7 @@ export class DatasheetRecordSubscriptionService {
       const unitId = unitIdByMemberId[memberId];
       const subscription = subscriptionByUserId[userId];
       
-      // 如果订阅来自 datasheet, 并且订阅者仍有 datasheet node 权限, 直接通知
+      // If subscription comes from datasheet and subscriber has datasheet node permission, notify
       if (!subscription.mirrorId) {
         if (datasheetMemberIds.includes(memberId)) {
           const message = this.buildNotificationMessage(spaceId, datasheetId, msgTemplate, operatorUserId, unitId, msgExtras);
@@ -261,7 +262,7 @@ export class DatasheetRecordSubscriptionService {
         return;
       }
 
-      // 订阅来自 mirror, 检查 record 在 mirror 中的可见性，如果可见则通知
+      // If subscription comes from mirror, check if record is visible in mirror, if so, notify
       let visibleRecordIds: string[];
       if (subscription.mirrorId in mirrorVisibleRecordIds) { // cache hit
         visibleRecordIds = mirrorVisibleRecordIds[subscription.mirrorId];
@@ -313,7 +314,8 @@ export class DatasheetRecordSubscriptionService {
     const subscriptions = await this.getSubscriptionsByRecordId(datasheetId, recordId);
     if (isEmpty(subscriptions)) return;
 
-    const subscriberUserIds = subscriptions.map((sub) => sub.createdBy).filter((uid: string) => uid !== operatorUserId); // 不通知操作人
+    // Don't notify operator
+    const subscriberUserIds = subscriptions.map((sub) => sub.createdBy).filter((uid: string) => uid !== operatorUserId);
     if (isEmpty(subscriberUserIds)) return;
 
     const subscriptionByUserId = subscriptions.reduce<{ [key: string]: DatasheetRecordSubscriptionEntity }>((acc, cur) => {
@@ -334,21 +336,21 @@ export class DatasheetRecordSubscriptionService {
 
     const subscriberMemberIds = Object.keys(userIdByMemberId);
 
-    // 获取涉及的 mirror nodes
+    // Obtain related mirror nodes
     const involvedMirrorNodes = await this.getSubscriptionInvolvedMirrorNodes(subscriptions);
 
-    // 获取首列值
+    // Obtain value of primary field
     const recordTitle = this.datasheetRecordService.getRecordTitle(relatedRecord, datasheetMeta, store);
 
-    // 断订阅者订阅来源 (datasheet or mirror)
+    // Get the subscription source (datasheet or mirror)
     const nodeRoleListData = await this.restService.getNodePermissionRoleList(authHeader, spaceId, datasheetId);
     const datasheetMemberIds = nodeRoleListData.members.map((member) => member.memberId);
 
-    // 镜像缓存
+    // mirror cache
     const mirrorIdToViewIdMap: { [key: string]: string } = {};
     const mirrorVisibleRecordIds: { [key: string]: string[] } = {};
 
-    // 消息 Extra payload
+    // message extra payload
     const msgTemplate = 'subscribed_record_commented';
     const msgExtras = {
       recordTitle: truncateText(recordTitle),
@@ -362,7 +364,7 @@ export class DatasheetRecordSubscriptionService {
       const unitId = unitIdByMemberId[memberId];
       const subscription = subscriptionByUserId[userId];
 
-      // 如果订阅来自 datasheet, 并且订阅者仍有 datasheet node 权限, 直接通知
+      // If subscription comes from datasheet and subscriber has datasheet node permission, notify
       if (!subscription.mirrorId) {
         if (datasheetMemberIds.includes(memberId)) {
           const message = this.buildNotificationMessage(spaceId, datasheetId, msgTemplate, operatorUserId, unitId, msgExtras);
@@ -371,7 +373,7 @@ export class DatasheetRecordSubscriptionService {
         return;
       }
 
-      // 订阅来自 mirror, 检查 record 在 mirror 中的可见性，如果可见则通知
+      // If subscription comes from mirror, check if record is visible in mirror, if so, notify
       let visibleRecordIds: string[];
       if (subscription.mirrorId in mirrorVisibleRecordIds) { // cache hit
         visibleRecordIds = mirrorVisibleRecordIds[subscription.mirrorId];
@@ -462,7 +464,7 @@ export class DatasheetRecordSubscriptionService {
       const dataPack: DatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, { recordIds: [recordId] });
       return dataPack;
     } catch (error) {
-      this.logger.error(`获取 DataPack 失败, dstId: ${dstId}, recordId: ${recordId}, err: ${error}.`);
+      this.logger.error(`Fetching DataPack failed, dstId: ${dstId}, recordId: ${recordId}, err: ${error}.`);
     }
     return undefined;
   }

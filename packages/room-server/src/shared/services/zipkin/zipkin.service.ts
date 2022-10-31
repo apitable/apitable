@@ -26,7 +26,7 @@ export class ZipkinService {
         logger: {
           logSpan: span => {
             const json = JSON_V2.encode(span);
-            console.log(`${serviceName} 上报: ${json}`);
+            console.log(`${serviceName} report: ${json}`);
             httpLogger.logSpan(span);
           },
         },
@@ -35,7 +35,7 @@ export class ZipkinService {
       return {
         record: rec => {
           const { spanId, traceId } = rec.traceId;
-          console.log(`${serviceName} 记录: ${traceId}/${spanId} ${rec.annotation.toString()}`);
+          console.log(`${serviceName} record: ${traceId}/${spanId} ${rec.annotation.toString()}`);
           batchRecorder.record(rec);
         },
       };

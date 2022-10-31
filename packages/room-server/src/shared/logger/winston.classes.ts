@@ -2,7 +2,7 @@ import { Logger } from 'winston';
 import { LoggerService } from '@nestjs/common';
 
 /**
- * 实现Nestjs的LoggerService接口
+ * Implements the interface LoggerService of Nestjs
  */
 export class WinstonLogger implements LoggerService {
   private context?: string;

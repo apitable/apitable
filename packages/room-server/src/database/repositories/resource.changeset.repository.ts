@@ -11,7 +11,7 @@ export class ResourceChangesetRepository extends Repository<ResourceChangesetEnt
   }
 
   /**
-   * 查询变更集列表
+   * Obtain the changeset list of a resource with the given revision numbers
    */
   getByResourceIdAndRevisions(resourceId: string, revisions: number[]): Promise<ResourceChangesetEntity[]> {
     return this.find({
@@ -20,7 +20,7 @@ export class ResourceChangesetRepository extends Repository<ResourceChangesetEnt
   }
 
   /**
-   * 获取数表变更集的最大版本
+   * Obtain the maximum revision number of a resource
    */
   getMaxRevisionByResourceId(resourceId: string): Promise<{ revision: string }> {
     return this.createQueryBuilder('vrc')
@@ -31,7 +31,9 @@ export class ResourceChangesetRepository extends Repository<ResourceChangesetEnt
   }
 
   /**
-   * 按版本顺序查询changeset
+   * Obtain the changeset list of a resource with the given revision numbers.
+   * 
+   * The order of the returned changeset list follows that of `revisions`.
    */
   getChangesetOrderList(resourceId: string, revisions: string | number[]): Promise<any[]> {
     return this.query(

@@ -4,8 +4,7 @@ import * as util from 'util';
 import { CacheKeys, STORAGE_EXPIRE_TIME } from '../../common';
 
 /**
- * 客户端存储抽象类
- * 基于Redis实现
+ * Abstract class for client storage, based on Redis.
  */
 @Injectable()
 export class ClientStorage {
@@ -14,9 +13,7 @@ export class ClientStorage {
   ) { }
 
   /**
-   * 根据socketId获取socket信息
-   *
-   * @param socketId socket连接唯一标识
+   * Obtain socket info by socket ID
    */
   async get<T = object>(socketId: string): Promise<T | null> {
     const client = this.redisService.getClient();
@@ -29,9 +26,7 @@ export class ClientStorage {
   }
 
   /**
-   * 批量根据socketId获取socket信息
-   *
-   * @param socketIds socket连接唯一标识集合
+   * Obtain socket infos by an array of socket IDs
    */
   async mget<T>(socketIds: string[]): Promise<T[]> {
     const client = this.redisService.getClient();
@@ -46,23 +41,23 @@ export class ClientStorage {
   }
 
   /**
-   * 设置socket连接信息到redis
+   * Set the socket connection info in Redis
    *
-   * @param socketId socket连接唯一标识
-   * @param data socket连接信息
+   * @param socketId socket ID
+   * @param data socket connection info
    */
   async set(socketId: string, data: object) {
     const client = this.redisService.getClient();
     const cacheKey = util.format(CacheKeys.SOCKET, socketId);
-    // 在服务端重启的时候，所有的 socketId 都会失效，并且没有很好的机制去清除他们，所以这里设定一个 3 天的过期时间。
-    // 假设一个用户 3 天不曾切换表/刷新表，就会失去他的协作者信息。但并不会造成其他影响。
+    // After the server restarts, all socket IDs are invalidated, but there is no good means to
+    // clear them, so a 3-day expiry time is set.
+    // If a user never switch datasheet/refresh the datasheet, its collaborator info will be lost.
+    // But there is no other impact
     return await client.set(cacheKey, JSON.stringify(data), 'EX', STORAGE_EXPIRE_TIME);
   }
 
   /**
-   * 删除socket连接信息
-   *
-   * @param socketId socket连接唯一标识
+   * Delete socket connection info
    */
   async del(socketId: string) {
     const client = this.redisService.getClient();

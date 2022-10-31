@@ -29,11 +29,11 @@ export class SchedTaskService {
   @Cron('0,30 * * * * *')
   async scheduleScanActivatedRecordAlarmJob() {
     const profiler = this.logger.startTimer();
-    this.logger.info('扫描需要触发的提醒开始');
+    this.logger.info('Start scanning activated record alarms');
 
     const activatedRecordAlarms = await this.recordAlarmService.getCurrentActivatedRecordAlarms(35);
     if (isEmpty(activatedRecordAlarms)) {
-      profiler.done({ message: '扫描需要触发提醒结束, 没有需要触发的提醒' });
+      profiler.done({ message: 'Finished scanning activated record alarms, no alarms found' });
       return;
     }
 
@@ -121,10 +121,10 @@ export class SchedTaskService {
 
       enqueuedAlarmIds.push(alarm.alarmId);
       this.queueSenderService.sendMessage('vikadata.api.notification.exchange', 'notification.message', message);
-      this.logger.info(`提醒 ${alarm.alarmId} 已进入队列`);
+      this.logger.info(`Alarm ${alarm.alarmId} is enqueued`);
     });
     this.recordAlarmService.batchUpdateStatusOfRecordAlarms(enqueuedAlarmIds, RecordAlarmStatus.DONE);
 
-    profiler.done({ message: `扫描需要触发的提醒结束, 加入队列 ${enqueuedAlarmIds.length}/${involvedAlarmIds.length}` });
+    profiler.done({ message: `Finished scanning activated record alarms, enqueued ${enqueuedAlarmIds.length}/${involvedAlarmIds.length}` });
   }
 }

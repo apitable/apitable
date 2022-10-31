@@ -2,11 +2,10 @@ import { UnitTeamEntity } from '../entities/unit.team.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 /**
- * <p>
- * vika_unit_team数据库相关操作
- * </p>
+ * Operations on table `vika_unit_team`
+ * 
  * @author Zoe zheng
- * @date 2020/7/30 4:09 下午
+ * @date 2020/7/30 4:09 PM
  */
 @EntityRepository(UnitTeamEntity)
 export class UnitTeamRepository extends Repository<UnitTeamEntity> {

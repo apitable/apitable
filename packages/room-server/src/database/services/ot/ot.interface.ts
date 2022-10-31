@@ -2,10 +2,12 @@ import { IMeta, ILocalChangeset, IRecordCellValue, IRecordMeta, ResourceType } f
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { IAuthHeader, NodePermission } from '../../../shared/interfaces';
 
-// 最大变更版本
+/**
+ * Maximum revision difference with which the client changes can be merged with the server's.
+ */
 export const MAX_REVISION_DIFF = 100;
 
-// 副作用变量收集器中的变量键值
+// effect key names for effect collector
 export enum EffectConstantName {
   Meta = 'meta',
   MetaActions = 'metaActions',
@@ -37,7 +39,7 @@ export interface IRestoreRecordInfo {
 }
 
 /**
- * 数表源数据
+ * Datasheet source data
  */
 export interface IReadMetaData {
   name: string;
@@ -52,11 +54,7 @@ export interface IReadMetaData {
 }
 
 /**
- * 通道消息
- * sourceDatasheetId: 源表ID
- * sourceType: 来源的类型
- * shareId: 分享 id
- * roomId: Room id
+ * Channel message
  */
 export interface IRoomChannelMessage {
   roomId: string;
@@ -65,7 +63,7 @@ export interface IRoomChannelMessage {
   sourceType?: SourceTypeEnum;
   changesets: ILocalChangeset[];
   allowAllEntrance?: boolean;
-  // java 内部调用 不校验权限
+  /** No auth for Java internal request */
   internalAuth?: {
     userId: string,
     uuid: string

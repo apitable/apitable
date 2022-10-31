@@ -9,33 +9,36 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
   }
 
   /**
-   * 获取数表metaData，忽略是否删除
-   * @param dstId 数表ID
+   * Obtain the metadata of a datasheet, ignoring `isDeleted` state.
+   * 
+   * @param dstId datasheet ID
    * @return
    * @author Zoe Zheng
-   * @date 2021/4/1 3:40 下午
+   * @date 2021/4/1 3:40 PM
    */
   selectMetaByDstIdIgnoreDeleted(dstId: string): Promise<DatasheetMetaEntity | undefined> {
     return this.findOne({ select: ['metaData'], where: [{ dstId }] });
   }
 
   /**
-   * 根据数表ID数组查找meta
-   * @param dstIds 数表ID数组
+   * Obtain the metadata list by datasheet ID list
+   * 
+   * @param dstIds datasheet ID array
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/26 1:57 下午
+   * @date 2020/8/26 1:57 PM
    */
   selectMetaByDstIds(dstIds: string[]): Promise<DatasheetMetaEntity[]> {
     return this.find({ select: ['revision', 'metaData', 'dstId'], where: [{ dstId: In(dstIds), isDeleted: false }] });
   }
 
   /**
-   * 根据数表ID数组查找meta, 忽略是否删除
-   * @param dstIds 数表ID数组
+   * Obtain the metadata list by datasheet ID list, ignoring `isDeleted` state
+   * 
+   * @param dstIds datasheet ID array
    * @return
    * @author Zoe Zheng
-   * @date 2021/4/1 3:49 下午
+   * @date 2021/4/1 3:49 PM
    */
   selectMetaByDstIdsIgnoreDeleted(dstIds: string[]): Promise<DatasheetMetaEntity[]> {
     return this.find({ select: ['revision', 'metaData', 'dstId'], where: [{ dstId: In(dstIds) }] });

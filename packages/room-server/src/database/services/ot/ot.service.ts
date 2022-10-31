@@ -45,7 +45,7 @@ import { EffectConstantName, IChangesetParseResult, ICommonData, IOtEventContext
 import { ResourceChangeHandler } from './resource.change.handler';
 
 /**
- * OT 处理服务类
+ * OT management service
  */
 @Injectable()
 export class OtService {
@@ -80,25 +80,23 @@ export class OtService {
   ) { }
 
   /**
-   * 获取操作用户对节点的权限
-   * @param nodeId 这里的做了扩展，不仅限于 dstId，还会包括其它各种节点 Id
-   * @param cookie 会话
-   * @param token 令牌
-   * @param needCheckShare
+   * Obtain the node rule of the operator.
+   * 
+   * @param nodeId node ID.
    */
   getNodeRole = async(nodeId: string, auth: IAuthHeader, shareId?: string,
     roomId?: string, sourceDatasheetId?: string, sourceType?: SourceTypeEnum, allowAllEntrance?: boolean): Promise<NodePermission> => {
     switch (sourceType) {
       case SourceTypeEnum.FORM:
-        // 神奇表单提交产生的数表资源 OP，权限以神奇表单节点为准
+        // Datasheet resource OP resulted from form submitting, use permission of form
         const fieldPermissionMap = await this.restService.getFieldPermission(auth, roomId!, shareId);
         const defaultPermission = { fieldPermissionMap, hasRole: true, role: ConfigConstant.permission.editor, ...DEFAULT_EDITOR_PERMISSION };
         const { fillAnonymous } = await this.resourceMetaRepository.selectMetaByResourceId(roomId!);
-        // 分享模式下若允许匿名填写，直接返回默认权限
+        // If anonymous filling is allowed in sharing mode, return default permission
         if (shareId && Boolean(fillAnonymous)) {
           return defaultPermission;
         }
-        // 补充用户信息
+        // Fill in user info
         const { userId, uuid } = await this.userService.getMe(auth);
         return { userId, uuid, ...defaultPermission };
       case SourceTypeEnum.MIRROR:
@@ -106,31 +104,31 @@ export class OtService {
           break;
         }
         const permission = await this.permissionServices.getNodeRole(roomId!, auth, shareId);
-        // 改写 mirror 权限集
+        // rewrite mirror permission set
         this.mirrorService.rewriteMirrorPermission(permission);
         return permission;
       default:
         break;
     }
-    // 获取节点权限信息。这里不做权限校验，交由资源解析操作时，校验具体要求权限
+    // Obtain node info. No authorization here, leave it to resource analysis operation
     const permission = await this.permissionServices.getNodeRole(nodeId, auth, shareId);
-    // 可编辑或以上权限，不需要进行数据源入口的全范围加载
+    // Editable or above permission, no need to do full-scale loading of data source entrance
     if (permission.editable || !allowAllEntrance) {
       return permission;
     }
-    // 获取该数表的关联节点资源（form、mirror...）
+    // Obtain related node resource (form, mirror, etc) of the datasheet
     const relNodeIds = await this.nodeService.getRelNodeIds(nodeId);
     if (relNodeIds?.length === 0) {
       return permission;
     }
-    //TODO 批量处理加载多个镜像的节点权限集
+    // TODO Batch loading node permission sets of multiple mirrors
     for (const relNodeId of relNodeIds) {
       if (!relNodeId.startsWith(ResourceIdPrefix.Mirror)) {
         continue;
       }
       const relNodePermission = await this.permissionServices.getNodeRole(relNodeId, auth, shareId);
       if (relNodePermission.editable) {
-        // 改写 mirror 权限集
+        // Rewrite mirror permission set
         this.mirrorService.rewriteMirrorPermission(relNodePermission);
         return relNodePermission;
       }
@@ -139,13 +137,10 @@ export class OtService {
   };
 
   /**
-   * 应用 ROOM 变更集
-   * @param message 客户端 ROOM 消息
-   * @param cookie 浏览器cookie
-   * @param token 用户访问令牌
+   * @param message client ROOM message
    */
   async applyRoomChangeset(message: IRoomChannelMessage, auth: IAuthHeader): Promise<IRemoteChangeset[]> {
-    // 校验分享是否开启可编辑
+    // Validate that sharing enables editing
     if (message.shareId) {
       await this.nodeShareSettingService.checkNodeShareCanBeEdited(message.shareId, message.roomId);
     }
@@ -154,15 +149,15 @@ export class OtService {
     const msgIds = message.changesets.map(cs => cs.messageId);
     const client = this.redisService.getClient();
     const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    // 对资源加锁，同一个资源的 message 只能依次进行消费。120秒超时
+    // Lock resource, messages of the same resource are consumed sequentially. Timeout is 120s
     const unlock = await lock(message.changesets.map(cs => cs.resourceId), 120 * 1000);
     const attachCites: any[] = [];
     const results: IRemoteChangeset[] = [];
     const context: IOtEventContext = { authHeader: auth, spaceId, fromEditableSharedNode: !isNil(message.shareId) };
-    //!!! 警告，所有Service/网络相关操作必须放进 try 中，否则会导致死锁
+    //!!! WARN All services and network related operations must be put inside try blocks, or dead lock may happen.
     try {
       const beginTime = +new Date();
-      this.logger.info(`room:[${message.roomId}] ====> parseChanges 开始......`);
+      this.logger.info(`room:[${message.roomId}] ====> parseChanges Start......`);
       const transactions: IChangesetParseResult[] = [];
       for (const cs of message.changesets) {
         const { transaction, effectMap, commonData, resultSet } = await this.parseChanges(spaceId, message, cs, auth);
@@ -173,8 +168,8 @@ export class OtService {
         attachCites.push(effectMap.get(EffectConstantName.AttachCite));
       }
       const parseEndTime = +new Date();
-      this.logger.info(`room:[${message.roomId}] ====> parseChanges 结束，耗时: ${parseEndTime - beginTime}ms。总事务开始......`);
-      // ======== 多资源操作事务 BEGIN ========
+      this.logger.info(`room:[${message.roomId}] ====> parseChanges Finished, duration: ${parseEndTime - beginTime}ms. General transaction start......`);
+      // ======== multiple-resource operation transaction BEGIN ========
       this.logger.info('applyRoomChangeset-transaction-start', { msgIds });
       await getManager().transaction(async(manager: EntityManager) => {
         for (const { transaction, effectMap, commonData, resultSet } of transactions) {
@@ -187,18 +182,20 @@ export class OtService {
         }
       });
       const endTime = +new Date();
-      this.logger.info(`room:[${message.roomId}] ====> 总事务结束，耗时: ${endTime - parseEndTime}ms`);
+      this.logger.info(`room:[${message.roomId}] ====> General transaction finished, duration: ${endTime - parseEndTime}ms`);
       this.logger.info('applyRoomChangeset-transaction-end', { msgIds });
-      // 处理资源变更事件
+      // Process resource change event
       await this.resourceChangeHandler.handleResourceChange(message.roomId, transactions);
-      // ======== 多资源操作事务 END ========
+      // ======== multiple-resource operation transaction END ========
     } finally {
-      // 释放各资源的锁
+      // Release lock of each resource
       await unlock();
     }
 
-    // 在没有异常的情况下才进行附件计算，保证数据一致性(如果计算失败，会有定时任行务进补偿)
-    // 加入队列，提交给java计算op中附件容，放量入队列是为了防止并发
+    // Only perform attachment computation if no exception was thrown, to ensure
+    // data consistency. (If computation fails, cron job will compensate)
+    // Add to queue, submit to java to calculate attachment capacity in op, 
+    // add to queue individually to avoid concurrency
     this.logger.info('applyRoomChangeset-handle-attach', { msgIds });
     if (attachCites.length) {
       for (const item of attachCites) {
@@ -217,16 +214,16 @@ export class OtService {
     const hasRobot = await this.resourceService.getHasRobotByResourceIds(allEffectDstIds);
     this.logger.info('applyRoomChangeset-hasRobot', { msgIds, thisBatchResourceIds, allEffectDstIds, hasRobot });
     if (hasRobot) {
-      // 这里处理事件
+      // Handle event here
       this.logger.info('applyRoomChangeset-robot-event-start', { msgIds });
-      // 清缓存
+      // Clear cache
       allEffectDstIds.forEach(resourceId => {
         clearComputeCache(resourceId);
       });
       this.eventService.handleChangesets(results);
     }
 
-    // 用户订阅记录变更事件
+    // User subscription record change event
     this.datasheetRecordSubscriptionService.handleChangesets(results, context);
 
     // clear cached selectors, will remove after release/1.0.0
@@ -235,20 +232,12 @@ export class OtService {
     return results;
   }
 
-  /**
-   * 解析变更集
-   * @param spaceId
-   * @param mainResourceId
-   * @param message 通道消息
-   * @param cookie
-   * @param token
-   */
   async parseChanges(spaceId: string, message: IRoomChannelMessage, changeset: ILocalChangeset,
     auth: IAuthHeader): Promise<IChangesetParseResult> {
     const { sourceDatasheetId, sourceType, shareId, roomId, internalAuth, allowAllEntrance } = message;
     const { resourceId } = changeset;
 
-    // 临时补充 resourceType
+    // Fill in resourceType if it is null
     if (changeset.resourceType == null) {
       switch (resourceId.substr(0, 3)) {
         case NodeTypeReg.DATASHEET: {
@@ -268,61 +257,62 @@ export class OtService {
 
     const { resourceType } = changeset;
 
-    // 如果不存在版本号，默认以数表最新的版本号进行填充
+    // If no revision exists, default to latest revision of the datasheet
     if (changeset.baseRevision == null) {
       changeset.baseRevision = await this.changesetService.getMaxRevision(resourceId, resourceType);
     }
 
-    // 检查资源消息是否重复
+    // Check if resource message is duplicate
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`检查资源[${resourceId}]消息是否重复`);
+      this.logger.debug(`Check if resource [${resourceId}] message is duplicate`);
     }
     const msgExist = await this.changesetService.countByResourceIdAndMessageId(resourceId, resourceType, changeset.messageId);
     if (msgExist) {
-      // 重复消息，抛出异常
+      // Duplicate message, throw an exception
       throw new ServerException(OtException.MSG_ID_DUPLICATE);
     }
-    // 查询资源版本号
+    // Query resource revision
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${resourceId}]获取数据库版本`);
+      this.logger.debug(`[${resourceId}] Obtain revision from database`);
     }
     const { resourceRevision, nodeId } = await this.metaService.getResourceInfo(resourceId, resourceType);
     if (resourceRevision === undefined || !nodeId) {
       this.logger.info(`REVISION_ERROR : ${resourceRevision}  --- ${nodeId} --- ${resourceId}`);
       throw new ServerException(OtException.REVISION_ERROR);
     }
-    // 客户端提交的operations转换成正确的changeset
+    // Transform operations submitted by client into correct changeset
     const remoteChangeset = await this.transform(changeset, resourceRevision);
-    // 获取变更集的最大版本号
+    // Obtain max revision of changesets
     const changesetRevision = await this.changesetService.getMaxRevision(resourceId, resourceType);
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${resourceId}]原变更集最大版本号:${changesetRevision}`);
+      this.logger.debug(`[${resourceId}] original max revision of changesets:${changesetRevision}`);
     }
-    // 不存在则默认使用传输过来的版本号
+    // If no max revision exists, use the revision from client
     const rightRevision = changesetRevision ? changesetRevision + 1 : remoteChangeset.revision;
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${resourceId}]原变更集版本号理论值:${rightRevision}`);
-      this.logger.debug(`[${resourceId}]客户端的版本号理论值:${remoteChangeset.revision}`);
+      this.logger.debug(`[${resourceId}] Theoretical value of original revision of changesets:${rightRevision}`);
+      this.logger.debug(`[${resourceId}] Theoretical value of client revision:${remoteChangeset.revision}`);
     }
     const isEqual = remoteChangeset.revision === rightRevision;
-    // 不匹配的情况下，需要拒绝
+    // Reject the revision if the revisions are not equal
     if (!isEqual) {
       throw new ServerException(OtException.MATCH_VERSION_ERROR);
     }
-    // 获取权限，如果开启了可编辑，不查node/permission，直接设置permission是editor权限，同时还要拿到userId
+    // Obtain permission, if editable is enabled, don't query node/permission, set permission to editor direcly,
+    // and obtain userId
     const permission = internalAuth
       ? { ...this.permissionServices.getDefaultManagerPermission(), userId: internalAuth.userId, uuid: internalAuth.uuid }
       : await this.getNodeRole(nodeId, auth, shareId, roomId, sourceDatasheetId, sourceType, allowAllEntrance);
 
-    // 副作用变量收集器
+    // Effect variable collector
     const effectMap = new Map<string, any>();
     effectMap.set(EffectConstantName.RemoteChangeset, remoteChangeset);
-    // 需要通知的map
+    // Map that needs notification
     effectMap.set(EffectConstantName.MentionedMessages, []);
 
-    // 循环客户端提交的操作,注意, 可能存在多个operations, 但都是针对同一个资源的操作
+    // Traverse operations from client, there may be multiple operations, but applied on the same resource.
     const beginTime = +new Date();
-    this.logger.info(`[${resourceId}] ====> 遍历Meta Operations开始......`);
+    this.logger.info(`[${resourceId}] ====> Start Meta Operations traversal......`);
     let transaction;
     let resultSet;
     switch (resourceType) {
@@ -363,7 +353,7 @@ export class OtService {
         break;
       }
     }
-    this.logger.info(`[${resourceId}] ====> 遍历Meta Operations结束......总耗时: ${+new Date() - beginTime}ms`);
+    this.logger.info(`[${resourceId}] ====> Finished Meta Operations traversal......duration: ${+new Date() - beginTime}ms`);
 
     const commonData: ICommonData = {
       userId: permission.userId,
@@ -380,31 +370,29 @@ export class OtService {
   }
 
   /**
-   * 转换
-   * @param changeset  变更集
-   * @param dbRevision 数据库保存变更集的版本号
+   * @param dbRevision revision of changesets in database
    */
   private async transform(changeset: ILocalChangeset, dbRevision: number): Promise<IRemoteChangeset> {
     const { baseRevision, ...localChangeset } = changeset;
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${changeset.resourceId}]数据库保存的版本:${dbRevision}`);
-      this.logger.debug(`[${changeset.resourceId}]客户端提交的版本:${baseRevision}`);
+      this.logger.debug(`[${changeset.resourceId}] revision in database:${dbRevision}`);
+      this.logger.debug(`[${changeset.resourceId}] revision from client:${baseRevision}`);
     }
     const revisionDiff = dbRevision - baseRevision;
-    // baseRevision 理论上不能大于 currentRevision
+    // baseRevision is not greater than currentRevision theoretically
     if (revisionDiff < 0) {
       throw new ServerException(OtException.REVISION_CONFLICT);
     }
 
-    // baseRevision 与服务端版本差距过大
+    // Difference of baseRevision and server revision is too large
     if (revisionDiff > MAX_REVISION_DIFF) {
       throw new ServerException(OtException.REVISION_OVER_LIMIT);
     }
 
     this.logger.info(`${changeset.resourceId}[${baseRevision}/${dbRevision}] operations length: ${JSON.stringify(changeset.operations).length}`);
-    // baseRevision 和 currentRevision 不相等，则要进行 transform
+    // baseRevision is not equal to currentRevision, needs transform
     if (revisionDiff > 0) {
-      // 生成 revision 差距的数组, 比如要获取 8~10 版本的 changeset 则生成[8, 9, 10]的参数数组
+      // Generate revision diff array, for example, if changesets of revisions 8~10 will be fetched, generate [8,9,10]
       const revisions = Array.from({ length: revisionDiff }).map((_, index) => baseRevision + index + 1);
       const changesets = await this.changesetService.getByRevisions(changeset.resourceId, changeset.resourceType, revisions);
       const isEqual = changesets && changesets.length === revisions.length;
@@ -422,21 +410,23 @@ export class OtService {
       changeset.operations.forEach(op => {
         localActionLength += op.actions.length;
       });
-      // 数据库的版本过大，不在服务端进行transform，交由客户端进行比较之后再存入
+      // Revision in database is too large, do not transform in server, hand to client
+      // to compare and then store
       const serverConfig = this.envConfigService.getRoomConfig(EnvConfigKey.CONST) as IServerConfig;
       if (serverActions.length * localActionLength > serverConfig.transformLimit) {
-        this.logger.error(`${changeset.resourceId}[action差异过大]${localActionLength}/${serverActions.length}`);
+        this.logger.error(`${changeset.resourceId}[action diff too large]${localActionLength}/${serverActions.length}`);
         throw new ServerException(OtException.REVISION_OVER_LIMIT);
       }
-      // 交叉转换生成新的 operations
-      // 原理请参考：https://ones.ai/wiki/#/team/NqxK6uTp/space/L8swSDkE/page/GjwDGTz1
+      // cross transform to generate new operations
+      // For the principle, see  https://ones.ai/wiki/#/team/NqxK6uTp/space/L8swSDkE/page/GjwDGTz1
       const newOperations = localChangeset.operations.map(op => {
         const [leftOp, rightOp] = jot.transformX(op.actions, serverActions);
         serverActions = rightOp;
 
         for (const v of leftOp) {
-          // 这里是针对视图配置不协同的处理。前端保存视图配置，会将 columns 字段做整体的替换，这样处理对于 transform 非常不友好，
-          // 所以当发现操作的是 columns ，并且 oi 和 od 的长度对不上时，中间层抛错
+          // Handling unsynchronized view settings. Client saving view settings will lead to entire replace of 'columns' field,
+          // which is bad for transform.
+          // So if 'columns' is being changed, and the lengths of 'oi' and 'oi' does not equal, throw an exception.
           if (
             v.p.includes('columns') &&
             v['oi'] &&
@@ -460,13 +450,13 @@ export class OtService {
   }
 
   /**
-   * 空间站内复制节点
+   * Copy node in space
    *
-   * @param data 复制节点的参数数据
+   * @param data request parameters
    * @return boolean
    * @throws ServerException
    * @author Zoe Zheng
-   * @date 2021/3/25 11:27 上午
+   * @date 2021/3/25 11:27 AM
    */
   async copyNodeEffectOt(data: INodeCopyRo): Promise<boolean> {
     const store = await this.datasheetService.fillBaseSnapshotStoreByDstIds([data.copyNodeId, data.nodeId]);
@@ -517,8 +507,10 @@ export class OtService {
   }
 
   /**
-   * 新变更内容
-   * 专门为fusion api提供变更
+   * New change
+   * 
+   * only provides change for fusion api
+   * 
    * @param roomId
    * @param changesets
    */
@@ -530,7 +522,7 @@ export class OtService {
   async applyChangesets(roomId: string, changesets: ILocalChangeset[], auth: IAuthHeader, shareId?: string) {
     const changeResult = await this.applyRoomChangeset({ allowAllEntrance: true, roomId, shareId, changesets }, auth);
     this.logger.info('Resource:ApplyChangeSet Success!');
-    // 通知Socket服务广播
+    // Notify socket service to broadcast
     await this.nestRoomChange(roomId, changeResult);
     this.logger.info('Resource:NotifyChangeSet Success!');
     return changeResult;

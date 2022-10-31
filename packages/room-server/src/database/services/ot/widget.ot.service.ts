@@ -35,7 +35,7 @@ export class WidgetOtService {
   analyseOperates(operations: IOperation[], permission: NodePermission, resultSet: { [key: string]: any }) {
     operations.forEach(op => {
       op.actions.forEach(action => {
-        //  修改组件名称
+        //  Modify widget name
         if (action.p[0] === 'widgetName') {
           if (!permission.editable) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
@@ -43,14 +43,14 @@ export class WidgetOtService {
           resultSet.updateWidgetName = action['oi'];
         }
 
-        // 修改组件依赖的 数表 ID
+        // Modify dependency datasheet ID of the widget
         if (action.p[0] === 'datasheetId') {
           if (!permission.editable) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
           }
           resultSet.updateWidgetDepDatasheetId = action['oi'];
         }
-        // 修改组件依赖的 数表 ID
+        // Modify dependency datasheet ID of the widget
         if (action.p[0] === 'sourceId') {
           if (!permission.editable) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
@@ -59,7 +59,7 @@ export class WidgetOtService {
         }
 
         if (action.p[0] === 'storage') {
-          // TODO: 确定下权限
+          // TODO: validate permission
           resultSet.storageAction.push(action);
         }
       });
@@ -76,55 +76,55 @@ export class WidgetOtService {
     resultSet: { [key: string]: any }
   ) => {
 
-    // ----- 更新 widget name 开始
+    // ----- Start updating widget name
     await this.handleForWidgetName(manager, commonData, resultSet);
-    // ----- 更新 widget name 结束
+    // ----- Finished updating widget name
 
-    // ----- 更新 widget name 开始
+    // ----- Start updating widget name
     await this.handleForDepDatasheetId(manager, commonData, resultSet);
-    // ----- 更新 widget name 结束
+    // ----- Finished updating widget name
 
-    // ----- 更新 widget storage 开始
+    // ----- Start updating widget storage
     await this.handleForStorage(manager, commonData, resultSet);
-    // ----- 更新 widget storage 结束
+    // ----- Finished updating widget storage
 
-    // 并行执行更新数据库
+    // Update database parallelly
     await Promise.all([
-      // 更新Meta
-      // 无论如何都添加changeset，operations和revision按照客户端传输过来的一样保存，叠加版本号即可
+      // update meta
+      // Always add changeset; operations and revision are stored as received from client, adding revision suffices
       this.createNewChangeset(manager, commonData, effectMap.get(EffectConstantName.RemoteChangeset)),
-      // 更改主表操作版本号
+      // Update revision number of original datasheet
       this.updateRevision(manager, commonData),
     ]);
   };
 
   async handleForWidgetName(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${commonData.resourceId}] 修改名称`);
+      this.logger.debug(`[${commonData.resourceId}] Modify name`);
     }
     if (!resultSet.updateWidgetName) {
       return;
     }
     const beginTime = Date.now();
-    this.logger.info(`[${commonData.resourceId}] ====> 数据库保存变更集开始......`);
+    this.logger.info(`[${commonData.resourceId}] ====> Start storing changeset......`);
     await manager.update(WidgetEntity, { widgetId: commonData.resourceId }, { name: resultSet.updateWidgetName });
     const endTime = Date.now();
-    this.logger.info(`[${commonData.resourceId}] ====> 数据库保存变更集结束...... 总时间:${endTime - beginTime}`);
+    this.logger.info(`[${commonData.resourceId}] ====> Finished storing changeset...... duration:${endTime - beginTime}`);
 
   }
 
   async handleForStorage(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${commonData.resourceId}] 更新组件 storage`);
+      this.logger.debug(`[${commonData.resourceId}] Update widget storage`);
     }
     if (!resultSet.storageAction.length) {
       return;
     }
     const beginTime = Date.now();
-    this.logger.info(`[${commonData.resourceId}] ====> 数据库保存变更集开始......`);
+    this.logger.info(`[${commonData.resourceId}] ====> Start storing changeset......`);
     const storageData = await this.widgetService.getStorageByWidgetId(commonData.resourceId);
 
-    // 合并Meta
+    // Merge meta
     try {
       jot.apply({ storage: storageData }, resultSet.storageAction);
     } catch (e) {
@@ -134,19 +134,19 @@ export class WidgetOtService {
 
     await manager.update(WidgetEntity, { widgetId: commonData.resourceId }, { storage: storageData });
     const endTime = Date.now();
-    this.logger.info(`[${commonData.resourceId}] ====> 数据库保存变更集结束...... 总时间:${endTime - beginTime}`);
+    this.logger.info(`[${commonData.resourceId}] ====> Finished storing changeset...... duration:${endTime - beginTime}`);
   }
 
   async handleForDepDatasheetId(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${commonData.resourceId}] 更新组件 datasheetId`);
+      this.logger.debug(`[${commonData.resourceId}] Update widget datasheetId`);
     }
     if (!resultSet.updateWidgetDepDatasheetId) {
       return;
     }
     const beginTime = Date.now();
     const spaceId = await this.resourceService.getSpaceIdByResourceId(commonData.resourceId);
-    this.logger.info(`[${commonData.resourceId}] ====> 数据库保存变更集开始......`);
+    this.logger.info(`[${commonData.resourceId}] ====> Start storing changeset......`);
     await manager.createQueryBuilder()
       .insert()
       .into(DatasheetWidgetEntity)
@@ -160,20 +160,21 @@ export class WidgetOtService {
       .updateEntity(false)
       .execute();
     const endTime = Date.now();
-    this.logger.info(`[${commonData.resourceId}] ====> 数据库保存变更集结束...... 总时间:${endTime - beginTime}`);
+    this.logger.info(`[${commonData.resourceId}] ====> Finished storing changeset...... duration:${endTime - beginTime}`);
   }
 
   /**
-   * 创建新的changeset存储db
-   * @param manager 数据库管理器
-   * @param remoteChangeset 存储db的changeset
+   * Create new changeset and store it in database
+   * 
+   * @param manager database manager
+   * @param remoteChangeset changeset that is about to be stored
    */
   private async createNewChangeset(manager: EntityManager, commonData: ICommonData, remoteChangeset: IRemoteChangeset) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${remoteChangeset.resourceId}]插入新变更集`);
+      this.logger.debug(`[${remoteChangeset.resourceId}] Insert new changeset`);
     }
     const beginTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> 数据库保存变更集开始......`);
+    this.logger.info(`[${remoteChangeset.resourceId}] ====> Start storing changeset......`);
     const { userId } = commonData;
     await manager.createQueryBuilder()
       .insert()
@@ -190,18 +191,18 @@ export class WidgetOtService {
       .updateEntity(false)
       .execute();
     const endTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> 数据库保存变更集结束......总耗时: ${endTime - beginTime}ms`);
+    this.logger.info(`[${remoteChangeset.resourceId}] ====> Finished storing changeset......duration: ${endTime - beginTime}ms`);
   }
 
   /**
-   * @param manager 数据库管理器
-   * @param dstId 数表id
-   * @param revision 本次提交的版本号
+   * @param manager database manager
+   * @param dstId datasheet ID
+   * @param revision revision number of the current update
    */
   private async updateRevision(manager: EntityManager, commonData: ICommonData) {
     const { resourceId, revision } = commonData;
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${resourceId}]修改主表操作版本号`);
+      this.logger.debug(`[${resourceId}] Modify revision number of original datasheet`);
     }
     await manager.update(WidgetEntity, { widgetId: resourceId }, { revision });
   }

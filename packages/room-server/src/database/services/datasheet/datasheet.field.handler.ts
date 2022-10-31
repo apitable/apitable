@@ -47,19 +47,21 @@ export class DatasheetFieldHandler {
       mainDstId,
       auth,
       origin,
-      // 关联表返回数据结构 { [foreignDatasheetId: string]: IBaseDatasheetPack }
+      // linked datasheet data
+      // { [foreignDatasheetId: string]: IBaseDatasheetPack }
       foreignDstMap: {},
-      // 数据结构：数表ID -> 首列字段ID
+      // datasheet ID -> primary field ID
       dstIdToHeadFieldIdMap: new Map<string, string>(),
-      // 成员字段的组织单元集合
+      // unit IDs of a member field
       memberFieldUnitIds: new Set<string>(),
-      // 创建/编辑人字段的 uuid 集合
+      // UUID set of creator/modifier fields
       createdByFieldUuids: new Set<string>(),
-      // 数表的ID -> 已处理的字段ID集合。总记录，避免循环引用无限递归解析。{ [dstId: string]: string[] } 
+      // datasheet ID -> processed field ID set
+      // { [dstId: string]: string[] } 
       dstIdToProcessedFldIdsMap: {},
-      // 数表的ID -> 出现新纪录标志。引入新的纪录时，需要循环解析字段
+      // datasheet ID -> if new records are added.
       dstIdToNewRecFlagMap: new Map<string, boolean>(),
-      // 忽略权限获取基础用户无关的基础表格信息
+      // If obtain datasheet base info unrelated to user base info regardless of permission
       withoutPermission,
     };
   }
@@ -75,20 +77,19 @@ export class DatasheetFieldHandler {
     withoutPermission?: boolean
   ): Promise<IForeignDatasheetMap & IDatasheetUnits> {
     const beginTime = +new Date();
-    this.logger.info(`处理特殊字段开始[${mainDstId}]`);
+    this.logger.info(`Start processing special field [${mainDstId}]`);
     const globalParam = this.initGlobalParameter(mainDstId, auth, origin, withoutPermission);
 
-    // 解析本表所有字段
+    // Process all fields of the datasheet
     const fldIds = fieldIds?.length ? fieldIds : Object.keys(mainMeta.fieldMap);
     await this.parseField(mainDstId, mainMeta.fieldMap, mainRecordMap, fldIds, globalParam, linkedRecordMap);
 
-    // 定义返回数据结构
     const combineResult: IForeignDatasheetMap & IDatasheetUnits = {};
     combineResult.foreignDatasheetMap = globalParam.foreignDstMap;
-    // 获取数表所在空间
+    // Get the space ID which the datasheet belongs to
     const spaceId = await this.getSpaceIdByDstId(mainDstId);
     let tempUnitMap: (IUnitValue | IUserValue)[] = [];
-    // 批量查询成员信息
+    // Batch query member info
     if (globalParam.memberFieldUnitIds.size > 0) {
       const unitMap = await this.unitService.getUnitInfo(spaceId, Array.from(globalParam.memberFieldUnitIds));
       tempUnitMap = [...unitMap];
@@ -102,107 +103,101 @@ export class DatasheetFieldHandler {
     }
 
     const endTime = +new Date();
-    this.logger.info(`处理特殊字段结束,总耗时[${mainDstId}]: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished processing special field, duration [${mainDstId}]: ${endTime - beginTime}ms`);
     return combineResult;
   }
 
   /**
-   * 解析字段
-   * @param dstId 数表ID
-   * @param fieldMap 表字段数据结构
-   * @param recordMap 表行记录
-   * @param processFieldIds 解析的字段ID集合
-   * @param globalParam 全局参数
-   * @param linkedRecordMap 关联列数据
+   * @param dstId datasheet ID
+   * @param fieldMap field data
+   * @param recordMap record data
+   * @param processFieldIds field IDs to be processed
+   * @param globalParam global parameters
+   * @param linkedRecordMap linked field data
    */
   private async parseField(dstId: string, fieldMap: IFieldMap, recordMap: RecordMap,
     processFieldIds: string[], globalParam: any, linkedRecordMap?: ILinkedRecordMap) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug('解析字段', processFieldIds);
+      this.logger.debug('Process fields', processFieldIds);
     }
-    // 提取数表已处理的字段ID集合
+    // Get field IDs that have been processed
     const processedFldIds = [...Object.values(globalParam.dstIdToProcessedFldIdsMap[dstId] || {})] as string[];
-    // 差集结果
     let diff = difference<string>(processFieldIds, processedFldIds);
-    // 新出现的字段，记入已处理字段集合
+    // New field, put inside processed fields
     if (diff.length > 0) {
       DatasheetFieldHandler.setIfExist(globalParam.dstIdToProcessedFldIdsMap, dstId, diff);
     }
-    // 引入新的纪录时，解析所有待处理字段
+    // When a record is created, parse its fields to be processed
     if (globalParam.dstIdToNewRecFlagMap.has(dstId)) {
       diff = processFieldIds;
       globalParam.dstIdToNewRecFlagMap.delete(dstId);
     }
-    // 无差集则代表不存在未处理过的字段
+    // If difference is empty, no unprocessed fileds exist
     if (diff.length === 0) {
       return;
     }
 
-    // 数据结构：fieldId 字段ID -> foreignDstId 关联表ID
+    // field ID -> linked datasheet ID
     const fieldIdToLinkDstIdMap = new Map<string, string>();
-    // Lookup字段：关联表ID -> 字段ID集合
+    // Lookup field: linked datasheet ID -> field ID set
     const foreignDstIdToLookupFldIdsMap: { [dstId: string]: string[] } = {};
 
     for (const fieldId of diff) {
       if (this.logger.isDebugEnabled()) {
-        this.logger.debug('字段:' + fieldId);
+        this.logger.debug('Field:' + fieldId);
       }
-      // 表存在此字段才能处理
+      // Only handle the field if datasheet contains it
       if (!(fieldId in fieldMap)) { continue; }
-      // 列数据结构
       const fieldInfo = fieldMap[fieldId];
-      // 列的类型
       const fieldType = fieldInfo.type;
       if (this.logger.isDebugEnabled()) {
-        this.logger.debug('字段类型:' + fieldType);
+        this.logger.debug('Field type:' + fieldType);
       }
       switch (fieldType) {
-        // 关联字段类型
         case FieldType.Link:
           const fieldProperty = fieldInfo.property as ILinkFieldProperty;
           const linkDatasheetId = fieldProperty.foreignDatasheetId;
-          // 主表自关联或被关联，跳过
+          // main datasheet is self-linking or linked, skip it
           if (linkDatasheetId === globalParam.mainDstId) { continue; }
-          // 存储关联列所对应的关联表ID
+          // Store linked datasheet ID corresponding to linked field
           fieldIdToLinkDstIdMap.set(fieldId, linkDatasheetId);
           break;
-        // Lookup字段类型，可能会递归
+        // Lookup field, may recurse
         case FieldType.LookUp:
           const { relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } = fieldInfo.property as ILookUpProperty;
-          // 本表不存在此列，跳过
+          // The field is not in datasheet, skip
           if (!fieldMap[relatedLinkFieldId]) { continue; }
-          // 引用的列不是关联类型，跳过
+          // Linked field is not link field, skip
           if (fieldMap[relatedLinkFieldId].type !== FieldType.Link) { continue; }
-          // 获得引用的关联表ID
+          // Get referenced linked datasheet ID
           const { foreignDatasheetId } = fieldMap[relatedLinkFieldId].property as ILinkFieldProperty;
           const foreignFieldIds = [lookUpTargetFieldId];
-          // 解析引用过滤条件
+          // Parse reference filter condition
           if (openFilter && filterInfo?.conditions.length) {
             filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
           }
-          // 创建双向引用关系
+          // Create two-way reference relation
           await this.computeFieldReferenceManager.createReference(dstId, fieldId, foreignDatasheetId, foreignFieldIds);
-          // 主表自关联或被关联，跳过
+          // main datasheet is self-linking or linked, skip
           if (foreignDatasheetId === globalParam.mainDstId) { continue; }
-          // 存储关联列所对应的关联表ID
+          // Store linked datasheet ID corresponding to linked field
           fieldIdToLinkDstIdMap.set(relatedLinkFieldId, foreignDatasheetId);
-          // 存储引用的关联表对应字段
+          // Store corresponding fields in referenced linked datasheet 
           DatasheetFieldHandler.setIfExist(foreignDstIdToLookupFldIdsMap, foreignDatasheetId, foreignFieldIds);
           break;
-        // 成员字段类型，不会递归
+        // member field, not recursive
         case FieldType.Member:
           const { unitIds } = fieldInfo.property as IMemberProperty;
           if (unitIds && unitIds.length) {
             unitIds.forEach((unitId: string) => globalParam.memberFieldUnitIds.add(unitId));
           }
           break;
-        // 编辑/创建人字段类型，不会递归
+        // modifier/creator field, not recursive
         case FieldType.CreatedBy:
         case FieldType.LastModifiedBy:
           const { uuids } = fieldInfo.property as ICreatedByProperty;
           uuids.forEach((uuid: string) => globalParam.createdByFieldUuids.add(uuid));
           break;
-        // 公式字段类型
         case FieldType.Formula:
           await this.processFormulaField(fieldMap, fieldInfo as IFormulaField, globalParam, recordMap);
           break;
@@ -211,40 +206,40 @@ export class DatasheetFieldHandler {
       }
     }
 
-    // ======= 加载关联表的结构信息（不包含记录） BEGIN =======
+    // ======= Load linked datasheet structure data (not including records) BEGIN =======
     for (const [fldId, foreignDstId] of fieldIdToLinkDstIdMap.entries()) {
-      // 已存在跳过，避免多列关联同一个数表重复加载
+      // Avoid redundant loading of a linked datasheet caused by multiple fields linking the same datasheet
       if (globalParam.foreignDstMap[foreignDstId]) { continue; }
       const { datasheet, meta, fieldPermissionMap } = await this.initLinkDstSnapshot(foreignDstId, globalParam);
-      // 若关联表无法访问，则跳过不加载数据
+      // If linked datasheet is unaccessible, skip loading
       if (!datasheet || !meta) {
         fieldIdToLinkDstIdMap.delete(fldId);
         continue;
       }
       globalParam.foreignDstMap[foreignDstId] = { snapshot: { meta, recordMap: {}, datasheetId: datasheet.id }, datasheet, fieldPermissionMap };
     }
-    // ======= 加载关联表的结构信息（不包含记录） END   =======
+    // ======= Load linked datasheet structure data (not including records) END =======
 
-    // 遍历表行记录，处理得到关联表ID和对应的关联记录
+    // Traverse records, obtain linked datasheet ID and corresponding linked records
     const foreignDstIdRecordIdsMap = linkedRecordMap || this.forEachRecordMap(recordMap, fieldIdToLinkDstIdMap);
-    // 主表关联字段存在关联记录的，都已经保存在【foreignDstIdRecordIdsMap】里面
+    // All linking records in link field of main datasheet are stored in foreignDstIdRecordIdsMap
     if (!isEmpty(foreignDstIdRecordIdsMap)) {
-      // 查询关联表信息和关联记录
+      // Query linked datasheet data and linked records
       for (const [foreignDstId, recordIds] of Object.entries(foreignDstIdRecordIdsMap)) {
         if (this.logger.isDebugEnabled()) {
-          this.logger.debug(`查询新的记录[${foreignDstId}] --- [${recordIds}]`);
+          this.logger.debug(`Query new record [${foreignDstId}] --- [${recordIds}]`);
         }
-        // 机器人事件的 linkedRecordMap，关联表可能无法访问，跳过
+        // linkedRecordMap of robot event, linked datasheet may be unaccessible, skip
         if (!globalParam.foreignDstMap[foreignDstId]) { continue; }
 
         if (globalParam.foreignDstMap[foreignDstId].snapshot.recordMap) {
           const existRecordIds = [...Object.keys(globalParam.foreignDstMap[foreignDstId].snapshot.recordMap)];
           if (this.logger.isDebugEnabled()) {
-            this.logger.debug(`新记录: ${Array.from(recordIds)} - 原记录: ${existRecordIds} `);
+            this.logger.debug(`New record: ${Array.from(recordIds)} - original record: ${existRecordIds} `);
           }
           const theDiff = difference(Array.from(recordIds), existRecordIds);
           if (this.logger.isDebugEnabled()) {
-            this.logger.debug(`过滤后: ${theDiff}`);
+            this.logger.debug(`after filter: ${theDiff}`);
           }
           if (theDiff.length > 0) {
             const addRecordMap = await this.fetchRecordMap(foreignDstId, Array.from(new Set<string>(theDiff)));
@@ -258,41 +253,41 @@ export class DatasheetFieldHandler {
       }
     }
 
-    // 处理关联表的首列，若是公式字段需递归处理
+    // Process primary field of linked datasheet, formula field requires recursive process
     for (const [fldId, foreignDstId] of fieldIdToLinkDstIdMap.entries()) {
-      // 已存在，跳过
+      // exists, skip
       if (globalParam.dstIdToHeadFieldIdMap.has(foreignDstId)) {
-        // 创建双向引用关系
+        // Create two-way reference
         const headFieldId = globalParam.dstIdToHeadFieldIdMap.get(foreignDstId);
         await this.computeFieldReferenceManager.createReference(dstId, fldId, foreignDstId, [headFieldId]);
         continue;
       }
-      // 提取关联表的视图和字段类型结构
+      // Get view and field data of linked datasheet
       const { views, fieldMap } = globalParam.foreignDstMap[foreignDstId].snapshot.meta;
-      // 首列字段ID
+      // Primary field ID
       const { fieldId } = head((head(views) as IViewProperty).columns)!;
-      // 首列字段信息
+      // Primary field data
       const indexField = fieldMap[fieldId];
       globalParam.dstIdToHeadFieldIdMap.set(foreignDstId, fieldId);
-      // 创建双向引用关系
+      // Create two-way reference
       await this.computeFieldReferenceManager.createReference(dstId, fldId, foreignDstId, [fieldId]);
-      // 公式字段才需要处理
+      // Only handle formula field
       if (indexField.type === FieldType.Formula) {
         if (this.logger.isDebugEnabled()) {
-          this.logger.debug(`关联表[${foreignDstId}]存在Formula字段`, indexField);
+          this.logger.debug(`Linked datasheet [${foreignDstId}] contains formula field`, indexField);
         }
-        // 处理关联表的首列，公式字段
+        // Process primary field of linked datasheet, which is a formula field
         await this.processFormulaField(fieldMap, indexField, globalParam);
       }
     }
 
-    // 处理LookUp字段，递归处理
+    // Process LookUp field recursively
     if (!isEmpty(foreignDstIdToLookupFldIdsMap)) {
       for (const [foreignDstId, fieldIds] of Object.entries(foreignDstIdToLookupFldIdsMap)) {
-        // 关联表必须存在，否则跳过
+        // Linked datasheet must exist, or skip
         if (!Object.keys(globalParam.foreignDstMap).includes(foreignDstId)) { continue; }
         if (this.logger.isDebugEnabled()) {
-          this.logger.debug(`递归处理新的Lookup字段[${foreignDstId}] --- [${fieldIds}]`);
+          this.logger.debug(`Process new Lookup field recursively [${foreignDstId}] --- [${fieldIds}]`);
         }
         const foreignFieldMap = globalParam.foreignDstMap[foreignDstId].snapshot.meta.fieldMap;
         const foreignRecordMap = globalParam.foreignDstMap[foreignDstId].snapshot.recordMap;
@@ -301,74 +296,64 @@ export class DatasheetFieldHandler {
     }
   }
 
-  /**
-   * 处理公式字段
-   * @param fieldMap 表字段数据结构
-   * @param formulaField 公式字段数据
-   * @param globalParam
-   */
   private async processFormulaField(fieldMap: IFieldMap, formulaField: IFormulaField, globalParam: any, recordMap?: RecordMap) {
-    // 处理Formula字段
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug('处理Formula字段', formulaField);
+      this.logger.debug('Process formula field', formulaField);
     }
-    // 提取公式表达式以及公式所在的数表
+    // Get formula expression and the datasheet which the formula field belongs to
     const { expression, datasheetId } = formulaField.property;
-    // 是否引用了字段
+    // If formula references fields
     const formulaRefFieldIds = expression.match(/fld\w{10}/g);
-    // match函数返回可能是null或者空数组
     if (!formulaRefFieldIds || isEmpty(formulaRefFieldIds)) return;
-    // 打印信息
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug('Formula引用字段列表', formulaRefFieldIds);
+      this.logger.debug('Formula reference fields', formulaRefFieldIds);
     }
-    // 创建双向引用关系
+    // Create two-way reference relation
     await this.computeFieldReferenceManager.createReference(datasheetId, formulaField.id, datasheetId, formulaRefFieldIds);
-    // 取出当前表的对应行记录
+    // Get corresponding record data of current datasheet
     if (!recordMap) {
       recordMap = globalParam.foreignDstMap[datasheetId].snapshot.recordMap;
     }
-    // 递归处理
+    // process recursively
     await this.parseField(datasheetId, fieldMap, recordMap || {}, formulaRefFieldIds, globalParam);
   }
 
   /**
-   * 遍历行记录
-   * @param recordMap 行记录
-   * @param fieldLinkDstMap 字段映射关联表键值对
-   * @returns 返回关联表对应被选择关联记录
+   * Traverse records
+   * 
+   * @param recordMap record data
+   * @param fieldLinkDstMap field ID -> linked datasheet ID
+   * @returns linked records in linked datasheets
    */
   private forEachRecordMap(recordMap: RecordMap, fieldLinkDstMap: Map<string, string>) {
     const beginTime = +new Date();
-    this.logger.info('开始遍历主表行记录数');
+    this.logger.info('Start traverse main datasheet records');
     if (Object.keys(recordMap).length === 0) return {};
     const foreignDstIdRecordIdsMap = Object.values(recordMap).reduce<{ [foreignDstId: string]: string[] }>((pre, cur) => {
-      // 空值跳过下个循环
       if (!isEmpty(cur) && !isEmpty(cur.data)) {
-        // 存在关联字段再处理
+        // Only process records with link fields
         if (fieldLinkDstMap.size > 0) {
-          // 每一行存在数据的单元格
+          // All cells containing data
           const fieldIds = [...Object.keys(cur.data)];
-          // 处理关联列的单元格数据，取出关联列的单元格选择的关联记录
-          // 提取关联列类型的字段ID
+          // Process cell data of link field, get linking records from cell data
+          // get linked field IDs
           const linkFieldIds = [...fieldLinkDstMap.keys()];
-          // 交集结果
           const inter = intersection<string>(fieldIds, linkFieldIds);
-          // 有交集则代表存在关联表的记录
+          // If difference is not empty, there are linked datasheet records
           if (inter.length > 0) {
-            // 存储的关联表对应的记录
+            // corresponding records from linked datasheet
             for (const [fieldId, foreignDstId] of fieldLinkDstMap.entries()) {
-              // 存储非空的情况下才拿出记录ID
+              // Only get record IDs if field is in fieldIds
               if (fieldIds.includes(fieldId)) {
-                // 关联表的记录ID集合
+                // record IDs of linked datasheet
                 const recordIds = cur.data[fieldId] as string[];
                 if (recordIds?.length > 0) {
-                  // 过滤关联字段，异常的单元格数据
+                  // filter out invalid cell values of linked fields
                   const filterRecordIds = recordIds.filter(recId => typeof recId === 'string');
                   if (filterRecordIds.length === 0) {
                     continue;
                   }
-                  // 存储关联表以及对应的记录ID
+                  // Store linked datasheet and corresponding record IDs
                   DatasheetFieldHandler.setIfExist(pre, foreignDstId, filterRecordIds);
                 }
               }
@@ -379,23 +364,19 @@ export class DatasheetFieldHandler {
       return pre;
     }, {});
     const endTime = +new Date();
-    this.logger.info(`结束遍历主表行记录数,总耗时: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished traversing main datasheet records, duration: ${endTime - beginTime}ms`);
     return foreignDstIdRecordIdsMap;
   }
 
-  /**
-   * 查询记录
-   * @param dstId 数表ID
-   * @param recordIds 记录ID集合
-   */
   private async fetchRecordMap(dstId: string, recordIds: string[]): Promise<RecordMap> {
     return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
   }
 
   /**
-   * 初始化数表基本信息
-   * @param dstId 数表ID
-   * @param globalParam 全局参数
+   * Initialize linked datasheet snapshot
+   * 
+   * @param dstId datasheet ID
+   * @param globalParam global parameters
    */
   private async initLinkDstSnapshot(dstId: string, globalParam: any) {
     try {
@@ -414,10 +395,7 @@ export class DatasheetFieldHandler {
   }
 
   /**
-   * 设置键值对，如果key存在，增量增加；不存在则直接设置
-   * @param map 键值对
-   * @param key 键
-   * @param value 值
+   * Add a value array to a key-values mapping, if key exists, append the array
    */
   private static setIfExist(map: { [dstId: string]: any[] }, key: string, value: any[]) {
     if (key in map) {
@@ -433,24 +411,22 @@ export class DatasheetFieldHandler {
 
   async computeFormulaReference(dstId: string, toChangeFormulaExpressions: any[]) {
     for (const { fieldId, createExpression, deleteExpression } of toChangeFormulaExpressions) {
-      // 解析新增的公式表达式
+      // Parse new formula expression
       if (createExpression) {
         const formulaRefFieldIds = createExpression.match(/fld\w{10}/g);
         if (!isEmpty(formulaRefFieldIds)) {
-          // 创建双向引用关系（属于覆盖操作，残余部分会解除双向引用关系，所以直接跳过，无需处理删除部分）
+          // Create two-way reference relation (cover old relations, remaining part will break two-way reference)
           const members = await this.computeFieldReferenceManager.createReference(dstId, fieldId, dstId, formulaRefFieldIds);
-          // 反向计算引用
           await this.reverseComputeReference(dstId, fieldId, dstId,
             difference<string>(formulaRefFieldIds, members), difference<string>(members, formulaRefFieldIds));
           continue;
         }
       }
-      // 解析删除的公式表达式
+      // Parse deleted formula expression
       if (deleteExpression) {
         const formulaRefFieldIds = deleteExpression.match(/fld\w{10}/g);
         if (!isEmpty(formulaRefFieldIds)) {
           await this.computeFieldReferenceManager.deleteReference(dstId, fieldId, dstId, formulaRefFieldIds);
-          // 反向计算引用
           await this.reverseComputeReference(dstId, fieldId, dstId, undefined, formulaRefFieldIds);
         }
       }
@@ -458,9 +434,9 @@ export class DatasheetFieldHandler {
   }
 
   async computeDatasheetReference(dstId: string, fieldMap: IFieldMap, dstToMetaMap: Map<string, IMeta>): Promise<string[]> {
-    // 数表的ID -> 已处理的字段ID集合
+    // datasheet ID -> processed field ID set
     const dstIdToProcessedFldIdsMap: { [dstId: string]: string[] } = {};
-    // 解析主表，获取所有引用的资源
+    // Parse main datasheet, obtain all referenced resources
     const specialFieldTypes = [FieldType.Link, FieldType.LookUp, FieldType.Formula];
     const refFieldIds = Object.values(fieldMap).reduce((pre, field) => {
       if (specialFieldTypes.includes(field.type)) {
@@ -477,26 +453,25 @@ export class DatasheetFieldHandler {
 
   async deleteLinkFieldReference(dstId: string, mainDstMeta: IMeta,
     fldIdToForeignDatasheetIdMap: Map<string, string>): Promise<string[] | undefined> {
-    // 解除关联，需确认资源完全不被引用了才能退出
-    // 1.可能同时多列关联了同一个关联表，未全部删除前不会解除映射关系; 
-    // 2.仍存在间接引用该关联表(如 A 关联 BC，B 关联 C 且首列引用 LinkC 字段。A 与 C 解除关联，LinkB 字段的引用仍需监控 C 数据)
+    // Break reference, make sure resource is not referenced before resource leaving room
+    // 1. many link fields may link the same datasheet, reference will not be broken before all these fields are deleted
+    // 2. there exists indirect reference to this datasheet. Example: A links B & C, B links C and primary field references LinkC field.
+    //    After A and C is unlinked, LinkB still references C indirectly.
 
-    // 处理关联字段引用
+    // Process link field reference
     const { dstIdToMetaMap, dstIdToProcessedFldIdsMap } =
       await this.processLinkFieldReference(dstId, mainDstMeta, fldIdToForeignDatasheetIdMap, false);
 
-    // 加载数表数为一，代表仅解除自关联，无资源需要退出，直接结束
+    // Loaded one datasheet means break self-linking, no resource will leave room, return
     if (dstIdToMetaMap.size === 1) {
       return undefined;
     }
-    // 解析主表，获取所有引用的资源
+    // Parse main datasheet, fetch all referenced resources
     const retainedDstIds = await this.computeDatasheetReference(dstId, mainDstMeta.fieldMap, dstIdToMetaMap);
-    // 差集结果
     return difference<string>(Object.keys(dstIdToProcessedFldIdsMap), retainedDstIds);
   }
 
   async computeLinkFieldReference(dstId: string, mainDstMeta: IMeta, fldIdToForeignDatasheetIdMap: Map<string, string>): Promise<string[]> {
-    // 处理关联字段引用
     const { dstIdToMetaMap } = await this.processLinkFieldReference(dstId, mainDstMeta, fldIdToForeignDatasheetIdMap, true);
 
     dstIdToMetaMap.delete(dstId);
@@ -504,13 +479,13 @@ export class DatasheetFieldHandler {
   }
 
   async processLinkFieldReference(dstId: string, mainDstMeta: IMeta, fldIdToForeignDatasheetIdMap: Map<string, string>, creatable: boolean) {
-    // 数表的ID -> Meta
+    // datasheet ID -> meta
     const dstIdToMetaMap = new Map<string, IMeta>();
     dstIdToMetaMap.set(dstId, mainDstMeta);
-    // 数表的ID -> 已处理的字段ID集合
+    // datasheet ID -> processed field ID set
     const dstIdToProcessedFldIdsMap: { [dstId: string]: string[] } = {};
 
-    // 关联字段ID -> 本表映射的 LookUp 字段信息集合
+    // link field ID -> mapped Lookup field data collection in current datasheet
     const linkFldIdToLookUpFieldMap: { [fldId: string]: any[] } = Object.values(mainDstMeta.fieldMap).reduce((pre, field) => {
       if (field.type !== FieldType.LookUp) {
         return pre;
@@ -528,29 +503,27 @@ export class DatasheetFieldHandler {
     for (const [fldId, foreignDatasheetId] of fldIdToForeignDatasheetIdMap.entries()) {
       const meta = await this.getMeta(foreignDatasheetId, dstIdToMetaMap);
       if (!meta) { continue; }
-      // 首列字段ID
+      // primary field ID
       const { fieldId } = head((head(meta.views) as IViewProperty).columns)!;
-      // 更新 Link 字段的双向引用关系
+      // Update two-way reference relation of link field
       await updateReference(dstId, fldId, foreignDatasheetId, [fieldId]);
-      // 统计关联表所有受影响字段
+      // Count all influenced fields of linked datasheet
       const allForeignFieldIds = [fieldId];
       if (fldId in linkFldIdToLookUpFieldMap) {
         for (const { lookUpFieldId, lookUpTargetFieldId, openFilter, filterInfo } of linkFldIdToLookUpFieldMap[fldId]) {
           const foreignFieldIds = [lookUpTargetFieldId];
-          // 解析引用过滤条件
+          // Analyze reference filter condition
           if (openFilter && filterInfo?.conditions.length) {
             filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
           }
-          // 更新 LookUp 字段的双向引用关系
+          // Update two-way reference of LookUp field
           await updateReference(dstId, lookUpFieldId, foreignDatasheetId, foreignFieldIds);
           allForeignFieldIds.push(...foreignFieldIds);
         }
       }
-      // 自关联，跳过
+      // Skip self-linking
       if (foreignDatasheetId === dstId) { continue; }
-      // 解析字段引用
       await this.parseFieldReference(dstId, foreignDatasheetId, allForeignFieldIds, dstIdToMetaMap, dstIdToProcessedFldIdsMap);
-      // 反向计算引用
       creatable ? await this.reverseComputeReference(dstId, fldId, foreignDatasheetId, allForeignFieldIds, undefined) :
         await this.reverseComputeReference(dstId, fldId, foreignDatasheetId, undefined, allForeignFieldIds);
     }
@@ -558,38 +531,37 @@ export class DatasheetFieldHandler {
   }
 
   async removeLookUpReference(dstId: string, meta: IMeta, toDeleteLookUpProperties: any[]): Promise<string[] | undefined> {
-    // 计算移除 LookUp 引用，可能引起的 ROOM 资源的变更，需确认资源完全不被引用了才能退出
-    // 处理神奇引用字段引用
+    // Compute possible ROOM resource changes caused by removing Lookup reference,
+    // Resource only leave room after not referenced.
+    // Process Lookup field reference
     const { dstIdToMetaMap, dstIdToProcessedFldIdsMap, foreignDatasheetIds } =
       await this.processLookUpFieldReference(dstId, meta, toDeleteLookUpProperties, false);
 
-    // 若变化的资源都是关联表，直接结束
+    // If all resouces are linked datasheet when changing, just return
     if (foreignDatasheetIds.length === Object.keys(dstIdToProcessedFldIdsMap).length) {
       return undefined;
     }
-    // 解析主表，获取所有引用的资源
+    // Analyze main datasheet, get all reference resource
     const retainedDstIds = await this.computeDatasheetReference(dstId, meta.fieldMap, dstIdToMetaMap);
-    // 差集结果
     return difference<string>(Object.keys(dstIdToProcessedFldIdsMap), retainedDstIds);
   }
 
   async computeLookUpReference(dstId: string, meta: IMeta, toCreateLookUpProperties: any[]): Promise<string[] | undefined> {
-    // 处理神奇引用字段引用
+    // Process Lookup field reference
     const { dstIdToProcessedFldIdsMap, foreignDatasheetIds } =
       await this.processLookUpFieldReference(dstId, meta, toCreateLookUpProperties, true);
 
     if (!foreignDatasheetIds.length || foreignDatasheetIds.length === Object.keys(dstIdToProcessedFldIdsMap).length) {
       return undefined;
     }
-    // 差集结果
     return difference<string>(Object.keys(dstIdToProcessedFldIdsMap), foreignDatasheetIds);
   }
 
   private async processLookUpFieldReference(dstId: string, meta: IMeta, properties: any[], creatable: boolean) {
-    // 数表的ID -> Meta
+    // datasheet ID -> Meta
     const dstIdToMetaMap = new Map<string, IMeta>();
     dstIdToMetaMap.set(dstId, meta);
-    // 数表的ID -> 已处理的字段ID集合
+    // datasheet ID -> processed field IDs
     const dstIdToProcessedFldIdsMap: { [dstId: string]: string[] } = {};
     const foreignDatasheetIds: string[] = [];
 
@@ -598,25 +570,25 @@ export class DatasheetFieldHandler {
 
     const fieldMap = meta.fieldMap;
     for (const { fieldId, relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } of properties) {
-      // 本表不存在此列，跳过
+      // This field does not exist in the datasheet, skip
       if (!(relatedLinkFieldId in fieldMap)) { continue; }
-      // 引用的列不是关联类型，跳过
+      // Referenced field is not field type, skip
       if (fieldMap[relatedLinkFieldId].type !== FieldType.Link) { continue; }
       const { foreignDatasheetId } = fieldMap[relatedLinkFieldId].property;
       const lookUpReferFieldIds = [lookUpTargetFieldId];
-      // 解析引用过滤条件
+      // Analyze reference filter condition
       if (openFilter && filterInfo?.conditions.length) {
         filterInfo.conditions.forEach(condition => lookUpReferFieldIds.push(condition.fieldId));
       }
-      // 更新 LookUp 字段的双向引用关系
+      // Update two-way reference of LookUp field
       updateReference(dstId, fieldId, foreignDatasheetId, lookUpReferFieldIds);
-      // 引用本表，跳过
+      // skip self-linking
       if (foreignDatasheetId === dstId) { continue; }
-      // 记录关联表ID，关联表资源必定不会退出 ROOM
+      // Record linked datasheet ID, linked datasheet resource won't leave ROOM
       foreignDatasheetIds.push(foreignDatasheetId);
-      // 解析引用字段
+      // Parse reference field
       await this.parseFieldReference(dstId, foreignDatasheetId, lookUpReferFieldIds, dstIdToMetaMap, dstIdToProcessedFldIdsMap);
-      // 反向计算引用（强依赖于字段引用关系缓存，在字段解析之后调用）
+      // Reverse compute reference (depends on field reference cache, must go after field reference parsing)
       creatable ? await this.reverseComputeReference(dstId, fieldId, foreignDatasheetId, lookUpReferFieldIds, undefined) :
         await this.reverseComputeReference(dstId, fieldId, foreignDatasheetId, undefined, lookUpReferFieldIds);
     }
@@ -625,80 +597,75 @@ export class DatasheetFieldHandler {
 
   private async parseFieldReference(mainDstId: string, foreignDstId: string, refFieldIds: string[],
     dstToMetaMap: Map<string, IMeta>, dstIdToProcessedFldIdsMap: { [dstId: string]: string[] }) {
-    // 判断是否处理过该关联表的字段，是则差集与已处理字段的结果
+    // Check if linked datasheet fields have been process, if so, get diffrence with processed fields
     const diff = foreignDstId in dstIdToProcessedFldIdsMap ? difference<string>(refFieldIds, dstIdToProcessedFldIdsMap[foreignDstId]) : refFieldIds;
-    // 无未处理的字段直接结束
+    // No unprocessed fields, return
     if (!diff.length) {
       return;
     }
-    // 新未处理的字段，记入已处理字段集合
+    // New unprocessed field, put it in processed fields
     DatasheetFieldHandler.setIfExist(dstIdToProcessedFldIdsMap, foreignDstId, refFieldIds);
 
     for (const refFieldId of diff) {
-      // 读取引用关系
+      // Get reference relation
       const dstToFiledMap = await this.computeFieldReferenceManager.getRefDstToFieldMap(foreignDstId, refFieldId);
       if (dstToFiledMap) {
         for (const [datasheetId, fieldIds] of dstToFiledMap.entries()) {
-          // 引用本表，跳过
+          // skip self-linking
           if (datasheetId === mainDstId) { continue; }
-          // 递归解析字段引用
+          // parse field reference recursively
           await this.parseFieldReference(mainDstId, datasheetId, fieldIds, dstToMetaMap, dstIdToProcessedFldIdsMap);
         }
         continue;
       }
 
-      // 引用关系读取失败，解析字段加载
+      // Get reference relation failed, analyze field loading
       const meta = await this.getMeta(foreignDstId, dstToMetaMap);
       if (!meta) { return; }
       const fieldMap = meta.fieldMap;
       const fieldInfo = fieldMap[refFieldId];
       if (!fieldInfo) { continue; }
       switch (fieldInfo.type) {
-        // 关联字段类型
         case FieldType.Link:
           const fieldProperty = fieldInfo.property as ILinkFieldProperty;
           const linkDatasheetId = fieldProperty.foreignDatasheetId;
-          // 引用主表，跳过
+          // Links main datasheet, skip
           if (linkDatasheetId === mainDstId) { break; }
           const linkDstMeta = await this.getMeta(linkDatasheetId, dstToMetaMap);
           if (!linkDstMeta) { break; }
-          // 首列字段ID
+          // primary field ID
           const { fieldId } = head((head(linkDstMeta.views) as IViewProperty).columns)!;
-          // 创建双向引用关系
+          // Create two-way reference
           await this.computeFieldReferenceManager.createReference(foreignDstId, refFieldId, linkDatasheetId, [fieldId]);
-          // 递归解析字段引用
+          // Parse field reference recursively
           await this.parseFieldReference(mainDstId, linkDatasheetId, [fieldId], dstToMetaMap, dstIdToProcessedFldIdsMap);
           break;
-        // Lookup字段类型
         case FieldType.LookUp:
           const { relatedLinkFieldId, lookUpTargetFieldId, openFilter, filterInfo } = fieldInfo.property as ILookUpProperty;
-          // 本表不存在此列，跳过
+          // Current datasheet does not contain the field, skip
           if (!fieldMap[relatedLinkFieldId]) { break; }
-          // 引用的列不是关联类型，跳过
+          // Linked field is not a link field, skip
           if (fieldMap[relatedLinkFieldId].type !== FieldType.Link) { break; }
-          // 获得引用的关联表ID
+          // Get linked datasheet ID
           const { foreignDatasheetId } = fieldMap[relatedLinkFieldId].property as ILinkFieldProperty;
           const foreignFieldIds = [lookUpTargetFieldId];
-          // 解析引用过滤条件
+          // Analyze reference filter condition
           if (openFilter && filterInfo?.conditions.length) {
             filterInfo.conditions.forEach(condition => foreignFieldIds.push(condition.fieldId));
           }
-          // 创建双向引用关系
+          // Create two-way reference
           await this.computeFieldReferenceManager.createReference(foreignDstId, refFieldId, foreignDatasheetId, foreignFieldIds);
-          // 引用主表，跳过
+          // Links main datasheet, skip
           if (foreignDatasheetId === mainDstId) { break; }
-          // 递归解析字段引用
+          // Parse field reference recursively
           await this.parseFieldReference(mainDstId, foreignDatasheetId, foreignFieldIds, dstToMetaMap, dstIdToProcessedFldIdsMap);
           break;
-        // 公式字段类型
         case FieldType.Formula:
-          // 解析公式表达式
+          // Analyze formula expression
           const formulaRefFieldIds = fieldInfo.property.expression.match(/fld\w{10}/g);
-          // match函数返回可能是null或者空数组
           if (!formulaRefFieldIds || isEmpty(formulaRefFieldIds)) { continue; }
-          // 创建双向引用关系
           await this.computeFieldReferenceManager.createReference(foreignDstId, refFieldId, foreignDstId, formulaRefFieldIds);
-          // 递归解析字段引用
+          // Parse field reference recursively
           await this.parseFieldReference(mainDstId, foreignDstId, formulaRefFieldIds, dstToMetaMap, dstIdToProcessedFldIdsMap);
           break;
         default:
@@ -719,70 +686,71 @@ export class DatasheetFieldHandler {
   }
 
   /**
-   * 反向计算字段引用，更新被动触发资源变更的 ROOM
-   * 如 A B 关联，A 房间中原来仅有 A、B 两个资源。
-   * 这时在 B 房间中将 B 首列改为引用 LinkC 的公式，则 A 表的 LinkB 字段的引用需监控 C 数据，所有处理该 op 时需将 C 资源加入 A 房间
+   * Reverse compute field reference, update ROOM with resource changes caused by reference
+   * Example: 
+   * If A links B, room A contains resource A and B. Then in room B, change primary field of B to formula referencing field LinkC,
+   * then references in field LinkB of datasheet A should track data in datasheet C, when processing such op, resource C must be 
+   * added to room A.
    */
   private async reverseComputeReference(dstId: string, fieldId: string, relDstId: string, addRefFldIds?: string[], delRefFldIds?: string[]) {
     let addResourceIds: string[] = [];
     let delResourceIds: string[] = [];
-    // 计算新增的引用字段
+    // Compute new referenced field
     if (addRefFldIds?.length > 0) {
-      // 数表的ID -> 已处理的字段ID集合
+      // datasheet ID -> processed field ID set
       const dstIdToProcessedFldIdsMap: { [dstId: string]: string[] } = {};
       await this.recurseComputeFieldReference(relDstId, addRefFldIds, dstIdToProcessedFldIdsMap);
       delete dstIdToProcessedFldIdsMap[dstId];
       addResourceIds = Object.keys(dstIdToProcessedFldIdsMap);
     }
 
-    // 计算删除的引用字段
+    // Compute deleted reference field
     if (delRefFldIds?.length > 0) {
-      // 数表的ID -> 已处理的字段ID集合
+      // datasheet ID -> processed field ID set
       const dstIdToProcessedFldIdsMap: { [dstId: string]: string[] } = {};
       await this.recurseComputeFieldReference(relDstId, delRefFldIds, dstIdToProcessedFldIdsMap);
       delete dstIdToProcessedFldIdsMap[dstId];
       delResourceIds = difference<string>(Object.keys(dstIdToProcessedFldIdsMap), addResourceIds);
     }
 
-    // 不存在变更资源集，直接结束 
+    // changed resource set does not exist, quit
     if (!addResourceIds.length && !delResourceIds.length) {
       return;
     }
 
-    // 读取反向引用关系
+    // Get backward reference relation
     const dstToFiledMap = await this.computeFieldReferenceManager.getReRefDstToFieldMap(dstId, fieldId);
-    // 不存在引用该列的关系，直接结束
+    // No relation references this field, quit
     if (!dstToFiledMap) {
       return;
     }
-    // 数表的ID -> Meta
+    // datasheet ID -> meta
     const dstIdToMetaMap = new Map<string, IMeta>();
-    // 数表的ID -> 已处理的字段ID集合
+    // datasheet ID -> processed field ID set
     const dstIdToProcessedFldIdsMap: { [dstId: string]: string[] } = {};
-    // 递归更新被动触发资源变更的 ROOM
+    // Update ROOM recursively with resource change caused by reference
     await this.recurseUpdateReverseRoom(dstId, addResourceIds, delResourceIds, dstToFiledMap, dstIdToMetaMap, dstIdToProcessedFldIdsMap);
   }
 
   private async recurseComputeFieldReference(dstId: string, fieldIds: string[], dstIdToProcessedFldIdsMap: { [dstId: string]: string[] }) {
-    // 提取数表已处理的字段ID集合
+    // Get processed field IDs
     const processedFldIds = [...Object.values(dstIdToProcessedFldIdsMap[dstId] || {})] as string[];
-    // 差集结果
     const diff = difference<string>(fieldIds, processedFldIds);
-    // 无差集则代表不存在未处理过的字段
+    // If difference is empty, no unprocessed fields
     if (diff.length === 0) {
       return;
     }
-    // 新出现的字段，记入已处理字段集合
+    // New field, put it in processed field set
     DatasheetFieldHandler.setIfExist(dstIdToProcessedFldIdsMap, dstId, diff);
 
     for (const fieldId of diff) {
-      // 读取引用关系
+      // Get reference relation
       const dstToFiledMap = await this.computeFieldReferenceManager.getRefDstToFieldMap(dstId, fieldId);
       if (!dstToFiledMap) {
         continue;
       }
       for (const [datasheetId, fieldIds] of dstToFiledMap.entries()) {
-        // 递归计算字段引用
+        // Compute field reference recursively
         await this.recurseComputeFieldReference(datasheetId, fieldIds, dstIdToProcessedFldIdsMap);
       }
     }
@@ -791,18 +759,17 @@ export class DatasheetFieldHandler {
   private async recurseUpdateReverseRoom(dstId: string, addResourceIds: string[], delResourceIds: string[],
     dstToFiledMap: Map<string, string[]>, dstIdToMetaMap: Map<string, IMeta>, dstIdToProcessedFldIdsMap: { [dstId: string]: string[] }) {
     for (const [datasheetId, fieldIds] of dstToFiledMap.entries()) {
-      // 提取数表已处理的字段ID集合
+      // Get processed field IDs
       const processedFldIds = [...Object.values(dstIdToProcessedFldIdsMap[datasheetId] || {})] as string[];
-      // 差集结果
       const diff = difference<string>(fieldIds, processedFldIds);
-      // 无差集则代表不存在未处理过的字段
+      // If difference is empty, no unprocessed fields
       if (diff.length === 0) {
         continue;
       }
-      // 新出现的字段，记入已处理字段集合
+      // New field, put it in processed field set
       DatasheetFieldHandler.setIfExist(dstIdToProcessedFldIdsMap, datasheetId, diff);
 
-      // 非本表，且第一次出现在处理集的关联表，更新 ROOM（防止重复更新同一个 ROOM）
+      // Linked datasheet is not self and occurs in processing the first time, update ROOM (avoid updating the same ROOM)
       if (datasheetId !== dstId && !processedFldIds.length) {
         if (addResourceIds.length) {
           await this.roomResourceRelService.createOrUpdateRel(datasheetId, addResourceIds);
@@ -810,21 +777,20 @@ export class DatasheetFieldHandler {
         if (delResourceIds.length) {
           const meta = await this.getMeta(datasheetId, dstIdToMetaMap);
           if (!meta) { continue; }
-          // 解析主表，获取所有引用的资源
+          // Analyze main datasheet, obtain all referenced resources
           const retainedDstIds = await this.computeDatasheetReference(datasheetId, meta.fieldMap, dstIdToMetaMap);
-          // 差集结果
           const delDstIds = difference<string>(delResourceIds, retainedDstIds);
           await this.roomResourceRelService.removeRel(datasheetId, delDstIds);
         }
       }
 
       for (const fieldId of diff) {
-        // 读取反向引用关系
+        // Get backward reference relation
         const dstIdToFiledIdsMap = await this.computeFieldReferenceManager.getReRefDstToFieldMap(datasheetId, fieldId);
         if (!dstIdToFiledIdsMap) {
           continue;
         }
-        // 递归更新被动触发资源变更的 ROOM
+        // Recursively update ROOM with resource change caused by reference
         await this.recurseUpdateReverseRoom(dstId, addResourceIds, delResourceIds, dstIdToFiledIdsMap, dstIdToMetaMap, dstIdToProcessedFldIdsMap);
       }
     }

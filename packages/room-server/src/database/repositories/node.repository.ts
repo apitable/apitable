@@ -6,28 +6,28 @@ import { EntityRepository, Repository } from 'typeorm';
 export class NodeRepository extends Repository<NodeEntity> {
 
   /**
-   * 查询指定节点ID 的数量
+   * Obtain the number of nodes with the given node ID
    */
   selectCountByNodeId(nodeId: string): Promise<number> {
     return this.count({ where: { nodeId, isRubbish: false }});
   }
 
   /**
-   * 查询指定节点ID 的模板数量
+   * Obtain the number of templates with the given node ID
    */
   selectTemplateCountByNodeId(nodeId: string): Promise<number> {
     return this.count({ where: { nodeId, isTemplate: true, isRubbish: false }});
   }
 
   /**
-   * 查询指定父节点ID 的数量
+   * Obtain the number of nodes with the given parent node ID
    */
   selectCountByParentId(parentId: string): Promise<number> {
     return this.count({ where: { parentId, isRubbish: false }});
   }
 
   /**
-   * 获取节点所在的空间ID
+   * Obtain the ID of the space which the given node belongs to
    */
   selectSpaceIdByNodeId(nodeId: string): Promise<{ spaceId: string } | undefined> {
     return this.createQueryBuilder('vn')
@@ -38,7 +38,7 @@ export class NodeRepository extends Repository<NodeEntity> {
   }
 
   /**
-   * 获取节点的所有子节点列表
+   * Obtain the children node list of a given node
    */
   async selectAllSubNodeIds(nodeId: string): Promise<string[]> {
     const raws = await this.query(
@@ -65,12 +65,14 @@ export class NodeRepository extends Repository<NodeEntity> {
   }
 
   /**
-   * 查询节点父级路径
-   * 数组结果集包含自己，排除根节点, 就近原则
-   * example: 假如当前节点的父级有三层，倒序结果：[nodeId, 第三父级, 第二父级, 第一父级]
+   * Obtain the path to the root node of a given node.
+   * 
+   * The returned node ID array includes the given node and does not include the root node.
+   * 
+   * Example: for a path of 3 nodes, the returned array is `[nodeId, parentId, grandparentId, great-grandparentId]`
    */
   async selectParentPathByNodeId(nodeId: string): Promise<string[]> {
-    // 纯SQL递归查询节点父级路径，结果集包含自己
+    // Query the path with recursive SQL, the result set includes the given node.
     const raws = await this.query(
       `
           WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS
@@ -96,9 +98,6 @@ export class NodeRepository extends Repository<NodeEntity> {
     }, []);
   }
 
-  /**
-   * 获取节点信息
-   */
   getNodeInfo(nodeId: string): Promise<NodeEntity | undefined> {
     return this.findOne({
       select: ['nodeId', 'nodeName', 'spaceId', 'parentId', 'icon', 'extra', 'type'],

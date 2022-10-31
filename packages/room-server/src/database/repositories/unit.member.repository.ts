@@ -3,11 +3,10 @@ import { omit } from 'lodash';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 /**
- * <p>
- * vika_unit_member数据库相关操作
- * </p>
+ * Operations on table `vika_unit_member`
+ * 
  * @author Zoe zheng
- * @date 2020/7/30 4:09 下午
+ * @date 2020/7/30 4:09 PM
  */
 @EntityRepository(UnitMemberEntity)
 export class UnitMemberRepository extends Repository<UnitMemberEntity> {
@@ -50,7 +49,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
       .addSelect('vum.user_id', 'userId')
       .addSelect('vum.is_active', 'isActive')
       .addSelect('vum.is_deleted', 'isDeleted')
-      // 企微需要字段
+      //  WeCom requires this field
       .addSelect('IFNULL(vum.is_social_name_modified, 2) > 0', 'isMemberNameModified')
       .addSelect('vu.id', 'unitId')
       .where('vum.space_id = :spaceId', { spaceId })

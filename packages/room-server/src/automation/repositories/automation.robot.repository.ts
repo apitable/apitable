@@ -188,7 +188,8 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
 
     Object.entries(groupBy(actionBaseInfoList, 'robotId')).forEach(item => {
       const [robotId, actions] = item;
-      // if process of creating robot is not complete, there may be a robot with only one trigger and no actions
+      // If the bootrapping process of the robot isn't finished, there may be only one trigger that
+      // does not have actions, just skip it
       if (actions.length === 0) {
         return;
       }
@@ -305,6 +306,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
   createRobot(robot: RobotCreateRo, userId: string) {
     const newRobot = this.create({
       resourceId: robot.resourceId,
+      // Starting with 'arb', followed by 15 random letters and digits ([a-zA-Z0-9])
       robotId: `arb${generateRandomString(15)}`,
       name: robot.name,
       description: robot.description,

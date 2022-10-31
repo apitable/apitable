@@ -30,7 +30,7 @@ export class FormOtService {
   analyseOperates(operations: IOperation[], permission: NodePermission, resultSet: { [key: string]: any }) {
     operations.forEach(op => {
       op.actions.forEach(action => {
-        //  修改收集表自有属性
+        // Modify form props
         if (action.p[0] === 'formProps' && 'oi' in action && 'od' in action) {
           if (!permission.editable) {
             throw new ServerException(PermissionException.OPERATION_DENIED);
@@ -51,18 +51,18 @@ export class FormOtService {
     resultSet: { [key: string]: any }
   ) => {
 
-    // 并行执行更新数据库
+    // Update database parallelly
     await Promise.all([
-      // 更新Meta
+      // Update meta
       this.handleMeta(manager, commonData, resultSet),
-      // 无论如何都添加changeset，operations和revision按照客户端传输过来的一样保存，叠加版本号即可
+      // Always add changeset; operations and revision are stored as received from client, adding revision suffices
       this.createNewChangeset(manager, commonData, effectMap.get(EffectConstantName.RemoteChangeset)),
     ]);
   };
 
   async handleMeta(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${commonData.resourceId}] 更新 Metadata`);
+      this.logger.debug(`[${commonData.resourceId}] Update metadata`);
     }
     const metaData = await this.repository.selectMetaByResourceId(commonData.resourceId);
     try {
@@ -79,16 +79,16 @@ export class FormOtService {
   }
 
   /**
-   * 创建新的changeset存储db
-   * @param manager 数据库管理器
-   * @param remoteChangeset 存储db的changeset
+   * Create new changeset and store it in database
+   * @param manager Database manager
+   * @param remoteChangeset changeset that is about to be stored in database
    */
   private async createNewChangeset(manager: EntityManager, commonData: ICommonData, remoteChangeset: IRemoteChangeset) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${remoteChangeset.resourceId}]插入新变更集`);
+      this.logger.debug(`[${remoteChangeset.resourceId}] Insert new changeset`);
     }
     const beginTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> 数据库保存变更集开始......`);
+    this.logger.info(`[${remoteChangeset.resourceId}] ====> Start storing changeset......`);
     const { userId } = commonData;
     await manager.createQueryBuilder()
       .insert()
@@ -105,7 +105,7 @@ export class FormOtService {
       .updateEntity(false)
       .execute();
     const endTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> 数据库保存变更集结束......总耗时: ${endTime - beginTime}ms`);
+    this.logger.info(`[${remoteChangeset.resourceId}] ====> Finished storing changeset......duration: ${endTime - beginTime}ms`);
   }
 
 }

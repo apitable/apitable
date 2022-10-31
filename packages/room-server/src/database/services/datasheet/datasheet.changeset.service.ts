@@ -22,11 +22,11 @@ export class DatasheetChangesetService {
 
   /**
    *
-   * @param ro 复制数表参数
-   * @param store 数据存储
+   * @param ro query parameters
+   * @param store redux store
    * @return
    * @author Zoe Zheng
-   * @date 2021/3/30 2:29 下午
+   * @date 2021/3/30 2:29 PM
    */
   getCopyNodeChangesets(ro: INodeCopyRo, store: Store<IReduxState>): ILocalChangeset[] | null {
     const changesetMap = new Map<string, ILocalChangeset>();
@@ -39,19 +39,18 @@ export class DatasheetChangesetService {
   }
 
   /**
-   * 获取删除节点的changeset
-   * @param ro 删除节点参数
-   * @param store 数据存储
+   * @param ro query parameters
+   * @param store redux store
    * @return ILocalChangeset[] | null
    * @author Zoe Zheng
-   * @date 2021/4/1 2:53 下午
+   * @date 2021/4/1 2:53 PM
    */
   getDeleteNodeChangesets(ro: INodeDeleteRo, store: Store<IReduxState>): ILocalChangeset[] | null {
     const changesetMap = new Map<string, ILocalChangeset>();
     ro.deleteNodeId.map(nodeId => {
       const fieldMap = Selectors.getFieldMap(store.getState(), nodeId);
       Object.values(fieldMap!).map(field => {
-        // 关联字段，并且关联表是删除的节点，将此列转换成多行文本字段
+        // Is linked field and linked datasheet is deleted, convert this field to multi-line text field
         if (field.type === FieldType.Link && ro.linkNodeId.includes(field.property.foreignDatasheetId)) {
           const options = this.commandOption.getSetFieldAttrOptions(nodeId, { ...field, property: null, type: FieldType.Text }, false);
           const { result, changeSets } = this.commandService.execute(options, store);
@@ -73,16 +72,15 @@ export class DatasheetChangesetService {
   }
 
   /**
-   * 获取record的changesets
-   * @param spaceId 空间ID
-   * @param dstId 数表ID
-   * @param recordId 记录ID
-   * @param lastChangeset 上一页的最后一个不是评论的changeset
-   * @param revisions 变更版本号列表
-   * @param filedIds 需要保留的列
+   * @param spaceId space ID
+   * @param dstId datasheet ID
+   * @param recordId record ID
+   * @param lastChangeset last non-comment changeset of previous page
+   * @param revisions changeset revisions
+   * @param filedIds preserved fields
    * @return { changesets: ChangesetBaseDto[]; users: UnitBaseInfoDto[] }
    * @author Zoe Zheng
-   * @date 2021/4/14 2:50 下午
+   * @date 2021/4/14 2:50 PM
    */
   async getRecordActivityChangesetList(
     spaceId: string,
@@ -100,9 +98,9 @@ export class DatasheetChangesetService {
     const { recordModifyEntities, commentEntities, userIds } = this.groupChangesets(entities);
     const userMap: Map<string, UnitBaseInfoDto> = await this.unitService.getUnitMemberInfoByUserIds(spaceId, Array.from(userIds), false);
     let recordChangesets: ChangesetBaseDto[] = [];
-    // 合并非评论的changeset
+    // Merge non-comment changesets
     if (recordModifyEntities.length) {
-      // 使用map保证唯一性
+      // Use map to make sure changesets are unique
       const changesetMap = this.composeRecordModifyChangeset(dstId, recordId, lastChangeset, userMap, filedIds, recordModifyEntities);
       recordChangesets = Array.from(changesetMap.values());
     }
@@ -115,7 +113,6 @@ export class DatasheetChangesetService {
         return pre;
       }, []);
     }
-    // 将comment和record根据版本号进行排序返回
     return { commentChangesets, users: Array.from(userMap.values()), recordChangesets };
   }
 
@@ -133,9 +130,8 @@ export class DatasheetChangesetService {
     fieldIds: string[],
     entities: (DatasheetChangesetEntity & { isComment: string })[],
   ): Map<string, ChangesetBaseDto> {
-    // 使用map保证唯一性
     const changesetMap: Map<string, ChangesetBaseDto> = new Map<string, ChangesetBaseDto>();
-    // 把上一个放回map中，进行合并
+    // Put last changeset in map and then merge them
     if (lastChangeset) {
       changesetMap.set(lastChangeset.messageId, lastChangeset);
     }
@@ -156,16 +152,16 @@ export class DatasheetChangesetService {
           messageId = pre.pop();
         } else if (!pre.length && lastChangeset) {
           messageId = lastChangeset.messageId;
-          // 标记已经用过了
+          // Mark lastChangeset is used
           lastChangeset = undefined;
         }
-        // 没有lastChangeset和第一次的时候messageId为null
+        // messageId is null when lastChangeset is undefined or first iteration
         const preChangeset = messageId ? changesetMap.get(messageId) : undefined;
         const changeset = this.composeChangeset(preChangeset, curChangeset, 30);
-        // cur 跟 pre 记录合并后没有任何改动,并且不是上一个的messageId
+        // No changesets after merging cur and pre, and messageId is not from previous changeset.
         if (!changeset) {
           changesetMap.delete(messageId);
-          // 将下一个的tmpCreatedAt置为合并之前的时间
+          // Set tmpCreateAt of next changeset to time before merge.
           composeStartAt = preChangeset?.tmpCreatedAt;
         } else {
           changesetMap.set(changeset.messageId, changeset);
@@ -182,11 +178,11 @@ export class DatasheetChangesetService {
     const originalSnapshot = Selectors.getSnapshot(store.getState(), ro.nodeId);
     const originalFieldMap = originalSnapshot!.meta.fieldMap;
     const fieldMap = Selectors.getFieldMap(store.getState(), ro.copyNodeId);
-    // 修改转换的文本字段为关联字段，恢复复制表的表结构
+    // Change converted text field to link field, restore datasheet structure of copied datasheet
     const copyNodeOperations = new Map<string, IOperation[]>();
     ro.fieldIds.map(fieldId => {
       if (originalFieldMap[fieldId].type === fieldMap![fieldId].type) return;
-      // 找出需要修改的列, 这里保持列名和ID都一样，添加关联列中的property.brotherFieldId会被command重置
+      // Find fields that need change
       const field = originalFieldMap[fieldId];
       const setFieldAttrOptions = this.commandOption.getSetFieldAttrOptions(ro.copyNodeId, field, false);
       const { result, changeSets } = this.commandService.execute(setFieldAttrOptions, store);
@@ -197,7 +193,7 @@ export class DatasheetChangesetService {
           } else {
             changesetMap.set(item.resourceId, item);
           }
-          // 应用之前成功的operations，进行数据的写入,防止field名称重复
+          // apply succeeded operations, writing data, to avoid field name duplicate
           store.dispatch(StoreActions.applyJOTOperations(item.operations, ResourceType.Datasheet, item.resourceId));
         });
       } else {
@@ -209,29 +205,29 @@ export class DatasheetChangesetService {
 
   /**
    *
-   * @param ro 复制节点参数
-   * @param store 数据存储
-   * @param changesetMap changeset收集器
+   * @param ro query parameters
+   * @param store redux store
+   * @param changesetMap changeset collector
    * @return
    * @author Zoe Zheng
-   * @date 2021/3/30 5:28 下午
+   * @date 2021/3/30 5:28 PM
    */
   private copeNodeSetRecordsChangesets(ro: INodeCopyRo, store: Store<IReduxState>, changesetMap: Map<string, ILocalChangeset>) {
-    // 设置链接，不然无法写入数据
+    // Set link, otherwise data cannot be written
     store.dispatch(StoreActions.setDatasheetConnected(ro.copyNodeId));
-    // copy数据的changeset
+    // copy data changeset
     const originalSnapshot = Selectors.getSnapshot(store.getState(), ro.nodeId);
-    // 这里的fieldMap已经和原来的的节点保持一致了
+    // This fieldMap is the same as original node
     const fieldMap = Selectors.getFieldMap(store.getState(), ro.copyNodeId);
-    // 过滤出修改的列
+    // Filter fields that need change
     const modifiedFieldMap = ro.fieldIds.reduce<IFieldMap>((pre, cur) => {
       pre[cur] = fieldMap![cur];
       return pre;
     }, {});
-    // 获取修改列的值
+    // Get values of fields that need change
     const setRecordsOptions = this.commandOption.getSetRecordsOptions(ro.copyNodeId, originalSnapshot!.recordMap, modifiedFieldMap);
     const { result, changeSets } = this.commandService.execute(setRecordsOptions, store);
-    // 写入数据 none 不用抛出异常
+    // Don't throw exception when written data is none
     if (result && (result.result == ExecuteResult.Success || result.result == ExecuteResult.None)) {
       changeSets.map(item => {
         if (changesetMap.has(item.resourceId)) {
@@ -246,24 +242,25 @@ export class DatasheetChangesetService {
   }
 
   /**
-   * 修改记录展示filter
+   * Change record to show filter
    *
-   * @param recordId 记录ID
-   * @param fieldIds 当前表的列ID
-   * @param operations 变化集
+   * @param recordId record ID
+   * @param fieldIds field IDs of current datasheet
+   * @param operations changeset
    * @private
    */
   private filterRecordActivityOperations(recordId: string, fieldIds: string[], operations: IOperation[]) {
     return operations.reduce<IOperation[]>((pre, cur) => {
-      // 过滤系统, 删除列op不展示，删除列对应的record修改记录也不展示
+      // Filter out System and Comment commands, field deletion op is not shown, record changes caused by field deletion are not show either.
       if (!cur.cmd.includes('System') && !cur.cmd.includes('Comment')) {
-        // 过滤列属性修改没有涉及到record和删除列，过滤不涉及到此次修改的recordId的actions
+        // Filter out field changes that do not relate to record change and field deletion,
+        // and filter out actions that do not relate to the current recordId
         const actions = cur.actions.filter(action => {
           return (
             (action.p.includes('fieldMap') && cur.actions.length > 1 && fieldIds.includes(action.p[2].toString())) ||
             (action.p[1] == recordId && action.p[2] == 'data' && fieldIds.includes(action.p[3].toString())) ||
             (action.p[1] == recordId && action.p[2] == 'comments') ||
-            // 新增记录有默认值,只有新增记录才会有oi.data
+            // Only record creation with default values contains oi.data
             (action.p[0] == 'recordMap' && action.p[1] == recordId && 'oi' in action && action.oi?.data && Object.keys(action.oi.data).length)
           );
         });
@@ -276,14 +273,14 @@ export class DatasheetChangesetService {
   }
 
   /**
-   * 合并两个changeset 评论不进行合并
+   * Merge two changesets, don't merge comments
    *
-   * @param cur 当前changeset
-   * @param pre 由于是倒序排序，pre的revision大于cur的revision
-   * @param timeInterval 时间间隔 可选
+   * @param cur current changeset
+   * @param pre pre.revision > cur.revision because of descending order
+   * @param timeInterval optional time interval
    */
   composeChangeset(pre: ChangesetBaseDto | undefined, cur: ChangesetBaseDto, timeInterval?: number): ChangesetBaseDto | null {
-    // 不同用户记录不合并
+    // Don't merge changesets caused by different users
     if (!pre || pre.userId !== cur.userId) {
       return cur;
     }
@@ -291,36 +288,36 @@ export class DatasheetChangesetService {
       const composeOperations: IOperation[] = [];
       let composed = false;
       cur.operations.forEach((value, index) => {
-        // 大于一是列配置的修改 不需要修改
+        // op is field property change when index > 1, no need to change
         const { operation, isComposed } = composeOperation(pre.operations[index], value);
         composed = isComposed || composed;
-        // 标记是否产生了合并
-        // 合并之后没有了
+        // operation is null if merged.
         if (operation != null) {
           composeOperations.push(operation);
         }
       });
       if (composeOperations.length > 0) {
         if (composed) {
-          // 合并后 pre messageId 更新 Map pre 记录
+          // After merge, update pre in Map
           return { ...pre, operations: composeOperations, createdAt: cur.createdAt };
         }
-        // 合并后 原样返回了cur
+        // After merge, return cur verbatim
         return cur;
       }
-      // 表示合并后 action 为空，更新 Map 删除 pre 记录
+      // action is empty after merge, delete pre in Map
       return null;
     }
-    // 不能合并则返回当前 changeset, 更新 Map 新增 curr 记录
+    // Return current changeset if cannot merge, insert curr into Map
     return cur;
   }
 
   /**
-   * 将评论和record的修改分组返回
-   * @param entities 数据库查询出的源数据
+   * Split changesets into comments and record changes and return them.
+   * 
+   * @param entities source data from database
    * @return
    * @author Zoe Zheng
-   * @date 2021/5/24 11:29 上午
+   * @date 2021/5/24 11:29 AM
    */
   private groupChangesets(entities: (DatasheetChangesetEntity & { isComment: string })[]) {
     const recordModifyEntities: (DatasheetChangesetEntity & { isComment: string })[] = [];

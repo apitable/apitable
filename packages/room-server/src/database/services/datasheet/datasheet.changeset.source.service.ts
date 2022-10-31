@@ -12,12 +12,13 @@ export class DatasheetChangesetSourceService {
   ) {}
 
   /**
-   * 批量创建changesets的来源信息
-   * @param changesets 服务端返回的changeset
-   * @param sourceType changeset来源
+   * Batch create source info for changesets
+   * 
+   * @param changesets changesets from server 
+   * @param sourceType changeset source
    * @return
    * @author Zoe Zheng
-   * @date 2021/4/16 5:27 下午
+   * @date 2021/4/16 5:27 PM
    */
   async batchCreateChangesetSource(changesets: IRemoteChangeset[], sourceType: SourceTypeEnum, sourceId?: string) {
     const changesetSourceEntities: DatasheetChangesetSourceEntity[] = changesets.map(changeset => {
@@ -31,7 +32,7 @@ export class DatasheetChangesetSourceService {
       entity.sourceType = sourceType;
       return entity;
     });
-    // 保存changeset来源
+    // Store changeset source
     await this.changesetSourceRepository.insert(changesetSourceEntities);
   }
 }

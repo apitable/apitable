@@ -52,7 +52,7 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
   }
 
   changeTriggerTypeId(triggerId: string, triggerTypeId: string, userId: string) {
-    // clean trigger input when type changed
+    // Clear input when switching trigger prototype
     return this.update({ triggerId }, { triggerTypeId, input: null, updatedBy: userId });
   }
 }

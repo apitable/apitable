@@ -20,7 +20,8 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
   }
 
   async deleteRobotActionByActionId(actionId: string, userId: string) {
-    // find prev and next node of current, and set next node's prev node to current node's prev node.
+    // Finds the previous and the next node of the current node, then
+    // currentNode.nextNode.prevNode <- currentNode.prevNode
     const thisAction = await this.query(
       `
     SELECT
@@ -32,9 +33,10 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
     `, [actionId]);
     const robotId = thisAction[0].robot_id;
     const prevActionId = thisAction[0].prev_action_id;
-    
-    // transaction to update prev and next node
+
+    // update together
     await getManager().transaction(async transactionalEntityManager => {
+      // update `prev_action_id` of the next node to `prev_action_id` of the current node
       await transactionalEntityManager.query(
         `
       UPDATE
@@ -63,7 +65,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
   }
 
   changeActionTypeId(actionId: string, actionTypeId: string, userId: string) {
-    // clean action input when changing action type
+    // When switching action prototype, clear input
     return this.update({ actionId }, { actionTypeId, input: null, updatedBy: userId });
   }
 }

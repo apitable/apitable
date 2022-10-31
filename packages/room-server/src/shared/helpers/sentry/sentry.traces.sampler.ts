@@ -2,14 +2,14 @@ import { SamplingContext } from '@sentry/types';
 import { find } from 'lodash';
 
 /**
- * Sentry 采样
+ * Sentry sampling
  */
 export class SentryTraces {
   private readonly _nameSamplerConfig: TransactionNameSampler[];
   private readonly _defaultSampleRate: number;
 
   constructor(defaultSampleRate?: number) {
-    // 初始化规则
+    // initialize rules
     this._nameSamplerConfig = [{
       name: /^GET \/actuator\/health$/,
       rate: 0
@@ -31,7 +31,7 @@ export class SentryTraces {
     return function(samplingContext: SamplingContext): number | boolean {
       const { name: transactionName } = samplingContext.transactionContext;
 
-      // 取第一个匹配的规则
+      // select the first matching rule
       const match = find(nameSamplerConfig, pre => {
         if (pre.name instanceof RegExp) {
           return pre.name.test(transactionName);

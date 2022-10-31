@@ -4,11 +4,6 @@ import { ServerException, PermissionException } from '../../../shared/exception'
 import { IBaseException } from '../../../shared/exception/base.exception';
 import { DatasheetMetaRepository } from '../../repositories/datasheet.meta.repository';
 
-/**
- * Datasheet Meta 服务
- *
- * @class DatasheetMetaService
- */
 @Injectable()
 export class DatasheetMetaService {
   public constructor(private repository: DatasheetMetaRepository) {}
@@ -37,20 +32,21 @@ export class DatasheetMetaService {
   }
 
   /**
-   * 通过sql查询出fieldIds 优化内存
-   * @param dstId 数表ID
-   * @param filterFieldIds 需要过滤的列ID
-   * @param excludedFieldType 需要排除的列类型
-   * @return 满足条件的列ID
+   * Query fieldIds through SQL, reduce memory footprint
+   * 
+   * @param dstId datasheet ID
+   * @param filterFieldIds IDs of fields that will be filtered out
+   * @param excludedFieldType excluded field types
+   * @return IDs of fields satisfying condition
    * @author Zoe Zheng
-   * @date 2021/4/22 2:26 下午
+   * @date 2021/4/22 2:26 PM
    */
   async getFieldIdByDstId(dstId: string, filterFieldIds: string[], excludedFieldType: Set<number>): Promise<string[]> {
     const raw = await this.repository.selectFieldMapByDstId(dstId);
     const fieldIds: string[] = [];
     if (raw && raw.fieldMap) {
       for (const fieldId in raw.fieldMap) {
-        // 排序关键列
+        // sort key fields
         if ((!excludedFieldType || !excludedFieldType.has(raw.fieldMap[fieldId].type) && !filterFieldIds.includes(fieldId))) {
           fieldIds.push(fieldId);
         }

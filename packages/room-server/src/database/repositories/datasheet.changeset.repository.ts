@@ -5,10 +5,9 @@ import { EntityRepository, In, Repository } from 'typeorm';
 @EntityRepository(DatasheetChangesetEntity)
 export class DatasheetChangesetRepository extends Repository<DatasheetChangesetEntity> {
   /**
-   * 获取数表变更集的最大版本
-   * 可能为null
+   * Obtain max revision number of datasheet changesets. May be null.
    *
-   * @param dstId 数表ID
+   * @param dstId datasheet ID
    */
   getMaxRevisionByDstId(dstId: string): Promise<{ revision: string }> {
     return this.createQueryBuilder('vdc')
@@ -21,10 +20,10 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
   }
 
   /**
-   * 查询变更集列表
+   * Obtain changset list with the given revision numbers
    *
-   * @param dstId 数表ID
-   * @param revisions 版本列表
+   * @param dstId datasheet ID
+   * @param revisions revision number list
    */
   selectByDstIdAndRevisions(dstId: string, revisions: number[]): Promise<DatasheetChangesetEntity[]> {
     return this.find({
@@ -33,13 +32,12 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
   }
 
   /**
-   * 按顺序查询changeset
+   * Obtain changeset list with the given revision numbers, in their order.
    *
-   * @param dstId 数表ID
-   * @param revisions 版本列表
+   * @param dstId datasheet ID
+   * @param revisions revision number list
    */
   getChangesetOrderList(dstId: string, revisions: string | number[]): Promise<any[]> {
-    // sql和参数分别传入，防止 sql 注入
     return this.query(
       `
         SELECT vdc.message_id messageId, vu.uuid userId, vdc.revision, 
@@ -54,10 +52,10 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
   }
 
   /**
-   * 查询消息是否存在
+   * Query if a message exists
    *
-   * @param dstId 数表ID
-   * @param messageId 消息ID
+   * @param dstId datasheet ID
+   * @param messageId message ID
    */
   countByDstIdAndMessageId(dstId: string, messageId: string): Promise<number> {
     return this.createQueryBuilder('vdc')

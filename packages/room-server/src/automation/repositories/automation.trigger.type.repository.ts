@@ -4,8 +4,7 @@ import { EntityRepository, Repository } from 'typeorm';
 @EntityRepository(AutomationTriggerTypeEntity)
 export class AutomationTriggerTypeRepository extends Repository<AutomationTriggerTypeEntity> {
   /**
-   * query unique trigger type by service slug and triggerType slug
-   * @param serviceSlugAndEndpoints ([record_updated,record_created], vika)
+   * Query the only trigger type with service slug and trigger endpoint
    */
   getTriggerTypeByServiceSlugAndEndpoints(endpoints: string[], serviceSlug: string): Promise<{
     triggerTypeId: string,

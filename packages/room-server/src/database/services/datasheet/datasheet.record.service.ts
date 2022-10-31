@@ -15,12 +15,6 @@ import { Store } from 'redux';
 import { In } from 'typeorm';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
 
-/**
- * Datasheet Record 服务
- *
- * @export
- * @class DatasheetRecordService
- */
 @Injectable()
 export class DatasheetRecordService {
   constructor(
@@ -70,7 +64,7 @@ export class DatasheetRecordService {
 
   private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {
     if (recordIds) {
-      // 按照传入ID排序, 排除一个或者没有的情况
+      // recordMap follows the order of 'records'
       const recordMap = keyBy(records, 'recordId');
       return recordIds.reduce<RecordMap>((pre, cur) => {
         const record = recordMap[cur];
@@ -128,16 +122,16 @@ export class DatasheetRecordService {
   }
 
   /**
-   * todo 优化数据查询，减少compose次数，减少循环次数
-   * @param spaceId 空间站ID
-   * @param dstId 数表ID
-   * @param recordId 记录ID
-   * @param query 参数
-   * @param showRecordHistory 是否展示记录的修改历史
-   * @param fieldIds 需要保留的列
+   * TODO optimize data query, reduce compose uses, reduce loops
+   * @param spaceId space ID
+   * @param dstId datasheet ID
+   * @param recordId record ID
+   * @param query query parameters
+   * @param showRecordHistory if record change history is shown
+   * @param fieldIds IDs of preserved fields
    * @return
    * @author Zoe Zheng
-   * @date 2021/4/9 4:05 下午
+   * @date 2021/4/9 4:05 PM
    */
   async getActivityList(
     spaceId: string,
@@ -164,9 +158,11 @@ export class DatasheetRecordService {
       // slice [)
       const tmp = canLoopRevisions.slice(i * doublePageSize, (i + 1) * doublePageSize);
       const result = await this.datasheetChangesetService.getRecordActivityChangesetList(spaceId, dstId, recordId, lastChangeset, tmp, fieldIds);
-      // 如果不是最后一页把上一页最后一个记录的修改重新放进去，进行合并 todo 这里有点问题，下一页为空的时候，lastChangeset没有重置
+      // TODO this is problematic, when next page is empty, lastChangeset is not reset
+      // If not last page, get last changeset of previous page, perform merging
       if (i + 1 != maxTimes && result.recordChangesets.length) {
-        //  在一次查询的分页内，每次上下页合并的changeset条数为最doublePageSize * query.pageSize多个
+        // In pagination of one query, numbers of merged changeset in adjacent pages
+        // is at most doublePageSize * query.pageSize
         if (i != 0 && i % query.pageSize === 0) {
           lastChangeset = undefined;
         } else {
@@ -181,7 +177,7 @@ export class DatasheetRecordService {
       }
     }
     changesets = orderBy(changesets, ['revision'], ['desc']).slice(0, query.pageSize);
-    // 减少查询量
+    // reduce queried data size
     const mentionedRevisions: number[] = [];
     const replyCommentIds: Set<string> = new Set();
     changesets = changesets.map(item => {
@@ -189,17 +185,15 @@ export class DatasheetRecordService {
         mentionedRevisions.push(Number(item.revision));
         const replyComment = get(item, 'operations.0.actions.0.li.commentMsg.reply');
         if (!isEmpty(replyComment) && replyComment.commentId) {
-          // 记录存在回复的Id
+          // record replied comment ID
           replyCommentIds.add(replyComment.commentId);
         }
       }
       return { ...item, createdAt: item.tmpCreatedAt, tmpCreatedAt: undefined };
     });
     if (mentionedRevisions.length) {
-      // 用户
       const mentionedUsers = await this.recordCommentService.getMentionedUnitsByRevisions(dstId, recordId, mentionedRevisions);
       units.push(...mentionedUsers);
-      // 点赞（emoji）信息
       emojis = await this.recordCommentService.getEmojisByRevisions(dstId, recordId, mentionedRevisions);
     }
     const commentReplyMap = await this.getCommentReplyMap(dstId, recordId, Array.from(replyCommentIds));
@@ -207,10 +201,11 @@ export class DatasheetRecordService {
   }
 
   /**
-   * @description 根据给的 commentIds 查询相应的原文
-   * @param dstId       数表ID
-   * @param recordId    记录ID
-   * @param commentIds  评论ID集合
+   * Fetch comments by comment IDs
+   * 
+   * @param dstId       datasheet ID
+   * @param recordId    record ID
+   * @param commentIds  comment ID set
    */
   async getCommentReplyMap(dstId: string, recordId: string, commentIds: string[]) {
     if (!commentIds.length) {
@@ -225,16 +220,16 @@ export class DatasheetRecordService {
   }
 
   /**
-   * 升序查询record的版本记录
+   * Obtain record revisions in ascending order of revisions
    *
-   * @param dstId 数表ID
-   * @param recordId 记录ID
-   * @param type 记录历史的类型
-   * @param showRecordHistory 是否显示记录的修改历史
-   * @param limitDays 限制天数
+   * @param dstId datasheet ID
+   * @param recordId record ID
+   * @param type record history type
+   * @param showRecordHistory if record change history is shown
+   * @param limitDays limit days
    * @return string[]
    * @author Zoe Zheng
-   * @date 2021/4/12 11:48 上午
+   * @date 2021/4/12 11:48 AM
    */
   async getRecordRevisionHistoryAsc(
     dstId: string,
@@ -284,7 +279,7 @@ export class DatasheetRecordService {
     const primaryField = datasheetMeta.fieldMap[primaryFieldId];
 
     if (primaryField.type === FieldType.Formula) {
-      return '首列为公式类型，暂无法展示内容';
+      return 'Formula primary field cannot be shown';
     }
     
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]) || '';

@@ -3,11 +3,10 @@ import { UnitTypeEnum } from '../../shared/enums';
 import { UnitEntity } from '../entities/unit.entity';
 
 /**
- * <p>
- * vika_unit数据库相关操作
- * </p>
+ * Operations on table `vika_unit`
+ * 
  * @author Zoe zheng
- * @date 2020/7/30 4:09 下午
+ * @date 2020/7/30 4:09 PM
  */
 @EntityRepository(UnitEntity)
 export class UnitRepository extends Repository<UnitEntity> {

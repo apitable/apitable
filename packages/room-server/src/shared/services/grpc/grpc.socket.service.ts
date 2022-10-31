@@ -21,9 +21,11 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 /**
  *
- * Socket客户端服务
- * 服务启动完成后自动初始化并监听socket事件
- * 实现OnApplicationBootstrap接口，应用启动完成后即可自定义初始化操作
+ * Socket client service
+ * 
+ * Initialize and listen on socket events after the service is started.
+ * 
+ * Implemented OnApplicationBootstrap interface to customize initialzation after the app starts.
  */
 @Injectable()
 export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationShutdown {
@@ -40,16 +42,18 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
   ) {}
 
   /**
-   * 这里采用pub/sub机制保证ip注册的实时性
-   * 并且由socket统一维护redis
-   * 注册失败不会启动项目
+   * Applies pub/sub mechanism here to ensure the IP registry is real-time.
+   * 
+   * Redis is maintained by socket service.
+   * 
+   * Application is not started if registry failed.
    *
-   * APPLICATION_NAME = ROOM_SERVER，才会触发注册机制
+   * registry mechanism is enabled only with APPLICATION_NAME = ROOM_SERVER
    */
   async onApplicationBootstrap() {
     if ('ROOM_SERVER' === APPLICATION_NAME) {
       let published = false;
-      // 失败最大重试10次
+      // max retry time is 10
       let maxTimes = 0;
       do {
         try {
@@ -64,14 +68,14 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
         }
         maxTimes++;
       } while (!published && maxTimes < 10);
-      // todo 考虑最大重试次数之后是否通知开发者注册失败
+      // TODO consider notifying the developer that registry was failed after max retry time is exceeded.
     }
   }
 
   async onApplicationShutdown(signal?: string): Promise<any> {
     if ('ROOM_SERVER' === APPLICATION_NAME) {
       let published = false;
-      // 失败最大重试10次
+      // max retry time is 10
       let maxTimes = 0;
       do {
         try {
@@ -86,18 +90,18 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
         }
         maxTimes++;
       } while (!published && maxTimes < 10);
-      // todo 考虑最大重试次数之后是否通知开发者踢出失败
+      // TODO consider notifying the developer that leaving room was failed after max retry time is exceeded.
     }
     return Promise.resolve(signal);
   }
 
   public errorCatch(e, message): any {
-    // 可能是OtException，或者是其他异常
+    // may be OtException or other exceptions
     const statusCode = e instanceof ServerException ? e.getCode() : OtErrorCode.SERVER_ERROR;
     const errMsg = e instanceof ServerException ? e.getMessage() : CommonStatusMsg.DEFAULT_ERROR_MESSAGE;
-    this.logger.error('处理数据变更异常 ', { stack: e?.stack || errMsg, code: e?.code || statusCode });
+    this.logger.error('Handles OT data change exception ', { stack: e?.stack || errMsg, code: e?.code || statusCode });
     if (!(e instanceof ServerException)) {
-      // 过滤出不需要上报的异常
+      // Filter exception that isn't necessary to be reported.
       message.cookie = undefined;
       message.token = undefined;
       Sentry.captureException(e, { extra: { message }});
@@ -122,10 +126,11 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
   }
 
   /**
-   * 将用户加入协同空间
-   * @param message 用户消息
-   * @param clientId 客户端ID
-   * @param socketIds socket连接id集合
+   * Join the user in collaboration room
+   * 
+   * @param message User message
+   * @param clientId client ID
+   * @param socketIds socket connection ID collection
    * @param metadata grpc metadata
    */
   public async watchRoom(message: IWatchRoomMessage, clientId: string, socketIds: string[], metadata: any) {
@@ -139,38 +144,38 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     if (!nodeId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
-    // 拒绝模板节点 watch
+    // reject template node watching
     const isTemplate = await this.watchRoomLogger(cTraceId, 'isTemplate', this.nodeService.isTemplate(nodeId));
     if (isTemplate) {
       throw new ServerException(PermissionException.ACCESS_DENIED);
     }
     if (message.shareId) {
-      // 分享连接鉴权
+      // authorize share link
       await this.watchRoomLogger(cTraceId, 'checkNodeHasOpenShare', this.nodeShareSettingService.checkNodeHasOpenShare(message.shareId, nodeId));
       const { uuid } = await this.watchRoomLogger(cTraceId, 'getMeNullable', this.userService.getMeNullable(message.cookie || ''));
       userId = uuid;
     } else {
-      // 站内连接鉴权
+      // authorize space link
       const user = await this.watchRoomLogger(cTraceId, 'getMe', this.userService.getMe({ cookie: message.cookie }));
-      // 检查当前用户是否在该空间
+      // check if the current user is in the this space
       await this.watchRoomLogger(cTraceId, 'checkUserForNode', this.nodeService.checkUserForNode(user.userId, nodeId));
-      // 校验节点权限
+      // validate node permission
       await this.watchRoomLogger(cTraceId, 'checkNodePermission', this.nodeService.checkNodePermission(nodeId, { cookie: message.cookie }));
       userId = user.uuid;
     }
-    // 存储当前用户信息
+    // store current user info
     await this.watchRoomLogger(cTraceId, 'set', this.clientStorage.set(
       clientId,
       { userId, socketId: clientId, createTime, shareId: message.shareId }
     ));
-    // 获取当前房间的协同用户列表，根据加入时间排序
+    // Obtain collaborator list of the room, ordered by join-time.
     const collaborators = (await this.watchRoomLogger(cTraceId, 'mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
-    // 过滤未登录用户
+    // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
       spaceId = await this.watchRoomLogger(cTraceId, 'getSpaceIdByNodeId', this.nodeService.getSpaceIdByNodeId(nodeId));
       const userInfos = await this.watchRoomLogger(cTraceId, 'getUserInfo', this.userService.getUserInfo(spaceId, (roomUserIds as string[])));
-      // 补充已登录用户的信息
+      // Fill in info for logged-in users.
       collaborators
         .filter(collaborator => collaborator.userId)
         .forEach(collaborator => {
@@ -180,23 +185,24 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
           }
           collaborator.avatar = user.avatar;
           collaborator.userName = user.name;
-          collaborator.memberName = 'unitId' in user ? user!.name : ''; // 站内成员才有 unitId，name 表示成员昵称，站外人员留空成员昵称
+          collaborator.memberName = 'unitId' in user ? user!.name : ''; // Only space member has unitId. Name means member nickname, empty for member not in space
         });
-      // 当前用户信息
+        // Current user info
       if (userId) {
         collaborator = collaborators.find(collaborator => collaborator.userId === userId);
       }
     }
-    // 获取 ROOM 内各个资源最新的版本号
+    // Obtain latest revision numbers of resources in the room
     const resourceRevisions = await this.watchRoomLogger(cTraceId, 'getResourceRevisions', this.relService.getResourceRevisions(message.roomId));
     const endTime = +new Date();
     this.logger.info(
-      `C-TraceId[${cTraceId}] Watch Room: ${message.roomId} Success，总耗时: ${endTime - createTime}ms | uuid: ${userId} | SocketIds: ${socketIds}`);
+      `C-TraceId[${cTraceId}] Watch Room: ${message.roomId} Success, duration: ${endTime - createTime}ms | uuid: ${userId} | SocketIds: ${socketIds}`);
     return { resourceRevisions, collaborators, collaborator, spaceId };
   }
 
   /**
-   * @description 作为 watchRoom 的辅助函数，支持跨 pod 获取当前房间内所有活跃用户的信息，
+   * Helper function for watchRoom, supports obtaining all user infos of active users in the current room cross-pod-ly
+   * 
    * @param {IWatchRoomMessage} message
    * @param {string} spaceId
    * @param {string[]} socketIds
@@ -207,13 +213,13 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
 
-    // 获取当前房间的协同用户列表，根据加入时间排序
+    // Obtain collaborator list of the room, ordered by join-time.
     const collaborators = (await this.clientStorage.mget<ICollaborator>(socketIds)).filter(Boolean).sort();
-    // 过滤未登录用户
+    // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
       const userInfos = await this.userService.getUserInfo(spaceId, (roomUserIds as string[]));
-      // 补充已登录用户的信息
+      // Fill in info for logged-in users.
       collaborators
         .filter(collaborator => collaborator.userId)
         .forEach(collaborator => {
@@ -223,7 +229,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
           }
           collaborator.avatar = user.avatar;
           collaborator.userName = user.name;
-          collaborator.memberName = 'unitId' in user ? user!.name : ''; // 站内成员才有 unitId，name 表示成员昵称，站外人员留空成员昵称
+          collaborator.memberName = 'unitId' in user ? user!.name : ''; // Only members in space has unitId. name means member nickname, empty name for members not in space
         });
     }
     return { collaborators };
@@ -234,25 +240,22 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
   }
 
   /**
-   * 用户更改 ROOM 内的节点内容
-   * @param message 消息数组
+   * User changes node contents in the room
    */
   public async roomChange(message: IRoomChannelMessage, auth: IAuthHeader): Promise<IClientRoomChangeResult[]> {
     this.logger.info(
-      `开始处理 CLIENT_ROOM_CHANGE,room:[${message.roomId}],shareId: ${message.shareId},changesets length:[${message.changesets.length}]`,
+      `Start processing CLIENT_ROOM_CHANGE,room:[${message.roomId}],shareId: ${message.shareId},changesets length:[${message.changesets.length}]`,
     );
     const beginTime = +new Date();
     const changesets = await this.roomChangeLogger('applyRoomChangeset', this.otService.applyRoomChangeset(message, auth));
     const data = await this.roomChangeLogger('getRoomChangeResult', this.relService.getRoomChangeResult(message.roomId, changesets));
     const endTime = +new Date();
-    this.logger.info(`room:[${message.roomId}] CLIENT_ROOM_CHANGE 处理完成，总耗时: ${endTime - beginTime}ms`);
-    // 返回响应数据
+    this.logger.info(`room:[${message.roomId}] Finished CLIENT_ROOM_CHANGE, duration: ${endTime - beginTime}ms`);
     return data;
   }
 
   /**
-   * 用户离开数表协同空间
-   * @param clientId 客户端ID
+   * User leaves collaboration room
    */
   public leaveRoom(clientId: string) {
     return this.clientStorage.del(clientId);
@@ -261,19 +264,19 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
   async publishIp(action: number): Promise<number> {
     const message = JSON.stringify({ ip: getIPAddress(), action });
     try {
-      // 保证redis连接的稳定性
+      // Ensure stability of Redis connection
       const redis = this.redisService.getClient().duplicate();
       const number = await redis.publish(VIKA_NEST_CHANNEL, message);
       if (!number) {
-        this.logger.error('socket服务没有启动', { message, channel: VIKA_NEST_CHANNEL });
+        this.logger.error('socket service isn\'t started', { message, channel: VIKA_NEST_CHANNEL });
       } else {
-        this.logger.info('发布IP成功', { message, channel: VIKA_NEST_CHANNEL });
+        this.logger.info('IP publish succeeded', { message, channel: VIKA_NEST_CHANNEL });
       }
-      // 手动删除连接
+      // Disconnect manually
       redis.disconnect();
       return number;
     } catch (e) {
-      this.logger.info('发布IP失败', { e: e.message, stack: e.stack, message });
+      this.logger.info('IP publish failed', { e: e.message, stack: e.stack, message });
       throw e;
     }
   }

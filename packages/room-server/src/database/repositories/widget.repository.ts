@@ -4,9 +4,6 @@ import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(WidgetEntity)
 export class WidgetRepository extends Repository<WidgetEntity> {
-  /**
-   * 查询节点ID
-   */
   selectNodeIdByWidgetId(widgetId: string): Promise<{ nodeId: string } | undefined> {
     return this.findOne({
       select: ['nodeId'],
@@ -29,7 +26,7 @@ export class WidgetRepository extends Repository<WidgetEntity> {
   }
 
   /**
-   * 查询多个组件对应的版本号
+   * Query revisions corresponding to multiple widgets
    */
   getRevisionByWdtIds(widgetIds: string[]): Promise<IResourceRevision[]> {
     return this.query(
@@ -42,9 +39,6 @@ export class WidgetRepository extends Repository<WidgetEntity> {
     );
   }
 
-  /**
-   * 查询节点ID和版本号
-   */
   getNodeIdAndRevision(widgetId: string): Promise<{ nodeId: string; revision: number } | undefined> {
     return this.findOne({
       select: ['nodeId', 'revision'],

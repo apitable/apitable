@@ -8,12 +8,6 @@ import { IdWorker } from '../../../shared/helpers';
 import { isEmpty } from 'lodash';
 import { DatasheetRecordAlarmRepository } from '../../repositories/datasheet.record.alarm.repository';
 
-/**
- * Datasheet Record Alarm 服务
- *
- * @export
- * @class DatasheetRecordAlarmService
- */
 @Injectable()
 export class DatasheetRecordAlarmService {
   constructor(
@@ -51,12 +45,13 @@ export class DatasheetRecordAlarmService {
 
     const existAlarmIds = existAlarms.map(a => a.alarmId);
     
-    // 创建新的提醒
+    // Create alarms
     const newAlarms = alarms.filter(a => !existAlarmIds.includes(a.alarmId));
     await this.repository.batchCreateRecordAlarms(newAlarms);
 
-    // 更新或恢复(soft deleted)已存在的提醒  
-    // TypeORM 不支持一次更新多个 Entities 为各自不同的值 (https://github.com/typeorm/typeorm/issues/5126)
+    // Update or recover (soft deleted) existing alarms
+    // TypeORM does not support update multiple entities to different values at the same time.
+    // See (https://github.com/typeorm/typeorm/issues/5126)
     const nowTime = dayjs(new Date());
     await Promise.all(existAlarms.map((alarm: DatasheetRecordAlarmEntity) => {
       const sourceAlarm = alarmMap[alarm.alarmId];
@@ -86,7 +81,7 @@ export class DatasheetRecordAlarmService {
 
     const alarmAt = this.calculateAlarmAt(dateValue, alarm.time, alarm.subtract);
     if (!alarmAt) {
-      this.logger.error(`无效的提醒时间来自 Record Alarm ${alarm.id}`);
+      this.logger.error(`Invalid alarm time from record alarm ${alarm.id}`);
       return null;
     }
     

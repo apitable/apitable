@@ -35,8 +35,8 @@ export class MirrorOtService {
     operations.map(item => {
       item.actions.forEach(action => {
         if (action.p[0] === 'widgetPanels') {
-          // ===== 组件面板的操作 =====
-          // 组件面板及组件的增删均需要可管理角色
+          // ===== Operations on widget panel =====
+          // Insertion and deletion of widget panels and widgets require manageable permission
           if ('ld' in action) {
             if (!permission.manageable) {
               throw new ServerException(PermissionException.OPERATION_DENIED);
@@ -60,12 +60,12 @@ export class MirrorOtService {
 
   collectByAddWidgetIds(action: IJOTAction, resultSet: { [key: string]: any }) {
     if (action.p.includes('widgets')) {
-      // 恢复组件板中的组件
+      // Recover widget in widget panel
       const addWidget = action['li'];
       resultSet.addWidgetIds.push(addWidget.id);
       return;
     }
-    // 恢复整个组件面板
+    // Recover whole widget panel
     const panel = action['li'];
     const widgets = panel.widgets;
     const ids = widgets.map(item => item.id);
@@ -74,12 +74,12 @@ export class MirrorOtService {
 
   collectByDeleteWidgetOrWidgetPanels(action: IJOTAction, resultSet: { [key: string]: any }) {
     if (action.p.includes('widgets')) {
-      // 删除组件板中的组件
+      // Delete widget in widget panel
       const deleteWidget = action['ld'];
       resultSet.deleteWidgetIds.push(deleteWidget.id);
       return;
     }
-    // 删除整个组件面板
+    // Delete whole widget panel
     const panel = action['ld'];
     const widgets = panel.widgets;
     const ids = widgets.map(item => item.id);
@@ -97,18 +97,18 @@ export class MirrorOtService {
 
     await this.handleDeleteWidget(manager, resultSet);
 
-    // 并行执行更新数据库
+    // Update database parallelly
     await Promise.all([
-      // 更新Meta 和 版本号
+      // Update meta and revision
       this.handleMeta(manager, commonData, resultSet),
-      // 无论如何都添加changeset，operations和revision按照客户端传输过来的一样保存，叠加版本号即可
+      // Always add changeset; operations and revision are stored as received from client, adding revision suffices
       this.createNewChangeset(manager, commonData, effectMap.get(EffectConstantName.RemoteChangeset)),
     ]);
   };
 
   async handleAddWidget(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug('[开始更新 widget 的 add 状态]');
+      this.logger.debug('[Start updating widget\'s add state]');
     }
     if (!resultSet.addWidgetIds.length) {
       return;
@@ -117,7 +117,7 @@ export class MirrorOtService {
     if (!deleteWidgetIds.length) {
       return;
     }
-    this.logger.info('[ ======> 批量新增 widget 开始]');
+    this.logger.info('[ ======> Start batch adding widgets]');
     for (const widgetId of resultSet.addWidgetIds) {
       if (deleteWidgetIds.includes(widgetId)) {
         await manager.createQueryBuilder()
@@ -127,29 +127,29 @@ export class MirrorOtService {
           .execute();
       }
     }
-    this.logger.info('[ ======> 批量新增 widget 结束]');
+    this.logger.info('[ ======> Finished batch adding widgets]');
   }
 
   async handleDeleteWidget(manager: EntityManager, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug('[开始更新 widget 的 delete 状态]');
+      this.logger.debug('[Start updating widget\'s delete state]');
     }
 
     if (!resultSet.deleteWidgetIds.length) {
       return;
     }
-    this.logger.info('[ ======> 批量删除 widget 开始]');
+    this.logger.info('[ ======> Start batch deleting widgets]');
     await manager.createQueryBuilder()
       .update(WidgetEntity)
       .set({ isDeleted: true })
       .where('widget_id IN(:...widgetIds)', { widgetIds: resultSet.deleteWidgetIds })
       .execute();
-    this.logger.info('[ ======> 批量删除 widget 结束]');
+    this.logger.info('[ ======> Finished batch deleting widgets]');
   }
 
   async handleMeta(manager: EntityManager, commonData: ICommonData, resultSet: { [key: string]: any }) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${commonData.resourceId}] 更新 Metadata`);
+      this.logger.debug(`[${commonData.resourceId}] Update metadata`);
     }
     const metaData = await this.repository.selectMetaByResourceId(commonData.resourceId);
     const _metaData = { widgetPanels: [], ...metaData };
@@ -167,16 +167,17 @@ export class MirrorOtService {
   }
 
   /**
-   * 创建新的changeset存储db
-   * @param manager 数据库管理器
-   * @param remoteChangeset 存储db的changeset
+   * Create new changeset and store it in database
+   * 
+   * @param manager Database manager
+   * @param remoteChangeset changeset that is about to be stored
    */
   private async createNewChangeset(manager: EntityManager, commonData: ICommonData, remoteChangeset: IRemoteChangeset) {
     if (this.logger.isDebugEnabled()) {
-      this.logger.debug(`[${remoteChangeset.resourceId}]插入新变更集`);
+      this.logger.debug(`[${remoteChangeset.resourceId}] Insert new changeset`);
     }
     const beginTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> 数据库保存变更集开始......`);
+    this.logger.info(`[${remoteChangeset.resourceId}] ====> Start storing changeset......`);
     const { userId } = commonData;
     await manager.createQueryBuilder()
       .insert()
@@ -193,6 +194,6 @@ export class MirrorOtService {
       .updateEntity(false)
       .execute();
     const endTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> 数据库保存变更集结束......总耗时: ${endTime - beginTime}ms`);
+    this.logger.info(`[${remoteChangeset.resourceId}] ====> Finished storing changeset......duration: ${endTime - beginTime}ms`);
   }
 }

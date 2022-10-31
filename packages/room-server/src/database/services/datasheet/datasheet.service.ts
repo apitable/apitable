@@ -20,9 +20,6 @@ import { DatasheetFieldHandler } from './datasheet.field.handler';
 import { DatasheetMetaService } from './datasheet.meta.service';
 import { DatasheetRecordService } from './datasheet.record.service';
 
-/**
- * 数表 业务层
- */
 @Injectable()
 export class DatasheetService {
   constructor(
@@ -38,12 +35,13 @@ export class DatasheetService {
   ) { }
 
   /**
-   * 获取数表的具体信息,不存在抛出异常
-   * @param datasheetId 数表ID
-   * @param throwError 是否抛异常
+   * Obtain datasheet info, throw exception if not exist
+   * 
+   * @param datasheetId datasheet ID
+   * @param throwError if throw error when datasheet not exist
    * @return Promise<DatasheetEntity>
    * @author Zoe Zheng
-   * @date 2020/8/5 12:04 下午
+   * @date 2020/8/5 12:04 PM
    */
   public getDatasheet(datasheetId: string, throwError?: boolean): Promise<DatasheetEntity | undefined> {
     const entity = this.datasheetRepository.selectById(datasheetId);
@@ -54,35 +52,33 @@ export class DatasheetService {
   }
 
   async fetchViewPack(dstId: string, viewId: string): Promise<ViewPack> {
-    // 查询数表的 meta
+    // Query metadata of datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
-    // 查询数表是否有对应的视图
+    // Check if datasheet has view with viewId
     const view = meta.views.find(view => view.id === viewId);
     if (!view) {
       throw new ServerException(DatasheetException.VIEW_NOT_EXIST);
     }
-    // 节点版本号
     const revision = await this.nodeService.getRevisionByDstId(dstId);
     return { view, revision: revision! };
   }
 
   /**
-   * 获取数表的数据包
-   * 自动加载所有关联表的信息
+   * Obtain datasheet data pack, with all linked datasheet data
    *
-   * @param dstId 数表ID
-   * @param auth 用户授权信息
-   * @param options 参数选项
+   * @param dstId datasheet ID
+   * @param auth authorization
+   * @param options query parameters
    */
   async fetchDataPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
-    this.logger.info(`主表数据开始加载[${dstId}]`);
-    // 查询datasheet
+    this.logger.info(`Start loading main datasheet data [${dstId}]`);
+    // Query datasheet
     const origin = { internal: true, main: true };
     const getNodeInfoProfiler = this.logger.startTimer();
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
     getNodeInfoProfiler.done({ message: `getNodeDetailInfo ${dstId} done` });
-    // 查询snapshot
+    // Query snapshot
     const getMetaProfiler = this.logger.startTimer();
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     getMetaProfiler.done({ message: `getMetaProfiler ${dstId} done` });
@@ -93,8 +89,8 @@ export class DatasheetService {
         : await this.datasheetRecordService.getRecordsByDstId(dstId);
     getRecordsProfiler.done({ message: `getRecordsProfiler ${dstId} done` });
     const endTime = +new Date();
-    this.logger.info(`主表数据完成加载,总耗时[${dstId}]: ${endTime - beginTime}ms`);
-    // 查询foreignDatasheetMap和unitMap
+    this.logger.info(`Finished main datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
+    // Query foreignDatasheetMap and unitMap
     const getProcessFieldProfiler = this.logger.startTimer();
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     getProcessFieldProfiler.done({ message: `getProcessFieldProfiler ${dstId} done` });
@@ -108,30 +104,29 @@ export class DatasheetService {
   }
 
   /**
-   * 获取分享数表的数据包
-   * 自动加载所有关联表的信息
+   * Fetch share datasheet data pack, with all linked datasheet data
    *
-   * @param shareId 分享ID
-   * @param dstId 数表ID
-   * @param auth 用户授权信息
-   * @param options 过滤选项
+   * @param shareId share ID
+   * @param dstId datasheet ID
+   * @param auth authorization
+   * @param options query parameters
    */
   async fetchShareDataPack(shareId: string, dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
-    this.logger.info(`分享数据开始加载[${dstId}]`);
-    // 查询datasheet;
+    this.logger.info(`Start loading share data [${dstId}]`);
+    // Query datasheet;
     const origin = { internal: false, main: true, shareId };
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
-    // 查询snapshot
+    // Query snapshot
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     const recordMap =
       options && options.recordIds?.length
         ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options.recordIds)
         : await this.datasheetRecordService.getRecordsByDstId(dstId);
-    // 查询foreignDatasheetMap和unitMap
+    // Query foreignDatasheetMap and unitMap
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
-    this.logger.info(`分享数据完成加载,总耗时[${dstId}]: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished loading share data, duration [${dstId}]: ${endTime - beginTime}ms`);
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
@@ -142,29 +137,28 @@ export class DatasheetService {
   }
 
   /**
-   * 获取模版数表的数据包
-   * 自动加载所有关联表的信息
+   * Fetch template datasheet data pack, with all linked datasheet data
    *
-   * @param dstId 数表ID
-   * @param auth 用户授权信息
-   * @param options 过滤选项
+   * @param dstId datasheet ID
+   * @param auth authorization
+   * @param options query parameters
    */
   async fetchTemplatePack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions): Promise<DatasheetPack> {
     const beginTime = +new Date();
-    this.logger.info(`模版数据开始加载[${dstId}]`);
-    // 查询datasheet;
+    this.logger.info(`Start loading template data [${dstId}]`);
+    // Query datasheet;
     const origin = { internal: false, main: true };
     const { node } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
-    // 查询snapshot
+    // Query snapshot
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     const recordMap =
       options && options.recordIds
         ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options.recordIds)
         : await this.datasheetRecordService.getRecordsByDstId(dstId);
-    // 查询foreignDatasheetMap和unitMap
+    // Query foreignDatasheetMap and unitMap
     const combine = await this.processField(dstId, {}, meta, recordMap, origin);
     const endTime = +new Date();
-    this.logger.info(`模版数据完成加载,总耗时[${dstId}]: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished loading template data, duration [${dstId}]: ${endTime - beginTime}ms`);
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
@@ -174,28 +168,28 @@ export class DatasheetService {
   }
 
   /**
-   * 提交表单时，获取神奇表单关联数表的数据包
-   * 只会加载需要的稀疏数据
+   * When submitting form, fetch linked datasheet data pack of form.
+   * Only loads necessary data.
    *
-   * @param dstId 数表ID
-   * @param auth 用户授权信息
-   * @param options 过滤选项
+   * @param dstId datasheet ID
+   * @param auth authorization
+   * @param options query parameters
    */
   async fetchSubmitFormForeignDatasheetPack(dstId: string, auth: IAuthHeader, options?: IFetchDataOptions, shareId?: string): Promise<DatasheetPack> {
     const beginTime = +new Date();
-    this.logger.info(`神奇表单关联数表数据开始加载[${dstId}]`);
-    // 查询datasheet;
+    this.logger.info(`Start loading form linked datasheet data [${dstId}]`);
+    // Query datasheet;
     const origin = shareId ? { internal: false, main: true, shareId } 
       : { internal: true, main: true, form: true };
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
-    // 查询snapshot
+    // Query snapshot
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
     const recordMap = options?.recordIds?.length
       ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options.recordIds) : {};
-    // 查询foreignDatasheetMap和unitMap
+    // Query foreignDatasheetMap and unitMap
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
-    this.logger.info(`神奇表单关联数表数据完成加载,总耗时[${dstId}]: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished loading form linked datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
     return {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
@@ -206,21 +200,21 @@ export class DatasheetService {
   }
 
   /**
-   * 获取关联表的数据包
-   * 关联表无权限时，仅加载首列相关的字段数据
-   * 以此来保障不会影响到用户打开关联表时的权限
+   * Fetch linked datasheet data pack.
+   * Only loads field data related to primary field if no permission for linked datasheet,
+   * so as to make sure not influence permission when user visits linked datasheet
    *
-   * @param dstId 数表ID
-   * @param foreignDatasheetId 关联表ID
-   * @param auth 用户授权信息
-   * @param shareId 分享ID
+   * @param dstId datasheet ID
+   * @param foreignDatasheetId linked datasheet ID
+   * @param auth authorization
+   * @param shareId sharing ID
    */
   async fetchForeignDatasheetPack(dstId: string, foreignDatasheetId: string, auth: IAuthHeader, shareId?: string): Promise<DatasheetPack> {
     const beginTime = +new Date();
-    this.logger.info(`关联表[${foreignDatasheetId}]数据开始加载，dstId:[${dstId}]`);
-    // 查询数表的 meta
+    this.logger.info(`Start loading linked datasheet dataa [${foreignDatasheetId}], dstId:[${dstId}]`);
+    // Query datasheet meta
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
-    // 查询数表是否有对应的关联表
+    // Check if datasheet has linked datasheet with foreighDatasheetId
     const isExist = Object.values(meta.fieldMap).some(field => {
       if (field.type === FieldType.Link) {
         return field.property.foreignDatasheetId === foreignDatasheetId;
@@ -231,21 +225,17 @@ export class DatasheetService {
       throw new ServerException(DatasheetException.FOREIGN_DATASHEET_NOT_EXIST);
     }
 
-    // 查询datasheet;
+    // Query datasheet;
     const origin = { internal: shareId ? false : true, main: false, shareId };
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(foreignDatasheetId, auth, origin);
-    // 查询snapshot
+    // Query snapshot
     const linkMeta = await this.datasheetMetaService.getMetaDataByDstId(foreignDatasheetId, DatasheetException.FOREIGN_DATASHEET_NOT_EXIST);
     const recordMap = await this.datasheetRecordService.getRecordsByDstId(foreignDatasheetId);
     const fieldIds: string[] = [];
-    // 无关联表的查看权限，初始化仅解析首列
-    // if (!node.permissions.readable) {
-    //   fieldIds.push(DatasheetFieldHandler.getHeadFieldId(linkMeta));
-    // }
-    // 查询foreignDatasheetMap和unitMap
+    // Query foreignDatasheetMap and unitMap
     const combine = await this.datasheetFieldHandler.parse(foreignDatasheetId, auth, linkMeta, recordMap, origin, undefined, fieldIds);
     const endTime = +new Date();
-    this.logger.info(`神奇表单关联数表数据完成加载,总耗时[${dstId}]: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished loading linked datasheet data, duration [${dstId}]: ${endTime - beginTime}ms`);
     return {
       foreignDatasheetMap: combine.foreignDatasheetMap,
       snapshot: { meta: linkMeta, recordMap, datasheetId: node.id },
@@ -255,14 +245,14 @@ export class DatasheetService {
   }
 
   /**
-   * 处理特殊字段（Link、Lookup、Formula）
-   * 没包含这些字段类型，会不处理
-   * @param mainDstId 主数表ID
-   * @param auth 用户会话
-   * @param mainMeta 表的列数据结构
-   * @param mainRecordMap 表行数据
-   * @param origin 查询选项
-   * @param linkedRecordMap 指定查找的关联表的记录
+   * Process special fields (link, lookup, and formula), ignoring other fields
+   * 
+   * @param mainDstId main datasheet ID
+   * @param auth authorization
+   * @param mainMeta datasheet field data
+   * @param mainRecordMap datasheet record data
+   * @param origin query parameters
+   * @param linkedRecordMap Specifies records to be queried in linked datasheet
    */
   async processField(
     mainDstId: string,
@@ -273,33 +263,31 @@ export class DatasheetService {
     linkedRecordMap?: ILinkedRecordMap,
     withoutPermission?: boolean,
   ): Promise<IForeignDatasheetMap & IDatasheetUnits> {
-    // 解析数表
     return await this.datasheetFieldHandler.parse(mainDstId, auth, mainMeta,
       mainRecordMap, origin, linkedRecordMap, undefined, withoutPermission);
   }
 
   async fetchUsers(nodeId: string, uuids: string[]): Promise<any[]> {
-    // 获取节点所在空间
+    // Get the space id the node is in
     const spaceId = await this.nodeService.getSpaceIdByNodeId(nodeId);
     if (!spaceId) {
       throw new ServerException(DatasheetException.NOT_EXIST);
     }
-    // 查询结果集
     return await this.userService.getUserInfo(spaceId, uuids);
   }
 
   /**
-   * 获取数表的数据包, 不包括关联表信息
-   * 自动加载所有关联表的信息
+   * Fetch datasheet data pack, not including linked datasheet data
    *
-   * @param dstId 数表ID
-   * @param includeLink 是否包含所有link字段的表 默认true
-   * @param includeCommentCount 是否查询评论条数 默认false
-   * @param ignoreDeleted 是否忽略删除的节点 默认false
+   * @param dstId datasheet ID
+   * @param includeLink if all linked datasheet is included. Default to true
+   * @param includeCommentCount If comment count is queried. Default to false
+   * @param ignoreDeleted If deleted flag is ignored. Default to false
    * @return  Promise<IBaseDatasheetPack[]>
    */
   async getBasePacks(dstId: string, includeLink = true, includeCommentCount = false, ignoreDeleted = false): Promise<IBaseDatasheetPack[]> {
-    // 查询snapshot todo 优化recordMap的查询，使用游标
+    // TODO optimize recordMap query with cursors
+    // Query snapshot
     const basePacks: IBaseDatasheetPack[] = [];
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, undefined, ignoreDeleted);
     const dstIdSet = includeLink ? this.getAllLinkDstIdFromFieldMap(meta.fieldMap) : new Set<string>();
@@ -327,13 +315,13 @@ export class DatasheetService {
 
   /**
    *
-   * @param dstIds 数表ID
-   * @param includeLink 是否包含所有link字段的表 默认true
-   * @param includeCommentCount 是否包含评论数 默认false
-   * @param ignoreDeleted 是否忽略删除的节点 默认false
+   * @param dstIds datasheet ID
+   * @param includeLink if all linked datasheet is included. Default to true
+   * @param includeCommentCount If comment count is queried. Default to false
+   * @param ignoreDeleted If deleted flag is ignoerd. Default to false
    * @return Promise<Store<IReduxState>>
    * @author Zoe Zheng
-   * @date 2021/4/1 2:41 下午
+   * @date 2021/4/1 2:41 PM
    */
   async fillBaseSnapshotStoreByDstIds(
     dstIds: string[],
@@ -361,12 +349,13 @@ export class DatasheetService {
   }
 
   /**
-   * 获取数表基本信息map
-   * @param dstIds 数表IDs
-   * @param ignoreDeleted 是否忽略删除
+   * Fetch datasheet base info map
+   * 
+   * @param dstIds datasheet IDs
+   * @param ignoreDeleted if deleted flag is ignored
    * @return
    * @author Zoe Zheng
-   * @date 2021/4/1 4:16 下午
+   * @date 2021/4/1 4:16 PM
    */
   async getBaseInfoMap(dstIds: string[], ignoreDeleted = false): Promise<{ [dstId: string]: { id: string; name: string; revision: number } } | null> {
     const datasheets = ignoreDeleted
@@ -386,9 +375,9 @@ export class DatasheetService {
   }
 
   /**
-   * 获取稀疏的 dstPack 只包含 meta 和 recordMap
-   * + 需要关联表信息
-   * + 需要成员信息
+   * Fetch partial datasheet data pack, including meta and recordMap
+   * + Needs linked datasheet data
+   * + Needs member info
    */
   async getTinyBasePacks(resourceMap: IEventResourceMap): Promise<IBaseDatasheetPack[]> {
     const dstIds = [...resourceMap.keys()];
@@ -404,12 +393,12 @@ export class DatasheetService {
     for (const dstId of dstIds) {
       const datasheet = datasheetBaseInfoMap[dstId];
       const meta = metaMap[dstId];
-      // 本批次事件影响的 recordIds
+      // Influenced recordsIds of the events
       const recordIds = resourceMap.get(dstId);
-      // 本表 recordMap
+      // recordMap of current datasheet
       let recordMap = await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
 
-      // 检查是否有自表关联，如果存扩充 recordIds
+      // Check if self-linking exists, if so, extend recordIds
       const fieldMap = meta.fieldMap;
       const exRecordIds = [];
       Object.keys(fieldMap).forEach(fieldId => {
@@ -423,14 +412,14 @@ export class DatasheetService {
           }
         }
       });
-      // 求 exRecordIds - recordIds 的差集
+      // Compute difference of exRecordIds and recordIds
       const exRecordIdsSet = new Set(exRecordIds);
       const recordIdsSet = new Set(recordIds);
       const diffRecordIds = [...exRecordIdsSet].filter(recordId => !recordIdsSet.has(recordId));
       const diffRecordMap = await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, diffRecordIds);
       recordMap = { ...recordMap, ...diffRecordMap };
 
-      // 查询foreignDatasheetMap和unitMap
+      // Query foreignDatasheetMap and unitMap
       const linkedRecordMap = this.getLinkedRecordMap(
         dstId,
         meta,
@@ -461,17 +450,17 @@ export class DatasheetService {
   }
 
   /**
-  * 根据 meta 和 recordMap 得到稀疏关联记录数据
+   * Get linked record data with meta and recordMap
   */
   getLinkedRecordMap(dstId: string, meta: IMeta, recordMap: IRecordMap): ILinkedRecordMap {
     const recordIds: string[] = Object.keys(recordMap);
-    // 按外键关联表id 收集对应表需要获取的记录 id
+    // Collect record IDs that need loading from corresponding datasheets by linked datasheet IDs
     const linkedRecordMap: ILinkedRecordMap = {};
     const foreignDatasheetIdMap = Object.values(meta.fieldMap)
       .filter(field => field.type === FieldType.Link)
       .map(field => {
         const foreignDatasheetId = field.property?.foreignDatasheetId;
-        // 过滤掉自表关联
+        // Filter out self-linking
         if (!foreignDatasheetId || foreignDatasheetId === dstId) return null;
         return {
           fieldId: field.id,
@@ -487,15 +476,15 @@ export class DatasheetService {
         pre.push(...cellLinkedIds);
         return pre;
       }, []);
-      // 会出现本表关联多张相同表的情况。
+      // The current datasheet may links to the same datasheet many times.
       if (linkedRecordMap.hasOwnProperty(foreignDatasheetId)) {
         linkedRecordMap[foreignDatasheetId].push(...linkedRecordIds);
       } else {
-        // 收集该关联字段的所有记录 ids
+        // Collect all record IDs of this link field
         linkedRecordMap[foreignDatasheetId] = linkedRecordIds;
       }
     });
-    // 对数组数据做一下去重
+    // Remove duplicates
     for (const key in linkedRecordMap) {
       linkedRecordMap[key] = [...new Set(linkedRecordMap[key])];
     }

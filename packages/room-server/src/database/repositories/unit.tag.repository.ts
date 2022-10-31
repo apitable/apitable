@@ -2,11 +2,10 @@ import { UnitTagEntity } from '../entities/unit.tag.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 /**
- * <p>
- * vika_unit_tag数据库相关操作
- * </p>
+ * Operations on table `vika_unit_tag`
+ * 
  * @author Zoe zheng
- * @date 2020/7/30 4:09 下午
+ * @date 2020/7/30 4:09 PM
  */
 @EntityRepository(UnitTagEntity)
 export class UnitTagRepository extends Repository<UnitTagEntity> {
