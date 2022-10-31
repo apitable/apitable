@@ -1,11 +1,11 @@
 # TComponent
 
-这个组件是 `t` 函数的补充，当模板变量中需要显示组件时，使用这个组件渲染。
+This component is complementary to the `t` function and is used to render components when they need to be displayed in a template variable.
 
-## 用法
+## Usage
 
 
-### 使用纯文本
+### Use plain text
 ```jsx
 import React from 'react';
 import { TComponent } from '.';
@@ -14,19 +14,19 @@ import { Tag } from '../tag';
 
 export function TComponentDemo() {
   // eslint-disable-next-line
-  const tkey = '这是一个带 component 的 i18n。 ${btn}组件${btn},这是第二个 ${tag} 组件';
+  const tkey = 'This is an i18n with component. ${btn} component ${btn}, this is the second ${tag} component';
   const params = {
-    btn: <Button type="primary">测试</Button>,
-    tag: <Tag>tag</Tag>,
+    btn: <Button type="primary">Test</Button>,
+    tag: <Tag>Tag</Tag>,
   };
   return <TComponent tkey={tkey} params={params} />;
 }
 
 
 ```
-参见： [demo](./demo.tsx)
+Reference: [demo](./demo.tsx)
 
-### 使用 t(Strings.xxxx)
+### Use t(Strings.xxxx)
 ```jsx
 // packages/datasheet/src/pc/components/multi_grid/format/format_lookup/format_lookup.tsx:L252
 <div className={settingStyles.subSectionTitle}>
@@ -42,4 +42,4 @@ export function TComponentDemo() {
 </div>
 ```
 
-请勿使用 `tkey={Strings.lookup_field}` 的写法，TComponent 已和语言包逻辑解耦。
+Do not use the `tkey={Strings.lookup_field}` writeup, the TComponent is decoupled from the language pack logic.

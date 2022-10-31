@@ -126,7 +126,7 @@ const SlateEditor = (props, ref) => {
                 data: { data: resData, success },
               } = res as any;
               if (!resData?.length || !success) {
-                console.log(`用户 ${userId} 获取失败`);
+                console.log(`User ${userId} Failed to get`);
               } else {
                 store.dispatch(StoreActions.updateUserMap(keyBy(resData, 'userId')));
               }

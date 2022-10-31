@@ -83,7 +83,7 @@
       height: 100%;
     }
 
-    // 拖拽时的线
+    // Line when dragging and dropping
     .label::before {
       display: none;
       content: "\0020";
@@ -95,7 +95,7 @@
       pointer-events: none;
     }
 
-    // 拖拽时的点
+    // Point when dragging and dropping
     .label::after {
       display: none;
       content: "\0020";
@@ -111,7 +111,7 @@
     }
 
     @media (any-hover: hover) {
-      // 节点hover样式
+      // Node hover style
       &:hover {
         border-radius: 4px;
         background: var(--fill0);
@@ -122,7 +122,7 @@
       background: var(--fill1);
     }
 
-    // 节点展开时的样式
+    // Style when nodes are expanded
     &.expanded {
       .iconContainer {
         svg {
@@ -131,12 +131,12 @@
       }
     }
 
-    // 节点聚焦时的样式
+    // Style when nodes are focused
     // &.focused {
     //   background: @node-focused-bg;
     // }
 
-    // 节点选中时的样式
+    // Style when node is selected
     &.selected {
       background: @node-selected-bg;
 
@@ -150,12 +150,12 @@
       border-radius: 4px 4px 0 0;
     }
 
-    // 节点禁用时的样式
+    // Style when node is disabled
     &.disabled {
       background: @node-disabled-bg;
     }
 
-    // 节点被拖拽时的样式
+    // Style of nodes when they are dragged and dropped
     &.dragNodeHighlight {
       background: @node-drag-bg;
     }
@@ -202,7 +202,6 @@
   }
 }
 
-// 激活时
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   font-weight: bold;
   color: var(--primaryColor);

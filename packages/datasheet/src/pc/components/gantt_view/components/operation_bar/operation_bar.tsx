@@ -26,7 +26,7 @@ export const OperationBar: FC<IOperationBarProps> = memo((props) => {
   const startDateList: { date: Dayjs; x: number; }[] = [];
   const { unitType, dateUnitType } = instance;
   const formatStr = dateUnitType === DateUnitType.Year ? t(Strings.gantt_date_form_start_time_year) 
-    : t(Strings.gantt_date_form_start_time_year_month); // 'YYYY年' : 'YYYY年MMM';
+    : t(Strings.gantt_date_form_start_time_year_month);
 
   for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex - 1; columnIndex++) {
     switch (dateUnitType) {

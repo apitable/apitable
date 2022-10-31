@@ -55,10 +55,10 @@ export const getAllCycleDAG = (nodes: string[], sourceAdj) => {
 };
 
 export const detectCyclesStack = (nodes: string[], sourceAdj) => {
-  const color: { [key: string]: number | null } = {}; // 记录是不是被访问过
-  const cycleStack: string[] = []; // 人工访问栈
-  const stackAdj: string[][] = []; // 记录当前栈接下来需要访问的参数
-  const cycles : string[][] = []; // 记录找到的环
+  const color: { [key: string]: number | null } = {}; // Whether the record was accessed
+  const cycleStack: string[] = []; // Manual Access Stack
+  const stackAdj: string[][] = []; // Record the next parameter to be accessed by the current stack
+  const cycles : string[][] = []; // Record the rings found
   const findCycle = (node: string) => {
     cycleStack.push(node);
     const nodeAdj = sourceAdj[node] ? sourceAdj[node] : [];

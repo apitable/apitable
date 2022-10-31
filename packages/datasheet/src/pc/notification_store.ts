@@ -26,7 +26,7 @@ export class NotificationStore {
 
   static init(userId: string, spaceId?: string) {
     this.destroy();
-    console.log('初始化 NotificationStore');
+    console.log('NotificationStore initialized');
     this.socket = this.openWsNotification(userId, spaceId);
   }
 
@@ -65,7 +65,7 @@ export class NotificationStore {
     });
 
     ws.on('NOTIFY', (data) => {
-      console.log('收到实时消息: ', data);
+      console.log('Receive real-time messages: ', data);
       const templateId = data.templateId;
       // Browser notifications
       if (!PublishNotifyList.includes(templateId)) {
@@ -131,7 +131,7 @@ export class NotificationStore {
   static joinSpace(spaceId: string) {
     this.socket.emit('WATCH_SPACE', { spaceId }, (result) => {
       if (!result) {
-        console.log('加入空间失败');
+        console.log('Failed to join space');
       }
     });
   }

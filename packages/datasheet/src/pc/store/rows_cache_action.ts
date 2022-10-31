@@ -5,13 +5,13 @@ export function rowsCacheAction({ getState }) {
   return next => (action: IUpdateCacheAction) => {
     const state = getState();
     switch(action.type) {
-      // 更新 fieldPermission
+      // Update fieldPermission
       case ActionConstants.UPDATE_FIELD_PERMISSION_MAP: {
         visibleRowsBaseCacheManage.updateVisibleRowsBaseCacheData = {
           datasheetId: action.datasheetId,
         };
       } break;
-      // 更新 mirror 上的筛选条件
+      // Update filter information for mirror
       case ActionConstants.CACHE_TEMPORARY_VIEW: {
         const mirrorInfo = Selectors.getMirrorSourceInfo(state, action.mirrorId);
         if (!mirrorInfo) {
