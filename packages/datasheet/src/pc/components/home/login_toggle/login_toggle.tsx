@@ -6,6 +6,7 @@ import { PhoneAndEmailLogin } from 'pc/components/home/login/phone_and_email_log
 
 import { ScanLogin } from 'pc/components/home/login/scan_login';
 import { isRenderServer } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 
 import styles from './style.module.less';
 
@@ -18,8 +19,8 @@ const initToggle = (): boolean => {
 };
 
 export const LoginToggle = (): JSX.Element => {
-  const [isScanLogin, { toggle }] = useToggle(initToggle());
-
+  const env = getEnvVariables();
+  const [isScanLogin, { toggle }] = useToggle(env.CLOUD_DISABLE_SCAN_CODE_TO_LOGIN ? false : initToggle());
   const onToggle = () => {
     localStorage.setItem('vika-login-preference', isScanLogin ? 'phone-and-email' : 'scan');
 
@@ -34,7 +35,7 @@ export const LoginToggle = (): JSX.Element => {
             {isScanLogin ? (
               <LinkButton
                 underline={false}
-                component="button"
+                component='button'
                 prefixIcon={<WorkbenchLargeOutlined color={lightColors.deepPurple[500]} />}
                 color={lightColors.deepPurple[500]}
                 style={{ padding: 0 }}
@@ -42,9 +43,9 @@ export const LoginToggle = (): JSX.Element => {
                 {t(Strings.phone_email_login)}
               </LinkButton>
             ) : (
-              <LinkButton
+              !env.CLOUD_DISABLE_SCAN_CODE_TO_LOGIN && <LinkButton
                 underline={false}
-                component="button"
+                component='button'
                 prefixIcon={<ShareQrcodeOutlined color={lightColors.deepPurple[500]} />}
                 color={lightColors.deepPurple[500]}
                 style={{ padding: 0 }}

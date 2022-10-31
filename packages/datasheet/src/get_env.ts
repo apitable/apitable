@@ -10,7 +10,7 @@ export const getEnvVars = () => {
     WECOM_SHOP_SUITEID: process.env.WECOM_SHOP_SUITEID,
     WECOM_SHOP_CORPID: process.env.WECOM_SHOP_CORPID,
     WECHAT_MP_QR_CODE: process.env.WECHAT_MP_QR_CODE,
-    INTERCOM_APPID:  process.env.INTERCOM_APPID,
+    INTERCOM_APPID: process.env.INTERCOM_APPID,
     FORCE_HTTPS: process.env.FORCE_HTTPS,
     SENTRY_DSN: process.env.SENTRY_DSN,
     SHOW_RECORD_CARD_SETTING: process.env.SHOW_RECORD_CARD_SETTING,
@@ -27,5 +27,6 @@ export const getEnvVars = () => {
     CLOUD_DISABLE_BILLING_UPGRADE: process.env.CLOUD_DISABLE_BILLING_UPGRADE === 'true',
     CLOUD_DISABLE_USE_APP_STORE: process.env.CLOUD_DISABLE_USE_APP_STORE === 'true',
     CLOUD_DISABLE_ACCOUNT_MANAGEMENT: process.env.CLOUD_DISABLE_ACCOUNT_MANAGEMENT === 'true',
+    CLOUD_DISABLE_SCAN_CODE_TO_LOGIN: process.env.CLOUD_DISABLE_SCAN_CODE_TO_LOGIN === 'true',
   };
 };
