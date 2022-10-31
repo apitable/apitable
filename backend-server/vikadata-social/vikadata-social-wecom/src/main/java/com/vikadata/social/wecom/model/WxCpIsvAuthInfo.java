@@ -10,18 +10,14 @@ import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 服务商获取企业授权信息，增加了订单支付信息
- * </p>
- * @author 刘斌华
- * @date 2022-04-24 14:16:27
+ * The service provider obtains enterprise authorization information and adds order payment information
  */
 @Setter
 @Getter
 public class WxCpIsvAuthInfo extends WxCpTpAuthInfo {
 
     /**
-     * 企业当前生效的版本信息
+     * The company's current version information
      */
     @SerializedName("edition_info")
     private EditionInfo editionInfo;
@@ -37,7 +33,9 @@ public class WxCpIsvAuthInfo extends WxCpTpAuthInfo {
     public static class EditionInfo implements Serializable {
 
         /**
-         * 授权的应用信息，注意是一个数组，但仅旧的多应用套件授权时会返回多个agent，对新的单应用授权，永远只返回一个agent
+         * Authorized application information, note that it is an array,
+         * but only the old multi-application suite authorization will return multiple agents,
+         * and the new single-application authorization will always return only one agent
          */
         @SerializedName("agent")
         private List<Agent> agents;
@@ -47,63 +45,68 @@ public class WxCpIsvAuthInfo extends WxCpTpAuthInfo {
         public static class Agent implements Serializable {
 
             /**
-             * 应用 ID
+             * agent ID
              */
             @SerializedName("agentid")
             private Integer agentId;
 
             /**
-             * 版本id，可在服务商平台查看已配置的付费版本信息
+             * edition id, you can view the configured paid edition information on the service provider platform
              */
             @SerializedName("edition_id")
             private String editionId;
 
             /**
-             * 版本名称
+             * edition name
              */
             @SerializedName("edition_name")
             private String editionName;
 
             /**
-             * 付费状态。
-             * 0-没有付费;
-             * 1-限时试用;
-             * 2-试用过期;
-             * 3-购买期内;
-             * 4-购买过期;
-             * 5-不限时试用;
-             * 6-购买期内，但是人数超标, 注意，超标后还可以用7天;
-             * 7-购买期内，但是人数超标, 且已经超标试用7天
+             * paid status.
+             * 0-Not paid;
+             * 1-Trial for a limited time;
+             * 2-Trial expired;
+             * 3-During the purchase period;
+             * 4-Purchase expired;
+             * 5-Unlimited trial;
+             * 6-During the purchase period, but the number of people exceeds the standard, note that it can be used
+             * for 15 days after exceeding the standard;;
+             * 7-During the purchase period, but the number of people exceeds the standard, and the trial has
+             * exceeded the standard for 15 days
              */
             @SerializedName("app_status")
             private Integer appStatus;
 
             /**
-             * 用户上限。
-             * 特别注意, 以下情况该字段无意义，可以忽略：
-             * 1. 固定总价购买
-             * 2. app_status = 限时试用/试用过期/不限时试用
-             * 3. 在第2条“app_status=不限时试用”的情况下，如果该应用的配置为“小企业无使用限制”，user_limit有效，且为限制的人数
+             * User limit.
+             * Note that this field is meaningless and can be ignored in the following cases:
+             * 1. Fixed price purchase
+             * 2. app_status = Timed Trial/rial Expired/Unlimited Trial
+             * 3. In the case of "app status=Unlimited trial" in Article 2,
+             * if the configuration of the app is "no use limit for small businesses",
+             * the user limit is valid and the number of people limited
              */
             @SerializedName("user_limit")
             private Long userLimit;
 
             /**
-             * 版本到期时间（根据购买版本，可能是试用到期时间或付费使用到期时间）。
-             * 特别注意，以下情况该字段无意义，可以忽略：
-             * 1. app_status = 不限时试用
+             * Edition expiry time (may be trial expiry time or paid usage expiry time depending on the purchased
+             * version).
+             * Note that this field is meaningless and can be ignored in the following cases:
+             * 1. app_status = Unlimited trial
              */
             @SerializedName("expired_time")
             private Long expiredTime;
 
             /**
-             * 是否虚拟版本
+             * Whether it is virtual version
              */
             @SerializedName("is_virtual_version")
             private Boolean isVirtualVersion;
 
             /**
-             * 是否由互联企业分享安装
+             * Whether it is shared and installed by Internet companies
              */
             @SerializedName("is_shared_from_other_corp")
             private Boolean isSharedFromOtherCorp;

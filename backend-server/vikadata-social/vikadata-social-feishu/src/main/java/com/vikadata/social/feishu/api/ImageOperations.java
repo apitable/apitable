@@ -1,7 +1,7 @@
 package com.vikadata.social.feishu.api;
 
 /**
- * 图片 接口
+ * picture interface
  * @author Shawn Deng
  * @date 2021-07-07 15:27:07
  */

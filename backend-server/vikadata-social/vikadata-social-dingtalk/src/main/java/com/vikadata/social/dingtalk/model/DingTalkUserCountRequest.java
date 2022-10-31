@@ -5,17 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户信息
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * User Info
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkUserCountRequest {
     /**
-     * 是否包含未激活钉钉人数
+     * Whether to include the number of inactive Dingding
      */
     private Boolean onlyActive;
 }

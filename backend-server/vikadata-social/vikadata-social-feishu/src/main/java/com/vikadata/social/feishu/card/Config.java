@@ -3,12 +3,7 @@ package com.vikadata.social.feishu.card;
 import cn.hutool.core.map.MapUtil;
 
 /**
- * <p>
- * 消息卡片配置
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 12:52
+ * message card configuration
  */
 public class Config implements CardComponent {
 

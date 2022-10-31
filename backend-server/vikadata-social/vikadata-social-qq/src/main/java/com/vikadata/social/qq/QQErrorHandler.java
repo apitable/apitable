@@ -16,10 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 /**
- * QQ 开放平台调用异常处理
- *
- * @author Shawn Deng
- * @date 2021-01-11 19:27:53
+ * QQ Open platform call exception handling
  */
 public class QQErrorHandler extends DefaultResponseErrorHandler {
 
@@ -38,20 +35,21 @@ public class QQErrorHandler extends DefaultResponseErrorHandler {
         HttpStatus statusCode = HttpStatus.resolve(rawStatusCode);
         if (statusCode != null) {
             if (statusCode.is2xxSuccessful()) {
-                // 解析响应体是否返回成功
+                // Parse the response body and determine whether the return is successful
                 byte[] body = getResponseBody(response);
                 JsonNode jsonNode = objectMapper.readTree(body);
-                // QQ的oauth2和getUserInfo的结果不是同样的，必须区别开来解析判断
+                // The results of QQ's oauth2 and getUserInfo are not the same, and must be distinguished for
+                // analysis and judgment
                 if (jsonNode.has("error")) {
-                    // oauth2接口调用失败
-                    logger.error("QQ授权失败，error:" + jsonNode.get("error") + ", description: " + jsonNode.get("error_description"));
+                    // oauth2 interface call failed
+                    logger.error("QQ Authorization error:" + jsonNode.get("error") + ", description: " + jsonNode.get("error_description"));
                     return true;
                 }
                 else if (jsonNode.has("ret")) {
-                    // getUserInfo接口
+                    // getUserInfo interface
                     int ret = jsonNode.get("ret").asInt();
                     if (ret != 0) {
-                        logger.error("QQ获取用户信息失败，返回码:" + jsonNode.get("ret") + ", 错误信息: " + jsonNode.get("msg"));
+                        logger.error("QQ get user info error, return code: " + jsonNode.get("ret") + ", message: " + jsonNode.get("msg"));
                         return true;
                     }
                 }
@@ -70,7 +68,7 @@ public class QQErrorHandler extends DefaultResponseErrorHandler {
         HttpStatus statusCode = HttpStatus.resolve(response.getRawStatusCode());
         if (statusCode != null) {
             if (statusCode.is2xxSuccessful()) {
-                // 从上面hasError()方法自定义解析继承下来的错误，HTTP状态码依然是200成功
+                // The error inherited from the custom parsing of the has Error() method above, the HTTP status code is still 200 success
                 byte[] body = getResponseBody(response);
                 JsonNode jsonNode = objectMapper.readTree(body);
                 if (jsonNode.has("error")) {
@@ -88,12 +86,12 @@ public class QQErrorHandler extends DefaultResponseErrorHandler {
             }
         }
         else {
-            // 未知的HTTP错误码类型
+            // Unknown HTTP error code type
             byte[] body = getResponseBody(response);
             String message = "Connect Server Error";
             throw new UnknownHttpStatusCodeException(message,
-                response.getRawStatusCode(), response.getStatusText(),
-                response.getHeaders(), body, getCharset(response));
+                    response.getRawStatusCode(), response.getStatusText(),
+                    response.getHeaders(), body, getCharset(response));
         }
     }
 }

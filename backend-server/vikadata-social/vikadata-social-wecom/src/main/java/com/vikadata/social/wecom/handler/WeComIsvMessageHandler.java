@@ -6,20 +6,13 @@ import com.vikadata.social.wecom.constants.WeComIsvMessageType;
 import com.vikadata.social.wecom.constants.WeComIsvMsgType;
 
 /**
- * <p>
- * 企业微信第三方服务商回调通知消息处理
- * </p>
- * @author 刘斌华
- * @date 2022-01-05 14:21:18
+ * Enterprise WeChat ISV callback notification message processing
  */
 public interface WeComIsvMessageHandler extends WxCpTpMessageHandler {
 
     /**
-     * 处理完当前逻辑后是否继续处理其他规则
-     *
-     * @return 处理完当前逻辑后是否继续处理其他规则。默认不处理
-     * @author 刘斌华
-     * @date 2022-01-05 14:26:26
+     * Whether to continue processing other rules after processing the current logic
+     * @return Whether to continue processing other rules after processing the current logic. Not processed by default
      */
     default boolean next() {
 
@@ -28,11 +21,8 @@ public interface WeComIsvMessageHandler extends WxCpTpMessageHandler {
     }
 
     /**
-     * 是否异步处理
-     *
-     * @return 是否异步处理。默认同步
-     * @author 刘斌华
-     * @date 2022-01-05 14:28:11
+     * Whether to process asynchronously
+     * @return Whether to process asynchronously. Sync by default
      */
     default boolean async() {
 
@@ -41,11 +31,8 @@ public interface WeComIsvMessageHandler extends WxCpTpMessageHandler {
     }
 
     /**
-     * 处理顺序
-     *
-     * @return 处理顺序。越小越先处理
-     * @author 刘斌华
-     * @date 2022-01-05 14:29:31
+     * Processing order
+     * @return processing order. The smaller the better
      */
     default int order() {
 
@@ -54,11 +41,8 @@ public interface WeComIsvMessageHandler extends WxCpTpMessageHandler {
     }
 
     /**
-     * 是否为事件处理类型
-     *
-     * @return 是否为事件处理类型。默认不是
-     * @author 刘斌华
-     * @date 2022-01-19 10:46:21
+     * Whether it is an event handling type
+     * @return Whether it is an event handler type. Default is not
      */
     default WeComIsvMsgType msgType() {
 
@@ -67,11 +51,8 @@ public interface WeComIsvMessageHandler extends WxCpTpMessageHandler {
     }
 
     /**
-     * 要处理的信息类型
-     *
-     * @return 要处理的信息类型。为 {@code null} 则会处理所有类型
-     * @author 刘斌华
-     * @date 2022-01-05 14:26:26
+     * type of information to process
+     * @return The type of information to process. is {@code null} will handle all types
      */
     WeComIsvMessageType messageType();
 

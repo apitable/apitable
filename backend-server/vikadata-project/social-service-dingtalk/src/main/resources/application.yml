@@ -12,7 +12,6 @@ spring:
     host: ${REDIS_HOST:127.0.0.1}
     password: ${REDIS_PASSWORD:}
     username: ${REDIS_USERNAME:}
-    # redis服务器端口
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DB:3}
     timeout: 30000
@@ -35,7 +34,6 @@ vikadata-starter:
             welcome: ${DINGTALK_ISV_MSG_WELCOME:3f7cec2386f74f5c8aec1a48395abeb0}
             comment: ${DINGTALK_ISV_MSG_COMMENT:b4ac28623fd5493dbc5f995bb1cc17c7}
             member: ${DINGTALK_ISV_MSG_MEMBER:5994e97c8766482bb971e6253ad7f6f1}
-  # 组件：在线API文档配置
   swagger:
     enabled: ${SWAGGER_ENABLED:false}
 

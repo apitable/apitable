@@ -5,17 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 部门详情请求
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * Department Details Request
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkDepartmentDetailRequest {
     /**
-     * 父部门ID，根部门传1。默认为根部
+     * Parent department ID, pass 1 for the root department. Default is root
      */
     private Long deptId;
 

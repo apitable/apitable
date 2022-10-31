@@ -7,9 +7,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * QQ网页应用操作抽象类
- * @author Shawn Deng
- * @date 2021-04-13 17:52:47
+ * QQ Web application operation abstract class
  */
 public abstract class AbstractQQOperations extends AbstractOperations {
 

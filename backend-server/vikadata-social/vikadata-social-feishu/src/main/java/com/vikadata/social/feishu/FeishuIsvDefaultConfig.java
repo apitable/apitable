@@ -13,10 +13,7 @@ import cn.hutool.core.util.StrUtil;
 import com.vikadata.social.feishu.util.FeishuDecryptor;
 
 /**
- * 飞书配置
- *
- * @author Shawn Deng
- * @date 2020-11-25 15:14:40
+ * Feishu isv default configuration
  */
 @Deprecated
 public class FeishuIsvDefaultConfig {
@@ -32,17 +29,17 @@ public class FeishuIsvDefaultConfig {
     private String appSecret;
 
     /**
-     * 数据加密密钥，选填
+     * Data encryption key, optional
      */
     private String encryptKey;
 
     /**
-     * 事件验证令牌，必填
+     * Event validation token, required
      */
     private String verificationToken;
 
     /**
-     * 是否商店应用
+     * is isv
      */
     private Boolean isv;
 
@@ -72,7 +69,8 @@ public class FeishuIsvDefaultConfig {
     public String decrypt(String encryptedData) throws BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         if (needDecrypt()) {
             return decryptor.decrypt(encryptedData);
-        } else {
+        }
+        else {
             return encryptedData;
         }
     }

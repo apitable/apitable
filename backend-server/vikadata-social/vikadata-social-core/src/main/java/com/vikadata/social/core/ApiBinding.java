@@ -17,10 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 /**
- * 通用开放平台API抽象基础类
- *
- * @author Shawn Deng
- * @date 2020-11-19 12:29:48
+ * common open platform API abstract class
  */
 public abstract class ApiBinding {
 

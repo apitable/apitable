@@ -6,11 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 创建apaas应用
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/29 10:45
+ * Create apaas application
  */
 @Setter
 @Getter

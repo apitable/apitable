@@ -9,10 +9,7 @@ import com.vikadata.social.feishu.model.FeishuOrderDetailRequest;
 import com.vikadata.social.feishu.model.FeishuOrderDetailResponse;
 
 /**
- * 应用管理接口
- *
- * @author Shawn Deng
- * @date 2020-12-02 23:56:28
+ * Application management interface
  */
 public class AppTemplate extends AbstractFeishuOperations implements AppOperations {
 

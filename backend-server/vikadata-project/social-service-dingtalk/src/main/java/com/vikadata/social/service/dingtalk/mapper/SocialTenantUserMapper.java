@@ -7,43 +7,30 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.social.service.dingtalk.entity.SocialTenantUserEntity;
 
-/**
- * <p>
- * 第三方平台集成-企业租户用户 Mapper
- * </p>
- * @author zoe zheng
- * @date 2021/8/30 2:44 下午
- */
 public interface SocialTenantUserMapper extends BaseMapper<SocialTenantUserEntity> {
     /**
-     * 快速批量插入
+     * fast batch insert
      *
-     * @param entities 列表
-     * @return 执行结果数
-     * @author Shawn Deng
-     * @date 2019/12/17 20:34
+     * @param entities list
+     * @return number of execution results
      */
     int insertBatch(@Param("entities") List<SocialTenantUserEntity> entities);
 
     /**
-     * 查询租户下的用户是否存在
+     * query whether the user under the tenant exists
      *
-     * @param tenantId 租户ID
-     * @param openId   租户下用户标识
-     * @return 总数
-     * @author zoe zheng
-     * @date 2021/9/18 13:31
+     * @param tenantId Tenant ID
+     * @param openId   user id under the tenant
+     * @return total
      */
     Integer selectCountByTenantIdAndOpenId(@Param("tenantId") String tenantId, @Param("openId") String openId);
 
     /**
-     * 删除租户下用户
+     * delete a user under a tenant
      *
-     * @param tenantId 租户标识
-     * @param openId   租户下用户标识
-     * @return 执行结果
-     * @author zoe zheng
-     * @date 2021/9/22 13:49
+     * @param tenantId Tenant ID
+     * @param openId   user id under the tenant
+     * @return results
      */
     int deleteByTenantIdAndOpenId(@Param("tenantId") String tenantId, @Param("openId") String openId);
 }

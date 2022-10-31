@@ -1,18 +1,13 @@
 package com.vikadata.social.feishu.model;
 
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Map;
-
 /**
- * <p>
- * 飞书用户信息
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/12/7 11:12
+ * Feishu User Information
  */
 @Getter
 @Setter

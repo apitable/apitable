@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 有名称的用户
+ * user with name
  *
  * @author Shawn Deng
  * @date 2020-11-26 23:35:14

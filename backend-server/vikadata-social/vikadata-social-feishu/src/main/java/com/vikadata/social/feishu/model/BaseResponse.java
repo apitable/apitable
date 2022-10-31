@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 响应基础结构
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/21 16:30
+ * responsive infrastructure
  */
 @Setter
 @Getter

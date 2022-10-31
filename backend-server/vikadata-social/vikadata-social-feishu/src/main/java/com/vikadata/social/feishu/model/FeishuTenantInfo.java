@@ -6,40 +6,36 @@ import lombok.Setter;
 import com.vikadata.social.feishu.model.v3.Avatar;
 
 /**
- * <p> 
- * 企业信息
- * </p> 
- * @author Shawn Deng 
- * @date 2021/7/7 15:32
+ * Corporate Information
  */
 @Setter
 @Getter
 public class FeishuTenantInfo {
 
     /**
-     * 企业名称
+     * Company Name
      */
     private String name;
 
     /**
-     * 企业编号
+     * Enterprise number
      */
     private String displayId;
 
     /**
-     * 个人版/团队版标志
-     * 0：团队版
-     * 2：个人版
+     * Personal Edition Team Edition logo
+     * 0: Team Edition
+     * 2: Personal Edition
      */
     private String tenantTag;
 
     /**
-     * 企业标识
+     * Corporate key
      */
     private String tenantKey;
 
     /**
-     * 企业头像
+     * Corporate avatar
      */
     private Avatar avatar;
 }

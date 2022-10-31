@@ -1,71 +1,61 @@
 package com.vikadata.social.feishu.api;
 
 /**
- * 飞书相关接口
- *
- * @author Shawn Deng
- * @date 2020-11-18 15:23:21
+ * Feishu related interfaces
  */
 public interface Feishu {
 
     /**
-     * 授权管理接口
-     *
-     * @return 授权管理接口
+     * Authorization management interface
+     * @return Authorization management interface
      */
     AuthOperations authOperations();
 
     /**
-     * 应用管理接口
-     *
-     * @return 应用管理接口
+     * Application management interface
+     * @return Application management interface
      */
     AppOperations appOperations();
 
     /**
-     * 通讯录管理接口
-     *
-     * @return 通讯录管理接口
+     * Contacts management interface
+     * @return Contacts management interface
      */
     ContactOperations contactOperations();
 
     /**
-     * 用户管理接口
-     *
-     * @return 用户管理接口
+     * User management interface
+     * @return User management interface
      */
     UserOperations userOperations();
 
     /**
-     * 部门管理接口
-     *
-     * @return 部门管理接口
+     * Department management interface
+     * @return Department management interface
      */
     DepartmentOperations departmentOperations();
 
     /**
-     * 机器人接口
-     *
-     * @return 机器人接口
+     * Robot interface
+     * @return Robot interface
      */
     BotOperations botOperations();
 
     /**
-     * 消息卡片接口
-     *
-     * @return 消息卡片接口
+     * message card interface
+     * @return message card interface
      */
     MessageOperations messageOperations();
 
     /**
-     * 企业信息接口
-     * @return 企业信息接口
+     * Enterprise Information Interface
+     * @return Enterprise Information Interface
      */
     TenantOperations tenantOperations();
 
     /**
-     * 图片操作接口
-     * @return
+     * Picture operation interface
+     * @return Picture operation interface
      */
     ImageOperations imageOperations();
 }

@@ -26,12 +26,8 @@ import static com.vikadata.social.dingtalk.DingTalkServiceProvider.EVENT_CALLBAC
 import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CALLBACK_SUCCESS;
 
 /**
- * <p>
- * 事件订阅 -- 高优先级数据，激活应用等
- * 事件订阅 -- 普通优先级数据，例如通讯录变更
- * </p>
- * @author zoe zheng
- * @date 2021/9/2 4:13 下午
+ * Event subscriptions -- high-priority data, activation of apps, etc.
+ * Event Subscriptions -- normal priority data, such as address book changes
  */
 @DingTalkEventHandler
 @Slf4j
@@ -43,23 +39,23 @@ public class SyncHttpEventHandler {
     private IDingTalkOpenSyncBizDataMediumService iDingTalkOpenSyncBizDataMediumService;
 
     /**
-     * 处理 高优先级数据，激活应用等
+     * Process high-priority data, activate apps, etc.
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onSyncHttpPushHighEvent(String suiteId, SyncHttpPushHighEvent event) {
-        log.info("收到ISV钉钉推送事件[{}]", event.getEventType());
+        log.info("Receive ISV Dingding push event[{}]", event.getEventType());
         DingTalkServiceProvider dingtalkServiceProvider = SpringContextHolder.getBean(DingTalkServiceProvider.class);
-        // 先根据bizType排序,从小到大
+        // First sort according to biz Type, from small to large
         List<BaseSyncHttpBizData> bizDataList = event.getBizData().stream().sorted(Comparator.comparing(BaseSyncHttpBizData::getBizType)).collect(Collectors.toList());
         for (BaseSyncHttpBizData bizData : bizDataList) {
-            // 异步创建,防止影响性能
+            // Asynchronous creation to prevent performance impact
             TaskManager.me().execute(() -> iDingTalkOpenSyncBizDataService.create(bizData.getSubscribeId(),
                     bizData.getCorpId(), bizData.getBizType(), bizData.getBizId(), bizData.getBizData()));
             if (!DingTalkBizType.hasValue(bizData.getBizType())) {
-                log.error("收到未定的bizType处理事件:{}", bizData.getBizType());
+                log.error("Received undefined bizType event:{}", bizData.getBizType());
                 continue;
             }
             JSONObject eventData = JSONUtil.parseObj(bizData.getBizData());
@@ -68,29 +64,31 @@ public class SyncHttpEventHandler {
                 dingtalkServiceProvider.handleIsvAppEventNotify(suiteId, eventData, bizData.getCorpId(), suiteId);
             }
             catch (Exception e) {
-                log.error("处理SyncAction异常:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
+                log.error("Handling syncAction exceptions:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
             }
         }
-        // 钉钉的事件推送不会重复 无论如何都返回true 保证服务稳定性，业务异常交给下层服务处理
+        // DingTalk's event push will not be repeated. It will return true anyway to ensure service stability,
+        // and business exceptions will be handled by lower-level services.
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 普通优先级数据，例如通讯录变更
+     * Normal priority data, such as address book changes
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onSyncHttpPushMediumEvent(String suiteId, SyncHttpPushMediumEvent event) {
-        log.info("收到钉钉推送事件{}", event.getEventType());
+        log.info("Receive DingTalk push event{}", event.getEventType());
         DingTalkServiceProvider dingtalkServiceProvider = SpringContextHolder.getBean(DingTalkServiceProvider.class);
         for (BaseSyncHttpBizData bizData : event.getBizData()) {
-            // 异步创建,防止影响性能,高优先级和中等优先级与钉钉保持一致分开存储
+            // Asynchronous creation to prevent performance impact,
+            // high priority and medium priority are stored separately with DingTalk
             TaskManager.me().execute(() -> iDingTalkOpenSyncBizDataMediumService.create(bizData.getSubscribeId(),
                     bizData.getCorpId(), bizData.getBizType(), bizData.getBizId(), bizData.getBizData()));
             if (!DingTalkBizType.hasValue(bizData.getBizType())) {
-                log.error("收到未定的bizType处理事件:{}", bizData.getBizType());
+                log.error("Received undefined bizType event:{}", bizData.getBizType());
                 return null;
             }
             JSONObject eventData = JSONUtil.parseObj(bizData.getBizData());
@@ -99,10 +97,10 @@ public class SyncHttpEventHandler {
                 dingtalkServiceProvider.handleIsvAppEventNotify(bizData.getBizId(), eventData, bizData.getCorpId(), suiteId);
             }
             catch (Exception e) {
-                log.error("处理SyncAction异常:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
+                log.error("Handling syncAction exceptions:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
             }
         }
-        // 钉钉的事件推送不会重复
+        // DingTalk's event push will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 }

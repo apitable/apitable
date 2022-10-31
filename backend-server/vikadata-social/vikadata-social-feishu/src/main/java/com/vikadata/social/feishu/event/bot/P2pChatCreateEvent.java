@@ -1,17 +1,15 @@
 package com.vikadata.social.feishu.event.bot;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.vikadata.social.feishu.annotation.FeishuEvent;
 import com.vikadata.social.feishu.event.BaseEvent;
 import com.vikadata.social.feishu.event.HasNameUser;
 import com.vikadata.social.feishu.event.UserInfo;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
- * 用户和机器人的会话首次被创建
- *
- * @author Shawn Deng
- * @date 2020-11-26 23:33:50
+ * User-bot session is created for the first time
  */
 @Setter
 @Getter

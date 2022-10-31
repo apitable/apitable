@@ -9,13 +9,8 @@ import me.chanjar.weixin.common.redis.WxRedisOps;
 import me.chanjar.weixin.cp.config.impl.WxCpDefaultConfigImpl;
 
 /**
- * <p>
- * 企业微信配置文件Redis存储策略实现 <br/>
- * 继承于WxJava 企业微信实现
- * </p>
- *
- * @author Pengap
- * @date 2021/7/28 16:45:41
+ * Wecom configuration file Redis storage strategy implementation <br/>
+ * Inherited from WxJava Enterprise WeChat Implementation
  */
 public class WeComRedisConfigImpl extends WxCpDefaultConfigImpl {
 
@@ -28,7 +23,7 @@ public class WeComRedisConfigImpl extends WxCpDefaultConfigImpl {
     protected final static String WORK_WEIXIN_AGENT_JSAPI_TICKET_KEY = "work_weixin:agent_jsapi_ticket_key:";
 
     /**
-     * redis 存储的 key 的前缀，可为空
+     * The prefix of the key stored by redis, which can be null
      */
     protected String keyPrefix;
 
@@ -48,14 +43,16 @@ public class WeComRedisConfigImpl extends WxCpDefaultConfigImpl {
     }
 
     /**
-     * 获取锁
+     * get lock
      */
     protected Lock getLockByKey(String key) {
         return redisOps.getLock(key);
     }
 
     /**
-     * 设置企业微信自研应用ID（整数）,同时初始化相关的redis key，注意要先调用setCorpId，再调用setAgentId
+     * Set the enterprise WeChat self-developed application ID (integer),
+     * and initialize the relevant redis key at the same time,
+     * pay attention to call setCorpId first, and then call setAgentId
      */
     @Override
     public void setAgentId(Integer agentId) {

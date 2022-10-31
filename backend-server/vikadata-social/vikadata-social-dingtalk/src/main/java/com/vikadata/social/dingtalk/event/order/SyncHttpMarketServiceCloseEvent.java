@@ -9,14 +9,11 @@ import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
 
 /**
- * <p>
- * 当biz_type=37时，数据为订单到期或者退款导致的服务关闭数据。
- * 该数据为企业在钉钉服务市场购买开通应用产生订单时刻推送，插入表open_sync_biz_data中。
- * syncAction为market_service_close表示因订单到期或者用户退款等导致的服务关闭。
- * 注意 目前仅推送因退款导致的服务关闭。
- * </p>
- * @author zoe zheng
- * @date 2021/10/25 11:37
+ * When biz type=37, the data is the service shutdown data due to order expiration or refund.
+ * This data is pushed to the time when the enterprise purchases and activates
+ * the application in the DingTalk service market and generates an order, and is inserted into the table open sync biz data.
+ * sync Action is market service close, which means the service is closed due to order expiration or user refund.
+ * Note: Only service shutdowns due to refunds are currently being pushed.
  */
 @Setter
 @Getter
@@ -24,30 +21,31 @@ import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
 @DingTalkEvent(value = DingTalkEventTag.SYNC_HTTP_PUSH_HIGH, action = DingTalkSyncAction.MARKET_SERVICE_CLOSE)
 public class SyncHttpMarketServiceCloseEvent extends BaseOrderEvent {
     /**
-     * 事件类型：subscription_close
+     * Event Type: subscription close
      */
     private String eventType;
 
     /**
-     * 关闭类型：
-     * 1：升级关闭
-     * 2：到期关闭
-     * 3：退款关闭
-     * 4：其他关闭
-     * 注意 目前仅推送3退款关闭。
+     * Close Type:
+     * 1: upgrade off,
+     * 2: Closing due to expiration,
+     * 3: Refund closed,
+     * 4: Other off,
+     * Note: Currently only push 3 refunds are closed.
      */
     private Integer closeType;
 
     private Integer pushType;
 
     /**
-     * 退款单id，退款唯一标识。已经不返回了
+     * Refund slip id, the unique identifier of the refund. not returning
      */
     private String refundId;
 
     /**
-     * 开通类型。
-     * 说明 目前针对订购开通的消息只推送开通类型为 “续费变配开通”，取值为：3。
+     * Open type.
+     * Note: At present, the message for subscription activation only pushes the activation type as "renewal and
+     * change configuration activation", and the value is: 3.
      */
     private Integer openType;
 }

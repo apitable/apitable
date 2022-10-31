@@ -5,18 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 获取指定部门的所有父部门列表
- * </p>
- * @author zoe zheng
- * @date 2021/4/6 6:49 下午
+ * Get a list of all parent departments of a specified department
  */
 @Getter
 @Setter
 @ToString
 public class DingTalkDeptParentIdListRequest {
     /**
-     * 要查询的部门的ID
+     * ID of the department to query
      */
     private Long deptId;
 }

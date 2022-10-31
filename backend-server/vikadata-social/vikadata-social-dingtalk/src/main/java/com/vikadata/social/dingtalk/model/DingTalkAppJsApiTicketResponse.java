@@ -16,12 +16,12 @@ import lombok.ToString;
 @ToString
 public class DingTalkAppJsApiTicketResponse extends BaseResponse {
     /**
-     * 生成的临时jsapi_ticket。
+     * Generated temporary jsapi ticket.
      */
     private String ticket;
 
     /**
-     * access_token的过期时间，单位秒
+     * The expiration time of the access token, in seconds
      */
     private int expiresIn;
 }

@@ -8,32 +8,29 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 部门列表ID返回
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * department list id return
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkServerAuthInfoResponse extends BaseResponse {
     /**
-     * 授权应用信息
+     * Authorized application information
      */
     private DingTalkServerAuthInfo authInfo;
 
     /**
-     * 授权方管理员信息
+     * Authorizer administrator information
      */
     private AgentAuthUserInfo authUserInfo;
 
     /**
-     * 授权方企业信息
+     * Licensee company information
      */
     private DingTalkAuthCorpInfo authCorpInfo;
 
     /**
-     * 授权的服务窗应用信息列表
+     * List of authorized service window application information
      */
     private ChannelAuthInfo channelAuthInfo;
 
@@ -50,27 +47,27 @@ public class DingTalkServerAuthInfoResponse extends BaseResponse {
     @ToString
     public static class DingTalkAgentApp {
         /**
-         * 授权方应用ID
+         * Authorizer App ID
          */
         private Long agentid;
 
         /**
-         * 授权方应用头像
+         * Authorizer App Avatar
          */
         private String logoUrl;
 
         /**
-         * 应用Id
+         * App Id
          */
         private Long appid;
 
         /**
-         * 授权方应用名字
+         * Authorizer application name
          */
         private String agentName;
 
         /**
-         * 对此微应用有管理权限的管理员userid。
+         * The administrator userid who has administrative privileges for this microapp.
          */
         private List<String> adminList;
     }
@@ -80,7 +77,7 @@ public class DingTalkServerAuthInfoResponse extends BaseResponse {
     @ToString
     public static class AgentAuthUserInfo {
         /**
-         * 管理员的userid
+         * admin userid
          */
         private String userId;
     }
@@ -90,58 +87,59 @@ public class DingTalkServerAuthInfoResponse extends BaseResponse {
     @ToString
     public static class DingTalkAuthCorpInfo {
         /**
-         * 授权企业的CorpId
+         * The Corp Id of the authorized company
          */
         private String corpid;
 
         /**
-         * 邀请码，只有自己邀请的企业才会返回邀请码，可用该邀请码统计不同渠道的拉新，否则值为空字符串。
+         * Invitation code. Only the company you invite will return the invitation code.
+         * You can use this invitation code to count new pulls from different channels. Otherwise, the value is an empty string.
          */
         private String inviteCode;
 
         /**
-         * 企业所属行业
+         * The industry the company belongs to
          */
         private String industry;
 
         /**
-         * 授权方企业名称。
+         * Company name.
          */
         private String corpName;
 
         /**
-         * 序列号
+         * License code
          */
         private String licenseCode;
 
         /**
-         * 渠道码。
+         * Channel code
          */
         private String authChannel;
 
         /**
-         * 渠道类型。
-         *
-         * 为了避免渠道码重复，可与渠道码共同确认渠道。可能为空，非空时当前只有满天星类型，值为STAR_ACTIVITY。
+         * Channel type.
+         * To avoid duplication of channel codes, you can confirm the channel together with the channel code.
+         * It may be empty. When it is not empty, there is currently only the star type, and the value is STAR ACTIVITY.
          */
         private String authChannelType;
 
         /**
-         * 企业认证等级：
-         * 0：未认证
-         * 1：高级认证
-         * 2：中级认证
-         * 3：初级认证
+         * Enterprise certification level:
+         * 0: Not authenticated,
+         * 1: Advanced Certification,
+         * 2: Intermediate certification,
+         * 3: Primary Certification,
          */
         private Integer authLevel;
 
         /**
-         * 企业邀请链接
+         * Enterprise Invitation Link
          */
         private String inviteUrl;
 
         /**
-         * 企业logo
+         * corporate logo
          */
         private String corpLogoUrl;
     }
@@ -160,22 +158,22 @@ public class DingTalkServerAuthInfoResponse extends BaseResponse {
     @ToString
     public static class ChannelAgent {
         /**
-         * 授权方应用名字
+         * Authorizer application name
          */
         private String agentName;
 
         /**
-         * 授权方应用ID
+         * Authorizer App ID
          */
         private Long agentid;
 
         /**
-         * 授权方应用头像
+         * Authorizer App Avatar
          */
         private String logoUrl;
 
         /**
-         * 应用Id
+         * AppId
          */
         private Long appid;
     }

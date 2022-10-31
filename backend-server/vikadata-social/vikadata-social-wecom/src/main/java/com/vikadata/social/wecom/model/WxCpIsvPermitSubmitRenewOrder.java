@@ -7,18 +7,14 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 提交账号续期任务
- * </p>
- * @author 刘斌华
- * @date 2022-07-04 15:11:37
+ * Submit Account Renewal Task
  */
 @Getter
 @Setter
 public class WxCpIsvPermitSubmitRenewOrder extends WxCpBaseResp {
 
     /**
-     * 订单号
+     * order id
      */
     @SerializedName("order_id")
     private String orderId;

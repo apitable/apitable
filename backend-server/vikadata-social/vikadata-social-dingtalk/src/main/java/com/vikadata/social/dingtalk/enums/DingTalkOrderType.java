@@ -4,34 +4,33 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p> 
- * 订单标记
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/28 14:19
+ * order type
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkOrderType {
     /**
-     * 新购
+     * new purchase
      */
     BUY("BUY"),
 
     /**
-     * 续费
+     * renewal
      */
     RENEW("RENEW"),
+
     /**
-     * 升级
+     * upgrade
      */
     UPGRADE("UPGRADE"),
+
     /**
-     * 续费升配
+     * renewal and upgrade
      */
     RENEW_UPGRADE("RENEW_UPGRADE"),
+    
     /**
-     * 续费降配
+     * Renewal and downgrade
      */
     RENEW_DEGRADE("RENEW_DEGRADE");
 

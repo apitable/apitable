@@ -5,18 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
  * app_access_token response
- * </p>
- * @author zoe zheng
- * @date 2021/4/6 6:49 下午
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkSsoAccessTokenResponse extends BaseResponse {
     /**
-     * 生成的access_token
+     * generated access token
      */
     private String accessToken;
 }

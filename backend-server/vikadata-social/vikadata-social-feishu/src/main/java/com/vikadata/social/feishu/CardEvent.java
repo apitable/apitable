@@ -1,15 +1,12 @@
 package com.vikadata.social.feishu;
 
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
-
 /**
- * 消息卡片交互事件
- *
- * @author Shawn Deng
- * @date 2020-11-24 11:48:32
+ * message card events
  */
 @Getter
 @Setter

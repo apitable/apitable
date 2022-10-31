@@ -7,59 +7,63 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p>
- * 钉钉订阅事件
- * </p>
- * @author zoe zheng
- * @date 2021/5/12 7:48 下午
+ * DingTalk subscribes to events
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkEventTag {
     /**
-     * 自定义默认值。
+     * Customize default values.
      */
     DEFAULT("default"),
+
     /**
-     * 通讯录用户增加。
+     * Address book users increased.
      */
     USER_ADD_ORG("user_add_org"),
 
     /**
-     * 通讯录用户更改
+     * Contacts User Change
      */
     USER_MODIFY_ORG("user_modify_org"),
+
     /**
-     * 通讯录用户离职
+     * Contacts user leaves
      */
     USER_LEAVE_ORG("user_leave_org"),
+
     /**
-     *
-     * 加入企业后用户激活
+     * User activation after joining the enterprise
      */
     USER_ACTIVATE_ORG("user_active_org"),
+
     /**
-     * 通讯录用户被设为管理员
+     * Contacts user is set as administrator
      */
     ORG_ADMIN_ADD("org_admin_add"),
+
     /**
-     * 通讯录用户被取消设置管理员
+     * Contacts user is canceled as administrator
      */
     ORG_ADMIN_REMOVE("org_admin_remove"),
+
     /**
-     * 通讯录企业部门创建
+     * enterprise department creation
      */
     ORG_DEPT_CREATE("org_dept_create"),
+
     /**
-     * 通讯录企业部门修改。
+     * Corporate sector revisions.
      */
     ORG_DEPT_MODIFY("org_dept_modify"),
+
     /**
-     * 通讯录企业部门删除。
+     * The contacts department is deleted.
      */
     ORG_DEPT_REMOVE("org_dept_remove"),
+
     /**
-     * 企业被解散。
+     * The business was dissolved.
      */
     ORG_REMOVE("org_remove"),
 
@@ -74,28 +78,28 @@ public enum DingTalkEventTag {
     LABEL_CONF_MODIFY("label_conf_modify"),
 
     CHECK_URL("check_url"),
+
     /**
-     * 验证回调地址有效性
+     * Verify the validity of the callback address
      */
     CHECK_CREATE_SUITE_URL("check_create_url"),
+
     /**
-     * 验证更新的回调地址有效性
+     * Verify the validity of the updated callback address
      */
     CHECK_UPDATE_SUITE_URL("check_update_suite_url"),
+
     /**
-     * 高优先级数据，激活应用等
+     * High-priority data, activated apps, etc.
      */
     SYNC_HTTP_PUSH_HIGH("SYNC_HTTP_PUSH_HIGH"),
+
     /**
-     * 普通优先级数据，例如通讯录变更
+     * Normal priority data, such as address book changes
      */
     SYNC_HTTP_PUSH_MEDIUM("SYNC_HTTP_PUSH_MEDIUM");
 
     private final String value;
-
-    public String getValue() {
-        return value;
-    }
 
     public static DingTalkEventTag toEnum(String value) {
         for (DingTalkEventTag enums : DingTalkEventTag.values()) {
@@ -107,11 +111,9 @@ public enum DingTalkEventTag {
     }
 
     /**
-     * 获取基本事件
+     * Get basic events
      *
      * @return List<DingTalkEvent>
-     * @author zoe zheng
-     * @date 2021/5/12 8:03 下午
      */
     public static List<String> baseEvent() {
         return Arrays.asList(USER_ADD_ORG.getValue(), USER_MODIFY_ORG.getValue(), USER_LEAVE_ORG.getValue(),
@@ -126,5 +128,9 @@ public enum DingTalkEventTag {
 
     public static Boolean shouldHandleSyncHttpEvent(DingTalkEventTag tag) {
         return !tag.equals(CHECK_URL) && !tag.equals(CHECK_UPDATE_SUITE_URL) && !tag.equals(CHECK_CREATE_SUITE_URL);
+    }
+
+    public String getValue() {
+        return value;
     }
 }

@@ -4,12 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 头像对象
- *
- * @author Shawn Deng
- * @date 2020-12-24 12:06:10
- */
 @Setter
 @Getter
 public class Avatar {

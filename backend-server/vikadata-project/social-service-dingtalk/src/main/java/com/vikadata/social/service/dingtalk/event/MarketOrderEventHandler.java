@@ -10,43 +10,41 @@ import com.vikadata.social.dingtalk.event.order.SyncHttpMarketServiceCloseEvent;
 import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CALLBACK_SUCCESS;
 
 /**
- * <p> 
- * 事件订阅 -- 应用市场订单
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 15:07
+ * Event Subscriptions -- Apply Marketplace Orders
  */
 @DingTalkEventHandler
 @Slf4j
 public class MarketOrderEventHandler {
 
     /**
-     * 应用市场开通付费应用
+     * application market opens paid applications
      *
-     * @param bizId 订单的orderid。
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId The orderid of the order.
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onMarketOrderEvent(String bizId, SyncHttpMarketOrderEvent event) {
-        log.info("收到钉钉推送订单事件:[{}:{}:{}:{}],不处理", event.getEventType(), event.getSyncAction(), event.getCorpId(),
+        log.info("DingTalk push order event received: [{}:{}:{}:{}], not processed", event.getEventType(),
+                event.getSyncAction(), event.getCorpId(),
                 bizId);
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 应用市场服务关闭通知
-     * 该订单对应的用户操作。
-     * syncAction为market_service_close表示因订单到期或者用户退款等导致的服务关闭。
-     * 注意 目前仅推送因退款导致的服务关闭。
+     * App Market Service Shutdown Notification.
+     * The user action corresponding to the order.
+     * When sync Action is market service close, it means that the service is closed due to order expiration or user refund.
+     * Note: Only service shutdowns due to refunds are currently being pushed.
      *
-     * @param bizId 订单的orderid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId orderid of the order
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onMarketServiceCloseEvent(String bizId, SyncHttpMarketServiceCloseEvent event) {
-        log.info("收到钉钉推送服务关闭事件:[{}:{}:{}:{}],不处理", event.getEventType(), event.getSyncAction(), event.getCorpId(),
+        log.info("Received DingTalk push service shutdown event: [{}:{}:{}:{}], not processed", event.getEventType(),
+                event.getSyncAction(), event.getCorpId(),
                 bizId);
         return DING_TALK_CALLBACK_SUCCESS;
     }

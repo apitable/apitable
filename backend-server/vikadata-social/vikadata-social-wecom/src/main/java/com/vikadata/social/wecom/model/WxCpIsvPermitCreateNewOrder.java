@@ -7,18 +7,14 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 接口许可下单购买账号
- * </p>
- * @author 刘斌华
- * @date 2022-06-23 17:22:57
+ * Interface LicensePlace an Order to Purchase an Account
  */
 @Getter
 @Setter
 public class WxCpIsvPermitCreateNewOrder extends WxCpBaseResp {
 
     /**
-     * 订单号
+     * order id
      */
     @SerializedName("order_id")
     private String orderId;

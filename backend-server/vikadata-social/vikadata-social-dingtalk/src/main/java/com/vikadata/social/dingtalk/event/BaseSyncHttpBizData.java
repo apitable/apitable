@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * sync http 推送事件公共属性
- *
- * @author Zoe Zheng
- * @date 2021-09-03 18:46:20
+ * sync http push event public properties
  */
 @Getter
 @Setter

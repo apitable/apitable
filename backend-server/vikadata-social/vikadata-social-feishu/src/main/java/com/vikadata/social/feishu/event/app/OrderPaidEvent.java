@@ -8,11 +8,7 @@ import com.vikadata.social.feishu.annotation.FeishuEvent;
 import com.vikadata.social.feishu.event.BaseEvent;
 
 /**
- * <p>
- * 应用商店应用购买
- * </p>
- * @author zoe zheng
- * @date 2021/12/28 11:56 AM
+ * App store app purchases
  */
 @Setter
 @Getter
@@ -22,23 +18,25 @@ public class OrderPaidEvent extends BaseEvent {
     private String orderId;
 
     /**
-     * 付费方案ID
+     * Paid plan ID
      */
     private String pricePlanId;
 
     /**
-     * 用户购买方案类型 "trial" -试用；"permanent"-一次性付费；"per_year"-企业年付费；"per_month"-企业月付费；
-     * "per_seat_per_year"-按人按年付费；"per_seat_per_month"-按人按月付费；"permanent_count"-按次付费
+     * User purchase plan type "trial" - trial; "permanent" - one-time payment;
+     * "per_year" - enterprise annual payment; "per_month" - enterprise monthly payment;
+     * "per seat per year" - pay per person per year; "per seat per month" - pay per person per month;
+     * "permanent count" - pay per use
      */
     private String pricePlanType;
 
     /**
-     * 表示购买了多少人份
+     * Indicates how many servings were purchased
      */
     private Integer seats;
 
     /**
-     * 套餐购买数量 目前都为1
+     * The number of package purchases is currently 1
      */
     private Integer buyCount;
 
@@ -47,17 +45,19 @@ public class OrderPaidEvent extends BaseEvent {
     private String payTime;
 
     /**
-     * 购买类型 buy普通购买 upgrade为升级购买 renew为续费购买
+     * Purchase type buy ordinary purchase upgrade is an upgrade purchase renew is a renewal purchase
      */
     private String buyType;
 
     /**
-     * 当前为升级购买时(buy_type 为upgrade)，该字段表示原订单ID，升级后原订单失效，状态变为已升级(业务方需要处理)
+     * When it is currently an upgrade purchase (buy_type is upgrade),
+     * this field represents the original order ID. After the upgrade, the original order becomes invalid and the
+     * status becomes upgraded (the business side needs to process it)
      */
     private String srcOrderId;
 
     /**
-     * 订单支付价格 单位分
+     * Order payment price Unit points
      */
     private Long orderPayPrice;
 }

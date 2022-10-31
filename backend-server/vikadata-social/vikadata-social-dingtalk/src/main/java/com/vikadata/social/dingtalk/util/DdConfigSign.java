@@ -8,19 +8,19 @@ import java.util.Formatter;
 import java.util.Random;
 
 /**
- * 计算dd.config的签名参数
+ * Calculate the signature parameters of dd.config
  **/
 public class DdConfigSign {
 
     /**
-     * 计算dd.config的签名参数
+     * Calculate the signature parameters of dd.config
      *
-     * @param jsticket  通过微应用appKey获取的jsticket
-     * @param nonceStr  自定义固定字符串
-     * @param timeStamp 当前时间戳
-     * @param url       调用dd.config的当前页面URL
+     * @param jsticket  jsticket obtained through the micro application app Key
+     * @param nonceStr  custom fixed string
+     * @param timeStamp current timestamp millisecond
+     * @param url       The current page URL that calls dd.config
      * @return sign
-     * @throws Exception
+     * @throws Exception Exception
      */
     public static String sign(String jsticket, String nonceStr, long timeStamp, String url) throws Exception {
         String plain = "jsapi_ticket=" + jsticket + "&noncestr=" + nonceStr + "&timestamp=" + timeStamp
@@ -36,7 +36,7 @@ public class DdConfigSign {
         }
     }
 
-    // 字节数组转化成十六进制字符串
+    // Convert byte array to hexadecimal string
     private static String byteToHex(final byte[] hash) {
         Formatter formatter = new Formatter();
         for (byte b : hash) {
@@ -48,12 +48,11 @@ public class DdConfigSign {
     }
 
     /**
-     * 因为ios端上传递的url是encode过的，android是原始的url。开发者使用的也是原始url,
-     * 所以需要把参数进行一般urlDecode
-     *
-     * @param url
-     * @return
-     * @throws Exception
+     * Because the url passed on the ios side is encoded, android is the original url.
+     * The developer also uses the original url, so it is necessary to decode the parameters to the general urlDecode
+     * @param url url
+     * @return String
+     * @throws Exception Exception
      */
     private static String decodeUrl(String url) throws Exception {
         URL urler = new URL(url);

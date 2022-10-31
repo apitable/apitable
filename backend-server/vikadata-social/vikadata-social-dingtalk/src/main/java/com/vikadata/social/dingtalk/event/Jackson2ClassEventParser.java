@@ -8,13 +8,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 /**
- * <p>
- * 事件内容转换成事件对象 {@link BaseEvent}
- * <p>
- * 支持下划线转驼峰
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 3:07 下午
+ * Convert event content to event object {@link BaseEvent}
+ * Support underscore to hump
  */
 public class Jackson2ClassEventParser implements EventParser {
 
@@ -24,14 +19,14 @@ public class Jackson2ClassEventParser implements EventParser {
 
     Jackson2ClassEventParser(Class<? extends BaseEvent> clazz) {
         this.clazz = clazz;
-        // 设置下划线转换驼峰
+        // set underscore to convert camel case
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     Jackson2ClassEventParser(Class<? extends BaseEvent> clazz, PropertyNamingStrategy strategy) {
         this.clazz = clazz;
-        // 设置转换规则
+        // Set up conversion rules
         objectMapper.setPropertyNamingStrategy(strategy);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

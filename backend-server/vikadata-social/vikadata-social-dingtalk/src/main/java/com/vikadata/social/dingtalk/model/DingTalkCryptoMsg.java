@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 钉钉消息加解密内容
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * Dingding message encryption and decryption content
  */
 @Setter
 @Getter

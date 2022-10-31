@@ -16,14 +16,6 @@ import com.vikadata.social.service.dingtalk.service.ISocialTenantService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <p>
- * 第三方集成 - 企业租户 服务 接口实现
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/30 17:14
- */
 @Service
 @Slf4j
 public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, SocialTenantEntity> implements ISocialTenantService {
@@ -37,10 +29,10 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
     @Transactional(rollbackFor = Exception.class)
     public void createTenant(SocialAppType appType, String suiteId, Integer status, BaseOrgSuiteEvent suiteAuthEvent) {
         String authCorpid = suiteAuthEvent.getAuthCorpInfo().getCorpid();
-        log.info("钉钉第三方开通应用的企业租户:[{}]:{}", suiteId, authCorpid);
+        log.info("DingTalk application activation:[{}]:{}", suiteId, authCorpid);
         boolean exist = isTenantAppExist(authCorpid, suiteId);
         if (exist) {
-            log.warn("租户已存在");
+            log.warn("tenant already exists");
             return;
         }
 
@@ -53,7 +45,7 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
         tenant.setAuthInfo(JSONUtil.toJsonStr(suiteAuthEvent));
         boolean flag = SqlHelper.retBool(baseMapper.insert(tenant));
         if (!flag) {
-            throw new RuntimeException("[钉钉] 新增租户失败");
+            throw new RuntimeException("[DingTalk] Failed to add tenant");
         }
     }
 

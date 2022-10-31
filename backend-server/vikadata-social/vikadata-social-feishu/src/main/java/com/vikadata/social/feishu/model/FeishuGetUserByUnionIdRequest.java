@@ -1,18 +1,13 @@
 package com.vikadata.social.feishu.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 /**
- * <p>
- * 使用统一 ID 获取用户 ID
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/12/7 11:10
+ * Get user id using unified id
  */
 @Getter
 @Setter

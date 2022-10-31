@@ -1,15 +1,13 @@
 package com.vikadata.social.feishu.event.contact;
 
-import com.vikadata.social.feishu.annotation.FeishuEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.vikadata.social.feishu.annotation.FeishuEvent;
+
 /**
- * 员工加入企业 事件
- *
- * @author Shawn Deng
- * @date 2020-12-10 18:04:25
+ * Employee joins company event
  */
 @Setter
 @Getter

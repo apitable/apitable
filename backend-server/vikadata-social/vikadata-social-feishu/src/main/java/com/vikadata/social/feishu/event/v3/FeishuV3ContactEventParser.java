@@ -14,16 +14,13 @@ import com.vikadata.social.feishu.event.contact.v3.ContactUserDeleteEvent;
 import com.vikadata.social.feishu.event.contact.v3.ContactUserUpdateEvent;
 
 /**
- * 新版通讯录事件解析器
- *
- * @author Shawn Deng
- * @date 2020-12-24 00:50:40
+ * New Contact Event Parser
  */
 public class FeishuV3ContactEventParser {
 
     /**
-     * FeishuEvent 事件名称作为key，
-     * 每个事件内容对应的解析器，这里是全部都是Jackson库转换
+     * FeishuEvent event name as key,
+     * The parser corresponding to each event content, here are all Jackson library conversions
      */
     private static final Map<String, V3ContactEventParser> EVENT_PARSER_MAP;
 

@@ -9,31 +9,29 @@ import me.chanjar.weixin.cp.bean.messagebuilder.BaseBuilder;
 import com.vikadata.social.wecom.model.WxCpIsvMessage.TemplateMsg;
 
 /**
- * <p>
- * 企微服务商模板消息 builder
- * </p>
- * @author 刘斌华
- * @date 2022-04-18 18:37:11
+ * Wecom ISV template message builder
  */
 public class WxCpIsvMessageTemplateMsgBuilder extends BaseBuilder<WxCpIsvMessageTemplateMsgBuilder> {
 
     /**
-     * 选人sdk或者选人jsapi返回的ticket列表，列表不超过10个。接收者不包含selected_tikcet的操作者，若要发送给操作者，可将操作者填到touser字段。
+     * The list of tickets returned by the candidate sdk or the candidate jsapi. The list should not exceed 10.
+     * The receiver does not contain the operator of the selected tikcet.
+     * If you want to send it to the operator, you can fill in the operator in the touser field.
      */
     private List<String> selectedTicketList;
 
     /**
-     * 消息内容
+     * Message content
      */
     private TemplateMsg templateMsg = new TemplateMsg();
 
     /**
-     * 是否启用 ID 转译
+     * Whether to enable ID translation
      */
     private Boolean enableIdTrans;
 
     /**
-     * 是否仅向未授权的用户发送消息
+     * Whether to send messages only to unauthorized users
      */
     private Boolean onlyUnauth;
 

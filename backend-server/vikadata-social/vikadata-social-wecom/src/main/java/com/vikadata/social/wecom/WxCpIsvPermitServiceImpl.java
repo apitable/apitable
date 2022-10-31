@@ -22,20 +22,22 @@ import com.vikadata.social.wecom.model.WxCpIsvPermitListOrderAccount;
 import com.vikadata.social.wecom.model.WxCpIsvPermitSubmitRenewOrder;
 
 /**
- * <p>
- * 企微服务商接口许可相关接口
- * </p>
- * @author 刘斌华
- * @date 2022-06-23 17:01:45
+ * Wecom Permit service implementation
  */
 public class WxCpIsvPermitServiceImpl {
 
     private static final String URI_CREATE_NEW_ORDER = "/cgi-bin/license/create_new_order";
+
     private static final String URI_GET_ORDER = "/cgi-bin/license/get_order";
+
     private static final String URI_LIST_ORDER_ACCOUNT = "/cgi-bin/license/list_order_account";
+
     private static final String URI_BATCH_GET_ACTIVE_INFO = "/cgi-bin/license/batch_get_active_info_by_code";
+
     private static final String URI_BATCH_ACTIVE_ACCOUNT = "/cgi-bin/license/batch_active_account";
+
     private static final String URI_CREATE_RENEW_ORDER = "/cgi-bin/license/create_renew_order_job";
+
     private static final String URI_SUBMIT_RENEW_ORDER = "/cgi-bin/license/submit_order_job";
 
     private final BaseWxCpTpServiceImpl<CloseableHttpClient, HttpHost> mainService;
@@ -45,15 +47,16 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 下单购买账号
-     *
-     * @param authCorpId 授权企业的 ID
-     * @param baseAccountCount 基础帐号个数，最多1000000个。(若企业为服务商测试企业，最多购买1000个)
-     * @param durationMonths 购买的月数，每个月按照31天计算。最多购买36个月。(若企业为服务商测试企业，最多购买1个月)
-     * @param buyerUserId 下单人。服务商企业内成员userid。该userid必须登录过企业微信，并且企业微信已绑定微信。最终也支持由其他人支付
-     * @return 下单结果
-     * @author 刘斌华
-     * @date 2022-06-23 17:25:11
+     * Place an order to buy an account
+     * @param authCorpId authorized company ID
+     * @param baseAccountCount The number of basic accounts, up to 1,000,000.
+     * (If the enterprise is a service provider testing enterprise, a maximum of 1000 can be purchased)
+     * @param durationMonths The number of months purchased, each month is calculated as 31 days. Purchase up to 36 months.
+     * (If the enterprise is a service provider testing enterprise, the maximum purchase is 1 month)
+     * @param buyerUserId place an order. Member userid of the service provider enterprise.
+     * The userid must have logged in to the enterprise WeChat, and the enterprise WeChat has been bound to WeChat.
+     * Eventually also supports being paid by others
+     * @return Order result
      */
     public WxCpIsvPermitCreateNewOrder createNewOrder(String authCorpId, Integer baseAccountCount,
             Integer durationMonths, String buyerUserId) throws WxErrorException {
@@ -76,12 +79,9 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 获取订单详情
-     *
-     * @param orderId 接口许可订单号
-     * @return 订单详情
-     * @author 刘斌华
-     * @date 2022-06-23 19:16:24
+     * Get order details
+     * @param orderId Interface license order number
+     * @return order details
      */
     public WxCpIsvPermitGetOrder getOrder(String orderId) throws WxErrorException {
         JsonObject jsonObject = new JsonObject();
@@ -96,14 +96,11 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 获取订单中的账号列表
-     *
-     * @param orderId 接口许可订单号
-     * @param limit 返回的最大记录数，整型，最大值1000，默认值500
-     * @param cursor 用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填
-     * @return 订单详情
-     * @author 刘斌华
-     * @date 2022-06-23 19:16:24
+     * Get the list of accounts in the order
+     * @param orderId Interface license order number
+     * @param limit The maximum number of records to return, integer, the maximum value is 1000, the default value is 500
+     * @param cursor Cursor used for paging query, string type, returned by the last call, can be left blank for the first call
+     * @return order details
      */
     public WxCpIsvPermitListOrderAccount listOrderAccount(String orderId, Integer limit, String cursor) throws WxErrorException {
         JsonObject jsonObject = new JsonObject();
@@ -122,13 +119,10 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 批量获取接口许可账号的详情
-     *
-     * @param authCorpId 授权的企业 ID
-     * @param activeCodes 接口许可激活码列表，最多不超过1000个
-     * @return 激活码详情
-     * @author 刘斌华
-     * @date 2022-06-29 18:36:49
+     * Obtain details of interface license accounts in batches
+     * @param authCorpId Authorized Enterprise ID
+     * @param activeCodes List of interface license activation codes, no more than 1000
+     * @return Activation code details
      */
     public WxCpIsvPermitBatchGetActiveInfo batchGetActiveInfo(String authCorpId, List<String> activeCodes) throws WxErrorException {
         JsonObject jsonObject = new JsonObject();
@@ -146,12 +140,9 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 批量激活接口许可账号
-     *
-     * @param request 请求参数
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-06-29 17:11:09
+     * Volume Activation of Interface License Accounts
+     * @param request request parameters
+     * @return WxCpIsvPermitBatchActiveAccountResponse
      */
     public WxCpIsvPermitBatchActiveAccountResponse batchActiveAccount(WxCpIsvPermitBatchActiveAccountRequest request) throws WxErrorException {
         @SuppressWarnings("deprecation")
@@ -164,12 +155,9 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 创建账号续期任务
-     *
-     * @param request 请求参数
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-07-04 14:57:24
+     * Create Account Renewal Task
+     * @param request request parameters
+     * @return WxCpIsvPermitCreateRenewOrderResponse
      */
     public WxCpIsvPermitCreateRenewOrderResponse createRenewOrder(WxCpIsvPermitCreateRenewOrderRequest request) throws WxErrorException {
         @SuppressWarnings("deprecation")
@@ -182,14 +170,13 @@ public class WxCpIsvPermitServiceImpl {
     }
 
     /**
-     * 提交账号续期任务
-     *
-     * @param jobId 任务id
-     * @param durationMonths 购买的月数，每个月按照31天计算。最多购买36个月。(若企业为服务商测试企业，每次续期只能续期1个月)
-     * @param buyerUserId 下单人。服务商企业内成员userid。该userid必须登录过企业微信，并且企业微信已绑定微信
-     * @return 返回结果
-     * @author 刘斌华
-     * @date 2022-07-04 15:09:33
+     * Submit Account Renewal Task
+     * @param jobId task id
+     * @param durationMonths The number of months purchased, each month is calculated as 31 days.
+     * Purchase up to 36 months. (If the company is a service provider testing company, each renewal can only be renewed for 1 month)
+     * @param buyerUserId place an order. Member userid of the service provider enterprise.
+     * The userid must have logged in to the enterprise WeChat, and the enterprise WeChat has been bound to WeChat
+     * @return WxCpIsvPermitSubmitRenewOrder
      */
     public WxCpIsvPermitSubmitRenewOrder submitRenewOrder(String jobId, Integer durationMonths, String buyerUserId) throws WxErrorException {
         JsonObject jsonObject = new JsonObject();

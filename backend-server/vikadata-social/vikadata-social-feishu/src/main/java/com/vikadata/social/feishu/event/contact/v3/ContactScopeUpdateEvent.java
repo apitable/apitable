@@ -13,7 +13,7 @@ import com.vikadata.social.feishu.model.v3.FeishuUserGroupObject;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 
 /**
- * 新版的通讯录授权范围变更
+ * The new version of the contact authorization scope changes
  *
  * @author Shawn Deng
  * @date 2020-12-22 14:24:40

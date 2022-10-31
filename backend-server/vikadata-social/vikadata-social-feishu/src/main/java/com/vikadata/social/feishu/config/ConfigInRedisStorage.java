@@ -18,10 +18,7 @@ import com.vikadata.social.core.SocialRedisOperations;
 import com.vikadata.social.feishu.util.FeishuDecryptor;
 
 /**
- * 基于redis存储配置
- *
- * @author Shawn Deng
- * @date 2020-11-21 12:45:20
+ * Based on redis storage configuration
  */
 public class ConfigInRedisStorage implements FeishuConfigStorage {
 
@@ -35,6 +32,10 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
 
     private static final String DYNAMIC_KEY_TPL = "%s:feishu:lock:%s:%s:";
 
+    private final SocialRedisOperations redisOps;
+
+    private final String redisKeyPrefix;
+
     protected volatile String appId;
 
     protected volatile String appSecret;
@@ -42,28 +43,24 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
     protected volatile boolean isv;
 
     /**
-     * 数据加密密钥
+     * data encryption key
      */
     protected volatile String encryptKey;
 
     /**
-     * 事件验证令牌
+     * event verification token
      */
     protected volatile String verificationToken;
 
     protected FeishuDecryptor decryptor;
-
-    private final SocialRedisOperations redisOps;
-
-    private final String redisKeyPrefix;
-
-    private String appAccessTokenKey;
 
     protected volatile Lock appAccessTokenLock;
 
     protected Map<String, Lock> userTokenLockMap = new ConcurrentHashMap<>();
 
     protected Map<String, Lock> tenantTokenLockMap = new ConcurrentHashMap<>();
+
+    private String appAccessTokenKey;
 
     public ConfigInRedisStorage(SocialRedisOperations redisOps) {
         this(redisOps, "vikadata");
@@ -74,6 +71,11 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
         this.redisKeyPrefix = redisKeyPrefix;
     }
 
+    @Override
+    public String getAppId() {
+        return this.appId;
+    }
+
     public void setAppId(String appId) {
         this.appId = appId;
         this.appAccessTokenKey = String.format(APP_ACCESS_TOKEN_KEY_TPL, this.redisKeyPrefix, appId);
@@ -82,17 +84,12 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
     }
 
     @Override
-    public String getAppId() {
-        return this.appId;
+    public String getAppSecret() {
+        return this.appSecret;
     }
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
-    }
-
-    @Override
-    public String getAppSecret() {
-        return this.appSecret;
     }
 
     public void setIsv(boolean isv) {
@@ -136,7 +133,8 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
     public String decrypt(String encryptedData) throws BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         if (needDecrypt()) {
             return decryptor.decrypt(encryptedData);
-        } else {
+        }
+        else {
             return encryptedData;
         }
     }

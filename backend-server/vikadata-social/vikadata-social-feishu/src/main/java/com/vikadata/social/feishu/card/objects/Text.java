@@ -6,27 +6,9 @@ import java.util.Map;
 import com.vikadata.social.feishu.card.CardComponent;
 
 /**
- * <p>
- * 文本
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 13:16
+ * Text
  */
 public class Text implements CardComponent {
-
-    public enum Mode {
-
-        /**
-         * 纯文本
-         */
-        PLAIN_TEXT,
-
-        /**
-         * Markdown
-         */
-        LARK_MD
-    }
 
     private String content;
 
@@ -79,5 +61,18 @@ public class Text implements CardComponent {
             r.put("lines", lines);
         }
         return r;
+    }
+
+    public enum Mode {
+
+        /**
+         * Plain Text
+         */
+        PLAIN_TEXT,
+
+        /**
+         * Markdown
+         */
+        LARK_MD
     }
 }

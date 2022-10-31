@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 企业调用凭证（商店应用）
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/23 12:10
+ * Enterprise Call Credentials (Store App)
  */
 @Setter
 @Getter

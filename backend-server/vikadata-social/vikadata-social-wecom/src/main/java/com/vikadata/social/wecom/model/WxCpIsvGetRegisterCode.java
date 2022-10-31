@@ -7,11 +7,7 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 根据注册模板生成注册码
- * </p>
- * @author 刘斌华
- * @date 2022-03-14 17:16:57
+ * Generate registration code based on registration template
  */
 @Getter
 @Setter

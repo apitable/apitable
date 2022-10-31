@@ -10,18 +10,14 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 批量获取接口许可账号的详情
- * </p>
- * @author 刘斌华
- * @date 2022-06-29 18:32:01
+ * Obtain details of interface license accounts in batches
  */
 @Getter
 @Setter
 public class WxCpIsvPermitBatchGetActiveInfo extends WxCpBaseResp {
 
     /**
-     * 帐号码信息列表
+     * Account code information list
      */
     @SerializedName("active_info_list")
     private List<ActiveInfoList> activeInfoList;
@@ -39,43 +35,43 @@ public class WxCpIsvPermitBatchGetActiveInfo extends WxCpBaseResp {
     public static class ActiveInfoList implements Serializable {
 
         /**
-         * 帐号激活码
+         * Account activation code
          */
         @SerializedName("active_code")
         private String activeCode;
 
         /**
-         * 帐号类型：1:基础帐号，2:互通帐号
+         * Account type: 1: Basic account, 2: Interworking account
          */
         @SerializedName("type")
         private Integer type;
 
         /**
-         * 帐号状态：1:未绑定，2:已绑定且有效，3:已过期，4:待转移
+         * Account status: 1: unbound, 2: bound and valid, 3: expired, 4: pending transfer
          */
         @SerializedName("status")
         private Integer status;
 
         /**
-         * 帐号绑定激活的企业成员userid，未激活则不返回该字段。返回加密的userid
+         * The userid of the enterprise member activated by the account binding. If it is not activated, this field will not be returned. return encrypted userid
          */
         @SerializedName("userid")
         private String userId;
 
         /**
-         * 创建时间，订单支付成功后立即创建。激活码必须在创建时间后的365天内激活
+         * Creation time, the order is created immediately after the payment is successful. Activation code must be activated within 365 days of creation time
          */
         @SerializedName("create_time")
         private Long createTime;
 
         /**
-         * 首次激活绑定用户的时间，未激活则不返回该字段
+         * The time when the bound user was activated for the first time, this field will not be returned if it is not activated
          */
         @SerializedName("active_time")
         private Long activeTime;
 
         /**
-         * 过期时间。为首次激活绑定的时间加上购买时长。未激活则不返回该字段
+         * Expiration. Add the purchase time to the time the binding was first activated. This field is not returned if not activated
          */
         @SerializedName("expire_time")
         private Long expireTime;

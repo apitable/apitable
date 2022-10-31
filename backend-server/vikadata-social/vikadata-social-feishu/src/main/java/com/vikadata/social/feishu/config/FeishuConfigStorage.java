@@ -11,9 +11,7 @@ import javax.crypto.NoSuchPaddingException;
 import com.vikadata.social.core.ConfigStorage;
 
 /**
- * 飞书应用配置存储接口
- * @author Shawn Deng
- * @date 2022-01-19 11:15:21
+ * Feishu application configuration storage interface
  */
 public interface FeishuConfigStorage extends ConfigStorage {
 

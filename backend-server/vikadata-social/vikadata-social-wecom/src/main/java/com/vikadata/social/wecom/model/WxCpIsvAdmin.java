@@ -10,11 +10,7 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 获取应用的管理员列表
- * </p>
- * @author 刘斌华
- * @date 2022-01-19 14:36:07
+ * Get a list of admins for an application
  */
 @Getter
 @Setter

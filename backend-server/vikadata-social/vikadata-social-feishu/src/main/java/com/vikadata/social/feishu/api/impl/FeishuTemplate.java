@@ -70,11 +70,7 @@ import static com.vikadata.social.feishu.FeishuBase.API_URL_BASE;
 import static com.vikadata.social.feishu.exception.FeishuExceptionConstants.TENANT_ACCESS_TOKEN_INVALID;
 
 /**
- * 飞书
- * 主动调用HTTP请求的服务类
- *
- * @author Shawn Deng
- * @date 2020-11-18 15:30:02
+ * Feishu A service class that actively calls HTTP requests
  */
 public class FeishuTemplate extends ApiBinding implements Feishu {
 
@@ -121,13 +117,24 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
     private FeishuConfigStorage defaultConfigStorage;
 
     /**
-     * 存储应用配置器，存储太多会不会不好？
+     * Store the app configurator, wouldn't it be bad to store too much?
      */
     private Map<String, FeishuConfigStorage> configStorageMap;
 
     public FeishuTemplate() {
-        // 配置RestTemplate
+        // Configure Rest Template
         configureRestTemplate();
+    }
+
+    /**
+     * The abstract base class has set the default request client factory,
+     * wraps the request again, and the response body stream can be read repeatedly
+     *
+     * @param requestFactory Request factory
+     * @return ClientHttpRequestFactory
+     */
+    private static ClientHttpRequestFactory bufferRequestWrapper(ClientHttpRequestFactory requestFactory) {
+        return new BufferingClientHttpRequestFactory(requestFactory);
     }
 
     public void setTicketStorage(AppTicketStorage ticketStorage) {
@@ -135,15 +142,16 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
     }
 
     /**
-     * 调用构造实例，添加默认存储器
+     * call to construct instance, add default memory
      */
     public void prepareTicketConfig() {
-        // 如果一开始就有商店应用，那么必须要配置商店应用票据存储器
+        // If you have a store app from the start, you must configure the store app ticket store
         if (this.ticketStorage == null) {
-            throw new IllegalStateException("独立服务商应用需提供Ticket存储器的实现，请实现AppTicketStorage接口，并注入到FeishuTemplate");
+            throw new IllegalStateException("Independent service provider applications need to provide the implementation of Ticket storage, "
+                    + "please implement the App Ticket Storage interface and inject it into Template");
         }
-        // 启动时主动触发重新发送ticket
-        LOGGER.info("当前应用[{}]是独立服务商，主动触发重新发送ticket", defaultConfigStorage.getAppId());
+        // Actively trigger re-send ticket at startup
+        LOGGER.info("Feishu ISV[{}], actively trigger re send ticket", defaultConfigStorage.getAppId());
         resendAppTicket(defaultConfigStorage.getAppId(), defaultConfigStorage.getAppSecret());
     }
 
@@ -176,13 +184,13 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 .form("redirect_uri", URIUtil.encodeURIComponent(redirectUri))
                 .execute();
         if (!response.isOk()) {
-            throw new HttpException("获取访问令牌响应失败: " + response.body());
+            throw new HttpException("Failed to get access token response:" + response.body());
         }
         try {
             return Jackson4FeishuConverter.toObject(response.body(), new TypeReference<FeishuPassportAccessToken>() {});
         }
         catch (IOException e) {
-            throw new HttpException("解析飞书响应体失败: " + response.body(), e);
+            throw new HttpException("Failed to parse response body:" + response.body(), e);
         }
     }
 
@@ -191,14 +199,18 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 .bearerAuth(accessToken)
                 .execute();
         if (!response.isOk()) {
-            throw new HttpException("获取用户身份信息响应失败: " + response.body());
+            throw new HttpException("Failed to get user identity information response:" + response.body());
         }
         try {
             return Jackson4FeishuConverter.toObject(response.body(), new TypeReference<FeishuPassportUserInfo>() {});
         }
         catch (IOException e) {
-            throw new HttpException("解析飞书响应体失败:" + response.body(), e);
+            throw new HttpException("Failed to parse response body:" + response.body(), e);
         }
+    }
+
+    public FeishuConfigStorage getDefaultConfigStorage() {
+        return defaultConfigStorage;
     }
 
     public void setDefaultConfigStorage(FeishuConfigStorage configStorage) {
@@ -206,16 +218,12 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
         addConfigStorage(configStorage);
     }
 
-    public FeishuConfigStorage getDefaultConfigStorage() {
-        return defaultConfigStorage;
-    }
-
     public boolean isDefaultIsv() {
         return defaultConfigStorage.isv();
     }
 
     public void addConfigStorage(FeishuConfigStorage configStorage) {
-        LOGGER.info("添加新的配置");
+        LOGGER.info("add new configuration");
         if (this.configStorageMap == null) {
             this.configStorageMap = MapUtil.newConcurrentHashMap();
             this.configStorageMap.put(configStorage.getAppId(), configStorage);
@@ -227,14 +235,16 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
 
     public FeishuConfigStorage getConfigStorage() {
         if (this.configStorageMap == null) {
-            LOGGER.error("当前应用配置存储器为空，无法获取应用配置");
+            LOGGER.error("The current application configuration memory is empty and the application "
+                    + "configuration cannot be obtained");
             return null;
         }
 
-        // 获取当前上下文存储的时候，如果有多个应用配置，必须调用switchTo方法切换上下文
+        // When obtaining the current context storage, if there are multiple application configurations,
+        // you must call the switch To method to switch the context
         if (StrUtil.isBlank(FeishuConfigStorageHolder.get())) {
-            // 当前上下文应用标识变量没有设置，返回空
-            LOGGER.error("当前没有应用上下文，无法获取应用配置");
+            // The current context application identification variable is not set, return null
+            LOGGER.error("There is currently no application context, unable to get application configuration");
             return null;
         }
         return this.configStorageMap.get(FeishuConfigStorageHolder.get());
@@ -244,13 +254,13 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
         synchronized (this) {
             if (this.configStorageMap.size() == 1) {
                 this.configStorageMap.remove(appId);
-                LOGGER.warn("已删除最后一个配置：{}，须立即使用setWxMpConfigStorage或setMultiConfigStorages添加配置", appId);
+                LOGGER.warn("Last configuration removed: {}, must be added now using set Wx Mp Config Storage or set Multi Config Storages", appId);
                 return;
             }
             if (FeishuConfigStorageHolder.get().equals(appId)) {
                 this.configStorageMap.remove(appId);
                 final String defaultAppId = this.configStorageMap.keySet().iterator().next();
-                LOGGER.warn("已删除默认配置，【{}】被设为默认配置", defaultAppId);
+                LOGGER.warn("The default configuration has been deleted, [{}] is set as the default configuration", defaultAppId);
                 return;
             }
             this.configStorageMap.remove(appId);
@@ -258,11 +268,11 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
     }
 
     /**
-     * 切换默认应用配置上下文
+     * Switch the default app configuration context
      */
     public synchronized void switchDefault() {
         if (this.configStorageMap == null) {
-            LOGGER.error("配置存储器为空，无法切换默认应用上下文！");
+            LOGGER.error("Configuration memory is empty, cannot switch default application context!");
             return;
         }
         if (this.configStorageMap.containsKey(defaultConfigStorage.getAppId())) {
@@ -274,12 +284,12 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
     }
 
     /**
-     * 切换应用配置上下文
-     * @param configStorage 存储
+     * Switch application configuration context
+     * @param configStorage Storage
      */
     public synchronized void switchTo(FeishuConfigStorage configStorage) {
         if (this.configStorageMap == null) {
-            // 从未使用过
+            // never used
             this.configStorageMap = MapUtil.newConcurrentHashMap();
             this.configStorageMap.put(configStorage.getAppId(), configStorage);
             return;
@@ -306,13 +316,13 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 }
             } while (!locked);
             if (getConfigStorage().isv()) {
-                // 企业商店应用
+                // Enterprise store app
                 if (ticketStorage == null) {
-                    throw new IllegalStateException("未提供Ticket Storage的实现");
+                    throw new IllegalStateException("No implementation of Ticket Storage provided");
                 }
                 String appTicket = ticketStorage.getTicket();
                 if (appTicket == null) {
-                    throw new IllegalStateException("APP Ticket 未找到，也许未收到，等一会再获取");
+                    throw new IllegalStateException("APP Ticket is not found, maybe not received, wait for a while and get it again");
                 }
                 FeishuAppAccessTokenIsvRequest request = new FeishuAppAccessTokenIsvRequest();
                 request.setAppId(getConfigStorage().getAppId());
@@ -323,7 +333,7 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 return response.getAppAccessToken();
             }
             else {
-                // 企业自建应用
+                // Enterprise self-built application
                 FeishuAppAccessTokenInternalRequest request = new FeishuAppAccessTokenInternalRequest();
                 request.setAppId(getConfigStorage().getAppId());
                 request.setAppSecret(getConfigStorage().getAppSecret());
@@ -359,13 +369,13 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 }
             } while (!locked);
             if (getConfigStorage().isv()) {
-                // 企业商店应用
+                // Enterprise store app
                 if (ticketStorage == null) {
-                    throw new IllegalStateException("未提供Ticket Storage 的实现");
+                    throw new IllegalStateException("no implementation of ticket storage provided");
                 }
                 String appTicket = ticketStorage.getTicket();
                 if (appTicket == null) {
-                    throw new IllegalStateException("APP Ticket 未找到，也许未收到，等一会再获取");
+                    throw new IllegalStateException("APP Ticket is not found, maybe not received, wait for a while and get it again");
                 }
                 FeishuTenantAccessTokenIsvRequest request = new FeishuTenantAccessTokenIsvRequest();
                 request.setAppAccessToken(getAppAccessToken(false));
@@ -375,7 +385,7 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 return response.getTenantAccessToken();
             }
             else {
-                // 企业自建应用
+                // enterprise self built application
                 FeishuTenantAccessTokenInternalRequest request = new FeishuTenantAccessTokenInternalRequest();
                 request.setAppId(getConfigStorage().getAppId());
                 request.setAppSecret(getConfigStorage().getAppSecret());
@@ -465,7 +475,7 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
                 throw new FeishuApiException(responseEntity.getBody().getCode(), responseEntity.getBody().getMsg());
             }
             else {
-                throw new FeishuApiException("请求飞书服务器失败，请检查网络或者参数");
+                throw new FeishuApiException("Failed to request Feishu server, please check network or parameters");
             }
         }
 
@@ -490,26 +500,15 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
         }
     }
 
-    protected interface ClientCallable<T> {
-
-        /**
-         * do whatever you want
-         *
-         * @return T
-         * @throws FeishuApiException 飞书异常
-         */
-        T doExecute() throws FeishuApiException;
-    }
-
     protected String buildUri(String resourceUrl) {
         return StrUtil.concat(false, API_URL_BASE, resourceUrl);
     }
 
     private void configureRestTemplate() {
         super.setRequestFactory(bufferRequestWrapper(getRestTemplate().getRequestFactory()));
-        // 设置请求拦截器
+        // Set up a request interceptor
         getRestTemplate().getInterceptors().add(userAgentInterceptor());
-        // 响应结果错误自定义拦截
+        // Response result error custom interception
         getRestTemplate().setErrorHandler(new FeishuResponseErrorHandler());
     }
 
@@ -522,40 +521,30 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
 
     @Override
     public void setRequestFactory(ClientHttpRequestFactory requestFactory) {
-        // 可自定义工厂类
+        // Customizable factory class
         super.setRequestFactory(bufferRequestWrapper(requestFactory));
     }
 
     @Override
     protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
-        // 配置消息转换器
+        // Configure message converters
         MappingJackson2HttpMessageConverter converter = super.getJsonMessageConverter();
-        // 飞书的所有API请求参数都是下划线格式,而响应结构的属性也是下划线
+        // All API request parameters of Feishu are in underlined format, and the attributes of the response structure are also underlined
         converter.getObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         converter.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return converter;
     }
 
     /**
-     * 抽象基类已经设置默认的请求客户端工厂，再次包装请求，响应体流可重复读取
-     *
-     * @param requestFactory Request factory
-     * @return ClientHttpRequestFactory
-     */
-    private static ClientHttpRequestFactory bufferRequestWrapper(ClientHttpRequestFactory requestFactory) {
-        return new BufferingClientHttpRequestFactory(requestFactory);
-    }
-
-    /**
-     * 在两种情况下需要触发
-     * 1. 启动工程时候，初始化ISV商店应用实例，那么就需要第一时间触发
-     * 2. 商店应用实例在事件url校验时候，可以触发验证，
+     * Need to trigger in two cases:
+     * 1. When starting the project, initialize the ISV store application instance, then you need to trigger the first time
+     * 2. The store application instance can trigger verification when the event url is verified.
      */
     public void resendAppTicket(String appId, String appSecret) {
         FeishuResendAppTicketRequest request = new FeishuResendAppTicketRequest();
         request.setAppId(appId);
         request.setAppSecret(appSecret);
-        // 触发重新发送ticket后，ticket在接收ticket事件引擎更新
+        // After triggering the resend of the ticket, the ticket is updated in the receiving ticket event engine
         try {
             getRestTemplate().postForObject(StrUtil.join("/", API_URL_BASE, RESEND_APP_TICKET), request, FeishuResendAppTicketResponse.class);
         }
@@ -607,5 +596,16 @@ public class FeishuTemplate extends ApiBinding implements Feishu {
     @Override
     public ImageOperations imageOperations() {
         return this.imageOperations;
+    }
+
+    protected interface ClientCallable<T> {
+
+        /**
+         * do whatever you want
+         *
+         * @return T
+         * @throws FeishuApiException Feishu exception
+         */
+        T doExecute() throws FeishuApiException;
     }
 }

@@ -13,9 +13,7 @@ import org.springframework.util.MultiValueMap;
 import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_DEPT_ID;
 
 /**
- * 调试工具类
- * @author Shawn Deng
- * @date 2022-02-08 18:08:43
+ * Debug tool class
  */
 public class DebugUtil {
 
@@ -28,7 +26,8 @@ public class DebugUtil {
                 users.forEach(user -> builder.append(StrUtil.format("{} - {}", user.getName(), user.isTenantManager())).append(", "));
             }
             builder.append("]");
-            log.debug("{} -> {} \n", dept.getDepartmentId().equals(FEISHU_ROOT_DEPT_ID) ? "根部门" : dept.getName(), builder);
+            log.debug("{} -> {} \n", dept.getDepartmentId().equals(FEISHU_ROOT_DEPT_ID) ? "root department" :
+                    dept.getName(), builder);
         });
     }
 }

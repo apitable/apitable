@@ -1,13 +1,5 @@
 package com.vikadata.social.core;
 
-import org.springframework.data.redis.connection.RedisStringCommands;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.data.redis.core.types.Expiration;
-import org.springframework.lang.NonNull;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -16,11 +8,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
+import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.core.types.Expiration;
+
 /**
- * 实现简单的redis分布式锁, 支持重入, 不是红锁
- *
- * @author Shawn Deng
- * @date 2020-11-21 14:00:48
+ * Implement simple redis distributed lock, support reentrancy, not Redlock
  */
 public class RedisTemplateSimpleDistributedLock implements Lock {
 
@@ -46,7 +42,8 @@ public class RedisTemplateSimpleDistributedLock implements Lock {
         while (!tryLock()) {
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 // Ignore
             }
         }
@@ -57,7 +54,8 @@ public class RedisTemplateSimpleDistributedLock implements Lock {
         while (!tryLock()) {
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 // Ignore
             }
         }
@@ -97,7 +95,7 @@ public class RedisTemplateSimpleDistributedLock implements Lock {
     @Override
     public void unlock() {
         if (valueThreadLocal.get() != null) {
-            // 提示: 必须指定returnType, 类型: 此处必须为Long, 不能是Integer
+            // Tip: returnType must be specified, type: here must be Long, not Integer
             RedisScript<Long> script = new DefaultRedisScript<>("if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end", Long.class);
             redisTemplate.execute(script, Collections.singletonList(key), valueThreadLocal.get());
             valueThreadLocal.remove();
@@ -110,8 +108,9 @@ public class RedisTemplateSimpleDistributedLock implements Lock {
     }
 
     /**
-     * 获取当前锁的值
-     * return 返回null意味着没有加锁, 但是返回非null值并不意味着当前加锁成功(redis中key可能自动过期)
+     * Get the value of the current lock
+     * @return Returning null means that there is no lock, but returning a non-null value does not
+     * mean that the current lock is successful (the key in redis may automatically expire)
      */
     public String getLockSecretValue() {
         return valueThreadLocal.get();

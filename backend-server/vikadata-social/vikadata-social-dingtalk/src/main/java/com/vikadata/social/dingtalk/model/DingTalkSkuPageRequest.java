@@ -5,30 +5,29 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 获取内购商品SKU页面地址
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 17:25
+ * Get the SKU page address of in-app purchase products
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkSkuPageRequest {
     /**
-     * 内购商品码。
+     * goods in app purchase code
      */
     private String goodsCode;
 
     /**
-     * 回调页面(进行URLEncode处理)，微应用为页面URL，E应用为页面路径地址。
-     * 注意 http模式下页面地址需要和应用的主域名地址保持一致不然无法跳转。
+     * Callback page (URLEncode processing), the micro application is the page URL,
+     * and the E application is the page path address.
+     * Note that the page address in http mode needs to be the same as the application's main domain name address,
+     * otherwise it cannot be redirected.
      */
     private String callbackPage;
 
     /**
-     * 调用方自定义扩展参数，主要用于用户页面引导等操作，不能作为权益开通凭证。
-     * 如果传入该值，会在订单消息推送时会推送过去。
+     * The caller customizes the extended parameters, which are mainly used for user page guidance and other operations,
+     * and cannot be used as a certificate of rights and interests. If this value is passed in,
+     * it will be pushed when the order message is pushed.
      */
     private String extendParam;
 

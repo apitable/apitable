@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 激活应用
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/15 7:48 下午
+ * Activate the app
  */
 @Setter
 @Getter
@@ -17,17 +13,17 @@ import lombok.ToString;
 public class DingTalkSuiteActiveSuiteRequest {
 
     /**
-     * 第三方应用的suiteKey。可在开发者后台的应用详情页获取。
+     * Suite Key for third-party applications. It can be obtained from the application details page in the developer background.
      */
     private String suiteKey;
 
     /**
-     * 授权企业的CorpId。HTTP回调事件中推送的CorpId。
+     * The Corp Id of the authorized company. The Corp Id pushed in the HTTP callback event.
      */
     private String authCorpid;
 
     /**
-     * 授权企业的永久授权码。
+     * The permanent authorization code of the authorized enterprise.
      */
     private String permanentCode;
 }

@@ -1,11 +1,5 @@
 package com.vikadata.social.feishu.util;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -13,11 +7,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
- * 飞书推送数据 解密
- *
- * @author Shawn Deng
- * @date 2020-11-19 17:49:11
+ * Feishu push data decryption
  */
 public class FeishuDecryptor {
 
@@ -28,22 +26,23 @@ public class FeishuDecryptor {
         try {
             digest = MessageDigest.getInstance("SHA-256");
             key = digest.digest(encryptKey.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
-            // 不会发生的，除非你乱填 algorithm
+        }
+        catch (NoSuchAlgorithmException e) {
+            // won't happen unless you fill in the algorithm
         }
     }
 
     /**
-     * 解密
+     * decrypt
      *
-     * @param encryptData 加密数据
-     * @return 解密数据
-     * @throws InvalidAlgorithmParameterException 非法算法
-     * @throws InvalidKeyException                非法值
-     * @throws BadPaddingException                异常
-     * @throws IllegalBlockSizeException          异常
-     * @throws NoSuchPaddingException             异常
-     * @throws NoSuchAlgorithmException           异常
+     * @param encryptData encrypted data
+     * @return decrypt data
+     * @throws InvalidAlgorithmParameterException illegal algorithm
+     * @throws InvalidKeyException                illegal value
+     * @throws BadPaddingException                exception
+     * @throws IllegalBlockSizeException          exception
+     * @throws NoSuchPaddingException             exception
+     * @throws NoSuchAlgorithmException           exception
      */
     public String decrypt(String encryptData) throws InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException {
 

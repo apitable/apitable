@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 用户信息 v2接口参数
- * </p> 
- * @author zoe zheng 
- * @date 2021/5/7 4:09 下午
+ * User information v2 interface parameters
  */
 @Setter
 @Getter

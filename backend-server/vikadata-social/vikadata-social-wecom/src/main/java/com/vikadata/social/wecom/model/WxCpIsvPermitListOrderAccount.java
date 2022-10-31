@@ -10,30 +10,26 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 获取订单中的账号列表
- * </p>
- * @author 刘斌华
- * @date 2022-06-27 10:27:40
+ * Get the list of accounts in the order
  */
 @Getter
 @Setter
 public class WxCpIsvPermitListOrderAccount extends WxCpBaseResp {
 
     /**
-     * 分页游标，再下次请求时填写以获取之后分页的记录
+     * Paging cursor, fill in the next request to get the records of subsequent paging
      */
     @SerializedName("next_cursor")
     private String nextCursor;
 
     /**
-     * 是否还有数据。0：否；1：是
+     * whether there is still data. 0: No; 1: Yes
      */
     @SerializedName("has_more")
     private Integer hasMore;
 
     /**
-     * 账号列表
+     * Account list
      */
     @SerializedName("account_list")
     private List<AccountList> accountList;
@@ -51,19 +47,20 @@ public class WxCpIsvPermitListOrderAccount extends WxCpBaseResp {
     public static class AccountList implements Serializable {
 
         /**
-         * 帐号码，订单类型为购买帐号时，返回该字段
+         * Account code, this field is returned when the order type is purchase account
          */
         @SerializedName("active_code")
         private String activeCode;
 
         /**
-         * 企业续期成员userid，订单类型为续期帐号时，返回该字段。返回加密的userid
+         * Enterprise renewal member userid, when the order type is renewal account, this field is returned.
+         * return encrypted userid
          */
         @SerializedName("userid")
         private String userId;
 
         /**
-         * 帐号类型：1:基础帐号，2:互通帐号
+         * Account type: 1: Basic account, 2: Interworking account
          */
         @SerializedName("type")
         private Integer type;

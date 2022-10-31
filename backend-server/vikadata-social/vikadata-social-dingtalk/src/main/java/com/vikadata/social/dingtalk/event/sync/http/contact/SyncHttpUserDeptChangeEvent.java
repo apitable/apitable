@@ -9,11 +9,7 @@ import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
 
 /**
- * <p> 
- * 事件列表 -- 企业修改员工所在部门事件之后的员工信息
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/2 3:47 下午
+ * Event List -- The company modifies the employee information after the employee's department event
  */
 @Setter
 @Getter

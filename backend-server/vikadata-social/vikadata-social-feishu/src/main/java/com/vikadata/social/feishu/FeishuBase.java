@@ -1,10 +1,7 @@
 package com.vikadata.social.feishu;
 
 /**
- * 飞书基础定义
- *
- * @author Shawn Deng
- * @date 2020-11-25 23:44:59
+ * Feishu Basic Definition
  */
 public class FeishuBase {
 

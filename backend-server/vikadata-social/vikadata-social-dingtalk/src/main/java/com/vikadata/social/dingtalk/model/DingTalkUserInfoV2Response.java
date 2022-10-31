@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户信息v2接口返回信息
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * User information v2 interface returns information
  */
 @Setter
 @Getter

@@ -7,10 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 部门列表返回
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * Department list back
  */
 @Setter
 @Getter
@@ -20,7 +17,7 @@ public class DingTalkDepartmentSubListResponse extends BaseResponse {
     private String requestId;
 
     /**
-     * 部门列表
+     * Department List
      */
     private List<DingTalkDeptBaseInfo> result;
 
@@ -29,27 +26,27 @@ public class DingTalkDepartmentSubListResponse extends BaseResponse {
     @ToString
     public static class DingTalkDeptBaseInfo {
         /**
-         * 部门ID
+         * Department ID
          */
         private Long deptId;
 
         /**
-         * 部门名称
+         * Department name
          */
         private String name;
 
         /**
-         * 父部门ID
+         * Parent Department ID
          */
         private Long parentId;
 
         /**
-         * 是否同步创建一个关联此部门的企业群
+         * Whether to create an enterprise group associated with this department
          */
         private Boolean createDeptGroup;
 
         /**
-         * 部门群已经创建后，有新人加入部门是否会自动
+         * After the department group has been created, will new people join the department automatically?
          */
         private Boolean autoAddUser;
     }

@@ -8,13 +8,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
-/**
- * <p>
- *
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 3:48 下午
- */
 public class Jackson4DingTalkConverter {
 
     private static final ObjectMapper DING_TALK_OBJECT_MAPPER = new ObjectMapper();

@@ -6,17 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 获取应用可见范围
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * Get app contact scope
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkAppVisibleScopeRequest {
     /**
-     * 应用ID
+     * App ID
      */
     @JsonProperty(value = "agentId")
     private Long agentId;

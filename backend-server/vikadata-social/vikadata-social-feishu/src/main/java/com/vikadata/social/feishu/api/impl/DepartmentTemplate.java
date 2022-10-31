@@ -24,10 +24,7 @@ import com.vikadata.social.feishu.model.v3.FeishuV3GetParentDeptsRequest;
 import com.vikadata.social.feishu.model.v3.FeishuV3GetParentDeptsResponse;
 
 /**
- * 飞书 部门管理 接口实现
- *
- * @author Shawn Deng
- * @date 2020-11-18 16:42:03
+ * Feishu Department Management Interface Implementation
  */
 public class DepartmentTemplate extends AbstractFeishuOperations implements DepartmentOperations {
 

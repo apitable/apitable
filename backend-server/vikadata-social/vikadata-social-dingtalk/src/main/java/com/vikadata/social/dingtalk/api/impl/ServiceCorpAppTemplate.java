@@ -56,11 +56,7 @@ import static com.vikadata.social.dingtalk.constants.DingTalkApiConst.SEND_MESSA
 import static com.vikadata.social.dingtalk.exception.DingTalkExceptionConstants.MESSAGE_USER_EXCEED_LIMIT;
 
 /**
- * <p>
- * 企业内部应用实现类--授权给第三方企业
- * </p>
- * @author zoe zheng
- * @date 2021/5/7 11:14 上午
+ * Enterprise internal application implementation class--authorization to third-party enterprises
  */
 public class ServiceCorpAppTemplate extends AbstractDingTalkOperations implements ServiceCorpAppOperations {
 

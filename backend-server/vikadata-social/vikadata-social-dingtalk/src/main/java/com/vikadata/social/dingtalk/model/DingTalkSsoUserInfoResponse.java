@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 获取应用管理员的身份信息
- * </p>
- * @author zoe zheng
- * @date 2021/9/22 15:58
+ * Get the identity information of the application administrator
  */
 @Setter
 @Getter
@@ -18,7 +14,7 @@ public class DingTalkSsoUserInfoResponse extends BaseResponse {
     private UserInfo userInfo;
 
     /**
-     * 是否是管理员。 true：是 false：不是
+     * Is the administrator. true: yes false: no
      */
     private Boolean isSys;
 
@@ -29,22 +25,22 @@ public class DingTalkSsoUserInfoResponse extends BaseResponse {
     @ToString
     public static class UserInfo {
         /**
-         * 头像地址
+         * Avatar address
          */
         private String avatar;
 
         /**
-         * email地址
+         * email address
          */
         private String email;
 
         /**
-         * 用户名字
+         * Username
          */
         private String name;
 
         /**
-         * 员工在企业内的userid
+         * The userid of the employee in the company
          */
         private String userid;
     }
@@ -54,12 +50,12 @@ public class DingTalkSsoUserInfoResponse extends BaseResponse {
     @ToString
     public static class CorpInfo {
         /**
-         * 公司名字
+         * company name
          */
         private String corpName;
 
         /**
-         * 公司corpid
+         * company corpid
          */
         private String corpid;
     }

@@ -9,11 +9,8 @@ import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
 
 /**
- * <p> 
- * 事件列表 -- 用户加入企业后的激活信息，active字段为true时表示已激活
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/2 3:47 下午
+ * Event list -- the activation information after the user joins the enterprise, when the active field is true, it
+ * means it has been activated
  */
 @Setter
 @Getter

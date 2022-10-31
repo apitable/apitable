@@ -7,51 +7,39 @@ import com.vikadata.social.dingtalk.model.DingTalkUserDetail;
 import com.vikadata.social.dingtalk.model.UserInfoV2;
 
 /**
- * <p> 
- * 企业内部应用接口
- * </p> 
- * @author zoe zheng 
- * @date 2021/4/19 3:31 下午
+ * Enterprise internal application interface
  */
 public interface CorpAppOperations {
     /**
-     * 获取企业内部应用的access_token
+     * Obtain the access token of the internal application of the enterprise
      *
-     * @param forceRefresh 强制刷新
+     * @param forceRefresh Force refresh
      * @return String
-     * @author zoe zheng
-     * @date 2021/4/20 6:37 下午
      */
     String getAccessToken(boolean forceRefresh);
 
     /**
-     * 通过免登码获取用户信息(v2)
+     * Obtaining user information through a free code (v 2)
      *
-     * @param code 免登授权码
+     * @param code No-login authorization code
      * @return UserInfoV2
-     * @author zoe zheng
-     * @date 2021/4/20 6:56 下午
      */
     UserInfoV2 getUserInfoByCode(String code);
 
     /**
-     * 根据userid获取用户详情
+     * Get user details based on userid
      *
-     * @param userId 员工唯一标识userid。
+     * @param userId The employee uniquely identifies the userid.
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/4/20 7:11 下午
      */
     DingTalkUserDetail getUserInfoByUserId(String userId);
 
     /**
-     * 企业内部应用发送群消息
+     * Intra-enterprise applications send group messages
      *
-     * @param receiver 消息接收者
-     * @param message 发送的消息
-     * @return 消息ID
-     * @author zoe zheng
-     * @date 2021/4/23 2:18 下午
+     * @param receiver message recipient
+     * @param message  message content
+     * @return message task id
      */
     String sendChatMessage(MessageReceiver receiver, Message message);
 

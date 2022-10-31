@@ -24,14 +24,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 /**
- * <p>
- * 异步任务配置
- * 使用Spring框架封装好的线程池
- * ROLE_INFRASTRUCTURE: Spring框架自己的BEAN，与使用用户没有关系
- * </p>
- *
- * @author Shawn Deng
- * @date 2019/9/6 15:46
+ * asynchronous task configuration,
+ * thread pool encapsulated by spring framework
+ * ROLE_INFRASTRUCTURE: Spring framework's own BEAN, which has nothing to do with the user
  */
 @Configuration(proxyBeanMethods = false)
 @EnableAsync
@@ -51,19 +46,19 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
     @Override
     @Bean(name = DEFAULT_EXECUTOR_BEAN_NAME)
     public Executor getAsyncExecutor() {
-        log.info("创建异步任务线程池");
+        log.info("Create async task thread pool");
         ThreadPoolTaskExecutor executor = new VisibleThreadPoolTaskExecutor();
         executor.setCorePoolSize(4);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(500);
         executor.setKeepAliveSeconds(3000);
         executor.setThreadNamePrefix("vika-social-task-");
-        // 线程池对拒绝任务的处理策略
-        // rejection-policy：当pool已经达到max size的时候，拒绝处理新任务
-        // CALLER_RUNS：不在新线程中执行任务，而是有调用者所在的线程来执行
+        // Thread pool's processing strategy for rejected tasks
+        // rejection-policy: Refuse to process new tasks when the pool has reached max size
+        // CALLER RUNS: The task is not executed in a new thread, but is executed by the thread where the caller is located
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        // 请求上下文放入异步线程，异步任务上下文装饰器
-        // 异步任务是一个单独的线程，与 Servlet 请求线程不在一起，所以主线程的上下文得传递过来
+        // The request context is put into the asynchronous thread, the asynchronous task context decorator
+        //The asynchronous task is a separate thread, not with the servlet request thread, so the context of the main thread has to be passed over
         executor.setTaskDecorator(runnable -> {
             RequestAttributes context = RequestContextHolder.getRequestAttributes();
             Map<String, String> mdcContext = MDC.getCopyOfContextMap();
@@ -73,28 +68,28 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
                     if (mdcContext != null) {
                         MDC.setContextMap(mdcContext);
                     }
-                    // 执行异步任务
+                    // Execute asynchronous tasks
                     runnable.run();
                 }
                 catch (Exception e) {
-                    log.error("手动执行异步任务异常", e);
+                    log.error("Manual execution of asynchronous task exception", e);
                     throw e;
                 }
                 finally {
-                    // 执行完成后重置
-                    log.info("重置异步线程变量");
+                    // reset after execution
+                    log.info("reset async thread variable");
                     MDC.clear();
                     RequestContextHolder.resetRequestAttributes();
                 }
             };
         });
         executor.initialize();
-        log.info("创建异步任务线程池完毕");
+        log.info("create asynchronous task thread pool completed");
         return new LazyTraceExecutor(beanFactory, executor);
     }
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) -> log.error("注解异步任务异常", ex);
+        return (ex, method, params) -> log.error("Annotating asynchronous task exceptions", ex);
     }
 }

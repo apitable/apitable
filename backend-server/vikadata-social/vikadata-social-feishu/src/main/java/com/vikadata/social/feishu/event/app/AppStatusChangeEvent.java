@@ -1,17 +1,15 @@
 package com.vikadata.social.feishu.event.app;
 
-import com.vikadata.social.feishu.annotation.FeishuEvent;
-import com.vikadata.social.feishu.event.BaseEvent;
-import com.vikadata.social.feishu.event.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.vikadata.social.feishu.annotation.FeishuEvent;
+import com.vikadata.social.feishu.event.BaseEvent;
+import com.vikadata.social.feishu.event.UserInfo;
+
 /**
- * 应用停启用事件
- *
- * @author Shawn Deng
- * @date 2020-11-23 20:20:24
+ * app deactivation event
  */
 @Setter
 @Getter
@@ -20,7 +18,9 @@ import lombok.ToString;
 public class AppStatusChangeEvent extends BaseEvent {
 
     public static final String STATUS_START_BY_TENANT = "start_by_tenant";
+
     public static final String STATUS_STOP_BY_TENANT = "stop_by_tenant";
+
     public static final String STATUS_STOP_BY_PLATFORM = "stop_by_platform";
 
     private String status;

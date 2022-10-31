@@ -7,12 +7,7 @@ import lombok.ToString;
 import com.vikadata.social.feishu.model.BaseResponse;
 
 /**
- * <p>
- * 获取单个部门信息 响应信息
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/12/7 11:12
+ * Get individual department information Response information
  */
 @Getter
 @Setter

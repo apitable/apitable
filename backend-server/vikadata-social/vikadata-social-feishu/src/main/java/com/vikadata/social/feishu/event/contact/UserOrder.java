@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 用户排序信息
- *
- * @author Shawn Deng
- * @date 2020-12-24 12:06:53
+ * User Sort Information
  */
 @Setter
 @Getter

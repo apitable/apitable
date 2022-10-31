@@ -7,11 +7,7 @@ import com.vikadata.social.core.AppTicketStorage;
 import com.vikadata.social.core.SocialRedisOperations;
 
 /**
- * <p>
- * dingTalk jsapi ticket 实现存储接口
- * </p>
- * @author zoe zheng
- * @date 2021/4/8 12:02 下午
+ * dingTalk jsapi ticket Implement storage interface
  */
 public class JsApiTicketInRedisStorage implements AppTicketStorage {
 
@@ -19,21 +15,25 @@ public class JsApiTicketInRedisStorage implements AppTicketStorage {
 
     private static final String LOCK_KEY_TPL = "%s:dingtalk:jsapi:lock:%s:";
 
+    private final SocialRedisOperations redisOps;
+
+    private final String redisKeyPrefix;
+
+    protected volatile Lock ticketLock;
+
     private volatile String appId;
 
     private volatile String appSecret;
 
     private volatile String ticketKey;
 
-    protected volatile Lock ticketLock;
-
-    private final SocialRedisOperations redisOps;
-
-    private final String redisKeyPrefix;
-
     public JsApiTicketInRedisStorage(SocialRedisOperations redisOps, String redisKeyPrefix) {
         this.redisOps = redisOps;
         this.redisKeyPrefix = redisKeyPrefix;
+    }
+
+    public String getAppId() {
+        return appId;
     }
 
     public void setAppId(String appId) {
@@ -43,16 +43,12 @@ public class JsApiTicketInRedisStorage implements AppTicketStorage {
         this.ticketLock = this.redisOps.getLock(lockKey.concat("jsApiTicketLock"));
     }
 
-    public String getAppId() {
-        return appId;
+    public String getAppSecret() {
+        return appSecret;
     }
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
-    }
-
-    public String getAppSecret() {
-        return appSecret;
     }
 
     @Override

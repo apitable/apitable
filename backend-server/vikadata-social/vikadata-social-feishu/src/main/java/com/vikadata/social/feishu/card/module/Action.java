@@ -1,22 +1,17 @@
 package com.vikadata.social.feishu.card.module;
 
 
-import com.vikadata.social.feishu.card.CardComponent;
-import com.vikadata.social.feishu.card.Layout;
-import com.vikadata.social.feishu.card.element.Element;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.vikadata.social.feishu.card.CardComponent;
+import com.vikadata.social.feishu.card.Layout;
+import com.vikadata.social.feishu.card.element.Element;
+
 /**
- * <p>
- * 交互模块
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:35
+ * Interactive module
  */
 public class Action extends Module {
 

@@ -8,11 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 事件列表 -- 基础企业授权套件信息
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/2 3:47 下午
+ * Event List -- Basic Enterprise Licensing Suite Information
  */
 @Setter
 @Getter
@@ -34,65 +30,52 @@ public class BaseOrgSuiteEvent extends BaseSyncHttpEvent {
     @Setter
     @ToString
     public static class AuthCorpInfo {
-        /**
-         * 渠道码。
-         */
+
         private String authChannel;
 
         /**
-         * 渠道类型。
-         *
-         * 为了避免渠道码重复，可与渠道码共同确认渠道。可能为空，非空时当前只有满天星类型，值为STAR_ACTIVITY。
+         * Channel type.
+         * To avoid duplication of channel codes, you can confirm the channel together with the channel code.
+         * It may be empty. When it is not empty, there is currently only the star type, and the value is STAR ACTIVITY.
          */
         private String authChannelType;
 
         /**
-         * 企业认证等级：
-         * 0：未认证
-         * 1：高级认证
-         * 2：中级认证
-         * 3：初级认证
+         * Enterprise certification level:
+         * 0: Not authenticated,
+         * 1: Advanced Certification,
+         * 2: Intermediate certification,
+         * 3: Primary Certification
          */
         private Integer authLevel;
 
-        /**
-         * 企业logo
-         */
         private String corpLogoUrl;
 
-        /**
-         * 授权方企业名称。
-         */
         private String corpName;
 
-        /**
-         * 授权企业的CorpId
-         */
         private String corpid;
 
 
         /**
-         * 企业所属行业
+         * The industry the company belongs to
          */
         private String industry;
 
         /**
-         * 邀请码，只有自己邀请的企业才会返回邀请码，可用该邀请码统计不同渠道的拉新，否则值为空字符串。
+         * Invitation code. Only the company you invite will return the invitation code.
+         * You can use this invitation code to count new pulls from different channels. Otherwise, the value is an empty string.
          */
         private String inviteCode;
 
         /**
-         * 企业邀请链接
+         * Enterprise Invitation Link
          */
         private String inviteUrl;
 
-        /**
-         *
-         */
         private Boolean isAuthenticated;
 
         /**
-         * 序列号
+         * serial number
          */
         private String licenseCode;
     }
@@ -109,27 +92,24 @@ public class BaseOrgSuiteEvent extends BaseSyncHttpEvent {
     @ToString
     public static class Agent {
         /**
-         * 对此微应用有管理权限的管理员userid。
+         * The administrator userid who has administrative privileges for this microapp.
          */
         private List<String> adminList;
 
         /**
-         * 授权方应用名字
+         * Authorizer application name
          */
         private String agentName;
 
         /**
-         * 授权方应用ID
+         * authorizer app id
          */
         private Long agentid;
 
-        /**
-         * 应用Id
-         */
         private Long appid;
 
         /**
-         * 授权方应用头像
+         * Authorizer App Avatar
          */
         private String logoUrl;
     }

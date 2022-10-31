@@ -4,47 +4,43 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p>
- * 钉钉订阅事件--数据格式类型
- * </p>
- * @author zoe zheng
- * @date 2021/5/12 7:48 下午
+ * DingTalk Subscription Event--Data Format Type
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkBizType {
     /**
-     * 套件票据suiteTicket最新状态
+     * Suite Ticket latest status
      */
     SUITE_TICKET_EVENT(2),
 
     /**
-     * 业授权应用的最新状态
+     * The latest status of industry-licensed applications
      */
     ORG_SUITE_AUTH(4),
     /**
-     * 企业微应用的最新状态
+     * The latest state of enterprise microapps
      */
     ORG_MICRO_APP_RESTORE(7),
     /**
      *
-     * 企业员工的最新状态
+     * The latest status of enterprise employees
      */
     ORG_USER_RESTORE(13),
     /**
-     * 企业部门的最新状态
+     * The latest status of the corporate sector
      */
     ORG_DEPT_RESTORE(14),
     /**
-     * 企业的最新状态
+     * The latest status of the business
      */
     ORG_CREATE(16),
     /**
-     * 应用内购订单
+     * In-app purchase order
      */
     MARKET_ORDER(17),
     /**
-     * 数据为订单到期或者退款导致的服务关闭数据
+     * The data is the service shutdown data due to order expiration or refund
      */
     SUBSCRIPTION_CLOSE(37);
 

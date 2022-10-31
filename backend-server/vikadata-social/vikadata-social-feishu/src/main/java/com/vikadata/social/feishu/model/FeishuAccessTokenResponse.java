@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 获取登录用户身份 响应
- *
- * @author Shawn Deng
- * @date 2020-11-26 10:16:06
+ * Get logged in user identity Response
  */
 @Setter
 @Getter

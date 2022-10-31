@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 飞书用户基本信息
- *
- * @author Shawn Deng
- * @date 2020-11-23 20:18:05
+ * Basic information of Feishu users
  */
 @Setter
 @Getter

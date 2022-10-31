@@ -1,10 +1,7 @@
 package com.vikadata.social.feishu.card;
 
 /**
- * 消息接口
- *
- * @author Shawn Deng
- * @date 2020-12-01 17:34:42
+ * message interface
  */
 public interface Message {
 

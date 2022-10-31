@@ -2,7 +2,6 @@ package com.vikadata.social.wecom.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -18,11 +17,7 @@ import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 import me.chanjar.weixin.cp.bean.message.WxCpXmlMessage;
 
 /**
- * <p>
- * 消息解密信息中转器，解决继承 {@link WxCpTpXmlMessage} 无法强制转换的问题
- * </p>
- * @author 刘斌华
- * @date 2022-04-23 14:53:38
+ * Message decryption message relay, solve the problem that inheritance {@link WxCpTpXmlMessage} cannot be cast
  */
 @Setter
 @Getter
@@ -50,7 +45,7 @@ public class WxCpIsvXmlMessageDto implements Serializable {
     @XStreamConverter(value = XStreamCDataConverter.class)
     protected String newOrderId;
 
-    // ======== 以下内容复制自 WxCpTpXmlMessage
+    // ======== The following is copied from WxCpTpXmlMessage
 
     @XStreamAlias("SuiteId")
     @XStreamConverter(value = XStreamCDataConverter.class)
@@ -418,10 +413,12 @@ public class WxCpIsvXmlMessageDto implements Serializable {
         @XStreamAlias("approverstep")
         protected Integer approverstep;
 
-        //自建/第三方应用调用审批流程引擎，状态通知
-        //ref: https://work.weixin.qq.com/api/doc/90001/90143/90376#审批状态通知事件
-        //1.自建/第三方应用调用审批流程引擎发起申请之后，审批状态发生变化时
-        //2.自建/第三方应用调用审批流程引擎发起申请之后，在“审批中”状态，有任意审批人进行审批操作时
+        // Self-built and third-party application calls approval process engine, status notification
+        // ref: https://work.weixin.qq.com/api/doc/90001/90143/90376 #approval Status Notification Events
+        // 1. After the self-built third-party application calls the approval process engine to initiate the
+        // application, when the approval status changes
+        // 2. After the self-built third-party application calls the approval process engine to initiate the
+        // application, in the "Approval" state, when any approver performs the approval operation
         @Data
         @XStreamAlias("ApprovalNode")
         public static class ApprovalNode implements Serializable {
@@ -446,14 +443,19 @@ public class WxCpIsvXmlMessageDto implements Serializable {
 
                 @XStreamAlias("ItemName")
                 protected String itemName;
+
                 @XStreamAlias("ItemUserId")
                 protected Integer itemUserId;
+
                 @XStreamAlias("ItemImage")
                 protected String itemImage;
+
                 @XStreamAlias("ItemStatus")
                 protected Integer itemStatus;
+
                 @XStreamAlias("ItemSpeech")
                 protected String itemSpeech;
+
                 @XStreamAlias("ItemOpTime")
                 protected Long itemOpTime;
             }
@@ -466,13 +468,15 @@ public class WxCpIsvXmlMessageDto implements Serializable {
 
             @XStreamAlias("ItemName")
             protected String itemName;
+
             @XStreamAlias("ItemUserId")
             protected Integer itemUserId;
+
             @XStreamAlias("ItemImage")
-            protected String  itemImage;
+            protected String itemImage;
         }
     }
 
-    // ======== 以上内容复制自 WxCpTpXmlMessage
+    // ======== The above is copied from WxCpTpXmlMessage
 
 }

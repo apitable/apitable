@@ -6,11 +6,7 @@ import java.util.stream.Collectors;
 import com.vikadata.social.dingtalk.DingtalkConfig.AgentApp;
 
 /**
- * <p>
- * 钉钉授权服务商应用redis配置存储
- * </p>
- * @author zoe zheng
- * @date 2021/7/26 2:20 下午
+ * DingTalk Authorized Service Provider Application Redis Configuration Storage
  */
 public class DingTalkConfigInRedisStorage implements DingTalkConfigStorage {
     private static final String DING_TALK_AGENT_APP_CONFIG = "%s:dingtalk:config:agent_app";

@@ -12,10 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.social.dingtalk.exception.DingTalkApiException;
 
 /**
- * grpc异常处理
+ * grpc exception handling
  *
- * @author Zoe Zheng
- * @date 2021-09-28 11:10:00
  */
 @Slf4j
 public class ExceptionInterceptor implements ServerInterceptor {

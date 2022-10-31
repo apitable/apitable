@@ -1,27 +1,22 @@
 package com.vikadata.social.feishu.card;
 
 /**
- * <p>
- * 交互元素布局
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:34
+ * Interactive element layout
  */
 public enum Layout {
 
     /**
-     * 二等分布局
+     * Bisection layout
      */
     BISECTED,
 
     /**
-     * 三等分布局
+     * Three equal layout
      */
     TRISECTION,
 
     /**
-     * 流式布局
+     * Flow layout
      */
     FLOW;
 

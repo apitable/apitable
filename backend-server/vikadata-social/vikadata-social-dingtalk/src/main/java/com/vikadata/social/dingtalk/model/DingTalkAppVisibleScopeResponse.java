@@ -8,32 +8,28 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 异步发送工作通知--response
- * </p>
- * @author zoe zheng
- * @date 2021/5/14 3:20 下午
+ * asynchronously send job notifications response
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkAppVisibleScopeResponse extends BaseResponse {
     /**
-     * 是否仅限管理员可见，true代表仅限管理员可见。
+     * App visible list of users
+     */
+    @JsonProperty(value = "userVisibleScopes")
+    List<String> userVisibleScopes;
+
+    /**
+     * Whether it is only visible to administrators, true means that it is only visible to administrators.
      */
     @JsonProperty(value = "isHidden")
     private Boolean isHidden;
 
     /**
-     * 应用可见的部门列表
+     * List of departments visible to the app
      */
     @JsonProperty(value = "deptVisibleScopes")
     private List<Long> deptVisibleScopes;
-
-    /**
-     * 应用可见的用户列表
-     */
-    @JsonProperty(value = "userVisibleScopes")
-    List<String> userVisibleScopes;
 
 }

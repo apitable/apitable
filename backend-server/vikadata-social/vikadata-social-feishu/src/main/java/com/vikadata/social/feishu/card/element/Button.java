@@ -1,41 +1,17 @@
 package com.vikadata.social.feishu.card.element;
 
+import java.util.Map;
+
 import cn.hutool.core.map.MapUtil;
+
 import com.vikadata.social.feishu.card.objects.Confirm;
 import com.vikadata.social.feishu.card.objects.Text;
 import com.vikadata.social.feishu.card.objects.Url;
 
-import java.util.Map;
-
 /**
- * <p>
- * 按钮元素
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:20
+ * button element
  */
 public class Button extends ActionElement {
-
-    /**
-     * 按钮样式
-     */
-    public enum StyleType {
-        /**
-         * 默认样式
-         */
-        DEFAULT,
-
-        /**
-         * primary 样式
-         */
-        PRIMARY,
-
-        /**
-         * danger 样式
-         */
-        DANGER
-    }
 
     private Text text;
 
@@ -114,5 +90,25 @@ public class Button extends ActionElement {
         }
 
         return map;
+    }
+
+    /**
+     * button style
+     */
+    public enum StyleType {
+        /**
+         * default style
+         */
+        DEFAULT,
+
+        /**
+         * primary style
+         */
+        PRIMARY,
+
+        /**
+         * danger style
+         */
+        DANGER
     }
 }

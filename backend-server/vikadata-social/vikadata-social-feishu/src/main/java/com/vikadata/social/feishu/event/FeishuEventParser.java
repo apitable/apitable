@@ -19,22 +19,19 @@ import com.vikadata.social.feishu.event.bot.PostMessageEvent;
 import com.vikadata.social.feishu.event.bot.TextMessageEvent;
 
 /**
- * 事件解析器
- *
- * @author Shawn Deng
- * @date 2020-11-24 18:03:36
+ * event parser
  */
 public class FeishuEventParser {
 
     /**
-     * FeishuEvent 事件名称作为key，
-     * 每个事件内容对应的解析器，这里是全部都是Jackson库转换
+     * The FeishuEvent event name is used as the key, the parser corresponding to each event content,
+     * here are all Jackson library conversions
      */
     private static final Map<String, EventParser> EVENT_PARSER_MAP;
 
     static {
         EVENT_PARSER_MAP = new HashMap<>(16);
-        // 应用事件
+        // application event
         registerClassEventParser(AppTicketEvent.class);
         registerClassEventParser(AppOpenEvent.class);
         registerClassEventParser(AppStatusChangeEvent.class);

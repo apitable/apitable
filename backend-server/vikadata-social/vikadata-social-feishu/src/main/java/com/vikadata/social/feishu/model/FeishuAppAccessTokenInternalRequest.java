@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 获取 app_access_token
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/21 16:31
+ * Get app_access_token
  */
 @Setter
 @Getter

@@ -22,11 +22,7 @@ import com.vikadata.social.dingtalk.model.UserInfoV2;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * <p> 
- * 企业内部应用接口api实现类
- * </p> 
- * @author zoe zheng 
- * @date 2021/4/19 3:31 下午
+ * Enterprise internal application interface api implementation class
  */
 public class CorpH5AppTemplate extends AbstractDingTalkOperations implements CorpAppOperations {
 

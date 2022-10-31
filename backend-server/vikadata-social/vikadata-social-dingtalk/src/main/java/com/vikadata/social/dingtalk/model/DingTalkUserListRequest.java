@@ -5,42 +5,39 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 获取部门用户详情
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * get department user details
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkUserListRequest {
     /**
-     * 父部门ID，根部门传1。默认为根部
+     * Parent department ID, pass 1 for the root department. Default is root
      */
     private Long deptId;
 
     /**
-     * 分页查询的游标，最开始传0，后续传返回参数中的next_cursor值。
+     * The cursor of the paging query, first pass 0, and then pass the next cursor value in the returned parameter.
      */
     private Integer cursor;
 
     /**
-     * 分页大小。
+     * paging size
      */
     private Integer size;
 
     /**
-     * 部门成员的排序规则，默认不传是按自定义排序（custom）：
+     * The sorting rules of department members, the default is not passed by custom sorting (custom)
      */
     private String orderField;
 
     /**
-     * 是否返回访问受限的员工。
+     * Whether to return employees with restricted access.
      */
     private Boolean containAccessLimit;
 
     /**
-     * 通讯录语言
+     * contact language
      */
     private String language;
 }

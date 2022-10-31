@@ -36,10 +36,7 @@ import static com.vikadata.social.dingtalk.DingTalkBase.API_URL_BASE;
 import static com.vikadata.social.dingtalk.DingTalkBase.API_V1_URL_BASE;
 
 /**
- * 钉钉 api 抽象类
- *
- * @author Zoe Zheng
- * @date 2021-04-06 16:54:57
+ * DingTalk api abstract class
  */
 public abstract class AbstractDingTalkOperations extends AbstractOperations {
     private static final String AUTH_CORP_ACCESS_TOKEN_KEY = "%s:%s";
@@ -131,7 +128,7 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
             if (headers != null && !headers.isEmpty()) {
                 headers.forEach(header::add);
             }
-            // post 请求 需要设置contentType
+            // The post request needs to set the contentType
             if (headers != null && headers.get("Content-Type") == null) {
                 header.setContentType(MediaType.APPLICATION_JSON);
             }
@@ -145,11 +142,10 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取企业内部应用的access_token
-     *
-     * @param appKey 应用的唯一标识key
-     * @param appSecret 应用的密钥
-     * @param forceRefresh 是否强制刷新
+     * get the access token of the internal application
+     * @param appKey The unique identification key of the application
+     * @param appSecret Application secret key value
+     * @param forceRefresh Whether to force refresh
      * @return access_token
      */
     protected String getAppAccessToken(String appKey, String appSecret, boolean forceRefresh) {
@@ -188,12 +184,10 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取第三方应用授权企业的access_token
+     * get the access token of the isv application of the auth
      *
-     * @param forceRefresh 是否强制刷新
+     * @param forceRefresh Whether to force refresh
      * @return String
-     * @author zoe zheng
-     * @date 2021/4/19 5:45 下午
      */
     protected String getCorpAppAccessToken(DingTalkSignature request, String authCorpId, boolean forceRefresh) {
         String key = String.format(AUTH_CORP_ACCESS_TOKEN_KEY, authCorpId, request.getAccessKey());
@@ -231,12 +225,10 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取第三方应用授权企业的access_token
+     * get isv app access_token
      *
-     * @param forceRefresh 是否强制刷新
+     * @param forceRefresh Whether to force refresh
      * @return String
-     * @author zoe zheng
-     * @date 2021/4/19 5:45 下午
      */
     protected String getIsvSuiteAccessToken(DingTalkSuiteAccessTokenRequest request, boolean forceRefresh) {
         String suiteKey = request.getSuiteKey();
@@ -306,13 +298,10 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
 
 
     /**
-     * 获取授权第三方企业应用的授权企业的access_token
-     *
-     * @param agentId 企业内部授权应用agentId
-     * @param forceRefresh 是否强制刷新
+     * get the access token of the authorized corporate
+     * @param agentId Enterprise internal authorization application agent Id
+     * @param forceRefresh Whether to force refresh
      * @return String
-     * @author zoe zheng
-     * @date 2021/4/19 5:43 下午
      */
     protected String getAgentAccessToken(String agentId, boolean forceRefresh) {
         AgentApp agentApp = dingtalkConfig.getAgentAppStorage().getAgentApp(agentId);
@@ -324,14 +313,11 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取第三方应用授权企业的access_token
-     *
-     * @param suiteId 套件ID
-     * @param forceRefresh 是否强制刷新
-     * @param authCorpId 授权企业的corpid
+     * get isv app access_token
+     * @param suiteId suite id
+     * @param forceRefresh Whether to force refresh
+     * @param authCorpId The corpid of the authorized enterprise
      * @return access_token
-     * @author zoe zheng
-     * @date 2021/9/13 6:01 下午
      */
     protected String getIsvAppAccessToken(String suiteId, String authCorpId, boolean forceRefresh) {
         IsvApp isvApp = dingtalkConfig.getIsvAppMap().get(suiteId);
@@ -343,18 +329,16 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取第三方企业应用的suite_access_token
-     * 该suite_access_token主要用于获取第三方企业应用的信息，在调用以下接口时会使用第三方企业应用的suite_access_token：
-     * 获取授权企业的永久授权码
-     * 获取授权应用的基本信息
-     * 获取企业授权信息
-     * 激活应用
-     *
-     * @param suiteId 套件ID
-     * @param forceRefresh 是否强制刷新
+     * get the suite access token for isv applications.
+     * The suite access token is mainly used to obtain the information of the isv application, and the suite
+     * access token of the isv application will be used when calling the following interfaces:
+     * get a permanent authorization code for an authorized enterprise,
+     * get basic information about authorized apps,
+     * get enterprise authorization information,
+     * activate the app
+     * @param suiteId suite id
+     * @param forceRefresh Whether to force refresh
      * @return access_token
-     * @author zoe zheng
-     * @date 2021/9/13 6:01 下午
      */
     protected String getIsvSuiteAccessToken(String suiteId, boolean forceRefresh) {
         IsvApp isvApp = dingtalkConfig.getIsvAppMap().get(suiteId);
@@ -366,12 +350,10 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取微应用后台免登的access_token
-     *
-     * @param corpId ISV开发的应用后台免登用的access_token，需使用ISV自己的corpId和SSOsecret来换取，不是管理员所在的企业的。
+     * Get the access token of the micro-app admin background without logging in
+     * @param corpId isv corporate id
+     * @param corpSecret the isv sso secret
      * @return access_token
-     * @author zoe zheng
-     * @date 2021/9/13 6:01 下午
      */
     protected String getSsoAccessToken(String corpId, String corpSecret) {
         Map<String, String> map = new HashMap<>(2);
@@ -384,13 +366,11 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
     }
 
     /**
-     * 获取完整的url
+     * get full url
      *
      * @param url dingtalk api url
-     * @param queryStr 经过处理的参数string
-     * @return 完整的请求url
-     * @author zoe zheng
-     * @date 2021/5/6 10:47 上午
+     * @param queryStr The processed parameter string
+     * @return full request url
      */
     public static String buildUrlWithQueryStr(String url, String queryStr) {
         String fullUrl;
@@ -440,9 +420,8 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
 
         /**
          * do whatever you want
-         *
          * @return T
-         * @throws DingTalkApiException 飞书异常
+         * @throws DingTalkApiException
          */
         T doExecute() throws DingTalkApiException;
     }
@@ -456,7 +435,7 @@ public abstract class AbstractDingTalkOperations extends AbstractOperations {
                 throw new DingTalkApiException(responseEntity.getBody().getErrcode(), responseEntity.getBody().getErrmsg());
             }
             else {
-                throw new DingTalkApiException("请求钉钉服务器失败，请检查网络或者参数");
+                throw new DingTalkApiException("Failed to request DingTalk server, please check network or parameters");
             }
         }
         if (responseEntity.getBody() != null) {

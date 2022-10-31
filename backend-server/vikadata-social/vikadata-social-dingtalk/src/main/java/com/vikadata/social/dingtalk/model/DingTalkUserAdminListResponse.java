@@ -7,11 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 获取管理员列表--response
- * </p>
- * @author zoe zheng
- * @date 2021/5/14 3:20 下午
+ * get admin list --response
  */
 @Setter
 @Getter
@@ -26,14 +22,14 @@ public class DingTalkUserAdminListResponse extends BaseResponse {
     @ToString
     public static class DingTalkAdminList {
         /**
-         * 管理员的userid。
+         * The userid of the administrator.
          */
         private String userId;
 
         /**
-         * 管理员角色：
-         * 1：主管理员
-         * 2：子管理员
+         * Admin role:
+         * 1: Main administrator
+         *2: Sub-Administrator
          */
         private Integer sysLevel;
 

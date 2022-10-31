@@ -9,11 +9,7 @@ import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
 
 /**
- * <p> 
- * 事件列表 -- 企业变更授权范围
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/2 3:47 下午
+ * Event List -- Enterprise Change Authorization Scope
  */
 @Setter
 @Getter

@@ -6,17 +6,14 @@ import java.util.HashMap;
 import com.vikadata.social.dingtalk.config.DingTalkConfigStorage;
 
 /**
- * 钉钉集成配置
- *
- * @author Shawn Deng
- * @date 2021-01-07 14:44:42
+ * DingTalk configuration
  */
 public class DingtalkConfig {
 
     private String isvCorpId;
 
     /**
-     * 企业密码
+     * corporate password
      */
     private String corpSecret;
 
@@ -31,12 +28,12 @@ public class DingtalkConfig {
     private H5app h5app;
 
     /**
-     * 定制服务的app存储服务
+     * App storage service for custom services
      */
     private DingTalkConfigStorage agentAppStorage;
 
     /**
-     * 第三方企业应用/应用市场应用
+     * market application
      */
     private HashMap<String, IsvApp> isvAppMap;
 

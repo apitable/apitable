@@ -13,10 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
- * 基于 SpringFramework 的 RedisTemplate 实现
- *
- * @author Shawn Deng
- * @date 2020-11-21 13:58:31
+ * RedisTemplate implementation based on SpringFramework
  */
 public class RedisTemplateDingTalkOperations implements DingTalkRedisOperations {
 

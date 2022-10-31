@@ -8,13 +8,6 @@ import lombok.ToString;
 import com.vikadata.social.feishu.annotation.FeishuEvent;
 import com.vikadata.social.feishu.model.v3.FeishuDeptObject;
 
-/**
- * 新版通讯录事件
- * 部门信息变化
- *
- * @author Shawn Deng
- * @date 2020-12-24 11:55:38
- */
 @Setter
 @Getter
 @ToString

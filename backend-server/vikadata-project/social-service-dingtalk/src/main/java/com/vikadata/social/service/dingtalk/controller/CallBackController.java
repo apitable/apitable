@@ -27,34 +27,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * 钉钉回调接口入口
- * </p>
- * @author zoe zheng
- * @date 2021/8/30 2:50 下午
+ * dingtalk callback interface entry
  */
 @Slf4j
-@Api(tags = "第三方平台集成接口--钉钉")
+@Api(tags = "Third-party platform integration interface--DingTalk")
 @RequestMapping(value = "/dingtalk")
 @RestController
 public class CallBackController {
     @Resource
     private IInternalService iInternalService;
 
-    @PostMapping(name = "钉钉第三方应用回调地址", value = "/callback/{suiteId}")
-    @ApiOperation(value = "钉钉第三方应用回调地址")
+    @PostMapping(name = "dingtalk third party application callback address", value = "/callback/{suiteId}")
+    @ApiOperation(value = "DingTalk third-party application callback address")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "signature", value = "消息体签名", required = true, dataTypeClass = String.class, paramType = "query", example = "111108bb8e6dbc2xxxx"),
-            @ApiImplicitParam(name = "timestamp", value = "时间戳", required = true, dataTypeClass = String.class, paramType = "query", example = "1783610513"),
-            @ApiImplicitParam(name = "nonce", value = "随机字符串", required = true, dataTypeClass = String.class, paramType = "query", example = "380320111"),
-            @ApiImplicitParam(name = "suiteId", value = "随机字符串", required = true, dataTypeClass = String.class, paramType = "path", example = "380320111"),
+            @ApiImplicitParam(name = "signature", value = "signature", required = true, dataTypeClass = String.class, paramType = "query", example = "111108bb8e6dbc2xxxx"),
+            @ApiImplicitParam(name = "timestamp", value = "timestamp", required = true, dataTypeClass = String.class, paramType = "query", example = "1783610513"),
+            @ApiImplicitParam(name = "nonce", value = "nonce", required = true, dataTypeClass = String.class, paramType = "query", example = "380320111"),
+            @ApiImplicitParam(name = "suiteId", value = "suiteId", required = true, dataTypeClass = String.class, paramType = "path", example = "380320111"),
     })
     public Map<String, Object> callback(@PathVariable("suiteId") String suiteId,
             @RequestParam("signature") String signature,
             @RequestParam("timestamp") String timestamp,
             @RequestParam("nonce") String nonce,
             @RequestBody DingTalkCallbackRo ro) {
-        // todo 删除
         log.info("callBack: {},{},{},{},{}", suiteId, signature, timestamp, nonce, ro);
         DingTalkServiceProvider dingtalkServiceProvider = SpringContextHolder.getBean(DingTalkServiceProvider.class);
         String result = dingtalkServiceProvider.syncHttpEventNotifyForIsv(suiteId, signature, timestamp, nonce,

@@ -10,10 +10,7 @@ import com.vikadata.social.feishu.model.BasePageInfo;
 import com.vikadata.social.feishu.model.BaseResponse;
 
 /**
- * 获取部门信息列表 响应
- *
- * @author Shawn Deng
- * @date 2020-11-23 16:06:27
+ * Get Department Information List Response
  */
 @Setter
 @Getter

@@ -3,12 +3,7 @@ package com.vikadata.social.qq.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * <p>
- * QQ互联-网站应用 授权信息
- * </p>
- *
- * @author Chambers
- * @date 2020/10/16
+ * QQ web app auth info
  */
 public class WebAppAuthInfo {
 

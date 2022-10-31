@@ -21,20 +21,17 @@ import com.vikadata.social.feishu.model.v3.FeishuV3GetParentDeptsRequest;
 import com.vikadata.social.feishu.model.v3.FeishuV3GetParentDeptsResponse;
 
 /**
- * 飞书 部门管理 接口
- *
- * @author Shawn Deng
- * @date 2020-11-18 16:41:39
+ * Feishu Department Management Interface
  */
 public interface DepartmentOperations {
 
     /**
-     * 获取子部门列表
+     * Get a list of sub-departments
      *
-     * @param tenantKey 企业标识
-     * @param request   请求参数
-     * @return 部门列表
-     * @throws FeishuApiException 异常
+     * @param tenantKey tenant key
+     * @param request   request param
+     * @return Department List
+     * @throws FeishuApiException exception
      */
     FeishuDepartmentListResponse getSubDepartments(String tenantKey, FeishuDepartmentListRequest request) throws FeishuApiException;
 

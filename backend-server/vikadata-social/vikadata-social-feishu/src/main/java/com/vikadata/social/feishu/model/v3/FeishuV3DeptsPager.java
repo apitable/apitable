@@ -12,9 +12,7 @@ import com.vikadata.social.feishu.api.DepartmentOperations;
 import com.vikadata.social.feishu.model.builder.DeptIdType;
 
 /**
- * 部门列表分页器
- * @author Shawn Deng
- * @date 2021-07-08 10:24:27
+ * Department List Pager
  */
 public class FeishuV3DeptsPager implements Iterator<List<FeishuDeptObject>> {
 

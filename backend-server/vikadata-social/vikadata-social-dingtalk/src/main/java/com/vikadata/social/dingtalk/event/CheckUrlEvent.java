@@ -8,11 +8,7 @@ import com.vikadata.social.dingtalk.annotation.DingTalkEvent;
 import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 
 /**
- * <p>
- * 事件订阅 -- 回调域名检测
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 1:56 下午
+ * Event subscription -- callback domain name detection
  */
 @Setter
 @Getter

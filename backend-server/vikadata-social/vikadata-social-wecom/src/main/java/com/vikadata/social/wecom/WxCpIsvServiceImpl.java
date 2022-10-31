@@ -19,11 +19,7 @@ import static me.chanjar.weixin.cp.constant.WxCpApiPathConsts.Tp.GET_AUTH_INFO;
 import static me.chanjar.weixin.cp.constant.WxCpApiPathConsts.Tp.GET_PERMANENT_CODE;
 
 /**
- * <p>
- * 企业微信第三方服务商接口调用
- * </p>
- * @author 刘斌华
- * @date 2022-01-18 11:45:51
+ * WeChat isv service provider interface call
  */
 public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
 
@@ -47,12 +43,9 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     }
 
     /**
-     * 重写获取永久授权码接口，增加订阅信息
-     *
-     * @param authCode 临时授权码
-     * @return 授权码信息
-     * @author 刘斌华
-     * @date 2022-04-20 17:28:22
+     * Rewrite the interface for obtaining permanent authorization code and add subscription information
+     * @param authCode temporary authorization code
+     * @return Authorization code information
      */
     @Override
     public WxCpIsvPermanentCodeInfo getPermanentCodeInfo(String authCode) throws WxErrorException {
@@ -66,13 +59,10 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     }
 
     /**
-     * 重写获取企业授权信息接口，增加订阅信息
-     *
-     * @param authCorpId 授权的企业 ID
-     * @param permanentCode 永久授权码
-     * @return 企业授权信息
-     * @author 刘斌华
-     * @date 2022-04-24 14:19:26
+     * Rewrite the interface for get corp authorization information and add subscription information
+     * @param authCorpId Authorized corp ID
+     * @param permanentCode Permanent Authorization Code
+     * @return Corp authorization information
      */
     @Override
     public WxCpIsvAuthInfo getAuthInfo(String authCorpId, String permanentCode) throws WxErrorException {
@@ -87,14 +77,11 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     }
 
     /**
-     * 重写获取应用管理员列表的接口，
-     *
-     * @see #getAdminList(String, Integer) 原接口有问题，没有返回 openUserId
-     * @param authCorpId 授权的企业 ID
-     * @param agentId 应用安装后的 ID
-     * @return 应用的管理员
-     * @author 刘斌华
-     * @date 2022-01-19 14:32:07
+     * Rewrite the interface for getting the list of application administrators
+     * @see #getAdminList(String, Integer) There is a problem with the original interface and no openUserId is returned
+     * @param authCorpId Authorized corp id
+     * @param agentId The id after the app is installed
+     * @return application's administrator
      */
     public WxCpIsvAdmin getAuthCorpAdminList(String authCorpId, Integer agentId) throws WxErrorException {
 
@@ -108,12 +95,9 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     }
 
     /**
-     * 根据注册模板生成注册码
-     *
-     * @param templateId 注册模板 ID
-     * @return 注册码信息
-     * @author 刘斌华
-     * @date 2022-03-14 17:17:23
+     * Generate registration code based on registration template
+     * @param templateId Registration Template ID
+     * @return Registration code information
      */
     public WxCpIsvGetRegisterCode getRegisterCode(String templateId) throws WxErrorException {
 
@@ -128,13 +112,11 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     }
 
     /**
-     * 发送应用消息
+     * Send app message
      *
-     * @param authCorpId 授权的企业 ID
-     * @param message 消息体
-     * @return 发送结果
-     * @author 刘斌华
-     * @date 2022-01-21 16:02:40
+     * @param authCorpId Authorized corp id
+     * @param message message body
+     * @return send result
      */
     public WxCpMessageSendResult sendMessage(String authCorpId, WxCpMessage message) throws WxErrorException {
 
@@ -146,12 +128,10 @@ public class WxCpIsvServiceImpl extends WxCpTpServiceImpl {
     }
 
     /**
-     * 获取订单详情
+     * Get order details
      *
-     * @param orderId 订单 ID
-     * @return 订单详情
-     * @author 刘斌华
-     * @date 2022-04-22 10:57:27
+     * @param orderId Order ID
+     * @return order details
      */
     public WxCpIsvGetOrder getOrder(String orderId) throws WxErrorException {
 

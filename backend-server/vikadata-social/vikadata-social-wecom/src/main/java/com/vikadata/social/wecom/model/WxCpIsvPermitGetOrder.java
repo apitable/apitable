@@ -9,18 +9,14 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 接口许可获取订单详情
- * </p>
- * @author 刘斌华
- * @date 2022-06-23 19:02:48
+ * Interface license to get order details
  */
 @Getter
 @Setter
 public class WxCpIsvPermitGetOrder extends WxCpBaseResp {
 
     /**
-     * 订单详情
+     * order details
      */
     @SerializedName("order")
     private Order order;
@@ -38,55 +34,56 @@ public class WxCpIsvPermitGetOrder extends WxCpBaseResp {
     public static class Order implements Serializable {
 
         /**
-         * 订单号
+         * order id
          */
         @SerializedName("order_id")
         private String orderId;
 
         /**
-         * 订单类型。1：购买帐号；2：续期帐号；5：历史企业迁移订单
+         * Order Type. 1: Purchase account; 2: Renew account; 5: Historical enterprise migration order
          */
         @SerializedName("order_type")
         private Integer orderType;
 
         /**
-         * 订单状态。0：待支付；1：已支付；2：未支付；订单已关闭；3：未支付，订单已过期；4：申请退款中；5：退款成功；6：退款被拒绝
+         * Order Status. 0: Pending payment; 1: Paid; 2: Not paid; Order closed; 3: Not paid, order has expired;
+         * 4: Refund in progress; 5: Refund successful; 6: Refund rejected
          */
         @SerializedName("order_status")
         private Integer orderStatus;
 
         /**
-         * 客户企业id，返回加密的corpid
+         * Customer enterprise id, returns encrypted corpid
          */
         @SerializedName("corpid")
         private String corpId;
 
         /**
-         * 订单金额，单位分
+         * Order amount, unit points
          */
         @SerializedName("price")
         private Integer price;
 
         /**
-         * 订单的帐号数详情
+         * Account number details for the order
          */
         @SerializedName("account_count")
         private AccountCount accountCount;
 
         /**
-         * 帐号购买时长
+         * Account purchase time
          */
         @SerializedName("account_duration")
         private AccountDuration accountDuration;
 
         /**
-         * 创建时间
+         * creation time
          */
         @SerializedName("create_time")
         private Long createTime;
 
         /**
-         * 支付时间。迁移订单不返回该字段
+         * Payment time. Migration orders do not return this field
          */
         @SerializedName("pay_time")
         private Long payTime;
@@ -96,13 +93,13 @@ public class WxCpIsvPermitGetOrder extends WxCpBaseResp {
         public static class AccountCount implements Serializable {
 
             /**
-             * 基础帐号个数
+             * Number of basic accounts
              */
             @SerializedName("base_count")
             private Integer baseCount;
 
             /**
-             * 互通帐号个数
+             * Number of interworking accounts
              */
             @SerializedName("external_contact_count")
             private Integer externalContactCount;
@@ -114,7 +111,7 @@ public class WxCpIsvPermitGetOrder extends WxCpBaseResp {
         public static class AccountDuration implements Serializable {
 
             /**
-             * 购买的月数，每个月按照31天计算
+             * The number of months purchased, each month is calculated as 31 days
              */
             @SerializedName("months")
             private Integer months;

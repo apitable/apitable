@@ -10,11 +10,7 @@ import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 import com.vikadata.social.dingtalk.enums.DingTalkSyncAction;
 
 /**
- * <p>
- * 事件订阅注解
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 2:00 下午
+ * event subscription annotation
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -28,11 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CALLBACK_SUCCESS;
 
 /**
- * <p> 
- * 内部服务调用接口实现 
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/8 6:57 下午
+ * Internal service call interface implementation
  */
 @Service
 @Slf4j
@@ -52,7 +48,7 @@ public class InternalServiceImpl implements IInternalService {
     @Override
     public void pushDingTalkSyncAction(String suiteId, String signature, String timestamp, String nonce,
             String encrypt) {
-        // 重试机制，保证异步调用同步稳定
+        // Retry mechanism to ensure synchronization and stability of asynchronous calls
         for (int i = 0; i < 3; i++) {
             try {
                 HttpHeaders headers = new HttpHeaders();
@@ -71,8 +67,8 @@ public class InternalServiceImpl implements IInternalService {
                 break;
             }
             catch (Exception e) {
-                log.error("调用API异常:{}", i, e);
-                // 超时 不需要重试
+                log.error("call api exception", i, e);
+                // timeout does not need to retry
                 if (e.getCause() instanceof SocketTimeoutException) {
                     throw e;
                 }
@@ -89,13 +85,13 @@ public class InternalServiceImpl implements IInternalService {
                 throw new BusinessException("response http status not in 200");
             }
             else {
-                throw new BusinessException("请求java服务器失败，请检查网络或者参数");
+                throw new BusinessException("Failed to request java server, please check network or parameters");
             }
         }
         if (responseEntity.getBody() != null) {
             DingTalkCallbackDto body = responseEntity.getBody();
             if (body.getEncrypt() == null) {
-                throw new BusinessException("java处理消息失败,服务无返回");
+                throw new BusinessException("java failed to process the message, the service did not return");
             }
             DingTalkServiceProvider dingtalkServiceProvider = SpringContextHolder.getBean(DingTalkServiceProvider.class);
             DingTalkCallbackCrypto callbackCrypto;
@@ -106,12 +102,12 @@ public class InternalServiceImpl implements IInternalService {
                         body.getEncrypt());
             }
             catch (Exception e) {
-                log.error("解析java返回数据异常:{}:[{}]", suiteId, body, e);
-                throw new BusinessException("解析java返回数据异常");
+                log.error("Parse java returns data exception: {}:[{}]", suiteId, body, e);
+                throw new BusinessException("Parse java returns data exception");
             }
             if (!DING_TALK_CALLBACK_SUCCESS.equals(decryptMsg)) {
-                log.error("java处理消息失败,返回数据:[{}]", decryptMsg);
-                throw new BusinessException("java处理消息失败");
+                log.error("java failed to process the message, return data: [{}]", decryptMsg);
+                throw new BusinessException("java processing message failed");
             }
         }
     }

@@ -25,11 +25,7 @@ import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.WildcardTypePermission;
 
 /**
- * <p>
- * xml 转换器
- * </p>
- * @author 刘斌华
- * @date 2022-04-22 17:10:39
+ * xml convert converter
  */
 public class WxCpIsvXmlMessageStreamTransformer {
 
@@ -67,21 +63,29 @@ public class WxCpIsvXmlMessageStreamTransformer {
 
                 return new PrettyPrintWriter(out, getNameCoder()) {
                     private static final String PREFIX_CDATA = "<![CDATA[";
+
                     private static final String SUFFIX_CDATA = "]]>";
+
                     private static final String PREFIX_MEDIA_ID = "<MediaId>";
+
                     private static final String SUFFIX_MEDIA_ID = "</MediaId>";
+
                     private static final String PREFIX_REPLACE_NAME = "<ReplaceName>";
+
                     private static final String SUFFIX_REPLACE_NAME = "</ReplaceName>";
 
                     @Override
                     protected void writeText(QuickWriter writer, String text) {
                         if (text.startsWith(PREFIX_CDATA) && text.endsWith(SUFFIX_CDATA)) {
                             writer.write(text);
-                        } else if (text.startsWith(PREFIX_MEDIA_ID) && text.endsWith(SUFFIX_MEDIA_ID)) {
+                        }
+                        else if (text.startsWith(PREFIX_MEDIA_ID) && text.endsWith(SUFFIX_MEDIA_ID)) {
                             writer.write(text);
-                        } else if (text.startsWith(PREFIX_REPLACE_NAME) && text.endsWith(SUFFIX_REPLACE_NAME)){
+                        }
+                        else if (text.startsWith(PREFIX_REPLACE_NAME) && text.endsWith(SUFFIX_REPLACE_NAME)) {
                             writer.write(text);
-                        } else {
+                        }
+                        else {
                             super.writeText(writer, text);
                         }
 
@@ -89,7 +93,7 @@ public class WxCpIsvXmlMessageStreamTransformer {
 
                     @Override
                     public String encodeNode(String name) {
-                        //防止将_转换成__
+                        // prevent converting _ to __
                         return name;
                     }
                 };
@@ -121,7 +125,7 @@ public class WxCpIsvXmlMessageStreamTransformer {
         xstream.autodetectAnnotations(true);
 
         xstream.addPermission(NoTypePermission.NONE);
-        xstream.addPermission(new WildcardTypePermission(new String[]{
+        xstream.addPermission(new WildcardTypePermission(new String[] {
                 "me.chanjar.weixin.**", "cn.binarywang.wx.**", "com.github.binarywang.**", "com.vikadata.**"
         }));
         xstream.setClassLoader(Thread.currentThread().getContextClassLoader());

@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 发送消息卡片 响应结构
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/12/2 10:58
+ * Send card message Response structure
  */
 @Setter
 @Getter

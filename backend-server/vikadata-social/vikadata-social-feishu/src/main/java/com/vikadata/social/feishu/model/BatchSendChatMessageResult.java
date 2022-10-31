@@ -1,16 +1,13 @@
 package com.vikadata.social.feishu.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 /**
- * 批量发送消息结果
- *
- * @author Shawn Deng
- * @date 2020-12-03 00:11:46
+ * Batch send message results
  */
 @Getter
 @Setter

@@ -22,12 +22,9 @@ import com.vikadata.social.dingtalk.util.DingTalkCallbackCrypto;
 
 import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CALLBACK_SUCCESS;
 
-/*** 飞书 服务类
- * <p>
- * 唯一入口类，包含配置管理、事件管理、HTTP请求管理、事件解析器
- *
- * @author Shawn Deng
- * @date 2020-11-20 17:54:21
+/**
+ * The only entry class of Dingtalk, including configuration management, event management, HTTP request management, event
+ * parser
  */
 public class DingTalkServiceProvider {
 
@@ -42,22 +39,22 @@ public class DingTalkServiceProvider {
     public static final String EVENT_SYNC_ACTION_SUITE_ID_KEY = "suiteId";
 
     /**
-     * 钉钉 配置
+     * DingTalk configuration
      */
     private DingtalkConfig dingtalkConfig;
 
     /**
-     * 钉钉 API 接口实例
+     * DingTalk API interface instance
      */
     private DingTalkTemplate dingTalkTemplate;
 
     /**
-     * 事件解析器，为监听器服务
+     * Event parser, serving listeners
      */
     private DingTalkEventParser eventParser = DingTalkEventParser.create();
 
     /**
-     * 事件监听管理器
+     * event listener manager
      */
     private DingTalkEventListenerManager eventListenerManager = new DingTalkEventListenerManager();
 
@@ -83,7 +80,7 @@ public class DingTalkServiceProvider {
     }
 
     public void init() {
-        // 实例化完成后，设置完一些属性后，必须调用此方法初始化
+        // After the instantiation is complete, after setting some properties, you must call this method to initialize
         dingTalkTemplate.initAppApis();
     }
 
@@ -92,16 +89,16 @@ public class DingTalkServiceProvider {
     }
 
     /**
-     * 事件订阅推送
+     * event subscription push
      *
-     * @param agentId app的agentID
-     * @param msgSignature 消息体签名
-     * @param nonce 随机字符串
-     * @param encryptMsg 推送body数据里面的encrypt
-     * @return 响应结果
+     * @param agentId The agent ID of the app
+     * @param msgSignature message body signature
+     * @param nonce random string
+     * @param encryptMsg Push the encrypt in the body data
+     * @return String
      */
     public String eventNotify(String agentId, String msgSignature, String timeStamp, String nonce, String encryptMsg) {
-        // 解析成JSON结构
+        // Parse into JSON structure
         AgentApp agentApp = getDingTalkTemplate().getDingTalkConfig().getAgentAppStorage().getAgentApp(agentId);
         DingTalkCallbackCrypto callbackCrypto;
         String decryptMsg;
@@ -110,31 +107,31 @@ public class DingTalkServiceProvider {
             decryptMsg = callbackCrypto.getDecryptMsg(msgSignature, timeStamp, nonce, encryptMsg);
         }
         catch (DingTalkEncryptException e) {
-            LOGGER.error("钉钉解析事件通知数据失败", e);
+            LOGGER.error("DingTalk failed to parse event data", e);
             return "";
         }
-        // 反序列化回调事件json数据
+        // Deserialize callback event json data
         JSONObject eventJson = JSONUtil.parseObj(decryptMsg);
         String eventType = eventJson.getStr(EVENT_CALLBACK_TYPE_KEY);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("钉钉事件数据结构:{}", decryptMsg);
+            LOGGER.debug("DingTalk event data:{}", decryptMsg);
         }
         if (StrUtil.isBlank(eventType)) {
-            LOGGER.error("钉钉事件类型[{}]为空内容", EVENT_CALLBACK_TYPE_KEY);
+            LOGGER.error("DingTalk eventType[{}] is empty", EVENT_CALLBACK_TYPE_KEY);
             return "";
         }
         DingTalkEventTag eventTag = DingTalkEventTag.toEnum(eventType);
         if (eventTag == null) {
-            LOGGER.error("钉钉推送未知事件类型[{}]", eventType);
+            LOGGER.error("DingTalk push unknown eventType[{}]", eventType);
             return "";
         }
-        LOGGER.info("钉钉推送事件类型[{}]", eventType);
+        LOGGER.info("DingTalk push eventType[{}]", eventType);
         BaseEvent event = eventParser.parseEvent(eventTag, eventJson);
         if (event == null) {
-            LOGGER.info("找不到对应事件监听器，是否未给此事件配置处理方法，默认不处理");
+            LOGGER.info("Cannot find DingTalk event listener, Whether a handler is not configured for this event, not handle by default");
             return "";
         }
-        // 判断当前agentId todo
+        // Determine the current agent Id
         Object eventResult = eventListenerManager.fireEventCallback(agentId, event);
         if (eventResult == null) {
             return "";
@@ -144,24 +141,23 @@ public class DingTalkServiceProvider {
             return JSONUtil.toJsonStr(jsonMap);
         }
         catch (DingTalkEncryptException e) {
-            LOGGER.error("钉钉加密返回消息失败", e);
+            LOGGER.error("DingTalk encryption return message failed", e);
             return "";
         }
     }
 
     /**
-     * SyncHTTP方式的ISV钉钉事件订阅推送
+     * SyncHTTP ISV DingTalk event subscription push method
      *
-     * @param suiteId 套件ID
-     * @param msgSignature 消息体签名
-     * @param nonce 随机字符串
-     * @param encryptMsg 推送body数据里面的encrypt
-     * @return 响应结果
+     * @param suiteId suite Id
+     * @param msgSignature message body signature
+     * @param nonce random string
+     * @param encryptMsg Push the encrypt in the body data
+     * @return response result
      */
     public String syncHttpEventNotifyForIsv(String suiteId, String msgSignature, String timeStamp, String nonce,
             String encryptMsg) {
-        // todo lock
-        // 解析成JSON结构
+        // Parse into JSON structure
         DingTalkCallbackCrypto callbackCrypto;
         String decryptMsg;
         try {
@@ -169,13 +165,13 @@ public class DingTalkServiceProvider {
             decryptMsg = callbackCrypto.getDecryptMsg(msgSignature, timeStamp, nonce, encryptMsg);
         }
         catch (Exception e) {
-            LOGGER.error("ISV钉钉解析事件通知数据失败", e);
+            LOGGER.error("DingTalk isv parse event error", e);
             return "";
         }
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.debug("ISV钉钉事件String数据结构:{}", decryptMsg);
+            LOGGER.debug("DingTalk isv event encrypt data:{}", decryptMsg);
         }
-        // 反序列化回调事件json数据
+        // Deserialize callback event json data
         JSONObject eventJson = JSONUtil.parseObj(decryptMsg);
         Object eventResult = handleIsvAppEventNotify(suiteId, eventJson, null, null);
         if (eventResult == null) {
@@ -186,40 +182,40 @@ public class DingTalkServiceProvider {
             return JSONUtil.toJsonStr(jsonMap);
         }
         catch (DingTalkEncryptException e) {
-            LOGGER.error("钉钉加密返回消息失败", e);
+            LOGGER.error("DingTalk isv encryption return message failed", e);
             return "";
         }
     }
 
     /**
-     * 解析并处理事件
+     * Parse and handle events
      *
-     * @param bizId 套件ID/或者对应类目的ID
-     * @param eventJson 事件消息体
-     * @param corpId 企业ID，可以为null
+     * @param bizId suite ID/ biz id
+     * @param eventJson event message body
+     * @param corpId corp id, can be null
      * @return Object
      */
     public Object handleIsvAppEventNotify(String bizId, JSONObject eventJson, String corpId, String suiteId) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("ISV钉钉事件JSON数据结构:[{}]", eventJson);
+            LOGGER.debug("DingTalk isv event data:[{}]", eventJson);
         }
         String eventType = eventJson.getStr(EVENT_CALLBACK_TYPE_KEY);
         if (StrUtil.isBlank(eventType)) {
-            LOGGER.error("ISV钉钉事件类型为空内容");
+            LOGGER.error("DingTalk isv eventType is blank");
             return DING_TALK_CALLBACK_SUCCESS;
         }
         DingTalkEventTag eventTag = DingTalkEventTag.toEnum(eventType);
         if (eventTag == null) {
-            LOGGER.error("ISV钉钉推送未定义的事件类型[{}]", eventType);
+            LOGGER.error("DingTalk isv eventType unknown[{}]", eventType);
             return DING_TALK_CALLBACK_SUCCESS;
         }
         BaseEvent event;
         String syncActionStr = eventJson.getStr(EVENT_SYNC_ACTION_KEY);
         if (syncActionStr != null) {
-            LOGGER.info("ISV钉钉SyncHttp推送事件类型[{}]", syncActionStr);
+            LOGGER.info("DingTalk isv syncHttp eventType[{}]", syncActionStr);
             DingTalkSyncAction syncAction = DingTalkSyncAction.toEnum(syncActionStr);
             if (syncAction == null) {
-                LOGGER.error("ISV钉钉SyncHttp推送未定义的事件类型[{}]", syncActionStr);
+                LOGGER.error("DingTalk isv syncHttp eventType unknown[{}]", syncActionStr);
                 return DING_TALK_CALLBACK_SUCCESS;
             }
             if (corpId != null) {
@@ -231,28 +227,27 @@ public class DingTalkServiceProvider {
             event = eventParser.parseEvent(syncAction, eventJson);
         }
         else {
-            LOGGER.info("ISV钉钉推送事件类型[{}]", eventType);
+            LOGGER.info("DingTalk isv eventType[{}]", eventType);
             event = eventParser.parseEvent(eventTag, eventJson);
         }
         if (event == null) {
-            LOGGER.info("ISV找不到对应事件监听器，是否未给此事件配置处理方法，默认不处理");
+            LOGGER.info("Cannot find DingTalk isv event listener, Whether a handler is not configured for this event, not handle by default");
             return DING_TALK_CALLBACK_SUCCESS;
         }
-        // 判断当前agentId todo
         return eventListenerManager.fireEventCallback(bizId, event);
     }
 
     public DingTalkCallbackCrypto getIsvDingTalkCallbackCrypto(String suiteId) {
         IsvApp isvApp = getDingTalkTemplate().getDingTalkConfig().getIsvAppMap().get(suiteId);
         if (isvApp == null) {
-            LOGGER.error("未配置ISV钉钉应用:{}", suiteId);
+            LOGGER.error("DingTalk isv app not configured:{}", suiteId);
             return null;
         }
         try {
             return new DingTalkCallbackCrypto(isvApp.getToken(), isvApp.getAesKey(), isvApp.getSuiteKey());
         }
         catch (DingTalkEncryptException e) {
-            LOGGER.error("ISV钉钉解析事件通知数据失败", e);
+            LOGGER.error("DingTalk decrypt data error", e);
             return null;
         }
     }

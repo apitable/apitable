@@ -9,11 +9,7 @@ import com.vikadata.social.feishu.annotation.FeishuEvent;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 
 /**
- * 新版通讯录事件
- * 员工入职事件
- *
- * @author Shawn Deng
- * @date 2020-12-24 11:55:38
+ * New version Contact event -- Employee onboarding event
  */
 @Setter
 @Getter

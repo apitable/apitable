@@ -22,12 +22,10 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 
 
 /**
- * 飞书 请求失败拦截处理器
- * 一般代表 http状态响应异常，非200异常
- * 飞书的错误异常都是自定义响应体内容 {@code 内容：{code: 9999, msg: 'need a token'} }, 错误信息需要自己提取其中的msg
- *
- * @author Shawn Deng
- * @date 2020-11-18 17:13:25
+ * Feishu request failure interception handler.
+ * Generally, it means that the http status response is abnormal, and it is not 200 abnormal.
+ * Feishu's error exceptions are all custom response body content {@code content: {code: 9999, msg: 'need a token'} },
+ * you need to extract the msg in the error message by yourself
  */
 public class FeishuResponseErrorHandler extends DefaultResponseErrorHandler {
 
@@ -35,7 +33,7 @@ public class FeishuResponseErrorHandler extends DefaultResponseErrorHandler {
 
     @Override
     protected void handleError(ClientHttpResponse response, HttpStatus statusCode) throws IOException {
-        // 状态码存在，额外处理，不抛出RestClientException异常
+        // Status code exists, additional processing does not throw Rest Client Exception
         try {
             ObjectMapper mapper = new ObjectMapper(new JsonFactory());
             String body = getBodyAsString(response.getBody());
@@ -45,7 +43,8 @@ public class FeishuResponseErrorHandler extends DefaultResponseErrorHandler {
             FeishuError error = new FeishuError(code, message);
             boolean isIgnore = error.getCode().equals(FeishuErrorCode.NO_DEPT_AUTHORITY_ERROR);
             if (!isIgnore) {
-                LOGGER.error("调用飞书API异常,是否可以忽略的错误[{}],HTTP状态码:[{}],业务错误码:[{}],业务错误信息:[{}],响应头: \n{}",
+                LOGGER.error("Calling feishu API error,is it possible to ignore errors[{}],HTTP status code:[{}],"
+                                + "business error code:[{}],business error message:[{}],response header: \n{}",
                         false, response.getRawStatusCode(),
                         error.getCode(), error.getMsg(), response.getHeaders());
             }
@@ -53,8 +52,8 @@ public class FeishuResponseErrorHandler extends DefaultResponseErrorHandler {
             throw new FeishuApiException(error.getCode(), error.getMsg());
         }
         catch (JsonParseException e) {
-            LOGGER.error("解析飞书响应体失败", e);
-            throw new RuntimeException("解析飞书响应体失败");
+            LOGGER.error("Failed to parse Feishu response body", e);
+            throw new RuntimeException("Failed to parse Feishu response body");
         }
     }
 

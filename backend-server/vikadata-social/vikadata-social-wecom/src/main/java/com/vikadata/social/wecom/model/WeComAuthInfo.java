@@ -8,12 +8,7 @@ import lombok.experimental.Accessors;
 import me.chanjar.weixin.cp.bean.WxCpUser;
 
 /**
- * <p>
- * 企业微信授权缓存实体类
- * </p>
- *
- * @author Pengap
- * @date 2021/7/31 16:48:37
+ * WeCom authorization cache entity class
  */
 @Data
 @Accessors(chain = true)
@@ -31,13 +26,13 @@ public class WeComAuthInfo implements Serializable {
 
     private AgentInfo agentInfo;
 
-    // 操作绑定的vika用户Id
+    // operate bind user ID in current system
     private Long operatingBindUserId;
 
-    // 操作绑定的企业微信成员Id
+    // operate bind user ID in wecom system
     private String operatingBindWeComUserId;
 
-    // 操作绑定的企业微信成员信息，忽略序列化不存储倒DB
+    // operate the bound enterprise wecom's member information, ignore serialization and do not store the reverse DB
     @JsonIgnore
     private volatile WxCpUser operatingBindWeComUser;
 

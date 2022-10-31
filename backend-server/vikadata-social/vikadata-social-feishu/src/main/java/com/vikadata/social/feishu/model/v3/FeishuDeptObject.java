@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * v3 版本 部门对象
- * @author Shawn Deng
- * @date 2021-07-07 22:00:44
+ * v3 Version Department Object
  */
 @Setter
 @Getter

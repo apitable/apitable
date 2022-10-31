@@ -1,17 +1,13 @@
 package com.vikadata.social.feishu.event.bot;
 
-import com.vikadata.social.feishu.annotation.FeishuMessageEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.vikadata.social.feishu.annotation.FeishuMessageEvent;
+
 /**
- * <p>
- * 文件消息
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/26 23:48
+ * file message
  */
 @Setter
 @Getter

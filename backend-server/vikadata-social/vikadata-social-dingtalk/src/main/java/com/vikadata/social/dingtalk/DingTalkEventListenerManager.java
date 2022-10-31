@@ -10,35 +10,30 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.social.dingtalk.event.BaseEvent;
 
 /**
- * <p>
- * 钉钉事件监听器管理器
- * 管理器调用register()方法注册
- * 当需要处理回调事件时，使用 {@code fireEventCallback(event)}
- * 需要处理消息卡片交互事件时，使用 {@code fireCardEvent(event)}
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 2:49 下午
+ * DingTalk Event Listener Manager
+ * The manager calls the register() method to register,
+ * when you need to handle callback events, use {@code fireEventCallback(event)},
+ * to handle message card interaction events, use {@code fireCardEvent(event)}
  */
 @Slf4j
 public class DingTalkEventListenerManager {
 
     /**
-     * 回调事件对应的处理存储器
+     * The processing memory corresponding to the callback event
      * Event -> callbackHandler implementation
      */
     private final Map<Class<? extends BaseEvent>, DingTalkEventCallbackHandler<?>> eventHandlerMap = new HashMap<>();
 
     /**
-     * 处理回调事件
-     *
-     * @param event 回调事件
-     * @param <T>   回调事件基础结构
-     * @return 事件指定响应结果
+     * Handling callback events
+     * @param event callback event
+     * @param <T>   Callback event infrastructure
+     * @return event specified response result
      */
     public <T extends BaseEvent> Object fireEventCallback(String agentId, T event) {
         Class<?> clazz = event.getClass();
         DingTalkEventCallbackHandler<T> callbackHandler = null;
-        // 找到对应的事件处理方法
+        // Find the corresponding event handler
         while (callbackHandler == null && BaseEvent.class.isAssignableFrom(clazz)) {
             callbackHandler = MapUtil.get(eventHandlerMap, clazz, new TypeReference<DingTalkEventCallbackHandler<T>>() {
             });
@@ -46,17 +41,16 @@ public class DingTalkEventListenerManager {
         }
 
         if (callbackHandler == null) {
-            throw new IllegalStateException("找不到应用的处理方法" + event.getClass().getName());
+            throw new IllegalStateException("Can't find a solution for the app" + event.getClass().getName());
         }
         return callbackHandler.doHandle(agentId, event);
     }
 
     /**
-     * 注册事件处理器
-     *
-     * @param clazz   回调事件
-     * @param handler 回调事件对应的处理器
-     * @param <T>     继承BaseEvent的事件
+     * register event handler
+     * @param clazz   callback event
+     * @param handler The handler corresponding to the callback event
+     * @param <T>     Events that inherit Base Event
      */
     public <T extends BaseEvent> void registerEventCallbackHandler(Class<T> clazz, DingTalkEventCallbackHandler<T> handler) {
         if (clazz != null && handler != null) {

@@ -8,10 +8,7 @@ import com.vikadata.social.dingtalk.annotation.DingTalkEvent;
 import com.vikadata.social.dingtalk.enums.DingTalkEventTag;
 
 /**
- * 通讯录用户被取消设置管理员
- *
- * @author Zoe Zheng
- * @date 2021-05-13 13:57:35
+ * Contacts user is canceled as administrator
  */
 @Setter
 @Getter

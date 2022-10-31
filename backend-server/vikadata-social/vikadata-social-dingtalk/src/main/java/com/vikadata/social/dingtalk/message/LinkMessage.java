@@ -4,16 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p> 
- * 链接消息
- * </p> 
- * @author zoe zheng 
- * @date 2021/4/21 11:56 上午
+ * link message
  */
 public class LinkMessage implements Message {
 
     /**
-     * 卡片消息的object action_card
+     * object action_card for the card message
      */
     private final Component link;
 

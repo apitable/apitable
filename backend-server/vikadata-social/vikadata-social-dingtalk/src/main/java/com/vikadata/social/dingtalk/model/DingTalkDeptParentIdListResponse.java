@@ -7,10 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 获取指定部门的所有父部门列表
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * Get a list of all parent departments of a specified department
  */
 @Setter
 @Getter
@@ -26,7 +23,7 @@ public class DingTalkDeptParentIdListResponse extends BaseResponse {
     @ToString
     public static class DingTalkDeptParentIdList {
         /**
-         * 该部门的所有父部门ID列表
+         * List of all parent department IDs for this department
          */
         private List<Long> parentIdList;
     }

@@ -1,23 +1,17 @@
 package com.vikadata.social.service.dingtalk.service;
 
 /**
- * <p> 
- * 内部服务调用接口 
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/8 6:52 下午
+ * internal service call interface
  */
 public interface IInternalService {
     /**
-     * 推送syncHttp 推送的消息给内部服务
+     * Push the message pushed by syncHttp to the internal service
      *
-     * @param suiteId 套件id
-     * @param signature 签名
-     * @param timestamp 时间戳
-     * @param nonce 随机字符串
-     * @param encrypt 加密数据
-     * @author zoe zheng
-     * @date 2021/9/8 6:56 下午
+     * @param suiteId suiteId
+     * @param signature signature
+     * @param timestamp timestamp
+     * @param nonce nonce
+     * @param encrypt encrypt
      */
     void pushDingTalkSyncAction(String suiteId, String signature, String timestamp, String nonce, String encrypt);
 }

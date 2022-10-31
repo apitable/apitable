@@ -1,16 +1,13 @@
 package com.vikadata.social.feishu.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 /**
- * 获取部门用户详情
- *
- * @author Shawn Deng
- * @date 2020-11-23 16:06:27
+ * Get department user details
  */
 @Setter
 @Getter

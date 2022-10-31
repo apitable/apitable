@@ -11,12 +11,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.vikadata.social.dingtalk.Jackson4DingTalkConverter;
 
 /**
- * <p>
- * 日期格式 转 LocalDateTime
- * </p>
- *
- * @author Chambers
- * @date 2020/6/1
+ * Date format to LocalDateTime
  */
 public class StringToMapDeserializer extends JsonDeserializer<Map<Object, Object>> {
 

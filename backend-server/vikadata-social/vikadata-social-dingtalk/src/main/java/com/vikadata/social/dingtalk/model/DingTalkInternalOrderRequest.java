@@ -5,18 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 获取内购订单信息
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/27 19:44
+ * Get in-app purchase order information
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkInternalOrderRequest {
     /**
-     * 内购商品订单号
+     * In-app purchase order number
      */
     private Long bizOrderId;
 }

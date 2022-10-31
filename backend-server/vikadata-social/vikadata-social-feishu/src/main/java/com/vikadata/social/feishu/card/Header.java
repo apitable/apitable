@@ -1,17 +1,13 @@
 package com.vikadata.social.feishu.card;
 
-import cn.hutool.core.map.MapUtil;
-import com.vikadata.social.feishu.card.objects.Text;
-
 import java.util.Map;
 
+import cn.hutool.core.map.MapUtil;
+
+import com.vikadata.social.feishu.card.objects.Text;
+
 /**
- * <p>
- * 消息卡片标题
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 12:52
+ * message card title
  */
 public class Header implements CardComponent {
 

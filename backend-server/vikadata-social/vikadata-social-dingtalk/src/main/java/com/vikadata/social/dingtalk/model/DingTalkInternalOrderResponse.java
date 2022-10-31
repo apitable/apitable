@@ -5,17 +5,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 获取内购订单信息
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/27 19:44
+ * Get in-app purchase order information
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkInternalOrderResponse extends BaseResponse {
-    
+
     private InAppGoodsOrderVo result;
 
     @Setter
@@ -23,60 +19,60 @@ public class DingTalkInternalOrderResponse extends BaseResponse {
     @ToString
     public static class InAppGoodsOrderVo {
         /**
-         * 订单创建时间
+         * order creation time
          */
         private Long createTimestamp;
 
         /**
-         * 订单支付时间
+         * order payment time
          */
         private Long paidTimestamp;
 
         /**
-         * 订购数量，周期型商品此字段为空
+         * Order quantity, this field is empty for periodic products
          */
         private Integer quantity;
 
         /**
-         * 订单状态：
-         * 0：订单关闭
-         * 3：订单支付
-         * 4：订单创建
+         * order status
+         * 0: order closed
+         * 3: Order payment
+         * 4: Order Creation
          */
         private Integer status;
 
         /**
-         * 实际支付总金额，单位为分(RMB)
+         * The actual total payment amount, in cents (RMB)
          */
         private Long totalActualPayFee;
 
         /**
-         * 内购商品规格码。
+         * In-app purchase product specification code.
          */
         private String itemCode;
 
         /**
-         * 购买商品的企业开放ID。
+         * The open ID of the enterprise that purchased the product.
          */
         private String corpId;
 
         /**
-         * 内购商品订单号。
+         * In-app purchase order number.
          */
         private String bizOrderId;
 
         /**
-         * 订购的服务结束时间。
+         * The end time of the ordered service.
          */
         private Long endTimestamp;
 
         /**
-         * 订购的服务开始时间。
+         * The start time of the ordered service.
          */
         private Long startTimestamp;
 
         /**
-         * 内购商品码。
+         * In-app purchase code.
          */
         private String goodsCode;
     }

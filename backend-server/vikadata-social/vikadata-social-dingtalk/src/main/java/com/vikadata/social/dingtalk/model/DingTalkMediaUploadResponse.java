@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 上传媒体文件
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/29 10:45
+ * Upload media files
  */
 @Setter
 @Getter

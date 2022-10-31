@@ -1,18 +1,14 @@
 package com.vikadata.social.feishu.card.element;
 
+import java.util.Map;
+
 import cn.hutool.core.map.MapUtil;
+
 import com.vikadata.social.feishu.card.objects.Confirm;
 import com.vikadata.social.feishu.card.objects.Text;
 
-import java.util.Map;
-
 /**
- * <p>
- * 日期控件 元素
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:27
+ * date control element
  */
 public class DatePicker extends ActionElement {
 

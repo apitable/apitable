@@ -9,11 +9,7 @@ import me.chanjar.weixin.cp.tp.service.impl.WxCpTpTagServiceImpl;
 import static me.chanjar.weixin.cp.constant.WxCpApiPathConsts.Tag.TAG_GET;
 
 /**
- * <p>
- * 企业微信第三方服务商接口调用
- * </p>
- * @author 刘斌华
- * @date 2022-01-18 11:45:51
+ * Wecom isv service provider interface call
  */
 public class WxCpIsvTagServiceImpl extends WxCpTpTagServiceImpl {
 
@@ -26,21 +22,18 @@ public class WxCpIsvTagServiceImpl extends WxCpTpTagServiceImpl {
     }
 
     /**
-     * 重写获取标签成员接口
-     *
-     * @see #get(String) 原接口有问题，没有提供 access_token
-     * @param tagId 标签 ID
-     * @param authCorpId 授权的企业 ID
-     * @author 刘斌华
-     * @date 2022-01-18 16:52:05
+     * Override the get tag member interface
+     * @see #get(String) There is a problem with the original interface and no access_token is provided
+     * @param tagId Tag ID
+     * @param authCorpId corp ID
      */
     public WxCpTpTagGetResult get(String tagId, String authCorpId) throws WxErrorException {
 
         if (tagId == null) {
-            throw new IllegalArgumentException("缺少tagId参数");
+            throw new IllegalArgumentException("Missing tag Id parameter");
         }
 
-        @SuppressWarnings("deprecation") // 需要使用此方法
+        @SuppressWarnings("deprecation") // need to use this method
         WxCpTpConfigStorage wxCpTpConfigStorage = mainService.getWxCpTpConfigStorage();
         String url = String.format(wxCpTpConfigStorage.getApiUrl(TAG_GET), tagId);
         String params = "&access_token=" + wxCpTpConfigStorage.getAccessToken(authCorpId);

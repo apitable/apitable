@@ -1,18 +1,14 @@
 package com.vikadata.social.dingtalk.message;
 
 /**
- * <p>
- * 消息title
- * </p>
- * @author zoe zheng
- * @date 2021/4/21 2:45 下午
+ * message title
  */
 public interface Element {
 
     /**
-     * 内容的标题
+     * title of content
      *
-     * @return 标题
+     * @return title
      */
     String getTitle();
 }

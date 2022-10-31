@@ -1,39 +1,34 @@
 package com.vikadata.social.feishu.card;
 
-import com.vikadata.social.feishu.card.module.Module;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.vikadata.social.feishu.card.module.Module;
+
 /**
- * <p>
- * 消息卡片结构
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 11:52
+ * message card structure
  */
 public class Card implements CardComponent {
 
     /**
-     * 卡片配置
+     * Card configuration
      */
     private Config config;
 
     /**
-     * 卡片标题
+     * card title
      */
     private Header header;
 
     /**
-     * 非多语言环境，直接定义副本
+     * Non-multilingual environment, direct definition copy
      */
     private List<Module> elements;
 
     /**
-     * 多语言副本, 替代 elements
+     * Multilingual copy, alternative elements
      */
     private Map<String, List<Module>> i18nElements;
 
@@ -88,10 +83,10 @@ public class Card implements CardComponent {
 
         if (i18nElements != null) {
             map.put("i18n_elements",
-                i18nElements.entrySet().stream().collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    e -> e.getValue().stream().map(CardComponent::toObj).collect(Collectors.toList()))
-                )
+                    i18nElements.entrySet().stream().collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            e -> e.getValue().stream().map(CardComponent::toObj).collect(Collectors.toList()))
+                    )
             );
         }
 

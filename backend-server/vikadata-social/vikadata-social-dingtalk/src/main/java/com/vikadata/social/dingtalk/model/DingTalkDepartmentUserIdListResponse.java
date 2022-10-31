@@ -7,10 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户ID列表返回
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * User ID list returned
  */
 @Setter
 @Getter

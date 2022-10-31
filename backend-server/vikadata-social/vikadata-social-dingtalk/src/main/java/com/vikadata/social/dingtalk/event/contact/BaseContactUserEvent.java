@@ -9,11 +9,7 @@ import lombok.Setter;
 import com.vikadata.social.dingtalk.event.BaseEvent;
 
 /**
- * <p>
- * 基础通讯录事件属性
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 4:11 下午
+ * Basic Address Book Event Properties
  */
 @Setter
 @Getter

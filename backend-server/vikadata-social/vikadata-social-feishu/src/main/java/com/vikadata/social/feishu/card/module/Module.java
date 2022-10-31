@@ -4,12 +4,7 @@ import com.vikadata.social.feishu.card.AbstractTagged;
 import com.vikadata.social.feishu.card.CardComponent;
 
 /**
- * <p>
- * 卡片内容模块
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 11:54
+ * card content module
  */
 public abstract class Module extends AbstractTagged implements CardComponent {
 

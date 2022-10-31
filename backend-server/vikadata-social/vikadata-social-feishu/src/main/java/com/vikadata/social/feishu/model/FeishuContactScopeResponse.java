@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 获取通讯录授权范围
- *
- * @author Shawn Deng
- * @date 2020-12-01 11:52:45
+ * Get the authorization scope of the address book
  */
 @Getter
 @Setter

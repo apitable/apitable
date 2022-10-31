@@ -15,11 +15,7 @@ import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 import static me.chanjar.weixin.cp.constant.WxCpApiPathConsts.User.USER_SIMPLE_LIST;
 
 /**
- * <p>
- * 企业微信第三方服务商接口调用
- * </p>
- * @author 刘斌华
- * @date 2022-01-18 11:45:51
+ * Wecom isv user service implementation
  */
 public class WxCpIsvUserServiceImpl extends WxCpTpUserServiceImpl {
 
@@ -32,21 +28,18 @@ public class WxCpIsvUserServiceImpl extends WxCpTpUserServiceImpl {
     }
 
     /**
-     * 重写获取部门成员接口
-     *
-     * @see #listSimpleByDepartment(Long, Boolean, Integer) 原接口有问题，没有提供 access_token
-     * @param departId 部门 ID
-     * @param fetchChild 是否递归子部门的成员
-     * @param status 成员状态
-     * @param authCorpId 授权的企业 ID
-     * @return 部门下的成员信息
-     * @author 刘斌华
-     * @date 2022-01-18 12:13:59
+     * Rewrite the interface for obtaining department members
+     * @see #listSimpleByDepartment(Long, Boolean, Integer) There is a problem with the original interface and no access_token is provided
+     * @param departId Department ID
+     * @param fetchChild whether to recurse the members of the subdepartment
+     * @param status Member status
+     * @param authCorpId Authorized corporate ID
+     * @return Member information under the department
      */
     public List<WxCpUser> listSimpleByDepartment(Long departId, Boolean fetchChild, Integer status, String authCorpId)
             throws WxErrorException {
 
-        @SuppressWarnings("deprecation") // 需要使用此方法
+        @SuppressWarnings("deprecation") // need to use this method
         WxCpTpConfigStorage wxCpTpConfigStorage = mainService.getWxCpTpConfigStorage();
         String url = wxCpTpConfigStorage.getApiUrl(USER_SIMPLE_LIST + departId);
         String params = "";
@@ -55,7 +48,8 @@ public class WxCpIsvUserServiceImpl extends WxCpTpUserServiceImpl {
         }
         if (status != null) {
             params += "&status=" + status;
-        } else {
+        }
+        else {
             params += "&status=0";
         }
         params += "&access_token=" + wxCpTpConfigStorage.getAccessToken(authCorpId);

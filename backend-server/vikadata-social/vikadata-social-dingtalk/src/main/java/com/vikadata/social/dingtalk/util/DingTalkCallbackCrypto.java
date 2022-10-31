@@ -18,12 +18,8 @@ import com.vikadata.social.dingtalk.exception.DingTalkEncryptException;
 
 
 /**
- * <p>
- *  钉钉开放平台加解密方法
+ *  DingTalk Open Platform Encryption and Decryption Method
  *  Cut & paste from open-dingtalk/dingtalk-callback-Crypto
- * </p>
- * @author zoe zheng
- * @date 2021/5/6 10:20 上午
  */
 public class DingTalkCallbackCrypto {
 
@@ -34,30 +30,30 @@ public class DingTalkCallbackCrypto {
     private final String corpId;
 
     /**
-     * ask getPaddingBytes key固定长度
+     * ask getPaddingBytes key fixed length
      **/
     public static final Integer AES_ENCODE_KEY_LENGTH = 43;
 
     /**
-     * token的固定长度
+     * fixed length of token
      */
     public static final Integer TOKEN_KEY_LENGTH = 32;
 
     /**
-     * 加密随机字符串字节长度
+     * Encrypted random string byte length
      **/
     private static final Integer RANDOM_LENGTH = 16;
 
     /**
-     * 构造函数
+     * Constructor
      *
-     * @param token          钉钉开放平台上，开发者设置的token
-     * @param encodingAesKey 钉钉开放台上，开发者设置的EncodingAESKey
-     * @param corpId         企业自建应用-事件订阅, 使用appKey
-     *                       企业自建应用-注册回调地址, 使用customKey
-     *                       第三方企业应用, 使用suiteKey
+     * @param token          On the DingTalk open platform, the token set by the developer
+     * @param encodingAesKey On the DingTalk open platform, the Encoding AES Key set by the developer
+     * @param corpId         Enterprise self-built application - event subscription, using appKey,
+     *                       Enterprise self-built application - register callback address, use customKey,
+     *                       Third-party enterprise applications, using suiteKey
      *
-     * @throws DingTalkEncryptException 执行失败，请查看该异常的错误码和具体的错误信息
+     * @throws DingTalkEncryptException Execution failed, please check the exception error code and specific error message
      */
     public DingTalkCallbackCrypto(String token, String encodingAesKey, String corpId) throws DingTalkEncryptException {
         if (null == encodingAesKey || encodingAesKey.length() != AES_ENCODE_KEY_LENGTH) {
@@ -76,13 +72,13 @@ public class DingTalkCallbackCrypto {
     }
 
     /**
-     * 将和钉钉开放平台同步的消息体加密,返回加密Map
+     * Encrypt the message body synchronized with the DingTalk open platform and return the encrypted Map
      *
-     * @param plaintext 传递的消息体明文
-     * @param timeStamp 时间戳
-     * @param nonce     随机字符串
+     * @param plaintext The message body passed in plaintext
+     * @param timeStamp timestamp millisecond
+     * @param nonce     random string
      * @return Map<String, String>
-     * @throws DingTalkEncryptException 钉钉加密异常
+     * @throws DingTalkEncryptException DingTalk encryption exception
      */
     public Map<String, String> getEncryptedMap(String plaintext, Long timeStamp, String nonce)
             throws DingTalkEncryptException {
@@ -95,7 +91,7 @@ public class DingTalkCallbackCrypto {
         if (null == nonce || nonce.length() != 16) {
             throw new DingTalkEncryptException(DingTalkEncryptException.ENCRYPTION_NONCE_ILLEGAL);
         }
-        // 加密
+        // encryption
         String encrypt = encrypt(Utils.getRandomStr(RANDOM_LENGTH), plaintext);
         String signature = getSignature(token, String.valueOf(timeStamp), nonce, encrypt);
         Map<String, String> resultMap = new HashMap<>();
@@ -107,34 +103,31 @@ public class DingTalkCallbackCrypto {
     }
 
     /**
-     * 密文解密
+     * ciphertext decryption
      *
-     * @param msgSignature 签名串
-     * @param timeStamp    时间戳
-     * @param nonce        随机串
-     * @param encryptMsg   密文
-     * @return 解密后的原文
-     * @throws DingTalkEncryptException 钉钉加密异常
+     * @param msgSignature signature string
+     * @param timeStamp    timestamp millisecond
+     * @param nonce        random string
+     * @param encryptMsg   ciphertext
+     * @return Decrypted original text
+     * @throws DingTalkEncryptException DingTalk encryption exception
      */
     public String getDecryptMsg(String msgSignature, String timeStamp, String nonce, String encryptMsg)
             throws DingTalkEncryptException {
-        //校验签名
+        // check signature
         String signature = getSignature(token, timeStamp, nonce, encryptMsg);
         if (!signature.equals(msgSignature)) {
             throw new DingTalkEncryptException(DingTalkEncryptException.COMPUTE_SIGNATURE_ERROR);
         }
-        // 解密
         return decrypt(encryptMsg);
     }
 
     /**
-     * 对明文加密
+     * Encrypt plaintext
      *
-     * @param random 加密随机字符串
-     * @param plaintext 需要加密的明文
-     * @return 加密后base64编码的字符串
-     * @author zoe zheng
-     * @date 2021/5/13 11:44 上午
+     * @param random Encrypted random string
+     * @param plaintext Plaintext to be encrypted
+     * @return Encrypted base 64 encoded string
      */
     private String encrypt(String random, String plaintext) throws DingTalkEncryptException {
         try {
@@ -164,21 +157,21 @@ public class DingTalkCallbackCrypto {
     }
 
     /*
-     * 对密文进行解密.
-     * @param text 需要解密的密文
-     * @return 解密得到的明文
+     * decrypt the ciphertext.
+     * @param text ciphertext to be decrypted
+     * @return decrypted plaintext
      */
     private String decrypt(String text) throws DingTalkEncryptException {
         byte[] originalArr;
         try {
-            // 设置解密模式为AES的CBC模式
+            // Set the decryption mode to CBC mode of AES
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
             IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey, 0, 16));
             cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
-            // 使用BASE64对密文进行解码
+            // Decrypt ciphertext using BASE64
             byte[] encrypted = Base64.getDecoder().decode(text);
-            // 解密
+            // decrypt
             originalArr = cipher.doFinal(encrypted);
         }
         catch (Exception e) {
@@ -188,9 +181,9 @@ public class DingTalkCallbackCrypto {
         String plainText;
         String fromCorpid;
         try {
-            // 去除补位字符
+            // remove complement characters
             byte[] bytes = PKCS7Padding.removePaddingBytes(originalArr);
-            // 分离16位随机字符串,网络字节序和corpId
+            // Separate 16-bit random string, network byte order and corpId
             byte[] networkOrder = Arrays.copyOfRange(bytes, 16, 20);
             int plainTextLegth = Utils.bytes2int(networkOrder);
             plainText = new String(Arrays.copyOfRange(bytes, 20, 20 + plainTextLegth), StandardCharsets.UTF_8);
@@ -200,7 +193,7 @@ public class DingTalkCallbackCrypto {
             throw new DingTalkEncryptException(DingTalkEncryptException.COMPUTE_DECRYPT_TEXT_LENGTH_ERROR);
         }
 
-        // corpid不相同的情况
+        // Cases where the corpids are not the same
         if (!fromCorpid.equals(corpId)) {
             throw new DingTalkEncryptException(DingTalkEncryptException.COMPUTE_DECRYPT_TEXT_CORPID_ERROR);
         }
@@ -208,14 +201,14 @@ public class DingTalkCallbackCrypto {
     }
 
     /**
-     * 数字签名
+     * digital signature
      *
-     * @param token     isv token
-     * @param timestamp 时间戳
-     * @param nonce     随机串
-     * @param encrypt   加密文本
-     * @return
-     * @throws DingTalkEncryptException
+     * @param token        isv token
+     * @param timestamp    timestamp millisecond
+     * @param nonce        random string
+     * @param encrypt      encrypted text
+     * @return String
+     * @throws DingTalkEncryptException DingTalk encryption exception
      */
     public String getSignature(String token, String timestamp, String nonce, String encrypt)
             throws DingTalkEncryptException {

@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 获取第三方企业应用的suite_access_token
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/15 7:48 下午
+ * Obtain the suite access token for third-party enterprise applications
  */
 @Setter
 @Getter
@@ -17,17 +13,19 @@ import lombok.ToString;
 public class DingTalkSuiteAccessTokenRequest {
 
     /**
-     * 第三方应用的suiteKey。可在开发者后台的应用详情页获取。
+     * Suite Key for third-party applications.
+     * It can be obtained from the application details page in the developer background.
      */
     private String suiteKey;
 
     /**
-     * 钉钉推送的suiteTicket,定制应用可随意填写,第三方企业应用使用钉钉开放平台向应用推送的suite_ticket
+     * The suite Ticket pushed by DingTalk can be filled in for customized applications,
+     * and the suite ticket pushed to the application by third-party enterprise applications using the DingTalk open platform
      */
     private String suiteTicket;
 
     /**
-     * 第三方应用的suiteSecret，可在开发者后台的应用详情页获取。
+     * The suite Secret of a third-party application can be obtained from the application details page in the developer's backend.
      */
     private String suiteSecret;
 }

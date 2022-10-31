@@ -1,17 +1,12 @@
 package com.vikadata.social.feishu.card.element;
 
-import com.vikadata.social.feishu.card.objects.Text;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import com.vikadata.social.feishu.card.objects.Text;
+
 /**
- * <p>
- * 图片元素
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:17
+ * picture element
  */
 public class Image extends Element {
 

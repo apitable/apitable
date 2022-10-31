@@ -5,17 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户信息
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * User Info
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkUserDetailRequest {
     /**
-     * 员工在当前企业内的唯一标识，也称staffId。
+     * The unique identifier of the employee in the current enterprise, also known as the staff Id.
      */
     private String userid;
 

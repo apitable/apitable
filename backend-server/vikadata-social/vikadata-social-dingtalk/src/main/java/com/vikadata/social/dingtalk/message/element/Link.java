@@ -9,29 +9,22 @@ import lombok.Setter;
 import com.vikadata.social.dingtalk.message.AbstractElement;
 import com.vikadata.social.dingtalk.message.Component;
 
-/**
- * <p>
- * 链接消息
- * </p>
- * @author zoe zheng
- * @date 2021/4/21 3:42 下午
- */
 @Getter
 @Setter
 public class Link extends AbstractElement implements Component {
     /**
-     * 消息点击链接地址，当发送消息为小程序时支持小程序跳转链接。
-     * 消息链接跳转，请参考消息链接说明。
+     * Message click link address, support applet jump link when sending message is applet.
+     * The message link jumps, please refer to the message link description.
      */
     private String messageUrl;
 
     /**
-     * 图片地址，可以通过上传媒体文件接口获取。
+     * The image URL can be obtained through the upload media file interface.
      */
     private String picUrl;
 
     /**
-     * 消息描述，建议500字符以内。
+     * Message description, within 500 characters is recommended.
      */
     private String text;
 

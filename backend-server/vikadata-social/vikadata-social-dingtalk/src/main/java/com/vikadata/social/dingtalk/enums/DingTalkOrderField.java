@@ -4,35 +4,34 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 图片机器审核的结果类型
- *
- * @author Benson Cheung
- * @since 2020/03/21
+ * Types of results for image machine review
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkOrderField {
 
     /**
-     * 代表按照进入部门的时间升序
+     * Delegates are in ascending order of time of entering the department
      */
     ENTRY_ASC("entry_asc"),
 
     /**
-     * 代表按照进入部门的时间降序
+     * Delegates are in descending order of entry time
      */
     ENTRY_DESC("entry_desc"),
 
     /**
-     * 代表按照进入部门的时间降序
+     * Delegates are in descending order of entry time
      */
     MODIFY_ASC("modify_asc"),
+
     /**
-     * 代表按照进入部门的时间降序
+     * Delegates are in descending order of entry time
      */
     MODIFY_DESC("modify_desc"),
+
     /**
-     * 代表用户定义(未定义时按照拼音)排序
+     * Represents user-defined sorting (according to pinyin if not defined)
      */
     CUSTOM("custom");
 

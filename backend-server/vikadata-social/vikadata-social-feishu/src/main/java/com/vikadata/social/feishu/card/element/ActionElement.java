@@ -4,12 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>
- * 元素抽象基础类
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:13
+ * Element abstract base class
  */
 public abstract class ActionElement extends Element {
 

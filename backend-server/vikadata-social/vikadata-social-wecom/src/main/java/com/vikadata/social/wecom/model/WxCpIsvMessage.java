@@ -13,11 +13,7 @@ import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * <p>
- * 企微服务商消息扩展
- * </p>
- * @author 刘斌华
- * @date 2022-04-18 18:36:56
+ * wecom isv message expansion
  */
 @Setter
 @Getter
@@ -26,17 +22,19 @@ public class WxCpIsvMessage extends WxCpMessage {
     public static final String TEMPLATE_MSG = "template_msg";
 
     /**
-     * 选人sdk或者选人jsapi返回的ticket列表，列表不超过10个。接收者不包含selected_tikcet的操作者，若要发送给操作者，可将操作者填到touser字段。
+     * The list of tickets returned by the candidate sdk or the candidate jsapi.
+     * The list should not exceed 10. The receiver does not contain the operator of the selected tikcet.
+     * If you want to send it to the operator, you can fill in the operator in the touser field.
      */
     private List<String> selectedTicketList;
 
     /**
-     * 消息内容
+     * Message content
      */
     private TemplateMsg templateMsg;
 
     /**
-     * 是否仅向未授权的用户发送消息
+     * Whether to send messages only to unauthorized users
      */
     private Boolean onlyUnauth;
 
@@ -109,11 +107,8 @@ public class WxCpIsvMessage extends WxCpMessage {
     }
 
     /**
-     * 获取应用模板消息 builder
-     *
+     * Get app template message builder
      * @return {@link WxCpIsvMessageTemplateMsgBuilder}
-     * @author 刘斌华
-     * @date 2022-04-18 18:27:04
      */
     public static WxCpIsvMessageTemplateMsgBuilder TEMPLATEMSG() {
 
@@ -126,17 +121,17 @@ public class WxCpIsvMessage extends WxCpMessage {
     public static class TemplateMsg {
 
         /**
-         * 消息模板 ID
+         * Message template ID
          */
         private String templateId;
 
         /**
-         * 点击消息后的跳转链接
+         * Click the jump link after the message
          */
         private String url;
 
         /**
-         * 消息内容的参数值
+         * The parameter value of the message content
          */
         private Map<String, String> contentItem;
 

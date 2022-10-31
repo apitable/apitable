@@ -37,26 +37,22 @@ import com.vikadata.social.dingtalk.event.sync.http.contact.SyncHttpUserModifyOr
 import com.vikadata.social.dingtalk.event.sync.http.contact.SyncHttpUserRoleChangeEvent;
 
 /**
- * <p>
- * 事件解析器
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 1:56 下午
+ * event parser
  */
 public class DingTalkEventParser {
 
+    public static final String SYNC_HTTP_ACTION = "sync_http_";
+
     /**
-     * DingTalkEvent 事件名称作为key，
-     * 每个事件内容对应的解析器，这里是全部都是Jackson库转换
+     * DingTalkEvent event name as key，
+     * The parser corresponding to each event content, here are all Jackson library conversions
      */
     private static final Map<String, EventParser> EVENT_PARSER_MAP;
-
-    public static final String SYNC_HTTP_ACTION = "sync_http_";
 
     static {
         EVENT_PARSER_MAP = new HashMap<>(16);
 
-        // 通讯录事件
+        // Contacts events
         registerClassEventParser(UserAddOrgEvent.class);
         registerClassEventParser(UserModifyOrgEvent.class);
         registerClassEventParser(UserLeaveOrgEvent.class);
@@ -69,16 +65,16 @@ public class DingTalkEventParser {
         registerClassEventParser(OrgDeptModifyEvent.class);
         registerClassEventParser(OrgDeptRemoveEvent.class);
 
-        // 注册回调url事件
+        // Register callback url event
         registerClassEventParser(CheckUrlEvent.class);
         registerClassEventParser(CheckCreateSuiteUrlEvent.class);
         registerClassEventParser(CheckUpdateSuiteUrlEvent.class);
 
-        // 注册syncHttp推送的事件
+        // Register for events pushed by sync Http
         registerClassEventParser(SyncHttpPushHighEvent.class);
         registerClassEventParser(SyncHttpPushMediumEvent.class);
 
-        // 注册syncHttpAction事件
+        // Register for sync Http Action event
         registerClassEventParser(SuiteTicketEvent.class);
         registerClassEventParser(OrgSuiteAuthEvent.class);
         registerClassEventParser(OrgSuiteChangeEvent.class);
@@ -89,13 +85,13 @@ public class DingTalkEventParser {
         registerClassEventParser(OrgMicroAppScopeUpdateEvent.class);
         registerClassEventParser(OrgUpdateEvent.class);
         registerClassEventParser(OrgRemoveEvent.class);
-        // syncHttp 通讯录
+        // syncHttp address book
         registerClassEventParser(SyncHttpUserAddOrgEvent.class);
         registerClassEventParser(SyncHttpUserActiveOrgEvent.class);
         registerClassEventParser(SyncHttpUserLeaveOrgEvent.class);
         registerClassEventParser(SyncHttpUserModifyOrgEvent.class);
         registerClassEventParser(SyncHttpUserRoleChangeEvent.class);
-        // syncHttp 订单信息
+        // syncHttp order information
         registerClassEventParser(SyncHttpMarketOrderEvent.class, PropertyNamingStrategies.LOWER_CAMEL_CASE);
         registerClassEventParser(SyncHttpMarketServiceCloseEvent.class, PropertyNamingStrategies.LOWER_CAMEL_CASE);
     }

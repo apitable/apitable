@@ -11,10 +11,7 @@ import com.vikadata.social.feishu.annotation.FeishuMessageEvent;
 import com.vikadata.social.feishu.event.bot.BaseMessageEvent;
 
 /**
- * 机器人接收用户发送消息解析器
- *
- * @author Shawn Deng
- * @date 2020-11-26 23:38:29
+ * The bot receives the messages sent by the user to the parser
  */
 public class BotMessageEventParser implements EventParser {
 
@@ -24,7 +21,7 @@ public class BotMessageEventParser implements EventParser {
 
     public BotMessageEventParser() {
         this.objectMapper = new ObjectMapper();
-        // 设置下划线转换驼峰
+        // set underscore to convert camel case
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

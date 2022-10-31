@@ -13,14 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * <p>
- * Mybatis-plus 配置
- * </p>
- *
- * @author Shawn Deng
- * @date 2019/9/16 16:16
- */
 @Configuration(proxyBeanMethods = false)
 @EnableTransactionManagement
 @MapperScan(basePackages = { "com.vikadata.social.service.*.mapper" })
@@ -35,7 +27,7 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * MyBatis 配置
+     * MyBatis
      */
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
@@ -46,7 +38,7 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * Mybatis Plus 配置
+     * Mybatis Plus
      */
     @Bean
     public MybatisPlusPropertiesCustomizer mybatisPlusPropertiesCustomizer() {

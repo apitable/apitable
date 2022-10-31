@@ -12,13 +12,8 @@ import java.util.Map.Entry;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-
 /**
- * <p>
- *   钉钉签名工具类
- * </p>
- * @author zoe zheng
- * @date 2021/5/6 10:20 上午
+ *  DingTalk Signature Tool
  */
 public class DingTalkSignatureUtil {
     private static final String DEFAULT_ENCODING = "UTF-8";
@@ -51,9 +46,9 @@ public class DingTalkSignatureUtil {
     }
 
     /**
-     * param参数转换成url的query标准字符串,默认编码UTF-8
+     * The param parameter is converted into the query standard string of the url, and the default encoding is UTF-8
      *
-     * @param params
+     * @param params params map
      * @return query string
      */
     public static String paramToQueryString(Map<String, String> params) {

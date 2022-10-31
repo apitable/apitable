@@ -10,11 +10,7 @@ import me.chanjar.weixin.common.util.xml.XStreamCDataConverter;
 import me.chanjar.weixin.cp.bean.message.WxCpTpXmlMessage;
 
 /**
- * <p>
- * 企微服务商消息通知解密后的内容，增加了订单等信息
- * </p>
- * @author 刘斌华
- * @date 2022-04-22 10:02:06
+ * Enterprise and micro service provider messages notify the decrypted content, adding information such as orders
  */
 @Setter
 @Getter

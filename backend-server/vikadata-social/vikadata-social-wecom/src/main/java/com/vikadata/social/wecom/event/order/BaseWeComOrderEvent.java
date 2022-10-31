@@ -7,11 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 企微订单基础内容
- * </p>
- * @author 刘斌华
- * @date 2022-08-10 11:15:19
+ * Wecom order basic content
  */
 @Setter
 @Getter
@@ -19,17 +15,17 @@ import lombok.ToString;
 public abstract class BaseWeComOrderEvent implements Serializable {
 
     /**
-     * 应用套件 ID
+     * Application Suite ID
      */
     private String suiteId;
 
     /**
-     * 下单的企业 ID
+     * The business ID of the order
      */
     private String paidCorpId;
 
     /**
-     * 企微订单号
+     * Enterprise order id
      */
     private String orderId;
 

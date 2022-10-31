@@ -5,28 +5,20 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * <p>
- * 企业微信基础公共配置
- * </p>
- *
- * @author Pengap
- * @date 2021/8/2 19:09:14
- */
 @Getter
 @Setter
 public class WeComConfig {
 
     /*
-     * 存储模式
-     * 目前支持：memory、redis
+     * storage mode
+     * supported：memory、redis
      */
     private String storageType;
 
-    // 存储Redis 目录前缀
+    // Redis prefix
     private String keyPrefix;
 
-    // vika显示企业应用Id
+    // wecom app id
     private String vikaWeComAppId;
 
     private List<InitMenu> initMenus;
@@ -34,7 +26,7 @@ public class WeComConfig {
     private OperateEnpDdns operateEnpDdns;
 
     /**
-     * 第三方服务商应用配置列表
+     * isv service provider application configuration list
      */
     private List<IsvApp> isvAppList;
 
@@ -69,54 +61,47 @@ public class WeComConfig {
 
     }
 
-    /**
-     * <p>
-     * 第三方服务商配置
-     * </p>
-     * @author 刘斌华
-     * @date 2022-01-05 10:02:47
-     */
     @Setter
     @Getter
     public static class IsvApp {
 
         /**
-         * 企业 ID
+         * service corp ID
          */
         private String corpId;
 
         /**
-         * 服务商密钥
+         * service provider key
          */
         private String providerSecret;
 
         /**
-         * 应用套件 ID
+         * application suite id
          */
         private String suiteId;
 
         /**
-         * 应用套件密钥
+         * application suite secret
          */
         private String suiteSecret;
 
         /**
-         * 应用 Token
+         * application token
          */
         private String token;
 
         /**
-         * 应用 AES 密钥
+         * application aes key
          */
         private String aesKey;
 
         /**
-         * 注册模板 ID
+         * register success message template id
          */
         private String templateId;
 
         /**
-         * 邀请成员模板消息 ID
+         * invitation member success message ID
          */
         private String inviteTemplateId;
 

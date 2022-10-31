@@ -4,17 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p> 
- * 卡片消息
- * </p> 
- * @author zoe zheng 
- * @date 2021/4/21 11:56 上午
+ * Card message
  */
 public class ActionCardMessage implements Message {
     public static final String ACTION_CARD_MSG_TYPE = "action_card";
 
     /**
-     * 卡片消息的object action_card
+     * object action_card for the card message
      */
     private Component actionCard;
 
@@ -25,12 +21,12 @@ public class ActionCardMessage implements Message {
         this.actionCard = actionCard;
     }
 
-    public void setActionCard(Component actionCard) {
-        this.actionCard = actionCard;
-    }
-
     public Component getActionCard() {
         return actionCard;
+    }
+
+    public void setActionCard(Component actionCard) {
+        this.actionCard = actionCard;
     }
 
     @Override

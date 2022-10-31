@@ -3,10 +3,7 @@ package com.vikadata.social.core;
 import java.util.concurrent.locks.Lock;
 
 /**
- * 配置存储接口
- *
- * @author Shawn Deng
- * @date 2020-11-21 12:33:04
+ * configuring storage interfaces
  */
 public interface ConfigStorage {
 

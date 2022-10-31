@@ -1,15 +1,14 @@
 package com.vikadata.social.feishu.event.bot;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vikadata.social.feishu.annotation.FeishuEvent;
-import com.vikadata.social.feishu.event.BaseEvent;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.vikadata.social.feishu.annotation.FeishuEvent;
+import com.vikadata.social.feishu.event.BaseEvent;
+
 /**
- * 机器人被邀请加入群聊时事件
- * @author Shawn Deng
- * @date 2020-12-23 19:36:10
+ * Event when a bot is invited to a group chat
  */
 @Setter
 @Getter
@@ -43,6 +42,7 @@ public class AddBotEvent extends BaseEvent {
     public static class ChatI18nNames {
 
         private String enUs;
+
         private String zhCn;
     }
 }

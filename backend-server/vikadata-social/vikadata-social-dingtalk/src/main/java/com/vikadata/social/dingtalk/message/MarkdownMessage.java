@@ -4,18 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p> 
- * Markdown消息
- * </p> 
- * @author zoe zheng 
- * @date 2021/4/21 11:56 上午
+ * Markdown messages
  */
 public class MarkdownMessage implements Message {
 
     /**
-     * 卡片消息的object action_card
+     * object action_card for the card message
      */
     private final Component markdown;
+
     public MarkdownMessage(Component markdown) {
         this.markdown = markdown;
     }

@@ -20,11 +20,7 @@ import com.vikadata.social.service.dingtalk.service.IDingTalkOpenSyncBizDataServ
 import org.springframework.stereotype.Service;
 
 /**
- * <p> 
- * 第三方集成 - 高优先级数据服务类
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 15:30
+ * Third Party Integration - High Priority Data Service Class
  */
 @Service
 @Slf4j
@@ -41,7 +37,7 @@ public class DingTalkOpenSyncBizDataServiceImpl extends ServiceImpl<DingTalkOpen
         Lock lock = dingTalkRedisOperations.getLock(lockKey);
         boolean locked = false;
         try {
-            // 就算接收到了数据，同一时间只能一个客户端处理
+            // Even if data is received, only one client can process it at the same time
             locked = lock.tryLock();
             if (locked) {
                 DingTalkOpenSyncBizDataEntity entity = new DingTalkOpenSyncBizDataEntity();
@@ -56,7 +52,7 @@ public class DingTalkOpenSyncBizDataServiceImpl extends ServiceImpl<DingTalkOpen
             }
         }
         catch (Exception e) {
-            log.error("写入推送数据异常:{}:{}", bizId, bizType, e);
+            log.error("Write push data exception:{}:{}", bizId, bizType, e);
         }
         finally {
             if (locked) {

@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 响应基础结构
- *
- * @author Zoe Zheng
- * @date 2021-04-06 17:40:17
+ * responsive infrastructure
  */
 @Setter
 @Getter

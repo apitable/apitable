@@ -4,12 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p>
- * 标题背景颜色
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 13:28
+ * title background color
  */
 @Getter
 @AllArgsConstructor

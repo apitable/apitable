@@ -8,10 +8,7 @@ import com.vikadata.social.core.AppTicketStorage;
 import com.vikadata.social.core.SocialRedisOperations;
 
 /**
- * 飞书 APP ticket 实现存储接口
- *
- * @author Shawn Deng
- * @date 2020-11-19 19:27:12
+ * Feishu APP ticket implements storage interface
  */
 public class AppTicketInRedisStorage implements AppTicketStorage {
 

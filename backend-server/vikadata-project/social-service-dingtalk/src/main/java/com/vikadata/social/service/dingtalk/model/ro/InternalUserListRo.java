@@ -5,27 +5,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * <p> 
- * 内部接口调用--获取钉钉部门用户详细列表参数
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/15 12:31 下午
+ * Internal interface call--get the parameters of the detailed list of users in the DingTalk department
  */
 @Data
-@ApiModel(value = "内部接口调用--获取钉钉部门用户详细列表参数")
+@ApiModel(value = "Internal interface call--get the parameters of the detailed list of users in the DingTalk department")
 public class InternalUserListRo {
-    @ApiModelProperty(value = "套件ID", dataType = "java.lang.String", example = "12345", required = true)
+    @ApiModelProperty(value = "suiteId", dataType = "java.lang.String", example = "12345", required = true)
     private String suiteId;
 
-    @ApiModelProperty(value = "授权企业ID", dataType = "java.lang.String", example = "corpdfkdaj", required = true)
+    @ApiModelProperty(value = "authCorpId", dataType = "java.lang.String", example = "corpdfkdaj", required = true)
     private String authCorpId;
 
-    @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1234L", required = true)
+    @ApiModelProperty(value = "deptId", dataType = "java.lang.String", example = "1234L", required = true)
     private Long deptId;
 
-    @ApiModelProperty(value = "分页查询的游标", dataType = "java.lang.Integer", example = "0")
+    @ApiModelProperty(value = "cursor", dataType = "java.lang.Integer", example = "0")
     private Integer cursor = 0;
 
-    @ApiModelProperty(value = "分页大小", dataType = "java.lang.Integer", example = "100")
+    @ApiModelProperty(value = "size", dataType = "java.lang.Integer", example = "100")
     private Integer size = 100;
 }

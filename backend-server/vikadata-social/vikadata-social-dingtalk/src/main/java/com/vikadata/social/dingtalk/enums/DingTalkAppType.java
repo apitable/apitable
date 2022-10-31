@@ -4,27 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 图片机器审核的结果类型
- *
- * @author Benson Cheung
- * @since 2020/03/21
+ * Types of Results for Image Machine Review
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkAppType {
 
     /**
-     * 移动接入应用
+     * mobile application
      */
     MOBILE_APP("mobile-app"),
 
     /**
-     * 企业内部h5应用
+     * h5 application
      */
     H5_APP("h5-app"),
 
     /**
-     * 定制服务app
+     * Customized service app
      */
     AGENT_APP("agent-app");
 

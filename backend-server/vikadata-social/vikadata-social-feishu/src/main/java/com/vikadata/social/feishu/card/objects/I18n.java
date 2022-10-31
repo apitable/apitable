@@ -1,17 +1,12 @@
 package com.vikadata.social.feishu.card.objects;
 
-import com.vikadata.social.feishu.card.CardComponent;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import com.vikadata.social.feishu.card.CardComponent;
+
 /**
- * <p>
- * 卡片标题-国际化
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 12:57
+ * Card Title - Internationalization
  */
 public class I18n implements CardComponent {
 

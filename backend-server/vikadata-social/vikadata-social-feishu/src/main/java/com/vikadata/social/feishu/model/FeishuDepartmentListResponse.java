@@ -1,16 +1,13 @@
 package com.vikadata.social.feishu.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 /**
- * 获取子部门列表
- *
- * @author Shawn Deng
- * @date 2020-11-23 16:06:27
+ * Get a list of sub-departments
  */
 @Setter
 @Getter

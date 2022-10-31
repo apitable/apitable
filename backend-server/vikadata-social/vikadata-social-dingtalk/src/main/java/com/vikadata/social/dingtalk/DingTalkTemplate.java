@@ -23,12 +23,6 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-/**
- * 钉钉服务接口
- *
- * @author Shawn Deng
- * @date 2021-01-07 14:45:07
- */
 public class DingTalkTemplate extends ApiBinding implements DingTalk {
 
     private final DingtalkConfig dingTalkConfig;
@@ -66,7 +60,7 @@ public class DingTalkTemplate extends ApiBinding implements DingTalk {
     }
 
     public void initAppApis() {
-        // 移动端不需要存储token
+        // The mobile app does not need to store the token
         mobileAppOperations = new MobileAppTemplate(getRestTemplate(), dingTalkConfig);
         corpH5AppOperations = new CorpH5AppTemplate(getRestTemplate(), dingTalkConfig, configStorage);
         serviceCorpAppOperations = new ServiceCorpAppTemplate(getRestTemplate(), dingTalkConfig, configStorage);
@@ -91,16 +85,15 @@ public class DingTalkTemplate extends ApiBinding implements DingTalk {
     @Override
     public IsvAppOperations isvAppOperations() {
         if (isvAppOperations == null) {
-            throw new IllegalStateException("第三方应用接口为定义");
+            throw new IllegalStateException("DingTalk isv app operation not find");
         }
         return isvAppOperations;
     }
 
     @Override
     protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
-        // 配置消息转换器
+        // Configure message converters
         MappingJackson2HttpMessageConverter converter = super.getJsonMessageConverter();
-        // 参数都是下划线格式,而响应结构的属性也是下划线
         converter.getObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         converter.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return converter;
@@ -109,13 +102,12 @@ public class DingTalkTemplate extends ApiBinding implements DingTalk {
 
     private void configureRestTemplate() {
         super.setRequestFactory(bufferRequestWrapper(getRestTemplate().getRequestFactory()));
-        // 设置请求拦截器
+        // Set up a request interceptor
         getRestTemplate().getInterceptors().add(userAgentInterceptor());
     }
 
     /**
-     * 抽象基类已经设置默认的请求客户端工厂，再次包装请求，响应体流可重复读取
-     *
+     * The abstract base class has set the default request client factory, wraps the request again, and the response body stream can be read repeatedly
      * @param requestFactory Request factory
      * @return ClientHttpRequestFactory
      */

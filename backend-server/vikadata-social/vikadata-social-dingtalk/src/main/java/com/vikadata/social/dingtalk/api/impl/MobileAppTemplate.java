@@ -13,11 +13,7 @@ import com.vikadata.social.dingtalk.model.UserInfo;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * <p> 
- * 移动接入应用管理接口实现类
- * </p> 
- * @author zoe zheng 
- * @date 2021/4/19 3:31 下午
+ * Mobile access application management interface implementation class
  */
 public class MobileAppTemplate extends AbstractDingTalkOperations implements MobileAppOperations {
     private static final String SNS_GET_USER_INFO_URL = "/sns/getuserinfo_bycode";

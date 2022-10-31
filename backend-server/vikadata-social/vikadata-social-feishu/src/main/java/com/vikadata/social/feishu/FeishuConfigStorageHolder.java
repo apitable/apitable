@@ -3,9 +3,7 @@ package com.vikadata.social.feishu;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 当前sdk调用应用ID变量存储器，只存在于线程中
- * @author Shawn Deng
- * @date 2022-01-18 21:57:28
+ * The current sdk calls the application variable memory, which only exists in the thread
  */
 @Slf4j
 public class FeishuConfigStorageHolder {
@@ -21,7 +19,8 @@ public class FeishuConfigStorageHolder {
     }
 
     /**
-     * 此方法需要用户根据自己程序代码，在适当位置手动触发调用，本SDK里无法判断调用时机
+     * This method requires the user to manually trigger the call at the appropriate location
+     * according to their own program code, and the timing of the call cannot be determined in this SDK
      */
     public static void remove() {
         HOLDER.remove();

@@ -32,12 +32,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * <p>
- * 企业微信模板操作抽象类
- * </p>
- *
- * @author Pengap
- * @date 2021/7/28 16:51:41
+ * WeCom template operation abstract class
  */
 public abstract class AbstractWeComTemplate {
 
@@ -57,7 +52,7 @@ public abstract class AbstractWeComTemplate {
     // key：corpId + agentId
     protected static Map<String, WxCpService> cpServices = Maps.newConcurrentMap();
 
-    // key：corpId + agentId , 缓存临时授权的服务，默认超时时间2小时
+    // key：corpId + agentId , cache temporarily authorized services, the default timeout is 2 hours
     protected static TimedCache<String, WxCpService> cpServicesByTempAuth = CacheUtil.newTimedCache(Duration.ofHours(2).toMillis());
 
     public AbstractWeComTemplate() {
@@ -65,42 +60,40 @@ public abstract class AbstractWeComTemplate {
     }
 
     /**
-     * 抽象的开启API的Service
-     *
-     * @return 微信API的Service
+     * Abstract Service that opens API
+     * @return WxCpService
      */
     public abstract WxCpService openService();
 
     /**
-     * 抽象的关闭API的Service
+     * Abstract Service that closes the API
      */
     public abstract void closeService();
 
     /**
-     * 获取企业微信基础公共配置
+     * Get the basic public configuration of WeCom
      */
     public WeComConfig getConfig() {
         return weComConfig;
     }
 
     /**
-     * 合并key
+     * merge key
      */
     public String mergeKey(String corpId, Integer agentId) {
         return String.format("%s-%s", corpId, agentId);
     }
 
     /**
-     * 获取缓存配置文件前缀
+     * Get cache configuration file prefix
      */
     public String getCacheConfigKeyPrefix() {
         return getCacheConfigKeyPrefix(false);
     }
 
     /**
-     * 获取缓存配置文件前缀
-     *
-     * @param isTemp    是否临时
+     * Get cache configuration file prefix
+     * @param isTemp Is temporary
      */
     public String getCacheConfigKeyPrefix(boolean isTemp) {
         String prefix = StrUtil.isBlank(weComConfig.getKeyPrefix()) ? "" : StrUtil.appendIfMissing(weComConfig.getKeyPrefix(), ":");
@@ -108,20 +101,18 @@ public abstract class AbstractWeComTemplate {
     }
 
     /**
-     * 查询当前是否缓存服务
-     * 无法查询临时授权服务
-     *
-     * @param key   缓存key
+     * Query whether the current cache service
+     * Unable to query temporary authorization service
+     * @param key  cache key
      */
     public boolean isExistService(String key) {
         return isExistService(key, false);
     }
 
     /**
-     * 查询当前是否缓存服务
-     *
-     * @param key               缓存key
-     * @param isTempAuthService 查询临时服务
+     * Query whether the current cache service
+     * @param key               cache key
+     * @param isTempAuthService Query temporary services
      */
     public boolean isExistService(String key, boolean isTempAuthService) {
         if (isTempAuthService) {
@@ -131,24 +122,23 @@ public abstract class AbstractWeComTemplate {
     }
 
     /**
-     * 动态添加企业微信服务类
-     *
-     * @param corpId 企业Id
-     * @param agentId 应用Id
-     * @param agentSecret 应用密钥
+     * Dynamically add enterprise WeCom service class
+     * @param corpId corp Id
+     * @param agentId agent id
+     * @param agentSecret agent secret key
      */
     public WxCpService addService(String corpId, Integer agentId, String agentSecret) {
         return addService(corpId, agentId, agentSecret, false, -1);
     }
 
     /**
-     * 动态添加企业微信服务类
+     * Dynamically add enterprise WeCom service class
      *
-     * @param corpId            企业Id
-     * @param agentId           应用Id
-     * @param agentSecret       应用密钥
-     * @param isTempAuthService 是否临时授权
-     * @param timeout           临时授权超时时间
+     * @param corpId            corp Id
+     * @param agentId           agent id
+     * @param agentSecret       agent secret key
+     * @param isTempAuthService Is it temporarily authorized
+     * @param timeout           Temporary authorization timeout
      */
     public WxCpService addService(String corpId, Integer agentId, String agentSecret, boolean isTempAuthService, long timeout) {
         WxCpService service;
@@ -164,12 +154,12 @@ public abstract class AbstractWeComTemplate {
                     break;
                 }
                 default:
-                    throw new IllegalStateException("构造企业微信服务【" + weComConfig.getStorageType() + "】策略不存在.");
+                    throw new IllegalStateException("Construct enterprise WeCom service[" + weComConfig.getStorageType() + "] policy does not exist.");
             }
             cpServices.put(key, service);
         }
         else {
-            // 临时授权服务无法使用 Redis模式，自动切换为内存构建模式
+            // The temporary authorization service cannot use Redis mode and automatically switches to in-memory build mode
             service = this.memoryBulid(corpId, agentId, agentSecret);
             cpServicesByTempAuth.put(key, service, timeout);
             return service;
@@ -178,7 +168,7 @@ public abstract class AbstractWeComTemplate {
     }
 
     /**
-     * 使用内存方式构建Service
+     * Build Services in Memory
      */
     private WxCpService memoryBulid(String corpId, Integer agentId, String agentSecret) {
         WxCpService service = new WxCpServiceImpl();
@@ -187,17 +177,18 @@ public abstract class AbstractWeComTemplate {
         configStorage.setAgentId(agentId);
         configStorage.setCorpSecret(agentSecret);
         service.setWxCpConfigStorage(configStorage);
-        // 由于没有配置回调业务，这里不实例化 tiken、aesKey
+        // Since no callback service is configured, ticket and aesKey are not instantiated here
         return service;
     }
 
     /**
-     * 使用Redis方式构建Service
+     * Use Redis to build Service
      */
     private WxCpService redisBulid(String corpId, Integer agentId, String agentSecret) {
         WxCpService service = new WxCpServiceImpl();
         if (null == stringRedisTemplate) {
-            throw new RuntimeException("构造失败：当前无法获取Redis连接，可以尝试使用：Memory模式.");
+            throw new RuntimeException("Construction failed: Currently unable to get Redis connection, you can try to "
+                    + "use: Memory mode.");
         }
         WxRedisOps redisOps = new RedisTemplateWxRedisOps(stringRedisTemplate);
 
@@ -210,14 +201,14 @@ public abstract class AbstractWeComTemplate {
     }
 
     /**
-     * 移除临时授权服务
+     * Remove temporary authorization service
      */
     public void removeCpServicesByTempAuth(String key) {
         cpServicesByTempAuth.remove(key);
     }
 
     /**
-     * 创建RestTemplate
+     * create RestTemplate
      */
     private RestTemplate createRestTemplate() {
         RestTemplate client = new RestTemplate();
@@ -226,14 +217,14 @@ public abstract class AbstractWeComTemplate {
     }
 
     /**
-     * 获取RestTemplate
+     * get RestTemplate
      */
     protected RestTemplate getRestTemplate() {
         return restTemplate;
     }
 
     /**
-     * https请求工厂
+     * https request factory
      */
     public HttpComponentsClientHttpRequestFactory generateHttpsRequestFactory() {
         try {
@@ -250,7 +241,7 @@ public abstract class AbstractWeComTemplate {
             return factory;
         }
         catch (Exception e) {
-            throw new RuntimeException("创建连接失败", e);
+            throw new RuntimeException("create connection error", e);
         }
     }
 

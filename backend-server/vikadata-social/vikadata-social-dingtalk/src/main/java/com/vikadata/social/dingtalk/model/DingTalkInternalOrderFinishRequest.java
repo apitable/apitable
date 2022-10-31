@@ -5,18 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 获取内购商品SKU页面地址
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 17:25
+ * Get the SKU page address of in-app purchase products
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkInternalOrderFinishRequest {
     /**
-     * 内购订单号。
+     * In-app purchase order number.
      */
     private Long bizOrderId;
 }

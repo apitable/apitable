@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 企业用户人数
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * Number of enterprise users
  */
 @Setter
 @Getter

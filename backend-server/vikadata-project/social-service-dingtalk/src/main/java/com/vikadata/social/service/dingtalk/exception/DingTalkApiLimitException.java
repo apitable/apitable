@@ -3,9 +3,7 @@ package com.vikadata.social.service.dingtalk.exception;
 import com.vikadata.social.dingtalk.exception.DingTalkExceptionConstants;
 
 /**
- * api 限流异常
- *
- * @author Zoe Zheng
+ * api current limit exception
  */
 public class DingTalkApiLimitException extends RuntimeException {
 

@@ -7,23 +7,19 @@ import lombok.ToString;
 import com.vikadata.social.dingtalk.event.sync.http.BaseSyncHttpEvent;
 
 /**
- * <p> 
- * 事件列表 -- 基础订单信息
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 11:42
+ * Event List -- Basic Order Information
  */
 @Setter
 @Getter
 @ToString
 public class BaseOrderEvent extends BaseSyncHttpEvent {
     /**
-     * 订单ID。
+     * Order ID.
      */
     private String orderId;
 
     /**
-     * 用户购买套件的suiteKey。
+     * The suite Key for the user to purchase the suite.
      */
     private String suiteKey;
 
@@ -34,42 +30,41 @@ public class BaseOrderEvent extends BaseSyncHttpEvent {
     private String itemName;
 
     /**
-     *
-     * 规格码。
+     * Specification code.
      */
     private String itemCode;
 
     /**
-     * 购买数量。
+     * Purchase quantity.
      */
     private String subQuantity;
 
     /**
-     * 服务开始时间（单位：毫秒）。
+     * Service start time (unit: milliseconds).
      */
     private Long serviceStartTime;
 
     /**
-     * 服务结束时间（单位：毫秒）。
+     * Service end time (unit: milliseconds).
      */
     private Long serviceStopTime;
 
     /**
      * payFee
-     * 实际支付价格（单位：分）。
-     * 说明 当商品类型articleType为image时不返回此字段。
+     * The actual price paid (unit: cents).
+     * Description: This field is not returned when the articleType is image.
      */
     private Long payFee;
 
     /**
-     * 内购商品关联的主应用商品code。
-     * 说明 当订单为内购商品订单时该字段有值。
+     * The main app product code associated with the in-app purchase product.
+     * Description: This field has a value when the order is an in-app purchase order.
      */
     private String mainGoodsCode;
 
     /**
-     * 内购商品关联的主应用商品名称。
-     * 说明 当订单为内购商品订单时该字段有值。
+     * The name of the main app product associated with the in-app purchase product.
+     * Description: This field has a value when the order is an in-app purchase order.
      */
     private String mainGoodsName;
 }

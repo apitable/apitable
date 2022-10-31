@@ -5,40 +5,28 @@ import com.vikadata.social.dingtalk.api.IsvAppOperations;
 import com.vikadata.social.dingtalk.api.MobileAppOperations;
 import com.vikadata.social.dingtalk.api.ServiceCorpAppOperations;
 
-/**
- * 飞书相关接口
- *
- * @author Shawn Deng
- * @date 2020-11-18 15:23:21
- */
 public interface DingTalk {
 
     /**
-     * 移动接入接口
-     *
-     * @return 移动接入接口
+     * mobile access interface
+     * @return MobileAppOperations
      */
     MobileAppOperations mobileAppOperations();
 
     /**
-     * 企业内部应用接口
-     *
-     * @return 企业内部应用接口
+     * Internal application interface
+     * @return CorpAppOperations
      */
     CorpAppOperations corpAppOperations();
 
     /**
-     * 授权第三方企业开发的内部应用接口
-     *
-     * @return 授权第三方企业开发的内部应用接口
+     * Authorized internal application interfaces developed by third-party companies
+     * @return Authorized internal application operations developed by isv companies
      */
     ServiceCorpAppOperations serviceCorpAppOperations();
 
     /**
-     * 第三方应用市场应用接口
-     *
-     * @author zoe zheng
-     * @date 2021/9/1 6:30 下午
+     * isv market application interface
      */
     IsvAppOperations isvAppOperations();
 }

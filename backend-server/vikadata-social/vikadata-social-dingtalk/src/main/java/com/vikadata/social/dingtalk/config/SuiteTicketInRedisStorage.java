@@ -9,27 +9,23 @@ import cn.hutool.core.util.StrUtil;
 import com.vikadata.social.core.AppTicketStorage;
 
 /**
- * <p> 
- * 钉钉 APP ticket 实现存储接口，每五个小时推送一次
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/6 9:52 下午
+ * DingTalk APP ticket implements the storage interface and pushes it every five hours
  */
 public class SuiteTicketInRedisStorage implements AppTicketStorage {
 
     private static final String LOCK_KEY_TPL = "%s:dingtalk:suite_ticket:lock:%s";
+
+    private final DingTalkRedisOperations redisOps;
+
+    private final String redisKeyPrefix;
+
+    protected volatile Lock ticketLock = new ReentrantLock();
 
     private volatile String suiteId;
 
     private volatile String corpId;
 
     private volatile String ticketKey;
-
-    protected volatile Lock ticketLock = new ReentrantLock();
-
-    private final DingTalkRedisOperations redisOps;
-
-    private final String redisKeyPrefix;
 
     public SuiteTicketInRedisStorage(DingTalkRedisOperations redisOps, String redisKeyPrefix) {
         this.redisOps = redisOps;
@@ -56,7 +52,7 @@ public class SuiteTicketInRedisStorage implements AppTicketStorage {
     public String getTicket() {
         String ticket = redisOps.getValue(ticketKey);
         if (StrUtil.isBlank(ticket)) {
-            throw new IllegalStateException(suiteId + ":suiteTicket没有下发请稍后再试");
+            throw new IllegalStateException(suiteId + ":Suite Ticket is not issued, please try again later");
         }
         return ticket;
     }

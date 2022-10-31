@@ -17,10 +17,7 @@ import com.vikadata.social.feishu.model.FeishuSendMessageRequest;
 import com.vikadata.social.feishu.model.FeishuSendMessageResponse;
 
 /**
- * 消息 接口
- *
- * @author Shawn Deng
- * @date 2020-12-02 10:54:52
+ * message interface
  */
 public class MessageTemplate extends AbstractFeishuOperations implements MessageOperations {
 

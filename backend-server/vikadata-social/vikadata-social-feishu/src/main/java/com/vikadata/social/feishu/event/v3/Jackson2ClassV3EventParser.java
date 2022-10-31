@@ -9,12 +9,8 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.vikadata.social.feishu.event.contact.v3.BaseV3ContactEvent;
 
 /**
- * 事件内容转换成事件对象 {@link BaseV3ContactEvent}
- * <p>
- * 支持下划线转驼峰
- *
- * @author Shawn Deng
- * @date 2020-11-24 18:09:29
+ * Convert event content to event object {@link BaseV3ContactEvent},
+ * Support underscore to hump
  */
 public class Jackson2ClassV3EventParser implements V3ContactEventParser {
 
@@ -24,7 +20,7 @@ public class Jackson2ClassV3EventParser implements V3ContactEventParser {
 
     Jackson2ClassV3EventParser(Class<? extends BaseV3ContactEvent> clazz) {
         this.clazz = clazz;
-        // 设置下划线转换驼峰
+        // set underscore to convert camel case
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 调用企业域域名DdnsApi基础响应数据
- * </p>
- *
- * @author Pengap
- * @date 2021/8/3 14:31:37
+ * Call the enterprise domain domain name Ddns Api basic response data
  */
 @Getter
 @Setter

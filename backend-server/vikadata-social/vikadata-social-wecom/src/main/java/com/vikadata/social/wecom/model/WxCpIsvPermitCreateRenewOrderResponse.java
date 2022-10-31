@@ -10,24 +10,20 @@ import me.chanjar.weixin.cp.bean.WxCpBaseResp;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 创建账号续期任务
- * </p>
- * @author 刘斌华
- * @date 2022-07-04 14:57:09
+ * Create Account Renewal Task
  */
 @Getter
 @Setter
 public class WxCpIsvPermitCreateRenewOrderResponse extends WxCpBaseResp {
 
     /**
-     * 任务id，请求包中未指定jobid时，会生成一个新的jobid返回
+     * Job id, when no jobid is specified in the request package, a new jobid will be generated and returned
      */
     @SerializedName("jobid")
     private String jobId;
 
     /**
-     * 不合法的续期账号列表
+     * List of illegal renewal accounts
      */
     @SerializedName("invalid_account_list")
     private List<InvalidAccountList> invalidAccountList;
@@ -45,25 +41,25 @@ public class WxCpIsvPermitCreateRenewOrderResponse extends WxCpBaseResp {
     public static class InvalidAccountList implements Serializable {
 
         /**
-         * 账号不合法相关错误码
+         * Illegal account related error code
          */
         @SerializedName("errcode")
         private Integer errCode;
 
         /**
-         * 账号不合法相关错误描述
+         * Account is illegal related error description
          */
         @SerializedName("errmsg")
         private String errMsg;
 
         /**
-         * 续期企业的成员userid。只支持加密的userid
+         * Member userid of the renewing enterprise. Only supports encrypted userid
          */
         @SerializedName("userid")
         private String userId;
 
         /**
-         * 续期帐号类型。1:基础帐号，2:互通帐号
+         * Renewal account type. 1: Basic account, 2: Interworking account
          */
         @SerializedName("type")
         private Integer type;

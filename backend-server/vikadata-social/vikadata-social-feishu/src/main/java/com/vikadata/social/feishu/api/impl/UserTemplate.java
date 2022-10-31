@@ -16,9 +16,7 @@ import com.vikadata.social.feishu.model.v3.FeishuV3UsersRequest;
 import com.vikadata.social.feishu.model.v3.FeishuV3UsersResponse;
 
 /**
- * 用户管理接口
- * @author Shawn Deng
- * @date 2020-11-18 15:48:41
+ * User management interface
  */
 public class UserTemplate extends AbstractFeishuOperations implements UserOperations {
 

@@ -1,10 +1,7 @@
 package com.vikadata.social.feishu;
 
 /**
- * 消息接收者 构造器
- *
- * @author Shawn Deng
- * @date 2020-12-02 12:18:04
+ * message receiver constructor
  */
 public class MessageReceiverBuilder {
 

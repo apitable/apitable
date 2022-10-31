@@ -1,10 +1,7 @@
 package com.vikadata.social.feishu.card;
 
 /**
- * 卡片消息
- *
- * @author Shawn Deng
- * @date 2020-12-01 17:35:18
+ * Card message
  */
 public class CardMessage implements Message {
 

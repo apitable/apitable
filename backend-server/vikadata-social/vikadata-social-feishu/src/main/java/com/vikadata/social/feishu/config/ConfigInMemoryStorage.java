@@ -14,11 +14,7 @@ import javax.crypto.NoSuchPaddingException;
 import lombok.Getter;
 
 /**
- * 基于内存的配置存储
- * 生产环境应该是持久化管理最佳
- *
- * @author Shawn Deng
- * @date 2020-11-25 16:39:58
+ * Memory-based configuration storage Production environment should be best for persistence management
  */
 public class ConfigInMemoryStorage implements FeishuConfigStorage, Serializable {
 
@@ -31,12 +27,12 @@ public class ConfigInMemoryStorage implements FeishuConfigStorage, Serializable 
     protected volatile boolean isv;
 
     /**
-     * 数据加密密钥
+     * data encryption key
      */
     protected volatile String encryptKey;
 
     /**
-     * 事件验证令牌
+     * event verification token
      */
     protected volatile String verificationToken;
 

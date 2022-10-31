@@ -5,11 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 用户状态
- * 新版通讯录事件
- *
- * @author Shawn Deng
- * @date 2020-12-24 12:08:15
+ * user status,
+ * new contacts events
  */
 @Setter
 @Getter

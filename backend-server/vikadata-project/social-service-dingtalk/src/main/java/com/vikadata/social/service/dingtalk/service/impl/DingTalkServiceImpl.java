@@ -45,10 +45,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 
 /**
- * 钉钉开放平台接口实现类
- *
- * @author Zoe Zheng
- * @date 2021-09-01 18:28:37
+ * DingTalk open platform interface implementation class
  */
 @Service
 @Slf4j
@@ -83,10 +80,10 @@ public class DingTalkServiceImpl implements IDingTalkService {
             }
             catch (DingTalkApiException e) {
                 if (e.isLimitError()) {
-                    log.error("获取部门用户列表触发限流:{}:{}:{}", e.getCode(), e.getMessage(), context.getRetryCount());
+                    log.error("Get the department user list to trigger current limit: {}:{}:{}", e.getCode(), e.getMessage(), context.getRetryCount());
                     throw new DingTalkApiLimitException(e.getCode(), e.getMessage());
                 }
-                log.error("获取部门用户列表失败:{}:{}", authCorpId, deptId, e);
+                log.error("Failed to get department user list:{}:{}", authCorpId, deptId, e);
                 return null;
             }
         });
@@ -100,10 +97,10 @@ public class DingTalkServiceImpl implements IDingTalkService {
             }
             catch (DingTalkApiException e) {
                 if (e.isLimitError()) {
-                    log.error("获取subId触发限流:{}:{}:{}", e.getCode(), e.getMessage(), context.getRetryCount());
+                    log.error("Get sub Id to trigger current limit:{}:{}:{}", e.getCode(), e.getMessage(), context.getRetryCount());
                     throw new DingTalkApiLimitException(e.getCode(), e.getMessage());
                 }
-                log.error("获取子部门ID失败:{}:{}", authCorpId, deptId, e);
+                log.error("Failed to get subdepartment ID: {}:{}", authCorpId, deptId, e);
                 return null;
             }
         });
@@ -120,7 +117,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             return dingTalkTemplate.isvAppOperations().activateSuite(suiteId, authCorpId, permanentCode);
         }
         catch (DingTalkApiException e) {
-            log.error("激活应用失败:{}", suiteId);
+            log.error("Failed to activate app: {}", suiteId);
         }
         return false;
     }
@@ -131,7 +128,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             return dingTalkTemplate.isvAppOperations().getAuthCorpInfo(suiteId, authCorpId);
         }
         catch (DingTalkApiException e) {
-            log.info("获取企业授权信息异常:{}:{}:{}", suiteId, authCorpId, e.getMessage());
+            log.info("Exception in obtaining enterprise authorization information: {}:{}:{}", suiteId, authCorpId, e.getMessage());
         }
         return null;
     }
@@ -196,9 +193,9 @@ public class DingTalkServiceImpl implements IDingTalkService {
     @Override
     public void getUserTreeList(String suiteId, String authCorpId, List<String> subDeptIds, HashMap<String,
             DingTalkUserDto> userMap) {
-        // 算出所有部门ID
+        // Calculate all department IDs
         for (String deptId : subDeptIds) {
-            // 过滤家校通讯录
+            // filter home school contacts
             DingTalkDepartmentSubIdListResponse response = getDepartmentSubIdList(suiteId, authCorpId,
                     Long.parseLong(deptId));
             if (response != null) {
@@ -217,7 +214,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
         HashMap<String, DingTalkUserDto> users = MapUtil.newHashMap();
         boolean hasMoreUser = false;
         int cursor = 0;
-        // 加载部门的全部用户
+        // Load all users of a department
         do {
             DingTalkUserListResponse response = getUserDetailList(suiteId, authCorpId, deptId, cursor, 100);
             if (response != null) {

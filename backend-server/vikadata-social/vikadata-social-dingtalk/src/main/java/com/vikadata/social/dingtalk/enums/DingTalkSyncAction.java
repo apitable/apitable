@@ -4,114 +4,125 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p>
- * 钉钉订阅事件--数据格式类型
- * </p>
- * @author zoe zheng
- * @date 2021/5/12 7:48 下午
+ * Dingding Subscription Event--Data Format Type
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkSyncAction {
     /**
-     * 套件票据suiteTicket最新状态
+     * Suite Ticket latest status
      */
     DEFAULT("default"),
+
     /**
-     * 套件票据suiteTicket最新状态
+     * Suite Ticket latest status
      */
     SUITE_TICKET("suite_ticket"),
+
     /**
-     * 企业授权套件
+     * Enterprise Licensing Suite
      */
     ORG_SUITE_AUTH("org_suite_auth"),
+
     /**
-     * 企业变更授权范围
+     * Enterprise change authorization scope
      */
     ORG_SUITE_CHANGE("org_suite_change"),
+
     /**
-     * 表示企业解除授权
+     * Indicates that the company is de-authorized
      */
     ORG_SUITE_RELIEVE("org_suite_relieve"),
+
     /**
-     * 微应用启用
+     * Microapps enabled
      */
     ORG_MICRO_APP_RESTORE("org_micro_app_restore"),
+
     /**
      *
-     * 微应用停用
+     * Micro app deactivation
      */
     ORG_MICRO_APP_STOP("org_micro_app_stop"),
+
     /**
-     * 企业部门的最新状态
+     * The latest status of the corporate sector
      */
     ORG_MICRO_APP_REMOVE("org_micro_app_remove"),
+
     /**
-     * 微应用可见范围变更
+     * Microapp Visibility Changes
      */
     ORG_MICRO_APP_SCOPE_UPDATE("org_micro_app_scope_update"),
+
     /**
-     * 企业增加员工事件之后的员工信息
+     * Employee information after the company adds employee events
      */
     USER_ADD_ORG("user_add_org"),
+
     /**
-     * 企业增加员工事件之后的员工信息
+     * Employee information after the company adds employee events
      */
     USER_MODIFY_ORG("user_modify_org"),
+
     /**
-     * 企业增加员工事件之后的员工信息
+     * Employee information after the company adds employee events
      */
     USER_DEPT_CHANGE("user_dept_change"),
+
     /**
-     * 企业修改员工所在角色(包括管理员变更)事件之后的员工信息
+     * Employee information after the company modifies the role of the employee (including administrator change)
      */
     USER_ROLE_CHANGE("user_role_change"),
+
     /**
-     * 用户加入企业后的激活信息，active字段为true时表示已激活
+     * Activation information after the user joins the enterprise. When the active field is true, it means it has
+     * been activated.
      */
     USER_ACTIVATE_ORG("user_active_org"),
+
     /**
-     * 企业删除员工
-     * 删除员工userid从biz_id中获取
+     * Enterprise delete employee Delete employee userid from biz_id
      */
     USER_LEAVE_ORG("user_leave_org"),
+
     /**
-     * 创建部门
+     * Create a department
      */
     ORG_DEPT_CREATE("org_dept_create"),
+
     /**
-     * 创建部门
+     * Create a department
      */
     ORG_DEPT_MODIFY("org_dept_modify"),
+
     /**
-     * 企业删除部门
-     * 删除部门id从biz_id中获取
+     * Enterprise delete department Delete department id is obtained from biz_id
      */
     ORG_DEPT_REMOVE("org_dept_remove"),
+
     /**
-     * 企业变更
+     * Enterprise change
      */
     ORG_UPDATE("org_update"),
+
     /**
-     * 企业变更
-     * 删除企业的corpId从biz_id中获取
+     * Enterprise change Delete the corpId of the enterprise and get it from biz_id
      */
     ORG_REMOVE("org_remove"),
+
     /**
-     * 订单信息
+     * order information
      */
     MARKET_ORDER("market_order"),
+    
     /**
-     * syncAction为market_service_close表示因订单到期或者用户退款等导致的服务关闭。
-     * 注意 目前仅推送因退款导致的服务关闭。
+     * If syncAction is market_service_close, it means that the service is closed due to order expiration or user refund.
+     * Note Only service shutdowns due to refunds are currently being pushed.
      */
     MARKET_SERVICE_CLOSE("market_service_close");
 
     private final String value;
-
-    public String getValue() {
-        return value;
-    }
 
     public static DingTalkSyncAction toEnum(String value) {
         for (DingTalkSyncAction item : DingTalkSyncAction.values()) {
@@ -120,5 +131,9 @@ public enum DingTalkSyncAction {
             }
         }
         return null;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

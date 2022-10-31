@@ -4,28 +4,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 媒体文件类型
+ * media file type
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkMediaType {
 
     /**
-     * 图片，图片最大1MB。支持上传jpg、gif、png、bmp格式
+     * Pictures, pictures up to 1 MB. Support uploading jpg, gif, png, bmp formats
      */
     IMAGE("image"),
 
     /**
-     * 语音，语音文件最大2MB。支持上传amr、mp3、wav格式
+     * Voice, voice files up to 2 MB. Support uploading amr, mp 3, wav formats
      */
     VOICE("voice"),
 
     /**
-     * 视频，视频最大10MB。支持上传mp4格式
+     * Video, video up to 10 MB. Support upload mp 4 format
      */
     VIDEO("video"),
     /**
-     * 普通文件，最大10MB。支持上传doc、docx、xls、xlsx、ppt、pptx、zip、pdf、rar格式
+     * Normal files, up to 10 MB. Support uploading doc, docx, xls, xlsx, ppt, pptx, zip, pdf, rar formats
      */
     FILE("file");
 
@@ -41,6 +41,6 @@ public enum DingTalkMediaType {
                 return dingTalkMediaType;
             }
         }
-        throw new IllegalStateException("未知媒体文件类型");
+        throw new IllegalStateException("Unknown media file type");
     }
 }

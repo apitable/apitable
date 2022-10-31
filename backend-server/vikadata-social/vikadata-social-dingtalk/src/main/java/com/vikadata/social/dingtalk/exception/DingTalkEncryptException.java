@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>
- * 钉钉加解密异常
- * </p>
- * @author zoe zheng
- * @date 2021/5/13 11:48 上午
+ * DingTalk encryption and decryption exception
  */
 public class DingTalkEncryptException extends Exception {
     public static final int SUCCESS = 0;
@@ -39,29 +35,29 @@ public class DingTalkEncryptException extends Exception {
 
     private static final Map<Integer, String> MSG_MAP = new HashMap<>();
 
-    private final Integer code;
-
     static {
-        MSG_MAP.put(0, "成功");
-        MSG_MAP.put(900001, "加密明文文本非法");
-        MSG_MAP.put(900002, "加密时间戳参数非法");
-        MSG_MAP.put(900003, "加密随机字符串参数非法");
-        MSG_MAP.put(900005, "签名不匹配");
-        MSG_MAP.put(900006, "签名计算失败");
-        MSG_MAP.put(900004, "不合法的aes key");
-        MSG_MAP.put(900007, "计算加密文字错误");
-        MSG_MAP.put(900008, "计算解密文字错误");
-        MSG_MAP.put(900009, "计算解密文字长度不匹配");
-        MSG_MAP.put(900010, "计算解密文字corpid不匹配");
-        MSG_MAP.put(900011, "不合法的token");
+        MSG_MAP.put(0, "success");
+        MSG_MAP.put(900001, "Encrypted plaintext is illegal");
+        MSG_MAP.put(900002, "The encrypted timestamp parameter is illegal");
+        MSG_MAP.put(900003, "The encrypted random string parameter is illegal");
+        MSG_MAP.put(900005, "Signature does not match");
+        MSG_MAP.put(900006, "Signature calculation failed");
+        MSG_MAP.put(900004, "invalid aes key");
+        MSG_MAP.put(900007, "Error calculating encrypted text");
+        MSG_MAP.put(900008, "Error in calculating decrypted text");
+        MSG_MAP.put(900009, "Calculate decrypted text length mismatch");
+        MSG_MAP.put(900010, "Compute decrypted literal corpid mismatch");
+        MSG_MAP.put(900011, "illegal token");
     }
 
-    public Integer getCode() {
-        return this.code;
-    }
+    private final Integer code;
 
     public DingTalkEncryptException(Integer exceptionCode) {
         super(MSG_MAP.get(exceptionCode));
         this.code = exceptionCode;
+    }
+
+    public Integer getCode() {
+        return this.code;
     }
 }

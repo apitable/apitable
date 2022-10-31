@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 获取子部门列表 请求参数
- *
- * @author Shawn Deng
- * @date 2020-11-23 16:03:11
+ * Get the list of sub-departments Request parameters
  */
 @Setter
 @Getter

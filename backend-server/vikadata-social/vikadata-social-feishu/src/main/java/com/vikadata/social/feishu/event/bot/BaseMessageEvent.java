@@ -2,19 +2,15 @@ package com.vikadata.social.feishu.event.bot;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vikadata.social.feishu.annotation.FeishuEvent;
-import com.vikadata.social.feishu.event.BaseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.vikadata.social.feishu.annotation.FeishuEvent;
+import com.vikadata.social.feishu.event.BaseEvent;
+
 /**
- * <p>
- * 消息卡片基础属性
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 11:09
+ * Message Card Basic Properties
  */
 @Setter
 @Getter

@@ -1,17 +1,15 @@
 package com.vikadata.social.feishu.model;
 
-import com.vikadata.social.feishu.event.UserInfo;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import com.vikadata.social.feishu.event.UserInfo;
+
 /**
- * 批量发送消息请求参数
- *
- * @author Shawn Deng
- * @date 2020-12-03 00:13:07
+ * batch send message request parameters
  */
 @Getter
 @Setter
@@ -27,7 +25,8 @@ public class BatchMessageRequest {
         List<String> cache = users.stream().map(UserInfo::getUserId).collect(Collectors.toList());
         if (userIds != null) {
             userIds.addAll(cache);
-        } else {
+        }
+        else {
             userIds = cache;
         }
     }

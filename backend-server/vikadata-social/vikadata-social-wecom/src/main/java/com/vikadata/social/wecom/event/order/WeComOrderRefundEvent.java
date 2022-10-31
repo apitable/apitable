@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 企微订单已退款
- * </p>
- * @author 刘斌华
- * @date 2022-08-10 09:53:19
+ * Wecom order has been refunded
  */
 @Setter
 @Getter

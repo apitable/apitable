@@ -1,9 +1,7 @@
 package com.vikadata.social.qq;
 
 /**
- * 应用配置
- * @author Shawn Deng
- * @date 2021-01-11 18:25:01
+ * Application configuration
  */
 public class AppConfig {
 
@@ -18,7 +16,7 @@ public class AppConfig {
     private String appKey;
 
     /**
-     * 回调地址
+     * callback uri
      */
     private String redirectUri;
 

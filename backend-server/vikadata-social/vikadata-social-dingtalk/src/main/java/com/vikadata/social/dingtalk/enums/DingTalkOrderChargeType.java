@@ -4,23 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p> 
- * 订单收费类型（仅针对试用规格）
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/28 14:19
+ * Order charge type (for trial specification only)
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkOrderChargeType {
 
     /**
-     * 免费开通
+     * Open for free
      */
     FREE("FREE"),
 
     /**
-     * 试用开通
+     * Trial activation
      */
     TRYOUT("TRYOUT");
 

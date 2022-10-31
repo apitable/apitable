@@ -7,7 +7,7 @@ import static com.vikadata.social.dingtalk.exception.DingTalkExceptionConstants.
 import static com.vikadata.social.dingtalk.exception.DingTalkExceptionConstants.ISV_API_MAX_LIMIT_SECONDS;
 
 /**
- * api 异常
+ * api exception
  *
  * @author Zoe Zheng
  * @date 2021-04-06 18:30:09

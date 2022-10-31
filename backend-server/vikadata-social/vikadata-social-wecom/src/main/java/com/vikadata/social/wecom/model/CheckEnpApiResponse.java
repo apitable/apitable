@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 校验企业域名响应参数
- * </p>
- *
- * @author Pengap
- * @date 2021/8/4 11:16:12
+ * Verify the corporate domain name response parameters
  */
 @Getter
 @Setter

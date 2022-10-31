@@ -11,18 +11,18 @@ import com.vikadata.social.feishu.model.FeishuUserAuthInfo;
 public interface AuthOperations {
 
     /**
-     * 刷新用户令牌
-     * @param refreshToken 刷新令牌
+     * refresh user token
+     * @param refreshToken refresh token
      * @return FeishuAccessToken
-     * @throws FeishuApiException 调用异常
+     * @throws FeishuApiException exception
      */
     FeishuAccessToken refreshUserAccessToken(String refreshToken) throws FeishuApiException;
 
     /**
-     * 获取用户信息
-     * @param userAccessToken 用户访问令牌
+     * Get user information
+     * @param userAccessToken user access token
      * @return FeishuUserAuthInfo
-     * @throws FeishuApiException 调用异常
+     * @throws FeishuApiException exception
      */
     FeishuUserAuthInfo getUserInfo(String userAccessToken) throws FeishuApiException;
 }

@@ -1,11 +1,7 @@
 package com.vikadata.social.wecom.exception;
 
 /**
- * <p>
- * 企业微信调用Api异常
- * </p>
- * @author Pengap
- * @date 2021/8/2 21:37:01
+ * Enterprise WeChat calls API exception
  */
 public class WeComApiException extends RuntimeException {
 

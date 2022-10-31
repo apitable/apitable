@@ -59,11 +59,7 @@ import static com.vikadata.social.dingtalk.exception.DingTalkExceptionConstants.
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
- * <p>
- * 企业内部应用实现类--授权给第三方企业
- * </p>
- * @author zoe zheng
- * @date 2021/5/7 11:14 上午
+ * Enterprise internal application implementation class--authorization to third-party enterprises
  */
 public class IsvAppTemplate extends AbstractDingTalkOperations implements IsvAppOperations {
     private static final Logger LOGGER = LoggerFactory.getLogger(IsvAppTemplate.class);

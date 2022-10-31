@@ -1,18 +1,14 @@
 package com.vikadata.social.feishu.event.app;
 
-import com.vikadata.social.feishu.annotation.FeishuEvent;
-import com.vikadata.social.feishu.event.BaseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.vikadata.social.feishu.annotation.FeishuEvent;
+import com.vikadata.social.feishu.event.BaseEvent;
+
 /**
- * <p>
- * 应用卸载 事件
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/23 22:46
+ * app uninstall event
  */
 @Setter
 @Getter

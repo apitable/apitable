@@ -8,11 +8,7 @@ import java.util.concurrent.locks.Lock;
 import com.vikadata.social.core.ConfigStorage;
 
 /**
- * <p>
- * 基于redis存储配置
- * </p>
- * @author zoe zheng
- * @date 2021/4/8 11:19 上午
+ * Based on redis storage configuration
  */
 public class AccessTokenInRedisStorage implements ConfigStorage {
 
@@ -26,23 +22,21 @@ public class AccessTokenInRedisStorage implements ConfigStorage {
 
     private static final String DYNAMIC_KEY_TPL = "%s:dingtalk:lock:%s";
 
-    /**
-     * 第三方企业应用为SuiteKey/定制服务为CustomKey，用于标志应用唯一性
-     */
-    protected volatile String appId;
-
-    /**
-     * 第三方企业应用为SuiteSecret/定制服务为CustomSecret
-     */
-    protected volatile String appSecret;
-
-    protected volatile boolean isv;
-
     private final DingTalkRedisOperations redisOps;
 
     private final String redisKeyPrefix;
 
-    private String appAccessTokenKey;
+    /**
+     * The third-party enterprise application is the Suite Key and the custom service is the Custom Key, which is used to mark the uniqueness of the application
+     */
+    protected volatile String appId;
+
+    /**
+     * The third-party enterprise application is Suite Secret and the custom service is Custom Secret
+     */
+    protected volatile String appSecret;
+
+    protected volatile boolean isv;
 
     protected volatile Lock appAccessTokenLock;
 
@@ -50,9 +44,16 @@ public class AccessTokenInRedisStorage implements ConfigStorage {
 
     protected Map<String, Lock> tenantTokenLockMap = new ConcurrentHashMap<>();
 
+    private String appAccessTokenKey;
+
     public AccessTokenInRedisStorage(DingTalkRedisOperations redisOps, String redisKeyPrefix) {
         this.redisOps = redisOps;
         this.redisKeyPrefix = redisKeyPrefix;
+    }
+
+    @Override
+    public String getAppId() {
+        return this.appId;
     }
 
     public void setAppId(String appId) {
@@ -63,17 +64,12 @@ public class AccessTokenInRedisStorage implements ConfigStorage {
     }
 
     @Override
-    public String getAppId() {
-        return this.appId;
+    public String getAppSecret() {
+        return this.appSecret;
     }
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
-    }
-
-    @Override
-    public String getAppSecret() {
-        return this.appSecret;
     }
 
     public void setIsv(boolean isv) {
@@ -151,11 +147,9 @@ public class AccessTokenInRedisStorage implements ConfigStorage {
     // TENANT ACCESS TOKEN
 
     /**
-     *
-     * @param agentId 应用的agentId/第三方企业应用为SuiteId
+     * get tenant access token lock
+     * @param agentId The agent Id of the application is the Suite Id of the third-party enterprise application
      * @return Lock
-     * @author zoe zheng
-     * @date 2021/4/17 4:01 下午
      */
     @Override
     public Lock getTenantAccessTokenLock(String agentId) {

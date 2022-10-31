@@ -6,14 +6,6 @@ import lombok.ToString;
 
 import com.vikadata.social.feishu.model.BaseResponse;
 
-/**
- * <p>
- * 飞书用户信息
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/12/7 11:12
- */
 @Getter
 @Setter
 @ToString

@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p> 
- * 获取第三方企业应用的suite_access_token
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/15 7:48 下午
+ * Obtain the suite access token for third-party enterprise applications
  */
 @Setter
 @Getter
@@ -17,12 +13,12 @@ import lombok.ToString;
 public class DingTalkSuiteAccessTokenResponse extends BaseResponse {
 
     /**
-     * 第三方企业应用的凭证
+     * Credentials for third-party enterprise applications
      */
     private String suiteAccessToken;
 
     /**
-     * 第三方企业应用的凭证过期时间，单位秒
+     * Credential expiration time for third-party enterprise applications, in seconds
      */
     private int expiresIn;
 }

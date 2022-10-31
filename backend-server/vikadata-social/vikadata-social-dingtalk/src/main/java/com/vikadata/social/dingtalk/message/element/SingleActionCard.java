@@ -8,13 +8,6 @@ import lombok.Setter;
 
 import com.vikadata.social.dingtalk.message.Component;
 
-/**
- * <p>
- * 卡片内容基础属性
- * </p>
- * @author zoe zheng
- * @date 2021/4/21 2:51 下午
- */
 @Getter
 @Setter
 public class SingleActionCard extends ActionCard implements Component {
@@ -23,11 +16,6 @@ public class SingleActionCard extends ActionCard implements Component {
 
     private String singleUrl;
 
-    /**
-     * JSON转换成对象
-     *
-     * @return 对象
-     */
     @Override
     public Object toObj() {
         Map<String, Object> map = new HashMap<>(4);

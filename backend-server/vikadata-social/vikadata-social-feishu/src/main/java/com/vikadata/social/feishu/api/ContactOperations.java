@@ -4,19 +4,16 @@ import com.vikadata.social.feishu.exception.FeishuApiException;
 import com.vikadata.social.feishu.model.FeishuContactScopeResponse;
 
 /**
- * 通讯录 接口
- *
- * @author Shawn Deng
- * @date 2020-12-01 11:49:22
+ * conntact nterface
  */
 public interface ContactOperations {
 
     /**
-     * 获取通讯录授权范围
+     * Get the authorization scope of the address book
      *
-     * @param tenantKey 租户标识
+     * @param tenantKey Tenant ID
      * @return FeishuContactScopeResponse
-     * @throws FeishuApiException 飞书自定义异常
+     * @throws FeishuApiException Feishu custom exception
      */
     FeishuContactScopeResponse getContactScope(String tenantKey) throws FeishuApiException;
 }

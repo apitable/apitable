@@ -13,13 +13,6 @@ import com.vikadata.social.service.dingtalk.service.ISocialTenantUserService;
 
 import org.springframework.stereotype.Service;
 
-/**
- * <p> 
- * 第三方集成 - 企业租户 服务 接口实现
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/18 13:30
- */
 @Service
 @Slf4j
 public class SocialTenantUserServiceImpl extends ServiceImpl<SocialTenantUserMapper, SocialTenantUserEntity> implements ISocialTenantUserService {

@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 新版事件用户组数据结构
- *
- * @author Shawn Deng
- * @date 2020-12-22 14:46:11
+ * New version of event user group data structure
  */
 @Setter
 @Getter

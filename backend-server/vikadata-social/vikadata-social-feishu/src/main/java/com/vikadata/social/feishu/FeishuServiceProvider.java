@@ -22,12 +22,8 @@ import com.vikadata.social.feishu.event.contact.v3.BaseV3ContactEvent;
 import com.vikadata.social.feishu.event.v3.FeishuV3ContactEventParser;
 
 /**
- * 飞书 服务类
- * <p>
- * 唯一入口类，包含配置管理、事件管理、HTTP请求管理、事件解析器
- *
- * @author Shawn Deng
- * @date 2020-11-20 17:54:21
+ * Feishu Services
+ * The only entry class, including configuration management, event management, HTTP request management, event parser
  */
 public class FeishuServiceProvider {
 
@@ -38,27 +34,27 @@ public class FeishuServiceProvider {
     public static final String EVENT_CALLBACK_EVENT = "event_callback";
 
     /**
-     * 飞书 API 接口实例
+     * Feishu API interface template
      */
     private final FeishuTemplate feishuTemplate;
 
     /**
-     * 事件解析器，为监听器服务
+     * Event parser serving for listeners
      */
     private final FeishuEventParser eventParser = FeishuEventParser.create();
 
     /**
-     * 新版通讯录事件解析器
+     * New contact event parser
      */
     private final FeishuV3ContactEventParser v3ContactEventParser = FeishuV3ContactEventParser.create();
 
     /**
-     * 事件监听管理器
+     * Event listener manager
      */
     private final FeishuEventListenerManager eventListenerManager = new FeishuEventListenerManager();
 
     /**
-     * 延迟任务线程池
+     * Delayed task thread pool
      */
     private final ScheduledExecutorService delayExecutor = new ScheduledThreadPoolExecutor(1, ThreadUtil.newNamedThreadFactory("delay-task", true));
 
@@ -72,40 +68,39 @@ public class FeishuServiceProvider {
     }
 
     /**
-     * 事件订阅推送
-     *
-     * @param jsonString 推送数据
-     * @return 响应结果
+     * Event subscription push
+     * @param jsonString push data
+     * @return response result
      */
     public String eventNotify(String jsonString) {
-        // 解析成JSON结构
+        // Parse into JSON structure
         Map<String, Object> notifyData = decryptIfNeed(jsonString);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("事件数据结构:{}", JSONUtil.toJsonPrettyStr(notifyData));
+            LOGGER.debug("event data structure:{}", JSONUtil.toJsonPrettyStr(notifyData));
         }
         Object type = notifyData.get("type");
         if (type == null) {
             Object schema = notifyData.get("schema");
             if (schema == null) {
-                LOGGER.error("无法解析事件类型");
+                LOGGER.error("unable to parse event type");
                 return "";
             }
-            LOGGER.info("接收到新版的通讯录变更事件");
-            // 处理新版的通讯录变更事件
-            // header部分
+            LOGGER.info("received a new contact change event");
+            // Handling the new contact change event
+            // headers
             Map<String, Object> headerMap = MapUtil.get(notifyData, "header", new cn.hutool.core.lang.TypeReference<Map<String, Object>>() {});
-            // 检查TOKEN
             checkToken(headerMap);
-            // 获取新版通讯录的类型
+            // Get the type of the new contact event
             String contactType = (String) headerMap.get("event_type");
             BaseV3ContactEvent event = v3ContactEventParser.parseEvent(contactType, notifyData);
             if (event == null) {
-                LOGGER.info("找不到对应新版通讯录事件监听器，是否未给此事件配置处理方法，默认不处理");
+                LOGGER.info("could not find new contact event handler, whether a handler is not configured for this "
+                        + "event, not processed by default");
                 return "";
             }
             if (!getFeishuTemplate().getConfigStorage().getAppId().equals(event.getHeader().getAppId())) {
-                // APP ID 不一致也是错误的，可能会乱串应用通知
-                throw new IllegalStateException("应用不匹配，回调地址配错");
+                // APP ID Inconsistency is also wrong and may mess with app notifications
+                throw new IllegalStateException("illegal application, wrong callback url");
             }
             Object eventResult = eventListenerManager.fireV3ContactEventCallback(event);
             if (eventResult == null) {
@@ -115,44 +110,44 @@ public class FeishuServiceProvider {
         }
         String eventType = (String) type;
         if (StrUtil.isBlank(eventType)) {
-            LOGGER.error("事件类型[type]为空内容");
+            LOGGER.error("Event[type] is empty");
             return "";
         }
         LOGGER.info("Event Type：{}", eventType);
         if (eventType.equals(URL_VERIFICATION_EVENT)) {
-            // 验证回调地址
+            // Verify callback address
             return challenge(notifyData);
         }
         else if (eventType.equals(EVENT_CALLBACK_EVENT)) {
-            // 事件回调
+            // check event
             checkToken(notifyData);
-            // 事件内容
+            // event content
             Map<String, Object> eventData = MapUtil.get(notifyData, "event", new cn.hutool.core.lang.TypeReference<Map<String, Object>>() {});
             if (eventData == null) {
-                LOGGER.error("事件内容不能为空");
+                LOGGER.error("Event content cannot be empty");
                 return "";
             }
             String eventSubType = eventData.get("type").toString();
             LOGGER.info("Event Name：{}", eventSubType);
             BaseEvent event = eventParser.parseEvent(eventSubType, eventData);
             if (event == null) {
-                LOGGER.info("找不到对应事件监听器，是否未给此事件配置处理方法，默认不处理");
+                LOGGER.info("could not find event handler, whether a handler is not configured for this event, not processed by default");
                 return "";
             }
             if (!getFeishuTemplate().getConfigStorage().getAppId().equals(event.getAppId())) {
-                // APP ID 不一致也是错误的，可能会乱串应用通知
-                throw new IllegalStateException("应用不匹配，回调地址配错");
+                // APP ID Inconsistency is also wrong and may mess with app notifications
+                throw new IllegalStateException("illegal application, wrong callback url");
             }
-            // 事件路由处理
+            // event routing
             BaseEvent.Meta meta = new BaseEvent.Meta();
             String uuid = (String) notifyData.get("uuid");
             meta.setUuid(uuid);
             String ts = (String) notifyData.get("ts");
             meta.setTs(ts);
-            LOGGER.info("消息标识：{}, 发送时间: {}", uuid, ts);
+            LOGGER.info("Event ID：{}, push time: {}", uuid, ts);
             event.setMeta(meta);
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("消息体：{}", JSONUtil.toJsonStr(eventData));
+                LOGGER.debug("Event data：{}", JSONUtil.toJsonStr(eventData));
             }
             Object eventResult = eventListenerManager.fireEventCallback(event);
             if (eventResult == null) {
@@ -169,10 +164,9 @@ public class FeishuServiceProvider {
     }
 
     /**
-     * 消息卡片事件订阅推送
-     *
-     * @param jsonData 推送数据
-     * @return 响应数据
+     * message card event subscription push
+     * @param jsonData push data
+     * @return response data
      */
     public String cardNotify(String jsonData) {
         System.out.println(jsonData);
@@ -180,10 +174,9 @@ public class FeishuServiceProvider {
     }
 
     /**
-     * 如果配置了密钥，则解密数据解析成JSON，否则返回原数据的解析
-     *
-     * @param jsonString 加密的数据
-     * @return JSONObject JSON结构
+     * If the key is configured, the decrypted data will be parsed into JSON, otherwise the original data will be parsed
+     * @param jsonString encrypted data
+     * @return JSONObject JSON structure
      */
     public Map<String, Object> decryptIfNeed(String jsonString) {
         Map<String, Object> json;
@@ -191,7 +184,7 @@ public class FeishuServiceProvider {
             json = Jackson4FeishuConverter.toObject(jsonString, new TypeReference<Map<String, Object>>() {});
         }
         catch (IOException e) {
-            throw new RuntimeException("解析事件通知数据失败: " + jsonString, e);
+            throw new RuntimeException("Feishu decrypt data error: " + jsonString, e);
         }
         FeishuConfigStorage configStorage = getFeishuTemplate().getConfigStorage();
         if (!configStorage.needDecrypt()) {
@@ -199,7 +192,7 @@ public class FeishuServiceProvider {
         }
         Object encryptData = json.get("encrypt");
         if (encryptData == null) {
-            throw new RuntimeException("数据未加密");
+            throw new RuntimeException("Feishu Data not encrypted");
         }
 
         String decryptJson;
@@ -207,28 +200,28 @@ public class FeishuServiceProvider {
             decryptJson = configStorage.decrypt(encryptData.toString());
         }
         catch (Exception e) {
-            throw new IllegalStateException("decrypt json data error");
+            throw new IllegalStateException("Feishu decrypt json data error");
         }
         try {
             return Jackson4FeishuConverter.toObject(decryptJson, new TypeReference<Map<String, Object>>() {});
         }
         catch (IOException e) {
-            throw new RuntimeException("解析已解密的数据失败", e);
+            throw new RuntimeException("Feishu parse data error", e);
         }
     }
 
     /**
-     * 验证URL的响应结果
+     * Verify the response result of the URL
      *
-     * @param notifyData 通知数据
-     * @return 响应的JSON字符串
+     * @param notifyData notification data
+     * @return Response JSON string
      */
     public String challenge(Map<String, Object> notifyData) {
         checkToken(notifyData);
         FeishuConfigStorage configStorage = getFeishuTemplate().getConfigStorage();
         if (configStorage != null && configStorage.isv()) {
-            // 商店应用初次验证回调URL时，主动重新发送ticket事件
-            LOGGER.info("当前应用是独立服务商，事件订阅地址验证完成，1秒后主动触发重新发送ticket");
+            // When the store app verifies the callback URL for the first time, it actively resends the ticket event
+            LOGGER.info("Feishu current is isv APP, Event register done, actively trigger re-send ticket after 1 s");
             delayExecutor.schedule(() ->
                     getFeishuTemplate().resendAppTicket(
                             configStorage.getAppId(), configStorage.getAppSecret()), 1, TimeUnit.SECONDS);
@@ -239,8 +232,8 @@ public class FeishuServiceProvider {
     public void checkToken(Map<String, Object> json) {
         String token = json.get("token").toString();
         if (!getFeishuTemplate().getConfigStorage().checkVerificationToken(token)) {
-            LOGGER.error("验证Token失败, illegal token: {}", token);
-            throw new IllegalStateException("遇到非法事件攻击，也许是未配置正确");
+            LOGGER.error("Verify token fail, illegal token: {}", token);
+            throw new IllegalStateException("Encountered an illegal event attack, perhaps not configured correctly");
         }
     }
 

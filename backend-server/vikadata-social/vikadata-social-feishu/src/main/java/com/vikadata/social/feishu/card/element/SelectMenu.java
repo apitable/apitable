@@ -1,26 +1,19 @@
 package com.vikadata.social.feishu.card.element;
 
-import cn.hutool.core.map.MapUtil;
-import com.vikadata.social.feishu.card.objects.Confirm;
-import com.vikadata.social.feishu.card.objects.Option;
-import com.vikadata.social.feishu.card.objects.Text;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.map.MapUtil;
+
+import com.vikadata.social.feishu.card.objects.Confirm;
+import com.vikadata.social.feishu.card.objects.Option;
+import com.vikadata.social.feishu.card.objects.Text;
+
 /**
- * <p>
- * 选项菜单 元素
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:21
+ * options menu element
  */
 public abstract class SelectMenu extends ActionElement {
-
-    public SelectMenu() {
-    }
 
     private Text placeholder;
 
@@ -29,6 +22,9 @@ public abstract class SelectMenu extends ActionElement {
     private List<Option> options;
 
     private Confirm confirm;
+
+    public SelectMenu() {
+    }
 
     public SelectMenu(String tag, String methodName) {
         super(tag, methodName);

@@ -1,34 +1,32 @@
 package com.vikadata.social.feishu.constants;
 
 /**
- * 飞书业务错误码
- * @author Shawn Deng
- * @date 2021-07-07 15:50:50
+ * Feishu business error code
  */
 public class FeishuErrorCode {
 
     /**
-     * 企业不存在
+     * tenant does not exist
      */
     public static final int TENANT_EXIST = 1184000;
 
     /**
-     * 无权限获取企业信息
+     * No access to company information
      */
     public static final int GET_TENANT_DENIED = 1184001;
 
     /**
-     * 没有用户权限
+     * no user rights
      */
     public static final int NO_USER_AUTHORITY_ERROR = 41050;
 
     /**
-     * 内部错误
+     * internal error
      */
     public static final int INTERNAL_ERROR = 40003;
 
     /**
-     * 部门未授权
+     * Department not authorized
      */
     public static final int NO_DEPT_AUTHORITY_ERROR = 40004;
 }

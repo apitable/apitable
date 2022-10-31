@@ -5,9 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 部门信息
- * @author Shawn Deng
- * @date 2020-11-18 16:44:19
+ * Department Information
  */
 @Setter
 @Getter

@@ -5,23 +5,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
  * app_access_token response
- * </p>
- * @author zoe zheng
- * @date 2021/4/6 6:49 下午
  */
 @Setter
 @Getter
 @ToString
 public class DingTalkAppAccessTokenResponse extends BaseResponse {
     /**
-     * 生成的access_token
+     * Generated access token
      */
     private String accessToken;
 
     /**
-     * access_token的过期时间，单位秒
+     * The expiration time of the access token, in seconds
      */
     private int expiresIn;
 }

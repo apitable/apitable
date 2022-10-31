@@ -39,7 +39,7 @@ public class FeishuAccessToken {
 
     private String tokenType;
 
-    // 以下只有自建应用才有
+    // The following are only available for self-built applications
     private String email;
 
     private String userId;

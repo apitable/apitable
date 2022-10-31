@@ -16,199 +16,161 @@ import com.vikadata.social.dingtalk.model.DingTalkUserListResponse.UserPageResul
 import com.vikadata.social.dingtalk.model.UserInfoV2;
 
 /**
- * <p>
- * 企业内部应用接口--授权给第三方企业
- * </p>
- *
- * @author zoe zheng
- * @date 2021/4/19 3:31 下午
+ * Enterprise internal application interface--authorization to third-party enterprises
  */
 public interface ServiceCorpAppOperations {
     /**
-     * 获取授权企业应用的access_token
+     * Obtain an access token for authorizing enterprise applications
      *
-     * @param forceRefresh 强制刷新
+     * @param forceRefresh Force refresh
      * @return String
-     * @author zoe zheng
-     * @date 2021/4/20 6:37 下午
      */
     String getAccessToken(String agentId, boolean forceRefresh);
 
     /**
-     * 通过免登码获取用户信息(v2)
+     * Obtaining user information through a free code (v 2)
      *
-     * @param agentId 应用agentId
-     * @param code 免登授权码
+     * @param agentId agent id
+     * @param code No-login authorization code
      * @return UserInfoV2
-     * @author zoe zheng
-     * @date 2021/5/7 12:10 下午
      */
     UserInfoV2 getUserInfoV2ByCode(String agentId, String code);
 
     /**
-     * 根据userid获取用户详情
+     * Get user details based on userid
      *
-     * @param agentId 应用agentId
-     * @param userId 用户的userid
+     * @param agentId application agent id
+     * @param userId userid
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/5/7 4:18 下午
      */
     DingTalkUserDetail getUserDetailByUserId(String agentId, String userId);
 
     /**
-     * 获取企业员工数量
+     * Get the number of employees in the company
      *
-     * @param agentId 应用agentId
-     * @param onlyActive 是否包含未激活钉钉人数
-     * @return 企业员工数量
-     * @author zoe zheng
-     * @date 2021/5/10 7:33 下午
+     * @param agentId application agent id
+     * @param onlyActive Whether to include the number of inactive Dingding
+     * @return number of employees
      */
     Integer getUserCount(String agentId, Boolean onlyActive);
 
     /**
-     * 获取子部门ID列表
+     * Get a list of sub-department IDs
      *
-     * @param agentId 应用agentId
-     * @param dptId 父部门ID，根部门传1
-     * @return 子部门ID列表
-     * @author zoe zheng
-     * @date 2021/5/11 1:15 下午
+     * @param agentId application agent id
+     * @param dptId Parent department ID, root department pass 1
+     * @return Sub-department ID list
      */
     List<Long> getDepartmentSubIdList(String agentId, Long dptId);
 
     /**
-     * 获取部门列表
-     * 只支持查询下一级子部门，不支持查询多级子部门
-     *
-     * @param agentId 应用agentId
-     * @param dptId 父部门ID，根部门传1
-     * @param language 通讯录语言 zh_CN（默认）/ en_US
-     * @return 子部门列表
-     * @author zoe zheng
-     * @date 2021/5/11 1:15 下午
+     *  Get the department list, Only supports querying of sub-departments at the next level, not multi-level
+     *  sub-departments
+     * @param agentId application agent id
+     * @param dptId Parent department ID, root department pass 1
+     * @param language language zh_CN (default) en_US
+     * @return Sub-department list
      */
     List<DingTalkDeptBaseInfo> getDepartmentSubList(String agentId, Long dptId, DingTalkLanguageType language);
 
     /**
-     * 获取部门用户详情
-     * @param agentId 应用agentId
-     * @param deptId 部门ID
-     * @param cursor 分页查询的游标，最开始传0，后续传返回参数中的next_cursor值。
-     * @param size 分页大小
-     * @param orderField 部门成员的排序规则
-     * @param containAccessLimit 是否返回访问受限的员工
-     * @param languageType 通讯录语言
+     * Get department user details
+     * @param agentId application agent id
+     * @param deptId Department ID
+     * @param cursor The cursor of the paging query, first pass 0, and then pass the next cursor value in the returned parameter.
+     * @param size Paging Size
+     * @param orderField Sorting Rules for Department Members
+     * @param containAccessLimit Whether to return employees with restricted access
+     * @param languageType  language
      * @return UserPageResult
-     * @author zoe zheng
-     * @date 2021/5/11 4:18 下午
      */
     UserPageResult getUserList(String agentId, Long deptId, Integer cursor, Integer size, DingTalkOrderField orderField,
             Boolean containAccessLimit, DingTalkLanguageType languageType);
 
     /**
-     * 注册钉钉应用回调事件
+     * Register DingTalk application callback event url
      *
-     * @param agentId 应用agentId
-     * @param url 回调url
-     * @param callbackTag 注册的事件类型
-     * @author zoe zheng
-     * @date 2021/5/12 7:18 下午
+     * @param agentId application agent id
+     * @param url callback url
+     * @param callbackTag Registered event type
      */
     void registerCallbackUrl(String agentId, String url, List<String> callbackTag);
 
     /**
-     * 删除回调事件接口
+     * delete callback event interface
      *
-     * @param agentId 应用agentId
-     * @author zoe zheng
-     * @date 2021/5/12 7:43 下午
+     * @param agentId application agent id
      */
     void deleteCallbackUrl(String agentId);
 
     /**
-     * 异步发送工作通知消息给用户
+     * Asynchronously send work notification messages to users
      *
-     * @param agentId 应用agentId
-     * @param message 消息内容
-     * @param userIds 钉钉用户ID 最大长度为100
-     * @return 创建的异步发送任务ID
-     * @author zoe zheng
-     * @date 2021/5/14 3:18 下午
+     * @param agentId application agent id
+     * @param message message content
+     * @param userIds The maximum length of DingTalk user ID is 100
+     * @return Created asynchronous send task ID
      */
     String asyncSendMessageToUser(String agentId, Message message, List<String> userIds);
 
     /**
-     * 获取部门详情
+     * Get department details
      *
-     * @param agentId 应用agentId
-     * @param deptId 部门ID
-     * @param language 返回语言
-     * @return 钉钉部门详情
-     * @author zoe zheng
-     * @date 2021/5/17 11:17 上午
+     * @param agentId application agent id
+     * @param deptId Department ID
+     * @param language language
+     * @return DingTalk department details
      */
     DingTalkDeptDetail getDeptDetail(String agentId, Long deptId, DingTalkLanguageType language);
 
     /**
-     * 获取部门用户ID列表
+     * Get a list of department user IDs
      *
-     * @param agentId 应用agentId
-     * @param deptId 部门ID
-     * @return 钉钉部门用户ID列表
-     * @author zoe zheng
-     * @date 2021/5/20 2:46 下午
+     * @param agentId application agent id
+     * @param deptId Department ID
+     * @return DingTalk department user ID list
      */
     List<String> getDeptUserIdList(String agentId, Long deptId);
 
     /**
-     * 获取企业授权信息
+     * Obtain enterprise authorization information
      *
-     * @param agentId 授权应用agentId
-     * @return 企业授权信息
-     * @author zoe zheng
-     * @date 2021/5/21 2:56 下午
+     * @param agentId application agent id
+     * @return DingTalkServerAuthInfoResponse
      */
     DingTalkServerAuthInfoResponse getServerAuthInfo(String agentId);
 
     /**
-     * 获取应用可见范围
+     * Get app contact visibility
      *
-     * @param agentId 授权应用agentId
-     * @return 企业授权信息
-     * @author zoe zheng
-     * @date 2021/5/21 2:56 下午
+     * @param agentId application agent id
+     * @return Enterprise authorization information
      */
     DingTalkAppVisibleScopeResponse getAppVisibleScopes(String agentId);
 
     /**
-     * 获取指定用户的所有父部门列表
+     * Get a list of all parent departments of a specified user
      *
-     * @param agentId 授权应用agentId
-     * @param userId 钉钉应用userId
+     * @param agentId Authorized application agent Id
+     * @param userId Dingding application user Id
      * @return DeptListParentByUserResponse
-     * @author zoe zheng
-     * @date 2021/6/9 5:46 下午
      */
     DingTalkUserParentDeptList getParentDeptIdByUser(String agentId, String userId);
 
     /**
-     * 获取钉钉企业的管理员列表
+     * Get the list of administrators of DingTalk Enterprise
      *
      * @param agentId agentId
      * @return DingTalkAdminList
-     * @author zoe zheng
-     * @date 2021/6/9 5:46 下午
      */
     List<DingTalkAdminList> getAdminList(String agentId);
 
     /**
-     * 获取指定部门的所有父部门列表
+     * Get a list of all parent departments of a specified department
      *
      * @param agentId agentId
-     * @param deptId 部门ID
-     * @return 该部门的所有父部门ID列表
+     * @param deptId Department ID
+     * @return List of all parent department IDs for this department
      */
     List<Long> getDeptParentIdList(String agentId, Long deptId);
 }

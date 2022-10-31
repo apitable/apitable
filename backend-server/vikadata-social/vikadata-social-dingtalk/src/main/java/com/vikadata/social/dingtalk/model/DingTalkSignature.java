@@ -5,11 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 签名计算需要的数据
- * </p>
- * @author zoe zheng
- * @date 2021/5/7 4:23 下午
+ * Data required for signature calculation
  */
 @Setter
 @Getter
@@ -17,17 +13,18 @@ import lombok.ToString;
 public class DingTalkSignature {
 
     /**
-     * 应用的唯一标识key
+     * The unique identification key of the application
      */
     private String accessKey;
 
     /**
-     * 钉钉推送的suiteTicket,定制应用可随意填写,第三方企业应用使用钉钉开放平台向应用推送的suite_ticket
+     * The suite Ticket pushed by DingTalk can be filled in for customized applications,
+     * and the suite ticket pushed to the application by third-party enterprise applications using the DingTalk open platform
      */
     private String suiteTicket;
 
     /**
-     * 应用的secret
+     * app secret
      */
     private String appSecret;
 }

@@ -14,12 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 第三方平台集成-企业租户部门表
- * </p>
- *
- * @author Shawn Deng
- * @since 2020-05-20
+ * Third Party Platform Integration - Enterprise Tenant Department Table
  */
 @Data
 @Builder(toBuilder = true)
@@ -30,48 +25,23 @@ import lombok.experimental.Accessors;
 @TableName("vika_social_tenant_department")
 public class SocialTenantDepartmentEntity implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-      /**
-     * 主键
-     */
-      @TableId(value = "id", type = IdType.ASSIGN_ID)
-      private Long id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private Long id;
 
-      /**
-     * 企业标识
-     */
-      private String tenantId;
+    private String tenantId;
 
-      /**
-     * 部门 open ID
-     */
-      private String openDepartmentId;
+    private String openDepartmentId;
 
-      /**
-     * 父部门 open ID
-     */
-      private String parentOpenDepartmentId;
+    private String parentOpenDepartmentId;
 
-      /**
-     * 部门名称
-     */
-      private String departmentName;
+    private String departmentName;
 
-      /**
-     * 部门排序
-     */
-      private Integer departmentOrder;
+    private Integer departmentOrder;
 
-      /**
-     * 创建时间
-     */
-      private LocalDateTime createdAt;
-
-      /**
-     * 更新时间
-     */
-      private LocalDateTime updatedAt;
-
+    private LocalDateTime createdAt;
+    
+    private LocalDateTime updatedAt;
 
 }

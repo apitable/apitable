@@ -1,18 +1,15 @@
 package com.vikadata.social.feishu.model;
 
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-import java.util.Map;
-
 /**
- * 用户详情
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:00:43
+ * user details
  */
 @Getter
 @Setter

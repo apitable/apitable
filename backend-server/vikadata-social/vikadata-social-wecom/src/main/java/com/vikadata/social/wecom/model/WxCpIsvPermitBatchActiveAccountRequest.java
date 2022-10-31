@@ -8,24 +8,20 @@ import lombok.Setter;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 批量激活接口许可账号
- * </p>
- * @author 刘斌华
- * @date 2022-06-29 17:15:36
+ * Volume Activation of Interface License Accounts
  */
 @Getter
 @Setter
 public class WxCpIsvPermitBatchActiveAccountRequest {
 
     /**
-     * 激活码所属企业corpid
+     * The corpid of the company to which the activation code belongs
      */
     @SerializedName("corpid")
     private String corpId;
 
     /**
-     * 需要激活的帐号列表，单次激活的员工数量不超过1000
+     * List of accounts that need to be activated, the number of employees to be activated at a time does not exceed 1000
      */
     @SerializedName("active_list")
     private List<ActiveList> activeList;
@@ -43,13 +39,13 @@ public class WxCpIsvPermitBatchActiveAccountRequest {
     public static class ActiveList {
 
         /**
-         * 帐号激活码
+         * Account activation code
          */
         @SerializedName("active_code")
         private String activeCode;
 
         /**
-         * 待绑定激活的企业成员userid
+         * The userid of the enterprise member to be bound and activated
          */
         @SerializedName("userid")
         private String userId;

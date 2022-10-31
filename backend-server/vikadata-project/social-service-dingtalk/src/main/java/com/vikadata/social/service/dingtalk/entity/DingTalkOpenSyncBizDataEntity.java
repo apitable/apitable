@@ -14,11 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * <p> 
- * 第三方平台集成-高优先级推送数据表
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 15:27
+ * 3rd party platform integration - high priority push data sheet
  */
 @Data
 @Builder(toBuilder = true)
@@ -32,40 +28,34 @@ public class DingTalkOpenSyncBizDataEntity implements Serializable {
     private static final long serialVersionUID = -8900015203702889446L;
 
     /**
-     * 主键
+     * primary key
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 套件suiteid加下划线0
+     * suite suiteid underlined 0
      */
     private String subscribeId;
 
     /**
-     * 企业corpid
+     * corporate corpid
      */
     private String corpId;
 
     private Integer bizType;
 
     /**
-     * 类目ID
+     * category id
      */
     private String bizId;
 
     /**
-     * 类目数据
+     * Category data
      */
     private String bizData;
 
-    /**
-     * 创建时间
-     */
     private LocalDateTime createdAt;
 
-    /**
-     * 更新时间
-     */
     private LocalDateTime updatedAt;
 }

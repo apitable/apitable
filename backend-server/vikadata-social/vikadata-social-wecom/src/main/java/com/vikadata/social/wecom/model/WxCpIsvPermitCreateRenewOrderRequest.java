@@ -8,30 +8,28 @@ import lombok.Setter;
 import me.chanjar.weixin.cp.util.json.WxCpGsonBuilder;
 
 /**
- * <p>
- * 创建账号续期任务
- * </p>
- * @author 刘斌华
- * @date 2022-07-04 11:42:20
+ * Create Account Renewal Task
  */
 @Getter
 @Setter
 public class WxCpIsvPermitCreateRenewOrderRequest {
 
     /**
-     * 企业id，只支持加密的corpid
+     * Enterprise id, only supports encrypted corpid
      */
     @SerializedName("corpid")
     private String corpId;
 
     /**
-     * 续期的帐号列表，每次最多1000个。同一个jobid最多关联1000000个基础账号跟1000000个互通账号
+     * A list of renewed accounts, up to 1000 at a time.
+     * The same jobid can be associated with a maximum of 1,000,000 basic accounts and 1,000,000 interworking accounts
      */
     @SerializedName("account_list")
     private List<AccountList> accountList;
 
     /**
-     * 任务id，若不传则默认创建一个新任务。若指定第一次调用后拿到jobid，可以通过该接口将jobid关联多个userid
+     * The task id, if not passed, a new task will be created by default.
+     * If you specify the jobid after the first call, you can associate the jobid with multiple userids through this interface
      */
     @SerializedName("jobid")
     private String jobId;
@@ -49,13 +47,13 @@ public class WxCpIsvPermitCreateRenewOrderRequest {
     public static class AccountList {
 
         /**
-         * 续期企业的成员userid。只支持加密的userid
+         * Member userid of the renewing enterprise. Only supports encrypted userid
          */
         @SerializedName("userid")
         private String userId;
 
         /**
-         * 续期帐号类型。1:基础帐号，2:互通帐号
+         * Renewal account type. 1: Basic account, 2: Interworking account
          */
         @SerializedName("type")
         private Integer type;

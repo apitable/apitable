@@ -3,9 +3,7 @@ package com.vikadata.social.feishu.config;
 import com.vikadata.social.core.SocialRedisOperations;
 
 /**
- * 应用配置存储帮助类
- * @author Shawn Deng
- * @date 2022-01-19 17:12:49
+ * Application configuration storage helper class
  */
 public class FeishuConfigStorageHelper {
 

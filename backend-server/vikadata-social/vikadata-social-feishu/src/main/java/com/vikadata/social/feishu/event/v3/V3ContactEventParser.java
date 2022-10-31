@@ -5,18 +5,15 @@ import java.util.Map;
 import com.vikadata.social.feishu.event.contact.v3.BaseV3ContactEvent;
 
 /**
- * 新版事件解析接口
- *
- * @author Shawn Deng
- * @date 2020-11-24 18:07:06
+ * New version of event parsing interface
  */
 public interface V3ContactEventParser {
 
     /**
-     * 根据数据解析出对应事件
+     * Analyze the corresponding events according to the data
      *
-     * @param data 接收的事件数据
-     * @return 事件
+     * @param data received event data
+     * @return event
      */
     BaseV3ContactEvent parse(Map<String, Object> data);
 }

@@ -10,10 +10,7 @@ import com.vikadata.social.feishu.model.BasePageInfo;
 import com.vikadata.social.feishu.model.BaseResponse;
 
 /**
- * 获取部门用户详情
- *
- * @author Shawn Deng
- * @date 2020-11-23 16:06:27
+ * Get department user details
  */
 @Setter
 @Getter

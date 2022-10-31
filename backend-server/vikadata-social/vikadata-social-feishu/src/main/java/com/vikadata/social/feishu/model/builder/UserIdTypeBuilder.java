@@ -1,9 +1,7 @@
 package com.vikadata.social.feishu.model.builder;
 
 /**
- * 用户 ID 类型 构造器
- * @author Shawn Deng
- * @date 2021-07-07 21:15:22
+ * User ID Type Constructor
  */
 public class UserIdTypeBuilder {
 

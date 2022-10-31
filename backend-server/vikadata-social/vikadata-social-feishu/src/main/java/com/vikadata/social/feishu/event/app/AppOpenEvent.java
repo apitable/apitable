@@ -11,10 +11,7 @@ import com.vikadata.social.feishu.event.BaseEvent;
 import com.vikadata.social.feishu.event.UserInfo;
 
 /**
- * 首次开通应用
- *
- * @author Shawn Deng
- * @date 2020-11-23 19:52:25
+ * Open the app for the first time
  */
 @Setter
 @Getter

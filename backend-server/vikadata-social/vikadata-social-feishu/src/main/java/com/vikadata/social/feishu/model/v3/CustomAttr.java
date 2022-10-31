@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 自定义属性
- * @author Shawn Deng
- * @date 2021-07-07 21:57:34
+ * custom properties
  */
 @Setter
 @Getter

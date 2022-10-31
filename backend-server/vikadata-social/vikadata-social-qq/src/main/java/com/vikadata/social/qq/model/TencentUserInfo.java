@@ -3,12 +3,7 @@ package com.vikadata.social.qq.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * <p>
- * QQ互联-网站应用 用户信息
- * </p>
- *
- * @author Chambers
- * @date 2020/10/16
+ * QQ user info
  */
 public class TencentUserInfo extends BaseResponse {
 

@@ -27,12 +27,8 @@ import com.vikadata.social.service.dingtalk.service.ISocialTenantService;
 import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CALLBACK_SUCCESS;
 
 /**
- * <p>
- * 事件订阅 -- 高优先级数据，激活应用等
- * 事件订阅 -- 普通优先级数据，例如通讯录变更
- * </p>
- * @author zoe zheng
- * @date 2021/9/2 4:13 下午
+ * Event subscriptions -- high-priority data, activation of apps, etc.
+ * Event Subscriptions -- normal priority data, such as address book changes
  */
 @DingTalkEventHandler
 @Slf4j
@@ -44,22 +40,22 @@ public class OrgEventHandler {
     private IDingTalkService iDingTalkService;
 
     /**
-     * 企业微应用的最新状态
+     * The latest state of enterprise microapps
      *
-     * @param bizId 套件suiteid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId suiteid
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onOrgSuiteAuthEvent(String bizId, OrgSuiteAuthEvent event) {
-        log.info("收到ISV钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received ISV DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         String corpId = event.getAuthCorpInfo().getCorpid();
-        // 获取授权企业信息，ticket会抛出IllegalStateException异常,在获取的
+        // To obtain authorized enterprise information, the ticket will throw an Illegal State Exception exception.
         DingTalkServerAuthInfoResponse authCorpInfo = iDingTalkService.getAuthCorpInfo(bizId, corpId);
         if (authCorpInfo != null) {
-            // 重新授权的时候需要强制刷新授权企业的access_token，不然会报错
+            // When reauthorizing, you need to force refresh the access token of the authorized company, otherwise an error will be reported
             iDingTalkService.refreshAccessToken(bizId, corpId);
-            // 矫正agentId，钉钉会存在agentId异常的情况
+            // Correct the agent Id, DingTalk will have abnormal agent Id
             Long agentId = authCorpInfo.getAuthInfo().getAgent().get(0).getAgentid();
             AuthInfo authInfo = event.getAuthInfo();
             Agent agent = authInfo.getAgent().get(0);
@@ -72,139 +68,87 @@ public class OrgEventHandler {
             iSocialTenantService.updateTenantAuthInfo(event.getCorpId(), bizId, event);
             return DING_TALK_CALLBACK_SUCCESS;
         }
-        // 激活应用
+        // activate the app
         iDingTalkService.activeSuite(bizId, corpId, event.getPermanentCode());
         iSocialTenantService.createTenant(SocialAppType.ISV, bizId, 1, event);
-        // 钉钉的事件推送不会重复
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 表示企业变更授权范围
+     * Indicates that the enterprise changes the scope of authorization
      *
-     * @param bizId 套件suiteid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId suiteid
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onSuiteChangeEvent(String bizId, OrgSuiteChangeEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         String corpId = event.getAuthCorpInfo().getCorpid();
         if (!iSocialTenantService.isTenantAppExist(corpId, bizId)) {
-            // 激活应用
+            // activate the app
             iDingTalkService.activeSuite(bizId, corpId, event.getPermanentCode());
             iSocialTenantService.createTenant(SocialAppType.ISV, bizId, 1, event);
         }
         else {
             iSocialTenantService.updateTenantAuthInfo(event.getCorpId(), bizId, event);
         }
-        // 钉钉的事件推送不会重复
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业解除授权
+     * Enterprise relieve
      *
-     * @param bizId 套件suiteid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId suiteid
+     * @param event event content
+     * @return response content
      */
     @DingTalkEventListener
     public Object onSuiteRelieveEvent(String bizId, OrgSuiteRelieveEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // 删除租户
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
+        // delete tenant
         iSocialTenantService.updateTenantIsDeleteStatus(event.getCorpId(), bizId, true);
-        // 钉钉的事件推送不会重复
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
-    /**
-     * 微应用启用
-     *
-     * @param bizId 微应用的appid。
-     * @param event 事件内容
-     * @return 响应内容
-     */
+
     @DingTalkEventListener
     public Object onOrgMicroAppRestoreEvent(String bizId, OrgMicroAppRestoreEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         iSocialTenantService.updateTenantStatus(event.getCorpId(), event.getSuiteId(), true);
-        // 钉钉的事件推送不会重复
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
-    /**
-     * 微应用停用
-     *
-     * @param bizId 微应用的appid
-     * @param event 事件内容
-     * @return 响应内容
-     */
     @DingTalkEventListener
     public Object onOrgMicroAppStopEvent(String bizId, OrgMicroAppStopEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         iSocialTenantService.updateTenantStatus(event.getCorpId(), event.getSuiteId(), false);
-        // 钉钉的事件推送不会重复
+        // DingTalk's event push will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
-    /**
-     * 微应用删除，保留企业对套件的授权
-     *
-     * @param bizId 微应用的appid
-     * @param event 事件内容
-     * @return 响应内容
-     */
     @DingTalkEventListener
     public Object onOrgMicroAppRemoveEvent(String bizId, OrgMicroAppRemoveEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         iSocialTenantService.updateTenantStatus(event.getCorpId(), event.getSuiteId(), false);
-        // 钉钉的事件推送不会重复
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
-    /**
-     * 微应用可见范围变更
-     *
-     * @param bizId 微应用的appid
-     * @param event 事件内容
-     * @return 响应内容
-     */
     @DingTalkEventListener
     public Object onOrgMicroAppScopeUpdateEvent(String bizId, OrgMicroAppScopeUpdateEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // todo
-        // 钉钉的事件推送不会重复
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
-    /**
-     * 企业变更
-     *
-     * @param bizId 授权企业ID
-     * @param event 事件内容
-     * @return 响应内容
-     */
     @DingTalkEventListener
     public Object onOrgUpdatedEvent(String bizId, OrgUpdateEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // todo
-        // 钉钉的事件推送不会重复
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
-    /**
-     * 企业删除
-     *
-     * @param bizId 授权企业ID
-     * @param event 事件内容
-     * @return 响应内容
-     */
     @DingTalkEventListener
     public Object onOrgRemoveEvent(String bizId, OrgRemoveEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // todo
-        // 钉钉的事件推送不会重复
+        log.info("Received DingTalk push event: [{}:{}]", event.getEventType(), event.getSyncAction());
         return DING_TALK_CALLBACK_SUCCESS;
     }
 }

@@ -5,18 +5,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 获取 app_access_token
- * </p>
- * @author zoe zheng
- * @date 2021/4/6 6:49 下午
+ * Get app_access_token
  */
 @Getter
 @Setter
 @ToString
 public class DingTalkCorpAccessTokenRequest {
     /**
-     * 授权企业的CorpId
+     * The Corp Id of the authorized company
      */
     private String authCorpid;
 }

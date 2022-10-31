@@ -5,47 +5,44 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 用户信息--v2接口返回信息
- *
- * @author Zoe Zheng
- * @date 2021-04-20 10:56:04
+ * User information --v2 interface returns information
  */
 @Setter
 @Getter
 @ToString
 public class UserInfoV2 {
     /**
-     * 用户的userid
+     * userid of the user
      */
     private String userid;
 
     /**
-     * 设备ID
+     * device id
      */
     private String deviceId;
 
     /**
-     * 是否是管理员。 true：是 false：不是
+     * is the administrator true yes false no
      */
     private Boolean sys;
 
     /**
-     * 级别。1：主管理员 2：子管理员 100：老板  0：其他（如普通员工）
+     * level. 1: Main administrator 2: Sub-admin 100: Boss 0: Others (such as ordinary employees)
      */
     private Integer sysLevel;
 
     /**
-     * 用户关联的unionId。
+     * the union id associated with the user
      */
     private String associatedUnionid;
 
     /**
-     * 用户unionId
+     * user union id
      */
     private String unionid;
 
     /**
-     * 用户名字
+     * username
      */
     private String name;
 

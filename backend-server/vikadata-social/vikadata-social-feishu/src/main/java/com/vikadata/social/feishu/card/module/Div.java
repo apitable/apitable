@@ -1,21 +1,17 @@
 package com.vikadata.social.feishu.card.module;
 
-import cn.hutool.core.map.MapUtil;
-import com.vikadata.social.feishu.card.element.Element;
-import com.vikadata.social.feishu.card.objects.Field;
-import com.vikadata.social.feishu.card.objects.Text;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.map.MapUtil;
+
+import com.vikadata.social.feishu.card.element.Element;
+import com.vikadata.social.feishu.card.objects.Field;
+import com.vikadata.social.feishu.card.objects.Text;
+
 /**
- * <p>
- * 内容模块
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 16:22
+ * content module
  */
 public class Div extends Module {
 

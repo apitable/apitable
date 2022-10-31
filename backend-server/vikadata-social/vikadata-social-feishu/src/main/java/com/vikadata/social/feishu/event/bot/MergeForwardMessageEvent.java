@@ -1,20 +1,16 @@
 package com.vikadata.social.feishu.event.bot;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vikadata.social.feishu.annotation.FeishuMessageEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
+import com.vikadata.social.feishu.annotation.FeishuMessageEvent;
 
 /**
- * <p>
- * 合并转发消息内容
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/26 23:48
+ * Combine forwarded message content
  */
 @Setter
 @Getter
@@ -31,18 +27,26 @@ public class MergeForwardMessageEvent extends BaseMessageEvent {
     @ToString
     public static class Message {
         private String rootId;
+
         private String parentId;
+
         private String openChatId;
+
         private String msgType;
+
         private String openId;
+
         private String openMessageId;
 
         @JsonProperty("is_mention")
         private boolean isMention;
 
         private Long createTime;
+
         private String text;
+
         private String title;
+
         private String imageKey;
     }
 }

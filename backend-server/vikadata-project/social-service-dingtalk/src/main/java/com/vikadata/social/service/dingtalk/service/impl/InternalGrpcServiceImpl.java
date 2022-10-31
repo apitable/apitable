@@ -69,12 +69,8 @@ import com.vikadata.social.service.dingtalk.service.IDingTalkService;
 import com.vikadata.social.service.dingtalk.service.ISocialTenantService;
 
 /**
- * <p> 
- * 内部服务调用接口实现
- * 不catch任何异常，因为需要下层业务服务处理异常
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/8 6:57 下午
+ * internal service call interface implementation,
+ * Do not catch any exceptions, because the underlying business services are required to handle exceptions
  */
 @GrpcService
 @Slf4j
@@ -292,11 +288,11 @@ public class InternalGrpcServiceImpl extends DingTalkServiceGrpc.DingTalkService
     @Override
     public void getUerTreeList(GetUserTreeListRo req, StreamObserver<UserTreeListResult> responseObserver) {
         long startedAt = System.currentTimeMillis();
-        log.info("获取全部用户开始:{}", req.getAuthCorpId());
+        log.info("Get all users start: {}", req.getAuthCorpId());
         HashMap<String, DingTalkUserDto> userMap = new HashMap<>();
         iDingTalkService.getUserTreeList(req.getSuiteId(), req.getAuthCorpId(), req.getSubDeptIdsList(), userMap);
         UserTreeListResult result = UserTreeListResult.newBuilder().putAllUserTreeList(userMap).build();
-        log.info("获取全部用户结束:{}:{}", req.getAuthCorpId(), System.currentTimeMillis() - startedAt);
+        log.info("Get all users end:{}:{}", req.getAuthCorpId(), System.currentTimeMillis() - startedAt);
         responseObserver.onNext(result);
         responseObserver.onCompleted();
     }

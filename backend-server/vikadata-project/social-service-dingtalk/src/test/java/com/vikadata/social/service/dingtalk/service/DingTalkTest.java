@@ -25,16 +25,16 @@ public class DingTalkTest {
 
     @Test
     public void testApiLimitPool() {
-        // 测试钉钉api限流
+        // Test DingTalk api current limit
         ThreadPoolExecutor threadPoolExecutor = ThreadUtil.newExecutorByBlockingCoefficient((float) 0.9f);
-        log.info("线程数量:{}", threadPoolExecutor.getCorePoolSize());
+        log.info("Number of threads: {}", threadPoolExecutor.getCorePoolSize());
         threadPoolExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        for (int i = 0; i < 50; i ++) {
+        for (int i = 0; i < 50; i++) {
             threadPoolExecutor.execute(() -> {
                 DingTalkUserListResponse response = iDingTalkService.getUserDetailList("20303001",
                         "dinga39a6d188d0e7fddbc961a6cb783455b", 1L, 0,
-                        100 );
-                log.info("返回数据:{}", JSONUtil.toJsonStr(response));
+                        100);
+                log.info("Return data: {}", JSONUtil.toJsonStr(response));
             });
         }
         ThreadUtil.sleep(10000000);

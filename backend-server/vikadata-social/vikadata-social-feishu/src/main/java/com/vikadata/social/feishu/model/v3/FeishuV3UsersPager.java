@@ -12,9 +12,7 @@ import com.vikadata.social.feishu.api.UserOperations;
 import com.vikadata.social.feishu.model.builder.DeptIdType;
 
 /**
- * 用户列表分页器
- * @author Shawn Deng
- * @date 2021-07-08 10:24:27
+ * user list pager
  */
 public class FeishuV3UsersPager implements Iterator<List<FeishuUserObject>> {
 

@@ -12,10 +12,7 @@ import com.vikadata.social.feishu.model.FeishuUserAuthInfo;
 import com.vikadata.social.feishu.model.FeishuUserInfoResponse;
 
 /**
- * 授权管理接口实现
- *
- * @author Shawn Deng
- * @date 2020-11-26 01:15:18
+ * Authorization management interface implementation
  */
 public class AuthTemplate extends AbstractFeishuOperations implements AuthOperations {
 

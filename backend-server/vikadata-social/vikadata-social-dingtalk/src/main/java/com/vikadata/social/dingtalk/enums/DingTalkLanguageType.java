@@ -4,22 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 图片机器审核的结果类型
- *
- * @author Benson Cheung
- * @since 2020/03/21
+ * Types of Results for Image Machine Review
  */
 @Getter
 @AllArgsConstructor
 public enum DingTalkLanguageType {
 
     /**
-     * 中文
+     * chinese
      */
     ZH_CN("zh_CN"),
 
     /**
-     * 英文
+     * english
      */
     EN_US("en_US");
 

@@ -12,19 +12,12 @@ import lombok.ToString;
 
 import com.vikadata.social.dingtalk.message.Component;
 
-/**
- * <p>
- * 卡片内容基础属性
- * </p>
- * @author zoe zheng
- * @date 2021/4/21 2:51 下午
- */
 @Getter
 @Setter
 public class BtnActionCard extends ActionCard implements Component {
     /**
-     * 使用独立跳转ActionCard样式时的按钮排列方式
-     * 0：竖直排列, 1：横向排列
+     * Button arrangement when using the independent jump Action Card style
+     * 0: vertical arrangement, 1: horizontal arrangement
      */
     private String btnOrientation;
 

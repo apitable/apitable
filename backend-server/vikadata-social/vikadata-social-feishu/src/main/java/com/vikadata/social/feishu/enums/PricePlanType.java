@@ -6,47 +6,41 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * <p>
- * 飞书用户购买方案类型
- * </p>
- * @author zoe zheng
- * @date 2021/12/28 2:08 PM
+ * Feishu user purchase plan types
  */
 @Getter
 @AllArgsConstructor
 public enum PricePlanType {
-    /**
-     * 试用
-     */
+
     TRIAL("trial"),
 
     /**
-     * 一次性付费
+     * one-time payment
      */
     PERMANENT("permanent"),
 
     /**
-     * 企业年付费
+     * Enterprise annual payment
      */
     PER_YEAR("per_year"),
 
     /**
-     * 企业月付费
+     * Enterprise monthly payment
      */
     PER_MONTH("per_month"),
 
     /**
-     * 按人按年付费
+     * Pay per person per year
      */
     PER_SEAT_PER_YEAR("per_seat_per_year"),
 
     /**
-     * 按人按月付费
+     * Pay per person per month
      */
     PER_SEAT_PER_MONTH("per_seat_per_month"),
 
     /**
-     * 按次付费
+     * pay-per-view
      */
     PERMANENT_COUNT("permanent_count");
 

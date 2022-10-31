@@ -1,20 +1,15 @@
 package com.vikadata.social.feishu.card.element;
 
-import com.vikadata.social.feishu.card.objects.Confirm;
-import com.vikadata.social.feishu.card.objects.Option;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.vikadata.social.feishu.card.objects.Confirm;
+import com.vikadata.social.feishu.card.objects.Option;
+
 /**
- * <p>
- * 折叠的按钮型菜单 元素
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/24 14:26
+ * Collapsed button menu element
  */
 public class Overflow extends ActionElement {
 

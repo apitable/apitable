@@ -48,31 +48,25 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClientException;
 
-/**
- * <p>
- * 企业微信操作Template
- * </p>
- *
- * @author Pengap
- * @date 2021/7/28 16:47:50
- */
 public class WeComTemplate extends AbstractWeComTemplate implements ApplicationContextAware, InitializingBean {
 
     /*
-     * 定义微信API的Service线程变量
-     * 由于本地线程变量可能导致内存泄露问题加上代码无法抽象的知道调用#remove()的时机
-     * 所有需要编写代码用户根据实际手动触发调用#closeService()
+     * Define the Service thread variable of the WeCom API
+     * Due to the possibility of memory leaks due to local thread variables and the code cannot abstractly know when to call remove()
+     * All users need to call close Service() according to the actual manual trigger
      */
     private final static ThreadLocal<WxCpService> THREAD_LOCAL = new ThreadLocal<>();
 
     private static final Map<String, WxCpTpService> ISV_SERVICES = Maps.newHashMapWithExpectedSize(1);
+
     private static final Map<String, WxCpTpTagService> ISV_TAG_SERVICES = Maps.newHashMapWithExpectedSize(1);
+
     private static final Map<String, WxCpTpMessageRouter> ISV_ROUTERS = Maps.newHashMapWithExpectedSize(16);
 
     private ApplicationContext applicationContext;
 
     /*
-     * 构造方法需要指定，存储策略
+     * The construction method needs to be specified, the storage strategy
      */
     public WeComTemplate(WeComConfig weComConfig) {
         this(weComConfig, null);
@@ -85,11 +79,8 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
     }
 
     /**
-     * 创建第三方服务商配置
-     *
-     * @param isvAppList 第三方服务商配置信息列表
-     * @author 刘斌华
-     * @date 2022-01-05 10:20:41
+     * Create isv app onfiguration
+     * @param isvAppList isv app configuration information list
      */
     private void generateIsvList(WxRedisOps wxRedisOps, List<IsvApp> isvAppList) {
 
@@ -115,23 +106,22 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
     }
 
     /**
-     * 切换到对应企业应用 Service
-     * 无法使用临时授权服务
-     *
-     * @param corpId    企业Id
-     * @param agentId   应用Id
+     * Switch to the corresponding enterprise application service
+     * Unable to use temporary authorization service
+     * @param corpId    corp id
+     * @param agentId   application id
      */
     public void switchoverTo(String corpId, Integer agentId) {
         this.switchoverTo(corpId, agentId, false);
     }
 
     /**
-     * 切换到对应企业应用 Service
-     * isTempAuthService=true 可以使用临时授权服务
+     * Switch to the corresponding enterprise application service Service
+     * isTempAuthService=true temporary authorization service available
      *
-     * @param corpId                企业Id
-     * @param agentId               应用Id
-     * @param isTempAuthService     临时授权服务
+     * @param corpId                corp Id
+     * @param agentId               agent Id
+     * @param isTempAuthService     temporary authorization service
      */
     public void switchoverTo(String corpId, Integer agentId, boolean isTempAuthService) {
         WxCpService service = null;
@@ -145,14 +135,14 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
         }
 
         if (null == service) {
-            throw new WxRuntimeException(String.format("无法找到对应【%s】的企业微信配置信息，请核实！", key));
+            throw new WxRuntimeException(String.format("cannot find wecom app config[%s]", key));
         }
         THREAD_LOCAL.set(service);
     }
 
     @Override
     public WxCpService openService() {
-        return Optional.of(THREAD_LOCAL.get()).orElseThrow(() -> new RuntimeException("企业微信Service加载失败"));
+        return Optional.of(THREAD_LOCAL.get()).orElseThrow(() -> new RuntimeException("get wecom service fail"));
     }
 
     @Override
@@ -203,81 +193,81 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
     }
 
     /**
-     * 添加域名解析值 <br/>
+     * Add domain resolution value <br/>
      * <ul>
-     *     <li>固定顶级域名：vika.(cn/ltd)</li>
-     *     <li>如果创建二级域名 - domainName：second-level；结果：second-level.vika.cn</li>
-     *     <li>如果创建三级域名 - domainName：asw1.enp；结果：asw1.enp.vika.cn</li>
+     *     <li>fixed top-level domain：vika.(cn/ltd)</li>
+     *     <li>If you create a second-level domain - domainName：second-level；result：second-level.vika.cn</li>
+     *     <li>If you create a third-level domain - domainName：asw1.enp；result：asw1.enp.vika.cn</li>
      * </ul>
      *
-     * @param domainPrefix 域前缀
-     * @return 创建是否成功
+     * @param domainPrefix domain prefix
+     * @return Whether the creation was successful
      */
     public String addEnpDomainName(String domainPrefix) {
         try {
             ActionEnpApiResponse response = actionEnpDomainApi("add", domainPrefix, ActionEnpApiResponse.class);
             if (null == response) {
-                throw new WeComApiException(WeComExceptionConstants.APPLY_ENP_DOMAIN_ERR_CODE, "申请企业域名响应错误");
+                throw new WeComApiException(WeComExceptionConstants.APPLY_ENP_DOMAIN_ERR_CODE, "apply domain response error");
             }
             ActionEnpApiResponse.Data data = response.getData();
             if (!response.getSuccess() || Objects.isNull(data) || StrUtil.isBlank(data.getDomainName())) {
-                LOGGER.error("申请企业域名错误：{}", response.getError());
-                throw new WeComApiException(WeComExceptionConstants.APPLY_ENP_DOMAIN_ERR_CODE, "申请企业域名失败");
+                LOGGER.error("failed to apply domain: {}", response.getError());
+                throw new WeComApiException(WeComExceptionConstants.APPLY_ENP_DOMAIN_ERR_CODE, "failed to apply domain");
             }
             return data.getDomainName();
         }
         catch (RestClientException e) {
-            LOGGER.error("创建企业域名错误：", e);
-            throw new WeComApiException("创建企业域名错误");
+            LOGGER.error("create business domain error：", e);
+            throw new WeComApiException("create business domain error");
         }
     }
 
     /**
-     * 删除域名解析值 <br/>
+     * Delete the domain name resolution value <br/>
      * <p>
      *   domainName：second-level、asw1.enp
      * </p>
      *
-     * @param domainPrefix 域前缀
-     * @return 是否删除成功
+     * @param domainPrefix domain prefix
+     * @return Whether the deletion is successful
      */
     public boolean removeEnpDomainName(String domainPrefix) {
         try {
             ActionEnpApiResponse response = actionEnpDomainApi("delete", domainPrefix, ActionEnpApiResponse.class);
             if (null == response) {
-                throw new WeComApiException(WeComExceptionConstants.DELETE_ENP_DOMAIN_ERR_CODE, "撤销企业域名响应错误");
+                throw new WeComApiException(WeComExceptionConstants.DELETE_ENP_DOMAIN_ERR_CODE, "revocation of domain response error");
             }
             if (!response.getSuccess()) {
-                LOGGER.error("撤销企业域名错误：{}", response.getError());
-                throw new WeComApiException(WeComExceptionConstants.DELETE_ENP_DOMAIN_ERR_CODE, "撤销企业域名失败");
+                LOGGER.error("revocation of domain error: {}", response.getError());
+                throw new WeComApiException(WeComExceptionConstants.DELETE_ENP_DOMAIN_ERR_CODE, "revocation of domain error");
             }
             return true;
         }
         catch (RestClientException e) {
-            LOGGER.error("删除企业域名错误：", e);
-            throw new WeComApiException("删除企业域名错误");
+            LOGGER.error("delete domain error: ", e);
+            throw new WeComApiException("delete domain error");
         }
     }
 
     /**
-     * 校验域名解析值 <br/>
+     * Verify the domain resolution value <br/>
      * <p>
      *   domainName：second-level、asw1.enp
      * </p>
      *
-     * @param domainPrefix 域前缀
-     * @return 是否存在
+     * @param domainPrefix domain prefix
+     * @return does it exist
      */
     public Data checkEnpDomainName(String domainPrefix) {
         try {
             CheckEnpApiResponse response = actionEnpDomainApi("check", domainPrefix, CheckEnpApiResponse.class);
             if (null == response) {
-                throw new WeComApiException(WeComExceptionConstants.CHECK_ENP_DOMAIN_ERR_CODE, "校验企业域名响应错误");
+                throw new WeComApiException(WeComExceptionConstants.CHECK_ENP_DOMAIN_ERR_CODE, "check domain response error");
             }
             Data data = response.getData();
             if (!response.getSuccess()) {
-                LOGGER.error("校验企业域名错误：{}", response.getError());
-                throw new WeComApiException(WeComExceptionConstants.CHECK_ENP_DOMAIN_ERR_CODE, "校验企业域名失败");
+                LOGGER.error("check domain error: {}", response.getError());
+                throw new WeComApiException(WeComExceptionConstants.CHECK_ENP_DOMAIN_ERR_CODE, "check domain error");
             }
             if (Objects.nonNull(data) && StrUtil.isNotBlank(data.getIpList())) {
                 return data;
@@ -285,20 +275,20 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
             return null;
         }
         catch (RestClientException e) {
-            LOGGER.error("校验企业域名错误：", e);
-            throw new WeComApiException("校验企业域名错误");
+            LOGGER.error("check domain error: ", e);
+            throw new WeComApiException("check domain error");
         }
     }
 
     /**
-     * 调用api操作新增、删除等域名解析动作
+     * Call api operations to add, delete and other domain resolution actions
      * <p>
-     *     actionOp支持参数：「add、delete、check」
+     *     actionOp support parameters: add/delete/check
      * </p>
      *
-     * @param actionOp     请求动作
-     * @param domainPrefix 域前缀
-     * @return 请求结果
+     * @param actionOp     request action
+     * @param domainPrefix domain prefix
+     * @return request result
      * @throws RestClientException
      */
     private <T extends EnpDdnsApiBaseResponse> T actionEnpDomainApi(String actionOp, String domainPrefix, Class<T> responseType) throws RestClientException {
@@ -306,7 +296,7 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
         String url = autoCreateDdns.getApiHost() + autoCreateDdns.getActionDdnsUrl();
 
         HttpHeaders header = new HttpHeaders();
-        // post 请求 需要设置contentType
+        // The post request needs to set the contentType
         header.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> requestBody = new HashMap<>(2);
@@ -333,9 +323,9 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
         if (CollUtil.isNotEmpty(isvHandlers)) {
             ISV_SERVICES.values().forEach(isvService -> {
                 WxCpTpMessageRouter isvRouter = new WxCpTpMessageRouter(isvService);
-                // 先将所有处理器排序
+                // Sort all processors first
                 isvHandlers.sort(Comparator.comparingInt(WeComIsvMessageHandler::order));
-                // 填充路由处理器
+                // Populate the route handler
                 isvHandlers.forEach(isvHandler -> {
                     WeComIsvMsgType msgType = isvHandler.msgType();
                     WeComIsvMessageType messageType = isvHandler.messageType();
@@ -348,12 +338,13 @@ public class WeComTemplate extends AbstractWeComTemplate implements ApplicationC
                             .handler(isvHandler);
                     if (isvHandler.next()) {
                         routerRule.next();
-                    } else {
+                    }
+                    else {
                         routerRule.end();
                     }
                 });
 
-                @SuppressWarnings("deprecation") // 必须要使用该方法获取应用套件 ID
+                @SuppressWarnings("deprecation") // This method must be used to get the application suite ID
                 WxCpTpConfigStorage wxCpTpConfigStorage = isvService.getWxCpTpConfigStorage();
                 ISV_ROUTERS.put(wxCpTpConfigStorage.getSuiteId(), isvRouter);
             });

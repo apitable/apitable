@@ -5,12 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 上传图片 响应结构
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/12/2 10:58
+ * upload image response structure
  */
 @Setter
 @Getter

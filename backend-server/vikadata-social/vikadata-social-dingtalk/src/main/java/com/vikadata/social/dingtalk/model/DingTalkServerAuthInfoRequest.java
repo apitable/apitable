@@ -5,23 +5,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <p>
- * 获取授权企业授权信息/企业信息
- * </p>
- * @author zoe zheng
- * @date 2021/4/6 6:49 下午
+ * Obtain authorized enterprise authorization informationEnterprise information
  */
 @Getter
 @Setter
 @ToString
 public class DingTalkServerAuthInfoRequest {
     /**
-     * 非必填，第三方应用的Suitekey
+     * Optional, Suitekey for third-party applications
      */
     private String suiteKey;
 
     /**
-     * 授权方的CorpId
+     * Authorizer's Corp Id
      */
     private String authCorpid;
 }
