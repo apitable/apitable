@@ -5,11 +5,10 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
- * 角色工具
+ * Role util
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/2/13 21:02
  */
 public class RoleBuildUtil {
 

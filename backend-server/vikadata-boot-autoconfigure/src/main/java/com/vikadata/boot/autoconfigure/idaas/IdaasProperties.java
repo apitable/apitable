@@ -3,35 +3,28 @@ package com.vikadata.boot.autoconfigure.idaas;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * <p>
- * 玉符 IDaaS 配置信息
- * </p>
- * @author 刘斌华
- * @date 2022-05-17 18:59:23
- */
 @Configuration
 @ConfigurationProperties(prefix = "vikadata-starter.idaas")
 public class IdaasProperties {
     private boolean enabled = false;
 
     /**
-     * 是否私有化部署。默认 false
+     * Whether to privatize the deployment. Default false
      */
     private boolean selfHosted = false;
 
     /**
-     * 玉符管理接口的域名。如：https://demo-admin.cig.tencentcs.com
+     * Domain name of Yufu management interface, example：https://demo-admin.cig.tencentcs.com
      */
     private String manageHost;
 
     /**
-     * 玉符通讯录接口的域名。如：https://{tenantName}-admin.cig.tencentcs.com
+     * Domain name of Yufu address book interface, example：https://{tenantName}-admin.cig.tencentcs.com
      */
     private String contactHost;
 
     /**
-     * 请求维格的域名
+     * the host
      */
     private String serverHost;
 

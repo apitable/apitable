@@ -16,9 +16,6 @@ import com.auth0.json.mgmt.users.User;
 import com.auth0.net.AuthRequest;
 import com.auth0.utils.tokens.IdTokenVerifier;
 
-/**
- * @author Shawn Deng
- */
 public class Auth0Template {
 
     private final AuthAPI authAPI;

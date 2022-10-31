@@ -14,17 +14,16 @@ public class BillingWhiteListConfigManager {
 
         private final BillingWhiteListConfig singleton;
 
-        // JVM保证这个方法绝对只调用一次
         Singleton() {
             try {
                 InputStream resourceAsStream = BillingWhiteListConfigManager.class.getResourceAsStream("/billing_white_list.json");
                 if (resourceAsStream == null) {
-                    throw new IOException("配置文件未找到");
+                    throw new IOException("config file not found");
                 }
                 singleton = Converter.getObjectMapper().readValue(resourceAsStream, BillingWhiteListConfig.class);
             }
             catch (IOException e) {
-                throw new RuntimeException("加载系统配置失败");
+                throw new RuntimeException("failed to load system configuration");
             }
         }
 

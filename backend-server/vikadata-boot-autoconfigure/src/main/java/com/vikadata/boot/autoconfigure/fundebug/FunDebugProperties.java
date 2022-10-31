@@ -4,11 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * Fundebug配置信息
+ * fundebug properties
  * </p>
  *
  * @author Benson Cheung
- * @date 2020/3/13
  */
 @ConfigurationProperties(prefix = "vikadata-starter.fundebug")
 public class FunDebugProperties {
@@ -23,7 +22,7 @@ public class FunDebugProperties {
     private String apiKey;
 
     /**
-     * 区分环境
+     * environment
      */
     private String releaseStage;
 

@@ -4,17 +4,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * SocketIO配置
+ * socketio properties
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/8 3:52 下午
  */
 @ConfigurationProperties(prefix = "vikadata-starter.socketio")
 public class SocketioProperties {
 
     /**
-     * 客户端配置
+     * client config
      */
     private Client client;
 
@@ -28,27 +27,27 @@ public class SocketioProperties {
 
     public static class Client {
         /**
-         * 域名
+         * url
          */
         private String url;
 
         /**
-         * 路径
+         * path
          */
         private String path;
 
         /**
-         * 重连次数
+         * Times of reconnection
          */
         private int reconnectionAttempts = 2;
 
         /**
-         * 重连间隔毫秒
+         * Reconnect interval (ms)
          */
         private int reconnectionDelay = 1000;
 
         /**
-         * 连接超时时间(ms)
+         * Connection timeout (ms)
          */
         private int timeout = 1000;
 

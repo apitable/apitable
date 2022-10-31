@@ -5,9 +5,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 私有化配置
+ * self-host billing properties
  * @author Shawn Deng
- * @date 2022-03-29 01:01:59
  */
 @Data
 @ConfigurationProperties(prefix = "vikadata.selfhost")

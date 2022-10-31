@@ -29,7 +29,7 @@ import com.vikadata.api.enums.workbench.WidgetPackageStatus;
 import com.vikadata.api.enums.workbench.WidgetPackageType;
 import com.vikadata.api.enums.workbench.WidgetReleaseStatus;
 import com.vikadata.api.enums.workbench.WidgetReleaseType;
-import com.vikadata.api.factory.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.model.dto.widget.WidgetBodyDTO;
 import com.vikadata.api.model.dto.widget.WidgetBodyDTO.DataArchive;
 import com.vikadata.api.model.ro.widget.WidgetAuditGlobalIdRo;

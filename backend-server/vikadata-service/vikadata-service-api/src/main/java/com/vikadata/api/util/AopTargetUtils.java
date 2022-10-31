@@ -1,20 +1,20 @@
 package com.vikadata.api.util;
 
+import java.lang.reflect.Field;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.support.AopUtils;
 
-import java.lang.reflect.Field;
-
 /**
  * <p>
- * 获取代理原始对象的工具
+ * A tool to get a proxy primitive object
  * </p>
  *
  * @author Shawn Deng
- * @date 2018/11/5 16:24
  */
 public class AopTargetUtils {
 
@@ -22,7 +22,6 @@ public class AopTargetUtils {
 
     public static Object getTarget(Object proxy) {
         if (!AopUtils.isAopProxy(proxy)) {
-            //不是代理对象
             return proxy;
         }
 
@@ -33,7 +32,7 @@ public class AopTargetUtils {
                 return getCglibProxyTargetObject(proxy);
             }
         } catch (Exception e) {
-            logger.error("获取代理对象异常", e);
+            logger.error("get proxy object exception", e);
             return null;
         }
     }

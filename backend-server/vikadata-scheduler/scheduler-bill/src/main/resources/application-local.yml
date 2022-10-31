@@ -24,7 +24,6 @@ vikadata-starter:
   vika:
     enabled: true
     host: https://integration.vika.ltd
-    # 维格表API 专用号 token
     token: uskM7PcEPftF4wh0Ni1
   job:
     register-address: http://job.vika.ltd

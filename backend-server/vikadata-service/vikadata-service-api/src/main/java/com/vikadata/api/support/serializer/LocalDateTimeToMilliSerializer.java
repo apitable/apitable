@@ -9,9 +9,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
- * LocalDateTime 转 unix时间戳（毫秒）
+ * LocalDateTime to timestamp（mills）
  * @author Shawn Deng
- * @date 2021-09-02 16:48:45
  */
 public class LocalDateTimeToMilliSerializer extends JsonSerializer<LocalDateTime> {
 

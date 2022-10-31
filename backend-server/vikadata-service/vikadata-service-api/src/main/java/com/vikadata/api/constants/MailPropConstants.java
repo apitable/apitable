@@ -2,11 +2,10 @@ package com.vikadata.api.constants;
 
 /**
  * <p>
- * 邮件属性
+ * mail constants
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/5/28 16:15
  */
 public class MailPropConstants {
 

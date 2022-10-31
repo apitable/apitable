@@ -16,8 +16,6 @@ import lombok.experimental.Tolerate;
  * <p> 
  * 第三方平台集成 - 企业微信第三方服务商应用消息通知信息
  * </p> 
- * @author 刘斌华
- * @date 2022-01-05 16:47:03
  */
 @Setter
 @Getter

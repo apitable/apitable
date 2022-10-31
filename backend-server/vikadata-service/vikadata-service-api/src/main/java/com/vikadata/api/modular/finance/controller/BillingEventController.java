@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.modular.finance.model.EventVO;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.core.support.ResponseData;

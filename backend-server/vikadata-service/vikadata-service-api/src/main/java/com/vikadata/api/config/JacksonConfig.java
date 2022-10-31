@@ -8,11 +8,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * Jackson 配置
+ * Jackson config
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/29 20:10
  */
 @Configuration(proxyBeanMethods = false)
 public class JacksonConfig {

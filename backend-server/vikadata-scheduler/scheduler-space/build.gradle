@@ -41,13 +41,10 @@ dependencies {
 
 }
 
-// 打包环境
 def profile = System.getProperty("profile") ?: "local"
 
 println 'Build Profile：' + profile
 
-// 设置打包环境变量到resource目录下文件
-// profile和revision在application.yml里面
 processResources {
   filesMatching("**/*.yml") {
     it.filter(ReplaceTokens, tokens: [

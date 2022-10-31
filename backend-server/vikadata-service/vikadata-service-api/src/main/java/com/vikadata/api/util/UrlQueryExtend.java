@@ -8,21 +8,18 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
- * UrlQuery 扩展工具类
+ * UrlQuery Extend Tool
  * </p>
  *
  * @author Pengap
- * @date 2021/9/3 20:56:37
  */
 public class UrlQueryExtend extends UrlQuery {
 
     /**
-     * 删除URL中指定参数
+     * remove the specified parameter from the url
      *
      * @param url      Url
-     * @param paramKey 参数Key
-     * @author Pengap
-     * @date 2021/9/3 20:59:36
+     * @param paramKey param key
      */
     public static String ridUrlParam(String url, String paramKey) {
         if (StrUtil.hasBlank(url, paramKey)) {

@@ -11,9 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 永中云自动装载配置
+ * autoconfiguration of yozo
  * @author Shawn Deng
- * @date 2021-06-22 10:43:25
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(YozoProperties.class)

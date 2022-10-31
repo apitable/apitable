@@ -1,12 +1,14 @@
 package com.vikadata.boot.autoconfigure.swagger;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import springfox.documentation.swagger.web.DocExpansion;
 import springfox.documentation.swagger.web.ModelRendering;
 import springfox.documentation.swagger.web.OperationsSorter;
 import springfox.documentation.swagger.web.TagsSorter;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
+ * swagger ui properties
  * @author Shawn Deng
  * @date 2021-01-08 17:37:47
  */
@@ -14,7 +16,7 @@ import springfox.documentation.swagger.web.TagsSorter;
 public class SwaggerUiProperties {
 
     /**
-     * 支持页面提交的请求类型
+     * submit methods
      **/
     private String[] submitMethods;
 
@@ -25,7 +27,7 @@ public class SwaggerUiProperties {
     private ModelRendering defaultModelRendering;
 
     /**
-     * 是否显示请求耗时，默认false
+     * whether show request duration, default false
      */
     private Boolean displayRequestDuration;
 

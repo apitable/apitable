@@ -13,7 +13,6 @@ import org.springframework.session.data.redis.config.ConfigureRedisAction;
 /**
  * <p>
  * Http Session Config
- * 设置30天内有效，主动续租
  * </p>
  *
  * @author Shawn Deng
@@ -31,9 +30,6 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
         );
     }
 
-    /**
-     * 关闭Spring-session中对CONFIG的操作，防止上线后报错，notify-keyspace-events
-     */
     @Bean
     public ConfigureRedisAction configureRedisAction() {
         return ConfigureRedisAction.NO_OP;

@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * vika sdk 属性
+ * vika sdk properties
  * </p>
  *
  * @author Chambers

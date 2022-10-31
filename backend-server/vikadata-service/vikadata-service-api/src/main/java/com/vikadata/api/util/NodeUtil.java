@@ -6,9 +6,6 @@ import java.util.List;
 
 import com.vikadata.api.model.vo.node.SimpleSortableNodeInfo;
 
-/**
- * @author Shawn Deng
- */
 public class NodeUtil {
 
     public static List<SimpleSortableNodeInfo> sortNode(List<SimpleSortableNodeInfo> list) {

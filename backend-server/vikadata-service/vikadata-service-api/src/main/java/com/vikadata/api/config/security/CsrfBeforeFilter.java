@@ -18,17 +18,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * <p>
- * 在CsrfFilter前面执行
+ * execute in front of csrf filter
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/6/23 15:48
  */
 @Slf4j
 public class CsrfBeforeFilter extends OncePerRequestFilter {
-    /**
-     * 需要跳过的path,nestjs 调用
-     */
+
     public List<String> ignorePath = CollUtil.newArrayList( "/base/attach/cite");
 
     @Override
@@ -38,7 +35,6 @@ public class CsrfBeforeFilter extends OncePerRequestFilter {
             log.info("csrf before filter path: {}", request.getServletPath());
         }
         if (StrUtil.isNotBlank(bearerToken) || this.ignorePath.contains(request.getServletPath())) {
-            // API_KEY请求不需要CSRF验证
             CsrfFilter.skipRequest(request);
         }
         filterChain.doFilter(request, response);

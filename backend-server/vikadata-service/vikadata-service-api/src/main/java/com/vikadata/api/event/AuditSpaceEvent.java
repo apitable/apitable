@@ -13,11 +13,10 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * <p>
- * 空间审计事件
+ * Space audit Event
  * </p>
  *
  * @author Chambers
- * @date 2022/5/25
  */
 public class AuditSpaceEvent extends ApplicationEvent {
 

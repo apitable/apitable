@@ -5,10 +5,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * @author Shawn Deng
- * @date 2021-01-11 13:17:52
- */
 @ConfigurationProperties(prefix = "vikadata-starter.beetl")
 public class BeetlProperties {
 
@@ -16,10 +12,14 @@ public class BeetlProperties {
 
     private String classPath = "templates";
 
-    /** 自定义模板占位起始符号，作为第二对占位符使用 */
+    /**
+     * Customized template placeholder starting symbol, used as the second pair of placeholders
+     */
     private String placeholderStart = "{{";
 
-    /** 自定义模板占位结束符号 */
+    /**
+     * Custom Template Placeholder End Symbol
+     */
     private String placeholderEnd = "}}";
 
     public Charset getCharset() {

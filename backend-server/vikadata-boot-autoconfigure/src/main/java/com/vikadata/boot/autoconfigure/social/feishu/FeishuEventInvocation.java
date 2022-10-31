@@ -5,10 +5,9 @@ import java.lang.reflect.Method;
 import com.vikadata.boot.autoconfigure.social.feishu.annotation.FeishuEventListener;
 
 /**
- * 事件监听器的调用包装类
+ * Wrapping class of event listener
  *
  * @author Shawn Deng
- * @date 2020-11-24 10:29:19
  */
 public class FeishuEventInvocation extends BaseInvocation {
 

@@ -22,12 +22,11 @@ import org.springframework.context.ApplicationContext;
 
 /**
  * <p>
- *  应用启动后，钉钉事件监听器扫描
- *  扫描特定的注解
- *   并放入容器管理
+ *  After the application is started, the dingtalk event listener scans
+ *  Scan for specific annotations {@link DingTalkEventHandler}
+ *  And put it into IOC container
  * </p>
  * @author zoe zheng
- * @date 2021/5/13 2:16 下午
  */
 public class DingTalkEventScanner {
 
@@ -40,26 +39,25 @@ public class DingTalkEventScanner {
     }
 
     public EventListenerFactory scan() {
-        // 获取标注 DingTalkEventHandler 注解的类
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(DingTalkEventHandler.class);
 
         if (beans.isEmpty()) {
-            log.warn("您似乎未提供钉钉的事件订阅的处理机制，请问是正确的吗？");
+            log.warn("It seems that you do not provide the processing mechanism of dingtalk event subscription. is it correct？");
         }
 
         final AppHandlers appHandlers = new AppHandlers();
 
-        // 解析注解类里面的方法，只有被标注的注解才能被扫描入容器
+        // only annotated method can be scanned into containers
         for (Object bean : beans.values()) {
-            // 所有注解的方法
+            // get all annotations of method
             List<BaseInvocation> invocations = findInvocations(bean);
-            // 遍历监听器方法列表
+            // fetch listener method list
             invocations.forEach(invocation -> {
                 if (invocation instanceof DingTalkEventInvocation) {
-                    // 事件订阅方法
+                    // Event subscription method
                     final DingTalkEventInvocation eventInvocation = (DingTalkEventInvocation) invocation;
                     if (BaseEvent.class.isAssignableFrom(eventInvocation.getEventType())) {
-                        // 如果是事件订阅回调
+                        // If it is an event subscription callback
                         if (null != appHandlers.callbackEventInvocations.putIfAbsent((Class<? extends BaseEvent>) eventInvocation.getEventType(), eventInvocation)) {
                             throw new IllegalStateException("duplicate ding talk event handler for " + eventInvocation.getEventType().getSimpleName());
                         }
@@ -69,13 +67,13 @@ public class DingTalkEventScanner {
                     }
                 }
                 else {
-                    // 不会发生的
-                    throw new IllegalStateException("钉钉事件未知的方法类型");
+                    // It won't happen
+                    throw new IllegalStateException("Unknown method type for dingtalk event");
                 }
             });
         }
 
-        // 往事件监听器里注册事件处理方法
+        // Register the event handling method to the event listener
         EventListenerFactory factory = new EventListenerFactory();
         factory.addEventCallbackHandler(
                 appHandlers.callbackEventInvocations.entrySet().stream().collect(
@@ -85,14 +83,13 @@ public class DingTalkEventScanner {
     }
 
     /**
-     * 查找注解并包装成处理类
+     * Find annotations and wrap them into processing classes
      *
-     * @param o bean 对象
-     * @return 注解对应的包装类列表
+     * @param o bean object
+     * @return List of packaging classes corresponding to annotations
      */
     private List<BaseInvocation> findInvocations(Object o) {
         final List<BaseInvocation> invocations = new ArrayList<>();
-        // 遍历类的方法
         for (Method m : o.getClass().getMethods()) {
             BaseInvocation inv = methodToInvocation(m, o);
             if (inv != null) {
@@ -104,24 +101,21 @@ public class DingTalkEventScanner {
 
     private BaseInvocation methodToInvocation(Method m, Object o) {
         if (m.isAnnotationPresent(DingTalkEventListener.class)) {
-            // 事件订阅注解方法
             Parameter[] parameters = m.getParameters();
-            // 参数为空不处理
             if (parameters == null) {
                 return null;
             }
             Parameter eventParam = null;
             for (Parameter p : parameters) {
-                // 参数是继承 BaseEvent 基类
                 boolean equalAssign = BaseEvent.class.isAssignableFrom(p.getType()) && BaseEvent.class != p.getType();
                 if (equalAssign) {
                     if (eventParam != null) {
-                        throw new IllegalStateException("DingTalkEventListener 注解的方法不允许存在多个参数: " + o.getClass().getName() + "." + m.getName());
+                        throw new IllegalStateException("DingTalkEventListener annotated method does not allow multiple parameters: " + o.getClass().getName() + "." + m.getName());
                     }
                     eventParam = p;
                 }
             }
-            // 参数为空则不应该代表正确的处理方法
+            // If the parameter is null, it should not represent the correct processing method
             if (eventParam == null) {
                 return null;
             }
@@ -163,7 +157,7 @@ public class DingTalkEventScanner {
     }
 
     /**
-     * 整个事件存储的临时容器类
+     * Temporary container class for the entire event store
      */
     private static class AppHandlers {
         Map<Class<? extends BaseEvent>, DingTalkEventInvocation> callbackEventInvocations = new HashMap<>();

@@ -4,9 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 渠道产品分类
+ * product channel
  * @author Shawn Deng
- * @date 2022-03-03 21:35:58
  */
 @Getter
 @RequiredArgsConstructor

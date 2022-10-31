@@ -13,11 +13,10 @@ import static com.vikadata.api.enums.datasheet.FieldPermissionChangeEvent.FIELD_
 
 /**
  * <p> 
- * 权限广播工厂
+ * Permission broadcast factory
  * </p> 
  *
  * @author Chambers
- * @date 2021/5/25
  */
 @Component
 public class SocketBroadcastFactory {

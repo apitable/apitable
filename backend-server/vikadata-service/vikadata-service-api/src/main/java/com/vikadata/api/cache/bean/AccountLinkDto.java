@@ -13,28 +13,24 @@ import static com.vikadata.api.constants.DateFormatConstants.TIME_SIMPLE_PATTERN
 
 /**
  * <p>
- * 帐号关联dto
+ * account link object
  * </p>
  *
  * @author Chambers
- * @date 2020/2/28
  */
 @Data
 public class AccountLinkDto {
 
     /**
-     * 关联类型：0钉钉；1微信, 2
+     * Link type
      */
     private Integer type;
 
     /**
-     * 帐号昵称
+     * nickname
      */
     private String nickName;
 
-    /**
-     * 绑定时间
-     */
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)

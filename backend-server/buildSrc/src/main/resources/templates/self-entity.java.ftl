@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 @TableName("${schemaName}${table.name}")
 </#if>
 <#if swagger>
-    @ApiModel(value = "${entity}对象", description = "${table.comment!}")
+    @ApiModel(value = "${entity}", description = "${table.comment!}")
 </#if>
 <#if superEntityClass??>
 public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
@@ -51,7 +51,6 @@ public class ${entity} {
 
     private static final long serialVersionUID = 1L;
 </#if>
-<#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
     <#if field.keyFlag>
         <#assign keyPropertyName="${field.propertyName}"/>
@@ -75,9 +74,7 @@ public class ${entity} {
         <#elseif field.convert>
     @TableId("${field.annotationColumnName}")
         </#if>
-    <#-- 普通字段 -->
     <#elseif field.fill??>
-    <#-- -----   存在字段填充设置   ----->
         <#if field.convert>
     @TableField(value = "${field.annotationColumnName}", fill = FieldFill.${field.fill})
         <#else>
@@ -86,17 +83,14 @@ public class ${entity} {
     <#elseif field.convert>
     @TableField("${field.annotationColumnName}")
     </#if>
-<#-- 乐观锁注解 -->
     <#if field.versionField>
     @Version
     </#if>
-<#-- 逻辑删除注解 -->
     <#if field.logicDeleteField>
     @TableLogic
     </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>
-<#------------  END 字段循环遍历  ---------->
 
 <#if !entityLombokModel>
     <#list table.fields as field>

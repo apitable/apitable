@@ -15,9 +15,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * ping++ 公钥文件加载器
+ * ping++ public key file loader
  * @author Shawn Deng
- * @date 2022-02-17 13:03:54
  */
 public class PingPublicKeyLoader {
 
@@ -40,17 +39,16 @@ public class PingPublicKeyLoader {
 
         private final String singleton;
 
-        // JVM保证这个方法绝对只调用一次
         Singleton() {
             try {
                 InputStream resourceAsStream = ClassPathResource.class.getClassLoader().getResourceAsStream("cert/pingpp_public_key.pem");
                 if (resourceAsStream == null) {
-                    throw new IOException("无法获取公钥文件");
+                    throw new IOException("Unable to get public key file");
                 }
                 singleton = IoUtil.read(resourceAsStream, StandardCharsets.UTF_8);
             }
             catch (IOException e) {
-                throw new RuntimeException("加载公钥文件失败");
+                throw new RuntimeException("Failed to load public key file");
             }
         }
 

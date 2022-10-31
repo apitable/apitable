@@ -8,11 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- *
- * @author Shawn Deng
- * @date 2022-02-15 17:34:54
- */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(Pingpp.class)
 @EnableConfigurationProperties(PingProperties.class)

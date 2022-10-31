@@ -19,9 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import static com.xiaomi.aegis.constant.SdkConstants.LOG_PROJECT_NAME;
 
 /**
- * 小米 cas授权接入
+ * autoconfiguration of xiaomi cas
  * @author Shawn Deng
- * @date 2021-06-30 15:08:13
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(XiaomiProperties.class)
@@ -63,24 +62,9 @@ public class XiaomiAutoConfiguration {
         }
         if (CommonUtil.isNotEmpty(AegisConfig.IGNORE_URL)) {
             AegisConfig.setIgnoreUrlArr(AegisConfig.IGNORE_URL.split("[,|，]"));
-            LOGGER.info("已设置忽略路径，ignoreUrls:{}", AegisConfig.IGNORE_URL);
+            LOGGER.info("ignore urls:{}", AegisConfig.IGNORE_URL);
         }
 
         LOGGER.info("AegisFilter init finish,{} public key", AegisConfig.publicKeys.length);
     }
-
-//    public FilterRegistrationBean<CasMidunFilter> casMidunFilterFilterRegistrationBean() {
-//        FilterRegistrationBean<CasMidunFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(new CasMidunFilter());
-//        registrationBean.addUrlPatterns("/*");
-//        if (xiaomiProperties.getIgnoreUrls() != null) {
-//            registrationBean.addInitParameter(IGNORE_URL_FILTER_INIT_PARAM_KEY, xiaomiProperties.getIgnoreUrls().stream().reduce("", (pre, cur) -> pre.concat(",").concat(cur)));
-//        }
-//        if (xiaomiProperties.getPublicKey() == null || "".equals(xiaomiProperties.getPublicKey())) {
-//            LOGGER.error("小米 Public Key 不能为空");
-//            throw new IllegalStateException("小米 Public Key 不能为空");
-//        }
-//        registrationBean.addInitParameter(PUBLIC_KEY_FILTER_INIT_PARAM_KEY, xiaomiProperties.getPublicKey());
-//        return registrationBean;
-//    }
 }

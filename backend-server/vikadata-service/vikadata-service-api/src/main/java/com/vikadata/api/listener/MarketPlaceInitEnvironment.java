@@ -14,10 +14,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-/**
- * 应用市场配置初始化数据，过滤环境
- * @author Shawn Deng
- */
 @Component
 public class MarketPlaceInitEnvironment implements EnvironmentAware, OnReadyListener {
 

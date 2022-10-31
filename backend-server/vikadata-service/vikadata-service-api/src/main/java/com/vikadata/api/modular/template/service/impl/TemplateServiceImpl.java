@@ -29,7 +29,7 @@ import com.vikadata.api.cache.bean.CategoryDto;
 import com.vikadata.api.cache.bean.RecommendConfig;
 import com.vikadata.api.cache.bean.RecommendConfig.AlbumGroup;
 import com.vikadata.api.cache.bean.RecommendConfig.TemplateGroup;
-import com.vikadata.api.cache.service.ITemplateConfigService;
+import com.vikadata.api.cache.service.TemplateConfigService;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.LimitProperties;
 import com.vikadata.api.control.role.ControlRoleManager;
@@ -153,7 +153,7 @@ public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, TemplateEnt
     private ISystemConfigService systemConfigService;
 
     @Resource
-    private ITemplateConfigService templateConfigService;
+    private TemplateConfigService templateConfigService;
 
     @Resource
     private INodeRelService iNodeRelService;

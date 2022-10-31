@@ -1,13 +1,14 @@
 package com.vikadata.api.listener;
 
 /**
- * 程序启动成功后的钩子监听器，实现它完成各种需要定制化的初始化操作
+ * The hook listener after the program starts successfully,
+ * realize it to complete various initialization operations that need to be customized
  * @author Shawn Deng
  */
 public interface OnReadyListener {
 
     /**
-     * 初始化
+     * Initialization
      */
     void init();
 }

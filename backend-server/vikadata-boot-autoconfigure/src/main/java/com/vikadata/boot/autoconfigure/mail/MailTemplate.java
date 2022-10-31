@@ -2,25 +2,24 @@ package com.vikadata.boot.autoconfigure.mail;
 
 /**
  * <p>
- * 邮件操作模版接口
+ * email template instance
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/5/28 14:38
  */
 public interface MailTemplate {
 
     /**
-     * 发送邮件
+     * Send Mail
      *
-     * @param emailMessage 消息体
+     * @param emailMessage message body
      */
     void send(EmailMessage emailMessage);
 
     /**
-     * 批量发送邮件
+     * Send mail in bulk
      *
-     * @param emailMessages 消息体集合
+     * @param emailMessages message body list
      */
     void send(EmailMessage... emailMessages);
 }

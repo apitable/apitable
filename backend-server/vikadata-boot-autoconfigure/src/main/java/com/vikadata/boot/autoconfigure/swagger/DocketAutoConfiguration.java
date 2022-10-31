@@ -22,10 +22,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Swagger文档配置
+ * Autoconfiguration of Swagger
  *
  * @author Shawn Deng
- * @date 2021-01-08 00:03:23
  */
 @Configuration(proxyBeanMethods = false)
 public class DocketAutoConfiguration {
@@ -62,9 +61,6 @@ public class DocketAutoConfiguration {
             .build();
     }
 
-    /**
-     * API的路径
-     */
     private Predicate<String> pathSelect() {
         ArrayList<Predicate<String>> basePaths = Stream.of(properties.getBasePaths())
             .reduce(new ArrayList<>(), (predicates, basePath) -> {
@@ -87,9 +83,6 @@ public class DocketAutoConfiguration {
         return andPredicates.and(notPredicates);
     }
 
-    /**
-     * 要忽略的参数类型
-     */
     private Class<?>[] ignoredParameterTypes() {
         Class<?>[] array = new Class[properties.getIgnoredParameterTypes().size()];
         return properties.getIgnoredParameterTypes().toArray(array);

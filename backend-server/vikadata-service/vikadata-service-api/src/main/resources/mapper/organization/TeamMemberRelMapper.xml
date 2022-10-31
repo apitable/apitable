@@ -21,7 +21,6 @@
           AND vodmr.member_id = #{memberId}
     </select>
 
-    <!--查询部门下成员关联总数-->
     <select id="countByTeamId" resultType="java.lang.Integer">
         SELECT COUNT(DISTINCT vom.id)
         FROM vika_unit_team_member_rel vodmr
@@ -32,14 +31,12 @@
         </foreach>
     </select>
 
-    <!--删除部门成员关联-->
     <delete id="deleteByTeamId">
         DELETE
         FROM vika_unit_team_member_rel
         WHERE team_id = #{teamId}
     </delete>
 
-    <!--删除成员所属部门-->
     <delete id="deleteByMemberId">
         DELETE vodmr FROM vika_unit_team_member_rel vodmr
         WHERE vodmr.member_id in
@@ -48,7 +45,6 @@
         </foreach>
     </delete>
 
-    <!--删除指定成员的关联的部门-->
     <delete id="deleteByTeamIdsAndMemberId">
         <if test="teamIds != null and teamIds.size() != 0">
             DELETE vodmr FROM vika_unit_team_member_rel vodmr

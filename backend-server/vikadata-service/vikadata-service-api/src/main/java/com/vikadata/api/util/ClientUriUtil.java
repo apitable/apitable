@@ -17,34 +17,31 @@ import com.vikadata.api.enums.datasheet.UrlRulePrefixEnum;
 
 /**
  * <p>
- * 客户端 nginx $request_uri 解析工具类
+ * client nginx $request_uri parse util
  * </p>
  *
  * @author Pengap
- * @date 2022/5/30 15:54:19
  */
 public class ClientUriUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientUriUtil.class);
 
     /**
-     * 解析客户端uri
-     *
-     * 比如：https://integration.vika.ltd/share/shrKk0fJy24hZhkJWFmlG 【维格表】- 彭安平给你分享了《新建维格表 2》，为了更好的体验，建议通过电脑浏览器访问
-     *
-     * 解析后：https://integration.vika.ltd/share/shrKk0fJy24hZhkJWFmlG
+     * parsing client uri
+     * <p>
+     * before：http://{ip}/share/shrKk0fJy24hZhkJWFmlG sheet description......
+     * <p>
+     * after：https://{ip}/share/shrKk0fJy24hZhkJWFmlG
      *
      * @param originalUrl nginx $request_uri
      * @return uri
-     * @author zoe zheng
-     * @date 2020/5/19 12:34 下午
      */
     public static String parseOriginUrlPath(String originalUrl) {
         String uri = "";
         if (StrUtil.isNotBlank(originalUrl)) {
             uri = URLUtil.toURI(URLUtil.decode(originalUrl), true).getPath();
         }
-        // 过滤空格之后的数据
+        // Filter data after spaces
         if (StrUtil.contains(uri, " ")) {
             uri = StrUtil.subBetween(uri, "", " ");
         }
@@ -52,42 +49,36 @@ public class ClientUriUtil {
     }
 
     /**
-     * 获取meta具体信息
+     * Get meta specific information
      *
      * @param uri nginx $request_uri
      * @return meta
-     * @author zoe zheng
-     * @date 2020/5/19 12:34 下午
      */
     public static boolean isMatchSharePath(String uri) {
         String uriCase = "/share/" + IdRulePrefixEnum.SHARE.getIdRulePrefixEnum();
         String tpcCase = "/template/" + IdRulePrefixEnum.TPC.getIdRulePrefixEnum();
         String spaceCase = "/space/" + IdRulePrefixEnum.SPC.getIdRulePrefixEnum();
         String tplCase = "/" + IdRulePrefixEnum.TPL.getIdRulePrefixEnum();
-        // 分享页渲染meta
         if (StrUtil.containsIgnoreCase(uri, uriCase)) {
             return true;
         }
-        // 模版分享页
         return StrUtil.containsIgnoreCase(uri, tpcCase) && !StrUtil.containsIgnoreCase(uri, spaceCase) && StrUtil.containsIgnoreCase(uri, tplCase);
     }
 
     /**
-     * 从uri里面获取含有prefix的各种ID,不区分大小写<br>
+     * Get various IDs with prefix from uri, case-insensitive<br>
      *
      * getIdFromUri(uri, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum());
      *
-     * @param uri 地址
-     * @param prefix 前缀
+     * @param uri uri address
+     * @param prefix prefix
      * @return null|string
-     * @author zoe zheng
-     * @date 2020/5/22 4:41 下午
      */
     public static String getIdFromUri(String uri, String prefix) {
         String uriSeparator = "/";
         String[] path = StrUtil.split(StrUtil.removePrefix(StrUtil.removeSuffix(uri, uriSeparator), uriSeparator), uriSeparator);
         for (String s : path) {
-            // 路由中有shr关键字，说明分享的节点，查找节点描述和名称
+            // There is a shr keyword in the route to describe the shared node, find the node description and name
             if (StrUtil.containsIgnoreCase(s, prefix)) {
                 return s;
             }
@@ -96,9 +87,9 @@ public class ClientUriUtil {
     }
 
     /**
-     * 地址是否为工作台节点地址
-     * @param uri 地址
-     * @return 是否为工作台节点地址
+     * whether the address is the workbench node address
+     * @param uri uri address
+     * @return true | false
      */
     public static boolean isMatchWorkbenchPath(URI uri) {
         return StrUtil.startWithIgnoreCase(uri.getPath(),
@@ -106,9 +97,9 @@ public class ClientUriUtil {
     }
 
     /**
-     * 地址是否为分享节点地址
-     * @param uri 地址
-     * @return 是否为分享节点地址
+     * Whether the address is a shared node address
+     * @param uri uri address
+     * @return true | false
      */
     public static boolean isMatchSharePath(URI uri) {
         return StrUtil.startWithIgnoreCase(uri.getPath(),
@@ -116,9 +107,9 @@ public class ClientUriUtil {
     }
 
     /**
-     * 根据分享uri获取分享信息
+     * Get sharing information according to the sharing address
      * @param uri uri
-     * @return 节点id
+     * @return node id optional
      */
     public static Optional<String> getShareIdByPath(URI uri) {
         String pathAboutSharedInfo = uri.getPath()
@@ -127,9 +118,9 @@ public class ClientUriUtil {
     }
 
     /**
-     * 根据工作台节点uri获取节点id信息
+     * Get the node id information according to the workbench node address
      * @param uri uri
-     * @return 节点id
+     * @return node id optional
      */
     public static Optional<String> getNodeIdByPath(URI uri) {
         String pathAboutNodeInfo = uri.getPath()
@@ -159,14 +150,14 @@ public class ClientUriUtil {
             String normalizeUrl = URLUtil.normalize(url);
             return Optional.of(new URL(normalizeUrl));
         } catch (MalformedURLException e) {
-            logger.error("[{}] 解析失败 [{}]", url, e.getMessage());
+            logger.error("[{}] parsing failed [{}]", url, e.getMessage());
         }
         return Optional.empty();
     }
 
     public static Optional<URI> urlTurnIntoURI(String url) {
         try {
-            // 删除地址的多余信息，如分享地址。
+            // Delete redundant information about the address, such as sharing address.
             if (StrUtil.contains(url, StrUtil.SPACE)) {
                 String trimmedUrl = StrUtil.subBetween(url, StrUtil.EMPTY, StrUtil.SPACE);
                 return Optional.of(new URI(trimmedUrl));
@@ -174,7 +165,7 @@ public class ClientUriUtil {
             return Optional.of(new URI(url));
         }
         catch (URISyntaxException e) {
-            logger.error("[{}] 解析失败 [{}]", url, e.getMessage());
+            logger.error("[{}] parsing failed [{}]", url, e.getMessage());
         }
         return Optional.empty();
     }

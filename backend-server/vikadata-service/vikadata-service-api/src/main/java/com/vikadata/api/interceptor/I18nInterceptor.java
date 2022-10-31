@@ -19,11 +19,10 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 /**
  * <p>
- * 国际化语言拦截器
+ * Internationalized language interceptor
  * </p>
  *
  * @author Pengap
- * @date 2021/12/14 01:18:48
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -34,13 +33,9 @@ public class I18nInterceptor extends AbstractServletSupport implements HandlerIn
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         try {
-            // 解析地址
             String requestPath = resolveServletPath(request);
-            // 匹配拦截地址
             if (INCLUDE_SERVLET_PATH.contains(requestPath)) {
-                // 获取登陆用户信息，如果没有设置就解析浏览器环境
                 Locale newLocale = LoginContext.me().getLocale();
-
                 LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
                 if (localeResolver == null) {
                     throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");

@@ -6,12 +6,11 @@ import com.vikadata.boot.autoconfigure.social.dingtalk.annotation.DingTalkEventH
 
 /**
  * <p> 
- * 注解抽象基础类
- * 提供 {@code DingTalkEventHandler} 的整合
- * 继承的子类都拥有必须的基础注解
+ * Annotation abstract base class
+ * Provide the integration of {@link DingTalkEventHandler}
+ * All inherited subclasses have the necessary basic annotation
  * </p> 
  * @author zoe zheng 
- * @date 2021/5/13 2:20 下午
  */
 public abstract class BaseInvocation {
 

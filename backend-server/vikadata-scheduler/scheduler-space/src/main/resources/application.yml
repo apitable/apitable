@@ -2,7 +2,6 @@ server:
   port: 9111
   shutdown: graceful
 
-# SpringBoot框架配置
 spring:
   application:
     name: scheduler-space
@@ -20,26 +19,18 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1
-  # Redis配置
   redis:
-    # redis服务器主机，本地开发是公网地址，线上环境是内网地址
     host: ${REDIS_HOST:127.0.0.1}
-    # redis服务器用户
     username: ${REDIS_USERNAME:}
-    # redis服务器密码
     password: ${REDIS_PASSWORD:}
-    # redis服务器端口
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DB:3}
     timeout: 30000
 
 config:
-  # oss 存储桶名称
   oss-bucket-name: ${VK_ASSETS_LTD_BUCKET:vk-assets-ltd}
-  # 存储类型
   oss-type: ${VK_ASSETS_LTD_TYPE:QNY1}
 
-# vikadata 组件配置
 vikadata-starter:
   job:
     register-address: ${JOB_ADMIN_ADDRESS:http://job.vika.ltd}
@@ -69,13 +60,10 @@ vikadata-starter:
       mobile-app:
         app-id: ${DINGTALK_APP_ID:dingoaumy4mh7oesecamid}
         app-secret: ${DINGTALK_APP_SECRET:A1-kYsquLtLr9e_XXnOAoMaqxEjC5xvMUeAztFxPy8YGgsYmeXsSu7QvwrmCcw1P}
-  # vika sdk 配置
   vika:
     enabled: ${VIKA_ENABLED:false}
     host: ${VIKA_HOST:https://integration.vika.ltd}
-    # 维格表API 专用号 token
     token: ${VIKA_TOKEN:usk8qo1Dk9PbecBlaqFIvbb}
-# 内部服务配置
 internal:
   domain: ${BACKEND_URL:http://backend-server:8081}
   getPausedUserHistoryInfoURL: /api/v1/internal/getUserHistories

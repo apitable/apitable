@@ -2,7 +2,6 @@ server:
   port: 9111
   shutdown: graceful
 
-# SpringBoot框架配置
 spring:
   application:
     name: scheduler-space
@@ -20,13 +19,10 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1
-  # Redis配置
   redis:
     host: ${REDIS_HOST:127.0.0.1}
-    # redis服务器端口
     port: ${REDIS_PORT:6379}
     timeout: 30000
-    # Redis连接池
     lettuce:
       pool:
         max-idle: 8
@@ -35,17 +31,11 @@ spring:
         max-wait: -1ms
 
 config:
-  # oss 存储桶域名
   resource-url: http://s1.vika.ltd
-  # oss 存储桶名称
   oss-bucket-name: vk-assets-ltd
-  # 存储类型
   oss-type: QNY1
-  #内容审核H5页面访问地址
   dt-censor-path: http://api.vika.ltd/imageCensor/index.html
-  #内容审核钉钉群
   dt-censor-chat-id: chat8a6b4b9005eb763cc560db4b21e695ef
-  # V 币统计数表ID
   v-code-statistics-datasheet: dstZcjB3zbdPuemkka
 
 # vikadata 组件配置
@@ -59,7 +49,6 @@ vikadata-starter:
     logpath: /logs/vikadata/job/space
     logretentiondays: 7
     access-token: onJvanLmSE3CqotjNp8hb7WRolpM1pdL
-  #组件：OSS云对象存储，默认开启：七牛云存储
   oss:
     type: qiniu
     qiniu:
@@ -80,13 +69,10 @@ vikadata-starter:
         app-id: dingoaumy4mh7oesecamid
         app-secret: A1-kYsquLtLr9e_XXnOAoMaqxEjC5xvMUeAztFxPy8YGgsYmeXsSu7QvwrmCcw1P
       vika-dst-id: dstKLuqVp99GRxHtNW
-  # vika sdk 配置
   vika:
     enabled: true
     host: https://integration.vika.ltd
-    # 维格表API 专用号 token
     token: usk8qo1Dk9PbecBlaqFIvbb
-# 内部服务配置
 internal:
   domain: http://backend-server:8081
   getPausedUserHistoryInfoURL: /api/v1/internal/getUserHistories

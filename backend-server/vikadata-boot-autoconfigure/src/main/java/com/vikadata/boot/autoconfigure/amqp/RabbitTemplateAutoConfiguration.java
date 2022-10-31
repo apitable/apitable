@@ -1,8 +1,5 @@
 package com.vikadata.boot.autoconfigure.amqp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vikadata.integration.rabbitmq.RabbitSendConfirmCallback;
 import com.vikadata.integration.rabbitmq.RabbitSender;
 import com.vikadata.integration.rabbitmq.RabbitSenderService;
@@ -20,16 +17,26 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 
 /**
  * <p>
- * rabbitmq starter 自动配置,如果start没有开启，不会注册bean
- * </p>
+ * This configuration class extend RabbitAutoConfiguration using spring rabbitmq properties when the RabbitMQ and Spring AMQP client
+ * libraries are on the classpath.
+ * <p>
+ * Registers the following beans:
+ * <ul>
+ * <li>{@link org.springframework.amqp.support.converter.MessageConverter MessageConverter} if there
+ * is no other bean of the same type in the context.</li>
+ * <li>{@link org.springframework.messaging.converter.MappingJackson2MessageConverter
+ * MappingJackson2MessageConverter} instance if there is no other bean of the same type in the
+ * context.</li>
+ * <li>{@link com.vikadata.integration.rabbitmq.RabbitSenderService
+ * RabbitSenderService} instance if there is no other bean of the same type in the
+ * context.</li>
+ * </ul>
  * @author zoe zheng
- * @date 2021/12/7 7:05 PM
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(RabbitSenderService.class)
 @ConditionalOnProperty(prefix = "spring.rabbitmq", name = "addresses")
 public class RabbitTemplateAutoConfiguration extends RabbitAutoConfiguration {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitTemplateAutoConfiguration.class);
 
     @Bean
     public MessageConverter messageConverter() {
@@ -44,7 +51,6 @@ public class RabbitTemplateAutoConfiguration extends RabbitAutoConfiguration {
     @Bean
     @ConditionalOnBean(RabbitTemplate.class)
     public RabbitSenderService rabbitSender(RabbitTemplate rabbitTemplate) {
-        LOGGER.info("启动自定义rabbitmq配置");
         RabbitSendConfirmCallback callback = new RabbitSendConfirmCallback();
         rabbitTemplate.setReturnsCallback(callback);
         rabbitTemplate.setConfirmCallback(callback);

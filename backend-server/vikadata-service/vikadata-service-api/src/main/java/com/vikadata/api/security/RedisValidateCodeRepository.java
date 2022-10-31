@@ -1,21 +1,23 @@
 package com.vikadata.api.security;
 
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Resource;
+
 import cn.hutool.json.JSONUtil;
-import com.vikadata.define.constants.RedisConstants;
 import lombok.extern.slf4j.Slf4j;
+
+import com.vikadata.define.constants.RedisConstants;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
-
 /**
  * <p>
- * 基于Redis存储的验证码存取器，避免由于没有session导致无法存取验证码的问题
+ * The verification code accessor based on Redis storage avoids the problem that the verification code cannot be accessed due to no session
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 14:45
  */
 @Service
 @Slf4j
@@ -26,7 +28,6 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
 
     @Override
     public void save(String type, ValidateCode code, String target, int effectiveTime) {
-        log.info("存储验证码");
         String key = getSaveKey(type, code.getScope(), target);
         redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(code), effectiveTime, TimeUnit.MINUTES);
     }
@@ -48,7 +49,6 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository {
     }
 
     private String getSaveKey(String type, String scope, String identify) {
-        //存储结构：vikadata:code:验证码类型:验证码作用域:发送对象（手机或者邮箱）
         return RedisConstants.getCaptchaKey(type, scope, identify);
     }
 }

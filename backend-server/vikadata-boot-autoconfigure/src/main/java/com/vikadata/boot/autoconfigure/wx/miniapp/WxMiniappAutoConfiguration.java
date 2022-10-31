@@ -25,11 +25,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-21 16:49:34
- */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(WxMaProperties.class)
 @ConditionalOnClass(WxMaService.class)

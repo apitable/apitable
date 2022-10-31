@@ -9,8 +9,6 @@ import com.vikadata.core.exception.BaseException;
  * <p>
  * 玉符 IDaaS 接口异常
  * </p>
- * @author 刘斌华
- * @date 2022-05-17 19:22:38
  */
 @Getter
 @AllArgsConstructor

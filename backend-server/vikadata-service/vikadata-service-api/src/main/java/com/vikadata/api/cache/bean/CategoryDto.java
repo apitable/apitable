@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 模板中心 - 官方分类 / 热门推荐自定义分组
+ * template category
  * </p>
  *
  * @author Chambers
- * @date 2020/7/3
  */
 @Data
 @NoArgsConstructor
@@ -21,19 +20,10 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class CategoryDto {
 
-    /**
-     * 分类code
-     */
     private String categoryCode;
 
-    /**
-     * 分类名称
-     */
     private String categoryName;
 
-    /**
-     * 分类下的模板
-     */
     private List<String> templateIds;
 
     public CategoryDto(String categoryName, List<String> templateIds) {

@@ -10,11 +10,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * XXL 调度任务集成自动配置
+ * autoconfiguration of XXL job
  * </p>
  *
  * @author Chambers
- * @date 2019/11/20
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(XxlJobExecutor.class)

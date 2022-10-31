@@ -18,7 +18,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.component.audit.AuditInfoField;
 import com.vikadata.api.constants.AuditConstants;
 import com.vikadata.api.control.ControlRoleDict;
 import com.vikadata.api.control.ControlTemplate;
@@ -32,7 +31,6 @@ import com.vikadata.api.enums.labs.LabsFeatureEnum;
 import com.vikadata.api.event.AuditSpaceEvent;
 import com.vikadata.api.event.AuditSpaceEvent.AuditSpaceArg;
 import com.vikadata.api.event.NodeShareDisableEvent;
-import com.vikadata.api.holder.AuditFieldHolder;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.dto.node.NodeBaseInfoDTO;
 import com.vikadata.api.model.dto.organization.MemberDto;
@@ -371,8 +369,6 @@ public class NodeShareServiceImpl implements INodeShareService {
             List<String> filterNodeIds = CollUtil.subtractToList(nodeIds, roleDict.keySet());
             options.setFilterNodeIds(filterNodeIds);
         }
-        // Audit variables, record change values
-        AuditFieldHolder.set(AuditInfoField.builder().sourceNodeId(nodeSetting.getNodeId()).build());
         return iNodeService.copyNodeToSpace(userId, spaceId, null, nodeSetting.getNodeId(), options);
     }
 

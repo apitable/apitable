@@ -9,11 +9,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 验证码处理管理器
+ * captcha processing manager
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/26 14:37
  */
 @Component
 public class ValidateCodeProcessorManage {
@@ -37,7 +36,7 @@ public class ValidateCodeProcessorManage {
         String name = type.toLowerCase() + ValidateCodeProcessor.class.getSimpleName();
         ValidateCodeProcessor processor = validateCodeProcessors.get(name);
         if (processor == null) {
-            throw new RuntimeException("验证码处理器" + name + "不存在");
+            throw new RuntimeException("captcha processor " + name + " is not exist");
         }
         return processor;
     }

@@ -1,9 +1,8 @@
 package com.vikadata.api.control;
 
 /**
- * 权限资源控制单位类型
+ * Principal Type
  * @author Shawn Deng
- * @date 2021-03-17 18:58:39
  */
 public enum PrincipalType {
 
@@ -12,7 +11,7 @@ public enum PrincipalType {
     TEAM_ID(2),
     ROLE_ID(3);
 
-    private int val;
+    private final int val;
 
     PrincipalType(int val) {
         this.val = val;

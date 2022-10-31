@@ -1,12 +1,11 @@
 package com.vikadata.api.modular.space.service;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.model.ro.space.AddSpaceRoleRo;
 import com.vikadata.api.model.ro.space.UpdateSpaceRoleRo;
 import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;

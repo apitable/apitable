@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vikadata.boot.autoconfigure.oss.OssProperties.Aws;
-import com.vikadata.integration.oss.aws.AwsS3OssClientRequestFactory;
 import com.vikadata.integration.oss.OssClientRequestFactory;
+import com.vikadata.integration.oss.aws.AwsS3OssClientRequestFactory;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -19,10 +19,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 亚马逊云S3存储自动配置
+ * Amazon Cloud S3 storage autoconfiguration
  *
  * @author Shawn Deng
- * @date 2021-01-05 11:26:17
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AmazonS3.class)
@@ -38,11 +37,10 @@ public class AwsS3AutoConfiguration extends OssConnectionConfiguration {
     @Bean
     @ConditionalOnMissingBean(OssClientRequestFactory.class)
     OssClientRequestFactory ossClientRequestFactory() {
-        LOGGER.info("AWS对象存储自动装配");
         Aws aws = getProperties().getAws();
         AWSCredentials credentials = new BasicAWSCredentials(aws.getAccessKeyId(), aws.getAccessKeySecret());
         EndpointConfiguration configuration =
-            new AwsClientBuilder.EndpointConfiguration(aws.getEndpoint(), aws.getRegion());
+                new AwsClientBuilder.EndpointConfiguration(aws.getEndpoint(), aws.getRegion());
         return new AwsS3OssClientRequestFactory(credentials, configuration);
     }
 }

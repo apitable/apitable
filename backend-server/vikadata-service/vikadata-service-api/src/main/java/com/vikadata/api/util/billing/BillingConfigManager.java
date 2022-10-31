@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
 
 /**
  * <p>
- * 计费工具类
+ * Billing Config Manager
  * </p>
  *
  * @author Shawn Deng
@@ -49,21 +49,19 @@ public class BillingConfigManager {
     }
 
     /**
-     * 根据名称获取产品
+     * Get product by name
      *
-     * @param productName 产品名称
-     * @return 产品
-     * @author 刘斌华
-     * @date 2022-08-26 14:52:51
+     * @param productName product name
+     * @return Product
      */
     public static Product getProductByName(String productName) {
         return BILLING_CONFIG.getProducts().get(productName);
     }
 
     /**
-     * 获取免费产品
-     *
-     * @return Product 产品
+     * Get free products
+     * @param channel product channel
+     * @return Product
      */
     public static Product getCurrentFreeProduct(ProductChannel channel) {
         return BILLING_CONFIG.getProducts().entrySet().stream()
@@ -74,10 +72,9 @@ public class BillingConfigManager {
     }
 
     /**
-     * 获取免费订阅产品的订阅方案名称
-     * 来源于配置表
+     * get free plan name
      *
-     * @return 免费方案名称
+     * @return free name
      */
     private static String getFreePlanName(ProductChannel channel) {
         Product freeProduct = getCurrentFreeProduct(channel);
@@ -89,9 +86,9 @@ public class BillingConfigManager {
     }
 
     /**
-     * 获取免费订阅产品的订阅方案
+     * get free plan on special channel
      *
-     * @return Plan 订阅方案
+     * @return Plan channel
      */
     public static Plan getFreePlan(ProductChannel channel) {
         String freePlanName = getFreePlanName(channel);
@@ -112,7 +109,6 @@ public class BillingConfigManager {
     }
 
     public static List<Price> getPriceList(ProductEnum product) {
-        // 获取产品类型下的指定席位
         List<String> priceIds = BILLING_CONFIG.getProducts().get(product.getName()).getPrices();
         List<Price> prices = new ArrayList<>();
         priceIds.forEach(priceId -> prices.add(BILLING_CONFIG.getPrices().get(priceId)));
@@ -153,20 +149,19 @@ public class BillingConfigManager {
     }
 
     /**
-     * 构建方案属性
+     * build plan feature
      *
-     * @param basePlan 基础订阅方案（免费方案或付费方案）
-     * @param addOnPlans 增值订阅方案（API用量或者容量增值方案）
+     * @param basePlan base plan
+     * @param addOnPlans list of add-on plan
      * @return BillingPlanFeature
      */
     public static BillingPlanFeature buildPlanFeature(Plan basePlan, List<Plan> addOnPlans) {
-        log.info("计算构建订阅方案的总限制值");
         BillingPlanFeature billingPlanFeature = new BillingPlanFeature();
-        // 获取基础订阅方案拥有的功能点
+        // Get the feature points that the basic subscription plan has
         Map<String, Feature> basePlanFeatureMap = BILLING_CONFIG.getFeatures().entrySet().stream()
                 .filter(entry -> basePlan.getFeatures().contains(entry.getKey()))
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-        // 增值包没有以下属性
+        // The add-on plan does not have the following attributes
         billingPlanFeature.setMaxSeats(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SEATS, Long.class));
         billingPlanFeature.setMaxSheetNums(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.NODES, Long.class));
         billingPlanFeature.setMaxAdminNums(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.ADMIN_NUM, Long.class));
@@ -199,7 +194,7 @@ public class BillingConfigManager {
         billingPlanFeature.setSecuritySettingAddressListIsolation(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_ADDRESS_LIST_ISOLATION, Boolean.class));
         billingPlanFeature.setSecuritySettingCatalogManagement(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.SECURITY_SETTING_CATALOG_MANAGEMENT, Boolean.class));
         billingPlanFeature.setMaxMirrorNums(getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.MIRRORS, Long.class));
-        // 可叠加订阅方案限制值
+        // Stackable subscription plan limits
         Long baseCapacitySize = getPlanFeatureValue(basePlanFeatureMap, BillingFunctionEnum.CAPACITY, Long.class);
         if (baseCapacitySize != null) {
             billingPlanFeature.setMaxCapacitySizeInBytes(baseCapacitySize != -1 ? baseCapacitySize * 1024 * 1024 * 1024L : baseCapacitySize);
@@ -208,25 +203,24 @@ public class BillingConfigManager {
         if (baseApiCalls != null) {
             billingPlanFeature.setMaxApiCall(baseApiCalls);
         }
-        // 获取增值包的方案
+        // Option to obtain add-on packages
         if (CollUtil.isNotEmpty(addOnPlans)) {
-            // 有增值包方案存在，使用增值方案的值
+            // There is an add-on plan, and the value of the add-on plan is used
             addOnPlans.forEach(addOnPlan -> {
                 List<Feature> features = BILLING_CONFIG.getFeatures().entrySet()
                         .stream()
                         .filter(entry -> addOnPlan.getFeatures().contains(entry.getKey()))
                         .map(Entry::getValue).collect(Collectors.toList());
                 for (Feature feature : features) {
-                    // 附件容量增值
+                    // Added capacity of accessories
                     if (feature.getFunction().equals(BillingFunctionEnum.CAPACITY.getCode())) {
-                        // 增值方案叠加包
                         long totalCapacity = billingPlanFeature.getMaxCapacitySizeInBytes() != null ?
                                 billingPlanFeature.getMaxCapacitySizeInBytes() + getTrueSpecificationByUnit(feature.getSpecification(), feature.getUnit())
                                 : feature.getSpecification();
                         billingPlanFeature.setMaxCapacitySizeInBytes(totalCapacity);
                         break;
                     }
-                    // API 用量增值
+                    // API Usage
                     if (feature.getFunction().equals(BillingFunctionEnum.API_CALL.getCode())) {
                         billingPlanFeature.setMaxApiCall(feature.getSpecification());
                         break;
@@ -250,13 +244,13 @@ public class BillingConfigManager {
     }
 
     /**
-     * 获取订阅规格值
+     * get subscription specification value
      *
-     * @param featureMap 方案功能集合
-     * @param functionEnum 功能点
-     * @param clzType 功能点规格类型
-     * @param <T> 规格类型
-     * @return 规格值
+     * @param featureMap feature set
+     * @param functionEnum function code
+     * @param clzType feature value data type
+     * @param <T> data type
+     * @return specification value
      */
     public static <T> T getPlanFeatureValue(Map<String, Feature> featureMap, BillingFunctionEnum functionEnum, Class<T> clzType) {
         Feature feature = getPlanFeature(featureMap, functionEnum.getCode());
@@ -281,11 +275,11 @@ public class BillingConfigManager {
     }
 
     /**
-     * 获取到指定功能点定义
+     * Get the specified function point definition
      *
-     * @param planFeatureMap 订阅方案功能集合
-     * @param functionId 功能点标识
-     * @return Feature 功能点对象
+     * @param planFeatureMap Subscription plan feature set
+     * @param functionId function identification
+     * @return Feature
      */
     public static Feature getPlanFeature(Map<String, Feature> planFeatureMap, String functionId) {
         Feature feature = null;

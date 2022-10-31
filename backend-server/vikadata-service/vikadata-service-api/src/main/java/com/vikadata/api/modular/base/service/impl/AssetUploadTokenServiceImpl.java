@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
-import com.vikadata.api.cache.service.IAssetCacheService;
+import com.vikadata.api.cache.service.AssetCacheService;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.ConstProperties.OssBucketInfo;
 import com.vikadata.api.enums.attach.AssetType;
@@ -56,8 +56,8 @@ import static cn.hutool.core.util.IdUtil.fastSimpleUUID;
 import static com.vikadata.api.constants.AssetsPublicConstants.MIME_LIMIT;
 import static com.vikadata.api.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.vikadata.api.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.vikadata.api.constants.WidgetAssetConstans.TOKEN_MAX;
-import static com.vikadata.api.constants.WidgetAssetConstans.WIDGET_PREFIX;
+import static com.vikadata.api.constants.WidgetAssetConstants.TOKEN_MAX;
+import static com.vikadata.api.constants.WidgetAssetConstants.WIDGET_PREFIX;
 import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 
 /**
@@ -97,7 +97,7 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
     private OssProperties ossProperties;
 
     @Resource
-    private IAssetCacheService iAssetCacheService;
+    private AssetCacheService assetCacheService;
 
     @Resource
     private IDeveloperAssetService developerAssetService;
@@ -202,7 +202,7 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
             // Non datasheet asset, save relevant information to the cache
             // (required for updating spatial resource references)
             if (assetType != AssetType.DATASHEET.getValue()) {
-                iAssetCacheService.save(key, new SpaceAssetDTO(spaceId, nodeId), 3600);
+                assetCacheService.save(key, new SpaceAssetDTO(spaceId, nodeId), 3600);
             }
         }
         // batch save to db

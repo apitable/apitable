@@ -19,13 +19,6 @@ import com.vikadata.entity.SocialTenantEntity;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-/**
- * <p>
- * 通知观察者--飞书第三方应用
- * </p>
- * @author zoe zheng
- * @date 2022/3/15 18:30
- */
 @Component
 @Slf4j
 @ConditionalOnProperty(value = "vikadata-starter.social.wecom.enabled", havingValue = "true")
@@ -45,13 +38,10 @@ public class WecomIsvNotifyObserver extends AbstractWecomNotifyObserver {
     public void notify(SocialNotifyContext context, NotificationCreateRo ro) {
         WxCpMessage wxCpMessage = renderTemplate(context, ro);
         if (wxCpMessage == null) {
-            log.warn("企业微信通知模版未配置:{}", ro.getTemplateId());
             return;
         }
         List<String> toUsers = toUser(ro);
         if (toUsers.isEmpty()) {
-            log.warn("企业微信通知用户为空,userId:{},memberId:{},unitId:{}", ro.getToUserId(), ro.getToMemberId(),
-                    ro.getToUnitId());
             return;
         }
         SocialTenantEntity tenantEntity = iSocialTenantService.getByAppIdAndTenantId(context.getAppId(), context.getTenantId());
@@ -59,7 +49,7 @@ public class WecomIsvNotifyObserver extends AbstractWecomNotifyObserver {
             iSocialCpIsvService.sendMessageToUser(tenantEntity, ro.getSpaceId(), wxCpMessage, toUsers);
         }
         catch (WxErrorException ex) {
-            log.error("企业微信第三方服务商消息发送失败", ex);
+            log.error("fail to send wecom isv card message", ex);
         }
     }
 }

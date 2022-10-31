@@ -10,11 +10,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 标注这个注解，则代表是一个钉钉事件组件
- * 可注解多个类，每个类里存在的方法如果标注{@code @DingTalkEventListener} 是处理事件
+ * Represents a event component of dingtalk
+ * if the method in each class is marked with {@link DingTalkEventListener},
  * </p>
  * @author zoe zheng
- * @date 2021/5/13 2:13 下午
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

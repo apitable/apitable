@@ -4,45 +4,28 @@ import lombok.Getter;
 
 /**
  * <p>
- * 通知to用户的标识
+ * notification target object
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/25 5:36 下午
  */
 @Getter
 public enum NotificationToTag {
-    /**
-     * 发给指定成员
-     */
+
     MEMBERS("members"),
-    /**
-     * 空间内所有成员
-     */
+
     ALL_MEMBERS("all_members"),
-    /**
-     * 空间管理员
-     */
+
     SPACE_ADMINS("space_admins"),
-    /**
-     * 空间成员管理权限的管理员
-     */
+
     SPACE_MEMBER_ADMINS("space_member_admins"),
-    /**
-     * 所有用户
-     */
+
     ALL_USERS("all_users"),
-    /**
-     * 发给指定用户
-     */
+
     USERS("users"),
-    /**
-     * 发给自己
-     */
+
     MYSELF("myself"),
-    /**
-     * 发给主管理员
-     */
+
     SPACE_MAIN_ADMIN("space_main_admin");
 
     private String value;

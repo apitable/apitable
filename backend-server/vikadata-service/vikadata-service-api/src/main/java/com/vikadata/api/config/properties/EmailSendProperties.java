@@ -11,11 +11,10 @@ import static com.vikadata.api.config.properties.EmailSendProperties.PREFIX;
 
 /**
  * <p>
- * 邮件发送定制化配置
+ * email send properties
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/11 16:43
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX)
@@ -24,17 +23,17 @@ public class EmailSendProperties {
     public static final String PREFIX = "vikadata.email";
 
     /**
-     * 运行环境，自动解析域名
+     * The running environment automatically resolves the domain name
      */
     private String context;
 
     /**
-     * 所有邮件的签名
+     * Signature of all messages
      */
     private String personal = "维格表";
 
     /**
-     * 扩展属性
+     * Extended Attributes
      */
     private Map<String, String> properties = new HashMap<>(16);
 }

@@ -5,11 +5,10 @@ import com.vikadata.api.control.role.RoleConstants.Field;
 
 /**
  * <p>
- * （数表字段）可编辑角色
+ * Editor Role of Field
  * </p>
  *
  * @author Chambers
- * @date 2021/3/22
  */
 public class FieldEditorRole extends FieldReaderRole {
 

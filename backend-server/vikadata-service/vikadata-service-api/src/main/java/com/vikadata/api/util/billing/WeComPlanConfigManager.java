@@ -17,34 +17,28 @@ import com.vikadata.system.config.wecom.WeComPlan;
 
 /**
  * <p>
- * 企业微信付费方案配置工具类
+ * wecom plan config manager
  * </p>
- * @author 刘斌华
- * @date 2022-04-29 18:12:36
  */
 public class WeComPlanConfigManager {
 
     private static final Map<String, WeComPlan> WECOM_PLAN = SystemConfigManager.getConfig().getWecom().getPlans();
 
     /**
-     * 判断企微商品版本 ID 是否为免费试用版本
+     * Determine whether the product version ID of wecom is a free trial version
      *
-     * @param editionId 企微订阅版本 ID
-     * @return 是否为免费试用版本
-     * @author 刘斌华
-     * @date 2022-05-10 11:47:28
+     * @param editionId wecom edition id
+     * @return free | false
      */
     public static boolean isWeComTrialEdition(String editionId) {
         return WECOM_PLAN.get(editionId).isTrial();
     }
 
     /**
-     * 获取企微订阅版本对应的订阅阶段
+     * Get the subscription phase corresponding to the wecom subscription version
      *
-     * @param editionId 企微订阅版本 ID
-     * @return 订阅阶段
-     * @author 刘斌华
-     * @date 2022-08-16 15:18:16
+     * @param editionId wecom edition id
+     * @return SubscriptionPhase
      */
     public static SubscriptionPhase getSubscriptionPhase(String editionId) {
         if (isWeComTrialEdition(editionId)) {
@@ -56,11 +50,9 @@ public class WeComPlanConfigManager {
     }
 
     /**
-     * 获取适用于企微试用的付费方案
+     * get paid plans for wecom trials
      *
-     * @return 适用于企微试用的付费方案
-     * @author 刘斌华
-     * @date 2022-05-11 12:03:36
+     * @return paid plan
      */
     public static Plan getPaidPlanFromWeComTrial() {
         return BillingConfigManager.getBillingConfig().getPlans()
@@ -72,16 +64,13 @@ public class WeComPlanConfigManager {
     }
 
     /**
-     * 根据企微订阅版本和使用人数获取对应的订阅方案
+     * get plan by wecom edition id
      *
-     * @param editionId 企微订阅版本 ID
-     * @param seats 使用人数
-     * @return 对应的订阅方案
-     * @author 刘斌华
-     * @date 2022-05-05 11:21:44
+     * @param editionId wecom edition id
+     * @param seats seats
+     * @return Plan
      */
     public static Plan getPlanByWeComEditionId(String editionId, Long seats) {
-        // 获取企业微信对应的订阅方案
         WeComPlan weComPlan = WECOM_PLAN.get(editionId);
         List<String> billingPlanIds = Optional.ofNullable(weComPlan)
                 .map(WeComPlan::getBillingPlanId)
@@ -89,25 +78,24 @@ public class WeComPlanConfigManager {
         if (CollUtil.isEmpty(billingPlanIds)) {
             return null;
         }
-        // 如果只有一个订阅方案，则直接返回
+        // If there is only one subscription plan, return directly
         if (billingPlanIds.size() == 1) {
             return BillingConfigManager.getBillingConfig().getPlans().get(billingPlanIds.get(0));
         }
-        // 根据使用人数匹配对应的订阅方案
+        // Match the corresponding subscription plan according to the number of seats
         Map<String, Plan> planMap = BillingConfigManager.getBillingConfig().getPlans();
         Plan plan = null;
         for (String billingPlanId : billingPlanIds) {
-            // 企微推送过来的试用人数并不是价格规格列表里的最高值，需要匹配最接近的方案
+            // Match the corresponding subscription plan according to the number of users
             Plan billingPlan = planMap.get(billingPlanId);
             int billingPlanSeats = billingPlan.getSeats();
             int seatsInt = seats.intValue();
             if (Objects.equals(billingPlanSeats, seatsInt)) {
-                // 如果人数相同直接返回
                 plan = billingPlan;
                 break;
             }
             else if (billingPlanSeats > seatsInt && (Objects.isNull(plan) || billingPlanSeats < plan.getSeats())) {
-                // 遍历取人数大于且最接近当前试用人数的订阅规格
+                // Traverse the subscription specifications with the number of people greater than and closest to the current trial number
                 plan = billingPlan;
             }
         }

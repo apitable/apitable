@@ -30,10 +30,9 @@ import com.vikadata.system.config.notification.SocialTemplate;
 
 /**
  * <p>
- * 通知观察者--钉钉自建应用
+ * base lark notify observer
  * </p>
  * @author zoe zheng
- * @date 2022/3/15 18:30
  */
 @Slf4j
 public abstract class AbstractLarkNotifyObserver extends SocialNotifyObserver<SocialTemplate, SocialNotifyContext> {
@@ -57,7 +56,6 @@ public abstract class AbstractLarkNotifyObserver extends SocialNotifyObserver<So
     public Message renderTemplate(SocialNotifyContext context, NotificationCreateRo ro) {
         SocialTemplate template = getTemplate(ro.getTemplateId());
         if (template == null) {
-            log.warn("飞书应用消息模版没有配置:{}", ro.getTemplateId());
             return null;
         }
         Map<String, Object> bindingMap = bindingMap(ro);
@@ -76,13 +74,11 @@ public abstract class AbstractLarkNotifyObserver extends SocialNotifyObserver<So
                     .setType(Button.StyleType.PRIMARY);
             action = new Action(Collections.singletonList(entryBtn));
         }
-        // 创建卡片 todo 兼容其他类型的消息
         Card card = new Card(new Config(false), header);
         Module[] modules = new Module[] { div };
         if (action != null) {
             modules = new Module[] { div, action };
         }
-        // 设置内容元素
         card.setModules(Arrays.asList(modules));
         return new CardMessage(card.toObj());
     }

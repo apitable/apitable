@@ -5,9 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 /**
- * 转换
+ * Json Converter
  * @author Shawn Deng
- * @date 2021-11-12 15:22:04
  */
 public class Converter {
 

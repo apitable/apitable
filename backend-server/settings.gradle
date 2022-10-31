@@ -1,4 +1,3 @@
-// 插件依赖管理
 pluginManagement {
   repositories {
     gradlePluginPortal()

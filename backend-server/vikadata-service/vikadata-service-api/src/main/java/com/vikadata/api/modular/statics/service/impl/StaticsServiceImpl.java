@@ -27,12 +27,11 @@ import com.vikadata.api.modular.statics.model.NodeStaticsVO;
 import com.vikadata.api.modular.statics.model.NodeTypeStatics;
 import com.vikadata.api.modular.statics.service.IStaticsService;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
-import com.vikadata.api.util.DateTool;
+import com.vikadata.api.util.DateHelper;
 import com.vikadata.core.util.SqlTool;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.ObjectUtils;
 
 import static com.vikadata.api.constants.DateFormatConstants.YEARS_MONTH_PATTERN;
 import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
@@ -113,7 +112,7 @@ public class StaticsServiceImpl implements IStaticsService {
                 return null;
             }
             // Update the API usage cache of this month before today
-            redisTemplate.opsForValue().set(monthKey, totalSum, DateTool.todayTimeLeft(), TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(monthKey, totalSum, DateHelper.todayTimeLeft(), TimeUnit.SECONDS);
             return totalSum;
         }
     }
@@ -121,21 +120,21 @@ public class StaticsServiceImpl implements IStaticsService {
     private Long getApiUsageTableMinId() {
         // Get the minimum ID of the API consumption table this month
         LocalDateTime now = LocalDateTime.now();
-        String key = StrUtil.format(GENERAL_STATICS, "api-usage-min-id", DateTool.formatFullTime(now, YEARS_MONTH_PATTERN));
+        String key = StrUtil.format(GENERAL_STATICS, "api-usage-min-id", DateHelper.formatFullTime(now, YEARS_MONTH_PATTERN));
         Long id = redisTemplate.opsForValue().get(key);
         if (id != null) {
             return id;
         }
         // The minimum ID of this month does not exist. Query the minimum ID of last month to reduce the query volume
         String lastMonthKey = StrUtil.format(GENERAL_STATICS, "api-usage-min-id",
-                DateTool.formatFullTime(now.plusMonths(-1), YEARS_MONTH_PATTERN));
+                DateHelper.formatFullTime(now.plusMonths(-1), YEARS_MONTH_PATTERN));
         Long lastMonthMinId = redisTemplate.opsForValue().get(lastMonthKey);
         // If the minimum table ID of last month does not exist, query the maximum table ID directly
         if (lastMonthMinId == null) {
             id = staticsMapper.selectMaxId();
         }
         else {
-            id = staticsMapper.selectApiUsageMinIdByCreatedAt(lastMonthMinId, DateTool.getStartTimeOfMonth());
+            id = staticsMapper.selectApiUsageMinIdByCreatedAt(lastMonthMinId, DateHelper.getStartTimeOfMonth());
         }
         // Keep the cache of the month
         redisTemplate.opsForValue().set(key, id, 33, TimeUnit.DAYS);

@@ -7,9 +7,9 @@
         <result column="description" property="description"/>
         <result column="endpoint" property="endpoint"/>
         <result column="input_json_schema" property="inputJsonSchema"
-                typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+                typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
         <result column="output_json_schema" property="outputJsonSchema"
-                typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+                typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
         <collection property="service" ofType="com.vikadata.api.modular.automation.model.AutomationServiceDto">
             <result column="service_id" property="serviceId"/>
             <result column="service_name" property="name"/>

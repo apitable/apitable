@@ -15,11 +15,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * vika sdk 自动配置
+ * autoconfiguration of vika sdk
  * </p>
  *
  * @author Chambers
- * @date 2021/3/26
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(VikaApiClient.class)

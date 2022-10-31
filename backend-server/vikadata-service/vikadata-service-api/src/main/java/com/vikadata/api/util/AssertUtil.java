@@ -6,9 +6,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 /**
- * 断言工具
+ * assert util
  * @author Shawn Deng
- * @date 2022-06-14 10:56:35
  */
 public class AssertUtil {
 

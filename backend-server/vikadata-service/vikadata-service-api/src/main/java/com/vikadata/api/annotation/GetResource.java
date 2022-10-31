@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * <p>
- * get方式请求http的资源标识
+ * resource with get method
  * </p>
  *
  * @author Shawn Deng
- * @date 2018/11/5 16:36
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -26,62 +25,56 @@ public @interface GetResource {
 
 	/**
 	 * <pre>
-	 * 资源编码唯一标识.
-	 *
-	 * 说明:
-	 *     1.可不填写此注解属性.
-	 *     2.若不填写,则默认生成的编码标识为: 控制器类名称 + 分隔符 + 方法名称.
-	 *     3.若编码存在重复则系统启动异常
-	 *
+	 * unique resource code
+     * description: This annotation attribute can be left blank, default controller name + $ + method name
 	 * </pre>
 	 */
 	String code() default "";
 
 	/**
-	 * 资源名称(必填项)
+	 * resource name
 	 */
 	String name() default "";
 
 	/**
-	 * 资源描述
+	 * resource description
 	 */
 	String description() default "";
 
 	/**
-	 * 需要登录(true-需要登录,false-不需要登录)
+	 * need validate whether to login
 	 */
 	boolean requiredLogin() default true;
 
 	/**
-	 * 是否需要校验用户权限(true-需要鉴权,false-不需要鉴权)
+	 * whether to validate permission
 	 */
 	boolean requiredPermission() default true;
 
 	/**
-	 * 请求路径(同RequestMapping)
+	 * request path
 	 */
 	@AliasFor(annotation = RequestMapping.class)
 	String[] path() default {};
 
 	/**
-	 * 请求的http方法(同RequestMapping)
+	 * request method
 	 */
 	@AliasFor(annotation = RequestMapping.class)
 	RequestMethod[] method() default RequestMethod.GET;
 
 	/**
-	 * 权限依赖
-	 * operation = false 时必须填写
+	 * permission tags
 	 */
 	String[] tags() default {};
 
     /**
-     * 是否需要校验域名(true-需要,false-不需要)
+     * whether to validate domain
      */
     boolean requiredAccessDomain() default false;
 
 	/**
-	 * 是否不理会，非资源标识
+	 * whether ignore this
 	 */
 	boolean ignore() default false;
 
@@ -89,5 +82,6 @@ public @interface GetResource {
      * See Also:
      * org.springframework.http.MediaType
      */
+    @AliasFor(annotation = RequestMapping.class)
     String[] produces() default {};
 }

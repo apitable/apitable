@@ -30,10 +30,9 @@ import static com.vikadata.api.constants.NotificationConstants.INVOLVE_RECORD_ID
 
 /**
  * <p>
- * 通知观察者--钉钉自建应用
+ * base notify observer
  * </p>
  * @author zoe zheng
- * @date 2022/3/15 18:30
  */
 public abstract class AbstractNotifyObserver<M, T> implements NotifyObserver<M, T> {
     @Resource
@@ -75,7 +74,6 @@ public abstract class AbstractNotifyObserver<M, T> implements NotifyObserver<M, 
         JSONObject extras = NotificationHelper.getExtrasFromNotifyBody(ro.getBody());
         if (extras != null) {
             extras.forEach((k, v) -> {
-                // 处理时间戳
                 if (StrUtil.endWith(k, "At")) {
                     LocalDateTime dateTime = DateUtil.toLocalDateTime(Instant.ofEpochMilli(Long.parseLong(v.toString())));
                     bindingMap.put(k, DateUtil.format(dateTime, NORM_DATETIME_MINUTE_PATTERN));

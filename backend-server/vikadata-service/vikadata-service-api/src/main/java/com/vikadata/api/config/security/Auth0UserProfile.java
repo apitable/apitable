@@ -2,9 +2,6 @@ package com.vikadata.api.config.security;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * @author Shawn Deng
- */
 public class Auth0UserProfile {
 
     private String name;

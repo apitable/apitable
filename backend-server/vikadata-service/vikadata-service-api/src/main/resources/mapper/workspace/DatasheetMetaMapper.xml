@@ -13,7 +13,7 @@
     </insert>
 
     <resultMap id="datasheetMetaVo" type="com.vikadata.api.model.vo.datasheet.DatasheetMetaVo">
-        <result column="meta_data" property="meta" typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+        <result column="meta_data" property="meta" typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
     </resultMap>
 
     <select id="selectByNodeId" resultMap="datasheetMetaVo">

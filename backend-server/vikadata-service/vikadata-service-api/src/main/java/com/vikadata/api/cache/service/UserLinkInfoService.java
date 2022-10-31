@@ -4,30 +4,25 @@ import com.vikadata.api.cache.bean.UserLinkInfo;
 
 /**
  * <p>
- * 用户关联信息 服务接口
+ * user link interface
  * </p>
  *
  * @author Chambers
- * @date 2020/8/26
  */
 public interface UserLinkInfoService {
 
     /**
-     * 获取用户关联信息
+     * get user related information
      *
-     * @param userId 用户ID
+     * @param userId user id
      * @return UserLinkInfo
-     * @author Chambers
-     * @date 2020/8/26
      */
     UserLinkInfo getUserLinkInfo(Long userId);
 
     /**
-     * 删除缓存
+     * delete cache
      *
-     * @param userId 用户ID
-     * @author Chambers
-     * @date 2020/8/26
+     * @param userId user id
      */
     void delete(Long userId);
 }

@@ -2,11 +2,10 @@ package com.vikadata.api.control.role;
 
 /**
  * <p>
- * 节点角色类
+ * base node role
  * </p>
  *
  * @author Chambers
- * @date 2021/9/10
  */
 public class NodeRole extends AbstractControlRole {
 

@@ -10,7 +10,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import com.vikadata.api.enums.datasheet.RemindType;
-import com.vikadata.api.factory.NotifyMailFactory.MailWithLang;
+import com.vikadata.api.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.model.ro.datasheet.RemindExtraRo;
 
 /**

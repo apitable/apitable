@@ -38,7 +38,6 @@
         </collection>
     </resultMap>
 
-    <!--根据名称模糊查询成员列表-->
     <select id="selectByName" resultMap="searchMemberDto">
         SELECT vou.id          as unit_id,
                vom.id          as member_id,
@@ -149,7 +148,6 @@
         </collection>
     </resultMap>
 
-    <!--查询成员详情-->
     <select id="selectInfoById" resultMap="memberInfo">
         SELECT vom.id as member_id,
                vu.avatar,

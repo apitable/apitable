@@ -11,12 +11,12 @@ import cn.hutool.core.lang.Dict;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.enums.action.EmailCodeType;
-import com.vikadata.api.factory.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.security.AbstractValidateCodeProcessor;
 import com.vikadata.api.security.ValidateCode;
 import com.vikadata.api.security.ValidateCodeRepository;
 import com.vikadata.api.security.ValidateTarget;
-import com.vikadata.api.util.DateTool;
+import com.vikadata.api.util.DateHelper;
 import com.vikadata.api.config.properties.SecurityProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.HttpContextUtil;
@@ -30,11 +30,10 @@ import static com.vikadata.api.enums.exception.ActionException.SMS_SEND_ONLY_ONE
 
 /**
  * <p>
- * 邮箱验证码处理器
+ * email verification code processor
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/26 15:17
  */
 @Slf4j
 @Component
@@ -53,7 +52,7 @@ public class EmailValidateCodeProcessor extends AbstractValidateCodeProcessor {
     @Override
     protected void send(ValidateCode validateCode, ValidateTarget validateTarget) {
         String target = validateTarget.getTarget();
-        log.info("发送邮箱验证码");
+        log.info("send email verification code");
         HttpServletRequest request = HttpContextUtil.getRequest();
         String ipAddr = HttpContextUtil.getRemoteAddr(request);
         this.checkBeforeSend(target, ipAddr);
@@ -64,58 +63,50 @@ public class EmailValidateCodeProcessor extends AbstractValidateCodeProcessor {
             dict.set("YEARS", LocalDate.now().getYear());
             final String lang = validateTarget.getLang();
             NotifyMailFactory.me().sendMail(lang, subject, dict, Collections.singletonList(target));
-            //发送完成后保存发送总数
+            // save the total number of sending after sending
             this.saveSendCount(target, ipAddr);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("发送邮箱错误,邮箱:{}, 原因：{}", target, e.getMessage());
-            throw new BusinessException("发送邮箱失败");
+            log.error("send email error email:{}, reason：{}", target, e.getMessage());
+            throw new BusinessException("failed to send email");
         }
     }
 
-    /**
-     * 校验处理
-     */
     private void checkBeforeSend(String email, String ipAddr) {
-        log.info("发送邮件校验处理");
-        //邮件发送频率
+        // email sending frequency
         String sendMailRateKey = RedisConstants.getSendCaptchaRateKey(email);
-        //一分钟限制不能再次获取，除非验证码过期自动删除
+        // The one-minute limit cannot be obtained again, unless the verification code expires and is automatically deleted
         Integer sendSmsRateCount = (Integer) redisTemplate.opsForValue().get(sendMailRateKey);
         if (sendSmsRateCount != null) {
-            log.info("60秒内不允许重复获取，邮箱={}，IP地址={}", email, ipAddr);
+            log.info("Repeated acquisitions are not allowed within 60 seconds，mail={}，ip address={}", email, ipAddr);
             throw new BusinessException(SMS_SEND_ONLY_ONE_MINUTE);
         } else {
             redisTemplate.opsForValue().set(sendMailRateKey, 1, 1, TimeUnit.MINUTES);
         }
 
-        //邮箱当天发送数量
+        // number of emails sent on the day
         String emailCountKey = RedisConstants.getSendCaptchaCountKey(email, "email");
-        //邮件发送数上限
+        // maximum number of emails sent
         Integer mailCount = (Integer) redisTemplate.opsForValue().get(emailCountKey);
         if (mailCount != null && mailCount >= properties.getEmail().getMaxSendCount()) {
-            log.error("该邮箱今天邮件发送数已到达上限，邮箱={}", email);
+            log.error("The maximum number of emails sent by this mailbox today has been reached，email={}", email);
             throw new BusinessException(EMAIL_SEND_MAX_COUNT_LIMIT);
         }
 
-        //IP当天发送数量
+        // number of ips sent on the day
         String ipSmsCountKey = RedisConstants.getSendCaptchaCountKey(ipAddr, "ip:email");
         Integer ipSmsCount = (Integer) redisTemplate.opsForValue().get(ipSmsCountKey);
         if (ipSmsCount != null && ipSmsCount >= properties.getEmail().getMaxIpSendCount()) {
-            log.error("IP地址当天邮件发送数上限 邮箱={}，IP地址={}", email, ipAddr);
-            throw new BusinessException("IP地址当天邮件发送数上限");
+            log.error("The maximum number of emails sent by an IP address in one day, email={}，ip address={}", email, ipAddr);
+            throw new BusinessException("The maximum number of emails sent by an IP address in one day");
         }
     }
 
-    /**
-     * 发送成功后累加总数
-     */
     private void saveSendCount(String email, String ipAddr) {
-        log.info("邮件发送成功后累加发送次数");
-        long second = DateTool.todayTimeLeft();
-        //邮箱当天发送数量
+        long second = DateHelper.todayTimeLeft();
+        // number of emails sent on the day
         super.accumulate(email, "email", second);
-        //IP当天发送数量
+        // number of ips sent on the day
         super.accumulate(ipAddr, "ip:email", second);
     }
 }

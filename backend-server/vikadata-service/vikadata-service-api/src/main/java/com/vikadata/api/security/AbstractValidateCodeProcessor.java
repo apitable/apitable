@@ -28,11 +28,10 @@ import static com.vikadata.api.enums.exception.ActionException.SEND_CAPTCHA_TOO_
 
 /**
  * <p>
- * 验证码校验处理器
+ * verification code validation processor
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 14:36
  */
 @Slf4j
 public abstract class AbstractValidateCodeProcessor implements ValidateCodeProcessor {
@@ -56,13 +55,12 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
 
     @Override
     public String createAndSend(ValidateTarget validateTarget, CodeValidateScope scope, boolean actual) {
-        log.info("创建验证码并发送验证码");
         String target = validateTarget.getRealTarget();
-        //检查安全验证码锁，校验错误超过5次锁住20分钟
+        // Check the security verification code lock, if the verification error exceeds 5 times, the lock will be locked for 20 minutes
         this.checkIfSend(target);
         ValidateCodeType codeType = getValidateCodeType();
         int length, effectiveTime, maxErrorNum, lockTime;
-        //根据验证码类型创建验证码
+        // create captcha based on captcha type
         if (codeType.equals(ValidateCodeType.SMS)) {
             length = properties.getSms().getDigit();
             effectiveTime = properties.getSms().getEffectiveTime();
@@ -76,22 +74,19 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
             lockTime = properties.getEmail().getLockTime();
         }
         String randomCode = RandomUtil.randomNumbers(length);
-        //保存15分钟
         ValidateCode validateCode = new ValidateCode(randomCode, scope.name().toLowerCase(), effectiveTime * 60);
-        //发送
         if (actual) {
             this.send(validateCode, validateTarget);
         }
-        //存储验证码
         validateCodeRepository.save(codeType.toString().toLowerCase(), validateCode, target, effectiveTime);
-        //存储验证码业务类型
         String scopeKey = getScopeKey(codeType.toString().toLowerCase(), target);
         redisTemplate.opsForValue().set(scopeKey, scope.name().toLowerCase(), effectiveTime, TimeUnit.MINUTES);
-        //删除校验错误次数
+        // Delete checksum errors
         String validateErrorNumKey = RedisConstants.getCaptchaValidateErrorNumKey(target);
         redisTemplate.delete(validateErrorNumKey);
 
-        //队列记录发送时间，判断在过去的20分钟内是否连续获取5次，达到则锁定20分钟
+        // The queue records the sending time, and determines whether it has been obtained 5 times in a row in the past 20 minutes,
+        // and if it reaches it, it will be locked for 20 minutes.
         String repeatKey = RedisConstants.getSendCaptchaRecordKey(scope.name().toLowerCase(), target);
         BoundSetOperations<String, Object> ops = redisTemplate.boundSetOps(repeatKey);
         Set<Object> set = ops.members();
@@ -116,35 +111,29 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
     }
 
     /**
-     * 发送验证码模版方法，由子类实现
-     * 1.短信发送
-     * 2.邮箱发送
+     * send verification code
      *
-     * @param validateCode 验证码信息
-     * @param target       手机号码或邮箱地址
-     * @author Shawn Deng
-     * @date 2019/12/25 15:52
+     * @param validateCode verification code
+     * @param target       phone or email
      */
     protected abstract void send(ValidateCode validateCode, ValidateTarget target);
 
     /**
-     * 校验验证码
+     * validate
      */
     @Override
     public void validate(ValidateTarget validateTarget, String code, boolean immediatelyDelete, CodeValidateScope scope) {
-        log.info("安全验证码验证");
         ValidateCodeType codeType = getValidateCodeType();
         String target = validateTarget.getRealTarget();
-        //未指定验证码作用域类型时，在缓存中取对象的验证码作用域
+        // When the verification code scope type is not specified, the verification code scope of the object is retrieved from the cache
         if (scope == null) {
             scope = getScope(codeType, target);
         }
 
-        //获取校验码
         ValidateCode codeInRedis = validateCodeRepository.get(target, codeType, scope.name().toLowerCase());
         if (codeInRedis == null || codeInRedis.isExpired()) {
             if (scope == CodeValidateScope.REGISTER) {
-                //登录不成功情况下，可与注册公用验证码
+                // If the login is unsuccessful, you can share the verification code with the registration
                 scope = CodeValidateScope.LOGIN;
                 codeInRedis = validateCodeRepository.get(target, codeType, scope.name().toLowerCase());
                 if (codeInRedis == null || codeInRedis.isExpired()) {
@@ -152,7 +141,7 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
                     throw new BusinessException(CODE_EXPIRE);
                 }
             }
-            //验证码过期或不存在
+            // Verification code expired or does not exis
             validateCodeRepository.remove(target, codeType, scope.name().toLowerCase());
             throw new BusinessException(CODE_EXPIRE);
         }
@@ -170,15 +159,14 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
             String smsCodeValidateErrorNumKey = RedisConstants.getCaptchaValidateErrorNumKey(target);
             Integer errorNum = (Integer) redisTemplate.opsForValue().get(smsCodeValidateErrorNumKey);
             if (errorNum != null && errorNum >= maxErrorNum) {
-                log.info("请求安全校验[{}]校验错误超过5次", target);
-                //验证码校验错误超过5次，重新获取
+                // The verification code verification error exceeds 5 times, get it again
                 redisTemplate.delete(smsCodeValidateErrorNumKey);
                 validateCodeRepository.remove(target, codeType, scope.name().toLowerCase());
                 throw new BusinessException(CODE_ERROR_OFTEN);
             }
             else {
                 redisTemplate.opsForValue().set(smsCodeValidateErrorNumKey, errorNum == null ? 1 : errorNum + 1, lockTime, TimeUnit.MINUTES);
-                //验证码错误
+                // Verification code error
                 throw new BusinessException(CODE_ERROR);
             }
         }
@@ -187,16 +175,16 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
             validateCodeRepository.remove(target, codeType, scope.name().toLowerCase());
             redisTemplate.delete(getScopeKey(codeType.toString().toLowerCase(), target));
         }
-        //验证身份成功后，删除目标1分钟不能获取限制
+        // After the identity verification is successful, delete the target and cannot get the limit for 1 minute
         redisTemplate.delete(RedisConstants.getSendCaptchaRateKey(target));
         redisTemplate.delete(RedisConstants.getSendCaptchaRecordKey(scope.name().toLowerCase(), target));
     }
 
     @Override
     public void delCode(String target, CodeValidateScope scope) {
-        log.info("删除验证码");
         ValidateCodeType codeType = getValidateCodeType();
-        //未指定验证码作用域类型时，在缓存中取对象的验证码作用域
+        // When the verification code scope type is not specified,
+        // the verification code scope of the object is retrieved from the cache
         if (scope == null) {
             scope = getScope(codeType, target);
         }
@@ -206,22 +194,19 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
 
     @Override
     public void savePassRecord(String target) {
-        log.info("保存验证通过记录");
         String successKey = RedisConstants.getCaptchaValidateSuccessKey(target);
         redisTemplate.opsForValue().set(successKey, "", properties.getSms().getSuccessTime(), TimeUnit.MINUTES);
     }
 
     @Override
     public void verifyIsPass(String target) {
-        log.info("验证是否已通过验证码校验");
         String successKey = RedisConstants.getCaptchaValidateSuccessKey(target);
         Object pass = redisTemplate.opsForValue().get(successKey);
         ExceptionUtil.isNotNull(pass, ActionException.NOT_PASS);
     }
 
-
     /**
-     * 获取当前验证码类型
+     * Get the current verification code type
      */
     private ValidateCodeType getValidateCodeType() {
         String type = StrUtil.subBefore(getClass().getSimpleName(), "ValidateCodeProcessor", true);
@@ -236,18 +221,15 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
     }
 
     private String getScopeKey(String type, String identify) {
-        //存储结构：vikadata:captcha:验证码类型:scope:发送对象（手机或者邮箱）
         return RedisConstants.getCaptchaScopeKey(type, identify);
     }
 
     /**
-     * 检查是否被锁
+     * Check if locked
      *
-     * @param target 手机号码或邮箱
+     * @param target phone or email
      */
     private void checkIfSend(String target) {
-        log.info("检查是否被锁");
-        //存储结构：vikadata:captcha:lock:发送对象（手机或者邮箱）
         String lockedKey = RedisConstants.getLockedKey(target);
         Object value = redisTemplate.opsForValue().get(lockedKey);
         if (ObjectUtil.isNotNull(value)) {
@@ -255,14 +237,9 @@ public abstract class AbstractValidateCodeProcessor implements ValidateCodeProce
         }
     }
 
-    /**
-     * 累加发送次数
-     */
     protected void accumulate(String target, String type, long second) {
         String countKey = RedisConstants.getSendCaptchaCountKey(target, type);
-        //已发送数
         Integer count = (Integer) redisTemplate.opsForValue().get(countKey);
-        //叠加计算发送次数
         redisTemplate.opsForValue().set(countKey, count == null ? 1 : count + 1, second, TimeUnit.SECONDS);
     }
 }

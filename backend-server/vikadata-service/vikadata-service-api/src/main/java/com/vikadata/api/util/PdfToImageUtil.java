@@ -15,11 +15,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * PDF 转 Image 工具
+ * PDF to Image util
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/6/3 19:17
  */
 public class PdfToImageUtil {
 
@@ -36,7 +35,7 @@ public class PdfToImageUtil {
             return new ByteArrayInputStream(os.toByteArray());
         }
         catch (IOException e) {
-            LOG.error("无法加载PDF", e);
+            LOG.error("unable to load pdf", e);
             return null;
         }
         finally {
@@ -46,7 +45,7 @@ public class PdfToImageUtil {
                 }
                 catch (IOException e) {
                     e.printStackTrace();
-                    LOG.error("关闭PDDocument流异常", e);
+                    LOG.error("close pd document stream exception", e);
                 }
             }
         }

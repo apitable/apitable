@@ -2,17 +2,11 @@ package com.vikadata.boot.autoconfigure.qq;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * QQ互联-网站应用 配置文件
- *
- * @author Chambers
- * @date 2020/10/16
- */
 @ConfigurationProperties(prefix = "vikadata-starter.tencent.webapp")
 public class WebAppProperties {
 
     /**
-     * 是否开启
+     * whether to enable, default false
      */
     private boolean enabled = false;
 
@@ -27,12 +21,12 @@ public class WebAppProperties {
     private String appKey;
 
     /**
-     * 回调地址
+     * redirect uri
      */
     private String redirectUri;
 
     /**
-     * 是否申请了unionId
+     * Whether union ID is applied
      */
     private boolean applyUnion = true;
 

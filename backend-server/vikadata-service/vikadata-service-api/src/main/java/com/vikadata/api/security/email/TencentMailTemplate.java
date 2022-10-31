@@ -32,11 +32,10 @@ import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RE
 
 /**
  * <p>
- * 腾讯云邮件模板
+ * tencent cloud email template
  * </p>
  *
  * @author Chambers
- * @date 2022/2/17
  */
 public class TencentMailTemplate {
 
@@ -53,126 +52,124 @@ public class TencentMailTemplate {
     public enum ChineseMailTemplate {
 
         /**
-         * 邮件验证码
+         * email verification code
          */
         VERIFY_CODE(SUBJECT_VERIFY_CODE, 27395L),
 
         /**
-         * 主管理员转移通知
+         * primary admin transfer notification
          */
         CHANGE_ADMIN(SUBJECT_CHANGE_ADMIN, 26507L),
 
         /**
-         * 支付成功
+         * payment successful
          */
         PAI_SUCCESS(SUBJECT_PAI_SUCCESS, 23462L),
 
         /**
-         * 注册验证码
+         * registration verification code
          */
         REGISTER(SUBJECT_REGISTER, 27395L),
 
         /**
-         * 空间邀请通知
+         * space invitation notice
          */
         INVITE_NOTIFY(SUBJECT_INVITE_NOTIFY, 26497L),
 
         /**
-         * 空间容量到达上限通知
+         * Notice that the space capacity has reached the upper limit
          */
         CAPACITY_FULL(SUBJECT_CAPACITY_FULL, 23465L),
 
         /**
-         * 记录评论提及
+         * log comment mentions
          */
         RECORD_COMMENT(SUBJECT_RECORD_COMMENT, 23466L),
 
         /**
-         * 成员字段通知
+         * member field notification
          */
         DATASHEET_REMIND(SUBJECT_DATASHEET_REMIND, 23467L),
 
         /**
-         * 小程序发布权转移
+         * transfer of mini program publishing rights
          */
         WIDGET_TRANSFER_NOTIFY(SUBJECT_WIDGET_TRANSFER_NOTIFY, 23468L),
 
         /**
-         * 小程序下架通知
+         * small program takedown notice
          */
         WIDGET_UNPUBLISH_NOTIFY(SUBJECT_WIDGET_UNPUBLISH_NOTIFY, 23469L),
 
         /**
-         * 空间站加入申请
+         * space station join application
          */
         SPACE_APPLY(SUBJECT_SPACE_APPLY, 26509L),
 
         /**
-         * 移出空间站通知
+         * move out of space station notification
          */
         REMOVE_MEMBER(SUBJECT_REMOVE_MEMBER, 23471L),
 
         /**
-         * 告警邮件
+         * alert email
          */
         WARN_NOTIFY(SUBJECT_WARN_NOTIFY, 23533L),
 
         /**
-         * 发版通知
+         * release notice
          */
         PUBLISH_NOTIFY(SUBJECT_PUBLISH_NOTIFY, 23534L),
 
         /**
-         * 添加记录即将超限
+         * adding records is about to exceed the limit
          */
         ADD_RECORD_SOON_LIMITED(SUBJECT_ADD_RECORD_SOON_LIMITED, 23956L),
 
         /**
-         * 添加记录超限
+         * add record overrun
          */
         ADD_RECORD_LIMITED(SUBJECT_ADD_RECORD_LIMITED, 24007L),
 
         /**
-         * 小程序上架成功
+         * the applet was successfully launched
          */
         WIDGET_SUBMIT_SUCCESS(SUBJECT_WIDGET_SUBMIT_SUCCESS, 24533L),
 
         /**
-         * 小程序上架失败
+         * failed to launch the applet
          */
         WIDGET_SUBMIT_FAIL(SUBJECT_WIDGET_SUBMIT_FAIL, 24534L),
 
         /**
-         * 小程序开发者主体资质认证成功
+         * Mini Program Developer Qualification Certification Successfully
          */
         WIDGET_QUALIFICATION_AUTH_SUCCESS(SUBJECT_WIDGET_QUALIFICATION_AUTH_SUCCESS, 24532L),
 
         /**
-         * 小程序开发者主体资质认证失败
+         * The qualification authentication of the Mini Program developer failed
          */
         WIDGET_QUALIFICATION_AUTH_FAIL(SUBJECT_WIDGET_QUALIFICATION_AUTH_FAIL, 24531L),
 
         /**
-         * 全局下架小程序通知
+         * notification of global removal of applet
          */
         WIDGET_UNPUBLISH_GLOBAL_NOTIFY(SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY, 25076L),
 
         /**
-         * 任务提醒
+         * task reminder
          */
         TASK_REMINDER(SUBJECT_TASK_REMINDER, 25038L),
 
         /**
-         * 关注记录变更通知
+         * follow record change notifications
          */
         SUBSCRIBED_RECORD_CELL_UPDATED(SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED, 25336L),
 
         /**
-         * 关注记录被评论通知
+         * follow records are notified by comments
          */
-        SUBSCRIBED_RECORD_COMMENTED(SUBJECT_SUBSCRIBED_RECORD_COMMENTED, 25334L),
-
-        ;
+        SUBSCRIBED_RECORD_COMMENTED(SUBJECT_SUBSCRIBED_RECORD_COMMENTED, 25334L);
 
         private final String subject;
 
@@ -197,106 +194,104 @@ public class TencentMailTemplate {
     public enum USMailTemplate {
 
         /**
-         * 邮件验证码
+         * email verification code
          */
         VERIFY_CODE(SUBJECT_VERIFY_CODE, 23612L),
 
         /**
-         * 主管理员转移通知
+         * primary admin transfer notification
          */
         CHANGE_ADMIN(SUBJECT_CHANGE_ADMIN, 26508L),
 
         /**
-         * 支付成功（暂无英文版模板。23462 是中文模板）
+         * The payment is successful (there is no English version template. 23462 is a Chinese template)
          */
         PAI_SUCCESS(SUBJECT_PAI_SUCCESS, 23462L),
 
         /**
-         * 注册验证码
+         * registration verification code
          */
         REGISTER(SUBJECT_REGISTER, 23612L),
 
         /**
-         * 空间邀请通知
+         * space invitation notice
          */
         INVITE_NOTIFY(SUBJECT_INVITE_NOTIFY, 26498L),
 
         /**
-         * 空间容量到达上限通知
+         * Notice that the space capacity has reached the upper limit
          */
         CAPACITY_FULL(SUBJECT_CAPACITY_FULL, 23616L),
 
         /**
-         * 记录评论提及
+         * record comment mentions
          */
         RECORD_COMMENT(SUBJECT_RECORD_COMMENT, 23617L),
 
         /**
-         * 成员字段通知
+         * member field notification
          */
         DATASHEET_REMIND(SUBJECT_DATASHEET_REMIND, 23618L),
 
         /**
-         * 小程序发布权转移
+         * transfer of mini program publishing rights
          */
         TRANSFER_WIDGET_NOTIFY(SUBJECT_WIDGET_TRANSFER_NOTIFY, 23619L),
 
         /**
-         * 小程序下架通知
+         * small program takedown notice
          */
         UNPUBLISH_WIDGET_NOTIFY(SUBJECT_WIDGET_UNPUBLISH_NOTIFY, 23620L),
 
         /**
-         * 空间站加入申请
+         * space station join application
          */
         SPACE_APPLY(SUBJECT_SPACE_APPLY, 26510L),
 
         /**
-         * 移出空间站通知
+         * move out of space station notification
          */
         REMOVE_MEMBER(SUBJECT_REMOVE_MEMBER, 23622L),
 
         /**
-         * 添加记录即将超限
+         * adding records is about to exceed the limit
          */
         ADD_RECORD_SOON_LIMITED(SUBJECT_ADD_RECORD_SOON_LIMITED, 23957L),
 
         /**
-         * 添加记录超限
+         * add record overrun
          */
         ADD_RECORD_LIMITED(SUBJECT_ADD_RECORD_LIMITED, 24008L),
 
         /**
-         * 小程序上架成功
+         * the applet was successfully launched
          */
         WIDGET_SUBMIT_SUCCESS(SUBJECT_WIDGET_SUBMIT_SUCCESS, 25083L),
 
         /**
-         * 小程序上架失败
+         * failed to launch the applet
          */
         WIDGET_SUBMIT_FAIL(SUBJECT_WIDGET_SUBMIT_FAIL, 25084L),
 
         /**
-         * 全局下架小程序通知
+         * notification of global removal of applet
          */
         WIDGET_UNPUBLISH_GLOBAL_NOTIFY(SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY, 25082L),
 
         /**
-         * 任务提醒
+         * task reminder
          */
         TASK_REMINDER(SUBJECT_TASK_REMINDER, 25039L),
 
         /**
-         * 关注记录变更通知
+         * follow record change notifications
          */
         SUBSCRIBED_RECORD_CELL_UPDATED(SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED, 25337L),
 
         /**
-         * 关注记录被评论通知
+         * follow records are notified by comments
          */
-        SUBSCRIBED_RECORD_COMMENTED(SUBJECT_SUBSCRIBED_RECORD_COMMENTED, 25335L),
-
-        ;
+        SUBSCRIBED_RECORD_COMMENTED(SUBJECT_SUBSCRIBED_RECORD_COMMENTED, 25335L);
 
         private final String subject;
 

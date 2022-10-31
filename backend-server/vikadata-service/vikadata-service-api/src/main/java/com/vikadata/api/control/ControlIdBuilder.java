@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 资源控制器构造器
+ * control id builder
  * @author Shawn Deng
- * @date 2021-03-18 11:18:27
  */
 public class ControlIdBuilder {
 

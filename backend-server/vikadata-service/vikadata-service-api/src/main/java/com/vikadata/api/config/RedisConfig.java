@@ -1,5 +1,10 @@
 package com.vikadata.api.config;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -7,22 +12,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.support.MagicalKeyStringRedisSerializer;
+import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.define.constants.RedisConstants;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.integration.redis.util.RedisLockRegistry;
+import org.springframework.lang.Nullable;
 
 /**
  * <p>
- * redis 键值序列化配置
+ * redis custom config
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/9/16 19:59
  */
 @Configuration(proxyBeanMethods = false)
 @Slf4j
@@ -32,26 +39,16 @@ public class RedisConfig {
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        //默认是：OBJECT_AND_NON_CONCRETE -- 类里有 Interface 、 AbstractClass 时，对其进行序列化和反序列化
-        //NON_FINAL ：包括上文提到的所有特征，而且包含即将被序列化的类里的全部、非final的属性，也就是相当于整个类、除final外的的属性信息都需要被序列化和反序列化
         om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_ARRAY);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         return jackson2JsonRedisSerializer;
     }
 
-    /**
-     * 设置redis键值序列化，值可视化
-     */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        log.info("Redis默认配置");
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        // 将刚才的redis连接工厂设置到模板类中
         template.setConnectionFactory(factory);
-        // 设置key序列化
-        // template.setKeySerializer(RedisSerializer.string());
-        template.setKeySerializer(MagicalKeyStringRedisSerializer.UTF_8);
-        // 设置value序列化
+        template.setKeySerializer(new MagicalKeyStringRedisSerializer(StandardCharsets.UTF_8));
         template.setValueSerializer(json());
         template.afterPropertiesSet();
         return template;
@@ -59,7 +56,31 @@ public class RedisConfig {
 
     @Bean
     public RedisLockRegistry redisLockRegistry(RedisConnectionFactory redisConnectionFactory) {
-        // 注意这里的时间单位是毫秒
         return new RedisLockRegistry(redisConnectionFactory, "vikadata:concurrent");
+    }
+
+    private static class MagicalKeyStringRedisSerializer extends StringRedisSerializer {
+
+        public MagicalKeyStringRedisSerializer(Charset charset) {
+            super(charset);
+        }
+
+        @Override
+        public String deserialize(@Nullable byte[] bytes) {
+            return super.deserialize(bytes);
+        }
+
+        @Override
+        public byte[] serialize(@Nullable String string) {
+            // replace magic value
+            string = StrUtil.format(string, this.getAllMagicalValue());
+            return super.serialize(string);
+        }
+
+        private Dict getAllMagicalValue() {
+            String activeProfile = SpringContextHolder.getActiveProfile();
+            return Dict.create().set(RedisConstants.REDIS_ENV, activeProfile);
+        }
+
     }
 }

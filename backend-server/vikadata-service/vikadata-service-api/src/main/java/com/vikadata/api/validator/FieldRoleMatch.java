@@ -10,7 +10,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * 字段角色校验注解
+ * field role validation annotation
  * @author Shawn Deng
  * @date 2021-04-07 11:08:33
  */

@@ -14,9 +14,8 @@ import static com.vikadata.api.util.billing.BillingMoney.MAX_SCALE;
 import static com.vikadata.api.util.billing.BillingMoney.ROUNDING_MODE;
 
 /**
- * 订单工具
+ * order util
  * @author Shawn Deng
- * @date 2022-05-16 14:55:33
  */
 public class OrderUtil {
 
@@ -45,8 +44,8 @@ public class OrderUtil {
     }
 
     /**
-     * 元转分
-     * @param bigDecimal 有精度的元单位
+     * yuan to cent
+     * @param bigDecimal yuan
      * @return int
      */
     public static int yuanToCents(BigDecimal bigDecimal) {
@@ -58,9 +57,8 @@ public class OrderUtil {
     }
 
     /**
-     * 分转元
-     * 四舍五入，保留两位小数点
-     * @param amount 整数
+     * cents to yuan, round to two decimal places
+     * @param amount cents
      * @return BigDecimal
      */
     public static BigDecimal centsToYuan(int amount) {

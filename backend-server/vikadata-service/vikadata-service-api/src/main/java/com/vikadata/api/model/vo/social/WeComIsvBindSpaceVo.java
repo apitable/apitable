@@ -12,8 +12,6 @@ import lombok.ToString;
  * <p>
  * 企业微信第三方应用绑定的空间站信息
  * </p>
- * @author 刘斌华
- * @date 2022-01-20 15:26:20
  */
 @ApiModel("企业微信第三方应用绑定的空间站信息")
 @Setter

@@ -5,16 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 云平台邮件推送配置属性
+ * Cloud Platform Email Push Configuration Properties
  * </p>
  *
  * @author Chambers
- * @date 2022/2/9
  */
 @ConfigurationProperties(prefix = "vikadata-starter.mail")
 public class CloudMailProperties {
-
-    private boolean enabled = false;
 
     private MailType type;
 
@@ -78,14 +75,8 @@ public class CloudMailProperties {
 
     public enum MailType {
 
-        /**
-         * 腾讯云
-         */
         TENCENT,
 
-        /**
-         * 阿里云
-         */
         ALIYUN
     }
 

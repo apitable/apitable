@@ -28,15 +28,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
-import com.vikadata.api.annotation.PageObjectParam;
+import com.vikadata.api.util.page.PageObjectParam;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.config.properties.WxProperties;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.developer.GmAction;
 import com.vikadata.api.enums.wechat.WechatMessageType;
 import com.vikadata.api.enums.wechat.WechatMpQrcodeType;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.model.vo.wechat.QrCodePageVo;
 import com.vikadata.api.model.vo.wechat.QrCodeVo;
 import com.vikadata.api.modular.developer.service.IGmService;

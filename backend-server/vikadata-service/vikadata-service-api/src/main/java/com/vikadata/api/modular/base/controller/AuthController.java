@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.annotation.ApiResource;
-import com.vikadata.api.annotation.AuditAction;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.auth.ConnectorTemplate;
@@ -53,8 +52,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.vikadata.api.constants.AuthConstants.AUTH_DESC;
 
 /**
  * Authorization interface
@@ -104,7 +101,12 @@ public class AuthController {
     @Autowired(required = false)
     private Auth0Template auth0Template;
 
-    @AuditAction(value = "user_login")
+    private static final String AUTH_DESC = "description:\n" +
+            "verifyType，available values:\n" +
+            "password\n" +
+            "sms_code\n" +
+            "email_code";
+
     @PostResource(name = "Login", path = "/signIn", requiredLogin = false)
     @ApiOperation(value = "login", notes = AUTH_DESC, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> login(@RequestBody @Valid LoginRo data, HttpServletRequest request) {
@@ -148,7 +150,6 @@ public class AuthController {
         return ResponseData.success();
     }
 
-    @AuditAction(value = "user_logout")
     @PostResource(name = "sign out", path = "/signOut", requiredPermission = false, method = { RequestMethod.GET, RequestMethod.POST })
     @ApiOperation(value = "sign out", notes = "log out of current user")
     public ResponseData<LogoutVO> logout(HttpServletRequest request, HttpServletResponse response) {

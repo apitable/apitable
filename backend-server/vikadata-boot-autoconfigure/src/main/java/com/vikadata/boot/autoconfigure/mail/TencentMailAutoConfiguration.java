@@ -1,8 +1,6 @@
 package com.vikadata.boot.autoconfigure.mail;
 
 import com.tencentcloudapi.ses.v20201002.SesClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vikadata.boot.autoconfigure.mail.CloudMailProperties.Tencent;
 import com.vikadata.integration.mail.CloudMailSender;
@@ -16,18 +14,15 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * 腾讯云邮件推送配置
+ * Tencent cloud mail configuration
  * </p>
  *
  * @author Chambers
- * @date 2022/2/9
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(SesClient.class)
 @ConditionalOnProperty(value = "vikadata-starter.mail.type", havingValue = "tencent")
 public class TencentMailAutoConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TencentMailAutoConfiguration.class);
 
     private final CloudMailProperties properties;
 
@@ -38,7 +33,6 @@ public class TencentMailAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public CloudMailSender cloudMailSender() {
-        LOGGER.info("腾讯云邮件推送自动装配");
         Tencent tencent = properties.getTencent();
         return new TencentMailSender(properties.getRegion(), tencent.getSecretId(), tencent.getSecretKey(), properties.getFrom(), properties.getReply());
     }

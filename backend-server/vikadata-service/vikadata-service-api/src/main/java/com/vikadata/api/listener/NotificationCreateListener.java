@@ -30,11 +30,10 @@ import static com.vikadata.api.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_B
 
 /**
  * <p>
- * 通知创建监听器
+ * notification creation listener
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/20 7:21 下午
  */
 @Slf4j
 @Component

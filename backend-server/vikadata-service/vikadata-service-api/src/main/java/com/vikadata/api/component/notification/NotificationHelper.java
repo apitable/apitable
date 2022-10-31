@@ -11,7 +11,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -19,11 +18,10 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.component.LanguageManager;
-import com.vikadata.api.component.audit.AuditHelper;
-import com.vikadata.api.component.audit.ParamLocation;
 import com.vikadata.api.constants.NodeExtraConstants;
 import com.vikadata.api.constants.NotificationConstants;
 import com.vikadata.api.constants.ParamsConstants;
+import com.vikadata.api.enums.datasheet.IdRulePrefixEnum;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.system.config.I18nConfigManager;
 import com.vikadata.system.config.i18n.I18nTypes;
@@ -38,37 +36,37 @@ import static com.vikadata.api.constants.NotificationConstants.RECORD_MENTION_TI
 
 /**
  * <p>
- * template工具类
+ * notification helper
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/13 2:05 下午
  */
 @Slf4j
 public class NotificationHelper {
+
+    public static final int ID_PREFIX_LENGTH = 3;
+
     /**
-     * 钉钉isv应用入口页地址
+     * dingtalk isv entry url
      */
     public static String DINGTALK_ISV_ENTRY_URL = "{}/user/dingtalk/social_bind_space?corpId={}&suiteId={}";
 
     /**
-     * 钉钉isv应用入口页地址
+     * dingtalk entry url
      */
     public static String DINGTALK_ENTRY_URL = "{}/user/dingtalk_callback?corpId={}&agentId={}";
 
     /**
-     * 操作节点的接口路径，用于判断是否发送空间通知
+     * The interface path of the operation node, which is used to determine whether to send space notifications
      */
     private static final String[] NODE_OPERATION_PATHS = new String[] {
             "/internal/spaces/*/datasheets", "/internal/spaces/*/nodes/*/delete"
     };
 
     /**
-     * @param userId     消息触达用户ID
-     * @param fromUserId 消息来源ID
-     * @return 用户语言
-     * @author zoe zheng
-     * @date 2020/6/3 12:41 下午
+     * @param userId    target user
+     * @param fromUserId  from user id
+     * @return user locale
      */
     public static I18nTypes getUserLanguageType(Long userId, Long fromUserId) {
         StringRedisTemplate stringRedisTemplate = SpringContextHolder.getBean(StringRedisTemplate.class);
@@ -82,17 +80,14 @@ public class NotificationHelper {
         else {
             return I18nTypes.aliasOf(LanguageManager.me().getDefaultLanguageTag());
         }
-        log.info("用户语言: {}", lang);
         return I18nTypes.of(lang);
     }
 
     /**
-     * 获取消息通知body里面的extras数据
+     * get extra data from notify body
      *
-     * @param notifyBody 通知body
-     * @return 解析之后的extras
-     * @author zoe zheng
-     * @date 2020/6/3 12:42 下午
+     * @param notifyBody notify body
+     * @return extra json object
      */
     public static JSONObject getExtrasFromNotifyBody(String notifyBody) {
         if (CharSequenceUtil.isNotBlank(notifyBody)) {
@@ -102,12 +97,10 @@ public class NotificationHelper {
     }
 
     /**
-     * 获取消息通知body里面的extras数据
+     * get extra data from notify body
      *
-     * @param notifyBody 通知body
-     * @return 解析之后的extras
-     * @author zoe zheng
-     * @date 2020/6/3 12:42 下午
+     * @param notifyBody notify body
+     * @return extra json object
      */
     public static JSONObject getExtrasFromNotifyBody(JSONObject notifyBody) {
         if (ObjectUtil.isNotNull(notifyBody)) {
@@ -117,12 +110,10 @@ public class NotificationHelper {
     }
 
     /**
-     * 获取extras里面的memberIds
+     * get member id list from extra json object
      *
-     * @param extras JSON结构
-     * @return JSON数组
-     * @author zoe zheng
-     * @date 2020/6/17 2:56 下午
+     * @param extras extra json object
+     * @return json key list
      */
     public static JSONArray getMemberIdsFromExtras(JSONObject extras) {
         if (ObjectUtil.isNotNull(extras)) {
@@ -132,12 +123,10 @@ public class NotificationHelper {
     }
 
     /**
-     * 获取recordIds
+     * get record id list of datasheet from extra json object
      *
-     * @param extras body中的额外字段
-     * @return JSON数组
-     * @author zoe zheng
-     * @date 2020/6/18 5:46 下午
+     * @param extras extra json object
+     * @return json array
      */
     public static JSONArray getRecordIdsFromExtras(JSONObject extras) {
         if (ObjectUtil.isNotNull(extras)) {
@@ -147,18 +136,15 @@ public class NotificationHelper {
     }
 
     /**
-     * 组装extras的渲染map todo 修改
-     *
-     * @param extras 通知消息body里面的extras
-     * @return 键值对
-     * @author zoe zheng
-     * @date 2020/6/3 12:42 下午
+     * append extra to render map
+     * todo update future
+     * @param extras extra json object
+     * @return map
      */
     public static Map<String, Object> addExtrasToRenderMap(JSONObject extras) {
         Map<String, Object> map = new HashMap<>(16);
         if (extras != null && extras.size() > 0) {
             extras.forEach((k, v) -> {
-                // 解析记录行关键字
                 if (k.equals(INVOLVE_RECORD_IDS)) {
                     JSONArray arr = JSONUtil.parseArray(v);
                     if (arr.size() == 0) {
@@ -175,41 +161,26 @@ public class NotificationHelper {
     }
 
     /**
-     * 获取渲染模版需要的字段
+     * get template locale key
      *
-     * @param content 模版内容
-     * @return 模版需要渲染的字段list
-     * @author zoe zheng
-     * @date 2020/5/21 3:15 下午
-     */
-    public static List<String> getRenderField(String content) {
-        return ReUtil.findAll("\\{\\{(.*?)\\}\\}", content, 1, new ArrayList<>());
-    }
-
-    /**
-     * 根据模版id获取airtable,config.strings的内容
-     *
-     * @param stringId airtable中config.strings的id
-     * @param lang     用户语言
-     * @return 语言对应的字符串
-     * @author zoe zheng
-     * @date 2020/5/23 2:24 下午
+     * @param stringId i18n key
+     * @param lang user locale
+     * @return locale
      */
     public static String getTemplateString(String stringId, I18nTypes lang) {
         return I18nConfigManager.getText(I18nConfigManager.getConfig().getStrings().get(stringId), lang);
     }
 
     /**
-     * 获取成员提及的body
+     * get mention body
      *
-     * @param oldBody 数据库已经存在的body
-     * @param newBody 更新的body
-     * @return 消息体
+     * @param oldBody old message body
+     * @param newBody new message body
+     * @return body
      */
     public static String getMentionBody(String oldBody, JSONObject newBody) {
         JSONArray oldRecordIds = NotificationHelper.getRecordIdsFromExtras(getExtrasFromNotifyBody(oldBody));
         JSONObject body = JSONUtil.parseObj(oldBody);
-        // 需要更新
         if (ObjectUtil.isNotNull(newBody)) {
             JSONObject extras = JSONUtil.parseObj(newBody.get(BODY_EXTRAS));
             JSONArray newRecordIds = JSONUtil.parseArray(extras.get(INVOLVE_RECORD_IDS));
@@ -229,18 +200,15 @@ public class NotificationHelper {
     }
 
     /**
-     * 从返回数据中获取值
+     * get node id from request
      *
-     * @param requestWrapper  请求数据
-     * @param response 返回数据
+     * @param requestWrapper request
+     * @param response response
      * @return object
-     * @author zoe zheng
-     * @date 2020/7/10 11:45 上午
      */
     public static Object resolveNodeId(ContentCachingRequestWrapper requestWrapper, Object response) {
-        // 从返回值获取
         for (ParamLocation paramLocation : ParamLocation.values()) {
-            Object nodeId = AuditHelper.resolveNodeId(paramLocation, requestWrapper, response);
+            Object nodeId = resolveNodeId(paramLocation, requestWrapper, response);
             if (nodeId != null) {
                 return nodeId;
             }
@@ -249,10 +217,9 @@ public class NotificationHelper {
     }
 
     /**
-     * @param requestWrapper 请求体
-     * @return 节点分享设置的值
-     * @author zoe zheng
-     * @date 2020/7/13 2:37 下午
+     * get share node id from request
+     * @param requestWrapper request object
+     * @return share node id
      */
     public static Object resolveNodeShared(ContentCachingRequestWrapper requestWrapper) {
         String uri = requestWrapper.getServletPath();
@@ -269,12 +236,10 @@ public class NotificationHelper {
     }
 
     /**
-     * 根据path判断是否是对节点的操作
+     * is node request
      *
-     * @param servletPath servlet 请求路径
-     * @return 是否存在
-     * @author zoe zheng
-     * @date 2020/7/13 2:38 下午
+     * @param servletPath servlet context path
+     * @return true | false
      */
     public static boolean isNodeOperate(String servletPath) {
         String[] pathNames = StrUtil.split(servletPath, "/");
@@ -282,7 +247,6 @@ public class NotificationHelper {
             if ("node".equals(pathName)) {
                 return true;
             }
-            // 使用模版
             if ("quote".equals(pathName)) {
                 return true;
             }
@@ -293,12 +257,10 @@ public class NotificationHelper {
     }
 
     /**
-     * 从返回数据中提取nodeInfo
+     * get node info view from response
      *
-     * @param response 返回数据
-     * @return NodeInfoVo 节点详细数据
-     * @author zoe zheng
-     * @date 2020/7/10 11:47 上午
+     * @param response response object
+     * @return Node info view
      */
     public static SpaceNotificationInfo.NodeInfo resolveNodeInfoFromResponse(Object response) {
         SpaceNotificationInfo.NodeInfo nodeInfo = new SpaceNotificationInfo.NodeInfo();
@@ -316,12 +278,10 @@ public class NotificationHelper {
     }
 
     /**
-     * 提出用户的长链socketId
+     * get user socket id from request
      *
-     * @param requestWrapper 请求体
+     * @param requestWrapper request object
      * @return socketId
-     * @author zoe zheng
-     * @date 2020/7/14 6:02 下午
      */
     public static String resolvePlayerSocketId(ContentCachingRequestWrapper requestWrapper) {
         String socketId = requestWrapper.getHeader(ParamsConstants.PLAYER_SOCKET_ID);
@@ -329,24 +289,21 @@ public class NotificationHelper {
     }
 
     /**
-     * 组织节点变更的消息（from request)
+     * get node info view from request
      *
-     * @param requestWrapper 请求体
+     * @param requestWrapper request object
      * @return SpaceNotificationInfo.NodeInfo
-     * @author zoe zheng
-     * @date 2020/7/13 4:00 下午
      */
-    public static SpaceNotificationInfo.NodeInfo
-    resolveNodeInfoFromRequest(ContentCachingRequestWrapper requestWrapper) {
+    public static SpaceNotificationInfo.NodeInfo resolveNodeInfoFromRequest(ContentCachingRequestWrapper requestWrapper) {
         SpaceNotificationInfo.NodeInfo nodeInfo = new SpaceNotificationInfo.NodeInfo();
-        Object nodeName = AuditHelper.resolveFromBody(requestWrapper, "nodeName");
-        Object icon = AuditHelper.resolveFromBody(requestWrapper, "icon");
-        Object cover = AuditHelper.resolveFromBody(requestWrapper, "cover");
-        Object parentId = AuditHelper.resolveFromBody(requestWrapper, "parentId");
+        Object nodeName = resolveFromBody(requestWrapper, "nodeName");
+        Object icon = resolveFromBody(requestWrapper, "icon");
+        Object cover = resolveFromBody(requestWrapper, "cover");
+        Object parentId = resolveFromBody(requestWrapper, "parentId");
         Object nodeShare = resolveNodeShared(requestWrapper);
-        Object description = AuditHelper.resolveFromBody(requestWrapper, "description");
-        Object preNodeId = AuditHelper.resolveFromBody(requestWrapper, "preNodeId");
-        Object showRecordHistory = AuditHelper.resolveFromBody(requestWrapper, NodeExtraConstants.SHOW_RECORD_HISTORY);
+        Object description = resolveFromBody(requestWrapper, "description");
+        Object preNodeId = resolveFromBody(requestWrapper, "preNodeId");
+        Object showRecordHistory = resolveFromBody(requestWrapper, NodeExtraConstants.SHOW_RECORD_HISTORY);
         if (nodeName != null) {
             nodeInfo.setNodeName(nodeName.toString());
         }
@@ -372,5 +329,64 @@ public class NotificationHelper {
             nodeInfo.setShowRecordHistory(Integer.parseInt(showRecordHistory.toString()));
         }
         return nodeInfo;
+    }
+
+    public static Object resolveNodeId(ParamLocation nodeParamLoc, ContentCachingRequestWrapper requestWrapper, Object responseData) {
+        String paramName = "nodeId";
+
+        if (nodeParamLoc == ParamLocation.RESPONSE) {
+            JSONObject response = JSONUtil.parseObj(responseData);
+            JSONObject data = response.getJSONObject("data");
+            if (ObjectUtil.isNotNull(data)) {
+                Object value = data.get(paramName);
+                if (ObjectUtil.isNotNull(value) && StrUtil.isNotBlank(value.toString())) {
+                    if (isNodeId(value.toString())) {
+                        return value;
+                    }
+                }
+            }
+        }
+
+        if (nodeParamLoc == ParamLocation.QUERY) {
+            return resolveFromQuery(requestWrapper, paramName);
+        }
+
+        if (nodeParamLoc == ParamLocation.BODY) {
+            return resolveFromBody(requestWrapper, paramName);
+        }
+
+        if (nodeParamLoc == ParamLocation.PATH) {
+            String[] pathNames = StrUtil.split(requestWrapper.getServletPath(), "/");
+            if (pathNames.length > 0) {
+                String pathName = pathNames[pathNames.length - 1];
+                if (isNodeId(pathName)) {
+                    return pathName;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Object resolveFromQuery(ContentCachingRequestWrapper requestWrapper, String paramName) {
+        return requestWrapper.getParameter(paramName);
+    }
+
+    public static Object resolveFromBody(ContentCachingRequestWrapper requestWrapper, String paramName) {
+        String requestBody = new String(requestWrapper.getContentAsByteArray());
+        if (StrUtil.isNotBlank(requestBody)) {
+            JSONObject map = JSONUtil.parseObj(requestBody);
+            if (map.containsKey(paramName)) {
+                return map.get(paramName);
+            }
+        }
+
+        return null;
+    }
+
+    public static boolean isNodeId(String id) {
+        List<String> nodeIdPrefixes = Arrays.asList(IdRulePrefixEnum.FOD.getIdRulePrefixEnum(),
+                IdRulePrefixEnum.DST.getIdRulePrefixEnum(), IdRulePrefixEnum.FORM.getIdRulePrefixEnum(),
+                IdRulePrefixEnum.DASHBOARD.getIdRulePrefixEnum(), IdRulePrefixEnum.MIRROR.getIdRulePrefixEnum());
+        return nodeIdPrefixes.contains(id.substring(0, ID_PREFIX_LENGTH));
     }
 }

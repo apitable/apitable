@@ -9,11 +9,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 国际化多语言管理器
+ * locale context manager
  * </p>
  *
  * @author Chambers
- * @date 2022/4/28
  */
 @Component
 public class LanguageManager {
@@ -22,9 +21,6 @@ public class LanguageManager {
         return SpringContextHolder.getBean(LanguageManager.class);
     }
 
-    /**
-     * 获取默认语言
-     */
     public Locale getDefaultLanguage() {
         String languageTag = SpringContextHolder.getBean(ConstProperties.class).getLanguageTag();
         return Locale.forLanguageTag(languageTag);
@@ -35,8 +31,8 @@ public class LanguageManager {
     }
 
     /**
-     * 获取默认语言字符串Tag，连字符"-"转为下划线"_"
-     * @return 带下划线的默认语言字符串
+     * Get the default language string Tag, and convert the connecting character "-" to the underscore "_"
+     * @return locale string key
      */
     public String getDefaultLanguageTagWithUnderLine() {
         return getDefaultLanguageTag().replace("-", "_");

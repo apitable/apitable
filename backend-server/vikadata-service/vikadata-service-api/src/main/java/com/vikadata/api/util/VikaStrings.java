@@ -14,23 +14,20 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
  * <p>
- * Vika strings.json 处理方法集合
+ * strings.json collection of processing methods
  * </p>
  *
  * @author Pengap
- * @date 2021/12/29 17:36:47
  */
 public class VikaStrings {
 
     /**
-     * 多语言获取strings文案
+     * get strings text in multiple languages
      *
      * @param stringsKey    strings.json key
-     * @param lang          语言，当前支持语言 {@link LanguageConstants#SUPPORTED_LANGUAGE}、{@link I18nTypes#isSupport()}
-     * @param defaultStr    如果解析字符串是{@code null}或者&quot;&quot;或者空白，则返回指定默认字符串
-     *
-     * @author Pengap
-     * @date 2021/12/29 17:55:42
+     * @param lang          language currently supported languages {@link LanguageConstants#SUPPORTED_LANGUAGE}、{@link I18nTypes#isSupport()}
+     * @param defaultStr    if str is {@code null} or &quot;&quot;or empty，returns the specified default string
+     * @return String
      */
     public static String t(String stringsKey, @NotNull Locale lang, String defaultStr) {
         if (StrUtil.isNotBlank(stringsKey)) {
@@ -42,38 +39,34 @@ public class VikaStrings {
     }
 
     /**
-     * 默认使用本地语言，转换T函数 </br>
-     * 本地语言表示：当前登陆人的语言，根据cookie解析，如果无法解析使用LocaleContextHolder#defaultLocale
+     * Use the local language by default, convert the T function
+     * </br>
+     * Local language representation: the language of the currently logged in person, parsed according to the cookie
+     * use LocaleContextHolder#defaultLocale if you can not parse
      *
      * @param stringsKey    strings.json key
-     * @param defaultStr    如果解析字符串是{@code null}或者&quot;&quot;或者空白，则返回指定默认字符串
-     * @author Pengap
-     * @date 2021/12/29 18:01:03
+     * @param defaultStr    f str is {@code null} or &quot;&quot;or empty，returns the specified default string
      */
     public static String t(String stringsKey, String defaultStr) {
-        // 获取当前的语言环境
+        // get the current locale
         Locale currentLang = LocaleContextHolder.getLocale();
         return t(stringsKey, currentLang, defaultStr);
     }
 
     /**
-     * 多语言获取strings文案
+     * get strings text in multiple languages
      *
      * @param stringsKey    strings.json key
-     * @param lang          语言，当前支持语言
-     * @author Pengap
-     * @date 2021/12/29 18:14:19
+     * @param lang          language, currently supported languages
      */
     public static String t(String stringsKey, @NotNull Locale lang) {
         return t(stringsKey, lang, StrUtil.EMPTY);
     }
 
     /**
-     * 执行T函数，转换为空默认返回{@link StrUtil#EMPTY}
+     * Execute the T function, convert to null and return {@link StrUtil#EMPTY}
      *
      * @param stringsKey    strings.json key
-     * @author Pengap
-     * @date 2021/12/29 18:10:42
      */
     public static String t(String stringsKey) {
         return t(stringsKey, StrUtil.EMPTY);

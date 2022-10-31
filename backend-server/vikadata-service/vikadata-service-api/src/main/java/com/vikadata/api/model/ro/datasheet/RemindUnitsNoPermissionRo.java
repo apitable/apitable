@@ -19,8 +19,6 @@ import org.springframework.validation.annotation.Validated;
  * <p>
  * 提及人时获取对指定节点无权限的成员
  * </p>
- * @author 刘斌华
- * @date 2022-03-25 10:37:43
  */
 @ApiModel("提及人时获取对指定节点无权限的成员")
 @Setter

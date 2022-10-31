@@ -2,9 +2,6 @@ package com.vikadata.boot.autoconfigure.auth0;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * @author Shawn Deng
- */
 @ConfigurationProperties(prefix = "vikadata-starter.auth0")
 public class Auth0Properties {
 

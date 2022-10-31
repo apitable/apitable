@@ -1,10 +1,9 @@
 package com.vikadata.boot.autoconfigure.social;
 
 /**
- * 社交媒体的通用配置
+ * social base class
  *
  * @author Shawn Deng
- * @date 2020-11-18 18:16:58
  */
 public class SocialProperties {
 

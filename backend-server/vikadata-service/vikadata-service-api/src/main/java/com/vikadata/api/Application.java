@@ -6,11 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
  * <p>
- * 启动入口
+ * boot entry
  * </p>
  *
  * @author Shawn Deng
- * @date 2019-07-18 21:06
  */
 @SpringBootApplication
 @ConfigurationPropertiesScan

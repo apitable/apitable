@@ -16,13 +16,13 @@ import com.vikadata.api.component.ApiResourceFactory;
 import com.vikadata.api.constants.ParamsConstants;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.exception.AuthException;
-import com.vikadata.api.helper.ApiHelper;
 import com.vikadata.api.holder.MemberHolder;
 import com.vikadata.api.holder.SpaceHolder;
 import com.vikadata.api.holder.UserHolder;
-import com.vikadata.api.lang.ResourceDefinition;
+import com.vikadata.api.component.ResourceDefinition;
 import com.vikadata.api.modular.developer.mapper.DeveloperMapper;
 import com.vikadata.api.modular.space.service.ISpaceService;
+import com.vikadata.api.util.ApiHelper;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
@@ -34,13 +34,12 @@ import static com.vikadata.api.enums.exception.SpaceException.SPACE_NOT_EXIST;
 
 /**
  * <p>
- * 资源校验拦截器
- * 1.空间管理资源校验
- * 2.节点资源校验
+ * Resource verification interceptor
+ * 1.space management resource check
+ * 2.Node resource check
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/2/8 21:20
  */
 @Slf4j
 public class ResourceInterceptor extends AbstractServletSupport implements HandlerInterceptor {
@@ -59,23 +58,20 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        // 解析地址
         String requestPath = resolveServletPath(request);
-        log.info("请求资源地址：{}", requestPath);
         ResourceDefinition resourceDef = apiResourceFactory.getResourceByUrl(requestPath);
         if (resourceDef == null) {
-            log.info("请求资源地址不存在");
+            log.error("Request path [{}] is not exist", requestPath);
             throw new BusinessException(NONE_RESOURCE);
         }
 
-        //资源不需要登录则忽略
         if (!resourceDef.getRequiredLogin()) {
             return true;
         }
 
         Long userId;
         if (!HttpContextUtil.hasSession()) {
-            // 获取 API KEY
+            // Get API KEY
             String apiKey = ApiHelper.getApiKey(request);
             ExceptionUtil.isNotNull(apiKey, AuthException.UNAUTHORIZED);
             userId = developerMapper.selectUserIdByApiKey(apiKey);
@@ -84,29 +80,28 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
             }
         }
         else {
-            //UserId在Session的Cookies里
+            // UserId in Session Cookies
             userId = SessionContext.getUserId();
         }
         UserHolder.set(userId);
 
-        // 空间管理权限校验
         if (resourceDef.getRequiredPermission()) {
-            //SpaceId在请求头
+            // SpaceId in the request header
             String spaceId = request.getHeader(ParamsConstants.SPACE_ID);
             ExceptionUtil.isNotNull(spaceId, SPACE_NOT_EXIST);
             SpaceHolder.set(spaceId);
 
-            //获取用户在空间的所有信息
+            // Get all the information of the user in the space
             UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
             MemberHolder.set(userSpace.getMemberId());
             if (userSpace.isMainAdmin()) {
-                //主管理员不校验
+                // The main admin does not verify
                 return true;
             }
             if (ArrayUtil.isNotEmpty(resourceDef.getTags())) {
                 String tag = "INVITE_MEMBER";
                 if (ArrayUtil.contains(resourceDef.getTags(), tag)) {
-                    //判断空间是否开启了全员可邀请成员
+                    // Determine whether the space is enabled for all members to invite members
                     Boolean invite = iSpaceService.getSpaceGlobalFeature(spaceId).getInvitable();
                     if (Boolean.TRUE.equals(invite)) {
                         return true;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * <p>
- * 空布尔型序列化处理
+ * Empty Boolean serialization
  * </p>
  *
  * @author Chambers

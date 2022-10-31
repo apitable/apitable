@@ -9,26 +9,20 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 国际化语言支持常量
+ * locale constants
  * </p>
  *
  * @author Pengap
- * @date 2021/11/17 19:24:14
  */
 public class LanguageConstants {
 
-    // 默认的语言 zh-CN
-    public static final Locale DEFAULT_LANGUAGE = Locale.SIMPLIFIED_CHINESE;
-
-    // 支持的语言列表
     public static final List<Locale> SUPPORTED_LANGUAGE = Arrays.asList(
-            // 简体中文
+            // Chinese
             Locale.SIMPLIFIED_CHINESE,
             // US
             Locale.US
     );
 
-    // 支持的语言范围
     private static final List<LanguageRange> SUPPORTED_LANGUAGE_RANGES;
 
     static {
@@ -36,18 +30,18 @@ public class LanguageConstants {
     }
 
     /**
-     * 判断传入语言系统是否支持
+     * whether language supported
      *
-     * @param languageTag 语言标签
+     * @param languageTag language
      */
     public static boolean isLanguagesSupported(String languageTag) {
         return isLanguagesSupported(Locale.forLanguageTag(languageTag));
     }
 
     /**
-     * 判断传入语言系统是否支持
+     * whether language supported
      *
-     * @param locale 语言
+     * @param locale locale
      */
     public static boolean isLanguagesSupported(Locale locale) {
         return !Locale.filter(SUPPORTED_LANGUAGE_RANGES, Collections.singletonList(locale)).isEmpty();

@@ -7,11 +7,10 @@ import java.util.Map;
 
 /**
  * <p>
- * 多个值 Map 工具类
+ * multi value map util
  * </p>
  *
  * @author Chambers
- * @date 2021/3/3
  */
 public class MultiValueMapUtils {
 

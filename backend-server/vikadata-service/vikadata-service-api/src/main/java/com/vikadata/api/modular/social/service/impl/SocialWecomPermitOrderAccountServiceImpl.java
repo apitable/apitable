@@ -19,7 +19,6 @@ import com.vikadata.api.modular.social.mapper.SocialWecomPermitOrderAccountMappe
 import com.vikadata.api.modular.social.model.TenantMemberDto;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderAccountService;
 import com.vikadata.api.modular.social.service.IsocialWecomPermitOrderAccountBindService;
-import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.entity.SocialWecomPermitOrderAccountBindEntity;
 import com.vikadata.entity.SocialWecomPermitOrderAccountEntity;
 import com.vikadata.social.wecom.model.WxCpIsvPermitListOrderAccount.AccountList;

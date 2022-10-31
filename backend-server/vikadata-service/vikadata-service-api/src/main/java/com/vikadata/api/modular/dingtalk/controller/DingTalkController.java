@@ -16,7 +16,7 @@ import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.action.TrackEventType;
 import com.vikadata.api.enums.user.LinkType;
-import com.vikadata.api.helper.RedisLockHelper;
+import com.vikadata.api.component.redis.RedisLockHelper;
 import com.vikadata.api.model.dto.client.ClientOriginInfo;
 import com.vikadata.api.modular.base.service.IAuthService;
 import com.vikadata.api.modular.base.service.SensorsService;

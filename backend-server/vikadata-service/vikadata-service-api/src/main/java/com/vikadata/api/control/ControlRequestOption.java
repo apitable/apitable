@@ -3,9 +3,8 @@ package com.vikadata.api.control;
 import java.io.Serializable;
 
 /**
- * 控制权限请求选项
+ * Control Request Executor option
  * @author Shawn Deng
- * @date 2021-04-01 17:17:01
  */
 public class ControlRequestOption implements Serializable {
 

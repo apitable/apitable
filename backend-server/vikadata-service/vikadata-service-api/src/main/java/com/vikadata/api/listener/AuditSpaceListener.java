@@ -21,7 +21,6 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.organization.model.UnitInfoDTO;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.space.repository.AuditSpaceRepository;
-import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.template.mapper.TemplateMapper;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
 import com.vikadata.api.util.InformationUtil;
@@ -60,17 +59,13 @@ import static com.vikadata.api.enums.audit.AuditSpaceAction.ENABLE_NODE_ROLE;
 
 /**
  * <p>
- * 空间审计事件监听器
+ * Space audit Listener
  * </p>
  *
  * @author Chambers
- * @date 2022/5/25
  */
 @Component
 public class AuditSpaceListener {
-
-    @Resource
-    private ISpaceService iSpaceService;
 
     @Resource
     private IUnitService iUnitService;
@@ -90,10 +85,7 @@ public class AuditSpaceListener {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @TransactionalEventListener(fallbackExecution = true, classes = AuditSpaceEvent.class)
     public void onApplicationEvent(AuditSpaceEvent event) {
-        // 获取请求来源信息
         ClientOriginInfo clientOriginInfo = InformationUtil.getClientOriginInfo(true, false);
-
-        // 事件参数
         AuditSpaceArg arg = event.getArg();
         String spaceId = arg.getSpaceId();
         AuditSpaceAction action = arg.getAction();
@@ -102,30 +94,29 @@ public class AuditSpaceListener {
         switch (category) {
             case WORK_CATALOG_CHANGE_EVENT:
             case WORK_CATALOG_SHARE_EVENT:
-                // 拼接节点相关的信息
+                // Information about splicing nodes
                 spaceId = this.appendNodeInfo(arg.getNodeId(), action, info);
                 break;
             case WORK_CATALOG_PERMISSION_CHANGE_EVENT:
-                // 拼接节点相关的信息
+                // Information about splicing nodes
                 spaceId = this.appendNodeInfo(arg.getNodeId(), action, info);
-                // 开启/关闭权限，无组织单元信息
+                // Enable or disable permissions, no organizational unit information
                 if (ENABLE_NODE_ROLE.equals(action) || DISABLE_NODE_ROLE.equals(action)) {
                     break;
                 }
-                // 拼接组织单元信息
+                // Splice organizational unit information
                 this.appendUnitInfo(info);
                 break;
             case SPACE_TEMPLATE_EVENT:
-                // 拼接模板相关的信息
+                // Information about splicing templates
                 this.appendTemplateInfo(arg.getNodeId(), action, info);
                 break;
             default:
                 break;
         }
 
-        // 查询操作者的成员信息
+        // Query operator's member information
         MemberEntity member = memberMapper.selectByUserIdAndSpaceIdIgnoreDelete(arg.getUserId(), spaceId);
-        // 构建实体
         AuditSpaceSchema schema = AuditSpaceSchema.builder()
                 .userId(arg.getUserId())
                 .spaceId(spaceId)
@@ -138,12 +129,11 @@ public class AuditSpaceListener {
                 .info(info)
                 .createdAt(LocalDateTime.now())
                 .build();
-        // 保存数据
         auditSpaceRepository.save(schema);
     }
 
     private String appendNodeInfo(String nodeId, AuditSpaceAction action, JSONObject info) {
-        // 节点基础信息
+        // query node basic information
         NodeEntity node = nodeMapper.selectByNodeIdIncludeDeleted(nodeId);
         info.set(NODE_ID, node.getNodeId());
         info.set(NODE_TYPE, node.getType());
@@ -159,17 +149,17 @@ public class AuditSpaceListener {
             case RECOVER_RUBBISH_NODE:
             case STORE_SHARE_NODE:
             case QUOTE_TEMPLATE:
-                // 设置父节点信息
+                // Set parent node information
                 this.setParentNodeInfo(node.getSpaceId(), node.getParentId(), info);
-                // 设置前置节点信息
+                // Set pre-node information
                 this.setPreNodeInfo(node.getPreNodeId(), info);
-                // 节点复制，设置被复制的源节点信息
+                // Node replication, set the source node information to be replicated
                 if (info.containsKey(SOURCE_NODE_ID)) {
                     info.set(SOURCE_NODE_NAME, nodeMapper.selectNodeNameByNodeIdIncludeDeleted(info.getStr(SOURCE_NODE_ID)));
                 }
                 break;
             case DELETE_NODE:
-                // 节点删除的路径
+                // The path to delete the node
                 info.set(NODE_DELETED_PATH, StrUtil.nullToEmpty(node.getDeletedPath()));
                 break;
             default:
@@ -192,10 +182,10 @@ public class AuditSpaceListener {
             return;
         }
 
-        // 查询组织单元视图
+        // Querying Organizational Unit Views
         List<UnitInfoDTO> unitInfos = iUnitService.getUnitInfoDTOByUnitIds(unitIds);
 
-        // 补充组织单元信息
+        // Supplemental Organizational Unit Information
         if (multiple) {
             info.set(UNIT_NAMES, unitInfos.stream().map(UnitInfoDTO::getName).collect(Collectors.toList()));
             return;
@@ -205,9 +195,9 @@ public class AuditSpaceListener {
     }
 
     private void appendTemplateInfo(String nodeId, AuditSpaceAction action, JSONObject info) {
-        // 创建模板
+        // Create a template
         if (CREATE_TEMPLATE.equals(action)) {
-            // 拼接节点相关的信息
+            // Information about splicing nodes
             this.appendNodeInfo(nodeId, action, info);
         }
         String templateName = templateMapper.selectNameByTemplateIdIncludeDelete(info.getStr(TEMPLATE_ID));
@@ -217,11 +207,12 @@ public class AuditSpaceListener {
     private void setParentNodeInfo(String spaceId, String parentId, JSONObject info) {
         info.set(PARENT_ID, parentId);
         String rootNodeId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
-        // 判断是否在根目录下创建，是则保存父级节点名称，否则保存为空字符串 ""
+        // Determine if it is created in the root directory,
+        // if yes, save the name of the parent node, otherwise save it as an empty string ""
         String parentName = rootNodeId.equals(parentId) ? StrUtil.EMPTY : nodeMapper.selectNodeNameByNodeIdIncludeDeleted(parentId);
         info.set(PARENT_NAME, parentName);
 
-        // 节点跨文件夹移动，原本的父级节点名称
+        // Node moves across folders, the original parent node name
         if (info.containsKey(OLD_PARENT_ID)) {
             String oldParentName = rootNodeId.equals(info.getStr(OLD_PARENT_ID)) ? StrUtil.EMPTY :
                     nodeMapper.selectNodeNameByNodeIdIncludeDeleted(info.getStr(OLD_PARENT_ID));
@@ -234,7 +225,7 @@ public class AuditSpaceListener {
         String preNodeName = preNodeId == null ? StrUtil.EMPTY : nodeMapper.selectNodeNameByNodeIdIncludeDeleted(preNodeId);
         info.set(PRE_NODE_NAME, preNodeName);
 
-        // 节点移动或排序，原本位置的前置节点名称
+        // Node movement or sorting, the previous node name of the original position
         if (info.containsKey(OLD_PRE_NODE_ID)) {
             String oldPreNodeName = StrUtil.isBlank(info.getStr(OLD_PRE_NODE_ID)) ? StrUtil.EMPTY :
                     nodeMapper.selectNodeNameByNodeIdIncludeDeleted(info.getStr(OLD_PRE_NODE_ID));

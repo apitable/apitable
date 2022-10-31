@@ -17,11 +17,10 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * SMS服务接口实现
+ * SMS Service Implement
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 17:17
  */
 @Service
 @Slf4j
@@ -36,25 +35,24 @@ public class SmsServiceImpl implements ISmsService {
     @Override
     public void sendValidateCode(ValidateTarget target, String code, SmsCodeType type) {
         if (smsSenderTemplate == null) {
-            log.info("未开启短信服务");
+            log.warn("sms service is disabled");
             connectorTemplate.sendSms(target.getTarget(), code);
             return;
         }
-        log.info("发送短信验证码");
         SmsMessage smsMessage = new SmsMessage();
         smsMessage.setAreaCode(target.getAreaCode());
         smsMessage.setMobile(target.getTarget());
-        // 国际短信
+        // International SMS
         if (!smsSenderTemplate.getLocalAreaCode().equals(smsMessage.getAreaCode())) {
             smsMessage.setText(StrUtil.format(YunpianTemplate.INTERNATION_GENERAL.getContent(), code));
             smsSenderTemplate.send(smsMessage);
             return;
         }
-        // 国内短信
+        // Chinese SMS
         smsMessage.setParams(new String[] { code });
         String smsTemplateCode = type.getTemplate().getTemplateCode();
         if (!TencentConstants.SmsTemplate.isSmsTemplate(smsTemplateCode)) {
-            throw new BusinessException("短信模板没有维护");
+            throw new BusinessException("Without SMS template");
         }
         smsMessage.setTemplateCode(smsTemplateCode);
         smsSenderTemplate.send(smsMessage);
@@ -63,20 +61,19 @@ public class SmsServiceImpl implements ISmsService {
     @Override
     public void sendMessage(ValidateTarget target, TencentConstants.SmsTemplate type) {
         if (smsSenderTemplate == null) {
-            log.info("未开启通知的短信服务");
+            log.warn("sms service is disabled");
             return;
         }
-        log.info("发送通知短信");
         SmsMessage smsMessage = new SmsMessage();
         smsMessage.setMobile(target.getTarget());
         smsMessage.setAreaCode(target.getAreaCode());
-        // 国际短信
+        // International SMS
         if (!smsSenderTemplate.getLocalAreaCode().equals(smsMessage.getAreaCode())) {
             smsMessage.setText(YunpianTemplate.UPDATE_PASSWORD_SUCCESS_NOTICE.getContent());
             smsSenderTemplate.send(smsMessage);
             return;
         }
-        // 国内短信
+        // Chinese SMS
         smsMessage.setTemplateCode(type.getTemplateCode());
         smsMessage.setParams(new String[0]);
         smsSenderTemplate.send(smsMessage);

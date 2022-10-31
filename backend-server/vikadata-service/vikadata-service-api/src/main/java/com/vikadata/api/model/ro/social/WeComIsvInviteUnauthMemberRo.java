@@ -19,8 +19,6 @@ import org.springframework.validation.annotation.Validated;
  * <p>
  * 邀请未授权的用户
  * </p>
- * @author 刘斌华
- * @date 2022-04-19 17:05:14
  */
 @ApiModel("邀请未授权的用户")
 @Setter

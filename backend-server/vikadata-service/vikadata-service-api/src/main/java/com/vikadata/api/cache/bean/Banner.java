@@ -16,7 +16,6 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
  * </p>
  *
  * @author Chambers
- * @date 2020/7/4
  */
 @Data
 @NoArgsConstructor

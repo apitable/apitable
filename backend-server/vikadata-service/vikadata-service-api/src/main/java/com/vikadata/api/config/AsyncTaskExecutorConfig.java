@@ -30,13 +30,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * <p>
- * 异步任务配置
- * 使用Spring框架封装好的线程池
- * ROLE_INFRASTRUCTURE: Spring框架自己的BEAN，与使用用户没有关系
+ * Asynchronous Task Configuration
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/9/6 15:46
  */
 @Configuration(proxyBeanMethods = false)
 @EnableAsync
@@ -56,19 +53,13 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
     @Override
     @Bean(name = DEFAULT_EXECUTOR_BEAN_NAME)
     public Executor getAsyncExecutor() {
-        log.info("创建异步任务线程池");
         ThreadPoolTaskExecutor executor = new VisibleThreadPoolTaskExecutor();
         executor.setCorePoolSize(4);
         executor.setMaxPoolSize(50);
         executor.setQueueCapacity(500);
         executor.setKeepAliveSeconds(3000);
         executor.setThreadNamePrefix("vika-task-");
-        // 线程池对拒绝任务的处理策略
-        // rejection-policy：当pool已经达到max size的时候，拒绝处理新任务
-        // CALLER_RUNS：不在新线程中执行任务，而是有调用者所在的线程来执行
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        // 请求上下文放入异步线程，异步任务上下文装饰器
-        // 异步任务是一个单独的线程，与 Servlet 请求线程不在一起，所以主线程的上下文得传递过来
         executor.setTaskDecorator(runnable -> {
             RequestAttributes context = RequestContextHolder.getRequestAttributes();
             LocaleContext localeContext = LocaleContextHolder.getLocaleContext();
@@ -80,7 +71,7 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
                     if (mdcContext != null) {
                         MDC.setContextMap(mdcContext);
                     }
-                    // 执行异步任务
+                    // execute asynchronous tasks
                     runnable.run();
                 }
                 catch (Exception ex) {
@@ -90,8 +81,7 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
                     throw ex;
                 }
                 finally {
-                    // 执行完成后重置
-                    log.info("重置异步线程变量");
+                    log.info("Reset asynchronous thread variables");
                     MDC.clear();
                     RequestContextHolder.resetRequestAttributes();
                     LocaleContextHolder.resetLocaleContext();
@@ -101,7 +91,6 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
             };
         });
         executor.initialize();
-        log.info("创建异步任务线程池完毕");
         return new LazyTraceExecutor(beanFactory, executor);
     }
 

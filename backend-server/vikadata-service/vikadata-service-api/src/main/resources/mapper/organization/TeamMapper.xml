@@ -15,7 +15,6 @@
         WHERE id = #{teamId} AND is_deleted = 0
     </select>
 
-    <!--查询子部门最大排序值-->
     <select id="selectMaxSequenceByParentId" resultType="java.lang.Integer">
         SELECT MAX(sequence)
         FROM vika_unit_team
@@ -32,7 +31,6 @@
         <result column="has_children" property="hasChildren"/>
     </resultMap>
 
-    <!--查询根部门的子部门-->
     <select id="selectRootSubTeams" resultMap="teamInfo">
         SELECT d.id                          AS team_id,
                d.team_name                   AS team_name,
@@ -70,7 +68,6 @@
         ORDER BY d.sequence;
     </select>
 
-    <!--查询子部门列表-->
     <select id="selectSubTeamsByParentId" resultMap="teamInfo">
         SELECT d.id                          AS team_id,
                d.team_name                   AS team_name,
@@ -116,7 +113,6 @@
         </if>
     </select>
 
-    <!--查询部门下的所有子部门ID列表-->
     <select id="selectAllSubTeamIdsByParentId" resultType="java.lang.Long">
         WITH RECURSIVE sub_ids (id) AS
             (
@@ -156,7 +152,6 @@
         FROM sub_ids;
     </select>
 
-    <!--根据部门名称模糊查询部门列表-->
     <select id="selectByTeamName" resultType="com.vikadata.api.model.vo.organization.SearchTeamResultVo">
         SELECT vod.id                             as team_id,
                vod.team_name                      as team_name,

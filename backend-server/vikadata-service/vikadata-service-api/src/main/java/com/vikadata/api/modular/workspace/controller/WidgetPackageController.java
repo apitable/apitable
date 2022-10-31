@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
-import com.vikadata.api.annotation.PageObjectParam;
+import com.vikadata.api.util.page.PageObjectParam;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.developer.GmAction;

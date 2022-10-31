@@ -16,9 +16,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Shawn Deng
- */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(Auth0Properties.class)
 @ConditionalOnClass(AuthenticationController.class)

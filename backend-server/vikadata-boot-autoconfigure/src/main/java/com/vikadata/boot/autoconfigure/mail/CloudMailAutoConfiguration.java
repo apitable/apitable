@@ -10,11 +10,10 @@ import org.springframework.context.annotation.Import;
 
 /**
  * <p>
- * 云平台邮件推送自动化配置
+ * Cloud platform email push automation configuration
  * </p>
  *
  * @author Chambers
- * @date 2022/2/9
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(CloudMailSender.class)

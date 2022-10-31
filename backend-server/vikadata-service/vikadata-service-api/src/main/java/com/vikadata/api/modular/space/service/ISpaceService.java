@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.ro.space.SpaceUpdateOpRo;
@@ -208,7 +207,7 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @param spaceId space id
      * @return SpaceGlobalFeature
      */
-    SpaceGlobalFeature getSpaceGlobalFeature(@Param("spaceId") String spaceId);
+    SpaceGlobalFeature getSpaceGlobalFeature(String spaceId);
 
     /**
      * change the space feature

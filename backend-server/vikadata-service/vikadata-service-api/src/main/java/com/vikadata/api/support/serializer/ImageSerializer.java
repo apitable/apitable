@@ -13,11 +13,10 @@ import com.vikadata.api.config.properties.ConstProperties;
 
 /**
  * <p>
- * 头像为空时序列化输出默认头像
+ * When the avatar is empty, serialize and output the default avatar
  * </p>
  *
  * @author Chambers
- * @date 2019/12/26
  */
 public class ImageSerializer extends JsonSerializer<String> {
 

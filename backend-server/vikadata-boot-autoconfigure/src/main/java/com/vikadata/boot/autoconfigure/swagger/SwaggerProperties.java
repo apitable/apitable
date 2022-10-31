@@ -8,8 +8,8 @@ import springfox.documentation.service.ParameterType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * swagger properties
  * @author Shawn Deng
- * @date 2021-01-08 15:19:18
  */
 @ConfigurationProperties(prefix = "vikadata-starter.swagger")
 public class SwaggerProperties {
@@ -198,29 +198,14 @@ public class SwaggerProperties {
     }
 
     public static class GlobalOperationParameter {
-        /**
-         * 参数名
-         **/
         private String name;
 
-        /**
-         * 描述信息
-         **/
         private String description;
 
-        /**
-         * 指定参数类型
-         **/
         private String modelRef;
 
-        /**
-         * 参数放在哪个地方:header,query,path,formData,cookie,form
-         **/
         private ParameterType parameterType;
 
-        /**
-         * 参数是否必须传
-         **/
         private Boolean required;
 
         public String getName() {

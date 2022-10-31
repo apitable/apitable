@@ -28,13 +28,13 @@ import com.vikadata.api.component.notification.observer.WecomNotifyObserver;
 import com.vikadata.api.component.notification.subject.CenterNotifySubject;
 import com.vikadata.api.component.notification.subject.SocialNotifyContext;
 import com.vikadata.api.component.notification.subject.SocialNotifySubject;
-import com.vikadata.api.config.task.AsyncTaskContextHolder;
 import com.vikadata.api.constants.NotificationConstants;
 import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.notification.EventType;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.modular.player.service.impl.PlayerNotificationServiceImpl;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.integration.socketio.SocketClientTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +48,10 @@ import static com.vikadata.api.constants.NotificationConstants.PLAN_NAME;
 
 /**
  * <p>
- * 通知管理类，发送后端需要发送的通知
+ * notification manager
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/28 3:34 下午
  */
 @Slf4j
 @Component
@@ -96,15 +95,13 @@ public class NotificationManager {
     }
 
     /**
-     * 统一消息发送方法
+     * send message
      *
-     * @param templateId  模版ID
-     * @param toPlayerIds 消息触达的用户，memberId或者userId
-     * @param fromUserId  消息来源的用户ID
-     * @param spaceId     空间ID
-     * @param bodyExtras  附加内容
-     * @author zoe zheng
-     * @date 2020/7/9 11:00 上午
+     * @param templateId  template id
+     * @param toPlayerIds target
+     * @param fromUserId  from
+     * @param spaceId     space id
+     * @param bodyExtras  extra
      */
     public void playerNotify(NotificationTemplateId templateId, List<Long> toPlayerIds, Long fromUserId, String spaceId, Map<String, Object> bodyExtras) {
         NotificationCreateRo ro = new NotificationCreateRo();
@@ -127,7 +124,7 @@ public class NotificationManager {
     }
 
     public void spaceNotify(NotificationTemplateId templateId, Long userId, String spaceId, Object result) {
-        HttpServletRequest request = AsyncTaskContextHolder.getServletRequest();
+        HttpServletRequest request = HttpContextUtil.getRequest();
         ContentCachingRequestWrapper requestWrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
         if (requestWrapper == null) {
             log.error("Request Wrapper is null");
@@ -137,10 +134,8 @@ public class NotificationManager {
         if (ObjectUtil.isNotNull(nodeId)) {
             String nodeIdStr = nodeId.toString();
             SpaceNotificationInfo.NodeInfo nodeInfoVo;
-            // 创建节点
             if (templateId == NotificationTemplateId.NODE_CREATE) {
                 nodeInfoVo = NotificationHelper.resolveNodeInfoFromResponse(result);
-                // 保证node的parentId一定返回
                 if (nodeInfoVo.getParentId() == null) {
                     nodeInfoVo.setParentId(notificationFactory.getNodeParentId(nodeIdStr));
                 }
@@ -148,7 +143,6 @@ public class NotificationManager {
             else {
                 nodeInfoVo = NotificationHelper.resolveNodeInfoFromRequest(requestWrapper);
             }
-            // 获取parentID
             if (templateId == NotificationTemplateId.NODE_UPDATE_ROLE) {
                 nodeInfoVo.setParentId(notificationFactory.getNodeParentId(nodeIdStr));
             }
@@ -166,16 +160,14 @@ public class NotificationManager {
     }
 
     /**
-     * 发送节点分享消息
+     * send node share notification
      *
-     * @param spaceId 空间ID
-     * @param nodeIds 节点ID列表
-     * @param nodeShared 分享是否关闭
-     * @author zoe zheng
-     * @date 2021/3/9 11:26 上午
+     * @param spaceId space id
+     * @param nodeIds node is list
+     * @param nodeShared whether node is shared
      */
     public void nodeShareNotify(String spaceId, List<String> nodeIds, boolean nodeShared) {
-        HttpServletRequest request = AsyncTaskContextHolder.getServletRequest();
+        HttpServletRequest request = HttpContextUtil.getRequest();
         ContentCachingRequestWrapper requestWrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
         if (requestWrapper == null) {
             log.error("Space Notify Request Wrapper is null");
@@ -195,7 +187,6 @@ public class NotificationManager {
     }
 
     public void centerNotify(NotificationCreateRo ro) {
-        // 通知中心消息
         CenterNotifySubject centerSub = new CenterNotifySubject();
         centerSub.addObserver(centerNotifyObserver);
         centerSub.send(ro);
@@ -205,7 +196,6 @@ public class NotificationManager {
         if (context == null) {
             return;
         }
-        // 通知中心消息
         SocialNotifySubject imSub = new SocialNotifySubject();
         if (wecomNotifyObserver != null || wecomIsvNotifyObserver != null) {
             imSub.addObserver(wecomNotifyObserver);
@@ -224,42 +214,36 @@ public class NotificationManager {
     }
 
     /**
-     * 订阅付费成功站内通知
-     * @param spaceId 空间ID
-     * @param fromUserId 发送者
-     * @param expireAt 付费方案过期时间
-     * @param planTitle 方案名称
-     * @param amount 方案金额
+     * send billing notification
+     * @param spaceId space id
+     * @param fromUserId from
+     * @param expireAt billing expired at
+     * @param planTitle billing plan name
+     * @param amount billing paid price
      */
     public void sendSubscribeNotify(String spaceId, Long fromUserId, Long expireAt, String planTitle, Integer amount, OrderType orderType) {
-        // 发送支付成功通知
         Dict paidExtra = Dict.create().set(PLAN_NAME, planTitle)
                 .set(EXPIRE_AT, expireAt.toString())
                 .set(PAY_FEE, String.format("¥%.2f", amount.doubleValue() / 100))
                 .set("orderType", orderType != null ? orderType.name() : StrUtil.EMPTY);
-        // 发送支付成功通知
         playerNotify(NotificationTemplateId.SPACE_VIKA_PAID_NOTIFY,
                 Collections.singletonList(fromUserId), 0L, spaceId, paidExtra);
     }
 
     /**
-     *  发送第三方通知
-     * @param planTitle 计划名称
-     * @param amount 支付金额 单位分
-     * @author zoe zheng
-     * @date 2022/6/7 16:40
+     * send billing notification in social platform
+     * @param planTitle billing plan name
+     * @param amount billing paid price
      */
     public void sendSocialSubscribeNotify(String spaceId, Long toUserId, LocalDate expireAt, String planTitle,
             Long amount) {
         if (toUserId != null && amount > 0) {
-            // 发送支付成功通知
             Dict paidExtra = Dict.create().set(PLAN_NAME, planTitle)
                     .set(EXPIRE_AT, String.valueOf(LocalDateTimeUtil.toEpochMilli(expireAt)))
                     .set(PAY_FEE, String.format("¥%.2f", amount.doubleValue() / 100));
             NotificationManager.me().playerNotify(NotificationTemplateId.SPACE_PAID_NOTIFY,
                     Collections.singletonList(toUserId), 0L, spaceId, paidExtra);
         }
-        // 发送订阅成功通知
         Dict subscriptionExtra = Dict.create().set(PLAN_NAME, planTitle)
                 .set(EXPIRE_AT, String.valueOf(LocalDateTimeUtil.toEpochMilli(expireAt)));
         NotificationManager.me().playerNotify(NotificationTemplateId.SPACE_SUBSCRIPTION_NOTIFY,

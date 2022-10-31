@@ -14,10 +14,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 通知观察者--通知中心
+ * self notify observer
  * </p>
  * @author zoe zheng
- * @date 2022/3/15 18:30
  */
 @Component
 public class CenterNotifyObserver extends AbstractNotifyObserver<NotificationTemplate, String> {

@@ -6,13 +6,7 @@ import java.util.Map;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
 
 public interface NotifyObserver<M, T> {
-    /**
-     * 是否发送通知
-     * @param context 上下文
-     * @return boolean
-     * @author zoe zheng
-     * @date 2022/3/21 15:20
-     */
+
     boolean isNotify(T context);
 
     M getTemplate(String templateId);

@@ -25,9 +25,6 @@ import org.springframework.stereotype.Service;
  * <p>
  * 订阅计费系统-企微商店渠道订单
  * </p>
- *
- * @author 刘斌华
- * @date 2022-08-18 18:43:27
  */
 @Service
 public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMapper, SocialWecomOrderEntity> implements ISocialWecomOrderService {

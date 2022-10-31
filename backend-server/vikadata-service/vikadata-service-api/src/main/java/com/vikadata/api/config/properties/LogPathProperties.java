@@ -8,11 +8,10 @@ import static com.vikadata.api.config.properties.LogPathProperties.PREFIX;
 
 /**
  * <p>
- * 日志路径配置
+ * log properties
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/11/15 11:06
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX)

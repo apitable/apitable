@@ -16,8 +16,6 @@ import org.springframework.validation.annotation.Validated;
  * <p>
  * 通过安装维格表的授权链接完成应用安装
  * </p>
- * @author 刘斌华
- * @date 2022-03-15 18:30:45
  */
 @ApiModel("通过安装维格表的授权链接完成应用安装")
 @Setter

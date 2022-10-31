@@ -1,6 +1,6 @@
 package com.vikadata.api.modular.space.service;
 
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.modular.space.model.SpaceAuditPageParam;
 import com.vikadata.api.modular.space.model.vo.SpaceAuditPageVO;
 

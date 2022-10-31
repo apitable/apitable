@@ -3,9 +3,8 @@ package com.vikadata.api.constants;
 import java.time.ZoneOffset;
 
 /**
- * 时区定义
+ * time zone constants
  * @author Shawn Deng
- * @date 2022-06-07 18:51:37
  */
 public class TimeZoneConstants {
 

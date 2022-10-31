@@ -1,18 +1,18 @@
 package com.vikadata.api.support.serializer;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import java.io.IOException;
-
 /**
  * <p>
- * 微信公众号 二维码图片前缀序列化处理
+ * wechat-mp
+ * QR code image prefix serialization processing
  * </p>
  *
  * @author Chambers
- * @date 2020/8/14
  */
 public class QrcodePreSerializer extends JsonSerializer<String> {
 

@@ -28,11 +28,10 @@ import org.springframework.util.StringUtils;
 
 /**
  * <p>
- * 邮件发送服务
+ * Mail send api
  * </p>
  *
  * @author Benson Cheung
- * @date 2019/8/23 16:31
  */
 public class MailSendService implements MailTemplate {
 
@@ -49,7 +48,7 @@ public class MailSendService implements MailTemplate {
 
     @Override
     public void send(EmailMessage emailMessage) {
-        this.send(new EmailMessage[]{emailMessage});
+        this.send(new EmailMessage[] { emailMessage });
     }
 
     @Override
@@ -61,11 +60,12 @@ public class MailSendService implements MailTemplate {
                 messages[i] = message;
             }
             sender.send(messages);
-        } catch (MessagingException | IOException | MailException exception) {
+        }
+        catch (MessagingException | IOException | MailException exception) {
             exception.printStackTrace();
             String ignoreInfo = "Invalid Addresses";
             if (!exception.getMessage().contains(ignoreInfo)) {
-                LOGGER.error("发送邮件失败", exception);
+                LOGGER.error("send email fail", exception);
             }
         }
     }
@@ -74,21 +74,22 @@ public class MailSendService implements MailTemplate {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(new InternetAddress(properties.getUsername(), emailMessage.getPersonal()));
-        //接收者
+        // set recipient
         helper.setTo(ArrayUtil.toArray(emailMessage.getTo(), String.class));
-        //抄送者
+        // set CC
         if (!CollectionUtils.isEmpty(emailMessage.getCc())) {
             helper.setCc(ArrayUtil.toArray(emailMessage.getCc(), String.class));
         }
-        //主题
+        // subject
         helper.setSubject(emailMessage.getSubject());
-        //邮件正文
+        // email content
         if (StringUtils.hasText(emailMessage.getPlainText())) {
             helper.setText(emailMessage.getPlainText(), emailMessage.getHtmlText());
-        } else {
+        }
+        else {
             helper.setText(emailMessage.getHtmlText(), true);
         }
-        //内嵌资源
+        // inline resource
         if (emailMessage.getInlines() != null && !emailMessage.getInlines().isEmpty()) {
             Map<String, InputStream> inlines = emailMessage.getInlines();
             for (Map.Entry<String, InputStream> entry : inlines.entrySet()) {
@@ -98,20 +99,19 @@ public class MailSendService implements MailTemplate {
         }
 
         if (!CollectionUtils.isEmpty(emailMessage.getAttaches())) {
-            //发送附件
+            // Send Attachment
             List<EmailMessage.EmailAttach> attaches = emailMessage.getAttaches();
             for (EmailMessage.EmailAttach attach : attaches) {
-                //获取MimeType
+                // Get Mime Type
                 ConfigurableMimeFileTypeMap ftm = new ConfigurableMimeFileTypeMap();
                 String mimeType = ftm.getContentType(attach.getAttachName());
-                //读取附件资源
+                // Read Attachment Resources
                 ByteArrayDataSource source = new ByteArrayDataSource(attach.getSource(), mimeType);
-                //解决乱码问题
+                // Solve the problem of garbled code
                 String fileName = MimeUtility.encodeText(attach.getAttachName(), StandardCharsets.UTF_8.name(), "B");
                 helper.addAttachment(fileName, source);
             }
         }
-
         return message;
     }
 }

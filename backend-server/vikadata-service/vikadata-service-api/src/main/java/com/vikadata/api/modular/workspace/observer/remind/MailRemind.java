@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.constants.MailPropConstants;
-import com.vikadata.api.factory.NotifyMailFactory;
-import com.vikadata.api.factory.NotifyMailFactory.MailWithLang;
+import com.vikadata.api.component.notification.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.modular.workspace.observer.remind.RemindSubjectType.RemindSubjectEnum;
 import com.vikadata.api.util.VikaStrings;
 import com.vikadata.core.exception.BusinessException;

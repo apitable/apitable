@@ -4,21 +4,20 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 产品类型
+ * product category
  * @author Shawn Deng
- * @date 2022-03-03 21:35:58
  */
 @Getter
 @RequiredArgsConstructor
 public enum ProductCategory {
 
     /**
-     * 基础类型
+     * base type
      */
     BASE,
 
     /**
-     * 附加类型
+     * add-on type
      */
     ADD_ON;
 }

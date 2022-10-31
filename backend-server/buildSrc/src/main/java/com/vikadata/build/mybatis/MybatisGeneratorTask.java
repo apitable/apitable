@@ -45,7 +45,6 @@ public class MybatisGeneratorTask extends DefaultTask {
     @TaskAction
     void execute() {
         String outputDir = destination.get().getAsFile().getAbsolutePath();
-        // 代码生成
         FastAutoGenerator
                 .create(
                         new DataSourceConfig.Builder("jdbc:mysql://vika-mysql-8.cstoexorttus.rds.cn-northwest-1.amazonaws.com.cn:3306/vikadata?characterEncoding=utf8&autoReconnect=true&useSSL=true&tinyInt1isBit=true",
@@ -55,23 +54,16 @@ public class MybatisGeneratorTask extends DefaultTask {
                                 .typeConvert(new MySqlTypeConvert())
                 )
                 .globalConfig(builder -> builder
-                        // 设置作者
                         .author("mybatis-plus-generator")
                         .disableOpenDir()
                         .dateType(DateType.TIME_PACK)
-                        // 指定输出目录
                         .outputDir(outputDir + File.separator + "java")
                 )
-                // 包配置
                 .packageConfig(builder -> builder
-                        // 设置父包名
                         .parent("com.vikadata")
                 )
-                // 策略配置
                 .strategyConfig(builder -> builder
-                        // 设置过滤表前缀
                         .addTablePrefix("vika_")
-                        // 设置需要排除生成的表名
                         .addExclude("vika_db_changelog", "vika_db_changelog_lock")
                         .entityBuilder().enableLombok().enableChainModel()
                         .formatFileName("%sEntity")

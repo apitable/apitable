@@ -52,7 +52,7 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
 import com.vikadata.api.event.AuditSpaceEvent;
 import com.vikadata.api.event.AuditSpaceEvent.AuditSpaceArg;
-import com.vikadata.api.factory.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.holder.NotificationRenderFieldHolder;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.dto.base.MapDTO;

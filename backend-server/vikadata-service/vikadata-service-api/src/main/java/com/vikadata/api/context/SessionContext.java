@@ -23,12 +23,10 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 
 /**
  * <p>
- * Session上下文快速操作工具
- * 只提供快速获取用户ID
+ * Session context util
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/29 18:14
  */
 public class SessionContext {
 
@@ -50,7 +48,7 @@ public class SessionContext {
     }
 
     /**
-     * 获取会话里的UserId
+     * get the user id in the session
      *
      * @return UserId
      */
@@ -68,9 +66,9 @@ public class SessionContext {
     }
 
     /**
-     * 设置用户ID到Session
+     * set user id to session
      *
-     * @param userId 用户ID
+     * @param userId user id
      */
     public static void setUserId(Long userId) {
         HttpSession session = getSession(true);
@@ -80,7 +78,7 @@ public class SessionContext {
     }
 
     /**
-     * 获取会话里的UserId, 不抛出异常
+     * Get the UserId in the session without throwing an exception
      *
      * @return UserId
      */
@@ -101,10 +99,10 @@ public class SessionContext {
     }
 
     /**
-     * 设置用户ID、微信会员ID到Session
+     * set user id and wechat open id to session
      *
-     * @param userId         用户ID
-     * @param wechatMemberId 微信会员ID
+     * @param userId         user id
+     * @param wechatMemberId wechat open id
      */
     public static void setId(Long userId, Long wechatMemberId) {
         HttpSession session = getSession(true);
@@ -118,7 +116,7 @@ public class SessionContext {
     }
 
     /**
-     * 获取会话里的微信会员ID
+     * get the wechat user id in the session
      *
      * @return wechatMemberId
      */
@@ -132,10 +130,10 @@ public class SessionContext {
     }
 
     /**
-     * 设置钉钉会员ID到Session
+     * set dingtalk user id to session
      *
-     * @param userId   钉钉会员信息
-     * @param userName 钉钉会员名称
+     * @param userId   dingtalk user id
+     * @param userName dingtalk user name
      */
     public static void setDingTalkUserId(String userId, String userName) {
         HttpSession session = HttpContextUtil.getSession(true);
@@ -149,9 +147,9 @@ public class SessionContext {
     }
 
     /**
-     * 获取会话中的钉钉会员信息
+     * get dingtalk user information in a session
      *
-     * @return String 钉钉会员信息
+     * @return String user id
      */
     public static String getDingtalkUserId() {
         HttpSession session = HttpContextUtil.getSession(false);
@@ -163,9 +161,9 @@ public class SessionContext {
     }
 
     /**
-     * 获取会话中的钉钉会员名称
+     * get the dingtalk user name in the session
      *
-     * @return String 钉钉会员信息名称
+     * @return dingtalk user name
      */
     public static String getDingtalkUserName() {
         HttpSession session = HttpContextUtil.getSession(false);
@@ -176,9 +174,6 @@ public class SessionContext {
         return (String) value;
     }
 
-    /**
-     * 关闭会话，并删除
-     */
     public static void cleanContext(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -213,25 +208,18 @@ public class SessionContext {
         }
     }
 
-    public static void copySessionToDomain(String targetDomain) {
-        copySessionToDomain(HttpContextUtil.getRequest(), HttpContextUtil.getResponse(), targetDomain);
-    }
-
     /**
-     * 移除cookie
+     * remove cookie
      *
      * @param response   HttpServletResponse
-     * @param cookieNmae cookie名称
-     * @author Pengap
-     * @date 2022/4/20 18:34:38
+     * @param cookieName cookie名称
      */
-    public static void removeCookie(HttpServletResponse response, String cookieNmae, String cookiePath) {
-        if (null == response || StrUtil.isBlank(cookieNmae)) {
+    public static void removeCookie(HttpServletResponse response, String cookieName, String cookiePath) {
+        if (null == response || StrUtil.isBlank(cookieName)) {
             return;
         }
-        // 将Cookie的值设置为null
-        Cookie cookie = new Cookie(cookieNmae, null);
-        //将`Max-Age`设置为0
+        Cookie cookie = new Cookie(cookieName, null);
+        //set `Max-Age` = 0
         cookie.setMaxAge(0);
         cookie.setPath(cookiePath);
         response.addCookie(cookie);

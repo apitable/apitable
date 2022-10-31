@@ -4,7 +4,6 @@ plugins {
   id "org.jetbrains.kotlin.jvm" apply false
 }
 
-// 扩展配置
 apply from: 'lib.gradle'
 
 description = 'Vikadata Framework'
@@ -14,7 +13,6 @@ version = "0.13.9"
 
 defaultTasks 'build'
 
-// 所有模块配置
 allprojects {
   repositories {
     mavenCentral()
@@ -23,11 +21,9 @@ allprojects {
   }
 }
 
-// 模块配置
 subprojects {
   apply plugin: 'io.spring.dependency-management'
   
-  // 统一依赖管理
   dependencyManagement {
     imports {
       mavenBom("org.springframework.boot:spring-boot-dependencies:${spring_boot_version}")

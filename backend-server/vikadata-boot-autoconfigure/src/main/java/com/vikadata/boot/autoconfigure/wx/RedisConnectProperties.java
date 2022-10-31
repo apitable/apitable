@@ -1,10 +1,5 @@
 package com.vikadata.boot.autoconfigure.wx;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-21 18:59:02
- */
 public class RedisConnectProperties {
 
     private String host;

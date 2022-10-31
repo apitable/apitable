@@ -35,7 +35,7 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
 import com.vikadata.api.enums.user.LinkType;
 import com.vikadata.api.event.SyncOrderEvent;
-import com.vikadata.api.factory.VikaFactory;
+import com.vikadata.api.component.vika.VikaFactory;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.service.IAppInstanceService;

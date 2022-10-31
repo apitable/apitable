@@ -8,11 +8,10 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * <p>
- * 通知写入事件
+ * Notification Created Event
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/20 7:19 下午
  */
 public class NotificationCreateEvent extends ApplicationEvent {
 

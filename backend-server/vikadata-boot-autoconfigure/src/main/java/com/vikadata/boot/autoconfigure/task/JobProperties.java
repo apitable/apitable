@@ -4,11 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 任务配置
+ * xxl-job properties
  * </p>
  *
  * @author Chambers
- * @date 2019/11/20
  */
 @ConfigurationProperties(prefix = "vikadata-starter.job")
 public class JobProperties {

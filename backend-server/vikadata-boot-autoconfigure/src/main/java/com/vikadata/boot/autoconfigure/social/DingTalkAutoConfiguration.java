@@ -62,13 +62,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.lang.NonNull;
 
+import static com.vikadata.boot.autoconfigure.social.StringUtil.fixBasePath;
+
 /**
  * <p>
- * 钉钉组件自动配置
+ * autoconfiguration of dingtalk component
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/9/17 15:39
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(DingTalkProperties.class)
@@ -76,7 +77,6 @@ import org.springframework.lang.NonNull;
 @ConditionalOnProperty(value = "vikadata-starter.social.dingtalk.enabled", havingValue = "true")
 public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanDefinitionRegistryPostProcessor,
         BeanPostProcessor, EnvironmentAware {
-    private static final String SLASH = "/";
 
     private static final String DINGTALK_CONFIG_STORAGE_BEAN_NAME = "dingtalkConfigStorage";
 
@@ -140,21 +140,19 @@ public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanD
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
-        //BEAN实例化之前，动态注册BEAN
-        // 这时候钉钉配置还没实例化完成，获取配置信息
         BindResult<DingTalkProperties> bind = Binder.get(environment).bind("vikadata-starter.social.dingtalk", Bindable.of(DingTalkProperties.class));
         properties = bind.get();
         if (properties == null) {
             return;
         }
-        // 配置检查
+        // check properties
         DingTalkProperties.checkAppProperties(properties);
-        // SDK 配置
+        // SDK config
         DingtalkConfig dingtalkConfig = applyProperties();
-        // 实例化服务类入口
+        // Instantiation service class entry
         DingTalkServiceProvider serviceProvider = new DingTalkServiceProvider(dingtalkConfig);
         instance = serviceProvider;
-        // 注册BEAN
+        // register dingtalk bean
         DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) ((ConfigurableApplicationContext) applicationContext).getBeanFactory();
         beanFactory.registerSingleton(DingTalkServiceProvider.class.getSimpleName(), serviceProvider);
         LOGGER.info("DingTalk Provider Bean Name: {}", DingTalkServiceProvider.class.getSimpleName());
@@ -164,13 +162,13 @@ public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanD
 
     @Override
     public void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        // BEAN实例化之前，修改BEAN的属性
+        // nothing to do
     }
 
     @Override
     public Object postProcessAfterInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
         if (DINGTALK_SUITE_TICKET_STORAGE_BEAN_NAME.equals(beanName)) {
-            // App Ticket 存储实例
+            // App Ticket storage instance
             HashMap<String, AppTicketStorage> ticketStorage = (HashMap<String, AppTicketStorage>) bean;
             if (!properties.getIsvAppList().isEmpty()) {
                 instance.setSuiteTicketStorage(ticketStorage);
@@ -184,9 +182,9 @@ public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanD
                         new CheckUpdateSuiteUrlEventCallbackHandler());
             }
         }
-        // BEAN已经实例化完成，可读取容器的所有BEAN,并设置属性
+        // bean has been instantiated. You can read all BEAN of the container and set properties
         if (bean instanceof ConfigStorage && DINGTALK_CONFIG_STORAGE_BEAN_NAME.equals(beanName)) {
-            // Token 管理存储实例
+            // Token storage instance
             instance.setConfigStorage((ConfigStorage) bean);
         }
 
@@ -212,7 +210,6 @@ public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanD
         return bean;
     }
 
-
     @Bean
     public ServletRegistrationBean<HttpServlet> registerDingTalkApi() {
         DingTalkServlet dingTalkServlet = new DingTalkServlet();
@@ -235,41 +232,16 @@ public class DingTalkAutoConfiguration implements ApplicationContextAware, BeanD
         DingTalkEventListenerManager manager = instance.getEventListenerManager();
         factory.getEventHandlerMap().forEach(manager::registerEventCallbackHandler);
         if (LOGGER.isInfoEnabled()) {
-            // 预览事件列表
+            // print event list
             StringBuilder output = new StringBuilder(256);
-            output.append("\n---------------- 已开通的钉钉事件订阅 -----------------\n");
+            output.append("\n---------------- Enable dingtalk subscribed events -----------------\n");
             manager.getEventHandlerMap().keySet().forEach(e -> output.append("Event Name:").append(e.getSimpleName()).append("\n"));
             output.append("---------------------------------------------------");
             LOGGER.info(output.toString());
         }
-        // 初始化入口类，没错误的话，恭喜钉钉服务启动成功
+        // Initialize instance entry class
         instance.init();
         LOGGER.info("Ding talk Event initializing complete. Congratulations.....");
-    }
-
-    private String fixBasePath(String path) {
-
-        String basePath = path;
-        // 不能设置为根路径请求，以免影响应用
-        if (SLASH.equals(basePath)) {
-            throw new IllegalStateException("不能设置为根路径 /，恐怕会影响您的业务应用接口造成没必要的错误: " + path);
-        }
-
-        // 移除后缀重复的 / 符号
-        while (basePath.endsWith(SLASH)) {
-            basePath = basePath.substring(0, basePath.length() - 1);
-        }
-
-        if (basePath.length() == 0) {
-            throw new IllegalStateException("您未设置应用请求基础路径，请设置vikadata-starter.social.dingtalk.base-path = : " + path);
-        }
-
-        // 前缀补齐
-        if (!basePath.startsWith(SLASH)) {
-            basePath = SLASH + basePath;
-        }
-
-        return basePath;
     }
 
     private DingtalkConfig applyProperties() {

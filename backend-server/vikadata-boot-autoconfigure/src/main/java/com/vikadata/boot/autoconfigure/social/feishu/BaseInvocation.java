@@ -5,12 +5,10 @@ import java.lang.reflect.Method;
 import com.vikadata.boot.autoconfigure.social.feishu.annotation.FeishuEventHandler;
 
 /**
- * 注解抽象基础类
- * 提供 {@code FeishuEventHandler} 的整合
- * 继承的子类都拥有必须的基础注解
+ * abstract annotation base class
+ * deal with {@link FeishuEventHandler}
  *
  * @author Shawn Deng
- * @date 2020-11-24 10:23:19
  */
 public abstract class BaseInvocation {
 

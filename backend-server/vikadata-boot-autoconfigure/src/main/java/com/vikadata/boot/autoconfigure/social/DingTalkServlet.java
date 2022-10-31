@@ -21,13 +21,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.NonNull;
 
 /**
- * 飞书事件回调接口
- * 统一回调接口
+ * dingtalk servlet
  *
  * @author Shawn Deng
- * @date 2020-11-20 16:11:03
  */
-@SuppressWarnings("AlibabaUndefineMagicConstant")
 public class DingTalkServlet extends HttpServlet implements ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DingTalkServlet.class);
@@ -37,26 +34,22 @@ public class DingTalkServlet extends HttpServlet implements ApplicationContextAw
     private ApplicationContext applicationContext;
 
     /**
-     * 钉钉回调路由，只有在返回加密的success字符串，回调才处理成功
-     * @param  request 钉钉回调请求
-     * @param response 返回
-     * @author zoe zheng
-     * @date 2021/5/13 3:36 下午
+     * dingtalk event post request
+     * @param request servlet request
+     * @param response servlet response
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        // 解析获取当前请求路径
         DingTalkProperties properties = applicationContext.getBean(DingTalkProperties.class);
         String path = parsePath(request);
         String[] paths = path.split("/");
         if (paths.length != 3 && !paths[0].equals(properties.getBasePath())) {
-            LOGGER.error("请求地址跟钉钉请求地址不匹配:{}", properties.getBasePath());
+            LOGGER.error("The request address does not match the dingtalk request address:{}", properties.getBasePath());
             return;
         }
         String subscribeId = paths[paths.length - 1];
         String eventPath = paths[1];
-        LOGGER.info("钉钉应用事件通知类型路径:{}/{}", eventPath, subscribeId);
-        // 根据应用名称获取对应实例入口
+        LOGGER.info("Dingtalk event path:{}/{}", eventPath, subscribeId);
         DingTalkServiceProvider provider = applicationContext.getBean(DingTalkServiceProvider.class);
         String msgSignature = request.getParameter("msg_signature");
         if (msgSignature == null) {
@@ -65,7 +58,7 @@ public class DingTalkServlet extends HttpServlet implements ApplicationContextAw
         String timestamp = request.getParameter("timestamp");
         String nonce = request.getParameter("nonce");
         if (StrUtil.isBlank(msgSignature) || StrUtil.isBlank(timestamp) || StrUtil.isBlank(nonce)) {
-            LOGGER.error("请求参数缺失:[{}]", request.getParameterMap());
+            LOGGER.error("Lost parameter in request: [{}]", request.getParameterMap());
             return;
         }
         String requestData = ServletUtil.getRequestBody(request);
@@ -74,25 +67,25 @@ public class DingTalkServlet extends HttpServlet implements ApplicationContextAw
             json = Jackson4DingTalkConverter.toObject(requestData, new TypeReference<Map<String, String>>() {});
         }
         catch (IOException e) {
-            LOGGER.error("钉钉集成配置错误:{}", path);
-            // 不需要处理这种问题
+            LOGGER.error("dingtalk init fail:{}", path);
+            // don't worry this error
             throw new RuntimeException(e);
         }
         String encryptMsg = json.get("encrypt");
         String responseData = "";
         if (eventPath.equals(properties.getEventPath())) {
-            // 事件订阅推送
+            // event subscribe
             responseData = provider.eventNotify(subscribeId, msgSignature, timestamp, nonce, encryptMsg);
         }
         else if (eventPath.equals(properties.getSyncEventPath())) {
-            // 事件订阅推送
+            // sync event subscribe
             responseData = provider.syncHttpEventNotifyForIsv(subscribeId, msgSignature, timestamp, nonce, encryptMsg);
         }
         else {
-            LOGGER.error("非法的事件类型路径:{}", path);
+            LOGGER.error("illegal event path:{}", path);
         }
 
-        // 响应数据
+        // response
         ServletUtil.toResponseData(response, responseData);
     }
 

@@ -18,25 +18,22 @@ import com.vikadata.core.util.HttpContextUtil;
 import static com.vikadata.api.constants.ParamsConstants.VIKA_DESKTOP;
 
 /**
- * 信息通用处理工具
+ * general information processing tool
  *
  * @author Chambers
- * @since 2019/10/21
  */
 public class InformationUtil {
 
     /**
-     * 支持的脱敏类型枚举
+     * enumeration of supported desensitization types
      */
     public enum InformationType {
-        // 密钥
         SECRET_KEY,
-        // 手机号
         MIDDLE
     }
 
     /**
-     * 关键词高亮处理
+     * keyword highlighting
      */
     public static String keywordHighlight(String originName, String keyword, String className) {
         if (StrUtil.isNotBlank(keyword)) {
@@ -54,26 +51,16 @@ public class InformationUtil {
         }
     }
 
-    /**
-     * 获取请求来源信息
-     */
     public static ClientOriginInfo getClientOriginInfo(HttpServletRequest request, boolean ip, boolean cookies) {
-        ClientOriginInfo originInfo = new ClientOriginInfo();
-        originInfo.setUserAgent(request.getHeader(ParamsConstants.USER_AGENT));
-        if (ip) {
-            originInfo.setIp(request.getRemoteAddr());
-        }
-        if (cookies) {
-            originInfo.setCookies(request.getCookies());
-        }
-        return originInfo;
+        return getClientOriginInfo(ip, cookies, request);
     }
 
-    /**
-     * 获取请求来源信息
-     */
     public static ClientOriginInfo getClientOriginInfo(boolean ip, boolean cookies) {
         HttpServletRequest req = HttpContextUtil.getRequest();
+        return getClientOriginInfo(ip, cookies, req);
+    }
+
+    private static ClientOriginInfo getClientOriginInfo(boolean ip, boolean cookies, HttpServletRequest req) {
         ClientOriginInfo originInfo = new ClientOriginInfo();
         originInfo.setUserAgent(req.getHeader(ParamsConstants.USER_AGENT));
         if (ip) {
@@ -85,21 +72,18 @@ public class InformationUtil {
         return originInfo;
     }
 
-    /**
-     * 获取 Vika 客户端信息
-     */
     public static String getVikaDesktop(String userAgent, boolean browser) {
         if (StrUtil.isBlank(userAgent)) {
             return null;
         }
         UserAgent ua = UserAgentUtil.parse(userAgent);
-        // 优先返回客户端信息
+        // return client information first
         if (StrUtil.containsIgnoreCase(userAgent, VIKA_DESKTOP)) {
             int start = StrUtil.indexOfIgnoreCase(userAgent, VIKA_DESKTOP);
             return StrUtil.subBefore(userAgent.substring(start), ' ', false) +
                     StrUtil.format(" ({})", ua.getPlatform());
         }
-        // 否则返回平台类型
+        // otherwise return the platform type
         StringBuilder platform = new StringBuilder(ua.getPlatform().toString());
         if (browser && !ua.getBrowser().equals(Browser.Unknown)) {
             platform.append(" ").append(ua.getBrowser().toString());
@@ -108,11 +92,11 @@ public class InformationUtil {
     }
 
     /**
-     * 脱敏，使用默认的脱敏策略
+     * Desensitization, using the default desensitization strategy
      *
-     * @param str              字符串
-     * @param informationType  脱敏类型;可以脱敏：密钥、手机号
-     * @return 脱敏之后的字符串
+     * @param str              strings
+     * @param informationType  Desensitization type; can be desensitized: key, mobile phone number
+     * @return string after desensitization
      */
     public static String desensitized(String str, InformationUtil.InformationType informationType) {
         if (StrUtil.isBlank(str)) {
@@ -131,10 +115,10 @@ public class InformationUtil {
     }
 
     /**
-     * 【手机号】前三位，后三位，其他隐藏，比如135*****210
+     * [Mobile phone number] The first three, the last three, the others are hidden, such as 135210
      *
-     * @param value 手机号
-     * @return 脱敏后的手机号
+     * @param value phone number
+     * @return cell phone number after desensitization
      */
     public static String hideMiddle(String value) {
         if (value == null || value.isEmpty()) {
@@ -151,10 +135,10 @@ public class InformationUtil {
     }
 
     /**
-     * 【密钥】密钥全部字符都用*代替，比如：******
+     * [Key] Replace all characters of the key with
      *
-     * @param secretKey 密钥
-     * @return 脱敏后的密钥
+     * @param secretKey key
+     * @return desensitized key
      */
     public static String secretKey(String secretKey) {
         if (StrUtil.isBlank(secretKey)) {

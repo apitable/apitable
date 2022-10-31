@@ -15,14 +15,8 @@ import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 
-/**
- * <p>
- * 通知观察者--钉钉自建应用
- * </p>
- * @author zoe zheng
- * @date 2022/3/15 18:30
- */
 public abstract class SocialNotifyObserver<M, T> extends AbstractNotifyObserver<M, T> {
+
     @Resource
     private IMemberService iMemberService;
 

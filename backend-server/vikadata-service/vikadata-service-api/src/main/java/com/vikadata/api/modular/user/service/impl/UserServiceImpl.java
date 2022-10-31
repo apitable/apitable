@@ -50,7 +50,6 @@ import com.vikadata.api.config.security.Auth0UserProfile;
 import com.vikadata.api.constants.IntegralActionCodeConstants;
 import com.vikadata.api.constants.LanguageConstants;
 import com.vikadata.api.constants.NotificationConstants;
-import com.vikadata.api.constants.UserQueryLimit;
 import com.vikadata.api.context.LoginContext;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.exception.DatabaseException;
@@ -99,7 +98,7 @@ import com.vikadata.api.modular.vcode.mapper.VCodeMapper;
 import com.vikadata.api.modular.vcode.service.IVCodeService;
 import com.vikadata.api.modular.vcode.service.IVCodeUsageService;
 import com.vikadata.api.modular.workspace.service.INodeShareService;
-import com.vikadata.api.util.DeveloperUtil;
+import com.vikadata.api.util.ApiHelper;
 import com.vikadata.api.util.RandomExtendUtil;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
@@ -254,6 +253,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Resource
     private NotificationFactory notificationFactory;
+
+    private static final int QUERY_LOCALE_IN_EMAILS_LIMIT = 200;
 
     @Override
     public Long getUserIdByMobile(String mobile) {
@@ -659,7 +660,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         DeveloperEntity developer = new DeveloperEntity();
         developer.setId(IdWorker.getId());
         developer.setUserId(newUser.getId());
-        developer.setApiKey(DeveloperUtil.createKey());
+        developer.setApiKey(ApiHelper.createKey());
         developer.setCreatedBy(0L);
         developer.setUpdatedBy(0L);
         developerMapper.insert(developer);
@@ -1200,9 +1201,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     public List<UserLangDTO> getLangByEmails(String expectedLang, List<String> emails) {
         // Maybe have performance problems, the segmented query is used.
         List<UserLangDTO> userLangs = new ArrayList<>(emails.size());
-        int page = PageUtil.totalPage(emails.size(), UserQueryLimit.QUERY_LOCALE_IN_EMAILS_LIMIT);
+        int page = PageUtil.totalPage(emails.size(), QUERY_LOCALE_IN_EMAILS_LIMIT);
         for (int i = 0; i < page; i++) {
-            List<String> subEmails = CollUtil.page(i, UserQueryLimit.QUERY_LOCALE_IN_EMAILS_LIMIT, emails);
+            List<String> subEmails = CollUtil.page(i, QUERY_LOCALE_IN_EMAILS_LIMIT, emails);
             userLangs.addAll(userMapper.selectLocaleInEmailsWithDefaultLocale(expectedLang, subEmails));
         }
         // Add an email that is not in the database

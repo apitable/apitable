@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import com.vikadata.api.validator.FieldRoleMatch;
-import com.vikadata.api.validator.UnitMatch;
 import com.vikadata.core.support.deserializer.StringToLongDeserializer;
 
 /**
@@ -24,7 +23,6 @@ import com.vikadata.core.support.deserializer.StringToLongDeserializer;
 public class FieldRoleEditRo {
 
     @NotNull(message = "组织单元不能为空")
-    @UnitMatch
     @ApiModelProperty(value = "组织单元ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long unitId;

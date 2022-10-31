@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.annotation.PostResource;
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.modular.test.model.ClockVO;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.clock.MockClock;

@@ -1,9 +1,16 @@
 package com.vikadata.api.config;
 
+import java.util.List;
+
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusPropertiesCustomizer;
+import com.baomidou.mybatisplus.core.injector.AbstractMethod;
+import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.extension.MybatisMapWrapperFactory;
+import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.IllegalSQLInnerInterceptor;
@@ -12,7 +19,6 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 
-import com.vikadata.api.component.ExpandSqlInjector;
 import com.vikadata.api.config.properties.MybatisPlusExpandProperties;
 
 import org.springframework.context.annotation.Bean;
@@ -21,11 +27,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * <p>
- * Mybatis-plus 配置
+ * Mybatis-plus Config
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/9/16 16:16
  */
 @Configuration(proxyBeanMethods = false)
 @EnableTransactionManagement
@@ -42,24 +47,17 @@ public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 分页拦截器
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-        // 乐观锁插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         if (properties.getPlugin().getIllegalSql()) {
-            // SQL规范插件，后期可定制化
             interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         }
         if (properties.getPlugin().getBlockAttack()) {
-            // 攻击 SQL 阻断解析器,防止全表更新与删除
             interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         }
         return interceptor;
     }
 
-    /**
-     * MyBatis 配置
-     */
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
         return configuration -> {
@@ -68,9 +66,6 @@ public class MybatisPlusConfig {
         };
     }
 
-    /**
-     * Mybatis Plus 配置
-     */
     @Bean
     public MybatisPlusPropertiesCustomizer mybatisPlusPropertiesCustomizer() {
         return properties -> {
@@ -81,7 +76,16 @@ public class MybatisPlusConfig {
     }
 
     @Bean
-    public ExpandSqlInjector expandSqlInjector() {
-        return new ExpandSqlInjector();
+    public DefaultSqlInjector expandSqlInjector() {
+        // Support batch insertion
+        return new DefaultSqlInjector() {
+            @Override
+            public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {
+                List<AbstractMethod> methodList = super.getMethodList(mapperClass, tableInfo);
+                InsertBatchSomeColumn insertBatchSomeColumn = new InsertBatchSomeColumn(t -> !StrUtil.equalsAny(t.getProperty(), "createdAt", "updatedAt", "isDeleted"));
+                methodList.add(insertBatchSomeColumn);
+                return methodList;
+            }
+        };
     }
 }

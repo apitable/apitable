@@ -29,11 +29,10 @@ import static com.vikadata.api.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_B
 
 /**
  * <p>
- * 节点分享关闭事件监听器
+ * node share close event listener
  * </p>
  *
  * @author Chambers
- * @date 2021/3/3
  */
 @Slf4j
 @Component
@@ -77,7 +76,7 @@ public class NodeShareDisableListener implements ApplicationListener<NodeShareDi
         List<NodeShareDisableNotifyRo> message = new ArrayList<>(nodeIdToShareIdsMap.size());
         List<BaseNodeInfo> nodeInfos = nodeMapper.selectBaseNodeInfoByNodeIds(nodeIdToShareIdsMap.keySet());
         for (BaseNodeInfo node : nodeInfos) {
-            // 文件夹无协同房间，不需要广播
+            // Folders have no collaborative rooms and do not need broadcasting
             if (node.getType().equals(NodeType.FOLDER.getNodeType())) {
                 continue;
             }

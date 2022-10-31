@@ -19,7 +19,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.lang.ExcelDataValidateException;
+import com.vikadata.api.util.excel.ExcelDataValidateException;
 import com.vikadata.api.model.dto.asset.UploadDataDto;
 import com.vikadata.api.model.vo.organization.ParseErrorRecordVO;
 import com.vikadata.api.modular.organization.service.IMemberService;

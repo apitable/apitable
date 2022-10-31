@@ -11,11 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * 默认校验器配置
+ * hibernate validator config
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/11/26 17:59
  */
 @Configuration(proxyBeanMethods = false)
 public class ValidatorConfig {

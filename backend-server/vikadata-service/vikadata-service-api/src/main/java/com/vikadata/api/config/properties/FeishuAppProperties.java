@@ -7,10 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import static com.vikadata.api.config.properties.FeishuAppProperties.PREFIX;
 
 /**
- *
- * 飞书应用配置
+ * feishu app properties
  * @author Shawn Deng
- * @date 2021-01-07 10:43:41
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX)

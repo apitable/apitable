@@ -10,13 +10,10 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.component.TaskManager;
-import com.vikadata.api.component.audit.AuditInfoField;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.control.ControlTemplate;
 import com.vikadata.api.control.permission.NodePermission;
 import com.vikadata.api.enums.social.SocialPlatformType;
-import com.vikadata.api.holder.AuditFieldHolder;
-import com.vikadata.api.holder.SpaceHolder;
 import com.vikadata.api.model.dto.template.TemplateInfo;
 import com.vikadata.api.model.ro.node.NodeUpdateOpRo;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
@@ -245,9 +242,6 @@ public class DingTalkDaServiceImpl implements IDingTalkDaService {
         });
         // Cumulative template usage
         TaskManager.me().execute(() -> templateMapper.updateUsedTimesByTempId(templateId, 1));
-        // Audit variables, record values
-        SpaceHolder.set(spaceId);
-        AuditFieldHolder.set(AuditInfoField.builder().templateId(templateId).build());
         return nodeId;
     }
 

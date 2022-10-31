@@ -21,7 +21,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.annotation.ApiResource;
-import com.vikadata.api.annotation.AuditAction;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.component.TaskManager;
@@ -476,7 +475,6 @@ public class SocialDingTalkController {
         throw new BusinessException(DING_TALK_DD_CONFIG_ERROR);
     }
 
-    @AuditAction(value = "quote_template")
     @PostResource(path = "/dingtalk/template/{dingTalkDaAppId}/create", requiredPermission = false, requiredLogin = false)
     @ApiOperation(value = "DingTalk Callback interface--Template Creation", notes = "DingTalk Callback interface--Template Creation")
     public void dingTalkDaTemplateCreate(@PathVariable("dingTalkDaAppId") String dingTalkDaAppId,

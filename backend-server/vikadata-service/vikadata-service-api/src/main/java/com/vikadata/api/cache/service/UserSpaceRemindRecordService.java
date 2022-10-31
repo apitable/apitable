@@ -4,33 +4,28 @@ import java.util.List;
 
 /**
  * <p>
- * 用户在空间内最近提及的成员记录缓存 服务类
+ * Member records recently mentioned by users in the space
  * </p>
  *
  * @author Chambers
- * @date 2020/5/27
  */
 public interface UserSpaceRemindRecordService {
 
     /**
-     * 获取用户指定空间最近提及的组织单元ID列表
+     * get member unit id list recently mentioned by users in the space
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @return 成员ID列表
-     * @author Chambers
-     * @date 2020/5/27
+     * @param userId  user id
+     * @param spaceId space id
+     * @return member id list
      */
     List<Long> getRemindUnitIds(Long userId, String spaceId);
 
     /**
-     * 刷新缓存
+     * refresh cache
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @param unitIds 组织单元ID列表
-     * @author Chambers
-     * @date 2020/5/27
+     * @param userId  user id
+     * @param spaceId space id
+     * @param unitIds unit id list
      */
     void refresh(Long userId, String spaceId, List<Long> unitIds);
 }

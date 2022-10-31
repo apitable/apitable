@@ -10,11 +10,10 @@ import static com.vikadata.api.config.properties.SecurityProperties.PREFIX;
 
 /**
  * <p>
- * 安全机制配置
+ * security properties
  * </p>
  *
  * @author Chambers
- * @date 2020/1/9
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX)
@@ -31,42 +30,42 @@ public class SecurityProperties {
     public static class Sms {
 
         /**
-         * 验证码的位数
+         * digit of numbers
          */
         private int digit;
 
         /**
-         * 验证码的有效时间，单位：分钟
+         * Valid time of verification code，unit：minutes
          */
         private int effectiveTime;
 
         /**
-         * 验证码校验成功的有效时间，单位：分钟
+         * Valid time for successful verification of verification code，unit：minutes
          */
         private int successTime;
 
         /**
-         * 超过上限的锁定时间，单位：分钟
+         * Locking time exceeding the upper limit，unit：minutes
          */
         private int lockTime;
 
         /**
-         * 连续获取验证码或校验验证码错误的最大次数
+         * The maximum number of times to continuously obtain or verify the verification code error
          */
         private int maxErrorNum;
 
         /**
-         * 同个手机号一天的最大发送次数
+         * The maximum number of times a phone number can be sent in a day
          */
         private int maxSendCount;
 
         /**
-         * 同个IP一天的最大发送次数
+         * The maximum number of times to send the same IP in one day
          */
         private int maxIpSendCount;
 
         /**
-         * 应用一天的最大发送次数
+         * The maximum number of times an application sends in a day
          */
         private int maxDaySendCount;
     }
@@ -76,32 +75,32 @@ public class SecurityProperties {
     public static class Email {
 
         /**
-         * 验证码的位数
+         * Digits of verification code
          */
         private int digit;
 
         /**
-         * 验证码的有效时间，单位：分钟
+         * Valid time of verification code，unit：minutes
          */
         private int effectiveTime;
 
         /**
-         * 超过上限的锁定时间，单位：分钟
+         * Locking time exceeding the upper limit，unit：minutes
          */
         private int lockTime;
 
         /**
-         * 连续获取验证码或校验验证码错误的最大次数
+         * The maximum number of times to continuously obtain or verify the verification code error
          */
         private int maxErrorNum;
 
         /**
-         * 同个手机号一天的最大发送次数
+         * The maximum number of times a phone number can be sent in a day
          */
         private int maxSendCount;
 
         /**
-         * 同个IP一天的最大发送次数
+         * The maximum number of times to send the same IP in one day
          */
         private int maxIpSendCount;
     }

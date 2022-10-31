@@ -2,8 +2,6 @@ plugins {
   id "java-library"
 }
 
-description = "Vikadata Boot AutoConfigure Based On Spring Boot Starter"
-
 java {
   registerFeature('optional') {
     usingSourceSet(sourceSets.main)
@@ -14,7 +12,7 @@ dependencies {
   api(rootProject.ext.dependencies['boot-starter'])
   annotationProcessor rootProject.ext.dependencies['configuration-processor']
   
-  // 整合所有的自动配置，并按需依赖自动化配置
+  // Consolidate all automatic configurations and rely on them on demand
   optionalImplementation(project(':vikadata-integration:vikadata-integration-vika'))
   optionalImplementation(project(':vikadata-integration:vikadata-integration-afs'))
   optionalImplementation(project(':vikadata-integration:vikadata-integration-data-analysis'))

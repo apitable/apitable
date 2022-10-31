@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.finance.OrderChannel;
 import com.vikadata.api.enums.finance.OrderPhase;
 import com.vikadata.api.enums.finance.OrderStatus;
@@ -307,8 +307,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
      * @param authCorpId 授权的企业 ID
      * @param isPaid 是否付费
      * @return 绑定的空间站 ID
-     * @author 刘斌华
-     * @date 2022-08-02 15:21:15
      */
     protected String createWecomIsvTenant(String suiteId, String authCorpId, boolean isPaid) {
         String authCorpName = "测试企业";

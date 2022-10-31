@@ -6,7 +6,7 @@ import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.modular.finance.model.ProductPriceVo;
 import com.vikadata.api.modular.finance.service.IShopService;
 import com.vikadata.api.util.billing.model.BillingPlanPrice;

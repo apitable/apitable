@@ -11,27 +11,27 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * 集合工具类
+ * collection util
  *
  * @author Shawn Deng
  */
 public class CollectionUtil {
 
     /**
-     * 集合是否为空
+     * is the collection empty
      *
-     * @param collection 集合
-     * @return 是否为空
+     * @param collection collection
+     * @return true | false
      */
     public static boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
 
     /**
-     * 集合是否为非空
+     * is the collection not empty
      *
-     * @param collection 集合
-     * @return 是否为非空
+     * @param collection collection
+     * @return true | false
      */
     public static boolean isNotEmpty(Collection<?> collection) {
         return !isEmpty(collection);
@@ -61,37 +61,37 @@ public class CollectionUtil {
     }
 
     /**
-     * 针对List自定义序列排序，排序会修改原List
+     * Sorting a custom sequence for List, the sorting will modify the original list
      *
-     * @param list 被排序的List
-     * @param keyExtractor 用户提取排序Key的函数
-     * @param customKeySort 自定义序列列表
-     * @return 排序后的值
+     * @param list to be sorted list
+     * @param keyExtractor The function that the user extracts the sorting key
+     * @param customKeySort custom sequence list
+     * @return sorted list
      */
     public static <T, U extends Comparable<? super U>> List<T> customSequenceSort(List<T> list, Function<? super T, ? extends U> keyExtractor, List<? super U> customKeySort) {
         return customSequenceSort(list, keyExtractor, customKeySort, null);
     }
 
     /**
-     * 针对List自定义序列排序，排序会修改原List
+     * Sort the custom sequence for the List, and the sorting will modify the original List
      *
-     * @param list 被排序的List
-     * @param keyExtractor 用户提取排序Key的函数
-     * @param customKeySort 自定义序列列表
-     * @param thenComparing 自定义排序完成后再次排序函数
-     * @return 排序后的值
+     * @param list to be sorted list
+     * @param keyExtractor The function that the user extracts the sorting key
+     * @param customKeySort custom sequence list
+     * @param thenComparing Sort function again after custom sorting is complete
+     * @return sorted list
      */
     public static <T, U extends Comparable<? super U>> List<T> customSequenceSort(List<T> list, Function<? super T, ? extends U> keyExtractor, List<? super U> customKeySort, Comparator<? super T> thenComparing) {
         if (isEmpty(list) || isEmpty(customKeySort)) {
             return list;
         }
 
-        // 根据自定义序列排序
+        // sort by custom sequence
         Comparator<T> comparing = Comparator.comparing(o -> {
             final int index = customKeySort.indexOf(keyExtractor.apply(o));
             return index == -1 ? Integer.MAX_VALUE : index;
         });
-        // 如果存在后续排序操作
+        // if there is a subsequent sort operation
         if (null != thenComparing) {
             comparing = comparing.thenComparing(thenComparing);
         }

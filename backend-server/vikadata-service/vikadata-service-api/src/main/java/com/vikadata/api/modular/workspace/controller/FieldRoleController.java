@@ -47,7 +47,6 @@ import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.workspace.service.IFieldRoleService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.modular.workspace.service.INodeShareService;
-import com.vikadata.api.validator.FieldMatch;
 import com.vikadata.api.validator.NodeMatch;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
@@ -104,7 +103,7 @@ public class FieldRoleController {
         @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> enableRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId,
+        @PathVariable("fieldId") String fieldId,
         @RequestBody(required = false) RoleControlOpenRo roleControlOpenRo) {
         // column operation permission pre check
         iFieldRoleService.checkFieldPermissionBeforeEnable(dstId, fieldId);
@@ -135,7 +134,7 @@ public class FieldRoleController {
         @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> disableRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId) {
+        @PathVariable("fieldId") String fieldId) {
         // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         // Check whether the operator can operate the field role change, only the administrator and creator can
@@ -156,7 +155,7 @@ public class FieldRoleController {
         @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<FieldCollaboratorVO> listRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId) {
+        @PathVariable("fieldId") String fieldId) {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(dstId, fieldId);
         return ResponseData.success(fieldCollaboratorVO);
     }
@@ -168,7 +167,7 @@ public class FieldRoleController {
         @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> addRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId,
+        @PathVariable("fieldId") String fieldId,
         @Valid @RequestBody FieldRoleCreateRo data) {
         // whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
@@ -194,7 +193,7 @@ public class FieldRoleController {
     })
     @Deprecated
     public ResponseData<Void> editRole(@PathVariable("dstId") @NodeMatch String dstId,
-            @PathVariable("fieldId") @FieldMatch String fieldId,
+            @PathVariable("fieldId") String fieldId,
             @RequestBody @Valid FieldRoleEditRo data) {
         BatchFieldRoleEditRo ro = new BatchFieldRoleEditRo();
         ro.setUnitIds(CollUtil.newArrayList(data.getUnitId()));
@@ -209,7 +208,7 @@ public class FieldRoleController {
             @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> batchEditRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId,
+        @PathVariable("fieldId") String fieldId,
         @RequestBody @Valid BatchFieldRoleEditRo data) {
         // Whether the field permission is already closed to prevent operation errors
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
@@ -234,7 +233,7 @@ public class FieldRoleController {
         @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> deleteRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId,
+        @PathVariable("fieldId") String fieldId,
         @RequestBody @Valid FieldRoleDeleteRo data) {
         // whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
@@ -258,7 +257,7 @@ public class FieldRoleController {
             @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> batchDeleteRole(@PathVariable("dstId") @NodeMatch String dstId,
-            @PathVariable("fieldId") @FieldMatch String fieldId,
+            @PathVariable("fieldId") String fieldId,
             @RequestBody @Valid BatchFieldRoleDeleteRo data) {
         // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
@@ -284,7 +283,7 @@ public class FieldRoleController {
         @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> updateRoleSetting(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") @FieldMatch String fieldId,
+        @PathVariable("fieldId") String fieldId,
         @RequestBody @Valid FieldControlProp prop) {
         // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);

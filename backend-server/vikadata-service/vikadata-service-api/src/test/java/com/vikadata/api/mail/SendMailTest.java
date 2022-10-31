@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.vikadata.api.component.LanguageManager;
 import com.vikadata.api.config.properties.EmailSendProperties;
 import com.vikadata.api.constants.MailPropConstants;
-import com.vikadata.api.factory.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.boot.autoconfigure.beetl.BeetlAutoConfiguration;
 import com.vikadata.boot.autoconfigure.mail.CloudMailAutoConfiguration;

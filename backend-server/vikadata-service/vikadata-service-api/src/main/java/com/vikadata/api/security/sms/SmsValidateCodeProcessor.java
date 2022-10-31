@@ -10,13 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.config.properties.SecurityProperties;
 import com.vikadata.api.enums.action.SmsCodeType;
-import com.vikadata.api.factory.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.security.AbstractValidateCodeProcessor;
 import com.vikadata.api.security.CodeValidateScope;
 import com.vikadata.api.security.ValidateCode;
 import com.vikadata.api.security.ValidateCodeRepository;
 import com.vikadata.api.security.ValidateTarget;
-import com.vikadata.api.util.DateTool;
+import com.vikadata.api.util.DateHelper;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.define.constants.RedisConstants;
@@ -29,11 +29,10 @@ import static com.vikadata.api.enums.exception.ActionException.SMS_SEND_ONLY_ONE
 
 /**
  * <p>
- * 手机短信验证码处理器
+ * Mobile phone SMS verification code processor
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 15:53
  */
 @Component
 @Slf4j
@@ -54,97 +53,90 @@ public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor {
 
     @Override
     protected void send(ValidateCode validateCode, ValidateTarget validateTarget) {
-        log.info("发送短信验证码");
         String target = validateTarget.getRealTarget();
-        //发送验证码短信只能通过用户请求发送
+        // Send verification code SMS can only be sent by user request
         HttpServletRequest request = HttpContextUtil.getRequest();
         String ipAddr = HttpContextUtil.getRemoteAddr(request);
-        //统一处理短信流量，防止刷短信
+        // Unified processing of SMS traffic to prevent swiping SMS messages
         this.checkBeforeSend(target, ipAddr);
-        //可以发送短信了
         CodeValidateScope scope = CodeValidateScope.fromName(validateCode.getScope());
         SmsCodeType type = SmsCodeType.ofName(scope.name());
         try {
             iSmsService.sendValidateCode(validateTarget, validateCode.getCode(), type);
         }
         catch (Exception e) {
-            NotifyMailFactory.me().notify("短信发送失败告警", StrUtil.format("手机号：{}，错误信息：{}", target, e.getMessage()));
-            throw new BusinessException("短信发送失败");
+            NotifyMailFactory.me().notify("Fail to send sms", StrUtil.format("phone number：{}，error message：{}", target, e.getMessage()));
+            throw new BusinessException("fail to send sms");
         }
-        //发送完成后保存发送总数
         this.saveSendCount(target, ipAddr);
     }
 
     /**
-     * 处理短信流量
+     * Handling SMS traffic
      *
-     * @param mobile 手机号码
-     * @param ipAddr IP地址
+     * @param mobile phone number
+     * @param ipAddr IP address
      */
     private void checkBeforeSend(String mobile, String ipAddr) {
-        log.info("统一处理短信流量，与运营商同步设置");
-        //手机当天发送数量
+        // The number of mobile phones sent on the day
         String mobileSmsCountKey = RedisConstants.getSendCaptchaCountKey(mobile, "mobile");
-        //IP当天发送数量
+        // Number of IPs sent on the day
         String ipSmsCountKey = RedisConstants.getSendCaptchaCountKey(ipAddr, "ip:mobile");
-        //当天所有手机发送数量
+        // The number of all mobile phones sent on the day
         String totalSmsCountKey = RedisConstants.getSendCaptchaCountKey("total", "mobile");
-        //手机发送频率
+        // mobile phone frequency
         String sendSmsRateKey = RedisConstants.getSendCaptchaRateKey(mobile);
 
-        //一分钟限制不能再次获取，除非验证码过期自动删除
+        // The one-minute limit cannot be obtained again, unless the verification code expires and is automatically deleted
         Integer sendSmsRateCount = (Integer) redisTemplate.opsForValue().get(sendSmsRateKey);
         if (sendSmsRateCount != null) {
-            log.info("60秒内不允许重复获取，IP地址={}, 手机号={}", ipAddr, mobile);
+            log.info("Repeated acquisitions are not allowed within 60 seconds，IP address={}, phone number={}", ipAddr, mobile);
             throw new BusinessException(SMS_SEND_ONLY_ONE_MINUTE);
         }
         else {
-            //锁住1分钟不让发送
+            // Lock for 1 minute not to send
             redisTemplate.opsForValue().set(sendSmsRateKey, 1, 1, TimeUnit.MINUTES);
         }
 
-        //手机当天短信发送数上限
+        // The maximum number of SMS messages sent by the mobile phone in one day
         Integer mobileSmsCount = (Integer) redisTemplate.opsForValue().get(mobileSmsCountKey);
         if (mobileSmsCount != null && mobileSmsCount >= properties.getSms().getMaxSendCount()) {
-            log.error("手机当天短信发送数上限，IP地址={}, 手机号={}", ipAddr, mobile);
+            log.error("The maximum number of SMS messages sent by the mobile phone in one day，IP address={}, phone number={}", ipAddr, mobile);
             throw new BusinessException(MOBILE_SEND_MAX_COUNT_LIMIT);
         }
 
-        //IP地址当天发送短信，不分手机号码
         Integer ipSmsCount = (Integer) redisTemplate.opsForValue().get(ipSmsCountKey);
         if (ipSmsCount != null && ipSmsCount >= properties.getSms().getMaxIpSendCount()) {
-            log.error("IP地址当天短信发送数上限 IP地址={}, 手机号={}", ipAddr, mobile);
-            throw new BusinessException("IP地址当天短信发送数上限");
+            log.error("The maximum number of SMS messages sent by an IP address in one day, ip={}, phone={}", ipAddr, mobile);
+            throw new BusinessException("The maximum number of SMS messages sent by an IP address in one day");
         }
 
-        //当天所有手机发送短信上限
         Integer totalSmsCount = (Integer) redisTemplate.opsForValue().get(totalSmsCountKey);
         if (totalSmsCount != null) {
             if (totalSmsCount >= properties.getSms().getMaxDaySendCount()) {
-                log.error("当天所有短信发送数上限 IP地址={}, 手机号={}", ipAddr, mobile);
-                throw new BusinessException("当天短信发送数上限");
+                log.error("The maximum number of text messages sent in one day, ip address={}, phone={}", ipAddr, mobile);
+                throw new BusinessException("The maximum number of text messages sent in one day");
             }
             int count = properties.getSms().getMaxDaySendCount() * 9 / 10;
             if (totalSmsCount == count) {
-                NotifyMailFactory.me().notify("当天短信发送数上限告警", "发送数已达到上限的90%，请注意！");
+                NotifyMailFactory.me().notify("Alarm on the upper limit of the number of SMS sent in the day", "The number of sending has reached 90% of the upper limit, please note！");
             }
         }
     }
 
     /**
-     * 发送完成之后，保存发送数量，建立阀值
+     * After the transmission is completed, save the number of transmissions and establish a threshold
      *
-     * @param mobile 手机号码
-     * @param ipAddr IP地址
+     * @param mobile mobile phone
+     * @param ipAddr IP address
      */
     private void saveSendCount(String mobile, String ipAddr) {
-        log.info("保存总数，在发送成功之后");
-        long second = DateTool.todayTimeLeft();
-        //手机当天发送数量
+        long second = DateHelper.todayTimeLeft();
+        // the number of mobile phones sent on the day
         super.accumulate(mobile, "mobile", second);
-        //IP当天发送数量
+        // number of ips sent on the day
         super.accumulate(ipAddr, "ip:mobile", second);
-        //当天所有手机发送数量
+        // the number of all mobile phones sent on the day
         super.accumulate("total", "mobile", second);
     }
 }

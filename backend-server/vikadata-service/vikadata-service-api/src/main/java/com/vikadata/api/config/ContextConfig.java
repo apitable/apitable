@@ -12,11 +12,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * 上下文组件配置
+ * context config
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/9 10:47
  */
 @Configuration(proxyBeanMethods = false)
 public class ContextConfig {
@@ -30,18 +29,12 @@ public class ContextConfig {
         this.userSpaceService = userSpaceService;
     }
 
-    /**
-     * 登录上下文
-     */
     @Bean
     @ConditionalOnMissingBean
     public LoginContext loginContext() {
         return new LoginContext(loginUserService, userSpaceService);
     }
 
-    /**
-     * i18n上下文
-     */
     @Bean
     @ConditionalOnMissingBean
     public I18nContext i18nContext(MessageSource messageSourc) {

@@ -15,11 +15,10 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * <p>
- * 字段权限事件
+ * Field Permission Event
  * </p>
  *
  * @author Chambers
- * @date 2021/4/1
  */
 public class FieldPermissionEvent extends ApplicationEvent {
 

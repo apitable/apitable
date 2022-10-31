@@ -32,10 +32,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * <p>
- * 企业微信配置文件自动装配
+ * autoconfiguration of wecom
  * </p>
  * @author Pengap
- * @date 2021/7/26 15:23:16
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(WeComProperties.class)
@@ -84,12 +83,4 @@ public class WeComAutoConfiguration {
         WxRedisOps wxRedisOps = new RedisTemplateWxRedisOps(applicationContext.getBean(StringRedisTemplate.class));
         return new WeComTemplate(config, wxRedisOps);
     }
-
-    /*
-     * 这里不做自动装配的实现，主要原因如下
-     * 1.初始情况下没有可用的企业微信Config
-     * 2.存在配置文件，由于启动需要读取数据库，造成启动APP缓慢
-     * 3.运行过程中空间站绑定企业微信
-     */
-
 }

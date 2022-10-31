@@ -11,9 +11,8 @@ import static com.vikadata.api.util.billing.model.ProductChannel.VIKA;
 import static com.vikadata.api.util.billing.model.ProductChannel.WECOM;
 
 /**
- * 产品类型
+ * product
  * @author Shawn Deng
- * @date 2021-11-03 14:28:16
  */
 @Getter
 public enum ProductEnum {

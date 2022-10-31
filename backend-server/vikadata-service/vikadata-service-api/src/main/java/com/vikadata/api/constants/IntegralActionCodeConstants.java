@@ -2,11 +2,10 @@ package com.vikadata.api.constants;
 
 /**
  * <p>
- * 积分动作常量
+ * integral action code
  * </p>
  *
  * @author Pengap
- * @date 2021/10/21 10:47:03
  */
 public class IntegralActionCodeConstants {
 

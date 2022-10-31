@@ -1,134 +1,120 @@
 package com.vikadata.api.security.sms;
 
-import com.vikadata.core.exception.BusinessException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.hutool.core.util.StrUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import com.vikadata.core.exception.BusinessException;
+
+import org.springframework.util.StringUtils;
+
 /**
  * <p>
- * 腾讯云短信
+ * Tencent Cloud Constants
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 16:40
  */
 public class TencentConstants {
 
     /**
-     * 短信模板
+     * Sms Template
      */
     @AllArgsConstructor
     @Getter
     public enum SmsTemplate {
 
         /**
-         * 注册
+         * Register
          */
-        REGISTER("注册", "430107"),
+        REGISTER("430107"),
 
         /**
-         * 登录
+         * Login
          */
-        LOGIN("登录", "525692"),
+        LOGIN("525692"),
 
         /**
-         * 修改登录密码
+         * Update Login Password
          */
-        UPDATE_PASSWORD("修改登录密码", "525694"),
+        UPDATE_PASSWORD("525694"),
 
         /**
-         * 修改密码成功提示
+         * Update Password success
          */
-        UPDATE_PASSWORD_SUCCESS_NOTICE("修改密码成功提示", "525695"),
+        UPDATE_PASSWORD_SUCCESS_NOTICE( "525695"),
 
         /**
-         * 绑定手机
+         * Bind Mobile
          */
-        BIND_MOBILE_PHONE("绑定手机", "525698"),
+        BIND_MOBILE_PHONE("525698"),
 
         /**
-         * 解除手机绑定
+         * unbind mobile
          */
-        REMOVE_MOBILE_PHONE_BINDING("解除手机绑定", "525699"),
+        REMOVE_MOBILE_PHONE_BINDING( "525699"),
 
         /**
-         * 修改邮箱绑定
+         * update bind mail
          */
-        UPDATE_EMAIL_BINDING("修改邮箱绑定", "525700"),
+        UPDATE_EMAIL_BINDING( "525700"),
 
         /**
-         * 删除空间
+         * delete space
          */
-        DELETE_SPACE("删除空间", "525701"),
+        DELETE_SPACE( "525701"),
 
         /**
-         * 更换主管理员
+         * change space main admin
          */
-        UPDATE_MAIN_ADMIN("更换主管理员", "525704"),
+        UPDATE_MAIN_ADMIN( "525704"),
 
         /**
-         * 钉钉绑定
+         * bind dingtalk
          */
-        DING_TALK_BINDING("钉钉绑定", "525705"),
+        DING_TALK_BINDING( "525705"),
 
         /**
-         * 普通验证
+         * normal verification
          */
-        GENERAL_VERIFICATION("普通验证", "533747"),
+        GENERAL_VERIFICATION("533747"),
 
         /**
-         * 更改开发者配置
+         * reset api key
          */
-        RESET_API_KEY("更改开发者配置", "617895"),
+        RESET_API_KEY( "617895"),
 
         /**
-         * 第三方平台绑定
+         * bind user
          */
-        SOCIAL_USER_BIND("第三方平台绑定", "800128"),;
-
-        private final String type;
+        SOCIAL_USER_BIND("800128"),;
 
         private final String templateCode;
 
         /**
-         * 模板编码转换
-         */
-        public static SmsTemplate ofCode(String templateCode) {
-            SmsTemplate smsTemplate = null;
-            for (SmsTemplate ele : SmsTemplate.values()) {
-                if (templateCode.equals(ele.getTemplateCode())) {
-                    smsTemplate = ele;
-                    break;
-                }
-            }
-            return smsTemplate;
-        }
-
-        /**
-         * 是否短信模板
+         * is sms template
          */
         public static boolean isSmsTemplate(String templateCode) {
-            if (StringUtils.isEmpty(templateCode)) {
-                throw new BusinessException("短信模板不存在");
+            if (StrUtil.isEmpty(templateCode)) {
+                throw new BusinessException("sms template is not exist");
             }
             List<String> templateCodeList = getTemplateCodeList();
             return templateCodeList.contains(templateCode);
         }
 
         /**
-         * 获取短信模板列表
+         * get sms template list
          */
         public static List<SmsTemplate> getList() {
             return Arrays.asList(SmsTemplate.values());
         }
 
         /**
-         * 获取短信模板编码列表
+         * get sms template code list
          */
         public static List<String> getTemplateCodeList() {
             List<String> templateCodeList = new ArrayList<>();

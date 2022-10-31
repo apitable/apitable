@@ -1,79 +1,66 @@
 package com.vikadata.api.cache.service;
 
-import com.vikadata.api.cache.bean.UserSpaceDto;
-
 import java.util.List;
+
+import com.vikadata.api.cache.bean.UserSpaceDto;
 
 /**
  * <p>
- * 用户空间 服务接口
+ * space stayed by user service
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/11/12 17:22
  */
 public interface UserSpaceService {
 
     /**
-     * 缓存用户相应空间的信息
+     * cache space stayed by users
      *
-     * @param userId   用户ID
-     * @param spaceId  空间ID
-     * @param memberId 成员ID
-     * @return 用户空间的内容
-     * @author Shawn Deng
-     * @date 2019/11/13 21:24
+     * @param userId   user id
+     * @param spaceId  space id
+     * @param memberId member id
+     * @return user stayed space object
      */
     UserSpaceDto saveUserSpace(Long userId, String spaceId, Long memberId);
 
     /**
-     * 根据用户对应空间的成员ID
+     * get member id in space stayed by user
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @return 成员ID
-     * @author Shawn Deng
-     * @date 2019/11/14 12:05
+     * @param userId  user id
+     * @param spaceId space id
+     * @return member id
      */
     Long getMemberId(Long userId, String spaceId);
 
     /**
-     * 删除不重新刷新
+     * delete special cache space stayed by user
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @author Shawn Deng
-     * @date 2019/11/15 16:07
+     * @param userId  user id
+     * @param spaceId space id
      */
     void delete(Long userId, String spaceId);
 
     /**
-     * 获取用户对应空间的内容
+     * get cache space stayed by users
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @return 用户空间的内容
-     * @author Chambers
-     * @date 2019/11/27
+     * @param userId  user id
+     * @param spaceId space id
+     * @return user stayed space object
      */
     UserSpaceDto getUserSpace(Long userId, String spaceId);
 
-	/**
-	 * 删除
-	 *
-	 * @param spaceId   空间ID
-	 * @param memberIds 成员ID列表
-	 * @author Chambers
-	 * @date 2020/2/19
-	 */
-	void delete(String spaceId, List<Long> memberIds);
+    /**
+     * delete cache
+     *
+     * @param spaceId   space id
+     * @param memberIds member id list
+     */
+    void delete(String spaceId, List<Long> memberIds);
 
-	/**
-	 * 删除空间内所有人的缓存
-	 *
-	 * @param spaceId   空间ID
-	 * @author Chambers
-	 * @date 2020/3/19
-	 */
-	void delete(String spaceId);
+    /**
+     * delete space cache
+     *
+     * @param spaceId   space id
+     */
+    void delete(String spaceId);
 }

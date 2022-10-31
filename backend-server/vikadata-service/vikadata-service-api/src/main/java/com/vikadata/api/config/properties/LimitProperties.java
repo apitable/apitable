@@ -9,11 +9,10 @@ import static com.vikadata.api.config.properties.LimitProperties.PREFIX_LIMIT;
 
 /**
  * <p>
- * 限制相关配置信息
+ * limitation properties
  * </p>
  *
  * @author Chambers
- * @date 2020/8/10
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX_LIMIT)
@@ -22,96 +21,96 @@ public class LimitProperties {
     public static final String PREFIX_LIMIT = "vikadata.limit";
 
     /**
-     * 是否允许超量使用
+     * Allow excessive use
      */
     private Boolean isAllowOverLimit = Boolean.FALSE;
 
     /**
-     * 回收舱的最大保留天数（超量使用状态下）
+     * Maximum retention days of recovery cabin（Under excessive use）
      */
     private Integer rubbishMaxRetainDay = 365;
 
     /**
-     * 用户的空间数量上限
+     * Maximum user space
      */
     private Integer spaceMaxCount = 10;
 
     /**
-     * 导入数表的文件大小上限
+     * Maximum file size of imported data table
      */
     private Integer maxFileSize = 20 * 1024 * 1024;
 
     /**
-     * 数表最大列数
+     * Maximum number of columns in the number table
      */
     private Integer maxColumnCount = 200;
 
     /**
-     * 视图数量上限
+     * Maximum Views
      */
     @Deprecated
     private Integer viewMaxCount = 100;
 
     /**
-     * 模版数量上限
+     * Maximum number of templates
      */
     private Integer templateMaxCount = 20;
 
     /**
-     * 成员字段，下拉框最大加载数量
+     * Maximum loading numbers of member field in datasheet
      */
     private Integer memberFieldMaxLoadCount = 10;
 
     /**
-     * 数表最大行数
+     * Maximum rows
      */
     @Deprecated
     private Integer maxRowCount = 50000;
 
     /**
-     * 附件空间上限1G
+     * limitation of attachment(byte)
      */
     @Deprecated
     private Long spaceMemoryMaxSize = 1024 * 1024 * 1024L;
 
     /**
-     * 文件节点数量上限
+     * Maximum node number
      */
     @Deprecated
     private Integer nodeMaxCount = 1000;
 
     /**
-     * 回收站
+     * Maximum days of recycle bin
      */
     @Deprecated
     private Integer rubbishRetainDay = 7;
 
     /**
-     * 成员总数
+     * Maximum member count of space
      */
     @Deprecated
     private Integer memberMaxCount = 100;
 
     /**
-     * 管理员总数
+     * Maximum admin number of space
      */
     @Deprecated
     private Integer adminMaxCount = 20;
 
     /**
-     * API用量每月次数
+     * Maximum api usage of space
      */
     @Deprecated
     private Integer apiUsageMaxCount = 10000;
 
     /**
-     * 仪表盘组件数量上限
+     * Maximum dashboard numbers of space
      */
     @Deprecated
     private Integer dsbWidgetMaxCount = 15;
 
     /**
-     * 单表机器人数量上限
+     * Maximum robot number of space
      */
     @Deprecated
     private Integer dstRobotMaxCount = 30;

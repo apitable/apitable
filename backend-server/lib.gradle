@@ -1,6 +1,4 @@
-// 扩展配置
 ext {
-  // 依赖简化
   dependencies = [
     // Spring Boot Dependencies
     'boot'                        : 'org.springframework.boot:spring-boot',

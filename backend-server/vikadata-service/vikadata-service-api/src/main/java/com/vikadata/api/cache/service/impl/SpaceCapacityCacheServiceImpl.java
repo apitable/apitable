@@ -17,14 +17,6 @@ import org.springframework.stereotype.Service;
 
 import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
 
-/**
- * <p>
- * 空间容量缓存实现类
- * </p>
- *
- * @author Chambers
- * @date 2021/10/28
- */
 @Slf4j
 @Service
 public class SpaceCapacityCacheServiceImpl implements SpaceCapacityCacheService {
@@ -35,9 +27,6 @@ public class SpaceCapacityCacheServiceImpl implements SpaceCapacityCacheService 
     @Resource
     private RedisTemplate<String, Number> redisTemplate;
 
-    /**
-     * 存储时间，单位：分钟
-     */
     private static final int TIMEOUT = 30;
 
     @Override
@@ -49,7 +38,6 @@ public class SpaceCapacityCacheServiceImpl implements SpaceCapacityCacheService 
         }
         List<Integer> fileSizes = spaceAssetMapper.selectFileSizeBySpaceId(spaceId);
         long statics = fileSizes.stream().filter(Objects::nonNull).mapToLong(Integer::intValue).sum();
-        // 保存缓存
         redisTemplate.opsForValue().set(key, statics, TIMEOUT, TimeUnit.MINUTES);
         return statics;
     }

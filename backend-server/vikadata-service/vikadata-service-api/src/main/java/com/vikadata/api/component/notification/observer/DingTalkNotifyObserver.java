@@ -1,13 +1,5 @@
 package com.vikadata.api.component.notification.observer;
 
-/**
- * <p>
- * 通知观察者--钉钉自建应用
- * </p>
- * @author zoe zheng
- * @date 2022/3/15 18:30
- */
-
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -72,15 +64,15 @@ public class DingTalkNotifyObserver extends SocialNotifyObserver<SocialTemplate,
         Map<String, Object> renderMap = bindingMap(ro);
         String description = StrUtil.format(VikaStrings.t(template.getTemplateString()), renderMap);
         String title = VikaStrings.t(template.getTitle());
-        // 自建应用入口页地址：https://{domain}/user/dingtalk_callback?corpId={}&agentId={}
+        // entry url：https://{domain}/user/dingtalk_callback?corpId={}&agentId={}
         String callbackUrl = StrUtil.format(context.getEntryUrl(), constProperties.getServerDomain(),
                         context.getTenantId(), context.getAgentId())
                 .concat("&reference=").concat(constProperties.getServerDomain())
                 .concat(CharSequenceUtil.prependIfMissingIgnoreCase(StrUtil.format(StrUtil.blankToDefault(template.getUrl(), ""), renderMap), "/"));
-        // 构建url
+        // build url
         String url = StrUtil.format(DINGTALK_OA_OPEN, context.getTenantId(), context.getAgentId(), URLUtil.encodeAll(callbackUrl));
         if (ActionCardMessage.ACTION_CARD_MSG_TYPE.equals(template.getMessageType())) {
-            // 单链接卡片消息
+            // Single link card message
             if (StrUtil.isBlank(template.getPicUrl())) {
                 SingleActionCard singleActionCard = new SingleActionCard();
                 singleActionCard.setTitle(title);
@@ -89,10 +81,10 @@ public class DingTalkNotifyObserver extends SocialNotifyObserver<SocialTemplate,
                 singleActionCard.setMarkdown(description);
                 return new ActionCardMessage(singleActionCard);
             }
-            // todo 多链接类型
+            // todo Multilink Type
             return null;
         }
-        // todo 其他的类型
+        // todo Other types
         return null;
 
     }

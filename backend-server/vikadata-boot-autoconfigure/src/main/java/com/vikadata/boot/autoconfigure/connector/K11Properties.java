@@ -4,11 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 新世界 K11 属性
+ * connector k11 properties
  * </p>
  *
  * @author Chambers
- * @date 2021/6/17
  */
 @ConfigurationProperties(prefix = "vikadata-connector.k11")
 public class K11Properties {

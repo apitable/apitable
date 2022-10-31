@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.modular.finance.core.DefaultOrderArguments;
 import com.vikadata.api.modular.finance.core.OrderArguments;

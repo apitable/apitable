@@ -17,8 +17,6 @@ import org.springframework.web.client.RestTemplate;
  * <p>
  * 企微服务商接口许可延时任务
  * </p>
- * @author 刘斌华
- * @date 2022-08-10 16:33:31
  */
 @Component
 public class WeComPermitDelayJobHandler {

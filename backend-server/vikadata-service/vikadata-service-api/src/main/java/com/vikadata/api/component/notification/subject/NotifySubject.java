@@ -8,15 +8,12 @@ import com.vikadata.api.model.ro.player.NotificationCreateRo;
 public abstract class NotifySubject<T> {
 
     /**
-     * 发送通知
+     * send notification
      */
     public abstract void send(NotificationCreateRo ro);
 
     public abstract void setContext(T context);
 
-    /**
-     * 上下文
-     */
     protected T context;
 
     private final Vector<NotifyObserver> observers = new Vector<>();
@@ -32,8 +29,8 @@ public abstract class NotifySubject<T> {
     }
 
     /**
-     * 通知观察者处理
-     * @param ro 通知参数
+     * notify observer processing
+     * @param ro notification parameters
      */
     protected void notifyObserver(NotificationCreateRo ro) {
         for (NotifyObserver observer : observers) {

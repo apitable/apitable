@@ -49,7 +49,6 @@
         AND is_deleted = 0
     </select>
 
-    <!--查询空间内的根部门ID-->
     <select id="selectBySpaceIdAndRefId" resultType="java.lang.Long">
         SELECT vou.id
         FROM vika_unit vou

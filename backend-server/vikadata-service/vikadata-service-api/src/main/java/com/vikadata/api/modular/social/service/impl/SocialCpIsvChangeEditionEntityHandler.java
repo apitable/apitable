@@ -8,7 +8,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
 import me.chanjar.weixin.common.error.WxErrorException;
 
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;

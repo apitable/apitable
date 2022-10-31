@@ -10,16 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.enums.lang.ExportLevelEnum;
 
-/**
- * @author tao
- */
 @Slf4j
 public class ExportLevelValidator implements ConstraintValidator<ExportLevelMatch, Integer> {
 
     @Override
     public boolean isValid(Integer exportLevel, ConstraintValidatorContext context) {
-        log.info("校验安全设置-导出权限成员等级参数「{}」是否正确", exportLevel);
-
         if (ObjectUtil.isNull(exportLevel)) {
             return true;
         }

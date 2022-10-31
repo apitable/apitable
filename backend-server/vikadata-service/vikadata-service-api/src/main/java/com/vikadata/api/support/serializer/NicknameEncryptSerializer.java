@@ -9,11 +9,10 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * <p>
- * 用户昵称加密序列化
+ * User nickname encryption serialization
  * </p>
  *
  * @author Chambers
- * @date 2021/5/31
  */
 public class NicknameEncryptSerializer extends JsonSerializer<String> {
 
@@ -25,7 +24,7 @@ public class NicknameEncryptSerializer extends JsonSerializer<String> {
             gen.writeString(value.charAt(0) + "*");
             return;
         }
-        // 计算需要隐藏的位数
+        // Calculate the number of bits to hide
         int size = length / percent;
         int remainder = length % percent > 1 ? 1 : 0;
         gen.writeString(StrUtil.hide(value, length - size - remainder, length));

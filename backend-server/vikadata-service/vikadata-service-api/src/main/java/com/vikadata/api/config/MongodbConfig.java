@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 /**
  * <p>
- * MongoDB 配置
+ * MongoDB config
  * </p>
  *
  * @author Chambers
@@ -45,7 +45,7 @@ public class MongodbConfig extends AbstractMongoClientConfiguration {
         MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mappingContext);
         converter.setCustomConversions(customConversions);
         converter.setCodecRegistryProvider(mongoDatabaseFactory);
-        // 数据不生成 _class
+        // do not generate suffix with _class
         converter.setTypeMapper(new DefaultMongoTypeMapper(null));
         return converter;
     }

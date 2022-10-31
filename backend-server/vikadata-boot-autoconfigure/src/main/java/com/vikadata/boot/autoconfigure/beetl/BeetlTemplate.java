@@ -20,10 +20,9 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import static cn.hutool.core.io.FileUtil.touch;
 
 /**
- * Beetl 渲染模版引擎接口
+ * beetl render template api
  *
  * @author Shawn Deng
- * @date 2021-01-09 10:43:52
  */
 public class BeetlTemplate {
 

@@ -7,7 +7,6 @@ plugins {
   id 'testing.java-conventions'
 }
 
-// 依赖配置
 dependencies {
   implementation project(':vikadata-define')
   implementation project(':vikadata-clock')
@@ -106,8 +105,6 @@ jar {
   enabled = false
 }
 
-// 动态设置变量到resource目录下文件
-// profile和revision在application.yml里面
 processResources {
   filesMatching("**/*.yml") {
     if (it.name != 'application.yml') {
@@ -116,7 +113,6 @@ processResources {
   }
 }
 
-// 编译时依赖编译Resources文件夹
 compileJava.dependsOn processResources
 bootJar.dependsOn processResources
 

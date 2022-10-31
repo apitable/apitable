@@ -12,19 +12,15 @@ import org.springframework.data.redis.serializer.RedisSerializationContext.Seria
 import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
- * Spring Caching 模块
+ * Spring Caching Config
  * @author Shawn Deng
- * @date 2021-06-28 20:42:56
  */
 @Configuration(proxyBeanMethods = false)
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
-    /**
-     * Key 生成器
-     * 生成策略： 目标类+目标方法+参数1...
-     */
     @Bean
+    @Override
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
             StringBuilder sb = new StringBuilder();

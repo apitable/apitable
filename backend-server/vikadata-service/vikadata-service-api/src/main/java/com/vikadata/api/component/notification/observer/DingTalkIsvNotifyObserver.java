@@ -25,13 +25,6 @@ import com.vikadata.system.config.notification.SocialTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-/**
- * <p>
- * 通知观察者--钉钉第三方
- * </p>
- * @author zoe zheng
- * @date 2022/3/15 18:30
- */
 @Slf4j
 @Component
 @ConditionalOnProperty(value = "vikadata-starter.social.dingtalk.enabled", havingValue = "true")
@@ -60,7 +53,6 @@ public class DingTalkIsvNotifyObserver extends SocialNotifyObserver<SocialTempla
                 }
             }
         }
-        log.warn("钉钉商店应用未配置通知模版ID:{}", templateId);
         return null;
     }
 
@@ -76,9 +68,10 @@ public class DingTalkIsvNotifyObserver extends SocialNotifyObserver<SocialTempla
         dataMap.put("corpId", context.getTenantId());
         dataMap.put("suiteId", context.getAppId());
         dataMap.put("appId", context.getAgentId());
-        // 去掉https开头,兼容之前的卡片 todo 迁移完成之后可去掉
+        // Remove the beginning of https and be compatible with the previous card
+        // todo It can be removed after migration
         dataMap.put("domain", URLUtil.url(constProperties.getServerDomain()).getHost());
-        // 构建跳转链接
+        // Build Links
         String reference = constProperties.getServerDomain().concat(CharSequenceUtil.prependIfMissingIgnoreCase(StrUtil.format(StrUtil.blankToDefault(template.getUrl(), ""), renderMap), "/"));
         String redirectUrl = StrUtil.format(context.getEntryUrl(), constProperties.getServerDomain(),
                 context.getTenantId(), context.getAppId()).concat("&reference" + "=").concat(reference);
@@ -91,7 +84,6 @@ public class DingTalkIsvNotifyObserver extends SocialNotifyObserver<SocialTempla
     public void notify(SocialNotifyContext context, NotificationCreateRo ro) {
         SocialTemplate template = getTemplate(ro.getTemplateId());
         if (template == null) {
-            log.warn("钉钉ISV通知模版未配置:{}", ro.getTemplateId());
             return;
         }
         HashMap<String, String> renderMap = renderTemplate(context, ro);

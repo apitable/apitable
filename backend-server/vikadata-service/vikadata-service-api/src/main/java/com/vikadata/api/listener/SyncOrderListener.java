@@ -25,9 +25,6 @@ import org.springframework.stereotype.Component;
 import static com.vikadata.api.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_BEAN_NAME;
 import static com.vikadata.api.util.billing.OrderUtil.centsToYuan;
 
-/**
- * @author Shawn Deng
- */
 @Component
 public class SyncOrderListener implements ApplicationListener<SyncOrderEvent> {
 

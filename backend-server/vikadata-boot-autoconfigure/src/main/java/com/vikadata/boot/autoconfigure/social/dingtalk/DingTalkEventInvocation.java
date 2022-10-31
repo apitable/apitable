@@ -7,10 +7,9 @@ import com.vikadata.boot.autoconfigure.social.dingtalk.annotation.DingTalkEventL
 
 /** 
 * <p> 
-* 事件监听器的调用包装类
+* wrapper class of event listener
 * </p> 
 * @author zoe zheng 
-* @date 2021/5/13 6:15 下午
 */
 public class DingTalkEventInvocation extends BaseInvocation {
 

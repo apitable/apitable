@@ -1,7 +1,6 @@
 plugins {
   id 'java-library'
 }
-description = '数据分析组件'
 
 dependencies {
   api(project(":vikadata-starters:vikadata-starter"))

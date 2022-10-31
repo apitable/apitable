@@ -1,15 +1,13 @@
 package com.vikadata.api.control.role;
 
 import com.vikadata.api.control.role.RoleConstants.Node;
-import com.vikadata.api.control.role.NodeReaderRole;
 
 /**
  * <p>
- * 节点模板访问者角色
+ * template visitor role of node
  * </p>
  *
  * @author Chambers
- * @date 2021/5/21
  */
 public class NodeTemplateVisitorRole extends NodeReaderRole {
 

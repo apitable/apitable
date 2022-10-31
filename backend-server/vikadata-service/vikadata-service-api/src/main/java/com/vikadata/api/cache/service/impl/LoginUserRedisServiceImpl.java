@@ -19,14 +19,6 @@ import com.vikadata.entity.UserEntity;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-/**
- * <p>
- * 缓存用户上下文信息，提供上下文服务层快速获取
- * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/12 17:22
- */
 @Service
 public class LoginUserRedisServiceImpl implements LoginUserService {
 
@@ -37,7 +29,7 @@ public class LoginUserRedisServiceImpl implements LoginUserService {
     private UserMapper userMapper;
 
     /**
-     * 存储时间，单位：分钟
+     * Storage unit(minutes)
      */
     private static final int TIMEOUT = 30;
 
@@ -46,15 +38,10 @@ public class LoginUserRedisServiceImpl implements LoginUserService {
         String str = redisTemplate.opsForValue().get(RedisConstants.getLoginUserKey(userId));
         if (str != null) {
             LoginUserDto userDto = JSONUtil.toBean(str, LoginUserDto.class);
-            /*
-             * 如果缓存值为null，刷新缓存
-             * 1.字段IsNickNameModified新增于2022-03-11，之前用户没有对应的缓存key，字段有默认值
-             */
             if (userDto != null && StrUtil.isNotBlank(userDto.getAreaCode()) && Objects.nonNull(userDto.getIsNickNameModified())) {
                 return userDto;
             }
         }
-        // 为空则重新加载
         UserEntity user = userMapper.selectById(userId);
         LoginUserDto loginUserDto = new LoginUserDto();
         loginUserDto.setUserId(userId);
@@ -68,7 +55,6 @@ public class LoginUserRedisServiceImpl implements LoginUserService {
         loginUserDto.setLastLoginTime(user.getLastLoginTime());
         loginUserDto.setLocale(user.getLocale());
         loginUserDto.setIsPaused(user.getIsPaused());
-        // 兼容字段为"NULL"的情况，默认值为：2
         Integer isSocialNameModified = ObjectUtil.defaultIfNull(user.getIsSocialNameModified(), SocialNameModified.NO_SOCIAL.getValue());
         loginUserDto.setIsNickNameModified(isSocialNameModified > 0);
         if (StrUtil.isBlank(user.getPassword())) {

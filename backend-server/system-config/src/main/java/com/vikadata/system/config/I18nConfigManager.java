@@ -8,7 +8,7 @@ import com.vikadata.system.config.i18n.I18nTypes;
 
 /**
  * <p>
- * 多语言配置管理器
+ * i18n config manager
  * </p>
  * @author Shawn Deng
  */

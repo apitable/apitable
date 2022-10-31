@@ -13,11 +13,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * 数据分析自动配置
+ * Automatic configuration of data analysis
  * </p>
  *
  * @author Chambers
- * @date 2020/4/3
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(DataAnalyzeProperties.class)

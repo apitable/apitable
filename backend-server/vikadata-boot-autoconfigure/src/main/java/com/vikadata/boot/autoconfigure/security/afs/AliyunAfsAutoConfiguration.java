@@ -13,11 +13,10 @@ import org.springframework.util.Assert;
 
 /**
  * <p>
- * 阿里云盾人机验证服务配置
+ * Alibaba Cloud Human-Machine Authentication Service Configuration
  * </p>
  *
  * @author Chambers
- * @date 2020/3/2
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({AnalyzeNvcRequest.class, AnalyzeNvcResponse.class})
@@ -33,7 +32,7 @@ public class AliyunAfsAutoConfiguration {
     @ConditionalOnMissingBean(AfsChecker.class)
     public AfsChecker afsChecker() {
         AfsProperties.Aliyun aliyun = properties.getAliyun();
-        Assert.state(aliyun != null, "云盾人机验证尚未配置");
+        Assert.state(aliyun != null, "human-machine verification has not been configured");
         return new AliyunAfsChecker(aliyun.getRegionId(), aliyun.getAccessKeyId(), aliyun.getSecret());
     }
 }

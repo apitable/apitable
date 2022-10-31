@@ -3,9 +3,8 @@ package com.vikadata.api.control.role;
 import com.vikadata.api.control.role.RoleConstants.Node;
 
 /**
- * 匿名角色
+ * Anonymous Role of Node
  * @author Shawn Deng
- * @date 2021-03-20 16:03:24
  */
 public class NodeAnonymousRole extends NodeReaderRole {
 

@@ -15,7 +15,7 @@ import com.vikadata.api.component.ApiResourceFactory;
 import com.vikadata.api.constants.ParamsConstants;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.social.TenantDomainStatus;
-import com.vikadata.api.lang.ResourceDefinition;
+import com.vikadata.api.component.ResourceDefinition;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.model.SpaceBindDomainDTO;
 import com.vikadata.api.modular.social.model.SpaceBindTenantInfoDTO;
@@ -34,12 +34,11 @@ import static com.vikadata.api.enums.exception.PermissionException.NODE_ACCESS_D
 import static com.vikadata.api.enums.exception.SocialException.EXCLUSIVE_DOMAIN_UNBOUND;
 
 /**
- * 专属域名拦截器
+ * Exclusive domain name blocker
  *
- * <p>拦截当前使用的域名，是否是绑定的空间，vika_social_tenant_domain保存空间站对应的域名
+ * <p>Intercept the currently used domain name, whether it is the bound space
  *
  * @author Pengap
- * @date 2021/8/30 16:18:08
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -59,12 +58,9 @@ public class ExclusiveDomainNameInterceptor extends AbstractServletSupport imple
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        // 解析地址
         String requestPath = resolveServletPath(request);
-        // 忽略检查地址
         for (String ignoreItem : IGNORE_CHECK_DOMAIN_URL) {
             if (ReUtil.isMatch(ignoreItem, requestPath)) {
-                // 通行
                 return true;
             }
         }
@@ -77,28 +73,26 @@ public class ExclusiveDomainNameInterceptor extends AbstractServletSupport imple
         String remoteHost = HttpContextUtil.getRemoteHost(request);
         String spaceId = request.getHeader(ParamsConstants.SPACE_ID);
 
-        // 校验需要校验的请求
         if (resourceDef.getRequiredAccessDomain()) {
-            // 查询空间站是否企业微信空间站（自建应用）
+            // Query whether the space station is an enterprise WeChat space station
             SpaceBindTenantInfoDTO spaceBindStatus = iSocialTenantBindService.getSpaceBindTenantInfoByPlatform(spaceId, SocialPlatformType.WECOM, null);
-            // 没有集成企业微信，集成状态=false，集成的类型不是自建应用，不对域名进行校验直接放行
             if (null == spaceBindStatus || !spaceBindStatus.getStatus() || SocialAppType.INTERNAL.getType() != spaceBindStatus.getAppType()) {
                 return true;
             }
-            // 1.先校验域名可用状态
+            // 1.Check the availability of the domain name first
             dto = iSocialTenantDomainService.getSpaceDomainByDomainName(remoteHost);
             if (null != dto) {
                 if (TenantDomainStatus.WAIT_BIND.getCode() == dto.getStatus()) {
-                    // 如果域名是绑定中禁止操作，并且弹出错误提示
+                    // If the domain name is prohibited from binding, and an error message pops up
                     throw new BusinessException(EXCLUSIVE_DOMAIN_UNBOUND);
                 }
             }
-            // 2.携带空间站Id请求头，校验访问域名是否匹配空间站绑定的域名
+            // 2.Check whether the access domain name matches the domain name bound to the space
             if (StrUtil.isNotBlank(spaceId)) {
                 dto = CollUtil.getFirst(iSocialTenantDomainService.getSpaceDomainBySpaceIds(Collections.singletonList(spaceId)));
                 ExceptionUtil.isNotNull(dto, EXCLUSIVE_DOMAIN_UNBOUND);
 
-                // 如果空间域名非可用状态，直接返回公网域名
+                // If the space domain name is not available, return the public domain name directly
                 String spaceDomain = dto.getDomainName();
                 if (!StrUtil.equals(spaceDomain, remoteHost)) {
                     throw new BusinessException(NODE_ACCESS_DENIED);

@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vikadata.api.modular.marketplace.mapper.MarketplaceSpaceAppMapper">
 
-    <!--查看空间站的内置应用ID列表-->
     <select id="selectBySpaceId" resultType="java.lang.String">
         SELECT msa.app_id
         FROM vika_marketplace_space_app_rel msa
@@ -15,7 +14,6 @@
         WHERE msa.space_id = #{spaceId} and msa.app_id = #{appId}
     </select>
 
-    <!--删除空间与应用关联-->
     <delete id="deleteBySpaceIdAndAppId">
         DELETE
         FROM vika_marketplace_space_app_rel msa

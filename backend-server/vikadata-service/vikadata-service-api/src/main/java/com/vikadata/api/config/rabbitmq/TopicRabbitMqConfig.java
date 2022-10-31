@@ -13,76 +13,77 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 public class TopicRabbitMqConfig {
+
     /**
-     * message失效后进入的队列，也就是实际的消费队列
+     * The queue entered after the message expires, that is the actual consumption queue
      */
     public final static String DING_TALK_ISV_TOPIC_QUEUE_NAME_DEAD = "vikadata.api.dingtalk.org.suite.dead";
 
     /**
-     * 发送到该队列的message会在一段时间后过期进入到vikadata.api.dingtalk.org.suite.process
-     * 每个message可以控制自己的失效时间
+     * Messages sent to the queue will expire after a period of time and enter the {@code vikadata.api.dingtalk.org.suite.process}
+     * Each message can control its own failure time
      */
     public final static String DING_TALK_ISV_TOPIC_QUEUE_NAME_BUFFER = "vikadata.api.dingtalk.org.suite.buffer";
 
     public final static String DING_TALK_ISV_HIGH_TOPIC = "org.suite.#";
 
     /**
-     * 缓冲交换机
+     * buffer exchange
      */
     public final static String DING_TALK_TOPIC_EXCHANGE_BUFFER = "vikadata.api.dingtalk.buffer";
 
     /**
-     * ding talk DLX 死信交换器
+     * dingtalk DLX exchange
      */
     public final static String DING_TALK_TOPIC_EXCHANGE_DEAD = "vikadata.api.dingtalk.dead";
 
     /**
-     * 企微缓冲交换机
+     * wecom buffer exchange
      */
     public static final String WECOM_TOPIC_EXCHANGE_BUFFER = "vikadata.api.wecom.buffer";
 
     /**
-     * 企微死信交换机
+     * wecom dead exchange
      */
     public static final String WECOM_TOPIC_EXCHANGE_DEAD = "vikadata.api.wecom.dead";
 
     /**
-     * 企微服务商事件路由
+     * wecom isv event router
      */
     public static final String WECOM_ISV_EVENT_TOPIC_ROUTING_KEY = "vikadata.api.wecom.isv.event";
 
     /**
-     * 企微服务商事件缓冲队列
+     * wecom isv event buffer queue
      */
     public static final String WECOM_ISV_EVENT_TOPIC_QUEUE_BUFFER = "vikadata.api.wecom.isv.event.buffer";
 
     /**
-     * 企微服务商事件死信队列
+     * wecom isv event dead queue
      */
     public static final String WECOM_ISV_EVENT_TOPIC_QUEUE_DEAD = "vikadata.api.wecom.isv.event.dead";
 
     /**
-     * 企微服务商接口许可路由
+     * wecom isv license permit router
      */
     public static final String WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY = "vikadata.api.wecom.isv.permit";
 
     /**
-     * 企微服务商接口许可缓冲队列
+     * wecom isv api permit buffer queue
      */
     public static final String WECOM_ISV_PERMIT_TOPIC_QUEUE_BUFFER = "vikadata.api.wecom.isv.permit.buffer";
 
     /**
-     * 企微服务商接口许可死信队列
+     * wecom isv permit dead queue
      */
     public static final String WECOM_ISV_PERMIT_TOPIC_QUEUE_DEAD = "vikadata.api.wecom.isv.permit.dead";
 
     /**
-     * 通知队列
+     * notification queue
      */
     public static final String NOTIFICATION_QUEUE = "vikadata.api.notification.queue";
 
     /**
-     * 通知 routing key
+     * notification route key
      */
     public final static String NOTIFICATION_ROUTING_KEY = "notification.#";
 
@@ -97,7 +98,7 @@ public class TopicRabbitMqConfig {
     public static final String WECOM_ISV_EVENT_QUEUE = "vikadata.api.wecom.isv.event";
 
     /**
-     * digntalk isv event queue
+     * dingtalk isv event queue
      */
     public static final String DINGTALK_ISV_EVENT_QUEUE = "vikadata.api.dingtalk.isv.event";
 
@@ -119,12 +120,12 @@ public class TopicRabbitMqConfig {
 
     /**
      *
-     * 通知 exchange
+     * notification exchange
      */
     private static final String NOTIFICATION_EXCHANGE = "vikadata.api.notification.exchange";
 
     /**
-     * 创建 ding talk DLX exchange
+     * create dingtalk DLX exchange
      */
     @Bean
     TopicExchange dingTalkDeadExchange() {
@@ -132,7 +133,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 定义钉钉topic缓冲交换器
+     * define dingtalk topic buffer exchange
      */
     @Bean
     TopicExchange dingTalkBufferExchange() {
@@ -140,17 +141,17 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 创建缓冲队列队列, 指定死信交换机
+     * create buffer queue
      */
     @Bean
     Queue dingTalkIsvBufferQueue() {
         return QueueBuilder.durable(DING_TALK_ISV_TOPIC_QUEUE_NAME_BUFFER)
-                .withArgument("x-dead-letter-exchange", DING_TALK_TOPIC_EXCHANGE_DEAD) // DLX，dead letter发送到的exchange
+                .withArgument("x-dead-letter-exchange", DING_TALK_TOPIC_EXCHANGE_DEAD)
                 .build();
     }
 
     /**
-     * 创建死信队列，也就是实际消费队列
+     * create dingtalk isv dead queue
      */
     @Bean
     public Queue dingTalkIsvDeadQueue() {
@@ -158,7 +159,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 将DLX绑定到死信队列，也就是实际消费队列
+     * bind dlx dingtalk dead queue
      */
     @Bean
     Binding bindDingTalkDlxExchangeWithOrgSuiteQueue(Queue dingTalkIsvDeadQueue, TopicExchange dingTalkDeadExchange) {
@@ -168,7 +169,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 绑定缓冲队列到缓冲交换机
+     * bind dingtalk exchange
      */
     @Bean
     public Binding bindDingTalkExchangeWithOrgSuiteQueue(Queue dingTalkIsvBufferQueue, TopicExchange dingTalkBufferExchange) {
@@ -176,7 +177,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 企微缓冲交换机
+     * wecom buffer exchange
      */
     @Bean
     public TopicExchange weComBufferExchange() {
@@ -184,7 +185,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 企微死信交换机
+     * wecom dead exchange
      */
     @Bean
     public TopicExchange weComDeadExchange() {
@@ -192,7 +193,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 企微服务商事件缓冲队列
+     * wecom isv event buffer queue
      */
     @Bean
     public Queue weComIsvEventBufferQueue() {
@@ -203,7 +204,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 企微服务商事件死信队列
+     * wecom isv event dead queue
      */
     @Bean
     public Queue weComIsvEventDeadQueue() {
@@ -211,7 +212,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 绑定企微服务商事件缓冲队列到交换机
+     * bind wecom isv event buffer to exchange
      */
     @Bean
     public Binding bindWeComBufferExchangeWithIsvEventQueue(Queue weComIsvEventBufferQueue, TopicExchange weComBufferExchange) {
@@ -221,7 +222,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 绑定企微服务商事件死信队列到交换机
+     * bind wecom isv event dead queue to exchange
      */
     @Bean
     public Binding bindWeComDeadExchangeWithIsvEventQueue(Queue weComIsvEventDeadQueue, TopicExchange weComDeadExchange) {
@@ -231,7 +232,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 企微服务商接口许可缓冲队列
+     * wecom isv license permit buffer queue
      */
     @Bean
     public Queue weComIsvPermitBufferQueue() {
@@ -242,7 +243,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 企微服务商接口许可死信队列
+     * wecom isv license permit dead queue
      */
     @Bean
     public Queue weComIsvPermitDeadQueue() {
@@ -250,7 +251,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 绑定企微服务商接口许可缓冲队列到交换机
+     * bind wecom isv license permit to exchange
      */
     @Bean
     public Binding bindWeComBufferExchangeWithIsvPermitQueue(Queue weComIsvPermitBufferQueue, TopicExchange weComBufferExchange) {
@@ -260,7 +261,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 绑定企微服务商接口许可死信队列到交换机
+     * bind wecom isv license permit dead queue to exchange
      */
     @Bean
     public Binding bindWeComDeadExchangeWithIsvPermitQueue(Queue weComIsvPermitDeadQueue, TopicExchange weComDeadExchange) {
@@ -270,7 +271,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 定义通知交换机
+     * define notification exchange
      */
     @Bean
     TopicExchange notificationExchange() {
@@ -278,7 +279,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 通知队列
+     * notification queue
      */
     @Bean
     public Queue notificationQueue() {
@@ -286,7 +287,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * 绑定通知交换机和队列
+     * bind notification exchange and queue
      */
     @Bean
     public Binding bindNotificationExchange(Queue notificationQueue, TopicExchange notificationExchange) {
@@ -302,7 +303,7 @@ public class TopicRabbitMqConfig {
     }
 
     /**
-     * init wecome isv event queue
+     * init wecom isv event queue
      */
     @Bean
     public Queue wecomIsvEventQueue() {

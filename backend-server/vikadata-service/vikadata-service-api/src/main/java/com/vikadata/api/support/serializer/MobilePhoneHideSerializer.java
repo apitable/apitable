@@ -13,11 +13,10 @@ import com.vikadata.api.util.InformationUtil;
 
 /**
  * <p>
- * 手机号加密序列化
+ * Mobile phone number encryption serialization
  * </p>
  *
  * @author Chambers
- * @date 2021/6/4
  */
 public class MobilePhoneHideSerializer extends JsonSerializer<String> {
 

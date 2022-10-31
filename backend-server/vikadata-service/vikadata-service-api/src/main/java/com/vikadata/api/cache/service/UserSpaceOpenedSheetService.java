@@ -4,43 +4,36 @@ import com.vikadata.api.cache.bean.OpenedSheet;
 
 /**
  * <p>
- * 用户在空间内打开的数表信息缓存 服务类
+ * opened datasheet by the user in the space
  * </p>
  *
  * @author Chambers
- * @date 2020/3/18
  */
 public interface UserSpaceOpenedSheetService {
 
 	/**
-	 * 获取用户指定空间打开状态的数表信息
+	 * get opened datasheet by user in the space
 	 *
-	 * @param userId  用户ID
-	 * @param spaceId 空间ID
-	 * @return 打开状态的数表信息
-	 * @author Chambers
-	 * @date 2020/3/18
+	 * @param userId  user id
+	 * @param spaceId space id
+	 * @return OpenedSheet
 	 */
 	OpenedSheet getOpenedSheet(Long userId, String spaceId);
 
 	/**
-	 * 刷新缓存
+	 * refresh cache
 	 *
-	 * @param userId       用户ID
-	 * @param spaceId      空间ID
-	 * @param openedSheet  打开的数表
-	 * @author Chambers
-	 * @date 2020/3/18
+	 * @param userId       user id
+	 * @param spaceId      space id
+	 * @param openedSheet opened datasheet
 	 */
 	void refresh(Long userId, String spaceId, OpenedSheet openedSheet);
 
     /**
-     * 删除缓存
+     * delete cache
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @author Chambers
-     * @date 2019/11/18
+     * @param userId  user id
+     * @param spaceId space id
      */
     void delete(Long userId, String spaceId);
 }

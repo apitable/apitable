@@ -35,11 +35,10 @@ import static com.vikadata.api.constants.AspectOrderConstants.CHAIN_ON_WECOM_SWI
 
 /**
  * <p>
- * 微信模板使用监听 AOP
+ * wecomTemplate app context AOP
  * </p>
  *
  * @author Pengap
- * @date 2021/7/30 18:36:17
  */
 @Aspect
 @Component
@@ -69,7 +68,7 @@ public class ChainOnWeComUseAspect extends BaseAspectSupport {
     public void beforeMethod(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         if (ArrayUtil.isEmpty(args) || args.length < 1) {
-            throw new BusinessException("获取企业微信配置失败");
+            throw new BusinessException("can't switch because appId lost");
         }
         String corpId = ArrayUtil.get(args, 0);
         Integer agentId = ArrayUtil.get(args, 1);
@@ -78,31 +77,27 @@ public class ChainOnWeComUseAspect extends BaseAspectSupport {
         String key = weComTemplate.mergeKey(corpId, agentId);
         boolean isExistService = weComTemplate.isExistService(key, isTempAuthService);
         if (isTempAuthService && !isExistService) {
-            // 构建临时授权
             Duration timeout = Duration.ofHours(TIMEOUT).plusSeconds(RandomUtil.randomLong(60, 360));
 
             String configSha = SecureUtil.sha1(String.format("%s-%s", corpId, agentId));
             WeComAuthInfo authConfig = iWeComService.getConfigSha(configSha);
             if (null == authConfig) {
-                throw new BusinessException("获取企业微信配置失败");
+                throw new BusinessException("get wecom config error");
             }
             weComTemplate.addService(corpId, agentId, authConfig.getAgentSecret(), true, timeout.toMillis());
         }
         else if (!isTempAuthService && !isExistService) {
-            // 构建授权
             WeComAuthInfo authConfig = this.cacheGetConfig(corpId, agentId);
             weComTemplate.addService(corpId, agentId, authConfig.getAgentSecret());
         }
     }
 
     /**
-     * 获取授权配置信息，如果有缓存优先获取缓存内容
+     * get auth config , If there is a cache, get the cache content first
      *
-     * @param corpId    企业Id
-     * @param agentId   企业应用Id
-     * @return 授权配置信息
-     * @author Pengap
-     * @date 2021/8/1 15:34:10
+     * @param corpId    corp id
+     * @param agentId   corp app id
+     * @return wecom auth info object
      */
     private WeComAuthInfo cacheGetConfig(String corpId, Integer agentId) {
         String key = weComTemplate.getCacheConfigKeyPrefix().concat(StrUtil.format("{}:{}", corpId, String.valueOf(agentId)));
@@ -113,16 +108,15 @@ public class ChainOnWeComUseAspect extends BaseAspectSupport {
             if (Objects.nonNull(authConfig)) {
                 return authConfig;
             }
-            // 获取数据
             config = socialTenantMapper.selectByAppIdAndTenantId(String.valueOf(agentId), corpId);
             if (null == config || StrUtil.isBlank(config.getAuthInfo())) {
-                throw new BusinessException("获取企业微信配置失败");
+                throw new BusinessException("can't get corp auth info");
             }
             else if (BooleanUtil.isFalse(config.getStatus())) {
-                throw new BusinessException("企业微信配置已禁用");
+                throw new BusinessException(String.format("this corp %s is disable", corpId));
             }
             else {
-                // 为了防止大量key在同一时间段内批量失效，添加随机数
+                // To prevent a large number of keys from failing in batches in the same time period, add random numbers
                 Duration timeout = Duration.ofHours(11).plusSeconds(RandomUtil.randomLong(60, 360));
                 authConfig = objectMapper.readValue(config.getAuthInfo(), WeComAuthInfo.class);
                 ops.set(authConfig, timeout);
@@ -130,7 +124,7 @@ public class ChainOnWeComUseAspect extends BaseAspectSupport {
             }
         }
         catch (JsonProcessingException e) {
-            throw new BusinessException("获取企业微信配置失败");
+            throw new BusinessException("parse corp auth info error");
         }
     }
 

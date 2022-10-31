@@ -225,8 +225,6 @@ public interface ISocialCpIsvService {
      * @param authCorpId Paid corporation ID
      * @param spaceId Optionally, vika space ID
      * @param orderEntity Existed order info
-     * @author Codeman
-     * @date 2022-08-29 16:53:52
      */
     void handleTenantPaidSubscribe(String suiteId, String authCorpId, String spaceId, WeComOrderPaidEvent orderEntity);
 

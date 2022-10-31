@@ -2,11 +2,10 @@ package com.vikadata.api.constants;
 
 /**
  * <p>
- * Session会话常量
+ * Session attribute constants
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/29 18:09
  */
 public class SessionAttrConstants {
 

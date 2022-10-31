@@ -12,8 +12,6 @@ import lombok.ToString;
  * <p>
  * 企业微信第三方应用登录后的信息
  * </p>
- * @author 刘斌华
- * @date 2022-01-20 16:51:15
  */
 @ApiModel("企业微信第三方应用登录后的信息")
 @Setter

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIsvTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.modular.finance.model.SocialOrderContext;

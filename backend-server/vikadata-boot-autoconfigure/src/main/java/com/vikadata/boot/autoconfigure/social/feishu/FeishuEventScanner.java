@@ -27,12 +27,9 @@ import com.vikadata.social.feishu.event.contact.v3.BaseV3ContactEvent;
 import org.springframework.context.ApplicationContext;
 
 /**
- * 应用启动后，飞书事件监听器扫描
- * 扫描特定的注解
- * 并放入容器管理
+ * scan feishu event every
  *
  * @author Shawn Deng
- * @date 2020-11-23 18:45:37
  */
 public class FeishuEventScanner {
 
@@ -55,36 +52,29 @@ public class FeishuEventScanner {
     }
 
     public EventListenerFactory scan() {
-        // 获取标注 FeishuEventHandler 注解的类
+        // get annotation with FeishuEventHandler
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(FeishuEventHandler.class);
 
         if (beans.isEmpty()) {
-            log.warn("您似乎未提供飞书的事件订阅的处理机制，请问是正确的吗？");
+            log.warn("It seems that you do not provide the processing mechanism for event subscription of feishu. Is it correct？");
         }
 
         final AppHandlers appHandlers = new AppHandlers();
 
-        // 解析注解类里面的方法，只有被标注的注解才能被扫描入容器
         for (Object bean : beans.values()) {
-            // 所有注解的方法
             List<BaseInvocation> invocations = findInvocations(bean);
-            // 遍历监听器方法列表
             invocations.forEach(invocation -> {
                 if (invocation instanceof FeishuEventInvocation) {
-                    // 事件订阅方法
                     final FeishuEventInvocation eventInvocation = (FeishuEventInvocation) invocation;
                     if (BaseEvent.class.isAssignableFrom(eventInvocation.getEventType())) {
-                        // 如果是事件订阅回调
                         if (null != appHandlers.callbackEventInvocations.putIfAbsent((Class<? extends BaseEvent>) eventInvocation.getEventType(), eventInvocation)) {
                             throw new IllegalStateException("duplicate handler for " + eventInvocation.getEventType().getSimpleName());
                         }
                     } else if (BaseV3ContactEvent.class.isAssignableFrom(eventInvocation.getEventType())) {
-                        // 如果是事件订阅回调
                         if (null != appHandlers.callbackNewContactEventInvocations.putIfAbsent((Class<? extends BaseV3ContactEvent>) eventInvocation.getEventType(), eventInvocation)) {
                             throw new IllegalStateException("duplicate handler for " + eventInvocation.getEventType().getSimpleName());
                         }
                     } else if (CardEvent.class == eventInvocation.getEventType()) {
-                        // 如果是消息卡片事件
                         if (appHandlers.cardEventInvocation != null) {
                             throw new IllegalStateException("duplicate handler for " + eventInvocation.getEventType().getSimpleName());
                         }
@@ -93,19 +83,18 @@ public class FeishuEventScanner {
                         throw new IllegalStateException("unreachable code, unknown eventType: " + eventInvocation.getEventType().getName());
                     }
                 } else if (invocation instanceof FeishuCardActionInvocation) {
-                    // 消息交互方法
                     final FeishuCardActionInvocation cardActionInvocation = (FeishuCardActionInvocation) invocation;
                     if (null != appHandlers.cardActionInvocations.putIfAbsent(cardActionInvocation.getCardActionAnnotation().methodName(), cardActionInvocation)) {
                         throw new IllegalStateException("duplicate handler for card method " + cardActionInvocation.getCardActionAnnotation().methodName());
                     }
                 } else {
-                    // 不会发生的
-                    throw new IllegalStateException("未知的方法类型");
+                    // It won't happen
+                    throw new IllegalStateException("Unknown event type");
                 }
             });
         }
 
-        // 往事件监听器里注册事件处理方法
+        // Register the event handling method to the event listener
         EventListenerFactory factory = new EventListenerFactory();
         factory.addEventCallbackHandler(
             appHandlers.callbackEventInvocations.entrySet().stream().collect(
@@ -118,14 +107,13 @@ public class FeishuEventScanner {
     }
 
     /**
-     * 查找注解并包装成处理类
+     * Find annotations and wrap them into processing classes
      *
-     * @param o bean 对象
-     * @return 注解对应的包装类列表
+     * @param o bean object
+     * @return list of wrapper class
      */
     private List<BaseInvocation> findInvocations(Object o) {
         final List<BaseInvocation> invocations = new ArrayList<>();
-        // 遍历类的方法
         for (Method m : o.getClass().getMethods()) {
             BaseInvocation inv = methodToInvocation(m, o);
             if (inv != null) {
@@ -137,40 +125,33 @@ public class FeishuEventScanner {
 
     private BaseInvocation methodToInvocation(Method m, Object o) {
         if (m.isAnnotationPresent(FeishuEventListener.class)) {
-            // 事件订阅注解方法
             Parameter[] parameters = m.getParameters();
-            // 参数为空不处理
             if (parameters == null) {
                 return null;
             }
             Parameter eventParam = null;
             for (Parameter p : parameters) {
-                // 参数是继承 BaseEvent 基类
                 boolean equalAssign = BaseEvent.class.isAssignableFrom(p.getType()) && BaseEvent.class != p.getType();
-                // 参数是继承 BaseNewContactEvent 类
                 boolean equalNewContactAssign = BaseV3ContactEvent.class.isAssignableFrom(p.getType()) && BaseV3ContactEvent.class != p.getType();
                 if (equalAssign || equalNewContactAssign || CardEvent.class == p.getType()) {
                     if (eventParam != null) {
-                        throw new IllegalStateException("FeishuEventListener 注解的方法不允许存在多个参数: " + o.getClass().getName() + "." + m.getName());
+                        throw new IllegalStateException("FeishuEventListener does not allow multiple parameters: " + o.getClass().getName() + "." + m.getName());
                     }
                     eventParam = p;
                 }
             }
-            // 参数为空则不应该代表正确的处理方法
             if (eventParam == null) {
                 return null;
             }
-            // 消息卡片事件必须指定返回类型为 Card 对象
             if (CardEvent.class == eventParam.getType()) {
                 if (m.getReturnType() != Card.class) {
-                    throw new IllegalStateException("CardEvent 注解的方法必须返回 Card 对象, 方法名: " + m.getName());
+                    throw new IllegalStateException("CardEvent must return Card object, method name: " + m.getName());
                 }
             }
             return new FeishuEventInvocation(m, o, eventParam.getType());
         } else if (m.isAnnotationPresent(FeishuCardActionListener.class)) {
-            // 消息卡片交互处理的方法
             if (m.getReturnType() != Card.class) {
-                throw new IllegalStateException("FeishuCardActionListener 注解的方法必须返回 Card 对象, 方法名: " + m.getName());
+                throw new IllegalStateException("FeishuCardActionListener must return Card object, method name: " + m.getName());
             }
             return new FeishuCardActionInvocation(m, o);
         }
@@ -264,7 +245,7 @@ public class FeishuEventScanner {
     }
 
     /**
-     * 整个事件存储的临时容器类
+     * Temporary container class for the entire event store
      */
     private static class AppHandlers {
 

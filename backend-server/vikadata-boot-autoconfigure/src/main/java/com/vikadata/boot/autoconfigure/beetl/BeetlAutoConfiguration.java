@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * IBeetl渲染模版
+ * beetl render template autoconfiguration
  *
  * @author Shawn Deng
- * @date 2021-01-09 01:01:41
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(GroupTemplate.class)

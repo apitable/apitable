@@ -9,8 +9,6 @@ import lombok.Setter;
  * <p>
  * 企业微信付费方案
  * </p>
- * @author 刘斌华
- * @date 2022-04-29 18:53:17
  */
 @Setter
 @Getter

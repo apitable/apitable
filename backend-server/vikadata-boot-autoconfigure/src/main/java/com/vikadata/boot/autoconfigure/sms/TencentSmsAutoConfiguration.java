@@ -19,17 +19,14 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * 腾讯云短信配置
+ * autoconfiguration of Tencent cloud SMS
  * </p>
  *
  * @author Shawn Deng
- * @date 2019-04-16 16:53
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({SmsSingleSender.class, SmsMultiSender.class})
 public class TencentSmsAutoConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TencentSmsAutoConfiguration.class);
 
     private final SmsProperties properties;
 
@@ -41,7 +38,6 @@ public class TencentSmsAutoConfiguration {
     @ConditionalOnMissingBean(LocalSmsSenderFactory.class)
     @ConditionalOnProperty(name = "vikadata-starter.sms.local.type", havingValue = "tencent")
     LocalSmsSenderFactory localSmsSenderFactory() {
-        LOGGER.info("腾讯云本地短信自动装配");
         Tencent tencent = properties.getLocal().getTencent();
         return new TencentLocalSmsSenderFactory(tencent.getAppId(), tencent.getAppKey(), tencent.getSign());
     }
@@ -50,7 +46,6 @@ public class TencentSmsAutoConfiguration {
     @ConditionalOnMissingBean(OutlandSmsSenderFactory.class)
     @ConditionalOnProperty(name = "vikadata-starter.sms.outland.type", havingValue = "tencent")
     OutlandSmsSenderFactory smsSenderFactory() {
-        LOGGER.info("腾讯云外地短信自动装配");
         Tencent tencent = properties.getOutland().getTencent();
         return new TencentOutlandSmsSenderFactory(tencent.getAppId(), tencent.getAppKey(), tencent.getSign());
     }

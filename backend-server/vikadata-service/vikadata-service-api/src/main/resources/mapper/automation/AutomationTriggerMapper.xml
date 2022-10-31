@@ -7,7 +7,7 @@
         <result column="trigger_id" property="triggerId" javaType="String"/>
         <result column="trigger_type_id" property="triggerTypeId" javaType="String"/>
         <result column="input" property="input"
-                typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+                typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
     </resultMap>
 
     <select id="getTriggersByResourceId" resultMap="triggerDto">

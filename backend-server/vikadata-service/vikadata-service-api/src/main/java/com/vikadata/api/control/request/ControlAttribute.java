@@ -5,27 +5,26 @@ import java.util.List;
 import com.vikadata.api.control.ControlType;
 
 /**
- * 控制器属性
+ * control attribute definition
  * @author Shawn Deng
- * @date 2021-03-17 19:06:21
  */
 public interface ControlAttribute {
 
     /**
-     * 权限控制机凭证
-     * @return 用户凭证
+     * get unit id of control
+     * @return unit id of organization
      */
     List<Long> getUnits();
 
     /**
-     * 权限控制单位
-     * @return 控制机对象
+     * get control id list
+     * @return control id list
      */
     List<String> getControlIds();
 
     /**
-     * 权限控制单位类型
-     * @return 权限控制单位类型
+     * get control type
+     * @return control type
      */
     ControlType getType();
 }

@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.config.properties.SubscriptionProperties;
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.finance.Currency;
 import com.vikadata.api.enums.finance.OrderChannel;
 import com.vikadata.api.enums.finance.OrderStatus;

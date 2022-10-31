@@ -1,9 +1,8 @@
 package com.vikadata.api.util.billing.model;
 
 /**
- * 经济模块常量定义
+ * billing constants
  * @author Shawn Deng
- * @date 2021-10-29 17:51:24
  */
 public class BillingConstants {
 

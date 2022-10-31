@@ -18,10 +18,9 @@ import com.vikadata.system.config.notification.SocialTemplate;
 
 /**
  * <p>
- * 通知观察者--企业微信应用抽象
+ * base wecom notify observer
  * </p>
  * @author zoe zheng
- * @date 2022/3/15 18:30
  */
 @Slf4j
 public abstract class AbstractWecomNotifyObserver extends SocialNotifyObserver<SocialTemplate, SocialNotifyContext> {
@@ -53,7 +52,6 @@ public abstract class AbstractWecomNotifyObserver extends SocialNotifyObserver<S
         Map<String, Object> renderMap = bindingMap(ro);
         String description = StrUtil.format(VikaStrings.t(template.getTemplateString()), renderMap);
         String title = VikaStrings.t(template.getTitle());
-        // 构建url
         String callbackUrl = context.getEntryUrl()
                 .concat("&reference={https_enp_domain}");
         if (StrUtil.isNotBlank(template.getUrl())) {

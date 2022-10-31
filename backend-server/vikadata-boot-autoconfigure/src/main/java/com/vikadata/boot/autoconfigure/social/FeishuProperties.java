@@ -4,10 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 飞书集成配置
+ * feishu integration properties
  *
  * @author Shawn Deng
- * @date 2020-11-18 17:46:46
  */
 @ConfigurationProperties(prefix = "vikadata-starter.social.feishu")
 public class FeishuProperties extends SocialProperties {
@@ -15,37 +14,37 @@ public class FeishuProperties extends SocialProperties {
     private boolean enabled = false;
 
     /**
-     * 应用名称
+     * app name
      */
     private String appName;
 
     /**
-     * 数据加密密钥，选填
+     * encrypt key
      */
     private String encryptKey;
 
     /**
-     * 事件验证令牌，必填
+     * verification token
      */
     private String verificationToken;
 
     /**
-     * 是否第三方应用,决定是否使用 {@code app ticket} 身份验证
+     * whether is isv
      */
     private Boolean isv = Boolean.FALSE;
 
     /**
-     * 基础路径，默认为 {@code feishu}
+     * base path, default is feishu
      */
     private String basePath = "feishu";
 
     /**
-     * 事件订阅回调路径，默认为 {@code event}，每个应用的事件回调全路径为：/{socialType}/event
+     * callback url of event, default is event, full callback event path should be ：/{socialType}/event
      */
     private String eventPath = "event";
 
     /**
-     * 消息卡片回调路径，默认为 {@code /card}，每个应用的事件回调全路径为：/{socialType}/card
+     * callback url of card event, default is event, full callback event path should be ：/{socialType}/card
      */
     private String cardEventPath = "card";
 
@@ -114,9 +113,9 @@ public class FeishuProperties extends SocialProperties {
     }
 
     /**
-     * 检查配置是否填写
+     * check attribute
      *
-     * @param properties 配置信息
+     * @param properties feishu properties
      */
     @Deprecated
     public static void checkAppProperties(FeishuProperties properties) {

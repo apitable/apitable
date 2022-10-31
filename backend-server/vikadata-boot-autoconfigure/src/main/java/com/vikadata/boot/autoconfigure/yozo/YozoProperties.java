@@ -2,29 +2,15 @@ package com.vikadata.boot.autoconfigure.yozo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-22 10:42:35
- */
 @ConfigurationProperties(prefix = "vikadata-starter.yozo")
 public class YozoProperties {
 
     private boolean enabled = false;
 
-    /**
-     * 应用唯一标识
-     */
     private String appId;
 
-    /**
-     * 永中SAAS版的接口调用所需key
-     */
     private String key;
 
-    /**
-     * 文件预览转换的API地址
-     */
     private Uri uri;
 
     public boolean isEnabled() {

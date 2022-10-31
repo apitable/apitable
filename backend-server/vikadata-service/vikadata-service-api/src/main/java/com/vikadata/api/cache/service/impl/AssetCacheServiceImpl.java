@@ -8,21 +8,13 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
-import com.vikadata.api.cache.service.IAssetCacheService;
+import com.vikadata.api.cache.service.AssetCacheService;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-/**
- * <p>
- * resource cache service implement class
- * </p>
- *
- * @author Chambers
- * @date 2022/8/11
- */
 @Service
-public class AssetCacheServiceImpl implements IAssetCacheService {
+public class AssetCacheServiceImpl implements AssetCacheService {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;

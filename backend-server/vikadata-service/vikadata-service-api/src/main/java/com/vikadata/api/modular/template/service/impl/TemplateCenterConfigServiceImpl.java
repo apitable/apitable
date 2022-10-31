@@ -20,7 +20,7 @@ import com.vikadata.api.cache.bean.Banner;
 import com.vikadata.api.cache.bean.RecommendConfig;
 import com.vikadata.api.cache.bean.RecommendConfig.AlbumGroup;
 import com.vikadata.api.cache.bean.RecommendConfig.TemplateGroup;
-import com.vikadata.api.cache.service.ITemplateConfigService;
+import com.vikadata.api.cache.service.TemplateConfigService;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.enums.base.SystemConfigType;
 import com.vikadata.api.enums.template.TemplateAlbumRelType;
@@ -96,7 +96,7 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
     private VikaOperations vikaOperations;
 
     @Resource
-    private ITemplateConfigService iTemplateConfigService;
+    private TemplateConfigService templateConfigService;
 
     /**
      * Template Center Entry Relation
@@ -146,8 +146,8 @@ public class TemplateCenterConfigServiceImpl implements ITemplateCenterConfigSer
         this.executeChangeSet(userId, changeSet);
         // delete cache
         existingData.i18nToRecommendMap.keySet().forEach(lang -> {
-            iTemplateConfigService.deleteRecommendConfigCacheByLang(lang);
-            iTemplateConfigService.deleteCategoriesListConfigCacheByLang(lang);
+            templateConfigService.deleteRecommendConfigCacheByLang(lang);
+            templateConfigService.deleteCategoriesListConfigCacheByLang(lang);
         });
     }
 

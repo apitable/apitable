@@ -8,11 +8,10 @@ import static com.vikadata.api.config.properties.CookieProperties.PREFIX;
 
 /**
  * <p>
- * Cookie 配置
+ * Cookie properties
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/28 20:18
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX)
@@ -21,32 +20,32 @@ public class CookieProperties {
     public static final String PREFIX = "vikadata.cookie";
 
     /**
-     * 会话cookie标识名称
+     * cookies name
      */
     private String cookieName;
 
     /**
-     * 会话域名作用域
+     * Session Domain Name Scope
      */
     private String domainName;
 
     /**
-     * 国际化cookie名称
+     * locale 118n cookies name
      */
     private String i18nCookieName;
 
     /**
-     * 会话域名作用域（匹配正则表达式，优先使用domainName）
+     * Session Domain Name Scope（use regex pattern，use domainName first if existed）
      */
     private String domainNamePattern;
 
     /**
-     * 是否开启会话Https,默认: false
+     * Whether to open the session https, default: false
      */
     private Boolean secure = false;
 
     /**
-     * 限制第三方 Cookie,可配置值：Strict，Lax，None，默认none
+     * Available values：Strict，Lax，None，default: none
      */
     private String sameSite = "None";
 }

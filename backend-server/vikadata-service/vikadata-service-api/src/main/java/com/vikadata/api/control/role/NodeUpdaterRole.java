@@ -4,11 +4,10 @@ import com.vikadata.api.control.permission.NodePermission;
 
 /**
  * <p>
- * 更新者角色
+ * Updater role of node
  * <p>
  *
  * @author liuzijing
- * @date 2022/07/06
  */
 public class NodeUpdaterRole extends NodeReaderRole{
 

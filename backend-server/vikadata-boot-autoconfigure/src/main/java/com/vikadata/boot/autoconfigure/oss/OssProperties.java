@@ -3,10 +3,9 @@ package com.vikadata.boot.autoconfigure.oss;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * OSS对象存储配置相关属性
+ * OSS Object Storage Properties
  *
  * @author Benson Cheung
- * @date 2020/2/29 11:57 下午
  */
 @ConfigurationProperties(prefix = "vikadata-starter.oss")
 public class OssProperties {

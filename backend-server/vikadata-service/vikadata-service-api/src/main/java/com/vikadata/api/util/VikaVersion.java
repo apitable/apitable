@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * 维格表版本工具
+ * vika version tool
  * @author Shawn Deng
- * @date 2022-03-26 20:38:39
+ * @deprecated future
  */
+@Deprecated
 public class VikaVersion implements Comparable<VikaVersion> {
 
     private static final Logger logger = LoggerFactory.getLogger(VikaVersion.class);
@@ -117,7 +118,7 @@ public class VikaVersion implements Comparable<VikaVersion> {
             throw new IllegalArgumentException("version don't contain build meta");
         }
         String build = meta[0];
-        // 各种无厘头的build值，没办法，不校验了
+        // All kinds of nonsensical build values, no way, no verification
         if (build == null || build.length() == 0) {
             throw new IllegalArgumentException("version build name is not exist");
         }
@@ -130,7 +131,7 @@ public class VikaVersion implements Comparable<VikaVersion> {
     }
 
     public boolean isFeatureVersion() {
-        return build != null && build.equals("feature");
+        return "feature".equals(build);
     }
 
     public boolean isReleaseVersion() {
@@ -222,7 +223,7 @@ public class VikaVersion implements Comparable<VikaVersion> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(String.format("v%d.%d.%d", major, minor, patch));
-        if (build != null && !build.equals("")) {
+        if (build != null && !"".equals(build)) {
             sb.append("-").append(build);
         }
         if (bugfix != 0) {

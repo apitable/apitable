@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.cache.bean.CategoryDto;
-import com.vikadata.api.cache.service.ITemplateConfigService;
+import com.vikadata.api.cache.service.TemplateConfigService;
 import com.vikadata.api.modular.template.service.ITemplatePropertyService;
 
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -28,7 +28,7 @@ public class TemplateConfigRedisImplTest extends AbstractIntegrationTest {
                     + "{\"templateIds\":[\"tpl3\",\"tpl4\"],\"categoryCode\":\"pc2\",\"categoryName\":\"cn2\"}]";
 
     @SpyBean
-    private ITemplateConfigService templateConfigService;
+    private TemplateConfigService templateConfigService;
 
     @SpyBean
     private ITemplatePropertyService templatePropertyService;

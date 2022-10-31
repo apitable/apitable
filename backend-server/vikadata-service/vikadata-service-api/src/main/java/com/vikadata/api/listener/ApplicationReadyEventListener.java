@@ -15,7 +15,7 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 
 /**
  * <p>
- * 服务启动成功事件监听器
+ * service startup success event listener
  * </p>
  *
  * @author Shawn Deng
@@ -26,11 +26,9 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        // 过滤配置中的环境
         event.getApplicationContext().getBean(OnReadyListener.class).init();
-        // 以防本地机器开发时区不同出现误判
         TimeZone.setDefault(TimeZone.getTimeZone(DEFAULT_TIME_ZONE));
         Locale.setDefault(LanguageManager.me().getDefaultLanguage());
-        log.info("服务语言配置「{}」", Locale.getDefault());
+        log.info("Server Locale is「{}」", Locale.getDefault());
     }
 }

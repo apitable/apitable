@@ -5,102 +5,61 @@ import lombok.Getter;
 
 /**
  * <p>
- * 节点权限点
- * 一一对应功能点
- * 一个功能对应Long型64位的某一个占位
- * 每个Group下的位移数是唯一的，不可以重复
- * 此处代表数据库存储，减少数据库查询
+ * node permission definition
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/4/25 14:33
  */
 @Getter
 @AllArgsConstructor
 public enum NodePermission implements PermissionDefinition {
 
-    /**
-     * 管理节点
-     */
     MANAGE_NODE("manageable", 0, 1L),
 
-    /**
-     * 编辑节点
-     */
     EDIT_NODE("editable", 0, 1L << 1),
 
-    /**
-     * 读取节点
-     */
     READ_NODE("readable", 0, 1L << 2),
 
-    /**
-     * 创建子节点
-     */
     CREATE_NODE("childCreatable", 0, 1L << 3),
 
-    /**
-     * 重命名节点
-     */
     RENAME_NODE("renamable", 0, 1L << 4),
 
-    /**
-     * 编辑节点图标
-     */
     EDIT_NODE_ICON("iconEditable", 0, 1L << 5),
 
-    /**
-     * 编辑节点描述
-     */
     EDIT_NODE_DESC("descriptionEditable", 0, 1L << 6),
 
-    /**
-     * 移动排序节点
-     */
     MOVE_NODE("movable", 0, 1L << 7),
 
-    /**
-     * 可复制节点
-     */
     COPY_NODE("copyable", 0, 1L << 8),
 
-    /**
-     * 导入节点
-     */
     IMPORT_NODE("importable", 0, 1L << 9),
 
-    /**
-     * 导出节点
-     */
     EXPORT_NODE("exportable", 0, 1L << 10),
 
-    /**
-     * 删除节点
-     */
     REMOVE_NODE("removable", 0, 1L << 11),
 
     /**
-     * 读取节点分享信息
+     * read node share info
      */
     SHARE_NODE("sharable", 0, 1L << 12),
 
     /**
-     * 设置节点允许他人保存状态
+     * allow saved shared node
      */
     SET_NODE_SHARE_ALLOW_SAVE("allowSaveConfigurable", 0, 1L << 13),
 
     /**
-     * 设置节点允许他人编辑状态
+     * allow edited share node
      */
     SET_NODE_SHARE_ALLOW_EDIT("allowEditConfigurable", 0, 1L << 14),
 
     /**
-     * 配置节点权限
+     * node configurable
      */
     ASSIGN_NODE_ROLE("nodeAssignable", 0, 1L << 15),
 
     /**
-     * 创建模板
+     * create template
      */
     CREATE_TEMPLATE("templateCreatable", 0, 1L << 16),
 
@@ -157,32 +116,32 @@ public enum NodePermission implements PermissionDefinition {
     EDIT_VIEW_COLOR_OPTION("viewColorOptionEditable", 1, 1L << 25),
 
     /**
-     * 视图锁定可管理
+     * whether to manage view lock
      */
     MANAGE_VIEW_LOCK("viewLockManageable", 1, 1L << 26),
 
     /**
-     * 视图手动保存可管理
+     * whether to manage view munual save operation
      */
     MANAGE_VIEW_MANUAL_SAVE("viewManualSaveManageable", 1, 1L << 27),
 
     /**
-     * 视图选项保存可编辑
+     * whether to edit view option
      */
     EDIT_VIEW_OPTION_SAVE("viewOptionSaveEditable", 1, 1L << 28);
 
     /**
-     * 同一组下唯一权限代号，不能重复
+     * unique code
      */
     private final String code;
 
     /**
-     * 权限位，分组的概念，long型最大容纳63个权限位，超过63个则group+1
+     * permission group
      */
     private final int group;
 
     /**
-     * 权限码，Long型空间的位置,从0开始
+     * unique memory value
      */
     private final long value;
 

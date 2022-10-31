@@ -1,18 +1,17 @@
 package com.vikadata.api.support.serializer;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import java.io.IOException;
-
 /**
  * <p>
- * 空数组序列化处理
+ * Empty array serialization
  * </p>
  *
  * @author Chambers
- * @date 2019/12/31
  */
 public class NullArraySerializer extends JsonSerializer<Object> {
 

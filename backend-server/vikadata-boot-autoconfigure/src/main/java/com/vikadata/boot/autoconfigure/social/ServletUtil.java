@@ -14,9 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
 /**
- * Servlet 工具
+ * Servlet util for social
  * @author Shawn Deng
- * @date 2022-02-08 11:28:06
  */
 public class ServletUtil {
 
@@ -27,15 +26,15 @@ public class ServletUtil {
             return getRequestBody(request.getReader());
         }
         catch (IOException e) {
-            // 不需要处理这种问题
-            LOG.error("事件回调读取HttpServletRequest失败", e);
+            // No need to deal with this problem
+            LOG.error("get servlet request error", e);
             return null;
         }
     }
 
     public static String getRequestBody(BufferedReader reader) {
         final StringBuilder builder = new StringBuilder();
-        // 默认缓存大小 8192
+        // Default cache size: 8192
         final CharBuffer buffer = CharBuffer.allocate(2 << 12);
         try {
             while (-1 != reader.read(buffer)) {

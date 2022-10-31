@@ -26,8 +26,6 @@ import com.vikadata.api.control.role.FieldEditorRole;
 import com.vikadata.api.control.role.NodeManagerRole;
 import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.modular.organization.service.IMemberService;
-import com.vikadata.api.modular.organization.service.IRoleMemberService;
-import com.vikadata.api.modular.organization.service.IRoleService;
 import com.vikadata.api.modular.organization.service.ITeamService;
 import com.vikadata.api.modular.organization.service.IUnitService;
 import com.vikadata.api.modular.space.service.ISpaceRoleService;
@@ -40,9 +38,8 @@ import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN
 import static com.vikadata.api.enums.exception.PermissionException.NODE_ACCESS_DENIED;
 
 /**
- * 控制权限入口接口
+ * control api
  * @author Shawn Deng
- * @date 2021-03-18 09:35:03
  */
 @Slf4j
 @Component
@@ -59,9 +56,6 @@ public class ControlTemplate {
 
     @Resource
     private ISpaceRoleService iSpaceRoleService;
-
-    @Resource
-    private IRoleMemberService iRoleMemberService;
 
     private final List<ControlRequestFactory> factories = new ArrayList<>();
 
@@ -109,14 +103,12 @@ public class ControlTemplate {
     }
 
     /**
-     * 判断成员在节点上是否拥有指定的权限
+     * Determine whether the member has the specified permission on the node
      *
-     * @param memberId 成员 ID
-     * @param nodeId 节点 ID
-     * @param permission 权限
-     * @return 是否拥有指定的权限
-     * @author 刘斌华
-     * @date 2022-03-25 15:05:13
+     * @param memberId member ID
+     * @param nodeId node ID
+     * @param permission node permission
+     * @return true | false
      */
     public boolean hasNodePermission(Long memberId, String nodeId, NodePermission permission) {
 
@@ -193,19 +185,19 @@ public class ControlTemplate {
             return this.doExecute(PrincipalBuilder.roleId(unitEntity.getUnitRefId()), controlId, requestWrapper);
         }
         else if (principal.getPrincipalType() == PrincipalType.MEMBER_ID) {
-            // 只有凭证是成员ID时才检查是否空间站管理员
+            // Check if main admin only if principal is member
             if (isWorkbenchAdmin(principal.getPrincipal())) {
                 ControlRoleDict controlRoleDict = ControlRoleDict.create();
                 ControlRole topRole = this.getTopRole(controlId.getControlType());
                 controlId.toRealIdList().forEach(cId -> controlRoleDict.put(cId, topRole));
                 return controlRoleDict;
             }
-            // 查询成员及所属的部门、角色对应的组织单元
+            // Query members, their departments, and the organizational units corresponding to their roles
             List<Long> fromUnitIds = iMemberService.getUnitsByMember(principal.getPrincipal());
             return doExecute(fromUnitIds, controlId, requestWrapper);
         }
         else if (principal.getPrincipalType() == PrincipalType.TEAM_ID) {
-            // 查询部门及所有父级部门和角色的组织单元
+            // Query the organizational unit of a department and all parent departments and roles
             List<Long> fromUnitIds = iTeamService.getUnitsByTeam(principal.getPrincipal());
             return doExecute(fromUnitIds, controlId, requestWrapper);
         }
@@ -252,7 +244,7 @@ public class ControlTemplate {
                 return factory.create(units, controlId.getControlIds());
             }
         }
-        // 未知的控制类型
+        // Unknown control type
         throw new UnknownControlTypeException(controlId.getControlType());
     }
 }

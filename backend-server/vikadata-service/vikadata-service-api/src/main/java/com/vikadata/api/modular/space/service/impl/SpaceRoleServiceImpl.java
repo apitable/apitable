@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 
@@ -19,13 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.cache.bean.SpaceMenuResourceGroupDto;
 import com.vikadata.api.cache.bean.SpaceResourceGroupDto;
-import com.vikadata.api.cache.service.SpaceResourceFactory;
+import com.vikadata.api.cache.service.SpaceResourceService;
 import com.vikadata.api.component.notification.NotificationRenderField;
 import com.vikadata.api.context.LoginContext;
 import com.vikadata.api.enums.exception.SpaceException;
-import com.vikadata.api.helper.PageHelper;
+import com.vikadata.api.util.page.PageHelper;
 import com.vikadata.api.holder.NotificationRenderFieldHolder;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.model.ro.space.AddSpaceRoleRo;
 import com.vikadata.api.model.ro.space.UpdateSpaceRoleRo;
 import com.vikadata.api.model.vo.space.RoleResourceVo;
@@ -90,7 +89,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     private MemberMapper memberMapper;
 
     @Resource
-    private SpaceResourceFactory spaceResourceFactory;
+    private SpaceResourceService spaceResourceFactory;
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;

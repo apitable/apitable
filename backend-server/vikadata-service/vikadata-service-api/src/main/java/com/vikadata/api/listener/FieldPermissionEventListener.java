@@ -61,11 +61,10 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * <p>
- * 字段权限事件监听器
+ * Field permission event listener
  * </p>
  *
  * @author Chambers
- * @date 2021/4/1
  */
 @Slf4j
 @Component
@@ -106,12 +105,12 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
         notifyRo.setChangeTime(Instant.now(Clock.system(ZoneId.of("+8"))).toEpochMilli());
         switch (arg.getEvent()) {
             case FIELD_PERMISSION_ENABLE:
-                // 开启权限设置
+                // Open permission settings
                 String spaceId = iNodeService.getSpaceIdByNodeId(arg.getDatasheetId());
-                // 获取变更通知对象列表
+                // Get a list of change notification objects
                 List<ChangeObject> changes = getChangeObjects(arg, spaceId);
                 notifyRo.setChanges(changes);
-                // 列权限开启默认关闭收集表写入
+                // Column permission is turned on by default, collection table writing is turned off
                 FieldRoleSetting fieldRoleSetting = new FieldRoleSetting();
                 fieldRoleSetting.setFormSheetAccessible(false);
                 notifyRo.setSetting(fieldRoleSetting);
@@ -121,19 +120,20 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 if (unitIds.isEmpty()) {
                     return;
                 }
-                // 获取组织单元下所有的成员ID，若无成员则代表不会有受影响的用户，直接结束
+                // Get all member IDs under the organizational unit. If there are no members,
+                // it means that there will be no affected users, and end directly
                 List<Long> memberIds = iUnitService.getMembersIdByUnitIds(unitIds);
                 if (memberIds.isEmpty()) {
                     return;
                 }
-                // 获取空间工作台管理员
+                // get space workbench admin
                 List<Long> spaceAdmins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(iNodeService.getSpaceIdByNodeId(arg.getDatasheetId()));
-                // 对空间工作台管理员的变更不会产生权限变化，过滤
+                // Changes to space workbench administrators do not result in permission changes, filtering
                 spaceAdmins.stream().filter(memberIds::contains).forEach(memberIds::remove);
                 if (memberIds.isEmpty()) {
                     return;
                 }
-                // 获取列权限开启者
+                // get column permission opener
                 ControlId controlId = ControlIdBuilder.fieldId(arg.getDatasheetId(), arg.getFieldId());
                 Long ownerMemberId = iControlService.getOwnerMemberId(controlId.toString());
                 if (ownerMemberId != null) {
@@ -143,21 +143,22 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                         return;
                     }
                 }
-                // 加载成员信息
+                // load member information
                 List<MemberBaseInfoDTO> members = memberMapper.selectBaseInfoDTOByIds(memberIds);
                 Map<Long, String> memberIdToUuidMap = members.stream().filter(info -> info.getUuid() != null)
                     .collect(Collectors.toMap(MemberBaseInfoDTO::getId, MemberBaseInfoDTO::getUuid));
-                // 不存在已激活的成员，直接结束
+                // no active members exist just end
                 if (memberIdToUuidMap.isEmpty()) {
                     return;
                 }
                 ControlRole fieldRole = ControlRoleManager.parseFieldRole(arg.getRole());
                 Map<String, List<String>> roleToUuidsMap = new HashMap<>(3);
                 String noRoleKey = "";
-                // 获取过滤变更的组织单元后，成员的列权限角色
+                // field permission roles of members after getting the organizational unit that filters changes
                 Map<Long, ControlRole> memberRoleMap = this.getFilterMemberRoleMap(controlId, spaceAdmins, unitIds);
                 if (arg.getRole() != null && arg.getChangedUnitIds() != null) {
-                    // 新增或修改字段角色，变更后的角色权限从无到有，或者变高了的才广播（例如原来已有可编辑权限，另外一个组织单元设置带来了可查看权限，无需广播）
+                    // Add or modify field roles, and the changed role permissions are created from scratch,
+                    // or broadcast only when they become higher (for example, the original editable permissions are already available, and another organizational unit setting brings viewing permissions, no need to broadcast)
                     for (Entry<Long, String> entry : memberIdToUuidMap.entrySet()) {
                         if (memberRoleMap.containsKey(entry.getKey()) && memberRoleMap.get(entry.getKey()).isGreaterThan(fieldRole)) {
                             continue;
@@ -166,7 +167,8 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                     }
                 }
                 else if (CollUtil.isNotEmpty(arg.getDelUnitIds())) {
-                    // 删除了指定组织单元角色后，变更后的角色权限从有到无，或者降低了的才广播
+                    // After the specified organizational unit role is deleted,
+                    // the changed role permissions will be broadcast from existence to non-existence, or only if they are reduced.
                     for (Entry<Long, String> entry : memberIdToUuidMap.entrySet()) {
                         if (memberRoleMap.containsKey(entry.getKey())) {
                             ControlRole memberFileRole = memberRoleMap.get(entry.getKey());
@@ -201,13 +203,13 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
     }
 
     private List<ChangeObject> getChangeObjects(Arg arg, String spaceId) {
-        // 获取数表对应真实具备角色权限所在节点
+        // Get the data table corresponding to the node that actually has role permissions
         String nodeId = iNodeRoleService.getClosestEnabledRoleNode(arg.getDatasheetId());
-        // 查节点的所有成员
+        // check all members of a node
         List<NodeRoleMemberVo> roleMembers =
             nodeId == null ? iNodeRoleService.getNodeRoleMembers(spaceId)
                 : iNodeRoleService.getNodeRoleMembers(spaceId, nodeId);
-        // 以节点可管理分组，取出对应用户的 uuid
+        // With the node manageable group, take out the corresponding user uuid
         Map<Boolean, List<String>> isManagerToUuidsMap = roleMembers.stream()
             .filter(vo -> vo.getUuid() != null && (vo.getIsAdmin() || !vo.getUuid().equals(arg.getUuid())))
             .collect(Collectors.groupingBy(vo -> {
@@ -220,14 +222,14 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 Collectors.mapping(NodeRoleMemberVo::getUuid, Collectors.toList())));
 
         List<ChangeObject> changes = new ArrayList<>(isManagerToUuidsMap.size());
-        // 如果includeExtend为false：向工作台管理员和列权限开启者广播列可编辑权限集。
-        // 如果includeExtend为true：向工作台管理员或节点权限大于读者，和列权限开启者广播列可编辑权限集。
+        // If include Extend is false: Broadcast the column editable permission set to workbench administrators and column permission enablers.
+        // If include Extend is true: broadcasts the column editable permission set to workbench administrators or node permissions greater than readers, and column permission openers.
         isManagerToUuidsMap.get(true).add(arg.getUuid());
         ControlRole role = ControlRoleManager.parseFieldRole(Field.EDITOR);
         changes.add(new ChangeObject(isManagerToUuidsMap.get(true), role.getRoleTag(), role.permissionToBean(FieldPermission.class)));
         if (isManagerToUuidsMap.containsKey(false)) {
-            // 如果includeExtend为false：其他权限的成员广播空权限集。
-            // 如果includeExtend为true：等于节点阅读权限的人员广播列可阅读权限集。
+            // If include Extend is false: members of other permissions broadcast an empty permission set.
+            // If include Extend is true: the read permission set of the broadcast column is equal to the read permission of the node.
             String defaultRole = BooleanUtil.isFalse(arg.getIncludeExtend()) ? StrUtil.EMPTY : Field.READER;
             changes.add(new ChangeObject(isManagerToUuidsMap.get(false), defaultRole, new FieldPermission()));
         }
@@ -235,19 +237,19 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
     }
 
     private Map<Long, ControlRole> getFilterMemberRoleMap(ControlId controlId, List<Long> admins, Collection<Long> changedUnitIds) {
-        // 构建成员角色映射
+        // build member role mappings
         Map<Long, ControlRole> memberRoleMap = new HashMap<>(16);
         FieldEditorRole editorRole = new FieldEditorRole();
 
-        // 工作台管理员和 owner 的列权限角色为编辑
+        // Workbench admin and owner column permission role is Edit
         admins.forEach(admin -> memberRoleMap.put(admin, editorRole));
 
-        // 获取权限集信息
+        // get permission set information
         List<ControlRoleUnitDTO> controlRoles = iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
         if (controlRoles.isEmpty()) {
             return memberRoleMap;
         }
-        // 过滤不发生变更和管理员的组织单元
+        // Filter org units with no changes and administrators
         Map<String, List<ControlRoleUnitDTO>> fieldRoleControlMap = controlRoles.stream()
             .filter(dto -> !changedUnitIds.contains(dto.getUnitId()) && !admins.contains(dto.getUnitRefId()))
             .sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(t.getRole()).getBits()).reversed())
@@ -267,7 +269,7 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                     memberRoleMap.putIfAbsent(control.getUnitRefId(), fieldRole);
                 }
             }
-            // 批量查询部门下的成员ID
+            //batch query member ids under departments
             if (!teamIds.isEmpty()) {
                 List<Long> teamMemberIds = iTeamService.getMemberIdsByTeamIds(teamIds);
                 for (Long teamMemberId : teamMemberIds) {

@@ -11,11 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * 新世界 k11 连接器自动配置
+ * k11 connector autoconfiguration
  * </p>
  *
  * @author Chambers
- * @date 2021/6/21
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "vikadata-connector.k11.enabled", havingValue = "true")

@@ -11,8 +11,6 @@ import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
  * <p>
  * 订阅计费系统-企微商店渠道订单
  * </p>
- * @author 刘斌华
- * @date 2022-08-18 18:37:52
  */
 public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntity> {
 
@@ -21,8 +19,6 @@ public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntit
      *
      * @param paidEvent 订单信息
      * @return 创建后的数据
-     * @author 刘斌华
-     * @date 2022-08-19 11:11:29
      */
     SocialWecomOrderEntity createOrder(WeComOrderPaidEvent paidEvent);
 
@@ -33,8 +29,6 @@ public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntit
      * @param paidCorpId 授权的企业 ID
      * @param orderStatuses 查询的订单状态。可以为空
      * @return 符合条件的所有订单
-     * @author 刘斌华
-     * @date 2022-08-22 16:03:12
      */
     List<SocialWecomOrderEntity> getAllOrders(String suiteId, String paidCorpId, List<Integer> orderStatuses);
 
@@ -43,8 +37,6 @@ public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntit
      *
      * @param orderId 企微订单号
      * @return 订单信息
-     * @author 刘斌华
-     * @date 2022-08-24 11:40:29
      */
     SocialWecomOrderEntity getByOrderId(String orderId);
 
@@ -65,8 +57,6 @@ public interface ISocialWecomOrderService extends IService<SocialWecomOrderEntit
      * @param suiteId 应用套件 ID
      * @param paidCorpId 授权的企业 ID
      * @return 租户的最后一个支付成功的订单
-     * @author 刘斌华
-     * @date 2022-08-25 17:01:44
      */
     SocialWecomOrderEntity getLastPaidOrder(String suiteId, String paidCorpId);
 

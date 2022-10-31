@@ -4,41 +4,36 @@ import com.vikadata.boot.autoconfigure.wx.RedisConnectProperties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-21 16:41:29
- */
 @ConfigurationProperties(prefix = "vikadata-starter.wx.miniapp")
 public class WxMaProperties {
 
     /**
-     * 是否启用（默认: false）
+     * whether to enable（default: false）
      */
     private boolean enabled = false;
 
     /**
-     * 设置微信小程序的appid.
+     * app id
      */
     private String appId;
 
     /**
-     * 设置微信小程序的Secret.
+     * app secret.
      */
     private String secret;
 
     /**
-     * 设置微信小程序消息服务器配置的token.
+     * encrypt token
      */
     private String token;
 
     /**
-     * 设置微信小程序消息服务器配置的EncodingAESKey.
+     * aes key
      */
     private String aesKey;
 
     /**
-     * 消息格式，XML或者JSON.
+     * message format, xml or json
      */
     private String msgDataFormat;
 
@@ -102,44 +97,26 @@ public class WxMaProperties {
 
     public static class ConfigStorage {
 
-        /**
-         * 存储类型.
-         */
         private StorageType storageType = StorageType.Memory;
 
         /**
-         * 指定key前缀.
+         * cache key prefix
          */
         private String keyPrefix = "vikadata:wechat:miniapp";
 
         /**
-         * http客户端类型.
+         * http client type
          */
         private HttpClientType httpClientType = HttpClientType.HttpClient;
 
-        /**
-         * Redis配置，只有jedis才需要配置
-         */
         private RedisConnectProperties redis;
 
-        /**
-         * http代理主机.
-         */
         private String httpProxyHost;
 
-        /**
-         * http代理端口.
-         */
         private Integer httpProxyPort;
 
-        /**
-         * http代理用户名.
-         */
         private String httpProxyUsername;
 
-        /**
-         * http代理密码.
-         */
         private String httpProxyPassword;
 
         public StorageType getStorageType() {
@@ -208,36 +185,10 @@ public class WxMaProperties {
     }
 
     public enum StorageType {
-        /**
-         * 内存.
-         */
-        Memory,
-
-        /**
-         * redis(JedisClient).
-         */
-        Jedis,
-
-        /**
-         * redis(RedisTemplate).
-         */
-        RedisTemplate
+        Memory, Jedis, RedisTemplate
     }
 
     public enum HttpClientType {
-        /**
-         * HttpClient.
-         */
-        HttpClient,
-
-        /**
-         * OkHttp.
-         */
-        OkHttp,
-
-        /**
-         * JoddHttp.
-         */
-        JoddHttp,
+        HttpClient, OkHttp, JoddHttp,
     }
 }

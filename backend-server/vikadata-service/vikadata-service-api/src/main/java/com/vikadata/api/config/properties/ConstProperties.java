@@ -12,11 +12,10 @@ import static com.vikadata.api.config.properties.ConstProperties.PREFIX_CONST;
 
 /**
  * <p>
- * 常量配置信息
+ * server constants properties
  * </p>
  *
  * @author Chambers
- * @date 2020/1/2
  */
 @Data
 @ConfigurationProperties(prefix = PREFIX_CONST)
@@ -28,152 +27,174 @@ public class ConstProperties {
 
     private String serverDomain;
 
-    /**
-     * 各个环境的回调域名
-     */
     private String callbackDomain;
 
     private String workbenchUrl = "/workbench";
 
     /**
-     * oss存储 - 是否创建图片审核记录
+     * Whether to create a picture audit record
      */
     private boolean ossImageAuditCreatable = false;
 
     /**
-     * oss存储桶配置
+     * OSS bucket configuration
      */
     private Map<BucketKey, OssBucketInfo> ossBuckets;
 
     /**
-     * 文档登陆避开人机验证token
+     * api document avoid validate token
      */
     private String loginToken = "BornForFuture";
 
     /**
-     * 官方默认头像列表
+     * Official default avatar list
+     * @deprecated open-source
      */
+    @Deprecated
     private String defaultAvatarList;
 
     /**
-     * 用户白名单列表，不设空间数量上限
+     * User white list, no upper limit of space
      */
     private String userWhiteList = "";
 
     /**
-     * 模板空间，该空间创建的模版将成为官方模版，且不设模版数量上限
+     * Template space, the templates created in this space will become official templates,
+     * and there is no upper limit for the number of templates
      */
     private String templateSpace = "";
 
     /**
-     * 新空间默认引用的模板ID
+     * Template ID referenced by new space by default
      */
     private String quoteTemplateId = "tpll8mltwrZMT";
 
     /**
-     * 新空间默认引用的英文模板ID
+     * English template ID referenced by default in new space
      */
     private String quoteEnTemplateId = "tpll8mltwrZMT";
 
     /**
-     * GM 配置组织单元
+     * @deprecated open-source
      */
+    @Deprecated
     private Long gmConfigUnit;
 
     private String integralRewardConfig = "https://integration.vika.ltd,usk8qo1Dk9PbecBlaqFIvbb,dst9qAYY0ud1E3Av4f,viwPFbZIozOUs";
 
     /**
-     * 微信公众号 获取邀请码的关键词
+     * wechat-mp invite code keyword
+     * @deprecated open-source
      */
+    @Deprecated
     private String inviteCodeKeyword;
 
     /**
-     * 微信公众号 获取邀请码的消息体
+     * wechat-mp get invite code message body
+     * @deprecated open-source
      */
     private String inviteCodeMessage;
 
     /**
-     * 微信公众号 获取邀请码活动的截止时间
+     * wechat-mp deadline of invitation code
+     * @deprecated open-source
      */
+    @Deprecated
     private String inviteCodeExpireTime;
 
     /**
-     * 微信公众号 获取邀请码活动截止后的回复
+     * wechat-mp for replying after get invitation code
+     * @deprecated open-source
      */
+    @Deprecated
     private String inviteCodeExpireReply;
 
     /**
-     * VCode 长度
+     * v-code length
      */
+    @Deprecated
     private Integer vCodeLength = 8;
 
     /**
-     * 微信扫码登录/绑定 回复的模板消息ID
+     * wechat-mp reply template id
+     * @deprecated open-source
      */
+    @Deprecated
     private String qrCodeReplyId;
 
     /**
-     * 微信扫码登录/绑定 回复的模板消息的开头
+     * The beginning of the template message for the reply
+     * warning: do not translate value
+     * @deprecated open-source
      */
+    @Deprecated
     private String qrCodeReplyFirst = "扫码成功";
 
     /**
-     * 微信扫码登录/绑定 回复的模板消息的开头
+     * The beginning of the template message for the reply
+     * warning: do not translate value
+     * @deprecated open-source
      */
+    @Deprecated
     private String qrCodeReplyMethod = "微信扫码";
 
     /**
-     * 微信扫码登录/绑定 回复的模板消息的结尾
+     * the end of the template message for the reply
      */
+    @Deprecated
     private String qrCodeReplyEnd = "更多操作请前往WEB端（vika.cn）进行。";
 
     /**
-     * 邀请成员通知线程等待时间ms
+     * invite member notification thread wait time ms
      */
+    @Deprecated
     private Integer inviteNotifyWaitTime = 3000;
 
     /**
-     * 成员提及次数统计redis超时时间ms
+     * member mention count statistics redis timeout ms
+     * @deprecated open-source
      */
+    @Deprecated
     private Integer mentionNotifyWaitTime = 15000;
 
     /**
-     * 测试手机号前缀
+     * test phone number prefix
      */
+    @Deprecated
     private String testMobilePre = "1340000";
 
     /**
-     * 钉钉订阅信息维格表ID
+     * dingtalk subscription information table id
      */
     private String dingTalkOrderDatasheet;
 
     /**
-     * 钉钉应用vika页面的显示设置ID
+     * display setting id of dingtalk app page
      */
     private String vikaDingTalkAppId = "ina9134969049653777";
 
     /**
-     * 灰度功能"新后端"的 space 白名单
+     * space whitelist for grayscale function "new backend"
      */
     private String newBackendSpaceIds = "";
 
     /**
-     * 发送订阅相关通知
+     * send subscription related notifications
      */
     private Boolean sendSubscriptionNotify = true;
 
     /**
-     * 钉钉自建应用是否需要还原目录树
+     * Do DingTalk self-built apps need to restore the directory tree?
      */
     private Boolean dingTalkContactWithTree = false;
 
     /**
-     * 空间站基础认证赠送的附件容量 GB
+     * The capacity of accessories given by the basic certification of the space station GB
      */
     private Integer spaceBasicCertificationCapacity = 5;
 
     /**
-     * 空间站高级认证赠送的空间站容量 GB
+     * Space station capacity gifted with space station advanced certification GB
      */
     private Integer spaceSeniorCertificationCapacity = 10;
 
@@ -185,41 +206,28 @@ public class ConstProperties {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new).getOrDefault(BucketKey.VK_PUBLIC_ASSETS_LTD, new OssBucketInfo());
     }
 
-    // 存储桶定义
     public enum BucketKey {
-        // 旧资源桶
-        // 改造前端直传期间暂时保留，等改造完成在作废
+        // old resource bucket
+        // It will be temporarily reserved during the transformation of the front-end direct transmission, and will be invalid when the transformation is completed.
         @Deprecated
         VK_ASSETS_LTD,
-        // 新的公开桶
+        // new open bucket
         VK_PUBLIC_ASSETS_LTD,
     }
 
     @Data
     public static class OssBucketInfo {
-        /**
-         * 存储桶域名
-         */
+
         private String resourceUrl = "";
 
-        /**
-         * 存储桶名称
-         */
         private String bucketName;
 
-        /**
-         * 存储类型
-         *
-         * 对应 vika settings （QNY1...）
-         */
         private String type;
     }
 
     /* Gray Config Start */
-    // 灰度空间站替换「serverDomain」变量
     private String grayServerDomain;
 
-    // 灰度空间站替换「callbackDomain」变量
     private String grayCallbackDomain;
     /* Gray Config End */
 

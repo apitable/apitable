@@ -12,21 +12,20 @@ import com.vikadata.system.config.billing.Plan;
 import static com.vikadata.api.util.billing.model.BillingConstants.CATALOG_VERSION;
 
 /**
- * 订阅工具类
+ * billing util
  *
  * @author Shawn Deng
  */
 public class BillingUtil {
 
     public static SubscribePlanInfo channelDefaultSubscription(ProductChannel channel) {
-        // 免费订阅
         Plan freePlan = BillingConfigManager.getFreePlan(channel);
         if (freePlan == null) {
             throw new RuntimeException("free plan is missing");
         }
         return SubscribePlanInfo.builder().version(CATALOG_VERSION)
                 .product(freePlan.getProduct())
-                // 飞书/钉钉/企业微信基础版永久有效，设置为 null
+                // lark/dingtalk/wecom base is not expired，set null
                 .deadline(null)
                 .basePlan(freePlan)
                 .addOnPlans(Collections.emptyList()).build();

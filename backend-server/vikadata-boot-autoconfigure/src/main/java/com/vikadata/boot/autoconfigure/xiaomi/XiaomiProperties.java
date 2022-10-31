@@ -4,11 +4,6 @@ import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-30 15:05:24
- */
 @ConfigurationProperties(prefix = "vikadata-starter.xiaomi")
 public class XiaomiProperties {
 

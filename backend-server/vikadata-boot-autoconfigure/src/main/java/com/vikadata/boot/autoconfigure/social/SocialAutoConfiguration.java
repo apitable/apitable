@@ -15,10 +15,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
- * 社交媒体集成自动配置
+ * autoconfiguration of social integration
  *
  * @author Shawn Deng
- * @date 2020-11-18 18:32:46
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(SocialRedisOperations.class)

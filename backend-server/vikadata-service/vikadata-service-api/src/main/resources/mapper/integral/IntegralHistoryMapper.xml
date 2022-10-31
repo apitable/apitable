@@ -13,7 +13,7 @@
         <result column="action_code" property="action"/>
         <result column="alter_type" property="alterType"/>
         <result column="alter_integral" property="alterValue"/>
-        <result column="parameter" property="params" typeHandler="com.vikadata.api.handler.mybatis.JsonHandler"/>
+        <result column="parameter" property="params" typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
         <result column="created_at" property="createdAt"/>
     </resultMap>
 

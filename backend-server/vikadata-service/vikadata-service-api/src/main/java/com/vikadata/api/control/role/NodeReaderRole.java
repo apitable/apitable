@@ -5,9 +5,8 @@ import com.vikadata.api.control.permission.NodePermission;
 import com.vikadata.api.control.role.RoleConstants.Node;
 
 /**
- * 只读角色
+ * reader role of node
  * @author Shawn Deng
- * @date 2021-03-18 16:42:50
  */
 public class NodeReaderRole extends NodeRole {
 

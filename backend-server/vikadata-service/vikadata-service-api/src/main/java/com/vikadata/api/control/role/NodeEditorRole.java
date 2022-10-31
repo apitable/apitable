@@ -5,9 +5,8 @@ import com.vikadata.api.control.permission.NodePermission;
 import com.vikadata.api.control.role.RoleConstants.Node;
 
 /**
- * 编辑者角色
+ * Editor role of node
  * @author Shawn Deng
- * @date 2021-03-18 16:42:50
  */
 public class NodeEditorRole extends NodeReaderRole {
 
@@ -43,9 +42,9 @@ public class NodeEditorRole extends NodeReaderRole {
 
         permissions.add(FieldPermission.EDIT_FIELD_DATA);
 
-        // 视图手动保存可管理
+        // views are manually saved and manageable
         permissions.add(NodePermission.MANAGE_VIEW_MANUAL_SAVE);
-        // 视图选项保存可编辑
+        // view options save editable
         permissions.add(NodePermission.EDIT_VIEW_OPTION_SAVE);
     }
 

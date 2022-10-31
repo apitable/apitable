@@ -16,11 +16,10 @@ import org.springframework.context.annotation.Import;
 
 /**
  * <p>
- * 短信自动配置
+ * autoconfiguration of SMS
  * </p>
  *
  * @author Shawn Deng
- * @date 2019-04-16 16:50
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(SmsSenderTemplate.class)

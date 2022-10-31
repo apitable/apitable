@@ -1,9 +1,8 @@
 package com.vikadata.api.control;
 
 /**
- * 资源控制凭证构造器
+ * Control Principal Builder
  * @author Shawn Deng
- * @date 2021-03-18 11:18:27
  */
 public class PrincipalBuilder {
 

@@ -1,16 +1,15 @@
 package com.vikadata.api.cache.bean;
 
-import lombok.Data;
-
 import java.io.Serializable;
+
+import lombok.Data;
 
 /**
  * <p>
- * 用户的空间资源
+ * resource in user space
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/2/14 15:50
  */
 @Data
 public class SpaceResourceDto implements Serializable {

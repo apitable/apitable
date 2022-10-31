@@ -1,17 +1,18 @@
 package com.vikadata.api.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.vikadata.api.component.audit.ParamLocation;
 import com.vikadata.api.component.notification.NotificationTemplateId;
-import org.apache.ibatis.jdbc.Null;
 
 /**
 * <p>
-*  通知标示
+*  notification annotation
 * </p>
 * @author zoe zheng
-* @date 2020/6/15 8:28 下午
 */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -19,7 +20,7 @@ import org.apache.ibatis.jdbc.Null;
 public @interface Notification {
 
     /**
-     * 模版ID
+     * template id
      */
     NotificationTemplateId[] templateId();
 }

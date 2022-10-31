@@ -17,7 +17,6 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/12 3:36 下午
  */
 @Data
 @ApiModel("用户基本信息")

@@ -34,9 +34,6 @@ import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.http.HttpHeaders;
 
-/**
- * @author tao
- */
 public class UrlRequestUtil {
 
     private static final Logger log = LoggerFactory.getLogger(UrlRequestUtil.class);
@@ -56,7 +53,6 @@ public class UrlRequestUtil {
 
     public static Optional<String> getHtmlTitle(URL url) {
         try {
-            // 1. 发起请求
             Request request = new Request.Builder().url(url).headers(DEFAULT_HEADERS).build();
             Call call = HTTP_CLIENT.newCall(request);
             Response response = call.execute();
@@ -69,7 +65,7 @@ public class UrlRequestUtil {
             log.info("fetch url:[{}] progress have io error, [{}]", url, e.getMessage());
         }
         catch (Throwable e) {
-            // 如github地址可能：Failed to connect to github.com/xx.xx.xx.xx:443 Operation timed out (Connection timed out)
+            // example：like github.com, Failed to connect to github.com/xx.xx.xx.xx:443 Operation timed out (Connection timed out)
             log.info("url [{}] fetch failure，[{}]", url.toString(), e.getMessage());
         }
         return Optional.empty();
@@ -82,18 +78,18 @@ public class UrlRequestUtil {
         Headers headers = response.headers();
         String contentType = headers.get(HttpHeaders.CONTENT_TYPE);
         ResponseBody responseBody = response.body();
-        // 1. 判断资源类型是否为文本
+        // 1. determine if the resource type is text
         if (StrUtil.containsAnyIgnoreCase(contentType,
                 org.springframework.http.MediaType.TEXT_HTML_VALUE)
                 && ObjectUtil.isNotNull(responseBody)) {
-            // 2. 解析获取网址title
+            // 2. parse to get the url title
             MediaType mediaType = responseBody.contentType();
             Charset charset = ObjectUtil.isNotNull(mediaType) ?
                     mediaType.charset(StandardCharsets.UTF_8)
                     : StandardCharsets.UTF_8;
-            // 每次最多读取32kb的字节数
+            // read up to 32 kb bytes at a time
             int bytesSize = 1024 * 32;
-            // 网络传输是分块，需要尝试多次读取
+            // Network transfers are chunked and require multiple reads
             final int tryReadNetworkCount = 5;
             byte[] bytes = new byte[bytesSize];
             InputStream stream = responseBody.byteStream();

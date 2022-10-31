@@ -8,10 +8,9 @@ import java.lang.annotation.Target;
 
 /** 
 * <p> 
-* 事件处理 注解
+* Dingtalk event listener
 * </p> 
 * @author zoe zheng 
-* @date 2021/5/13 2:16 下午
 */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

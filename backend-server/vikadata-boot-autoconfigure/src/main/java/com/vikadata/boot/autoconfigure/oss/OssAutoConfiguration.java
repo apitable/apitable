@@ -13,10 +13,9 @@ import org.springframework.context.annotation.Import;
 
 
 /**
- * 对象存储自动配置
+ * Object Storage Auto Configuration
  *
  * @author Benson Cheung
- * @date 2020/2/29 11:54 下午
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OssProperties.class)

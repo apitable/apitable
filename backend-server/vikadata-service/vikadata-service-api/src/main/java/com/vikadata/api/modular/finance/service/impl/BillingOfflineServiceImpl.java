@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.CapacityType;
 import com.vikadata.api.enums.finance.Currency;

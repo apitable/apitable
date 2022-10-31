@@ -8,11 +8,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * <p>
- * 空字符串序列化返回
+ * Empty string serialization
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/11/9 10:51:52
  */
 public class EmptyBooleanSerializer extends JsonSerializer<Boolean> {
 

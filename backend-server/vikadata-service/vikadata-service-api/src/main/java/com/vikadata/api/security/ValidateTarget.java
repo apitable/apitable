@@ -10,27 +10,20 @@ import static com.vikadata.api.enums.exception.UserException.MOBILE_ERROR_FORMAT
 
 /**
  * <p>
- * 验证目标对象
+ * validate the target object
  * </p>
  *
  * @author Chambers
- * @date 2021/5/11
  */
 @Data
 public class ValidateTarget {
 
     private String target;
 
-    /**
-     * 区号
-     */
     private String areaCode;
 
     private static String mainlandAreaCode = "+86";
 
-    /**
-     * 邮件发送语言
-     */
     private String lang;
 
     public ValidateTarget() {

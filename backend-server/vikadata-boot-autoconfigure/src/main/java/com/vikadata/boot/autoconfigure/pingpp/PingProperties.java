@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- *  ping ++ 配置
+ *  ping plus plus properties
  * </p>
  * @author Shawn Deng
  * @date 2022/2/16 00:38

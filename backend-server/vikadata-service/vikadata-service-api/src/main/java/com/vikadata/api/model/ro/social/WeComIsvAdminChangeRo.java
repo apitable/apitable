@@ -17,8 +17,6 @@ import org.springframework.validation.annotation.Validated;
  * <p>
  * 租户空间更换主管理员
  * </p>
- * @author 刘斌华
- * @date 2022-01-26 17:18:52
  */
 @ApiModel("租户空间更换主管理员")
 @Setter

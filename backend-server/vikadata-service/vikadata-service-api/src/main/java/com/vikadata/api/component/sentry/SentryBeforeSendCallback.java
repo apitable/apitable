@@ -18,11 +18,6 @@ import com.vikadata.api.context.LoginContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-07-13 12:06:14
- */
 @Component
 @Slf4j
 public class SentryBeforeSendCallback implements SentryOptions.BeforeSendCallback {
@@ -53,7 +48,7 @@ public class SentryBeforeSendCallback implements SentryOptions.BeforeSendCallbac
                 }
             }
             catch (Exception ignored) {
-                // 如果没有登陆就不用理会
+                // don't bother if not log in
             }
             return user;
         };

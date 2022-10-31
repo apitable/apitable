@@ -9,25 +9,23 @@ import javax.validation.Valid;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.vikadata.api.annotation.*;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
-import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
-import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 
+import com.vikadata.api.annotation.ApiResource;
+import com.vikadata.api.annotation.GetResource;
+import com.vikadata.api.annotation.Notification;
+import com.vikadata.api.util.page.PageObjectParam;
+import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.cache.bean.LoginUserDto;
 import com.vikadata.api.cache.service.UserActiveSpaceService;
 import com.vikadata.api.cache.service.UserSpaceOpenedSheetService;
 import com.vikadata.api.cache.service.UserSpaceService;
 import com.vikadata.api.component.TaskManager;
-import com.vikadata.api.component.audit.ParamLocation;
 import com.vikadata.api.component.notification.NotificationRenderField;
 import com.vikadata.api.component.notification.NotificationTemplateId;
 import com.vikadata.api.constants.AuditConstants;
@@ -40,7 +38,9 @@ import com.vikadata.api.enums.exception.ParameterException;
 import com.vikadata.api.enums.exception.SpaceException;
 import com.vikadata.api.event.AuditSpaceEvent;
 import com.vikadata.api.event.AuditSpaceEvent.AuditSpaceArg;
+import com.vikadata.api.util.page.PageHelper;
 import com.vikadata.api.holder.NotificationRenderFieldHolder;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.ro.space.SpaceDeleteRo;
 import com.vikadata.api.model.ro.space.SpaceMemberSettingRo;
@@ -58,6 +58,7 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.space.model.GetSpaceListFilterCondition;
 import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
+import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
 import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.service.IUserService;
@@ -78,6 +79,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.vikadata.api.constants.PageConstants.PAGE_PARAM;
+import static com.vikadata.api.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 import static com.vikadata.api.enums.exception.SpaceException.DELETE_SPACE_ERROR;
 
 @RestController
@@ -261,7 +263,6 @@ public class SpaceController {
     }
 
     @Notification(templateId = NotificationTemplateId.QUIT_SPACE)
-    @AuditAction(value = "user_leave_space", spaceIdLoc = ParamLocation.PATH)
     @PostResource(path = "/quit/{spaceId}", requiredPermission = false)
     @ApiOperation(value = "Quit space")
     @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")

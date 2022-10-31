@@ -9,11 +9,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 钉钉配置
+ * dingtalk properties
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/9/17 16:28
  */
 @ConfigurationProperties(prefix = "vikadata-starter.social.dingtalk")
 public class DingTalkProperties {
@@ -23,12 +22,12 @@ public class DingTalkProperties {
     private String env = "daily";
 
     /**
-     * 开发E应用所属企业的corpId。在开发者后台首页可以看到
+     * isv corp id
      */
     private String isvCorpId;
 
     /**
-     * 企业密码
+     * corp secret
      */
     private String corpSecret;
 
@@ -40,50 +39,38 @@ public class DingTalkProperties {
 
     private List<String> preEvnCorpIdList = Collections.emptyList();
 
-    /**
-     * 第三方企业应用--小程序应用
-     */
     private MobileApp mobileApp;
 
-    /**
-     * 企业内部应用--接入H5微应用
-     */
     private CorpH5App corpH5App;
 
-    /**
-     * 第三方企业应用/定制服务应用
-     */
     private List<AgentAppProperty> agentApp = Collections.emptyList();
 
-    /**
-     * 第三方企业应用/应用市场应用
-     */
     private List<IsvAppProperty> isvAppList = Collections.emptyList();
 
     /**
-     * 基础路径，默认为 {@code dingtalk}
+     * base path, default dingtalk
      */
     private String basePath = "dingtalk";
 
     /**
-     * 事件订阅回调路径，默认为 {@code event}，每个应用的事件回调全路径为：/{socialType}/event
+     * callback url of event, default is event, full callback event path should be ：/{socialType}/event
      */
     private String eventPath = "event";
 
     /**
-     * sync http 事件订阅回调路径，默认为 {@code sync_event}，每个应用的事件回调全路径为：/{socialType}/sync_event
+     * sync http event subscribe path, default is sync_event, full callback event path should be ：/{socialType}/sync_event
      */
     private String syncEventPath = "sync_event";
 
     /**
-     * 消息卡片回调路径，默认为 {@code /card}，每个应用的事件回调全路径为：/{socialType}/card
+     * callback url of message card, default is /card, full callback event path should be ：/{socialType}/card
      */
     private String cardEventPath = "card";
 
     /**
-     * 检查配置是否填写
+     * check properties
      *
-     * @param properties 配置信息
+     * @param properties dingtalk properties
      */
     public static void checkAppProperties(DingTalkProperties properties) {
         if (properties == null) {
@@ -277,12 +264,12 @@ public class DingTalkProperties {
         private String corpId;
 
         /**
-         * 加解密需要用到的token，可以随机填写，长度大于等于6个字符且少于64个字符。
+         * Encryption and decryption token
          */
         private String token;
 
         /**
-         * 数据加密密钥。用于回调数据的加密，长度固定为43个字符，从a-z，A-Z，0-9共62个字符中选取，您可以随机生成，ISV(服务提供商)推荐使用注册套件时填写的EncodingAESKey。
+         * aes key
          */
         private String aesKey;
 
@@ -345,12 +332,12 @@ public class DingTalkProperties {
 
     public static class IsvAppProperty {
         /**
-         * 加解密需要用到的token，可以随机填写，长度大于等于6个字符且少于64个字符。
+         * Encryption token
          */
         private String token;
 
         /**
-         * 回调消息加解密参数，是AES密钥的Base64编码，用于解密回调消息内容对应的密文,应用下相关应用产生的回调消息都使用该值来解密。
+         * aes key
          */
         private String aesKey;
 
@@ -363,7 +350,7 @@ public class DingTalkProperties {
         private String appId;
 
         /**
-         * 钉钉商品码，暂时存在配置文件里面，只有一个
+         * dingtalk good code, only one
          */
         private String goodsCode;
 
@@ -482,7 +469,7 @@ public class DingTalkProperties {
         private String secret;
 
         /**
-         * 模版ID->模版钉钉搭icon
+         * template id <> dingtalk template icon
          */
         private Map<String, String> template = new HashMap<>();
 

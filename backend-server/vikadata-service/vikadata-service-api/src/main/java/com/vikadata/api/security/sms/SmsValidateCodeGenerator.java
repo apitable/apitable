@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 短信验证码生成器
+ * SMS verification code generator
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 15:39
  */
 @Component
 public class SmsValidateCodeGenerator implements ValidateCodeGenerator {

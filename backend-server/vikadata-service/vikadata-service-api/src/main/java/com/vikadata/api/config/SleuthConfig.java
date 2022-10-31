@@ -8,9 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 追踪配置
+ * spring cloud sleuth config
  * @author Shawn Deng
- * @date 2021-01-28 17:06:24
  */
 @Configuration(proxyBeanMethods = false)
 public class SleuthConfig {

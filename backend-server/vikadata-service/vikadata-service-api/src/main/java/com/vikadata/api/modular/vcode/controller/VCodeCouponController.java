@@ -13,12 +13,12 @@ import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
-import com.vikadata.api.annotation.PageObjectParam;
+import com.vikadata.api.util.page.PageObjectParam;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.developer.GmAction;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.model.ro.vcode.VCodeCouponRo;
 import com.vikadata.api.model.vo.vcode.VCodeCouponPageVo;
 import com.vikadata.api.model.vo.vcode.VCodeCouponVo;

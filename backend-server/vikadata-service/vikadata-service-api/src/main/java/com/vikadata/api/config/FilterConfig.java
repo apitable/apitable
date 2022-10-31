@@ -22,11 +22,10 @@ import static com.vikadata.api.constants.FilterConstants.MDC_INSERTING_SERVLET_F
 
 /**
  * <p>
- * 过滤器配置
+ * filter config
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/28 19:51
  */
 @Configuration(proxyBeanMethods = false)
 public class FilterConfig {
@@ -41,9 +40,6 @@ public class FilterConfig {
         this.corsProperties = corsProperties;
     }
 
-    /**
-     * 请求日志上下文过滤器
-     */
     @Bean
     public FilterRegistrationBean<MDCInsertingServletFilter> filterMdcBean() {
         FilterRegistrationBean<MDCInsertingServletFilter> registrationBean = new FilterRegistrationBean<>();
@@ -55,7 +51,7 @@ public class FilterConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        // 动态配置
+        // Dynamic configuration
         config.setAllowedOriginPatterns(ArrayUtil.isEmpty(corsProperties.getOrigins()) ? Collections.singletonList("*")
                 : Arrays.asList(corsProperties.getOrigins()));
         config.setAllowCredentials(true);
@@ -68,7 +64,7 @@ public class FilterConfig {
             HttpMethod.PUT.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name()));
         config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // 对所有路径跨域过滤拦截
+        // Cross domain filtering and interception of all paths
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

@@ -1,3 +1,0 @@
-= common definition module
-
-any common definitions are concentrated in this package

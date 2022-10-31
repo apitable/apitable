@@ -8,11 +8,10 @@ import static com.vikadata.api.config.properties.CorsProperties.PREFIX;
 
 /**
  * <p>
- * 跨域 配置信息
+ * cross origin properties
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/28 20:40
  */
 @Data
 @ConfigurationProperties(prefix= PREFIX)

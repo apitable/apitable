@@ -8,41 +8,40 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 企业微信配置文件
+ * wecom properties
  * </p>
  * @author Pengap
- * @date 2021/7/26 15:21:50
  */
 @ConfigurationProperties(prefix = "vikadata-starter.social.wecom")
 public class WeComProperties {
 
     /**
-     * 是否启用（默认: false）
+     * whether to enabled, default false
      */
     private boolean enabled = false;
 
     /**
-     * 企业微信应用vika页面的显示设置ID
+     * Display setting ID of enterprise wecom application vika page
      */
     private String vikaWeComAppId = "ina5200279359980055";
 
     /**
-     * 初始化菜单
+     * Initialization Menu
      */
     private List<InitMenu> initMenus;
 
     /**
-     * 存储策略
+     * Storage Policy
      */
     private ConfigStorage configStorage;
 
     /**
-     * 自动创建企业微信域名接口配置
+     * create enterprise wecom domain name interface configuration
      */
     private OperateEnpDdns operateEnpDdns;
 
     /**
-     * 第三方服务商应用配置列表
+     * Application configuration list of third-party service providers
      */
     private List<IsvApp> isvAppList;
 
@@ -97,23 +96,24 @@ public class WeComProperties {
     public static class InitMenu {
 
         /**
-         * 菜单名称
+         * menu name
          */
         private String name;
 
         /**
-         * 菜单类型 {@link MenuButtonType}
+         * menu type {@link MenuButtonType}
          */
         private String type;
 
         /**
-         * 菜单Url，相对地址Path，域名地址根据不同的应用自动填充，如果是完整地址就不自动填充
-         * <p>path：/ ，表示应用主页
+         * The menu url relative address Path and domain name address are automatically filled in according to different applications.
+         * If it is a complete address, it will not be automatically filled in.
+         * <p>path：/ Represents the application homepage
          */
         private String url;
 
         /**
-         * 子菜单
+         * sub menu
          */
         private List<InitMenu> subButtons;
 
@@ -153,12 +153,12 @@ public class WeComProperties {
     public static class ConfigStorage {
 
         /**
-         * 存储类型.
+         * Storage Type.
          */
         private StorageType storageType = StorageType.memory;
 
         /**
-         * 指定key前缀.
+         * key prefix.
          */
         private String keyPrefix = "vikadata";
 
@@ -180,31 +180,24 @@ public class WeComProperties {
     }
 
     public enum StorageType {
-        /**
-         * 内存.
-         */
         memory,
-
-        /**
-         * redis(RedisTemplate).
-         */
         redis
     }
 
     public static class OperateEnpDdns {
 
         /**
-         * ddns 操作api域名地址
+         * api domain name address
          */
         private String apiHost;
 
         /**
-         * ddns 操作接口Url
+         * ddns operation interface Url
          */
         private String actionDdnsUrl;
 
         /**
-         * 申请企业域名模版
+         * apply enterprise domain template
          */
         private String applyEnpDomainTemplate;
 
@@ -235,60 +228,59 @@ public class WeComProperties {
 
     /**
      * <p>
-     * 第三方服务商配置
+     * isv properties
      * </p>
-     * @author 刘斌华
-     * @date 2022-01-05 10:02:47
      */
     public static class IsvApp {
 
         /**
-         * 应用名称。不能为空且必须唯一
+         * application name, must not null
          */
         private String name;
 
         /**
-         * 企业 ID
+         * corp ID
          */
         private String corpId;
 
         /**
-         * 服务商密钥
+         * isv secret
          */
         private String providerSecret;
 
         /**
-         * 应用套件 ID
+         * app suite id
          */
         private String suiteId;
 
         /**
-         * 应用套件密钥
+         * app suite secret
          */
         private String suiteSecret;
 
         /**
-         * 应用 Token
+         * app Token
          */
         private String token;
 
         /**
-         * 应用 AES 密钥
+         * app AES key
          */
         private String aesKey;
 
         /**
-         * 注册模板 ID
+         * register template ID
          */
         private String templateId;
 
         /**
-         * 邀请成员模板消息 ID
+         * invite template id
          */
         private String inviteTemplateId;
 
         /**
-         * 手动授权上线的时间，GMT+8。这个是为了兼容之前未开通权限的老用户，防止被企微拦截
+         * manual auth time is GMT+8, this is for user which don't open permission,
+         * in case of wecom intercept
          */
         private String manualAuthDatetime;
 
@@ -298,47 +290,50 @@ public class WeComProperties {
         private String subscriptionTrialEditionId;
 
         /**
-         * 接口许可免费试用天数
+         * permit trial days
          */
         private Integer permitTrialDays;
 
         /**
-         * 接口许可免费试用到期空间站通知模板 ID
+         * id of notify template  when free trial is expired
          */
         private String permitTrialExpiredTemplateId;
 
         /**
-         * 接口许可免费试用过期的前几天发送通知。格式：1,3,7,15,30
+         * control notify frequency before trial expire, example: 1,3,7,15,30
          */
         private String permitBuyNotifyBeforeDays;
 
         /**
-         * 购买接口许可时的下单人 user_id
+         * set user id when purchasing interface license
          */
         private String permitBuyerUserId;
 
         /**
-         * 付费用户首次授权安装指定的天数后才购买接口许可
+         * The paid user can purchase the interface license
+         * only after the specified number of days for the first authorized installation
+         *
          */
         private Integer permitCompatibleDays;
 
         /**
-         * 接口许可 Webhook 消息通知地址
+         * webhook address of interface license
          */
         private String permitNotifyWebhookUrl;
 
         /**
-         * 接口许可 Webhook 消息通知密钥
+         * webhook message secret of interface license
          */
         private String permitNotifyWebhookSecret;
 
         /**
-         * 接口许可每日通知的时间区间
+         * start time interval for daily notification of interface license
+         *
          */
         private String permitNotifyTimeStart;
 
         /**
-         * 接口许可每日通知的时间区间
+         * end time interval for daily notification of interface license
          */
         private String permitNotifyTimeEnd;
 

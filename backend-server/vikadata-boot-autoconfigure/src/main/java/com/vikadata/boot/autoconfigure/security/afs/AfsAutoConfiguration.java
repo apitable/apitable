@@ -7,11 +7,10 @@ import org.springframework.context.annotation.Import;
 
 /**
  * <p>
- * 人机验证服务自动配置
+ * autoconfiguration of human verification service
  * </p>
  *
  * @author Chambers
- * @date 2020/3/2
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(AfsProperties.class)

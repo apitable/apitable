@@ -11,7 +11,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 
 import com.vikadata.api.cache.bean.CategoryDto;
-import com.vikadata.api.cache.service.ITemplateConfigService;
+import com.vikadata.api.cache.service.TemplateConfigService;
 import com.vikadata.api.component.LanguageManager;
 import com.vikadata.api.enums.base.SystemConfigType;
 import com.vikadata.api.modular.base.service.ISystemConfigService;
@@ -22,11 +22,8 @@ import org.springframework.stereotype.Service;
 
 import static com.vikadata.define.constants.RedisConstants.GENERAL_CONFIG;
 
-/**
- * @author tao
- */
 @Service
-public class TemplateConfigRedisImpl implements ITemplateConfigService {
+public class TemplateConfigRedisImpl implements TemplateConfigService {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -37,9 +34,6 @@ public class TemplateConfigRedisImpl implements ITemplateConfigService {
     @Resource
     private ITemplatePropertyService templatePropertyService;
 
-    /**
-     * 存储时间，单位：天
-     */
     private static final int TIMEOUT = 2;
 
     private static final String RECOMMEND = ":recommend";

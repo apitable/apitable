@@ -16,8 +16,6 @@ import org.springframework.validation.annotation.Validated;
  * <p>
  * 企业微信内第三方应用授权登录
  * </p>
- * @author 刘斌华
- * @date 2022-01-20 15:56:19
  */
 @ApiModel("企业微信应用用户扫码登录请求参数")
 @Setter

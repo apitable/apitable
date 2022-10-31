@@ -8,11 +8,10 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 事件处理 注解
+ * feishu event listener
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/11/23 19:46
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

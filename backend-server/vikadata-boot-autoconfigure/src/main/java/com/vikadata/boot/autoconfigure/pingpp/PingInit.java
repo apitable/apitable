@@ -10,9 +10,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * ping++初始化
+ * ping plus plus initial
  * @author Shawn Deng
- * @date 2022-02-16 16:32:33
  */
 public class PingInit implements InitializingBean {
 
@@ -28,7 +27,7 @@ public class PingInit implements InitializingBean {
         Pingpp.appId = pingProperties.getAppId();
         URL url = ClassPathResource.class.getClassLoader().getResource(pingProperties.getPrivateKeyPath());
         if (url == null) {
-            throw new IllegalStateException("Ping++私钥文件未找到");
+            throw new IllegalStateException("private key file not found");
         }
         Pingpp.privateKey = IoUtil.read(url.openStream(), StandardCharsets.UTF_8);
     }

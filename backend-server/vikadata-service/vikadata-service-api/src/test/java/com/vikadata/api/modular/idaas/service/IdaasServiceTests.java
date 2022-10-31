@@ -18,9 +18,6 @@ import com.vikadata.api.modular.idaas.model.IdaasAppBindVo;
 import com.vikadata.api.modular.idaas.model.IdaasTenantCreateRo;
 import com.vikadata.api.modular.idaas.model.IdaasTenantCreateRo.ServiceAccount;
 import com.vikadata.api.modular.idaas.model.IdaasTenantCreateVo;
-import com.vikadata.api.modular.idaas.service.IIdaasAppBindService;
-import com.vikadata.api.modular.idaas.service.IIdaasContactService;
-import com.vikadata.api.modular.idaas.service.IIdaasTenantService;
 
 /**
  * <p>

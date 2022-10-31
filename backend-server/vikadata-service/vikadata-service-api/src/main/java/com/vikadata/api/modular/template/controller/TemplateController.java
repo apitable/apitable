@@ -26,7 +26,6 @@ import com.vikadata.api.cache.bean.UserSpaceDto;
 import com.vikadata.api.cache.service.SpaceCapacityCacheService;
 import com.vikadata.api.cache.service.UserSpaceService;
 import com.vikadata.api.component.TaskManager;
-import com.vikadata.api.component.audit.AuditInfoField;
 import com.vikadata.api.component.notification.NotificationTemplateId;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.constants.AuditConstants;
@@ -42,7 +41,6 @@ import com.vikadata.api.enums.audit.AuditSpaceAction;
 import com.vikadata.api.enums.developer.GmAction;
 import com.vikadata.api.event.AuditSpaceEvent;
 import com.vikadata.api.event.AuditSpaceEvent.AuditSpaceArg;
-import com.vikadata.api.holder.AuditFieldHolder;
 import com.vikadata.api.holder.SpaceHolder;
 import com.vikadata.api.model.dto.client.ClientOriginInfo;
 import com.vikadata.api.model.dto.template.TemplateInfo;
@@ -358,8 +356,6 @@ public class TemplateController {
         }
         // 删除模板
         iTemplateService.delete(userId, templateId);
-        // 审计变量，记录值
-        AuditFieldHolder.set(AuditInfoField.builder().templateId(templateId).build());
         // 删除空间容量缓存
         spaceCapacityCacheService.del(spaceId);
         // 发布空间审计事件

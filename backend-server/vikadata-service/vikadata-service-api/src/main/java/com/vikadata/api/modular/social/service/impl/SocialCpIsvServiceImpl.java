@@ -58,7 +58,7 @@ import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
 import com.vikadata.api.config.properties.ConstProperties;
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.exception.BillingException;
 import com.vikadata.api.enums.exception.SocialException;
 import com.vikadata.api.enums.exception.SpaceException;

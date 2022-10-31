@@ -1,10 +1,9 @@
 package com.vikadata.api.constants;
 
 /**
- * 文件后缀常量
+ * file constants
  *
  * @author Chambers
- * @since 2019/11/6
  */
 public class FileSuffixConstants {
 

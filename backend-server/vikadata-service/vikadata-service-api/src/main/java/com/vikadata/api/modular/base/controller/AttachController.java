@@ -12,14 +12,14 @@ import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
-import com.vikadata.api.annotation.PageObjectParam;
+import com.vikadata.api.util.page.PageObjectParam;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.enums.attach.AssetType;
 import com.vikadata.api.enums.exception.AuthException;
 import com.vikadata.api.enums.exception.PermissionException;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.model.ro.asset.AssetsAuditRo;
 import com.vikadata.api.model.ro.asset.AttachAuditCallbackRo;
 import com.vikadata.api.model.ro.asset.AttachOfficePreviewRo;

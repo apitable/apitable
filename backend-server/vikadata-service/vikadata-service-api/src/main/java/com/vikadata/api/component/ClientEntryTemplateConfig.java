@@ -1,22 +1,22 @@
 package com.vikadata.api.component;
 
+import java.util.Map;
+
 import cn.hutool.core.util.StrUtil;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.StringTemplateResourceLoader;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 /**
  * <p>
- * beetle 模版用于加载客户端html入口
+ * Client Entry template config
  * </p>
  *
  * @author zoe zheng
- * @date 2020/4/15 3:50 下午
  */
 @Component
 public class ClientEntryTemplateConfig implements InitializingBean {
@@ -38,7 +38,7 @@ public class ClientEntryTemplateConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        // 初始化代码 为了兼容前端的模板引擎 单独设置标志符 重新加载
+        // Initialization code In order to be compatible with the front-end template engine, set the identifier separately and reload
         StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
         Configuration cfg = Configuration.defaultConfiguration();
         cfg.setPlaceholderStart(HTML_PLACEHOLDER_START);

@@ -25,11 +25,10 @@ import static com.vikadata.api.enums.exception.SpacePermissionException.ILLEGAL_
 
 /**
  * <p>
- * 登录用户信息上下文工具
+ * login context util
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/29 16:12
  */
 public class LoginContext {
 
@@ -42,22 +41,17 @@ public class LoginContext {
         this.userSpaceService = userSpaceService;
     }
 
-    /**
-     * 获取自身INSTANCE
-     */
     public static LoginContext me() {
         return SpringContextHolder.getBean(LoginContext.class);
     }
 
     /**
-     * 获取当前用户
+     * get current login user
      * <p>
-     * 先从ThreadLocal中拿login user，如果有值就直接返回
+     * get login user from threadLocal if has
      * </p>
      *
      * @return LoginUser
-     * @author Shawn Deng
-     * @date 2019/10/29 16:13
      */
     public LoginUserDto getLoginUser() {
         LoginUserDto loginUserDto = LoginUserHolder.get();
@@ -70,26 +64,21 @@ public class LoginContext {
     }
 
     /**
-     * 获取当前请求的空间ID
+     * get current request space id
      *
-     * @return 空间ID
-     * @author Shawn Deng
-     * @date 2020/2/10 00:20
+     * @return space id
      */
     public String getSpaceId() {
         String spaceId = SpaceHolder.get();
         if (spaceId == null) {
             spaceId = HttpContextUtil.getRequest().getHeader(ParamsConstants.SPACE_ID);
             if (spaceId == null) {
-                throw new BusinessException("工作空间不存在");
+                throw new BusinessException("workspace does not exist");
             }
         }
         return spaceId;
     }
 
-    /**
-     * 获取当前用户在空间内的成员ID
-     */
     public Long getMemberId() {
         Long memberId = MemberHolder.get();
         if (memberId == null) {
@@ -104,19 +93,14 @@ public class LoginContext {
         return userSpaceDto.getMemberId();
     }
 
-    public void checkAcrossSpace(String spaceId) {
-        Long userId = SessionContext.getUserId();
-        this.checkAcrossSpace(userId, spaceId);
-    }
-
     public void checkAcrossSpace(Long userId, String spaceId) {
         userSpaceService.getUserSpace(userId, spaceId);
     }
 
     /**
-     * 检查是否拥有资源
+     * whether current user has resource
      *
-     * @param resourceCodes 资源列表
+     * @param resourceCodes resource code list
      */
     public void checkSpaceResource(List<String> resourceCodes) {
         String spaceId = LoginContext.me().getSpaceId();
@@ -130,9 +114,9 @@ public class LoginContext {
     }
 
     /**
-     * 查询用户对应空间信息
+     * get space stayed by current login user
      *
-     * @param spaceId 空间ID
+     * @param spaceId space
      * @return UserSpaceDto
      */
     public UserSpaceDto getUserSpaceDto(String spaceId) {
@@ -141,8 +125,8 @@ public class LoginContext {
     }
 
     /**
-     * 获取当前用户语言
-     * 业务代码中使用-LocaleContextHolder.getLocale().toLanguageTag()
+     * get current user locale
+     * use {@code LocaleContextHolder.getLocale().toLanguageTag()}
      */
     public String getLocaleStr() {
         String result = null;
@@ -153,15 +137,13 @@ public class LoginContext {
 
         }
         finally {
-            // 如果登陆用户设置语言为空，解析Http请求头：accept-language
+            // parse request header：accept-language
             if (StrUtil.isBlank(result)) {
                 Locale reqLocale = HttpContextUtil.getRequest().getLocale();
                 if (Locale.CHINESE.getLanguage().equals(reqLocale.getLanguage())) {
-                    // 中文环境一律都返回：简体中文；还未兼容繁体
                     result = LanguageManager.me().getDefaultLanguageTag();
                 }
                 else {
-                    // 非中文环境一律都返回：美式英语
                     result = Locale.US.toLanguageTag();
                 }
             }
@@ -170,15 +152,15 @@ public class LoginContext {
     }
 
     /**
-     * 获取当前用户语言Locale对象
-     * 业务代码中使用-LocaleContextHolder.getLocale().toLanguageTag()
+     * get current user locale object
+     * use {@code LocaleContextHolder.getLocale().toLanguageTag()}
      */
     public Locale getLocale() {
         return Locale.forLanguageTag(getLocaleStr());
     }
 
     /**
-     * 获取当前用户语言，以下划线代替短横杠，如"zh_CN"
+     * get current user locale, replace underscore from "-"
      */
     public String getLocaleStrWithUnderLine() {
         return getLocaleStr().replace("-", "_");

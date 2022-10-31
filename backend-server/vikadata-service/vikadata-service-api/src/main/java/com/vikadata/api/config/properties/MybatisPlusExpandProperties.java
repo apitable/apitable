@@ -7,9 +7,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * mybatis plus 扩展配置
+ * mybatis plus extend properties
  * @author Shawn Deng
- * @date 2022-03-29 21:52:18
  */
 @Data
 @ConfigurationProperties(prefix = "vikadata.mybatis-plus")
@@ -22,14 +21,13 @@ public class MybatisPlusExpandProperties {
     public static class Plugin {
 
         /**
-         * 是否开启垃圾sql拦截，在SQL性能优化阶段，先默认设置false
+         * Whether to enable garbage sql interception only unit test，default false
          */
         private Boolean illegalSql = Boolean.FALSE;
 
         /**
-         * 是否开启攻击 SQL 阻断解析器
+         * whether to enable sql block attack only unit test, default false
          */
         private Boolean blockAttack = Boolean.FALSE;
-
     }
 }

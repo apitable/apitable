@@ -20,11 +20,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * SocketIO自动配置
+ * autoconfiguration of socketio
  * </p>
  *
  * @author zoe zheng
- * @date 2020/5/8 4:10 下午
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(Socket.class)
@@ -51,22 +50,21 @@ public class SocketioAutoConfiguration {
     private Socket createInstance(SocketioProperties.Client client) {
         Socket socket = null;
         try {
-            // 连接配置
             IO.Options options = new IO.Options();
-            // 失败重试次数
+            // Number of failed retries
             options.reconnectionAttempts = client.getReconnectionAttempts();
-            // 失败重连的时间间隔
+            // Time interval of failed reconnection
             options.reconnectionDelay = client.getReconnectionDelay();
-            // 连接超时时间(ms)
+            // Connection timeout(ms)
             options.timeout = client.getTimeout();
             options.path = client.getPath();
-            // 连接鉴权统一 连接参数
+            // Unified connection parameters for connection authentication
             options.query = "userId=java_" + InetAddress.getLocalHost();
             socket = IO.socket(client.getUrl(), options);
-            socket.on(Socket.EVENT_CONNECTING, objects -> LOGGER.info("socket连接中:host:{}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT_TIMEOUT, objects -> LOGGER.info("socket连接超时:host:{}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT_ERROR, objects -> LOGGER.info("socket连接失败:host:{}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT, objects -> LOGGER.info("socket连接成功:host:{}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECTING, objects -> LOGGER.info("connecting {}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECT_TIMEOUT, objects -> LOGGER.info("connect timeout :{}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECT_ERROR, objects -> LOGGER.info("connect fail: {}", client.getUrl()));
+            socket.on(Socket.EVENT_CONNECT, objects -> LOGGER.info("connect success: {}", client.getUrl()));
             socket.connect();
         }
         catch (UnknownHostException | URISyntaxException e) {

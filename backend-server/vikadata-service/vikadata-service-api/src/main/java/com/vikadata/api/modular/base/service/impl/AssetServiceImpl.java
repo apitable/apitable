@@ -39,7 +39,7 @@ import com.vikadata.api.enums.exception.ActionException;
 import com.vikadata.api.enums.exception.AuthException;
 import com.vikadata.api.enums.exception.DatabaseException;
 import com.vikadata.api.enums.exception.PermissionException;
-import com.vikadata.api.helper.ApiHelper;
+import com.vikadata.api.util.ApiHelper;
 import com.vikadata.api.model.dto.asset.ImageDto;
 import com.vikadata.api.model.dto.space.SpaceAssetDto;
 import com.vikadata.api.model.ro.asset.AttachOfficePreviewRo;

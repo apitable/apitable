@@ -4,9 +4,8 @@ import com.vikadata.api.control.permission.NodePermission;
 import com.vikadata.api.control.role.RoleConstants.Node;
 
 /**
- * 管理者角色
+ * Manager role of node
  * @author Shawn Deng
- * @date 2021-03-18 16:42:50
  */
 public class NodeManagerRole extends NodeEditorRole {
 
@@ -48,10 +47,10 @@ public class NodeManagerRole extends NodeEditorRole {
         permissions.add(NodePermission.EDIT_FIELD_PROPERTY);
         permissions.add(NodePermission.REMOVE_FIELD);
 
-        // 列权限
+        // field permission
         permissions.add(NodePermission.MANAGE_FIELD_PERMISSION);
 
-        // 视图锁定可管理
+        // view locking is manageable
         permissions.add(NodePermission.MANAGE_VIEW_LOCK);
     }
 

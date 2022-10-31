@@ -16,14 +16,13 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.enums.datasheet.IdRulePrefixEnum;
 import com.vikadata.api.enums.datasheet.RemindType;
 import com.vikadata.api.enums.exception.PermissionException;
-import com.vikadata.api.factory.NotifyMailFactory.MailWithLang;
+import com.vikadata.api.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;

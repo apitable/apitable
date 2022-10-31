@@ -19,6 +19,7 @@ import org.springframework.integration.redis.util.RedisLockRegistry;
  */
 @Slf4j
 public class AbstractSocialRabbitConsumer {
+
     /**
      * 5 seconds wait for lock
      */

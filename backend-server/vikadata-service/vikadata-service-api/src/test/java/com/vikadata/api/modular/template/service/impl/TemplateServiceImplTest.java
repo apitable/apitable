@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.cache.service.ITemplateConfigService;
+import com.vikadata.api.cache.service.TemplateConfigService;
 import com.vikadata.api.enums.exception.TemplateException;
 import com.vikadata.api.model.dto.template.TemplateDto;
 import com.vikadata.api.model.vo.node.FieldPermissionInfo;
@@ -63,7 +63,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
     private NodeMapper nodeMapper;
 
     @SpyBean
-    private ITemplateConfigService templateConfigService;
+    private TemplateConfigService templateConfigService;
 
     private final static String CATEGORIES_LIST_CONFIG =
             "[{\"templateIds\":[\"tpl1\",\"tpl2\"],\"categoryCode\":\"pc1\",\"categoryName\":\"cn1\"},"

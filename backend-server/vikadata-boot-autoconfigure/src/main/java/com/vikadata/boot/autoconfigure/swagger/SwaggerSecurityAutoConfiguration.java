@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * swagger 安全结构配置
+ * swagger security properties
  *
  * @author Shawn Deng
- * @date 2021-01-08 17:52:57
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "vikadata-starter.swagger.enabled", havingValue = "true")

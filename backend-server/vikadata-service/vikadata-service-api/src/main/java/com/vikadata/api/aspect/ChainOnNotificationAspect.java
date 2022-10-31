@@ -32,11 +32,10 @@ import static com.vikadata.api.constants.AspectOrderConstants.CHAIN_ON_AUDIT_NOT
 
 /**
  * <p>
- * 用户通知切面
+ * notification aop
  * </p>
  *
  * @author zoe zheng
- * @date 2020/6/16 11:22 上午
  */
 @Aspect
 @Component
@@ -47,9 +46,6 @@ public class ChainOnNotificationAspect extends BaseAspectSupport {
     @Resource
     private NotificationManager notificationManager;
 
-    /**
-     * 成功执行之后的切入点
-     */
     @AfterReturning(pointcut = "@annotation(notification)", returning = "result")
     public void doAfterReturning(Notification notification, Object result) {
         try {

@@ -17,9 +17,8 @@ import com.vikadata.api.enums.lang.ExportLevelEnum;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 
 /**
- * 抽象的角色类
+ * base control role
  * @author Shawn Deng
- * @date 2021-03-18 16:47:51
  */
 abstract class AbstractControlRole implements ControlRole {
 
@@ -46,7 +45,6 @@ abstract class AbstractControlRole implements ControlRole {
         Map<Integer, List<PermissionDefinition>> mapGroups = permissions.stream().distinct()
             .sorted(Comparator.comparing(PermissionDefinition::getGroup))
             .collect(Collectors.groupingBy(PermissionDefinition::getGroup, Collectors.toList()));
-        // 权限占位分组空间数组
         return mapGroups.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey,
                 entry ->
@@ -69,7 +67,6 @@ abstract class AbstractControlRole implements ControlRole {
 
     @Override
     public int compareTo(ControlRole other) {
-        // 从小到大排序
         return Long.compare(getBits(), other.getBits());
     }
 
@@ -109,9 +106,9 @@ abstract class AbstractControlRole implements ControlRole {
     public <T> T permissionToBean(Class<T> beanClass, SpaceGlobalFeature feature) {
         Map<String, Boolean> map = getPermissions().stream()
                 .collect(HashMap::new, (m, v) -> m.put(v.getCode(), true), HashMap::putAll);
-        // 非空间站管理员，节点导出权限由空间全局属性决定
+        // For non-main admin, node export permissions are determined by the space global properties
         if (getPermissions().contains(NodePermission.EXPORT_NODE) && !isAdmin()) {
-            // 比较：空间全局属性和个人权限比较。
+            // Comparison of space global attributes and individual permissions
             boolean isAllowedNodeExportResult = isAllowedNodeExport(feature);
             map.put(NodePermission.EXPORT_NODE.getCode(), isAllowedNodeExportResult);
         }
@@ -120,15 +117,13 @@ abstract class AbstractControlRole implements ControlRole {
 
     private boolean isAllowedNodeExport(SpaceGlobalFeature feature) {
         Integer exportLevel = feature.exportLevelOrDefault();
-        // 1. 没有节点导出信息。
-        boolean isNoExportLevelInfo = ObjectUtil.isNull(feature);
-        // 2. 不允许节点导出。
+        // Whether to allow node export
         boolean isDisallowedNodeExport = ObjectUtil.isNotNull(feature)
                 && ExportLevelEnum.LEVEL_CLOSED.getValue().equals(exportLevel);
-        if (isNoExportLevelInfo || isDisallowedNodeExport) {
+        if (ObjectUtil.isNull(feature) || isDisallowedNodeExport) {
             return false;
         }
-        // 3. 节点导出的角色权限和个人权限比较。
+        // Comparison of role permissions and personal permissions exported by nodes.
         String roleCode = ExportLevelEnum.toEnum(exportLevel).getRoleCode();
         ControlRole nodeExportPermission = ControlRoleManager.parseNodeRole(roleCode);
         return this.isGreaterThanOrEqualTo(nodeExportPermission);

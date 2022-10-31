@@ -35,9 +35,8 @@ import static com.vikadata.api.enums.finance.PayChannel.ALIPAY_PC;
 import static com.vikadata.api.enums.finance.PayChannel.WX_PUB_QR;
 
 /**
- * Ping++工具
+ * Ping++ Util
  * @author Shawn Deng
- * @date 2022-05-16 09:51:53
  */
 public class PingppUtil {
 
@@ -56,8 +55,8 @@ public class PingppUtil {
 
     /**
      * get event data from request
-     * @param requestBody 请求体
-     * @param signature 签名
+     * @param requestBody request body
+     * @param signature signature
      * @return Event Object
      * @throws Exception exception
      */
@@ -71,14 +70,14 @@ public class PingppUtil {
     }
 
     /**
-     * 验证签名
-     * @param dataString 请求数据
-     * @param signatureString 签名
-     * @param publicKey Ping++公钥
+     * verify signature
+     * @param dataString request data
+     * @param signatureString signature
+     * @param publicKey Ping++ public key
      * @return true | false
-     * @throws NoSuchAlgorithmException 算法异常
-     * @throws InvalidKeyException 无法校验异常
-     * @throws SignatureException 签名异常
+     * @throws NoSuchAlgorithmException algorithm exception
+     * @throws InvalidKeyException unable to check exception
+     * @throws SignatureException signature exception
      */
     public static boolean verifyData(String dataString, String signatureString, PublicKey publicKey)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
@@ -99,7 +98,7 @@ public class PingppUtil {
     }
 
     public static Charge createCharge(String appId, Price price, PayChannel channel, String outOrderNo, int amount) {
-        // 创建支付流水号
+        // create payment serial number
         Map<String, Object> chargeParams = new HashMap<>();
         chargeParams.put("order_no", outOrderNo);
         chargeParams.put("amount", amount);
@@ -119,11 +118,11 @@ public class PingppUtil {
         }
         chargeParams.put("extra", extra);
         try {
-            //发起交易请求
+            // initiate a transaction request
             return Charge.create(chargeParams);
         }
         catch (PingppException e) {
-            log.error("发起订单支付失败", e);
+            log.error("failed to initiate order payment", e);
             throw new BusinessException(PAY_ORDER_FAIL);
         }
     }

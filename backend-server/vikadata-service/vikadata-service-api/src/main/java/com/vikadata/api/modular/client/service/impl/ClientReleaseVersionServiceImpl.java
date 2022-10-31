@@ -25,7 +25,7 @@ import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.config.properties.ClientProperties;
 import com.vikadata.api.constants.NodeDescConstants;
 import com.vikadata.api.enums.datasheet.IdRulePrefixEnum;
-import com.vikadata.api.factory.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.model.dto.client.ClientEntryDetailDto;
 import com.vikadata.api.model.dto.node.NodeDescParseDTO;
 import com.vikadata.api.model.ro.client.ClientBuildRo;

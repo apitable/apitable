@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.holder.AuditFieldHolder;
 import com.vikadata.api.holder.LoginUserHolder;
 import com.vikadata.api.holder.MemberHolder;
 import com.vikadata.api.holder.NotificationRenderFieldHolder;
@@ -26,11 +25,10 @@ import static com.vikadata.api.constants.FilterConstants.REQUEST_THREAD_HOLDER_F
 
 /**
  * <p>
- * 请求过滤器
+ * Thread Holder Filter
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/2/9 19:50
  */
 @Component
 @Slf4j
@@ -38,12 +36,10 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        //临时保存器
         UserHolder.init();
         LoginUserHolder.init();
         SpaceHolder.init();
         MemberHolder.init();
-        AuditFieldHolder.init();
         NotificationRenderFieldHolder.init();
 
         try {
@@ -54,7 +50,6 @@ public class RequestThreadHolderFilter extends OncePerRequestFilter implements O
             LoginUserHolder.remove();
             SpaceHolder.remove();
             MemberHolder.remove();
-            AuditFieldHolder.remove();
             NotificationRenderFieldHolder.remove();
             FeishuConfigStorageHolder.remove();
         }

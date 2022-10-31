@@ -5,33 +5,28 @@ import com.vikadata.api.security.ValidateTarget;
 
 /**
  * <p>
- * SMS服务接口
+ * sms service interface
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/25 17:17
  */
 public interface ISmsService {
 
     /**
-     * 发送短信验证码
+     * send sms verification code
      *
-     * @param target 验证目标
-     * @param code   验证码
-     * @param type   短信业务类型
-     * @author Shawn Deng
-     * @date 2019/12/25 18:31
+     * @param target verification target
+     * @param code   verification code
+     * @param type   sms service type
      * @see SmsCodeType
      */
     void sendValidateCode(ValidateTarget target, String code, SmsCodeType type);
 
     /**
-     * 发送通知短信
+     * send notification sms
      *
-     * @param target 验证目标
-     * @param type   短信业务类型
-     * @author Chambers
-     * @date 2019/12/27
+     * @param target verification target
+     * @param type   sms service type
      */
     void sendMessage(ValidateTarget target, TencentConstants.SmsTemplate type);
 }

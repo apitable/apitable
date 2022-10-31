@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 
-import com.vikadata.api.context.ClockManager;
+import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.enums.finance.BundleState;
 import com.vikadata.api.enums.finance.SubscriptionState;
 import com.vikadata.api.util.billing.model.ProductCategory;

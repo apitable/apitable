@@ -1,4 +1,3 @@
-# 框架配置
 spring:
   application:
     name: service-api
@@ -8,7 +7,6 @@ spring:
       max-request-size: ${MAX_REQUEST_SIZE:1GB}
   session:
     timeout: ${SESSION_TIMEOUT:30d}
-  # 数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:vika_dev}?characterEncoding=utf8&autoReconnect=true
@@ -23,31 +21,26 @@ spring:
     host: ${REDIS_HOST:127.0.0.1}
     # redis服务器用户
     username: ${REDIS_USERNAME:}
-    # redis服务器密码
     password: ${REDIS_PASSWORD:}
-    # redis服务器端口
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DB:3}
     timeout: 30000
-  # RabbitMQ配置
   rabbitmq:
     addresses: amqp://${RABBITMQ_HOST:127.0.0.1}:${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:vika}
     password: ${RABBITMQ_PASSWORD:password}
-    publisher-returns: true # exchange到queue的callback,开启发送失败退回（消息有没有找到合适的队列）
-    publisher-confirm-type: correlated # 消息发送到队列的callback,开启发送ack
+    publisher-returns: true
+    publisher-confirm-type: correlated
     listener:
       simple:
-        acknowledge-mode: manual # 手动 ack
+        acknowledge-mode: manual
         prefetch: 5
     virtual-host: ${RABBITMQ_VHOST:/}
-  # 邮件配置
   mail:
     host: ${MAIL_HOST:smtp.feishu.cn}
     username: ${MAIL_USERNAME:email-server@vikadata.com}
     password: ${MAIL_PASSWORD:Qwer123456}
     protocol: smtp
-  # zipkin配置
   zipkin:
     enabled: ${ZIPKIN_ENABLED:false}
     base-url: ${ZIPKIN_BASE_URL}
@@ -57,7 +50,6 @@ spring:
     sender:
       type: ${ZIPKIN_SENDER_TYPE:web}
 
-# 应用配置
 vikadata:
   selfhost:
     enabled: ${SELFHOST_ENABLED:false}
@@ -68,13 +60,11 @@ vikadata:
     domain-name: ${DOMAIN_NAME:}
   cors:
     origins: ${CORS_ORIGINS:*}
-  # 常量配置
   const:
     language-tag: ${LANGUAGE_TAG:zh-CN}
     server-domain: ${SERVER_DOMAIN:}
     callback-domain: ${CALLBACK_DOMAIN:}
     oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
-    # 存储桶配置
     ossBuckets:
       vk_assets_ltd:
         resource-url: ${VK_ASSETS_LTD_URL:https://s1.vika.cn}
@@ -84,51 +74,28 @@ vikadata:
         resource-url: ${VK_PUBLIC_ASSETS_LTD_URL:https://s1-applets.vika.cn}
         bucket-name: ${VK_PUBLIC_ASSETS_LTD_BUCKET:vk-public-assets-ltd}
         type: ${VK_PUBLIC_ASSETS_LTD_TYPE:QNY3}
-    # 人机验证token
     login-token: ${LOGIN_TOKEN:FutureIsComing,TheyAreTheFuture}
-    # 官方头像列表
     default-avatar-list: ${DEFAULT_AVATARS:space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e}
-    # 用户白名单列表，不设空间数量上限
     user-white-list: ${WHITE_USERS}
-    # 模板空间
     template-space: ${TEMPLATE_SPACE:spcNA5eN3Sj6Q}
-    # 新空间默认引用的模板ID
     quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
-    # 新空间默认引用的英文模板ID
     quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
-    # GM 配置组织单元
     gm-config-unit: ${GM_CONFIG_UNIT:1217029305187893249}
-    # 微信公众号 获取邀请码的关键词
     invite-code-keyword: vika
-    # 微信公众号 获取邀请码的消息体
     invite-code-message: '{V_CODE}'
-    # 微信公众号 获取邀请码活动的截止时间
     invite-code-expire-time: 2099-01-01 00:00:00
-    # 微信公众号 获取邀请码活动截止后的回复
     invite-code-expire-reply: 活动已结束
-    # VCode 长度
     v-code-length: 8
-    # 微信扫码登录/绑定 回复的模板消息ID
     qr-code-reply-id: ${QRCODE_REPLY_ID:HH_VkCYNwTeiuExIgriGZxrjKYxm-SGUCO7DSvPegSE}
-    # 钉钉订阅信息维格表ID
     ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
-  # 限制配置
   limit:
-    # 用户的空间数量上限
     space-max-count: ${SPACE_MAX_COUNT:10}
-    # 导入数表的文件大小上限 20M
     max-file-size: ${EXPORT_MAX_FILE_SIZE:20971520}
-    # 数表最大列数
     max-column-count: ${MAX_COLUMN_COUNT:200}
-    # 数表最大行数
     max-row-count: ${MAX_ROW_COUNT:50000}
-    # 模版数量上限
     template-max-count: ${TEMPLATE_MAX_COUNT:20}
-    # 仪表盘组件数量上限
     dsb-widget-max-count: ${DSB_WIDGET_MAX_COUNT:30}
-    # 仪表盘组件数量上限
     dst-robot-max-count: ${DST_ROBOT_MAX_COUNT:10}
-  # Socket Server 配置信息
   socket:
     domain: ${SOCKET_DOMAIN:http://127.0.0.1:3001/socket}
   wx:
@@ -141,7 +108,6 @@ vikadata:
     test-mode: ${SUBSCRIPTION_TEST_MODE:false}
   test:
     test-mode: ${CLOCK_TEST_MODE:false}
-  # 组件：地图服务
   lbs:
     amap:
       jscode: ${AMAP_JSCODE:e21828e25e02c281835f7b65c42fc418}
@@ -152,20 +118,14 @@ vikadata:
       restapi:
         proxy-pass: ${AMAP_RESTAPI_PROXY:https://restapi.amap.com/}
 
-# 自定义组件配置
 vikadata-starter:
   socketio:
     client:
-      # 环境配置
       url: ${SOCKET_URL:http://127.0.0.1:3002}
       path: ${SOCKET_PATH:/notification}
-      # 重连次数
       reconnection-attempts: ${SOCKET_RECONNECTION_ATTEMPTS:2}
-      # 重连间隔毫秒
       reconnection-delay: ${SOCKET_RECONNECTION_DELAY:1000}
-      # 连接超时时间(ms)
       timeout: ${SOCKET_TIMEOUT:1000}
-  #组件：OSS云对象存储，默认开启：七牛云存储
   oss:
     enabled: ${OSS_ENABLED:true}
     type: ${OSS_TYPE:aws}
@@ -188,7 +148,6 @@ vikadata-starter:
       access-key: ${MINIO_ACCESS_KEY:vika}
       secret-key: ${MINIO_SECRET_KEY:vikadata@com}
       bucket-policy: ${MINIO_BUCKET_POLICY:'{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::vk-assets-ltd"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::vk-assets-ltd"],"Condition":{"StringEquals":{"s3:prefix":["*.*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::vk-assets-ltd/*.**"]}]}'}
-  # 组件：短信组件配置
   sms:
     enabled: ${SMS_ENABLED:false}
     local-area-code: ${SMS_LOCAL_AREA_CODE:+86}
@@ -197,12 +156,11 @@ vikadata-starter:
       tencent:
         app-id: ${SMS_TENCENT_APP_ID:1400261864}
         app-key: ${SMS_TENCENT_APP_KEY:393f363b9710ede454eacdc5e6114fb4}
-        sign: ${SMS_TENCENT_SIGN:维格云}
+        sign: ${SMS_TENCENT_SIGN:Cloud}
     outland:
       type: ${SMS_OUTLAND_TYPE:yunpian}
       yunpian:
         apikey: ${SMS_YUNPIAN_APIKEY:c62e64fe947c252761f1f6dbd944d288}
-  # 组件：云邮件推送配置
   mail:
     enabled: ${MAIL_ENABLED:false}
     type: ${MAIL_TYPE:tencent}
@@ -212,7 +170,6 @@ vikadata-starter:
     tencent:
       secret-id: ${MAIL_TENCENT_SECRET_ID:AKIDua7RYR5WihT1KQIuHPIvJRKyOaXHoFcp}
       secret-key: ${MAIL_TENCENT_SECRET_KEY:3rRlqgHemfLo58wuqfIgplTvAAvQghU2}
-  # 组件：腾讯组件
   tencent:
     webapp:
       enabled: ${TENCENT_WEBAPP_ENABLED:false}
@@ -220,23 +177,19 @@ vikadata-starter:
       app-key: ${TENCENT_WEBAPP_APP_KEY:03484c5d9ebabc6ceb02eb7b626011c6}
       redirect-uri: ${TENCENT_WEBAPP_REDIRECT_URI:http://shawn.vaiwan.com/user/qq_connect/callback}
       apply-union: ${TENCENT_WEBAPP_APPLY_UNION:true}
-  # 组件：人机验证服务组件配置
   afs:
     enabled: ${AFS_ENABLED:false}
     aliyun:
       access-key-id: ${AFS_ALIYUN_ACCESS_KEY:LTAI4FbrkR6v4RfpAgL7GRN7}
       secret: ${AFS_ALIYUN_SECRET:XxYFF7e8RkSuOdszPqugrmaY83hNfR}
       region-id: ${AFS_ALIYUN_REGION_ID:cn-shenzhen}
-  # 组件：数据分析组件配置
   data:
     analyze:
       enabled: ${DATA_ANALYZE_ENABLED:false}
       sensors:
         enabled: ${SENSORS_ENABLED:false}
-  # 组件：社交媒体集成方案
   social:
     feishu:
-      # 维格表助手应用
       enabled: ${FEISHU_ENABLED:false}
       app-name: ${FEISHU_APP_NAME:assistant}
       app-id: ${FEISHU_APP_ID:cli_a2d96e91ac3b100d}
@@ -244,7 +197,6 @@ vikadata-starter:
       encrypt-key: ${FEISHU_ENCRYPT_KEY:fMhQmSpUsXuZx4z6B9Eb}
       verification-token: ${FEISHU_VERIFICATION_TOKEN:vVuJKuBGAAUqVaD2BeTQLbH3hLMoskzG}
       isv: ${FEISHU_ISV:false}
-    # 组件：钉钉组件配置
     dingtalk:
       enabled: ${DINGTALK_ENABLED:false}
       isv-corp-id: ${DINGTALK_ISV_CORP_ID:dingc7ad99cf1e0ad49a35c2f4657eb6378f}
@@ -281,7 +233,6 @@ vikadata-starter:
           suite-ticket: ${DINGTALK_AGENT_SUITE_TICKET:integration_1}
           aes-key: ${DINGTALK_AGENT_AES_KEY:UeLONuTAGG3fBejeJRZwmPmNRGhCdHpEh5TuSgiSmGg}
           token: ${DINGTALK_AGENT_TOKEN:1lTi8eF3z7pxuKkWetmpDTA1vzhvjNt7}
-    # 组件：企业微信组件配置
     wecom:
       enabled: ${WECOM_ENABLED:false}
       vika-we-com-app-id: ${WECOM_APP_ID:ina5200279359980055}
@@ -327,16 +278,12 @@ vikadata-starter:
           permit-notify-webhook-secret: ${WECOM_PERMIT_NOTIFY_WEBHOOK_SECRET}
           permit-notify-time-start: ${WECOM_PERMIT_NOTIFY_TIME_START:'09:00+0800'}
           permit-notify-time-end: ${WECOM_PERMIT_NOTIFY_TIME_END:'10:00+0800'}
-  # 组件：维格表API配置
   vika:
     enabled: ${VIKA_ENABLED:false}
     host: ${VIKA_HOST:https://integration.vika.ltd}
-    # 维格表API 专用号 token
     token: ${VIKA_TOKEN:usk8qo1Dk9PbecBlaqFIvbb}
-  # 组件：在线API文档配置
   swagger:
     enabled: ${SWAGGER_ENABLED:false}
-  # 组件：微信生态集合
   wx:
     miniapp:
       enabled: ${WX_MINIAPP_ENABLED:false}
@@ -379,7 +326,6 @@ vikadata-starter:
     app-id: ${PINGPP_APP_ID:app_z5qTy9TGqPG4j14O}
     api-key: ${PINGPP_APP_KEY:sk_test_yH8erPj1W1eLKKa9KCij9qPK}
     private-key-path: ${PINGPP_PRIVATE_KEY_PATH:cert/private_key.pem}
-  # 组件：玉符IDaaS
   idaas:
     enabled: ${IDAAS_ENABLED:true}
     self-hosted: ${IDAAS_SELF_HOSTED:false}
@@ -395,7 +341,6 @@ vikadata-starter:
     db-connection-id: ${AUTH0_DB_CONNECTION_ID:con_7R0apN7yVNGiVNez}
     db-connection-name: ${AUTH0_DB_CONNECTION_NAME:DB-APITable-Integration}
 
-# Sentry 配置
 sentry:
   dsn: ${SENTRY_DSN:}
   send-default-pii: true
@@ -407,7 +352,6 @@ sentry:
     minimum-breadcrumb-level: debug
     minimum-event-level: info
 
-# 客户端配置
 client:
   datasheet:
     env: ${ENV}
@@ -435,10 +379,9 @@ client:
         - liuyi@vikadata.com
     notify:
       email-to: all@vikadata.com
-      sender-name: 运维
-      title: 正式版本更新
+      sender-name: Devops
+      title: Release
 
-# grpc-client 配置
 grpc:
   server:
     port: ${BACKEND_GRPC_PORT:8083}
@@ -450,7 +393,6 @@ grpc:
       security:
         clientAuthEnabled: false
         authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
-      # 本地开发使用，开启 negotiationType，隐藏 security
 #      address: ${DINGTALK_GRPC_ADDRESS:static://localhost:9092}
 #      negotiationType: PLAINTEXT
 

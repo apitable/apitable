@@ -4,36 +4,21 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /** 
 * <p> 
-* 高德地图 配置信息
+* amap properties
 * </p> 
 * @author zoe zheng 
-* @date 2022/6/15 16:53
 */
 @ConfigurationProperties(prefix = "vikadata.lbs.amap")
 public class AMapProperties {
 
-    /**
-     * 应用key
-     */
     private String key;
-    /**
-     * jscode安全密钥
-     */
+
     private String jscode;
 
-    /**
-     * 自定义地图反向代理
-     */
     private Proxy styles;
 
-    /**
-     * 海外地图反向代理路径
-     */
     private Proxy vectormap;
 
-    /**
-     * web服务api代理路径
-     */
     private Proxy restapi;
 
     public String getKey() {
@@ -77,9 +62,7 @@ public class AMapProperties {
     }
 
     public static class Proxy {
-        /**
-         * 反向代理路径
-         */
+
         private String proxyPass;
 
         public String getProxyPass() {

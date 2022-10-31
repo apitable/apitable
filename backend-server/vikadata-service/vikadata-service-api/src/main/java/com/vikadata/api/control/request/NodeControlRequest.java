@@ -27,9 +27,8 @@ import com.vikadata.api.modular.workspace.model.SimpleNodeInfo;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 
 /**
- * 节点角色计算请求
+ * node control executor
  * @author Shawn Deng
- * @date 2021-03-17 19:16:56
  */
 public class NodeControlRequest extends AbstractControlRequest {
 
@@ -85,7 +84,7 @@ public class NodeControlRequest extends AbstractControlRequest {
 
     @Override
     public ControlRoleDict execute() {
-        // 加载回收站节点权限集
+        // Load the recycle bin node permission set if building recycle list
         if (rubbishBuilding) {
             if (logger.isTraceEnabled()) {
                 logger.trace("Load Rubbish Node Permission");
@@ -96,39 +95,45 @@ public class NodeControlRequest extends AbstractControlRequest {
         if (nodeList == null || nodeList.isEmpty()) {
             return ControlRoleDict.create();
         }
-        // 内部调用加载节点权限集
+        // Internal call to load node permission set
         if (internalBuilding) {
             if (logger.isTraceEnabled()) {
                 logger.trace("Load Internal Node Permission");
             }
             return this.getInternalNodeRoles(nodeList);
         }
-        // 查找处理节点的上级路径（近-远依次插入），判断节点的最高权限
+        // Find the upper-level path of the processing node (insert near-far in sequence),
+        // and determine the highest authority of the node
         Map<String, Set<String>> parentNodeRoleMap = new LinkedHashMap<>(16);
-        // 收集所有存在配置角色的父节点，目的是为了减少循环查询DB
-        // 一次性将所有父节点的角色查询出来，利用集合遍历方式极速计算每一个节点的权限角色出来
+        // Collect all parent nodes with configuration roles in order to reduce circular query DB
+        // Query the roles of all parent nodes at one time,
+        // and use the collection traversal method to quickly calculate the permission roles of each node.
         Set<String> roleNodeIds = new HashSet<>();
-        // 开始采集节点的必要属性，极速计算有两大要素
-        // 1.节点的权限模式是什么
-        // 2.如果节点是继承模式，那么得将父级路径加载出来，而且还要减少DB检索
+        // Start collecting the necessary attributes of nodes. There are two main elements for fast computing.
+        // 1.What is the permission mode of the node
+        // 2.If the node is in inheritance mode, the parent path has to be loaded, and the DB retrieval is also reduced
         for (String controlId : getControlIds()) {
-            // 先找到节点
+            // Find the node first
             SimpleNodeInfo node = findNode(nodeList, controlId);
-            // 节点信息不存在，直接找下一个，按道理是应该存在的，除非传入一个已删除的节点ID
+            // If the node information does not exist, look for the next one directly.
+            // It should exist, unless a deleted node is passed in.
             if (node == null) {
                 if (logger.isTraceEnabled()) {
                     logger.trace("Node [{}] is not exist", controlId);
                 }
                 continue;
             }
-            // 继承模式，继续往上查找到父级目录，如果上级目录当中指定权限没有配置自己，则不允许访问
+            // If the permission of the node is to inherit the parent node,
+            // continue to look up to the parent directory.
+            // If the specified permission in the upper directory is not configured with itself, access is not allowed.
             if (node.getExtend()) {
-                // 继承模式，继续往上查找到父级目录，如果上级目录当中指定权限没有配置自己，则不允许访问
+                // Continue to look up to the parent directory. If the specified permissions in the parent directory are not configured with themselves, access is not allowed.
                 Set<String> orderParentNodeIds = findParentNodeIdFromTop2Bottom(nodeList, node);
                 if (logger.isTraceEnabled()) {
                     logger.trace("Parent Node Id [{}]", orderParentNodeIds);
                 }
-                // 存储节点上级对应指定模式的所有父节点,如果是第一层节点，orderParentNodeIds是空集合
+                // Stores the ordered parent nodes of the specified node's superior corresponding to the specified mode.
+                // If it is the first-level node, it is an empty set
                 parentNodeRoleMap.put(controlId, orderParentNodeIds);
                 roleNodeIds.addAll(orderParentNodeIds);
                 if (logger.isTraceEnabled()) {
@@ -136,55 +141,56 @@ public class NodeControlRequest extends AbstractControlRequest {
                 }
             }
             else {
-                // 当前节点是指定模式，直接获取当前节点的权限
+                // The current node has set permissions, and directly obtains the permissions of the current node
                 roleNodeIds.add(controlId);
             }
         }
 
         if (roleNodeIds.isEmpty()) {
-            // 所有的节点所属父节点都没有权限，或者，节点也没有角色权限，返回默认权限
-            // 这种情况一般出现在新的工作空间站内，无权限
+            // The parent nodes of all nodes have no permissions, or have no role permissions, return to the default permissions
+            // This is generally the case in new space
             ControlRoleDict roleDict = ControlRoleDict.create();
             getControlIds().forEach(controlId -> roleDict.put(controlId, new DefaultWorkbenchRole()));
             return roleDict;
         }
 
-        // 一次性查找父级节点对应的角色，利用算法遍历计算出每个节点的角色配置
+        // Find the role corresponding to the parent node at one time,
+        // and use the algorithm to traverse to calculate the role configuration of each node
         List<ControlRoleInfo> controlRoleInfos = SpringContextHolder.getBean(ControlRoleMapper.class)
             .selectControlRoleInfoByControlIds(roleNodeIds);
-        // 将结果做个分组，以节点分组
+        // group by node
         Map<String, List<ControlRoleInfo>> nodeRoleMap = controlRoleInfos.stream()
             .collect(Collectors.groupingBy(ControlRoleInfo::getControlId));
-        // 再遍历一次，将节点过滤出来
         Map<String, Set<String>> nodeRoles = new LinkedHashMap<>(parentNodeRoleMap.size());
-        // 继承模式下，从上往下的父级中如果不包含自己的权限，则下面的都不能再出现
-        // 建立set集合存储无权限的节点是为了循环节点遇到无权限的时候，避免重复比较，减少遍历
+        // If the parent from top to bottom does not contain its own permissions, the following can no longer appear
+        // The purpose of creating a SET collection to store unauthorized nodes is to avoid repeated comparisons and reduce traversal when a loop node encounters unauthorized access.
         Set<String> accessDeniedNode = new HashSet<>();
-        // 计算每个节点的角色，比如节点可能拥有多个角色，根据优先级则取最高的角色即可
+        // Calculate the role of each node. For example, a node may have difference roles,
+        // and the highest role can be taken according to the priority.
         for (String controlId : getControlIds()) {
-            // 构建树时，节点已在过滤之列，直接跳过
+            // When building a node tree, the node is already in the filter list, skip it directly
             if (treeBuilding && accessDeniedNode.contains(controlId)) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("[{}] don't has role, deny loop", controlId);
                 }
                 continue;
             }
-            // 判断当前节点的权限模式是什么
+            // Determine what the permission mode of the current node is
             if (parentNodeRoleMap.containsKey(controlId)) {
-                // 继承模式，从上往下查找父级是否包含自己
+                // Find if parent contains itself from top to bottom
                 Set<String> parentNodeIds = parentNodeRoleMap.get(controlId);
                 if (parentNodeIds.isEmpty()) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("[{}] haven't parent node role, set default role", controlId);
                     }
-                    // 节点的父节点都未开启权限,设置默认角色
+                    // The parent node of the node does not have permissions enabled, set the default role
                     nodeRoles.put(controlId, Collections.singleton(Node.MANAGER));
                     continue;
                 }
-                // parents应该是有序的，从上往下的顺序，不然绝对产生无法想象的数据
+                // Parent nodes should be in order, from top to bottom, otherwise unimaginable data will definitely be generated
                 int i = 0;
                 for (String parentNodeId : parentNodeIds) {
-                    // 如果父级节点是无权限的，下面的所有节点也不应该可以访问
+                    // If the parent node is unprivileged, all nodes below should also not be accessible
                     if (treeBuilding) {
                         if (accessDeniedNode.contains(parentNodeId)) {
                             if (logger.isDebugEnabled()) {
@@ -193,11 +199,11 @@ public class NodeControlRequest extends AbstractControlRequest {
                             continue;
                         }
                     }
-                    // 归类自己在节点拥有的角色，可能有多个角色
+                    // Categorize the roles the user has on the node, there may be multiple roles
                     Set<String> roles = calNodeRoles(nodeRoleMap, parentNodeId, getUnits());
                     if (roles.isEmpty()) {
-                        // 找到某个父级的角色配置没有配置自己
-                        // 因为父级肯定是指定模式，代表自己没有权限，直接把下面的节点也过滤掉
+                        // Found that the role configuration of a parent does not grant permission, which means that there is no permission,
+                        // and directly filter out the following nodes
                         if (treeBuilding) {
                             List<String> children = findAllChildren(nodeList, parentNodeId);
                             accessDeniedNode.addAll(children);
@@ -206,7 +212,7 @@ public class NodeControlRequest extends AbstractControlRequest {
                     }
                     else {
                         if (i == parentNodeIds.size() - 1) {
-                            // 最靠近的父级节点
+                            // Find the closest parent node
                             nodeRoles.put(controlId, roles);
                         }
                     }
@@ -214,13 +220,13 @@ public class NodeControlRequest extends AbstractControlRequest {
                 }
             }
             else {
-                // 指定模式，直接获取节点权限
+                // If the node has set permissions, get the node permissions directly
                 Set<String> roles = calNodeRoles(nodeRoleMap, controlId, getUnits());
                 if (!roles.isEmpty()) {
                     nodeRoles.put(controlId, roles);
                 }
                 else if (treeBuilding) {
-                    // 指定模式，自己没有权限，构建树时，直接把下面的节点也过滤掉
+                    // When building node tree, directly filter out the following nodes
                     accessDeniedNode.add(controlId);
                     List<String> children = findAllChildren(nodeList, controlId);
                     accessDeniedNode.addAll(children);
@@ -228,40 +234,41 @@ public class NodeControlRequest extends AbstractControlRequest {
             }
         }
         ControlRoleDict roleDict = ControlRoleDict.create();
-        // 取最高角色
+        // Get the most privileged role
         nodeRoles.forEach((nodeId, roleCodes) -> roleDict.put(nodeId, ControlRoleManager.getTopNodeRole(roleCodes)));
         return roleDict;
     }
 
     public ControlRoleDict getRubbishNodeRoles() {
         ControlRoleDict roleDict = ControlRoleDict.create();
-        // 查询节点对应权限视图
+        // Query the permissions view of a node
         List<ControlRoleInfo> controlRoleInfos = SpringContextHolder.getBean(ControlRoleMapper.class)
             .selectControlRoleInfoByControlIds(nodeIds);
         if (controlRoleInfos.isEmpty()) {
-            // 所有的节点都没有权限，即删除时继承自根节点，返回默认权限
+            // All nodes have no permissions. The node was previously inherited from the root node and returns to the default permissions.
             nodeIds.forEach(controlId -> roleDict.put(controlId, new DefaultWorkbenchRole()));
             return roleDict;
         }
-        // 获取已开启了权限的节点ID
+        // Get the node that has enabled permissions
         Set<String> enabledPermissionNodeIds = controlRoleInfos.stream().map(ControlRoleInfo::getControlId).collect(Collectors.toSet());
-        // 没有权限的节点，返回默认权限
+        // Nodes without permissions, return to default permissions
         nodeIds.stream().filter(nodeId -> !enabledPermissionNodeIds.contains(nodeId))
                 .forEach(controlId -> roleDict.put(controlId, new DefaultWorkbenchRole()));
-        // 过滤组织单元，以节点分组取角色集
+        // Filter organizational units and get role sets by node grouping
         Map<String, Set<String>> nodeRoles = controlRoleInfos.stream()
             .filter(permission -> units.contains(permission.getUnitId()))
             .collect(Collectors.groupingBy(ControlRoleInfo::getControlId, Collectors.mapping(ControlRoleInfo::getRole, Collectors.toSet())));
         if (nodeRoles.isEmpty()) {
             return roleDict;
         }
-        // 取最高角色
+        // Get the most privileged role
         nodeRoles.forEach((nodeId, roleCodes) -> roleDict.put(nodeId, ControlRoleManager.getTopNodeRole(roleCodes)));
         return roleDict;
     }
 
     /**
-     * 内部调用服务，需要判断节点是否属于幽灵节点
+     * For internal call，Need to determine whether the node belongs to the ghost node
+     * @param nodeList simple node list
      */
     private ControlRoleDict getInternalNodeRoles(List<SimpleNodeInfo> nodeList) {
         ControlRoleDict roleDict = ControlRoleDict.create();
@@ -274,11 +281,11 @@ public class NodeControlRequest extends AbstractControlRequest {
                 continue;
             }
             SimpleNodeInfo node = nodeToInfoMap.get(controlId);
-            // 当前节点是指定模式，获取当前节点的权限
+            // // If the node has set permissions, get the permissions of node directly
             if (!node.getExtend()) {
                 roleNodeIds.add(controlId);
             }
-            // 查找倒序的父节点，即从下往上
+            // Find all parent nodes from bottom to top
             List<String> reverseParentNodeIds = findParentNodeIdFromBottom2Top(nodeList, node);
             reverseParentNodeRoleMap.put(controlId, reverseParentNodeIds);
             if (reverseParentNodeIds.isEmpty()) {
@@ -286,16 +293,16 @@ public class NodeControlRequest extends AbstractControlRequest {
             }
             roleNodeIds.addAll(reverseParentNodeIds);
         }
-        // 所有的节点所属父节点都没有权限，或者，节点也没有角色权限，返回默认权限
+        // The parent nodes of all nodes have no permissions, and the current node has no permissions, returning to the default permissions
         if (roleNodeIds.isEmpty()) {
             getControlIds().forEach(controlId -> roleDict.put(controlId, new DefaultWorkbenchRole()));
             return roleDict;
         }
 
-        // 一次性查找父级节点对应的角色，利用算法遍历计算出每个节点的角色配置
+        // Find the role corresponding to the parent node at one time, and use the algorithm to traverse to calculate the role configuration of each node
         List<ControlRoleInfo> controlRoleInfos = SpringContextHolder.getBean(ControlRoleMapper.class)
                 .selectControlRoleInfoByControlIds(roleNodeIds);
-        // 将结果做个分组，以节点分组
+        // Group by node
         Map<String, List<ControlRoleInfo>> nodeRoleMap = controlRoleInfos.stream()
                 .collect(Collectors.groupingBy(ControlRoleInfo::getControlId));
 
@@ -306,29 +313,28 @@ public class NodeControlRequest extends AbstractControlRequest {
             SimpleNodeInfo node = nodeToInfoMap.get(controlId);
             String nodeId = controlId;
             List<String> reverseParentNodeIds = reverseParentNodeRoleMap.get(controlId);
-            // 继承模式，权限以上级最靠近的一个指定权限节点为准；指定模式则是以自身为准
             if (node.getExtend()) {
                 if (reverseParentNodeIds.isEmpty()) {
-                    // 设置默认角色
+                    // Set default roles
                     roleDict.put(controlId, new DefaultWorkbenchRole());
                     continue;
                 }
                 nodeId = reverseParentNodeIds.remove(0);
             }
-            // 计算节点角色
+            // Compute node role
             Set<String> roles = calNodeRoles(nodeRoleMap, nodeId, getUnits());
             if (!roles.isEmpty()) {
-                // 取最高角色
+                // Get the most privileged role
                 roleDict.put(controlId, ControlRoleManager.getTopNodeRole(roles));
             } else {
-                // 无权限，肯定不是幽灵节点
+                // No permission, not a ghost node
                 continue;
             }
-            // 上级节点均无指定权限，不构成幽灵节点
+            // No upper-level nodes have designated permissions and should not be ghost nodes
             if (reverseParentNodeIds.isEmpty()) {
                 continue;
             }
-            // 从下往上查询是否有上级节点无权限，构成幽灵节点
+            // Query from bottom to top whether there is a superior node without permission, it should be a ghost node
             boolean isGhostNode = false;
             for (String parentNodeId : reverseParentNodeIds) {
                 Set<String> parentRoles = calNodeRoles(nodeRoleMap, parentNodeId, getUnits());
@@ -344,21 +350,22 @@ public class NodeControlRequest extends AbstractControlRequest {
     }
 
     private List<SimpleNodeInfo> getSimpleNodeInfos() {
-        // 查询节点对应的父级节点ID，为了提高性能，一次性查询所有父级节点，得出当前节点的所有上级
+        // Query the parent node corresponding to the node. In order to improve performance, query all parent nodes at one time to obtain all the superiors of the current node.
         List<SimpleNodeInfo> nodeList = SpringContextHolder.getBean(NodeMapper.class).selectAllParentNodeIdsByNodeIds(nodeIds, false);
-        // 非分享树，或分享节点位于第一层
+        // is not generating a share tree, or the share node is at the first level
         if (!shareTreeBuilding || nodeList.size() == getControlIds().size()) {
             return nodeList;
         }
-        // 分享树允许断层的幽灵节点保留权限，故不能从上往下计算，而是从分享节点往下计算，避免直接被截断
-        // 分享节点在首位
+        // The shared tree allows the ghost nodes of the fault to retain permissions,
+        // so it cannot be calculated from the top down, but calculated from the shared node down to avoid being directly truncated
+        // The share node is at the root
         SimpleNodeInfo node = findNode(nodeList, getControlIds().get(0));
         if (node == null) {
             return null;
         }
-        // 分享节点为继承模式
+        // The share node does not have permission
         if (node.getExtend()) {
-            // 查找最靠近的一个指定权限父节点，截断之前的上级节点
+            // Find the closest parent node of the specified permission and truncate the previous parent node
             List<String> reverseParentNodeIds = findParentNodeIdFromBottom2Top(nodeList, node);
             if (reverseParentNodeIds.isEmpty()) {
                 return nodeList;
@@ -373,16 +380,16 @@ public class NodeControlRequest extends AbstractControlRequest {
             return nodeList.subList(i, nodeList.size());
         }
         else {
-            // 分享节点是指定模式，截断所有上级节点
+            // The shared node has set permissions, truncating all upper-level nodes
             return nodeList.subList(nodeList.size() - getControlIds().size(), nodeList.size());
         }
     }
 
     /**
-     * 查找节点
-     * @param simpleNodeInfos 节点列表
-     * @param nodeId 节点
-     * @return 节点信息
+     * find node
+     * @param simpleNodeInfos node list
+     * @param nodeId node id
+     * @return node info
      */
     private static SimpleNodeInfo findNode(List<SimpleNodeInfo> simpleNodeInfos, String nodeId) {
         SimpleNodeInfo node = null;
@@ -396,38 +403,38 @@ public class NodeControlRequest extends AbstractControlRequest {
     }
 
     /**
-     * 递归获取节点的父节点列表
-     * @param simpleNodeInfos 节点列表
-     * @param node 节点
-     * @return 从下往上的父节点列表
+     * Recursively get the list of parent nodes of a node
+     * @param simpleNodeInfos node list
+     * @param node node
+     * @return List of parent nodes from bottom to top
      */
     private static Set<String> findParentNodeIdFromTop2Bottom(List<SimpleNodeInfo> simpleNodeInfos, SimpleNodeInfo node) {
-        // 查找倒序的父节点
+        // Find parent node from bottom to top
         List<String> parentNodeIds = findParentNodeIdFromBottom2Top(simpleNodeInfos, node);
-        // 反转顺序，因为获取是往下往上的，为了权限控制，必须反转顺序，从上往下
+        // Reverse the order, because the acquisition is from bottom to top, for permission control, the order must be reversed, from top to bottom
         Collections.reverse(parentNodeIds);
         return new LinkedHashSet<>(parentNodeIds);
     }
 
     /**
-     * 查询倒序的父节点
-     * @param simpleNodeInfos 节点树列表
-     * @param node 节点信息
-     * @return 节点ID列表
+     * Query the parent node in reverse order
+     * @param simpleNodeInfos node info list
+     * @param node node
+     * @return list of node id
      */
     private static List<String> findParentNodeIdFromBottom2Top(List<SimpleNodeInfo> simpleNodeInfos, SimpleNodeInfo node) {
-        // 查找倒序的父节点，即从下往上
+        // Find parent nodes in reverse order, from bottom to top
         List<String> parents = new ArrayList<>();
-        // 查找所有配置了指定模式的父级节点，有序的，从下往上
+        // Find all parent nodes with permissions configured, from bottom to top
         findParentNodeRole(simpleNodeInfos, node, parents::add);
         return parents;
     }
 
     /**
-     * 查找开启角色权限配置的父节点
-     * @param simpleNodeInfos 节点列表
-     * @param roleInfo 节点树
-     * @param parents 拥有权限的父节点
+     * Find the parent node that enables the role permission configuration
+     * @param simpleNodeInfos node list
+     * @param roleInfo node info
+     * @param parents parent node with permission
      */
     private static void findParentNodeRole(List<SimpleNodeInfo> simpleNodeInfos, SimpleNodeInfo roleInfo, Consumer<String> parents) {
         for (SimpleNodeInfo simpleNodeInfo : simpleNodeInfos) {
@@ -441,18 +448,18 @@ public class NodeControlRequest extends AbstractControlRequest {
     }
 
     /**
-     * 计算节点角色
-     * @param nodeRoleMap 节点角色键值对
-     * @param nodeId 节点ID
-     * @param memberUnitIds 成员所属组织单元列表
-     * @return 节点角色
+     * compute node role
+     * @param nodeRoleMap Node role key-value pair
+     * @param nodeId node id
+     * @param memberUnitIds List of organizational units to which members belong
+     * @return node role
      */
     private static Set<String> calNodeRoles(Map<String, List<ControlRoleInfo>> nodeRoleMap, String nodeId, List<Long> memberUnitIds) {
         List<ControlRoleInfo> permissions = nodeRoleMap.get(nodeId);
         if (permissions == null) {
             return new HashSet<>();
         }
-        // 节点的角色对应的组织单元
+        // The organizational unit corresponding to the node role
         Map<String, List<Long>> roleUnitMap = permissions.stream()
             .collect(Collectors.groupingBy(ControlRoleInfo::getRole, Collectors.mapping(ControlRoleInfo::getUnitId, Collectors.toList())));
         return roleUnitMap.entrySet()
@@ -462,10 +469,10 @@ public class NodeControlRequest extends AbstractControlRequest {
     }
 
     /**
-     * 得到所有自节点
-     * @param simpleNodeInfos 节点列表
-     * @param parentNodeId 父节点
-     * @return 所有子节点
+     * find all child nodes
+     * @param simpleNodeInfos list of node info
+     * @param parentNodeId parent node id
+     * @return all child node
      */
     private static List<String> findAllChildren(List<SimpleNodeInfo> simpleNodeInfos, String parentNodeId) {
         List<String> allChildren = new ArrayList<>();
@@ -481,10 +488,10 @@ public class NodeControlRequest extends AbstractControlRequest {
     }
 
     /**
-     *
-     * @param simpleNodeInfos 遍历的节点列表
-     * @param parentNodeId 父节点
-     * @return 子节点
+     * Find child node id
+     * @param simpleNodeInfos list of node info
+     * @param parentNodeId parent node id
+     * @return list of child node id
      */
     private static List<String> findChildren(List<SimpleNodeInfo> simpleNodeInfos, String parentNodeId) {
         List<String> children = new ArrayList<>();

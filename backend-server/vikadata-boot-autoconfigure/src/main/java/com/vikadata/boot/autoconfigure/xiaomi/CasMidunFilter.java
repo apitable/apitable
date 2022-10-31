@@ -28,9 +28,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import static com.vikadata.boot.autoconfigure.FilterChainOrdered.MIDUN_CAS_FILTER;
 
 /**
- * 米盾过滤器
+ * xiaomi midun filter
  * @author Shawn Deng
- * @date 2021-06-30 16:29:10
  */
 public class CasMidunFilter extends OncePerRequestFilter implements Ordered {
 
@@ -63,15 +62,14 @@ public class CasMidunFilter extends OncePerRequestFilter implements Ordered {
             }
             String serverPath = request.getServletPath();
             if (isIgnoreUrl(serverPath)) {
-                log.info("配置为忽略的路径,url:{}", serverPath);
+                log.info("ignore path:{}", serverPath);
                 filterChain.doFilter(request, response);
                 return;
             }
-            //验签，确认米盾身份
             String verifyIdentitySignData = request.getHeader(SdkConstants.HEADER_KEY_SIGN_VERIFY_IDENTITY);
             if (CommonUtil.isEmpty(verifyIdentitySignData)) {
-                log.error("没有标识米盾身份的签名数据,url:{}", serverPath);
-                // 没有标识米盾身份,返回自定义内容
+                log.error("verify sign data error:{}", serverPath);
+                // return custom error data
                 customizer.customize(response);
                 return;
             }
@@ -82,7 +80,7 @@ public class CasMidunFilter extends OncePerRequestFilter implements Ordered {
                 verifyIdentityData = AegisSignUtil.verifySignGetInfo(verifyIdentitySignData, key);
                 if (CommonUtil.isNotEmpty(verifyIdentityData)) {
                     currentUsePublicKey = key;
-                    // 正确的key不是第一个，调整key的位置减少下次试错次数
+                    // The correct key is not the first. Adjust the key position to reduce the number of trial and error next time
                     if (index != 0) {
                         String[] newKeys = AegisSignUtil.clearUpKeys(AegisConfig.publicKeys, index);
                         AegisConfig.setPublicKeys(newKeys);
@@ -92,18 +90,18 @@ public class CasMidunFilter extends OncePerRequestFilter implements Ordered {
                 index++;
             }
             if (index > 0) {
-                log.warn("public key,url:{},尝试次数为:{},", serverPath, index + 1);
+                log.warn("public key,url:{},retry times:{},", serverPath, index + 1);
             }
             if (CommonUtil.isEmpty(verifyIdentityData)) {
-                log.error("检测米盾身份,验签失败,url:{},signData:{}", serverPath, verifyIdentitySignData);
-                // 验证米盾身份失败，返回自定义内容
+                log.error("check sign fail, url:{}, signData:{}", serverPath, verifyIdentitySignData);
+                // check fail, return error
                 customizer.customize(response);
                 return;
             }
-            // 小米账号登录
+            // xiaomi user login
             String loginType = request.getHeader(SdkConstants.HEADER_KEY_LOGIN_TYPE);
             if (SdkConstants.LOGIN_TYPE_PASSPORT.equalsIgnoreCase(loginType)) {
-                log.info("小米账号登录,url:{}", serverPath);
+                log.info("request path:{}", serverPath);
                 String username = request.getHeader(SdkConstants.HEADER_KEY_USER_NAME);
                 UserInfoVO userInfo = new UserInfoVO();
                 userInfo.setUser(username);
@@ -114,21 +112,19 @@ public class CasMidunFilter extends OncePerRequestFilter implements Ordered {
                 filterChain.doFilter(request, response);
                 return;
             }
-            // CAS登录
-            log.info("CAS账号登录,url:{}", serverPath);
+            // CAS Login
             String signAndUserSignData = request.getHeader(SdkConstants.HEADER_KEY_SIGN_AND_USER_DATA);
-            //没有签名信息不做验签
+            // don't verify sign if it has no user sign data
             if (CommonUtil.isEmpty(signAndUserSignData)) {
-                log.info("确认为米盾请求，没有用户的签名数据(bypass|静态资源)，url:{}", serverPath);
+                log.info("static resource(bypass)，path:{}", serverPath);
                 filterChain.doFilter(request, response);
                 return;
             }
-            //验签，获取用户数据
+            // verify sign and get user
             String userJson = AegisSignUtil.verifySignGetInfo(signAndUserSignData, currentUsePublicKey);
-            //验签失败
             if (CommonUtil.isEmpty(userJson)) {
-                log.error("获取用户数据，验签失败,url:{},signData:{}", serverPath, signAndUserSignData);
-                // 验证签名失败，返回自定义内容
+                log.error("check sign fail,path:{}, signData:{}", serverPath, signAndUserSignData);
+                // return error
                 customizer.customize(response);
                 return;
             }

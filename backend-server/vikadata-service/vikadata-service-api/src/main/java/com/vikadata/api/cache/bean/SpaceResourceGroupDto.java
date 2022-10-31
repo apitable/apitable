@@ -1,17 +1,16 @@
 package com.vikadata.api.cache.bean;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Set;
 
+import lombok.Data;
+
 /**
  * <p>
- * 资源分组对象
+ * resource group
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/2/16 20:38
  */
 @Data
 public class SpaceResourceGroupDto implements Serializable {

@@ -4,18 +4,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 数据分析配置信息
+ * Data analysis configuration information
  * </p>
  *
  * @author Chambers
- * @date 2020/4/3
  */
 @ConfigurationProperties(prefix = "vikadata-starter.data.analyze")
 public class DataAnalyzeProperties {
 
-    /**
-     * 是否启用
-     */
     private boolean enabled = false;
 
     private DataAnalyzeProperties.Sensors sensors;

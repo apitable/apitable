@@ -4,9 +4,8 @@ import com.vikadata.api.control.permission.FieldPermission;
 import com.vikadata.api.control.role.RoleConstants.Field;
 
 /**
- * （数表字段）只读角色
+ * Reader role of field
  * @author Shawn Deng
- * @date 2021-03-18 17:34:31
  */
 public class FieldReaderRole extends AbstractControlRole {
 

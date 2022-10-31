@@ -44,23 +44,21 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 企业微信 MQ 消费者
+ * wecom event consumer
  * </p>
  *
- * @author 刘斌华
- * @date 2022-02-24 10:45:15
  */
 @Component
 @Slf4j
 public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
 
     /**
-     * 企微服务商事件延时消费时间，1s
+     * isv event delay consumption time，1s
      */
     public static final String DLX_MILLIS_ISV_MESSAGE = Integer.toString(1000);
 
     /**
-     * 企微服务商接口许可延时消费时间，1h
+     * isv license delay consumption time，1h
      */
     public static final String DLX_MILLIS_ISV_PERMIT_DELAY = Integer.toString(60 * 60 * 1000);
 
@@ -119,23 +117,20 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                 }
             }
             else {
-                // 获取锁失败，重新放入缓冲队列等待执行
                 rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                         TopicRabbitMqConfig.WECOM_ISV_EVENT_TOPIC_ROUTING_KEY,
                         mqMessage, DLX_MILLIS_ISV_MESSAGE);
             }
         }
         catch (InterruptedException ex) {
-            log.error("[" + authCorpId + "]租户锁操作失败", ex);
-            // 将消息改成处理失败状态
+            log.error("Tenant [" + authCorpId + "] lock operation failed", ex);
             socialCpIsvMessageService.updateById(SocialCpIsvMessageEntity.builder()
                     .id(id)
                     .processStatus(SocialCpIsvMessageProcessStatus.REJECT_TEMPORARILY.getValue())
                     .build());
         }
         catch (Exception ex) {
-            log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", authCorpId, mqMessage.getInfoType()), ex);
-            // 将消息改成处理失败状态
+            log.error(String.format("fail to processing tenant [%s] Event [%s]", authCorpId, mqMessage.getInfoType()), ex);
             socialCpIsvMessageService.updateById(SocialCpIsvMessageEntity.builder()
                     .id(id)
                     .processStatus(SocialCpIsvMessageProcessStatus.REJECT_TEMPORARILY.getValue())
@@ -214,8 +209,7 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                 try {
                     SocialWecomPermitDelayEntity delayEntity = socialWecomPermitDelayService.getById(id);
                     if (Objects.isNull(delayEntity)) {
-                        log.warn(String.format("企微服务商接口许可延时任务不存在，企业 ID：%s，任务 ID：%s", authCorpId, id));
-                        // 延时任务不存在，直接结束
+                        log.warn(String.format("isv license permit delay task does not exist，corp ID：%s，task ID：%s", authCorpId, id));
                         socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                                 .id(id)
                                 .processStatus(SocialCpIsvPermitDelayProcessStatus.FINISHED.getValue())
@@ -226,18 +220,15 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                         switch (processStatus) {
                             case PENDING:
                             case QUEUED:
-                                // 待处理
                                 isvPermitDelayPending(delayEntity);
                                 break;
                             case ORDER_CREATED:
-                                // 已下单
                                 isvPermitDelayOrderCreated(delayEntity);
                                 break;
                             case FINISHED:
-                                // 已完成，无需做任何处理
                                 break;
                             default:
-                                log.error(String.format("企微服务商接口许可延时任务状态异常，企业 ID：%s，任务 ID：%s，状态：%s", authCorpId, id, processStatus));
+                                log.error(String.format("fail to process isv delay task，corp ID：%s，task ID：%s，status：%s", authCorpId, id, processStatus));
                         }
                     }
                 }
@@ -246,15 +237,13 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                 }
             }
             else {
-                // 获取锁失败，重新放入缓冲队列等待执行
                 rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                         TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY,
                         mqMessage, DLX_MILLIS_ISV_PERMIT_DELAY);
             }
         }
         catch (Exception ex) {
-            log.error(String.format("企微服务商接口许可延时任务处理失败，企业 ID：%s，任务 ID：%s", authCorpId, id), ex);
-            // 失败返回延时队列等待重试
+            log.error(String.format("fail to process isv delay task，corp ID：%s，task ID：%s", authCorpId, id), ex);
             rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                     TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY,
                     SocialWecomPermitDelayEntity.builder()
@@ -278,7 +267,7 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                 .orElse(0);
         LocalDateTime currentDateTime = DateTimeUtil.localDateTimeNow(8);
         if (DateTimeUtil.between(delayEntity.getFirstAuthTime(), currentDateTime, ChronoField.EPOCH_DAY) <= permitCompatibleDays) {
-            // 还未到接口许可下单时间，返回延时队列
+            // The time for ordering the isv license has not yet arrived
             rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                     TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY,
                     SocialWecomPermitDelayEntity.builder()
@@ -288,11 +277,11 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                     DLX_MILLIS_ISV_PERMIT_DELAY);
         }
         else {
-            // 下单购买接口许可
+            // purchase interface permit
             String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
             Bundle activeBundle = bundleService.getActivatedBundleBySpaceId(spaceId);
             if (Objects.isNull(activeBundle) || activeBundle.getBaseSubscription().getPhase() != SubscriptionPhase.FIXEDTERM) {
-                // 非付费订阅，延时任务结束
+                // free trial, delay task is over
                 socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                         .id(delayEntity.getId())
                         .processStatus(SocialCpIsvPermitDelayProcessStatus.FINISHED.getValue())
@@ -302,7 +291,7 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                 List<SocialWecomPermitOrderEntity> orderEntities = socialWecomPermitOrderService
                         .getByOrderStatuses(suiteId, authCorpId, Collections.singletonList(0));
                 if (CollUtil.isNotEmpty(orderEntities)) {
-                    // 存在待支付的订单，返回延时队列
+                    // There are orders to be paid
                     rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                             TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY,
                             SocialWecomPermitDelayEntity.builder()
@@ -315,7 +304,7 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                     boolean isNeedNewOrRenewal = socialCpIsvPermitService.createPermitOrder(suiteId, authCorpId, spaceId,
                             activeBundle.getBaseSubscription().getExpireDate());
                     if (isNeedNewOrRenewal) {
-                        // 更改状态为已下单，并返回延时队列
+                        // Change the order status to paid
                         socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                                 .id(delayEntity.getId())
                                 .processStatus(SocialCpIsvPermitDelayProcessStatus.ORDER_CREATED.getValue())
@@ -329,7 +318,7 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                                 DLX_MILLIS_ISV_PERMIT_DELAY);
                     }
                     else {
-                        // 没有需要新购和续费的账号，延时任务结束
+                        // No account for new purchase and renewal
                         socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                                 .id(delayEntity.getId())
                                 .processStatus(SocialCpIsvPermitDelayProcessStatus.FINISHED.getValue())
@@ -341,30 +330,29 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
     }
 
     private void isvPermitDelayOrderCreated(SocialWecomPermitDelayEntity delayEntity) {
-        // 1 获取所有企业所有待支付的订单
+        // 1 Get all orders to be paid from all corp
         Long delayId = delayEntity.getId();
         String suiteId = delayEntity.getSuiteId();
         String authCorpId = delayEntity.getAuthCorpId();
         List<SocialWecomPermitOrderEntity> orderEntities = socialWecomPermitOrderService
                 .getByOrderStatuses(suiteId, authCorpId, Collections.singletonList(0));
         if (CollUtil.isEmpty(orderEntities)) {
-            // 订单不存在，延时任务结束
+            // Order does not exist
             socialWecomPermitDelayService.updateById(SocialWecomPermitDelayEntity.builder()
                     .id(delayId)
                     .processStatus(SocialCpIsvPermitDelayProcessStatus.FINISHED.getValue())
                     .build());
             return;
         }
-        // 判断延时任务是否结束，只要有订单未完成则不能结束
+        // whether the delayed task is finished. It cannot be finished as long as there is an unfinished order
         boolean isFinished = true;
         for (SocialWecomPermitOrderEntity orderEntity : orderEntities) {
             String orderId = orderEntity.getOrderId();
-            // 2 确认订单的最新信息
+            // 2 Get the latest order status
             orderEntity = socialCpIsvPermitService.ensureOrder(orderId);
-            // 订单的最新状态
             int orderStatus = orderEntity.getOrderStatus();
             if (orderStatus == 0 || orderStatus == 4) {
-                // 2.1 待支付、申请退款中，返回延时队列
+                // 2.1 unpaid、refunding
                 isFinished = false;
                 if (orderStatus == 0) {
                     IsvApp isvApp = weComProperties.getIsvAppList().stream()
@@ -377,7 +365,7 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                             .localTimeFromSource(isvApp.getPermitNotifyTimeEnd(), DateTimeUtil.HOUR_MINUTE_ZONE);
                     LocalTime currentTime = DateTimeUtil.localTimeNow(8);
                     if (!currentTime.isBefore(permitNotifyTimeStart) && !currentTime.isAfter(permitNotifyTimeEnd)) {
-                        // 未支付时每天都在指定时间内发送通知
+                        // Send notification within specified time every day when payment is not done
                         int orderType = orderEntity.getOrderType();
                         if (orderType == 1) {
                             socialCpIsvPermitService.sendNewWebhook(suiteId, authCorpId, null, orderId, null);
@@ -389,14 +377,14 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                 }
             }
             else if (orderStatus == 1 || orderStatus == 6) {
-                // 2.2 已支付、退款被拒绝
+                // 2.2 Paid, Refund Rejected
                 if (orderEntity.getOrderType() == 1) {
-                    // 2.2.1 新购订单，激活账号
+                    // 2.2.1 New purchase order, activation account
                     socialCpIsvPermitService.activateOrder(orderId);
                 }
             }
             else if (orderStatus == 5) {
-                // 2.4 退款成功，确认账号状态
+                // 2.4 Refund successfully, confirm account status
                 socialCpIsvPermitService.ensureAllActiveCodes(delayEntity.getSuiteId(), delayEntity.getAuthCorpId());
             }
         }
@@ -407,7 +395,6 @@ public class WeComRabbitConsumer extends AbstractSocialRabbitConsumer {
                     .build());
         }
         else {
-            // 返回延时队列
             rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                     TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY,
                     SocialWecomPermitDelayEntity.builder()

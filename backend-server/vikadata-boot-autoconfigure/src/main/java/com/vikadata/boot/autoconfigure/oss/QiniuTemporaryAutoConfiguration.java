@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Configuration;
  * </p>
  *
  * @author Chambers
- * @date 2022/8/22
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OssProperties.class)
@@ -47,7 +46,6 @@ public class QiniuTemporaryAutoConfiguration extends OssConnectionConfiguration 
         Auth auth = Auth.create(qiniu.getAccessKey(), qiniu.getSecretKey());
         Callback callback = Optional.ofNullable(qiniu.getCallback()).orElseGet(Callback::new);
         QiniuOssClientRequestFactory factory = new QiniuOssClientRequestFactory(auth, qiniu.getRegion(), qiniu.getDownloadDomain(), callback.getUrl(), callback.getBodyType(), qiniu.getUploadUrl());
-
         return new QiniuTemporaryClientTemplate(factory);
     }
 }

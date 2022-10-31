@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Swagger UI 配置
+ * autoconfiguration of Swagger UI
  *
  * @author Shawn Deng
- * @date 2021-01-08 17:41:55
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(SwaggerUiProperties.class)

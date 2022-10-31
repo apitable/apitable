@@ -12,10 +12,9 @@ import com.vikadata.system.config.dingtalk.DingTalkPlan;
 
 /**
  * <p>
- * 钉钉付费方案配置工具类
+ * dingtalk plan config manager
  * </p>
  * @author zoe zheng
- * @date 2022/2/25 14:24
  */
 @Slf4j
 public class DingTalkPlanConfigManager {
@@ -28,18 +27,17 @@ public class DingTalkPlanConfigManager {
     }
 
     /**
-     * 获取钉钉价格方案
+     * get dingtalk price plan
      *
-     * @param itemCode 钉钉商品码
-     * @author zoe zheng
-     * @date 2022/5/19 17:39
+     * @param itemCode dingtalk item code
+     * @param month month
      */
     public static Price getPriceByItemCodeAndMonth(String itemCode) {
         DingTalkPlan dingTalkPlan = DING_TALK_PLAN.get(itemCode);
         if (dingTalkPlan == null) {
             return null;
         }
-        // 获取商品码对应的价目ID
+        // get price
         List<String> billingPriceId = dingTalkPlan.getBillingPriceId();
         if (CollUtil.isEmpty(billingPriceId)) {
             return null;

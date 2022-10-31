@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
-import com.vikadata.api.cache.service.IAssetCacheService;
+import com.vikadata.api.cache.service.AssetCacheService;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.enums.attach.AssetType;
 import com.vikadata.api.enums.attach.AssetUploadSource;
@@ -55,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.constants.AssetsPublicConstants.IMAGE_PREFIX;
 import static com.vikadata.api.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.vikadata.api.constants.WidgetAssetConstans.TOKEN_MAX;
+import static com.vikadata.api.constants.WidgetAssetConstants.TOKEN_MAX;
 import static com.vikadata.api.enums.exception.DatabaseException.EDIT_ERROR;
 import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
 
@@ -93,7 +93,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
     private RedisLockRegistry redisLockRegistry;
 
     @Resource
-    private IAssetCacheService iAssetCacheService;
+    private AssetCacheService assetCacheService;
 
     @Resource
     private ConstProperties constProperties;
@@ -153,7 +153,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             body.setAssetType(assetType.getValue());
             if (assetType != AssetType.DATASHEET) {
                 // Load cached data
-                SpaceAssetDTO spaceAssetDTO = iAssetCacheService.getSpaceAssetDTO(asset.getFileUrl());
+                SpaceAssetDTO spaceAssetDTO = assetCacheService.getSpaceAssetDTO(asset.getFileUrl());
                 BeanUtil.copyProperties(spaceAssetDTO, body);
             }
             // Resource upload processing

@@ -4,39 +4,19 @@ import com.vikadata.boot.autoconfigure.wx.RedisConnectProperties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-21 19:09:17
- */
 @ConfigurationProperties(prefix = "vikadata-starter.wx.open")
 public class WxOpenProperties {
 
     private boolean enabled = false;
 
-    /**
-     * 设置微信开放平台的appid.
-     */
     private String appId;
 
-    /**
-     * 设置微信开放平台的app secret.
-     */
     private String secret;
 
-    /**
-     * 设置微信开放平台的token.
-     */
     private String token;
 
-    /**
-     * 设置微信开放平台的EncodingAESKey.
-     */
     private String aesKey;
 
-    /**
-     * 存储策略.
-     */
     private ConfigStorage configStorage;
 
     public boolean isEnabled() {
@@ -89,44 +69,20 @@ public class WxOpenProperties {
 
     public static class ConfigStorage {
 
-        /**
-         * 存储类型.
-         */
         private StorageType storageType = StorageType.MEMORY;
 
-        /**
-         * 指定key前缀.
-         */
         private String keyPrefix = "vikadata:wechat:open";
 
-        /**
-         * redis连接配置.
-         */
         private RedisConnectProperties redis;
 
-        /**
-         * http客户端类型.
-         */
         private HttpClientType httpClientType = HttpClientType.HttpClient;
 
-        /**
-         * http代理主机.
-         */
         private String httpProxyHost;
 
-        /**
-         * http代理端口.
-         */
         private Integer httpProxyPort;
 
-        /**
-         * http代理用户名.
-         */
         private String httpProxyUsername;
 
-        /**
-         * http代理密码.
-         */
         private String httpProxyPassword;
 
         public StorageType getStorageType() {
@@ -195,22 +151,7 @@ public class WxOpenProperties {
     }
 
     public enum StorageType {
-        /**
-         * 内存.
-         */
-        MEMORY,
-        /**
-         * jedis.
-         */
-        JEDIS,
-        /**
-         * redisson.
-         */
-        REDISSON,
-        /**
-         * redistemplate
-         */
-        RedisTemplate
+        MEMORY, JEDIS, REDISSON, RedisTemplate
     }
 
     public enum HttpClientType {

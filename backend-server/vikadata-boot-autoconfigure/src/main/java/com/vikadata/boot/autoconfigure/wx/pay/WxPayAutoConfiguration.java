@@ -12,11 +12,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-06-21 21:17:44
- */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(WxPayProperties.class)
 @ConditionalOnClass(WxPayService.class)
@@ -40,7 +35,7 @@ public class WxPayAutoConfiguration {
         payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
         payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
         payConfig.setKeyPath(StringUtils.trimToNull(this.properties.getKeyPath()));
-        //以下是apiv3以及支付分相关
+        // api v3 payment
         payConfig.setServiceId(StringUtils.trimToNull(this.properties.getServiceId()));
         payConfig.setPayScoreNotifyUrl(StringUtils.trimToNull(this.properties.getPayScoreNotifyUrl()));
         payConfig.setPrivateKeyPath(StringUtils.trimToNull(this.properties.getPrivateKeyPath()));

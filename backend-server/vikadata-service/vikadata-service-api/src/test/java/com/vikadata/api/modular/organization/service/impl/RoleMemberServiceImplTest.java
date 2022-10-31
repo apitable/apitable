@@ -2,7 +2,6 @@ package com.vikadata.api.modular.organization.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -11,18 +10,15 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enums.organization.UnitType;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.organization.OrgUnitRo;
 import com.vikadata.api.model.ro.organization.RoleMemberUnitRo;
 import com.vikadata.api.model.vo.organization.RoleMemberVo;
 import com.vikadata.api.modular.organization.service.IUnitService;
-import com.vikadata.entity.UnitEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleMemberServiceImplTest extends AbstractIntegrationTest {

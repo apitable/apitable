@@ -1,17 +1,16 @@
 package com.vikadata.api.cache.bean;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Set;
 
+import lombok.Data;
+
 /**
  * <p>
- * 菜单结构化权限资源
+ * menu resource in space
  * </p>
  *
  * @author Shawn Deng
- * @date 2020/2/16 20:35
  */
 @Data
 public class SpaceMenuResourceGroupDto implements Serializable {

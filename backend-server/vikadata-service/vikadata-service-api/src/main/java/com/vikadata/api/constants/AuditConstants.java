@@ -2,11 +2,10 @@ package com.vikadata.api.constants;
 
 /**
  * <p>
- * 审计常量
+ * audit constants
  * </p>
  *
  * @author Chambers
- * @date 2022/5/26
  */
 public class AuditConstants {
 

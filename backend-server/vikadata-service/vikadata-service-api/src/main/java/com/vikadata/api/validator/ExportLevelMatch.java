@@ -21,7 +21,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Constraint(validatedBy = ExportLevelValidator.class)
 public @interface ExportLevelMatch {
 
-    String message() default "【安全设置】- 节点导出权限非法设值";
+    String message() default "【Security Settings】- The node export permission is illegally set";
 
     Class<?>[] groups() default {};
 

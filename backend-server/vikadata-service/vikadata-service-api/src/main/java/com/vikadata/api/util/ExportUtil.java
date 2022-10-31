@@ -1,18 +1,18 @@
 package com.vikadata.api.util;
 
-import com.vikadata.core.util.HttpContextUtil;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
+
+import com.vikadata.core.util.HttpContextUtil;
+
 /**
  * <p>
- * 通用输出工具类
+ * export util
  * </p>
  *
  * @author Chambers
- * @date 2019/12/13
  */
 public class ExportUtil {
 

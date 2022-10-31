@@ -16,11 +16,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 连接器入口
+ * connector template
  * </p>
  *
  * @author Chambers
- * @date 2021/6/25
  */
 @Slf4j
 @Component
@@ -33,56 +32,49 @@ public class ConnectorTemplate {
     private IUserService iUserService;
 
     public void loginBySsoToken(String token){
-        log.info("sso token 「{}」登录", token);
+        log.info("sso token 「{}」Login", token);
         if (k11Connector != null) {
             try {
                 SsoAuthInfo authInfo = k11Connector.loginBySsoToken(token);
-                // k11 电话号码可能是座机，不做自动绑定
-                // 判断邮箱是否已注册维格帐号
+                // The phone number may be a landline, so automatic binding is not required
                 UserEntity user = iUserService.getByEmail(authInfo.getEmailAddr());
                 if (user != null) {
-                    // 更新最后登陆时间
                     iUserService.updateLoginTime(user.getId());
-                    // 登录成功，保存session
                     SessionContext.setUserId(user.getId());
                     return;
                 }
                 Long registerUserId = iUserService.create(null, null,
                     authInfo.getUserDisplayName(), null, authInfo.getEmailAddr(),"");
-                // 登录成功，保存session
                 SessionContext.setUserId(registerUserId);
                 return;
             }
             catch (Exception e) {
-                log.error("sso token「{}」登录失败。msg:{}", token, e.getMessage());
-                throw new BusinessException("SSO 认证失败");
+                log.error("sso token「{}」login error, msg:{}", token, e.getMessage());
+                throw new BusinessException("SSO login error");
             }
         }
-        throw new BusinessException("该环境暂不支持 SSO 方式登录");
+        throw new BusinessException("This environment does not support SSO login");
 
     }
 
     public Long loginBySso(String username, String credential) {
-        log.info("sso 帐号「{}」登录", username);
+        log.info("user「{}」login", username);
         if (k11Connector != null) {
             try {
-                // k11 电话号码可能是座机，不做自动绑定
                 SsoAuthInfo authInfo = k11Connector.loginBySso(username, credential);
-                // 判断邮箱是否已注册维格帐号
                 UserEntity user = iUserService.getByEmail(authInfo.getEmailAddr());
                 if (user != null) {
-                    // 更新最后登陆时间
                     iUserService.updateLoginTime(user.getId());
                     return user.getId();
                 }
                 return iUserService.create(null, null,
                         authInfo.getUserDisplayName(), null, authInfo.getEmailAddr(),"");
             } catch (Exception e) {
-                log.error("sso 帐号「{}」登录失败。msg:{}", username, e.getMessage());
-                throw new BusinessException("SSO 登录失败");
+                log.error("sso user「{}」login error, msg:{}", username, e.getMessage());
+                throw new BusinessException("SSO login error");
             }
         }
-        throw new BusinessException("该环境暂不支持 SSO 方式登录");
+        throw new BusinessException("This environment does not support SSO login");
     }
 
     public void sendSms(String target, String code) {
@@ -90,10 +82,10 @@ public class ConnectorTemplate {
             try {
                 k11Connector.sendSms(target, code);
             } catch (Exception e) {
-                throw new BusinessException("短信发送失败");
+                throw new BusinessException("send sms message error");
             }
             return;
         }
-        throw new BusinessException("未开启外部连接的短信服务");
+        throw new BusinessException("SMS service is not enabled");
     }
 }

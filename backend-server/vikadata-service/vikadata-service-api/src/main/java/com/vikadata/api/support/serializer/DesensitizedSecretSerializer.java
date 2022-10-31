@@ -12,11 +12,10 @@ import com.vikadata.api.util.InformationUtil.InformationType;
 
 /**
  * <p>
- * 脱敏序列化 - Secretkey
+ * Desensitization Serialization
  * </p>
  *
  * @author Pengap
- * @date 2021/8/13 15:13:34
  */
 public class DesensitizedSecretSerializer extends JsonSerializer<String> {
 

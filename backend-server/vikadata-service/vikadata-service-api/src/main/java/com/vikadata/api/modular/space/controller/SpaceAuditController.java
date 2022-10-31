@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.context.LoginContext;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.modular.space.model.SpaceAuditPageParam;
 import com.vikadata.api.modular.space.model.vo.SpaceAuditPageVO;
 import com.vikadata.api.modular.space.service.ISpaceAuditService;

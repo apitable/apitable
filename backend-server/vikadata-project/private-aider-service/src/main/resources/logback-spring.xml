@@ -15,8 +15,6 @@
     <springProfile name="local">
         <logger name="com.vikadata" level="debug"/>
         <logger name="springfox.documentation" level="warn"/>
-        <!--<logger name="org.springframework.cloud.sleuth" level="debug"/>-->
-        <!--<logger name="org.springframework" level="debug"/>-->
         <logger name="brave" level="debug"/>
         <!--local develop debug log level: DEBUG，pre-release and online forbid DEBUG level-->
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

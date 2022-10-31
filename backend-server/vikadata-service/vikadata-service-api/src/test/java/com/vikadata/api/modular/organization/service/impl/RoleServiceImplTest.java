@@ -9,20 +9,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.organization.OrgUnitRo;
 import com.vikadata.api.model.ro.organization.RoleMemberUnitRo;
 import com.vikadata.api.model.vo.organization.RoleInfoVo;
 import com.vikadata.api.model.vo.organization.RoleMemberVo;
 import com.vikadata.api.model.vo.organization.RoleVo;
 import com.vikadata.api.modular.organization.model.RoleBaseInfoDto;
-import com.vikadata.entity.UnitEntity;
 import com.vikadata.entity.UserEntity;
 
 import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleServiceImplTest extends AbstractIntegrationTest {

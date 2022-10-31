@@ -6,51 +6,50 @@ import java.util.Map;
 
 /**
  * <p>
- * 邮件消息模板
+ * Mail Message Template
  * </p>
  *
  * @author Benson Cheung
- * @date 2019/8/23 13:31
  */
 public class EmailMessage {
 
     /**
-     * 发件人个性化名称
+     * Sender Personalized Name
      */
     private String personal;
 
     /**
-     * 收件人列表(支持多个)
+     * Recipient list (multiple supported)
      */
     private List<String> to;
 
     /**
-     * 抄送人列表(支持多个)
+     * Cc list (multiple supported
      */
     private List<String> cc;
 
     /**
-     * 邮件主题
+     * Message subject
      */
     private String subject;
 
     /**
-     * 纯文本内容
+     * Plain text content
      */
     private String plainText;
 
     /**
-     * HTML文本
+     * html text
      */
     private String htmlText;
 
     /**
-     * 内嵌资源（图片、文件等等）
+     * Embedded resources (pictures, files, etc.)
      */
     private Map<String, InputStream> inlines;
 
     /**
-     * 附件
+     * attaches resources
      */
     private List<EmailAttach> attaches;
 

@@ -16,8 +16,8 @@ import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
-import com.vikadata.api.helper.PageHelper;
-import com.vikadata.api.lang.PageInfo;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.modular.appstore.enums.AppType;
 import com.vikadata.api.modular.appstore.model.AppInfo;
 import com.vikadata.api.modular.social.service.IFeishuService;

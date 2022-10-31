@@ -15,9 +15,8 @@ import com.vikadata.system.config.wecom.WeComConfig;
 import com.vikadata.system.config.wizard.GuideConfig;
 
 /**
- * 系统配置大对象
+ * System Config
  * @author Shawn Deng
- * @date 2021-11-11 15:26:31
  */
 @Data
 public class SystemConfig {

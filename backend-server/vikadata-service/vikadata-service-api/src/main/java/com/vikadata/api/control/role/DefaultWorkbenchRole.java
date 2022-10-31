@@ -1,9 +1,8 @@
 package com.vikadata.api.control.role;
 
 /**
- * 默认工作台角色-可管理
+ * Default Workbench Role
  * @author Shawn Deng
- * @date 2021-03-18 16:42:50
  */
 public class DefaultWorkbenchRole extends NodeManagerRole {
 

@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * 短信配置信息
+ * SMS properties
  * </p>
  *
  * @author Shawn Deng
@@ -116,19 +116,10 @@ public class SmsProperties {
          */
         public static class Tencent {
 
-            /**
-             * 应用ID
-             */
             private Integer appId;
 
-            /**
-             * 应用密钥
-             */
             private String appKey;
 
-            /**
-             * 签名内容
-             */
             private String sign;
 
             public Integer getAppId() {
@@ -188,7 +179,7 @@ public class SmsProperties {
         public static class Yunpian {
 
             /**
-             * API 密钥
+             * API key
              */
             private String apikey;
 
