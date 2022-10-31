@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
- * 工作台-节点表
+ * Workbench-Node Description
  */
 @Entity('vika_node_desc')
 export class NodeDescEntity {
@@ -12,7 +12,7 @@ export class NodeDescEntity {
     name: 'node_id',
     nullable: false,
     unique: true,
-    comment: '节点Id(关联#vika_node#node_id)',
+    comment: 'node Id(related#vika_node#node_id)',
     length: 50,
   })
     nodeId: string;
@@ -21,13 +21,13 @@ export class NodeDescEntity {
     name: 'description',
     type: 'text',
     nullable: false,
-    comment: '节点描述',
+    comment: 'node description',
   })
     description: string | '';
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;
@@ -35,7 +35,7 @@ export class NodeDescEntity {
   @Column('timestamp', {
     name: 'updated_at',
     nullable: true,
-    comment: '更新时间',
+    comment: 'updated time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     updatedAt: Date | null;

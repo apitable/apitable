@@ -7,7 +7,7 @@ export class WidgetEntity extends BaseEntity {
     name: 'node_id',
     nullable: false,
     unique: true,
-    comment: '节点ID',
+    comment: 'node ID',
     length: 50,
   })
     nodeId: string;
@@ -16,7 +16,7 @@ export class WidgetEntity extends BaseEntity {
     name: 'space_id',
     nullable: false,
     unique: true,
-    comment: '空间ID',
+    comment: 'space ID',
     length: 50,
   })
     spaceId: string;
@@ -25,7 +25,7 @@ export class WidgetEntity extends BaseEntity {
     name: 'package_id',
     nullable: false,
     unique: true,
-    comment: '组件包ID',
+    comment: 'package ID',
     length: 50,
   })
     packageId: string;
@@ -34,7 +34,7 @@ export class WidgetEntity extends BaseEntity {
     name: 'widget_id',
     nullable: false,
     unique: true,
-    comment: '自定组件ID',
+    comment: 'widget ID',
     length: 50,
   })
     widgetId: string;
@@ -42,7 +42,7 @@ export class WidgetEntity extends BaseEntity {
   @Column({
     name: 'name',
     nullable: true,
-    comment: '名称',
+    comment: 'name',
     length: 255,
   })
     name: string | null;
@@ -50,7 +50,7 @@ export class WidgetEntity extends BaseEntity {
   @Column('json', {
     name: 'storage',
     nullable: true,
-    comment: '存储配置',
+    comment: 'storage configuration',
   })
     storage: { [key: string]: any } | null;
 
@@ -58,7 +58,7 @@ export class WidgetEntity extends BaseEntity {
     name: 'revision',
     nullable: false,
     unsigned: true,
-    comment: '版本号',
+    comment: 'revision',
     default: () => 0,
     type: 'bigint',
     width: 20,

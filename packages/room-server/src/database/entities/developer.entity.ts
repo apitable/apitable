@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { IdWorker } from 'shared/helpers/snowflake';
 
 /**
- * 工作台-数据表格表
+ * Workbench-Developer
  */
 @Entity('vika_developer')
 export class DeveloperEntity {
@@ -10,7 +10,7 @@ export class DeveloperEntity {
     name: 'user_id',
     nullable: false,
     unique: true,
-    comment: '用户ID',
+    comment: 'user ID',
     width: 20,
     type: 'bigint',
   })
@@ -19,7 +19,7 @@ export class DeveloperEntity {
   @Column({
     name: 'api_key',
     nullable: false,
-    comment: '开发者平台唯一令牌',
+    comment: 'The only token of the developer platform',
     length: 64,
   })
     apiKey: string;
@@ -31,19 +31,19 @@ export class DeveloperEntity {
 
   @Column('bigint', {
     name: 'created_by',
-    comment: '创建者',
+    comment: 'creator ID',
   })
     createdBy: string;
 
   @Column('bigint', {
     name: 'updated_by',
-    comment: '最后一次更新者',
+    comment: 'the user who last updated it',
   })
     updatedBy: string;
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;
@@ -51,7 +51,7 @@ export class DeveloperEntity {
   @Column('timestamp', {
     name: 'updated_at',
     nullable: true,
-    comment: '更新时间',
+    comment: 'updated time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     updatedAt: Date | null;

@@ -2,14 +2,14 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
 /**
- * 组织架构-部门表
+ * Organization-Department
  */
 @Entity('vika_unit_team')
 export class UnitTeamEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: '空间ID(关联#vika_space#space_id)',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
     type: 'varchar',
   })
@@ -18,7 +18,7 @@ export class UnitTeamEntity extends BaseEntity {
   @Column({
     name: 'parent_id',
     nullable: false,
-    comment: '父级ID,如果是根部门,则为0',
+    comment: 'parent department ID, if it is the root department, it is 0',
     width: 20,
     type: 'bigint',
   })
@@ -27,7 +27,7 @@ export class UnitTeamEntity extends BaseEntity {
   @Column({
     name: 'team_name',
     nullable: false,
-    comment: '部门名称',
+    comment: 'department name',
     length: 100,
     type: 'varchar',
   })
@@ -36,7 +36,7 @@ export class UnitTeamEntity extends BaseEntity {
   @Column({
     name: 'team_level',
     nullable: false,
-    comment: '层级，默认1开始',
+    comment: 'hierarchy, start from 1 by default',
     width: 5,
     type: 'int',
   })
@@ -45,7 +45,7 @@ export class UnitTeamEntity extends BaseEntity {
   @Column({
     name: 'sequence',
     nullable: false,
-    comment: '空间内排序(默认从1开始)',
+    comment: 'sort in space (default starting from 1)',
     width: 11,
     type: 'int',
   })

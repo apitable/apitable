@@ -2,14 +2,14 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
 /**
- * 资源表
+ * Asset
  */
 @Entity('vika_asset')
 export class AssetEntity extends BaseEntity {
   @Column({
     name: 'checksum',
     nullable: true,
-    comment: '整个文件的Hash，MD5摘要',
+    comment: 'Hash, MD5 summary of the entire file',
     length: 255,
     type: 'varchar',
   })
@@ -18,7 +18,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'head_sum',
     nullable: true,
-    comment: '资源文件前32个字节的Base64',
+    comment: 'Base64 in the first 32 bytes of the resource file',
     length: 255,
     type: 'varchar',
   })
@@ -27,7 +27,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'bucket',
     nullable: true,
-    comment: '存储桶标志',
+    comment: 'Bucket name',
     length: 50,
     type: 'varchar',
   })
@@ -36,7 +36,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'file_size',
     nullable: false,
-    comment: '文件大小(单位:byte)',
+    comment: 'File size (unit: byte)',
     width: 11,
     type: 'int',
   })
@@ -45,7 +45,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'file_url',
     nullable: false,
-    comment: '云端文件存放路径',
+    comment: 'Cloud file storage path',
     width: 255,
     type: 'varchar',
   })
@@ -63,7 +63,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'extension_name',
     nullable: false,
-    comment: '文件扩展名',
+    comment: 'File extension name',
     length: 255,
     type: 'varchar',
   })
@@ -72,7 +72,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'preview',
     nullable: false,
-    comment: '预览图令牌',
+    comment: 'Preview tokens',
     length: 255,
     type: 'varchar',
   })
@@ -81,7 +81,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'is_template',
     nullable: false,
-    comment: '是否是模版附件(0:否,1:是)',
+    comment: 'Whether it is a template attachment (0: no, 1: yes)',
     width: 1,
     type: 'tinyint',
   })
@@ -90,7 +90,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'height',
     nullable: true,
-    comment: '图片高度',
+    comment: 'Picture height',
     width: 11,
     type: 'int',
   })
@@ -99,7 +99,7 @@ export class AssetEntity extends BaseEntity {
   @Column({
     name: 'width',
     nullable: true,
-    comment: '图片宽度',
+    comment: 'Picture width',
     width: 11,
     type: 'int',
   })

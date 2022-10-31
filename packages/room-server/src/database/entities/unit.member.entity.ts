@@ -6,7 +6,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'user_id',
     nullable: true,
-    comment: '用户ID(关联#vika_user#id)',
+    comment: 'user ID(related#vika_user#id)',
     width: 20,
     type: 'bigint',
   })
@@ -15,7 +15,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: '空间ID(关联#vika_space#space_id)',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
     type: 'varchar',
   })
@@ -24,7 +24,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'member_name',
     nullable: false,
-    comment: '成员姓名',
+    comment: 'member name',
     length: 255,
     type: 'varchar',
   })
@@ -33,7 +33,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'job_number',
     nullable: false,
-    comment: '工号',
+    comment: 'job number',
     length: 60,
     type: 'varchar',
   })
@@ -42,7 +42,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'position',
     nullable: false,
-    comment: '职位',
+    comment: 'position',
     width: 255,
     type: 'varchar',
   })
@@ -51,7 +51,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'mobile',
     nullable: false,
-    comment: '手机号码',
+    comment: 'mobile number',
     length: 20,
     type: 'varchar',
   })
@@ -60,7 +60,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'email',
     nullable: false,
-    comment: '电子邮箱',
+    comment: 'email',
     length: 100,
     type: 'varchar',
   })
@@ -69,7 +69,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'ding_user_id',
     nullable: false,
-    comment: '钉钉员工ID',
+    comment: 'DingDing user ID',
     length: 64,
     type: 'varchar',
   })
@@ -78,7 +78,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'status',
     nullable: false,
-    comment: '用户的空间状态(0:非活跃,1:活跃,2:预删除,3:未激活)',
+    comment: 'user status(0: Non -active, 1: active, 2: pre -delete, 3: No activation)',
     width: 2,
     type: 'tinyint',
   })
@@ -87,7 +87,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'is_social_name_modified',
     nullable: true,
-    comment: '是否作为第三方 IM 用户修改过昵称。0：否；1：是；2：不是 IM 第三方用户',
+    comment: 'Have you modified the nickname as a third -party IM user? 0: No; 1: Yes; 2: Not third -party users of IM',
     width: 1,
     type: 'tinyint',
   })
@@ -96,7 +96,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'is_point',
     nullable: false,
-    comment: '是否有小红点(0:否,1:是)',
+    comment: 'are there little red dots (0: no, 1: yes)',
     width: 1,
     type: 'tinyint',
   })
@@ -105,7 +105,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'is_active',
     nullable: false,
-    comment: '是否激活(0:否,1:是)',
+    comment: 'is it activated (0: No, 1: Yes)',
     width: 1,
     type: 'tinyint',
   })
@@ -114,7 +114,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'is_admin',
     nullable: false,
-    comment: '是否管理员(0:否,1:是)',
+    comment: 'whether the administrator (0: no, 1: yes)',
     width: 1,
     type: 'tinyint',
   })

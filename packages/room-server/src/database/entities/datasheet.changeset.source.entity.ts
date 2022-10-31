@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
- * 工作台-数表变更集来源表
+ * Workbench-Datasheet Changeset Source
  */
 @Entity('vika_datasheet_changeset_source')
 export class DatasheetChangesetSourceEntity {
@@ -11,7 +11,7 @@ export class DatasheetChangesetSourceEntity {
   @Column({
     name: 'dst_id',
     nullable: false,
-    comment: '数表ID(关联#vika_datasheet#dst_id)',
+    comment: 'datasheet ID (associated#vika_datasheet#dst_id)',
     length: 50,
   })
     dstId: string;
@@ -19,7 +19,7 @@ export class DatasheetChangesetSourceEntity {
   @Column({
     name: 'resource_id',
     nullable: false,
-    comment: '数据来源ID(一般为 nodeId)',
+    comment: 'source ID(generally is nodeId)',
     length: 50,
   })
     resourceId: string;
@@ -27,7 +27,7 @@ export class DatasheetChangesetSourceEntity {
   @Column({
     name: 'message_id',
     nullable: false,
-    comment: 'changeset请求的唯一标识，用于保证resource changeset的唯一',
+    comment: 'Unique identifier of a changeset request',
     length: 255,
   })
     messageId: string;
@@ -35,7 +35,7 @@ export class DatasheetChangesetSourceEntity {
   @Column({
     name: 'source_id',
     nullable: true,
-    comment: '数据来源ID',
+    comment: 'source ID',
     length: 50,
   })
     sourceId: string | undefined;
@@ -43,7 +43,7 @@ export class DatasheetChangesetSourceEntity {
   @Column({
     name: 'source_type',
     nullable: false,
-    comment: '数据来源类型(0:user_interface,1:openapi,2:relation_effect)',
+    comment: 'source type (0: user_interface, 1: Openapi, 2: related_effect)',
     width: 2,
     type: 'tinyint',
   })
@@ -52,14 +52,14 @@ export class DatasheetChangesetSourceEntity {
   @Column('bigint', {
     name: 'created_by',
     nullable: true,
-    comment: '创建者',
+    comment: 'creator ID',
     default: null,
   })
     createdBy: string | undefined;
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;

@@ -2,7 +2,7 @@ import { IdWorker } from 'shared/helpers/snowflake';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
- * 工作台-数据表格表
+ * Workbench-User
  */
 @Entity('vika_user')
 export class UserEntity {
@@ -10,7 +10,7 @@ export class UserEntity {
     name: 'uuid',
     nullable: true,
     unique: true,
-    comment: '用户uuid',
+    comment: 'user uuid',
     length: 32,
   })
     uuid: string | null;
@@ -18,7 +18,7 @@ export class UserEntity {
   @Column({
     name: 'nick_name',
     nullable: true,
-    comment: '昵称',
+    comment: 'nick name',
     length: 50,
   })
     nikeName: string | null;
@@ -26,7 +26,7 @@ export class UserEntity {
   @Column({
     name: 'mobile_phone',
     nullable: true,
-    comment: '手机号码',
+    comment: 'mobile phone number',
     length: 50,
   })
     mobilePhone: string | null;
@@ -34,7 +34,7 @@ export class UserEntity {
   @Column({
     name: 'email',
     nullable: true,
-    comment: '邮箱',
+    comment: 'email',
     length: 100,
   })
     email: string | null;
@@ -42,7 +42,7 @@ export class UserEntity {
   @Column({
     name: 'password',
     nullable: true,
-    comment: '密码',
+    comment: 'password',
     length: 255,
   })
     password: string | null;
@@ -50,14 +50,14 @@ export class UserEntity {
   @Column({
     name: 'avatar',
     nullable: true,
-    comment: '头像',
+    comment: 'avatar',
     length: 255,
   })
     avatar: string | null;
 
   @Column({
     name: 'gender',
-    comment: '性别',
+    comment: 'gender',
     length: 1,
     default: '1',
   })
@@ -66,7 +66,7 @@ export class UserEntity {
   @Column({
     name: 'remark',
     nullable: true,
-    comment: '备注',
+    comment: 'remark',
     length: 255,
   })
     remark: string | null;
@@ -74,7 +74,7 @@ export class UserEntity {
   @Column({
     name: 'ding_open_id',
     nullable: true,
-    comment: '钉钉开放应用内的唯一标识',
+    comment: 'The unique ID in the open application',
     length: 255,
   })
     dingOpenId: string | null;
@@ -82,7 +82,7 @@ export class UserEntity {
   @Column({
     name: 'ding_union_id',
     nullable: true,
-    comment: '钉钉开发者企业内的唯一标识',
+    comment: 'The unique ID in the Dingding developer enterprise',
     length: 255,
   })
     dingUnionId: string | null;
@@ -90,14 +90,14 @@ export class UserEntity {
   @Column('timestamp', {
     name: 'last_login_time',
     nullable: true,
-    comment: '更新时间',
+    comment: 'updated time',
   })
     lastLoginTime: Date | null;
 
   @Column({
     name: 'locale',
     nullable: true,
-    comment: '语言',
+    comment: 'locale',
     length: 50,
   })
     locale: string | null;
@@ -105,7 +105,7 @@ export class UserEntity {
   @Column({
     name: 'is_social_name_modified',
     nullable: true,
-    comment: '是否作为第三方 IM 用户修改过昵称。0：否；1：是；2：不是 IM 第三方用户',
+    comment: 'have you modified the nickname as a third -party IM user? 0: No; 1: Yes; 2: Not third -party users of IM',
     width: 1,
     type: 'tinyint',
   })
@@ -117,7 +117,7 @@ export class UserEntity {
 
   @Column({
     name: 'is_deleted',
-    comment: '删除标记(0:否,1:是)',
+    comment: 'deleted mark (0: No, 1: Yes)',
     unsigned: true,
     default: () => false,
   })
@@ -125,7 +125,7 @@ export class UserEntity {
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;
@@ -133,7 +133,7 @@ export class UserEntity {
   @Column('timestamp', {
     name: 'updated_at',
     nullable: true,
-    comment: '更新时间',
+    comment: 'updated time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     updatedAt: Date | null;

@@ -3,14 +3,14 @@ import { BaseEntity } from '../../shared/entities/base.entity';
 import { IFormProps } from '@apitable/core';
 
 /**
- * 工作台-节点表
+ * Workbench-Node
  */
 @Entity('vika_node')
 export class NodeEntity extends BaseEntity {
   @Column({
     name: 'type',
     nullable: false,
-    comment: '类型 (0:根节点;1:文件夹;2:数表;3:神奇表单)',
+    comment: 'node type(0: root node; 1: folder; 2: datasheet; 3: form)',
     width: 2,
     type: 'tinyint',
   })
@@ -19,7 +19,7 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: '空间ID(关联#vika_space#space_id)',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
   })
     spaceId: string;
@@ -27,7 +27,7 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'parent_id',
     nullable: false,
-    comment: '父节点Id',
+    comment: 'parent node ID',
     length: 50,
   })
     parentId: string;
@@ -35,7 +35,7 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'pre_node_id',
     nullable: true,
-    comment: '同级下前一个节点ID',
+    comment: 'previous node ID',
     length: 50,
   })
     preNodeId: string | null;
@@ -44,7 +44,7 @@ export class NodeEntity extends BaseEntity {
     name: 'node_id',
     nullable: false,
     unique: true,
-    comment: '数表节点Id(关联#vika_node#node_id)',
+    comment: 'node Id(related#vika_node#node_id)',
     length: 50,
   })
     nodeId: string | null;
@@ -52,7 +52,7 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'node_name',
     nullable: true,
-    comment: '名称',
+    comment: 'node name',
     length: 255,
   })
     nodeName: string | null;
@@ -60,7 +60,7 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'icon',
     nullable: true,
-    comment: '节点图标',
+    comment: 'node icon',
     length: 100,
   })
     icon: string | null;
@@ -68,14 +68,14 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'cover',
     nullable: true,
-    comment: '封面图TOKEN',
+    comment: 'Cover TOKEN',
     length: 255,
   })
     cover: string | null;
 
   @Column({
     name: 'is_template',
-    comment: '模版标志(0:否,1:是)',
+    comment: 'is it a template(0: no, 1: yes)',
     unsigned: true,
     default: () => false,
   })
@@ -84,21 +84,21 @@ export class NodeEntity extends BaseEntity {
   @Column('json', {
     name: 'extra',
     nullable: true,
-    comment: '其他信息'
+    comment: 'other information'
   })
     extra: IFormProps | null;
 
   @Column({
     name: 'deleted_path',
     nullable: true,
-    comment: '删除时的路径',
+    comment: 'The path when deletes',
     length: 255,
   })
     deletedPath: string | null;
 
   @Column({
     name: 'is_rubbish',
-    comment: '回收站标记(0:否,1:是)',
+    comment: 'recycling station mark (0: no, 1: yes)',
     unsigned: true,
     default: () => false,
   })
@@ -106,7 +106,7 @@ export class NodeEntity extends BaseEntity {
 
   @Column({
     name: 'is_banned',
-    comment: '封禁标志(0:否,1:是)',
+    comment: 'banning sign (0: No, 1: Yes)',
     unsigned: true,
     default: () => false,
   })

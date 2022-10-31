@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
- * 工作台-节点关联表
+ * Workbench-Node Relationship
  */
 @Entity('vika_node_rel')
 export class NodeRelEntity {
@@ -11,7 +11,7 @@ export class NodeRelEntity {
   @Column({
     name: 'main_node_id',
     nullable: false,
-    comment: '主节点ID',
+    comment: 'main node ID',
     length: 50,
   })
     mainNodeId: string;
@@ -19,7 +19,7 @@ export class NodeRelEntity {
   @Column({
     name: 'rel_node_id',
     nullable: false,
-    comment: '关联节点ID',
+    comment: 'related node ID',
     length: 50,
   })
     relNodeId: string;
@@ -27,21 +27,21 @@ export class NodeRelEntity {
   @Column('json', {
     name: 'extra',
     nullable: true,
-    comment: '其他信息',
+    comment: 'other information',
   })
     extra?: string;
 
   @Column('bigint', {
     name: 'created_by',
     nullable: true,
-    comment: '创建者',
+    comment: 'creator ID',
   })
     createdBy?: string;
 
   @Column('timestamp', {
     name: 'created_at',
     nullable: false,
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;

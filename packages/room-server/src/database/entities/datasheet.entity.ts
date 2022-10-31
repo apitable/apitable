@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
 /**
- * 工作台-数据表格表
+ * Workbench-Datasheet
  */
 @Entity('vika_datasheet')
 export class DatasheetEntity extends BaseEntity {
@@ -10,7 +10,7 @@ export class DatasheetEntity extends BaseEntity {
     name: 'dst_id',
     nullable: true,
     unique: true,
-    comment: '数表ID',
+    comment: 'datasheet ID',
     length: 50,
   })
     dstId: string | null;
@@ -18,7 +18,7 @@ export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'node_id',
     nullable: true,
-    comment: '数表节点Id(关联#vika_node#node_id)',
+    comment: 'node ID (association#vika_node#node_id)',
     length: 50,
   })
     nodeId: string | null;
@@ -26,7 +26,7 @@ export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'dst_name',
     nullable: true,
-    comment: '名称',
+    comment: 'datasheet name',
     length: 255,
   })
     dstName: string | null;
@@ -34,7 +34,7 @@ export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: true,
-    comment: '空间ID(关联#vika_space#space_id)',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
   })
     spaceId: string | null;
@@ -42,14 +42,14 @@ export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'creator',
     nullable: true,
-    comment: '创建者',
+    comment: 'creator ID',
   })
     creator: string | null;
 
   @Column({
     name: 'revision',
     nullable: true,
-    comment: '版本号',
+    comment: 'revision',
     unsigned: true,
     default: () => 0,
     type: 'bigint',

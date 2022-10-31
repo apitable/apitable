@@ -3,7 +3,7 @@ import { IdWorker } from 'shared/helpers/snowflake';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
- * resource 相关的操作合集，这里包括 datasheet 
+ * Resource related operation collection, which includes datasheet
  */
 @Entity('vika_resource_changeset')
 export class ResourceChangesetEntity {
@@ -13,7 +13,7 @@ export class ResourceChangesetEntity {
   @Column({
     name: 'message_id',
     nullable: false,
-    comment: 'changeset请求的唯一标识，用于保证changeset的唯一',
+    comment: 'unique identifier of a changeset request',
     length: 255,
   })
     messageId: string;
@@ -21,7 +21,7 @@ export class ResourceChangesetEntity {
   @Column({
     name: 'resource_id',
     nullable: false,
-    comment: '资源ID',
+    comment: 'resource ID',
     length: 50,
   })
     resourceId: string;
@@ -29,7 +29,7 @@ export class ResourceChangesetEntity {
   @Column({
     name: 'resource_type',
     nullable: false,
-    comment: '资源类型(0:数表;1:神奇表单;2:仪表盘;3:组件)',
+    comment: 'resource type(0: datasheet, 1: form, 2: dashboard, 3: widget)',
     unsigned: true,
     default: () => 0,
   })
@@ -38,7 +38,7 @@ export class ResourceChangesetEntity {
   @Column({
     name: 'source_type',
     nullable: false,
-    comment: '数据来源类型(0:默认)',
+    comment: 'source type(0: default)',
     unsigned: true,
     default: () => 0,
   })
@@ -47,14 +47,14 @@ export class ResourceChangesetEntity {
   @Column('json', {
     name: 'operations',
     nullable: true,
-    comment: '操作action的合集',
+    comment: 'operation action collection',
   })
     operations: IOperation[] | null;
 
   @Column({
     name: 'revision',
     nullable: false,
-    comment: '版本号',
+    comment: 'revision',
     unsigned: true,
     default: () => 0,
   })
@@ -62,13 +62,13 @@ export class ResourceChangesetEntity {
 
   @Column('bigint', {
     name: 'created_by',
-    comment: '创建者',
+    comment: 'creator ID',
   })
     createdBy: string;
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;

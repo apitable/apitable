@@ -3,7 +3,7 @@ import { INodeShareProps } from 'shared/interfaces/datasheet.interface';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
- * 节点分享设置表
+ * Workbench-Node Share Settings
  */
 @Entity('vika_node_share_setting')
 export class NodeShareSettingEntity {
@@ -13,7 +13,7 @@ export class NodeShareSettingEntity {
 
   @Column({
     name: 'node_id',
-    comment: '节点Id',
+    comment: 'node Id',
     length: 50,
   })
     nodeId: string;
@@ -21,14 +21,14 @@ export class NodeShareSettingEntity {
   @Column({
     name: 'share_id',
     nullable: true,
-    comment: '分享唯一ID',
+    comment: 'unique ID of sharing node',
     length: 50,
   })
     shareId: string | null;
 
   @Column({
     name: 'is_enabled',
-    comment: '可分享状态(0:关闭,1:开启)',
+    comment: 'can share status (0: Close, 1: Open)',
     unsigned: true,
     default: () => false,
   })
@@ -36,7 +36,7 @@ export class NodeShareSettingEntity {
 
   @Column({
     name: 'allow_save',
-    comment: '是否允许他人转存(0:否,1:是)',
+    comment: 'whether to allow others to transfer (0: No, 1: Yes)',
     unsigned: true,
     default: () => false,
   })
@@ -44,7 +44,7 @@ export class NodeShareSettingEntity {
 
   @Column({
     name: 'allow_edit',
-    comment: '是否允许他人编辑(0:否,1:是)',
+    comment: 'whether to allow others to edit (0: No, 1: Yes)',
     unsigned: true,
     default: () => false,
   })
@@ -53,25 +53,25 @@ export class NodeShareSettingEntity {
   @Column('json', {
     name: 'props',
     nullable: true,
-    comment: '分享选项参数',
+    comment: 'share option properties',
   })
     props: INodeShareProps | null;
 
   @Column('bigint', {
     name: 'created_by',
-    comment: '创建者',
+    comment: 'creator ID',
   })
     createdBy: string;
 
   @Column('bigint', {
     name: 'updated_by',
-    comment: '最后一次更新者',
+    comment: 'the user who last updated it',
   })
     updatedBy: string;
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;
@@ -79,7 +79,7 @@ export class NodeShareSettingEntity {
   @Column('timestamp', {
     name: 'updated_at',
     nullable: true,
-    comment: '更新时间',
+    comment: 'updated time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     updatedAt: Date | null;

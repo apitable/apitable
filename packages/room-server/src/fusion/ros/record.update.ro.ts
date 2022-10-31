@@ -10,7 +10,7 @@ export class RecordUpdateRo {
   @ApiProperty({
     type: [FieldUpdateRo],
     required: true,
-    description: '需要修改记录的数据对应列和数据',
+    description: 'Need to modify the data corresponding column and data',
     example: [
       {
         recordId: 'recrHnjVuH6Fd',

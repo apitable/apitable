@@ -2,14 +2,14 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
 /**
- * 组织架构-标签表
+ * Organizational structure-label table
  */
 @Entity('vika_unit_tag')
 export class UnitTagEntity extends BaseEntity {
   @Column({
     name: 'group_id',
     nullable: true,
-    comment: '组织单元关联ID',
+    comment: 'organization unit ID',
     width: 20,
     type: 'bigint',
   })
@@ -18,7 +18,7 @@ export class UnitTagEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: '空间ID(关联#vika_space#space_id)',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
     type: 'varchar',
   })
@@ -27,7 +27,7 @@ export class UnitTagEntity extends BaseEntity {
   @Column({
     name: 'tag_name',
     nullable: false,
-    comment: '标签名称',
+    comment: 'tag name',
     length: 100,
     type: 'varchar',
   })
@@ -36,7 +36,7 @@ export class UnitTagEntity extends BaseEntity {
   @Column({
     name: 'sequence',
     nullable: false,
-    comment: '空间内排序(默认从1开始)',
+    comment: 'sort in space (default starting from 1)',
     width: 11,
     type: 'int',
   })

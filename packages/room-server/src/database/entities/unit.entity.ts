@@ -2,14 +2,14 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
 /**
- * 组织架构-组织单元表
+ * Organizational structure-Organization unit table
  */
 @Entity('vika_unit')
 export class UnitEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: '空间ID(关联#vika_space#space_id)',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
   })
     spaceId: string;
@@ -17,7 +17,7 @@ export class UnitEntity extends BaseEntity {
   @Column({
     name: 'unit_type',
     nullable: false,
-    comment: '类型(1:部门,2:标签,3:成员)',
+    comment: 'unit type(1: department, 2: tag, 3:member)',
     width: 2,
     type: 'tinyint',
   })
@@ -26,7 +26,7 @@ export class UnitEntity extends BaseEntity {
   @Column({
     name: 'unit_ref_id',
     nullable: false,
-    comment: '组织单元关联ID',
+    comment: 'organization unit association ID',
     width: 20,
     type: 'bigint',
   })
