@@ -18,10 +18,8 @@ import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CAL
 
 /**
  * <p>
- * 事件订阅 -- 普通优先级数据，数据为企业员工的最新状态
+ * Event subscription -- general priority data, which is the latest status of enterprise employees
  * </p>
- * @author zoe zheng
- * @date 2021/9/2 4:13 下午
  */
 @DingTalkEventHandler
 @Slf4j
@@ -30,93 +28,93 @@ public class SyncHttpOrgContactUserEventHandler {
     private IDingTalkIsvEventService iDingTalkIsvEventService;
 
     /**
-     * 企业增加员工事件之后的员工信息
+     * Employee information after the enterprise adds an employee event
      *
-     * @param userId 员工的userid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param userId Employee's userid
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserAddOrgEvent(String userId, SyncHttpUserAddOrgEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleUserAddOrgEvent(userId, event);
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业修改员工事件之后的员工信息
+     * Employee information after an enterprise modifies an employee event
      *
-     * @param userId 员工的userid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param userId Employee's userid
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserModifyOrgEvent(String userId, SyncHttpUserModifyOrgEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // 重新加入空间站，会推送用户修改事件
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
+        // Re joining the space station will push user modification events
         iDingTalkIsvEventService.handleUserAddOrgEvent(userId, event);
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业修改员工所在部门事件之后的员工信息
+     * Employee information after the event of modifying the employee's department
      *
-     * @param userId 员工的userid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param userId Employee's userid
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserDeptChangeEvent(String userId, SyncHttpUserDeptChangeEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received Ding]Talk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleUserAddOrgEvent(userId, event);
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业修改员工所在角色(包括管理员变更)事件之后的员工信息
+     * Employee information after the enterprise modifies the employee's role (including administrator change) event
      *
-     * @param userId 员工的userid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param userId Employee's userid
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserRoleChangeEvent(String userId, SyncHttpUserRoleChangeEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         // todo
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 用户加入企业后的激活信息，active字段为true时表示已激活
+     * The activation information after the user joins the enterprise. If the active field is true, it means it has been activated
      *
-     * @param userId 员工的userid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param userId Employee's userid
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserActiveOrgEvent(String userId, SyncHttpUserActiveOrgEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // 用户激活企业, 相当于加入企业，因为在加入企业的时候有判断用户是否激活
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
+        // The user activates the enterprise, which is equivalent to joining the enterprise, because when joining the enterprise, it is judged whether the user is activated
         iDingTalkIsvEventService.handleUserAddOrgEvent(userId, event);
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 用户加入企业后的激活信息，active字段为true时表示已激活
+     * The activation information after the user joins the enterprise. If the active field is true, it means it has been activated
      *
-     * @param userId 员工的userid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param userId Employee's userid
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserLeaveOrgEvent(String userId, SyncHttpUserLeaveOrgEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleUserLeaveOrgEvent(userId, event);
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 }

@@ -13,12 +13,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 用户在千帆玉符系统登录后完成后续操作
+ * The user completes subsequent operations after logging in to the I Daa S system
  * </p>
- * @author 刘斌华
- * @date 2022-05-25 10:56:50
  */
-@ApiModel("用户在千帆玉符系统登录后完成后续操作")
+@ApiModel("The user completes subsequent operations after logging in to the I Daa S system")
 @Setter
 @Getter
 @ToString
@@ -26,11 +24,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class IdaasAuthCallbackRo {
 
-    @ApiModelProperty("玉符 IDaaS 登录回调返回的 code")
+    @ApiModelProperty("Code returned by IDaaS login callback")
     @NotBlank
     private String code;
 
-    @ApiModelProperty("玉符 IDaaS 登录回调返回的 state")
+    @ApiModelProperty("The state returned by the IDaaS login callback")
     @NotBlank
     private String state;
 

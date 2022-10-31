@@ -10,35 +10,29 @@ import com.vikadata.entity.SocialTenantOrderEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业租户订单 Mapper
+ * Third party platform integration - enterprise tenant order mapper
  * </p>
- * @author zoe zheng
- * @date 2022/2/28 18:49
  */
 public interface SocialTenantOrderMapper extends BaseMapper<SocialTenantOrderEntity> {
     /**
-     *  根据订单号查找订单数量
+     *  Find the order quantity according to the order number
      *
-     * @param channelOrderId 渠道订单号
-     * @param tenantId 企业ID
-     * @param appId 应用ID
-     * @param platform 应用类型
-     * @return
-     * @author zoe zheng
-     * @date 2022/2/28 18:54
+     * @param channelOrderId Channel order No
+     * @param tenantId Enterprise ID
+     * @param appId App ID
+     * @param platform Application Type
+     * @return Number
      */
     Integer selectCountByChannelOrderId(@Param("channelOrderId") String channelOrderId, @Param("tenantId") String tenantId,
             @Param("appId") String appId, @Param("platform") SocialPlatformType platform);
 
     /**
-     * 获取第三方企业的订单信息
+     * Get the order information of the third-party enterprise
      *
-     * @param tenantId 企业ID
-     * @param appId 应用ID
-     * @param platform 应用类型
+     * @param tenantId Enterprise ID
+     * @param appId App ID
+     * @param platform Application Type
      * @return orderData
-     * @author zoe zheng
-     * @date 2022/2/28 20:44
      */
     List<String> selectOrderDataByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId,
             @Param("platform") SocialPlatformType platform);

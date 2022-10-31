@@ -35,10 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 第三方平台集成-用户 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-07 11:22:47
+ * Third party platform integration - user service interface implementation
  */
 @Service
 @Slf4j
@@ -123,7 +120,7 @@ public class SocialUserServiceImpl extends ServiceImpl<SocialUserMapper, SocialU
         authInfo.setOpenId(userDetail.getUserid());
         authInfo.setUnionId(userDetail.getUnionid());
         authInfo.setType(LinkType.DINGTALK.getType());
-        // 手机号没有绑定维格账号，新建一个用户
+        // The mobile phone number is not bound to a vika account. Create a new user
         if (!userService.checkByCodeAndMobile(authInfo.getAreaCode(), authInfo.getMobile())) {
             DingTalkServerAuthInfoResponse serverAuthInfo = dingTalkService.getServerAuthInfo(agentId);
             authInfo.setTenantName(serverAuthInfo.getAuthCorpInfo().getCorpName());
@@ -132,18 +129,18 @@ public class SocialUserServiceImpl extends ServiceImpl<SocialUserMapper, SocialU
         }
         else {
             result.setUserId(userMapper.selectIdByMobile(userDetail.getMobile()));
-            // 如果没有绑定，就绑定第三方账号, 因为以前注册过的账号没有绑定，所以在登录的时候进行绑定
+            // If there is no binding, bind the third-party account. Because the previously registered account is not bound, bind it when logging in
             if (!userLinkService.checkUserLinkExists(result.getUserId(), userDetail.getUnionid(), userDetail.getUserid())) {
-                // 这里的用户类型和平台类型对应不上
+                // The user type here does not correspond to the platform type
                 userLinkService.createThirdPartyLink(result.getUserId(), userDetail.getUserid(), userDetail.getUnionid(),
                         userDetail.getName(), 0);
             }
-            // 检查是否有写入第三方平台集成-用户绑定
+            // Check whether the third-party platform integration user binding is written
             if (!iSocialUserBindService.isUnionIdBind(result.getUserId(), userDetail.getUnionid())) {
                 iSocialUserBindService.create(result.getUserId(), userDetail.getUnionid());
             }
         }
-        // 没有写入第三方集成用户信息
+        // No third-party integrated user information is written
         String tenantId = dingTalkService.getTenantIdByAgentId(agentId);
         AgentApp agentApp = dingTalkService.getAgentAppById(agentId);
         if (!socialTenantUserService.isTenantUserOpenIdExist(agentApp.getCustomKey(), tenantId, userDetail.getUserid())) {
@@ -155,9 +152,9 @@ public class SocialUserServiceImpl extends ServiceImpl<SocialUserMapper, SocialU
     @Override
     public void dingTalkActiveMember(Long userId, String spaceId, DingTalkUserDetail userDetail) {
         MemberEntity member = memberMapper.selectBySpaceIdAndOpenId(spaceId, userDetail.getUserid());
-        // 激活用户
+        // Activate User
         if (member != null) {
-            // 更正成员方信息
+            // Correct member information
             if (StrUtil.isBlank(member.getEmail())) {
                 member.setEmail(userDetail.getEmail());
             }

@@ -15,12 +15,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 玉符 IDaaS 创建租户
+ * IDaaS Create tenant
  * </p>
- * @author 刘斌华
- * @date 2022-05-17 18:36:28
  */
-@ApiModel("玉符 IDaaS 创建租户")
+@ApiModel("IDaaS Create tenant")
 @Setter
 @Getter
 @ToString
@@ -28,23 +26,23 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class IdaasTenantCreateRo {
 
-    @ApiModelProperty(value = "租户名。只能是小写字母和数字，且不能以数字开头", required = true)
+    @ApiModelProperty(value = "Tenant name. Can only be lowercase letters and numbers, and cannot start with a number", required = true)
     @NotBlank
     private String tenantName;
 
-    @ApiModelProperty(value = "企业名称。中文全称", required = true)
+    @ApiModelProperty(value = "Enterprise name. Full Chinese name", required = true)
     @NotBlank
     private String corpName;
 
-    @ApiModelProperty(value = "默认管理员账号", required = true)
+    @ApiModelProperty(value = "Default administrator account", required = true)
     @NotBlank
     private String adminUsername;
 
-    @ApiModelProperty(value = "默认管理员密码", required = true)
+    @ApiModelProperty(value = "Default Administrator Password", required = true)
     @NotBlank
     private String adminPassword;
 
-    @ApiModelProperty(value = "系统级 ServiceAccount", required = true)
+    @ApiModelProperty(value = "System level ServiceAccount", required = true)
     @NotNull
     @Valid
     private ServiceAccount serviceAccount;

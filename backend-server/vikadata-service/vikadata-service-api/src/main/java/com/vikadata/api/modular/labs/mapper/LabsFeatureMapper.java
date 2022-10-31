@@ -10,54 +10,51 @@ import com.vikadata.entity.LabsFeaturesEntity;
 
 /**
  * <p>
- * 实验性功能表 Mapper 接口
+ * Experimental menu Mapper interface
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/20 20:30:18
  */
 public interface LabsFeatureMapper extends BaseMapper<LabsFeaturesEntity> {
 
     /**
-     * 根据featureKeys查询所有实验性功能
+     * Query all experimental functions according to feature keys
      *
-     * @param featureKeys 实验室功能标识列表
+     * @param featureKeys List of laboratory function identification
      * @return LabsFeaturesEntity List
      * */
     @InterceptorIgnore(illegalSql = "true")
     List<LabsFeaturesEntity> selectAllByFeatureKeys(@Param("featureKeys") List<String> featureKeys);
 
     /**
-     * 根据实验室功能类别查询所有实验性功能
+     * Query all experimental functions according to the laboratory function category
      *
-     * @param types 实验室功能类别列表
+     * @param types List of laboratory function categories
      * @return LabsFeaturesEntity List
      * */
     @InterceptorIgnore(illegalSql = "true")
     List<LabsFeaturesEntity> selectAllFeaturesByType(@Param("types") List<Integer> types);
 
     /**
-     * 根据实验室功能唯一标识查询ID
-     * @param featureKey 实验室功能标识
+     * Query ID according to the unique ID of the laboratory function
+     * @param featureKey Laboratory function identification
      * @return id
      * */
     @InterceptorIgnore(illegalSql = "true")
     Long selectIdByFeatureKey(@Param("featureKey") String featureKey);
 
     /**
-     * 根据单个featureHey查询实验室功能
+     * Query laboratory functions according to a single feature Hey
      *
-     * @param featureKey 实验室功能标识
+     * @param featureKey Laboratory function identification
      * @return LabsFeaturesEntity
      * */
     @InterceptorIgnore(illegalSql = "true")
     LabsFeaturesEntity selectByFeatureKey(@Param("featureKey") String featureKey);
 
     /**
-     * 根据功能标识和功能作用域查询实验室功能
+     * Query laboratory functions according to function ID and function scope
      *
-     * @param featureKey 实验室功能唯一标识
-     * @param featureScope 实验室功能作用域
+     * @param featureKey Unique identification of laboratory function
+     * @param featureScope Lab Functional Scope
      * @return LabsFeaturesEntity
      * */
     @InterceptorIgnore(illegalSql = "true")

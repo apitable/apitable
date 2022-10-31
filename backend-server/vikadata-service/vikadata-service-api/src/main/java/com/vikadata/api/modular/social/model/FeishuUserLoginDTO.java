@@ -7,20 +7,17 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 飞书用户登录请求参数
- *
- * @author Shawn Deng
- * @date 2020-12-15 12:15:47
+ * Lark User Login Request Parameters
  */
-@ApiModel("飞书用户登录请求参数")
+@ApiModel("Lark User Login Request Parameters")
 @Data
 public class FeishuUserLoginDTO {
 
     @NotBlank
-    @ApiModelProperty(value = "飞书用户标识", required = true, position = 1)
+    @ApiModelProperty(value = "Lark User ID", required = true, position = 1)
     private String openId;
 
     @NotBlank
-    @ApiModelProperty(value = "登录用户所在企业标识", required = true, position = 2)
+    @ApiModelProperty(value = "Login user's enterprise ID", required = true, position = 2)
     private String tenantKey;
 }

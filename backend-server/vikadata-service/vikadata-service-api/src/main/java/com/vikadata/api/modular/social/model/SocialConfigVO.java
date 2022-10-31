@@ -8,27 +8,24 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 第三方集成配置信息视图
- *
- * @author Shawn Deng
- * @date 2020-12-02 17:43:50
+ * Third party integrated configuration information view
  */
 @Data
-@ApiModel("第三方集成配置信息视图")
+@ApiModel("Third party integrated configuration information view")
 public class SocialConfigVO {
 
-    @ApiModelProperty(value = "所属平台( 1: 企业微信, 2: 钉钉, 3: 飞书)", position = 1)
+    @ApiModelProperty(value = "Platform( 1: WeCom, 2: DingTalk, 3: Lark)", position = 1)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer platform;
 
-    @ApiModelProperty(value = "是否启用", position = 2)
+    @ApiModelProperty(value = "Enable", position = 2)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean enable;
 
-    @ApiModelProperty(value = "应用标识", position = 3)
+    @ApiModelProperty(value = "Application ID", position = 3)
     private String appId;
 
-    @ApiModelProperty(value = "是否服务商应用", position = 4)
+    @ApiModelProperty(value = "Service provider application or not", position = 4)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isv;
 }

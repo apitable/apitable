@@ -11,12 +11,10 @@ import lombok.experimental.Tolerate;
 
 /**
  * <p>
- * 跳转前往玉符 IDaaS 系统进行登录
+ * Jump to IDaaS system for login
  * </p>
- * @author 刘斌华
- * @date 2022-05-25 10:33:16
  */
-@ApiModel("玉符 IDaaS 绑定租户下的应用")
+@ApiModel("IDaaS binds the application under the tenant")
 @Setter
 @Getter
 @Builder
@@ -24,7 +22,7 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode
 public class IdaasAuthLoginVo {
 
-    @ApiModelProperty("登录的地址")
+    @ApiModelProperty("Login address")
     private String loginUrl;
 
     @Tolerate

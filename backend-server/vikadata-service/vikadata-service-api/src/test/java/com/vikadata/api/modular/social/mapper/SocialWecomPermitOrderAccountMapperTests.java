@@ -19,10 +19,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 /**
  * <p>
- * 企微服务商接口许可账号信息
+ * WeCom service provider interface license account information
  * </p>
- * @author 刘斌华
- * @date 2022-07-05 18:12:30
  */
 class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest {
 

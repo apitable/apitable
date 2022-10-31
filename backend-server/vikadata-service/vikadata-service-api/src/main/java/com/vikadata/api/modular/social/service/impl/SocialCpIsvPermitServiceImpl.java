@@ -77,10 +77,8 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * <p>
- * 企微服务商接口许可
+ * WeCom Service Provider Interface License
  * </p>
- * @author 刘斌华
- * @date 2022-06-23 17:30:23
  */
 @Slf4j
 @Service
@@ -139,25 +137,25 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
     @Override
     public SocialWecomPermitOrderEntity createNewOrder(String spaceId, Integer durationMonths) {
-        // 1 获取空间站对应的信息
+        // 1 Get the information corresponding to the space station
         SocialTenantBindEntity tenantBindEntity = socialTenantBindService.getBySpaceId(spaceId);
         if (Objects.isNull(tenantBindEntity)) {
             throw new BusinessException(SocialException.TENANT_NOT_EXIST);
         }
         String suiteId = tenantBindEntity.getAppId();
         String authCorpId = tenantBindEntity.getTenantId();
-        // 1.1 先确认所有账号的激活状态
+        // 1.1 Confirm the activation status of all accounts first
         List<String> allActiveCodes = socialWecomPermitOrderAccountService.getActiveCodes(suiteId, authCorpId, null);
         ensureActiveCodes(suiteId, authCorpId, allActiveCodes);
-        // 1.2 需要购买账号的数量
+        // 1.2 Number of accounts to be purchased
         int newAccountCount = calcNewAccountCount(suiteId, authCorpId, spaceId);
         if (newAccountCount == 0) {
-            // 没有人需要激活
+            // Nobody needs to activate
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_UN_NEEDED);
         }
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         WxCpIsvPermitServiceImpl wxCpIsvPermitService = wxCpIsvService.getWxCpIsvPermitService();
-        // 2 下单购买账号
+        // 2 Order purchase account
         String buyerUserId = weComProperties.getIsvAppList().stream()
                 .filter(isv -> isv.getSuiteId().equals(suiteId))
                 .findFirst()
@@ -171,7 +169,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             log.error("Exception occurred while creating new order.", ex);
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_API_ERROR);
         }
-        // 3 查询订单的详情
+        // 3 Query order details
         WxCpIsvPermitGetOrder.Order getOrderDetail;
         try {
             WxCpIsvPermitGetOrder getOrder = wxCpIsvPermitService.getOrder(createNewOrder.getOrderId());
@@ -181,7 +179,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             log.error("Exception occurred while getting order.", ex);
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_API_ERROR);
         }
-        // 4 保存订单信息
+        // 4 Save order information
         SocialWecomPermitOrderEntity orderEntity = buildOrderEntity(null, getOrderDetail, suiteId, authCorpId, buyerUserId);
         socialWecomPermitOrderService.save(orderEntity);
         return orderEntity;
@@ -189,16 +187,16 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
     @Override
     public void activateOrder(String orderId) {
-        // 1 获取接口许可订单信息
+        // 1 Obtain interface license order information
         SocialWecomPermitOrderEntity orderEntity = socialWecomPermitOrderService.getByOrderId(orderId);
         if (Objects.isNull(orderEntity) || orderEntity.getOrderType() != 1) {
-            // 只有购买账号的订单才需要激活
+            // Only orders with purchase accounts need to be activated
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_ORDER_INVALID);
         }
         String suiteId = orderEntity.getSuiteId();
         String authCorpId = orderEntity.getAuthCorpId();
         if (orderEntity.getOrderStatus() == 0) {
-            // 1.1 如果订单为待支付状态，则确认订单的最新状态
+            // 1.1 If the order is to be paid, confirm the latest status of the order
             try {
                 WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
                 WxCpIsvPermitServiceImpl wxCpIsvPermitService = wxCpIsvService.getWxCpIsvPermitService();
@@ -212,34 +210,34 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             }
         }
         if (orderEntity.getOrderStatus() != 1 && orderEntity.getOrderStatus() != 6) {
-            // 订单需要已支付或者退款被拒绝
+            // The order needs to be paid or the refund is rejected
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_ORDER_INVALID);
         }
-        // 2 获取租户信息
+        // 2 Obtain tenant information
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
         if (CharSequenceUtil.isBlank(spaceId)) {
             throw new BusinessException(SocialException.TENANT_NOT_BIND_SPACE);
         }
-        // 3 判断许可订单的账号是否已经保存
+        // 3 Judge whether the license order account has been saved
         int existedCount = socialWecomPermitOrderAccountBindService.getCountByOrderId(orderId);
         if (existedCount == 0) {
-            // 3.1 没有已存在的许可账号，需要获取并保存订单下的所有账号信息
+            // 3.1 There is no existing license account. You need to obtain and save all account information under the order
             saveAllActiveCodes(suiteId, authCorpId, orderId);
         }
         else {
-            // 3.2 已保存许可账号，则确认所有账号的激活状态
+            // 3.2 If the license account has been saved, confirm the activation status of all accounts
             List<String> allActiveCodes = socialWecomPermitOrderAccountService
                     .getActiveCodesByOrderId(suiteId, authCorpId, orderId, null);
             ensureActiveCodes(suiteId, authCorpId, allActiveCodes);
         }
-        // 4 激活账号
-        // 4.1 使用待激活的账号
+        // 4 Activate account
+        // 4.1 Use the account to be activated
         List<String> allActivatedCodes = socialWecomPermitOrderAccountService.getActiveCodes(suiteId, authCorpId,
                 Collections.singletonList(SocialCpIsvPermitActivateStatus.NO_ACTIVATED.getValue()));
         if (CollUtil.isNotEmpty(allActivatedCodes)) {
             activateAccount(suiteId, authCorpId, spaceId, allActivatedCodes);
         }
-        // 4.2 复用待转移的账号
+        // 4.2 Reuse the account to be transferred
         List<String> allTransferredCodes = socialWecomPermitOrderAccountService.getActiveCodes(suiteId, authCorpId,
                 Collections.singletonList(SocialCpIsvPermitActivateStatus.TRANSFERRED.getValue()));
         if (CollUtil.isNotEmpty(allTransferredCodes)) {
@@ -249,7 +247,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
     @Override
     public SocialWecomPermitOrderEntity renewalCpUser(String spaceId, List<String> cpUserIds, Integer durationMonths) {
-        // 1 获取空间站对应的信息
+        // 1 Get the information corresponding to the space station
         SocialTenantBindEntity tenantBindEntity = socialTenantBindService.getBySpaceId(spaceId);
         if (Objects.isNull(tenantBindEntity)) {
             throw new BusinessException(SocialException.TENANT_NOT_EXIST);
@@ -258,7 +256,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
         String authCorpId = tenantBindEntity.getTenantId();
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         WxCpIsvPermitServiceImpl wxCpIsvPermitService = wxCpIsvService.getWxCpIsvPermitService();
-        // 2 添加续期账号
+        // 2 Add renewal account
         WxCpIsvPermitCreateRenewOrderRequest renewOrderRequest = new WxCpIsvPermitCreateRenewOrderRequest();
         renewOrderRequest.setCorpId(authCorpId);
         for (List<String> userIds : CollUtil.split(cpUserIds, 1000)) {
@@ -280,7 +278,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             }
             renewOrderRequest.setJobId(renewOrderResponse.getJobId());
         }
-        // 3 提交续期订单
+        // 3 Submit renewal order
         String buyerUserId = weComProperties.getIsvAppList().stream()
                 .filter(isv -> isv.getSuiteId().equals(suiteId))
                 .findFirst()
@@ -294,7 +292,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             log.error("Exception occurred while submitting renew order.", ex);
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_API_ERROR);
         }
-        // 4 查询订单的详情
+        // 4 Query order details
         WxCpIsvPermitGetOrder.Order getOrderDetail;
         try {
             WxCpIsvPermitGetOrder getOrder = wxCpIsvPermitService.getOrder(submitRenewOrder.getOrderId());
@@ -304,7 +302,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             log.error("Exception occurred while getting order.", ex);
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_API_ERROR);
         }
-        // 5 保存订单信息
+        // 5 Save order information
         SocialWecomPermitOrderEntity orderEntity = buildOrderEntity(null, getOrderDetail, suiteId, authCorpId, buyerUserId);
         socialWecomPermitOrderService.save(orderEntity);
         return orderEntity;
@@ -312,9 +310,9 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
     @Override
     public void ensureOrderAndAllActiveCodes(String orderId) {
-        // 1 确认订单的最新信息
+        // 1 Confirm the latest information of the order
         SocialWecomPermitOrderEntity orderEntity = ensureOrder(orderId);
-        // 2 确认所有账号的激活状态
+        // 2 Confirm the activation status of all accounts
         String suiteId = orderEntity.getSuiteId();
         String authCorpId = orderEntity.getAuthCorpId();
         ensureAllActiveCodes(suiteId, authCorpId);
@@ -325,7 +323,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
         List<String> noActivatedCpUserIds = socialWecomPermitOrderAccountService.getNeedActivateCpUserIds(suiteId, authCorpId, spaceId);
         List<String> availableActiveCodes = socialWecomPermitOrderAccountService.getActiveCodes(suiteId, authCorpId,
                 Arrays.asList(SocialCpIsvPermitActivateStatus.NO_ACTIVATED.getValue(), SocialCpIsvPermitActivateStatus.TRANSFERRED.getValue()));
-        // 需要购买账号的数量 = 未绑定激活码的人数 - 待激活数量 - 待转移数量
+        // The number of accounts to be purchased = the number of people with unbound activation code - the number to be activated - the number to be transferred
         int newAccountCount = CollUtil.size(noActivatedCpUserIds) - CollUtil.size(availableActiveCodes);
         if (newAccountCount < 0) {
             newAccountCount = 0;
@@ -335,12 +333,12 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
     @Override
     public SocialWecomPermitOrderEntity ensureOrder(String orderId) {
-        // 1 获取接口许可订单信息
+        // 1 Obtain interface license order information
         SocialWecomPermitOrderEntity orderEntity = socialWecomPermitOrderService.getByOrderId(orderId);
         if (Objects.isNull(orderEntity)) {
             throw new BusinessException(SocialException.WECOM_ISV_PERMIT_ORDER_INVALID);
         }
-        // 2 确认订单的最新状态
+        // 2 Confirm the latest status of the order
         try {
             WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(orderEntity.getSuiteId());
             WxCpIsvPermitServiceImpl wxCpIsvPermitService = wxCpIsvService.getWxCpIsvPermitService();
@@ -363,33 +361,33 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
     @Override
     public void autoProcessPermitOrder(String suiteId, String authCorpId, String spaceId) {
-        // 已付费用户才需要处理接口许可
+        // Only paid users need to process interface license
         Bundle activeBundle = bundleService.getActivatedBundleBySpaceId(spaceId);
         if (Objects.isNull(activeBundle) || activeBundle.getBaseSubscription().getPhase() != SubscriptionPhase.FIXEDTERM) {
             return;
         }
-        // 获取租户信息
+        // Obtain tenant information
         SocialTenantEntity tenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         int permitCompatibleDays = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> suiteId.equals(isvApp.getSuiteId()))
                 .findFirst()
                 .map(IsvApp::getPermitCompatibleDays)
                 .orElse(0);
-        // 判断距离首次安装授权是否已过指定天数
-        // 大于指定天数需要立即下单购买或者续期接口许可账号，否则由延时队列处理
-        // 如果空间站不存在，说明是新租户安装的同时付费，此时肯定未过时效，由延时队列处理
+        // Judge whether the specified number of days has passed since the first installation authorization
+        // If the number of days is greater than the specified number of days, you need to immediately place an order to purchase or renew the interface license account, otherwise it will be processed by the delay queue
+        // If the space station does not exist, it means that the new tenant is paying for the installation at the same time. At this time, it must not be expired, and it is handled by the delay queue
         if (DateTimeUtil.between(tenantEntity.getCreatedAt(), DateTimeUtil.localDateTimeNow(8), ChronoField.EPOCH_DAY) <= permitCompatibleDays) {
-            // 未过指定时间，保存延时信息
+            // Save delay information before the specified time
             socialWecomPermitDelayService.addAuthCorp(suiteId, authCorpId, tenantEntity.getCreatedAt(),
                     SocialCpIsvPermitDelayType.BUY_AFTER_SUBSCRIPTION_PAID.getValue(),
                     SocialCpIsvPermitDelayProcessStatus.PENDING.getValue());
         }
         else {
-            // 已过指定时间，立即下单处理接口许可
+            // After the specified time, place an order to process the interface license immediately
             List<SocialWecomPermitOrderEntity> orderEntities = socialWecomPermitOrderService
                     .getByOrderStatuses(suiteId, authCorpId, Collections.singletonList(0));
             if (CollUtil.isNotEmpty(orderEntities)) {
-                // 存在待支付的订单，延时处理
+                // There are orders to be paid, and processing is delayed
                 socialWecomPermitDelayService.addAuthCorp(suiteId, authCorpId, tenantEntity.getCreatedAt(),
                         SocialCpIsvPermitDelayType.BUY_AFTER_SUBSCRIPTION_PAID.getValue(),
                         SocialCpIsvPermitDelayProcessStatus.PENDING.getValue());
@@ -397,7 +395,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             else {
                 boolean result = createPermitOrder(suiteId, authCorpId, spaceId, activeBundle.getBaseSubscription().getExpireDate());
                 if (result) {
-                    // 保存已下单的任务，并提交到延时队列
+                    // Save the ordered task and submit it to the delay queue
                     SocialWecomPermitDelayEntity delayEntity = socialWecomPermitDelayService.addAuthCorp(suiteId, authCorpId, tenantEntity.getCreatedAt(),
                             SocialCpIsvPermitDelayType.BUY_AFTER_SUBSCRIPTION_PAID.getValue(),
                             SocialCpIsvPermitDelayProcessStatus.ORDER_CREATED.getValue());
@@ -418,38 +416,38 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     @Override
     public boolean createPermitOrder(String suiteId, String authCorpId, String spaceId, LocalDateTime expireTime) {
         boolean result = false;
-        // 判断是否需要新购账号
+        // Judge whether a new account is required
         int newAccountCount = calcNewAccountCount(suiteId, authCorpId, spaceId);
         if (newAccountCount > 0) {
             result = true;
-            // 需要新购账号
+            // Need a new account
             int durationMonths = calcDurationMonths(DateTimeUtil.localDateTimeNow(8), expireTime);
             try {
                 SocialWecomPermitOrderEntity permitOrderEntity = createNewOrder(spaceId, durationMonths);
-                // 下单信息通知到飞书群
+                // Order information is notified to Lark Group
                 TaskManager.me().execute(() -> sendNewWebhook(suiteId, authCorpId, null, permitOrderEntity.getOrderId(), null));
             }
             catch (Exception ex) {
                 log.error("Exception occurred while creating new order.", ex);
-                // 待手动下单信息通知到飞书群
+                // To be notified to Lark group about manually placing an order
                 TaskManager.me().execute(() -> sendNewWebhook(suiteId, authCorpId, spaceId, null, durationMonths));
             }
         }
-        // 根据激活码的过期时间来判断是否续期
+        // Judge whether to renew according to the expiration time of the activation code
         Map<Integer, List<String>> needRenewCpUserIds = getNeedRenewCpUserIds(suiteId, authCorpId, spaceId, expireTime);
         if (CollUtil.isNotEmpty(needRenewCpUserIds)) {
             result = true;
-            // 需要续期账号
+            // Need to renew the account
             try {
                 for (Entry<Integer, List<String>> entry : needRenewCpUserIds.entrySet()) {
                     SocialWecomPermitOrderEntity permitOrderEntity = renewalCpUser(spaceId, entry.getValue(), entry.getKey());
-                    // 下单信息通知到飞书群
+                    // Notify Lark group of order information
                     TaskManager.me().execute(() -> sendRenewWebhook(suiteId, authCorpId, null, permitOrderEntity.getOrderId()));
                 }
             }
             catch (Exception ex) {
                 log.error("Exception occurred while creating renewal order.", ex);
-                // 待手动下单信息通知到飞书群
+                // To be notified to Lark group about manually placing an order
                 TaskManager.me().execute(() -> sendRenewWebhook(suiteId, authCorpId, spaceId, null));
             }
         }
@@ -487,13 +485,11 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     }
 
     /**
-     * 保存接口许可订单下的所有账号信息
+     * Save all account information under the interface license order
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param orderId 接口许可订单号
-     * @author 刘斌华
-     * @date 2022-07-01 10:53:29
+     * @param suiteId App Suite ID
+     * @param authCorpId Authorized enterprise ID
+     * @param orderId Interface license order number
      */
     private void saveAllActiveCodes(String suiteId, String authCorpId, String orderId) {
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
@@ -522,13 +518,11 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     }
 
     /**
-     * 确认并更新所有账号的最终状态
+     * Confirm and update the final status of all accounts
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param allActiveCodes 要确认的激活码列表
-     * @author 刘斌华
-     * @date 2022-06-30 09:45:42
+     * @param suiteId App Suite ID
+     * @param authCorpId Authorized enterprise ID
+     * @param allActiveCodes List of activation codes to be confirmed
      */
     private void ensureActiveCodes(String suiteId, String authCorpId, List<String> allActiveCodes) {
         if (CollUtil.isEmpty(allActiveCodes)) {
@@ -537,7 +531,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
 
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         WxCpIsvPermitServiceImpl wxCpIsvPermitService = wxCpIsvService.getWxCpIsvPermitService();
-        // 2 查询激活码的最新详情
+        // 2 Query the latest details of activation code
         List<ActiveInfoList> allActiveInfoList = Lists.newArrayList();
         for (List<String> activeCodes : CollUtil.split(allActiveCodes, 1000)) {
             WxCpIsvPermitBatchGetActiveInfo batchGetActiveInfo;
@@ -554,7 +548,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
                 allActiveInfoList.addAll(activeInfoList);
             }
         }
-        // 3 提取需要更新或者删除的激活码
+        // 3 Extract the activation code to be updated or deleted
         Map<String, ActiveInfoList> activeInfoListMap = allActiveInfoList.stream()
                 .collect(Collectors.toMap(ActiveInfoList::getActiveCode, v -> v, (k1, k2) -> k2));
         List<SocialWecomPermitOrderAccountEntity> toBeUpdated = Lists.newArrayList();
@@ -565,7 +559,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
             accountEntities.forEach(accountEntity -> {
                 ActiveInfoList activeInfo = activeInfoListMap.get(accountEntity.getActiveCode());
                 if (Objects.isNull(activeInfo)) {
-                    // 3.1 没有最新的详情，说明该激活码已经失效，需要删除
+                    // 3.1 No latest details, indicating that the activation code has expired and needs to be deleted
                     toBeDeleted.add(accountEntity.getId());
                 }
                 else {
@@ -574,7 +568,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
                     LocalDateTime actualCreateTime = DateTimeUtil.localDateTimeFromSeconds(activeInfo.getCreateTime(), 8);
                     LocalDateTime actualActiveTime = DateTimeUtil.localDateTimeFromSeconds(activeInfo.getActiveTime(), 8);
                     LocalDateTime actualExpireTime = DateTimeUtil.localDateTimeFromSeconds(activeInfo.getExpireTime(), 8);
-                    // 3.2 对比任一信息不同，则需要更新
+                    // 3.2 If any information is different, it needs to be updated
                     if (accountEntity.getActivateStatus() != actualActivateStatus ||
                             !Objects.equals(accountEntity.getCpUserId(), actualCpUserId) ||
                             !Objects.equals(accountEntity.getCreateTime(), actualCreateTime) ||
@@ -591,7 +585,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
                 }
             });
         });
-        // 4 更新其最终状态
+        // 4 Update its final status
         if (CollUtil.isNotEmpty(toBeUpdated)) {
             socialWecomPermitOrderAccountService.updateBatchById(toBeUpdated);
         }
@@ -601,24 +595,22 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     }
 
     /**
-     * 激活账号
+     * Activate account
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 成员所在的空间站 ID
-     * @param activeCodes 用户激活的激活码列表
-     * @author 刘斌华
-     * @date 2022-07-02 12:11:54
+     * @param suiteId App Suite ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID of the member
+     * @param activeCodes User activated activation code list
      */
     private void activateAccount(String suiteId, String authCorpId, String spaceId, List<String> activeCodes) {
-        // 1 获取需要激活成员信息
+        // 1 Get the member information to be activated
         List<String> needActivateCpUserIds = socialWecomPermitOrderAccountService.getNeedActivateCpUserIds(suiteId, authCorpId, spaceId);
         if (CollUtil.isEmpty(needActivateCpUserIds)) {
             return;
         }
-        // 2 激活
+        // 2 Activation
         if (needActivateCpUserIds.size() > activeCodes.size()) {
-            // 2.1 如果需要激活的成员数量大于可用激活码数量，则只能激活部分成员
+            // 2.1 If the number of members to be activated is greater than the number of available activation codes, only some members can be activated
             needActivateCpUserIds = CollUtil.sub(needActivateCpUserIds, 0, activeCodes.size());
         }
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
@@ -645,21 +637,19 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
                 throw new BusinessException(SocialException.WECOM_ISV_PERMIT_API_ERROR);
             }
         });
-        // 3 确认并更新激活信息
+        // 3 Confirm and update activation information
         ensureActiveCodes(suiteId, authCorpId, activeCodes);
     }
 
     /**
-     * 构造订单信息新建对象或者更新对象
+     * Create order information, create new objects or update objects
      *
-     * @param originalEntity 原对象。更新时需要
-     * @param getOrderDetail 最新订单信息
-     * @param suiteId 应用套件 ID。新建时需要
-     * @param authCorpId 授权的企业 ID。新建时需要
-     * @param buyerUserId 代下单的企微用户 ID。新建时需要
-     * @return 新建对象或者更新对象
-     * @author 刘斌华
-     * @date 2022-07-07 15:30:28
+     * @param originalEntity The original object. Required when updating
+     * @param getOrderDetail Latest order information
+     * @param suiteId App Suite ID. Required when creating
+     * @param authCorpId The authorized enterprise ID. Required when creating
+     * @param buyerUserId The ID of the enterprise micro user who placed the order. Required when creating
+     * @return Create a new object or update an object
      */
     private SocialWecomPermitOrderEntity buildOrderEntity(SocialWecomPermitOrderEntity originalEntity, WxCpIsvPermitGetOrder.Order getOrderDetail,
             String suiteId, String authCorpId, String buyerUserId) {
@@ -688,17 +678,15 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     }
 
     /**
-     * 计算应新购或者续期的月数
+     * Calculate the number of months for new purchase or renewal
      *
-     * @param currentTime 当前时间
-     * @param expiredTime 付费订阅到期的时间
-     * @return 应新购或者续期的月数
-     * @author 刘斌华
-     * @date 2022-07-25 15:40:50
+     * @param currentTime current time
+     * @param expiredTime Expiration time of paid subscription
+     * @return Number of months for new purchase or renewal
      */
     private int calcDurationMonths(LocalDateTime currentTime, LocalDateTime expiredTime) {
         int durationDays = (int) DateTimeUtil.between(currentTime, expiredTime, ChronoField.EPOCH_DAY);
-        // 31 天算一个月，不足的也算一个月，并且最多购买 36 个月
+        // 31 Every day counts as one month, and the less than one month counts as one month, and the maximum purchase time is 36 months
         int durationMonths = durationDays / 31 + (durationDays % 31 == 0 ? 0 : 1);
         if (durationMonths > 36) {
             durationMonths = 36;
@@ -707,15 +695,13 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     }
 
     /**
-     * 获取所有需要续期的企微用户 ID
+     * Obtain all WeCom user IDs that need to be renewed
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 成员所在的空间站 ID
-     * @param expireTime 指定的时间
-     * @return 需要续期的企微用户 ID。key 为需要续期的月数，value 为需要续期该月数的企微用户 ID 列表
-     * @author 刘斌华
-     * @date 2022-07-28 14:56:33
+     * @param suiteId App Suite ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space station ID of the member
+     * @param expireTime Specified time
+     * @return WeCom user ID that needs to be renewed. Key is the number of months that need to be renewed, and value is the WeCom user ID list for the number of months that need to be renewed
      */
     private Map<Integer, List<String>> getNeedRenewCpUserIds(String suiteId, String authCorpId, String spaceId, LocalDateTime expireTime) {
         List<SocialWecomPermitOrderAccountEntity> needRenewAccounts = socialWecomPermitOrderAccountService
@@ -723,7 +709,7 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
         if (CollUtil.isEmpty(needRenewAccounts)) {
             return Collections.emptyMap();
         }
-        // 根据需要续期的月数来将企微用户 ID 分组
+        // Group WeCom user IDs according to the number of months that need to be renewed
         LocalDateTime currentDateTime = DateTimeUtil.localDateTimeNow(8);
         return needRenewAccounts.stream()
                 .collect(Collectors.groupingBy(entity -> {
@@ -739,27 +725,25 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
     }
 
     /**
-     * 发送 Webhook 消息
+     * Send Webhook message
      *
-     * @param webhookUrl Webhook 地址
-     * @param webhookSecret Webhook 密钥
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID
-     * @param orderId 如果已下单，对应的接口许可订单号
-     * @param durationMonths 下单的月数
-     * @param isOrderCreated 是否已创建订单，否则需要人工手动创建
-     * @param isNew 是否为新购订单，否则为续期订单或者退款通知
-     * @param isRefund 是否退款通知
-     * @return 是否发送成功
-     * @author 刘斌华
-     * @date 2022-07-27 17:36:55
+     * @param webhookUrl Webhook Address
+     * @param webhookSecret Webhook secret key
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID
+     * @param orderId If the order has been placed, the corresponding interface license order number
+     * @param durationMonths Number of months of order
+     * @param isOrderCreated Whether the order has been created, otherwise it needs to be manually created
+     * @param isNew Whether it is a new purchase order, otherwise it is a renewal order or refund notice
+     * @param isRefund Refund notification or not
+     * @return Send successfully
      */
     public boolean sendWebhook(String webhookUrl, String webhookSecret,
             String authCorpId, String spaceId, String orderId, Integer durationMonths,
             boolean isOrderCreated, boolean isNew, boolean isRefund) {
         JsonObject body = new JsonObject();
         if (CharSequenceUtil.isNotBlank(webhookSecret)) {
-            // 有密钥需要提供签名
+            // Signature is required if there is a key
             String currentSecondsString = Long.toString(Instant.now().getEpochSecond());
             String signData = currentSecondsString + '\n' + webhookSecret;
             byte[] signature = DigestUtil.hmac(HmacAlgorithm.HmacSHA256, signData.getBytes(StandardCharsets.UTF_8))
@@ -831,8 +815,8 @@ public class SocialCpIsvPermitServiceImpl implements ISocialCpIsvPermitService {
                 .orElse(null);
         JsonElement statusCode = Objects.isNull(responseBody) ? null : responseBody.get("StatusCode");
         if (Objects.isNull(statusCode) || statusCode.getAsInt() != 0) {
-            // 发送失败
-            log.error("Webhook 消息发送失败，返回结果：" + response);
+            // Fail in send
+            log.error("Webhook Failed to send the message. The result is returned：" + response);
             return false;
         }
         return true;

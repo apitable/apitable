@@ -4,36 +4,34 @@ import lombok.Data;
 
 /**
  * <p>
- * 钉钉搭创建模版
+ * Ding Talk Creation Template
  * </p>
- * @author zoe zheng
- * @date 2021/5/28 5:36 下午
  */
 @Data
 public class DingTalkDaCreateTemplateDTO {
 
     /**
-     * 应用实例id
+     * Application instance ID
      */
     private String bizAppId;
 
     /**
-     * 移动端打开地址
+     * Mobile terminal opening address
      */
     private String homepageLink;
 
     /**
-     * pc端打开地址
+     * Opening address of PC terminal
      */
     private String pcHomepageLink;
 
     /**
-     * 移动端编辑页打开地址
+     * Mobile terminal editing page opening address
      */
     private String homepageEditLink;
 
     /**
-     * pc端编辑页打开地址
+     * Opening address of edit page on PC side
      */
     private String pcHomepageEditLink;
 }

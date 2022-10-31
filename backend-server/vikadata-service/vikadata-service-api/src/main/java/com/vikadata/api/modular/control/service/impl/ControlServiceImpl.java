@@ -27,9 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
- * @author Shawn Deng
- * @date 2021-04-01 19:36:16
+ * Control service implementation class
  */
 @Service
 @Slf4j
@@ -49,20 +47,20 @@ public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity
 
     @Override
     public ControlEntity getByControlId(String controlId) {
-        log.info("查询控制权限单元信息");
+        log.info("Query control permission unit information");
         return controlMapper.selectByControlId(controlId);
     }
 
     @Override
     public void checkControlStatus(String controlId, Consumer<Boolean> consumer) {
-        log.info("检查权限控制单元状态「{}」", controlId);
+        log.info("Check the status of authority control unit「{}」", controlId);
         int count = SqlTool.retCount(controlMapper.selectCountByControlId(controlId));
         consumer.accept(count > 0);
     }
 
     @Override
     public void create(Long userId, String spaceId, String controlId, ControlType controlType) {
-        log.info("创建权限控制单元。userId:{},spaceId:{},controlId:{}", userId, spaceId, controlId);
+        log.info("Create permission control unit.userId:{},spaceId:{},controlId:{}", userId, spaceId, controlId);
         ControlEntity deletedEntity = controlMapper.selectDeletedByControlIdAndSpaceId(controlId, spaceId, controlType);
         boolean flag;
         if (deletedEntity != null) {
@@ -88,12 +86,12 @@ public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeControl(Long userId, List<String> controlIds, boolean delSetting) {
-        log.info("删除指定控制单元「{}」", controlIds);
+        log.info("Delete the specified control unit「{}」", controlIds);
         boolean flag = SqlHelper.retBool(controlMapper.deleteByControlIds(userId, controlIds));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
-        // 删除指定控制单元的所有角色（可能不存在任何角色）
+        // Delete all roles of the specified control unit (no role may exist)
         iControlRoleService.removeByControlIds(userId, controlIds);
-        // 删除指定控制单元设置
+        // Delete the specified control unit settings
         if (delSetting) {
             iControlSettingService.removeByControlIds(userId, controlIds);
         }
@@ -111,7 +109,7 @@ public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity
 
     @Override
     public Long getOwnerMemberId(String controlId) {
-        log.info("获取权限控制单元「{}」拥有者的成员ID", controlId);
+        log.info("Get the member ID of the owner of permission control unit 「{}」", controlId);
         ControlEntity controlEntity = controlMapper.selectByControlId(controlId);
         if (controlEntity == null) {
             return null;

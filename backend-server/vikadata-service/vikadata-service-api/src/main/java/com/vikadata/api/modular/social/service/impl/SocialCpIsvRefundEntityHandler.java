@@ -30,11 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用退款处理
+ * Third party platform integration - WeCom third-party service provider application refund processing
  * </p>
- *
- * @author 刘斌华
- * @date 2022-04-25 10:13:31
  */
 @Service
 public class SocialCpIsvRefundEntityHandler implements ISocialCpIsvEntityHandler {
@@ -59,40 +56,39 @@ public class SocialCpIsvRefundEntityHandler implements ISocialCpIsvEntityHandler
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean process(SocialCpIsvMessageEntity unprocessed) throws WxErrorException {
-        // 企微对订单退款的操作是按照支付订单时的顺序反向操作的
-        // 当对升级、续期、切换版本订单进行退款时，会回退到上一阶段的版本
+        // The order refund operation of the enterprise is performed in the reverse order of order payment
+        // When refunding upgrade, renewal, and version switching orders, the previous version will be returned
         String suiteId = unprocessed.getSuiteId();
         String authCorpId = unprocessed.getAuthCorpId();
         WxCpIsvXmlMessage wxCpIsvXmlMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpIsvXmlMessage.class);
         String refundWeComOrderId = wxCpIsvXmlMessage.getOrderId();
-        // 1 更改企微订单为已退款状态
+        // 1 Change WeCom order to refunded status
         updateOrderStatus(suiteId, refundWeComOrderId);
-        // 2 处理订阅变更
+        // 2 Process subscription changes
         WeComOrderRefundEvent refundEvent = new WeComOrderRefundEvent();
         refundEvent.setSuiteId(suiteId);
         refundEvent.setPaidCorpId(authCorpId);
         refundEvent.setOrderId(refundWeComOrderId);
         SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM)
                 .retrieveOrderRefundEvent(refundEvent);
-        // 3 判断是否已不存在付费订阅
+        // 3 Determine whether there is no paid subscription
         SocialWecomOrderEntity lastPaidOrder = socialWecomOrderService.getLastPaidOrder(suiteId, authCorpId);
         if (Objects.isNull(lastPaidOrder) || DateTimeUtil.localDateTimeNow(8).isAfter(lastPaidOrder.getEndTime())) {
-            // 3.1 如果上一阶段支付成功的企微订单不存在或者已过期，即已不存在付费订阅版本，则通知将该企业的接口许可退款
+            // 3.1 If the WeCom order successfully paid in the previous stage does not exist or has expired, that is,
+            // there is no paid subscription version, the enterprise will be notified to refund the interface license
             TaskManager.me().execute(() -> socialCpIsvPermitService.sendRefundWebhook(suiteId, authCorpId));
         }
         return true;
     }
 
     /**
-     * 更新企微订单的状态
+     * Update the status of WeCom orders
      *
-     * @param suiteId 应用套件 ID
-     * @param orderId 企微订单号
-     * @author 刘斌华
-     * @date 2022-08-25 16:58:34
+     * @param suiteId App Suite ID
+     * @param orderId WeCom order ID
      */
     private void updateOrderStatus(String suiteId, String orderId) throws WxErrorException {
-        // 获取企业微信订单的最新信息
+        // Get the latest information about WeCom orders
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         WxCpIsvGetOrder wxCpIsvGetOrder = wxCpIsvService.getOrder(orderId);
         socialWecomOrderService.updateOrderStatusByOrderId(orderId, wxCpIsvGetOrder.getOrderStatus());

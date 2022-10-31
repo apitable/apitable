@@ -97,14 +97,12 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.vikadata.api.enums.exception.SocialException.ONLY_TENANT_ADMIN_BOUND_ERROR;
 
 /**
- * 第三方平台集成接口 - 企业微信第三方服务商
+ * Third party platform integration interface - WeCom Third party service provider
  * <p>
- * 因为企业微信 API 的不规则性，如果需要开发多个第三方应用，最好每个应用使用各自的 Controller
+ * Because of the irregularity of WeCom API, if multiple third-party applications need to be developed, it is better for each application to use its own Controller
  * </p>
- * @author 刘斌华
- * @date 2022-01-04 16:19:18
  */
-@Api(tags = "第三方平台集成接口 - 企业微信第三方服务商")
+@Api(tags = "Third party platform integration interface - WeCom Third party service provider")
 @RestController
 @ApiResource(path = "/social/wecom/isv/" + SocialWeComIsvController.ISV_NAME)
 @Slf4j
@@ -189,15 +187,14 @@ public class SocialWeComIsvController {
     private UserSpaceService userSpaceService;
 
     /**
-     * 企业管理员在保存回调配置信息时，企业微信会通过 GET 发送一条验证消息到填写的 URL，以完成 URL 验证
+     * When the enterprise administrator saves the callback configuration information,
+     * WeCom will send a verification message to the filled URL through GET to complete URL verification
      *
-     * @param signature 加密签名
-     * @param timestamp 时间戳
-     * @param nonce 随机数
-     * @param echo 加密的字符串
-     * @return 解密 {@code echo} 后的明文消息
-     * @author 刘斌华
-     * @date 2022-01-13 12:14:53
+     * @param signature Encrypted signature
+     * @param timestamp time stamp
+     * @param nonce random number
+     * @param echo Encrypted string
+     * @return Plaintext message after decrypt {@code echo}
      */
     @GetResource(path = "/callback", requiredLogin = false)
     public String getCallback(@RequestParam("msg_signature") String signature,
@@ -210,7 +207,7 @@ public class SocialWeComIsvController {
                 .map(WeComProperties.IsvApp::getSuiteId)
                 .orElse(null);
         WxCpTpService wxCpTpService = weComTemplate.isvService(suiteId);
-        @SuppressWarnings("deprecation") // 加密工具必须要使用该方法实现
+        @SuppressWarnings("deprecation") // The encryption tool must use this method to implement
         WxCpTpConfigStorage wxCpTpConfigStorage = wxCpTpService.getWxCpTpConfigStorage();
         if (!signature.equals(SHA1.gen(wxCpTpConfigStorage.getToken(), timestamp, nonce, echo))) {
             return CALLBACK_FAILURE;
@@ -220,15 +217,13 @@ public class SocialWeComIsvController {
     }
 
     /**
-     * POST 回调接口入口
+     * POST Callback interface entry
      *
-     * @param requestBody 请求体
-     * @param signature 加密签名
-     * @param timestamp 时间戳
-     * @param nonce 随机数
-     * @return 响应结果
-     * @author 刘斌华
-     * @date 2022-01-13 12:15:29
+     * @param requestBody Request body
+     * @param signature Encrypted signature
+     * @param timestamp time stamp
+     * @param nonce random number
+     * @return Response results
      */
     @PostResource(path = "/callback", produces = "application/xml; charset=UTF-8", requiredLogin = false)
     public String postCallback(@RequestBody String requestBody,
@@ -237,22 +232,23 @@ public class SocialWeComIsvController {
             @RequestParam("msg_signature") String signature,
             @RequestParam("timestamp") String timestamp,
             @RequestParam("nonce") String nonce) {
-        // 根据实际测试，数据回调中 ToUserName 返回的是 authCorpId，指令回调中 ToUserName 返回的是 suiteId
-        // type 为本接口自定义，这边在企业微信的【数据回调 URL】和【指令回调 URL】使用了同一个接口，使用该参数来区分不同接口
+        // According to the actual test, in the data callback, ToUserName returns authCorpId, and in the instruction callback, ToUserName returns suiteId
+        // type Customized for this interface. Here, the same interface is used in WeCom's [Data Callback URL] and [Instruction Callback URL].
+        // Use this parameter to distinguish different interfaces
         if (TYPE_DATA.equals(type)) {
-            log.info("接收到企业微信第三方服务数据回调通知，signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
+            log.info("WeCom third-party service data callback notification received，signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
                     signature, timestamp, nonce, requestBody, suiteIdParam);
         }
         else if (TYPE_INSTRUCTION.equals(type)) {
-            log.info("接收到企业微信第三方服务指令回调通知，signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
+            log.info("Receive the callback notification of the third-party service order of WeCom, signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
                     signature, timestamp, nonce, requestBody, suiteIdParam);
         }
         else if (TYPE_SYSTEM.equals(type)) {
-            log.info("接收到企业微信第三方服务系统事件通知，signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
+            log.info("Receive the event notification of the third-party service system of WeCom, signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
                     signature, timestamp, nonce, requestBody, suiteIdParam);
         }
         else {
-            log.warn("接收到企业微信第三方服务无效回调通知，type: {}, signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
+            log.warn("WeCom received the callback notification of invalid third-party service, type: {}, signature: {}, timestamp: {}, nonce: {}, requestBody: {}, suiteId: {}",
                     type, signature, timestamp, nonce, requestBody, suiteIdParam);
             return CALLBACK_SUCCESS;
         }
@@ -263,32 +259,32 @@ public class SocialWeComIsvController {
                 .map(WeComProperties.IsvApp::getSuiteId)
                 .orElse(null);
         WxCpTpService wxCpTpService = weComTemplate.isvService(suiteId);
-        @SuppressWarnings("deprecation") // 加密工具必须要使用该方法实现
+        @SuppressWarnings("deprecation") // The encryption tool must use this method to implement
         WxCpTpCryptUtil cryptUtil = new WxCpTpCryptUtil(wxCpTpService.getWxCpTpConfigStorage());
         String plainXml = cryptUtil.decrypt(signature, timestamp, nonce, requestBody);
-        log.info("企业微信第三方服务回调通知解密后数据：{} ", plainXml);
-        // 工具将空字段转换时，会出现数字列表转换的异常，故对空值字段处理
+        log.info("WeCom third-party service callback notification decrypted data:{} ", plainXml);
+        // When the tool converts an empty field, an exception will occur in the number list conversion, so the null value field is handled
         plainXml = plainXml.replace("<Department><![CDATA[]]></Department>", "")
                 .replace("<IsLeaderInDept><![CDATA[]]></IsLeaderInDept>", "")
                 .replace("<AddPartyItems><![CDATA[]]></AddPartyItems>", "")
                 .replace("<DelPartyItems><![CDATA[]]></DelPartyItems>", "");
         WxCpIsvXmlMessage inMessage = WxCpIsvXmlMessage.fromXml(plainXml);
         if (CharSequenceUtil.isBlank(inMessage.getSuiteId())) {
-            // 如果加密体中的 suiteId 为空，则直接填充
+            // If the suiteId in the encryption body is empty, fill it directly
             inMessage.setSuiteId(suiteId);
         }
-        log.info("企业微信第三方服务回调通知转换后信息：{} ", JSONUtil.toJsonStr(inMessage));
+        log.info("WeCom third-party service callback notification post conversion information:{} ", JSONUtil.toJsonStr(inMessage));
         WxCpXmlOutMessage outMessage = weComTemplate.isvRouter(suiteId).route(inMessage);
-        // 第三方服务商回调通知都必须直接返回字符串 success
+        // The third-party service provider callback notification must directly return the string success
         return Objects.isNull(outMessage) ? CALLBACK_SUCCESS : CALLBACK_FAILURE;
     }
 
     @PostResource(path = "/login/code", requiredLogin = false)
-    @ApiOperation(value = "企业微信内跳转第三方应用自动登录", notes = "企业微信内跳转第三方应用自动登录")
+    @ApiOperation(value = "Auto login to third-party applications within WeCom", notes = "Auto login to third-party applications within WeCom")
     public ResponseData<WeComIsvUserLoginVo> postLoginCode(@RequestBody WeComIsvLoginCodeRo request) {
         String suiteId = request.getSuiteId();
         WxCpTpService wxCpTpService = weComTemplate.isvService(suiteId);
-        // 1 获取用户在企业中的身份
+        // 1 Obtain the user's identity in the enterprise
         WxCpTpUserInfo wxCpTpUserInfo;
         String avatar = null;
         try {
@@ -308,9 +304,9 @@ public class SocialWeComIsvController {
                     .map(WxError::getErrorCode)
                     .orElse(0);
             if (errorCode == WX_ERROR_NO_PRIVILEGE || errorCode == WX_ERROR_INVALID_USER) {
-                // 错误代码：60011，错误信息：指定的成员/部门/标签参数无权限
-                // 错误代码：60111，错误信息：用户不存在通讯录中
-                // 说明该用户不在可见范围
+                // Error code: 60011, error message: The specified member department label parameter has no permission
+                // Error code: 60111, error message: the user does not exist in the address book
+                // It indicates that the user is not in the visible range
                 throw new BusinessException(SocialException.USER_NOT_EXIST_WECOM);
             }
             else if (errorCode == INVALID_AUTH_CODE) {
@@ -322,24 +318,24 @@ public class SocialWeComIsvController {
         }
         String authCorpId = wxCpTpUserInfo.getCorpId();
         String cpUserId = wxCpTpUserInfo.getUserId();
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotBlank(authCorpId, SocialException.TENANT_NOT_EXIST);
         ExceptionUtil.isNotBlank(cpUserId, SocialException.TENANT_NOT_EXIST);
-        // 2 判断企业是否已经授权
+        // 2 Judge whether the enterprise has been authorized
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(socialTenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(socialTenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 3 获取绑定的空间站
+        // 3 Get the bound space
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
-        // 租户没有绑定空间站
+        // The tenant does not bind the space
         ExceptionUtil.isNotBlank(spaceId, SocialException.TENANT_NOT_BIND_SPACE);
-        // 4 判断用户是否已经绑定到该空间站
+        // 4 Determine whether the user has been bound to the space
         MemberEntity memberEntity = memberService.getBySpaceIdAndOpenId(spaceId, cpUserId);
         if (Objects.isNull(memberEntity)) {
             if (Boolean.TRUE.equals(spaceService.isContactSyncing(spaceId))) {
-                // 4.1 通讯录还在同步中
+                // 4.1 Contacts are still syncing
                 return ResponseData.success(WeComIsvUserLoginVo.builder()
                         .logined(0)
                         .suiteId(suiteId)
@@ -349,11 +345,11 @@ public class SocialWeComIsvController {
                         .build());
             }
             else {
-                // 4.2 用户不是可见成员
+                // 4.2 User is not a visible member
                 throw new BusinessException(SocialException.USER_NOT_EXIST_WECOM);
             }
         }
-        // 5 如果该成员还未创建用户，则创建
+        // 5 If the member has not yet created a user, create
         if (Objects.isNull(memberEntity.getUserId())) {
             SocialUser socialUser = SocialUser.WECOM()
                     .tenantId(authCorpId)
@@ -369,15 +365,15 @@ public class SocialWeComIsvController {
         }
         else {
             if (Boolean.FALSE.equals(memberEntity.getIsActive())) {
-                // 如果成员未激活则改为已激活状态
+                // If the member is not activated, change to the activated state
                 memberService.updateById(MemberEntity.builder()
                         .id(memberEntity.getId())
                         .isActive(true)
                         .build());
             }
-            // 如果手动授权获取了头像，则更新头像
+            // If you have obtained the avatar by manual authorization, update the avatar
             if (CharSequenceUtil.isNotBlank(avatar)) {
-                // 企业微信服务商需要判断是否更新头像
+                // WeCom service provider needs to judge whether to update the avatar
                 UserEntity userEntity = userService.getById(memberEntity.getUserId());
                 if (CharSequenceUtil.isBlank(userEntity.getAvatar())) {
                     userService.updateById(UserEntity.builder()
@@ -387,7 +383,7 @@ public class SocialWeComIsvController {
                 }
             }
         }
-        // 6 如果该空间站创建时没有指定管理员，则将第一个进入的用户设置为管理员
+        // 6 If no administrator is specified when the space station is created, the first user who enters will be set as the administrator
         SpaceEntity spaceEntity = spaceService.getBySpaceId(spaceId);
         if (Objects.isNull(spaceEntity.getOwner())) {
             spaceEntity.setOwner(memberEntity.getId());
@@ -395,29 +391,29 @@ public class SocialWeComIsvController {
             memberService.setMemberMainAdmin(memberEntity.getId());
             userSpaceService.delete(memberEntity.getUserId(), spaceId);
         }
-        // 7 自动登录
+        // 7 Automatic login
         if (Objects.nonNull(SessionContext.getUserIdWithoutException())) {
-            // 有可能再次手动授权，清除之前的登录信息缓存
+            // It is possible to manually authorize again and clear the previous login information cache
             loginUserService.delete(memberEntity.getUserId());
         }
         SessionContext.setUserId(memberEntity.getUserId());
         userService.updateLoginTime(memberEntity.getUserId());
-        // 8 神策埋点
+        // 8 Shence burial site
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
         TaskManager.me().execute(() -> sensorsService
-                .track(memberEntity.getUserId(), TrackEventType.LOGIN, "企业微信免密登录", origin));
-        // 9 判断是否需要再次手动授权
+                .track(memberEntity.getUserId(), TrackEventType.LOGIN, "WeCom password free login", origin));
+        // 9 Determine whether manual authorization is required again
         LocalDateTime manualAuthDatetime = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> isvApp.getSuiteId().equals(suiteId))
                 .findFirst()
                 .map(WeComProperties.IsvApp::getManualAuthDatetime)
                 .map(datetime -> LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")))
                 .orElse(null);
-        // 9.1 在手动授权版本上线之后安装的企业需要再次手动授权
+        // 9.1 Enterprises installed after the manually authorized version goes online need to manually authorize again
         boolean shouldReAuth = Objects.isNull(manualAuthDatetime) || manualAuthDatetime.isBefore(socialTenantEntity.getUpdatedAt());
         if (shouldReAuth) {
             UserEntity userEntity = userService.getById(memberEntity.getUserId());
-            // 9.2 如果当前用户已经有头像了，则不需要再次手动授权
+            // 9.2 If the current user already has a avatar, manual authorization is not required again
             if (CharSequenceUtil.isNotBlank(userEntity.getAvatar())) {
                 shouldReAuth = false;
             }
@@ -436,10 +432,10 @@ public class SocialWeComIsvController {
     }
 
     @PostResource(path = "/login/authCode", requiredLogin = false)
-    @ApiOperation(value = "企业微信第三方应用扫码登录", notes = "企业微信第三方应用扫码登录")
+    @ApiOperation(value = "WeCom third-party application scanning code login", notes = "WeCom third-party application scanning code login")
     public ResponseData<WeComIsvUserLoginVo> postLoginAuthCode(@RequestBody WeComIsvLoginAuthCodeRo request) {
         String suiteId = request.getSuiteId();
-        // 1 获取用户在企业中的身份
+        // 1 Obtain the user's identity in the enterprise
         WxTpLoginInfo wxTpLoginInfo;
         try {
             wxTpLoginInfo = weComTemplate.isvService(suiteId).getLoginInfo(request.getAuthCode());
@@ -449,9 +445,9 @@ public class SocialWeComIsvController {
                     .map(WxError::getErrorCode)
                     .orElse(0);
             if (errorCode == WX_ERROR_NO_PRIVILEGE || errorCode == WX_ERROR_INVALID_USER) {
-                // 错误代码：60011，错误信息：指定的成员/部门/标签参数无权限
-                // 错误代码：60111，错误信息：用户不存在通讯录中
-                // 说明该用户不在可见范围
+                // Error code: 60011, error message: The specified member department label parameter has no permission
+                // Error code: 60111, error message: the user does not exist in the address book
+                // It indicates that the user is not in the visible range
                 throw new BusinessException(SocialException.USER_NOT_EXIST_WECOM);
             }
             else if (errorCode == INVALID_AUTH_CODE) {
@@ -463,24 +459,24 @@ public class SocialWeComIsvController {
         }
         String authCorpId = wxTpLoginInfo.getCorpInfo().getCorpId();
         String cpUserId = wxTpLoginInfo.getUserInfo().getUserId();
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotBlank(authCorpId, SocialException.TENANT_NOT_EXIST);
         ExceptionUtil.isNotBlank(cpUserId, SocialException.TENANT_NOT_EXIST);
-        // 2 判断企业是否已经授权
+        // 2 Judge whether the enterprise has been authorized
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(socialTenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(socialTenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 3 获取绑定的空间站
+        // 3 Get the bound space station
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
-        // 租户没有绑定空间站
+        // The tenant does not bind the space station
         ExceptionUtil.isNotBlank(spaceId, SocialException.TENANT_NOT_BIND_SPACE);
-        // 4 判断用户是否已经绑定到该空间站
+        // 4 Determine whether the user has been bound to the space station
         MemberEntity memberEntity = memberService.getBySpaceIdAndOpenId(spaceId, cpUserId);
         if (Objects.isNull(memberEntity)) {
             if (Boolean.TRUE.equals(spaceService.isContactSyncing(spaceId))) {
-                // 4.1 通讯录还在同步中
+                // 4.1 Contacts are still syncing
                 return ResponseData.success(WeComIsvUserLoginVo.builder()
                         .logined(0)
                         .suiteId(suiteId)
@@ -490,11 +486,11 @@ public class SocialWeComIsvController {
                         .build());
             }
             else {
-                // 4.2 用户不是可见成员
+                // 4.2 User is not a visible member
                 throw new BusinessException(SocialException.USER_NOT_EXIST_WECOM);
             }
         }
-        // 5 如果该成员还未创建用户，则创建
+        // 5 If the member has not yet created a user, create
         if (Objects.isNull(memberEntity.getUserId())) {
             SocialUser socialUser = SocialUser.WECOM()
                     .tenantId(authCorpId)
@@ -510,14 +506,14 @@ public class SocialWeComIsvController {
         }
         else {
             if (Boolean.FALSE.equals(memberEntity.getIsActive())) {
-                // 如果成员未激活则改为已激活状态
+                // If the member is not activated, change to the activated state
                 memberService.updateById(MemberEntity.builder()
                         .id(memberEntity.getId())
                         .isActive(true)
                         .build());
             }
         }
-        // 6 如果该空间站创建时没有指定管理员，则将第一个进入的用户设置为管理员
+        // 6 If no administrator is specified when the space station is created, the first user who enters will be set as the administrator
         SpaceEntity spaceEntity = spaceService.getBySpaceId(spaceId);
         if (Objects.isNull(spaceEntity.getOwner())) {
             spaceEntity.setOwner(memberEntity.getId());
@@ -525,13 +521,13 @@ public class SocialWeComIsvController {
             memberService.setMemberMainAdmin(memberEntity.getId());
             userSpaceService.delete(memberEntity.getUserId(), spaceId);
         }
-        // 7 自动登录
+        // 7 Automatic login
         SessionContext.setUserId(memberEntity.getUserId());
         userService.updateLoginTime(memberEntity.getUserId());
-        // 8 神策埋点
+        // 8 Shence burial site
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
         TaskManager.me().execute(() -> sensorsService
-                .track(memberEntity.getUserId(), TrackEventType.LOGIN, "企业微信扫码登录", origin));
+                .track(memberEntity.getUserId(), TrackEventType.LOGIN, "WeCom Scan Code Login", origin));
 
         return ResponseData.success(WeComIsvUserLoginVo.builder()
                 .logined(1)
@@ -545,10 +541,10 @@ public class SocialWeComIsvController {
     }
 
     @PostResource(path = "/login/adminCode", requiredLogin = false)
-    @ApiOperation(value = "企业微信管理员跳转第三方应用管理页自动登录", notes = "企业微信管理员跳转第三方应用管理页自动登录")
+    @ApiOperation(value = "WeCom administrator jumps to the third-party application management page and automatically logs in", notes = "WeCom administrator jumps to the third-party application management page and automatically logs in")
     public ResponseData<WeComIsvUserLoginVo> postLoginAdminCode(@RequestBody WeComIsvLoginAdminCodeRo request) {
         String suiteId = request.getSuiteId();
-        // 1 获取管理员在企业中的身份
+        // 1 Get the administrator's identity in the enterprise
         WxTpLoginInfo wxTpLoginInfo;
         try {
             wxTpLoginInfo = weComTemplate.isvService(suiteId).getLoginInfo(request.getAuthCode());
@@ -558,9 +554,9 @@ public class SocialWeComIsvController {
                     .map(WxError::getErrorCode)
                     .orElse(0);
             if (errorCode == WX_ERROR_NO_PRIVILEGE || errorCode == WX_ERROR_INVALID_USER) {
-                // 错误代码：60011，错误信息：指定的成员/部门/标签参数无权限
-                // 错误代码：60111，错误信息：用户不存在通讯录中
-                // 说明该用户不在可见范围
+                // Error code: 60011, error message: The specified member department label parameter has no permission
+                // Error code: 60111, error message: the user does not exist in the address book
+                // It indicates that the user is not in the visible range
                 throw new BusinessException(SocialException.USER_NOT_EXIST_WECOM);
             }
             else if (errorCode == INVALID_AUTH_CODE) {
@@ -572,26 +568,26 @@ public class SocialWeComIsvController {
         }
         String authCorpId = wxTpLoginInfo.getCorpInfo().getCorpId();
         String cpUserId = wxTpLoginInfo.getUserInfo().getUserId();
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotBlank(authCorpId, SocialException.TENANT_NOT_EXIST);
         ExceptionUtil.isNotBlank(cpUserId, SocialException.TENANT_NOT_EXIST);
-        // 2 判断企业是否已经授权
+        // 2 Judge whether the enterprise has been authorized
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(socialTenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(socialTenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 3 获取绑定的空间站
+        // 3 Get the bound space
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
-        // 租户没有绑定空间站
+        // The tenant does not bind the space
         ExceptionUtil.isNotBlank(spaceId, SocialException.TENANT_NOT_BIND_SPACE);
-        // 获取请求来源信息
+        // Get request source information
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-        // 4 判断管理员是否已经绑定到该空间站
+        // 4 Determine whether the administrator has been bound to the space
         Long userId;
         MemberEntity memberEntity = memberService.getBySpaceIdAndOpenId(spaceId, cpUserId);
         if (Objects.isNull(memberEntity)) {
-            // 非可见范围的管理员仅创建维格用户，不绑定空间站
+            // The administrator in the non visible range only creates a vika user, and does not bind the space
             userId = Optional.ofNullable(socialCpTenantUserService.getCpTenantUserId(authCorpId, suiteId, cpUserId))
                     .map(cpTenantUserId -> socialCpUserBindService.getUserIdByCpTenantUserId(cpTenantUserId))
                     .orElseGet(() -> {
@@ -600,14 +596,14 @@ public class SocialWeComIsvController {
                                 .appId(suiteId)
                                 .openId(cpUserId)
                                 .unionId(wxTpLoginInfo.getUserInfo().getOpenUserId())
-                                // 第三方服务商无法获取用户名称，默认使用 openId 替代
+                                // The third-party service provider cannot obtain the user name, and the openId is used by default
                                 .nickName(cpUserId)
                                 .avatar(null)
                                 .socialAppType(SocialAppType.ISV)
                                 .build();
                         Long weComUserId = userService.createWeComUser(socialUser);
-                        // 神策埋点 - 注册
-                        TaskManager.me().execute(() -> sensorsService.track(weComUserId, TrackEventType.LOGIN, "企业微信ISV", origin));
+                        // Shence burial site - registration
+                        TaskManager.me().execute(() -> sensorsService.track(weComUserId, TrackEventType.LOGIN, "WeComISV", origin));
                         return weComUserId;
                     });
         }
@@ -627,11 +623,11 @@ public class SocialWeComIsvController {
         else {
             userId = memberEntity.getUserId();
         }
-        // 5 自动登录
+        // 5 Automatic login
         SessionContext.setUserId(userId);
         userService.updateLoginTime(userId);
-        // 6 神策埋点
-        TaskManager.me().execute(() -> sensorsService.track(userId, TrackEventType.LOGIN, "企业微信管理页登录", origin));
+        // 6 Shence burial site
+        TaskManager.me().execute(() -> sensorsService.track(userId, TrackEventType.LOGIN, "WeCom management page login", origin));
 
         return ResponseData.success(WeComIsvUserLoginVo.builder()
                 .logined(1)
@@ -645,16 +641,16 @@ public class SocialWeComIsvController {
     }
 
     @GetResource(path = "/tenant/info", requiredPermission = false)
-    @ApiOperation(value = "获取租户绑定的信息", notes = "获取租户绑定的信息")
+    @ApiOperation(value = "Get tenant binding information", notes = "Get tenant binding information")
     public ResponseData<TenantDetailVO> getTenantInfo(@RequestParam("suiteId") String suiteId,
             @RequestParam("authCorpId") String authCorpId) {
-        // 1 获取租户信息
+        // 1 Obtain tenant information
         SocialTenantEntity tenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(tenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(tenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 2 获取操作的用户信息
+        // 2 Get the user information of the operation
         Long userId = SessionContext.getUserId();
         SocialCpTenantUserEntity tenantUserEntity = socialCpTenantUserService.getCpTenantUser(authCorpId, suiteId, userId);
         ExceptionUtil.isNotNull(tenantUserEntity, ONLY_TENANT_ADMIN_BOUND_ERROR);
@@ -663,38 +659,38 @@ public class SocialWeComIsvController {
     }
 
     @PostResource(path = "/admin/change", requiredPermission = false)
-    @ApiOperation(value = "租户空间更换主管理员", notes = "租户空间更换主管理员")
+    @ApiOperation(value = "Tenant space replacement master administrator", notes = "Tenant space replacement master administrator")
     public ResponseData<Void> postAdminChange(@RequestBody WeComIsvAdminChangeRo request) {
         String suiteId = request.getSuiteId();
         String authCorpId = request.getAuthCorpId();
-        // 1 获取租户信息
+        // 1 Obtain tenant information
         SocialTenantEntity tenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(tenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(tenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 2 获取操作的用户信息
+        // 2 Get the user information of the operation
         Long userId = SessionContext.getUserId();
         SocialCpTenantUserEntity tenantUserEntity = socialCpTenantUserService.getCpTenantUser(authCorpId, suiteId, userId);
         ExceptionUtil.isNotNull(tenantUserEntity, ONLY_TENANT_ADMIN_BOUND_ERROR);
-        // 3 更改空间站管理员
+        // 3 Change Space Station Administrator
         socialService.changeMainAdmin(request.getSpaceId(), request.getMemberId());
 
         return ResponseData.success();
     }
 
     @GetResource(path = "/jsSdk/config", requiredPermission = false)
-    @ApiOperation(value = "JS-SDK 校验企业身份与权限的配置参数", notes = "JS-SDK 校验企业身份与权限的配置参数")
+    @ApiOperation(value = "JS-SDK Verify the configuration parameters of enterprise identity and authority", notes = "JS-SDK Verify the configuration parameters of enterprise identity and authority")
     public ResponseData<WeComIsvJsSdkConfigVo> getJsSdkConfig(@RequestParam("spaceId") String spaceId, @RequestParam("url") String url) {
-        // 1 获取租户信息
+        // 1 Obtain tenant information
         SocialTenantEntity tenantEntity = Optional.ofNullable(socialTenantBindService.getTenantBindInfoBySpaceId(spaceId))
                 .map(tenantBind -> socialTenantService.getByAppIdAndTenantId(tenantBind.getAppId(), tenantBind.getTenantId()))
                 .orElse(null);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(tenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(tenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 2 获取配置
+        // 2 Get Configuration
         try {
             WeComIsvJsSdkConfigVo weComIsvJsSdkConfigVo = socialCpIsvService.getJsSdkConfig(tenantEntity, url);
 
@@ -708,18 +704,18 @@ public class SocialWeComIsvController {
     }
 
     @GetResource(path = "/jsSdk/agentConfig", requiredPermission = false)
-    @ApiOperation(value = "JS-SDK 校验应用身份与权限的配置参数", notes = "JS-SDK 校验应用身份与权限的配置参数")
+    @ApiOperation(value = "JS-SDK Verify the configuration parameters of application identity and permission", notes = "JS-SDK Verify the configuration parameters of application identity and permission")
     public ResponseData<WeComIsvJsSdkAgentConfigVo> getJsSdkAgentConfig(@RequestParam("spaceId") String spaceId,
             @RequestParam("url") String url) {
-        // 1 获取租户信息
+        // 1 Obtain tenant information
         SocialTenantEntity tenantEntity = Optional.ofNullable(socialTenantBindService.getTenantBindInfoBySpaceId(spaceId))
                 .map(tenantBind -> socialTenantService.getByAppIdAndTenantId(tenantBind.getAppId(), tenantBind.getTenantId()))
                 .orElse(null);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(tenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(tenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-        // 2 获取配置
+        // 2 Get Configuration
         try {
             WeComIsvJsSdkAgentConfigVo weComIsvJsSdkAgentConfigVo = socialCpIsvService.getJsSdkAgentConfig(tenantEntity, url);
 
@@ -733,9 +729,9 @@ public class SocialWeComIsvController {
     }
 
     @PostResource(path = "/invite/unauthMember", requiredPermission = false)
-    @ApiOperation(value = "邀请未授权的用户", notes = "邀请未授权的用户")
+    @ApiOperation(value = "Invite unauthorized users", notes = "Invite unauthorized users")
     public ResponseData<Void> postInviteUnauthMember(@RequestBody WeComIsvInviteUnauthMemberRo request) {
-        // 1 获取租户信息
+        // 1 Obtain tenant information
         SocialTenantBindEntity tenantBindEntity = socialTenantBindService.getBySpaceId(request.getSpaceId());
         SocialTenantEntity tenantEntity = Optional.ofNullable(tenantBindEntity)
                 .map(bind -> {
@@ -745,17 +741,17 @@ public class SocialWeComIsvController {
                     return socialTenantEntity;
                 })
                 .orElse(null);
-        // 租户不存在
+        // Tenant does not exist
         ExceptionUtil.isNotNull(tenantEntity, SocialException.TENANT_NOT_EXIST);
-        // 租户已经停用
+        // Tenant has been deactivated
         ExceptionUtil.isTrue(tenantEntity.getStatus(), SocialException.TENANT_DISABLED);
 
-        // 2 获取发起邀请的成员信息
+        // 2 Get the information of the member who initiated the invitation
         Long userId = SessionContext.getUserId();
         MemberEntity memberEntity = memberService.getByUserIdAndSpaceId(userId, request.getSpaceId());
         Boolean fromMemberNameModified = Objects.isNull(memberEntity.getIsSocialNameModified()) || memberEntity.getIsSocialNameModified() != 0;
 
-        // 3 组装模板消息
+        // 3 Assembly Template Message
         Agent agent = JSONUtil.toBean(tenantEntity.getContactAuthScope(), Agent.class);
         String inviteTemplateId = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> isvApp.getSuiteId().equals(tenantEntity.getAppId()))
@@ -764,19 +760,19 @@ public class SocialWeComIsvController {
                 .orElse(null);
         WxCpIsvMessage inviteTemplateMsg = WeComIsvCardFactory.createMemberInviteTemplateMsg(tenantEntity.getAppId(), agent.getAgentId(),
                 inviteTemplateId, request.getSelectedTickets(), memberEntity.getMemberName(), fromMemberNameModified, constProperties.getServerDomain());
-        // 4 发送邀请消息
+        // 4 Send invitation message
         try {
             socialCpIsvService.sendTemplateMessageToUser(tenantEntity, request.getSpaceId(), inviteTemplateMsg, null);
         }
         catch (WxErrorException ex) {
-            log.error("企业微信第三方服务商消息发送失败", ex);
+            log.error("WeCom third-party service provider message sending failed", ex);
         }
 
         return ResponseData.success();
     }
 
     @GetResource(path = "/register/installWeCom", requiredLogin = false)
-    @ApiOperation(value = "获取注册企微并安装维格表的注册码", notes = "获取注册企微并安装维格表的注册码")
+    @ApiOperation(value = "Get the registration code for registering WeCom and installing vika", notes = "Get the registration code for registering WeCom and installing vika")
     public ResponseData<WeComIsvRegisterInstallWeComVo> getRegisterInstallWeCom() {
         WeComProperties.IsvApp currentIsvApp = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> ISV_NAME.equals(isvApp.getName()))
@@ -800,7 +796,7 @@ public class SocialWeComIsvController {
     }
 
     @GetResource(path = "/register/installSelf/url", requiredLogin = false)
-    @ApiOperation(value = "获取安装维格表的授权链接", notes = "获取安装维格表的授权链接")
+    @ApiOperation(value = "Get the authorization link for installing vika", notes = "Get the authorization link for installing vika")
     public ResponseData<WeComIsvRegisterInstallSelfUrlVo> getRegisterInstallSelfUrl(@RequestParam("finalPath") String finalPath) {
         WeComProperties.IsvApp currentIsvApp = weComProperties.getIsvAppList().stream()
                 .filter(isvApp -> ISV_NAME.equals(isvApp.getName()))
@@ -828,7 +824,7 @@ public class SocialWeComIsvController {
     }
 
     @GetResource(path = "/register/installSelf/authCode", requiredLogin = false)
-    @ApiOperation(value = "通过安装维格表的授权链接完成应用安装", hidden = true)
+    @ApiOperation(value = "Complete the application installation through the authorization link of installing vika", hidden = true)
     public void getRegisterInstallSelfAuthCode(HttpServletResponse response,
             @RequestParam("finalPath") String finalPath, @RequestParam("auth_code") String authCode,
             @RequestParam("expires_in") Integer expiresIn, @RequestParam("state") String state) {
@@ -849,13 +845,13 @@ public class SocialWeComIsvController {
             AuthCorpInfo authCorpInfo = permanentCodeInfo.getAuthCorpInfo();
 
             entity.setAuthCorpId(authCorpInfo.getCorpId());
-            // 这里保存获取企业永久授权码接口返回的信息
+            // The information returned by the interface for obtaining the enterprise permanent authorization code is saved
             entity.setMessage(JSONUtil.toJsonStr(permanentCodeInfo));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.PENDING.getValue());
-            // 保存信息
+            // Save information
             socialCpIsvMessageService.save(entity);
 
-            // 仅记录下相关信息，后续再处理业务
+            // Only record the relevant information, and then process the business
             socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(),
                     entity.getSuiteId());
         }
@@ -864,7 +860,7 @@ public class SocialWeComIsvController {
 
             entity.setMessage(JSONUtil.toJsonStr(Collections.singletonMap("authCode", authCode)));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY.getValue());
-            // 保存信息
+            // Save information
             socialCpIsvMessageService.save(entity);
 
             throw new BusinessException(SocialException.GET_AGENT_CONFIG_ERROR);
@@ -874,7 +870,7 @@ public class SocialWeComIsvController {
 
             entity.setMessage(JSONUtil.toJsonStr(Collections.singletonMap("authCode", authCode)));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY.getValue());
-            // 保存信息
+            // Save information
             socialCpIsvMessageService.save(entity);
 
             throw new BusinessException(SocialException.GET_AGENT_CONFIG_ERROR);

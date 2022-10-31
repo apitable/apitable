@@ -8,22 +8,18 @@ import com.vikadata.entity.SocialEditionChangelogWecomEntity;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用版本变更信息
+ * Third party platform integration - WeChat third-party service provider application version change information
  * </p>
- * @author 刘斌华
- * @date 2022-04-28 10:33:01
  */
 @Mapper
 public interface SocialEditionChangelogWeComMapper extends BaseMapper<SocialEditionChangelogWecomEntity> {
 
     /**
-     * 获取最近一条的企微版本信息
+     * Get the latest WeChat version information
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 支付的授权企业 ID
-     * @return 应用版本信息
-     * @author 刘斌华
-     * @date 2022-05-06 18:57:33
+     * @param suiteId App Suite ID
+     * @param paidCorpId Authorized enterprise ID paid
+     * @return Application version information
      */
     SocialEditionChangelogWecomEntity selectLastChangeLog(@Param("suiteId") String suiteId, @Param("paidCorpId") String paidCorpId);
 

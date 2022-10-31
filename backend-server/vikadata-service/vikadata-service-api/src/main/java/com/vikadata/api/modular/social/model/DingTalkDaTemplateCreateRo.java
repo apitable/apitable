@@ -6,35 +6,33 @@ import lombok.Data;
 
 /**
  * <p> 
- * 钉钉搭--创建应用(使用模板)
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/28 15:05
+ * DingTalk--Create an app (using a template)
+ * </p>
  */
-@ApiModel("钉钉搭--创建应用(使用模板)")
+@ApiModel("DingTalk--Create an app (using a template)")
 @Data
 public class DingTalkDaTemplateCreateRo {
-    @ApiModelProperty(value = "使用模版的企业ID", required = true, position = 1)
+    @ApiModelProperty(value = "Enterprise ID using template", required = true, position = 1)
     private String corpId;
 
-    @ApiModelProperty(value = "应用名称", required = true, position = 2)
+    @ApiModelProperty(value = "APPLY NAME", required = true, position = 2)
     private String name;
 
-    @ApiModelProperty(value = "创建人id", required = true, position = 3)
+    @ApiModelProperty(value = "Creator ID", required = true, position = 3)
     private String opUserId;
 
-    @ApiModelProperty(value = "应用模板key", required = true, position = 4)
+    @ApiModelProperty(value = "Application template key", required = true, position = 4)
     private String templateKey;
 
-    @ApiModelProperty(value = "是否保留样例数据", required = true, position = 5)
+    @ApiModelProperty(value = "Whether to keep sample data", required = true, position = 5)
     private Boolean keepSampleData;
 
-    @ApiModelProperty(value = "当前时间戳", required = true, position = 6)
+    @ApiModelProperty(value = "Current timestamp", required = true, position = 6)
     private String timestamp;
 
-    @ApiModelProperty(value = "签名", required = true, position = 7)
+    @ApiModelProperty(value = "signature", required = true, position = 7)
     private String signature;
 
-    @ApiModelProperty(value = "请求id，便于排查问题", required = true, position = 8)
+    @ApiModelProperty(value = "Request ID for easy troubleshooting", required = true, position = 8)
     private String requestId;
 }

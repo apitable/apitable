@@ -23,10 +23,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商授权企业应用版本变更通知
+ * Notification of changes in the version of the enterprise application authorized by the third-party service provider
  * </p>
- * @author 刘斌华
- * @date 2022-04-22 11:23:59
  */
 @Component
 @Slf4j

@@ -24,15 +24,12 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * <p>
- * 第三方平台集成接口
+ * Third party platform integration interface
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/30 19:16
  */
 @RestController
 @ApiResource(path = "/social")
-@Api(tags = "第三方平台集成接口")
+@Api(tags = "Third party platform integration interface")
 @Slf4j
 public class SocialController {
 
@@ -46,10 +43,10 @@ public class SocialController {
     private IFeishuService iFeishuService;
 
     @GetResource(path = "/feishu/workbench/callback", requiredLogin = false)
-    @ApiOperation(value = "飞书配置应用回调", hidden = true)
+    @ApiOperation(value = "Lark configuration application callback", hidden = true)
     public void feishuWorkbenchCallback(@RequestParam(name = "url") String url,
             HttpServletRequest request, HttpServletResponse response) throws IOException {
-        log.info("收到飞书回调: {}, 参数：{}", request.getRequestURI(), request.getQueryString());
+        log.info("Lark callback received: {}, parameter：{}", request.getRequestURI(), request.getQueryString());
         String redirectUri = constProperties.getServerDomain()
                 + serverProperties.getServlet().getContextPath()
                 + StrUtil.format("/social/feishu/entry?url={}", url);
@@ -58,10 +55,10 @@ public class SocialController {
 
     @Deprecated
     @GetResource(path = "/feishu/configure/callback", requiredLogin = false)
-    @ApiOperation(value = "飞书配置应用回调", hidden = true)
+    @ApiOperation(value = "Lark configuration application callback", hidden = true)
     public void feishuConfigureCallback(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        log.info("收到飞书回调: {}, 参数：{}", request.getRequestURI(), request.getQueryString());
-        // 飞书二期，重定向到《开始使用》入口
+        log.info("Lark callback received: {}, parameter：{}", request.getRequestURI(), request.getQueryString());
+        // Redirect to the Getting Started portal
         String redirectUri = constProperties.getServerDomain()
                 + serverProperties.getServlet().getContextPath()
                 + "/social/feishu/admin";
@@ -69,7 +66,7 @@ public class SocialController {
     }
 
     @GetResource(path = "/feishu/auth/callback", requiredLogin = false)
-    @ApiOperation(value = "飞书授权登录", hidden = true)
+    @ApiOperation(value = "Lark authorized login", hidden = true)
     public RedirectView feishuAuthCallback() {
         iFeishuService.switchDefaultContext();
         String redirectUri;

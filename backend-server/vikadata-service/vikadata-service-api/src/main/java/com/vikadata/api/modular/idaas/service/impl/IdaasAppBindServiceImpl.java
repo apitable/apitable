@@ -30,10 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 玉符 IDaaS 应用与空间站绑定
+ * IDaaS application is bound to the space
  * </p>
- * @author 刘斌华
- * @date 2022-05-19 11:30:58
  */
 @Slf4j
 @Service
@@ -64,10 +62,10 @@ public class IdaasAppBindServiceImpl extends ServiceImpl<IdaasAppBindMapper, Ida
     public IdaasAppBindVo bindTenantApp(IdaasAppBindRo request) {
         IdaasTenantEntity tenantEntity = idaasTenantService.getByTenantName(request.getTenantName());
         if (Objects.isNull(tenantEntity)) {
-            // 租户信息不存在
+            // Tenant information does not exist
             throw new BusinessException(IdaasException.PARAM_INVALID);
         }
-        // 1 调用 Well-known 接口，获取相关信息
+        // 1 Call the Well known interface to obtain relevant information
         WellKnowResponse wellKnowResponse;
         try {
             wellKnowResponse = idaasTemplate.getSystemApi()
@@ -78,11 +76,11 @@ public class IdaasAppBindServiceImpl extends ServiceImpl<IdaasAppBindMapper, Ida
 
             throw new BusinessException(IdaasException.API_ERROR);
         }
-        // 2 保存或者更新应用信息
+        // 2 Save or update application information
         String clientId = request.getAppClientId();
         IdaasAppEntity appEntity = idaasAppService.getByClientId(clientId);
         if (Objects.isNull(appEntity)) {
-            // 应用信息不存在，则创建应用
+            // If the application information does not exist, create an application
             appEntity = IdaasAppEntity.builder()
                     .tenantName(tenantEntity.getTenantName())
                     .clientId(clientId)
@@ -94,7 +92,7 @@ public class IdaasAppBindServiceImpl extends ServiceImpl<IdaasAppBindMapper, Ida
             idaasAppService.save(appEntity);
         }
         else {
-            // 已存在应用，则更新信息
+            // If an app already exists, update the information
             appEntity.setTenantName(tenantEntity.getTenantName());
             appEntity.setClientId(clientId);
             appEntity.setClientSecret(request.getAppClientSecret());
@@ -103,10 +101,10 @@ public class IdaasAppBindServiceImpl extends ServiceImpl<IdaasAppBindMapper, Ida
             appEntity.setUserinfoEndpoint(wellKnowResponse.getUserinfoEndpoint());
             idaasAppService.updateById(appEntity);
         }
-        // 3 保存或者更新绑定信息
+        // 3 Save or update binding information
         IdaasAppBindEntity appBindEntity = getBySpaceId(request.getSpaceId());
         if (Objects.isNull(appBindEntity)) {
-            // 信息不存在，则创建绑定关系
+            // If the information does not exist, create a binding relationship
             appBindEntity = IdaasAppBindEntity.builder()
                     .tenantName(tenantEntity.getTenantName())
                     .clientId(clientId)
@@ -115,7 +113,7 @@ public class IdaasAppBindServiceImpl extends ServiceImpl<IdaasAppBindMapper, Ida
             save(appBindEntity);
         }
         else {
-            // 已存在绑定，则更新信息
+            // If binding already exists, update the information
             appBindEntity.setTenantName(tenantEntity.getTenantName());
             appBindEntity.setClientId(clientId);
             appBindEntity.setSpaceId(request.getSpaceId());

@@ -7,40 +7,29 @@ import com.vikadata.social.feishu.event.BaseEvent;
 import com.vikadata.social.feishu.event.contact.v3.BaseV3ContactEvent;
 
 /**
- * 第三方平台集成-飞书事件日志 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-14 19:49:26
+ * Third party platform integration - Mark event log service interface
  */
 public interface ISocialFeishuEventLogService extends IService<SocialFeishuEventLogEntity> {
 
     /**
-     * 事件处理完成
+     * Event processing completed
      *
-     * @param uuid 事件唯一ID
-     * @author Shawn Deng
-     * @date 2020/12/16 14:47
+     * @param uuid Event Unique ID
      */
     void doneEvent(String uuid);
 
     /**
-     * 创建事件记录
+     * Create event record
      *
-     * @param event 事件
-     * @author Shawn Deng
-     * @date 2020/12/14 19:55
-     * @return
+     * @param event Event
      */
     <T extends BaseEvent> boolean create(T event);
 
     /**
-     * 创建事件记录
-     * 新版通讯录事件
+     * Create event record
+     * New Address Book Event
      *
-     * @param event 事件
-     * @author Shawn Deng
-     * @date 2020/12/14 19:55
-     * @return
+     * @param event Event
      */
     <T extends BaseV3ContactEvent> boolean createV3ContactEventLog(T event);
 }

@@ -7,48 +7,38 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.vikadata.entity.ControlSettingEntity;
 
 /**
- *
- * @author Shawn Deng
- * @date 2021-04-06 20:10:13
+ * Control setting service
  */
 public interface IControlSettingService extends IService<ControlSettingEntity> {
 
     /**
-     * 获取控制单元设置
+     * Get control unit settings
      *
-     * @param controlId 控制单元ID
+     * @param controlId Control unit ID
      * @return ControlSettingEntity
-     * @author Chambers
-     * @date 2021/4/27
      */
     ControlSettingEntity getByControlId(String controlId);
 
     /**
-     * 批量获取权限控制单元设置
+     * Batch Access Permission Control Unit Settings
      *
-     * @param controlIds 控制单元ID列表
+     * @param controlIds List of control unit IDs
      * @return ControlSettingEntities
-     * @author Chambers
-     * @date 2021/4/14
      */
     List<ControlSettingEntity> getBatchByControlIds(List<String> controlIds);
 
     /**
-     * 创建权限控制单元设置
+     * Create permission control unit settings
      *
-     * @param userId    用户ID
-     * @param controlId 控制单元ID
-     * @author Chambers
-     * @date 2021/4/22
+     * @param userId    User ID
+     * @param controlId Control unit ID
      */
     void create(Long userId, String controlId);
 
     /**
-     * 删除指定控制单元设置
+     * Delete the specified control unit settings
      *
-     * @param controlIds 控制单元ID 集合
-     * @author Chambers
-     * @date 2021/4/27
+     * @param controlIds Control unit ID set
      */
     void removeByControlIds(Long userId, List<String> controlIds);
 }

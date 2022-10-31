@@ -8,19 +8,17 @@ import lombok.Data;
 
 /**
  * <p> 
- * 钉钉dd.config参数获取
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 17:55
+ * DingTalk Get the dd.config parameter
+ * </p>
  */
-@ApiModel("钉钉--dd.config参数获取")
+@ApiModel("DingTalk Get the dd.config parameter")
 @Data
 public class DingTalkDdConfigRo {
-    @ApiModelProperty(value = "空间站ID", required = true, position = 1)
+    @ApiModelProperty(value = "Space ID", required = true, position = 1)
     @NotNull
     private String spaceId;
 
-    @ApiModelProperty(value = "当前页面地址", position = 2)
+    @ApiModelProperty(value = "Current page address", position = 2)
     @NotNull
     private String url;
 }

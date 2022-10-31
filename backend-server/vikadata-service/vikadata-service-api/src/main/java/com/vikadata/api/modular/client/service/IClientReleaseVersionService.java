@@ -8,110 +8,94 @@ import com.vikadata.entity.ClientReleaseVersionEntity;
 
 /**
  * <p>
- * 版本发布表 服务类
+ * Version Publish Table Service Class
  * </p>
- *
- * @author Zoe Zheng
- * @since 2020-04-07
  */
 public interface IClientReleaseVersionService extends IService<ClientReleaseVersionEntity> {
 
     /**
-     * 适配获取客户端版本号
-     * @param env 客户端环境
-     * @param pipelineId 客户端流水线标识
+     * Adapt to obtain the client version number
+     *
+     * @param env Client environment
+     * @param pipelineId Client pipeline ID
      * @return String
      */
     String getVersionOrDefault(Env env, String pipelineId);
 
     /**
-     * 创建客户端版本
+     * Create Client Version
      *
-     * @param clientBuildRo 请求参数
-     * @author zoe zheng
-     * @date 2020/4/9 10:34 上午
+     * @param clientBuildRo Request parameters
      */
     void createClientVersion(ClientBuildRo clientBuildRo);
 
     /**
-     * 获取指定版本的HTML内容
-     * @param version
-     * @return
+     * Get the HTML content of the specified version
+     *
+     * @param version version ID
+     * @return Html Content
      */
     String getHtmlContentByVersion(String version);
 
     /**
-     * 缓存刷新指定版本的html内容
-     * @param version
-     * @return
+     * Cache refreshes the specified version of html content
+     *
+     * @param version version ID
+     * @return Html Content
      */
     String refreshHtmlContent(String version);
 
     /**
-     * 根据version获取htmlContent
+     * Get html Content according to version
      *
-     * @param version 版本号
+     * @param version Version ID
      * @return String
-     * @author zoe zheng
-     * @date 2020/4/9 10:36 上午
      */
     String getHtmlContentCacheIfAbsent(String version);
 
     /**
-     * 发送发版邮件提醒
+     * Send post email reminder
      *
-     * @param version 发布版本
-     * @author zoe zheng
-     * @date 2020/4/10 4:21 下午
+     * @param version Release Version
      */
     void sendNotifyEmail(String version);
 
     /**
-     * 获取meta具体信息
+     * Get specific meta information
      *
      * @param uri nginx $request_uri
      * @return meta
-     * @author zoe zheng
-     * @date 2020/5/19 12:34 下午
      */
     String getMetaContent(String uri);
 
     /**
-     * 根据uri获取节点ID
+     * Get the node ID according to the uri
      *
-     * @param uri 请求路径
-     * @return 节点ID
-     * @author zoe zheng
-     * @date 2020/7/7 3:15 下午
+     * @param uri Request Path
+     * @return Node ID
      */
     String getNodeIdFromUri(String uri);
 
     /**
-     * 根据uri获取SpaceId
+     * Get Space id according to uri
      *
-     * @param uri 请求路径
-     * @return SpaceId
-     * @author Pengap
-     * @date 2022/5/30 21:32:34
+     * @param uri Request Path
+     * @return Space ID
      */
     String getSpaceIdFromUri(String uri);
 
     /**
-     * 查询版本号是否比datasheet当前版本高
+     * Query whether the version number is higher than the current version of datasheet
      *
-     * @param version 客户端版本
-     * @return 返回差的版本正负
-     * @author zoe zheng
-     * @date 2021/3/1 11:18 上午
+     * @param version Client Version
+     * @return Return the positive and negative versions of the difference
      */
     boolean isMoreThanClientVersion(String version);
 
     /**
-     * 获取最新的正式版本号
+     * Get the latest official version number
      *
      * @return version
-     * @author zoe zheng
-     * @date 2021/3/23 7:58 下午
      */
     String getLatestVersion();
 }

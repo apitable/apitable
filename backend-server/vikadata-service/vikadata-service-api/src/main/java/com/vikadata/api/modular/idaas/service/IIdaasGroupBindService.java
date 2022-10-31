@@ -8,30 +8,24 @@ import com.vikadata.entity.IdaasGroupBindEntity;
 
 /**
  * <p>
- * 玉符 IDaaS 用户组绑定信息
+ * IDaaS User group binding information
  * </p>
- * @author 刘斌华
- * @date 2022-05-30 10:06:37
  */
 public interface IIdaasGroupBindService extends IService<IdaasGroupBindEntity> {
 
     /**
-     * 获取跟空间站绑定的所有用户组
+     * Get all user groups bound to the space station
      *
-     * @param spaceId 要查询的空间站 ID
-     * @return 空间站绑定的所有用户组
-     * @author 刘斌华
-     * @date 2022-05-30 11:41:43
+     * @param spaceId space ID
+     * @return All user groups bound to the space station
      */
     List<IdaasGroupBindEntity> getAllBySpaceId(String spaceId);
 
     /**
-     * 获取跟空间站绑定的所有用户组，包括已删除的
+     * Get all user groups bound to the space station, including the deleted
      *
-     * @param spaceId 要查询的空间站 ID
-     * @return 空间站绑定的所有用户组
-     * @author 刘斌华
-     * @date 2022-05-30 11:41:43
+     * @param spaceId space ID
+     * @return All user groups bound to the space station
      */
     List<IdaasGroupBindEntity> getAllBySpaceIdIgnoreDeleted(String spaceId);
 

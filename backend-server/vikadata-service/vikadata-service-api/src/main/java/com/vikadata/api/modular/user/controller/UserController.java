@@ -103,7 +103,7 @@ import static com.vikadata.define.constants.RedisConstants.ERROR_PWD_NUM_DIR;
 
 /**
  * <p>
- * 用户接口
+ * User interface
  * </p>
  *
  * @author Benson Cheung
@@ -111,7 +111,7 @@ import static com.vikadata.define.constants.RedisConstants.ERROR_PWD_NUM_DIR;
  */
 @Slf4j
 @RestController
-@Api(tags = "账户中心模块_用户管理接口")
+@Api(tags = "Account Center Module_User Management Interface")
 @ApiResource(path = "/user")
 public class UserController {
 
@@ -155,7 +155,7 @@ public class UserController {
     private IVCodeService ivCodeService;
 
     @GetResource(path = "/integral", requiredPermission = false)
-    @ApiOperation(value = "查询账户积分信息")
+    @ApiOperation(value = "Query account integral information")
     public ResponseData<UserIntegralVo> integrals() {
         Long userId = SessionContext.getUserId();
         int totalIntegral = iIntegralService.getTotalIntegralValueByUserId(userId);
@@ -165,8 +165,8 @@ public class UserController {
     }
 
     @GetResource(path = "/integral/records", requiredPermission = false)
-    @ApiOperation(value = "分页查询积分收支明细")
-    @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_COMPLEX_EXAMPLE)
+    @ApiOperation(value = "Page by page query of integral revenue and expenditure details")
+    @ApiImplicitParam(name = PAGE_PARAM, value = "Page parameter", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_COMPLEX_EXAMPLE)
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResponseData<PageInfo<IntegralRecordVO>> integralRecords(@PageObjectParam Page page) {
         Long userId = SessionContext.getUserId();
@@ -174,26 +174,26 @@ public class UserController {
         return ResponseData.success(PageHelper.build(results));
     }
 
-    @PostResource(name = "解除第三方账号绑定", path = "/unbind", requiredPermission = false)
-    @ApiOperation(value = "解除第三方账号绑定")
+    @PostResource(name = "Unbind the third-party account", path = "/unbind", requiredPermission = false)
+    @ApiOperation(value = "Unbind the third-party account")
     public ResponseData<Void> unbind(@RequestBody @Valid UserLinkOpRo opRo) {
         Long userId = SessionContext.getUserId();
         iUserService.unbind(userId, opRo.getType());
-        // 删除缓存
+        // Delete Cache
         userLinkInfoService.delete(userId);
         return ResponseData.success();
     }
 
-    @GetResource(name = "查询用户是否绑定邮箱", path = "/email/bind", requiredPermission = false)
-    @ApiOperation(value = "查询用户是否绑定邮箱", notes = "查询用户是否绑定邮箱")
+    @GetResource(name = "Query whether users bind mail", path = "/email/bind", requiredPermission = false)
+    @ApiOperation(value = "Query whether users bind mail", notes = "Query whether users bind mail")
     public ResponseData<Boolean> validBindEmail() {
         Long userId = SessionContext.getUserId();
         Boolean exist = iUserService.checkUserHasBindEmail(userId);
         return ResponseData.success(exist);
     }
 
-    @PostResource(name = "查询用户是否与指定邮箱一致", path = "/validate/email", requiredPermission = false)
-    @ApiOperation(value = "查询用户是否与指定邮箱一致", notes = "查询用户是否与指定邮箱一致,前提条件是用户已经绑定了邮箱才能判断")
+    @PostResource(name = "Query whether the user is consistent with the specified mail", path = "/validate/email", requiredPermission = false)
+    @ApiOperation(value = "Query whether the user is consistent with the specified mail", notes = "Query whether the user is consistent with the specified mail. It can only be determined if the user has bound the mail")
     public ResponseData<Boolean> validSameEmail(@RequestBody @Valid CheckUserEmailRo data) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
@@ -202,8 +202,8 @@ public class UserController {
         return ResponseData.success(user.getEmail().equals(data.getEmail()));
     }
 
-    @PostResource(name = "关联受邀邮箱", path = "/link/inviteEmail", requiredPermission = false)
-    @ApiOperation(value = "关联受邀邮箱", notes = "在用户没有其他邮箱的情况下，只能关联受邀邮箱", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Associate the invited mail", path = "/link/inviteEmail", requiredPermission = false)
+    @ApiOperation(value = "Associate the invited mail", notes = "Users can only associate with invited mail when they have no other mail", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> bindEmail(@RequestBody @Valid UserLinkEmailRo data) {
         String email = data.getEmail();
         String spaceId = data.getSpaceId();
@@ -212,8 +212,8 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "关联钉钉", path = "/bindDingTalk", requiredPermission = false)
-    @ApiOperation(value = "关联钉钉", notes = "关联钉钉", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Associated DingTalk", path = "/bindDingTalk", requiredPermission = false)
+    @ApiOperation(value = "Associated DingTalk", notes = "Associated DingTalk", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> bindDingTalk(@RequestBody @Valid DtBindOpRo opRo) {
         ValidateTarget target = ValidateTarget.create(opRo.getPhone(), opRo.getAreaCode());
         ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS).verifyIsPass(target.getRealTarget());
@@ -221,12 +221,12 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "绑定邮箱", path = "/bindEmail", requiredPermission = false)
-    @ApiOperation(value = "绑定邮箱", notes = "绑定邮箱、修改邮箱", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Bind mail", path = "/bindEmail", requiredPermission = false)
+    @ApiOperation(value = "Bind mail", notes = "Bind mail and modify mail", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> verifyEmail(@RequestBody @Valid EmailCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getEmail());
         ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL).validate(target, param.getCode(), true, CodeValidateScope.BOUND_EMAIL);
-        //判断是否存在
+        // Judge whether it exists
         boolean exist = iUserService.checkByEmail(param.getEmail());
         ExceptionUtil.isFalse(exist, EMAIL_HAS_BIND);
         Long userId = SessionContext.getUserId();
@@ -234,11 +234,11 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "解绑邮箱", path = "/unbindEmail", requiredPermission = false)
-    @ApiOperation(value = "解绑邮箱", notes = "绑定邮箱、修改邮箱", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Unbind mail", path = "/unbindEmail", requiredPermission = false)
+    @ApiOperation(value = "Unbind mail", notes = "Bind mail and modify mail", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> unbindEmail(@RequestBody @Valid CodeValidateRo param) {
         LoginUserDto loginUser = LoginContext.me().getLoginUser();
-        // 判断用户是否绑定邮箱
+        // Judge whether users bind mail
         ExceptionUtil.isNotBlank(loginUser.getEmail(), USER_NOT_BIND_EMAIL);
         ValidateTarget target = ValidateTarget.create(loginUser.getEmail());
         ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL).validate(target, param.getCode(), true, CodeValidateScope.COMMON_VERIFICATION);
@@ -246,12 +246,12 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "绑定新手机", path = "/bindPhone", requiredPermission = false)
-    @ApiOperation(value = "绑定新手机", notes = "绑定新手机", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Bind a new phone", path = "/bindPhone", requiredPermission = false)
+    @ApiOperation(value = "Bind a new phone", notes = "Bind a new phone", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> verifyPhone(@RequestBody @Valid SmsCodeValidateRo param) {
         ValidateTarget target = ValidateTarget.create(param.getPhone(), param.getAreaCode());
         ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS).validate(target, param.getCode(), true, CodeValidateScope.BOUND_MOBILE);
-        // 判断是否存在
+        // Judge whether it exists
         boolean exist = iUserService.checkByCodeAndMobile(param.getAreaCode(), param.getPhone());
         ExceptionUtil.isFalse(exist, MOBILE_HAS_REGISTER);
         Long userId = SessionContext.getUserId();
@@ -259,11 +259,11 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "解绑手机", path = "/unbindPhone", requiredPermission = false)
-    @ApiOperation(value = "解绑手机", notes = "解绑手机", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Unbind mobile phone", path = "/unbindPhone", requiredPermission = false)
+    @ApiOperation(value = "Unbind mobile phone", notes = "Unbind mobile phone", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> unbindPhone(@RequestBody @Valid CodeValidateRo param) {
         LoginUserDto loginUser = LoginContext.me().getLoginUser();
-        // 判断用户是否绑定手机号
+        // Judge whether the user binds the mobile phone number
         ExceptionUtil.isNotBlank(loginUser.getMobile(), USER_NOT_BIND_PHONE);
         ValidateTarget target = ValidateTarget.create(loginUser.getMobile(), loginUser.getAreaCode());
         ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS).validate(target, param.getCode(), true, CodeValidateScope.UN_BOUND_MOBILE);
@@ -271,8 +271,8 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "编辑用户信息", path = "/update", requiredPermission = false)
-    @ApiOperation(value = "编辑用户信息", notes = "请求参数不能全为空", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Edit user information", path = "/update", requiredPermission = false)
+    @ApiOperation(value = "Edit user information", notes = "Request parameters cannot be all empty", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<String> update(@RequestBody @Valid UserOpRo param) {
         ExceptionUtil.isTrue(StrUtil.isNotBlank(param.getAvatar()) || StrUtil.isNotBlank(param.getNickName())
                 || StrUtil.isNotBlank(param.getLocale()), ParameterException.NO_ARG);
@@ -282,20 +282,20 @@ public class UserController {
             return ResponseData.success(StringUtil.trimSlash(constProperties.getOssBucketByAsset().getResourceUrl()) + param.getAvatar());
         }
         if (BooleanUtil.isTrue(param.getInit()) && StrUtil.isNotBlank(param.getNickName())) {
-            //神策埋点 - 初始化昵称
+            // Shence buried point - initialize nickname
             ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
             TaskManager.me().execute(() -> sensorsService.track(userId, TrackEventType.SET_NICKNAME, null, origin));
         }
         return ResponseData.success(null);
     }
 
-    @PostResource(name = "修改密码", path = "/updatePwd", requiredPermission = false)
-    @ApiOperation(value = "修改密码", notes = "场景：1、个人设置修改密码；2、未设置密码的帐号登录后初始化", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Change Password", path = "/updatePwd", requiredPermission = false)
+    @ApiOperation(value = "Change Password", notes = "Scene: 1. Personal setting and password modification; 2. Initialize after login for accounts without password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> updatePwd(@RequestBody UpdatePwdOpRo param) {
         verificationService.verifyPassword(param.getPassword());
         Long userId = SessionContext.getUserId();
         if (StrUtil.isNotBlank(param.getCode())) {
-            // 场景1，验证码校验
+            // Scene 1: Verification of verification code
             LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
             if (param.getType() == ValidateType.EMAIL_CODE) {
                 ValidateTarget target = ValidateTarget.create(loginUserDto.getEmail());
@@ -308,22 +308,22 @@ public class UserController {
                         .validate(target, param.getCode(), true, CodeValidateScope.UPDATE_PWD);
             }
             else {
-                // 帐号同时未绑定手机、邮箱，才允许跳过验证码校验
+                // The account is not bound to the mobile phone and email at the same time, so the verification code verification can be skipped
                 ExceptionUtil.isTrue(StrUtil.isBlank(loginUserDto.getEmail())
                         && StrUtil.isBlank(loginUserDto.getMobile()), MODIFY_PASSWORD_ERROR);
             }
-            // 修改密码
+            // Change Password
             iUserService.updatePwd(userId, param.getPassword());
-            // 异步发送短信通知
+            // Send SMS notification asynchronously
             if (StrUtil.isNotBlank(loginUserDto.getMobile())) {
                 ValidateTarget target = ValidateTarget.create(loginUserDto.getMobile(), loginUserDto.getAreaCode());
                 TaskManager.me().execute(() -> iSmsService.sendMessage(target, TencentConstants.SmsTemplate.UPDATE_PASSWORD_SUCCESS_NOTICE));
             }
-            // 关闭帐号其他端登录会话
+            // Close the login session of other end of the account
             iUserService.closeMultiSession(userId, true);
         }
         else {
-            // 判断用户帐号是否设置密码，已设置密码的帐号不能使用初始化
+            // Judge whether the user account is set with a password. The account with a password cannot be initialized
             boolean needPwd = LoginContext.me().getLoginUser().getNeedPwd();
             ExceptionUtil.isTrue(needPwd, PASSWORD_HAS_SETTING);
             iUserService.updatePwd(userId, param.getPassword());
@@ -331,98 +331,98 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(name = "找回密码", path = "/retrievePwd", requiredLogin = false)
-    @ApiOperation(value = "找回密码", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Retrieve password", path = "/retrievePwd", requiredLogin = false)
+    @ApiOperation(value = "Retrieve password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> retrievePwd(@RequestBody @Valid RetrievePwdOpRo param) {
-        // 校验密码格式
+        // Verify password format
         verificationService.verifyPassword(param.getPassword());
         UserEntity user;
         if (param.getType() == ValidateType.EMAIL_CODE) {
-            // 校验邮件验证码
+            // Check the email verification code
             ValidateTarget target = ValidateTarget.create(param.getUsername());
             ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL)
                     .validate(target, param.getCode(), true, CodeValidateScope.COMMON_VERIFICATION);
-            // 判断帐号是否存在
+            // Determine whether the account exists
             user = iUserService.getByEmail(param.getUsername());
             ExceptionUtil.isNotNull(user, EMAIL_NO_EXIST);
         }
         else {
-            // 校验短信验证码
+            // Check SMS verification code
             ValidateTarget target = ValidateTarget.create(param.getUsername(), param.getAreaCode());
             ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS)
                     .validate(target, param.getCode(), true, CodeValidateScope.UPDATE_PWD);
-            // 判断帐号是否存在
+            // Determine whether the account exists
             user = iUserService.getByCodeAndMobilePhone(param.getAreaCode(), param.getUsername());
             ExceptionUtil.isNotNull(user, MOBILE_NO_EXIST);
         }
         Long id = user.getId();
-        // 修改密码
+        // Change Password
         iUserService.updatePwd(id, param.getPassword());
-        // 异步发送短信通知
+        // Send SMS notification asynchronously
         if (user.getMobilePhone() != null) {
             TaskManager.me().execute(() -> iSmsService.sendMessage(ValidateTarget.create(user.getMobilePhone(), user.getCode()),
                     TencentConstants.SmsTemplate.UPDATE_PASSWORD_SUCCESS_NOTICE));
         }
-        // 关闭帐号其他端登录会话
+        // Close the login session of other end of the account
         iUserService.closeMultiSession(id, false);
-        //解除密码错误频繁导致的账号锁定
+        // Unlock the account caused by frequent password errors
         redisTemplate.delete(ERROR_PWD_NUM_DIR + id);
         return ResponseData.success();
     }
 
-    @GetResource(name = "查询是否已登录", path = "/session", requiredLogin = false)
-    @ApiOperation(value = "查询是否已登录", notes = "获取自己必要信息", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "Query whether have logged in", path = "/session", requiredLogin = false)
+    @ApiOperation(value = "Query whether have logged in", notes = "Get necessary information", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Boolean> meSession() {
         HttpSession session = HttpContextUtil.getSession(false);
         return ResponseData.success(session != null && session.getAttribute(SessionAttrConstants.LOGIN_USER_ID) != null);
     }
 
-    @PostResource(name = "申请注销用户账号", path = "/applyForClosing", requiredPermission = false)
-    @ApiOperation(value = "申请注销用户账号", notes = "已注册登录用户申请注销账号", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Apply for cancellation of user account", path = "/applyForClosing", requiredPermission = false)
+    @ApiOperation(value = "Apply for cancellation of user account", notes = "Registered login user applies for account cancellation", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> applyForClosing() {
-        // 获取当前登录用户
+        // Get the current login user
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
-        // 判断用户是否已经申请过账号注销
+        // Judge whether the user has applied for account cancellation
         ExceptionUtil.isFalse(user.getIsPaused(), USER_APPLIED_FOR_CLOSING);
-        // 判断当前用户是否满足注销条件
+        // Judge whether the current user meets the logout conditions
         boolean allowedToBeClosed = userHistoryService.checkAccountAllowedToBeClosed(userId);
         ExceptionUtil.isTrue(allowedToBeClosed, USER_NOT_ALLOWED_TO_CLOSE);
-        // 注销账号，进入冷静期
+        // Cancel the account and enter the calm period
         iUserService.applyForClosingAccount(user);
-        // 销毁用户cookie并维持会话
+        // Destroy user cookies and maintain sessions
         iUserService.closeMultiSession(userId, true);
         return ResponseData.success();
     }
 
-    @GetResource(name = "校验账号能否注销", path = "/checkForClosing", requiredPermission = false)
-    @ApiOperation(value = "校验账号能否注销", notes = "未注销用户校验账号是否满足注销条件", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "Verify whether the account can be cancelled", path = "/checkForClosing", requiredPermission = false)
+    @ApiOperation(value = "Verify whether the account can be cancelled", notes = "Unregistered users verify whether the account meets the cancellation conditions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> checkForClosing() {
-        // 获取当前登录用户
+        // Get the current login user
         Long userId = SessionContext.getUserId();
-        // 判断当前用户是否满足账号注销条件
+        // Judge whether the current user meets the account cancellation conditions
         boolean isAllowedToBeClosed = userHistoryService.checkAccountAllowedToBeClosed(userId);
         ExceptionUtil.isTrue(isAllowedToBeClosed, USER_NOT_ALLOWED_TO_CLOSE);
         return ResponseData.success();
     }
 
-    @PostResource(name = "申请恢复账号", path = "/cancelClosing", requiredPermission = false)
-    @ApiOperation(value = "申请恢复账号", notes = "已申请注销用户恢复账号", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostResource(name = "Apply for account restoration", path = "/cancelClosing", requiredPermission = false)
+    @ApiOperation(value = "Apply for account restoration", notes = "User recovery account has been applied for cancellation", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> cancelClosing() {
-        // 获取当前登录用户
+        // Get the current login user
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
-        // 未提交注销账号申请，无法撤回注销
+        // The account cancellation application has not been submitted and cannot be withdrawn
         ExceptionUtil.isTrue(user.getIsPaused(), USER_NOT_ALLOWED_CANCEL_CLOSING);
-        // 账号已过冷静期，无法恢复
+        // The account has passed the calm period and cannot be recovered
         ExceptionUtil.isFalse(user.getIsDeleted(), USER_CANCELED_CLOSING);
-        // 撤销账号注销
+        // Cancel account cancellation
         iUserService.cancelClosingAccount(user);
         return ResponseData.success();
     }
 
-    @GetResource(name = "获取已开启的实验性功能", path = "/labs/features", requiredPermission = false)
-    @ApiOperation(value = "获取已开启的实验性功能", notes = "获取已开启的实验性功能", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "Get the enabled experimental functions", path = "/labs/features", requiredPermission = false)
+    @ApiOperation(value = "Get the enabled experimental functions", notes = "Get the enabled experimental functions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<LabsFeatureVo> getEnabledLabFeatures(@RequestParam String spaceId) {
         Long userId = SessionContext.getUserId();
         List<String> applicants = new ArrayList<>();
@@ -434,47 +434,47 @@ public class UserController {
     }
 
     @PostResource(path = "/labs/features", requiredPermission = false)
-    @ApiOperation(value = "更新实验室功能的使用状态", notes = "更新实验室功能的使用状态", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Update the usage status of laboratory functions", notes = "Update the usage status of laboratory functions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> updateLabsFeatureStatus(@RequestBody @Valid UserLabsFeatureRo userLabsFeatureRo) {
-        // 获取当前用户的userId
+        // Get the user ID of the current user
         Long userId = SessionContext.getUserId();
-        // 获取待操作空间站级别功能的spaceId
+        // Get the space ID of the space station level function to be operated
         String spaceId = userLabsFeatureRo.getSpaceId();
-        // 获取待操作功能的featureKey
+        // Get the feature key of the function to be operated
         String featureKey = userLabsFeatureRo.getKey();
-        // 操作空间站级别功能必须带上spaceId，否则不允许操作
+        // The space level function must be operated with the space ID, otherwise it is not allowed to operate
         LabsApplicantTypeEnum applicantType = ofLabsFeature(featureKey).getApplicantType();
         ExceptionUtil.isFalse(SPACE_LEVEL_FEATURE.equals(applicantType) && StrUtil.isBlank(spaceId), SPACE_ID_NOT_EMPTY);
-        // 当操作用户不属于该空间站，不允许操作
+        // When the operating user does not belong to the space, operation is not allowed
         UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
         ExceptionUtil.isNotNull(userSpace, NOT_IN_SPACE);
         String applicant = StrUtil.isNotBlank(spaceId) ? spaceId : Long.toString(userId);
         if (userLabsFeatureRo.getIsEnabled()) {
-            // 启用实验性功能
+            // Enable experimental features
             iLabsApplicantService.enableLabsFeature(applicant, applicantType, featureKey, userId);
         }
         else {
-            // 停用实验性功能
+            // Disable experimental functions
             iLabsApplicantService.disableLabsFeature(applicant, featureKey);
         }
         return ResponseData.success();
     }
 
     @PostResource(path = "/invite/reward", requiredPermission = false)
-    @ApiOperation(value = "填写邀请码奖励", notes = "用户补写邀请码并获得奖励", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Fill in invitation code reward", notes = "Users fill in the invitation code and get rewards", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> inviteCodeReward(@RequestBody @Validated InviteCodeRewardRo body) {
-        // 校验邀请码的有效性
+        // Verify the validity of the invitation code
         ivCodeService.checkInviteCode(body.getInviteCode());
-        // 填写邀请码并奖励积分
+        // Fill in the invitation code and reward integral
         Long userId = SessionContext.getUserId();
         iUserService.useInviteCodeReward(userId, body.getInviteCode());
         return ResponseData.success();
     }
 
     @PostResource(path = "/delActiveSpaceCache", method = { RequestMethod.GET }, requiredPermission = false)
-    @ApiOperation(value = "删除活动空间缓存")
+    @ApiOperation(value = "Delete Active Space Cache")
     public ResponseData<Void> delActiveSpaceCache() {
-        // 填写邀请码并奖励积分
+        // Fill in the invitation code and reward integral
         Long userId = SessionContext.getUserId();
         userActiveSpaceService.delete(userId);
         return ResponseData.success();

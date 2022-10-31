@@ -21,14 +21,6 @@ import com.vikadata.social.wecom.WeComTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Pengap
- * @date 2021/8/5 22:34:08
- */
 @Disabled("no assertion")
 public class WeComTest {
 

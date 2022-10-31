@@ -20,17 +20,14 @@ import com.vikadata.social.feishu.card.module.Module;
 import com.vikadata.social.feishu.card.objects.Text;
 
 /**
- * 消息卡片工厂
- *
- * @author Shawn Deng
- * @date 2020-12-02 15:13:09
+ * Message Card Factory
  */
 public class FeishuCardFactory {
 
     public static Message createV2EntryCardMsg(String appId) {
         String FEISHU_WEB_OPEN = "https://applink.feishu.cn/client/web_app/open?appId=%s";
         String FEISHU_INNER_WEB_VIEW = "https://applink.feishu.cn/client/web_url/open?mode=window&url=%s";
-        // 创建卡片
+        // Create Card
         Header header = new Header(new Text(Text.Mode.LARK_MD, "**\uD83C\uDF89 欢迎使用维格表**"));
         Card card = new Card(new Config(false), header);
         List<Module> divList = new LinkedList<>();
@@ -44,20 +41,20 @@ public class FeishuCardFactory {
         Button helpBtn = new Button(new Text(Text.Mode.LARK_MD, "查看帮助"))
                 .setUrl(String.format(FEISHU_INNER_WEB_VIEW, URIUtil.encodeURIComponent(feishuAppProperties.getHelpUri())));
         divList.add(new Action(Arrays.asList(entryBtn, helpBtn)));
-        // 设置内容元素
+        // Set Content Elements
         card.setModules(divList);
         return new CardMessage(card.toObj());
     }
 
     /**
-     * 自建应用《欢迎》消息卡片
-     * 自建应用不能使用app link协议进入，只能通过授权地址进入
-     * @param appId 应用ID
+     * Self built application 《Welcome》 message card
+     * Self built applications cannot be accessed using the app link protocol, but only through the authorized address
+     * @param appId App ID
      * @return Message
      */
     public static Message createInternalEntryCardMsg(String appId) {
         String appLink = "https://applink.feishu.cn/client/web_app/open?appId=%s";
-        // 创建卡片
+        // Create Card
         Header header = new Header(new Text(Text.Mode.LARK_MD, "**\uD83C\uDF89 欢迎使用维格表**"));
         Card card = new Card(new Config(false), header);
         List<Module> divList = new LinkedList<>();
@@ -67,7 +64,7 @@ public class FeishuCardFactory {
                 .setUrl(String.format(appLink, appId))
                 .setType(Button.StyleType.PRIMARY);
         divList.add(new Action(Collections.singletonList(entryBtn)));
-        // 设置内容元素
+        // Set Content Elements
         card.setModules(divList);
         return new CardMessage(card.toObj());
     }

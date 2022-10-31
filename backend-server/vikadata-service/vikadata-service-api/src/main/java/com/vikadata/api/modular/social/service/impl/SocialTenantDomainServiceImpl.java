@@ -30,10 +30,8 @@ import static com.vikadata.api.enums.exception.DatabaseException.INSERT_ERROR;
 
 /**
  * <p>
- * 第三方平台集成-企业租户专属域名 服务接口 实现
+ * Third party platform integration - enterprise tenant exclusive domain name service interface implementation
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:18:04
  */
 @Slf4j
 @Service
@@ -76,10 +74,10 @@ public class SocialTenantDomainServiceImpl extends ServiceImpl<SocialTenantDomai
 
     @Override
     public String getDomainNameBySpaceId(String spaceId, boolean apendHttpsPrefix) {
-        // 获取空间站对应域名
+        // Get the domain name corresponding to the space station
         Map<String, String> spaceDomainToMap = this.getSpaceDomainBySpaceIdsToMap(Collections.singletonList(spaceId));
         String domainName = spaceDomainToMap.getOrDefault(spaceId, this.getSpaceDefaultDomainName());
-        // 是否添加Https前缀
+        // Add Https prefix or not
         if (apendHttpsPrefix) {
             domainName = StrUtil.prependIfMissingIgnoreCase(domainName, "https://");
         }
@@ -101,7 +99,7 @@ public class SocialTenantDomainServiceImpl extends ServiceImpl<SocialTenantDomai
 
     @Override
     public List<SpaceBindDomainDTO> getSpaceDomainBySpaceIds(List<String> spaceIds) {
-        // 清理意外的空白字符
+        // Clean up unexpected white space characters
         CollUtil.removeBlank(spaceIds);
         if (CollUtil.isEmpty(spaceIds)) {
             return Collections.emptyList();
@@ -109,7 +107,7 @@ public class SocialTenantDomainServiceImpl extends ServiceImpl<SocialTenantDomai
         List<SpaceBindDomainDTO> result = new ArrayList<>();
 
         if (CollUtil.isNotEmpty(spaceIds)) {
-            // 查询空间站列表绑定的domain
+            // Query the domain bound to the space station list
             List<SpaceBindDomainDTO> dtoList = baseMapper.selectSpaceDomainBySpaceIds(spaceIds);
             Map<String, SpaceBindDomainDTO> dtoTOmap = dtoList.stream().collect(Collectors.toMap(SpaceBindDomainDTO::getSpaceId, v -> v));
 

@@ -24,10 +24,8 @@ import com.vikadata.api.modular.idaas.service.IIdaasTenantService;
 
 /**
  * <p>
- * 玉符 IDaaS 租户和应用相关测试
+ * IDaaS Tenant and application related tests
  * </p>
- * @author 刘斌华
- * @date 2022-06-20 14:23:17
  */
 class IdaasServiceTests extends AbstractIntegrationTest {
 
@@ -54,27 +52,24 @@ class IdaasServiceTests extends AbstractIntegrationTest {
     }
 
     /**
-     * 创建租户、绑定应用、同步通讯录流程测试
+     * Test the process of creating tenants, binding applications, and synchronizing address books
      *
      * <p>
-     * 当前流程中的每一个都依赖于上一步的数据，故放到同一个测试中
+     * Each of the current processes depends on the data in the previous step, so they are put into the same test
      * </p>
-     *
-     * @author 刘斌华
-     * @date 2022-06-20 15:26:01
      */
     @Test
     void tenantAppContactTest() {
-        // 1 创建租户
+        // 1 Create Tenant
         IdaasTenantCreateRo idaasTenantCreateRo = new IdaasTenantCreateRo();
         idaasTenantCreateRo.setTenantName(TEST_TENANT_NAME);
-        idaasTenantCreateRo.setCorpName("junit测试租户");
+        idaasTenantCreateRo.setCorpName("junit test tenant");
         idaasTenantCreateRo.setAdminUsername("junit-test");
         idaasTenantCreateRo.setAdminPassword("123456");
         idaasTenantCreateRo.setServiceAccount(systemServiceAccount);
         IdaasTenantCreateVo idaasTenantCreateVo = idaasTenantService.createTenant(idaasTenantCreateRo);
         Assertions.assertNotNull(idaasTenantCreateVo);
-        // 2 绑定应用与空间站
+        // 2 Bind application to space station
         IdaasAppBindRo idaasAppBindRo = new IdaasAppBindRo();
         idaasAppBindRo.setTenantName(TEST_TENANT_NAME);
         idaasAppBindRo.setAppClientId("ai-96154ae6a70741b0bc4e9cbc59745b37");
@@ -83,7 +78,7 @@ class IdaasServiceTests extends AbstractIntegrationTest {
         idaasAppBindRo.setSpaceId(TEST_SPACE_ID);
         IdaasAppBindVo idaasAppBindVo = idaasAppBindService.bindTenantApp(idaasAppBindRo);
         Assertions.assertNotNull(idaasAppBindVo);
-        // 3 同步通讯录
+        // 3 Synchronize contacts
         idaasContactService.syncContact(TEST_SPACE_ID, null);
         Assertions.assertTrue(true);
     }

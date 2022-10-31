@@ -5,9 +5,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.entity.UserBindEntity;
 
-/**
- * @author Shawn Deng
- */
 public interface UserBindMapper extends BaseMapper<UserBindEntity> {
 
     /**

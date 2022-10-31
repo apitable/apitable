@@ -2,19 +2,17 @@ package com.vikadata.api.modular.social.enums;
 
 /**
  * <p>
- * 延时处理类型
+ * Delay processing type
  * </p>
- * @author 刘斌华
- * @date 2022-08-10 18:39:26
  */
 public enum SocialCpIsvPermitDelayType {
 
     /**
-     * 接口许可免费试用过期通知
+     * Interface license free trial expiration notice
      */
     NOTIFY_BEFORE_TRIAL_EXPIRED(1),
     /**
-     * 企业付费延时购买接口许可
+     * Enterprise pays for delayed purchase of interface license
      */
     BUY_AFTER_SUBSCRIPTION_PAID(2),
     ;

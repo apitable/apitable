@@ -5,11 +5,8 @@ import com.vikadata.api.modular.social.enums.SocialAppType;
 
 /**
  * <p>
- * 住户基础User Builder
+ * Household Foundation User Builder
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 14:45:50
  */
 public class BaseSocialUserBuilder<T> {
 

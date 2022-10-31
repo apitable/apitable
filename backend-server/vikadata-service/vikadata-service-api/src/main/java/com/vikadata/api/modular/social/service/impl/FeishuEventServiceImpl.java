@@ -112,10 +112,8 @@ import static com.vikadata.social.feishu.event.bot.BaseMessageEvent.GROUP_CHAT_T
 import static com.vikadata.social.feishu.event.bot.BaseMessageEvent.PRIVATE_CHAT_TYPE;
 
 /**
- * 飞书事件处理服务 实现(2.0)
- * 异步处理飞书事件推送，对方要求1秒内响应200，业务代码执行时长有时无法满足
- * @author Shawn Deng
- * @date 2021-07-22 09:55:57
+ * Lark Event Processing Service Implementation (2.0)
+ * Asynchronous processing of Lark event push. The other party requires 200 responses within 1 second. Sometimes the execution time of business code cannot be met
  */
 @Service
 @Slf4j
@@ -192,7 +190,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleAppOpenEvent(AppOpenEvent event) {
-        // 只有商店应用会使用，应用上下文必定有
+        // Only store apps will use it, and the application context must have
         String appId = event.getAppId();
         String tenantKey = event.getTenantKey();
         String lockKey = StrUtil.join("-", appId, tenantKey);
@@ -200,33 +198,33 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 保险起见，检查一下
+                    // To be on the safe side, check
                     boolean isTenantExist = iSocialTenantService.isTenantExist(tenantKey, appId);
                     if (!isTenantExist) {
-                        // 租户不存在则创建
+                        // Create if the tenant does not exist
                         iSocialTenantService.createTenant(SocialPlatformType.FEISHU, SocialAppType.ISV, event.getAppId(), tenantKey, new JSONObject().toString());
                     }
                     else {
-                        // 已存在则更新租户
+                        // Update tenant if it already exists
                         iSocialTenantService.updateTenantStatus(appId, tenantKey, true);
                     }
                     iFeishuService.switchDefaultContext();
                     UserInfo installer = getAppInstaller(event);
-                    // 同步通讯录
+                    // Synchronize contacts
                     syncTenantContact(appId, tenantKey, installer);
-                    // 处理未绑定空间的订阅信息
+                    // Processing subscription information of unbound space
                     handleTenantOrders(tenantKey, appId);
-                    // 同步完成后，发送通知
+                    // Send a notification when synchronization is complete
                     if (installer != null && StrUtil.isNotBlank(installer.getOpenId())) {
-                        log.info("[飞书] 安装者：{}", installer.getOpenId());
-                        // 发送消息卡片
+                        log.info("[Lark] Installer：{}", installer.getOpenId());
+                        // Send Message Card
                         sendEntryCardToUser(appId, event.getTenantKey(), event.getInstaller().getOpenId());
                     }
-                    // 事件处理完成
+                    // Event processing completed
                     iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getType()), e);
+                    log.error(String.format("Tenant[%s] handling events [%s] fail, resolve it quickly", tenantKey, event.getType()), e);
                     throw e;
                 }
                 finally {
@@ -235,26 +233,26 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "] Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
 
     private UserInfo getAppInstaller(AppOpenEvent event) {
         if (CollUtil.isNotEmpty(event.getApplicants())) {
-            // 普通成员申请安装应用时，优先返回此申请者
+            // When ordinary members apply to install apps, they have priority to return to this applicant
             return CollUtil.getFirst(event.getApplicants());
         }
         else if (event.getInstaller() != null && StrUtil.isNotBlank(event.getInstaller().getOpenId())) {
-            // 没有申请者安装时，管理员安装，安装者信息优先返回
+            // When no applicant installs, the administrator installs, and the installer information is returned first
             return event.getInstaller();
         }
         else if (event.getInstallerEmployee() != null && StrUtil.isNotBlank(event.getInstallerEmployee().getOpenId())) {
-            // 没发现会出现此字段
+            // This field is not found
             return event.getInstallerEmployee();
         }
         else {
-            log.error("应用开通事件[{}]没有任何操作者", event.getMeta().getUuid());
+            log.error("Application activation event[{}]No operator", event.getMeta().getUuid());
             return null;
         }
     }
@@ -262,9 +260,9 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handleAppStopEvent(AppStatusChangeEvent event) {
-        // 停用不删已绑定的空间
+        // Deactivate Do Not Delete Bound Spaces
         iSocialTenantService.stopByTenant(event.getAppId(), event.getTenantKey());
-        // 事件处理完成
+        // Event processing completed
         iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
     }
 
@@ -272,7 +270,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleAppRestartEvent(AppStatusChangeEvent event) {
-        // 只有商店应用会使用，应用上下文必定有
+        // Only store apps will use it, and the application context must have
         String appId = event.getAppId();
         String tenantKey = event.getTenantKey();
         String lockKey = StrUtil.join("-", appId, tenantKey);
@@ -280,30 +278,30 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 重新开启 保险起见，检查一下
+                    // To be safe, turn it back on. Check it
                     boolean isTenantExist = iSocialTenantService.isTenantExist(tenantKey, appId);
                     if (!isTenantExist) {
-                        // 租户不存在则创建
+                        // Create if the tenant does not exist
                         iSocialTenantService.createTenant(SocialPlatformType.FEISHU, SocialAppType.ISV, event.getAppId(), tenantKey, new JSONObject().toString());
                     }
                     else {
-                        // 已存在则更新租户
+                        // Update tenant if it already exists
                         iSocialTenantService.updateTenantStatus(appId, tenantKey, true);
                     }
                     iFeishuService.switchDefaultContext();
-                    // 处理授权变更范围,先同步部门,再同步员工
+                    // Process the scope of authorization change, synchronize the department first, and then synchronize the employees
                     MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = fetchTenantContactIfFail(tenantKey, event.getOperator());
                     String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
                     handleTenantContactData(appId, tenantKey, spaceId, contactMap);
                     if (StrUtil.isNotBlank(event.getOperator().getOpenId())) {
-                        // 发送消息卡片
+                        // Send Message Card
                         sendEntryCardToUser(appId, event.getTenantKey(), event.getOperator().getOpenId());
                     }
-                    // 事件处理完成
+                    // Event processing completed
                     iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getType()), e);
+                    log.error(String.format("Tenant [%s] handling events [%s] failure, solve it quickly", tenantKey, event.getType()), e);
                     throw e;
                 }
                 finally {
@@ -312,7 +310,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
@@ -320,12 +318,12 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handleAppUninstalledEvent(AppUninstalledEvent event) {
-        // 卸载也需要移除
+        // Uninstall also needs to be removed
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(event.getAppId(), event.getTenantKey());
         if (StrUtil.isNotBlank(spaceId)) {
             iSocialTenantService.removeTenant(event.getAppId(), event.getTenantKey(), spaceId);
         }
-        // 事件处理完成
+        // Event processing completed
         iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
     }
 
@@ -333,13 +331,13 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleContactScopeChangeEvent(ContactScopeUpdateEvent event) {
-        // 通讯录授权范围变更
+        // Change of address book authorization scope
         iFeishuService.switchDefaultContext();
         String tenantKey = event.getHeader().getTenantKey();
         String appId = event.getHeader().getAppId();
         boolean isTenantExist = iSocialTenantService.isTenantExist(tenantKey, appId);
         if (!isTenantExist) {
-            // 租户由开通时创建，这里只会通讯录刷新,故跳过
+            // The tenant is created at the time of activation. Only the address book will be refreshed, so skip
             return;
         }
         String lockKey = StrUtil.join("-", appId, tenantKey);
@@ -347,16 +345,16 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 远程拉取通讯录
+                    // Remote access to address book
                     MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = iFeishuTenantContactService.fetchTenantContact(tenantKey);
                     String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
-                    // 处理授权变更范围,先同步部门，再同步员工
+                    // Process the scope of authorization change, synchronize the department first, and then synchronize the employees
                     handleTenantContactData(appId, tenantKey, spaceId, contactMap);
-                    // 事件处理完成
+                    // Event processing completed
                     iSocialFeishuEventLogService.doneEvent(event.getHeader().getEventId());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getHeader().getEventType()), e);
+                    log.error(String.format("Tenant [%s] handling events[%s] failure, solve it quickly", tenantKey, event.getHeader().getEventType()), e);
                     throw e;
                 }
                 finally {
@@ -365,14 +363,14 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
 
     private MultiValueMap<FeishuDeptObject, FeishuUserObject> fetchTenantContactIfFail(String tenantKey,
             UserInfo installer) {
-        // 如果企业通讯录都没有权限，尝试获取安装者基本信息，并归入根部门下
+        // If the enterprise address book does not have permission, try to obtain the basic information of the installer and put it under the root door
         try {
             MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = iFeishuTenantContactService.fetchTenantContact(tenantKey);
             if (contactMap.isEmpty()) {
@@ -384,7 +382,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         }
         catch (ContactAccessDeniesException exception) {
             MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = new LinkedMultiValueMap<>();
-            // 没有通讯录权限,返回默认安装者信息
+            // No address book permission, return default installer information
             if (installer == null) {
                 return contactMap;
             }
@@ -396,7 +394,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                 userObject = iFeishuService.getUser(tenantKey, installer.getOpenId());
             }
             catch (Exception ex) {
-                log.error("飞书企业租户[{}]通讯录无权限，安装者[{}]也无法获取，返回默认的用户", tenantKey, installer.getOpenId());
+                log.error("Lark enterprise tenant [{}] no permission for address book, Installer [{}] can't get, return to the default user", tenantKey, installer.getOpenId());
                 userObject = SocialFactory.createDefaultLarkUser(installer);
             }
             contactMap.add(FeishuContactAuthScope.createRootDeptObject(), userObject);
@@ -405,40 +403,42 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     }
 
     /**
-     * 同步企业通讯录并创建空间站
-     * @param tenantKey 租户标识
+     * Synchronize enterprise address book and create space station
+     *
+     * @param tenantKey Tenant ID
      */
     private SpaceContext syncTenantContact(String appId, String tenantKey, UserInfo installer) {
-        // 处理授权变更范围,先同步部门,再同步员工
+        // Process the scope of authorization change, synchronize the department first, and then synchronize the employees
         MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = fetchTenantContactIfFail(tenantKey, installer);
-        // 远程拉取通讯录
+        // Remote access to address book
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
         return handleTenantContactData(appId, tenantKey, spaceId, contactMap);
     }
 
     /**
-     * 同步和更新租户通讯录结构到空间站
-     * 如果空间站不存在，则创建一个
-     * @param appId 应用ID
-     * @param tenantKey 租户标识
-     * @param spaceId 空间ID
-     * @param contactMap 租户通讯录结构
-     * @return 创建好的空间上下文
+     * Synchronize and update the tenant address book structure to the space
+     * If the space station does not exist, create a
+     *
+     * @param appId App ID
+     * @param tenantKey Tenant ID
+     * @param spaceId Space ID
+     * @param contactMap Tenant Address Book Structure
+     * @return Create a good spatial context
      */
     @Override
     public SpaceContext handleTenantContactData(String appId, String tenantKey, String spaceId, MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap) {
-        // 查询部门以及部门
+        // Query department and department
         SpaceContext spaceContext = new SpaceContext(spaceId);
         spaceContext.prepare(tenantKey);
-        // 根部门
+        // Root gate
         Long rootTeamId = spaceContext.rootTeamId;
-        // 已绑定的部门
+        // Bound department
         List<SocialTenantDepartmentBindEntity> tenantBindTeamList = iSocialTenantDepartmentBindService.getBindDepartmentList(tenantKey, spaceId);
         Map<String, Long> bindTeamMap = tenantBindTeamList.stream()
                 .collect(Collectors.toMap(SocialTenantDepartmentBindEntity::getTenantDepartmentId, SocialTenantDepartmentBindEntity::getTeamId));
         Map<String, Long> deptIdGeneratorMap = generateDeptBindTeamIdIfAbsent(contactMap, bindTeamMap, rootTeamId);
         List<String> bindDepartmentIdRecords = new ArrayList<>(bindTeamMap.keySet());
-        // 已存在的成员
+        // Existing members
         Map<String, Long> hasBindMemberMap = spaceContext.getMembers().stream()
                 .filter(m -> StrUtil.isNotBlank(m.getOpenId()))
                 .collect(Collectors.toMap(MemberEntity::getOpenId, MemberEntity::getId));
@@ -448,33 +448,32 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                         tenantUserBindMemberIdMap.put(user.getOpenId(),
                                 hasBindMemberMap.getOrDefault(user.getOpenId(), IdWorker.getId()))));
         List<String> bindOpenIdRecords = new ArrayList<>(hasBindMemberMap.keySet());
-        // 租户的成员
+        // Members of tenants
         Map<String, List<String>> tenantUserOpenIds = iSocialTenantUserService.getOpenIdMapByTenantId(appId, tenantKey);
-        // 租户的部门
+        // Tenant's department
         List<String> tenantDeptIds = iSocialTenantDepartmentService.getDepartmentIdsByTenantId(tenantKey, spaceId);
 
         ContactMeta meta = new ContactMeta();
         meta.spaceId = spaceContext.spaceId;
 
-        // 空间的主管理员成员ID
+        // Primary administrator member ID of the space
         Long oldMainAdminMemberId = spaceContext.getMainAdmin();
         boolean isMainAdminContain = oldMainAdminMemberId != null && tenantUserBindMemberIdMap.containsValue(oldMainAdminMemberId);
         Long mainAdminMemberId = null;
         Long indexMemberId = null;
         int index = 0;
         Map<String, Long> createdOrUpdatedMemberIdMap = new HashMap<>(16);
-        // 因为飞书企业的员工可属于多个部门，遍历记录下来防止多次更新成员
+        // Because employees of Lark enterprises can belong to multiple departments, traversal records are made to prevent multiple updates of members
         List<Long> updatedMemberIds = new ArrayList<>();
         for (Entry<FeishuDeptObject, List<FeishuUserObject>> entry : contactMap.entrySet()) {
             FeishuDeptObject dept = entry.getKey();
             Long teamId = deptIdGeneratorMap.get(dept.getDepartmentId());
-            // 处理部门
+            // Processing department
             if (!dept.getDepartmentId().equals(FEISHU_ROOT_DEPT_ID)) {
-                // 非根部门
                 Long parentTeamId = dept.getParentDepartmentId().equals(FEISHU_ROOT_DEPT_ID) ?
                         rootTeamId : deptIdGeneratorMap.getOrDefault(dept.getParentDepartmentId(), rootTeamId);
                 if (bindTeamMap.containsKey(dept.getDepartmentId())) {
-                    // 部门已绑定
+                    // Department is bound
                     Long bindId = iSocialTenantDepartmentService.getIdByDepartmentId(spaceId, tenantKey, dept.getDepartmentId());
                     meta.updateTenantDepartmentEntities.add(SocialTenantDepartmentEntity.builder()
                             .id(bindId).spaceId(meta.spaceId).tenantId(tenantKey)
@@ -490,13 +489,13 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                             .teamName(StrUtil.sub(dept.getName(), 0, 99))
                             .sequence(Integer.parseInt(dept.getOrder()))
                             .build());
-                    // 删除部门下的成员
+                    // Delete a member under a department
                     iTeamMemberRelService.removeByTeamId(teamId);
-                    // 移除部门记录
+                    // Remove Department Records
                     bindDepartmentIdRecords.remove(dept.getDepartmentId());
                 }
                 else {
-                    // 部门未绑定
+                    // Department not bound
                     if (!tenantDeptIds.contains(dept.getDepartmentId())) {
                         SocialTenantDepartmentEntity tenantDepartment = SocialFactory.createFeishuTenantDepartment(tenantKey, meta.spaceId, dept);
                         meta.tenantDepartmentEntities.add(tenantDepartment);
@@ -505,11 +504,11 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                     }
                 }
             }
-            // 处理部门下的成员
+            // Members under the processing department
             for (FeishuUserObject user : entry.getValue()) {
                 if (!tenantUserOpenIds.containsKey(user.getOpenId())) {
                     meta.tenantUserEntities.add(SocialFactory.createTenantUser(appId, tenantKey, user.getOpenId(), user.getUnionId()));
-                    // 员工可以有多部门，防止出现重复员工添加
+                    // Employees can have multiple departments to prevent duplicate employee addition
                     tenantUserOpenIds.put(user.getOpenId(), ListUtil.toList(user.getUnionId()));
                 }
                 else {
@@ -517,7 +516,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                     if (!unionIds.contains(user.getUnionId())) {
                         unionIds.add(user.getUnionId());
                         meta.tenantUserEntities.add(SocialFactory.createTenantUser(appId, tenantKey, user.getOpenId(), user.getUnionId()));
-                        // 员工可以有多部门，防止出现重复员工添加
+                        // Employees can have multiple departments to prevent duplicate employee addition
                         tenantUserOpenIds.put(user.getOpenId(), unionIds);
                     }
                 }
@@ -526,13 +525,12 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                     indexMemberId = memberId;
                 }
                 if (!isMainAdminContain) {
-                    // 以前没有主管理员或者未包含在通讯录授权范围内,使用默认分配管理员规则
+                    // There is no primary administrator or it is not included in the authorization scope of the address book before. Use the default administrator assignment rule
                     if (mainAdminMemberId == null) {
                         if (user.isTenantManager()) {
                             mainAdminMemberId = memberId;
                         }
                         else if (index == contactMap.size() - 1) {
-                            // 已经遍历到最后了
                             mainAdminMemberId = indexMemberId;
                         }
                     }
@@ -541,7 +539,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                     mainAdminMemberId = oldMainAdminMemberId;
                 }
                 if (hasBindMemberMap.containsKey(user.getOpenId())) {
-                    // 修改成员
+                    // Modify Members
                     if (!updatedMemberIds.contains(memberId)) {
                         meta.updateMemberEntities.add(MemberEntity.builder()
                                 .id(memberId)
@@ -563,7 +561,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                 }
                 else {
                     if (!createdOrUpdatedMemberIdMap.containsKey(user.getOpenId())) {
-                        // 添加成员
+                        // Add Members
                         meta.memberEntities.add(SocialFactory.createFeishuMember(memberId, spaceContext.spaceId,
                                 user.getName(), user.getMobile(), user.getEmail(), user.getJobTitle(),
                                 user.getOpenId(), mainAdminMemberId != null && mainAdminMemberId.equals(memberId)));
@@ -574,16 +572,16 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
             index++;
         }
-        // 空间成员删除
+        // Space member deletion
         List<Long> removeMemberIds = new ArrayList<>();
         bindOpenIdRecords.forEach(openId -> removeMemberIds.add(hasBindMemberMap.get(openId)));
         iMemberService.batchDeleteMemberFromSpace(spaceId, removeMemberIds, false);
-        // 租户下部门和员工记录删除
+        // Deleting Department and Employee Records under Tenant
         iSocialTenantUserService.deleteByFeishuOpenIds(appId, tenantKey, new ArrayList<>(bindOpenIdRecords));
         iSocialTenantDepartmentService.deleteBatchByDepartmentId(spaceId, tenantKey, bindDepartmentIdRecords);
-        // 保存变更
+        // Save Changes
         meta.doSaveOrUpdate();
-        // 新空间随机引用模板方法，包含GRPC调用，放置最后
+        // The new space randomly references the template method, including GRPC calls, and places the last
         spaceContext.after(tenantKey, mainAdminMemberId);
         return spaceContext;
     }
@@ -592,7 +590,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleUserLeaveEvent(ContactUserDeleteEvent event) {
-        // 切换应用配置上下文
+        // Switch application configuration context
         iFeishuService.switchDefaultContext();
         String appId = event.getHeader().getAppId();
         String tenantKey = event.getHeader().getTenantKey();
@@ -601,13 +599,13 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 新版事件
+                    // New version event
                     handleUserLeave(appId, tenantKey, event.getEvent().getUser().getOpenId());
-                    // 事件处理完成
+                    // Event processing completed
                     iSocialFeishuEventLogService.doneEvent(event.getHeader().getEventId());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getHeader().getEventType()), e);
+                    log.error(String.format("Tenant [%s] handling events [%s] fail, resolve it quickly", tenantKey, event.getHeader().getEventType()), e);
                     throw e;
                 }
                 finally {
@@ -616,16 +614,16 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
 
     private void handleUserLeave(String appId, String tenantKey, String userOpenId) {
-        // 获取空间ID
+        // Get space ID
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
         if (StrUtil.isBlank(spaceId)) {
-            log.error("[用户离职事件]租户「{}」未绑定任何空间", tenantKey);
+            log.error("[User resignation event]Tenant「{}」No space bound", tenantKey);
             return;
         }
         MemberEntity member = iMemberService.getBySpaceIdAndOpenId(spaceId, userOpenId);
@@ -633,15 +631,15 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             if (member.getIsAdmin()) {
                 handleChangeMainAdminIfLeaveOrSuspend(tenantKey, userOpenId, spaceId, member.getId());
             }
-            // 禁止使用飞书授权登录
+            // Do not log in with Lark authorization
             iSocialTenantUserService.deleteByTenantIdAndOpenId(appId, tenantKey, userOpenId);
-            // 移除成员所在空间
+            // Remove member's space
             iMemberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(member.getId()), false);
         }
     }
 
     private void handleChangeMainAdminIfLeaveOrSuspend(String tenantKey, String mainAdminOpenId, String spaceId, Long mainAdminMemberId) {
-        // 离职的成员是主管理员，则顺序修改其他员工为主管理员
+        // If the resigned member is the primary administrator, modify other employees as the primary administrator in sequence
         FeishuAdminUserList adminList = iFeishuService.getAdminList(tenantKey);
         List<String> adminOpenIds = adminList.getUserList().stream().map(Admin::getOpenId).collect(Collectors.toList());
         if (CollUtil.isNotEmpty(adminOpenIds)) {
@@ -661,7 +659,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
 
             if (!change) {
-                // 按创建时间往下找新的成员作为管理员
+                // Find new members as administrators according to the creation time
                 Long randomMemberId = iMemberService.getRandomMemberId(spaceId, mainAdminMemberId);
                 if (randomMemberId != null) {
                     MemberEntity updateMember = new MemberEntity();
@@ -673,7 +671,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         else {
-            // 按创建时间往下找新的成员作为管理员
+            // Find new members as administrators according to the creation time
             Long randomMemberId = iMemberService.getRandomMemberId(spaceId, mainAdminMemberId);
             if (randomMemberId != null) {
                 MemberEntity updateMember = new MemberEntity();
@@ -689,9 +687,9 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleUserUpdateEvent(ContactUserUpdateEvent event) {
-        // 切换应用配置上下文
+        // switchApplicationConfigurationContext
         iFeishuService.switchDefaultContext();
-        // 新版事件
+        // New version event
         String appId = event.getHeader().getAppId();
         String tenantKey = event.getHeader().getTenantKey();
         String lockKey = StrUtil.join("-", appId, tenantKey);
@@ -702,7 +700,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                     handleUserUpdate(event);
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getHeader().getEventType()), e);
+                    log.error(String.format("Tenant [%s] handling events [%s] fail, resolve it quickly", tenantKey, event.getHeader().getEventType()), e);
                     throw e;
                 }
                 finally {
@@ -711,7 +709,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
@@ -719,64 +717,64 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     private void handleUserUpdate(ContactUserUpdateEvent event) {
         String appId = event.getHeader().getAppId();
         String tenantKey = event.getHeader().getTenantKey();
-        // 获取当前部门的空间ID
+        // Get the space ID of the current department
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
         if (StrUtil.isBlank(spaceId)) {
-            log.error(" [用户信息发生变化事件]租户「{}」未绑定任何空间", tenantKey);
+            log.error(" [User information change event] Tenant「{}」not bound any space", tenantKey);
             return;
         }
-        // 改变后的员工信息
+        // Changed employee information
         FeishuUserObject userObject = event.getEvent().getUser();
-        // 改变前的员工信息
+        // Employee information before change
         FeishuUserObject changeProperty = event.getEvent().getChangeProperty();
         if (changeProperty.getStatus() != null && !changeProperty.getStatus().equals(userObject.getStatus())) {
-            // 员工状态更改，有三种情况：员工激活企业、员工账号被暂停、员工账号被恢复
+            // The employee status changes in three ways: employee activates the enterprise, employee account is suspended, and employee account is restored
             if (!changeProperty.getStatus().isActivated() && userObject.getStatus().isActivated()) {
-                // 需要其他状态都是false才能算是激活
+                // All other statuses must be false to be active
                 if (!userObject.getStatus().isFrozen() && !userObject.getStatus().isResigned()) {
-                    log.info("[用户状态变更] - [员工激活企业]");
-                    // 加入对应空间站,并且修改其他属性
+                    log.info("[User status change] - [Employee activates enterprise]");
+                    // Add the corresponding space station and modify other properties
                     handleUserActive(event.getHeader().getAppId(), tenantKey, spaceId, userObject);
                 }
             }
             if (!changeProperty.getStatus().isFrozen() && userObject.getStatus().isFrozen()) {
-                log.info("[用户状态变更] - [暂停员工账号]");
-                // 踢出空间站
+                log.info("[User status change] - [Suspend employee account]");
+                // Kick out of the space station
                 handleUserSuspend(tenantKey, spaceId, userObject.getOpenId());
             }
             if (changeProperty.getStatus().isFrozen() && !userObject.getStatus().isFrozen()) {
-                log.info("[用户状态变更] - [恢复员工账号]");
-                // 恢复员工对应的成员以及账户
+                log.info("[User status change] - [Restore employee account]");
+                // Restore the member and account corresponding to the employee
                 handleUserRestore(tenantKey, spaceId, userObject);
             }
         }
         else {
             Long memberId = iMemberService.getMemberIdBySpaceIdAndOpenId(spaceId, userObject.getOpenId());
             if (memberId != null) {
-                // 名称变更
+                // Name change
                 if (StrUtil.isNotBlank(changeProperty.getName())) {
-                    // 更新成员信息
+                    // Update member information
                     MemberEntity member = new MemberEntity();
                     member.setId(memberId);
                     member.setMemberName(userObject.getName());
                     iMemberService.updateById(member);
                 }
 
-                // 部门变更
+                // Department change
                 if (CollUtil.isNotEmpty(changeProperty.getDepartmentIds())) {
-                    // 先把原来的部门关联删除掉
+                    // First delete the original department association
                     iTeamMemberRelService.removeByMemberId(memberId);
-                    // 重新关联
+                    // Reassociate
                     handleUserDepartmentRelate(tenantKey, spaceId, memberId, userObject.getDepartmentIds());
                 }
             }
             else if (userObject.getStatus().isActivated() && !userObject.getStatus().isResigned() && !userObject.getStatus().isFrozen()) {
-                // 用户加入空间站
-                log.info("[用户修改信息] - [员工激活企业]");
+                // Users join the space station
+                log.info("[User modification information] - [Employee activates enterprise]");
                 handleUserActive(event.getHeader().getAppId(), tenantKey, spaceId, userObject);
             }
         }
-        // 事件处理完成
+        // Event processing completed
         iSocialFeishuEventLogService.doneEvent(event.getHeader().getEventId());
     }
 
@@ -799,14 +797,14 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleDeptDeleteEvent(ContactDeptDeleteEvent event) {
-        // 切换应用配置上下文
+        // Switch application configuration context
         iFeishuService.switchDefaultContext();
         String appId = event.getHeader().getAppId();
         String tenantKey = event.getHeader().getTenantKey();
-        // 获取当前部门所在的空间ID
+        // Get the space ID of the current department
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
         if (StrUtil.isBlank(spaceId)) {
-            log.error("[部门删除事件]租户「{}」未绑定任何空间", tenantKey);
+            log.error("[Department deletion event] Tenant「{}」No space bound", tenantKey);
             return;
         }
         String lockKey = StrUtil.join("-", appId, tenantKey);
@@ -814,16 +812,16 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 不用理会部门下面的成员，飞书部门的删除前提条件是必须删除部门下面的成员才能删除
-                    // 飞书上被删除的部门下面必须不存在子部门，所以也不用理会子部门的变更
-                    // 删除租户部门记录
+                    // Ignore the members under the department. The precondition for Lark department deletion is that the members under the department must be deleted
+                    // There must be no sub department under the deleted department in Lark, so we don't need to pay attention to the change of the sub department
+                    // Delete Tenant Department Record
                     FeishuDeptObject deptObject = event.getEvent().getDepartment();
                     iSocialTenantDepartmentService.deleteTenantDepartment(spaceId, tenantKey, deptObject.getDepartmentId());
-                    // 事件处理完成
+                    // Event processing completed
                     iSocialFeishuEventLogService.doneEvent(event.getHeader().getEventId());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getHeader().getEventType()), e);
+                    log.error(String.format("Tenant [%s] handling events [%s] fail, resolve it quickly", tenantKey, event.getHeader().getEventType()), e);
                     throw e;
                 }
                 finally {
@@ -832,7 +830,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
@@ -841,15 +839,16 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleDeptUpdateEvent(ContactDeptUpdateEvent event) {
-        // 切换应用配置上下文
+        // Switch application configuration context
         iFeishuService.switchDefaultContext();
         String appId = event.getHeader().getAppId();
         String tenantKey = event.getHeader().getTenantKey();
-        // 前提条件：名称修改 ｜ 部门层级调整（调整时会自动将下面的员工带过去,注意部门调整排序略显复杂）
-        // 获取当前部门所在的空间ID
+        // Preconditions: Name Modification | Department Level Adjustment (the following employees will be brought in automatically when adjusting.
+        // Note that the department adjustment sorting is slightly complicated)
+        // Get the space ID of the current department
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
         if (StrUtil.isBlank(spaceId)) {
-            log.error("[部门信息更新事件]租户「{}」未绑定任何空间", tenantKey);
+            log.error("[Department information update event] Tenant「{}」not bound any space", tenantKey);
             return;
         }
         String lockKey = StrUtil.join("-", appId, tenantKey);
@@ -859,11 +858,11 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                 try {
                     FeishuDeptObject deptObject = event.getEvent().getDepartment();
                     handleUpdateDept(spaceId, tenantKey, deptObject);
-                    // 事件处理完成
+                    // Event processing completed
                     iSocialFeishuEventLogService.doneEvent(event.getHeader().getEventId());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getHeader().getEventType()), e);
+                    log.error(String.format("Tenant [%s] handling events [%s] fail, resolve it quickly", tenantKey, event.getHeader().getEventType()), e);
                     throw e;
                 }
                 finally {
@@ -872,27 +871,27 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
 
     private void handleUpdateDept(String spaceId, String tenantKey, FeishuDeptObject deptObject) {
-        // 绑定的部门ID
+        // Bound department ID
         Long teamId = iSocialTenantDepartmentBindService.getBindSpaceTeamId(spaceId, tenantKey, deptObject.getDepartmentId());
         if (teamId == null) {
-            // 不存在，可能非是全员授权，部分授权，然后挪入，先查询父部门是否存在
+            // It does not exist. It may not be authorized by all employees, but partially. Then move in. First, query whether the parent department exists
             FeishuDeptObject parentDeptObject = getDeptOrNull(tenantKey, deptObject.getParentDepartmentId());
             if (parentDeptObject == null) {
-                log.warn("[部门信息更新事件]租户「{}」部门「{}」的上级部门[{}]无权限获取", tenantKey, deptObject.getDepartmentId(), deptObject.getParentDepartmentId());
+                log.warn("[Department information update event] Tenant「{}」department「{}」's superior department [{}] no access", tenantKey, deptObject.getDepartmentId(), deptObject.getParentDepartmentId());
                 return;
             }
             Long bindParentTeamId = iSocialTenantDepartmentBindService.getBindSpaceTeamId(spaceId, tenantKey, parentDeptObject.getDepartmentId());
             if (bindParentTeamId == null) {
-                log.warn("[部门信息更新事件]租户「{}」部门「{}」的上级部门[{}]没有绑定", tenantKey, deptObject.getDepartmentId(), deptObject.getParentDepartmentId());
+                log.warn("[Department information update event] Tenant「{}」department「{}」's superior department[{}] not bound", tenantKey, deptObject.getDepartmentId(), deptObject.getParentDepartmentId());
                 return;
             }
-            // 新建部门
+            // New Create Department
             TeamEntity team = new TeamEntity();
             team.setId(IdWorker.getId());
             team.setSpaceId(spaceId);
@@ -901,7 +900,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             team.setParentId(bindParentTeamId);
             iTeamService.batchCreateTeam(spaceId, Collections.singletonList(team));
 
-            // 新增飞书部门记录
+            // Add Lark department record
             SocialTenantDepartmentEntity tenantDepartment = new SocialTenantDepartmentEntity();
             tenantDepartment.setId(IdWorker.getId());
             tenantDepartment.setTenantId(tenantKey);
@@ -912,7 +911,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             tenantDepartment.setParentOpenDepartmentId(parentDeptObject.getOpenDepartmentId());
             tenantDepartment.setDepartmentName(deptObject.getName());
             iSocialTenantDepartmentService.createBatch(Collections.singletonList(tenantDepartment));
-            // 新增绑定
+            // New Binding
             SocialTenantDepartmentBindEntity tenantDepartmentBind = new SocialTenantDepartmentBindEntity();
             tenantDepartmentBind.setId(IdWorker.getId());
             tenantDepartmentBind.setSpaceId(spaceId);
@@ -927,12 +926,12 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         team.setId(teamId);
         team.setTeamName(StrUtil.sub(deptObject.getName(), 0, 99));
         team.setSequence(Integer.parseInt(deptObject.getOrder()));
-        // 处理父级部门
+        // Process parent department
         SocialTenantDepartmentEntity tenantDepartment = iSocialTenantDepartmentService.getByDepartmentId(spaceId, tenantKey, deptObject.getDepartmentId());
         String parentDepartmentId = deptObject.getParentDepartmentId();
         if (StrUtil.isNotBlank(parentDepartmentId) && !parentDepartmentId.equals(FEISHU_ROOT_DEPT_ID)) {
-            // 根部门是0，更新后的上级部门在非空和非根部门的情况下
-            // 如果parent-department-id返回的是open-department-id的格式，重新获取并覆盖
+            // The root door is 0, and the updated superior department is not empty or root department
+            // If the parent department id returns the format of open department id, retrieve and overwrite it
             if (parentDepartmentId.startsWith("od-")) {
                 FeishuDeptObject parentDept = getDeptOrNull(tenantKey, parentDepartmentId);
                 parentDepartmentId = parentDept != null ? parentDept.getDepartmentId() : FEISHU_ROOT_DEPT_ID;
@@ -942,7 +941,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         team.setParentId(parentTeamId);
         iTeamService.updateById(team);
 
-        // 覆盖飞书部门的值
+        // Override value of Lark department
         SocialTenantDepartmentEntity updateTenantDepartment = new SocialTenantDepartmentEntity();
         updateTenantDepartment.setId(tenantDepartment.getId());
         updateTenantDepartment.setDepartmentName(deptObject.getName());
@@ -952,41 +951,41 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
 
     @Override
     public void handleP2pChatCreateEvent(P2pChatCreateEvent event) {
-        // 用户点击机器人进入时，发送<开始使用>消息卡片
+        // When the user clicks the robot to enter, he/she sends a <Start Using> message card
         sendEntryCardToUser(event.getAppId(), event.getTenantKey(), event.getUser().getOpenId());
-        // 事件处理完成
+        // Event processing completed
         iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
     }
 
     @Override
     public void handleAddBotEvent(AddBotEvent event) {
-        // 发送消息到群里
+        // Send a message to the group
         sendEntryCardToChatGroup(event.getAppId(), event.getTenantKey(), event.getOpenChatId());
-        // 事件处理完成
+        // Event processing completed
         iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
     }
 
     @Override
     public <E extends BaseMessageEvent> void handleMessageEvent(E event) {
         if (event.isMention()) {
-            // 提及到机器人
+            // Mention robots
             if (event.getChatType().equals(PRIVATE_CHAT_TYPE)) {
-                // 私聊消息, 发给用户自己看，不发机器人群
+                // Chat privately and send it to users to see for themselves without sending robots
                 sendEntryCardToUser(event.getAppId(), event.getTenantKey(), event.getOpenId());
             }
             else if (event.getChatType().equals(GROUP_CHAT_TYPE)) {
-                // 群聊里@机器人，直接发到群组
+                // Group chat @ robot, directly sent to the group
                 sendEntryCardToChatGroup(event.getAppId(), event.getTenantKey(), event.getOpenChatId());
             }
         }
         else {
-            //  未提及到，只有私聊才会回复
+            //  Didn't mention it. Only private chat will reply
             if (event.getChatType().equals(PRIVATE_CHAT_TYPE)) {
-                // 私聊消息, 发给用户自己看，不发机器人群
+                // Chat privately and send it to users to see for themselves without sending robots
                 sendEntryCardToUser(event.getAppId(), event.getTenantKey(), event.getOpenId());
             }
         }
-        // 事件处理完成
+        // Event processing completed
         iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
     }
 
@@ -996,29 +995,29 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         Integer status = iSocialFeishuOrderService.getStatusByOrderId(event.getTenantKey(), event.getAppId(),
                 event.getOrderId());
         if (SqlHelper.retBool(status)) {
-            log.warn("飞书订单已经处理:{}", event.getOrderId());
+            log.warn("Lark order has been processed:{}", event.getOrderId());
             return;
         }
-        // 写入飞书订单
+        // Write Lark Order
         if (null == status) {
             iSocialFeishuOrderService.createOrder(event);
         }
         String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(event.getAppId(), event.getTenantKey());
         if (StrUtil.isBlank(spaceId)) {
-            log.warn("飞书企业还未收到开通应用事件:{}", event.getTenantKey());
+            log.warn("Lark enterprise has not received the event of opening the application:{}", event.getTenantKey());
             return;
         }
         try {
             String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
-            // 事件处理完成
+            // Event processing completed
             iSocialFeishuEventLogService.doneEvent(event.getMeta().getUuid());
-            // 同步订单事件
+            // Synchronize order events
             SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
         }
         catch (Exception e) {
-            log.error("处理租户订单失败，请火速解决:{}:{}", spaceId, event.getOrderId(), e);
+            log.error("Failed to process tenant order, please solve it as soon as possible:{}:{}", spaceId, event.getOrderId(), e);
         }
-        // 发送通知
+        // Send notification
         SubscribePlanInfo planInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         TaskManager.me().execute(() -> {
             Long toUserId = iSpaceService.getSpaceOwnerUserId(spaceId);
@@ -1028,15 +1027,14 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                         price.getGoodChTitle(), event.getOrderPayPrice());
             }
         });
-        // 发送
     }
 
     private Long createTeamIfNotExist(String tenantKey, String spaceId, String parentDepartmentId, String newTeamName, String order) {
-        // 是否一级部门
+        // First level department or not
         if (parentDepartmentId.equals(FEISHU_ROOT_DEPT_ID)) {
-            // 一级部门
+            // First level department
             Long rootTeamId = iTeamService.getRootTeamId(spaceId);
-            // 新建部门
+            // New Create Department
             TeamEntity team = new TeamEntity();
             team.setId(IdWorker.getId());
             team.setParentId(rootTeamId);
@@ -1047,14 +1045,14 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             return team.getId();
         }
         else {
-            // 非一级部门
-            // 获取父部门ID绑定空间站的小组ID
+            // Non primary departments
+            // Get the group ID of the parent department ID bound to the space station
             Long parentTeamId = iSocialTenantDepartmentBindService.getBindSpaceTeamId(spaceId, tenantKey, parentDepartmentId);
             if (parentTeamId == null) {
-                // 上级部门未存在
+                // Superior department does not exist
                 parentTeamId = iTeamService.getRootTeamId(spaceId);
             }
-            // 创建空间站小组
+            // Create space station team
             TeamEntity team = new TeamEntity();
             team.setId(IdWorker.getId());
             team.setParentId(parentTeamId);
@@ -1067,15 +1065,15 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     }
 
     private Long getParentTeamId(String tenantKey, SocialTenantDepartmentEntity tenantDepartment, String parentDepartmentId) {
-        // 部门层级调整
+        // Department level adjustment
         if (!tenantDepartment.getParentId().equals(parentDepartmentId)) {
             if (tenantDepartment.getParentId().equals(FEISHU_ROOT_DEPT_ID)) {
-                // 以前是根部门下层
+                // It was the lower layer of the root gate previously
                 return iSocialTenantDepartmentBindService.getBindSpaceTeamId(tenantDepartment.getSpaceId(), tenantKey, parentDepartmentId);
             }
 
             if (parentDepartmentId.equals(FEISHU_ROOT_DEPT_ID)) {
-                // 现在是根部门下层
+                // Now it's the lower layer of the root gate
                 return iTeamService.getRootTeamId(tenantDepartment.getSpaceId());
             }
         }
@@ -1095,17 +1093,17 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     }
 
     private void handleUserActive(String appId, String tenantKey, String spaceId, FeishuUserObject userObject) {
-        // 员工被入职后点击客户端对应企业后激活
-        // 只有同步通讯录时候才会创建租户用户记录，员工激活后应该是不存在空间站
-        // 创建租户用户记录
+        // After the employee is employed, click the corresponding enterprise on the client to activate it
+        // Tenant user records can only be created when the address book is synchronized. After the employee activates, there should be no space station
+        // Create Tenant User Records
         boolean isExistTenantUser = iSocialTenantUserService.isTenantUserUnionIdExist(appId, tenantKey, userObject.getOpenId(), userObject.getUnionId());
         if (!isExistTenantUser) {
             iSocialTenantUserService.create(appId, tenantKey, userObject.getOpenId(), userObject.getUnionId());
         }
-        // 查询空间内是否有此成员，已删除的也要查出来
+        // Query whether there is this member in the space. The deleted member should also be found out
         Long memberId = iMemberService.getMemberIdByOpenIdIgnoreDelete(spaceId, userObject.getOpenId());
         if (memberId == null) {
-            // 创建成员
+            // Create Member
             MemberEntity member = SocialFactory.createFeishuMember(IdWorker.getId(), spaceId, userObject.getName(),
                     userObject.getMobile(), userObject.getEmail(), userObject.getJobTitle(),
                     userObject.getOpenId(), false);
@@ -1113,30 +1111,30 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             memberId = member.getId();
         }
         else {
-            // 恢复成员信息
+            // Restore member information
             MemberEntity member = iMemberService.getByIdIgnoreDelete(memberId);
             if (member.getIsDeleted()) {
-                // 已删除的恢复成员
+                // Deleted recovery members
                 member.setMemberName(userObject.getName());
                 member.setIsActive(true);
                 member.setStatus(UserSpaceStatus.INACTIVE.getStatus());
                 member.setIsPoint(true);
-                // 空间内的成员名称不同步用户名称
+                // Member names in the space do not synchronize user names
                 member.setNameModified(true);
-                // 恢复成员数据
+                // Recover member data
                 iMemberService.restoreMember(member);
-                // 恢复组织单元数据
+                // Restore Organization Unit Data
                 iUnitService.restoreMemberUnit(spaceId, Collections.singletonList(memberId));
             }
             else {
-                // 更新成员信息
+                // Update member information
                 MemberEntity updateMember = new MemberEntity();
                 updateMember.setId(memberId);
                 updateMember.setMemberName(userObject.getName());
                 iMemberService.updateById(updateMember);
             }
         }
-        // 创建部门关联
+        // Create Department Association
         handleUserDepartmentRelate(tenantKey, spaceId, memberId, userObject.getDepartmentIds());
     }
 
@@ -1144,7 +1142,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @Transactional(rollbackFor = Exception.class)
     public void handleDeptCreateEvent(ContactDeptCreateEvent event) {
-        // 切换应用配置上下文
+        // Switch application configuration context
         iFeishuService.switchDefaultContext();
         String appId = event.getHeader().getAppId();
         String tenantKey = event.getHeader().getTenantKey();
@@ -1153,17 +1151,17 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 获取当前部门所在的空间ID
+                    // Get the space ID of the current department
                     String spaceId = iSocialTenantBindService.getTenantDepartmentBindSpaceId(appId, tenantKey);
                     if (StrUtil.isBlank(spaceId)) {
                         return;
                     }
                     handleCreateDept(tenantKey, spaceId, event.getEvent().getDepartment());
-                    // 事件完成
+                    // Event completion
                     iSocialFeishuEventLogService.doneEvent(event.getHeader().getEventId());
                 }
                 catch (Exception e) {
-                    log.error(String.format("租户[%s]处理事件[%s]失败,火速解决", tenantKey, event.getHeader().getEventType()), e);
+                    log.error(String.format("Tenant [%s] handling events [%s] fail, resolve it quickly", tenantKey, event.getHeader().getEventType()), e);
                     throw e;
                 }
                 finally {
@@ -1172,7 +1170,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
             }
         }
         catch (InterruptedException e) {
-            log.error("[" + tenantKey + "]租户锁操作太频繁", e);
+            log.error("[" + tenantKey + "]Tenant lock operations are too frequent", e);
             throw new BusinessException(BillingException.ACCOUNT_CREDIT_ALTER_FREQUENTLY);
         }
     }
@@ -1187,10 +1185,10 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                 }
             }
         }
-        // 新增的部门无需在系统里查询，只需知道此部门在企业租户的父部门是什么
+        // The newly added department does not need to be queried in the system, just know what the parent department of the department is in the enterprise tenant
         Long toCreateTeamId = createTeamIfNotExist(tenantKey, spaceId, parentDeptObject.getDepartmentId(), StrUtil.sub(deptObject.getName(), 0, 99), deptObject.getOrder());
 
-        // 新增飞书部门记录
+        // Add Lark department record
         SocialTenantDepartmentEntity tenantDepartment = new SocialTenantDepartmentEntity();
         tenantDepartment.setId(IdWorker.getId());
         tenantDepartment.setTenantId(tenantKey);
@@ -1201,7 +1199,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
         tenantDepartment.setParentOpenDepartmentId(parentDeptObject.getOpenDepartmentId());
         tenantDepartment.setDepartmentName(deptObject.getName());
         iSocialTenantDepartmentService.createBatch(Collections.singletonList(tenantDepartment));
-        // 新增绑定
+        // New Binding
         SocialTenantDepartmentBindEntity tenantDepartmentBind = new SocialTenantDepartmentBindEntity();
         tenantDepartmentBind.setId(IdWorker.getId());
         tenantDepartmentBind.setSpaceId(spaceId);
@@ -1246,70 +1244,70 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
     }
 
     private void handleUserSuspend(String tenantKey, String spaceId, String userOpenId) {
-        // 管理员在后台暂停此员工账号在本企业使用
-        // 暂停后，成员也无法登录该企业，所以禁止登录也无关紧要
+        // The administrator suspends the use of this employee account in the enterprise in the background
+        // After the suspension, members cannot log in to the enterprise, so it is irrelevant to prohibit logging in
         MemberEntity member = iMemberService.getBySpaceIdAndOpenId(spaceId, userOpenId);
         if (member == null) {
-            log.warn("飞书企业[{}]暂停的成员[{}]不存在", tenantKey, userOpenId);
+            log.warn("Lark enterprise [{}] suspended members [{}] not exist", tenantKey, userOpenId);
             return;
         }
         if (member.getIsAdmin()) {
-            // 如果暂停了主管理员，要动态更换其他管理员
+            // If the primary administrator is suspended, other administrators should be replaced dynamically
             handleChangeMainAdminIfLeaveOrSuspend(tenantKey, userOpenId, spaceId, member.getId());
         }
         List<Long> memberIds = Collections.singletonList(member.getId());
-        // 删除成员关联部门
+        // Delete a member's associated department
         iTeamMemberRelService.removeByMemberIds(memberIds);
         // delete the associated role
         iRoleMemberService.removeByRoleMemberIds(memberIds);
-        // 删除成员
+        // Delete Member
         iMemberService.removeByMemberIds(memberIds);
     }
 
     private void handleUserRestore(String tenantKey, String spaceId, FeishuUserObject userObject) {
-        // 管理员在后台恢复此员工账号在本企业使用
+        // The administrator restores this employee account in the background for use in the enterprise
         Long memberId = iMemberService.getMemberIdByOpenIdIgnoreDelete(spaceId, userObject.getOpenId());
         if (memberId == null) {
-            log.warn("飞书企业[{}]恢复的成员[{}]不存在", tenantKey, userObject.getOpenId());
+            log.warn("Lark enterprise [{}] recovered members [{}] not exist", tenantKey, userObject.getOpenId());
             return;
         }
         MemberEntity member = iMemberService.getByIdIgnoreDelete(memberId);
         member.setIsActive(true);
         member.setStatus(UserSpaceStatus.INACTIVE.getStatus());
         member.setIsPoint(true);
-        // 空间内的成员名称不同步用户名称
+        // Member names in the space do not synchronize user names
         member.setNameModified(true);
-        // 恢复成员数据
+        // Recover member data
         iMemberService.restoreMember(member);
-        // 恢复组织单元数据
+        // Restore Organization Unit Data
         iUnitService.restoreMemberUnit(spaceId, Collections.singletonList(memberId));
-        // 重新关联部门
+        // Relate departments
         handleUserDepartmentRelate(tenantKey, spaceId, memberId, userObject.getDepartmentIds());
     }
 
     public void sendEntryCardToUser(String appId, String tenantKey, String userOpenId) {
         try {
-            // 发送<开始使用>消息卡片给用户
+            // Send the <Start Using> message card to the user
             Message cardMessage = FeishuCardFactory.createV2EntryCardMsg(appId);
             String messageId = iFeishuService.sendCardMessageToUserPrivate(tenantKey, userOpenId, cardMessage);
-            log.info("消息送达ID：{}", messageId);
+            log.info("Message delivery ID：{}", messageId);
         }
         catch (FeishuApiException exception) {
-            // 发不出去不用理会,报个警查一下原因
-            log.error("发送消息卡片到应用里失败", exception);
+            // Don't pay attention if you can't send it out. Call the police to find out the reason
+            log.error("Failed to send message card to application", exception);
         }
     }
 
     private void sendEntryCardToChatGroup(String appId, String tenantKey, String chatId) {
         try {
-            // 发送<开始使用>消息卡片到群里
+            // Send <Start using> message cards to the group
             Message cardMessage = FeishuCardFactory.createV2EntryCardMsg(appId);
             String messageId = iFeishuService.sendCardMessageToChatGroup(tenantKey, chatId, cardMessage);
-            log.info("消息送达ID：{}", messageId);
+            log.info("Message delivery ID：{}", messageId);
         }
         catch (FeishuApiException exception) {
-            // 发不出去不用理会,报个警查一下原因
-            log.error("发送消息卡片到群里失败", exception);
+            // Don't pay attention if you can't send it out. Call the police to find out the reason
+            log.error("Failed to send message card to group", exception);
         }
     }
 
@@ -1322,7 +1320,7 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                 handleOrderPaidEvent(event);
             }
             catch (Exception e) {
-                log.error("处理租户订单失败，请火速解决:{}:{}", tenantKey, event.getOrderId(), e);
+                log.error("Failed to process tenant order, please solve it as soon as possible:{}:{}", tenantKey, event.getOrderId(), e);
             }
         });
     }
@@ -1393,15 +1391,15 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                 }
                 catch (FeishuApiException exception) {
                     if (exception.getCode() == GET_TENANT_DENIED) {
-                        // 180天内企业未使用过此应用，不算错误，返回NULL即可
-                        log.warn("飞书企业信息无法获取，对方超过180天没有使用过此应用");
+                        // This application has not been used by the enterprise in 180 days, so it is not an error, just return NULL
+                        log.warn("Lark enterprise information cannot be obtained, and the other party has not used this application for more than 180 days");
                     }
                 }
                 spaceName = getTenantNameIfAbsent(tenantInfo);
                 spaceLogo = getTenantAvatarIfAbsent(tenantInfo);
                 rootTeamId = iTeamService.createRootTeam(spaceId, spaceName);
                 iUnitService.create(spaceId, UnitType.TEAM, rootTeamId);
-                // 创建根节点
+                // Create Root Node
                 rootNodeId = iNodeService.createChildNode(-1L, CreateNodeDto.builder()
                         .spaceId(spaceId)
                         .newNodeId(IdUtil.createNodeId())
@@ -1425,15 +1423,15 @@ public class FeishuEventServiceImpl implements IFeishuEventService {
                         .owner(owner)
                         .build();
                 iSpaceService.save(space);
-                // 绑定租户和此空间站
+                // Bind the tenant and this space
                 iSocialTenantBindService.addTenantBind(iFeishuService.getIsvAppId(), tenantId, spaceId);
-                // 更新应用市场状态
+                // Update app market status
                 iAppInstanceService.createInstanceByAppType(spaceId, AppType.LARK_STORE.name());
 
-                // 随机引用模板中心 热门推荐 轮播图的模板
+                // Randomly quote the template of the popular recommended carousel chart in the template center
                 String templateNodeId = iTemplateService.getDefaultTemplateNodeId();
                 if (StrUtil.isNotBlank(templateNodeId)) {
-                    // 转存节点方法，包含GRPC调用，放置最后
+                    // Transfer node method, including GRPC calls, and place the last
                     iNodeService.copyNodeToSpace(-1L, spaceId, rootNodeId, templateNodeId, NodeCopyOptions.create());
                 }
             }

@@ -18,10 +18,8 @@ import com.vikadata.social.wecom.model.WxCpIsvMessage;
 
 /**
  * <p>
- * 企业微信第三方服务商消息卡片
+ * WeCom Third Party Service Provider Message Card
  * </p>
- * @author 刘斌华
- * @date 2022-01-21 14:53:58
  */
 public final class WeComIsvCardFactory {
 
@@ -36,9 +34,9 @@ public final class WeComIsvCardFactory {
     public static final String WECOM_OAUTH_PATH = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={suiteId}&redirect_uri={redirect_uri}&response_type=code&scope=snsapi_privateinfo&state={suiteId}#wechat_redirect";
 
     /**
-     * 欢迎使用消息
+     * Welcome Message
      *
-     * @param agentId   企业应用ID
+     * @param agentId   Enterprise application ID
      */
     public static WxCpMessage createWelcomeMsg(Integer agentId) {
 
@@ -58,7 +56,7 @@ public final class WeComIsvCardFactory {
                         .picUrl("https://s1.vika.cn/space/2021/06/29/9487bd92778c49748aebb74da45c9c8d")
                         .build())
                 .build();
-        // 开启重复消息检查，防止企业授权安装时用户收到多条通知
+        // Enable duplicate message check to prevent users from receiving multiple notifications during enterprise authorized installation
         wxCpMessage.setEnableDuplicateCheck(true);
         wxCpMessage.setDuplicateCheckInterval(10);
 
@@ -67,18 +65,18 @@ public final class WeComIsvCardFactory {
     }
 
     /**
-     * 成员字段被提及消息
+     * Member field mentioned message
      *
-     * @param agentId       企业应用ID
-     * @param recordTitle   记录标题
-     * @param memberName    @成员名称
-     * @param nodeName      datasheet表名
-     * @param url           详情Url
+     * @param agentId       Enterprise application ID
+     * @param recordTitle   Record Title
+     * @param memberName    @Member Name
+     * @param nodeName      datasheet name
+     * @param url           Details Url
      */
     public static WxCpMessage createRecordRemindMemberCardMsg(Integer agentId, String recordTitle,
             String memberName, Boolean memberNameModified, String nodeName, String url) {
 
-        // 没有修改过成员名称时，需要对 openId 转译
+        // When the member name has not been modified, the openId needs to be translated
         boolean isTransId = Objects.nonNull(memberNameModified) && !memberNameModified;
         String description = "记录：{recordTitle}"
                 + "\n"
@@ -90,7 +88,7 @@ public final class WeComIsvCardFactory {
                 .set("memberName", memberName)
                 .set("nodeName", nodeName);
 
-        // 移除Url comment 参数
+        // Remove Url comment parameter
         url = UrlQueryExtend.ridUrlParam(url, "comment");
         String callbackUrl = WECOM_ISV_LOGIN_PATH
                 .concat("&reference={https_enp_domain}")
@@ -109,19 +107,19 @@ public final class WeComIsvCardFactory {
     }
 
     /**
-     * 评论提及消息
+     * Comments mention information
      *
-     * @param agentId           企业应用ID
-     * @param recordTitle       记录标题
-     * @param commentContent    评论内容
-     * @param memberName        @成员名称
-     * @param nodeName          datasheet表名
-     * @param url               详情Url
+     * @param agentId           Enterprise application ID
+     * @param recordTitle       Record Title
+     * @param commentContent    Comments
+     * @param memberName        @Member Name
+     * @param nodeName          datasheet name
+     * @param url               Details Url
      */
     public static WxCpMessage createCommentRemindCardMsg(Integer agentId, String recordTitle,
             String commentContent, String memberName, Boolean memberNameModified, String nodeName, String url) {
 
-        // 没有修改过成员名称时，需要对 openId 转译
+        // When the member name has not been modified, the openId needs to be translated
         boolean isTransId = Objects.nonNull(memberNameModified) && !memberNameModified;
         String description = "记录：{recordTitle}"
                 + "\n"
@@ -153,13 +151,13 @@ public final class WeComIsvCardFactory {
     }
 
     /**
-     * 成员模式邀请消息
+     * Member Mode Invitation Message
      *
-     * @param agentId           企业应用ID
-     * @param templateId        消息模板 ID
-     * @param selectedTickets   选择的成员票据
-     * @param memberName        成员名称
-     * @param memberNameModified 成员名称是否已修改
+     * @param agentId           Enterprise application ID
+     * @param templateId        Message template ID
+     * @param selectedTickets   Selected member tickets
+     * @param memberName        Member Name
+     * @param memberNameModified Whether the member name has been modified
      */
     public static WxCpIsvMessage createMemberInviteTemplateMsg(String suiteId, Integer agentId, String templateId, List<String> selectedTickets,
             String memberName, Boolean memberNameModified, String redirectUrlDomain) {
@@ -176,7 +174,7 @@ public final class WeComIsvCardFactory {
             throw new IllegalArgumentException(ex);
         }
 
-        // 没有修改过成员名称时，需要对 openId 转译
+        // When the member name has not been modified, the openId needs to be translated
         boolean isTransId = Objects.nonNull(memberNameModified) && !memberNameModified;
         String oauthUrl = StrUtil.format(WECOM_OAUTH_PATH, variable);
 

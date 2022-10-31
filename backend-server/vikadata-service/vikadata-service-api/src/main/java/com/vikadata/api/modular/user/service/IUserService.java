@@ -18,126 +18,109 @@ import com.vikadata.entity.UserEntity;
 
 /**
  * <p>
- * 用户表 服务类
+ * User table service class
  * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-16
  */
 public interface IUserService extends IService<UserEntity> {
 
     /**
-     * 根据手机号获取用户ID
-     * @param mobile 手机号
+     * Obtain user ID according to mobile number
+     * 
+     * @param mobile cell-phone number
      * @return User ID
-     * @author Chambers
-     * @date 2019/11/28
      */
     Long getUserIdByMobile(String mobile);
 
     /**
-     * 根据邮箱地址获取用户ID
-     * @param email 邮箱地址
-     * @return 用户ID
+     * Obtain user ID according to email address
+     * 
+     * @param email email
+     * @return User ID
      */
     Long getUserIdByEmail(String email);
 
     /**
-     * 判断手机号是否已注册
+     * Determine whether the mobile phone number has been registered
      *
-     * @param code   区号
-     * @param mobile 手机号
+     * @param code   Area code
+     * @param mobile Phone number
      * @return true/false
-     * @author Chambers
-     * @date 2019/11/28
      */
     boolean checkByCodeAndMobile(String code, String mobile);
 
     /**
-     * 判断邮箱是否已被绑定
+     * Determine whether the email has been bound
      *
-     * @param email 邮箱
+     * @param email email
      * @return true/false
-     * @author Chambers
-     * @date 2019/11/28
      */
     boolean checkByEmail(String email);
 
     /**
-     * 获取用户
+     * Get Users
      *
-     * @param code          区号
-     * @param mobilePhone   手机号
+     * @param code          Area code
+     * @param mobilePhone   Phone number
      * @return UserEntity
-     * @author Chambers
-     * @date 2021/6/16
      */
     UserEntity getByCodeAndMobilePhone(String code, String mobilePhone);
 
     /**
-     * 获取用户
+     * Get Users
      *
-     * @param code          区号
-     * @param mobilePhones  手机号列表
+     * @param code          Area code
+     * @param mobilePhones  Mobile number list
      * @return UserEntity
-     * @author Chambers
-     * @date 2022/6/25
      */
     List<UserEntity> getByCodeAndMobilePhones(String code, Collection<String> mobilePhones);
 
     /**
-     * 获取用户
+     * Get Users
      *
-     * @param email 邮箱
+     * @param email email
      * @return UserEntity
-     * @author Chambers
-     * @date 2021/6/16
      */
     UserEntity getByEmail(String email);
 
     /**
-     * 批量获取用户
+     * Get users in batch
      *
-     * @param emails 邮箱列表
+     * @param emails email list
      * @return UserEntity
-     * @author Chambers
-     * @date 2021/6/16
      */
     List<UserEntity> getByEmails(Collection<String> emails);
 
     /**
-     * 外部系统连接创建用户
-     * @param nickName 昵称
-     * @param avatar 头像
-     * @param email 邮件
-     * @param externalId 外部系统ID
-     * @param remark 备注
+     * External system connection creation user
+     *
+     * @param nickName Nickname
+     * @param avatar Avatar
+     * @param email email
+     * @param externalId External System ID
+     * @param remark Remarks
      * @return user id
-     * @author Shawn Deng
-     * @date 2021/7/1 16:54
      */
     Long createByExternalSystem(String externalId, String nickName, String avatar, String email, String remark);
 
     /**
-     * 创建用户
-     * @param user 用户
+     * Create User
+     *
+     * @param user User
      * @return user id
-     * @author Shawn Deng 
-     * @date 2021/7/7 15:01
      */
     Long createSocialUser(User user);
 
     /**
-     * 创建飞书用户
-     * @param user 用户
+     * Create Lark User
+     *
+     * @param user User
      * @return user id
-     * @author Shawn Deng
-     * @date 2021/7/7 15:01
      */
     Long createUser(SocialUser user);
 
     /**
      * create user
+     *
      * @param user user entity
      * @return user id
      */
@@ -145,6 +128,7 @@ public interface IUserService extends IService<UserEntity> {
 
     /**
      * create user by auth0 user profile
+     *
      * @param userProfile auth0 user profile
      * @return user id
      */
@@ -152,336 +136,300 @@ public interface IUserService extends IService<UserEntity> {
 
     /**
      * create user by auth0 user model
+     *
      * @param user user info from auth0 model
      * @return user id
      */
     Long createUserByAuth0IfNotExist(com.auth0.json.mgmt.users.User user);
 
     /**
-     * 创建企业微信第三方关联用户
+     * Create enterprise WeChat third-party associated users
      *
-     * @param user 用户信息
-     * @return 维格用户 ID
-     * @author 刘斌华
-     * @date 2022-03-02 16:57:44
+     * @param user User information
+     * @return vika user ID
      */
     Long createWeComUser(SocialUser user);
 
     /**
-     * 激活指定空间
-     * @param userId 用户ID
-     * @param spaceId 空间ID
-     * @param openId 开放唯一ID
+     * Activate the specified space
+     *
+     * @param userId User ID
+     * @param spaceId Space ID
+     * @param openId Open Unique ID
      */
     void activeTenantSpace(Long userId, String spaceId, String openId);
 
     /**
-     * 创建帐号
+     * Create Account
      *
-     * @param areaCode  手机区号
-     * @param mobile 手机号
-     * @param nickName   第三方用户昵称
-     * @param avatar 第三方用户头像
-     * @param email  邮箱地址
-     * @param spaceName 新建空间站的名字
+     * @param areaCode  Area code
+     * @param mobile Phone number
+     * @param nickName   Third party user nickname
+     * @param avatar Third party user avatar
+     * @param email  email
+     * @param spaceName Name of the new space
      * @return userId
-     * @author Chambers
-     * @date 2020/2/24
      */
     Long create(String areaCode, String mobile, String nickName, String avatar, String email, String spaceName);
 
     /**
-     * 手机号方式创建帐号
+     * Create an account by phone number
      *
-     * @param areaCode  手机区号
-     * @param mobile 手机号
-     * @param nickName   第三方用户昵称
-     * @param avatar 第三方用户头像
+     * @param areaCode  Area code
+     * @param mobile Phone number
+     * @param nickName   Third party user nickname
+     * @param avatar Third party user avatar
      * @return user
-     * @author Chambers
-     * @date 2020/2/24
      */
     UserEntity createUserByMobilePhone(String areaCode, String mobile, String nickName, String avatar);
 
     /**
-     * 邮箱方式创建账号
-     * @param email 邮箱地址
+     * Create an account by email
+     *
+     * @param email email
      * @return UserEntity
      */
     UserEntity createUserByEmail(String email);
 
     /**
-     * 批量创建马甲号
-     * @author Shawn Deng
-     * @date 2021/4/1 11:45
+     * Batch create vest numbers
      */
     void createUsersByCli();
 
     /**
-     * 创建用户
-     * 由CLI工具发起的创建操作，创建用户马甲
+     * Create User
+     * Create operation initiated by CLI tool to create user vest
      *
-     * @param username 用户名（邮箱）
-     * @param password 密码
-     * @param phone 密码
+     * @param username User name (email)
+     * @param password Password
+     * @param phone Phone number
      * @return user entity
      */
     UserEntity createUserByCli(String username, String password, String phone);
 
     /**
      * initial new space for new user
+     *
      * @param user user entity
      */
     void initialDefaultSpaceForUser(UserEntity user);
 
     /**
      * active space if user has be invited to another space
+     *
      * @param userId user id
      * @param memberIds member id list
      */
     void activeInvitationSpace(Long userId, List<Long> memberIds);
 
     /**
-     * 查询用户是否绑定邮箱
+     * Query whether users bind email
      *
-     * @param userId 用户ID
-     * @return 是否存在
-     * @author Shawn Deng
-     * @date 2019/12/30 11:44
+     * @param userId User ID
+     * @return Boolean
      */
     boolean checkUserHasBindEmail(Long userId);
 
     /**
-     * 绑定关联成员邮箱
+     * Bind associated member email
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @param email   邮箱
-     * @author Shawn Deng
-     * @date 2019/12/30 17:58
+     * @param userId  User ID
+     * @param spaceId Space ID
+     * @param email   email
      */
     void bindMemberByEmail(Long userId, String spaceId, String email);
 
     /**
-     * 用户绑定邮箱
+     * User bind email
      *
-     * @param userId 用户ID
-     * @param email  邮箱
-     * @author Shawn Deng
-     * @date 2019/12/30 15:32
+     * @param userId User ID
+     * @param email  email
      */
     void updateEmailByUserId(Long userId, String email);
 
     /**
-     * 用户解绑邮箱
+     * User Unbind Email
      *
-     * @param userId 用户ID
-     * @author Pengap
-     * @date 2021/10/20 18:24:09
+     * @param userId User ID
      */
     void unbindEmailByUserId(Long userId);
 
     /**
-     * 用户修改手机号
+     * User modifies mobile number
      *
-     * @param userId 用户ID
-     * @param code   区号
-     * @param mobile 手机号
-     * @author Chambers
-     * @date 2020/8/28
+     * @param userId User ID
+     * @param code   Area code
+     * @param mobile Phone number
      */
     void updateMobileByUserId(Long userId, String code, String mobile);
 
     /**
-     * 用户解绑手机号
+     * User unbind mobile number
      *
-     * @param userId    用户Id
-     * @author Pengap
-     * @date 2021/10/20 18:24:09
+     * @param userId    User Id
      */
     void unbindMobileByUserId(Long userId);
 
     /**
-     * 更新用户登录时间
+     * Update user logon time
      *
-     * @param userId 用户ID
-     * @author Shawn Deng
-     * @date 2019/12/25 12:01
+     * @param userId User ID
      */
     void updateLoginTime(Long userId);
 
     /**
-     * 编辑用户信息
+     * Edit user information
      *
-     * @param userId 用户ID
-     * @param param  操作参数
+     * @param userId User ID
+     * @param param  Operate parameters
      */
     void edit(Long userId, UserOpRo param);
 
     /**
-     * 修改密码
+     * Change Password
      *
-     * @param userId   用户ID
-     * @param password 设置的新密码
+     * @param userId   User ID
+     * @param password New password set
      */
     void updatePwd(Long userId, String password);
 
     /**
-     * 获取当前用户信息和空间内容
+     * Get current user information and space content
      *
-     * @param userId  用户ID
-     * @param spaceId 空间ID
-     * @param filter  是否过滤空间相关信息
+     * @param userId  User ID
+     * @param spaceId Space ID
+     * @param filter  Whether to filter space related information
      * @return UserInfoVo
-     * @author Chambers
-     * @date 2019/11/28
      */
     UserInfoVo getCurrentUserInfo(Long userId, String spaceId, Boolean filter);
 
     /**
-     * 关联钉钉
+     * Associated DingTalk
      *
-     * @param opRo 请求参数
-     * @author Chambers
-     * @date 2019/12/5
+     * @param opRo Request parameters
      */
     void bindDingTalk(DtBindOpRo opRo);
 
     /**
-     * 关闭用户的多端会话
+     * Close the user's multi ended session
      *
-     * @param userId   用户ID
-     * @param isRetain 是否保留当前会话
-     * @author Chambers
-     * @date 2019/12/17
+     * @param userId   User ID
+     * @param isRetain Whether to keep the current session
      */
     void closeMultiSession(Long userId, boolean isRetain);
 
     /**
-     * 解除第三方绑定
+     * Unbind Third Party
      *
-     * @param userId    用户ID
-     * @param type      第三方类型
-     * @author Chambers
-     * @date 2021/1/29
+     * @param userId    User ID
+     * @param type      Third party type
      */
     void unbind(Long userId, Integer type);
 
     /**
-     * 获取UUID
+     * Get UUID
      *
-     * @param userId    用户ID
+     * @param userId    User ID
      * @return uuid
-     * @author Chambers
-     * @date 2021/12/7
      */
     String getUuidByUserId(Long userId);
 
     /**
-     * 注销用户账号，进入冷静期。
-     * 注销冷静期账号在用户使用角度完全等同于已注销账号，共享链接、邀请链接、个人邀请码等均不可用.
+     * Log off the user account and enter the calm period.
+     * The account cancellation in the calm period is exactly the same as the account cancellation from the user's perspective, and the sharing link, invitation link, personal invitation code, etc. are unavailable
      *
-     * @param user 用户
+     * @param user User
      * */
     void applyForClosingAccount(UserEntity user);
 
     /**
-     * 撤销账号注销，仅适用于注销冷静期账号
-     * @param user 用户实体类
+     * Cancellation of account cancellation is only applicable to cancellation of account in calm period
+     *
+     * @param user UserEntity
      */
     void cancelClosingAccount(UserEntity user);
 
     /**
-     * 正式关闭账号.
-     * @param user 用户实体类
+     * Official close of account
+     *
+     * @param user UserEntity
      */
     void closeAccount(UserEntity user);
 
     /**
-     * 获取冷静期账号，不包含已注销账号.
-     * @param userIds 用户ID列表
+     * Obtain the cooling off period account, excluding the cancelled account
+     *
+     * @param userIds User ID List
      * @return UserInPausedDto List
      */
     List<UserInPausedDto> getPausedUserDtos(List<Long> userIds);
 
     /**
      * <p>
-     *     根据邮件列表获取邮件用户id和用户设置的系统语言。<br/>
-     *     数据库中没有email对应记录行，结果列表中依旧存在改email，对应的语言为"浏览器语言"。<br/>
-     *     emails最好不包括不存在的email。
+     *     Obtain the mail user ID and the system language set by the user according to the mail list<br/>
+     *     There is no record line corresponding to email in the database, and the modified email still exists in the result list, and the corresponding language is "browser language"<br/>
+     *     It is better not to include non-existent emails
      * </p>
      * <br/>
      * <p>
-     *     注意：异步方法调用可能异常
+     *     Note: Asynchronous method calls may be abnormal
      * </p>
      *
-     * @param emails 邮件列表
-     * @return 带用户id、系统语言、邮件的列表
-     * @author Pengap
-     * @date 2022/3/22 20:39:32
+     * @param emails Email list
+     * @return List with user id, system language and email
      */
     List<UserLangDTO> getLangByEmails(List<String> emails);
 
     /**
      * <p>
-     *     根据邮件列表获取邮件用户id和用户设置的系统语言。<br/>
-     *     数据库中没有email对应记录行，结果列表中依旧存在改email，对应的语言为expectedLang。<br/>
-     *     emails最好不包括不存在的email。
+     *     Obtain the mail user ID and the system language set by the user according to the mail list<br/>
+     *     There is no record line corresponding to the email in the database, but the modified email still exists in the result list, and the corresponding language is expected Lang.<br/>
+     *     It is better not to include non-existent emails
      * </p>
      *
-     * @param expectedLang 用户没有设置系统语言，期待的邮件发送语言
-     * @param emails 邮件列表
-     * @return 带用户id、系统语言、邮件的列表
-     * @author wuyitao
-     * @date 2022/01/24
+     * @param expectedLang The user did not set the system language. The expected email sending language
+     * @param emails Email list
+     * @return List with user id, system language and email
      */
     List<UserLangDTO> getLangByEmails(String expectedLang, List<String> emails);
 
     /**
      * <p>
-     *     根据邮件获取系统语言。<br/>
-     *     数据库中没有email对应记录行，对应的语言为expectedLang。<br/>
+     *     Get the system language according to the mail<br/>
+     *     There is no record line corresponding to email in the database, and the corresponding language is expected Lang<br/>
      * </p>
      *
-     * @param expectedLang 用户没有设置系统语言，期待的邮件发送语言
-     * @param email 邮件
-     * @return 系统语言
-     * @author wuyitao
-     * @date 2022/01/26
+     * @param expectedLang The user did not set the system language. The expected email sending language
+     * @param email Email
+     * @return System language
      */
     String getLangByEmail(String expectedLang, String email);
 
     /**
-     * 根据userId获取用户语言
+     * Get the user language according to the user ID
      *
-     * @param userIds 用户ID
-     * @param defaultLocale 缺省语言
+     * @param userIds User ID
+     * @param defaultLocale Default Language
      * @return List<UserLangDTO>
-     * @author zoe zheng
-     * @date 2022/2/24 11:44
      */
     List<UserLangDTO> getLangAndEmailByIds(List<Long> userIds, String defaultLocale);
 
     void useInviteCodeReward(Long userId, String inviteCode);
 
     /**
-     * 根据uuid获取用户userId
+     * Obtain user ID according to uuid
      *
-     * @param uuid 用户uuid
-     * @return 用户userId
-     * @author zoe zheng
-     * @date 2022/4/6 17:04
+     * @param uuid User uuid
+     * @return User ID
      */
     Long getUserIdByUuid(String uuid);
 
     /**
-     * 根据用户名查询用户
+     * Query users by user's name
      *
-     * @param areaCode  区号（非必须，用户名为手机号时使用）
-     * @param username  用户名（邮箱或者手机号）
+     * @param areaCode  Area code（Not required, used when the user name is mobile number)
+     * @param username  User's name (email or phone number)
      * @return UserEntity
-     * @author Chambers
-     * @date 2022/7/15
      */
     UserEntity getByUsername(String areaCode, String username);
 }

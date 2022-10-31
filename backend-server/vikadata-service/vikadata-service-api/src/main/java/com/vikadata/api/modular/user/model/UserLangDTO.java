@@ -3,10 +3,7 @@ package com.vikadata.api.modular.user.model;
 import lombok.Data;
 
 /**
- * 用户语言及其邮箱
- *
- * @author wuyitao
- * @date 22/01/21
+ * User Language and Email
  */
 @Data
 public class UserLangDTO {

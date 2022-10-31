@@ -7,16 +7,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 校验飞书登录用户是否管理员
- *
- * @author Shawn Deng
- * @date 2020-12-07 12:08:46
+ * Verify whether Lark login user is an administrator
  */
 @Data
-@ApiModel("校验飞书登录用户是否管理员")
+@ApiModel("Verify whether Lark login user is an administrator")
 public class FeishuCheckUserAdminVO {
 
-    @ApiModelProperty(value = "是否管理员", position = 1)
+    @ApiModelProperty(value = "Administrator or not", position = 1)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isAdmin;
 }

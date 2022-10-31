@@ -19,9 +19,7 @@ import com.vikadata.entity.AppInstanceEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * 飞书自建应用服务 接口 实现
- * @author Shawn Deng
- * @date 2021-12-31 17:49:58
+ * Lark Self built Application Service Interface Implementation
  */
 @Service
 @Slf4j
@@ -48,13 +46,13 @@ public class LarkAppInstanceConfigServiceImpl implements ILarkAppInstanceConfigS
 
     @Override
     public AppInstance updateLarkBaseConfig(String appInstanceId, String appKey, String appSecret) {
-        log.info("初始化飞书配置");
+        log.info("Initialize Lark configuration");
         AppInstanceEntity instanceEntity = iAppInstanceService.getByAppInstanceId(appInstanceId);
         ExceptionUtil.isNotNull(instanceEntity, AppException.APP_INSTANCE_NOT_EXIST);
-        // 检查是否是当前应用实例的配置应用KEY
+        // Check whether it is the configuration application KEY of the current application instance
         boolean isAppInstanceAppKeyExist = StrUtil.isNotBlank(instanceEntity.getAppKey()) && instanceEntity.getAppKey().equals(appKey);
         if (!isAppInstanceAppKeyExist) {
-            // 不是本实例的配置，全局检查AppKey是否已经存在
+            // It is not the configuration of this instance. Check whether the App Key already exists globally
             boolean isAppKeyExist = iAppInstanceService.isAppKeyExist(appKey);
             ExceptionUtil.isFalse(isAppKeyExist, AppException.APP_KEY_EXIST);
         }

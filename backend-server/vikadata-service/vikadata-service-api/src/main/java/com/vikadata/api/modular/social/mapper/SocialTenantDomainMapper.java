@@ -10,91 +10,73 @@ import com.vikadata.entity.SocialTenantDomainEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业租户专属域名 Mapper
+ * Third party platform integration - enterprise tenant exclusive domain name Mapper
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:27:18
  */
 public interface SocialTenantDomainMapper extends BaseMapper<SocialTenantDomainEntity> {
 
     /**
-     * 根据空间站查询域名信息
+     * Query domain name information according to the space
      *
-     * @param spaceId   空间站Id
-     * @return 域名信息
-     * @author Pengap
-     * @date 2021/8/13 11:08:54
+     * @param spaceId   Space Id
+     * @return Domain name information
      */
     SocialTenantDomainEntity selectBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 批量查询空间站域名信息
+     * Batch query of space domain name information
      *
-     * @param spaceIds 空间ID集合
-     * @return 域名信息
-     * @author Pengap
-     * @date 2021/8/13 11:08:54
+     * @param spaceIds Space ID Collection
+     * @return Domain name information
      */
     List<SocialTenantDomainEntity> selectBySpaceIds(@Param("spaceIds") List<String> spaceIds);
 
     /**
-     * 统计企业微信专属域名前缀重复数量
+     * Count the number of duplicate prefixes of enterprise WeChat exclusive domain names
      *
-     * @param domainPrefix 前缀域名（全小写spaceId）
-     * @return int 域名数量
-     * @author Pengap
-     * @date 2021/8/13 11:08:54
+     * @param domainPrefix Prefix domain name (all lowercase space Id)
+     * @return int Number of domain names
      */
     int countTenantDomainName(String domainPrefix);
 
     /**
-     * 查询空间站Id
+     * Query space ID
      *
-     * @param domainName 企业域名
-     * @return 空间站Id
-     * @author Pengap
-     * @date 2021/8/24 17:43:52
+     * @param domainName Enterprise domain name
+     * @return Space Id
      */
     String selectSpaceIdByDomainName(@Param("domainName") String domainName);
 
     /**
-     * 查询空间站域名
+     * Query the domain name of the space station
      *
-     * @param spaceIds 空间ids
-     * @return 域名集合
-     * @author Pengap
-     * @date 2021/8/26 14:42:01
+     * @param spaceIds Space Ids
+     * @return Domain Name Collection
      */
     List<SpaceBindDomainDTO> selectSpaceDomainBySpaceIds(@Param("spaceIds") List<String> spaceIds);
 
     /**
-     * 修改域名状态
+     * Modify domain name status
      *
-     * @param spaceId 空间站Id
-     * @param domainStatus 状态
+     * @param spaceId Space Id
+     * @param domainStatus State
      * @return int
-     * @author Pengap
-     * @date 2021/8/30 12:00:48
      */
     int updateStatusBySpaceId(@Param("spaceId") String spaceId, @Param("domainStatus") int domainStatus);
 
     /**
-     * 获取域名绑定空间状态
+     * Get the domain name binding space status
      *
-     * @param domainName 域名
-     * @return 域名绑定信息
-     * @author Pengap
-     * @date 2021/9/8 16:42:05
+     * @param domainName Domain name
+     * @return Domain name binding information
      */
     SpaceBindDomainDTO selectSpaceDomainByDomainName(@Param("domainName") String domainName);
 
     /**
-     * 根据空间站Id删除空间站域名
+     * Delete the space domain name according to the space station ID
      *
-     * @param spaceIds 空间ID集合
-     * @return int  影响行数
-     * @author Pengap
-     * @date 2021/9/13 11:30:40
+     * @param spaceIds Space ID Collection
+     * @return int  Number of rows affected
      */
     int deleteSpaceDomainBySpaceIds(@Param("spaceIds") List<String> spaceIds);
 

@@ -30,11 +30,9 @@ import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CAL
 
 /**
  * <p>
- * 事件订阅 -- 高优先级数据，激活应用等
- * 事件订阅 -- 普通优先级数据，例如通讯录变更
+ * Event subscription - high priority data, application activation, etc
+ * Event subscription -- common priority data, such as address book change
  * </p>
- * @author zoe zheng
- * @date 2021/9/2 4:13 下午
  */
 @DingTalkEventHandler
 @Slf4j
@@ -55,37 +53,37 @@ public class SyncHttpOrgEventHandler {
     private ISocialTenantService iSocialTenantService;
 
     /**
-     * 企业微应用的最新状态
+     * Latest status of enterprise applications
      *
-     * @param bizId 套件suiteid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Suite suite id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgSuiteAuthEvent(String bizId, OrgSuiteAuthEvent event) {
-        log.info("收到ISV钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received ISV DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleOrgSuiteAuthEvent(bizId, event);
         TaskManager.me().execute(() -> iDingTalkIsvEventService.handleOrgSuiteChangeEvent(bizId, event));
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 表示企业变更授权范围
+     * Indicates the scope of authorization for enterprise change
      *
-     * @param bizId 套件suiteid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Suite suite id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgSuiteChangeEvent(String bizId, OrgSuiteChangeEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         String corpId = event.getCorpId();
-        // 把逻辑提前，防止钉钉消息错乱之后，无法同步空间的其他成员
+        // Advance the logic to prevent other members of the space from being synchronized after the Ding Talk messages are scrambled
         if (!iSocialTenantService.isTenantExist(corpId, bizId)) {
-            // 先保存主管理员
+            // Save the master administrator first
             iDingTalkIsvEventService.handleOrgSuiteAuthEvent(bizId, event);
-            // 再同步其他成员
+            // Resynchronize other members
             TaskManager.me().execute(() -> iDingTalkIsvEventService.handleOrgSuiteChangeEvent(bizId, event));
         }
         else {
@@ -94,118 +92,119 @@ public class SyncHttpOrgEventHandler {
                 iDingTalkIsvEventService.handleOrgSuiteChangeEvent(bizId, event);
             }
             else {
-                // 放入延迟队列
+                // Put in delay queue
                 rabbitSenderService.topicSend(DING_TALK_TOPIC_EXCHANGE_BUFFER, DING_TALK_ISV_HIGH_TOPIC, event,
                         Long.toString(120 * 1000));
             }
         }
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业解除授权
+     * Enterprise de authorization
      *
-     * @param bizId 套件suiteid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Suite suite id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onSuiteRelieveEvent(String bizId, OrgSuiteRelieveEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // 停用租户
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
+        // Deactivate Tenant
         iDingTalkIsvEventService.handleOrgSuiteRelieveEvent(bizId, event.getCorpId());
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 微应用启用
+     * Micro application enabling
      *
-     * @param bizId 微应用的appid。
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Micro application id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgMicroAppRestoreEvent(String bizId, OrgMicroAppRestoreEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleOrgMicroAppRestoreEvent(event.getSuiteId(), event.getCorpId());
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 微应用停用
+     * Micro application deactivation
      *
-     * @param bizId 微应用的appid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Micro application id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgMicroAppStopEvent(String bizId, OrgMicroAppStopEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleOrgMicroAppStopEvent(event.getSuiteId(), event.getCorpId());
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 微应用删除，保留企业对套件的授权
+     * Delete the micro application and retain the authorization of the enterprise to the suite
      *
-     * @param bizId 微应用的appid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Micro application id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgMicroAppRemoveEvent(String bizId, OrgMicroAppRemoveEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         iDingTalkIsvEventService.handleOrgMicroAppStopEvent(event.getSuiteId(), event.getCorpId());
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 微应用可见范围变更
+     * Change of visible range of micro application
      *
-     * @param bizId 微应用的appid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Micro application id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgMicroAppScopeUpdateEvent(String bizId, OrgMicroAppScopeUpdateEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // 无需处理，因为这里第三方应用无法获取授权通讯录的可见范围，所以在org_suite_change那里进行处理
-        // 钉钉的事件推送不会重复
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
+        // No processing is required, because the third-party application cannot obtain the visible range of the authorized address book,
+        // so it is processed at org suite change
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业变更
+     * Change of an enterprise
      *
-     * @param bizId 企业的corpid。
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Enterprise corp id
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgUpdatedEvent(String bizId, OrgUpdateEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
-        // todo  不处理企业信息变更
-        // 钉钉的事件推送不会重复
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
+        // todo  Do not process enterprise information changes
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 企业删除
+     * Enterprise deletion
      *
-     * @param bizId 授权企业ID
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Authorized enterprise ID
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onOrgRemoveEvent(String bizId, OrgRemoveEvent event) {
-        log.info("收到钉钉推送事件:[{}:{}]", event.getEventType(), event.getSyncAction());
+        log.info("Received DingTalk push event:[{}:{}]", event.getEventType(), event.getSyncAction());
         // todo
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 

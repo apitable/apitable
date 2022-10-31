@@ -7,40 +7,31 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 第三方平台集成-用户 Mapper
- *
- * @author Shawn Deng
- * @date 2020-12-07 11:21:22
+ * Third party platform integration - user mapper
  */
 public interface SocialUserMapper extends BaseMapper<SocialUserEntity> {
 
     /**
-     * 快速批量插入
+     * Quick Bulk Insert
      *
-     * @param entities 成员列表
-     * @return 执行结果数
-     * @author Shawn Deng
-     * @date 2019/12/17 20:34
+     * @param entities Member List
+     * @return Number of execution results
      */
     int insertBatch(@Param("entities") List<SocialUserEntity> entities);
 
     /**
-     * 根据OPEN_ID查询
+     * Query according to OPEN ID
      *
-     * @param unionId 第三方平台用户标识
+     * @param unionId Third party platform user ID
      * @return SocialUserEntity
-     * @author Shawn Deng
-     * @date 2020/12/15 11:43
      */
     SocialUserEntity selectByUnionId(@Param("unionId") String unionId);
 
     /**
-     * 批量删除记录
+     * Batch Delete Records
      *
-     * @param unionIds 第三方平台用户标识
-     * @return 执行结果数
-     * @author Shawn Deng
-     * @date 2020/12/15 10:16
+     * @param unionIds Third party platform user ID
+     * @return Number of execution results
      */
     int deleteByUnionIds(@Param("unionIds") List<String> unionIds);
 }

@@ -11,54 +11,54 @@ import java.util.List;
 public interface ILabsFeatureService extends IService<LabsFeaturesEntity> {
 
     /**
-     * 获取所有可正常操作的实验室功能
+     * Get all laboratory functions that can operate normally
      *
      * @return LabsFeaturesEntity List
      * */
     List<LabsFeaturesEntity> getAvailableLabFeatures();
 
     /**
-     * 获取已存在的实验室功能
+     * Get existing lab functions
      *
-     * @param featureKey 实验室功能唯一标识
+     * @param featureKey Unique identification of laboratory function
      * @return LabsFeaturesEntity
      * */
     LabsFeaturesEntity getExistLabsFeature(String featureKey);
 
     /**
-     * 获取指定功能作用域的实验性功能
+     * Get experimental functions of specified function scope
      *
-     * @param featureKey 实验性功能唯一标识
-     * @param featureScope 实验室功能的作用域
+     * @param featureKey Unique identification of experimental function
+     * @param featureScope Scope of laboratory functions
      * @return LabsFeaturesEntity
      * */
     LabsFeaturesEntity getCurrentLabsFeature(String featureKey, String featureScope);
 
     /**
-     * 获取用户以及所在空间站启用关闭的实验性功能列表
+     * Get the list of experimental functions enabled and disabled by the user and the space station
      *
      * @return UserSpaceLabsFeatureVo
      * */
     UserSpaceLabsFeatureVo getAvailableLabsFeature();
 
     /**
-     * 获取当前实验室功能类别
+     * Get the current laboratory function category
      *
-     * @param featureKey 实验室功能唯一标识
+     * @param featureKey Unique identification of laboratory function
      * @return LabsFeatureTypeEnum
      * */
     LabsFeatureTypeEnum getCurrentLabsFeatureType(String featureKey);
 
     /**
-     * 删除指定的实验性功能
+     * Delete the specified experimental function
      *
-     * @param id 实验室功能ID
-     * @return 受影响的结果集
+     * @param id Lab Function ID
+     * @return Affected result sets
      * */
     int deleteLabsFeature(Long id);
 
     /**
-     * 修改实验室功能属性
+     * Modify laboratory function properties
      * */
     void updateLabsFeatureAttribute(GmLabsFeatureCreatorRo ro);
 }

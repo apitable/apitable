@@ -10,19 +10,16 @@ import lombok.ToString;
 import java.util.List;
 
 /**
- * 飞书企业的注册邀请码
- *
- * @author Shawn Deng
- * @date 2020-12-09 10:49:13
+ * Lark Enterprise registration invitation code
  */
 @Data
-@ApiModel("飞书企业的注册邀请码")
+@ApiModel("Lark Enterprise registration invitation code")
 public class FeishuTenantBindInfoVO {
 
-    @ApiModelProperty(value = "邀请码", example = "1263123")
+    @ApiModelProperty(value = "Invitation code", example = "1263123")
     private String inviteCode;
 
-    @ApiModelProperty(value = "绑定空间列表")
+    @ApiModelProperty(value = "List of bound spaces")
     private List<BindSpaceInfoVO> bindInfoList;
 
     @Setter
@@ -30,10 +27,10 @@ public class FeishuTenantBindInfoVO {
     @ToString
     public static class BindSpaceInfoVO {
 
-        @ApiModelProperty(value = "空间ID", example = "spc12hjasd")
+        @ApiModelProperty(value = "Space ID", example = "spc12hjasd")
         private String spaceId;
 
-        @ApiModelProperty(value = "空间名称", example = "空间站")
+        @ApiModelProperty(value = "Space name", example = "Space station")
         private String spaceName;
     }
 }

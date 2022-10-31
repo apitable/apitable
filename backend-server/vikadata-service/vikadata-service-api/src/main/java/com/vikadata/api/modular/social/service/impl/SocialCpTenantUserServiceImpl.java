@@ -36,10 +36,8 @@ import static com.vikadata.api.enums.exception.DatabaseException.INSERT_ERROR;
 
 /**
  * <p>
- * 第三方平台集成-企业微信租户用户
+ * Third party platform integration - WeCom tenant user
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:20:01
  */
 @Slf4j
 @Service
@@ -93,12 +91,12 @@ public class SocialCpTenantUserServiceImpl extends ServiceImpl<SocialCpTenantUse
             return Collections.emptyMap();
         }
 
-        // 通过 openId 查找到企微租户中的用户信息
+        // Find the user information in WeCom tenant through openId
         List<SocialCpTenantUserEntity> cpTenantUserEntities = baseMapper.selectByTenantIdAndAppIdAndCpUserIds(tenantId, appId, cpUserIds);
         if (CollUtil.isEmpty(cpTenantUserEntities)) {
             return Collections.emptyMap();
         }
-        // 通过企微租户中的用户查找到与维格用户的绑定信息
+        // Find the binding information with the Vigor user through the user in the WeCom tenant
         List<Long> cpTenantUserIds = cpTenantUserEntities.stream()
                 .map(SocialCpTenantUserEntity::getId)
                 .collect(Collectors.toList());
@@ -106,7 +104,7 @@ public class SocialCpTenantUserServiceImpl extends ServiceImpl<SocialCpTenantUse
         if (CollUtil.isEmpty(cpUserBindEntities)) {
             return Collections.emptyMap();
         }
-        // 通过绑定信息查找到维格用户信息
+        // Find vika user information through binding information
         List<Long> userIds = cpUserBindEntities.stream()
                 .map(SocialCpUserBindEntity::getUserId)
                 .collect(Collectors.toList());
@@ -115,7 +113,7 @@ public class SocialCpTenantUserServiceImpl extends ServiceImpl<SocialCpTenantUse
             return Collections.emptyMap();
         }
 
-        // 转换 openId -> user 的对应信息
+        // Convert the corresponding information of openId ->user
         Map<Long, Long> cpUserBindAndUserIdMap = cpUserBindEntities.stream()
                 .collect(Collectors.toMap(SocialCpUserBindEntity::getCpTenantUserId, SocialCpUserBindEntity::getUserId, (k1, k2) -> k2));
         Map<Long, UserEntity> userMap = userEntities.stream()
@@ -147,12 +145,12 @@ public class SocialCpTenantUserServiceImpl extends ServiceImpl<SocialCpTenantUse
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchDeleteByCorpAgent(String tenantId, String appId) {
-        // 查询所有已同步用户
+        // Query all synchronized users
         Map<String, Long> openUsers = getOpenIdsByTenantId(tenantId, appId);
         if (MapUtil.isNotEmpty(openUsers)) {
-            // 删除企业微信租户用户
+            // Delete WeCom Tenant User
             this.batchDeleteByCorpAgentUsers(tenantId, appId, new ArrayList<>(openUsers.keySet()));
-            // 删除企业微信租户绑定VikaUser关系
+            // Delete WeCom tenant binding vika User relationship
             iSocialCpUserBindService.batchDeleteByCpTenantUserIds(new ArrayList<>(openUsers.values()));
         }
     }

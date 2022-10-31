@@ -4,9 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.entity.UserBindEntity;
 
-/**
- * @author Shawn Deng
- */
 public interface IUserBindService extends IService<UserBindEntity> {
 
     /**

@@ -7,26 +7,24 @@ import lombok.Data;
 /**
  * <p> 
  * dd.config params
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/30 15:25
+ * </p>
  */
-@ApiModel("钉钉--dd.config需要的参数")
+@ApiModel("dd.config params")
 @Data
 public class DingTalkDdConfigVo {
 
-    @ApiModelProperty(value = "应用agengId", position = 1)
+    @ApiModelProperty(value = "Application agent Id", position = 1)
     private String agentId;
 
-    @ApiModelProperty(value = "当前企业ID", position = 2)
+    @ApiModelProperty(value = "Current enterprise ID", position = 2)
     private String corpId;
 
-    @ApiModelProperty(value = "时间戳", position = 3)
+    @ApiModelProperty(value = "Time stamp", position = 3)
     private String timeStamp;
 
-    @ApiModelProperty(value = "自定义固定字符串", position = 4)
+    @ApiModelProperty(value = "Custom Fixed String", position = 4)
     private String nonceStr;
 
-    @ApiModelProperty(value = "签名", position = 5)
+    @ApiModelProperty(value = "signature", position = 5)
     private String signature;
 }

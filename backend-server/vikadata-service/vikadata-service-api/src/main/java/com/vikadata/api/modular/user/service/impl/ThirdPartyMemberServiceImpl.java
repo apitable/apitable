@@ -30,11 +30,8 @@ import static com.vikadata.api.enums.exception.UserException.UPDATE_WECHAT_MEMBE
 
 /**
  * <p>
- * 第三方系统-会员信息表 服务实现类
+ * Third party system - member information table service implementation class
  * </p>
- *
- * @author Chambers
- * @date 2020/8/10
  */
 @Slf4j
 @Service
@@ -58,9 +55,9 @@ public class ThirdPartyMemberServiceImpl implements IThirdPartyMemberService {
 
     @Override
     public void createMpMember(String appId, WxMpUser wxMpUser) {
-        log.info("创建微信公众号会员，wxMpUser：{}", wxMpUser);
+        log.info("Create a WeChat official account member,wxMpUser：{}", wxMpUser);
         JSONObject extra = JSONUtil.createObj();
-        // 微信公众平台用户信息调整后不反悔敏感信息
+        // No regret about sensitive information after user information adjustment on WeChat public platform
         // extra.set("sexDesc", wxMpUser.getSexDesc());
         // extra.set("sex", wxMpUser.getSex());
         // extra.set("city", wxMpUser.getCity());
@@ -87,7 +84,7 @@ public class ThirdPartyMemberServiceImpl implements IThirdPartyMemberService {
 
     @Override
     public Long createMiniAppMember(String appId, WxMaJscode2SessionResult result) {
-        log.info("创建微信小程序会员，WxMaJscode2SessionResult：{}", result);
+        log.info("Create WeChat applet members, WxMaJscode2SessionResult：{}", result);
         ThirdPartyMemberEntity entity = ThirdPartyMemberEntity.builder()
                 .appId(appId)
                 .type(ThirdPartyMemberType.WECHAT_MINIAPP.getType())
@@ -103,7 +100,7 @@ public class ThirdPartyMemberServiceImpl implements IThirdPartyMemberService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void editMiniAppMember(Long id, WxMaJscode2SessionResult result, WxMaPhoneNumberInfo phoneNoInfo, WxMaUserInfo userInfo) {
-        log.info("更新微信小程序会员信息，id:{}，result:{}，WxMaPhoneNumberInfo:{}，WxMaUserInfo:{}", id, result, phoneNoInfo, userInfo);
+        log.info("Update WeChat applet member information, id:{}，result:{}，WxMaPhoneNumberInfo:{}，WxMaUserInfo:{}", id, result, phoneNoInfo, userInfo);
         ThirdPartyMemberEntity entity = ThirdPartyMemberEntity.builder()
                 .id(id)
                 .build();
@@ -131,10 +128,10 @@ public class ThirdPartyMemberServiceImpl implements IThirdPartyMemberService {
             extraJson.set("province", userInfo.getProvince());
             extraJson.set("city", userInfo.getCity());
             entity.setExtra(extraJson.toString());
-            // 查询 unionId 是否绑定了维格帐号，是则无需更新原小程序与维格帐号的关联系信息，避免同一个 unionId 出现两条帐号关联记录
+            // Query whether the unionId is bound to the vika account. If yes, it is unnecessary to update the association system information between the original applet and the vika account to avoid two account association records for the same unionId
             Long linkUserId = userLinkMapper.selectUserIdByUnionIdAndType(userInfo.getUnionId(), LinkType.WECHAT.getType());
             if (linkUserId == null) {
-                // 更新帐号关联信息
+                // Update account association information
                 userLinkMapper.updateNickNameAndUnionIdByOpenId(userInfo.getNickName(), userInfo.getUnionId(), userInfo.getOpenId(), LinkType.WECHAT.getType());
             }
         }
@@ -144,7 +141,7 @@ public class ThirdPartyMemberServiceImpl implements IThirdPartyMemberService {
 
     @Override
     public void createTencentMember(WebAppAuthInfo authInfo, TencentUserInfo userInfo) {
-        log.info("创建 QQ 会员，authInfo:{}，userInfo:{}", authInfo.toString(), userInfo.toString());
+        log.info("Create QQ members, authInfo:{}，userInfo:{}", authInfo.toString(), userInfo.toString());
         JSONObject extra = JSONUtil.createObj();
         extra.set("gender", userInfo.getGender());
         extra.set("genderType", userInfo.getGenderType());

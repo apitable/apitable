@@ -2,27 +2,25 @@ package com.vikadata.api.modular.social.enums;
 
 /**
  * <p>
- * 企微服务商接口许可延时任务处理状态
+ * WeCom service provider interface permission delay task processing status
  * </p>
- * @author 刘斌华
- * @date 2022-07-19 14:11:42
  */
 public enum SocialCpIsvPermitDelayProcessStatus {
 
     /**
-     * 待处理
+     * Pending
      */
     PENDING(0),
     /**
-     * 已发送到队列
+     * Sent to queue
      */
     QUEUED(1),
     /**
-     * 已下单
+     * Ordered
      */
     ORDER_CREATED(5),
     /**
-     * 已完成
+     * Completed
      */
     FINISHED(9),
     ;
@@ -38,12 +36,10 @@ public enum SocialCpIsvPermitDelayProcessStatus {
     }
 
     /**
-     * 将值转换为枚举
+     * Convert Value to Enum
      *
-     * @param statusValue 值
-     * @return 对应的枚举
-     * @author 刘斌华
-     * @date 2022-07-19 15:55:41
+     * @param statusValue value
+     * @return Corresponding enumeration
      */
     public static SocialCpIsvPermitDelayProcessStatus fromStatusValue(Integer statusValue) {
         switch (statusValue) {

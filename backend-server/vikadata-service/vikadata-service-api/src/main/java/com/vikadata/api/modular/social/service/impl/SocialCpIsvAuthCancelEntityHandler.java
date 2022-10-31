@@ -25,10 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商取消授权处理
+ * Third party platform integration - WeCom third-party service provider cancels authorization processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-19 17:16:43
  */
 @Service
 public class SocialCpIsvAuthCancelEntityHandler implements ISocialCpIsvEntityHandler, InitializingBean {
@@ -64,19 +62,19 @@ public class SocialCpIsvAuthCancelEntityHandler implements ISocialCpIsvEntityHan
         String suiteId = unprocessed.getSuiteId();
         String authCorpId = unprocessed.getAuthCorpId();
 
-        // 1 获取企业已有的租户信息
+        // 1 Obtain the existing tenant information of the enterprise
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
+                .format("No available tenant information found,tenantId：%s，appId：%s", authCorpId, suiteId)));
 
-        // 2 解除应用市场的绑定状态
+        // 2 Unbind the app market
         String spaceId = socialTenantBindService.getTenantBindSpaceId(socialTenantEntity.getTenantId(), socialTenantEntity.getAppId());
         iAppInstanceService.deleteBySpaceIdAndAppType(spaceId, AppType.WECOM_STORE.name());
-        // 3 停用
+        // 3 Deactivate
         socialTenantEntity.setStatus(false);
         socialTenantEntity.setUpdatedAt(LocalDateTime.now());
         socialTenantService.updateById(socialTenantEntity);
-        // 4 清空空间站缓存
+        // 4 Clear the space station cache
         userSpaceService.delete(spaceId);
         return true;
 

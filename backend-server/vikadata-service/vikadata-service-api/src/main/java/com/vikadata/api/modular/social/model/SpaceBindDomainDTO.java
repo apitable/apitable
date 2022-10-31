@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 空间绑定域名DTO
+ * Space bound domain name DTO
  * </p>
- *
- * @author Pengap
- * @date 2021/8/26 14:39:25
  */
 @Data
 @Builder(toBuilder = true)
@@ -20,17 +17,17 @@ import lombok.NoArgsConstructor;
 public class SpaceBindDomainDTO {
 
     /**
-     * 空间站Id
+     * Space Id
      */
     private String spaceId;
 
     /**
-     * 域名
+     * Domain name
      */
     private String domainName;
 
     /**
-     * 状态
+     * State
      */
     private Integer status;
 

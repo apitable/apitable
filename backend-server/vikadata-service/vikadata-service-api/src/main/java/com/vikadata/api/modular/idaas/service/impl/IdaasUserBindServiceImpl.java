@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 玉符 IDaaS 用户绑定信息
+ * IDaaS User bound information
  * </p>
- * @author 刘斌华
- * @date 2022-05-31 11:15:47
  */
 @Service
 public class IdaasUserBindServiceImpl extends ServiceImpl<IdaasUserBindMapper, IdaasUserBindEntity> implements IIdaasUserBindService {

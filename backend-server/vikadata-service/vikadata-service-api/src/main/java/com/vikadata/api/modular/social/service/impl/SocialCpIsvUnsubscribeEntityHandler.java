@@ -30,10 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商成员取消关注处理
+ * Third party platform integration - WeCom third-party service provider member cancels the attention processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-20 17:33:58
  */
 @Service
 public class SocialCpIsvUnsubscribeEntityHandler implements ISocialCpIsvEntityHandler, InitializingBean {
@@ -72,27 +70,27 @@ public class SocialCpIsvUnsubscribeEntityHandler implements ISocialCpIsvEntityHa
         String suiteId = unprocessed.getSuiteId();
         String authCorpId = unprocessed.getAuthCorpId();
 
-        // 1 获取企业已有的租户信息
+        // 1 Obtain the existing tenant information of the enterprise
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
-        // 2 获取绑定的空间站
+                .format("No available tenant information found,tenantId：%s，appId：%s", authCorpId, suiteId)));
+        // 2 Get the bound space station
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
         Assert.notBlank(spaceId, () -> new IllegalStateException(String
-                .format("没有找到对应的空间站信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
-        // 3 获取成员信息
+                .format("No corresponding space station information was found,tenantId：%s，appId：%s", authCorpId, suiteId)));
+        // 3 Get member information
         WxCpTpXmlMessage wxMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpTpXmlMessage.class);
         MemberEntity memberEntity = Optional.ofNullable(socialCpUserBindService
                         .getUserIdByTenantIdAndAppIdAndCpUserId(authCorpId, suiteId, wxMessage.getFromUserName()))
                 .map(userId -> memberService.getByUserIdAndSpaceId(userId, spaceId))
                 .orElse(null);
         if (Objects.isNull(memberEntity)) {
-            // 3.1 成员信息不存在，直接忽略
+            // 3.1 The member information does not exist. Ignore it directly
             return true;
         }
-        // 4 移除成员
+        // 4 Remove Members
         memberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(memberEntity.getId()), false);
-        // 5 如果是管理员，则清除空间站的管理员
+        // 5 If it is an administrator, clear the administrator of the space station
         if (Boolean.TRUE.equals(memberEntity.getIsAdmin())) {
             spaceService.removeMainAdmin(spaceId);
         }

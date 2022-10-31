@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 玉符 IDaaS 通讯录
+ * IDaaS address book
  * </p>
- * @author 刘斌华
- * @date 2022-05-16 16:11:58
  */
 @Slf4j
-@Api(tags = "玉符 IDaaS 通讯录")
+@Api(tags = "IDaaS address book")
 @RestController
 @ApiResource(path = "/idaas/contact")
 public class IdaasContactController {
@@ -32,7 +30,7 @@ public class IdaasContactController {
     private IIdaasContactService idaasContactService;
 
     @PostResource(path = "/sync")
-    @ApiOperation("同步通讯录")
+    @ApiOperation("Synchronize address book")
     public ResponseData<Void> postSync() {
         idaasContactService.syncContact(LoginContext.me().getSpaceId(), SessionContext.getUserId());
 

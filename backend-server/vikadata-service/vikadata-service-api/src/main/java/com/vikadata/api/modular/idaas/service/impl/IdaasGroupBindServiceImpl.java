@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 玉符 IDaaS 用户组绑定信息
+ * IDaaS User group binding information
  * </p>
- * @author 刘斌华
- * @date 2022-05-30 10:10:11
  */
 @Service
 public class IdaasGroupBindServiceImpl extends ServiceImpl<IdaasGroupBindMapper, IdaasGroupBindEntity> implements IIdaasGroupBindService {

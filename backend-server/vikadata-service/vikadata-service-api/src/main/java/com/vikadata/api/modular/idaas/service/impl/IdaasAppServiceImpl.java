@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 玉符 IDaaS 应用信息
+ * IDaaS application information
  * </p>
- * @author 刘斌华
- * @date 2022-05-25 11:41:52
  */
 @Service
 public class IdaasAppServiceImpl extends ServiceImpl<IdaasAppMapper, IdaasAppEntity> implements IIdaasAppService {

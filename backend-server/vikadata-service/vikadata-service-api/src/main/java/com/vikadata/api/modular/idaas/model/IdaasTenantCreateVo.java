@@ -11,12 +11,10 @@ import lombok.experimental.Tolerate;
 
 /**
  * <p>
- * 玉符 IDaaS 创建租户
+ * IDaaS Create tenant
  * </p>
- * @author 刘斌华
- * @date 2022-05-17 18:37:08
  */
-@ApiModel("玉符 IDaaS 创建租户")
+@ApiModel("IDaaS Create tenant")
 @Setter
 @Getter
 @Builder
@@ -25,21 +23,21 @@ import lombok.experimental.Tolerate;
 public class IdaasTenantCreateVo {
 
     /**
-     * 主键 ID
+     * Primary key ID
      */
-    @ApiModelProperty("主键 ID")
+    @ApiModelProperty("Primary key ID")
     private Long id;
 
     /**
-     * 租户 ID
+     * tenant ID
      */
-    @ApiModelProperty("租户 ID")
+    @ApiModelProperty("tenant ID")
     private String tenantId;
 
     /**
-     * 租户名
+     * tenant name
      */
-    @ApiModelProperty("租户名")
+    @ApiModelProperty("tenant name")
     private String tenantName;
 
     @Tolerate

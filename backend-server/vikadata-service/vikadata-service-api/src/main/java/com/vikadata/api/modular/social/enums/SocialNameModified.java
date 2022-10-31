@@ -2,23 +2,16 @@ package com.vikadata.api.modular.social.enums;
 
 /**
  * <p>
- * 是否作为第三方 IM 用户修改过昵称
+ * Whether the nickname has been modified as a third-party IM user
  * </p>
- * @author 刘斌华
- * @date 2022-03-10 10:16:08
  */
 public enum SocialNameModified {
+    NO(0),
+
+    YES(1),
 
     /**
-     * 否
-     */
-    NO(0),
-    /**
-     * 是
-     */
-    YES(1),
-    /**
-     * 不是 IM 第三方用户
+     * Not an IM third-party user
      */
     NO_SOCIAL(2),
 

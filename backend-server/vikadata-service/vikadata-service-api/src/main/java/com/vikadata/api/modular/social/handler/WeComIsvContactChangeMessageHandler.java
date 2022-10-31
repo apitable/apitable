@@ -21,10 +21,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商从企业微信应用市场发起通讯录变更通知
+ * The third party service provider initiates the notice of address book change from the We Com application market
  * </p>
- * @author 刘斌华
- * @date 2022-01-11 18:09:28
  */
 @Component
 @Slf4j

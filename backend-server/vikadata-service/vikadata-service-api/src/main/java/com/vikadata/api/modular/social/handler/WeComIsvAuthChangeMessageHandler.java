@@ -20,10 +20,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商从企业微信应用市场发起变更授权通知
+ * Third party service provider initiates change authorization notice from WeCom application market
  * </p>
- * @author 刘斌华
- * @date 2022-01-05 15:31:04
  */
 @Component
 public class WeComIsvAuthChangeMessageHandler implements WeComIsvMessageHandler {
@@ -42,7 +40,7 @@ public class WeComIsvAuthChangeMessageHandler implements WeComIsvMessageHandler 
     public WxCpXmlOutMessage handle(WxCpTpXmlMessage wxMessage, Map<String, Object> context,
             WxCpTpService wxCpService, WxSessionManager sessionManager) {
 
-        // 响应必须在 1000ms 内完成，因此在当前事件中仅记录下相关信息，后续再处理业务
+        // The response must be completed within 1000ms, so only the relevant information is recorded in the current event, and then the business is processed later
         SocialCpIsvMessageEntity entity = SocialCpIsvMessageEntity.builder()
                 .type(WeComIsvMessageType.AUTH_CHANGE.getType())
                 .suiteId(wxMessage.getSuiteId())

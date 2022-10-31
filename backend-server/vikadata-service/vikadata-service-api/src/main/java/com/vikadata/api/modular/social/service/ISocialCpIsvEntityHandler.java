@@ -7,30 +7,24 @@ import com.vikadata.social.wecom.constants.WeComIsvMessageType;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用消息通知信息处理
+ * Third party platform integration - WeCom third-party service provider application message notification information processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-11 11:14:40
  */
 public interface ISocialCpIsvEntityHandler {
 
     /**
-     * 消息类型
+     * Message Type
      *
      * @return {@link WeComIsvMessageType}
-     * @author 刘斌华
-     * @date 2022-01-11 11:21:11
      */
     WeComIsvMessageType type();
 
     /**
-     * 处理还未处理的消息
+     * Process messages that have not yet been processed
      *
-     * @param unprocessed 待处理的信息
-     * @return 是否有数据处理成功
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-11 11:18:55
+     * @param unprocessed Information to be processed
+     * @return Whether data processing is successful
+     * @throws WxErrorException WeCom interface exception
      */
     boolean process(SocialCpIsvMessageEntity unprocessed) throws WxErrorException;
 

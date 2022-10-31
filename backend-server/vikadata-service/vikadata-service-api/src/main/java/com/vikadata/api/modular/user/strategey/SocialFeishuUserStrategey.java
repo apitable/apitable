@@ -26,11 +26,8 @@ import static com.vikadata.api.enums.exception.UserException.SIGN_IN_ERROR;
 
 /**
  * <p>
- * 飞书创建SocialUser策略实现
+ * Lark creates social user policy implementation
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 11:22:14
  */
 @Component
 public class SocialFeishuUserStrategey extends AbstractCreateSocialUser {
@@ -59,9 +56,9 @@ public class SocialFeishuUserStrategey extends AbstractCreateSocialUser {
         if (StrUtil.isNotBlank(bindSpaceId)) {
             member = iMemberService.getBySpaceIdAndOpenId(bindSpaceId, user.getOpenId());
         }
-        // 兼容跟换了主体信息，导致unionId发生改变
+        // Compatible with the change of the subject information, resulting in the change of the union ID
         if (userId == null && member != null && member.getUserId() != null) {
-            // 创建关联用户,将userId和新的unionId关联上
+            // Create an associated user and associate the user ID with the new union ID
             iSocialUserBindService.create(member.getUserId(), user.getUnionId());
             boolean isLink = iUserLinkService.isUserLink(user.getUnionId(), LinkType.FEISHU.getType());
             if (!isLink) {
@@ -70,13 +67,13 @@ public class SocialFeishuUserStrategey extends AbstractCreateSocialUser {
             userId = member.getUserId();
         }
         if (null == userId) {
-            // 创建用户
+            // Create User
             UserEntity entity = this.createUserAndCopyAvatar(user, SIGN_IN_ERROR);
-            // 创建用户活动记录
+            // Create user activity record
             iPlayerActivityService.createUserActivityRecord(entity.getId());
-            // 创建个人邀请码
+            // Create personal invitation code
             ivCodeService.createPersonalInviteCode(entity.getId());
-            // 创建关联用户
+            // Create Associated User
             iSocialUserBindService.create(entity.getId(), user.getUnionId());
             boolean isLink = iUserLinkService.isUserLink(user.getUnionId(), LinkType.FEISHU.getType());
             if (!isLink) {
@@ -84,12 +81,12 @@ public class SocialFeishuUserStrategey extends AbstractCreateSocialUser {
             }
             userId = entity.getId();
             ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-            // 神策埋点 - 注册
+            // Shence burial site - registration
             Long finalUserId = userId;
             String scene = "飞书ISV";
             TaskManager.me().execute(() -> sensorsService.track(finalUserId, TrackEventType.REGISTER, scene, origin));
         }
-        // 关联所在租户空间的成员
+        // Associate the members of the tenant space
         if (member != null) {
             MemberEntity updatedMember = new MemberEntity();
             updatedMember.setId(member.getId());

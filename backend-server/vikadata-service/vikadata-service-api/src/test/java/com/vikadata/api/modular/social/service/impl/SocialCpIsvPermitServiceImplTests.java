@@ -51,10 +51,8 @@ import static org.mockito.Mockito.lenient;
 
 /**
  * <p>
- * 企微服务商接口许可
+ * WeCom Service Provider Interface License
  * </p>
- * @author 刘斌华
- * @date 2022-07-06 11:29:49
  */
 class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
 
@@ -191,7 +189,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
         String activeCode = "testActiveCode";
         String orderId = "testOrderId";
 
-        // 预填充数据
+        // Pre populated data
         WxCpIsvPermitListOrderAccount.AccountList accountList = new WxCpIsvPermitListOrderAccount.AccountList();
         accountList.setActiveCode(activeCode);
         accountList.setType(1);
@@ -241,7 +239,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
         String authCorpId = "testAuthCorpId";
         String activeCode = "testActiveCode";
         String orderId = "testOrderId";
-        // 预填充数据
+        // Pre populated data
         WxCpIsvPermitListOrderAccount.AccountList accountList = new WxCpIsvPermitListOrderAccount.AccountList();
         accountList.setActiveCode(activeCode);
         accountList.setType(1);
@@ -320,11 +318,9 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialTenantBindService#getBySpaceId(String)}
      *
-     * @param suiteId 预期的应用套件 ID
-     * @param authCorpId 预期的授权企业 ID
-     * @param spaceId 预期的空间站 ID
-     * @author 刘斌华
-     * @date 2022-07-18 11:06:42
+     * @param suiteId Expected App Suite ID
+     * @param authCorpId Expected Authorized Enterprise ID
+     * @param spaceId Expected space ID
      */
     private void mockGetBySpaceId(String suiteId, String authCorpId, String spaceId) {
         Mockito.when(socialTenantBindService.getBySpaceId(spaceId))
@@ -338,9 +334,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialWecomPermitOrderAccountService#getNeedActivateCpUserIds(String, String, String)}
      *
-     * @param cpUserId 预期的企微用户 ID
-     * @author 刘斌华
-     * @date 2022-07-18 11:08:02
+     * @param cpUserId Expected enterprise WeCom users ID
      */
     private void mockGetNeedActivateCpUserIds(String cpUserId) {
         Mockito.when(socialWecomPermitOrderAccountService.getNeedActivateCpUserIds(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -348,10 +342,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * Mock 获取 {@link WxCpIsvPermitServiceImpl}
-     *
-     * @author 刘斌华
-     * @date 2022-07-18 11:09:05
+     * Mock Get {@link WxCpIsvPermitServiceImpl}
      */
     private void mockWxCpIsvPermitService() {
         Mockito.when(weComTemplate.isvService(Mockito.any()))
@@ -361,12 +352,10 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * Mock 获取企微应用信息配置
+     * Mock Get enterprise WeCom application information configuration
      *
-     * @param suiteId 预期的应用套件 ID
-     * @param permitBuyerUserId 预期的接口许可下单人的企微用户 ID
-     * @author 刘斌华
-     * @date 2022-07-18 11:10:02
+     * @param suiteId Expected App Suite ID
+     * @param permitBuyerUserId The enterprise WeCom user ID of the person under the expected interface license
      */
     private void mockGetIsvAppList(String suiteId, String permitBuyerUserId) {
         WeComProperties.IsvApp isvApp = new WeComProperties.IsvApp();
@@ -381,9 +370,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#createNewOrder(String, Integer, Integer, String)}
      *
-     * @param orderId 预期的接口许可单号
-     * @author 刘斌华
-     * @date 2022-07-18 11:10:51
+     * @param orderId Expected interface license number
      */
     private void mockCreateNewOrder(String orderId) throws WxErrorException {
         WxCpIsvPermitCreateNewOrder wxCpIsvPermitCreateNewOrder = new WxCpIsvPermitCreateNewOrder();
@@ -395,11 +382,9 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#getOrder(String)}
      *
-     * @param authCorpId 预期的授权企业 ID
-     * @param orderId 预期的接口许可单号
-     * @param isPaid 预期是否已支付
-     * @author 刘斌华
-     * @date 2022-07-18 11:11:52
+     * @param authCorpId Expected Authorized Enterprise ID
+     * @param orderId Expected interface license number
+     * @param isPaid Whether it is expected to have been paid
      */
     private void mockGetOrder(String authCorpId, String orderId, boolean isPaid) throws WxErrorException {
         WxCpIsvPermitGetOrder wxCpIsvPermitGetOrder = new WxCpIsvPermitGetOrder();
@@ -428,9 +413,6 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
 
     /**
      * Mock {@link ISocialWecomPermitOrderService#save(Object)}
-     *
-     * @author 刘斌华
-     * @date 2022-07-18 11:13:08
      */
     private void mockSave(String suiteId, String authCorpId, String orderId, String buyerUserId, boolean isPaid) {
         SocialWecomPermitOrderEntity socialWecomPermitOrderEntity = SocialWecomPermitOrderEntity.builder()
@@ -454,12 +436,10 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialWecomPermitOrderService#getByOrderId(String)}
      *
-     * @param suiteId 预期的应用套件 ID
-     * @param authCorpId 预期的授权企业 ID
-     * @param orderId 预期的接口许可单号
-     * @param isPaid 预期订单是否已支付
-     * @author 刘斌华
-     * @date 2022-07-18 11:13:49
+     * @param suiteId Expected App Suite ID
+     * @param authCorpId Expected Authorized Enterprise ID
+     * @param orderId Expected interface license number
+     * @param isPaid Whether the expected order has been paid
      */
     private void mockGetByOrderId(String suiteId, String authCorpId, String orderId, boolean isPaid) {
         Mockito.when(socialWecomPermitOrderService.getByOrderId(Mockito.any()))
@@ -480,9 +460,6 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
 
     /**
      * Mock {@link ISocialWecomPermitOrderService#updateById(Object)}
-     *
-     * @author 刘斌华
-     * @date 2022-07-18 11:15:00
      */
     private void mockUpdateById() {
         Mockito.when(socialWecomPermitOrderService.updateById(Mockito.any()))
@@ -492,9 +469,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialTenantBindService#getTenantBindSpaceId(String, String)}
      *
-     * @param spaceId 预期的空间站 ID
-     * @author 刘斌华
-     * @date 2022-07-18 11:15:30
+     * @param spaceId Expected space ID
      */
     private void mockGetTenantBindSpaceId(String spaceId) {
         Mockito.when(socialTenantBindService.getTenantBindSpaceId(Mockito.any(), Mockito.any()))
@@ -504,9 +479,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link IsocialWecomPermitOrderAccountBindService#getCountByOrderId(String)}
      *
-     * @param count 预期返回的数量
-     * @author 刘斌华
-     * @date 2022-07-18 11:16:30
+     * @param count Expected quantity returned
      */
     private void mockGetCountByOrderId(int count) {
         Mockito.when(socialWecomPermitOrderAccountBindService.getCountByOrderId(Mockito.any()))
@@ -516,9 +489,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#listOrderAccount(String, Integer, String)}
      *
-     * @param activeCode 预期返回的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:17:13
+     * @param activeCode Expected return activation code
      */
     private void mockListOrderAccount(String activeCode) throws WxErrorException {
         WxCpIsvPermitListOrderAccount wxCpIsvPermitListOrderAccount = new WxCpIsvPermitListOrderAccount();
@@ -535,9 +506,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialWecomPermitOrderAccountService#getActiveCodesByOrderId(String, String, String, List)}
      *
-     * @param activeCode 预期返回的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:18:19
+     * @param activeCode Expected return activation code
      */
     private void mockGetActiveCodesByOrderId(String activeCode) {
         Mockito.when(socialWecomPermitOrderAccountService.getActiveCodesByOrderId(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
@@ -546,9 +515,6 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
 
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#batchActiveAccount(WxCpIsvPermitBatchActiveAccountRequest)}
-     *
-     * @author 刘斌华
-     * @date 2022-07-18 11:19:06
      */
     private void mockBatchActiveAccount() throws WxErrorException {
         Mockito.when(wxCpIsvPermitService.batchActiveAccount(Mockito.any()))
@@ -558,9 +524,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#batchGetActiveInfo(String, List)}
      *
-     * @param activeCode 预期返回的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:19:37
+     * @param activeCode Expected return activation code
      */
     private void mockBatchGetActiveInfo(String activeCode) throws WxErrorException {
         WxCpIsvPermitBatchGetActiveInfo.ActiveInfoList activeInfoList = new WxCpIsvPermitBatchGetActiveInfo.ActiveInfoList();
@@ -578,11 +542,9 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialWecomPermitOrderAccountService#getByActiveCodes(String, String, List)}
      *
-     * @param suiteId 预期返回的应用套件 ID
-     * @param authCorpId 预期返回的授权企业 ID
-     * @param activeCode 预期返回的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:20:11
+     * @param suiteId Expected returned application suite ID
+     * @param authCorpId Expected returned authorized enterprise ID
+     * @param activeCode Expected return activation code
      */
     private void mockGetByActiveCodes(String suiteId, String authCorpId, String activeCode) {
         Mockito.when(socialWecomPermitOrderAccountService.getByActiveCodes(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -597,9 +559,6 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
 
     /**
      * Mock {@link ISocialWecomPermitOrderAccountService#updateBatchById(Collection)}
-     *
-     * @author 刘斌华
-     * @date 2022-07-18 11:21:07
      */
     private void mockUpdateBatchById() {
         Mockito.when(socialWecomPermitOrderAccountService.updateBatchById(Mockito.any()))
@@ -609,9 +568,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#createRenewOrder(WxCpIsvPermitCreateRenewOrderRequest)}
      *
-     * @param jobId 预期返回的 jobId
-     * @author 刘斌华
-     * @date 2022-07-18 11:22:00
+     * @param jobId Expected returned jobId
      */
     private void mockCreateRenewOrder(String jobId) throws WxErrorException {
         WxCpIsvPermitCreateRenewOrderResponse wxCpIsvPermitCreateRenewOrderResponse = new WxCpIsvPermitCreateRenewOrderResponse();
@@ -624,9 +581,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link WxCpIsvPermitServiceImpl#submitRenewOrder(String, Integer, String)}
      *
-     * @param orderId 预期返回的单号
-     * @author 刘斌华
-     * @date 2022-07-18 11:22:39
+     * @param orderId Expected return order number
      */
     private void mockSubmitRenewOrder(String orderId) throws WxErrorException {
         WxCpIsvPermitSubmitRenewOrder wxCpIsvPermitSubmitRenewOrder = new WxCpIsvPermitSubmitRenewOrder();
@@ -639,9 +594,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link ISocialWecomPermitOrderAccountService#getActiveCodes(String, String, List)}
      *
-     * @param activeCode 预期返回的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:23:16
+     * @param activeCode Expected return activation code
      */
     private void mockGetActiveCodes(String activeCode) {
         Mockito.when(socialWecomPermitOrderAccountService.getActiveCodes(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -650,9 +603,6 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
 
     /**
      * Mock {@link ISocialWecomPermitDelayService#addAuthCorp(String, String, LocalDateTime, Integer, Integer)}
-     *
-     * @author 刘斌华
-     * @date 2022-08-15 11:44:23
      */
     private void mockAddAuthCorp() {
         lenient().when(socialWecomPermitDelayService.addAuthCorp(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
@@ -662,9 +612,7 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     /**
      * Mock {@link RestTemplate#postForObject(String, Object, Class, Object...)}
      *
-     * @param response 预期的返回结果
-     * @author 刘斌华
-     * @date 2022-08-04 14:19:07
+     * @param response Expected return results
      */
     private void mockPostForObject(String response) {
         Mockito.when(restTemplate.postForObject((String) Mockito.any(), Mockito.any(), Mockito.any()))
@@ -672,11 +620,9 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * Mock 保存激活码
+     * Mock Save Activation Code
      *
-     * @param activeCode 预期返回的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:23:58
+     * @param activeCode Expected return activation code
      */
     private void mockSaveAllActiveCodes(String suite, String authCorpId, String orderId, String activeCode) throws WxErrorException {
         mockWxCpIsvPermitService();
@@ -685,13 +631,11 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * Mock 确认激活码
+     * Mock Confirm Activation Code
      *
-     * @param suiteId 预期的应用套件 ID
-     * @param authCorpId 预期的授权企业 ID
-     * @param activeCode 预期的激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:24:31
+     * @param suiteId Expected App Suite ID
+     * @param authCorpId Expected Authorized Enterprise ID
+     * @param activeCode Expected activation code
      */
     private void mockEnsureActiveCodes(String suiteId, String authCorpId, String activeCode) throws WxErrorException {
         mockWxCpIsvPermitService();
@@ -701,14 +645,12 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * Mock 激活账号
+     * Mock Activate account
      *
-     * @param suiteId 预期的应用套件 ID
-     * @param authCorpId 预期的授权企业 ID
-     * @param activeCode 预期的激活码
-     * @param cpUserId 预期的企微用户 ID
-     * @author 刘斌华
-     * @date 2022-07-18 11:25:08
+     * @param suiteId Expected App Suite ID
+     * @param authCorpId Expected Authorized Enterprise ID
+     * @param activeCode Expected activation code
+     * @param cpUserId Expected enterprise user ID
      */
     private void mockActivateAccount(String suiteId, String authCorpId, String activeCode, String cpUserId) throws WxErrorException {
         mockGetNeedActivateCpUserIds(cpUserId);
@@ -718,14 +660,12 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * 调用 {@link ISocialWecomPermitOrderAccountService#batchSaveActiveCode(String, String, String, List)}
+     * Call {@link ISocialWecomPermitOrderAccountService#batchSaveActiveCode(String, String, String, List)}
      *
-     * @param suiteId 预应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param orderId 订单号
-     * @param activeCode 激活码
-     * @author 刘斌华
-     * @date 2022-07-18 11:17:44
+     * @param suiteId Pre application Suite ID
+     * @param authCorpId Authorized enterprise ID
+     * @param orderId order ID
+     * @param activeCode Activation code
      */
     private void realBatchSaveActiveCode(String suiteId, String authCorpId, String orderId, String activeCode) {
         WxCpIsvPermitListOrderAccount.AccountList accountList = new WxCpIsvPermitListOrderAccount.AccountList();
@@ -742,11 +682,9 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * 调用 {@link IBundleService#getActivatedBundleBySpaceId(String)}
+     * Call {@link IBundleService#getActivatedBundleBySpaceId(String)}
      *
-     * @param spaceId 空间站 ID
-     * @author 刘斌华
-     * @date 2022-08-04 14:04:51
+     * @param spaceId Space ID
      */
     private Bundle realGetActivatedBundleBySpaceId(String spaceId) {
         return Mockito.doAnswer(invocation -> realBundleService.getActivatedBundleBySpaceId(spaceId))
@@ -755,12 +693,10 @@ class SocialCpIsvPermitServiceImplTests extends AbstractIsvTest {
     }
 
     /**
-     * 调用 {@link ISocialTenantService#getByAppIdAndTenantId(String, String)}
+     * Call {@link ISocialTenantService#getByAppIdAndTenantId(String, String)}
      *
-     * @param suiteId 预应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @author 刘斌华
-     * @date 2022-08-04 14:04:51
+     * @param suiteId Pre application Suite ID
+     * @param authCorpId Authorized enterprise ID
      */
     private void realGetByAppIdAndTenantId(String suiteId, String authCorpId) {
         Mockito.doAnswer(invocation -> realSocialTenantService.getByAppIdAndTenantId(suiteId, authCorpId))

@@ -25,10 +25,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用版本变更信息
+ * Third party platform integration - WeCom third-party service provider application version change information
  * </p>
- * @author 刘斌华
- * @date 2022-04-28 10:36:22
  */
 @Service
 public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEditionChangelogWeComMapper, SocialEditionChangelogWecomEntity>
@@ -53,11 +51,11 @@ public class SocialEditionChangelogWeComServiceImpl extends ServiceImpl<SocialEd
                 .paidCorpId(paidCorpId)
                 .build();
         if (fetchEditionInfo) {
-            // 需要获取企业应用版本信息
+            // Need to get the enterprise application version information
             SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, paidCorpId);
             ExceptionUtil.isNotNull(socialTenantEntity, SocialException.TENANT_NOT_EXIST);
             ExceptionUtil.isTrue(socialTenantEntity.getStatus(), SocialException.TENANT_DISABLED);
-            // 获取并填充应用版本信息
+            // Get and fill in the application version information
             WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
             WxCpIsvAuthInfo wxCpIsvAuthInfo = wxCpIsvService.getAuthInfo(paidCorpId, socialTenantEntity.getPermanentCode());
             WxCpIsvAuthInfo.EditionInfo.Agent agent = Optional.ofNullable(wxCpIsvAuthInfo.getEditionInfo())

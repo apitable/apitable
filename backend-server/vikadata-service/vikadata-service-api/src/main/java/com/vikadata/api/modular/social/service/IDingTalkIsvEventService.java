@@ -8,98 +8,78 @@ import com.vikadata.social.dingtalk.event.sync.http.contact.SyncHttpUserLeaveOrg
 
 /**
  * <p> 
- * ISV钉钉事件服务接口
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/14 3:37 下午
+ * ISV DingTalk Event Service Interface
+ * </p>
  */
 public interface IDingTalkIsvEventService {
     /**
-     * 处理钉钉企业授权事件
+     * Handle the DingTalk enterprise authorization event
      *
-     * @param suiteId 套件ID
-     * @param event 授权事件
-     * @author zoe zheng
-     * @date 2021/9/13 2:41 下午
+     * @param suiteId Suit ID
+     * @param event Authorization Event
      */
     void handleOrgSuiteAuthEvent(String suiteId, BaseOrgSuiteEvent event);
 
     /**
-     * 处理钉钉授权变更事件
+     * Handle the DingTalk authorization change event
      *
-     * @param suiteId 套件ID
-     * @param event 授权事件
-     * @author zoe zheng
-     * @date 2021/9/18 14:31
+     * @param suiteId Suit ID
+     * @param event Authorization Event
      */
     void handleOrgSuiteChangeEvent(String suiteId, BaseOrgSuiteEvent event);
 
     /**
-     * 处理钉钉企业解除授权
+     * Process DingTalk Enterprise De authorization
      *
-     * @param suiteId 套件ID
-     * @param corpId 授权企业ID
-     * @author zoe zheng
-     * @date 2021/9/13 2:41 下午
+     * @param suiteId Suit ID
+     * @param corpId Authorized enterprise ID
      */
     void handleOrgSuiteRelieveEvent(String suiteId, String corpId);
 
     /**
-     * 处理钉钉应用启用事件
-     * 因为这个事件只能是后台操作，所以之前一定是后台手动停用了
+     * Process the DingTalk app enable event
+     * Because this event can only be a background operation, it must have been manually disabled in the background before
      *
-     * @param suiteId 套件ID
-     * @param corpId 授权企业ID
-     * @author zoe zheng
-     * @date 2021/9/13 2:41 下午
+     * @param suiteId Suit ID
+     * @param corpId Authorized enterprise ID
      */
     void handleOrgMicroAppRestoreEvent(String suiteId, String corpId);
 
     /**
-     * 处理钉钉应用停用事件，这个事件只能是后台操作，并且可以重新启用，所以不删除用户信息
+     * Process the Ding Talk application deactivation event. This event can only be a background operation and can be re enabled, so the user information will not be deleted
      *
-     * @param suiteId 套件ID
-     * @param corpId 授权企业ID
-     * @author zoe zheng
-     * @date 2021/9/13 2:41 下午
+     * @param suiteId Suit ID
+     * @param corpId Authorized enterprise ID
      */
     void handleOrgMicroAppStopEvent(String suiteId, String corpId);
 
     /**
-     * 处理用户加入企业
+     * Process user joining the enterprise
      *
-     * @param openId 用户ID
-     * @param event 事件
-     * @author zoe zheng
-     * @date 2021/9/22 10:24
+     * @param openId User ID
+     * @param event Event
      */
     void handleUserAddOrgEvent(String openId, BaseOrgUserContactEvent event);
 
     /**
-     * 处理用户离开企业
+     * Handle user leaving the enterprise
      *
-     * @param openId 用户ID
-     * @param event 事件
-     * @author zoe zheng
-     * @date 2021/9/22 13:53
+     * @param openId User ID
+     * @param event Event
      */
     void handleUserLeaveOrgEvent(String openId, SyncHttpUserLeaveOrgEvent event);
 
     /**
-     * 处理应用市场下单信息
+     * Processing application market order information
      *
-     * @param event 订单信息
-     * @author zoe zheng
-     * @date 2021/10/26 12:04
+     * @param event Order information
      */
     void handleMarketOrderEvent(SyncHttpMarketOrderEvent event);
 
     /**
-     *  处理订单关闭事件
+     *  Process the order closing event
      *
-     * @param event 退订订单信息
-     * @author zoe zheng
-     * @date 2021/10/27 14:35
+     * @param event Unsubscribe Order Information
      */
     void handleMarketServiceClosedEvent(SyncHttpMarketServiceCloseEvent event);
 }

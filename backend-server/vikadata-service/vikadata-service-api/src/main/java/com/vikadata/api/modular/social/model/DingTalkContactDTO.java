@@ -7,10 +7,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 钉钉用户信息
+ * Ding Talk User Information
  * </p>
- * @author zoe zheng
- * @date 2022/4/18 14:21
  */
 @Data
 public class DingTalkContactDTO {

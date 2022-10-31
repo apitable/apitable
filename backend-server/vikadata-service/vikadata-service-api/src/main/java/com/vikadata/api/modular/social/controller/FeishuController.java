@@ -42,13 +42,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * 飞书接入接口
- * @author Shawn Deng
- * @date 2021-07-21 10:03:22
+ * Lark access interface
  */
 @RestController
 @ApiResource(path = "/")
-@Api(tags = "飞书接口")
+@Api(tags = "Lark Interface")
 @Slf4j
 public class FeishuController {
 
@@ -80,12 +78,12 @@ public class FeishuController {
     private ISocialTenantUserService iSocialTenantUserService;
 
     @GetResource(path = "/social/feishu/login/callback", requiredLogin = false)
-    @ApiOperation(value = "维格内网飞书入口登录回调", notes = "专属内网版本免登场景，线上不会提供", hidden = true)
+    @ApiOperation(value = "vika integration Lark Portal login callback", notes = "The exclusive intranet version of the login free scenario will not be available online", hidden = true)
     public RedirectView loginCallback(@RequestParam("code") String code) {
         iFeishuService.switchDefaultContext();
-        // 自建应用飞书用户登录后，回调CODE到这里，保证只有一次调用
+        // User's of self built applications will call back the CODE here to ensure that there is only one call after logging in,
         FeishuAccessToken accessToken = iFeishuService.getUserAccessToken(code);
-        // 查询用户的手机号是否存在, 注意返回的手机号是带着区号的
+        // Query whether the user's mobile phone number exists. Note that the returned mobile phone number carries the area code
         String mobile = StrUtil.subSuf(accessToken.getMobile(), 3);
         Long userId = iUserService.getUserIdByMobile(mobile);
         if (userId == null) {
@@ -96,36 +94,36 @@ public class FeishuController {
     }
 
     @GetResource(path = "/social/feishu/admin/callback", requiredLogin = false)
-    @ApiOperation(value = "应用管理后台授权回调", notes = "商店应用，只能接收从飞书应用回调", hidden = true)
+    @ApiOperation(value = "Application management background authorization callback", notes = "Store app can only receive callback from Lark app", hidden = true)
     public RedirectView adminCallback(@RequestParam("code") String code) {
         try {
             iFeishuService.switchDefaultContext();
-            // 必须在应用可用授权范围内才能使用
+            // It can only be used within the scope of application available authorization
             FeishuAccessToken accessToken = iFeishuService.getUserAccessToken(code);
             boolean isTenantAdmin = iFeishuService.checkUserIsAdmin(accessToken.getTenantKey(), accessToken.getOpenId());
             if (!isTenantAdmin) {
-                // 非应用管理员，重定向到错误页面
+                // Non application administrator, redirect to the error page
                 return new RedirectView(getErrorPath("is_not_admin"));
             }
-            // 不存在用户则创建
+            // Create if no user exists
             Long userId = iUserService.createSocialUser(new SocialUser(accessToken.getName(), accessToken.getAvatarUrl(),
                     null, null, null, iFeishuService.getIsvAppId(),
                     accessToken.getTenantKey(), accessToken.getOpenId(), accessToken.getUnionId(), SocialPlatformType.FEISHU));
             SessionContext.setUserId(userId);
-            // 重定向到管理页面，加密租户信息，并传递告诉页面这是哪个租户的管理页面
+            // Redirect to the management page, encrypt the tenant information, and tell the page which tenant is the management page
             String redirectUri = constProperties.getServerDomain() + feishuAppProperties.getAdminUri();
             return new RedirectView(StrUtil.format(redirectUri, accessToken.getTenantKey()));
         }
         catch (Exception exception) {
-            log.error("飞书租户管理入口授权失败", exception);
+            log.error("Lark tenant management portal authorization failed", exception);
             return new RedirectView(getErrorPath("auth_fail"));
         }
     }
 
     @GetResource(path = "/social/feishu/admin", requiredLogin = false)
-    @ApiOperation(value = "进入应用管理后台授权回调", notes = "只能接收从飞书应用回调", hidden = true)
+    @ApiOperation(value = "Enter the application management background authorization callback", notes = "Only callback from Lark application can be received", hidden = true)
     public RedirectView adminManagePage() {
-        // 只做构造飞书授权回调
+        // Only construct Lark authorization callback
         iFeishuService.switchDefaultContext();
         String redirectUri = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/social/feishu/admin/callback";
         String authUrl = iFeishuService.buildAuthUrl(redirectUri, String.valueOf(DateUtil.date().getTime()));
@@ -133,28 +131,28 @@ public class FeishuController {
     }
 
     @GetResource(path = "/social/feishu/entry/callback", requiredLogin = false)
-    @ApiOperation(value = "飞书开始使用入口", notes = "只能接收从飞书应用回调", hidden = true)
+    @ApiOperation(value = "Lark starts using the entrance", notes = "Only callback from Lark application can be received", hidden = true)
     public RedirectView feishuEntryCallback(@RequestParam(name = "code") String code,
             @RequestParam(name = "url", required = false) String url,
             HttpServletRequest request) {
-        log.info("收到飞书回调: {}, 参数：{}", request.getRequestURI(), request.getQueryString());
+        log.info("Lark callback received: {}, parameter：{}", request.getRequestURI(), request.getQueryString());
         try {
             iFeishuService.switchDefaultContext();
             FeishuAccessToken accessToken = iFeishuService.getUserAccessToken(code);
-            // 检查是否已登陆，如果未注册，自动创建账户并设置当前用户登录
+            // Check whether you have logged in. If not, automatically create an account and set the current user to log in
             Long userId = iUserService.createSocialUser(new SocialUser(accessToken.getName(), accessToken.getAvatarUrl(),
                     null, null, null, iFeishuService.getIsvAppId(),
                     accessToken.getTenantKey(), accessToken.getOpenId(), accessToken.getUnionId(), SocialPlatformType.FEISHU));
             SessionContext.setUserId(userId);
             if (StrUtil.isNotBlank(url)) {
-                // 提及通知入口
+                // Mention notification entry
                 return new RedirectView(url);
             }
             else {
                 List<String> spaceIds = iSocialTenantBindService.getSpaceIdsByTenantIdAndAppId(accessToken.getTenantKey(), iFeishuService.getIsvAppId());
                 String openId = iSocialTenantUserService.getOpenIdByTenantIdAndUserId(iFeishuService.getIsvAppId(), accessToken.getTenantKey(), userId);
                 if (StrUtil.isBlank(openId)) {
-                    // 跳转默认工作台
+                    // Jump to the default workbench
                     return new RedirectView(constProperties.getServerDomain() + "/workbench");
                 }
                 else {
@@ -162,11 +160,11 @@ public class FeishuController {
                         return new RedirectView(constProperties.getServerDomain() + "/workbench");
                     }
                     else {
-                        // 查询空间是否已经同步完所有成员
+                        // Query whether all members of the space have been synchronized
                         String spaceId = CollUtil.getFirst(spaceIds);
                         int memberCount = iMemberService.getTotalMemberCountBySpaceId(spaceId);
                         if (memberCount > 0) {
-                            // 跳转到指定空间站
+                            // Jump to the designated space station
                             return new RedirectView(StrUtil.format(constProperties.getServerDomain() + "/space/{}/workbench", spaceId));
                         }
                         else {
@@ -177,15 +175,15 @@ public class FeishuController {
             }
         }
         catch (Exception exception) {
-            log.error("飞书应用入口授权失败", exception);
+            log.error("Lark application portal authorization failed", exception);
             return new RedirectView(getErrorPath("auth_fail"));
         }
     }
 
     @GetResource(path = "/social/feishu/entry", requiredLogin = false)
-    @ApiOperation(value = "应用入口", notes = "只能接收从飞书应用点击", hidden = true)
+    @ApiOperation(value = "Application portal", notes = "Can only receive clicks from Lark app", hidden = true)
     public RedirectView feishuEntry(@RequestParam(name = "url", required = false) String url) {
-        // 构造飞书授权登录
+        // Construct Lark authorization login
         String redirectUri = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/social/feishu/entry/callback";
         if (StrUtil.isNotBlank(url)) {
             redirectUri = StrUtil.format(redirectUri + "?url={}", url);
@@ -197,24 +195,24 @@ public class FeishuController {
 
     @GetResource(path = "/social/feishu/tenant/{tenantKey}", requiredPermission = false)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "tenantKey", value = "飞书租户标识", required = true,
+            @ApiImplicitParam(name = "tenantKey", value = "Lark Tenant ID", required = true,
                     dataTypeClass = String.class, paramType = "path", example = "18823789")
     })
-    @ApiOperation(value = "获取租户绑定的信息", notes = "获取租户绑定的空间信息")
+    @ApiOperation(value = "Get tenant binding information", notes = "Get the space information bound by the tenant")
     public ResponseData<FeishuTenantDetailVO> getTenantInfo(@PathVariable("tenantKey") String tenantKey) {
         Long userId = SessionContext.getUserId();
         iFeishuService.switchDefaultContext();
-        // 校验当前操作的用户是否在租户内
+        // Verify whether the current user is in the tenant
         iSocialService.checkUserIfInTenant(userId, iFeishuService.getIsvAppId(), tenantKey);
         return ResponseData.success(iSocialService.getFeishuTenantInfo(iFeishuService.getIsvAppId(), tenantKey));
     }
 
     @PostResource(path = "/social/feishu/changeAdmin", requiredPermission = false)
-    @ApiOperation(value = "租户空间更换主管理员", notes = "更换主管理员")
+    @ApiOperation(value = "Tenant space replacement master administrator", notes = "Replace the master administrator")
     public ResponseData<Void> changeAdmin(@RequestBody @Valid FeishuTenantMainAdminChangeRo opRo) {
         Long userId = SessionContext.getUserId();
         String tenantKey = opRo.getTenantKey();
-        // 校验当前操作的用户是否在租户内
+        // Verify whether the current user is in the tenant
         iFeishuService.switchDefaultContext();
         iSocialService.checkUserIfInTenant(userId, iFeishuService.getIsvAppId(), tenantKey);
         iSocialService.changeMainAdmin(opRo.getSpaceId(), opRo.getMemberId());

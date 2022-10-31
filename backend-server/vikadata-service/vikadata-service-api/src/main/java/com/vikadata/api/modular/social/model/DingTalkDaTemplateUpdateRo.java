@@ -6,35 +6,33 @@ import lombok.Data;
 
 /**
  * <p> 
- * 钉钉搭--修改应用(修改模板)
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/28 15:05
+ * DingTalk--Modify Application (Modify Template)
+ * </p>
  */
-@ApiModel("钉钉搭--修改应用(修改模板)")
+@ApiModel("DingTalk--Modify Application (Modify Template)")
 @Data
 public class DingTalkDaTemplateUpdateRo {
-    @ApiModelProperty(value = "使用模版的企业ID", required = true, position = 1)
+    @ApiModelProperty(value = "Enterprise ID using template", required = true, position = 1)
     private String corpId;
 
-    @ApiModelProperty(value = "创建人id", required = true, position = 2)
+    @ApiModelProperty(value = "Creator ID", required = true, position = 2)
     private String opUserId;
 
-    @ApiModelProperty(value = "应用实例id", position = 3)
+    @ApiModelProperty(value = "Application instance ID", position = 3)
     private String bizAppId;
 
-    @ApiModelProperty(value = "应用名称", position = 4)
+    @ApiModelProperty(value = "Apply name", position = 4)
     private String name;
 
-    @ApiModelProperty(value = "应用状态，0:停用，1:启用", position = 5)
+    @ApiModelProperty(value = "Application status, 0: Deactivate, 1: Enable", position = 5)
     private Integer appStatus;
 
-    @ApiModelProperty(value = "当前时间戳", required = true, position = 6)
+    @ApiModelProperty(value = "Current timestamp", required = true, position = 6)
     private String timestamp;
 
-    @ApiModelProperty(value = "签名", required = true, position = 7)
+    @ApiModelProperty(value = "signature", required = true, position = 7)
     private String signature;
 
-    @ApiModelProperty(value = "请求id，便于排查问题", position = 8)
+    @ApiModelProperty(value = "Request ID for easy troubleshooting", position = 8)
     private String requestId;
 }

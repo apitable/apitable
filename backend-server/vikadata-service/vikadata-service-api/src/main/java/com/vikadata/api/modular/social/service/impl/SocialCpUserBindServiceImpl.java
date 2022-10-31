@@ -22,10 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成-企业微信用户绑定 服务接口
+ * Third party platform integration WeCom user binding service interface
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:19:36
  */
 @Slf4j
 @Service

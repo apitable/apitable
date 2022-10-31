@@ -8,11 +8,9 @@ import com.vikadata.social.dingtalk.event.CheckUrlEvent;
 
 /**
  * <p>
- * 钉钉
- * 事件订阅 - 基本事件
+ * DingTalk
+ * Event Subscription - Basic Event
  * </p>
- * @author zoe zheng
- * @date 2021/5/13 4:36 下午
  */
 @DingTalkEventHandler
 @Slf4j
@@ -20,14 +18,14 @@ public class DingTalkAppEventHandler {
 
 
     /**
-     * 用户激活
+     * User Activation
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onCheckUrl(String agentId, CheckUrlEvent event) {
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return "";
     }
 }

@@ -42,8 +42,6 @@ import static java.lang.Thread.sleep;
  * <p>
  * {@link WeComOrderServiceImpl} unit tests
  * </p>
- * @author Codeman
- * @date 2022-08-29 19:06:46
  */
 class WeComOrderServiceImplTests extends AbstractIsvTest {
 

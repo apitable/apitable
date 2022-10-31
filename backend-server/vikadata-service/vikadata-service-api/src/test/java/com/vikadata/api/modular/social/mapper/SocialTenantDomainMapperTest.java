@@ -17,11 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     测试访问层测试：第三方平台集成-企业租户专属域名表测试
+ *     Test access layer test: third-party platform integration - enterprise tenant exclusive domain name table test
  * </p>
- *
- * @author wuyitao
- * @date 2022/4/4 4:43 PM
  */
 @Disabled
 public class SocialTenantDomainMapperTest extends AbstractMyBatisMapperTest {

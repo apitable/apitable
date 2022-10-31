@@ -1,7 +1,7 @@
 package com.vikadata.api.modular.social.constants;
 
 /**
- *  飞书常量定义
+ *  Lark constant definition
  * @author Shawn Deng
  * @date 2022-02-08 10:25:57
  */

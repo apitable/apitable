@@ -23,10 +23,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商从企业微信应用市场发起取消授权通知
+ * The third-party service provider sends a notice of authorization cancellation from the We Com application market
  * </p>
- * @author 刘斌华
- * @date 2022-01-05 15:31:04
  */
 @Component
 public class WeComIsvAuthCancelMessageHandler implements WeComIsvMessageHandler {
@@ -48,12 +46,12 @@ public class WeComIsvAuthCancelMessageHandler implements WeComIsvMessageHandler 
     public WxCpXmlOutMessage handle(WxCpTpXmlMessage wxMessage, Map<String, Object> context,
             WxCpTpService wxCpService, WxSessionManager sessionManager) {
 
-        // 将该企业的 access_token 过期
+        // Set the access of the enterprise_ Token expired
         WxCpTpService wxCpTpService = weComTemplate.isvService(wxMessage.getSuiteId());
-        @SuppressWarnings("deprecation") // 需要用该对象来刷新 access_token
+        @SuppressWarnings("deprecation") //  need to use this object to refresh access_ token
         WxCpTpConfigStorage wxCpTpConfigStorage = wxCpTpService.getWxCpTpConfigStorage();
         wxCpTpConfigStorage.expireAccessToken(wxMessage.getAuthCorpId());
-        // 响应必须在 1000ms 内完成，因此在当前事件中仅记录下相关信息，后续再处理业务
+        // The response must be completed within 1000ms, so only the relevant information is recorded in the current event, and then the business is processed later
         SocialCpIsvMessageEntity entity = SocialCpIsvMessageEntity.builder()
                 .type(WeComIsvMessageType.AUTH_CANCEL.getType())
                 .suiteId(wxMessage.getSuiteId())

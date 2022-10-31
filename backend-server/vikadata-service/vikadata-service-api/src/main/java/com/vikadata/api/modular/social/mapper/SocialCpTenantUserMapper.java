@@ -10,92 +10,76 @@ import com.vikadata.entity.SocialCpTenantUserEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业微信租户用户 Mapper
+ * Third party platform integration WeCom tenant user Mapper
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:26:21
  */
 public interface SocialCpTenantUserMapper extends BaseMapper<SocialCpTenantUserEntity> {
 
     /**
-     * 快速批量插入
+     * Quick Bulk Insert
      *
-     * @param entities 列表
-     * @return 执行结果数
-     * @author Pengap
-     * @date 2021/8/5 20:40:41
+     * @param entities list
+     * @return Number of execution results
      */
     int insertBatch(@Param("entities") List<SocialCpTenantUserEntity> entities);
 
     /**
-     * 查询租户下的所有openId
+     * Query all open IDs under the tenant
      *
-     * @param tenantId 租户标识
-     * @param appId    租户应用标识
+     * @param tenantId Tenant ID
+     * @param appId    Tenant application ID
      * @return openIds
-     * @author Pengap
-     * @date 2021/8/5 20:40:41
      */
     List<CpTenantUserDTO> selectOpenIdsByTenantId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
     /**
-     * 批量删除企业微信用户
+     * Mass deletion of We Com users
      *
-     * @param tenantId  企业微信Id
-     * @param appId     企业微信应用Id
-     * @param cpUserIds 企业微信用户Ids
+     * @param tenantId  WeCom ID
+     * @param appId     WeCom application ID
+     * @param cpUserIds WeCom user Ids
      * @return int
-     * @author Pengap
-     * @date 2021/8/16 21:17:32
      */
     int batchDeleteByCorpAgent(@Param("tenantId") String tenantId, @Param("appId") String appId, @Param("cpUserIds") List<String> cpUserIds);
 
     /**
-     * 查询企业为成员信息
+     * Query the information that the enterprise is a member
      *
-     * @param tenantId  企业微信Id
-     * @param appId     企业微信应用Id
-     * @param cpUserId  企业微信用户Id
-     * @return 企业微信成员信息
-     * @author Pengap
-     * @date 2021/8/19 16:21:15
+     * @param tenantId  WeCom ID
+     * @param appId     WeCom application ID
+     * @param cpUserId  WeCom user ID
+     * @return WeCom member information
      */
     SocialCpTenantUserEntity selectByTenantIdAndAppIdAndCpUserId(@Param("tenantId") String tenantId, @Param("appId") String appId, @Param("cpUserId") String cpUserId);
 
     /**
-     * 查询企业微信成员信息
+     * Query WeCom member information
      *
-     * @param tenantId  企业微信Id
-     * @param appId     企业微信应用Id
-     * @param cpUserIds  企业微信用户Id
-     * @return 企业微信成员信息
-     * @author 刘斌华
-     * @date 2022-04-13 17:09:05
+     * @param tenantId  WeCom ID
+     * @param appId     WeCom application ID
+     * @param cpUserIds  WeCom user ID
+     * @return WeCom member information
      */
     List<SocialCpTenantUserEntity> selectByTenantIdAndAppIdAndCpUserIds(@Param("tenantId") String tenantId, @Param("appId") String appId, @Param("cpUserIds") List<String> cpUserIds);
 
     /**
-     * 查询企业微信成员信息
+     * Query We Com member information
      *
-     * @param tenantId 租户 ID
-     * @param appId 应用 ID
-     * @param userId 维格用户 ID
-     * @return 企业微信成员信息
-     * @author 刘斌华
-     * @date 2022-02-15 11:55:50
+     * @param tenantId tenant ID
+     * @param appId application ID
+     * @param userId vika user ID
+     * @return WeCom member information
      */
     SocialCpTenantUserEntity selectByTenantIdAndAppIdAndUserId(@Param("tenantId") String tenantId,
             @Param("appId") String appId, @Param("userId") Long userId);
 
     /**
-     * 查询CpTenantUserId
+     * Query CpTenantUserId
      *
-     * @param tenantId  企业微信Id
-     * @param appId     企业微信应用Id
-     * @param cpUserId  企业微信用户Id
-     * @return 企业微信成员信息
-     * @author Pengap
-     * @date 2021/8/19 16:21:15
+     * @param tenantId  WeComId
+     * @param appId     WeCom application ID
+     * @param cpUserId  WeCom user ID
+     * @return WeCom member information
      */
     Long selectIdByTenantIdAndAppIdAndCpUserId(@Param("tenantId") String tenantId, @Param("appId") String appId, @Param("cpUserId") String cpUserId);
 

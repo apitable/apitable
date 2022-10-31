@@ -23,10 +23,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商授权企业订单支付成功通知
+ * Notice of successful payment of the order of the enterprise authorized by the third-party service provider
  * </p>
- * @author 刘斌华
- * @date 2022-04-22 09:51:20
  */
 @Component
 @Slf4j

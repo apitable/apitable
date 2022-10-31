@@ -9,80 +9,66 @@ import com.vikadata.entity.SocialCpUserBindEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业微信用户绑定 Mapper
+ * Third party platform integration WeCom user binding Mapper
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:26:13
  */
 public interface SocialCpUserBindMapper extends BaseMapper<SocialCpUserBindEntity> {
 
     /**
-     * 查询用户ID
+     * Query user ID
      *
-     * @param cpTenantUserId    第三方平台用户标识（SocialCpTenantUser#ID）
-     * @return 用户ID
-     * @author Pengap
-     * @date 2021/8/18 18:43:44
+     * @param cpTenantUserId    Third party platform user ID (Social Cp Tenant User ID)
+     * @return user ID
      */
     Long selectUserIdByCpTenantUserId(@Param("cpTenantUserId") Long cpTenantUserId);
 
     /**
-     * 批量获取信息
+     * Get information in batches
      *
-     * @param cpTenantUserIds 第三方平台用户标识（SocialCpTenantUser#ID）
-     * @return 信息列表
-     * @author 刘斌华
-     * @date 2022-04-13 17:48:31
+     * @param cpTenantUserIds Third party platform user ID (Social Cp Tenant User ID)
+     * @return Information List
      */
     List<SocialCpUserBindEntity> selectByCpTenantUserIds(@Param("cpTenantUserIds") List<Long> cpTenantUserIds);
 
     /**
-     * 查询用户ID
+     * Query user ID
      *
-     * @param tenantId  企业Id
-     * @param cpUserId  应用用户Id
-     * @return 用户ID
-     * @author Pengap
-     * @date 2021/8/23 16:31:06
+     * @param tenantId  Enterprise Id
+     * @param cpUserId  Application User Id
+     * @return User ID
      */
     Long selectUserIdByTenantIdAndCpUserId(@Param("tenantId") String tenantId, @Param("cpUserId") String cpUserId);
 
     /**
-     * 获取OpenId
+     * Get Open Id
      *
-     * @param tenantId  企业Id
-     * @param userId    Vika用户ID
-     * @return 企业微信OpenId
-     * @author Pengap
-     * @date 2021/9/17 17:28:24
+     * @param tenantId  Enterprise Id
+     * @param userId    vika User ID
+     * @return WeChat OpenId
      */
     String selectOpenIdByTenantIdAndUserId(@Param("tenantId") String tenantId, @Param("userId") Long userId);
 
     /**
-     * 批量删除企业微信绑定关系
+     * Batch Delete WeCom Binding Relationship
      *
-     * @param removeCpTenantUserIds 第三方平台用户唯一标识（SocialCpTenantUser#ID）
-     * @return int 影响行数
-     * @author Pengap
-     * @date 2021/8/25 18:29:13
+     * @param removeCpTenantUserIds Third party platform user unique ID (Social Cp Tenant User ID)
+     * @return int Number of rows affected
      */
     int batchDeleteByCpTenantUserIds(@Param("removeCpTenantUserIds") List<Long> removeCpTenantUserIds);
 
     /**
-     * 统计指定租户下，指定用户出现数量
+     * Count the number of specified users under the specified tenant
      *
-     * @param tenantId    租户Id
-     * @param userId      用户Id
-     * @return 用户出现数量
-     * @author Pengap
-     * @date 2021/9/14 17:37:40
+     * @param tenantId    Tenant Id
+     * @param userId      User Id
+     * @return Number of users
      */
     Long countTenantBindByUserId(@Param("tenantId") String tenantId, @Param("userId") Long userId);
 
     /**
-     * 根据用户ID 物理删除
-     * @param userId
-     * @return
+     * Physical deletion based on user ID
+     * @param userId user id
+     * @return deleted number
      */
     int deleteByUserId(@Param("userId") Long userId);
 }

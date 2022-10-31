@@ -43,11 +43,8 @@ import static com.vikadata.api.enums.user.LinkType.WECHAT;
 
 /**
  * <p>
- * 基础-帐号关联表 服务实现类
+ * Basic - Account Association Table Service Implementation Class
  * </p>
- *
- * @author Chambers
- * @since 2020-02-22
  */
 @Slf4j
 @Service
@@ -67,7 +64,7 @@ public class UserLinkServiceImpl extends ServiceImpl<UserLinkMapper, UserLinkEnt
 
     @Override
     public void create(Long userId, Long wechatMemberId) {
-        log.info("创建关联");
+        log.info("Create Associations");
         ThirdPartyMemberEntity wechatMember = thirdPartyMemberMapper.selectById(wechatMemberId);
         UserLinkEntity entity = UserLinkEntity.builder()
                 .userId(userId)
@@ -78,13 +75,13 @@ public class UserLinkServiceImpl extends ServiceImpl<UserLinkMapper, UserLinkEnt
                 .build();
         boolean flag = save(entity);
         ExceptionUtil.isTrue(flag, LINK_FAILURE);
-        // 删除缓存
+        // Delete Cache
         userLinkInfoService.delete(userId);
     }
 
     @Override
     public void checkThirdPartyLinkOtherUser(String unionId, Integer type) {
-        log.info("检查第三方帐号是否关联了其他维格账号");
+        log.info("Check whether the third-party account is associated with other vika accounts");
         Long linkUserId = userLinkMapper.selectUserIdByUnionIdAndType(unionId, type);
         throwEx(type, linkUserId != null, DINGTALK_LINK_OTHER, WECHAT_LINK_OTHER, TENCENT_LINK_OTHER, FEISHU_LINK_OTHER);
     }
@@ -92,25 +89,25 @@ public class UserLinkServiceImpl extends ServiceImpl<UserLinkMapper, UserLinkEnt
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createUserLink(Long userId, SocialAuthInfo authInfo, boolean check, Integer type) {
-        log.info("创建第三方关联");
+        log.info("Create Third Party Association");
         if (type != FEISHU.getType()) {
             if (check) {
-                // 查询维格帐号是否已关联了其他第三方帐号
+                // Query whether the vika account has been associated with other third-party accounts
                 String linkUnionId = userLinkMapper.selectUnionIdByUserIdAndType(userId, type);
                 if (authInfo.getUnionId().equals(linkUnionId)) {
                     return;
                 }
                 throwEx(type, linkUnionId != null, MOBILE_HAS_BOUND_DINGTALK, MOBILE_HAS_BOUND_WECHAT, MOBILE_HAS_BOUND_TENCENT, MOBILE_HAS_BOUND_FEISHU);
-                // 检查第三方帐号是否关联了其他维格账号
+                // Check whether the third-party account is associated with other vika accounts
                 checkThirdPartyLinkOtherUser(authInfo.getUnionId(), type);
             }
         }
-        // 第三方平台账号绑定
+        // Third party platform account bind
         boolean isExist = iSocialUserBindService.isUnionIdBind(userId, authInfo.getUnionId());
         if (!isExist) {
             iSocialUserBindService.create(userId, authInfo.getUnionId());
         }
-        // TODO 重构时候改掉
+        // TODO Change during reconstruction
         createThirdPartyLink(userId, authInfo.getOpenId(), authInfo.getUnionId(), authInfo.getNickName(), type);
     }
 
@@ -124,7 +121,7 @@ public class UserLinkServiceImpl extends ServiceImpl<UserLinkMapper, UserLinkEnt
         entity.setType(type);
         boolean flag = save(entity);
         ExceptionUtil.isTrue(flag, LINK_FAILURE);
-        // 删除缓存
+        // Delete Cache
         userLinkInfoService.delete(userId);
     }
 

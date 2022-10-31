@@ -30,14 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.vikadata.api.enums.exception.PermissionException.NODE_NOT_EXIST;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Pengap
- * @date 2021/8/23 11:49:12
- */
 @Slf4j
 public abstract class AbstractCreateSocialUser implements CreateSocialUserStrategey {
 
@@ -63,10 +55,10 @@ public abstract class AbstractCreateSocialUser implements CreateSocialUserStrate
     protected IVCodeService ivCodeService;
 
     /**
-     * 检查企业应用状态
+     * Check enterprise application status
      *
-     * @param tenantId  应用企业Id
-     * @param appId     应用Id
+     * @param tenantId  Application Enterprise ID
+     * @param appId     App ID
      */
     protected void checkTenantAppStatus(String tenantId, String appId) {
         SocialTenantEntity tenant = iSocialTenantService.getByAppIdAndTenantId(appId, tenantId);
@@ -79,10 +71,11 @@ public abstract class AbstractCreateSocialUser implements CreateSocialUserStrate
     }
 
     /**
-     * 检查企业应用是否绑定空间
-     * @param tenantId  应用企业Id
-     * @param appId     应用Id
-     * @return 绑定的空间ID
+     * Check whether the enterprise application is bound to the space
+     *
+     * @param tenantId  Application Enterprise ID
+     * @param appId     App ID
+     * @return Bound space ID
      */
     protected String checkTenantAppBindSpace(String tenantId, String appId) {
         String bindSpaceId = iSocialTenantBindService.getTenantBindSpaceId(tenantId, appId);
@@ -91,10 +84,10 @@ public abstract class AbstractCreateSocialUser implements CreateSocialUserStrate
     }
 
     /**
-     * 创建用户并且上传头像
+     * Create users and upload avatars
      *
-     * @param user  用户参数
-     * @param saveException 保存异常
+     * @param user  User parameters
+     * @param saveException Save Exception
      */
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserAndCopyAvatar(User user, BaseException saveException) {
@@ -104,7 +97,7 @@ public abstract class AbstractCreateSocialUser implements CreateSocialUserStrate
                 .nickName(user.getNickName())
                 .avatar(avatar)
                 .lastLoginTime(LocalDateTime.now())
-                // 目前只有企业微信服务商需要设置该字段
+                // Currently, only enterprise WeChat service providers need to set this field
                 .isSocialNameModified(user.getSocialPlatformType() == SocialPlatformType.WECOM && user.getSocialAppType() == SocialAppType.ISV ?
                         SocialNameModified.NO.getValue() : SocialNameModified.NO_SOCIAL.getValue())
                 .build();

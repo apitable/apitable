@@ -66,13 +66,11 @@ import static com.vikadata.social.feishu.FeishuServiceProvider.EVENT_CALLBACK_EV
 import static com.vikadata.social.feishu.FeishuServiceProvider.URL_VERIFICATION_EVENT;
 
 /**
- * 飞书自建应用配置接口
- * @author Shawn Deng
- * @date 2021-12-31 17:51:16
+ * LarkSelf built application configuration interface
  */
 @RestController
-@ApiResource(name = "飞书自建应用配置接口", path = "/")
-@Api(tags = "应用管理_飞书自建应用配置接口")
+@ApiResource(name = "Lark self built application configuration interface", path = "/")
+@Api(tags = "Application management_Lark self built application configuration interface")
 @Slf4j
 public class LarkAppInstanceController {
 
@@ -110,18 +108,17 @@ public class LarkAppInstanceController {
     }
 
     @PostResource(path = "/lark/event/{appInstanceId}", requiredLogin = false)
-    @ApiOperation(value = "飞书自建应用事件回调", notes = "接收飞书应用身份自建回调", hidden = true)
+    @ApiOperation(value = "Lark Self built Application Event Callback", notes = "Receive self built callback of Lark application identity", hidden = true)
     public Object larkEvent(@PathVariable("appInstanceId") String appInstanceId, HttpServletRequest request) {
         FeishuConfigStorage configStorage = iAppInstanceService.buildConfigStorageByInstanceId(appInstanceId);
-        // 切换应用上下文
+        // Switch application context
         iFeishuService.switchContextIfAbsent(configStorage);
-        // 请求体
         String requestBody = ServletUtil.getRequestBody(request);
-        // 解密
+        // Decrypt
         Map<String, Object> jsonData = iFeishuService.decryptData(requestBody);
-        // 获取事件类型
+        // Get event type
         if (jsonData.containsKey("schema")) {
-            // 2.0版本事件推送，校验TOKEN
+            // 2.0Version event push, verify TOKEN
             Map<String, Object> header = MapUtil.get(jsonData, "header", new TypeReference<Map<String, Object>>() {});
             iFeishuService.checkVerificationToken(header);
             String contactType = (String) header.get("event_type");
@@ -130,26 +127,26 @@ public class LarkAppInstanceController {
             iFeishuService.getEventListenerManager().fireV3ContactEventCallback(event);
         }
         else {
-            // 1.0版本事件，校验TOKEN
+            // Version 1.0 event, verify TOKEN
             iFeishuService.checkVerificationToken(jsonData);
             String eventType = MapUtil.getStr(jsonData, "type");
             if (URL_VERIFICATION_EVENT.equals(eventType)) {
-                // 验证回调地址,设置回调成功
+                // Verify the callback address and set the callback successfully
                 iFeishuInternalEventService.urlCheck(appInstanceId);
-                // 按规定返回内容
+                // Return content as required
                 return JSONUtil.createObj().set("challenge", jsonData.get("challenge")).toString();
             }
             else if (EVENT_CALLBACK_EVENT.equals(eventType)) {
-                // 事件推送
-                log.info("飞书事件推送: {}", eventType);
+                // Event Push
+                log.info("Lark event push: {}", eventType);
                 Map<String, Object> eventData = MapUtil.get(jsonData, "event", new TypeReference<Map<String, Object>>() {});
                 if (log.isDebugEnabled()) {
-                    log.debug("事件内容:{}", JSONUtil.toJsonPrettyStr(eventData));
+                    log.debug("Event content:{}", JSONUtil.toJsonPrettyStr(eventData));
                 }
                 String eventSubType = eventData.get("type").toString();
                 BaseEvent event = iFeishuService.getEventParser().parseEvent(eventSubType, eventData);
                 if (event == null) {
-                    log.error("事件{}, 内容:{}, 不存在，无法处理", eventSubType, eventData);
+                    log.error("Event{}, Content:{}, does not exist and cannot be processed", eventSubType, eventData);
                     return "SUCCESS";
                 }
                 event.setAppInstanceId(appInstanceId);
@@ -160,17 +157,17 @@ public class LarkAppInstanceController {
                 iFeishuService.getEventListenerManager().fireEventCallback(event);
             }
             else {
-                log.error("飞书自建应用的非法事件类型: {}", eventType);
+                log.error("Illegal event type of Lark self built application: {}", eventType);
             }
         }
         return "SUCCESS";
     }
 
     @GetResource(path = "/lark/idp/entry/{appInstanceId}", requiredLogin = false)
-    @ApiOperation(value = "飞书自建应用身份应用入口", notes = "飞书Idp身份免登入口路由", hidden = true)
+    @ApiOperation(value = "Lark Self built Application Identity Application Portal", notes = "Lark Idp identity login free entry route", hidden = true)
     public RedirectView larkIdpEntry(@PathVariable("appInstanceId") String appInstanceId,
             @RequestParam(name = "url", required = false) String url) {
-        // 构造飞书授权登录
+        // Construct Lark authorization login
         String redirectUri = constProperties.getServerDomain() + LarkConstants.formatInternalLoginUrl(appInstanceId);
         if (StrUtil.isNotBlank(url)) {
             redirectUri = StrUtil.format(redirectUri + "?url={}", url);
@@ -183,7 +180,7 @@ public class LarkAppInstanceController {
             return new RedirectView(authUrl);
         }
         catch (Exception e) {
-            log.error("飞书自建应用消息卡片路由进来报错, 实例ID:{}, 路径: {}", appInstanceId, url, e);
+            log.error("Lark self built application message card reported an error when routing in, instance ID:{}, path: {}", appInstanceId, url, e);
             return new RedirectView(getErrorPath());
         }
         finally {
@@ -192,25 +189,25 @@ public class LarkAppInstanceController {
     }
 
     @GetResource(path = "/lark/idp/login/{appInstanceId}", requiredLogin = false)
-    @ApiOperation(value = "飞书应用身份验证回调服务", notes = "接收飞书Idp身份提供商回调临时授权码", hidden = true)
+    @ApiOperation(value = "Lark application authentication callback service", notes = "Receive Lark Idp identity provider callback temporary authorization code", hidden = true)
     public RedirectView larkIdpLogin(@PathVariable("appInstanceId") String appInstanceId,
             @RequestParam("code") String code,
             @RequestParam("state") String state,
             @RequestParam(name = "url", required = false) String url) {
-        log.info("自建应用回调参数[code:{}, state:{}]", code, state);
-        // 查询应用实例的飞书配置
+        log.info("Self built application callback parameters[code:{}, state:{}]", code, state);
+        // Query Lark Configuration of an Application Instance
         AppInstanceEntity appInstanceEntity = iAppInstanceService.getByAppInstanceId(appInstanceId);
         if (appInstanceEntity == null) {
-            // 实例不存在，路由到错误页面
+            // Instance does not exist, routing to error page
             return new RedirectView(getErrorPath());
         }
         if (!appInstanceEntity.getIsEnabled()) {
-            // 禁用状态下，路由到错误页面
+            // When disabled, route to the error page
             return new RedirectView(getErrorPath());
         }
         AppInstance appInstance = iAppInstanceService.buildInstance(appInstanceEntity);
         if (appInstance.getConfig().getType() != AppType.LARK) {
-            // 不是飞书类型的实例
+            // Not an instance of Lark type
             return new RedirectView(getErrorPath());
         }
         LarkInstanceConfigProfile profile = (LarkInstanceConfigProfile) appInstance.getConfig().getProfile();
@@ -218,71 +215,71 @@ public class LarkAppInstanceController {
                 || StrUtil.isBlank(profile.getAppSecret())
                 || StrUtil.isBlank(profile.getEventVerificationToken())
                 || !profile.isEventCheck()) {
-            // 未完全基础配置的重定向页面
+            // Redirect page with incomplete basic configuration
             return new RedirectView(constProperties.getServerDomain() + CONFIG_ERROR_URL);
         }
-        // 切换应用上下文
+        // Switch application context
         iFeishuService.switchContextIfAbsent(profile.buildConfigStorage());
-        // 已完成所有配置
+        // All configurations completed
         if (!profile.isContactSyncDone()) {
-            // 未同步完通讯录
+            // Address book not synchronized
             if (REDIRECT_STATE.equals(state)) {
                 FeishuPassportUserInfo userInfo;
                 try {
-                    // 必须在应用可用授权范围内才能使用
+                    // It can only be used within the scope of application available authorization
                     FeishuPassportAccessToken accessToken = iFeishuService.getPassportAccessToken(code, profile.getRedirectUrl());
                     userInfo = iFeishuService.getPassportUserInfo(accessToken.getAccessToken());
                 }
                 catch (Exception exception) {
-                    log.error("飞书应用实例租户入口授权失败", exception);
+                    log.error("Lark application instance tenant entry authorization failed", exception);
                     return new RedirectView(getErrorPath());
                 }
-                // 管理员扫码操作，新建异步任务执行同步通讯录
+                // The administrator scans the code to create a new asynchronous task and execute the synchronous address book
                 iFeishuInternalEventService.syncContactFirst(userInfo, appInstance);
             }
-            // 未同步完或者同步失败，重定向到等待页面
+            // The synchronization is not completed or failed. Redirect to the waiting page
             return new RedirectView(constProperties.getServerDomain() + LarkConstants.formatContactSyncingUrl(appInstanceId));
         }
         else {
-            // 已同步完通讯录，纯登录操作
+            // Synchronized address book, pure login operation
             FeishuAccessToken accessToken;
             try {
-                // 必须在应用可用授权范围内才能使用
+                // It can only be used within the scope of application available authorization
                 accessToken = iFeishuService.getUserAccessToken(code);
             }
             catch (Exception exception) {
-                log.error("飞书应用实例租户入口授权失败", exception);
+                log.error("Lark application instance tenant entry authorization failed", exception);
                 return new RedirectView(getErrorPath());
             }
-            // 自建应用，根据邮箱或手机查询是否存在此用户，如果没有，则新建
+            // Self built application, query whether the user exists according to the email or mobile phone, if not, create a new one
             Long userId = iSocialUserBindService.getUserIdByUnionId(accessToken.getUnionId());
             if (userId == null) {
-                // 都不存在，创建用户
+                // None exists, create user
                 userId = iUserService.createUser(new SocialUser(accessToken.getName(), accessToken.getAvatarUrl(),
                         StrUtil.subPre(accessToken.getMobile(), 3), StrUtil.subSuf(accessToken.getMobile(), 3), accessToken.getEmail(),
                         profile.getAppKey(), accessToken.getTenantKey(), accessToken.getOpenId(), accessToken.getUnionId(), SocialPlatformType.FEISHU));
                 ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-                // 神策埋点 - 注册
+                // Shence burial site - registration
                 Long finalUserId = userId;
-                TaskManager.me().execute(() -> sensorsService.track(finalUserId, TrackEventType.REGISTER, "飞书自建应用", origin));
+                TaskManager.me().execute(() -> sensorsService.track(finalUserId, TrackEventType.REGISTER, "Lark self built application", origin));
             }
             iUserService.activeTenantSpace(userId, appInstance.getSpaceId(), accessToken.getOpenId());
             SessionContext.setUserId(userId);
             if (StrUtil.isNotBlank(url)) {
-                // 重定向到提及通知地址
+                // Redirect to mention notification address
                 return new RedirectView(url);
             }
             else {
-                // 重定向指定页面
+                // Redirect the specified page
                 return new RedirectView(constProperties.getServerDomain() + LarkConstants.formatSpaceWorkbenchUrl(appInstance.getSpaceId()));
             }
         }
     }
 
     @PostResource(path = "/lark/appInstance/{appInstanceId}/updateBaseConfig", method = RequestMethod.PUT, requiredPermission = false)
-    @ApiOperation(value = "更新基础配置", notes = "更新应用实例的基础配置")
+    @ApiOperation(value = "Update basic configuration", notes = "Update the basic configuration of the application instance")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "appInstanceId", value = "应用实例ID", required = true, dataTypeClass = String.class, paramType = "path", example = "ai-1jsjakd1")
+            @ApiImplicitParam(name = "appInstanceId", value = "Application instance ID", required = true, dataTypeClass = String.class, paramType = "path", example = "ai-1jsjakd1")
     })
     public ResponseData<AppInstance> initConfig(@PathVariable("appInstanceId") String appInstanceId,
             @RequestBody @Valid FeishuAppConfigRo data) {
@@ -292,9 +289,9 @@ public class LarkAppInstanceController {
     }
 
     @PostResource(path = "/lark/appInstance/{appInstanceId}/updateEventConfig", method = RequestMethod.PUT, requiredPermission = false)
-    @ApiOperation(value = "更新事件配置", notes = "更改应用实例的事件配置")
+    @ApiOperation(value = "Update Event Configuration", notes = "Change the event configuration of an application instance")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "appInstanceId", value = "应用实例ID", required = true, dataTypeClass = String.class, paramType = "path", example = "ai-1jsjakd1")
+            @ApiImplicitParam(name = "appInstanceId", value = "Application instance ID", required = true, dataTypeClass = String.class, paramType = "path", example = "ai-1jsjakd1")
     })
     public ResponseData<AppInstance> eventConfig(@PathVariable("appInstanceId") String appInstanceId,
             @RequestBody @Valid FeishuAppEventConfigRo data) {

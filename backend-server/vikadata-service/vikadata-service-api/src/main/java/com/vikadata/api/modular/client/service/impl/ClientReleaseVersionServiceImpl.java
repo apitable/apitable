@@ -56,11 +56,8 @@ import static com.vikadata.define.constants.RedisConstants.DATASHEET_CLIENT_VERS
 
 /**
  * <p>
- * 版本发布表
+ * Version release table
  * </p>
- *
- * @author zoe zheng
- * @date 2020/4/7 4:58 下午
  */
 @Service
 @Slf4j
@@ -98,11 +95,11 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
     public String getVersionOrDefault(Env env, String pipelineId) {
         if (StrUtil.isNotBlank(pipelineId)) {
             if (env != null && (env.isIntegrationEnv() || env.isTestEnv())) {
-                // integration/test 可以加载pipelineId
+                // integration/test Pipeline Id can be loaded
                 return "feature." + pipelineId;
             }
         }
-        // 否则默认加载最新版本
+        // Otherwise, the latest version will be loaded by default
         return Boolean.TRUE.equals(redisTemplate.hasKey(DATASHEET_CLIENT_VERSION_KEY)) ?
                 redisTemplate.opsForValue().get(DATASHEET_CLIENT_VERSION_KEY)
                 : getLatestVersion();
@@ -114,18 +111,18 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
         if (StrUtil.isBlank(htmlContent)) {
             throw new BusinessException("html content is blank");
         }
-        // 检查是否SaaS环境，否则不检查版本规范
+        // Check whether the SaaS environment is available, otherwise do not check the version specification
         String env = StrUtil.blankToDefault(clientProperties.getDatasheet().getEnv(), "other");
         boolean isSaasEnv = VikaVersion.isSaaSEnv(env);
         if (isSaasEnv) {
-            // 检查版本是否符合规范
+            // Check whether the version conforms to the specification
             VikaVersion version = VikaVersion.parseNotException(clientBuildRo.getVersion());
             if (version == null) {
-                // 解析版本失败
+                // Failed to parse version
                 throw new BusinessException("illegal version, please check again");
             }
             if (!version.isFeatureVersion()) {
-                // 非开发版本，校验ci部署用户权限
+                // For non development version, verify ci deployment user permissions
                 if (clientProperties.getDatasheet().getPublish() != null && CollectionUtil.isNotEmpty(clientProperties.getDatasheet().getPublish().getAuthUser())) {
                     if (!clientProperties.getDatasheet().getPublish().getAuthUser().contains(clientBuildRo.getPublishUser())) {
                         throw new BusinessException("You have no permission to publish client");
@@ -140,12 +137,12 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
                     .htmlContent(htmlContent)
                     .publishUser(clientBuildRo.getPublishUser()).build());
             if (version.isFeatureVersion()) {
-                // 如果是feature 就发送邮件
+                // Send an email if it is a feature
                 TaskManager.me().execute(() -> sendNotifyEmail(realVersion));
             }
         }
         else {
-            // 非SaaS环境: poc、本地开发、selfhost....any
+            // Non SaaS Environment: poc、Local development、selfhost....any
             save(ClientReleaseVersionEntity.builder()
                     .version(clientBuildRo.getVersion())
                     .description(StrUtil.sub(clientBuildRo.getDescription(), 0, 255))
@@ -158,10 +155,10 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
     public String getHtmlContentByVersion(String version) {
         ClientEntryDetailDto clientEntryDetailDto = clientReleaseVersionMapper.selectClientEntryDetailByVersion(version);
         if (clientEntryDetailDto == null) {
-            log.error("无法查到客户端版本:{}", version);
-            throw new RuntimeException("无法查到客户端版本: " + version);
+            log.error("Unable to find the client version:{}", version);
+            throw new RuntimeException("Unable to find the client version: " + version);
         }
-        // 更新缓存，防止版本回滚之后缓存不及时更新
+        // Update the cache to prevent the cache from not updating in time after version rollback
         return clientEntryDetailDto.getHtmlContent();
     }
 
@@ -174,7 +171,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
 
     @Override
     public String getHtmlContentCacheIfAbsent(String version) {
-        // 注意，feature版本不要放入内存，这样只会增加没必要的查询与占用
+        // Note that the feature version should not be put into memory, which will only increase unnecessary queries and occupation
         String htmlContent = ClientProperties.HTML_CONTENT_CACHE.get(version);
         if (StrUtil.isBlank(htmlContent)) {
             htmlContent = refreshHtmlContent(version);
@@ -187,7 +184,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
         try {
             ClientEntryDetailDto clientEntryDetailDto =
                     clientReleaseVersionMapper.selectClientEntryDetailByVersion(version);
-            // 渲染邮件HTML正文
+            // Render message HTML body
             NotifyEmailVo notifyEmailVo = NotifyEmailVo.builder().version(version)
                     .publishUser(clientEntryDetailDto.getPublishUser()).years(DateUtil.thisYear())
                     .content(clientEntryDetailDto.getDescription()).build();
@@ -202,13 +199,13 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
         }
         catch (Exception e) {
             e.printStackTrace();
-            log.error("发送版本更新邮件失败");
+            log.error("Failed to send version update mail");
         }
     }
 
     @Override
     public String getMetaContent(String uri) {
-        // 是否是分享页路由
+        // Whether it is a shared page route
         if (ClientUriUtil.isMatchSharePath(uri)) {
             MetaLabelContentVo defaultMetaContent;
             String nodeId = null;
@@ -231,7 +228,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
                 return clientEntryTemplate.render(metaLabel, BeanUtil.beanToMap(defaultMetaContent));
             }
             String cacheKey = RedisConstants.getEntryMetaKey(keyId);
-            // 因为分享之后，第一个打开的是平台机器人，所以不会存在缓存穿透，设置的缓存时间为一分钟
+            // Since the platform robot is the first one opened after sharing, there will be no cache penetration. The set cache time is one minute
             if (BooleanUtil.isTrue(redisTemplate.hasKey(cacheKey))) {
                 return redisTemplate.opsForValue().get(cacheKey);
             }
@@ -243,21 +240,21 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
                     clientProperties.getDatasheet().getMetaLabel().getCacheExpire(), TimeUnit.MINUTES);
             return metaContent;
         }
-        // 不是分享页，使用默认的meta标签
+        // Not a sharing page, use the default meta tag
         return getDefaultMetaContent();
     }
 
     @Override
     public String getNodeIdFromUri(String uri) {
-        // 分享ID
+        // Share ID
         String shareId = ClientUriUtil.getIdFromUri(uri, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum());
         if (StrUtil.isNotBlank(shareId)) {
             return shareSettingMapper.selectNodeIdByShareId(shareId);
         }
-        // 模版ID
+        // Template ID
         String tmplId = ClientUriUtil.getIdFromUri(uri, IdRulePrefixEnum.TPL.getIdRulePrefixEnum());
         if (StrUtil.isNotBlank(tmplId)) {
-            // 官方的才解析
+            // Official talent analysis
             return templateMapper.selectNodeIdByTempIdAndType(tmplId, 0);
         }
         return null;
@@ -265,7 +262,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
 
     @Override
     public String getSpaceIdFromUri(String uri) {
-        // 分享ID
+        // Share ID
         String shareId = ClientUriUtil.getIdFromUri(uri, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum());
         if (StrUtil.isNotBlank(shareId)) {
             return shareSettingMapper.selectSpaceIdByShareId(shareId);
@@ -275,7 +272,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
 
     @Override
     public boolean isMoreThanClientVersion(String version) {
-        // 此方式是SaaS版本运营时全量发布消息时使用，不在其他环境使用
+        // This mode is used when the Saa S version is in operation to publish messages in full volume, not in other environments
         VikaVersion compareVersion = VikaVersion.parseNotException(version);
         if (compareVersion == null) {
             log.error("fail to parse version from notification: {}", version);
@@ -294,19 +291,19 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
     @Deprecated
     public Version getVersion(String version) {
         try {
-            // 替换掉版本号开头字符串
+            // Replace the beginning string of version number
             String tmpVersion = ReUtil.replaceAll(version, "^[a-zA-Z]", "");
             return Version.valueOf(tmpVersion);
         }
         catch (Exception e) {
-            log.error("解析版本号错误:{}", version);
+            log.error("Error parsing version number:{}", version);
             return null;
         }
     }
 
     @Override
     public String getLatestVersion() {
-        // 获取客户端环境配置
+        // Get the client environment configuration
         String env = StrUtil.blankToDefault(clientProperties.getDatasheet().getEnv(), "other");
         if (log.isDebugEnabled()) {
             log.debug("Client Datasheet Env: {}", env);
@@ -324,13 +321,13 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
             return null;
         }
         else {
-            // 非SaaS环境，直接获取最新的即可
+            // Non SaaS environment, just get the latest
             return clientReleaseVersionMapper.selectClientLatestVersion();
         }
     }
 
     private MetaLabelContentVo getDefaultShareMetaContentVo(NodeShareSettingEntity entity) {
-        // 不存在
+        // Non existent
         if (ObjectUtil.isNull(entity)) {
             return MetaLabelContentVo.builder()
                     .description(StrUtil.blankToDefault(VikaStrings.t("client_meta_label_file_deleted_desc"),
@@ -340,7 +337,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
                             clientProperties.getDatasheet().getMetaLabel().getNodeDeletedContent().getTitle())).build();
         }
         String nodeName = nodeMapper.selectNodeNameByNodeId(entity.getNodeId());
-        // 分享节点被删除了
+        // The sharing node has been deleted
         if (StrUtil.isBlank(nodeName)) {
             return MetaLabelContentVo.builder()
                     .description(StrUtil.blankToDefault(VikaStrings.t("client_meta_label_file_deleted_desc"),
@@ -361,7 +358,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
     }
 
     private MetaLabelContentVo getDefaultTplMetaContentVo(String nodeId) {
-        // 模版被删除了
+        // Template deleted
         if (StrUtil.isBlank(nodeId)) {
             return MetaLabelContentVo.builder()
                     .description(StrUtil.blankToDefault(VikaStrings.t("client_meta_label_template_deleted_desc"),
@@ -375,7 +372,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
     }
 
     private MetaLabelContentVo getMetaContentVo(String nodeId) {
-        // 先加载默认的值，之后有数据再替换
+        // Load the default value first, and then replace it with data
         MetaLabelContentVo metaLabelContentVo = MetaLabelContentVo.builder()
                 .description(StrUtil.blankToDefault(VikaStrings.t("client_meta_label_desc"),
                         clientProperties.getDatasheet().getMetaLabel().getDefaultContent().getDescription()))
@@ -389,7 +386,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
         if (StrUtil.isBlank(nodeName)) {
             return metaLabelContentVo;
         }
-        // 防止节点被删除，返回null
+        // Prevent the node from being deleted and return null
         metaLabelContentVo.setTitle(nodeName);
         try {
             NodeDescParseDTO nodeDescParseDto = nodeId.startsWith(IdRulePrefixEnum.FORM.getIdRulePrefixEnum())
@@ -406,7 +403,7 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
             }
         }
         catch (Exception e) {
-            log.warn("获取节点描述失败", e);
+            log.warn("Failed to get node description", e);
         }
         return metaLabelContentVo;
     }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * <p>
- * isv--钉钉搭基本信息
+ * isv--Ding Talk Basic Information
  * </p>
  * @author zoe zheng
  * @date 2021/10/8 20:04

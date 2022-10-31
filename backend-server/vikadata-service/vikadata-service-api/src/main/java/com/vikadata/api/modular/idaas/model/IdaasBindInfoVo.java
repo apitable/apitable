@@ -11,12 +11,10 @@ import lombok.experimental.Tolerate;
 
 /**
  * <p>
- * 获取空间站绑定的玉符信息
+ * Get IDaaS information bound to the space station
  * </p>
- * @author 刘斌华
- * @date 2022-06-08 11:29:00
  */
-@ApiModel("获取空间站绑定的玉符信息")
+@ApiModel("Get IDaaS information bound to the space station")
 @Setter
 @Getter
 @Builder
@@ -24,10 +22,10 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode
 public class IdaasBindInfoVo {
 
-    @ApiModelProperty("是否绑定了玉符 IDaaS 应用")
+    @ApiModelProperty("Whether IDaaS application is bound")
     private Boolean enabled;
 
-    @ApiModelProperty("绑定的玉符 IDaaS 应用的 Client ID")
+    @ApiModelProperty("Bound IDaaS application Client ID")
     private String clientId;
 
     @Tolerate

@@ -29,7 +29,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 飞书订单服务测试
+ * Lark order service test
  */
 public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
 
@@ -134,7 +134,7 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_20_1_upgrade.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
         SpaceSubscribeVo vo20 = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        // 续费升级到30人试用, 待生效
+        // Renewal upgrade to 30 people for trial, to be effective
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(getOrderPaidEvent(
                 "social/feishu/order/base_30_1_renew_trail.json"));
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
@@ -146,18 +146,18 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
         String spaceId = "spc" + IdWorker.get32UUID();
         OrderPaidEvent trailEvent = getOrderPaidEvent("social/feishu/order/base_10_1_trail.json");
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getTenantKey(), trailEvent.getAppId());
-        // 1. 试用
+        // 1. ON TRIAL
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(trailEvent);
-        // 2. 购买
+        // 2. Buy
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU)
                 .retrieveOrderPaidEvent(getOrderPaidEvent("social/feishu/order/base_10_1_per_year.json"));
-        // 3 升级
+        // 3 Upgrade
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU)
                 .retrieveOrderPaidEvent(getOrderPaidEvent("social/feishu/order/base_20_1_upgrade.json"));
-        // 4 续费升级到30人试用, 待生效
+        // 4 Renewal upgrade to 30 people for trial, to be effective
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(getOrderPaidEvent(
                 "social/feishu/order/base_30_1_renew_trail.json"));
-        // 5 续费升级之后，再次给原方案升级
+        // 5 After renewal and upgrade, upgrade the original scheme again
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/enterprise_30_1_upgrade_after_renew.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
@@ -183,7 +183,7 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
     }
 
     private void prepareSpaceData(String spaceId) {
-        // 初始化空间信息
+        // Initialize space information
         SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
         iSpaceService.save(spaceEntity);
     }

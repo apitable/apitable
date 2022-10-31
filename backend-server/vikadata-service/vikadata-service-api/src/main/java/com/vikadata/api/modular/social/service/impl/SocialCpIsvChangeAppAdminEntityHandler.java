@@ -40,10 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用管理员变更处理
+ * Third party platform integration - WeCom third-party service provider application administrator change processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-19 11:32:21
  */
 @Service
 public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntityHandler, InitializingBean {
@@ -90,27 +88,27 @@ public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntit
 
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
+                .format("No available tenant information found,tenantId：%s，appId：%s", authCorpId, suiteId)));
         if (socialTenantEntity.getAuthMode() == SocialTenantAuthMode.MEMBER.getValue()) {
-            // 成员授权模式不受应用管理员影响，直接忽略
+            // The member authorization mode is not affected by the application administrator and is ignored directly
             return true;
         }
 
-        // 如果需要，先刷新 access_token
+        // If necessary, refresh access first_ token
         socialCpIsvService.refreshAccessToken(suiteId, unprocessed.getAuthCorpId(), socialTenantEntity.getPermanentCode());
-        // 1 获取授权企业的空间站及其主管理员
+        // 1 Obtain the space station and its master administrator of the authorized enterprise
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
         Assert.notBlank(spaceId, () -> new IllegalStateException(String
-                .format("没有找到对应的空间站信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
+                .format("No corresponding space station information was found,tenantId：%s，appId：%s", authCorpId, suiteId)));
         MemberEntity adminMember = Optional.ofNullable(memberService.getAdminBySpaceId(spaceId))
                 .orElse(null);
-        // 2 获取应用变更后的管理员列表
+        // 2 Get the list of administrators after applying changes
         WxCpIsvServiceImpl wxCpIsvService = (WxCpIsvServiceImpl) weComTemplate.isvService(suiteId);
         WxCpTpXmlMessage xmlMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpTpXmlMessage.class);
         WxCpIsvAdmin wxCpIsvAdmin = wxCpIsvService.getAuthCorpAdminList(authCorpId, Integer.parseInt(xmlMessage.getAgentID()));
         List<WxCpIsvAdmin.Admin> isvAdmins = Optional.ofNullable(wxCpIsvAdmin.getAdmin())
                 .map(admins -> admins.stream()
-                        // 拥有管理权限的应用管理员才可以设置为空间站主管理员
+                        // Only the application administrator with management permission can be set as the primary administrator of the space station
                         .filter(item -> item.getAuthType() == 1)
                         .collect(Collectors.toList()))
                 .orElse(null);
@@ -119,9 +117,9 @@ public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntit
                         .map(WxCpIsvAdmin.Admin::getUserId)
                         .collect(Collectors.toList()))
                 .orElse(null);
-        // 3 设置变更后的空间站主管理员
+        // 3 Master administrator of the space station after setting changes
         if (CollUtil.isEmpty(adminOpenIds)) {
-            // 3.1 变更后应用管理员为空，则移除当前空间站管理员
+            // 3.1 If the application administrator is empty after the change, remove the current space station administrator
             if (Objects.nonNull(adminMember)) {
                 adminMember.setIsAdmin(false);
                 memberService.updateById(adminMember);
@@ -130,7 +128,7 @@ public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntit
             }
         }
         else if (Objects.isNull(adminMember) || !CollUtil.contains(adminOpenIds, adminMember.getOpenId())) {
-            // 3.2 空间站原来没有主管理员，或者已有的主管理员不属于变更后的应用管理员
+            // 3.2 The space station has no original master administrator, or the existing master administrator is not the application administrator after the change
             Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
             Privilege privilege = agent.getPrivilege();
             List<String> allowUsers = privilege.getAllowUsers();
@@ -141,9 +139,9 @@ public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntit
                 boolean viewable = socialCpIsvService.judgeViewable(authCorpId, isvAdmin.getUserId(), suiteId,
                         allowUsers, allowParties, allowTags);
                 if (viewable) {
-                    // 3.2.1 将可见范围内管理员列表中的第一个人设置为空间站主管理员
+                    // 3.2.1 Set the first person in the administrator list within the visible range as the primary administrator of the space station
                     socialCpIsvService.syncSingleUser(authCorpId, isvAdmin.getUserId(), suiteId, spaceId, true);
-                    // 3.2.2 取消原来的主管理员
+                    // 3.2.2 Cancel the original primary administrator
                     if (Objects.nonNull(adminMember)) {
                         adminMember.setIsAdmin(false);
                         memberService.updateById(adminMember);
@@ -153,14 +151,14 @@ public class SocialCpIsvChangeAppAdminEntityHandler implements ISocialCpIsvEntit
                     break;
                 }
             }
-            // 3.3.3 如果没有可见范围内的管理员，则直接清除空间站主管理员
+            // 3.3.3 If there is no administrator within the visible range, clear the primary administrator of the space station directly
             if (!hasAdmin) {
                 spaceService.removeMainAdmin(spaceId);
             }
         }
-        // 5 清空临时缓存
+        // 5 Empty temporary cache
         socialCpIsvService.clearCache(authCorpId);
-        // 6 清空空间站缓存
+        // 6 Clear the space station cache
         userSpaceService.delete(spaceId);
 
         return true;

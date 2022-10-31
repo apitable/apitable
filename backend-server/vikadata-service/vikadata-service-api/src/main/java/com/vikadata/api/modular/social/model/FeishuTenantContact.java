@@ -7,9 +7,7 @@ import com.vikadata.social.feishu.model.v3.FeishuDeptObject;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 
 /**
- * 飞书通讯录组装结构
- * @author Shawn Deng
- * @date 2021-09-03 18:13:38
+ * Lark Address Book Assembly Structure
  */
 public class FeishuTenantContact {
 

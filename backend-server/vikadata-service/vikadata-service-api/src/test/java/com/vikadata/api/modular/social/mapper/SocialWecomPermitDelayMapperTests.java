@@ -18,10 +18,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 /**
  * <p>
- * 企微服务商接口许可延时任务处理信息
+ * WeCom service provider interface permission delay task processing information
  * </p>
- * @author 刘斌华
- * @date 2022-08-01 16:55:33
  */
 class SocialWecomPermitDelayMapperTests extends AbstractMyBatisMapperTest {
 

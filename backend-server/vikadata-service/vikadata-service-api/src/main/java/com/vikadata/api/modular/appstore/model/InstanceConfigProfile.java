@@ -1,24 +1,22 @@
 package com.vikadata.api.modular.appstore.model;
 
 /**
- * 实例配置设置
- * @author Shawn Deng
- * @date 2022-01-14 18:45:02
+ * Instance configuration settings
  */
 public interface InstanceConfigProfile {
 
     /**
-     * App标识
+     * App ID
      */
     String getAppKey();
 
     /**
-     * App密钥
+     * App Key
      */
     String getAppSecret();
 
     /**
-     * 转换成JSON字符串
+     * Convert to JSON string
      */
     String toJsonString();
 }

@@ -13,273 +13,232 @@ import com.vikadata.entity.ControlRoleEntity;
 
 /**
  * <p>
- * 权限控制单元角色 Mapper
+ * Permission Control Unit Role Mapper
  * </p>
- *
- * @author Chambers
- * @date 2021/4/27
  */
 public interface ControlRoleMapper extends BaseMapper<ControlRoleEntity> {
 
     /**
-     * 查询指定控制单元的所有角色
+     * Query all roles of the specified control unit
      *
-     * @param controlId 控制单元ID
+     * @param controlId Control unit ID
      * @return entities
-     * @author Chambers
-     * @date 2021/4/27
      */
     List<ControlRoleEntity> selectByControlId(@Param("controlId") String controlId);
 
     /**
-     * 查询多个控制单元的所有角色
+     * Query all roles of multiple control units
      *
-     * @param controlIds 控制单元ID 集合
+     * @param controlIds Control unit ID set
      * @return entities
-     * @author Chambers
-     * @date 2021/4/27
      */
     List<ControlRoleEntity> selectByControlIds(@Param("controlIds") List<String> controlIds);
 
     /**
-     * 查询指定控制单元、指定组织单元的所有角色
+     * Query all roles of the specified control unit and organization unit
      *
-     * @param controlId     控制单元ID
-     * @param unitId        组织单元ID
+     * @param controlId     Control unit ID
+     * @param unitId        Org Unit ID
      * @return entities
-     * @author Chambers
-     * @date 2021/5/24
      */
     List<ControlRoleEntity> selectByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
 
     /**
-     * 查询组织单元ID
+     * Query Org Unit ID
      *
-     * @param controlId 控制单元ID
-     * @param roleCode  角色编码
+     * @param controlId Control unit ID
+     * @param roleCode  Role Code
      * @return unitId
-     * @author Chambers
-     * @date 2021/5/25
      */
     Long selectUnitIdAndControlIdAndRoleCode(@Param("controlId") String controlId, @Param("roleCode") String roleCode);
 
     /**
-     * 查询角色编码
+     * Query Role Code
      *
-     * @param controlId 控制单元ID
-     * @param unitId    组织单元ID
+     * @param controlId Control unit ID
+     * @param unitId    Org Unit ID
      * @return RoleCode
-     * @author Chambers
-     * @date 2021/4/27
      */
     String selectRoleCodeByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
 
     /**
-     * 批量查询角色编码
+     * Batch query of Role Code
      *
-     * @param controlId 控制单元ID
-     * @param unitIds    组织单元ID
+     * @param controlId Control unit ID
+     * @param unitIds    Org Unit ID
      * @return RoleCode
      */
     List<ControlRoleInfo> selectControlRoleInfoByControlIdAndUnitIds(@Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds);
 
 
     /**
-     * 查询控制单元的角色和组织单元ID
+     * Query the role and Org Unit ID of the control unit
      *
-     * @param controlIds 控制单元ID 集合
+     * @param controlIds Control unit ID Collection
      * @return NodeUnitRole
-     * @author Chambers
-     * @date 2021/5/25
      */
     List<ControlRoleInfo> selectControlRoleInfoByControlIds(@Param("controlIds") Collection<String> controlIds);
 
     /**
-     * 查询控制单元的角色及组织单元信息
+     * Query the role and organization unit information of the control unit
      *
-     * @param controlId 控制单元ID
+     * @param controlId Control unit ID
      * @return ControlRoleUnitDTO
-     * @author Chambers
-     * @date 2021/4/27
      */
     @InterceptorIgnore(illegalSql = "true")
     List<ControlRoleUnitDTO> selectControlRoleUnitDtoByControlId(@Param("controlId") String controlId);
 
     /**
-     * 批量插入
+     * Bulk Insert
      *
-     * @param entities 实体集合
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/4/27
+     * @param entities Entity Collection
+     * @return Number of execution results
      */
     int insertBatch(@Param("entities") List<ControlRoleEntity> entities);
 
     /**
-     * 更改指定控制单元的多个组织单元角色
+     * Change multiple organizational unit roles of the specified control unit
      *
-     * @param userId    用户ID
-     * @param controlId 控制单元ID
-     * @param unitIds   组织单元ID 列表
-     * @param role      修改后的角色
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/4/27
+     * @param userId    User ID
+     * @param controlId Control unit ID
+     * @param unitIds   Org Unit ID List
+     * @param role      Modified role
+     * @return Number of execution results
      */
     @Deprecated
     int updateRoleCodeByControlIdAndUnitIds(@Param("userId") Long userId, @Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds, @Param("role") String role);
 
     /**
-     * 更改指定表ID 的角色
+     * Change the role of the specified table ID
      *
-     * @param userId    用户ID
-     * @param ids       表ID 列表
-     * @param role      修改后的角色
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/5/24
+     * @param userId    User ID
+     * @param ids       Table ID List
+     * @param role      Modified role
+     * @return Number of execution results
      */
     int updateRoleCodeByIds(@Param("userId") Long userId, @Param("ids") List<Long> ids, @Param("role") String role);
 
     /**
-     * 删除指定表ID的角色
+     * Delete the role of the specified table ID
      *
-     * @param ids 表ID 列表
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/5/24
+     * @param ids Table ID List
+     * @return Number of execution results
      */
     @Deprecated
     int deleteByIds(@Param("ids") List<Long> ids);
 
     /**
-     * 删除指定控制单元所有角色
+     * Delete all roles of the specified control unit
      *
-     * @param controlIds 控制单元ID 集合
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/4/27
+     * @param controlIds Control unit ID Collection
+     * @return Number of execution results
      */
     @Deprecated
     int deleteByControlIds(@Param("userId") Long userId, @Param("controlIds") List<String> controlIds);
 
     /**
-     * 删除指定组织单元所有角色
+     * Delete all roles of the specified organizational unit
      *
-     * @param unitIds 组织单元ID 集合
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/4/30
+     * @param unitIds Org Unit ID Collection
+     * @return Number of execution results
      */
     @Deprecated
     int deleteByUnitIds(@Param("unitIds") List<Long> unitIds);
 
     /**
-     * 删除指定控制单元、指定组织单元的角色
+     * Delete the role of the specified control unit and organization unit
      *
-     * @param controlId 控制单元ID
-     * @param unitId    组织单元ID
-     * @return 执行结果数
-     * @author Chambers
-     * @date 2021/4/27
+     * @param controlId Control unit ID
+     * @param unitId    Org Unit ID
+     * @return Number of execution results
      */
     @Deprecated
     int deleteByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);
 
     /**
-     * 通过权限ID和组织ID查找权限
+     * Find permissions by permission ID and organization ID
      *
-     * @param controlId 权限ID
-     * @param unitIds 组织单元ID
+     * @param controlId Permission ID
+     * @param unitIds Org Unit ID
      * @return List<ControlRoleEntity>
-     * @author zoe zheng
-     * @date 2022/2/28 15:30
      */
     List<ControlRoleEntity> selectDeletedRole(@Param("controlId") String controlId,
             @Param("unitIds") List<Long> unitIds, @Param("roleCode") String roleCode);
 
     /**
-     * 修改删除字段
+     * Modify Delete Field
      *
-     * @param ids 主键ID
-     * @param userId 修改用户ID
-     * @param isDeleted 是否删除
-     * @return 影响记录行数
-     * @author zoe zheng
-     * @date 2022/2/28 16:08
+     * @param ids Primary key ID
+     * @param userId Modify User ID
+     * @param isDeleted Delete
+     * @return Number of affected record lines
      */
     Integer updateIsDeletedByIds(@Param("userId") Long userId, @Param("ids") List<Long> ids,
             @Param("isDeleted") Boolean isDeleted);
 
     /**
-     * 查找删除的集合
+     * Find Deleted Collections
      *
-     * @param controlId 权限ID
-     * @param unitIds 组织单元ID
-     * @param roleCodes 角色编码
+     * @param controlId Permission ID
+     * @param unitIds Org Unit ID
+     * @param roleCodes Role Code
      * @return List<ControlRoleEntity>
-     * @author zoe zheng
-     * @date 2022/3/1 00:21
      */
     List<ControlRoleEntity> selectDeletedRoleByRoleCodes(@Param("controlId") String controlId,
             @Param("unitIds") List<Long> unitIds, @Param("roleCodes") List<String> roleCodes);
 
     /**
-     * 查询组织单元ID
+     * Query Org Unit ID
      *
-     * @param controlId 控制单元ID
-     * @param roleCode  角色编码
-     * @param ignoreDeleted 忽略删除
+     * @param controlId Control unit ID
+     * @param roleCode  Role Code
+     * @param ignoreDeleted Ignore Delete
      * @return unitId
-     * @author zoe zheng
-     * @date 2022/4/13 20:09
      */
     ControlRoleEntity selectByControlIdAndUnitIdAndRoleCode(@Param("controlId") String controlId, @Param("unitId") Long unitId,
             @Param("roleCode") String roleCode, @Param("ignoreDeleted") boolean ignoreDeleted);
 
     /**
-     * 查询指定控制单元的所有角色
+     * Query all roles of the specified control unit
      *
-     * @param controlId 控制单元ID
-     * @param unitIds    组织单元ID
-     * @param ignoreDeleted 忽略删除标志
+     * @param controlId Control unit ID
+     * @param unitIds    Org Unit ID
+     * @param ignoreDeleted Ignore delete flag
      * @return entities
-     * @author zoe zheng
-     * @date 2022/4/13 21:09
      */
     List<ControlRoleEntity> selectByControlIdAndUnitIds(@Param("controlId") String controlId,
             @Param("unitIds") List<Long> unitIds, @Param("ignoreDeleted") boolean ignoreDeleted);
 
     /**
-     * 查询指定控制单元的所有角色
+     * Query all roles of the specified control unit
      *
-     * @param controlIds     控制单元ID列表
+     * @param controlIds     Control unit ID List
      * @return id List
      */
     List<Long> selectIdByControlIds(@Param("controlIds") List<String> controlIds);
 
     /**
-     * 查询指定组织单元的所有角色
+     * Query all roles of the specified organizational unit
      *
-     * @param unitIds        组织单元ID列表¬
+     * @param unitIds        Org Unit ID List
      * @return id List
      */
     List<Long> selectIdByUnitIds(@Param("unitIds") List<Long> unitIds);
 
     /**
-     * 查询指定控制单元、指定多个组织单元的所有角色
+     * Query all roles of the specified control unit and multiple organization units
      *
-     * @param controlId     控制单元ID
-     * @param unitIds        组织单元ID列表
+     * @param controlId     Control unit ID
+     * @param unitIds        Org Unit ID List
      * @return id List
      */
     List<Long> selectIdByControlIdAndUnitIds(@Param("controlId") String controlId, @Param("unitIds") List<Long> unitIds);
 
     /**
-     * 查询指定控制单元、指定组织单元的所有角色
+     * Query all roles of the specified control unit and organization unit
      *
-     * @param controlId     控制单元ID
-     * @param unitId        组织单元ID
+     * @param controlId     Control unit ID
+     * @param unitId        Org Unit ID
      * @return id List
      */
     List<Long> selectIdByControlIdAndUnitId(@Param("controlId") String controlId, @Param("unitId") Long unitId);

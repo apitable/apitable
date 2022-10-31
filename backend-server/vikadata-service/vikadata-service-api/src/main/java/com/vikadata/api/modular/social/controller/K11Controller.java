@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(tags = "k11登录接口")
+@Api(tags = "k11 Login interface")
 @ApiResource(path = "/k11")
 @Slf4j
 public class K11Controller {
@@ -35,10 +35,10 @@ public class K11Controller {
     private ConstProperties constProperties;
 
     @GetResource(path = "/oss/sync-login", requiredLogin = false)
-    @ApiOperation(value = "k11采用token同步登录")
+    @ApiOperation(value = "k11 Synchronous login with token")
     public ResponseData<String> loginBySsoToken(@ApiParam(name = "token", required = true) String token, HttpServletResponse response) throws IOException {
         if (StrUtil.isEmptyIfStr(token)) {
-            return ResponseData.success("SSO token不允许为空");
+            return ResponseData.success("SSO token cannot be empty");
         }
         String defaultWorkUri = constProperties.getServerDomain() + "/workbench";
         HttpSession session = HttpContextUtil.getSession(false);

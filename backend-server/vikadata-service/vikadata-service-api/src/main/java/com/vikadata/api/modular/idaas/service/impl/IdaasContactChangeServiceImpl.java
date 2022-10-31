@@ -42,10 +42,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 玉符 IDaaS 通讯录变更统一处理
+ * IDaaS Unified handling of address book changes
  * </p>
- * @author 刘斌华
- * @date 2022-06-04 09:26:42
  */
 @Service
 public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService {
@@ -71,10 +69,10 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveContactChange(String tenantName, String spaceId, IdaasContactChange contactChange) {
-        // 1 处理新增的用户组
+        // 1 Processing new user groups
         List<GroupResponse> addGroupResponses = contactChange.getAddGroups();
         if (CollUtil.isNotEmpty(addGroupResponses)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(addGroupResponses, 500).forEach(addGroups -> {
                 List<TeamEntity> teamEntities = Lists.newArrayListWithCapacity(addGroups.size());
                 List<IdaasGroupBindEntity> groupBindEntities = Lists.newArrayListWithCapacity(addGroups.size());
@@ -82,7 +80,7 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                     Long teamId = IdWorker.getId();
                     Long rootTeamId = teamService.getRootTeamId(spaceId);
                     TeamEntity teamEntity = OrganizationFactory.createTeam(spaceId, teamId, rootTeamId, addGroup.getName(), addGroup.getOrder());
-                    // 用户组没有多层结构，都位于一级根目录下
+                    // User groups have no multi-level structure and are located in the first level root directory
                     teamEntity.setTeamLevel(2);
                     teamEntities.add(teamEntity);
 
@@ -101,10 +99,10 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                 idaasGroupBindService.saveBatch(groupBindEntities);
             });
         }
-        // 2 处理更新的用户组
+        // 2 User groups that process updates
         List<IdaasGroupBindEntity> updateGroupBinds = contactChange.getUpdateGroups();
         if (CollUtil.isNotEmpty(updateGroupBinds)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(updateGroupBinds, 500).forEach(groupBinds -> {
                 List<TeamEntity> teamEntities = Lists.newArrayListWithCapacity(groupBinds.size());
                 List<IdaasGroupBindEntity> groupBindEntities = Lists.newArrayListWithCapacity(groupBinds.size());
@@ -127,11 +125,11 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                 idaasGroupBindService.updateBatchById(groupBindEntities);
             });
         }
-        // 3 处理删除的用户组
-        // 逻辑删除空间站组织结构和用户组绑定信息
+        // 3 Handling Deleted User Groups
+        // Logically delete the space station organization structure and user group binding information
         List<IdaasGroupBindEntity> deleteGroupBinds = contactChange.getDeleteGroups();
         if (CollUtil.isNotEmpty(deleteGroupBinds)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(deleteGroupBinds, 500).forEach(groupBinds -> {
                 List<Long> deleteTeamIds = groupBinds.stream()
                         .map(IdaasGroupBindEntity::getTeamId)
@@ -144,15 +142,15 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                 idaasGroupBindService.removeBatchByIds(deleteGroupBindIds);
             });
         }
-        // 4 获取团队信息
+        // 4 Get team information
         List<IdaasGroupBindEntity> effectiveGroupBinds = idaasGroupBindService.getAllBySpaceId(spaceId);
         Map<String, Long> groupBindTeamMap = effectiveGroupBinds.stream()
                 .collect(Collectors.toMap(IdaasGroupBindEntity::getGroupId, IdaasGroupBindEntity::getTeamId, (k1, k2) -> k2));
         Long rootTeamId = teamService.getRootTeamId(spaceId);
-        // 5 处理新增的用户
+        // 5 Process new users
         List<UserResponse> addUserResponses = contactChange.getAddUsers();
         if (CollUtil.isNotEmpty(addUserResponses)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(addUserResponses, 500).forEach(addUsers -> {
                 List<UserEntity> userEntities = Lists.newArrayListWithCapacity(addUsers.size());
                 List<MemberEntity> memberEntities = Lists.newArrayListWithCapacity(addUsers.size());
@@ -198,7 +196,7 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                     if (CollUtil.isNotEmpty(teamMemberRels)) {
                         teamMemberRelEntities.addAll(teamMemberRels);
                     } else {
-                        // 没有分配有效的用户组则放在根目录下
+                        // If no valid user group is assigned, it will be placed in the root directory
                         teamMemberRelEntities.add(TeamMemberRelEntity.builder()
                                 .memberId(memberId)
                                 .teamId(rootTeamId)
@@ -223,10 +221,10 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                 idaasUserBindService.saveBatch(userBindEntities);
             });
         }
-        // 6 处理新增的成员
+        // 6 Process new members
         List<IdaasUserBindEntity> addMemberBinds = contactChange.getAddMembers();
         if (CollUtil.isNotEmpty(addMemberBinds)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(addMemberBinds, 500).forEach(addMembers -> {
                 List<MemberEntity> memberEntities = Lists.newArrayListWithCapacity(addMembers.size());
                 List<TeamMemberRelEntity> teamMemberRelEntities = Lists.newArrayListWithCapacity(addMembers.size());
@@ -257,7 +255,7 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                     if (CollUtil.isNotEmpty(teamMemberRels)) {
                         teamMemberRelEntities.addAll(teamMemberRels);
                     } else {
-                        // 没有分配有效的用户组则放在根目录下
+                        // If no valid user group is assigned, it will be placed in the root directory
                         teamMemberRelEntities.add(TeamMemberRelEntity.builder()
                                 .memberId(memberId)
                                 .teamId(rootTeamId)
@@ -269,16 +267,16 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                 teamMemberRelService.saveBatch(teamMemberRelEntities);
             });
         }
-        // 7 处理更新的用户
+        // 7 Users who process updates
         List<IdaasUserBindEntity> updateUserBinds = contactChange.getUpdateUsers();
         if (CollUtil.isNotEmpty(updateUserBinds)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(updateUserBinds, 500).forEach(userBinds -> {
                 List<UserEntity> userEntities = Lists.newArrayListWithCapacity(userBinds.size());
                 List<MemberEntity> memberEntities = Lists.newArrayListWithCapacity(userBinds.size());
                 List<TeamMemberRelEntity> teamMemberRelEntities = Lists.newArrayListWithCapacity(userBinds.size());
                 List<IdaasUserBindEntity> userBindEntities = Lists.newArrayListWithCapacity(userBinds.size());
-                // 7.1 获取空间站已绑定的成员信息
+                // 7.1 Get the bound member information of the space station
                 List<Long> vikaUserIds = userBinds.stream()
                         .map(IdaasUserBindEntity::getVikaUserId)
                         .collect(Collectors.toList());
@@ -311,7 +309,7 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
                     if (CollUtil.isNotEmpty(teamMemberRels)) {
                         teamMemberRelEntities.addAll(teamMemberRels);
                     } else {
-                        // 没有分配有效的用户组则放在根目录下
+                        // If no valid user group is assigned, it will be placed in the root directory
                         teamMemberRelEntities.add(TeamMemberRelEntity.builder()
                                 .memberId(memberId)
                                 .teamId(rootTeamId)
@@ -329,17 +327,17 @@ public class IdaasContactChangeServiceImpl implements IIdaasContactChangeService
 
                 userService.updateBatchById(userEntities);
                 memberService.updateBatchById(memberEntities);
-                // 将已有的成员小组信息全部删除，再重新添加
+                // Delete all the existing member group information and add it again
                 teamMemberRelService.removeByMemberIds(new ArrayList<>(userMemberIdMap.values()));
                 teamMemberRelService.saveBatch(teamMemberRelEntities);
                 idaasUserBindService.updateBatchById(userBindEntities);
             });
         }
-        // 8 处理删除的用户
-        // 逻辑删除成员
+        // 8 Process deleted users
+        // Tombstone member
         List<Long> deleteMemberIds = contactChange.getDeleteMemberIds();
         if (CollUtil.isNotEmpty(deleteMemberIds)) {
-            // 分批处理，防止大批量数据操作
+            // Batch processing to prevent mass data operation
             CollUtil.split(deleteMemberIds, 500).forEach(memberIds -> {
                 memberService.removeBatchByIds(memberIds);
             });

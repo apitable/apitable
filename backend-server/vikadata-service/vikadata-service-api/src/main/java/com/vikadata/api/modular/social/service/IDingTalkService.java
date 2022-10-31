@@ -23,383 +23,310 @@ import com.vikadata.social.dingtalk.model.UserInfoV2;
 
 /**
  * <p>
- * 钉钉集成服务 接口
+ * DingTalk integration service interface
  * </p>
- * @author zoe zheng
- * @date 2021/5/7 5:09 下午
  */
 public interface IDingTalkService {
     /**
-     * 根据临时授权码获取用户信息
+     * Obtain user information according to temporary authorization code
      *
-     * @param agentId 应用的agentId
-     * @param code 临时授权码
-     * @return
-     * @author zoe zheng
-     * @date 2021/5/7 6:05 下午
+     * @param agentId Applied agentId
+     * @param code Temporary authorization code
      */
     UserInfoV2 getUserInfoByCode(String agentId, String code);
 
     /**
-     * 根据userId获取用户详细信息
+     * Obtain user details according to user ID
      *
-     * @param agentId 应用的agentId
-     * @param userId 钉钉应用的userId
+     * @param agentId Applied agentId
+     * @param userId DingTalk Application UserId
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/5/7 5:11 下午
      */
     DingTalkUserDetail getUserDetailByUserId(String agentId, String userId);
 
     /**
-     * 根据临时授权码获取用户详细信息
+     * Obtain user details according to temporary authorization code
      *
-     * @param agentId 应用的agentId
-     * @param userId 钉钉应用的userId
+     * @param agentId Applied agentId
+     * @param userId DingTalk Application UserId
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/5/7 6:07 下午
      */
     DingTalkUserDetail getUserDetailByCode(String agentId, String userId);
 
     /**
-     * 钉钉应用--获取子部门ID列表
+     * DingTalk Application -- get the sub department ID list
      *
-     * @param agentId 应用的agentId
-     * @param deptId 父部门ID，根部门传1。
-     * @return 子部门ID列表
-     * @author zoe zheng
-     * @date 2021/5/11 1:25 下午
+     * @param agentId Applied agentId
+     * @param deptId The parent Department ID is passed to 1 at the root.
+     * @return Sub Department ID List
      */
     List<Long> getDepartmentSubIdList(String agentId, Long deptId);
 
     /**
-     * 获取部门全部成员列表
+     * Get the list of all members of the department
      *
-     * @param agentId 应用的agentId
-     * @param deptId 部门ID
-     * @param cursor 分页查询的游标
-     * @param size 分页大小。
+     * @param agentId Applied agentId
+     * @param deptId Department ID
+     * @param cursor Cursor for paged queries
+     * @param size Page size
      * @return List<UserDetail>
-     * @author zoe zheng
-     * @date 2021/5/11 4:25 下午
      */
     UserPageResult getUserDetailList(String agentId, Long deptId, Integer cursor, Integer size);
 
     /**
-     * 获取当前应用根部门下面所有用户信息
+     * Get all user information under the root door of the current application
      *
-     * @param agentId 应用的agentId
-     * @param cursor 分页查询的游标
-     * @param size 分页大小。
+     * @param agentId Applied agentId
+     * @param cursor Cursor for paged queries
+     * @param size Page size
      * @return UserPageResult
-     * @author zoe zheng
-     * @date 2021/5/11 4:33 下午
      */
     UserPageResult getRootUserDetailList(String agentId, Integer cursor, Integer size);
 
     /**
-     * 获取部门列表
+     * Get department list
      *
-     * @param agentId 应用的agentId
-     * @param deptId 部门ID
+     * @param agentId Applied agentId
+     * @param deptId Department ID
      * @return List<DeptBaseResponse>
-     * @author zoe zheng
-     * @date 2021/5/11 5:36 下午
      */
     List<DingTalkDeptBaseInfo> getDepartmentSubList(String agentId, Long deptId);
 
     /**
-     * 注册钉钉回调事件url
+     * Register the Ding Talk callback event url
      *
-     * @param agentId 应用的agentId
-     * @param url 回调url
-     * @param events 回调事件
-     * @author zoe zheng
-     * @date 2021/5/12 7:46 下午
+     * @param agentId Applied agentId
+     * @param url Callback url
+     * @param events Callback Events
      */
     void registerCallbackUrl(String agentId, String url, List<String> events);
 
     /**
-     * 删除钉钉回调事件url
+     * Delete DingTalk callback event url
      *
-     * @param agentId 应用的agentId
-     * @author zoe zheng
-     * @date 2021/5/12 8:24 下午
+     * @param agentId Applied agentId
      */
     void deleteCallbackUrl(String agentId);
 
     /**
-     * 发送卡片消息给钉钉用户--工作通知形式
+     * Send card message to DingTalk user -- work notice form
      *
-     * @param agentId 应用的agentId
-     * @param message 消息内容
-     * @param tenantUserIds 钉钉用户ID
-     * @return 异步任务ID
-     * @author zoe zheng
-     * @date 2021/5/14 3:10 下午
+     * @param agentId Applied agentId
+     * @param message Message content
+     * @param tenantUserIds DingTalk User ID
+     * @return Asynchronous task ID
      */
     List<String> asyncSendCardMessageToUserPrivate(String agentId, Message message, List<String> tenantUserIds);
 
     /**
-     * 根据appid和第三方公司ID获取agentId
+     * Get the agent ID according to the appid and the third-party company ID
      *
-     * @param appId 应用唯一标识
-     * @param tenantId 第三集成平台唯一标识
-     * @return 应用的agentId
-     * @author zoe zheng
-     * @date 2021/5/14 7:04 下午
+     * @param appId Application unique identification
+     * @param tenantId Unique identification of the third integration platform
+     * @return Applied agentId
      */
     String getAgentIdByAppIdAndTenantId(String appId, String tenantId);
 
     /**
-     * 获取部门详情
+     * Get department details
      *
-     * @param agentId 应用唯一标识
-     * @param deptId 钉钉部门ID
+     * @param agentId Application unique identification
+     * @param deptId DingTalkDepartment ID
      * @return DingTalkDeptDetail
-     * @author zoe zheng
-     * @date 2021/5/17 11:22 上午
      */
     DingTalkDeptDetail getDeptDetail(String agentId, Long deptId);
 
     /**
-     * 获取部门详情
+     * Get department details
      *
-     * @param agentId 应用唯一标识
-     * @param deptId 钉钉部门ID
-     * @param languageType 返回信息语言
+     * @param agentId Application unique identification
+     * @param deptId DingTalkDepartment ID
+     * @param languageType Return message language
      * @return DingTalkDeptDetail
-     * @author zoe zheng
-     * @date 2021/5/17 11:22 上午
      */
     DingTalkDeptDetail getDeptDetail(String agentId, Long deptId, DingTalkLanguageType languageType);
 
     /**
-     * 获取部门用户ID列表
+     * Get the list of department user IDs
      *
-     * @param agentId 应用唯一标识
-     * @param deptId 钉钉部门ID
-     * @return 部门用户ID列表
-     * @author zoe zheng
-     * @date 2021/5/17 11:22 上午
+     * @param agentId Application unique identification
+     * @param deptId DingTalkDepartment ID
+     * @return Department User ID List
      */
     List<String> getDeptUserIdList(String agentId, Long deptId);
 
     /**
-     * 获取企业授权信息
+     * Get Enterprise authorization information
      *
-     * @param agentId 应用唯一标识
-     * @return 企业授权信息
-     * @author zoe zheng
-     * @date 2021/5/21 3:05 下午
+     * @param agentId Application unique identification
+     * @return Enterprise authorization information
      */
     DingTalkServerAuthInfoResponse getServerAuthInfo(String agentId);
 
     /**
-     * 根据应用ID获取授权企业ID
+     * Obtain the authorized enterprise ID according to the application ID
      *
-     * @param agentId 应用唯一标识
-     * @return 授权企业ID
-     * @author zoe zheng
-     * @date 2021/5/21 3:30 下午
+     * @param agentId Application unique identification
+     * @return Authorized enterprise ID
      */
     String getTenantIdByAgentId(String agentId);
 
     /**
-     * 获取应用可见范围
+     * Get the visible range of the application
      *
-     * @param agentId 授权应用agentId
-     * @return 企业授权信息
-     * @author zoe zheng
-     * @date 2021/5/21 2:56 下午
+     * @param agentId Authorization application agent ID
+     * @return Enterprise authorization information
      */
     DingTalkAppVisibleScopeResponse getAppVisibleScopes(String agentId);
 
     /**
-     * 获取用户父部门列表
+     * Get the user's parent department list
      *
-     * @param agentId 授权应用agentId
-     * @param userId 钉钉应用userId
+     * @param agentId Authorization application agent ID
+     * @param userId DingTalk Application user ID
      * @return DingTalkUserParentDeptList
-     * @author zoe zheng
-     * @date 2021/6/9 5:54 下午
      */
     DingTalkUserParentDeptList getUserParentDeptList(String agentId, String userId);
 
     /**
-     * 获取应用可见范围人数
+     * Get the number of people in the application visible range
      *
-     * @param agentId 授权应用agentId
-     * @return 人数
-     * @author zoe zheng
-     * @date 2021/6/21 6:15 下午
+     * @param agentId Authorization application agent ID
+     * @return Number of people
      */
     Integer getAppVisibleUserCount(String agentId);
 
     /**
-     * 获取指定部门的所有父部门列表,包括自己
+     * Get a list of all the parent departments of the specified department, including your own
      *
      * @param agentId agentId
-     * @param deptId 部门ID
-     * @return 该部门的所有父部门ID列表
+     * @param deptId Department ID
+     * @return List of all parent Department IDs of the department
      */
     List<Long> getDeptParentIdList(String agentId, Long deptId);
 
     /**
-     *  第三方网站登陆：通过临时授权码Code获取用户信息
+     *  Third party website login: obtain user information through temporary authorization code
      *
-     * @param tmpAuthCode 临时授权码Code;
+     * @param tmpAuthCode Temporary authorization code
      * @return UserInfo
-     * @author zoe zheng
-     * @date 2021/4/20 6:28 下午
      */
     UserInfo getUserInfoByCode(String tmpAuthCode);
 
     /**
-     * 通过免登码获取用户信息(v2)
+     * Obtaining user information through non login code (v 2)
      *
-     * @param code 免登授权码
+     * @param code Registration free authorization code
      * @return UserInfoV2
-     * @author zoe zheng
-     * @date 2021/4/20 6:56 下午
      */
     UserInfoV2 getUserInfoV2ByCode(String code);
 
     /**
-     * 根据userid获取用户详情
+     * Obtain user details according to userid
      *
-     * @param userId 员工唯一标识userid。
+     * @param userId Employee's unique ID userid
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/4/20 7:11 下午
      */
     DingTalkUserDetail getUserInfoByUserId(String userId);
 
     /**
-     * 根据agentId获取agentApp的配置信息
+     * Get the configuration information of agent app according to agent ID
      *
      * @param agentId agentId
      * @return AgentApp
-     * @author zoe zheng
-     * @date 2021/7/20 11:46 上午
      */
     AgentApp getAgentAppById(String agentId);
 
     /**
-     * 获取维格表的钉钉显示配置的ID
+     * Get the ID of vika's Ding alk display configuration
      *
      * @return string
-     * @author zoe zheng
-     * @date 2021/7/20 11:46 上午
      */
     String getVikaDingAppId();
 
     /**
-     *  获取钉钉配置
+     *  Get DingTalk configuration
      *
-     * @return DingtalkConfig
-     * @author zoe zheng
-     * @date 2021/7/20 7:44 下午
+     * @return DingTalk Config
      */
     DingtalkConfig getDingTalkConfig();
 
     /**
-     * 获取钉钉事件回调地址
+     * Get the callback address of the Ding Talk event
      *
      * @param agentId agentId
-     * @return 回调地址
-     * @author zoe zheng
-     * @date 2021/7/21 10:50 上午
+     * @return token url
      */
     String getDingTalkEventCallbackUrl(String agentId);
 
     /**
-     * 获取部门全部成员列表
+     * Get the list of all members of the department
      *
-     * @param agentId 应用的agentId
-     * @param deptId 部门ID
+     * @param agentId Applied agentId
+     * @param deptId Department ID
      * @return List<UserDetail>
-     * @author zoe zheng
-     * @date 2021/5/11 4:25 下午
      */
     List<DingTalkUserDetail> getDeptAllUserDetailList(String agentId, Long deptId);
 
     /**
-     * 获取部门全部成员map
+     * Get the map of all department members
      *
-     * @param agentId 应用的agentId
-     * @param deptId 部门Id
+     * @param agentId Applied agentId
+     * @param deptId Department Id
      * @return Map<String, DingTalkUserDetail>
-     * @author zoe zheng
-     * @author zoe zheng
-     * @date 2022/4/18 15:45
      */
     Map<String, DingTalkUserDTO> getUserDetailMap(String agentId, Long deptId);
 
     /**
-     * 获取给定部门下所有自部门和所有的用户map
+     * Get all self departments and all user maps under a given department
      *
-     * @param agentId 应用的agentId
-     * @param deptId 部门ID
-     * @param userDeptMap 用户部门map
+     * @param agentId Applied agentId
+     * @param deptId Department ID
+     * @param userDeptMap User department map
      * @return Map<String, DingTalkUserDetail>
-     * @author zoe zheng
-     * @author zoe zheng
-     * @date 2022/4/18 15:45
      */
     LinkedHashMap<Long, DingTalkContactDTO> getUserDetailSubTreeMapByDeptId(String agentId, Long deptId, LinkedHashMap<Long, DingTalkContactDTO> userDeptMap);
 
     /**
-     * 获取给定部门下所有自部门和所有的用户map
+     * Get all self departments and all user maps under a given department
      *
-     * @param agentId 应用的agentId
-     * @param deptIds 部门ID列表
+     * @param agentId Applied agentId
+     * @param deptIds Department ID List
      * @return Map<Long, Map < String, DingTalkUserDetailDTO>>
-     * @author zoe zheng
-     * @date 2022/4/18 17:36
      */
     LinkedHashMap<Long, DingTalkContactDTO> getContactSubTreeMapByDeptIds(String agentId, List<Long> deptIds);
 
     /**
-     * 根据部门ID获取通讯录列表
+     * Get the address list according to the Department ID
      *
-     * @param agentId 应用的agentId
-     * @param deptIds 部门ID列表
+     * @param agentId Applied agentId
+     * @param deptIds Department ID List
      * @return Map<Long, Map < String, DingTalkUserDetailDTO>>
-     * @author zoe zheng
-     * @date 2022/4/18 17:36
      */
     LinkedHashMap<Long, DingTalkContactDTO> getContactTreeMapByDeptIds(String agentId, List<Long> deptIds);
 
     /**
-     * 根据部门ID获取通讯录列表
+     * Get the address list according to the Department ID
      *
-     * @param agentId 应用的agentId
-     * @param openIds 用户的openID列表
+     * @param agentId Applied agentId
+     * @param openIds User's open ID list
      * @return Map<Long, Map < String, DingTalkUserDetailDTO>>
-     * @author zoe zheng
-     * @date 2022/4/18 17:36
      */
     LinkedHashMap<Long, DingTalkContactDTO> getContactTreeMapByOpenIds(String agentId, List<String> openIds, LinkedHashMap<Long, DingTalkContactDTO> contactMap);
 
     /**
-     * 根据部门ID获取通讯录列表
+     * Get the address list according to the Department ID
      *
-     * @param agentId 应用的agentId
-     * @return LinkedHashMap<Long, DingTalkContactDTO> 钉钉部门成员信息
-     * @author zoe zheng
-     * @date 2022/4/18 17:36
+     * @param agentId Applied agentId
+     * @return LinkedHashMap<Long, DingTalkContactDTO> DingTalk Department member information
      */
     LinkedHashMap<Long, DingTalkContactDTO> getContactTreeMap(String agentId);
 
     /**
-     * 构建部门基本数据
+     * Build department basic data
      *
-     * @param baseInfo 部门基础信息
+     * @param baseInfo Department Basic Information
      * @return DingTalkDepartmentDTO
-     * @author zoe zheng
-     * @date 2022/4/19 16:08
      */
     DingTalkDepartmentDTO formatDingTalkDepartmentDto(DingTalkDeptBaseInfo baseInfo);
 }

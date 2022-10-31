@@ -16,10 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据层访问测试：第三方平台集成-企业租户部门表测试
+ *     Data layer access test: third-party platform integration - enterprise tenant department table test
  * </p>
- * @author wuyitao
- * @date 2022/4/4 4:42 PM
  */
 @Disabled
 public class SocialTenantDepartmentMapperTest extends AbstractMyBatisMapperTest {

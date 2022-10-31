@@ -11,9 +11,7 @@ import com.vikadata.api.modular.social.constants.LarkConstants;
 import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 
 /**
- * 飞书应用配置工厂
- * @author Shawn Deng
- * @date 2022-01-18 01:05:43
+ * Lark Application Configuration Factory
  */
 public class LarkConfigFactory {
 

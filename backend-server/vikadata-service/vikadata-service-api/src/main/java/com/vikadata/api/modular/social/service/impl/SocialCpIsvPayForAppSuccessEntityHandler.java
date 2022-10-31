@@ -25,11 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商订单支付成功处理
+ * Third party platform integration - WeCom third-party service provider order payment successfully processed
  * </p>
- *
- * @author 刘斌华
- * @date 2022-04-25 10:13:08
  */
 @Service
 @Slf4j

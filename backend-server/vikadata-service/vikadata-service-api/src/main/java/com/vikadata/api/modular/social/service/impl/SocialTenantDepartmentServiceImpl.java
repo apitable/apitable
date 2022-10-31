@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 第三方平台集成-租户部门 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-09 14:57:11
+ * Third party platform integration - tenant department service interface implementation
  */
 @Service
 @Slf4j
@@ -58,7 +55,7 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
     @Override
     public List<String> getDepartmentIdsByTenantId(String tenantId, String spaceId) {
         if (StrUtil.isBlank(spaceId)) {
-            // 首次获取，肯定是空的
+            // First time acquisition, it must be empty
             return Collections.emptyList();
         }
         return socialTenantDepartmentMapper.selectDepartmentIdsByTenantId(tenantId, spaceId);
@@ -67,7 +64,7 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
     @Override
     public List<SocialTenantDepartmentEntity> getByTenantId(String tenantId, String spaceId) {
         if (StrUtil.isBlank(spaceId)) {
-            // 首次获取，肯定是空的
+            // First time acquisition, it must be empty
             return Collections.emptyList();
         }
         return socialTenantDepartmentMapper.selectByTenantId(tenantId, spaceId);
@@ -78,7 +75,7 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
         if (CollUtil.isEmpty(entities)) {
             return;
         }
-        // 添加或修改租户的部门列表，覆盖式
+        // Add or modify the tenant's department list, overlay
         socialTenantDepartmentMapper.insertBatch(entities);
     }
 
@@ -86,11 +83,11 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
     @Transactional(rollbackFor = Exception.class)
     public void deleteTenantDepartment(String spaceId, String tenantId, String departmentId) {
         Long bindTeamId = iSocialTenantDepartmentBindService.getBindSpaceTeamId(spaceId, tenantId, departmentId);
-        // 删除空间站绑定的小组
+        // Delete the team bound to the space station
         if (bindTeamId != null) {
             iTeamService.deleteTeam(bindTeamId);
         }
-        // 删除租户部门绑定小组记录
+        // Delete tenant department binding group record
         iSocialTenantDepartmentBindService.deleteByTenantDepartmentId(spaceId, tenantId, departmentId);
         socialTenantDepartmentMapper.deleteByDepartmentId(spaceId, tenantId, departmentId);
     }
@@ -102,9 +99,9 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
             return;
         }
         List<Long> bindTeamIds = iSocialTenantDepartmentBindService.getBindSpaceTeamIds(spaceId, tenantId, new ArrayList<>(departmentIds));
-        // 删除空间站绑定的小组
+        // Delete the team bound to the space station
         bindTeamIds.forEach(bindTeamId -> iTeamService.deleteTeam(bindTeamId));
-        // 删除租户部门绑定小组记录
+        // Delete tenant department binding group record
         iSocialTenantDepartmentBindService.deleteBatchByTenantDepartmentId(spaceId, tenantId, new ArrayList<>(departmentIds));
         socialTenantDepartmentMapper.deleteBatchByDepartmentId(spaceId, tenantId, departmentIds);
 
@@ -113,9 +110,9 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteByTenantId(String spaceId, String tenantId) {
-        // 删除部门记录
+        // Delete department record
         socialTenantDepartmentMapper.deleteByTenantId(tenantId, spaceId);
-        // 删除绑定
+        // Delete Binding
         iSocialTenantDepartmentBindService.deleteByTenantId(spaceId, tenantId);
     }
 
@@ -130,11 +127,11 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
     public void deleteSpaceTenantDepartment(String spaceId, String tenantId, String departmentId) {
         Long bindTeamId = iSocialTenantDepartmentBindService.getBindSpaceTeamIdBySpaceId(spaceId, tenantId,
                 departmentId);
-        // 删除空间站绑定的小组
+        // Delete the team bound to the space station
         if (bindTeamId != null) {
             iTeamService.deleteTeam(bindTeamId);
         }
-        // 删除租户部门绑定小组记录
+        // Delete tenant department binding group record
         iSocialTenantDepartmentBindService.deleteSpaceBindTenantDepartment(spaceId, tenantId, departmentId);
         socialTenantDepartmentMapper.deleteBySpaceIdAndTenantIdAndDepartmentId(spaceId, tenantId, departmentId);
     }
@@ -142,9 +139,9 @@ public class SocialTenantDepartmentServiceImpl extends ServiceImpl<SocialTenantD
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteByTenantIdAndSpaceId(String tenantId, String spaceId) {
-        // 删除部门记录
+        // Delete department record
         socialTenantDepartmentMapper.deleteByTenantIdAndSpaceId(tenantId, spaceId);
-        // 删除绑定
+        // Delete Binding
         socialTenantDepartmentBindMapper.deleteByTenantIdAndSpaceId(tenantId, spaceId);
     }
 

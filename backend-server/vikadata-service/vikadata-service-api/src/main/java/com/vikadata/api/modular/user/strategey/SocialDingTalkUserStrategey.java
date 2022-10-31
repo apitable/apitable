@@ -29,10 +29,8 @@ import static com.vikadata.api.enums.exception.UserException.SIGN_IN_ERROR;
 
 /**
  * <p> 
- * 钉钉创建SocialUser策略实现
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/16 6:49 下午
+ * DingTalk creates Social User policy implementation
+ * </p>
  */
 @Component
 public class SocialDingTalkUserStrategey extends AbstractCreateSocialUser {
@@ -59,17 +57,17 @@ public class SocialDingTalkUserStrategey extends AbstractCreateSocialUser {
         String tenantId = user.getTenantId();
         Long userId = iSocialUserBindService.getUserIdByUnionId(unionId);
         if (userId == null) {
-            // 创建用户
+            // Create User
             UserEntity entity = createUserAndCopyAvatar(user, SIGN_IN_ERROR);
             userId = entity.getId();
-            // 创建用户活动记录
+            // Create user activity record
             iPlayerActivityService.createUserActivityRecord(userId);
-            // 创建个人邀请码
+            // Create personal invitation code
             ivCodeService.createPersonalInviteCode(userId);
-            // 第三方平台集成-用户绑定
+            // Third party platform integration - user bind
             iSocialUserBindService.create(userId, unionId);
             ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-            // 神策埋点 - 注册
+            // Shence burial site - registration
             Long finalUserId = userId;
             String scene = "钉钉";
             TaskManager.me().execute(() -> sensorsService.track(finalUserId, TrackEventType.REGISTER, scene, origin));
@@ -82,11 +80,11 @@ public class SocialDingTalkUserStrategey extends AbstractCreateSocialUser {
         if (!isExistTenantUser) {
             iSocialTenantUserService.create(user.getAppId(), tenantId, openId, unionId);
         }
-        // 关联所在租户空间的成员
+        // Associate the members of the tenant space
         List<String> bindSpaceIds = iSocialTenantBindService.getSpaceIdsByTenantId(tenantId);
         if (CollUtil.isNotEmpty(bindSpaceIds)) {
             for (String bindSpaceId : bindSpaceIds) {
-                // todo 需要验证同一个企业下载两个相同服务商的应用，openID是否一样
+                // todo It is necessary to verify whether the open ID of the same enterprise downloading applications from two same service providers is the same
                 MemberEntity member = iMemberService.getBySpaceIdAndOpenId(bindSpaceId, openId);
                 if (member != null) {
                     MemberEntity updatedMember = new MemberEntity();
@@ -97,7 +95,7 @@ public class SocialDingTalkUserStrategey extends AbstractCreateSocialUser {
                 }
             }
         }
-        // 新建的userID
+        // New user ID
         return userId;
     }
 }

@@ -11,12 +11,10 @@ import lombok.experimental.Tolerate;
 
 /**
  * <p>
- * 玉符 IDaaS 绑定租户下的应用
+ * IDaaS Bind the application under the tenant
  * </p>
- * @author 刘斌华
- * @date 2022-05-23 16:45:33
  */
-@ApiModel("玉符 IDaaS 绑定租户下的应用")
+@ApiModel("IDaaS Bind the application under the tenant")
 @Setter
 @Getter
 @Builder
@@ -24,10 +22,10 @@ import lombok.experimental.Tolerate;
 @EqualsAndHashCode
 public class IdaasAppBindVo {
 
-    @ApiModelProperty("单点登录 URL")
+    @ApiModelProperty("Single sign on URL")
     private String initiateLoginUri;
 
-    @ApiModelProperty("登录回调 URL")
+    @ApiModelProperty("Login callback URL")
     private String redirectUri;
 
     @Tolerate

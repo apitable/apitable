@@ -9,60 +9,50 @@ import com.vikadata.entity.SocialWecomPermitDelayEntity;
 
 /**
  * <p>
- * 企微服务商接口许可延时任务处理信息
+ * WeCom service provider interface permission delay task processing information
  * </p>
- * @author 刘斌华
- * @date 2022-07-19 09:50:09
  */
 public interface ISocialWecomPermitDelayService extends IService<SocialWecomPermitDelayEntity> {
 
     /**
-     * 添加延时处理信息
+     * Add Delay processing information
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param firstAuthTime 首次安装授权的时间
-     * @param delayType 延时处理类型
-     * @param processStatus 处理状态
-     * @return 新增的延时处理信息。为空则表示没有新增，交由已存在的任务处理
-     * @author 刘斌华
-     * @date 2022-07-19 11:01:32
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param firstAuthTime Time of first installation authorization
+     * @param delayType Delay processing type
+     * @param processStatus Processing status
+     * @return New Delay processing information. If it is blank, it means there is no addition and it will be handed over to the existing task for processing
      */
     SocialWecomPermitDelayEntity addAuthCorp(String suiteId, String authCorpId, LocalDateTime firstAuthTime,
             Integer delayType, Integer processStatus);
 
     /**
-     * 获取企业的延时处理信息
+     * Get the delay processing information of the enterprise
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param delayType 延时处理类型
-     * @param processStatuses 处理状态
-     * @return 延时处理信息
-     * @author 刘斌华
-     * @date 2022-07-19 11:11:27
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param delayType Delay processing type
+     * @param processStatuses Processing status
+     * @return Delay processing information
      */
     List<SocialWecomPermitDelayEntity> getByProcessStatuses(String suiteId, String authCorpId, Integer delayType, List<Integer> processStatuses);
 
     /**
-     * 获取企业的延时处理信息
+     * Get the delay processing information of the enterprise
      *
-     * @param suiteId 应用套件 ID
-     * @param processStatus 处理状态
-     * @param limit 数据偏移
-     * @param skip 返回的数量
-     * @return 延时处理信息
-     * @author 刘斌华
-     * @date 2022-07-19 11:11:27
+     * @param suiteId Application Suit ID
+     * @param processStatus Processing status
+     * @param limit Data Offset
+     * @param skip Quantity returned
+     * @return Delay processing information
      */
     List<SocialWecomPermitDelayEntity> getBySuiteIdAndProcessStatus(String suiteId, Integer processStatus, Integer skip, Integer limit);
 
     /**
-     * 批量处理待处理数据
+     * Batch processing of pending data
      *
-     * @param suiteId 应用套件 ID
-     * @author 刘斌华
-     * @date 2022-08-12 14:30:43
+     * @param suiteId Application Suit ID
      */
     void batchProcessPending(String suiteId);
 

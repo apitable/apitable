@@ -8,21 +8,17 @@ import com.vikadata.entity.IdaasAppEntity;
 
 /**
  * <p>
- * 玉符 IDaaS 应用信息
+ * IDaaS application information
  * </p>
- * @author 刘斌华
- * @date 2022-05-25 11:38:02
  */
 @Mapper
 public interface IdaasAppMapper extends BaseMapper<IdaasAppEntity> {
 
     /**
-     * 获取应用信息
+     * Get application information
      *
-     * @param clientId 应用的 Client ID
-     * @return 应用信息
-     * @author 刘斌华
-     * @date 2022-05-25 11:51:23
+     * @param clientId App's Client ID
+     * @return application information
      */
     IdaasAppEntity selectByClientId(@Param("clientId") String clientId);
 

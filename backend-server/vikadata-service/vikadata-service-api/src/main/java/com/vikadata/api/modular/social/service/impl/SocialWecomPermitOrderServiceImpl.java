@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 企微服务商接口许可下单信息
+ * WeCom Service Provider Interface License Ordering Information
  * </p>
- * @author 刘斌华
- * @date 2022-06-23 18:34:44
  */
 @Service
 public class SocialWecomPermitOrderServiceImpl extends ServiceImpl<SocialWecomPermitOrderMapper, SocialWecomPermitOrderEntity> implements ISocialWecomPermitOrderService {

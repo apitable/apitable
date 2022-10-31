@@ -56,9 +56,7 @@ import static com.vikadata.api.enums.exception.AuthException.UNAUTHORIZED;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_MAIN_ADMIN;
 
 /**
- * 应用实例服务 实现
- * @author Shawn Deng
- * @date 2022-01-17 15:23:39
+ * Application instance service implementation
  */
 @Service
 @Slf4j
@@ -121,11 +119,11 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
                 .filter(instance -> AppType.of(appStoreConfig.get(instance.getAppId()).getType()) == appType)
                 .collect(Collectors.toList());
         if (CollUtil.isEmpty(larkInstanceEntities)) {
-            log.error("空间没有绑定飞书自建应用类型的应用实例: {}", spaceId);
+            log.error("The space is not bound to application instances of Lark's self built application type: {}", spaceId);
             return null;
         }
         if (larkInstanceEntities.size() > 1) {
-            log.error("空间有多个同类型的应用实例: {}", spaceId);
+            log.error("There are multiple application instances of the same type in the space: {}", spaceId);
             return null;
         }
         return CollUtil.getFirst(larkInstanceEntities);
@@ -139,7 +137,7 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
         AppType appType = AppType.of(appStore.get(appInstanceEntity.getAppId()).getType());
         if (appType == AppType.LARK) {
             LarkInstanceConfig instanceConfig = LarkInstanceConfig.fromJsonString(appInstanceEntity.getConfig());
-            // 设置动态属性
+            // Set Dynamic Properties
             LarkInstanceConfigProfile profile = (LarkInstanceConfigProfile) instanceConfig.getProfile();
             if (StrUtil.isNotBlank(profile.getAppKey()) && StrUtil.isNotBlank(profile.getAppSecret()) && StrUtil.isNotBlank(profile.getEventVerificationToken())) {
                 return profile.buildConfigStorage();
@@ -151,10 +149,10 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void compatibleMarketPlace(String spaceId) {
-        // 查询商店应用列表
+        // Query the list of store apps
         String officePreviewOldId = "ina5645957505507647";
         List<String> marketPlaceAppIds = iMarketplaceAppService.getAppIdsBySpaceId(spaceId);
-        // 排除掉其他
+        // Exclude others
         marketPlaceAppIds.removeIf(appId -> !appId.equals(officePreviewOldId));
         MarketPlaceConfig marketPlaceConfig = SystemConfigManager.getConfig().getMarketplace();
         Set<String> marketAppType = new HashSet<>(marketPlaceAppIds.size());
@@ -175,10 +173,10 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
         instanceEntities.forEach(appInstance -> existInstance.add(appStoreConfig.get(appInstance.getAppId()).getType()));
         Map<String, AppStore> appStoreMap = new HashMap<>();
         appStoreConfig.values().forEach(appStore -> appStoreMap.put(appStore.getType(), appStore));
-        // 将marketplace的数据迁移过来
+        // Migrate the data of marketplace
         marketAppType.forEach(appType -> {
             if (!existInstance.contains(appType)) {
-                // 未包含，直接创建
+                // Not included, create directly
                 create(spaceId, appStoreMap.get(appType).getId());
             }
         });
@@ -229,7 +227,7 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
             MarketPlaceConfig marketPlaceConfig = SystemConfigManager.getConfig().getMarketplace();
             App app = marketPlaceConfig.ofAppType(appType);
             if (app != null) {
-                // 同步数据
+                // Synchronize data
                 return iMarketplaceAppService.checkBySpaceIdAndAppId(spaceId, app.getAppId());
             }
             return false;
@@ -252,7 +250,7 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
 
     @Override
     public List<AppInstance> getAppInstancesBySpaceId(String spaceId) {
-        // 查询应用实例列表
+        // Query the application instance list
         List<AppInstanceEntity> instanceEntities = getAppInstances(spaceId);
         List<AppInstance> appInstances = new ArrayList<>();
         if (CollUtil.isEmpty(instanceEntities)) {
@@ -275,13 +273,13 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
         AppStoreConfig appStoreConfig = SystemConfigManager.getConfig().getAppStores();
         AppStore appStore = appStoreConfig.ofType(appType);
         if (appStore == null) {
-            throw new RuntimeException("应用不存在");
+            throw new RuntimeException("App does not exist");
         }
-        // 判断空间是否已经开通过
+        // Determine whether the space has been opened
         AppInstanceEntity instance = getBySpaceIdAndAppId(spaceId, appStore.getId());
         ExceptionUtil.isNull(instance, APP_EXIST);
         create(spaceId, appStore.getId());
-        // 冗余数据以防回滚版本
+        // Redundant data to prevent version rollback
         MarketPlaceConfig marketPlaceConfig = SystemConfigManager.getConfig().getMarketplace();
         App app = marketPlaceConfig.ofAppType(appType);
         if (app != null) {
@@ -292,19 +290,19 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AppInstance createInstance(String spaceId, String appId) {
-        // 判断应用是否存在
+        // Judge whether the application exists
         AppStoreConfig appStore = SystemConfigManager.getConfig().getAppStores();
         ExceptionUtil.isTrue(appStore.containsKey(appId), APP_NOT_EXIST);
-        // 判断空间是否已经开通过
+        // Determine whether the space has been opened
         AppInstanceEntity instance = getBySpaceIdAndAppId(spaceId, appId);
         ExceptionUtil.isNull(instance, APP_EXIST);
-        // 冗余数据以防回滚版本
+        // Redundant data to prevent version rollback
         MarketPlaceConfig marketPlaceConfig = SystemConfigManager.getConfig().getMarketplace();
         App app = marketPlaceConfig.ofAppType(appStore.get(appId).getType());
         if (app != null) {
             iMarketplaceAppService.openSpaceApp(spaceId, app.getAppId());
         }
-        // 创建实例
+        // Create Instance
         return create(spaceId, appId);
     }
 
@@ -354,27 +352,27 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
     public void deleteAppInstance(Long userId, String appInstanceId) {
         AppInstanceEntity instanceEntity = appInstanceMapper.selectByAppInstanceId(appInstanceId);
         ExceptionUtil.isNotNull(instanceEntity, AppException.APP_INSTANCE_NOT_EXIST);
-        // 校验
+        // Check
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, instanceEntity.getSpaceId());
-        // 检测停用的空间是否是当前用户的空间
+        // Detect whether the deactivated space is the space of the current user
         ExceptionUtil.isNotNull(memberId, UNAUTHORIZED);
-        // 检测是否是主管理员
+        // Detect whether it is the primary administrator
         Long mainMemberId = iSpaceService.getSpaceMainAdminMemberId(instanceEntity.getSpaceId());
         ExceptionUtil.isTrue(ObjectUtil.equal(memberId, mainMemberId), NOT_SPACE_MAIN_ADMIN);
-        // 删除相关应用
+        // Delete related apps
         AppStoreConfig appStoreConfig = SystemConfigManager.getConfig().getAppStores();
         AppStore appStore = appStoreConfig.get(instanceEntity.getAppId());
         AppType appType = AppType.of(appStore.getType());
         if (appType == AppType.LARK) {
-            // 删除飞书租户配置
+            // Delete Lark Tenant Configuration
             LarkInstanceConfig instanceConfig = LarkInstanceConfig.fromJsonString(instanceEntity.getConfig());
-            // 设置动态属性
+            // Set Dynamic Properties
             LarkInstanceConfigProfile profile = (LarkInstanceConfigProfile) instanceConfig.getProfile();
             if (StrUtil.isNotBlank(profile.getAppKey()) && StrUtil.isNotBlank(profile.getAppSecret()) && StrUtil.isNotBlank(profile.getEventVerificationToken())) {
                 String spaceId = instanceEntity.getSpaceId();
                 List<String> tenantIds = iSocialTenantBindService.getTenantIdBySpaceId(spaceId);
                 if (CollUtil.isNotEmpty(tenantIds)) {
-                    // 查询租户信息
+                    // Query tenant information
                     List<SocialTenantEntity> tenantEntities = iSocialTenantService.getByTenantIds(tenantIds);
                     if (CollUtil.isNotEmpty(tenantEntities)) {
                         List<SocialTenantEntity> feishuTenants = tenantEntities.stream()
@@ -387,11 +385,11 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
             }
         }
         else if (appType == AppType.DINGTALK) {
-            // 钉钉应用停用逻辑
+            // DingTalk application deactivation logic
             iSocialTenantService.removeSpaceIdSocialBindInfo(instanceEntity.getSpaceId());
         }
         else if (appType == AppType.WECOM) {
-            // 企业微信停用逻辑
+            // WeCom deactivation logic
             iWeComService.stopWeComApp(instanceEntity.getSpaceId());
         }
         appInstanceMapper.deleteByAppInstanceId(appInstanceId);
@@ -412,7 +410,7 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
         MarketPlaceConfig marketPlaceConfig = SystemConfigManager.getConfig().getMarketplace();
         App app = marketPlaceConfig.ofAppType(appType);
         if (app != null) {
-            // 同步删除数据
+            // Delete data synchronously
             MarketplaceSpaceAppRelEntity marketplaceSpaceAppRelEntity = iMarketplaceAppService.getBySpaceIdAndAppId(spaceId, app.getAppId());
             if (marketplaceSpaceAppRelEntity != null) {
                 iMarketplaceAppService.removeById(marketplaceSpaceAppRelEntity.getId());
@@ -433,7 +431,7 @@ public class AppInstanceServiceImpl extends ServiceImpl<AppInstanceMapper, AppIn
         AppType appType = AppType.of(appInstance.getType());
         if (appType == AppType.LARK) {
             LarkInstanceConfig instanceConfig = LarkInstanceConfig.fromJsonString(instanceEntity.getConfig());
-            // 设置动态属性
+            // Set Dynamic Properties
             LarkInstanceConfigProfile profile = (LarkInstanceConfigProfile) instanceConfig.getProfile();
             if (StrUtil.isNotBlank(profile.getAppKey()) && StrUtil.isNotBlank(profile.getAppSecret())) {
                 String redirectUri = LarkConfigFactory.createRedirectUri(instanceEntity.getAppInstanceId());

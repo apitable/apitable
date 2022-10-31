@@ -8,134 +8,110 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.SocialTenantDepartmentBindEntity;
 
 /**
- * 第三方平台集成-企业租户部门关联表 Mapper
- *
- * @author Shawn Deng
- * @date 2020-12-09 14:59:03
+ * Third party platform integration - enterprise tenant department association table Mapper
  */
 public interface SocialTenantDepartmentBindMapper extends BaseMapper<SocialTenantDepartmentBindEntity> {
 
     /**
-     * 快速批量插入
+     * Quick Bulk Insert
      *
-     * @param entities 成员列表
-     * @return 执行结果数
-     * @author Shawn Deng
-     * @date 2019/12/17 20:34
+     * @param entities Member List
+     * @return Number of execution results
      */
     int insertBatch(@Param("entities") List<SocialTenantDepartmentBindEntity> entities);
 
     /**
-     * 查询租户部门ID绑定的空间站小组ID
+     * Query the space group ID bound by the tenant's department ID
      *
-     * @param tenantId 租户标识
-     * @param tenantDepartmentId 租户的部门ID
-     * @return 空间站部门ID
-     * @author Shawn Deng
-     * @date 2020/12/18 15:05
+     * @param tenantId Tenant ID
+     * @param tenantDepartmentId Tenant's department ID
+     * @return Space department ID
      */
     Long selectTeamIdByTenantDepartmentId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId, @Param("tenantDepartmentId") String tenantDepartmentId);
 
     /**
-     * 查询租户部门ID绑定的空间站小组ID
+     * Query the space station group ID bound by the tenant's department ID
      *
-     * @param tenantId 租户标识
-     * @param tenantDepartmentIds 租户的部门ID
-     * @return 空间站部门ID
-     * @author Shawn Deng
-     * @date 2020/12/18 15:05
+     * @param tenantId Tenant ID
+     * @param tenantDepartmentIds Tenant's department ID
+     * @return Space department ID
      */
     List<Long> selectTeamIdsByTenantDepartmentId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId, @Param("tenantDepartmentIds") List<String> tenantDepartmentIds);
 
     /**
-     * 查询租户绑定的部门列表
+     * Query the list of departments bound by the tenant
      *
-     * @param tenantId 租户标识
+     * @param tenantId Tenant ID
      * @return SocialTenantDepartmentBindEntity List
-     * @author Shawn Deng
-     * @date 2020/12/28 12:09
      */
     List<SocialTenantDepartmentBindEntity> selectByTenantId(@Param("tenantId") String tenantId, @Param("spaceId") String spaceId);
 
     /**
-     * 根据租户部门ID删除绑定
-     * @param tenantId 租户标识
-     * @param tenantDepartmentId 租户的部门ID
-     * @return 执行结果
-     * @author Shawn Deng
-     * @date 2020/12/18 15:52
+     * Delete binding according to tenant department ID
+     *
+     * @param tenantId Tenant ID
+     * @param tenantDepartmentId Tenant's department ID
+     * @return Results of enforcement
      */
     int deleteByTenantDepartmentId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId, @Param("tenantDepartmentId") String tenantDepartmentId);
 
     /**
-     * 根据租户部门ID批量删除绑定
-     * @param tenantId 租户标识
-     * @param tenantDepartmentIds 租户的部门ID
-     * @return 执行结果
-     * @author Shawn Deng
-     * @date 2020/12/18 15:52
+     * Batch delete binding according to tenant department ID
+     *
+     * @param tenantId Tenant ID
+     * @param tenantDepartmentIds Tenant s department id
+     * @return Results of enforcement
      */
     int deleteBatchByTenantDepartmentId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId, @Param("tenantDepartmentIds") List<String> tenantDepartmentIds);
 
     /**
-     * 根据租户标识批量删除
+     * Batch deletion based on tenant identity
      *
-     * @param tenantId 租户标识
-     * @return 执行结果
-     * @author Shawn Deng
-     * @date 2020/12/15 10:25
+     * @param tenantId Tenant ID
+     * @return Results of enforcement
      */
     int deleteByTenantId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId);
 
     /**
+     * Query the space station group ID bound by the tenant's department ID
      *
-     * 查询租户部门ID绑定的空间站小组ID
-     *
-     * @param spaceId 空间站ID
-     * @param tenantId 企业标识
-     * @param tenantDepartmentId 租户的部门ID
-     * @return 空间站部门ID
-     * @author zoe zheng
-     * @date 2021/5/17 3:22 下午
+     * @param spaceId Space station ID
+     * @param tenantId Enterprise ID
+     * @param tenantDepartmentId Tenant's department ID
+     * @return Space department ID
      */
     Long selectSpaceTeamIdByTenantIdAndDepartmentId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId,
             @Param("tenantDepartmentId") String tenantDepartmentId);
 
 
     /**
-     * 根据租户Id和部门ID删除绑定
+     * Delete binding according to tenant ID and department ID
      *
-     * @param spaceId 空间站ID
-     * @param tenantId 租户企业标识
-     * @param tenantDepartmentId 租户的部门ID
-     * @return 执行结果
-     * @author zoe zheng
-     * @date 2021/5/17 12:17 下午
+     * @param spaceId Space ID
+     * @param tenantId Tenant Enterprise ID
+     * @param tenantDepartmentId Tenant's department ID
+     * @return Results of enforcement
      */
     int deleteBySpaceIdAndTenantIdAndDepartmentId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId,
             @Param("tenantDepartmentId") String tenantDepartmentId);
 
     /**
-     * 查询租户部门ID绑定的空间站小组ID
+     * Query the space group ID bound by the tenant's department ID
      *
-     * @param spaceId 空间站ID
-     * @param tenantDepartmentIds 租户的部门ID
-     * @param tenantId 租户企业ID
-     * @return 空间站部门ID
-     * @author zoe zheng
-     * @date 2021/5/17 5:17 下午
+     * @param spaceId Space station ID
+     * @param tenantDepartmentIds Tenant's department ID
+     * @param tenantId Tenant Enterprise ID
+     * @return Space station department ID
      */
     List<Long> selectSpaceTeamIdsByTenantIdAndDepartmentId(@Param("spaceId") String spaceId,
             @Param("tenantId") String tenantId, @Param("tenantDepartmentIds") List<String> tenantDepartmentIds);
 
     /**
-     * 根据租户标和空间ID识批量删除
+     * Batch deletion based on tenant logo and space ID
      *
-     * @param tenantId 租户标识
-     * @param spaceId 空间站ID
-     * @return 空间站部门ID
-     * @author zoe zheng
-     * @date 2021/5/17 5:17 下午
+     * @param tenantId Tenant ID
+     * @param spaceId Space ID
+     * @return Space station department ID
      */
     int deleteByTenantIdAndSpaceId(@Param("tenantId") String tenantId, @Param("spaceId") String spaceId);
 }

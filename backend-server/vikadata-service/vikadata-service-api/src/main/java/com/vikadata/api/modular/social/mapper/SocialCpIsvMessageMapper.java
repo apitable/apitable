@@ -8,10 +8,8 @@ import com.vikadata.entity.SocialCpIsvMessageEntity;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用消息通知信息
+ * Third party platform integration - WeCom third-party service provider application message notification information
  * </p>
- * @author 刘斌华
- * @date 2022-01-05 16:57:57
  */
 @Mapper
 public interface SocialCpIsvMessageMapper extends BaseMapper<SocialCpIsvMessageEntity> {

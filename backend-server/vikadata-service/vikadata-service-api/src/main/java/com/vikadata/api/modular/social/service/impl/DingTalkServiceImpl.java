@@ -53,10 +53,7 @@ import static com.vikadata.social.dingtalk.constants.DingTalkApiConst.SEND_MESSA
 import static com.vikadata.social.dingtalk.constants.DingTalkConst.ROOT_DEPARTMENT_ID;
 
 /**
- * 钉钉集成服务 接口实现
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:29:55
+ * DingTalk Integration Service Interface Implementation
  */
 @Service
 @Slf4j
@@ -118,7 +115,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             dingTalkTemplate.serviceCorpAppOperations().registerCallbackUrl(agentId, url, events);
         }
         catch (Exception e) {
-            log.error("钉钉注册回调地址失败:{}", url, e);
+            log.error("DingTalk failed to register callback address:{}", url, e);
         }
     }
 
@@ -128,7 +125,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             dingTalkTemplate.serviceCorpAppOperations().deleteCallbackUrl(agentId);
         }
         catch (Exception e) {
-            log.error("钉钉删除回调地址失败:{}", agentId, e);
+            log.error("DingTalk failed to delete callback address:{}", agentId, e);
         }
 
     }
@@ -148,7 +145,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                         taskIds.add(taskId);
                     }
                     catch (DingTalkApiException e) {
-                        log.error("发送钉钉开始使用通知失败:agentId={},userIds=[{}]", agentId, tmpUserIds, e);
+                        log.error("Failed to send DingTalk start notification:agentId={},userIds=[{}]", agentId, tmpUserIds, e);
                     }
                 });
             }
@@ -159,7 +156,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
             }
         }
         catch (DingTalkApiException exception) {
-            log.error("发送钉钉消息失败", exception);
+            log.error("Failed to send DingTalk message", exception);
         }
 
         return taskIds;
@@ -215,7 +212,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
     @Override
     public Integer getAppVisibleUserCount(String agentId) {
         DingTalkAppVisibleScopeResponse visibleScope = getAppVisibleScopes(agentId);
-        // 仅管理员可见，获取企业管理员列表
+        // Only visible to administrators, get the list of enterprise administrators
         if (visibleScope.getIsHidden()) {
             return dingTalkTemplate.serviceCorpAppOperations().getAdminList(agentId).size();
         }
@@ -223,27 +220,27 @@ public class DingTalkServiceImpl implements IDingTalkService {
             List<Long> deptVisibleScopes = visibleScope.getDeptVisibleScopes();
             List<String> userVisibleScopes = visibleScope.getUserVisibleScopes();
 
-            // 部分员工可见,并且不是创建人
+            // Some employees are visible and not the creator
             if (!deptVisibleScopes.isEmpty()) {
                 if (!userVisibleScopes.isEmpty()) {
-                    // 选了部门，和员工
+                    // Department and employee selected
                     Set<String> countUserIds = new HashSet<>(userVisibleScopes);
                     countUserIds.addAll(getNotRepeatDeptUserIds(agentId, deptVisibleScopes));
                     return countUserIds.size();
                 }
                 else if (!DingTalkConst.ROOT_DEPARTMENT_ID.equals(CollUtil.getFirst(deptVisibleScopes))) {
-                    // 只选了部门
+                    // Only departments are selected
                     return getNotRepeatDeptUserIds(agentId, deptVisibleScopes).size();
                 }
                 else {
-                    // 全部可见
+                    // All visible
                     return dingTalkTemplate.serviceCorpAppOperations().getUserCount(agentId, true);
                 }
             }
             else {
-                // 直接指定了部分用户，未指定部门
+                // Some users are directly assigned, but no departments are assigned
                 if (!visibleScope.getUserVisibleScopes().isEmpty()) {
-                    // 只选了员工
+                    // Only employees are selected
                     return userVisibleScopes.size();
                 }
             }
@@ -259,7 +256,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
     @Override
     public UserInfo getUserInfoByCode(String tmpAuthCode) {
         if (dingTalkTemplate == null) {
-            throw new BusinessException("未开启钉钉集成组件服务");
+            throw new BusinessException("The DingTalk integration component service is not enabled");
         }
         return dingTalkTemplate.mobileAppOperations().getUserInfoByCode(tmpAuthCode);
     }
@@ -267,7 +264,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
     @Override
     public UserInfoV2 getUserInfoV2ByCode(String code) {
         if (dingTalkTemplate == null) {
-            throw new BusinessException("未开启钉钉集成组件服务");
+            throw new BusinessException("The DingTalk integration component service is not enabled");
         }
         return dingTalkTemplate.corpAppOperations().getUserInfoByCode(code);
     }
@@ -281,7 +278,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
     public AgentApp getAgentAppById(String agentId) {
         DingTalkConfigStorage dingTalkConfigStorage = dingTalkTemplate.getDingTalkConfig().getAgentAppStorage();
         if (dingTalkConfigStorage == null) {
-            log.error("未配置钉钉集成配置存储方式");
+            log.error("DingTalk integration configuration storage mode is not configured");
             return null;
         }
         return dingTalkTemplate.getDingTalkConfig().getAgentAppStorage().getAgentApp(agentId);
@@ -353,13 +350,13 @@ public class DingTalkServiceImpl implements IDingTalkService {
     public LinkedHashMap<Long, DingTalkContactDTO> getContactSubTreeMapByDeptIds(String agentId, List<Long> deptIds) {
         LinkedHashMap<Long, DingTalkContactDTO> contactMap = new LinkedHashMap<>();
         for (Long deptId : deptIds) {
-            // 当前部门下的用户
+            // Users under the current department
             DingTalkDeptDetail deptDetail = getDeptDetail(agentId, deptId);
             DingTalkContactDTO contact = new DingTalkContactDTO();
             contact.setDepartment(formatDingTalkDepartmentDto(deptDetail));
             contact.setUserMap(getUserDetailMap(agentId, deptId));
             contactMap.put(deptId, contact);
-            // 子部门下的用户
+            // Users under sub departments
             contactMap.putAll(getUserDetailSubTreeMapByDeptId(agentId, deptId, contactMap));
         }
         return contactMap;
@@ -369,12 +366,12 @@ public class DingTalkServiceImpl implements IDingTalkService {
     public LinkedHashMap<Long, DingTalkContactDTO> getContactTreeMapByDeptIds(String agentId, List<Long> deptIds) {
         LinkedHashMap<Long, DingTalkContactDTO> contactMap = new LinkedHashMap<>();
         for (Long deptId : deptIds) {
-            // 处理部门层级
+            // Processing department level
             if (!ROOT_DEPARTMENT_ID.equals(deptId)) {
-                // 处理部门所有父部门,不包括自己,倒序，从[1, 2, 3]
+                // All parent departments of the processing department, excluding the self, in reverse order, from [1, 2, 3]
                 List<Long> parentIds = CollUtil.reverse(CollUtil.removeAny(getDeptParentIdList(agentId, deptId), deptId));
                 for (Long parentId : parentIds) {
-                    // 过滤根部门
+                    // Filter root department
                     if (!ROOT_DEPARTMENT_ID.equals(parentId)) {
                         DingTalkDeptDetail deptDetail = getDeptDetail(agentId, parentId);
                         DingTalkContactDTO contact = new DingTalkContactDTO();
@@ -384,7 +381,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                 }
             }
         }
-        // 处理子部门和当前部门
+        // Process sub department and current department
         contactMap.putAll(getContactSubTreeMapByDeptIds(agentId, deptIds));
         return contactMap;
     }
@@ -393,17 +390,17 @@ public class DingTalkServiceImpl implements IDingTalkService {
     public LinkedHashMap<Long, DingTalkContactDTO> getContactTreeMapByOpenIds(String agentId, List<String> openIds, LinkedHashMap<Long, DingTalkContactDTO> contactMap) {
         if (MapUtil.isEmpty(contactMap)) {
             contactMap = new LinkedHashMap<>();
-            // 初始化根部门
+            // Initialize root department
             DingTalkContactDTO contact = new DingTalkContactDTO();
             contact.setDepartment(formatDingTalkDepartmentDto(getDeptDetail(agentId, ROOT_DEPARTMENT_ID)));
             contactMap.put(ROOT_DEPARTMENT_ID, contact);
         }
         for (String openId : openIds) {
-            // 同步用户目录树
+            // Synchronize User Tree
             if (constProperties.getDingTalkContactWithTree()) {
                 DingTalkUserParentDeptList userParentDeptList = getUserParentDeptList(agentId, openId);
                 for (DeptParentResponse value : userParentDeptList.getParentList()) {
-                    // 倒序 [1，456, 123]
+                    // Reverse [1456, 123]
                     List<Long> parentIds = CollUtil.reverse(value.getParentDeptIdList());
                     for (Long deptId : parentIds) {
                         if (!contactMap.containsKey(deptId)) {
@@ -414,7 +411,7 @@ public class DingTalkServiceImpl implements IDingTalkService {
                     }
                 }
             }
-            // 处理用户信息
+            // Processing user information
             DingTalkUserDetail userDetail = getUserDetailByUserId(agentId, openId);
             for (Long deptId : userDetail.getDeptIdList()) {
                 DingTalkContactDTO userContact = contactMap.getOrDefault(deptId, contactMap.get(ROOT_DEPARTMENT_ID));
@@ -430,13 +427,13 @@ public class DingTalkServiceImpl implements IDingTalkService {
     @Override
     public LinkedHashMap<Long, DingTalkContactDTO> getContactTreeMap(String agentId) {
         LinkedHashMap<Long, DingTalkContactDTO> contactMap = new LinkedHashMap<>();
-        // 初始化根部门
+        // Initialize root department
         DingTalkContactDTO contact = new DingTalkContactDTO();
         contact.setDepartment(formatDingTalkDepartmentDto(getDeptDetail(agentId, ROOT_DEPARTMENT_ID)));
         contactMap.put(ROOT_DEPARTMENT_ID, contact);
-        // 应用可见范围
+        // Application visible range
         DingTalkAppVisibleScopeResponse visibleScope = getAppVisibleScopes(agentId);
-        // 可见范围中有部门ID
+        // Department ID in visible range
         if (CollUtil.isNotEmpty(visibleScope.getDeptVisibleScopes())) {
             if (constProperties.getDingTalkContactWithTree()) {
                 contactMap.putAll(getContactTreeMapByDeptIds(agentId, visibleScope.getDeptVisibleScopes()));
@@ -461,17 +458,15 @@ public class DingTalkServiceImpl implements IDingTalkService {
     }
 
     /**
-     * 获取部门下所有的用户Id，已去重
+     * Obtain all user IDs under the department, and the duplicate has been removed
      *
-     * @param agentId   应用Id
-     * @param deptIds   部门集合Id
-     * @return 不重复的用户Id
-     * @author Pengap
-     * @date 2021/9/8 11:34:55
+     * @param agentId   App Id
+     * @param deptIds   Department Collection Id
+     * @return Unique user ID
      */
     private Set<String> getNotRepeatDeptUserIds(String agentId, List<Long> deptIds) {
         Set<String> notRepeatUserIds = new HashSet<>();
-        // 同步部门，子部门，获取所有父部门ID
+        // Synchronize departments, sub departments, and obtain all parent department IDs
         for (Long deptId : deptIds) {
             List<Long> parentIds = getDeptParentIdList(agentId, deptId);
             for (Long parentId : parentIds) {

@@ -13,12 +13,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 玉符 IDaaS 绑定租户下的应用
+ * IDaaS Bind the application under the tenant
  * </p>
- * @author 刘斌华
- * @date 2022-05-19 10:28:21
  */
-@ApiModel("玉符 IDaaS 绑定租户下的应用")
+@ApiModel("IDaaS Bind the application under the tenant")
 @Setter
 @Getter
 @ToString
@@ -26,23 +24,23 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class IdaasAppBindRo {
 
-    @ApiModelProperty(value = "租户名", required = true)
+    @ApiModelProperty(value = "tenant name", required = true)
     @NotBlank
     private String tenantName;
 
-    @ApiModelProperty(value = "应用的 Client ID", required = true)
+    @ApiModelProperty(value = "application's client ID", required = true)
     @NotBlank
     private String appClientId;
 
-    @ApiModelProperty(value = "应用的 Client Secret", required = true)
+    @ApiModelProperty(value = "application's client secret", required = true)
     @NotBlank
     private String appClientSecret;
 
-    @ApiModelProperty(value = "应用的 Well-known 接口路径", required = true)
+    @ApiModelProperty(value = "application's Well-known interface path", required = true)
     @NotBlank
     private String appWellKnown;
 
-    @ApiModelProperty(value = "要绑定的空间站 ID", required = true)
+    @ApiModelProperty(value = "bind space ID", required = true)
     @NotBlank
     private String spaceId;
 

@@ -5,9 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.vikadata.api.modular.appstore.enums.AppType;
 
 /**
- * 飞书实例接口
- * @author Shawn Deng
- * @date 2022-01-14 18:37:21
+ * Lark instance interface
  */
 public class LarkInstanceConfig implements InstanceConfig {
 

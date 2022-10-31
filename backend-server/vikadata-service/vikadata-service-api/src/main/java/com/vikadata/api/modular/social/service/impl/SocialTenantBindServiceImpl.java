@@ -46,10 +46,7 @@ import static com.vikadata.api.enums.exception.SocialException.TENANT_BIND_FAIL;
 import static com.vikadata.api.enums.exception.SocialException.USER_NOT_EXIST;
 
 /**
- * 第三方平台集成-企业租户绑定空间 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-08 23:54:21
+ * Third party platform integration - enterprise tenant binding space service interface implementation
  */
 @Service
 @Slf4j
@@ -87,14 +84,14 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
 
     @Override
     public boolean getSpaceBindStatus(String spaceId) {
-        // 是否空间绑定了第三方集成
+        // Whether the space is bound to third-party integration
         SocialTenantBindEntity tenantBind = getBySpaceId(spaceId);
         if (tenantBind == null) {
             return false;
         }
-        // 查询租户
+        // Query tenants
         SocialTenantEntity tenantEntity = iSocialTenantService.getByAppIdAndTenantId(tenantBind.getAppId(), tenantBind.getTenantId());
-        // 租户是否开启
+        // Whether the tenant is enabled
         return tenantEntity != null && tenantEntity.getStatus();
     }
 
@@ -171,29 +168,29 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
         AgentApp agentApp = dingTalkService.getAgentAppById(agentId);
         String corpId = agentApp.getCorpId();
         String appId = agentApp.getCustomKey();
-        // 当前用户绑定的union_id
+        // The union id bound by the current user
         String openId = tenantUserService.getOpenIdByTenantIdAndUserId(appId, corpId, bindUserId);
-        // 第三方没有这个用户
+        // The third party does not have this user
         ExceptionUtil.isFalse(StrUtil.isBlank(openId), USER_NOT_EXIST);
-        // 空间初次绑定时，增加绑定
+        // When the space is bound for the first time, increase the binding
         addTenantBind(agentApp.getCustomKey(), corpId, spaceId);
-        // 绑定用户,需要在注册回调之前,防止注册了回调却没有绑定用户
+        // To bind users, you need to prevent users from being bound when a callback is registered before registering a callback
         Set<String> tenantUserIds = socialService.connectDingTalkAgentAppContact(spaceId, agentId, openId, contactMap);
-        // 没有企业应用信息，需要新建,如果已经停用需要更新
+        // There is no enterprise application information and it needs to be created. If it has been deactivated, it needs to be updated
         SocialTenantEntity entity = socialTenantService.getByAppIdAndTenantId(appId, corpId);
         if (entity == null || !entity.getStatus()) {
             DingTalkServerAuthInfoResponse serverAuthInfo = dingTalkService.getServerAuthInfo(agentId);
             String url = dingTalkService.getDingTalkEventCallbackUrl(agentId);
             List<String> registerEvents = DingTalkEventTag.baseEvent();
             String authInfo = SocialFactory.createDingTalkAuthInfo(serverAuthInfo, agentId, url, registerEvents);
-            // 保存或者更新租户信息 应用可见范围
+            // Save or update tenant information Application visibility
             DingTalkAppVisibleScopeResponse visibleScope = dingTalkService.getAppVisibleScopes(agentId);
             socialTenantService.createOrUpdateWithScope(SocialPlatformType.DINGTALK, SocialAppType.INTERNAL,
                     appId, corpId, JSONUtil.toJsonStr(visibleScope), authInfo);
-            // 注册应用回调事件url
+            // Register the application callback event url
             dingTalkService.registerCallbackUrl(agentId, url, registerEvents);
         }
-        // 更改空间的全局状态(禁止申请加入, 禁止邀请)
+        // Change the global status of the space (application and invitation are prohibited)
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().joinable(false).invitable(false).build();
         spaceService.switchSpacePros(bindUserId, spaceId, feature);
         return tenantUserIds;
@@ -215,12 +212,12 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
             LinkedHashMap<Long, DingTalkContactDTO> contactMap) {
         AgentApp agentApp = dingTalkService.getAgentAppById(agentId);
         Set<String> openIds = socialService.connectDingTalkAgentAppContact(spaceId, agentId, operatorOpenId, contactMap);
-        // 保存或者更新租户信息
+        // Save or update tenant information
         DingTalkServerAuthInfoResponse serverAuthInfo = dingTalkService.getServerAuthInfo(agentId);
         String url = dingTalkService.getDingTalkEventCallbackUrl(agentId);
         List<String> registerEvents = DingTalkEventTag.baseEvent();
         String authInfo = SocialFactory.createDingTalkAuthInfo(serverAuthInfo, agentId, url, registerEvents);
-        // 应用可见范围
+        // Application visible range
         DingTalkAppVisibleScopeResponse visibleScope = dingTalkService.getAppVisibleScopes(agentId);
         socialTenantService.createOrUpdateWithScope(SocialPlatformType.DINGTALK, SocialAppType.INTERNAL,
                 agentApp.getCustomKey(), agentApp.getCorpId(), JSONUtil.toJsonStr(visibleScope), authInfo);
@@ -236,9 +233,9 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
 
     @Override
     public String getTenantDepartmentBindSpaceId(String appId, String tenantKey) {
-        // 查询租户绑定的空间站列表
+        // Query the list of space stations bound by tenants
         if (StrUtil.isBlank(appId) || StrUtil.isBlank(tenantKey)) {
-            log.error("查询租户绑定的空间参数错误,应用标识:{},租户标识:{}", appId, tenantKey);
+            log.error("Error querying tenant bound space parameters, application ID:{},tenant ID:{}", appId, tenantKey);
             return null;
         }
         List<String> bindSpaceIds = socialTenantBindMapper.selectSpaceIdsByTenantIdAndAppId(tenantKey, appId);
@@ -246,7 +243,7 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
             return null;
         }
         if (bindSpaceIds.size() > 1) {
-            log.error("租户[" + tenantKey + "]绑了多个空间站，错误");
+            log.error("Tenant[" + tenantKey + "]Multiple space are tied, error");
             return null;
         }
         return bindSpaceIds.get(0);
@@ -268,17 +265,17 @@ public class SocialTenantBindServiceImpl extends ServiceImpl<SocialTenantBindMap
 
     @Override
     public List<SocialTenantEntity> getFeishuTenantsBySpaceId(String spaceId) {
-        // 查询空间对应绑定的租户列表
+        // Query the list of tenants bound to the space
         List<String> tenantIds = getTenantIdBySpaceId(spaceId);
         if (CollUtil.isEmpty(tenantIds)) {
             return null;
         }
-        // 查询租户信息
+        // Query tenant information
         List<SocialTenantEntity> tenantEntities = iSocialTenantService.getByTenantIds(tenantIds);
         if (CollUtil.isEmpty(tenantEntities)) {
             return null;
         }
-        // 过滤出飞书应用类型的应用
+        // Filter out the application type of Lark
         return tenantEntities.stream()
                 .filter(tenant -> SocialPlatformType.toEnum(tenant.getPlatform()) == SocialPlatformType.FEISHU)
                 .collect(Collectors.toList());

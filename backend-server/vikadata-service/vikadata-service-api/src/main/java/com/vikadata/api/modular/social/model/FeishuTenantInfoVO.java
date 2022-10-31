@@ -5,15 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 飞书租户信息
- *
- * @author Shawn Deng
- * @date 2020-12-09 10:49:13
+ * Lark Tenant information
  */
 @Data
-@ApiModel("飞书租户信息")
+@ApiModel("Lark Tenant information")
 public class FeishuTenantInfoVO {
 
-    @ApiModelProperty(value = "成员人数", example = "100")
+    @ApiModelProperty(value = "Number of members", example = "100")
     private Integer memberCount;
 }

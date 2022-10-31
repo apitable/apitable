@@ -16,10 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：用户历史记录表测试
+ *     Data access layer test: user history table test
  * </p>
- * @author wuyitao
- * @date 2022/4/5 5:39 PM
  */
 public class UserHistoryMapperTest extends AbstractMyBatisMapperTest {
 

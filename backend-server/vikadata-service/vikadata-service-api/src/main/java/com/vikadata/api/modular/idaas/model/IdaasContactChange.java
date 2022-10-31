@@ -12,47 +12,45 @@ import com.vikadata.integration.idaas.model.UsersResponse.UserResponse;
 
 /**
  * <p>
- * 玉符 IDaaS 通讯录变更内容
+ * IDaaS Address book changes
  * </p>
- * @author 刘斌华
- * @date 2022-06-04 09:29:02
  */
 @Setter
 @Getter
 public class IdaasContactChange {
 
     /**
-     * 添加用户组
+     * add user group
      */
     private List<GroupResponse> addGroups;
 
     /**
-     * 更新用户组
+     * update user group
      */
     private List<IdaasGroupBindEntity> updateGroups;
 
     /**
-     * 删除用户组
+     * delete user group
      */
     private List<IdaasGroupBindEntity> deleteGroups;
 
     /**
-     * 添加用户
+     * add users
      */
     private List<UserResponse> addUsers;
 
     /**
-     * 添加成员
+     * add members
      */
     private List<IdaasUserBindEntity> addMembers;
 
     /**
-     * 更新用户
+     * updater users
      */
     private List<IdaasUserBindEntity> updateUsers;
 
     /**
-     * 删除成员
+     * delete members
      */
     private List<Long> deleteMemberIds;
 

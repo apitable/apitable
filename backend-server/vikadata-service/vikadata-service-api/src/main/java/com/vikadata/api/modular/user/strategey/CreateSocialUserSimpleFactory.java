@@ -15,11 +15,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 创建SocialUser简单的工厂
+ * Create a simple social user factory
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 11:30:15
  */
 @Component
 public class CreateSocialUserSimpleFactory implements InitializingBean {
@@ -43,15 +40,13 @@ public class CreateSocialUserSimpleFactory implements InitializingBean {
     }
 
     /**
-     * 根据类型获取处理策略
+     * Get the processing policy according to the type
      *
-     * @param socialPlatformType    第三方社交软件平台类型
-     * @author Pengap
-     * @date 2021/8/23 11:41:41
+     * @param socialPlatformType    Type of third-party social software platform
      */
     public CreateSocialUserStrategey getStrategy(Integer socialPlatformType) {
         CreateSocialUserStrategey strategy = CREATE_SOCIAL_USER_STRATEGY_MAP.get(socialPlatformType);
-        return Optional.ofNullable(strategy).orElseThrow(() -> new BusinessException("未知的第三方帐号类型"));
+        return Optional.ofNullable(strategy).orElseThrow(() -> new BusinessException("Unknown third-party account type"));
     }
 
 }

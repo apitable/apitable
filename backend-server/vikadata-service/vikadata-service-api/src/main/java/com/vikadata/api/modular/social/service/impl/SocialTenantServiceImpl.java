@@ -45,11 +45,8 @@ import static com.vikadata.api.enums.exception.SocialException.TENANT_APP_BIND_I
 
 /**
  * <p>
- * 第三方集成 - 企业租户 服务 接口实现
+ * Third party integration - enterprise tenant service interface implementation
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/30 17:14
  */
 @Service
 @Slf4j
@@ -89,7 +86,7 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
 
     @Override
     public void createTenant(SocialPlatformType socialType, SocialAppType appType, String appId, String tenantId, String contactScope) {
-        log.info("第三方平台类型:{}, 开通应用的企业租户: {}", socialType.getValue(), tenantId);
+        log.info("Third party platform type:{}, enterprise tenants opening applications: {}", socialType.getValue(), tenantId);
         SocialTenantEntity tenant = new SocialTenantEntity();
         tenant.setAppId(appId);
         tenant.setAppType(appType.getType());
@@ -98,13 +95,13 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
         tenant.setContactAuthScope(contactScope);
         boolean flag = save(tenant);
         if (!flag) {
-            throw new RuntimeException("[飞书] 新增租户失败");
+            throw new RuntimeException("[Lark] Failed to add tenant");
         }
     }
 
     @Override
     public void updateTenantStatus(String appId, String tenantId, boolean enabled) {
-        // 更新租户的状态
+        // Update tenant's status
         socialTenantMapper.updateTenantStatus(appId, tenantId, enabled);
     }
 
@@ -117,25 +114,25 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
                 iAppInstanceService.deleteBySpaceIdAndAppType(spaceId, AppType.LARK_STORE.name());
             }
         }
-        // 更改租户停启用状态
+        // Change the tenant stop enabling status
         updateTenantStatus(appId, tenantId, false);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeTenant(String appId, String tenantId, String spaceId) {
-        // 恢复空间的全员可邀请状态（同步初创空间的默认配置）
+        // Invitable status of all members of the recovery space (synchronize the default configuration of the startup space)
         Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().invitable(true).build();
         iSpaceService.switchSpacePros(mainAdminUserId, spaceId, feature);
         iAppInstanceService.deleteBySpaceIdAndAppType(spaceId, AppType.LARK_STORE.name());
-        // 更改租户停启用状态
+        // Change the tenant stop enabling status
         updateTenantStatus(appId, tenantId, false);
-        // 删除空间的绑定
+        // Delete space binding
         iSocialTenantBindService.removeBySpaceIdAndTenantId(spaceId, tenantId);
-        // 删除租户的部门记录以及绑定
+        // Delete the tenant's department record and binding
         iSocialTenantDepartmentService.deleteByTenantId(spaceId, tenantId);
-        // 删除租户的用户记录
+        // Delete tenant's user record
         iSocialTenantUserService.deleteByTenantId(appId, tenantId);
     }
 
@@ -146,19 +143,19 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
         if (tenant != null) {
             removeById(tenant);
         }
-        // 删除空间所有成员的已绑定的openId
+        // Delete the bound open IDs of all members of the space
         List<MemberEntity> memberEntities = iMemberService.getMembersBySpaceId(spaceId, true);
         if (!memberEntities.isEmpty()) {
             memberEntities.forEach(memberEntity -> iMemberService.clearOpenIdById(memberEntity.getId()));
         }
-        // 恢复空间的全员可邀请状态（同步初创空间的默认配置）
+        // Invitable status of all members of the recovery space (synchronize the default configuration of the startup space)
         Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().invitable(true).build();
         iSpaceService.switchSpacePros(mainAdminUserId, spaceId, feature);
         iSocialTenantBindService.removeBySpaceIdAndTenantId(spaceId, tenantId);
-        // 删除租户的部门记录以及绑定
+        // Delete the tenant's department record and binding
         iSocialTenantDepartmentService.deleteByTenantIdAndSpaceId(tenantId, spaceId);
-        // 删除租户的用户记录
+        // Delete tenant's user record
         iSocialTenantUserService.deleteByAppIdAndTenantId(appId, tenantId);
     }
 
@@ -170,21 +167,22 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeSpaceIdSocialBindInfo(String spaceId) {
-        // 钉钉绑定逻辑
+        // DingTalk binding logic
         TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
         ExceptionUtil.isNotNull(bindInfo, TENANT_APP_BIND_INFO_NOT_EXISTS);
         String tenantId = bindInfo.getTenantId();
-        // 获取当前企业app的数量，用于判断是否删除企业组织信息
+        // Get the number of current enterprise app to determine whether to delete enterprise organization information
         int appCount = socialTenantMapper.selectCountByTenantId(tenantId);
-        // 恢复空间的全员可邀请状态（同步初创空间的默认配置）
+        // Invitable status of all members of the recovery space (synchronize the default configuration of the startup space)
         Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().invitable(true).build();
         iSpaceService.switchSpacePros(mainAdminUserId, spaceId, feature);
-        // 删除租户的部门记录以及绑定,防止多应用误删
+        // Delete the tenant's department records and bindings to prevent multiple applications from being deleted by mistake
         iSocialTenantDepartmentService.deleteByTenantIdAndSpaceId(tenantId, spaceId);
-        // 删除空间的绑定
+        // Delete space binding
         iSocialTenantBindService.removeBySpaceId(spaceId);
-        // 只有一个应用的时候，删除租户的用户记录，因为同一个企业的openId是一样的,这里不删除member的openId，因为可能存在重复绑定的情况
+        // When there is only one application, delete the tenant's user record.
+        // Because the open ID of the same enterprise is the same, the member's open ID will not be deleted here, because there may be repeated binding
         if (appCount <= 1) {
             List<String> openIds = memberMapper.selectOpenIdBySpaceId(CollUtil.toList(spaceId));
             if (!openIds.isEmpty()) {
@@ -193,9 +191,9 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
         }
         String appId = bindInfo.getAppId();
         if (StrUtil.isNotBlank(appId)) {
-            // 停用应用
+            // Deactivate app
             socialTenantMapper.setTenantStop(appId, tenantId);
-            // 删出回调
+            // Delete callback
             dingTalkService.deleteCallbackUrl(dingTalkService.getAgentIdByAppIdAndTenantId(appId, tenantId));
         }
     }
@@ -203,10 +201,10 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
     @Override
     public void createOrUpdateWithScope(SocialPlatformType socialType, SocialAppType appType, String appId,
             String tenantId, String scope, String authInfo) {
-        // 没有企业应用信息，需要新建,如果有信息，但是状态是停用，需要重新启用, 这里因为一个企业可能有多个应用
+        // There is no enterprise application information and it needs to be created. If there is information, but the status is disabled, it needs to be re enabled. Here, an enterprise may have multiple applications
         SocialTenantEntity entity = getByAppIdAndTenantId(appId, tenantId);
         if (entity == null) {
-            log.info("第三方平台类型:{}, 开通应用的企业租户: {}, 开通应用: {}", socialType.getValue(), tenantId, appId);
+            log.info("Third party platform type:{}, Enterprise tenants opening applications: {}, open application: {}", socialType.getValue(), tenantId, appId);
             SocialTenantEntity tenant = new SocialTenantEntity();
             tenant.setAppId(appId);
             tenant.setAppType(appType.getType());
@@ -217,7 +215,7 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
             tenant.setAuthInfo(authInfo);
             boolean flag = SqlHelper.retBool(socialTenantMapper.insert(tenant));
             if (!flag) {
-                throw new RuntimeException("新增租户失败");
+                throw new RuntimeException("Failed to add tenant");
             }
         }
         if (entity != null) {
@@ -230,7 +228,7 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
             }
             boolean flag = SqlHelper.retBool(socialTenantMapper.updateById(entity));
             if (!flag) {
-                throw new RuntimeException("更新租户失败");
+                throw new RuntimeException("Failed to update tenant");
             }
         }
     }
@@ -239,14 +237,14 @@ public class SocialTenantServiceImpl extends ServiceImpl<SocialTenantMapper, Soc
     public void createOrUpdateByTenantAndApp(SocialTenantEntity entity) {
         SocialTenantEntity existedEntity = getByAppIdAndTenantId(entity.getAppId(), entity.getTenantId());
         if (Objects.isNull(existedEntity)) {
-            // 该第三方平台信息不存在，新增
+            // The third-party platform information does not exist, new create
             boolean isSaved = save(entity);
             if (!isSaved) {
                 throw new IllegalStateException("No tenant data saved.");
             }
         }
         else {
-            // 信息已存在，则更新相关数据
+            // If the information already exists, update the relevant data
             existedEntity.setContactAuthScope(entity.getContactAuthScope());
             existedEntity.setAuthMode(entity.getAuthMode());
             existedEntity.setPermanentCode(entity.getPermanentCode());

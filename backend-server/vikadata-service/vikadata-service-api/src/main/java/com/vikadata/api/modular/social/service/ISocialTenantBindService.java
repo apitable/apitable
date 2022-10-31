@@ -14,233 +14,204 @@ import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialTenantEntity;
 
 /**
- * 第三方平台集成-企业租户绑定空间 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-08 23:53:48
+ * Third party platform integration - enterprise tenant binding space service interface
  */
 public interface ISocialTenantBindService extends IService<SocialTenantBindEntity> {
 
     /**
-     * 获取租户绑定状态
+     * Get tenant binding status
      *
-     * @param tenantId 第三方企业标识
+     * @param tenantId Third party enterprise logo
      * @return True | False
-     * @author Shawn Deng
-     * @date 2020/12/14 15:26
      */
     boolean getTenantBindStatus(String tenantId);
 
     /**
-     * 获取空间绑定状态
+     * Get space binding status
      *
-     * @param spaceId 空间ID
+     * @param spaceId Space ID
      * @return True | False
-     * @author Shawn Deng
-     * @date 2020/12/14 15:26
      */
     boolean getSpaceBindStatus(String spaceId);
 
     /**
-     * 获取空间绑定的租户
+     * Get the tenant of space binding
      *
-     * @param spaceId 空间ID
-     * @return 租户标识
-     * @author Shawn Deng
-     * @date 2020/12/16 19:26
+     * @param spaceId Space ID
+     * @return Tenant ID
      */
     List<String> getTenantIdBySpaceId(String spaceId);
 
     /**
-     * 获取空间绑定的租户
+     * Get the tenant of space binding
      *
-     * @param spaceId 空间ID
+     * @param spaceId Space ID
      * @return SocialTenantBindEntity
      */
     SocialTenantBindEntity getBySpaceId(String spaceId);
 
     /**
-     * 获取企业绑定的空间列表
-     * 废弃： 不同应用下的租户是一样的
-     * @param tenantId 第三方企业标识
-     * @return 绑定的空间列表
-     * @author Shawn Deng
-     * @date 2020/12/14 15:26
+     * Get List of bound spaces
+     * Abandonment: tenants in different applications are the same
+     *
+     * @param tenantId Third party enterprise ID
+     * @return List of bound spaces
      */
     @Deprecated
     List<String> getSpaceIdsByTenantId(String tenantId);
 
     /**
-     * 获取企业绑定的空间列表
+     * Get List of bound spaces
      *
-     * @param tenantId 第三方企业标识
-     * @param appId 应用ID
-     * @return 绑定的空间列表
-     * @author Shawn Deng
-     * @date 2020/12/14 15:26
+     * @param tenantId Third party enterprise ID
+     * @param appId Application ID
+     * @return List of bound spaces
      */
     List<String> getSpaceIdsByTenantIdAndAppId(String tenantId, String appId);
 
     /**
-     * 检查空间绑定租户是否存在
-     * @param appId 应用ID
-     * @param spaceId 空间ID
-     * @param tenantId 租户标识
+     * Check whether the space binding tenant exists
+     *
+     * @param appId Application ID
+     * @param spaceId Space ID
+     * @param tenantId Tenant ID
      * @return true | false
      */
     boolean checkExistBySpaceIdAndTenantId(String appId, String spaceId, String tenantId);
 
     /**
-     * 企业绑定空间
+     * Enterprise bound space
      *
-     * @param appId 第三方应用ID
-     * @param tenantId 第三方企业标识
-     * @param spaceId 空间ID
-     * @author Shawn Deng
-     * @date 2020/12/14 15:26
+     * @param appId Third party Application ID
+     * @param tenantId Third party enterprise ID
+     * @param spaceId Space ID
      */
     void addTenantBind(String appId, String tenantId, String spaceId);
 
     /**
-     * 查询企业的绑定信息
+     * Query the binding information of the enterprise
      *
-     * @param tenantId 租户 ID
-     * @param appId 应用 ID
-     * @return 绑定信息
-     * @author 刘斌华
-     * @date 2022-06-16 16:17:43
+     * @param tenantId Tenant ID
+     * @param appId App ID
+     * @return Binding information
      */
     SocialTenantBindEntity getByTenantIdAndAppId(String tenantId, String appId);
 
     /**
-     * 移除空间指定的租户
-     * @param spaceId 空间ID
-     * @param tenantId 第三方企业标识
+     * Remove the tenant specified by the space
+     *
+     * @param spaceId Space ID
+     * @param tenantId Third party enterprise ID
      */
     void removeBySpaceIdAndTenantId(String spaceId, String tenantId);
 
     /**
-     * 获取空间绑定租户列表
+     * Get the list of space bound tenants
      *
-     * @param spaceId 空间ID
-     * @return 绑定租户列表
-     * @author zoe zheng
-     * @date 2021/5/12 3:48 下午
+     * @param spaceId Space ID
+     * @return Bind Tenant List
      */
     TenantBindDTO getTenantBindInfoBySpaceId(String spaceId);
 
     /**
-     * 钉钉第三方集成获取租户绑定状态
-     * @param tenantId 第三方企业标识
-     * @param appId 第三方应用标识
+     * DingTalk Third Party Integration Get Tenant Binding Status
+     *
+     * @param tenantId Third party enterprise ID
+     * @param appId Third party application ID
      * @return boolean
-     * @author zoe zheng
-     * @date 2021/5/12 6:16 下午
      */
     boolean getDingTalkTenantBindStatus(String tenantId, String appId);
 
     /**
-     * 企业微信第三方应用是否已绑定空间站
-     * @param tenantId 第三方企业标识
-     * @param appId 第三方应用标识
+     * Whether weCom third-party applications have been bound to the space station
+     *
+     * @param tenantId Third party enterprise ID
+     * @param appId Third party application ID
      * @return true | false
      */
     boolean getWeComTenantBindStatus(String tenantId, String appId);
 
     /**
-     * 钉钉应用绑定空间
+     * DingTalk application binding space
      *
-     * @param agentId  应用的agentId
-     * @param spaceId    空间ID
-     * @param operatorUserId 绑定空间的操作用户ID
-     * @param contactMap 通讯录可见范围
-     * @return 绑定成功的钉钉用户ID
-     * @author zoe zheng
-     * @date 2021/5/11 11:51 上午
+     * @param agentId  Applied agentId
+     * @param spaceId    Space ID
+     * @param operatorUserId The operation user ID of the bound space
+     * @param contactMap Visible range of address book
+     * @return DingTalk user ID successfully bound
      */
     Set<String> dingTalkAppBindSpace(String agentId, String spaceId, Long operatorUserId, LinkedHashMap<Long,
             DingTalkContactDTO> contactMap);
 
     /**
-     * 钉钉第三方集成获取租户绑定空间站ID
+     * Ding Talk third-party integration to obtain tenant bound space station ID
      *
-     * @param tenantId 第三方企业标识
-     * @param appId 第三方应用标识
+     * @param tenantId Third party enterprise logo
+     * @param appId Third party application ID
      * @return boolean
-     * @author zoe zheng
-     * @date 2021/5/12 6:16 下午
      */
     String getTenantBindSpaceId(String tenantId, String appId);
 
     /**
-     * 解绑空间站绑定的应用
+     * Application of Unbinding Space Station
      *
-     * @param spaceId 空间站ID
-     * @author zoe zheng
-     * @date 2021/5/17 9:06 下午
+     * @param spaceId Space station ID
      */
     void removeBySpaceId(String spaceId);
 
     /**
-     * 钉钉应用绑定空间
+     * DingTalk application binding space
      *
-     * @param agentId  应用的agentId
-     * @param spaceId    空间ID
-     * @param operatorOpenId 绑定空间的操作用户的平台ID
+     * @param agentId  Applied agent Id
+     * @param spaceId    Space ID
+     * @param operatorOpenId Platform ID of the operating user of the bound space
      * @param contactMap
-     * @return 绑定成功的钉钉用户ID
-     * @author zoe zheng
-     * @date 2021/5/11 11:51 上午
+     * @return DingTalk user ID successfully bound
      */
     Set<String> dingTalkRefreshContact(String spaceId, String agentId, String operatorOpenId, LinkedHashMap<Long,
             DingTalkContactDTO> contactMap);
 
     /**
-     * 检查空间是否绑定了特定的第三方平台
+     * Check whether the space is bound to a specific third-party platform
      *
-     * @param spaceId 空间ID
-     * @param socialPlatformType 第三方平台类型
+     * @param spaceId Space ID
+     * @param socialPlatformType Third party platform type
      * @return boolean
-     * @author zoe zheng
-     * @date 2021/8/6 4:54 下午
      */
     boolean getSpaceBindStatusByPlatformType(String spaceId, SocialPlatformType socialPlatformType);
 
     /**
-     * 获取租户绑定的空间id
-     * @param tenantKey 租户标识
-     * @return 绑定的空间站id
-     * @author Shawn Deng
-     * @date 2021/8/30 12:23
+     * Get the space ID bound by the tenant
+     *
+     * @param tenantKey Tenant ID
+     * @return Bound space station ID
      */
     String getTenantDepartmentBindSpaceId(String appId, String tenantKey);
 
     /**
-     * 根据绑定平台获取空间站绑定租户授权信息
+     * Obtain the space station binding tenant authorization information according to the binding platform
      *
-     * @param spaceId               空间ID
-     * @param socialPlatformType    第三方平台类型
-     * @param authInfoType          授权信息Class类型 可以为NULL
-     * @return 空间站绑定信息
-     * @author Pengap
-     * @date 2021/8/16 11:09:20
+     * @param spaceId               Space ID
+     * @param socialPlatformType    Third party platform type
+     * @param authInfoType          The authorization information Class type can be NULL
+     * @return Space station binding information
      */
     SpaceBindTenantInfoDTO getSpaceBindTenantInfoByPlatform(String spaceId, SocialPlatformType socialPlatformType, Class<?> authInfoType);
 
     /**
-     * 获取空间对应的租户列表
-     * @param spaceId 空间ID
-     * @return SocialTenantEntity 列表
+     * Get the list of tenants corresponding to the space
+     *
+     * @param spaceId Space ID
+     * @return SocialTenantEntity List
      */
     List<SocialTenantEntity> getFeishuTenantsBySpaceId(String spaceId);
 
     /**
-     * 获取第三方绑定的空间站列表
-     * @param tenantIds 平台ID
-     * @param appIds 应用ID
+     * Get the list of third-party bound space stations
+     *
+     * @param tenantIds Platform ID
+     * @param appIds Application ID
      * @return List<String>
-     * @author zoe zheng
-     * @date 2022/6/7 17:36
      */
     List<String> getSpaceIdsByTenantIdsAndAppIds(List<String> tenantIds, List<String> appIds);
 
@@ -249,8 +220,6 @@ public interface ISocialTenantBindService extends IService<SocialTenantBindEntit
      *
      * @param appId App ID
      * @return Space ID
-     * @author Codeman
-     * @date 2022-09-02 18:25:28
      */
     List<String> getAllSpaceIdsByAppId(String appId);
 

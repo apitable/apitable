@@ -49,10 +49,7 @@ import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
 import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_DEPT_ID;
 
 /**
- * 创建工厂
- *
- * @author Shawn Deng
- * @date 2020-12-18 22:38:36
+ * Create Factory
  */
 public class SocialFactory {
 
@@ -71,11 +68,11 @@ public class SocialFactory {
     }
 
     /**
-     *  企业微信租户 - 部门管理创建工厂
+     *  WeCom Tenant - Department Management Create Factory
      *
-     * @param spaceId           空间站Id
-     * @param tenantKey         租户Id
-     * @param departmentInfo    企业微信部门信息
+     * @param spaceId           Space Id
+     * @param tenantKey         Tenant Id
+     * @param departmentInfo    WeCom Department Information
      */
     public static <T extends WeComDepartTree> SocialTenantDepartmentEntity createWeComTenantDepartment(String spaceId, String tenantKey, T departmentInfo) {
         return new SocialTenantDepartmentEntity()
@@ -89,11 +86,11 @@ public class SocialFactory {
     }
 
     /**
-     *  企业微信租户 - 成员管理创建工厂
+     *  WeCom Tenant - Member Management Create Factory
      *
-     * @param tenantKey 企业Id
-     * @param appId     企业应用Id
-     * @param cpUserId  企业成员UserId
+     * @param tenantKey Enterprise Id
+     * @param appId     Enterprise Application Id
+     * @param cpUserId  Enterprise Member User Id
      */
     public static SocialCpTenantUserEntity createWeComTenantUser(String tenantKey, String appId, String cpUserId) {
         return new SocialCpTenantUserEntity()
@@ -106,13 +103,13 @@ public class SocialFactory {
     public static String createDingTalkAuthInfo(DingTalkServerAuthInfoResponse serverAuthInfo, String agentId,
             String callbackUrl, List<String> registerEvents) {
         Map<String, Object> scope = new HashMap<>(3);
-        // 授权方管理员信息
+        // Licensor administrator information
         if (serverAuthInfo.getAuthUserInfo() != null) {
             Map<String, String> authUser = new HashMap<>(2);
             authUser.put("userId", serverAuthInfo.getAuthUserInfo().getUserId());
             scope.put("authUserInfo", authUser);
         }
-        // 授权企业信息
+        // Authorized enterprise information
         if (serverAuthInfo.getAuthCorpInfo() != null) {
             Map<String, String> tenantInfo = new HashMap<>(4);
             tenantInfo.put("tenantName", serverAuthInfo.getAuthCorpInfo().getCorpName());
@@ -121,7 +118,7 @@ public class SocialFactory {
             tenantInfo.put("tenantLogoUrl", serverAuthInfo.getAuthCorpInfo().getCorpLogoUrl());
             scope.put("authTenantInfo", tenantInfo);
         }
-        // 授权应用信息
+        // Authorized application information
         if (serverAuthInfo.getAuthInfo() != null) {
             Map<Long, DingTalkAgentApp> agentAppMap = serverAuthInfo.getAuthInfo().getAgent().
                     stream().collect(Collectors.toMap(DingTalkAgentApp::getAgentid, a -> a, (k1, k2) -> k1));
@@ -140,7 +137,7 @@ public class SocialFactory {
     public static MemberEntity createDingTalkMember(DingTalkUserDTO userDetail) {
         MemberEntity member = new MemberEntity();
         member.setMemberName(userDetail.getName());
-        // 空间内的成员名称不同步用户名称
+        // Member's name in the space do not synchronize user's name
         member.setNameModified(true);
         member.setOpenId(userDetail.getOpenId());
         member.setMobile(userDetail.getMobile());
@@ -150,10 +147,10 @@ public class SocialFactory {
     }
 
     /**
-     * 根据企业微信成员，创建信息的Member并且绑定到空间
+     * According to the members of WeCom, create information members and bind them to the space
      *
-     * @param spaceId   空间站Id
-     * @param wxCpUser  企业微信成员
+     * @param spaceId   Space id
+     * @param wxCpUser  WeCom member
      */
     public static MemberEntity createWeComMemberAndBindSpace(String spaceId, WxCpUser wxCpUser) {
         return new MemberEntity()
@@ -161,7 +158,7 @@ public class SocialFactory {
                 .setMemberName(wxCpUser.getName())
                 .setOpenId(wxCpUser.getUserId())
                 .setSpaceId(spaceId)
-                // 空间内的成员名称不同步用户名称
+                // Member's name in the space do not synchronize user's name
                 .setNameModified(true)
                 .setIsSocialNameModified(SocialNameModified.NO_SOCIAL.getValue())
                 .setIsActive(false)
@@ -170,15 +167,13 @@ public class SocialFactory {
     }
 
     /**
-     * 创建第三方绑定空间站的信息
+     * Information about creating a third-party binding space
      *
-     * @param spaceId  空间站Id
-     * @param spaceName  空间名称
-     * @param spaceLogo 空间站logo
-     * @param creator 创建者
-     * @param owner 空间站主管理员
-     * @author zoe zheng
-     * @date 2021/9/13 7:25 下午
+     * @param spaceId  Space id
+     * @param spaceName  Space name
+     * @param spaceLogo Space logo
+     * @param creator Creator
+     * @param owner Space Master Administrator
      */
     public static SpaceEntity createSocialBindBindSpaceInfo(String spaceId, String spaceName,
             String spaceLogo, Long creator, Long owner) {
@@ -199,7 +194,7 @@ public class SocialFactory {
         Object authInfoObj = JSONUtil.parseObj(authInfo);
         TenantBaseInfoDto dto = new TenantBaseInfoDto();
         if (platformType.equals(SocialPlatformType.DINGTALK)) {
-            // 钉钉第三方应用
+            // DingTalk Third party applications
             if (appType.equals(SocialAppType.ISV)) {
                 OrgSuiteAuthEvent event = BeanUtil.toBean(authInfoObj, OrgSuiteAuthEvent.class);
                 dto.setTenantKey(event.getAuthCorpInfo().getCorpid());
@@ -230,7 +225,7 @@ public class SocialFactory {
     }
 
     public static SocialTenantDepartmentEntity createFeishuTenantDepartment(String tenantKey, String spaceId, FeishuDeptObject deptObject) {
-        // 创建租户部门记录
+        // Create Tenant Department Records
         SocialTenantDepartmentEntity tenantDepartment = new SocialTenantDepartmentEntity();
         tenantDepartment.setId(IdWorker.getId());
         tenantDepartment.setSpaceId(spaceId);
@@ -283,12 +278,10 @@ public class SocialFactory {
     }
 
     /**
-     * 创建飞书灰度测试兼容成员信息
+     * Create Lark grayscale test compatible member information
      *
-     * @param userInfo 飞书用户信息
-     * @return FeishuUserObject
-     * @author zoe zheng
-     * @date 2022/3/10 18:48
+     * @param userInfo Lark user information
+     * @return Lark user object
      */
     public static FeishuUserObject createDefaultLarkUser(UserInfo userInfo) {
         FeishuUserObject user = new FeishuUserObject();
@@ -316,29 +309,25 @@ public class SocialFactory {
     }
 
     /**
-     * 获取企微订单生效的月数
+     * Get the effective months of the WeCom order
      *
-     * @param orderPeriod 购买的时长
-     * @return 订单生效的月数
-     * @author 刘斌华
-     * @date 2022-05-07 16:39:35
+     * @param orderPeriod Duration of purchase
+     * @return Number of months the order takes effect
      */
     public static Integer getWeComOrderMonth(Integer orderPeriod) {
         if (Objects.isNull(orderPeriod)) {
             return null;
         }
-        // 企微返回的购买时长以天为单位，365 天为 1 年，不足一年的按一年算
+        // The purchase duration returned by WeCom is in days, 365 days is one year, and less than one year is one year
         int rest = orderPeriod % 365;
         return (orderPeriod / 365 + (rest == 0 ? 0 : 1)) * 12;
     }
 
     /**
-     * Convert wecom order type to vika order type
+     * Convert WeCom order type to vika order type
      *
-     * @param weComOrderType Wecom order type。0: new order; 1: expand volume; 2: renew period; 3: change edition
-     * @return Vika order type
-     * @author Codeman
-     * @date 2022-05-05 17:04:17
+     * @param weComOrderType WeCom order type。0: new order; 1: expand volume; 2: renew period; 3: change edition
+     * @return vika order type
      */
     public static OrderType getOrderTypeFromWeCom(Integer weComOrderType) {
         switch (weComOrderType) {
@@ -355,7 +344,7 @@ public class SocialFactory {
     }
 
     public static WeComOrderPaidEvent formatOrderPaidEventFromWecomOrder(WxCpIsvGetOrder order) {
-        // 复制数据
+        // Copy Data
         WeComOrderPaidEvent paidEvent = new WeComOrderPaidEvent();
         paidEvent.setSuiteId(order.getSuiteId());
         paidEvent.setPaidCorpId(order.getPaidCorpId());

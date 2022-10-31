@@ -4,20 +4,16 @@ import com.vikadata.api.modular.user.User;
 
 /**
  * <p>
- * 创建SocialUser策略接口类
+ * Create Social User Policy Interface Class
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 11:18:59
  */
 public interface CreateSocialUserStrategey {
 
     /**
-     * 创建用户
-     * @param user 用户
+     * Create User
+     *
+     * @param user User
      * @return user id
-     * @author Shawn Deng
-     * @date 2021/7/7 15:01
      */
     Long createSocialUser(User user);
 

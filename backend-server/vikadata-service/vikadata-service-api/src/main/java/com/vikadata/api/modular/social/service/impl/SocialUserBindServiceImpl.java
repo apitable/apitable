@@ -26,10 +26,7 @@ import com.vikadata.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * 第三方平台集成-用户绑定 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:21:40
+ * Third party platform integration - user binding service interface implementation
  */
 @Service
 @Slf4j

@@ -17,10 +17,6 @@ import com.vikadata.entity.SocialTenantDepartmentBindEntity;
 
 import org.springframework.stereotype.Service;
 
-/**
- * @author Shawn Deng
- * @date 2020-12-09 15:00:11
- */
 @Service
 @Slf4j
 public class SocialTenantDepartmentBindServiceImpl extends ServiceImpl<SocialTenantDepartmentBindMapper, SocialTenantDepartmentBindEntity> implements ISocialTenantDepartmentBindService {
@@ -39,7 +35,7 @@ public class SocialTenantDepartmentBindServiceImpl extends ServiceImpl<SocialTen
     @Override
     public List<SocialTenantDepartmentBindEntity> getBindDepartmentList(String tenantKey, String spaceId) {
         if (StrUtil.isBlank(spaceId)) {
-            // 应用首次开通，部门为空，因为停用后，绑定的数据将删除，为空
+            // The application is opened for the first time, and the department is empty, because after deactivation, the bound data will be deleted, which is empty
             return Collections.emptyList();
         }
         return getBindListByTenantId(tenantKey, spaceId);

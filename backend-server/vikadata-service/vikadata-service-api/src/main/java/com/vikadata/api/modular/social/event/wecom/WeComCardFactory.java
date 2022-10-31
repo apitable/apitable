@@ -13,19 +13,17 @@ import com.vikadata.api.config.properties.ClientProperties;
 
 /**
  * <p>
- * 企业微信消息卡片工厂
+ * WeCom Message Card Factory
  * </p>
- * @author Pengap
- * @date 2021/8/11 17:38:23
  */
 public class WeComCardFactory {
 
     public static final String WECOM_CALLBACK_PATH = "{https_enp_domain}/user/wecom_callback?corpId={corpId}&agentId={agentId}";
 
     /**
-     * 欢迎使用消息
+     * Welcome Message
      *
-     * @param agentId   企业应用ID
+     * @param agentId   Enterprise application ID
      */
     public static WxCpMessage createWelcomeMsg(Integer agentId) {
         String title = "欢迎使用维格表！";
@@ -48,7 +46,7 @@ public class WeComCardFactory {
     }
 
     /**
-     * 获取企业微信应用homePagePath
+     * Get WeCom app home Page Path
      */
     public static String getWecomCallbackPath() {
         ClientProperties clientProperties = SpringContextHolder.getBean(ClientProperties.class);
@@ -60,13 +58,13 @@ public class WeComCardFactory {
     }
 
     /**
-     * 成员字段被提及消息
+     * Member field mentioned message
      *
-     * @param agentId       企业应用ID
-     * @param recordTitle   记录标题
-     * @param memberName    @成员名称
-     * @param nodeName      datasheet表名
-     * @param url           详情Url
+     * @param agentId       Enterprise application ID
+     * @param recordTitle   Record Title
+     * @param memberName    @Member Name
+     * @param nodeName      datasheet name
+     * @param url           Details Url
      */
     public static WxCpMessage createRecordRemindMemberCardMsg(Integer agentId, String recordTitle, String memberName, String nodeName, String url) {
         String description = "记录：{recordTitle}"
@@ -79,7 +77,7 @@ public class WeComCardFactory {
                 .set("memberName", memberName)
                 .set("nodeName", nodeName);
 
-        // 移除Url comment 参数
+        // Remove Url comment parameter
         url = UrlQueryExtend.ridUrlParam(url, "comment");
         String callbackUrl = getWecomCallbackPath().concat("&reference={https_enp_domain}").concat(URLUtil.encodeAll(StrUtil.prependIfMissingIgnoreCase(url, "/")));
 
@@ -91,14 +89,14 @@ public class WeComCardFactory {
     }
 
     /**
-     * 评论提及消息
+     * Comments mention information
      *
-     * @param agentId           企业应用ID
-     * @param recordTitle       记录标题
-     * @param commentContent    评论内容
-     * @param memberName        @成员名称
-     * @param nodeName          datasheet表名
-     * @param url               详情Url
+     * @param agentId           Enterprise application ID
+     * @param recordTitle       Record Title
+     * @param commentContent    Comments
+     * @param memberName        @Member Name
+     * @param nodeName          datasheet name
+     * @param url               Details Url
      */
     public static WxCpMessage createCommentRemindCardMsg(Integer agentId, String recordTitle, String commentContent, String memberName, String nodeName, String url) {
         String description = "记录：{recordTitle}"

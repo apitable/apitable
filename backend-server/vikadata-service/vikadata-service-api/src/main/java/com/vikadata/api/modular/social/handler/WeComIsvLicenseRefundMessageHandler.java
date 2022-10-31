@@ -23,10 +23,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商接口许可退款结果通知
+ * Third party service provider interface license refund result notice
  * </p>
- * @author 刘斌华
- * @date 2022-08-04 09:50:26
  */
 @Component
 @Slf4j

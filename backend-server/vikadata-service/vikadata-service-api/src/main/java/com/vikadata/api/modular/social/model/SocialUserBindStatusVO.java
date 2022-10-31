@@ -7,16 +7,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 第三方用户绑定状态
- *
- * @author Shawn Deng
- * @date 2020-12-11 15:14:48
+ * Binding status of third-party users
  */
 @Data
-@ApiModel("第三方用户绑定状态")
+@ApiModel("Binding status of third-party users")
 public class SocialUserBindStatusVO {
 
-    @ApiModelProperty(value = "状态", example = "true")
+    @ApiModelProperty(value = "State", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean status;
 }

@@ -17,10 +17,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 第三方平台集成-企业租户订单 服务接口 实现
+ * Third party platform integration - enterprise tenant order service interface implementation
  * </p>
- * @author zoe zheng
- * @date 2022/2/28 18:50
  */
 @Service
 @Slf4j

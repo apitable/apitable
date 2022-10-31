@@ -4,10 +4,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 用户昵称dto
+ * User nickname dto
  * </p>
- * @author zoe zheng
- * @date 2021/11/11 15:30
  */
 @Data
 public class UserNickNameDTO {

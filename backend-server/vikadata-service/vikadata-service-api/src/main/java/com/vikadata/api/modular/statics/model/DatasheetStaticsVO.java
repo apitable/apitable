@@ -3,9 +3,7 @@ package com.vikadata.api.modular.statics.model;
 import lombok.Data;
 
 /**
- *
- * @author Shawn Deng
- * @date 2021-09-01 23:04:16
+ * Datasheet Statistics Vo
  */
 @Data
 public class DatasheetStaticsVO {

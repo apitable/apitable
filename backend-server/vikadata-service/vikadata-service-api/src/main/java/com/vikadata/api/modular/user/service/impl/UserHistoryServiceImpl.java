@@ -27,11 +27,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 用户历史记录 服务类
+ * User History Service Class
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/12/31 15:00:42
  */
 @Service
 public class UserHistoryServiceImpl extends ServiceImpl<UserHistoryMapper, UserHistoryEntity> implements IUserHistoryService {
@@ -53,22 +50,22 @@ public class UserHistoryServiceImpl extends ServiceImpl<UserHistoryMapper, UserH
     @Override
     // TODO: move to User Service. added by troy.
     public boolean checkAccountAllowedToBeClosed(Long userId) {
-        // 获取用户管理的所有空间
+        // Get all spaces managed by users
         List<MemberEntity> memberEntities = memberMapper.selectByUserId(userId);
         if (memberEntities.size() == 0) return true;
         List<Long> memberIds = memberEntities.stream().map(memberEntity -> memberEntity.getId()).collect(Collectors.toList());
         List<SpaceEntity> spaceEntities = spaceMapper.selectByUserId(userId);
-        // 查找出主管理的空间
+        // Find out the main managed space
         List<String> spaceIdsInMainAdmin = spaceEntities.stream().filter(space-> memberIds.contains(space.getOwner()))
                 .map(memberEntity -> memberEntity.getSpaceId()).collect(Collectors.toList());
         if (spaceIdsInMainAdmin.size() == 0) return true;
-        // 获取所有空间成员
+        // Get all space members
         List<SpaceMemberDto> memberDtos = memberMapper.selectMembersBySpaceIds(spaceIdsInMainAdmin);
-        // 分类各空间成员
+        // Classify space members
         Map<String, List<SpaceMemberDto>> spaceMemberDtos = memberDtos.stream()
                 .collect(Collectors.groupingBy(SpaceMemberDto::getSpaceId));
         for (Map.Entry<String, List<SpaceMemberDto>> entry : spaceMemberDtos.entrySet()) {
-            // 管理了超过1个成员的空间站时，不允许注销账号
+            // When managing a space station with more than one member, you are not allowed to cancel the account
             if (entry.getValue().size() > 1) {
             // if(manageSpaceWithMultipleMembers(userId, entry.getValue())) {
                 return false;

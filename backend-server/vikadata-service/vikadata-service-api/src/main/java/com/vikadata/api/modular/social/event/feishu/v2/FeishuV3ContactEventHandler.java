@@ -17,11 +17,8 @@ import com.vikadata.social.feishu.event.contact.v3.ContactUserDeleteEvent;
 import com.vikadata.social.feishu.event.contact.v3.ContactUserUpdateEvent;
 
 /**
- * 飞书
- * 事件订阅 - 新版通讯录事件
- *
- * @author Shawn Deng
- * @date 2020-12-24 01:53:16
+ * Lark
+ * Event subscription - new address book event
  */
 @Slf4j
 @FeishuEventHandler

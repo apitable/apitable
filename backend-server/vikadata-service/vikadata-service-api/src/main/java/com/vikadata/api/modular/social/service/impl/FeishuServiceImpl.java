@@ -56,10 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 飞书集成服务 接口实现
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:29:55
+ * Lark Integrated service interface implementation
  */
 @Service
 @Slf4j
@@ -235,7 +232,7 @@ public class FeishuServiceImpl implements IFeishuService {
 
     @Override
     public int getFeishuTenantContactScopeEmployeeCount(String tenantKey, boolean filterInactive) {
-        // 获取通讯录授权范围，得到授权范围的部门列表（只有一级）
+        // Obtain the authorization scope of the address book, and the list of authorized departments (only one level)
         FeishuContactScope contactScope = this.getFeishuTenantContactAuthScope(tenantKey);
         List<String> authedOpenIds = contactScope.getAuthedOpenIds();
         int memberCount = 0;
@@ -252,9 +249,9 @@ public class FeishuServiceImpl implements IFeishuService {
         }
         List<String> authedDepartments = contactScope.getAuthedDepartments();
         if (log.isDebugEnabled()) {
-            log.debug("[飞书]租户：「{}」，通讯录授权范围，部门：{}", tenantKey, JSONUtil.toJsonStr(authedDepartments));
+            log.debug("[Lark] Tenant：「{}」, address book authorization scope, department：{}", tenantKey, JSONUtil.toJsonStr(authedDepartments));
         }
-        // 查询授权部门的成员总数
+        // Query the total number of members of the authorized department
         if (CollUtil.isNotEmpty(authedDepartments)) {
             if (filterInactive) {
                 for (String authedDepartment : authedDepartments) {

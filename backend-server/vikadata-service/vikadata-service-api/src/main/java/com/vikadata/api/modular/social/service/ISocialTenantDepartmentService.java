@@ -9,129 +9,107 @@ import com.vikadata.api.modular.social.model.TenantDepartmentBindDTO;
 import com.vikadata.entity.SocialTenantDepartmentEntity;
 
 /**
- * 第三方平台集成-租户部门 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-09 14:57:01
+ * Third party platform integration - tenant department service interface
  */
 public interface ISocialTenantDepartmentService extends IService<SocialTenantDepartmentEntity> {
 
     /**
-     * 获取行ID
+     * Get Row ID
      *
-     * @param departmentId 租户部门ID
-     * @return 行ID
-     * @author Shawn Deng
-     * @date 2020/12/18 16:22
+     * @param departmentId Tenant Department ID
+     * @return Row ID
      */
     Long getIdByDepartmentId(String spaceId, String tenantId, String departmentId);
 
     /**
-     * 根据租户部门自定义ID获取
+     * Acquired according to the customized ID of the tenant department
      *
-     * @param departmentId 租户部门ID
+     * @param departmentId Tenant Department ID
      * @return SocialTenantDepartmentEntity
-     * @author Shawn Deng
-     * @date 2020/12/18 16:22
      */
     SocialTenantDepartmentEntity getByDepartmentId(String spaceId, String tenantId, String departmentId);
 
     /**
-     * 获取租户的部门ID列表
+     * Get the tenant's department ID list
      *
-     * @param tenantId 租户ID
-     * @param spaceId 空间ID
-     * @return DepartmentId 列表
-     * @author Shawn Deng
-     * @date 2020/12/25 13:03
+     * @param tenantId Tenant ID
+     * @param spaceId Space ID
+     * @return DepartmentId List
      */
     List<String> getDepartmentIdsByTenantId(String tenantId, String spaceId);
 
     /**
-     * 获取租户的部门列表
-     * @param tenantId 租户ID
-     * @param spaceId 空间ID
+     * Get the tenant's department list
+     *
+     * @param tenantId Tenant ID
+     * @param spaceId Space ID
      * @return SocialTenantDepartmentEntity List
      */
     List<SocialTenantDepartmentEntity> getByTenantId(String tenantId, String spaceId);
 
     /**
-     * 批量创建租户部门
+     * Batch Create Tenant Departments
      *
-     * @param entities 实体列表
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
+     * @param entities Entity List
      */
     void createBatch(List<SocialTenantDepartmentEntity> entities);
 
     /**
-     * 删除租户部门记录
-     * @param tenantId 租户标识
-     * @param departmentId 租户的部门id
-     * @author Shawn Deng
-     * @date 2020/12/18 15:55
+     * Delete Tenant Department Record
+     *
+     * @param tenantId Tenant ID
+     * @param departmentId Tenant's department ID
      */
     void deleteTenantDepartment(String spaceId, String tenantId, String departmentId);
 
     /**
-     * 删除租户部门记录
-     * @param tenantId 租户标识
-     * @param departmentIds 租户的部门ID集合
-     * @author Shawn Deng
-     * @date 2020/12/18 15:55
+     * Delete Tenant Department Record
+     *
+     * @param tenantId Tenant ID
+     * @param departmentIds Tenant's Department ID Collection
      */
     void deleteBatchByDepartmentId(String spaceId, String tenantId, Collection<String> departmentIds);
 
     /**
-     * 删除租户的部门记录
+     * Delete tenant's department record
      *
-     * @param tenantId 租户标识
-     * @author Shawn Deng
-     * @date 2020/12/15 10:29
+     * @param tenantId Tenant ID
      */
     void deleteByTenantId(String spaceId, String tenantId);
 
     /**
      *
-     * 根据租户部门自定义ID获取
+     * Acquired according to the customized ID of the tenant department
      *
-     * @param spaceId 空间id
-     * @param tenantId 企业标识
-     * @param departmentId 租户部门ID
+     * @param spaceId Space ID
+     * @param tenantId Enterprise ID
+     * @param departmentId Tenant Department ID
      * @return SocialTenantDepartmentEntity
-     * @author zoe zheng
-     * @date 2021/5/17 11:58 上午
      */
     SocialTenantDepartmentEntity getByTenantIdAndDepartmentId(String spaceId, String tenantId, String departmentId);
 
     /**
-     * 删除租户部门记录
+     * Delete Tenant Department Record
      *
-     * @param spaceId 空间站ID
-     * @param tenantId 租户企业标识
-     * @param departmentId 租户的部门OPENID
-     * @author zoe zheng
-     * @date 2021/5/17 12:15 下午
+     * @param spaceId Space ID
+     * @param tenantId Tenant Enterprise ID
+     * @param departmentId Tenant's department OPENID
      */
     void deleteSpaceTenantDepartment(String spaceId, String tenantId, String departmentId);
 
     /**
-     * 根据spaceId和租户ID删除绑定关系
+     * Delete binding relationship according to spaceId and Tenant ID
      *
-     * @param spaceId 空间站ID
-     * @param tenantId 租户ID
-     * @author zoe zheng
-     * @date 2021/5/17 9:18 下午
+     * @param spaceId Space ID
+     * @param tenantId Tenant ID
      */
     void deleteByTenantIdAndSpaceId(String tenantId, String spaceId);
 
     /**
-     * 获取第三方组织绑定部门集合
+     * Get the collection of departments bound by the third party organization
      *
-     * @param spaceId 空间站Id
-     * @return 第三方组织绑定部门集合
-     * @author Pengap
-     * @date 2021/9/6 15:38:54
+     * @param spaceId Space ID
+     * @return Third party organization binding department collection
      */
     List<TenantDepartmentBindDTO> getTenantBindTeamListBySpaceId(String spaceId);
 }

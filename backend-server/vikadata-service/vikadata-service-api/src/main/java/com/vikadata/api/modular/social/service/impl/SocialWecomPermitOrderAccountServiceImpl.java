@@ -29,10 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 企微服务商接口许可账号信息
+ * WeCom interface license account information
  * </p>
- * @author 刘斌华
- * @date 2022-06-27 18:49:23
  */
 @Service
 public class SocialWecomPermitOrderAccountServiceImpl extends ServiceImpl<SocialWecomPermitOrderAccountMapper, SocialWecomPermitOrderAccountEntity> implements ISocialWecomPermitOrderAccountService {
@@ -106,23 +104,23 @@ public class SocialWecomPermitOrderAccountServiceImpl extends ServiceImpl<Social
 
     @Override
     public List<String> getNeedActivateCpUserIds(String suiteId, String authCorpId, String spaceId) {
-        // 1 获取所有成员
+        // 1 Get all members
         List<TenantMemberDto> allMembers = memberService.getMemberOpenIdListBySpaceId(spaceId);
         if (CollUtil.isEmpty(allMembers)) {
             return Collections.emptyList();
         }
-        // 2 获取所有已激活或者已过期的企微用户 ID
+        // 2 Get all activated or expired WeCom user IDs
         List<String> activatedCpUserIds = getCpUserIdsByStatus(suiteId, authCorpId,
                 Arrays.asList(SocialCpIsvPermitActivateStatus.ACTIVATED.getValue(), SocialCpIsvPermitActivateStatus.EXPIRED.getValue()));
         List<String> allCpUserIds = allMembers.stream()
                 .map(TenantMemberDto::getOpenId)
                 .collect(Collectors.toList());
         if (CollUtil.isEmpty(activatedCpUserIds)) {
-            // 2.1 全部待激活
+            // 2.1 All to be activated
             return allCpUserIds;
         }
         else {
-            // 2.2 提取待激活
+            // 2.2 Extraction to be activated
             Map<String, String> activatedCpUserIdMap = activatedCpUserIds.stream()
                     .collect(Collectors.toMap(k -> k, v -> v, (k1, k2) -> k2));
 
@@ -134,17 +132,17 @@ public class SocialWecomPermitOrderAccountServiceImpl extends ServiceImpl<Social
 
     @Override
     public List<SocialWecomPermitOrderAccountEntity> getNeedRenewAccounts(String suiteId, String authCorpId, String spaceId, LocalDateTime expireTime) {
-        // 1 获取所有在指定时间将过期的账号
+        // 1 Get all accounts that will expire at the specified time
         List<SocialWecomPermitOrderAccountEntity> expireAccounts = getBaseMapper().selectByExpireTime(suiteId, authCorpId, expireTime);
         if (CollUtil.isEmpty(expireAccounts)) {
             return Collections.emptyList();
         }
-        // 2 获取所有成员
+        // 2 Get all members
         List<TenantMemberDto> allMembers = memberService.getMemberOpenIdListBySpaceId(spaceId);
         if (CollUtil.isEmpty(allMembers)) {
             return Collections.emptyList();
         }
-        // 3 过滤需要续期的账号
+        // 3 Filter the accounts to be renewed
         List<String> allCpUserIds = allMembers.stream()
                 .map(TenantMemberDto::getOpenId)
                 .collect(Collectors.toList());

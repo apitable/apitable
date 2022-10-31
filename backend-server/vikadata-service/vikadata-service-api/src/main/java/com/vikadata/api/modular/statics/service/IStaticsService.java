@@ -9,112 +9,103 @@ import com.vikadata.api.modular.statics.model.NodeTypeStatics;
 
 /**
  * <p>
- * 统计接口
+ * Statistical interface
  * </p>
- *
- * @author Chambers
- * @date 2021/6/18
  */
 public interface IStaticsService {
 
     /**
-     * 获取当月 API 使用量
+     * Get the current month's API usage
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return amount
-     * @author Chambers
-     * @date 2021/6/18
      */
     long getCurrentMonthApiUsage(String spaceId);
 
     /**
-     * 获取今日API使用量，并更新缓存
+     * Get today's API usage and update the cache
      *
-     * @param spaceId 空间ID
-     * @return 数量
-     * @author liuzijing
-     * @date 2022/6/15
+     * @param spaceId space id
+     * @return amount
      */
     Long getTodayApiUsage(String spaceId);
 
     /**
-     * 获取本月到昨天为止API使用量，并更新缓存
+     * Get the API usage from this month to yesterday, and update the cache
      *
-     * @param spaceId 空间ID
-     * @return 数量
-     * @author liuzijing
-     * @date 2022/6/15
+     * @param spaceId spaceid
+     * @return amount
      */
     Long getCurrentMonthApiUsageUntilYesterday(String spaceId);
 
     /**
-     * 获取空间的总人数
+     * Total number of people obtaining space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return amount
      */
     long getMemberTotalCountBySpaceId(String spaceId);
 
     /**
-     * 获取空间小组总数
+     * Total number of space acquisition groups
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return amount
      */
     long getTeamTotalCountBySpaceId(String spaceId);
 
     /**
-     * 获取空间的子管理员总数
+     * Total number of sub administrators getting space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return amount
      */
     long getAdminTotalCountBySpaceId(String spaceId);
 
     /**
-     * 获取空间所有数表的总行数
+     * Get the total number of rows of all tables in the space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return amount
      */
     long getDatasheetRecordTotalCountBySpaceId(String spaceId);
 
     /**
-     * 获取空间的附件总容量
+     * Total attachment capacity for acquiring space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return amount
      */
     long getTotalFileSizeBySpaceId(String spaceId);
 
     /**
-     * 获取空间的权限统计视图
+     * Get the permission statistics view of the space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return ControlStaticsVO
      */
     ControlStaticsVO getFieldRoleTotalCountBySpaceId(String spaceId);
 
     /**
-     * 获取空间的工作目录统计视图
+     * Get the working directory statistics view of the space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return NodeStaticsVO
      */
     NodeStaticsVO getNodeStaticsBySpaceId(String spaceId);
 
     /**
-     * 获取空间的节点类型统计视图
+     * Get the node type statistics view of the space
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return NodeTypeStatics
      */
     List<NodeTypeStatics> getNodeTypeStaticsBySpaceId(String spaceId);
 
     /**
-     * 获取空间的数表统计视图
+     * Get the statistics view of the space table
      *
-     * @param spaceId 空间ID
+     * @param spaceId space id
      * @return DatasheetStaticsVO
      */
     DatasheetStaticsVO getDatasheetStaticsBySpaceId(String spaceId);

@@ -17,117 +17,99 @@ import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商
+ * Third party platform integration - WeCom third-party service provider
  * </p>
- * @author 刘斌华
- * @date 2022-01-12 11:38:49
  */
 public interface ISocialCpIsvService {
 
     /**
-     * 刷新 access_token，不强制刷新
+     * Refresh access_ token, do not force refresh
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 企业 ID
-     * @param permanentCode 企业永久授权码
-     * @author 刘斌华
-     * @date 2022-01-17 19:07:14
+     * @param suiteId Application Suit ID
+     * @param authCorpId Enterprise ID
+     * @param permanentCode Enterprise permanent authorization code
      */
     void refreshAccessToken(String suiteId, String authCorpId, String permanentCode);
 
     /**
-     * 刷新 access_token
+     * Refresh access_ token
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 企业 ID
-     * @param permanentCode 企业永久授权码
-     * @param forceRefresh 是否强制刷新
-     * @author 刘斌华
-     * @date 2022-01-17 19:07:14
+     * @param suiteId Application Suit ID
+     * @param authCorpId Enterprise ID
+     * @param permanentCode Enterprise permanent authorization code
+     * @param forceRefresh Whether to force refresh
      */
     void refreshAccessToken(String suiteId, String authCorpId, String permanentCode, boolean forceRefresh);
 
     /**
-     * 获取 JS-SDK 校验企业身份与权限的配置参数
+     * Obtain the configuration parameters for JS-SDK to verify the enterprise identity and permission
      *
-     * @param socialTenantEntity 企微绑定的租户信息
-     * @param url 当前网页的 URL，不包含 # 及其后面部分
-     * @return JS-SDK 校验企业身份与权限的配置参数
-     * @author 刘斌华
-     * @date 2022-03-10 16:17:05
+     * @param socialTenantEntity Tenant information bound by WeCom
+     * @param url URL of the current page, exclude # and its subsequent parts
+     * @return JS-SDK Verify the configuration parameters of enterprise identity and authority
      */
     WeComIsvJsSdkConfigVo getJsSdkConfig(SocialTenantEntity socialTenantEntity, String url) throws WxErrorException;
 
     /**
-     * 获取 JS-SDK 校验应用身份与权限的配置参数
+     * Get the configuration parameters of JS-SDK verification application identity and permission
      *
-     * @param socialTenantEntity 企微绑定的租户信息
-     * @param url 当前网页的 URL，不包含 # 及其后面部分
-     * @return JS-SDK 校验企业身份与权限的配置参数
-     * @author 刘斌华
-     * @date 2022-03-10 16:17:05
+     * @param socialTenantEntity Tenant information bound by WeCom
+     * @param url URL of the current page, exclude # and its subsequent parts
+     * @return JS-SDK Verify the configuration parameters of enterprise identity and authority
      */
     WeComIsvJsSdkAgentConfigVo getJsSdkAgentConfig(SocialTenantEntity socialTenantEntity, String url) throws WxErrorException;
 
     /**
-     * 根据永久授权信息创建租户
+     * Create tenants based on permanent authorization information
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param permanentCodeInfo 永久授权信息
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-03-15 18:55:52
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized Enterprise ID
+     * @param permanentCodeInfo Permanent authorization information
+     * @throws WxErrorException WeCom Interface Exception
      */
     void createAuthFromPermanentInfo(String suiteId, String authCorpId, WxCpIsvPermanentCodeInfo permanentCodeInfo) throws WxErrorException;
 
     /**
-     * 为删除了空间站的租户创建新的空间站
+     * Create a new space station for tenants who have deleted the space station
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权企业的 ID
-     * @author 刘斌华
-     * @date 2022-06-16 14:09:33
+     * @param suiteId Application Suit ID
+     * @param authCorpId ID of authorized enterprise
      */
     void createNewSpace(String suiteId, String authCorpId);
 
     /**
-     * 判断用户是否在应用的可见范围内
+     * Judge whether the user is within the visible range of the application
      *
      * <p>
-     * 需要清空临时缓存
+     * Need to clear temporary cache
      * </p>
      *
-     * @param corpId 企业 ID
-     * @param cpUserId 用户的 ID
-     * @param suiteId 应用套件 ID
-     * @param allowUsers 企业微信可见用户
-     * @param allowParties 企业微信可见部门
-     * @param allowTags 企业微信可见标签
-     * @return 用户是否在应用的可见范围内
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-07 14:40:26
+     * @param corpId Enterprise ID
+     * @param cpUserId User's ID
+     * @param suiteId Application Suit ID
+     * @param allowUsers WeCom Visible Users
+     * @param allowParties WeCom departments of WeCom
+     * @param allowTags WeCom Visible Label
+     * @return Whether the user is within the WeCom range of the application
+     * @throws WxErrorException WeCom Interface Exception
      */
     boolean judgeViewable(String corpId, String cpUserId, String suiteId,
             List<String> allowUsers, List<Integer> allowParties, List<Integer> allowTags)
             throws WxErrorException;
 
     /**
-     * 根据规则判断为空间站创建并绑定主管理员
+     * According to the rules, create and bind the master administrator for the space station
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param authCpUserId 操作授权的企微用户 ID
-     * @param agentId 安装后的应用 ID
-     * @param authMode 授权模式
-     * @param spaceId 空间站 ID
-     * @param allowUsers 可见的用户列表
-     * @param allowParties 可见的部门列表
-     * @param allowTags 可见的标签列表
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-03-10 15:00:52
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized Enterprise ID
+     * @param authCpUserId WeCom user ID of operation authorization
+     * @param agentId App ID after installation
+     * @param authMode Authorization Mode
+     * @param spaceId Space ID
+     * @param allowUsers WeCom Visible Users
+     * @param allowParties WeCom departments of WeCom
+     * @param allowTags WeCom Visible Label
+     * @throws WxErrorException WeCom Interface Exception
      */
     void bindSpaceAdmin(String suiteId, String authCorpId, String authCpUserId,
             Integer agentId, Integer authMode, String spaceId,
@@ -135,120 +117,104 @@ public interface ISocialCpIsvService {
             throws WxErrorException;
 
     /**
-     * 同步所有可见成员
+     * Synchronize all visible members
      *
      * <p>
-     * 需要清空临时缓存
+     * Need to clear temporary cache
      * </p>
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID
-     * @param allowUsers 企业微信可见用户
-     * @param allowParties 企业微信可见部门
-     * @param allowTags 企业微信可见标签
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-07 18:28:34
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized Enterprise ID
+     * @param spaceId Space ID
+     * @param allowUsers WeCom Visible Users
+     * @param allowParties WeCom departments of WeCom
+     * @param allowTags WeCom Visible Label
+     * @throws WxErrorException WeCom Interface Exception
      */
     void syncViewableUsers(String suiteId, String authCorpId, String spaceId,
             List<String> allowUsers, List<Integer> allowParties, List<Integer> allowTags)
             throws WxErrorException;
 
     /**
-     * 同步单个成员
+     * Synchronize individual members
      *
      * <p>
-     * 需要清空临时缓存
+     * Need to clear temporary cache
      * </p>
      *
-     * @param corpId 企业 ID
-     * @param cpUserId 授权管理员（成员）的 ID
-     * @param suiteId 应用套件 ID
-     * @param spaceId 空间站
-     * @param isAdmin 是否将该用户设置为主管理员
-     * @author 刘斌华
-     * @date 2022-01-06 18:49:56
+     * @param corpId Enterprise ID
+     * @param cpUserId ID of authorized administrator (member)
+     * @param suiteId Application Suit ID
+     * @param spaceId Space ID
+     * @param isAdmin Set this user as the primary administrator
      */
     void syncSingleUser(String corpId, String cpUserId, String suiteId, String spaceId, boolean isAdmin);
 
     /**
-     * 清空授权企业在通讯录操作时的所有临时缓存
+     * Clear all temporary caches of authorized enterprises during address book operations
      *
-     * @param authCorpId 授权企业的 ID
-     * @author 刘斌华
-     * @date 2022-01-18 16:44:07
+     * @param authCorpId ID of authorized enterprise
      */
     void clearCache(String authCorpId);
 
     /**
-     * 发送开始使用消息
+     * Send Start Using Message
      *
-     * @param socialTenantEntity 租户信息
-     * @param spaceId 空间站 ID
-     * @param wxCpMessage 消息体
-     * @param toUsers 接收的用户
-     * @param toParties 接收的部门
-     * @param toTags 接收的标签
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-21 14:52:09
+     * @param socialTenantEntity Tenant information
+     * @param spaceId Space ID
+     * @param wxCpMessage Message Body
+     * @param toUsers Received users
+     * @param toParties Receiving department
+     * @param toTags Received tags
+     * @throws WxErrorException WeCom Interface Exception
      */
     void sendWelcomeMessage(SocialTenantEntity socialTenantEntity, String spaceId, WxCpMessage wxCpMessage,
             List<String> toUsers, List<Integer> toParties, List<Integer> toTags) throws WxErrorException;
 
     /**
-     * 对新增成员缓存列表中的用户发送开始使用消息
+     * Send the start message to the users in the new member cache list
      *
-     * @param socialTenantEntity 租户信息
-     * @param spaceId 空间站 ID
-     * @param wxCpMessage 消息体
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-02-18 11:54:46
+     * @param socialTenantEntity Tenant information
+     * @param spaceId Space ID
+     * @param wxCpMessage Message Body
+     * @throws WxErrorException WeCom Interface Exception
      */
     void sendWelcomeMessage(SocialTenantEntity socialTenantEntity, String spaceId, WxCpMessage wxCpMessage) throws WxErrorException;
 
     /**
-     * 发送消息给指定用户
+     * Send a message to the specified user
      *
-     * @param socialTenantEntity 租户信息
-     * @param spaceId 空间站 ID
-     * @param wxCpMessage 消息体
-     * @param toUsers 接收的用户
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-21 18:53:45
+     * @param socialTenantEntity Tenant information
+     * @param spaceId Space ID
+     * @param wxCpMessage Message Body
+     * @param toUsers Received users
+     * @throws WxErrorException WeCom Interface Exception
      */
     void sendMessageToUser(SocialTenantEntity socialTenantEntity, String spaceId, WxCpMessage wxCpMessage,
             List<String> toUsers) throws WxErrorException;
 
     /**
-     * 发送模板消息给指定用户
+     * Send the template message to the specified user
      *
-     * @param socialTenantEntity 租户信息
-     * @param spaceId 空间站 ID
-     * @param wxCpMessage 消息体
-     * @param toUsers 接收的用户
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-21 18:53:45
+     * @param socialTenantEntity Tenant information
+     * @param spaceId Space ID
+     * @param wxCpMessage Message Body
+     * @param toUsers Received users
+     * @throws WxErrorException WeCom Interface Exception
      */
     void sendTemplateMessageToUser(SocialTenantEntity socialTenantEntity, String spaceId, WxCpMessage wxCpMessage,
             List<String> toUsers) throws WxErrorException;
 
     /**
-     * 模糊搜索用户或者部门
+     * Fuzzy search user or department
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param agentId 授权后的应用 ID
-     * @param keyword 搜索关键词
-     * @param type 搜索类型，为空则查询所有。1：用户；2：部门
-     * @return 匹配的用户或者部门
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-04-12 11:35:22
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized Enterprise ID
+     * @param agentId Application ID after authorization
+     * @param keyword Search keywords
+     * @param type Search type. If it is blank, all items will be queried. 1: Users; 2: Department
+     * @return Matching user or department
+     * @throws WxErrorException WeCom Interface Exception
      */
     WxCpTpContactSearchResp.QueryResult search(String suiteId, String authCorpId, Integer agentId, String keyword, Integer type) throws WxErrorException;
 

@@ -12,166 +12,147 @@ import com.vikadata.entity.SocialTenantEntity;
 
 /**
  * <p>
- * 第三方集成 - 企业租户表 Mapper 接口
+ * Third party integration - enterprise tenant table mapper interface
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/30 17:10
  */
 public interface SocialTenantMapper extends BaseMapper<SocialTenantEntity> {
 
     /**
-     * 查询第三方平台应用的租户ID
+     * Query the tenant ID of third-party platform applications
      *
-     * @param appId 应用ID
-     * @return 租户标识列表
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
+     * @param appId App ID
+     * @return Tenant ID List
      */
     List<String> selectTenantIdByAppId(@Param("appId") String appId);
 
     /**
-     * 查询租户
+     * Query tenants
      *
-     * @param appId    应用ID
-     * @param tenantId 租户ID
+     * @param appId    App ID
+     * @param tenantId Tenant ID
      * @return SocialTenantEntity
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
      */
     SocialTenantEntity selectByAppIdAndTenantId(@Param("appId") String appId, @Param("tenantId") String tenantId);
 
     /**
-     * 条件查询租户总数
+     * Total number of conditional query tenants
      *
-     * @param appId    应用ID
-     * @param tenantId 租户ID
-     * @return 总数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
+     * @param appId    App ID
+     * @param tenantId Tenant ID
+     * @return Total
      */
     Integer selectCountByAppIdAndTenantId(@Param("appId") String appId, @Param("tenantId") String tenantId);
 
     /**
-     * 重启租户
+     * Restart tenant
      *
-     * @param appId    应用ID
-     * @param tenantId 租户ID
-     * @return 执行数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
+     * @param appId    App ID
+     * @param tenantId Tenant ID
+     * @return Number of executions
      */
     int setTenantOpen(@Param("appId") String appId, @Param("tenantId") String tenantId);
 
     /**
-     * 停止租户
+     * Stop Tenant
      *
-     * @param appId    应用ID
-     * @param tenantId 租户ID
-     * @return 执行数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
+     * @param appId    App ID
+     * @param tenantId Tenant ID
+     * @return Number of executions
      */
     int setTenantStop(@Param("appId") String appId, @Param("tenantId") String tenantId);
 
     /**
-     * 删除应用的所有租户
+     * Delete all tenants of the app
      *
-     * @param appId 应用ID
-     * @return 执行数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:55
+     * @param appId App ID
+     * @return Number of executions
      */
     int deleteByAppId(@Param("appId") String appId);
 
     /**
-     * 租户通讯录授权范围
+     * Tenant address book authorization scope
      *
-     * @param tenantId 租户ID
-     * @param scope    通讯录授权范围
-     * @return 执行结果
-     * @author Shawn Deng
-     * @date 2020/12/24 15:57
+     * @param tenantId Tenant ID
+     * @param scope    Address book authorization scope
+     * @return Results of enforcement
      */
     int updateScopeByTenantId(@Param("tenantId") String tenantId, @Param("scope") String scope);
 
     /**
-     * 获取租户下绑定的应用数量
+     * Get the number of applications bound under the tenant
      *
-     * @param tenantId 租户ID
-     * @return 租户绑定的应用数量
-     * @author zoe zheng
-     * @date 2021/5/20 6:09 下午
+     * @param tenantId Tenant ID
+     * @return Number of applications bound by tenants
      */
     Integer selectCountByTenantId(@Param("tenantId") String tenantId);
 
     /**
-     * 获取钉钉应用的agentId
+     * Get the agent ID of the Ding Talk application
      *
-     * @param tenantId 租户ID
-     * @param appId 应用ID
+     * @param tenantId Tenant ID
+     * @param appId App ID
      * @return agentId
-     * @author zoe zheng
-     * @date 2021/6/10 4:33 下午
      */
     String selectAgentIdByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
     /**
-     * 查询租户授权范围
-     * @param tenantId 租户ID
-     * @return 通讯录授权范围
+     * Query tenant authorization range
+     *
+     * @param tenantId Tenant ID
+     * @return Address book authorization scope
      */
     String selectAuthScopeByTenantId(@Param("tenantId") String tenantId);
 
     /**
-     * 更新租户停启用状态
-     * @param appId 应用ID
-     * @param tenantId 租户ID
-     * @param enabled true 或者 false
-     * @return 影响条数
+     * Update tenant disable status
+     *
+     * @param appId App ID
+     * @param tenantId Tenant ID
+     * @param enabled true or false
+     * @return Number of influence pieces
      */
     int updateTenantStatus(@Param("appId") String appId, @Param("tenantId") String tenantId, @Param("enabled") Boolean enabled);
 
     /**
-     * 查询租户状态
+     * Query tenant status
      *
-     * @param tenantId 租户ID
-     * @param appId 应用ID
-     * @return 租户状态
-     * @author zoe zheng
-     * @date 2021/9/24 17:54
+     * @param tenantId Tenant ID
+     * @param appId App ID
+     * @return Tenant Status
      */
     Integer selectTenantStatusByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
     /**
-     * 查询钉钉第三方app的agentId
-     * @param tenantId 租户ID
-     * @param appId 应用ID
+     * Query the agent ID of the Ding Talk third-party app
+     *
+     * @param tenantId Tenant ID
+     * @param appId App ID
      * @return agentId
      */
     String selectIsvAgentIdByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
     /**
-     * 批量根据租户ID查询
-     * @param tenantIds 租户ID列表
+     * Batch query based on Tenant ID
+     *
+     * @param tenantIds Tenant ID List
      * @return SocialTenantEntity List
      */
     List<SocialTenantEntity> selectByTenantIds(@Param("tenantIds") List<String> tenantIds);
 
     /**
-     * 根据租户ID删除
-     * @param tenantId 租户ID
-     * @return 执行成功行数
+     * Delete according to Tenant ID
+     *
+     * @param tenantId Tenant ID
+     * @return Number of successful execution lines
      */
     int deleteByTenantId(@Param("tenantId") String tenantId);
 
     /**
-     * 查询第三方平台信息
-     * @param platformType 平台类型
-     * @param appType 应用类型
+     * Query third-party platform information
+     *
+     * @param platformType Platform Type
+     * @param appType Application Type
      * @return List<SocialTenantEntity>
-     * @author zoe zheng
-     * @date 2022/6/7 17:27
      */
     List<SocialTenantEntity> selectByPlatformTypeAndAppType(@Param("platformType") SocialPlatformType platformType,
             @Param("appType") SocialAppType appType);

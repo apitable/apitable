@@ -12,12 +12,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 获取安装维格表的授权链接
+ * Get the authorization link for installing vika
  * </p>
- * @author 刘斌华
- * @date 2022-03-15 09:30:07
  */
-@ApiModel("获取安装维格表的授权链接")
+@ApiModel("Get the authorization link for installing vika")
 @Setter
 @Getter
 @Builder
@@ -26,10 +24,10 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WeComIsvRegisterInstallSelfUrlVo {
 
-    @ApiModelProperty(value = "授权链接", required = true)
+    @ApiModelProperty(value = "Authorization link", required = true)
     private String url;
 
-    @ApiModelProperty(value = "授权链接中的随机状态码", required = true)
+    @ApiModelProperty(value = "Random status code in authorization link", required = true)
     private String state;
 
 }

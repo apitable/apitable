@@ -10,41 +10,33 @@ import com.vikadata.entity.SocialCpIsvMessageEntity;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用授权通知信息记录
+ * Third party platform integration - WeCom third-party service provider application authorization notification information record
  * </p>
- * @author 刘斌华
- * @date 2022-01-05 17:00:30
  */
 public interface ISocialCpIsvMessageService extends IService<SocialCpIsvMessageEntity> {
 
     /**
-     * 批量获取未处理的消息通知
+     * Get unprocessed message notifications in batches
      *
-     * @param size 批量获取的数量
-     * @return 未处理的消息通知列表
-     * @author 刘斌华
-     * @date 2022-01-05 17:45:33
+     * @param size Quantity obtained in batch
+     * @return List of unprocessed message notifications
      */
     List<SocialCpIsvMessageEntity> getUnprocessedList(int size);
 
     /**
-     * 对还未处理的消息通知进行相关操作
+     * Perform relevant operations on the message notifications that have not been processed
      *
-     * @param unprocessedInfo 要处理的消息通知
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-01-06 11:41:42
+     * @param unprocessedInfo Message notifications to process
+     * @throws WxErrorException WeCom Interface exception
      */
     void doUnprocessedInfo(SocialCpIsvMessageEntity unprocessedInfo) throws WxErrorException;
 
     /**
-     * 将未处理的消息通知发送到 MQ
+     * Send unprocessed message notifications to MQ
      *
-     * @param unprocessedId 未处理的消息 ID
-     * @param infoType 消息类型
-     * @param authCorpId 授权的企业 ID
-     * @author 刘斌华
-     * @date 2022-02-24 15:13:43
+     * @param unprocessedId Unhandled messages ID
+     * @param infoType Message Type
+     * @param authCorpId Authorized enterprises ID
      */
     void sendToMq(Long unprocessedId, String infoType, String authCorpId, String suiteId);
 

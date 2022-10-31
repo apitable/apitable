@@ -41,11 +41,8 @@ import static java.util.stream.Collectors.groupingBy;
 
 /**
  * <p>
- * 实验性功能表 服务实现类
+ * Experimental Menu Service Implementation Class
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/22 20:24:25
  */
 @Service
 @Slf4j
@@ -114,22 +111,22 @@ public class LabsFeatureServiceImpl extends ServiceImpl<LabsFeatureMapper, LabsF
 
     @Override
     public void updateLabsFeatureAttribute(GmLabsFeatureCreatorRo ro) {
-        // 校验实验性功能唯一标识
+        // Unique identification of verification experimental function
         LabsFeatureEnum featureEnum = ofLabsFeature(ro.getKey());
         ExceptionUtil.isFalse(Objects.equals(featureEnum, UNKNOWN_LAB_FEATURE), FEATURE_KEY_IS_NOT_EXIST);
-        // 校验属性修改值个数
+        // Check the number of modified values of attributes
         ExceptionUtil.isTrue(StrUtil.isNotBlank(ro.getScope()) || StrUtil.isNotBlank(ro.getType()) || StrUtil.isNotBlank(ro.getUrl()), FEATURE_ATTRIBUTE_AT_LEAST_ONE);
         if (StrUtil.isNotBlank(ro.getScope())) {
-            // 校验实验性功能作用域
+            // Verify the scope of experimental functions
             LabsFeatureScopeEnum scopeEnum = ofLabsFeatureScope(ro.getScope());
             ExceptionUtil.isFalse(Objects.equals(scopeEnum, UNKNOWN_SCOPE), FEATURE_SCOPE_IS_NOT_EXIST);
         }
         if (StrUtil.isNotBlank(ro.getType())) {
-            // 校验实验性功能类型
+            // Verify experimental function type
             LabsFeatureTypeEnum labsFeatureTypeEnum = ofLabsFeatureType(ro.getType());
             ExceptionUtil.isFalse(Objects.equals(labsFeatureTypeEnum, UNKNOWN_LABS_FEATURE_TYPE), FEATURE_TYPE_IS_NOT_EXIST);
         }
-        // 修改实验室功能属性
+        // Modify laboratory function properties
         Long featureId = labsFeatureMapper.selectIdByFeatureKey(ro.getKey());
         ExceptionUtil.isNotNull(featureId, FEATURE_KEY_IS_NOT_EXIST);
         LabsFeaturesEntity labsFeaturesEntity = new LabsFeaturesEntity();

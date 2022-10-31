@@ -17,10 +17,7 @@ import com.vikadata.social.feishu.event.contact.v3.BaseV3ContactEvent;
 import org.springframework.stereotype.Service;
 
 /**
- * 第三方平台集成-飞书事件日志 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-14 19:49:54
+ * Third party platform integration - implementation of the Lark event log service interface
  */
 @Service
 @Slf4j
@@ -41,7 +38,7 @@ public class SocialFeishuEventLogServiceImpl extends ServiceImpl<SocialFeishuEve
     public <T extends BaseEvent> boolean create(T event) {
         boolean duplicate = SqlTool.retCount(socialFeishuEventLogMapper.selectCountByUuid(event.getMeta().getUuid())) > 0;
         if (duplicate) {
-            log.error("重复飞书事件通知,请检查是否已经处理完,租户[{}], 事件类型[{}], 事件标识[{}]", event.getTenantKey(), event.getType(), event.getMeta().getUuid());
+            log.error("Repeat Lark event notification. Please check whether it has been processed. Tenant[{}], event type[{}], event id[{}]", event.getTenantKey(), event.getType(), event.getMeta().getUuid());
             return false;
         }
         SocialFeishuEventLogEntity eventLog = new SocialFeishuEventLogEntity();
@@ -58,7 +55,7 @@ public class SocialFeishuEventLogServiceImpl extends ServiceImpl<SocialFeishuEve
     public <T extends BaseV3ContactEvent> boolean createV3ContactEventLog(T event) {
         SocialFeishuEventLogEntity logEntity = socialFeishuEventLogMapper.selectByUuid(event.getHeader().getEventId());
         if (logEntity != null) {
-            log.error("重复飞书事件通知,请检查是否已经处理完,租户[{}],事件类型[{}],事件标识[{}]", event.getHeader().getTenantKey(), event.getHeader().getEventType(), event.getHeader().getEventId());
+            log.error("Repeat Lark event notification. Please check whether it has been processed. Tenant[{}],event type[{}],event id[{}]", event.getHeader().getTenantKey(), event.getHeader().getEventType(), event.getHeader().getEventId());
             return logEntity.getStatus();
         }
         SocialFeishuEventLogEntity eventLog = new SocialFeishuEventLogEntity();

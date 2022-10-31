@@ -27,9 +27,7 @@ import org.springframework.util.MultiValueMap;
 import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_DEPT_ID;
 
 /**
- * 飞书企业通讯录服务实现
- * @author Shawn Deng
- * @date 2022-02-08 18:19:23
+ * Lark Enterprise Address Book Service Implementation
  */
 @Service
 @Slf4j
@@ -45,24 +43,24 @@ public class FeishuTenantContactServiceImpl implements IFeishuTenantContactServi
             return fetchTenantContact(tenantKey, contact.getDeptObjects(), contact.getUserObjects());
         }
         catch (Exception exception) {
-            log.error("没有飞书企业租户[{}]的任何通讯录权限, 灰度测试中", tenantKey, exception);
+            log.error("No Lark Enterprise Tenant[{}] any address book permission, gray scale test in progress", tenantKey, exception);
             throw new ContactAccessDeniesException();
         }
     }
 
     @Override
     public FeishuTenantContact requestTenantContact(String tenantKey) {
-        // 主动拉取通讯录
+        // Actively pull the address book
         FeishuContactScope contactScope = iFeishuService.getFeishuTenantContactAuthScope(tenantKey);
         FeishuTenantContact contact = new FeishuTenantContact();
-        // 授权用户列表，全员可见时返回的是当前企业所有顶级部门用户列表
+        // The list of authorized users. When all members are visible, the list of users from all top-level departments of the current enterprise is returned
         List<String> authedOpenIds = contactScope.getAuthedOpenIds();
         if (CollUtil.isNotEmpty(authedOpenIds)) {
             List<FeishuUserObject> userObjects = new ArrayList<>();
             authedOpenIds.forEach(openId -> userObjects.add(iFeishuService.getUser(tenantKey, openId)));
             contact.setUserObjects(userObjects);
         }
-        // 授权部门列表，全员可见时返回的是当前企业的所有一级部门列表
+        // The list of authorized departments. When all employees are visible, the list of all first level departments of the current enterprise is returned
         List<String> authedDepartments = contactScope.getAuthedDepartments();
         if (CollUtil.isNotEmpty(authedDepartments)) {
             List<FeishuDeptObject> deptObjects = new ArrayList<>();
@@ -82,17 +80,17 @@ public class FeishuTenantContactServiceImpl implements IFeishuTenantContactServi
     @Override
     public MultiValueMap<FeishuDeptObject, FeishuUserObject> fetchTenantContact(String tenantKey, List<FeishuDeptObject> deptObjects, List<FeishuUserObject> userObjects) {
         MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap = new LinkedMultiValueMap<>();
-        // 遍历部门
+        // Traversal department
         if (CollUtil.isNotEmpty(deptObjects)) {
             for (FeishuDeptObject deptObject : deptObjects) {
-                // 部门直属员工
+                // Employees directly under the department
                 List<FeishuUserObject> users = fetchUsersByDepartmentId(tenantKey, deptObject.getDepartmentId());
                 contactMap.addAll(deptObject, users);
                 if (CollUtil.isNotEmpty(userObjects)) {
                     users.forEach(user -> userObjects.removeIf(object -> object.equals(user)));
                 }
 
-                // 子部门
+                // Subsidiary department
                 FeishuV3DeptsPager subDeptsPager = iFeishuService.getDeptPager(tenantKey, deptObject.getDepartmentId());
                 while (subDeptsPager.hasNext()) {
                     List<FeishuDeptObject> subDepts = subDeptsPager.next();
@@ -107,7 +105,7 @@ public class FeishuTenantContactServiceImpl implements IFeishuTenantContactServi
             }
         }
 
-        // 授权用户重复则已经排除，无部门授权的用户都是归属根部门的用户
+        // Duplicated authorized users are excluded. Users without department authorization are all users belonging to the root department
         if (CollUtil.isNotEmpty(userObjects)) {
             FeishuDeptObject rootDeptObject = FeishuContactAuthScope.createRootDeptObject();
             contactMap.addAll(rootDeptObject, userObjects);

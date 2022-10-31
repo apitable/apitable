@@ -12,12 +12,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * JS-SDK 校验应用身份与权限的配置参数
+ * JS-SDK Verify the configuration parameters of application identity and permission
  * </p>
- * @author 刘斌华
- * @date 2022-03-09 11:48:35
  */
-@ApiModel("JS-SDK 校验应用身份与权限的配置参数")
+@ApiModel("JS-SDK Verify the configuration parameters of application identity and permission")
 @Setter
 @Getter
 @Builder
@@ -26,19 +24,19 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WeComIsvJsSdkAgentConfigVo {
 
-    @ApiModelProperty(value = "当前登录微信企业的 corpId", required = true)
+    @ApiModelProperty(value = "The corpId of the currently logged in WeCom", required = true)
     private String authCorpId;
 
-    @ApiModelProperty(value = "当前登录企业微信的应用 ID", required = true)
+    @ApiModelProperty(value = "The application ID of the currently logged in WeCom", required = true)
     private String agentId;
 
-    @ApiModelProperty(value = "生成签名的时间戳", required = true)
+    @ApiModelProperty(value = "Time stamp of signature generation", required = true)
     private Long timestamp;
 
-    @ApiModelProperty(value = "生成签名的随机字符串", required = true)
+    @ApiModelProperty(value = "Generate a random string of signatures", required = true)
     private String random;
 
-    @ApiModelProperty(value = "生成的签名", required = true)
+    @ApiModelProperty(value = "Generated Signature", required = true)
     private String signature;
 
 }

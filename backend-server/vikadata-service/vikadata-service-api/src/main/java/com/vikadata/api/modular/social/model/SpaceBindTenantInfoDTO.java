@@ -5,10 +5,8 @@ import lombok.Data;
 
 /**
  * <p> 
- * 空间站绑定租户信息视图
- * </p> 
- * @author Pengap
- * @date 2021/8/16 11:21:52
+ * Space station binding tenant information view
+ * </p>
  */
 @Data
 public class SpaceBindTenantInfoDTO {
@@ -16,37 +14,37 @@ public class SpaceBindTenantInfoDTO {
     private String spaceId;
 
     /**
-     * 企业的唯一标识，各大平台名词不一致，这里统一使用租户表示
+     * The unique identifier of the enterprise. The terms of the major platforms are inconsistent. Tenants are used here to represent
      */
     private String tenantId;
 
     /**
-     * 应用唯一标识
+     * Application unique identification
      */
     private String appId;
 
     /**
-     * 所属平台(1: 企业微信, 2: 钉钉, 3: 飞书)
+     * Platform(1: WeCom, 2: DingTalk, 3: Lark)
      */
     private Integer platform;
 
     /**
-     * 应用类型(1: 企业内部应用, 2: 独立服务商)
+     * Application Type(1: Enterprise internal application, 2: Independent service provider)
      */
     private Integer appType;
 
     /**
-     * 授权模式。1：企业授权；2：成员授权
+     * Authorization mode. 1: Enterprise authorization; 2: Member Authorization
      */
     private Integer authMode;
 
     /**
-     * 应用授权信息
+     * Application authorization information
      */
     private Object authInfo;
 
     /**
-     * 状态
+     * State
      */
     private Boolean status;
 

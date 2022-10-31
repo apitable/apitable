@@ -21,11 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *      数据访问层测试：第三方平台集成-企业租户绑定空间表测试
+ *      Data access layer test: third-party platform integration - enterprise tenant binding space table test
  * </p>
- *
- * @author wuyitao
- * @date 2022/4/4 4:42 PM
  */
 @Disabled
 public class SocialTenantBindMapperTest extends AbstractMyBatisMapperTest {

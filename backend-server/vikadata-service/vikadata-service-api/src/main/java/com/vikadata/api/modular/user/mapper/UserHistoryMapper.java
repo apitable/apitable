@@ -11,37 +11,35 @@ import com.vikadata.entity.UserHistoryEntity;
 
 /**
  * <p>
- * 用户历史记录 Mapper接口
+ * User History Mapper Interface
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/12/31 14:58:33
  */
 public interface UserHistoryMapper extends BaseMapper<UserHistoryEntity> {
 
     /**
-     * 根据用户ID查询最新的注销申请记录
+     * Query the latest logoff application record according to the user ID
      *
-     * @param userId 用户ID
+     * @param userId User ID
      * @return UserHistoryEntity
      * */
     UserHistoryEntity selectLatest(@Param("userId") Long userId, @Param("userStatus") Integer userStatus);
 
     /**
-     * 根据userId更新用户历史记录
+     * Update user history according to user ID
      *
-     * @param userId 用户ID
-     * @param updateUser 数据记录更新者，0代表系统用户
-     * @return 受影响记录数
+     * @param userId User ID
+     * @param updateUser Data record updater, 0 represents system user
+     * @return Number of affected records
      * */
     int updateUpdateUserByUserId(@Param("userId") Long userId, @Param("updateUser") Long updateUser);
 
     /**
-     * 获取createdAtAfter之后的操作记录.
-     * @param createdAtBefore
-     * @param createdAtAfter
-     * @param userStatus
-     * @return
+     * Get the operation record after created At After
+     *
+     * @param createdAtBefore   Create start time
+     * @param createdAtAfter    Create end time
+     * @param userStatus        User status
+     * @return DTO
      */
     List<PausedUserHistoryDto> selectUserHistoryDtos(@Param("createdAtBefore") LocalDateTime createdAtBefore, @Param("createdAtAfter") LocalDateTime createdAtAfter, @Param("userStatus") Integer userStatus);
 

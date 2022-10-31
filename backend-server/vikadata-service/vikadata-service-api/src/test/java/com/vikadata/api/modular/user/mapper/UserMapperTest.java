@@ -19,11 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     接口访问层测试：用户表测试
+ *     Interface access layer test: user table test
  * </p>
- *
- * @author wuyitao
- * @date 2022/4/5 5:40 PM
  */
 public class UserMapperTest extends AbstractMyBatisMapperTest {
 

@@ -28,10 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商成员关注处理
+ * Third party platform integration - WeCom third-party service provider members pay attention to processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-20 17:33:58
  */
 @Service
 public class SocialCpIsvSubscribeEntityHandler implements ISocialCpIsvEntityHandler, InitializingBean {
@@ -64,25 +62,25 @@ public class SocialCpIsvSubscribeEntityHandler implements ISocialCpIsvEntityHand
         String suiteId = unprocessed.getSuiteId();
         String authCorpId = unprocessed.getAuthCorpId();
 
-        // 1 获取企业已有的租户信息
+        // 1 Obtain the existing tenant information of the enterprise
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
-        // 如果需要，先刷新 access_token
+                .format("No available tenant information found,tenantId：%s，appId：%s", authCorpId, suiteId)));
+        // If necessary, refresh access first_ token
         socialCpIsvService.refreshAccessToken(suiteId, authCorpId, socialTenantEntity.getPermanentCode());
-        // 2 获取绑定的空间站
+        // 2 Get the bound space station
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
         Assert.notBlank(spaceId, () -> new IllegalStateException(String
-                .format("没有找到对应的空间站信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
-        // 3 添加成员
+                .format("No corresponding space station information was found,tenantId：%s，appId：%s", authCorpId, suiteId)));
+        // 3 Add Members
         WxCpTpXmlMessage wxMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpTpXmlMessage.class);
         socialCpIsvService.syncSingleUser(authCorpId, wxMessage.getFromUserName(), suiteId, spaceId, false);
-        // 4 对新增成员发送开始使用消息
+        // 4 Send the start message to the new member
         Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
         WxCpMessage wxCpMessage = WeComIsvCardFactory.createWelcomeMsg(agent.getAgentId());
         socialCpIsvService.sendWelcomeMessage(socialTenantEntity, spaceId, wxCpMessage,
                 Collections.singletonList(wxMessage.getFromUserName()), null, null);
-        // 6 清空临时缓存
+        // 6 Empty temporary cache
         socialCpIsvService.clearCache(authCorpId);
 
         return true;

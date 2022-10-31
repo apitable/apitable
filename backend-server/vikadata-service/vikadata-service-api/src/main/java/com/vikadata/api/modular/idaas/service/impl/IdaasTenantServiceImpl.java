@@ -29,10 +29,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 玉符 IDaaS 租户信息
+ * IDaaS tenant information
  * </p>
- * @author 刘斌华
- * @date 2022-05-17 18:07:59
  */
 @Slf4j
 @Service
@@ -47,8 +45,8 @@ public class IdaasTenantServiceImpl extends ServiceImpl<IdaasTenantMapper, Idaas
     @Override
     public IdaasTenantCreateVo createTenant(IdaasTenantCreateRo request) {
         SystemApi systemApi = idaasTemplate.getSystemApi();
-        // 1 创建租户及其管理员
-        // 1.1 构建创建租户参数
+        // 1 Create tenants and their administrators
+        // 1.1 Build Create Tenant Parameters
         TenantRequest tenantRequest = new TenantRequest();
         tenantRequest.setName(request.getTenantName());
         tenantRequest.setDisplayName(request.getCorpName());
@@ -56,7 +54,7 @@ public class IdaasTenantServiceImpl extends ServiceImpl<IdaasTenantMapper, Idaas
         tenantAdmin.setUsername(request.getAdminUsername());
         tenantAdmin.setPassword(request.getAdminPassword());
         tenantRequest.setAdmin(tenantAdmin);
-        // 1.2 使用系统级 ServiceAccount 调用
+        // 1.2 Use system level ServiceAccount calls
         ServiceAccount systemServiceAccount = new ServiceAccount();
         IdaasTenantCreateRo.ServiceAccount requestServiceAccount = request.getServiceAccount();
         systemServiceAccount.setClientId(requestServiceAccount.getClientId());
@@ -74,7 +72,7 @@ public class IdaasTenantServiceImpl extends ServiceImpl<IdaasTenantMapper, Idaas
         privateKey.setDq(requestPrivateKey.getDq());
         privateKey.setN(requestPrivateKey.getN());
         systemServiceAccount.setPrivateKey(privateKey);
-        // 1.3 创建租户及其默认管理员
+        // 1.3 Create a tenant and its default administrator
         TenantResponse tenantResponse;
         try {
             tenantResponse = systemApi.tenant(tenantRequest, systemServiceAccount);
@@ -85,7 +83,7 @@ public class IdaasTenantServiceImpl extends ServiceImpl<IdaasTenantMapper, Idaas
 
             throw new BusinessException(IdaasException.API_ERROR);
         }
-        // 2 生成该租户的 ServiceAccount
+        // 2 Generate the ServiceAccount of the tenant
         ServiceAccount tenantServiceAccount;
         try {
             tenantServiceAccount = systemApi.serviceAccount(tenantRequest.getName(), systemServiceAccount);
@@ -97,10 +95,10 @@ public class IdaasTenantServiceImpl extends ServiceImpl<IdaasTenantMapper, Idaas
             throw new BusinessException(IdaasException.API_ERROR);
         }
 
-        // 3 保存相关信息
+        // 3 Save related information
         IdaasTenantEntity tenantEntity = getByTenantName(tenantRequest.getName());
         if (Objects.isNull(tenantEntity)) {
-            // 租户不存在，则创建
+            // If the tenant does not exist, create it
             tenantEntity = IdaasTenantEntity.builder()
                     .tenantName(tenantResponse.getName())
                     .serviceAccount(JSONUtil.toJsonStr(tenantServiceAccount))
@@ -108,7 +106,7 @@ public class IdaasTenantServiceImpl extends ServiceImpl<IdaasTenantMapper, Idaas
             save(tenantEntity);
         }
         else {
-            // 已存在则更新信息
+            // Update information if it already exists
             tenantEntity.setTenantName(tenantResponse.getName());
             tenantEntity.setServiceAccount(JSONUtil.toJsonStr(tenantServiceAccount));
             updateById(tenantEntity);

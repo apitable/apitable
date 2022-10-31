@@ -20,110 +20,123 @@ import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 import org.springframework.util.MultiValueMap;
 
 /**
- * 飞书事件处理服务
- * @author Shawn Deng
- * @date 2021-07-22 09:55:44
+ * Lark event processing service
  */
 public interface IFeishuEventService {
 
     /**
-     * 处理首次开通应用
-     * @param event 事件
+     * Processing the first application
+     *
+     * @param event Event
      */
     void handleAppOpenEvent(AppOpenEvent event);
 
     /**
-     * 处理应用停启用事件
-     * @param event 事件
+     * Processing application stop enable event
+     *
+     * @param event Event
      */
     void handleAppStopEvent(AppStatusChangeEvent event);
 
     /**
-     * 处理应用停启用事件
-     * @param event 事件
+     * Processing application stop enable event
+     *
+     * @param event Event
      */
     void handleAppRestartEvent(AppStatusChangeEvent event);
 
     /**
-     * 处理应用卸载
-     * @param event 事件
+     * Processing app uninstallation
+     *
+     * @param event Event
      */
     void handleAppUninstalledEvent(AppUninstalledEvent event);
 
     /**
-     * 处理通讯录授权范围变更
-     * @param event 事件
+     * Handle the change of address book authorization scope
+     *
+     * @param event Event
      */
     void handleContactScopeChangeEvent(ContactScopeUpdateEvent event);
 
     /**
-     * 处理租户通讯录数据
-     * @param appId 应用ID
-     * @param tenantKey 租户标识
-     * @param spaceId 空间ID，也许为空
-     * @param contactMap 租户通讯录数据结构
+     * Processing tenant address book data
+     *
+     * @param appId App ID
+     * @param tenantKey Tenant ID
+     * @param spaceId Space ID, maybe empty
+     * @param contactMap Tenant Address Book Data Structure
      * @return SpaceContext
      */
     SpaceContext handleTenantContactData(String appId, String tenantKey, String spaceId, MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap);
 
     /**
-     * 处理员工离职事件
-     * @param event 事件
+     * Process employee resignation event
+     *
+     * @param event Event
      */
     void handleUserLeaveEvent(ContactUserDeleteEvent event);
 
     /**
-     * 处理员工信息变化事件
-     * @param event 事件
+     * Handling employee information change event
+     * @param event Event
      */
     void handleUserUpdateEvent(ContactUserUpdateEvent event);
 
     /**
-     * 处理部门新建
-     * @param event 事件
+     * New Processing Department
+     *
+     * @param event Event
      */
     void handleDeptCreateEvent(ContactDeptCreateEvent event);
 
     /**
-     * 处理部门被删除
-     * @param event 事件
+     * Processing department is deleted
+     *
+     * @param event Event
      */
     void handleDeptDeleteEvent(ContactDeptDeleteEvent event);
 
     /**
-     * 处理 部门信息变化
-     * @param event 事件
+     * Handling department information changes
+     *
+     * @param event Event
      */
     void handleDeptUpdateEvent(ContactDeptUpdateEvent event);
 
     /**
-     * 处理 用户和机器人的会话首次被创建
-     * @param event 事件
+     * The session of processing user and robot is created for the first time
+     *
+     * @param event Event
      */
     void handleP2pChatCreateEvent(P2pChatCreateEvent event);
 
     /**
-     * 处理 机器人被邀请加入群聊时事件
-     * @param event 事件
+     * Event when processing robot is invited to join group chat
+     *
+     * @param event Event
      */
     void handleAddBotEvent(AddBotEvent event);
 
     /**
-     * 处理 接收机器人消息事件
-     * @param event 事件
+     * Process and receive robot message Event
+     *
+     * @param event Event
      */
     <E extends BaseMessageEvent> void handleMessageEvent(E event);
 
     /**
-     * 处理 订单支付事件
-     * @param event 事件
+     * Process Order Payment Event
+     *
+     * @param event Event
      */
     void handleOrderPaidEvent(OrderPaidEvent event);
 
     /**
-     * 处理飞书租户订单
-     * @param tenantKey 租户标识
-     * @param appId 应用ID
+     * Process Lark Tenant Orders
+     *
+     * @param tenantKey Tenant ID
+     * @param appId App ID
      */
     void handleTenantOrders(String tenantKey, String appId);
 }

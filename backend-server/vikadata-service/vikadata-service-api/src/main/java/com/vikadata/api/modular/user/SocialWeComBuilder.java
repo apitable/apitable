@@ -4,11 +4,8 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 
 /**
  * <p>
- * 创建企业微信租户User Builder
+ * Create WeCom Tenant User Builder
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 14:54:15
  */
 public class SocialWeComBuilder extends BaseSocialUserBuilder<SocialWeComBuilder> {
 

@@ -14,100 +14,85 @@ import com.vikadata.social.wecom.model.WeComAuthInfo;
 
 /**
  * <p>
- * 企业微信服务 接口
+ * WeCom service interface
  * </p>
- *
- * @author Pengap
- * @date 2021/7/31 16:30:54
  */
 public interface IWeComService {
 
     /**
-     * 创建临时企业应用授权配置信息
+     * Create temporary enterprise application authorization configuration information
      * <ul>
-     *     <li>1.校验应用是否启用</li>
-     *     <li>2.通过校验后生成Config Sha</li>
-     *     <li>3.会根据spaceId生成域名</li>
+     *     <li>1.Verify whether the application is enabled</li>
+     *     <li>2.Generate Config Sha after verification</li>
+     *     <li>3.Domain name will be generated according to space Id</li>
      * </ul>
      *
-     * @param corpId                   企业ID
-     * @param agentId                  企业应用ID
-     * @param agentSecret              企业应用密钥
-     * @param spaceId                  空间站ID
-     * @param isAutoCreateDomain       是否自动生成域名（调用Api生成）
-     * @return String                  校验通过后生成对应临时配置文件的 configSha
-     * @author Pengap
-     * @date 2021/7/31 16:40:46
+     * @param corpId                   Enterprise ID
+     * @param agentId                  Enterprise App ID
+     * @param agentSecret              Enterprise Application Key
+     * @param spaceId                  Space ID
+     * @param isAutoCreateDomain       Whether to automatically generate the domain name (call Api to generate)
+     * @return String                  Generate configSha of corresponding temporary configuration file after verification
      */
     WeComCreateTempConfigResult createTempAgentAuthConfig(String corpId, Integer agentId, String agentSecret, String spaceId, boolean isAutoCreateDomain);
 
     /**
-     * 获取缓存中校验通过的授权配置
+     * Get the authorization configuration that passed the verification in the cache
      *
-     * @param configSha 校验通过的企业微信配置sha
-     * @return 临时配置对象
-     * @author Pengap
-     * @date 2021/9/8 18:32:01
+     * @param configSha WeCom configuration sha after verification
+     * @return Temporary configuration object
      */
     WeComAuthInfo getConfigSha(String configSha);
 
     /**
-     * 移除临时授权配置文件
+     * Remove temporary authorization profile
      *
-     * @param configSha 校验通过的企业微信配置sha
+     * @param configSha WeCom configuration sha after verification
      * @return void
-     * @author Pengap
-     * @date 2021/9/8 18:27:30
      */
     void removeTempConfig(String configSha);
 
     /**
-     * 获取绑定的企业微信应用配置
+     * Get the bound WeCom application configuration
      *
-     * @param spaceId 空间站Id
-     * @return 绑定信息
-     * @author Pengap
-     * @date 2021/8/13 14:47:03
+     * @param spaceId Space ID
+     * @return Binding information
      */
     WeComBindConfigVo getTenantBindWeComConfig(String spaceId);
 
     /**
-     * 根据授权code获取应用成员
-     * 同步校验UserId是否在应用授权可见区域
+     * Obtain application members according to authorization code
+     * Synchronously verify whether the User ID is in the application authorization visible area
      *
-     * @param corpId        企业Id
-     * @param agentId       企业应用Id
-     * @param code          企业
-     * @param isTempAuth    是否使用临时授权Service Api
-     * @return 企业微信用户Id
+     * @param corpId        Enterprise ID
+     * @param agentId       Enterprise App ID
+     * @param code          Enterprise
+     * @param isTempAuth    Whether to use temporary authorization Service Api
+     * @return WeCom UserId
      */
     WxCpUser getWeComUserByOAuth2Code(String corpId, Integer agentId, String code, boolean isTempAuth);
 
     /**
-     * 根据授权code获取应用成员
-     * 同步校验UserId是否在应用授权可见区域
+     * Obtain application members according to authorization code
+     * Synchronously verify whether the User ID is in the application authorization visible area
      *
-     * @param corpId        企业Id
-     * @param agentId       企业应用Id
-     * @param code          企业
-     * @return 企业微信用户
-     * @author Pengap
-     * @date 2021/8/18 20:02:16
+     * @param corpId        Enterprise ID
+     * @param agentId       Enterprise App ID
+     * @param code          Enterprise
+     * @return WeCom Users
      */
     default WxCpUser getWeComUserByOAuth2Code(String corpId, Integer agentId, String code) {
         return getWeComUserByOAuth2Code(corpId, agentId, code, false);
     }
 
     /**
-     * 根据企业微信UserId获取成员
+     * Get members according to WeCom UserId
      *
-     * @param corpId        企业Id
-     * @param agentId       企业应用Id
-     * @param weComUserId   企业微信用户Id
-     * @param isTempAuth    是否使用临时授权Service Api
-     * @return 企业微信用户
-     * @author Pengap
-     * @date 2021/8/18 20:02:16
+     * @param corpId        Enterprise ID
+     * @param agentId       Enterprise App ID
+     * @param weComUserId   WeCom UserId
+     * @param isTempAuth    Whether to use temporary authorization Service Api
+     * @return WeCom Users
      */
     WxCpUser getWeComUserByWeComUserId(String corpId, Integer agentId, String weComUserId, boolean isTempAuth);
 
@@ -116,105 +101,87 @@ public interface IWeComService {
     }
 
     /**
-     * 企业微信应用绑定空间
+     * WeCom application binding space
      *
-     * @param corpId            企业ID
-     * @param agentId           企业应用ID
-     * @param spaceId           空间ID
-     * @param agentConfig       绑定空间的操作授权信息
-     * @return 绑定成功的企业微信用户ID
-     * @author Pengap
-     * @date 2021/8/3 16:17:35
+     * @param corpId            Enterprise ID
+     * @param agentId           Enterprise App ID
+     * @param spaceId           Space ID
+     * @param agentConfig       Operation authorization information of the binding space
+     * @return WeCom user ID successfully bound
      */
     Set<String> weComAppBindSpace(String corpId, Integer agentId, String spaceId, WeComAuthInfo agentConfig);
 
     /**
-     * 刷新企业微信通讯录
+     * Refresh WeCom Address Book
      *
-     * @param corpId            企业ID
-     * @param agentId           企业应用ID
-     * @param spaceId           空间站ID
-     * @param operatingUserId   刷新操作用户Id
-     * @return 同步的企业微信应用用户ID
-     * @author Pengap
-     * @date 2021/8/14 16:43:34
+     * @param corpId            Enterprise ID
+     * @param agentId           Enterprise App ID
+     * @param spaceId           Space ID
+     * @param operatingUserId   Refresh operation user ID
+     * @return Synchronized WeCom application user ID
      */
     Set<String> weComRefreshContact(String corpId, Integer agentId, String spaceId, Long operatingUserId);
 
     /**
-     * 发送消息
+     * Send message
      *
-     * @param corpId    企业Id
-     * @param agentId   企业应用Id
-     * @param spaceId   空间站Id
-     * @param toUsers   发送成员列表，为Null = @all
-     * @param message   消息体
-     * @author Pengap
-     * @date 2021/8/6 13:27:25
+     * @param corpId    Enterprise ID
+     * @param agentId   Enterprise App ID
+     * @param spaceId   Space ID
+     * @param toUsers   Send member list for Null = @all
+     * @param message   Message body
      */
     void sendMessageToUserPrivate(String corpId, Integer agentId, String spaceId, List<String> toUsers, WxCpMessage message);
 
     /**
-     * 创建固定应用菜单
+     * Create fixed application menu
      *
-     * @param corpId    企业Id
-     * @param agentId   企业应用Id
-     * @param spaceId   空间站Id
-     * @author Pengap
-     * @date 2021/8/25 14:21:52
+     * @param corpId    Enterprise ID
+     * @param agentId   Enterprise App ID
+     * @param spaceId   Space ID
      */
     void createFixedMenu(String corpId, Integer agentId, String spaceId);
 
     /**
-     * 获取企业微信应用信息
+     * Get WeCom application information
      *
-     * @param corpId        企业Id
-     * @param agentId       企业应用Id
-     * @param isTempAuth    是否使用临时授权Service Api
-     * @return 企业应用信息
-     * @author Pengap
-     * @date 2021/8/13 18:36:40
+     * @param corpId        Enterprise ID
+     * @param agentId       Enterprise App ID
+     * @param isTempAuth    Whether to use temporary authorization Service Api
+     * @return Enterprise Application Information
      */
     WxCpAgent getCorpAgent(String corpId, Integer agentId, boolean isTempAuth);
 
     /**
-     * 获取企业微信应用信息
+     * Get WeCom application information
      *
-     * @param corpId        企业Id
-     * @param agentId       企业应用Id
-     * @return 企业应用信息
-     * @author Pengap
-     * @date 2021/8/13 18:36:40
+     * @param corpId        Enterprise ID
+     * @param agentId       Enterprise App ID
+     * @return Enterprise Application Information
      */
     default WxCpAgent getCorpAgent(String corpId, Integer agentId) {
         return getCorpAgent(corpId, agentId, false);
     }
 
     /**
-     * 获取第三方企业微信集成环境
+     * Get the third-party WeCom integrated environment
      *
-     * @param requestHost 请求Host
-     * @return 第三方租户集成环境
-     * @author Pengap
-     * @date 2021/8/24 17:39:19
+     * @param requestHost Request Host
+     * @return Third party tenant integration environment
      */
     SocialTenantEnvVo getWeComTenantEnv(String requestHost);
 
     /**
-     * 获取维格表的企业微信显示配置的ID
+     * Get the ID of vika's We Com display configuration
      *
-     * @return 维格表企业微信Id
-     * @author Pengap
-     * @date 2021/8/25 17:14:15
+     * @return vika WeCom Id
      */
     String getVikaWeComAppId();
 
     /**
-     * 停用企业微信App
+     * Deactivate WeCom App
      *
-     * @param spaceId 空间站Id
-     * @author Pengap
-     * @date 2021/8/25 17:23:13
+     * @param spaceId Space ID
      */
     void stopWeComApp(String spaceId);
 

@@ -15,135 +15,112 @@ import com.vikadata.entity.UserEntity;
 
 /**
  * <p>
- * 用户表 Mapper 接口
+ * User Table Mapper Interface
  * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-16
  */
 public interface UserMapper extends BaseMapper<UserEntity> {
 
     /**
-     * 根据ID查询用户名称
+     * Query user's name according to ID
      *
-     * @param userId ID主键
-     * @return 用户名称
-     * @author Shawn Deng
-     * @date 2020/3/30 20:22
+     * @param userId ID Primary Key
+     * @return User Name
      */
     String selectUserNameById(@Param("userId") Long userId);
 
     /**
-     * 查询邮箱
+     * Query email
      *
-     * @param userId 用户ID
-     * @return email
-     * @author Chambers
-     * @date 2020/9/25
+     * @param userId User ID
+     * @return email email
      */
     String selectEmailById(@Param("userId") Long userId);
 
     /**
-     * 通过手机号码获取用户ID
+     * Get User ID through Phone number
      *
-     * @param mobilePhone 手机号码
-     * @return 用户ID
+     * @param mobilePhone Phone number
+     * @return User ID
      */
     Long selectIdByMobile(@Param("mobilePhone") String mobilePhone);
 
     /**
-     * 通过邮箱地址获取用户ID
+     * Obtain User ID through email
      *
-     * @param email 邮箱地址
-     * @return 用户ID
+     * @param email mail
+     * @return User ID
      */
     Long selectIdByEmail(@Param("email") String email);
 
     /**
-     * 通过手机号码获取用户
+     * Get users through Phone number
      *
-     * @param mobilePhone 手机号码
-     * @return 用户ID
+     * @param mobilePhone Phone number
+     * @return User ID
      */
     UserEntity selectByMobile(@Param("mobilePhone") String mobilePhone);
 
     /**
-     * 通过手机号码批量查询用户
+     * Batch query users through Phone number
      *
-     * @param mobilePhones  手机号码列表
+     * @param mobilePhones  Phone number list
      * @return UserEntities
-     * @author Chambers
-     * @date 2022/6/27
      */
     List<UserEntity> selectByMobilePhoneIn(@Param("mobilePhones") Collection<String> mobilePhones);
 
     /**
-     * 根据邮箱地址查询用户
+     * Query users according to email
      *
-     * @param email 邮箱地址
-     * @return 用户
-     * @author Shawn Deng
-     * @date 2019/12/27 16:12
+     * @param email email
+     * @return user
      */
     UserEntity selectByEmail(@Param("email") String email);
 
     /**
-     * 根据邮箱地址查询数量
+     * Query quantity according to email
      *
-     * @param email 邮箱
+     * @param email email
      * @return count
-     * @author Chambers
-     * @date 2020/8/28
      */
     Integer selectCountByEmail(@Param("email") String email);
 
     /**
-     * 根据邮箱地址，批量查询用户
+     * Batch query users according to email
      *
-     * @param emails 邮箱列表
+     * @param emails email list
      * @return entities
-     * @author Chambers
-     * @date 2020/7/24
      */
     List<UserEntity> selectByEmails(@Param("emails") Collection<String> emails);
 
     /**
-     * 根据uuid查询userId
+     * Query user ID according to uuid
      *
-     * @param uuid 外部系统ID
-     * @return 用户的ID
-     * @author zoe zheng
-     * @date 2020/6/8 12:22 下午
+     * @param uuid External System ID
+     * @return User's ID
      */
     Long selectIdByUuid(@Param("uuid") String uuid);
 
     /**
-     * 根据uuid查询userId
+     * Query user ID according to uuid
      *
-     * @param uuidList users的uuid列
-     * @return 用户的ID
-     * @author zoe zheng
-     * @date 2020/6/8 12:22 下午
+     * @param uuidList Uuid column of users
+     * @return User's ID
      */
     List<Long> selectIdByUuidList(@Param("uuidList") List<String> uuidList);
 
     /**
-     * 根据userId查询uuid
+     * Query uuid according to user ID
      *
-     * @param id 表ID
+     * @param id Datasheet ID
      * @return uuid
-     * @author zoe zheng
-     * @date 2020/6/8 12:47 下午
      */
     String selectUuidById(@Param("id") Long id);
 
     /**
-     * 根据用户ID查询
+     * Query by User ID
      *
-     * @param userIds 用户ID
+     * @param userIds User ID
      * @return List<UserEntity>
-     * @author zoe zheng
-     * @date 2020/10/13 11:51 上午
      */
     List<UserEntity> selectByIds(@Param("userIds") List<Long> userIds);
 
@@ -152,131 +129,112 @@ public interface UserMapper extends BaseMapper<UserEntity> {
      *
      * @param uuids user's uuid
      * @return List<UserEntity>
-     * @author liuzijing
-     * @date 2022/9/8
      */
     List<UserEntity> selectByUuIds(@Param("uuids") List<String> uuids);
 
     /**
-     * todo 希望添加created_at为索引，然后数据量多的时候根据时间进行分区
-     * 游标查询当前时间的所有用户ID
+     * todo Want to add created at as an index, and then partition according to time when there is a large amount of data
+     * The cursor queries all user IDs of the current time
      *
-     * @param ignoreDelete 忽略删除
+     * @param ignoreDelete Ignore Delete
      * @return Cursor<Long>
-     * @author zoe zheng
-     * @date 2021/3/5 6:51 下午
      */
     @InterceptorIgnore(illegalSql = "true")
     Cursor<Long> selectAllUserIdByIgnoreDelete(@Param("ignoreDelete") boolean ignoreDelete);
 
     /**
-     * 修改用户手机号
+     * Modify user's mobile number
      *
-     * @param userId        用户Id
-     * @return 影响行数
-     * @author Pengap
-     * @date 2021/10/20 20:06:19
+     * @param userId        User ID
+     * @return Number of rows affected
      */
     int resetMobileByUserId(@Param("userId") Long userId);
 
     /**
-     * 修改用户邮箱
+     * Modify user email
      *
-     * @param userId        用户Id
-     * @return 影响行数
-     * @author Pengap
-     * @date 2021/10/20 20:06:19
+     * @param userId        User ID
+     * @return Number of rows affected
      */
     int resetEmailByUserId(@Param("userId") Long userId);
 
     /**
-     * 重置用户信息
-     * 重置字段：code、mobile、email、is_deleted
+     * Reset user information
+     * Reset field: code、mobile、email、is_deleted
      *
-     * @param userId 用户ID
-     * @return 受影响记录行数
+     * @param userId User ID
+     * @return Number of affected record lines
      * */
     int resetUserById(@Param("userId") Long userId);
 
     /**
-     * 批量查询成员邮箱
+     * Batch query member email
      *
-     * @param userIds 用户ID集合
-     * @return 邮件地址列表
-     * @author Pengap
-     * @date 2021/11/9 17:18:33
+     * @param userIds User ID Collection
+     * @return Mail Address List
      */
     List<String> selectEmailByUserIds(@Param("userIds") List<Long> userIds);
 
     /**
      * <p>
-     *     根据邮件查询用户id和设置的语言。<br/>
-     *     方法使用IN批量查询，数据过多时注意分批查找。<br/>
-     *     若locale为空，将设置为defaultLocale。<br/>
+     *     Query the user id and set language according to the mail.<br/>
+     *     Methods Use IN to query in batches. If there is too much data, pay attention to searching in batches.<br/>
+     *     If the locale is empty, it will be set to default Locale.<br/>
      *     <strong>
-     *         注意：sql语句IFNULL带有方言性，即项目连接非mysql数据库可能出错。
+     *         Note: The SQL statement IFNULL is dialect, that is, the project may have errors connecting to non mysql databases.
      *     </strong>
      * </p>
      *
-     * @param defaultLocale 默认的语言
-     * @param emails 查找的email列表
-     * @return email、id、locale列表
-     * @author wuyitao
-     * @date 2022/01/25
+     * @param defaultLocale Default language
+     * @param emails List of emails found
+     * @return email、id、locale List
      */
     List<UserLangDTO> selectLocaleInEmailsWithDefaultLocale(@Param("defaultLocale") String defaultLocale, @Param("emails") List<String> emails);
 
     /**
-     * 根据邮件查询用户id和设置的语言。<br/>
+     * Query the user id and set language according to the mail
      *
-     * @param email 查找的email
+     * @param email Email
      * @return email、id、locale
-     * @author wuyitao
-     * @date 2022/01/21
      */
     UserLangDTO selectLocaleByEmail(@Param("email") String email);
 
     /**
      * <p>
-     *     根据邮件查询用户id和设置的语言。<br/>
-     *     若locale为空，将设置为defaultLocale。<br/>
+     *     Query the user id and set language according to the mail.<br/>
+     *     If the locale is empty, it will be set to default Locale<br/>
      *     <strong>
-     *         注意：sql语句IFNULL带有方言性，即项目连接非mysql数据库可能出错。
+     *         Note: The SQL statement IFNULL is dialect, that is, the project may have errors connecting to non mysql databases.
      *     </strong>
      * </p>
      *
-     * @param defaultLocale 默认的语言
-     * @param email 查找的email
+     * @param defaultLocale Default language
+     * @param email email
      * @return email、id、locale
-     * @author wuyitao
-     * @date 2022/01/25
      */
     UserLangDTO selectLocaleByEmailWithDefaultLocale(@Param("defaultLocale") String defaultLocale, @Param("email") String email);
 
     /**
-     * 根据userId查询用户语言
+     * Query user language according to user ID
      *
      * @param ids userId
      * @return List<UserLangDTO>
-     * @author zoe zheng
-     * @date 2022/2/24 11:46
      */
     List<UserLangDTO> selectLocaleAndEmailByIds(@Param("ids") List<Long> ids);
 
     /**
-     * 批量获取冷静期账号信息
-     * @param userIds 用户Id集合
+     * Batch acquisition of account information in the calm period
+     *
+     * @param userIds User ID List
      * @return UserInPausedDto List
      */
     List<UserInPausedDto> selectPausedUsers(@Param("ids") List<Long> userIds);
 
     /**
-     * 根据用户Id获取邀请用户信息
+     * Obtain the invited user information according to the User ID
      *
-     * @param userId 用户ID
-     * @return inviteUserInfo 邀请用户信息
-     * @author liuzijing
-     * @date 2022/8/23
+     * @param userId User ID
+     * @return inviteUserInfo Invite user information
      */
     InviteUserInfo selectInviteUserInfoByUserId(@Param("userId") Long userId);
 }

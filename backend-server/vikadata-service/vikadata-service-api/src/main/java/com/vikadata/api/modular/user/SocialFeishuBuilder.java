@@ -4,11 +4,8 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 
 /**
  * <p>
- * 创建飞书租户User Builder
+ * Create Lark Tenant User Builder
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 14:54:15
  */
 public class SocialFeishuBuilder extends BaseSocialUserBuilder<SocialFeishuBuilder> {
 

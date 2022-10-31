@@ -9,49 +9,41 @@ import com.vikadata.entity.SocialTenantOrderEntity;
 
 /**
  * <p>
- * 第三方平台集成-订单 服务接口
+ * Third party platform integration - order service interface
  * </p>
- * @Deprecated move to finance
- * @author zoe zheng
- * @date 2022/2/28 18:49
  */
 @Deprecated
 public interface ISocialTenantOrderService extends IService<SocialTenantOrderEntity> {
     /**
-     * 第三方订单是否存在
+     * Whether the third-party order exists
      *
-     * @param channelOrderId 渠道订单号
-     * @param tenantId 企业ID
-     * @param appId 应用ID
-     * @param platformType 应用类型
+     * @param channelOrderId Channel order No
+     * @param tenantId Enterprise ID
+     * @param appId App ID
+     * @param platformType Application Type
      * @return Boolean
-     * @author zoe zheng
-     * @date 2022/2/28 19:50
      */
     Boolean tenantOrderExisted(String channelOrderId, String tenantId, String appId, SocialPlatformType platformType);
 
     /**
-     * 创建第三方订单
+     * Create Third Party Orders
      *
-     * @param orderId 第三方订单ID
-     * @param tenantId 企业ID
-     * @param appId 应用ID
-     * @param platformType 应用类型
-     * @param orderData 订单数据
+     * @param orderId Third party order ID
+     * @param tenantId Enterprise ID
+     * @param appId App ID
+     * @param platformType Application Type
+     * @param orderData Order Data
      * @return Boolean
-     * @author zoe zheng
-     * @date 2022/2/28 19:58
      */
     Boolean createTenantOrder(String orderId, String tenantId, String appId, SocialPlatformType platformType,
             String orderData);
     /**
-     * 获取第三方信息
-     * @param tenantId 企业ID
-     * @param appId 应用ID
-     * @param platformType 应用类型
+     * Access to third party information
+     *
+     * @param tenantId Enterprise ID
+     * @param appId App ID
+     * @param platformType Application Type
      * @return  List<String> orderData
-     * @author zoe zheng
-     * @date 2022/2/28 20:42
      */
     List<String> getOrderDataByTenantIdAndAppId(String tenantId, String appId, SocialPlatformType platformType);
 }

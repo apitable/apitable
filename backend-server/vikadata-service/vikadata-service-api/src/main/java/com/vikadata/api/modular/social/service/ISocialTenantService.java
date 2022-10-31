@@ -12,177 +12,157 @@ import com.vikadata.entity.SocialTenantEntity;
 
 /**
  * <p>
- * 第三方集成 - 企业租户 服务 接口
+ * Third party integration - enterprise tenant service interface
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/11/30 17:13
  */
 public interface ISocialTenantService extends IService<SocialTenantEntity> {
 
     /**
-     * 企业是否存在
-     * @param tenantId 企业标识
-     * @param appId 应用标识
+     * Whether the enterprise exists
+     * 
+     * @param tenantId Enterprise ID
+     * @param appId Application ID
      * @return true | false
      */
     boolean isTenantExist(String tenantId, String appId);
 
     /**
-     * 新增第三方平台租户
+     * New third-party platform tenants
      *
-     * @param socialType 第三方社交软件平台类型
-     * @param appType    应用类型
-     * @param appId      应用ID
-     * @param tenantId   企业标识
-     * @author Shawn Deng
-     * @date 2020/12/14 15:30
+     * @param socialType Third party social software platform type
+     * @param appType    Application Type
+     * @param appId      Application ID
+     * @param tenantId   Enterprise ID
      */
     void createTenant(SocialPlatformType socialType, SocialAppType appType, String appId, String tenantId, String contactScope);
 
     /**
-     * 更新租户状态
-     * @param tenantId 租户ID
-     * @param appId    应用ID
+     * Update tenant status
+     *
+     * @param tenantId Tenant ID
+     * @param appId    Application ID
      * @param enabled true ｜ false
      */
     void updateTenantStatus(String appId, String tenantId, boolean enabled);
 
     /**
-     * 租户停用
+     * Tenant deactivation
      *
-     * @param appId    应用ID
-     * @param tenantId 企业标识
-     * @author Shawn Deng
-     * @date 2020/12/14 15:30
+     * @param appId    Application ID
+     * @param tenantId Enterprise ID
      */
     void stopByTenant(String appId, String tenantId);
 
     /**
-     * 停用租户
+     * Deactivate Tenant
      *
-     * @param appId    应用ID
-     * @param tenantId 企业标识
-     * @param spaceId 空间ID
-     * @author Shawn Deng
-     * @date 2020/12/14 15:30
+     * @param appId    Application ID
+     * @param tenantId Enterprise ID
+     * @param spaceId Space ID
      */
     void removeTenant(String appId, String tenantId, String spaceId);
 
     /**
-     * 移除飞书自建应用
-     * @param appId    应用ID
-     * @param tenantId 企业标识
-     * @param spaceId 空间ID
+     * Remove Lark self built application
+     *
+     * @param appId    Application ID
+     * @param tenantId Enterprise ID
+     * @param spaceId Space ID
      */
     void removeInternalTenant(String appId, String tenantId, String spaceId);
 
     /**
-     * 获取租户信息
+     * Obtain tenant information
      *
-     * @param appId 应用ID
-     * @param tenantId 企业标识
+     * @param appId Application ID
+     * @param tenantId Enterprise ID
      * @return SocialTenantEntity
-     * @author Shawn Deng
-     * @date 2020/12/15 11:31
      */
     SocialTenantEntity getByAppIdAndTenantId(String appId, String tenantId);
 
     /**
-     * 删除平台绑定信息
+     * Delete Platform Binding Information
      *
-     * @param spaceId 空间站ID
-     * @author zoe zheng
-     * @date 2021/5/20 4:28 下午
+     * @param spaceId Space ID
      */
     void removeSpaceIdSocialBindInfo(String spaceId);
 
     /**
-     * 新增或者更新第三方平台租户
+     * Add or update third-party platform tenants
      *
-     * @param socialType 第三方社交软件平台类型
-     * @param appType    应用类型
-     * @param appId      应用ID
-     * @param tenantId   企业标识
-     * @param scope 应用通讯录可见范围
-     * @param authInfo 企业授权信息
-     * @author zoe zheng
-     * @date 2021/5/21 3:48 下午
+     * @param socialType Third party social software platform Type
+     * @param appType    Application Type
+     * @param appId      Application ID
+     * @param tenantId   Enterprise ID
+     * @param scope Visible range of application address book
+     * @param authInfo Enterprise authorization information
      */
     void createOrUpdateWithScope(SocialPlatformType socialType, SocialAppType appType, String appId, String tenantId,
             String scope, String authInfo);
 
     /**
-     * 根据企业 ID 和应用 ID 新增或者更新第三方平台租户信息
+     * Add or update third-party platform tenant information according to enterprise ID and application ID
      *
-     * @param entity 数据信息
-     * @author 刘斌华
-     * @date 2022-01-06 16:01:36
+     * @param entity Data information
      */
     void createOrUpdateByTenantAndApp(SocialTenantEntity entity);
 
     /**
-     * 获取钉钉应用的agentId
+     * Get the agent ID of the DingTalk application
      *
-     * @param tenantId 租户唯一标识
-     * @param appId 租户应用唯一标识
+     * @param tenantId Tenant ID
+     * @param appId Tenant Application ID
      * @return agentId
-     * @author zoe zheng
-     * @date 2021/6/10 4:28 下午
      */
     String getDingTalkAppAgentId(String tenantId, String appId);
 
     /**
-     * 获取租户企业具体信息
+     * Obtain the specific information of the tenant enterprise
      *
-     * @param tenantId 租户唯一标识
-     * @param appId 租户应用唯一标识
+     * @param tenantId Tenant ID
+     * @param appId Tenant Application ID
      * @return TenantBaseInfoDto
-     * @author zoe zheng
-     * @date 2021/9/23 14:20
      */
     TenantBaseInfoDto getTenantBaseInfo(String tenantId, String appId);
 
     /**
-     * 检查租户绑定状态
+     * Check tenant binding status
      *
-     * @param tenantId 租户唯一标识
-     * @param appId 租户应用唯一标识
+     * @param tenantId Tenant ID
+     * @param appId Tenant Application ID
      * @return boolean
-     * @author zoe zheng
-     * @date 2021/9/24 17:52
      */
     boolean isTenantActive(String tenantId, String appId);
 
     /**
-     * 批量查询租户实体类
-     * @param tenantIds 租户ID列表
+     * Batch Query Tenant Entity Class
+     *
+     * @param tenantIds Tenant ID List
      * @return SocialTenantEntity List
      */
     List<SocialTenantEntity> getByTenantIds(List<String> tenantIds);
 
     /**
-     * 查询第三方平台信息
-     * @param platformType 平台类型
-     * @param appType 应用类型
+     * Query third-party platform information
+     *
+     * @param platformType Platform Type
+     * @param appType Application Type
      * @return List<SocialTenantEntity>
-     * @author zoe zheng
-     * @date 2022/6/7 17:27
      */
     List<SocialTenantEntity> getByPlatformTypeAndAppType(SocialPlatformType platformType, SocialAppType appType);
 
     /**
-     * 查询第三方平台绑定空间站列表
-     * @param platformType 平台类型
-     * @param appType 应用类型
+     * Query the list of third-party platform bound space stations
+     *
+     * @param platformType Platform Type
+     * @param appType Application Type
      * @return List<SocialTenantEntity>
-     * @author zoe zheng
-     * @date 2022/6/7 17:27
      */
     List<String> getSpaceIdsByPlatformTypeAndAppType(SocialPlatformType platformType, SocialAppType appType);
 
     /**
      * get a permanent authorization code
+     *
      * @param tenantId auth corp id
      * @param appId app id
      * @return permanentCode
@@ -191,6 +171,7 @@ public interface ISocialTenantService extends IService<SocialTenantEntity> {
 
     /**
      * get created at time
+     *
      * @param tenantId auth corp id
      * @param appId app ido
      * @return LocalDateTime

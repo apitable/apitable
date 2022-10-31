@@ -33,11 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 权限控制单元角色 服务实现类
+ * Permission control unit role service implementation class
  * </p>
- *
- * @author Chambers
- * @date 2021/4/27
  */
 @Slf4j
 @Service
@@ -48,58 +45,58 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
 
     @Override
     public List<ControlRoleEntity> getByControlId(String controlId) {
-        log.info("获取控制单元「{}」的所有角色信息", controlId);
+        log.info("Get all role information of control unit 「{}」", controlId);
         return controlRoleMapper.selectByControlId(controlId);
     }
 
     @Override
     public List<ControlRoleEntity> getByControlIdAndUnitId(String controlId, Long unitId) {
-        log.info("获取控制单元「{}」组织单元「{}」的所有角色信息", controlId, unitId);
+        log.info("Get all role information of control unit 「{}」organizational unit 「{}」", controlId, unitId);
         return controlRoleMapper.selectByControlIdAndUnitId(controlId, unitId);
     }
 
     @Override
     public Long getUnitIdByControlIdAndRoleCode(String controlId, String roleCode) {
-        log.info("获取控制单元「{}」角色编码为「{}」的组织单元", controlId, roleCode);
+        log.info("Get the organization unit whose control unit 「{}」 role code is 「{}」", controlId, roleCode);
         return controlRoleMapper.selectUnitIdAndControlIdAndRoleCode(controlId, roleCode);
     }
 
     @Override
     public String getRoleCodeByControlIdAndUnitId(String controlId, Long unitId) {
-        log.info("获取控制单元「{}」组织单元「{}」的角色编码", controlId, unitId);
+        log.info("Get the role code of control unit 「{}」organizational unit 「{}」", controlId, unitId);
         return controlRoleMapper.selectRoleCodeByControlIdAndUnitId(controlId, unitId);
     }
 
     @Override
     public List<ControlRoleInfo> getUnitRoleByControlIdAndUnitIds(String controlId, List<Long> unitIds) {
-        log.info("获取控制单元「{}」组织单元「{}」的角色编码", controlId, unitIds);
+        log.info("Get the role code of control unit 「{}」 organizational unit 「{}」", controlId, unitIds);
         return controlRoleMapper.selectControlRoleInfoByControlIdAndUnitIds(controlId, unitIds);
     }
 
     @Override
     public List<ControlRoleInfo> getUnitRoleByControlId(String controlId) {
-        log.info("获取控制单元「{}」的角色信息", controlId);
+        log.info("Get the role information of control unit 「{}」", controlId);
         return controlRoleMapper.selectControlRoleInfoByControlIds(Collections.singletonList(controlId));
     }
 
     @Override
     public List<ControlRoleUnitDTO> getControlRolesUnitDtoByControlId(String controlId) {
-        log.info("获取控制单元「{}」的角色及组织单元信息", controlId);
+        log.info("Get the role and organizational unit information of control unit 「{}」", controlId);
         return controlRoleMapper.selectControlRoleUnitDtoByControlId(controlId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addControlRole(Long userId, String controlId, List<Long> unitIds, String role) {
-        log.info("新增控制单元角色。userId:{},controlId:{},role:{},unitIds:{}", userId, controlId, role, unitIds);
+        log.info("New control unit role。userId:{},controlId:{},role:{},unitIds:{}", userId, controlId, role, unitIds);
         List<ControlRoleEntity> entities = new ArrayList<>();
         List<Long> updateIds = new ArrayList<>();
         List<Long> insertUnitIds = new ArrayList<>(unitIds);
-        // 修改之前的is_deleted状态
+        // modify former deleted status
         List<ControlRoleEntity> deletedEntities = controlRoleMapper.selectDeletedRole(controlId, unitIds, role);
         deletedEntities.forEach(entity -> {
             updateIds.add(entity.getId());
-            // 删除已经存在的
+            // Delete exist
             insertUnitIds.remove(entity.getUnitId());
         });
         new HashSet<>(insertUnitIds).forEach(unitId -> entities.add(ControlRoleEntity.builder()
@@ -122,10 +119,10 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
 
     @Override
     public void addControlRole(Long userId, String controlId, Map<Long, String> unitRoleMap) {
-        log.info("「{}」新增控制单元「{}」的组织单元角色集", userId, controlId);
+        log.info("「{}」Add the organizational unit role set of control unit 「{}」", userId, controlId);
         List<Long> unitIds = ListUtil.toList(unitRoleMap.keySet());
         List<String> roleCodes = ListUtil.toList((unitRoleMap.values()));
-        // 修改之前的is_deleted状态
+        // modify former deleted status
         List<ControlRoleEntity> deletedEntities = controlRoleMapper.selectDeletedRoleByRoleCodes(controlId,
                 unitIds, roleCodes);
         List<Long> updateIds = new ArrayList<>();
@@ -161,7 +158,7 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
         if (CollUtil.isEmpty(unitIds)) {
             return;
         }
-        log.info("「{}」修改控制单元「{}」组织单元「{}」的角色为「{}」", userId, controlId, unitIds, role);
+        log.info("「{}」 modifies the role of control unit 「{}」 organizational unit 「{}」 to 「{}」", userId, controlId, unitIds, role);
         List<ControlRoleEntity> controlRoles = controlRoleMapper.selectByControlIdAndUnitIds(controlId, unitIds, true);
         if (controlRoles.isEmpty()) {
             addControlRole(userId, controlId, unitIds, role);
@@ -176,17 +173,17 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
         for (Long unitId : unitIds) {
             if (unitRoleMap.containsKey(unitId)) {
                 Set<String> roleCodes = unitRoleMap.get(unitId).keySet();
-                // 没有这个权限
+                // No permission
                 if (!roleCodes.contains(role)) {
                     addControlRoleUnitIds.add(unitId);
                 }
                 else {
-                    // 这个权限之前删除了
+                    // This permission was previously deleted
                     if (unitRoleMap.get(unitId).get(role).getIsDeleted()) {
                         recoverIds.add(unitRoleMap.get(unitId).get(role).getId());
                     }
                 }
-                // 之前有这个权限，删除除了这个权限的其他未删除的权限
+                // If you have this permission before, delete other undeleted permissions except this permission
                 deleteIds.addAll(roleCodes.stream().filter(i -> !unitRoleMap.get(unitId).get(i).getRoleCode().equals(role) && !unitRoleMap.get(unitId).get(i).getIsDeleted())
                         .map(i -> unitRoleMap.get(unitId).get(i).getId()).collect(Collectors.toList()));
             }
@@ -200,32 +197,32 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
 
     @Override
     public void editControlRole(Long userId, List<Long> controlRoleIds, String role) {
-        log.info("「{}」修改控制单元表ID「{}」的角色为「{}」", userId, controlRoleIds, role);
+        log.info("「{}」 modifies the role of control unit table ID 「{}」 to 「{}」", userId, controlRoleIds, role);
         boolean flag = SqlHelper.retBool(controlRoleMapper.updateRoleCodeByIds(userId, controlRoleIds, role));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
 
     @Override
     public void removeByControlIds(Long userId, List<String> controlIds) {
-        log.info("删除指定控制单元的所有角色「{}」", controlIds);
-        // 查询主键ID
+        log.info("Delete all roles of the specified control unit「{}」", controlIds);
+        // Query primary key ID
         List<Long> controlRoleIds = controlRoleMapper.selectIdByControlIds(controlIds);
-        // 逻辑删除
+        // Logical delete
         removeByIds(controlRoleIds);
     }
 
     @Override
     public void removeByUnitIds(List<Long> unitIds) {
-        log.info("删除指定组织单元的所有角色「{}」", unitIds);
-        // 查询主键ID
+        log.info("Delete all roles of the specified organizational unit「{}」", unitIds);
+        // Query primary key ID
         List<Long> controlRoleIds = controlRoleMapper.selectIdByUnitIds(unitIds);
-        // 逻辑删除
+        // Logical delete
         removeByIds(controlRoleIds);
     }
 
     @Override
     public void removeByControlIdAndUnitId(String controlId, Long unitId) {
-        log.info("删除控制单元「{}」下组织单元「{}」的角色", controlId, unitId);
+        log.info("Delete the role of organizational unit 「{}」 under control unit 「{}」", controlId, unitId);
         List<Long> controlRoleIds = controlRoleMapper.selectIdByControlIdAndUnitId(controlId, unitId);
         boolean flag = removeByIds(controlRoleIds);
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
@@ -233,7 +230,7 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
 
     @Override
     public void removeByControlIdAndUnitIds(String controlId, List<Long> unitIds) {
-        log.info("删除控制单元「{}」下组织单元「{}」的角色", controlId, unitIds);
+        log.info("Delete the role of organizational unit 「{}」 under control unit 「{}」", controlId, unitIds);
         List<Long> controlRoleIds = controlRoleMapper.selectIdByControlIdAndUnitIds(controlId, unitIds);
         boolean flag = removeByIds(controlRoleIds);
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
@@ -255,7 +252,7 @@ public class ControlRoleServiceImpl extends ServiceImpl<ControlRoleMapper, Contr
 
     @Override
     public Map<Long, String> getUnitIdToRoleCodeMapWithoutOwnerRole(String controlId, List<Long> unitIds) {
-        log.info("获取控制单元「{}」组织单元「{}」的所有角色信息", controlId, unitIds);
+        log.info("Get all role information of control unit 「{}」 organizational unit 「{}」", controlId, unitIds);
         List<ControlRoleEntity> controlRoles = controlRoleMapper.selectByControlIdAndUnitIds(controlId, unitIds, false);
         Map<Long, String> unitIdToCodeRole = new HashMap<>(unitIds.size());
         controlRoles.stream()

@@ -19,11 +19,9 @@ import com.vikadata.social.dingtalk.event.contact.UserModifyOrgEvent;
 
 /**
  * <p>
- * 钉钉
- * 事件订阅 - 通讯录事件
+ * DingTalk
+ * Event subscription - address book event
  * </p>
- * @author zoe zheng
- * @date 2021/5/13 4:36 下午
  */
 @DingTalkEventHandler
 @Slf4j
@@ -33,16 +31,16 @@ public class DingTalkContactEventHandler {
     private IDingTalkEventService iDingTalkEventService;
 
     /**
-     * 用户激活
+     * User Activation
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserActiveOrgEvent(String agentId, UserActiveOrgEvent event) {
-        log.info("钉钉收到事件 [员工激活] ：{}", JSONUtil.toJsonStr(event));
+        log.info("Nail received event [Employee Activation]: {}", JSONUtil.toJsonStr(event));
         if (event.getUserId() != null) {
-            // 钉钉的事件推送不会重复
+            // The event push of nailing will not repeat
             event.getUserId().forEach(userId -> iDingTalkEventService.handleUserActiveOrg(agentId,
                     event.getCorpId(), userId));
         }
@@ -50,57 +48,57 @@ public class DingTalkContactEventHandler {
     }
 
     /**
-     * 员工加入企业
+     * Employee joining the enterprise
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onUserAddOrgEvent(String agentId, UserAddOrgEvent event) {
-        log.info("钉钉收到事件[员工加入企业]:{}:{}", agentId, JSONUtil.toJsonStr(event));
-        // 钉钉的事件推送不会重复
+        log.info("Ding Talk received the event [Employee joining the enterprise]:{}:{}", agentId, JSONUtil.toJsonStr(event));
+        // The event push of nailing will not repeat
         event.getUserId().forEach(userId -> iDingTalkEventService.handleUserActiveOrg(agentId,
                 event.getCorpId(), userId));
         return agentId;
     }
 
     /**
-     * 员工离职
+     * Employee Resignation
      *
-     * @param event 员工离职 事件内容体
+     * @param event Employee resignation event content body
      * @return any
      */
     @DingTalkEventListener
     public Object onUserLeaveOrgEvent(String agentId, UserLeaveOrgEvent event) {
-        log.info("钉钉收到事件 [员工离职] ：{}", JSONUtil.toJsonStr(event));
+        log.info("DingTalk received the event [Employee Resignation] ：{}", JSONUtil.toJsonStr(event));
         event.getUserId().forEach(userId -> iDingTalkEventService.handUserLeaveOrg(agentId,
                 event.getCorpId(), userId));
         return agentId;
     }
 
     /**
-     * 员工信息更改
+     * Employee information change
      *
-     * @param event 通讯录用户更改
+     * @param event Address Book User Change
      * @return any
      */
     @DingTalkEventListener
     public Object onUserModifyOrgEvent(String agentId, UserModifyOrgEvent event) {
-        log.info("钉钉收到事件 [通讯录用户更改]:{}", JSONUtil.toJsonStr(event));
+        log.info("DingTalk received event [Address Book User Change]:{}", JSONUtil.toJsonStr(event));
         event.getUserId().forEach(userId -> iDingTalkEventService.handleUserModifyOrg(agentId,
                 event.getCorpId(), userId));
         return agentId;
     }
 
     /**
-     * 新建部门
+     * New Department
      *
-     * @param event 新建部门 事件内容体
+     * @param event New Department Event Content Body
      * @return any
      */
     @DingTalkEventListener
     public Object onOrgDeptCreateEvent(String agentId, OrgDeptCreateEvent event) {
-        log.info("钉钉收到事件[新建部门]:{}:{}", agentId, JSONUtil.toJsonStr(event));
+        log.info("DingTalk received event [New Department]:{}:{}", agentId, JSONUtil.toJsonStr(event));
         if (StrUtil.isBlank(agentId)) {
             return agentId;
         }
@@ -110,28 +108,28 @@ public class DingTalkContactEventHandler {
     }
 
     /**
-     * 通讯录企业部门修改
+     * Address book enterprise department modification
      *
-     * @param event  事件内容体
+     * @param event  Event content body
      * @return any
      */
     @DingTalkEventListener
     public Object OnOrgDeptModifyEvent(String agentId, OrgDeptModifyEvent event) {
-        log.info("钉钉收到事件 [修改部门] ：{}", JSONUtil.toJsonStr(event));
+        log.info("DingTalk received event [Edit Department] ：{}", JSONUtil.toJsonStr(event));
         event.getDeptId().forEach(deptId -> iDingTalkEventService.handleOrgDeptModify(agentId,
                 event.getCorpId(), Long.parseLong(deptId)));
         return agentId;
     }
 
     /**
-     * 通讯录企业部门删除
+     * Address book enterprise department deletion
      *
-     * @param event  事件内容体
+     * @param event  Event content body
      * @return any
      */
     @DingTalkEventListener
     public Object OnOrgDeptRemoveEvent(String agentId, OrgDeptRemoveEvent event) {
-        log.info("钉钉收到事件 [删除部门]:{}:{}", agentId, JSONUtil.toJsonStr(event));
+        log.info("DingTalk received event [Delete Department]:{}:{}", agentId, JSONUtil.toJsonStr(event));
         if (StrUtil.isBlank(agentId)) {
             return agentId;
         }

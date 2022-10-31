@@ -2,27 +2,25 @@ package com.vikadata.api.modular.social.enums;
 
 /**
  * <p>
- * 企微接口许可账号激活状态
+ * WeCom interface license account activation status
  * </p>
- * @author 刘斌华
- * @date 2022-06-29 17:56:05
  */
 public enum SocialCpIsvPermitActivateStatus {
 
     /**
-     * 待激活
+     * To be activated
      */
     NO_ACTIVATED(1),
     /**
-     * 已激活并有效
+     * Active and valid
      */
     ACTIVATED(2),
     /**
-     * 已过期
+     * Expired
      */
     EXPIRED(3),
     /**
-     * 待转移
+     * To be transferred
      */
     TRANSFERRED(4),
     ;
@@ -38,12 +36,10 @@ public enum SocialCpIsvPermitActivateStatus {
     }
 
     /**
-     * 转换来自企微的激活状态值
+     * Convert the activation status value from WeCom
      *
-     * @param status 企微的激活状态值
-     * @return 对应的枚举
-     * @author 刘斌华
-     * @date 2022-07-01 18:58:04
+     * @param status WeCom activation status value
+     * @return Corresponding enumeration
      */
     public static SocialCpIsvPermitActivateStatus fromWecomStatus(Integer status) {
         switch (status) {

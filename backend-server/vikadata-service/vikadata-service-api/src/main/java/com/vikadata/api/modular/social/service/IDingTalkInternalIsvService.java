@@ -21,341 +21,288 @@ import com.vikadata.social.dingtalk.model.UserInfoV2;
 
 /**
  * <p>
- * 钉钉集成服务 接口
+ * DingTalk Integration service interface
  * </p>
- * @author zoe zheng
- * @date 2021/5/7 5:09 下午
  */
 public interface IDingTalkInternalIsvService {
     /**
-     * 根据临时授权码获取用户信息
+     * Obtain user information according to temporary authorization code
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @param code 临时授权码
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @param code Temporary authorization code
      * @return UserInfoV2
-     * @author zoe zheng
-     * @date 2021/5/7 6:05 下午
      */
     UserInfoV2 getUserInfoByCode(String suiteId, String authCorpId, String code);
 
     /**
-     * 根据临时授权码获取用户详细信息
+     * Obtain user details according to temporary authorization code
      *
-     * @param suiteId 套件ID
-     * @param code 通过Oauth认证给URL带上的code
+     * @param suiteId Suit ID
+     * @param code Authenticate to the code on the URL through Oauth
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/5/7 6:07 下午
      */
     DingTalkSsoUserInfoResponse getSsoUserInfoByCode(String suiteId, String code);
 
     /**
-     * 根据临时授权码获取用户详细信息
+     * Obtain user details according to temporary authorization code
      *
-     * @param suiteId 套件ID
-     * @param userId 钉钉应用的userId
-     * @param authCorpId 授权企业的corpid
+     * @param suiteId Suit ID
+     * @param userId DingTalk Application UserId
+     * @param authCorpId Corpid of authorized enterprises
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/5/7 6:07 下午
      */
     DingTalkUserDetail getUserDetailByCode(String suiteId, String authCorpId, String userId);
 
     /**
-     * 根据userid获取用户详情
+     * Obtain user details according to userid
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @param userId 用户的userid
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @param userId User's userid
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/9/13 6:27 下午
      */
     DingTalkUserDetail getUserDetailByUserId(String suiteId, String authCorpId, String userId);
 
     /**
-     * 根据userid获取用户详情
+     * Obtain user details according to userid
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @param userId 用户的userid
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @param userId User's userid
      * @return DingTalkUserDetailResponse
-     * @author zoe zheng
-     * @date 2021/9/13 6:27 下午
      */
     DingTalkUserDto getIsvUserDetailByUserId(String suiteId, String authCorpId, String userId);
 
     /**
-     * 检查授权企业状态，是否授权
+     * Check whether the authorized enterprise is authorized
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @return 是否授权
-     * @author zoe zheng
-     * @date 2021/9/16 11:29 上午
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @return Whether authorized
      */
     Boolean getSocialTenantStatus(String suiteId, String authCorpId);
 
     /**
-     * 钉钉ISV应用--获取部门子ID列表
+     * DingTalkISV Application -- get the sub ID list of the department
      *
-     * @param suiteId 应用的suiteId
-     * @param authCorpId 授权企业corpid
-     * @param deptId 父部门ID，根部门传1。
-     * @return 子部门ID列表
-     * @author zoe zheng
-     * @date 2021/9/14 2:45 下午
+     * @param suiteId The suite Id of the application
+     * @param authCorpId Authorized enterprise corpId
+     * @param deptId The parent department ID is passed to 1 from the root door.
+     * @return Sub department ID list
      */
     List<Long> getDepartmentSubIdList(String suiteId, String authCorpId, Long deptId);
 
     /**
-     * 获取部门全部成员列表
+     * Get the list of all members of the department
      *
-     * @param suiteId 应用的suiteId
-     * @param authCorpId 授权企业ID
-     * @param deptId 部门ID
-     * @param cursor 分页查询的游标
-     * @param size 分页大小。
+     * @param suiteId The suite Id of the application
+     * @param authCorpId Authorized enterprise ID
+     * @param deptId Department ID
+     * @param cursor Cursor for paged queries
+     * @param size Page size
      * @return List<UserDetail>
-     * @author zoe zheng
-     * @date 2021/5/11 4:25 下午
      */
     UserPageResult getDeptUserDetailList(String suiteId, String authCorpId, Long deptId, Integer cursor, Integer size);
 
     /**
-     * 获取授权企业的用户信息列表
+     * Obtain the user information list of authorized enterprises
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @param authDeptIds 可见范围的部门ID
-     * @param authUserIds 可见范围的钉钉用户ID
-     * @return 钉钉用户详细信息列表
-     * @author zoe zheng
-     * @date 2021/9/14 2:09 下午
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @param authDeptIds Department ID of the visible range
+     * @param authUserIds Ding Talk user ID of the visible range
+     * @return DingTalk User Details List
      */
     HashMap<String, DingTalkUserDto> getAuthCorpUserDetailMap(String suiteId, String authCorpId, List<String> authDeptIds,
             List<String> authUserIds);
 
     /**
-     * 通过可见用户ID获取授权企业的用户信息
+     * Obtain the user information of the authorized enterprise through the visible user ID
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @param userIds 可见范围的用户ID
-     * @return 钉钉用户详细信息列表
-     * @author zoe zheng
-     * @date 2021/9/14 2:11 下午
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @param userIds User ID of the visible range
+     * @return DingTalk User Details List
      */
     Map<String, DingTalkUserDto> getAuthCorpUserDetailListByUserIds(String suiteId, String authCorpId,
             List<String> userIds);
 
     /**
-     * 使用模板发送工作通知消息
+     * Use templates to send work notification messages
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业的corpId
-     * @param templateId 消息模版ID
-     * @param data 消息模板动态参数赋值数据,说明 key和value均为字符串格式。
-     * @param userIds 钉钉用户ID 最大长度为100
-     * @return 创建的异步发送任务ID
-     * @author zoe zheng
-     * @date 2021/5/14 3:18 下午
+     * @param suiteId App suite Id
+     * @param authCorpId The corp ID of the authorized enterprise
+     * @param templateId Message template ID
+     * @param data The dynamic parameter assignment data of the message template indicates that both key and value are in string format.
+     * @param userIds DingTalk The maximum length of user ID is 100
+     * @return ID of the asynchronous sending task created
      */
     List<DingTalkAsyncSendCorpMessageResponse> sendMessageToUserByTemplateId(String suiteId, String authCorpId,
             String templateId, HashMap<String, String> data, List<String> userIds);
 
     /**
-     * 使用模板发送工作通知消息
+     * Use templates to send work notification messages
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业的corpId
-     * @param templateId 消息模版ID
-     * @param data 消息模板动态参数赋值数据,说明 key和value均为字符串格式。
-     * @param userIds 钉钉用户ID 最大长度为100
-     * @param agentId 应用的agentId
-     * @return 创建的异步发送任务ID
-     * @author zoe zheng
-     * @date 2021/5/14 3:18 下午
+     * @param suiteId App suite Id
+     * @param authCorpId The corp ID of the authorized enterprise
+     * @param templateId Message template ID
+     * @param data The dynamic parameter assignment data of the message template indicates that both key and value are in string format.
+     * @param userIds DingTalk The maximum length of user ID is 100
+     * @param agentId Applied agent Id
+     * @return ID of the asynchronous sending task created
      */
     List<DingTalkAsyncSendCorpMessageResponse> sendMessageToUserByTemplateId(String suiteId, String authCorpId,
             String templateId, HashMap<String, String> data, List<String> userIds, String agentId);
 
     /**
-     * 获取第三方企业应用配置信息
+     * Get third-party enterprise application configuration information
      *
-     * @param suiteId 应用suiteId
+     * @param suiteId App suite Id
      * @return IsvApp
-     * @author zoe zheng
-     * @date 2021/9/26 17:04
      */
     IsvAppProperty getIsvAppConfig(String suiteId);
 
     /**
-     * 获取第三方企业应用配置信息
+     * Get third-party enterprise application configuration information
      *
-     * @param dingDingDaKey 钉钉搭的key
+     * @param dingDingDaKey DingTalk key
      * @return IsvApp
-     * @author zoe zheng
-     * @date 2021/9/26 17:04
      */
     IsvAppProperty getIsvAppConfigByDingDingDaKey(String dingDingDaKey);
 
     /**
-     * 上传媒体文件
+     * Upload media files
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param mediaType 类型
-     * @param file 文件
-     * @param fileName 文件名称
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param mediaType Type
+     * @param file File
+     * @param fileName Document name
      * @return DingTalkMediaCreateResponse
-     * @author zoe zheng
-     * @date 2021/9/29 14:40
      */
     String uploadMedia(String suiteId, String authCorpId, DingTalkMediaType mediaType, byte[] file, String fileName);
 
     /**
-     * 创建apaas应用
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param request 请求参数
+     * Create an apaas application
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param request Request parameters
      * @return DingTalkCreateApaasAppResponse
-     * @author zoe zheng
-     * @date 2021/9/29 11:39
      */
     DingTalkCreateApaasAppResponse createMicroApaasApp(String suiteId, String authCorpId, DingTalkCreateApaasAppRequest request);
 
     /**
-     * 检查授权企
+     * Check authorized enterprises
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
      * @return TenantInfoResult
-     * @author zoe zheng
-     * @date 2021/10/13 13:13
      */
     TenantInfoResult getSocialTenantInfo(String authCorpId, String suiteId);
 
     /**
-     * 获取内购商品SKU页面地址
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param callbackPage 回调页面(进行URLEncode处理)，微应用为页面URL，E应用为页面路径地址。
-     * @param extendParam 参数
+     * Get the SKU page address of domestic products
+     *
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param callbackPage Callback page (URL Encoding), micro application is the page URL, and E application is the page path address.
+     * @param extendParam Parameter
      * @return DingTalkSkuPageResponse
-     * @author zoe zheng
-     * @date 2021/10/25 17:30
      */
     String getInternalSkuPage(String suiteId, String authCorpId, String callbackPage,
             String extendParam);
 
     /**
-     * 内购商品订单处理完成
-     * 调用本接口完成内购商品订单处理。
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param orderId 内购订单号。
+     * Processing of domestic purchase order completed
+     * Call this interface to complete the processing of domestic purchase order
+     *
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param orderId Internal purchase orderId
      * @return Boolean
-     * @author zoe zheng
-     * @date 2021/10/25 18:25
      */
     Boolean internalOrderFinish(String suiteId, String authCorpId, String orderId);
 
     /**
-     * 获取内购订单信息
+     * Get the internal purchase order information
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param orderId 内购订单号。
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param orderId Internal purchase orderId
      * @return DingTalkInternalOrderResponse
-     * @author zoe zheng
-     * @date 2021/10/27 20:49
      */
     InAppGoodsOrderVo getInternalOrder(String suiteId, String authCorpId, String orderId);
 
     /**
-     * js api dd.config签名生成
+     * js api dd.config Signature generation
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
-     * @param nonceStr 随机字符串
-     * @param timestamp 时间戳
-     * @param url 当前也面链接
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
+     * @param nonceStr Random string
+     * @param timestamp Time stamp
+     * @param url Current interface link
      * @return String
-     * @author zoe zheng
-     * @date 2021/10/30 15:10
      */
     String ddConfigSign(String suiteId, String authCorpId, String nonceStr, String timestamp, String url);
 
     /**
-     * 获取第三方企业应用的agentId
+     * Get the agent ID of the third-party enterprise application
      *
-     * @param suiteId 套件ID
-     * @param authCorpId 授权企业的corpid
+     * @param suiteId Suit ID
+     * @param authCorpId CorpId of authorized enterprises
      * @return agentId
-     * @author zoe zheng
-     * @date 2021/10/30 15:31
      */
     String getIsvDingTalkAgentId(String suiteId, String authCorpId);
 
     /**
-     * 获取员工人数
+     * Get the number of employees
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param onlyActive 是否包含未激活钉钉人数：false：包含未激活钉钉的人员数量。true：只包含激活钉钉的人员数量。
-     * @return 员工人数
-     * @author zoe zheng
-     * @date 2021/11/8 11:57
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param onlyActive Include the number of inactive Ding Talk people: false: Include the number of inactive Ding Talk people. True: Only the number of people who activate Ding Talk is included.
+     * @return Number of employees
      */
     Integer getUserCount(String suiteId, String authCorpId, Boolean onlyActive);
 
     /**
-     * 获取员工人数
+     * Get the number of employees
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param deptIds 部门ID
-     * @return 员工人数
-     * @author zoe zheng
-     * @date 2021/11/8 11:57
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param deptIds Department ID
+     * @return Number of employees
      */
     Integer getUserCountByDeptIds(String suiteId, String authCorpId, List<String> deptIds);
 
     /**
-     * 获取员工人数
+     * Get the number of employees
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param deptIds 部门ID
-     * @param userIds 用户ID
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param deptIds Department ID
+     * @param userIds User ID
      * @return DingTalkDepartmentUserIdListResponse
-     * @author zoe zheng
-     * @date 2021/11/8 14:15
      */
     Integer getUserCountByDeptIdsAndUserIds(String suiteId, String authCorpId, List<String> deptIds,
             List<String> userIds);
 
     /**
-     * 递归给入的部门，查询所有用户信息
+     * Recursive department to query all user information
      *
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param subDeptIds 部门ID列表
-     * @author zoe zheng
-     * @date 2021/11/24 6:24 下午
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param subDeptIds Department ID List
      */
     Map<String, DingTalkUserDto> getUserTreeList(String suiteId, String authCorpId, List<String> subDeptIds);
 
     /**
-     * 获取企业的事件信息
-     * @param suiteId 应用suiteId
-     * @param authCorpId 授权企业
-     * @param bizTypes 事件类型
+     * Obtain event information of the enterprise
+     *
+     * @param suiteId App suite Id
+     * @param authCorpId Authorized enterprise
+     * @param bizTypes Event Type
      * @return List<CorpBizDataDto>
-     * @author zoe zheng
-     * @date 2022/6/1 15:00
      */
     List<CorpBizDataDto> getCorpBizDataByBizTypes(String suiteId, String authCorpId, List<DingTalkBizType> bizTypes);
 }

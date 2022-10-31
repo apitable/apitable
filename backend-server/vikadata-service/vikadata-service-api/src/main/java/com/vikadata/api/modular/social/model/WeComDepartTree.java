@@ -12,11 +12,8 @@ import com.vikadata.core.support.tree.v2.Tree;
 
 /**
  * <p>
- * 企业微信部门树结构
+ * WeCom Department Tree Structure
  * </p>
- *
- * @author Pengap
- * @date 2021/8/9 16:11:01
  */
 @Data
 @EqualsAndHashCode(of = { "id" })

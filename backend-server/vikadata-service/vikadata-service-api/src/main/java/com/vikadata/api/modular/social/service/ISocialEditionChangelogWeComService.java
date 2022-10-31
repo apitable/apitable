@@ -8,58 +8,48 @@ import com.vikadata.social.wecom.model.WxCpIsvAuthInfo.EditionInfo;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用版本变更信息
+ * Third party platform integration - WeCom third-party service provider application version change information
  * </p>
- * @author 刘斌华
- * @date 2022-04-28 10:34:01
  */
 public interface ISocialEditionChangelogWeComService extends IService<SocialEditionChangelogWecomEntity> {
 
     /**
-     * 获取并保存新的应用版本信息
+     * Get and save new application version information
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 支付的授权企业 ID
-     * @return 应用版本信息
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-04-28 11:55:06
+     * @param suiteId App Suite ID
+     * @param paidCorpId Authorized enterprise ID paid
+     * @return Application version information
+     * @throws WxErrorException WeCom interface exception
      */
     SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId) throws WxErrorException;
 
     /**
-     * 保存新的应用版本信息
+     * Save the new Application version information
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 支付的授权企业 ID
-     * @param fetchEditionInfo 是否获取变更后的企微应用版本信息
-     * @return 应用版本信息
-     * @throws WxErrorException 企业微信接口异常
-     * @author 刘斌华
-     * @date 2022-04-28 11:55:06
+     * @param suiteId App Suite ID
+     * @param paidCorpId Authorized enterprise ID paid
+     * @param fetchEditionInfo Get the changed enterprise application version information
+     * @return Application version information
+     * @throws WxErrorException WeCom interface exception
      */
     SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId, boolean fetchEditionInfo) throws WxErrorException;
 
     /**
-     * 保存新的应用版本信息
+     * Save the new Application version information
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 支付的授权企业 ID
-     * @param editionInfoAgent 企微的应用版本信息
-     * @return 应用版本信息
-     * @author 刘斌华
-     * @date 2022-05-06 18:49:29
+     * @param suiteId App Suite ID
+     * @param paidCorpId Authorized enterprise ID paid
+     * @param editionInfoAgent WeCom Application version information
+     * @return Application version information
      */
     SocialEditionChangelogWecomEntity createChangelog(String suiteId, String paidCorpId, EditionInfo.Agent editionInfoAgent);
 
     /**
-     * 获取最近一条的企微版本信息
+     * Get the latest WeCom version information
      *
-     * @param suiteId 应用套件 ID
-     * @param paidCorpId 支付的授权企业 ID
-     * @return 应用版本信息
-     * @author 刘斌华
-     * @date 2022-05-06 18:57:33
+     * @param suiteId App Suite ID
+     * @param paidCorpId Authorized enterprise ID paid
+     * @return Application version information
      */
     SocialEditionChangelogWecomEntity getLastChangeLog(String suiteId, String paidCorpId);
 

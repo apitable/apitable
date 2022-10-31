@@ -15,14 +15,11 @@ import javax.annotation.Resource;
 
 /**
  * <p>
- * 实验室模块 实验性功能接口
+ * Laboratory module experimental function interface
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/20 10:31:09
  */
 @RestController
-@Api(tags = "实验室模块_实验性功能接口")
+@Api(tags = "Laboratory module_ Experimental function interface")
 @ApiResource(path = "/labs")
 @Slf4j
 public class LabsFeatureController {
@@ -30,10 +27,10 @@ public class LabsFeatureController {
     @Resource
     private ILabsFeatureService iLabsFeatureService;
 
-    @GetResource(name = "获取实验室功能列表", path = "/features", requiredPermission = false)
-    @ApiOperation(value = "获取实验室功能列表", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetResource(name = "Get Lab Function List", path = "/features", requiredPermission = false)
+    @ApiOperation(value = "Get Lab Function List", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<UserSpaceLabsFeatureVo> showAvailableLabsFeatures() {
-        // 获取可用的实验性列表
+        // Get a list of available experiments
         return ResponseData.success(iLabsFeatureService.getAvailableLabsFeature());
     }
 }

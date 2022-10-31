@@ -93,10 +93,7 @@ import static com.vikadata.social.dingtalk.constants.DingTalkConst.ROOT_DEPARTME
 import static com.vikadata.social.feishu.constants.FeishuErrorCode.GET_TENANT_DENIED;
 
 /**
- * 第三方集成 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-02 18:04:20
+ * Third party integration service interface implementation
  */
 @Service
 @Slf4j
@@ -180,7 +177,7 @@ public class SocialServiceImpl implements ISocialService {
 
     @Override
     public void checkUserIfInTenant(Long userId, String appId, String tenantKey) {
-        // 检查用户是否在租户内，并且是管理员
+        // Check whether the user is in the tenant and an administrator
         String openId = iSocialUserBindService.getOpenIdByTenantIdAndUserId(appId, tenantKey, userId);
         if (StrUtil.isBlank(openId)) {
             throw new BusinessException(SocialException.USER_NOT_EXIST);
@@ -227,7 +224,7 @@ public class SocialServiceImpl implements ISocialService {
         }
         catch (FeishuApiException exception) {
             if (exception.getCode() != GET_TENANT_DENIED) {
-                // 180天内企业未使用过此应用，不算错误，返回NULL即可
+                // This application has not been used by the enterprise in 180 days, so it is not an error, just return NULL
                 throw exception;
             }
         }
@@ -256,7 +253,7 @@ public class SocialServiceImpl implements ISocialService {
                 space.setSpaceId(spaceEntity.getSpaceId());
                 space.setSpaceName(spaceEntity.getName());
                 space.setSpaceLogo(spaceEntity.getLogo());
-                // 钉钉订阅
+                // DingTalk Subscription
                 SubscribePlanInfo subscribePlanInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceEntity.getSpaceId());
                 space.setProduct(subscribePlanInfo.getProduct());
                 space.setDeadline(subscribePlanInfo.getDeadline());
@@ -280,11 +277,11 @@ public class SocialServiceImpl implements ISocialService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void changeMainAdmin(String spaceId, Long memberId) {
-        log.info("更换主管理员");
-        //更新空间、成员信息
+        log.info("Replace the master administrator");
+        // Update space and member information
         Long beforeOwnerMemberId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         if (beforeOwnerMemberId != null && beforeOwnerMemberId.equals(memberId)) {
-            log.warn("主管理员一样，无需改变");
+            log.warn("Like the master administrator, no change is required");
             return;
         }
         if (beforeOwnerMemberId != null) {
@@ -301,7 +298,7 @@ public class SocialServiceImpl implements ISocialService {
         if (newAdminMember.getUserId() != null) {
             userSpaceService.delete(newAdminMember.getUserId(), spaceId);
         }
-        //若新管理员原本是子管理员，删除原权限
+        // If the new administrator was originally a sub administrator, delete the original permission
         int count = SqlTool.retCount(spaceMemberRoleRelMapper.selectCountBySpaceIdAndMemberId(spaceId, memberId));
         if (count > 0) {
             iSpaceRoleService.deleteRole(spaceId, memberId);
@@ -312,7 +309,7 @@ public class SocialServiceImpl implements ISocialService {
     @Override
     public List<String> getSocialDisableRoleGroupCode(String spaceId) {
         TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
-        // 过滤钉钉第三方集成
+        // Filtering Ding Talk third-party integration
         if (bindInfo != null && bindInfo.getAppId() != null) {
             SocialTenantEntity entity = iSocialTenantService.getByAppIdAndTenantId(bindInfo.getAppId(),
                     bindInfo.getTenantId());
@@ -339,16 +336,16 @@ public class SocialServiceImpl implements ISocialService {
         if (contactMap.isEmpty()) {
             return new HashSet<>();
         }
-        // 自建授权应用，这里不需要获取钉钉的通讯录授权权限
+        // Self built authorization application. It is not necessary to obtain the address book authorization permission of DingTalk
         AgentApp agentApp = dingTalkService.getAgentAppById(agentId);
         String tenantId = agentApp.getCorpId();
-        // 空间的根组织ID
+        // Root organization ID of the space
         Long rootTeamId = iTeamService.getRootTeamId(spaceId);
-        // 空间的主管理员DingTalk用户信息
+        // DingTalk user information of the main administrator of the space
         DingTalkUserDetail operatorOpenUser = dingTalkService.getUserDetailByUserId(agentId, operatorOpenId);
-        // 空间的主管理员成员ID
+        // Primary administrator member ID of the space
         Long mainAdminMemberId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
-        // 初始化主管理员信息
+        // Initialize master administrator information
         OpenUserToMember mainAdminOpenUserToMember = OpenUserToMember.builder().memberId(mainAdminMemberId)
                 .memberName(operatorOpenUser.getName())
                 .openId(operatorOpenId)
@@ -356,27 +353,27 @@ public class SocialServiceImpl implements ISocialService {
                 .isNew(false).isCurrentSync(true).build();
         DingTalkContactMeta contactMeta = new DingTalkContactMeta(spaceId, tenantId, agentId, rootTeamId);
         contactMeta.openUserToMemberMap.put(operatorOpenId, mainAdminOpenUserToMember);
-        // 初始化根部门信息
+        // Initialize root department information
         OpenDeptToTeam rootDeptToTeam = OpenDeptToTeam.builder().departmentId(ROOT_DEPARTMENT_ID).teamId(rootTeamId)
                 .isNew(false).isCurrentSync(true).op(SyncOperation.KEEP)
                 .build();
         contactMeta.openDeptToTeamMap.put(ROOT_DEPARTMENT_ID, rootDeptToTeam);
-        // 当前已经同步过的成员openUser->vikaMember的map
+        // The map of the currently synchronized member open User -> vika Member
         List<MemberEntity> memberList = iMemberService.getMembersBySpaceId(spaceId, true);
-        // 相同的openId，只保留最近的一个成员
+        // The same open ID, only the latest member is reserved
         Map<String, OpenUserToMember> memberListByOpenIdToMap = memberList.stream()
-                // 由于主管理在上面手动初始化，这里需要过滤
+                // Since the master management is initialized manually above, filtering is required here
                 .filter(dto -> !dto.getId().equals(mainAdminMemberId))
                 .collect(Collectors.toMap(MemberEntity::getOpenId, dto -> {
                     OpenUserToMember cahceData =
                             OpenUserToMember.builder().openId(dto.getOpenId()).memberId(dto.getId()).memberName(dto.getMemberName()).isDeleted(dto.getIsDeleted()).build();
-                    // 查询关联组织Ids todo 这里应该批量查询
+                    // Query Associated Organization Ids todo Batch query is required here
                     cahceData.setOldUnitTeamIds(CollUtil.newHashSet(iTeamMemberRelService.getTeamByMemberId(cahceData.getMemberId())));
                     return cahceData;
                 }, (pre, cur) -> !cur.getIsDeleted() ? cur : pre));
         contactMeta.openUserToMemberMap.putAll(memberListByOpenIdToMap);
 
-        // 钉钉部门ID和vika系统部门ID,初始值为根部门ID
+        // DingTalk department ID and vika system department ID, the initial value is the root department ID
         List<TenantDepartmentBindDTO> teamList = iSocialTenantDepartmentService.getTenantBindTeamListBySpaceId(spaceId);
         Map<Long, OpenDeptToTeam> teamListByDepartmentIdToMap = teamList.stream().collect(Collectors.toMap(keyDto -> Long.valueOf(keyDto.getDepartmentId()), dto -> OpenDeptToTeam.builder()
                 .id(dto.getId()).departmentName(dto.getDepartmentName())
@@ -386,27 +383,27 @@ public class SocialServiceImpl implements ISocialService {
                 .internalSequence(dto.getInternalSequence())
                 .build()));
         contactMeta.openDeptToTeamMap.putAll(teamListByDepartmentIdToMap);
-        // 同步通讯录
+        // Synchronize contacts
         syncDingTalkContacts(contactMeta, contactMap);
 
-        // 检查人数限制
+        // Limit on number of inspectors
         // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
         // ExceptionUtil.isTrue(contactMeta.openIds.size() <= defaultMaxMemberCount, SubscribeFunctionException.MEMBER_LIMIT);
-        // 如果同步的成员没有主管理员，需要将主管理员挂靠在根部门里面
+        // If the synchronization member does not have a master administrator, the master administrator needs to be attached to the root door
         if (!contactMeta.openIds.contains(operatorOpenId)) {
             contactMeta.teamMemberRelEntities.add(OrganizationFactory.createTeamMemberRel(rootTeamId, mainAdminMemberId));
         }
-        // 初始化通讯录结构
+        // Initialize address book structure
         contactMeta.doDeleteTeams();
-        // 删除没有的member
+        // Delete the missing member
         contactMeta.deleteMembers();
-        // 删除成员关联关系
+        // Delete member association
         contactMeta.doDeleteMemberRels();
-        // 更新主管理员信息
+        // Update master administrator information
         contactMeta.updateMainAdminMember(operatorOpenId);
-        // 存储到DB
+        // Store to DB
         contactMeta.doSaveOrUpdate();
-        // 删除缓存
+        // Delete Cache
         userSpaceService.delete(spaceId);
         return contactMeta.openIds;
     }
@@ -415,7 +412,7 @@ public class SocialServiceImpl implements ISocialService {
         Set<Long> deptIds = contactTree.keySet();
         contactTree.forEach((deptId, contact) -> {
             DingTalkDepartmentDTO dingTalkDepartmentDTO = contact.getDepartment();
-            // 当前可见范围没有父部门
+            // The current visible range has no parent department
             if (!deptIds.contains(dingTalkDepartmentDTO.getParentDeptId())) {
                 dingTalkDepartmentDTO.setParentDeptId(ROOT_DEPARTMENT_ID);
             }
@@ -428,15 +425,15 @@ public class SocialServiceImpl implements ISocialService {
     }
 
     private void handleDingTalkMember(DingTalkContactMeta contactMeta, DingTalkContactDTO.DingTalkUserDTO userDetail, Long parentTeamId) {
-        // 过滤未激活的钉钉用户
+        // Filter inactive DingTalk users
         if (BooleanUtil.isFalse(userDetail.getActive())) {
             return;
         }
         String dingTalkUserid = userDetail.getOpenId();
         OpenUserToMember cahceMember = contactMeta.openUserToMemberMap.get(dingTalkUserid);
-        // 没有同步过
+        // No synchronization
         if (!contactMeta.openIds.contains(dingTalkUserid)) {
-            // 数据库中的member 不存在,没有同步过，需要登录的时候才绑定用户
+            // The member in the database does not exist and has not been synchronized. Users can be bound only when they need to log in
             if (null == cahceMember) {
                 MemberEntity member = SocialFactory.createDingTalkMember(userDetail)
                         .setId(IdWorker.getId())
@@ -451,15 +448,15 @@ public class SocialServiceImpl implements ISocialService {
                 cahceMember = OpenUserToMember.builder().memberId(member.getId()).memberName(member.getMemberName()).openId(dingTalkUserid).isNew(true).build();
             }
             else {
-                // 存在查看是否需要修改关键信息
+                // ExistCheck whether key information needs to be modified
                 if (!cahceMember.getMemberName().equals(userDetail.getName()) || cahceMember.getIsDeleted() || !userDetail.getOpenId().equals(cahceMember.getOpenId())) {
                     MemberEntity updateMember =
                             MemberEntity.builder().id(cahceMember.getMemberId()).memberName(userDetail.getName()).openId(userDetail.getOpenId()).isDeleted(false).spaceId(contactMeta.spaceId).build();
-                    // 需要恢复的成员
+                    // Members to be recovered
                     if (cahceMember.getIsDeleted()) {
                         contactMeta.recoverMemberIds.add(cahceMember.getMemberId());
                     }
-                    // 更新缓存
+                    // Update Cache
                     cahceMember.setMemberName(userDetail.getName());
                     cahceMember.setOpenId(userDetail.getOpenId());
                     cahceMember.setIsDeleted(false);
@@ -467,23 +464,23 @@ public class SocialServiceImpl implements ISocialService {
                     contactMeta.updateMemberEntities.add(updateMember);
                 }
             }
-            // 标记本次同步的用户
+            // Mark users for this synchronization
             cahceMember.setIsCurrentSync(true);
         }
-        // 绑定部门，如果缓存中没有对应的部门关系，直接挂钩Root部门
+        // Bind departments. If there is no corresponding department relationship in the cache, directly link to the root department
         cahceMember.getNewUnitTeamIds().add(parentTeamId);
         if (CollUtil.isEmpty(cahceMember.getOldUnitTeamIds()) || (CollUtil.isNotEmpty(cahceMember.getOldUnitTeamIds()) && !cahceMember.getOldUnitTeamIds().contains(parentTeamId))) {
-            // 成员历史不存在部门下，添加成员和部门关联记录
+            // Member history does not exist under department, add member and department association records
             contactMeta.teamMemberRelEntities.add(OrganizationFactory.createTeamMemberRel(parentTeamId, cahceMember.getMemberId()));
         }
         contactMeta.openIds.add(dingTalkUserid);
-        // 添加 钉钉用户-维格表用户
+        // Add DingTalk user - vika user
         contactMeta.openUserToMemberMap.put(dingTalkUserid, cahceMember);
     }
 
     private void handleDingTalkDept(DingTalkContactMeta contactMeta, DingTalkDepartmentDTO deptBaseInfo) {
         if (ROOT_DEPARTMENT_ID.equals(deptBaseInfo.getDeptId())) {
-            // 不处理根部门
+            // Do not process root department
             return;
         }
         Long parentDeptId = deptBaseInfo.getParentDeptId();
@@ -505,7 +502,7 @@ public class SocialServiceImpl implements ISocialService {
             SocialTenantDepartmentEntity dingTalkDepartment = SocialFactory.createDingTalkDepartment(spaceId, tenantId, deptBaseInfo);
             contactMeta.tenantDepartmentEntities.add(dingTalkDepartment);
             contactMeta.tenantDepartmentBindEntities.add(SocialFactory.createTenantDepartmentBind(spaceId, team.getId(), tenantId, deptBaseInfo.getDeptId().toString()));
-            // 同步关系
+            // Synchronous relation
             openDeptToTeam = OpenDeptToTeam.builder()
                     .departmentName(team.getTeamName())
                     .departmentId(Long.valueOf(dingTalkDepartment.getDepartmentId())).openDepartmentId(Long.valueOf(dingTalkDepartment.getOpenDepartmentId()))
@@ -518,15 +515,15 @@ public class SocialServiceImpl implements ISocialService {
         }
         else {
             boolean isUpdate = BooleanUtil.or(
-                    // 是否修改部门层级
+                    // Modify Department Level
                     BooleanUtil.negate(openDeptToTeam.getParentOpenDepartmentId().equals(parentDeptId)),
-                    // 是否修改名称
+                    // Modify Name
                     BooleanUtil.negate(openDeptToTeam.getDepartmentName().equals(deptBaseInfo.getDeptName())),
-                    // 是否修改顺序
+                    // Modify Order
                     openDeptToTeam.getInternalSequence() != sequence
             );
             if (isUpdate) {
-                // 修改部门结构
+                // Modify Department Structure
                 SocialTenantDepartmentEntity updateTenantDepartment = SocialTenantDepartmentEntity.builder()
                         .id(openDeptToTeam.getId())
                         .departmentName(deptBaseInfo.getDeptName())
@@ -552,13 +549,13 @@ public class SocialServiceImpl implements ISocialService {
                 openDeptToTeam.setOp(SyncOperation.UPDATE);
             }
             else {
-                // 没有修改
+                // No modification
                 openDeptToTeam.setOp(SyncOperation.KEEP);
             }
         }
 
-        // 保存父部门ID->teamId
-        openDeptToTeam.setIsCurrentSync(true); // 标记本次同步的部门
+        // Save parent department ID -> team ID
+        openDeptToTeam.setIsCurrentSync(true); // Mark the department for this synchronization
         contactMeta.openDeptToTeamMap.put(deptBaseInfo.getDeptId(), openDeptToTeam);
     }
 
@@ -660,7 +657,7 @@ public class SocialServiceImpl implements ISocialService {
             iSocialTenantDepartmentBindService.createBatch(tenantDepartmentBindEntities);
 
             iMemberService.batchCreate(spaceId, memberEntities);
-            // 恢复之前的组织单元，防止表格里面的成员是灰色的
+            // Restore the previous organizational unit to prevent the members in the table from being grayed out
             if (!recoverMemberIds.isEmpty()) {
                 iUnitService.batchUpdateIsDeletedBySpaceIdAndRefId(spaceId, recoverMemberIds, UnitType.MEMBER, false);
             }
@@ -679,16 +676,16 @@ public class SocialServiceImpl implements ISocialService {
 
         Long rootTeamId;
 
-        // 钉钉用户-维格表用户
+        // DingTalk User - vika User
         Map<String, OpenUserToMember> openUserToMemberMap = MapUtil.newHashMap(true);
 
-        // 钉钉部门-维格表部门
+        // DingTalk Department - vika Department
         Map<Long, OpenDeptToTeam> openDeptToTeamMap = MapUtil.newHashMap(true);
 
-        // 这次同步的钉钉用户ID，用于发送开始使用消息
+        // The DingTalk user ID of this synchronization, which is used to send the start message
         Set<String> openIds = CollUtil.newHashSet();
 
-        // 存储父-子部门关系 用于计算sequence
+        // Store the parent-child department relationship for calculating sequence
         HashMap<Long, List<Long>> openDeptIdMap = CollUtil.newHashMap();
 
         DingTalkContactMeta(String spaceId, String tenantId, String agentId, Long rootTeamId) {
@@ -699,7 +696,7 @@ public class SocialServiceImpl implements ISocialService {
             this.openDeptIdMap.put(ROOT_DEPARTMENT_ID, CollUtil.newArrayList());
         }
 
-        // 获取缓存TeamId，无数据默认：rootTeamId
+        // Get the cached Team Id. No data. Default: root Team Id
         Long getTeamId(Long dingTalkDeptId) {
             return Optional.ofNullable(this.openDeptToTeamMap.get(dingTalkDeptId))
                     .map(OpenDeptToTeam::getTeamId)
@@ -707,7 +704,7 @@ public class SocialServiceImpl implements ISocialService {
         }
 
         void doDeleteTeams() {
-            // 计算需要删除的小组
+            // Calculate the groups to be deleted
             List<Long> oldTeamIds = iTeamService.getTeamIdsBySpaceId(spaceId);
             Map<Long, Long> newTeams = this.openDeptToTeamMap.values().stream()
                     .filter(OpenDeptToTeam::getIsCurrentSync)
@@ -715,10 +712,10 @@ public class SocialServiceImpl implements ISocialService {
 
             Set<Long> newTeamIds = new HashSet<>(newTeams.keySet());
 
-            // 计算交集，没有变更的部门
+            // Calculate intersection, department without change
             newTeamIds.retainAll(oldTeamIds);
             if (!newTeamIds.isEmpty()) {
-                // 计算差集，需要删除的部门
+                // Calculate the difference set and the department to be deleted
                 oldTeamIds.removeAll(newTeamIds);
             }
 
@@ -731,20 +728,21 @@ public class SocialServiceImpl implements ISocialService {
                         .collect(Collectors.toMap(OpenDeptToTeam::getTeamId, dto -> dto.getDepartmentId().toString()));
 
                 for (Long deleteTeamId : oldTeamIds) {
-                    // 删除Vika部门下面的Menber，出现人员存在多个部门，需要判断本次同步人员在不在列表中，如果存在就不删除人员，反之删除
+                    // Delete the Member under the vika department. There are multiple departments for the personnel. It is necessary to judge whether the synchronized personnel are in the list.
+                    // If they exist, they will not be deleted. Otherwise, they will be deleted
                     List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamId(deleteTeamId);
                     memberIds.removeAll(currentSyncMemberUsers);
 
                     String deleteWeComTeamId = teamToWecomTeamMap.get(deleteTeamId);
                     if (StrUtil.isNotBlank(deleteWeComTeamId)) {
-                        // 移除部门 - 删除第三方部门，并且删除绑定关系，并且删除Vika部门
+                        // Remove department - delete the third-party department, delete the binding relationship, and delete the Vika department
                         iSocialTenantDepartmentService.deleteSpaceTenantDepartment(spaceId, tenantId, deleteWeComTeamId);
                     }
                     else {
-                        // 表示没有绑定过，直接删除Vika部门
+                        // It means that there is no binding, and vika department is deleted directly
                         iTeamService.deleteTeam(deleteTeamId);
                     }
-                    // 移除成员
+                    // Remove Members
                     iMemberService.batchDeleteMemberFromSpace(spaceId, memberIds, false);
                 }
             }
@@ -758,24 +756,24 @@ public class SocialServiceImpl implements ISocialService {
 
             Set<Long> newMemberIds = new HashSet<>(newMemberUsers.keySet());
 
-            // 计算交集，没有变更的用户
+            // Calculate intersection, users without changes
             newMemberIds.retainAll(oldMemberIds);
             if (!newMemberIds.isEmpty()) {
-                // 计算差集，需要删除的用户
+                // Users to be deleted when calculating difference sets
                 oldMemberIds.removeAll(newMemberIds);
             }
 
-            // 不等于或需要删除的成员为空，表示不是初次同步
+            // The member that is not equal to or needs to be deleted is empty, which means it is not the first synchronization
             Set<String> newWeComUserIds = this.openUserToMemberMap.values().stream()
                     .filter(OpenUserToMember::getIsNew)
                     .map(OpenUserToMember::getOpenId)
                     .collect(Collectors.toSet());
             if (newMemberUsers.size() != newWeComUserIds.size() || oldMemberIds.isEmpty()) {
-                // 重新计算本次新增的用户
+                // Recalculate the new users
                 openIds.retainAll(newWeComUserIds);
             }
 
-            // 移除成员
+            // Remove Members
             iMemberService.batchDeleteMemberFromSpace(spaceId, oldMemberIds, false);
         }
 
@@ -793,7 +791,7 @@ public class SocialServiceImpl implements ISocialService {
 
         void updateMainAdminMember(String openId) {
             OpenUserToMember adminMember = openUserToMemberMap.get(openId);
-            // 更新主管理员信息
+            // Update master administrator information
             iMemberService.updateById(MemberEntity.builder().memberName(adminMember.getMemberName()).id(adminMember.getMemberId()).openId(adminMember.getOpenId()).build());
         }
     }

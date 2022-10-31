@@ -10,112 +10,92 @@ import com.vikadata.entity.UserEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业微信租户用户 服务接口
+ * Third party platform integration WeCom tenant user service interface
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:20:01
  */
 public interface ISocialCpTenantUserService extends IService<SocialCpTenantUserEntity> {
 
     /**
-     * 创建
+     * Create
      *
-     * @param tenantId  租户标识
-     * @param appId     租户应用Id
-     * @param cpUserId  租户用户UserId
-     * @param cpOpenUserId 租户平台 OpenUserId。可能为 {@code null}
-     * @author Pengap
-     * @return 新增数据Id
-     * @date 2021/8/5 20:36:19
+     * @param tenantId  Tenant ID
+     * @param appId     Tenant Application ID
+     * @param cpUserId  Tenant User ID
+     * @param cpOpenUserId Tenant platform OpenUserId. Probably {@code null}
+     * @return New Data Id
      */
     Long create(String tenantId, String appId, String cpUserId, String cpOpenUserId);
 
     /**
-     * 批量插入
+     * Bulk Insert
      *
-     * @param entities 实体列表
-     * @author Pengap
-     * @date 2021/8/5 20:36:19
+     * @param entities Entity List
      */
     void createBatch(List<SocialCpTenantUserEntity> entities);
 
     /**
-     * 获取企业微信成员
+     * Get WeCom members
      *
-     * @param tenantId  租户标识
-     * @param appId     租户应用Id
-     * @param cpUserId  租户用户UserId
-     * @return 企业微信用户信息
-     * @author Pengap
-     * @date 2021/8/19 16:19:14
+     * @param tenantId  Tenant ID
+     * @param appId     Tenant Application ID
+     * @param cpUserId  Tenant User ID
+     * @return WeCom User Information
      */
     SocialCpTenantUserEntity getCpTenantUser(String tenantId, String appId, String cpUserId);
 
     /**
-     * 查询企业微信成员信息
+     * Query enterprise WeCom member information
      *
-     * @param tenantId 租户 ID
-     * @param appId 应用 ID
-     * @param userId 维格用户 ID
-     * @return 企业微信成员信息
-     * @author 刘斌华
-     * @date 2022-02-15 11:55:50
+     * @param tenantId Tenant ID
+     * @param appId Application ID
+     * @param userId vika User ID
+     * @return WeCom User Information
      */
     SocialCpTenantUserEntity getCpTenantUser(String tenantId, String appId, Long userId);
 
     /**
-     * 获取CpTenantUserId
+     * CP Tenant User ID
      *
-     * @param tenantId  租户标识
-     * @param appId     租户应用Id
-     * @param cpUserId  租户用户UserId
-     * @return 企业微信住户Id（主键）
-     * @author Pengap
-     * @date 2021/8/23 15:46:58
+     * @param tenantId  Tenant ID
+     * @param appId     Tenant Application ID
+     * @param cpUserId  Tenant User ID
+     * @return WeCom Tenant user ID(Primary key)
      */
     Long getCpTenantUserId(String tenantId, String appId, String cpUserId);
 
     /**
-     * 批量获取 openId 对应的维格用户信息
+     * Get vika user information corresponding to openId in batch
      *
-     * @param tenantId 租户 ID
-     * @param appId 应用 ID
+     * @param tenantId Tenant ID
+     * @param appId App ID
      * @param cpUserIds openId
-     * @return 维格用户信息。key 对应参数中的 cpUserId（openId）
-     * @author 刘斌华
-     * @date 2022-04-13 17:50:08
+     * @return vika user information. CpUserId (openId) in the parameter corresponding to the key
      */
     Map<String, UserEntity> getUserByCpUserIds(String tenantId, String appId, List<String> cpUserIds);
 
     /**
-     * 批量删除企业微信用户
+     * Mass deletion of WeCom users
      *
-     * @param tenantId          企业Id
-     * @param appId             企业应用Id
-     * @param removeCpUserIds   企业微信用户Ids
-     * @author Pengap
-     * @date 2021/8/16 21:14:02
+     * @param tenantId          Enterprise ID
+     * @param appId             Enterprise Application ID
+     * @param removeCpUserIds   WeCom user ID
      */
     void batchDeleteByCorpAgentUsers(String tenantId, String appId, List<String> removeCpUserIds);
 
     /**
-     * 批量删除企业微信自定义应用所有用户
+     * Batch delete all users of enterprise WeChat customized application
      *
-     * @param tenantId  企业Id
-     * @param appId     企业应用Id
-     * @author Pengap
-     * @date 2021/8/25 18:41:37
+     * @param tenantId  Enterprise ID
+     * @param appId     Enterprise Application ID
      */
     void batchDeleteByCorpAgent(String tenantId, String appId);
 
     /**
-     * 获取租户下的所有用户openId
+     * Get the open IDs of all users under the tenant
      *
-     * @param tenantId 租户标识
-     * @param appId    租户应用标识
+     * @param tenantId Tenant ID
+     * @param appId    Tenant application ID
      * @return openIds
-     * @author Pengap
-     * @date 2021/8/5 20:36:19
      */
     Map<String, Long> getOpenIdsByTenantId(String tenantId, String appId);
 

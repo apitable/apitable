@@ -18,11 +18,9 @@ import static com.vikadata.social.feishu.event.app.AppStatusChangeEvent.STATUS_S
 import static com.vikadata.social.feishu.event.app.AppStatusChangeEvent.STATUS_STOP_BY_TENANT;
 
 /**
- * 飞书
- * 事件订阅 - 应用事件
+ * Lark
+ * Event subscription - application event
  *
- * @author Shawn Deng
- * @date 2020-11-25 18:49:05
  */
 @FeishuEventHandler
 @Slf4j
@@ -35,73 +33,73 @@ public class FeishuV2AppEventHandler {
     private ISocialFeishuEventLogService iSocialFeishuEventLogService;
 
     /**
-     * 首次开通应用事件处理
+     * Event processing for the first time opening application
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @FeishuEventListener
     public Object onAppOpenEvent(AppOpenEvent event) {
-        // 租户首次开通应用
-        log.info("[飞书] 首次开通应用, 租户：[{}]", event.getTenantKey());
+        // Tenant launches application for the first time
+        log.info("[Lark] First time application, tenant:[{}]", event.getTenantKey());
         iSocialFeishuEventLogService.create(event);
         iFeishuEventService.handleAppOpenEvent(event);
         return "";
     }
 
     /**
-     * 应用停启用 事件处理
+     * Application Stop Enable Event Processing
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @FeishuEventListener
     public Object onAppStatusChangeEvent(AppStatusChangeEvent event) {
-        // 记录租户
-        log.info("[飞书] 企业租户:[{}], 应用[{}], 状态变更: {}", event.getTenantKey(), event.getAppId(), event.getStatus());
+        // Record Tenant
+        log.info("[Lark] Enterprise Tenant:[{}], Application[{}], status change: {}", event.getTenantKey(), event.getAppId(), event.getStatus());
         iSocialFeishuEventLogService.create(event);
         switch (event.getStatus()) {
             case STATUS_STOP_BY_TENANT:
-                log.info("[飞书] 租户主动停用");
+                log.info("[Lark] Tenant active deactivation");
                 iFeishuEventService.handleAppStopEvent(event);
                 break;
             case STATUS_START_BY_TENANT:
-                log.info("[飞书] 租户停用后再启用");
+                log.info("[Lark] Enable after tenant deactivation");
                 iFeishuEventService.handleAppRestartEvent(event);
                 break;
             case STATUS_STOP_BY_PLATFORM:
-                log.info("[飞书] 平台停用");
+                log.info("[Lark] Platform Deactivation");
                 break;
             default:
-                log.error("未知的应用状态事件通知");
+                log.error("Unknown app status event notification");
                 break;
         }
         return "";
     }
 
     /**
-     * 应用卸载 事件处理
+     * Application uninstallation event handling
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @FeishuEventListener
     public Object onAppUninstalledEvent(AppUninstalledEvent event) {
-        log.info("[飞书] 租户卸载应用, 租户：[{}]", event.getTenantKey());
+        log.info("[Lark] Tenant uninstalls apps, Tenant: [{}]", event.getTenantKey());
         iSocialFeishuEventLogService.create(event);
         iFeishuEventService.handleAppUninstalledEvent(event);
         return "";
     }
 
     /**
-     * 应用商店应用购买 事件处理
+     * Store app purchase event processing
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @FeishuEventListener
     public Object onAppOrderPaidEvent(OrderPaidEvent event) {
-        log.info("[飞书] 租户商店应用购买, 租户：[{}]", event.getTenantKey());
+        log.info("[Lark] Tenant store app purchase, tenant: [{}]", event.getTenantKey());
         iSocialFeishuEventLogService.create(event);
         iFeishuEventService.handleOrderPaidEvent(event);
         return "";

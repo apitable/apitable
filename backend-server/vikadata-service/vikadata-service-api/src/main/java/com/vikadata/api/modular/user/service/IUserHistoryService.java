@@ -12,50 +12,51 @@ import com.vikadata.entity.UserHistoryEntity;
 
 /**
  * <p>
- * 用户历史记录 服务接口
+ * User History Service Interface
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/12/31 14:59:55
  */
 public interface IUserHistoryService extends IService<UserHistoryEntity> {
 
     /**
-     * 获取用户最近某个类型的一条操作记录
-     * @param userId
-     * @param userOperationType
-     * @return
+     * Get a user's recent operation record of a certain type
+     *
+     * @param userId User ID
+     * @param userOperationType User Operation Type
+     * @return LatestUserHistoryEntity
      */
     UserHistoryEntity getLatestUserHistoryEntity(Long userId, UserOperationType userOperationType);
 
     /**
-     * 校验用户是否可以注销
+     * Verify whether the user can log off
      *
-     * @param userId 用户ID
-     * @return boolean 允许为true，不允许为false
+     * @param userId User ID
+     * @return boolean True allowed, false not allowed
      * */
     boolean checkAccountAllowedToBeClosed(Long userId);
 
     /**
-     * 新增用户操作记录, 保留User所有数据.
+     * Add user operation records and retain all user data
      *
-     * @param user
-     * @param userOperationType
-     * @return
+     * @param user User
+     * @param userOperationType User Operation Type
+     * @return Number of rows affected
      */
     int create(UserEntity user, UserOperationType userOperationType);
 
     /**
-     * 新增用户操作记录，自定义需要保留的数据.
-     * @param userHistory
+     * Add user operation records and customize the data to be retained
+     *
+     * @param userHistory User History
      */
     void create(UserHistoryEntity userHistory);
 
     /**
-     * 获取createdAtAfter之后的操作记录.
-     * @param createdAtAfter
-     * @param userOperationType
-     * @return
+     * Get the operation record after created At After
+     *
+     * @param createdAtBefore Create start time
+     * @param createdAtAfter  Create end time
+     * @param userOperationType User Operation Type
+     * @return UserHistoryDto
      */
     List<PausedUserHistoryDto> selectUserHistoryDtos(LocalDateTime createdAtBefore
             , LocalDateTime createdAtAfter, UserOperationType userOperationType);

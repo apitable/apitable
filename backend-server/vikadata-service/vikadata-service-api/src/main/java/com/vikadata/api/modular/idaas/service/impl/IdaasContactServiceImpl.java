@@ -58,10 +58,8 @@ import static com.vikadata.api.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_B
 
 /**
  * <p>
- * 玉符 IDaaS 通讯录
+ * IDaaS Address book
  * </p>
- * @author 刘斌华
- * @date 2022-05-17 14:28:02
  */
 @Slf4j
 @Service
@@ -109,16 +107,16 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
             throw new BusinessException(IdaasException.APP_SPACE_NOT_BIND);
         }
 
-        // 1 将空间站设置为正在同步状态
+        // 1 Set the space station to synchronizing
         spaceService.setContactSyncing(spaceId, tenantEntity.getTenantName());
         try {
             ServiceAccount serviceAccount = JSONUtil.toBean(tenantEntity.getServiceAccount(), ServiceAccount.class);
             IdaasContactChange contactChange = new IdaasContactChange();
-            // 2 获取组织结构
+            // 2 Get Organization Structure
             fetchGroups(tenantEntity.getTenantName(), serviceAccount, spaceId, contactChange);
-            // 3 获取成员
+            // 3 Get Members
             fetchUsers(tenantEntity.getTenantName(), serviceAccount, spaceId, contactChange);
-            // 4 保存变更信息
+            // 4 Save change information
             idaasContactChangeService.saveContactChange(tenantEntity.getTenantName(), spaceId, contactChange);
         }
         catch (IdaasApiException ex) {
@@ -127,7 +125,7 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
             throw new BusinessException(IdaasException.API_ERROR);
         }
         finally {
-            // 5 清空临时缓存
+            // 5 Empty temporary cache
             stringRedisTemplate.delete(Arrays.asList(
                     getCacheExistedGroupKey(spaceId),
                     getCacheNewGroupKey(spaceId),
@@ -135,20 +133,18 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
                     getCacheNewUserKey(spaceId),
                     getCacheUserItemKey(spaceId)
             ));
-            // 6 解除空间站的正在同步状态
+            // 6 Release the synchronizing status of the space station
             spaceService.contactFinished(spaceId);
         }
     }
 
     /**
-     * 获取并处理用户组信息
+     * Get and process user group information
      *
-     * @param tenantName 租户名
-     * @param serviceAccount 租户级 ServiceAccount
-     * @param spaceId 绑定的空间站
-     * @param contactChange 变更信息
-     * @author 刘斌华
-     * @date 2022-06-04 17:10:50
+     * @param tenantName tenant name
+     * @param serviceAccount tenant level ServiceAccount
+     * @param spaceId bound space
+     * @param contactChange Change information
      */
     private void fetchGroups(String tenantName, ServiceAccount serviceAccount, String spaceId, IdaasContactChange contactChange) throws IdaasApiException {
         String cacheExistedGroupKey = getCacheExistedGroupKey(spaceId);
@@ -156,7 +152,7 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
         String cacheGroupItemKey = getCacheGroupItemKey(spaceId);
         SetOperations<String, String> setOperations = stringRedisTemplate.opsForSet();
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
-        // 1 获取最新的用户组信息，并加入缓存
+        // 1 Get the latest user group information and add it to the cache
         GroupApi groupApi = idaasTemplate.getGroupApi();
         GroupsRequest groupsRequest = new GroupsRequest();
         groupsRequest.setPageIndex(0);
@@ -166,9 +162,9 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
         List<GroupResponse> groupResponses = groupsResponse.getData();
         AtomicInteger order = new AtomicInteger(0);
         while (CollUtil.isNotEmpty(groupResponses)) {
-            // 1.1 将最新的用户组信息缓存起来
+            // 1.1 Cache the latest user group information
             groupResponses.forEach(groupResponse -> {
-                // 将列表返回的顺序作为组织结构的排序
+                // Sort the returned order of the list as the organization structure
                 groupResponse.setOrder(order.incrementAndGet());
 
                 setOperations.add(cacheNewGroupKey, groupResponse.getId());
@@ -179,16 +175,16 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
             groupsResponse = groupApi.groups(groupsRequest, serviceAccount, tenantName);
             groupResponses = groupsResponse.getData();
         }
-        // 2 获取所有已绑定的用户组信息
+        // 2 Get all bound user group information
         List<IdaasGroupBindEntity> groupBinds = idaasGroupBindService.getAllBySpaceIdIgnoreDeleted(spaceId);
         if (CollUtil.isNotEmpty(groupBinds)) {
-            // 2.1 将已绑定的用户组加入缓存
+            // 2.1 Add the bound user group to the cache
             String[] bindGroupIds = groupBinds.stream()
                     .map(IdaasGroupBindEntity::getGroupId)
                     .toArray(String[]::new);
             setOperations.add(cacheExistedGroupKey, bindGroupIds);
         }
-        // 3 遍历所有已绑定的用户组信息，获取需要更新、删除的用户组
+        // 3 Traverse all the bound user group information to obtain the user groups to be updated and deleted
         contactChange.setUpdateGroups(Lists.newArrayList());
         contactChange.setDeleteGroups(Lists.newArrayList());
         groupBinds.forEach(groupBind -> {
@@ -198,20 +194,20 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
                     .map(str -> JSONUtil.toBean(str, GroupResponse.class))
                     .orElse(null);
             if (Objects.isNull(groupResponse)) {
-                // 3.1 已绑定的用户组在最新列表中不存在，则需要删除
+                // 3.1 The bound user group does not exist in the latest list, you need to delete it
                 contactChange.getDeleteGroups().add(groupBind);
             }
             else if (!Objects.equals(groupBind.getGroupName(), groupResponse.getName()) ||
                     !Objects.equals(groupBind.getGroupOrder(), groupResponse.getOrder()) ||
                     Boolean.TRUE.equals(groupBind.getIsDeleted())) {
-                // 3.2 如果已绑定的用户组的名称、排序发生了变更或者重新启用，则需要更新信息
+                // 3.2 If the name and sorting of the bound user group are changed or re enabled, the information needs to be updated
                 groupBind.setGroupName(groupResponse.getName());
                 groupBind.setGroupOrder(groupResponse.getOrder());
                 contactChange.getUpdateGroups().add(groupBind);
             }
         });
 
-        // 4 获取需要新增的用户组
+        // 4 Get the user group to be added
         Set<String> toBeAddGroupIds = setOperations.difference(cacheNewGroupKey, cacheExistedGroupKey);
         List<GroupResponse> toBeAddGroupResponses = Optional.ofNullable(toBeAddGroupIds)
                 .filter(list -> !list.isEmpty())
@@ -225,21 +221,19 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
     }
 
     /**
-     * 获取并处理用户信息
+     * Obtain and process user information
      *
-     * @param tenantName 租户名
-     * @param serviceAccount 租户级 ServiceAccount
-     * @param spaceId 绑定的空间站
-     * @param contactChange 变更信息
-     * @author 刘斌华
-     * @date 2022-06-04 17:10:50
+     * @param tenantName tenant name
+     * @param serviceAccount tenant level ServiceAccount
+     * @param spaceId bound space
+     * @param contactChange change information
      */
     private void fetchUsers(String tenantName, ServiceAccount serviceAccount, String spaceId, IdaasContactChange contactChange) throws IdaasApiException {
         String cacheNewUserKey = getCacheNewUserKey(spaceId);
         String cacheUserItemKey = getCacheUserItemKey(spaceId);
         SetOperations<String, String> setOperations = stringRedisTemplate.opsForSet();
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
-        // 1 获取最新的用户信息，并加入缓存
+        // 1 Get the latest user information and add it to the cache
         UserApi userApi = idaasTemplate.getUserApi();
         UsersRequest usersRequest = new UsersRequest();
         usersRequest.setStatus("ACTIVE");
@@ -250,7 +244,7 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
         UsersResponse usersResponse = userApi.users(usersRequest, serviceAccount, tenantName);
         List<UserResponse> userResponses = usersResponse.getData();
         while (CollUtil.isNotEmpty(userResponses)) {
-            // 1.1 将最新的用户信息缓存起来
+            // 1.1 Cache the latest user information
             userResponses.forEach(userResponse -> {
                 setOperations.add(cacheNewUserKey, userResponse.getId());
                 hashOperations.put(cacheUserItemKey, userResponse.getId(), JSONUtil.toJsonStr(userResponse));
@@ -260,15 +254,15 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
             usersResponse = userApi.users(usersRequest, serviceAccount, tenantName);
             userResponses = usersResponse.getData();
         }
-        // 2 获取所有 IDaaS 对应的维格用户信息
+        // 2 Get the information of all IDaaS users
         Set<String> allNewUserIds = setOperations.members(cacheNewUserKey);
-        // 3 获取空间站已绑定的成员信息
+        // 3 Get the bound member information of the space station
         List<MemberEntity> allMembers = memberService.getMembersBySpaceId(spaceId, true);
         Map<Long, MemberEntity> allMemberMap = allMembers.stream()
                 .collect(Collectors.toMap(MemberEntity::getUserId, v -> v, (k1, k2) -> k2));
-        // 3.1 遍历所有成员，获取需要删除的成员
+        // 3.1 Traverse all members to get the members to be deleted
         contactChange.setDeleteMemberIds(Lists.newArrayList());
-        // 分批处理，防止大批量数据操作
+        // Batch processing to prevent mass data operation
         CollUtil.split(allMembers, 500).forEach(members -> {
             List<Long> vikaUserIds = members.stream()
                     .map(MemberEntity::getUserId)
@@ -277,16 +271,16 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
             userBinds.forEach(userBind -> {
                 MemberEntity member = allMemberMap.get(userBind.getVikaUserId());
                 if (!CollUtil.contains(allNewUserIds, userBind.getUserId()) && Boolean.FALSE.equals(member.getIsDeleted())) {
-                    // 3.2 如果已绑定成员不在新的用户列表中，则需要删除
+                    // 3.2 If the bound member is not in the new user list, you need to delete it
                     contactChange.getDeleteMemberIds().add(member.getId());
                 }
             });
         });
-        // 4 遍历所有 IDaaS 用户，获取需要新增、更新的信息
+        // 4 Traverse all IDaaS users to obtain the information to be added and updated
         contactChange.setAddUsers(Lists.newArrayList());
         contactChange.setAddMembers(Lists.newArrayList());
         contactChange.setUpdateUsers(Lists.newArrayList());
-        // 分批处理，防止大批量数据操作
+        // Batch processing to prevent mass data operation
         CollUtil.split(allNewUserIds, 500).forEach(newUserIds -> {
             List<IdaasUserBindEntity> userBinds = idaasUserBindService.getAllByUserIdsIgnoreDeleted(newUserIds);
             Map<String, IdaasUserBindEntity> userBindMap = userBinds.stream()
@@ -294,14 +288,14 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
             newUserIds.forEach(newUserId -> {
                 IdaasUserBindEntity userBind = userBindMap.get(newUserId);
                 if (Objects.isNull(userBind)) {
-                    // 4.1 IDaaS 的用户绑定信息不存在，则新增用户
+                    // 4.1 If the user binding information of IDaaS does not exist, a new user will be added
                     String userResponseStr = hashOperations.get(cacheUserItemKey, newUserId);
                     contactChange.getAddUsers().add(JSONUtil.toBean(userResponseStr, UserResponse.class));
                 }
                 else {
                     MemberEntity member = allMemberMap.get(userBind.getVikaUserId());
                     if (Objects.isNull(member)) {
-                        // 4.2 空间站成员信息不存在，则新增成员
+                        // 4.2 If the space station member information does not exist, add a member
                         contactChange.getAddMembers().add(userBind);
                     }
                     else {
@@ -314,7 +308,7 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
                                 !Objects.equals(userBind.getMobile(), userValues.getPhoneNum()) ||
                                 CollUtil.isNotEmpty(groupIdDiff) ||
                                 Boolean.TRUE.equals(userBind.getIsDeleted())) {
-                            // 3.2 如果已绑定的用户的名称、手机号码、邮箱、用户组发生了变更或者重新启用，则需要更新信息
+                            // 3.2 If the name, mobile phone number, email address and user group of the bound user are changed or re enabled, the information needs to be updated
                             userBind.setNickName(userValues.getDisplayName());
                             userBind.setEmail(userValues.getPrimaryMail());
                             userBind.setMobile(userValues.getPhoneNum());
@@ -328,60 +322,50 @@ public class IdaasContactServiceImpl implements IIdaasContactService {
     }
 
     /**
-     * 获取空间站已绑定用户组列表的缓存 Key
+     * Get the cache key of the bound user group list of the space station
      *
-     * @param spaceId 空间站 ID
-     * @return 缓存 Key
-     * @author 刘斌华
-     * @date 2022-05-30 15:51:57
+     * @param spaceId space ID
+     * @return cache Key
      */
     private String getCacheExistedGroupKey(String spaceId) {
         return String.format(CACHE_EXISTED_GROUP, spaceId);
     }
 
     /**
-     * 获取空间站最新用户组列表的缓存 Key
+     * Get the cache key of the latest user group list of the space station
      *
-     * @param spaceId 空间站 ID
-     * @return 缓存 Key
-     * @author 刘斌华
-     * @date 2022-05-30 15:51:57
+     * @param spaceId space ID
+     * @return cache Key
      */
     private String getCacheNewGroupKey(String spaceId) {
         return String.format(CACHE_NEW_GROUP, spaceId);
     }
 
     /**
-     * 获取空间站最新用户组信息的缓存 Key
+     * Get the cache key of the latest user group information of the space station
      *
-     * @param spaceId 空间站 ID
-     * @return 缓存 Key
-     * @author 刘斌华
-     * @date 2022-05-30 15:51:57
+     * @param spaceId space ID
+     * @return cache Key
      */
     private String getCacheGroupItemKey(String spaceId) {
         return String.format(CACHE_GROUP_ITEM, spaceId);
     }
 
     /**
-     * 获取空间站最新用户列表的缓存 Key
+     * Get the cache key of the latest user list of the space station
      *
-     * @param spaceId 空间站 ID
-     * @return 缓存 Key
-     * @author 刘斌华
-     * @date 2022-05-30 15:51:57
+     * @param spaceId space ID
+     * @return cache Key
      */
     private String getCacheNewUserKey(String spaceId) {
         return String.format(CACHE_NEW_USER, spaceId);
     }
 
     /**
-     * 获取空间站最新用户信息的缓存 Key
+     * Get the cache key of the latest user information of the space station
      *
-     * @param spaceId 空间站 ID
-     * @return 缓存 Key
-     * @author 刘斌华
-     * @date 2022-05-30 15:51:57
+     * @param spaceId space ID
+     * @return cache Key
      */
     private String getCacheUserItemKey(String spaceId) {
         return String.format(CACHE_USER_ITEM, spaceId);

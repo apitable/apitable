@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 第三方平台集成-企业租户用户 服务接口 实现
- *
- * @author Shawn Deng
- * @date 2020-12-18 00:27:51
+ * Third party platform integration - enterprise tenant user service interface implementation
  */
 @Service
 @Slf4j
@@ -103,13 +100,12 @@ public class SocialTenantUserServiceImpl extends ExpandServiceImpl<SocialTenantU
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteByTenantId(String appId, String tenantId) {
-        // 飞书一期集成的逻辑
         List<String> unionIds = socialTenantUserMapper.selectUnionIdsByTenantId(appId, tenantId);
         if (CollUtil.isNotEmpty(unionIds)) {
             iSocialUserService.deleteBatchByUnionId(unionIds);
             iUserLinkService.deleteBatchByUnionId(unionIds);
         }
-        // 删除记录
+        // Delete Record
         socialTenantUserMapper.deleteByTenantId(appId, tenantId);
     }
 
@@ -125,7 +121,7 @@ public class SocialTenantUserServiceImpl extends ExpandServiceImpl<SocialTenantU
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteByTenantIdAndOpenId(String appId, String tenantId, String openId) {
-        // 飞书租户员工删除的前提是 员工离职
+        // Lark tenant employee deletion is conditional on employee resignation
         String unionId = socialTenantUserMapper.selectUnionIdByOpenId(appId, tenantId, openId);
         if (StrUtil.isNotBlank(unionId)) {
             iSocialUserService.deleteBatchByUnionId(Collections.singletonList(unionId));
@@ -138,7 +134,7 @@ public class SocialTenantUserServiceImpl extends ExpandServiceImpl<SocialTenantU
     @Transactional(rollbackFor = Exception.class)
     public void deleteByTenantIdAndOpenIds(String appId, String tenantId, List<String> openIds) {
         if (CollUtil.isNotEmpty(openIds)) {
-            // 删除记录
+            // Delete Record
             socialTenantUserMapper.deleteBatchByOpenId(appId, tenantId, openIds);
         }
     }
@@ -169,7 +165,7 @@ public class SocialTenantUserServiceImpl extends ExpandServiceImpl<SocialTenantU
 
     @Override
     public String getOpenIdByTenantIdAndUserId(String appId, String tenantId, Long userId) {
-        // 查询用户绑定的unionId
+        // Query the union ID bound by the user
         List<String> unionIds = iSocialUserBindService.getUnionIdsByUserId(userId);
         if (unionIds.isEmpty()) {
             return null;

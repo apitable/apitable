@@ -12,60 +12,57 @@ import com.vikadata.entity.LabsApplicantEntity;
 
 /**
  * <p>
- * 实验性功能申请表 服务类
+ * Service class of experimental function application form
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @since 2021/10/21 10:17:23
  */
 public interface ILabsApplicantService extends IService<LabsApplicantEntity> {
 
     /**
-     * 根据userId和spaceId查询当前用户以及空房间站的实验室功能
+     * Query the laboratory functions of the current user and the empty room station according to the user ID and space ID
      *
-     * @param applicants 申请者IDs，为userId或者spaceId
+     * @param applicants Applicant I Ds, which are user Id or space Id
      * @return LabsApplicantEntity List
      * */
     LabsFeatureVo getUserCurrentFeatureApplicants(List<String> applicants);
 
     /**
-     * 获取申请用户或者用户所在空间站中启用的指定实验性功能
+     * Get the specified experimental functions enabled by the applicant or the space station where the user resides
      *
-     * @param applicant 申请者唯一标识，可以是spaceId或者userId
-     * @param featureKey 实验性功能名称
+     * @param applicant The unique identifier of the applicant, which can be space ID or user ID
+     * @param featureKey Name of experimental function
      * @return LabsApplicantEntity
      * */
     LabsApplicantEntity getApplicantByApplicantAndFeatureKey(String applicant, String featureKey);
 
     /**
-     * 为用户/所在空间站开启指定实验性内测功能
+     * Enable the designated experimental internal test function for the user's space
      *
-     * @param applicant 用户ID或者空间站ID
-     * @param featureKey 待开启实验性功能唯一标识
+     * @param applicant User ID or space ID
+     * @param featureKey Unique identification of experimental function to be opened
      * */
     void enableLabsFeature(String applicant, LabsApplicantTypeEnum applicantType, String featureKey, Long operator);
 
     /**
-     * 为用户/所在空间站关闭指定实验性内测功能
+     * Turn off the designated experimental internal test function for the user's space
      *
-     * @param applicant 用户ID或者空间站ID
-     * @param featureKey 待关闭实验性功能唯一标识
+     * @param applicant User ID or space ID
+     * @param featureKey Unique identification of experimental function to be closed
      * */
     void disableLabsFeature(String applicant, String featureKey);
 
     /**
-     * 发送站内通知
+     * Send in station notifications
      *
-     * @param templateId 通知模板ID
-     * @param applyUser 申请者user_id，前端的uuid
-     * @param applyFeatureRo 申请实验室功能请求对象
+     * @param templateId Notification template ID
+     * @param applyUser Applicant user id, the uuid of the front end
+     * @param applyFeatureRo Request object for laboratory function
      * */
     void sendNotification(NotificationTemplateId templateId, List<Long> toUserId, Long applyUser, GmApplyFeatureRo applyFeatureRo);
 
     /**
-     * 开启内测申请实验室功能
+     * Enable the function of internal test application laboratory
      *
-     * @param id 主键ID
+     * @param id Primary key ID
      * */
     void openApplicantFeature(Long id);
 }

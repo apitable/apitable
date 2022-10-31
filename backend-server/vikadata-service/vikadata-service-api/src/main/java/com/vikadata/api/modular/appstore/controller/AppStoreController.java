@@ -32,25 +32,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 应用商城库接口
- * @author Shawn Deng
- * @date 2022-01-12 11:35:34
+ * Application store library interface
  */
 @RestController
-@Api(tags = "应用商城_应用商城相关服务接口")
-@ApiResource(name = "应用商城库接口", path = "/appstores")
+@Api(tags = "App Store_Relevant service interfaces of the application store")
+@ApiResource(name = "Application store library interface", path = "/appstores")
 public class AppStoreController {
 
     @Resource
     private IFeishuService iFeishuService;
 
     @GetResource(path = "/apps", requiredPermission = false)
-    @ApiOperation(value = "查询应用列表", notes = "分页查询，不传查询参数则代表使用默认查询")
+    @ApiOperation(value = "Query application list", notes = "Pagination query. If no query parameter is transferred, the default query will be used")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageIndex", value = "页索引", dataTypeClass = String.class, paramType = "query", example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "每页数量", dataTypeClass = String.class, paramType = "query", example = "50"),
-            @ApiImplicitParam(name = "orderBy", value = "排序字段", dataTypeClass = String.class, paramType = "query", example = "createdAt"),
-            @ApiImplicitParam(name = "sortBy", value = "排序规则,asc=正序,desc=倒序", dataTypeClass = String.class, paramType = "query", example = "desc"),
+            @ApiImplicitParam(name = "pageIndex", value = "Page Index", dataTypeClass = String.class, paramType = "query", example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "Quantity per page", dataTypeClass = String.class, paramType = "query", example = "50"),
+            @ApiImplicitParam(name = "orderBy", value = "Sort field", dataTypeClass = String.class, paramType = "query", example = "createdAt"),
+            @ApiImplicitParam(name = "sortBy", value = "Collation,asc=positive sequence,desc=reverse order", dataTypeClass = String.class, paramType = "query", example = "desc"),
     })
     public ResponseData<PageInfo<AppInfo>> fetchAppStoreApps(@RequestParam(name = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(name = "pageSize", required = false, defaultValue = "50") Integer pageSize,

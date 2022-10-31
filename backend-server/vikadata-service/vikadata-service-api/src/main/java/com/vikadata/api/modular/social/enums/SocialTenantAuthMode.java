@@ -4,19 +4,17 @@ import java.util.Objects;
 
 /**
  * <p>
- * 第三方平台授权模式
+ * Third party platform authorization mode
  * </p>
- * @author 刘斌华
- * @date 2022-01-06 16:23:37
  */
 public enum SocialTenantAuthMode {
 
     /**
-     * 企业管理员授权
+     * Enterprise administrator authorization
      */
     ADMIN(1),
     /**
-     * 成员授权
+     * Member Authorization
      */
     MEMBER(2),
     ;
@@ -32,13 +30,11 @@ public enum SocialTenantAuthMode {
     }
 
     /**
-     * 将企业微信定义的授权模式取值转换为当前枚举
+     * Convert the authorization mode value defined by WeCom to the current enumeration
      *
-     * @param authMode 企业微信定义的授权模式取值
+     * @param authMode Value of authorization mode defined by WeCom
      * @return {@link SocialTenantAuthMode}
-     * @throws IllegalArgumentException 参数为 {@code null} 或者无效值
-     * @author 刘斌华
-     * @date 2022-01-06 16:39:19
+     * @throws IllegalArgumentException The parameter is {@code null} or invalid value
      */
     public static SocialTenantAuthMode fromWeCom(Integer authMode) {
 

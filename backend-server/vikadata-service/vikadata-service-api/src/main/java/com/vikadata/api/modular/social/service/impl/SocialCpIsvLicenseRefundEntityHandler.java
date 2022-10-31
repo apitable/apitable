@@ -21,10 +21,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商接口许可退款结果处理
+ * Third party platform integration - WeCom third-party service provider interface license refund result processing
  * </p>
- * @author 刘斌华
- * @date 2022-08-04 09:58:47
  */
 @Slf4j
 @Service
@@ -48,17 +46,17 @@ public class SocialCpIsvLicenseRefundEntityHandler implements ISocialCpIsvEntity
     public boolean process(SocialCpIsvMessageEntity unprocessed) throws WxErrorException {
         WxCpIsvXmlMessage wxCpIsvXmlMessage = JSONUtil.toBean(unprocessed.getMessage(), WxCpIsvXmlMessage.class);
         String orderId = wxCpIsvXmlMessage.getOrderId();
-        // 获取接口许可订单信息
+        // Obtain interface license order information
         SocialWecomPermitOrderEntity orderEntity = socialWecomPermitOrderService.getByOrderId(orderId);
         if (Objects.isNull(orderEntity)) {
-            log.warn("未找到退款的接口许可订单，请检查是否为其他环境数据，suiteId：{}，authCorpId：{}，订单号：{}",
+            log.warn("No refunded interface license order was found. Please check whether it is other environmental data,suiteId：{}，authCorpId：{}，订单号：{}",
                     unprocessed.getSuiteId(), unprocessed.getAuthCorpId(), orderId);
         }
         else {
-            // 订单存在，确认订单的状态
+            // Order exists, confirm the order status
             orderEntity = socialCpIsvPermitService.ensureOrder(orderId);
             if (orderEntity.getOrderStatus() == 5) {
-                // 如果退款成功，则确认所有账号的激活状态
+                // If the refund is successful, confirm the activation status of all accounts
                 socialCpIsvPermitService.ensureAllActiveCodes(unprocessed.getSuiteId(), unprocessed.getAuthCorpId());
             }
         }

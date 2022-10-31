@@ -146,11 +146,8 @@ import static com.vikadata.api.enums.user.UserOperationType.COMPLETE_CLOSING;
 
 /**
  * <p>
- * 用户表 服务实现类
+ * User table service implementation class
  * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-16
  */
 @Service
 @Slf4j
@@ -321,7 +318,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public Long createByExternalSystem(String externalId, String nickName, String avatar, String email, String remark) {
         if (StrUtil.isNotBlank(email)) {
-            // 查询现有的邮箱是否存在
+            // Query whether the existing mail exists
             UserEntity selectUser = baseMapper.selectByEmail(email);
             if (selectUser != null) {
                 UserEntity user = new UserEntity();
@@ -338,7 +335,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 return selectUser.getId();
             }
         }
-        log.info("创建账户");
+        log.info("Create Account");
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setNickName(StrUtil.isNotBlank(nickName) ? nickName : StrUtil.format("星球居民{}", RandomExtendUtil.randomString(4)));
@@ -351,7 +348,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             throw new BusinessException(SIGN_IN_ERROR);
         }
         if (StrUtil.isNotBlank(email)) {
-            // 如果邮箱有被受邀且未绑定过其他账户，激活受邀邮箱的空间成员
+            // If the mail has been invited and has not been bound to other accounts, activate the space members of the invited mail
             List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberByEmails(email);
             inactiveMemberProcess(user.getId(), inactiveMembers);
         }
@@ -362,11 +359,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             }
             iSpaceService.createSpace(user, spaceName);
         }
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(user.getId());
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(user.getId());
-        // 创建关联用户
+        // Create Associated User
         iSocialUserBindService.create(user.getId(), externalId);
         return user.getId();
     }
@@ -374,8 +371,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createSocialUser(User user) {
-        log.info("创建租户关联用户");
-        // 根据不同租户类型获取策略实现创建用户
+        log.info("Create Tenant Associated User");
+        // Obtain policies according to different tenant types to create users
         CreateSocialUserStrategey strategy = createSocialUserSimpleFactory.getStrategy(user.getSocialPlatformType().getValue());
         return strategy.createSocialUser(user);
     }
@@ -391,11 +388,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .lastLoginTime(LocalDateTime.now())
                 .build();
         saveUser(entity);
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(entity.getId());
-        // 创建关联用户
+        // Create Associated User
         iSocialUserBindService.create(entity.getId(), user.getUnionId());
         boolean isLink = iUserLinkService.isUserLink(user.getUnionId(), LinkType.FEISHU.getType());
         if (!isLink) {
@@ -436,9 +433,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             // create user bind
             UserEntity userEntity = buildUserEntity(userProfile.getPicture(), userProfile.getNickname(), userProfile.getEmail());
             saveUser(userEntity);
-            // 创建用户活动记录
+            // Create user activity record
             iPlayerActivityService.createUserActivityRecord(userEntity.getId());
-            // 创建个人邀请码
+            // Create personal invitation code
             ivCodeService.createPersonalInviteCode(userEntity.getId());
             // create user bind
             iUserBindService.create(userEntity.getId(), userProfile.getSub());
@@ -460,9 +457,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             // create user bind
             UserEntity userEntity = buildUserEntity(user.getPicture(), user.getNickname(), user.getEmail());
             saveUser(userEntity);
-            // 创建用户活动记录
+            // Create user activity record
             iPlayerActivityService.createUserActivityRecord(userEntity.getId());
-            // 创建个人邀请码
+            // Create personal invitation code
             ivCodeService.createPersonalInviteCode(userEntity.getId());
             // create user bind
             iUserBindService.create(userEntity.getId(), user.getId());
@@ -502,11 +499,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                         SocialNameModified.NO.getValue() : SocialNameModified.NO_SOCIAL.getValue())
                 .build();
         saveUser(entity);
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(entity.getId());
-        // 创建关联用户
+        // Create Associated User
         Long cpTenantUserId = iSocialCpTenantUserService.getCpTenantUserId(user.getTenantId(), user.getAppId(), user.getOpenId());
         if (Objects.isNull(cpTenantUserId)) {
             cpTenantUserId = iSocialCpTenantUserService.create(user.getTenantId(), user.getAppId(), user.getOpenId(), user.getUnionId());
@@ -520,7 +517,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public void activeTenantSpace(Long userId, String spaceId, String openId) {
-        // 激活关联所在租户空间的成员
+        // Activate the member of the tenant space where the association is located
         MemberEntity member = iMemberService.getBySpaceIdAndOpenId(spaceId, openId);
         if (member != null && member.getUserId() == null) {
             MemberEntity updatedMember = new MemberEntity();
@@ -534,7 +531,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long create(String areaCode, String mobile, String nickName, String avatar, String email, String spaceName) {
-        // 使用手机号创建用户
+        // Create user with mobile number
         UserEntity entity = UserEntity.builder()
                 .uuid(IdUtil.fastSimpleUUID())
                 .code(areaCode)
@@ -548,16 +545,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
         boolean hasSpace = false;
         if (email != null) {
-            // 如果邮箱有被受邀且未绑定过其他账户，激活受邀邮箱的空间成员
+            // If the mailbox has been invited and has not been bound to other accounts, activate the space members of the invited mailbox
             List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberByEmails(email);
             hasSpace = this.inactiveMemberProcess(entity.getId(), inactiveMembers);
         }
-        // 激活导入的成员
+        // Activate imported members
         if (mobile != null) {
             int count = memberMapper.updateUserIdByMobile(entity.getId(), mobile);
             hasSpace = hasSpace || count > 0;
         }
-        // 没有空间自动创建一个空间
+        // No space to create a space automatically
         if (!hasSpace) {
             String newSpaceName;
             if (StrUtil.isNotBlank(spaceName)) {
@@ -571,9 +568,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             }
             iSpaceService.createSpace(entity, newSpaceName);
         }
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(entity.getId());
         return entity.getId();
     }
@@ -591,9 +588,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(entity.getId());
         return entity;
     }
@@ -610,9 +607,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .build();
         boolean flag = saveUser(entity);
         ExceptionUtil.isTrue(flag, REGISTER_FAIL);
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(entity.getId());
         return entity;
     }
@@ -636,7 +633,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByCli(String username, String password, String phone) {
-        log.info("创建用户");
+        log.info("Create User");
         ExceptionUtil.isTrue(Validator.isEmail(username), REGISTER_EMAIL_ERROR);
         UserEntity user = baseMapper.selectByEmail(username);
         ExceptionUtil.isNull(user, REGISTER_EMAIL_HAS_EXIST);
@@ -655,9 +652,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             spaceName += SPACE_NAME_DEFAULT_SUFFIX;
         }
         iSpaceService.createSpace(newUser, spaceName);
-        // 创建个人邀请码
+        // Create personal invitation code
         ivCodeService.createPersonalInviteCode(newUser.getId());
-        // 创建用户活动记录
+        // Create user activity record
         iPlayerActivityService.createUserActivityRecord(newUser.getId());
         DeveloperEntity developer = new DeveloperEntity();
         developer.setId(IdWorker.getId());
@@ -695,7 +692,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public boolean checkUserHasBindEmail(Long userId) {
-        log.info("查询用户是否绑定邮箱");
+        log.info("Query whether users bind email");
         UserEntity user = getById(userId);
         ExceptionUtil.isNotNull(user, USER_NOT_EXIST);
         return user.getEmail() != null;
@@ -704,48 +701,48 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void bindMemberByEmail(Long userId, String spaceId, String email) {
-        log.info("绑定成员邮箱");
-        // 判断邮箱是否是未绑定，且是受邀邮箱
+        log.info("Bind member email");
+        // Determine whether the email is unbound and invited
         MemberEntity member = iMemberService.getBySpaceIdAndEmail(spaceId, email);
         ExceptionUtil.isNotNull(member, INVITE_EMAIL_NOT_EXIT);
         ExceptionUtil.isNull(member.getUserId(), INVITE_EMAIL_HAS_LINK);
 
-        // 判断请求用户邮箱是否已绑定其他邮箱、用户的邮箱必须为空
+        // Judge whether the requesting user's mailbox is bound to another email, and the user's email must be empty
         String userEmail = baseMapper.selectEmailById(userId);
         ExceptionUtil.isBlank(userEmail, LINK_EMAIL_ERROR);
-        // 绑定为用户邮箱，该邮箱被受邀的空间成员会一起激活
+        // Bind as user email, and the email will be activated by invited space members together
         updateEmailByUserId(userId, email);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateEmailByUserId(Long userId, String email) {
-        log.info("修改用户[{}]邮箱[{}]", userId, email);
+        log.info("Modify User [{}] email [{}]", userId, email);
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setEmail(email);
         boolean flag = updateById(updateUser);
         ExceptionUtil.isTrue(flag, LINK_EMAIL_ERROR);
-        // 同步成员信息的邮箱
+        // Synchronize member information email
         iMemberService.updateEmailByUserId(userId, email);
-        //如果邮箱有被受邀且未绑定过其他账户，激活受邀邮箱的空间成员
+        // If the email has been invited and has not been bound to other accounts, activate the space members of the invited email
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberByEmails(email);
         this.inactiveMemberProcess(userId, inactiveMembers);
-        //删除缓存
+        // Delete Cache
         loginUserService.delete(userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void unbindEmailByUserId(Long userId) {
-        // 用户解绑邮箱，需要至少绑定一个联系方式（手机号、邮箱）
+        // The user needs to bind at least one contact (mobile phone number, email) to unbind the email
         LoginUserDto userDto = loginUserService.getLoginUser(userId);
         ExceptionUtil.isNotBlank(userDto.getMobile(), MUST_BIND_MOBILE);
         boolean flag = SqlHelper.retBool(baseMapper.resetEmailByUserId(userId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 同步解绑成员信息的邮箱
+        // Synchronize unbound member information email
         iMemberService.resetEmailByUserId(userId);
-        // 删除缓存
+        // Delete Cache
         loginUserService.delete(userId);
     }
 
@@ -759,37 +756,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         updateUser.setMobilePhone(mobile);
         boolean flag = updateById(updateUser);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 同步成员信息的手机号
+        // Synchronize the mobile number of member information
         iMemberService.updateMobileByUserId(userId, mobile);
-        // 如果手机号有被受邀且未绑定过其他账户，激活受邀的空间成员
+        // If the mobile phone number has been invited and no other account has been bound, activate the invited space member
         List<MemberDto> inactiveMembers = iMemberService.getInactiveMemberByEmails(mobile);
         this.inactiveMemberProcess(userId, inactiveMembers);
 
-        // 删除缓存
+        // Delete Cache
         loginUserService.delete(userId);
-        // 邮箱注册首次绑定手机，补赠邀请奖励
+        // Email registration is bound to mobile phones for the first time, and additional invitation rewards are given
         if (userDto.getMobile() == null) {
             TaskManager.me().execute(() -> {
-                // 获取注册时的邀请码
+                // Get the invitation code when registering
                 VCodeDTO vCodeDTO = ivCodeUsageService.getInvitorUserId(userId);
                 if (vCodeDTO == null) {
                     return;
                 }
-                // 判断邀请码类型
+                // Judge the invitation code type
                 boolean isPersonal = vCodeDTO.getType().equals(VCodeType.PERSONAL_INVITATION_CODE.getType());
                 String actionCode = isPersonal ? IntegralActionCodeConstants.BE_INVITED_TO_REWARD
                         : IntegralActionCodeConstants.OFFICIAL_INVITATION_REWARD;
-                // 每个用户只能享受一次积分奖励
+                // Each user can only enjoy one point reward
                 int historyNum = iIntegralService.getCountByUserIdAndActionCode(userId, actionCode);
                 if (historyNum >= 1) {
                     return;
                 }
-                // 个人邀请码奖励
+                // Personal invitation code reward
                 if (isPersonal) {
                     iAuthService.personalInvitedReward(userId, userDto.getNickName(), vCodeDTO.getUserId());
                     return;
                 }
-                // 官方邀请码奖励
+                // Official invitation code award
                 iAuthService.officialInvitedReward(userId);
             });
         }
@@ -798,20 +795,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void unbindMobileByUserId(Long userId) {
-        // 用户解绑手机号，需要至少绑定一个联系方式（手机号、邮箱）
+        // The user needs to bind at least one contact (phone number, email) to unbind the mobile phone number
         LoginUserDto userDto = loginUserService.getLoginUser(userId);
         ExceptionUtil.isNotBlank(userDto.getEmail(), MUST_BIND_EAMIL);
         boolean flag = SqlHelper.retBool(baseMapper.resetMobileByUserId(userId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        // 同步解绑成员信息的手机号
+        // Synchronize the mobile phone number of unbinding member information
         iMemberService.resetMobileByUserId(userId);
-        // 删除缓存
+        // Delete Cache
         loginUserService.delete(userId);
     }
 
     @Override
     public void updateLoginTime(Long userId) {
-        // 更新最后登陆时间
+        // Update the last login time
         UserEntity update = new UserEntity();
         update.setId(userId);
         update.setLastLoginTime(LocalDateTime.now());
@@ -822,7 +819,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(Long userId, UserOpRo param) {
-        log.info("编辑用户信息");
+        log.info("Edit user information");
         UserEntity userEntity = getById(userId);
         ExceptionUtil.isNotNull(userEntity, USER_NOT_EXIST);
         UserEntity user = UserEntity.builder().id(userId).build();
@@ -836,7 +833,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             user.setLocale(param.getLocale());
         }
         if (StrUtil.isNotBlank(param.getNickName())) {
-            //初始化昵称，若存在注册自动创建的空间"星球居民***的空间站"，将空间名同步修改
+            // Initialize the nickname. If there is a space "space of *** planet residents" registered and automatically created, synchronously modify the space name
             if (BooleanUtil.isTrue(param.getInit())) {
                 String spaceId = spaceMapper.selectSpaceIdByUserIdAndName(userId, userEntity.getNickName());
                 if (StrUtil.isNotBlank(spaceId)) {
@@ -847,11 +844,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                     iSpaceService.updateSpace(userId, spaceId, SpaceUpdateOpRo.builder().name(spaceName).build());
                 }
             }
-            // 同步个人昵称到未指定修改过的成员名称
+            // Synchronize personal nickname to member name that has not been modified
             iMemberService.updateMemberNameByUserId(userId, param.getNickName());
-            // 同步修改成员'SocialNameModified'字段状态
+            // Synchronously modify member 'Social Name Modified' field status
             memberMapper.updateSocialNameModifiedByUserId(userId);
-            // 删除修改了成员名称的空间缓存
+            // Delete the space cache with modified member names
             TaskManager.me().execute(() -> {
                 List<String> spaceIds = iMemberService.getSpaceIdWithoutNameModifiedByUserId(userId);
                 for (String spcId : spaceIds) {
@@ -861,7 +858,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             user.setNickName(param.getNickName())
                     .setIsSocialNameModified(SocialNameModified.YES.getValue());
             if (BooleanUtil.isTrue(param.getInit())) {
-                // 如果是邀请奖励进来操作修改用户名称
+                // If it is an invitation to reward, modify the user's name
                 String key = RedisConstants.getInviteHistoryKey(userId.toString());
                 if (BooleanUtil.isTrue(redisTemplate.hasKey(key))) {
                     Long recordId = Long.parseLong(StrUtil.toString(redisTemplate.opsForValue().get(key)));
@@ -872,10 +869,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         boolean flag = updateById(user);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        //删除缓存
+        // Delete Cache
         loginUserService.delete(userId);
         if (StrUtil.isNotBlank(waitDeleteOldAvatar) && StrUtil.startWith(waitDeleteOldAvatar, PUBLIC_PREFIX)) {
-            // 删除云端原文件
+            // Delete original cloud files
             iAssetService.delete(waitDeleteOldAvatar);
         }
     }
@@ -883,14 +880,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updatePwd(Long id, String password) {
-        log.info("修改密码");
+        log.info("Change Password");
         PasswordEncoder passwordEncoder = SpringContextHolder.getBean(PasswordEncoder.class);
         UserEntity user = UserEntity.builder()
                 .id(id)
                 .password(passwordEncoder.encode(password))
                 .build();
 
-        //删除缓存
+        // Delete Cache
         loginUserService.delete(id);
         boolean flag = updateById(user);
         ExceptionUtil.isTrue(flag, MODIFY_PASSWORD_ERROR);
@@ -898,18 +895,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public UserInfoVo getCurrentUserInfo(Long userId, String spaceId, Boolean filter) {
-        log.info("获取用户信息和空间内容");
-        // 查询用户基本信息
+        log.info("Get user information and space content");
+        // Query the user's basic information
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
         UserLinkInfo userLinkInfo = userLinkInfoService.getUserLinkInfo(loginUserDto.getUserId());
-        // 复制第三方帐号关联信息
+        // Copy third-party account associated information
         List<UserLinkVo> thirdPartyInformation = new ArrayList<>(userLinkInfo.getAccountLinkList().size());
         for (int i = 0; i < userLinkInfo.getAccountLinkList().size(); i++) {
             UserLinkVo linkVo = new UserLinkVo();
             BeanUtil.copyProperties(userLinkInfo.getAccountLinkList().get(i), linkVo);
             thirdPartyInformation.add(linkVo);
         }
-        // 是否使用过邀请码奖励
+        // Whether the invitation code has been used for rewards
         boolean usedInviteReward = iIntegralService.checkByUserIdAndActionCodes(userId,
                 CollectionUtil.newArrayList(IntegralActionCodeConstants.BE_INVITED_TO_REWARD, IntegralActionCodeConstants.OFFICIAL_INVITATION_REWARD));
         UserInfoVo userInfo = UserInfoVo.builder().sendSubscriptionNotify(constProperties.getSendSubscriptionNotify())
@@ -917,7 +914,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .build()
                 .transferDataFromDto(loginUserDto, userLinkInfo, thirdPartyInformation);
 
-        if (userInfo.getIsPaused()) { // 注销冷静期内账号，计算正式注销时间
+        if (userInfo.getIsPaused()) { // Cancel the account during the calm period, and calculate the official cancellation time
             UserHistoryEntity userHistory = iUserHistoryService
                     .getLatestUserHistoryEntity(userId, UserOperationType.APPLY_FOR_CLOSING);
             ExceptionUtil.isNotNull(userHistory, UserClosingException.USER_HISTORY_RECORD_ISSUE);
@@ -925,7 +922,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
 
         boolean noSpace = StrUtil.isBlank(spaceId);
-        // 选择性过滤空间相关信息
+        // Selectively filter spatial related information
         if (BooleanUtil.isTrue(filter)) {
             if (noSpace) {
                 return userInfo;
@@ -936,7 +933,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             }
         }
         else if (noSpace) {
-            // 不传空间ID时，获取用户最近工作的空间ID
+            // When the space ID is not transferred, obtain the space ID of the user's recent work
             String activeSpaceId = userActiveSpaceService.getLastActiveSpace(userId);
             if (StrUtil.isBlank(activeSpaceId)) {
                 return userInfo;
@@ -944,11 +941,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             spaceId = activeSpaceId;
         }
         else {
-            // 防止访问未加入的空间
+            // Prevent access to not join spaces
             userSpaceService.getMemberId(userId, spaceId);
         }
         userInfo.setNeedCreate(false);
-        //缓存取会话
+        // Cache session
         UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
         userInfo.setSpaceId(userSpace.getSpaceId());
         userInfo.setSpaceName(userSpace.getSpaceName());
@@ -962,7 +959,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         userInfo.setIsNewComer(!iMemberService.checkUserHasModifyNameInSpace(userId));
         userInfo.setIsMemberNameModified(userSpace.getIsMemberNameModified());
 
-        //获取上一次打开的数表信息
+        // Get the last opened data table information
         OpenedSheet openedSheet = userSpaceOpenedSheetService.getOpenedSheet(userId, spaceId);
         if (ObjectUtil.isNotNull(openedSheet) && ObjectUtil.isNotNull(openedSheet.getNodeId())) {
             userInfo.setActiveNodeId(openedSheet.getNodeId());
@@ -975,8 +972,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public void bindDingTalk(DtBindOpRo opRo) {
-        log.info("关联钉钉");
-        //判断是否存在
+        log.info("Associated DingTalk");
+        // Judge whether it exists
         Long id = baseMapper.selectIdByMobile(opRo.getPhone());
         ExceptionUtil.isNotNull(id, MOBILE_NO_EXIST);
         UserEntity user = UserEntity.builder()
@@ -987,7 +984,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
         boolean flag = updateById(user);
         ExceptionUtil.isTrue(flag, LINK_FAILURE);
-        //绑定成功、自动登陆保存session
+        // Bind successfully, and automatically log in to save the session
         SessionContext.setUserId(id);
     }
 
@@ -1010,11 +1007,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public void unbind(Long userId, Integer type) {
-        log.info("创建(用户)账单账户");
+        log.info("Create (user) billing account");
         String linkUnionId = userLinkMapper.selectUnionIdByUserIdAndType(userId, type);
-        // 删除第三方集成关联
+        // Delete third-party integration association
         socialUserBindMapper.deleteByUnionIds(Collections.singletonList(linkUnionId));
-        // 删除账号关联
+        // Delete account association
         userLinkMapper.deleteByUserIdAndType(userId, type);
     }
 
@@ -1026,23 +1023,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void applyForClosingAccount(UserEntity user) {
-        // 更新用户注销冷静期的状态为是
+        // Update the user logoff cool down period status to Yes
         updateIsPaused(user.getId(), true);
-        // 新增用户操作记录
+        // Add User Operation Record
         iUserHistoryService.create(user, UserOperationType.APPLY_FOR_CLOSING);
-        // 逻辑删除user share.
+        // Logically delete user share
         nodeShareService.disableNodeSharesByUserId(user.getId());
-        // 删除userLoginDto缓存
+        // Delete user Login Dto cache
         loginUserService.delete(user.getId());
         userActiveSpaceService.delete(user.getId());
-        // 逻辑删除space invite link.
+        // Logical deletion of space invite link
         List<MemberEntity> members = iMemberService.getByUserId(user.getId());
         if (members.size() == 0) {
             return;
         }
         List<Long> memberIds = members.stream().map(MemberEntity::getId).collect(Collectors.toList());
         spaceInviteLinkService.deleteByMemberIds(memberIds);
-        // 逻辑删除成员信息
+        // Logical delete member information
         iMemberService.preDelByMemberIds(memberIds);
 
         // notify the main admin about this member is going to close his account.
@@ -1056,10 +1053,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     /**
-     * 封装Notification，用于通知主管理员成员已申请注销.
+     * Encapsulate Notification to notify the master administrator that the member has applied for logoff
      *
-     * @param user 用户
-     * @param spaces 空间列表
+     * @param user User
+     * @param spaces Space List
      * @return NotificationCreateRo List
      */
     private List<NotificationCreateRo> genNotificationCreateRos(UserEntity user, List<SpaceEntity> spaces) {
@@ -1089,22 +1086,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void cancelClosingAccount(UserEntity user) {
-        // 更新用户为注销冷静期状态为否
+        // Update the user to log off the cool down period status to No
         updateIsPaused(user.getId(), false);
-        // 获取当前未逻辑删除的成员信息，兼容通信录同步导致的异常情况.
+        // Get the member information that has not been logically deleted and the exceptions caused by compatible address book synchronization
         List<MemberEntity> unexpectedMembers = iMemberService.getByUserId(user.getId());
         List<Long> unexpectedMemberIds = unexpectedMembers.stream().map(MemberEntity::getId)
                 .collect(Collectors.toList());
-        // 逻辑删除异常成员信息.
+        // Logical deletion of abnormal member information
         if (unexpectedMemberIds.size() > 0) {
             memberMapper.deleteBatchByIds(unexpectedMemberIds);
         }
-        // 恢复成员信息
+        // Restore member information
         iMemberService.cancelPreDelByUserId(user.getId());
-        // 删除userLoginDto缓存
+        // Delete user Login Dto cache
         loginUserService.delete(user.getId());
         userActiveSpaceService.delete(user.getId());
-        // 新增用户操作记录
+        // Add User Operation Record
         UserHistoryEntity userHistory = UserHistoryEntity.builder().userId(user.getId())
                 .userStatus(UserOperationType.CANCEL_CLOSING.getStatusCode())
                 .uuid(user.getUuid())
@@ -1115,15 +1112,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void closeAccount(UserEntity user) {
-        // 清除该用户的昵称、区号、手机和邮箱信息
+        // Clear the user's nickname, area code, mobile phone and email information
         userMapper.resetUserById(user.getId());
-        // 清除该用户在成员表的信息
+        // Clear the user's information in the member table
         memberMapper.clearMemberInfoByUserId(user.getId());
-        // 物理删除用户第三方关联绑定信息
+        // Physically delete the user's third-party association binding information
         userLinkMapper.deleteByUserId(user.getId());
         iSocialUserBindService.deleteByUserId(user.getId());
         iSocialCpUserBindService.deleteByUserId(user.getId());
-        // 往历史表中写入"已完成注销"记录，0代表系统用户
+        // Write the "Logout Completed" record to the history table. 0 represents the system user
         UserHistoryEntity userHistory = UserHistoryEntity.builder()
                 .userId(user.getId())
                 .uuid(user.getUuid())
@@ -1145,11 +1142,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         List<Long> activateMember = new ArrayList<>();
         List<Long> delMember = new ArrayList<>();
-        // 获取用户所有空间的ID
+        // Get the ID of all spaces of the user
         List<String> spaceIds = iMemberService.getSpaceIdByUserId(userId);
         inactiveMembers.forEach(member -> {
             if (spaceIds.contains(member.getSpaceId())) {
-                // 未激活的成员，已存在用户空间中，删除该未激活成员
+                // An inactive member already exists in the user space. Delete the inactive member
                 delMember.add(member.getId());
             }
             else {
@@ -1157,7 +1154,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             }
         });
         if (CollUtil.isNotEmpty(activateMember)) {
-            // 激活受邀空间的成员，并同步用户信息
+            // Activate members of the invited space and synchronize user information
             UserEntity entity = getById(userId);
             if (entity != null) {
                 List<MemberEntity> updateMembers = new ArrayList<>();
@@ -1174,7 +1171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 iMemberService.updateBatchById(updateMembers);
             }
         }
-        // 删除同一个空间重复的未激活成员
+        // Delete duplicate inactive members of the same space
         if (CollUtil.isNotEmpty(delMember)) {
             iMemberService.removeByMemberIds(delMember);
         }
@@ -1201,16 +1198,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public List<UserLangDTO> getLangByEmails(String expectedLang, List<String> emails) {
-        // 由于in可能存在性能问题，采用分段查询。
+        // Maybe have performance problems, the segmented query is used.
         List<UserLangDTO> userLangs = new ArrayList<>(emails.size());
         int page = PageUtil.totalPage(emails.size(), UserQueryLimit.QUERY_LOCALE_IN_EMAILS_LIMIT);
         for (int i = 0; i < page; i++) {
             List<String> subEmails = CollUtil.page(i, UserQueryLimit.QUERY_LOCALE_IN_EMAILS_LIMIT, emails);
             userLangs.addAll(userMapper.selectLocaleInEmailsWithDefaultLocale(expectedLang, subEmails));
         }
-        // 添加上数据库中没有的email
+        // Add an email that is not in the database
         if (userLangs.size() != emails.size()) {
-            // 一般不会走进这个判断
+            // Generally, they will not enter this judgment
             List<String> existEmails = userLangs.stream().map(UserLangDTO::getEmail).collect(Collectors.toList());
             List<String> nonExistEmails = CollUtil.subtractToList(emails, existEmails);
             nonExistEmails.forEach(email -> {
@@ -1244,21 +1241,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public void useInviteCodeReward(Long userId, String inviteCode) {
-        // 查询用户的邀请码，判断不可用自身的邀请码
+        // Query the user's invitation code, and determine that your own invitation code is not available
         String userInviteCode = ivCodeService.getUserInviteCode(userId);
         ExceptionUtil.isFalse(inviteCode.equals(userInviteCode), VCodeException.INVITE_CODE_NOT_VALID);
-        // 用户没使用过邀请奖励
+        // Users have not used invitation rewards
         boolean usedInviteReward = iIntegralService.checkByUserIdAndActionCodes(userId,
                 CollectionUtil.newArrayList(IntegralActionCodeConstants.BE_INVITED_TO_REWARD, IntegralActionCodeConstants.OFFICIAL_INVITATION_REWARD));
         ExceptionUtil.isFalse(usedInviteReward, VCodeException.INVITE_CODE_REWARD_ERROR);
-        // 加载用户信息
+        // Load user information
         LoginUserDto userDto = loginUserService.getLoginUser(userId);
-        // 保存邀请码使用记录
+        // Save the use record of invitation code
         ivCodeService.useInviteCode(userId, userDto.getNickName(), inviteCode);
-        // 查询邀请码所属用户，不存在则代表官方邀请码
+        // Query the user of the invitation code. If it does not exist, it represents the official invitation code
         Long inviteUserId = vCodeMapper.selectRefIdByCodeAndType(inviteCode, VCodeType.PERSONAL_INVITATION_CODE.getType());
         if (inviteUserId == null) {
-            // 非个人邀请码，官方邀请码
+            // Non personal invitation code, official invitation code
             iAuthService.officialInvitedReward(userId);
             return;
         }
@@ -1279,30 +1276,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     /**
-     * 根据用户名查询用户
-     * 用户名可以是邮箱或者区号+手机号
+     * Query users by user name
+     * User's name can be email or area code+mobile phone number
      *
-     * @param areaCode 区号
-     * @param username 用户名
+     * @param areaCode Area code
+     * @param username User name
      * @return UserEntity
      */
     @Override
     public UserEntity getByUsername(String areaCode, String username) {
         if (Validator.isEmail(username)) {
-            // 判断是否存在
+            // Judge whether it exists
             UserEntity user = this.getByEmail(username);
             ExceptionUtil.isNotNull(user, USERNAME_OR_PASSWORD_ERROR);
             return user;
         }
         else if (StrUtil.isNotBlank(areaCode)) {
             ExceptionUtil.isTrue(Validator.isNumber(username), USERNAME_OR_PASSWORD_ERROR);
-            // 判断是否存在
+            // Judge whether it exists
             UserEntity user = this.getByCodeAndMobilePhone(areaCode, username);
             ExceptionUtil.isNotNull(user, USERNAME_OR_PASSWORD_ERROR);
             return user;
         }
         else {
-            //用户名格式错误
+            // User name format error
             throw new BusinessException(USERNAME_OR_PASSWORD_ERROR);
         }
     }

@@ -12,203 +12,168 @@ import com.vikadata.api.modular.social.model.TenantBindDTO;
 import com.vikadata.entity.SocialTenantBindEntity;
 
 /**
- * 第三方平台集成-企业租户绑定空间表 Mapper
- *
- * @author Shawn Deng
- * @date 2020-12-02 18:05:48
+ * Third party platform integration - enterprise tenant binding space table Mapper
  */
 public interface SocialTenantBindMapper extends BaseMapper<SocialTenantBindEntity> {
 
     /**
-     * 查询空间绑定的租户总数
+     * Total number of tenants querying space binding
      *
-     * @param spaceId 空间ID
-     * @return 总数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:50
+     * @param spaceId Space ID
+     * @return Total
      */
     Integer selectCountBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 查询租户绑定的空间总数
+     * Query the total space bound by the tenant
      *
-     * @param tenantId 租户ID
-     * @return 总数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:50
+     * @param tenantId Tenant ID
+     * @return Total
      */
     Integer selectCountByTenantId(@Param("tenantId") String tenantId);
 
     /**
-     * 查询空间绑定的租户标识
+     * Query the tenant ID of the space binding
      *
-     * @param spaceId 空间ID
-     * @return 租户标识
-     * @author Shawn Deng
-     * @date 2020/12/16 19:24
+     * @param spaceId Space ID
+     * @return Tenant ID
      */
     List<String> selectTenantIdBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 查询租户绑定的所有空间
+     * Query all spaces bound by the tenant
      *
-     * @param tenantId 租户ID
-     * @return 空间ID列表
-     * @author Shawn Deng
-     * @date 2020/12/14 14:51
+     * @param tenantId Tenant ID
+     * @return Space ID List
      */
     List<String> selectSpaceIdByTenantId(@Param("tenantId") String tenantId);
 
     /**
-     * 查询租户绑定的所有空间
+     * Query all spaces bound by the tenant
      *
-     * @param tenantId 租户ID
-     * @param appId 应用ID
-     * @return 空间ID列表
-     * @author zoe zheng
-     * @date 2021/9/23 16:23
+     * @param tenantId Tenant ID
+     * @param appId App ID
+     * @return Space ID List
      */
     List<String> selectSpaceIdsByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
     /**
-     * 删除租户绑定
+     * Delete Tenant Binding
      *
-     * @param spaceId 空间ID
-     * @param tenantId 租户ID
-     * @return 成功执行数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:51
+     * @param spaceId Space ID
+     * @param tenantId Tenant ID
+     * @return Number of successful executions
      */
     int deleteBySpaceIdAndTenantId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId);
 
     /**
-     * 批量删除租户绑定
+     * Batch delete tenant bindings
      *
-     * @param tenantIds 租户ID列表
-     * @return 成功执行数
-     * @author Shawn Deng
-     * @date 2020/12/14 14:52
+     * @param tenantIds Tenant ID List
+     * @return Number of successful executions
      */
     int deleteBatchByTenantId(@Param("tenantIds") List<String> tenantIds);
 
     /**
-     * 获取空间站绑定信息
+     * Get the binding information of the space
      *
-     * @param spaceId 空间ID
-     * @return 租户Id列表
-     * @author zoe zheng
-     * @date 2021/5/12 3:44 下午
+     * @param spaceId Space ID
+     * @return Tenant Id List
      */
     TenantBindDTO selectBaseInfoBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 查询租户绑定的空间总数
+     * Query the total space bound by the tenant
      *
-     * @param tenantId 租户ID
-     * @param appId 租户appId
+     * @param tenantId Tenant ID
+     * @param appId Tenant app Id
      * @return Integer
-     * @author zoe zheng
-     * @date 2021/5/12 6:17 下午
      */
     Integer selectCountByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
 
     /**
-     * 获取租户绑定空间站ID
+     * Get the tenant bound space station ID
      *
-     * @param tenantId 租户ID
-     * @param appId 租户appId
-     * @return 空间ID
-     * @author zoe zheng
-     * @date 2021/5/12 3:44 下午
+     * @param tenantId Tenant ID
+     * @param appId Tenant app Id
+     * @return Space ID
      */
     String selectSpaceIdByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
 
     /**
-     * 获取租户绑定空间站ID
+     * Get the tenant bound space station ID
      *
-     * @param tenantId 租户ID
-     * @param appId 租户appId
-     * @return 空间ID
-     * @author zoe zheng
-     * @date 2021/5/12 3:44 下午
+     * @param tenantId Tenant ID
+     * @param appId Tenant app Id
+     * @return Space ID
      */
     SocialTenantBindEntity selectByTenantIdAndAppId(@Param("tenantId") String tenantId, @Param("appId") String appId);
 
     /**
-     * 根据租户ID和应用ID删除绑定关系
+     * Delete binding relationship according to tenant ID and application ID
      *
-     * @param spaceId 空间站ID
-     * @return 删除记录条数
-     * @author zoe zheng
-     * @date 2021/5/17 9:01 下午
+     * @param spaceId Space ID
+     * @return Number of records deleted
      */
     int deleteBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 查询空间绑定的租户类型总数
+     * Total number of tenant types for querying space binding
      *
-     * @param spaceId 空间站ID
-     * @param platform 所属平台(1: 企业微信, 2: 钉钉, 3: 飞书)
-     * @return 记录总数
-     * @author zoe zheng
-     * @date 2021/8/6 4:45 下午
+     * @param spaceId Space ID
+     * @param platform Platform(1: WeChat, 2: DingTalk, 3: Lark)
+     * @return Total Records
      */
     Integer selectCountBySpaceIdAndPlatform(@Param("spaceId") String spaceId, @Param("platform") Integer platform);
 
     /**
-     * 查询空间绑定的租户授权信息
+     * Query the tenant authorization information of space binding
      *
-     * @param spaceId   空间站ID
-     * @param platform  所属平台(1: 企业微信, 2: 钉钉, 3: 飞书)
-     * @return 空间绑定租户授权信息
-     * @author Pengap
-     * @date 2021/8/16 11:17:07
+     * @param spaceId   Space ID
+     * @param platform  Platform(1: WeChat, 2: DingTalk, 3: Lark)
+     * @return Space binding tenant authorization information
      */
     SpaceBindTenantInfoDTO selectSpaceBindTenantInfoByPlatform(@Param("spaceId") String spaceId, @Param("platform") Integer platform);
 
     /**
-     * 查询第三方绑定的企业的空间
-     * todo 这里是全表扫描
-     * @param platformType 所属平台(1: 企业微信, 2: 钉钉, 3: 飞书)
-     * @param appType 应用类型
+     * Query the space of enterprises bound by third parties
+     * todo Here is full table scanning
+     * @param platformType Platform(1: WeChat, 2: DingTalk, 3: Lark)
+     * @param appType Application Type
      * @return List<String>
-     * @author zoe zheng
-     * @date 2021/11/1 12:11
      */
     List<String> selectSpaceIdByPlatformTypeAndAppType(@Param("platformType") SocialPlatformType platformType,
             @Param("appType") SocialAppType appType);
 
     /**
-     * 根据空间和租户标识删除
-     * @param tenantId 租户标识
-     * @param spaceId 空间标识
+     * Delete based on space and tenant identity
+     * @param tenantId Tenant ID
+     * @param spaceId Space ID
      */
     int deleteByTenantIdAndSpaceId(@Param("tenantId") String tenantId, @Param("spaceId") String spaceId);
 
     /**
-     * 根据空间和租户标识查询
-     * @param spaceId 空间标识
-     * @param tenantId 租户标识
+     * Query based on space and tenant identity
+     * @param spaceId Space ID
+     * @param tenantId Tenant ID
      * @return SocialTenantBindEntity List
      */
     List<SocialTenantBindEntity> selectBySpaceIdAndTenantId(@Param("spaceId") String spaceId, @Param("tenantId") String tenantId);
 
     /**
-     * 查询空间绑定的租户
-     * @param spaceId 空间标识
+     * Query the tenants of space binding
+     * @param spaceId Space ID
      * @return SocialTenantBindEntity
      */
     SocialTenantBindEntity selectBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * 获取第三方绑定的空间站列表
-     * @param tenantIds 平台ID
-     * @param appIds 应用ID
+     * Get the list of third-party bound space stations
+     * @param tenantIds Platform ID
+     * @param appIds App ID
      * @return List<String>
-     * @author zoe zheng
-     * @date 2022/6/7 17:36
      */
     List<String> selectSpaceIdsByTenantIdsAndAppIds(@Param("tenantIds") List<String> tenantIds,
             @Param("appIds") List<String> appIds);
@@ -218,8 +183,6 @@ public interface SocialTenantBindMapper extends BaseMapper<SocialTenantBindEntit
      *
      * @param appId App ID
      * @return Space ID
-     * @author Codeman
-     * @date 2022-09-02 18:25:28
      */
     List<String> selectAllSpaceIdsByAppId(String appId);
 

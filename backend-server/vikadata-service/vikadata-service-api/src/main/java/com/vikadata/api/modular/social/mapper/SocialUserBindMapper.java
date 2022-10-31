@@ -8,68 +8,57 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.SocialUserBindEntity;
 
 /**
- * 第三方平台集成-用户绑定 Mapper
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:22:34
+ * Third party platform integration - user binding mapper
  */
 public interface SocialUserBindMapper extends BaseMapper<SocialUserBindEntity> {
 
     /**
-     * 查询用户ID
+     * Query user ID
      *
-     * @param unionId 第三方用户标识
-     * @return 用户ID
-     * @author Shawn Deng
-     * @date 2020/12/14 15:00
+     * @param unionId Third party user ID
+     * @return User ID
      */
     Long selectUserIdByUnionId(@Param("unionId") String unionId);
 
     /**
-     * 查询用户ID
+     * Query user ID
      *
-     * @param userId 用户ID
-     * @return 用户ID
-     * @author Shawn Deng
-     * @date 2020/12/14 15:00
+     * @param userId User ID
+     * @return User ID
      */
     List<String> selectUnionIdByUserId(@Param("userId") Long userId);
 
     /**
-     * 根据UnionId查询
+     * Query by Union Id
      *
-     * @param unionIds 第三方平台用户标识
+     * @param unionIds Third party platform user ID
      * @return SocialUserBindEntity List
-     * @author Shawn Deng
-     * @date 2020/12/22 16:17
      */
     List<SocialUserBindEntity> selectByUnionIds(@Param("unionIds") List<String> unionIds);
 
     /**
-     * 批量删除记录
+     * Batch Delete Records
      *
-     * @param unionIds 第三方平台用户标识
-     * @return 执行结果数
-     * @author Shawn Deng
-     * @date 2020/12/15 10:16
+     * @param unionIds Third party platform user ID
+     * @return Number of execution results
      */
     int deleteByUnionIds(@Param("unionIds") List<String> unionIds);
 
     /**
-     * 根据用户ID 物理删除
+     * Physical deletion based on user ID
+     *
      * @param userId
-     * @return
+     * @return Number of execution results
      */
     int deleteByUserId(@Param("userId") Long userId);
 
     /**
-     * 获取用户在企业的open_id
-     * @param appId 应用标识
-     * @param tenantId 租户标识
-     * @param userId 用户
+     * Get the user's open ID in the enterprise
+     *
+     * @param appId Application ID
+     * @param tenantId Tenant ID
+     * @param userId User
      * @return open id
-     * @author Shawn Deng
-     * @date 2021/8/16 23:38
      */
     String selectOpenIdByTenantIdAndUserId(@Param("appId") String appId, @Param("tenantId") String tenantId, @Param("userId") Long userId);
 }

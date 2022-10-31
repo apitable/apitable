@@ -8,111 +8,92 @@ import com.vikadata.entity.SocialCpUserBindEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业微信用户绑定 服务接口
+ * Third party platform integration WeCom user binding service interface
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:19:36
  */
 public interface ISocialCpUserBindService extends IService<SocialCpUserBindEntity> {
 
     /**
-     * 创建用户绑定第三方账户
+     * Create user binding third-party account
      *
-     * @param userId            用户ID
-     * @param cpTenantUserId    第三方用户标识（SocialCpTenantUser#ID）
-     * @author Pengap
-     * @date 2021/8/18 18:33:30
+     * @param userId            User ID
+     * @param cpTenantUserId    Third party user ID (Social Cp Tenant User ID)
      */
     void create(Long userId, Long cpTenantUserId);
 
     /**
-     * 获取用户Id
+     * Get User Id
      *
-     * @param tenantId  企业Id
-     * @param appId     企业应用Id
-     * @param cpUserId  企业微信用户Id
-     * @return Vika用户Id
-     * @author Pengap
-     * @date 2021/8/23 15:42:32
+     * @param tenantId  Enterprise Id
+     * @param appId     Enterprise Application Id
+     * @param cpUserId  Enterprise WeCom user ID
+     * @return vika User Id
      */
     Long getUserIdByTenantIdAndAppIdAndCpUserId(String tenantId, String appId, String cpUserId);
 
     /**
-     * 获取用户Id
-     * 同个企业不同应用只要存在绑定关系就返回用户Id
+     * Get User Id
+     * The user ID is returned for different applications in the same enterprise as long as the binding relationship exists
      *
-     * @param tenantId  企业Id
-     * @param cpUserId  企业微信用户Id
-     * @return Vika用户Id
-     * @author Pengap
-     * @date 2021/8/23 16:03:40
+     * @param tenantId  Enterprise Id
+     * @param cpUserId  Enterprise WeCom user ID
+     * @return vika User Id
      */
     Long getUserIdByTenantIdAndCpUserId(String tenantId, String cpUserId);
 
     /**
-     * 获取用户Id
+     * Get User Id
      *
-     * @param cpTenantUserId   第三方平台用户标识（SocialCpTenantUser#ID）
-     * @return Vika用户ID
-     * @author Pengap
-     * @date 2021/8/18 18:33:30
+     * @param cpTenantUserId   Third party platform user ID (Social Cp Tenant User ID)
+     * @return vika User ID
      */
     Long getUserIdByCpTenantUserId(Long cpTenantUserId);
 
     /**
-     * 批量获取信息
+     * Get information in batches
      *
-     * @param cpTenantUserIds 第三方平台用户标识（SocialCpTenantUser#ID）
-     * @return 信息列表
-     * @author 刘斌华
-     * @date 2022-04-13 17:48:31
+     * @param cpTenantUserIds Third party platform user ID (Social Cp Tenant User ID)
+     * @return Information List
      */
     List<SocialCpUserBindEntity> getByCpTenantUserIds(List<Long> cpTenantUserIds);
 
     /**
-     * 获取OpenId
+     * Get Open Id
      *
-     * @param tenantId  企业Id
-     * @param userId    Vika用户ID
-     * @return 企业微信OpenId
-     * @author Pengap
-     * @date 2021/9/17 17:26:34
+     * @param tenantId  Enterprise Id
+     * @param userId    vika User ID
+     * @return Enterprise WeCom Open Id
      */
     String getOpenIdByTenantIdAndUserId(String tenantId, Long userId);
 
     /**
-     * 检查unionId是否绑定
+     * Check whether the union ID is bound
      *
-     * @param userId            用户维格账号ID
-     * @param cpTenantUserId    第三方平台用户唯一标识（SocialCpTenantUser#ID）
-     * @return 是否绑定
-     * @author Pengap
-     * @date 2021/8/18 18:33:30
+     * @param userId            User vika account ID
+     * @param cpTenantUserId    Third party platform user unique ID (Social Cp Tenant User ID)
+     * @return Whether to bind
      */
     boolean isCpTenantUserIdBind(Long userId, Long cpTenantUserId);
 
     /**
-     * 批量删除企业微信绑定关系
+     * Batch Delete WeCom Binding Relationship
      *
-     * @param removeCpTenantUserIds    第三方平台用户唯一标识（SocialCpTenantUser#ID）
-     * @author Pengap
-     * @date 2021/8/16 21:14:02
+     * @param removeCpTenantUserIds    Third party platform user unique ID (Social Cp Tenant User ID)
      */
     void batchDeleteByCpTenantUserIds(List<Long> removeCpTenantUserIds);
 
     /**
-     * 统计指定租户下，指定用户出现数量
+     * Count the number of specified users under the specified tenant
      *
-     * @param tenantId    租户Id
-     * @param userId      用户Id
-     * @return 用户出现数量
-     * @author Pengap
-     * @date 2021/9/14 17:35:24
+     * @param tenantId    Tenant Id
+     * @param userId      User Id
+     * @return Number of users
      */
     long countTenantBindByUserId(String tenantId, Long userId);
 
     /**
-     * 根据用户ID物理删除用户第三方信息.
+     * The third party information of the user is physically deleted according to the user ID
+     *
      * @param userId
      */
     void deleteByUserId(Long userId);

@@ -48,10 +48,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 玉符 IDaaS 登录授权
+ * IDaaS Login authorization
  * </p>
- * @author 刘斌华
- * @date 2022-05-24 16:42:16
  */
 @Slf4j
 @Service
@@ -138,7 +136,7 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
     @Override
     public void idaasLoginCallback(String clientId, String spaceId, String authCode, String state) {
         if (CharSequenceUtil.isBlank(spaceId) && !idaasProperties.isSelfHosted()) {
-            // 非私有化部署 spaceId 不能为空
+            // Non private deployment spaceId cannot be empty
             throw new BusinessException(IdaasException.PARAM_INVALID);
         }
         IdaasAppEntity appEntity = idaasAppService.getByClientId(clientId);
@@ -156,10 +154,10 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
         }
 
         AuthApi authApi = idaasTemplate.getAuthApi();
-        // 1 通过回调返回的 code 换取用户信息 access_token
+        // 1 Exchange the code returned by callback for user information access_ token
         AccessTokenResponse accessTokenResponse;
         try {
-            // redirectUri 跟前面登录的参数完全一致，直接重新拼接即可
+            // redirectUri, the parameters are exactly the same as those previously logged in, and can be directly re spliced
             String redirectUri = URLEncoder.ALL.encode(getVikaCallbackUrl(clientId, spaceId), StandardCharsets.UTF_8);
             AccessTokenRequest accessTokenRequest = new AccessTokenRequest();
             accessTokenRequest.setCode(authCode);
@@ -171,7 +169,7 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
 
             throw new BusinessException(IdaasException.API_ERROR);
         }
-        // 2 通过 access_token 去获取用户信息
+        // 2 Through access_ Token to obtain user information
         UserInfoResponse userInfoResponse;
         try {
             userInfoResponse = authApi.userInfo(appEntity.getUserinfoEndpoint(), accessTokenResponse.getAccessToken());
@@ -181,12 +179,12 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
 
             throw new BusinessException(IdaasException.API_ERROR);
         }
-        // 3 获取关联的用户信息
+        // 3 Get associated user information
         IdaasUserBindEntity userBind = idaasUserBindService.getByUserId(userInfoResponse.getUserId());
         if (Objects.isNull(userBind)) {
             throw new BusinessException(IdaasException.USER_NOT_BIND);
         }
-        // 4 获取成员信息，并激活
+        // 4 Get member information and activate
         if (CharSequenceUtil.isBlank(spaceId)) {
             List<MemberEntity> memberEntities = memberService.getByUserId(userBind.getVikaUserId());
             if (CollUtil.isEmpty(memberEntities)) {
@@ -195,7 +193,7 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
 
             memberEntities.forEach(memberEntity -> {
                 if (Boolean.FALSE.equals(memberEntity.getIsActive())) {
-                    // 4.1 如果成员未激活则改为已激活状态
+                    // 4.1 If the member is not activated, change to the activated state
                     memberService.updateById(MemberEntity.builder()
                             .id(memberEntity.getId())
                             .isActive(true)
@@ -210,7 +208,7 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
             }
 
             if (Boolean.FALSE.equals(memberEntity.getIsActive())) {
-                // 4.1 如果成员未激活则改为已激活状态
+                // 4.1 If the member is not activated, change to the activated state
                 memberService.updateById(MemberEntity.builder()
                         .id(memberEntity.getId())
                         .isActive(true)
@@ -218,13 +216,13 @@ public class IdaasAuthServiceImpl implements IIdaasAuthService {
             }
         }
 
-        // 5 自动登录
+        // 5 Automatic logon
         SessionContext.setUserId(userBind.getVikaUserId());
         userService.updateLoginTime(userBind.getVikaUserId());
-        // 6 神策埋点
+        // 6 Shence burial site
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
         TaskManager.me().execute(() -> sensorsService
-                .track(userBind.getVikaUserId(), TrackEventType.LOGIN, "玉符单点登录", origin));
+                .track(userBind.getVikaUserId(), TrackEventType.LOGIN, "IDaaS Single sign on", origin));
     }
 
 }

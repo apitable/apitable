@@ -10,32 +10,33 @@ import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 import org.springframework.util.MultiValueMap;
 
 /**
- * 飞书企业通讯录服务
- * @author Shawn Deng
- * @date 2022-02-08 18:19:10
+ * Lark Enterprise Address Book Service
  */
 public interface IFeishuTenantContactService {
 
     /**
-     * 拉取企业通讯录和组装数据结构
-     * @param tenantKey 租户
+     * Pull enterprise address book and assemble data structure
+     *
+     * @param tenantKey Tenant
      * @return MultiValueMap<FeishuDeptObject, FeishuUserObject>
      */
     MultiValueMap<FeishuDeptObject, FeishuUserObject> fetchTenantContact(String tenantKey) throws ContactAccessDeniesException;
 
     /**
-     * 请求租户通讯录
-     * @param tenantKey 租户
+     * Request tenant address book
+     *
+     * @param tenantKey Tenant
      * @return FeishuTenantContact
      */
     FeishuTenantContact requestTenantContact(String tenantKey);
 
     /**
-     * 组装租户通讯录结构化数据
-     * @param tenantKey 租户
-     * @param deptObjects 一级部门列表
-     * @param userObjects 一级用户列表
-     * @return 结构化数据
+     * Assemble tenant address book structured data
+     *
+     * @param tenantKey Tenant
+     * @param deptObjects List of first level departments
+     * @param userObjects First level user list
+     * @return Structured data
      */
     MultiValueMap<FeishuDeptObject, FeishuUserObject> fetchTenantContact(String tenantKey, List<FeishuDeptObject> deptObjects, List<FeishuUserObject> userObjects);
 }

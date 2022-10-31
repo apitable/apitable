@@ -21,10 +21,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商从企业微信应用市场发起成员关注通知
+ * The third party service provider initiates the notice of members' concern from the We Com application market
  * </p>
- * @author 刘斌华
- * @date 2022-01-20 17:27:01
  */
 @Component
 public class WeComIsvSubscribeMessageHandler implements WeComIsvMessageHandler {

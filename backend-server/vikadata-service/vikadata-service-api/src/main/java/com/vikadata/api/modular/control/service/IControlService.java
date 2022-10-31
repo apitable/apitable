@@ -9,81 +9,66 @@ import com.vikadata.api.control.ControlType;
 import com.vikadata.entity.ControlEntity;
 
 /**
- *
- * @author Shawn Deng
- * @date 2021-04-01 19:35:52
+ * Control service
  */
 public interface IControlService extends IService<ControlEntity> {
 
     /**
-     * 查询控制单元
-     * @param controlId 控制单元ID
+     * Query control unit
+     *
+     * @param controlId Control unit ID
      * @return ControlEntity
-     * @author Shawn Deng
-     * @date 2021/6/9 17:23
      */
     ControlEntity getByControlId(String controlId);
 
     /**
-     * 检查权限控制单元状态
+     * Check the status of authority control unit
      *
-     * @param controlId 控制单元ID
-     * @param consumer  自定义 consumer
-     * @author Chambers
-     * @date 2021/4/22
+     * @param controlId Control unit ID
+     * @param consumer  Custom consumer
      */
     void checkControlStatus(String controlId, Consumer<Boolean> consumer);
 
     /**
-     * 创建权限控制单元
+     * Create permission control unit
      *
-     * @param userId        用户ID
-     * @param spaceId       空间ID
-     * @param controlId     控制单元ID
-     * @param controlType   控制单元类型
-     * @author Chambers
-     * @date 2021/4/27
+     * @param userId        User ID
+     * @param spaceId       Space ID
+     * @param controlId     Control unit ID
+     * @param controlType   Control unit type
      */
     void create(Long userId, String spaceId, String controlId, ControlType controlType);
 
     /**
-     * 删除控制单元相关信息
+     * Delete information about the control unit
      *
-     * @param controlIds 控制单元ID 集合
-     * @param delSetting 删除控制单元设置
-     * @author Chambers
-     * @date 2021/4/27
+     * @param controlIds Control unit ID set
+     * @param delSetting Deleting control unit settings
      */
     void removeControl(Long userId, List<String> controlIds, boolean delSetting);
 
     /**
-     * 获取权限控制单元ID
+     * Get the permission control unit ID
      *
-     * @param prefix    控制单元ID 前缀
-     * @param type      控制单元类型
-     * @return 控制单元ID
-     * @author Chambers
-     * @date 2021/4/14
+     * @param prefix    Control unit ID prefix
+     * @param type      Control unit type
+     * @return Control unit ID
      */
     List<String> getControlIdByControlIdPrefixAndType(String prefix, Integer type);
 
     /**
-     * 获取存在的控制单元ID
+     * Get the existing control unit ID
      *
-     * @param controlIds 控制单元ID 集合
-     * @return 控制单元ID
-     * @author Chambers
-     * @date 2021/4/30
+     * @param controlIds Control unit ID set
+     * @return Control unit ID
      */
     List<String> getExistedControlId(List<String> controlIds);
 
     /**
-     * 获取权限控制单元创建者的成员ID
+     * Get the member ID of the authority control unit creator
      *
-     * @param controlId 控制单元ID
+     * @param controlId Control unit ID
      * @return memberId
-     * @author Chambers
-     * @date 2021/6/7
      */
     Long getOwnerMemberId(String controlId);
 }

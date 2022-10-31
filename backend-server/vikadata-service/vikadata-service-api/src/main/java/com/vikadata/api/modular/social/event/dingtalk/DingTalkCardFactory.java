@@ -32,10 +32,8 @@ import static com.vikadata.api.component.notification.NotificationHelper.DINGTAL
 
 /**
  * <p>
- * 消息卡片工厂
+ * Message Card Factory
  * </p>
- * @author zoe zheng
- * @date 2021/5/14 2:16 下午
  */
 public class DingTalkCardFactory {
     public static final String DINGTALK_OA_OPEN = "dingtalk://dingtalkclient/action/openapp?corpid={}&container_type=work_platform&app_id=0_{}&redirect_type=jump&redirect_url={}";
@@ -46,7 +44,7 @@ public class DingTalkCardFactory {
         IDingTalkService dingTalkService = SpringContextHolder.getBean(IDingTalkService.class);
         String corpId = dingTalkService.getAgentAppById(agentId).getCorpId();
         BtnActionCard btnActionCard = new BtnActionCard();
-        // 竖直排列
+        // Vertical arrangement
         btnActionCard.setBtnOrientation("0");
         List<BtnJson> btnJsonList = new ArrayList<>();
         String redirectUrl = StrUtil.format("{}/user/dingtalk_callback?corpId={}&agentId={}&pipeline={}",

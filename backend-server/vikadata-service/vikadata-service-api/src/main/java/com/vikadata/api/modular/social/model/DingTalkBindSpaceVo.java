@@ -10,16 +10,14 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /** 
 * <p> 
-* 钉钉用用绑定空间信息
-* </p> 
-* @author zoe zheng 
-* @date 2021/5/28 5:36 下午
+* Binding space information for Ding Talk
+* </p>
 */
-@ApiModel("钉钉用用绑定空间信息")
+@ApiModel("Binding space information for Ding Talk")
 @Data
 @Builder
 public class DingTalkBindSpaceVo {
-    @ApiModelProperty(value = "应用绑定的空间站ID", position = 1)
+    @ApiModelProperty(value = "Space ID bound by the application", position = 1)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String bindSpaceId;
 }

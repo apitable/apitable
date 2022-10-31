@@ -7,18 +7,16 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 飞书应用事件配置请求参数
- * @author Shawn Deng
- * @date 2022-01-11 19:00:52
+ * Lark Application event configuration request parameters
  */
-@ApiModel("飞书应用事件配置请求参数")
+@ApiModel("Lark Application event configuration request parameters")
 @Data
 public class FeishuAppEventConfigRo {
 
-    @ApiModelProperty(value = "事件加密密钥", dataType = "String", example = "asdj123jl1")
+    @ApiModelProperty(value = "Event Encryption Key", dataType = "String", example = "asdj123jl1")
     private String eventEncryptKey;
 
     @NotBlank
-    @ApiModelProperty(value = "事件校验令牌", dataType = "String", example = "12h3khkjhass")
+    @ApiModelProperty(value = "Event verification token", dataType = "String", example = "12h3khkjhass")
     private String eventVerificationToken;
 }

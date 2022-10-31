@@ -14,10 +14,8 @@ import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CAL
 
 /**
  * <p> 
- * 事件订阅 -- 应用市场订单
- * </p> 
- * @author zoe zheng 
- * @date 2021/10/25 15:07
+ * Event subscription -- application market order
+ * </p>
  */
 @DingTalkEventHandler
 @Slf4j
@@ -27,29 +25,29 @@ public class SyncHttpMarketOrderEventHandler {
     private IDingTalkIsvEventService iDingTalkIsvEventService;
 
     /**
-     * 应用市场开通付费应用
+     * Application market opens paid applications
      *
-     * @param bizId 订单的orderid。
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Order id of the order
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onMarketOrderEvent(String bizId, SyncHttpMarketOrderEvent event) {
-        log.info("收到钉钉推送订单事件:[{}:{}:{}:{}]", event.getEventType(), event.getSyncAction(), event.getCorpId(), bizId);
+        log.info("Received the DingTalk push order event:[{}:{}:{}:{}]", event.getEventType(), event.getSyncAction(), event.getCorpId(), bizId);
         iDingTalkIsvEventService.handleMarketOrderEvent(event);
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 收到钉钉推送服务关闭事件
+     * Received the DingTalk push service shutdown event
      *
-     * @param bizId 订单的orderid
-     * @param event 事件内容
-     * @return 响应内容
+     * @param bizId Order id of the order
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onMarketServiceCloseEvent(String bizId, SyncHttpMarketServiceCloseEvent event) {
-        log.info("收到钉钉推送服务关闭事件:[{}:{}:{}:{}]", event.getEventType(), event.getSyncAction(), event.getCorpId(),
+        log.info("Received the Ding Talk push service shutdown event:[{}:{}:{}:{}]", event.getEventType(), event.getSyncAction(), event.getCorpId(),
                 event.getOrderId());
         iDingTalkIsvEventService.handleMarketServiceClosedEvent(event);
         return DING_TALK_CALLBACK_SUCCESS;

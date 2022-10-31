@@ -12,12 +12,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 获取注册企微并安装维格表的注册码
+ * Get the registration code for registering We Com and installing vika
  * </p>
- * @author 刘斌华
- * @date 2022-03-14 17:46:07
  */
-@ApiModel("获取注册企微并安装维格表的注册码")
+@ApiModel("Get the registration code for registering We Com and installing vika")
 @Setter
 @Getter
 @Builder
@@ -26,7 +24,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WeComIsvRegisterInstallWeComVo {
 
-    @ApiModelProperty(value = "注册码", required = true)
+    @ApiModelProperty(value = "Registration code", required = true)
     private String registerCode;
 
 }

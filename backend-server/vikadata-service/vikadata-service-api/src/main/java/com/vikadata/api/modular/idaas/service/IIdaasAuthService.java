@@ -4,53 +4,43 @@ import com.vikadata.api.modular.idaas.model.IdaasAuthLoginVo;
 
 /**
  * <p>
- * 玉符 IDaaS 登录授权
+ * IDaaS Login authorization
  * </p>
- * @author 刘斌华
- * @date 2022-05-24 16:41:22
  */
 public interface IIdaasAuthService {
 
     /**
-     * 获取维格一键登录页面的地址
+     * Get the address of the vika one click login page
      *
-     * @param clientId 玉符 IDaaS 应用的 Client ID
-     * @return 维格一键登录页面的地址
-     * @author 刘斌华
-     * @date 2022-05-25 12:19:33
+     * @param clientId IDaaS Application's Client ID
+     * @return Address of vika one click login page
      */
     String getVikaLoginUrl(String clientId);
 
     /**
-     * 获取维格处理玉符登录回调页面的地址
+     * Get the address of vika's IDaaS login callback page
      *
-     * @param clientId 玉符 IDaaS 应用的 Client ID
-     * @param spaceId 绑定的空间站 ID，私有化部署时不需要该字段
-     * @return 维格处理玉符登录回调页面的地址
-     * @author 刘斌华
-     * @date 2022-05-25 12:19:33
+     * @param clientId IDaaS Application's Client ID
+     * @param spaceId Bound space ID, this field is not required for privatization deployment
+     * @return vika handles the address of the IDaaS login callback page
      */
     String getVikaCallbackUrl(String clientId, String spaceId);
 
     /**
-     * 获取玉符 IDaaS 登录的路径
+     * Get IDaaS login path
      *
-     * @param clientId 玉符 IDaaS 应用的 Client ID
-     * @return 玉符 IDaaS 登录的路径
-     * @author 刘斌华
-     * @date 2022-05-24 16:45:51
+     * @param clientId IDaaS Application's Client ID
+     * @return IDaaS login path
      */
     IdaasAuthLoginVo idaasLoginUrl(String clientId);
 
     /**
-     * 玉符 IDaaS 登录后回调完成后续操作
+     * IDaaS After login, callback to complete subsequent operations
      *
-     * @param clientId 玉符 IDaaS 应用的 Client ID
-     * @param spaceId 绑定的空间站 ID，私有化部署时不需要该字段
-     * @param authCode 回调返回的授权码
-     * @param state 回调返回的随机字符串
-     * @author 刘斌华
-     * @date 2022-05-24 17:32:48
+     * @param clientId IDaaS Application's Client ID
+     * @param spaceId bound space ID, this field is not required for privatization deployment
+     * @param authCode Authorization code returned by callback
+     * @param state Random string returned by callback
      */
     void idaasLoginCallback(String clientId, String spaceId, String authCode, String state);
 

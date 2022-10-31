@@ -8,153 +8,130 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.vikadata.entity.SocialTenantUserEntity;
 
 /**
- * 第三方平台集成-企业租户用户 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-18 00:27:36
+ * Third party platform integration - enterprise tenant user service interface
  */
 public interface ISocialTenantUserService extends IService<SocialTenantUserEntity> {
 
     /**
-     * 创建
+     * Create
      *
-     * @param tenantId 租户标识
-     * @param openId   租户用户标识
-     * @param unionId  租户用户唯一标识
-     * @author Shawn Deng
-     * @date 2020/12/14 23:36
+     * @param tenantId Tenant ID
+     * @param openId   Tenant  User ID
+     * @param unionId  Tenant user unique ID
      */
     void create(String appId, String tenantId, String openId, String unionId);
 
     /**
-     * 批量插入
+     * Bulk Insert
      *
-     * @param entities 实体列表
-     * @author Shawn Deng
-     * @date 2020/12/14 23:36
+     * @param entities Entity List
      */
     void createBatch(List<SocialTenantUserEntity> entities);
 
     /**
-     * 获取租户下的所有用户openId
+     * Get the open IDs of all users under the tenant
      *
-     * @param tenantId 租户标识
+     * @param tenantId Tenant ID
      * @return openIds
-     * @author Shawn Deng
-     * @date 2020/12/22 15:36
      */
     List<String> getOpenIdsByTenantId(String appId, String tenantId);
 
     /**
-     * 获取租户下用户绑定的openId
+     * Get the open ID bound by the user under the tenant
      *
-     * @param tenantId 租户标识
-     * @param userId   用户ID
+     * @param tenantId Tenant ID
+     * @param userId   User ID
      * @return unionId
-     * @author Shawn Deng
-     * @date 2020/12/22 15:36
      */
     String getOpenIdByTenantIdAndUserId(String appId, String tenantId, Long userId);
 
     /**
-     * 获取租户下的openId
-     * @param appId 应用ID
-     * @param tenantId 租户ID
+     * Get the open ID under the tenant
+     *
+     * @param appId App ID
+     * @param tenantId Tenant ID
      * @return openId list
      */
     List<String> getOpenIdsByAppIdAndTenantId(String appId, String tenantId);
 
     /**
-     * 根据openId 获取 unionId
-     * @param tenantId 租户ID
-     * @param openId 租户下用户标识
+     * Get the unionId according to the openId
+     *
+     * @param tenantId Tenant ID
+     * @param openId User ID under the tenant
      * @return UnionId
-     * @author Shawn Deng
-     * @date 2020/12/22 12:56
      */
     String getUnionIdByOpenId(String appId, String tenantId, String openId);
 
     /**
-     * 租户的用户是否存在
+     * Whether the tenant's user exists
      *
-     * @param tenantId 租户标识
-     * @param openId   租户下用户标识
+     * @param tenantId Tenant ID
+     * @param openId   User ID under the tenant
      * @return TRUE | FALSE
-     * @author Shawn Deng
-     * @date 2020/12/22 12:14
      */
     boolean isTenantUserOpenIdExist(String appId, String tenantId, String openId);
 
     /**
-     * 租户的用户是否存在
+     * Whether the tenant's user exists
      *
-     * @param tenantId 租户标识
-     * @param openId   租户下用户标识
-     * @param unionId 开发者账号下用户唯一标识
+     * @param tenantId Tenant ID
+     * @param openId   User ID under the tenant
+     * @param unionId Unique ID of the user under the developer account
      * @return TRUE | FALSE
-     * @author zoe zheng
-     * @date 2022/2/15 15:55
      */
     boolean isTenantUserUnionIdExist(String appId, String tenantId, String openId, String unionId);
 
     /**
-     * 删除租户的用户记录
+     * Delete tenant's user record
      *
-     * @param tenantId 租户标识
-     * @author Shawn Deng
-     * @date 2020/12/15 10:29
+     * @param tenantId Tenant ID
      */
     void deleteByTenantId(String appId, String tenantId);
 
     /**
-     * 删除租户的用户记录
+     * Delete tenant's user record
      *
-     * @param openIds 租户下用户标识
-     * @author Shawn Deng
-     * @date 2020/12/15 10:29
+     * @param openIds User ID under the tenant
      */
     void deleteByFeishuOpenIds(String appId, String tenantId, List<String> openIds);
 
     /**
-     * 移除租户用户记录
+     * Remove tenant user record
      *
-     * @param tenantId 租户标识
-     * @param openId   租户下用户标识
-     * @author Shawn Deng
-     * @date 2020/12/22 12:48
+     * @param tenantId Tenant ID
+     * @param openId   User ID under the tenant
      */
     void deleteByTenantIdAndOpenId(String appId, String tenantId, String openId);
 
     /**
-     * 删除钉钉应用绑定的用户
+     * Delete the user of the DingTalk application binding
      *
-     * @param tenantId 租户标识
-     * @param openIds 应用下用户的唯一标识
-     * @author zoe zheng
-     * @date 2021/5/20 4:21 下午
+     * @param tenantId Tenant ID
+     * @param openIds Unique ID of the user under the application
      */
     void deleteByTenantIdAndOpenIds(String appId, String tenantId, List<String> openIds);
 
     /**
-     * 根据应用ID和租户ID删除
-     * @param appId 应用id
-     * @param tenantId 租户ID
+     * Delete according to application ID and Tenant ID
+     *
+     * @param appId Application ID
+     * @param tenantId Tenant ID
      */
     void deleteByAppIdAndTenantId(String appId, String tenantId);
 
     /**
-     * 根据unionId查询用户ID
+     * Query User ID according to unionId
      *
-     * @param unionId 钉钉平台租户用户唯一标识
-     * @return 用户ID
-     * @author zoe zheng
-     * @date 2021/9/13 3:49 下午
+     * @param unionId Tenant user unique ID
+     * @return User ID
      */
     Long getUserIdByDingTalkUnionId(String unionId);
 
     /**
-     * 通过tenantId获取openId->unionIds的map
-     * @param tenantId 租户ID
+     * Get the map of open Id ->union Ids through the tenant Id
+     *
+     * @param tenantId Tenant ID
      * @return Map<String, List < String>>
      * @author zoe zheng
      * @date 2022/2/15 14:37

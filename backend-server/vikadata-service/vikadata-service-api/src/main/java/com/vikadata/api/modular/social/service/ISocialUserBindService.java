@@ -8,94 +8,80 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.vikadata.entity.SocialUserBindEntity;
 
 /**
- * 第三方平台集成-用户绑定 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:21:26
+ * Third party platform integration - user binding service interface
  */
 public interface ISocialUserBindService extends IService<SocialUserBindEntity> {
 
     /**
-     * 创建用户绑定第三方账户
+     * Create user binding third-party account
      *
-     * @param userId  用户ID
-     * @param unionId 第三方用户标识
-     * @author Shawn Deng
-     * @date 2020/12/14 15:20
+     * @param userId  User ID
+     * @param unionId Third party user ID
      */
     void create(Long userId, String unionId);
 
     /**
-     * 查询用户绑定的unionId
-     * @param userId 用户标识
+     * Query the union ID bound by the user
+     *
+     * @param userId User ID
      * @return unionIds
      */
     List<String> getUnionIdsByUserId(Long userId);
 
     /**
-     * 获取绑定的用户ID
+     * Get the bound User ID
      *
-     * @param unionId 第三方平台用户标识
-     * @return 用户ID
-     * @author Shawn Deng
-     * @date 2020/12/14 15:21
+     * @param unionId User ID of third-party platform
+     * @return User ID
      */
     Long getUserIdByUnionId(String unionId);
 
     /**
-     * 获取租户的对应open_id
-     * @param appId 应用标识
-     * @param tenantId 租户标识
-     * @param userId 用户ID
+     * Get the corresponding open ID of the tenant
+     *
+     * @param appId Application ID
+     * @param tenantId Tenant ID
+     * @param userId User ID
      * @return open id
-     * @author Shawn Deng
-     * @date 2021/8/16 23:40
      */
     String getOpenIdByTenantIdAndUserId(String appId, String tenantId, Long userId);
 
     /**
-     * 根据UnionId获取实体
+     * Get entity according to Union Id
      *
-     * @param unionIds 第三方平台用户标识
+     * @param unionIds User ID of third-party platform
      * @return SocialUserBindEntity List
-     * @author Shawn Deng
-     * @date 2020/12/22 16:18
      */
     List<SocialUserBindEntity> getEntitiesByUnionId(List<String> unionIds);
 
     /**
-     * 批量删除
+     * Batch deletion
      *
-     * @param unionIds 第三方平台用户标识
-     * @author Shawn Deng
-     * @date 2020/12/22 00:23
+     * @param unionIds User ID of third-party platform
      */
     void deleteBatchByUnionId(List<String> unionIds);
 
     /**
-     * 根据用户ID物理删除用户第三方信息.
+     * Physically delete the user's third-party information according to the User ID
+     *
      * @param userId
      */
     void deleteByUserId(Long userId);
 
     /**
-     * 检查unionId是否绑定
+     * Check whether the union ID is bound
      *
-     * @param unionId 第三方平台用户唯一标识
-     * @param userId 用户维格账号ID
+     * @param unionId Third party platform user unique ID
+     * @param userId User vika account ID
      * @return boolean
-     * @author zoe zheng
-     * @date 2021/5/20 5:47 下午
      */
     Boolean isUnionIdBind(Long userId, String unionId);
 
     /**
-     * 根据unionId获取用户名称
+     * Get the user name according to the union ID
      *
-     * @param unionIds 第三方平台用户标识
+     * @param unionIds User ID of third-party platform
      * @return unionId->userName
-     * @author zoe zheng
-     * @date 2021/11/11 15:10
      */
     HashMap<String, String> getUserNameByUnionIds(List<String> unionIds);
 }

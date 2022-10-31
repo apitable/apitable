@@ -8,34 +8,28 @@ import com.vikadata.entity.IdaasAppBindEntity;
 
 /**
  * <p>
- * 玉符 IDaaS 应用与空间站绑定
+ * IDaaS application is bound to the space
  * </p>
- * @author 刘斌华
- * @date 2022-05-19 11:29:21
  */
 public interface IIdaasAppBindService extends IService<IdaasAppBindEntity> {
 
     /**
-     * 查询应用和空间站的绑定信息
+     * Query the binding information between the application and the space station
      *
-     * @param spaceId 应用 Client Secret
-     * @return 绑定信息
-     * @author 刘斌华
-     * @date 2022-05-19 11:42:56
+     * @param spaceId Application's Client Secret
+     * @return bound information
      */
     IdaasAppBindEntity getBySpaceId(String spaceId);
 
     /**
-     * 玉符 IDaaS 绑定租户下的应用
+     * IDaaS Bind the application under the tenant
      *
      * <p>
-     * 仅用于私有化部署时调用
+     * Called only for privatization deployment
      * </p>
      *
-     * @param request 请求参数
-     * @return 绑定结果
-     * @author 刘斌华
-     * @date 2022-05-19 10:41:47
+     * @param request Request parameters
+     * @return Binding Results
      */
     IdaasAppBindVo bindTenantApp(IdaasAppBindRo request);
 

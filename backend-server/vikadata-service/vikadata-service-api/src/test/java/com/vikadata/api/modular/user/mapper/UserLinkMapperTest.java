@@ -15,10 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：基础-用户第三方平台关联表测试
+ *     Data access layer test: basic user third-party platform association table test
  * </p>
- * @author wuyitao
- * @date 2022/4/5 5:40 PM
  */
 public class UserLinkMapperTest extends AbstractMyBatisMapperTest {
 

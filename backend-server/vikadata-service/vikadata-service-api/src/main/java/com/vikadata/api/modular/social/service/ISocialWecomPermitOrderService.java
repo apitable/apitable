@@ -8,32 +8,26 @@ import com.vikadata.entity.SocialWecomPermitOrderEntity;
 
 /**
  * <p>
- * 企微服务商接口许可下单信息
+ * WeCom Service Provider Interface License Ordering Information
  * </p>
- * @author 刘斌华
- * @date 2022-06-23 18:33:40
  */
 public interface ISocialWecomPermitOrderService extends IService<SocialWecomPermitOrderEntity> {
 
     /**
-     * 根据订单号获取详情
+     * Get details according to the order number
      *
-     * @param orderId 许可订单号
-     * @return 订单详情
-     * @author 刘斌华
-     * @date 2022-06-27 17:55:42
+     * @param orderId License Order Number
+     * @return Order Details
      */
     SocialWecomPermitOrderEntity getByOrderId(String orderId);
 
     /**
-     * 根据订单状态查询
+     * Query according to order status
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param orderStatuses 查询的订单状态
-     * @return 符合条件的订单列表
-     * @author 刘斌华
-     * @date 2022-07-29 18:45:00
+     * @param suiteId App Suite ID
+     * @param authCorpId Authorized enterprise ID
+     * @param orderStatuses Order status queried
+     * @return List of qualified orders
      */
     List<SocialWecomPermitOrderEntity> getByOrderStatuses(String suiteId, String authCorpId, List<Integer> orderStatuses);
 

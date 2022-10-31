@@ -3,7 +3,7 @@ package com.vikadata.api.modular.social.model;
 import lombok.Data;
 
 /**
- * 租户信息
+ * Tenant information
  */
 @Data
 public class TenantBaseInfoDto {

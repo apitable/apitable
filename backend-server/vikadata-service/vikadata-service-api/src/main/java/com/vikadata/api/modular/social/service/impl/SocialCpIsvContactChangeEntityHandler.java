@@ -48,10 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用变更通讯录处理
+ * Third party platform integration - WeCom third-party service provider application change address book processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-11 18:31:43
  */
 @Slf4j
 @Service
@@ -103,38 +101,38 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         List<String> existedSpaceIds = socialTenantBindService
                 .getSpaceIdsByTenantIdAndAppId(authCorpId, suiteId);
         Assert.notEmpty(existedSpaceIds, () -> new IllegalStateException(String.
-                format("没有找到对应的空间站信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
+                format("No corresponding space station information was found,tenantId：%s，appId：%s", authCorpId, suiteId)));
         String spaceId = existedSpaceIds.get(0);
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
-        // 如果需要，先刷新 access_token
+                .format("No available tenant information found,tenantId：%s，appId：%s", authCorpId, suiteId)));
+        // If necessary, refresh access first_ token
         socialCpIsvService.refreshAccessToken(suiteId, unprocessed.getAuthCorpId(), socialTenantEntity.getPermanentCode());
-        // 1 处理不同的变更类型
+        // 1 Handling different change types
         String changeType = xmlMessage.getChangeType();
         switch (changeType) {
             case "create_user":
-                // 1.1 新增成员
+                // 1.1 New member
                 if (SocialTenantAuthMode.ADMIN.getValue() == socialTenantEntity.getAuthMode()) {
-                    // 管理员授权才需要通过可见范围处理
+                    // Only when the administrator authorizes, it needs to be processed through the visible range
                     createUser(authCorpId, suiteId, cpUserId, spaceId);
                 }
                 break;
             case "update_user":
-                // 1.2 更新成员
+                // 1.2 Update Members
                 if (SocialTenantAuthMode.ADMIN.getValue() == socialTenantEntity.getAuthMode()) {
-                    // 管理员授权才需要通过可见范围处理
+                    // Only when the administrator authorizes, it needs to be processed through the visible range
                     updateUser(authCorpId, suiteId, cpUserId, spaceId, xmlMessage.getDepartment());
                 }
                 break;
             case "delete_user":
-                // 1.3 移除成员
+                // 1.3 Remove Members
                 deleteUser(cpUserId, spaceId);
                 break;
             case "update_tag":
-                // 1.4 更新标签
+                // 1.4 Update Label
                 if (SocialTenantAuthMode.ADMIN.getValue() == socialTenantEntity.getAuthMode()) {
-                    // 管理员授权才需要通过可见范围处理
+                    // Only when the administrator authorizes, it needs to be processed through the visible range
                     updateTag(authCorpId, suiteId, spaceId,
                             xmlMessage.getAddUserItems(), xmlMessage.getDelUserItems(),
                             xmlMessage.getAddPartyItems(), xmlMessage.getDelPartyItems());
@@ -143,24 +141,24 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
             default:
                 // nothing to do
         }
-        // 3 清空临时缓存
+        // 3 Empty temporary cache
         socialCpIsvService.clearCache(authCorpId);
-        // 4 接口许可处理
+        // 4 Interface license processing
         try {
             socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
         }
         catch (Exception ex) {
-            log.error("企微接口许可自动化处理失败", ex);
+            log.error("WeCom interface license automation processing failed", ex);
         }
         return true;
     }
 
     private void createUser(String tenantId, String appId, String cpUserId, String spaceId) throws WxErrorException {
 
-        // 1 获取当前企业授权的可见范围
+        // 1 Obtain the visible range of current enterprise authorization
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(appId, tenantId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", tenantId, appId)));
+                .format("No available tenant information found,tenantId：%s，appId：%s", tenantId, appId)));
 
         Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
         Privilege privilege = agent.getPrivilege();
@@ -170,9 +168,9 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         boolean viewable = socialCpIsvService.judgeViewable(tenantId, cpUserId, appId,
                 allowUsers, allowParties, allowTags);
         if (viewable) {
-            // 2 添加的用户在应用可见范围内，则新增成员
+            // 2 If the added user is within the visible range of the application, add a new member
             socialCpIsvService.syncSingleUser(tenantId, cpUserId, appId, spaceId, false);
-            // 3 发送开始使用消息
+            // 3 Send Start Using Message
             WxCpMessage wxCpMessage = WeComIsvCardFactory.createWelcomeMsg(agent.getAgentId());
             socialCpIsvService.sendWelcomeMessage(socialTenantEntity, spaceId, wxCpMessage, Collections.singletonList(cpUserId), null, null);
         }
@@ -182,20 +180,20 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
     private void updateUser(String tenantId, String appId, String cpUserId, String spaceId, Integer[] cpDepartments)
             throws WxErrorException {
 
-        // 企业微信第三方服务商无法获取到用户个人信息，不需要对个人信息进行处理
-        // 成员变更后，需要重新判断该用户的所属部门是否在可见范围内
+        // WeCom third-party service providers cannot obtain the user's personal information, and do not need to process the personal information
+        // After the member changes, it is necessary to re judge whether the user's department is within the visible range
 
-        // 1 获取用户的成员信息
+        // 1 Get user's member information
         MemberEntity memberEntity = memberService.getBySpaceIdAndOpenId(spaceId, cpUserId);
         if (Objects.isNull(memberEntity)) {
-            // 2 不存在，新增成员
+            // 2 Does not exist, new member
             createUser(tenantId, appId, cpUserId, spaceId);
         }
         else {
-            // 3 获取当前企业授权的可见范围
+            // 3 Obtain the visible range of current enterprise authorization
             SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(appId, tenantId);
             Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                    .format("没有找到可用的租户信息，tenantId：%s，appId：%s", tenantId, appId)));
+                    .format("No available tenant information found,tenantId：%s，appId：%s", tenantId, appId)));
 
             Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
             Privilege privilege = agent.getPrivilege();
@@ -205,7 +203,7 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
             boolean viewable = socialCpIsvService.judgeViewable(tenantId, cpUserId, appId,
                     allowUsers, allowParties, allowTags);
             if (!viewable) {
-                // 4 成员变更后，不处于应用的可见范围内，则移除成员
+                // 4 After the member changes, if it is not within the visible range of the application, remove the member
                 deleteUser(memberEntity, spaceId);
             }
         }
@@ -214,13 +212,13 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
 
     private void deleteUser(String cpUserId, String spaceId) {
 
-        // 1 获取用户的成员信息
+        // 1 Get user's member information
         MemberEntity memberEntity = memberService.getBySpaceIdAndOpenId(spaceId, cpUserId);
         if (Objects.isNull(memberEntity)) {
             return;
         }
 
-        // 2 移除成员
+        // 2 Remove Members
         deleteUser(memberEntity, spaceId);
 
     }
@@ -231,9 +229,9 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
             return;
         }
 
-        // 1 移除成员信息
+        // 1 Remove member information
         memberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(memberEntity.getId()), false);
-        // 2 如果是管理员，需要移除对应空间站的管理员
+        // 2 If you are an administrator, you need to remove the administrator of the corresponding space station
         if (Boolean.TRUE.equals(memberEntity.getIsAdmin())) {
             spaceService.removeMainAdmin(spaceId);
         }
@@ -244,10 +242,10 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
             String[] addUserItems, String[] delUserItems, Integer[] addPartyItems, Integer[] delPartyItems)
             throws WxErrorException {
 
-        // 只有在授权应用可见范围内的标签的变更，才会触发该事件回调
+        // This event callback will only be triggered if the label changes within the visible range of the authorized application
 
         if (ArrayUtil.isNotEmpty(addUserItems)) {
-            // 1 将标签新增的用户加入成员
+            // 1 Add the user added to the tag to the member
             for (String cpUserId : addUserItems) {
                 createUser(tenantId, appId, cpUserId, spaceId);
             }
@@ -256,7 +254,7 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         }
 
         if (ArrayUtil.isNotEmpty(delUserItems)) {
-            // 2 将标签删除的用户移除成员
+            // 2 Users who delete labels Remove members
             for (String cpUserId : delUserItems) {
                 deleteUser(cpUserId, spaceId);
             }
@@ -267,10 +265,10 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
 
         if (ArrayUtil.isNotEmpty(addPartyItems)) {
-            // 3 将标签新增的部门下的用户加入成员
+            // 3 Add the user under the new department of the label to the member
             WxCpIsvUserServiceImpl wxCpTpUserService = (WxCpIsvUserServiceImpl) weComTemplate.isvService(appId)
                     .getWxCpTpUserService();
-            // 使用缓存，防止通讯录大批量操作时频繁调用接口
+            // Use cache to prevent frequent calls to the interface during mass operation of the address book
             String userSimpleListKey = RedisConstants.getWecomIsvContactUserSimpleListKey(tenantId);
             for (Integer party : addPartyItems) {
                 String userSimpleListHashKey = party.toString();
@@ -295,10 +293,10 @@ public class SocialCpIsvContactChangeEntityHandler implements ISocialCpIsvEntity
         }
 
         if (ArrayUtil.isNotEmpty(delPartyItems)) {
-            // 4 将标签删除的部门下的用户移除成员
+            // 4 Remove members from users under the department whose labels are deleted
             WxCpIsvUserServiceImpl wxCpTpUserService = (WxCpIsvUserServiceImpl) weComTemplate.isvService(appId)
                     .getWxCpTpUserService();
-            // 使用缓存，防止通讯录大批量操作时频繁调用接口
+            // Use cache to prevent frequent calls to the interface during mass operation of the address book
             String userSimpleListKey = RedisConstants.getWecomIsvContactUserSimpleListKey(tenantId);
             for (Integer party : delPartyItems) {
                 String userSimpleListHashKey = party.toString();

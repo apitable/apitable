@@ -38,10 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商变更授权处理
+ * Third party platform integration - WeCom third-party service provider change authorization processing
  * </p>
- * @author 刘斌华
- * @date 2022-01-19 16:51:54
  */
 @Slf4j
 @Service
@@ -84,14 +82,14 @@ public class SocialCpIsvAuthChangeEntityHandler implements ISocialCpIsvEntityHan
         String suiteId = unprocessed.getSuiteId();
         String authCorpId = unprocessed.getAuthCorpId();
 
-        // 1 获取企业已有的租户和空间站信息
+        // 1 Obtain the existing tenants and space station information of the enterprise
         SocialTenantEntity socialTenantEntity = socialTenantService.getByAppIdAndTenantId(suiteId, authCorpId);
         Assert.notNull(socialTenantEntity, () -> new IllegalStateException(String
-                .format("没有找到可用的租户信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
+                .format("No available tenant information found,tenantId：%s，appId：%s", authCorpId, suiteId)));
         String spaceId = socialTenantBindService.getTenantBindSpaceId(authCorpId, suiteId);
         Assert.notBlank(spaceId, () -> new IllegalStateException(String
-                .format("没有找到对应的空间站信息，tenantId：%s，appId：%s", authCorpId, suiteId)));
-        // 2 获取该企业最新的授权信息
+                .format("No corresponding space station information was found,tenantId：%s，appId：%s", authCorpId, suiteId)));
+        // 2 Get the latest authorization information of the enterprise
         WxCpTpAuthInfo wxCpTpAuthInfo = weComTemplate.isvService(suiteId)
                 .getAuthInfo(authCorpId, socialTenantEntity.getPermanentCode());
         AuthCorpInfo authCorpInfo = wxCpTpAuthInfo.getAuthCorpInfo();
@@ -102,30 +100,30 @@ public class SocialCpIsvAuthChangeEntityHandler implements ISocialCpIsvEntityHan
                 .orElse(null);
         Objects.requireNonNull(authCorpInfo, "AuthCorpInfo cannot be null.");
         Objects.requireNonNull(agent, "Agent cannot be null.");
-        // 3 更新企业的授权信息
+        // 3 Update the authorization information of the enterprise
         socialTenantEntity.setContactAuthScope(JSONUtil.toJsonStr(agent));
         socialTenantEntity.setAuthMode(SocialTenantAuthMode.fromWeCom(agent.getAuthMode()).getValue());
         socialTenantEntity.setAuthInfo(JSONUtil.toJsonStr(wxCpTpAuthInfo));
         socialTenantService.updateById(socialTenantEntity);
-        // 如果需要，先刷新 access_token
+        // If necessary, refresh access first_ token
         socialCpIsvService.refreshAccessToken(suiteId, unprocessed.getAuthCorpId(), socialTenantEntity.getPermanentCode());
-        // 4 重新同步通讯录
+        // 4 Resynchronize contacts
         Privilege privilege = agent.getPrivilege();
         socialCpIsvService.syncViewableUsers(suiteId, authCorpInfo.getCorpId(), spaceId,
                 privilege.getAllowUsers(), privilege.getAllowParties(), privilege.getAllowTags());
-        // 5 对新增成员发送开始使用消息
+        // 5 Send the start message to the new member
         WxCpMessage wxCpMessage = WeComIsvCardFactory.createWelcomeMsg(agent.getAgentId());
         socialCpIsvService.sendWelcomeMessage(socialTenantEntity, spaceId, wxCpMessage);
-        // 7 清空临时缓存
+        // 7 Empty temporary cache
         socialCpIsvService.clearCache(authCorpInfo.getCorpId());
-        // 8 清空空间站缓存
+        // 8 Clear the space station cache
         userSpaceService.delete(spaceId);
-        // 9 接口许可处理
+        // 9 Interface license processing
         try {
             socialCpIsvPermitService.autoProcessPermitOrder(suiteId, authCorpId, spaceId);
         }
         catch (Exception ex) {
-            log.error("企微接口许可自动化处理失败", ex);
+            log.error("WeCom interface license automation processing failed", ex);
         }
 
         return true;

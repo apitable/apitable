@@ -4,10 +4,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 成员第三方基本信息
+ * Basic information of the third party
  * </p>
- * @author zoe zheng
- * @date 2021/6/11 3:42 下午
  */
 @Data
 public class TenantMemberDto {

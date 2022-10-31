@@ -9,41 +9,39 @@ import com.vikadata.entity.ClientReleaseVersionEntity;
 
 /**
  * <p>
- * 版本发布表 Mapper 接口
+ * Version Publish Table Mapper Interface
  * </p>
- *
- * @author Zoe Zheng
- * @since 2020-04-07
  */
 public interface ClientReleaseVersionMapper extends BaseMapper<ClientReleaseVersionEntity> {
 
     /**
-     * 根据version获取详情
+     * Get details according to version
      *
-     * @param version 版本号
+     * @param version Version No
      * @return ClientHtmlContentDto
-     * @author zoe zheng
-     * @date 2020/4/9 10:36 上午
      */
     ClientEntryDetailDto selectClientEntryDetailByVersion(@Param("version") String version);
 
     /**
-     * 根据索引获取客户端最新的版本
-     * @return 版本号字段值
+     * Get the latest version of the client according to the index
+     *
+     * @return Version Number Field Value
      */
     @InterceptorIgnore(illegalSql = "true")
     String selectClientLatestVersionByOffset(@Param("offset") long offset);
 
     /**
-     * 获取最新的版本号
-     * @return 版本号字段值
+     * Get the latest version number
+     *
+     * @return Version Number Field Value
      */
     @InterceptorIgnore(illegalSql = "true")
     String selectClientLatestVersion();
 
     /**
-     * 查询总数
-     * @return 总数
+     * Total Queries
+     *
+     * @return Total
      */
     @InterceptorIgnore(illegalSql = "true")
     Long selectTotalCount();

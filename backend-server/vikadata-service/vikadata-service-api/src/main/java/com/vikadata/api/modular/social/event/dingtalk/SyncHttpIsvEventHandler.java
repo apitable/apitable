@@ -27,11 +27,9 @@ import static com.vikadata.social.dingtalk.constants.DingTalkConst.DING_TALK_CAL
 
 /**
  * <p>
- * 事件订阅 -- 高优先级数据，激活应用等
- * 事件订阅 -- 普通优先级数据，例如通讯录变更
+ * Event subscription - high priority data, application activation, etc
+ * Event subscription -- common priority data, such as address book change
  * </p>
- * @author zoe zheng
- * @date 2021/9/2 4:13 下午
  */
 @DingTalkEventHandler
 @Slf4j
@@ -40,21 +38,20 @@ public class SyncHttpIsvEventHandler {
     private DingTalkRedisOperations dingTalkRedisOperations;
 
     /**
-     * 处理 高优先级数据，激活应用等
+     * Processing high priority data, activating applications, etc
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onSyncHttpPushHighEvent(String suiteId, SyncHttpPushHighEvent event) {
-        log.info("收到ISV钉钉推送事件[{}]", event.getEventType());
+        log.info("ISV DingTalk push event received[{}]", event.getEventType());
         DingTalkServiceProvider dingtalkServiceProvider = SpringContextHolder.getBean(DingTalkServiceProvider.class);
-        // 先根据bizType排序,从小到大,因为需要优先级
+        // Sort by biz type first, from small to large, because priority is required
         List<BaseSyncHttpBizData> bizDataList = event.getBizData().stream().sorted(Comparator.comparing(BaseSyncHttpBizData::getBizType)).collect(Collectors.toList());
         for (BaseSyncHttpBizData bizData : bizDataList) {
             if (!DingTalkBizType.hasValue(bizData.getBizType())) {
-                log.error("收到未定的bizType处理事件:{}", bizData.getBizType());
-                // 不管，进行下一个
+                log.error("Received an undetermined biz type processing event:{}", bizData.getBizType());
                 continue;
             }
             String lockKey = RedisConstants.getDingTalkSyncHttpEventLockKey(bizData.getSubscribeId(),
@@ -63,7 +60,7 @@ public class SyncHttpIsvEventHandler {
             Lock lock = dingTalkRedisOperations.getLock(lockKey);
             boolean locked = false;
             try {
-                // 就算接收到了数据，同一时间只能一个客户端处理
+                // Even if the data is received, it can only be processed by one client at a time
                 locked = lock.tryLock();
                 if (locked) {
                     JSONObject eventData = JSONUtil.parseObj(bizData.getBizData());
@@ -72,7 +69,7 @@ public class SyncHttpIsvEventHandler {
                 }
             }
             catch (Exception e) {
-                log.error("处理SyncAction异常:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
+                log.error("Handling Sync Action exceptions:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
             }
             finally {
                 if (locked) {
@@ -80,23 +77,23 @@ public class SyncHttpIsvEventHandler {
                 }
             }
         }
-        // 钉钉的事件推送不会重复
+        // The event push of DingTalk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 
     /**
-     * 普通优先级数据，例如通讯录变更
+     * Common priority data, such as address book change
      *
-     * @param event 事件内容
-     * @return 响应内容
+     * @param event Event content
+     * @return Response content
      */
     @DingTalkEventListener
     public Object onSyncHttpPushMediumEvent(String suiteId, SyncHttpPushMediumEvent event) {
-        log.info("收到钉钉推送事件{}", event.getEventType());
+        log.info("Received DingTalk push event{}", event.getEventType());
         DingTalkServiceProvider dingtalkServiceProvider = SpringContextHolder.getBean(DingTalkServiceProvider.class);
         for (BaseSyncHttpBizData bizData : event.getBizData()) {
             if (!DingTalkBizType.hasValue(bizData.getBizType())) {
-                log.error("收到未定的bizType处理事件:{}", bizData.getBizType());
+                log.error("Received an undetermined biz type processing event:{}", bizData.getBizType());
                 return null;
             }
             String lockKey = RedisConstants.getDingTalkSyncHttpEventLockKey(bizData.getSubscribeId(),
@@ -105,7 +102,7 @@ public class SyncHttpIsvEventHandler {
             Lock lock = dingTalkRedisOperations.getLock(lockKey);
             boolean locked = false;
             try {
-                // 就算接收到了数据，同一时间只能一个客户端处理
+                // Even if the data is received, it can only be processed by one client at a time
                 locked = lock.tryLock();
                 if (locked) {
                     JSONObject eventData = JSONUtil.parseObj(bizData.getBizData());
@@ -114,7 +111,7 @@ public class SyncHttpIsvEventHandler {
                 }
             }
             catch (Exception e) {
-                log.error("处理SyncAction异常:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
+                log.error("Handling Sync Action exceptions:{}:{}", bizData.getBizId(), bizData.getBizType(), e);
             }
             finally {
                 if (locked) {
@@ -122,7 +119,7 @@ public class SyncHttpIsvEventHandler {
                 }
             }
         }
-        // 钉钉的事件推送不会重复
+        // The event push of Ding Talk will not repeat
         return DING_TALK_CALLBACK_SUCCESS;
     }
 }

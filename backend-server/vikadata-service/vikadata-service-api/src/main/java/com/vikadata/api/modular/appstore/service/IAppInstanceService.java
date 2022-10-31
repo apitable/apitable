@@ -11,147 +11,164 @@ import com.vikadata.entity.AppInstanceEntity;
 import com.vikadata.social.feishu.config.FeishuConfigStorage;
 
 /**
- * 应用实例服务
- * @author Shawn Deng
- * @date 2022-01-17 15:23:27
+ * Application instance service
  */
 public interface IAppInstanceService extends IService<AppInstanceEntity> {
 
     /**
-     * 获取空间的应用实例
-     * @param spaceId 空间ID
+     * Get space application examples
+     * 
+     * @param spaceId Space ID
      * @return AppInstanceEntity List
      */
     List<AppInstanceEntity> getAppInstances(String spaceId);
 
     /**
-     * 根据实例ID获取应用实例
-     * @param appInstanceId 实例ID
+     * Get the application instance according to the instance ID
+     *
+     * @param appInstanceId Instance ID
      * @return AppInstanceEntity
      */
     AppInstanceEntity getByAppInstanceId(String appInstanceId);
 
     /**
-     * 是否存在应用实例配置的应用key
-     * @param appInstanceId 应用实例ID
-     * @param appKey 应用实例KEY
+     * Whether there is an application key configured for the application instance
+     *
+     * @param appInstanceId Application Instance ID
+     * @param appKey Application instance KEY
      * @return true | false
      */
     boolean isAppInstanceAppKeyExist(String appInstanceId, String appKey);
 
     /**
-     * 是否存在应用实例配置的应用key
-     * @param appKey 应用实例KEY
+     * Whether there is an application key configured for the application instance
+     *
+     * @param appKey Application instance KEY
      * @return true | false
      */
     boolean isAppKeyExist(String appKey);
 
     /**
-     * 获取应用实例
-     * @param spaceId 空间ID
-     * @param appId 应用ID
+     * Get application instance
+     *
+     * @param spaceId Space ID
+     * @param appId Application ID
      * @return AppInstanceEntity
      */
     AppInstanceEntity getBySpaceIdAndAppId(String spaceId, String appId);
 
     /**
-     * 获取空间指定类型的应用实例
-     * @param spaceId 空间ID
-     * @param appType 应用类型
+     * Get the application instance of the specified type of space
+     *
+     * @param spaceId Space ID
+     * @param appType Application Type
      * @return AppInstanceEntity
      */
     AppInstanceEntity getInstanceBySpaceIdAndAppType(String spaceId, AppType appType);
 
     /**
-     * 根据应用实例ID构建配置存储器
-     * @param appInstanceId 应用实例ID
-     * @return 应用配置存储
+     * Build configuration storage according to application instance ID
+     *
+     * @param appInstanceId Application Instance ID
+     * @return Application configuration storage
      */
     FeishuConfigStorage buildConfigStorageByInstanceId(String appInstanceId);
 
     /**
-     * 兼容应用市场数据
-     * @param spaceId 空间ID
+     * Compatible application market data
+     *
+     * @param spaceId Space ID
      */
     void compatibleMarketPlace(String spaceId);
 
     /**
-     * 检查指定应用类型的应用是否已开通
-     * @param spaceId 空间ID
-     * @param appType 应用类型
+     * Check whether the application of the specified Application Type has been opened
+     *
+     * @param spaceId Space ID
+     * @param appType Application Type
      * @return true | false
      */
     boolean checkInstanceExist(String spaceId, String appType);
 
     /**
-     * 获取应用实例列表
-     * @param spaceId 空间ID
+     * Get the list of application instances
+     *
+     * @param spaceId Space ID
      * @return AppInstance List
      */
     List<AppInstance> getAppInstancesBySpaceId(String spaceId);
 
     /**
-     * 根据实例ID获取应用实例视图
-     * @param appInstanceId 应用实例ID
+     * Get the application instance view according to the instance ID
+     *
+     * @param appInstanceId Application Instance ID
      * @return AppInstance
      */
     AppInstance getAppInstance(String appInstanceId);
 
     /**
-     * 创建指定类型的应用实例
-     * @param spaceId 空间ID
-     * @param appType 应用类型
+     * Create an application instance of the specified type
+     *
+     * @param spaceId Space ID
+     * @param appType Application Type
      */
     void createInstanceByAppType(String spaceId, String appType);
 
     /**
-     * 创建应用实例
-     * @param spaceId 空间ID
-     * @param appId 应用ID
+     * Create an application instance
+     *
+     * @param spaceId Space ID
+     * @param appId Application ID
      * @return AppInstance
      */
     AppInstance createInstance(String spaceId, String appId);
 
     /**
-     * 创建应用实例
-     * @param spaceId 空间ID
-     * @param appId 应用ID
+     * Create an application instance
+     *
+     * @param spaceId Space ID
+     * @param appId Application ID
      * @return AppInstance
      */
     AppInstance create(String spaceId, String appId);
 
     /**
-     * 更新应用实例配置
-     * @param appInstanceId 应用实例ID
-     * @param config 应用实例配置
+     * Update application instance configuration
+     *
+     * @param appInstanceId Application Instance ID
+     * @param config Application instance configuration
      * @return AppInstance
      */
     AppInstance updateAppInstanceConfig(String appInstanceId, InstanceConfig config);
 
     /**
-     * 更改应用实例状态
-     * @param appInstanceId 应用实例ID
-     * @param isEnabled 是否开启
+     * Change application instance status
+     *
+     * @param appInstanceId Application Instance ID
+     * @param isEnabled Whether to open
      */
     void updateAppInstanceStatus(String appInstanceId, boolean isEnabled);
 
     /**
-     * 删除应用实例
-     * @param userId 用户ID
-     * @param appInstanceId 应用实例ID
+     * Delete Application Instance
+     *
+     * @param userId User ID
+     * @param appInstanceId Application Instance ID
      */
     void deleteAppInstance(Long userId, String appInstanceId);
 
     /**
-     * 删除空间指定类型的应用
-     * @param spaceId 空间ID
-     * @param appType 应用类型
+     * Delete the application of the specified type of space
+     *
+     * @param spaceId Space ID
+     * @param appType Application Type
      */
     void deleteBySpaceIdAndAppType(String spaceId, String appType);
 
     /**
-     * 构建应用实例视图
-     * @param instanceEntity 实例实体类
+     * Build application instance view
+     *
+     * @param instanceEntity Instance Entity Class
      * @return AppInstance
      */
     AppInstance buildInstance(AppInstanceEntity instanceEntity);

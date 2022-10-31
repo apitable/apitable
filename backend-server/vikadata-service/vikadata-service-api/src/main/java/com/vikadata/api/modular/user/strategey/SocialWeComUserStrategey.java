@@ -37,11 +37,8 @@ import static com.vikadata.api.enums.exception.UserException.USER_ALREADY_LINK_S
 
 /**
  * <p>
- * 企业微信创建SocialUser策略实现
+ * WeCom creates Social User policy implementation
  * </p>
- *
- * @author Pengap
- * @date 2021/8/23 11:24:07
  */
 @Slf4j
 @Component
@@ -66,25 +63,26 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
     public Long createSocialUser(User user) {
         SocialUser su = (SocialUser) user;
 
-        // TODO 先测试微信创建用户加锁，后面统一在策略工厂前加锁
+        // TODO First test the locking of WeChat users, and then uniformly lock in front of the policy factory
         String lockKey = StrUtil.format("createSocialUser:wecom_{}_{}:{}", su.getTenantId(), su.getAppId(), su.getOpenId());
         Lock lock = redisLockRegistry.obtain(lockKey);
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
                 try {
-                    // 检查租户应用状态
+                    // Check tenant application status
                     this.checkTenantAppStatus(su.getTenantId(), su.getAppId());
-                    // 检查应用绑定空间状态
+                    // Check the status of application binding space
                     String bindSpaceId = this.checkTenantAppBindSpace(su.getTenantId(), su.getAppId());
-                    // 查询同企业不同应用下WeComUser 是否绑定VikaUser，如果绑定不创建用户，直接建立绑定关系
+                    // Query whether WeComUser is bound to vika user under different applications of the same enterprise.
+                    // If the binding does not create a user, the binding relationship is established directly
                     Long bindUserId = iSocialCpUserBindService.getUserIdByTenantIdAndAppIdAndCpUserId(su.getTenantId(), su.getAppId(), su.getOpenId());
-                    // 租户空间的成员信息
+                    // Member information of tenant space
                     MemberEntity member = iMemberService.getBySpaceIdAndOpenId(bindSpaceId, su.getOpenId());
                     ExceptionUtil.isNotNull(member, USER_NOT_EXIST_WECOM);
                     if (null != bindUserId) {
-                        // 检查绑定关系是否存在意外未删除，但是成员信息已删除，重新建立关联关系
+                        // Check whether the binding relationship has not been deleted unexpectedly, but the member information has been deleted. Re establish the association relationship
                         if (null == member.getUserId()) {
-                            // 修改Member关联的VikaUserId（弥补操作）
+                            // Modify the vika user id associated with a Member (make up operation)
                             MemberEntity condition = MemberEntity.builder()
                                     .id(member.getId())
                                     .memberName(su.getNickName())
@@ -95,7 +93,7 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                         }
                         if (CharSequenceUtil.isNotBlank(su.getAvatar()) &&
                                 su.getSocialPlatformType() == SocialPlatformType.WECOM && su.getSocialAppType() == SocialAppType.ISV) {
-                            // 企业微信服务商需要判断是否更新头像
+                            // WeCom service provider needs to judge whether to update the avatar
                             UserEntity userEntity = iUserService.getById(bindUserId);
                             if (CharSequenceUtil.isBlank(userEntity.getAvatar())) {
                                 iUserService.updateById(UserEntity.builder()
@@ -108,18 +106,19 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                         return bindUserId;
                     }
 
-                    // 查询同企业下企业微信成员是否存在绑定，如果有绑定关系，直接建立绑定关系，如果不存在则创建用户并且建立绑定关系
+                    // Query whether there is a binding between WeChat members of enterprises under the same enterprise. If there is a binding relationship, establish a binding relationship directly.
+                    // If not, create a user and establish a binding relationship
                     Long tenantAgentOtherBindUserId = iSocialCpUserBindService.getUserIdByTenantIdAndCpUserId(su.getTenantId(), su.getOpenId());
                     if (null == tenantAgentOtherBindUserId) {
-                        // 创建用户
+                        // Create User
                         UserEntity entity = this.createUserAndCopyAvatar(user, SIGN_IN_ERROR);
-                        // 创建用户活动记录
+                        // Create user activity record
                         iPlayerActivityService.createUserActivityRecord(entity.getId());
-                        // 创建个人邀请码
+                        // Create personal invitation code
                         ivCodeService.createPersonalInviteCode(entity.getId());
                         bindUserId = entity.getId();
                         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
-                        // 神策埋点 - 注册
+                        // Shence burial site - registration
                         Long finalBindUserId = bindUserId;
                         String scene = "企业微信";
                         TaskManager.me().execute(() -> sensorsService.track(finalBindUserId, TrackEventType.REGISTER, scene, origin));
@@ -128,7 +127,7 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                         bindUserId = tenantAgentOtherBindUserId;
                         if (CharSequenceUtil.isNotBlank(su.getAvatar()) &&
                                 su.getSocialPlatformType() == SocialPlatformType.WECOM && su.getSocialAppType() == SocialAppType.ISV) {
-                            // 企业微信服务商需要判断是否更新头像
+                            // WeCom service provider needs to judge whether to update the avatar
                             UserEntity userEntity = iUserService.getById(bindUserId);
                             if (CharSequenceUtil.isBlank(userEntity.getAvatar())) {
                                 iUserService.updateById(UserEntity.builder()
@@ -139,7 +138,7 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                         }
                     }
 
-                    // 绑定住户成员关联关系
+                    // Bind household member association
                     Long cpTenantUserId = iSocialCpTenantUserService.getCpTenantUserId(su.getTenantId(), su.getAppId(), su.getOpenId());
                     if (null == cpTenantUserId) {
                         cpTenantUserId = iSocialCpTenantUserService.create(su.getTenantId(), su.getAppId(), su.getOpenId(), su.getUnionId());
@@ -149,7 +148,7 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                         iSocialCpUserBindService.create(bindUserId, cpTenantUserId);
                     }
 
-                    // 兜底逻辑，一个user只能绑定一个企业微信账号（TenantId + OpenId）
+                    // Bottom line logic: one user can only bind to one enterprise WeChat account (TenantId+OpenId)
                     String linkedWeComUserId = iSocialCpUserBindService.getOpenIdByTenantIdAndUserId(su.getTenantId(), bindUserId);
                     if (null != linkedWeComUserId) {
                         ExceptionUtil.isTrue(linkedWeComUserId.equalsIgnoreCase(su.getOpenId()), USER_ALREADY_LINK_SAME_TYPE_ERROR_WECOM);
@@ -157,12 +156,12 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                     long tenantBindUserNum = iSocialCpUserBindService.countTenantBindByUserId(su.getTenantId(), bindUserId);
                     ExceptionUtil.isFalse(tenantBindUserNum > 1, USER_ALREADY_LINK_SAME_TYPE_ERROR_WECOM);
 
-                    // 修改Member关联的VikaUserId
+                    // Modify the vika user id associated with a Member
                     iMemberService.updateById(MemberEntity.builder().id(member.getId()).userId(bindUserId).isActive(true).build());
                     return bindUserId;
                 }
                 catch (Exception e) {
-                    log.error("用户登陆操作失败", e);
+                    log.error("User login operation failed", e);
                     throw e;
                 }
                 finally {
@@ -174,8 +173,8 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
             }
         }
         catch (InterruptedException e) {
-            log.error("用户登陆操作频繁", e);
-            // 获取锁被中断
+            log.error("Frequent user login operations", e);
+            // Obtaining lock is interrupted
             throw new BusinessException(UserException.REFRESH_MA_CODE_OFTEN);
         }
     }

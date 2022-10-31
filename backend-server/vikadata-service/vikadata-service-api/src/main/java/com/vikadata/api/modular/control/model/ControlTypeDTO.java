@@ -4,11 +4,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 权限控制单元及类型DTO
+ * Permission control unit and type DTO
  * </p>
- *
- * @author Chambers
- * @date 2021/12/29
  */
 @Data
 public class ControlTypeDTO {

@@ -12,10 +12,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 /**
  * <p>
- * 玉符 IDaaS 租户测试
+ * IDaaS Tenant Test
  * </p>
- * @author 刘斌华
- * @date 2022-06-22 17:24:03
  */
 class IdaasTenantMapperTests extends AbstractMyBatisMapperTest {
 

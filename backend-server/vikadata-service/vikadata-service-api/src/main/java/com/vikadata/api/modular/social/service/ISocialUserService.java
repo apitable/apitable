@@ -11,81 +11,64 @@ import com.vikadata.entity.SocialUserEntity;
 import com.vikadata.social.dingtalk.model.DingTalkUserDetail;
 
 /**
- * 第三方平台集成-用户 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-07 11:22:19
+ * Third party platform integration - user service interface
  */
 public interface ISocialUserService extends IService<SocialUserEntity> {
 
     /**
-     * 批量插入
+     * Bulk Insert
      *
-     * @param entities 实体列表
-     * @author Shawn Deng
-     * @date 2020/12/14 23:36
+     * @param entities Entity List
      */
     void createBatch(List<SocialUserEntity> entities);
 
     /**
-     * 记录第三方平台用户
+     * Record third-party platform users
      *
-     * @param unionId      第三方平台用户标识
-     * @param platformType 第三方平台类型
-     * @author Shawn Deng
-     * @date 2020/12/14 15:34
+     * @param unionId      Third party platform user ID
+     * @param platformType Third party platform type
      */
     void create(String unionId, SocialPlatformType platformType);
 
     /**
-     * 获取第三方平台用户信息
+     * Access to third-party platform user information
      *
-     * @param unionId 第三方平台用户标识
+     * @param unionId Third party platform user ID
      * @return SocialUserEntity
-     * @author Shawn Deng
-     * @date 2020/12/15 11:45
      */
     SocialUserEntity getByUnionId(String unionId);
 
     /**
-     * 批量删除
+     * Batch delete
      *
-     * @param unionIds 第三方平台用户标识
-     * @author Shawn Deng
-     * @date 2020/12/22 00:23
+     * @param unionIds Third party platform user ID
      */
     void deleteBatchByUnionId(List<String> unionIds);
 
     /**
-     * 第三方平台应用，用户通过平台绑定的手机号，自动注册维格账号
+     * For third-party platform applications, users can automatically register vika accounts through the mobile phone number bound to the platform
      *
-     * @param authInfo 注册需要的数据
-     * @return 默认的空间名称
-     * @author zoe zheng
-     * @date 2021/5/8 1:41 下午
+     * @param authInfo Data required for registration
+     * @return Default space name
      */
     Long signUpByMobile(SocialAuthInfo authInfo);
 
 
     /**
-     * 钉钉应用的用户登录
+     * User login of DingTalk application
      *
-     * @param userDetail 钉钉应用获取到的用户详细信息
-     * @param agentId 授权应用唯一ID
-     * @return 用户的userId
-     * @author zoe zheng
-     * @date 2021/5/8 2:13 下午
+     * @param userDetail User details obtained by DingTalk application
+     * @param agentId Unique ID of authorized application
+     * @return UserId of the user
      */
     UserRegisterResult dingTalkUserLogin(DingTalkUserDetail userDetail, String agentId);
 
     /**
-     * 成员激活
+     * Member Activation
      *
-     * @param userId 用户ID
-     * @param spaceId 空间ID
-     * @param userDetail 第三方用户详细信息
-     * @author zoe zheng
-     * @date 2021/5/27 5:34 下午
+     * @param userId User ID
+     * @param spaceId Space ID
+     * @param userDetail Third party user details
      */
     void dingTalkActiveMember(Long userId, String spaceId, DingTalkUserDetail userDetail);
 }

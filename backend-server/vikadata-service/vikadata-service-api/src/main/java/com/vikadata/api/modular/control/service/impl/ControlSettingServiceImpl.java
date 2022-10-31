@@ -18,9 +18,7 @@ import com.vikadata.entity.ControlSettingEntity;
 import org.springframework.stereotype.Service;
 
 /**
- *
- * @author Shawn Deng
- * @date 2021-04-06 20:10:27
+ * Control setting service implementation class
  */
 @Service
 @Slf4j
@@ -41,7 +39,7 @@ public class ControlSettingServiceImpl extends ServiceImpl<ControlSettingMapper,
 
     @Override
     public void create(Long userId, String controlId) {
-        log.info("创建权限控制单元设置。userId:{},controlId:{}", userId, controlId);
+        log.info("Create permission control unit settings.userId:{},controlId:{}", userId, controlId);
         Integer count;
         ControlSettingEntity deletedEntity =
                 controlSettingMapper.selectDeletedByControlId(controlId);
@@ -52,7 +50,7 @@ public class ControlSettingServiceImpl extends ServiceImpl<ControlSettingMapper,
                     false);
         }
         else {
-            // 初始化字段权限设置
+            // Initialize field permission settings
             ControlSettingEntity controlSetting = new ControlSettingEntity();
             controlSetting.setId(IdWorker.getId());
             controlSetting.setControlId(controlId);
@@ -65,7 +63,7 @@ public class ControlSettingServiceImpl extends ServiceImpl<ControlSettingMapper,
 
     @Override
     public void removeByControlIds(Long userId, List<String> controlIds) {
-        log.info("删除指定控制单元设置「{}」", controlIds);
+        log.info("Delete the specified control unit settings「{}」", controlIds);
         controlSettingMapper.deleteByControlIds(userId, controlIds);
     }
 }

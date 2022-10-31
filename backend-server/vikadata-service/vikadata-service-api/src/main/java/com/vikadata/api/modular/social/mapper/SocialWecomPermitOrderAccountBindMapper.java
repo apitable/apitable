@@ -10,31 +10,25 @@ import com.vikadata.entity.SocialWecomPermitOrderAccountBindEntity;
 
 /**
  * <p>
- * 企微服务商接口许可账号绑定信息
+ * WeCom service provider interface license account binding information
  * </p>
- * @author 刘斌华
- * @date 2022-07-01 10:41:12
  */
 @Mapper
 public interface  SocialWecomPermitOrderAccountBindMapper extends BaseMapper<SocialWecomPermitOrderAccountBindEntity> {
 
     /**
-     * 查询激活码
+     * Query activation code
      *
-     * @param orderId 接口许可订单号
-     * @return 激活码列表
-     * @author 刘斌华
-     * @date 2022-07-01 15:08:07
+     * @param orderId Interface license order number
+     * @return Activation code list
      */
     List<String> selectActiveCodesByOrderId(@Param("orderId") String orderId);
 
     /**
-     * 获取接口许可订单中的账号数量
+     * Obtain the number of accounts in the interface license order
      *
-     * @param orderId 接口许可订单号
-     * @return 账号数量
-     * @author 刘斌华
-     * @date 2022-06-28 10:30:00
+     * @param orderId Interface license order number
+     * @return Number of accounts
      */
     int selectCountByOrderId(@Param("orderId") String orderId);
 

@@ -7,15 +7,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 钉钉用户登录请求参数
- *
- * @author Shawn Deng
- * @date 2020-12-15 12:15:47
+ * DingTalk User Login Request Parameters
  */
-@ApiModel("钉钉应用用户登录请求参数")
+@ApiModel("DingTalk Application User Login Request Parameters")
 @Data
 public class DingTalkUserLoginRo {
     @NotBlank
-    @ApiModelProperty(value = "免登授权码", required = true, position = 2)
+    @ApiModelProperty(value = "Registration free authorization code", required = true, position = 2)
     private String code;
 }

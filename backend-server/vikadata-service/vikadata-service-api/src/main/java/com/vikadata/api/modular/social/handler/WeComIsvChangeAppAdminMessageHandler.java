@@ -21,10 +21,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商从企业微信应用市场发起变更应用管理员通知
+ * The third party service provider initiates a change from the We Com application market Application Manager Notification
  * </p>
- * @author 刘斌华
- * @date 2022-01-19 10:27:23
  */
 @Component
 public class WeComIsvChangeAppAdminMessageHandler implements WeComIsvMessageHandler {

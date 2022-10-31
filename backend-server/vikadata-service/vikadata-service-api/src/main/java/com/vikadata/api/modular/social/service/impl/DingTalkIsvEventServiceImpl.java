@@ -105,10 +105,8 @@ import static com.vikadata.social.dingtalk.constants.DingTalkConst.ROOT_DEPARTME
 
 /**
  * <p>
- * ISV钉钉事件服务接口实现
+ * ISV DingTalk Implementation of event service interface
  * </p>
- * @author zoe zheng
- * @date 2021/9/14 3:36 下午
  */
 @Service
 @Slf4j
@@ -181,19 +179,19 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     public void handleOrgSuiteAuthEvent(String suiteId, BaseOrgSuiteEvent event) {
         String corpId = event.getAuthCorpInfo().getCorpid();
         SocialTenantEntity entity = iSocialTenantService.getByAppIdAndTenantId(suiteId, corpId);
-        // 已经存在，并且为启用状态重复
+        // Already exists, and is in the enabled state repeatedly
         if (entity != null && entity.getStatus()) {
             return;
         }
-        // 检查第三方状态
+        // Check third-party status
         TenantInfoResult tenantInfo = iDingTalkInternalIsvService.getSocialTenantInfo(corpId, suiteId);
-        // 可能存在重新授权，本地状态为0，新建一个空间进行绑定
+        // There may be re authorization. The local status is 0. Create a new space to bind
         String authUserOpenId = event.getAuthUserInfo().getUserId();
-        // 先保存授权人员的信息，初始化空间站然后再同步成员信息
+        // First save the information of authorized personnel, initialize the space station, and then synchronize the member information
         AuthOrgScopes scopes = new AuthOrgScopes();
         scopes.setAuthedUser(Collections.singletonList(authUserOpenId));
         scopes.setAuthedDept(Collections.emptyList());
-        // 初始化一个新空间
+        // Initialize a new space
         SpaceContext spaceContext = new SpaceContext(null, event.getAuthCorpInfo().getCorpName(),
                 event.getAuthCorpInfo().getCorpLogoUrl());
         spaceContext.prepare();
@@ -201,7 +199,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
         ContactMeta contactMeta = new ContactMeta(spaceId, corpId, suiteId, authUserOpenId);
         handleIsvOrgContactData(contactMeta, spaceContext, scopes);
         String agentId = event.getAuthInfo().getAgent().get(0).getAgentid().toString();
-        // 在保存前更正agentId
+        // Correct agent id before saving
         if (StrUtil.isNotBlank(tenantInfo.getTenantId())) {
             agentId = tenantInfo.getAgentId();
             AuthInfo authInfo = event.getAuthInfo();
@@ -210,18 +208,18 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             authInfo.setAgent(Collections.singletonList(agent));
             event.setAuthInfo(authInfo);
         }
-        // 保存或者更新租户信息
+        // Save or update tenant information
         iSocialTenantService.createOrUpdateWithScope(SocialPlatformType.DINGTALK, SocialAppType.ISV,
                 suiteId, corpId, JSONUtil.toJsonStr(scopes), JSONUtil.toJsonStr(event));
-        // 绑定租户和此空间站
+        // Bind the tenant and this space station
         iSocialTenantBindService.addTenantBind(suiteId, corpId, spaceId);
-        // 保存通讯录信息
+        // Save address book information
         contactMeta.doSaveOrUpdate();
-        // 空间的主管理员成员ID（新空间随机引用模板方法，包含GRPC调用，放置最后）
+        // ID of the main administrator member of the space (the new space randomly references the template method, including GRPC calls, and places the last)
         spaceContext.after(contactMeta.openIdMap.get(authUserOpenId).getMemberId());
-        // 如果在授权之前有订单信息，需要补全
+        // If there is order information before authorization, it needs to be completed
         handleTenantOrders(corpId, suiteId);
-        // 发送开始使用通知
+        // Send start notification
         String finalAgentId = agentId;
         TaskManager.me().execute(() -> {
             IsvAppProperty app = iDingTalkInternalIsvService.getIsvAppConfig(suiteId);
@@ -235,28 +233,28 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     @Transactional(rollbackFor = Exception.class)
     public void handleOrgSuiteChangeEvent(String suiteId, BaseOrgSuiteEvent event) {
         String corpId = event.getAuthCorpInfo().getCorpid();
-        // 更新租户的变更
+        // Update tenant changes
         String authUserOpenId = event.getAuthUserInfo().getUserId();
         AuthOrgScopes scopes = event.getAuthScope().getAuthOrgScopes();
         String spaceId = iSocialTenantBindService.getTenantBindSpaceId(corpId, suiteId);
-        // 初始化一个新空间
+        // Initialize a new space
         SpaceContext spaceContext = new SpaceContext(spaceId, event.getAuthCorpInfo().getCorpName(),
                 event.getAuthCorpInfo().getCorpLogoUrl());
         spaceContext.prepare();
         ContactMeta contactMeta = new ContactMeta(spaceId, corpId, suiteId, authUserOpenId);
         handleIsvOrgContactData(contactMeta, spaceContext, scopes);
-        // 保存或者更新租户信息
+        // Save or update tenant information
         iSocialTenantService.createOrUpdateWithScope(SocialPlatformType.DINGTALK, SocialAppType.ISV,
                 suiteId, corpId, JSONUtil.toJsonStr(scopes), JSONUtil.toJsonStr(event));
-        // 保存通讯录信息
+        // Save address book information
         contactMeta.deleteMembers();
         contactMeta.doSaveOrUpdate();
-        // 主管理员移出了可见范围
+        // The master administrator moved out of the visible range
         Long owner = contactMeta.openIds.contains(spaceContext.oldAdminOpenId) ?
                 contactMeta.openIdMap.get(spaceContext.oldAdminOpenId).getMemberId() : null;
-        // 空间的主管理员成员ID（新空间随机引用模板方法，包含GRPC调用，放置最后）
+        // ID of the main administrator member of the space (the new space randomly references the template method, including GRPC calls, and places the last)
         spaceContext.after(owner);
-        // 发送开始使用通知
+        // Send start notification
         TaskManager.me().execute(() -> {
             IsvAppProperty app = iDingTalkInternalIsvService.getIsvAppConfig(suiteId);
             List<String> openIds = contactMeta.tenantUserMap.values().stream().filter(i -> i.isNew)
@@ -278,7 +276,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
                 Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
                 SpaceGlobalFeature feature = SpaceGlobalFeature.builder().invitable(true).build();
                 iSpaceService.switchSpacePros(mainAdminUserId, spaceId, feature);
-                // 删除空间的绑定
+                // Delete space binding
                 iSocialTenantBindService.removeBySpaceId(spaceId);
                 List<String> openIds = memberMapper.selectOpenIdBySpaceId(CollUtil.toList(spaceId));
                 if (!openIds.isEmpty()) {
@@ -297,9 +295,9 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             for (String spaceId : spaceIds) {
                 iAppInstanceService.createInstanceByAppType(spaceId, AppType.DINGTALK_STORE.name());
             }
-            // 重新开启租户
+            // Reopen the tenant
             iSocialTenantService.updateTenantStatus(suiteId, corpId, true);
-            // todo 发送消息卡片
+            // todo Send Message Card
         }
     }
 
@@ -311,7 +309,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             for (String spaceId : spaceIds) {
                 iAppInstanceService.deleteBySpaceIdAndAppType(spaceId, AppType.DINGTALK_STORE.name());
             }
-            // 更新应用状态
+            // Update application status
             iSocialTenantService.updateTenantStatus(suiteId, corpId, false);
         }
     }
@@ -319,45 +317,45 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handleUserAddOrgEvent(String openId, BaseOrgUserContactEvent event) {
-        // 新版事件
+        // New version event
         String tenantKey = event.getCorpId();
         String unionId = event.getUnionid();
         if (!event.getErrcode().equals(0)) {
-            log.warn("[正常] - [用户信息有误]:{}:{}:{}", tenantKey, openId, event.getErrmsg());
+            log.warn("[Normal] - [Incorrect user information]:{}:{}:{}", tenantKey, openId, event.getErrmsg());
             handleUserLeaveOrgEvent(openId, BeanUtil.toBean(event, SyncHttpUserLeaveOrgEvent.class));
             return;
         }
         if (StrUtil.isBlank(unionId)) {
-            log.warn("[正常] - [用户没有unionId]:{}:{}", tenantKey, openId);
+            log.warn("[Normal] - [The user does not have a union ID]:{}:{}", tenantKey, openId);
             return;
         }
         String suiteId = event.getSuiteId();
-        // 获取当前部门的空间ID
+        // Get the space ID of the current department
         String spaceId = iSocialTenantBindService.getTenantBindSpaceId(tenantKey, suiteId);
         if (StrUtil.isBlank(spaceId)) {
-            log.warn("[正常] - [用户信息发生变化事件]租户「{}」未绑定任何空间", tenantKey);
+            log.warn("[Normal] - [User information change event]Tenant「{}」No space bound", tenantKey);
             return;
         }
-        // 员工非激活状态的变化事件信息不处理
+        // Employee inactive change event information will not be processed
         if (!event.getActive()) {
-            log.warn("[用户信息发生变化事件]租户「{}」下的用户[{}]未激活，不处理", tenantKey, openId);
+            log.warn("[User information change event] Tenant「{}」User [{}]Not activated, not processed", tenantKey, openId);
             return;
         }
         if (!memberVisitable(tenantKey, suiteId, openId)) {
-            log.warn("[用户信息发生变化事件]租户「{}」下的用户[{}]不在可见范围，不处理", tenantKey, openId);
+            log.warn("[User information change event]Tenant「{}」User[{}]Not in the visible range, not processed", tenantKey, openId);
             return;
         }
         Long memberId = iMemberService.getMemberIdBySpaceIdAndOpenId(spaceId, openId);
         if (ObjectUtil.isNull(memberId)) {
             HashMap<String, String> nickNameMap = iSocialUserBindService.getUserNameByUnionIds(Collections.singletonList(unionId));
-            // 创建成员
+            // Create Member
             MemberEntity member = createMember(IdWorker.getId(), spaceId, nickNameMap.get(unionId), openId, false);
-            // 创建成员
+            // Create Member
             iMemberService.batchCreate(spaceId, Collections.singletonList(member));
-            // 创建部门关联,直接放入根部门
+            // Create department association and put it directly into the root department
             Long rootTeamId = iTeamService.getRootTeamId(spaceId);
             iTeamMemberRelService.createBatch(Collections.singletonList(createTeamMemberRel(rootTeamId, member.getId())));
-            // 发送开始使用通知
+            // Send start notification
             TaskManager.me().execute(() -> {
                 IsvAppProperty app = iDingTalkInternalIsvService.getIsvAppConfig(suiteId);
                 iDingTalkInternalIsvService.sendMessageToUserByTemplateId(suiteId, tenantKey, app.getMsgTplId().getWelcome(),
@@ -371,25 +369,25 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     @Transactional(rollbackFor = Exception.class)
     public void handleUserLeaveOrgEvent(String openId, SyncHttpUserLeaveOrgEvent event) {
         String tenantKey = event.getCorpId();
-        // 获取空间ID
+        // Get space ID
         String spaceId = iSocialTenantBindService.getTenantBindSpaceId(tenantKey, event.getSuiteId());
         if (StrUtil.isBlank(spaceId)) {
-            log.warn("[正常] - [用户离职事件]租户「{}」未绑定任何空间", tenantKey);
+            log.warn("[Normal] - [User resignation event]Tenant「{}」No space bound", tenantKey);
             return;
         }
         MemberEntity member = iMemberService.getBySpaceIdAndOpenId(spaceId, openId);
         if (member != null) {
             if (member.getIsAdmin()) {
-                // 离职的成员是主管理员，将空间站主管理员置为null
+                // The resigned member is the master administrator. Set the master administrator of the space station to null
                 spaceMapper.updateSpaceOwnerId(spaceId, null, null);
             }
-            // 禁止使用授权登录
+            // Prohibit login with authorization
             String unionId = iSocialTenantUserService.getUnionIdByOpenId(event.getSuiteId(), tenantKey, openId);
             if (StrUtil.isNotBlank(unionId)) {
                 iUserLinkService.deleteBatchOpenId(Collections.singletonList(openId), LinkType.DINGTALK.getType());
             }
             socialTenantUserMapper.deleteByTenantIdAndOpenId(event.getSuiteId(), tenantKey, openId);
-            // 移除成员所在空间
+            // Remove member's space
             iMemberService.batchDeleteMemberFromSpace(spaceId, Collections.singletonList(member.getId()), false);
         }
     }
@@ -401,28 +399,28 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
         Integer status = iSocialDingTalkOrderService.getStatusByOrderId(event.getCorpId(), event.getSuiteId(),
                 event.getOrderId());
         if (SqlHelper.retBool(status)) {
-            log.warn("钉钉订单已经处理:{}", event.getOrderId());
+            log.warn("DingTalk order has been processed:{}", event.getOrderId());
             return;
         }
-        // 写入钉钉订单
+        // Write DingTalk order
         if (null == status) {
             iSocialDingTalkOrderService.createOrder(event);
         }
-        // 获取空间ID
+        // Get space ID
         String spaceId = iSocialTenantBindService.getTenantBindSpaceId(tenantKey, event.getSuiteId());
         if (StrUtil.isBlank(spaceId)) {
-            log.warn("钉钉企业还未收到开通应用事件:{}", event.getCorpId());
+            log.warn("The DingTalk enterprise has not received the application activation event:{}", event.getCorpId());
             return;
         }
         try {
             String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
-            // 同步订单事件
+            // Synchronize order events
             SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
         }
         catch (Exception e) {
-            log.error("处理租户订单失败，请火速解决:{}:{}", spaceId, event.getOrderId(), e);
+            log.error("Failed to process tenant order, please solve it as soon as possible:{}:{}", spaceId, event.getOrderId(), e);
         }
-        // 发送通知
+        // Send notification
         TaskManager.me().execute(() -> {
             LocalDateTime expireTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(event.getServiceStopTime()),
                     TimeZone.getDefault().toZoneId());
@@ -430,7 +428,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             NotificationManager.me().sendSocialSubscribeNotify(spaceId, toUserId, LocalDate.from(expireTime),
                     event.getItemName(), event.getPayFee());
         });
-        // 保存数据到数表
+        // Save data to data table
         TaskManager.me().execute(() -> saveDingTalkSubscriptionInfo(spaceId, event));
 
     }
@@ -438,19 +436,19 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     @Override
     public void handleMarketServiceClosedEvent(SyncHttpMarketServiceCloseEvent event) {
         String tenantKey = event.getCorpId();
-        // 获取空间ID
+        // Get space ID
         String spaceId = iSocialTenantBindService.getTenantBindSpaceId(tenantKey, event.getSuiteId());
         if (StrUtil.isBlank(spaceId)) {
-            log.error("企业未授权:{}", tenantKey);
+            log.error("Enterprise not authorized:{}", tenantKey);
             return;
         }
         Integer status = iSocialDingTalkRefundService.getStatusByOrderId(event.getCorpId(), event.getSuiteId(),
                 event.getOrderId());
-        // 已经处理过了
+        // Already handled
         if (SqlHelper.retBool(status)) {
             return;
         }
-        // 退款不存在，写入钉钉退款订单
+        // Refund does not exist. Write Ding Talk refund order
         if (null == status) {
             iSocialDingTalkRefundService.createRefund(event);
         }
@@ -458,7 +456,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
         }
         catch (Exception e) {
-            log.error("处理租户退款失败，请火速解决:{}:{}:{}", spaceId, event.getOrderId(), event.getRefundId(), e);
+            log.error("Failed to process tenant refund, please solve it as soon as possible:{}:{}:{}", spaceId, event.getOrderId(), event.getRefundId(), e);
         }
     }
 
@@ -490,13 +488,13 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
 
 
     private void handleIsvOrgContactData(ContactMeta contactMeta, SpaceContext spaceContext, AuthOrgScopes authScopes) {
-        // 钉钉第三方应用，无需还原通讯录部门结构，全部同步到根部门
+        // DingTalk third-party applications do not need to restore the address book department structure, and all are synchronized to the root department
         String suiteId = contactMeta.suiteId;
         String authCorpId = contactMeta.corpId;
         // unionId -> DingTalkUserDto
         HashMap<String, DingTalkUserDto> userMap = iDingTalkInternalIsvService.getAuthCorpUserDetailMap(suiteId,
                 authCorpId, authScopes.getAuthedDept(), authScopes.getAuthedUser());
-        // 初次绑定，可见范围没有主管理员，主管理员就是空的
+        // When binding for the first time, there is no primary administrator in the visible range, and the primary administrator is empty
         Long rootTeamId = spaceContext.rootTeamId;
         for (DingTalkUserDto userInfo : userMap.values()) {
             handleMember(contactMeta, userInfo, rootTeamId);
@@ -510,32 +508,32 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
         }
         DingTalkIsvMemberDto dto = contactMeta.openIdMap.get(openId);
         Long memberId;
-        // 数据库中的member 不存在,没有同步过，需要登录的时候才绑定用户
+        // The member in the database does not exist and has not been synchronized. Users can be bound only when they need to log in
         if (ObjectUtil.isNull(dto)) {
             MemberEntity member = createMember(IdWorker.getId(), contactMeta.spaceId, userInfo.getUserName(),
                     openId, contactMeta.authOpenId.equals(openId));
-            // 不存在，map中没有，更新memberId
+            // Does not exist, does not exist in the map, update member Id
             memberId = member.getId();
             contactMeta.memberEntities.add(member);
-            // 部门绑定, 因为管理员可以编辑部门，所以只有新增的成员才会放到根部门
+            // Department binding. Because administrators can edit departments, only new members will be placed in the root department
             contactMeta.teamMemberRelEntities.add(OrganizationFactory.createTeamMemberRel(parentTeamId, memberId));
             contactMeta.openIdMap.put(openId,
                     DingTalkIsvMemberDto.builder().memberId(memberId).openId(openId).isVisible(true).build());
         }
         else {
-            // 已经同步过 判断是否之前删除了，恢复数据
+            // It has been synchronized to determine whether it has been deleted before and recover the data
             memberId = dto.getMemberId();
             if (dto.isDeleted()) {
                 contactMeta.recoverMemberIds.add(memberId);
-                // 重新关联回根部门
+                // Reassociate to the root department
                 contactMeta.teamMemberRelEntities.add(OrganizationFactory.createTeamMemberRel(parentTeamId, memberId));
                 dto.setDeleted(false);
             }
             dto.setVisible(true);
             contactMeta.openIdMap.put(openId, dto);
         }
-        // 同步第三方用户，过滤已经添加过的用户,因为测试环境存在一个应用绑定多个空间的情况,这里不做钉钉通讯录的管理，只有在通讯录事件的
-        // 时候进行同步，防止误删钉钉通讯录用户
+        // Synchronize third-party users and filter users that have been added. Because the test environment has an application bound to multiple spaces, the management of the Ding Talk address book is not done here.
+        // Only synchronize when the address book events occur to prevent the deletion of Ding Talk address book users by mistake
         SocialTenantUserDTO tenantUserDTO = contactMeta.tenantUserMap.get(openId);
         if (null == tenantUserDTO) {
             contactMeta.tenantUserEntities.add(SocialFactory.createTenantUser(contactMeta.suiteId, contactMeta.corpId,
@@ -546,7 +544,6 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             tenantUserDTO.setVisible(true);
         }
         contactMeta.tenantUserMap.put(openId, tenantUserDTO);
-        // 实际上是所有成员
         contactMeta.allMemberIds.add(memberId);
         contactMeta.openIds.add(openId);
     }
@@ -554,7 +551,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     private void handleTenantOrders(String tenantKey, String appId) {
         List<String> orderData = iSocialDingTalkOrderService.getOrdersByTenantIdAndAppId(tenantKey, appId);
         if (CollUtil.isEmpty(orderData)) {
-            log.warn("没有待处理的钉钉订单:{}:{}", tenantKey, appId);
+            log.warn("No pending DingTalk orders:{}:{}", tenantKey, appId);
         }
         orderData.forEach(data -> {
             SyncHttpMarketOrderEvent event = JSONUtil.toBean(data, SyncHttpMarketOrderEvent.class);
@@ -562,14 +559,14 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
                 handleMarketOrderEvent(event);
             }
             catch (Exception e) {
-                log.error("处理钉钉订单失败，请火速解决:{}:{}", tenantKey, e);
+                log.error("Failed to process Ding Talk list, please solve it quickly:{}:{}", tenantKey, e);
             }
         });
     }
 
     void saveDingTalkSubscriptionInfo(String spaceId, BaseOrderEvent event) {
         DingTalkSubscriptionInfo info = new DingTalkSubscriptionInfo();
-        // 订单购买的付费方案
+        // Payment scheme for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         info.setSpaceId(spaceId);
         info.setSpaceName(iSpaceService.getNameBySpaceId(spaceId));
@@ -596,13 +593,12 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     }
 
     /**
-     * 检查用户是否在可见范围
-     * @param tenantId 企业ID
-     * @param appId 应用ID
-     * @param  openId 用户的openId
+     * Check if the user is in the visible range
+     *
+     * @param tenantId Enterprise ID
+     * @param appId App ID
+     * @param  openId User's open ID
      * @return boolean
-     * @author zoe zheng
-     * @date 2022/5/27 15:17
      */
     private boolean memberVisitable(String tenantId, String appId, String openId) {
         SocialTenantEntity entity = iSocialTenantService.getByAppIdAndTenantId(appId, tenantId);
@@ -611,17 +607,17 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             return false;
         }
         AuthOrgScopes scopes = event.getAuthScope().getAuthOrgScopes();
-        // 包含授权用户
+        // Include authorized users
         if (scopes.getAuthedUser().size() > 0 && scopes.getAuthedUser().contains(openId)) {
             return true;
         }
-        // 选择了部门
+        // Department selected
         if (scopes.getAuthedDept().size() > 0) {
-            // 全部用户
+            // All users
             if (scopes.getAuthedDept().contains(ROOT_DEPARTMENT_ID.toString())) {
                 return true;
             }
-            // 查询授权部门下是否包涵此用户
+            // Query whether the user is included in the authorized department
             try {
                 DingTalkUserDetail userDetail = iDingTalkInternalIsvService.getUserDetailByUserId(appId, tenantId,
                         openId);
@@ -631,7 +627,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
                 }
             }
             catch (Exception e) {
-                log.warn("查询钉钉ISV用户失败:" + openId, e);
+                log.warn("Failed to query the DingTalk ISV user:" + openId, e);
             }
         }
         return false;
@@ -647,7 +643,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
         private boolean isDeleted;
 
         /**
-         * 是否在可见范围中
+         * Whether it is in the visible range
          */
         private boolean isVisible;
     }
@@ -658,12 +654,12 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
         private String openId;
 
         /**
-         * 是否新增，用于发送通知消息
+         * New or not, used to send notification messages
          */
         private boolean isNew;
 
         /**
-         * 是否在可见范围中
+         * Whether it is in the visible range
          */
         private boolean isVisible;
     }
@@ -694,10 +690,10 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
             if (StrUtil.isBlank(spaceId)) {
                 spaceId = IdUtil.createSpaceId();
                 spaceName = spaceName + SPACE_NAME_DEFAULT_SUFFIX;
-                // 创建根部门
+                // Create root department
                 rootTeamId = iTeamService.createRootTeam(spaceId, spaceName);
                 iUnitService.create(spaceId, UnitType.TEAM, rootTeamId);
-                // 创建根节点
+                // Create Root Node
                 rootNodeId = iNodeService.createChildNode(-1L, CreateNodeDto.builder()
                         .spaceId(spaceId)
                         .newNodeId(IdUtil.createNodeId())
@@ -712,25 +708,25 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
 
         void after(Long owner) {
             if (isCreate) {
-                // owner 可能为null 因为主管理员可能不在可见范围,api无法拿到数据
+                // owner may be null because the main administrator may not be in the visible range, and the api cannot get data
                 SpaceEntity space = SocialFactory.createSocialBindBindSpaceInfo(spaceId, spaceName, spaceLogo,
                         null, owner);
                 iSpaceService.save(space);
-                // 更新应用市场状态
+                // Update app market status
                 iAppInstanceService.createInstanceByAppType(spaceId, AppType.DINGTALK_STORE.name());
-                // 标记空间正在同步空间站通讯录
+                // Tagged space is synchronizing the address book of the space station
                 iSpaceService.setContactSyncing(spaceId, owner.toString());
 
-                // 随机引用模板中心 热门推荐 轮播图的模板
+                // Randomly quote the template of the popular recommended carousel chart in the template center
                 String templateNodeId = iTemplateService.getDefaultTemplateNodeId();
                 if (StrUtil.isNotBlank(templateNodeId)) {
-                    // 转存节点方法，包含GRPC调用，放置最后
+                    // Transfer node method, including GRPC calls, and place the last
                     iNodeService.copyNodeToSpace(-1L, spaceId, rootNodeId, templateNodeId, NodeCopyOptions.create());
                 }
             }
             else {
                 if (owner == null) {
-                    // 主管理员不在可见范围，将空间站主管理员置为null
+                    // The primary administrator is not in the visible range. Set the primary administrator of the space station to null
                     spaceMapper.updateSpaceOwnerId(spaceId, null, null);
                 }
                 iSpaceService.contactFinished(spaceId);
@@ -763,13 +759,14 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
 
         Map<String, DingTalkIsvMemberDto> openIdMap;
 
-        // 已经存在的钉钉通讯录用户, 不在同步通讯录的时候删除，通过回调事件进行同步，因为同一个企业用户ID是一样的
+        // The existing DingTalk address book users are not deleted when the address book is synchronized.
+        // They are synchronized through callback events because the same enterprise user ID is the same
         Map<String, SocialTenantUserDTO> tenantUserMap;
 
-        // 通讯录范围内的openId对应的members表的ID
+        // ID of the member table corresponding to the open ID in the address book range
         List<Long> allMemberIds = CollUtil.newArrayList();
 
-        // 这次同步的钉钉用户ID，用于发送开始使用消息
+        // The DingTalk user ID of this synchronization, which is used to send the start message
         Set<String> openIds = CollUtil.newHashSet();
 
         List<SocialTenantUserEntity> tenantUserEntities = new ArrayList<>();
@@ -792,22 +789,22 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
         void doSaveOrUpdate() {
             iSocialTenantUserService.createBatch(tenantUserEntities);
             iMemberService.batchCreate(spaceId, memberEntities);
-            // 恢复成员
+            // Restore Member
             if (!recoverMemberIds.isEmpty()) {
                 iMemberService.batchRecoveryMemberFromSpace(spaceId, recoverMemberIds);
             }
             iTeamMemberRelService.createBatch(teamMemberRelEntities);
-            // 删除缓存
+            // Delete Cache
             userSpaceService.delete(spaceId);
         }
 
         void deleteMembers() {
-            // 计算出removeMemberIds, 之前的成员，并且不在此次同步范围中
+            // RemoveMemberIds, the previous member, is calculated and is not in this synchronization range
             List<Long> removeMemberIds =
                     openIdMap.values().stream().filter(i -> !i.isVisible && !i.isDeleted).map(DingTalkIsvMemberDto::getMemberId).collect(Collectors.toList());
-            // oldMembers就是需要删除的成员
+            // Old Members are the members to be deleted
             iMemberService.batchDeleteMemberFromSpace(spaceId, removeMemberIds, false);
-            // 删除social tenant user
+            // Delete social tenant user
             List<String> openIds =
                     tenantUserMap.values().stream().filter(i -> !i.isVisible).map(SocialTenantUserDTO::getOpenId).collect(Collectors.toList());
             if (!openIds.isEmpty()) {

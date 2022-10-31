@@ -9,24 +9,22 @@ import lombok.Data;
 
 /**
  * <p> 
- * 空间更换主管理员请求参数
- * </p> 
- * @author zoe zheng 
- * @date 2021/9/17 17:53
+ * Request parameters of space replacement master administrator
+ * </p>
  */
 @Data
-@ApiModel("钉钉租户空间更换主管理员请求参数")
+@ApiModel("DingTalk Tenant Space Change Primary Administrator Request Parameters")
 public class DingTalkTenantMainAdminChangeRo {
 
-    @ApiModelProperty(value = "空间站标识", example = "spc2123hjhasd", required = true)
-    @NotBlank(message = "空间ID不能为空")
+    @ApiModelProperty(value = "Space identification", example = "spc2123hjhasd", required = true)
+    @NotBlank(message = "Space ID cannot be empty")
     private String spaceId;
 
-    @ApiModelProperty(value = "新主管理员的成员ID", example = "123456", position = 2, required = true)
-    @NotNull(message = "新主管理员的成员ID不能为空")
+    @ApiModelProperty(value = "MemberID of the new master administrator", example = "123456", position = 2, required = true)
+    @NotNull(message = "The member ID of the new master administrator cannot be empty")
     private Long memberId;
 
-    @ApiModelProperty(value = "第三方组织ID", example = "ddsddd", position = 3, required = true)
-    @NotNull(message = "第三方组织ID不能为空")
+    @ApiModelProperty(value = "Third party organization ID", example = "ddsddd", position = 3, required = true)
+    @NotNull(message = "Third party organization ID cannot be empty")
     private String corpId;
 }

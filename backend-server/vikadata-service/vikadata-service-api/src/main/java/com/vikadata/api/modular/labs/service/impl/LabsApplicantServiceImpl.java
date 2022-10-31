@@ -36,11 +36,8 @@ import static com.vikadata.api.enums.labs.LabsFeatureTypeEnum.NORMAL_PERSIST;
 
 /**
  * <p>
- * 实验性功能申请表 服务实现类
+ * Service implementation class of experimental function application form
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/21 11:00:52
  */
 @Service
 @Slf4j
@@ -54,21 +51,21 @@ public class LabsApplicantServiceImpl extends ServiceImpl<LabsApplicantMapper, L
 
     @Override
     public LabsFeatureVo getUserCurrentFeatureApplicants(List<String> applicants) {
-        // 加载全局开放的实验性功能
+        // Load experimental functions that are open globally
         List<String> globalApplicants = labsApplicantMapper.selectFeatureKeyByType(GLOBAL.getType());
 
-        // 对申请者进行空值判断
+        // Judge the applicant as null
         if(applicants.isEmpty()){
             return LabsFeatureVo.builder()
                     .keys(globalApplicants.stream().map(LabsFeatureEnum::ofFeatureKey).collect(Collectors.toList()))
                     .build();
         }
 
-        // 查询用户级别、空间站级别下的所有内测申请记录
+        // Query all internal test application records at user level and space level
         List<String> userLabsApplicants =
                 labsApplicantMapper.selectUserFeaturesByApplicant(applicants);
 
-        // 合并去重
+        // Merge and de duplication
         globalApplicants.addAll(userLabsApplicants);
         globalApplicants = new ArrayList<>(new LinkedHashSet<>(globalApplicants));
 
@@ -88,11 +85,11 @@ public class LabsApplicantServiceImpl extends ServiceImpl<LabsApplicantMapper, L
                 labsApplicantMapper.selectApplicantAndFeatureKey(applicant, ofLabsFeature(featureKey).name());
         LabsFeatureTypeEnum currentLabsFeatureType = iLabsFeatureService.getCurrentLabsFeatureType(featureKey);
         if (Objects.isNull(existLabsApplicant)) {
-            // 如果不是normal或者normal_persist类型，不允许启用实验性功能
+            // If it is not of normal or normal persistent type, it is not allowed to enable experimental functions
             boolean enableUpdate = NORMAL.equals(currentLabsFeatureType) ||
                     NORMAL_PERSIST.equals(currentLabsFeatureType);
             ExceptionUtil.isTrue(enableUpdate, FEATURE_TYPE_IS_NOT_EXIST);
-            // 写入记录
+            // Write Record
             labsApplicantMapper.insert(LabsApplicantEntity.builder()
                     .applicant(applicant)
                     .applicantType(applicantType.getCode())

@@ -35,7 +35,7 @@ import com.vikadata.system.config.billing.Price;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * 钉钉订单服务测试
+ * DingTalk Order Service Test
  */
 public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
     @Resource
@@ -51,7 +51,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
     public void testTrailPlan() {
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
         assertThat(event).as("数据无法解析:base_trail").isNotNull();
-        // 订单购买的付费方案
+        // Payment scheme for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(price).as("钉钉试用计划配置错误").isNotNull();
     }
@@ -61,12 +61,12 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
         String spaceId = "spc" + IdWorker.get32UUID();
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(event).getCorpId(), event.getSuiteId());
-        // 购买试用订单
+        // Purchase trial order
         LocalDateTime now = getClock().getNow(testTimeZone).toLocalDateTime();
         event.setServiceStartTime(now.toInstant(testTimeZone).toEpochMilli());
         event.setServiceStopTime(now.plusMonths(1).toInstant(testTimeZone).toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
-        // 订单购买的付费方案
+        // Payment scheme for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
         assertThat(vo.getOnTrial()).isTrue();
@@ -136,7 +136,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
 
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        // 订单购买的付费方案
+        // Payment scheme for order purchase
         Plan plan = BillingConfigManager.getFreePlan(ProductChannel.DINGTALK);
         assertThat(vo.getOnTrial()).isFalse();
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(plan).getId());
@@ -207,7 +207,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
 
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        // 订单购买的付费方案
+        // Payment scheme for order purchase
         Plan plan = BillingConfigManager.getFreePlan(ProductChannel.DINGTALK);
         assertThat(vo.getOnTrial()).isFalse();
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(plan).getId());
@@ -258,7 +258,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
     }
 
     private void prepareSpaceData(String spaceId) {
-        // 初始化空间信息
+        // Initialize space information
         SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
         iSpaceService.save(spaceEntity);
     }

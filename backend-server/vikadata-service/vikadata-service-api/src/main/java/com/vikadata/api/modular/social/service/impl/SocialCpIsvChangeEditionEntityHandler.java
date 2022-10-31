@@ -30,11 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- * 第三方平台集成 - 企业微信第三方服务商应用版本变更处理
+ * Third party platform integration - WeCom third-party service provider application version change processing
  * </p>
- *
- * @author 刘斌华
- * @date 2022-04-25 10:13:31
  */
 @Service
 public class SocialCpIsvChangeEditionEntityHandler implements ISocialCpIsvEntityHandler {
@@ -60,24 +57,24 @@ public class SocialCpIsvChangeEditionEntityHandler implements ISocialCpIsvEntity
     public boolean process(SocialCpIsvMessageEntity unprocessed) throws WxErrorException {
         List<String> spaceIds = socialTenantBindService.getSpaceIdsByTenantIdAndAppId(unprocessed.getAuthCorpId(), unprocessed.getSuiteId());
         if (CollUtil.isNotEmpty(spaceIds)) {
-            // 租户空间站不存在不做处理
-            // 如果是企业安装的同时付费，则由【授权安装】处理
+            // Tenant space station does not exist, so it will not be processed
+            // If the enterprise installation is paid at the same time, it will be handled by Authorized Installation
             String suiteId = unprocessed.getSuiteId();
             String authCorpId = unprocessed.getAuthCorpId();
-            // 1 获取上一次版本信息
+            // 1 Get the last version information
             SocialEditionChangelogWecomEntity lastChangelog = socialEditionChangelogWeComService
                     .getLastChangeLog(suiteId, authCorpId);
-            // 2 保存本次版本信息
+            // 2 Save this version information
             SocialEditionChangelogWecomEntity changelogWecomEntity = socialEditionChangelogWeComService
                     .createChangelog(suiteId, authCorpId);
-            // 3 处理试用订阅
+            // 3 Process Trial Subscription
             WxCpIsvAuthInfo.EditionInfo.Agent agent = JSONUtil.toBean(changelogWecomEntity.getEditionInfo(), WxCpIsvAuthInfo.EditionInfo.Agent.class);
             String editionId = agent.getEditionId();
             if (WeComPlanConfigManager.isWeComTrialEdition(editionId)) {
                 WeComOrderPaidEvent event = SocialFactory.formatWecomTailEditionOrderPaidEvent(suiteId, authCorpId,
                         ClockManager.me().getLocalDateTimeNow(), agent);
                 String orderId = SocialOrderStrategyFactory.getService(SocialPlatformType.WECOM).retrieveOrderPaidEvent(event);
-                // 同步订单事件
+                // Synchronize order events
                 if (orderId != null) {
                     SpringContextHolder.getApplicationContext().publishEvent(new SyncOrderEvent(this, orderId));
                 }

@@ -11,9 +11,7 @@ import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 import static com.vikadata.social.feishu.constants.FeishuConstants.FEISHU_ROOT_DEPT_ID;
 
 /**
- * 飞书租户通讯录授权范围处理类
- * @author Shawn Deng
- * @date 2021-08-05 11:11:29
+ * Lark Tenant Address Book Authorization Scope Processing Class
  */
 @Data
 public class FeishuContactAuthScope {

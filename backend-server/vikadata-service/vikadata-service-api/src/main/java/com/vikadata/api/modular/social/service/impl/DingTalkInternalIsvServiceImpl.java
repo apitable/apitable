@@ -47,10 +47,7 @@ import static com.vikadata.social.dingtalk.constants.DingTalkApiConst.SEND_MESSA
 import static com.vikadata.social.dingtalk.constants.DingTalkApiConst.SEND_MESSAGE_USER_MAX_COUNT;
 
 /**
- * 钉钉集成服务 接口实现
- *
- * @author Shawn Deng
- * @date 2020-12-08 16:29:55
+ * DingTalk Integrated service interface implementation
  */
 @Service
 @Slf4j
@@ -74,7 +71,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
             return iGrpcClientService.getUserInfoByCode(suiteId, authCorpId, code);
         }
         catch (Exception e) {
-            log.error("根据临时授权码获取用户信息失败", e);
+            log.error("Failed to obtain user information according to temporary authorization code", e);
         }
         return null;
     }
@@ -85,7 +82,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
             return iGrpcClientService.getSsoUserInfoByCode(suiteId, code);
         }
         catch (Exception e) {
-            log.error("根据临时授权码获取后台用户信息失败", e);
+            log.error("Failed to obtain the background user information according to the temporary authorization code", e);
         }
         return null;
     }
@@ -98,7 +95,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
                 return getUserDetailByUserId(suiteId, authCorpId, userInfo.getUserid());
             }
             catch (Exception e) {
-                log.error("根据userId取用户信息失败", e);
+                log.error("Failed to get user information according to user ID", e);
             }
         }
         return null;
@@ -127,7 +124,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
             return iGrpcClientService.getDingTalkDepartmentSubIdList(suiteId, authCorpId, deptId.toString()).stream().filter(x -> x > 0).collect(Collectors.toList());
         }
         catch (Exception e) {
-            log.error("获取子部门ID异常:{}:{}", authCorpId, deptId, e);
+            log.error("Exception in obtaining sub department ID:{}:{}", authCorpId, deptId, e);
             return new ArrayList<>();
         }
     }
@@ -141,7 +138,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
     @Override
     public HashMap<String, DingTalkUserDto> getAuthCorpUserDetailMap(String suiteId, String authCorpId,
             List<String> authDeptIds, List<String> authUserIds) {
-        log.info("钉钉ISV获取通讯录开始:{}", authCorpId);
+        log.info("DingTalk ISV getting address book started:{}", authCorpId);
         long startAt = System.currentTimeMillis();
         HashMap<String, DingTalkUserDto> userMap = new HashMap<>();
         if (!authDeptIds.isEmpty()) {
@@ -154,7 +151,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
                     authUserIds.stream().filter(i -> !existOpenIds.contains(i)).collect(Collectors.toList());
             userMap.putAll(getAuthCorpUserDetailListByUserIds(suiteId, authCorpId, openIds));
         }
-        log.info("钉钉ISV获取通讯录耗时:{}:{}:{}ms", authCorpId, userMap.size(), System.currentTimeMillis() - startAt);
+        log.info("DingTalk ISV time consuming to obtain address book:{}:{}:{}ms", authCorpId, userMap.size(), System.currentTimeMillis() - startAt);
         return userMap;
     }
 
@@ -194,7 +191,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
                     results.add(response);
                 }
                 catch (DingTalkApiException e) {
-                    log.error("发送钉钉开始使用通知失败:suiteId={},userIds={}", suiteId, tmpUserIds, e);
+                    log.error("Failed to send Ding Talk start notification:suiteId={},userIds={}", suiteId, tmpUserIds, e);
                 }
             });
         }
@@ -257,7 +254,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
             return iGrpcClientService.internalOrderFinish(suiteId, authCorpId, orderId);
         }
         catch (Exception e) {
-            log.error("标记订单处理完成失败:{}:{}", authCorpId, orderId, e);
+            log.error("Failed to mark order processing completion:{}:{}", authCorpId, orderId, e);
         }
         return false;
     }
@@ -268,7 +265,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
             return iGrpcClientService.getInternalOrder(suiteId, authCorpId, orderId);
         }
         catch (Exception e) {
-            log.error("获取钉钉订单数据失败:{}", orderId, e);
+            log.error("Failed to get DingTalk order data:{}", orderId, e);
         }
         return null;
     }
@@ -287,9 +284,9 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
             if (agentId != null) {
                 return agentId.toString();
             }
-            log.error("企业AgentId信息错误:{}:{}:{}", authCorpId, suiteId, result);
+            log.error("Enterprise AgentId information error:{}:{}:{}", authCorpId, suiteId, result);
         }
-        log.warn("企业信息错误:{}:{}", authCorpId, suiteId);
+        log.warn("Enterprise information error:{}:{}", authCorpId, suiteId);
         return null;
     }
 
@@ -323,10 +320,10 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
 
     @Override
     public Map<String, DingTalkUserDto> getUserTreeList(String suiteId, String authCorpId, List<String> subDeptIds) {
-        log.info("获取钉钉企业授权人员信息开始-[{}]", authCorpId);
+        log.info("Getting the information of DingTalk enterprise authorized personnel starts-[{}]", authCorpId);
         long startedAt = System.currentTimeMillis();
         Map<String, DingTalkUserDto> userMap = iGrpcClientService.getUserTreeList(suiteId, authCorpId, subDeptIds);
-        log.info("获取钉钉企业授权人员信息结束-[{}],部门:{},总人数:{},耗时:{}", authCorpId, subDeptIds, userMap.size(),
+        log.info("End of obtaining DingTalk enterprise authorized personnel information-[{}],Department:{},Total number of people:{},Time consuming:{}", authCorpId, subDeptIds, userMap.size(),
                 System.currentTimeMillis() - startedAt);
         return handleIsvDingTalkUserName(userMap);
     }
@@ -356,7 +353,7 @@ public class DingTalkInternalIsvServiceImpl implements IDingTalkInternalIsvServi
         }
         HashMap<String, DingTalkUserDto> userMap = new HashMap<>(users);
         int maxSize = NumberUtil.ceilDiv(userMap.size(), SEND_MESSAGE_USER_MAX_COUNT);
-        // 根据unionId查出用户的名称
+        // Find out the user's name according to the union ID
         Set<String> unionIds = userMap.keySet();
         Stream.iterate(0, n -> n + 1).limit(maxSize).forEach(i -> {
             List<String> tmpUnionIds =

@@ -12,11 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：第三方平台集成-企业微信用户绑定表及其相关表测试
+ *     Data access layer test: third-party platform integration - enterprise WeCom user binding table and related table test
  * </p>
- *
- * @author wuyitao
- * @date 2022/4/4 4:40 PM
  */
 @Disabled
 public class SocialCpUserBindMapperTest extends AbstractMyBatisMapperTest {

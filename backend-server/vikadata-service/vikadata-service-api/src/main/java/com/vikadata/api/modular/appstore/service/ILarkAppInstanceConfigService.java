@@ -5,59 +5,64 @@ import com.vikadata.api.modular.appstore.model.LarkInstanceConfig;
 import com.vikadata.entity.AppInstanceEntity;
 
 /**
- * 飞书自建应用服务 接口
- * @author Shawn Deng
- * @date 2021-12-31 17:49:45
+ * Lark self built application service interface
  */
 public interface ILarkAppInstanceConfigService {
 
     /**
-     * 获取应用实例配置
-     * @param appInstanceId 应用实例ID
+     * Get application instance configuration
+     *
+     * @param appInstanceId Application instance ID
      * @return LarkInstanceConfig
      */
     LarkInstanceConfig getLarkConfig(String appInstanceId);
 
     /**
-     * 获取应用实例配置
-     * @param instanceEntity 应用实例实体
+     * Get application instance configuration
+     *
+     * @param instanceEntity Application instance entity
      * @return LarkInstanceConfig
      */
     LarkInstanceConfig getLarkConfig(AppInstanceEntity instanceEntity);
 
     /**
-     * 更新飞书应用实例基础配置
-     * @param appInstanceId 应用实例ID
-     * @param appKey 用户企业的飞书自建应用ID
-     * @param appSecret 飞书自建应用密钥
+     * Update the basic configuration of flying book application example
+     *
+     * @param appInstanceId Application instance ID
+     * @param appKey Lark self built application ID of user enterprise
+     * @param appSecret Lark self built application key
      * @return AppInstance
      */
     AppInstance updateLarkBaseConfig(String appInstanceId, String appKey, String appSecret);
 
     /**
-     * 更新飞书应用实例事件配置
-     * @param appInstanceId 应用实例ID
-     * @param eventEncryptKey 事件加密密钥
-     * @param eventVerificationToken 事件验证令牌
+     * Update Lark application instance event configuration
+     *
+     * @param appInstanceId Application instance ID
+     * @param eventEncryptKey Event Encryption Key
+     * @param eventVerificationToken Event validation token
      * @return AppInstance
      */
     AppInstance updateLarkEventConfig(String appInstanceId, String eventEncryptKey, String eventVerificationToken);
 
     /**
-     * 事件检查完成
-     * @param appInstanceId 应用实例ID
+     * Event check completed
+     *
+     * @param appInstanceId Application instance ID
      */
     void updateLarkEventCheckStatus(String appInstanceId);
 
     /**
-     * 设置完成状态标识
-     * @param appInstanceId 应用实例ID
+     * Set completion status ID
+     *
+     * @param appInstanceId Application instance ID
      */
     void updateLarkConfigCompleteStatus(String appInstanceId);
 
     /**
-     * 同步通讯录状态完成
-     * @param appInstanceId 应用实例ID
+     * Synchronization of address book status completed
+     *
+     * @param appInstanceId Application instance ID
      */
     void updateLarkContactSyncStatus(String appInstanceId);
 }

@@ -8,9 +8,7 @@ import com.vikadata.social.feishu.config.FeishuConfigStorage;
 import com.vikadata.social.feishu.config.FeishuConfigStorageHelper;
 
 /**
- * 飞书应用实例设置清单
- * @author Shawn Deng
- * @date 2022-01-14 18:48:34
+ * Lark Application Instance Setting List
  */
 public class LarkInstanceConfigProfile implements InstanceConfigProfile {
 

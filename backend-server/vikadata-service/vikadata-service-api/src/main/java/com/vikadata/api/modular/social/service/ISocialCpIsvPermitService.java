@@ -7,149 +7,123 @@ import com.vikadata.entity.SocialWecomPermitOrderEntity;
 
 /**
  * <p>
- * 企微服务商接口许可
+ * WeCom Service Provider Interface License
  * </p>
- * @author 刘斌华
- * @date 2022-06-23 17:29:18
  */
 public interface ISocialCpIsvPermitService {
 
     /**
-     * 为企业创建新的订单
+     * Create a new order for the enterprise
      *
-     * @param spaceId 要购买接口许可的空间站 ID
-     * @param durationMonths 购买的月数，每个月按照31天计算。最多购买36个月。(若企业为服务商测试企业，最多购买1个月)
-     * @return 订单信息
-     * @author 刘斌华
-     * @date 2022-06-23 17:57:58
+     * @param spaceId Space ID to purchase interface license
+     * @param durationMonths The number of months for purchase is 31 days per month. Buy up to 36 months.(If the enterprise is a service provider testing enterprise, it can be purchased for 1 month at most)
+     * @return Order Information
      */
     SocialWecomPermitOrderEntity createNewOrder(String spaceId, Integer durationMonths);
 
     /**
-     * 激活接口许可订单中的账号
+     * Activate the account in the interface license order
      *
-     * @param orderId 接口许可订单号
-     * @author 刘斌华
-     * @date 2022-06-27 17:51:11
+     * @param orderId Interface license order number
      */
     void activateOrder(String orderId);
 
     /**
-     * 为指定的企微用户续期
+     * Renew the specified WeCom user
      *
-     * @param spaceId 空间站 ID
-     * @param cpUserIds 要续期的企微用户 ID 列表
-     * @param durationMonths 续期的月数，每个月按照31天计算。最多购买36个月。(若企业为服务商测试企业，每次续期只能续期1个月)
-     * @return 订单信息
-     * @author 刘斌华
-     * @date 2022-07-04 15:28:07
+     * @param spaceId Space ID
+     * @param cpUserIds List of WeCom user IDs to renew
+     * @param durationMonths The number of renewal months is 31 days per month. Buy up to 36 months. (If the enterprise is a service provider testing enterprise, each renewal can only be renewed for 1 month)
+     * @return Order Information
      */
     SocialWecomPermitOrderEntity renewalCpUser(String spaceId, List<String> cpUserIds, Integer durationMonths);
 
     /**
-     * 确认订单及其企业下所有账号的最新信息
+     * Confirm the latest information of the order and all accounts under the enterprise
      *
-     * @param orderId 接口许可订单号
-     * @author 刘斌华
-     * @date 2022-07-07 18:34:35
+     * @param orderId Interface license order number
      */
     void ensureOrderAndAllActiveCodes(String orderId);
 
     /**
-     * 计算需要新购账号的数量
+     * Calculate the number of new purchase accounts
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID
-     * @return 需要新购账号的数量
-     * @author 刘斌华
-     * @date 2022-07-13 18:54:40
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID
+     * @return Number of accounts to be purchased
      */
     int calcNewAccountCount(String suiteId, String authCorpId, String spaceId);
 
     /**
-     * 确认接口许可订单的最新信息，如果需要则更新
+     * Confirm the latest information of the interface license order, and update it if necessary
      *
-     * @param orderId 接口许可订单号
-     * @return 最新的接口许可订单信息
-     * @author 刘斌华
-     * @date 2022-07-20 14:52:45
+     * @param orderId Interface license order number
+     * @return Latest interface license Order Information
      */
     SocialWecomPermitOrderEntity ensureOrder(String orderId);
 
     /**
-     * 确认企业下所有账号的最新信息
+     * Confirm the latest information of all accounts under the enterprise
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @author 刘斌华
-     * @date 2022-07-20 14:52:45
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
      */
     void ensureAllActiveCodes(String suiteId, String authCorpId);
 
     /**
-     * 自动处理接口许可下单
+     * Automatic processing of interface licensing orders
      *
      * <p>
-     * 新购、续期、或者忽略
+     * New purchase, renewal, or neglect
      * </p>
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID
-     * @author 刘斌华
-     * @date 2022-07-13 17:25:55
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID
      */
     void autoProcessPermitOrder(String suiteId, String authCorpId, String spaceId);
 
     /**
-     * 创建需要新购或者续期的订单
+     * Create an order for new purchase or renewal
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID
-     * @param expireTime 付费订阅的过期时间
-     * @return 是否需要新购或者续期
-     * @author 刘斌华
-     * @date 2022-07-29 17:41:22
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID
+     * @param expireTime Expiration time of paid subscription
+     * @return Whether new purchase or renewal is required
      */
     boolean createPermitOrder(String suiteId, String authCorpId, String spaceId, LocalDateTime expireTime);
 
     /**
-     * 发送新购订单信息到群机器人
+     * Send new Order Information to group robots
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID。已下单则不需要
-     * @param orderId 订单编号。不为空发送已下单消息，为空则发送手动下单消息
-     * @param durationMonths 购买的月数。已下单则不需要
-     * @return 是否发送成功
-     * @author 刘斌华
-     * @date 2022-07-22 14:25:50
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID。已下单则不需要
+     * @param orderId Order number. If it is not blank, send the ordered message; if it is blank, send the manual order message
+     * @param durationMonths Number of months purchased. No need if the order has been placed
+     * @return Send successfully
      */
     boolean sendNewWebhook(String suiteId, String authCorpId, String spaceId, String orderId, Integer durationMonths);
 
     /**
-     * 发送续期订单信息到群机器人
+     * Send renewal Order Information to the swarm robot
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param spaceId 空间站 ID。已下单则不需要
-     * @param orderId 订单编号。不为空发送已下单消息，为空则发送手动下单消息
-     * @return 是否发送成功
-     * @author 刘斌华
-     * @date 2022-07-22 14:25:50
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @param spaceId Space ID。已下单则不需要
+     * @param orderId Order number. If it is not blank, send the ordered message; if it is blank, send the manual order message
+     * @return Send successfully
      */
     boolean sendRenewWebhook(String suiteId, String authCorpId, String spaceId, String orderId);
 
     /**
-     * 发送退款信息到群机器人
+     * Send refund information to group robots
      *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @return 是否发送成功
-     * @author 刘斌华
-     * @date 2022-07-22 14:25:50
+     * @param suiteId Application Suit ID
+     * @param authCorpId Authorized enterprise ID
+     * @return Send successfully
      */
     boolean sendRefundWebhook(String suiteId, String authCorpId);
 

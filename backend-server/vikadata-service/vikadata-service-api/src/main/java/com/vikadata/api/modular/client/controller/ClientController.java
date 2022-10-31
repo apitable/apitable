@@ -62,14 +62,11 @@ import static com.vikadata.define.constants.RedisConstants.REDIS_ENV;
 
 /**
  * <p>
- * 客户端版本控制器
+ * Client Version Controller
  * </p>
- *
- * @author zoe zheng
- * @date 2020/4/7 5:12 下午
  */
 @RestController
-@Api(tags = "客户端接口")
+@Api(tags = "Client interface")
 @ApiResource(path = "/client")
 @Slf4j
 public class ClientController {
@@ -98,12 +95,12 @@ public class ClientController {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @GetResource(name = "获取应用版本信息", path = "/info", requiredLogin = false, requiredPermission = false)
-    @ApiOperation(value = "获取应用版本信息", notes = "获取应用客户端版本渲染信息")
-    @ApiImplicitParam(name = "pipeline", value = "构建流水号", dataTypeClass = String.class, paramType = "query", example = "4818")
+    @GetResource(name = "Get application version information", path = "/info", requiredLogin = false, requiredPermission = false)
+    @ApiOperation(value = "Get application version information", notes = "Get the application client version rendering information")
+    @ApiImplicitParam(name = "pipeline", value = "Construction serial number", dataTypeClass = String.class, paramType = "query", example = "4818")
     public ClientInfoVO getTemplateInfo(@RequestHeader HttpHeaders headers, HttpServletRequest request,
             @RequestParam(name = "pipeline", required = false) String pipelineId, @RequestParam(name = "spaceId", required = false) String spaceId) {
-        // 如果RequestParam不为空，就主动切换传过来的空间站
+        // If the Request Param is not empty, it will actively switch to the space
         this.userSwitchSpace(SessionContext.getUserIdWithoutException(), spaceId);
         ClientInfoVO info = new ClientInfoVO();
         UserInfoVo userInfoVo = this.getUserInfoFromSession();
@@ -112,10 +109,11 @@ public class ClientController {
                 info.setUserInfo(objectMapper.writeValueAsString(userInfoVo));
             }
             catch (JsonProcessingException e) {
-                log.error("应用客户端的用户信息序列化失败", e);
+                log.error("Serialization of user information of application client failed", e);
                 info.setUserInfo(StrUtil.NULL);
             }
-            // 获取现在空间站的灰度环境，如果不主动提出要获取的空间站ID，就使用UserMe里面的空间ID（上次活跃的）
+            // Obtain the grayscale environment of the current space.
+            // If you do not actively propose the space station ID to be obtained, use the space ID in User Me (the last active one)
             String spaceGrayEnv = this.getSpaceGrayEnv(StrUtil.blankToDefault(spaceId, userInfoVo.getSpaceId()));
             info.setSpaceGrayEnv(spaceGrayEnv);
         }
@@ -130,24 +128,24 @@ public class ClientController {
     }
 
     /**
-     * 客户端应用版本入口
-     * 应用版本在不同的环境下都有不同的处理，环境变量设置位置：ClientProperties.Datasheet.Env
+     * Client application version portal
+     * The application version has different processing in different environments. The environment variable setting location is:ClientProperties.Datasheet.Env
      * SaaS环境有: test(test)、integration(alpha)、staging(beta)、production(release)
-     * @param pipelineId 可选参数，ci流水号，当环境变量是test或integration时，
-     *                   可以获取指定的pipelineId的应用版本，版本号一般是feature.${pipelineId}
-     * @return 应用版本网页内容，一般是response的contentType=text/html的内容
+     * @param pipelineId Optional parameter, ci serial number. When the environment variable is test or integration,
+     *                   The application version of the specified pipeline ID can be obtained. The version number is feature.${pipelineId} generally
+     * @return Web content of application version
      */
     @Deprecated
-    @GetResource(name = "应用版本入口", path = "/entry", requiredPermission = false, requiredLogin = false, produces = { MediaType.TEXT_HTML_VALUE })
-    @ApiOperation(value = "客户端应用版本入口", notes = "客户端应用版本入口")
-    @ApiImplicitParam(name = "pipeline", value = "构建流水号", dataTypeClass = String.class, paramType = "query", example = "4818")
+    @GetResource(name = "Application version entry", path = "/entry", requiredPermission = false, requiredLogin = false, produces = { MediaType.TEXT_HTML_VALUE })
+    @ApiOperation(value = "Client application version portal", notes = "Client application version portal")
+    @ApiImplicitParam(name = "pipeline", value = "Construction serial number", dataTypeClass = String.class, paramType = "query", example = "4818")
     public String entry(@RequestHeader HttpHeaders headers, @RequestParam(name = "pipeline", required = false) String pipelineId,
             HttpServletRequest request, HttpServletResponse response) {
-        // 正式环境不允许加载 pipeline 入口
+        // The formal environment does not allow the pipeline entry to be loaded
         String envName = StrUtil.blankToDefault(clientProperties.getDatasheet().getEnv(), "other");
         String versionName = clientReleaseVersionService.getVersionOrDefault(Env.of(envName), pipelineId);
         if (StrUtil.isBlank(versionName)) {
-            log.error("客户端版本不存在，请检查发布客户端");
+            log.error("The client version does not exist, please check the publishing client");
             return "Error Rendering....";
         }
 
@@ -158,31 +156,31 @@ public class ClientController {
                 entryVo.setUserInfoVo(objectMapper.writeValueAsString(userInfoVo));
             }
             catch (JsonProcessingException e) {
-                log.error("应用客户端的用户信息序列化失败", e);
+                log.error("Serialization of user information of application client failed", e);
                 entryVo.setUserInfoVo(StrUtil.NULL);
             }
-            // 尝试搜索空间站灰度信息
+            // Try to search the grayscale information of the space station
             this.tryFillSpaceEnvByGray(userInfoVo.getSpaceId(), entryVo);
         }
         else {
-            // 前端不接受空值，只接受 "null"
+            // The front end does not accept null values, only "null"
             entryVo.setUserInfoVo(StrUtil.NULL);
         }
 
-        // 在入口页写入用户全局语言,语言变量在cookies里，自动获取
+        // Write the user's global language in the entry page, and the language variable is automatically obtained in the cookies
         entryVo.setLocale(LocaleContextHolder.getLocale().toLanguageTag());
         // Feature客户端版本不允许放入内存
         String templateContent = versionName.contains("feature") ?
                 clientReleaseVersionService.getHtmlContentByVersion(entryVo.getVersion())
                 : clientReleaseVersionService.getHtmlContentCacheIfAbsent(entryVo.getVersion());
         if (StrUtil.isNotBlank(templateContent)) {
-            // 加载引导及公告配置
+            // Loading guidance and announcement configuration
             entryVo.setWizards(StrUtil.toString(iConfigService.getWizardConfig(I18nTypes.ZH_CN.getName())));
-            // 加载header中的meta标签内容
+            // Load the meta tag content in the header
             entryVo.setMetaContent(getMetaContent(headers));
-            // 如果直接访问 / or /workbench
+            // If you directly access or workbench
             this.redirectByAccessRoot(request, response, userInfoVo);
-            // 渲染
+            // Render
             return clientEntryTemplateConfig.render(templateContent, BeanUtil.beanToMap(entryVo));
         }
         return "Error Rendering....";
@@ -197,62 +195,60 @@ public class ClientController {
             userInfoVo = iUserService.getCurrentUserInfo(SessionContext.getUserId(), null, false);
         }
         catch (Exception e) {
-            log.warn("从 Session 获取 UserInfo 失败。", e);
+            log.warn("Failed to get UserInfo from Session.", e);
             return null;
         }
         return userInfoVo;
     }
 
     /**
-     * 如果直接访问 / or /workbench，根据用户活跃节点情况看看是否需要重定向
+     * If you visit / or /workbench directly, Check whether redirection is required according to the user's active nodes
      *
-     * 注意这是一个备份，方法新集群稳定后，这个方法可以删除
+     * Note that this is a backup. After the new cluster is stable, this method can be deleted
      *
-     * @param userInfo 用户活跃节点信息
+     * @param userInfo User active node information
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
-     * @author Pengap
-     * @date 2022/6/13 17:12:02
      */
     @Deprecated
     @SneakyThrows
     private void redirectByAccessRoot(HttpServletRequest request, HttpServletResponse response, UserInfoVo userInfo) {
-        // 用户访问的域名
+        // Domain name accessed by the user
         String scheme = HttpContextUtil.getScheme(request);
         String remoteHost = HttpContextUtil.getRemoteHost(request);
-        // 用户访问的路径
+        // User access path
         String originalUrl = request.getHeader(FilterConfig.X_ORIGINAL_URI);
 
         if (null != userInfo && StrUtil.isNotBlank(remoteHost) && StrUtil.equalsAnyIgnoreCase(originalUrl, "/", "/workbench")) {
             String activeNodeId = userInfo.getActiveNodeId();
             String activeViewId = userInfo.getActiveViewId();
-            // 判断是否有激活节点
+            // Judge whether there is an active node
             if (StrUtil.isNotBlank(activeNodeId)) {
                 StrBuilder redirectUrl = StrBuilder.create("https".equals(scheme) ? "https" : "http")
                         .append("://")
                         .append(remoteHost)
                         .append("/workbench/").append(activeNodeId);
-                // 判断是否有激活视图
+                // Determine whether there is an active view
                 if (StrUtil.isNotBlank(activeViewId)) {
                     redirectUrl.append("/").append(activeViewId);
                 }
-                // 重定向
+                // Redirect
                 response.sendRedirect(redirectUrl.toString());
             }
         }
     }
 
     private String redirectByAccessRoot(HttpServletRequest request, UserInfoVo userInfo) {
-        // 用户访问的路径
+        // User access path
         String originalUrl = request.getHeader(FilterConfig.X_ORIGINAL_URI);
 
         if (null != userInfo && StrUtil.equalsAnyIgnoreCase(originalUrl, "/", "/workbench", "/workbench/")) {
             String activeNodeId = userInfo.getActiveNodeId();
             String activeViewId = userInfo.getActiveViewId();
-            // 判断是否有激活节点
+            // Judge whether there is an active node
             if (StrUtil.isNotBlank(activeNodeId)) {
                 StrBuilder redirectUrl = StrBuilder.create("/workbench/").append(activeNodeId);
-                // 判断是否有激活视图
+                // Determine whether there is an active view
                 if (StrUtil.isNotBlank(activeViewId)) {
                     redirectUrl.append("/").append(activeViewId);
                 }
@@ -263,43 +259,41 @@ public class ClientController {
     }
 
     /**
-     * 尝试根据空间站ID来填充灰度信息
+     * Try to fill in grayscale information according to space station ID
      *
-     * @param spaceId 空间站ID
-     * @param entry   版本VO
-     * @author Pengap
-     * @date 2022/6/13 22:54:05
+     * @param spaceId Space ID
+     * @param entry   Version VO
      */
     private void tryFillSpaceEnvByGray(String spaceId, EntryVo entry) {
         if (StrUtil.isBlank(spaceId)) {
             return;
         }
-        // 尝试查询一下空间站是否在灰度环境
+        // Try to query whether the space station is in a grayscale environment
         String spaceGrayEnv = this.getSpaceGrayEnv(spaceId);
         if (StrUtil.isBlank(spaceGrayEnv)) {
             return;
         }
         /*
-         * 1.注意这里其实是破坏了 redis 序列化的魔法变量模式，抢先在序列化前替换了
-         * 2.这里为什么要小写?
-         *  2.1 因为 spaceGrayEnv 等于 nginx config upstream 的名称
-         *      举个栗子：正常的：upstream = backend；灰度的 backend = backendTeamX
-         *      这样标识在nginx才能区分，所有这里spaceGrayEnv需要这样缓存
-         *  2.2 TeamX这个值又是等于spring.profiles.active
-         *      举个栗子：teamx spring.profiles.active = teamx
-         *      所有为了能查询到这个全部转换为小写
+         * 1.Note that the magic variable mode of Redis serialization is broken and replaced before serialization
+         * 2.Why is it in lower case?
+         *  2.1 Because spaceGrayEnv is equal to the name of nginx config upstream
+         *      For example: normal: upstream=backend; Backend of grayscale=backendTeamX
+         *      In this way, the identifications can be distinguished in nginx. Space Gray Env needs to be cached in this way
+         *  2.2 Team X is equal to spring.profiles.active
+         *      For example: teamx spring.profiles.active = teamx
+         *      All are converted to lowercase in order to query
          */
         spaceGrayEnv = StrUtil.toString(spaceGrayEnv).toLowerCase();
         Dict dict = Dict.create().set(REDIS_ENV, spaceGrayEnv);
         String cacheClientVersionKey = StrUtil.format(DATASHEET_CLIENT_VERSION_KEY, dict);
 
-        // 如果空间站存在灰度环境，去获取缓存中的最新版本号
+        // If the space station has a grayscale environment, get the latest version number in the cache
         String spaceGrayVersion = redisTemplate.opsForValue().get(cacheClientVersionKey);
         if (StrUtil.isBlank(spaceGrayVersion)) {
             return;
         }
 
-        // 替换之前查询出来的版本，变更为 灰度的版本号
+        // Replace the version found before, and change it to the grayscale version number
         entry.setVersion(spaceGrayVersion);
         String grayEnv;
         Map<String, String> irregularEnv = clientProperties.getDatasheet().getIrregularEnv();
@@ -319,23 +313,21 @@ public class ClientController {
     }
 
     private String getMetaContent(HttpHeaders headers) {
-        // nginx加入header 过滤空格之后的数据
+        // Nginx adds header to filter data after blank
         String originalUrl = headers.getFirst(FilterConfig.X_ORIGINAL_URI);
         String uri = ClientUriUtil.parseOriginUrlPath(originalUrl);
         return clientReleaseVersionService.getMetaContent(uri);
     }
 
     /**
-     * 用户切换空间站
+     * User switching space station
      *
-     * @param userId   用户ID
-     * @param spaceId  切换空间站的Id
-     * @author Pengap
-     * @date 2022/7/6 12:04:49
+     * @param userId   User ID
+     * @param spaceId  Switch the ID of the space station
      */
     private void userSwitchSpace(Long userId, String spaceId) {
         try {
-            // userId不等于空，spaceId不等于空并且不等于'undefined'，spaceId必须要'spc'开头
+            // User id is not equal to null, space id is not equal to null and not equal to 'undefined', space id must start with 'spc'
             boolean isPass = null != userId && StrUtil.isNotBlank(spaceId) &&
                     !StrUtil.isNullOrUndefined(spaceId) &&
                     StrUtil.startWithIgnoreEquals(spaceId, IdRulePrefixEnum.SPC.getIdRulePrefixEnum());
@@ -344,38 +336,38 @@ public class ClientController {
             }
         }
         catch (Exception e) {
-            log.error("渲染模版时,用户切换空间站异常", e);
-            // 不要因为切换空间站的异常导致模版无法正常的渲染
+            log.error("When rendering the template, the user switches the space station abnormally", e);
+            // Do not cause the template to fail to render normally due to the abnormal switching of the space station
         }
     }
 
     /**
-     * 构建(创建)客户端应用版本
+     * Build (create) client application version
      *
-     * @param clientBuildRo 请求参数
-     * @return 响应体
+     * @param clientBuildRo Request parameters
+     * @return Responder
      */
     @Deprecated
-    @PostResource(name = "创建客户端应用版本", path = "/build", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "创建客户端应用版本", notes = "创建客户端应用版本")
+    @PostResource(name = "Create client application version", path = "/build", requiredPermission = false, requiredLogin = false)
+    @ApiOperation(value = "Create client application version", notes = "Create client application version")
     public ResponseData<Void> build(@RequestBody @Valid ClientBuildRo clientBuildRo) {
         clientReleaseVersionService.createClientVersion(clientBuildRo);
         return ResponseData.success();
     }
 
     @Deprecated
-    @PostResource(name = "客户端发布应用版本", path = "/publish", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "客户端发布应用版本", notes = "客户端发布应用版本")
+    @PostResource(name = "Client releases application version", path = "/publish", requiredPermission = false, requiredLogin = false)
+    @ApiOperation(value = "Client releases application version", notes = "Client releases application version")
     public ResponseData<Void> publish(@RequestBody ClientPublishRo publishRo) {
         try {
             String versionName = publishRo.getVersion();
             redisTemplate.opsForValue().set(DATASHEET_CLIENT_VERSION_KEY, versionName, 30, TimeUnit.DAYS);
-            // 刷新机器上存储的指定应用版本内容
+            // Refresh the content of the specified application version stored on the machine
             clientReleaseVersionService.refreshHtmlContent(versionName);
             return ResponseData.success();
         }
         catch (Exception e) {
-            log.error("发布客户端版本失败", e);
+            log.error("Failed to publish client version", e);
             throw new BusinessException("fail to publish client version");
         }
     }

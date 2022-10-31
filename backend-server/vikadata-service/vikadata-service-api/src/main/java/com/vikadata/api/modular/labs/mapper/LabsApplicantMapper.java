@@ -9,45 +9,42 @@ import com.vikadata.entity.LabsApplicantEntity;
 
 /**
  * <p>
- * 实验室功能申请表 Mapper 接口
+ * Laboratory Function Application Form Mapper Interface
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @since 2021/10/20 20:25:45
  */
 public interface LabsApplicantMapper extends BaseMapper<LabsApplicantEntity> {
 
     /**
-     * 根据userId和spaceId查询其实验性功能
+     * Query its experimental functions according to user ID and space ID
      *
-     * @param applicants 申请者ID，为userId和spaceId
+     * @param applicants Applicant ID: user ID and space ID
      * @return featureKey List
      * */
     List<String> selectUserFeaturesByApplicant(@Param("applicants") List<String> applicants);
 
     /**
-     * 根据实验室功能的类型查询实验室功能唯一标识符
+     * Query the unique identifier of a laboratory function according to its type
      *
-     * @param type 实验室功能的类型
-     * @return featureKey 实验室功能唯一标识符
+     * @param type Types of laboratory functions
+     * @return featureKey Laboratory function unique identifier
      */
     List<String> selectFeatureKeyByType(@Param("type") Integer type);
 
     /**
-     * 根据applicant和featureKey查询指定的申请记录
+     * Query the specified application record according to the application and feature key
      *
-     * @param applicant 申请者ID，可以是userId或者spaceId
-     * @param featureKey 实验性功能标识
+     * @param applicant Applicant ID, which can be user ID or space ID
+     * @param featureKey Experimental function identification
      * @return LabsApplicantEntity
      * */
     LabsApplicantEntity selectApplicantAndFeatureKey(@Param("applicant") String applicant, @Param("featureKey") String featureKey);
 
     /**
-     * 软删除实验性功能申请记录
+     * Soft deletion of experimental function application record
      *
-     * @param id 实验性功能申请表的id
-     * @param isDeleted 是否删除记录
-     * @return 受影响的记录行数
+     * @param id ID of the experimental function application form
+     * @param isDeleted Delete Record
+     * @return Number of affected record lines
      * */
     int updateIsDeletedById(@Param("id") Long id, @Param("isDeleted") Boolean isDeleted);
 }

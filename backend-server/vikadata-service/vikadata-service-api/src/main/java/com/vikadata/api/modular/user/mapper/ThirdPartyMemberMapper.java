@@ -8,101 +8,82 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- * 第三方系统-会员信息表 Mapper 接口
+ * Third party system - Mapper interface of member information table
  * </p>
- *
- * @author Chambers
- * @date 2020/8/10
  */
 public interface ThirdPartyMemberMapper extends BaseMapper<ThirdPartyMemberEntity> {
 
     /**
-     * 查询 unionId
+     * Query unionId
      *
      * @param appId  appId
      * @param openId openId
-     * @param type   类型
+     * @param type   Type
      * @return unionId
-     * @author Chambers
-     * @date 2020/8/10
      */
     String selectUnionIdByOpenIdAndType(@Param("appId") String appId, @Param("openId") String openId, @Param("type") Integer type);
 
     /**
-     * 查询昵称
+     * Query nickname
      *
      * @param appId   appId
      * @param unionId unionId
-     * @param type    类型
+     * @param type    Type
      * @return nickName
-     * @author Chambers
-     * @date 2020/8/11
      */
     String selectNickNameByUnionIdAndType(@Param("appId") String appId, @Param("unionId") String unionId, @Param("type") Integer type);
 
     /**
-     * 查询 extra
+     * Query extra
      *
-     * @param id 会员ID
+     * @param id Member ID
      * @return extra
-     * @author Chambers
-     * @date 2020/9/10
      */
     String selectExtraById(@Param("id") Long id);
 
     /**
-     * 查询session_key
+     * Query session key
      *
-     * @param id 会员ID
+     * @param id Member ID
      * @return session_key
-     * @author Chambers
-     * @date 2020/2/24
      */
     String selectSessionKeyById(@Param("id") Long id);
 
     /**
-     * 查询会员信息
+     * Query member information
      *
      * @param appId   appId
      * @param unionId unionId
-     * @param type    类型
+     * @param type    Type
      * @return info
-     * @author Chambers
-     * @date 2020/8/14
      */
     ThirdPartyMemberInfo selectInfo(@Param("appId") String appId, @Param("unionId") String unionId, @Param("type") Integer type);
 
     /**
-     * 获取绑定的用户ID
+     * Get the bind user ID
      *
-     * @param id       会员ID
-     * @param linkType 关联的第三方类型
+     * @param id       Member ID
+     * @param linkType Associated Third Party Type
      * @return userId
-     * @author Chambers
-     * @date 2020/2/27
      */
     Long selectUserIdByIdAndLinkType(@Param("id") Long id, @Param("linkType") Integer linkType);
 
     /**
-     * 查询微信会员信息
+     * Query WeChat member information
      *
-     * @param type   类型
+     * @param type   Type
      * @param appId  appId
      * @param openId openId
      * @return Dto
-     * @author Chambers
-     * @date 2020/2/22
      */
     WechatMemberDto selectWechatMemberDto(@Param("type") Integer type, @Param("appId") String appId, @Param("openId") String openId);
 
     /**
-     * 查询用户ID及关联的微信会员信息
+     * Query user ID and associated WeChat member information
      *
      * @param appId  appId
-     * @param mobile 手机号
+     * @param mobile phone number
      * @return Dto
-     * @author Chambers
-     * @date 2020/2/24
      */
     WechatMemberDto selectUserLinkedWechatMemberDto(@Param("appId") String appId, @Param("mobile") String mobile);
 }

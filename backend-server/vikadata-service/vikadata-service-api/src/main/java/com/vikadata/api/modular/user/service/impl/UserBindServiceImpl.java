@@ -8,9 +8,6 @@ import com.vikadata.entity.UserBindEntity;
 
 import org.springframework.stereotype.Service;
 
-/**
- * @author Shawn Deng
- */
 @Service
 public class UserBindServiceImpl extends ServiceImpl<UserBindMapper, UserBindEntity> implements IUserBindService {
 

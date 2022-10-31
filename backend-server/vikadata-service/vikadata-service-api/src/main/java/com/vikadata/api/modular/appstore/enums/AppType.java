@@ -1,9 +1,7 @@
 package com.vikadata.api.modular.appstore.enums;
 
 /**
- * 应用类型
- * @author Shawn Deng
- * @date 2022-01-14 18:43:20
+ * Application Type
  */
 public enum AppType {
 

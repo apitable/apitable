@@ -39,11 +39,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 企微服务商接口许可延时任务处理信息
+ * WeCom service provider interface permission delay task processing information
  * </p>
- *
- * @author 刘斌华
- * @date 2022-07-19 09:51:38
  */
 @Slf4j
 @Service
@@ -66,8 +63,8 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
             LocalDateTime firstAuthTime, Integer delayType, Integer processStatus) {
         List<SocialWecomPermitDelayEntity> delayEntities = getByProcessStatuses(suiteId, authCorpId, delayType,
                 Collections.singletonList(SocialCpIsvPermitDelayProcessStatus.PENDING.getValue()));
-        // 如果企业不存在待处理的同类型延时任务，则新增延时任务
-        // 如果存在则不添加，交由已存在的同类型任务处理
+        // If there is no delayed task of the same type to be processed in the enterprise, add a new delayed task
+        // If it exists, it will not be added and will be handled by the existing task of the same type
         if (CollUtil.isEmpty(delayEntities)) {
             SocialWecomPermitDelayEntity delayEntity = SocialWecomPermitDelayEntity.builder()
                     .suiteId(suiteId)
@@ -117,7 +114,7 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
                 .findFirst()
                 .map(IsvApp::getPermitTrialExpiredTemplateId)
                 .orElse(null);
-        // 分批次取出所有待处理数据
+        // Get all pending data in batches
         int processStatus = SocialCpIsvPermitDelayProcessStatus.PENDING.getValue();
         int skip = 0;
         int limit = 1000;
@@ -129,7 +126,7 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
             if (CollUtil.isNotEmpty(delayEntities)) {
                 for (SocialWecomPermitDelayEntity delayEntity : delayEntities) {
                     if (delayEntity.getDelayType() == SocialCpIsvPermitDelayType.NOTIFY_BEFORE_TRIAL_EXPIRED.getValue()) {
-                        // 接口许可试用过期通知
+                        // Interface license trial expiration notice
                         boolean isFinished = notifyBeforePermitTrialExpired(delayEntity, currentDateTime,
                                 permitTrialDays, permitBuyNotifyBeforeDays, permitTrialExpiredTemplateId);
                         if (isFinished) {
@@ -137,7 +134,7 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
                         }
                     }
                     else if (delayEntity.getDelayType() == SocialCpIsvPermitDelayType.BUY_AFTER_SUBSCRIPTION_PAID.getValue()) {
-                        // 付费企业购买接口许可
+                        // Paid enterprises purchase interface license
                         boolean isQueued = buyAfterSubscriptionPaid(delayEntity, currentDateTime, permitCompatibleDays);
                         if (isQueued) {
                             toQueuedDelayIds.add(delayEntity.getId());
@@ -147,7 +144,7 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
                 skip += delayEntities.size();
             }
         } while (CollUtil.isNotEmpty(delayEntities));
-        // 更新已发送到队列
+        // Update sent to queue
         if (CollUtil.isNotEmpty(toQueuedDelayIds)) {
             List<SocialWecomPermitDelayEntity> updatedEntities = toQueuedDelayIds.stream()
                     .map(delayId -> SocialWecomPermitDelayEntity.builder()
@@ -157,7 +154,7 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
                     .collect(Collectors.toList());
             updateBatchById(updatedEntities);
         }
-        // 更新已完成
+        // Update completed
         if (CollUtil.isNotEmpty(toFinishedDelayIds)) {
             List<SocialWecomPermitDelayEntity> updatedEntities = toFinishedDelayIds.stream()
                     .map(delayId -> SocialWecomPermitDelayEntity.builder()
@@ -170,25 +167,23 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
     }
 
     /**
-     * 发送接口许可试用到期通知
+     * Send interface license trial expiration notice
      *
-     * @param delayEntity 延时消息
-     * @param currentDateTime 当前时间
-     * @param permitTrialDays 接口许可试用的时间
-     * @param permitBuyNotifyBeforeDays 提前发送通知的天数
-     * @param permitTrialExpiredTemplateId 接口许可免费试用到期空间站通知模板 ID
-     * @return 延时消息是否已经结束
-     * @author 刘斌华
-     * @date 2022-08-12 10:56:45
+     * @param delayEntity Delay message
+     * @param currentDateTime current time
+     * @param permitTrialDays Time of interface license trial
+     * @param permitBuyNotifyBeforeDays Days to send notifications in advance
+     * @param permitTrialExpiredTemplateId Interface license free trial expiration space station notification template ID
+     * @return Whether the delay message has ended
      */
     private boolean notifyBeforePermitTrialExpired(SocialWecomPermitDelayEntity delayEntity, LocalDateTime currentDateTime,
             Integer permitTrialDays, List<Integer> permitBuyNotifyBeforeDays, String permitTrialExpiredTemplateId) {
-        // 已试用的天数
+        // Trial days
         int daysPassed = (int) DateTimeUtil.between(delayEntity.getFirstAuthTime(), currentDateTime, ChronoField.EPOCH_DAY);
-        // 距离试用结束相差的天数
+        // Number of days from the end of probation
         int daysToExpired = permitTrialDays - daysPassed;
         if (permitBuyNotifyBeforeDays.contains(daysToExpired)) {
-            // 如果属于需要发送通知的距离天数，并且还未付费，则发送通知
+            // If it is the number of days to send the notice and the payment has not been made, the notice will be sent
             String suiteId = delayEntity.getSuiteId();
             String authCorpId = delayEntity.getAuthCorpId();
             SocialWecomOrderEntity lastPaidOrder = socialWecomOrderService.getLastPaidOrder(suiteId, authCorpId);
@@ -206,20 +201,20 @@ public class SocialWecomPermitDelayServiceImpl extends ServiceImpl<SocialWecomPe
                     NotificationManager.me().centerNotify(notificationCreateRo);
                 }
                 catch (Exception ex) {
-                    log.warn("发送通知异常，通知数据：" + JSONUtil.toJsonStr(notificationCreateRo), ex);
+                    log.warn("Sending notification exception, notification data:" + JSONUtil.toJsonStr(notificationCreateRo), ex);
                 }
             }
         }
-        // 试用结束，不再需要发送通知，延时任务结束
+        // After the trial, it is no longer necessary to send a notice, delaying the end of the task
         return daysToExpired <= 0;
     }
 
     private boolean buyAfterSubscriptionPaid(SocialWecomPermitDelayEntity delayEntity, LocalDateTime currentDateTime,
             Integer permitCompatibleDays) {
-        // 已试用的天数
+        // Trial days
         int daysPassed = (int) DateTimeUtil.between(delayEntity.getFirstAuthTime(), currentDateTime, ChronoField.EPOCH_DAY);
         if (daysPassed > permitCompatibleDays) {
-            // 到达指定时间，提交延时队列消息
+            // When the specified time is reached, submit the delayed queue message
             rabbitSenderService.topicSend(TopicRabbitMqConfig.WECOM_TOPIC_EXCHANGE_BUFFER,
                     TopicRabbitMqConfig.WECOM_ISV_PERMIT_TOPIC_ROUTING_KEY,
                     SocialWecomPermitDelayEntity.builder()

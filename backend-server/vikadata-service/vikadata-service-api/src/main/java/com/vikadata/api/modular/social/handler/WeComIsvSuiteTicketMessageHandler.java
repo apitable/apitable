@@ -22,10 +22,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商 suite_ticket 定时推送
+ * Third party service provider suite_ Tickets are pushed regularly
  * </p>
- * @author 刘斌华
- * @date 2022-01-05 18:21:39
  */
 @Component
 public class WeComIsvSuiteTicketMessageHandler implements WeComIsvMessageHandler {
@@ -58,11 +56,11 @@ public class WeComIsvSuiteTicketMessageHandler implements WeComIsvMessageHandler
             weComTemplate.isvService(wxMessage.getSuiteId()).setSuiteTicket(wxMessage.getSuiteTicket());
 
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.SUCCESS.getValue());
-            // 保存通知信息
+            // Save notification information
             socialCpIsvMessageService.save(entity);
         } catch (Exception ex) {
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY.getValue());
-            // 保存通知信息
+            // Save notification information
             socialCpIsvMessageService.save(entity);
 
             throw ex;

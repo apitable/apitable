@@ -9,25 +9,22 @@ import lombok.Data;
 
 /**
  * <p>
- * 空间更换主管理员请求参数
+ * Request parameters of space replacement master administrator
  * </p>
- *
- * @author Chambers
- * @date 2020/1/21
  */
 @Data
-@ApiModel("飞书租户空间更换主管理员请求参数")
+@ApiModel("Lark tenant space change master administrator request parameters")
 public class FeishuTenantMainAdminChangeRo {
 
-    @ApiModelProperty(value = "租户标识", example = "128371293xja", required = true)
-    @NotBlank(message = "租户标识")
+    @ApiModelProperty(value = "Tenant ID", example = "128371293xja", required = true)
+    @NotBlank(message = "Tenant ID")
     private String tenantKey;
 
-    @ApiModelProperty(value = "空间站标识", example = "spc2123hjhasd", required = true)
-    @NotBlank(message = "空间ID不能为空")
+    @ApiModelProperty(value = "Space identification", example = "spc2123hjhasd", required = true)
+    @NotBlank(message = "Space ID cannot be empty")
     private String spaceId;
 
-    @ApiModelProperty(value = "新主管理员的成员ID", example = "123456", position = 2, required = true)
-    @NotNull(message = "新主管理员的成员ID不能为空")
+    @ApiModelProperty(value = "Member ID of the new master administrator", example = "123456", position = 2, required = true)
+    @NotNull(message = "The member ID of the new master administrator cannot be empty")
     private Long memberId;
 }

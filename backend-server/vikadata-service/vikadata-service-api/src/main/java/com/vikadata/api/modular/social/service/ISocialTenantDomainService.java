@@ -10,111 +10,89 @@ import com.vikadata.entity.SocialTenantDomainEntity;
 
 /**
  * <p>
- * 第三方平台集成-企业租户专属域名 服务接口
+ * Third party platform integration - enterprise tenant exclusive domain name service interface
  * </p>
- * @author Pengap
- * @date 2021/8/5 20:18:04
  */
 public interface ISocialTenantDomainService extends IService<SocialTenantDomainEntity> {
 
     /**
-     * 创建域名（状态：绑定中）
+     * Create domain name (status: binding)
      *
-     * @param spaceId       空间站Id
-     * @param domainPrefix  域名前缀
-     * @param domainName    域名
-     * @author Pengap
-     * @date 2021/8/30 11:49:58
+     * @param spaceId       Space ID
+     * @param domainPrefix  Domain name prefix
+     * @param domainName    DOMAIN NAME
      */
     SocialTenantDomainEntity createDomain(String spaceId, String domainPrefix, String domainName);
 
     /**
-     * 启用域名
+     * Enable domain name
      *
-     * @param spaceId   空间站Id
-     * @author Pengap
-     * @date 2021/8/30 11:50:02
+     * @param spaceId   Space ID
      */
     void enabledDomain(String spaceId);
 
     /**
-     * 删除域名并且删除域名DDNS解析记录
+     * Delete the domain name and delete the domain name DDNS resolution record
      *
-     * @param spaceIds 空间站Id
-     * @author Pengap
-     * @date 2021/9/13 11:29:24
+     * @param spaceIds Space ID
      */
     void removeDomain(List<String> spaceIds);
 
     /**
-     * 获取空间站域名
+     * Get the space station domain name
      *
-     * @param spaceId           空间站Id
-     * @param apendHttpsPrefix  是否自动添加https前缀，false 返回没有协议的域名
-     * @return 域名（获取不到时，返回公网域名）
-     * @author Pengap
-     * @date 2021/8/26 11:00:09
+     * @param spaceId           Space ID
+     * @param apendHttpsPrefix  Whether to add https prefix automatically. If false, the domain name without protocol will be returned
+     * @return Domain name (return to the public domain name if it is not available)
      */
     String getDomainNameBySpaceId(String spaceId, boolean apendHttpsPrefix);
 
     /**
-     * 获取空间站域名（不带http协议头的域名）
+     * Obtain the domain name of the space station (domain name without http protocol header)
      *
-     * @param spaceId           空间站Id
-     * @return 域名（获取不到时，返回公网域名）
-     * @author Pengap
-     * @date 2021/8/26 11:00:09
+     * @param spaceId           Space ID
+     * @return Domain name (return to the public domain name if it is not available)
      */
     default String getDomainNameBySpaceId(String spaceId) {
         return getDomainNameBySpaceId(spaceId, false);
     }
 
     /**
-     * 从配置文件获取空间的默认域名
+     * Get the default domain name of the space from the configuration file
      *
-     * @return 公网域名
-     * @author Pengap
-     * @date 2021/8/27 18:54:53
+     * @return Public domain name
      */
     String getSpaceDefaultDomainName();
 
     /**
-     * 获取空间站Id
+     * Get Space ID
      *
-     * @param domainName    企业域名
+     * @param domainName    Enterprise domain name
      * @return spaceId
-     * @author Pengap
-     * @date 2021/8/26 11:00:13
      */
     String getSpaceIdByDomainName(String domainName);
 
     /**
-     * 批量获取空间站域名
+     * Batch acquisition of space station domain names
      *
-     * @param spaceIds 空间Ids
-     * @return 空间站对应域名（不过滤状态）
-     * @author Pengap
-     * @date 2021/8/31 10:44:03
+     * @param spaceIds Space Ids
+     * @return Domain name corresponding to the space station (unfiltered)
      */
     List<SpaceBindDomainDTO> getSpaceDomainBySpaceIds(List<String> spaceIds);
 
     /**
-     * 批量获取空间站域名
+     * Batch acquisition of space station domain names
      *
-     * @param spaceIds   空间Ids
-     * @return key:空间站Id，value:空间站绑定域名
-     * @author Pengap
-     * @date 2021/8/26 14:35:25
+     * @param spaceIds   Space Ids
+     * @return key:Space ID，value:Space station binding domain name
      */
     Map<String, String> getSpaceDomainBySpaceIdsToMap(List<String> spaceIds);
 
     /**
-     * 获取域名绑定空间状态
+     * Get the domain name binding space status
      *
-     * @param domainName 域名
-     * @return 域名绑定信息
-     * @author Pengap
-     * @date 2021/9/8 16:40:20
+     * @param domainName Domain name
+     * @return Domain name binding information
      */
     SpaceBindDomainDTO getSpaceDomainByDomainName(String domainName);
 

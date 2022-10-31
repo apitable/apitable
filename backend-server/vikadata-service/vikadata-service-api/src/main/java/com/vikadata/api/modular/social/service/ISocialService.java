@@ -10,92 +10,79 @@ import com.vikadata.api.modular.social.model.TenantDetailVO;
 import com.vikadata.api.modular.social.model.TenantDetailVO.Space;
 
 /**
- * 第三方集成 服务接口
- *
- * @author Shawn Deng
- * @date 2020-12-02 18:04:09
+ * Third party integration service interface
  */
 public interface ISocialService {
 
     /**
-     * 用户激活空间成员
-     * @param userId 用户ID
-     * @param spaceId 空间ID
+     * Users activate space members
+     * 
+     * @param userId User ID
+     * @param spaceId Space ID
      * @param openId openId
-     * @param mobile 手机号
+     * @param mobile mobile
      */
     Long activeSpaceByMobile(Long userId, String spaceId, String openId, String mobile);
 
     /**
-     * 校验用户是否是租户的管理员
-     * @param userId 用户ID
-     * @param tenantKey 租户标识
-     * @author Shawn Deng
-     * @date 2021/7/21 14:53
+     * Verify whether the user is the tenant's administrator
+     * 
+     * @param userId User ID
+     * @param tenantKey Tenant ID
      */
     void checkUserIfInTenant(Long userId, String appId, String tenantKey);
 
     /**
-     * 获取企业的空间信息
-     * @param appId 应用标识
-     * @param tenantKey 飞书企业标识
+     * Obtain the spatial information of the enterprise
+     *
+     * @param appId Application ID
+     * @param tenantKey Lark Enterprise ID
      * @return FeishuTenantInfoVO
-     * @author Shawn Deng
-     * @date 2021/7/21 14:40
      */
     FeishuTenantDetailVO getFeishuTenantInfo(String appId, String tenantKey);
 
     /**
-     * 获取企业的空间信息
+     * Obtain the spatial information of the enterprise
      *
-     * @param tenantKey 企业标识
-     * @param appId 应用标识
+     * @param tenantKey Enterprise ID
+     * @param appId Application ID
      * @return TenantDetailVO
-     * @author zoe zheng
-     * @date 2021/9/23 14:10
      */
     TenantDetailVO getTenantInfo(String tenantKey, String appId);
 
     /**
-     * 获取企业的空间信息
+     * Obtain the spatial information of the enterprise
      *
-     * @param tenantKey 企业标识
-     * @param appId 应用标识
+     * @param tenantKey Enterprise ID
+     * @param appId Application ID
      * @return List<Space>
-     * @author zoe zheng
-     * @date 2021/9/23 14:10
      */
     List<Space> getTenantBindSpaceInfo(String tenantKey, String appId);
 
     /**
-     * 更换主管理员
-     * @param spaceId 空间ID
-     * @param memberId 成员ID
-     * @author Shawn Deng
-     * @date 2021/8/18 20:50
+     * Replace the master administrator
+     *
+     * @param spaceId Space ID
+     * @param memberId Member ID
      */
     void changeMainAdmin(String spaceId, Long memberId);
 
     /**
-     * 获取空间绑定集成的禁止资源
+     * Get forbidden resources for space binding integration
      *
-     * @param spaceId 空间ID
-     * @return 空间权限资源禁止列表
-     * @author Shawn Deng
-     * @date 2020/12/18 12:21
+     * @param spaceId Space ID
+     * @return Space permission resource prohibition list
      */
     List<String> getSocialDisableRoleGroupCode(String spaceId);
 
     /**
-     * 钉钉绑定空间以及同步通讯录
+     * DingTalk binding space and synchronous address book
      *
-     * @param agentId 企业应用唯一标识
-     * @param spaceId    空间ID
-     * @param operatorOpenId 操作用户的openId
-     * @param contact 应用可见范围
-     * @return 绑定成功的钉钉用户ID
-     * @author zoe zheng
-     * @date 2021/5/11 11:51 上午
+     * @param agentId Enterprise application unique ID
+     * @param spaceId    Space ID
+     * @param operatorOpenId The open ID of the operation user
+     * @param contact Application visible range
+     * @return DingTalk User ID of successful binding
      */
     Set<String> connectDingTalkAgentAppContact(String spaceId, String agentId, String operatorOpenId,
             LinkedHashMap<Long, DingTalkContactDTO> contact);

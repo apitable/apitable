@@ -15,11 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层测试：实验性功能表测试
+ *     Data access layer test: experimental menu test
  * </p>
- *
- * @author wuyitao
- * @date 2022/3/31 2:25 PM
  */
 public class LabsFeatureMapperTest extends AbstractMyBatisMapperTest {
 

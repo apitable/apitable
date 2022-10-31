@@ -39,11 +39,8 @@ import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
 
 /**
  * <p>
- * 统计接口实现类
+ * Statics interface implementation class
  * </p>
- *
- * @author Chambers
- * @date 2021/6/18
  */
 @Slf4j
 @Service
@@ -63,12 +60,12 @@ public class StaticsServiceImpl implements IStaticsService {
 
     @Override
     public long getCurrentMonthApiUsage(String spaceId) {
-        // 获取到昨天为止本月API用量
+        // Get the API usage of this month up to yesterday
         Long apiUsageUntilYesterday = this.getCurrentMonthApiUsageUntilYesterday(spaceId);
-        // 如果为NULL，说明API用量日统计表为空，则采取旧方法
+        // If it is NULL, it indicates that the daily API usage statistics table is empty, and the old method is adopted
         if (apiUsageUntilYesterday == null) {
             Long minId = this.getApiUsageTableMinId();
-            // 本月最小表ID不存在，即没有调用记录
+            // The minimum table ID of this month does not exist, that is, there is no call record
             if (minId == null) {
                 return 0;
             }
@@ -80,67 +77,67 @@ public class StaticsServiceImpl implements IStaticsService {
 
     @Override
     public Long getTodayApiUsage(String spaceId) {
-        // 获取今日API用量缓存
+        // Get today's API usage cache
         SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd");
         String todayKey = StrUtil.format(GENERAL_STATICS, "api" + today.format(new Date()), spaceId);
         Object apiUsageToday = redisTemplate.opsForValue().get(todayKey);
         if (apiUsageToday == null) {
-            // 昨日API用量记录最大表ID
+            // Maximum table ID of yesterday's API usage record
             Long yesterdayMaxId = staticsMapper.selectMaxIdByTime(today.format(DateUtil.yesterday()));
-            // 获取今日API用量
+            // Get today's API usage
             apiUsageToday = staticsMapper.countByIdGreaterThanAndSpaceId(yesterdayMaxId, spaceId);
-            // 更新今日api用量缓存
+            // Update today's api usage cache
             redisTemplate.opsForValue().set(todayKey, Long.valueOf(apiUsageToday.toString()), 2, TimeUnit.HOURS);
         }
-        // 返回空间站今日API用量
+        // Return to the space station today's API usage
         return Long.valueOf(apiUsageToday.toString());
     }
 
     @Override
     public Long getCurrentMonthApiUsageUntilYesterday(String spaceId) {
-        // 如果是本月1号，则直接返回0
+        // If it is the first day of this month, 0 will be returned directly
         if (ObjectUtil.equals(DateUtil.date(new Date()).getDate(), 1)) {
             return 0L;
         } else {
-            // 获取今天以前本月API用量缓存
+            // Get the API usage cache of this month before today
             SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
             String monthKey = StrUtil.format(GENERAL_STATICS, "api" + month.format(new Date()), spaceId);
             Object apiUsageBeforeToday = redisTemplate.opsForValue().get(monthKey);
             if (apiUsageBeforeToday != null) {
                 return Long.valueOf(apiUsageBeforeToday.toString());
             }
-            // 没有缓存，查询今日以前本月API用量
+            // No cache. Query the API usage in this month before today
             SimpleDateFormat today = new SimpleDateFormat("yyyy-MM-dd");
             Long totalSum = staticsMapper.selectTotalSumBySpaceIdAndTimeBetween(spaceId, today.format(DateUtil.beginOfMonth(new Date())), today.format(DateUtil.yesterday()));
             if (totalSum == null) {
                 return null;
             }
-            // 更新今日以前本月API用量缓存
+            // Update the API usage cache of this month before today
             redisTemplate.opsForValue().set(monthKey, totalSum, DateTool.todayTimeLeft(), TimeUnit.SECONDS);
             return totalSum;
         }
     }
 
     private Long getApiUsageTableMinId() {
-        // 获取 API用量表 本月最小的ID
+        // Get the minimum ID of the API consumption table this month
         LocalDateTime now = LocalDateTime.now();
         String key = StrUtil.format(GENERAL_STATICS, "api-usage-min-id", DateTool.formatFullTime(now, YEARS_MONTH_PATTERN));
         Long id = redisTemplate.opsForValue().get(key);
         if (id != null) {
             return id;
         }
-        // 本月最小ID不存在，查询上个月的最小ID，减少查询量
+        // The minimum ID of this month does not exist. Query the minimum ID of last month to reduce the query volume
         String lastMonthKey = StrUtil.format(GENERAL_STATICS, "api-usage-min-id",
                 DateTool.formatFullTime(now.plusMonths(-1), YEARS_MONTH_PATTERN));
         Long lastMonthMinId = redisTemplate.opsForValue().get(lastMonthKey);
-        // 若上个月的最小表ID也不存在，直接查询最大表ID
+        // If the minimum table ID of last month does not exist, query the maximum table ID directly
         if (lastMonthMinId == null) {
             id = staticsMapper.selectMaxId();
         }
         else {
             id = staticsMapper.selectApiUsageMinIdByCreatedAt(lastMonthMinId, DateTool.getStartTimeOfMonth());
         }
-        // 保留当月缓存
+        // Keep the cache of the month
         redisTemplate.opsForValue().set(key, id, 33, TimeUnit.DAYS);
         return id;
     }
@@ -181,20 +178,20 @@ public class StaticsServiceImpl implements IStaticsService {
         Map<Integer, List<String>> typeToControlIdsMap = controls.stream()
                 .collect(Collectors.groupingBy(ControlTypeDTO::getControlType,
                         Collectors.mapping(ControlTypeDTO::getControlId, Collectors.toList())));
-        // 文件权限
+        // File Permission
         if (typeToControlIdsMap.containsKey(ControlType.NODE.getVal())) {
             List<String> nodeIds = typeToControlIdsMap.get(ControlType.NODE.getVal());
-            // 过滤根节点和逻辑删除的节点数量
+            // Filter the number of root nodes and logically deleted nodes
             vo.setNodeRoleCount(nodeMapper.countByNodeIds(nodeIds));
         }
-        // 列权限
+        // Column Permissions
         List<String> controlIds = typeToControlIdsMap.get(ControlType.DATASHEET_FIELD.getVal());
         if (CollUtil.isEmpty(controlIds)) {
             return vo;
         }
-        // 每张表中多少个列权限
+        // How many column permissions in each table
         Map<String, Integer> counts = new HashMap<>(controlIds.size());
-        // 获取列权限们所在的表
+        // Get the table of column permissions
         List<String> dstIds = controlIds.stream()
                 .map(controlId -> {
                     List<String> ids = StrSpliter.split(controlId, ControlIdBuilder.SYMBOL,
@@ -208,7 +205,7 @@ public class StaticsServiceImpl implements IStaticsService {
                 })
                 .distinct()
                 .collect(Collectors.toList());
-        // 非回收站中的表dstIds
+        // Table dst Ids in non recycle bin
         List<String> notRubbishedDstIds = nodeMapper.selectNodeIdByNodeIds(dstIds);
         int count;
         if (notRubbishedDstIds.size() == counts.size()) {

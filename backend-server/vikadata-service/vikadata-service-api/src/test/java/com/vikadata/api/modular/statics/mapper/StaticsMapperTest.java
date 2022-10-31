@@ -17,10 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * <p>
- *     数据访问层：相关表计算测试
+ *     Data access layer: related table calculation test
  * </p>
- * @author wuyitao
- * @date 2022/4/5 5:36 PM
  */
 @Disabled
 public class StaticsMapperTest extends AbstractMyBatisMapperTest {

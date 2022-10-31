@@ -28,10 +28,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 第三方服务商从企业微信应用市场发起授权成功通知
+ * The third-party service provider sends a successful authorization notification from the We Com application market
  * </p>
- * @author 刘斌华
- * @date 2022-01-05 15:31:04
  */
 @Component
 @Slf4j
@@ -66,13 +64,13 @@ public class WeComIsvAuthCreateMessageHandler implements WeComIsvMessageHandler 
             AuthCorpInfo authCorpInfo = permanentCodeInfo.getAuthCorpInfo();
 
             entity.setAuthCorpId(authCorpInfo.getCorpId());
-            // 这里并不保存回调通知的数据，而是保存获取企业永久授权码接口返回的信息
+            // The callback notification data is not saved here, but the information returned by the interface for obtaining the enterprise permanent authorization code is saved
             entity.setMessage(JSONUtil.toJsonStr(permanentCodeInfo));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.PENDING.getValue());
-            // 保存通知信息
+            // Save notification information
             socialCpIsvMessageService.save(entity);
 
-            // 响应必须在 1000ms 内完成，因此在当前事件中仅记录下相关信息，后续再处理业务
+            // The response must be completed within 1000ms, so only the relevant information is recorded in the current event, and then the business is processed later
             socialCpIsvMessageService.sendToMq(entity.getId(), entity.getInfoType(), entity.getAuthCorpId(),
                     entity.getSuiteId());
         }
@@ -81,7 +79,7 @@ public class WeComIsvAuthCreateMessageHandler implements WeComIsvMessageHandler 
 
             entity.setMessage(JSONUtil.toJsonStr(wxMessage));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY.getValue());
-            // 保存通知信息
+            // Save notification information
             socialCpIsvMessageService.save(entity);
 
             return new WxCpXmlOutTextMessage();
@@ -89,7 +87,7 @@ public class WeComIsvAuthCreateMessageHandler implements WeComIsvMessageHandler 
         catch (Exception ex) {
             entity.setMessage(JSONUtil.toJsonStr(wxMessage));
             entity.setProcessStatus(SocialCpIsvMessageProcessStatus.REJECT_PERMANENTLY.getValue());
-            // 保存通知信息
+            // Save notification information
             socialCpIsvMessageService.save(entity);
 
             throw ex;

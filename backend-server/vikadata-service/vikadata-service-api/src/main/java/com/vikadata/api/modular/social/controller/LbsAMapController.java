@@ -27,14 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 /** 
 * <p> 
-* 高德地图接口
-* </p> 
-* @author zoe zheng 
-* @date 2022/6/15 14:37
+* AutoNavi Interface
+* </p>
 */
 @RestController
 @ApiResource(path = "/")
-@Api(tags = "高德地图接口")
+@Api(tags = "AutoNavi Interface")
 @Slf4j
 public class LbsAMapController {
     @Resource
@@ -51,7 +49,7 @@ public class LbsAMapController {
         if (uri.contains("vectormap")) {
             newUri = URLUtil.toURI(aMapProperties.getVectormap().getProxyPass() + "?" + query);
         }
-        // 执行代理查询
+        // Execute Proxy Query
         String methodName = request.getMethod();
         HttpMethod httpMethod = HttpMethod.resolve(methodName);
         if(httpMethod == null) {
@@ -60,7 +58,7 @@ public class LbsAMapController {
 
         ClientHttpRequest delegate =  new SimpleClientHttpRequestFactory().createRequest(newUri, httpMethod);
         Enumeration<String> headerNames = request.getHeaderNames();
-        // 设置请求头
+        // Set request header
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
             Enumeration<String> v = request.getHeaders(headerName);
@@ -72,10 +70,10 @@ public class LbsAMapController {
         }
 
         StreamUtils.copy(request.getInputStream(), delegate.getBody());
-        // 执行远程调用
+        // Execute remote call
         ClientHttpResponse clientHttpResponse = delegate.execute();
         response.setStatus(clientHttpResponse.getStatusCode().value());
-        // 设置响应头
+        // Set Response Header
         clientHttpResponse.getHeaders().forEach((key, value) -> value.forEach(it -> {
             response.setHeader(key, it);
         }));

@@ -17,56 +17,53 @@ import lombok.Setter;
 import com.vikadata.api.support.serializer.ImageSerializer;
 
 /**
- * 租户信息
- *
- * @author Shawn Deng
- * @date 2020-12-09 10:49:13
+ * Tenant information
  */
 @Data
-@ApiModel("租户信息")
+@ApiModel("Tenant information")
 public class TenantDetailVO {
 
-    @ApiModelProperty(value = "绑定的空间列表", position = 1)
+    @ApiModelProperty(value = "List of bound spaces", position = 1)
     private List<Space> spaces;
 
-    @ApiModelProperty(value = "企业标识", example = "17236123", position = 2)
+    @ApiModelProperty(value = "Enterprise ID", example = "17236123", position = 2)
     private String tenantKey;
 
-    @ApiModelProperty(value = "企业名称", example = "企业名称", position = 3)
+    @ApiModelProperty(value = "Enterprise name", example = "Enterprise name", position = 3)
     private String tenantName;
 
-    @ApiModelProperty(value = "企业头像", example = "https://....", position = 3)
+    @ApiModelProperty(value = "Corporate avatar", example = "https://....", position = 3)
     private String avatar;
 
     @Setter
     @Getter
     public static class Space {
 
-        @ApiModelProperty(value = "空间站标识", example = "spc21182sjahsd", position = 1)
+        @ApiModelProperty(value = "Space identification", example = "spc21182sjahsd", position = 1)
         private String spaceId;
 
-        @ApiModelProperty(value = "空间站名称", example = "维格智数", position = 2)
+        @ApiModelProperty(value = "Space name", example = "vika", position = 2)
         private String spaceName;
 
-        @ApiModelProperty(value = "空间站logo", example = "logo", position = 2)
+        @ApiModelProperty(value = "Space logo", example = "logo", position = 2)
         @JsonSerialize(using = ImageSerializer.class)
         private String spaceLogo;
 
-        @ApiModelProperty(value = "主管理员ID", example = "123", position = 2)
+        @ApiModelProperty(value = "Primary administrator ID", example = "123", position = 2)
         @JsonSerialize(using = ToStringSerializer.class)
         private Long mainAdminUserId;
 
-        @ApiModelProperty(value = "主管理员名称", example = "李四", position = 2)
+        @ApiModelProperty(value = "Primary administrator name", example = "LiSi", position = 2)
         private String mainAdminUserName;
 
-        @ApiModelProperty(value = "主管理员头像", example = "logo", position = 2)
+        @ApiModelProperty(value = "Head portrait of the main administrator", example = "logo", position = 2)
         @JsonSerialize(using = ImageSerializer.class)
         private String mainAdminUserAvatar;
 
-        @ApiModelProperty(value = "订阅产品名称", example = "Bronze", position = 3)
+        @ApiModelProperty(value = "Subscription product name", example = "Bronze", position = 3)
         private String product;
 
-        @ApiModelProperty(value = "订阅到期时间, 免费则为空", example = "2019-01-01", position = 4)
+        @ApiModelProperty(value = "Subscription expiration time, blank if free", example = "2019-01-01", position = 4)
         @JsonFormat(pattern = DatePattern.NORM_DATE_PATTERN)
         @JsonSerialize(using = LocalDateSerializer.class)
         private LocalDate deadline;

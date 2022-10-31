@@ -129,11 +129,8 @@ import static com.vikadata.api.enums.exception.SocialException.USER_NOT_EXIST;
 
 /**
  * <p>
- * 企业微信服务 接口实现
+ * WeCom service interface implementation
  * </p>
- *
- * @author Pengap
- * @date 2021/7/31 16:31:10
  */
 @Slf4j
 @Service
@@ -201,11 +198,11 @@ public class WeComServiceImpl implements IWeComService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public WeComCreateTempConfigResult createTempAgentAuthConfig(String corpId, Integer agentId, String agentSecret, String spaceId, boolean isAutoCreateTempDomain) {
-        log.info("创建企业微信绑定临时授权配置");
+        log.info("Create WeCom binding temporary authorization configuration");
         Duration timeout = Duration.ofHours(TIMEOUT).plusSeconds(RandomUtil.randomLong(60, 360));
         WxCpAgent corpAgent = this.getCorpAgentByTempAuth(corpId, agentId, agentSecret, timeout);
         if (corpAgent.getClose() == 1) {
-            throw new BusinessException(String.format("企业微信应用「%s」未启用", corpAgent.getName()));
+            throw new BusinessException(String.format("WeCom application「%s」not enabled", corpAgent.getName()));
         }
         WeComCreateTempConfigResult result = new WeComCreateTempConfigResult();
         WeComAuthInfo weComAuthInfo = new WeComAuthInfo()
@@ -213,21 +210,21 @@ public class WeComServiceImpl implements IWeComService {
                 .setAgentId(agentId)
                 .setAgentSecret(agentSecret)
                 .setClose(corpAgent.getClose());
-        // 赋值应用授权信息
+        // Assign application authorization information
         AgentInfo agentInfo = new AgentInfo();
         BeanUtil.copyProperties(corpAgent, agentInfo, CopyOptions.create().ignoreError());
         weComAuthInfo.setAgentInfo(agentInfo);
 
-        // 生成临时配置sha用于后续流程识别的唯一标识
+        // Generate the unique identifier of temporary configuration sha for subsequent process identification
         String configSha = SecureUtil.sha1(String.format("%s-%s", corpId, agentId));
         String domainName = null;
-        // 是否自动申请企业微信专属域名
+        // Whether to automatically apply for the exclusive domain name of We Com
         if (isAutoCreateTempDomain) {
-            // 申请企业域名
+            // Apply for enterprise domain name
             ApplyEnpDomainResult applyResult = this.applyEnpDomain(spaceId);
             domainName = applyResult.getApplyFullDomainName();
         }
-        // 保存到缓存中
+        // Save to cache
         String key = weComTemplate.getCacheConfigKeyPrefix(true).concat(configSha);
         BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(key);
         ops.set(weComAuthInfo, timeout);
@@ -236,7 +233,7 @@ public class WeComServiceImpl implements IWeComService {
 
     @Override
     public WeComAuthInfo getConfigSha(String configSha) {
-        log.info("获取企业微信临时配置，配置SHA：{}", configSha);
+        log.info("Get temporary configuration of We Com and configure SHA:{}", configSha);
         if (StrUtil.isBlank(configSha)) {
             return null;
         }
@@ -251,7 +248,7 @@ public class WeComServiceImpl implements IWeComService {
 
     @Override
     public void removeTempConfig(String configSha) {
-        log.info("移除企业微信临时配置，配置SHA：{}", configSha);
+        log.info("Remove the temporary configuration of We Com and configure SHA:{}", configSha);
         String key = weComTemplate.getCacheConfigKeyPrefix(true).concat(configSha);
         BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(key);
         Object config = ops.get();
@@ -266,13 +263,13 @@ public class WeComServiceImpl implements IWeComService {
 
     @Override
     public WeComBindConfigVo getTenantBindWeComConfig(String spaceId) {
-        log.info("获取空间站「{}」绑定企业微信配置", spaceId);
-        // 根据空间站查询绑定信息
+        log.info("Get the space「{}」bind WeCom configuration", spaceId);
+        // Query binding information according to the space
         SpaceBindTenantInfoDTO spaceBindTenantInfo = iSocialTenantBindService.getSpaceBindTenantInfoByPlatform(spaceId, SocialPlatformType.WECOM, WeComAuthInfo.class);
         ExceptionUtil.isNotNull(spaceBindTenantInfo, UNBOUND_WECOM);
         ExceptionUtil.isNotNull(spaceBindTenantInfo.getAuthInfo(), GET_AGENT_CONFIG_ERROR);
         ExceptionUtil.isTrue(spaceBindTenantInfo.getStatus(), AGENT_CONFIG_DISABLE);
-        // 根据空间站绑定域名
+        // Bind the domain name according to the space
         String domainNameBySpace = iSocialTenantDomainService.getDomainNameBySpaceId(spaceId, false);
         WeComAuthInfo authInfo = (WeComAuthInfo) spaceBindTenantInfo.getAuthInfo();
 
@@ -287,8 +284,8 @@ public class WeComServiceImpl implements IWeComService {
 
     @Override
     public WxCpUser getWeComUserByOAuth2Code(String corpId, Integer agentId, String code, boolean isTempAuth) {
-        log.info("OAuth2获取企业微信成员信息，应用「corpId:{} / agentId:{}」，TempAuth模式：{}", corpId, agentId, isTempAuth);
-        // 切换上下文
+        log.info("OAuth2 get We Com member information, apply「corpId:{} / agentId:{}」，TempAuth pattern:{}", corpId, agentId, isTempAuth);
+        // Toggle Context
         this.switchoverWeComTemplate(corpId, agentId, isTempAuth);
         WxCpOAuth2Service oAuth2Service = weComTemplate.oAuth2Service();
         try {
@@ -299,21 +296,21 @@ public class WeComServiceImpl implements IWeComService {
             WxError error = e.getError();
             if (null != error) {
                 if (error.getErrorCode() == 40029) {
-                    throw new BusinessException("无效的CODE编码");
+                    throw new BusinessException("Invalid CODE code");
                 }
             }
-            throw new RuntimeException("获取企业微信应用用户信息异常：", e);
+            throw new RuntimeException("Exception in obtaining user information of WeCom application: ", e);
         }
         finally {
-            // 关闭服务
+            // Close Service
             weComTemplate.closeService();
         }
     }
 
     @Override
     public WxCpUser getWeComUserByWeComUserId(String corpId, Integer agentId, String weComUserId, boolean isTempAuth) {
-        log.info("获取应用「corpId:{} / agentId:{}」成员「{}」信息，TempAuth模式：{}", corpId, agentId, weComUserId, isTempAuth);
-        // 切换上下文
+        log.info("Get apps「corpId:{} / agentId:{}」Member「{}」information,TempAuth pattern:{}", corpId, agentId, weComUserId, isTempAuth);
+        // Toggle Context
         this.switchoverWeComTemplate(corpId, agentId, isTempAuth);
         WxCpUserService userService = weComTemplate.userService();
         try {
@@ -327,10 +324,10 @@ public class WeComServiceImpl implements IWeComService {
                     throw new BusinessException(USER_NOT_EXIST);
                 }
             }
-            throw new RuntimeException("获取企业微信应用用户信息异常：", e);
+            throw new RuntimeException("Exception in obtaining user information of WeCom application:", e);
         }
         finally {
-            // 关闭服务
+            // Close Service
             weComTemplate.closeService();
         }
     }
@@ -339,61 +336,61 @@ public class WeComServiceImpl implements IWeComService {
     @Transactional(rollbackFor = Exception.class)
     public Set<String> weComAppBindSpace(String corpId, Integer agentId, String spaceId, WeComAuthInfo agentConfig) {
         if (weComTemplate == null) {
-            throw new BusinessException("企业微信未启用");
+            throw new BusinessException("WeCom is not enabled");
         }
-        // 绑定操作的vika用户Id
+        // The vika user ID of the binding operation
         Long bindUserId = agentConfig.getOperatingBindUserId();
-        log.info("空间站「{}」绑定企业微信，操作用户：{}", spaceId, bindUserId);
-        // 绑定操作的企业微信用户Id（主管理员wecomUserId）
+        log.info("Space「{}」bind WeCom, operating user:{}", spaceId, bindUserId);
+        // WeCom user's id of the binding operation (WeCom user's id of the main administrator)
         String mainAdminWeComUserId = agentConfig.getOperatingBindWeComUserId();
-        // 绑定操作的企业微信用户信息
+        // WeCom user information of binding operation
         WxCpUser bindWeComUser = agentConfig.getOperatingBindWeComUser();
         ExceptionUtil.isTrue(Objects.nonNull(bindWeComUser) && StrUtil.isNotBlank(bindWeComUser.getUserId()), USER_NOT_EXIST);
-        // 空间的主管理员用户ID
+        // Primary administrator user ID of the space
         Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
-        // 检查是否空间主管理员
+        // Check whether the space master administrator
         ExceptionUtil.isTrue(mainAdminUserId.equals(bindUserId), SpaceException.NOT_SPACE_MAIN_ADMIN);
-        // 绑定空间的根组织ID
+        // Root organization ID of the binding space
         Long rootTeamId = iTeamService.getRootTeamId(spaceId);
-        // 空间的主管理员成员ID（旧）
+        // Primary administrator member ID of the space (old)
         Long mainAdminMemberId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
 
-        // 应用可见范围
+        // Application visible range
         WeComAppVisibleScope visibleScopes = this.getAppVisibleScopes(corpId, agentId, true);
-        // 切换service上下文
+        // Switch service context
         this.switchoverWeComTemplate(corpId, agentId, true);
 
         ContactMeta currentSyncContactMeta = new ContactMeta(spaceId, corpId, String.valueOf(agentId), rootTeamId, mainAdminMemberId);
-        // 由于绑定不会创建一个member成员，这里模拟添加一条关联关系
+        // Since binding will not create a member, here we simulate adding an association
         CahceWeComUserLinkVikaMember mainAdminWeComLinkVikaMember = CahceWeComUserLinkVikaMember.builder().memberId(mainAdminMemberId)
                 .memberName("").openId(mainAdminWeComUserId)
                 .oldUnitTeamIds(CollUtil.newHashSet(iTeamMemberRelService.getTeamByMemberId(mainAdminMemberId)))
                 .isNew(true).isCurrentSync(true).build();
         currentSyncContactMeta.weComUserToVikaMemberMap.put(mainAdminWeComUserId, mainAdminWeComLinkVikaMember);
 
-        // 同步企业微信通讯录
+        // Sync WeCom Contacts
         currentSyncContactMeta = this.incrementSyncWeComContact(currentSyncContactMeta, visibleScopes);
-        // 删除所有子管理员
+        // Delete all sub administrators
         iSpaceRoleService.deleteBySpaceId(spaceId);
 
-        // 获取新的空间站主管理员（新）
+        // Get a new master administrator of the space(new)
         Long bindCpTenantUserId = currentSyncContactMeta.syncedWeComUserIdsByTenant.get(mainAdminWeComUserId);
         ExceptionUtil.isNotNull(bindCpTenantUserId, PermissionException.SET_MAIN_ADMIN_FAIL);
-        // 绑定空间站Member到WeComUser
+        // Bind the space member to WeCom User
         this.bindSpaceMemberToSocialTenantUser(mainAdminMemberId, bindUserId, bindCpTenantUserId, mainAdminWeComUserId);
 
-        // 空间初次绑定时，增加绑定
+        // When the space is bound for the first time, increase the binding
         iSocialTenantBindService.addTenantBind(String.valueOf(agentId), corpId, spaceId);
-        // 没有企业应用信息，需要新建，如果已经停用需要更新
+        // There is no enterprise application information, it needs to be created. If it has been deactivated, it needs to be updated
         this.createOrUpdateTenant(corpId, String.valueOf(agentId), true, visibleScopes, agentConfig);
-        // 更改空间的全局状态(禁止申请加入, 禁止邀请)
+        // Change the global status of the space (application and invitation are prohibited)
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().joinable(false).invitable(false).build();
         iSpaceService.switchSpacePros(bindUserId, spaceId, feature);
-        // 更新应用市场状态
+        // Update app market status
         iAppInstanceService.createInstanceByAppType(spaceId, AppType.WECOM.name());
-        // 生效域名
+        // Effective domain name
         iSocialTenantDomainService.enabledDomain(spaceId);
-        // 删除临时绑定配置
+        // Delete temporary binding configuration
         String configSha = SecureUtil.sha1(String.format("%s-%s", corpId, agentId));
         this.removeTempConfig(configSha);
         return currentSyncContactMeta.currentSyncWeComUserIds;
@@ -402,50 +399,50 @@ public class WeComServiceImpl implements IWeComService {
     @Override
     public Set<String> weComRefreshContact(String corpId, Integer agentId, String spaceId, Long operatingUserId) {
         if (weComTemplate == null) {
-            throw new BusinessException("企业微信未启用");
+            throw new BusinessException("WeCom is not enabled");
         }
-        log.info("空间站「{}」刷新通讯录，操作用户：{}", spaceId, operatingUserId);
-        // 空间的主管理员用户ID
+        log.info("Space「{}」refresh address book, operating user:{}", spaceId, operatingUserId);
+        // Primary administrator user ID of the space
         Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
-        // 检查是否空间主管理员
+        // Check whether the space master administrator
         ExceptionUtil.isTrue(mainAdminUserId.equals(operatingUserId), SpaceException.NOT_SPACE_MAIN_ADMIN);
-        // 空间的主管理员成员ID（旧）
+        // Primary administrator member ID of the space (old)
         Long mainAdminMemberId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
-        // 空间的管理员对应OPEN_ID（旧）
+        // The administrator of the space corresponds to the OPEN ID (old)
         String mainAdminOpenId = iMemberService.getOpenIdByMemberId(mainAdminMemberId);
-        // 检查主管理员绑定微信成员是否存在可见区域
+        // Check whether there is a visible area for the main administrator to bind WeChat members
         getWeComUserByWeComUserId(corpId, agentId, mainAdminOpenId);
-        // 绑定空间的根组织ID
+        // Root organization ID of the binding space
         Long rootTeamId = iTeamService.getRootTeamId(spaceId);
-        // 应用可见范围
+        // Application visible range
         WeComAppVisibleScope visibleScopes = this.getAppVisibleScopes(corpId, agentId, false);
-        // 切换service上下文
+        // Switch service context
         this.switchoverWeComTemplate(corpId, agentId, false);
 
         ContactMeta currentSyncContactMeta = new ContactMeta(spaceId, corpId, String.valueOf(agentId), rootTeamId, mainAdminMemberId);
-        // 初始化主管理员信息
+        // Initialize master administrator information
         CahceWeComUserLinkVikaMember mainAdminWeComLinkVikaMember = CahceWeComUserLinkVikaMember.builder().memberId(mainAdminMemberId)
                 .memberName("").openId(mainAdminOpenId)
                 .oldUnitTeamIds(CollUtil.newHashSet(iTeamMemberRelService.getTeamByMemberId(mainAdminMemberId)))
                 .isNew(false).isCurrentSync(true).build();
         currentSyncContactMeta.weComUserToVikaMemberMap.put(mainAdminOpenId, mainAdminWeComLinkVikaMember);
 
-        // 同步企业微信通讯录
+        // Sync WeCom Contacts
         currentSyncContactMeta = this.incrementSyncWeComContact(currentSyncContactMeta, visibleScopes);
 
-        // 检查人数限制
+        // Limit on number of inspectors
         // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
         // ExceptionUtil.isTrue(currentSyncContactMeta.syncedWeComUserIdsByTenant.size() <= defaultMaxMemberCount, SubscribeFunctionException.MEMBER_LIMIT);
-        // 更新企业应用信息
+        // Update enterprise application information
         this.createOrUpdateTenant(corpId, String.valueOf(agentId), true, visibleScopes, null);
         return currentSyncContactMeta.currentSyncWeComUserIds;
     }
 
     @Override
     public void sendMessageToUserPrivate(String corpId, Integer agentId, String spaceId, List<String> toUsers, WxCpMessage message) {
-        log.info("发送企业微信消息推送");
+        log.info("Send WeCom message push");
         if (ObjectUtil.hasNull(corpId, agentId, spaceId)) {
-            log.warn("企业微信消息推送「{}」参数不完整", message.getMsgType());
+            log.warn("WeCom message push「{}」incomplete parameters", message.getMsgType());
             return;
         }
         String touser = CollUtil.isEmpty(toUsers) ? "@all" : CollUtil.join(toUsers, "|");
@@ -454,12 +451,12 @@ public class WeComServiceImpl implements IWeComService {
                 this.switchoverWeComTemplate(corpId, agentId, false);
                 String domainNameCarryHttps = iSocialTenantDomainService.getDomainNameBySpaceId(spaceId, true);
                 message.setToUser(touser);
-                // 填充域名参数变量
+                // Fill domain name parameter variable
                 Dict variable = Dict.create()
                         .set("corpId", corpId)
                         .set("agentId", agentId)
                         .set("https_enp_domain", domainNameCarryHttps);
-                // 填充域名
+                // Fill domain name
                 if (KefuMsgType.NEWS.equals(message.getMsgType())) {
                     for (NewArticle article : message.getArticles()) {
                         article.setUrl(this.fillingSendWeComMsgUrl(article.getUrl(), variable));
@@ -475,28 +472,28 @@ public class WeComServiceImpl implements IWeComService {
                 }
                 WxCpMessageSendResult sendResult = weComTemplate.messageService().send(message);
                 if (log.isDebugEnabled()) {
-                    log.debug("企业微信发送应用消息结果：{}", sendResult);
+                    log.debug("WeCom sends application message results:{}", sendResult);
                 }
             }
         }
         catch (WxErrorException e) {
-            log.error("企业微信发送应用消息失败：", e);
+            log.error("WeCom failed to send the application message:", e);
         }
         finally {
-            // 关闭服务
+            // Close Service
             weComTemplate.closeService();
         }
     }
 
     @Override
     public void createFixedMenu(String corpId, Integer agentId, String spaceId) {
-        log.info("空间站「{}」完成集成企业微信，创建固定菜单", spaceId);
+        log.info("Space「{}」complete the integration of We Com and create a fixed menu", spaceId);
         this.switchoverWeComTemplate(corpId, agentId, false);
         try {
             weComTemplate.menuService().create(agentId, this.createWeComMenu(corpId, agentId, spaceId));
         }
         catch (WxErrorException e) {
-            log.error("企业微信「{}-{}-{}」创建菜单失败：", corpId, agentId, spaceId, e);
+            log.error("WeCom「{}-{}-{}」Failed to create menu:", corpId, agentId, spaceId, e);
         }
         finally {
             weComTemplate.closeService();
@@ -505,21 +502,21 @@ public class WeComServiceImpl implements IWeComService {
 
     @Override
     public WxCpAgent getCorpAgent(String corpId, Integer agentId, boolean isTempAuth) {
-        log.info("获取应用「corpId:{} / agentId:{}」信息，TempAuth模式：{}", corpId, agentId, isTempAuth);
-        // 切换上下文
+        log.info("Get apps「corpId:{} / agentId:{}」information,TempAuth pattern:{}", corpId, agentId, isTempAuth);
+        // Toggle Context
         this.switchoverWeComTemplate(corpId, agentId, isTempAuth);
         return this.getCorpAgentByCpService(weComTemplate.openService());
     }
 
     @Override
     public SocialTenantEnvVo getWeComTenantEnv(String requestHost) {
-        log.info("专属域名「{}」获取环境配置", requestHost);
+        log.info("Exclusive domain name「{}」get environment configuration", requestHost);
         SocialTenantEnvVo result = null;
-        // 查询域名对应的空间站Id
+        // Query the space ID corresponding to the domain name
         String spaceId = socialTenantDomainMapper.selectSpaceIdByDomainName(requestHost);
         if (StrUtil.isNotBlank(spaceId)) {
             result = new SocialTenantEnvVo();
-            // 目前查询环境只有集成企业微信使用的到，这里只查询企业微信
+            // At present, the query environment can only be used by integrating WeCom. Here, we only query WeCom
             SpaceBindTenantInfoDTO dto = iSocialTenantBindService.getSpaceBindTenantInfoByPlatform(spaceId, SocialPlatformType.WECOM, null);
             if (null != dto) {
                 Dict envs = Dict.create()
@@ -543,42 +540,40 @@ public class WeComServiceImpl implements IWeComService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void stopWeComApp(String spaceId) {
-        log.info("空间站「{}」停止企业微信集成", spaceId);
+        log.info("Space「{}」Stop WeCom integration", spaceId);
         TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
         ExceptionUtil.isNotNull(bindInfo, TENANT_APP_BIND_INFO_NOT_EXISTS);
         String tenantId = bindInfo.getTenantId();
         String appId = bindInfo.getAppId();
 
-        // 删除租户的部门记录以及绑定,防止多应用误删
+        // Delete the tenant's department records and bindings to prevent multiple applications from being deleted by mistake
         iSocialTenantDepartmentService.deleteByTenantIdAndSpaceId(tenantId, spaceId);
-        // 删除租户的用户记录并且删除关联关系
+        // Delete the user record of the tenant and delete the association
         iSocialCpTenantUserService.batchDeleteByCorpAgent(tenantId, appId);
-        // 删除空间的绑定
+        // Delete space binding
         iSocialTenantBindService.removeBySpaceId(spaceId);
-        // 停用应用
+        // Deactivate app
         socialTenantMapper.setTenantStop(appId, tenantId);
-        // 恢复空间的全员可邀请状态（同步初创空间的默认配置）
+        // Invitable status of all members of the recovery space (synchronize the default configuration of the startup space)
         Long mainAdminUserId = iSpaceService.getSpaceMainAdminUserId(spaceId);
         SpaceGlobalFeature feature = SpaceGlobalFeature.builder().invitable(true).build();
         iSpaceService.switchSpacePros(mainAdminUserId, spaceId, feature);
     }
 
     /**
-     * 切换switchoverToTempAuth
-     * 只负责切换上下文不负责创建上下文
+     * Switch switchoverToTempAuth
+     * Only responsible for switching contexts, not creating contexts
      *
-     * @param corpId                企业Id
-     * @param agentId               企业应用Id
-     * @param switchoverToTempAuth  是否切换到临时授权
-     * @author Pengap
-     * @date 2021/8/13 18:45:35
+     * @param corpId                Enterprise Id
+     * @param agentId               Enterprise Application Id
+     * @param switchoverToTempAuth  Whether to switch to temporary authorization
      */
     private void switchoverWeComTemplate(String corpId, Integer agentId, boolean switchoverToTempAuth) {
         if (null == weComTemplate) {
-            throw new BusinessException("企业微信未启用");
+            throw new BusinessException("WeCom is not enabled");
         }
         if (log.isDebugEnabled()) {
-            log.debug("切换企业微信Service上下文到，应用「corpId:{} / agentId:{}」，TempAuth模式：{}", corpId, agentId, switchoverToTempAuth);
+            log.debug("Switch WeCom service context, application「corpId:{} / agentId:{}」，TempAuth pattern:{}", corpId, agentId, switchoverToTempAuth);
         }
         if (switchoverToTempAuth) {
             weComTemplate.switchoverTo(corpId, agentId, true);
@@ -589,128 +584,122 @@ public class WeComServiceImpl implements IWeComService {
     }
 
     /**
-     * 使用临时授权服务Api，获取企业微信应用信息
+     * Use the temporary authorization service Api to obtain the application information of WeCom
      *
-     * @param corpId            企业Id
-     * @param agentId           企业应用Id
-     * @param agentSecret       企业应用密钥
-     * @param authEffectiveTime 授权有效时间
-     * @return 企业应用信息
-     * @author Pengap
-     * @date 2021/8/13 18:40:05
+     * @param corpId            Enterprise Id
+     * @param agentId           Enterprise Application Id
+     * @param agentSecret       Enterprise Application Key
+     * @param authEffectiveTime Valid time of authorization
+     * @return Enterprise application information
      */
     private WxCpAgent getCorpAgentByTempAuth(String corpId, Integer agentId, String agentSecret, Duration authEffectiveTime) {
         if (weComTemplate == null) {
-            throw new BusinessException("企业微信未启用");
+            throw new BusinessException("WeCom is not enabled");
         }
         WxCpService tempAuthService = weComTemplate.addService(corpId, agentId, agentSecret, true, authEffectiveTime.toMillis());
         return this.getCorpAgentByCpService(tempAuthService);
     }
 
     /**
-     * 根据Api服务获取企业微信应用信息
+     * Obtain the application information of WeCom according to Api service
      *
-     * @param wxCpService   企业微信api服务
-     * @return 企业应用信息
-     * @author Pengap
-     * @date 2021/8/4 18:50:15
+     * @param wxCpService   WeCom api Service
+     * @return Enterprise application information
      */
     private WxCpAgent getCorpAgentByCpService(WxCpService wxCpService) {
         if (weComTemplate == null) {
-            throw new BusinessException("企业微信未启用");
+            throw new BusinessException("WeCom is not enabled");
         }
         String corpId = wxCpService.getWxCpConfigStorage().getCorpId();
         Integer agentId = wxCpService.getWxCpConfigStorage().getAgentId();
         try {
             WxCpAgent wxAgent = wxCpService.getAgentService().get(agentId);
             if (null == wxAgent || wxAgent.getErrCode() != 0) {
-                throw new BusinessException("企业微信应用配置异常，请检查配置");
+                throw new BusinessException("WeCom application configuration is abnormal, please check the configuration");
             }
             else {
                 return wxAgent;
             }
         }
         catch (WxErrorException e) {
-            // 发生错误移除临时授权缓存
+            // An error occurred removing the temporary authorization cache
             weComTemplate.removeCpServicesByTempAuth(weComTemplate.mergeKey(corpId, agentId));
             WxError error = e.getError();
             if (null != error) {
                 switch (error.getErrorCode()) {
                     case 40001:
-                        throw new BusinessException(error.getErrorCode(), "不合法的secret参数");
+                        throw new BusinessException(error.getErrorCode(), "Illegal secret parameter");
                     case 40013:
-                        throw new BusinessException(error.getErrorCode(), "不合法的CorpID");
+                        throw new BusinessException(error.getErrorCode(), "Illegal Corp ID");
                     case 301002:
-                        throw new BusinessException(error.getErrorCode(), "无权限操作指定的应用");
+                        throw new BusinessException(error.getErrorCode(), "No permission to operate the specified application");
                     default:
-                        throw new BusinessException("企业微信应用配置异常，请检查配置");
+                        throw new BusinessException("WeCom application configuration is abnormal, please check the configuration");
                 }
             }
-            throw new RuntimeException("企业微信配证异常：", e);
+            throw new RuntimeException("WeCom abnormal certificate matching:", e);
         }
         finally {
-            // 关闭服务
+            // Close Service
             weComTemplate.closeService();
         }
     }
 
     /**
-     * 申请企业专属域名
+     * Apply for enterprise exclusive domain name
      *
-     * @param spaceId   空间站ID
-     * @return 专属企业域名
-     * @author Pengap
-     * @date 2021/8/2 14:55:36
+     * @param spaceId   Space ID
+     * @return Exclusive enterprise domain name
      */
     private ApplyEnpDomainResult applyEnpDomain(String spaceId) {
         SocialTenantDomainEntity tenantDomain = socialTenantDomainMapper.selectBySpaceId(spaceId);
         try {
-            // 申请完整域名
+            // Apply for full domain name
             String applyFullDomainName;
-            // 申请域名前缀
+            // Apply for domain name prefix
             String applyDomainPrefix;
-            // 申请企业域名模版
+            // Apply for enterprise domain name template
             String applyEnpDomainTemplate = weComTemplate.getConfig().getOperateEnpDdns().getApplyEnpDomainTemplate();
 
             if (null == tenantDomain || StrUtil.isBlank(tenantDomain.getDomainName())) {
-                // 历史没有授权域名，自动创建域名，并且校验域名是否重复
+                // There is no authorized domain name in history. The domain name is automatically created and verified to be duplicate
                 String toLC = spaceId.toLowerCase();
                 applyDomainPrefix = String.format(applyEnpDomainTemplate, toLC);
                 int num = socialTenantDomainMapper.countTenantDomainName(toLC);
                 if (num > 0) {
-                    // 重复域名自动在后面增加1以作区别
+                    // Duplicate domain names are automatically added with 1 for differentiation
                     applyDomainPrefix = String.format(applyEnpDomainTemplate, toLC.concat(String.valueOf(num)));
                 }
             }
             else {
-                // 历史已授权域名获取域名前缀再次校验
+                // Historical authorized domain name obtains domain name prefix and verifies again
                 applyDomainPrefix = tenantDomain.getDomainPrefix();
             }
-            // 校验域名是否已存在
+            // Verify whether the domain name already exists
             CheckEnpApiResponse.Data checkResult = weComTemplate.checkEnpDomainName(applyDomainPrefix);
             if (null == checkResult) {
-                // 不存在添加域名解析记录
+                // No record of adding domain name resolution exists
                 applyFullDomainName = weComTemplate.addEnpDomainName(applyDomainPrefix);
-                // 保存企业域名关联记录
+                // Save enterprise domain name association record
                 iSocialTenantDomainService.createDomain(spaceId, applyDomainPrefix, applyFullDomainName);
             }
             else {
-                // 存在解析记录直接使用
+                // There are resolution records for direct use
                 applyFullDomainName = checkResult.getDomainName();
             }
             return new ApplyEnpDomainResult(applyDomainPrefix, applyFullDomainName);
         }
         catch (Exception e) {
-            log.error("申请企业域名失败：", e);
-            throw new BusinessException("申请企业域名失败");
+            log.error("Failed to apply for enterprise domain name:", e);
+            throw new BusinessException("Failed to apply for enterprise domain name");
         }
     }
 
     /**
-     * 填充企业微信消息推送Url
+     * Fill in WeCom message push Url
      *
-     * @param messageUrl    消息推送Url（不携带域名只有 path）
-     * @param variable      url变量参数
+     * @param messageUrl    Message push Url (only path without domain name)
+     * @param variable      Url variable parameter
      */
     private String fillingSendWeComMsgUrl(String messageUrl, Dict variable) {
         if (StrUtil.isBlank(messageUrl)) {
@@ -723,21 +712,21 @@ public class WeComServiceImpl implements IWeComService {
     }
 
     /**
-     * 获取应用可见范围信息
+     * Get the visible range information of the application
      *
-     * @param corpId                企业Id
-     * @param agentId               企业应用Id
-     * @param switchoverToTempAuth  是否切换到临时授权
-     * @return 应用可见区域
+     * @param corpId                Enterprise Id
+     * @param agentId               Enterprise Application Id
+     * @param switchoverToTempAuth  Whether to switch to temporary authorization
+     * @return Apply visible area
      */
     private WeComAppVisibleScope getAppVisibleScopes(String corpId, Integer agentId, boolean switchoverToTempAuth) {
         WxCpAgent corpAgent = this.getCorpAgent(corpId, agentId, switchoverToTempAuth);
         if (corpAgent.getClose() == 1) {
-            throw new BusinessException(String.format("企业微信应用「%s」未启用", corpAgent.getName()));
+            throw new BusinessException(String.format("WeCom application「%s」not enabled", corpAgent.getName()));
         }
-        // 判断可见区域是否都为空
+        // Judge whether all visible areas are empty
         if (ObjectUtil.isAllEmpty(corpAgent.getAllowParties().getPartyIds(), corpAgent.getAllowUserInfos())) {
-            throw new BusinessException(String.format("企业微信应用「%s」可见区域为空，请调整后再试", corpAgent.getName()));
+            throw new BusinessException(String.format("WeCom application「%s」visible area is empty. Please adjust it and try again", corpAgent.getName()));
         }
         return new WeComAppVisibleScope()
                 .setClose(corpAgent.getClose())
@@ -747,14 +736,12 @@ public class WeComServiceImpl implements IWeComService {
     }
 
     /**
-     * 增量同步企业微信通讯录
-     * 需要在前置方法切换企业微信ServiceApi上下文
+     * Incremental synchronization of WeCom address book
+     * You need to switch the WeCom Service Api context in the pre method
      *
-     * @param contactMeta   同步通讯录元数据
-     * @param visibleScope  应用可见区域
-     * @return 本次同步的企业微信用户Id
-     * @author Pengap
-     * @date 2021/8/16 12:05:11
+     * @param contactMeta   Synchronize address book metadata
+     * @param visibleScope  Apply visible area
+     * @return WeCom user ID of this synchronization
      */
     @Transactional(rollbackFor = Exception.class)
     public ContactMeta incrementSyncWeComContact(ContactMeta contactMeta, WeComAppVisibleScope visibleScope) {
@@ -767,33 +754,33 @@ public class WeComServiceImpl implements IWeComService {
         WxCpDepartmentService departmentService = weComTemplate.departmentService();
         WxCpUserService userService = weComTemplate.userService();
         try {
-            // 授权顶级可见区域 - 部门
+            // Authorized top-level visible area - department
             List<Long> partyIds = visibleScope.getAllowParties().getPartyIds();
-            // 授权顶级可见区域 - 人员
+            // Authorize Top Level Visible Area - People
             List<String> userIds = Optional.of(visibleScope.getAllowUserInfos().getUsers()).orElseGet(ArrayList::new)
                     .stream()
                     .map(User::getUserId)
                     .collect(Collectors.toList());
 
-            /* 拉取同步历史数据 start */
-            // 拉取同步过的成员openId -> CahceWeComLinkMember
+            /* Pull synchronous historical data start */
+            // Pull the synchronized member openId ->CahceWeComLinkMember
             List<TenantMemberDto> memberList = iMemberService.getMemberOpenIdListBySpaceId(spaceId);
             Map<String, CahceWeComUserLinkVikaMember> memberListByOpendIdToMap = memberList.stream()
-                    // 由于主管理在上面手动初始化，这里需要过滤
+                    // Since the master management is initialized manually above, filtering is required here
                     .filter(dto -> !dto.getMemberId().equals(mainAdminMemberId))
                     .collect(Collectors.toMap(TenantMemberDto::getOpenId, dto -> {
                         CahceWeComUserLinkVikaMember cahceData = CahceWeComUserLinkVikaMember.builder().openId(dto.getOpenId()).memberId(dto.getMemberId()).memberName(dto.getMemberName()).build();
-                        // 查询关联组织Ids
+                        // Query Associated Organization Ids
                         cahceData.setOldUnitTeamIds(CollUtil.newHashSet(iTeamMemberRelService.getTeamByMemberId(cahceData.getMemberId())));
                         return cahceData;
                     }));
             contactMeta.weComUserToVikaMemberMap.putAll(memberListByOpendIdToMap);
-            // 拉取同步过企业微信成员
+            // Pull synchronized WeCom members
             Map<String, Long> openIdToMemberIdMap = iSocialCpTenantUserService.getOpenIdsByTenantId(corpId, agentId);
             if (MapUtil.isNotEmpty(openIdToMemberIdMap)) {
                 contactMeta.syncedWeComUserIdsByTenant.putAll(openIdToMemberIdMap);
             }
-            // 拉取同步过的部门信息
+            // Pull synchronized department information
             List<TenantDepartmentBindDTO> teamList = iSocialTenantDepartmentService.getTenantBindTeamListBySpaceId(spaceId);
             Map<String, CahceWeComTeamLinkVikaTeam> teamListByDepartmentIdToMap = teamList.stream().collect(Collectors.toMap(TenantDepartmentBindDTO::getDepartmentId, dto -> CahceWeComTeamLinkVikaTeam.builder()
                     .id(dto.getId()).departmentName(dto.getDepartmentName())
@@ -803,48 +790,47 @@ public class WeComServiceImpl implements IWeComService {
                     .internalSequence(dto.getInternalSequence())
                     .build()));
             contactMeta.weComTeamToVikaTeamMap.putAll(teamListByDepartmentIdToMap);
-            /* 拉取同步历史数据 end */
-
-            // 允许同步的成员状态
+            /* Pull synchronous historical data end */
+            // Member states that allow synchronization
             Integer[] allowUserStatus = { WeComUserStatus.ACTIVE.getCode(), WeComUserStatus.NOT_ACTIVE.getCode() };
-            // 拉取可见区域授权 - 通讯录
+            // Pull visible area authorization - address book
             List<WxCpDepart> wxCpDepartList = departmentService.list(null);
-            // 当前拉取企业微信通讯录所有的部门Id
+            // Currently, all department IDs of the WeCom address book are retrieved
             List<String> currentPullWeComDepartIds = wxCpDepartList.stream().map(wxCpDepart -> wxCpDepart.getId().toString()).collect(Collectors.toList());
             List<WxCpUser> wxCpUserLisr = new ArrayList<>();
-            // 拉取可见区域授权 - 成员
+            // Pull Visible Area Authorization - Member
             for (String userId : userIds) {
                 WxCpUser wxCpUser = userService.getById(userId);
                 if (!ArrayUtil.contains(allowUserStatus, wxCpUser.getStatus())) {
-                    // 不允许拉取直接跳过
+                    // Pull is not allowed to skip directly
                     continue;
                 }
                 Long[] cpUserRelDepartIds = wxCpUser.getDepartIds();
-                // 如果人员部门不存在可见区域所授权的部门集合，直接挂钩顶级部门
+                // If there is no department set authorized by the visible area in the personnel department, it is directly linked to the top-level department
                 if (!CollUtil.containsAny(currentPullWeComDepartIds, Convert.toList(String.class, cpUserRelDepartIds))) {
-                    // 增量创建
+                    // Incremental creation
                     this.createMemberAndBindTeamRel(wxCpUser, rootTeamId, contactMeta);
                 }
             }
-            // 尝试构建通讯录树结构
+            // Try to build the address book tree structure
             Comparator<WxCpDepart> comparing = Comparator.comparing(o -> {
                 final int index = partyIds.indexOf(o.getId());
                 boolean isExist = currentPullWeComDepartIds.contains(o.getParentId().toString());
                 return (index == -1 || isExist) ? Integer.MAX_VALUE : index;
             });
-            // 强制根据可见区域部门优先排序
+            // Enforce prioritization based on visible regional departments
             wxCpDepartList = wxCpDepartList.stream().sorted(comparing.thenComparing(Comparator.comparing(WxCpDepart::getOrder).reversed())).collect(Collectors.toList());
             List<WeComDepartTree> nodeList = CollUtil.newArrayList();
             for (WxCpDepart depart : wxCpDepartList) {
-                // 添加支撑树结构数据
+                // Add Support Tree Structure Data
                 nodeList.add(new WeComDepartTree(depart.getId().toString(), depart.getName(), depart.getEnName(), depart.getParentId().toString(), depart.getOrder()));
             }
             List<WeComDepartTree> tryBulidTree = TreeUtil.build(nodeList, null, new NotRelyTryTreeBuildFactory<>());
-            // 创建部门 - 循环树结构，tryBulidTree表示：顶级数据
+            // Create a department circular tree structure, and tryBulidTree represents: top-level data
             for (WeComDepartTree departTree : tryBulidTree) {
-                // treeToList表示：顶级下所有数据，顶级+子集数据
+                // treeToList representation: All data under the top level, top level+subset data
                 List<WeComDepartTree> departDatas = TreeUtil.treeToList(departTree);
-                // 拉取部门下用户 - 只是拉取简单的信息
+                // Pull the user from the department - just pull simple information
                 List<WxCpUser> wxCpUsers = userService.listByDepartment(Long.valueOf(departTree.getId()), true, null);
                 if (CollUtil.isNotEmpty(wxCpUsers)) {
                     wxCpUserLisr.addAll(wxCpUsers);
@@ -852,28 +838,28 @@ public class WeComServiceImpl implements IWeComService {
                 int i = 0, multiple = 2000;
                 for (WeComDepartTree depart : departDatas) {
                     if (depart.getId().equals(WeComConstants.ROOT_DEPART_ID)) {
-                        // 不同步第三方根部门
+                        // Out of sync with the third party root department
                         continue;
                     }
                     String departId = depart.getId();
                     Long teamId = IdWorker.getId();
 
-                    // 树形结构反转成集合所有数据是有序的
+                    // Invert the tree structure into a set. All data are ordered
                     CahceWeComTeamLinkVikaTeam cahceTeam = contactMeta.getCahceTeam(departId);
-                    // 父Id
+                    // Parent Id
                     Long teamPid = contactMeta.getCahceTeamId(depart.getParentId());
                     boolean isExist = true;
                     if (null != cahceTeam && !(isExist = currentPullWeComDepartIds.contains(cahceTeam.getParentOpenDepartmentId()))) {
-                        // 父节点不存在本次可见区域，直接划分到根部门
+                        // The parent node does not exist in the current visible area and is directly divided into the root department
                         teamPid = rootTeamId;
                     }
-                    // 第三方root节点
+                    // Third party root node
                     String tenantTeamPid = rootTeamId.equals(teamPid) ? WeComConstants.ROOT_DEPART_PARENT_ID : depart.getParentId();
-                    // 排序
+                    // Sort
                     int departSequence = depart.getOrder() > Integer.MAX_VALUE ? Integer.MAX_VALUE : depart.getOrder().intValue();
                     int internalSequence = (depart.getLevel() + 1) * multiple + i;
                     if (null == cahceTeam) {
-                        // 创建部门结构
+                        // Create department structure
                         TeamEntity team = OrganizationFactory.createTeam(spaceId, teamId, teamPid, depart.getName(), internalSequence);
                         team.setTeamLevel(depart.getLevel() + 2);
                         contactMeta.teamEntities.add(team);
@@ -883,7 +869,7 @@ public class WeComServiceImpl implements IWeComService {
                         contactMeta.tenantDepartmentEntities.add(weComTenantDepartment);
                         SocialTenantDepartmentBindEntity tenantDepartmentBind = SocialFactory.createTenantDepartmentBind(spaceId, team.getId(), corpId, departId);
                         contactMeta.tenantDepartmentBindEntities.add(tenantDepartmentBind);
-                        // 同步关系
+                        // Synchronous relation
                         cahceTeam = CahceWeComTeamLinkVikaTeam.builder()
                                 .departmentName(team.getTeamName())
                                 .departmentId(weComTenantDepartment.getDepartmentId()).openDepartmentId(weComTenantDepartment.getOpenDepartmentId())
@@ -899,56 +885,56 @@ public class WeComServiceImpl implements IWeComService {
                         TeamEntity updateTeam = null;
 
                         if (!cahceTeam.getParentDepartmentId().equals(depart.getParentId()) || !isExist) {
-                            // 部门层级改变，或父节点移除可见范围
+                            // Change the department level, or remove the visible range of the parent node
                             updateTenantDepartment = SocialTenantDepartmentEntity.builder()
                                     .id(cahceTeam.getId())
                                     .parentId(tenantTeamPid).parentOpenDepartmentId(depart.getParentId())
                                     .build();
                             updateTeam = TeamEntity.builder().id(cahceTeam.getTeamId()).parentId(teamPid).build();
-                            // 更新缓存
+                            // Update Cache
                             cahceTeam.setParentDepartmentId(updateTenantDepartment.getParentId());
                             cahceTeam.setParentOpenDepartmentId(updateTenantDepartment.getParentOpenDepartmentId());
                             cahceTeam.setParentTeamId(updateTeam.getParentId());
                         }
                         if (!cahceTeam.getDepartmentName().equals(depart.getName())) {
-                            // 部门名称改变
+                            // Change of department name
                             updateTenantDepartment = Optional.ofNullable(updateTenantDepartment)
                                     .orElse(SocialTenantDepartmentEntity.builder().id(cahceTeam.getId()).build())
                                     .setDepartmentName(depart.getName());
                             updateTeam = Optional.ofNullable(updateTeam).orElse(TeamEntity.builder().id(cahceTeam.getTeamId()).build())
                                     .setTeamName(depart.getName());
-                            // 更新缓存
+                            // Update Cache
                             cahceTeam.setDepartmentName(updateTeam.getTeamName());
                         }
                         if (cahceTeam.getInternalSequence() != internalSequence) {
-                            // 部门顺序改变
+                            // Change of department order
                             updateTenantDepartment = Optional.ofNullable(updateTenantDepartment)
                                     .orElse(SocialTenantDepartmentEntity.builder().id(cahceTeam.getId()).build())
                                     .setDepartmentOrder(departSequence);
                             updateTeam = Optional.ofNullable(updateTeam).orElse(TeamEntity.builder().id(cahceTeam.getTeamId()).build())
                                     .setSequence(internalSequence);
-                            // 更新缓存
+                            // Update Cache
                             cahceTeam.setInternalSequence(updateTeam.getSequence());
                         }
 
                         if (!ObjectUtil.hasNull(updateTenantDepartment, updateTeam)) {
-                            // 添加到修改集合
+                            // Add to Modify Collection
                             cahceTeam.setOp(SyncOperation.UPDATE);
                             contactMeta.updateTenantDepartmentEntities.add(updateTenantDepartment);
                             contactMeta.updateTeamEntities.add(updateTeam);
                         }
                         else {
-                            // 没有修改
+                            // No modification
                             cahceTeam.setOp(SyncOperation.KEEP);
                         }
                     }
-                    // 添加 wecom TO vika 对应部门
-                    cahceTeam.setIsCurrentSync(true); // 标记本次同步的部门
+                    // Add WeCom to vika corresponding department
+                    cahceTeam.setIsCurrentSync(true); // Mark the department for this synchronization
                     contactMeta.weComTeamToVikaTeamMap.put(departId, cahceTeam);
                     i++;
                 }
             }
-            // 转换结构，根据部门划分成员，成员可以存在于多个部门中
+            // Transform the structure. Members can be divided according to departments. Members can exist in multiple departments
             Map<Long, List<WxCpUser>> groupCpUser = new LinkedHashMap<>();
             for (WxCpUser user : wxCpUserLisr) {
                 for (Long departId : user.getDepartIds()) {
@@ -962,23 +948,23 @@ public class WeComServiceImpl implements IWeComService {
                     }
                 }
             }
-            // 创建成员 - 成员可以存在多个部门中，但是都是同一个memberId
+            // Create Member - Members can exist in multiple departments, but all of them are the same memberId
             for (Entry<Long, List<WxCpUser>> entry : groupCpUser.entrySet()) {
                 Long departId = entry.getKey();
                 List<WxCpUser> wxCpUserList = entry.getValue();
                 for (WxCpUser wxCpUser : wxCpUserList) {
                     if (!ArrayUtil.contains(allowUserStatus, wxCpUser.getStatus())) {
-                        // 不允许拉取直接跳过
+                        // Pull is not allowed to skip directly
                         continue;
                     }
-                    // 增量创建
+                    // Incremental creation
                     this.createMemberAndBindTeamRel(wxCpUser, departId, contactMeta);
                 }
             }
         }
         catch (Exception e) {
-            log.error("同步企业微信通讯录错误：", e);
-            String errorMsg = "同步企业微信通讯录失败：%s";
+            log.error("Error synchronizing WeCom address book:", e);
+            String errorMsg = "Synchronization of WeCom address book failed:%s";
             int errorCode = -1;
             if (e instanceof WxErrorException) {
                 errorCode = ((WxErrorException) e).getError().getErrorCode();
@@ -995,102 +981,100 @@ public class WeComServiceImpl implements IWeComService {
             throw new BusinessException(errorMsg);
         }
         finally {
-            // 关闭服务
+            // Close Service
             weComTemplate.closeService();
         }
 
-        // 删除部门
+        // Delete Department
         contactMeta.doDeleteTeams();
-        // 删除成员
+        // Delete Member
         contactMeta.doDeleteMembers();
-        // 删除成员关联关系
+        // Delete member association
         contactMeta.doDeleteMemberRels();
-        // 存储到DB
+        // Store to DB
         contactMeta.doSaveOrUpdate();
-        // 清理VikaUser缓存
+        // Clean up the vika User cache
         userSpaceService.delete(spaceId);
 
         return contactMeta;
     }
 
     /**
-     * 空间站成员绑定企业微信租户成员
+     * Members of the space bind to members of We Com tenants
      *
      * @param memberId          vika memberId
-     * @param userId            vika用户Id
-     * @param cpTenantUserId    企业微信租户用户Id
-     * @param weComUserId       企业微信成员Id
-     * @author Pengap
-     * @date 2021/8/18 11:47:26
+     * @param userId            vika User Id
+     * @param cpTenantUserId    WeCom Tenant User Id
+     * @param weComUserId       WeCom Member Id
      */
     private void bindSpaceMemberToSocialTenantUser(Long memberId, Long userId, Long cpTenantUserId, String weComUserId) {
         boolean isBind = iSocialCpUserBindService.isCpTenantUserIdBind(userId, cpTenantUserId);
         if (!isBind) {
             iSocialCpUserBindService.create(userId, cpTenantUserId);
         }
-        // 修改Member关联的openId
+        // Modify the open ID associated with a Member
         iMemberService.updateById(MemberEntity.builder().id(memberId).openId(weComUserId).build());
     }
 
     /**
-     * 创建member并且绑定组织关联
-     * 如果已创建的用户不会重复创建
+     * Create member and bind organization association
+     * If the created user will not be re created
      *
-     * @param wxCpUser      企业微信用户
-     * @param departId      企业微信部门Id
-     * @param contactMeta   元数据
+     * @param wxCpUser      WeCom User
+     * @param departId      WeCom Department Id
+     * @param contactMeta   Metadata
      */
     private void createMemberAndBindTeamRel(WxCpUser wxCpUser, Long departId, ContactMeta contactMeta) {
         String wecomUserId = wxCpUser.getUserId();
         CahceWeComUserLinkVikaMember cahceMember = contactMeta.weComUserToVikaMemberMap.get(wecomUserId);
         Long cahceCpTenantUserId = contactMeta.syncedWeComUserIdsByTenant.get(wecomUserId);
-        // 判断本次操作有没有同步
+        // Judge whether the operation is synchronized
         if (!contactMeta.currentSyncWeComUserIds.contains(wecomUserId)) {
-            // 如果Member不存在创建一个
+            // If the Member does not exist, create a
             if (null == cahceMember) {
                 MemberEntity member = SocialFactory.createWeComMemberAndBindSpace(contactMeta.spaceId, wxCpUser);
                 contactMeta.memberEntities.add(member);
                 cahceMember = CahceWeComUserLinkVikaMember.builder().memberId(member.getId()).memberName(member.getMemberName()).openId(wecomUserId).isNew(true).build();
             }
             else {
-                // 存在查看是否需要修改关键信息
+                // ExistCheck whether key information needs to be modified
                 if (!cahceMember.getMemberName().equals(wxCpUser.getName())) {
                     MemberEntity updateMember = MemberEntity.builder().id(cahceMember.getMemberId()).memberName(wxCpUser.getName()).build();
                     contactMeta.updateMemberEntities.add(updateMember);
                 }
             }
-            // 标记本次同步的用户
+            // Mark users for this synchronization
             cahceMember.setIsCurrentSync(true);
-            // 如果企业微信成员不存在创建一个
+            // If WeCom member does not exist, create a
             if (null == cahceCpTenantUserId) {
                 SocialCpTenantUserEntity weComTenantUser = SocialFactory.createWeComTenantUser(contactMeta.tenantId, String.valueOf(contactMeta.appId), wecomUserId);
                 contactMeta.tenantCpUserEntities.add(weComTenantUser);
-                // 添加企业微信成员 key:cpUserId value:cpTenantUserId
+                // Add WeCom member key: cpUserId value: cpTenantUserId
                 contactMeta.syncedWeComUserIdsByTenant.put(wecomUserId, weComTenantUser.getId());
             }
         }
-        // 绑定部门，如果缓存中没有对应的部门关系，直接挂钩Root部门
+        // Bind departments. If there is no corresponding department relationship in the cache, directly link to the root department
         Long cahceTeamId = contactMeta.getCahceTeamId(String.valueOf(departId));
         cahceMember.getNewUnitTeamIds().add(cahceTeamId);
         if (CollUtil.isEmpty(cahceMember.getOldUnitTeamIds()) || (CollUtil.isNotEmpty(cahceMember.getOldUnitTeamIds()) && !cahceMember.getOldUnitTeamIds().contains(cahceTeamId))) {
-            // 成员历史不存在部门下，添加成员和部门关联记录
+            // Member history does not exist under department, add member and department association records
             contactMeta.teamMemberRelEntities.add(OrganizationFactory.createTeamMemberRel(cahceTeamId, cahceMember.getMemberId()));
         }
-        // 添加操作同步企业微信用户记录
+        // Add operation synchronization WeCom user record
         contactMeta.currentSyncWeComUserIds.add(wecomUserId);
-        // 添加 wecom TO vika 对应User
+        // Add user corresponding to WeCom TO vika
         contactMeta.weComUserToVikaMemberMap.put(wecomUserId, cahceMember);
     }
 
     /**
-     * 创建和修改租户授权信息
+     * Create and modify tenant authorization information
      *
-     * @param tenantId      企业Id
-     * @param appId         企业应用Id
-     * @param status        启用状态
-     * @param visibleScope  企业应用可见区域信息
-     * @param authInfo      企业应用授权信息
-     * @return 新增的租户信息
+     * @param tenantId      Enterprise Id
+     * @param appId         Enterprise Application Id
+     * @param status        Enable Status
+     * @param visibleScope  Enterprise application visible area information
+     * @param authInfo      Enterprise application authorization information
+     * @return New tenant information
      */
     private SocialTenantEntity createOrUpdateTenant(String tenantId, String appId, Boolean status, WeComAppVisibleScope visibleScope, WeComAuthInfo authInfo) {
         SocialTenantEntity tenant = socialTenantMapper.selectByAppIdAndTenantId(appId, tenantId);
@@ -1124,28 +1108,28 @@ public class WeComServiceImpl implements IWeComService {
                 flag = SqlHelper.retBool(socialTenantMapper.updateById(tenant));
             }
             if (!flag) {
-                throw new RuntimeException("新增租户失败");
+                throw new RuntimeException("Failed to add tenant");
             }
             return tenant;
         }
         catch (Exception e) {
-            throw new RuntimeException("新增租户失败");
+            throw new RuntimeException("Failed to add tenant");
         }
     }
 
     /**
-     * 创建企业微信应用菜单
+     * Create WeCom Application Menu
      *
-     * @param corpId    企业Id
-     * @param agentId   企业应用Id
-     * @param spaceId   空间站Id
+     * @param corpId    Enterprise Id
+     * @param agentId   Enterprise Application Id
+     * @param spaceId   Space Id
      */
     private WxMenu createWeComMenu(String corpId, Integer agentId, String spaceId) {
         WxMenu menu = new WxMenu();
         List<WxMenuButton> wxMenuButtonList = new ArrayList<>();
 
         String domainNameCarryHttps = iSocialTenantDomainService.getDomainNameBySpaceId(spaceId, true);
-        // 填充域名参数变量
+        // Fill domain name parameter variable
         Dict variable = Dict.create()
                 .set("corpId", corpId)
                 .set("agentId", agentId)
@@ -1154,11 +1138,11 @@ public class WeComServiceImpl implements IWeComService {
         WeComConfig config = weComTemplate.getConfig();
         if (CollUtil.isNotEmpty(config.getInitMenus())) {
             for (InitMenu initMenu : config.getInitMenus()) {
-                // 一级菜单
+                // Primary menu
                 WxMenuButton wxMenu = this.fillWxMenuButton(initMenu, domainNameCarryHttps, variable);
 
                 if (CollUtil.isNotEmpty(initMenu.getSubButtons())) {
-                    // 二级菜单
+                    // Secondary menu
                     List<WxMenuButton> wxMenutSubButtonsList = new ArrayList<>();
                     for (InitMenu subButton : initMenu.getSubButtons()) {
                         WxMenuButton wxSubMenu = this.fillWxMenuButton(subButton, domainNameCarryHttps, variable);
@@ -1174,18 +1158,18 @@ public class WeComServiceImpl implements IWeComService {
     }
 
     /**
-     * 填充菜单参数
+     * Fill menu parameters
      */
     private WxMenuButton fillWxMenuButton(InitMenu initMenu, String domainNameCarryHttps, Dict variable) {
         WxMenuButton wxMenu = new WxMenuButton();
         String url = initMenu.getUrl();
         if ("/".equals(url)) {
-            // 主页
+            // Homepage
             String wecomCallbackPath = WeComCardFactory.getWecomCallbackPath();
             url = this.fillingSendWeComMsgUrl(wecomCallbackPath, variable);
         }
         else if (!ReUtil.contains("http://|https://", url)) {
-            // 自动填充Url，域名
+            // Auto fill Url, domain name
             url = domainNameCarryHttps + StrUtil.prependIfMissingIgnoreCase(url, "/");
         }
         wxMenu.setName(initMenu.getName());
@@ -1268,31 +1252,31 @@ public class WeComServiceImpl implements IWeComService {
     }
 
     class ContactMeta {
-        // 空间站Id
+        // Space Id
         String spaceId;
 
-        // 第三方企业Id
+        // Third party enterprise ID
         String tenantId;
 
-        // 第三方企业应用Id
+        // Third party enterprise application ID
         String appId;
 
-        // 空间的根组织Id
+        // The root organization ID of the space
         Long rootTeamId;
 
-        // 空间站主管理员成员Id
+        // Space Master Administrator Member Id
         Long mainAdminMemberId;
 
-        // 保存企业微信用户对应VikaMember关系 wecom（UserId） => vika（CahceWeComUserLinkVikaMember）
+        // Save the vika Member relationship corresponding to the WeCom user WeCom (UserId) => vika (CahceWeComUserLinkVikaMember)
         Map<String, CahceWeComUserLinkVikaMember> weComUserToVikaMemberMap = new CaseInsensitiveMap<>();
 
-        // 保存企业微信部门对应VikaTeam关系 wecom（DepartmentId） => vika（CahceWeComTeamLinkVikaTeam）
+        // Save the vika Team relationship corresponding to the WeCom department WeCom (DepartmentId)=>vika (CahceWeComTeamLinkVikaTeam)
         Map<String, CahceWeComTeamLinkVikaTeam> weComTeamToVikaTeamMap = MapUtil.newHashMap(true);
 
-        // 获取：缓存，已同步的企业微信用户，按照企业应用拉取 key:wecomUserId value:cpTenantUserId
+        // Get: cache, synchronized WeCom user, pull key: WeComUserId value: cpTenantUserId according to enterprise application
         Map<String, Long> syncedWeComUserIdsByTenant = new CaseInsensitiveMap<>();
 
-        // 记录当前（本次）同步的WeCom用户ID
+        // Record the current (current) synchronized We Com user ID
         Set<String> currentSyncWeComUserIds = Collections.synchronizedSet(new HashSet<>());
 
         public ContactMeta(String spaceId, String tenantId, String appId, Long rootTeamId, Long mainAdminMemberId) {
@@ -1321,19 +1305,19 @@ public class WeComServiceImpl implements IWeComService {
 
         List<TeamMemberRelEntity> teamMemberRelEntities = new ArrayList<>();
 
-        // 获取缓存TeamId，无数据默认：rootTeamId
+        // Get the cached Team Id. No data. Default: root Team Id
         Long getCahceTeamId(String weComDepartId) {
             return Optional.ofNullable(this.weComTeamToVikaTeamMap.get(weComDepartId))
                     .map(CahceWeComTeamLinkVikaTeam::getTeamId)
                     .orElse(rootTeamId);
         }
 
-        // 获取缓存Team
+        // Get Cache Team
         CahceWeComTeamLinkVikaTeam getCahceTeam(String weComDepartId) {
             return this.weComTeamToVikaTeamMap.get(weComDepartId);
         }
 
-        // 根据Vika成员Id获取WeComTenantUserId
+        // Get WeCom Tenant User's id according to vika Member's id
         List<Long> getCpTenantUserIdByMemberId(List<Long> memberIds) {
             if (CollUtil.isEmpty(memberIds)) {
                 return Collections.emptyList();
@@ -1351,7 +1335,7 @@ public class WeComServiceImpl implements IWeComService {
         }
 
         void doDeleteTeams() {
-            // 计算需要删除的小组
+            // Calculate the groups to be deleted
             List<Long> oldTeamIds = iTeamService.getTeamIdsBySpaceId(spaceId);
             Map<Long, String> newTeams = this.weComTeamToVikaTeamMap.values().stream()
                     .filter(CahceWeComTeamLinkVikaTeam::getIsCurrentSync)
@@ -1360,10 +1344,10 @@ public class WeComServiceImpl implements IWeComService {
             Set<Long> newTeamIds = new HashSet<>(newTeams.keySet());
             newTeamIds.add(rootTeamId);
 
-            // 计算交集，没有变更的部门
+            // Calculate intersection, department without change
             newTeamIds.retainAll(oldTeamIds);
             if (!newTeamIds.isEmpty()) {
-                // 计算差集，需要删除的部门
+                // Calculate the difference set and the department to be deleted
                 oldTeamIds.removeAll(newTeamIds);
             }
 
@@ -1376,23 +1360,24 @@ public class WeComServiceImpl implements IWeComService {
                         .collect(Collectors.toMap(CahceWeComTeamLinkVikaTeam::getTeamId, CahceWeComTeamLinkVikaTeam::getDepartmentId));
 
                 for (Long deleteTeamId : oldTeamIds) {
-                    // 删除Vika部门下面的Menber，出现人员存在多个部门，需要判断本次同步人员在不在列表中，如果存在就不删除人员，反之删除
+                    // Delete the member under the vika department. There are multiple departments for the personnel. It is necessary to judge whether the synchronized personnel are in the list.
+                    // If they exist, they will not be deleted. Otherwise, they will be deleted
                     List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamId(deleteTeamId);
                     memberIds.removeAll(currentSyncMemberUsers);
 
                     String deleteWeComTeamId = teamToWecomTeamMap.get(deleteTeamId);
                     if (StrUtil.isNotBlank(deleteWeComTeamId)) {
-                        // 移除部门 - 删除第三方部门，并且删除绑定关系，并且删除Vika部门
+                        // Remove department - delete the third-party department, delete the binding relationship, and delete the vika department
                         iSocialTenantDepartmentService.deleteSpaceTenantDepartment(spaceId, tenantId, deleteWeComTeamId);
                     }
                     else {
-                        // 表示没有绑定过，直接删除Vika部门
+                        // It means that there is no binding, and vika department is deleted directly
                         iTeamService.deleteTeam(deleteTeamId);
                     }
-                    // 移除成员
+                    // Remove Members
                     iMemberService.batchDeleteMemberFromSpace(spaceId, memberIds, false);
                     List<Long> deleteCpTenantUserId = this.getCpTenantUserIdByMemberId(memberIds);
-                    // 移除Vika成员历史绑定企业微信成员关系
+                    // Remove vika member history binding WeCom membership
                     iSocialCpUserBindService.batchDeleteByCpTenantUserIds(deleteCpTenantUserId);
                 }
             }
@@ -1406,10 +1391,10 @@ public class WeComServiceImpl implements IWeComService {
 
             Set<Long> newMemberIds = newMemberUsers.keySet();
 
-            // 计算交集，没有变更的用户
+            // Calculate intersection, users without changes
             newMemberIds.retainAll(oldMemberIds);
             if (!newMemberIds.isEmpty()) {
-                // 计算差集，需要删除的用户
+                // Users to be deleted when calculating difference sets
                 oldMemberIds.removeAll(newMemberIds);
             }
 
@@ -1417,13 +1402,13 @@ public class WeComServiceImpl implements IWeComService {
                     .filter(CahceWeComUserLinkVikaMember::getIsNew)
                     .map(CahceWeComUserLinkVikaMember::getOpenId)
                     .collect(Collectors.toSet());
-            // 重新计算本次新增的用户
+            // Recalculate the new users
             currentSyncWeComUserIds.retainAll(newWeComUserIds);
 
-            // 移除成员
+            // Remove Members
             iMemberService.batchDeleteMemberFromSpace(spaceId, oldMemberIds, false);
             List<Long> deleteCpTenantUserId = this.getCpTenantUserIdByMemberId(oldMemberIds);
-            // 移除Vika成员历史绑定企业微信成员关系
+            // Remove vika Member History Binding WeCom Membership
             iSocialCpUserBindService.batchDeleteByCpTenantUserIds(deleteCpTenantUserId);
         }
 

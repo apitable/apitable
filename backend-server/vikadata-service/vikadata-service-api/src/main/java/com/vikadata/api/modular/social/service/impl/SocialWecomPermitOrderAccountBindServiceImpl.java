@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 企微服务商接口许可账号绑定信息
+ * WeCom service provider interface license account binding information
  * </p>
- * @author 刘斌华
- * @date 2022-07-01 10:39:50
  */
 @Service
 public class SocialWecomPermitOrderAccountBindServiceImpl extends ServiceImpl<SocialWecomPermitOrderAccountBindMapper, SocialWecomPermitOrderAccountBindEntity> implements IsocialWecomPermitOrderAccountBindService {

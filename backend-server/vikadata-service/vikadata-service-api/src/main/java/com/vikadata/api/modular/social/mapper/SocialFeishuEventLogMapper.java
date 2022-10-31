@@ -6,50 +6,39 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.entity.SocialFeishuEventLogEntity;
 
 /**
- * 飞书事件日志 Mapper
- *
- * @author Shawn Deng
- * @date 2020-12-14 19:48:17
+ * Lark Event Log Mapper
  */
 public interface SocialFeishuEventLogMapper extends BaseMapper<SocialFeishuEventLogEntity> {
 
     /**
-     * 查询UUID的总数
+     * Query total number of UUIDs
      *
-     * @param uuid 事件唯一标识
-     * @return 总数
-     * @author Shawn Deng
-     * @date 2020/12/16 14:21
+     * @param uuid Event unique identifier
+     * @return Total
      */
     Integer selectCountByUuid(@Param("uuid") String uuid);
 
     /**
-     * 根据UUID查询
+     * Query by UUID
      *
-     * @param uuid 事件唯一标识
-     * @return SocialFeishuEventLogEntity
-     * @author Shawn Deng
-     * @date 2020/12/16 14:21
+     * @param uuid Event unique identifier
+     * @return Social Lark Event Log Entity
      */
     SocialFeishuEventLogEntity selectByUuid(@Param("uuid") String uuid);
 
     /**
-     * 更新事件处理状态
+     * Update event processing status
      *
-     * @param uuid 事件唯一标识
-     * @return 执行结果数
-     * @author Shawn Deng
-     * @date 2020/12/16 14:44
+     * @param uuid Event unique identifier
+     * @return Number of execution results
      */
     int updateStatusTrueByUuid(@Param("uuid") String uuid);
 
     /**
-     * 查询租户最新的事件类型
-     * @param tenantKey 企业标识
-     * @param type 事件类型
-     * @return SocialFeishuEventLogEntity
-     * @author Shawn Deng 
-     * @date 2021/7/30 19:16
+     * Query the latest event type of the tenant
+     * @param tenantKey Enterprise ID
+     * @param type Event Type
+     * @return Social Lark Event Log Entity
      */
     String selectLatestByTenantKeyAndType(@Param("tenantKey") String tenantKey, @Param("type") String type);
 }

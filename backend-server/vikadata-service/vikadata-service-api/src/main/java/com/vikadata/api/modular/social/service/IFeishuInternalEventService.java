@@ -17,86 +17,96 @@ import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 import org.springframework.util.MultiValueMap;
 
 /**
- * 飞书自建应用事件处理服务
- * @author Shawn Deng
- * @date 2021-07-22 09:55:44
+ * Lark Self built Application Event Processing Service
  */
 public interface IFeishuInternalEventService {
 
     /**
-     * 应用检查
-     * @param appInstanceId 应用实例ID
+     * Application check
+     *
+     * @param appInstanceId Application instance ID
      */
     void urlCheck(String appInstanceId);
 
     /**
-     * 同步通讯录
-     * @param userInfo 安装者用户信息
-     * @param appInstance 飞书应用实例
+     * Synchronize contacts
+     *
+     * @param userInfo Installer User Information
+     * @param appInstance Lark application example
      */
     void syncContactFirst(FeishuPassportUserInfo userInfo, AppInstance appInstance);
 
     /**
-     * 处理通讯录授权范围变更
-     * @param event 事件
+     * Handle the change of address book authorization scope
+     *
+     * @param event Event
      */
     void handleContactScopeChangeEvent(ContactScopeUpdateEvent event);
 
     /**
-     * 刷新租户所在空间站所在标识
-     * @param appId 应用标识
-     * @param spaceId 空间标识
-     * @param tenantKey 租户标识
-     * @param installer 安装者OPEN_ID
-     * @param contactMap 租户通讯录结构
+     * Refresh the identity of the space station where the tenant is located
+     *
+     * @param appId Application ID
+     * @param spaceId Space ID
+     * @param tenantKey Tenant ID
+     * @param installer Installer OPEN ID
+     * @param contactMap Tenant Address Book Structure
      */
     void handleTenantContactData(String appId, String spaceId, String tenantKey, String installer, MultiValueMap<FeishuDeptObject, FeishuUserObject> contactMap);
 
     /**
-     * 处理员工离职事件
-     * @param event 事件内容
+     * Processing employee resignation events
+     *
+     * @param event Event content
      */
     void handleUserLeaveEvent(ContactUserDeleteEvent event);
 
     /**
-     * 处理员工信息变化事件
-     * @param event 事件内容
+     * Handling employee information change events
+     *
+     * @param event Event content
      */
     void handleUserUpdateEvent(ContactUserUpdateEvent event);
 
     /**
-     * 处理部门创建事件
-     * @param event 事件内容
+     * Processing department creation event
+     *
+     * @param event Event content
      */
     void handleDeptCreateEvent(ContactDeptCreateEvent event);
 
     /**
-     * 处理部门更新事件
-     * @param event 事件内容
+     * Handle department update events
+     *
+     * @param event Event content
      */
     void handleDeptUpdateEvent(ContactDeptUpdateEvent event);
 
     /**
-     * 处理部门删除事件
-     * @param event 事件内容
+     * Processing department deletion event
+     *
+     * @param event Event content
      */
     void handleDeptDeleteEvent(ContactDeptDeleteEvent event);
 
     /**
-     * 处理 用户和机器人的会话首次被创建
-     * @param event 事件
+     * The session of processing user and robot is created for the first time
+     *
+     * @param event Event
      */
     void handleP2pChatCreateEvent(P2pChatCreateEvent event);
 
     /**
-     * 处理 机器人被邀请加入群聊时事件
-     * @param event 事件
+     * Handle the event when a robot is invited to join a group chat
+     *
+     * @param event Event
      */
     void handleAddBotEvent(AddBotEvent event);
 
     /**
-     * 处理 接收机器人消息事件
-     * @param event 事件
+     * Handle the event of receiving robot message
+     *
+     * @param event Event
      */
     <E extends BaseMessageEvent> void handleMessageEvent(E event);
 }

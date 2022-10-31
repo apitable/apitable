@@ -7,22 +7,19 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 钉钉用户登录请求参数
- *
- * @author Shawn Deng
- * @date 2020-12-15 12:15:47
+ * DingTalk User Login Request Parameters
  */
-@ApiModel("钉钉ISV应用用户登录请求参数")
+@ApiModel("DingTalk ISV Application User Login Request Parameters")
 @Data
 public class DingTalkIsvUserLoginRo {
     @NotBlank
-    @ApiModelProperty(value = "免登授权码", required = true, position = 1)
+    @ApiModelProperty(value = "Registration free authorization code", required = true, position = 1)
     private String code;
 
-    @NotBlank(message = "corpId不正确")
-    @ApiModelProperty(value = "授权企业ID", required = true, position = 2)
+    @NotBlank(message = "The corpId is incorrect")
+    @ApiModelProperty(value = "Authorized enterprise ID", required = true, position = 2)
     private String corpId;
 
-    @ApiModelProperty(value = "钉钉搭应用实例id", position = 3)
+    @ApiModelProperty(value = "DingTalk application instance id", position = 3)
     private String bizAppId;
 }

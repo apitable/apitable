@@ -8,133 +8,111 @@ import com.vikadata.social.dingtalk.model.DingTalkCreateApaasAppResponse;
 
 /**
  * <p>
- * 钉钉集成服务 接口
+ * DingTalk Integration service interface
  * </p>
- * @author zoe zheng
- * @date 2021/5/7 5:09 下午
  */
 public interface IDingTalkDaService {
     /**
-     * 验证钉钉搭的回调签名
+     * Verify the callback signature of DingTalk
      *
-     * @param dingTalkDaKey 钉钉搭的key，自定义的
-     * @param corpId 企业ID
-     * @param timestamp 时间戳
-     * @param signature 传递的签名
-     * @author zoe zheng
-     * @date 2021/9/28 15:24
+     * @param dingTalkDaKey DingTalk key
+     * @param corpId Enterprise ID
+     * @param timestamp Time stamp
+     * @param signature Signature passed
      */
     void validateSignature(String dingTalkDaKey, String corpId, String timestamp, String signature);
 
     /**
-     * 获取钉钉搭签名
+     * Get DingTalk signature
      *
-     * @param dingTalkDaKey 钉钉搭的的key，自定义的
-     * @param corpId 企业ID
-     * @param timestamp 时间戳
+     * @param dingTalkDaKey DingTalk key
+     * @param corpId Enterprise ID
+     * @param timestamp Time stamp
      * @return String|null
-     * @author zoe zheng
-     * @date 2021/9/28 16:10
      */
     String getSignature(String dingTalkDaKey, String corpId, String timestamp);
 
     /**
-     * 钉钉搭使用模版
+     * DingTalk Use Template
      *
-     * @param dingDingDaKey 钉钉搭定义的key
-     * @param authCorpId 授权企业ID
-     * @param templateKey 模版ID
-     * @param opUserId 操作人钉钉UserID
-     * @param appName 钉钉搭应用的名称
+     * @param dingDingDaKey DingTalk key
+     * @param authCorpId Authorized Enterprise ID
+     * @param templateKey Template ID
+     * @param opUserId Operator DingTalk User ID
+     * @param appName DingTalk Application Name
      * @return mediaId
-     * @author zoe zheng
-     * @date 2021/9/29 16:55
      */
     DingTalkDaCreateTemplateDTO dingTalkDaTemplateCreate(String dingDingDaKey, String authCorpId, String templateKey,
             String opUserId, String appName);
 
     /**
-     *  获取模版的logo
+     *  Get the logo of the template
      *
-     * @param suiteId 第三方应用suiteID
-     * @param authCorpId 授权企业ID
-     * @param template 模版信息
-     * @param templateIconId 模版应用iconID
-     * @param bizAppId 应用ID
-     * @param opUserId 操作人钉钉UserID
+     * @param suiteId Third party application suite ID
+     * @param authCorpId Authorized Enterprise ID
+     * @param template Template information
+     * @param templateIconId Template application icon ID
+     * @param bizAppId App ID
+     * @param opUserId Operator DingTalk User ID
      * @return mediaId
-     * @author zoe zheng
-     * @date 2021/9/29 16:55
      */
     DingTalkCreateApaasAppResponse createApssApp(String suiteId, String authCorpId,
             String bizAppId, TemplateInfo template, String templateIconId, String opUserId);
 
     /**
-     *  获取模版的logo
+     *  Get the logo of the template
      *
-     * @param suiteId 第三方应用suiteID
-     * @param authCorpId 授权企业ID
-     * @param templateId 模版ID
+     * @param suiteId Third party application suite ID
+     * @param authCorpId Authorized Enterprise ID
+     * @param templateId Template ID
      * @return mediaId
-     * @author zoe zheng
-     * @date 2021/9/29 16:55
      */
     String dingTalkDaTemplateIconMediaId(String suiteId, String authCorpId, String templateId);
 
     /**
-     * 引用模版到用户绑定的空间
+     * Reference template to user bound space
      *
-     * @param templateInfo 模版信息
-     * @param spaceId 空间ID
-     * @param opMemberId 操作成员ID
-     * @param opUserId 操作人的维格表userId
-     * @param nodeName 钉钉搭应用的名称
-     * @return 生成的目录ID
-     * @author zoe zheng
-     * @date 2021/9/30 17:24
+     * @param templateInfo Template information
+     * @param spaceId Space ID
+     * @param opMemberId Action member ID
+     * @param opUserId The vika user ID of the operator
+     * @param nodeName Name of DingTalk application
+     * @return Generated directory ID
      */
     String quoteTemplate(TemplateInfo templateInfo, String spaceId, Long opMemberId, Long opUserId, String nodeName);
 
     /**
-     * 根据bizAppId获取钉钉搭应用信息
+     * Get DingTalk application information according to the biz App Id
      *
-     * @param bizAppId 钉钉搭应用
+     * @param bizAppId DingTalk Application
      * @return DingTalkDaDTO
-     * @author zoe zheng
-     * @date 2021/10/8 20:05
      */
     DingTalkDaDTO getDingTalkDaInfoByBizAppId(String bizAppId);
 
     /**
-     * 钉钉搭应用更新
+     * DingTalk Apply Updates
      *
-     * @param dingTalkDaKey 钉钉搭定义的key
-     * @param updateRo 更新参数
-     * @author zoe zheng
-     * @date 2021/10/8 20:45
+     * @param dingTalkDaKey DingTalk key
+     * @param updateRo Update parameters
      */
     void dingTalkDaTemplateUpdate(String dingTalkDaKey, DingTalkDaTemplateUpdateRo updateRo);
 
     /**
-     * 钉钉搭模版应用删除
+     * DingTalk Template application deletion
      *
-     * @param bizAppId 钉钉搭appId对应我们的模版引用之后创建的nodeId
-     * @param status 钉钉搭应用状态0表示停用，1表示启用, 2表示删除, 3表示未发布
-     * @author zoe zheng
-     * @date 2021/10/12 13:39
+     * @param bizAppId DingTalk appId corresponds to the nodeId created after our template reference
+     * @param status DingTalk Application status 0 means deactivated, 1 means enabled, 2 means deleted, and 3 means unpublished
      */
     void dingTalkDaTemplateStatusUpdate(String bizAppId, Integer status);
 
     /**
-     *  获取模版的logo
+     *  Get the logo of the template
      *
-     * @param spaceId 空间站ID
-     * @param nodeId 模版引用之后创建的文件ID
-     * @param templateId 模版ID
-     * @param memberId 操作用户成员ID
+     * @param spaceId Space ID
+     * @param nodeId File ID created after template reference
+     * @param templateId Template ID
+     * @param memberId Operation user member ID
      * @return mediaId
-     * @author zoe zheng
-     * @date 2021/9/29 16:55
      */
     void handleTemplateQuoted(String spaceId, String nodeId, String templateId, Long memberId);
 }
