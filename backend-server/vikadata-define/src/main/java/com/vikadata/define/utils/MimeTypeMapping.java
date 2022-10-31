@@ -8,11 +8,9 @@ import java.util.Scanner;
 
 /**
  * <p>
- * MimeType 匹配工具
+ * MimeType Matching tool
  * </p>
  *
- * @author Shawn Deng
- * @date 2020/6/2 15:05
  */
 public class MimeTypeMapping {
 

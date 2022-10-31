@@ -2,11 +2,9 @@ package com.vikadata.define.constants;
 
 /**
  * <p>
- * 时间格式常量
+ * Time format constant
  * </p>
  *
- * @author Chambers
- * @date 2022/7/18
  */
 public class DateFormatConstants {
 

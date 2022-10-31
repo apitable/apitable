@@ -10,16 +10,15 @@ import cn.hutool.crypto.digest.Digester;
 
 /**
  * <p>
- * 摘要算法工具
+ * Abstract Algorithm Tools
  * </p>
  *
- * @author Chambers
- * @date 2019/12/25
  */
 public class DigestUtil {
 
     /**
-     * 同步生成Content-MD5的原理：先计算MD5加密的二进制数组(128位),  再进行Base64编码。
+     * The principle of synchronous generation of Content-MD5: first calculate the MD5 encrypted binary array (128 bits),
+     * and then perform Base64 encoding.
      */
     public static String md5Hex(InputStream is) {
         Digester md5 = new Digester(DigestAlgorithm.MD5);
@@ -28,10 +27,10 @@ public class DigestUtil {
     }
 
     /**
-     * 创建文件前32个字节，Base64编码
+     * The first 32 bytes of the created file are encoded in Base64
      */
     public static String createHeadSum(InputStream is) {
-        // 取资源文件前32个字节，Base64编码
+        // get the first 32 bytes of the resource file, encoded in Base64
         byte[] bytes = IoUtil.readBytes(is);
         return Base64.encode(ArrayUtil.resize(bytes, 32));
     }

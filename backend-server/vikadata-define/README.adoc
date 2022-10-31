@@ -1,3 +1,3 @@
-= 公共定义模块
+= common definition module
 
-任何公用的定义集中在这个包
+any common definitions are concentrated in this package

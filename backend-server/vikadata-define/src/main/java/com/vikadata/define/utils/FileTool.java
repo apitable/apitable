@@ -11,21 +11,19 @@ import cn.hutool.core.util.IdUtil;
 
 /**
  * <p>
- * 文件相关工具
+ * Document related tools
  * </p>
  *
- * @author Chambers
- * @date 2020/1/7
  */
 public class FileTool {
 
-    // vika临时文件夹名称
+    // vika temporary folder Name
     private static final String VIKA_TMP = "vika.tmp";
 
-    // 上传临时文件夹名称
+    // upload temporary folder name
     private static final String UPLOAD_TEMP = "upload";
 
-    // 临时文件默认后缀
+    // default suffix for temporary files
     private static final String TMP_SUFFIX = ".tmp";
 
     public static String identifyCoding(InputStream in) {
@@ -42,11 +40,11 @@ public class FileTool {
             int midIndex = 2;
             if (read != -1) {
                 if (first3Bytes[0] == byte0xff && first3Bytes[1] == byte0xfe) {
-                    //UTF-16LE
+                    // UTF-16LE
                     charset = "Unicode";
                 }
                 else if (first3Bytes[0] == byte0xfe && first3Bytes[1] == byte0xff) {
-                    //UTF-16BE
+                    // UTF-16BE
                     charset = "Unicode";
                 }
                 else if (first3Bytes[0] == byte0xef && first3Bytes[1] == byte0xbb && first3Bytes[midIndex] == byte0xbf) {
@@ -59,7 +57,7 @@ public class FileTool {
                             break;
                         }
                         if (0x80 <= read && read <= 0xBF) {
-                            //单独出现BF以下的，也算是GBK
+                            // The single occurrence of BF below is also GBK
                             break;
                         }
                         if (0xC0 <= read && read <= 0xDF) {
@@ -67,7 +65,7 @@ public class FileTool {
                             if (0x80 > read || read > 0xBF) {
                                 break;
                             }
-                            //双字节 (0xC0 - 0xDF) (0x80 - 0xBF),也可能在GB编码内
+                            // Double byte (0xC0-0xDF) (0x80-0xBF), which may also be in GB encoding
                         }
                         else if (0xE0 <= read) {
                             read = bis.read();
@@ -90,18 +88,18 @@ public class FileTool {
     }
 
     /**
-     * 获取临时文件路径（绝对路径）
+     * Get temporary file path (absolute path)
      *
-     * @return 临时文件路径
+     * @return Temporary file path
      */
     public static String getTmpDirPath() {
         return System.getProperty("java.io.tmpdir");
     }
 
     /**
-     * 创建上传临时文件
+     * Create and upload temporary files
      *
-     * @return 临时文件
+     * @return temporary files
      * @throws IOException
      */
     public static Path createUploadTempFile() throws IOException {
@@ -109,11 +107,11 @@ public class FileTool {
     }
 
     /**
-     * 创建上传临时文件
+     * Create and upload temporary files
      *
-     * @param prefix – 用于生成文件名的前缀字符串； 可能为null
-     * @param suffix – 用于生成文件名的后缀字符串； 可能为null ，在这种情况下使用“ .tmp ”
-     * @return 临时文件
+     * @param prefix – Prefix string used to generate file names; May be null
+     * @param suffix – The suffix string used to generate the file name; May be null, use ". tmp" in this case
+     * @return temporary files
      * @throws IOException
      */
     public static Path createUploadTempFile(String prefix, String suffix) throws IOException {
@@ -121,11 +119,12 @@ public class FileTool {
     }
 
     /**
-     * 创建临时文件
-     * @param prefix 用于生成文件名的前缀字符串； 可能为null
-     * @param suffix 用于生成文件名的后缀字符串； 可能为null ，在这种情况下使用“ .tmp ”
-     * @param more   要连接的附加字符串以形成路径字符串
-     * @return 临时文件
+     * Create temporary file
+     *
+     * @param prefix Prefix string used to generate file names; May be null
+     * @param suffix The suffix string used to generate the file name; May be null, use ". tmp" in this case
+     * @param more   The additional string to concatenate to form the path string
+     * @return temporary file
      * @throws IOException
      */
     public static Path createTempFile(String prefix, String suffix, String... more) throws IOException {
@@ -134,12 +133,12 @@ public class FileTool {
     }
 
     /**
-     * 计算文件大小
+     * Calculate file size
      * <p>
-     *     注意：计算后会破坏流
+     *     Note: the flow will be destroyed after calculation
      * </p>
-     * @param in 输入流
-     * @return 大小
+     * @param in input stream
+     * @return size
      */
     public static long calculateSize(InputStream in) {
         long size = 0;

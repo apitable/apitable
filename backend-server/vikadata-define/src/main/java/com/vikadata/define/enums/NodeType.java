@@ -1,65 +1,63 @@
 package com.vikadata.define.enums;
 
 /**
- * 节点类型
+ * node type
  *
- * @author Chambers
- * @since 2019/10/12
  */
 public enum NodeType {
 
     /**
-     * 根节点
+     * root node
      */
     ROOT(0),
 
     /**
-     * 文件夹
+     * folder
      */
     FOLDER(1),
 
     /**
-     * 数表
+     * datasheet
      */
     DATASHEET(2),
 
     /**
-     * 收集表
+     * form
      */
     FORM(3),
 
     /**
-     * 仪表盘
+     * dashboard
      */
     DASHBOARD(4),
 
     /**
-     * 镜像方式
+     * mirror
      */
     MIRROR(5),
 
     /**
-     * 维格数页，基于维格表的页面设计
+     * dataPage, Page design based on VIKA
      */
     DATAPAGE(6),
 
     /**
-     * 画布
+     * canvas
      */
     CANVAS(7),
 
     /**
-     * 普通编辑器文档
+     * editor documents
      */
     WORD_DOC(8),
 
     /**
-     * 静态资源文件
+     * static resource file
      */
     ASSET_FILE(98),
 
     /**
-     * 维格文
+     * dataDoc
      */
     DATADOC(99);
 
@@ -84,7 +82,7 @@ public enum NodeType {
                 return e;
             }
         }
-        throw new RuntimeException("未知的节点类型");
+        throw new RuntimeException("unknown node type");
     }
 
     /**
