@@ -5,25 +5,25 @@ export class ApiRecordDto implements IApiRecord {
   @ApiProperty({
     type: String,
     example: 'recV3ElniQavTNyJG',
-    description: '记录ID',
+    description: 'record ID',
   })
     recordId: string;
 
   @ApiProperty({
     type: Object,
-    description: '请求是传入的fields对应的数据{"field": "value"}',
+    description: 'fields\'s map, the structure is {"field": "value"}',
   })
     fields: IFieldValueMap;
 
   @ApiProperty({
     type: Number,
-    description: '记录创建时间,时间戳',
+    description: 'created time, timestamp',
   })
     createdAt: number;
 
   @ApiProperty({
     type: Number,
-    description: '记录修改时间,时间戳',
+    description: 'updated time, timestamp',
   })
     updatedAt: number;
 }

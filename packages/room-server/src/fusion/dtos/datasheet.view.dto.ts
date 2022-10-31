@@ -6,20 +6,20 @@ export class DatasheetViewDto implements IApiDatasheetView {
   @ApiProperty({
     type: String,
     example: 'viwpdA8TUBp5r',
-    description: '视图 ID',
+    description: 'view ID',
   })
     id: string;
 
   @ApiProperty({
     type: String,
-    description: '视图名称',
-    example: '全部订单',
+    description: 'view name',
+    example: 'All the orders',
   })
     name: string;
 
   @ApiProperty({
     enum: ViewTypeTextEnum,
-    description: '视图类型 Grid、Gallery、Kanban、Gantt',
+    description: 'view type: Grid, Gallery, Kanban and Gantt',
     example: ViewTypeTextEnum.Grid,
   })
     type: ViewTypeTextEnum;

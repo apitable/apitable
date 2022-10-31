@@ -4,14 +4,14 @@ import { IAPISpace } from 'shared/interfaces/space.interface';
 export class SpaceDto implements IAPISpace {
   @ApiProperty({
     type: String,
-    description: '空间站 ID',
+    description: 'space ID',
     example: 'spczdmQDfBAn5',
   })
     id: string;
 
   @ApiProperty({
     type: String,
-    description: '空间站名称',
+    description: 'space name',
     example: 'Vika',
   })
     name: string;

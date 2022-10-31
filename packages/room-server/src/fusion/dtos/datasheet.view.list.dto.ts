@@ -5,7 +5,7 @@ import { DatasheetViewDto } from 'fusion/dtos/datasheet.view.dto';
 export class DatasheetViewListDto implements IViewList<DatasheetViewDto[]> {
   @ApiProperty({
     type: [DatasheetViewDto],
-    description: '字段列表',
+    description: 'view list',
   })
     views: DatasheetViewDto[];
 }

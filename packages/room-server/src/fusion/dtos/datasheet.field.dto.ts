@@ -20,33 +20,33 @@ export class DatasheetFieldDto implements IApiDatasheetField {
   @ApiProperty({
     type: String,
     example: 'fldsRHWJZwFcM',
-    description: '字段 ID',
+    description: 'field ID',
   })
     id: string;
 
   @ApiProperty({
     type: String,
-    description: '字段名称',
-    example: '单号',
+    description: 'field name',
+    example: 'order id',
   })
     name: string;
 
   @ApiProperty({
     enum: FieldTypeTextEnum,
-    description: '字段类型',
+    description: 'field type',
     example: FieldTypeTextEnum.SingleText,
   })
     type: FieldTypeTextEnum;
 
   @ApiPropertyOptional({
     type: String,
-    description: '字段描述',
-    example: '这一列是自动生成的单号，不要手动修改',
+    description: 'field description',
+    example: 'do not change it, it was generated automatically',
   })
     desc?: string;
 
   @ApiPropertyOptional({
-    description: '字段专有属性',
+    description: 'field property',
     oneOf: [
       { $ref: getSchemaPath(SingleTextPropertyDto) },
       { $ref: getSchemaPath(NumberFieldPropertyDto) },
@@ -61,7 +61,7 @@ export class DatasheetFieldDto implements IApiDatasheetField {
       { $ref: getSchemaPath(LookupFieldPropertyDto) },
       { $ref: getSchemaPath(FormulaFieldPropertyDto) },
     ],
-    example: '{"defaultValue":"待补充"}',
+    example: '{"defaultValue":"to be added"}',
   })
     property?:
     | SingleTextPropertyDto
@@ -79,7 +79,7 @@ export class DatasheetFieldDto implements IApiDatasheetField {
 
   @ApiPropertyOptional({
     enum: FieldPermissionEnum,
-    description: '用户对当前字段的权限',
+    description: 'user permission type of this field',
     example: FieldPermissionEnum.Edit,
   })
     permissionLevel?: FieldPermissionEnum;

@@ -8,25 +8,25 @@ import { CommentReplyDto } from 'database/dtos/comment.reply.dto';
 export class RecordHistoryDto {
   @ApiProperty({
     type: [ChangesetBaseDto],
-    description: 'changeset列表',
+    description: 'changeset list',
   })
     changesets: ChangesetBaseDto[];
 
   @ApiProperty({
     type: [CommentDto],
-    description: '记录评论涉及到的组织单元列表',
+    description: 'comment involved units\'s list',
   })
     units: UnitBaseInfoDto[];
 
   @ApiProperty({
     type: [CommentEmojiDto],
-    description: '记录评论所有的点赞信息',
+    description: 'comment\'s emojis',
   })
     emojis: CommentEmojiDto;
 
   @ApiProperty({
     type: [CommentReplyDto],
-    description: '记录评论引用的信息集合',
+    description: 'comment\'s quote information',
   })
     commentReplyMap: CommentReplyDto;
 }

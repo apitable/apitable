@@ -4,67 +4,67 @@ import { IOperation, IRemoteChangeset, ResourceType } from '@apitable/core';
 export class ChangesetBaseDto implements IRemoteChangeset {
   @ApiProperty({
     type: String,
-    description: 'changeset请求的唯一标识，用于保证changeset的唯一',
+    description: 'changeset unique identification, works for making unique changeset',
   })
     messageId: string;
 
   @ApiProperty({
     enum: ResourceType,
-    description: 'changeset来源',
+    description: 'changeset resource type',
   })
     resourceType: ResourceType;
 
   @ApiProperty({
     type: String,
-    description: 'changeset来源ID',
+    description: 'changeset resource ID',
   })
     resourceId: string;
 
   @ApiProperty({
     type: Number,
-    description: '版本号',
+    description: 'revision',
   })
     revision: number;
 
   @ApiProperty({
     isArray: true,
     type: Object,
-    description: '操作action的合集',
+    description: 'an array of operation actions',
   })
     operations: IOperation[];
 
   @ApiPropertyOptional({
     type: String,
-    description: '用户userId',
+    description: 'creator ID',
   })
     createdBy?: string;
 
   @ApiProperty({
     type: String,
-    description: '用户uuid',
+    description: 'creator uuid',
   })
     userId: string;
 
   @ApiProperty({
     type: Number,
-    description: 'changeset来源0:user_interface,1:openapi,2:relation_effect',
+    description: 'changeset source type(0: user_interface,1: openapi, 2: relation_effect)',
   })
     sourceType?: number;
 
   @ApiProperty({
-    description: '创建时间-时间戳',
+    description: 'created time-timestamp',
     type: Number,
   })
     createdAt: number;
 
   @ApiProperty({
-    description: '是否是评论',
+    description: 'is it comment',
     type: Number,
   })
     isComment: number;
 
   @ApiProperty({
-    description: '临时保存正确时间的字段',
+    description: 'temporary use for the exact time field',
     type: Number,
   })
     tmpCreatedAt?: number;

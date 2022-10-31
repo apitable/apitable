@@ -8,28 +8,28 @@ class MemberProperty {
   @ApiProperty({
     type: String,
     example: '1217029313010270209',
-    description: '成员 id',
+    description: 'member ID',
   })
     id: string;
 
   @ApiProperty({
     type: String,
-    example: '张三',
-    description: '成员名称',
+    example: 'LiLei',
+    description: 'member name',
   })
     name: string;
 
   @ApiProperty({
     enum: UnitTypeTextEnum,
     example: UnitTypeTextEnum.Member,
-    description: '组织类型 member、team',
+    description: 'unit type: member and team',
   })
     type: UnitTypeTextEnum;
 
   @ApiPropertyOptional({
     type: String,
     example: 'https://s1.vika.cn/default/avatar001.jpg',
-    description: '头像',
+    description: 'avatar',
   })
     avatar?: string;
 }
@@ -38,21 +38,21 @@ class UserProperty {
   @ApiProperty({
     type: String,
     example: 'eeb620a54e2248c69c25de68e6eb668c',
-    description: '用户 id \n 特殊ID：\n Anonymous: 匿名者，未登录用户创建或更新记录 \n Bot: 机器人',
+    description: 'user id. special ID for Anonymous and robot',
   })
     id: string;
 
   @ApiProperty({
     type: String,
-    example: '张三',
-    description: '用户名称',
+    example: 'LiLei',
+    description: 'user name',
   })
     name: string;
 
   @ApiProperty({
     type: String,
     example: 'https://s1.vika.cn/default/avatar001.jpg',
-    description: '头像',
+    description: 'avatar',
   })
     avatar: string;
 }
@@ -61,16 +61,16 @@ class DatasheetField {
   @ApiProperty({
     type: String,
     example: 'dstxxxxxxx',
-    description: '引用表 ID',
+    description: 'reference datasheet ID',
   })
     datasheetId: string;
 
   @ApiProperty({
     type: () => DatasheetFieldDto,
-    description: '引用字段',
+    description: 'reference field',
     example:
-      '{"id": "fldsRHWJZwFcM","name": "单号","type": "SingleText","desc": "这一列是自动生成的单号，不要手动修改",' +
-      '"property": {"defaultValue": "待补充"},"permissionLevel": "edit" }',
+      '{"id": "fldsRHWJZwFcM","name": "order number","type": "SingleText","desc": "automatically",' +
+      '"property": {"defaultValue": "to be added"},"permissionLevel": "edit" }',
   })
     field: DatasheetFieldDto;
 }
@@ -79,21 +79,21 @@ class SingleSelectProperty {
   @ApiProperty({
     type: String,
     example: 'opt8QSSURh52T',
-    description: '选项 ID',
+    description: 'option ID',
   })
     id: string;
 
   @ApiProperty({
     type: String,
-    example: '科幻',
-    description: '选项名称',
+    example: 'magical',
+    description: 'option name',
   })
     name: string;
 
   @ApiProperty({
     type: Object,
     example: '{"name":"red_0", "value":"#ff0000"}',
-    description: '选项颜色',
+    description: 'option color',
   })
     color: Object;
 }
@@ -102,8 +102,8 @@ class SingleSelectProperty {
 export class SingleTextPropertyDto {
   @ApiPropertyOptional({
     type: String,
-    example: '待补充',
-    description: '新建记录时，此字段的默认值',
+    example: 'to be added',
+    description: 'default value',
   })
     defaultValue?: string;
 }
@@ -112,8 +112,8 @@ export class SingleTextPropertyDto {
 export class NumberFieldPropertyDto {
   @ApiPropertyOptional({
     type: String,
-    example: '待补充',
-    description: '新建记录时，此字段的默认值',
+    example: 'to be added',
+    description: 'default value',
   })
     defaultValue?: string;
 

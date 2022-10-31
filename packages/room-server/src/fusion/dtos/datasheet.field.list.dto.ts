@@ -5,7 +5,7 @@ import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 export class DatasheetFieldListDto implements IFieldList<DatasheetFieldDto[]> {
   @ApiProperty({
     type: [DatasheetFieldDto],
-    description: '字段列表',
+    description: 'field list',
   })
     fields: DatasheetFieldDto[];
 }

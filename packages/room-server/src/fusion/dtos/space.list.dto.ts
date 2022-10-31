@@ -5,7 +5,7 @@ import { SpaceDto } from './space.dto';
 export class SpaceListDto implements ISpaceList<SpaceDto[]> {
   @ApiProperty({
     type: [SpaceListDto],
-    description: '视图列表',
+    description: 'space list',
   })
     spaces: SpaceDto[];
 }

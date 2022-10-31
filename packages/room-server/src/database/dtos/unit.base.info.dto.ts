@@ -5,14 +5,14 @@ export class UnitBaseInfoDto implements IUserValue {
   @ApiProperty({
     type: String,
     example: 0,
-    description: '组织单元ID',
+    description: 'unit Id',
   })
     unitId: string;
 
   @ApiProperty({
     type: String,
     example: 0,
-    description: '组织单元名称',
+    description: 'unit name',
   })
     name: string;
 
@@ -22,56 +22,56 @@ export class UnitBaseInfoDto implements IUserValue {
   @ApiProperty({
     type: String,
     example: 0,
-    description: '用户uuID',
+    description: 'user uuid',
   })
     uuid: string;
 
   @ApiProperty({
     type: String,
     example: 0,
-    description: '用户uuID',
+    description: 'user ID',
   })
     userId: string;
 
   @ApiProperty({
     type: Number,
-    example: '类型(1:部门,2:标签,3:成员)',
-    description: '成员姓名',
+    example: '1: department, 2: tag, 3: member',
+    description: 'member type',
   })
     type: number;
 
   @ApiProperty({
     type: String,
     example: 'avatar',
-    description: '头像',
+    description: 'avatar',
   })
     avatar: string;
 
   @ApiProperty({
     type: Boolean,
     example: 0,
-    description: '是否激活',
+    description: 'active status',
   })
     isActive: boolean;
 
   @ApiProperty({
     type: Boolean,
     example: 0,
-    description: '是否删除',
+    description: 'is it deleted',
   })
     isDeleted: boolean;
 
   @ApiProperty({
     type: Boolean,
     example: 0,
-    description: '用户（user）是否修改过昵称',
+    description: 'if nick name was modified ever',
   })
     isNickNameModified: boolean;
 
   @ApiProperty({
     type: Boolean,
     example: 0,
-    description: '企微成员（member）是否修改过昵称',
+    description: 'if nick name was modified ever by wecom member',
   })
     isMemberNameModified: boolean;
 
