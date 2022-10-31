@@ -29,6 +29,7 @@ import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
 import styles from './styles.module.less';
 import { InfoCard } from 'pc/components/common/info_card';
+import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 
 const triggerBase = {
   action: ['hover'],
@@ -51,6 +52,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
     // 无论是否要开启远程搜索，都需要对数据做一次备份，尤其是组件传入的 local data
     return initList;
   });
+  const spaceInfo = useSelector(state => state.space.curSpaceInfo);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const { formId } = useSelector(state => state.pageParams);
@@ -258,6 +260,11 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
         {
           memberList.map((item, index) => {
             const unitId = uniqId === 'unitId' ? item.unitId : item.userId;
+            const title = getSocialWecomUnitName({
+              name: item.name,
+              isModified: item.isMemberNameModified,
+              spaceInfo,
+            });
             return (
               <CommonList.Option
                 key={item[uniqId] || index}
@@ -269,7 +276,7 @@ export const MemberOptionList: React.FC<IMemberOptionListProps & { inputRef?: Re
                 className={styles.memberOptionItemWrapper}
               > 
                 <InfoCard 
-                  title={item.name}
+                  title={title}
                   description={item.teamData ? item.teamData[0]?.fullHierarchyTeamName : ''}
                   avatarProps={{
                     id: unitId || '',

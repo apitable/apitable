@@ -150,7 +150,7 @@ export const UserCard: FC<IUserCard> = ({
                 />
                 <div className={styles.nameWrapper}>
                   <Typography className={styles.name} variant="h7" color={colors.firstLevelText} ellipsis tooltipsZIndex={tooltipZIndex}>
-                    {spareName || title }
+                    { title || spareName }
                   </Typography>
                   {permissionVisible && memberRole &&
                     <div className={styles.permissionWrapper}>
