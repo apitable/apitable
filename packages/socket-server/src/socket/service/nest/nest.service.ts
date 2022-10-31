@@ -48,7 +48,7 @@ export class NestService implements NestInterface {
   }
 
   public getSocketId(): string {
-    // 先从本地内存中拿取;
+    // First fetch from local memory
     if (this.socketMap.size != 0) {
       const socketIds = Array.from(this.socketMap.keys());
       const index = randomNum(0, socketIds.length - 1);
@@ -57,7 +57,7 @@ export class NestService implements NestInterface {
     return null;
   }
 
-  async notify(event: string, message: any): Promise<any | null> {
+  public async notify(event: string, message: any): Promise<any | null> {
     this.logger.debug({ event, message });
     return new Promise(resolve => {
       const socketId = this.getSocketId();
@@ -100,19 +100,21 @@ export class NestService implements NestInterface {
   }
 
   /**
-   * 获取资源映射的所有房间
+   * Get all rooms for resource mapping
+   *
    * @param resourceId
    */
-  async getResourceRelateRoomIds(resourceId: string): Promise<string[]> {
+  public async getResourceRelateRoomIds(resourceId: string): Promise<string[]> {
     const resourceKey = util.format(NestCacheKeys.RESOURCE_RELATE, resourceId);
     return await this.redisService.getSet(resourceKey);
   }
 
   /**
-   * 获取 socket 的信息
+   * Get socket information
+   *
    * @param socketIds
    */
-  async getSocketInfos(socketIds: string[]): Promise<any[]> {
+  public async getSocketInfos(socketIds: string[]): Promise<any[]> {
     const ids = socketIds.map(id => util.format(NestCacheKeys.SOCKET, id));
     const raws = await this.redisService.getValues(ids);
     return raws.filter(Boolean).map(raw => JSON.parse(raw));

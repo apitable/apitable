@@ -1,30 +1,30 @@
-import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
 import { ICollaborator, OtErrorCode } from '@apitable/core';
+import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import * as Sentry from '@sentry/node';
 import { RedisService } from '@vikadata/nestjs-redis';
-import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from '../../common';
-import { PermissionException, ServerException } from '../../exception';
-import { getIPAddress } from 'shared/helpers/system.helper';
-import { IAuthHeader } from '../../interfaces';
-import { ApiResponse } from '../../../fusion/vos/api.response';
-import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
-import { OtService } from 'database/services/ot/ot.service';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
+import { OtService } from 'database/services/ot/ot.service';
 import { ResourceService } from 'database/services/resource/resource.service';
 import { UserService } from 'database/services/user/user.service';
+import { getIPAddress } from 'shared/helpers/system.helper';
 import { ClientStorage } from 'shared/services/socket/client.storage';
 import { RoomResourceRelService } from 'shared/services/socket/room.resource.rel.service';
 import { IClientRoomChangeResult, IWatchRoomMessage } from 'shared/services/socket/socket.interface';
 import { Logger } from 'winston';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { ApiResponse } from 'fusion/vos/api.response';
+import { APPLICATION_NAME, CommonStatusMsg, InjectLogger, VIKA_NEST_CHANNEL } from '../../common';
+import { PermissionException, ServerException } from '../../exception';
+import { IAuthHeader } from '../../interfaces';
 
 /**
  *
  * Socket client service
- * 
+ *
  * Initialize and listen on socket events after the service is started.
- * 
+ *
  * Implemented OnApplicationBootstrap interface to customize initialzation after the app starts.
  */
 @Injectable()
@@ -43,9 +43,9 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
 
   /**
    * Applies pub/sub mechanism here to ensure the IP registry is real-time.
-   * 
+   *
    * Redis is maintained by socket service.
-   * 
+   *
    * Application is not started if registry failed.
    *
    * registry mechanism is enabled only with APPLICATION_NAME = ROOM_SERVER
@@ -104,7 +104,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       // Filter exception that isn't necessary to be reported.
       message.cookie = undefined;
       message.token = undefined;
-      Sentry.captureException(e, { extra: { message }});
+      Sentry.captureException(e, { extra: { message } });
     }
     return ApiResponse.error(errMsg, statusCode);
   }
@@ -121,13 +121,13 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     return result;
   }
 
-  private async watchRoomLogger<T>(traceId: string, func: string, promise: Promise<T>) {
-    return await this.timeLogger(`C-TraceId[${traceId}] WATCH_ROOM`, func, promise);
+  private async watchRoomLogger<T>(func: string, promise: Promise<T>) {
+    return await this.timeLogger('WATCH_ROOM', func, promise);
   }
 
   /**
    * Join the user in collaboration room
-   * 
+   *
    * @param message User message
    * @param clientId client ID
    * @param socketIds socket connection ID collection
@@ -138,43 +138,42 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     let userId;
     let collaborator;
     let spaceId;
-    const cTraceId = metadata.get('X-C-TraceId')[0];
-    this.logger.info(`C-TraceId[${cTraceId}] Watch Room: ${message.roomId}, ShareId: ${message.shareId} | ClientId: ${clientId}`);
-    const nodeId = await this.watchRoomLogger(cTraceId, 'getNodeIdByResourceId', this.resourceService.getNodeIdByResourceId(message.roomId));
+    this.logger.info(`Watch Room: ${message.roomId}, ShareId: ${message.shareId} | ClientId: ${clientId}`);
+    const nodeId = await this.watchRoomLogger('getNodeIdByResourceId', this.resourceService.getNodeIdByResourceId(message.roomId));
     if (!nodeId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
     // reject template node watching
-    const isTemplate = await this.watchRoomLogger(cTraceId, 'isTemplate', this.nodeService.isTemplate(nodeId));
+    const isTemplate = await this.watchRoomLogger('isTemplate', this.nodeService.isTemplate(nodeId));
     if (isTemplate) {
       throw new ServerException(PermissionException.ACCESS_DENIED);
     }
     if (message.shareId) {
       // authorize share link
-      await this.watchRoomLogger(cTraceId, 'checkNodeHasOpenShare', this.nodeShareSettingService.checkNodeHasOpenShare(message.shareId, nodeId));
-      const { uuid } = await this.watchRoomLogger(cTraceId, 'getMeNullable', this.userService.getMeNullable(message.cookie || ''));
+      await this.watchRoomLogger('checkNodeHasOpenShare', this.nodeShareSettingService.checkNodeHasOpenShare(message.shareId, nodeId));
+      const { uuid } = await this.watchRoomLogger('getMeNullable', this.userService.getMeNullable(message.cookie || ''));
       userId = uuid;
     } else {
       // authorize space link
-      const user = await this.watchRoomLogger(cTraceId, 'getMe', this.userService.getMe({ cookie: message.cookie }));
+      const user = await this.watchRoomLogger('getMe', this.userService.getMe({ cookie: message.cookie }));
       // check if the current user is in the this space
-      await this.watchRoomLogger(cTraceId, 'checkUserForNode', this.nodeService.checkUserForNode(user.userId, nodeId));
+      await this.watchRoomLogger('checkUserForNode', this.nodeService.checkUserForNode(user.userId, nodeId));
       // validate node permission
-      await this.watchRoomLogger(cTraceId, 'checkNodePermission', this.nodeService.checkNodePermission(nodeId, { cookie: message.cookie }));
+      await this.watchRoomLogger('checkNodePermission', this.nodeService.checkNodePermission(nodeId, { cookie: message.cookie }));
       userId = user.uuid;
     }
     // store current user info
-    await this.watchRoomLogger(cTraceId, 'set', this.clientStorage.set(
+    await this.watchRoomLogger('set', this.clientStorage.set(
       clientId,
       { userId, socketId: clientId, createTime, shareId: message.shareId }
     ));
     // Obtain collaborator list of the room, ordered by join-time.
-    const collaborators = (await this.watchRoomLogger(cTraceId, 'mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
+    const collaborators = (await this.watchRoomLogger('mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
     // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
-      spaceId = await this.watchRoomLogger(cTraceId, 'getSpaceIdByNodeId', this.nodeService.getSpaceIdByNodeId(nodeId));
-      const userInfos = await this.watchRoomLogger(cTraceId, 'getUserInfo', this.userService.getUserInfo(spaceId, (roomUserIds as string[])));
+      spaceId = await this.watchRoomLogger('getSpaceIdByNodeId', this.nodeService.getSpaceIdByNodeId(nodeId));
+      const userInfos = await this.watchRoomLogger('getUserInfo', this.userService.getUserInfo(spaceId, (roomUserIds as string[])));
       // Fill in info for logged-in users.
       collaborators
         .filter(collaborator => collaborator.userId)
@@ -187,22 +186,21 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
           collaborator.userName = user.name;
           collaborator.memberName = 'unitId' in user ? user!.name : ''; // Only space member has unitId. Name means member nickname, empty for member not in space
         });
-        // Current user info
+      // Current user info
       if (userId) {
         collaborator = collaborators.find(collaborator => collaborator.userId === userId);
       }
     }
     // Obtain latest revision numbers of resources in the room
-    const resourceRevisions = await this.watchRoomLogger(cTraceId, 'getResourceRevisions', this.relService.getResourceRevisions(message.roomId));
+    const resourceRevisions = await this.watchRoomLogger('getResourceRevisions', this.relService.getResourceRevisions(message.roomId));
     const endTime = +new Date();
-    this.logger.info(
-      `C-TraceId[${cTraceId}] Watch Room: ${message.roomId} Success, duration: ${endTime - createTime}ms | uuid: ${userId} | SocketIds: ${socketIds}`);
+    this.logger.info(`Watch Room: ${message.roomId} Success, duration: ${endTime - createTime}ms | uuid: ${userId} | SocketIds: ${socketIds}`);
     return { resourceRevisions, collaborators, collaborator, spaceId };
   }
 
   /**
    * Helper function for watchRoom, supports obtaining all user infos of active users in the current room cross-pod-ly
-   * 
+   *
    * @param {IWatchRoomMessage} message
    * @param {string} spaceId
    * @param {string[]} socketIds

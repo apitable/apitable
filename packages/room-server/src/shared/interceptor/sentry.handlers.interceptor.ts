@@ -1,13 +1,15 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
-import { isString } from '@sentry/utils';
-import { Transaction } from '@sentry/types';
-import { extractTraceparentData, SpanStatus } from '@sentry/tracing';
-import { getCurrentHub, startTransaction } from '@sentry/core';
-import { Observable } from 'rxjs';
-import http from 'http';
-import { status, Metadata } from '@grpc/grpc-js';
+import { Metadata, status } from '@grpc/grpc-js';
 import { Http2ServerCallStream } from '@grpc/grpc-js/build/src/server-call';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { getCurrentHub, startTransaction } from '@sentry/core';
+import * as Sentry from '@sentry/node';
+import { extractTraceparentData, SpanStatus } from '@sentry/tracing';
+import { Transaction } from '@sentry/types';
+import { isString } from '@sentry/utils';
+import http from 'http';
+import { isEmpty } from 'lodash';
+import { Observable } from 'rxjs';
+import { ALS } from 'shared/helpers/fastify.zipkin.plugin';
 
 /**
  * Sentry Http Tracing Interceptor
@@ -29,14 +31,18 @@ export class TracingHandlerInterceptor implements NestInterceptor {
     } else if (host.getType() === 'rpc') {
       const rpcCtx = host.switchToRpc();
       const rpcData = rpcCtx.getData();
-      const rpcContext = rpcCtx.getContext();
+      const rpcContext = rpcCtx.getContext() as Metadata;
       const rpcServerUnary = host.getArgByIndex(2);
+      const rpcTraceId = isEmpty(rpcContext.get('x-changesets-message-id')) ? rpcContext.get('x-trace-id') :
+        rpcContext.get('x-changesets-message-id');
+
+      !isEmpty(rpcTraceId) && ALS.enterWith({ traceId: rpcTraceId, spanId: rpcTraceId });
+
       if (rpcServerUnary) {
-        const { call: serverUnaryCall, call: { stream: serverHttp2Stream }} = rpcServerUnary;
+        const { call: serverUnaryCall } = rpcServerUnary;
         const mapping = {
           method: serverUnaryCall?.handler?.type,
           path: serverUnaryCall?.handler?.path,
-          address: serverHttp2Stream?.session?.server?.address()
         };
         grpcTracingHandler(rpcData, rpcContext, serverUnaryCall, mapping);
       }
@@ -109,6 +115,17 @@ function grpcTracingHandler(data: any, context: Metadata, serverUnaryCall: Http2
 
   serverUnaryCall.once('callEnd', (code: status) => {
     setImmediate(() => {
+      const traceId = context.get('x-trace-id')?.toString();
+      const changesetsMessageId = context.get('x-changesets-message-id')?.toString();
+      const changesetsCmd = context.get('x-trace-id')?.toString();
+
+      transaction.setTag('grpc.status_code', code)
+        .setTag('grpc.trace_id', traceId);
+
+      // add changesets meta info
+      !isEmpty(changesetsMessageId) && transaction.setTag('x-changesets-message-id', changesetsMessageId);
+      !isEmpty(changesetsCmd) && transaction.setTag('x-changesets-cmd', changesetsCmd);
+
       transaction.setTag('grpc.status_code', code)
         .setStatus(code === status.OK ? SpanStatus.Ok : SpanStatus.UnknownError)
         .finish();
@@ -143,7 +160,7 @@ function extractExpressTransactionName(
   return info;
 }
 
-const DEFAULT_REQUEST_KEYS = ['userAgent', 'cookies', 'requestType', 'roomId', 'address'];
+const DEFAULT_REQUEST_KEYS = ['userAgent', 'cookies', 'requestType', 'changesetsCmd', 'roomId'];
 
 function extractRpcData(
   req: { [key: string]: any },
@@ -160,6 +177,9 @@ function extractRpcData(
         break;
       case 'requestType':
         requestData.requestType = req.type || '';
+        break;
+      case 'changesetsCmd':
+        requestData.changesetsCmd = req?.grpcMetaData?.get('x-changesets-cmd') || '';
         break;
       case 'roomId':
         requestData.roomId = req.roomId || '';

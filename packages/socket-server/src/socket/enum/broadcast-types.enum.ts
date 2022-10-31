@@ -1,60 +1,56 @@
 /**
- * <p>
- * 广播的消息类型
- * </p>
- * @author Zoe zheng
- * @date 2020/6/23 4:33 下午
+ * Broadcast message types
  */
 export enum BroadcastTypes {
 
   /**
-   * 房间内其他用户操作了 changeset
-   * 因为相对于客户端来说，是服务端主动推给他的，所以以 Server 开头
+   * Other users in the room have operated changeset
+   * Because it is the server that takes the initiative to push it to him as opposed to the client, it starts with `Server`
    */
   SERVER_ROOM_CHANGE = 'SERVER_ROOM_CHANGE',
 
   /**
-   * 有新激活协作人
+   * There are new active collaborators
    */
-  ACTIVATE_COLLABORATOR = "ACTIVATE_COLLABORATOR",
+  ACTIVATE_COLLABORATOR = 'ACTIVATE_COLLABORATOR',
 
   /**
-   * 有新激活协作（多）人
+   * There are newly activated collaboration (multi) people
    */
-  ACTIVATE_COLLABORATORS = "ACTIVATE_COLLABORATORS",
+  ACTIVATE_COLLABORATORS = 'ACTIVATE_COLLABORATORS',
 
   /**
-   * 有协作人被取消激活
+   * There are collaborators who are de-activated
    */
-  DEACTIVATE_COLLABORATOR = "DEACTIVATE_COLLABORATOR",
+  DEACTIVATE_COLLABORATOR = 'DEACTIVATE_COLLABORATOR',
 
   /**
-   * 有用户更新了光标
+   * Some users have updated the cursor
    */
   ENGAGEMENT_CURSOR = 'ENGAGEMENT_CURSOR',
 
   /**
-   * 节点分享被关闭
+   * Node sharing is turned off
    */
   NODE_SHARE_DISABLED = 'NODE_SHARE_DISABLED',
 
   /**
-   * 字段权限开启
+   * Field permission enabled
    */
   FIELD_PERMISSION_ENABLE = 'FIELD_PERMISSION_ENABLE',
 
   /**
-   * 字段权限变更
+   * Field permission changes
    */
   FIELD_PERMISSION_CHANGE = 'FIELD_PERMISSION_CHANGE',
 
   /**
-   * 字段权限关闭
+   * Field permission off
    */
   FIELD_PERMISSION_DISABLE = 'FIELD_PERMISSION_DISABLE',
 
   /**
-   * 字段配置属性变更
+   * Field configuration property changes
    */
    FIELD_PERMISSION_SETTING_CHANGE = 'FIELD_PERMISSION_SETTING_CHANGE',
 }

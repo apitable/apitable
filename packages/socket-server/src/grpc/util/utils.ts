@@ -1,10 +1,11 @@
-import { Metadata } from '@grpc/grpc-js';
+import { Metadata, MetadataValue } from '@grpc/grpc-js';
+import { TRACE_ID } from 'src/socket/constants/socket-constants';
 
 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 export const sleep: Function = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export function generateRandomString(length= 20): string {
+export function generateRandomString(length = 20): string {
   let randomString = '';
   const size = chars.length;
   for (let i = 0; i < length; i++) {
@@ -14,9 +15,14 @@ export function generateRandomString(length= 20): string {
   return randomString;
 }
 
-export function getGlobalGrpcMetadata() {
+export function initGlobalGrpcMetadata(extMeta?: { [key: string]: MetadataValue }) {
   const grpcMeta = new Metadata();
-  // 暂时添加自定义CTraceId
-  grpcMeta.set('X-C-TraceId', generateRandomString());
+  // initialize trace id
+  grpcMeta.set(TRACE_ID, generateRandomString());
+  if (extMeta) {
+    Object.entries(extMeta).forEach(([k, v]) => {
+      grpcMeta.set(k, v);
+    });
+  }
   return grpcMeta;
 }

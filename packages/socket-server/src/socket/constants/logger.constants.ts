@@ -29,7 +29,7 @@ const defaultMaxFiles = '14d';
 // logger formatter
 const formatter = winston.format.combine(
   winston.format.timestamp(),
-  nestWinstonModuleUtilities.format.nestLike(defaultAppName)
+  nestWinstonModuleUtilities.format.nestLike(defaultAppName, { colors: isDev(), prettyPrint: isDev() })
 );
 
 // logger transports

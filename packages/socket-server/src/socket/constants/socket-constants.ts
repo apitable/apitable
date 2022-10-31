@@ -1,3 +1,10 @@
+/**
+ * gRPC MetaData 常量Key
+ */
+export const TRACE_ID = 'x-trace-id';
+export const CHANGESETS_MESSAGE_ID = 'x-changesets-message-id';
+export const CHANGESETS_CMD = 'x-changesets-cmd';
+
 export class SocketConstants {
   public static readonly SOCKET_TYPES = ['CONNECT', 'DISCONNECT', 'EVENT', 'ACK', 'ERROR', 'BINARY_EVENT', 'BINARY_ACK'];
 

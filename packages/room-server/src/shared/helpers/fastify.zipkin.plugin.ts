@@ -114,3 +114,4 @@ fastifyZipkinPlugin[Symbol.for('fastify.display-name')] = pluginName;
 
 export const getTraceId = () => als.getStore() && als.getStore()['traceId'];
 export const getSpanId = () => als.getStore() && als.getStore()['spanId'];
+export const ALS = als;

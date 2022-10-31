@@ -4,6 +4,7 @@ import { VikaGrpcClientProxy } from 'src/grpc/client/vika.grpc.client.proxy';
 import { vika } from 'src/grpc/generated/grpc/proto/socket.service';
 import { pack, unpack } from 'src/grpc/util/pack.message';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
+import { TRACE_ID } from 'src/socket/constants/socket-constants';
 
 @Injectable()
 export class NestClient implements OnModuleInit {
@@ -22,7 +23,7 @@ export class NestClient implements OnModuleInit {
   async watchRoom(message: vika.grpc.WatchRoomRo, metadata: any): Promise<any | null> {
     this.logger.log({
       action: 'WatchRoom',
-      traceId: String(metadata.get('X-C-TraceId')),
+      traceId: String(metadata.get(TRACE_ID)),
       message: `WatchRoom socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`
     });
 
@@ -32,7 +33,7 @@ export class NestClient implements OnModuleInit {
   async getActiveCollaborators(message: vika.grpc.WatchRoomRo, metadata: any): Promise<any | null> {
     this.logger.log({
       action: 'GetActiveCollaborators',
-      traceId: String(metadata.get('X-C-TraceId')),
+      traceId: String(metadata.get(TRACE_ID)),
       message: `GetActiveCollaborators socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`
     });
 
@@ -42,7 +43,7 @@ export class NestClient implements OnModuleInit {
   async leaveRoom(message: vika.grpc.LeaveRoomRo, metadata: any): Promise<vika.grpc.BasicResult> {
     this.logger.log({
       action: 'LeaveRoom',
-      traceId: String(metadata.get('X-C-TraceId')),
+      traceId: String(metadata.get(TRACE_ID)),
       message: `LeaveRoom socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`
     });
 
@@ -52,7 +53,7 @@ export class NestClient implements OnModuleInit {
   async roomChange(message: vika.grpc.UserRoomChangeRo, metadata: any): Promise<any> {
     this.logger.log({
       action: 'RoomChange',
-      traceId: String(metadata.get('X-C-TraceId')),
+      traceId: String(metadata.get(TRACE_ID)),
       message: `RoomChange socket-id:[${message.clientId}] To room-server:[${await this.client.currentClientUrl}]`
     });
 

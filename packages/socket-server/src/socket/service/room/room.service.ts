@@ -1,12 +1,13 @@
+import { MetadataValue } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
 import { Socket } from 'socket.io';
 import { NestClient } from 'src/grpc/client/nest.client';
 import { Retryable } from 'src/grpc/util/retry.decorator';
-import { getGlobalGrpcMetadata } from 'src/grpc/util/utils';
+import { initGlobalGrpcMetadata } from 'src/grpc/util/utils';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
+import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID, SocketConstants, TRACE_ID } from 'src/socket/constants/socket-constants';
 import { BroadcastTypes } from 'src/socket/enum/broadcast-types.enum';
 import { RequestTypes } from 'src/socket/enum/request-types.enum';
 import { ServerErrorCode, SocketEventEnum } from 'src/socket/enum/socket.enum';
@@ -41,7 +42,7 @@ export class RoomService {
       }
     }
     // notify nest server actions
-    await this.nestClient.leaveRoom(this.injectMessage(socket, { clientId: socket.id }), getGlobalGrpcMetadata());
+    await this.nestClient.leaveRoom(this.injectMessage(socket, { clientId: socket.id }), initGlobalGrpcMetadata());
   }
 
   @Retryable({
@@ -56,8 +57,8 @@ export class RoomService {
     const room = message.roomId;
     const createTime = Date.now();
     const isExistRoom = socket.rooms.has(room);
-    const grpcMetadata = getGlobalGrpcMetadata();
-    const traceId = grpcMetadata.get('X-C-TraceId')[0];
+    const _grpcMetadata = initGlobalGrpcMetadata();
+    const traceId = _grpcMetadata.get(TRACE_ID)[0];
 
     this.logger.log({
       action: 'WatchRoom',
@@ -69,8 +70,8 @@ export class RoomService {
       this.logger.log(`traceId[${traceId}] User are already in room，
       socketId: ${socket.id} has already in room: ${JSON.stringify(socket.rooms[room])}`);
     }
-    // 通知 NestServer 处理消息
-    const result = await this.nestClient.watchRoom(this.injectMessage(socket, message, true, true), grpcMetadata);
+    // notifies nest-server to handle `WatchRoom` messages
+    const result = await this.nestClient.watchRoom(this.injectMessage(socket, message, true, true), _grpcMetadata);
 
     if ('success' in result && result.success) {
       // 当 client 在 room 中不存在的时候，进行 join 和 userEnter 的广播
@@ -95,7 +96,6 @@ export class RoomService {
     }
 
     const endTime = +new Date();
-
     this.logger.log({
       action: 'WatchRoom',
       traceId: traceId,
@@ -106,12 +106,12 @@ export class RoomService {
   }
 
   private complementaryCollaborator(server: any, message: any, socket: Socket, spaceId: string) {
-    // 获取数表资源的所有房间
+    // get all rooms of the datasheet resource
     const roomIds = [message.roomId];
     // custom request to get multiple service node pod sockets
     server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (_err: any, replies: string | any[]) => {
       this.logger.log({ message: 'WatchRoom:ServerSideEmit', replies });
-      // 没有 room 连接，直接结束
+      // no room connection return directly
       if (!replies.length) {
         return;
       }
@@ -121,15 +121,15 @@ export class RoomService {
           socketIds.push(...ids);
         }
       }
-      // 没有客户端连接，直接结束
+      // no client connection return directly
       if (!socketIds.length) {
         return;
       }
-      const grpcMetadata = getGlobalGrpcMetadata();
+      const _grpcMetadata = initGlobalGrpcMetadata();
       const _message = this.injectMessage(socket, message, true, true);
       _message.socketIds = [...new Set([..._message.socketIds, ...socketIds])];
       _message.spaceId = spaceId;
-      const result = await this.nestClient.getActiveCollaborators(_message, grpcMetadata);
+      const result = await this.nestClient.getActiveCollaborators(_message, _grpcMetadata);
       socket.broadcast.to(socket.id).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
         collaborators: result.data?.collaborators || [],
       });
@@ -158,8 +158,8 @@ export class RoomService {
   async roomChange(message: any, socket: Socket): Promise<any> {
     const createTime = Date.now();
     const room = message.roomId;
-    const grpcMetadata = getGlobalGrpcMetadata();
-    const traceId = grpcMetadata.get('X-C-TraceId')[0];
+    const _grpcMetadata = initGlobalGrpcMetadata(this.changesetToGrpcMeta(message.changesets));
+    const traceId = _grpcMetadata.get(CHANGESETS_MESSAGE_ID)[0];
 
     this.logger.log({
       action: 'RoomChange',
@@ -167,15 +167,14 @@ export class RoomService {
       message: `RoomChange Start roomId:[${message.roomId}]`
     });
 
-    // notify nest server to process the message
-    const result = await this.nestClient.roomChange(this.injectMessage(socket, message, true), grpcMetadata);
+    // notifies nest-server to handle `RoomChange` messages
+    const result = await this.nestClient.roomChange(this.injectMessage(socket, message, true), _grpcMetadata);
     if ('success' in result && result.success) {
       const changesets = this.broadcastServerChange(room, result.data, socket);
       result.data = { changesets };
     }
 
     const endTime = +new Date();
-
     this.logger.log({
       action: 'RoomChange',
       traceId: traceId,
@@ -220,14 +219,11 @@ export class RoomService {
   }
 
   /**
-   * 绑定client的信息到message
+   * bind client information to message
    *
-   * @param socket socket连接信息
-   * @param message 客户端发送的消息
-   * @param isNeedCookie 是否需要cookie信息
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/6/30 6:18 下午
+   * @param socket socket connection information
+   * @param message message sent by client
+   * @param isNeedCookie whether cookie information is required
    */
   private injectMessage(socket: Socket, message: any, isNeedCookie = false, isNeedSocketIds = false): any {
     if (isNeedCookie) {
@@ -244,23 +240,29 @@ export class RoomService {
     return message;
   }
 
+  /**
+   * Node sharing is turned off
+   */
   async broadcastNodeShareDisabled(server: any, message: NodeShareDisableRo[]) {
-    // 不存在通信房间，直接结束
+    // there is no communication room return directly
     if (!Object.keys(server.sockets).length) {
       return;
     }
-    // 广播到各个节点的房间
+
     await message.map(ro => {
       server.to(ro.nodeId).emit(BroadcastTypes.NODE_SHARE_DISABLED, { shareIds: ro.shareIds });
       return;
     });
   }
 
+  /**
+   * Field configuration property changes
+   */
   async broadcastFieldPermissionChange(server: any, message: FieldPermissionChangeRo) {
-    // 获取数表资源的所有房间
+    // get all rooms of the datasheet resource
     const roomIds = await this.nestService.getResourceRelateRoomIds(message.datasheetId);
     const { event, changes, ...args } = message;
-    // 字段权限关闭或属性变更，直接广播到各个房间
+    // Field permission closures or attribute changes are broadcast directly to each room
     if (event === BroadcastTypes.FIELD_PERMISSION_DISABLE || event === BroadcastTypes.FIELD_PERMISSION_SETTING_CHANGE) {
       roomIds.map(roomId => {
         server.to(roomId).emit(event, args);
@@ -275,7 +277,7 @@ export class RoomService {
       }
       this.logger.log({ message: 'FieldPermission:ServerSideEmit', replies });
 
-      // 没有 room 连接，直接结束
+      // no room connection return directly
       if (!replies.length) {
         return;
       }
@@ -285,35 +287,44 @@ export class RoomService {
           socketIds.push(...ids);
         }
       }
-      // 没有客户端连接，直接结束
+      // no client connection return directly
       if (!socketIds.length) {
         return;
       }
-      // 获取 socket 信息
+
       const infos = await this.nestService.getSocketInfos(socketIds);
-      // 构建 用户ID - 权限 Map
+      // Build User ID - Permission Map
       const uuidToPermissionInfoMap = new Map<string, any>();
       for (const { uuids, ...permissionInfo } of changes) {
         for (const uuid of uuids) {
           uuidToPermissionInfoMap.set(uuid, permissionInfo);
         }
       }
-      // 广播到各个 socket
+      // broadcast to each socket
       await infos.map(info => {
-        // 分享页面的连接，仅广播字段权限开启
+        // Sharing page connection, only broadcast field permission is on
         if (info.shareId) {
           if (event === BroadcastTypes.FIELD_PERMISSION_ENABLE) {
             server.to(info.socketId).emit(event, args);
           }
           return;
         }
-        // 站内的连接，只对发生权限变更的用户广播
+        // The connection within the station is broadcast only to the user whose privileges have changed
         if (info.userId && uuidToPermissionInfoMap.has(info.userId)) {
           server.to(info.socketId).emit(event, { ...uuidToPermissionInfoMap.get(info.userId), ...args });
         }
         return;
       });
     });
+  }
+
+  private changesetToGrpcMeta(changesets: any): { [key: string]: MetadataValue } {
+    try {
+      const [{ messageId, operations: [{ cmd }] }] = changesets;
+      return { [CHANGESETS_MESSAGE_ID]: messageId, [CHANGESETS_CMD]: cmd };
+    } catch {
+      return null;
+    }
   }
 
 }

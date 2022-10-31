@@ -8,13 +8,12 @@ import { Metadata } from '@grpc/grpc-js';
 export namespace vika {
     export namespace grpc {
         export interface SocketService {
-            // 加入房间
             watchRoom(data: WatchRoomRo, metadata?: Metadata): Observable<WatchRoomVo>;
-            // 退出房间
+
             leaveRoom(data: LeaveRoomRo, metadata?: Metadata): Observable<BasicResult>;
-            // 用户修改
+
             roomChange(data: UserRoomChangeRo, metadata?: Metadata): Observable<UserRoomChangeVo>;
-            // 获取当前房间所有活跃的用户
+            // get all active users in the current room
             getActiveCollaborators(data: WatchRoomRo, metadata?: Metadata): Observable<GetActiveCollaboratorsVo>;
         }
         export interface BasicResult {
