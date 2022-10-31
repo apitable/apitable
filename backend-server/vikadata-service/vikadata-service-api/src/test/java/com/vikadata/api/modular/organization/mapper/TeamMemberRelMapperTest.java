@@ -14,14 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：组织架构-部门成员关联及其相关表测试
- * </p>
- *
- * @author wuyitao
- * @date 2022/3/31 3:27 PM
- */
 @Disabled
 public class TeamMemberRelMapperTest extends AbstractMyBatisMapperTest {
 

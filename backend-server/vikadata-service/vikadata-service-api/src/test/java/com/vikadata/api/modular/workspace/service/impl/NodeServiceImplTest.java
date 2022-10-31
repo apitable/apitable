@@ -35,7 +35,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenNotRootNodeWhenCheckNodeOpThenPass() {
-        // 给定节点不为根目录
+        // the given node is not the root directory
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         NodeOpRo folder = new NodeOpRo().toBuilder()
@@ -51,7 +51,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenRootNodeAndTrueRootManageWhenCheckOpThenPass() {
-        // 给根节点，但是空间属性允许成员根目录管理
+        // To the root node, but the spatial attribute allows member root directory management
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
@@ -64,7 +64,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenRootNodeAndFalseRootManageButUserAdminWhenCheckOpThenPass() {
-       // 给根节点，空间属性不允许成员根目录管理，但人员为管理员
+       // Root node, space attribute does not allow member root directory management, but the person is the administrator
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(), userSpace.getSpaceId());
@@ -77,13 +77,13 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenRootNodeAndFalseRootManageAndNoAdminWhenCheckOpThenNoPass() {
-        // 给根节点，空间属性不允许成员根目录管理，且人员不为管理员
+        // root node, the space attribute does not allow member root directory management, and the personnel is not the administrator
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = nodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         SpaceGlobalFeature feature = new SpaceGlobalFeature();
         feature.setRootManageable(false);
         iSpaceService.switchSpacePros(userSpace.getUserId(), userSpace.getSpaceId(), feature);
-        // 添加用户进入空间站根部门
+        // add users to the space root department
         UserEntity user = iUserService.createUserByCli("test2@vikadata.com", "123456789", "12345678910");
         Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
         iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
@@ -104,7 +104,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
                 .nodeName("folder")
                 .build();
         String parentNodeId = nodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), firstOp);
-        // 节点下添加节点
+        // add node under node
         NodeOpRo secondOp = new NodeOpRo().toBuilder()
                 .parentId(parentNodeId)
                 .type(NodeType.FOLDER.getNodeType())

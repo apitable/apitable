@@ -13,14 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：组织架构-组织单元表测试
- * </p>
- *
- * @author wuyitao
- * @date 2022/3/31 3:28 PM
- */
 public class UnitMapperTest extends AbstractMyBatisMapperTest {
     @Autowired
     UnitMapper unitMapper;

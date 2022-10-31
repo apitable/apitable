@@ -20,14 +20,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *  组织单元 服务接口实现测试
- * <p>
- *
- * @author liuzijing
- * @date 2022/5/16 16:27
- */
 public class OrganizationServiceImplTest extends AbstractIntegrationTest {
 
     @Resource

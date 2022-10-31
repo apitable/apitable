@@ -166,7 +166,7 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
     }
 
     private Long prepareUserData(String uuid) {
-        // 初始化用户
+        // initialize user
         UserEntity userEntity = UserEntity.builder().id(IdWorker.getId()).uuid(uuid).build();
         iUserService.save(userEntity);
         return userEntity.getId();
@@ -174,20 +174,20 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
 
 
     private void prepareSpaceData(String spaceId) {
-        // 初始化空间信息
+        // initialize spatial information
         SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
         iSpaceService.save(spaceEntity);
     }
 
     private Long prepareSpaceMemberData(String spaceId, Long userId) {
-        // 初始化成员信息
+        // initialize member information
         MemberEntity memberEntity = MemberEntity.builder().userId(userId).spaceId(spaceId).build();
         iMemberService.save(memberEntity);
         return memberEntity.getId();
     }
 
     private void prepareSpaceDataWithOwner(String spaceId, Long memberId) {
-        // 初始化空间信息
+        // initialize spatial information
         SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").owner(memberId).build();
         iSpaceService.save(spaceEntity);
     }

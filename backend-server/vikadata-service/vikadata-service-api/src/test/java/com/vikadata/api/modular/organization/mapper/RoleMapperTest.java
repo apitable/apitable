@@ -15,12 +15,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     组织架构-角色表mapper层测试
- * </p>
- * @author tao
- */
 public class RoleMapperTest extends AbstractMyBatisMapperTest {
 
     @Resource

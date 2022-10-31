@@ -12,13 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问接口测试：
- * </p>
- * @author wuyitao
- * @date 2022/4/6 2:43 PM
- */
 @Disabled
 public class NodeFavoriteMapperTest extends AbstractMyBatisMapperTest {
 

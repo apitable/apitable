@@ -14,14 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：工作台-邀请链接表测试
- * </p>
- *
- * @author wuyitao
- * @date 2022/4/5 1:13 AM
- */
 public class SpaceInviteLinkMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired

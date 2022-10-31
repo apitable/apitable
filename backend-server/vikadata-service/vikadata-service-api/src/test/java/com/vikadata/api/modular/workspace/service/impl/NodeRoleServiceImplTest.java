@@ -23,9 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author tao
- */
 public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -69,17 +66,17 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
                 .nodeName("folder")
                 .build();
         String parentNodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), firstOp);
-        // 打开节点的控制权限
+        // open the control permission of the node
         iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(), parentNodeId, false);
-        // 添加用户进入空间站根部门
+        // add users to the space station root department
         UserEntity user = iUserService.createUserByCli("test2@vikadata.com", "123456789", "12345678910");
         Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
         iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
-        // 节点添加新进入成员为可编辑角色
+        // node adds new entry members as editable roles
         Long newMemberId = iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), userSpace.getSpaceId());
         Long newUnitId = iUnitService.getUnitIdByRefId(newMemberId);
         iNodeRoleService.addNodeRole(userSpace.getUserId(), parentNodeId, Node.EDITOR, CollUtil.newArrayList(newUnitId));
-        // 节点下添加数表
+        // add a datasheet under the node
         NodeOpRo secondOp = new NodeOpRo().toBuilder()
                 .parentId(parentNodeId)
                 .type(NodeType.DATASHEET.getNodeType())

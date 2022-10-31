@@ -21,11 +21,6 @@ import com.vikadata.entity.TeamMemberRelEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *  组织架构-部门表 服务实现类测试
- * <p>
- */
 public class TeamServiceImplTest extends AbstractIntegrationTest {
 
     @Resource

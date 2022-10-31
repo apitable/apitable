@@ -10,13 +10,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：工作台-数据表格表测试
- * </p>
- * @author wuyitao
- * @date 2022/4/6 2:38 PM
- */
 public class DatasheetMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired

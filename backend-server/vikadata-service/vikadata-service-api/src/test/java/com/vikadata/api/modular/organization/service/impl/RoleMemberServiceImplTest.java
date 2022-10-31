@@ -25,12 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     org - role member service impl test
- * </p>
- * @author tao
- */
 public class RoleMemberServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired

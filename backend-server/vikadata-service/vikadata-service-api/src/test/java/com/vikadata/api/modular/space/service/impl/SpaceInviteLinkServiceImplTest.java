@@ -23,14 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     工作空间-公开邀请链接测试
- * </p>
- *
- * @author liuzijing
- * @date 2022/8/26
- */
 public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -57,12 +49,12 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
                 .name("测试空间站")
                 .build();
         spaceMapper.insert(space);
-        // 添加缓存
+        // add cache
         String key = RedisConstants.getUserInvitedJoinSpaceKey(userId, spaceId);
         redisTemplate.opsForValue().set(key, userId, 5, TimeUnit.MINUTES);
-        // 判断是否是新用户加入空加入空间站，并发放附件容量奖励
+        // Judge whether it is a new user joining the space station, and issue an accessory capacity reward.
         iSpaceInviteLinkService.checkIsNewUserRewardCapacity(userId, userName, spaceId);
-        // 查询奖励附件容量
+        // query bonus attachment capacity
         Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
         assertThat(number).isEqualTo(314572800);
     }

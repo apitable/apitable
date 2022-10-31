@@ -31,15 +31,6 @@ import javax.annotation.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据层访问测试：组织架构-成员表测试
- * </p>
- *
- *
- * @author wuyitao
- * @date 2022/3/31 3:26 PM
- */
 @Disabled
 public class MemberMapperTest extends AbstractMyBatisMapperTest {
 

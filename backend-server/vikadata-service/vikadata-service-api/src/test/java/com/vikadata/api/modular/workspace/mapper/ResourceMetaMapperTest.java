@@ -13,14 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：工作台-资源元数据表测试
- * </p>
- *
- * @author wuyitao
- * @date 2022/4/6 2:45 PM
- */
 public class ResourceMetaMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired

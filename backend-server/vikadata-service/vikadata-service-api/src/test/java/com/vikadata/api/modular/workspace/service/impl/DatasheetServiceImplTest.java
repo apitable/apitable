@@ -20,12 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-/**
- * 数据表格表 服务类测试
- *
- * @author liuzijing
- * @date 2022/7/30
- */
 @Disabled("no assert")
 public class DatasheetServiceImplTest extends AbstractIntegrationTest {
 

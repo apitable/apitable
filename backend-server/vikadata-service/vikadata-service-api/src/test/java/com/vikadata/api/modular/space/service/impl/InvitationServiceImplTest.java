@@ -24,13 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * <p>
- *   space--invitation service test
- * </p>
- * @author zoe zheng
- * @date 2022/9/13 17:25
- */
 public class InvitationServiceImplTest extends AbstractIntegrationTest {
     @Autowired
     private InvitationMapper invitationMapper;

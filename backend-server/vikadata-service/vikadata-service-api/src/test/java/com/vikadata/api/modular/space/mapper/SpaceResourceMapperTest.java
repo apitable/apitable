@@ -16,13 +16,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：工作台-权限资源及其相关表测试
- * </p>
- * @author wuyitao
- * @date 2022/4/5 1:17 AM
- */
 public class SpaceResourceMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired

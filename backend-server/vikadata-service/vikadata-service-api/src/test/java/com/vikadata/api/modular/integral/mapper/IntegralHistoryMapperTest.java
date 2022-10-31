@@ -12,15 +12,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：积分系统-积分变更历史表测试
- * </p>
- *
- *
- * @author wuyitao
- * @date 2022/3/31 2:06 PM
- */
 public class IntegralHistoryMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired

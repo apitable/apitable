@@ -64,8 +64,10 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenRootTeamWhenGetFieldRolesThenReturnRootTeamWithEditRole() {
-        // 获取字段权限时，如果字段没有开启权限，且所在的数表没有开启权限且数表的父节点们没有开启权限控制。
-        // 默认管理员和根部门。
+        // When obtaining field permissions, if the field does not have permission to enable,
+        // and the number table where it is located does not have permission to enable,
+        // and the parent nodes of the number table do not have permission control enabled.
+        // default administrator and root department
         MockUserSpace userSpace = createSingleUserAndSpace();
         String nodeId = initNode(userSpace, false, false);
         DatasheetSnapshot datasheetSnapshot = iDatasheetMetaService.getMetaByDstId(nodeId);
@@ -82,8 +84,9 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenDatasheetWhenGetFieldRoles() {
-        // 获取字段权限时，如果字段没有开启权限，且所在的数表开启权限。
-        // 默认管理员和数表权限角色。
+        // When you obtain field permissions, if the field does not have the permission to enable,
+        // and the table where it is located has the permission to enable.
+        // default administrator and table permission roles
         MockUserSpace userSpace = createSingleUserAndSpace();
         String nodeId = initNode(userSpace, true, false);
         DatasheetSnapshot datasheetSnapshot = iDatasheetMetaService.getMetaByDstId(nodeId);
@@ -100,8 +103,9 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenDatasheetWithParentNodeWhenGetFieldRoles() {
-        // 获取字段权限时，如果字段没有开启权限，且所在的数表没开启权限而父节点开启控制角色权限。
-        // 默认管理员和数表父节点权限角色。
+        // When obtaining field permissions, if the field does not have the enable permission,
+        // and the number table where it is located does not have the enable permission, the parent node has the control role permission.
+        // Default administrator and number table parent node permission roles.
         MockUserSpace userSpace = createSingleUserAndSpace();
         String nodeId = initNode(userSpace, true, true);
         DatasheetSnapshot datasheetSnapshot = iDatasheetMetaService.getMetaByDstId(nodeId);
@@ -116,9 +120,10 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenWhenAddExtendFieldRoleThenAddRootTeamControl() {
-        // 自动开启字段权限时，
-        // 如果字段没有开启权限，且所在的数表没有开启权限且数表的父节点们没有开启权限控制。
-        // 默认添加根部门可编辑权限。
+        // When field permissions are automatically turned on,
+        // If the field does not have permission to enable, and the number table where it is located does not have permission to enable,
+        // and the parent nodes of the number table do not have permission control enabled.
+        // the root department can be edited by default
         MockUserSpace userSpace = createSingleUserAndSpace();
         String nodeId = initNode(userSpace, false, false);
         String fieldId = getNoFirstFieldId(nodeId);
@@ -133,9 +138,10 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenWhenAddExtendFieldRoleThenAddDatasheetControl() {
-        // 自动开启字段权限时，
-        // 如果字段没有开启权限，且所在的数表开启权限。
-        // 默认添加数表权限角色。
+        // When field permissions are automatically turned on,
+        // If the field does not have the permission to enable,
+        // and the number table to which it is located has the permission to enable.
+        // the number table permission role is added by default.
         MockUserSpace userSpace = createSingleUserAndSpace();
         String nodeId = initNode(userSpace, true, false);
         String fieldId = getNoFirstFieldId(nodeId);
@@ -150,9 +156,10 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void givenWhenAutoDisableRoleExtendThenAddParentControl() {
-        // 自动开启字段权限时，
-        // 如果字段没有开启权限，且所在的数表没开启权限而父节点开启控制角色权限。
-        // 默认添加父节点控制角色权限。
+        // When field permissions are automatically turned on,
+        // If the field does not have permission to enable, and the table where it is located does not have permission to enable,
+        // the parent node has permission to enable the control role.
+        // Add parent node control role permissions by default.
         MockUserSpace userSpace = createSingleUserAndSpace();
         String nodeId = initNode(userSpace, true, true);
         String fieldId = getNoFirstFieldId(nodeId);
@@ -198,15 +205,15 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
         }
         if(isAddControl) {
             iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(), controlNodeId, false);
-            // 添加用户进入空间站根部门
+            // add users to the space root department
             UserEntity user = iUserService.createUserByCli("test2@vikadata.com", "123456789", "12345678910");
             Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
             iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
-            // 节点添加新进入成员为可管理角色
+            // node adds new entry members to manageable roles
             Long newMemberId = iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), userSpace.getSpaceId());
             Long newUnitId = iUnitService.getUnitIdByRefId(newMemberId);
             iNodeRoleService.addNodeRole(userSpace.getUserId(), controlNodeId, Node.MANAGER, CollUtil.newArrayList(newUnitId));
-            // 为根部门添加可阅读角色
+            // add a readable role to the root department
             Long rootTeamUnitId = iTeamService.getRootTeamUnitId(userSpace.getSpaceId());
             iNodeRoleService.addNodeRole(userSpace.getUserId(), controlNodeId, Node.READER, CollUtil.newArrayList(rootTeamUnitId));
         }
@@ -228,9 +235,9 @@ public class FieldRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     void bugAboutGivenDatasheetWhenGetFieldRoles() {
-        // 获取字段权限时，如果字段没有开启权限，且所在的数表开启权限。
-        // 默认管理员和数表权限角色。
-        // 如果控制权限编辑角色只有owner，那么会发生in报错，现在已修复。
+        // When you obtain field permissions, if the field does not have the permission to enable, and the table where it is located has the permission to enable.
+        // default administrator and table permission roles
+        // If the control permission editing role is only owner, an in error will occur and has been fixed now.
         MockUserSpace userSpace = createSingleUserAndSpace();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
         NodeOpRo ro = new NodeOpRo().toBuilder()

@@ -24,14 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Chambers
- * @date 2022/7/26
- */
 public class SpaceRoleServiceImplTest extends AbstractIntegrationTest {
 
     @Resource

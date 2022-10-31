@@ -19,13 +19,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *     数据访问层测试：工作台-组件发布历史表测试
- * </p>
- * @author wuyitao
- * @date 2022/4/6 2:47 PM
- */
 @Disabled
 public class WidgetPackageReleaseMapperTest extends AbstractMyBatisMapperTest {
 
