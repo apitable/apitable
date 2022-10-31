@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import javax.annotation.Resource;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -53,8 +52,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
         assertThat(event).as("数据无法解析:base_trail").isNotNull();
         // 订单购买的付费方案
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(price).as("钉钉试用计划配置错误").isNotNull();
     }
 
@@ -69,8 +67,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         event.setServiceStopTime(now.plusMonths(1).toInstant(testTimeZone).toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
         // 订单购买的付费方案
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
         assertThat(vo.getOnTrial()).isTrue();
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
@@ -86,8 +83,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getOnTrial()).isFalse();
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
@@ -102,8 +98,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_100_1_per_year.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getOnTrial()).isFalse();
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
@@ -122,8 +117,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
@@ -165,8 +159,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
@@ -189,8 +182,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
@@ -235,8 +227,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/standard_200_3_renew_per_month.json"));
 
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getOnTrial()).isFalse();
         assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }

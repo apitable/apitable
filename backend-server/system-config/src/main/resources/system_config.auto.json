@@ -3500,7 +3500,6 @@
                 "ch_name": "钉钉旗舰版",
                 "prices": [
                     "price_dingtalk_enterprise_200_1",
-                    "price_dingtalk_enterprise_200_12",
                     "price_dingtalk_enterprise_200_2",
                     "price_dingtalk_enterprise_200_3",
                     "price_dingtalk_enterprise_200_4",
@@ -3549,7 +3548,6 @@
                     "price_dingtalk_enterprise_300_9",
                     "price_dingtalk_enterprise_300_10",
                     "price_dingtalk_enterprise_300_11",
-                    "price_dingtalk_enterprise_200_24",
                     "price_dingtalk_enterprise_300_24",
                     "price_dingtalk_enterprise_500_24",
                     "price_dingtalk_enterprise_1000_24",
@@ -4178,9 +4176,6 @@
                     "price_wecom_enterprise_200_12",
                     "price_wecom_enterprise_200_24",
                     "price_wecom_enterprise_200_36",
-                    "price_wecom_enterprise_200_12",
-                    "price_wecom_enterprise_200_24",
-                    "price_wecom_enterprise_200_36",
                     "price_wecom_enterprise_300_12",
                     "price_wecom_enterprise_300_24",
                     "price_wecom_enterprise_300_36",
@@ -4477,7 +4472,6 @@
                 "description": "钉钉企业级200人年付",
                 "prices": [
                     "price_dingtalk_enterprise_200_1",
-                    "price_dingtalk_enterprise_200_12",
                     "price_dingtalk_enterprise_200_2",
                     "price_dingtalk_enterprise_200_3",
                     "price_dingtalk_enterprise_200_4",
@@ -4769,9 +4763,6 @@
                 "recurringPrice": 165376,
                 "channel": "dingtalk",
                 "description": "钉钉企业级200人两年付",
-                "prices": [
-                    "price_dingtalk_enterprise_200_24"
-                ],
                 "product_en_name": "Ultimate Plan with DingTalk"
             },
             "dingtalk_enterprise_300_biennial_v1": {
@@ -10809,9 +10800,6 @@
                 "channel": "wecom",
                 "description": "企业微信旗舰版200人",
                 "prices": [
-                    "price_wecom_enterprise_200_12",
-                    "price_wecom_enterprise_200_24",
-                    "price_wecom_enterprise_200_36",
                     "price_wecom_enterprise_200_12",
                     "price_wecom_enterprise_200_24",
                     "price_wecom_enterprise_200_36"
@@ -21263,21 +21251,6 @@
                 "origin_price": 106688,
                 "product": "Wecom_Enterprise"
             },
-            "price_wecom_enterprise_200_12": {
-                "plan_id": "wecom_enterprise_200_v1",
-                "product_ch_name": "企业微信旗舰版",
-                "product_en_name": "Ultimate Plan with WeCom",
-                "channel": "wecom",
-                "good_en_title": "Ultimate Plan with WeCom-200人-1年",
-                "seat": 200,
-                "month": 12,
-                "paid_price": 116680,
-                "id": "price_wecom_enterprise_200_12",
-                "online": true,
-                "good_ch_title": "企业微信旗舰版-200人-1年",
-                "origin_price": 116680,
-                "product": "Wecom_Enterprise"
-            },
             "price_wecom_enterprise_120_24": {
                 "plan_id": "wecom_enterprise_120_v1",
                 "product_ch_name": "企业微信旗舰版",
@@ -21348,20 +21321,6 @@
                 "origin_price": 213376,
                 "product": "Wecom_Enterprise"
             },
-            "price_wecom_enterprise_200_24": {
-                "plan_id": "wecom_enterprise_200_v1",
-                "product_ch_name": "企业微信旗舰版",
-                "product_en_name": "Ultimate Plan with WeCom",
-                "channel": "wecom",
-                "good_en_title": "Ultimate Plan with WeCom-200人-2年",
-                "seat": 200,
-                "month": 24,
-                "paid_price": 0,
-                "id": "price_wecom_enterprise_200_24",
-                "online": true,
-                "good_ch_title": "企业微信旗舰版-200人-2年",
-                "product": "Wecom_Enterprise"
-            },
             "price_wecom_enterprise_120_36": {
                 "plan_id": "wecom_enterprise_120_v1",
                 "product_ch_name": "企业微信旗舰版",
@@ -21430,20 +21389,6 @@
                 "id": "price_wecom_enterprise_300_36",
                 "good_ch_title": "企业微信旗舰版-300人-3年",
                 "origin_price": 320064,
-                "product": "Wecom_Enterprise"
-            },
-            "price_wecom_enterprise_200_36": {
-                "plan_id": "wecom_enterprise_200_v1",
-                "product_ch_name": "企业微信旗舰版",
-                "product_en_name": "Ultimate Plan with WeCom",
-                "channel": "wecom",
-                "good_en_title": "Ultimate Plan with WeCom-200人-3年",
-                "seat": 200,
-                "month": 36,
-                "paid_price": 0,
-                "id": "price_wecom_enterprise_200_36",
-                "online": true,
-                "good_ch_title": "企业微信旗舰版-200人-3年",
                 "product": "Wecom_Enterprise"
             },
             "price_dingtalk_standard_10_12": {
@@ -21683,21 +21628,6 @@
                 "paid_price": 0,
                 "id": "price_dingtalk_enterprise_200_1",
                 "good_ch_title": "钉钉旗舰版-200人-1个月",
-                "product": "Dingtalk_Enterprise"
-            },
-            "price_dingtalk_enterprise_200_24": {
-                "plan_id": "dingtalk_enterprise_200_annual_v1",
-                "product_ch_name": "钉钉旗舰版",
-                "product_en_name": "Ultimate Plan with DingTalk",
-                "channel": "dingtalk",
-                "good_en_title": "Ultimate Plan with DingTalk-200人-2年",
-                "seat": 200,
-                "month": 24,
-                "paid_price": 116680,
-                "id": "price_dingtalk_enterprise_200_24",
-                "online": true,
-                "good_ch_title": "钉钉旗舰版-200人-2年",
-                "origin_price": 116680,
                 "product": "Dingtalk_Enterprise"
             },
             "price_dingtalk_enterprise_300_1": {
@@ -22954,21 +22884,6 @@
                 "paid_price": 0,
                 "id": "price_dingtalk_enterprise_120_11",
                 "good_ch_title": "钉钉旗舰版-120人-11个月",
-                "product": "Dingtalk_Enterprise"
-            },
-            "price_dingtalk_enterprise_200_12": {
-                "plan_id": "dingtalk_enterprise_200_annual_v1",
-                "product_ch_name": "钉钉旗舰版",
-                "product_en_name": "Ultimate Plan with DingTalk",
-                "channel": "dingtalk",
-                "good_en_title": "Ultimate Plan with DingTalk-200人-1年",
-                "seat": 200,
-                "month": 12,
-                "paid_price": 116680,
-                "id": "price_dingtalk_enterprise_200_12",
-                "online": true,
-                "good_ch_title": "钉钉旗舰版-200人-1年",
-                "origin_price": 116680,
                 "product": "Dingtalk_Enterprise"
             },
             "price_dingtalk_enterprise_200_2": {
@@ -24484,6 +24399,51 @@
                 "good_ch_title": "企业微信专业版-200人-3年",
                 "product": "Wecom_Profession"
             },
+            "price_wecom_enterprise_200_12": {
+                "plan_id": "wecom_enterprise_200_v1",
+                "product_ch_name": "企业微信旗舰版",
+                "product_en_name": "Ultimate Plan with WeCom",
+                "channel": "wecom",
+                "good_en_title": "Ultimate Plan with WeCom-200人-1年",
+                "seat": 200,
+                "month": 12,
+                "paid_price": 116680,
+                "id": "price_wecom_enterprise_200_12",
+                "online": true,
+                "good_ch_title": "企业微信旗舰版-200人-1年",
+                "origin_price": 116680,
+                "product": "Wecom_Enterprise"
+            },
+            "price_wecom_enterprise_200_24": {
+                "plan_id": "wecom_enterprise_200_v1",
+                "product_ch_name": "企业微信旗舰版",
+                "product_en_name": "Ultimate Plan with WeCom",
+                "channel": "wecom",
+                "good_en_title": "Ultimate Plan with WeCom-200人-2年",
+                "seat": 200,
+                "month": 24,
+                "paid_price": 165376,
+                "id": "price_wecom_enterprise_200_24",
+                "online": true,
+                "good_ch_title": "企业微信旗舰版-200人-2年",
+                "origin_price": 165376,
+                "product": "Wecom_Enterprise"
+            },
+            "price_wecom_enterprise_200_36": {
+                "plan_id": "wecom_enterprise_200_v1",
+                "product_ch_name": "企业微信旗舰版",
+                "product_en_name": "Ultimate Plan with WeCom",
+                "channel": "wecom",
+                "good_en_title": "Ultimate Plan with WeCom-200人-3年",
+                "seat": 200,
+                "month": 36,
+                "paid_price": 248064,
+                "id": "price_wecom_enterprise_200_36",
+                "online": true,
+                "good_ch_title": "企业微信旗舰版-200人-3年",
+                "origin_price": 248064,
+                "product": "Wecom_Enterprise"
+            },
             "price_dingtalk_profession_200_12": {
                 "plan_id": "dingtalk_profession_200",
                 "product_ch_name": "钉钉专业版",
@@ -24512,6 +24472,36 @@
                 "online": true,
                 "good_ch_title": "钉钉专业版-200人-2年",
                 "product": "Dingtalk_Profession"
+            },
+            "price_dingtalk_enterprise_200_12": {
+                "plan_id": "dingtalk_enterprise_200_annual_v1",
+                "product_ch_name": "钉钉旗舰版",
+                "product_en_name": "Ultimate Plan with DingTalk",
+                "channel": "dingtalk",
+                "good_en_title": "Ultimate Plan with DingTalk-200人-1年",
+                "seat": 200,
+                "month": 12,
+                "paid_price": 116680,
+                "id": "price_dingtalk_enterprise_200_12",
+                "online": true,
+                "good_ch_title": "钉钉旗舰版-200人-1年",
+                "origin_price": 116680,
+                "product": "Dingtalk_Enterprise"
+            },
+            "price_dingtalk_enterprise_200_24": {
+                "plan_id": "dingtalk_enterprise_200_annual_v1",
+                "product_ch_name": "钉钉旗舰版",
+                "product_en_name": "Ultimate Plan with DingTalk",
+                "channel": "dingtalk",
+                "good_en_title": "Ultimate Plan with DingTalk-200人-2年",
+                "seat": 200,
+                "month": 24,
+                "paid_price": 116680,
+                "id": "price_dingtalk_enterprise_200_24",
+                "online": true,
+                "good_ch_title": "钉钉旗舰版-200人-2年",
+                "origin_price": 116680,
+                "product": "Dingtalk_Enterprise"
             }
         },
         "pricelist": {
@@ -26898,8 +26888,6 @@
             "DT_GOODS_881632919748679_851003": {
                 "billing_price_id": [
                     "price_dingtalk_enterprise_200_1",
-                    "price_dingtalk_enterprise_200_24",
-                    "price_dingtalk_enterprise_200_12",
                     "price_dingtalk_enterprise_200_2",
                     "price_dingtalk_enterprise_200_3",
                     "price_dingtalk_enterprise_200_4",
@@ -26909,7 +26897,9 @@
                     "price_dingtalk_enterprise_200_8",
                     "price_dingtalk_enterprise_200_9",
                     "price_dingtalk_enterprise_200_10",
-                    "price_dingtalk_enterprise_200_11"
+                    "price_dingtalk_enterprise_200_11",
+                    "price_dingtalk_enterprise_200_12",
+                    "price_dingtalk_enterprise_200_24"
                 ],
                 "id": "DT_GOODS_881632919748679_851003",
                 "ding_talk_item_code": "DT_GOODS_881632919748679_851003"
@@ -27082,31 +27072,31 @@
                 "id": "DT_GOODS_881632901465805_1808003",
                 "ding_talk_item_code": "DT_GOODS_881632901465805_1808003"
             },
-            "DT_GOODS_881632901465805_1808007": {
-                "billing_price_id": [
-                    "price_dingtalk_profession_200_12",
-                    "price_dingtalk_profession_200_24"
-                ],
-                "id": "DT_GOODS_881632901465805_1808007",
-                "ding_talk_item_code": "DT_GOODS_881632901465805_1808007"
-            },
             "DT_GOODS_881632901465805_1808008": {
                 "billing_price_id": [
-                    "price_dingtalk_enterprise_50_12",
-                    "price_dingtalk_standard_50_24"
+                    "price_dingtalk_enterprise_30_12",
+                    "price_dingtalk_enterprise_30_24"
                 ],
                 "id": "DT_GOODS_881632901465805_1808008",
                 "ding_talk_item_code": "DT_GOODS_881632901465805_1808008"
             },
             "DT_GOODS_881632901465805_1808006": {
                 "billing_price_id": [
+                    "price_dingtalk_enterprise_50_12",
+                    "price_dingtalk_standard_50_24"
+                ],
+                "id": "DT_GOODS_881632901465805_1808006",
+                "ding_talk_item_code": "DT_GOODS_881632901465805_1808006"
+            },
+            "DT_GOODS_881632901465805_1809015": {
+                "billing_price_id": [
                     "price_dingtalk_enterprise_100_12",
                     "price_dingtalk_enterprise_100_24",
                     "price_dingtalk_enterprise_200_12",
                     "price_dingtalk_enterprise_200_24"
                 ],
-                "id": "DT_GOODS_881632901465805_1808006",
-                "ding_talk_item_code": "DT_GOODS_881632901465805_1808006"
+                "id": "DT_GOODS_881632901465805_1809015",
+                "ding_talk_item_code": "DT_GOODS_881632901465805_1809015"
             },
             "DT_GOODS_881632901465805_1810011": {
                 "billing_price_id": [
@@ -27139,6 +27129,102 @@
                 ],
                 "id": "DT_GOODS_881632901465805_1809016",
                 "ding_talk_item_code": "DT_GOODS_881632901465805_1809016"
+            },
+            "DT_GOODS_881632901465805_1808007": {
+                "billing_price_id": [
+                    "price_dingtalk_profession_200_12",
+                    "price_dingtalk_profession_200_24"
+                ],
+                "id": "DT_GOODS_881632901465805_1808007",
+                "ding_talk_item_code": "DT_GOODS_881632901465805_1808007"
+            },
+            "DT_GOODS_881632919748679_1846025": {
+                "billing_price_id": [
+                    "price_dingtalk_standard_30_12",
+                    "price_dingtalk_standard_30_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846025",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846025"
+            },
+            "DT_GOODS_881632919748679_1846026": {
+                "billing_price_id": [
+                    "price_dingtalk_standard_50_12",
+                    "price_dingtalk_standard_50_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846026",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846026"
+            },
+            "DT_GOODS_881632919748679_1846024": {
+                "billing_price_id": [
+                    "price_dingtalk_standard_100_12",
+                    "price_dingtalk_standard_100_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846024",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846024"
+            },
+            "DT_GOODS_881632919748679_1846018": {
+                "billing_price_id": [
+                    "price_dingtalk_profession_30_12",
+                    "price_dingtalk_profession_30_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846018",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846018"
+            },
+            "DT_GOODS_881632919748679_1846019": {
+                "billing_price_id": [
+                    "price_dingtalk_profession_50_12",
+                    "price_dingtalk_profession_50_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846019",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846019"
+            },
+            "DT_GOODS_881632919748679_1846016": {
+                "billing_price_id": [
+                    "price_dingtalk_profession_100_12",
+                    "price_dingtalk_profession_100_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846016",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846016"
+            },
+            "DT_GOODS_881632919748679_1846017": {
+                "billing_price_id": [
+                    "price_dingtalk_profession_200_12",
+                    "price_dingtalk_profession_200_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846017",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846017"
+            },
+            "DT_GOODS_881632919748679_1846022": {
+                "billing_price_id": [
+                    "price_dingtalk_enterprise_30_12",
+                    "price_dingtalk_enterprise_30_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846022",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846022"
+            },
+            "DT_GOODS_881632919748679_1846023": {
+                "billing_price_id": [
+                    "price_dingtalk_enterprise_50_12",
+                    "price_dingtalk_enterprise_50_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846023",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846023"
+            },
+            "DT_GOODS_881632919748679_1846020": {
+                "billing_price_id": [
+                    "price_dingtalk_enterprise_100_12",
+                    "price_dingtalk_enterprise_100_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846020",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846020"
+            },
+            "DT_GOODS_881632919748679_1846021": {
+                "billing_price_id": [
+                    "price_dingtalk_enterprise_200_12",
+                    "price_dingtalk_enterprise_200_24"
+                ],
+                "id": "DT_GOODS_881632919748679_1846021",
+                "ding_talk_item_code": "DT_GOODS_881632919748679_1846021"
             }
         }
     }

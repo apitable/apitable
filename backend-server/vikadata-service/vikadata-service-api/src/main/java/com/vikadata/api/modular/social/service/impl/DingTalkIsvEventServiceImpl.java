@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -571,8 +570,7 @@ public class DingTalkIsvEventServiceImpl implements IDingTalkIsvEventService {
     void saveDingTalkSubscriptionInfo(String spaceId, BaseOrderEvent event) {
         DingTalkSubscriptionInfo info = new DingTalkSubscriptionInfo();
         // 订单购买的付费方案
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         info.setSpaceId(spaceId);
         info.setSpaceName(iSpaceService.getNameBySpaceId(spaceId));
         if (event.getClass().equals(SyncHttpMarketOrderEvent.class)) {

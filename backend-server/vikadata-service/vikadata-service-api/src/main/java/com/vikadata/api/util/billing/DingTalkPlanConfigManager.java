@@ -2,7 +2,6 @@ package com.vikadata.api.util.billing;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +31,10 @@ public class DingTalkPlanConfigManager {
      * 获取钉钉价格方案
      *
      * @param itemCode 钉钉商品码
-     * @param month 订阅时常
      * @author zoe zheng
      * @date 2022/5/19 17:39
      */
-    public static Price getPriceByItemCodeAndMonth(String itemCode, Integer month) {
+    public static Price getPriceByItemCodeAndMonth(String itemCode) {
         DingTalkPlan dingTalkPlan = DING_TALK_PLAN.get(itemCode);
         if (dingTalkPlan == null) {
             return null;
@@ -46,20 +44,6 @@ public class DingTalkPlanConfigManager {
         if (CollUtil.isEmpty(billingPriceId)) {
             return null;
         }
-        // 如果是一对一的关系，直接返回对应的价目对应的订阅方案
-        if (billingPriceId.size() == 1) {
-            return BillingConfigManager.getBillingConfig().getPrices().get(billingPriceId.get(0));
-        }
-
-        // 获取价目表
-        Map<String, Price> prices = BillingConfigManager.getBillingConfig().getPrices();
-        for (String priceId : billingPriceId) {
-            Price price = prices.get(priceId);
-            // 如果 月份相同直接返回
-            if (Objects.equals(month, price.getMonth())) {
-                return price;
-            }
-        }
-        return null;
+        return BillingConfigManager.getBillingConfig().getPrices().get(billingPriceId.get(0));
     }
 }

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -204,8 +203,7 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
             return null;
         }
         // 订单购买的付费方案
-        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode(),
-                (int) DateUtil.betweenMonth(DateUtil.date(event.getServiceStartTime()), DateUtil.date(event.getServiceStopTime()), false));
+        Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         // price是null的情况，那么购买的是钉钉基础版
         Product product = ObjectUtil.isNull(price) ? BillingConfigManager.getCurrentFreeProduct(ProductChannel.DINGTALK)
                 : BillingConfigManager.getBillingConfig().getProducts().get(price.getProduct());
