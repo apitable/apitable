@@ -13,6 +13,7 @@ import { LoggerModule } from 'shared/logger/winston.module';
 import { QueueWorkerModule } from './_modules/queue.worker.module';
 import { SchedTaskModule } from './_modules/sched.task.module';
 import { SocketModule } from './_modules/socket.module';
+import { SocketModule as SocketModuleNew } from './socket/socket.module';
 import { I18nModule } from 'nestjs-i18n';
 import { RedisModule, RedisModuleOptions } from '@vikadata/nestjs-redis';
 import path, { resolve } from 'path';
@@ -20,7 +21,36 @@ import environmentConfig from './shared/services/config/environment.config';
 import { ZipkinModule } from './_modules/zipkin.module';
 import { ActuatorModule } from 'actuator/actuator.module';
 import { FusionApiModule } from 'fusion/fusion.api.module';
-import { InternalModule } from '_modules/internal.module';
+import { GrpcController } from 'database/controllers/grpc.controller';
+import { FormController } from 'database/controllers/form.controller';
+import { MirrorController } from 'database/controllers/mirror.controller';
+import { ResourceController } from 'database/controllers/resource.controller';
+import { MirrorService } from 'database/services/mirror/mirror.service';
+import { FormService } from 'database/services/form/form.service';
+import { ResourceServiceModule } from '_modules/resource.service.module';
+import { FusionApiServiceModule } from '_modules/fusion.api.service.module';
+import { OtModule } from '_modules/ot.module';
+import { CommandServiceModule } from '_modules/command.service.module';
+import { DatasheetServiceModule } from '_modules/datasheet.service.module';
+import { ResourceMetaRepository } from 'database/repositories/resource.meta.repository';
+import { NodeServiceModule } from '_modules/node.service.module';
+import { UserServiceModule } from '_modules/user.service.module';
+import { DatabaseModule } from 'database/database.module';
+import { RobotModule } from 'automation/robot.module';
+import { GrpcServiceModule } from 'shared/services/grpc/grpc.service.module';
+import { DashboardController } from 'database/controllers/dashboard.controller';
+import { EventService } from 'database/services/event/event.service';
+import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
+import { AutomationTriggerTypeRepository } from 'automation/repositories/automation.trigger.type.repository';
+import { EntryModule } from 'entry.module';
+import { AutomationService } from 'automation/services/automation.service';
+import { NodeRepository } from 'database/repositories/node.repository';
+import { AutomationRobotRepository } from 'automation/repositories/automation.robot.repository';
+import { AutomationRunHistoryRepository } from 'automation/repositories/automation.run.history.repository';
+import { AutomationServiceRepository } from 'automation/repositories/automation.service.repository';
+import { AutomationActionTypeRepository } from 'automation/repositories/automation.action.type.repository';
+import { DashboardService } from 'database/services/dashboard/dashboard.service';
+import { RestModule } from '_modules/rest.module';
 
 // 初始化环境，本地开发为development，部署线上则需要指定NODE_ENV，非开发环境可选值[integration, staging, production]
 // 环境已经使用app.environment设置了
@@ -67,9 +97,40 @@ import { InternalModule } from '_modules/internal.module';
     }),
   ScheduleModule.forRoot(),
   SchedTaskModule.register(enableScheduler),
+  SocketModuleNew.register(true), // TODO: whether or not use socket-module
   QueueWorkerModule,
-  ActuatorModule, FusionApiModule, InternalModule
+  ActuatorModule, FusionApiModule,
+  DatabaseModule, RobotModule, OtModule, GrpcServiceModule, NodeServiceModule,
+  UserServiceModule, 
+  NodeServiceModule, 
+  TypeOrmModule.forFeature([ResourceMetaRepository]),
+  DatasheetServiceModule,
+  CommandServiceModule,
+  OtModule,
+  FusionApiServiceModule,
+  ResourceServiceModule,
+  UserServiceModule,
+  NodeServiceModule,
+  DatasheetServiceModule,
+  CommandServiceModule,
+  TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    AutomationTriggerRepository,
+    AutomationRobotRepository,
+    AutomationRunHistoryRepository,
+    AutomationServiceRepository,
+    AutomationTriggerTypeRepository,
+    AutomationActionTypeRepository
+    ]),
+  TypeOrmModule.forFeature([ResourceMetaRepository]),
+  NodeServiceModule,
+  RestModule,
+
+  EntryModule,
   ],
+  controllers: [DashboardController, GrpcController, FormController, MirrorController, ResourceController],
+  providers: [DashboardService, EventService, FormService, MirrorService, AutomationService, ],
   })
 export class AppModule {
 }

@@ -4,7 +4,6 @@ import { AutomationActionRepository } from './repositories/automation.action.rep
 import { AutomationRobotRepository } from './repositories/automation.robot.repository';
 import { AutomationRunHistoryRepository } from './repositories/automation.run.history.repository';
 import { AutomationTriggerRepository } from './repositories/automation.trigger.repository';
-import { AutomationServiceModule } from '../_modules/automation.service.module';
 import { UserServiceModule } from '../_modules/user.service.module';
 import { RobotActionController } from './action.controller';
 import { RobotActionTypeController } from './action.type.controller';
@@ -13,9 +12,16 @@ import { RobotRunHistoryController } from './run.history.controller';
 import { RobotServiceController } from './service.controller';
 import { RobotTriggerController } from './trigger.controller';
 import { RobotTriggerTypeController } from './trigger.type.controller';
+import { SharedModule } from 'shared/shared.module';
+import { AutomationService } from './services/automation.service';
+import { NodeRepository } from 'database/repositories/node.repository';
+import { AutomationServiceRepository } from './repositories/automation.service.repository';
+import { AutomationTriggerTypeRepository } from './repositories/automation.trigger.type.repository';
+import { AutomationActionTypeRepository } from './repositories/automation.action.type.repository';
 
 @Module({
   imports: [
+  SharedModule,
   TypeOrmModule.forFeature([
     AutomationTriggerRepository,
     AutomationActionRepository,
@@ -23,7 +29,18 @@ import { RobotTriggerTypeController } from './trigger.type.controller';
     AutomationRunHistoryRepository,
     ]),
   UserServiceModule,
-  AutomationServiceModule,
+  TypeOrmModule.forFeature([
+    NodeRepository,
+    AutomationTriggerRepository,
+    AutomationRobotRepository,
+    AutomationRunHistoryRepository,
+    AutomationServiceRepository,
+    AutomationTriggerTypeRepository,
+    AutomationActionTypeRepository
+    ]),
+  ],
+  providers: [
+  AutomationService,
   ],
   controllers: [
   RobotController,
