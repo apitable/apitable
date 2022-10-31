@@ -1,14 +1,14 @@
-// 公用状态码
+// public status code
 export enum CommonStatusCode {
   DEFAULT_SUCCESS_CODE = 200,
   DEFAULT_ERROR_CODE = 500,
 }
 
-// 公用状态码信息
+// public status code information
 export enum CommonStatusMsg {
   DEFAULT_SUCCESS_MESSAGE = 'SUCCESS',
   DEFAULT_ERROR_MESSAGE = 'SERVER_ERROR',
 }
 
-// 鉴权令牌
+// authentication token
 export const AUTH_TOKEN = 'FutureIsComing';

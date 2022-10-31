@@ -7,7 +7,7 @@ export class GatewayConstants {
   public static readonly ROOM_PATH: string = '/room';
   public static readonly ROOM_NAMESPACE: string = 'room';
   /**
-   * ack超时时间默认30000ms(30s)
+   * ack timeout default 30000ms(30s)
    */
   public static readonly ACK_TIMEOUT = parseInt(process.env.ACK_TIMEOUT, 10) || 30000;
 

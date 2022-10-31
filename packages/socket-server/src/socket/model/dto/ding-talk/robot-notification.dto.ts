@@ -2,12 +2,12 @@ import { RobotNotificationTypeEnum } from '../../../enum/ding-talk/robot-notific
 
 interface NotificationAt {
   /**
-   * 手机号码
-   * 被@人的手机号（在content里添加@人的手机号）
+   * Cell phone number
+   * Cell phone number of the person being @ (add the @person's cell phone number to the content)
    */
   atMobiles: string[];
   /**
-   * 是否@所有人
+   * Whether @all
    */
   isAll: boolean;
 }

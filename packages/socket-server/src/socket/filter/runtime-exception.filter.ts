@@ -9,7 +9,6 @@ export class RuntimeExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost): any {
     this.logger.error('Runtime Error', exception?.stack);
 
-    // 上报 sentry
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
     const response = ctx.getResponse();

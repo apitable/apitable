@@ -32,14 +32,13 @@ export const redisConfig = {
         logger.error(`RedisClient:${clientType}:reconnectOnError`, e?.stack);
         return false;
       },
-      // 作为socket的咩有这个属性
       keyPrefix: keyPrefix,
       autoResubscribe: true,
       // I had the same problem with Google Firebase Cloud Functions.
       // The problem was that latest version of Redis keep the connections alive forever.
       // If the process that calls Redis ends shortly after it calls Redis as in our case with the Cloud Functions,
       // you have to set the timeout setting to something different than the default 0.
-      // redis重连报错，需要设置connectTimeout
+      // redis reconnection error need to set connectTimeout
       connectTimeout: RedisConstants.CONNECT_TIMEOUT,
       maxRetriesPerRequest: 1,
     };

@@ -6,13 +6,6 @@ import { RoomService } from 'src/socket/service/room/room.service';
 import { unpack } from 'src/grpc/util/pack.message';
 import { vika } from 'src/grpc/generated/grpc/proto/changeset.service';
 
-/**
- * <p>
- * grpc 内部服务 必须定义在controller中
- * </p>
- * @author Zoe zheng
- * @date 2021/3/24 4:34 下午
- */
 @UseFilters(new GrpcExceptionFilter())
 @Controller('socket')
 export class SocketGrpcController {

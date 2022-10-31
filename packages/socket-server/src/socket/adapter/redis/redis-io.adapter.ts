@@ -78,7 +78,7 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
         this.socketIoService.joinRoom(socket);
       } else {
         this.logger.warn({ message: 'RedisIoAdapter:bindClientConnect:invalidUserIdForAuth', handshake: socket.handshake });
-        // 关闭连接
+        // Close the connection
         socket.disconnect();
       }
       callback(socket);
@@ -86,13 +86,13 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
   }
 
   bindClientDisconnect(socket: AuthenticatedSocket, callback: (socket: AuthenticatedSocket) => {}) {
-    // 客户端断开连接
+    // Client disconnecting
     socket.on(SocketEventEnum.DISCONNECTING, args => {
-      // 移出房间，判断房间里面的人数是否为空，如果房间空了，删除房间
+      // Move out of the room, determine whether the number of people inside the room is empty, if the room is empty, delete the room
       this.logger.log({ message: 'RedisIoAdapter:clientDisconnecting', userId: socket.auth?.userId, socketId: socket.id, args });
       this.socketIoService.leaveRoom(socket);
     });
-    // 客户端断开连接
+    // Client disconnect
     socket.on(SocketEventEnum.DISCONNECTION, args => {
       this.logger.warn({ message: 'RedisIoAdapter:clientDisconnect', userId: socket.auth?.userId, socketId: socket.id, args });
       socket.removeAllListeners('disconnect');
@@ -101,12 +101,11 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
   }
 
   async close(server: SocketIo.Server) {
-    // 关闭sockets服务
+    // close the sockets service
     try {
       server.close();
       return await Promise.resolve();
     } catch (e) {
-      // namespace会传入路由，没有关闭的属性
       this.logger.error('RedisIoAdapter:close', e?.stack);
     }
   }

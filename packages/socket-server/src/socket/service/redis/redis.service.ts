@@ -12,7 +12,7 @@ export class RedisService implements IRedisService {
 
   public async saveUserSocketId(userId: string, socketId: string): Promise<[Error | null, any][]> {
     const key: string = USER_ROOM.PREFIX + userId;
-    // sadd增加set集合元素， 返回true， 重复返回false
+    // `sadd` adds set collection elements, returns true, repeatedly returns false
     return this.redis
       .multi()
       .sadd(key, socketId)

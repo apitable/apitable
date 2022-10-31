@@ -15,7 +15,6 @@ import { RuntimeExceptionFilter } from './socket/filter/runtime-exception.filter
 const initSentry = (): void => {
   Sentry.init({
     debug: isDev(),
-    // 开发模式下不上报异常
     enabled: Boolean(!isDev() && process.env.SENTRY_DSN),
     dsn: process.env.SENTRY_DSN,
     environment: process.env.ENV,

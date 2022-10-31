@@ -1,11 +1,11 @@
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { UseFilters, UseInterceptors } from '@nestjs/common';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
+import { RoomService } from 'src/socket/service/room/room.service';
+import { GatewayConstants } from '../constants/gateway.constants';
 import { RequestTypes } from '../enum/request-types.enum';
 import { HttpExceptionFilter } from '../filter/http-exception.filter';
-import { GatewayConstants } from '../constants/gateway.constants';
-import { Socket } from 'socket.io';
 import { ExecuteTimeInterceptor } from '../interceptor/execute-time.interceptor';
-import { RoomService } from 'src/socket/service/room/room.service';
 
 @UseFilters(HttpExceptionFilter)
 @WebSocketGateway(GatewayConstants.ROOM_PORT, {
@@ -47,14 +47,10 @@ export class RoomGateway {
   }
 
   /**
-   *
-   * nest-server 的fusionApi触发
+   * nest-server `fusion api` triggers
    *
    * @param message
    * @param client
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/7/4 7:03 下午
    */
   @SubscribeMessage(RequestTypes.NEST_ROOM_CHANGE)
   newChange(@MessageBody() message: any, @ConnectedSocket() client: Socket): boolean {

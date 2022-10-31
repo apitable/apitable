@@ -231,7 +231,7 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
         // 服务启动成功默认表示健康，追加到健康的Ip池，1表示可用等级
         await redisClient.zadd(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, 1, ip);
         this.clientIps.add(ip);
-        this.logger.log({ ips: Array.from(this.clientIps) }, 'nest注册成功');
+        this.logger.log({ message: 'nest注册成功', ips: Array.from(this.clientIps) });
       } catch (e) {
         this.logger.error({ ips: Array.from(this.clientIps) }, e.message, 'nest注册失败');
       }
@@ -246,7 +246,7 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
         await redisClient.hdel(RedisConstants.VIKA_NEST_LOAD_UNHEALTH_KEY_V2, ip);
         // 需要删除本地的
         this.clientIps.delete(ip);
-        this.logger.log({ ips: Array.from(this.clientIps) }, 'nest删除成功');
+        this.logger.log({ message: 'nest删除成功', ips: Array.from(this.clientIps) });
       } catch (e) {
         this.logger.error({ ips: Array.from(this.clientIps) }, e.message, 'nest删除失败');
       }

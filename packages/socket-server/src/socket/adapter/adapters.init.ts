@@ -4,7 +4,7 @@ import { RedisIoAdapter } from './redis/redis-io.adapter';
 
 export const initRedisIoAdapter = (app: INestApplication): INestApplication => {
   const socketIoService = app.get(SocketIoService);
-  // 降低redis的连接数，没有必要建立一次握手，就建立一次连接
+  // Reduce the number of connections to redis, there is no need to establish a handshake, just establish a connection
   app.useWebSocketAdapter(new RedisIoAdapter(app, socketIoService));
   return app;
 };

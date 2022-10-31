@@ -1,66 +1,78 @@
 export enum RequestTypes {
   /**
-   * 建立长连接通道
+   * Build long connection channels
    */
   WATCH_ROOM = 'WATCH_ROOM',
 
   /**
-   * 离开协作ROOM
+   * Leave collaboration ROOM
    */
   LEAVE_ROOM = 'LEAVE_ROOM',
 
   /**
-   * RESOURCE 加入 ROOM
+   * RESOURCE JOIN ROOM
+   *
+   * @deprecated
    */
   RESOURCE_JOIN_ROOM = 'RESOURCE_JOIN_ROOM',
 
   /**
-   * RESOURCE 离开 ROOM
+   * RESOURCE LEAVE ROOM
+   *
+   * @deprecated
    */
   RESOURCE_LEAVE_ROOM = 'RESOURCE_LEAVE_ROOM',
 
   /**
-   * ROOM 发送 changeset
+   * room send changeset
    */
   CLIENT_ROOM_CHANGE = 'CLIENT_ROOM_CHANGE',
 
   /**
-   * NEST 服务的 ROOM 消息 
+   * nest-server send changeset (nest-server `fusion api` triggers)
    */
   NEST_ROOM_CHANGE = 'NEST_ROOM_CHANGE',
 
   /**
-   * 发送 changeset
+   * send changeset
+   *
+   * @deprecated
    */
   USER_CHANGES = 'USER_CHANGES',
 
   /**
-   * 拉取缺失版本的 changeset
+   * Pull the missing version of changeset
+   *
+   * @deprecated
    */
   NEW_CHANGES = 'NEW_CHANGES',
 
   /**
-   * 更新自己的光标
+   * Update your own cursor
    */
   ENGAGEMENT_CURSOR = 'ENGAGEMENT_CURSOR',
 
   /**
-   * 自己从一个表切换到另外一个表
+   * Switch from one table to another by yourself
+   *
+   * @deprecated
    */
   SWITCH_DATASHEET = 'SWITCH_DATASHEET',
 }
 
 export enum NotificationTypes {
   /**
-   * 监听消息
+   * listen for messages
    */
   NOTIFY = 'NOTIFY',
+
   /**
-   *  进入空间
+   * into space
    */
   WATCH_SPACE = 'WATCH_SPACE',
+
   /**
-   * 节点变更
+   * node change
    */
   NODE_CHANGE = 'NODE_CHANGE',
 

@@ -74,11 +74,11 @@ export class RoomService {
     const result = await this.nestClient.watchRoom(this.injectMessage(socket, message, true, true), _grpcMetadata);
 
     if ('success' in result && result.success) {
-      // 当 client 在 room 中不存在的时候，进行 join 和 userEnter 的广播
+      // Broadcast join and userEnter when the client does not exist in the room
       if (!isExistRoom) {
         socket.join(room);
         this.logger.log({ room, socketId: socket.id, message: `traceId[${traceId}] User are join in room` });
-        // 通知客户端所有连接新用户加入房间
+        // Notify the client that all connected new users join the room
         socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
           collaborators: [{
             socketId: socket.id,
@@ -87,11 +87,12 @@ export class RoomService {
         });
         result.data.collaborator = undefined;
 
-        // 调用异步的 customRequest，获取给其他节点的协同者，广播该客户端新用户和加入房间的消息
+        // Call an asynchronous customRequest to get the collaborator given to the other nodes,
+        // broadcasting the new user and joining the room for that client
         this.complementaryCollaborator(server, message, socket, result.data.spaceId);
       }
     } else if (isExistRoom) {
-      // 鉴权失败，且已存在 room 中，断开连接
+      // Authentication failed and is already in `room`, disconnect
       await this.leaveRoom({ roomId: room }, socket);
     }
 

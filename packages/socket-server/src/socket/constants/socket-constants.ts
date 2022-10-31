@@ -1,5 +1,5 @@
 /**
- * gRPC MetaData 常量Key
+ * gRPC MetaData Constant Key
  */
 export const TRACE_ID = 'x-trace-id';
 export const CHANGESETS_MESSAGE_ID = 'x-changesets-message-id';
@@ -17,48 +17,52 @@ export class SocketConstants {
 
   public static readonly SOCKET_COOKIE_LANGUAGE_KEY = 'vika-i18n';
   /**
-   * 空间房间前缀
+   * space room prefix
    */
   public static readonly SPACE_ROOM_PREFIX = 'space:';
 
   /**
+   * GrpcClientProxy health check mode（
+   *    DEFAULT：socket regularly maintains room ip pool by itself；
+   *    XXL_JOB：java XXL JOB scheduled task maintenance roomIp pool；
+   * ）
    *
-   * GrpcClientProxy 健康检测模式（DEFAULT：socket自己定时维护roomIp池，XXL_JOB：java XXL JOB定时任务维护roomIp池）
+   *  @deprecated prepare to delete xxl job
    */
   public static readonly GRPC_CLIENT_PROXY_HEALTH_MODEL = process.env.HEALTH_MODEL || 'DEFAULT';
 
   /**
-   * GRPC_OPTIONS gRPC参数选项
+   * GRPC_OPTIONS gRPC parameter options
    */
   public static readonly GRPC_OPTIONS = {
-    // 通道可以发送的最大消息长度
+    // Maximum message length a channel can send
     maxSendMessageLength: 1024 * 1024 * 100,
-    // 通道可以接收的最大消息长度
+    // Maximum message length a channel can receive
     maxReceiveMessageLength: 1024 * 1024 * 100,
 
-    // 通道（频道）策略
+    // Channel (channel) strategy
     channelOptions: {
-      // 后续连接尝试之间的最短时间，以毫秒为单位
+      // Minimum time between subsequent connection attempts, in milliseconds
       'grpc.min_reconnect_backoff_ms': 500,
-      // 后续连接尝试之间的最长时间，以毫秒为单位
+      // Maximum time between subsequent connection attempts, in milliseconds
       'grpc.max_reconnect_backoff_ms': 15000,
     },
 
-    // 看门狗策略
+    // Watchdog Strategy
     keepalive: {
-      // 在这段时间之后，客户端/服务器 ping 其对等方以查看传输是否仍然有效
+      // After this time, the client/server pings its peer to see if the transfer is still valid
       keepaliveTimeMs: 7200000,
-      // 等待这段时间后，如果keepalive ping 发送方没有收到ping ack，它将关闭传输
+      // After waiting this time, if the keepalive ping sender does not receive the ping ack, it will close the transmission
       keepaliveTimeoutMs: 10000,
-      // 是否允许在没有任何未完成的流的情况下发送 keepalive ping
+      // Whether to allow keepalive ping to be sent without any outstanding streams
       keepalivePermitWithoutCalls: 0,
-      // 在需要发送数据/报头帧之前，我们可以发送多少个 ping
+      // How many pings can we send before we need to send data/header frames
       http2MaxPingsWithoutData: 2,
     },
 
-    // 重试策略
+    // Retry strategy
     retryPolicy: {
-      // 最大尝试次数
+      // Maximum number of attempts
       maxAttempts: parseInt(process.env.GRPC_RETRY_MAX_ATTEMPTS || '5', 10),
     },
   };

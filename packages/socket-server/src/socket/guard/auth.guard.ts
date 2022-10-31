@@ -1,5 +1,5 @@
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
-import { AUTH_TOKEN } from "src/socket/common/constants";
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { AUTH_TOKEN } from 'src/socket/common/constants';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

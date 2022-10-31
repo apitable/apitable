@@ -12,7 +12,7 @@ export class RedisConstants {
   // redis config factory
   public static readonly REDIS_CONFIG = 'REDIS_CONFIG';
 
-  // socket.io-adapter的key
+  // socket.io-adapter of key
   public static readonly CHANNEL_PREFIX = 'vika-' + process.env.WEB_SOCKET_CHANNEL_ENV;
 
   public static readonly VIKA_NEST_LOAD_HEALTH_KEY = 'load:nest:' + process.env.WEB_SOCKET_CHANNEL_ENV + ':health:%s';

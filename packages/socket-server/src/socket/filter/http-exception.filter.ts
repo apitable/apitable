@@ -6,7 +6,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const response = host.switchToWs().getClient();
 
-    // 上报 sentry
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
     Sentry.captureException(exception, {
