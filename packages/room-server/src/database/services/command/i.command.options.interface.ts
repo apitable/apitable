@@ -2,38 +2,38 @@ import { ICollaCommandOptions, IField, IFieldMap, IRecordMap } from '@apitable/c
 
 export interface ICommandOptionsInterface {
   /**
-   * 获取添加列的command options
+   * Get command options for AddField
    *
-   * @param dstId 数表id
-   * @param fields 需要添加的列
-   * @param index 开始位置 默认为最后
+   * @param dstId datasheet id
+   * @param fields fields to be added
+   * @param index starting position, default to last
    * @return IAddFieldsOptions
    * @author Zoe Zheng
-   * @date 2021/3/24 4:59 下午
+   * @date 2021/3/24 4:59 PM
    */
   getAddFieldOptions(dstId: string, fields: IField[], index: number): ICollaCommandOptions;
 
   /**
-   * 获取修改单元格的options
+   * Get options for modify cells
    *
-   * @param dstId 数表ID
-   * @param records 需要写入的数据
-   * @param fieldMap 写入数据对应的列
+   * @param dstId datasheet ID
+   * @param records records to be written
+   * @param fieldMap fields corresponding to written records
    * @return ISetRecordsOptions
    * @author Zoe Zheng
-   * @date 2021/3/24 5:21 下午
+   * @date 2021/3/24 5:21 PM
    */
   getSetRecordsOptions(dstId: string, records: IRecordMap, fieldMap: IFieldMap): ICollaCommandOptions;
 
   /**
-   * 获取修改列的options
+   * Get options for modify fields
    *
-   * @param datasheetId 数表ID
-   * @param field 需要修改的列
-   * @param deleteBrotherField 是否删除关联表的列
+   * @param datasheetId datasheet ID
+   * @param field field to be modified
+   * @param deleteBrotherField if field in linked datasheet should be deleted
    * @return
    * @author Zoe Zheng
-   * @date 2021/3/26 10:23 上午
+   * @date 2021/3/26 10:23 PM
    */
   getSetFieldAttrOptions(datasheetId: string, field: IField, deleteBrotherField?: boolean): ICollaCommandOptions;
 }

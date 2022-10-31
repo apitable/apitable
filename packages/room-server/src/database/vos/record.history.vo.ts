@@ -5,7 +5,7 @@ import { RecordHistoryDto } from '../dtos/record.history.dto';
 export class RecordHistoryVo extends ApiResponse<RecordHistoryDto | null> {
   @ApiProperty({
     type: RecordHistoryDto,
-    description: '记录评论列表',
+    description: 'record history list',
   })
     data: RecordHistoryDto | null;
 }

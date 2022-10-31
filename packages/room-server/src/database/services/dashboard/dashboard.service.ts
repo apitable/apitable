@@ -7,9 +7,6 @@ import { ResourceException } from '../../../shared/exception/resource.exception'
 import { RestService } from '../../../shared/services/rest/rest.service';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 
-/**
- * Dashboard 服务
- */
 @Injectable()
 export class DashboardService {
 

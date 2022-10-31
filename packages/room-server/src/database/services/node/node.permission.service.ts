@@ -12,9 +12,6 @@ import { UserService } from '../user/user.service';
 import { IFetchDataOriginOptions } from '../../../shared/interfaces';
 import { RestService } from '../../../shared/services/rest/rest.service';
 
-/**
- * 节点权限服务
- */
 @Injectable()
 export class NodePermissionService {
 
@@ -26,59 +23,58 @@ export class NodePermissionService {
   ) {}
 
   /**
-   * 获取节点的权限
-   * 站内访问 -- 空间站内访问
-   * 站外访问 -- 模版访问或分享访问
-   * @param nodeId  节点ID
-   * @param auth    用户授权信息
-   * @param origin  来源的参数选项
+   * Obtain node permissions.
+   * 
+   * - On-space access: access node in space
+   * - Off-space access: template access or share access
+   * 
+   * @param nodeId  node ID
+   * @param auth    authorization
+   * @param origin  origin options
    */
   async getNodePermission(nodeId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<NodePermission> {
     if (origin.internal) {
-      this.logger.info('站内访问');
-      // 站内神奇表单
+      this.logger.info('On-space access');
+      // On-space form
       if (origin.form) {
         const fieldPermissionMap = await this.restService.getFieldPermission(auth, nodeId, origin.shareId);
         return { hasRole: true, role: ConfigConstant.permission.editor, fieldPermissionMap, ...DEFAULT_EDITOR_PERMISSION };
       }
       const permission = await this.restService.getNodePermission(auth, nodeId);
       if (origin.main) {
-        // 主表权限必须校验操作权限
-        this.logger.info(`加载主节点权限[${nodeId}]`);
+        // Main datasheet must check permission
+        this.logger.info(`Loading main node permission [${nodeId}]`);
         if (!permission.hasRole || !permission.readable) {
           throw new ServerException(PermissionException.ACCESS_DENIED);
         }
       }
       return permission;
     }
-    // 站外访问：模版或分享
+    // Off-space access: template or share
     if (!origin.shareId) {
-      this.logger.info('模版访问');
+      this.logger.info('template access');
       return { hasRole: true, role: ConfigConstant.permission.templateVisitor, ...DEFAULT_READ_ONLY_PERMISSION };
     }
     const hasLogin = await this.userService.session(auth.cookie);
-    // 未登录，匿名者操作权限
+    // Unlogged-in, anonymous user permission
     if (!hasLogin) {
-      this.logger.info('分享访问，用户访问状态: 未登录');
+      this.logger.info('Share acces, user state: unlogged-in');
       const fieldPermissionMap = await this.restService.getFieldPermission(auth, nodeId, origin.shareId);
       if (origin.main) {
-        // 主表权限直接返回可查看
+        // Main datasheet returns read-only permission
         return { hasRole: true, role: ConfigConstant.permission.anonymous, fieldPermissionMap, ...DEFAULT_READ_ONLY_PERMISSION };
       }
-      // 关联表权限判断是否在分享之列
+      // Check if linked datasheet is in sharing
       const props = await this.nodeShareSettingService.getNodeShareProps(origin.shareId, nodeId);
       if (props) {
         return { hasRole: true, role: ConfigConstant.permission.anonymous, fieldPermissionMap, ...DEFAULT_READ_ONLY_PERMISSION };
       }
       return { hasRole: true, role: ConfigConstant.permission.anonymous, fieldPermissionMap, ...DEFAULT_PERMISSION };
     }
-    this.logger.info('分享访问，用户访问状态: 已登录');
+    this.logger.info('Share access, user state: logged-in');
     return await this.getNodeRole(nodeId, auth, origin.shareId);
   }
 
-  /**
-   * 获取节点的权限设置状态
-   */
   async getNodePermissionSetStatus(nodeId: string): Promise<boolean> {
     const nodePermitSetCount = await getConnection().createQueryBuilder()
       .select('COUNT(1)', 'count')
@@ -89,26 +85,26 @@ export class NodePermissionService {
   }
 
   async getNodeRole(nodeId: string, auth: IAuthHeader, shareId?: string): Promise<NodePermission> {
-    // 站内权限直接返回
+    // On-space permission
     if (!shareId) {
       return await this.restService.getNodePermission(auth, nodeId);
     }
-    // 获取分享选项参数。节点不在分享之列（例如加载分享文件外部的关联表），返回默认权限
+    // Obtain share options. If the node is not in sharing (e.g. linked datasheet of shared datasheet), returns default permission
     const props = await this.nodeShareSettingService.getNodeShareProps(shareId, nodeId);
     if (!props) {
       const fieldPermissionMap = await this.restService.getFieldPermission(auth, nodeId, shareId);
       return { hasRole: false, role: ConfigConstant.permission.foreigner, fieldPermissionMap, ...DEFAULT_PERMISSION };
     }
-    // 分享的节点权限体系，是以分享最后编辑人的权限为准
+    // Permissions of shared node is based on last modifier of the shared node
     const { editable, readable, userId, uuid, fieldPermissionMap } = await this.restService.getNodePermission(auth, nodeId, shareId);
-    // 分享可编辑。若分享者无可编辑权限，只返回默认权限
+    // Sharing editable. If the sharer does not have editable permission, return default permission.
     if (props.canBeEdited) {
       if (!editable) {
         return { hasRole: false, role: ConfigConstant.permission.foreigner, userId, uuid, fieldPermissionMap, ...DEFAULT_PERMISSION };
       }
       return { hasRole: true, role: ConfigConstant.permission.editor, userId, uuid, fieldPermissionMap, ...DEFAULT_EDITOR_PERMISSION };
     }
-    // 非分享可编辑。若分享者无查看权限，只返回默认权限
+    // Not sharing editable. If the sharer does not have editable permission, return default permission
     if (!readable) {
       return { hasRole: false, role: ConfigConstant.permission.foreigner, userId, uuid, fieldPermissionMap, ...DEFAULT_PERMISSION };
     }

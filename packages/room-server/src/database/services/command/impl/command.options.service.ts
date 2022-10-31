@@ -3,11 +3,8 @@ import { CollaCommandName, ICollaCommandOptions, IField, IFieldMap, IRecordMap }
 import { ICommandOptionsInterface } from 'database/services/command/i.command.options.interface';
 
 /**
- * <p>
- * 实现类
- * </p>
  * @author Zoe zheng
- * @date 2020/8/20 11:23 上午
+ * @date 2020/8/20 11:23 AM
  */
 @Injectable()
 export class CommandOptionsService implements ICommandOptionsInterface {

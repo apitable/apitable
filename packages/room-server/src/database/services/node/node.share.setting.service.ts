@@ -13,16 +13,14 @@ export class NodeShareSettingService {
   constructor(private repository: NodeShareSettingRepository, private nodeRepository: NodeRepository) {}
 
   /**
-   * 根据分享ID获取分享设置
-   * @param shareId 分享id
+   * Obtain share settings by share ID
    */
   async getByShareId(shareId: string): Promise<NodeShareSettingEntity | undefined> {
     return await this.repository.selectByShareId(shareId);
   }
 
   /**
-   * 查询指定节点是否设置分享
-   * 不包含上级目录
+   * Check if the node enables sharing, regardless of ancestor nodes.
    */
   async getShareStatusByNodeId(nodeId: string): Promise<boolean> {
     const nodeShareSetting = await this.repository.selectByNodeId(nodeId);
@@ -30,11 +28,9 @@ export class NodeShareSettingService {
   }
 
   /**
-   * 检查节点是否开启分享
-   * 包含上级目录
+   * Check if the node enables sharing, including ancestor nodes.
    */
   async checkNodeHasOpenShare(shareId: string, nodeId: string): Promise<void> {
-    // 节点分享设置信息
     const shareSetting = await this.getByShareId(shareId);
     if (isEmpty(shareSetting) || !shareSetting?.isEnabled) {
       throw new ServerException(PermissionException.ACCESS_DENIED);
@@ -50,10 +46,10 @@ export class NodeShareSettingService {
   }
 
   /**
-   * 检查节点是否为分享可编辑
+   * Check if the node is share editable.
    *
-   * @param shareId 分享ID
-   * @param nodeId  节点ID
+   * @param shareId share ID
+   * @param nodeId  node ID
    */
   async checkNodeShareCanBeEdited(shareId: string, nodeId: string): Promise<void> {
     const props = await this.getNodeShareProps(shareId, nodeId);
@@ -63,25 +59,24 @@ export class NodeShareSettingService {
   }
 
   /**
-   * 获取分享选项参数。节点不在分享之列返回 null
+   * Obtain node sharing options. If the node is not shared, return null.
    * 
-   * @param shareId 分享id
-   * @param nodeId 节点id
+   * @param shareId share id
+   * @param nodeId node id
    */
   async getNodeShareProps(shareId: string, nodeId: string): Promise<INodeShareProps | null> {
-    // 节点分享设置信息
     const shareSetting = await this.getByShareId(shareId);
     if (isEmpty(shareSetting) || !shareSetting?.isEnabled) {
       return null;
     }
-    // 判断是否是指定开启分享的节点
+    // Check if the node enables sharing
     if (shareSetting.nodeId === nodeId) {
       return shareSetting.props;
     }
-    // 判断是否有子节点
+    // Check if the node has children nodes
     const hasChildren = await this.nodeRepository.selectCountByParentId(shareSetting.nodeId);
     if (hasChildren) {
-      // 存在子节点
+      // Children nodes exist
       const childrenNodes = await this.nodeRepository.selectAllSubNodeIds(shareSetting.nodeId);
       if (childrenNodes.includes(nodeId)) {
         return shareSetting.props;

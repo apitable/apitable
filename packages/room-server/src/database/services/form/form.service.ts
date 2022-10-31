@@ -46,27 +46,27 @@ export class FormService {
 
   async fetchDataPack(formId: string, auth: IAuthHeader, templateId?: string): Promise<FormDataPack> {
     const beginTime = +new Date();
-    this.logger.info(`表单数据开始加载[${formId}]`);
-    // 查询节点信息
+    this.logger.info(`Start loading form data [${formId}]`);
+    // Query node info
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(
       formId,
       auth,
       { internal: !templateId, main: true, notDst: true }
     );
-    // 查询收集表元数据
+    // Query form metadata
     const formProps = await this.fetchFormProps(formId);
-    // 查询映射的数表和视图相关信息
+    // Query info of referenced datasheet and view
     const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
     const dstId = nodeRelInfo.datasheetId;
-    // 查询映射数表的 meta
+    // Query meta of referenced datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
-    // 站内返回源表权限集
+    // Get source datasheet permission in space
     if (!templateId) {
       const permissions = await this.nodeService.getPermissions(dstId, auth, { internal: true, main: false });
       nodeRelInfo.datasheetPermissions = permissions;
     }
     const endTime = +new Date();
-    this.logger.info(`表单数据完成加载,总耗时: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished loading form data, duration: ${endTime - beginTime}ms`);
     return {
       sourceInfo: nodeRelInfo,
       snapshot: {
@@ -80,25 +80,25 @@ export class FormService {
 
   async fetchShareDataPack(formId: string, shareId: string, userId: string, auth: IAuthHeader): Promise<FormDataPack> {
     const beginTime = +new Date();
-    this.logger.info(`分享表单数据开始加载[${formId}]`);
-    // 查询节点信息
+    this.logger.info(`Start loading share form data [${formId}]`);
+    // Query node info
     const origin = { internal: false, main: true, shareId, notDst: true };
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(formId, auth, origin);
-    // 查询神奇表单元数据
+    // Query form metadata 
     const formProps = await this.fetchFormProps(formId);
-    // 查询映射的数表和视图相关信息
+    // Query info of referenced datasheet and view
     const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
     const dstId = nodeRelInfo.datasheetId;
-    // 查询映射数表的 meta
+    // Query meta of referenced datasheet
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId, DatasheetException.DATASHEET_NOT_EXIST);
     let hasSubmitted = false;
-    // 在分享状态下，但凡登陆了都会查询是否提交过
+    // Check if form is already submitted when logged in and in share state
     if (shareId && userId) {
-      // 查询用户是否使用当前神奇表单提交过记录
+      // Check if the user has submitted using this form
       hasSubmitted = await this.fetchSubmitStatus(userId, formId, dstId);
     }
     const endTime = +new Date();
-    this.logger.info(`分享表单数据完成加载,总耗时: ${endTime - beginTime}ms`);
+    this.logger.info(`Finished loading share form data, duration: ${endTime - beginTime}ms`);
     return {
       sourceInfo: nodeRelInfo,
       snapshot: {
@@ -116,13 +116,13 @@ export class FormService {
   async addRecord({ formId, shareId = '', userId, recordData }, auth: IAuthHeader): Promise<any> {
     const dstId = await this.nodeService.getMainNodeId(formId);
     const revision: any = await this.nodeService.getRevisionByDstId(dstId);
-    // 版本找不到的错误
+    // revision not found
     if (revision == null) {
       throw new ServerException(DatasheetException.VERSION_ERROR);
     }
     const client = this.redisService.getClient();
     const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    // 对资源加锁，同一个维格表的收集表提交只能依次进行消费。解决并发基础版本容易落差过大问题
+    // Lock resource, submissions of the same form must be consumed sequentially.
     const unlock = await lock('form.add.' + dstId, 120 * 1000);
     try {
       return await this.addRecordAction(dstId, { formId, shareId, userId, recordData }, auth);
@@ -137,7 +137,7 @@ export class FormService {
     dstId: string,
     interStore: any
   }): Promise<any> {
-    // FIXME:换地方 dispatchEvent，不阻塞。try 一下保证不影响正常运行
+    // FIXME: dispatchEvent in other place. wrap in try block to make sure execution is normal
     const { formId, recordId, dstId, interStore } = props;
     try {
       const nodeRelInfo = await this.nodeService.getNodeRelInfo(formId);
@@ -149,7 +149,7 @@ export class FormService {
         recordId
       });
       const eventContext = {
-        // TODO: 旧结构，给千帆留的,后续删除
+        // TODO: Old structure left for Qianfan, delete later
         datasheet: {
           id: dstId,
           name: nodeRelInfo.datasheetName
@@ -160,7 +160,7 @@ export class FormService {
           fields: eventFields
         },
         formId: formId,
-        // 下面是拍平的新结构
+        // Flattened new structure
         datasheetId: dstId,
         datasheetName: nodeRelInfo.datasheetName,
         recordId,
@@ -195,10 +195,10 @@ export class FormService {
     }
     const datasheetPack: IServerDatasheetPack =
       await this.datasheetService.fetchSubmitFormForeignDatasheetPack(dstId, auth, fetchDataOptions, shareId);
-    // 神奇表单提交，若有列权限的相关处理
+    // Form submission, handle field permissions
     if (datasheetPack.fieldPermissionMap) {
       for (const fieldPermissionInfo of Object.values(datasheetPack.fieldPermissionMap)) {
-        // 开启列权限字段不允许通过神奇表单写入时，将编辑权限覆盖
+        // When the field is not writable via form submission, disable editable permission
         if (!fieldPermissionInfo.setting?.formSheetAccessible) {
           fieldPermissionInfo.permission.editable = false;
           fieldPermissionInfo.role = ConfigConstant.Role.None;
@@ -208,17 +208,18 @@ export class FormService {
     const interStore = this.commandService.fullFillStore(datasheetPack.datasheet.spaceId, datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError('api_insert_error');
-    // 客户端的提交已经在 apply 到 store 了。等 room 确认。
+    // Client submission has been applied to store. Wait for room to acknowledgment
     const roomChangeSets = await this.applyChangeSet(formId, dstId, changeSets, shareId, auth);
     // console.log('changeSets', JSON.stringify(changeSets), JSON.stringify(roomChangeSets));
-    // 将 room 的 changeset apply 会 store，然后拿到的 interStore 是最新的稀疏 store。参与计算时，计算字段才能获取到正确的值
+    // Apply room changeset to store, the interStore is the latest sparse store.
+    // Only when taking part in computation, compute fields can get correct values
     roomChangeSets.forEach(cs => {
       const systemOperations = cs.operations.filter(ops => ops.cmd.startsWith('System'));
       if (systemOperations.length > 0) {
         interStore.dispatch(StoreActions.applyJOTOperations(systemOperations, cs.resourceType, cs.resourceId));
       }
     });
-    // 表单提交需要记录来源，用于追踪记录来源
+    // Form submission need to store source for tracking record source.
     const recordId = result.data && result.data[0];
     await this.datasheetRecordSourceService.createRecordSource(userId, dstId, formId, [recordId!], SourceTypeEnum.FORM);
     await this.dispatchFormSubmittedEvent({ formId, recordId, dstId, interStore });
@@ -226,12 +227,12 @@ export class FormService {
   }
 
   /**
-   * 根据 meta 和 recordData 得到稀疏关联记录数据
+   * Get linked record data by meta and recordData
    */
   private getLinkedRecordMap(dstId: string, meta: IMeta, recordData: any): IFetchDataOptions {
     const recordIds: string[] = [];
     const linkedRecordMap = {};
-    // 映射表关联表 ID 集合
+    // linked datasheet set
     const foreignDatasheetIdMap = Object.values(meta.fieldMap)
       .filter(field => {
         return field.type === FieldType.Link;
@@ -249,7 +250,7 @@ export class FormService {
     foreignDatasheetIdMap.forEach(item => {
       const { foreignDatasheetId, fieldId } = item!;
       if (recordData[fieldId]) {
-        // 收集自关联 recordId
+        // collect self-linking recordId
         if (foreignDatasheetId === dstId) {
           recordIds.push(...recordData[fieldId]);
           return;
@@ -260,7 +261,7 @@ export class FormService {
             : recordData[fieldId];
       }
     });
-    // 对数组数据做一下去重
+    // remove duplicates
     for (const key in linkedRecordMap) {
       linkedRecordMap[key] = [...new Set(linkedRecordMap[key])];
     }
@@ -269,10 +270,10 @@ export class FormService {
 
   async applyChangeSet(formId: string, dstId: string, changesets: ILocalChangeset[], shareId: string, auth: IAuthHeader) {
     const changeResult = await this.otService.applyRoomChangeset({ roomId: formId, sourceType: SourceTypeEnum.FORM, shareId, changesets }, auth);
-    // 保存changeset来源
+    // Store changeset source
     await this.datasheetChangesetSourceService.batchCreateChangesetSource(changeResult, SourceTypeEnum.FORM, formId);
     this.logger.info('Form:ApplyChangeSet Success!');
-    // 通知Socket服务广播
+    // notify socket service broadcast
     await this.otService.nestRoomChange(dstId, changeResult);
     this.logger.info('Form:NotifyChangeSet Success!');
     return changeResult;
@@ -280,13 +281,13 @@ export class FormService {
 
   async fetchSubmitStatus(userId: string, formId: string, dstId?: string) {
     if (!dstId) {
-      // 查询映射的数表
+      // Obtain referenced datasheet
       const datasheetId = await this.nodeService.getMainNodeId(formId);
-      // 查询用户是否用神奇表单提交过提交
+      // Check if the user has ever submitted via form
       const recordSource = await this.datasheetRecordSourceService.fetchRecordSourceStatus(userId, datasheetId, formId, 0);
       return Boolean(recordSource);
     }
-    // 查询用户是否用神奇表单提交过提交
+    // Check if the user has ever submitted via form
     const recordSource = await this.datasheetRecordSourceService.fetchRecordSourceStatus(userId, dstId, formId, 0);
     return Boolean(recordSource);
   }
@@ -295,7 +296,7 @@ export class FormService {
     await this.resourceMetaRepository.updateMetaDataByResourceId(resourceId, userId, formProps);
   }
 
-  // 查询神奇表单元数据
+  // Obtain form metadata
   async fetchFormProps(formId: string) {
     return await this.resourceMetaRepository.selectMetaByResourceId(formId);
   }

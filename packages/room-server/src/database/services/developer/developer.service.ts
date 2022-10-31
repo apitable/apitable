@@ -4,9 +4,6 @@ import { DeveloperRepository } from '../../repositories/developer.repository';
 import { UnitMemberRepository } from '../../repositories/unit.member.repository';
 import { UserRepository } from '../../repositories/user.repository';
 
-/**
- * 开发者服务
- */
 @Injectable()
 export class DeveloperService {
   constructor(
@@ -16,11 +13,12 @@ export class DeveloperService {
   ) {}
 
   /**
-   * 根据apiKay查找userId
-   * @param apiKey 开发者平台唯一令牌
+   * Get User base info by api key
+   * 
+   * @param apiKey unique token on developer platform
    * @return user_id
    * @author Zoe Zheng
-   * @date 2020/7/24 3:18 下午
+   * @date 2020/7/24 3:18 PM
    */
   public async getUserInfoByApiKey(apiKey: string): Promise<UserEntity> {
     const entity = await this.developerRepo.selectUserIdByApiKey(apiKey);
@@ -31,11 +29,12 @@ export class DeveloperService {
   }
 
   /**
-   * 获取用户的spaceId集合
-   * @param userId 用户ID
+   * Get space ID list of a user
+   * 
+   * @param userId user ID
    * @return  Promise<string[]>
    * @author Zoe Zheng
-   * @date 2020/9/14 5:35 下午
+   * @date 2020/9/14 5:35 PM
    */
   public async getUserSpaceIds(userId: string): Promise<string[]> {
     return await this.memberRepo.selectSpaceIdsByUserId(userId);

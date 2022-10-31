@@ -3,11 +3,8 @@ import { CommandOptionsService } from 'database/services/command/impl/command.op
 import { CommandService } from '../database/services/command/impl/command.service';
 
 /**
- * <p>
- * 对应core层的command
- * </p>
  * @author Zoe zheng
- * @date 2020/8/20 11:23 上午
+ * @date 2020/8/20 11:23 AM
  */
 @Global()
 @Module({

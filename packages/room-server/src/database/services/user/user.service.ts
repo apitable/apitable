@@ -7,9 +7,6 @@ import { UserRepository } from '../../repositories/user.repository';
 import { getConnection } from 'typeorm';
 import { RestService } from '../../../shared/services/rest/rest.service';
 
-/**
- * 用户服务接口
- */
 @Injectable()
 export class UserService {
   constructor(
@@ -19,9 +16,7 @@ export class UserService {
   ) { }
 
   /**
-   * 根据UUID批量获取用户信息
-   * @param spaceId 空间ID
-   * @param uuids UUID列表
+   * Get user info by UUIDs
    */
   async getUserInfo(spaceId: string, uuids: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
@@ -51,11 +46,8 @@ export class UserService {
   }
 
   /**
-   * 根据用户ID查询用户视图
-   * @param userIds 用户ID列表
-   * @return IUserBaseInfoMap 视图
    * @author Zoe Zheng
-   * @date 2020/7/24 3:18 下午
+   * @date 2020/7/24 3:18 PM
    */
   async getUserBaseInfoMapByUserIds(userIds: number[]): Promise<Map<string, INamedUser>> {
     const users = await this.userRepo.selectUserBaseInfoByIds(userIds);
@@ -81,16 +73,17 @@ export class UserService {
   async getUserInfoBySpaceId(headers: IAuthHeader, spaceId: string) {
     return await this.restService.getUserInfoBySpaceId(headers, spaceId);
   }
+
   /**
-   * 获取自己信息
-   * @param headers 请求头
+   * Get self info
    */
   async getMe(headers: IAuthHeader): Promise<IUserBaseInfo> {
     return await this.restService.fetchMe(headers);
   }
 
   /**
-   * @description 未登录用户在分享页面查看
+   * Unlogged-in user view on share page
+   * 
    * @param {string} cookie
    * @returns
    */

@@ -1109,7 +1109,7 @@ export class DatasheetActions {
     const view = snapshot.meta.views[viewIndex];
 
     if (!validateFilterInfo(filterInfo)) {
-      console.error('illegal filter condition！');
+      console.error('illegal filter condition!');
       filterInfo = undefined;
     }
 

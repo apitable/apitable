@@ -10,23 +10,24 @@ import {
 
 export interface ICommandInterface {
   /**
-   * 用 datasheetPack 数据初始化redux store
-   * @param spaceId 空间ID
+   * Initialize redux store with datasheetPack data
+   * 
+   * @param spaceId space ID
    * @param datasheetPack
    * @return any
    * @author Zoe Zheng
-   * @date 2020/8/20 12:19 下午
+   * @date 2020/8/20 12:19 PM
    */
   fullFillStore(spaceId: string, datasheetPack: IBaseDatasheetPack & IForeignDatasheetMap, userInfo?: IUserInfo): any;
 
   /**
-   * 获取manager和changeSets
+   * Obtain command manager
    * @param userUuid
    * @param store
    * @param changeSet
    * @return CollaCommandManager
    * @author Zoe Zheng
-   * @date 2020/8/20 2:39 下午
+   * @date 2020/8/20 2:39 PM
    */
   getCommandManager(store: any, changeSet: ILocalChangeset[]): CollaCommandManager;
 
@@ -37,7 +38,7 @@ export interface ICommandInterface {
    * @param store
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/29 12:00 下午
+   * @date 2020/8/29 12:00 PM
    */
   execute<R>(options: ICollaCommandOptions, store: any): { result: ICollaCommandExecuteResult<R>; changeSets: ILocalChangeset[] };
 }

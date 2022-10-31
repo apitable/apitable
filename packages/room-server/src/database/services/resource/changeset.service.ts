@@ -11,7 +11,7 @@ import { Logger } from 'winston';
 import { NodeService } from '../node/node.service';
 
 /**
- * 所有资源（包括数表、组件...） 的 Changeset Service
+ * Changeset service for all resources (including datasheets, widgets, etc)
  */
 @Injectable()
 export class ChangesetService {
@@ -24,26 +24,18 @@ export class ChangesetService {
   ) {}
 
   /**
-   * 获取资源变更集的最大版本
-   * 可能为null
-   *
-   * @param resourceId    资源ID
-   * @param resourceType  资源类型
+   * Get maximum revision of changesets, may be null
    */
   async getMaxRevision(resourceId: string, resourceType: ResourceType): Promise<number | null> {
     if (resourceType === ResourceType.Datasheet) {
       return await this.nodeService.getRevisionByDstId(resourceId);
     }
-    // 非数表资源
+    // non-datasheet resource
     return await this.nodeService.getReversionByResourceId(resourceId);
   }
 
   /**
-   * 查询变更集列表
-   *
-   * @param resourceId    资源ID
-   * @param resourceType  资源类型
-   * @param revisions     版本列表
+   * Obtain changeset list by revisions
    */
   async getByRevisions(
     resourceId: string,
@@ -57,11 +49,7 @@ export class ChangesetService {
   }
 
   /**
-   * 查询消息是否存在
-   *
-   * @param resourceId    资源ID
-   * @param resourceType  资源类型
-   * @param messageId     消息ID
+   * Check if the message exists
    */
   async countByResourceIdAndMessageId(resourceId: string, resourceType: ResourceType, messageId: string): Promise<boolean> {
     let count;
@@ -74,7 +62,7 @@ export class ChangesetService {
   }
 
   async getChangesetList(resourceId: string, resourceType: ResourceType, revisions: string | number[]): Promise<ChangesetView[]> {
-    this.logger.info(`[${resourceId}]根据版本查询变更集`);
+    this.logger.info(`[${resourceId}] Obtain changesets by revisions`);
 
     const spaceId = await this.resourceService.getSpaceIdByResourceId(resourceId);
 
@@ -96,11 +84,7 @@ export class ChangesetService {
   }
 
   /**
-   * 按顺序查询changeset
-   *
-   * @param resourceId 来源ID
-   * @param resourceType 来源类型
-   * @param revisions 版本列表
+   * Obtain changeset list by revisions, whose order follows that of revisions.
    */
   async getChangesetOrderList(resourceId: string, resourceType: ResourceType, revisions: string | number[]): Promise<any[]> {
     this.logger.info(`revision list: ${revisions}`);

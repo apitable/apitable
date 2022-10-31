@@ -3,22 +3,22 @@ import { IUserValue, MemberType } from '@apitable/core';
 import { UnitTeamRepository } from '../../repositories/unit.team.repository';
 
 /**
- * <p>
- * unitTeam相关操作
- * </p>
+ * unitTeam related operations
+ * 
  * @author Zoe zheng
- * @date 2020/7/30 6:31 下午
+ * @date 2020/7/30 6:31 PM
  */
 @Injectable()
 export class UnitTeamService {
   constructor(private readonly teamRepo: UnitTeamRepository) { }
 
   /**
-   * 根据teamIds获取对应的名称
+   * Get team base info by team ids
+   * 
    * @param teamIds
    * @return IUnitTeamBaseInfoMap
    * @author Zoe Zheng
-   * @date 2020/7/30 5:39 下午
+   * @date 2020/7/30 5:39 PM
    */
   public async getTeamsByIdsIncludeDeleted(teamIds: number[]): Promise<{ [teamId: string]: IUserValue }> {
     if (teamIds.length > 0) {

@@ -55,7 +55,7 @@ export class AttachmentService {
       this.unlinkFile(newPath);
     } catch (e) {
       this.unlinkFile(newPath);
-      this.logger.error(e.stack || e, ['上传附件异常']);
+      this.logger.error(e.stack || e, ['Uploading attachment failed']);
       throw ApiException.tipError('api_server_error', { value: 1 });
     }
 

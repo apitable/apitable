@@ -11,11 +11,12 @@ export class UnitMemberService {
   constructor(private readonly memberRepo: UnitMemberRepository, private readonly userService: UserService) {}
 
   /**
-   * 根据memberIds获取对应的名称
+   * Get member base infos by member ids
+   * 
    * @param memberIds
    * @return
    * @author Zoe Zheng
-   * @date 2020/7/30 5:39 下午
+   * @date 2020/7/30 5:39 PM
    */
   async getMembersBaseInfo(memberIds: number[]): Promise<{ [memberId: number]: IUserValue }> {
     if (memberIds.length > 0) {
@@ -60,7 +61,7 @@ export class UnitMemberService {
   }
 
   /**
-   * 检查用户是否存在此空间
+   * Check if the user is in the space
    */
   async checkUserIfInSpace(userId: string, spaceId: string) {
     const memberId = await this.getIdBySpaceIdAndUserId(spaceId, userId);

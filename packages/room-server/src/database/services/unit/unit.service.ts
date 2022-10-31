@@ -26,9 +26,7 @@ export class UnitService {
   ) {}
 
   /**
-   * 批量获取组织单元信息
-   * @param spaceId 空间ID
-   * @param unitIds 组织单元ID列表
+   * Batch obtain unit infos
    */
   async getUnitInfo(spaceId: string, unitIds: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
@@ -60,11 +58,10 @@ export class UnitService {
   }
 
   /**
-   * 根据ID获取基本信息
    * @param unitIds
    * @return Promise<UnitEntity[]>
    * @author Zoe Zheng
-   * @date 2020/7/30 5:52 下午
+   * @date 2020/7/30 5:52 PM
    */
   public async getUnitInfoByIdsIncludeDeleted(unitIds: string[]): Promise<UnitEntity[]> {
     if (!unitIds.length) return [];
@@ -72,11 +69,10 @@ export class UnitService {
   }
 
   /**
-   * 根据ID获取组织单元基本信息
    * @param unitIds
    * @return
    * @author Zoe Zheng
-   * @date 2020/7/30 5:53 下午
+   * @date 2020/7/30 5:53 PM
    */
   public async getUnitMemberInfoByIds(unitIds: string[]): Promise<UnitBaseInfoDto[]> {
     const units: UnitEntity[] = await this.getUnitInfoByIdsIncludeDeleted(unitIds);
@@ -107,11 +103,12 @@ export class UnitService {
   }
 
   /**
-   *  根据 unitEntities 里面的type和refId分类
+   * Group by type and refId in unitEntities
+   * 
    * @param unitEntities
    * @return IUnitMemberRefIdMap
    * @author Zoe Zheng
-   * @date 2020/7/30 5:11 下午
+   * @date 2020/7/30 5:11 PM
    */
   private getMemberRefIdMapFromUnities(unitEntities: UnitEntity[]): IUnitMemberRefIdMap {
     const memberIds = [];
@@ -142,7 +139,7 @@ export class UnitService {
    * @param spaceId
    * @return Promise<string | null>
    * @author Zoe Zheng
-   * @date 2020/9/9 1:41 上午
+   * @date 2020/9/9 1:41 AM
    */
   async getIdByNameAndType(unitName: string, unitType: UnitTypeEnum, spaceId: string): Promise<string | null> {
     let refId;
@@ -168,14 +165,10 @@ export class UnitService {
   }
 
   /**
-   * 根据用户ID获取组织单元基本信息
-   *
-   * @param spaceId
-   * @param userIds users表的ID
-   * @param excludeDeleted 排除删除
+   * @param userIds ID of users table
    * @return Promise<{ [userId: string]: UnitBaseInfoDto } | null
    * @author Zoe Zheng
-   * @date 2021/4/13 5:28 下午
+   * @date 2021/4/13 5:28 PM
    */
   async getUnitMemberInfoByUserIds(spaceId: string, userIds: string[], excludeDeleted = true): Promise<Map<string, UnitBaseInfoDto>> {
     const userMap = new Map<string, UnitBaseInfoDto>();
@@ -187,7 +180,7 @@ export class UnitService {
     const oss = this.envConfigService.getRoomConfig(EnvConfigKey.OSS) as IOssConfig;
     users.map(user => {
       const member = memberMap[user.id];
-      // key是user表的ID
+      // key is ID of user table
       userMap.set(user.id, {
         avatar: user.avatar ? oss.host + '/' + user.avatar : '',
         isActive: member?.isActive,
@@ -196,7 +189,7 @@ export class UnitService {
         isMemberNameModified: member?.isMemberNameModified,
         name: member ? member.memberName : user.nikeName,
         type: UnitTypeEnum.MEMBER,
-        // 这里是uuid
+        // NOTE here userId is uuid
         userId: user.uuid,
         unitId: member?.unitId,
         uuid: user.uuid,

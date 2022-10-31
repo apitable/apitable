@@ -5,13 +5,13 @@ import { UnitBaseInfoDto } from '../dtos/unit.base.info.dto';
 export class CommentListVo {
   @ApiProperty({
     type: [CommentDto],
-    description: '记录评论列表',
+    description: 'record comment list',
   })
     comments: CommentDto[];
 
   @ApiProperty({
     type: [CommentDto],
-    description: '记录评论涉及到的组织单元列表',
+    description: 'list of units involved in record comments',
   })
     units: UnitBaseInfoDto[];
 }

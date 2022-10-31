@@ -24,7 +24,7 @@ export class ResourceService {
   }
 
   async getNodeIdByResourceId(resourceId: string): Promise<string> {
-    // 小组件独立打开，WidgetId 非节点ID
+    // Widget is open individually, widgetId is not node ID
     if (resourceId.startsWith(ResourceIdPrefix.Widget)) {
       return await this.widgetService.getNodeIdByWidgetId(resourceId);
     }
@@ -36,7 +36,7 @@ export class ResourceService {
   }
 
   async fetchForeignDatasheetPack(resourceId: string, foreignDatasheetId: string, auth: IAuthHeader, shareId?: string) {
-    // 查询映射的数表
+    // Obtain referenced datasheet
     const datasheetId = resourceId.startsWith(ResourceIdPrefix.Datasheet) ? resourceId :
       await this.nodeService.getMainNodeId(resourceId);
     return await this.datasheetService.fetchForeignDatasheetPack(datasheetId, foreignDatasheetId, auth, shareId);

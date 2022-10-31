@@ -30,11 +30,8 @@ import { Logger } from 'winston';
 import { ICommandInterface } from '../i.command.interface';
 
 /**
- * <p>
- * 实现类
- * </p>
  * @author Zoe zheng
- * @date 2020/8/20 11:23 上午
+ * @date 2020/8/20 11:23 AM
  */
 @Injectable()
 export class CommandService implements ICommandInterface {
@@ -48,7 +45,7 @@ export class CommandService implements ICommandInterface {
 
     if (datasheetPack.foreignDatasheetMap) {
       Object.keys(datasheetPack.foreignDatasheetMap).forEach(dstId => {
-        // 不校验关联表 关联表需要设置为以连接，不然无法写入关联数据
+        // Don't check linked datasheet, linked datasheet should be set to connected, or linked data can not be written
         store.dispatch(StoreActions.setDatasheetConnected(dstId));
         const dataPack = datasheetPack.foreignDatasheetMap![dstId];
         store.dispatch(StoreActions.receiveDataPack(dataPack, true));
@@ -56,11 +53,11 @@ export class CommandService implements ICommandInterface {
       });
     }
     if (datasheetPack.units) {
-      // 初始化 UnitMap，供 Member 字段使用
+      // Initialize UnitMap for member fields
       const unitMap = {};
       (datasheetPack.units as IUnitValue[]).filter(unit => unit.unitId).forEach(unit => (unitMap[unit.unitId] = unit));
       store.dispatch(StoreActions.updateUnitMap(unitMap));
-      // 初始化 UserMap，供 CreatedBy/LastModifiedBy 字段使用
+      // Initialize UserMap for CreatedBy/LastModifiedBy fields
       const userMap = {};
       (datasheetPack.units as IUserValue[]).filter(unit => unit.uuid).forEach(user => (userMap[user.uuid] = user));
       store.dispatch(StoreActions.updateUserMap(userMap));
@@ -71,7 +68,7 @@ export class CommandService implements ICommandInterface {
     store.dispatch(StoreActions.setDatasheetConnected(datasheetPack.datasheet.id));
     store.dispatch(StoreActions.receiveDataPack(datasheetPack));
 
-    // 填充当前用户信息，和个人筛选逻辑相关
+    // Fill current user info, relates to personal filtering
     if (userInfo) {
       store.dispatch(StoreActions.setUserMe(userInfo));
     }
@@ -84,18 +81,18 @@ export class CommandService implements ICommandInterface {
     dstPacks.forEach(datasheetPack => {
       if (datasheetPack.foreignDatasheetMap) {
         Object.keys(datasheetPack.foreignDatasheetMap).forEach(dstId => {
-          // 不校验关联表 关联表需要设置为以连接，不然无法写入关联数据
+          // Don't check linked datasheet, linked datasheet should be set to connected, or linked data can not be written
           store.dispatch(StoreActions.setDatasheetConnected(dstId));
           const dataPack = datasheetPack.foreignDatasheetMap![dstId];
           store.dispatch(StoreActions.receiveDataPack(dataPack, true));
         });
       }
       if (datasheetPack.units) {
-        // 初始化 UnitMap，供 Member 字段使用
+        // Initialize UnitMap for member fields
         const unitMap = {};
         (datasheetPack.units as IUnitValue[]).filter(unit => unit.unitId).forEach(unit => (unitMap[unit.unitId] = unit));
         store.dispatch(StoreActions.updateUnitMap(unitMap));
-        // 初始化 UserMap，供 CreatedBy/LastModifiedBy 字段使用
+        // Initialize UserMap for CreatedBy/LastModifiedBy fields
         const userMap = {};
         (datasheetPack.units as IUserValue[]).filter(unit => unit.uuid).forEach(user => (userMap[user.uuid] = user));
         store.dispatch(StoreActions.updateUserMap(userMap));
@@ -143,7 +140,7 @@ export class CommandService implements ICommandInterface {
     const changeSets: ILocalChangeset[] = [];
     const manager = this.getCommandManager(store, changeSets);
     const result = manager.execute<R>(options);
-    // 执行成功后将变更 apply 到内存 store 中
+    // Apply changes into store after execution succeeds
     if (result && result.result == ExecuteResult.Success)
       changeSets.forEach(cs => {
         store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
@@ -154,11 +151,11 @@ export class CommandService implements ICommandInterface {
   getCommandManager(store: any, changeSets: ILocalChangeset[]) {
     return new CollaCommandManager(
       {
-        // command 所有的 op 都已经应用到 state 之后，会调用这里。
+        // After all ops in command have been applied to state, here is reached.
         handleCommandExecuted: (resourceOpsCollects: IResourceOpsCollect[]) => {
           resourceOpsCollects.forEach(collect => {
             const { resourceId, resourceType, operations } = collect;
-            // 一个表一个changeSet
+            // One datasheet, one changeset
             const existChangeSet = changeSets.find(cs => cs.resourceId === resourceId);
             const datasheet = Selectors.getDatasheet(store.getState(), resourceId);
             if (existChangeSet) {

@@ -6,7 +6,7 @@ import { CommentListVo } from 'database/vos/comment.list.vo';
 export class CommentVo extends ApiResponse<CommentListVo> {
   @ApiProperty({
     type: [CommentDto],
-    description: '记录评论列表',
+    description: 'record comment list',
   })
     data: CommentListVo;
 }

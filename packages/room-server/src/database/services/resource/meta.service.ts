@@ -5,7 +5,7 @@ import { WidgetService } from '../widget/widget.service';
 import { IResourceInfo } from './resource.interface';
 
 /**
- * 所有资源（包括数表、组件...） 的 Meta Service
+ * Meta service for all resources (including datasheets, widgets, etc)
  */
 @Injectable()
 export class MetaService {
@@ -14,12 +14,6 @@ export class MetaService {
     private readonly widgetService: WidgetService,
   ) { }
 
-  /**
-   * 查询资源信息
-   *
-   * @param resourceId    资源ID
-   * @param resourceType  资源类型
-   */
   async getResourceInfo(resourceId: string, resourceType: ResourceType): Promise<IResourceInfo> {
     switch (resourceType) {
       case ResourceType.Datasheet:

@@ -278,7 +278,7 @@ export const isNullValue = (value: any): value is null => {
 };
 
 /**
- * IOpenComputedFormat =》 IComputedFieldFormattingProperty
+ * IOpenComputedFormat => IComputedFieldFormattingProperty
  * Convert the external read calculation field format content into executable cmd format (formula, magic reference)
  * @param fieldInstance 
  * @param format 

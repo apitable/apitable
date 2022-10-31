@@ -15,9 +15,6 @@ import { UnitMemberService } from '../unit/unit.member.service';
 import { NodePermissionService } from './node.permission.service';
 import { NodeShareSettingService } from './node.share.setting.service';
 
-/**
- * 节点服务
- */
 @Injectable()
 export class NodeService {
   constructor(
@@ -39,9 +36,9 @@ export class NodeService {
   }
 
   async checkUserForNode(userId: string, nodeId: string): Promise<string> {
-    // 获取节点所在空间ID
+    // Get the space ID which the node belongs to
     const spaceId = await this.getSpaceIdByNodeId(nodeId);
-    // 获取用户是否存在此空间
+    // Check if the user is in this space
     await this.memberService.checkUserIfInSpace(userId, spaceId);
     return spaceId;
   }
@@ -70,7 +67,7 @@ export class NodeService {
   }
 
   /**
-   * 获取节点关联信息
+   * Get node linking info
    */
   async getNodeRelInfo(nodeId: string): Promise<NodeRelInfo> {
     const raw = await this.nodeRelRepository.selectNodeRelInfo(nodeId);
@@ -82,8 +79,7 @@ export class NodeService {
   }
 
   /**
-   * 批量获取节点关联信息
-   * @param nodeIds 
+   * Batch obtain node linking info
    */
   async getNodeRelInfoByIds(nodeIds: string[]): Promise<NodeRelInfo[]> {
     return await this.nodeRelRepository.selectNodeRelInfoByIds(nodeIds);
@@ -91,24 +87,24 @@ export class NodeService {
 
   async getPermissions(nodeId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<IPermissions> {
     const permission = await this.nodePermissionService.getNodePermission(nodeId, auth, origin);
-    // 排除属性拷贝
+    // Exclude property copy
     return omit(permission, ['userId', 'uuid', 'role', 'hasRole', 'isGhostNode', 'nodeFavorite', 'fieldPermissionMap']);
   }
 
   async getNodeDetailInfo(nodeId: string, auth: IAuthHeader, origin: IFetchDataOriginOptions): Promise<NodeDetailInfo> {
-    // 节点权限视图，如果没有传递用户授权信息，则可能是模版访问和分享访问
+    // Node permission view. If no auth is given, it is template access or share access.
     const permission = await this.nodePermissionService.getNodePermission(nodeId, auth, origin);
-    // 节点基本信息
+    // Node base info
     const nodeInfo = await this.nodeRepository.getNodeInfo(nodeId);
-    // 节点描述
+    // Node description
     const description = await this.nodeDescService.getDescription(nodeId);
-    // 节点版本号
+    // Node revisoin
     const revision = origin.notDst ? await this.getReversionByResourceId(nodeId) : await this.getRevisionByDstId(nodeId);
-    // 查询节点分享状态
+    // Obtain node sharing state
     const nodeShared = await this.nodeShareSettingService.getShareStatusByNodeId(nodeId);
-    // 查询节点权限
+    // Obtain node permissions
     const nodePermitSet = await this.nodePermissionService.getNodePermissionSetStatus(nodeId);
-    // 排除属性拷贝
+    // Exclude property copy
     const permissions = omit(permission, ['userId', 'uuid', 'role', 'hasRole', 'isGhostNode', 'nodeFavorite', 'fieldPermissionMap']);
 
     return {
@@ -133,7 +129,7 @@ export class NodeService {
   }
 
   async getSpaceIdByNodeId(nodeId: string): Promise<string> {
-    // 获取节点所在空间ID
+    // Obtain the space ID which the node belongs to
     const rawResult = await this.nodeRepository.selectSpaceIdByNodeId(nodeId);
     if (!rawResult?.spaceId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
@@ -160,7 +156,7 @@ export class NodeService {
       if (extra.hasOwnProperty(NodeExtraConstant.SHOW_RECORD_HISTORY)) {
         return { ...extra, showRecordHistory: !!extra.showRecordHistory };
       }
-      // 默认都展示
+      // Default to show both
       return { ...extra, showRecordHistory: true };
     }
     return { showRecordHistory: true };
