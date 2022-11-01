@@ -50,10 +50,10 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testTrailPlan() {
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
-        assertThat(event).as("数据无法解析:base_trail").isNotNull();
+        assertThat(event).as("data could not be parsed:base_trail").isNotNull();
         // Payment scheme for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(price).as("钉钉试用计划配置错误").isNotNull();
+        assertThat(price).as("dingtalk trial plan configuration error").isNotNull();
     }
 
     @Test
@@ -259,7 +259,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
 
     private void prepareSpaceData(String spaceId) {
         // Initialize space information
-        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
+        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("test space").build();
         iSpaceService.save(spaceEntity);
     }
 }

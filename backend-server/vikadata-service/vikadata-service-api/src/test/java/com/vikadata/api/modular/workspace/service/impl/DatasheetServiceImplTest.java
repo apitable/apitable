@@ -35,7 +35,7 @@ public class DatasheetServiceImplTest extends AbstractIntegrationTest {
         List<DatasheetMetaDTO> metaList = new ArrayList<>();
         DatasheetMetaDTO datasheetMetaDTO = new DatasheetMetaDTO();
         datasheetMetaDTO.setDstId("dst1");
-        datasheetMetaDTO.setMetaData("{fieldMap:{fld123:{id:fld123, name:测试字段, type:7, property:{foreignDatasheetId:dst3, }}}}");
+        datasheetMetaDTO.setMetaData("{fieldMap:{fld123:{id:fld123, name:test field, type:7, property:{foreignDatasheetId:dst3, }}}}");
         metaList.add(datasheetMetaDTO);
         // given
         given(iDatasheetMetaService.findMetaDtoByDstIds(dstList)).willReturn(metaList);
@@ -45,7 +45,7 @@ public class DatasheetServiceImplTest extends AbstractIntegrationTest {
         assertThat(getForeignFieldNames).isNotEmpty();
         for (String dst : getForeignFieldNames.keySet()) {
             assertThat(dst).isEqualTo("dst1");
-            assertThat(getForeignFieldNames.get(dst).get(0)).isEqualTo("测试字段");
+            assertThat(getForeignFieldNames.get(dst).get(0)).isEqualTo("test field");
         }
     }
 }

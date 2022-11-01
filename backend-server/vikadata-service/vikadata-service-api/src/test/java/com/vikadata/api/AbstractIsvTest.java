@@ -123,7 +123,7 @@ public abstract class AbstractIsvTest extends AbstractIntegrationTest {
                 paidEvent.setOrderType(0);
                 paidEvent.setOperatorId("kelvinpoon");
                 paidEvent.setEditionId("sp4ec7bdf66c091737");
-                paidEvent.setEditionName("标准版");
+                paidEvent.setEditionName("Standard");
                 paidEvent.setPrice(198000);
                 paidEvent.setUserCount(10L);
                 paidEvent.setOrderPeriod(365);

@@ -2,7 +2,7 @@
     "authInfo": {
         "agents": [
             {
-                "name": "vika维格表",
+                "name": "application",
                 "agentId": 1000040,
                 "authMode": 0,
                 "privilege": {
@@ -32,7 +32,7 @@
                 "appStatus": 1,
                 "editionId": "sp0e8c1d98ca123945",
                 "userLimit": 4294967295,
-                "editionName": "标准版试用",
+                "editionName": "StandardTest",
                 "expiredTime": 1655869815,
                 "isVirtualVersion": false
             }
@@ -40,15 +40,15 @@
     },
     "authCorpInfo": {
         "corpId": "wpOhr1DQAAwanrL1YfepPhNqs2Eu17HQ",
-        "corpName": "深圳体育健康有限公司",
+        "corpName": "test company",
         "corpType": "unverified",
         "location": "",
-        "corpScale": "1-50人",
+        "corpScale": "1-50",
         "corpUserMax": "200",
         "subjectType": 1,
-        "corpIndustry": "IT服务",
+        "corpIndustry": "IT",
         "corpWxQrcode": "https://wework.qpic.cn/wwpic/752760_bGZbRwCpRPuDuaD_1654573816/0",
-        "corpSubIndustry": "计算机软件/硬件/信息服务",
+        "corpSubIndustry": "Computer software and hardware information service",
         "corpRoundLogoUrl": "http://p.qpic.cn/pic_wework/1415612393/74723564f7cc73a584ad90fdffe98eb1639e6b1e9557edae/0",
         "corpSquareLogoUrl": "https://p.qlogo.cn/bizmail/YpRLxhOiaNcGsHicgsomF5ibJldneGGTqKD5wYQxWXRwYqJZ5iabFwHvJA/0"
     },

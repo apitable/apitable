@@ -14,14 +14,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- *  数据访问层测试：内容审核结果记录表测试
- * <p>
- *
- * @author 吴奕涛
- * @date 2022/3/31 12:24 AM
- */
 @Disabled
 class ContentCensorResultMapperTest extends AbstractMyBatisMapperTest {
 

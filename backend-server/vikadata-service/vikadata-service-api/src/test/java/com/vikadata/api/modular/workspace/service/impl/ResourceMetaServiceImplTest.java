@@ -17,11 +17,7 @@ import com.vikadata.api.modular.workspace.service.IResourceMetaService;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * <p>
  * resource meta service test
- * </p>
- * @author zoe zheng
- * @date 2022/5/17 19:01
  */
 public class ResourceMetaServiceImplTest extends AbstractIntegrationTest {
 
@@ -40,7 +36,7 @@ public class ResourceMetaServiceImplTest extends AbstractIntegrationTest {
         prepareFormMetaData(formId, "meta/form_text_meta.json");
         NodeDescParseDTO desc = iResourceMetaService.parseFormDescByFormId(formId);
         Assertions.assertTrue(desc.getContent().size() > 0);
-        Assertions.assertEquals("测试", desc.getContent().get(0));
+        Assertions.assertEquals("test", desc.getContent().get(0));
     }
 
     @Test
@@ -58,7 +54,7 @@ public class ResourceMetaServiceImplTest extends AbstractIntegrationTest {
         prepareFormMetaData(formId, "meta/form_text_blank_meta.json");
         NodeDescParseDTO desc = iResourceMetaService.parseFormDescByFormId(formId);
         Assertions.assertTrue(desc.getContent().size() > 0);
-        Assertions.assertEquals("测试 测试", desc.getContent().get(0));
+        Assertions.assertEquals("test test", desc.getContent().get(0));
     }
 
     private void prepareFormMetaData(String formId, String fileName) {

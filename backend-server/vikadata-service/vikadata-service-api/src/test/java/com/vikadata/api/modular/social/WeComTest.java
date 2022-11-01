@@ -62,7 +62,7 @@ public class WeComTest {
     @SneakyThrows
     @Test
     public void sendRecordRemindMemberCardMsg() {
-        WxCpMessage message = WeComCardFactory.createRecordRemindMemberCardMsg(agentId, "测试记录一", "Pengap", "测试企业微信消息",
+        WxCpMessage message = WeComCardFactory.createRecordRemindMemberCardMsg(agentId, "test record one", "Pengap", "test enterprise wechat messages",
                 "https://integration.vika.ltd");
         message.setToUser("PengAnPing");
 
@@ -73,8 +73,8 @@ public class WeComTest {
     @SneakyThrows
     @Test
     public void sendCommentRemindCardMsg() {
-        WxCpMessage message = WeComCardFactory.createCommentRemindCardMsg(agentId, "测试记录一", "  测试企业微信评论消息&nbsp;", "Pengap",
-                "测试企业微信消息", "https://integration.vika.ltd");
+        WxCpMessage message = WeComCardFactory.createCommentRemindCardMsg(agentId, "test record one", "  Test enterprise WeChat comment messages&nbsp;", "Pengap",
+                "test enterprise wechat messages", "https://integration.vika.ltd");
         message.setToUser("null");
 
         WxCpMessageSendResult send = service.getMessageService().send(message);
@@ -99,7 +99,7 @@ public class WeComTest {
         @SneakyThrows
         @Test
         public void serviceToSendRecordRemindMemberCardMsg() {
-            WxCpMessage recordRemindMemberMsg = WeComCardFactory.createRecordRemindMemberCardMsg(agentId, "测试记录", "会员名称", "测试标题", "/workbench/dstD8sjYBArvfS6qv4/viwMsGBk1UBPr/rec43LVF10W5w?notifyId=b2c6c854a97c4b82be198c423902d144");
+            WxCpMessage recordRemindMemberMsg = WeComCardFactory.createRecordRemindMemberCardMsg(agentId, "Test Record", "Member name", "test title", "/workbench/dstD8sjYBArvfS6qv4/viwMsGBk1UBPr/rec43LVF10W5w?notifyId=b2c6c854a97c4b82be198c423902d144");
             iWeComService.sendMessageToUserPrivate(corpld, agentId, "spcH5N5x2572s", CollUtil.toList("PengAnPing"), recordRemindMemberMsg);
         }
 

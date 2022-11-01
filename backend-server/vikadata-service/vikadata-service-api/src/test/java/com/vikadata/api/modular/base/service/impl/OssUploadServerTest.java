@@ -27,14 +27,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- * 前端直传单测
- * </p>
- *
- * @author Pengap
- * @date 2022/4/13 14:09:12
- */
 public class OssUploadServerTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -52,7 +44,7 @@ public class OssUploadServerTest extends AbstractIntegrationTest {
     private final static String callBackJson = "{\n"
             + "    \"ext\":\".png\",\n"
             + "    \"imageWidth\":\"64\",\n"
-            + "    \"fname\":\"生成二维码(生成本地图片).png\",\n"
+            + "    \"fname\":\"image.png\",\n"
             + "    \"uploadSource\":0,\n"
             + "    \"uploadDeveloperAssetId\":1514140107337134081,\n"
             + "    \"mimeType\":\"image/png\",\n"
@@ -64,7 +56,7 @@ public class OssUploadServerTest extends AbstractIntegrationTest {
             + "    \"spaceId\":\"spc123456\",\n"
             + "    \"fsize\":\"1123\",\n"
             + "    \"nodeId\":\"wpk1w3eEFBR5Z\",\n"
-            + "    \"key\":\"widget/wpk1w3eEFBR5Z/生成二维码(生成本地图片).png\",\n"
+            + "    \"key\":\"widget/wpk1w3eEFBR5Z/image.png\",\n"
             + "    \"hash\":\"Fk4-P8ygCfgH1NzoPZSFom-2Nf7W\"\n"
             + "}";
 
@@ -109,7 +101,7 @@ public class OssUploadServerTest extends AbstractIntegrationTest {
     @SneakyThrows
     private WidgetPackageEntity initWidget(UserEntity testOpUser) {
         I18nField i18nName = new I18nField();
-        i18nName.setZhCN("单测小程序");
+        i18nName.setZhCN("Single test applet");
         i18nName.setEnUS("single_test_applet");
 
         WidgetPackageEntity widgetPack = new WidgetPackageEntity()
@@ -117,7 +109,7 @@ public class OssUploadServerTest extends AbstractIntegrationTest {
                 .setI18nName(i18nName.toJson())
                 .setPackageType(WidgetPackageType.THIRD_PARTY.getValue())
                 .setReleaseType(WidgetReleaseType.GLOBAL.getValue())
-                // 空间站小程序默认生效，全局小程序默认不生效
+                // The space station applet takes effect by default, and the global applet does not take effect by default
                 .setIsEnabled(true)
                 .setIsTemplate(false)
                 .setStatus(WidgetPackageStatus.DEVELOP.getValue())

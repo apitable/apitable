@@ -6,11 +6,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.vikadata.api.control.role.*;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.control.permission.FieldPermission;
 import com.vikadata.api.control.permission.NodePermission;
+import com.vikadata.api.control.role.ControlRole;
+import com.vikadata.api.control.role.ControlRoleManager;
+import com.vikadata.api.control.role.FieldReaderRole;
+import com.vikadata.api.control.role.NodeEditorRole;
+import com.vikadata.api.control.role.NodeManagerRole;
+import com.vikadata.api.control.role.NodeOwnerRole;
+import com.vikadata.api.control.role.NodeReaderRole;
+import com.vikadata.api.control.role.NodeUpdaterRole;
 import com.vikadata.api.control.role.RoleConstants.Field;
 import com.vikadata.api.control.role.RoleConstants.Node;
 
@@ -19,8 +26,6 @@ import static org.assertj.core.util.Lists.list;
 
 /**
  * Control Role Unit Test
- * @author Shawn Deng
- * @date 2021-03-18 17:24:51
  */
 public class ControlRoleTest {
 
@@ -67,16 +72,16 @@ public class ControlRoleTest {
         assertThat(role.hasPermission(FieldPermission.READ_FIELD_DATA)).isTrue();
         assertThat(role.getPermissions()).contains(FieldPermission.READ_FIELD_DATA);
     }
+
     @Test
     public void testCompareRole() {
         List<ControlRole> roles = new ArrayList<>();
-        // 胡乱插入数据
         roles.add(new NodeManagerRole());
         roles.add(new NodeReaderRole());
         roles.add(new NodeEditorRole());
         roles.add(new NodeUpdaterRole());
 
-        // 自然排序
+        // natural ordering
         Collections.sort(roles);
 
         assertThat(roles).size().isEqualTo(4);
@@ -149,7 +154,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterAndManagerRoleGreaterThan(){
+    public void testUpdaterAndManagerRoleGreaterThan() {
         ControlRole manager = ControlRoleManager.parseNodeRole("manager");
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         assertThat(manager.isEqualTo(updater)).isFalse();
@@ -158,7 +163,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterAndEditorRoleGreaterThan(){
+    public void testUpdaterAndEditorRoleGreaterThan() {
         ControlRole editor = ControlRoleManager.parseNodeRole("editor");
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         assertThat(editor.isEqualTo(updater)).isFalse();
@@ -167,7 +172,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterAndReaderRoleGreaterThan(){
+    public void testUpdaterAndReaderRoleGreaterThan() {
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         ControlRole reader = ControlRoleManager.parseNodeRole("reader");
         assertThat(updater.isEqualTo(reader)).isFalse();
@@ -176,7 +181,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterRoleGreaterThanOrEqualTo(){
+    public void testUpdaterRoleGreaterThanOrEqualTo() {
         ControlRole updater1 = ControlRoleManager.parseNodeRole("updater");
         ControlRole updater2 = ControlRoleManager.parseNodeRole("updater");
         assertThat(updater1.isEqualTo(updater2)).isTrue();
@@ -185,7 +190,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterAndManagerRoleLessThan(){
+    public void testUpdaterAndManagerRoleLessThan() {
         ControlRole manager = ControlRoleManager.parseNodeRole("manager");
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         assertThat(manager.isEqualTo(updater)).isFalse();
@@ -194,7 +199,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterAndEditorRoleLessThan(){
+    public void testUpdaterAndEditorRoleLessThan() {
         ControlRole editor = ControlRoleManager.parseNodeRole("editor");
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         assertThat(editor.isEqualTo(updater)).isFalse();
@@ -203,7 +208,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterAndReaderRoleLessThan(){
+    public void testUpdaterAndReaderRoleLessThan() {
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         ControlRole reader = ControlRoleManager.parseNodeRole("reader");
         assertThat(updater.isEqualTo(reader)).isFalse();
@@ -212,7 +217,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterRoleLessThanOrEqualTo(){
+    public void testUpdaterRoleLessThanOrEqualTo() {
         ControlRole updater1 = ControlRoleManager.parseNodeRole("updater");
         ControlRole updater2 = ControlRoleManager.parseNodeRole("updater");
         assertThat(updater1.isEqualTo(updater2)).isTrue();
@@ -221,7 +226,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testCompareFieldRoleAndNodeUpdaterRole(){
+    public void testCompareFieldRoleAndNodeUpdaterRole() {
         ControlRole nodeUpdaterRole = new NodeUpdaterRole();
         assertThat(nodeUpdaterRole.getPermissions()).contains(FieldPermission.READ_FIELD_DATA);
         assertThat(nodeUpdaterRole.getPermissions()).doesNotContain(FieldPermission.EDIT_FIELD_DATA);
@@ -235,7 +240,7 @@ public class ControlRoleTest {
     }
 
     @Test
-    public void testUpdaterRoleCanCreateRow(){
+    public void testUpdaterRoleCanCreateRow() {
         ControlRole updater = ControlRoleManager.parseNodeRole("updater");
         assertThat(updater.getPermissions()).contains(NodePermission.EDIT_CELL);
         assertThat(updater.getPermissions()).contains(NodePermission.CREATE_ROW);

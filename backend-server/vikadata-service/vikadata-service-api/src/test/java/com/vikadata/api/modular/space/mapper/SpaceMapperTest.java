@@ -27,7 +27,7 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/testdata/space-data.sql")
     void testSelectSpaceNameBySpaceId() {
         String name = spaceMapper.selectSpaceNameBySpaceId("spc41");
-        assertThat(name).isEqualTo("41的工作站");
+        assertThat(name).isEqualTo("41'space");
     }
 
     @Test

@@ -1,14 +1,14 @@
 {
-    "title":"维格视图的神奇表单",
-    "description":[
+    "title": "form",
+    "description": [
         {
-            "type":"paragraph",
-            "children":[
+            "type": "paragraph",
+            "children": [
                 {
-                    "text":"测试"
+                    "text": "test"
                 }
             ]
         }
     ],
-    "fillAnonymous":true
+    "fillAnonymous": true
 }

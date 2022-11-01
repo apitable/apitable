@@ -1,4 +1,4 @@
--- 资源类型：png,jpeg,pdf,zip,
+-- Resource type: png, jpeg, pdf, zip,
 INSERT INTO vika_asset(id, `checksum`, head_sum, bucket, file_size, file_url, mime_type,
                        extension_name, preview, is_template, height, width)
 VALUES (1506201075392774146, 'DekwyNBgUj3Shi1FzCfl1A==', NULL, 'QNY1', 658436,

@@ -300,17 +300,8 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         orderChecker.check(orderId, expected);
     }
 
-    /**
-     * 创建企微服务商租户
-     *
-     * @param suiteId 应用套件 ID
-     * @param authCorpId 授权的企业 ID
-     * @param isPaid 是否付费
-     * @return 绑定的空间站 ID
-     */
     protected String createWecomIsvTenant(String suiteId, String authCorpId, boolean isPaid) {
-        String authCorpName = "测试企业";
-        // 1 保存企业或者更新企业的授权信息
+        String authCorpName = "test_corp";
         SocialTenantEntity tenantEntity = SocialTenantEntity.builder()
                 .appId(suiteId)
                 .appType(SocialAppType.ISV.getType())
@@ -323,20 +314,15 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
                 .status(true)
                 .build();
         iSocialTenantService.createOrUpdateByTenantAndApp(tenantEntity);
-        // 2 创建企业的空间站
-        SpaceEntity spaceEntity = iSpaceService.createWeComIsvSpaceWithoutUser(String.format("%s的空间站", authCorpName));
+        SpaceEntity spaceEntity = iSpaceService.createWeComIsvSpaceWithoutUser(String.format("%s'Space", authCorpName));
         String spaceId = spaceEntity.getSpaceId();
-        // 2.1 绑定新创建的空间站
         iSocialTenantBindService.addTenantBind(tenantEntity.getAppId(), tenantEntity.getTenantId(), spaceId);
-        // 2.2 创建空间站的根节点
         String rootNodeId = iNodeService.createChildNode(-1L, CreateNodeDto.builder()
                 .spaceId(spaceId)
                 .newNodeId(IdUtil.createNodeId())
                 .type(NodeType.ROOT.getNodeType())
                 .build());
-        // 3 设置应用市场绑定状态
         iAppInstanceService.createInstanceByAppType(spaceId, AppType.WECOM_STORE.name());
-        // 4 配置订阅信息
         SocialWecomOrderEntity orderWeComEntity = SocialWecomOrderEntity.builder()
                 .orderId("junitTestWecomOrderId")
                 .orderStatus(1)
@@ -385,7 +371,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         orderMetadata.setOrderNo(orderEntity.getOrderNo());
         orderMetadata.setMetadata(isPaid ? JSONUtil.toJsonStr(orderWeComEntity) : null);
         orderMetadata.setOrderChannel(OrderChannel.WECOM.getName());
-        // 返回绑定的空间站 ID
         return spaceId;
     }
 

@@ -10,9 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * 版本处理工具测试
- * @author Shawn Deng
- * @date 2022-03-26 20:30:57
+ * version handling tool test
  */
 public class VikaVersionTest {
 

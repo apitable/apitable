@@ -1,6 +1,5 @@
 package com.vikadata.api.modular.workspace.mapper;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,10 +19,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author wuyitao
- * @date 2022/4/6 2:43 PM
- */
 @Disabled
 public class NodeMapperTest extends AbstractMyBatisMapperTest {
 
@@ -58,7 +53,7 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/testdata/node-data.sql")
     void testSelectNodeNameByNodeId() {
         String name = nodeMapper.selectNodeNameByNodeId("ni41");
-        assertThat(name).isEqualTo("vika body的空间");
+        assertThat(name).isEqualTo("vika body'space");
     }
 
 
@@ -66,7 +61,7 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/testdata/node-data.sql")
     void testSelectNodeNameByNodeIdIncludeDeleted() {
         String name = nodeMapper.selectNodeNameByNodeIdIncludeDeleted("ni41");
-        assertThat(name).isEqualTo("vika boy的空间");
+        assertThat(name).isEqualTo("vika boy'space'");
     }
 
 

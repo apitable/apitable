@@ -19,9 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 /**
- * 快速测试Mapper，利用Mybatis-Plus的illegal sql插件实现sql合理
- * @author Shawn Deng
- * @date 2022-03-24 21:37:46
+ * Quickly test Mapper and use Mybatis-Plus's illegal sql plug-in to achieve reasonable sql
  */
 @MybatisPlusTest
 @ContextConfiguration(classes = { MybatisPlusExpandProperties.class, MybatisPlusConfig.class })
@@ -38,8 +36,8 @@ public abstract class AbstractMyBatisMapperTest {
     static void setUp(@Autowired JdbcTemplate jdbcTemplate,
             @Value("#{'${exclude}'.split(',')}") List<String> excludeTables,
             @Autowired MybatisPlusExpandProperties properties) {
-        logger.info("是否开启垃圾SQL拦截： {}", properties.getPlugin().getIllegalSql());
-        logger.info("是否攻击SQL阻断解析器： {}", properties.getPlugin().getBlockAttack());
+        logger.info("Whether to enable garbage SQL interception: {}", properties.getPlugin().getIllegalSql());
+        logger.info("Whether to attack the SQL blocking parser: {}", properties.getPlugin().getBlockAttack());
         UnitTestUtil.clearDB(jdbcTemplate, excludeTables);
     }
 }

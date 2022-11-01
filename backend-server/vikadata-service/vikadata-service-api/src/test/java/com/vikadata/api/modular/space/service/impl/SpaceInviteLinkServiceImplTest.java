@@ -42,11 +42,11 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
     public void testCheckIsNewUserRewardCapacity() {
         Long userId = 123L;
         String spaceId = "spa123";
-        String userName = "测试用户";
+        String userName = "test user";
         SpaceEntity space = SpaceEntity.builder()
                 .id(IdWorker.getId())
                 .spaceId(spaceId)
-                .name("测试空间站")
+                .name("test space")
                 .build();
         spaceMapper.insert(space);
         // add cache

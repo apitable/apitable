@@ -46,7 +46,8 @@ public class ClientUrlUtilTest {
 
     @Test
     void test() {
-        Optional<URI> turnIntoURI = ClientUriUtil.urlTurnIntoURI("https://vika.cn/share/shrg7yENL1Dg2Ki0zreEg 【维格表】- 吴奕涛给你分享了《node》，为了更好的体验，建议通过电脑浏览器访问");
+        Optional<URI> turnIntoURI = ClientUriUtil.urlTurnIntoURI("https://vika.cn/share/shrg7yENL1Dg2Ki0zreEg ["
+                + "Form] - Wu Yitao shared 'node' with you. For a better experience, it is recommended to access it through a computer browser");
         assertThat(turnIntoURI.isPresent()).isTrue();
     }
 }

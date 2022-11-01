@@ -29,11 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-/**
- * 授权服务测试
- * @author Shawn Deng
- * @date 2022-04-09 00:23:25
- */
 public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -41,7 +36,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingPasswordWithMobilePhoneNotExist() {
-        // 手机号不存在尝试登录，不自动注册
+        // The mobile phone number does not exist, try to log in, do not automatically register
         LoginRo loginRo = new LoginRo();
         loginRo.setAreaCode("+86");
         loginRo.setUsername("13631619061");
@@ -52,7 +47,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingPasswordWithMobilePhoneWithoutPassword() {
-        // 手机号但是密码错误尝试登录，不自动注册
+        // The phone number but the password is wrong, try to log in, not automatically registered
         LoginRo loginRo = new LoginRo();
         loginRo.setAreaCode("+86");
         loginRo.setUsername("13631619061");
@@ -63,7 +58,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingPasswordWithMobilePhoneInputPasswordCorrect() {
-        // 手机号和密码正确尝试登录
+        // The phone number and password are correct and try to log in
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setCode("+86");
@@ -81,7 +76,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingPasswordWithEmailNotExist() {
-        // 手机号不存在尝试登录，不自动注册
+        // The mobile phone number does not exist, try to log in, do not automatically register
         LoginRo loginRo = new LoginRo();
         loginRo.setUsername("dengguiheng@vikadat.com");
         loginRo.setType(LoginType.PASSWORD);
@@ -91,7 +86,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingPasswordWithEmailWithoutPassword() {
-        // 手机号但是密码错误尝试登录，不自动注册
+        // Phone number but wrong password try to log in, no automatic registration
         LoginRo loginRo = new LoginRo();
         loginRo.setUsername("dengguiheng@vikadat.com");
         loginRo.setType(LoginType.PASSWORD);
@@ -101,7 +96,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingPasswordWithEmailInputPasswordCorrect() {
-        // 手机号和密码正确尝试登录
+        // The phone number and password are correct and try to log in
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setEmail("dengguiheng@vikadat.com");
@@ -119,7 +114,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     public void testLoginUsingSmsCodeWithMobilePhoneNotExistAutoRegister() {
         String areaCode = "+86";
         String mobile = "13631619061";
-        // 准备验证码
+        // Prepare verification code
         String validCode = sendLoginSmsCode(areaCode, mobile);
 
         LoginRo loginRo = new LoginRo();
@@ -138,7 +133,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoginUsingSmsCodeWithMobilePhoneExistAutoLogin() {
-        // 准备用户
+        // prepare users
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setCode("+86");
@@ -147,7 +142,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
         String areaCode = "+86";
         String mobile = "13631619061";
-        // 准备验证码
+        // Prepare verification code
         String validCode = sendLoginSmsCode(areaCode, mobile);
 
         LoginRo loginRo = new LoginRo();
@@ -162,7 +157,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testLoginUsingEmailCodeWithEmailNotExistAutoRegister() {
         String email = "dengguiheng@vikadata.com";
-        // 准备验证码
+        // Prepare verification code
         String validCode = sendLoginEmailCode(email);
 
         LoginRo loginRo = new LoginRo();
@@ -181,13 +176,11 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testLoginUsingEmailCodeWithEmailExistAutoLogin() {
         String email = "dengguiheng@vikadata.com";
-        // 准备用户
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
         user.setEmail(email);
         iUserService.save(user);
 
-        // 准备验证码
         String validCode = sendLoginEmailCode(email);
 
         LoginRo loginRo = new LoginRo();
@@ -207,12 +200,12 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         SpaceEntity space = SpaceEntity.builder()
             .id(IdWorker.getId())
             .spaceId("spc123")
-            .name("测试空间")
+            .name("testSpace")
             .build();
         spaceMapper.insert(space);
-        // 匹配空间站，发放奖励
+        // match space stations and issue rewards
         iAuthService.checkSpaceRewardCapacity(firstMemberDto.getUserId(), firstMemberDto.getMemberName(), "spc123");
-        // 查询奖励记录
+        // query reward records
         Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity("spc123");
         assertThat(number).isEqualTo(314572800);
     }

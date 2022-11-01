@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.component.LanguageManager;
+import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.config.properties.EmailSendProperties;
 import com.vikadata.api.constants.MailPropConstants;
-import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.boot.autoconfigure.beetl.BeetlAutoConfiguration;
 import com.vikadata.boot.autoconfigure.mail.CloudMailAutoConfiguration;
@@ -28,15 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-/**
- * <p>
- * 测试邮件发送
- * </p>
- *
- * @author Pengap
- * @date 2022/3/21 23:07:44
- */
-@Disabled("简单测试邮件模版样式，非必需")
+@Disabled("Simple test email template style, not required")
 @SpringJUnitConfig({
         BeetlAutoConfiguration.class,
         MailSenderAutoConfiguration.class,
@@ -52,9 +44,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 })
 public class SendMailTest {
 
-    private final Dict dict = Dict.create();
-
     private final static String NOTICE_EMAIL = "penganping@vikadata.com";
+
+    private final Dict dict = Dict.create();
 
     @BeforeEach
     void init() {
@@ -79,7 +71,7 @@ public class SendMailTest {
     public void sendWidgetQualificationAuthFailMail() {
         String subjectType = MailPropConstants.SUBJECT_WIDGET_QUALIFICATION_AUTH_FAIL;
 
-        dict.set("IDENTITY_VERIFY_FAIL_REASON", "小程序开发者主体资质认证失败");
+        dict.set("IDENTITY_VERIFY_FAIL_REASON", "The qualification authentication of the Mini Program developer failed");
 
         String lang = LanguageManager.me().getDefaultLanguageTag();
         List<String> to = Collections.singletonList(NOTICE_EMAIL);
@@ -92,7 +84,7 @@ public class SendMailTest {
     public void sendWidgetSubmitSuccessMail() {
         String subjectType = MailPropConstants.SUBJECT_WIDGET_SUBMIT_SUCCESS;
 
-        dict.set("WIDGET_NAME", "小程序A");
+        dict.set("WIDGET_NAME", "applet a");
         dict.set("WIDGET_VERSION", "1.0.0");
 
         List<String> to = Collections.singletonList(NOTICE_EMAIL);
@@ -108,9 +100,9 @@ public class SendMailTest {
     public void sendWidgetSubmitFailMail() {
         String subjectType = MailPropConstants.SUBJECT_WIDGET_SUBMIT_FAIL;
 
-        dict.set("WIDGET_NAME", "小程序A");
+        dict.set("WIDGET_NAME", "applet a");
         dict.set("WIDGET_VERSION", "1.0.0");
-        dict.set("WIDGET_EVALUATE_FAIL_REASON", "小程序A上架失败");
+        dict.set("WIDGET_EVALUATE_FAIL_REASON", "mini program a failed to launch");
 
         List<String> to = Collections.singletonList(NOTICE_EMAIL);
 
@@ -125,11 +117,11 @@ public class SendMailTest {
     public void sendWidgetUnpublishNotifyMail() {
         String subjectType = MailPropConstants.SUBJECT_WIDGET_UNPUBLISH_NOTIFY;
 
-        dict.set("SPACE_NAME", "空间站A");
-        dict.set("WIDGET_NAME", "小程序A");
+        dict.set("SPACE_NAME", "space a");
+        dict.set("WIDGET_NAME", "applet a");
 
         Dict mapDict = Dict.create();
-        mapDict.set("WIDGET_NAME", "小程序A");
+        mapDict.set("WIDGET_NAME", "applet a");
 
         List<String> to = Collections.singletonList(NOTICE_EMAIL);
 
@@ -144,12 +136,12 @@ public class SendMailTest {
     public void sendWidgetTransferNotifyMail() {
         String subjectType = MailPropConstants.SUBJECT_WIDGET_TRANSFER_NOTIFY;
 
-        dict.set("SPACE_NAME", "空间站A");
-        dict.set("WIDGET_NAME", "小程序A");
-        dict.set("MEMBER_NAME", "成员A");
+        dict.set("SPACE_NAME", "space a");
+        dict.set("WIDGET_NAME", "applet a");
+        dict.set("MEMBER_NAME", "member a");
 
         Dict mapDict = Dict.create();
-        mapDict.set("WIDGET_NAME", "小程序A");
+        mapDict.set("WIDGET_NAME", "applet a");
 
         List<String> to = Collections.singletonList(NOTICE_EMAIL);
 
@@ -164,10 +156,10 @@ public class SendMailTest {
     public void sendWidgetUnpublishGlobalNotifyMail() {
         String subjectType = MailPropConstants.SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY;
 
-        dict.set("WIDGET_NAME", "小程序A");
+        dict.set("WIDGET_NAME", "applet a");
 
         Dict mapDict = Dict.create();
-        mapDict.set("WIDGET_NAME", "小程序A");
+        mapDict.set("WIDGET_NAME", "applet a");
 
         List<String> to = Collections.singletonList(NOTICE_EMAIL);
 

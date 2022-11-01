@@ -25,15 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * 订阅相关配置单元测试
- *
- * @author Shawn Deng
- */
+
 public class BillingConfigManagerTest {
 
     /**
-     * 产品渠道-专有云计费：旗舰级产品
+     * Product Channel - Proprietary Cloud Billing: Flagship Product
      */
     @Test
     public void testGetFreeProductByPrivateChannel() {
@@ -69,7 +65,7 @@ public class BillingConfigManagerTest {
     }
 
     /**
-     * 产品渠道-阿里云计算巢计费：免费产品
+     * Product Channels - Alibaba Cloud Computing Nest Billing: Free Products
      */
     @Test
     public void testGetFreeProductByAliyunChannel() {
@@ -105,7 +101,7 @@ public class BillingConfigManagerTest {
     }
 
     /**
-     * 产品渠道-自营计费：青铜级产品
+     * Product channel - self-operated billing: bronze-level product
      */
     @Test
     public void testGetFreeProductByVikaChannel() {
@@ -170,7 +166,7 @@ public class BillingConfigManagerTest {
     }
 
     /**
-     * 产品渠道-钉钉计费: 钉钉基础版产品
+     * Product Channel - DingTalk Billing: DingTalk Basic Edition Products
      */
     @Test
     public void testGetFreeProductByDingtalkChannel() {
@@ -206,7 +202,7 @@ public class BillingConfigManagerTest {
     }
 
     /**
-     * 产品渠道-飞书计费：飞书基础版产品
+     * Product Channels - Feishu Billing: Feishu Basic Edition Products
      */
     @Test
     public void testGetFreeProductByFeishuChannel() {
@@ -242,7 +238,7 @@ public class BillingConfigManagerTest {
     }
 
     /**
-     * 产品渠道-企业微信计费：企业微信基础版产品
+     * Product Channel-Enterprise WeChat Billing: Enterprise WeChat Basic Edition Products
      */
     @Test
     public void testGetFreeProductByWecomChannel() {
@@ -279,27 +275,27 @@ public class BillingConfigManagerTest {
 
     @Test
     public void testGetFreePlanByChannel() {
-        // 自营计费：青铜版
+        // Sass: Bronze Edition
         Plan bronzePlan = BillingConfigManager.getFreePlan(ProductChannel.VIKA);
         assertNotNull(bronzePlan);
         assertTrue(bronzePlan.isOnline());
         assertEquals(bronzePlan.getProduct(), ProductEnum.BRONZE.getName());
-        // 钉钉计费：钉钉基础版
+        //DingTalk Billing: DingTalk Basic Edition
         Plan dingtalkBasePlan = BillingConfigManager.getFreePlan(ProductChannel.DINGTALK);
         assertNotNull(dingtalkBasePlan);
         assertTrue(dingtalkBasePlan.isOnline());
         assertEquals(dingtalkBasePlan.getProduct(), ProductEnum.DINGTALK_BASE.getName());
-        // 飞书计费：飞书基础版
+        // Feishu Billing: Feishu Basic Edition
         Plan feishuBasePlan = BillingConfigManager.getFreePlan(ProductChannel.LARK);
         assertNotNull(feishuBasePlan);
         assertTrue(feishuBasePlan.isOnline());
         assertEquals(feishuBasePlan.getProduct(), ProductEnum.FEISHU_BASE.getName());
-        // 企业微信计费：企业微信基础版
+        // Enterprise WeChat Billing: Enterprise WeChat Basic Edition
         Plan wecomBasePlan = BillingConfigManager.getFreePlan(ProductChannel.WECOM);
         assertNotNull(wecomBasePlan);
         assertTrue(wecomBasePlan.isOnline());
         assertEquals(wecomBasePlan.getProduct(), ProductEnum.WECOM_BASE.getName());
-        // 专有云计费：专有云旗舰版
+        // Proprietary Cloud Billing: Proprietary Cloud Ultimate
         Plan privateCloudPlan = BillingConfigManager.getFreePlan(ProductChannel.PRIVATE);
         assertNotNull(privateCloudPlan);
         assertEquals(privateCloudPlan.getProduct(), ProductEnum.PRIVATE_CLOUD.getName());
@@ -316,7 +312,7 @@ public class BillingConfigManagerTest {
     @Test
     public void testSilverPriceList() {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.SILVER);
-        // 白银套餐必须具备哪些计划
+        // What plans are must-haves for the silver package
         Integer[] months = array(1, 6, 12);
         Integer[] seats = array(100);
         assertEquals(priceList.size(), months.length * seats.length);
@@ -325,7 +321,7 @@ public class BillingConfigManagerTest {
     @Test
     public void testGoldPriceList() {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.GOLD);
-        // 白银套餐必须具备哪些计划
+        // What plans are must-haves for the silver package
         Integer[] months = array(1, 6, 12);
         Integer[] seats = array(200);
         assertEquals(priceList.size(), months.length * seats.length);

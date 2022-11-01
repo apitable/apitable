@@ -40,7 +40,7 @@ INSERT INTO `vika_node` (`id`, `space_id`, `parent_id`, `pre_node_id`, `node_id`
                          `node_name`, `icon`, `type`, `cover`, `is_template`, `extra`,
                          `creator`, `deleted_path`, `is_deleted`, `is_rubbish`,
                          `is_banned`, `created_by`, `updated_by`)
-VALUES (41, 'spc41', '0', NULL, 'ni41', 'vika boy的空间', NULL, 0, NULL, 0,
+VALUES (41, 'spc41', '0', NULL, 'ni41', 'vika boy', NULL, 0, NULL, 0,
         NULL, 2, NULL, 0, 0, 0, 41, 41);
 
 INSERT INTO `vika_node` (`id`, `space_id`, `parent_id`, `pre_node_id`, `node_id`,

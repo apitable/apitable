@@ -4,7 +4,7 @@ VALUES (1, '23a5f52cd1ee4e6abdc8a77e9b73cdeb', 'Shawn', 'dengguiheng@vikadata.co
        (2, '3e2f7d835958472ab43a623f15dec64f', 'Chambers', 'chenbochao@vikadata.com',
         '+86',
         '13425442832'),
-       (3, '23a5f52cd1ee4e6abdc8a77e9b73cdec', '张本富Benson', 'benson@vikadata.com', '+86',
+       (3, '23a5f52cd1ee4e6abdc8a77e9b73cdec', 'Benson', 'benson@vikadata.com', '+86',
         '13265435122');
 
 INSERT INTO `vika_user` (`id`, `uuid`, `nick_name`, `code`, `mobile_phone`, `email`,

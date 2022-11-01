@@ -36,7 +36,7 @@ public class DatasheetMetaMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/datasheet-meta-data.sql")
     void testCountByMetaData() {
-        Integer count = datasheetMetaMapper.countByMetaData(CollUtil.newArrayList("ni41"), "表格视图");
+        Integer count = datasheetMetaMapper.countByMetaData(CollUtil.newArrayList("ni41"), "view");
         assertThat(count).isEqualTo(1);
     }
 

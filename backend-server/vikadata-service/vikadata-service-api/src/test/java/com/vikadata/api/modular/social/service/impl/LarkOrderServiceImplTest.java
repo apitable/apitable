@@ -36,37 +36,37 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
     @Test
     public void testPriceTenAndOneYear() {
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_10_1_trail.json");
-        assertThat(event).as("数据无法解析:base_10_1_trail").isNotNull();
+        assertThat(event).as("data could not be parsed:base_10_1_trail").isNotNull();
 
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(event.getPricePlanId());
-        assertThat(price).as("飞书标准版（10 人）配置错误").isNotNull();
+        assertThat(price).as("Feishu Standard Edition (10 people) configuration error").isNotNull();
     }
 
     @Test
     public void testPriceTwentyAndOneYear() {
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_20_1_upgrade.json");
-        assertThat(event).as("数据无法解析:base_20_1_upgrade").isNotNull();
+        assertThat(event).as("Data could not be parsed:base_20_1_upgrade").isNotNull();
 
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(event.getPricePlanId());
-        assertThat(price).as("飞书标准版（20 人）配置错误").isNotNull();
+        assertThat(price).as("Feishu Standard Edition (20 people) is misconfigured").isNotNull();
     }
 
     @Test
     public void testPriceThirtyAndOneYear() {
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_30_1_renew_trail.json");
-        assertThat(event).as("数据无法解析:base_30_1_renew_trail").isNotNull();
+        assertThat(event).as("Data could not be parsed:base_30_1_renew_trail").isNotNull();
 
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(event.getPricePlanId());
-        assertThat(price).as("飞书标准版（30 人）配置错误").isNotNull();
+        assertThat(price).as("Feishu Standard Edition (30 people) is misconfigured").isNotNull();
     }
 
     @Test
     public void testEnterprisePriceThirtyAndOneYear() {
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/enterprise_30_1_upgrade_after_renew.json");
-        assertThat(event).as("数据无法解析:enterprise_30_1_upgrade_after_renew").isNotNull();
+        assertThat(event).as("data could not be parsed:enterprise_30_1_upgrade_after_renew").isNotNull();
 
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(event.getPricePlanId());
-        assertThat(price).as("飞书企业版（30 人）配置错误").isNotNull();
+        assertThat(price).as("Feishu Enterprise Edition (30 people) configuration error").isNotNull();
     }
 
     @Test
@@ -184,7 +184,7 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
 
     private void prepareSpaceData(String spaceId) {
         // Initialize space information
-        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
+        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("test space").build();
         iSpaceService.save(spaceEntity);
     }
 }

@@ -2,16 +2,11 @@ package com.vikadata.api;
 
 import java.io.InputStream;
 
-/**
- * 测试文件工具类
- * @author Shawn Deng
- * @date 2022-03-25 12:13:14
- */
 public class FileHelper {
 
     /**
-     * 获取ClassPath资源文件流
-     * @param resourcePath ClassPath下的相对路径
+     * Get Class Path resource file stream
+     * @param resourcePath relative path under class path
      * @return InputStream
      */
     public static InputStream getInputStreamFromResource(String resourcePath) {

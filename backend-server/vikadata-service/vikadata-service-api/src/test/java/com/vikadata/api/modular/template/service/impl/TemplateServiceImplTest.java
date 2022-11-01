@@ -167,7 +167,7 @@ public class TemplateServiceImplTest extends AbstractIntegrationTest {
         relNodeToMainNodeMap.put("dst2", "dst");
         // given
         given(iNodeRelService.getRelNodeToMainNodeMap(formList)).willReturn(relNodeToMainNodeMap);
-        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("测试");
+        given(nodeMapper.selectNodeNameByNodeId("dst2")).willReturn("test");
         // when
         boolean isException = false;
         try {

@@ -23,9 +23,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
 /**
- * 抽象容器集成类：Mysql、redis
- * @author Shawn Deng
- * @date 2022-03-20 00:12:54
+ * Abstract container integration class: Mysql, redis
  */
 @Testcontainers
 @MybatisPlusTest
@@ -40,17 +38,17 @@ import org.springframework.test.context.DynamicPropertySource;
 @Slf4j
 public abstract class IntegrationTest {
 
-    private static final DockerImageName MYSQL_IMAGE = DockerImageName.parse("mysql:8.0.23");
-
-    private static final DockerImageName REDIS_IMAGE = DockerImageName.parse("redis:6.0.2");
-
     static final MySQLContainer<?> testMySQLContainer;
 
     static final GenericContainer<?> testRedisContainer;
 
+    private static final DockerImageName MYSQL_IMAGE = DockerImageName.parse("mysql:8.0.23");
+
+    private static final DockerImageName REDIS_IMAGE = DockerImageName.parse("redis:6.0.2");
+
     static {
         Instant start = Instant.now();
-        // 单例模式，对于继承此类的测试用例都只启动一次
+        // Singleton mode, only start once for test cases that inherit this class
         testMySQLContainer = new MySQLContainer<>(MYSQL_IMAGE)
                 .withCommand("--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci")
                 // .withReuse(true)
@@ -60,7 +58,7 @@ public abstract class IntegrationTest {
                 // .withReuse(true)
                 // .withLabel("reuse.UUID", "0429783b-c855-4b32-8239-258cba232b63")
                 .withExposedPorts(6379);
-        // 并行启动
+        // parallel start
         Startables.deepStart(Stream.of(testMySQLContainer, testRedisContainer)).join();
         log.info("🐳 TestContainers started in {}", Duration.between(start, Instant.now()));
     }

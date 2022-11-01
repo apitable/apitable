@@ -6,11 +6,11 @@
     "suiteId": "19704002",
     "unionId": "Kbk3fMDiSwo8iE",
     "itemCode": "DT_GOODS_881632919748679_848029",
-    "itemName": "标准版 200 人",
+    "itemName": "Standard Edition 200 people",
     "paidtime": 1636375383000,
     "suiteKey": "suiteybkflwglluwcjnmv",
     "goodsCode": "DT_GOODS_881632919748679",
-    "goodsName": "维格表",
+    "goodsName": "test table",
     "orderType": "BUY",
     "syncAction": "market_order",
     "maxOfPeople": "200",
@@ -20,5 +20,5 @@
     "orderCreatSource": "TIANYUAN",
     "serviceStartTime": 1636109093023,
     "distributorCorpId": "dingc7ad99cf1e0ad49a35c2f4657eb6378f",
-    "distributorCorpName": "维格智数"
+    "distributorCorpName": "test company"
 }

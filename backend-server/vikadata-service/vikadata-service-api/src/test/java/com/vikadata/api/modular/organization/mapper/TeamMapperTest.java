@@ -48,7 +48,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({ "/testdata/unit-team-data.sql" })
     void testSelectByTeamName() {
-        List<SearchTeamResultVo> entities = teamMapper.selectByTeamName("spc41", "研发部");
+        List<SearchTeamResultVo> entities = teamMapper.selectByTeamName("spc41", "team");
         assertThat(entities).isNotEmpty();
     }
 
@@ -149,7 +149,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-team-data.sql")
     void testSelectBySpaceIdAndName() {
-        TeamEntity entity = teamMapper.selectBySpaceIdAndName("spc41", "维格", 0L);
+        TeamEntity entity = teamMapper.selectBySpaceIdAndName("spc41", "space name", 0L);
         assertThat(entity).isNotNull();
     }
 
@@ -171,14 +171,14 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-team-data.sql")
     void testSelectTeamIdsLikeName() {
-        List<Long> ids = teamMapper.selectTeamIdsLikeName("spc41", "研发部");
+        List<Long> ids = teamMapper.selectTeamIdsLikeName("spc41", "team");
         assertThat(ids).isNotEmpty();
     }
 
     @Test
     @Sql("/testdata/unit-team-data.sql")
     void testSelectIdBySpaceIdAndNames() {
-        List<Long> ids = teamMapper.selectIdBySpaceIdAndNames("spc41", CollUtil.newArrayList("维格"));
+        List<Long> ids = teamMapper.selectIdBySpaceIdAndNames("spc41", CollUtil.newArrayList("team"));
         assertThat(ids).isNotEmpty();
     }
 
@@ -207,7 +207,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/testdata/unit-team-data.sql")
     void testSelectTeamNameById() {
         String teamName = teamMapper.selectTeamNameById(41L);
-        assertThat(teamName).isEqualTo("维格");
+        assertThat(teamName).isEqualTo("team41");
     }
 
     @Test
@@ -241,7 +241,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-team-data.sql")
     void testSelectTreeByTeamName() {
-        List<TeamEntity> entities = teamMapper.selectTreeByTeamName("spc41", "研发部");
+        List<TeamEntity> entities = teamMapper.selectTreeByTeamName("spc41", "team41");
         assertThat(entities).isNotEmpty();
     }
 
@@ -264,6 +264,6 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     void testSelectParentTreeByTeamIds(){
         List<Long> teamIds = CollUtil.newArrayList(41L);
         List<TeamPathInfo> teamPathInfos = teamMapper.selectParentTreeByTeamIds("spc41", teamIds);
-        assertThat(teamPathInfos.get(0).getTeamName()).isEqualTo("维格");
+        assertThat(teamPathInfos.get(0).getTeamName()).isEqualTo("team41");
     }
 }

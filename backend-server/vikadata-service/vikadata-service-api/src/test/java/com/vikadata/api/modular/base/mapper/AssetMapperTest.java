@@ -19,13 +19,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <p>
- * 数据访问层测试：资源表测试
- * </p>
- * @author Shawn Deng
- * @date 2022/3/25 21:15
- */
 public class AssetMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
@@ -33,7 +26,6 @@ public class AssetMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     void testInitAssetExist() {
-        // 初始化资源必须存在
         InputStream inputStream = FileHelper.getInputStreamFromResource("vika_asset_exclude_row.txt");
         List<String> fileUrls = IoUtil.readLines(inputStream, StandardCharsets.UTF_8, new ArrayList<>());
         List<AssetEntity> assetEntities = assetMapper.selectByFileUrl(fileUrls);

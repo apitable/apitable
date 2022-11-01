@@ -24,18 +24,16 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.util.CollectionUtils;
 
 /**
- * 数据库沙箱工具类
- * 负责清理数据库，保持单元测试类的隔离性
- * @author Shawn Deng
- * @date 2022-03-25 12:47:45
+ * database sandbox tool class.
+ * Responsible for cleaning up the database and keeping unit test classes isolated
  */
 public class UnitTestUtil {
-
-    private static final Logger logger = LoggerFactory.getLogger(UnitTestUtil.class);
 
     public static final String LIQUIBASE_TABLE_PREFIX = "vika_db_changelog";
 
     public static final String ASSET_TABLE_NAME = "vika_asset";
+
+    private static final Logger logger = LoggerFactory.getLogger(UnitTestUtil.class);
 
     public static void cleanCacheKeys(RedisTemplate<String, Object> redisTemplate) {
         Set<String> keys = redisTemplate.keys("*");
@@ -47,10 +45,10 @@ public class UnitTestUtil {
     public static void clearDB(JdbcTemplate jdbcTemplate, List<String> excludeTables) {
         String catalog = getDbName(jdbcTemplate);
         logger.info("prepare db for unit test, schema: {}", catalog);
-        // 这里是在ci环境下，清理ci中MySQL中的数据库所有表格数据，在本地开发并不会执行，因为指定了vika_test
+        // Here is in the ci environment, clean up all table data in the database in My SQL in ci, it will not be executed in local development, because vika test is specified
         List<String> tableNames = getTableNames(jdbcTemplate, catalog);
         if (catalog.equals("vikadata")) {
-            // 为了不让开发者连上使用环境或者测试环境，不允许操作相关vikadata字眼的数据库名称
+            // In order to prevent developers from connecting to the use environment or test environment, it is not allowed to operate the database name of the relevant vikadata word
             throw new RuntimeException("may be you should not use db name which called 「vikadata」");
         }
         tableNames.removeIf(tableName -> tableName.equals(ASSET_TABLE_NAME));
@@ -92,9 +90,9 @@ public class UnitTestUtil {
     }
 
     private static void filterTableNames(List<String> tableNames, List<String> excludeTables) {
-        // 排除清理某些初始化数据的表格数据
-        logger.info("排除清理的表格:{}", excludeTables);
+        // Tables that exclude initialization data
+        logger.info("Exclude table: {}", excludeTables);
         tableNames.removeIf(excludeTables::contains);
-        logger.info("排除后清理的表格：{}", tableNames);
+        logger.info("Table cleaned after exclusion: {}", tableNames);
     }
 }

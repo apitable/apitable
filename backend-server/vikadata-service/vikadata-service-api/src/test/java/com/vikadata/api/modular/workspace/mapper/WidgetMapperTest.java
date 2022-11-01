@@ -98,7 +98,7 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
         nodeIds.add("ni41");
         List<NodeWidgetDto> list = widgetMapper.selectNodeWidgetDtoByNodeIds(nodeIds);
         assertThat(list.get(0).getNodeId()).isEqualTo("ni41");
-        assertThat(list.get(0).getWidgetName()).isEqualTo("创世组件");
+        assertThat(list.get(0).getWidgetName()).isEqualTo("genesis components");
         assertThat(list.get(0).getDstId()).isEqualTo("ni41");
     }
 }

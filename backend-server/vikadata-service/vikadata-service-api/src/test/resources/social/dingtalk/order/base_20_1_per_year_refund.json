@@ -4,12 +4,12 @@
 	"suiteId": 19704002,
 	"syncSeq": "F0C92A3B2E04273B883D633D",
 	"itemCode": "DT_GOODS_881632919748679_848023",
-	"itemName": "标准版 10 人",
+	"itemName": "Standard ten people",
 	"pushType": "4",
 	"suiteKey": "suiteybkflwglluwcjnmv",
 	"closeType": 3,
 	"eventType": "subscription_close",
 	"goodsCode": "DT_GOODS_881632919748679",
-	"goodsName": "维格表",
+	"goodsName": "test table",
 	"syncAction": "market_service_close"
 }

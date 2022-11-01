@@ -175,7 +175,7 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
 
     private void prepareSpaceData(String spaceId) {
         // initialize spatial information
-        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").build();
+        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("test space").build();
         iSpaceService.save(spaceEntity);
     }
 
@@ -188,7 +188,7 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
 
     private void prepareSpaceDataWithOwner(String spaceId, Long memberId) {
         // initialize spatial information
-        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("测试空间站").owner(memberId).build();
+        SpaceEntity spaceEntity = SpaceEntity.builder().spaceId(spaceId).name("test space").owner(memberId).build();
         iSpaceService.save(spaceEntity);
     }
 }
