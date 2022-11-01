@@ -1,5 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpcProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 import { grpc } from 'src/grpc/generated/grpc/proto/backend.serving.service';
 import { vika } from 'src/grpc/generated/grpc/proto/socket.service';
 import { GatewayConstants } from 'src/socket/constants/gateway.constants';
@@ -17,6 +18,6 @@ export class GrpcClient implements OnModuleInit {
   }
 
   async recordNodeBrowsing(message: grpc.serving.NodeBrowsingRo): Promise<vika.grpc.BasicResult> {
-    return await this.backendService.recordNodeBrowsing(message).toPromise();
+    return await lastValueFrom(this.backendService.recordNodeBrowsing(message));
   }
 }

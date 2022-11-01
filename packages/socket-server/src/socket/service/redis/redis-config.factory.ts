@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { RedisConstants } from 'src/socket/constants/redis-constants';
+import { RedisConstants } from '../../constants/redis-constants';
 import IORedis = require('ioredis');
 
 export const redisConfig = {

@@ -30,7 +30,6 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
   protected readonly redisService: RedisService;
   protected readonly clientCredentials;
   private _currentClientUrl;
-  // 保证唯一性
   clientIps: Set<string>;
   private readonly httpService: HttpService;
 
@@ -45,9 +44,9 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
   async onApplicationBootstrap(): Promise<any> {
     this.logger.log('Current health check mode：XXL_JOB');
     /*
-     * Client订阅了管道，无法使用管道外的其余命令所以这里需要开启 duplicate()
-     * 如果不开启后面的客户端会异常：Connection in subscriber mode, only subscriber commands may be used
-     * 参考：https://redis.io/commands/subscribe
+     * Client subscribed to the pipeline, can not use the rest of the commands outside the pipeline, so here you need to turn on duplicate()
+     * If you don't turn it on, the client will get an exception: Connection in subscriber mode, only subscriber commands may be used
+     * Reference: https://redis.io/commands/subscribe
      */
     const redis = this.redisService.getClient().duplicate();
     redis.subscribe(RedisConstants.VIKA_NEST_CHANNEL, (err, count) => {
@@ -57,13 +56,13 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
         this.logger.log({ message: 'SubscribedSuccessful', channel: RedisConstants.VIKA_NEST_CHANNEL, count });
       }
     });
-    // 用于处理nest的启动和停止
+
     redis.on('message', (channel, message) => {
       this.logger.log({ channel, message });
       const nestMessage: INestMessage = JSON.parse(message);
       this.handleNestMessage(nestMessage);
     });
-    // 用于处理socket的重启
+
     await this.refreshNestClient();
   }
 
@@ -71,9 +70,9 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
   async handleNestIp() {
     try {
       const nestClientInfo = await this.refreshNestClient();
-      this.logger.log(`可用IP池：${nestClientInfo?.healthIps?.length ? nestClientInfo.healthIps : '无'}`);
-    } catch (error) {
-      this.logger.error('监听nest健康Ip池任务异常', error);
+      this.logger.log(`Available IP Pools：${nestClientInfo?.healthIps?.length ? nestClientInfo.healthIps : 'None'}`);
+    } catch (e) {
+      this.logger.error('Listening for nest health Ip pool task exception', e?.stack);
     }
   }
 
@@ -121,8 +120,7 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
 
   getHealthServerEndpoint(): string {
     if (!this.clientIps.size || isDev()) {
-      // 没有可用的健康ip,直接返回默认的配置 todo?
-      this.logger.error({}, 'Empty nest server', 'EmptyNestServer');
+      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.NEST_GRPC_URL}`);
       return GatewayConstants.NEST_GRPC_URL;
     }
     const ips = Array.from(this.clientIps);
@@ -173,30 +171,28 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
   }
 
   /**
-   * 刷新本地可用客户端
+   * refresh locally available client
    */
   async refreshNestClient(): Promise<INestClientInfo> {
     const redis = this.redisService.getClient();
-    // 拉去待检测Ip列表
+
     const checkIps = await redis.smembers(RedisConstants.VIKA_NEST_LOAD_KEY_V2);
     if (!checkIps.length) {
-      this.logger.error({}, 'NestServer没有注册，请确认NestServer是否启动', 'EmptyNestServer');
+      this.logger.warn('NestServer is not registered, please check if NestServer is started?');
       return;
     }
 
-    // 拉取健康的Ip集合
     const healthIps = await redis.zrange(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, 0, -1);
     if (!healthIps.length) {
-      this.logger.warn(`Nest-Server无健康IP可用，调用默认Ip-[${GatewayConstants.NEST_GRPC_URL}]`);
+      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.NEST_GRPC_URL}`);
     }
-    // 拉取不健康的Ip集合
+
     const unHealthIps = await redis.hkeys(RedisConstants.VIKA_NEST_LOAD_UNHEALTH_KEY_V2);
 
-    // 计算健康有效的IP集合
     const checkIpsSet = new Set(checkIps);
-    // 有效的Ip
+
     const validHealthIps = [];
-    // 弃用的Ip
+
     const deprecatedHealthIps = [];
     for (const v of healthIps) {
       if (checkIpsSet.has(v)) {
@@ -204,18 +200,17 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
       } else {
         deprecatedHealthIps.push(v);
       }
+
     }
-    // 移除弃用的Ip
     if (deprecatedHealthIps.length) {
       await redis.zrem(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, deprecatedHealthIps)
-        .then(r => this.logger.log(`移除已弃用的客户端IP:[${deprecatedHealthIps}]，结果：${r}`));
+        .then(r => this.logger.log(`Remove the deprecated client IP:[${deprecatedHealthIps}]，result：${r}`));
     }
-    // 同步本地可用IP池
+
     this.clientIps = new Set(validHealthIps);
 
     if (!healthIps.length) {
-      // todo 邮件通知？
-      this.logger.error('EmptyHealthNestEndpoints');
+      this.logger.warn('EmptyHealthNestEndpoints');
     }
     return { healthIps: validHealthIps, unHealthIps: unHealthIps };
   }
@@ -223,32 +218,32 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
   async handleNestMessage(message: INestMessage) {
     const redisClient = this.redisService.getClient();
     const ip = message.ip;
-    // 注册,新增ip
+    // Register, add ip
     if (message.action) {
-      // 采用集合存储ip，提高redis的效率
+      // Use a collection of storage ip, improve the efficiency of redis
       try {
         await redisClient.sadd(RedisConstants.VIKA_NEST_LOAD_KEY_V2, ip);
-        // 服务启动成功默认表示健康，追加到健康的Ip池，1表示可用等级
+        // Successful service startup default means healthy, append to healthy Ip pool, `1` means available level
         await redisClient.zadd(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, 1, ip);
         this.clientIps.add(ip);
-        this.logger.log({ message: 'nest注册成功', ips: Array.from(this.clientIps) });
+        this.logger.log({ message: 'grpc client add success', ips: Array.from(this.clientIps) });
       } catch (e) {
-        this.logger.error({ ips: Array.from(this.clientIps) }, e.message, 'nest注册失败');
+        this.logger.error({ message: e?.message, ips: Array.from(this.clientIps) }, e?.stack);
       }
     } else {
-      // nest重启，断开,删除ip
+      // nest restart, disconnect, delete ip
       try {
-        // IP从待检测池移除
+        // IP removal from the pool to be detected
         await redisClient.srem(RedisConstants.VIKA_NEST_LOAD_KEY_V2, ip);
-        // IP从健康池移除
+        // IP Removal from Health Pool
         await redisClient.zrem(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, ip);
-        // IP从不健康池移除
+        // IP removed from unhealthy pool
         await redisClient.hdel(RedisConstants.VIKA_NEST_LOAD_UNHEALTH_KEY_V2, ip);
-        // 需要删除本地的
+        // Need to delete the local
         this.clientIps.delete(ip);
-        this.logger.log({ message: 'nest删除成功', ips: Array.from(this.clientIps) });
+        this.logger.log({ message: 'grpc client remove success', ips: Array.from(this.clientIps) });
       } catch (e) {
-        this.logger.error({ ips: Array.from(this.clientIps) }, e.message, 'nest删除失败');
+        this.logger.error({ message: e?.message, ips: Array.from(this.clientIps) }, e?.stack);
       }
     }
   }

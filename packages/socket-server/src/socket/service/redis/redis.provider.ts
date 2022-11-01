@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
 import Redis from 'ioredis';
-import { RedisConstants } from 'src/socket/constants/redis-constants';
+import { RedisConstants } from '../../constants/redis-constants';
 import { redisConfig } from './redis-config.factory';
 
 export type RedisClient = Redis;

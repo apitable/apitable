@@ -1,16 +1,29 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { SOCKET_CACHE, USER_ROOM } from 'src/socket/enum/redis-key.enum';
-import { IRedisService } from './i-redis-service.interface';
+import { RedisConstants } from '../../constants/redis-constants';
+import { SOCKET_CACHE, USER_ROOM } from '../../enum/redis-key.enum';
 import { RedisClient } from './redis.provider';
 
 @Injectable()
-export class RedisService implements IRedisService {
+export class RedisService {
   constructor(
     @Inject(RedisConstants.REDIS_CLIENT) public readonly redis: RedisClient
   ) {}
 
-  public async saveUserSocketId(userId: string, socketId: string): Promise<[Error | null, any][]> {
+  getClient() {
+    return this.redis;
+  }
+
+  getStatus() {
+    return this.redis.status;
+  }
+
+  /**
+   * store socket id in redis
+   *
+   * @param userId
+   * @param socketId
+   */
+  async saveUserSocketId(userId: string, socketId: string): Promise<[Error | null, any][]> {
     const key: string = USER_ROOM.PREFIX + userId;
     // `sadd` adds set collection elements, returns true, repeatedly returns false
     return this.redis
@@ -20,44 +33,83 @@ export class RedisService implements IRedisService {
       .exec();
   }
 
-  public async saveValue(key: string, value: string, ex: number | string) {
-    await this.redis.set(key, value, 'EX', ex);
-  }
-
-  public removeUserSocketId(userId: string, socketId: string) {
+  /**
+   * remove cached socket id
+   *
+   * @param userId
+   * @param socketId
+   */
+  removeUserSocketId(userId: string, socketId: string) {
     const key: string = USER_ROOM.PREFIX + userId;
     return this.redis.srem(key, socketId);
   }
 
-  public getValue(key: string): Promise<string | null> {
+  /**
+   * save value to cache
+   *
+   * @param key
+   * @param value
+   * @param ex
+   */
+  async saveValue(key: string, value: string, ex: number | string) {
+    await this.redis.set(key, value, 'EX', ex);
+  }
+
+  /**
+   * get cached data
+   *
+   * @param key
+   */
+  getValue(key: string): Promise<string | null> {
     return this.redis.get(key);
   }
 
-  public async getValues(keys: string[]): Promise<any[] | null> {
+  /**
+   * get cached data in batches
+   *
+   * @param keys
+   */
+  async getValues(keys: string[]): Promise<any[] | null> {
     return await this.redis.mget(...keys);
   }
 
-  public async getSet(key: string): Promise<any[]> {
+  /**
+   * get set type data
+   *
+   * @param key
+   */
+  async getSet(key: string): Promise<any[]> {
     return await this.redis.smembers(key);
   }
 
-  getStatus() {
-    return this.redis.status;
-  }
-
-  public async saveSocket(prefix: string, key: string, value: string) {
+  /**
+   * Save the socket information of the server for sending confirmation messages
+   *
+   * @param prefix
+   * @param key
+   * @param value socket connection user id
+   */
+  async saveSocket(prefix: string, key: string, value: string) {
     return this.redis.hset(SOCKET_CACHE.PREFIX + prefix, key, value);
   }
 
-  public async getSockets(prefix: string): Promise<Record<string, string>> {
+  /**
+   * Get the socket connection corresponding to the ip Address
+   *
+   * @param prefix
+   */
+  async getSockets(prefix: string): Promise<Record<string, string>> {
     return this.redis.hgetall(SOCKET_CACHE.PREFIX + prefix);
   }
 
-  public async removeSocket(prefix: string, key: string) {
+  /**
+   * delete socket information
+   *
+   * @param prefix
+   * @param key
+   */
+  async removeSocket(prefix: string, key: string) {
     return this.redis.hdel(SOCKET_CACHE.PREFIX + prefix, key);
   }
 
-  public getClient() {
-    return this.redis;
-  }
 }

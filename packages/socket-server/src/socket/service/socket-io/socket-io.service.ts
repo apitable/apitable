@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { getRequestLanguage, getValueFromCookie, isBackendServer, isNestServer, isRoomConnect } from 'src/socket/common/helper';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { USER_LANGUAGE } from 'src/socket/enum/redis-key.enum';
-import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
+import { getRequestLanguage, getValueFromCookie, isBackendServer, isNestServer, isRoomConnect } from '../../common/helper';
+import { SocketConstants } from '../../constants/socket-constants';
+import { USER_LANGUAGE } from '../../enum/redis-key.enum';
+import { AuthenticatedSocket } from '../../interface/socket/authenticated-socket.interface';
 import { NestService } from '../nest/nest.service';
 import { RedisService } from '../redis/redis.service';
 import { RoomService } from '../room/room.service';

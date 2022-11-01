@@ -6,13 +6,13 @@ import { Socket } from 'socket.io';
 import { NestClient } from 'src/grpc/client/nest.client';
 import { Retryable } from 'src/grpc/util/retry.decorator';
 import { initGlobalGrpcMetadata } from 'src/grpc/util/utils';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID, SocketConstants, TRACE_ID } from 'src/socket/constants/socket-constants';
-import { BroadcastTypes } from 'src/socket/enum/broadcast-types.enum';
-import { RequestTypes } from 'src/socket/enum/request-types.enum';
-import { ServerErrorCode, SocketEventEnum } from 'src/socket/enum/socket.enum';
-import { FieldPermissionChangeRo } from 'src/socket/model/ro/datasheet/datasheet.ro';
-import { NodeShareDisableRo } from 'src/socket/model/ro/node/node.ro';
+import { GatewayConstants } from '../../constants/gateway.constants';
+import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID, SocketConstants, TRACE_ID } from '../../constants/socket-constants';
+import { BroadcastTypes } from '../../enum/broadcast-types.enum';
+import { RequestTypes } from '../../enum/request-types.enum';
+import { ServerErrorCode, SocketEventEnum } from '../../enum/socket.enum';
+import { FieldPermissionChangeRo } from '../../model/ro/datasheet/datasheet.ro';
+import { NodeShareDisableRo } from '../../model/ro/node/node.ro';
 import { NestService } from '../nest/nest.service';
 
 @Injectable()

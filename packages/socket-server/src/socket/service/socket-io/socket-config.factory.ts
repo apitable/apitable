@@ -1,5 +1,5 @@
-import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
+import { RedisConstants } from '../../constants/redis-constants';
+import { SocketConstants } from '../../constants/socket-constants';
 
 export const socketConfig = {
   provide: RedisConstants.REDIS_CONFIG,

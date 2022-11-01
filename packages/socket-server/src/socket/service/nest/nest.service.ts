@@ -9,10 +9,9 @@ import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-s
 import { SocketRo } from 'src/socket/model/ro/socket.ro';
 import * as util from 'util';
 import { RedisService } from '../redis/redis.service';
-import { NestInterface as NestInterface } from './nest.interface';
 
 @Injectable()
-export class NestService implements NestInterface {
+export class NestService {
   private readonly logger = new Logger(NestService.name);
 
   constructor(
@@ -23,13 +22,44 @@ export class NestService implements NestInterface {
   // each node holds the connection of the current nest
   private socketMap = new Map<string, AuthenticatedSocket>();
 
-  public async setSocket(socket: AuthenticatedSocket) {
+  async setSocket(socket: AuthenticatedSocket) {
     this.socketMap.set(socket.id, socket);
     await this.redisService.saveSocket(SocketConstants.NEST_SERVER_PREFIX, socket.auth.userId, getSocketServerAddr(ipAddress()));
   }
 
-  public async getSocketNotifyUrl() {
-    return this.redisService
+  async removeSocket(socket: AuthenticatedSocket) {
+    this.socketMap.delete(socket.id);
+    await this.redisService.removeSocket(SocketConstants.NEST_SERVER_PREFIX, socket.auth.userId);
+    this.logger.log(`NestService:removeSocket ${socket.auth}`);
+  }
+
+  async handleHttpNotify(socketRo: SocketRo) {
+    return this.notify(socketRo.event, socketRo.message);
+  }
+
+  /**
+   * Get all rooms for resource mapping
+   *
+   * @param resourceId
+   */
+  async getResourceRelateRoomIds(resourceId: string): Promise<string[]> {
+    const resourceKey = util.format(NestCacheKeys.RESOURCE_RELATE, resourceId);
+    return await this.redisService.getSet(resourceKey);
+  }
+
+  /**
+   * Get socket information
+   *
+   * @param socketIds
+   */
+  async getSocketInfos(socketIds: string[]): Promise<any[]> {
+    const ids = socketIds.map(id => util.format(NestCacheKeys.SOCKET, id));
+    const raws = await this.redisService.getValues(ids);
+    return raws.filter(Boolean).map(raw => JSON.parse(raw));
+  }
+
+  private async getSocketNotifyUrl() {
+    return await this.redisService
       .getSockets(SocketConstants.NEST_SERVER_PREFIX)
       .then(result => {
         this.logger.log(`NestServer:Connection:Redis ${JSON.stringify(result)}`);
@@ -47,7 +77,15 @@ export class NestService implements NestInterface {
       });
   }
 
-  public getSocketId(): string {
+  private async httpNotify(event: string, message: any): Promise<any | null> {
+    const url = await this.getSocketNotifyUrl();
+    if (!isNil(url)) {
+      return this.httpService.post(url, { event, message }).toPromise();
+    }
+    return Promise.reject(null);
+  }
+
+  private getSocketId(): string {
     // First fetch from local memory
     if (this.socketMap.size != 0) {
       const socketIds = Array.from(this.socketMap.keys());
@@ -57,7 +95,7 @@ export class NestService implements NestInterface {
     return null;
   }
 
-  public async notify(event: string, message: any): Promise<any | null> {
+  private async notify(event: string, message: any): Promise<any | null> {
     this.logger.debug({ event, message });
     return new Promise(resolve => {
       const socketId = this.getSocketId();
@@ -79,44 +117,5 @@ export class NestService implements NestInterface {
           });
       }
     });
-  }
-
-  public async removeSocket(socket: AuthenticatedSocket) {
-    this.socketMap.delete(socket.id);
-    await this.redisService.removeSocket(SocketConstants.NEST_SERVER_PREFIX, socket.auth.userId);
-    this.logger.log(`NestService:removeSocket ${socket.auth}`);
-  }
-
-  public async handleHttpNotify(socketRo: SocketRo) {
-    return this.notify(socketRo.event, socketRo.message);
-  }
-
-  public async httpNotify(event: string, message: any): Promise<any | null> {
-    const url = await this.getSocketNotifyUrl();
-    if (!isNil(url)) {
-      return this.httpService.post(url, { event, message }).toPromise();
-    }
-    return Promise.reject(null);
-  }
-
-  /**
-   * Get all rooms for resource mapping
-   *
-   * @param resourceId
-   */
-  public async getResourceRelateRoomIds(resourceId: string): Promise<string[]> {
-    const resourceKey = util.format(NestCacheKeys.RESOURCE_RELATE, resourceId);
-    return await this.redisService.getSet(resourceKey);
-  }
-
-  /**
-   * Get socket information
-   *
-   * @param socketIds
-   */
-  public async getSocketInfos(socketIds: string[]): Promise<any[]> {
-    const ids = socketIds.map(id => util.format(NestCacheKeys.SOCKET, id));
-    const raws = await this.redisService.getValues(ids);
-    return raws.filter(Boolean).map(raw => JSON.parse(raw));
   }
 }

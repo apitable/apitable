@@ -8,10 +8,9 @@ import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-s
 import { NodeChangeRo } from 'src/socket/model/ro/notification/node-change.ro';
 import { NotificationRo } from 'src/socket/model/ro/notification/notification.ro';
 import { WatchSpaceRo } from 'src/socket/model/ro/notification/watch-space.ro';
-import { INotificationService } from './i-notification-service.interface';
 
 @Injectable()
-export class NotificationService implements INotificationService {
+export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
   constructor(
@@ -21,7 +20,7 @@ export class NotificationService implements INotificationService {
 
   broadcastNotify(message: NotificationRo, client: Socket): boolean {
     if (isNil(message.toUserId)) {
-      throw new ForbiddenException('Forbidden:403', '用户不匹配');
+      throw new ForbiddenException('Forbidden:403', 'User mismatch');
     }
     try {
       client.in(SocketConstants.USER_SOCKET_ROOM + message.toUserId).emit(message.event, message);
@@ -66,7 +65,6 @@ export class NotificationService implements INotificationService {
       this.logger.error('Error:nodeBrowsed', e?.stack);
       return false;
     }
-
   }
 
   private getSpaceRoom(spaceId: string): string {
