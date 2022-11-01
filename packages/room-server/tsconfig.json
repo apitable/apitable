@@ -6,6 +6,7 @@
     "noUnusedLocals": false,
     "noImplicitReturns": false,
     "noImplicitThis": false,
+    "experimentalDecorators": true,
     "target": "es2017",
     "types": ["jest", "node"],
     "sourceMap": true,
