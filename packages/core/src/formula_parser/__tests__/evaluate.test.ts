@@ -5,7 +5,7 @@ import { ConfigConstant } from '../../';
 
 // tslint:disable: max-line-length
 
-// 为了方便，这里直接使用 fieldName 当 key
+// For convenience, use fieldName directly as key here
 const fieldMap: { [key: string]: IField } = {
   a: {
     id: 'a',
@@ -43,7 +43,7 @@ const fieldMap: { [key: string]: IField } = {
 const testEvaluate = (tests: any) => {
   tests.forEach((test: any) => {
     const [expression, context, expectedResult] = test;
-    // text 字段做一下转换
+    // Convert the text field
     for (const id in fieldMap) {
       if (fieldMap[id].type === FieldType.Text) {
         context[id] = [{ type: 1, text: context[id] }];

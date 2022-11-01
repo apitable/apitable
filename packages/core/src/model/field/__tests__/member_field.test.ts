@@ -2,42 +2,42 @@ import { IMemberField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
 
 const memberField: IMemberField = {
-  name: '成员字段',
+  name: 'Member Field',
   id: 'fld1111',
   type: 13,
   property: {
-    isMulti: false, // 可选单个或者多个成员。
-    shouldSendMsg: false, // 选择成员后是否发送消息通知
+    isMulti: false, // Optional single or multiple members.
+    shouldSendMsg: false, // Whether to send a message notification after selecting a member
     unitIds: []
   }
 };
 
-describe('成员字段的格式检查', () => {
+describe('Format Check for Member Fields', () => {
   const valid = getValidCellValue(memberField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multi choices', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single choice', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件内容', function() {
+  it('input attachment', function() {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
@@ -49,34 +49,34 @@ describe('成员字段的格式检查', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 1', function() {
+  it('input 1', function() {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 0', function() {
+  it('input 0', function() {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 true', function() {
+  it('input true', function() {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 false', function() {
+  it('input false', function() {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 unitId', function() {
+  it('input unitId', function() {
     const [expectValue, receiveValue] = valid(['1632153600000']);
     expect(receiveValue).toEqual(expectValue);
   });
 
 });
 
-describe('检查成员字段 property 格式', () => {
+describe('Check member field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...memberField,
@@ -98,7 +98,7 @@ describe('检查成员字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有不应该存在的属性', function() {
+  it('property has properties that shouldn\'t exist', function() {
     expect(validProperty({
       ...memberField,
       property: {
@@ -107,17 +107,17 @@ describe('检查成员字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('unitIds 不存在', function() {
+  it('unitIds not exist', function() {
     expect(validProperty({
       ...memberField,
       property: {
-        isMulti: false, // 可选单个或者多个成员。
-        shouldSendMsg: false, // 选择成员后是否发送消息通知
+        isMulti: false, // Optional single or multiple members.
+        shouldSendMsg: false, // Whether to send a message notification after selecting a member
       }
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...memberField
     } as any)).toEqual(true);

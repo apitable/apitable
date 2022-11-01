@@ -36,7 +36,7 @@ export const TRIGGER_INPUT_PARSER_FUNCTIONS = [
   makeFunction(newArray, 'newArray'),
 ];
 
-// 这个是给前端校验用的
+// This is for front-end validation
 export const ACTION_INPUT_PARSER_BASE_FUNCTIONS = [
   makeFunction(and, 'and'),
   makeFunction(or, 'or'),
@@ -48,7 +48,7 @@ export const ACTION_INPUT_PARSER_BASE_FUNCTIONS = [
   makeFunction(getNodeOutput, 'getNodeOutput'),
 ];
 
-// 也是给前端用的，在不知道上下文的情况下，不解析动态参数
+// It is also used for the front end, without parsing dynamic parameters without knowing the context
 export const ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS = [
   makeFunction(getNodeOutput, 'getNodeOutput')
 ];

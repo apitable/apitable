@@ -3,17 +3,17 @@ import { IField } from '../../../types/field_types';
 import { Field } from '../index';
 
 export const commonTestSuit = (valid: any) => {
-  it('输入随机的字符串', function() {
+  it('Enter a random string', function() {
     const [expectValue, receiveValue] = valid(Math.random().toString(36).slice(-8));
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 undefined', function() {
+  it('Input undefined', function() {
     const [expectValue, receiveValue] = valid(undefined);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 null', function() {
+  it('Input null', function() {
     const [expectValue, receiveValue] = valid(null);
     expect(receiveValue).toEqual(expectValue);
   });

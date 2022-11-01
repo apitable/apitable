@@ -57,7 +57,7 @@ export const validateMagicForm = (rootSchema: JSONSchema7, formData: any) => {
                 propertyErrors.push({
                   dataPath: `.${propertyKey}`,
                   keyword: 'enum',
-                  message: '不存在指定的选项', // TODO: i18n
+                  message: 'The specified option does not exist', // TODO: i18n
                   params: { enum: propertySchema.enum },
                   schemaPath: '#/enum',
                 });

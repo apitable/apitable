@@ -2,7 +2,7 @@ import { ICreatedByField } from '../../../types/field_types';
 import { validProperty } from './common';
 
 const createdByField: ICreatedByField = {
-  name: '勾选字段',
+  name: 'CreatedBy Field',
   id: 'fld1111',
   type: 23,
   property: {
@@ -11,7 +11,7 @@ const createdByField: ICreatedByField = {
   }
 };
 
-describe('检查创建人字段 property 格式', () => {
+describe('Check creator field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...createdByField,
@@ -33,7 +33,7 @@ describe('检查创建人字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有错误的属性', function() {
+  it('property has the wrong property', function() {
     expect(validProperty({
       ...createdByField,
       property: {
@@ -42,7 +42,7 @@ describe('检查创建人字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...createdByField
     } as any)).toEqual(true);

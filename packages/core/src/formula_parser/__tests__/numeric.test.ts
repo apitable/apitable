@@ -5,7 +5,7 @@ import { mergeContext } from './mock_state';
 
 const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>) => {
   const fieldMap = ctx.state.datasheetMap['dst123'].datasheet!.snapshot.meta.fieldMap;
-  // 各字段做一下转换
+  // Convert each field
   for (const id in fieldMap) {
     if (fieldMap[id].type === FieldType.Text) {
       ctx.record.data[id] = [{ type: 1, text: ctx.record.data[id] }] as any;
@@ -33,7 +33,7 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(2.03);
 
-    // 数组类型求和
+    // sum of array types
     expect(evaluate(
       'SUM({d})',
       mergeContext({ d: [0, 2, 3], b: '456', c: 1591414562369 }),
@@ -88,7 +88,7 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(1.5);
 
-    // 数组类型
+    // sum of array types
     expect(evaluate(
       'AVERAGE({d})',
       mergeContext({ d: [1, 2, 3], b: '456', c: 1591414562369 }),
@@ -227,7 +227,7 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(3);
 
-    // 数组类型
+    // array type
     expect(evaluate(
       'MAX({d})',
       mergeContext({ d: [1, 2, 3], b: '456', c: 1591414562369 }),
@@ -248,13 +248,13 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(1591414562369);
 
-    // 多 datetime 可以参与计算
+    // Multiple datetimes can participate in the calculation
     expect(evaluate(
       'MAX({c}, {e})',
       mergeContext({ a: 0, b: '8', c: 1591414562369, e: 1691414562369 }),
     )).toEqual(1691414562369);
 
-    // datetime + number， 则过滤掉 datetime
+    // datetime + number, then filter out datetime
     expect(evaluate(
       'MAX({c}, {e}, {a})',
       mergeContext({ a: 0, b: '8', c: 1591414562369, e: 1691414562369 }),
@@ -272,7 +272,7 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(1);
 
-    // 数组类型
+    // array type
     expect(evaluate(
       'MIN({d})',
       mergeContext({ d: [1, 2, 3], b: '456', c: 1591414562369 }),
@@ -293,13 +293,13 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(1591414562369);
 
-    // 多 datetime 可以参与计算
+    // Multiple datetimes can participate in the calculation
     expect(evaluate(
       'MIN(c, e)',
       mergeContext({ a: 0, b: '8', c: 1591414562369, e: 1691414562369 }),
     )).toEqual(1591414562369);
 
-    // datetime + number， 则过滤掉 datetime
+    // datetime + number, then filter out datetime
     expect(evaluate(
       'MIN(c, e, a)',
       mergeContext({ a: 0, b: '8', c: 1591414562369, e: 1691414562369 }),
@@ -317,7 +317,7 @@ describe('Numeric function test', () => {
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
     )).toEqual(10);
 
-    // 数组类型
+    // array type
     expect(evaluate(
       'LOG(10000)',
       mergeContext({ a: [1, 2, 3], b: '456', c: 1591414562369, d: ['x', 'y'] }),

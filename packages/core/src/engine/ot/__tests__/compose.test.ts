@@ -103,7 +103,7 @@ describe('compose operations', () => {
     expect(res).toEqual(operations);
   });
 
-  it('对字段显示和隐藏做多次操作合并', () => {
+  it('Combine multiple operations on field display and hide', () => {
     const operations: IOperation[] = [
       {
         cmd: 'ModifyViews',

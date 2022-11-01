@@ -2,7 +2,7 @@ import { validProperty } from './common';
 import { IFormulaField } from '../../../types/field_types';
 
 const formulaField: IFormulaField = {
-  name: '公式字段',
+  name: 'Formula Field',
   id: 'fld1111',
   type: 16,
   property: {
@@ -11,7 +11,7 @@ const formulaField: IFormulaField = {
   }
 };
 
-describe('检查公式字段 property 格式', () => {
+describe('Check formula field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...formulaField,
@@ -53,7 +53,7 @@ describe('检查公式字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('property.datasheetId 格式不合法', function() {
+  it('property.datasheetId format is invalid', function() {
     expect(validProperty({
       ...formulaField,
       property: {
@@ -63,7 +63,7 @@ describe('检查公式字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...formulaField,
     } as any)).toEqual(true);

@@ -3,38 +3,38 @@ import { commonTestSuit, getValidCellValue, validProperty } from './common';
 import { CurrencyField } from '../index';
 
 const currencyField: ICurrencyField = {
-  name: '货币字段',
+  name: 'Currency Field',
   id: 'fld1111',
   type: 17,
   property: CurrencyField.defaultProperty()
 };
 
-describe('货币字段的格式检查', () => {
+describe('Format check for currency fields', () => {
   const valid = getValidCellValue(currencyField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input humber', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multi choices', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single choice', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件内容', function() {
+  it('input attachment', function() {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
@@ -46,28 +46,28 @@ describe('货币字段的格式检查', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 1', function() {
+  it('nput 1', function() {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入 0', function() {
+  it('input 0', function() {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入 true', function() {
+  it('input true', function() {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 false', function() {
+  it('input false', function() {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 });
 
-describe('检查货币字段 property 格式', () => {
+describe('Check currency field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...currencyField,
@@ -89,7 +89,7 @@ describe('检查货币字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 只有必填项', function() {
+  it('property only required', function() {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -99,7 +99,7 @@ describe('检查货币字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('property precision 缺失', function() {
+  it('property precision is missing', function() {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -108,7 +108,7 @@ describe('检查货币字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property symbol 为空字符串', function() {
+  it('property symbol is an empty string', function() {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -138,13 +138,13 @@ describe('检查货币字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 属性正确', function() {
+  it('property attribute is correct', function() {
     expect(validProperty({
       ...currencyField
     } as any)).toEqual(true);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...currencyField,
       property: {

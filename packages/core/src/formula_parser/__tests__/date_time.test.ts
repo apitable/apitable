@@ -8,7 +8,7 @@ describe('DateTime function test', () => {
       'DAY({c})',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(6);
-    // 支持解析字符串类型
+    // support parsing string type
     expect(evaluate(
       'DAY({b})',
       // tslint:disable-next-line: max-line-length
@@ -18,12 +18,12 @@ describe('DateTime function test', () => {
       'DAY({b})',
       mergeContext({ a: 0, b: '2012年2月3日', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(3);
-    // 忽略多余参数
+    // ignore redundant parameters
     expect(evaluate(
       'DAY({c}, {a})',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(6);
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'DAY()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
@@ -35,13 +35,13 @@ describe('DateTime function test', () => {
       'YEAR({c})',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(2020);
-    // 支持解析字符串类型
+    // support parsing string type
     expect(evaluate(
       'YEAR({b})',
       // tslint:disable-next-line: max-line-length
       mergeContext({ a: 0, b: '2012/2/3 23:22:44', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(2012);
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'YEAR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
@@ -53,13 +53,13 @@ describe('DateTime function test', () => {
       'MONTH({c})',
       mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
     )).toEqual(6);
-    // 支持解析字符串类型
+    // support parsing string type
     expect(evaluate(
       'MONTH({b})',
       // tslint:disable-next-line: max-line-length
       mergeContext({ a: 0, b: '2012/2/3 23:22:44', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(2);
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'MONTH()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
@@ -71,13 +71,13 @@ describe('DateTime function test', () => {
       'HOUR({c})',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(11);
-    // 支持解析字符串类型
+    // support parsing string type
     expect(evaluate(
       'HOUR({b})',
       // tslint:disable-next-line: max-line-length
       mergeContext({ a: 0, b: '2012/2/3 23:22:44', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(23);
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'HOUR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
@@ -89,13 +89,13 @@ describe('DateTime function test', () => {
       'MINUTE({c})',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(36);
-    // 支持解析字符串类型
+    // support parsing string type
     expect(evaluate(
       'MINUTE({b})',
       // tslint:disable-next-line: max-line-length
       mergeContext({ a: 0, b: '2012/2/3 23:22:44', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(22);
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'MINUTE()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
@@ -107,13 +107,13 @@ describe('DateTime function test', () => {
       'SECOND({c})',
       mergeContext({ c: new Date('2020/6/10 00:00:02').getTime() }),
     )).toEqual(2);
-    // 支持解析字符串类型
+    // support parsing string type
     expect(evaluate(
       'SECOND({b})',
       // tslint:disable-next-line: max-line-length
       mergeContext({ a: 0, b: '2012/2/3 23:22:44', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(44);
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'SECOND()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
@@ -136,7 +136,7 @@ describe('DateTime function test', () => {
       mergeContext({ c: new Date('2020/6/10 00:00:00').getTime() }),
     )).toEqual(3);
 
-    // 至少需要一个参数
+    // requires at least one parameter
     expect(() => evaluate(
       'WEEKDAY()',
       mergeContext({ c: new Date('2020/6/10 00:00:00').getTime() }),
@@ -194,7 +194,7 @@ describe('DateTime function test', () => {
       mergeContext({ b: 'milliseconds', c: new Date('2020/6/6 00:00:00').getTime() }),
     )).toEqual(new Date('2020/6/6 00:01:40').getTime());
 
-    // 至少需要3个参数
+    // requires at least 3 parameters
     expect(() => evaluate(
       'DATEADD()',
       mergeContext({ a: 0, b: '456', c: 1592236800000, d: ['opt1', 'opt2'] }),
@@ -252,7 +252,7 @@ describe('DateTime function test', () => {
       mergeContext({ c: new Date('2020/12/6 00:00:00').getTime(), e: new Date('2020/6/6 00:00:00').getTime() }),
     )).toEqual(15811200000);
 
-    // 至少需要3个参数
+    // requires at least 3 parameters
     expect(() => evaluate(
       'DATETIME_DIFF()',
       mergeContext({ a: 0, b: '456', c: 1592236800000, d: ['opt1', 'opt2'] }),
@@ -449,7 +449,7 @@ describe('DateTime function test', () => {
       mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
     )).toEqual(93);
 
-    // 因为这里需要抛错误，需要通过 catch 捕获错误并验证
+    // Because you need to throw an error here, you need to catch the error and verify it through catch
     try {
       evaluate(
         'WORKDAY_DIFF({c}, "null")',

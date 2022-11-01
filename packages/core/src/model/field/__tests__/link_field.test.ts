@@ -2,7 +2,7 @@ import { ILinkField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
 
 const linkField: ILinkField = {
-  name: '关联字段',
+  name: 'Link Field',
   id: 'fld1111',
   type: 7,
   property: {
@@ -10,32 +10,32 @@ const linkField: ILinkField = {
   }
 };
 
-describe('关联字段的格式检查', () => {
+describe('Format Check for Relation Fields', () => {
   const valid = getValidCellValue(linkField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multi choices', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single choice', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件内容', function() {
+  it('input attachment', function() {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
@@ -47,34 +47,34 @@ describe('关联字段的格式检查', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 1', function() {
+  it('input 1', function() {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 0', function() {
+  it('input 0', function() {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 true', function() {
+  it('input true', function() {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 false', function() {
+  it('input false', function() {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 recordId 数组', function() {
+  it('input recordId array', function() {
     const [expectValue, receiveValue] = valid(['rec12312312']);
     expect(receiveValue).toEqual(expectValue);
   });
 
 });
 
-describe('检查关联字段 property 格式', () => {
+describe('Check the relation field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...linkField,
@@ -96,7 +96,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 缺少 foreignDatasheetId', function() {
+  it('property is missing foreignDatasheetId', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -105,7 +105,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 记录的 foreignDatasheetId 不存在', function() {
+  it('property record foreignDatasheetId does not exist', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -114,7 +114,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 记录的 foreignDatasheetId 存在', function() {
+  it('The foreignDatasheetId of the property record exists', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -123,7 +123,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('brotherFieldId 数据错误', function() {
+  it('brotherFieldId data error', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -133,7 +133,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('brotherFieldId 数据正确', function() {
+  it('brotherFieldId data is correct', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -143,7 +143,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('limitToView 数据错误', function() {
+  it('limitToView data error', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -153,7 +153,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('limitToView 数据正确', function() {
+  it('limitToView data is correct', function() {
     expect(validProperty({
       ...linkField,
       property: {
@@ -163,7 +163,7 @@ describe('检查关联字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...linkField,
       property: {

@@ -10,11 +10,11 @@ const createdTimeField: ICreatedTimeField = {
   type: FieldType.CreatedTime,
   property: {
     datasheetId: 'dst1111',
-    /** 创建时间格式 */
+    /** Create time format */
     dateFormat: DateFormat['YYYY-MM-DD'],
-    /** 时间格式 */
+    /** Time format */
     timeFormat: TimeFormat['HH:mm'],
-    /** 是否包含时间 */
+    /** Whether to include time */
     includeTime: true
   }
 };
@@ -40,7 +40,7 @@ const propertyOptionalNotFill: IUpdateOpenCreatedTimeFieldProperty = {
   dateFormat: 'YYYY-MM-DD'
 };
 
-describe('创建时间字段读取property格式检查', () => {
+describe('Create time field read property format check', () => {
   const valid = getOpenFieldProperty(createdTimeField);
   it('正确的property', function() {
     const [expectValue, receiveValue] = valid(openCreatedTimeField.property);
@@ -48,7 +48,7 @@ describe('创建时间字段读取property格式检查', () => {
   });
 });
 
-describe('创建时间字段更新property检查', () => {
+describe('Create time field update property check', () => {
   const valid = validUpdateOpenProperty(createdTimeField);
   it('不填可选字段', () => {
     const result = valid(propertyOptionalNotFill);
@@ -66,7 +66,7 @@ describe('创建时间字段更新property检查', () => {
   });
 });
 
-describe('创建时间字段更新property转换property检查', () => {
+describe('Create time field update property transform property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(createdTimeField);
   it('不填可选字段', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {

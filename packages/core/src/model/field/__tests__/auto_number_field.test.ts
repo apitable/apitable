@@ -2,7 +2,7 @@ import { IAutoNumberField } from '../../../types/field_types';
 import { validProperty } from './common';
 
 const autoNumberField: IAutoNumberField = {
-  name: '自增数字字段',
+  name: 'Auto Increment Number Field',
   id: 'fld1111',
   type: 20,
   property: {
@@ -12,7 +12,7 @@ const autoNumberField: IAutoNumberField = {
   }
 };
 
-describe('检查自增数字字段 property 格式', () => {
+describe('Check auto-incrementing numeric field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...autoNumberField,
@@ -34,7 +34,7 @@ describe('检查自增数字字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有错误的属性', function() {
+  it('property has the wrong property', function() {
     expect(validProperty({
       ...autoNumberField,
       property: {
@@ -44,7 +44,7 @@ describe('检查自增数字字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...autoNumberField
     } as any)).toEqual(true);

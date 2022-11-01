@@ -2,7 +2,7 @@ import { ILastModifiedByField } from '../../../types/field_types';
 import { validProperty } from './common';
 
 const lastModifiedByField: ILastModifiedByField = {
-  name: '更新人字段',
+  name: 'LastModifiedBy Field',
   id: 'fld1111',
   type: 24,
   property: {
@@ -13,7 +13,7 @@ const lastModifiedByField: ILastModifiedByField = {
   }
 };
 
-describe('检查更新人字段 property 格式', () => {
+describe('Check the updated by field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...lastModifiedByField,
@@ -35,7 +35,7 @@ describe('检查更新人字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有错误的属性', function() {
+  it('property has the wrong property', function() {
     expect(validProperty({
       ...lastModifiedByField,
       property: {
@@ -44,7 +44,7 @@ describe('检查更新人字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...lastModifiedByField
     } as any)).toEqual(true);

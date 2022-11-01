@@ -3,38 +3,38 @@ import { commonTestSuit, getValidCellValue, validProperty } from './common';
 import { DateTimeField } from '../index';
 
 const datetimeField: IDateTimeField = {
-  name: '日期字段',
+  name: 'Datetime Field',
   id: 'fld1111',
   type: 5,
   property: DateTimeField.defaultProperty()
 };
 
-describe('日期字段的格式检查', () => {
+describe('Format check for date fields', () => {
   const valid = getValidCellValue(datetimeField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multiple choices', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single choice', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件内容', function() {
+  it('input attachment', function() {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
@@ -46,34 +46,34 @@ describe('日期字段的格式检查', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 1', function() {
+  it('input 1', function() {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入 0', function() {
+  it('input 0', function() {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入 true', function() {
+  it('input true', function() {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 false', function() {
+  it('input false', function() {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入时间戳', function() {
+  it('input timestamp', function() {
     const [expectValue, receiveValue] = valid(1632153600000);
     expect(receiveValue).toEqual(expectValue);
   });
 
 });
 
-describe('检查勾选字段 property 格式', () => {
+describe('Check the tick field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...datetimeField,
@@ -95,7 +95,7 @@ describe('检查勾选字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 只有其他属性', function() {
+  it('property only other properties', function() {
     expect(validProperty({
       ...datetimeField,
       property: {
@@ -104,7 +104,7 @@ describe('检查勾选字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 必填项缺失', function() {
+  it('property required field is missing', function() {
     expect(validProperty({
       ...datetimeField,
       property: {
@@ -115,7 +115,7 @@ describe('检查勾选字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 属性值错误', function() {
+  it('wrong property value', function() {
     expect(validProperty({
       ...datetimeField,
       property: {
@@ -126,13 +126,13 @@ describe('检查勾选字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...datetimeField
     } as any)).toEqual(true);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...datetimeField,
       property: {

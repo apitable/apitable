@@ -2,7 +2,7 @@ import { validProperty } from './common';
 import { ILookUpField } from '../../../types/field_types';
 
 const lookupField: ILookUpField = {
-  name: 'lookup 字段',
+  name: 'lookup field',
   id: 'fld1111',
   type: 14,
   property: {
@@ -12,7 +12,7 @@ const lookupField: ILookUpField = {
   }
 };
 
-describe('检查 lookup 字段 property 格式', () => {
+describe('Check lookup field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...lookupField,
@@ -44,7 +44,7 @@ describe('检查 lookup 字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property.datasheetId 格式不合法', function() {
+  it('property.datasheetId format is invalid', function() {
     expect(validProperty({
       ...lookupField,
       property: {
@@ -54,7 +54,7 @@ describe('检查 lookup 字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property.relatedLinkFieldId 格式不合法', function() {
+  it('property.relatedLinkFieldId format is invalid', function() {
     expect(validProperty({
       ...lookupField,
       property: {
@@ -64,13 +64,13 @@ describe('检查 lookup 字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 格式正确', function() {
+  it('property is in the correct format', function() {
     expect(validProperty({
       ...lookupField,
     } as any)).toEqual(true);
   });
 
-  it('lookup 存在筛选项，且配置齐全', function() {
+  it('Lookup has filter items and is fully configured', function() {
     expect(validProperty({
       ...lookupField,
       filterInfo: {
@@ -88,7 +88,7 @@ describe('检查 lookup 字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('lookup 存在筛选项，缺少 fieldId', function() {
+  it('lookup filter item exists, missing fieldId', function() {
     expect(validProperty({
       ...lookupField,
       property: {

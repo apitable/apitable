@@ -14,7 +14,7 @@ describe('Logical function test', () => {
       'IF(IF({a}, 1, 0), 2, 3)',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(3);
-    // 至少需要3个参数
+    // requires at least 3 parameters
     expect(() => evaluate(
       'IF("x")',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),

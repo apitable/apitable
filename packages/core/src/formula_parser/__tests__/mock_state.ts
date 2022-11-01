@@ -38,8 +38,8 @@ const fieldMap: IFieldMap = {
         { id: 'opt1', name: '智', color: 0 },
         { id: 'opt2', name: '维格', color: 1 },
         { id: 'opt3', name: '维他', color: 2 },
-        { id: 'opt4', name: '第一', color: 3 },
-        { id: 'opt5', name: '第二', color: 4 },
+        { id: 'opt4', name: 'the first', color: 3 },
+        { id: 'opt5', name: 'the second', color: 4 },
         { id: 'x', name: 'x', color: 0 },
         { id: 'y', name: 'y', color: 1 },
       ],
@@ -123,7 +123,7 @@ const fieldMap: IFieldMap = {
 
 export const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>, isTransform = true) => {
   const fieldMap = ctx.state.datasheetMap['dst123'].datasheet!.snapshot.meta.fieldMap;
-  // 各字段做一下转换
+  // Convert each field
   for (const id in fieldMap) {
     if (!fieldMap[id]) {
       fieldMap[id] = {
@@ -271,11 +271,11 @@ export const generateMockState = (fieldMap: IFieldMap): IReduxState => ({
     saveAsTemplateModalNodeId: '',
     importModalNodeId: '',
     loadedKeys: [],
-    /** 权限设置弹窗是否来自通知调用 **/
+    /** Whether the permission setting pop-up window comes from notification call **/
     permissionCommitRemindStatus: false,
-    /** 成员消息发送所需参数 **/
+    /** Parameters required for member message sending **/
     permissionCommitRemindParameter: null,
-    /** 无权限成员unitIds **/
+    /** Unauthorized member unitIds **/
     noPermissionMembers: []
   },
   user: {
@@ -510,11 +510,11 @@ export const mockState = {
     saveAsTemplateModalNodeId: '',
     importModalNodeId: '',
     loadedKeys: [],
-    /** 权限设置弹窗是否来自通知调用 **/
+    /** Whether the permission setting pop-up window comes from notification call **/
     permissionCommitRemindStatus: false,
-    /** 成员消息发送所需参数 **/
+    /** Parameters required for member message sending **/
     permissionCommitRemindParameter: null,
-    /** 无权限成员unitIds **/
+    /** Unauthorized member unitIds **/
     noPermissionMembers: []
   },
   user: {
