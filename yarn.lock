@@ -13533,7 +13533,7 @@ __metadata:
     "@vikadata/react-contexify": ^5.0.5
     "@vikadata/react-window": 1.8.7
     ahooks: ^3.5.0
-    antd: 4.23.6
+    antd: 4.23.5
     babel-jest: 26.6.0
     chromatic: ^5.10.1
     classnames: 2.2.6
@@ -13641,7 +13641,7 @@ __metadata:
     "@vikadata/widget-sdk": "*"
     "@webcomponents/shadydom": ^1.9.0
     ahooks: ^3.5.0
-    antd: 4.23.6
+    antd: 4.23.5
     antd-mobile: 5.24.0
     attr-accept: ^2.1.0
     axios: 0.19.0
@@ -15094,9 +15094,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:4.23.6":
-  version: 4.23.6
-  resolution: "antd@npm:4.23.6"
+"antd@npm:4.23.5":
+  version: 4.23.5
+  resolution: "antd@npm:4.23.5"
   dependencies:
     "@ant-design/colors": ^6.0.0
     "@ant-design/icons": ^4.7.0
@@ -15123,7 +15123,7 @@ __metadata:
     rc-motion: ^2.6.1
     rc-notification: ~4.6.0
     rc-pagination: ~3.1.17
-    rc-picker: ~2.6.11
+    rc-picker: ~2.6.10
     rc-progress: ~3.3.2
     rc-rate: ~2.9.0
     rc-resize-observer: ^1.2.0
@@ -15133,8 +15133,8 @@ __metadata:
     rc-steps: ~4.1.0
     rc-switch: ~3.2.0
     rc-table: ~7.26.0
-    rc-tabs: ~12.2.0
-    rc-textarea: ~0.4.5
+    rc-tabs: ~12.1.0-alpha.1
+    rc-textarea: ~0.4.3
     rc-tooltip: ~5.2.0
     rc-tree: ~5.7.0
     rc-tree-select: ~5.5.0
@@ -15145,7 +15145,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 8139cadcb51a0ca8aa56b4c2eb75fe6879f0a4f1253151fef545da19aa10e0afb1b8c2caeae328b690519f355f353d05d19f726d0a3266c80e0e0f348b3d9b67
+  checksum: 07ce3e12bb4e7da9a0e859702d80d511adee59c87d4f4bd83fc9f0832e0831f26dedf3ce6b9776353079df77032c18df09f20838d2b6f3609b5d1f6d78398300
   languageName: node
   linkType: hard
 
@@ -37598,7 +37598,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"rc-picker@npm:~2.6.11":
+"rc-picker@npm:~2.6.10":
   version: 2.6.11
   resolution: "rc-picker@npm:2.6.11"
   dependencies:
@@ -37792,9 +37792,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"rc-tabs@npm:~12.2.0":
-  version: 12.2.1
-  resolution: "rc-tabs@npm:12.2.1"
+"rc-tabs@npm:~12.1.0-alpha.1":
+  version: 12.1.0-alpha.1
+  resolution: "rc-tabs@npm:12.1.0-alpha.1"
   dependencies:
     "@babel/runtime": ^7.11.2
     classnames: 2.x
@@ -37806,7 +37806,7 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: f2ed5b66a4c1ea077b23221d84fef5aa9b01cd45984870d59f66db82f1c8a36c63a74e24fe94b7c7695bb10574d5d1004ddf6939e3ae9f844aa4701ff3807db6
+  checksum: 5f5d642ee7b88d793f107c5c7a12a8a7aae95baefbe95edde10513343ded71326e3a12c5bec645cd4f62eff809e1f939d2a1d981315a0a1d9241aa231703634b
   languageName: node
   linkType: hard
 
@@ -37826,7 +37826,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"rc-textarea@npm:~0.4.5":
+"rc-textarea@npm:~0.4.3":
   version: 0.4.6
   resolution: "rc-textarea@npm:0.4.6"
   dependencies:
