@@ -244,7 +244,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if (CollUtil.isEmpty(memberIds)) {
             return new ArrayList<>();
         }
-        List<UnitMemberVo> unitMemberVos =  memberMapper.selectUnitMemberByMemberIds(memberIds);
+        List<UnitMemberVo> unitMemberVos = memberMapper.selectUnitMemberByMemberIds(memberIds);
         // handle member's team name, get full hierarchy team name
         nodeRoleService.handleNodeMemberTeamName(unitMemberVos, spaceId);
         return unitMemberVos;
@@ -253,78 +253,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Override
     public List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params, Long sharer) {
         log.info("load or search unit");
-        List<Long> unitIds = new ArrayList<>();
-        if (CollUtil.isEmpty(params.getUnitIds())) {
-            if (BooleanUtil.isTrue(params.getAll())) {
-                unitIds = unitMapper.selectIdBySpaceId(spaceId);
-            }
-            else {
-                List<Long> refIds = new ArrayList<>();
-                String likeWord = CharSequenceUtil.trim(params.getKeyword());
-                if (CharSequenceUtil.isNotBlank(likeWord)) {
-                    // fuzzy search department
-                    List<Long> teamIds = teamMapper.selectTeamIdsLikeName(spaceId, likeWord);
-                    refIds.addAll(teamIds);
-                    // fuzzy search members
-                    List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
-                    refIds.addAll(memberIds);
-                    // fuzzy search email
-                    if (BooleanUtil.isTrue(params.getSearchEmail())) {
-                        refIds.addAll(memberMapper.selectIdsBySpaceIdAndEmailKeyword(spaceId, likeWord));
-                    }
-                    // fuzzy search role
-                    List<Long> roleIds = iRoleService.getRoleIdsByKeyWord(spaceId, likeWord);
-                    refIds.addAll(roleIds);
-                    SocialTenantEntity socialTenantEntity = Optional.ofNullable(socialTenantBindService.getBySpaceId(spaceId))
-                            .map(bind -> socialTenantService.getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId()))
-                            .orElse(null);
-                    if (Objects.nonNull(socialTenantEntity)
-                            && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
-                            && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-                        // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
-                        String suiteId = socialTenantEntity.getAppId();
-                        String authCorpId = socialTenantEntity.getTenantId();
-                        Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
-                        Integer agentId = agent.getAgentId();
-                        try {
-                            WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, likeWord, 1);
-                            List<String> cpUserIds = queryResult.getUser().getUserid();
-                            if (CollUtil.isNotEmpty(cpUserIds)) {
-                                // Populate the returned result with the un-renamed members
-                                List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, cpUserIds);
-                                refIds.addAll(socialMemberIds);
-                            }
-                        }
-                        catch (WxErrorException ex) {
-                            log.error("Failed to search users from wecom isv.", ex);
-                        }
-                    }
-                }
-                else {
-                    if (sharer != null) {
-                        // a sharer of node sharing
-                        refIds.add(sharer);
-                    } else if (userId != null) {
-                        // Load the most recently selected members and departments
-                        unitIds = userSpaceRemindRecordService.getRemindUnitIds(userId, spaceId);
-                        Integer loadCount = limitProperties.getMemberFieldMaxLoadCount();
-                        if (CollUtil.isEmpty(unitIds) || unitIds.size() < loadCount) {
-                            // Gets the group members of the latest group that the member joined
-                            Long memberId = userSpaceService.getMemberId(userId, spaceId);
-                            List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
-                            if (CollUtil.isNotEmpty(teamIds)) {
-                                List<Long> ids = teamMemberRelMapper.selectMemberIdsByTeamId(teamIds.get(teamIds.size() - 1));
-                                refIds = CollUtil.sub(CollUtil.reverse(ids), 0, loadCount - unitIds.size());
-                            }
-                        }
-                    }
-                }
-                if (CollUtil.isNotEmpty(refIds)) {
-                    List<Long> ids = unitMapper.selectIdsByRefIds(refIds);
-                    CollUtil.addAllIfNotContains(unitIds, ids);
-                }
-            }
-        }
+        List<Long> unitIds = this.getLoadedUnitIds(userId, spaceId, params, sharer);
         // Specifies the ID of the organizational unit to filter
         if (CollUtil.isNotEmpty(params.getFilterIds())) {
             unitIds.removeAll(params.getFilterIds());
@@ -333,6 +262,89 @@ public class OrganizationServiceImpl implements IOrganizationService {
             return iUnitService.getUnitInfoList(spaceId, unitIds);
         }
         return new ArrayList<>();
+    }
+
+    private List<Long> getLoadedUnitIds(Long userId, String spaceId, LoadSearchDTO params, Long sharer) {
+        if (CollUtil.isNotEmpty(params.getUnitIds())) {
+            return params.getUnitIds();
+        }
+        if (BooleanUtil.isTrue(params.getAll())) {
+            return unitMapper.selectIdBySpaceId(spaceId);
+        }
+        List<Long> unitIds = new ArrayList<>();
+        List<Long> refIds = new ArrayList<>();
+        String likeWord = CharSequenceUtil.trim(params.getKeyword());
+        if (CharSequenceUtil.isNotBlank(likeWord)) {
+            refIds = this.getSearchUnitRefIds(spaceId, likeWord, params.getSearchEmail());
+        }
+        else {
+            if (sharer != null) {
+                // a sharer of node sharing
+                refIds.add(sharer);
+            }
+            else if (userId != null) {
+                // Load the most recently selected members and departments
+                unitIds = userSpaceRemindRecordService.getRemindUnitIds(userId, spaceId);
+                Integer loadCount = limitProperties.getMemberFieldMaxLoadCount();
+                if (CollUtil.isEmpty(unitIds) || unitIds.size() < loadCount) {
+                    // Gets the group members of the latest group that the member joined
+                    Long memberId = userSpaceService.getMemberId(userId, spaceId);
+                    List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
+                    if (CollUtil.isNotEmpty(teamIds)) {
+                        List<Long> ids = teamMemberRelMapper.selectMemberIdsByTeamId(teamIds.get(teamIds.size() - 1));
+                        refIds = CollUtil.sub(CollUtil.reverse(ids), 0, loadCount - unitIds.size());
+                    }
+                }
+            }
+        }
+        if (CollUtil.isNotEmpty(refIds)) {
+            List<Long> ids = unitMapper.selectIdsByRefIds(refIds);
+            CollUtil.addAllIfNotContains(unitIds, ids);
+        }
+        return unitIds;
+    }
+
+    private List<Long> getSearchUnitRefIds(String spaceId, String likeWord, Boolean searchEmail) {
+        // fuzzy search department
+        List<Long> teamIds = teamMapper.selectTeamIdsLikeName(spaceId, likeWord);
+        List<Long> refIds = new ArrayList<>(teamIds);
+        // fuzzy search members
+        List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
+        refIds.addAll(memberIds);
+        // fuzzy search email
+        if (BooleanUtil.isTrue(searchEmail)) {
+            refIds.addAll(memberMapper.selectIdsBySpaceIdAndEmailKeyword(spaceId, likeWord));
+        }
+        // fuzzy search role
+        List<Long> roleIds = iRoleService.getRoleIdsByKeyWord(spaceId, likeWord);
+        refIds.addAll(roleIds);
+
+        // social wecom logic
+        SocialTenantEntity socialTenantEntity = Optional.ofNullable(socialTenantBindService.getBySpaceId(spaceId))
+                .map(bind -> socialTenantService.getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId()))
+                .orElse(null);
+        if (Objects.nonNull(socialTenantEntity)
+                && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
+                && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
+            // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
+            String suiteId = socialTenantEntity.getAppId();
+            String authCorpId = socialTenantEntity.getTenantId();
+            Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
+            Integer agentId = agent.getAgentId();
+            try {
+                WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, likeWord, 1);
+                List<String> cpUserIds = queryResult.getUser().getUserid();
+                if (CollUtil.isNotEmpty(cpUserIds)) {
+                    // Populate the returned result with the un-renamed members
+                    List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, cpUserIds);
+                    refIds.addAll(socialMemberIds);
+                }
+            }
+            catch (WxErrorException ex) {
+                log.error("Failed to search users from wecom isv.", ex);
+            }
+        }
+        return refIds;
     }
 
     @Override
@@ -376,7 +388,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         List<Long> teamIdList = teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
         // Filter out the departments that do not need to be loaded
         return teamsInfo.stream()
-            .filter(teamInfo -> !teamIdList.contains(teamInfo.getParentId()))
-            .map(TeamCteInfo::getId).collect(Collectors.toList());
+                .filter(teamInfo -> !teamIdList.contains(teamInfo.getParentId()))
+                .map(TeamCteInfo::getId).collect(Collectors.toList());
     }
 }
