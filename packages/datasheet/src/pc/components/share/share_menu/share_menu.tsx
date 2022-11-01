@@ -122,6 +122,10 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
   };
 
   const singleFormShare = formId && shareNode?.nodeId === formId;
+
+  // The login user is removed from the space station and is not allowed to enter.
+  const removedUserHiddenCard = shareSpace.hasLogin && shareSpace.isDeleted;
+
   return (
     <div className={styles.shareMenu}>
       <div className={styles.logo} onClick={enterSpace}>
@@ -147,7 +151,7 @@ export const ShareMenu: React.FC<IShareMenu> = ({ shareSpace, shareNode, visible
           {shareSpace.allowSaved && (
             <OperationCard img={SavePng} tipText={t(Strings.save_action_desc)} btnText={t(Strings.save_to_space)} onClick={saveToMySpace} />
           )}
-          {userInfo && userInfo.spaceId && shareSpace.allowEdit && (
+          {userInfo && userInfo.spaceId && shareSpace.allowEdit && !removedUserHiddenCard && (
             <OperationCard
               img={EditPng}
               tipText={t(Strings.support_access_to_editors)}

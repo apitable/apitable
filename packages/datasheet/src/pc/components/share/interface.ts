@@ -10,6 +10,7 @@ export interface IShareSpaceInfo {
   lastModifiedAvatar: string;
   lastModifiedBy: string;
   hasLogin: boolean;
+  isDeleted?: boolean;
   isFolder: boolean;
 }
 

@@ -14,6 +14,7 @@ export interface IShareInfo {
   allowEdit?: boolean;
   allowSaved?: boolean;
   hasLogin?: boolean;
+  isDeleted?: boolean;
   isFolder?: boolean;
   lastModifiedAvatar?: string;
   lastModifiedBy?: string;
