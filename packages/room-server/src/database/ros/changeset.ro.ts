@@ -7,7 +7,7 @@ export class ChangesetRo {
     type: String,
     required: true,
     example: 'dst0Yj5aNeoHldqvf6',
-    description: '维格表ID',
+    description: 'datasheet ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     dstId: string;
@@ -16,7 +16,7 @@ export class ChangesetRo {
     type: String,
     required: true,
     example: '0Yj5aNeoHldqvf6',
-    description: '消息ID',
+    description: 'message ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     messageId: string;

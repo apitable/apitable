@@ -9,7 +9,7 @@ export class RecordHistoryQueryRo {
     type: Number,
     required: true,
     example: 0,
-    description: '动态类型0: 全部, 1: 修改历史, 2: 评论, 默认全部',
+    description: 'type(0: All, 1: History, 2: Comment), default: 0',
   })
   @Type(() => Number)
   @IsIn([0, 1, 2], { context: { tipId: ApiTipIdEnum.apiParamsInvalidValue }})
@@ -18,7 +18,7 @@ export class RecordHistoryQueryRo {
   @ApiPropertyOptional({
     type: Number,
     example: 14,
-    description: '限制天数，默认14，最大730天',
+    description: 'Limited days, default is 14, maximum is 730 days',
   })
   @Type(() => Number)
   @Max(730, { context: { tipId: ApiTipIdEnum.apiParamsMaxError, value: 730 }})
@@ -28,7 +28,7 @@ export class RecordHistoryQueryRo {
     type: Number,
     example: 10,
     default: 10,
-    description: '指定每页返回的记录总数，缺省值为10。此参数只接受1-100的整数',
+    description: 'The total number of records returned per page is 10. This parameter only accepts an integer of 1-100',
   })
   @Type(() => Number)
   @IsOptional()
@@ -39,9 +39,10 @@ export class RecordHistoryQueryRo {
   @ApiPropertyOptional({
     type: Number,
     example: 10,
-    description: '（选填）指定当前最大版本号，返回小于版本号的的记录,不填为最大版本号',
+    description: '(Optional) Specify the current largest revision, return the record witch is smaller than the revision, ' + 
+    'and default is the largest revision',
   })
-  // 为了参数验证
+  // For parameter validation
   @Type(() => Number)
   @IsOptional()
   @Min(1, { context: { tipId: ApiTipIdEnum.apiParamsMinError }})

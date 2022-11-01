@@ -3,7 +3,7 @@ syntax='proto3';
 package grpc;
 
 import 'message.proto';
-// internal server generate, changeset->apply
+// generates by calling internal server, changeset->apply
 service NodeService {
   // ot of duplicating node from a space
   rpc CopyNodeEffectOt (NodeCopyRo) returns (BasicResult);

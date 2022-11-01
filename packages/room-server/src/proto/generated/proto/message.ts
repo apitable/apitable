@@ -6,27 +6,27 @@ import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
 export namespace grpc {
-    // 内部调用rpc 节点复制message
+    // Internal call with gRPC, message of duplicating node
     export interface NodeCopyRo {
-        // 原始数表ID
+        // original node ID
         nodeId?: string;
-        // 复制的数表ID
+        // duplicated node ID
         copyNodeId?: string;
-        // 用户ID
+        // user ID
         userId?: string;
-        // 用户uuid
+        // user uuid
         uuid?: string;
-        // 需要转换的fieldId数组
+        // original fieldIds that need to be transferred
         fieldIds?: string[];
     }
     export interface NodeDeleteRo {
-        // 删除节点的数组
+        // array of deleted node ID 
         deleteNodeId?: string[];
-        // 需要转换字段的关联表
+        // IDs of related datasheets of the fields that need to be transferred
         linkNodeId?: string[];
-        // 用户ID
+        // user ID
         userId?: string;
-        // 用户uuid
+        // user uuid
         uuid?: string;
     }
     export interface BasicResult {

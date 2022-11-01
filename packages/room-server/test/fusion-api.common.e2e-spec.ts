@@ -42,12 +42,12 @@ export async function initNestTestApp() {
   const logger = module.get<LoggerService>(WINSTON_MODULE_NEST_PROVIDER);
   app.useLogger(logger);
   initHttpHook(app);
-  // 全局异常处理
+  // Global Exception Handler
   app.useGlobalFilters(new GlobalExceptionFilter(logger, app.get<I18nService>(I18nService)));
   // app.useGlobalFilters(new GlobalExceptionFilter(logger));
-  // 全局注册拦截器(成功返回格式)
+  // Global Interceptor Handler(return standard response body if success)
   app.useGlobalInterceptors(new HttpResponseInterceptor());
-  // 全局验证器,自定义参数异常的返回
+  // Global Validator, return custom parameter validation error
   app.useGlobalPipes(new ValidationPipe({ enableErrorDetail: true }));
   await app.init();
   await app

@@ -1,19 +1,19 @@
 
 export class InternalSpaceSubscriptionView {
-  maxRowsPerSheet: number; // 每张表允许的最大记录数
-  maxRowsInSpace: number; // 当前空间站允许的最大记录数
-  maxGalleryViewsInSpace: number; // 空间站内允许的相册视图的最大数量
-  maxKanbanViewsInSpace: number; // 空间站内允许的看板视图的最大数量
-  maxGanttViewsInSpace: number; // 空间站内允许的甘特视图的最大数量
-  maxCalendarViewsInSpace: number; // 空间站内允许的日历视图的最大数量
+  maxRowsPerSheet: number; // The maximum record allowed per datasheet
+  maxRowsInSpace: number; // The maximum record allowed by the current space
+  maxGalleryViewsInSpace: number; // The maximum number of gallery views allowed in the space
+  maxKanbanViewsInSpace: number; // The maximum number of kanban views allowed in the space
+  maxGanttViewsInSpace: number; // The maximum quantity of the allowable Gantt view in the space
+  maxCalendarViewsInSpace: number; // The maximum number of calendar views allowed in the space
 }
 
 export class InternalSpaceUsageView {
-  recordNums: number; // 空间所有表总行数
-  galleryViewNums: number; // 空间相册视图总数
-  kanbanViewNums: number; // 空间看板视图总数
-  ganttViewNums: number; // 空间甘特视图总数
-  calendarViewNums: number; // 空间日历视图总数"
+  recordNums: number; // The number of all records of all datasheets in the space
+  galleryViewNums: number; // The number of all views in the space
+  kanbanViewNums: number; // The number of all kanban views in the space
+  ganttViewNums: number; // The number of all gantt views in the space
+  calendarViewNums: number; // The number of all calender views in the space
 }
 
 export class InternalCreateDatasheetVo{

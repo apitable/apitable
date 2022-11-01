@@ -7,7 +7,7 @@ export class DatasheetPackRo {
     type: [String],
     required: false,
     example: 'rec4zxfWB5uyM',
-    description: '记录ID。如果附带此参数，则返回指定的单条记录',
+    description: 'Record ID. If this parameter is attached, return the specified records',
   })
   @Transform(value => stringToArray(value), { toClassOnly: true })
     recordIds: string[];

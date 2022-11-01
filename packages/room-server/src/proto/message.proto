@@ -1,27 +1,28 @@
 syntax='proto3';
 
 package grpc;
-// internal gRPC message of duplicating node
+// Internal call with gRPC, message of duplicating node
 message NodeCopyRo {
   // original node ID
   string node_id = 1;
   // duplicated node ID
   string copy_node_id = 2;
+  // user ID
   string user_id = 3;
   // user uuid
   string uuid = 4;
-  // original fieldIds
+  // original fieldIds that need to be transferred
   repeated string field_ids = 5;
 }
 
 message NodeDeleteRo {
-  // 删除节点的数组
+  // array of deleted node ID 
   repeated string delete_node_id = 1;
-  // 需要转换字段的关联表
+  // IDs of related datasheets of the fields that need to be transferred
   repeated string link_node_id = 2;
-  // 用户ID
+  // user ID
   string user_id = 3;
-  // 用户uuid
+  // user uuid
   string uuid = 4;
 }
 

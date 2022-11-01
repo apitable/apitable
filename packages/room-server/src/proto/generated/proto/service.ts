@@ -6,34 +6,34 @@ import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
 export namespace grpc {
-    // 内部服务调用生成changeset-&gt;apply
+    // generates by calling internal server, changeset->apply
     export interface NodeService {
-        // 空间站内复制副作用ot
+        // ot of duplicating node from a space
         copyNodeEffectOt(data: NodeCopyRo, metadata?: Metadata): Observable<BasicResult>;
-        // 空间站内删除接口副作用ot
+        // effect ot of deleting a node from a space
         deleteNodeEffectOt(data: NodeDeleteRo, metadata?: Metadata): Observable<BasicResult>;
     }
-    // 内部调用rpc 节点复制message
+    // Internal call with gRPC, message of duplicating node
     export interface NodeCopyRo {
-        // 原始数表ID
+        // original node ID
         nodeId?: string;
-        // 复制的数表ID
+        // duplicated node ID
         copyNodeId?: string;
-        // 用户ID
+        // user ID
         userId?: string;
-        // 用户uuid
+        // user uuid
         uuid?: string;
-        // 需要转换的fieldId数组
+        // original fieldIds that need to be transferred
         fieldIds?: string[];
     }
     export interface NodeDeleteRo {
-        // 删除节点的数组
+        // array of deleted node ID 
         deleteNodeId?: string[];
-        // 需要转换字段的关联表
+        // IDs of related datasheets of the fields that need to be transferred
         linkNodeId?: string[];
-        // 用户ID
+        // user ID
         userId?: string;
-        // 用户uuid
+        // user uuid
         uuid?: string;
     }
     export interface BasicResult {

@@ -93,7 +93,7 @@ describe('FusionController (e2e) | create datasheet', () => {
       .set(getDefaultHeader(app))
       .end((err, res) => {
         expect(res.status).toEqual(403);
-        expect(res.body).toEqual({ code: 403, message: '禁止访问', success: false });
+        expect(res.body).toEqual({ code: 403, message: 'Forbidden', success: false });
         done();
       });
   });
@@ -106,7 +106,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .set(getDefaultHeader(app))
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[datasheet]必须包含name字段', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[datasheet] should contains name', success: false });
           done();
         });
     });
@@ -122,7 +122,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send({ name })
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[name]长度不能超过100', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[name]\'s length could not exceed 100', success: false });
           done();
         });
     });
@@ -138,7 +138,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[folderId]的值不正确', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[folderId] is not valid', success: false });
           done();
         });
     });
@@ -154,7 +154,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[folderId]的值不正确', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[folderId] is not valid', success: false });
           done();
         });
     });
@@ -170,7 +170,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[preNodeId]的值不正确', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[preNodeId] is not valid', success: false });
           done();
         });
     });
@@ -186,7 +186,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[preNodeId]的值不正确', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[preNodeId] is not valid', success: false });
           done();
         });
     });
@@ -203,7 +203,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, message: '[preNodeId]的值不正确', success: false });
+          expect(res.body).toEqual({ code: 400, message: '[preNodeId] is not valid', success: false });
           done();
         });
     });
@@ -225,7 +225,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, success: false, message: '[field]必须包含name字段' });
+          expect(res.body).toEqual({ code: 400, success: false, message: '[field] should contains name' });
           done();
         });
     });
@@ -247,7 +247,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, success: false, message: '[field.name]必须唯一' });
+          expect(res.body).toEqual({ code: 400, success: false, message: '[field.name] should be unique' });
           done();
         });
     });
@@ -267,7 +267,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, success: false, message: '[field]必须包含type字段' });
+          expect(res.body).toEqual({ code: 400, success: false, message: '[field] should contains type' });
           done();
         });
     });
@@ -288,7 +288,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, success: false, message: '[fields[abc].type]的值不正确' });
+          expect(res.body).toEqual({ code: 400, success: false, message: '[fields[abc].type] is not valid' });
           done();
         });
     });
@@ -309,7 +309,7 @@ describe('FusionController (e2e) | create datasheet', () => {
         .send(ro)
         .end((err, res) => {
           expect(res.status).toEqual(200);
-          expect(res.body).toEqual({ code: 400, success: false, message: '[fields[abc].property]的值不正确' });
+          expect(res.body).toEqual({ code: 400, success: false, message: '[fields[abc].property] is not valid' });
           done();
         });
     });

@@ -8,20 +8,18 @@ import { IApiPaginateRo } from '../../shared/interfaces';
 import { SortRo } from './sort.ro';
 
 /**
- * <p>
- * 记录排序
- * </p>
+ * Record sorting
  * @author Zoe zheng
- * @date 2020/7/21 7:09 下午
+ * @date 2020/7/21 7:09 PM
  */
 export abstract class PageRo implements IApiPaginateRo {
   @ApiPropertyOptional({
     type: Number,
     example: 100,
     default: 100,
-    description: '指定每页返回的记录总数，缺省值为100。此参数只接受1-1000的整数',
+    description: 'The total number of records returned per page, the default value is 100. This parameter only accepts an integer of 1-1000',
   })
-  // 为了参数验证
+  // For parameter verification
   @Type(() => Number)
   @IsOptional()
   @ValidateIf(o => o.pageSize !== -1)
@@ -34,9 +32,9 @@ export abstract class PageRo implements IApiPaginateRo {
   @ApiPropertyOptional({
     type: Number,
     example: 1000,
-    description: '（选填）指定返回记录的总数量。如果此参数与pageSize一起使用，并且此参数的值小于total(总记录数),就返回此参数',
+    description: '(Optional) Specify the total number of returned records.' +
+    'If this parameter is used with PageSize, and the value of this parameter is less than Total (total record), return this parameter',
   })
-  // 为了参数验证
   @Type(() => Number)
   @IsOptional()
   @Min(1, { message: ApiTipConstant.api_params_maxrecords_min_error })
@@ -46,7 +44,7 @@ export abstract class PageRo implements IApiPaginateRo {
     type: Number,
     example: 1,
     default: 1,
-    description: '指定分页的页码，与参数size配合使用',
+    description: 'Specify the page number of the pagination, use it with the parameter size',
   })
   @Type(() => Number)
   @IsOptional()
@@ -57,12 +55,15 @@ export abstract class PageRo implements IApiPaginateRo {
     type: [SortRo],
     isArray: true,
     description:
-      '对指定维格表的记录进行排序。由多个“排序对象”组成的数组。一个Sort Object的结构为{"order":"desc", "field":"客户ID"}。' +
-      'url参数形式sort[][filed]=fldAj8ZBpzj1X&sort[][order]=asc注：如果此参数与viewId参数一起使用，则此参数指定的排序条件将会覆盖视图里的排序条件。',
+      'Sort the records of the specified datasheet. A array consisting of multiple "sorting objects".' + 
+      'The structure of a Sort Object is {"Order": "Desc", "Field": "Customer ID"}' +
+      'URL parameter form: sort[][field] = flDaj8zbpzj1x & sort[][order] = asc, ' + 
+      'Note: If this parameter is used with the viewId parameter, ' +
+      'the sorting conditions specified in this parameter will cover the sorting conditions in the view'
   })
   @Type(() => SortRo)
   @Transform(value => plainToClass(SortRo, objStringToArray(value), {}), { toClassOnly: true })
-  // todo 这个注解有个bug，不能传递options,所以忽略格式不正确的校验
+  // TODO: This annotation has a bug that cannot pass the OPTIONS, so ignoring the incorrect verification of the format
   @ValidateNested({ message: ApiTipConstant.api_params_instance_sort_error })
   @IsOptional()
     sort: SortRo[];

@@ -8,7 +8,7 @@ import { Metadata } from '@grpc/grpc-js';
 export namespace vika {
     export namespace grpc {
         export interface ChangesetService {
-            // 加入房间
+            // Enter the room
             serverRoomChange(data: ServerRoomChangeRo, metadata?: Metadata): Observable<BasicResult>;
         }
         export interface BasicResult {

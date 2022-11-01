@@ -7,7 +7,7 @@ export class RecordHistoryParamRo {
     type: String,
     required: true,
     example: 'dst0Yj5aNeoHldqvf6',
-    description: '维格表ID',
+    description: 'datasheet ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     dstId: string;
@@ -16,7 +16,7 @@ export class RecordHistoryParamRo {
     type: String,
     required: true,
     example: 'rec0Yj5aNeoHldqvf6',
-    description: '维格表记录ID',
+    description: 'record ID',
   })
   @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
     recId: string;
