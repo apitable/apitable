@@ -5,7 +5,7 @@ import { getFieldOptionColor } from 'model/color';
 import { ICellValue } from 'model/record';
 import { handleEmptyCellValue, isNullValue } from 'model/utils';
 import { IReduxState } from 'store';
-import { BasicValueType, FieldType, IField, IMultiSelectField, IStandardValue } from 'types/field_types';
+import { BasicValueType, FieldType, IField, IMultiSelectField, ISelectFieldProperty, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';
 import { FOperator, IFilterCondition, IFilterMultiSelect } from 'types/view_types';
@@ -14,7 +14,7 @@ import { DatasheetActions } from '../../datasheet';
 import { isOptionId, SelectField } from './common_select_field';
 
 export class MultiSelectField extends SelectField {
-  constructor(public field: IMultiSelectField, public state: IReduxState) {
+  constructor(public override field: IMultiSelectField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -32,7 +32,7 @@ export class MultiSelectField extends SelectField {
     if (!isArray(optionIds)) {
       return helpers.message({ en: 'cellValue is not array' });
     }
-    if (!optionIds.every(id => field.property.options.some(option => option.id === id))) {
+    if (!optionIds.every(id => (field.property as ISelectFieldProperty).options.some(option => option.id === id))) {
       return helpers.message({ en: 'option not exist field property' });
     }
     return optionIds;
@@ -44,7 +44,7 @@ export class MultiSelectField extends SelectField {
     if (!optionIdsOrNames) {
       return helpers.error('value format error');
     }
-    if (field.property.options.every(option => option.id === optionIdsOrNames || option.name === optionIdsOrNames)) {
+    if ((field.property as ISelectFieldProperty).options.every(option => option.id === optionIdsOrNames || option.name === optionIdsOrNames)) {
       return helpers.error('option not exist field property');
     }
     return optionIdsOrNames;
@@ -58,7 +58,7 @@ export class MultiSelectField extends SelectField {
     return MultiSelectField.openWriteValueSchema.validate(owv, { context: { field: this.field }});
   }
 
-  defaultValue(): string[] | null {
+  override defaultValue(): string[] | null {
     const defaultValue = this.field.property.defaultValue as string[] | undefined;
     if (!defaultValue || !defaultValue.length) {
       return null;
@@ -70,7 +70,7 @@ export class MultiSelectField extends SelectField {
     return BasicValueType.Array;
   }
 
-  get innerBasicValueType() {
+  override get innerBasicValueType() {
     return BasicValueType.String;
   }
 
@@ -119,7 +119,7 @@ export class MultiSelectField extends SelectField {
     };
   }
 
-  isMultiValueField() {
+  override isMultiValueField() {
     return true;
   }
 
@@ -151,7 +151,7 @@ export class MultiSelectField extends SelectField {
     return null;
   }
 
-  compare(cellValue1: string[] | null, cellValue2: string[] | null, orderInCellValueSensitive?: boolean) {
+  override compare(cellValue1: string[] | null, cellValue2: string[] | null, orderInCellValueSensitive?: boolean) {
     // grouping sort
     if (!orderInCellValueSensitive) {
       const sortCellValue1 = this.sortValueByOptionOrder(cellValue1);
@@ -161,7 +161,7 @@ export class MultiSelectField extends SelectField {
     return super.compare(cellValue1, cellValue2);
   }
 
-  isMeetFilter(
+  override isMeetFilter(
     operator: FOperator,
     cellValue: string[] | null,
     conditionValue: Exclude<IFilterMultiSelect, null>,
@@ -301,7 +301,7 @@ export class MultiSelectField extends SelectField {
       return null;
     }
     const isSimple = openWriteValue.length && typeof openWriteValue[0] === 'string';
-    const writeValue = isSimple ? openWriteValue : (openWriteValue as ISelectFieldBaseOpenValue[]).map(v => v.id || v.name);
+    const writeValue = isSimple ? openWriteValue as string[] : (openWriteValue as ISelectFieldBaseOpenValue[]).map(v => v.id || v.name);
     const optionIds: string[] = [];
     writeValue.forEach(value => {
       this.field.property.options.forEach(option => {
@@ -315,7 +315,7 @@ export class MultiSelectField extends SelectField {
     return optionIds;
   }
 
-  static openUpdatePropertySchema = Joi.object({
+  static override openUpdatePropertySchema = Joi.object({
     options: Joi.array().items(Joi.object({
       id: Joi.string(),
       name: Joi.string().required(),
@@ -324,7 +324,7 @@ export class MultiSelectField extends SelectField {
     defaultValue: Joi.array().items(Joi.string())
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
+  override validateUpdateOpenProperty(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
     const result = MultiSelectField.openUpdatePropertySchema.validate(updateProperty);
     if (result.error) {
       return result;

@@ -11,7 +11,7 @@ import { IOpenMemberFieldProperty, IOpenMemberOption } from 'types/open/open_fie
 import { IAddOpenMemberFieldProperty, IUpdateOpenMemberFieldProperty } from 'types/open/open_field_write_types';
 
 export class MemberField extends MemberBaseField {
-  constructor(public field: IMemberField, public state: IReduxState) {
+  constructor(public override field: IMemberField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -48,7 +48,7 @@ export class MemberField extends MemberBaseField {
     return MemberField.openWriteValueSchema.validate(owv);
   }
 
-  get apiMetaProperty(): IAPIMetaMemberFieldProperty {
+  override get apiMetaProperty(): IAPIMetaMemberFieldProperty {
     const unitMap = Selectors.getUnitMap(this.state);
     const options: IAPIMetaMember[] = [];
     if (unitMap) {
@@ -123,7 +123,7 @@ export class MemberField extends MemberBaseField {
     };
   }
 
-  recordEditable(datasheetId?: string, mirrorId?: string) {
+  override recordEditable(datasheetId?: string, mirrorId?: string) {
     if (!super.recordEditable(datasheetId, mirrorId)) {
       return false;
     }
@@ -131,11 +131,11 @@ export class MemberField extends MemberBaseField {
     return templateId ? false : true;
   }
 
-  isMultiValueField(): boolean {
+  override isMultiValueField(): boolean {
     return true;
   }
 
-  stdValueToCellValue(stdValue: IStandardValue): ICellValue | null {
+  override stdValueToCellValue(stdValue: IStandardValue): ICellValue | null {
     // Match matching member information with name text in redux.
     const unitMap = Selectors.getUnitMap(this.state);
     if (!unitMap) {
@@ -161,7 +161,7 @@ export class MemberField extends MemberBaseField {
     return cvMap.size ? [...cvMap.values()] : null;
   }
 
-  eq(cv1: IUnitIds | null, cv2: IUnitIds | null): boolean {
+  override eq(cv1: IUnitIds | null, cv2: IUnitIds | null): boolean {
     if (cv1 == null || cv2 == null) {
       return cv1 === cv2;
     }
@@ -169,7 +169,7 @@ export class MemberField extends MemberBaseField {
     return isEqual(MemberField.polyfillOldData([cv1].flat()), MemberField.polyfillOldData([cv2].flat()));
   }
 
-  getUnitNames(cellValue: IUnitIds) {
+  override getUnitNames(cellValue: IUnitIds) {
     const unitMap = Selectors.getUnitMap(this.state);
     if (!unitMap) {
       return null;
@@ -185,11 +185,11 @@ export class MemberField extends MemberBaseField {
     });
   }
 
-  getUnitIds(cellValue: IUnitIds | null) {
+  override getUnitIds(cellValue: IUnitIds | null) {
     return MemberField.polyfillOldData(cellValue);
   }
 
-  getUnits(cellValue: IUnitIds) {
+  override getUnits(cellValue: IUnitIds) {
     const unitMap = Selectors.getUnitMap(this.state);
     if (!unitMap) {
       return null;
@@ -203,7 +203,7 @@ export class MemberField extends MemberBaseField {
    * API returns basic information of members
    * @param cellValues
    */
-  cellValueToApiStandardValue(cellValues: any[] | null): any[] | null {
+  override cellValueToApiStandardValue(cellValues: any[] | null): any[] | null {
     if (isNil(cellValues)) {
       return null;
     }
@@ -225,7 +225,7 @@ export class MemberField extends MemberBaseField {
     return units;
   }
 
-  enrichProperty(stdVals: IStandardValue[]): IMemberProperty {
+  override enrichProperty(stdVals: IStandardValue[]): IMemberProperty {
     const cellValues = stdVals.map(stdVal => {
       const cv = this.stdValueToCellValue(stdVal);
       if (!cv) {
@@ -254,7 +254,7 @@ export class MemberField extends MemberBaseField {
     return false;
   }
 
-  get openFieldProperty(): IOpenMemberFieldProperty {
+  override get openFieldProperty(): IOpenMemberFieldProperty {
     const unitMap = Selectors.getUnitMap(this.state);
     const options: IOpenMemberOption[] = [];
     if (unitMap) {
@@ -283,11 +283,11 @@ export class MemberField extends MemberBaseField {
     shouldSendMsg: Joi.boolean(),
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenMemberFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenMemberFieldProperty) {
     return MemberField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMemberFieldProperty): IMemberProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMemberFieldProperty): IMemberProperty {
     const { isMulti, shouldSendMsg } = openFieldProperty;
     const { unitIds } = this.field.property;
     return {
@@ -297,7 +297,7 @@ export class MemberField extends MemberBaseField {
     };
   }
 
-  addOpenFieldPropertyTransformProperty(openFieldProperty: IAddOpenMemberFieldProperty): IMemberProperty {
+  override addOpenFieldPropertyTransformProperty(openFieldProperty: IAddOpenMemberFieldProperty): IMemberProperty {
     const { isMulti, shouldSendMsg } = openFieldProperty;
     const defaultProperty = MemberField.defaultProperty();
     return {

@@ -32,9 +32,9 @@ export const isObjectOperand = (operand: any) => {
  * @param key 
  * @param propertySchema
  */
-export const getObjectOperandProperty = (objectOperand, key, propertySchema) => {
+export const getObjectOperandProperty = (objectOperand: any, key: string, propertySchema: any) => {
   if (isObjectOperand(objectOperand)) {
-    const keyIndex = objectOperand.value.operands.findIndex((operand, index) => {
+    const keyIndex = (objectOperand.value.operands as any[]).findIndex((operand, index) => {
       return index % 2 === 0 && typeof operand === 'string' ? key === operand : isEqual(operand, key);
     });
     if (keyIndex > -1) {
@@ -85,7 +85,7 @@ export const getOperandValueType = (operand: any) => {
   throw Error('must be operand');
 };
 
-export const isOperandNullValue = (operand, schema) => {
+export const isOperandNullValue = (operand: any, schema: any) => {
   // if null 
   if (operand.type === 'Literal' && operand.value === null) {
     return true;
@@ -125,7 +125,7 @@ export const objectCombOperand = (operands: any[]) => {
     const itemKey = operands[idx]; // 0
     const itemValue = operands[idx + 1]; //1
     // even numbers is key & odd numbers is value
-    const newItemKeys = newItems.filter((item, index) => {
+    const newItemKeys = newItems.filter((_item, index) => {
       return index % 2 === 0;
     });
     const itemKeyIndex = newItemKeys.findIndex(key => isEqual(key, itemKey));
@@ -144,8 +144,8 @@ export const objectCombOperand = (operands: any[]) => {
   }
   return newItems;
 };
-export const removeArrayOperandItemByIndex = (arrayOperand, index: number) => {
-  return produce(arrayOperand, draft => {
+export const removeArrayOperandItemByIndex = (arrayOperand: any, index: number) => {
+  return produce(arrayOperand, (draft: any) => {
     if (isOperand(draft)) {
       draft.value.operands.splice(index, 1);
     }
@@ -156,7 +156,7 @@ export const removeArrayOperandItemByIndex = (arrayOperand, index: number) => {
 /**
  * transform an object to an operand
  */
-export const data2Operand = (data: any) => {
+export const data2Operand = (data: any): any => {
   if (data == null) {
     return JSON.parse(JSON.stringify(EmptyNullOperand));
   }
@@ -194,7 +194,7 @@ export const data2Operand = (data: any) => {
  * @param operand1 
  * @param operand2 
  */
-export const mergeOperand = (operand1, operand2) => {
+export const mergeOperand = (operand1: any, operand2: any) => {
   if (isObjectOperand(operand1) && isObjectOperand(operand2)) {
     return {
       type: 'Expression',

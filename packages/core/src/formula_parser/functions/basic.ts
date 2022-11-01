@@ -29,7 +29,7 @@ export interface IFormulaEvaluateContext {
 
 // Equation error base class, error reporting mechanism for unified equations
 export class FormulaBaseError extends Error {
-  constructor(public message: string) {
+  constructor(message: string) {
     super();
     this.message = message ? '#Error: ' + message : '#Error!';
   }
@@ -73,7 +73,7 @@ export abstract class FormulaFunc {
   * 3. The function name needs to be explicitly given in the error message
   * 4. The numbers in the error message need to use Arabic numerals such as: "3" instead of "three"
   */
- static validateParams(params: AstNode[]) {
+ static validateParams(_params: AstNode[]) {
    //
  }
  /**
@@ -88,7 +88,7 @@ export abstract class FormulaFunc {
  }
 
  // function body implementation
- static func(params: IFormulaParam[], context?: IFormulaContext): any { return null; }
+ static func(_params: IFormulaParam[], _context?: IFormulaContext): any { return null; }
 }
 
 export const isArrayTypeParam = (params: IFormulaParam[]) => {

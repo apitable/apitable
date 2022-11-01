@@ -8,11 +8,11 @@ import { Settings } from 'config';
 import { integrateCdnHost } from 'utils';
 
 export class GridView extends View {
-  get recordShowName() {
+  override get recordShowName() {
     return t(Strings.row);
   }
 
-  get recordShowUnit() {
+  override get recordShowUnit() {
     return '';
   }
 
@@ -34,7 +34,7 @@ export class GridView extends View {
           return { fieldId: item.fieldId, width: item.width };
         });
       } else {
-        columns = (srcView.columns as any).map(item => {
+        columns = (srcView.columns as IViewColumn[]).map(item => {
           return { fieldId: item.fieldId };
         });
       }

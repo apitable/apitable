@@ -7,7 +7,7 @@ import { ICellValue } from '../record';
 import { TextBaseField } from './text_base_field';
 
 export class URLField extends TextBaseField {
-  constructor(public field: IURLField, public state: IReduxState) {
+  constructor(public override field: IURLField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -17,7 +17,7 @@ export class URLField extends TextBaseField {
     };
   }
 
-  static cellValueSchema = Joi.array().items(Joi.object({
+  static override cellValueSchema = Joi.array().items(Joi.object({
     text: Joi.string().allow('').required(),
     type: Joi.number().required(),
     link: Joi.string(),
@@ -25,11 +25,11 @@ export class URLField extends TextBaseField {
     favicon: Joi.string(),
   }).required()).allow(null).required();
 
-  static propertySchema = Joi.object({
+  static override propertySchema = Joi.object({
     isRecogURLFlag: Joi.boolean(),
   });
 
-  cellValueToApiStringValue(cellValue: ICellValue): string | null {
+  override cellValueToApiStringValue(cellValue: ICellValue): string | null {
     if (cellValue === null) {
       return '';
     }
@@ -55,11 +55,11 @@ export class URLField extends TextBaseField {
     return (cv as IHyperlinkSegment[]).map(seg => seg?.title || seg?.text).join('') || null;
   }
 
-  validateProperty() {
+  override validateProperty() {
     return URLField.propertySchema.validate(this.field.property);
   }
 
-  validateCellValue(cv: ICellValue) {
+  override validateCellValue(cv: ICellValue) {
     return URLField.cellValueSchema.validate(cv);
   }
 

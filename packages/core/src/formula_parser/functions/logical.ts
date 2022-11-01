@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { Strings, t } from 'i18n';
 import { handleLookupNullValue } from 'formula_parser/helper';
 class LogicalFunc extends FormulaFunc {
-  static readonly type = FormulaFuncType.Logical;
+  static override readonly type = FormulaFuncType.Logical;
 }
 
 function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<any[] | null>] {
@@ -19,9 +19,9 @@ function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<an
 }
 
 export class If extends LogicalFunc {
-  static acceptValueType = new Set([BasicValueType.Array, BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'IF',
@@ -30,7 +30,7 @@ export class If extends LogicalFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
 
     if (!params) {
@@ -55,61 +55,61 @@ export class If extends LogicalFunc {
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<boolean>, IFormulaParam<any>, IFormulaParam<any>]): string | number {
+  static override func(params: [IFormulaParam<boolean>, IFormulaParam<any>, IFormulaParam<any>]): string | number {
     const [logical, value1Param, value2Param] = params;
     return logical.value ? value1Param.value : value2Param.value;
   }
 }
 
 export class Blank extends LogicalFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(): null {
+  static override func(): null {
     return null;
   }
 }
 
 export class True extends LogicalFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(): boolean {
+  static override func(): boolean {
     return true;
   }
 }
 
 export class False extends LogicalFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(): boolean {
+  static override func(): boolean {
     return false;
   }
 }
 
 export class Or extends LogicalFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'OR',
@@ -118,12 +118,12 @@ export class Or extends LogicalFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: IFormulaParam<boolean>[]): boolean {
+  static override func(params: IFormulaParam<boolean>[]): boolean {
     params = handleLookupNullValue(params);
     if (isArrayParam(params)) {
       if (!params[0].value) { return false; }
@@ -135,9 +135,9 @@ export class Or extends LogicalFunc {
 }
 
 export class And extends LogicalFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'AND',
@@ -146,12 +146,12 @@ export class And extends LogicalFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: IFormulaParam<boolean>[]): boolean {
+  static override func(params: IFormulaParam<boolean>[]): boolean {
     params = handleLookupNullValue(params);
     if (isArrayParam(params)) {
       if (!params[0].value) { return false; }
@@ -163,9 +163,9 @@ export class And extends LogicalFunc {
 }
 
 export class Xor extends LogicalFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'XOR',
@@ -174,12 +174,12 @@ export class Xor extends LogicalFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: IFormulaParam<boolean>[]): boolean {
+  static override func(params: IFormulaParam<boolean>[]): boolean {
     let count: number;
     params = handleLookupNullValue(params);
     if (isArrayParam(params)) {
@@ -194,7 +194,7 @@ export class Xor extends LogicalFunc {
 }
 
 export class Not extends LogicalFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'NOT',
@@ -203,12 +203,12 @@ export class Not extends LogicalFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: [IFormulaParam<boolean>]): boolean {
+  static override func(params: [IFormulaParam<boolean>]): boolean {
     params = handleLookupNullValue(params) as [IFormulaParam<boolean>];
     const logical1Param = params[0].value;
     return !logical1Param;
@@ -216,9 +216,9 @@ export class Not extends LogicalFunc {
 }
 
 export class Switch extends LogicalFunc {
-  static acceptValueType = new Set([BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'SWITCH',
@@ -227,7 +227,7 @@ export class Switch extends LogicalFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
 
     if (!params) {
@@ -251,7 +251,7 @@ export class Switch extends LogicalFunc {
     return resultType === BasicValueType.Array ? BasicValueType.String : resultType;
   }
 
-  static func(params: IFormulaParam[]): string | number | null {
+  static override func(params: IFormulaParam[]): string | number | null {
     params = handleLookupNullValue(params);
     let targetValue = params[0].value;
     const argsLength = params.length - 1;
@@ -260,7 +260,7 @@ export class Switch extends LogicalFunc {
     const isDateTimeType = params[0].node.innerValueType === BasicValueType.DateTime; // Do special handling for DateTime types
 
     // Specially handle the matching of Array type fields to BLANK
-    const isEmptyArray = param => param.node.valueType === BasicValueType.Array && !param.value?.length; 
+    const isEmptyArray = (param: IFormulaParam) => param.node.valueType === BasicValueType.Array && !param.value?.length; 
 
     if (isDateTimeType) {
       targetValue = dayjs(targetValue).valueOf();
@@ -290,23 +290,23 @@ export class Switch extends LogicalFunc {
 
 // All equations' running errors or manual triggers will inherit this class
 export class FormulaError extends LogicalFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>]) {
+  static override func(params: [IFormulaParam<string>]) {
     const errText = params[0]?.value;
     throw new FormulaBaseError(errText || '');
   }
 }
 
 export class IsError extends LogicalFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'IS_ERROR',
@@ -315,12 +315,12 @@ export class IsError extends LogicalFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: [IFormulaParam<any>]): boolean {
+  static override func(params: [IFormulaParam<any>]): boolean {
     const value = params[0].value;
     const isError = value instanceof FormulaBaseError || isNaN(value) || value === Infinity;
     return isError;

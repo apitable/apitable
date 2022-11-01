@@ -27,8 +27,8 @@ export type IReqMethod = {
 };
 
 export abstract class IAutomationRobotRunner {
-  reqMethods: IReqMethod;
-  inputParser: InputParser<IRobotTaskRuntimeContext>;
+  reqMethods!: IReqMethod;
+  inputParser!: InputParser<IRobotTaskRuntimeContext>;
   // run robot task
   abstract run(robotTask: IRobotTask): Promise<void>;
   // validate the input of action, use json schema

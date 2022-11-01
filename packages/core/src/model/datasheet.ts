@@ -948,7 +948,7 @@ export class DatasheetActions {
     if (!oldAlarm) {
       const fieldExtraMap = snapshot.recordMap[recordId]?.recordMeta?.fieldExtraMap;
       // compensate snapshot fieldExtraMap default data
-      let defaultAction;
+      let defaultAction: IObjectInsertAction | undefined;
       // without fieldExtraMap
       if (!fieldExtraMap) {
         defaultAction = {
@@ -1494,7 +1494,7 @@ export class DatasheetActions {
   }
 
   static deleteWidgetPanel2Action(
-    state: IReduxState,
+    _state: IReduxState,
     panelId: string,
     widgetPanels: IWidgetPanel[],
     resourceType: ResourceType.Mirror | ResourceType.Datasheet
@@ -1588,7 +1588,7 @@ export class DatasheetActions {
   }
 
   static modifyPanelName2Acton(
-    state: IReduxState,
+    _state: IReduxState,
     newPanel: IWidgetPanel,
     widgetPanels: IWidgetPanel[],
     resourceType: ResourceType.Mirror | ResourceType.Datasheet
@@ -1626,7 +1626,10 @@ export class DatasheetActions {
     ];
   }
 
-  static addWidgetToPanel2Action(state: IReduxState, { installationIndex, panelIndex, widgetId }): IJOTAction[] | null {
+  static addWidgetToPanel2Action(
+    _state: IReduxState,
+    { installationIndex, panelIndex, widgetId }: { installationIndex: number, panelIndex: number, widgetId: string }
+  ): IJOTAction[] | null {
 
     const newWidget = {
       id: widgetId,
@@ -1643,7 +1646,10 @@ export class DatasheetActions {
     ];
   }
 
-  static addWidgetToPanelWithMirror2Action(state: IReduxState, { installationIndex, panelIndex, widgetId }): IJOTAction[] | null {
+  static addWidgetToPanelWithMirror2Action(
+    _state: IReduxState,
+    { installationIndex, panelIndex, widgetId }: { installationIndex: number, panelIndex: number, widgetId: string }
+  ): IJOTAction[] | null {
 
     const newWidget = {
       id: widgetId,
@@ -1661,7 +1667,7 @@ export class DatasheetActions {
   }
 
   static deleteWidget2Action(
-    state: IReduxState,
+    _state: IReduxState,
     options: {
       widgetPanelIndex: number,
       widget: IWidgetInPanel,
@@ -1677,7 +1683,7 @@ export class DatasheetActions {
   }
 
   static deleteMirrorWidget2Action(
-    state: IReduxState,
+    _state: IReduxState,
     options: {
       widgetPanelIndex: number,
       widget: IWidgetInPanel,
@@ -1692,7 +1698,10 @@ export class DatasheetActions {
     }];
   }
 
-  static changeWidgetHeight2Action(state: IReduxState, { widgetPanelIndex, widgetIndex, widgetHeight, datasheetId }): IJOTAction[] | null {
+  static changeWidgetHeight2Action(
+    state: IReduxState,
+    { widgetPanelIndex, widgetIndex, widgetHeight, datasheetId }: { widgetPanelIndex: number, widgetIndex: number, widgetHeight: number, datasheetId: string }
+  ): IJOTAction[] | null {
     const activeWidgetPanel = getResourceActiveWidgetPanel(state, datasheetId, ResourceType.Datasheet)!;
     const widget = activeWidgetPanel.widgets[widgetIndex];
     return [
@@ -1706,7 +1715,10 @@ export class DatasheetActions {
 
   }
 
-  static moveWidget2Action(state: IReduxState, { widgetPanelIndex, layout, resourceType, resourceId }): IJOTAction[] | null {
+  static moveWidget2Action(
+    state: IReduxState,
+    { widgetPanelIndex, layout, resourceType, resourceId }: { widgetPanelIndex: number, layout: any[], resourceType: ResourceType, resourceId: string }
+  ): IJOTAction[] | null {
     const widgetPanel = getResourceWidgetPanels(state, resourceId, resourceType);
     const oldLayout = widgetPanel?.[widgetPanelIndex]?.widgets;
     if (!oldLayout || layout.length !== oldLayout.length) {
@@ -1715,7 +1727,7 @@ export class DatasheetActions {
 
     const actions: IJOTAction[] = [];
 
-    const getPath = (widgetPanelIndex, index, key) => {
+    const getPath = (widgetPanelIndex: number, index: number, key: string) => {
       const basePath = ['widgetPanels', widgetPanelIndex, 'widgets', index, key];
       return resourceType === ResourceType.Mirror ? basePath : ['meta', ...basePath];
     };

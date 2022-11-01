@@ -27,7 +27,7 @@ const multiSelectField: ISelectField = {
   }
 };
 
-export const selectCommonTestSuit = (valid) => {
+export const selectCommonTestSuit = (valid: any) => {
 
   commonTestSuit(valid);
 

@@ -1,6 +1,6 @@
 import { AnyAction, combineReducers } from 'redux';
 import { WIDGET_JOT_ACTION, WIDGET_UPDATE_REVISION } from 'store/action_constants';
-import { IUnMountWidget, IWidget } from 'store/interface';
+import { IJOTActionPayload, IUnMountWidget, IWidget } from 'store/interface';
 import { RECEIVE_INSTALLATIONS_WIDGET, RESET_WIDGET } from '../../../action_constants';
 import { JOTApply } from '../index';
 import produce from 'immer';
@@ -24,7 +24,7 @@ export const widgetMap = (state = {}, action: IUnMountWidget | AnyAction) => {
   };
 };
 
-export const widget = (state: IWidget, action) => {
+export const widget = (state: IWidget, action: AnyAction) => {
   if (action.type === RECEIVE_INSTALLATIONS_WIDGET) {
     return action.payload;
   }
@@ -34,7 +34,7 @@ export const widget = (state: IWidget, action) => {
   switch (action.type) {
     case WIDGET_JOT_ACTION:
       return produce(state, draft => {
-        JOTApply(draft, action);
+        JOTApply(draft, action as IJOTActionPayload);
         return draft;
       });
     case WIDGET_UPDATE_REVISION:
@@ -50,13 +50,13 @@ export const widget = (state: IWidget, action) => {
 
 // TODO： finish more here
 export const widgetPack = combineReducers({
-  loading: (state = false, action) => {
+  loading: (state = false, _action) => {
     return state;
   },
-  syncing: (state = false, action) => {
+  syncing: (state = false, _action) => {
     return state;
   },
-  connected: (state = false, action) => {
+  connected: (state = false, _action) => {
     return state;
   },
   widget,

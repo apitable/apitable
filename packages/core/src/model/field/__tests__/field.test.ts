@@ -3,7 +3,7 @@ import { mockState } from '../../../formula_parser/__tests__/mock_state';
 import { FieldType } from '../../../types';
 import { Field } from '../index';
 
-const create500ThousandArray = itemType => {
+const create500ThousandArray = (itemType: string) => {
   const arr: string[] = [];
   for (let i = 0; i < 10000; i++) {
     switch (itemType) {
@@ -11,7 +11,7 @@ const create500ThousandArray = itemType => {
         arr.push(Random.csentence(10, 30));
         break;
       case 'number':
-        arr.push(Random.natural());
+        arr.push(String(Random.natural()));
         break;
       case 'date':
         arr.push(Random.datetime());

@@ -68,7 +68,7 @@ const statFilled = (cellValues: ICellValue[]) => {
   return cellValues.filter(cellValue => cellValue).length;
 };
 
-const statUnique = (cellValues: ICellValue[], field: IField) => {
+const statUnique = (cellValues: ICellValue[], _field: IField) => {
   const _cellValue = cellValues.map(item => {
     return JSON.stringify(item);
   });

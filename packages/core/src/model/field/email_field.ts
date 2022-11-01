@@ -4,11 +4,11 @@ import { DatasheetActions } from '../datasheet';
 import { TextBaseField } from './text_base_field';
 
 export class EmailField extends TextBaseField {
-  constructor(public field: IEmailField, public state: IReduxState) {
+  constructor(public override field: IEmailField, public override state: IReduxState) {
     super(field, state);
   }
 
-  get apiMetaProperty() {
+  override get apiMetaProperty() {
     return null;
   }
 

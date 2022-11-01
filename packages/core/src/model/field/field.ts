@@ -305,7 +305,7 @@ export abstract class Field {
 
   // used for copy-paste/type conversion before getting a new record, according to the
   // Data fills the properties in Field, such as options in single/multi
-  enrichProperty(stdVals: IStandardValue[]): IFieldProperty {
+  enrichProperty(_stdVals: IStandardValue[]): IFieldProperty {
     return this.field.property;
   }
 
@@ -383,7 +383,7 @@ export abstract class Field {
    * Check update field property
    * @returns {Joi.ValidationResult}
    */
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
+  validateUpdateOpenProperty(_updateProperty: IUpdateOpenFieldProperty, _effectOption?: IEffectOption): Joi.ValidationResult {
     return joiErrorResult(`${getFieldTypeString(this.field.type)} not support set property`);
   }
 

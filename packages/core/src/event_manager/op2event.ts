@@ -55,7 +55,7 @@ export class OP2Event implements IOP2Event {
   makeVirtualEvents(events: IEventInstance<IRealAtomEvent>[], state: IReduxState): IEventInstance<IVirtualAtomEvent>[] {
     // For example: an update of field A causes an update of field B
     const virtualEvents: IEventInstance<IVirtualAtomEvent>[] = [];
-    Object.keys(this.eventNameClsInstanceMap).forEach((eventName: OPEventNameEnums) => {
+    (Object.keys(this.eventNameClsInstanceMap) as OPEventNameEnums[]).forEach((eventName: OPEventNameEnums) => {
       const eventClsInstance = this.eventNameClsInstanceMap[eventName];
       const _events = events.filter(event => event.eventName === eventName);
       // The field update event only has the processing logic of the calculation event
@@ -95,7 +95,7 @@ export class OP2Event implements IOP2Event {
     const events: IEventInstance<IRealAtomEvent>[] = [];
     op.actions.forEach(action => {
       const opContext: IOPBaseContext = { op, action, resourceId, resourceType };
-      Object.keys(this.eventNameClsInstanceMap).forEach((eventName: OPEventNameEnums) => {
+      (Object.keys(this.eventNameClsInstanceMap) as OPEventNameEnums[]).forEach((eventName: OPEventNameEnums) => {
         const eventClsInstance = this.eventNameClsInstanceMap[eventName];
         if (eventClsInstance.scope !== resourceType || eventClsInstance.atomType !== EventAtomTypeEnums.ATOM) {
           return;

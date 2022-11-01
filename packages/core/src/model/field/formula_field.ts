@@ -22,7 +22,7 @@ import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, joiErrorResult } from './validate_schema';
 
 export class FormulaField extends ArrayValueField {
-  constructor(public field: IFormulaField, public state: IReduxState) {
+  constructor(public override field: IFormulaField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -95,7 +95,7 @@ export class FormulaField extends ArrayValueField {
     return parse(this.field.property.expression, { field: this.field, fieldMap, state: this.state });
   }
 
-  get hasError(): boolean {
+  override get hasError(): boolean {
     const { datasheetId, expression } = this.field.property;
     const cacheResult = ExpCache.get(datasheetId, this.field.id, expression);
     if (isClient()) {
@@ -108,7 +108,7 @@ export class FormulaField extends ArrayValueField {
     return Boolean(cacheResult && 'error' in cacheResult);
   }
 
-  get statTypeList() {
+  override get statTypeList() {
     switch (this.valueType) {
       case BasicValueType.Number:
         return NumberBaseField._statTypeList;
@@ -132,7 +132,7 @@ export class FormulaField extends ArrayValueField {
     return formulaExpr.ast.valueType;
   }
 
-  get innerBasicValueType(): BasicValueType {
+  override get innerBasicValueType(): BasicValueType {
     const formulaExpr = this.getParseResult();
     if ('error' in formulaExpr) {
       return BasicValueType.String;
@@ -141,7 +141,7 @@ export class FormulaField extends ArrayValueField {
     return formulaExpr.ast.innerValueType || BasicValueType.String;
   }
 
-  showFOperatorDesc(type: FOperator) {
+  override showFOperatorDesc(type: FOperator) {
     switch (this.valueType) {
       case BasicValueType.Number:
         return NumberBaseField.FOperatorDescMap[type];
@@ -156,7 +156,7 @@ export class FormulaField extends ArrayValueField {
     }
   }
 
-  get acceptFilterOperators(): FOperator[] {
+  override get acceptFilterOperators(): FOperator[] {
     switch (this.valueType) {
       case BasicValueType.Number:
         return NumberBaseField._acceptFilterOperators;
@@ -171,7 +171,7 @@ export class FormulaField extends ArrayValueField {
     }
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
@@ -187,7 +187,7 @@ export class FormulaField extends ArrayValueField {
     };
   }
 
-  compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean) {
+  override compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean) {
     // Compatible with sorting formula error
     const isCv1Error = cv1 instanceof FormulaBaseError;
     const isCv2Error = cv2 instanceof FormulaBaseError;
@@ -213,7 +213,7 @@ export class FormulaField extends ArrayValueField {
     }
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
@@ -262,15 +262,15 @@ export class FormulaField extends ArrayValueField {
     });
   }
 
-  stdValueToCellValue(stdField: IStandardValue): null {
+  stdValueToCellValue(_stdField: IStandardValue): null {
     return null;
   }
 
-  validate(value: any): value is string | number {
+  validate(_value: any): _value is string | number {
     return true;
   }
 
-  defaultValueForCondition(condition: IFilterCondition<FieldType.Text>): null {
+  defaultValueForCondition(_condition: IFilterCondition<FieldType.Text>): null {
     return null;
   }
 
@@ -295,7 +295,7 @@ export class FormulaField extends ArrayValueField {
     }
   }
 
-  isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: Exclude<any, null>) {
+  override isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: Exclude<any, null>) {
     switch (this.basicValueType) {
       case BasicValueType.Number:
         return NumberBaseField._isMeetFilter(operator, cellValue as number | null, conditionValue);
@@ -346,7 +346,7 @@ export class FormulaField extends ArrayValueField {
     }
   }
 
-  statType2text(type: StatType): string {
+  override statType2text(type: StatType): string {
     switch (this.valueType) {
       case BasicValueType.DateTime:
         return DateTimeBaseField._statType2text(type);
@@ -377,7 +377,7 @@ export class FormulaField extends ArrayValueField {
     return null;
   }
 
-  get openFieldProperty(): IOpenFormulaFieldProperty {
+  override get openFieldProperty(): IOpenFormulaFieldProperty {
     const res: IOpenFormulaFieldProperty = {
       expression: this.field.property.expression,
       valueType: this.basicValueType,
@@ -394,11 +394,11 @@ export class FormulaField extends ArrayValueField {
     format: computedFormattingStr(),
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenFormulaFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenFormulaFieldProperty) {
     return FormulaField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenFormulaFieldProperty): IFormulaProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenFormulaFieldProperty): IFormulaProperty {
     const { expression, format } = openFieldProperty;
     const formatting: IComputedFieldFormattingProperty | undefined = format ? computedFormattingToFormat(format) : undefined;
     return {

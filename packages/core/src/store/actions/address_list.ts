@@ -37,9 +37,9 @@ export function updateSingleMemberInMemberList(memberInfo: Partial<IMemberInfoIn
 /**
  * Contacts - get Team(Departments) Lists
  */
-export function getTeamListData(user: IUserInfo) {
+export function getTeamListData(_user: IUserInfo) {
   let teamList: ITeamList[] = [];
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getTeamList().then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -67,7 +67,7 @@ export function getTeamListData(user: IUserInfo) {
  * Contacts - get specified Team(Departments) members list
  */
 export function getMemberListData(teamId?: string) {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getMemberList(teamId).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -81,7 +81,7 @@ export function getMemberListData(teamId?: string) {
  * Contacts - get specified member detail info
  */
 export function getMemberInfoData(memberId: string) {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getMemberInfo({ memberId }).then(res => {
       const { success, data } = res.data;
       if (success) {

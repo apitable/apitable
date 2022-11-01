@@ -152,7 +152,7 @@ export const addNodeToMap = (data: (Omit<INodesMapItem, 'children'> & { children
  * @param node the node info of new 
  */
 export const addNode = (node: INodesMapItem) => {
-  return dispatch => {
+  return (dispatch: any) => {
     dispatch(batchActions([addNodeToMap([node]), setEditNodeId(node.nodeId)], 'ADD_NODE'));
   };
 };
@@ -202,7 +202,7 @@ export function setNodeErrorType(nodeId: string, errType: NodeErrorType | null) 
  * @param nodeId Node ID
  */
 export function getChildNode(nodeId: string): any {
-  return async(dispatch: Dispatch, getState) => {
+  return async(dispatch: Dispatch, getState: () => IReduxState) => {
     const state: IReduxState = getState();
     const { loadedKeys } = state.catalogTree;
     dispatch(setTreeLoading(true));
@@ -251,7 +251,7 @@ const getChildNodeList = (nodeId: string) => {
       return data;
     }
     return NodeErrorType.ChildNodes;
-  }).catch(e => NodeErrorType.ChildNodes);
+  }).catch(() => NodeErrorType.ChildNodes);
 };
 
 /**
@@ -392,7 +392,7 @@ export const deleteNode = (optNode: IOptNode) => {
     setDelNodeId(''),
     setDelNodeId('', ConfigConstant.Modules.FAVORITE),
   ];
-  return dispatch => {
+  return (dispatch: any) => {
     dispatch(batchActions(actions));
   };
 };
@@ -403,8 +403,8 @@ export const deleteNode = (optNode: IOptNode) => {
  * @param nodeId Node ID 
  */
 export const collectionNodeAndExpand = (nodeId: string) => {
-  return (dispatch: Dispatch, getState) => {
-    const state: IReduxState = getState();
+  return (dispatch: Dispatch, getState: () => IReduxState) => {
+    const state = getState();
     const { rootId, expandedKeys, treeNodesMap, favoriteExpandedKeys, favoriteTreeNodeIds } = state.catalogTree;
     const newExpandKeys = [...(new Set([...expandedKeys, ...getExpandNodeIds(treeNodesMap, nodeId, rootId)]))];
     const newFavoriteExpandKeys = [...(new Set([...favoriteExpandedKeys, ...getExpandNodeIds(treeNodesMap, nodeId, rootId, favoriteTreeNodeIds)]))];
@@ -448,8 +448,8 @@ export const addNodeToFavoriteTree = (nodeIds: string[], parentId = '') => {
  * @returns 
  */
 export const removeFavorite = (nodeId: string) => {
-  return (dispatch: Dispatch, getState) => {
-    const state: IReduxState = getState();
+  return (dispatch: Dispatch, getState: () => IReduxState) => {
+    const state = getState();
     const type = state.catalogTree.treeNodesMap[nodeId].type;
     dispatch(updateNodeInfo(nodeId, type, { nodeFavorite: false }));
     dispatch({

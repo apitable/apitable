@@ -14,7 +14,7 @@ import { fieldPermissionMap } from 'store/reducers/resource/datasheet/field_perm
 import { JOTApply } from '../index';
 import { client } from './client';
 
-export const filterDatasheetOp = (state, action: IJOTAction[]) => {
+export const filterDatasheetOp = (state: IDatasheetState, action: IJOTAction[]) => {
   return action.filter(action => {
     // OPs that filter comments
     if (action.p[2] === 'comments' && action.p[0] === 'recordMap' && ('li' in action || 'ld' in action)) {
@@ -147,7 +147,7 @@ export const datasheetMap = (
   };
 };
 
-const computedInfo = (state: IComputedInfo = {}, action) => {
+const computedInfo = (state: IComputedInfo = {}, action: AnyAction) => {
 
   if (action.type === actions.SET_DATASHEET_COMPUTED) {
     return action.payload;
@@ -161,7 +161,7 @@ const computedInfo = (state: IComputedInfo = {}, action) => {
   return state;
 };
 
-const computedStatus = (state: IComputedStatus = {}, action) => {
+const computedStatus = (state: IComputedStatus = {}, action: AnyAction) => {
 
   if (action.type === actions.SET_DATASHEET_COMPUTED_STATUS) {
     return { ...state, ...action.payload };
@@ -203,7 +203,7 @@ export const datasheetPack = combineReducers<IDatasheetPack>({
     return state;
   },
   datasheet,
-  client,
+  client: client as any,
   fieldPermissionMap,
   computedInfo,
   computedStatus,

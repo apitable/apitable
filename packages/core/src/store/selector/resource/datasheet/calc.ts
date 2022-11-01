@@ -25,7 +25,7 @@ import {
 import {
   AlarmUsersType, IActiveUpdateRowInfo, ICalendarViewColumn, ICalendarViewProperty, IDatasheetState, IFieldMap, IFieldPermissionMap, IGanttViewColumn,
   IGanttViewProperty, IGridViewColumn, IGridViewProperty, ILinearRow, IMirror, IOrgChartViewColumn, IOrgChartViewProperty, IPermissions, IRecord,
-  IRecordAlarm, IRecordAlarmClient, IRecordSnapshot, IReduxState, ISearchCellResult, ISearchRecordResult, ISearchResult, ISnapshot,
+  IRecordAlarm, IRecordAlarmClient, IRecordMap, IRecordSnapshot, IReduxState, ISearchCellResult, ISearchRecordResult, ISearchResult, ISnapshot,
   IStandardValueTable, IViewColumn, IViewProperty, IViewRow, Role,
 } from 'store/interface';
 import { getGroupBreakpoint } from 'store/selector';
@@ -68,7 +68,7 @@ export const createDeepEqualSelector = createSelectorCreator(
   isEqual,
 );
 
-const defaultKeySelector = (state, datasheetId) => datasheetId || getActiveDatasheetId(state);
+const defaultKeySelector = (state: IReduxState, datasheetId: string) => datasheetId || getActiveDatasheetId(state);
 
 const workerCompute = () => (global as any).useWorkerCompute;
 
@@ -132,7 +132,7 @@ export const getViewIndex = (snapshot: ISnapshot, viewId: string) => {
   return snapshot.meta.views.findIndex(view => view.id === viewId);
 };
 
-const filterColumnsByPermission = (columns, fieldPermissionMap) => {
+const filterColumnsByPermission = (columns: IViewColumn[], fieldPermissionMap: IFieldPermissionMap | undefined) => {
   return columns.filter((column) => {
     // TODO: column permission delete this logic (2nd phase)
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
@@ -300,7 +300,7 @@ export const getCellValue = (
   return res.cellValue;
 };
 
-export const getTemporaryView = (snapshot: ISnapshot, viewId: string, datasheetId?: string, mirror?: IMirror | null) => {
+export const getTemporaryView = (snapshot: ISnapshot, viewId: string, _datasheetId?: string, mirror?: IMirror | null) => {
   const temporaryView = mirror?.temporaryView;
 
   if (!snapshot) {
@@ -462,7 +462,7 @@ export const getFilterInfoExceptInvalid = (state: IReduxState, filterInfo?: IFil
   };
 };
 
-const getFilterRowsBase = (state, { filterInfo, rows, snapshot, recordMap }) => {
+const getFilterRowsBase = (state: IReduxState, { filterInfo, rows, snapshot, recordMap }: { filterInfo?: IFilterInfo, rows: IViewRow[], snapshot: ISnapshot, recordMap: IRecordMap }) => {
   if (!filterInfo) {
     return rows;
   }
@@ -926,7 +926,7 @@ export const getStringifyCellValue = (
   snapshot: IRecordSnapshot,
   recordId: string,
   fieldId: string,
-  withFilter?: boolean,
+  _withFilter?: boolean,
   withError?: boolean,
 ) => {
   const dsId = snapshot.datasheetId || state.pageParams.datasheetId;
@@ -1731,7 +1731,7 @@ export const isCellInSelection = (state: IReduxState, cell: ICell): boolean => {
   });
 };
 
-export const getCellIndex = (state: IReduxState, cell: ICell) => {
+export const getCellIndex = (state: IReduxState, cell: ICell): { recordIndex: number, fieldIndex: number } | null => {
   const visibleRowIndexMap = getVisibleRowsIndexMap(state);
   const visibleColumnIndexMap = getVisibleColumnsMap(state);
   if (isCellVisible(state, cell)) {
@@ -1786,7 +1786,7 @@ export const getGroupLevel = createSelector([getActiveViewGroupInfo], (groupInfo
   return groupInfo.length;
 });
 
-function getLinearRowsBase(state: IReduxState, visibleRows, groupInfo, groupingCollapseIds?) {
+function getLinearRowsBase(state: IReduxState, visibleRows: IViewRow[], groupInfo: IGroupInfo, groupingCollapseIds?: string[]) {
   const snapshot = getSnapshot(state)!;
   const res: ILinearRow[] = [];
   // init groupBreakpoint
@@ -1901,7 +1901,7 @@ export const getLinearRowsIndexMap = createSelector([getLinearRows], linearRows 
   return new Map(linearRows.map((row, index) => [`${row.type}_${row.recordId}`, index]));
 });
 
-export const getCellUIIndex = (state: IReduxState, cell: ICell) => {
+export const getCellUIIndex = (state: IReduxState, cell: ICell): { rowIndex: number, columnIndex: number } | null => {
   const visibleColumnIndexMap = getVisibleColumnsMap(state);
   const linearRowIndexMap = getLinearRowsIndexMap(state);
   if (isCellVisible(state, cell)) {
@@ -1955,7 +1955,7 @@ export const getCurrentGalleryViewStyle = createSelector([getCurrentView], (view
 });
 
 const getIntegratePermissionWithFieldBase = (
-  state: IReduxState,
+  _state: IReduxState,
   { permission, fieldId, fieldPermissionMap }: { permission: IPermissions; fieldId?: string; fieldPermissionMap?: IFieldPermissionMap },
 ) => {
   const fieldPermission = fieldPermissionMap && fieldId ? fieldPermissionMap[fieldId] : undefined;
@@ -2203,7 +2203,7 @@ export const getGanttStyle = (state: IReduxState) => {
 export const getGanttVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | null | void, IGanttViewColumn[]>(
   [getCurrentView],
   (view?: IGanttViewProperty) => {
-    return view ? view.columns.filter((item, i) => !item.hiddenInGantt) : [];
+    return view ? view.columns.filter((item, _i) => !item.hiddenInGantt) : [];
   },
 )(defaultKeySelector);
 

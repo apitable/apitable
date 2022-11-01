@@ -36,7 +36,7 @@ export class IO {
       }
       let retryTimes = 3;
 
-      const emit = (interval) => {
+      const emit = (interval: NodeJS.Timeout) => {
         this.socket.emit(SyncRequestTypes.WATCH_ROOM, { ...params, roomId, shareId }, (msg: T) => {
           interval && clearInterval(interval as any);
 
@@ -75,7 +75,7 @@ export class IO {
     }
 
     // console.log('Send data:', params);
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       this.socket.emit(params.type, params, (responseData: T) => {
         resolve(responseData);
       });
@@ -84,8 +84,8 @@ export class IO {
 
   unWatch() {
     this.abort = true;
-    return new Promise((resolve, reject) => {
-      this.socket.emit(SyncRequestTypes.LEAVE_ROOM, { roomId: this.roomId }, msg => {
+    return new Promise((resolve) => {
+      this.socket.emit(SyncRequestTypes.LEAVE_ROOM, { roomId: this.roomId }, (msg: any) => {
         console.log('unwatch: ', this.roomId, 'msg:', msg);
         this.offAll();
         resolve(msg);

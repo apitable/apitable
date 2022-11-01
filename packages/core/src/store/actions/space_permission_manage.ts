@@ -28,7 +28,7 @@ export function getSubAdminList(pageNo: number) {
     order: ConfigConstant.ORDER_CREATE_TIME,
     sort: ConfigConstant.SORT_ASC,
   };
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getlistRole(JSON.stringify({ ...pageObjectParams, pageNo })).then(res => {
       const { success, data } = res.data;
       success && dispatch(updateSubAdminListData(data));
@@ -37,7 +37,7 @@ export function getSubAdminList(pageNo: number) {
 }
 
 export function getMainAdminInfo() {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getMainAdminInfo().then(res => {
       const { success, data } = res.data;
       success && dispatch(updateMainAdminInfo(data));
@@ -46,7 +46,7 @@ export function getMainAdminInfo() {
 }
 
 export function spaceResource() {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getSpaceResource().then(res => {
       const { success, data } = res.data;
       success && dispatch(updateSpaceResource(data));

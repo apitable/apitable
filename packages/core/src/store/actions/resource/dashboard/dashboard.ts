@@ -11,7 +11,7 @@ import {
 } from 'store/action_constants';
 
 export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any) => void, overWrite = false) => {
-  return (dispatch, getState: () => IReduxState) => {
+  return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
     const { shareId, templateId } = state.pageParams;
     const dashboardPack = getDashboardPack(state, dashboardId);
@@ -41,15 +41,15 @@ export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any
       return;
     }
     dispatch(setDashboardLoading(true, dashboardId));
-    return fetchMethod().then(response => {
+    return fetchMethod().then((response: any) => {
       return Promise.resolve({ dispatch, getState, response, dashboardId });
-    }).catch(err => {
+    }).catch((err: any) => {
       if (state.catalogTree.treeNodesMap[dashboardId]) {
         dispatch(deleteNode({ nodeId: dashboardId, parentId: state.catalogTree.treeNodesMap[dashboardId].parentId }));
       }
       dispatch(setDashboardErrorCode(dashboardId, StatusCode.COMMON_ERR));
       throw err;
-    }).then(props => {
+    }).then((props: any) => {
       fetchSuccess(props);
       props.response.data.success && successFn?.(props);
     });
@@ -64,7 +64,7 @@ export const setDashboardErrorCode = (dashboardId: string, code: number | null) 
   };
 };
 
-export const fetchSuccess = ({ dispatch, getState, response, dashboardId }) => {
+export const fetchSuccess = ({ dispatch, response, dashboardId }: { dispatch: any, getState: () => IReduxState, response: any, dashboardId: string }) => {
   const { data, success, code } = response.data;
   if (success) {
     const _batchActions: any[] = [

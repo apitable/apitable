@@ -137,15 +137,6 @@ export const getUserMe = (locateIdMap: ILocateIdMap = {}) => {
   };
 };
 
-export const formatOpenedSheet = (openedSheets, spaceId) => {
-  return openedSheets.map(item => {
-    item.type = ConfigConstant.NodeType.DATASHEET;
-    item.spaceId = spaceId;
-    item.children = [];
-    return item;
-  });
-};
-
 /**
  * set my user info
  * @param user 
@@ -252,8 +243,8 @@ export const setHttpErrInfo = (info: IHttpErr | null) => {
 /**
  * update password
  */
-export const updatePwd = password => {
-  return dispatch => {
+export const updatePwd = (password: string) => {
+  return (dispatch: any) => {
     Api.updatePwd(password).then(res => {
       const { success, code, message: msg } = res.data;
       if (success) {
@@ -272,7 +263,7 @@ export const updatePwd = password => {
  * unbind account
  */
 export const unBindAccount = (type: BindAccount) => {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.unBindAccount(type).then(res => {
       const { success, code, message: msg } = res.data;
       if (success) {

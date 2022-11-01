@@ -53,7 +53,7 @@ export class CheckboxField extends Field {
     };
   }
 
-  get statTypeList(): StatType[] {
+  override get statTypeList(): StatType[] {
     return CheckboxField._statTypeList;
   }
 
@@ -76,7 +76,7 @@ export class CheckboxField extends Field {
     }
   }
 
-  isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: IFilterCondition['value']) {
+  override isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: IFilterCondition['value']) {
     return CheckboxField._isMeetFilter(operator, cellValue, conditionValue);
   }
 
@@ -143,15 +143,15 @@ export class CheckboxField extends Field {
     return cellValue ? '1' : '0';
   }
 
-  defaultValueForCondition(condition: IFilterCondition<FieldType.Checkbox>): boolean | null {
+  defaultValueForCondition(_condition: IFilterCondition<FieldType.Checkbox>): boolean | null {
     return true;
   }
 
-  static _compare(cellValue1: ICellValue, cellValue2: ICellValue, orderInCellValueSensitive?: boolean): number {
+  static _compare(cellValue1: ICellValue, cellValue2: ICellValue, _orderInCellValueSensitive?: boolean): number {
     return Boolean(cellValue1) === Boolean(cellValue2) ? 0 : (Boolean(cellValue1) > Boolean(cellValue2) ? 1 : -1);
   }
 
-  compare(cellValue1: ICellValue, cellValue2: ICellValue, orderInCellValueSensitive?: boolean): number {
+  override compare(cellValue1: ICellValue, cellValue2: ICellValue, orderInCellValueSensitive?: boolean): number {
     return CheckboxField._compare(cellValue1, cellValue2, orderInCellValueSensitive);
   }
 
@@ -179,13 +179,13 @@ export class CheckboxField extends Field {
     return openWriteValue;
   }
 
-  get openFieldProperty(): IOpenCheckboxFieldProperty {
+  override get openFieldProperty(): IOpenCheckboxFieldProperty {
     return {
       icon: getEmojiIconNativeString(this.field.property.icon),
     };
   }
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenCheckboxFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenCheckboxFieldProperty) {
     const result = CheckboxField.propertySchema.validate(updateProperty);
     if (!result.error && !EmojisConfig[updateProperty.icon]) {
       return joiErrorResult('icon is not Emoji slug');

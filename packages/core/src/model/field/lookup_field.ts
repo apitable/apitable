@@ -57,7 +57,7 @@ export const NOT_FORMAT_FUNC_SET = new Set([
 ]);
 
 export class LookUpField extends ArrayValueField {
-  constructor(public field: ILookUpField, public state: IReduxState) {
+  constructor(public override field: ILookUpField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -171,7 +171,7 @@ export class LookUpField extends ArrayValueField {
     };
   }
 
-  get canGroup(): boolean {
+  override get canGroup(): boolean {
     if (this.hasError) {
       return false;
     }
@@ -182,7 +182,7 @@ export class LookUpField extends ArrayValueField {
     return Field.bindContext(lookUpEntityField, this.state).canGroup;
   }
 
-  get hasError(): boolean {
+  override get hasError(): boolean {
     const { datasheetId } = this.field.property;
     if (isClient()) {
       const computeRefManager = getComputeRefManager(this.state);
@@ -197,13 +197,13 @@ export class LookUpField extends ArrayValueField {
     return isFilterError;
   }
 
-  get warnText(): string {
+  override get warnText(): string {
     const { typeSwitch: isFilterTypeSwitch } = this.checkFilterInfo();
     return isFilterTypeSwitch ? t(Strings.lookup_filter_waring) : '';
   }
 
   // statistic options
-  get statTypeList() {
+  override get statTypeList() {
     const expression = this.getExpression();
     const rollUpType = this.field.property.rollUpType;
     if (expression) {
@@ -244,7 +244,7 @@ export class LookUpField extends ArrayValueField {
   }
 
   // When the underlying type is Array, get the underlying type of the elements in the Array
-  get innerBasicValueType(): BasicValueType {
+  override get innerBasicValueType(): BasicValueType {
     const entityField = this.getLookUpEntityField();
     if (!entityField) {
       return BasicValueType.String;
@@ -264,7 +264,7 @@ export class LookUpField extends ArrayValueField {
     };
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
@@ -272,7 +272,7 @@ export class LookUpField extends ArrayValueField {
     return this.field.property.rollUpType || RollUpFuncType.VALUES;
   }
 
-  showFOperatorDesc(type: FOperator) {
+  override showFOperatorDesc(type: FOperator) {
     const expression = this.getExpression();
     if (expression) {
       switch (this.valueType) {
@@ -294,7 +294,7 @@ export class LookUpField extends ArrayValueField {
   }
 
   // filter options
-  get acceptFilterOperators() {
+  override get acceptFilterOperators() {
     const expression = this.getExpression();
     if (expression) {
       switch (this.valueType) {
@@ -566,7 +566,7 @@ export class LookUpField extends ArrayValueField {
     }) : [];
   }
 
-  isEmptyOrNot(operator: FOperator.IsEmpty | FOperator.IsNotEmpty, cellValue: ICellValue) {
+  override isEmptyOrNot(operator: FOperator.IsEmpty | FOperator.IsNotEmpty, cellValue: ICellValue) {
     cellValue = handleNullArray(cellValue);
     switch (operator) {
       /**
@@ -583,7 +583,7 @@ export class LookUpField extends ArrayValueField {
   }
 
   // lookup does not allow editing cells
-  recordEditable(): boolean {
+  override recordEditable(): boolean {
     return false;
   }
 
@@ -604,7 +604,7 @@ export class LookUpField extends ArrayValueField {
    * 
    * @returns {number} negative => less than, 0 => equal, positive => greater than
    */
-  compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean): number {
+  override compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean): number {
     const expression = this.getExpression();
     cv1 = handleNullArray(cv1);
     cv2 = handleNullArray(cv2);
@@ -651,7 +651,7 @@ export class LookUpField extends ArrayValueField {
     return res;
   }
 
-  isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: IFilterCondition['value']) {
+  override isMeetFilter(operator: FOperator, cellValue: ICellValue, conditionValue: IFilterCondition['value']) {
     cellValue = handleNullArray(cellValue);
     const expr = this.getExpression();
     if (expr) {
@@ -706,7 +706,7 @@ export class LookUpField extends ArrayValueField {
     if (!entityField) {
       return false;
     }
-    const judge = (cv) => {
+    const judge = (cv: ICellValue) => {
       return Field.bindContext(entityField, this.state).isMeetFilter(operator, cv, conditionValue);
     };
     // The cv of the lookup is already the value after flat, and the original field value is an array, using common comparison logic.
@@ -734,7 +734,7 @@ export class LookUpField extends ArrayValueField {
           .every(cv => judge(cv)) : judge(cellValue);
       default:
         return Array.isArray(cellValue) ?
-          cellValue.some(cv => judge(cv)) : judge(cellValue);
+          (cellValue as ILookUpValue).some(cv => judge(cv)) : judge(cellValue);
     }
   }
 
@@ -877,7 +877,7 @@ export class LookUpField extends ArrayValueField {
    * For multiple selections, the collaborator field will return true.
    * NOTE: Fields that are guaranteed to return true, value is an array.
    */
-  isMultiValueField(): boolean {
+  override isMultiValueField(): boolean {
     return true;
   }
 
@@ -895,14 +895,14 @@ export class LookUpField extends ArrayValueField {
   /**
    * Returns the default value of the field attribute configuration when adding a record
    */
-  defaultValue(): ICellValue {
+  override defaultValue(): ICellValue {
     return null;
   }
 
   /**
    * @description convert the statistical parameters into Chinese
    */
-  statType2text(type: StatType): string {
+  override statType2text(type: StatType): string {
     const expression = this.getExpression();
     if (expression) {
       switch (this.basicValueType) {
@@ -955,7 +955,7 @@ export class LookUpField extends ArrayValueField {
         return targetField.cellValueToApiStandardValue(cellValue);
       }
       const result: ICellValue[] = [];
-      cellValue.forEach(item => {
+      (cellValue as ILookUpValue).forEach(item => {
         const value = targetField.cellValueToApiStandardValue(item);
         if (value != null) {
           result.push(value);
@@ -1031,7 +1031,7 @@ export class LookUpField extends ArrayValueField {
     return null;
   }
 
-  get openFieldProperty(): IOpenMagicLookUpFieldProperty {
+  override get openFieldProperty(): IOpenMagicLookUpFieldProperty {
     const res: IOpenMagicLookUpFieldProperty = {
       relatedLinkFieldId: this.field.property.relatedLinkFieldId,
       targetFieldId: this.field.property.lookUpTargetFieldId,
@@ -1065,11 +1065,11 @@ export class LookUpField extends ArrayValueField {
     format: computedFormattingStr(),
   });
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenMagicLookUpFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenMagicLookUpFieldProperty) {
     return LookUpField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMagicLookUpFieldProperty): ILookUpProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMagicLookUpFieldProperty): ILookUpProperty {
     const { relatedLinkFieldId, targetFieldId: lookUpTargetFieldId, rollupFunction: rollUpType, format } = openFieldProperty;
     const formatting: IComputedFieldFormattingProperty | undefined = format ? computedFormattingToFormat(format) : undefined;
     return {

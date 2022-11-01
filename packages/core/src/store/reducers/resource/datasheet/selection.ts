@@ -41,7 +41,7 @@ function setRecord(state: ISelection | null, { payload }: ISetRecordRange): ISel
  * @param param1 
  * @returns 
  */
-function setFieldRanges(state: ISelection | null, { payload }: ISetFieldRanges): ISelection {
+function setFieldRanges(_state: ISelection | null, { payload }: ISetFieldRanges): ISelection {
   const init = {
     fieldRanges: payload,
   };

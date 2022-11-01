@@ -258,7 +258,7 @@ export class Interpreter {
             value = value && value[0];
           } else {
             // The built-in type of the array is not Number, directly converted to a string
-            value = value?.length && value.filter(v => !isNull(v)).join(', ');
+            value = value?.length && value.filter((v: any) => !isNull(v)).join(', ');
           }
           innerValueType && (valueType = innerValueType);
         }

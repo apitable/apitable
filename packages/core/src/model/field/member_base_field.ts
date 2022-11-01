@@ -31,11 +31,11 @@ export abstract class MemberBaseField extends ArrayValueField {
     return BasicValueType.Array;
   }
 
-  get innerBasicValueType() {
+  override get innerBasicValueType() {
     return BasicValueType.String;
   }
 
-  get acceptFilterOperators(): FOperator[] {
+  override get acceptFilterOperators(): FOperator[] {
     return [
       FOperator.Is,
       FOperator.IsNot,
@@ -61,7 +61,7 @@ export abstract class MemberBaseField extends ArrayValueField {
    * Solve problem 1: Many members have one-to-one correspondence but the order of members is different and they are divided into different groups
    * Solve problem 2: members with the same name but different unitId are assigned to the same group
    */
-  compare(cellValue1: IUnitIds | IUuids | null, cellValue2: IUnitIds | IUuids | null, orderInCellValueSensitive?: boolean): number {
+  override compare(cellValue1: IUnitIds | IUuids | null, cellValue2: IUnitIds | IUuids | null, orderInCellValueSensitive?: boolean): number {
     if (!orderInCellValueSensitive) {
       if (this.eq(cellValue1, cellValue2)) return 0;
       if (cellValue1 == null) return -1;
@@ -81,7 +81,7 @@ export abstract class MemberBaseField extends ArrayValueField {
     return super.compare(cellValue1, cellValue2);
   }
 
-  isMeetFilter(
+  override isMeetFilter(
     operator: FOperator,
     cellValue: IUnitIds | IUuids | null,
     conditionValue: Exclude<IFilterMember, null>,
@@ -139,7 +139,7 @@ export abstract class MemberBaseField extends ArrayValueField {
    * Inherited classes need to implement this method
    * @desc Get uuids/unitIds according to cellValue
    */
-  getUnitIds(cellValue: IUnitIds | IUuids | null): null | string[] {
+  getUnitIds(_cellValue: IUnitIds | IUuids | null): null | string[] {
     return null;
   }
 
@@ -147,7 +147,7 @@ export abstract class MemberBaseField extends ArrayValueField {
    * Inherited classes need to implement this method
     * @desc Get an array of corresponding names according to uuids/unitIds
    */
-  getUnitNames(cellValue: IUnitIds | IUuids): null | string[] {
+  getUnitNames(_cellValue: IUnitIds | IUuids): null | string[] {
     return null;
   }
 
@@ -155,7 +155,7 @@ export abstract class MemberBaseField extends ArrayValueField {
    * Inherited classes need to implement this method
     * @desc Get an array of corresponding unit information according to uuids/unitIds
    */
-  getUnits(cellValue: IUnitIds | IUuids): null | any[] {
+  getUnits(_cellValue: IUnitIds | IUuids): null | any[] {
     return null;
   }
 
@@ -163,7 +163,7 @@ export abstract class MemberBaseField extends ArrayValueField {
    * Inherited classes need to implement this method
     * @desc Get an array of corresponding names according to uuids/unitIds
    */
-  getUnitList(cellValue: IUnitIds | IUuids): null | string[] {
+  getUnitList(_cellValue: IUnitIds | IUuids): null | string[] {
     return null;
   }
 
@@ -183,7 +183,7 @@ export abstract class MemberBaseField extends ArrayValueField {
   /**
    * @desc Get the string concatenated with the corresponding name according to cellValue
    */
-  cellValueToString(cellValue: IUnitIds | IUuids | null, cellToStringOption?: ICellToStringOption): string | null {
+  cellValueToString(cellValue: IUnitIds | IUuids | null, _cellToStringOption?: ICellToStringOption): string | null {
     if (!cellValue) return null;
     return this.arrayValueToString(this.cellValueToArray([cellValue].flat()));
   }
@@ -204,7 +204,7 @@ export abstract class MemberBaseField extends ArrayValueField {
     return stdValue;
   }
 
-  stdValueToCellValue(stdValue: IStandardValue): ICellValue | null {
+  stdValueToCellValue(_stdValue: IStandardValue): ICellValue | null {
     return null;
   }
 
@@ -240,7 +240,7 @@ export abstract class MemberBaseField extends ArrayValueField {
     return null;
   }
 
-  defaultValue(): ICellValue {
+  override defaultValue(): ICellValue {
     return null;
   }
 

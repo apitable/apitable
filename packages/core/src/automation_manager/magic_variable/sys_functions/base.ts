@@ -11,7 +11,7 @@ export const getArrayLength = (_context: any, array: any[]): number => {
  * @param array 
  * @returns 
  */
-export const flatten = (context: any, array: any[]): any[] => {
+export const flatten = (_context: any, array: any[]): any[] => {
   return array?.flat();
 };
 
@@ -47,7 +47,7 @@ export const getObjectProperty = (_context: any, obj: object, paths: string[]) =
  * @param args 
  * @returns 
  */
-export const concatParagraph = (...args) => {
+export const concatParagraph = (...args: string[]) => {
   const [, ...paragraphs] = args;
   return paragraphs.join('\n');
 };
@@ -55,7 +55,7 @@ export const concatParagraph = (...args) => {
 /**
  * concat string with ''
  */
-export const concatString = (...args) => {
+export const concatString = (...args: string[]) => {
   const [, ...strings] = args;
   return strings.join('');
 };
@@ -64,7 +64,7 @@ export const concatString = (...args) => {
  * the factory function of object to make a new object
  * [key1,value1,key2,value2,...] => {key1:value1,key2:value2,...}
  */
-export const newObject = (...args) => {
+export const newObject = (...args: any[]) => {
   const [, ...restArgs] = args;
   // [key1,value1,key2,value2,...] => [[key1,value1],[key2,value2]]
   const keyValuePairs = restArgs.reduce((acc, cur, index) => {
@@ -79,7 +79,7 @@ export const newObject = (...args) => {
 /**
  * the factory function of array to make a new array
  */
-export const newArray = (...args) => {
+export const newArray = (...args: any[]) => {
   const [, ...restArgs] = args;
   return new Array(...restArgs);
 };
@@ -87,7 +87,7 @@ export const newArray = (...args) => {
 /**
  * logical and
  */
-export const and = (...args) => {
+export const and = (...args: any[]) => {
   const [, ...restArgs] = args;
   // console.log('and', args);
   return restArgs.every(Boolean);
@@ -96,7 +96,7 @@ export const and = (...args) => {
 /**
  * logical or
  */
-export const or = (...args) => {
+export const or = (...args: any[]) => {
   const [, ...restArgs] = args;
   // console.log('or', args);
   return restArgs.some(Boolean);

@@ -27,7 +27,7 @@ export class PermissionCheck {
    * @param permission
    * @param resultSet
    */
-  collectByAddField(cmd: string, action: IObjectInsertAction, permission: any, resultSet: { [key: string]: any }) {
+  collectByAddField(_cmd: string, action: IObjectInsertAction, permission: any, resultSet: { [key: string]: any }) {
     const oiData = action.oi as IField;
     if (oiData.type === FieldType.Link) {
       // Add a magical association type, you need to judge the permission of the association table
@@ -389,11 +389,11 @@ export class PermissionCheck {
 
   /**
    * @description collects ops related to operation lines
-   * @param action
+   * @param _action
    * @param permission
-   * @param resultSet
+   * @param _resultSet
    */
-  collectByOperateForRow(cmd: string, action: IJOTAction, permission: any, resultSet: { [key: string]: any }) {
+  collectByOperateForRow(_cmd: string, _action: IJOTAction, permission: any, _resultSet: { [key: string]: any }) {
     if (!permission.editable) {
       throw new Error('OPERATION_DENIED');
     }
@@ -401,11 +401,11 @@ export class PermissionCheck {
 
   /**
    * @description collects ops related to comments
-   * @param {*} action
+   * @param {*} _action
    * @param {*} permission
-   * @param resultSet
+   * @param _resultSet
    */
-  collectByOperateForComment(action: IJOTAction, permission: any, resultSet: { [key: string]: any }) {
+  collectByOperateForComment(_action: IJOTAction, permission: any, _resultSet: { [key: string]: any }) {
     if (!permission.readable) {
       throw new Error('OPERATION_DENIED');
     }

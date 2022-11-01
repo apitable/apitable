@@ -18,23 +18,23 @@ export function fetchTemplateFormPack(templateId: string, formId: string) {
   return axios.get<IApiWrapper & { data: IServerFormPack }>(urlcat(Url.READ_TEMPLATE_FORMPACK, { templateId, formId }), { baseURL });
 }
 
-export function addFormRecord(formId: string, recordData) {
+export function addFormRecord(formId: string, recordData: any) {
   return axios.post<IApiWrapper & { data: any }>(urlcat(Url.FORM_ADD_RECORD, {
     formId,
   }), recordData, { baseURL });
 }
 
-export function addShareFormRecord(formId: string, shareId: string | undefined, recordData) {
+export function addShareFormRecord(formId: string, shareId: string | undefined, recordData: any) {
   return axios.post<IApiWrapper & { data: any }>(urlcat(Url.SHARE_FORM_ADD_RECORD, {
     formId, shareId,
   }), recordData, { baseURL });
 }
 
-export function fetchFormProps(formId) {
+export function fetchFormProps(formId: string) {
   return axios.get<IApiWrapper & { data: any }>(urlcat(Url.READ_FORM_PROPS, { formId }), { baseURL });
 }
 
-export function updateFormProps(formId, formProps) {
+export function updateFormProps(formId: string, formProps: any) {
   return axios.post<IApiWrapper & { data: any }>(urlcat(Url.UPDATE_FORM_PROPS, {
     formId,
   }), formProps, { baseURL });

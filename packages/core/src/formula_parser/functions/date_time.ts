@@ -123,12 +123,12 @@ const formatDateTimeStr = (dateStr: string | number) => {
 const DEFAULT_LOCALE = 'zh-cn'; // default localization language
 
 class DateFunc extends FormulaFunc {
-  static readonly type = FormulaFuncType.DateTime;
-  static acceptValueType = new Set([BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
+  static override readonly type = FormulaFuncType.DateTime;
+  static override acceptValueType = new Set([BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
 }
 
 export class Year extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'YEAR',
@@ -137,18 +137,18 @@ export class Year extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>]): number {
+  static override func(params: [IFormulaParam<number | string>]): number {
     return getDayjs(params[0].value).year();
   }
 }
 
 export class Month extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'MONTH',
@@ -157,18 +157,18 @@ export class Month extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>]): number | null {
+  static override func(params: [IFormulaParam<number | string>]): number | null {
     return getDayjs(params[0].value).month() + 1;
   }
 }
 
 export class Day extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'DAY',
@@ -177,18 +177,18 @@ export class Day extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>]): number {
+  static override func(params: [IFormulaParam<number | string>]): number {
     return getDayjs(params[0].value).date();
   }
 }
 
 export class Hour extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'HOUR',
@@ -197,18 +197,18 @@ export class Hour extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>]): number {
+  static override func(params: [IFormulaParam<number | string>]): number {
     return getDayjs(params[0].value).hour();
   }
 }
 
 export class Minute extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'MINUTE',
@@ -217,18 +217,18 @@ export class Minute extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>]): number {
+  static override func(params: [IFormulaParam<number | string>]): number {
     return getDayjs(params[0].value).minute();
   }
 }
 
 export class Second extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'SECOND',
@@ -237,18 +237,18 @@ export class Second extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>]): number {
+  static override func(params: [IFormulaParam<number | string>]): number {
     return getDayjs(params[0].value).second();
   }
 }
 
 export class Weekday extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'WEEKDAY',
@@ -257,12 +257,12 @@ export class Weekday extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>, IFormulaParam<string>]): number | null {
+  static override func(params: [IFormulaParam<number | string>, IFormulaParam<string>]): number | null {
     if (params[0].value == null) {
       return null;
     }
@@ -277,7 +277,7 @@ export class Weekday extends DateFunc {
 }
 
 export class Dateadd extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'DATEADD',
@@ -293,12 +293,12 @@ export class Dateadd extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>, IFormulaParam<string>]): string | number {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>, IFormulaParam<string>]): string | number {
     const [{ value: date }, { value: count }, { value: unitStr }] = params;
     const unit = getPureUnit(unitStr);
     const day = getDayjs(date);
@@ -307,7 +307,7 @@ export class Dateadd extends DateFunc {
 }
 
 export class DatetimeDiffUtil extends DateFunc {
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
@@ -327,7 +327,7 @@ export class DatetimeDiffUtil extends DateFunc {
 }
 
 export class DatetimeDiff extends DatetimeDiffUtil {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'DATETIME_DIFF',
@@ -342,45 +342,45 @@ export class DatetimeDiff extends DatetimeDiffUtil {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>, IFormulaParam<string>]): string | number | null {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>, IFormulaParam<string>]): string | number | null {
     const diff = this.calc(params, true);
     return diff;
   }
 }
 
 export class Today extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(): number {
+  static override func(): number {
     const timeStamp = new Date().setHours(0, 0, 0, 0);
     return timeStamp;
   }
 }
 
 export class Now extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(): number {
+  static override func(): number {
     return Date.now();
   }
 }
 
 export class FromNow extends DatetimeDiffUtil {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'FROMNOW',
@@ -389,7 +389,7 @@ export class FromNow extends DatetimeDiffUtil {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<string>]): number {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<string>]): number {
     const diff = this.calc([{ value: Date.now() } as IFormulaParam<number>, ...params]);
     return Math.abs(Number(diff));
   }
@@ -399,7 +399,7 @@ export class FromNow extends DatetimeDiffUtil {
   * Separately written just to remind the text and modify the relevant logic later to be better differentiated
   */
 export class ToNow extends DatetimeDiffUtil {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'TONOW',
@@ -408,14 +408,14 @@ export class ToNow extends DatetimeDiffUtil {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<string>]): number {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<string>]): number {
     const diff = this.calc([{ value: Date.now() } as IFormulaParam<number>, ...params]);
     return Math.abs(Number(diff));
   }
 }
 
 export class IsBefore extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'IS_BEFORE',
@@ -424,12 +424,12 @@ export class IsBefore extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: [IFormulaParam<number | string>, IFormulaParam<number | string>]): boolean | null {
+  static override func(params: [IFormulaParam<number | string>, IFormulaParam<number | string>]): boolean | null {
     if (params?.some(v => v.value == null)) {
       return null;
     }
@@ -440,7 +440,7 @@ export class IsBefore extends DateFunc {
 }
 
 export class IsAfter extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'IS_AFTER',
@@ -449,12 +449,12 @@ export class IsAfter extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(params: [IFormulaParam<number | string>, IFormulaParam<number | string>]): boolean | null {
+  static override func(params: [IFormulaParam<number | string>, IFormulaParam<number | string>]): boolean | null {
     if (params?.some(v => v.value == null)) {
       return null;
     }
@@ -465,7 +465,7 @@ export class IsAfter extends DateFunc {
 }
 
 export class WorkDay extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'WORKDAY',
@@ -474,12 +474,12 @@ export class WorkDay extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: IFormulaParam<number | string>[]): number | null {
+  static override func(params: IFormulaParam<number | string>[]): number | null {
     let startDate = getDayjs(params[0].value);
     const startDay = startDate.day();
     // Specify which days the weekend is
@@ -549,7 +549,7 @@ export class WorkDay extends DateFunc {
 }
 
 export class WorkDayDiff extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'WORKDAY_DIFF',
@@ -558,12 +558,12 @@ export class WorkDayDiff extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<number | string>[]): number {
+  static override func(params: IFormulaParam<number | string>[]): number {
     let startDate = getDayjs(params[0].value);
     let endDate = getDayjs(params[1].value);
     const isMinus = startDate.valueOf() > endDate.valueOf(); // Whether with a negative sign
@@ -612,7 +612,7 @@ export class WorkDayDiff extends DateFunc {
 }
 
 export class TimeStr extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'TIMESTR',
@@ -621,19 +621,19 @@ export class TimeStr extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<number | string>]): string {
+  static override func(params: [IFormulaParam<number | string>]): string {
     const date = getDayjs(params[0].value);
     return date.format('HH:mm:ss');
   }
 }
 
 export class DateStr extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count, {
         name: 'DATESTR',
@@ -642,19 +642,19 @@ export class DateStr extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<number | string>]): string {
+  static override func(params: [IFormulaParam<number | string>]): string {
     const date = getDayjs(params[0].value);
     return date.format('YYYY-MM-DD');
   }
 }
 
 export class WeekNum extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'WEEKNUM',
@@ -663,12 +663,12 @@ export class WeekNum extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number | string>, IFormulaParam<string>]): number {
+  static override func(params: [IFormulaParam<number | string>, IFormulaParam<string>]): number {
     const currentDate = getDayjs(params[0].value);
     const startDayOfWeek = String(params[1]?.value).toLowerCase();
     const startOfWeek = startDayOfWeek === 'undefined' ? 0 : WeekdayUnits[startDayOfWeek];
@@ -696,7 +696,7 @@ export class WeekNum extends DateFunc {
 }
 
 export class IsSame extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'IS_SAME',
@@ -705,12 +705,12 @@ export class IsSame extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Boolean;
   }
 
-  static func(
+  static override func(
     params: [IFormulaParam<number | string>, IFormulaParam<number | string>, IFormulaParam<string>],
   ): boolean {
     const [{ value: dateFrom }, { value: dateTo }] = params;
@@ -724,7 +724,7 @@ export class IsSame extends DateFunc {
 }
 
 export class DateTimeParse extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'DATETIME_PARSE',
@@ -733,12 +733,12 @@ export class DateTimeParse extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): number {
+  static override func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): number {
     const dateStr = formatDateTimeStr(params[0].value);
     // If it is a timestamp, don't pass this parameter directly, let dayjs convert it by itself
     const formatStr = typeof dateStr === 'number' ? '' : String(params[1]?.value); 
@@ -752,7 +752,7 @@ export class DateTimeParse extends DateFunc {
 }
 
 export class DateTimeFormat extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'DATETIME_FORMAT',
@@ -761,12 +761,12 @@ export class DateTimeFormat extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): string {
+  static override func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): string {
     const date = getDayjs(params[0].value);
     const formatStr = String(params[1]?.value || 'YYYY-MM-DD HH:mm');
 
@@ -775,7 +775,7 @@ export class DateTimeFormat extends DateFunc {
 }
 
 export class SetLocale extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'SET_LOCALE',
@@ -784,12 +784,12 @@ export class SetLocale extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): Dayjs {
+  static override func(params: [IFormulaParam<string | number>, IFormulaParam<string>]): Dayjs {
     const localeDate = params[0].value;
     const locale = params[1]?.value || DEFAULT_LOCALE;
 
@@ -798,7 +798,7 @@ export class SetLocale extends DateFunc {
 }
 
 export class SetTimeZone extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'SET_TIMEZONE',
@@ -807,12 +807,12 @@ export class SetTimeZone extends DateFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: [IFormulaParam<string | number>, IFormulaParam<number>]): Dayjs {
+  static override func(params: [IFormulaParam<string | number>, IFormulaParam<number>]): Dayjs {
     const date = getDayjs(params[0].value);
     let timezoneOffset = Number(params[1]?.value);
 
@@ -824,32 +824,32 @@ export class SetTimeZone extends DateFunc {
 }
 
 export class CreatedTime extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: IFormulaParam[], context: IFormulaContext): number | Date | null {
+  static override func(_params: IFormulaParam[], context: IFormulaContext): number | Date | null {
     const createdAt = context.record?.recordMeta?.createdAt;
     return createdAt == null ? null : createdAt;
   }
 }
 
 export class LastModifiedTime extends DateFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.DateTime;
   }
 
-  static func(params: IFormulaParam[], context: IFormulaContext): number | Date | null {
+  static override func(params: IFormulaParam[], context: IFormulaContext): number | Date | null {
     const record = context.record;
     const updatedMap = record.recordMeta?.fieldUpdatedMap;
 

@@ -3,13 +3,13 @@ import { Events, Player } from 'player';
 import { batchActions } from 'redux-batched-actions';
 import { Selectors } from 'store';
 import { RECEIVE_INSTALLATIONS_WIDGET, RESET_WIDGET } from 'store/action_constants';
-import { IUnMountWidget, IWidget } from 'store/interface';
+import { IReduxState, IUnMountWidget, IWidget } from 'store/interface';
 
 export const fetchWidgetsByWidgetIds = (
   widgetIds: string[],
   successCb?: (props: { responseBody: any; dispatch: any, getState: any }) => void
 ) => {
-  return (dispatch, getState) => {
+  return (dispatch: any, getState: () => IReduxState) => {
     // dispatch(setWidgetPanelLoading(true));
     const state = getState();
     const linkId = Selectors.getLinkId(state);
@@ -38,7 +38,7 @@ export const receiveInstallationWidget = (widgetId: string, widget: IWidget) => 
   };
 };
 
-export const fetchInstallationWidgetSuccess = ({ responseBody, dispatch }) => {
+export const fetchInstallationWidgetSuccess = ({ responseBody, dispatch }: { responseBody: any, dispatch: any }) => {
   const { data, success } = responseBody;
   // dispatch(setWidgetPanelLoading(false));
   if (success) {

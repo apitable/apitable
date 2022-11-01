@@ -41,7 +41,7 @@ export class AttachmentField extends ArrayValueField {
     url: Joi.string(),
   }).required()).allow(null).required();
 
-  constructor(public field: IAttacheField, state: IReduxState) {
+  constructor(public override field: IAttacheField, state: IReduxState) {
     super(field, state);
   }
 
@@ -105,11 +105,11 @@ export class AttachmentField extends ArrayValueField {
     };
   }
 
-  get canGroup(): boolean {
+  override get canGroup(): boolean {
     return false;
   }
 
-  get acceptFilterOperators(): FOperator[] {
+  override get acceptFilterOperators(): FOperator[] {
     return [
       FOperator.IsEmpty,
       FOperator.IsNotEmpty,
@@ -120,7 +120,7 @@ export class AttachmentField extends ArrayValueField {
     return BasicValueType.Array;
   }
 
-  get innerBasicValueType(): BasicValueType {
+  override get innerBasicValueType(): BasicValueType {
     return BasicValueType.String;
   }
 
@@ -149,7 +149,7 @@ export class AttachmentField extends ArrayValueField {
     return null;
   }
 
-  eq(cv1: IAttachmentValue[] | null, cv2: IAttachmentValue[] | null): boolean {
+  override eq(cv1: IAttachmentValue[] | null, cv2: IAttachmentValue[] | null): boolean {
     if (cv1 == null || cv2 == null) {
       return cv1 === cv2;
     }
@@ -228,7 +228,7 @@ export class AttachmentField extends ArrayValueField {
     return null;
   }
 
-  defaultValueForCondition(condition: IFilterCondition): null {
+  defaultValueForCondition(_condition: IFilterCondition): null {
     return null;
   }
 
@@ -287,7 +287,7 @@ export class AttachmentField extends ArrayValueField {
     }));
   }
 
-  validateAddOpenFieldProperty(updateProperty: IAddOpenAttachmentFieldProperty) {
+  override validateAddOpenFieldProperty(updateProperty: IAddOpenAttachmentFieldProperty) {
     if (updateProperty === null) {
       return { error: undefined, value: null };
     }

@@ -2,7 +2,7 @@ import { Api } from 'api';
 import axios from 'axios';
 import { getCustomConfig } from 'config';
 import { ActionConstants } from 'store';
-import { IApp, IEnvs, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from '../interface';
+import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from '../interface';
 import { initCatalogTree } from './catalog_tree';
 import { getUserMe } from './user';
 
@@ -10,7 +10,7 @@ import { getUserMe } from './user';
  * Get Space List
  */
 export const spaceList = (): any => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     Api.spaceList().then((res) => {
       const { success, data } = res.data;
       if (success) {
@@ -35,7 +35,7 @@ export const setSpaceList = (data: ISpaceInfo[]) => {
  * @param spaceId Space ID
  */
 export const removeRedPoint = (spaceId: string) => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     Api.removeSpaceRedPoint(spaceId).then((res) => {
       const { success } = res.data;
       if (success) {
@@ -61,7 +61,7 @@ export const setQuitSpaceId = (spaceId: string) => {
  * @param spaceId space ID
  */
 export const quitSpace = (spaceId: string) => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     Api.quitSpace(spaceId).then((res) => {
       const { success } = res.data;
       if (success) {
@@ -186,7 +186,7 @@ export const toggleRecordFullScreen = (status?: boolean) => {
  * @returns 
  */
 export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) => {
-  return (dispatch, getState) => {
+  return (dispatch: any, getState: () => IReduxState) => {
     const curSpace = getState().space;
     const lastUpdateTime = curSpace?.curSpaceInfo?.lastUpdateTime || 0;
 
@@ -210,7 +210,7 @@ export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) 
  * @returns 
  */
 export const getSpaceFeatures = () => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     Api.getSpaceFeatures().then((res) => {
       const { data, success } = res.data;
       if (success) {
@@ -233,7 +233,7 @@ export const setMarketPlaceApps = (apps: IApp[]) => {
  * @returns 
  */
 export const fetchMarketplaceApps = (spaceId: string) => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     if (getCustomConfig().marketplaceDisable) {
       dispatch(setMarketPlaceApps([]));
       return;

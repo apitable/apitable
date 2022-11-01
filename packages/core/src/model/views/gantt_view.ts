@@ -14,11 +14,11 @@ import { Settings } from 'config';
 export const DEFAULT_WORK_DAYS = [1, 2, 3, 4, 5];
 
 export class GanttView extends View {
-  get recordShowName(){
+  override get recordShowName(){
     return t(Strings.gantt_task);
   }
 
-  get recordShowUnit(){
+  override get recordShowUnit(){
     return '';
   }
 

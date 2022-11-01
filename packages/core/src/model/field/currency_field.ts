@@ -23,7 +23,7 @@ export const getSymbolAlignStr = (symbolAlign?: SymbolAlign.default | SymbolAlig
 };
 
 export class CurrencyField extends NumberBaseField {
-  constructor(public field: ICurrencyField, public state: IReduxState) {
+  constructor(public override field: ICurrencyField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -34,7 +34,7 @@ export class CurrencyField extends NumberBaseField {
     symbolAlign: Joi.valid(...enumToArray(SymbolAlign)),
   }).required();
 
-  get apiMetaProperty(): IAPIMetaCurrencyFieldProperty {
+  override get apiMetaProperty(): IAPIMetaCurrencyFieldProperty {
     const { defaultValue, precision, symbol, symbolAlign } = this.field.property;
     return {
       defaultValue: defaultValue || undefined,
@@ -45,7 +45,7 @@ export class CurrencyField extends NumberBaseField {
   }
 
   // the data of preview, includes (positive or negative sign) + currency symbol + scientific notation number or normal number + thousand separator
-  cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
+  override cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
 
     if (this.validate(cellValue)) {
       const { symbol, precision, symbolAlign } = this.field.property;
@@ -62,7 +62,7 @@ export class CurrencyField extends NumberBaseField {
   }
 
   // return new records' default value of field attributes
-  defaultValue(): ICellValue {
+  override defaultValue(): ICellValue {
     const { defaultValue } = this.field.property;
     return defaultValue ? str2number(defaultValue) : null;
   }
@@ -72,7 +72,7 @@ export class CurrencyField extends NumberBaseField {
     return cellValue2Str === null ? null : str2number(cellValue2Str as string);
   }
 
-  compare(cellValue1: number, cellValue2: number): number {
+  override compare(cellValue1: number, cellValue2: number): number {
     return NumberBaseField._compare(
       this.compareCellValue(cellValue1),
       this.compareCellValue(cellValue2),
@@ -107,7 +107,7 @@ export class CurrencyField extends NumberBaseField {
     symbolAlign: Joi.valid(...enumToArray(TSymbolAlign)),
   }).required();
 
-  get openFieldProperty(): IOpenCurrencyFieldProperty {
+  override get openFieldProperty(): IOpenCurrencyFieldProperty {
     const { defaultValue, symbol, precision, symbolAlign } = this.field.property;
     return {
       defaultValue,
@@ -117,11 +117,11 @@ export class CurrencyField extends NumberBaseField {
     };
   }
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenCurrencyFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenCurrencyFieldProperty) {
     return CurrencyField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenCurrencyFieldProperty): ICurrencyFieldProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenCurrencyFieldProperty): ICurrencyFieldProperty {
     const { defaultValue, symbolAlign: symbolAlignStr, symbol, precision } = openFieldProperty;
     const defaultProperty = CurrencyField.defaultProperty();
     const symbolAlign = symbolAlignStr === undefined ? defaultProperty.symbolAlign : SymbolAlign[symbolAlignStr.toLocaleLowerCase()];

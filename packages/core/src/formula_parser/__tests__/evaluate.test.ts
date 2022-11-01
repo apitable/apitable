@@ -40,8 +40,8 @@ const fieldMap: { [key: string]: IField } = {
   },
 };
 
-const testEvaluate = tests => {
-  tests.forEach(test => {
+const testEvaluate = (tests: any) => {
+  tests.forEach((test: any) => {
     const [expression, context, expectedResult] = test;
     // text 字段做一下转换
     for (const id in fieldMap) {

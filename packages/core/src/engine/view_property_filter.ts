@@ -65,7 +65,7 @@ export class ViewPropertyFilter {
   }
 
   /* Strategy for checking data integrity */
-  private _fieldIntegrityCheck(viewProperty: IViewPropertyKey, op, fieldMap) {
+  private _fieldIntegrityCheck(viewProperty: IViewPropertyKey, op: any, fieldMap: IFieldMap) {
     switch (viewProperty) {
       case 'groupInfo': {
         return this._checkGroupInfo(op, fieldMap);

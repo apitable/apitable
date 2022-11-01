@@ -7,11 +7,11 @@ import { IOpenSingleTextFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenSingleTextFieldProperty } from 'types/open/open_field_write_types';
 
 export class SingleTextField extends TextBaseField {
-  constructor(public field: ISingleTextField, public state: IReduxState) {
+  constructor(public override field: ISingleTextField, public override state: IReduxState) {
     super(field, state);
   }
 
-  static propertySchema = Joi.object({
+  static override propertySchema = Joi.object({
     defaultValue: Joi.string().allow('')
   });
 
@@ -19,17 +19,17 @@ export class SingleTextField extends TextBaseField {
     return {};
   }
 
-  get apiMetaProperty() {
+  override get apiMetaProperty() {
     return {
       defaultValue: this.field.property.defaultValue,
     };
   }
 
-  validateProperty() {
+  override validateProperty() {
     return SingleTextField.propertySchema.validate(this.field.property);
   }
 
-  defaultValue(): ISegment[] | null {
+  override defaultValue(): ISegment[] | null {
     const defaultValue = this.field.property.defaultValue;
     if (!defaultValue || !defaultValue.trim().length) {
       return null;
@@ -52,7 +52,7 @@ export class SingleTextField extends TextBaseField {
    * @returns {(ISegment[] | null)}
    * @memberof SingleTextField
    */
-  stdValueToCellValue(stdField: IStandardValue): ISegment[] | null {
+  override stdValueToCellValue(stdField: IStandardValue): ISegment[] | null {
     const { data, sourceType } = stdField;
 
     if (data.length === 0) {
@@ -71,12 +71,12 @@ export class SingleTextField extends TextBaseField {
     return super.stdValueToCellValue(stdField);
   }
 
-  get openFieldProperty(): IOpenSingleTextFieldProperty {
+  override get openFieldProperty(): IOpenSingleTextFieldProperty {
     const { defaultValue } = this.field.property;
     return { defaultValue };
   }
 
-  validateUpdateOpenProperty(property: IUpdateOpenSingleTextFieldProperty) {
+  override validateUpdateOpenProperty(property: IUpdateOpenSingleTextFieldProperty) {
     return SingleTextField.propertySchema.validate(property);
   }
 }

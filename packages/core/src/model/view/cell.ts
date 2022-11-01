@@ -28,7 +28,7 @@ export class Cell {
   }
 
   move(state: IReduxState, direction: CellDirection, breakpoints: number[] = []) {
-    const columns = Selectors.getVisibleColumns(state);
+    const columns = Selectors.getVisibleColumns(state)!;
     const rows = Selectors.getVisibleRows(state);
     const rowCount = rows.length;
     const maxColumnIndex = columns.length - 1;

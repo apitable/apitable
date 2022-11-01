@@ -14,7 +14,7 @@ import { IUpdateOpenLastModifiedByFieldProperty } from 'types/open/open_field_wr
 import { IOpenLastModifiedByFieldProperty } from 'types/open/open_field_read_types';
 
 export class LastModifiedByField extends MemberBaseField {
-  constructor(public field: ILastModifiedByField, public state: IReduxState) {
+  constructor(public override field: ILastModifiedByField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -27,7 +27,7 @@ export class LastModifiedByField extends MemberBaseField {
     fieldIdCollection: Joi.array().items(Joi.string()).required(),
   }).required();
 
-  get apiMetaProperty(): IAPIMetaLastModifiedByFieldProperty {
+  override get apiMetaProperty(): IAPIMetaLastModifiedByFieldProperty {
     const userMap = Selectors.getUserMap(this.state);
     return getApiMetaUserProperty(this.field.property.uuids, userMap);
   }
@@ -71,23 +71,23 @@ export class LastModifiedByField extends MemberBaseField {
     };
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
-  get basicValueType(): BasicValueType {
+  override get basicValueType(): BasicValueType {
     return BasicValueType.String;
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
-  stdValueToCellValue(): null {
+  override stdValueToCellValue(): null {
     return null;
   }
 
-  validate(cv) {
+  override validate(cv: ICellValue) {
     if (cv) {
       return false;
     }
@@ -114,7 +114,7 @@ export class LastModifiedByField extends MemberBaseField {
         return prev;
       }
       return { at: info.at, by: info.by };
-    }, { at: 0, by: null });
+    }, { at: 0, by: null } as { at: number, by: string | null });
 
     return fieldUpdateInfo?.by || null;
   }
@@ -151,7 +151,7 @@ export class LastModifiedByField extends MemberBaseField {
     return [...new Set([...uuids, ...fieldUuids])];
   }
 
-  getUnitNames(cellValue: IUuids) {
+  override getUnitNames(cellValue: IUuids) {
     const userMap = Selectors.getUserMap(this.state);
     if (!userMap) return null;
     return cellValue.map(uuid => {
@@ -160,19 +160,19 @@ export class LastModifiedByField extends MemberBaseField {
     });
   }
 
-  eq(cv1: IUuids | null, cv2: IUuids | null): boolean {
+  override eq(cv1: IUuids | null, cv2: IUuids | null): boolean {
     if (cv1 == null || cv2 == null) return cv1 === cv2;
     return isEqual(cv1, cv2);
   }
 
-  getUnitIds(cellValue: IUuids | null): string[] | null {
+  override getUnitIds(cellValue: IUuids | null): string[] | null {
     if (!cellValue) {
       return null;
     }
     return [cellValue].flat();
   }
 
-  getUnits(cellValue: IUuids) {
+  override getUnits(cellValue: IUuids) {
     const userMap = Selectors.getUserMap(this.state);
     if (!userMap) return null;
     return cellValue.reduce((ids, uuid) => {
@@ -183,7 +183,7 @@ export class LastModifiedByField extends MemberBaseField {
     }, []);
   }
 
-  get openFieldProperty(): IOpenLastModifiedByFieldProperty {
+  override get openFieldProperty(): IOpenLastModifiedByFieldProperty {
     const { collectType, fieldIdCollection } = this.field.property;
     return {
       collectType,
@@ -196,11 +196,11 @@ export class LastModifiedByField extends MemberBaseField {
     fieldIdCollection: Joi.array().items(Joi.string())
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenLastModifiedByFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenLastModifiedByFieldProperty) {
     return LastModifiedByField.openUpdatePropertySchema.validate(updateProperty);
   }
   
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenLastModifiedByFieldProperty): ILastModifiedByProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenLastModifiedByFieldProperty): ILastModifiedByProperty {
     const { collectType, fieldIdCollection } = openFieldProperty;
     const { uuids, datasheetId } = this.field.property;
     const defaultProperty = LastModifiedByField.defaultProperty();

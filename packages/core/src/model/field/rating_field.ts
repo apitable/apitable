@@ -14,7 +14,7 @@ import { EmojisConfig } from 'config/emojis_config';
 import { joiErrorResult } from './validate_schema';
 
 export class RatingField extends NumberBaseField {
-  constructor(public field: IRatingField, state: IReduxState) {
+  constructor(public override field: IRatingField, state: IReduxState) {
     super(field, state);
   }
 
@@ -27,7 +27,7 @@ export class RatingField extends NumberBaseField {
     return RatingField.propertySchema.validate(this.field.property);
   }
 
-  get apiMetaProperty() {
+  override get apiMetaProperty() {
     return {
       icon: getEmojiIconNativeString(this.field.property.icon),
       max: this.field.property.max,
@@ -47,14 +47,14 @@ export class RatingField extends NumberBaseField {
     return { icon: 'star', max: 5 };
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
+  override cellValueToString(cellValue: ICellValue): string | null {
     if (this.validate(cellValue)) {
       return cellValue.toString();
     }
     return null;
   }
 
-  stdValueToCellValue(stdVal: IStandardValue): number | null {
+  override stdValueToCellValue(stdVal: IStandardValue): number | null {
     const { data, sourceType } = stdVal;
 
     if (data.length === 0) {
@@ -71,12 +71,12 @@ export class RatingField extends NumberBaseField {
    * Cancel the verification of property.max, and call cellValueToString during statistics.
    * The result of the summation may be greater than max. Values exceeding max have been handled at the UI layer.
    */
-  validate(value: any): value is number {
+  override validate(value: any): value is number {
     // && value <= this.field.property.max
     return isNumber(value) && !Number.isNaN(value) && value > 0;
   }
 
-  isMeetFilter(operator: FOperator, cellValue: number | null, conditionValue: Exclude<IFilterNumber, null>) {
+  override isMeetFilter(operator: FOperator, cellValue: number | null, conditionValue: Exclude<IFilterNumber, null>) {
     if (conditionValue == null) {
       // Score filter null == 0
       const filterValue = 0;
@@ -101,7 +101,7 @@ export class RatingField extends NumberBaseField {
     return NumberBaseField._isMeetFilter(operator, cellValue, conditionValue);
   }
 
-  get openFieldProperty(): IOpenRatingFieldProperty {
+  override get openFieldProperty(): IOpenRatingFieldProperty {
     const { max, icon } = this.field.property;
     return {
       icon: getEmojiIconNativeString(icon),
@@ -109,7 +109,7 @@ export class RatingField extends NumberBaseField {
     };
   }
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenRatingFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenRatingFieldProperty) {
     const result = RatingField.propertySchema.validate(updateProperty);
     if (!result.error && !EmojisConfig[updateProperty.icon]) {
       return joiErrorResult('icon is not Emoji slug');

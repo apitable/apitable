@@ -6,7 +6,7 @@ import { divide, noNaN, plus, times } from 'utils';
 import { t, Strings } from 'i18n';
 
 class NumericFunc extends FormulaFunc {
-  static readonly type = FormulaFuncType.Numeric;
+  static override readonly type = FormulaFuncType.Numeric;
 }
 
 type NumericType = number | null;
@@ -34,7 +34,7 @@ function isArrayNodes(nodes?: AstNode[]) {
   * Tool class for some public functions
   */
 export class NumericUtilsFunc extends NumericFunc {
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
@@ -79,17 +79,17 @@ export class NumericUtilsFunc extends NumericFunc {
 }
 
 export class Sum extends NumericFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams() {
+  static override validateParams() {
     //
   }
 
-  static getReturnType() {
+  static override getReturnType() {
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<number>[]): number {
+  static override func(params: IFormulaParam<number>[]): number {
     let result = 0;
     // If there is only one parameter and it is an array, it means that the value of the array type field is summed
     if (isArrayParam(params)) {
@@ -115,33 +115,33 @@ export class Sum extends NumericFunc {
 }
 
 export class Abs extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
 
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>]): number {
+  static override func(params: [IFormulaParam<number>]): number {
     return Math.abs(params[0] && params[0].value);
   }
 }
 
 export class Average extends NumericFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams() {
+  static override validateParams() {
     //
   }
 
-  static getReturnType() {
+  static override getReturnType() {
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<number>[]): number {
+  static override func(params: IFormulaParam<number>[]): number {
     // If there is only one parameter and it is an array, it means that the value of the array type field is summed
     if (isArrayParam(params)) {
       const innerValueType = (params[0].node as ValueOperandNodeBase).innerValueType;
@@ -172,7 +172,7 @@ export class Average extends NumericFunc {
 }
 
 export class Ceiling extends NumericUtilsFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'CEILING',
@@ -181,13 +181,13 @@ export class Ceiling extends NumericUtilsFunc {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     return this.calc2RoundFC(params, Math.ceil);
   }
 }
 
 export class Floor extends NumericUtilsFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'FLOOR',
@@ -196,13 +196,13 @@ export class Floor extends NumericUtilsFunc {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     return this.calc2RoundFC(params, Math.floor);
   }
 }
 
 export class Round extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'ROUND',
@@ -211,12 +211,12 @@ export class Round extends NumericFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -229,13 +229,13 @@ export class Round extends NumericFunc {
 }
 
 export class Max extends NumericFunc {
-  static acceptValueType = new Set([BasicValueType.DateTime, BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.DateTime, BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     if (!params) {
       return BasicValueType.Number;
@@ -257,7 +257,7 @@ export class Max extends NumericFunc {
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<number>[]): NumericType {
+  static override func(params: IFormulaParam<number>[]): NumericType {
     return this.calc(params, max);
   }
 
@@ -284,13 +284,13 @@ export class Max extends NumericFunc {
 
 // The Min function is different from Max only in the calculation method calcFn
 export class Min extends Max {
-  static func(params: IFormulaParam<number>[]): NumericType {
+  static override func(params: IFormulaParam<number>[]): NumericType {
     return this.calc(params, min);
   }
 }
 
 export class Log extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'LOG',
@@ -299,12 +299,12 @@ export class Log extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -316,7 +316,7 @@ export class Log extends NumericFunc {
 }
 
 export class Int extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'INT',
@@ -325,12 +325,12 @@ export class Int extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -340,7 +340,7 @@ export class Int extends NumericFunc {
 }
 
 export class Exp extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'EXP',
@@ -349,12 +349,12 @@ export class Exp extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -364,7 +364,7 @@ export class Exp extends NumericFunc {
 }
 
 export class Odd extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'ODD',
@@ -373,12 +373,12 @@ export class Odd extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (params[0].value == null) {
       return null;
@@ -394,7 +394,7 @@ export class Odd extends NumericFunc {
 }
 
 export class Even extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'EVEN',
@@ -403,12 +403,12 @@ export class Even extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (params[0].value == null) {
       return null;
@@ -424,7 +424,7 @@ export class Even extends NumericFunc {
 }
 
 export class RoundUp extends NumericUtilsFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'ROUNDUP',
@@ -433,13 +433,13 @@ export class RoundUp extends NumericUtilsFunc {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     return this.calc2RoundDU(params, Math.ceil, Math.floor);
   }
 }
 
 export class RoundDown extends NumericUtilsFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'ROUNDDOWN',
@@ -448,13 +448,13 @@ export class RoundDown extends NumericUtilsFunc {
     }
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     return this.calc2RoundDU(params, Math.floor, Math.ceil);
   }
 }
 
 export class Power extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'POWER',
@@ -463,12 +463,12 @@ export class Power extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (params[0].value == null) {
       return null;
@@ -478,7 +478,7 @@ export class Power extends NumericFunc {
 }
 
 export class Sqrt extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'SQRT',
@@ -487,12 +487,12 @@ export class Sqrt extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (params[0].value == null) {
       return null;
@@ -502,7 +502,7 @@ export class Sqrt extends NumericFunc {
 }
 
 export class Mod extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'MOD',
@@ -511,12 +511,12 @@ export class Mod extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
+  static override func(params: [IFormulaParam<number>, IFormulaParam<number>]): NumericType {
     const value = params[0].value;
     if (params[0].value == null) {
       return null;
@@ -533,7 +533,7 @@ export class Mod extends NumericFunc {
 }
 
 export class Value extends NumericFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'VALUE',
@@ -542,12 +542,12 @@ export class Value extends NumericFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<string>]): number {
+  static override func(params: [IFormulaParam<string>]): number {
     const text = String(params[0].value);
     const regNumber = /[^0-9.+-]/g;
     const regSymbol = /(\+|-|\.)+/g;

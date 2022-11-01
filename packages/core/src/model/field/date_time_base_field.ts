@@ -76,7 +76,7 @@ export const dateTimeFormat = (
 export type ICommonDateTimeField = IDateTimeField | ICreatedTimeField | ILastModifiedTimeField;
 
 export abstract class DateTimeBaseField extends Field {
-  constructor(public field: ICommonDateTimeField, public state: IReduxState) {
+  constructor(public override field: ICommonDateTimeField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -118,7 +118,7 @@ export abstract class DateTimeBaseField extends Field {
     [FOperator.IsRepeat]: t(Strings.is_repeat),
   };
 
-  showFOperatorDesc(type: FOperator) {
+  override showFOperatorDesc(type: FOperator) {
     return DateTimeBaseField.FOperatorDescMap[type];
   }
 
@@ -140,7 +140,7 @@ export abstract class DateTimeBaseField extends Field {
     };
   }
 
-  get statTypeList(): StatType[] {
+  override get statTypeList(): StatType[] {
     return DateTimeBaseField._statTypeList;
   }
 
@@ -211,7 +211,7 @@ export abstract class DateTimeBaseField extends Field {
     return DateTimeBaseField._defaultValueForCondition(condition);
   }
 
-  defaultValue(): number | null {
+  override defaultValue(): number | null {
     return null;
   }
 
@@ -253,11 +253,11 @@ export abstract class DateTimeBaseField extends Field {
       0 : (timestamp1! > timestamp2! ? 1 : -1);
   }
 
-  compare(cellValue1: ITimestamp, cellValue2: ITimestamp, onlyCompareOriginValue?: boolean): number {
+  override compare(cellValue1: ITimestamp, cellValue2: ITimestamp, onlyCompareOriginValue?: boolean): number {
     return DateTimeBaseField._compare(cellValue1, cellValue2, this.field.property, onlyCompareOriginValue);
   }
 
-  eq(cv1: ITimestamp, cv2: ITimestamp): boolean {
+  override eq(cv1: ITimestamp, cv2: ITimestamp): boolean {
     return isEqual(dateTimeFormat(cv1, this.field.property), dateTimeFormat(cv2, this.field.property));
   }
 
@@ -347,10 +347,10 @@ export abstract class DateTimeBaseField extends Field {
     * Last month: [January 1st 00:00, January 31st 23:59] UTC+8
     * This year: [January 1st 00:00, December 31st 23:59] UTC+8
     */
-  static getTimeRange(filterDuration: FilterDuration, time: ITimestamp | string | null): [ITimestamp, ITimestamp] {
+  static getTimeRange(filterDuration: FilterDuration, time: ITimestamp | string | null | undefined): [ITimestamp, ITimestamp] {
     switch (filterDuration) {
       case FilterDuration.ExactDate: {
-        if (time != null) {
+        if (time != undefined) {
           return [
             dayjs(time).startOf('day').valueOf(),
             dayjs(time).endOf('day').valueOf()
@@ -474,7 +474,7 @@ export abstract class DateTimeBaseField extends Field {
       return cellValue != null;
     }
     const [filterDuration] = conditionValue;
-    let timestamp;
+    let timestamp: number | undefined | null;
     if (
       filterDuration === FilterDuration.ExactDate ||
       filterDuration === FilterDuration.DateRange ||
@@ -528,7 +528,7 @@ export abstract class DateTimeBaseField extends Field {
     }
   }
 
-  isMeetFilter(operator: FOperator, cellValue: ITimestamp | null, conditionValue: Exclude<IFilterDateTime, null>) {
+  override isMeetFilter(operator: FOperator, cellValue: ITimestamp | null, conditionValue: Exclude<IFilterDateTime, null>) {
     return DateTimeBaseField._isMeetFilter(operator, cellValue, conditionValue);
   }
 
@@ -545,7 +545,7 @@ export abstract class DateTimeBaseField extends Field {
   /**
    * @description convert the statistical parameters into Chinese
    */
-  statType2text(type: StatType): string {
+  override statType2text(type: StatType): string {
     return DateTimeBaseField._statType2text(type);
   }
 

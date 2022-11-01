@@ -30,7 +30,7 @@ export const moveRow: ICollaCommandDef<IMoveRowOptions> = {
     const { data, recordData, viewId } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
-    const recordMap = Selectors.getRowsIndexMap(state, datasheetId);
+    const recordMap = Selectors.getRowsIndexMap(state, datasheetId)!;
 
     if (!snapshot) {
       return null;

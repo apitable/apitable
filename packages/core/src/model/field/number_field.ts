@@ -10,7 +10,7 @@ import { IOpenNumberFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenNumberFieldProperty } from 'types/open/open_field_write_types';
 
 export class NumberField extends NumberBaseField {
-  constructor(public field: INumberField, public state: IReduxState) {
+  constructor(public override field: INumberField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -22,7 +22,7 @@ export class NumberField extends NumberBaseField {
     symbolAlign: Joi.valid(...enumToArray(SymbolAlign)),
   }).required();
 
-  cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
+  override cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
     if (this.validate(cellValue)) {
       const { symbol, precision, symbolAlign = SymbolAlign.right, commaStyle } = this.field.property;
       const cellString = numberToShow(cellValue, precision);
@@ -61,14 +61,14 @@ export class NumberField extends NumberBaseField {
     return cellValue2Str === null ? null : str2number(cellValue2Str as string);
   }
 
-  compare(cellValue1: number, cellValue2: number): number {
+  override compare(cellValue1: number, cellValue2: number): number {
     return NumberBaseField._compare(
       this.compareCellValue(cellValue1),
       this.compareCellValue(cellValue2),
     );
   }
 
-  defaultValue(): ICellValue {
+  override defaultValue(): ICellValue {
     const { defaultValue } = this.field.property;
     // Compatible with old data without the <default> attribute
     return defaultValue ? str2number(defaultValue) : null;
@@ -84,12 +84,12 @@ export class NumberField extends NumberBaseField {
     symbol: Joi.string().allow('')
   }).required();
 
-  get openFieldProperty(): IOpenNumberFieldProperty {
+  override get openFieldProperty(): IOpenNumberFieldProperty {
     const { defaultValue, precision, symbol } = this.field.property;
     return { defaultValue, precision, symbol };
   }
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenNumberFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenNumberFieldProperty) {
     return NumberField.updateOpenPropertySchema.validate(updateProperty);
   }
 }

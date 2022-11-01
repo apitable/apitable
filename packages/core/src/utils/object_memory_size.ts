@@ -1,7 +1,7 @@
-export function memorySizeOf(obj) {
+export function memorySizeOf(obj: any) {
   let bytes = 0;
 
-  function sizeOf(obj) {
+  function sizeOf(obj: any) {
     if (obj !== null && obj !== undefined) {
       switch (typeof obj) {
         case 'number':
@@ -31,7 +31,7 @@ export function memorySizeOf(obj) {
     return bytes;
   }
 
-  function formatByteSize(bytes): number {
+  function formatByteSize(bytes: number): number {
     // if (bytes < 1024) {
     //   return bytes + ' bytes';
     // } else if (bytes < 1048576) {

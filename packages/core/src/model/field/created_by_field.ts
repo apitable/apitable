@@ -14,7 +14,7 @@ import { t, Strings } from 'i18n';
 
 export class CreatedByField extends MemberBaseField {
 
-  constructor(public field: ICreatedByField, public state: IReduxState) {
+  constructor(public override field: ICreatedByField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -42,7 +42,7 @@ export class CreatedByField extends MemberBaseField {
     return joiErrorResult("computed field shouldn't validate cellValue");
   }
 
-  validate(cv) {
+  override validate(cv: ICellValue) {
     return cv == null;
   }
 
@@ -55,7 +55,7 @@ export class CreatedByField extends MemberBaseField {
     };
   }
 
-  get apiMetaProperty(): IAPIMetaCreateByFieldProperty {
+  override get apiMetaProperty(): IAPIMetaCreateByFieldProperty {
     const userMap = Selectors.getUserMap(this.state);
     return getApiMetaUserProperty((this.field.property as ICreatedByProperty).uuids, userMap);
   }
@@ -81,20 +81,20 @@ export class CreatedByField extends MemberBaseField {
     };
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
-  get basicValueType(): BasicValueType {
+  override get basicValueType(): BasicValueType {
     return BasicValueType.String;
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
   // CreatedBy is read-only field, no need to implement this method
-  stdValueToCellValue(): null {
+  override stdValueToCellValue(): null {
     return null;
   }
 
@@ -115,7 +115,7 @@ export class CreatedByField extends MemberBaseField {
     return [...new Set(uuids)];
   }
 
-  getUnitNames(cellValue: IUuids) {
+  override getUnitNames(cellValue: IUuids) {
     const userMap = Selectors.getUserMap(this.state);
     if (!userMap) {
       return null;
@@ -128,21 +128,21 @@ export class CreatedByField extends MemberBaseField {
     });
   }
 
-  eq(cv1: IUuids | null, cv2: IUuids | null): boolean {
+  override eq(cv1: IUuids | null, cv2: IUuids | null): boolean {
     if (cv1 == null || cv2 == null) {
       return cv1 === cv2;
     }
     return isEqual(cv1, cv2);
   }
 
-  getUnitIds(cellValue: IUuids | null): string[] | null {
+  override getUnitIds(cellValue: IUuids | null): string[] | null {
     if (!cellValue) {
       return null;
     }
     return [cellValue].flat();
   }
 
-  getUnits(cellValue: IUuids) {
+  override getUnits(cellValue: IUuids) {
     const userMap = Selectors.getUserMap(this.state);
     if (!userMap) {
       return null;
@@ -155,7 +155,7 @@ export class CreatedByField extends MemberBaseField {
     }, [] as any[]);
   }
 
-  validateAddOpenFieldProperty(updateProperty: IAddOpenCreatedByFieldProperty) {
+  override validateAddOpenFieldProperty(updateProperty: IAddOpenCreatedByFieldProperty) {
     if (updateProperty === null) {
       return { error: undefined, value: null };
     }

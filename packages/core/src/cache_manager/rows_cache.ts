@@ -30,7 +30,7 @@ class VisibleRowsBaseCache {
     this._updateVisibleRowsBaseCacheData = updateVisibleRowsBaseCacheData;
   }
 
-  set(datasheetId: string, viewId: string, cache: IViewRow[], mirrorId?: string) {
+  set(datasheetId: string, viewId: string, cache: IViewRow[], _mirrorId?: string) {
     // If it is a server-side environment, do not cache
     if (isServer()) {
       return;
@@ -143,7 +143,7 @@ class VisibleRowsBaseCache {
 
 const removeCellValueCacheIfNeed = (action: IAnyAction, datasheetId: string) => {
   const updateRecordMetaPath = ['recordMap', ':rec', 'recordMeta'];
-  const isUpdateRecordMetaAction = action.p.every((v, i) => {
+  const isUpdateRecordMetaAction = (action.p as (string | number)[]).every((v, i) => {
     const p = updateRecordMetaPath[i] || '';
     const isTem = p.startsWith(':');
     const pre = isTem && p.split(':')?.[1];

@@ -17,8 +17,8 @@ export enum AstNodeType {
 
 export abstract class AstNode {
   readonly token: Token;
-  readonly name: AstNodeType;
-  valueType: BasicValueType;
+  readonly name!: AstNodeType;
+  valueType!: BasicValueType;
   innerValueType?: BasicValueType;
 
   constructor(token: Token) {
@@ -33,7 +33,7 @@ export abstract class AstNode {
 export class BinaryOperatorNode extends AstNode {
   readonly left: AstNode;
   readonly right: AstNode;
-  readonly name = AstNodeType.BinaryOperatorNode;
+  override readonly name = AstNodeType.BinaryOperatorNode;
 
   constructor(left: AstNode, token: Token, right: AstNode) {
     super(token);
@@ -95,7 +95,7 @@ export class BinaryOperatorNode extends AstNode {
 
 export class UnaryOperatorNode extends AstNode {
   readonly child: AstNode;
-  readonly name = AstNodeType.UnaryOperatorNode;
+  override readonly name = AstNodeType.UnaryOperatorNode;
 
   constructor(child: AstNode, token: Token) {
     super(token);
@@ -105,10 +105,10 @@ export class UnaryOperatorNode extends AstNode {
 
 export abstract class ValueOperandNodeBase extends AstNode {
   readonly value: string;
-  valueType: BasicValueType;
-  readonly name: AstNodeType;
-  field: IField;
-  context: { state: IReduxState, fieldMap: IFieldMap };
+  override valueType!: BasicValueType;
+  override readonly name!: AstNodeType;
+  field!: IField;
+  context!: { state: IReduxState, fieldMap: IFieldMap };
 
   constructor(token: Token) {
     super(token);
@@ -142,10 +142,10 @@ export abstract class ValueOperandNodeBase extends AstNode {
 }
 
 export class ValueOperandNode extends ValueOperandNodeBase {
-  readonly value: string;
-  readonly valueType: BasicValueType;
-  readonly name = AstNodeType.ValueOperandNode;
-  readonly field: IField;
+  override readonly value!: string;
+  override readonly valueType!: BasicValueType;
+  override readonly name = AstNodeType.ValueOperandNode;
+  override readonly field!: IField;
 
   constructor(token: Token, context: { state: IReduxState, fieldMap: IFieldMap }, hostField?: IField) {
     super(token);
@@ -155,10 +155,10 @@ export class ValueOperandNode extends ValueOperandNodeBase {
 }
 
 export class PureValueOperandNode extends ValueOperandNodeBase {
-  readonly value: string;
-  readonly valueType: BasicValueType;
-  readonly name = AstNodeType.PureValueOperandNode;
-  readonly field: IField;
+  override readonly value!: string;
+  override readonly valueType!: BasicValueType;
+  override readonly name = AstNodeType.PureValueOperandNode;
+  override readonly field!: IField;
 
   constructor(token: Token, context: { state: IReduxState, fieldMap: IFieldMap }, hostField?: IField) {
     super(token);
@@ -169,7 +169,7 @@ export class PureValueOperandNode extends ValueOperandNodeBase {
 
 export class CallOperandNode extends AstNode {
   readonly value: string;
-  readonly name = AstNodeType.CallOperandNode;
+  override readonly name = AstNodeType.CallOperandNode;
   readonly params: AstNode[] = [];
   constructor(token: Token) {
     super(token);
@@ -179,8 +179,8 @@ export class CallOperandNode extends AstNode {
 
 export class NumberOperandNode extends AstNode {
   readonly value: string;
-  readonly name = AstNodeType.NumberOperandNode;
-  valueType = BasicValueType.Number;
+  override readonly name = AstNodeType.NumberOperandNode;
+  override valueType = BasicValueType.Number;
   constructor(token: Token) {
     super(token);
     this.value = token.value;
@@ -189,8 +189,8 @@ export class NumberOperandNode extends AstNode {
 
 export class StringOperandNode extends AstNode {
   readonly value: string;
-  readonly name = AstNodeType.StringOperandNode;
-  valueType = BasicValueType.String;
+  override readonly name = AstNodeType.StringOperandNode;
+  override valueType = BasicValueType.String;
 
   constructor(token: Token) {
     super(token);

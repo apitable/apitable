@@ -17,7 +17,7 @@ interface IFetchMirrorSuccess {
   getState: () => IReduxState;
 }
 
-export const fetchMirrorInfoApi = (mirrorId: string, shareId?: string, templateId?: string) => {
+export const fetchMirrorInfoApi = (mirrorId: string, shareId?: string, _templateId?: string) => {
   let requestMethod = fetchMirrorInfo;
   if (shareId) {
     requestMethod = () => fetchShareMirrorInfo(shareId, mirrorId);
@@ -34,7 +34,7 @@ export const fetchMirrorDataPackApi = (mirrorId: string, shareId?: string, recor
 };
 
 export function fetchMirrorPack(
-  mirrorId: string, successCb?: (props?: IFetchMirrorSuccess) => void, overWrite?: boolean, extra?: { recordIds: string[] }, failCb?: () => void
+  mirrorId: string, successCb?: (props?: IFetchMirrorSuccess) => void, _overwrite?: boolean, extra?: { recordIds: string[] }, failCb?: () => void
 ) {
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
@@ -74,7 +74,8 @@ export const setMirrorErrorCode = (mirrorId: string, code: number | null) => {
 };
 
 const fetchSuccess = (
-  { dispatch, getState, response, mirrorId }, recordIds?: string[], successCb?: (props?: IFetchMirrorSuccess) => void, failCb?: () => void
+  { dispatch, getState, response, mirrorId }: { dispatch: any, getState: () => IReduxState, response: any, mirrorId: string },
+  recordIds?: string[], successCb?: (props?: IFetchMirrorSuccess) => void, failCb?: () => void
 ) => {
   const { data, success, code } = response.data;
   if (success) {

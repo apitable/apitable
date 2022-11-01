@@ -89,8 +89,8 @@ export function number2str(value: string) {
  * Rewrite toFixed precision problem
  * Only supports 20 digits of precision
  */
-export const toFixed = function(value: number, precision = 0) {
-  if (isNaN(value)) return 0;
+export const toFixed = function(value: number, precision = 0): string {
+  if (isNaN(value)) return '0';
   const that = Math.abs(value);
   let changenum;
   let index;
@@ -98,7 +98,7 @@ export const toFixed = function(value: number, precision = 0) {
   // If the input parameter is negative, an error will be reported. Here, it is treated as 0 by default, that is, the form of bits is not reserved.
   if (precision < 0) precision = 0; 
   changenum = that * Math.pow(10, precision) + 0.5;
-  changenum = (parseInt(changenum, 10) / Math.pow(10, precision)).toString();
+  changenum = (parseInt(String(changenum), 10) / Math.pow(10, precision)).toString();
   index = changenum.indexOf('.');
   if (index < 0 && precision > 0) {
     changenum = changenum + '.' + '0'.repeat(precision);

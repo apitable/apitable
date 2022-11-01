@@ -35,7 +35,7 @@ export const getTextRecordMap =
     });
 
 export class LinkField extends ArrayValueField {
-  constructor(public field: ILinkField, public state: IReduxState) {
+  constructor(public override field: ILinkField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -100,7 +100,7 @@ export class LinkField extends ArrayValueField {
     };
   }
 
-  get statTypeList(): StatType[] {
+  override get statTypeList(): StatType[] {
     return [
       StatType.None,
       StatType.Empty,
@@ -114,11 +114,11 @@ export class LinkField extends ArrayValueField {
     return BasicValueType.Array;
   }
 
-  get innerBasicValueType() {
+  override get innerBasicValueType() {
     return BasicValueType.String;
   }
 
-  get acceptFilterOperators(): FOperator[] {
+  override get acceptFilterOperators(): FOperator[] {
     return [
       FOperator.Contains,
       FOperator.DoesNotContain,
@@ -189,7 +189,7 @@ export class LinkField extends ArrayValueField {
    * @orderInCellValueSensitive {boolean} optional parameter, 
    * to determine whether to only do normal sorting for the associated field, without preprocessing the cell content
    */
-  compare(
+  override compare(
     cellValue1: string[] | null,
     cellValue2: string[] | null,
     orderInCellValueSensitive?: boolean,
@@ -202,7 +202,7 @@ export class LinkField extends ArrayValueField {
     return super.compare(cellValue1, cellValue2);
   }
 
-  isMeetFilter(
+  override isMeetFilter(
     operator: FOperator,
     cellValue: string[] | null,
     conditionValue: Exclude<IFilterText, null>,
@@ -334,7 +334,7 @@ export class LinkField extends ArrayValueField {
     return Field.bindContext(field, this.state).cellValueToString(this.getLinkedCellValue(recordId));
   }
 
-  defaultValueForCondition(condition: IFilterCondition): any {
+  defaultValueForCondition(_condition: IFilterCondition): any {
     return null;
   }
 
@@ -380,7 +380,7 @@ export class LinkField extends ArrayValueField {
     limitSingleRecord: Joi.boolean()
   }).required();
 
-  get openFieldProperty(): IOpenMagicLinkFieldProperty {
+  override get openFieldProperty(): IOpenMagicLinkFieldProperty {
     const { limitToView: limitToViewId, foreignDatasheetId, brotherFieldId, limitSingleRecord } = this.field.property;
     return {
       foreignDatasheetId,
@@ -390,7 +390,7 @@ export class LinkField extends ArrayValueField {
     };
   }
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenMagicLinkFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenMagicLinkFieldProperty) {
     return LinkField.openUpdatePropertySchema.validate(updateProperty);
   }
 
@@ -398,7 +398,7 @@ export class LinkField extends ArrayValueField {
     return LinkField.openAddPropertySchema.validate(addProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMagicLinkFieldProperty): ILinkFieldProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenMagicLinkFieldProperty): ILinkFieldProperty {
     const { foreignDatasheetId, limitToViewId: limitToView, limitSingleRecord } = openFieldProperty;
     return {
       foreignDatasheetId,

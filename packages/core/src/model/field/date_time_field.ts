@@ -10,7 +10,7 @@ import { IOpenDateTimeFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenDateTimeFieldProperty } from 'types/open/open_field_write_types';
 
 export class DateTimeField extends DateTimeBaseField {
-  constructor(public field: IDateTimeField, public state: IReduxState) {
+  constructor(public override field: IDateTimeField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -56,7 +56,7 @@ export class DateTimeField extends DateTimeBaseField {
     };
   }
 
-  defaultValue(): number | null {
+  override defaultValue(): number | null {
     if (this.field.property.autoFill) {
       return Date.now();
     }
@@ -78,7 +78,7 @@ export class DateTimeField extends DateTimeBaseField {
     return DateTimeField.openWriteValueSchema.validate(owv);
   }
 
-  get openFieldProperty(): IOpenDateTimeFieldProperty {
+  override get openFieldProperty(): IOpenDateTimeFieldProperty {
     const { autoFill, includeTime, dateFormat, timeFormat } = this.field.property;
     return {
       dateFormat: DateFormat[dateFormat],
@@ -95,11 +95,11 @@ export class DateTimeField extends DateTimeBaseField {
     autoFill: Joi.boolean(),
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenDateTimeFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenDateTimeFieldProperty) {
     return DateTimeField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenDateTimeFieldProperty): IDateTimeFieldProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenDateTimeFieldProperty): IDateTimeFieldProperty {
     const { dateFormat, timeFormat, autoFill, includeTime } = openFieldProperty;
     const defaultProperty = DateTimeField.defaultProperty();
     return {

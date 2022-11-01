@@ -34,7 +34,7 @@ export class OPEventRecordCommentUpdated implements IAtomEventType<any> {
   realType = EventRealTypeEnums.REAL;
   scope = ResourceType.Datasheet;
   atomType = EventAtomTypeEnums.ATOM;
-  test(opContext: IOPBaseContext, sourceType?: EventSourceTypeEnums.ALL): IEventTestResult<any> {
+  test(opContext: IOPBaseContext, _sourceType?: EventSourceTypeEnums.ALL): IEventTestResult<any> {
     const { action, resourceId } = opContext;
     const { pass, recordId } = testPath(action.p, ['recordMap', ':recordId', 'comments', ':commentIndex']);
     return {

@@ -30,7 +30,7 @@ export const collaboratorSelector = createDeepEqualSelector(
 
 export const collaboratorCursorSelector = createSelector(
   [collaboratorSocketSelector, getActiveDatasheetId],
-  (collaborators, activeDatasheetId): ICollaboratorCursorMap => {
+  (collaborators, _activeDatasheetId): ICollaboratorCursorMap => {
     const collaboratorCursorMap: ICollaboratorCursorMap = {};
     collaborators!
       .filter(collaborator => collaborator.activeCell)

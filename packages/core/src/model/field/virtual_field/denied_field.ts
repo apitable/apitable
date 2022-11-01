@@ -40,46 +40,46 @@ export class DeniedField extends Field {
     return this.validateProperty();
   }
 
-  cellValueToStdValue(cellValue: any): IStandardValue {
+  cellValueToStdValue(_cellValue: any): IStandardValue {
     return {
       sourceType: this.field.type,
       data: [],
     };
   }
 
-  stdValueToCellValue(stdValue: IStandardValue): null {
+  stdValueToCellValue(_stdValue: IStandardValue): null {
     return null;
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
-  validate(value: any): false {
+  validate(_value: any): false {
     return false;
   }
 
-  cellValueToString(cellValue: ICellValue): null {
+  cellValueToString(_cellValue: ICellValue): null {
     return null;
   }
 
-  defaultValueForCondition(condition: IFilterCondition): null {
+  defaultValueForCondition(_condition: IFilterCondition): null {
     return null;
   }
 
-  cellValueToApiStandardValue(cellValue: ICellValue): null {
+  cellValueToApiStandardValue(_cellValue: ICellValue): null {
     return null;
   }
 
-  cellValueToApiStringValue(cellValue: ICellValue) {
+  cellValueToApiStringValue(_cellValue: ICellValue) {
     return null;
   }
 
-  cellValueToOpenValue(cellValue: ICellValue): null {
+  cellValueToOpenValue(_cellValue: ICellValue): null {
     return null;
   }
 
-  openWriteValueToCellValue(openWriteValue: string): null {
+  openWriteValueToCellValue(_openWriteValue: string): null {
     return null;
   }
 }

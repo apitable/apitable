@@ -21,10 +21,10 @@ export function str2timestamp(
  * Returns the number of milliseconds from 13:45 to 00:00
  * @export
  * @param {string} value 12:34
- * @param {IDateTimeField} [field]
+ * @param {IDateTimeField} [_field]
  * @returns
  */
-export function str2time(value: string, field?: IDateTimeField) {
+export function str2time(value: string, _field?: IDateTimeField) {
   // const format = (field && field.property.timeFormat) || DateTimeField.defaultTimeFormat;
   // let dateTime = dayjs(value, format);
   // if (!dateTime.isValid()) {

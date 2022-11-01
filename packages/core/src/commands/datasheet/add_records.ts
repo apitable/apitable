@@ -167,7 +167,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         return collected;
       }
 
-      linkFieldIds.forEach((field: ILinkField) => {
+      (linkFieldIds as ILinkField[]).forEach((field: ILinkField) => {
         const value = newRecord.data[field.id] as string[] | null;
         const linkedSnapshot = Selectors.getSnapshot(state, field.property.foreignDatasheetId)!;
 

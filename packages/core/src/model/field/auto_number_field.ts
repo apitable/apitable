@@ -14,11 +14,11 @@ export class AutoNumberField extends NumberBaseField {
     datasheetId: datasheetIdString().required(),
   }).required();
 
-  get apiMetaProperty() {
+  override get apiMetaProperty() {
     return null;
   }
 
-  static _acceptFilterOperators = [
+  static override _acceptFilterOperators = [
     FOperator.Is,
     FOperator.IsNot,
     FOperator.IsGreater,
@@ -29,7 +29,7 @@ export class AutoNumberField extends NumberBaseField {
     FOperator.IsNotEmpty,
   ];
 
-  get acceptFilterOperators(): FOperator[] {
+  override get acceptFilterOperators(): FOperator[] {
     return AutoNumberField._acceptFilterOperators;
   }
 
@@ -50,19 +50,19 @@ export class AutoNumberField extends NumberBaseField {
     };
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
-  stdValueToCellValue(): null {
+  override stdValueToCellValue(): null {
     return null;
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
+  override cellValueToString(cellValue: ICellValue): string | null {
     if (this.validate(cellValue)) {
       return String(cellValue);
     }
@@ -73,11 +73,11 @@ export class AutoNumberField extends NumberBaseField {
     return AutoNumberField.propertySchema.validate(this.field.property);
   }
 
-  validateCellValue() {
+  override validateCellValue() {
     return joiErrorResult("computed field shouldn't validate cellValue");
   }
 
-  validateOpenWriteValue() {
+  override validateOpenWriteValue() {
     return joiErrorResult("computed field shouldn't validate cellValue");
   }
 
@@ -91,7 +91,7 @@ export class AutoNumberField extends NumberBaseField {
     return fieldUpdatedMap[fieldId]?.autoNumber || cellValue || null;
   }
 
-  validateAddOpenFieldProperty(updateProperty: IAddOpenAutoNumberFieldProperty) {
+  override validateAddOpenFieldProperty(updateProperty: IAddOpenAutoNumberFieldProperty) {
     if (updateProperty === null) {
       return { error: undefined, value: null };
     }

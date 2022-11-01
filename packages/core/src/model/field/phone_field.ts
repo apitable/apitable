@@ -4,7 +4,7 @@ import { DatasheetActions } from '../datasheet';
 import { TextBaseField } from './text_base_field';
 
 export class PhoneField extends TextBaseField {
-  constructor(public field: IPhoneField, state: IReduxState) {
+  constructor(public override field: IPhoneField, state: IReduxState) {
     super(field, state);
   }
 
@@ -12,7 +12,7 @@ export class PhoneField extends TextBaseField {
     return null;
   }
 
-  get apiMetaProperty() {
+  override get apiMetaProperty() {
     return null;
   }
 

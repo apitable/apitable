@@ -24,7 +24,7 @@ export const computedFormattingStr = () => Joi.allow(Joi.object({
   commaStyle: Joi.string(),
 }));
 
-const stringIsNumber = value => isNaN(Number(value)) === false;
+const stringIsNumber = (value: string) => isNaN(Number(value)) === false;
 
 export function enumToArray(en: Object) {
   const keys = Object.keys(en).filter(k => !stringIsNumber(k));

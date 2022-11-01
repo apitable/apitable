@@ -146,7 +146,7 @@ export function getFeiShuTenant(tenantKey: string) {
  * @param memberId 
  * @returns 
  */
-export function feishuChangeMainAdmin(tenantKey, spaceId, memberId) {
+export function feishuChangeMainAdmin(tenantKey: string, spaceId: string, memberId: string) {
   return axios.post(Url.SOCIAL_CHANGE_ADMIN, { memberId, spaceId, tenantKey });
 }
 
@@ -285,7 +285,10 @@ export function getWecomCommonConfig(spaceId: string, url: string) {
  * @param param0 
  * @returns 
  */
-export function socialWecomCheckConfig({ agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain }) {
+export function socialWecomCheckConfig(
+  { agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain }:
+  { agentId: string, agentSecret: string, appHomepageUrl: string, authCallbackDomain: string, corpId: string, trustedDomain: string }
+) {
   return axios.post(Url.SOCIAL_WECOM_CHECK_CONFIG, { agentId, agentSecret, appHomepageUrl, authCallbackDomain, corpId, trustedDomain });
 }
 

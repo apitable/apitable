@@ -56,7 +56,7 @@ export class ResourceStashManager {
     this.calcRefMap(_activeDstIds, activeDstIds);
   }
 
-  static getIdsByResourceType(stashResourceIds) {
+  static getIdsByResourceType(stashResourceIds: string[]) {
     const stashDatasheetIds: string[] = [];
     const stashDashboardIds: string[] = [];
     const stashFormIds: string[] = [];

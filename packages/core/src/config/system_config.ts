@@ -27,7 +27,7 @@ const ApiTipConfig = apiTipConfigJson as APITipConfigInterface;
 const Settings = SystemConfig.settings;
 
 // notification
-const jsonToObject = (object) => {
+const jsonToObject = (object: object) => {
   const obj = { ...object };
   Object.keys(object).forEach((i) => {
     obj[i] = i;

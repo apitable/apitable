@@ -2,7 +2,7 @@ import { mockState } from '../../../formula_parser/__tests__/mock_state';
 import { IField } from '../../../types/field_types';
 import { Field } from '../index';
 
-export const commonTestSuit = (valid) => {
+export const commonTestSuit = (valid: any) => {
   it('输入随机的字符串', function() {
     const [expectValue, receiveValue] = valid(Math.random().toString(36).slice(-8));
     expect(receiveValue).not.toEqual(expectValue);

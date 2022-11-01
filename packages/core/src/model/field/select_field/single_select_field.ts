@@ -5,7 +5,7 @@ import { isNullValue } from 'model/utils';
 import { getFieldOptionColor } from 'model/color';
 import { ICellValue } from 'model/record';
 import { IReduxState } from 'store';
-import { BasicValueType, FieldType, IField, ISingleSelectField, IStandardValue } from 'types/field_types';
+import { BasicValueType, FieldType, IField, ISelectFieldProperty, ISingleSelectField, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { FOperator, IFilterCondition, IFilterSingleSelect } from 'types/view_types';
 import { DatasheetActions } from '../../datasheet';
@@ -13,7 +13,7 @@ import { isOptionId, SelectField } from './common_select_field';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';
 
 export class SingleSelectField extends SelectField {
-  constructor(public field: ISingleSelectField, public state: IReduxState) {
+  constructor(public override field: ISingleSelectField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -33,7 +33,7 @@ export class SingleSelectField extends SelectField {
       return helpers.message({ en: 'option is not string' });
     }
 
-    if (!field.property.options.some(option => option.id === optionId)) {
+    if (!(field.property as ISelectFieldProperty).options.some(option => option.id === optionId)) {
       return helpers.message({ en: 'option not exist field property' });
     }
     return optionId;
@@ -45,7 +45,7 @@ export class SingleSelectField extends SelectField {
     if (!optionIdOrName) {
       return helpers.error('value format error');
     }
-    if (!field.property.options.some(option => option.id === optionIdOrName || option.name === optionIdOrName)) {
+    if (!(field.property as ISelectFieldProperty).options.some(option => option.id === optionIdOrName || option.name === optionIdOrName)) {
       return helpers.error('option not exist field property');
     }
     return optionIdOrName;
@@ -59,7 +59,7 @@ export class SingleSelectField extends SelectField {
     return SingleSelectField.openWriteValueSchema.validate(owv, { context: { field: this.field }});
   }
 
-  defaultValue(): string | null {
+  override defaultValue(): string | null {
     const defaultValue = this.field.property.defaultValue as string | undefined;
     if (!defaultValue || !defaultValue.trim().length) {
       return null;
@@ -175,7 +175,7 @@ export class SingleSelectField extends SelectField {
     return isString(value) && this.field.property.options.some(option => option.id === value);
   }
 
-  isMeetFilter(
+  override isMeetFilter(
     operator: FOperator, cellValue: string | null, conditionValue: Exclude<IFilterSingleSelect, null>,
   ) {
     if (operator === FOperator.IsEmpty) {
@@ -239,7 +239,7 @@ export class SingleSelectField extends SelectField {
     return option?.id ?? null;
   }
 
-  static openUpdatePropertySchema = Joi.object({
+  static override openUpdatePropertySchema = Joi.object({
     options: Joi.array().items(Joi.object({
       id: Joi.string(),
       name: Joi.string().required(),
@@ -248,7 +248,7 @@ export class SingleSelectField extends SelectField {
     defaultValue: Joi.string()
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
+  override validateUpdateOpenProperty(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
     const result = SingleSelectField.openUpdatePropertySchema.validate(updateProperty);
     if (result.error) {
       return result;

@@ -150,7 +150,7 @@ export class RoomService {
           opBufferMap
         });
       } catch (e) {
-        if (e.name === 'QuotaExceededError') {
+        if ((e as any).name === 'QuotaExceededError') {
           await this.backupDB.clear();
           this.backupDB.setItem(String(Date.now()), { changesetMap, opBufferMap });
         }
@@ -165,7 +165,7 @@ export class RoomService {
       });
 
       Player.doTrigger(Events.app_error_logger, {
-        error: new Error(`Failed to initialize applyChangeset: ${e.message}`),
+        error: new Error(`Failed to initialize applyChangeset: ${(e as any).message}`),
         metaData: {
           roomId: this.roomId,
           changesetMap: JSON.stringify(changesetMap),

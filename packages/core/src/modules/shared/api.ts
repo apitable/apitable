@@ -786,8 +786,8 @@ export function subscribeRemind(params: { nodeId?: string; spaceId: string; spec
  * @param spaceId
  * @returns
  */
-export function getLabsFeature(spaceId) {
-  return axios.get(urlcat(Url.GET_LABS_FEATURE, { spaceId }));
+export function getLabsFeature(spaceId: string) {
+    return axios.get(urlcat(Url.GET_LABS_FEATURE, { spaceId }));
 }
 
 /**
@@ -865,7 +865,7 @@ export function queryOrderStatus(orderId: string) {
   return axios.get<IApiWrapper & { data: IQueryOrderStatusResponse }>(urlcat(Url.ORDER_STATUS, { orderId }));
 }
 
-export function queryOrderDiscount(params) {
+export function queryOrderDiscount(params: any) {
   return axios.post<IApiWrapper & { data: IQueryOrderDiscountResponse }>(Url.DRY_RUN, params);
 }
 

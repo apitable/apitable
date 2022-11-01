@@ -12,9 +12,10 @@ import { IJOTAction, integrateCdnHost, OTActionName, Settings } from 'index';
 
 export class CalendarView extends View {
 
-  get recordShowName(){
+  override get recordShowName(){
     return t(Strings.calendar_record);
   }
+
   static getViewIntroduce() {
     return {
       title: t(Strings.calendar_view),

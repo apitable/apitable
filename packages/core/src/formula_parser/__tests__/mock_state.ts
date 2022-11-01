@@ -1,4 +1,4 @@
-import { IReduxState, IFieldMap, ThemeName, RecordVision } from '../../store/interface';
+import { IReduxState, IFieldMap, ThemeName, RecordVision, IRecordCellValue } from '../../store/interface';
 import { FieldType } from '../../types/field_types';
 import { IFormulaContext } from '../functions/basic';
 import { evaluate as _evaluate } from '../evaluate';
@@ -142,7 +142,7 @@ export const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>
   return _evaluate(expression, { ...ctx, field: fieldMap.x }, true, true);
 };
 
-export const mergeContext = (recordData, _fieldMap?: IFieldMap) => {
+export const mergeContext = (recordData: IRecordCellValue, _fieldMap?: IFieldMap) => {
   return {
     state: generateMockState({ ...fieldMap, ...(_fieldMap || {}) }),
     record: {

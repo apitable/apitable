@@ -3,7 +3,7 @@ import { Strings, t } from 'i18n';
 import { StatusCode } from 'config';
 
 export const errorCapture = <T extends { event: { onError?(e: any): void } }>() => {
-  return (target: T, name: string, descriptor: PropertyDescriptor) => {
+  return (_target: T, name: string, descriptor: PropertyDescriptor) => {
     const fn = descriptor.value;
 
     return {
@@ -40,7 +40,7 @@ export const errorCapture = <T extends { event: { onError?(e: any): void } }>() 
           throw e;
         };
 
-        return (...args) => {
+        return (...args: any[]) => {
           try {
             
             const promise = boundFn(...args);

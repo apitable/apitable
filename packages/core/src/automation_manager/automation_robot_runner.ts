@@ -31,11 +31,11 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
     const entryActionId = globalContext.robot.entryActionId;
     await this.executeAction(entryActionId, globalContext);
   }
-  validateActionInput(actionType: IActionType, input: any): boolean {
+  validateActionInput(_actionType: IActionType, _input: any): boolean {
     // TODO: implement json schema validation
     return true;
   }
-  validateActionOutput(actionType: IActionType, output: any): boolean {
+  validateActionOutput(_actionType: IActionType, _output: any): boolean {
     // TODO: implement json schema validation
     return true;
   }
@@ -97,7 +97,7 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
       }
     } catch (error) {
       errorStacks.push({
-        message: error.message,
+        message: (error as any).message,
       });
       // unexpected error, we should stop the execution, done but failed
       globalContext.isDone = true;

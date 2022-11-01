@@ -9,7 +9,7 @@ export const ERROR_STR = '[ERROR STR]';
 
 // String.key will return key, for compatibility 
 export const Strings = new Proxy({}, {
-  get: function(target, key) {
+  get: function(_target, key) {
     return key;
   },
 }) as StringKeysMapType;

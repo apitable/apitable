@@ -10,11 +10,11 @@ import { FieldType } from 'types/field_types';
 import { IJOTAction, OTActionName } from 'engine/ot/interface';
 
 export class OrgChartView extends View {
-  get recordShowName() {
+  override get recordShowName() {
     return t(Strings.row);
   }
 
-  get recordShowUnit() {
+  override get recordShowUnit() {
     return '';
   }
 

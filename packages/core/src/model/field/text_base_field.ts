@@ -67,7 +67,7 @@ export abstract class TextBaseField extends Field {
     };
   }
 
-  showFOperatorDesc(type: FOperator) {
+  override showFOperatorDesc(type: FOperator) {
     return FOperatorDescMap[type];
   }
 
@@ -178,11 +178,11 @@ export abstract class TextBaseField extends Field {
     }
   }
 
-  eq(cv1: ISegment[] | null, cv2: ISegment[] | null): boolean {
+  override eq(cv1: ISegment[] | null, cv2: ISegment[] | null): boolean {
     return this.cellValueToString(cv1) === this.cellValueToString(cv2);
   }
 
-  isMeetFilter(operator: FOperator, cellValue: ISegment[] | null, conditionValue: Exclude<IFilterText, null>) {
+  override isMeetFilter(operator: FOperator, cellValue: ISegment[] | null, conditionValue: Exclude<IFilterText, null>) {
     const cellText = this.cellValueToString(cellValue);
     if (operator === FOperator.IsEmpty) {
       return cellText == null;
@@ -237,7 +237,7 @@ export abstract class TextBaseField extends Field {
     return string2Segment(openWriteValue);
   }
 
-  validateAddOpenFieldProperty(updateProperty: IAddOpenFieldProperty) {
+  override validateAddOpenFieldProperty(updateProperty: IAddOpenFieldProperty) {
     if (this.field.type !== FieldType.SingleText && updateProperty === null) {
       return { error: undefined, value: null };
     }

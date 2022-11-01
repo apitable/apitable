@@ -18,7 +18,7 @@ type IInviteActions = IUpdateInviteEmailInfoAction | IUpdateTeamTreeInviteAction
 IUpdateSubTeamTreeInviteAction | IUpdateLinkListAction | IUpdateInviteLinkInfoAction | IUpdateLinkTokenAction |
 IUpdateMailTokenAction | IUpdateErrCodeAction;
 
-const findParent = (data: ITeamTreeNode[], id: string) => {
+const findParent = (data: ITeamTreeNode[], id: string): null | ITeamTreeNode => {
   return data.reduce<ITeamTreeNode | null>((preValue, item) => {
     if (preValue) {
       return preValue;

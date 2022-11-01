@@ -268,7 +268,7 @@ export function batchEditFieldPermissionRole(dstId: string, fieldId: string, opt
  * @param viewId 
  * @returns 
  */
-export function getDstViewDataPack(dstId, viewId) {
+export function getDstViewDataPack(dstId: string, viewId: string) {
   return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(
     urlcat(Url.GET_DST_VIEW_DATA_PACK, { dstId, viewId }), { baseURL },
   );
@@ -282,7 +282,7 @@ export function getDstViewDataPack(dstId, viewId) {
  * @param shareId 
  * @returns 
  */
-export function getShareDstViewDataPack(dstId, viewId, shareId) {
+export function getShareDstViewDataPack(dstId: string, viewId: string, shareId: string) {
   return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(
     urlcat(Url.GET_SHARE_DST_VIEW_DATA_PACK, { dstId, viewId, shareId }), { baseURL },
   );

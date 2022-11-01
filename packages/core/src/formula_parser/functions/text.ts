@@ -7,13 +7,13 @@ import { Strings, t } from 'i18n';
 import { flattenParams } from './array';
 
 class TextFunc extends FormulaFunc {
-  static readonly type = FormulaFuncType.Text;
+  static override readonly type = FormulaFuncType.Text;
 }
 
 type TextType = string | null;
 
 export class Find extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'FIND',
@@ -22,12 +22,12 @@ export class Find extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<string>, IFormulaParam<string>, IFormulaParam<number>]): number {
+  static override func(params: [IFormulaParam<string>, IFormulaParam<string>, IFormulaParam<number>]): number {
     const stringToFind = params[0].value;
     const whereToSearch = params[1].value;
     if (stringToFind == null || whereToSearch == null) {
@@ -44,7 +44,7 @@ export class Find extends TextFunc {
 }
 
 export class Search extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'SEARCH',
@@ -53,12 +53,12 @@ export class Search extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<string>, IFormulaParam<string>, IFormulaParam<number>]): number | null {
+  static override func(params: [IFormulaParam<string>, IFormulaParam<string>, IFormulaParam<number>]): number | null {
     const stringToFind = params[0].value;
     const whereToSearch = params[1].value;
     if (stringToFind == null || whereToSearch == null) {
@@ -74,9 +74,9 @@ export class Search extends TextFunc {
 }
 
 export class Concatenate extends TextFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'CONCATENATE',
@@ -85,19 +85,19 @@ export class Concatenate extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: IFormulaParam<string>[]): TextType {
+  static override func(params: IFormulaParam<string>[]): TextType {
     const flattenValue = flattenParams(params);
     return flattenValue.join('');
   }
 }
 
 export class EncodeUrlComponent extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'ENCODE_URL_COMPONENT',
@@ -106,12 +106,12 @@ export class EncodeUrlComponent extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>]): TextType {
+  static override func(params: [IFormulaParam<string>]): TextType {
     const value = params[0].value;
 
     if (value == null) {
@@ -122,7 +122,7 @@ export class EncodeUrlComponent extends TextFunc {
 }
 
 export class Left extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'LEFT',
@@ -131,12 +131,12 @@ export class Left extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>, IFormulaParam<number>]): TextType {
+  static override func(params: [IFormulaParam<string>, IFormulaParam<number>]): TextType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -147,7 +147,7 @@ export class Left extends TextFunc {
 }
 
 export class Right extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'RIGHT',
@@ -156,12 +156,12 @@ export class Right extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>, IFormulaParam<number>]): TextType {
+  static override func(params: [IFormulaParam<string>, IFormulaParam<number>]): TextType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -174,7 +174,7 @@ export class Right extends TextFunc {
 }
 
 export class Len extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'LEN',
@@ -183,12 +183,12 @@ export class Len extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: [IFormulaParam<string>]): number | null {
+  static override func(params: [IFormulaParam<string>]): number | null {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -198,7 +198,7 @@ export class Len extends TextFunc {
 }
 
 export class Lower extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'LOWER',
@@ -207,12 +207,12 @@ export class Lower extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>]): TextType {
+  static override func(params: [IFormulaParam<string>]): TextType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -222,7 +222,7 @@ export class Lower extends TextFunc {
 }
 
 export class Upper extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'UPPER',
@@ -231,12 +231,12 @@ export class Upper extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>]): TextType {
+  static override func(params: [IFormulaParam<string>]): TextType {
     const value = params[0].value;
     if (value == null) {
       return null;
@@ -246,7 +246,7 @@ export class Upper extends TextFunc {
 }
 
 export class Mid extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'MID',
@@ -255,12 +255,12 @@ export class Mid extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>, IFormulaParam<number>, IFormulaParam<number>]): TextType {
+  static override func(params: [IFormulaParam<string>, IFormulaParam<number>, IFormulaParam<number>]): TextType {
     let [{ value: str }, { value: whereToStart }, { value: count }] = params;
 
     if (str == null) {
@@ -275,7 +275,7 @@ export class Mid extends TextFunc {
 }
 
 export class Replace extends TextFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 4) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'REPLACE',
@@ -284,12 +284,12 @@ export class Replace extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [
+  static override func(params: [
     IFormulaParam<string>, IFormulaParam<number>, IFormulaParam<number>, IFormulaParam<string>
   ]): TextType {
     let [{ value: str }, { value: whereToStart }, { value: count }, { value: replaceStr }] = params;
@@ -313,9 +313,9 @@ export class Replace extends TextFunc {
 }
 
 export class T extends TextFunc {
-  static acceptValueType = new Set([BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.DateTime, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'T',
@@ -324,12 +324,12 @@ export class T extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>]): TextType {
+  static override func(params: [IFormulaParam<string>]): TextType {
     const str = params[0].value;
     if (isString(str)) {
       return str;
@@ -339,9 +339,9 @@ export class T extends TextFunc {
 }
 
 export class Trim extends TextFunc {
-  static acceptValueType = new Set([BasicValueType.Boolean, BasicValueType.String]);
+  static override acceptValueType = new Set([BasicValueType.Boolean, BasicValueType.String]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'TRIM',
@@ -350,12 +350,12 @@ export class Trim extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>]): TextType {
+  static override func(params: [IFormulaParam<string>]): TextType {
     const str = params[0].value;
     if (str == null) {
       return null;
@@ -365,9 +365,9 @@ export class Trim extends TextFunc {
 }
 
 export class Rept extends TextFunc {
-  static acceptValueType = new Set([BasicValueType.Boolean, BasicValueType.String]);
+  static override acceptValueType = new Set([BasicValueType.Boolean, BasicValueType.String]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'REPT',
@@ -376,12 +376,12 @@ export class Rept extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [IFormulaParam<string>, IFormulaParam<number>]): TextType {
+  static override func(params: [IFormulaParam<string>, IFormulaParam<number>]): TextType {
     let [{ value: str }, { value: count }] = params;
     if (str == null) {
       return null;
@@ -393,9 +393,9 @@ export class Rept extends TextFunc {
 }
 
 export class Substitute extends TextFunc {
-  static acceptValueType = new Set([BasicValueType.Boolean, BasicValueType.String]);
+  static override acceptValueType = new Set([BasicValueType.Boolean, BasicValueType.String]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'SUBSTITUTE',
@@ -404,12 +404,12 @@ export class Substitute extends TextFunc {
     }
   }
 
-  static getReturnType(params?: AstNode[]) {
+  static override getReturnType(params?: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.String;
   }
 
-  static func(params: [
+  static override func(params: [
     IFormulaParam<string>, IFormulaParam<string>, IFormulaParam<string>, IFormulaParam<number>
   ]): TextType {
     const [{ value: str }, { value: oldText }, { value: newText }] = params;

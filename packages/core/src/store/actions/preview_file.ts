@@ -3,7 +3,7 @@ import { IAttachmentValue } from 'types';
 import { IPreviewFile } from 'store/interface';
 
 export const setPreviewFile = (data: IPreviewFile) => {
-  return dispatch => {
+  return (dispatch: any) => {
     dispatch({
       type: actions.SET_PREVIEW_FILE,
       payload: data,
@@ -12,7 +12,7 @@ export const setPreviewFile = (data: IPreviewFile) => {
 };
 
 export const setPreviewFileCellActive = (list: IAttachmentValue[]) => {
-  return dispatch => {
+  return (dispatch: any) => {
     dispatch({
       type: actions.SET_PREVIEW_FILE_CELL_ACTIVE,
       payload: list,
@@ -21,7 +21,7 @@ export const setPreviewFileCellActive = (list: IAttachmentValue[]) => {
 };
 
 export const setPreviewFileDefault = () => {
-  return dispatch => {
+  return (dispatch: any) => {
     dispatch({
       type: actions.SET_PREVIEW_DEFAULT_ACTIVE,
     });

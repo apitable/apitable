@@ -11,6 +11,7 @@ import {
   BasicValueType,
   IAutoNumberField,
   INumberFieldProperty,
+  IComputedFieldFormattingProperty,
 } from 'types/field_types';
 import { FOperator, IFilterCondition, IFilterNumber } from 'types/view_types';
 import { Field } from './field';
@@ -33,7 +34,7 @@ export const commonNumberFields = new Set([
 // scientific notation threshold
 export const numberThresholdValue = 1e+16;
 
-export const numberFormat = (cv, formatting) => {
+export const numberFormat = (cv: ICellValue, formatting?: IComputedFieldFormattingProperty) => {
   const { formatType, precision = 0, symbol, commaStyle } = (formatting as any) || {};
 
   if (formatType === FieldType.Currency) {
@@ -51,7 +52,7 @@ export const numberFormat = (cv, formatting) => {
 };
 
 export abstract class NumberBaseField extends Field {
-  constructor(public field: ICommonNumberField, state: IReduxState) {
+  constructor(public override field: ICommonNumberField, state: IReduxState) {
     super(field, state);
   }
 
@@ -115,7 +116,7 @@ export abstract class NumberBaseField extends Field {
 
   static openWriteValueSchema = Joi.number().allow(null).required();
 
-  showFOperatorDesc(type: FOperator) {
+  override showFOperatorDesc(type: FOperator) {
     return NumberBaseField.FOperatorDescMap[type];
   }
 
@@ -123,7 +124,7 @@ export abstract class NumberBaseField extends Field {
     return NumberBaseField._acceptFilterOperators;
   }
 
-  get statTypeList(): StatType[] {
+  override get statTypeList(): StatType[] {
     return NumberBaseField._statTypeList;
   }
 
@@ -131,7 +132,7 @@ export abstract class NumberBaseField extends Field {
     return BasicValueType.Number;
   }
 
-  cellValueToString(cellValue: ICellValue): string | null {
+  cellValueToString(_cellValue: ICellValue): string | null {
     return null;
   }
 
@@ -149,7 +150,7 @@ export abstract class NumberBaseField extends Field {
       0 : (cellValue1 > cellValue2 ? 1 : -1);
   }
 
-  compare(cellValue1: number, cellValue2: number): number {
+  override compare(cellValue1: number, cellValue2: number): number {
     return NumberBaseField._compare(cellValue1, cellValue2);
   }
 
@@ -254,7 +255,7 @@ export abstract class NumberBaseField extends Field {
     }
   }
 
-  isMeetFilter(operator: FOperator, cellValue: number | null, conditionValue: Exclude<IFilterNumber, null>) {
+  override isMeetFilter(operator: FOperator, cellValue: number | null, conditionValue: Exclude<IFilterNumber, null>) {
     return NumberBaseField._isMeetFilter(operator, cellValue, conditionValue);
   }
 

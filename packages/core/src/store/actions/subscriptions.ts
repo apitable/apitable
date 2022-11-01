@@ -8,7 +8,7 @@ import { getSubscriptions } from '../../modules/database/datasheet_api';
  * @param mirrorId 
  * @returns 
  */
-export const getSubscriptionsAction = (datasheetId: string, mirrorId?: string) => async(dispatch) => {
+export const getSubscriptionsAction = (datasheetId: string, mirrorId?: string) => async(dispatch: any) => {
   const { data } = await getSubscriptions(datasheetId, mirrorId);
 
   if (data?.success) {

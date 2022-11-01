@@ -79,9 +79,9 @@ export function selecteTeamRowsInModal(arr: ISubTeamListInSpaceBase[]) {
  * Space - Team List
  * Query and get specific team list
  */
-export function getTeamListDataInSpace(spaceId: string, user: IUserInfo) {
+export function getTeamListDataInSpace(_spaceId: string, _user: IUserInfo) {
   let teamListInSpace: ITeamListInSpace[] = [];
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getTeamList().then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -95,8 +95,8 @@ export function getTeamListDataInSpace(spaceId: string, user: IUserInfo) {
  * Contacts - Team List
  * Get Team Info
  */
-export function getTeamInfo(spaceId: string, teamId: string) {
-  return dispatch => {
+export function getTeamInfo(_spaceId: string, teamId: string) {
+  return (dispatch: any) => {
     Api.readTeam(teamId).then(res => {
       const { success, data } = res.data;      
       success && dispatch(updateSelectedTeamInfoInSpace({
@@ -111,8 +111,8 @@ export function getTeamInfo(spaceId: string, teamId: string) {
  * Space - invite member by email
  * invite member by email
  */
-export function sendInviteEmail(spaceId: string, invite: IInviteMemberList[]) {
-  return dispatch => {
+export function sendInviteEmail(_spaceId: string, invite: IInviteMemberList[]) {
+  return (dispatch: any) => {
     Api.sendInvite(invite).then(res => {
       const { success } = res.data;
       dispatch(updateInviteStatus(true));
@@ -139,7 +139,7 @@ export function getMemberListDataInSpace(pageNo: number, teamId?: string) {
     order: 'createdAt',
     sort: ConfigConstant.SORT_ASC,
   };
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getMemberListInSpace(JSON.stringify({ ...pageObjectParams, pageNo }), teamId).then(res => {
       const { success, data } = res.data;
       if (success) {
@@ -155,7 +155,7 @@ export function getMemberListDataInSpace(pageNo: number, teamId?: string) {
  * Get Member detail
  */
 export function getEditMemberInfo(memberId: string) {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getMemberInfo({ memberId }).then(res => {
       if (res.data.success) {
         dispatch(updateMemberInfoInSpace(res.data.data));
@@ -169,7 +169,7 @@ export function getEditMemberInfo(memberId: string) {
  * Get sub team list by specific team
  */
 export function getSubTeamListDataInSpace(teamId: string) {
-  return dispatch => {
+  return (dispatch: any) => {
     Api.getSubTeams(teamId).then(res => {
       const { success, data } = res.data;
       if (success) {

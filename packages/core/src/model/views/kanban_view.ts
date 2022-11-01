@@ -5,7 +5,7 @@ import { DatasheetActions } from 'model';
 import { IFieldMap, IKanbanViewProperty, ISetKanbanStyleValue, ISnapshot, ViewType } from 'store';
 import { IViewColumn, IViewProperty } from 'store/interface';
 import { getViewIndex } from 'store/selector';
-import { FieldType, IField } from 'types';
+import { FieldType, IField, IMemberProperty } from 'types';
 import { CardView } from './card_view';
 import { integrateCdnHost } from 'utils';
 
@@ -47,7 +47,7 @@ export class KanbanView extends CardView {
         hiddenGroupMap[item.id] = false;
       });
     } else {
-      field.property.unitIds.forEach(id => {
+      (field.property as IMemberProperty).unitIds.forEach(id => {
         hiddenGroupMap[id] = false;
       });
     }

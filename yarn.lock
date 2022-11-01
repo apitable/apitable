@@ -187,9 +187,11 @@ __metadata:
     "@types/color": ^3.0.1
     "@types/jest": ^27.5.1
     "@types/lodash": 4.14.161
+    "@types/mockjs": ^1.0.7
     "@types/node": ^14.14.34
     "@types/qs": ^6.9.4
     "@types/socket.io-client": ^1.4.36
+    "@types/string.prototype.matchall": ^4.0.1
     apphook: 1.0.6
     attr-accept: ^2.1.0
     axios: 0.19.0
@@ -12425,6 +12427,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mockjs@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "@types/mockjs@npm:1.0.7"
+  checksum: 50cb08ce903b1752c6185194e6188bab782f9b1f72f4b7afaf599696f8eeb297cc38573210ea7f1b2cabc9cbe737a92747f79ad3cd25e2dd278d3f91c6eefc0f
+  languageName: node
+  linkType: hard
+
 "@types/node-fetch@npm:^2.5.7":
   version: 2.5.12
   resolution: "@types/node-fetch@npm:2.5.12"
@@ -13045,6 +13054,13 @@ __metadata:
   version: 2.0.0
   resolution: "@types/stack-utils@npm:2.0.0"
   checksum: b3fbae25b073116977ecb5c67d22f14567b51a7792403b0bf46e5de8f29bde3bd4ec1626afb22065495ca7f1c699c8bd66720050c94b8f8f9bcefbee79d161fd
+  languageName: node
+  linkType: hard
+
+"@types/string.prototype.matchall@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@types/string.prototype.matchall@npm:4.0.1"
+  checksum: 8dd9fd5e3f160ca1dfb137eb9625d417b4cb1f5d65827c87b9f1c82df49b5220fa8b4eeb142a38dedd917e4cb195b8a5e025b73f9b88fcfe5d7efd9548b32d86
   languageName: node
   linkType: hard
 

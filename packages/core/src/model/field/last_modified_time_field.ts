@@ -13,7 +13,7 @@ import { IOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_read_t
 import { IUpdateOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_write_types';
 
 export class LastModifiedTimeField extends DateTimeBaseField {
-  constructor(public field: ILastModifiedTimeField, state: IReduxState) {
+  constructor(public override field: ILastModifiedTimeField, state: IReduxState) {
     super(field, state);
   }
 
@@ -49,11 +49,11 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     };
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
@@ -69,7 +69,7 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     return joiErrorResult("computed field shouldn't validate cellValue");
   }
 
-  stdValueToCellValue(): null {
+  override stdValueToCellValue(): null {
     return null;
   }
 
@@ -93,7 +93,7 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     return timestamps.length ? Math.max(...timestamps as number[]) : null;
   }
 
-  get openFieldProperty(): IOpenLastModifiedTimeFieldProperty {
+  override get openFieldProperty(): IOpenLastModifiedTimeFieldProperty {
     const { includeTime, dateFormat, timeFormat, collectType, fieldIdCollection } = this.field.property;
     return {
       dateFormat: DateFormat[dateFormat],
@@ -112,11 +112,11 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     fieldIdCollection: Joi.array().items(Joi.string())
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenLastModifiedTimeFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenLastModifiedTimeFieldProperty) {
     return LastModifiedTimeField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenLastModifiedTimeFieldProperty): ILastModifiedTimeFieldProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenLastModifiedTimeFieldProperty): ILastModifiedTimeFieldProperty {
     const { dateFormat, timeFormat, includeTime, collectType, fieldIdCollection } = openFieldProperty;
     const defaultProperty = LastModifiedTimeField.defaultProperty();
     return {

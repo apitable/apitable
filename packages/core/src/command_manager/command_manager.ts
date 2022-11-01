@@ -38,12 +38,12 @@ export type IResourceOpsCollect = {
 };
 
 export interface ICollaCommandManagerListener {
-  handleCommandExecuted?(resourceOpsCollects: IResourceOpsCollect[]);
+  handleCommandExecuted?(resourceOpsCollects: IResourceOpsCollect[]): void;
   getRoomId?(): string;
   handleCommandExecuteError?(
     error: IError,
     type?: 'message' | 'modal' | 'subscribeUsage'
-  );
+  ): void;
 }
 
 export class CollaCommandManager {
@@ -165,7 +165,7 @@ export class CollaCommandManager {
       ret = command.execute(context, options);
     } catch (e) {
       Player.doTrigger(Events.app_error_logger, {
-        error: new Error(`command execution error: ${e.message}`),
+        error: new Error(`command execution error: ${(e as any).message}`),
         metaData: {
           resourceId: options.resourceId,
           resourceType: options.resourceType,
@@ -175,7 +175,7 @@ export class CollaCommandManager {
         this._listener.handleCommandExecuteError({
           type: ErrorType.CollaError,
           code: ErrorCode.CommandExecuteFailed,
-          message: e.message,
+          message: (e as any).message,
         });
       return {
         resourceId: options.resourceId,

@@ -61,7 +61,7 @@ export class ComputeRefManager {
   }
 
   // Check if there is a circular reference, if it exists, it will not pass
-  public checkRef(key: string, _visitedNode?: Set<string>) {
+  public checkRef(key: string, _visitedNode?: Set<string>): boolean {
     const visitedNode = _visitedNode || new Set<string>();
     if (visitedNode.has(key)) {
       return false;

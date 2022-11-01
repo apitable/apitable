@@ -28,7 +28,7 @@ export class GalleryView extends CardView {
     };
   }
 
-  static defaultRows(srcView: IViewProperty) {
+  static override defaultRows(srcView: IViewProperty) {
     if (srcView) {
       return srcView.rows;
     }

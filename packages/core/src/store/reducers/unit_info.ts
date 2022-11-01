@@ -10,14 +10,14 @@ const defaultState: IUnitInfo = {
 
 type IUnitInfoAction = IUpdateUnitMapAction | IUpdateUserMapAction | IResetUnitInfoAction;
 
-const updateUnitMap = (oldUnitMap, newUnitMap) => {
+const updateUnitMap = (oldUnitMap: any, newUnitMap: any) => {
   return {
     ...(oldUnitMap || {}),
     ...newUnitMap,
   };
 };
 
-const updateUserMap = (oldUserMap, newUserMap) => {
+const updateUserMap = (oldUserMap: any, newUserMap: any) => {
   if (!oldUserMap) {
     oldUserMap = {};
   }

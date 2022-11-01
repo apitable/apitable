@@ -16,8 +16,8 @@ import { ViewPropertyFilter } from 'engine/view_property_filter';
 
 export interface IEngineEvent {
   onAcceptSystemOperations: (op: IOperation[]) => void;
-  onNewChanges(resourceType: ResourceType, resourceId: string, actions: IJOTAction[]);
-  onError?(error: IError);
+  onNewChanges(resourceType: ResourceType, resourceId: string, actions: IJOTAction[]): void;
+  onError?(error: IError): void;
   getUndoManager(): UndoManager;
   reloadResourceData(): void;
 }
@@ -39,7 +39,7 @@ export class Engine {
   getState: () => any;
   dispatch: (action: any) => void;
   private prepared = false;
-  private readonly viewPropertyFilter: ViewPropertyFilter;
+  private readonly viewPropertyFilter?: ViewPropertyFilter;
 
   constructor(params: {
     resourceId: string,

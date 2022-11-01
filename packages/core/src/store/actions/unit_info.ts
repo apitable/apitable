@@ -44,7 +44,7 @@ export const resetUnitInfo = () => {
  * @returns 
  */
 export const loadLackUnitMap = (names: string, linkId?: string,) => {
-  return async dispatch => {
+  return async (dispatch: any) => {
     if (!names.length) {
       return;
     }

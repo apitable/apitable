@@ -11,7 +11,7 @@ import { IFillHandleStatus } from 'store/interface';
  * @param ranges 
  * @returns 
  */
-export const setSelection = (ranges: IRange | IRange[]): any => (dispatch, getState: () => IReduxState) => {
+export const setSelection = (ranges: IRange | IRange[]): any => (dispatch: any, getState: () => IReduxState) => {
   const state = getState();
   const datasheetId = state.pageParams.datasheetId;
   const selectionState = Selectors.getDatasheetClient(state)!.selection;

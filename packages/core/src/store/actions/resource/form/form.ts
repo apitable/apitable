@@ -53,7 +53,7 @@ export function fetchForm(formId: string, successFn?: (props?: any) => void) {
 }
 
 function fetchDataSuccess(
-  { formId, response, dispatch, shareId }: { formId: string, response: AxiosResponse, dispatch: Dispatch, shareId: string },
+  { formId, response, dispatch }: { formId: string, response: AxiosResponse, dispatch: Dispatch, shareId: string },
 ) {
   const body = response.data;
   const data = body.data;
@@ -166,7 +166,7 @@ export async function fetchForeignFormList(
     const res = await Api.getRelateNodeByDstId(dstId, viewId, ConfigConstant.NodeType.FORM);
     return res.data.data;
   } catch (e) {
-    throw new Error(e);
+    throw new Error(e as any);
   }
 }
 export const deactivateFormCollaborator = (payload: { socketId: string }, resourceId: string) => {

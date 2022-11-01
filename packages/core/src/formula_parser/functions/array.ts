@@ -6,9 +6,9 @@ import dayjs from 'dayjs';
 import { t, Strings } from 'i18n';
 
 class ArrayFunc extends FormulaFunc {
-  static readonly type = FormulaFuncType.Array;
+  static override readonly type = FormulaFuncType.Array;
 
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 }
 
 function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<any[] | null>] {
@@ -36,7 +36,7 @@ export const flattenParams = (params: IFormulaParam[]): any[] => {
       }
     }
     return value != null ? [...prev, value] : prev;
-  }, []);
+  }, [] as IFormulaParam[]);
   return value.flat(Infinity);
 };
 
@@ -48,17 +48,17 @@ enum SymbolType {
 }
 
 export class ArrayJoin extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
 
     return BasicValueType.String;
   }
 
-  static func(
+  static override func(
     [valuesParam, separatorParam]: [IFormulaParam, IFormulaParam<string>],
   ): string | null {
     const { value, node } = valuesParam;
@@ -78,65 +78,65 @@ export class ArrayJoin extends ArrayFunc {
 }
 
 export class ArrayUnique extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Array;
   }
 
-  static func(params: IFormulaParam[]): any[] {
+  static override func(params: IFormulaParam[]): any[] {
     const flattenValue = flattenParams(params);
     return [...new Set(flattenValue)];
   }
 }
 
 export class ArrayFlatten extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Array;
   }
 
-  static func(params: IFormulaParam[]): any[] {
+  static override func(params: IFormulaParam[]): any[] {
     return flattenParams(params);
   }
 }
 
 export class ArrayCompact extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Array;
   }
 
-  static func(params: IFormulaParam[]): any[] {
+  static override func(params: IFormulaParam[]): any[] {
     const flattenValue = flattenParams(params);
     return flattenValue.filter(v => v !== '');
   }
 }
 
 export class Count extends ArrayFunc {
-  static acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
+  static override acceptValueType = new Set([BasicValueType.Array, ...FormulaFunc.acceptValueType]);
 
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<any>[]): number {
+  static override func(params: IFormulaParam<any>[]): number {
     const calc = (v: any) => typeof v === 'number' && !isNaN(v);
     if (isArrayParam(params)) {
       const innerValueType = (params[0].node as ValueOperandNode).innerValueType;
@@ -152,16 +152,16 @@ export class Count extends ArrayFunc {
 }
 
 export class Counta extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<any>[]): number {
+  static override func(params: IFormulaParam<any>[]): number {
     // Due to how other platforms handle this function, false is also included in the range of nulls
     const calc = (v: any) => v != null && v !== '' && v !== false;
 
@@ -175,16 +175,16 @@ export class Counta extends ArrayFunc {
 }
 
 export class Countall extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(_params: AstNode[]) {
     //
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<any>[]): number {
+  static override func(params: IFormulaParam<any>[]): number {
     if (isArrayParam(params)) {
       if (params[0].value == null) { return 0; }
       return params[0].value.length;
@@ -195,7 +195,7 @@ export class Countall extends ArrayFunc {
 }
 
 export class CountIf extends ArrayFunc {
-  static validateParams(params: AstNode[]) {
+  static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
       throw new Error(t(Strings.function_validate_params_count_at_least, {
         name: 'COUNTIF',
@@ -204,16 +204,16 @@ export class CountIf extends ArrayFunc {
     }
   }
 
-  static getReturnType(params: AstNode[]) {
+  static override getReturnType(params: AstNode[]) {
     params && this.validateParams(params);
     return BasicValueType.Number;
   }
 
-  static func(params: IFormulaParam<any>[]): number {
+  static override func(params: IFormulaParam<any>[]): number {
     const [{ node: rangeNode, value: range }, { node: conditionNode, value: condition }] = params;
     const symbol = params[2]?.value || '=';
     const reg = /^(=)|(!=|！=)|(>)|(<)$/g;
-    const finalSymbol = symbol.replace(reg, (_, $1, $2, $3, $4) => {
+    const finalSymbol = symbol.replace(reg, (_m: string, $1?: string, $2?: string, $3?: string, $4?: string) => {
       return ($1 && SymbolType.Equal) || 
         ($2 && SymbolType.NotEqual) ||
         ($3 && SymbolType.Greater) ||
@@ -223,6 +223,8 @@ export class CountIf extends ArrayFunc {
 
     if (range == null) return 0;
     if (rangeNode.valueType === BasicValueType.Array) {
+      // @ts-ignore
+      declare let range: any[]
       const filterTypes = [BasicValueType.String, BasicValueType.Number]; // special convertible type
       switch (finalSymbol) {
         case SymbolType.Equal: {
@@ -274,13 +276,12 @@ export class CountIf extends ArrayFunc {
           return range.filter(v => v < condition).length;
         }
       }
-    }
-    if (rangeNode.valueType === BasicValueType.String) {
+    } else if (rangeNode.valueType === BasicValueType.String) {
       switch (finalSymbol) {
         case SymbolType.Equal: {
           const filterTypes = [BasicValueType.String, BasicValueType.Number]; // special convertible type
           if (filterTypes.includes(conditionNode.valueType)) {
-            return range.split(condition).length - 1;
+            return (range as string).split(condition).length - 1;
           }
           return 0;
         }

@@ -130,7 +130,7 @@ export function parse(
       const ast = new FormulaExprParser(lexer, context).parse();
       ExpCache.set(datasheetId, field.id, expression, { lexer, ast });
     } catch (e) {
-      ExpCache.set(datasheetId, field.id, expression, { error: e });
+      ExpCache.set(datasheetId, field.id, expression, { error: e as Error });
     }
   }
 

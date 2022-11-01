@@ -17,7 +17,7 @@ export const isOptionId = (optionId: string) => {
 
 export abstract class SelectField extends Field {
 
-  constructor(public field: ISelectField, state: IReduxState) {
+  constructor(public override field: ISelectField, state: IReduxState) {
     super(field, state);
   }
 
@@ -27,7 +27,7 @@ export abstract class SelectField extends Field {
       name: Joi.string().required(),
       color: Joi.number().integer().min(0).required(),
     })).required(),
-    defaultValue: Joi.custom((prototype, helpers) => {
+    defaultValue: Joi.custom((_prototype, helpers) => {
       if (helpers.prefs['context']?.['fieldType'] === FieldType.SingleSelect) {
         return Joi.string();
       }
@@ -137,7 +137,7 @@ export abstract class SelectField extends Field {
     return mapOptions;
   });
 
-  compare(
+  override compare(
     cellValue1: string | string[] | null,
     cellValue2: string | string[] | null,
   ): number {
@@ -173,7 +173,7 @@ export abstract class SelectField extends Field {
   }
 
   // Modify the current property according to StandardValue
-  enrichProperty(stdVals: IStandardValue[]): ISelectFieldProperty {
+  override enrichProperty(stdVals: IStandardValue[]): ISelectFieldProperty {
     if (!this.propertyEditable()) {
       // Filling non-existent values for single and multiple selection will be enriched by default, 
       // but if there is no manageable permission for the node, enrich will report an error
@@ -230,7 +230,7 @@ export abstract class SelectField extends Field {
     return options.filter(item => item.name.trim().length);
   }
 
-  get openFieldProperty(): IOpenSelectBaseFieldProperty {
+  override get openFieldProperty(): IOpenSelectBaseFieldProperty {
     const { defaultValue } = this.field.property;
     const options = this.field.property.options.map(option => {
       return {
@@ -265,7 +265,7 @@ export abstract class SelectField extends Field {
     return { error: undefined, value: undefined };
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IWriteOpenSelectBaseFieldProperty): ISelectFieldProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IWriteOpenSelectBaseFieldProperty): ISelectFieldProperty {
     const { options, defaultValue } = openFieldProperty;
     const newOptions: ISelectFieldOption[] = [];
     let transformedDefaultValue = defaultValue;
@@ -306,7 +306,7 @@ export abstract class SelectField extends Field {
     return defaultValue;
   }
 
-  private matchSingleSelectName(name: string, defaultValue): boolean{
+  private matchSingleSelectName(name: string, defaultValue: any): boolean{
     return typeof defaultValue === 'string' 
       && name === defaultValue;
   }

@@ -40,11 +40,11 @@ export class CreatedTimeField extends DateTimeBaseField {
     };
   }
 
-  get isComputed() {
+  override get isComputed() {
     return true;
   }
 
-  recordEditable() {
+  override recordEditable() {
     return false;
   }
 
@@ -60,7 +60,7 @@ export class CreatedTimeField extends DateTimeBaseField {
     return joiErrorResult("computed field shouldn't validate cellValue");
   }
 
-  stdValueToCellValue(): null {
+  override stdValueToCellValue(): null {
     return null;
   }
 
@@ -69,7 +69,7 @@ export class CreatedTimeField extends DateTimeBaseField {
     return createdAt == null ? null : dayjs(createdAt).valueOf();
   }
 
-  get openFieldProperty(): IOpenCreatedTimeFieldProperty {
+  override get openFieldProperty(): IOpenCreatedTimeFieldProperty {
     const { includeTime, dateFormat, timeFormat } = this.field.property;
     return {
       dateFormat: DateFormat[dateFormat],
@@ -84,11 +84,11 @@ export class CreatedTimeField extends DateTimeBaseField {
     includeTime: Joi.boolean()
   }).required();
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenCreatedTimeFieldProperty) {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenCreatedTimeFieldProperty) {
     return CreatedTimeField.openUpdatePropertySchema.validate(updateProperty);
   }
 
-  updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenCreatedTimeFieldProperty): ICreatedTimeFieldProperty {
+  override updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenCreatedTimeFieldProperty): ICreatedTimeFieldProperty {
     const { dateFormat, timeFormat, includeTime } = openFieldProperty;
     const defaultProperty = CreatedTimeField.defaultProperty();
     return {

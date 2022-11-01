@@ -91,7 +91,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
 
     // There is already record paste assignment
     const columnCount = options.fields.length;
-    const visibleColumns = getVisibleColumns(state);
+    const visibleColumns = getVisibleColumns(state)!;
     const columnsToPaste = visibleColumns.slice(column, column + columnCount);
     if (columnsToPaste.length === 0) {
       return null;

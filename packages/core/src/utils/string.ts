@@ -1,6 +1,6 @@
 import { ISegment, SegmentType, SymbolAlign } from 'types/field_types';
 import { phone } from 'phone';
-import shim from 'string.prototype.matchall/shim';
+import { shim } from 'string.prototype.matchall';
 shim();
 
 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';

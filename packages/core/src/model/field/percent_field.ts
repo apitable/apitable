@@ -9,7 +9,7 @@ import { IOpenPercentFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenPercentFieldProperty } from 'types/open/open_field_write_types';
 
 export class PercentField extends NumberBaseField {
-  constructor(public field: IPercentField, public state: IReduxState) {
+  constructor(public override field: IPercentField, public override state: IReduxState) {
     super(field, state);
   }
 
@@ -19,7 +19,7 @@ export class PercentField extends NumberBaseField {
   }).required();
 
   // preview state data
-  cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
+  override cellValueToString(cellValue: ICellValue, cellToStringOption?: ICellToStringOption): string | null {
     if (this.validate(cellValue)) {
       const cellString = numberToShow(times(cellValue, 100), this.field.property.precision);
       const { hideUnit } = cellToStringOption || {};
@@ -29,7 +29,7 @@ export class PercentField extends NumberBaseField {
   }
 
   // Return the default value of the field attribute configuration when adding a record
-  defaultValue(): ICellValue {
+  override defaultValue(): ICellValue {
     const { defaultValue } = this.field.property;
     return defaultValue ? str2number(defaultValue) : null;
   }
@@ -39,7 +39,7 @@ export class PercentField extends NumberBaseField {
     return cellValue2Str === null ? null : str2number(cellValue2Str as string);
   }
 
-  compare(cellValue1: number | null, cellValue2: number | null): number {
+  override compare(cellValue1: number | null, cellValue2: number | null): number {
     return NumberBaseField._compare(
       this.compareCellValue(cellValue1),
       this.compareCellValue(cellValue2),
@@ -65,7 +65,7 @@ export class PercentField extends NumberBaseField {
     };
   }
 
-  get openFieldProperty(): IOpenPercentFieldProperty {
+  override get openFieldProperty(): IOpenPercentFieldProperty {
     const { defaultValue, precision } = this.field.property;
     return {
       defaultValue,
@@ -73,7 +73,7 @@ export class PercentField extends NumberBaseField {
     };
   }
 
-  validateUpdateOpenProperty(updateProperty: IUpdateOpenPercentFieldProperty): Joi.ValidationResult {
+  override validateUpdateOpenProperty(updateProperty: IUpdateOpenPercentFieldProperty): Joi.ValidationResult {
     return PercentField.propertySchema.validate(updateProperty);
   }
 }

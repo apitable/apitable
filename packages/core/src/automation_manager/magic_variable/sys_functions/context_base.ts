@@ -43,7 +43,7 @@ const IMagicOperatorMap = {
 };
 
 const makeFunction = (operator: OperatorEnums, funcName: string) => {
-  const func = (...args) => {
+  const func = (...args: any[]) => {
     const [ctx, fieldId, b] = args;
     const fieldMap = ctx.state.datasheetMap[ctx.datasheetId].datasheet?.snapshot.meta.fieldMap!;
     const field = fieldMap[fieldId];
