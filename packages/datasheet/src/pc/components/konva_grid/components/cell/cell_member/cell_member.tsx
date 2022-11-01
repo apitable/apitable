@@ -80,7 +80,7 @@ export const CellMember: FC<ICellProps> = props => {
           const { x, y, width, height, text, id, unitInfo } = item;
           const { avatar, type, unitId } = unitInfo;
 
-          const radius = type === MemberType.Team ? 4 : 16;
+          const radius = type === MemberType.Member ? 16 : 4;
           const itemBg = colors.fc11;
           const iconX = width - GRID_OPTION_ITEM_PADDING - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - GRID_CELL_DELETE_ITEM_BUTTON_SIZE_OFFSET;
           let iconBg = 'transparent';

@@ -26,7 +26,9 @@ export const CreateTeamModal: FC<IModalProps> = props => {
 
   const validCreate = () => {
     setStart(true);
-    props.setModalVisible(false);
+    setTimeout(() => {
+      props.setModalVisible(false);
+    });
   };
   const handleOk = () => {
     if (inputContent.length > MAX_NAME_STRING_LENGTH) {

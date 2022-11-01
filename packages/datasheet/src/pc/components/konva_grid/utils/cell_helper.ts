@@ -888,7 +888,7 @@ export class CellHelper extends KonvaDrawer {
           y: y + currentY,
           width: itemWidth,
           height: itemHeight,
-          radius: type === MemberType.Team ? 4 : isFromGanttShortHeight ? 10 : 16,
+          radius: type === MemberType.Member ? (isFromGanttShortHeight ? 10 : 16) : 4,
           fill: colors.fc11,
         });
 
