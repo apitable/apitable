@@ -886,15 +886,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                     userSpaceService.delete(userId, spaceId);
                 }
             }
-            // The sharing link of the shared node is withdrawn, and the sharing is closed
-            List<String> nodeIds = nodeShareSettingMapper.selectNodeIdsByUpdatersAndSpaceId(userIds, spaceId);
-            if (CollUtil.isNotEmpty(nodeIds)) {
-                // disabling node sharing
-                nodeShareSettingMapper.disableByNodeIds(nodeIds);
-                // publish the node share shutdown event
-                SpringContextHolder.getApplicationContext().publishEvent(new NodeShareDisableEvent(this, nodeIds));
-                TaskManager.me().execute(() -> NotificationManager.me().nodeShareNotify(spaceId, nodeIds, false));
-            }
         }
         List<MemberEntity> memberEntities = baseMapper.selectBatchIds(memberIds);
         // The invitation link is invalid and the public link it created is deleted

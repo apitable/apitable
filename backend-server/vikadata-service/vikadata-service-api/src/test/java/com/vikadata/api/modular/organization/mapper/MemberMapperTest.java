@@ -22,6 +22,7 @@ import com.vikadata.api.model.vo.space.MainAdminInfoVo;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
 import com.vikadata.api.modular.social.model.TenantMemberDto;
+import com.vikadata.api.modular.workspace.model.MemberInfoDTO;
 import com.vikadata.entity.MemberEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -494,6 +495,14 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
         assertThat(memberTeamInfoDTOS.get(0).getTeamId()).isEqualTo(41);
         assertThat(memberTeamInfoDTOS.get(1).getMemberId()).isEqualTo(45);
         assertThat(memberTeamInfoDTOS.get(1).getTeamId()).isEqualTo(45);
+    }
+
+    @Test
+    @Sql("/testdata/unit-member-data.sql")
+    void testSelectIdByUserIdAndSpaceIdExcludeDelete() {
+        MemberInfoDTO memberInfoDTO = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(41L, "spc41");
+        assertThat(memberInfoDTO.getId()).isEqualTo(41L);
+        assertThat(memberInfoDTO.getIsDeleted()).isEqualTo(0L);
     }
 }
 

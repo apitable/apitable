@@ -98,4 +98,7 @@ public class NodeShareInfoVO {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean featureViewManualSave;
 
+    @ApiModelProperty(value = "is deleted", example = "true", position = 16)
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isDeleted;
 }

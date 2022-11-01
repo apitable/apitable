@@ -44,6 +44,7 @@ import com.vikadata.api.modular.organization.mapper.MemberMapper;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
 import com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper;
+import com.vikadata.api.modular.workspace.model.MemberInfoDTO;
 import com.vikadata.api.modular.workspace.model.NodeCopyOptions;
 import com.vikadata.api.modular.workspace.model.NodeSharePropsDTO;
 import com.vikadata.api.modular.workspace.service.INodeService;
@@ -248,10 +249,11 @@ public class NodeShareServiceImpl implements INodeShareService {
             nodeShareInfoVo.setAllowSaved(props.getBool("canBeStored", false));
             nodeShareInfoVo.setAllowEdit(props.getBool("canBeEdited", false));
         }
-        // Get the last operator to determine if it does not exist.
-        Long memberId = memberMapper.selectIdByUserIdAndSpaceId(setting.getUpdatedBy(), node.getSpaceId());
-        ExceptionUtil.isNotNull(memberId, SHARE_EXPIRE);
-        MemberDto member = memberMapper.selectDtoByMemberId(memberId);
+        // Get the last operator
+        MemberInfoDTO memberInfo = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(setting.getUpdatedBy(), node.getSpaceId());
+        ExceptionUtil.isNotNull(memberInfo, SHARE_EXPIRE);
+        nodeShareInfoVo.setIsDeleted(memberInfo.getIsDeleted());
+        MemberDto member = memberMapper.selectDtoByMemberId(memberInfo.getId());
         nodeShareInfoVo.setLastModifiedBy(member.getMemberName());
         nodeShareInfoVo.setLastModifiedAvatar(member.getAvatar());
         nodeShareInfoVo.setHasLogin(HttpContextUtil.hasSession());
@@ -266,7 +268,7 @@ public class NodeShareServiceImpl implements INodeShareService {
             }
         }
 
-        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, nodeIds);
+        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberInfo.getId(), nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), SHARE_EXPIRE);
         // Filter nodes. If you allow others to edit the nodes, you need to edit the above permissions before you can display the nodes. Otherwise, you only need to view the permissions.
         ControlRole requireRole = ControlRoleManager.parseNodeRole(nodeShareInfoVo.getAllowEdit() ? Node.EDITOR : Node.READER);

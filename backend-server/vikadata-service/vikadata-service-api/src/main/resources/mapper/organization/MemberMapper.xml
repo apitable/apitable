@@ -347,6 +347,12 @@
         where user_id = #{userId} and space_id = #{spaceId} and is_deleted = 0 LIMIT 0,1
     </select>
 
+    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.modular.workspace.model.MemberInfoDTO">
+        select id, is_deleted
+        from vika_unit_member
+        where user_id = #{userId} and space_id = #{spaceId}  LIMIT 0,1
+    </select>
+
     <select id="selectMemberIdByUserIdAndSpaceIdExcludeDelete" resultType="java.lang.Long">
         select id
         from vika_unit_member

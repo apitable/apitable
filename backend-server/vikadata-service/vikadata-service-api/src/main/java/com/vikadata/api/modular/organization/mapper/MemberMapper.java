@@ -20,6 +20,7 @@ import com.vikadata.api.modular.mapper.ExpandBaseMapper;
 import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
 import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
 import com.vikadata.api.modular.social.model.TenantMemberDto;
+import com.vikadata.api.modular.workspace.model.MemberInfoDTO;
 import com.vikadata.entity.MemberEntity;
 
 public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
@@ -150,7 +151,7 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * get member name id even if he was deleted.
      *
      *
-     * @param id member id 
+     * @param id member id
      * @return member name
      */
     String selectMemberNameById(@Param("id") Long id);
@@ -246,7 +247,7 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      *
      * @param userId user id
      * @param spaceId space id
-     * @return affected row 
+     * @return affected row
      */
     int updateActiveStatusByUserIdAndSpaceId(@Param("userId") Long userId, @Param("spaceId") String spaceId);
 
@@ -266,6 +267,15 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return member id
      */
     Long selectIdByUserIdAndSpaceId(@Param("userId") Long userId, @Param("spaceId") String spaceId);
+
+    /**
+     * query user's memberId in space, exclude deleted member
+     *
+     * @param userId  user's id
+     * @param spaceId space's id
+     * @return memberInfo
+     */
+    MemberInfoDTO selectIdByUserIdAndSpaceIdExcludeDelete(@Param("userId") Long userId, @Param("spaceId") String spaceId);
 
     /**
      * query the user's member id in the space, even if member is deleted.
@@ -761,7 +771,7 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
 
     /**
      * clear open id
-     * @param id member id 
+     * @param id member id
      * @return affected row
      */
     int clearOpenIdById(@Param("id") Long id);
