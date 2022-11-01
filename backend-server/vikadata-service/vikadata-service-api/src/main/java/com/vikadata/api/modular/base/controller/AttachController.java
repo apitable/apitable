@@ -103,7 +103,6 @@ public class AttachController {
     @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     @SuppressWarnings("rawtypes")
     public ResponseData<PageInfo<AssetsAuditVo>> readReviews(@PageObjectParam Page page) {
-        //查询session中的钉钉会员信息
         String auditorUserId = SessionContext.getDingtalkUserId();
         ExceptionUtil.isNotNull(auditorUserId, AuthException.UNAUTHORIZED);
         return ResponseData.success(PageHelper.build(iAssetAuditService.readReviews(page)));

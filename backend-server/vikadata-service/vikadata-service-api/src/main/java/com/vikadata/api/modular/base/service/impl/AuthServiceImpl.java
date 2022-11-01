@@ -149,12 +149,12 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long loginByPassword(LoginRo loginRo) {
-        //人机验证
+        // human-machine verification
         afsCheckService.noTraceCheck(loginRo.getData());
         UserEntity user = iUserService.getByUsername(loginRo.getAreaCode(), loginRo.getUsername());
         int errorPwdCount = 0;
         String key = ERROR_PWD_NUM_DIR + user.getId();
-        //判断是否连续输错超过五次密码
+        // Determine whether you have entered the wrong password more than five times in a row
         if (BooleanUtil.isTrue(redisTemplate.hasKey(key))) {
             BoundValueOperations<String, Object> opts = redisTemplate.boundValueOps(key);
             errorPwdCount = Integer.parseInt(Objects.requireNonNull(opts.get()).toString());

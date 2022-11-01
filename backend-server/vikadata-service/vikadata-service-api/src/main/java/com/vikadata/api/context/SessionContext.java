@@ -16,9 +16,7 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.HttpContextUtil;
 
 import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.Session;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
-import org.springframework.session.web.http.CookieSerializer.CookieValue;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
 /**
@@ -190,29 +188,10 @@ public class SessionContext {
     }
 
     /**
-     * 拷贝session到指定域名
-     * @param request       HttpServletRequest
-     * @param response      HttpServletResponse
-     * @param targetDomain  targetDomain
-     */
-    public static void copySessionToDomain(HttpServletRequest request, HttpServletResponse response, String targetDomain) {
-        HttpSession session = request.getSession(false);
-        if (null != session) {
-            Session redisSession = sessionRepository.findById(session.getId());
-            if (null != redisSession) {
-                CookieValue cookieValue = new CookieValue(request, response, redisSession.getId());
-                cookieSerializer.setDomainName(targetDomain);
-                cookieSerializer.setCookiePath("/");
-                cookieSerializer.writeCookieValue(cookieValue);
-            }
-        }
-    }
-
-    /**
      * remove cookie
      *
      * @param response   HttpServletResponse
-     * @param cookieName cookie名称
+     * @param cookieName cookie name
      */
     public static void removeCookie(HttpServletResponse response, String cookieName, String cookiePath) {
         if (null == response || StrUtil.isBlank(cookieName)) {

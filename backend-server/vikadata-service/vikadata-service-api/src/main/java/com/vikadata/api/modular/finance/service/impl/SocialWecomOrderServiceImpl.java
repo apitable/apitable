@@ -91,7 +91,7 @@ public class SocialWecomOrderServiceImpl extends ServiceImpl<SocialWecomOrderMap
     public List<String> getUnRefundedLastSubscriptionIds(String spaceId, String suiteId, String paidCorpId) {
         SocialWecomOrderEntity order = baseMapper.selectLastPaidOrder(suiteId, paidCorpId);
         if (null == order) {
-            // 判断是否在试用期
+            // determine whether it is in the trial period
             String subscriptionId = iSubscriptionService.getActiveTrailSubscriptionIdBySpaceId(spaceId);
             if (null != subscriptionId) {
                 return Collections.singletonList(subscriptionId);

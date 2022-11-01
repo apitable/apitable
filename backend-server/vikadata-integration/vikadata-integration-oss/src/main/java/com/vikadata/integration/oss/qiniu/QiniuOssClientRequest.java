@@ -156,7 +156,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     public UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath) throws IOException {
         // grab network resources to space
         try {
-            StopWatch stopWatch = new StopWatch("上传网络资源耗时");
+            StopWatch stopWatch = new StopWatch("time consuming to upload network resources");
             stopWatch.start();
             FetchRet fetchRet = bucketManager.fetch(remoteSrcUrl, bucketName, keyPath);
             stopWatch.stop();

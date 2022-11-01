@@ -66,7 +66,6 @@ public class ${entity} {
         </#if>
     </#if>
     <#if field.keyFlag>
-    <#-- 主键 -->
         <#if field.keyIdentityFlag>
     @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
         <#elseif idType??>

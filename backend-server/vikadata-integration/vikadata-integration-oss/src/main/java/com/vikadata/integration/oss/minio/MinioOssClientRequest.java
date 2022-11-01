@@ -148,7 +148,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
                     PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(path)
-                            // 10M分片上传
+                            // 10M slice upload
                             .stream(in, -1, 10485760)
                             .contentType(mimeType)
                             .headers(userMetadata)

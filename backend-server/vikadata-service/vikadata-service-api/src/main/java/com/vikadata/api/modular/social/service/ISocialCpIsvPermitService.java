@@ -100,7 +100,7 @@ public interface ISocialCpIsvPermitService {
      *
      * @param suiteId Application Suit ID
      * @param authCorpId Authorized enterprise ID
-     * @param spaceId Space ID。已下单则不需要
+     * @param spaceId Space id
      * @param orderId Order number. If it is not blank, send the ordered message; if it is blank, send the manual order message
      * @param durationMonths Number of months purchased. No need if the order has been placed
      * @return Send successfully
@@ -112,7 +112,7 @@ public interface ISocialCpIsvPermitService {
      *
      * @param suiteId Application Suit ID
      * @param authCorpId Authorized enterprise ID
-     * @param spaceId Space ID。已下单则不需要
+     * @param spaceId Space ID
      * @param orderId Order number. If it is not blank, send the ordered message; if it is blank, send the manual order message
      * @return Send successfully
      */

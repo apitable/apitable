@@ -16,20 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p> 
- * IService 实现类（ 泛型：M 是 mapper 对象，T 是实体 ）
+ * IService Expand Class
  * </p> 
  * @author zoe zheng 
- * @date 2021/11/10 11:31
  */
 public class ExpandServiceImpl<M extends ExpandBaseMapper<T>, T> extends ServiceImpl<M, T> {
 
-    /**
-     * 批量插入
-     *
-     * @param entityList ignore
-     * @param batchSize  ignore
-     * @return ignore
-     */
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveBatch(Collection<T> entityList, int batchSize) {

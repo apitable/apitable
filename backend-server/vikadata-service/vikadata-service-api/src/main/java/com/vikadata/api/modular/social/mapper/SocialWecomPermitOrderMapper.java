@@ -20,7 +20,7 @@ public interface SocialWecomPermitOrderMapper extends BaseMapper<SocialWecomPerm
      * Get details according to the order number
      *
      * @param orderId License Order Number
-     * @return Order details情
+     * @return Order details
      */
     SocialWecomPermitOrderEntity selectByOrderId(@Param("orderId") String orderId);
 

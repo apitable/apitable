@@ -129,7 +129,6 @@ public class ClientReleaseVersionServiceImpl extends ServiceImpl<ClientReleaseVe
                     }
                 }
             }
-            // feature版本不需要版本号，直接使用[feature.{pipelineId}]
             String realVersion = version.isFeatureVersion() ? version.getBuildMetaVersion() : version.toString();
             save(ClientReleaseVersionEntity.builder()
                     .version(realVersion)

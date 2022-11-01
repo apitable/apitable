@@ -130,7 +130,7 @@ public class ClientController {
     /**
      * Client application version portal
      * The application version has different processing in different environments. The environment variable setting location is:ClientProperties.Datasheet.Env
-     * SaaS环境有: test(test)、integration(alpha)、staging(beta)、production(release)
+     * SaaS: test(test)、integration(alpha)、staging(beta)、production(release)
      * @param pipelineId Optional parameter, ci serial number. When the environment variable is test or integration,
      *                   The application version of the specified pipeline ID can be obtained. The version number is feature.${pipelineId} generally
      * @return Web content of application version
@@ -169,7 +169,6 @@ public class ClientController {
 
         // Write the user's global language in the entry page, and the language variable is automatically obtained in the cookies
         entryVo.setLocale(LocaleContextHolder.getLocale().toLanguageTag());
-        // Feature客户端版本不允许放入内存
         String templateContent = versionName.contains("feature") ?
                 clientReleaseVersionService.getHtmlContentByVersion(entryVo.getVersion())
                 : clientReleaseVersionService.getHtmlContentCacheIfAbsent(entryVo.getVersion());

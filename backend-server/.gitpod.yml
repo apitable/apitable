@@ -7,22 +7,18 @@ additionalRepositories:
 image:
   file: .gitpod.Dockerfile
 
-
 tasks:
   - name: java-server
-    # 提前预先编译
     init: |
       source scripts/install-utils.sh
       bash ./devtools.sh setup-redis
       bash ./devtools.sh setup-mysql
       bash ./devtools.sh setup-rabbitmq
       ./gradlew build -x test
-    # 启动程序运行命令, redis容易走丢，重新运行一次
     command: |
       bash ./devtools.sh setup-redis
       bash ./devtools.sh launch-service-api
     openMode: tab-before
-  # 8081启动后创建测试账号
   - name: init-users & open browser
     command: |
       gp await-port 8081
@@ -36,7 +32,6 @@ tasks:
     command: |
       yarn run start:dev
     openMode: tab-after
-  # 一个独立的命令行窗口用于自由编辑
   - name: command line for free
     command: echo "Hi, Vikaer"
     openMode: tab-after
