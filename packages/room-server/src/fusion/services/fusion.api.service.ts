@@ -1,51 +1,70 @@
+import {
+  CacheManager,
+  CollaCommandName,
+  Conversion,
+  ExecuteResult,
+  FieldKeyEnum,
+  getViewTypeString,
+  ICollaCommandOptions,
+  IDeleteRecordData,
+  IField,
+  ILocalChangeset,
+  IMeta,
+  IOperation,
+  IServerDatasheetPack,
+  IViewRow,
+  NoticeTemplatesConstant,
+} from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { DatasheetPack } from 'database/interfaces';
+import { CommandService } from 'database/services/command/impl/command.service';
+import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
+import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
+import { DatasheetRecordSourceService } from 'database/services/datasheet/datasheet.record.source.service';
+import { DatasheetService } from 'database/services/datasheet/datasheet.service';
+import { OtService } from 'database/services/ot/ot.service';
+import { UserService } from 'database/services/user/user.service';
+import { FastifyRequest } from 'fastify';
+import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
+import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
+import { flatten, keyBy, pick } from 'lodash';
 import {
-  CacheManager, CollaCommandName, Conversion, ExecuteResult, FieldKeyEnum, getViewTypeString, ICollaCommandOptions, IDeleteRecordData, IField,
-  ILocalChangeset, IMeta, IOperation, IServerDatasheetPack, IViewRow, NoticeTemplatesConstant,
-} from '@apitable/core';
-import {
-  CommonStatusCode, DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_LINKED, DATASHEET_META_HTTP_DECORATE, EnvConfigKey, InjectLogger, REQUEST_AT, REQUEST_ID,
-  SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE,
-} from '../../shared/common';
-import { EnvConfigService } from 'shared/services/config/env.config.service';
+  CommonStatusCode,
+  DATASHEET_ENRICH_SELECT_FIELD,
+  DATASHEET_LINKED,
+  DATASHEET_META_HTTP_DECORATE,
+  EnvConfigKey,
+  InjectLogger,
+  REQUEST_AT,
+  REQUEST_ID,
+  SPACE_ID_HTTP_DECORATE,
+  USER_HTTP_DECORATE,
+} from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
 import { ApiTipIdEnum } from 'shared/enums/string.enum';
-import { DatasheetException } from '../../shared/exception';
-import { ApiException } from '../../shared/exception/api.exception';
-import { ServerException } from '../../shared/exception/server.exception';
-import { FastifyRequest } from 'fastify';
-import { IAuthHeader, ILinkedRecordMap, IServerConfig } from '../../shared/interfaces';
+import { ApiException, DatasheetException, ServerException } from 'shared/exception';
+import { IAuthHeader, ILinkedRecordMap, IServerConfig } from 'shared/interfaces';
 import { IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
-import { flatten, keyBy, pick } from 'lodash';
-import { ApiResponse } from '../vos/api.response';
+import { EnvConfigService } from 'shared/services/config/env.config.service';
+import { JavaService } from 'shared/services/java/java.service';
+import { RestService } from 'shared/services/rest/rest.service';
+import { Logger } from 'winston';
 import { DatasheetViewDto } from '../dtos/datasheet.view.dto';
+import { FusionApiFilter } from '../filter/fusion.api.filter';
+import { IFusionApiInterface } from '../i.fusion.api.interface';
+import { ApiUsageRepository } from '../repositories/api.usage.repository';
 import { DatasheetCreateRo } from '../ros/datasheet.create.ro';
 import { FieldCreateRo } from '../ros/field.create.ro';
 import { FieldQueryRo } from '../ros/field.query.ro';
 import { RecordCreateRo } from '../ros/record.create.ro';
 import { RecordQueryRo } from '../ros/record.query.ro';
 import { RecordUpdateRo } from '../ros/record.update.ro';
+import { ApiResponse } from '../vos/api.response';
 import { DatasheetCreateDto, FieldCreateDto } from '../vos/datasheet.create.vo';
 import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
-import { DatasheetPack } from '../../database/interfaces';
-import { OtService } from 'database/services/ot/ot.service';
-import { ApiUsageRepository } from '../repositories/api.usage.repository';
-import { RestService } from 'shared/services/rest/rest.service';
-import { CommandService } from 'database/services/command/impl/command.service';
-import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
-import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
-import { DatasheetRecordSourceService } from 'database/services/datasheet/datasheet.record.source.service';
-import { DatasheetService } from 'database/services/datasheet/datasheet.service';
-import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
-import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
-import { JavaService } from 'shared/services/java/java.service';
-import { UserService } from 'database/services/user/user.service';
-import { Logger } from 'winston';
-import { FusionApiFilter } from '../filter/fusion.api.filter';
-import { IFusionApiInterface } from '../i.fusion.api.interface';
 
 @Injectable()
 export class FusionApiService implements IFusionApiInterface {
@@ -66,8 +85,7 @@ export class FusionApiService implements IFusionApiInterface {
     private readonly envConfigService: EnvConfigService,
     @InjectLogger() private readonly logger: Logger,
     @Inject(REQUEST) private readonly request: FastifyRequest,
-  ) {
-  }
+  ) {}
 
   public async getSpaceList(): Promise<IAPISpace[]> {
     const authHeader = { token: this.request.headers.authorization };
@@ -128,20 +146,22 @@ export class FusionApiService implements IFusionApiInterface {
     // 获取结果需要的列
     const fieldMap = this.filter.fieldMapFilter(dataPack.snapshot.meta.fieldMap, query.fieldKey, query.fields);
     // 转换
-    return this.transform.recordPageVoTransform({
-      rows,
-      fieldMap,
-      store,
-      columns: view.columns,
-    }, query);
+    return this.transform.recordPageVoTransform(
+      {
+        rows,
+        fieldMap,
+        store,
+        columns: view.columns,
+      },
+      query,
+    );
   }
 
   public async getFieldCreateDtos(datasheetId: string): Promise<FieldCreateDto[]> {
     const meta: IMeta = await this.metaService.getMetaDataByDstId(datasheetId);
-    return Object.keys(meta.fieldMap)
-      .map(fieldId => {
-        return { id: fieldId, name: meta.fieldMap[fieldId].name };
-      });
+    return Object.keys(meta.fieldMap).map(fieldId => {
+      return { id: fieldId, name: meta.fieldMap[fieldId].name };
+    });
   }
 
   public async addField(datasheetId: string, fieldCreateRo: FieldCreateRo): Promise<FieldCreateDto> {
@@ -163,10 +183,12 @@ export class FusionApiService implements IFusionApiInterface {
     const auth = { token: this.request.headers.authorization };
     const options: ICollaCommandOptions = {
       cmd: CollaCommandName.DeleteField,
-      data: [{
-        deleteBrotherField: conversion === Conversion.Delete,
-        fieldId,
-      }],
+      data: [
+        {
+          deleteBrotherField: conversion === Conversion.Delete,
+          fieldId,
+        },
+      ],
     };
     const interStore = await this.datasheetService.fillBaseSnapshotStoreByDstIds([datasheetId]);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
@@ -197,17 +219,19 @@ export class FusionApiService implements IFusionApiInterface {
   private async getDefaultFieldIds(state, datasheetId) {
     const { datasheetMap } = state;
     let meta;
-    if(datasheetMap && datasheetMap[datasheetId]) {
+    if (datasheetMap && datasheetMap[datasheetId]) {
       const datasheet = datasheetMap[datasheetId].datasheet;
-      if(datasheet && datasheet.snapshot && datasheet.snapshot.meta){
-        meta = datasheet.snapshot.meta; 
+      if (datasheet && datasheet.snapshot && datasheet.snapshot.meta) {
+        meta = datasheet.snapshot.meta;
       }
     }
-    if(!meta) {
-      meta = await this.metaService.getMetaDataByDstId(datasheetId); 
+    if (!meta) {
+      meta = await this.metaService.getMetaDataByDstId(datasheetId);
     }
     const { fieldMap } = meta;
-    const fieldIds = Object.keys(fieldMap).map(fieldId => {return { fieldId };});
+    const fieldIds = Object.keys(fieldMap).map(fieldId => {
+      return { fieldId };
+    });
     return fieldIds;
   }
 
@@ -229,13 +253,13 @@ export class FusionApiService implements IFusionApiInterface {
     const options: ICollaCommandOptions = {
       cmd: CollaCommandName.DeleteField,
       data: fieldIds,
-      datasheetId
+      datasheetId,
     };
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) {
       throw ApiException.tipError(ApiTipIdEnum.apiInsertError);
     }
-    await this.applyChangeSet(datasheetId, changeSets, auth); 
+    await this.applyChangeSet(datasheetId, changeSets, auth);
   }
 
   public async updateRecords(dstId: string, body: RecordUpdateRo, viewId: string): Promise<ListVo> {
@@ -248,19 +272,18 @@ export class FusionApiService implements IFusionApiInterface {
     const linkDatasheet: ILinkedRecordMap = this.request[DATASHEET_LINKED];
     const recordIdSet: Set<string> = new Set(body.records.map(record => record.recordId));
     const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
-    linkedRecordMap && linkedRecordMap[dstId]?.forEach(recordId => {
-      recordIdSet.add(recordId);
-    });
+    linkedRecordMap &&
+      linkedRecordMap[dstId]?.forEach(recordId => {
+        recordIdSet.add(recordId);
+      });
     const recordIds = Array.from(recordIdSet);
-    const auth = { token: this.request.headers.authorization };
-    const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(
-      dstId, auth, { linkedRecordMap, recordIds });
+    const auth = {
+      token: this.request.headers.authorization,
+    };
+    const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, { linkedRecordMap, recordIds });
     const updateStore = this.commandService.fullFillStore(datasheetPack.datasheet.spaceId, datasheetPack);
     const updateFieldOperations = this.getFieldUpdateOps(updateStore, dstId, meta);
-    const {
-      result,
-      changeSets,
-    } = this.commandService.execute<{}>(options, updateStore);
+    const { result, changeSets } = this.commandService.execute<{}>(options, updateStore);
     this.combChangeSetsOp(changeSets, dstId, updateFieldOperations);
 
     const rows: IViewRow[] = recordIds.map(recordId => {
@@ -301,17 +324,13 @@ export class FusionApiService implements IFusionApiInterface {
     // 转换写入的字段
     const options: ICollaCommandOptions = this.transform.getAddRecordCommandOptions(dstId, body.records, meta);
     const auth = { token: this.request.headers.authorization };
-    const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(
-      dstId, auth, {
-        linkedRecordMap: this.request[DATASHEET_LINKED],
-        recordIds: [],
-      });
+    const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, {
+      linkedRecordMap: this.request[DATASHEET_LINKED],
+      recordIds: [],
+    });
     const interStore = this.commandService.fullFillStore(datasheetPack.datasheet.spaceId, datasheetPack);
     const updateFieldOperations = this.getFieldUpdateOps(interStore, dstId, meta);
-    const {
-      result,
-      changeSets,
-    } = this.commandService.execute<string[]>(options, interStore);
+    const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) {
       throw ApiException.tipError('api_insert_error');
     }
@@ -323,11 +342,10 @@ export class FusionApiService implements IFusionApiInterface {
     const rows = recordIds.map(recordId => {
       return { recordId };
     });
-    const dataPack: DatasheetPack = await this.datasheetService.fetchDataPack(
-      dstId, auth, {
-        recordIds,
-        linkedRecordMap: this.request[DATASHEET_LINKED],
-      });
+    const dataPack: DatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, {
+      recordIds,
+      linkedRecordMap: this.request[DATASHEET_LINKED],
+    });
     const store = this.commandService.fullFillStore(dataPack.datasheet.spaceId, dataPack);
     return this.transform.recordsVoTransform({
       rows,
@@ -344,10 +362,7 @@ export class FusionApiService implements IFusionApiInterface {
     const auth = { token: this.request.headers.authorization };
     const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, { recordIds });
     const store = this.commandService.fullFillStore(datasheetPack.datasheet.spaceId, datasheetPack);
-    const {
-      result,
-      changeSets,
-    } = this.commandService.execute<{}>(options, store);
+    const { result, changeSets } = this.commandService.execute<{}>(options, store);
     // command执行失败
     if (!result || result.result !== ExecuteResult.Success) {
       throw ApiException.tipError('api_delete_error');
@@ -434,10 +449,7 @@ export class FusionApiService implements IFusionApiInterface {
     Object.entries(enrichedSelectFields).forEach(item => {
       const field = item[1] as IField;
       const fieldUpdateOptions: ICollaCommandOptions = this.transform.getUpdateFieldCommandOptions(dstId, field, meta);
-      const {
-        result,
-        changeSets,
-      } = this.commandService.execute<string[]>(fieldUpdateOptions, interStore);
+      const { result, changeSets } = this.commandService.execute<string[]>(fieldUpdateOptions, interStore);
       if (!result || result.result !== ExecuteResult.Success) {
         throw ApiException.tipError('api_insert_error');
       }
@@ -454,15 +466,21 @@ export class FusionApiService implements IFusionApiInterface {
     const auth = { token: this.request.headers.authorization };
     const spaceId = this.request[SPACE_ID_HTTP_DECORATE];
     const userId = this.request[USER_HTTP_DECORATE].id;
-    const totalCount = recordCount + body.records.length;// 即将超限提醒 >=90条 < 100条
-    if (totalCount >= (limit.maxRecordCount * limit.recordRemindRange / 100) && totalCount <= limit.maxRecordCount) {
-      this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_soon_to_be_limit, [userId],
-        spaceId, dstId, limit.maxRecordCount, totalCount);
+    const totalCount = recordCount + body.records.length; // 即将超限提醒 >=90条 < 100条
+    if (totalCount >= (limit.maxRecordCount * limit.recordRemindRange) / 100 && totalCount <= limit.maxRecordCount) {
+      this.restService.createRecordLimitRemind(
+        auth,
+        NoticeTemplatesConstant.add_record_soon_to_be_limit,
+        [userId],
+        spaceId,
+        dstId,
+        limit.maxRecordCount,
+        totalCount,
+      );
     }
     if (totalCount > limit.maxRecordCount) {
       // 超限提醒
-      this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_out_of_limit, [userId],
-        spaceId, dstId, limit.maxRecordCount);
+      this.restService.createRecordLimitRemind(auth, NoticeTemplatesConstant.add_record_out_of_limit, [userId], spaceId, dstId, limit.maxRecordCount);
       throw new ServerException(DatasheetException.RECORD_ADD_LIMIT, CommonStatusCode.DEFAULT_ERROR_CODE);
     }
   }

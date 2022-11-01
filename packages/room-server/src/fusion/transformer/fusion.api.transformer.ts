@@ -1,29 +1,48 @@
+import {
+  CellFormatEnum,
+  CollaCommandName,
+  getEmojiIconNativeString,
+  ICellValue,
+  ICollaCommandOptions,
+  IField,
+  IFieldMap,
+  IMeta,
+  INode,
+  IRecordMap,
+  IReduxState,
+  ISnapshot,
+  ISortedField,
+  ISpaceInfo,
+  IViewColumn,
+  IViewProperty,
+  IViewRow,
+  Selectors,
+} from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { CellFormatEnum, CollaCommandName, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta, INode, IRecordMap, IReduxState, ISnapshot, ISortInfo, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors } from '@apitable/core';
-import { InjectLogger } from '../../shared/common';
-import { OrderEnum } from '../../shared/enums';
+import { keyBy, map } from 'lodash';
+import { Store } from 'redux';
 import { FieldTypeEnum } from 'shared/enums/field.type.enum';
-import { ApiException } from '../../shared/exception';
 import { getAPINodeType } from 'shared/helpers/fusion.helper';
-import { ICellValueMap, IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IRecordsTransformOptions } from '../../shared/interfaces';
 import { IAPIFolderNode, IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
-import { keyBy, map } from 'lodash';
+import { Logger } from 'winston';
+import { InjectLogger } from '../../shared/common';
+import { OrderEnum } from '../../shared/enums';
+import { ApiException } from '../../shared/exception';
+import { ICellValueMap, IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IRecordsTransformOptions } from '../../shared/interfaces';
 import { ApiRecordDto } from '../dtos/api.record.dto';
+import { FieldManager } from '../field.manager';
+import { IFieldTransformInterface } from '../i.field.transform.interface';
 import { FieldCreateRo } from '../ros/record.field.create.ro';
 import { FieldUpdateRo } from '../ros/record.field.update.ro';
 import { RecordQueryRo } from '../ros/record.query.ro';
 import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
-import { Store } from 'redux';
-import { Logger } from 'winston';
-import { FieldManager } from '../field.manager';
-import { IFieldTransformInterface } from '../i.field.transform.interface';
 
 @Injectable()
 export class FusionApiTransformer implements IFieldTransformInterface {
-  constructor(@InjectLogger() private readonly logger: Logger) { }
+  constructor(@InjectLogger() private readonly logger: Logger) {}
 
   getUpdateFieldCommandOptions(dstId: string, field: IField, meta: IMeta): ICollaCommandOptions {
     return {
@@ -33,6 +52,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       data: field,
     };
   }
+
   getAddRecordCommandOptions(dstId: string, records: FieldCreateRo[], meta: IMeta): ICollaCommandOptions {
     const cellValues = records.reduce<ICellValueMap[]>((pre, cur) => {
       // 这里循环map是因为要拿到默认的值
@@ -48,17 +68,19 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       index: meta.views[0].rows.length,
       count: cellValues.length,
       cellValues,
-      ignoreFieldPermission: true
+      ignoreFieldPermission: true,
     };
   }
 
   getUpdateRecordCommandOptions(dstId: string, records: FieldUpdateRo[], meta: IMeta): ICollaCommandOptions {
-    const data = records.reduce<{
-      recordId: string;
-      fieldId: string;
-      field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
-      value: ICellValue;
-    }[]>((pre, cur) => {
+    const data = records.reduce<
+      {
+        recordId: string;
+        fieldId: string;
+        field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
+        value: ICellValue;
+      }[]
+    >((pre, cur) => {
       Object.keys(cur.fields).forEach(fieldId => {
         pre.push({ recordId: cur.recordId, fieldId, value: cur.fields[fieldId] });
       });
@@ -103,6 +125,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       };
     });
   }
+
   public spaceListVoTransform(spaceList: ISpaceInfo[]): IAPISpace[] {
     return spaceList.map(spaceItem => {
       const res: IAPISpace = {
@@ -208,16 +231,14 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   /**
-   * 获取参数和视图的筛选条件
+   * get view group info
    * @param query RecordQueryRo
-   * @param viewMap
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/8/27 5:08 下午
+   * @param findView the default view info
+   * @return ISortedField[]
    */
-  getSortInfo(query: RecordQueryRo, findView?: (viewId?: string) => IViewProperty): ISortInfo {
+  getGroupInfo(query: RecordQueryRo, findView?: (viewId?: string) => IViewProperty): ISortedField[] {
     let rules = [];
-    // 排序是倒着排
+    // sort with desc in front
     if (query.sort) {
       query.sort.forEach(sort => {
         rules.push({ fieldId: sort.field, desc: sort.order === OrderEnum.DESC });
@@ -225,6 +246,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     }
     if (!query.recordIds && query.viewId && findView) {
       const view = findView(query.viewId);
+      // compatible with old data
       if (view && view.sortInfo) {
         if (Array.isArray(view.sortInfo)) {
           rules = rules.concat(view.sortInfo);
@@ -233,8 +255,13 @@ export class FusionApiTransformer implements IFieldTransformInterface {
           rules = rules.concat(view.sortInfo.rules);
         }
       }
+      if (view && view.groupInfo) {
+        if (Array.isArray(view.groupInfo)) {
+          rules = rules.concat(view.groupInfo);
+        }
+      }
     }
-    return { rules, keepSort: true };
+    return rules;
   }
 
   getRecordRows(recordMap: IRecordMap): IViewRow[] {
@@ -252,7 +279,10 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   getViewInfo(query: RecordQueryRo, snapshot: ISnapshot, store: Store<IReduxState>): IViewProperty {
     const findView = this.getViewByViewIdOrDefault(store.getState(), snapshot.datasheetId);
     // 默认第一个, 使用第一个视图rows的顺序+用户自定义的顺序
-    const view: IViewProperty = { ...findView(), sortInfo: this.getSortInfo(query, findView) };
+    const view: IViewProperty = {
+      ...findView(),
+      groupInfo: this.getGroupInfo(query, findView),
+    };
     // 使用view里面的的排序/过滤条件
     if (query.viewId) {
       const queryView = findView(query.viewId);
@@ -266,7 +296,9 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       view.rows = queryView.rows;
     } else {
       // 不显式指定视图时，获取全部数据，取消记录隐藏，取消视图筛选条件, 取消列的隐藏。
-      view.rows = view.rows.map(item => ({ recordId: item.recordId }));
+      view.rows = view.rows.map(item => ({
+        recordId: item.recordId,
+      }));
       view.filterInfo = undefined;
       view.columns = (view.columns as IViewColumn[]).map(item => ({ fieldId: item.fieldId }));
     }

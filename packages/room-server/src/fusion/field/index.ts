@@ -13,6 +13,7 @@ export * from './percent.field';
 export * from './phone.field';
 export * from './rating.field';
 export * from './single.select.field';
+export * from './single.text.field';
 export * from './text.field';
 export * from './url.field';
 export * from './auto.number.field';
