@@ -23,7 +23,7 @@ export class GrpcSocketClient implements OnModuleInit {
    */
   async nestRoomChange(roomId: string, changesets: IClientRoomChangeResult[]) {
     try {
-      await this.socketClient.serverRoomChange({ roomId, data: pack(changesets, 'vika.grpc.ServerRoomChangeRo.data') }).toPromise();
+      await this.socketClient.serverRoomChange({ roomId, data: pack(changesets, 'vika.grpc.ServerRoomChangeRo.data', this.logger) }).toPromise();
     } catch(e) {
       this.logger.error('Failed to notify room', { e });
     }

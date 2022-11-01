@@ -102,7 +102,7 @@ export class GrpcController {
         data = { sourceDatasheetId, sourceType: SourceTypeEnum.MIRROR, ...data };
       }
       const result = await this.grpcSocketService.roomChange(data, { cookie: message.cookie });
-      return ApiResponse.success(pack(result, 'socket.UserRoomChangeVo.data'));
+      return ApiResponse.success(pack(result, 'socket.UserRoomChangeVo.data', this.logger));
     } catch (error) {
       return this.grpcSocketService.errorCatch(error, message);
     }

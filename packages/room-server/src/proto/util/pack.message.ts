@@ -2,6 +2,7 @@
 import { vika } from 'proto/generated/proto/any';
 import * as protobuf from 'protobufjs';
 import { Properties } from 'protobufjs';
+import { Logger } from 'winston';
 
 // reflection
 // const root = protobuf.loadSync(path.join(__dirname, '../proto/socket.message.proto')).root;
@@ -17,8 +18,9 @@ class Any extends protobuf.Message<vika.grpc.Any> implements vika.grpc.Any {
   }
 }
 
-export const pack = (message: any, prefix: string) => {
+export const pack = (message: any, prefix: string, logger: Logger) => {
   const value = Buffer.from(JSON.stringify(message));
+  logger.info(`message(Buffer) length: ${value.length}`);
   return new Any({
     typeUrl: prefix,
     value: value,
