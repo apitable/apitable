@@ -249,7 +249,7 @@ public class NodeShareServiceImpl implements INodeShareService {
             nodeShareInfoVo.setAllowSaved(props.getBool("canBeStored", false));
             nodeShareInfoVo.setAllowEdit(props.getBool("canBeEdited", false));
         }
-        // Get the last operator
+        // Get the last operator info
         MemberInfoDTO memberInfo = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(setting.getUpdatedBy(), node.getSpaceId());
         ExceptionUtil.isNotNull(memberInfo, SHARE_EXPIRE);
         nodeShareInfoVo.setIsDeleted(memberInfo.getIsDeleted());
