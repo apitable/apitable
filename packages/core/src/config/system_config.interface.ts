@@ -162,22 +162,22 @@ export interface SystemConfigInterfaceGuide {
 }
 
 export interface Step {
-    uiConfigId: string;
-    uiType:     UIType;
-    prev?:      string;
-    backdrop?:  Backdrop;
-    onPlay?:    string[];
-    onNext?:    On[];
-    next?:      Next;
-    onPrev?:    On[];
-    nextId?:    NextID;
-    onSkip?:    On[];
-    uiConfig:   string;
-    onClose?:   string[];
-    onTarget?:  On[];
-    byEvent?:   string[];
-    skipId?:    string;
-    skip?:      string;
+    uiConfigId?: string;
+    uiType:      UIType;
+    prev?:       string;
+    backdrop?:   Backdrop;
+    onPlay?:     string[];
+    onNext?:     On[];
+    next?:       Next;
+    onPrev?:     On[];
+    nextId?:     NextID;
+    onSkip?:     On[];
+    uiConfig?:   string;
+    onClose?:    string[];
+    onTarget?:   On[];
+    byEvent?:    string[];
+    skipId?:     string;
+    skip?:       string;
 }
 
 export enum Backdrop {
@@ -788,6 +788,7 @@ export interface Settings {
     role_empty:                             CustomerServiceQrCode;
     role_help_url:                          CustomerServiceQrCode;
     server_error_page_bg:                   CustomerServiceQrCode;
+    share_iframe_brand:                     CustomerServiceQrCode;
     share_url:                              CustomerServiceQrCode;
     solution:                               CustomerServiceQrCode;
     space_corp_cert_url:                    CustomerServiceQrCode;

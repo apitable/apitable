@@ -969,6 +969,7 @@ export interface StringsInterface {
     czech: String;
     dark_theme: String;
     dashboard: String;
+    dashboard_access_denied_help_link: String;
     dashboard_editor_label: String;
     dashboard_manager_label: String;
     dashboard_reader_label: String;
@@ -1088,6 +1089,11 @@ export interface StringsInterface {
     developer_configuration: String;
     developer_token: String;
     developer_token_placeholder: String;
+    devtool_apply_backup_data: String;
+    devtool_batch_delete_node: String;
+    devtool_more: String;
+    devtool_open_eruda: String;
+    devtool_test_functions: String;
     dingding_bind: String;
     dingding_login: String;
     dingtalk: String;

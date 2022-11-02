@@ -4798,6 +4798,11 @@
             "en_US": "Dashboard",
             "zh_HK": "儀錶盤"
         },
+        "dashboard_access_denied_help_link": {
+            "zh_CN": "https://help.vika.cn/docs/guide/intro-dashboard#access-denied",
+            "en_US": "https://help.vika.cn/docs/guide/intro-dashboard#access-denied",
+            "zh_HK": "https://help.vika.cn/docs/guide/intro-dashboard#access-denied"
+        },
         "dashboard_editor_label": {
             "zh_CN": "在「只可阅读」基础上，还可以编辑小程序和分享仪表盘",
             "en_US": "In addition to \"Read-only\", can also edit widget and share dashboard",
@@ -4864,9 +4869,9 @@
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
         },
         "datasheet_limit": {
-            "zh_CN": "空间站的维格表数量已超出上限，升级可获得更高用量",
-            "en_US": "Your Space has exceeded the limit on the number of datasheets. You can upgrade the plan to get more usage.",
-            "zh_HK": "空間站的維格表數量已超出上限，升級可獲得更高用量"
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站文件节点数上限为 <a class=\"specification\"></a> 个，当前已创建 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of file nodes to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
+            "zh_HK": "你管理的「<a class=\"spaceName\"></a>」空間站檔案節點數上限為 <a class=\"specification\"></a> 個，當前已創建 <a class=\"usage\"></a> 個，升級可獲得更高用量。"
         },
         "datasheet_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的维格表数已超出上限（{USAGE}/{SPECIFICATION}）",
@@ -4888,8 +4893,8 @@
             "zh_HK": "你僅可查看此表格的內容"
         },
         "datasheet_record_limit": {
-            "zh_CN": "空间站的「<a class=\"nodeName\"></a>」维格表记录数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space's \"<a class=\"nodeName\"></a>\" datasheet has the maximum number of records (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站的「<a class=\"nodeName\"></a>」维格表记录数上限为 <a class=\"specification\"></a> 行，当前已创建 <a class=\"usage\"></a> 行，升级可获得更高用量。",
+            "en_US": "The maximum number of file nodes to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.\n\nThe maximum number of records in one datasheet is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的「<a class=\"nodeName\"></a>」維格表記錄數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "datasheet_record_limit_email_title": {
@@ -5383,6 +5388,26 @@
             "zh_CN": "请点击“+”手动生成 Token",
             "en_US": "Click \"+\" to generate the token ",
             "zh_HK": "請點擊“+”手動生成 Token"
+        },
+        "devtool_apply_backup_data": {
+            "zh_CN": "备份数据恢复",
+            "en_US": "Apply Backup Data"
+        },
+        "devtool_batch_delete_node": {
+            "zh_CN": "批量删除目录树",
+            "en_US": "Batch Delete Node"
+        },
+        "devtool_more": {
+            "zh_CN": "更多",
+            "en_US": "more"
+        },
+        "devtool_open_eruda": {
+            "zh_CN": "开启eruda调试工具",
+            "en_US": "Open Eruda"
+        },
+        "devtool_test_functions": {
+            "zh_CN": "测试功能体验",
+            "en_US": "Test Functions"
         },
         "dingding_bind": {
             "zh_CN": "请使用钉钉扫码绑定",
@@ -9900,7 +9925,7 @@
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"1 元\",\"gold\":\"1.5 元\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"3188元/月\",\n  \"gold\": \"8888元/月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"680元 /月\",\n  \"gold\": \"2,800元 /月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"free\",\"silver\":\"about 36 yuan per person/month\",\"gold\":\"about 43.8 yuan per person/month\",\"enterprise\":\"customized on demand\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 36 元 人/月\",\"gold\":\"約 43.8 元 人/月\",\"enterprise\":\"按需定制\"}"
         },
@@ -9910,7 +9935,7 @@
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"33,888/年\",\n  \"gold\": \"108,888/年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"6,800 /年\",\n  \"gold\": \"26,800 /年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"免费\",\"silver\":\"368 元 人/年\",\"gold\":\"538.8 元 人/年\",\"enterprise\":\"按需定制\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
         },
@@ -10844,9 +10869,9 @@
             "zh_HK": "我受邀的空間站"
         },
         "intro_dashboard": {
-            "zh_CN": "https://help.vika.cn/docs/guide/intro-dashboard#access-denied",
-            "en_US": "https://help.vika.cn/docs/guide/intro-dashboard#access-denied",
-            "zh_HK": "https://help.vika.cn/docs/guide/intro-dashboard#access-denied"
+            "zh_CN": "https://help.vika.cn/docs/guide/intro-dashboard",
+            "en_US": "https://help.vika.cn/docs/guide/intro-dashboard",
+            "zh_HK": "https://help.vika.cn/docs/guide/intro-dashboard"
         },
         "intro_widget": {
             "zh_CN": "https://help.vika.cn/docs/guide/intro-widget",
@@ -16653,7 +16678,7 @@
             "zh_HK": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2022/01/21/fe33887f388649579947379203ece53b\",\n    \"readMoreTxt\": \"查看更多\",\n    \"readMoreUrl\": \"https://cn.bing.com\",\n    \"children\": \"<h3>2022年1月更新：第二彈</h3>\\n<ul>\\n<li>維格表功能界面支持英文語言，點亮 Hello World</li>\\n<li>新增文件信息窗展示創建人和創建時間，管理更有序</li>\\n<li>回收艙取消「徹底刪除」，避免其他成員誤刪除導致無法恢復</li>\\n<li>小助手增加「歷史更新」，遊歷社區挖掘更多功能使用小技巧</li>\\n</ul>\"\n}"
         },
         "player_step_ui_config_null": {
-            "zh_CN": "{\"headerImg\":\"https://s1.vika.cn/space/2022/09/29/91f12b7bbbec4c8f87810b7e9ee06afc?attname=Update_cover%402x.png\",\"readMoreUrl\":\"https://bbs.vika.ltd/article/133\",\"children\":\"<h3>🚀 本次更新内容</h3>\\n<h3>🚀 本次更新内容</h3>\\\\n<ul><li>新增「角色」功能，权限分配与任务指派更灵活</li><li>「成员」选择框增加悬浮式信息卡片</li><li>简化「分享」路径，兼顾数据安全与操作便利</li><li>右键菜单新增「移动至」选项，文件分类归纳更快捷</li><li>模板中心新增假期旅游攻略、自卷指南和复盘规划三大专题</li></ul>\"}"
+            "zh_CN": "{\"headerImg\":\"https://s1.vika.cn/space/2022/10/20/1dc32d8aa47b4863a97ea84ce11ecc60?attname=Update_cover%402x.png\",\"readMoreUrl\":\"https://bbs.vika.cn/article/252\",\"children\":\"<h3>🚀 本次更新内容</h3>\\n<h3>🚀 本次更新内容</h3>\\\\n<ul><li>模板中心新增「专题」板块，更多元化的模板介绍</li><li>全新帮助中心上线，提供更丰富的内容</li><li>部分功能结束免费体验，正式按空间站等级提供服务</li></ul>\"}"
         },
         "please": {
             "zh_CN": "请",
@@ -18195,9 +18220,9 @@
             "zh_HK": "請填寫必填項"
         },
         "robot_config_help_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-automation-robot/#机器人配置详细教程",
-            "en_US": "https://help.vika.cn/docs/guide/manual-automation-robot/#机器人配置详细教程",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-automation-robot/#机器人配置详细教程"
+            "zh_CN": "https://help.vika.cn/docs/guide/manual-automation-robot/#how_config_robot",
+            "en_US": "https://help.vika.cn/docs/guide/manual-automation-robot/#how_config_robot",
+            "zh_HK": "https://help.vika.cn/docs/guide/manual-automation-robot/#how_config_robot"
         },
         "robot_config_incomplete_tooltip": {
             "zh_CN": "请先完成配置",

@@ -1,12 +1,12 @@
 import * as fs from 'fs';
-import path from 'path';
+// import path from 'path';
 
 type HashMap = { [key: string]: string };
 
 // 配置项
 const inputPath = 'apitable/packages/i18n-lang/src/config/strings.auto.json'; // 解析源
 const allPkgPath = 'apitable/packages/i18n-lang/src/config/strings.json'; // 全语言包导出的位置
-const pkgsPath = 'apitable/packages/datasheet/src/static/lang'; // 各种语言包
+// const pkgsPath = 'apitable/packages/datasheet/src/static/lang'; // 各种语言包
 const map: HashMap = {
   'zh-CN': 'zh_CN',
   'en-US': 'en_US',
@@ -32,13 +32,13 @@ for (const langKey in map) {
     pkgContent[stringKey] = val;
   }
   allLang[langKey] = pkgContent;
-  const langPkgPath = path.resolve(pkgsPath, langKey + '.js');
+  // const langPkgPath = path.resolve(pkgsPath, langKey + '.js');
   // TODO: 优化点。开发环境可以不生成这个（本地环境使用全量语言包），部署的时候才生成。
-  fs.writeFileSync(
-    langPkgPath,
-    'window.vika_i18n =\n' + JSON.stringify(pkgContent, null, 2),
-  );
-  console.log(`成功生成 ${langKey} 语言包`, langPkgPath);
+  // fs.writeFileSync(
+  //   langPkgPath,
+  //   'window.vika_i18n =\n' + JSON.stringify(pkgContent, null, 2),
+  // );
+  // console.log(`成功生成 ${langKey} 语言包`, langPkgPath);
 }
 
 fs.writeFileSync(
