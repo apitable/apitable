@@ -171,7 +171,7 @@ export class RestService {
     if (response.data?.isAllowOverLimit) {
       return false;
     }
-    return response.data.totalCapacity - response.data.usedCapacity < 0;
+    return response.data.currentBundleCapacity - response.data.usedCapacity < 0;
   }
 
   async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number): Promise<AssetVo[]> {
