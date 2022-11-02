@@ -6440,18 +6440,6 @@
                     "set_wizard_completed({\"curWizard\": true})",
                     "open_guide_next_step({\"clearAllPrevUi\":true})"
                 ]
-            },
-            "165": {
-                "uiType": "notice",
-                "onNext": [
-                    "open_guide_next_step({\"clearAllPrevUi\":true})"
-                ],
-                "next": "查看详情",
-                "nextId": "check_detail",
-                "onClose": [
-                    "set_wizard_completed({\"curWizard\": true})",
-                    "open_guide_next_step({\"clearAllPrevUi\":true})"
-                ]
             }
         }
     },
