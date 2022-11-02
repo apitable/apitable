@@ -94,12 +94,12 @@ public class DingTalkOrderServiceImpl extends AbstractSocialOrderService<SyncHtt
         createOrderMetaData(orderId, OrderChannel.DINGTALK, event);
         // Upgrade, Renewal, New Purchase, Renewal Upgrade, Trial
         String subscriptionId;
-        if (DingTalkOrderType.BUY.getValue().equals(event.getOrderType()) && null == context.getActivatedBundle()) {
+        if (OrderType.BUY.equals(context.getOrderType()) && null == context.getActivatedBundle()) {
             // Create subscription bundle
             String bundleId = createBundle(context);
             subscriptionId = createSubscription(bundleId, context);
         }
-        else if (DingTalkOrderType.RENEW.getValue().equals(event.getOrderType())) {
+        else if (OrderType.RENEW.equals(context.getOrderType())) {
             subscriptionId = renewSubscription(context);
         }
         else {

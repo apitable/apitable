@@ -30,7 +30,6 @@ public class DingTalkPlanConfigManager {
      * get dingtalk price plan
      *
      * @param itemCode dingtalk item code
-     * @param month month
      */
     public static Price getPriceByItemCodeAndMonth(String itemCode) {
         DingTalkPlan dingTalkPlan = DING_TALK_PLAN.get(itemCode);
