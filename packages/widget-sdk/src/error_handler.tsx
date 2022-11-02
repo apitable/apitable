@@ -32,9 +32,7 @@ export const ErrorHandler: React.FC = props => {
     return !(getWidgetDatasheet(state) && state.widget?.snapshot);
   });
 
-  // here to intercept the case in the mirror has permission source table without permission,
-  // because the loading is completed,
-  // but the mirror load causes the source table data to overwrite the errorCode of the datasheet source table resulting in permission penetration
+  // 这里拦截一下在镜像有权限源表无权限的情况下，由于 loading 完成，但是镜像的加载导致源表数据导致会覆盖掉datasheet源表的errorCode产生的权限穿透
   errorCode = useSelector(state => {
     const datasheet = getWidgetDatasheet(state);
     if (!errorCode && !isLoading && !sourceId?.startsWith('mir') && !datasheet?.permissions.readable) {
@@ -98,7 +96,7 @@ export const ErrorHandler: React.FC = props => {
         {
           getErrorTip()
         }，
-        <a href={t(Strings.intro_dashboard)} target="_blank" rel="noopener noreferrer" style={{
+        <a href={t(Strings.dashboard_access_denied_help_link)} target="_blank" rel="noopener noreferrer" style={{
           borderBottom: '1px solid',
           paddingBottom: 2,
         }}>
