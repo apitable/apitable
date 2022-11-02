@@ -542,8 +542,8 @@ export class DatasheetOtService {
         let skipFieldPermission = false;
         if (oiData.property.relatedLinkFieldId === odData.property.relatedLinkFieldId
           && oiData.property.lookUpTargetFieldId === odData.property.lookUpTargetFieldId) {
-          // 
-          // 神奇引用关联字段、目标字段均不变时，不用校验权限，只计算引用过滤条件使用的字段集是否发生变化
+          // If neithor linking field of lookup field nor its target field changes, don't check permission,
+          // only check if referenced field set of lookup filtering condition have changed.
           skipFieldPermission = true;
           const oiReferFieldIds: string[] = [];
           const odReferFieldIds: string[] = [];
@@ -597,13 +597,12 @@ export class DatasheetOtService {
           throw new ServerException(PermissionException.OPERATION_DENIED);
         }
         // Operation on linked field creation related to linked datasheet, check editable permission
-        // 关联表联动新增关联列的操作，校验可编辑权限
         if (!permission.editable) {
           throw new ServerException(PermissionException.OPERATION_DENIED);
         }
       }
       const { foreignDatasheetId } = odData.property;
-      this.logger.debug(`[${resultSet.datasheetId}]删除关联列 -> 关联表[${foreignDatasheetId}]`);
+      this.logger.debug(`[${resultSet.datasheetId}] Delete linked field -> linked datasheet [${foreignDatasheetId}]`);
       resultSet.toDeleteForeignDatasheetIdMap.set(odData.id, foreignDatasheetId);
     } else {
       if (!permission.fieldRemovable) {
@@ -611,7 +610,7 @@ export class DatasheetOtService {
       }
       const specialFieldTypes = [FieldType.LastModifiedTime, FieldType.CreatedTime, FieldType.CreatedBy, FieldType.AutoNumber];
       if (!specialFieldTypes.includes(odData.type)) {
-        // 收集被删除的字段，以此来清理 fieldUpdatedMap 中对应的数据
+        // Collect deleted fields to clean up corresponding data in fieldUpdatedMap
         resultSet.cleanFieldMap.set(odData.id, odData.type);
       }
       if (odData.type === FieldType.LookUp) {
@@ -684,21 +683,21 @@ export class DatasheetOtService {
             }
             return;
           case 'rows':
-            // ====== 记录新增对视图属性的影响 ======
+            // ====== View property changes caused by record creation ======
             if ('li' in action) {
               if (!permission.rowCreatable) {
                 throw new ServerException(PermissionException.OPERATION_DENIED);
               }
               return;
             }
-            // ====== 记录删除对视图属性的影响 ======
+            // ====== View property changes caused by record deletion ======
             if ('ld' in action) {
               if (!permission.rowRemovable) {
                 throw new ServerException(PermissionException.OPERATION_DENIED);
               }
               return;
             }
-            // ====== 记录移动顺序对视图属性的影响 ======
+            // ====== View property changes caused by record movement ======
             if ('lm' in action) {
               if (!permission.rowSortable) {
                 throw new ServerException(PermissionException.OPERATION_DENIED);
@@ -817,11 +816,12 @@ export class DatasheetOtService {
       if (permission.editable) {
         return;
       }
-      // 若无可能是因为本表双向删除关联列（或者撤销该操作）造成视图中的 columns 变化
+      // If no, maybe this datasheet delete linking fields two-way or undo this operation, causing
+      // columns change in view.
       if (action.p[3] !== 'columns') {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
-      // 做记录在外层校验是否有对应删除/恢复删除列
+      // Take a note to check outside later if fields exist corresponding to deleted or recovered deleted fields.
       if ('li' in action) {
         resultSet.fldOpInViewMap.set(action.li.fieldId, true);
       } else if ('ld' in action) {
@@ -871,11 +871,10 @@ export class DatasheetOtService {
     if (action.p[1] === 'fieldMap') {
       // ===== Field operation BEGIN =====
       /**
-       * Field operation, check permission above manageable
+       * Field operation, check permission above manageable.
        * Member field is special, value update requires updating field property, so don't intercept here,
-       * 成员字段比较特殊，编辑数据需要修改列数据源的属性，所以这里还是不要预先拦截，根据具体类型判断
-       * 反正创建、修改、删除操作已经细粒化
-       * 下面开始字段细粒度权限判断
+       * check by field type. Since Creation, update and deletion is fine-grained.
+       * Now begin fine-grained field permision checking
        */
       // ====== New field(including copy field) ======
       if (('oi' in action) && !('od' in action)) {
@@ -951,7 +950,7 @@ export class DatasheetOtService {
       if (!permission.rowRemovable) {
         throw new ServerException(PermissionException.OPERATION_DENIED);
       }
-      // 在删除行操作之前如果检查到有对这一行单元格的任何修改，都可以视为没有这些操作，清空之前收集的数据
+      // If any change happens to cells in the record before record deletion, these changes are discarded.
       if (resultSet.cleanRecordCellMap.has(recordId)) {
         resultSet.cleanRecordCellMap.delete(recordId);
       }
@@ -1538,15 +1537,13 @@ export class DatasheetOtService {
       cellData.forEach(fieldData => {
         const fieldId = fieldData.fieldId;
 
-        // 
-        // 清除单元格内容并且在当前删除列的范围内，则对 recordMeta.fieldUpdatedMap 进行清理
+        // The update is cell value deletion and the cell's fieldId is within deleted fields, clean up recordMeta.fieldUpdatedMap
         if (isDelete && toCleanFieldIds.includes(fieldId)) {
           delete fieldUpdatedMap[fieldId];
           return;
         }
         const prevFieldUpdatedInfo = fieldUpdatedMap[fieldId] || {};
-        // Update 'at' and 'by' corresponding to fieldId corresponding to field
-        // 更新 fieldUpdatedMap 中对应 fieldId 对应的 at 和 by
+        // Update 'at' and 'by' in fieldUpdatedMap corresponding to fieldId
         fieldUpdatedMap[fieldId] = { ...prevFieldUpdatedInfo, at: updatedAt, by: uuid };
       });
 
