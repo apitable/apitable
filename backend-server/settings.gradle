@@ -30,18 +30,15 @@ rootProject.name = 'backend'
 
 include 'code-coverage-report'
 
-include 'system-config'
-include 'vikadata-clock'
-include 'vikadata-core'
-include 'vikadata-define'
+include 'config'
+include 'clock'
+include 'core'
 include 'vikadata-boot-autoconfigure'
 
 include 'vikadata-service:vikadata-db-model'
 include 'vikadata-service:vikadata-mongodb-model'
-include 'vikadata-service:vikadata-service-api'
+include 'application'
 
-include 'vikadata-project:api-service'
-include 'vikadata-project:space-scheduler'
 include 'vikadata-project:social-service-dingtalk'
 include 'vikadata-project:private-aider-service'
 

@@ -21,8 +21,7 @@ def profile = System.getProperty("profile") ?: "local"
 
 System.out.println("Build Profile:" + profile)
 dependencies {
-  implementation project(':vikadata-define')
-  implementation project(':vikadata-core')
+  implementation project(':core')
   implementation project(':vikadata-service:vikadata-db-model')
   
   annotationProcessor rootProject.ext.dependencies['configuration-processor']

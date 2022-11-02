@@ -9,9 +9,7 @@ plugins {
 }
 
 dependencies {
-  implementation project(':vikadata-define')
-  implementation project(':vikadata-core')
-  implementation project(':system-config')
+  implementation project(':core')
   implementation project(':vikadata-service:vikadata-db-model')
   implementation project(':vikadata-starters:vikadata-starter-xxl')
   implementation project(':vikadata-starters:vikadata-starter-oss')

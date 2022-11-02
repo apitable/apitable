@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import cn.hutool.core.util.StrUtil;
 import com.xxl.job.core.context.XxlJobHelper;
 
-import com.vikadata.define.constants.RedisConstants;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.scheduler.space.cache.service.RedisService;
 import com.vikadata.scheduler.space.mapper.statistics.StatisticsMapper;
 import com.vikadata.scheduler.space.mapper.workspace.DatasheetMetaMapper;
@@ -22,7 +22,7 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
-import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
+import static com.vikadata.core.constants.RedisConstants.GENERAL_STATICS;
 
 /**
  * <p>

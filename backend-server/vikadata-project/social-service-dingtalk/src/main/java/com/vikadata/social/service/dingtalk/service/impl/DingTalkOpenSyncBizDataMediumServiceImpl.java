@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.define.constants.RedisConstants;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.social.dingtalk.config.DingTalkRedisOperations;
 import com.vikadata.social.service.dingtalk.entity.DingTalkOpenSyncBizDataMediumEntity;
 import com.vikadata.social.service.dingtalk.mapper.DingTalkOpenSyncBizDataMediumMapper;

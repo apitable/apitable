@@ -3,12 +3,7 @@ plugins {
   id 'org.liquibase.gradle' version "2.0.4"
 }
 
-description = 'Vikadata DB Manage'
-group = "com.vikadata"
-version = "0.13.9"
-
 repositories {
-  maven { url 'https://maven.aliyun.com/repository/public' }
   mavenCentral()
 }
 

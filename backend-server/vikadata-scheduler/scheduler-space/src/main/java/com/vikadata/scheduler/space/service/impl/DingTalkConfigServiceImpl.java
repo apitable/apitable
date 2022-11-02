@@ -8,7 +8,7 @@ import cn.hutool.json.JSONUtil;
 import com.xxl.job.core.context.XxlJobHelper;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.define.constants.RedisConstants;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.integration.vika.VikaOperations;
 import com.vikadata.integration.vika.model.DingTalkAgentAppInfo;
 import com.vikadata.integration.vika.model.DingTalkDaTemplateInfo;

@@ -28,8 +28,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.vikadata.define.constants.DateFormatConstants.NORM_DATE_PATTERN;
-import static com.vikadata.define.constants.RedisConstants.GENERAL_STATICS;
+import static com.vikadata.core.constants.DateFormatConstants.NORM_DATE_PATTERN;
+import static com.vikadata.core.constants.RedisConstants.GENERAL_STATICS;
 
 /**
  * <p>

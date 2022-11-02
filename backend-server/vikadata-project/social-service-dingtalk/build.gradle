@@ -8,8 +8,7 @@ plugins {
 }
 
 dependencies {
-  implementation project(':vikadata-core')
-  implementation project(':vikadata-define')
+  implementation project(':core')
   implementation project(':vikadata-starters:vikadata-starter-swagger')
   implementation project(':vikadata-starters:vikadata-starter-grpc-model')
   implementation project(':vikadata-starters:vikadata-starter-social-dingtalk')

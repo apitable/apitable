@@ -7,7 +7,7 @@ patch: # bump version number patch
 
 docker_build_app:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
-	export BUILD_ARG="--build-arg JAR_PATH=vikadata-service/vikadata-service-api/build/libs/*.jar --build-arg PORT=8081"; \
+	export BUILD_ARG="--build-arg JAR_PATH=application/build/libs/*.jar --build-arg PORT=8081"; \
 	export DOCKERFILE=Dockerfile; \
 	build_docker backend-server
 

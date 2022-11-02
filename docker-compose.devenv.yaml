@@ -17,7 +17,7 @@ services:
       - OSS_TYPE=aws
     networks:
       - apitable
-    command: sh -c "./gradlew build -x test && java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar"
+    command: sh -c "./gradlew build -x test && java -jar application/build/libs/application.jar"
 
   web-server:
     image: apitable/devenv:latest

@@ -1,23 +1,20 @@
 plugins {
-  id 'io.spring.dependency-management'
+  id("io.spring.dependency-management")
+  id("org.jetbrains.kotlin.jvm") apply false
   // https://youtrack.jetbrains.com/issue/KT-30276
-  id "org.jetbrains.kotlin.jvm" apply false
 }
 
 apply from: 'lib.gradle'
 
-description = 'Vikadata Framework'
-
-group "com.vikadata"
-version = "0.13.9"
-
-defaultTasks 'build'
+defaultTasks("build")
 
 allprojects {
+  group = "com.apitable"
+  
   repositories {
     mavenCentral()
-    // for ping plus plus sdk
-    maven { url  'https://jcenter.bintray.com' }
+    // for ping++ sdk
+    maven { url = uri("https://jcenter.bintray.com") }
   }
 }
 

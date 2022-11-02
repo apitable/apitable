@@ -280,7 +280,7 @@ _install-backend-server: ## graldew install backend-server dependencies
 
 .PHONY: devenv-backend-server
 devenv-backend-server:
-	$(RUNNER) backend-server java -jar vikadata-service/vikadata-service-api/build/libs/vikadata-service-api.jar
+	$(RUNNER) backend-server java -jar application/build/libs/application.jar
 
 
 .PHONY: install-web-server
