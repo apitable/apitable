@@ -14,7 +14,6 @@ import { Tooltip } from '../tooltip';
 import classNames from 'classnames';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
 import { Typography } from '@vikadata/components';
-import { isIframe } from 'pc/utils/env';
 
 export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;
@@ -171,7 +170,7 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
         {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) &&
           <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
         }
-        {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) && !isIframe() &&
+        {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) &&
           <Tooltip title={getPermissionTip()}>
             <Tag
               className={styles.tag}
