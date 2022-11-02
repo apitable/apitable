@@ -131,7 +131,7 @@ describe('Check numeric field property format', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...numberField,
       property: {

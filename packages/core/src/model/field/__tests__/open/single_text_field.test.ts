@@ -4,7 +4,7 @@ import { FieldType, ISingleTextField } from 'types/field_types';
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const textField: ISingleTextField = {
-  name: '文本字段',
+  name: 'text field',
   id: 'fld1111',
   type: FieldType.SingleText,
   property: {
@@ -13,7 +13,7 @@ const textField: ISingleTextField = {
 };
 
 const openSingleTextField: IOpenField = {
-  name: '文本字段',
+  name: 'text field',
   id: 'fld1111',
   type: APIMetaFieldType.SingleText,
   property: {
@@ -25,56 +25,56 @@ const writeOpenProperty: IOpenSingleTextFieldProperty = {
   defaultValue: '1'
 };
 
-describe('文本字段读取property格式检查', () => {
+describe('Text field read property format check', () => {
   const valid = getOpenFieldProperty(textField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openSingleTextField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('文本字段更新property检查', () => {
+describe('Text field update property check', () => {
   const valid = validUpdateOpenProperty(textField);
-  it('文本字段更新property', () => {
+  it('text field update property', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('文本字段更新property为空的时候', () => {
+  it('text field update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('文本字段新增property检查', () => {
+describe('Add property check to text field', () => {
   const valid = validAddOpenProperty(textField);
-  it('输入正确的新增property参数', () => {
+  it('Enter the correct new property parameter', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('新增property为空的时候', () => {
+  it('When the new property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('文本字段更新property转换property检查', () => {
+describe('Text field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(textField);
-  it('输入正确的更新property参数', () => {
+  it('Enter the correct update property parameters', () => {
     const [expectValue, receiveValue] = valid(writeOpenProperty, textField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('文本字段字段新增property检查', () => {
+describe('Add property check to text field', () => {
   const valid = validAddOpenProperty(textField);
-  it('property 有值', () => {
+  it('property has value', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

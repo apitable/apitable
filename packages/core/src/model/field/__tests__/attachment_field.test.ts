@@ -2,38 +2,38 @@ import { IAttacheField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
 
 const attachmentField: IAttacheField = {
-  name: '附件字段',
+  name: 'Attachment Field',
   id: 'fld1111',
   type: 6,
   property: null
 };
 
-describe('附件字段的格式检查', () => {
+describe('Format Check for Attachment Fields', () => {
   const valid = getValidCellValue(attachmentField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multi choices', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single choice', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件值缺少 id', function() {
+  it('the attachment value input that missing the id', function() {
     const [expectValue, receiveValue] = valid([{
       name: 'xxxx',
       mimeType: 'image/jpg',
@@ -44,7 +44,7 @@ describe('附件字段的格式检查', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件包括可选值', function() {
+  it('the attachment value that includes optional values', function() {
     const [expectValue, receiveValue] = valid([{
       bucket: 'QNY1',
       height: 225,
@@ -58,7 +58,7 @@ describe('附件字段的格式检查', () => {
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入的附件不包括可选值', function() {
+  it('the attachment input value that doesn\'t include optional values', function() {
     const [expectValue, receiveValue] = valid([{
       id: 'xxxx',
       name: 'xxxx',
@@ -71,7 +71,7 @@ describe('附件字段的格式检查', () => {
   });
 });
 
-describe('检查附件字段 property 格式', () => {
+describe('Check attachment field\'s property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...attachmentField,

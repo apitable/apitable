@@ -185,7 +185,7 @@ __metadata:
   resolution: "@apitable/core@workspace:packages/core"
   dependencies:
     "@types/color": ^3.0.1
-    "@types/jest": ^27.5.1
+    "@types/jest": ^29.2.1
     "@types/lodash": 4.14.161
     "@types/mockjs": ^1.0.7
     "@types/node": ^14.14.34
@@ -12467,6 +12467,16 @@ __metadata:
     jest-matcher-utils: ^27.0.0
     pretty-format: ^27.0.0
   checksum: be20e39f7aaf17179109c0060d0a0489cec2034d4e2e28a631284c7ecd13c5ae52f62697a33a0e89b03b6cfe54e9d5e8c2bd387ab2bd90d6071d68c63b86d1e3
+  languageName: node
+  linkType: hard
+
+"@types/jest@npm:^29.2.1":
+  version: 29.2.1
+  resolution: "@types/jest@npm:29.2.1"
+  dependencies:
+    expect: ^29.0.0
+    pretty-format: ^29.0.0
+  checksum: 5610c9a44c57f6dc39cf54429ea8d04574ad4c3e3ddf9a2621882aa94a0758a42ca97a0d0aec41a8d0b149fa63bf3d077d1f07c1f1d82e3d89ad7408de211255
   languageName: node
   linkType: hard
 

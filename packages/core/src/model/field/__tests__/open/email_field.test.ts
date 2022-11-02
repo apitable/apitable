@@ -4,14 +4,14 @@ import { FieldType, IEmailField } from 'types/field_types';
 import { getOpenFieldProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const emailField: IEmailField = {
-  name: '邮箱字段',
+  name: 'Email field',
   id: 'fld1111',
   type: FieldType.Email,
   property: null
 };
 
 const openTextField: IOpenField = {
-  name: '邮箱字段',
+  name: 'Email field',
   id: 'fld1111',
   type: APIMetaFieldType.Email,
   property: null
@@ -19,32 +19,31 @@ const openTextField: IOpenField = {
 
 const writeOpenProperty: IOpenFieldProperty = null;
 
-describe('邮箱字段读取property格式检查', () => {
+describe('Email field read property format check', () => {
   const valid = getOpenFieldProperty(emailField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openTextField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('邮箱字段更新property检查', () => {
+describe('Email field update property check', () => {
   const valid = validUpdateOpenProperty(emailField);
-  it('邮箱字段更新property', () => {
+  it('email field update property', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(false);
   });
 });
 
-describe('邮箱字段新增property检查', () => {
+describe('Add property check for mailbox field', () => {
   const valid = validAddOpenProperty(emailField);
-  it('输入新增property参数', () => {
+  it('Enter new property parameter', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('输入新增property参数，不为空', () => {
+  it('Enter the new property parameter, not empty', () => {
     const result = valid({});
     expect(result).toEqual(false);
   });
 });
-

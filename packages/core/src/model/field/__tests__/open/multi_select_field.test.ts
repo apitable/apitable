@@ -7,79 +7,79 @@ import { getOpenFieldProperty, transformProperty, updateOpenFieldPropertyTransfo
   , validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const singleSelectField: ISelectField = {
-  name: '多选字段',
+  name: 'Multiple selection fields',
   id: 'fld1111',
   type: 4,
   property: {
     options: [
       {
         id: 'opt000',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: 1
       },
       {
         id: 'opt001',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: 2
       }
     ]
   }
 };
 const invalidIdField: ISelectField = {
-  name: '多选字段',
+  name: 'Multiple selection fields',
   id: 'fld1111',
   type: 4,
   property: {
     options: [
       {
         id: '',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: 0
       },
       {
         id: '',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: 0
       }
-    ], 
-    defaultValue: ['测试标签1']
+    ],
+    defaultValue: ['Test Label 1']
   }
 };
 
 const fieldWithoutDefaultValue: ISelectField = {
-  name: '多选字段',
+  name: 'Multiple selection fields',
   id: 'fld1111',
   type: 4,
   property: {
     options: [
       {
         id: '',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: 0
       },
       {
         id: '',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: 0
       }
-    ], 
+    ],
   }
 };
 
 const openSingleSelectField: IOpenField = {
   id: 'fld1111',
-  name: '多选字段',
+  name: 'Multiple selection fields',
   type: APIMetaFieldType.MultiSelect,
   property: {
     options: [
       {
         id: 'opt000',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: getFieldOptionColor(1)
       },
       {
         id: 'opt001',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: getFieldOptionColor(2)
       }
     ]
@@ -89,7 +89,7 @@ const openSingleSelectField: IOpenField = {
 const writeOpenPropertyDelete: IUpdateOpenMultiSelectFieldProperty = {
   options: [{
     id: 'opt000',
-    name: '测试标签1',
+    name: 'Test Label 1',
     color: getFieldOptionColor(1).name
   }]
 };
@@ -97,70 +97,70 @@ const writeOpenPropertyDelete: IUpdateOpenMultiSelectFieldProperty = {
 const writeOpenProperty: IUpdateOpenMultiSelectFieldProperty = {
   options: [{
     id: 'opt000',
-    name: '测试标签1',
+    name: 'Test Label 1',
     color: getFieldOptionColor(1).name
   }, {
     id: 'opt001',
-    name: '测试标签2',
+    name: 'Test Label 2',
     color: getFieldOptionColor(2).name
   }]
 };
 
-describe('多选字段读取property格式检查', () => {
+describe('Multiple selection fields read property format check', () => {
   const valid = getOpenFieldProperty(singleSelectField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openSingleSelectField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('多选字段更新property检查', () => {
+describe('Multiple selection field update property check', () => {
   const valid = validUpdateOpenProperty(singleSelectField);
-  it('输入会删除选项的property并带上副作用参数', () => {
+  it('Enter the property that will delete the option and take the side effect parameter', () => {
     const result = valid(writeOpenPropertyDelete, { enableSelectOptionDelete: true });
     expect(result).toEqual(true);
   });
 
-  it('输入会删除选项的property并不带副作用参数', () => {
+  it('Enter the property that deletes the option without side effect parameters', () => {
     const result = valid(writeOpenPropertyDelete);
     expect(result).toEqual(false);
   });
 
-  it('多选字段更新property为空的时候', () => {
+  it('multiple selection field update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('多选字段新增property检查', () => {
+describe('Add property check for multiple selection fields', () => {
   const valid = validAddOpenProperty(singleSelectField);
-  it('输入正确的新增property参数', () => {
+  it('Enter the correct new property parameter', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('新增property为空的时候', () => {
+  it('When the new property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('多选字段更新property转换property检查', () => {
+describe('Multiple selection field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(singleSelectField);
-  it('输入正确的更新property参数', () => {
+  it('Enter the correct update property parameters', () => {
     const [expectValue, receiveValue] = valid(writeOpenProperty, singleSelectField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('多选字段字段新增property检查', () => {
+describe('Add property check for multi-select fields', () => {
   const valid = validAddOpenProperty(singleSelectField);
-  it('property有值检查', () => {
+  it('property has value check', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

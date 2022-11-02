@@ -14,6 +14,7 @@ import { IFieldMap, IReduxState } from 'store';
 import { Functions } from 'formula_parser/functions';
 import { IField } from 'types';
 import { t, Strings } from 'i18n';
+import { SelfRefError } from 'formula_parser/errors/self_ref.error';
 
 /**
   * operator precedence
@@ -84,7 +85,7 @@ export class FormulaExprParser {
         this.next(TokenType.Value);
         const tokenValue = token.value.slice(1, -1);
         if (tokenValue === this.context.field.id) {
-          throw new Error(t(Strings.function_err_no_ref_self_column));
+          throw new SelfRefError();
         }
         return new ValueOperandNode(token, this.context);
       }
@@ -94,7 +95,7 @@ export class FormulaExprParser {
         this.next(TokenType.PureValue);
         const tokenValue = token.value;
         if (tokenValue === this.context.field.id) {
-          throw new Error(t(Strings.function_err_no_ref_self_column));
+          throw new SelfRefError();
         }
         return new PureValueOperandNode(token, this.context, this.context.field);
       }

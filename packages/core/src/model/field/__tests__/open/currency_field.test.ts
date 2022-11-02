@@ -5,7 +5,7 @@ import { IUpdateOpenCurrencyFieldProperty } from 'types/open/open_field_write_ty
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const currencyField: ICurrencyField = {
-  name: '货币字段',
+  name: 'Currency Field',
   id: 'fld1111',
   type: FieldType.Currency,
   property: {
@@ -17,7 +17,7 @@ const currencyField: ICurrencyField = {
 };
 
 const openCurrencyField: IOpenField = {
-  name: '货币字段',
+  name: 'Currency Field',
   id: 'fld1111',
   type: APIMetaFieldType.Currency,
   property: {
@@ -40,35 +40,35 @@ const propertyOptionalNotFill: IUpdateOpenCurrencyFieldProperty = {
   symbol: '$',
 };
 
-describe('货币字段读取property格式检查', () => {
+describe('The currency field reads property format check', () => {
   const valid = getOpenFieldProperty(currencyField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openCurrencyField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('货币字段更新property检查', () => {
+describe('Currency field update property check', () => {
   const valid = validUpdateOpenProperty(currencyField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('货币字段更新property转换property检查', () => {
+describe('Currency field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(currencyField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {
       ...CurrencyField.defaultProperty(),
       ...propertyOptionalNotFill,
@@ -76,25 +76,25 @@ describe('货币字段更新property转换property检查', () => {
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, currencyField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('货币字段字段新增property检查', () => {
+describe('Add property check for currency field', () => {
   const valid = validAddOpenProperty(currencyField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

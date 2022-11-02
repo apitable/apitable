@@ -4,7 +4,7 @@ import { IUpdateOpenNumberFieldProperty } from 'types/open/open_field_write_type
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const numberField: INumberField = {
-  name: '数字字段',
+  name: 'Number field',
   id: 'fld1111',
   type: FieldType.Number,
   property: {
@@ -14,7 +14,7 @@ const numberField: INumberField = {
 };
 
 const openNumberField: IOpenField = {
-  name: '数字字段',
+  name: 'Number field',
   id: 'fld1111',
   type: APIMetaFieldType.Number,
   property: {
@@ -33,58 +33,58 @@ const propertyOptionalNotFill: IUpdateOpenNumberFieldProperty = {
   precision: 1.0
 };
 
-describe('数字字段读取property格式检查', () => {
+describe('Number field read property format check', () => {
   const valid = getOpenFieldProperty(numberField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openNumberField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('数字字段更新property检查', () => {
+describe('Number field update property check', () => {
   const valid = validUpdateOpenProperty(numberField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('数字字段更新property为空的时候', () => {
+  it('When the numeric field is updated when the property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('数字字段更新property转换property检查', () => {
+describe('Number field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(numberField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, propertyOptionalFill);
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, propertyOptionalNotFill);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('数字字段字段新增property检查', () => {
+describe('Add property check for numeric fields', () => {
   const valid = validAddOpenProperty(numberField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

@@ -4,7 +4,7 @@ import { IUpdateOpenFormulaFieldProperty } from 'types/open/open_field_write_typ
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const formulaField: IFormulaField = {
-  name: '公式字段',
+  name: 'Formula Field',
   id: 'fld1111',
   type: FieldType.Formula,
   property: {
@@ -19,7 +19,7 @@ const formulaField: IFormulaField = {
 };
 
 const openFormulaField: IOpenField = {
-  name: '公式字段',
+  name: 'Formula Field',
   id: 'fld1111',
   type: APIMetaFieldType.Formula,
   property: {
@@ -51,35 +51,35 @@ const propertyOptionalFill: IUpdateOpenFormulaFieldProperty = {
 
 const propertyOptionalNotFill: IUpdateOpenFormulaFieldProperty = {};
 
-describe('公式字段读取property格式检查', () => {
+describe('The formula field reads the property format check', () => {
   const valid = getOpenFieldProperty(formulaField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openFormulaField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('公式字段更新property检查', () => {
+describe('Formula field update property check', () => {
   const valid = validUpdateOpenProperty(formulaField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('公式字段更新property转换property检查', () => {
+describe('Formula field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(formulaField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {
       datasheetId: formulaField.property.datasheetId,
       expression: ''
@@ -87,25 +87,25 @@ describe('公式字段更新property转换property检查', () => {
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, formulaField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('公式字段字段新增property检查', () => {
+describe('Add property check to formula field field', () => {
   const valid = validAddOpenProperty(formulaField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

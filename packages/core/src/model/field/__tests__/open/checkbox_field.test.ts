@@ -3,8 +3,8 @@ import { IOpenField, IOpenCheckboxFieldProperty } from 'types/open/open_field_re
 import { FieldType, ICheckboxField } from 'types/field_types';
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
-const textField: ICheckboxField = {
-  name: '勾选字段',
+const checkboxField: ICheckboxField = {
+  name: 'checkbox field',
   id: 'fld1111',
   type: FieldType.Checkbox,
   property: {
@@ -13,7 +13,7 @@ const textField: ICheckboxField = {
 };
 
 const openCheckboxField: IOpenField = {
-  name: '勾选字段',
+  name: 'checkbox field',
   id: 'fld1111',
   type: APIMetaFieldType.Checkbox,
   property: {
@@ -25,49 +25,49 @@ const writeOpenProperty: IOpenCheckboxFieldProperty = {
   icon: 'flag-ni'
 };
 
-describe('勾选字段读取property格式检查', () => {
-  const valid = getOpenFieldProperty(textField);
-  it('正确的property', function() {
+describe('the format check of checkbox reads property', () => {
+  const valid = getOpenFieldProperty(checkboxField);
+  it('the correct property', function() {
     const [expectValue, receiveValue] = valid(openCheckboxField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('勾选字段更新property检查', () => {
-  const valid = validUpdateOpenProperty(textField);
-  it('勾选字段更新property', () => {
+describe('the check of checkbox field update property', () => {
+  const valid = validUpdateOpenProperty(checkboxField);
+  it('checkbox field update property', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('勾选字段更新property为错误的icon', () => {
+  it('checkbox update property is error icon', () => {
     const result = valid({ icon: 'test' });
     expect(result).toEqual(false);
   });
 
-  it('勾选字段更新property为空的时候', () => {
+  it('Checkbox field update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('勾选字段新增property检查', () => {
-  const valid = validAddOpenProperty(textField);
-  it('输入正确的新增property参数', () => {
+describe('checkbox new property', () => {
+  const valid = validAddOpenProperty(checkboxField);
+  it('input correct new property arguments', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('新增property为空的时候', () => {
+  it('new a empty property', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('勾选字段更新property转换property检查', () => {
-  const valid = updateOpenFieldPropertyTransformProperty(textField);
-  it('输入正确的更新property参数', () => {
-    const [expectValue, receiveValue] = valid(writeOpenProperty, textField.property);
+describe('checkbox field, update property convert to other property', () => {
+  const valid = updateOpenFieldPropertyTransformProperty(checkboxField);
+  it('input correct update property arguments', () => {
+    const [expectValue, receiveValue] = valid(writeOpenProperty, checkboxField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });

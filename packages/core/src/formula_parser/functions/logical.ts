@@ -2,8 +2,8 @@ import { FormulaFunc, IFormulaParam, FormulaBaseError } from './basic';
 import { BasicValueType, FormulaFuncType } from 'types';
 import { AstNode } from 'formula_parser/parser/ast';
 import dayjs from 'dayjs';
-import { Strings, t } from 'i18n';
 import { handleLookupNullValue } from 'formula_parser/helper';
+import { ParamsCountError, ParamsErrorType } from 'formula_parser/errors/params_count.error';
 class LogicalFunc extends FormulaFunc {
   static override readonly type = FormulaFuncType.Logical;
 }
@@ -23,10 +23,7 @@ export class If extends LogicalFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'IF',
-        count: 3,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'IF', 3);
     }
   }
 
@@ -111,10 +108,7 @@ export class Or extends LogicalFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'OR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'OR', 1);
     }
   }
 
@@ -139,10 +133,7 @@ export class And extends LogicalFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'AND',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'AND', 1);
     }
   }
 
@@ -167,10 +158,7 @@ export class Xor extends LogicalFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'XOR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'XOR', 1);
     }
   }
 
@@ -196,10 +184,7 @@ export class Xor extends LogicalFunc {
 export class Not extends LogicalFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'NOT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'NOT', 1);
     }
   }
 
@@ -220,10 +205,7 @@ export class Switch extends LogicalFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'SWITCH',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'SWITCH', 2);
     }
   }
 
@@ -308,10 +290,7 @@ export class FormulaError extends LogicalFunc {
 export class IsError extends LogicalFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'IS_ERROR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'IS_ERROR', 1);
     }
   }
 

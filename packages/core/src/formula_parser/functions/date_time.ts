@@ -30,7 +30,8 @@ import 'dayjs/locale/de'; // german
 import 'dayjs/locale/ja'; // Japanese
 import 'dayjs/locale/ko'; // Korean
 import 'dayjs/locale/hi'; // Hindi
-import { Strings, t } from 'i18n';
+import { ParamsCountError, ParamsErrorType } from 'formula_parser/errors/params_count.error';
+import { UnitError } from 'formula_parser/errors/unit.error';
 
 dayjs.extend(quarterOfYear);
 dayjs.extend(weekOfYear);
@@ -84,9 +85,7 @@ UnitMapBase.forEach((v, k) => {
 const getPureUnit = (unitStr: string) => {
   const unit = UnitMap.get(String(unitStr));
   if (!unit) {
-    throw new Error(t(Strings.function_err_wrong_unit_str, {
-      unitStr,
-    }));
+    throw new UnitError(unitStr);
   }
   return UnitMapBase.get(unit)![1] as QUnitType;
 };
@@ -130,10 +129,7 @@ class DateFunc extends FormulaFunc {
 export class Year extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'YEAR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'YEAR', 1);
     }
   }
 
@@ -150,10 +146,7 @@ export class Year extends DateFunc {
 export class Month extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'MONTH',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'MONTH', 1);
     }
   }
 
@@ -170,10 +163,7 @@ export class Month extends DateFunc {
 export class Day extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'DAY',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'DAY', 1);
     }
   }
 
@@ -190,10 +180,7 @@ export class Day extends DateFunc {
 export class Hour extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'HOUR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'HOUR', 1);
     }
   }
 
@@ -210,10 +197,7 @@ export class Hour extends DateFunc {
 export class Minute extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'MINUTE',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'MINUTE', 1);
     }
   }
 
@@ -230,10 +214,7 @@ export class Minute extends DateFunc {
 export class Second extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'SECOND',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'SECOND', 1);
     }
   }
 
@@ -250,10 +231,7 @@ export class Second extends DateFunc {
 export class Weekday extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'WEEKDAY',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'WEEKDAY', 1);
     }
   }
 
@@ -279,17 +257,12 @@ export class Weekday extends DateFunc {
 export class Dateadd extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'DATEADD',
-        count: 3,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'DATEADD', 3);
     }
 
     const unit = params[2].token.value.slice(1, -1);
     if (params[2].token.type === TokenType.String && !UnitMap.get(unit)) {
-      throw new Error(t(Strings.function_err_wrong_unit_str, {
-        unitStr: unit,
-      }));
+      throw new UnitError(unit);
     }
   }
 
@@ -329,16 +302,11 @@ export class DatetimeDiffUtil extends DateFunc {
 export class DatetimeDiff extends DatetimeDiffUtil {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'DATETIME_DIFF',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'DATETIME_DIFF', 2);
     }
     const unit = params[2]?.token.value.slice(1, -1);
     if (params[2]?.token.type === TokenType.String && !UnitMap.get(unit)) {
-      throw new Error(t(Strings.function_err_wrong_unit_str, {
-        unitStr: unit,
-      }));
+      throw new UnitError(unit);
     }
   }
 
@@ -382,10 +350,7 @@ export class Now extends DateFunc {
 export class FromNow extends DatetimeDiffUtil {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'FROMNOW',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'FROMNOW', 2);
     }
   }
 
@@ -401,10 +366,7 @@ export class FromNow extends DatetimeDiffUtil {
 export class ToNow extends DatetimeDiffUtil {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'TONOW',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'TONOW', 2);
     }
   }
 
@@ -417,10 +379,7 @@ export class ToNow extends DatetimeDiffUtil {
 export class IsBefore extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'IS_BEFORE',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'IS_BEFORE', 2);
     }
   }
 
@@ -442,10 +401,7 @@ export class IsBefore extends DateFunc {
 export class IsAfter extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'IS_AFTER',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'IS_AFTER', 2);
     }
   }
 
@@ -467,10 +423,7 @@ export class IsAfter extends DateFunc {
 export class WorkDay extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'WORKDAY',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'WORKDAY', 2);
     }
   }
 
@@ -551,10 +504,7 @@ export class WorkDay extends DateFunc {
 export class WorkDayDiff extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'WORKDAY_DIFF',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'WORKDAY_DIFF', 2);
     }
   }
 
@@ -614,10 +564,7 @@ export class WorkDayDiff extends DateFunc {
 export class TimeStr extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'TIMESTR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'TIMESTR', 1);
     }
   }
 
@@ -635,10 +582,7 @@ export class TimeStr extends DateFunc {
 export class DateStr extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count, {
-        name: 'DATESTR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.NotEquals, 'DATESTR', 1);
     }
   }
 
@@ -656,10 +600,7 @@ export class DateStr extends DateFunc {
 export class WeekNum extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'WEEKNUM',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'WEEKNUM', 1);
     }
   }
 
@@ -698,10 +639,7 @@ export class WeekNum extends DateFunc {
 export class IsSame extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'IS_SAME',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'IS_SAME', 2);
     }
   }
 
@@ -726,10 +664,7 @@ export class IsSame extends DateFunc {
 export class DateTimeParse extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'DATETIME_PARSE',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'DATETIME_PARSE', 1);
     }
   }
 
@@ -754,10 +689,7 @@ export class DateTimeParse extends DateFunc {
 export class DateTimeFormat extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'DATETIME_FORMAT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'DATETIME_FORMAT', 1);
     }
   }
 
@@ -777,10 +709,7 @@ export class DateTimeFormat extends DateFunc {
 export class SetLocale extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'SET_LOCALE',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'SET_LOCALE', 1);
     }
   }
 
@@ -800,10 +729,7 @@ export class SetLocale extends DateFunc {
 export class SetTimeZone extends DateFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'SET_TIMEZONE',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'SET_TIMEZONE', 1);
     }
   }
 

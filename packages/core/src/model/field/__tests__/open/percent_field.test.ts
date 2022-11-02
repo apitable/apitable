@@ -4,7 +4,7 @@ import { IUpdateOpenPercentFieldProperty } from 'types/open/open_field_write_typ
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const percentField: IPercentField = {
-  name: '百分比字段',
+  name: 'Percentage field',
   id: 'fld1111',
   type: FieldType.Percent,
   property: {
@@ -14,7 +14,7 @@ const percentField: IPercentField = {
 };
 
 const openPercentField: IOpenField = {
-  name: '百分比字段',
+  name: 'Percentage field',
   id: 'fld1111',
   type: APIMetaFieldType.Percent,
   property: {
@@ -32,58 +32,58 @@ const propertyOptionalNotFill: IUpdateOpenPercentFieldProperty = {
   precision: 1
 };
 
-describe('百分比字段读取property格式检查', () => {
+describe('Percentage field read property format check', () => {
   const valid = getOpenFieldProperty(percentField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openPercentField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('百分比字段更新property检查', () => {
+describe('Percentage field update property check', () => {
   const valid = validUpdateOpenProperty(percentField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('百分比字段更新property转换property检查', () => {
+describe('Percentage field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(percentField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, propertyOptionalNotFill);
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, propertyOptionalFill);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('百分比字段字段新增property检查', () => {
+describe('Percentage field added property check', () => {
   const valid = validAddOpenProperty(percentField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

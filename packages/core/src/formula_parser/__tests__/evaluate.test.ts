@@ -2,6 +2,7 @@ import { expressionTransform } from '../evaluate';
 import { FieldType, IField } from '../../types/field_types';
 import { mergeContext, evaluate } from './mock_state';
 import { ConfigConstant } from '../../';
+import { SelfRefError } from 'formula_parser/errors/self_ref.error';
 
 // tslint:disable: max-line-length
 
@@ -91,7 +92,7 @@ describe('FormulaEvaluate', () => {
       ['1 + 2 * 3', { a: 1, b: '456', c: 2, d: 3 }, 7],
       ['1 + (1 + 3) * 2', { a: 1, b: '456', c: 2, d: 3 }, 9],
       ['2 * (2 + 3) - 10', { a: 1, b: '456', c: 2, d: 3 }, 0],
-      ['\'语数外平均成绩\' & \'=\' & ({a}+{c}+{d}) / 3', { a: 1, b: '456', c: 2, d: 3 }, '语数外平均成绩=2'],
+      ['\'Courses平均成绩\' & \'=\' & ({a}+{c}+{d}) / 3', { a: 1, b: '456', c: 2, d: 3 }, 'Courses平均成绩=2'],
       ['1 + 2 + 3 + 5 - 1 * 2 * 3 / 4 % 5 * 323 % 1', { a: 0, b: '456', c: 1 }, 10.5],
       ['1 * 2 * 3 + 4 + 5', { a: 0, b: '456', c: 1 }, 15],
       ['IF(1 > 2, 3, 5)', { a: 0, b: '456', c: 1 }, 5],
@@ -205,8 +206,11 @@ describe('FormulaEvaluate', () => {
       ['SUM({a}, {c}) * SUM({a}, {c}) = 4', { a: 1, b: '456', c: 1 }, true],
       ['SUM(1, 2, 3)', { a: 0, b: '456', c: 1 }, 6],
       ['SUM(1,2,3) + 3', { a: 0, b: '456', c: 1 }, 9],
-      ['{标题} & "进步了：" & {期末考试成绩} - {期中考试成绩} & "分"', { 标题: '小明', 期末考试成绩: 40, 期中考试成绩: 20 }, '小明进步了：20分'],
-      ['标题 & "进步了：" & 期末考试成绩 - 期中考试成绩 & "分"', { 标题: '小明', 期末考试成绩: 40, 期中考试成绩: 20 }, '小明进步了：20分'],
+      [
+        '{title} & "\'s exam score improved ：" & {中文期末考试成绩} - {midterm_exam_score} & "分"', 
+        { title: 'Mary Lee', 中文期末考试成绩: 40, midterm_exam_score: 20 }, 'Mary Lee\'s exam score improved ：20分'
+      ],
+      ['中文变量 & "进步了：" & 中文期末考试成绩 - midterm_exam_score & "分"', { 中文变量: 'Tom', 中文期末考试成绩: 40, midterm_exam_score: 20 }, 'Tom进步了：20分'],
       ['SUM(1, -2, SUM(1,2,3)) + 3', { a: 0, b: '456', c: 1 }, 8],
       ['SUM(1, {c}, SUM(1,2,3)) + 3', { a: 0, b: '456', c: 1 }, 11],
       ['SUM(1, c, SUM(1,2,3)) + 3', { a: 0, b: '456', c: 1 }, 11],
@@ -257,7 +261,7 @@ describe('FormulaEvaluate', () => {
     const tests = [
       ['1+1', {}, 2],
       ['"abc" + "xyz"', {}, 'abcxyz'],
-      ['"我们是：" + "共产主义接班人"', {}, '我们是：共产主义接班人'],
+      ['"我们是：" + "向往自由民主技术人"', {}, '我们是：向往自由民主技术人'],
       ['{a} + {b}', { a: 0, b: '456' }, '0456'],
       ['{a} + {b}', { a: 'xyz', b: 'abc' }, 'xyzabc'],
       ['{a} + {c}', { a: 50, c: 1 }, 51],
@@ -383,7 +387,7 @@ describe('FormulaEvaluate', () => {
     expect(() => evaluate('{a} % {b}', mergeContext({ a: 'xyz', b: 3 }))).toThrow('NaN');
     expect(() => evaluate('{a} / {b}', mergeContext({ a: 'xyz', b: 'abc' }))).toThrow('NaN');
     expect(() => evaluate('{a} * {b}', mergeContext({ a: 'xyz', b: 'abc' }))).toThrow('NaN');
-    expect(() => evaluate('{x}', mergeContext({}))).toThrow('公式列中的函数不可以引用当前公式列');
+    expect(() => evaluate('{x}', mergeContext({}))).toThrow(SelfRefError);
   });
 
   it('should evaluate " and \'', () => {
@@ -391,15 +395,15 @@ describe('FormulaEvaluate', () => {
       ['AND({a}="1", {b}="2")', { a: '1', b: '2' }, true],
       ['"test" & "-" & "123"', { a: '1', b: '2' }, 'test-123'],
       ['"abc\\""', { a: '1', b: '2' }, 'abc"'],
-      ['"引号测试+=*/\\"123"', { a: '1', b: '2' }, '引号测试+=*/"123'],
+      ['"quotes test+=*/\\"123"', { a: '1', b: '2' }, 'quotes test+=*/"123'],
       ['AND({a}=\'1\', {b}=\'2\')', { a: '1', b: '2' }, true],
       ['\'test\' & \'-\' & \'123\'', { a: '1', b: '2' }, 'test-123'],
       ['\'abc\\\'\'', { a: '1', b: '2' }, 'abc\''],
-      ['\'引号测试+=*/\\\'123\'', { a: '1', b: '2' }, '引号测试+=*/\'123'],
+      ['\'quote test+=*/\\\'123\'', { a: '1', b: '2' }, 'quote test+=*/\'123'],
       ['AND({a}=\'1\', {b}="2")', { a: '1', b: '2' }, true],
       ['\'test\' & \'-\' & "123"', { a: '1', b: '2' }, 'test-123'],
       ['"abc\'"', { a: '1', b: '2' }, 'abc\''],
-      ['"引号测试+=*/\'123"', { a: '1', b: '2' }, '引号测试+=*/\'123'],
+      ['"quotes test+=*/\'123"', { a: '1', b: '2' }, 'quotes test+=*/\'123'],
     ];
 
     testEvaluate(tests);

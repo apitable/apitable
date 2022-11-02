@@ -3,7 +3,7 @@ import { FormulaFunc, IFormulaParam } from './basic';
 import { BasicValueType, FormulaFuncType } from 'types';
 import { AstNode, ValueOperandNodeBase } from 'formula_parser/parser';
 import { divide, noNaN, plus, times } from 'utils';
-import { t, Strings } from 'i18n';
+import { ParamsCountError, ParamsErrorType } from 'formula_parser/errors/params_count.error';
 
 class NumericFunc extends FormulaFunc {
   static override readonly type = FormulaFuncType.Numeric;
@@ -174,10 +174,7 @@ export class Average extends NumericFunc {
 export class Ceiling extends NumericUtilsFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'CEILING',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'CEILING', 1);
     }
   }
 
@@ -189,10 +186,7 @@ export class Ceiling extends NumericUtilsFunc {
 export class Floor extends NumericUtilsFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'FLOOR',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'FLOOR', 1);
     }
   }
 
@@ -204,10 +198,7 @@ export class Floor extends NumericUtilsFunc {
 export class Round extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'ROUND',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'ROUND', 1);
     }
   }
 
@@ -292,10 +283,7 @@ export class Min extends Max {
 export class Log extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'LOG',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'LOG', 1);
     }
   }
 
@@ -318,10 +306,7 @@ export class Log extends NumericFunc {
 export class Int extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'INT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'INT', 1);
     }
   }
 
@@ -342,10 +327,7 @@ export class Int extends NumericFunc {
 export class Exp extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'EXP',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'EXP', 1);
     }
   }
 
@@ -366,10 +348,7 @@ export class Exp extends NumericFunc {
 export class Odd extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'ODD',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'ODD', 1);
     }
   }
 
@@ -396,10 +375,7 @@ export class Odd extends NumericFunc {
 export class Even extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'EVEN',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'EVEN', 1);
     }
   }
 
@@ -426,10 +402,7 @@ export class Even extends NumericFunc {
 export class RoundUp extends NumericUtilsFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'ROUNDUP',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'ROUNDUP', 1);
     }
   }
 
@@ -441,10 +414,7 @@ export class RoundUp extends NumericUtilsFunc {
 export class RoundDown extends NumericUtilsFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'ROUNDDOWN',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'ROUNDDOWN', 1);
     }
   }
 
@@ -456,10 +426,7 @@ export class RoundDown extends NumericUtilsFunc {
 export class Power extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'POWER',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'POWER', 2);
     }
   }
 
@@ -480,10 +447,7 @@ export class Power extends NumericFunc {
 export class Sqrt extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'SQRT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'SQRT', 1);
     }
   }
 
@@ -504,10 +468,7 @@ export class Sqrt extends NumericFunc {
 export class Mod extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'MOD',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'MOD', 2);
     }
   }
 
@@ -535,10 +496,7 @@ export class Mod extends NumericFunc {
 export class Value extends NumericFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'VALUE',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'VALUE', 1);
     }
   }
 

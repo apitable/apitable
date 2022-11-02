@@ -4,7 +4,7 @@ import { FieldType, IRatingField } from 'types/field_types';
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const ratingField: IRatingField = {
-  name: '评分字段',
+  name: 'rating field',
   id: 'fld1111',
   type: FieldType.Rating,
   property: {
@@ -14,7 +14,7 @@ const ratingField: IRatingField = {
 };
 
 const openRatingField: IOpenField = {
-  name: '评分字段',
+  name: 'rating field',
   id: 'fld1111',
   type: APIMetaFieldType.Rating,
   property: {
@@ -28,53 +28,53 @@ const writeOpenProperty: IOpenRatingFieldProperty = {
   icon: 'flag-ni'
 };
 
-describe('评分字段读取property格式检查', () => {
+describe('The rating field reads the property format check', () => {
   const valid = getOpenFieldProperty(ratingField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openRatingField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('评分字段更新property检查', () => {
+describe('Rating field update property check', () => {
   const valid = validUpdateOpenProperty(ratingField);
-  it('评分字段更新property', () => {
+  it('Rating field update property', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('评分字段更新property为错误的icon', () => {
+  it('The rating field updates the property to the wrong icon', () => {
     const result = valid({ icon: 'test', max: 5 });
     expect(result).toEqual(false);
   });
 
-  it('评分字段更新property为错误的范围', () => {
+  it('The rating field is updated with a property of the wrong range', () => {
     const result = valid({ icon: 'flag-ni', max: 11 });
     expect(result).toEqual(false);
   });
 
-  it('评分字段更新property为空的时候', () => {
+  it('The rating field is updated when the property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('评分字段更新property转换property检查', () => {
+describe('Rating field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(ratingField);
-  it('输入正确的更新property参数', () => {
+  it('Enter the correct update property parameters', () => {
     const [expectValue, receiveValue] = valid(writeOpenProperty, ratingField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('评分字段字段新增property检查', () => {
+describe('Added property check for scoring field', () => {
   const valid = validAddOpenProperty(ratingField);
-  it('property 有值', () => {
+  it('property has value', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

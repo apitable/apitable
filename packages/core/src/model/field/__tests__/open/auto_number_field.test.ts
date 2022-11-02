@@ -4,7 +4,7 @@ import { FieldType, IAutoNumberField } from 'types/field_types';
 import { getOpenFieldProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const autoNumberField: IAutoNumberField = {
-  name: '自增数字字段',
+  name: 'Auto incremental number field',
   id: 'fld1111',
   type: FieldType.AutoNumber,
   property: {
@@ -15,7 +15,7 @@ const autoNumberField: IAutoNumberField = {
 };
 
 const openAutoNumberField: IOpenField = {
-  name: '自增数字字段',
+  name: 'Auto incremental number field',
   id: 'fld1111',
   type: APIMetaFieldType.AutoNumber,
   property: null
@@ -23,30 +23,30 @@ const openAutoNumberField: IOpenField = {
 
 const writeOpenProperty: IOpenFieldProperty = null;
 
-describe('自增数字字段读取property格式检查', () => {
+describe('Auto-Self-incrementing numeric fields read property format check', () => {
   const valid = getOpenFieldProperty(autoNumberField);
-  it('正确的property', function() {
+  it('the correct property', function() {
     const [expectValue, receiveValue] = valid(openAutoNumberField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('自增数字字段更新property检查', () => {
+describe('Auto-Self-incrementing numeric field update property check', () => {
   const valid = validUpdateOpenProperty(autoNumberField);
-  it('自增数字字段更新property', () => {
+  it('Auto-increment numeric field update property', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(false);
   });
 });
 
-describe('自增数字字段新增property检查', () => {
+describe('Added property check for auto-incrementing numeric fields', () => {
   const valid = validAddOpenProperty(autoNumberField);
-  it('输入新增property参数', () => {
+  it('Enter the new property parameter', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('输入新增property参数，不为空', () => {
+  it('Enter the new property parameter, not empty', () => {
     const result = valid({});
     expect(result).toEqual(false);
   });

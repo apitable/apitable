@@ -3,7 +3,7 @@ import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const lookupField: ILookUpField = {
-  name: '引用字段',
+  name: 'lookup field',
   id: 'fld1111',
   type: FieldType.LookUp,
   property: {
@@ -20,24 +20,24 @@ const lookupField: ILookUpField = {
 };
 
 // const openLookUpField: IOpenField = {
-//   name: '引用字段',
-//   id: 'fld1111',
-//   type: APIMetaFieldType.MagicLookUp,
-//   property: {
-//     relatedLinkFieldId: 'fldxxxx',
-//     targetFieldId: 'fldccc',
-//     hasError: false,
-//     rollupFunction: RollUpFuncType.AND,
-//     valueType: 'String',
-//     format: {
-//       type: APIMetaFieldPropertyFormatEnums.DateTime,
-//       format: {
-//         dateFormat: 'YYYY/MM/DD',
-//         timeFormat: 'HH:mm',
-//         includeTime: true
-//       }
-//     }
-//   }
+// name: 'lookup field',
+// id: 'fld1111',
+// type: APIMetaFieldType.MagicLookUp,
+// property: {
+// relatedLinkFieldId: 'fldxxxx',
+// targetFieldId: 'fldccc',
+// hasError: false,
+// rollupFunction: RollUpFuncType.AND,
+// valueType: 'String',
+// format: {
+// type: APIMetaFieldPropertyFormatEnums.DateTime,
+// format: {
+// dateFormat: 'YYYY/MM/DD',
+// timeFormat: 'HH:mm',
+// includeTime: true
+// }
+// }
+// }
 // };
 
 const propertyOptionalFill: IUpdateOpenMagicLookUpFieldProperty = {
@@ -59,9 +59,9 @@ const propertyOptionalNotFill: IUpdateOpenMagicLookUpFieldProperty = {
   targetFieldId: 'fldccc'
 };
 
-describe('神奇引用字段读取property格式检查', () => {
+describe('Magic reference field read property format check', () => {
   const valid = getOpenFieldProperty(lookupField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid({
       hasError: true,
       relatedLinkFieldId: 'fldxxxx',
@@ -72,27 +72,27 @@ describe('神奇引用字段读取property格式检查', () => {
   });
 });
 
-describe('神奇引用字段更新property检查', () => {
+describe('Magic reference field update property check', () => {
   const valid = validUpdateOpenProperty(lookupField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('神奇引用字段更新property转换property检查', () => {
+describe('Magic reference field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(lookupField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {
       relatedLinkFieldId: 'fldxxxx',
       lookUpTargetFieldId: 'fldccc',
@@ -101,25 +101,25 @@ describe('神奇引用字段更新property转换property检查', () => {
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, lookupField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('神奇引用字段字段新增property检查', () => {
+describe('Magic reference field added property check', () => {
   const valid = validAddOpenProperty(lookupField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

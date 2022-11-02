@@ -5,7 +5,7 @@ import { IUpdateOpenLastModifiedByFieldProperty } from 'types/open/open_field_wr
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const lastModifiedByField: ILastModifiedByField = {
-  name: '修改人字段',
+  name: 'Modifier field',
   id: 'fld1111',
   type: FieldType.LastModifiedBy,
   property: {
@@ -17,7 +17,7 @@ const lastModifiedByField: ILastModifiedByField = {
 };
 
 const openLastModifiedByField: IOpenField = {
-  name: '修改人字段',
+  name: 'Modifier field',
   id: 'fld1111',
   type: APIMetaFieldType.LastModifiedBy,
   property: {
@@ -35,35 +35,35 @@ const propertyOptionalNotFill: IUpdateOpenLastModifiedByFieldProperty = {
   collectType: CollectType.AllFields,
 };
 
-describe('修改人字段读取property格式检查', () => {
+describe('Modifier field read property format check', () => {
   const valid = getOpenFieldProperty(lastModifiedByField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openLastModifiedByField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('修改人字段更新property检查', () => {
+describe('Modifier field update property check', () => {
   const valid = validUpdateOpenProperty(lastModifiedByField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('修改人字段更新property转换property检查', () => {
+describe('Modifier field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(lastModifiedByField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {
       ...LastModifiedByField.defaultProperty(),
       collectType: CollectType.AllFields,
@@ -72,25 +72,25 @@ describe('修改人字段更新property转换property检查', () => {
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, lastModifiedByField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('修改人字段字段新增property检查', () => {
+describe('Modify the person field to add a property check', () => {
   const valid = validAddOpenProperty(lastModifiedByField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

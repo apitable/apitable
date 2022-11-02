@@ -7,59 +7,59 @@ import { getOpenFieldProperty, transformProperty
   , updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const singleSelectField: ISelectField = {
-  name: '单选字段',
+  name: 'single select field',
   id: 'fld1111',
   type: 3,
   property: {
     options: [
       {
         id: 'opt000',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: 1
       },
       {
         id: 'opt001',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: 2
       }
     ]
   }
 };
 const invalidIdField: ISelectField = {
-  name: '单选字段',
+  name: 'single select field',
   id: 'fld1111',
   type: 3,
   property: {
     options: [
       {
         id: '',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: 0
       },
       {
         id: '',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: 0
       }
-    ], 
-    defaultValue: '测试标签1'
+    ],
+    defaultValue: 'Test Label 1'
   }
 };
 
 const openSingleSelectField: IOpenField = {
   id: 'fld1111',
-  name: '单选字段',
+  name: 'select single field',
   type: APIMetaFieldType.SingleSelect,
   property: {
     options: [
       {
         id: 'opt000',
-        name: '测试标签1',
+        name: 'Test Label 1',
         color: getFieldOptionColor(1)
       },
       {
         id: 'opt001',
-        name: '测试标签2',
+        name: 'Test Label 2',
         color: getFieldOptionColor(2)
       }
     ]
@@ -69,7 +69,7 @@ const openSingleSelectField: IOpenField = {
 const writeOpenPropertyDelete: IUpdateOpenSingleSelectFieldProperty = {
   options: [{
     id: 'opt000',
-    name: '测试标签1',
+    name: 'Test Label 1',
     color: getFieldOptionColor(1).name
   }]
 };
@@ -77,70 +77,70 @@ const writeOpenPropertyDelete: IUpdateOpenSingleSelectFieldProperty = {
 const writeOpenProperty: IUpdateOpenSingleSelectFieldProperty = {
   options: [{
     id: 'opt000',
-    name: '测试标签1',
+    name: 'Test Label 1',
     color: getFieldOptionColor(1).name
   }, {
     id: 'opt001',
-    name: '测试标签2',
+    name: 'Test Label 2',
     color: getFieldOptionColor(2).name
   }]
 };
 
-describe('单选字段读取property格式检查', () => {
+describe('Radio field read property format check', () => {
   const valid = getOpenFieldProperty(singleSelectField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openSingleSelectField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('单选字段更新property检查', () => {
+describe('radio field update property check', () => {
   const valid = validUpdateOpenProperty(singleSelectField);
-  it('输入会删除选项的property并带上副作用参数', () => {
+  it('Enter the property that will delete the option and take the side effect parameter', () => {
     const result = valid(writeOpenPropertyDelete, { enableSelectOptionDelete: true });
     expect(result).toEqual(true);
   });
 
-  it('输入会删除选项的property并不带副作用参数', () => {
+  it('Enter the property that deletes the option without side effect parameters', () => {
     const result = valid(writeOpenPropertyDelete);
     expect(result).toEqual(false);
   });
 
-  it('单选字段更新property为空的时候', () => {
+  it('When the radio field update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('单选字段新增property检查', () => {
+describe('Add property check to radio field', () => {
   const valid = validAddOpenProperty(singleSelectField);
-  it('输入正确的新增property参数', () => {
+  it('Enter the correct new property parameter', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('新增property为空的时候', () => {
+  it('When the new property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('单选字段更新property转换property检查', () => {
+describe('radio field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(singleSelectField);
-  it('输入正确的更新property参数', () => {
+  it('Enter the correct update property parameters', () => {
     const [expectValue, receiveValue] = valid(writeOpenProperty, singleSelectField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('单选字段字段新增property检查', () => {
+describe('Add a property check to the radio field', () => {
   const valid = validAddOpenProperty(singleSelectField);
-  it('property 有值', () => {
+  it('property has value', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

@@ -55,23 +55,23 @@ describe('', () => {
   });
 });
 
-describe.skip('1 万条数据测试 field 排序', () => {
-  it('中文单行文本排序耗时小于 1000ms', () => {
+describe.skip('10,000 data test field sorting', () => {
+  it('Chinese single-line text sorting takes less than 1000ms', () => {
     compare(FieldType.Text, 1, 'zh');
   });
-  it('数字排序耗时小于 1000ms', () => {
+  it('Number sorting takes less than 1000ms', () => {
     compare(FieldType.Number, 2, 'number');
   });
-  it('日期排序耗时小于 1000ms', () => {
+  it('Date sorting takes less than 1000ms', () => {
     compare(FieldType.DateTime, 5, 'date');
   });
-  it('链接排序耗时小于 1000ms', () => {
+  it('Link sorting takes less than 1000ms', () => {
     compare(FieldType.URL, 8, 'url');
   });
-  it('邮箱排序耗时小于 1000ms', () => {
+  it('Mail sorting takes less than 1000ms', () => {
     compare(FieldType.Email, 9, 'email');
   });
-  it('电话排序耗时小于 1000ms', () => {
+  it('Phone number sorting takes less than 1000ms', () => {
     compare(FieldType.Phone, 10, 'phone');
   });
 });

@@ -2,38 +2,38 @@ import { IRatingField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
 
 const ratingField: IRatingField = {
-  name: '评分字段',
+  name: 'Rating field',
   id: 'fld1111',
   type: 12,
   property: { icon: 'star', max: 5 }
 };
 
-describe('评分字段的格式检查', () => {
+describe('Format Check for Rating Fields', () => {
   const valid = getValidCellValue(ratingField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multi choices', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single choice', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件内容', function() {
+  it('input attachment', function() {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
@@ -45,34 +45,34 @@ describe('评分字段的格式检查', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 1', function() {
+  it('input 1', function() {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入 0', function() {
+  it('input 0', function() {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入 true', function() {
+  it('input true', function() {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 false', function() {
+  it('input false', function() {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 unitId', function() {
+  it('input unitId', function() {
     const [expectValue, receiveValue] = valid(['1632153600000']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
 });
 
-describe('检查数字字段 property 格式', () => {
+describe('Check numeric field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...ratingField,
@@ -94,7 +94,7 @@ describe('检查数字字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 只有其他属性', function() {
+  it('property only has other properties', function() {
     expect(validProperty({
       ...ratingField,
       property: {
@@ -109,7 +109,7 @@ describe('检查数字字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('icon 值类型错误', function() {
+  it('wrong icon value type', function() {
     expect(validProperty({
       ...ratingField,
       property: {
@@ -119,7 +119,7 @@ describe('检查数字字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...ratingField,
       property: {

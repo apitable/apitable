@@ -1,3 +1,4 @@
+import { ParamsCountError } from 'formula_parser/errors/params_count.error';
 import { mergeContext, evaluate } from './mock_state';
 
 describe('Logical function test', () => {
@@ -18,7 +19,7 @@ describe('Logical function test', () => {
     expect(() => evaluate(
       'IF("x")',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('IF 函数需要 3 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('BLANK', () => {
@@ -86,7 +87,7 @@ describe('Logical function test', () => {
     expect(() => evaluate(
       'OR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('OR 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('AND', () => {
@@ -108,7 +109,7 @@ describe('Logical function test', () => {
     expect(() => evaluate(
       'AND()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('AND 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('XOR', () => {
@@ -130,7 +131,7 @@ describe('Logical function test', () => {
     expect(() => evaluate(
       'XOR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('XOR 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('NOT', () => {
@@ -147,34 +148,34 @@ describe('Logical function test', () => {
     expect(() => evaluate(
       'NOT()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('NOT 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('SWITCH', () => {
     expect(evaluate(
-      'SWITCH({b}, "一二三")',
+      'SWITCH({b}, "one two three")',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toEqual('一二三');
+    )).toEqual('one two three');
 
     expect(evaluate(
-      'SWITCH({a}, "123", "一二三", "456", "四五六", "七八九")',
+      'SWITCH({a}, "123", "one two three", "456", "four five six", "default value")',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toEqual('七八九');
+    )).toEqual('default value');
 
     expect(evaluate(
-      'SWITCH({b}, "123", "一二三", "456", "四五六", "七八九")',
+      'SWITCH({b}, "123", "one two three", "456", "four five six", "default value")',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toEqual('四五六');
+    )).toEqual('four five six');
 
     expect(evaluate(
-      'SWITCH({a}, "123", "一二三", "456", "四五六")',
+      'SWITCH({a}, "123", "one two three", "456", "four five six")',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
     )).toEqual(null);
 
     expect(() => evaluate(
       'SWITCH({a})',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('SWITCH 函数至少需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   // it('ERROR', () => {
@@ -228,6 +229,6 @@ describe('Logical function test', () => {
     expect(() => evaluate(
       'ISERROR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('IS_ERROR 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 });

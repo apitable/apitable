@@ -2,6 +2,7 @@ import { evaluate as _evaluate } from '../evaluate';
 import { IFormulaContext } from '../functions/basic';
 import { FieldType } from '../../types/field_types';
 import { mergeContext } from './mock_state';
+import { ParamsCountError } from '../errors/params_count.error';
 
 const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>) => {
   const fieldMap = ctx.state.datasheetMap['dst123'].datasheet!.snapshot.meta.fieldMap;
@@ -139,7 +140,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'CEILING()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('CEILING 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('FLOOR', () => {
@@ -171,7 +172,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'FLOOR()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('FLOOR 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('ROUND', () => {
@@ -218,7 +219,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'ROUND()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('ROUND 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('MAX', () => {
@@ -326,7 +327,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'LOG()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('LOG 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('INT', () => {
@@ -343,7 +344,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'INT()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('INT 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('EXP', () => {
@@ -360,7 +361,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'EXP()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('EXP 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('EVEN', () => {
@@ -392,7 +393,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'EVEN()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('EVEN 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('ODD', () => {
@@ -424,7 +425,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'ODD()',
       mergeContext({ a: 0, b: '8', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('ODD 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('COUNT', () => {
@@ -559,7 +560,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'ROUNDUP()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('ROUNDUP 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('ROUNDDOWN', () => {
@@ -586,7 +587,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'ROUNDDOWN()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('ROUNDDOWN 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('POWER', () => {
@@ -608,7 +609,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'POWER({a})',
       mergeContext({ a: 1, b: '456', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('POWER 函数至少需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('SQRT', () => {
@@ -625,7 +626,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'SQRT()',
       mergeContext({ a: 1, b: '456', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('SQRT 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('MOD', () => {
@@ -647,7 +648,7 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'MOD({a})',
       mergeContext({ a: 1, b: '456', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('MOD 函数至少需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('VALUE', () => {
@@ -674,6 +675,6 @@ describe('Numeric function test', () => {
     expect(() => evaluate(
       'VALUE()',
       mergeContext({ a: 1, b: '456', c: 1591414562369, d: ['x', 'y'] }),
-    )).toThrow('VALUE 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 });

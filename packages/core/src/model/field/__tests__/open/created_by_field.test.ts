@@ -4,7 +4,7 @@ import { FieldType, ICreatedByField } from 'types/field_types';
 import { getOpenFieldProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const createdByField: ICreatedByField = {
-  name: '创建人字段',
+  name: 'Creator Field',
   id: 'fld1111',
   type: FieldType.CreatedBy,
   property: {
@@ -14,7 +14,7 @@ const createdByField: ICreatedByField = {
 };
 
 const openCreatedByField: IOpenField = {
-  name: '创建人字段',
+  name: 'Creator Field',
   id: 'fld1111',
   type: APIMetaFieldType.CreatedBy,
   property: null
@@ -22,29 +22,29 @@ const openCreatedByField: IOpenField = {
 
 const writeOpenProperty: IOpenFieldProperty = null;
 
-describe('创建人字段读取property格式检查', () => {
+describe('Created by field read property format check', () => {
   const valid = getOpenFieldProperty(createdByField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openCreatedByField.property);
     expect(receiveValue).toEqual(expectValue);
   });
 });
 
-describe('创建人字段更新property检查', () => {
+describe('Created by field update property check', () => {
   const valid = validUpdateOpenProperty(createdByField);
-  it('创建人字段更新property', () => {
+  it('Creator field update property', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(false);
   });
 });
 
-describe('创建人字段新增property检查', () => {
+describe('Added property check to the creator field', () => {
   const valid = validAddOpenProperty(createdByField);
-  it('输入新增property参数', () => {
+  it('Enter the new property parameter', () => {
     const result = valid(writeOpenProperty);
     expect(result).toEqual(true);
   });
-  it('输入新增property参数，不为空', () => {
+  it('Enter the new property parameter, not empty', () => {
     const result = valid({});
     expect(result).toEqual(false);
   });

@@ -4,7 +4,7 @@ import { Conversion, IUpdateOpenMagicLinkFieldProperty } from 'types/open/open_f
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const linkField: ILinkField = {
-  name: '关联字段',
+  name: 'Link field',
   id: 'fld1111',
   type: FieldType.Link,
   property: {
@@ -16,7 +16,7 @@ const linkField: ILinkField = {
 };
 
 const openLinkField: IOpenField = {
-  name: '关联字段',
+  name: 'Link field',
   id: 'fld1111',
   type: APIMetaFieldType.MagicLink,
   property: {
@@ -38,40 +38,40 @@ const propertyOptionalNotFill: IUpdateOpenMagicLinkFieldProperty = {
   foreignDatasheetId: 'dst2222',
 };
 
-describe('神奇关联字段读取property格式检查', () => {
+describe('Magic Link field read property format check', () => {
   const valid = getOpenFieldProperty(linkField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openLinkField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('神奇关联字段更新property检查', () => {
+describe('Magic associated field update property check', () => {
   const valid = validUpdateOpenProperty(linkField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('神奇关联字段更新property转换property检查', () => {
+describe('Magic Link field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(linkField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, propertyOptionalNotFill);
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, {
       foreignDatasheetId: 'dst2222',
       limitToView: 'viw22222',
@@ -81,19 +81,19 @@ describe('神奇关联字段更新property转换property检查', () => {
   });
 });
 
-describe('神奇关联字段字段新增property检查', () => {
+describe('Magic Link field added property check', () => {
   const valid = validAddOpenProperty(linkField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in Link fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

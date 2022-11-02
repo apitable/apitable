@@ -2,81 +2,82 @@ import { ITextField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
 
 const textField: ITextField = {
-  name: '文本字段',
+  name: 'Text Field',
   id: 'fld1111',
   type: 1,
   property: null
 };
 
 /**
- * 邮箱、单行文本、多行文本、链接、电话 这四种字段用的都是一种数据结构，所以只检查其中一种即可
+ * Mailbox, single-line text, multi-line text, link, phone These four fields use a data structure, 
+ * so only one of them can be checked
  */
 
-describe('文本字段的格式检查', () => {
+describe('Format check for text fields', () => {
   const valid = getValidCellValue(textField);
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入多选的内容', function() {
+  it('input multi select', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single select', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入的附件内容', function() {
+  it('input attachment', function() {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
       mimeType: 'image/jpg',
-      token: 'vika.cn',
+      token: 'apitable.com',
       bucket: 'image/xxxx.jpg',
       size: 123111,
     });
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 1', function() {
+  it('input 1', function() {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 0', function() {
+  it('input 0', function() {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 true', function() {
+  it('input true', function() {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入 false', function() {
+  it('input false', function() {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入时间戳', function() {
+  it('input timestamp', function() {
     const [expectValue, receiveValue] = valid(1632153600000);
     expect(receiveValue).not.toEqual(expectValue);
   });
 });
 
-// 多行文本,email,phone,url 的 property 接口设置相似，可以用同一个测试用例
-describe('检查多行文本字段 property 格式', () => {
+// Multi-line text, email, phone, url property interface settings are similar, you can use the same test case
+describe('Check multiline text field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...textField,
@@ -97,7 +98,7 @@ describe('检查多行文本字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 只有其他属性', function() {
+  it('property has only other properties', function() {
     expect(validProperty({
       ...textField,
       property: {
@@ -112,7 +113,7 @@ describe('检查多行文本字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...textField,
       property: {
@@ -123,8 +124,8 @@ describe('检查多行文本字段 property 格式', () => {
   });
 });
 
-// 单行文本
-describe('检查单行文本字段 property 格式', () => {
+// single line of text
+describe('Check single-line text field property format', () => {
   const singleTextField = {
     textField,
     type: 19,

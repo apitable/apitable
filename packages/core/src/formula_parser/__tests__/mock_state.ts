@@ -35,9 +35,9 @@ const fieldMap: IFieldMap = {
     type: FieldType.MultiSelect,
     property: {
       options: [
-        { id: 'opt1', name: '智', color: 0 },
+        { id: 'opt1', name: '科', color: 0 },
         { id: 'opt2', name: '维格', color: 1 },
-        { id: 'opt3', name: '维他', color: 2 },
+        { id: 'opt3', name: 'APITable', color: 2 },
         { id: 'opt4', name: 'the first', color: 3 },
         { id: 'opt5', name: 'the second', color: 4 },
         { id: 'x', name: 'x', color: 0 },

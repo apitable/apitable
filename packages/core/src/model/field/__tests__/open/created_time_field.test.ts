@@ -5,7 +5,7 @@ import { IUpdateOpenCreatedTimeFieldProperty } from 'types/open/open_field_write
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const createdTimeField: ICreatedTimeField = {
-  name: '创建时间字段',
+  name: 'Created time field',
   id: 'fld1111',
   type: FieldType.CreatedTime,
   property: {
@@ -20,7 +20,7 @@ const createdTimeField: ICreatedTimeField = {
 };
 
 const openCreatedTimeField: IOpenField = {
-  name: '创建时间字段',
+  name: 'Created time field',
   id: 'fld1111',
   type: APIMetaFieldType.CreatedTime,
   property: {
@@ -42,7 +42,7 @@ const propertyOptionalNotFill: IUpdateOpenCreatedTimeFieldProperty = {
 
 describe('Create time field read property format check', () => {
   const valid = getOpenFieldProperty(createdTimeField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openCreatedTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });
@@ -50,17 +50,17 @@ describe('Create time field read property format check', () => {
 
 describe('Create time field update property check', () => {
   const valid = validUpdateOpenProperty(createdTimeField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('Fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
@@ -68,7 +68,7 @@ describe('Create time field update property check', () => {
 
 describe('Create time field update property transform property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(createdTimeField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {
       ...CreatedTimeField.defaultProperty(),
       dateFormat: DateFormat['YYYY-MM-DD'],
@@ -77,25 +77,25 @@ describe('Create time field update property transform property check', () => {
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('Fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, createdTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('创建时间字段新增property检查', () => {
+describe('Added property check for creation time field', () => {
   const valid = validAddOpenProperty(createdTimeField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('Fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

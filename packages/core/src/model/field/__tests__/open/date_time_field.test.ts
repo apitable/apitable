@@ -5,23 +5,23 @@ import { IUpdateOpenDateTimeFieldProperty } from 'types/open/open_field_write_ty
 import { getOpenFieldProperty, updateOpenFieldPropertyTransformProperty, validAddOpenProperty, validUpdateOpenProperty } from './common';
 
 const dateTimeField: IDateTimeField = {
-  name: '日期字段',
+  name: 'date field',
   id: 'fld1111',
   type: FieldType.DateTime,
   property: {
-    /** 日期格式 */
+    /** date format */
     dateFormat: DateFormat['YYYY-MM-DD'],
-    /** 时间格式 */
+    /** Time format */
     timeFormat: TimeFormat['HH:mm'],
-    /** 是否包含时间 */
+    /** Whether to include time */
     includeTime: true,
-    /** 新增记录时是否自动填入创建时间 */
+    /** Whether to automatically fill in the creation time when adding a new record */
     autoFill: false
   }
 };
 
 const openDateTimeField: IOpenField = {
-  name: '日期字段',
+  name: 'date field',
   id: 'fld1111',
   type: APIMetaFieldType.DateTime,
   property: {
@@ -43,35 +43,35 @@ const propertyOptionalNotFill: IUpdateOpenDateTimeFieldProperty = {
   dateFormat: 'YYYY-MM-DD'
 };
 
-describe('日期字段读取property格式检查', () => {
+describe('Date field read property format check', () => {
   const valid = getOpenFieldProperty(dateTimeField);
-  it('正确的property', function() {
+  it('correct property', function() {
     const [expectValue, receiveValue] = valid(openDateTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('日期字段更新property检查', () => {
+describe('Date field update property check', () => {
   const valid = validUpdateOpenProperty(dateTimeField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('更新property为空的时候', () => {
+  it('When the update property is empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });
 });
 
-describe('日期字段更新property转换property检查', () => {
+describe('date field update property conversion property check', () => {
   const valid = updateOpenFieldPropertyTransformProperty(dateTimeField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalNotFill, {
       ...DateTimeField.defaultProperty(),
       dateFormat: DateFormat['YYYY-MM-DD']
@@ -79,25 +79,25 @@ describe('日期字段更新property转换property检查', () => {
     expect(expectValue).toEqual(receiveValue);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const [expectValue, receiveValue] = valid(propertyOptionalFill, dateTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });
 });
 
-describe('日期字段字段新增property检查', () => {
+describe('Add property check for date field field', () => {
   const valid = validAddOpenProperty(dateTimeField);
-  it('不填可选字段', () => {
+  it('Do not fill in optional fields', () => {
     const result = valid(propertyOptionalNotFill);
     expect(result).toEqual(true);
   });
 
-  it('填可选字段', () => {
+  it('fill in optional fields', () => {
     const result = valid(propertyOptionalFill);
     expect(result).toEqual(true);
   });
 
-  it('为空的时候', () => {
+  it('when empty', () => {
     const result = valid(null);
     expect(result).toEqual(false);
   });

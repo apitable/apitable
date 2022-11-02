@@ -2,26 +2,26 @@ import { ISelectField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
 
 const singleSelectField: ISelectField = {
-  name: '单选字段',
+  name: 'single select field',
   id: 'fld1111',
   type: 3,
   property: {
     options: [{
       id: 'opt000',
-      name: '测试标签',
+      name: 'test tag',
       color: 1
     }]
   }
 };
 
 const multiSelectField: ISelectField = {
-  name: '多选字段',
+  name: 'multi selects field',
   id: 'fld22222',
   type: 4,
   property: {
     options: [{
       id: 'opt000',
-      name: '测试标签',
+      name: 'test tag',
       color: 1
     }]
   }
@@ -31,62 +31,62 @@ export const selectCommonTestSuit = (valid: any) => {
 
   commonTestSuit(valid);
 
-  it('输入数字', function() {
+  it('input number', function() {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入文本类型的内容', function() {
+  it('input text', function() {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
 };
 
-describe('单选字段的格式检查', () => {
+describe('Format check for single select fields', () => {
   const valid = getValidCellValue(singleSelectField);
 
   selectCommonTestSuit(valid);
 
-  it('输入多选的内容', function() {
+  it('Enter multiple selections', function() {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容，值在 property 中存在', function() {
+  it('Enter single select value, the value exists in the property', function() {
     const [expectValue, receiveValue] = valid('opt000');
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('输入单选内容，值在 property 中不存在', function() {
+  it('Enter single select value, the value does not exist in the property', function() {
     const [expectValue, receiveValue] = valid('opt111');
     expect(receiveValue).not.toEqual(expectValue);
   });
 });
 
-describe('多选字段的格式检查', () => {
+describe('Format check for multi-select fields', () => {
   const valid = getValidCellValue(multiSelectField);
 
   selectCommonTestSuit(valid);
 
-  it('多选的值在 field property 中存在', function() {
+  it('The value of the multiple selection exists in the field property', function() {
     const [expectValue, receiveValue] = valid(['opt000']);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('多选的值在 field property 中不存在', function() {
+  it('The value of the multi-select does not exist in the field property', function() {
     const [expectValue, receiveValue] = valid(['opt1111']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('输入单选内容', function() {
+  it('input single select content', function() {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 });
 
-// 单选和多选的结构一致，检查一种即可
-describe('检查单选字段 property 格式', () => {
+// The structure of single-selection and multiple-selection are the same, just check one
+describe('Check single select field property format', () => {
   it('property = undefined', function() {
     expect(validProperty({
       ...singleSelectField,
@@ -123,7 +123,7 @@ describe('检查单选字段 property 格式', () => {
     } as any)).toEqual(true);
   });
 
-  it('property.options 不能为字符串数组', function() {
+  it('property.options cannot be an array of strings', function() {
     expect(validProperty({
       ...singleSelectField,
       property: {
@@ -132,7 +132,7 @@ describe('检查单选字段 property 格式', () => {
     } as any)).toEqual(false);
   });
 
-  it('property 有多余的属性', function() {
+  it('property has redundant properties', function() {
     expect(validProperty({
       ...singleSelectField,
       property: {

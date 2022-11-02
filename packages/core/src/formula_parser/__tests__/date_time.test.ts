@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { getDayjs } from '../functions/date_time';
 import { evaluate, mergeContext } from './mock_state';
+import { ParamsCountError } from '../errors/params_count.error';
+import { UnitError } from 'formula_parser/errors/unit.error';
 
 describe('DateTime function test', () => {
   it('DAY', () => {
@@ -27,7 +29,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'DAY()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('DAY 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('YEAR', () => {
@@ -45,7 +47,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'YEAR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('YEAR 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('MONTH', () => {
@@ -63,7 +65,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'MONTH()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('MONTH 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('HOUR', () => {
@@ -81,7 +83,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'HOUR()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('HOUR 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('MINUTE', () => {
@@ -99,7 +101,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'MINUTE()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('MINUTE 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('SECOND', () => {
@@ -117,7 +119,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'SECOND()',
       mergeContext({ a: 0, b: '456', c: 1591414562369, d: ['opt1', 'opt2'] }),
-    )).toThrow('SECOND 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('WEEKDAY', () => {
@@ -140,7 +142,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'WEEKDAY()',
       mergeContext({ c: new Date('2020/6/10 00:00:00').getTime() }),
-    )).toThrow('WEEKDAY 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('DATEADD', () => {
@@ -198,12 +200,12 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'DATEADD()',
       mergeContext({ a: 0, b: '456', c: 1592236800000, d: ['opt1', 'opt2'] }),
-    )).toThrow('DATEADD 函数需要 3 个参数');
+    )).toThrow(ParamsCountError);
 
     expect(() => evaluate(
       'DATEADD(c, 10, "x")',
       mergeContext({ a: 0, b: '456', c: 1592236800000, d: ['opt1', 'opt2'] }),
-    )).toThrow('错误的 unit 参数值：x');
+    )).toThrow(UnitError);
   });
 
   it('DATETIME_DIFF', () => {
@@ -256,12 +258,12 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'DATETIME_DIFF()',
       mergeContext({ a: 0, b: '456', c: 1592236800000, d: ['opt1', 'opt2'] }),
-    )).toThrow('DATETIME_DIFF 函数需要 2 个参数');
+    )).toThrow(ParamsCountError);
 
     expect(() => evaluate(
       'DATETIME_DIFF(c, c, "x")',
       mergeContext({ a: 0, b: '456', c: 1592236800000, d: ['opt1', 'opt2'] }),
-    )).toThrow('错误的 unit 参数值：x');
+    )).toThrow(UnitError);
   });
 
   it('TODAY', () => {
@@ -332,7 +334,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'FROMNOW({c})',
       mergeContext({ a: 0, b: '456', c: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000 + 1).getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('FROMNOW 函数需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('TONOW', () => {
@@ -349,7 +351,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'TONOW({c})',
       mergeContext({ a: 0, b: '456', c: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000 + 1).getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('TONOW 函数需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('IS_BEFORE', () => {
@@ -366,7 +368,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'IS_BEFORE({c})',
       mergeContext({ a: 0, b: '456', c: new Date('2020/12/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('IS_BEFORE 函数需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('IS_AFTER', () => {
@@ -383,7 +385,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'IS_AFTER({c})',
       mergeContext({ a: 0, b: '456', c: new Date('2020/12/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('IS_AFTER 函数需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('WORKDAY', () => {
@@ -430,7 +432,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'WORKDAY({c})',
       mergeContext({ a: 0, b: '456', c: new Date('2020/12/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('WORKDAY 函数至少需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('WORKDAY_DIFF', () => {
@@ -467,7 +469,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'WORKDAY_DIFF({c})',
       mergeContext({ a: 0, b: '456', c: new Date('2020/12/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('WORKDAY_DIFF 函数至少需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('TIMESTR', () => {
@@ -479,7 +481,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'TIMESTR()',
       mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 18:30:15').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('TIMESTR 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('DATESTR', () => {
@@ -491,7 +493,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'DATESTR()',
       mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 18:30:15').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('DATESTR 函数需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('WEEKNUM', () => {
@@ -518,7 +520,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'WEEKNUM()',
       mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 18:30:15').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('WEEKNUM 函数至少需要 1 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('IS_SAME', () => {
@@ -535,7 +537,7 @@ describe('DateTime function test', () => {
     expect(() => evaluate(
       'IS_SAME({c})',
       mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 18:30:15').getTime(), d: ['opt1', 'opt2'] }),
-    )).toThrow('IS_SAME 函数至少需要 2 个参数');
+    )).toThrow(ParamsCountError);
   });
 
   it('validate getDayjs function',()=>{

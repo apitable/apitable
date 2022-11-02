@@ -3,8 +3,8 @@ import { BasicValueType, FormulaFuncType } from 'types';
 import { AstNode } from 'formula_parser/parser';
 import { noNaN } from 'utils';
 import { isString } from 'lodash';
-import { Strings, t } from 'i18n';
 import { flattenParams } from './array';
+import { ParamsCountError, ParamsErrorType } from 'formula_parser/errors/params_count.error';
 
 class TextFunc extends FormulaFunc {
   static override readonly type = FormulaFuncType.Text;
@@ -15,10 +15,7 @@ type TextType = string | null;
 export class Find extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'FIND',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'FIND', 2);
     }
   }
 
@@ -46,10 +43,7 @@ export class Find extends TextFunc {
 export class Search extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'SEARCH',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'SEARCH', 2);
     }
   }
 
@@ -78,10 +72,7 @@ export class Concatenate extends TextFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'CONCATENATE',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'CONCATENATE', 1);
     }
   }
 
@@ -99,10 +90,7 @@ export class Concatenate extends TextFunc {
 export class EncodeUrlComponent extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'ENCODE_URL_COMPONENT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'ENCODE_URL_COMPONENT', 1);
     }
   }
 
@@ -124,10 +112,7 @@ export class EncodeUrlComponent extends TextFunc {
 export class Left extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'LEFT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'LEFT', 1);
     }
   }
 
@@ -149,10 +134,7 @@ export class Left extends TextFunc {
 export class Right extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'RIGHT',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'RIGHT', 1);
     }
   }
 
@@ -176,10 +158,7 @@ export class Right extends TextFunc {
 export class Len extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'LEN',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'LEN', 1);
     }
   }
 
@@ -200,10 +179,7 @@ export class Len extends TextFunc {
 export class Lower extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'LOWER',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'LOWER', 1);
     }
   }
 
@@ -224,10 +200,7 @@ export class Lower extends TextFunc {
 export class Upper extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'UPPER',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'UPPER', 1);
     }
   }
 
@@ -248,10 +221,7 @@ export class Upper extends TextFunc {
 export class Mid extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'MID',
-        count: 3,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'MID', 3); 
     }
   }
 
@@ -277,10 +247,7 @@ export class Mid extends TextFunc {
 export class Replace extends TextFunc {
   static override validateParams(params: AstNode[]) {
     if (params.length < 4) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'REPLACE',
-        count: 4,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'REPLACE', 4);
     }
   }
 
@@ -317,10 +284,7 @@ export class T extends TextFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'T',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'T', 1);
     }
   }
 
@@ -343,10 +307,7 @@ export class Trim extends TextFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 1) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'TRIM',
-        count: 1,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'TRIM', 1);
     }
   }
 
@@ -369,10 +330,7 @@ export class Rept extends TextFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 2) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'REPT',
-        count: 2,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'REPT', 2);
     }
   }
 
@@ -397,10 +355,7 @@ export class Substitute extends TextFunc {
 
   static override validateParams(params: AstNode[]) {
     if (params.length < 3) {
-      throw new Error(t(Strings.function_validate_params_count_at_least, {
-        name: 'SUBSTITUTE',
-        count: 3,
-      }));
+      throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'SUBSTITUTE', 3);
     }
   }
 

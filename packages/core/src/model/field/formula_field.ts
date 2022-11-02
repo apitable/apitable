@@ -77,7 +77,7 @@ export class FormulaField extends ArrayValueField {
           title: this.field.name,
           items: {
             type: ValueTypeMap[innerBasicValueType],
-            title: '子项目'
+            title: 'sub project'
           }
         };
       default:
