@@ -31,6 +31,21 @@
     align-items: center;
     height: 40px;
     padding: 0 24px;
+
+    :global {
+      .ant-breadcrumb {
+        white-space: nowrap;
+        line-height: 1;
+        
+        ol {
+          flex-wrap: nowrap;
+
+          li {
+            display: flex;
+          }
+        }
+      }
+    }
   }
 
   .tabWrap {
