@@ -74,14 +74,15 @@ import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
 import { UserRepository } from 'database/repositories/user.repository';
 import { UserService } from 'database/services/user/user.service';
 
-// 初始化环境，本地开发为development，部署线上则需要指定NODE_ENV，非开发环境可选值[integration, staging, production]
-// 环境已经使用app.environment设置了
+// Initialization environment, development for local development, should specify the NODE_ENV environment variable in production
+// other options in non-development environment: integration, staging, production
+// use app.environment instead
 // const env = process.env.NODE_ENV || 'development';
 
 @Module({
   imports: [
   SharedModule,
-// 环境配置
+// environment configuration
   ConfigModule.forRoot({
     envFilePath: resolve(process.cwd(), 'dist/env/.env.defaults'),
     encoding: 'utf-8',
@@ -89,11 +90,11 @@ import { UserService } from 'database/services/user/user.service';
     expandVariables: true,
     load: [environmentConfig],
     }),
-// 数据库配置
+// database configuration
   TypeOrmModule.forRootAsync({
     useClass: DatabaseConfigService,
     }),
-// Redis配置
+// Redis configuration
   RedisModule.forRootAsync({
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => {
@@ -206,7 +207,7 @@ const redisModuleOptions = (configService: ConfigService) => {
     host,
     port,
   };
-  // 存在配置再配置
+  // use config values if there is a configuration
   if (password) {
     redisConfig.password = password;
   }

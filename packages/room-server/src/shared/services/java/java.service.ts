@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { IAuthHeader } from '../../interfaces';
 
 /**
- * @deprecated 错误的做法, 请使用 RestService
+ * @deprecated deprecated, use RestService instead.
  */
 @Injectable()
 export class JavaService {
@@ -29,11 +29,11 @@ export class JavaService {
   }
   /**
    *
-   * @param auth 验证
-   * @param options 其他请求头
+   * @param auth verfication
+   * @param options other header parameters
    * @return
    * @author Zoe Zheng
-   * @date 2020/8/12 10:53 上午
+   * @date 2020/8/12 10:53 AM
    */
   public setHeaders(auth: IAuthHeader, options?: any): this {
     if (auth.cookie) {

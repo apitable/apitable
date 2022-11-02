@@ -32,9 +32,7 @@ import { NodeRateLimiterMiddleware } from './node.rate.limiter.middleware';
 import { ResourceDataInterceptor } from './resource.data.interceptor';
 
 /**
- * <p>
- * 中间件模块，包括pipe/middleware/guard
- * </p>
+ * middleware module works with pipe, middleware and guard
  * @author Zoe zheng
  * @date 2020/7/24 4:39 PM
  */

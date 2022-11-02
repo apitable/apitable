@@ -4,8 +4,8 @@ import { JavaService } from './java.service';
 import { HttpConfigService } from '../config/http.config.service';
 
 /**
- * 业务服务模块整合
- * @deprecated 错误做法，请使用 RestModule
+ * Backend server module integration
+ * @deprecated deprecate, use RestModule instead
  */
 @Module({
   imports: [

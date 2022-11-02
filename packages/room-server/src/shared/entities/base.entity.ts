@@ -2,7 +2,7 @@ import { IdWorker } from 'shared/helpers/snowflake';
 import { BeforeInsert, Column, PrimaryColumn } from 'typeorm';
 
 /**
- * 基础字段父类
+ * base entity class with common fields
  */
 export abstract class BaseEntity {
   @PrimaryColumn('bigint')
@@ -10,7 +10,7 @@ export abstract class BaseEntity {
 
   @Column({
     name: 'is_deleted',
-    comment: '删除标记(0:否,1:是)',
+    comment: 'wether it is deleted(0: no, 1: yes)',
     unsigned: true,
     default: () => false,
   })
@@ -18,19 +18,19 @@ export abstract class BaseEntity {
 
   @Column('bigint', {
     name: 'created_by',
-    comment: '创建者',
+    comment: 'user ID of creator',
   })
     createdBy: string;
 
   @Column('bigint', {
     name: 'updated_by',
-    comment: '最后一次更新者',
+    comment: 'ID of use who last updated id',
   })
     updatedBy: string;
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'created time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;
@@ -38,7 +38,7 @@ export abstract class BaseEntity {
   @Column('timestamp', {
     name: 'updated_at',
     nullable: true,
-    comment: '更新时间',
+    comment: 'updated time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     updatedAt: Date | null;

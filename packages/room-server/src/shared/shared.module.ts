@@ -86,11 +86,11 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     useClass: HttpConfigService,
     }),
 
-// Zipkin 配置
+// Zipkin configuration
   ZipkinModule.forRootAsync({
     useClass: ZipkinConfigService,
     }),
-// 日志配置
+// Logger configuration
   LoggerModule.forRootAsync({
     useClass: LoggerConfigService,
     }),
