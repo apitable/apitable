@@ -1,59 +1,50 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ApiTipConstant, Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IDPrefix, IField, IReduxState } from '@apitable/core';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsDefined, IsOptional, ValidateNested } from 'class-validator';
 import { DatasheetFieldCreateRo } from './datasheet.field.create.ro';
 
 export class DatasheetCreateRo {
 
-  constructor(name: string, description: string) {
-    this.name = name;
-    this.description = description;
-  }
-
   @ApiProperty({
     type: String,
     required: true,
-    description: '表格名称',
-    example: '新建表格'
+    description: 'datasheet name',
+    example: 'New dataSheet'
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'datasheet', value: 'name' }})
-    name: string;
-
+  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'datasheet', value: 'name' } })
+  name: string;
   @ApiPropertyOptional({
     type: String,
     required: false,
     example: 'viwG9l1VPD6nH',
-    description: '表格描述，仅支持纯文本',
+    description: 'datasheet description, plain text only',
   })
-    description: string;
-
+  description: string;
   @ApiPropertyOptional({
     type: String,
     required: false,
     example: 'fodn173Q0e8nC',
-    description: '文件夹ID，如不填则为工作目录下',
+    description: 'folder Id, if not filled in, it is under the working directory',
   })
-    folderId?: string;
-
+  folderId?: string;
   @ApiPropertyOptional({
     type: String,
     required: false,
     example: '',
-    description: '前一个节点ID，如不填则为首位',
+    description: 'Previous node Id, or first if not filled in',
   })
-    preNodeId?: string;
-
+  preNodeId?: string;
   @ApiPropertyOptional({
     type: [DatasheetFieldCreateRo],
     required: false,
-    description: '需要创建的字段列表',
+    description: 'List of fields to be created',
     example: [{
-      name: '标题',
+      name: 'Title',
       type: 'TEXT',
       isPrimary: true
-    },{
-      name: '选项',
+    }, {
+      name: 'Options',
       type: 'SingleSelect',
       property: {
         options: [{
@@ -66,11 +57,16 @@ export class DatasheetCreateRo {
   // @ArrayMaxSize(200, { message: ApiTipConstant.api_params_max_count_error, context: { value: 200 }})
   @Type(() => DatasheetFieldCreateRo)
   @ValidateNested()
-    fields?: DatasheetFieldCreateRo[];
+  fields?: DatasheetFieldCreateRo[];
 
-  transferToCommandData(): any[]{
+  constructor(name: string, description: string) {
+    this.name = name;
+    this.description = description;
+  }
+
+  transferToCommandData(): any[] {
     const fields = [];
-    if(this.fields) {
+    if (this.fields) {
       this.fields.forEach(field => {
         const fieldType = getFieldTypeByString(field.type as any)!;
         const fieldInfo = {
@@ -80,12 +76,12 @@ export class DatasheetCreateRo {
           property: getFieldClass(fieldType).defaultProperty(),
         } as IField;
         const fieldContext = Field.bindContext(fieldInfo, {} as IReduxState);
-        const property = fieldContext.addOpenFieldPropertyTransformProperty(field.property)||null;
-        fields.push({ 
+        const property = fieldContext.addOpenFieldPropertyTransformProperty(field.property) || null;
+        fields.push({
           data: {
-            name: field.name, 
+            name: field.name,
             type: fieldType,
-            property, 
+            property,
           },
         });
       });
@@ -95,10 +91,10 @@ export class DatasheetCreateRo {
 
   foreignDatasheetIds(): string[] {
     const foreignDatasheetIds = [];
-    if(this.fields) {
-      this.fields.forEach(field => { 
+    if (this.fields) {
+      this.fields.forEach(field => {
         const fieldType = getFieldTypeByString(field.type as any)!;
-        if(fieldType === FieldType.Link && field.property) {
+        if (fieldType === FieldType.Link && field.property) {
           foreignDatasheetIds.push(field.property['foreignDatasheetId']);
         }
       });

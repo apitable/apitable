@@ -4,5 +4,5 @@ import { ApiResponse } from './api.response';
 
 export class FieldListVo extends ApiResponse<DatasheetFieldListDto> {
   @ApiProperty({ type: DatasheetFieldListDto })
-    data: DatasheetFieldListDto;
+  data: DatasheetFieldListDto;
 }

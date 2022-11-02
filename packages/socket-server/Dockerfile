@@ -8,7 +8,7 @@ COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
 
 COPY packages/socket-server/package.json ./packages/socket-server/
 
-# install packages 可以使用缓存
+# install packages cache
 RUN yarn workspaces focus @vikadata/websocket root
 
 # stage builder
@@ -34,7 +34,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# agenthub配置
+# agenthub configure
 COPY --from=builder /app/packages/socket-server/app-config.json /root/
 
 COPY --from=builder /app/package.json ./package.json

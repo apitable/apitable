@@ -4,5 +4,5 @@ import { ApiResponse } from './api.response';
 
 export class ViewListVo extends ApiResponse<DatasheetViewListDto> {
   @ApiProperty({ type: DatasheetViewListDto })
-    data: DatasheetViewListDto;
+  data: DatasheetViewListDto;
 }

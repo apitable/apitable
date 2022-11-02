@@ -16,12 +16,12 @@ import * as util from 'util';
 
 @Injectable()
 export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicationBootstrap {
-  protected readonly redisService: RedisService;
-  protected readonly clientOptions;
-  protected readonly clientCredentials;
   private _currentClientUrl;
-  private readonly clientIps: Set<string>;
+
+  protected readonly redisService: RedisService;
   private readonly httpService: HttpService;
+  protected readonly clientCredentials;
+  private readonly clientIps: Set<string>;
 
   constructor(props) {
     super(props);

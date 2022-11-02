@@ -1,36 +1,20 @@
 import {
-  CellFormatEnum,
-  CollaCommandName,
-  getEmojiIconNativeString,
-  ICellValue,
-  ICollaCommandOptions,
-  IField,
-  IFieldMap,
-  IMeta,
-  INode,
-  IRecordMap,
-  IReduxState,
-  ISnapshot,
-  ISortedField,
-  ISpaceInfo,
-  IViewColumn,
-  IViewProperty,
-  IViewRow,
-  Selectors,
+  CellFormatEnum, CollaCommandName, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta, INode, IRecordMap,
+  IReduxState, ISnapshot, ISortedField, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { keyBy, map } from 'lodash';
 import { Store } from 'redux';
+import { InjectLogger } from 'shared/common';
+import { OrderEnum } from 'shared/enums';
 import { FieldTypeEnum } from 'shared/enums/field.type.enum';
+import { ApiException } from 'shared/exception';
 import { getAPINodeType } from 'shared/helpers/fusion.helper';
+import { ICellValueMap, IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IRecordsTransformOptions } from 'shared/interfaces';
 import { IAPIFolderNode, IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { Logger } from 'winston';
-import { InjectLogger } from '../../shared/common';
-import { OrderEnum } from '../../shared/enums';
-import { ApiException } from '../../shared/exception';
-import { ICellValueMap, IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IRecordsTransformOptions } from '../../shared/interfaces';
 import { ApiRecordDto } from '../dtos/api.record.dto';
 import { FieldManager } from '../field.manager';
 import { IFieldTransformInterface } from '../i.field.transform.interface';
@@ -42,7 +26,9 @@ import { PageVo } from '../vos/page.vo';
 
 @Injectable()
 export class FusionApiTransformer implements IFieldTransformInterface {
-  constructor(@InjectLogger() private readonly logger: Logger) {}
+  constructor(
+    @InjectLogger() private readonly logger: Logger
+  ) {}
 
   getUpdateFieldCommandOptions(dstId: string, field: IField, meta: IMeta): ICollaCommandOptions {
     return {
@@ -73,14 +59,12 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   getUpdateRecordCommandOptions(dstId: string, records: FieldUpdateRo[], meta: IMeta): ICollaCommandOptions {
-    const data = records.reduce<
-      {
-        recordId: string;
-        fieldId: string;
-        field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
-        value: ICellValue;
-      }[]
-    >((pre, cur) => {
+    const data = records.reduce<{
+      recordId: string;
+      fieldId: string;
+      field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
+      value: ICellValue;
+    }[]>((pre, cur) => {
       Object.keys(cur.fields).forEach(fieldId => {
         pre.push({ recordId: cur.recordId, fieldId, value: cur.fields[fieldId] });
       });

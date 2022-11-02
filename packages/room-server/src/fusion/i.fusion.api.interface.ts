@@ -1,5 +1,5 @@
 import { ICollaCommandOptions, ILocalChangeset } from '@apitable/core';
-import { IAuthHeader } from '../shared/interfaces';
+import { IAuthHeader } from 'shared/interfaces';
 import { IAPINode } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { DatasheetViewDto } from './dtos/datasheet.view.dto';

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ICellValueMap } from '../../shared/interfaces';
 import { IsDefined } from 'class-validator';
 import { ApiTipIdEnum } from 'shared/enums/string.enum';
+import { ICellValueMap } from 'shared/interfaces';
 
 export class FieldCreateRo {
   @ApiProperty({
     type: Object,
     required: true,
-    description: '需要创建的的数据对应列和数据',
-    example: { 货币: 5.53, 单选: '单选2' },
+    description: 'The columns and data corresponding to the data to be created',
+    example: { Currency: 5.53, Select: 'Select 1' },
   })
-  @IsDefined({ context: { tipId: ApiTipIdEnum.apiParamsInstanceError, property: 'records', value: 'fields' }})
-    fields: ICellValueMap;
+  @IsDefined({ context: { tipId: ApiTipIdEnum.apiParamsInstanceError, property: 'records', value: 'fields' } })
+  fields: ICellValueMap;
 }

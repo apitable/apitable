@@ -5,7 +5,7 @@ export class SpaceParamRo {
     type: String,
     required: true,
     example: 'spcjXzqVrjaP3',
-    description: '空间ID',
+    description: 'space Id',
   })
-    spaceId: string;
+  spaceId: string;
 }

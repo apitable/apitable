@@ -5,9 +5,9 @@ export class NodeListParamRo {
     type: String,
     required: true,
     example: 'spczdmQDfBAn5',
-    description: '空间站 ID',
+    description: 'space Id',
   })
-    spaceId: string;
+  spaceId: string;
 }
 
 export class OldNodeDetailParamRo {
@@ -15,17 +15,17 @@ export class OldNodeDetailParamRo {
     type: String,
     required: true,
     example: 'spczdmQDfBAn5',
-    description: '空间站 ID',
+    description: 'space Id',
   })
-    spaceId: string;
+  spaceId: string;
 
   @ApiProperty({
     type: String,
     required: true,
     example: 'dstS94qPZFXjC1LKns',
-    description: '节点 ID',
+    description: 'node Id',
   })
-    nodeId: string;
+  nodeId: string;
 }
 
 export class NodeDetailParamRo {
@@ -33,7 +33,7 @@ export class NodeDetailParamRo {
     type: String,
     required: true,
     example: 'dstS94qPZFXjC1LKns',
-    description: '节点 ID',
+    description: 'node Id',
   })
-    nodeId: string;
+  nodeId: string;
 }

@@ -4,11 +4,11 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as Sentry from '@sentry/node';
 import { WinstonModule } from 'nest-winston';
 import { join } from 'path';
-import { instance } from 'src/socket/constants/logger.constants';
 import { AppModule } from './app.module';
 import { initRedisIoAdapter } from './socket/adapter/adapters.init';
 import { isDev } from './socket/common/helper';
 import { GatewayConstants } from './socket/constants/gateway.constants';
+import { instance } from './socket/constants/logger.constants';
 import { SocketConstants } from './socket/constants/socket-constants';
 import { RuntimeExceptionFilter } from './socket/filter/runtime-exception.filter';
 
@@ -24,12 +24,10 @@ const initSentry = (): void => {
       new Sentry.Integrations.OnUncaughtException({
         onFatalError: err => {
           if (err.name === 'SentryError') {
-            // logger('ApplicationContext').error(err);
             console.error(err);
           } else {
             Sentry.captureException(err);
             process.exit(1);
-
           }
         },
       }),
@@ -60,13 +58,12 @@ async function bootstrap() {
 
   app.enableShutdownHooks();
   app.setGlobalPrefix('socket');
-  // grpc
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       url: GatewayConstants.GRPC_URL,
       package: GatewayConstants.GRPC_PACKAGE,
-      // 10M
       maxSendMessageLength: SocketConstants.GRPC_OPTIONS.maxSendMessageLength,
       maxReceiveMessageLength: SocketConstants.GRPC_OPTIONS.maxReceiveMessageLength,
       protoPath: [join(__dirname, './grpc/proto/changeset.service.proto')],
@@ -75,6 +72,7 @@ async function bootstrap() {
       },
     },
   });
+
   await app.startAllMicroservices();
   await app.listen(GatewayConstants.API_PORT);
 

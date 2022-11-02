@@ -1,18 +1,17 @@
+import {
+  evaluate, expressionTransform, Field, FieldKeyEnum, FieldType, getNewId, IDPrefix, IFieldMap, IFormulaField, IReduxState, ISnapshot, IViewColumn,
+  IViewProperty, IViewRow, parse, Selectors
+} from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { evaluate, expressionTransform, Field, FieldKeyEnum, FieldType, getNewId, IDPrefix, IFieldMap, IFormulaField, IReduxState, ISnapshot, IViewColumn, IViewProperty, IViewRow, parse, Selectors } from '@apitable/core';
-import { ApiException } from '../../shared/exception/api.exception';
 import { keyBy } from 'lodash';
+import { Store } from 'redux';
+import { ApiException } from 'shared/exception';
+import { IFusionApiFilterInterface } from '../fusion.api.filter.interface';
 import { FieldQueryRo } from '../ros/field.query.ro';
 import { RecordQueryRo } from '../ros/record.query.ro';
-import { Store } from 'redux';
-import { IFusionApiFilterInterface } from '../fusion.api.filter.interface';
 
 /**
- * <p>
- * 字段转换服务
- * </p>
- * @author Zoe zheng
- * @date 2020/7/31 3:31 下午
+ * Field Conversion Service
  */
 @Injectable()
 export class FusionApiFilter implements IFusionApiFilterInterface {
@@ -35,7 +34,8 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
   }
 
   formulaFilter(expression: string, rows: IViewRow[], snapshot: ISnapshot, state: IReduxState): IViewRow[] {
-    // 虚构一个field传入进行计算, todo 这里field只是用来过滤自己和获取snapshot,可以考虑把参数提出来 todo 优化 ？？
+    // Fictitiously pass in a field for calculation
+    // TODO: Here field is only used to filter themselves and get snapshot, you can consider putting forward the parameters to todo optimization?
     const datasheet = Selectors.getDatasheet(state);
     const field: IFormulaField = {
       id: getNewId(IDPrefix.Field),
@@ -70,7 +70,7 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
     if (query.filterByFormula) {
       const expression = this.validateExpression(query.filterByFormula, state);
       view.rows = this.formulaFilter(expression, view.rows, snapshot, state);
-      // 直接返回
+
       if (!view.rows.length) {
         return null;
       }
@@ -82,7 +82,7 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
   getVisibleFieldList(dstId: string, state: IReduxState, query: FieldQueryRo) {
     const datasheet = Selectors.getDatasheet(state, dstId);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, dstId);
-    // 经过权限处理后的 fieldMap
+    // The fieldMap after permission processing
     const fieldMap = Selectors.getFieldMapBase(datasheet, fieldPermissionMap);
 
     const { viewId } = query;
@@ -94,14 +94,14 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
       }
       return (view.columns as IViewColumn[]).map(column => {
         const field = fieldMap[column.fieldId];
-        // 指定视图时，与视图顺序显隐保持一致。
+        // When specifying a view, it is consistent with the view order being visible and invisible.
         if (field && !column.hidden) {
           return Field.bindContext(field, state).getApiMeta(dstId);
         }
         return null;
       }).filter(Boolean);
     }
-    // 不指定视图 ID 时，按照第一个视图的字段顺序，不受字段显影影响，返回全部字段列表。
+    // When no view ID is specified, the full list of fields is returned in the order of the first view, regardless of the field display.
     const firstView = snapshot.meta.views[0];
     return (firstView.columns as IViewColumn[]).map(column => {
       const field = fieldMap[column.fieldId];
@@ -116,17 +116,17 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
     const datasheet = Selectors.getDatasheet(state);
     const snapshot = Selectors.getSnapshot(state);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
-    // 模拟一个field
+    // Simulate a field
     const field: IFormulaField = {
       id: getNewId(IDPrefix.Field),
       name: FusionApiFilter.FIELD_NAME,
       type: FieldType.Formula,
       property: {
-        datasheetId: datasheet.id, // formula 进行计算是，需要通过 fieldProperty 定位到当前 datasheetId;
+        datasheetId: datasheet.id, // The formula is calculated by locating the current datasheetId by fieldProperty;
         expression,
       },
     };
-    // todo 这里要根据fieldKey判断一下么？
+    // TODO: Do we need to judge here according to the fieldKey?
     const exprTransform = expressionTransform(expression, { fieldMap: snapshot.meta.fieldMap, fieldPermissionMap }, 'id');
     const result: any = parse(exprTransform, { field, fieldMap: snapshot.meta.fieldMap, state }, true);
     if (result.hasOwnProperty('error')) {
@@ -139,7 +139,7 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
     const state: IReduxState = store.getState();
     const datasheet = Selectors.getDatasheet(state, dstId);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, dstId);
-    // 经过权限处理后的 fieldMap
+    // The fieldMap after permission processing
     const fieldMap: IFieldMap = Selectors.getFieldMapBase(datasheet, fieldPermissionMap);
     const snapshot = Selectors.getSnapshot(state, dstId);
     if (viewId) {
@@ -147,7 +147,7 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
       if (view) {
         return (view.columns as IViewColumn[]).reduce<IViewColumn[]>((data: IViewColumn[], cur) => {
           const field = fieldMap[cur.fieldId];
-          // 指定视图时，与视图顺序显隐保持一致。
+          // When specifying a view, it is displayed in line with the view order.
           if (field && !cur.hidden) {
             data.push(cur);
           }
@@ -155,7 +155,7 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
         }, []);
       }
     }
-    // 不指定视图 ID 时，返回全部的有权限的列
+    // If you do not specify a view ID, all columns with permissions are returned
     return Object.keys(fieldMap).map(fieldId => {
       return { fieldId: fieldId };
     });

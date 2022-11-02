@@ -1,21 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { ApiException, ApiTipId } from '../../shared/exception';
+import { DatasheetRecordRepository } from 'database/repositories/datasheet.record.repository';
 import { difference } from 'lodash';
-import { DatasheetRecordRepository } from '../../database/repositories/datasheet.record.repository';
+import { ApiException, ApiTipId } from 'shared/exception';
 
 @Injectable()
 export class FusionApiRecordService {
-  constructor(private readonly recordRepository: DatasheetRecordRepository) {
+  constructor(
+    private readonly recordRepository: DatasheetRecordRepository
+  ) {
   }
 
   /**
-   * 检测recordId和数表ID是否匹配
-   * @param dstId 数表ID
-   * @param recordIds recordID
-   * @param error 错误提示
+   * Check if recordId and table ID match
+   *
+   * @param dstId
+   * @param recordIds
+   * @param error error message
+   *
    * @throws ApiException
-   * @author Zoe Zheng
-   * @date 2020/9/10 7:10 下午
    */
   public async validateRecordExists(dstId: string, recordIds: string[], error: ApiTipId) {
     const dbRecordIds = await this.recordRepository.selectIdsByDstIdAndRecordIds(dstId, recordIds);

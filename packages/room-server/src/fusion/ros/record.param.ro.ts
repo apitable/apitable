@@ -5,7 +5,7 @@ export class RecordParamRo {
     type: String,
     required: true,
     example: 'dst0Yj5aNeoHldqvf6',
-    description: '维格表ID',
+    description: 'datasheet Id',
   })
-    datasheetId: string;
+  datasheetId: string;
 }

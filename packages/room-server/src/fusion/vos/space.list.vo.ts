@@ -4,5 +4,5 @@ import { ApiResponse } from './api.response';
 
 export class SpaceListVo extends ApiResponse<SpaceListDto> {
   @ApiProperty({ type: SpaceListDto })
-    data: SpaceListDto;
+  data: SpaceListDto;
 }

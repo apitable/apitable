@@ -7,7 +7,7 @@ export class AssetUploadQueryRo {
     default: 1,
     example: '1',
     description:
-      '创建的预签名URL数量（默认为1，最大为20）',
+      'Number of pre-signed URLs created (default is 1, maximum is 20)',
   })
   count: number;
 }

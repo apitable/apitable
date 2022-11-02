@@ -1,6 +1,6 @@
-import { ApiResponse } from './api.response';
 import { ApiProperty } from '@nestjs/swagger';
-import { AttachmentDto } from '../../database/dtos/attachment.dto';
+import { AttachmentDto } from 'database/dtos/attachment.dto';
+import { ApiResponse } from './api.response';
 
 export class AttachmentVo extends ApiResponse<AttachmentDto> {
   @ApiProperty({ type: AttachmentDto })
@@ -9,13 +9,13 @@ export class AttachmentVo extends ApiResponse<AttachmentDto> {
 
 export class AssetVo {
 
-  @ApiProperty({ type: String, description: '资源名，文件访问相对路径' })
+  @ApiProperty({ type: String, description: 'Resource name, file access relative path' })
   token: string;
 
-  @ApiProperty({ type: String, description: '上传请求URL' })
+  @ApiProperty({ type: String, description: 'Upload request URL' })
   uploadUrl: string;
 
-  @ApiProperty({ type: String, description: '上传请求方式' })
+  @ApiProperty({ type: String, description: 'Upload request method' })
   uploadRequestMethod: string;
 
 }

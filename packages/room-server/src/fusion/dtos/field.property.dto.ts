@@ -1,8 +1,8 @@
-import { ApiExtraModels, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BasicValueType, RollUpFuncType } from '@apitable/core';
+import { ApiExtraModels, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 import { ExtraModel } from '../../shared/common';
 import { UnitTypeTextEnum } from '../../shared/enums';
-import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 
 class MemberProperty {
   @ApiProperty({
@@ -10,28 +10,28 @@ class MemberProperty {
     example: '1217029313010270209',
     description: 'member ID',
   })
-    id: string;
+  id: string;
 
   @ApiProperty({
     type: String,
     example: 'LiLei',
     description: 'member name',
   })
-    name: string;
+  name: string;
 
   @ApiProperty({
     enum: UnitTypeTextEnum,
     example: UnitTypeTextEnum.Member,
     description: 'unit type: member and team',
   })
-    type: UnitTypeTextEnum;
+  type: UnitTypeTextEnum;
 
   @ApiPropertyOptional({
     type: String,
     example: 'https://s1.vika.cn/default/avatar001.jpg',
     description: 'avatar',
   })
-    avatar?: string;
+  avatar?: string;
 }
 
 class UserProperty {
@@ -40,21 +40,21 @@ class UserProperty {
     example: 'eeb620a54e2248c69c25de68e6eb668c',
     description: 'user id. special ID for Anonymous and robot',
   })
-    id: string;
+  id: string;
 
   @ApiProperty({
     type: String,
     example: 'LiLei',
     description: 'user name',
   })
-    name: string;
+  name: string;
 
   @ApiProperty({
     type: String,
     example: 'https://s1.vika.cn/default/avatar001.jpg',
     description: 'avatar',
   })
-    avatar: string;
+  avatar: string;
 }
 
 class DatasheetField {
@@ -63,7 +63,7 @@ class DatasheetField {
     example: 'dstxxxxxxx',
     description: 'reference datasheet ID',
   })
-    datasheetId: string;
+  datasheetId: string;
 
   @ApiProperty({
     type: () => DatasheetFieldDto,
@@ -72,7 +72,7 @@ class DatasheetField {
       '{"id": "fldsRHWJZwFcM","name": "order number","type": "SingleText","desc": "automatically",' +
       '"property": {"defaultValue": "to be added"},"permissionLevel": "edit" }',
   })
-    field: DatasheetFieldDto;
+  field: DatasheetFieldDto;
 }
 
 class SingleSelectProperty {
@@ -81,21 +81,21 @@ class SingleSelectProperty {
     example: 'opt8QSSURh52T',
     description: 'option ID',
   })
-    id: string;
+  id: string;
 
   @ApiProperty({
     type: String,
     example: 'magical',
     description: 'option name',
   })
-    name: string;
+  name: string;
 
   @ApiProperty({
     type: Object,
     example: '{"name":"red_0", "value":"#ff0000"}',
     description: 'option color',
   })
-    color: Object;
+  color: Object;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -105,7 +105,7 @@ export class SingleTextPropertyDto {
     example: 'to be added',
     description: 'default value',
   })
-    defaultValue?: string;
+  defaultValue?: string;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -115,14 +115,14 @@ export class NumberFieldPropertyDto {
     example: 'to be added',
     description: 'default value',
   })
-    defaultValue?: string;
+  defaultValue?: string;
 
   @ApiProperty({
     type: Number,
     example: 2,
-    description: '数字展示精度 0-4',
+    description: 'digital display accuracy 0-4',
   })
-    precision: number;
+  precision: number;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -130,36 +130,36 @@ export class CurrencyFieldPropertyDto extends NumberFieldPropertyDto {
   @ApiPropertyOptional({
     type: String,
     example: '$',
-    description: '货币符号，可以自定义的任意字符',
+    description: 'Currency symbols, customizable to any character',
   })
-    symbol?: string;
+  symbol?: string;
 }
 
 @ApiExtraModels(ExtraModel)
 export class SelectFieldPropertyDto {
   @ApiProperty({
     type: [SingleSelectProperty],
-    description: '单选字段属性',
+    description: 'Radio Field Properties',
   })
-    options: SingleSelectProperty[];
+  options: SingleSelectProperty[];
 }
 
 @ApiExtraModels(ExtraModel)
 export class MemberFieldPropertyDto {
   @ApiProperty({
     type: [MemberProperty],
-    description: '成员字段属性',
+    description: 'Member Field Properties',
   })
-    options: MemberProperty[];
+  options: MemberProperty[];
 }
 
 @ApiExtraModels(ExtraModel)
 export class UserPropertyDto {
   @ApiProperty({
     type: [UserProperty],
-    description: 'CreateBy｜LastModifiedBy字段属性',
+    description: 'CreateBy｜LastModifiedBy Field Properties',
   })
-    options: UserProperty[];
+  options: UserProperty[];
 }
 
 @ApiExtraModels(ExtraModel)
@@ -167,9 +167,9 @@ export class CheckboxFieldPropertyDto {
   @ApiProperty({
     type: String,
     example: '✅',
-    description: 'emoji 字符',
+    description: 'emoji character',
   })
-    icon: string;
+  icon: string;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -177,9 +177,9 @@ export class RatingFieldPropertyDto extends CheckboxFieldPropertyDto {
   @ApiProperty({
     type: Number,
     example: 5,
-    description: '评分最大值 1-10',
+    description: 'Rating Maximum 1-10',
   })
-    max: number;
+  max: number;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -188,25 +188,29 @@ export class DateTimeFieldPropertyDto {
     type: String,
     example: 'YYYY/MM/DD HH:mm',
     description:
-      '日期格式 ' +
-      '\n 日期字段的值会返回时间戳, 不限制格式。字段属性中 format 信息可用于格式化, 含义参见 dayjs format' +
-      '\n 如果你不想处理日期格式化，希望返回结果和视图展示内容保持一致，可以在查询参数中赋值 cellFormat 为 string, 则返回的内容全部为字符串',
+      'Date Format ' +
+
+      '\n The value of the date field returns a timestamp, with no restrictions on formatting. ' +
+      'The format information in the field properties can be used for formatting, see dayjs format for the meaning' +
+
+      '\n If you don\'t want to deal with date formatting and want the returned results to be consistent with the view display, ' +
+      'you can assign cellFormat to string in the query parameters, and the returned content will all be strings',
   })
-    format: string;
+  format: string;
 
   @ApiProperty({
     type: Boolean,
     example: true,
-    description: '新建记录时，是否自动填充时间',
+    description: 'Whether the time is automatically filled when a new record is created',
   })
-    autoFill: boolean;
+  autoFill: boolean;
 
   @ApiProperty({
     type: Boolean,
     example: true,
-    description: '是否显示时间',
+    description: 'Whether to display the time',
   })
-    includeTime: boolean;
+  includeTime: boolean;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -214,16 +218,16 @@ export class LinkFieldPropertyDto {
   @ApiProperty({
     type: String,
     example: 'dstg3kerxz9DYzGjvs',
-    description: '关联表 ID',
+    description: 'related datasheet Id',
   })
-    foreignDatasheetId: string;
+  foreignDatasheetId: string;
 
   @ApiProperty({
     type: String,
     example: 'fidxxxxxxx',
-    description: '关联表中兄弟字段 ID',
+    description: 'related datasheet brother field Id',
   })
-    brotherFieldId: string;
+  brotherFieldId: string;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -231,42 +235,44 @@ export class LookupFieldPropertyDto {
   @ApiProperty({
     type: String,
     example: 'fidxxxxxxx',
-    description: '引用依附的关联字段 ID',
+    description: 'Referencing dependent association field Id',
   })
-    relatedLinkFieldId: string;
+  relatedLinkFieldId: string;
 
   @ApiProperty({
     type: DatasheetField,
-    description: '引用字段',
+    description: 'Reference field',
   })
-    targetField: DatasheetField;
+  targetField: DatasheetField;
 
   @ApiPropertyOptional({
     type: Boolean,
     example: true,
-    description: '当神奇引用的依赖的关联字段被删除或者转化类型时，可能无法正常获取引用值',
+    description:
+      'When the associated field of a `lookup` dependency is deleted or converted to a type, the reference value may not be obtained properly',
   })
-    hasError?: boolean;
+  hasError?: boolean;
 
   @ApiPropertyOptional({
     type: DatasheetField,
-    description: '最终引用到的实体字段，不包含 lookup 类型的字段。存在错误时，实体字段可能不存在。',
+    description:
+      'The entity field that is eventually referenced does not contain a field of type `lookup`. In case of an error, the entity field may not exist',
   })
-    entityField?: DatasheetField;
+  entityField?: DatasheetField;
 
   @ApiProperty({
     enum: RollUpFuncType,
     example: RollUpFuncType.VALUES,
-    description: '汇总函数',
+    description: 'rollup function',
   })
-    rollupFunction: RollUpFuncType;
+  rollupFunction: RollUpFuncType;
 
   @ApiProperty({
     enum: BasicValueType,
     example: BasicValueType.String,
-    description: '返回值类型 String,Boolean,Number,DateTime,Array',
+    description: 'Return Value Type: String,Boolean,Number,DateTime,Array',
   })
-    valueType: BasicValueType;
+  valueType: BasicValueType;
 }
 
 @ApiExtraModels(ExtraModel)
@@ -274,21 +280,22 @@ export class FormulaFieldPropertyDto {
   @ApiProperty({
     type: String,
     example: '{fidxxxxxx}',
-    description: '公式表达式',
+    description: 'Formula expression',
   })
-    expression: string;
+  expression: string;
 
   @ApiProperty({
     enum: BasicValueType,
     example: BasicValueType.String,
-    description: '返回值类型 String,Boolean,Number,DateTime,Array',
+    description: 'Return Value Type: String,Boolean,Number,DateTime,Array',
   })
-    valueType: BasicValueType;
+  valueType: BasicValueType;
 
   @ApiPropertyOptional({
     type: Boolean,
     example: true,
-    description: '当神奇引用的依赖的关联字段被删除或者转化类型时，可能无法正常获取引用值',
+    description:
+      'When the associated field of a `lookup` dependency is deleted or converted to a type, the reference value may not be obtained properly',
   })
-    hasError?: boolean;
+  hasError?: boolean;
 }

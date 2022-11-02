@@ -4,5 +4,5 @@ import { ApiResponse } from './api.response';
 
 export class NodeListVo extends ApiResponse<NodeListDto> {
   @ApiProperty({ type: NodeListDto })
-    data: NodeListDto;
+  data: NodeListDto;
 }

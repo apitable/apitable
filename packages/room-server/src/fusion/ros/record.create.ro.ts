@@ -1,30 +1,32 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ApiTipConstant, FieldKeyEnum } from '@apitable/core';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ArrayMaxSize, ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
-import { API_MAX_MODIFY_RECORD_COUNTS } from '../../shared/common';
+import { API_MAX_MODIFY_RECORD_COUNTS } from 'shared/common';
 import { FieldCreateRo } from './record.field.create.ro';
 
 export class RecordCreateRo {
   @ApiProperty({
     type: [FieldCreateRo],
     required: true,
-    description: '需要创建的的数据',
+    description: 'Data to be created',
     example: [
       {
         fields: {
-          事项: '「组织架构」模块 Organization Module - 通讯录面板的组织架构展示',
-          问题描述: '本质上和上面的需求是同一个',
-          分类: '产品需求',
-          评审日期: '2019-10-30T00:00:00.000Z',
+          Matter: '"Organizational Structure" module - Organizational structure display in the address book panel',
+          'Problem Description': 'Essentially the same requirement as above',
+          Select: 'Product Requirements',
+          'Review Date': '2019-10-30T00:00:00.000Z',
         },
       },
       {
         fields: {
-          事项: '「成员」模块 - 设置所在部门',
-          问题描述: '选择人后，可以调整他所属的多个部门\n选择部门后，也可添加成员至当前部门',
-          分类: '产品需求',
-          评审日期: '2019-10-29T16:00:00.000Z',
+          Matter: '"Members" module - set your department',
+          'Problem Description':
+            'After selecting a person, you can adjust the multiple departments he belongs to' +
+            '\nAfter selecting the department, you can also add members to the current department',
+          Select: 'Product Requirements',
+          'Review Date': '2019-10-29T16:00:00.000Z',
         },
       },
     ],
@@ -38,13 +40,13 @@ export class RecordCreateRo {
     },
   })
   @ValidateNested()
-    records: FieldCreateRo[];
+  records: FieldCreateRo[];
 
   @ApiPropertyOptional({
     enum: FieldKeyEnum,
-    description: '【可选】，fields map 是由什么做 key。id 或者 name, 默认为 name',
+    description: '[Optional], what the fields map is made of key. id or name, default is name',
     default: FieldKeyEnum.NAME,
   })
   @IsEnum(FieldKeyEnum, { message: ApiTipConstant.api_params_invalid_field_key })
-    fieldKey: FieldKeyEnum = FieldKeyEnum.NAME;
+  fieldKey: FieldKeyEnum = FieldKeyEnum.NAME;
 }

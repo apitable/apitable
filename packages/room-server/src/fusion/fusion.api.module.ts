@@ -24,29 +24,9 @@ import { UnitTeamService } from 'database/services/unit/unit.team.service';
 import { UserService } from 'database/services/user/user.service';
 import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
 import {
-  AttachmentField,
-  AutoNumberField,
-  CheckboxField,
-  CreatedByField,
-  CreatedTimeField,
-  CurrencyField,
-  DateTimeField,
-  EmailField,
-  FormulaField,
-  LastModifiedByField,
-  LastModifiedTimeField,
-  LinkField,
-  LookUpField,
-  MemberField,
-  MultiSelectField,
-  NumberField,
-  PercentField,
-  PhoneField,
-  RatingField,
-  SingleSelectField,
-  SingleTextField,
-  TextField,
-  UrlField,
+  AttachmentField, AutoNumberField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
+  LastModifiedByField, LastModifiedTimeField, LinkField, LookUpField, MemberField, MultiSelectField, NumberField, PercentField, PhoneField,
+  RatingField, SingleSelectField, SingleTextField, TextField, UrlField,
 } from 'fusion/field';
 import { CacheConfigService } from 'shared/cache/cache.config.service';
 import { ApiRequestMiddleware } from 'shared/middleware/api.request.middleware';
@@ -82,7 +62,6 @@ import { ApiUsageRepository } from './repositories/api.usage.repository';
     // HttpModule.registerAsync({
     //   useClass: HttpConfigService,
     //   }),
-    TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
   ],
   controllers: [FusionApiController],
   providers: [

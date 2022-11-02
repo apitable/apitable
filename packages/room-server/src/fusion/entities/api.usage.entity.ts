@@ -3,7 +3,7 @@ import { IApiRequestDetail, IApiResponseDetail } from '../../shared/interfaces';
 import { IdWorker } from '../../shared/helpers';
 
 /**
- * 工作台-数据表格表
+ * Workbench - api request information record form
  */
 @Entity('vika_api_usage')
 export class ApiUsageEntity {
@@ -14,7 +14,7 @@ export class ApiUsageEntity {
     name: 'user_id',
     nullable: false,
     unique: true,
-    comment: '用户ID',
+    comment: 'user ID(related#vika_user#id)',
     width: 20,
     type: 'bigint',
   })
@@ -23,7 +23,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: '空间ID',
+    comment: 'space ID(related#vika_space#space_id)',
     length: 50,
   })
     spaceId: string | null;
@@ -31,7 +31,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'dst_id',
     nullable: false,
-    comment: '数表ID',
+    comment: 'datasheet ID(related#vika_datasheet#dst_id)',
     length: 50,
   })
     dstId: string | null;
@@ -39,7 +39,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'req_path',
     nullable: false,
-    comment: 'api的path,域名后面的数据',
+    comment: 'The data behind the path,domain of the api',
     length: 100,
   })
     reqPath: string | null;
@@ -47,7 +47,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'req_method',
     nullable: false,
-    comment: 'api请求方式1 get 2 post 3 patch 4 put',
+    comment: 'api request method:1 get 2 post 3 patch 4 put',
     width: 2,
     type: 'tinyint',
   })
@@ -56,7 +56,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'api_version',
     nullable: false,
-    comment: 'api版本',
+    comment: 'api version',
     length: 10,
   })
     apiVersion: string | null;
@@ -64,20 +64,20 @@ export class ApiUsageEntity {
   @Column({
     name: 'req_ip',
     nullable: false,
-    comment: '客户端IP',
+    comment: 'client ip',
     length: 20,
   })
     reqIp: string | null;
 
-  @Column('json', { name: 'req_detail', nullable: true, comment: 'api调用详细信息,包括ua,refer等信息' })
+  @Column('json', { name: 'req_detail', nullable: true, comment: 'api call details, including ua, refer and other information' })
     reqDetail: IApiRequestDetail | null;
 
-  @Column('json', { name: 'res_detail', nullable: true, comment: 'api调用返回信息，包括code,message等' })
+  @Column('json', { name: 'res_detail', nullable: true, comment: 'api calls return information, including code, message, etc' })
     resDetail: IApiResponseDetail | null;
 
   @Column('timestamp', {
     name: 'created_at',
-    comment: '创建时间',
+    comment: 'creation time',
     default: () => 'CURRENT_TIMESTAMP',
   })
     createdAt: Date;

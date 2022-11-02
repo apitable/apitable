@@ -9,20 +9,20 @@ module.exports = {
       name: 'nest',
       script: './dist/main.js',
       cwd: 'packages/room-server',
-      // 基于内存重启
+      // restart from memory
       max_memory_restart: maxMemoryRestart,
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       exec_mode: 'cluster',
       instances: instanceCount,
-      // 指数退避重启延迟
+      // exponential backoff restart delay
       exp_backoff_restart_delay: 100,
-      // 应用运行少于时间被认为是异常启动
+      // applications running for less time are considered to be abnormally started
       min_uptime: '5m',
-      // 最大异常重启次数，即小于min_uptime运行时间重启次数
+      // maximum number of abnormal restarts, i.e. restarts with less than min_uptime runtime
       max_restarts: 5,
-      // 不输出日志
+      // no log output
       out_file: '/dev/null',
-      // 不输出日志
+      // no log output
       error_file: '/dev/null',
     },
   ],

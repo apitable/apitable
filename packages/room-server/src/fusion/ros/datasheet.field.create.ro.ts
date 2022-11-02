@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ApiTipConstant, IAddOpenFieldProperty } from '@apitable/core';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDefined } from 'class-validator';
 
 export class DatasheetFieldCreateRo {
@@ -7,28 +7,27 @@ export class DatasheetFieldCreateRo {
   @ApiProperty({
     type: String,
     required: true,
-    description: '字段名称',
-    example: '名称'
+    description: 'Field Name',
+    example: 'field name'
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'field', value: 'name' }})
-    name: string;
+  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'field', value: 'name' } })
+  name: string;
 
   @ApiProperty({
     type: String,
     required: true,
-    description: '字段类型',
+    description: 'Field type',
     example: ''
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'field', value: 'type' }})
-    type: string;
+  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'field', value: 'type' } })
+  type: string;
 
-  /** 字段配置 */
   @ApiPropertyOptional({
     type: Object,
     required: false,
     example: '',
-    description: '属性',
+    description: 'Field property',
   })
-    property?: IAddOpenFieldProperty | null;
+  property?: IAddOpenFieldProperty | null;
 
 }

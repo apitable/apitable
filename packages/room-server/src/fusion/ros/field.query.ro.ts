@@ -5,7 +5,8 @@ export class FieldQueryRo {
     type: String,
     required: false,
     example: 'viwG9l1VPD6nH',
-    description: '视图 ID，指定视图则返回的 fields 顺序和视图保持一致，隐藏的字段不会返回。',
+    description:
+      'The view Id, specifying the view, returns the fields in the same order as the view, hidden fields are not returned',
   })
-    viewId: string;
+  viewId: string;
 }

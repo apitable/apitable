@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { ApiTipConstant, Conversion } from '@apitable/core';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class FieldDeleteRo {
@@ -12,6 +12,6 @@ export class FieldDeleteRo {
   })
   @IsOptional()
   @IsEnum(Conversion, { message: ApiTipConstant.api_params_invalid_value })
-    conversion?: Conversion;
+  conversion?: Conversion;
 
 }

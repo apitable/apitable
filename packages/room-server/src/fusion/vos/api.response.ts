@@ -1,34 +1,50 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { HttpStatus } from '@nestjs/common';
-import { IHttpSuccessResponse } from '../../shared/interfaces';
 import { ConfigConstant } from '@apitable/core';
+import { HttpStatus } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { IHttpSuccessResponse } from 'shared/interfaces';
 
 export class ApiResponse<T> implements IHttpSuccessResponse<T> {
   @ApiProperty({
     type: Boolean,
     example: true,
-    description: '是否成功',
+    description: 'Is it successful',
   })
-    success: boolean;
+  success: boolean;
 
   @ApiProperty({
     type: Number,
     example: 200,
-    description: '响应状态码',
+    description: 'Response Status Code',
   })
-    code: number;
+  code: number;
 
   @ApiProperty({
     type: String,
     example: 'SUCCESS',
-    description: '响应状态码描述',
+    description: 'Response Status Code Description',
   })
-    message: string;
+  message: string;
 
   @ApiProperty({
-    description: '响应数据',
+    description: 'Response Data',
   })
-    data: T;
+  data: T;
+
+  static success<T>(data: T, message?: string): ApiResponse<T> {
+    return new ApiResponse<T>()
+      .setCode(HttpStatus.OK)
+      .setSuccess(true)
+      .setData(data)
+      .setMessage(message ? message : ConfigConstant.DefaultStatusMessage.OK_MSG);
+  }
+
+  static error<T>(message: string, code?: number, data?: T) {
+    return new ApiResponse<T>()
+      .setCode(code ? code : HttpStatus.INTERNAL_SERVER_ERROR)
+      .setMessage(message)
+      .setSuccess(false)
+      .setData(data);
+  }
 
   getCode(): number {
     return this.code;
@@ -51,6 +67,7 @@ export class ApiResponse<T> implements IHttpSuccessResponse<T> {
   getMessage(): string {
     return this.message;
   }
+
   setMessage(message: string): ApiResponse<T> {
     this.message = message;
     return this;
@@ -63,21 +80,5 @@ export class ApiResponse<T> implements IHttpSuccessResponse<T> {
   setData(data: T): ApiResponse<T> {
     this.data = data;
     return this;
-  }
-
-  static success<T>(data: T, message?: string): ApiResponse<T> {
-    return new ApiResponse<T>()
-      .setCode(HttpStatus.OK)
-      .setSuccess(true)
-      .setData(data)
-      .setMessage(message ? message : ConfigConstant.DefaultStatusMessage.OK_MSG);
-  }
-
-  static error<T>(message: string, code?: number, data?: T) {
-    return new ApiResponse<T>()
-      .setCode(code ? code : HttpStatus.INTERNAL_SERVER_ERROR)
-      .setMessage(message)
-      .setSuccess(false)
-      .setData(data);
   }
 }

@@ -28,8 +28,12 @@ const defaultMaxFiles = '14d';
 
 // logger formatter
 const formatter = winston.format.combine(
-  winston.format.timestamp(),
-  nestWinstonModuleUtilities.format.nestLike(defaultAppName, { colors: isDev(), prettyPrint: isDev() })
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+  isDev() ?
+    // Development environment friendly output log format
+    nestWinstonModuleUtilities.format.nestLike(defaultAppName, { colors: true, prettyPrint: true }) :
+    // Production environment using Json format + elk to analyze logs
+    winston.format.json()
 );
 
 // logger transports

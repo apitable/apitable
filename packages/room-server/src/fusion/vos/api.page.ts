@@ -1,30 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IPaginateInfo } from '../../shared/interfaces';
+import { IPaginateInfo } from 'shared/interfaces';
 
 export class ApiPage<T> implements IPaginateInfo<T> {
   @ApiProperty({
     type: Number,
     example: '1',
-    description: '当前页',
+    description: 'Current page number',
   })
-    pageNum: number;
+  pageNum: number;
 
   @ApiProperty({
-    description: '分页数据',
+    description: 'Paging Data',
   })
-    records: T;
+  records: T;
 
   @ApiProperty({
     type: Number,
     example: '200',
-    description: '每页数量',
+    description: 'Number per page',
   })
-    pageSize: number;
+  pageSize: number;
 
   @ApiProperty({
     type: Number,
     example: '2000',
-    description: '总条数',
+    description: 'Total number of records',
   })
-    total: number;
+  total: number;
 }
