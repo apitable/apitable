@@ -12,13 +12,24 @@
 @tooltip-arrow-color: var(--tooltipBg);
 
 
-:root {
-  --antd-arrow-background-color: linear-gradient(to right bottom, rgba(var(--tooltipBg-rgb), 0.65), rgba(var(--tooltipBg-rgb), 0.75));
-}
-
 .ant-tooltip-inner {
   font-size: 12px;
   color: var(--defaultBg);
   background-color: var(--tooltipBg);
   padding: 8px;
+}
+
+.ant-tooltip-arrow-content::before {
+  background: var(--tooltipBg);
+}
+.ant-tooltip-placement-bottom .ant-tooltip-arrow,
+.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow,
+.ant-tooltip-placement-bottomRight .ant-tooltip-arrow {
+  top: 1px;
+}
+
+.ant-tooltip-placement-right .ant-tooltip-arrow,
+.ant-tooltip-placement-rightTop .ant-tooltip-arrow,
+.ant-tooltip-placement-rightBottom .ant-tooltip-arrow {
+  left: 1px;
 }
