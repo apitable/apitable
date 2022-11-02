@@ -18,4 +18,5 @@
     <include file="db/changelog/0.13/20220829_changeset.xml"/>
     <include file="db/changelog/0.13/20220929_changeset.xml"/>
     <include file="db/changelog/0.13/20221010_changeset.xml"/>
+    <include file="db/changelog/0.13/20221102_changeset.xml"/>
 </databaseChangeLog>
