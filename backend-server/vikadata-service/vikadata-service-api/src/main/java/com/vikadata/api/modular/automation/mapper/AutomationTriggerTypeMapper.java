@@ -1,10 +1,6 @@
 package com.vikadata.api.modular.automation.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+public interface AutomationTriggerTypeMapper {
 
-import com.vikadata.entity.AutomationTriggerTypeEntity;
-
-public interface AutomationTriggerTypeMapper extends BaseMapper<AutomationTriggerTypeEntity> {
-
-    public String getTriggerTypeByEndpoint(String endpoint);
+    String getTriggerTypeByEndpoint(String endpoint);
 }

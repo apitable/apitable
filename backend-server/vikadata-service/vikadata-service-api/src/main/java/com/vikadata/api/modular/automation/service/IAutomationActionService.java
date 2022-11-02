@@ -1,12 +1,9 @@
 package com.vikadata.api.modular.automation.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.vikadata.entity.AutomationActionEntity;
+public interface IAutomationActionService {
 
-public interface IAutomationActionService extends IService<AutomationActionEntity> {
+    void createRequestAction(String robotId, String triggerId, String method, String headers, String webhookUrl);
 
-    boolean createRequestAction(String robotId,String triggerId,String method,String headers,String webhookUrl);
-
-    boolean updateRequestAction(String robotId,String triggerId,String method,String headers,String webhookUrl);
+    void updateRequestAction(String robotId, String triggerId, String method, String headers, String webhookUrl);
 
 }

@@ -1,17 +1,12 @@
 package com.vikadata.api.modular.automation.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vikadata.entity.AutomationActionEntity;
 import org.apache.ibatis.annotations.Param;
+
+import com.vikadata.entity.AutomationActionEntity;
 
 public interface AutomationActionMapper extends BaseMapper<AutomationActionEntity> {
 
-    /**
-     * Update the data(json) that action input.
-     *
-     * @param actionId  custom action id
-     * @param input     data that action input
-     */
-    void updateInput(@Param("actionId") String actionId, @Param("input") String input);
+    int updateActionTypeIdAndInputByRobotId(@Param("updatedActionTypeId") String updatedActionTypeId, @Param("updatedInput") String updatedInput, @Param("robotId") String robotId);
 
 }

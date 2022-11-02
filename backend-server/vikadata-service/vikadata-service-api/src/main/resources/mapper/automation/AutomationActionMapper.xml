@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.modular.automation.mapper.AutomationActionMapper">
-    <update id="updateInput">
+    <update id="updateActionTypeIdAndInputByRobotId">
         UPDATE vika_automation_action
-        SET input = #{input},
-        WHERE action_id = #{actionId}
-          AND is_deleted = 0
-    </update>
-
-    <update id="deleteActionByRobotId">
-        UPDATE vika_automation_action
-        SET is_deleted = 1
+        SET action_type_id = #{updatedActionTypeId},
+            `input`        = #{updatedInput}
         WHERE robot_id = #{robotId}
     </update>
 </mapper>

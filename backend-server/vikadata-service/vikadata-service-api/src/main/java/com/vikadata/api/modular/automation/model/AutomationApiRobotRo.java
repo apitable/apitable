@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
 @Data
 @ApiModel("AutomationApiTrigger")
 public class AutomationApiRobotRo {
+
     @NotBlank
     @ApiModelProperty(value = "name", example = "order nformation notification robot", position = 1, required = true)
     private String name;

@@ -10,17 +10,6 @@
                 typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
     </resultMap>
 
-    <select id="getTriggersByResourceId" resultMap="triggerDto">
-        SELECT trg.robot_id as robot_id,
-               trg.trigger_id,
-               trg.trigger_type_id,
-               trg.input
-        FROM vika_automation_trigger trg
-                 JOIN vika_automation_robot rbt
-            ON rbt.resource_id = #{resourceId} and rbt.robot_id = trg.robot_id and rbt.is_active = 1
-        WHERE trg.is_deleted = 0
-    </select>
-
     <select id="getTriggersBySeqId" resultMap="triggerDto">
         SELECT trg.robot_id as robot_id,
                trg.trigger_id,
@@ -31,18 +20,6 @@
                       ON rbt.seq_id = #{seqId} and rbt.resource_id = #{resourceId} and rbt.robot_id = trg.robot_id and rbt.is_active = 1
         WHERE trg.is_deleted = 0;
     </select>
-
-    <update id="deleteTriggerById">
-        UPDATE vika_automation_trigger
-        SET is_deleted = 1
-        WHERE trigger_id = #{triggerId}
-    </update>
-
-    <update id="deleteTriggerByRobotId">
-        UPDATE vika_automation_trigger
-        SET is_deleted = 1
-        WHERE robot_id = #{robotId}
-    </update>
 
     <update id="updateInput">
         UPDATE vika_automation_trigger

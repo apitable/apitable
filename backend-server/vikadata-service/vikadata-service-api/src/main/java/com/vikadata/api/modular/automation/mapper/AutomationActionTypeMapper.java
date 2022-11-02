@@ -1,17 +1,18 @@
 package com.vikadata.api.modular.automation.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vikadata.entity.AutomationActionTypeEntity;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.vikadata.entity.AutomationActionTypeEntity;
 
 public interface AutomationActionTypeMapper extends BaseMapper<AutomationActionTypeEntity> {
 
     /**
-     * get action type by endpoint.
+     * Get action type by endpoint
+     *
      * @param endpoint  invocation interface
      * @return action type
      */
-    String getActionTypeIdByEndpoint(String endpoint);
+    String getActionTypeIdByEndpoint(@Param("endpoint") String endpoint);
 
 }

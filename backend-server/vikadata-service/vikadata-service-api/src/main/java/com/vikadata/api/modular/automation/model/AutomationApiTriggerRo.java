@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 @ApiModel("AutomationApiTrigger")
 public class AutomationApiTriggerRo {
+
     @NotBlank
     @ApiModelProperty(value = "Fixed format(.*@vika) for trigger name", example = "form_submitted@vika", position = 1, required = true)
     private String typeName;

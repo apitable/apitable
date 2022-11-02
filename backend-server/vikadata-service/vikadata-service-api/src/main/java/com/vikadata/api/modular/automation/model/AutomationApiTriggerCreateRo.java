@@ -1,11 +1,11 @@
 package com.vikadata.api.modular.automation.model;
 
+import javax.validation.constraints.NotNull;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel("AutomationApiTrigger")
@@ -23,7 +23,7 @@ public class AutomationApiTriggerCreateRo {
     private String webhookUrl;
 
     @ApiModelProperty(value = "request sequence, normal 32 uuid", example = "1e16c603908743a8aaa5933faec91973", position = 4)
-    @Length(max=64)
+    @Length(max = 64)
     private String seqId;
 
 }

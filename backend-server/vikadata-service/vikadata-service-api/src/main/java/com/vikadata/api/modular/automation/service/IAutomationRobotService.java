@@ -1,16 +1,14 @@
 package com.vikadata.api.modular.automation.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
+
 import com.vikadata.api.modular.automation.model.AutomationApiTriggerCreateRo;
 import com.vikadata.api.modular.automation.model.AutomationRobotDto;
-import com.vikadata.api.modular.automation.model.AutomationRobotVo;
 import com.vikadata.api.modular.automation.model.AutomationTriggerCreateVo;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.entity.AutomationRobotEntity;
 
-import java.util.List;
-
-public interface IAutomationRobotService extends IService<AutomationRobotEntity> {
+public interface IAutomationRobotService {
     /**
      * Query the automation list under the resource by the resource id.
      *
@@ -34,6 +32,6 @@ public interface IAutomationRobotService extends IService<AutomationRobotEntity>
      * @param xServiceToken service token
      * @return automation trigger
      */
-    ResponseData<AutomationTriggerCreateVo> upsert(AutomationApiTriggerCreateRo data,String xServiceToken );
+    ResponseData<AutomationTriggerCreateVo> upsert(AutomationApiTriggerCreateRo data, String xServiceToken);
 
 }

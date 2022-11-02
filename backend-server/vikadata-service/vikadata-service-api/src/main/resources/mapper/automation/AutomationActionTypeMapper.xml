@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.modular.automation.mapper.AutomationActionTypeMapper">
-
-    <select id="getTriggerTypeByEndpoint" resultType="java.lang.String">
-        SELECT tt.trigger_type_id
-        FROM vika_automation_trigger_type tt
-        WHERE tt.endpoint = #{endpoint}
-          AND tt.is_deleted = 0;
-    </select>
-
     <select id="getActionTypeIdByEndpoint" resultType="java.lang.String">
         SELECT tt.action_type_id
         FROM vika_automation_action_type tt
         WHERE tt.endpoint = #{endpoint}
-          AND tt.is_deleted = 0;
+          AND tt.is_deleted = 0
     </select>
-
-
 </mapper>

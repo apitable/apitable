@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class AutomationRobotDto {
+
     @ApiModelProperty(value = "robot ID", example = "arbtxxxxxxxxx", position = 1, required = true)
     private String robotId;
 
