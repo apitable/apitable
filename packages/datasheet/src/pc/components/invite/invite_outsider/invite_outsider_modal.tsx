@@ -66,7 +66,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
       </TabPane>
       {!emailInvitationDisable && (isAdmin || !isOrgIsolated) && (
         <>
-          <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab'>
+          <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab' style={{ height: '100%' }}>
             <InputEmail
               cancel={cancelModal}
               setMemberInvited={setMemberInvited}
@@ -115,11 +115,11 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
           {
             fromDepartmentId: -1,
             mode: 'multi', // Mandatory, select mode, single means single, multi means multiple
-            selectedContextContact: 0, 
+            selectedContextContact: 0,
           },
           function(res) {
             if (res.err_msg == 'selectPrivilegedContact:ok') {
-              const selectedTicket = res.result.selectedTicket; 
+              const selectedTicket = res.result.selectedTicket;
               Api.postWecomUnauthMemberInvite(spaceId, [selectedTicket]).then(rlt => {
                 if (rlt.data.message === 'SUCCESS') {
                   Message.success({ content: t(Strings.success) });

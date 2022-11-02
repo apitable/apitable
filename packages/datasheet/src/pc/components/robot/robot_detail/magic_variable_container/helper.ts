@@ -1,7 +1,7 @@
 import {
   IExpression, IExpressionOperand, IField, InputParser, IOperand,
   MagicVariableParser, OperandTypeEnums, OperatorEnums,
-  ACTION_INPUT_PARSER_BASE_FUNCTIONS, EmptyNullOperand, IFieldPermissionMap, Strings, t
+  ACTION_INPUT_PARSER_BASE_FUNCTIONS, EmptyNullOperand, IFieldPermissionMap, Strings, t,
 } from '@apitable/core';
 import produce from 'immer';
 import { Transforms, Selection } from 'slate';
@@ -28,7 +28,7 @@ export interface ISchemaPropertyListItem {
   hasChildren: boolean;
   canInsert: boolean;
   disabled?: boolean;
-  // Are properties and methods on the prototype chain of data structures, 
+  // Are properties and methods on the prototype chain of data structures,
   // such as strings, length of arrays, trim of strings, etc. Currently only length exists for arrays.
   isPrototype?: boolean;
 }
@@ -55,12 +55,12 @@ const getPropertyItem = (props: {
     operands: [
       {
         type: OperandTypeEnums.Expression,
-        value: expression as IExpression
+        value: expression as IExpression,
       },
       {
         type: OperandTypeEnums.Literal,
-        value: [key]
-      }
+        value: [key],
+      },
     ],
   };
   return {
@@ -70,7 +70,7 @@ const getPropertyItem = (props: {
     disabled: propertySchema['disabled'],
     expression: _expression,
     hasChildren,
-    canInsert
+    canInsert,
   };
 };
 
@@ -83,7 +83,7 @@ const getObjectSchemaPropertyList = (props: {
   return propertiesKeys.map((key) => {
     const propertySchema = schema.properties![key];
     return getPropertyItem({
-      expression, propertySchema, key, isJSONField
+      expression, propertySchema, key, isJSONField,
     });
   });
 };
@@ -106,13 +106,13 @@ const getArraySchemaPropertyList = (props: {
       operands: [
         {
           type: OperandTypeEnums.Expression,
-          value: expression as IExpression
-        }
+          value: expression as IExpression,
+        },
       ],
     } as IExpression,
     hasChildren: false,
     canInsert: true,
-    isPrototype: true
+    isPrototype: true,
   };
   const res: any[] = [];
 
@@ -122,7 +122,7 @@ const getArraySchemaPropertyList = (props: {
       operands: [
         {
           type: OperandTypeEnums.Expression,
-          value: expression as IExpression
+          value: expression as IExpression,
         },
       ],
     };
@@ -132,13 +132,13 @@ const getArraySchemaPropertyList = (props: {
     if (itemSchema.type === 'object') {
       // TODO: Here it can be optimized that property fetching for array objects can be expressed in a separate expression.
       res.push(...getObjectSchemaPropertyList({
-        expression, schema: itemSchema, isJSONField
+        expression, schema: itemSchema, isJSONField,
       }));
     }
     if (itemSchema.type === 'array') {
       // Arrays over arrays first flatten
       res.push(...getArraySchemaPropertyList({
-        expression, schema: itemSchema, shouldFlatten: true, isJSONField
+        expression, schema: itemSchema, shouldFlatten: true, isJSONField,
       }));
     }
   }
@@ -181,12 +181,12 @@ const getSchemaPropertyList = (props: {
         operands: [
           {
             type: OperandTypeEnums.Expression,
-            value: expression as IExpression
+            value: expression as IExpression,
           },
           {
             type: OperandTypeEnums.Literal,
-            value: [key]
-          }
+            value: [key],
+          },
         ],
       };
       // Base type direct insertion
@@ -216,7 +216,7 @@ export interface ISchemaAndExpressionItem {
 }
 
 /**
- * schemaExpressionList maintains a stack of the currently viewed schema, 
+ * schemaExpressionList maintains a stack of the currently viewed schema,
  * producing a list of expressions corresponding to dynamic parameters based on the schema property
  * - Calculated dynamically based on schemaExpressionList, always taking the last one.
  * - When the length is 1, the list of predecessor nodes is output.
@@ -240,8 +240,8 @@ export const getCurrentVariableList = (props: {
           {
             type: OperandTypeEnums.Literal,
             value: id,
-          }
-        ]
+          },
+        ],
       };
       return {
         key: id,
@@ -261,7 +261,7 @@ export const getCurrentVariableList = (props: {
     schema,
     uiSchema,
     expression,
-    isJSONField
+    isJSONField,
   });
 };
 
@@ -299,12 +299,12 @@ export type IExpressionChainNode = {
 };
 
 /*
-  Convert an expression into a list of nodes for a chain call tree -> list
-  monadic operators into chain call format:
-  - length(JSONStringify(getNodeOutput("nodeId"))) => "nodeId".JSONStringify().length()
-  Multi-eye operator:
-  - getObjectProperty(getNodeOutput("nodeId"),['property1','property2']) => "nodeId".'property1'.'property2'
-  - getArrayItemProperty([{a:1},{a:2}],['a']) => [{a:1},{a:2}].'a'
+ Convert an expression into a list of nodes for a chain call tree -> list
+ monadic operators into chain call format:
+ - length(JSONStringify(getNodeOutput("nodeId"))) => "nodeId".JSONStringify().length()
+ Multi-eye operator:
+ - getObjectProperty(getNodeOutput("nodeId"),['property1','property2']) => "nodeId".'property1'.'property2'
+ - getArrayItemProperty([{a:1},{a:2}],['a']) => [{a:1},{a:2}].'a'
  */
 export const getExpressionChainList = (expression: IExpression): IExpressionChainNode[] => {
   const exprChainList: IExpressionChainNode[] = [];
@@ -356,7 +356,7 @@ const expression2SlateValue = (operand: IOperand) => {
   operand.value.operands.forEach((operand: IOperand) => {
     const res: any = {
       type: 'paragraph',
-      children: []
+      children: [],
     };
     operand.value.operands.forEach((operand: IOperand) => {
       switch (operand.type) {
@@ -389,7 +389,7 @@ export const formData2SlateValue = (value: any) => {
     {
       type: 'paragraph',
       children: [
-        { text: initTextValue }
+        { text: initTextValue },
       ],
     },
   ];
@@ -415,8 +415,8 @@ export const transformParagraphToExpression = (paragraph) => {
     type: OperandTypeEnums.Expression,
     value: {
       operator: 'concatString' as OperatorEnums,
-      operands: []
-    }
+      operands: [],
+    },
   };
   paragraph.children.forEach((child) => {
     if (child.type === 'magicVariable') {
@@ -444,8 +444,8 @@ export const transformSlateValue = (paragraphs: any): {
     type: OperandTypeEnums.Expression,
     value: {
       operator: 'concatParagraph' as OperatorEnums,
-      operands: []
-    }
+      operands: [],
+    },
   };
   paragraphs.forEach((paragraph) => {
     res.value.operands.push(transformParagraphToExpression(paragraph));
@@ -480,7 +480,7 @@ export const withMagicVariable = (editor) => {
   };
 
   editor.onChange = (...params) => {
-    // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus, 
+    // Record the last selection value to ensure that the new node is inserted in the correct position after the editor loses focus,
     // for example, by adding a new link element
     if (editor.selection) {
       // ref.current = editor.selection as unknown as Selection;
@@ -497,25 +497,27 @@ export const withMagicVariable = (editor) => {
 };
 
 export const insertMagicVariable = (data, editor) => {
-  const mv = {
-    type: 'magicVariable',
-    data,
-    children: [{ text: '' }],
-  };
-  const { lastSelection } = editor as any;
-  if (lastSelection) {
-    ReactEditor.focus(editor as any);
-    Transforms.select(editor, lastSelection);
-    // Delete / , insert magic variable
-    Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
-    // console.log(lastSelection, 'lastSelection');
-    Transforms.insertNodes(editor, [mv]);
-    // slate transform moves the cursor to the newly inserted position
-    Transforms.move(editor, {
-      distance: 1,
-      unit: 'offset',
-    });
-  }
+  setTimeout(() => {
+    const mv = {
+      type: 'magicVariable',
+      data,
+      children: [{ text: '' }],
+    };
+    const { lastSelection } = editor as any;
+    if (lastSelection) {
+      ReactEditor.focus(editor as any);
+      Transforms.select(editor, lastSelection);
+      // Delete / , insert magic variable
+      Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
+      // console.log(lastSelection, 'lastSelection');
+      Transforms.insertNodes(editor, [mv]);
+      // slate transform moves the cursor to the newly inserted position
+      Transforms.move(editor, {
+        distance: 1,
+        unit: 'offset',
+      });
+    }
+  }, 0);
 };
 
 export const enrichDatasheetTriggerOutputSchema = (
@@ -528,13 +530,13 @@ export const enrichDatasheetTriggerOutputSchema = (
     // trigger must have outputJsonSchema
     nodeOutputSchema.schema!.properties = {
       ...nodeOutputSchema.schema!.properties, // The original self-contained schema properties
-      ...enrichedFieldsSchema.properties // Dynamically expand field-related schema properties
+      ...enrichedFieldsSchema.properties, // Dynamically expand field-related schema properties
     };
     nodeOutputSchema.uiSchema = {
       layout: [
         {
           title: t(Strings.robot_variables_select_columns),
-          items: Object.keys(enrichedFieldsSchema.properties!)
+          items: Object.keys(enrichedFieldsSchema.properties!),
         },
         {
           title: t(Strings.robot_variables_select_basics),
@@ -542,10 +544,10 @@ export const enrichDatasheetTriggerOutputSchema = (
             'recordId',
             'recordUrl',
             'datasheetId',
-            'datasheetName'
-          ]
-        }
-      ]
+            'datasheetName',
+          ],
+        },
+      ],
     };
     return nodeOutputSchema;
   });
