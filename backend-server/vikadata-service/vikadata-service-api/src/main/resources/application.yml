@@ -117,6 +117,18 @@ vikadata:
         proxy-pass: ${AMAP_VECTORMAP_PROXY:https://fmap01.amap.com/v3/vectormap}
       restapi:
         proxy-pass: ${AMAP_RESTAPI_PROXY:https://restapi.amap.com/}
+  oneaccess:
+    enabled: ${ONEACCESS_ENABLED:false}
+    iam-host: ${ONEACCESS_IAM_HOST:https://wecom.com}
+    encrypt-alg: AES
+    encrypt-key: ${ONEACCESS_ENCRYPT_KEY:123456}
+    client-id: ${ONEACCESS_CLIENT_ID:123}
+    client-secret: ${ONEACCESS_CLIENT_SECRET:vk-xxxxxx}
+    we-com:
+      corpid: ${ONEACCESS_WECOM_CORPID:wwf4021212121}
+      secret: ${ONEACCESS_WECOM_SECRET:wcxxxxx}
+      agent-id: ${ONEACCESS_WECOM_AGENT_ID:1000065}
+      base-api-url: ${ONEACCESS_BASE_API_URL:https://exampe.wecom.com}
 
 vikadata-starter:
   socketio:
@@ -340,6 +352,9 @@ vikadata-starter:
     redirect-uri: ${AUTH0_REDIRECT_URI:http://127.0.0.1:8081/api/v1/auth0/callback}
     db-connection-id: ${AUTH0_DB_CONNECTION_ID:con_7R0apN7yVNGiVNez}
     db-connection-name: ${AUTH0_DB_CONNECTION_NAME:DB-APITable-Integration}
+  teg:
+    enabled: ${TEG_ENBALED:false}
+    token-key: ${TEG_TOKEN:teg000001}
 
 sentry:
   dsn: ${SENTRY_DSN:}

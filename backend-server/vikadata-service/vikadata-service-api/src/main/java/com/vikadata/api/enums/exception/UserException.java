@@ -115,6 +115,8 @@ public enum UserException implements BaseException {
 
     DING_USER_UNKNOWN(334, "DingTalk failed to obtain user information, please log in again"),
 
+    UPDATE_USER_INFO_FAIL(335, "Failed to update user information"),
+
     REGISTER_BY_INVITE_CODE_OPERATION_FREQUENTLY(336, "The invitation code registration operation is frequent, please try again in 10 seconds"),
 
     AUTH_FAIL(337, "Authorization failed"),

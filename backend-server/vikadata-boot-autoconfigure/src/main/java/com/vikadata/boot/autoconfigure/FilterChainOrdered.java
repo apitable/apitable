@@ -9,4 +9,6 @@ import org.springframework.core.Ordered;
 public class FilterChainOrdered {
 
     public static final int MIDUN_CAS_FILTER = Ordered.LOWEST_PRECEDENCE - 100;
+
+    public static final int MIDUN_SMARTPROXY_FILTER = Ordered.LOWEST_PRECEDENCE - 99;
 }
