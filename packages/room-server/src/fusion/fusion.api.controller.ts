@@ -76,8 +76,8 @@ export class FusionApiController {
 
   @Get('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary: '查询表格记录',
-    description: '获取某个维格表的N条记录',
+    summary: 'Query datasheet records',
+    description: 'Get multiple records of a datasheet',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -99,14 +99,20 @@ export class FusionApiController {
 
   @Post('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary: '给指定的维格表插入多条记录',
+    summary: 'Add multiple rows to a specified datasheet',
     description:
-      '单次请求可最多创建10条记录。在Request Header中需带上`Content-Type：application/json`，以raw json的格式提交数据。\n' +
-      'POST数据是一个JSON对象，其中需包含一个数组：`records`，records数组包含多条将要创建的记录。\n' +
-      '对象`fields`包含一条记录中要新建的字段值，可以包含任意数量的字段值，不一定要包含全部字段。如果有设置字段默认值，没有传入的字段值将根据设置字段时的默认值进行保存',
+      'Up to 10 records can be created in a single request.' +
+      'You need to bring `Content-Type: application/json` in the Request Header to submit data in raw json format. \n' +
+      'The POST data is a JSON object, which should contain an array: \`records\`, the records array contains multiple records to be created. \n' +
+      'The object \`fields\` contains the values of the fields to be created in a record,' +
+      'and can contain any number of field values, not necessarily all of them. If there are field defaults set,' +
+      'field values that are not passed in will be saved according to the default values at the time the fields were set.',
     deprecated: false,
   })
-  @ApiBody({ description: '添加记录参数', type: RecordCreateRo })
+  @ApiBody({
+    description: 'Add record parameters',
+    type: RecordCreateRo
+  })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiDatasheetGuard)
@@ -115,7 +121,10 @@ export class FusionApiController {
     await this.fusionApiService.checkDstRecordCount(param.datasheetId, body);
     const client = this.redisService.getClient();
     const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
-    // 对资源加锁，同一个资源的api 只能依次进行消费。解决并发写入link字段，关联表数据不完整的问题，120秒超时
+    /*
+     * Add locks to resources, api of the same resource can only be consumed sequentially.
+     * Solve the problem of concurrent writing of link fields and incomplete data of associated tables, 120 seconds timeout
+     */
     const unlock = await lock('api.add.' + param.datasheetId, 120 * 1000);
     try {
       const res = await this.fusionApiService.addRecords(param.datasheetId, body, query.viewId);
@@ -127,7 +136,7 @@ export class FusionApiController {
 
   @Get('/datasheets/:datasheetId/attachments/presignedUrl')
   @ApiOperation({
-    summary: '获取维格附件的预签名URL',
+    summary: 'Get the pre-signed URL of the datasheet attachment',
     description: '',
     deprecated: false,
   })
@@ -148,15 +157,16 @@ export class FusionApiController {
 
   @Post('/datasheets/:datasheetId/attachments')
   @ApiOperation({
-    summary: '上传维格附件',
+    summary: 'Upload datasheet attachment',
     description:
-      '在Request Header中需带上`Content-Type：multipart/form-data`，以form的形式提交数据。\n' +
-      'POST数据是一个`formData`对象。\n' +
-      '上传附件接口，每次仅允许接收一个附件。如果需要上传多份文件，需要重复调用此接口。',
+      'You need to bring `Content-Type: multipart/form-data` in the Request Header to submit data as a form. \n' +
+      'The POST data is a `formData` object. \n' +
+      'Upload attachment interface, only one attachment is allowed to be received at a time. ' +
+      'If you need to upload more than one file, you need to call this interface repeatedly.',
     deprecated: true,
   })
   @ApiBody({
-    description: '附件',
+    description: 'attachment',
     type: AttachmentUploadRo,
   })
   @ApiInternalServerErrorResponse()
@@ -164,7 +174,7 @@ export class FusionApiController {
   @ApiProduces('application/json')
   @NodePermissions(NodePermissionEnum.EDITABLE)
   @UseGuards(ApiDatasheetGuard)
-  // todo 等待nestjs官方继承multi和fastify
+  // TODO: Waiting for nestjs official inheritance multi and fastify
   public async addAttachment(@Param() param: RecordParamRo, @Req() req, @Res() reply): Promise<AttachmentVo> {
     // check space capacity
     const datasheet = req[DATASHEET_HTTP_DECORATE];
@@ -218,12 +228,17 @@ export class FusionApiController {
 
   @Patch('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary: '更新记录',
-    description: '更新某个维格表的若干条记录。使用PATCH方法提交，只有被指定的字段才会更新数据，没有被指定的字段会保留旧值。',
+    summary:
+      'Update Records',
+    description:
+      'Update several records of a datasheet. ' +
+      'When submitted using the PUT method, only the fields that are specified will have their data updated, ' +
+      'and fields that are not specified will retain their old values.',
     deprecated: false,
   })
   @ApiBody({
-    description: '修改记录参数',
+    description:
+      'Update record parameters',
     type: RecordUpdateRo,
   })
   @ApiProduces('application/json')
@@ -241,12 +256,17 @@ export class FusionApiController {
 
   @Put('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary: '更新记录',
-    description: '更新某个维格表的若干条记录。使用PUT方法提交，只有被指定的字段才会更新数据，没有被指定的字段会保留旧值。',
+    summary:
+      'Update Records',
+    description:
+      'Update several records of a datasheet. ' +
+      'When submitted using the PUT method, only the fields that are specified will have their data updated, ' +
+      'and fields that are not specified will retain their old values.',
     deprecated: false,
   })
   @ApiBody({
-    description: '修改记录参数',
+    description:
+      'Update record parameters',
     type: RecordUpdateRo,
   })
   @ApiProduces('application/json')
@@ -264,8 +284,8 @@ export class FusionApiController {
 
   @Delete('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary: '删除记录',
-    description: '删除某个维格表的若干条记录',
+    summary: 'Delete records',
+    description: 'Delete a number of records from a datasheet',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -280,8 +300,10 @@ export class FusionApiController {
 
   @Get('/datasheets/:datasheetId/fields')
   @ApiOperation({
-    summary: '查询表格的所有字段',
-    description: '表格的所有字段，不分页',
+    summary:
+      'Query all fields of a datasheet',
+    description:
+      'All fields of the datasheet, without paging',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -297,8 +319,10 @@ export class FusionApiController {
 
   @Get('/datasheets/:datasheetId/views')
   @ApiOperation({
-    summary: '查询表格的所有视图',
-    description: '一张维格表可以建立最多 30 张视图。请求视图时一次性返回，不分页。',
+    summary:
+      'Query all views of a datasheet',
+    description:
+      'A datasheet can create up to 30 views and return them all at once when requesting a view, without paging.',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -314,13 +338,15 @@ export class FusionApiController {
 
   @Get('/spaces')
   @ApiOperation({
-    summary: '查询空间列表',
-    description: '返回当前用户的空间列表。一次性返回，不分页。',
+    summary:
+      'Query space list',
+    description:
+      'Returns a list of spaces for the current user. Returns it all at once, without paging.',
     deprecated: false,
   })
   @ApiProduces('application/json')
-  // 这个接口暂时不统计 API 使用量
   public async spaceList() {
+    // This interface does not count API usage for now
     const spaceList = await this.fusionApiService.getSpaceList();
     return ApiResponse.success({
       spaces: spaceList,
@@ -329,12 +355,12 @@ export class FusionApiController {
 
   @Post('/spaces/:spaceId/datasheets/:datasheetId/fields')
   @ApiOperation({
-    summary: '新增字段',
-    description: '新增字段',
+    summary: 'New field',
+    description: 'New field',
     deprecated: false,
   })
   @ApiBody({
-    description: '新增字段',
+    description: 'New field',
     type: FieldCreateRo,
   })
   @ApiProduces('application/json')
@@ -354,12 +380,12 @@ export class FusionApiController {
 
   @Delete('/spaces/:spaceId/datasheets/:datasheetId/fields/:fieldId')
   @ApiOperation({
-    summary: '删除字段',
-    description: '删除字段',
+    summary: 'Delete field',
+    description: 'Delete field',
     deprecated: false,
   })
   @ApiBody({
-    description: '删除字段',
+    description: 'Delete field',
     type: FieldCreateRo,
   })
   @ApiProduces('application/json')
@@ -383,12 +409,12 @@ export class FusionApiController {
 
   @Post('/spaces/:spaceId/datasheets')
   @ApiOperation({
-    summary: '创建表格',
-    description: '创建表格及其字段',
+    summary: 'Create Datasheet',
+    description: 'Create Datasheet and their fields',
     deprecated: false,
   })
   @ApiBody({
-    description: '创建表格',
+    description: 'Create Datasheet',
     type: DatasheetCreateRo,
   })
   @ApiProduces('application/json')
@@ -416,8 +442,10 @@ export class FusionApiController {
 
   @Get('/spaces/:spaceId/nodes')
   @ApiOperation({
-    summary: '查询空间站一级文件节点列表',
-    description: '返回指定空间站一级文件节点列表。一次性返回，不分页。',
+    summary:
+      'Query the list of space station level 1 document nodes',
+    description:
+      'Returns a list of file nodes at the specified space station level. Returns it all at once, without paging.',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -430,11 +458,13 @@ export class FusionApiController {
     });
   }
 
-  // 无 spacesId 也可以直接查询 node 详情，先兼容保留。没有路由请求后删除这里。
+  /**
+   * @deprecated No spacesId can also directly query node details, first compatible with the reservation. Delete here after no route request.
+   */
   @Get('/spaces/:spaceId/nodes/:nodeId')
   @ApiOperation({
-    summary: '查询节点详情',
-    description: '查询指定文件节点详情',
+    summary: 'Query Node Details',
+    description: 'Query the details of the specified file node',
     deprecated: true,
   })
   @ApiProduces('application/json')
@@ -447,8 +477,8 @@ export class FusionApiController {
 
   @Get('/nodes/:nodeId')
   @ApiOperation({
-    summary: '查询节点详情',
-    description: '查询指定文件节点详情',
+    summary: 'Query Node Details',
+    description: 'Query the details of the specified file node',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -460,12 +490,14 @@ export class FusionApiController {
   }
 
   /**
-   * 隐藏接口
+   * Hidden Interface
    */
   @Post('datasheets/:datasheetId/executeCommand')
   @ApiOperation({
-    summary: '创建资源的 op',
-    description: '为了灵活性考虑，也为了内部的自动化测试，提供一个自由创建 command 的接口',
+    summary:
+      'Create the op of the resource',
+    description:
+      'For flexibility reasons and for internal automation testing, provide an interface to freely create commands',
     deprecated: false,
   })
   @ApiProduces('application/json')

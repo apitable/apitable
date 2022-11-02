@@ -1,15 +1,17 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { getNewId, IAttachmentValue, ICellValue, IDPrefix, IField } from '@apitable/core';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { isString } from 'class-validator';
-import { IFieldValue } from '../../shared/interfaces';
+import { BaseField } from 'fusion/field/base.field';
+import { IFieldValue } from 'shared/interfaces';
 import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { RestService } from 'shared/services/rest/rest.service';
-import { BaseField } from 'fusion/field/base.field';
 import { FieldManager } from '../field.manager';
 
 @Injectable()
 export class AttachmentField extends BaseField implements OnApplicationBootstrap {
-  constructor(private readonly restService: RestService) {
+  constructor(
+    private readonly restService: RestService
+  ) {
     super();
   }
 
@@ -17,10 +19,10 @@ export class AttachmentField extends BaseField implements OnApplicationBootstrap
     if (fieldValues === null) return;
     if (Array.isArray(fieldValues)) {
       fieldValues.forEach((value: any) => {
-        // 验证必要参数
+        // Validate the necessary parameters
         if (!value.token) this.throwException(field, 'api_params_instance_attachment_token_error');
         if (!value.name) this.throwException(field, 'api_params_instance_attachment_name_error');
-        // 验证参数类型
+        // Validate the parameter type
         if (!isString(value.token)) this.throwException(field, 'api_param_attachment_token_type_error');
         if (!isString(value.name)) this.throwException(field, 'api_param_attachment_name_type_error');
       });

@@ -1,7 +1,7 @@
 import { CellFormatEnum, Field, ICellValue, IField } from '@apitable/core';
-import { ApiException, ApiTipId } from '../../shared/exception/api.exception';
-import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from '../../shared/interfaces';
 import { IFieldValidatorInterface } from 'fusion/i.field.validator.interface';
+import { ApiException, ApiTipId } from 'shared/exception';
+import { IFieldRoTransformOptions, IFieldValue, IFieldVoTransformOptions } from 'shared/interfaces';
 import { IFieldTransformInterface } from '../i.field.transform.interface';
 
 export abstract class BaseField implements IFieldTransformInterface, IFieldValidatorInterface {

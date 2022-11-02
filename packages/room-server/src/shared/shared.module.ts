@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AutomationActionTypeRepository } from 'automation/repositories/automation.action.type.repository';
 import { AutomationRobotRepository } from 'automation/repositories/automation.robot.repository';
@@ -79,152 +79,103 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
 
 @Module({
   imports: [
-  GlobalModule,
-  TypeOrmModule.forFeature([AssetRepository]),
-  JavaModule,
-  HttpModule.registerAsync({
-    useClass: HttpConfigService,
+    GlobalModule,
+    TypeOrmModule.forFeature([AssetRepository]),
+    JavaModule,
+    HttpModule.registerAsync({
+      useClass: HttpConfigService,
     }),
-
-// Zipkin configuration
-  ZipkinModule.forRootAsync({
-    useClass: ZipkinConfigService,
+    // Zipkin configuration
+    ZipkinModule.forRootAsync({
+      useClass: ZipkinConfigService,
     }),
-// Logger configuration
-  LoggerModule.forRootAsync({
-    useClass: LoggerConfigService,
+    // Logger configuration
+    LoggerModule.forRootAsync({
+      useClass: LoggerConfigService,
     }),
-  TypeOrmModule.forFeature([UserRepository]),
-  TypeOrmModule.forFeature([
-    WidgetRepository,
+    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([WidgetRepository]),
+    TypeOrmModule.forFeature([ApiUsageRepository]),
+    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([DatasheetRecordRepository]),
+    TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
+    GrpcClientModule,
+    TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
+    TypeOrmModule.forFeature([
+      NodeRepository,
+      AutomationTriggerRepository,
+      AutomationRobotRepository,
+      AutomationRunHistoryRepository,
+      AutomationServiceRepository,
+      AutomationTriggerTypeRepository,
+      AutomationActionTypeRepository
     ]),
-  TypeOrmModule.forFeature([ApiUsageRepository]),
-  JavaModule,
-  // ResourceServiceModule,
-  TypeOrmModule.forFeature([UserRepository]),
-  TypeOrmModule.forFeature([DatasheetRecordRepository]),
-  TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
-  // ResourceServiceModule,
-  // HttpModule.registerAsync({
-  //   useClass: HttpConfigService,
-  //   }),
-  GrpcClientModule,
-  TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
-  
-  TypeOrmModule.forFeature([
-    NodeRepository,
-    AutomationTriggerRepository,
-    AutomationRobotRepository,
-    AutomationRunHistoryRepository,
-    AutomationServiceRepository,
-    AutomationTriggerTypeRepository,
-    AutomationActionTypeRepository
+    TypeOrmModule.forFeature([ResourceMetaRepository]),
+    TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
+    TypeOrmModule.forFeature([
+      NodeRepository,
+      NodeRelRepository,
+      NodeDescRepository,
+      NodeShareSettingRepository,
+      DatasheetRepository,
+      ResourceMetaRepository,
     ]),
-  TypeOrmModule.forFeature([ResourceMetaRepository]),
-  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-  TypeOrmModule.forFeature([
-    NodeRepository,
-    NodeRelRepository,
-    NodeDescRepository,
-    NodeShareSettingRepository,
-    DatasheetRepository,
-    ResourceMetaRepository,
+    TypeOrmModule.forFeature([
+      DatasheetRecordRepository,
+      DatasheetRecordSourceRepository,
+      DatasheetRecordSubscriptionRepository,
+      DatasheetRepository,
+      DatasheetMetaRepository,
+      RecordCommentRepository,
+      DatasheetChangesetRepository,
+      DatasheetChangesetSourceRepository,
+      DatasheetRecordAlarmRepository,
     ]),
-  // HttpModule.registerAsync({
-  //   useClass: HttpConfigService,
-  //   }),
-  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
- 
-  TypeOrmModule.forFeature([
-    WidgetRepository,
-    ]),
-  TypeOrmModule.forFeature([
-    DatasheetRecordRepository,
-    DatasheetRecordSourceRepository,
-    DatasheetRecordSubscriptionRepository,
-    DatasheetRepository,
-    DatasheetMetaRepository,
-    RecordCommentRepository,
-    DatasheetChangesetRepository,
-    DatasheetChangesetSourceRepository,
-    DatasheetRecordAlarmRepository,
-    ]),
-  // UserServiceModule,
-  TypeOrmModule.forFeature([UserRepository]),
-  JavaModule,
-  QueueWorkerModule,
-
-  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-  // UserServiceModule,
-  // HttpModule.registerAsync({
-  //   useClass: HttpConfigService,
-  //   }),
-  TypeOrmModule.forFeature([
-    NodeRepository,
-    NodeRelRepository,
-    NodeDescRepository,
-    NodeShareSettingRepository,
-    DatasheetRepository,
-    ResourceMetaRepository,
-    ]),
-  // UserServiceModule,
-  // HttpModule.registerAsync({
-  //   useClass: HttpConfigService,
-  //   }),
-  TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-  // UserServiceModule, 
+    // UserServiceModule,
+    QueueWorkerModule,
   ],
-
   controllers: [],
-  providers: [AttachmentService,UserService,
-  FusionApiRecordService, FusionApiService, FusionApiFilter, FusionApiTransformer,
-// RestService,
-  OtService,
-  DatasheetOtService,
-  DashboardOtService,
-  MirrorOtService,
-  FormOtService,
-  WidgetOtService,
-  ResourceChangeHandler,
-  MirrorService,
-  EventService,
-  AutomationService,
-  DashboardService,
-  UnitService, UnitMemberService, UnitTagService, UnitTeamService,
-  WidgetService,
-  NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService, 
-  UserService ,
-  UnitService, UnitMemberService, UnitTagService, UnitTeamService,
-  DatasheetService,
-  DatasheetMetaService,
-  DatasheetRecordService,
-  RecordCommentService,
-  DatasheetRecordSourceService,
-  DatasheetRecordSubscriptionService,
-  DatasheetFieldHandler,
-  ComputeFieldReferenceManager,
-  DatasheetChangesetService,
-  DatasheetChangesetSourceService,
-  DatasheetRecordAlarmService,
-  UserService ,
-  WidgetService,
-  UnitService, UnitMemberService, UnitTagService, UnitTeamService,
-  NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService, 
-  
-  UnitService, UnitMemberService, UnitTagService, UnitTeamService
+  providers: [AttachmentService, UserService,
+    FusionApiRecordService, FusionApiService, FusionApiFilter, FusionApiTransformer,
+    OtService,
+    DatasheetOtService,
+    DashboardOtService,
+    MirrorOtService,
+    FormOtService,
+    WidgetOtService,
+    ResourceChangeHandler,
+    MirrorService,
+    EventService,
+    AutomationService,
+    DashboardService,
+    UnitService, UnitMemberService, UnitTagService, UnitTeamService,
+    WidgetService,
+    NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService,
+    DatasheetService,
+    DatasheetMetaService,
+    DatasheetRecordService,
+    RecordCommentService,
+    DatasheetRecordSourceService,
+    DatasheetRecordSubscriptionService,
+    DatasheetFieldHandler,
+    ComputeFieldReferenceManager,
+    DatasheetChangesetService,
+    DatasheetChangesetSourceService,
+    DatasheetRecordAlarmService
   ],
-  exports: [AttachmentService, UserService,FusionApiService, FusionApiFilter, FusionApiTransformer,
-  DatasheetService,
-  DatasheetMetaService,
-  DatasheetRecordService,
-  RecordCommentService,
-  DatasheetRecordSourceService,
-  DatasheetRecordSubscriptionService,
-  DatasheetFieldHandler,
-  ComputeFieldReferenceManager,
-  DatasheetChangesetService,
-  DatasheetChangesetSourceService,
-  DatasheetRecordAlarmService,
-  ],
-  })
-export class SharedModule {}
+  exports: [AttachmentService, UserService, FusionApiService, FusionApiFilter, FusionApiTransformer,
+    DatasheetService,
+    DatasheetMetaService,
+    DatasheetRecordService,
+    RecordCommentService,
+    DatasheetRecordSourceService,
+    DatasheetRecordSubscriptionService,
+    DatasheetFieldHandler,
+    ComputeFieldReferenceManager,
+    DatasheetChangesetService,
+    DatasheetChangesetSourceService,
+    DatasheetRecordAlarmService,
+  ]
+})
+export class SharedModule {
+}

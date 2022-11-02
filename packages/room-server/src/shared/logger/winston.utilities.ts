@@ -1,8 +1,8 @@
+import { currentAppInstanceId, isDevMode } from 'app.environment';
+import dayjs from 'dayjs';
+import safeStringify from 'fast-safe-stringify';
 import { Format } from 'logform';
 import { format } from 'winston';
-import safeStringify from 'fast-safe-stringify';
-import dayjs from 'dayjs';
-import { currentAppInstanceId, isDevMode } from 'app.environment';
 import { getSpanId, getTraceId } from '../helpers/fastify.zipkin.plugin';
 
 /**

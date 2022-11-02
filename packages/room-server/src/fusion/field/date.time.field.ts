@@ -1,20 +1,20 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { DEFAULT_TIMEZONE, ICellValue, IField } from '@apitable/core';
-import { IFieldValue } from '../../shared/interfaces';
-import { isNumber } from 'lodash';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { BaseField } from 'fusion/field/base.field';
+import { isNumber } from 'lodash';
 import moment from 'moment-timezone';
+import { IFieldValue } from 'shared/interfaces';
 import { FieldManager } from '../field.manager';
 
 @Injectable()
 export class DateTimeField extends BaseField implements OnApplicationBootstrap {
   validate(fieldValue: IFieldValue, field: IField, extra?: { [key: string]: string }) {
     if (fieldValue === null) return;
-    // 时间字符串
+    // Time String
     if (moment(fieldValue.toString()).isValid()) {
       return;
     }
-    // 验证数字
+    // Verify the number
     if (isNumber(fieldValue) && !Number.isNaN(fieldValue)) {
       return;
     }
@@ -23,20 +23,20 @@ export class DateTimeField extends BaseField implements OnApplicationBootstrap {
 
   // eslint-disable-next-line require-await
   async roTransform(fieldValue: IFieldValue, field: IField): Promise<ICellValue> {
-    // 默认时区
-    // todo 目前 dayjs setDefaultTimeZone 报错，之后切到dayjs
+    // Default Time Zone
+    // TODO: Currently dayjs setDefaultTimeZone is reporting an error, then cut to dayjs
     moment.tz.setDefault(DEFAULT_TIMEZONE);
     const zoneTime = moment(fieldValue.toString());
-    // 还原
+    // Revert
     moment.tz.setDefault();
     if (zoneTime && zoneTime.isValid()) {
-      // 原本时间
+      // Original time
       if (zoneTime.hasOwnProperty('_tzm') && zoneTime.isUtcOffset()) {
         return zoneTime.valueOf() - zoneTime.utcOffset() * 60 * 1000;
       }
       return zoneTime.valueOf();
     }
-    // 统一转换成毫秒
+    // Uniform conversion to milliseconds
     return new Date(fieldValue as number).getTime();
   }
 

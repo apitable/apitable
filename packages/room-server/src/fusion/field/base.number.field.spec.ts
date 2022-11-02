@@ -4,11 +4,12 @@ import { NumberField } from 'fusion/field/number.field';
 describe('BaseNumberField', () => {
   let fieldClass: NumberField;
   let field: INumberField;
+
   beforeAll(() => {
     fieldClass = new NumberField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '数字',
+      name: 'Number',
       type: FieldType.Number,
       property: { precision: 0, defaultValue: null },
     };

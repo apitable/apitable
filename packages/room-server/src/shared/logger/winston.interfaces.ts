@@ -1,6 +1,6 @@
-import { LoggerOptions } from 'winston';
-import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { Type } from '@nestjs/common';
+import { ModuleMetadata } from '@nestjs/common/interfaces';
+import { LoggerOptions } from 'winston';
 
 export type LoggerModuleOptions = LoggerOptions;
 

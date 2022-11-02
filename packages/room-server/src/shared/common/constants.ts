@@ -76,7 +76,7 @@ export const X_MAX_AGE = 'x-max-age';
 /**
  * default value of the `max-age` property of the API cache, units are seconds
  */
-export const DEFAULT_X_MAX_AGE = parseInt(process.env.DEFAULT_X_MAX_AGE, 10) || 24 * 60 * 60 ;
+export const DEFAULT_X_MAX_AGE = parseInt(process.env.DEFAULT_X_MAX_AGE, 10) || 24 * 60 * 60;
 
 /**
  * API Cache prefix
@@ -114,12 +114,17 @@ export const GRPC_MAX_PACKAGE_SIZE = 1024 * 1024 * 100;
 export const VIKA_NEST_CHANNEL = 'vikadata:nest:' + process.env.WEB_SOCKET_CHANNEL_ENV;
 
 /*
- * application name, could be one of the following values: ROOM_SERVER, NEST_REST_SERVER, FUSION_SERVER.
- * ROOM_SERVER: full functionality
- * FUSION_SERVER: fusion API only
- * NEST_REST_SERVER: rest API only
+ * application type, could be one of the following
  */
-export const APPLICATION_NAME = process.env.APPLICATION_NAME || 'ROOM_SERVER';
+export type ApplicationType =
+  /** full functionality（default） */
+  | 'ROOM_SERVER'
+  /** fusion API only */
+  | 'FUSION_SERVER'
+  /** rest API only */
+  | 'NEST_REST_SERVER';
+
+export const APPLICATION_NAME: ApplicationType = (process.env.APPLICATION_NAME || 'ROOM_SERVER') as ApplicationType;
 
 export class EnvConfigKey {
   public static readonly CONST = 'const';

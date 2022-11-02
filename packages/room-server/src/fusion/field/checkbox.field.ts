@@ -1,8 +1,8 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ICellValue, IField } from '@apitable/core';
-import { IFieldValue } from '../../shared/interfaces';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { FieldManager } from 'fusion/field.manager';
 import { BaseField } from 'fusion/field/base.field';
+import { IFieldValue } from 'shared/interfaces';
 
 @Injectable()
 export class CheckboxField extends BaseField implements OnApplicationBootstrap {

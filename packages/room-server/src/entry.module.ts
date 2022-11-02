@@ -7,12 +7,13 @@ import { SharedModule } from 'shared/shared.module';
 
 @Module({
   imports: [
-  ActuatorModule,
-  RobotModule,
-  FusionApiModule,
-  SharedModule, 
-  DatabaseModule,
+    ActuatorModule,
+    RobotModule,
+    FusionApiModule,
+    SharedModule,
+    DatabaseModule,
   ],
   controllers: [],
-  })
-export class EntryModule {}
+})
+export class EntryModule {
+}

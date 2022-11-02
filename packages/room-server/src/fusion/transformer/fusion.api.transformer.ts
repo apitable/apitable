@@ -41,9 +41,9 @@ export class FusionApiTransformer implements IFieldTransformInterface {
 
   getAddRecordCommandOptions(dstId: string, records: FieldCreateRo[], meta: IMeta): ICollaCommandOptions {
     const cellValues = records.reduce<ICellValueMap[]>((pre, cur) => {
-      // 这里循环map是因为要拿到默认的值
+      // Looping the map here is for getting the default value
       Object.keys(cur.fields);
-      // 已经转换过了 command里面有defaultValue
+      // Already converted Command with defaultValue inside
       pre.push(cur.fields);
       return pre;
     }, []);
@@ -62,7 +62,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     const data = records.reduce<{
       recordId: string;
       fieldId: string;
-      field?: IField; // 可选，传入 field 信息。适用于在还没有应用到 snapshot 的 field 上 addRecords
+      field?: IField; // [Optional], pass in field information. Applies to addRecords on fields that have not yet been applied to a snapshot
       value: ICellValue;
     }[]>((pre, cur) => {
       Object.keys(cur.fields).forEach(fieldId => {
@@ -124,13 +124,13 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   public async recordPageVoTransform(options: IRecordsTransformOptions, query: RecordQueryRo): Promise<PageVo> {
-    // 分页
+    // Pagination
     const maxRecords = query.maxRecords && query.maxRecords <= options.rows.length ? query.maxRecords : options.rows.length;
     const rows = options.rows.slice(0, maxRecords);
     const start = (query.pageNum - 1) * query.pageSize;
     const end = start + query.pageSize;
     const pageRows = query.pageSize == -1 ? rows : rows.slice(start, end);
-    // 分页之后再转换，减少计算
+    // Convert after paging to reduce calculations
     const listVo: ListVo = await this.recordsVoTransform({ ...options, rows: pageRows }, query.cellFormat);
     return {
       total: maxRecords,
@@ -154,7 +154,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       const record = recordMap[row.recordId];
       if (record) {
         fieldKeys.forEach(field => {
-          // 过滤hidden
+          // Filter hidden
           const column = columnMap[options.fieldMap[field].id];
           if (column && !column.hidden) {
             const cellValue = Selectors.getCellValue(
@@ -184,11 +184,11 @@ export class FusionApiTransformer implements IFieldTransformInterface {
 
   // eslint-disable-next-line require-await
   async roTransform(fieldValue: IFieldValue, field: IField, fieldMap: IFieldMap): Promise<ICellValue> {
-    // 所有字段都只有在不为null 的时候才参转换
+    // All fields are only converted if they are not null
     if (fieldValue) {
       const transformer = FieldManager.findService(FieldTypeEnum.get(field.type).name);
       if (!transformer) {
-        this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: '找不到字段转换器' }));
+        this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: 'Field converter not found' }));
         return null;
       }
       return transformer.roTransform(fieldValue, field, fieldMap);
@@ -197,14 +197,14 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   public voTransform(fieldValue: ICellValue, field: IField, options: IFieldVoTransformOptions): IFieldValue {
-    // 所有非计算字段都只有在不为null 的时候才参转换
+    // All non-computed fields are only converted if they are not null
     if (!FieldTypeEnum.get(field.type)) {
-      this.logger.error(JSON.stringify({ validator: { field }, trace: '找不到字段转换器' }));
+      this.logger.error(JSON.stringify({ validator: { field }, trace: 'Field converter not found' }));
       return undefined;
     }
     const transformer = FieldManager.findService(FieldTypeEnum.get(field.type).name);
     if (!transformer) {
-      this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: '找不到字段转换器' }));
+      this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: 'Field converter not found' }));
       return undefined;
     }
     const value = transformer.voTransform(fieldValue, field, options);
@@ -262,12 +262,12 @@ export class FusionApiTransformer implements IFieldTransformInterface {
 
   getViewInfo(query: RecordQueryRo, snapshot: ISnapshot, store: Store<IReduxState>): IViewProperty {
     const findView = this.getViewByViewIdOrDefault(store.getState(), snapshot.datasheetId);
-    // 默认第一个, 使用第一个视图rows的顺序+用户自定义的顺序
+    // Default first, use the order of the first view rows + user-defined order
     const view: IViewProperty = {
       ...findView(),
       groupInfo: this.getGroupInfo(query, findView),
     };
-    // 使用view里面的的排序/过滤条件
+    // Use the sorting/filtering criteria inside the view
     if (query.viewId) {
       const queryView = findView(query.viewId);
       if (!queryView) {
@@ -279,14 +279,14 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       view.filterInfo = queryView.filterInfo;
       view.rows = queryView.rows;
     } else {
-      // 不显式指定视图时，获取全部数据，取消记录隐藏，取消视图筛选条件, 取消列的隐藏。
+      // Get all data without explicitly specifying a view, unhide records, unhide view filter conditions, unhide columns.
       view.rows = view.rows.map(item => ({
         recordId: item.recordId,
       }));
       view.filterInfo = undefined;
       view.columns = (view.columns as IViewColumn[]).map(item => ({ fieldId: item.fieldId }));
     }
-    // 首先使用使用传入recordId排序 + 用户自定排序
+    // First use the sort using the incoming recordId + user-defined sort
     if (query.recordIds) {
       view.rows = this.getRecordRows(snapshot.recordMap);
     }

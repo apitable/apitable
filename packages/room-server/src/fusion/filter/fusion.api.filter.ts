@@ -6,7 +6,6 @@ import { Injectable } from '@nestjs/common';
 import { keyBy } from 'lodash';
 import { Store } from 'redux';
 import { ApiException } from 'shared/exception';
-import { IFusionApiFilterInterface } from '../fusion.api.filter.interface';
 import { FieldQueryRo } from '../ros/field.query.ro';
 import { RecordQueryRo } from '../ros/record.query.ro';
 
@@ -14,9 +13,16 @@ import { RecordQueryRo } from '../ros/record.query.ro';
  * Field Conversion Service
  */
 @Injectable()
-export class FusionApiFilter implements IFusionApiFilterInterface {
-  private static readonly FIELD_NAME = '虚拟';
+export class FusionApiFilter {
+  private static readonly FIELD_NAME = 'Virtual';
 
+  /**
+   * Filter filedMap according to the incomingfields, fields may be IDs or names (currently only names are considered)
+   *
+   * @param filedMap
+   * @param fieldKey
+   * @param fields
+   */
   fieldMapFilter(filedMap: IFieldMap, fieldKey: FieldKeyEnum, fields?: string[]): IFieldMap {
     const map: IFieldMap = {};
     if (fieldKey === FieldKeyEnum.NAME) {
@@ -64,6 +70,13 @@ export class FusionApiFilter implements IFusionApiFilterInterface {
     });
   }
 
+  /**
+   * Get the final returned rows
+   *
+   * @param query
+   * @param view
+   * @param store
+   */
   getVisibleRows(query: RecordQueryRo, view: IViewProperty, store: Store<IReduxState>): IViewRow[] | null {
     const state = store.getState();
     const snapshot = Selectors.getSnapshot(state);

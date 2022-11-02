@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ISpaceList } from '../../shared/interfaces';
+import { ISpaceList } from 'shared/interfaces';
 import { SpaceDto } from './space.dto';
 
 export class SpaceListDto implements ISpaceList<SpaceDto[]> {
@@ -7,5 +7,5 @@ export class SpaceListDto implements ISpaceList<SpaceDto[]> {
     type: [SpaceListDto],
     description: 'space list',
   })
-    spaces: SpaceDto[];
+  spaces: SpaceDto[];
 }

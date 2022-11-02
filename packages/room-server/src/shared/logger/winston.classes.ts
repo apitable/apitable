@@ -1,5 +1,5 @@
-import { Logger } from 'winston';
 import { LoggerService } from '@nestjs/common';
+import { Logger } from 'winston';
 
 /**
  * Implements the interface LoggerService of Nestjs

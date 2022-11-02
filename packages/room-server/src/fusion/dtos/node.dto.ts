@@ -8,33 +8,33 @@ export class NodeDto implements IAPINode {
     description: 'node ID',
     example: 'fodDWMTvdtmFs',
   })
-    id: string;
+  id: string;
 
   @ApiProperty({
     type: String,
     description: 'node name',
     example: 'order management',
   })
-    name: string;
+  name: string;
 
   @ApiProperty({
     enum: NodeTypeEnum,
     description: 'node type',
     example: NodeTypeEnum.Folder,
   })
-    type: NodeTypeEnum;
+  type: NodeTypeEnum;
 
   @ApiProperty({
     type: String,
     description: 'node Emoji ID',
     example: '👋',
   })
-    icon: string;
+  icon: string;
 
   @ApiProperty({
     type: Boolean,
     description: 'if it had been favorite',
     example: true,
   })
-    isFav: boolean;
+  isFav: boolean;
 }

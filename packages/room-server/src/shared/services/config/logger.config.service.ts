@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { isDevMode } from 'app.environment';
+import { resolve } from 'path';
 import { ILoggerModuleOptionsFactory, LoggerModuleOptions } from 'shared/logger/winston.interfaces';
 import { utilities as nestWinstonModuleUtilities } from 'shared/logger/winston.utilities';
-import { resolve } from 'path';
 import * as winston from 'winston';
 
 /**
@@ -22,7 +22,7 @@ export class LoggerConfigService implements ILoggerModuleOptionsFactory {
     // custom and use the standard format for printing logs, without assigning them in the transports
     const format = winston.format.combine(
       winston.format.timestamp(),
-      winston.format.metadata({ fillWith: ['spanId','traceId','parentTraceId'] }),
+      winston.format.metadata({ fillWith: ['spanId', 'traceId', 'parentTraceId'] }),
       nestWinstonModuleUtilities.format.nestLike(),
     );
     // console logging settings

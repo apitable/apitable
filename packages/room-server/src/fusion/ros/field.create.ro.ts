@@ -14,6 +14,7 @@ export class FieldCreateRo {
   })
   @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'name' } })
   name: string;
+
   @ApiProperty({
     type: String,
     required: true,
@@ -22,6 +23,7 @@ export class FieldCreateRo {
   })
   @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'type' } })
   type: string;
+
   @ApiPropertyOptional({
     type: Object,
     required: false,

@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
-import { IApiRequestDetail, IApiResponseDetail } from '../../shared/interfaces';
-import { IdWorker } from '../../shared/helpers';
+import { IdWorker } from 'shared/helpers';
+import { IApiRequestDetail, IApiResponseDetail } from 'shared/interfaces';
 
 /**
  * Workbench - api request information record form
@@ -8,7 +8,7 @@ import { IdWorker } from '../../shared/helpers';
 @Entity('vika_api_usage')
 export class ApiUsageEntity {
   @PrimaryColumn('bigint')
-    id: string;
+  id: string;
 
   @Column({
     name: 'user_id',
@@ -18,7 +18,7 @@ export class ApiUsageEntity {
     width: 20,
     type: 'bigint',
   })
-    userId: bigint;
+  userId: bigint;
 
   @Column({
     name: 'space_id',
@@ -26,7 +26,7 @@ export class ApiUsageEntity {
     comment: 'space ID(related#vika_space#space_id)',
     length: 50,
   })
-    spaceId: string | null;
+  spaceId: string | null;
 
   @Column({
     name: 'dst_id',
@@ -34,7 +34,7 @@ export class ApiUsageEntity {
     comment: 'datasheet ID(related#vika_datasheet#dst_id)',
     length: 50,
   })
-    dstId: string | null;
+  dstId: string | null;
 
   @Column({
     name: 'req_path',
@@ -42,7 +42,7 @@ export class ApiUsageEntity {
     comment: 'The data behind the path,domain of the api',
     length: 100,
   })
-    reqPath: string | null;
+  reqPath: string | null;
 
   @Column({
     name: 'req_method',
@@ -51,7 +51,7 @@ export class ApiUsageEntity {
     width: 2,
     type: 'tinyint',
   })
-    reqMethod: number;
+  reqMethod: number;
 
   @Column({
     name: 'api_version',
@@ -59,7 +59,7 @@ export class ApiUsageEntity {
     comment: 'api version',
     length: 10,
   })
-    apiVersion: string | null;
+  apiVersion: string | null;
 
   @Column({
     name: 'req_ip',
@@ -67,20 +67,20 @@ export class ApiUsageEntity {
     comment: 'client ip',
     length: 20,
   })
-    reqIp: string | null;
+  reqIp: string | null;
 
   @Column('json', { name: 'req_detail', nullable: true, comment: 'api call details, including ua, refer and other information' })
-    reqDetail: IApiRequestDetail | null;
+  reqDetail: IApiRequestDetail | null;
 
   @Column('json', { name: 'res_detail', nullable: true, comment: 'api calls return information, including code, message, etc' })
-    resDetail: IApiResponseDetail | null;
+  resDetail: IApiResponseDetail | null;
 
   @Column('timestamp', {
     name: 'created_at',
     comment: 'creation time',
     default: () => 'CURRENT_TIMESTAMP',
   })
-    createdAt: Date;
+  createdAt: Date;
 
   @BeforeInsert()
   beforeInsert() {

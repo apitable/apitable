@@ -1,10 +1,10 @@
+import { ICellValue, IField } from '@apitable/core';
 import { Injectable, OnApplicationBootstrap, OnModuleInit } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { ICellValue, IField } from '@apitable/core';
-import { IFieldValue } from '../../shared/interfaces';
 import { FieldManager } from 'fusion/field.manager';
 import { BaseField } from 'fusion/field/base.field';
 import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
+import { IFieldValue } from 'shared/interfaces';
 
 @Injectable()
 export class LinkField extends BaseField implements OnModuleInit, OnApplicationBootstrap {
@@ -21,10 +21,10 @@ export class LinkField extends BaseField implements OnModuleInit, OnApplicationB
   validate(fieldValue: IFieldValue[], field: IField, extra?: { [key: string]: string }) {
     if (fieldValue === null) return;
     if (Array.isArray(fieldValue)) {
-      // 不允许空数组
+      // Empty arrays are not allowed
       if (!fieldValue.length) this.throwException(field, 'api_params_link_field_recordids_empty_error', extra);
       if (field.property.limitSingleRecord && fieldValue.length > 1) {
-        // 只允许单个
+        // Only single
         this.throwException(field, 'api_params_link_field_records_max_count_error', extra);
       }
     } else {
@@ -33,9 +33,9 @@ export class LinkField extends BaseField implements OnModuleInit, OnApplicationB
   }
 
   async roTransform(fieldValue: IFieldValue, field: IField): Promise<ICellValue> {
-    // 去重
+    // Deduplicate data
     const cellValue: string[] = Array.from(new Set(fieldValue as string[]));
-    // 验证存在性
+    // Verify presence
     await this.recordService.validateRecordExists(field.property.foreignDatasheetId, cellValue,
       'api_params_link_field_recordids_not_exists');
     return fieldValue as ICellValue;

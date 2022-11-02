@@ -8,12 +8,13 @@ describe('DatetimeField', () => {
   let fieldClass: DateTimeField;
   let field: IDateTimeField;
   let store: Store<IReduxState>;
+
   beforeAll(() => {
     fieldClass = new DateTimeField();
     store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '日期',
+      name: 'Date',
       type: FieldType.DateTime,
       property: {
         dateFormat: DateFormat['YYYY-MM-DD'],
@@ -25,63 +26,63 @@ describe('DatetimeField', () => {
   });
 
   describe('validate', () => {
-    it('null--should return null', () => {
+    it('null should return null', () => {
       expect(() => fieldClass.validate(null, field)).not.toThrow();
     });
 
-    it('非日期--字符串--should throw ServerException', () => {
+    it('Non Date String should throw ServerException', () => {
       expect(() => {
         fieldClass.validate('aaaa', field);
       }).toThrow(/^api_param_datetime_field_type_error$/);
     });
 
-    it('日期--数字时间戳--should pass', () => {
+    it('Date Digital Timestamp should pass', () => {
       expect(() => fieldClass.validate(55521445, field)).not.toThrow();
     });
 
-    it('日期--年-数字--should pass', () => {
+    it('Date Year Number should pass', () => {
       expect(() => fieldClass.validate(2020, field)).not.toThrow();
     });
 
-    it('日期--年-字符串--should pass', () => {
+    it('Date Year String--should pass', () => {
       expect(() => fieldClass.validate('2020', field)).not.toThrow();
     });
 
-    it('日期--字符串--should pass', () => {
+    it('Date String should pass', () => {
       expect(() => fieldClass.validate('2020-01-01 11:11:11', field)).not.toThrow();
     });
 
-    it('日期--时间戳--should pass', () => {
+    it('Date Timestamp should pass', () => {
       expect(() => fieldClass.validate(1599893097514, field)).not.toThrow();
     });
   });
 
   describe('roTransform', () => {
-    it('日期--[2021]--should return 1609430400000', async() => {
+    it('Date [2021] should return 1609430400000', async() => {
       expect(await fieldClass.roTransform(2021, field)).toBe(1609430400000);
     });
 
-    it('日期--[\'2021\']--should return 1609430400000', async() => {
+    it('Date [\'2021\'] should return 1609430400000', async() => {
       expect(await fieldClass.roTransform('2021', field)).toBe(1609430400000);
     });
 
-    it('日期--[\'2021-01-01 00:00:00\']--should return 1609430400000', async() => {
+    it('Date [\'2021-01-01 00:00:00\'] should return 1609430400000', async() => {
       expect(await fieldClass.roTransform('2021-01-01 00:00:00', field)).toBe(1609430400000);
     });
 
-    it('日期--[\'2021-01-01T00:00:00Z\']--should return 1609430400000', async() => {
+    it('Date [\'2021-01-01T00:00:00Z\'] should return 1609430400000', async() => {
       expect(await fieldClass.roTransform('2021-01-01T00:00:00Z', field)).toBe(1609430400000);
     });
 
-    it('日期--[\'2020-09-12 18:37 +0800\']--should return 1599907020000', async() => {
+    it('Date [\'2020-09-12 18:37 +0800\'] should return 1599907020000', async() => {
       expect(await fieldClass.roTransform('2020-09-12 18:37 +0800', field)).toBe(1599907020000);
     });
 
-    it('日期--[1609430400000]--should return 1609430400000', async() => {
+    it('Date [1609430400000] should return 1609430400000', async() => {
       expect(await fieldClass.roTransform(1609430400000, field)).toBe(1609430400000);
     });
 
-    it('日期--[55521445]--should return 55521445', async() => {
+    it('Date [55521445] should return 55521445', async() => {
       expect(await fieldClass.roTransform(55521445, field)).toBe(55521445);
     });
   });

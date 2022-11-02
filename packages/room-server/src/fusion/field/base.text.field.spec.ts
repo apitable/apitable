@@ -8,7 +8,7 @@ describe('BaseTextField', () => {
     fieldClass = new TextField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '文本',
+      name: 'Text',
       type: FieldType.Text,
       property: null,
     };

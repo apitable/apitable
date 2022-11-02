@@ -4,11 +4,12 @@ import { CheckboxField } from 'fusion/field/checkbox.field';
 describe('CheckBoxField', () => {
   let fieldClass: CheckboxField;
   let field: ICheckboxField;
+
   beforeAll(() => {
     fieldClass = new CheckboxField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '复选框',
+      name: 'Multi-select',
       type: FieldType.Checkbox,
       property: { icon: 'haha' }
     };

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { INodeList } from '../../shared/interfaces';
+import { INodeList } from 'shared/interfaces';
 import { NodeDto } from './node.dto';
 
 export class NodeListDto implements INodeList<NodeDto[]> {
@@ -7,5 +7,5 @@ export class NodeListDto implements INodeList<NodeDto[]> {
     type: [NodeDto],
     description: 'node list',
   })
-    nodes: NodeDto[];
+  nodes: NodeDto[];
 }

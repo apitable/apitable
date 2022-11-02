@@ -7,12 +7,12 @@ export class SpaceDto implements IAPISpace {
     description: 'space ID',
     example: 'spczdmQDfBAn5',
   })
-    id: string;
+  id: string;
 
   @ApiProperty({
     type: String,
     description: 'space name',
     example: 'Vika',
   })
-    name: string;
+  name: string;
 }

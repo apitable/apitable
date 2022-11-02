@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IFieldValueMap, IApiRecord } from '../../shared/interfaces';
+import { IFieldValueMap, IApiRecord } from 'shared/interfaces';
 
 export class ApiRecordDto implements IApiRecord {
   @ApiProperty({

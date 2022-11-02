@@ -1,8 +1,8 @@
 import { BasicValueType, RollUpFuncType } from '@apitable/core';
 import { ApiExtraModels, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
-import { ExtraModel } from '../../shared/common';
-import { UnitTypeTextEnum } from '../../shared/enums';
+import { ExtraModel } from 'shared/common';
+import { UnitTypeTextEnum } from 'shared/enums';
 
 class MemberProperty {
   @ApiProperty({

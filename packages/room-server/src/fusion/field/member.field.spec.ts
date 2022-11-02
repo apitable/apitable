@@ -1,17 +1,18 @@
+import { FieldType, IMemberField } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FieldType, IMemberField } from '@apitable/core';
 import '@vikadata/i18n-lang';
 import { AppModule } from 'app.module';
-import { MemberField } from 'fusion/field/member.field';
 import { UnitMemberService } from 'database/services/unit/unit.member.service';
+import { MemberField } from 'fusion/field/member.field';
 
 describe('MemberField', () => {
   let app;
   let fieldClass: MemberField;
   let field: IMemberField;
   let unitservice;
-  beforeAll(async() => {
+
+  beforeAll(async () => {
     jest.setTimeout(60000);
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -22,7 +23,7 @@ describe('MemberField', () => {
     fieldClass = new MemberField(unitservice);
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '成员',
+      name: 'Member',
       type: FieldType.Member,
       property: {
         isMulti: true,
@@ -32,7 +33,7 @@ describe('MemberField', () => {
     };
   });
 
-  afterAll(async() => {
+  afterAll(async () => {
     await app.close();
   });
 

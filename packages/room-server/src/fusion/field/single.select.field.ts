@@ -1,9 +1,9 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ICellValue, IField } from '@apitable/core';
-import { isOptionId } from 'shared/helpers/fusion.helper';
-import { IFieldValue } from '../../shared/interfaces';
-import { isString } from 'lodash';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { BaseField } from 'fusion/field/base.field';
+import { isString } from 'lodash';
+import { isOptionId } from 'shared/helpers/fusion.helper';
+import { IFieldValue } from 'shared/interfaces';
 import { FieldManager } from '../field.manager';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class SingleSelectField extends BaseField implements OnApplicationBootstr
     if (!isString(fieldValue)) {
       this.throwException(field, 'api_param_select_field_value_type_error', extra);
     }
-    // 不再校验选项的存在性。
+    // No longer checks the existence of options.
     return;
   }
 

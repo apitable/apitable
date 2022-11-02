@@ -1,8 +1,8 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IField } from '@apitable/core';
-import { IFieldValue } from '../../shared/interfaces';
-import { isNumber } from 'lodash';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { BaseNumberField } from 'fusion/field/base.number.field';
+import { isNumber } from 'lodash';
+import { IFieldValue } from 'shared/interfaces';
 import { FieldManager } from '../field.manager';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class RatingField extends BaseNumberField implements OnApplicationBootstr
     if (!isNumber(fieldValue) || Number.isNaN(fieldValue)) {
       this.throwException(field, 'api_param_rating_field_type_error', extra);
     }
-    // 判断是不是超过最大值
+    // Determine if the maximum value is exceeded
     if (fieldValue > field.property.max) {
       this.throwException(field, 'api_params_rating_field_max_error');
     }

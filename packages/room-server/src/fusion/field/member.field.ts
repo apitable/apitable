@@ -1,9 +1,9 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { APIMetaMemberType, ICellValue, IField, MemberType } from '@apitable/core';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { isString } from 'class-validator';
-import { IFieldRoTransformOptions, IFieldValue } from '../../shared/interfaces';
-import { BaseField } from 'fusion/field/base.field';
 import { UnitService } from 'database/services/unit/unit.service';
+import { BaseField } from 'fusion/field/base.field';
+import { IFieldRoTransformOptions, IFieldValue } from 'shared/interfaces';
 import { FieldManager } from '../field.manager';
 
 @Injectable()
@@ -13,23 +13,23 @@ export class MemberField extends BaseField implements OnApplicationBootstrap {
   }
 
   validate(fieldValue: IFieldValue, field: IField, extra?: { [key: string]: string }) {
-    // 传入数组
+    // Pass in an array
     if (fieldValue === null) return;
     if (!Array.isArray(fieldValue)) {
       this.throwException(field, 'api_param_member_field_type_error', extra);
     }
     const keys = Object.keys(fieldValue);
-    // 只允许单个
+    // Only single
     if (!field.property.isMulti && keys.length > 1) {
       this.throwException(field, 'api_params_member_field_records_max_count_error');
     }
     for (const key of keys) {
       const unitId = fieldValue[key].id;
-      // 传入字符串防止精度丢失
+      // Pass in a string to prevent loss of precision
       if (unitId && !isString(unitId)) {
         this.throwException(field, 'api_param_member_id_type_error', extra);
       }
-      // 验证必要参数
+      // Validate the necessary parameters
       if (!fieldValue[key].name) this.throwException(field, 'api_params_instance_member_name_error');
       if (!fieldValue[key].type) this.throwException(field, 'api_params_instance_member_type_error');
     }
@@ -53,7 +53,7 @@ export class MemberField extends BaseField implements OnApplicationBootstrap {
       const unitId = fieldValues[key].id;
       if (unitId) {
         const count = await this.unitService.getCountBySpaceIdAndId(unitId, options.spaceId);
-        // 校验ID
+        // Check id
         if (0 === count) {
           this.throwException(field, 'api_param_unit_not_exists');
         }
@@ -61,7 +61,7 @@ export class MemberField extends BaseField implements OnApplicationBootstrap {
       } else {
         const { name, type } = fieldValues[key];
         const unitId = await this.unitService.getIdByNameAndType(name, MemberField.getTransformedUnitType(type), options.spaceId);
-        // 校验name
+        // Check name
         if (!unitId) {
           this.throwException(field, 'api_param_unit_name_type_not_exists');
         }

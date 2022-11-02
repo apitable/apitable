@@ -14,6 +14,7 @@ export class DatasheetCreateRo {
   })
   @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'datasheet', value: 'name' } })
   name: string;
+
   @ApiPropertyOptional({
     type: String,
     required: false,
@@ -21,6 +22,7 @@ export class DatasheetCreateRo {
     description: 'datasheet description, plain text only',
   })
   description: string;
+
   @ApiPropertyOptional({
     type: String,
     required: false,
@@ -28,6 +30,7 @@ export class DatasheetCreateRo {
     description: 'folder Id, if not filled in, it is under the working directory',
   })
   folderId?: string;
+
   @ApiPropertyOptional({
     type: String,
     required: false,
@@ -35,6 +38,7 @@ export class DatasheetCreateRo {
     description: 'Previous node Id, or first if not filled in',
   })
   preNodeId?: string;
+
   @ApiPropertyOptional({
     type: [DatasheetFieldCreateRo],
     required: false,

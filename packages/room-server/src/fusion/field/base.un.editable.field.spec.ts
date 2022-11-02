@@ -13,11 +13,12 @@ import { LookUpField } from 'fusion/field/look.up.field';
 describe('AutoNumberField', () => {
   let fieldClass: AutoNumberField;
   let field: IAutoNumberField;
+
   beforeAll(() => {
     fieldClass = new CreatedTimeField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '创建时间',
+      name: 'Created time',
       type: FieldType.AutoNumber,
       property: {
         datasheetId: 'string',
@@ -37,11 +38,12 @@ describe('AutoNumberField', () => {
 describe('CreatedTimeField', () => {
   let fieldClass: CreatedTimeField;
   let field: ICreatedTimeField;
+
   beforeAll(() => {
     fieldClass = new CreatedTimeField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '创建时间',
+      name: 'Created time',
       type: FieldType.CreatedTime,
       property: {
         datasheetId: 'string',
@@ -62,11 +64,12 @@ describe('CreatedTimeField', () => {
 describe('CreatedByField', () => {
   let fieldClass;
   let field: ICreatedByField;
+
   beforeAll(() => {
     fieldClass = new CreatedByField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '创建人',
+      name: 'Created by',
       type: FieldType.CreatedBy,
       property: {
         datasheetId: 'string',
@@ -85,11 +88,12 @@ describe('CreatedByField', () => {
 describe('FormulaField', () => {
   let fieldClass;
   let field: IFormulaField;
+
   beforeAll(() => {
     fieldClass = new FormulaField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '公式',
+      name: 'Formula',
       type: FieldType.Formula,
       property: {
         datasheetId: 'string',
@@ -108,11 +112,12 @@ describe('FormulaField', () => {
 describe('LookUpField', () => {
   let fieldClass;
   let field: ILookUpField;
+
   beforeAll(() => {
     fieldClass = new LookUpField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '公式',
+      name: 'Formula',
       type: FieldType.LookUp,
       property: {
         datasheetId: 'string',
@@ -132,23 +137,24 @@ describe('LookUpField', () => {
 describe('LastModifiedTimeField', () => {
   let fieldClass;
   let field: ILastModifiedTimeField;
+
   beforeAll(() => {
     fieldClass = new LastModifiedTimeField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '公式',
+      name: 'Last edited time',
       type: FieldType.LastModifiedTime,
       property: {
         datasheetId: 'string',
-        // 日期格式
+        // date format
         dateFormat: DateFormat['YYYY-MM-DD'],
-        // 时间格式
+        // time format
         timeFormat: TimeFormat['HH:mm'],
-        // 是否包含时间
+        // does it include time
         includeTime: true,
-        // 依赖的字段集合类型
+        // dependent field collection type
         collectType: CollectType.AllFields,
-        // 依赖的字段
+        // dependent fields
         fieldIdCollection: ['aaa'],
       },
     };
@@ -164,18 +170,19 @@ describe('LastModifiedTimeField', () => {
 describe('LastModifiedByField', () => {
   let fieldClass;
   let field: ILastModifiedByField;
+
   beforeAll(() => {
     fieldClass = new LastModifiedByField();
     field = {
       id: 'fldpRxaCC8Mhe',
-      name: '公式',
+      name: 'Last edited by',
       type: FieldType.LastModifiedBy,
       property: {
         datasheetId: 'string',
         uuids: ['aaa'],
-        // 依赖的字段集合类型
+        // dependent field collection type
         collectType: CollectType.AllFields,
-        // 依赖的字段
+        // dependent fields
         fieldIdCollection: ['aaa'],
       },
     };

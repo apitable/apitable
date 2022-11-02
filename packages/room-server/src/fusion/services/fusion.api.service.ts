@@ -32,7 +32,6 @@ import { RestService } from 'shared/services/rest/rest.service';
 import { Logger } from 'winston';
 import { DatasheetViewDto } from '../dtos/datasheet.view.dto';
 import { FusionApiFilter } from '../filter/fusion.api.filter';
-import { IFusionApiInterface } from '../i.fusion.api.interface';
 import { ApiUsageRepository } from '../repositories/api.usage.repository';
 import { DatasheetCreateRo } from '../ros/datasheet.create.ro';
 import { FieldCreateRo } from '../ros/field.create.ro';
@@ -46,7 +45,7 @@ import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
 
 @Injectable()
-export class FusionApiService implements IFusionApiInterface {
+export class FusionApiService {
   constructor(
     private readonly datasheetService: DatasheetService,
     private readonly userService: UserService,
@@ -72,6 +71,11 @@ export class FusionApiService implements IFusionApiInterface {
     return this.transform.spaceListVoTransform(spaceList);
   }
 
+  /**
+   * Query the list of space station level 1 document nodes
+   *
+   * @param spaceId space id
+   */
   public async getNodeList(spaceId: string): Promise<IAPINode[]> {
     const authHeader = { token: this.request.headers.authorization };
     const nodeList = await this.restService.getNodeList(authHeader, spaceId);
@@ -96,6 +100,12 @@ export class FusionApiService implements IFusionApiInterface {
     }));
   }
 
+  /**
+   * Query all fields of a datasheet
+   *
+   * @param dstId datasheet id
+   * @param query query criteria
+   */
   public async getFieldList(dstId: string, query: FieldQueryRo) {
     const profiler = this.logger.startTimer();
     const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(
@@ -109,6 +119,13 @@ export class FusionApiService implements IFusionApiInterface {
     return this.filter.getVisibleFieldList(dstId, state, query);
   }
 
+  /**
+   * Query datasheet records
+   *
+   * @param dstId datasheet id
+   * @param query query criteria
+   * @param auth  authorization inf
+   */
   public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo | null> {
     const dataPack: DatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, { recordIds: query.recordIds });
     /*
@@ -198,6 +215,13 @@ export class FusionApiService implements IFusionApiInterface {
     return { id: dstId, createdAt: undefined, fields };
   }
 
+  /**
+   * Update Records
+   *
+   * @param dstId   datasheet id
+   * @param body    update recorded data
+   * @param viewId  view id
+   */
   public async updateRecords(dstId: string, body: RecordUpdateRo, viewId: string): Promise<ListVo> {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
     await this.fusionApiRecordService.validateRecordExists(dstId, body.getRecordIds(), 'api_param_record_not_exists');
@@ -253,6 +277,13 @@ export class FusionApiService implements IFusionApiInterface {
     });
   }
 
+  /**
+   * Add records
+   *
+   * @param dstId   datasheet id
+   * @param body    create record data
+   * @param viewId  view id
+   */
   public async addRecords(dstId: string, body: RecordCreateRo, viewId: string): Promise<ListVo> {
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
     const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
@@ -291,6 +322,12 @@ export class FusionApiService implements IFusionApiInterface {
     });
   }
 
+  /**
+   * Delete records
+   *
+   * @param dstId     datasheet id
+   * @param recordIds Record Id Set
+   */
   public async deleteRecord(dstId: string, recordIds: string[]): Promise<boolean> {
     // Validate the existence in advance to prevent repeatedly swiping all the count table data
     await this.fusionApiRecordService.validateRecordExists(dstId, recordIds, 'api_param_record_not_exists');
@@ -307,6 +344,14 @@ export class FusionApiService implements IFusionApiInterface {
     return true;
   }
 
+  /**
+   * Call otServer to apply changeSet
+   *
+   * @param dstId         datasheet id
+   * @param changesets    array of changesets
+   * @param auth          authorization info (developer token)
+   * @param internalFix   [optional] use when repairing data
+   */
   async applyChangeSet(dstId: string, changesets: ILocalChangeset[], auth: IAuthHeader, internalFix?: any): Promise<string> {
     this.logger.info('API:ApplyChangeSet');
     let applyAuth = auth;
@@ -386,6 +431,9 @@ export class FusionApiService implements IFusionApiInterface {
     }
   }
 
+  /**
+   * Customize command
+   */
   public async executeCommand(datasheetId: string, commandBody: ICollaCommandOptions, auth: IAuthHeader) {
     const includeLink = commandBody['includeLink'];
     const internalFix = commandBody['internalFix'];
