@@ -54,7 +54,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
    */
   computeEvent(eventBuffer: IEventInstance<IOPEvent>[], state: IReduxState): IEventInstance<IVirtualAtomEvent>[] {
     const computeRefManager = getComputeRefManager(state);
-    const computeEventContextSet = new Set<string>();
+    const computeEventContextQueue: string[] = [];
     const addComputeEventContext = (context: string, state: IReduxState) => {
       const [datasheetId, recordId, fieldId] = context.split('-');
       // 1. A cell is updated, this cell corresponds to the field
@@ -92,7 +92,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             if (isEventInSameDatasheet) {
               // Cause the lookup field to change, either the link field or the entity field being looked.
               if (updateCellField.id === relatedLinkField.id) {
-                computeEventContextSet.add(`${_datasheetId}-${recordId}-${_fieldId}`);
+                computeEventContextQueue.push(`${_datasheetId}-${recordId}-${_fieldId}`);
               } else {
                 // Since the entity field of the table association look changes. 
                 // The lookup fields of all records that reference this record are updated.
@@ -113,12 +113,12 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             // Due to the existence of dirty data, we first judge whether it is an array type before processing it. Delete data after cleaning?
             if (triggerRecIds && Array.isArray(triggerRecIds)) {
               (triggerRecIds as string[]).forEach(recId => {
-                computeEventContextSet.add(`${_datasheetId}-${recId}-${_fieldId}`);
+                computeEventContextQueue.push(`${_datasheetId}-${recId}-${_fieldId}`);
               });
             }
             break;
           case FieldType.Formula:
-            computeEventContextSet.add(`${datasheetId}-${recordId}-${_fieldId}`);
+            computeEventContextQueue.push(`${datasheetId}-${recordId}-${_fieldId}`);
             break;
           case FieldType.Link:
             // The LINK field is not a strictly calculated field, 
@@ -131,7 +131,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             // FIXME: There may be a non-empty cv that is not an array here. Causes the following code to have problems, first compatible.
             if (linkRecIds && Array.isArray(linkRecIds)) {
               linkRecIds.forEach(recId => {
-                computeEventContextSet.add(`${_datasheetId}-${recId}-${_fieldId}`);
+                computeEventContextQueue.push(`${_datasheetId}-${recId}-${_fieldId}`);
               });
             }
             break;
@@ -150,9 +150,10 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
       addComputeEventContext(key, state);
     });
     // The context from which the virtual event came
-    computeEventContextSet.forEach(context => {
+    for (let i = 0; i < computeEventContextQueue.length; i++) {
+      const context = computeEventContextQueue[i];
       addComputeEventContext(context, state);
-    });
+    }
     // After set deduplication. Inside the computeRef is the update of the calculation cell that will be triggered by the update of the entity cell.
     /**
      * !!! The collection continues to push new elements into the collection during the loop. New elements also appear in this cycle.
@@ -169,7 +170,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
      * In theory, in the absence of circular references, there will be no infinite loop.
      */
     const res: IEventInstance<IVirtualAtomEvent>[] = [];
-    computeEventContextSet.forEach(context => {
+    computeEventContextQueue.forEach(context => {
       const [datasheetId, recordId, fieldId] = context.split('-');
       res.push({
         eventName: OPEventNameEnums.CellUpdated,

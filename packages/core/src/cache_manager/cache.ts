@@ -109,7 +109,7 @@ class Cache {
     if (!fields) {
       return false;
     }
-    return fields.some((fieldId: string) => {
+    return fields.every((fieldId: string) => {
       return this.removeCellCache(dsId, fieldId, recordId);
     });
   }
