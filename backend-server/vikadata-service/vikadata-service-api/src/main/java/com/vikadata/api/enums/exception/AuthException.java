@@ -1,35 +1,26 @@
 package com.vikadata.api.enums.exception;
 
-import com.vikadata.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.vikadata.core.exception.BaseException;
+
 /**
  * <p>
- * 授权异常
+ * authorization exception
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/27 14:37
  */
 @Getter
 @AllArgsConstructor
 public enum AuthException implements BaseException {
 
-    /**
-     * 未授权或者访问失效
-     */
-    UNAUTHORIZED(201, "未授权或者访问失效"),
+    UNAUTHORIZED(201, "unauthorized or invalid access"),
 
-    /**
-     * 权限不足,禁止访问资源
-     */
-    FORBIDDEN(202, "权限不足,禁止访问资源"),
+    FORBIDDEN(202, "Insufficient permissions, forbidden to access the resource"),
 
-    /**
-     * 资源不存在
-     */
-    NONE_RESOURCE(203, "资源不存在");
+    NONE_RESOURCE(203, "resource does not exist");
 
     private final Integer code;
 

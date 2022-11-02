@@ -1,24 +1,25 @@
 package com.vikadata.api.enums.action;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 /**
  * <p>
- * 校验类型
+ * check type
  * </p>
  *
  * @author Chambers
- * @date 2021/6/15
  */
+@Getter
 public enum ValidateType {
 
     /**
-     * 短信验证码
+     * sms verification code
      */
     SMS_CODE("sms_code"),
 
     /**
-     * 邮件验证码
+     * email verification code
      */
     EMAIL_CODE("email_code");
 

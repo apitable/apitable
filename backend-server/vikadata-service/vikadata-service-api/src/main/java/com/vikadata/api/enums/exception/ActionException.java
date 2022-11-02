@@ -7,151 +7,63 @@ import com.vikadata.core.exception.BaseException;
 
 /**
  * ActionException
- * 非业务异常状态码，代表一些动作异常，比如短信、邮件、文件操作
- * 状态码范围（230-）
+ * status code range（230-299）
  *
  * @author Chambers
- * @since 2019/10/26
  */
 @Getter
 @AllArgsConstructor
 public enum ActionException implements BaseException {
 
-    /**
-     * 非法请求验证码
-     */
-    ILLEGAL_CODE_SEND(230, "非法请求验证码"),
+    MOBILE_SEND_MAX_COUNT_LIMIT(230, "The maximum number of SMS messages sent by this phone in one day"),
 
-    /**
-     * 非法请求验证码
-     */
-    MOBILE_SEND_MAX_COUNT_LIMIT(230, "此手机当天短信发送数上限"),
+    EMAIL_SEND_MAX_COUNT_LIMIT(230, "The maximum number of emails sent by this phone today has been reached"),
 
-    /**
-     * 当天邮件发送数上限
-     */
-    EMAIL_SEND_MAX_COUNT_LIMIT(230, "该邮箱今天邮件发送数已到达上限"),
+    SMS_SEND_ONLY_ONE_MINUTE(230, "Cannot get repeated within 60 seconds, please try again later"),
 
-    /**
-     * 一分钟内重复获取
-     */
-    SMS_SEND_ONLY_ONE_MINUTE(230, "60秒内不能重复获取，请稍后再试"),
+    CODE_EMPTY(231, "verification code must be filled"),
 
-    /**
-     * 验证码不能为空
-     */
-    CODE_EMPTY(231, "验证码不能为空"),
+    CODE_ERROR_OFTEN(231, "The current verification code is invalid, please get it again"),
 
-    /**
-     * 当前验证码失效，请重新获取
-     */
-    CODE_ERROR_OFTEN(231, "当前验证码失效，请重新获取"),
+    CODE_EXPIRE(231, "The verification code has not been obtained or has expired, please obtain it again"),
 
-    /**
-     * 未获取验证码或已过期，请重新获取
-     */
-    CODE_EXPIRE(231, "未获取验证码或已过期，请重新获取"),
+    CODE_ERROR(231, "incorrect verification code please reenter"),
 
-    /**
-     * 验证码错误，请重新输入
-     */
-    CODE_ERROR(231, "验证码错误，请重新输入"),
+    NOT_PASS(232, "Not passed verification code verification"),
 
-    /**
-     * 尚未通过验证码校验
-     */
-    NOT_PASS(232, "尚未通过验证码校验"),
+    SEND_CAPTCHA_TOO_MUSH(233, "Frequent user operations, please try again in 20 minutes"),
 
-    /**
-     * 获取频繁
-     */
-    SEND_CAPTCHA_TOO_MUSH(233, "用户操作频繁，请20分钟后再试"),
+    FILE_NOT_SUPPORT_HTML(240, "uploading html files is not currently supported"),
 
-    /**
-     * 暂不支持上传 HTML 文件
-     */
-    FILE_NOT_SUPPORT_HTML(240, "暂不支持上传 HTML 文件"),
+    FILE_EMPTY(240, "file cannot be empty"),
 
-    /**
-     * 文件为空
-     */
-    FILE_EMPTY(240, "文件不能为空"),
+    FILE_ERROR_CONTENT(240, "file content error"),
 
-    /**
-     * 文件内容错误
-     */
-    FILE_ERROR_CONTENT(240, "文件内容错误"),
+    FILE_ERROR_PASSWORD(240, "file parsing password error"),
 
-    /**
-     * 文件解析密码错误
-     */
-    FILE_ERROR_PASSWORD(240, "文件解析密码错误"),
+    FILE_ERROR_FORMAT(240, "file format error"),
 
-    /**
-     * 文件格式错误
-     */
-    FILE_ERROR_FORMAT(240, "文件格式错误"),
+    FILE_HAS_PASSWORD(240, "file requires permission password to open"),
 
-    /**
-     * 文件需要打开权限密码
-     */
-    FILE_HAS_PASSWORD(240, "文件需要打开权限密码"),
+    FILE_EXCEED_LIMIT(240, "a single upload file should not exceed 20 mb"),
 
-    /**
-     * 文件超过限制大小
-     */
-    FILE_EXCEED_LIMIT(240, "单次上传文件不要超过20MB哟~"),
+    ROW_EXCEED_LIMIT(240, "The number of lines exceeds the limit of 50000 lines"),
 
-    /**
-     * 行数超过限制大小
-     */
-    ROW_EXCEED_LIMIT(240, "行数超过50000行限制"),
+    COLUMN_EXCEED_LIMIT(240, "the number of columns exceeds the 200 limit"),
 
-    /**
-     * 列数超过限制大小
-     */
-    COLUMN_EXCEED_LIMIT(240, "列数超过200列限制"),
+    FILE_NOT_EXIST(242, "file does not exist"),
 
-    /**
-     * 超过附件空间上限
-     */
-    ATTACH_EXCEED_LIMIT(241, "超过附件空间上限"),
+    MAN_MACHINE_VERIFICATION_FAILED(250, "captcha failed"),
 
-    /**
-     * 文件不存在
-     */
-    FILE_NOT_EXIST(242, "文件不存在"),
+    SECONDARY_VERIFICATION(251, "secondary verification"),
 
-    /**
-     * 人机验证失败
-     */
-    MAN_MACHINE_VERIFICATION_FAILED(250, "人机验证失败"),
+    ENABLE_SMS_VERIFICATION(252, "The current environment is at risk, please re-validate"),
 
-    /**
-     * 二次验证
-     */
-    SECONDARY_VERIFICATION(251, "二次验证"),
+    OFFICE_PREVIEW_API_FAILED(253, "The request failed, the file transfer to preview failed, please try again"),
 
-    /**
-     * 启用短信验证
-     */
-    ENABLE_SMS_VERIFICATION(252, "当前环境存在风险，请重新验证"),
+    OFFICE_PREVIEW_GET_URL_FAILED(254, "The file could not get the preview URL, please try again"),
 
-
-    /**
-     * 永中API请求失败，文件转预览失败
-     */
-    OFFICE_PREVIEW_API_FAILED(253, "永中API请求失败，文件转预览失败，请重新尝试"),
-
-    /**
-     * 文件无法获取预览URL地址
-     */
-    OFFICE_PREVIEW_GET_URL_FAILED(254, "文件无法获取预览URL地址，请重新尝试"),
-
-    /**
-     * 文件已损坏或被加密，无法预览
-     */
-    OFFICE_PREVIEW_DESTROYED_FAILED(255, "文件已损坏或被加密，无法预览，请重新尝试");
+    OFFICE_PREVIEW_DESTROYED_FAILED(255, "The file is corrupt or encrypted and cannot be previewed, please try again");
 
     private final Integer code;
 

@@ -7,17 +7,16 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**
- * 开发者资源类型
+ * developer asset type
  *
  * @author Pengap
- * @date 2021/7/21
  */
 @Getter
 @AllArgsConstructor
 public enum DeveloperAssetType implements IBaseEnum {
 
     /**
-     * 小组件
+     * widget
      */
     WIDGET(0);
 
@@ -29,7 +28,7 @@ public enum DeveloperAssetType implements IBaseEnum {
                 return type;
             }
         }
-        throw new BusinessException("未知的附件类型");
+        throw new BusinessException("unknown asset type");
     }
 
 }

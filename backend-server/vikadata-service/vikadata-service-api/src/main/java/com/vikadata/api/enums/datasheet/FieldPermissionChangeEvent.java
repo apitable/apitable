@@ -2,31 +2,30 @@ package com.vikadata.api.enums.datasheet;
 
 /**
  * <p>
- * 字段权限变更事件
+ * field permission change event
  * </p>
  *
  * @author Chambers
- * @date 2021/3/31
  */
 public enum FieldPermissionChangeEvent {
 
     /**
-     * 字段权限开启
+     * enable event
      */
     FIELD_PERMISSION_ENABLE,
 
     /**
-     * 字段权限变更
+     * change event
      */
     FIELD_PERMISSION_CHANGE,
 
     /**
-     * 字段权限关闭
+     * disable event
      */
     FIELD_PERMISSION_DISABLE,
 
     /**
-     * 字段配置属性变更
+     * setting change event
      */
     FIELD_PERMISSION_SETTING_CHANGE
 }

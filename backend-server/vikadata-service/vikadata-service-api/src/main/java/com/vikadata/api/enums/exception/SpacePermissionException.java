@@ -1,33 +1,24 @@
 package com.vikadata.api.enums.exception;
 
-import com.vikadata.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.vikadata.core.exception.BaseException;
+
 /**
- * 空间管理权限异常状态码
+ * space permission exception
  *
  * @author Chambers
- * @since 2019/10/29
  */
 @Getter
 @AllArgsConstructor
 public enum SpacePermissionException implements BaseException {
 
-    /**
-     * 权限资源不可分配
-     */
-    NO_RESOURCE_ASSIGNABLE(601, "权限资源不可分配"),
+    NO_RESOURCE_ASSIGNABLE(601, "Permission resources are not assignable"),
 
-    /**
-     * 非法分配资源
-     */
-    ILLEGAL_ASSIGN_RESOURCE(602, "非法分配资源"),
+    ILLEGAL_ASSIGN_RESOURCE(602, "Illegal allocation of resources"),
 
-    /**
-     * 空间管理权限不足
-     */
-    INSUFFICIENT_PERMISSIONS(603, "空间管理权限不足");
+    INSUFFICIENT_PERMISSIONS(603, "Insufficient space management rights");
 
     private final Integer code;
 

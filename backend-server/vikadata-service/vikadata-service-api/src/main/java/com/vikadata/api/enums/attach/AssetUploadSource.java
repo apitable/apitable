@@ -11,7 +11,6 @@ import com.vikadata.core.support.serializer.IBaseEnum;
  * using: CallBack Body
  *
  * @author Pengap
- * @date 2021/7/21
  */
 @Getter
 @AllArgsConstructor

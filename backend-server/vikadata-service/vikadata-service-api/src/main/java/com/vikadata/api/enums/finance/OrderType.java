@@ -1,12 +1,5 @@
 package com.vikadata.api.enums.finance;
 
-/** 
-* <p> 
-* 订单类型
-* </p> 
-* @author zoe zheng 
-* @date 2022/2/25 16:09
-*/
 public enum OrderType {
 
     BUY("buy", 0),
@@ -15,11 +8,6 @@ public enum OrderType {
 
     private final String name;
 
-    /**
-     * 0: 新购
-     * 1：升级
-     * 2：续订
-     */
     private final int type;
 
     OrderType(String name, int type) {

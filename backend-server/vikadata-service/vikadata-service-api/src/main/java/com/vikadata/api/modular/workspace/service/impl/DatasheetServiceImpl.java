@@ -44,7 +44,7 @@ import com.vikadata.api.control.permission.NodePermission;
 import com.vikadata.api.enums.datasheet.DateFormat;
 import com.vikadata.api.enums.datasheet.FieldType;
 import com.vikadata.api.enums.datasheet.RemindType;
-import com.vikadata.api.enums.datasheet.SegmentType;
+import com.vikadata.api.enums.datasheet.CellType;
 import com.vikadata.api.enums.datasheet.TimeFormat;
 import com.vikadata.api.enums.exception.DataSheetException;
 import com.vikadata.api.enums.exception.DatabaseException;
@@ -1115,7 +1115,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                             }
                         });
                         JSONObject obj = JSONUtil.createObj();
-                        obj.set("type", SegmentType.TEXT.getSegmentType());
+                        obj.set("type", CellType.TEXT.getType());
                         obj.set("text", strBuilder.toString());
                         JSONArray array = JSONUtil.createArray();
                         array.add(obj);

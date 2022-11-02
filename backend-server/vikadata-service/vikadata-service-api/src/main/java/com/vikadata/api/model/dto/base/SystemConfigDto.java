@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 
 import lombok.Data;
 
-/**
- * @author tao
- */
 @Data
 public class SystemConfigDto {
 

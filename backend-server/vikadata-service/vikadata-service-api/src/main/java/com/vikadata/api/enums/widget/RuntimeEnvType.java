@@ -1,35 +1,29 @@
 package com.vikadata.api.enums.widget;
 
-import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.vikadata.core.exception.BusinessException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import com.vikadata.core.exception.BusinessException;
+
 /**
  * <p>
- * 小程序运行环境类型
+ * Mini Program Running Environment Type
  * </p>
  *
  * @author liuzijing
- * @date 2022/6/20
  */
 @Getter
 @AllArgsConstructor
 public enum RuntimeEnvType {
 
-    /**
-     * 移动端
-     */
     MOBILE("mobile", "01"),
 
-    /**
-     * 桌面端
-     */
     DESKTOP("desktop", "02");
 
     @JsonValue
@@ -43,13 +37,13 @@ public enum RuntimeEnvType {
                 return type;
             }
         }
-        throw new BusinessException("未知运行环境类型");
+        throw new BusinessException("Unknown runtime environment type");
     }
 
-    public static List<String> toValueList(String codes){
+    public static List<String> toValueList(String codes) {
         List<RuntimeEnvType> runtimeEnvTypes = RuntimeEnvType.toTypeList(codes);
         List<String> list = new ArrayList<>();
-        for (RuntimeEnvType runtimeEnvType : runtimeEnvTypes){
+        for (RuntimeEnvType runtimeEnvType : runtimeEnvTypes) {
             list.add(runtimeEnvType.value);
         }
         return list;
@@ -58,7 +52,7 @@ public enum RuntimeEnvType {
     public static List<RuntimeEnvType> toTypeList(String codes) {
         List<RuntimeEnvType> runtimeEnvTypes = new ArrayList<>();
         String[] split = StrUtil.split(codes, 2);
-        for(String s : split){
+        for (String s : split) {
             for (RuntimeEnvType type : RuntimeEnvType.values()) {
                 if (type.getCode().equals(s)) {
                     runtimeEnvTypes.add(type);
@@ -69,13 +63,12 @@ public enum RuntimeEnvType {
     }
 
     public static String getRuntimeEnvCode(List<String> runtimeEnv) {
-        // 获取小组件运行环境编码
-        String runtimeEnvsCodes = "";
-        if(runtimeEnv != null){
-            for(String runtimeenv : runtimeEnv){
-                runtimeEnvsCodes += (RuntimeEnvType.toType(runtimeenv).getCode());
+        StringBuilder runtimeEnvsCodes = new StringBuilder();
+        if (runtimeEnv != null) {
+            for (String runtimeenv : runtimeEnv) {
+                runtimeEnvsCodes.append(RuntimeEnvType.toType(runtimeenv).getCode());
             }
         }
-        return runtimeEnvsCodes;
+        return runtimeEnvsCodes.toString();
     }
 }

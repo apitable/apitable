@@ -5,24 +5,20 @@ import lombok.Getter;
 
 /**
  * <p>
- * 日期字段 时间格式类型
+ * date formatter enum
  * </p>
  *
  * @author Chambers
- * @date 2020/6/11
  */
 @Getter
 @AllArgsConstructor
 public enum TimeFormat {
 
-    /**
-     * 时分类型
-     */
     TIME(0, "HH:mm");
 
-    private int type;
+    private final int type;
 
-    private String pattern;
+    private final String pattern;
 
     public static String getPattern(int type) {
         for (TimeFormat format : TimeFormat.values()) {

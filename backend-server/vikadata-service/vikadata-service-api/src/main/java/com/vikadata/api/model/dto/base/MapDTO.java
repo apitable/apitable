@@ -5,14 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>
- * Map DTO
- * </p>
- *
- * @author Chambers
- * @date 2021/4/9
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

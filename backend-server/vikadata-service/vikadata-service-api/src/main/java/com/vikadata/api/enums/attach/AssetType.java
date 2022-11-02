@@ -7,40 +7,23 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**
- * 资源类型
+ * asset type
  *
  * @author Chambers
- * @since 2019/11/7
  */
 @Getter
 @AllArgsConstructor
 public enum AssetType implements IBaseEnum {
 
-    /**
-     * 用户头像
-     */
     USER_AVATAR(0),
 
-    /**
-     * 空间logo
-     */
     SPACE_LOGO(1),
 
-    /**
-     * 数表附件
-     */
     DATASHEET(2),
 
-    /**
-     * 封面图
-     */
     COVER(3),
 
-    /**
-     * 节点描述图
-     */
     NODE_DESC(4);
-
 
     private final int value;
 
@@ -55,7 +38,7 @@ public enum AssetType implements IBaseEnum {
                 return type;
             }
         }
-        throw new BusinessException("未知的附件类型");
+        throw new BusinessException("unknown attachment type");
     }
 
     public static boolean isSpaceAsset(AssetType type) {

@@ -6,221 +6,80 @@ import lombok.Getter;
 import com.vikadata.core.exception.BaseException;
 
 /**
- * OrganizationException
- * 组织相关异常状态码
- * 状态码范围（501-599）
+ * Organization Exception
+ * status code range（501-599）
  *
  * @author Chambers
- * @since 2019/10/29
  */
 @Getter
 @AllArgsConstructor
 public enum OrganizationException implements BaseException {
 
-    /**
-     * 创建部门失败
-     */
-    CREATE_TEAM_ERROR(501, "创建部门失败"),
+    CREATE_TEAM_ERROR(501, "failed to create department"),
 
-    /**
-     * 修改部门失败
-     */
-    UPDATE_TEAM_ERROR(502, "修改部门失败"),
+    UPDATE_TEAM_ERROR(502, "failed to modify department"),
 
-    /**
-     * 修改部门名称失败
-     */
-    UPDATE_TEAM_NAME_ERROR(502, "修改部门名称失败"),
+    UPDATE_TEAM_NAME_ERROR(502, "failed to modify department name"),
 
-    /**
-     * 调整部门层级失败,不能调整到自己的子部门下面
-     */
-    UPDATE_TEAM_LEVEL_ERROR(502, "调整部门层级失败,不能调整到自己的子部门下面"),
+    UPDATE_TEAM_LEVEL_ERROR(502, "Failed to adjust the department level, can not be adjusted to its own sub-department"),
 
-    /**
-     * 删除部门失败
-     */
-    DELETE_TEAM_ERROR(503, "删除部门失败"),
+    DELETE_TEAM_ERROR(503, "Failed to delete department"),
 
-    /**
-     * 需要先删除部门下的成员，再删除该部门
-     */
-    TEAM_HAS_SUB(504, "该部门下存在子部门，需要先删除部门下的子部门"),
+    TEAM_HAS_SUB(504, "There are sub-departments under this department, you need to delete the sub-departments under the department first"),
 
-    /**
-     * 需要先删除部门下的成员，再删除该部门
-     */
-    TEAM_HAS_MEMBER(505, "需要先删除部门下的成员，再删除该部门"),
+    TEAM_HAS_MEMBER(505, "You need to delete the members under the department first, and then delete the department"),
 
-    /**
-     * 部门不存在
-     */
-    GET_TEAM_ERROR(506, "部门不存在，请重试"),
+    GET_TEAM_ERROR(506, "Department does not exist, please try again"),
 
-    /**
-     * 不允许删除根部门
-     */
-    DELETE_ROOT_ERROR(507, "不允许删除根部门"),
+    DELETE_ROOT_ERROR(507, "Deletion of root department is not allowed"),
 
-    /**
-     * 成员不存在
-     */
-    NOT_EXIST_MEMBER(508, "抱歉，成员不存在"),
+    NOT_EXIST_MEMBER(508, "Sorry, the member does not exist"),
 
-    /**
-     * 编辑成员失败
-     */
-    UPDATE_MEMBER_ERROR(509, "编辑成员失败"),
+    UPDATE_MEMBER_ERROR(509, "Failed to edit member"),
 
-    /**
-     * 添加成员失败
-     */
-    CREATE_MEMBER_ERROR(510, "添加成员失败"),
+    CREATE_MEMBER_ERROR(510, "Failed to add member"),
 
-    /**
-     * 调整成员所属部门失败
-     */
-    UPDATE_MEMBER_TEAM_ERROR(511, "调整成员所属部门失败"),
+    UPDATE_MEMBER_TEAM_ERROR(511, "Failed to adjust member's department"),
 
-    /**
-     * 不允许删除主管理员
-     */
-    DELETE_SPACE_ADMIN_ERROR(512, "不允许删除主管理员"),
+    DELETE_SPACE_ADMIN_ERROR(512, "Not allowed to delete primary admin"),
 
-    /**
-     * 删除操作类型错误
-     */
-    DELETE_ACTION_ERROR(512, "删除操作类型错误"),
+    DELETE_ACTION_ERROR(512, "delete operation type error"),
 
-    /**
-     * 删除成员参数错误
-     */
-    DELETE_MEMBER_PARAM_ERROR(512, "删除成员参数错误"),
+    DELETE_MEMBER_PARAM_ERROR(512, "delete member parameter error"),
 
-    /**
-     * 删除成员失败
-     */
-    DELETE_MEMBER_ERROR(512, "删除成员失败"),
+    DELETE_MEMBER_ERROR(512, "Failed to delete member"),
 
-    /**
-     * 新建标签失败
-     */
-    CREATE_TAG_ERROR(514, "新建标签失败"),
+    INVITE_EXPIRE(517, "The current invite link has expired"),
 
-    /**
-     * 修改标签失败
-     */
-    RENAME_TAG_ERROR(515, "修改标签失败"),
+    INVITE_URL_ERROR(517, "illegal invitation link"),
 
-    /**
-     * 调整成员部门失败
-     */
-    UPDATE_MEMBER_TAG_ERROR(516, "更新成员所属标签失败"),
+    INVITE_EMAIL_NOT_FOUND(518, "This email has not been invited before, you cannot send another invitation"),
 
-    /**
-     * 邀请成员失败
-     */
-    INVITE_MEMBER_ERROR(517, "邀请成员失败"),
+    INVITE_EMAIL_HAS_ACTIVE(518, "This email has been activated, please do not send it again"),
 
-    /**
-     * 邀请链接已失效
-     */
-    INVITE_EXPIRE(517, "当前邀请链接已失效"),
+    INVITE_EMAIL_NOT_EXIT(518, "Invited email does not exist"),
 
-    /**
-     * 非法邀请链接
-     */
-    INVITE_URL_ERROR(517, "非法邀请链接"),
+    INVITE_EMAIL_HAS_LINK(518, "The invited mailbox has been bound to another user, please do not bind it repeatedly"),
 
-    /**
-     * 邀请邮箱未注册
-     */
-    INVITE_EMAIL_NOT_EXIST(517, "邀请邮箱未注册"),
+    INVITE_TOO_OFTEN(518, "Frequent operations, please try again later"),
 
-    /**
-     * 找不到此邮箱的邀请记录，请邀请后才能再次发送邀请
-     */
-    INVITE_EMAIL_NOT_FOUND(518, "此邮箱还没邀请过，不能再次发送邀请"),
+    EXCEL_BEYOND_MAX_ROW(519, "Upload a maximum of 200 member information at one time, please split it into multiple files and re-upload"),
 
-    /**
-     * 此邮箱已激活，请不要重复发送
-     */
-    INVITE_EMAIL_HAS_ACTIVE(518, "此邮箱已激活，请不要重复发送"),
+    EXCEL_CAN_READ_ERROR(519, "The file cannot be read, please check the file and upload it again"),
 
-    /**
-     * 受邀邮箱不存在
-     */
-    INVITE_EMAIL_NOT_EXIT(518, "受邀邮箱不存在"),
+    DUPLICATION_ROLE_NAME(523, "The role name already exists"),
 
-    /**
-     * 受邀邮箱已绑定其他用户，请勿重复绑定
-     */
-    INVITE_EMAIL_HAS_LINK(518, "受邀邮箱已绑定其他用户，请勿重复绑定"),
+    CREATE_ROLE_ERROR(524, "Failed to create role"),
 
-    /**
-     * 操作频繁，请稍后再试
-     */
-    INVITE_TOO_OFTEN(518, "操作频繁，请稍后再试"),
+    UPDATE_ROLE_NAME_ERROR(525, "Failed to modify role name"),
 
-    /**
-     * 最多一次性上传200个成员信息，请拆分为多个文件后重新上传
-     */
-    EXCEL_BEYOND_MAX_ROW(519, "最多一次性上传200个成员信息，请拆分为多个文件后重新上传"),
+    NOT_EXIST_ROLE(526, "The role does not exist"),
 
-    /**
-     * 文件无法读取，请检查文件后重新上传
-     */
-    EXCEL_CAN_READ_ERROR(519, "文件无法读取，请检查文件后重新上传"),
+    ADD_ROLE_MEMBER_ERROR(527, "Failed to add member"),
 
-    /**
-     * 成员数量超过上限
-     */
-    NUMBER_LIMIT(520, "成员数量超过上限"),
+    ROLE_EXIST_ROLE_MEMBER(528, "There are members in this role"),
 
-    /**
-     * 组织类型必须是成员
-     */
-    UNIT_MUST_MEMBER(521, "组织类型必须是成员"),
-
-    /**
-     * 组织单元不存在
-     */
-    UNIT_NOT_EXIST(522, "组织单元不存在"),
-
-    /**
-     * role name exist
-     */
-    DUPLICATION_ROLE_NAME(523, "该角色名称已存在"),
-
-    /**
-     * create role failure
-     */
-    CREATE_ROLE_ERROR(524, "创建角色失败"),
-
-    /**
-     * update role failure
-     */
-    UPDATE_ROLE_NAME_ERROR(525, "修改角色名称失败"),
-
-    /**
-     * role no exist
-     */
-    NOT_EXIST_ROLE(526, "该角色不存在"),
-
-    /**
-     * add role failure
-     */
-    ADD_ROLE_MEMBER_ERROR(527, "添加成员失败"),
-
-    /**
-     * role has members
-     */
-    ROLE_EXIST_ROLE_MEMBER(528, "该角色下存在成员"),
-
-    /**
-     * space has roles
-     */
-    SPACE_EXIST_ROLES(529, "空间站已存在该角色");
+    SPACE_EXIST_ROLES(529, "The character already exists on the space station");
 
     private final Integer code;
 

@@ -7,54 +7,26 @@ import com.vikadata.core.exception.BaseException;
 
 /**
  * <p>
- * 玉符 IDaaS 接口异常
+ * IDaaS Exception
  * </p>
  */
 @Getter
 @AllArgsConstructor
 public enum  IdaasException implements BaseException {
 
-    /**
-     * 内部异常
-     */
-    INTERNAL_ERROR(200, "内部异常"),
-    /**
-     * 请求参数错误
-     */
-    PARAM_INVALID(201, "请求参数错误"),
+    PARAM_INVALID(201, "wrong request parameter"),
 
-    /**
-     * 接口请求异常
-     */
-    API_ERROR(210, "接口请求异常"),
+    API_ERROR(210, "interface request exception"),
 
-    /**
-     * 单点登录信息不存在
-     */
-    APP_NOT_FOUND(220, "单点登录信息不存在"),
-    /**
-     * 空间站还未绑定单点登录或者已经解绑
-     */
-    APP_SPACE_NOT_BIND(221, "空间站还未绑定单点登录或者已经解绑"),
-    /**
-     * 空间站的绑定信息异常
-     */
-    APP_SPACE_INVALID_BIND(222, "空间站的绑定信息异常"),
+    APP_NOT_FOUND(220, "sso does not exist"),
 
-    /**
-     * 只有空间站的主管理员可以操作
-     */
-    NOT_SPACE_MAIN_ADMIN(230, "只有空间站的主管理员可以操作"),
+    APP_SPACE_NOT_BIND(221, "The space station has not been bound with sso or has been unbound"),
 
-    /**
-     * 用户还未绑定单点登录或者已经解绑
-     */
-    USER_NOT_BIND(240, "用户还未绑定单点登录或者已经解绑"),
+    APP_SPACE_INVALID_BIND(222, "The binding information of the space station is abnormal"),
 
-    /**
-     * 用户还未绑定单点登录或者已经解绑
-     */
-    MEMBER_NOT_BIND(250, "用户还未绑定单点登录或者已经解绑"),
+    USER_NOT_BIND(240, "The user has not been bound to single sign-on or has been unbound"),
+
+    MEMBER_NOT_BIND(250, "The user has not been bound to single sign-on or has been unbound"),
     ;
 
     private final Integer code;

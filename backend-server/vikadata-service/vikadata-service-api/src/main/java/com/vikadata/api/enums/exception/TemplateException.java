@@ -6,102 +6,38 @@ import lombok.Getter;
 import com.vikadata.core.exception.BaseException;
 
 /**
- * TemplateException
- * 模板异常状态码
- * 状态码范围（430-439）
+ * Template Exception
+ * status code range（430-439）
  *
  * @author Chambers
- * @since 2020/5/18
  */
 @Getter
 @AllArgsConstructor
 public enum TemplateException implements BaseException {
 
-    /**
-     * 模板数量已到达上限
-     */
-    NUMBER_LIMIT(430, "模板数量已到达上限"),
+    NUMBER_LIMIT(430, "The maximum number of templates has been reached"),
 
-    /**
-     * 当前表有关联的列，无法保存为模板
-     */
-    LINK_FOREIGN_NODE(430, "当前表有关联的列，无法保存为模板"),
+    SUB_NODE_PERMISSION_INSUFFICIENT(430, "There are nodes with insufficient permissions under the folder"),
 
-    /**
-     * 文件夹下存在权限不足的节点，创建失败
-     */
-    SUB_NODE_PERMISSION_INSUFFICIENT(430, "文件夹下存在权限不足的节点，创建失败"),
+    FIELD_PERMISSION_INSUFFICIENT(430, "There is a wig table with insufficient field permissions"),
 
-    /**
-     * 存在字段权限不足的维格表，创建失败
-     */
-    FIELD_PERMISSION_INSUFFICIENT(430, "存在字段权限不足的维格表，创建失败"),
+    SINGLE_FORM_CREATE_FAIL(430, "Collection forms do not allow separate templates to be saved"),
 
-    /**
-     * 收集表不允许单独保存模板
-     */
-    SINGLE_FORM_CREATE_FAIL(430, "收集表不允许单独保存模板"),
+    SINGLE_DASHBOARD_CREATE_FAIL(430, "Dashboard does not allow templates to be saved individually"),
 
-    /**
-     * 收集表关联了外部的表格，创建失败
-     */
-    FORM_LINK_FOREIGN_NODE(430, "收集表关联了外部的表格，创建失败"),
+    SINGLE_MIRROR_CREATE_FAIL(430, "Mirroring does not allow templates to be saved separately"),
 
-    /**
-     * 仪表盘不允许单独保存模板
-     */
-    SINGLE_DASHBOARD_CREATE_FAIL(430, "仪表盘不允许单独保存模板"),
+    FOLDER_NODE_LINK_FOREIGN_NODE(430, "The {FOREIGN FIELD NAMES} column in the '{NODE NAME}' table in the current folder is associated with a table outside the folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
 
-    /**
-     * 仪表盘的组件引用了外部的表格，创建失败
-     */
-    DASHBOARD_LINK_FOREIGN_NODE(430, "仪表盘的组件引用了外部的表格，创建失败"),
+    FOLDER_FORM_LINK_FOREIGN_NODE(430, "The table attached to the form '{NODE NAME}' in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
 
-    /**
-     * 镜像不允许单独保存模板
-     */
-    SINGLE_MIRROR_CREATE_FAIL(430, "镜像不允许单独保存模板"),
+    FOLDER_DASHBOARD_LINK_FOREIGN_NODE(430, "The table referenced by the '{FOREIGN WIDGET NAME}' applet in the '{NODE NAME}' dashboard in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
 
-    /**
-     * 镜像关联了文件夹以外的表格，创建模板失败
-     */
-    MIRROR_LINK_FOREIGN_NODE(430, "镜像关联了文件夹以外的表格，创建模板失败"),
+    FOLDER_MIRROR_LINK_FOREIGN_NODE(430, "The original table connected to the '{NODE NAME}' image in the current folder is not in the current folder. If the folder is related to the outside of the folder, it will not be able to save as a template"),
 
-    /**
-     * 当前文件夹里的「${NODE_NAME}」表中的${FOREIGN_FIELD_NAMES}列关联了文件夹外的表。文件夹内有关联了文件夹外的情况将无法保存为模版
-     */
-    FOLDER_NODE_LINK_FOREIGN_NODE(430, "当前文件夹里的「${NODE_NAME}」表中的${FOREIGN_FIELD_NAMES}列关联了文件夹外的表。文件夹内有关联了文件夹外的情况将无法保存为模版"),
+    NODE_LINK_FOREIGN_NODE(430, "The {FOREIGN FIELD NAMES} column in the current table is related to another table. In this case, it will not be possible to save as a template"),
 
-    /**
-     * 当前文件夹里的「${NODE_NAME}」表单所连接的表不在当前文件夹内。文件夹内有关联了文件夹外的情况将无法保存为模版
-     */
-    FOLDER_FORM_LINK_FOREIGN_NODE(430, "当前文件夹里的「${NODE_NAME}」表单所连接的表不在当前文件夹内。文件夹内有关联了文件夹外的情况将无法保存为模版"),
-
-    /**
-     * 当前文件夹里的「${NODE_NAME}」仪表盘中的「${FOREIGN_WIDGET_NAME}」小程序引用的表不在当前文件夹内。文件夹内有关联了文件夹外的情况将无法保存为模版
-     */
-    FOLDER_DASHBOARD_LINK_FOREIGN_NODE(430, "当前文件夹里的「${NODE_NAME}」仪表盘中的「${FOREIGN_WIDGET_NAME}」小程序引用的表不在当前文件夹内。文件夹内有关联了文件夹外的情况将无法保存为模版"),
-
-    /**
-     * 当前文件夹里的「${NODE_NAME}」镜像所连接的原表不在当前文件夹内。文件夹内有关联了文件夹外的情况将无法保存为模版
-     */
-    FOLDER_MIRROR_LINK_FOREIGN_NODE(430, "当前文件夹里的「${NODE_NAME}」镜像所连接的原表不在当前文件夹内。文件夹内有关联了文件夹外的情况将无法保存为模版"),
-
-    /**
-     * 当前表中的${FOREIGN_FIELD_NAMES}列关联了其他表。该情况将无法保存为模版
-     */
-    NODE_LINK_FOREIGN_NODE(430, "当前表中的${FOREIGN_FIELD_NAMES}列关联了其他表。该情况将无法保存为模版"),
-
-    /**
-     * 模板信息错误
-     */
-    TEMPLATE_INFO_ERROR(431, "模板信息错误"),
-
-    /**
-     * 模板内容无法修改
-     */
-    TEMPLATE_CONTENT_CANNOT_MODIFY(432, "模板内容无法修改");
-
+    TEMPLATE_INFO_ERROR(431, "Template information error");
 
     private final Integer code;
 

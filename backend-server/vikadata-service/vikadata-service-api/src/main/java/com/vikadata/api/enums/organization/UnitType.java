@@ -1,37 +1,28 @@
 package com.vikadata.api.enums.organization;
 
-import com.vikadata.core.exception.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.vikadata.core.exception.BusinessException;
+
 /**
  * <p>
- * 组织单元类型
+ * Organization unit type
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/23 11:50
  */
 @AllArgsConstructor
 @Getter
 public enum UnitType {
 
-    /**
-     * 部门
-     */
     TEAM(1),
 
-    /**
-     * Role
-     */
     ROLE(2),
 
-	/**
-	 * 成员
-	 */
 	MEMBER(3);
 
-    private Integer type;
+    private final Integer type;
 
 	public static UnitType toEnum(Integer type) {
 		if (null != type) {
@@ -41,6 +32,6 @@ public enum UnitType {
 				}
 			}
 		}
-		throw new BusinessException("组织单元类型解析失败");
+		throw new BusinessException("unknown unit type");
 	}
 }

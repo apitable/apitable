@@ -1,50 +1,30 @@
 package com.vikadata.api.enums.exception;
 
-import com.vikadata.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.vikadata.core.exception.BaseException;
+
 /**
- * SpaceExceptionEnum
- * 空间加入申请异常状态码
- * 状态码范围（450-）
+ * status code range（450-）
  *
  * @author Chambers
- * @since 2020/10/29
  */
 @Getter
 @AllArgsConstructor
 public enum SpaceApplyException implements BaseException {
 
-    /**
-     * 申请不存在
-     */
-    APPLY_NOT_EXIST(450, "申请不存在"),
+    APPLY_NOT_EXIST(450, "application does not exist"),
 
-    /**
-     * 申请已失效或已被处理
-     */
-    APPLY_EXPIRED_OR_PROCESSED(451, "申请已失效或已被处理"),
+    APPLY_EXPIRED_OR_PROCESSED(451, "application has expired or has been processed"),
 
-    /**
-     * 您已在该空间中，申请无效
-     */
-    EXIST_MEMBER(452, "您已在该空间中，申请无效"),
+    EXIST_MEMBER(452, "You are already in this space, the request is invalid"),
 
-    /**
-     * 该空间未开启加入申请允许，申请失败
-     */
-    APPLY_SWITCH_CLOSE(453, "该空间未开启加入申请允许，申请失败"),
+    APPLY_SWITCH_CLOSE(453, "This space is not allowed to join the application, the application failed"),
 
-    /**
-     * 您已提交过申请，待管理员审批
-     */
-    APPLY_DUPLICATE(454, "您已提交过申请，待管理员审批"),
+    APPLY_DUPLICATE(454, "You have submitted an application, pending approval by the administrator"),
 
-    /**
-     * 申请消息有误
-     */
-    APPLY_NOTIFICATION_ERROR(455, "申请消息有误");
+    APPLY_NOTIFICATION_ERROR(455, "application message is incorrect");
 
     private final Integer code;
 

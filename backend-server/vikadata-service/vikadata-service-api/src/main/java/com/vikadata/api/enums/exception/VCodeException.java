@@ -1,140 +1,64 @@
 package com.vikadata.api.enums.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import com.vikadata.core.exception.BaseException;
 
 /**
  * <p>
- * V码相关异常状态码
- * 状态码范围（800-849）
+ * status code range（800-849）
  * </p>
  *
  * @author Chambers
- * @date 2020/8/12
  */
+@Getter
+@AllArgsConstructor
 public enum VCodeException implements BaseException {
 
-    /**
-     * 活动不存在
-     */
-    ACTIVITY_NOT_EXIST(800, "活动不存在"),
+    ACTIVITY_NOT_EXIST(800, "activity does not exist"),
 
-    /**
-     * 场景值已存在
-     */
-    SCENE_EXIST(800, "场景值已存在"),
+    SCENE_EXIST(800, "scene value already exists"),
 
-    /**
-     * 已生成二维码，场景值修改失败
-     */
-    QR_CODE_EXIST(800, "已生成二维码，场景值修改失败"),
+    QR_CODE_EXIST(800, "The QR code has been generated, and the scene value modification failed"),
 
-    /**
-     * 兑换券模板不存在
-     */
-    COUPON_TEMPLATE_NOT_EXIST(801, "兑换券模板不存在"),
+    COUPON_TEMPLATE_NOT_EXIST(801, "Coupon template does not exist"),
 
-    /**
-     * 过期时间设置有误
-     */
-    EXPIRE_TIME_INCORRECT(802, "过期时间设置有误"),
+    EXPIRE_TIME_INCORRECT(802, "The expiration time is set incorrectly"),
 
-    /**
-     * 类型错误
-     */
-    TYPE_ERROR(802, "类型错误"),
+    TYPE_ERROR(802, "type error"),
 
-    /**
-     * 兑换码需选择兑换模板
-     */
-    TEMPLATE_EMPTY(802, "兑换码需选择兑换模板"),
+    TEMPLATE_EMPTY(802, "Redemption code needs to select redemption template"),
 
-    /**
-     * 指定的手机账号未注册
-     */
-    ACCOUNT_NOT_REGISTER(802, "指定的手机账号未注册"),
+    ACCOUNT_NOT_REGISTER(802, "The specified mobile account is not registered"),
 
-    /**
-     * V码可使用总数，单人限制使用次数不能为零
-     */
-    CANNOT_ZERO(802, "V码可使用总数，单人限制使用次数不能为零"),
+    CANNOT_ZERO(802, "The total number of codes that can be used, and the number of times that a single person can use cannot be zero"),
 
-    /**
-     * V码不存在
-     */
-    CODE_NOT_EXIST(803, "V码不存在"),
+    CODE_NOT_EXIST(803, "code does not exist"),
 
-    /**
-     * 非兑换码类型，修改兑换模板失败
-     */
-    TYPE_INFO_ERROR(803, "非兑换码类型，修改兑换模板失败"),
+    TYPE_INFO_ERROR(803, "Non-redemption code type, failed to modify the redemption template"),
 
-    /**
-     * 请输入邀请码
-     */
-    INVITE_CODE_NOT_EXIST(804, "请输入邀请码"),
+    INVITE_CODE_NOT_EXIST(804, "Please enter the invitation code"),
 
-    /**
-     * 邀请码无效
-     */
-    INVITE_CODE_NOT_VALID(805, "邀请码无效"),
+    INVITE_CODE_NOT_VALID(805, "Invitation code is invalid"),
 
-    /**
-     * 邀请码已过期
-     */
-    INVITE_CODE_EXPIRE(805, "邀请码已过期"),
+    INVITE_CODE_EXPIRE(805, "Invitation code has expired"),
 
-    /**
-     * 邀请码已使用
-     */
-    INVITE_CODE_USED(805, "邀请码已使用"),
+    INVITE_CODE_USED(805, "Invitation code used"),
 
-    /**
-     * 请输入兑换码
-     */
-    REDEMPTION_CODE_NOT_EXIST(804, "请输入兑换码"),
+    REDEMPTION_CODE_NOT_EXIST(804, "Please enter redemption code"),
 
-    /**
-     * 兑换码无效
-     */
-    REDEMPTION_CODE_NOT_VALID(805, "兑换码无效"),
+    REDEMPTION_CODE_NOT_VALID(805, "Invalid redemption code"),
 
-    /**
-     * 兑换码已过期
-     */
-    REDEMPTION_CODE_EXPIRE(805, "兑换码已过期"),
+    REDEMPTION_CODE_EXPIRE(805, "Redemption code has expired"),
 
-    /**
-     * 兑换码已使用
-     */
-    REDEMPTION_CODE_USED(805, "兑换码已使用"),
+    REDEMPTION_CODE_USED(805, "Redemption code used"),
 
-    /**
-     * 邀请码注册奖励失败
-     */
-    INVITE_CODE_REWARD_ERROR(805, "邀请码注册奖励失败"),
+    INVITE_CODE_REWARD_ERROR(805, "Invitation code registration reward failed"),
 
-    /**
-     * 邀请码使用注册频繁，请重试
-     */
-    INVITE_CODE_FREQUENTLY(805, "邀请码使用注册频繁，请重试");
-
+    INVITE_CODE_FREQUENTLY(805, "Invitation code is frequently used for registration");
 
     private final Integer code;
 
     private final String message;
-
-    VCodeException(Integer code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    @Override
-    public Integer getCode() {
-        return this.code;
-    }
-
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
 }

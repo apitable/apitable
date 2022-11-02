@@ -1,9 +1,8 @@
 package com.vikadata.api.enums.audit;
 
 /**
- * audit change type
+ * billing change type
  * @author Shawn Deng
- * @date 2022-05-10 16:50:33
  */
 public enum ChangeType {
 

@@ -5,38 +5,37 @@ import lombok.Getter;
 
 /**
  * <p>
- * 空间审计事件分类枚举
+ * audit category in space
  * </p>
  *
  * @author Chambers
- * @date 2022/5/25
  */
 @Getter
 @AllArgsConstructor
 public enum AuditSpaceCategory {
 
     /**
-     * 空间站信息变更事件
+     * space change event
      */
     SPACE_CHANGE_EVENT,
 
     /**
-     * 工作目录信息变更事件
+     * work catalog change event
      */
     WORK_CATALOG_CHANGE_EVENT,
 
     /**
-     * 工作目录分享事件
+     * work catalog share event
      */
     WORK_CATALOG_SHARE_EVENT,
 
     /**
-     * 工作目录权限变更事件
+     * work catalog permission change event
      */
     WORK_CATALOG_PERMISSION_CHANGE_EVENT,
 
     /**
-     * 空间站模板事件
+     * space template event
      */
     SPACE_TEMPLATE_EVENT,
 
@@ -48,6 +47,6 @@ public enum AuditSpaceCategory {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Enum not exist.");
+        throw new IllegalArgumentException("unknown audit category type.");
     }
 }

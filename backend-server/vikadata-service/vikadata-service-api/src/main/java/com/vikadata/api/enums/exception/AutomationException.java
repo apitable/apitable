@@ -1,30 +1,24 @@
 package com.vikadata.api.enums.exception;
 
-import com.vikadata.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.vikadata.core.exception.BaseException;
+
 /**
  * <p>
- * automation 机器人相关
+ * automation exception
  * </p>
  *
  * @author feng penglong
- * @date 2021/09/23 19:18
  */
 @Getter
 @AllArgsConstructor
 public enum AutomationException implements BaseException {
 
-    /**
-     * 单表机器人数量已到达上限
-     */
-    DST_ROBOT_LIMIT(1101, "单表机器人己达上限"),
+    DST_ROBOT_LIMIT(1101, "The single-table robot has reached the upper limit"),
 
-    /**
-     * 创建机器人请求重复
-     */
-    DST_ROBOT_REPEAT(1102, "请勿重复创建");
+    DST_ROBOT_REPEAT(1102, "Do not recreate");
 
     private final Integer code;
 

@@ -8,28 +8,27 @@ import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**
  * <p>
- * 邮件验证码业务类型
+ * email verification code type
  * </p>
  *
  * @author Chambers
- * @date 2019/12/27
  */
 @Getter
 @AllArgsConstructor
 public enum EmailCodeType implements IBaseEnum {
 
     /**
-     * 邮箱绑定
+     * email binding
      */
     BOUND_EMAIL(1, MailPropConstants.SUBJECT_VERIFY_CODE),
 
     /**
-     * 邮箱注册
+     * email registration
      */
     REGISTER_EMAIL(2, MailPropConstants.SUBJECT_REGISTER),
 
     /**
-     * 通用校验
+     * universal check
      */
     COMMON_VERIFICATION(3, MailPropConstants.SUBJECT_VERIFY_CODE);
 
@@ -43,7 +42,7 @@ public enum EmailCodeType implements IBaseEnum {
                 return type;
             }
         }
-        throw new IllegalArgumentException("未知的邮件类型");
+        throw new IllegalArgumentException("unknown email code type");
     }
 
     public static EmailCodeType fromName(Integer name) {
@@ -52,6 +51,6 @@ public enum EmailCodeType implements IBaseEnum {
                 return type;
             }
         }
-        throw new IllegalArgumentException("未知的邮件类型");
+        throw new IllegalArgumentException("unknown email code type");
     }
 }

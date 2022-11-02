@@ -3,11 +3,6 @@ package com.vikadata.api.enums.finance;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * 订单状态
- * @author Shawn Deng
- * @date 2022-02-16 18:09:29
- */
 @Getter
 @RequiredArgsConstructor
 public enum OrderStatus {

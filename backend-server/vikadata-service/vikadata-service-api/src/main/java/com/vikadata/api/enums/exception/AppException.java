@@ -5,26 +5,21 @@ import lombok.Getter;
 
 import com.vikadata.core.exception.BaseException;
 
-/**
- *
- * @author Shawn Deng
- * @date 2022-01-17 15:33:08
- */
 @Getter
 @AllArgsConstructor
 public enum AppException implements BaseException {
 
-    APP_NOT_EXIST(1301, "应用不存在"),
+    APP_NOT_EXIST(1301, "app does not exist"),
 
-    APP_EXIST(1302, "应用已存在"),
+    APP_EXIST(1302, "app already exists"),
 
-    APP_INSTANCE_NOT_EXIST(1303, "应用实例不存在"),
+    APP_INSTANCE_NOT_EXIST(1303, "application instance does not exist"),
 
-    NOT_LARK_APP_TYPE(1304, "不是飞书应用类型"),
+    NOT_LARK_APP_TYPE(1304, "not lark app type"),
 
-    APP_NOT_OPEN(1305, "应用未开启"),
+    APP_NOT_OPEN(1305, "app is not open"),
 
-    APP_KEY_EXIST(1306, "应用实例配置已存在");
+    APP_KEY_EXIST(1306, "application instance configuration already exists");
 
     private final Integer code;
 

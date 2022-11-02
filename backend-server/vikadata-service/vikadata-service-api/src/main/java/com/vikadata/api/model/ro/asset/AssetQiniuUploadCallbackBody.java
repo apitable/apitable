@@ -6,64 +6,63 @@ import lombok.Data;
 
 /**
  * <p>
- * 七牛云上传回调Body
- * 参考文档：https://developer.qiniu.com/kodo/1235/vars#magicvar-fname
+ * Qiniu Cloud upload callback Body
+ * Reference documentation：https://developer.qiniu.com/kodo/1235/vars#magicvar-fname
  * </p>
  *
  * @author Pengap
- * @date 2022/4/6 17:32:02
  */
 @Data
-@ApiModel("七牛云上传回调Body")
+@ApiModel("Qiniu Cloud upload callback Body")
 public class AssetQiniuUploadCallbackBody {
 
     /**
-     * 获得文件保存在空间中的资源名。
+     * Get the resource name of the file saved in the space.
      */
     private String key;
 
     /**
-     * 文件上传成功后的 HTTPETag。若上传时未指定资源ID，Etag将作为资源ID使用。
+     * The HTTPETag after the file is uploaded successfully. If the resource ID is not specified when uploading, the Etag will be used as the resource ID.
      */
     private String hash;
 
     /**
-     * 获得上传的目标空间名。
+     * Get the upload target space name。
      */
     private String bucket;
 
     /**
-     * 上传的原始文件名。
+     * Uploaded original filename。
      */
     private String fname;
 
     /**
-     * 资源尺寸，单位为字节。
+     * Resource size, in bytes.
      */
     private Long fsize;
 
     /**
-     * 上传资源的后缀名
+     * The suffix of the uploaded resource
      */
     private String ext;
 
     /**
-     * 资源类型，例如JPG图片的资源类型为image/jpg。
+     * Resource type, for example, the resource type of a JPG image is imagejpg.
      */
     private String mimeType;
 
     /**
-     * 上传资源的后缀名
+     * The suffix of the uploaded resource
      */
     private String suffix;
 
     /**
-     * 图片的宽度
+     * the width of the image
      */
     private Integer imageWidth;
 
     /**
-     * 图片的高度
+     * the height of the picture
      */
     private Integer imageHeight;
 

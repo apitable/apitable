@@ -7,10 +7,9 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**
- * 资源上传Scope
+ * asset upload scope
  *
  * @author Pengap
- * @date 2021/7/21
  */
 @Deprecated
 @Getter
@@ -18,14 +17,14 @@ import com.vikadata.core.support.serializer.IBaseEnum;
 public enum AssetUploadScope implements IBaseEnum {
 
     /**
-     * 单个文件
-     * <bucket>:<key>，表示只允许用户上传指定 key 的文件
+     * single file
+     * bucket:key，Indicates that only users are allowed to upload files with the specified key
      */
     SINGLE(0),
 
     /**
-     * 多个文件
-     * <bucket>:<keyPrefix>，表示允许用户上传以 scope 的 keyPrefix 为前缀的文件。
+     * multiple files
+     * bucket:keyPrefix，Indicates that users are allowed to upload files prefixed with the scope's keyPrefix.
      */
     MULTIPLE(1);
 

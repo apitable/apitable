@@ -6,26 +6,12 @@ import lombok.Getter;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.serializer.IBaseEnum;
 
-/**
- * <p>
- * 小组件包类型
- * </p>
- *
- * @author Pengap
- * @date 2021/7/8
- */
 @Getter
 @AllArgsConstructor
 public enum WidgetPackageType implements IBaseEnum {
 
-    /**
-     * 第三方
-     */
     THIRD_PARTY(0),
 
-    /**
-     * 官方
-     */
     OFFICIAL(1);
 
     private final Integer value;
@@ -38,6 +24,6 @@ public enum WidgetPackageType implements IBaseEnum {
                 }
             }
         }
-        throw new BusinessException("小组件包类型错误");
+        throw new BusinessException("Wrong widget package type");
     }
 }

@@ -1,50 +1,45 @@
 package com.vikadata.api.enums.action;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * <p>
- * 登录验证类型
+ * login verification type
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/12/24 16:48
  */
+@Getter
+@AllArgsConstructor
 public enum LoginType {
 
     /**
-     * 密码
+     * password
      */
     PASSWORD("password"),
 
     /**
-     * 短信验证码
+     * sms code
      */
     SMS_CODE("sms_code"),
 
     /**
-     * 邮件验证码
+     * email code
      */
     EMAIL_CODE("email_code"),
 
 	/**
-	 * 微信小程序短信验证码
+	 * WeChat sms code
 	 */
 	WECHAT_SMS_CODE("wechat_sms_code"),
 
     /**
-     * sso 身份认证
+     * sso auth
      */
     SSO_AUTH("sso_auth");
 
     @JsonValue
     private final String value;
-
-    LoginType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

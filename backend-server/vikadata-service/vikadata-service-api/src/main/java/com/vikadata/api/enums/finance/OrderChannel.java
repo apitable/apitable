@@ -3,13 +3,6 @@ package com.vikadata.api.enums.finance;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * <p>
- * 订单渠道
- * </p>
- * @author zoe zheng
- * @date 2022/2/25 16:12
- */
 @Getter
 @RequiredArgsConstructor
 public enum OrderChannel {

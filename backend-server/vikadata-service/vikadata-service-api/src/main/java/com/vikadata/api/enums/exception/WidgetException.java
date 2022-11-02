@@ -6,145 +6,58 @@ import lombok.Getter;
 import com.vikadata.core.exception.BaseException;
 
 /**
- * 组件相关异常状态码
- * 状态码范围（460-）
+ * status code range（460-）
  *
  * @author Chambers
- * @since 2020/12/23
  */
 @Getter
 @AllArgsConstructor
 public enum WidgetException implements BaseException {
 
-    /**
-     * 组件包不存在或未上线
-     */
-    WIDGET_PACKAGE_NOT_EXIST(460, "组件包不存在或未上线"),
+    WIDGET_PACKAGE_NOT_EXIST(460, "Widger package does not exist or is not online"),
 
-    /**
-     * 组件不存在
-     */
-    WIDGET_NOT_EXIST(461, "组件不存在"),
+    WIDGET_NOT_EXIST(461, "Widget does not exist"),
 
-    /**
-     * 组件所在的空间不一致
-     */
-    WIDGET_SPACE_ERROR(462, "组件所在的空间不一致"),
+    WIDGET_SPACE_ERROR(462, "The space where the widget is located is inconsistent"),
 
-    /**
-     * 组件引用的维格表不存在，复制失败
-     */
-    WIDGET_DATASHEET_NOT_EXIST(462, "组件引用的维格表不存在，复制失败"),
+    WIDGET_DATASHEET_NOT_EXIST(462, "The dimensional table referenced by the widget does not exist, the copy failed"),
 
-    /**
-     * 组件数量已到达上限，创建失败
-     */
-    WIDGET_NUMBER_LIMIT(462, "组件数量已到达上限，创建失败"),
+    WIDGET_NUMBER_LIMIT(462, "The number of widget has reached the upper limit, and the creation failed"),
 
-    /**
-     * 小程序创建失败，创建参数不完整
-     */
-    CREATE_FAIL_INCOMPLETE_PARAME(463, "小程序创建失败，创建参数不完整"),
+    CREATE_FAIL_CUSTOM_PACKAGEID_REPEAT(466, "The applet creation failed, the package Id is duplicated"),
 
-    /**
-     * 小程序创建失败，发布类型错误
-     */
-    CREATE_FAIL_RELEASE_TYPE_ERROR(464, "小程序创建失败，发布类型错误"),
+    WIDGET_BANNED(467, "Operation failed, widget banned"),
 
-    /**
-     * 小程序创建失败，name重复
-     */
-    @Deprecated
-    CREATE_FAIL_PACKAGE_NAME_REPEAT(465, "小程序创建失败，name重复"),
+    RELEASES_FAIL_WIDGET_DISABLED(468, "Failed to publish the applet, the widget has been disabled, please contact GM"),
 
-    /**
-     * 小程序创建失败，packageId重复
-     */
-    CREATE_FAIL_CUSTOM_PACKAGEID_REPEAT(466, "小程序创建失败，packageId重复"),
+    RELEASES_FAIL_VERSION_NUM_ERROR(469, "Failed to publish the applet, the version number does not conform to the specification"),
 
-    /**
-     * 操作失败，组件已封禁
-     */
-    WIDGET_BANNED(467, "操作失败，组件已封禁"),
+    RELEASES_FAIL_VERSION_NUM_REPEAT(470, "Failed to publish the applet, the version number is duplicated"),
 
-    /**
-     * 小程序发布失败，组件已禁用请联系GM
-     */
-    RELEASES_FAIL_WIDGET_DISABLED(468, "小程序发布失败，组件已禁用请联系GM"),
+    ROLLBACK_FAIL_VERSION_NUM_ERROR(471, "The applet fails to roll back, and the version number does not conform to the specification"),
 
-    /**
-     * 小程序发布失败，版本号不符合规范
-     */
-    RELEASES_FAIL_VERSION_NUM_ERROR(469, "小程序发布失败，版本号不符合规范"),
+    ROLLBACK_FAIL_SELECT_VERSION_ERROR(472, "The applet fails to roll back, the rollback version number is wrong or fails to pass the audit"),
 
-    /**
-     * 小程序发布失败，版本号重复
-     */
-    RELEASES_FAIL_VERSION_NUM_REPEAT(470, "小程序发布失败，版本号重复"),
+    RELEASES_FAIL_INCOMPLETE_PARAME(473, "Failed to publish the applet, the publishing parameters are incomplete"),
 
-    /**
-     * 小程序发布失败，版本号不符合规范
-     */
-    ROLLBACK_FAIL_VERSION_NUM_ERROR(471, "小程序回滚失败，版本号不符合规范"),
-
-    /**
-     * 小程序回滚失败，回滚版本号错误或未通过审核
-     */
-    ROLLBACK_FAIL_SELECT_VERSION_ERROR(472, "小程序回滚失败，回滚版本号错误或未通过审核"),
-
-    /**
-     * 小程序发布失败，创建参数不完整
-     */
-    RELEASES_FAIL_INCOMPLETE_PARAME(473, "小程序发布失败，发布参数不完整"),
-
-    /**
-     * en-US is required
-     */
     EN_US_REQUIRED(474, "en-US is required"),
 
-    /**
-     * 小程序提交失败，创建参数不完整
-     */
-    SUBMIT_FAIL_INCOMPLETE_PARAME(475, "小程序提交失败，提交参数不完整"),
+    SUBMIT_FAIL_INCOMPLETE_PARAME(475, "The applet submission failed, the submission parameters are incomplete"),
 
-    /**
-     * 小程序提交失败，版本号不符合规范
-     */
-    SUBMIT_FAIL_VERSION_NUM_ERROR(476, "小程序提交失败，版本号不符合规范"),
+    SUBMIT_FAIL_VERSION_NUM_ERROR(476, "The applet submission failed, the version number does not meet the specification"),
 
-    /**
-     * 小程序提交失败，版本号重复
-     */
-    SUBMIT_FAIL_VERSION_NUM_REPEAT(477, "小程序提交失败，版本号重复"),
+    SUBMIT_FAIL_VERSION_NUM_REPEAT(477, "The applet submission failed, the version number is duplicated"),
 
-    /**
-     * 空间站小程序，无法执行submit
-     */
-    SUBMIT_FAIL_NO_SUBMIT_METHOD(478, "空间站小程序，无法执行submit"),
+    SUBMIT_FAIL_NO_SUBMIT_METHOD(478, "Space applet, unable to execute submit"),
 
-    /**
-     * 申请全局小程序ID失败，请稍后再试
-     */
-    ISSUED_GLOBAL_ID_FAIL(479, "申请全局小程序ID失败，请稍后再试"),
+    ISSUED_GLOBAL_ID_FAIL(479, "Failed to apply for global applet ID, please try again later"),
 
-    /**
-     * 小程序资质认证数据无法重复审核
-     */
-    WIDGET_AUTH_DATA_AUDIT_FAIL(480, "小程序资质认证数据无法重复审核"),
+    WIDGET_AUTH_DATA_AUDIT_FAIL(480, "Applet certification data cannot be reviewed repeatedly"),
 
-    /**
-     * 审核备注不能为空
-     */
-    AUDIT_REASON_NOT_EMPTY(481, "审核备注不能为空"),
+    AUDIT_REASON_NOT_EMPTY(481, "Review comments cannot be empty"),
 
-    /**
-     * 小程序版本数据无法重复审核
-     */
-    WIDGET_VERSION_DATA_AUDIT_FAIL(482, "小程序版本数据无法重复审核"),
+    WIDGET_VERSION_DATA_AUDIT_FAIL(482, "Mini Program version data cannot be reviewed repeatedly"),
 
-    /**
-     * 审核提交的版本不存在
-     */
     AUDIT_SUBMIT_VERSION_NOT_EXIST(483, "Submit Version Not Exist"),
     ;
 

@@ -5,41 +5,40 @@ import lombok.Getter;
 
 /**
  * <p>
- * 埋点事件类型
+ * buried event type
  * </p>
  *
  * @author Chambers
- * @date 2020/4/8
  */
 @Getter
 @AllArgsConstructor
 public enum TrackEventType {
 
     /**
-     * 获取验证码成功
+     * get the verification code successfully
      */
     GET_SMC_CODE("authGetCodeResult"),
 
     /**
-     * 注册成功
+     * registration success
      */
     REGISTER("registerSuccess"),
 
     /**
-     * 初始化昵称成功
+     * initialized nickname succeeded
      */
     SET_NICKNAME("setNameSuccess"),
 
     /**
-     * 登录成功
+     * login successful
      */
     LOGIN("loginSuccess"),
 
     /**
-     * 搜索模版
+     * search template
      */
     SEARCH_TEMPLATE("searchTemplate");
 
 
-    private String eventName;
+    private final String eventName;
 }
