@@ -1,6 +1,6 @@
 {
   "name": "@vikadata/components",
-  "version": "0.13.9",
+  "version": "0.14.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "APITable PTE. LTD.<support@apitable.com>",

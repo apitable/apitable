@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.core.constants.RedisConstants;
 
 import org.springframework.context.annotation.Bean;
@@ -78,8 +77,9 @@ public class RedisConfig {
         }
 
         private Dict getAllMagicalValue() {
-            String activeProfile = SpringContextHolder.getActiveProfile();
-            return Dict.create().set(RedisConstants.REDIS_ENV, activeProfile);
+            String env = System.getenv("ENV");
+            log.info("Magical Key String Redis Serializer Load Environment: {}", env);
+            return Dict.create().set(RedisConstants.REDIS_ENV, env);
         }
 
     }
