@@ -196,11 +196,12 @@ Here's a general APITable git workflow:
 
 APITable use common use conventions:
 
-- What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? -> [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? -> [Conventional Commits](https://www.conventionalcommits.org/)
-- How to versioning and tagging? -> [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? -> [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
+- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
+- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
+- What is the Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ## 🛣 Roadmap
