@@ -28,8 +28,6 @@ export enum AccountCenterModules {
   AccountWallet = 'AccountWallet',
   AccountManager = 'AccountManager',
   DeveloperConfiguration = 'DeveloperConfiguration',
-  LanguageSetting = 'LanguageSetting',
-  ThemeSetting = 'ThemeSetting',
   PersonalizedSetting = 'PersonalizedSetting',
   TestFunction = 'TestFunction',
 }
@@ -44,7 +42,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const colors = useThemeColors();
-  const [activeItem, setActiveItem] = useState(props.defaultActiveItem || (isPrivateDeployment() && isMobile) ? 1 : 0);
+  const [activeItem, setActiveItem] = useState(props.defaultActiveItem || ((isPrivateDeployment() && isMobile) ? 1 : 0));
   const [showNav, setShowNav] = useState(false);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const { socialLinkDisable, accountWalletDisable } = getCustomConfig();
