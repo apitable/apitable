@@ -50,7 +50,7 @@ APITable provides incredible powerful features, from the personal to the Enterpr
     - **100k+** Data Rows real-time collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
-    - Community-friendly programming languages and framework, TypeScript(React + NestJS) and Java (Spring Boot)
+    - Community-friendly programming languages and framework, TypeScript([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - Beautiful and Rich Database-Spreadsheet UI
     - `CRUD`: Create, Read, Update and Delete on Tables, Columns, and Rows
     - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
