@@ -146,7 +146,7 @@
     "redux": "4.2.0",
     "redux-batched-actions": "0.5.0",
     "redux-thunk": "2.4.1",
-    "regenerator-runtime": "^0.14.0",
+    "regenerator-runtime": "^0.13.9",
     "resize-observer-polyfill": "^1.5.1",
     "scroller": "^0.0.3",
     "semver": "^7.1.3",
