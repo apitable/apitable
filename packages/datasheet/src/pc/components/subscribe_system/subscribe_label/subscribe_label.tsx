@@ -57,7 +57,7 @@ export const SubscribeLabel: React.FC<ISubscribeLabelProps> = (props) => {
     const gradeName = labelMap[grade](social?.appType, product);
     if (grade === SubscribeGrade.Silver) {
       return <Typography
-        variant={'body4'} className={classnames(styles.baseLabel, styles.gradeSilver)} component={'span'} color={colors.rainbowIndigo3}>
+        variant={'body4'} className={classnames(styles.baseLabel, styles.gradeSilver)} component={'span'} color={colors.rainbowIndigo4}>
         {gradeName}
       </Typography>;
     }
