@@ -1,8 +1,10 @@
 // import App from 'next/app'
 import { Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
+import { Scope } from '@sentry/browser';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
+import ErrorPage from 'error_page';
 import type { AppProps } from 'next/app';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
@@ -58,6 +60,7 @@ import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
 import { IClientInfo } from '../utils/interface';
+import * as Sentry from '@sentry/react';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -70,7 +73,7 @@ interface IMyAppProps {
   pathUrl: string;
 }
 
-const initWorker = async() => {
+const initWorker = async () => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -172,15 +175,15 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
           okText: t(Strings.submit),
           onOk: () => {
             Router.push(Navigation.HOME);
-          }
+          },
         });
         return;
       }
       store.dispatch(
         StoreActions.updateUserInfoErr({
           code: clientInfo.userInfoError.code,
-          msg: clientInfo.userInfoError.message
-        })
+          msg: clientInfo.userInfoError.message,
+        }),
       );
       return;
     }
@@ -190,7 +193,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
       StoreActions.setIsLogin(true),
       StoreActions.setUserMe(userInfo),
       StoreActions.setLoading(false),
-      StoreActions.updateUserInfoErr(null)
+      StoreActions.updateUserInfoErr(null),
     ];
     if (!getRegResult(pathUrl, shareIdReg)) {
       // This is to avoid initializing the space resource more than once under the share route
@@ -200,8 +203,8 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     store.dispatch(
       batchActions(
         _batchActions,
-        LOGIN_SUCCESS
-      )
+        LOGIN_SUCCESS,
+      ),
     );
   }, [clientInfo, clientInfo?.userInfo, pathUrl]);
 
@@ -223,7 +226,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
             url = `${window.location.origin}${url}`;
           }
           const blob = new Blob(['importScripts(' + JSON.stringify(url) + ')'], {
-            type: 'text/javascript'
+            type: 'text/javascript',
           });
           return new _Worker(URL.createObjectURL(blob), opts);
         } as any;
@@ -314,33 +317,36 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
     <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
     <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
-    <div className={classNames({ 'script-loading-wrap': loading !== LoadingStatus.Complete }, '__next_main')}>
-      <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
-        <Provider store={store}>
-          <RouterProvider>
-            <ThemeWrapper>
-              <Component {...pageProps} userInfo={userInfo} />
-            </ThemeWrapper>
-          </RouterProvider>
-        </Provider>
-      </div>
-      {
-        loading !== LoadingStatus.Complete && <div className='main-img-wrap' style={{ height: 'auto' }}>
-          <span className='script-loading-logo-img'>
-            <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt='logo' layout={'fill'} />
-          </span>
-          <span className='script-loading-vika-img'>
-            <Image
-              alt='vika'
-              layout={'fill'}
-              object-fit={'contain'}
-              src={`${publicRuntimeConfig.staticFolder}/logo_text_dark.svg`}
-            />
-          </span>
+    <Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
+      <div className={classNames({ 'script-loading-wrap': loading !== LoadingStatus.Complete }, '__next_main')}>
+        <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
+          <Provider store={store}>
+            <RouterProvider>
+              <ThemeWrapper>
+                <Component {...pageProps} userInfo={userInfo} />
+              </ThemeWrapper>
+            </RouterProvider>
+          </Provider>
         </div>
-      }
+        {
+          loading !== LoadingStatus.Complete && <div className='main-img-wrap' style={{ height: 'auto' }}>
+            <span className='script-loading-logo-img'>
+              <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt='logo' layout={'fill'} />
+            </span>
+            <span className='script-loading-vika-img'>
+              <Image
+                alt='vika'
+                layout={'fill'}
+                object-fit={'contain'}
+                src={`${publicRuntimeConfig.staticFolder}/logo_text_dark.svg`}
+              />
+            </span>
+          </div>
+        }
 
-    </div>
+      </div>
+    </Sentry.ErrorBoundary>
+
   </>;
 }
 
@@ -360,3 +366,7 @@ export default MyApp;
 reportWebVitals();
 
 MyApp.getInitialProps = getInitialProps;
+
+const beforeCapture = (scope: Scope) => {
+  scope.setTag('PageCrash', true);
+};

@@ -354,6 +354,13 @@ buildpush-socketserver:
 patch: # bump version number patch
 	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion patch
 
+.PHONY: minor
+minor: # bump version number patch
+	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion minor
+
+.PHONY: major
+major: # bump version number patch
+	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion major
 
 ### data environement
 .PHONY: dataenv

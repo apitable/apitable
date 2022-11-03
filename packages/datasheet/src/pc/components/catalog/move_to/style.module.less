@@ -48,6 +48,21 @@
     }
     .wholeTips {
       padding: 2px 16px;
+
+      :global {
+        .ant-breadcrumb {
+          white-space: nowrap;
+          line-height: 1;
+          
+          ol {
+            flex-wrap: nowrap;
+  
+            li {
+              display: flex;
+            }
+          }
+        }
+      }
     }
     .noWholeTips {
       padding: 7px 16px;
