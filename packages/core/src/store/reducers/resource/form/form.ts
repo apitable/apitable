@@ -2,7 +2,7 @@ import produce from 'immer';
 
 import { AnyAction, combineReducers } from 'redux';
 import { IFormMap, IFormClient, IFormState, IJOTActionPayload } from 'store/interface';
-import { IResetFormAction } from 'store/actions/resource/form';
+import { IResetFormAction } from 'modules/database/store/actions/resource/form';
 import * as actions from 'store/action_constants';
 import { JOTApply } from '..';
 

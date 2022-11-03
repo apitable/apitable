@@ -3,7 +3,7 @@ import * as React from 'react';
 import SplitPane, { SplitPaneProps } from 'react-split-pane';
 import styles from './style.module.less';
 import classNames from 'classnames';
-import { EmitterEventName, SimpleEmitter } from 'pc/common/simple_emitter';
+import { EmitterEventName, SimpleEmitter } from 'modules/shared/simple_emitter';
 
 interface IVikaSplitPanelProps extends Omit<SplitPaneProps, 'SplitPaneProps'> {
   panelLeft: JSX.Element;

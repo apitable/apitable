@@ -1,6 +1,6 @@
 import { stopPropagation } from '@vikadata/components';
 import { IAttachmentValue, isWebp } from '@apitable/core';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { memo, useCallback } from 'react';
 import * as React from 'react';
 import { getCellValueThumbSrc } from '../../../utils/file_type';

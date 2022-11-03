@@ -2,7 +2,7 @@ import { LS_DATASHEET_NAMESPACE } from 'config/constant';
 import { ILocalChangeset, IOperation, composeOperations } from './ot';
 import { generateRandomString } from 'utils';
 import { ResourceType } from 'types';
-import { Events, Player } from 'player';
+import { Events, Player } from '../modules/shared/player';
 import { TrackEvents } from 'config';
 
 // Local cache processing interface

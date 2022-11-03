@@ -16,7 +16,7 @@ import {
   WithTipWrapper,
   IdentifyingCodeInput,
 } from 'pc/components/common';
-import { addWizardNumberAndApiRun } from 'pc/common/guide/utils';
+import { addWizardNumberAndApiRun } from 'modules/enterprise/guide/utils';
 import { useSetState } from 'pc/hooks';
 import { TextInput } from '@vikadata/components';
 import { Verify } from '../modify_mobile_modal/verify';

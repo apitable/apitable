@@ -11,7 +11,7 @@ import { useThemeColors } from '@vikadata/components';
 import { ICommonTabRef } from '../upload_tab';
 import styles from './styles.module.less';
 import { AddOutlined } from '@vikadata/icons';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 
 interface IUploadZonProps {
   onUpload(files: IUploadZoneItem[]): void;

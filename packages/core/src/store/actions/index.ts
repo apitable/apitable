@@ -12,7 +12,7 @@ export * from './hooks';
 export * from './toolbar';
 export * from './right_pane';
 export * from './billing';
-export * from './resource';
+export * from '../../modules/database/store/actions/resource';
 export * from './template_centre';
 export * from './unit_info';
 export * from './labs';

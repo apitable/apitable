@@ -1,8 +1,8 @@
-import { TriggerCommands } from './../apphook/trigger_commands';
+import { TriggerCommands } from '../../../modules/shared/apphook/trigger_commands';
 import { StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
-import { Guide, isEqualArr, addWizardNumberAndApiRun } from 'pc/common/guide';
-import { getWizardInfo } from 'pc/common/guide/utils';
+import { Guide, isEqualArr, addWizardNumberAndApiRun } from 'modules/enterprise/guide';
+import { getWizardInfo } from 'modules/enterprise/guide/utils';
 import { Step } from '@apitable/core/src/config/system_config.interface';
 let curSteps: number[] = [];
 

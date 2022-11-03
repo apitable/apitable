@@ -1,8 +1,8 @@
 import { IReduxState, StoreActions } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { values } from 'lodash';
-import { IntercomWrapper } from 'pc/common/intercom';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { IntercomWrapper } from 'modules/enterprise/intercom';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSideBar } from 'pc/components/mobile_side_bar';
 import { Navigation } from 'pc/components/navigation';

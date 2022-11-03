@@ -15,8 +15,8 @@ import { ICommonTabRef } from '../upload_tab';
 import styles from './styles.module.less';
 import { IUploadZoneItem } from 'pc/components/upload_modal/upload_zone';
 import { isImage, Strings, t, IAttachmentValue } from '@apitable/core';
-import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
-import { ShortcutActionName } from 'pc/common/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
 
 interface IUploadPasteBaseProps {
   recordId: string;

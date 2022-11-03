@@ -1,7 +1,7 @@
 import { store } from 'pc/store';
 import { Selectors, visibleRowsBaseCacheManage } from '@apitable/core';
 import { mainWidgetMessage } from '@vikadata/widget-sdk';
-import { getDependenceDstIds } from 'pc/common/billing';
+import { getDependenceDstIds } from 'modules/enterprise/billing';
 
 store.subscribe(function visibleRowsBase() {
   const state = store.getState();

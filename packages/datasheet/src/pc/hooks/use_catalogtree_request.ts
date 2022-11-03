@@ -2,7 +2,7 @@ import {
   Api, ConfigConstant, INodesMapItem, IOptNode, IReduxState, IUpdateRoleData, Navigation, ResourceIdPrefix, ResourceType, Selectors, StatusCode,
   StoreActions, Strings, t,
 } from '@apitable/core';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';

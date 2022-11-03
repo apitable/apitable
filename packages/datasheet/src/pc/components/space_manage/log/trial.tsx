@@ -2,7 +2,7 @@ import { Strings, t } from '@apitable/core';
 import { Button } from '@vikadata/components';
 import classnames from 'classnames';
 import Image from 'next/image';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import styles from 'pc/components/space_manage/log/styles.module.less';
 import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { Dispatch, FC, SetStateAction } from 'react';

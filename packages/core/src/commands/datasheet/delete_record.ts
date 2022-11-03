@@ -2,7 +2,7 @@ import { ICollaCommandDef, ExecuteResult } from 'command_manager';
 import { DatasheetActions } from 'model';
 import { Selectors } from 'store';
 import { FieldType, ILinkField, ResourceType } from 'types';
-import { Player, Events } from 'player';
+import { Player, Events } from '../../modules/shared/player';
 import { CollaCommandName } from 'commands';
 
 export interface IDeleteRecordOptions {

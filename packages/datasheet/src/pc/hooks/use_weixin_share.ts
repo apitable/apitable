@@ -1,6 +1,6 @@
 import { Api, integrateCdnHost, IReduxState, Selectors, Settings, Strings, t } from '@apitable/core';
 import { isObject } from 'lodash';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';

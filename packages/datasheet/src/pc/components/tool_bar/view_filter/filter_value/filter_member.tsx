@@ -9,7 +9,7 @@ import {
   Strings,
   t
 } from '@apitable/core';
-import { memberStash } from 'pc/common/member_stash/member_stash';
+import { memberStash } from 'modules/space/member_stash/member_stash';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { IFilterMemberProps } from '../interface';

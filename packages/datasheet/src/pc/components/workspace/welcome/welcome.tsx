@@ -2,7 +2,7 @@ import { Button, TextButton, Typography, useThemeColors } from '@vikadata/compon
 import { ConfigConstant, IReduxState, Navigation, Settings, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@vikadata/icons';
 import Image from 'next/image';
-import { showModal } from 'pc/common/guide/ui';
+import { showModal } from 'modules/enterprise/guide/ui';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
 import { MobileBar } from 'pc/components/mobile_bar';

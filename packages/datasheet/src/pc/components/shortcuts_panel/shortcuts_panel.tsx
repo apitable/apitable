@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import * as React from 'react';
 import { SystemConfig, t, Strings, StoreActions } from '@apitable/core';
-import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import styles from './style.module.less';
 import { BaseModal } from '../common';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import { Space } from 'antd';
 import { useDispatch } from 'react-redux';
 import ShortcutKeyIcon from 'static/icon/workbench/keyboardshortcuts.svg';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 
 export const ShortcutsPanel: FC = () => {
   const dispatch = useDispatch();

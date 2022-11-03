@@ -2,7 +2,7 @@ import { Button, LinkButton, TextButton, Typography, useThemeColors } from '@vik
 import { Api, IReduxState, Settings, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@vikadata/icons';
 import Image from 'next/image';
-import { triggerUsageAlert } from 'pc/common/billing';
+import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { ModalOutsideOperate } from 'pc/components/common/modal_outside_operate';

@@ -2,6 +2,6 @@
 // if(process.env.NODE_ENV === 'development') {
 //   require('@vikadata/i18n-lang');
 // } 
-import { initLanguage } from 'pc/common/i18n';
+import { initLanguage } from 'modules/shared/i18n';
 
 initLanguage();

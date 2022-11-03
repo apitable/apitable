@@ -6,7 +6,7 @@ import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickSta
 import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@vikadata/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
 import dynamic from 'next/dynamic';
-import { triggerUsageAlert } from 'pc/common/billing';
+import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
 import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';

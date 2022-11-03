@@ -11,15 +11,15 @@ import { BillingModal, Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getEnvVariables, getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
-import './apphook/hook_bindings';
+import '../../modules/shared/apphook/hook_bindings';
 import { initCronjobs } from './cronjob';
 import { initialConfig } from './initial_config';
 import './store_subscribe';
-import { vika } from './vikalib';
+import { APITable } from '../../modules/shared/apitable_lib';
 
 declare let window: any;
 if (!process.env.SSR && window !== undefined) {
-  window.vika = vika;
+  window.APITable = APITable;
   initialConfig();
 }
 

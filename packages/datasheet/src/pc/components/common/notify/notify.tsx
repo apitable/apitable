@@ -97,7 +97,7 @@ export function notifyWithUndo(msg: string, key: NotifyKey) {
     btnText: t(Strings.undo),
     key,
     btnFn() {
-      import('pc/common/shortcut_key').then(({ ShortcutActionManager, ShortcutActionName }) => {
+      import('modules/shared/shortcut_key').then(({ ShortcutActionManager, ShortcutActionName }) => {
         ShortcutActionManager.trigger(ShortcutActionName.Undo);
       });
       notify.close(key);

@@ -9,7 +9,7 @@ import {
 } from '@vikadata/icons';
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message } from 'pc/components/common';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
 import { ColorGroup } from 'pc/components/common/color_picker/color_group';

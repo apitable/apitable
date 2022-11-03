@@ -3,7 +3,7 @@ import {
   Selectors,
 } from '@apitable/core';
 import { KonvaEventObject } from 'konva/lib/Node';
-import { appendRow, getCellValuesForGroupRecord } from 'pc/common/shortcut_key/shortcut_actions/append_row';
+import { appendRow, getCellValuesForGroupRecord } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { AreaType, GanttCoordinate, KonvaGanttViewContext, PointPosition, ScrollViewType } from 'pc/components/gantt_view';
 import { GridCoordinate, KonvaGridContext } from 'pc/components/konva_grid';

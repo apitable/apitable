@@ -14,7 +14,7 @@ import {
   UnitItem,
 } from '@apitable/core';
 import { Workbook } from 'exceljs';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal';

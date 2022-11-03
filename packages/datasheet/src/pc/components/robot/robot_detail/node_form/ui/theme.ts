@@ -1,4 +1,4 @@
-import { utils } from '../core';
+import { utils } from '@apitable/core';
 import { IThemeProps } from '../core/interface';
 import { ArrayFieldTemplate, ErrorList, FieldTemplate, ObjectFieldTemplate } from './template';
 import { SelectWidget, TextWidget } from './widget';

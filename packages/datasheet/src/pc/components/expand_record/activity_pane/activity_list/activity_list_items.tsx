@@ -8,7 +8,7 @@ import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { resourceService } from 'pc/resource_service';

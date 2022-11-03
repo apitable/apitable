@@ -5,8 +5,8 @@ import {
 import { permission } from '@apitable/core/dist/config/constant';
 import { useMount, useToggle } from 'ahooks';
 import { Switch } from 'antd';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing/trigger_usage_alert';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing/trigger_usage_alert';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
 import { Message } from 'pc/components/common/message/message';

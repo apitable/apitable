@@ -5,7 +5,7 @@ import * as actions from '../action_constants';
 import { batchActions } from 'redux-batched-actions';
 import { Api, IApi } from 'api';
 import { getExpandNodeIds } from 'utils';
-import { updateForm } from './resource/form/form';
+import { updateForm } from '../../modules/database/store/actions/resource/form/form';
 import { ConfigConstant } from 'config';
 import { Selectors } from 'store';
 

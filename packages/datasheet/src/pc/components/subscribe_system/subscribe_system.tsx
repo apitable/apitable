@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';

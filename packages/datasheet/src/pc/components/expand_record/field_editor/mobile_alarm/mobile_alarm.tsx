@@ -8,7 +8,7 @@ import { DatePicker } from 'antd-mobile';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import { compact, isEqual, keyBy, pick } from 'lodash';
-import { memberStash } from 'pc/common/member_stash/member_stash';
+import { memberStash } from 'modules/space/member_stash/member_stash';
 import { AlarmTipText } from 'pc/components/alarm_tip_text';
 import { Message, MobileContextMenu } from 'pc/components/common';
 import { fakeMemberField } from 'pc/components/editors/date_time_editor/date_time_alarm';

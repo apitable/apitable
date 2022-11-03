@@ -7,9 +7,9 @@ import {
 import { AttentionOutlined, CommentOutlined } from '@vikadata/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
-import { expandRecordManager } from 'pc/common/expand_record_manager';
+import { expandRecordManager } from 'modules/database/expand_record_manager';
 
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';

@@ -1,6 +1,6 @@
 import { Button } from '@vikadata/components';
 import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@apitable/core';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Modal } from 'pc/components/common';
 import { LoginModal } from 'pc/components/home/login_modal';
 import { Router } from 'pc/components/route_manager/router';

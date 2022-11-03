@@ -8,7 +8,7 @@ import {
   FilterOutlined, FreezeOutlined, GroupOutlined, HideFilled, LockOutlined
 } from '@vikadata/icons';
 import { useMount } from 'ahooks';
-import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';

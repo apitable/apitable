@@ -1,9 +1,9 @@
 import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
-import { getBillingInfo } from 'pc/common/billing/get_billing_info';
-import { ContextName } from 'pc/common/shortcut_key/enum';
-import { ShortcutContext } from 'pc/common/shortcut_key/shortcut_key';
+import { getBillingInfo } from 'modules/enterprise/billing/get_billing_info';
+import { ContextName } from 'modules/shared/shortcut_key/enum';
+import { ShortcutContext } from 'modules/shared/shortcut_key/shortcut_key';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
 import { confirm, danger, info, success, warning } from './modal.function';
 import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';

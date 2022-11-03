@@ -6,7 +6,7 @@ import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } f
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
-import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
 import { Message } from 'pc/components/common/message';

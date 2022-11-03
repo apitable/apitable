@@ -9,7 +9,7 @@ import { getField, getSnapshot, getDatasheet } from 'store/selector';
 import { DatasheetActions } from 'model/datasheet';
 import { createNewField, setField } from 'commands/common/field';
 import { TextField } from 'model/field/text_field';
-import { Events, Player } from 'player';
+import { Events, Player } from '../../modules/shared/player';
 import { Field } from 'model';
 
 export interface IRollback {

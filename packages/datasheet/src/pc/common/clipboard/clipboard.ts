@@ -7,8 +7,8 @@ import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { store } from 'pc/store';
 import { UploadManager } from 'pc/utils';
-import { browser } from '../browser';
-import { ShortcutContext } from '../shortcut_key';
+import { browser } from '../../../modules/shared/browser';
+import { ShortcutContext } from '../../../modules/shared/shortcut_key';
 import { recogClipboardURLData } from './clip_data_url_recog';
 import { ISerializer, Serializer } from './serializer';
 

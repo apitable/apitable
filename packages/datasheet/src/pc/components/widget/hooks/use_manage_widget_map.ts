@@ -1,7 +1,7 @@
 import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
 import { usePrevious } from 'ahooks';
 import { difference } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';

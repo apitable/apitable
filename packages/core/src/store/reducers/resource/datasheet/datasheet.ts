@@ -2,7 +2,7 @@ import { compensator } from 'compensator';
 import { IJOTAction } from 'engine/ot';
 import { Strings, t } from 'i18n';
 import produce from 'immer';
-import { Events, Player } from 'player';
+import { Events, Player } from '../../../../modules/shared/player';
 import { AnyAction, combineReducers } from 'redux';
 import * as actions from 'store/action_constants';
 import {

@@ -1,9 +1,9 @@
 import { useContextMenu } from '@vikadata/components';
 import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
-import { subscribeUsageCheck } from 'pc/common/billing/subscribe_usage_check';
-import { ScrollBar } from 'pc/common/guide/scroll_bar';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
+import { subscribeUsageCheck } from 'modules/enterprise/billing/subscribe_usage_check';
+import { ScrollBar } from 'modules/enterprise/guide/scroll_bar';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';

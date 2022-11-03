@@ -1,8 +1,8 @@
 import { Box, IOption, Skeleton } from '@vikadata/components';
 import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';

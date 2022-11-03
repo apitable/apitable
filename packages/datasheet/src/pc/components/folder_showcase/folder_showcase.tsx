@@ -8,7 +8,7 @@ import { useToggle, useUnmount } from 'ahooks';
 import { Spin } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Share } from 'pc/components/catalog/share';
 import { ButtonPlus } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

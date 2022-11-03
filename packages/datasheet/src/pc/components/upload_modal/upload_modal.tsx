@@ -1,6 +1,6 @@
 import { IAttachmentValue, IField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useThemeColors } from '@vikadata/components';
 import { useState } from 'react';
 import * as React from 'react';

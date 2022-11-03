@@ -2,7 +2,7 @@ import { stopPropagation, ThemeProvider } from '@vikadata/components';
 import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, Settings, StoreActions } from '@apitable/core';
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
-import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';

@@ -3,7 +3,7 @@ import { CollaCommandName } from 'commands';
 import { TrackEvents } from 'config';
 import { IJOTAction, ILocalChangeset, IOperation, IRemoteChangeset, jot } from 'engine';
 import { Strings, t } from 'i18n';
-import { Events, Player } from 'player';
+import { Events, Player } from '../modules/shared/player';
 import { IChangesetPack, INetworking } from 'store';
 import { updateRevision } from 'store/actions';
 import { ResourceType, ModalType } from 'types';

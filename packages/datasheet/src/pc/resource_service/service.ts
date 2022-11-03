@@ -1,9 +1,9 @@
 import { BroadcastTypes, IReduxState, Selectors } from '@apitable/core';
 import { IServiceError, ResourceService } from '@vikadata/widget-sdk';
-import { SimpleEmitter } from 'pc/common/simple_emitter';
+import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { Store } from 'redux';
 import { Clipboard } from '../common/clipboard';
-import { KeybindingService } from '../common/shortcut_key/keybinding_service';
+import { KeybindingService } from '../../modules/shared/shortcut_key/keybinding_service';
 import { UploadManager } from '../utils';
 
 export class ResourceServiceEnhanced extends ResourceService {

@@ -21,7 +21,7 @@ import { FieldSetting } from '../multi_grid/field_setting';
 import { store } from 'pc/store';
 import { FieldMenu } from './field_menu';
 import classNames from 'classnames';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { useDispatch } from 'pc/hooks';
 const COLUMN_WIDTH = 134;
 const ROW_HEIGHT = 80 + 16 + 14;

@@ -5,7 +5,7 @@ import {
 import { useUpdateEffect } from 'ahooks';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { isEqual } from 'lodash';
-import { appendRow } from 'pc/common/shortcut_key/shortcut_actions/append_row';
+import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecord, expandRecordIdNavigate } from 'pc/components/expand_record';

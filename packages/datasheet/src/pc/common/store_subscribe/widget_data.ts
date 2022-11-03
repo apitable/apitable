@@ -4,7 +4,7 @@ import {
   IDatasheetClient, IDatasheetMainSimple, mainWidgetMessage, IWidgetDashboardState, iframeWidgetDashboardSelector
 } from '@vikadata/widget-sdk';
 import { updateCache } from './visible_rows_base';
-import { getDependenceDstIds } from 'pc/common/billing';
+import { getDependenceDstIds } from 'modules/enterprise/billing';
 
 let client: IDatasheetClient = {
   selection: undefined,

@@ -14,8 +14,8 @@ import {
 } from '@apitable/core';
 import classNames from 'classnames';
 import { clamp, debounce, throttle } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
-import { appendRow } from 'pc/common/shortcut_key/shortcut_actions/append_row';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { EXPAND_RECORD } from 'pc/components/expand_record';
 import { ScrollContext } from 'pc/context';
 import { ButtonOperateType, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPERATE_BUTTON_CLASS } from 'pc/utils';

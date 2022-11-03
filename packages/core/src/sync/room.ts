@@ -8,7 +8,7 @@ import { BufferStorage, ILocalForage, ILsStore } from 'engine/buffer_storage';
 import { Strings, t } from 'i18n';
 import { IO } from 'io';
 import { keyBy, throttle } from 'lodash';
-import { Events, Player } from 'player';
+import { Events, Player } from '../modules/shared/player';
 import { AnyAction, Store } from 'redux';
 import 'socket.io-client';
 import { DEFAULT_FIELD_PERMISSION, IResourceRevision, Selectors, StoreActions } from 'store';

@@ -3,7 +3,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { batchActions } from 'redux-batched-actions';
-import { expandRecordManager } from '../expand_record_manager';
+import { expandRecordManager } from '../../../modules/database/expand_record_manager';
 
 let mirrorId: string | undefined;
 

@@ -1,6 +1,6 @@
 import { ActionConstants } from 'store';
 import { ISubscriptions } from 'store/interface';
-import { getSubscriptions } from '../../modules/database/datasheet_api';
+import { getSubscriptions } from '../../modules/database/api/datasheet_api';
 
 /**
  * get current datasheet/mirrors' subscribed(followed) record ids

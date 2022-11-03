@@ -8,7 +8,7 @@ import * as actions from 'store/action_constants';
 import { CHANGE_WIDGET_PANEL_WIDTH, SWITCH_ACTIVE_PANEL, TOGGLE_WIDGET_PANEL } from 'store/action_constants';
 import {
   IResetMirror, ISetMirrorClientAction, ISetMirrorDataAction, ISetMirrorLoadingAction, IUpdateMirrorInfoAction, IUpdateMirrorName,
-} from 'store/actions/resource/mirror';
+} from 'modules/database/store/actions/resource/mirror';
 import {
   IChangeResourceSyncingStatus, IJOTActionPayload, IMirrorMap, IMirrorPack, IResourceErrCode, IRoomInfoSync, ISetResourceConnected, IUpdateResource,
   IUpdateRevision,

@@ -1,7 +1,7 @@
 import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useKeyPress } from 'ahooks';
 import classNames from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { store } from 'pc/store';
 import { useThemeColors } from '@vikadata/components';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';

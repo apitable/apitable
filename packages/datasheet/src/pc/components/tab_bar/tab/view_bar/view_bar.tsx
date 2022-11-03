@@ -2,7 +2,7 @@ import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayEl
 import { ChevronDownOutlined } from '@vikadata/icons';
 import { TextButton, useContextMenu } from '@vikadata/components';
 import cls from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ToolHandleType } from 'pc/components/tool_bar/interface';
 import { resourceService } from 'pc/resource_service';
 import { changeView } from 'pc/hooks';

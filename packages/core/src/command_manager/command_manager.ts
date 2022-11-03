@@ -24,7 +24,7 @@ import { LinkedDataConformanceMaintainer, MemberFieldMaintainer } from 'model';
 import { FieldType, ResourceType } from 'types';
 import { CellFormatChecker } from 'cell_format_checker';
 import { LinkIntegrityChecker } from 'link_integrity_checker/link_integrity_checker';
-import { Events, Player } from 'player';
+import { Events, Player } from '../modules/shared/player';
 import { SubscribeUsageCheck } from 'subscribe_usage_check';
 import { EnhanceError } from 'sync/enhance_error';
 

@@ -1,6 +1,6 @@
 import { FieldType, getTextFieldType, ISegment, string2Segment, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { stopPropagation } from 'pc/utils/dom';
 import RcTextArea from 'rc-textarea';
 

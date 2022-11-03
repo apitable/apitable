@@ -8,7 +8,7 @@ import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
-import { EmitterEventName } from 'pc/common/simple_emitter';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';

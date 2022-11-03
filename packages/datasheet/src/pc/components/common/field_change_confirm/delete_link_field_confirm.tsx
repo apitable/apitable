@@ -3,7 +3,7 @@ import { CollaCommandName, ILinkField, Selectors, Strings, t } from '@apitable/c
 import { useLocalStorageState } from 'ahooks';
 import { Modal, Radio } from 'antd';
 import Image from 'next/image';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { LinkJump, Modal as CustomModal } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

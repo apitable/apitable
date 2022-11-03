@@ -1,6 +1,6 @@
 import { Strings, t } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
-import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { PageTurn, PageTurnMobile } from 'pc/components/expand_record/page_turn';

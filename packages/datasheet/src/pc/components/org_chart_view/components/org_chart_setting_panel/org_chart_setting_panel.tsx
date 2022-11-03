@@ -25,7 +25,7 @@ import {
 } from '@vikadata/icons';
 import { resourceService } from 'pc/resource_service';
 import styles from './style.module.less';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FlowContext } from '../../context/flow_context';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';

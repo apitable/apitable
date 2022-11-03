@@ -17,7 +17,7 @@ import { batchActions } from 'redux-batched-actions';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { FieldPermissionLock } from 'pc/components/field_permission';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
 const UNUSED_END_DATE = 'unusedEndDate';

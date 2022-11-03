@@ -24,7 +24,7 @@ import {
 import { ApiOutlined, ChevronDownOutlined, RecoverOutlined, RobotOutlined, SettingFilled, WidgetOutlined } from '@vikadata/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';

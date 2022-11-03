@@ -15,7 +15,7 @@ import {
 import { VariableSizeGrid as Grid } from '@vikadata/react-window';
 import { useDebounceFn } from 'ahooks';
 import cls from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { stopPropagation } from 'pc/utils';

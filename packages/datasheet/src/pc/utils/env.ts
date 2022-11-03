@@ -1,6 +1,6 @@
 import { ConfigConstant } from '@apitable/core';
 import { getEnvVars } from 'get_env';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { IInitializationData } from 'typings';
 
 export function getInitializationData(): IInitializationData {

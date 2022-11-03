@@ -3,7 +3,7 @@ import {
 } from '@apitable/core';
 import { GridOnScrollProps, VariableSizeGrid as Grid } from '@vikadata/react-window';
 import { useMount, useUpdateEffect } from 'ahooks';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import * as React from 'react';
 import { isMobile } from 'react-device-detect';

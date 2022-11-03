@@ -1,5 +1,5 @@
 import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@apitable/core';
-import { triggerUsageAlert } from 'pc/common/billing';
+import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';
 import { Router } from 'pc/components/route_manager/router';

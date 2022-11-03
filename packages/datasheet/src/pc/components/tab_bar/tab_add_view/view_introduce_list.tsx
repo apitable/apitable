@@ -5,7 +5,7 @@ import {
 import { AddOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import Trigger from 'rc-trigger';
 import * as React from 'react';

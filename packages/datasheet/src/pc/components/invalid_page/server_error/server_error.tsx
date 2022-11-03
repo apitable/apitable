@@ -1,7 +1,7 @@
 import { Button } from '@vikadata/components';
 import { integrateCdnHost, Strings, t, Settings } from '@apitable/core';
 import Image from 'next/image';
-import { ServiceQrCode } from 'pc/common/guide/ui/qr_code';
+import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { FC } from 'react';

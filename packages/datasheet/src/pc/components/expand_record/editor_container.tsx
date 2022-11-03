@@ -2,7 +2,7 @@ import { TextButton, useThemeColors } from '@vikadata/components';
 import { Strings, t, ViewType } from '@apitable/core';
 import { TriangleDown16Filled, TriangleRight16Filled } from '@vikadata/icons';
 import classNames from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import React, { useEffect, useMemo } from 'react';

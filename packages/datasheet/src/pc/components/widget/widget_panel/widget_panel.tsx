@@ -3,7 +3,7 @@ import { Events, integrateCdnHost, IWidgetPanelStatus, Player, ResourceType, Sel
 import { CloseLargeOutlined } from '@vikadata/icons';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { shallowEqual, useSelector } from 'react-redux';

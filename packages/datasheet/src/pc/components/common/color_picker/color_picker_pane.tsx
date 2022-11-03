@@ -3,7 +3,7 @@ import { ISelectFieldOption, Strings, t } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';

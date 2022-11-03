@@ -22,7 +22,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import { getCellValuesForGroupRecord } from '../../../common/shortcut_key/shortcut_actions/append_row';
+import { getCellValuesForGroupRecord } from '../../../../modules/shared/shortcut_key/shortcut_actions/append_row';
 import { HoverLine } from '../hover_line/hover_line';
 import { MicroComponent } from '../micro_component';
 import { useCacheScroll } from 'pc/context';

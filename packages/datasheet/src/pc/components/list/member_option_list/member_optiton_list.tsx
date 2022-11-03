@@ -17,7 +17,7 @@ import { useUpdateEffect } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';
-import { memberStash } from 'pc/common/member_stash/member_stash';
+import { memberStash } from 'modules/space/member_stash/member_stash';
 import { expandInviteModal } from 'pc/components/invite';
 import { CommonList } from 'pc/components/list/common_list';
 import { useCallback, useEffect, useRef, useState } from 'react';

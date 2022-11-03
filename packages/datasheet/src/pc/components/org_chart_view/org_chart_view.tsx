@@ -45,8 +45,8 @@ import { EdgeContextMenu } from './components/context_menu/edge_context_menu';
 import styles from './styles.module.less';
 import { IFuncUpdater } from 'ahooks/lib/createUseStorageState';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { getWizardRunCount } from 'pc/common/guide';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { getWizardRunCount } from 'modules/enterprise/guide';
 
 export interface IOrgChartViewProps {
   width: number;

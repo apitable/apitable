@@ -7,8 +7,8 @@ import {
   SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebsiteOutlined,
 } from '@vikadata/icons';
 import classnames from 'classnames';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
-import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'pc/common/guide/vikaby';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'pc/components/enterprise/vikaby';
 import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { inSocialApp } from 'pc/components/home/social_platform';

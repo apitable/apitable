@@ -8,8 +8,8 @@ import UndoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg'
 import styles from '../style.module.less';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
-import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
-import { ShortcutActionName } from 'pc/common/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { IconButton, useThemeColors } from '@vikadata/components';
 
 export const Undo: React.FC<{ className?: string }> = ({ className }) => {

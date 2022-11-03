@@ -2,7 +2,7 @@ import { Button } from '@vikadata/components';
 import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t, Settings } from '@apitable/core';
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';
-import { ServiceQrCode } from 'pc/common/guide/ui/qr_code';
+import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible } from 'pc/hooks';
 import { FC } from 'react';

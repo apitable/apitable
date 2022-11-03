@@ -7,7 +7,7 @@ import { t, Strings } from 'i18n';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
 import { CollaCommandName } from 'commands';
-import { Events, Player } from 'player';
+import { Events, Player } from '../../modules/shared/player';
 
 export interface IMoveRow {
   recordId: string;

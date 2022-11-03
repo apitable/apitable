@@ -4,7 +4,7 @@ import {
 import { KonvaEventObject } from 'konva/lib/Node';
 import { isEqual } from 'lodash';
 import dynamic from 'next/dynamic';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { generateTargetName, IScrollState } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
 import {

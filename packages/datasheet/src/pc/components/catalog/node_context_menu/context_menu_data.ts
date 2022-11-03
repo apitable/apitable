@@ -1,7 +1,7 @@
 import { ConfigConstant, Strings, t, WORKBENCH_SIDE_ID } from '@apitable/core';
 import { black } from '@vikadata/components';
-import { ShortcutActionName } from 'pc/common/shortcut_key';
-import { getShortcutKeyString } from 'pc/common/shortcut_key/keybinding_config';
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { colorVars } from '@vikadata/components';
 import { isMobile } from 'react-device-detect';
 import { makeNodeIconComponent, NodeIcon } from './node_icons';

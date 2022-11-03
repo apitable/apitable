@@ -4,7 +4,7 @@ import { WarningTriangleNonzeroFilled } from '@vikadata/icons';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import { keyBy, pick } from 'lodash';
-import { memberStash } from 'pc/common/member_stash/member_stash';
+import { memberStash } from 'modules/space/member_stash/member_stash';
 import { AlarmTipText } from 'pc/components/alarm_tip_text';
 import { Message } from 'pc/components/common';
 import { FieldSelect } from 'pc/components/editors/date_time_editor/date_time_alarm/field_select/field_select';

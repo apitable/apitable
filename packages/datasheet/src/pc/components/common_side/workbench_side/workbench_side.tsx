@@ -6,7 +6,7 @@ import {
 import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@vikadata/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
 import { ImportFile } from 'pc/components/catalog/import_file';
 import { MoveTo } from 'pc/components/catalog/move_to';

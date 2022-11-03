@@ -3,7 +3,7 @@ import { Api, IReduxState, Navigation, Settings, StoreActions, Strings, t } from
 import classnames from 'classnames';
 import { last } from 'lodash';
 import Image from 'next/image';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'pc/common/billing';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';

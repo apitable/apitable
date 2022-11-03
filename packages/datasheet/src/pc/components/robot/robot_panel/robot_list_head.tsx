@@ -1,7 +1,7 @@
 import { Box, IconButton, TextButton, Tooltip, Typography, useTheme } from '@vikadata/components';
 import { Strings, t } from '@apitable/core';
 import { AddOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@vikadata/icons';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useAddNewRobot, useShowRobot } from '../hooks';
 import { IRobotHeadAddBtn } from '../interface';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './style.module.less';
 import { Button } from '@vikadata/components';
-import { ServiceQrCode } from 'pc/common/guide/ui/qr_code';
+import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { t, Strings } from '@apitable/core';
 import { store } from 'pc/store';
 import { Provider } from 'react-redux';

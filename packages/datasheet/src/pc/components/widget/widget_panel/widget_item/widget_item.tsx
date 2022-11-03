@@ -20,7 +20,7 @@ import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { SimpleEmitter } from 'pc/common/simple_emitter';
+import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';

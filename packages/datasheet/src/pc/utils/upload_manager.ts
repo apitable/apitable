@@ -2,8 +2,8 @@ import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue,
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
-import { triggerUsageAlert } from 'pc/common/billing';
-import { subscribeUsageCheck } from 'pc/common/billing/subscribe_usage_check';
+import { triggerUsageAlert } from 'modules/enterprise/billing';
+import { subscribeUsageCheck } from 'modules/enterprise/billing/subscribe_usage_check';
 import { Message, Modal } from 'pc/components/common';
 import { IUploadResponse } from 'pc/components/upload_modal/upload_core';
 import { store } from 'pc/store';

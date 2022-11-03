@@ -1,4 +1,4 @@
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { useEffect, useRef } from 'react';
 
 export function useKeyboardCollapse(callback: Function) {

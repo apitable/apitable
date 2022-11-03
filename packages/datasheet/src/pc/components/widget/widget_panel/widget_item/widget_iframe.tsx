@@ -4,7 +4,7 @@ import { IExpandRecordProps, mainWidgetMessage, RuntimeEnv } from '@vikadata/wid
 import { WidgetMessageType } from '@vikadata/widget-sdk/dist/iframe_message/interface';
 import { useUnmount } from 'ahooks';
 import classnames from 'classnames';
-import { getDependenceByDstIds } from 'pc/common/billing';
+import { getDependenceByDstIds } from 'modules/enterprise/billing';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

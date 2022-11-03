@@ -1,7 +1,7 @@
 import { Button, Message } from '@vikadata/components';
 import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import Image from 'next/image';
-import { triggerUsageAlert } from 'pc/common/billing';
+import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Modal } from 'pc/components/common';
 import { IDisabledPermission } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';

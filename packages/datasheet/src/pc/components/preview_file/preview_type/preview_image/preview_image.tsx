@@ -4,7 +4,7 @@ import { IPreviewTypeBase } from '../preview_type.interface';
 import { cellValueToImageSrc, isWebp } from '@apitable/core';
 import styles from './style.module.less';
 import { FileType, getDownloadSrc, isSupportImage, renderFileIconUrl } from 'pc/utils/file_type';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { NoSupport } from '../no_support';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_placeholder_filled.png'; // img
 import { useEvents } from './hooks/use_events';

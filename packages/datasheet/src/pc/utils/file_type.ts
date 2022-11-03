@@ -1,7 +1,7 @@
 import { cellValueToImageSrc, getHostOfAttachment, IAttachmentValue, IImageSrcOption, isImage, isPdf, isWebp } from '@apitable/core';
 import accept from 'attr-accept';
 import mime from 'mime-types';
-import { browser } from 'pc/common/browser';
+import { browser } from 'modules/shared/browser';
 import { byte2Mb } from 'pc/utils';
 import IconImg from 'static/icon/datasheet/attachment/attachment_ img_small_placeholder_filled.png'; // img
 import IconTxt from 'static/icon/datasheet/attachment/datasheet_img_attachment_ text_placeholder.png'; // txt

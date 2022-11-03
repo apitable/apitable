@@ -1,7 +1,7 @@
 import { StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
-import { getWizardInfo } from 'pc/common/guide/utils';
-import { startActions } from 'pc/common/apphook/trigger_commands';
+import { getWizardInfo } from 'modules/enterprise/guide/utils';
+import { startActions } from 'modules/shared/apphook/trigger_commands';
 import { batchActions } from 'redux-batched-actions';
 let curId = -1;
 

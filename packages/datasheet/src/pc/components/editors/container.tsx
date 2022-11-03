@@ -28,8 +28,8 @@ import {
 } from '@apitable/core';
 
 import { isEqual, noop } from 'lodash';
-import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'pc/common/shortcut_key';
-import { appendRow } from 'pc/common/shortcut_key/shortcut_actions/append_row';
+import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
+import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { convertAlarmStructure } from 'pc/components/editors/date_time_editor/date_time_alarm/utils';
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';

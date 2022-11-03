@@ -3,7 +3,7 @@ import { Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCo
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';

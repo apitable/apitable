@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react';
 import { ISubscription, Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
 import { IServiceError } from '@vikadata/widget-sdk';
-import { triggerUsageAlert } from 'pc/common/billing';
+import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';

@@ -10,7 +10,7 @@ export * from './utils';
 export * from './config';
 export * from './api';
 export * from './i18n';
-export * from './player';
+export * from './modules/shared/player';
 export * from './formula_parser';
 export * from './store/reducers/resource';
 export * from './compensator';

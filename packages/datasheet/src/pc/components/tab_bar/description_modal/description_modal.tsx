@@ -3,7 +3,7 @@ import { DescriptionOutlined } from '@vikadata/icons';
 import { Modal } from 'antd';
 import classNames from 'classnames';
 import { debounce } from 'lodash';
-import { ContextName, ShortcutContext } from 'pc/common/shortcut_key';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { Deserializer, IEditorData, Serializer, SlateEditor } from 'pc/components/slate_editor';
 import { useImageUpload } from 'pc/hooks';
 import { store } from 'pc/store';

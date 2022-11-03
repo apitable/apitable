@@ -4,7 +4,7 @@ import { deleteLinkFieldConfirm } from './delete_link_field_confirm';
 import { Modal } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { notify } from 'pc/components/common/notify';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { NotifyKey } from '../notify/notify.interface';
 
 export function fieldChangeConfirm(props: {

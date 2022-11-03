@@ -1,6 +1,6 @@
 import { CollaCommandName, FieldType, ICellValue, IField } from '@apitable/core';
 import { ShapeConfig } from 'konva/lib/Shape';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { resourceService } from 'pc/resource_service';
 import { FC, memo } from 'react';
 import { CellScrollContainer } from '../cell_scroll_container';

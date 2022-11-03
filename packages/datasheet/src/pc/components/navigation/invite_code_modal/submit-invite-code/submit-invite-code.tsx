@@ -2,7 +2,7 @@ import { Button, Message, TextInput, Typography } from '@vikadata/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { setUsedInviteReward } from '@apitable/core/dist/store/actions';
 import Image from 'next/image';
-import { TriggerCommands } from 'pc/common/apphook/trigger_commands';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { WithTipWrapper } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { dispatch } from 'pc/worker/store';

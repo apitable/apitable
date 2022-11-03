@@ -1,4 +1,4 @@
-import { appendRow } from 'pc/common/shortcut_key/shortcut_actions/append_row';
+import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import * as React from 'react';
 import styles from './styles.module.less';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';

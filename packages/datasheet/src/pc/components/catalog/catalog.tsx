@@ -1,6 +1,6 @@
 import { ConfigConstant, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
-import { ShortcutActionManager, ShortcutActionName } from 'pc/common/shortcut_key';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useWorkbenchSideSync, useRootManageable } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { useContext, useEffect, useState } from 'react';
