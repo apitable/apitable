@@ -95,7 +95,9 @@ public class PermissionServiceImpl implements IPermissionService {
         // non space station member
         if (memberId == null) {
             for (String nodeId : nodeIds) {
-                views.add(this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId));
+                DatasheetPermissionView view = this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId);
+                view.setIsDeleted(true);
+                views.add(view);
             }
             return views;
         }

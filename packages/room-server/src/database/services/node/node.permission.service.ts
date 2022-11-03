@@ -96,13 +96,13 @@ export class NodePermissionService {
       return { hasRole: false, role: ConfigConstant.permission.foreigner, fieldPermissionMap, ...DEFAULT_PERMISSION };
     }
     // Permissions of shared node is based on last modifier of the shared node
-    const { editable, readable, userId, uuid, fieldPermissionMap } = await this.restService.getNodePermission(auth, nodeId, shareId);
+    const { editable, readable, userId, uuid, fieldPermissionMap, isDeleted } = await this.restService.getNodePermission(auth, nodeId, shareId);
     // Sharing editable. If the sharer does not have editable permission, return default permission.
     if (props.canBeEdited) {
-      if (!editable) {
-        return { hasRole: false, role: ConfigConstant.permission.foreigner, userId, uuid, fieldPermissionMap, ...DEFAULT_PERMISSION };
+      if( editable || isDeleted ){
+        return { hasRole: true, role: ConfigConstant.permission.editor, userId, uuid, fieldPermissionMap, ...DEFAULT_EDITOR_PERMISSION };
       }
-      return { hasRole: true, role: ConfigConstant.permission.editor, userId, uuid, fieldPermissionMap, ...DEFAULT_EDITOR_PERMISSION };
+      return { hasRole: false, role: ConfigConstant.permission.foreigner, userId, uuid, fieldPermissionMap, ...DEFAULT_PERMISSION };
     }
     // Not sharing editable. If the sharer does not have editable permission, return default permission
     if (!readable) {

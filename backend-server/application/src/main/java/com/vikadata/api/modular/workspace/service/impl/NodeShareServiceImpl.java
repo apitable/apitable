@@ -359,12 +359,12 @@ public class NodeShareServiceImpl implements INodeShareService {
         String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeSetting.getNodeId());
         ExceptionUtil.isNotNull(nodeSpaceId, SHARE_EXPIRE);
         // Get the last operator to determine if it does not exist.
-        Long memberId = memberMapper.selectIdByUserIdAndSpaceId(nodeSetting.getUpdatedBy(), nodeSpaceId);
-        ExceptionUtil.isNotNull(memberId, SHARE_EXPIRE);
+        MemberInfoDTO member = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(nodeSetting.getUpdatedBy(), nodeSpaceId);
+        ExceptionUtil.isNotNull(member.getId(), SHARE_EXPIRE);
         // Obtain the node ID of the node and its child descendants.
         List<String> nodeIds = nodeMapper.selectBatchAllSubNodeIds(Collections.singletonList(nodeSetting.getNodeId()), false);
         // Filter the required permissions of the node and share the display logic of the node tree synchronously.
-        ControlRoleDict roleDict = controlTemplate.fetchShareNodeTree(memberId, nodeIds);
+        ControlRoleDict roleDict = controlTemplate.fetchShareNodeTree(member.getId(), nodeIds);
         ExceptionUtil.isFalse(roleDict.isEmpty(), SHARE_EXPIRE);
         NodeCopyOptions options = NodeCopyOptions.builder().copyData(true).verifyNodeCount(true).filterPermissionField(true).build();
         if (roleDict.keySet().size() != nodeIds.size()) {
