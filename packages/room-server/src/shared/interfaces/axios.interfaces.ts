@@ -18,6 +18,7 @@ export interface INodePermissionBase {
   nodeFavorite?: boolean;
   fieldPermissionMap?: IFieldPermissionMap;
   isGhostNode?: boolean;
+    isDeleted?: boolean;
 }
 
 export type NodePermission = INodePermissionBase & IPermissions;

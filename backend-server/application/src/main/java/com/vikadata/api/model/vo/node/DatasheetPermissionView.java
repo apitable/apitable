@@ -232,4 +232,8 @@ public class DatasheetPermissionView {
 
     @ApiModelProperty(value = "数表字段权限信息", dataType = "java.util.Map", position = 27)
     private Map<String, FieldPermissionInfo> fieldPermissionMap;
+
+    @ApiModelProperty(value = "sharer is deleted", example = "true", position = 28)
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isDeleted;
 }
