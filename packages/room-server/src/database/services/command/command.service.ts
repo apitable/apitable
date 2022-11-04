@@ -22,26 +22,28 @@ import {
   Selectors,
   StoreActions
 } from '@apitable/core';
-import { InjectLogger } from '../../../../shared/common';
+import { InjectLogger } from '../../../shared/common';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';
 import thunkMiddleware from 'redux-thunk';
 import { Logger } from 'winston';
-import { ICommandInterface } from '../i.command.interface';
 
 /**
  * @author Zoe zheng
  * @date 2020/8/20 11:23 AM
  */
 @Injectable()
-export class CommandService implements ICommandInterface {
+export class CommandService {
   constructor(
     @InjectLogger() private readonly logger: Logger
   ) { }
 
-  fullFillStore(spaceId: string, datasheetPack: IServerDatasheetPack, userInfo?: IUserInfo): any {
+  fullFillStore(datasheetPack: IServerDatasheetPack, userInfo?: IUserInfo): any {
     const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
-    store.dispatch(StoreActions.setPageParams({ datasheetId: datasheetPack.datasheet.id, spaceId }));
+    store.dispatch(StoreActions.setPageParams({
+      datasheetId: datasheetPack.datasheet.id,
+      spaceId: datasheetPack.datasheet.spaceId
+    }));
 
     if (datasheetPack.foreignDatasheetMap) {
       Object.keys(datasheetPack.foreignDatasheetMap).forEach(dstId => {
@@ -115,20 +117,6 @@ export class CommandService implements ICommandInterface {
       store.dispatch(store.dispatch(StoreActions.receiveDataPack({ datasheet: pack.datasheet, snapshot: pack.snapshot }, true)));
     });
     return store;
-  }
-
-  applyJOTOperations(
-    resourceId: string,
-    operates: IOperation[],
-    store: Store<IReduxState>,
-    datasheets?: { [dstId: string]: { resourceType: ResourceType; revision: number } },
-  ) {
-    store.dispatch(StoreActions.applyJOTOperations(operates, datasheets ? datasheets[resourceId].resourceType : ResourceType.Datasheet, resourceId));
-    if (datasheets) {
-      Object.keys(datasheets).forEach(dstId => {
-        store.dispatch(StoreActions.updateRevision(datasheets[dstId].revision, dstId, datasheets[dstId].resourceType));
-      });
-    }
   }
 
   setPageParam(payload: { datasheetId: string; spaceId?: string }, store: Store<IReduxState>) {

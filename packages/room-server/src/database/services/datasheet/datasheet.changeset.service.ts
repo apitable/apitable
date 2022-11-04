@@ -7,8 +7,8 @@ import { ChangesetBaseDto } from '../../dtos/changeset.base.dto';
 import { UnitBaseInfoDto } from '../../dtos/unit.base.info.dto';
 import { DatasheetChangesetRepository } from '../../repositories/datasheet.changeset.repository';
 import { Store } from 'redux';
-import { CommandOptionsService } from '../command/impl/command.options.service';
-import { CommandService } from '../command/impl/command.service';
+import { CommandService } from '../command/command.service';
+import { CommandOptionsService } from '../command/command.options.service';
 import { UnitService } from '../unit/unit.service';
 
 @Injectable()

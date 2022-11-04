@@ -15,7 +15,7 @@ import { omit } from 'lodash';
 import { FormDataPack } from '../../interfaces';
 import { OtService } from 'database/services/ot/ot.service';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
-import { CommandService } from 'database/services/command/impl/command.service';
+import { CommandService } from 'database/services/command/command.service';
 import { RedisService } from '@vikadata/nestjs-redis';
 import { promisify } from 'util';
 import { Logger } from 'winston';
@@ -205,7 +205,7 @@ export class FormService {
         }
       }
     }
-    const interStore = this.commandService.fullFillStore(datasheetPack.datasheet.spaceId, datasheetPack);
+    const interStore = this.commandService.fullFillStore(datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError('api_insert_error');
     // Client submission has been applied to store. Wait for room to acknowledgment

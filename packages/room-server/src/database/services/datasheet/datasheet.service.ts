@@ -10,7 +10,7 @@ import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordM
 import { isEmpty } from 'lodash';
 import { DatasheetPack, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../../repositories/datasheet.repository';
-import { CommandService } from 'database/services/command/impl/command.service';
+import { CommandService } from 'database/services/command/command.service';
 import { Store } from 'redux';
 import { Logger } from 'winston';
 import { UnitInfo, UserInfo } from '../../interfaces';

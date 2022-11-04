@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CollaCommandName, ICollaCommandOptions, IField, IFieldMap, IRecordMap } from '@apitable/core';
-import { ICommandOptionsInterface } from 'database/services/command/i.command.options.interface';
 
 /**
  * @author Zoe zheng
  * @date 2020/8/20 11:23 AM
  */
 @Injectable()
-export class CommandOptionsService implements ICommandOptionsInterface {
+export class CommandOptionsService {
   getSetRecordsOptions(dstId: string, records: IRecordMap, fieldMap: IFieldMap): ICollaCommandOptions {
     const fieldData = Object.values(records).reduce<any[]>((pre, cur) => {
       Object.keys(fieldMap).forEach(fieldId => {

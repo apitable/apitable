@@ -7,7 +7,7 @@ import { RecordAlarmStatus } from 'shared/enums/record.alarm.enum';
 import { isEmpty } from 'lodash';
 import { RecordMap } from '../../../database/interfaces';
 import { QueueSenderService } from 'shared/services/queue/queue.sender.service';
-import { CommandService } from 'database/services/command/impl/command.service';
+import { CommandService } from 'database/services/command/command.service';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
 import { DatasheetRecordAlarmService } from 'database/services/datasheet/datasheet.record.alarm.service';
 import { DatasheetRecordService } from 'database/services/datasheet/datasheet.record.service';

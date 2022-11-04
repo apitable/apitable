@@ -32,6 +32,7 @@ import { UserRepository } from 'database/repositories/user.repository';
 import { WidgetRepository } from 'database/repositories/widget.repository';
 import { AttachmentService } from 'database/services/attachment/attachment.service';
 import { DashboardService } from 'database/services/dashboard/dashboard.service';
+import { DataBusService } from 'database/services/databus/databus.service';
 import { ComputeFieldReferenceManager } from 'database/services/datasheet/compute.field.reference.manager';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
@@ -142,6 +143,7 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     FusionApiService,
     FusionApiFilter,
     FusionApiTransformer,
+    DataBusService,
     OtService,
     DatasheetOtService,
     DashboardOtService,
@@ -180,6 +182,7 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     FusionApiService,
     FusionApiFilter,
     FusionApiTransformer,
+    DataBusService,
     DatasheetService,
     DatasheetMetaService,
     DatasheetRecordService,

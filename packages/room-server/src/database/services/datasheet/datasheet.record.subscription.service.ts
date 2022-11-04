@@ -12,7 +12,7 @@ import { DatasheetRecordSubscriptionRepository } from '../../repositories/datash
 import { RestService } from 'shared/services/rest/rest.service';
 import { In } from 'typeorm';
 import { Logger } from 'winston';
-import { CommandService } from '../command/impl/command.service';
+import { CommandService } from '../command/command.service';
 import { NodeService } from '../node/node.service';
 import { UnitMemberService } from '../unit/unit.member.service';
 import { UserService } from '../user/user.service';
@@ -176,7 +176,7 @@ export class DatasheetRecordSubscriptionService {
     if (!dataPack) return;
 
     const userInfo = await this.userService.getUserInfoBySpaceId(authHeader, dataPack.datasheet.spaceId);
-    const store = this.commandService.fullFillStore(dataPack.datasheet.spaceId, dataPack, userInfo);
+    const store = this.commandService.fullFillStore(dataPack, userInfo);
     const state = store.getState();
 
     const subscriptions = await this.getSubscriptionsByRecordId(datasheetId, recordId);
@@ -308,7 +308,7 @@ export class DatasheetRecordSubscriptionService {
     if (!dataPack) return;
 
     const userInfo = await this.userService.getUserInfoBySpaceId(authHeader, dataPack.datasheet.spaceId);
-    const store = this.commandService.fullFillStore(dataPack.datasheet.spaceId, dataPack, userInfo);
+    const store = this.commandService.fullFillStore(dataPack, userInfo);
     const state = store.getState();
 
     const subscriptions = await this.getSubscriptionsByRecordId(datasheetId, recordId);

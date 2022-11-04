@@ -15,7 +15,7 @@ import { getRecordUrl } from 'shared/helpers/env';
 import { AutomationTriggerRepository } from '../../../automation/repositories/automation.trigger.repository';
 import { AutomationTriggerTypeRepository } from '../../../automation/repositories/automation.trigger.type.repository';
 import { AutomationService } from '../../../automation/services/automation.service';
-import { CommandService } from '../command/impl/command.service';
+import { CommandService } from '../command/command.service';
 import { DatasheetService } from '../datasheet/datasheet.service';
 import { Logger } from 'winston';
 
