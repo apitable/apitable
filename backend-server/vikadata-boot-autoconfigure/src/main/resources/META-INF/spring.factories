@@ -26,5 +26,6 @@ com.vikadata.boot.autoconfigure.xiaomi.XiaomiAutoConfiguration,\
 com.vikadata.boot.autoconfigure.amqp.RabbitTemplateAutoConfiguration,\
 com.vikadata.boot.autoconfigure.pingpp.PingPlusPlusAutoConfiguration,\
 com.vikadata.boot.autoconfigure.idaas.IdaasAutoConfiguration,\
-com.vikadata.boot.autoconfigure.auth0.Auth0AutoConfiguration
+com.vikadata.boot.autoconfigure.auth0.Auth0AutoConfiguration,\
+com.vikadata.boot.autoconfigure.teg.SmartProxyAutoConfiguration
 org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=com.vikadata.boot.autoconfigure.AutoConfigurationFilter

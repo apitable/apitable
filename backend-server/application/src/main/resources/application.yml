@@ -355,6 +355,7 @@ vikadata-starter:
   teg:
     enabled: ${TEG_ENBALED:false}
     token-key: ${TEG_TOKEN:teg000001}
+    ignore-urls: ${TEG_IGNORE_URLS:'/internal/**,/client/**,/actuator/**'}
 
 sentry:
   dsn: ${SENTRY_DSN:}
