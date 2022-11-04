@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.modular.automation.mapper.AutomationTriggerTypeMapper">
+    <select id="selectIdByTriggerTypeId" resultType="java.lang.Long">
+        SELECT id
+        FROM vika_automation_trigger_type
+        WHERE trigger_type_id = #{triggerTypeId}
+          AND is_deleted = 0 LIMIT 1
+    </select>
+
     <select id="getTriggerTypeByEndpoint" resultType="java.lang.String">
         SELECT tt.trigger_type_id
         FROM vika_automation_trigger_type tt

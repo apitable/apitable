@@ -15,4 +15,5 @@ public interface AutomationActionTypeMapper extends BaseMapper<AutomationActionT
      */
     String getActionTypeIdByEndpoint(@Param("endpoint") String endpoint);
 
+    Long selectIdByActionTypeId(@Param("actionTypeId") String actionTypeId);
 }
