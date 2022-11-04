@@ -147,7 +147,7 @@ curl https://apitable.github.io/install.sh | bash -c
 
 Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
 
-If you want to set up your local development environment, read our [developer guide](./docs/contribute/developer-guide.md)
+If you want to set up your local development environment, read our [Developer Guide](./docs/contribute/developer-guide.md)
 
 
 ## 🧑‍💻 Contributing
@@ -156,29 +156,13 @@ Welcome, and thank you for your interest in contributing to APITable!
 
 There are many ways in which you can contribute, beyond writing code. 
 
-You can read this repository’s [contributing guidelines](./CONTRIBUTING.md) to learn how to contribute.
+You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
 
 Here help you quick start the process of contributing to APITable.
 
-### Run for development
+### Development environment
 
-APITable uses Docker to run everything, so relax that Java and NodeJS are unnecessary installed for your local machine.
-
-Make sure you have `docker` & `make` installed locally.
-
-Then you run development environment by one command:
-
-```bash
-# docker compose up the development environment with local code
-make devenv-up
-```
-
-Input `make` command to see the help.
-
-```bash
-# help
-make
-```
+Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
 
 ### Git workflow basic
 
@@ -192,9 +176,9 @@ Here's a general APITable git workflow:
 6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
 
-### Conventions
+### Work conventions
 
-APITable use common use conventions:
+APITable use these common conventions:
 
 - What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
 - How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
