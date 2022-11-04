@@ -7,6 +7,7 @@ Make sure you have the following dependencies installed before setting up your d
 
 - `git`
 - `docker`
+- `docker-compose v2`
 - `make`
 
 ## macOS
@@ -22,12 +23,22 @@ brew install make
 
 
 ## Windows
-If you are running APITable on Windows 10, we recommend installing the Windows Subsystem for Linux (WSL). 
-For installation instructions, refer to our [APITable setup guide for Windows environment](./windows-guide.md).
+
+If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal),
+you can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+
+Install missing dependencies on Ubuntu using `apt`:
+
+```bash
+sudo apt update
+sudo apt install git
+sudo apt install make
+```
+
 
 ## Local Programming Language Environment
 
-APITable use `docker` to run everything. It is unnecessary to set up programming language environment. 
+APITable use `docker` to run everything. It is unnecessary to set up programming language environment.
 But if you want to do so, we recommend following these SDK manager installed.
 
 - [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
@@ -37,7 +48,7 @@ Then install programming langauge environment locally:
 
 ```bash
 sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
-nvm install 16.15.0 && nvm use 16.15.0
+nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 ```
 
 
