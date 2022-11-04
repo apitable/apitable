@@ -13990,7 +13990,7 @@ __metadata:
     quill-markdown-shortcuts: ^0.0.10
     raw-loader: ^4.0.2
     rc-calendar: ^9.15.11
-    rc-queue-anim: ^2.0.0
+    rc-queue-anim: ^1.8.5
     rc-swipeout: ^2.0.11
     rc-textarea: ^0.4.5
     rc-trigger: ^5.3.3
@@ -19200,17 +19200,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:2, commander@npm:^2.15.1, commander@npm:^2.18.0, commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:~2.20.3":
-  version: 2.20.3
-  resolution: "commander@npm:2.20.3"
-  checksum: ab8c07884e42c3a8dbc5dd9592c606176c7eb5c1ca5ff274bcf907039b2c41de3626f684ea75ccf4d361ba004bbaff1f577d5384c155f3871e456bdf27becf9e
-  languageName: node
-  linkType: hard
-
 "commander@npm:4.1.1, commander@npm:^4.0.0, commander@npm:^4.1.1":
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
   checksum: d7b9913ff92cae20cb577a4ac6fcc121bd6223319e54a40f51a14740a681ad5c574fd29a57da478a5f234a6fa6c52cbf0b7c641353e03c648b1ae85ba670b977
+  languageName: node
+  linkType: hard
+
+"commander@npm:^2.15.1, commander@npm:^2.18.0, commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:~2.20.3":
+  version: 2.20.3
+  resolution: "commander@npm:2.20.3"
+  checksum: ab8c07884e42c3a8dbc5dd9592c606176c7eb5c1ca5ff274bcf907039b2c41de3626f684ea75ccf4d361ba004bbaff1f577d5384c155f3871e456bdf27becf9e
   languageName: node
   linkType: hard
 
@@ -20482,13 +20482,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"d3-array@npm:^1.2.0":
-  version: 1.2.4
-  resolution: "d3-array@npm:1.2.4"
-  checksum: d0be1fa7d72dbfac8a3bcffbb669d42bcb9128d8818d84d2b1df0c60bbe4c8e54a798be0457c55a219b399e2c2fabcbd581cbb130eb638b5436b0618d7e56000
-  languageName: node
-  linkType: hard
-
 "d3-color@npm:1 - 3":
   version: 3.0.1
   resolution: "d3-color@npm:3.0.1"
@@ -20526,13 +20519,6 @@ __metadata:
   dependencies:
     d3-color: 1 - 3
   checksum: a42ba314e295e95e5365eff0f604834e67e4a3b3c7102458781c477bd67e9b24b6bb9d8e41ff5521050a3f2c7c0c4bbbb6e187fd586daa3980943095b267e78b
-  languageName: node
-  linkType: hard
-
-"d3-polygon@npm:^1.0.3":
-  version: 1.0.6
-  resolution: "d3-polygon@npm:1.0.6"
-  checksum: 4a9764c2064d15e9f4fc9018c975f127540f6e701c18442e2a2e9339e743726f40e017d5213982d983cac3c23802321c257f2a10e686c803ec5533c6ff42bb7a
   languageName: node
   linkType: hard
 
@@ -21817,13 +21803,6 @@ __metadata:
     readable-stream: ^2.0.0
     stream-shift: ^1.0.0
   checksum: 3c2ed2223d956a5da713dae12ba8295acb61d9acd966ccbba938090d04f4574ca4dca75cca089b5077c2d7e66101f32e6ea9b36a78ca213eff574e7a8b8accf2
-  languageName: node
-  linkType: hard
-
-"earcut@npm:^2.1.1":
-  version: 2.2.4
-  resolution: "earcut@npm:2.2.4"
-  checksum: aea0466cb2f24e0c3c57148d8d28ac9846f53c4f43ee66780826474303ac851b305ef988152d0bdeb31e8f7ca939dc0df737e7505cfb1c1bdf2ff9d7f9ea2faa
   languageName: node
   linkType: hard
 
@@ -24495,20 +24474,6 @@ __metadata:
   version: 3.1.1
   resolution: "flatted@npm:3.1.1"
   checksum: 508935e3366d95444131f0aaa801a4301f24ea5bcb900d12764e7335b46b910730cc1b5bcfcfb8eccb7c8db261ba0671c6a7ca30d10870ff7a7756dc7e731a7a
-  languageName: node
-  linkType: hard
-
-"flubber@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "flubber@npm:0.4.2"
-  dependencies:
-    d3-array: ^1.2.0
-    d3-polygon: ^1.0.3
-    earcut: ^2.1.1
-    svg-path-properties: ^0.2.1
-    svgpath: ^2.2.1
-    topojson-client: ^3.0.0
-  checksum: 089be854af2a1b2324a012bebe8d0ac251b6b1a4b71dfdd85f8186b851c0fbf7c795f4c1aa8aa7020064e42220e3cd10c8463fb2c9f1d3637f77d9a80c33bed2
   languageName: node
   linkType: hard
 
@@ -38089,7 +38054,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"raf@npm:^3.1.0, raf@npm:^3.4.0, raf@npm:^3.4.1":
+"raf@npm:^3.1.0, raf@npm:^3.4.0, raf@npm:~3.4.0":
   version: 3.4.1
   resolution: "raf@npm:3.4.1"
   dependencies:
@@ -38535,16 +38500,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"rc-queue-anim@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "rc-queue-anim@npm:2.0.0"
+"rc-queue-anim@npm:^1.8.5":
+  version: 1.8.5
+  resolution: "rc-queue-anim@npm:1.8.5"
   dependencies:
-    "@babel/runtime": ^7.11.1
-    tween-one: ^1.0.52
-  peerDependencies:
-    react: ">=16.9.0"
-    react-dom: ">=16.9.0"
-  checksum: 01f2d3223790dfb28e8f3842e0aadae05f65f6d3aaa863f9be273971a41e4b5c72008b0433acbdda2c24ed1303e1a23b24b06538161ec4d94b640a8ce883471d
+    babel-runtime: 6.x
+    prop-types: ^15.6.0
+    rc-tween-one: ^2.5.0
+    react-lifecycles-compat: ^3.0.4
+  checksum: cfbeb920d530c37b03b4ce9a689d9379366ec5789ef8f42ec9894452ae18af3c3baf3360bf03ca481d224b69668d85c25e86dfd98037ef262f9756412a1d1eae
   languageName: node
   linkType: hard
 
@@ -38865,6 +38829,20 @@ fsevents@^1.2.7:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
   checksum: 92134e35b25c20d906c1655d8b6bef9805710a0916e22799adda7404cbfaa4b7fdf57040280bcf53ff4e31c4aef15ea8dfb0bf2e9d74c65abd7575199931feda
+  languageName: node
+  linkType: hard
+
+"rc-tween-one@npm:^2.5.0":
+  version: 2.7.3
+  resolution: "rc-tween-one@npm:2.7.3"
+  dependencies:
+    babel-runtime: 6.x
+    prop-types: ^15.6.1
+    raf: ~3.4.0
+    react-lifecycles-compat: ^3.0.4
+    style-utils: ~0.2.0
+    tween-functions: ~1.2.0
+  checksum: 6b27c8ae19bacaa7f816e71e2e9488af389393034cb09aef4f4e3a79ab7ff8b6f0d76055d3be2c0a6990e81e22bc1557e50fd957184863481c6a43c8d06be109
   languageName: node
   linkType: hard
 
@@ -43706,10 +43684,10 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"style-utils@npm:^0.3.6":
-  version: 0.3.8
-  resolution: "style-utils@npm:0.3.8"
-  checksum: 84c0458e2f1685d5ba7ea65638d6a63fd22a3066188e6f305ca1f59ae042b8ac21ad21cd975fe293427a6813a9b48386cd54945624657e7ea2e24b4e76340689
+"style-utils@npm:~0.2.0":
+  version: 0.2.1
+  resolution: "style-utils@npm:0.2.1"
+  checksum: 3a1065b4029ca7c3501498d9018cee3ae275502e1e9f1ce2550135f761d6990f628c7cb8b76c880d6cd168c5caf9b13efa576a986ebbcaf1db307297cc9eea84
   languageName: node
   linkType: hard
 
@@ -43973,20 +43951,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"svg-path-properties@npm:^0.2.1":
-  version: 0.2.2
-  resolution: "svg-path-properties@npm:0.2.2"
-  checksum: 1adb6b9f61c9749c3cc05f29e8527ed595a3570213c7aa5e349a1ffcfb7c7fe1d8fc8daee846130c43dd0fdf50b22bca372e13b1120b4574fba06300a716be7a
-  languageName: node
-  linkType: hard
-
-"svg-path-properties@npm:^1.0.4":
-  version: 1.0.13
-  resolution: "svg-path-properties@npm:1.0.13"
-  checksum: b528ba51cab288aed18abd6c3b4268fe56f26b3facb7d70a353c221a7c840c7451bf1a47d78a915015836cfd90d45f1dab84ff96ff2839d987f3fd1fc83a2ca9
-  languageName: node
-  linkType: hard
-
 "svg-tags@npm:^1.0.0":
   version: 1.0.0
   resolution: "svg-tags@npm:1.0.0"
@@ -44035,13 +43999,6 @@ resolve@^2.0.0-next.3:
   bin:
     svgo: bin/svgo
   checksum: b92f71a8541468ffd0b81b8cdb36b1e242eea320bf3c1a9b2c8809945853e9d8c80c19744267eb91cabf06ae9d5fff3592d677df85a31be4ed59ff78534fa420
-  languageName: node
-  linkType: hard
-
-"svgpath@npm:^2.2.1":
-  version: 2.5.0
-  resolution: "svgpath@npm:2.5.0"
-  checksum: 90301456898dfce54a4d55755db57d4f0e5df3ee80cedce9f75fa08e1703b814daedfccd3adf87d3460b20d40310009832539e83924dc8b6151fe58ec0ec6732
   languageName: node
   linkType: hard
 
@@ -44766,19 +44723,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"topojson-client@npm:^3.0.0":
-  version: 3.1.0
-  resolution: "topojson-client@npm:3.1.0"
-  dependencies:
-    commander: 2
-  bin:
-    topo2geo: bin/topo2geo
-    topomerge: bin/topomerge
-    topoquantize: bin/topoquantize
-  checksum: 8c029a4f18324ace0b8b55dd90edbd40c9e3c6de18bafbb5da37ca20ebf20e26fbd4420891acb3c2c264e214185f7557871f5651a9eee517028663be98d836de
-  languageName: node
-  linkType: hard
-
 "totalist@npm:^1.0.0":
   version: 1.1.0
   resolution: "totalist@npm:1.1.0"
@@ -45379,24 +45323,10 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tween-functions@npm:^1.0.1, tween-functions@npm:^1.2.0":
+"tween-functions@npm:^1.0.1, tween-functions@npm:~1.2.0":
   version: 1.2.0
   resolution: "tween-functions@npm:1.2.0"
   checksum: 880708d680eff5c347ddcb9f922ad121703a91c78ce308ed309073e73a794b633eb0b80589a839365803f150515ad34c9646809ae8a0e90f09e62686eefb1ab6
-  languageName: node
-  linkType: hard
-
-"tween-one@npm:^1.0.52":
-  version: 1.1.8
-  resolution: "tween-one@npm:1.1.8"
-  dependencies:
-    "@babel/runtime": ^7.11.1
-    flubber: ^0.4.2
-    raf: ^3.4.1
-    style-utils: ^0.3.6
-    svg-path-properties: ^1.0.4
-    tween-functions: ^1.2.0
-  checksum: 202da1252c212434e4fb11b3a4734185e89a7394995c4f1d880215e615b8c15ddeb266a3d1c7c703e7ad34b4165bf6c5b4fd8ecee42c36384b6c579126dd3cbb
   languageName: node
   linkType: hard
 
