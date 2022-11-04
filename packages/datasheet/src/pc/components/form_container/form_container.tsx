@@ -19,7 +19,7 @@ import { Modal } from 'pc/components/common/modal';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { Router } from 'pc/components/route_manager/router';
-import { useDispatch, useQuery, useResponsive } from 'pc/hooks';
+import { useQuery, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
@@ -37,6 +37,7 @@ import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 
 enum IFormContentType {
   Form = 'Form',
@@ -129,7 +130,7 @@ export const FormContainer: React.FC = () => {
   const query = useQuery();
   const colors = useThemeColors();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const storageName = shareId ? StorageName.SharedFormFieldContainer : StorageName.FormFieldContainer;
   const recordId = tempRecordID;
 
