@@ -1,4 +1,5 @@
 import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@apitable/core';
+import { useThemeColors } from '@vikadata/components';
 import classNames from 'classnames';
 import produce from 'immer';
 import { Message } from 'pc/components/common';
@@ -7,8 +8,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { usePrevious } from 'pc/components/common/hooks/use_previous';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
-import { useThemeColors } from '@vikadata/components';
-import { memo, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
@@ -27,7 +27,16 @@ const FormatSelectBase = (props: IFormatSelect) => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const { currentField, setCurrentField } = props;
-  const fieldMap = useSelector(state => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const fieldMap = useSelector(state => {
+    const { formId, datasheetId } = state.pageParams;
+    if (formId) {
+      const sourceInfo = Selectors.getForm(state, formId)?.sourceInfo;
+      if (!sourceInfo) return {};
+      const { datasheetId } = sourceInfo;
+      return Selectors.getFieldMap(state, datasheetId);
+    }
+    return Selectors.getFieldMap(state, datasheetId!);
+  })!;
   const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
 
   function addNewItem() {
@@ -121,7 +130,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     <>
       {Boolean(isPreview && curOptsLen) && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>}
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={currentField.id} direction="vertical">
+        <Droppable droppableId={currentField.id} direction='vertical'>
           {provided => {
             return (
               <div
