@@ -6,21 +6,21 @@ export function useWidgetComponent(
   codeUrl?: string, widgetPackageId?: string):
   [React.FC | undefined, () => void, boolean, WidgetLoadError | undefined] {
   const componentRef = useRef<React.FC>();
-  const [loading, setLoading] = useState(false);
+  // if need to load the widget package.
+  const validate = Boolean(codeUrl && widgetPackageId);
+  const [loading, setLoading] = useState(validate);
   const [count, { inc: refreshVersion }] = useCounter(0);
   const [error, setError] = useState<WidgetLoadError>();
   const preCount = useRef<number>(count);
   const preCodeUrl = useRef<string>();
 
   useEffect(() => {
-    setLoading(true);
-    if (!codeUrl || !widgetPackageId) {
+    if (!validate) {
       componentRef.current = undefined;
-      setLoading(false);
       return;
     }
 
-    loadWidget(codeUrl, widgetPackageId,
+    loadWidget(codeUrl!, widgetPackageId!,
       // when version is refreshed or incoming codeUrl changes, the widget code package is reloaded
       count > preCount.current || (Boolean(preCodeUrl.current) && preCodeUrl.current !== codeUrl)
     ).then(component => {
@@ -33,10 +33,11 @@ export function useWidgetComponent(
       preCount.current = count;
       preCodeUrl.current = codeUrl;
     });
-  }, [codeUrl, count, setLoading, widgetPackageId]);
+  }, [codeUrl, count, setLoading, widgetPackageId, validate]);
 
   const refresh = useCallback(() => {
     componentRef.current = undefined;
+    setLoading(true);
     refreshVersion();
   }, [refreshVersion]);
 
