@@ -11,7 +11,7 @@ import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { IFilterDateProps } from '../../interface';
@@ -42,6 +42,13 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
   const ref = useRef<HTMLDivElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<IEditor>(null);
+
+  const [showRangeCalendar, setShowRangeCalendar] = useState(false);
+
+  useEffect(() => {
+    if (condition.value[0] !== FilterDuration.DateRange) return;
+    setShowRangeCalendar(true);
+  }, [condition.value]);
 
   if (field.type === FieldType.DateTime) {
     noDateProperty = {
@@ -143,7 +150,7 @@ export const FilterDate: React.FC<IFilterDateProps> = props => {
           <ComponentDisplay minWidthCompatible={ScreenSize.md}>
             <div ref={divRef}>
               {
-                divRef.current && ReactDOM.render(<RangePicker
+                divRef.current && showRangeCalendar && ReactDOM.render(<RangePicker
                   onChange={(value) => {rangePickerChange(value);}}
                   format='YYYY-MM-DD'
                   className={styles.dateRange}
