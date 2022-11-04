@@ -6,12 +6,12 @@ import { InvalidGrpcServiceException } from '@nestjs/microservices/errors/invali
 import { Cron } from '@nestjs/schedule';
 import { isFunction } from 'lodash';
 import { Observable } from 'rxjs';
-import { isDev, randomNum } from 'src/socket/common/helper';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { HealthConstants } from 'src/socket/constants/health.constants';
-import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { RedisService } from 'src/socket/service/redis/redis.service';
+import { isDev, randomNum } from 'socket/common/helper';
+import { GatewayConstants } from 'socket/constants/gateway.constants';
+import { HealthConstants } from 'socket/constants/health.constants';
+import { RedisConstants } from 'socket/constants/redis-constants';
+import { SocketConstants } from 'socket/constants/socket-constants';
+import { RedisService } from 'socket/service/redis/redis.service';
 
 /**
  * @deprecated
@@ -120,9 +120,9 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
 
   getHealthServerEndpoint(): string {
     if (!this.clientIps.size || isDev()) {
-      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.NEST_GRPC_URL}`);
-      return GatewayConstants.NEST_GRPC_URL;
-    }
+                                           this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.ROOM_GRPC_URL}`);
+                                           return GatewayConstants.ROOM_GRPC_URL;
+                                         }
     const ips = Array.from(this.clientIps);
     const index = randomNum(0, ips.length - 1);
     const ip = ips[index];
@@ -184,7 +184,7 @@ export class VikaGrpcClientProxyXxlJob extends ClientGrpcProxy implements OnAppl
 
     const healthIps = await redis.zrange(RedisConstants.VIKA_NEST_LOAD_HEALTH_KEY_V2, 0, -1);
     if (!healthIps.length) {
-      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.NEST_GRPC_URL}`);
+      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.ROOM_GRPC_URL}`);
     }
 
     const unHealthIps = await redis.hkeys(RedisConstants.VIKA_NEST_LOAD_UNHEALTH_KEY_V2);

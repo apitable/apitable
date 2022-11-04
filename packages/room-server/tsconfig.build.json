@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["src/proto/generated/proto", "node_modules", "test", "dist", "**/*spec.ts"]
+  "exclude": ["src/grpc/generated", "node_modules", "test", "dist", "**/*spec.ts"]
 }

@@ -8,13 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import com.vikadata.api.enums.datasheet.IdRulePrefixEnum;
+import com.vikadata.api.enums.node.NodeType;
 import com.vikadata.api.modular.organization.service.IMemberService;
-import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.workspace.service.INodeRecentlyBrowsedService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.api.enums.node.NodeType;
 import com.vikadata.integration.grpc.ApiServingServiceGrpc;
 import com.vikadata.integration.grpc.BasicResult;
 import com.vikadata.integration.grpc.NodeBrowsingRo;
@@ -25,12 +24,7 @@ import static com.vikadata.core.constants.ResponseExceptionConstants.DEFAULT_SUC
 import static com.vikadata.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
 
 /**
- * <p>
  * backend grp serving service
- * </p>
- *
- * @author zoe zheng
- * @date 2022/9/13 00:23
  */
 @GrpcService
 @Slf4j
@@ -40,9 +34,6 @@ public class BackendServingServiceImpl extends ApiServingServiceGrpc.ApiServingS
 
     @Resource
     private INodeService iNodeService;
-
-    @Resource
-    private ISpaceService iSpaceService;
 
     @Resource
     private IUserService iUserService;

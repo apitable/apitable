@@ -2,10 +2,11 @@ import { MetadataValue } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
+import { GrpcClient } from 'grpc/client/grpc.client';
+import { Value } from 'grpc/generated/google/protobuf/struct';
+import { Retryable } from 'grpc/util/retry.decorator';
+import { initGlobalGrpcMetadata } from 'grpc/util/utils';
 import { Socket } from 'socket.io';
-import { NestClient } from 'src/grpc/client/nest.client';
-import { Retryable } from 'src/grpc/util/retry.decorator';
-import { initGlobalGrpcMetadata } from 'src/grpc/util/utils';
 import { GatewayConstants } from '../../constants/gateway.constants';
 import { CHANGESETS_CMD, CHANGESETS_MESSAGE_ID, SocketConstants, TRACE_ID } from '../../constants/socket-constants';
 import { BroadcastTypes } from '../../enum/broadcast-types.enum';
@@ -19,11 +20,7 @@ import { NestService } from '../nest/nest.service';
 export class RoomService {
   private readonly logger = new Logger(RoomService.name);
 
-  constructor(
-    private readonly nestService: NestService,
-    private readonly nestClient: NestClient,
-  ) {
-  }
+  constructor(private readonly nestService: NestService, private readonly nestClient: GrpcClient) {}
 
   async clientDisconnect(socket: Socket) {
     const rooms = socket.rooms;
@@ -48,8 +45,12 @@ export class RoomService {
   @Retryable({
     maxAttempts: SocketConstants.GRPC_OPTIONS.retryPolicy.maxAttempts,
     sentryScopeContext: {
-      tags: (args) => { return { clientId: args[0]?.clientId }; },
-      extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie }; },
+      tags: args => {
+        return { clientId: args[0]?.clientId };
+      },
+      extra: args => {
+        return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie };
+      },
     },
     callback: () => ({ code: ServerErrorCode.NetworkError, success: false, message: 'Network Error' }),
   })
@@ -63,7 +64,7 @@ export class RoomService {
     this.logger.log({
       action: 'WatchRoom',
       traceId: traceId,
-      message: `WatchRoom Start roomId:[${message.roomId}]`
+      message: `WatchRoom Start roomId:[${message.roomId}]`,
     });
 
     if (isExistRoom) {
@@ -80,10 +81,13 @@ export class RoomService {
         this.logger.log({ room, socketId: socket.id, message: `traceId[${traceId}] User are join in room` });
         // Notify the client that all connected new users join the room
         socket.broadcast.to(room).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
-          collaborators: [{
-            socketId: socket.id,
-            createTime, ...result.data.collaborator,
-          }],
+          collaborators: [
+            {
+              socketId: socket.id,
+              createTime,
+              ...result.data.collaborator,
+            },
+          ],
         });
         result.data.collaborator = undefined;
 
@@ -101,7 +105,7 @@ export class RoomService {
       action: 'WatchRoom',
       traceId: traceId,
       ms: endTime - createTime,
-      message: `WatchRoom End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`
+      message: `WatchRoom End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`,
     });
     return result;
   }
@@ -151,8 +155,12 @@ export class RoomService {
   @Retryable({
     maxAttempts: SocketConstants.GRPC_OPTIONS.retryPolicy.maxAttempts,
     sentryScopeContext: {
-      tags: (args) => { return { clientId: args[0]?.clientId }; },
-      extra: (args) => { return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie }; },
+      tags: args => {
+        return { clientId: args[0]?.clientId };
+      },
+      extra: args => {
+        return { roomId: args[0]?.roomId, clientId: args[0]?.clientId, cookie: args[0]?.cookie };
+      },
     },
     callback: () => ({ code: ServerErrorCode.ServerError, success: false, message: 'Server Error' }),
   })
@@ -165,13 +173,13 @@ export class RoomService {
     this.logger.log({
       action: 'RoomChange',
       traceId: traceId,
-      message: `RoomChange Start roomId:[${message.roomId}]`
+      message: `RoomChange Start roomId:[${message.roomId}]`,
     });
 
     // notifies nest-server to handle `RoomChange` messages
     const result = await this.nestClient.roomChange(this.injectMessage(socket, message, true), _grpcMetadata);
     if ('success' in result && result.success) {
-      const changesets = this.broadcastServerChange(room, result.data, socket);
+      const changesets = this.broadcastServerChange(room, Value.decode(result.data.value).listValue, socket);
       result.data = { changesets };
     }
 
@@ -180,7 +188,7 @@ export class RoomService {
       action: 'RoomChange',
       traceId: traceId,
       ms: endTime - createTime,
-      message: `RoomChange End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`
+      message: `RoomChange End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`,
     });
     return result;
   }
@@ -321,11 +329,15 @@ export class RoomService {
 
   private changesetToGrpcMeta(changesets: any): { [key: string]: MetadataValue } {
     try {
-      const [{ messageId, operations: [{ cmd }] }] = changesets;
+      const [
+        {
+          messageId,
+          operations: [{ cmd }],
+        },
+      ] = changesets;
       return { [CHANGESETS_MESSAGE_ID]: messageId, [CHANGESETS_CMD]: cmd };
     } catch {
       return null;
     }
   }
-
 }

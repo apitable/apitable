@@ -1,6 +1,6 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
-import { HealthConstants } from 'src/socket/constants/health.constants';
+import { HealthConstants } from 'socket/constants/health.constants';
 import { LocalHealthIndicator } from '../service/indicator/local-health.indicator';
 
 @Controller('health')

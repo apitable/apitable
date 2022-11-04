@@ -57,9 +57,9 @@ import { EnterpriseModule } from 'enterprise/enterprise.module';
 import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
 import { EntryModule } from 'entry.module';
 import { FusionApiModule } from 'fusion/fusion.api.module';
+import { GrpcClientModule } from 'grpc/client/grpc.client.module';
 import { I18nModule } from 'nestjs-i18n';
 import path, { resolve } from 'path';
-import { GrpcClientModule } from 'proto/client/grpc.client.module';
 import { DEFAULT_LANGUAGE, I18nJsonParser } from 'shared/adapters/I18n.json.parser';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
 import { DatabaseConfigService } from 'shared/services/config/database.config.service';
@@ -104,8 +104,10 @@ import environmentConfig from './shared/services/config/environment.config';
     EnterpriseModule.register(enableScheduler),
     SocketModule.register(true), // TODO: whether or not use socket-module
     QueueWorkerModule,
-    ActuatorModule, FusionApiModule,
-    DatabaseModule, RobotModule,
+    ActuatorModule,
+    FusionApiModule,
+    DatabaseModule,
+    RobotModule,
     TypeOrmModule.forFeature([ResourceMetaRepository]),
     // FusionApiServiceModule,
     TypeOrmModule.forFeature([UserRepository]),
@@ -117,7 +119,7 @@ import environmentConfig from './shared/services/config/environment.config';
       AutomationRunHistoryRepository,
       AutomationServiceRepository,
       AutomationTriggerTypeRepository,
-      AutomationActionTypeRepository
+      AutomationActionTypeRepository,
     ]),
     TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
     GrpcClientModule,
@@ -135,10 +137,16 @@ import environmentConfig from './shared/services/config/environment.config';
     //   useClass: HttpConfigService,
     //   }),
     TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-    EntryModule
+    EntryModule,
   ],
   controllers: [DashboardController, GrpcController, FormController, MirrorController, ResourceController],
-  providers: [GrpcSocketService, DashboardService, EventService, FormService, MirrorService, AutomationService,
+  providers: [
+    GrpcSocketService,
+    DashboardService,
+    EventService,
+    FormService,
+    MirrorService,
+    AutomationService,
     OtService,
     UserService,
     DatasheetOtService,
@@ -148,12 +156,17 @@ import environmentConfig from './shared/services/config/environment.config';
     WidgetOtService,
     ResourceChangeHandler,
     WidgetService,
-    NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService,
-    UnitService, UnitMemberService, UnitTagService, UnitTeamService
-  ]
+    NodeService,
+    NodePermissionService,
+    NodeShareSettingService,
+    NodeDescriptionService,
+    UnitService,
+    UnitMemberService,
+    UnitTagService,
+    UnitTeamService,
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}
 
 const redisModuleOptions = (configService: ConfigService) => {
   const { host, port, password, db } = {

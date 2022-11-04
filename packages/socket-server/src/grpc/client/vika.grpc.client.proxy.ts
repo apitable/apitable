@@ -6,12 +6,12 @@ import { InvalidGrpcServiceException } from '@nestjs/microservices/errors/invali
 import { Cron } from '@nestjs/schedule';
 import { isFunction } from 'lodash';
 import { lastValueFrom, Observable } from 'rxjs';
-import { isDev, randomNum } from 'src/socket/common/helper';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { HealthConstants } from 'src/socket/constants/health.constants';
-import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { RedisService } from 'src/socket/service/redis/redis.service';
+import { isDev, randomNum } from 'socket/common/helper';
+import { GatewayConstants } from 'socket/constants/gateway.constants';
+import { HealthConstants } from 'socket/constants/health.constants';
+import { RedisConstants } from 'socket/constants/redis-constants';
+import { SocketConstants } from 'socket/constants/socket-constants';
+import { RedisService } from 'socket/service/redis/redis.service';
 import * as util from 'util';
 
 @Injectable()
@@ -111,10 +111,12 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
     const maxSendMessageLengthKey = 'grpc.max_send_message_length';
     const maxReceiveMessageLengthKey = 'grpc.max_receive_message_length';
     const maxMessageLengthOptions = {
-      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength',
-        SocketConstants.GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH),
-      [maxReceiveMessageLengthKey]: this.getOptionsProp(this.options, 'maxReceiveMessageLength',
-        SocketConstants.GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH),
+      [maxSendMessageLengthKey]: this.getOptionsProp(this.options, 'maxSendMessageLength', SocketConstants.GRPC_DEFAULT_MAX_SEND_MESSAGE_LENGTH),
+      [maxReceiveMessageLengthKey]: this.getOptionsProp(
+        this.options,
+        'maxReceiveMessageLength',
+        SocketConstants.GRPC_DEFAULT_MAX_RECEIVE_MESSAGE_LENGTH,
+      ),
     };
     const maxMetadataSize = this.getOptionsProp(this.options, 'maxMetadataSize', -1);
     if (maxMetadataSize > 0) {
@@ -133,8 +135,8 @@ export class VikaGrpcClientProxy extends ClientGrpcProxy implements OnApplicatio
   getHealthServerEndpoint(): string {
     if (!this.clientIps.size || isDev()) {
       // If no healthy ip is available, return to the default configuration directly
-      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.NEST_GRPC_URL}`);
-      return GatewayConstants.NEST_GRPC_URL;
+      this.logger.warn(`empty nest server，fallback as default：${GatewayConstants.ROOM_GRPC_URL}`);
+      return GatewayConstants.ROOM_GRPC_URL;
     }
     const ips = Array.from(this.clientIps);
     const index = randomNum(0, ips.length - 1);

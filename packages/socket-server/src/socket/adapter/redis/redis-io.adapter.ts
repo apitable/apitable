@@ -4,22 +4,19 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import { createAdapter, RedisAdapter } from '@socket.io/redis-adapter';
 import Redis from 'ioredis';
 import * as SocketIo from 'socket.io';
-import { ipAddress } from 'src/socket/common/helper';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { RedisConstants } from 'src/socket/constants/redis-constants';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { SocketEventEnum } from 'src/socket/enum/socket.enum';
-import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
-import { redisConfig } from 'src/socket/service/redis/redis-config.factory';
-import { SocketIoService } from 'src/socket/service/socket-io/socket-io.service';
+import { ipAddress } from 'socket/common/helper';
+import { GatewayConstants } from 'socket/constants/gateway.constants';
+import { RedisConstants } from 'socket/constants/redis-constants';
+import { SocketConstants } from 'socket/constants/socket-constants';
+import { SocketEventEnum } from 'socket/enum/socket.enum';
+import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { redisConfig } from 'socket/service/redis/redis-config.factory';
+import { SocketIoService } from 'socket/service/socket-io/socket-io.service';
 
 export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
   private readonly logger = new Logger(RedisIoAdapter.name);
 
-  constructor(
-    private readonly app: INestApplicationContext,
-    private readonly socketIoService: SocketIoService
-  ) {
+  constructor(private readonly app: INestApplicationContext, private readonly socketIoService: SocketIoService) {
     super(app);
   }
 
@@ -61,10 +58,10 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
     });
 
     // record error log
-    server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.on('error', function (error: any) {
+    server.of(GatewayConstants.SOCKET_NAMESPACE).adapter.on('error', function(error: any) {
       _nestedLogger.error(error.message, error?.stack);
     });
-    server.of(GatewayConstants.ROOM_NAMESPACE).adapter.on('error', function (error: any) {
+    server.of(GatewayConstants.ROOM_NAMESPACE).adapter.on('error', function(error: any) {
       _nestedLogger.error(error.message, error?.stack);
     });
     return server;

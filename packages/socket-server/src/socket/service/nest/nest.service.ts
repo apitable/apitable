@@ -1,12 +1,12 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { isEmpty, isNil } from '@nestjs/common/utils/shared.utils';
-import { getSocketServerAddr, ipAddress, randomNum } from 'src/socket/common/helper';
-import { GatewayConstants } from 'src/socket/constants/gateway.constants';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { NestCacheKeys } from 'src/socket/enum/redis-key.enum';
-import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
-import { SocketRo } from 'src/socket/model/ro/socket.ro';
+import { getSocketServerAddr, ipAddress, randomNum } from 'socket/common/helper';
+import { GatewayConstants } from 'socket/constants/gateway.constants';
+import { SocketConstants } from 'socket/constants/socket-constants';
+import { NestCacheKeys } from 'socket/enum/redis-key.enum';
+import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { SocketRo } from 'socket/model/ro/socket.ro';
 import * as util from 'util';
 import { RedisService } from '../redis/redis.service';
 
@@ -14,10 +14,7 @@ import { RedisService } from '../redis/redis.service';
 export class NestService {
   private readonly logger = new Logger(NestService.name);
 
-  constructor(
-    private readonly redisService: RedisService,
-    private readonly httpService: HttpService
-  ) { }
+  constructor(private readonly redisService: RedisService, private readonly httpService: HttpService) {}
 
   // each node holds the connection of the current nest
   private socketMap = new Map<string, AuthenticatedSocket>();
@@ -100,7 +97,7 @@ export class NestService {
     return new Promise(resolve => {
       const socketId = this.getSocketId();
       if (!isNil(socketId)) {
-        this.socketMap.get(socketId).emit(event, message, function (answer) {
+        this.socketMap.get(socketId).emit(event, message, function(answer) {
           // this.logger.debug({ event, answer });
           return resolve(answer);
         });

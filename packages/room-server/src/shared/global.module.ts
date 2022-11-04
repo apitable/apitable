@@ -67,11 +67,11 @@ import { UnitTeamService } from 'database/services/unit/unit.team.service';
 import { UserService } from 'database/services/user/user.service';
 import { WidgetService } from 'database/services/widget/widget.service';
 import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
-import { GrpcClientModule } from 'proto/client/grpc.client.module';
+import { GrpcClientModule } from 'grpc/client/grpc.client.module';
 // import { DatasheetServiceModule } from '_modules/datasheet.service.module';
 // import { ResourceServiceModule } from '_modules/resource.service.module';
-import { HttpConfigService } from '../shared/services/config/http.config.service';
-import { RestService } from '../shared/services/rest/rest.service';
+import { HttpConfigService } from 'shared/services/config/http.config.service';
+import { RestService } from 'shared/services/rest/rest.service';
 import { JavaModule } from './services/java/java.module';
 import { ClientStorage } from './services/socket/client.storage';
 import { RoomResourceRelService } from './services/socket/room.resource.rel.service';
@@ -83,9 +83,7 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
       useClass: HttpConfigService,
     }),
 
-    TypeOrmModule.forFeature([
-      WidgetRepository,
-    ]),
+    TypeOrmModule.forFeature([WidgetRepository]),
     TypeOrmModule.forFeature([DatasheetRepository, ResourceMetaRepository, WidgetRepository]),
     TypeOrmModule.forFeature([UserRepository]),
     // ResourceServiceModule,
@@ -97,7 +95,6 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     // HttpModule.registerAsync({
     //   useClass: HttpConfigService,
     //   }),
-    GrpcClientModule,
     // DatasheetServiceModule,
     TypeOrmModule.forFeature([AutomationTriggerRepository, AutomationTriggerTypeRepository]),
     TypeOrmModule.forFeature([
@@ -107,7 +104,7 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
       AutomationRunHistoryRepository,
       AutomationServiceRepository,
       AutomationTriggerTypeRepository,
-      AutomationActionTypeRepository
+      AutomationActionTypeRepository,
     ]),
     TypeOrmModule.forFeature([ResourceMetaRepository]),
     TypeOrmModule.forFeature([
@@ -122,13 +119,8 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     //   useClass: HttpConfigService,
     //   }),
     TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
-    TypeOrmModule.forFeature([
-      WidgetRepository,
-    ]),
-    TypeOrmModule.forFeature([
-      DatasheetChangesetRepository,
-      ResourceChangesetRepository,
-    ]),
+    TypeOrmModule.forFeature([WidgetRepository]),
+    TypeOrmModule.forFeature([DatasheetChangesetRepository, ResourceChangesetRepository]),
     // DatasheetServiceModule,
     TypeOrmModule.forFeature([
       NodeRepository,
@@ -137,7 +129,7 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
       AutomationRunHistoryRepository,
       AutomationServiceRepository,
       AutomationTriggerTypeRepository,
-      AutomationActionTypeRepository
+      AutomationActionTypeRepository,
     ]),
     TypeOrmModule.forFeature([
       NodeRepository,
@@ -154,9 +146,7 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     // UserServiceModule,
     TypeOrmModule.forFeature([UserRepository]),
 
-    TypeOrmModule.forFeature([
-      WidgetRepository,
-    ]),
+    TypeOrmModule.forFeature([WidgetRepository]),
     TypeOrmModule.forFeature([
       DatasheetRecordRepository,
       DatasheetRecordSourceRepository,
@@ -193,8 +183,12 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
     // UserServiceModule,
   ],
-  providers: [RestService, CommandService, CommandOptionsService,
-    RoomResourceRelService, ClientStorage,
+  providers: [
+    RestService,
+    CommandService,
+    CommandOptionsService,
+    RoomResourceRelService,
+    ClientStorage,
     UserService,
     // RestService,
     OtService,
@@ -209,14 +203,30 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     AutomationService,
     DashboardService,
     WidgetService,
-    NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService,
+    NodeService,
+    NodePermissionService,
+    NodeShareSettingService,
+    NodeDescriptionService,
 
-    UnitService, UnitMemberService, UnitTagService, UnitTeamService,
+    UnitService,
+    UnitMemberService,
+    UnitTagService,
+    UnitTeamService,
 
-    ResourceService, MetaService, ChangesetService, AutomationService, WidgetService,
-    NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService,
+    ResourceService,
+    MetaService,
+    ChangesetService,
+    AutomationService,
+    WidgetService,
+    NodeService,
+    NodePermissionService,
+    NodeShareSettingService,
+    NodeDescriptionService,
     UserService,
-    UnitService, UnitMemberService, UnitTagService, UnitTeamService,
+    UnitService,
+    UnitMemberService,
+    UnitTagService,
+    UnitTeamService,
     DatasheetService,
     DatasheetMetaService,
     DatasheetRecordService,
@@ -230,13 +240,29 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     DatasheetRecordAlarmService,
     UserService,
     WidgetService,
-    UnitService, UnitMemberService, UnitTagService, UnitTeamService,
-    NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService,
+    UnitService,
+    UnitMemberService,
+    UnitTagService,
+    UnitTeamService,
+    NodeService,
+    NodePermissionService,
+    NodeShareSettingService,
+    NodeDescriptionService,
 
-    UnitService, UnitMemberService, UnitTagService, UnitTeamService
+    UnitService,
+    UnitMemberService,
+    UnitTagService,
+    UnitTeamService,
   ],
-  exports: [RestService, CommandService, CommandOptionsService, RoomResourceRelService, ClientStorage,
-    ResourceService, MetaService, ChangesetService,
+  exports: [
+    RestService,
+    CommandService,
+    CommandOptionsService,
+    RoomResourceRelService,
+    ClientStorage,
+    ResourceService,
+    MetaService,
+    ChangesetService,
     DatasheetService,
     DatasheetMetaService,
     DatasheetRecordService,
@@ -250,5 +276,4 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     DatasheetRecordAlarmService,
   ],
 })
-export class GlobalModule {
-}
+export class GlobalModule {}

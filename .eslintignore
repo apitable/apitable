@@ -1,2 +1,3 @@
-packages/room-server/src/proto/generated/*
+packages/socket-server/src/grpc/generated/*
+packages/room-server/src/grpc/generated/*
 packages/datasheet/src/static/lang/*

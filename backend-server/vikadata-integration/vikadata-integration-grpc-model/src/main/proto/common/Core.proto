@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package grpc.common;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+
+option java_multiple_files = true;
+option java_package = "com.vikadata.integration.grpc";
+
+message BasicResult {
+  int32 code = 1;
+  string message = 2;
+  bool success = 3;
+}
+
+message ServerRoomChangeRo {
+  string room_id = 1;
+  google.protobuf.Any data = 2;
+}

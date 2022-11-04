@@ -3,8 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as Sentry from '@sentry/node';
 import { WinstonModule } from 'nest-winston';
-import { join } from 'path';
+import * as path from 'path';
 import { AppModule } from './app.module';
+import { protobufPackage } from './grpc/generated/serving/SocketServingService';
 import { initRedisIoAdapter } from './socket/adapter/adapters.init';
 import { isDev } from './socket/common/helper';
 import { GatewayConstants } from './socket/constants/gateway.constants';
@@ -63,10 +64,13 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: GatewayConstants.GRPC_URL,
-      package: GatewayConstants.GRPC_PACKAGE,
+      package: [protobufPackage],
       maxSendMessageLength: SocketConstants.GRPC_OPTIONS.maxSendMessageLength,
       maxReceiveMessageLength: SocketConstants.GRPC_OPTIONS.maxReceiveMessageLength,
-      protoPath: [join(__dirname, './grpc/proto/changeset.service.proto')],
+      protoPath: [
+        path.join(__dirname, 'grpc/generated/serving/SocketServingService.proto'),
+        path.join(__dirname, 'grpc/generated/common/Core.proto'),
+      ],
       loader: {
         json: true,
       },

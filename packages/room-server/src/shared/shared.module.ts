@@ -68,7 +68,7 @@ import { ApiUsageRepository } from 'fusion/repositories/api.usage.repository';
 import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
-import { GrpcClientModule } from 'proto/client/grpc.client.module';
+import { GrpcClientModule } from 'grpc/client/grpc.client.module';
 import { GlobalModule } from './global.module';
 import { LoggerModule } from './logger/winston.module';
 import { HttpConfigService } from './services/config/http.config.service';
@@ -108,7 +108,7 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
       AutomationRunHistoryRepository,
       AutomationServiceRepository,
       AutomationTriggerTypeRepository,
-      AutomationActionTypeRepository
+      AutomationActionTypeRepository,
     ]),
     TypeOrmModule.forFeature([ResourceMetaRepository]),
     TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
@@ -135,8 +135,13 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     QueueWorkerModule,
   ],
   controllers: [],
-  providers: [AttachmentService, UserService,
-    FusionApiRecordService, FusionApiService, FusionApiFilter, FusionApiTransformer,
+  providers: [
+    AttachmentService,
+    UserService,
+    FusionApiRecordService,
+    FusionApiService,
+    FusionApiFilter,
+    FusionApiTransformer,
     OtService,
     DatasheetOtService,
     DashboardOtService,
@@ -148,22 +153,15 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     EventService,
     AutomationService,
     DashboardService,
-    UnitService, UnitMemberService, UnitTagService, UnitTeamService,
+    UnitService,
+    UnitMemberService,
+    UnitTagService,
+    UnitTeamService,
     WidgetService,
-    NodeService, NodePermissionService, NodeShareSettingService, NodeDescriptionService,
-    DatasheetService,
-    DatasheetMetaService,
-    DatasheetRecordService,
-    RecordCommentService,
-    DatasheetRecordSourceService,
-    DatasheetRecordSubscriptionService,
-    DatasheetFieldHandler,
-    ComputeFieldReferenceManager,
-    DatasheetChangesetService,
-    DatasheetChangesetSourceService,
-    DatasheetRecordAlarmService
-  ],
-  exports: [AttachmentService, UserService, FusionApiService, FusionApiFilter, FusionApiTransformer,
+    NodeService,
+    NodePermissionService,
+    NodeShareSettingService,
+    NodeDescriptionService,
     DatasheetService,
     DatasheetMetaService,
     DatasheetRecordService,
@@ -175,7 +173,24 @@ import { ZipkinModule } from './services/zipkin/zipkin.module';
     DatasheetChangesetService,
     DatasheetChangesetSourceService,
     DatasheetRecordAlarmService,
-  ]
+  ],
+  exports: [
+    AttachmentService,
+    UserService,
+    FusionApiService,
+    FusionApiFilter,
+    FusionApiTransformer,
+    DatasheetService,
+    DatasheetMetaService,
+    DatasheetRecordService,
+    RecordCommentService,
+    DatasheetRecordSourceService,
+    DatasheetRecordSubscriptionService,
+    DatasheetFieldHandler,
+    ComputeFieldReferenceManager,
+    DatasheetChangesetService,
+    DatasheetChangesetSourceService,
+    DatasheetRecordAlarmService,
+  ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

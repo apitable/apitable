@@ -1,9 +1,9 @@
-import { BroadcastTypes } from "src/socket/enum/broadcast-types.enum";
+import { BroadcastTypes } from 'socket/enum/broadcast-types.enum';
 
 export class FieldPermissionChange {
-    uuids: string[];
-    role: string;
-    permission: any;
+  uuids: string[];
+  role: string;
+  permission: any;
 }
 
 export class FieldPermissionChangeRo {

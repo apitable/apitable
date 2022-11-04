@@ -1,6 +1,0 @@
-syntax = 'proto3';
-package vika.grpc;
-message Any {
-  string type_url = 1;
-  bytes value = 2;
-}

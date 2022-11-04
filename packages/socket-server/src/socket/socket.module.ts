@@ -1,8 +1,8 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { GrpcClientModule } from 'src/grpc/client/grpc.client.module';
-import { SocketGrpcController } from 'src/socket/controller/socket.grpc.controller';
+import { GrpcClientModule } from 'grpc/client/grpc.client.module';
+import { SocketGrpcController } from 'socket/controller/socket.grpc.controller';
 import { RedisModule } from './_modules/redis.module';
 import { DatasheetController } from './controller/datasheet.controller';
 import { HealthController } from './controller/health.controller';

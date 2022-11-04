@@ -21,8 +21,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "grpc:build": "tsproto --path src/grpc/proto --output src/grpc/generated",
-    "grpc:clean": "rimraf src/grpc/generated",
     "pm2:nest": "pm2-runtime start ecosystem.config.js"
   },
   "engines": {
@@ -45,7 +43,6 @@
     "@socket.io/redis-adapter": "^7.2.0",
     "ioredis": "^5.2.3",
     "nest-winston": "^1.8.0",
-    "nestjs-proto-gen-ts": "^1.0.20",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",

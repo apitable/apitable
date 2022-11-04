@@ -68,3 +68,5 @@ scripts/design_token/__pycache__
 /.cache
 /.npm
 /backend-server/?
+# backend proto generated class
+/backend-server/**/generated

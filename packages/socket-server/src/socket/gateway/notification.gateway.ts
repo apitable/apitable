@@ -1,7 +1,7 @@
 import { UseFilters } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { NodeBrowsedRo } from 'src/socket/model/ro/notification/node.browsed.ro';
+import { NodeBrowsedRo } from 'socket/model/ro/notification/node.browsed.ro';
 import { GatewayConstants } from '../constants/gateway.constants';
 import { NotificationTypes } from '../enum/request-types.enum';
 import { HttpExceptionFilter } from '../filter/http-exception.filter';

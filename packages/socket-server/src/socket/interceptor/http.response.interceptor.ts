@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor, HttpStatus } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CommonStatusMsg } from 'src/socket/common/constants';
+import { CommonStatusMsg } from 'socket/common/constants';
 
 /**
  * HTTP Response Interceptor

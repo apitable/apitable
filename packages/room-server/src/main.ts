@@ -11,6 +11,7 @@ import { environment, isDevMode, isProdMode } from 'app.environment';
 import { AppModule } from 'app.module';
 import helmet from 'fastify-helmet';
 import fastifyMultipart from 'fastify-multipart';
+import { protobufPackage } from 'grpc/generated/serving/SocketServingService';
 import { I18nService } from 'nestjs-i18n';
 import { join } from 'path';
 import { initHttpHook, initSwagger } from 'shared/adapters/adapters.init';
@@ -138,16 +139,14 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: grpcUrl,
-      // ['hero', 'hero2']
-      package: ['grpc', 'vika.grpc'],
-      // ['./hero/hero.proto', './hero/hero2.proto']
-      protoPath: [join(__dirname, './proto/service.proto'), join(__dirname, 'proto/socket.service.proto')],
+      package: [protobufPackage],
+      protoPath: [join(__dirname, 'grpc/generated/serving/RoomServingService.proto'), join(__dirname, 'grpc/generated/common/Core.proto')],
       // 100M
       maxSendMessageLength: GRPC_MAX_PACKAGE_SIZE,
       maxReceiveMessageLength: GRPC_MAX_PACKAGE_SIZE,
       loader: {
-        json: true
-      }
+        json: true,
+      },
     },
   });
   await nestApp.startAllMicroservicesAsync();

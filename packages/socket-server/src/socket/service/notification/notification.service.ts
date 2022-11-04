@@ -1,22 +1,19 @@
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { Socket } from 'socket.io';
-import { GrpcClient } from 'src/grpc/client/grpc.client';
-import { SocketConstants } from 'src/socket/constants/socket-constants';
-import { NotificationTypes } from 'src/socket/enum/request-types.enum';
-import { AuthenticatedSocket } from 'src/socket/interface/socket/authenticated-socket.interface';
-import { NodeChangeRo } from 'src/socket/model/ro/notification/node-change.ro';
-import { NotificationRo } from 'src/socket/model/ro/notification/notification.ro';
-import { WatchSpaceRo } from 'src/socket/model/ro/notification/watch-space.ro';
+import { GrpcClient } from 'grpc/client/grpc.client';
+import { SocketConstants } from 'socket/constants/socket-constants';
+import { NotificationTypes } from 'socket/enum/request-types.enum';
+import { AuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
+import { NodeChangeRo } from 'socket/model/ro/notification/node-change.ro';
+import { NotificationRo } from 'socket/model/ro/notification/notification.ro';
+import { WatchSpaceRo } from 'socket/model/ro/notification/watch-space.ro';
 
 @Injectable()
 export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
-  constructor(
-    private readonly grpcClient: GrpcClient
-  ) {
-  }
+  constructor(private readonly grpcClient: GrpcClient) {}
 
   broadcastNotify(message: NotificationRo, client: Socket): boolean {
     if (isNil(message.toUserId)) {

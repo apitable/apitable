@@ -1,5 +1,5 @@
 import { Metadata, MetadataValue } from '@grpc/grpc-js';
-import { TRACE_ID } from 'src/socket/constants/socket-constants';
+import { TRACE_ID } from 'socket/constants/socket-constants';
 
 const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 

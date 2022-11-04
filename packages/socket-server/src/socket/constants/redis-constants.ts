@@ -4,7 +4,7 @@ export class RedisConstants {
   public static readonly REDIS_DB: number = process.env.REDIS_DB != null ? parseInt(process.env.REDIS_DB, 10) : 3;
   public static readonly CONNECT_TIMEOUT = 15000;
   public static readonly RE_CONNECT_MAX_TIMES = 10;
-  public static readonly PASSWORD = process.env.REDIS_PASSWORD || 'vikadata@com';
+  public static readonly PASSWORD = process.env.REDIS_PASSWORD || '';
   public static readonly REDIS_CLIENT = 'REDIS_COMMON_CLIENT';
   public static readonly REDIS_PUBLISHER_CLIENT = 'REDIS_PUBLISHER_CLIENT';
   public static readonly REDIS_SUBSCRIBER_CLIENT = 'REDIS_SUBSCRIBER_CLIENT';

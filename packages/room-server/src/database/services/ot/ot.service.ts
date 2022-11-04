@@ -1,27 +1,18 @@
-import { Injectable } from '@nestjs/common';
 import {
-  clearComputeCache, ConfigConstant, DEFAULT_EDITOR_PERMISSION, IJOTAction, ILocalChangeset, IRemoteChangeset, jot, ResourceIdPrefix, ResourceType
-  , clearCachedSelectors
+  clearCachedSelectors,
+  clearComputeCache,
+  ConfigConstant,
+  DEFAULT_EDITOR_PERMISSION,
+  IJOTAction,
+  ILocalChangeset,
+  IRemoteChangeset,
+  jot,
+  ResourceIdPrefix,
+  ResourceType,
 } from '@apitable/core';
 import { NodeTypeReg } from '@apitable/core/dist/config/constant';
+import { Injectable } from '@nestjs/common';
 import { RedisService } from '@vikadata/nestjs-redis';
-import { EnvConfigKey } from '../../../shared/common';
-import { InjectLogger } from 'shared/common/decorators';
-import { EnvConfigService } from 'shared/services/config/env.config.service';
-import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
-import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
-import { OtException } from '../../../shared/exception/ot.exception';
-import { ServerException } from '../../../shared/exception/server.exception';
-import { RedisLock } from 'shared/helpers/redis.lock';
-import { IServerConfig } from '../../../shared/interfaces';
-import { IAuthHeader, NodePermission } from 'shared/interfaces/axios.interfaces';
-import { isNil } from 'lodash';
-import { DashboardOtService } from 'database/services/ot/dashboard.ot.service';
-import { DatasheetOtService } from 'database/services/ot/datasheet.ot.service';
-import { MirrorOtService } from 'database/services/ot/mirror.ot.service';
-import { WidgetOtService } from 'database/services/ot/widget.ot.service';
-import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
-import { RestService } from 'shared/services/rest/rest.service';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
 import { DatasheetRecordSubscriptionService } from 'database/services/datasheet/datasheet.record.subscription.service';
@@ -31,14 +22,30 @@ import { MirrorService } from 'database/services/mirror/mirror.service';
 import { NodePermissionService } from 'database/services/node/node.permission.service';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
+import { DashboardOtService } from 'database/services/ot/dashboard.ot.service';
+import { DatasheetOtService } from 'database/services/ot/datasheet.ot.service';
+import { MirrorOtService } from 'database/services/ot/mirror.ot.service';
+import { WidgetOtService } from 'database/services/ot/widget.ot.service';
 import { ChangesetService } from 'database/services/resource/changeset.service';
 import { ResourceService } from 'database/services/resource/resource.service';
 import { UserService } from 'database/services/user/user.service';
+import { GrpcSocketClient } from 'grpc/client/grpc.socket.client';
+import { isNil } from 'lodash';
+import { EnvConfigKey } from 'shared/common';
+import { InjectLogger } from 'shared/common/decorators';
+import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
+import { OtException, ServerException } from 'shared/exception';
+import { RedisLock } from 'shared/helpers/redis.lock';
+import { IServerConfig } from 'shared/interfaces';
+import { IAuthHeader, NodePermission } from 'shared/interfaces/axios.interfaces';
+import { EnvConfigService } from 'shared/services/config/env.config.service';
+import { RestService } from 'shared/services/rest/rest.service';
 import { RoomResourceRelService } from 'shared/services/socket/room.resource.rel.service';
-import { GrpcSocketClient } from 'proto/client/grpc.socket.client';
 import { EntityManager, getManager } from 'typeorm';
 import { promisify } from 'util';
 import { Logger } from 'winston';
+import { INodeCopyRo, INodeDeleteRo } from '../../interfaces/grpc.interface';
+import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 import { MetaService } from '../resource/meta.service';
 import { FormOtService } from './form.ot.service';
 import { EffectConstantName, IChangesetParseResult, ICommonData, IOtEventContext, IRoomChannelMessage, MAX_REVISION_DIFF } from './ot.interface';
@@ -49,7 +56,6 @@ import { ResourceChangeHandler } from './resource.change.handler';
  */
 @Injectable()
 export class OtService {
-
   constructor(
     @InjectLogger() private readonly logger: Logger,
     private readonly userService: UserService,
@@ -77,15 +83,22 @@ export class OtService {
     private readonly envConfigService: EnvConfigService,
     private readonly eventService: EventService,
     private readonly nodeService: NodeService,
-  ) { }
+  ) {}
 
   /**
    * Obtain the node rule of the operator.
-   * 
+   *
    * @param nodeId node ID.
    */
-  getNodeRole = async(nodeId: string, auth: IAuthHeader, shareId?: string,
-    roomId?: string, sourceDatasheetId?: string, sourceType?: SourceTypeEnum, allowAllEntrance?: boolean): Promise<NodePermission> => {
+  getNodeRole = async (
+    nodeId: string,
+    auth: IAuthHeader,
+    shareId?: string,
+    roomId?: string,
+    sourceDatasheetId?: string,
+    sourceType?: SourceTypeEnum,
+    allowAllEntrance?: boolean,
+  ): Promise<NodePermission> => {
     switch (sourceType) {
       case SourceTypeEnum.FORM:
         // Datasheet resource OP resulted from form submitting, use permission of form
@@ -150,10 +163,17 @@ export class OtService {
     const client = this.redisService.getClient();
     const lock = promisify<string | string[], number, () => void>(RedisLock(client as any));
     // Lock resource, messages of the same resource are consumed sequentially. Timeout is 120s
-    const unlock = await lock(message.changesets.map(cs => cs.resourceId), 120 * 1000);
+    const unlock = await lock(
+      message.changesets.map(cs => cs.resourceId),
+      120 * 1000,
+    );
     const attachCites: any[] = [];
     const results: IRemoteChangeset[] = [];
-    const context: IOtEventContext = { authHeader: auth, spaceId, fromEditableSharedNode: !isNil(message.shareId) };
+    const context: IOtEventContext = {
+      authHeader: auth,
+      spaceId,
+      fromEditableSharedNode: !isNil(message.shareId),
+    };
     //!!! WARN All services and network related operations must be put inside try blocks, or dead lock may happen.
     try {
       const beginTime = +new Date();
@@ -164,19 +184,29 @@ export class OtService {
         if (!context.operatorUserId && commonData.userId) {
           context.operatorUserId = commonData.userId;
         }
-        transactions.push({ transaction, effectMap, commonData, resultSet });
+        transactions.push({
+          transaction,
+          effectMap,
+          commonData,
+          resultSet,
+        });
         attachCites.push(effectMap.get(EffectConstantName.AttachCite));
       }
       const parseEndTime = +new Date();
-      this.logger.info(`room:[${message.roomId}] ====> parseChanges Finished, duration: ${parseEndTime - beginTime}ms. General transaction start......`);
+      this.logger.info(
+        `room:[${message.roomId}] ====> parseChanges Finished, duration: ${parseEndTime - beginTime}ms. General transaction start......`,
+      );
       // ======== multiple-resource operation transaction BEGIN ========
       this.logger.info('applyRoomChangeset-transaction-start', { msgIds });
-      await getManager().transaction(async(manager: EntityManager) => {
+      await getManager().transaction(async (manager: EntityManager) => {
         for (const { transaction, effectMap, commonData, resultSet } of transactions) {
           await transaction(manager, effectMap, commonData, resultSet);
           let remoteChangeset = effectMap.get(EffectConstantName.RemoteChangeset);
           if (!remoteChangeset.userId && commonData.userId) {
-            remoteChangeset = { ...remoteChangeset, userId: commonData.userId };
+            remoteChangeset = {
+              ...remoteChangeset,
+              userId: commonData.userId,
+            };
           }
           results.push(remoteChangeset);
         }
@@ -194,7 +224,7 @@ export class OtService {
 
     // Only perform attachment computation if no exception was thrown, to ensure
     // data consistency. (If computation fails, cron job will compensate)
-    // Add to queue, submit to java to calculate attachment capacity in op, 
+    // Add to queue, submit to java to calculate attachment capacity in op,
     // add to queue individually to avoid concurrency
     this.logger.info('applyRoomChangeset-handle-attach', { msgIds });
     if (attachCites.length) {
@@ -212,7 +242,12 @@ export class OtService {
 
     const allEffectDstIds: string[] = await this.relService.getEffectDatasheetIds(thisBatchResourceIds);
     const hasRobot = await this.resourceService.getHasRobotByResourceIds(allEffectDstIds);
-    this.logger.info('applyRoomChangeset-hasRobot', { msgIds, thisBatchResourceIds, allEffectDstIds, hasRobot });
+    this.logger.info('applyRoomChangeset-hasRobot', {
+      msgIds,
+      thisBatchResourceIds,
+      allEffectDstIds,
+      hasRobot,
+    });
     if (hasRobot) {
       // Handle event here
       this.logger.info('applyRoomChangeset-robot-event-start', { msgIds });
@@ -232,8 +267,7 @@ export class OtService {
     return results;
   }
 
-  async parseChanges(spaceId: string, message: IRoomChannelMessage, changeset: ILocalChangeset,
-    auth: IAuthHeader): Promise<IChangesetParseResult> {
+  async parseChanges(spaceId: string, message: IRoomChannelMessage, changeset: ILocalChangeset, auth: IAuthHeader): Promise<IChangesetParseResult> {
     const { sourceDatasheetId, sourceType, shareId, roomId, internalAuth, allowAllEntrance } = message;
     const { resourceId } = changeset;
 
@@ -427,12 +461,7 @@ export class OtService {
           // Handling unsynchronized view settings. Client saving view settings will lead to entire replace of 'columns' field,
           // which is bad for transform.
           // So if 'columns' is being changed, and the lengths of 'oi' and 'oi' does not equal, throw an exception.
-          if (
-            v.p.includes('columns') &&
-            v['oi'] &&
-            v['od'] &&
-            v['oi'].length !== v['od'].length
-          ) {
+          if (v.p.includes('columns') && v['oi'] && v['od'] && v['oi'].length !== v['od'].length) {
             throw new ServerException(OtException.OPERATION_ABNORMAL);
           }
         }
@@ -508,9 +537,9 @@ export class OtService {
 
   /**
    * New change
-   * 
+   *
    * only provides change for fusion api
-   * 
+   *
    * @param roomId
    * @param changesets
    */
@@ -527,5 +556,4 @@ export class OtService {
     this.logger.info('Resource:NotifyChangeSet Success!');
     return changeResult;
   }
-
 }

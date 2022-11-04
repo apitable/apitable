@@ -14301,7 +14301,6 @@ __metadata:
     ioredis: ^5.2.3
     jest: ^29.1.2
     nest-winston: ^1.8.0
-    nestjs-proto-gen-ts: ^1.0.20
     prettier: ^1.19.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
@@ -34233,21 +34232,6 @@ fsevents@^1.2.7:
   bin:
     tsproto: bin/cli
   checksum: 2ff2ca66c4e7b14df3e2be269e838b17dfa711328fa95343bfabae319e8c88f43d784e08b762efbc311c9116d157e1bf9ae956f1da5f96627a73717c84106b6b
-  languageName: node
-  linkType: hard
-
-"nestjs-proto-gen-ts@npm:^1.0.20":
-  version: 1.0.20
-  resolution: "nestjs-proto-gen-ts@npm:1.0.20"
-  dependencies:
-    chalk: ^4.0.0
-    fs-extra: ^9.0.1
-    handlebars: ^4.7.6
-    protobufjs: ^6.9.0
-    yargs: ^15.3.1
-  bin:
-    tsproto: bin/cli
-  checksum: 44ff04eadc5663cd8c35f8f46e12ec75ccc6e3217d71dec8b28170f81ed183d3040132935533c4824552ab9a2ed689ebd47afc84872a41857aef2d785da1a0dd
   languageName: node
   linkType: hard
 

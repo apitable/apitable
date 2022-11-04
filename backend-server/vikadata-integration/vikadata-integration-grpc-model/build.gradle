@@ -19,11 +19,7 @@ protobuf {
   }
   plugins {
     grpc {
-      if (osdetector.os == "osx") {
-        artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}:osx-x86_64"
-      } else {
-        artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}"
-      }
+      artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}"
     }
   }
   

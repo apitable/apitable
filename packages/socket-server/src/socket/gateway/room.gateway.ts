@@ -1,7 +1,7 @@
 import { UseFilters, UseInterceptors } from '@nestjs/common';
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { RoomService } from 'src/socket/service/room/room.service';
+import { RoomService } from 'socket/service/room/room.service';
 import { GatewayConstants } from '../constants/gateway.constants';
 import { RequestTypes } from '../enum/request-types.enum';
 import { HttpExceptionFilter } from '../filter/http-exception.filter';

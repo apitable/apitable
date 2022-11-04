@@ -1,8 +1,8 @@
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
 import { join, resolve } from 'path';
-import { isDev } from 'src/socket/common/helper';
+import { isDev } from 'socket/common/helper';
 import * as winston from 'winston';
-import * as DailyRotateFile from 'winston-daily-rotate-file';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 // app name
 const defaultAppName = 'socket-server';

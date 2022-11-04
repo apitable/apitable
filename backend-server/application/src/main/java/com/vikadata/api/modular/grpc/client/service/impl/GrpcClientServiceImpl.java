@@ -43,8 +43,8 @@ import com.vikadata.integration.grpc.GetUserTreeListRo;
 import com.vikadata.integration.grpc.InternalOrderFinishRo;
 import com.vikadata.integration.grpc.NodeCopyRo;
 import com.vikadata.integration.grpc.NodeDeleteRo;
-import com.vikadata.integration.grpc.NodeServiceGrpc.NodeServiceBlockingStub;
 import com.vikadata.integration.grpc.RequestIdResult;
+import com.vikadata.integration.grpc.RoomServingServiceGrpc.RoomServingServiceBlockingStub;
 import com.vikadata.integration.grpc.SendMessageToUserByTemplateIdRo;
 import com.vikadata.integration.grpc.TenantInfoResult;
 import com.vikadata.integration.grpc.UploadMediaRo;
@@ -80,7 +80,7 @@ public class GrpcClientServiceImpl implements IGrpcClientService {
     private static final Integer ERROR_CODE = 500;
 
     @GrpcClient("nest-grpc-server")
-    private NodeServiceBlockingStub simpleStub;
+    private RoomServingServiceBlockingStub simpleStub;
 
     @GrpcClient("dingtalk-grpc-server")
     private DingTalkServiceBlockingStub dingTalkServiceBlockingStub;

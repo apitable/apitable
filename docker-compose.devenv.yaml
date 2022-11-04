@@ -79,6 +79,19 @@ services:
     networks:
       - apitable
     command: sh -c "cd packages/socket-server/ && yarn && yarn run start:dev"
+
+  proto-generic:
+    build:
+      dockerfile: scripts/protos/Dockerfile
+    working_dir: /devenv
+    environment:
+      - PROTO_PATH=scripts/protos
+      - PROTO_FILE=scripts/protos/serving/*.proto
+      - TS_PROTO_OUT_PATH
+      - JAVA_PROTO_OUT_PATH
+    volumes:
+      - ./:/devenv
+
 networks:
   apitable:
     driver: bridge

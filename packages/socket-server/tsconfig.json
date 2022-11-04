@@ -1,17 +1,25 @@
 {
+  "extends": "../../common-tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
+    // TODO 去掉这几个设置为 false 的配置
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
     "experimentalDecorators": true,
     "target": "es2017",
+    "types": [
+      "jest",
+      "node"
+    ],
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "types": ["jest", "node"],
-    "skipLibCheck": true
+    "baseUrl": "./src",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }

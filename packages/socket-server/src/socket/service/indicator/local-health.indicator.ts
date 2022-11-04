@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HealthCheckError, HealthIndicator, HealthIndicatorResult } from '@nestjs/terminus';
 import * as os from 'os';
-import { ipAddress } from 'src/socket/common/helper';
-import { HealthConstants } from 'src/socket/constants/health.constants';
+import { ipAddress } from 'socket/common/helper';
+import { HealthConstants } from 'socket/constants/health.constants';
 import { RedisService } from '../redis/redis.service';
 
 @Injectable()
