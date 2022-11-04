@@ -163,5 +163,9 @@ export const integrateCdnHost = (
   pathName: string,
 ): string => {
   const host: string = getHostOfAttachment('QNY1');
+  // TODO: delete this. Compatible with old version data
+  if (pathName.startsWith('http')) {
+    return pathName;
+  }
   return urlcat(host, pathName);
 };
