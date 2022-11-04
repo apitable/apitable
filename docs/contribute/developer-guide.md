@@ -6,7 +6,8 @@ This guide helps you get started developing APITable.
 Make sure you have the following dependencies installed before setting up your developer environment:
 
 - `git`
-- `docker`, `docker-compose v2`
+- `docker`
+- `docker-compose v2`
 - `make`
 
 ## macOS
