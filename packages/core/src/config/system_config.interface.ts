@@ -696,6 +696,7 @@ export interface Settings {
     customer_qrcode_background_image:       ArakGroundhog;
     customer_qrcode_url:                    ArakGroundhog;
     " customer_service_qr_code":            ArakGroundhog;
+    datasheet_max_view_count_per_sheet:     ArakGroundhog;
     default_avatar:                         ArakGroundhog;
     default_widget_template_url:            ArakGroundhog;
     deploy_mode:                            ArakGroundhog;
