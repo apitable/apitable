@@ -6,22 +6,22 @@ import {
   IAPIMetaCurrencyFormat,
   IAPIMetaDateTimeFormat,
   IAPIMetaNoneStringValueFormat, IAPIMetaNumberFormat, IAPIMetaUser, IComputedFieldFormattingProperty,
-  IDateTimeFieldPropertyFormat, INumberBaseFieldPropertyFormat, IPercentFormat, MemberType, TimeFormat,
+  IDateTimeFieldPropertyFormat, INumberBaseFieldPropertyFormat, IPercentFormat, MemberType, TimeFormat
 } from '../types';
 import { APIMetaFieldPropertyFormatEnums, APIMetaFieldType, APIMetaMemberType, APIMetaViewType } from './../types/field_api_enums';
-import { getCustomConfig, Settings } from 'config';
+import { getCustomConfig } from 'config';
 import { IOpenComputedFormat } from 'types/open/open_field_read_types';
 import { CurrencyField, DateTimeField, NumberField } from './field';
 import { PercentField } from './field/percent_field';
 
 /**
- *
+ * 
  * Array null value processing, lookup's cv now contains null value by default, which will affect the original calculation logic.
  * In the lookup, the cellValue operation needs to be converted to a null value.
- * In the UI, the cellValue of the original rendered lookup component also needs to be processed
+ * In the UI, the cellValue of the original rendered lookup component also needs to be processed 
  * in this layer to ensure that it is consistent with the original display.
  * [null]=>null
- *
+ * 
  */
 export const handleNullArray = (cv: any | null): any | null => {
   if (cv == null) {
@@ -181,22 +181,22 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
         format: {
           dateFormat: DateTimeField.defaultDateFormat,
           timeFormat: DateTimeField.defaultTimeFormat,
-          includeTime: false,
-        },
+          includeTime: false
+        }
       };
     }
     const {
       dateFormat,
       timeFormat,
-      includeTime,
+      includeTime
     } = (fieldInstance.field.property.formatting || {}) as IDateTimeFieldPropertyFormat;
     return {
       type: APIMetaFieldPropertyFormatEnums.DateTime,
       format: {
         dateFormat: DateFormat[dateFormat],
         timeFormat: TimeFormat[timeFormat],
-        includeTime,
-      },
+        includeTime
+      }
     };
   }
   // format to number
@@ -208,14 +208,14 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
           type: APIMetaFieldPropertyFormatEnums.Number,
           format: {
             precision: formatting?.precision || NumberField.defaultProperty().precision,
-          },
+          }
         };
       case FieldType.Percent:
         return {
           type: APIMetaFieldPropertyFormatEnums.Percent,
           format: {
             precision: formatting?.precision || PercentField.defaultProperty().precision,
-          },
+          }
         };
       case FieldType.Currency:
         return {
@@ -223,14 +223,14 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
           format: {
             precision: formatting?.precision || CurrencyField.defaultProperty().precision,
             symbol: formatting?.symbol || CurrencyField.defaultProperty().symbol,
-          },
+          }
         };
       default:
         return {
           type: APIMetaFieldPropertyFormatEnums.Number,
           format: {
             precision: formatting?.precision || NumberField.defaultProperty().precision,
-          },
+          }
         };
     }
   }
@@ -258,7 +258,7 @@ export const getApiMetaUserProperty = (uuids: string[], userMap?: IUserMap | nul
 };
 
 export const getMaxViewCountPerSheet = () => {
-  return getCustomConfig().maxViewCountPerSheet || Settings.datasheet_max_view_count_per_sheet.value || 30;
+  return getCustomConfig().maxViewCountPerSheet || 30;
 };
 
 export const getMaxManageableSpaceCount = () => {
@@ -280,8 +280,8 @@ export const isNullValue = (value: any): value is null => {
 /**
  * IOpenComputedFormat => IComputedFieldFormattingProperty
  * Convert the external read calculation field format content into executable cmd format (formula, magic reference)
- * @param fieldInstance
- * @param format
+ * @param fieldInstance 
+ * @param format 
  */
 export const computedFormattingToFormat =
   (format: IOpenComputedFormat): IComputedFieldFormattingProperty => {
@@ -292,32 +292,29 @@ export const computedFormattingToFormat =
         formatting = {
           dateFormat: DateFormat[dateFormat],
           timeFormat: TimeFormat[timeFormat],
-          includeTime,
+          includeTime
         };
-      }
-        break;
+      } break;
       case APIMetaFieldPropertyFormatEnums.Currency: {
         const { precision, symbol } = format.format as IAPIMetaCurrencyFormat;
         formatting = {
           formatType: FieldType.Currency,
           precision,
-          symbol,
+          symbol
         };
-      }
-        break;
+      } break;
       case APIMetaFieldPropertyFormatEnums.Number: {
         const { precision } = format.format as IAPIMetaNumberFormat;
         formatting = {
           formatType: FieldType.Number,
-          precision,
+          precision
         };
-      }
-        break;
+      } break;
       case APIMetaFieldPropertyFormatEnums.Percent: {
         const { precision } = format.format as IPercentFormat;
         formatting = {
           formatType: FieldType.Percent,
-          precision,
+          precision
         };
       }
     }
