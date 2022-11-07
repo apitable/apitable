@@ -380,5 +380,4 @@ public class NodeShareServiceImpl implements INodeShareService {
         String nodeName = nodeMapper.selectNodeNameByNodeId(nodeId);
         return Optional.ofNullable(nodeName);
     }
-
 }

@@ -502,7 +502,7 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     void testSelectIdByUserIdAndSpaceIdExcludeDelete() {
         MemberInfoDTO memberInfoDTO = memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(41L, "spc41");
         assertThat(memberInfoDTO.getId()).isEqualTo(41L);
-        assertThat(memberInfoDTO.getIsDeleted()).isEqualTo(0L);
+        assertThat(memberInfoDTO.getIsDeleted()).isFalse();
     }
 }
 
