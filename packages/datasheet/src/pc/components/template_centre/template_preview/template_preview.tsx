@@ -21,7 +21,7 @@ export const TemplatePreview: FC = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
+  const { categoryId, templateId } = useSelector((state: IReduxState) => state.pageParams);
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest<IUserInfo | undefined, any[]>(getLoginStatusReq, { manual: true });
 
@@ -64,7 +64,7 @@ export const TemplatePreview: FC = () => {
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <MobileBar />
         </ComponentDisplay>
-        {categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID || !categoryId ? (
+        {(categoryId === ConfigConstant.TEMPLATE_CHOICE_CATEGORY_ID && !templateId) || !categoryId ? (
           <TemplateChoice setUsingTemplate={setUsingTemplate} />
         ) : (
           <TemplateCategoryDetail isOfficial={isOfficial} templateCategory={templateCategory || []} setUsingTemplate={setUsingTemplate} />
