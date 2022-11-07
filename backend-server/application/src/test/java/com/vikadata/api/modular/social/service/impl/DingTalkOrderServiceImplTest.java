@@ -217,6 +217,9 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
     public void testPriceTwoHundredAndOneYearOrder() {
         String spaceId = "spc" + IdWorker.get32UUID();
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/standard_200_1_per_year.json");
+        event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
+        event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
+
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(event).getCorpId(), event.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
