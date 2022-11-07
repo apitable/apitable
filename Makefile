@@ -283,17 +283,9 @@ devenv-backend-server:
 	$(RUNNER) backend-server java -jar application/build/libs/application.jar
 
 
-.PHONY: install-web-server
-_install-web-server: ## install web-server dependencies
-	$(RUNNER) web-server sh -c "yarn install && yarn build:dst:pre"
-
 .PHONY: devenv-web-server
 devenv-web-server:
 	$(RUNNER) web-server sh -c "yarn install && yarn sd:r"
-
-.PHONY: install-room-server
-_install-room-server:
-	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
 
 .PHONY: devenv-room-server
 devenv-room-server: 
@@ -304,19 +296,36 @@ devenv-room-server:
 build-socket-server:
 	$(BUILDER) socket-server 
 
-.PHONY: install-socket-server
-_install-socket-server:
-	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
-	  
 .PHONY: devenv-socket-server
 devenv-socket-server:
 	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn run start:dev"
 
 
-
 .PHONY: install
-install: _install-web-server _install-backend-server _install-socket-server _install-room-server ## install all dependencies with docker devenv
-	echo 'Install Finished'
+install: install-local
+	@echo 'Install Finished'
+
+.PHONY: install-docker
+install-docker: _install-web-server _install-backend-server _install-socket-server _install-room-server ## install all dependencies with docker devenv
+	@echo 'Install Finished'
+
+.PHONY: _install-socket-server
+_install-socket-server:
+	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
+	 
+.PHONY: _install-web-server
+_install-web-server: ## install web-server dependencies
+	$(RUNNER) web-server sh -c "yarn install && yarn build:dst:pre"
+
+.PHONY: _install-room-server
+_install-room-server:
+	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
+ 
+.PHONY: install-local
+install-local: ## install all dependencies with local programming language environment
+	yarn install && yarn build:dst:pre
+	cd packages/socket-server && yarn
+	cd backend-server && ./gradlew build -x test
 
 .PHONY:
 clean: ## clean and delete git ignore and dirty files
