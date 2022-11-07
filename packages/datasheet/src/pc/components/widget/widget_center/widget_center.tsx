@@ -200,7 +200,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     <div className={styles.widgetPackageItem}>
       <div className={styles.imgBox}>
         <div className={styles.headImg} onClick={() => isReview && expandReviewInfo(props)}>
-          <Image src={cover} alt={''} layout={'fill'} />
+          <Image src={integrateCdnHost(cover)} alt={''} layout={'fill'} />
         </div>
 
         <div className={styles.authorIconWrap}>

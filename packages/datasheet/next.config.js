@@ -78,6 +78,15 @@ module.exports = withPlugins(plugins, {
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
     domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com'],
+    remotePatterns: [{
+      protocol: 'http',
+      hostname: '**',
+      pathname: '/vk-assets-ltd/**',
+    }, {
+      protocol: 'https',
+      hostname: '**',
+      pathname: '/vk-assets-ltd/**',
+    }]
   },
   poweredByHeader: false,
   publicRuntimeConfig: {
