@@ -11,10 +11,10 @@ plugins {
 dependencies {
   implementation project(':core')
   implementation project(':vikadata-service:vikadata-db-model')
-  implementation project(':vikadata-starters:vikadata-starter-xxl')
-  implementation project(':vikadata-starters:vikadata-starter-oss')
-  implementation project(':vikadata-starters:vikadata-starter-social-dingtalk')
-  implementation project(':vikadata-starters:vikadata-starter-vika')
+  implementation project(':starters:xxl')
+  implementation project(':starters:oss')
+  implementation project(':starters:social-dingtalk')
+  implementation project(':starters:vika')
   annotationProcessor rootProject.ext.dependencies['configuration-processor']
   implementation rootProject.ext.dependencies['spring-web-starter']
   implementation('org.springframework.boot:spring-boot-starter-data-redis') {

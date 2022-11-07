@@ -4,10 +4,10 @@ import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.connector.K11Connector;
+import com.apitable.starter.connector.k11.model.SsoAuthInfo;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.modular.user.service.IUserService;
-import com.vikadata.connector.k11.K11Connector;
-import com.vikadata.connector.k11.model.SsoAuthInfo;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.UserEntity;
 

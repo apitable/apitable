@@ -9,9 +9,9 @@ plugins {
 
 dependencies {
   implementation project(':core')
-  implementation project(':vikadata-starters:vikadata-starter-swagger')
-  implementation project(':vikadata-starters:vikadata-starter-grpc-model')
-  implementation project(':vikadata-starters:vikadata-starter-social-dingtalk')
+  implementation project(':starters:swagger')
+  implementation project(':vikadata-integration:vikadata-integration-grpc-model')
+  implementation project(':starters:social-dingtalk')
   
   implementation rootProject.ext.dependencies['hutool']
   implementation rootProject.ext.dependencies['p6spy-starter']

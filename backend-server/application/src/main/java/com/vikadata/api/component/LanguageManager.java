@@ -3,7 +3,7 @@ package com.vikadata.api.component;
 import java.util.Locale;
 
 import com.vikadata.api.config.properties.ConstProperties;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.stereotype.Component;
 

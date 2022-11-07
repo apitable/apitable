@@ -1,0 +1,10 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(project(':vikadata-integration:vikadata-integration-afs'))
+  implementation(rootProject.ext.dependencies['aliyun-core'])
+  implementation(rootProject.ext.dependencies['aliyun-afs'])
+}

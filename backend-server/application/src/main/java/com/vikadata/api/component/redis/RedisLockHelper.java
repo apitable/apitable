@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.util.ObjectUtil;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.data.redis.core.BoundValueOperations;

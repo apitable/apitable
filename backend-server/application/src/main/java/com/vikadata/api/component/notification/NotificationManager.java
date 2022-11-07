@@ -33,7 +33,7 @@ import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.notification.EventType;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.modular.player.service.impl.PlayerNotificationServiceImpl;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.integration.socketio.SocketClientTemplate;
 

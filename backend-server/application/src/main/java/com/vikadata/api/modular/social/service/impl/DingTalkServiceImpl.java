@@ -24,7 +24,7 @@ import com.vikadata.api.modular.social.model.DingTalkContactDTO;
 import com.vikadata.api.modular.social.model.DingTalkContactDTO.DingTalkDepartmentDTO;
 import com.vikadata.api.modular.social.model.DingTalkContactDTO.DingTalkUserDTO;
 import com.vikadata.api.modular.social.service.IDingTalkService;
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties;
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.social.dingtalk.DingTalkTemplate;
 import com.vikadata.social.dingtalk.DingtalkConfig;

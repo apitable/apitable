@@ -1,0 +1,12 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(project(':vikadata-integration:vikadata-integration-oss'))
+
+  implementation(rootProject.ext.dependencies['aws'])
+  implementation(rootProject.ext.dependencies['minio'])
+  implementation(rootProject.ext.dependencies['qiniu'])
+}

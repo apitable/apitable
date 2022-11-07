@@ -2,7 +2,7 @@ package com.vikadata.api.security;
 
 import java.util.Map;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

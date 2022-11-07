@@ -22,7 +22,7 @@ import com.vikadata.api.constants.NodeExtraConstants;
 import com.vikadata.api.constants.NotificationConstants;
 import com.vikadata.api.constants.ParamsConstants;
 import com.vikadata.api.enums.datasheet.IdRulePrefixEnum;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.system.config.I18nConfigManager;
 import com.vikadata.system.config.i18n.I18nTypes;
 

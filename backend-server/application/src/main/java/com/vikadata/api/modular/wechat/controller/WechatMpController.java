@@ -40,7 +40,7 @@ import com.vikadata.api.modular.user.service.IThirdPartyMemberService;
 import com.vikadata.api.modular.user.service.IUserLinkService;
 import com.vikadata.api.util.InformationUtil;
 import com.vikadata.api.util.RandomExtendUtil;
-import com.vikadata.boot.autoconfigure.wx.mp.WxMpProperties;
+import com.apitable.starter.wx.mp.autoconfigure.WxMpProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;

@@ -66,7 +66,7 @@ import com.vikadata.api.security.CodeValidateScope;
 import com.vikadata.api.security.ValidateCodeProcessorManage;
 import com.vikadata.api.security.ValidateCodeType;
 import com.vikadata.api.security.ValidateTarget;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;

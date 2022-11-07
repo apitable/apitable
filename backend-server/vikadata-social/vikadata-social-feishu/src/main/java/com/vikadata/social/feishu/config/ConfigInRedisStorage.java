@@ -14,7 +14,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import cn.hutool.core.util.StrUtil;
 
-import com.vikadata.social.core.SocialRedisOperations;
 import com.vikadata.social.feishu.util.FeishuDecryptor;
 
 /**
@@ -32,7 +31,7 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
 
     private static final String DYNAMIC_KEY_TPL = "%s:feishu:lock:%s:%s:";
 
-    private final SocialRedisOperations redisOps;
+    private final FeishuRedisOperations redisOps;
 
     private final String redisKeyPrefix;
 
@@ -62,11 +61,11 @@ public class ConfigInRedisStorage implements FeishuConfigStorage {
 
     private String appAccessTokenKey;
 
-    public ConfigInRedisStorage(SocialRedisOperations redisOps) {
+    public ConfigInRedisStorage(FeishuRedisOperations redisOps) {
         this(redisOps, "vikadata");
     }
 
-    public ConfigInRedisStorage(SocialRedisOperations redisOps, String redisKeyPrefix) {
+    public ConfigInRedisStorage(FeishuRedisOperations redisOps, String redisKeyPrefix) {
         this.redisOps = redisOps;
         this.redisKeyPrefix = redisKeyPrefix;
     }

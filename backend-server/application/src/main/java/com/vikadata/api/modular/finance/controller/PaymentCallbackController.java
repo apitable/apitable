@@ -16,7 +16,7 @@ import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.modular.finance.model.PingChargeSuccess;
 import com.vikadata.api.modular.finance.service.IOrderPaymentService;
 import com.vikadata.api.util.PingppUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.HttpContextUtil;
 
 import org.springframework.http.HttpHeaders;

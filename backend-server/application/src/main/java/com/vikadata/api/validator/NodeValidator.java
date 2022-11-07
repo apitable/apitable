@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.holder.MemberHolder;
 import com.vikadata.api.modular.workspace.service.INodeService;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 /**
  * node id validator

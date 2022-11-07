@@ -13,7 +13,7 @@ import com.vikadata.api.component.notification.subject.SocialNotifyContext;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.util.VikaStrings;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.social.core.URIUtil;
 import com.vikadata.social.feishu.card.Card;
 import com.vikadata.social.feishu.card.CardMessage;

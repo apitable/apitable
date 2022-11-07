@@ -47,7 +47,7 @@ import com.vikadata.api.modular.space.service.ISpaceRoleService;
 import com.vikadata.api.modular.workspace.model.ControlRoleInfo;
 import com.vikadata.api.modular.workspace.service.INodeRoleService;
 import com.vikadata.api.modular.workspace.service.INodeService;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 

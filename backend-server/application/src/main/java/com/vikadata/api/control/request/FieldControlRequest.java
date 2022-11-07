@@ -14,7 +14,7 @@ import com.vikadata.api.control.role.RoleConstants.Field;
 import com.vikadata.api.modular.control.mapper.ControlMapper;
 import com.vikadata.api.modular.control.mapper.ControlRoleMapper;
 import com.vikadata.api.modular.control.model.ControlUnitDTO;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.entity.ControlRoleEntity;
 
 /**

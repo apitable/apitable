@@ -1,0 +1,11 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(project(':vikadata-integration:vikadata-integration-sms'))
+
+  implementation(rootProject.ext.dependencies['qcloudsms'])
+  implementation(rootProject.ext.dependencies['yunpian-sms'])
+}

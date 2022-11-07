@@ -89,7 +89,7 @@ import com.vikadata.api.modular.workspace.service.INodeRelService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.modular.workspace.service.VikaBundleService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;

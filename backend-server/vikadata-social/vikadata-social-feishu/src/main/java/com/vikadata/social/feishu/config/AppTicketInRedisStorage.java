@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.vikadata.social.core.AppTicketStorage;
-import com.vikadata.social.core.SocialRedisOperations;
 
 /**
  * Feishu APP ticket implements storage interface
@@ -24,15 +23,15 @@ public class AppTicketInRedisStorage implements AppTicketStorage {
 
     protected volatile Lock ticketLock = new ReentrantLock();
 
-    private final SocialRedisOperations redisOps;
+    private final FeishuRedisOperations redisOps;
 
     private final String redisKeyPrefix;
 
-    public AppTicketInRedisStorage(SocialRedisOperations redisOps) {
+    public AppTicketInRedisStorage(FeishuRedisOperations redisOps) {
         this(redisOps, "vikadata");
     }
 
-    public AppTicketInRedisStorage(SocialRedisOperations redisOps, String redisKeyPrefix) {
+    public AppTicketInRedisStorage(FeishuRedisOperations redisOps, String redisKeyPrefix) {
         this.redisOps = redisOps;
         this.redisKeyPrefix = redisKeyPrefix;
     }

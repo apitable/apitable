@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.social.dingtalk.DingTalkServiceProvider;
 import com.vikadata.social.service.dingtalk.component.TaskManager;
 import com.vikadata.social.service.dingtalk.model.ro.DingTalkCallbackRo;

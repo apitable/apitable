@@ -109,7 +109,7 @@ import com.vikadata.api.security.ValidateCodeType;
 import com.vikadata.api.security.ValidateTarget;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.api.util.billing.model.BillingPlanFeature;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;

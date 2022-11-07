@@ -2,8 +2,8 @@ package com.vikadata.social.service.dingtalk.event;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.boot.autoconfigure.social.dingtalk.annotation.DingTalkEventHandler;
-import com.vikadata.boot.autoconfigure.social.dingtalk.annotation.DingTalkEventListener;
+import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventHandler;
+import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventListener;
 import com.vikadata.social.dingtalk.event.order.SyncHttpMarketOrderEvent;
 import com.vikadata.social.dingtalk.event.order.SyncHttpMarketServiceCloseEvent;
 

@@ -6,8 +6,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.boot.autoconfigure.social.dingtalk.annotation.DingTalkEventHandler;
-import com.vikadata.boot.autoconfigure.social.dingtalk.annotation.DingTalkEventListener;
+import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventHandler;
+import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventListener;
 import com.vikadata.social.dingtalk.event.sync.http.contact.SyncHttpUserActiveOrgEvent;
 import com.vikadata.social.dingtalk.event.sync.http.contact.SyncHttpUserAddOrgEvent;
 import com.vikadata.social.dingtalk.event.sync.http.contact.SyncHttpUserDeptChangeEvent;

@@ -21,7 +21,7 @@ import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.modular.social.service.IDingTalkService;
 import com.vikadata.api.modular.workspace.observer.remind.NotifyDataSheetMeta;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.social.dingtalk.message.ActionCardMessage;
 import com.vikadata.social.dingtalk.message.Message;
 import com.vikadata.social.dingtalk.message.element.BtnActionCard;

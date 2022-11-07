@@ -18,7 +18,7 @@ import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.api.modular.social.service.ISocialEditionChangelogWeComService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.util.billing.WeComPlanConfigManager;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 import com.vikadata.entity.SocialEditionChangelogWecomEntity;
 import com.vikadata.social.wecom.constants.WeComIsvMessageType;

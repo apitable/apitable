@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties.IsvAppProperty;
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
 import com.vikadata.integration.grpc.CorpBizDataDto;
 import com.vikadata.integration.grpc.DingTalkUserDto;
 import com.vikadata.integration.grpc.TenantInfoResult;

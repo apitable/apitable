@@ -34,7 +34,7 @@ import com.vikadata.api.modular.workspace.mapper.NodeMapper;
 import com.vikadata.api.modular.workspace.model.NodeCopyOptions;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties.IsvAppProperty;
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.constants.RedisConstants;

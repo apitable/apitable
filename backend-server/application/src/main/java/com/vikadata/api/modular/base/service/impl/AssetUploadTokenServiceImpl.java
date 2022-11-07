@@ -14,6 +14,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.autoconfigure.oss.OssProperties;
+import com.apitable.starter.autoconfigure.oss.OssProperties.OssType;
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
 import com.vikadata.api.cache.service.AssetCacheService;
 import com.vikadata.api.config.properties.ConstProperties;
@@ -38,8 +40,6 @@ import com.vikadata.api.modular.base.service.IDeveloperAssetService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.modular.workspace.service.IWidgetPackageService;
 import com.vikadata.api.util.StringUtil;
-import com.vikadata.boot.autoconfigure.oss.OssProperties;
-import com.vikadata.boot.autoconfigure.oss.OssProperties.OssType;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.AssetEntity;
 import com.vikadata.entity.DeveloperAssetEntity;

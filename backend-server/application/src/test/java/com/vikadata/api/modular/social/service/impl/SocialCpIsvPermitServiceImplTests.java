@@ -28,7 +28,7 @@ import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderAccountService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderService;
 import com.vikadata.api.modular.social.service.IsocialWecomPermitOrderAccountBindService;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
 import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialWecomPermitOrderAccountEntity;

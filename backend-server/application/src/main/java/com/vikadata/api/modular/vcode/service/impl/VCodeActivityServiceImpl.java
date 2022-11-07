@@ -18,7 +18,7 @@ import com.vikadata.api.model.vo.vcode.VCodeActivityPageVo;
 import com.vikadata.api.model.vo.vcode.VCodeActivityVo;
 import com.vikadata.api.modular.vcode.mapper.VCodeActivityMapper;
 import com.vikadata.api.modular.vcode.service.IVCodeActivityService;
-import com.vikadata.boot.autoconfigure.wx.mp.WxMpProperties;
+import com.apitable.starter.wx.mp.autoconfigure.WxMpProperties;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.CodeActivityEntity;

@@ -78,7 +78,7 @@ import com.vikadata.api.modular.user.model.UserLangDTO;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.VikaStrings;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.constants.RedisConstants;

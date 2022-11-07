@@ -12,6 +12,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.net.URLEncoder;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
+import com.apitale.starter.autoconfigure.idaas.IdaasProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.component.TaskManager;
@@ -28,7 +29,6 @@ import com.vikadata.api.modular.idaas.service.IIdaasUserBindService;
 import com.vikadata.api.modular.organization.service.IMemberService;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.idaas.IdaasProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.IdaasAppBindEntity;
 import com.vikadata.entity.IdaasAppEntity;

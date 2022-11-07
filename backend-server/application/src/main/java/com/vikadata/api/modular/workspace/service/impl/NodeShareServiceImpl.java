@@ -52,7 +52,7 @@ import com.vikadata.api.modular.workspace.service.INodeShareService;
 import com.vikadata.api.modular.workspace.service.INodeShareSettingService;
 import com.vikadata.api.util.CollectionUtil;
 import com.vikadata.api.util.IdUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
 import com.vikadata.core.util.ExceptionUtil;

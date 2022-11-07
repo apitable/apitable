@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.annotation.Resource;
 
+import com.apitale.starter.autoconfigure.idaas.IdaasProperties;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +16,6 @@ import com.vikadata.api.modular.idaas.service.IIdaasAppBindService;
 import com.vikadata.api.modular.idaas.service.IIdaasAppService;
 import com.vikadata.api.modular.idaas.service.IIdaasAuthService;
 import com.vikadata.api.modular.idaas.service.IIdaasTenantService;
-import com.vikadata.boot.autoconfigure.idaas.IdaasProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.IdaasAppBindEntity;
 import com.vikadata.entity.IdaasAppEntity;

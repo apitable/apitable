@@ -63,7 +63,7 @@ import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.api.util.billing.LarkPlanConfigManager;
 import com.vikadata.api.util.billing.model.SubscribePlanInfo;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.api.enums.node.NodeType;
 import com.vikadata.entity.MemberEntity;

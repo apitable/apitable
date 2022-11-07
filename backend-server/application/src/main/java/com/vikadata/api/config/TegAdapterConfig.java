@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.apitable.starter.autoconfigure.teg.TegProperties.SmartProxyHeaderProperty;
+import com.apitable.starter.autoconfigure.teg.UnauthorizedResponseCustomizer;
 import com.vikadata.api.component.ApiResourceFactory;
+import com.vikadata.api.component.ResourceDefinition;
 import com.vikadata.api.constants.FilterConstants;
 import com.vikadata.api.context.SessionContext;
-import com.vikadata.api.component.ResourceDefinition;
 import com.vikadata.api.modular.social.mapper.SocialUserBindMapper;
-import com.vikadata.boot.autoconfigure.teg.TegProperties.SmartProxyHeaderProperty;
-import com.vikadata.boot.autoconfigure.xiaomi.UnauthorizedResponseCustomizer;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -64,7 +64,7 @@ public class TegAdapterConfig {
     @Bean
     FilterRegistrationBean<JwtProxyUserDetailFilter> JwtProxyUserDetailFilter(BeanFactory beanFactory, ApiResourceFactory resourceFactory) {
         FilterRegistrationBean<JwtProxyUserDetailFilter> filterRegistrationBean =
-            new FilterRegistrationBean<>(new JwtProxyUserDetailFilter(beanFactory, resourceFactory));
+                new FilterRegistrationBean<>(new JwtProxyUserDetailFilter(beanFactory, resourceFactory));
         filterRegistrationBean.setOrder(FilterConstants.TRACE_REQUEST_FILTER);
         filterRegistrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
         return filterRegistrationBean;
@@ -89,8 +89,8 @@ final class JwtProxyUserDetailFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String serverPath = request.getServletPath();
         ResourceDefinition resourceDef = apiResourceFactory.getResourceByUrl(serverPath);
-        String ignoreUrl = (String)request.getAttribute(SmartProxyHeaderProperty.REQUEST_IGNORE_URL);
-        if (serverPath.equals(ignoreUrl)){
+        String ignoreUrl = (String) request.getAttribute(SmartProxyHeaderProperty.REQUEST_IGNORE_URL);
+        if (serverPath.equals(ignoreUrl)) {
             LOGGER.info("Service check to Smart Proxy ignore path: {}", serverPath);
             filterChain.doFilter(request, response);
             return;
@@ -113,7 +113,7 @@ final class JwtProxyUserDetailFilter extends OncePerRequestFilter {
         Long userId = socialUserBindMapper.selectUserIdByUnionId(jwtStaffName);
         if (userId == null) {
             // Unsynced users are not allowed to log in
-            log.info("User does not exist, please create user first[{}]",jwtStaffName);
+            log.info("User does not exist, please create user first[{}]", jwtStaffName);
             throw new ServletException(UNAUTHORIZED.getMessage());
         }
         SessionContext.setExternalId(userId, jwtStaffName);

@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import com.vikadata.api.support.serializer.ChinaLocalDateTimeToUtcSerializer;
 import com.vikadata.api.support.serializer.NullBooleanSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.api.config.properties.LimitProperties;
 
 /**

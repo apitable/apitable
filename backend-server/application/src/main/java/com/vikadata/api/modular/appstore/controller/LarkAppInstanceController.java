@@ -43,7 +43,7 @@ import com.vikadata.api.modular.social.service.ISocialUserBindService;
 import com.vikadata.api.modular.user.SocialUser;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.social.ServletUtil;
+import com.vikadata.social.core.ServletUtil;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.entity.AppInstanceEntity;
 import com.vikadata.social.feishu.FeishuConfigStorageHolder;

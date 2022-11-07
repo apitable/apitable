@@ -20,7 +20,7 @@ import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.service.IFeishuService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.workspace.observer.remind.RemindSubjectType.RemindSubjectEnum;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.entity.AppInstanceEntity;
 import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.social.core.URIUtil;

@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.config.properties.TestProperties;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.clock.Clock;
 import com.vikadata.clock.DefaultClock;
 import com.vikadata.clock.MockClock;

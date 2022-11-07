@@ -18,7 +18,7 @@ import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.modular.social.enums.SocialAppType;
 import com.vikadata.api.modular.social.service.IDingTalkInternalIsvService;
 import com.vikadata.api.util.VikaStrings;
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties.IsvAppProperty;
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
 import com.vikadata.system.config.SystemConfigManager;
 import com.vikadata.system.config.notification.SocialTemplate;
 

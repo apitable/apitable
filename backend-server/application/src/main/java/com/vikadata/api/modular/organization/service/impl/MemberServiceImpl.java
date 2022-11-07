@@ -96,7 +96,7 @@ import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper;
 import com.vikadata.api.util.CollectionUtil;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;

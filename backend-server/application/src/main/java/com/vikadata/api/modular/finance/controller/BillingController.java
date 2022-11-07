@@ -26,7 +26,7 @@ import com.vikadata.api.modular.developer.service.IGmService;
 import com.vikadata.api.modular.finance.model.OfflineOrderInfo;
 import com.vikadata.api.modular.finance.model.SpaceSubscriptionVo;
 import com.vikadata.api.modular.finance.service.IBillingOfflineService;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.social.feishu.card.Message;
 

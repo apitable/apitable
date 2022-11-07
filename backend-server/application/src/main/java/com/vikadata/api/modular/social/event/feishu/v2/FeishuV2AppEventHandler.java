@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.modular.social.service.IFeishuEventService;
 import com.vikadata.api.modular.social.service.ISocialFeishuEventLogService;
-import com.vikadata.boot.autoconfigure.social.feishu.annotation.FeishuEventHandler;
-import com.vikadata.boot.autoconfigure.social.feishu.annotation.FeishuEventListener;
+import com.apitable.starter.social.feishu.autoconfigure.annotation.FeishuEventHandler;
+import com.apitable.starter.social.feishu.autoconfigure.annotation.FeishuEventListener;
 import com.vikadata.social.feishu.event.app.AppOpenEvent;
 import com.vikadata.social.feishu.event.app.AppStatusChangeEvent;
 import com.vikadata.social.feishu.event.app.AppUninstalledEvent;

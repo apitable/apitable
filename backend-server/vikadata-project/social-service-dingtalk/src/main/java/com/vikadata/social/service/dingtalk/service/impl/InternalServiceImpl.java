@@ -9,8 +9,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.social.dingtalk.DingTalkServiceProvider;
 import com.vikadata.social.dingtalk.util.DingTalkCallbackCrypto;

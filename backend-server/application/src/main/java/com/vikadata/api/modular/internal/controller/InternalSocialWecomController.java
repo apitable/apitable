@@ -11,8 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties.IsvApp;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.beans.factory.annotation.Autowired;

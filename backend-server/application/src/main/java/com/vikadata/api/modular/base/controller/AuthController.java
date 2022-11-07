@@ -42,7 +42,7 @@ import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.security.afs.AfsCheckService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.auth0.Auth0Template;
+import com.vikadata.integration.auth0.Auth0Template;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.HttpContextUtil;
 

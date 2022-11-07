@@ -1,0 +1,8 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(rootProject.ext.dependencies['wx-pay'])
+}

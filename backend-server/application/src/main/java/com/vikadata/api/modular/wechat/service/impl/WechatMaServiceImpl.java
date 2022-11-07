@@ -9,6 +9,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.wx.miniapp.autoconfigure.WxMaProperties;
 import com.vikadata.api.cache.bean.LoginUserDto;
 import com.vikadata.api.cache.service.LoginUserService;
 import com.vikadata.api.cache.service.UserActiveSpaceService;
@@ -26,7 +27,6 @@ import com.vikadata.api.modular.user.service.IThirdPartyMemberService;
 import com.vikadata.api.modular.user.service.IUserLinkService;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.wechat.service.IWechatMaService;
-import com.vikadata.boot.autoconfigure.wx.miniapp.WxMaProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 

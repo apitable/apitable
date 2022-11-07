@@ -3,7 +3,7 @@ package com.vikadata.api.context;
 import java.util.Locale;
 
 import com.vikadata.api.component.LanguageManager;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.context.MessageSource;
 

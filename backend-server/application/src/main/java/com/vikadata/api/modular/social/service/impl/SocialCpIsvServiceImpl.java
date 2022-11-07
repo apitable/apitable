@@ -100,7 +100,7 @@ import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.IdUtil;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.WeComPlanConfigManager;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;

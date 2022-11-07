@@ -8,7 +8,7 @@ import me.chanjar.weixin.cp.bean.article.NewArticle;
 import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 
 import com.vikadata.api.util.UrlQueryExtend;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.api.config.properties.ClientProperties;
 
 /**

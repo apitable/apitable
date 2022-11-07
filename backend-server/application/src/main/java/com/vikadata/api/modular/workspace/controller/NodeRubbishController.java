@@ -34,7 +34,7 @@ import com.vikadata.api.model.vo.node.NodeInfoVo;
 import com.vikadata.api.model.vo.node.RubbishNodeVo;
 import com.vikadata.api.modular.workspace.service.INodeRubbishService;
 import com.vikadata.api.modular.workspace.service.INodeService;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 

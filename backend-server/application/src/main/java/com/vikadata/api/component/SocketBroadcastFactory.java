@@ -5,7 +5,7 @@ import java.util.List;
 import com.vikadata.api.control.ControlIdBuilder;
 import com.vikadata.api.event.FieldPermissionEvent;
 import com.vikadata.api.event.FieldPermissionEvent.Arg;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.stereotype.Component;
 

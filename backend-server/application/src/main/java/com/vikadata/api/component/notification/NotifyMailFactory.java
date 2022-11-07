@@ -21,12 +21,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.autoconfigure.beetl.BeetlTemplate;
+import com.apitable.starter.autoconfigure.mail.EmailMessage;
+import com.apitable.starter.autoconfigure.mail.MailTemplate;
 import com.vikadata.api.config.properties.EmailSendProperties;
 import com.vikadata.api.security.email.TencentMailTemplate;
-import com.vikadata.boot.autoconfigure.beetl.BeetlTemplate;
-import com.vikadata.boot.autoconfigure.mail.EmailMessage;
-import com.vikadata.boot.autoconfigure.mail.MailTemplate;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.integration.mail.CloudEmailMessage;
 import com.vikadata.integration.mail.CloudMailSender;
 
@@ -45,6 +45,8 @@ import static com.vikadata.api.constants.MailPropConstants.SUBJECT_RECORD_COMMEN
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_REGISTER;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_REMOVE_MEMBER;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
+import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED;
+import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_COMMENTED;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_TASK_REMINDER;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_VERIFY_CODE;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_WARN_NOTIFY;
@@ -55,8 +57,6 @@ import static com.vikadata.api.constants.MailPropConstants.SUBJECT_WIDGET_SUBMIT
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_WIDGET_TRANSFER_NOTIFY;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_WIDGET_UNPUBLISH_GLOBAL_NOTIFY;
 import static com.vikadata.api.constants.MailPropConstants.SUBJECT_WIDGET_UNPUBLISH_NOTIFY;
-import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED;
-import static com.vikadata.api.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_COMMENTED;
 import static java.util.stream.Collectors.toList;
 
 /**

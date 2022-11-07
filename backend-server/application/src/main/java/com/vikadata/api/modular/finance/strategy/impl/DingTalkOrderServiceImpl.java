@@ -32,7 +32,7 @@ import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.util.billing.BillingConfigManager;
 import com.vikadata.api.util.billing.DingTalkPlanConfigManager;
 import com.vikadata.api.util.billing.model.ProductChannel;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.entity.SubscriptionEntity;
 import com.vikadata.integration.grpc.CorpBizDataDto;

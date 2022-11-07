@@ -8,7 +8,7 @@ import cn.hutool.http.HttpUtil;
 
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.modular.social.constants.LarkConstants;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 /**
  * Lark Application Configuration Factory

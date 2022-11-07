@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.hutool.core.lang.Dict;
+import com.apitable.starter.autoconfigure.beetl.BeetlAutoConfiguration;
+import com.apitable.starter.autoconfigure.mail.CloudMailAutoConfiguration;
+import com.apitable.starter.autoconfigure.mail.MailAutoConfiguration;
+import com.apitable.starter.autoconfigure.mail.TencentMailAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -17,11 +21,7 @@ import com.vikadata.api.component.notification.NotifyMailFactory;
 import com.vikadata.api.config.properties.EmailSendProperties;
 import com.vikadata.api.constants.MailPropConstants;
 import com.vikadata.api.util.IdUtil;
-import com.vikadata.boot.autoconfigure.beetl.BeetlAutoConfiguration;
-import com.vikadata.boot.autoconfigure.mail.CloudMailAutoConfiguration;
-import com.vikadata.boot.autoconfigure.mail.MailAutoConfiguration;
-import com.vikadata.boot.autoconfigure.mail.TencentMailAutoConfiguration;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

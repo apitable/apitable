@@ -11,7 +11,7 @@ import cn.hutool.core.util.StrUtil;
 import com.vikadata.api.constants.SessionAttrConstants;
 import com.vikadata.api.enums.exception.AuthException;
 import com.vikadata.api.holder.UserHolder;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.HttpContextUtil;
 

@@ -29,7 +29,7 @@ import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.security.Auth0UserProfile;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.modular.user.service.IUserService;
-import com.vikadata.boot.autoconfigure.auth0.Auth0Template;
+import com.vikadata.integration.auth0.Auth0Template;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;

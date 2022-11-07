@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.vikadata.api.config.properties.FeishuAppProperties;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.social.core.URIUtil;
 import com.vikadata.social.feishu.card.Card;
 import com.vikadata.social.feishu.card.CardMessage;

@@ -58,7 +58,7 @@ import com.vikadata.api.modular.social.service.ISocialTenantService;
 import com.vikadata.api.modular.space.mapper.SpaceMapper;
 import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties.IsvAppProperty;
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.entity.AppInstanceEntity;
 import com.vikadata.entity.SocialTenantEntity;

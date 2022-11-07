@@ -17,6 +17,8 @@ import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties.IsvApp;
 import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
 import com.vikadata.api.enums.finance.SubscriptionPhase;
 import com.vikadata.api.modular.finance.core.Bundle;
@@ -28,8 +30,6 @@ import com.vikadata.api.modular.social.service.ISocialCpIsvPermitService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitOrderService;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties.IsvApp;
 import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;

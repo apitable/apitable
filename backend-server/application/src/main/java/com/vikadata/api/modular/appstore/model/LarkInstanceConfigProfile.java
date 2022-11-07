@@ -2,8 +2,8 @@ package com.vikadata.api.modular.appstore.model;
 
 import cn.hutool.json.JSONUtil;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
-import com.vikadata.social.core.SocialRedisOperations;
+import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.social.feishu.config.FeishuRedisOperations;
 import com.vikadata.social.feishu.config.FeishuConfigStorage;
 import com.vikadata.social.feishu.config.FeishuConfigStorageHelper;
 
@@ -49,7 +49,7 @@ public class LarkInstanceConfigProfile implements InstanceConfigProfile {
     }
 
     public FeishuConfigStorage buildConfigStorage() {
-        SocialRedisOperations redisOperations = SpringContextHolder.getBean(SocialRedisOperations.class);
+        FeishuRedisOperations redisOperations = SpringContextHolder.getBean(FeishuRedisOperations.class);
         return FeishuConfigStorageHelper.withInitial(redisOperations,
                 appKey, appSecret,
                 false, eventEncryptKey, eventVerificationToken);

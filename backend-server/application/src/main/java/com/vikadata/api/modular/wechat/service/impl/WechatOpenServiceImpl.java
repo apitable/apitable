@@ -17,9 +17,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.vikadata.api.enums.user.ThirdPartyMemberType;
-import com.vikadata.api.enums.wechat.WechatReplyMode;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -36,6 +33,7 @@ import me.chanjar.weixin.open.bean.auth.WxOpenAuthorizerInfo;
 import me.chanjar.weixin.open.bean.result.WxOpenQueryAuthResult;
 import org.apache.commons.lang3.StringUtils;
 
+import com.apitable.starter.wx.mp.autoconfigure.WxMpProperties;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.enums.exception.DatabaseException;
 import com.vikadata.api.enums.user.ThirdPartyMemberType;
@@ -52,7 +50,6 @@ import com.vikadata.api.modular.wechat.service.IWechatMpKeywordReplyService;
 import com.vikadata.api.modular.wechat.service.IWechatMpLogService;
 import com.vikadata.api.modular.wechat.service.IWechatOpenService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.wx.mp.WxMpProperties;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.WechatAuthPermissionEntity;

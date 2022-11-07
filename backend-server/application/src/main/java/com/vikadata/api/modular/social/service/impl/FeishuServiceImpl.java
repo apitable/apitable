@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.modular.social.model.FeishuTenantInfoVO;
 import com.vikadata.api.modular.social.service.IFeishuService;
-import com.vikadata.boot.autoconfigure.social.FeishuProperties;
+import com.apitable.starter.social.feishu.autoconfigure.FeishuProperties;
 import com.vikadata.social.feishu.FeishuEventListenerManager;
 import com.vikadata.social.feishu.FeishuServiceProvider;
 import com.vikadata.social.feishu.MessageReceiverBuilder;

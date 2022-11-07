@@ -1,0 +1,8 @@
+ plugins {
+  id 'java-library'
+}
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(project(':vikadata-integration:vikadata-integration-socketio'))
+  implementation rootProject.ext.dependencies['socket-io']
+}

@@ -100,7 +100,7 @@ import com.vikadata.api.modular.vcode.service.IVCodeUsageService;
 import com.vikadata.api.modular.workspace.service.INodeShareService;
 import com.vikadata.api.util.ApiHelper;
 import com.vikadata.api.util.RandomExtendUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;

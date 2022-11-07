@@ -24,7 +24,7 @@ import com.vikadata.api.modular.control.mapper.ControlRoleMapper;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
 import com.vikadata.api.modular.workspace.model.ControlRoleInfo;
 import com.vikadata.api.modular.workspace.model.SimpleNodeInfo;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 /**
  * node control executor

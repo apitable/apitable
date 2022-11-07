@@ -69,7 +69,7 @@ import com.vikadata.api.modular.space.service.ISpaceService;
 import com.vikadata.api.modular.user.SocialUser;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.social.wecom.WeComProperties;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;

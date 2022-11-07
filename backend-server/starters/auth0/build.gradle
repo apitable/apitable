@@ -1,0 +1,9 @@
+plugins {
+  id 'java-library'
+}
+
+dependencies {
+  implementation(rootProject.ext.dependencies['boot-starter'])
+  api(project(':vikadata-integration:vikadata-integration-auth0'))
+  api(rootProject.ext.dependencies['auth0'])
+}

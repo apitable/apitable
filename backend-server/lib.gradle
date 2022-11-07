@@ -77,7 +77,6 @@ ext {
     ],
     'beetl'                       : "com.ibeetl:beetl:${ibeetl_version}",
     'sensors'                     : "com.sensorsdata.analytics.javasdk:SensorsAnalyticsSDK:${sensors_version}",
-    'fundebug'                    : "com.fundebug:fundebug-spring:${fundebug_version}",
     'wx-open'                     : "com.github.binarywang:weixin-java-open:${wx_java_sdk_version}",
     'wx-mp'                       : "com.github.binarywang:weixin-java-mp:${wx_java_sdk_version}",
     'wx-miniapp'                  : "com.github.binarywang:weixin-java-miniapp:${wx_java_sdk_version}",
@@ -102,7 +101,6 @@ ext {
       'org.slf4j:slf4j-api',
       'ch.qos.logback:logback-classic',
     ],
-    'gitlab4j'                    : "org.gitlab4j:gitlab4j-api:${gitlab4j_version}",
     'pdf'                         : [
       "org.apache.pdfbox:pdfbox:${pdfbox_version}",
       "org.apache.pdfbox:pdfbox-tools:${pdfbox_version}",

@@ -43,7 +43,7 @@ import com.vikadata.api.modular.developer.service.IGmService;
 import com.vikadata.api.modular.wechat.mapper.WechatKeywordReplyMapper;
 import com.vikadata.api.modular.wechat.service.IWechatMpQrcodeService;
 import com.vikadata.api.modular.wechat.service.IWechatOpenService;
-import com.vikadata.boot.autoconfigure.wx.mp.WxMpProperties;
+import com.apitable.starter.wx.mp.autoconfigure.WxMpProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;

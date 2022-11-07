@@ -20,6 +20,7 @@ import cn.hutool.core.date.TimeInterval;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -37,7 +38,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.integration.oss.OssClientTemplate;
 import com.vikadata.integration.oss.OssObject;
 import com.vikadata.integration.vika.VikaOperations;
@@ -55,6 +55,7 @@ import com.vikadata.scheduler.space.service.IDatasheetMetaService;
 import com.vikadata.scheduler.space.service.impl.DatasheetMetaServiceImpl.WaitProcessedOneWayLinkData.FixType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +78,9 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
 
     @Autowired(required = false)
     private VikaOperations vikaOperations;
+
+    @Resource
+    private Environment environment;
 
     @Override
     public void oneWayLinkDataHandler(ClearOneWayLinkJobHandler.JobParam jobParam) {
@@ -105,7 +109,8 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
             }
         }
         else {
-            String activeProfile = SpringContextHolder.getActiveProfile();
+            final String[] activeProfiles = environment.getActiveProfiles();
+            String activeProfile = ArrayUtil.isNotEmpty(activeProfiles) ? activeProfiles[0] : null;
 
             if (!"local".equals(activeProfile) && StrUtil.isEmpty(jobParam.getSpaceId())) {
                 XxlJobHelper.log("Currently does not support full space station scan and repair, please specify space id.");

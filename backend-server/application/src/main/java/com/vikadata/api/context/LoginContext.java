@@ -16,7 +16,7 @@ import com.vikadata.api.constants.ParamsConstants;
 import com.vikadata.api.holder.LoginUserHolder;
 import com.vikadata.api.holder.MemberHolder;
 import com.vikadata.api.holder.SpaceHolder;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;

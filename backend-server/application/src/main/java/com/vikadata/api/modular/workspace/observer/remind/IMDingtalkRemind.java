@@ -7,11 +7,11 @@ import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
 import com.vikadata.api.modular.social.event.dingtalk.DingTalkCardFactory;
 import com.vikadata.api.modular.social.service.IDingTalkInternalIsvService;
 import com.vikadata.api.modular.social.service.IDingTalkService;
 import com.vikadata.api.modular.workspace.observer.remind.RemindSubjectType.RemindSubjectEnum;
-import com.vikadata.boot.autoconfigure.social.DingTalkProperties.IsvAppProperty;
 import com.vikadata.social.dingtalk.message.Message;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

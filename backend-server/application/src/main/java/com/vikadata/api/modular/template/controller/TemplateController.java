@@ -60,7 +60,7 @@ import com.vikadata.api.modular.template.service.ITemplateService;
 import com.vikadata.api.modular.workspace.model.NodeCopyOptions;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 

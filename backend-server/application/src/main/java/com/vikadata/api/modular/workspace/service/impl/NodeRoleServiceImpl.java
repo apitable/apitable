@@ -59,7 +59,7 @@ import com.vikadata.api.modular.workspace.model.ControlRoleInfo;
 import com.vikadata.api.modular.workspace.model.ControlRoleUnitDTO;
 import com.vikadata.api.modular.workspace.model.SimpleNodeInfo;
 import com.vikadata.api.modular.workspace.service.INodeRoleService;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.ControlRoleEntity;
 

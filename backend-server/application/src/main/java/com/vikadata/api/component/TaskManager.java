@@ -4,7 +4,7 @@ import java.util.concurrent.Executor;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.stereotype.Component;
 
