@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { 
-  IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage, IUserInfo
+import {
+  IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage, ISubscription, IUserInfo,
 } from '@apitable/core';
 import { CommonStatusCode, InjectLogger } from '../../common';
 import { CommonException, PermissionException, ServerException } from '../../exception';
@@ -215,7 +215,7 @@ export class RestService {
 
   /**
    * Calculates the number of references of attachments in a datasheet
-   * 
+   *
    * @param auth Authorization info
    * @param ro request parameters
    * @return
@@ -253,7 +253,7 @@ export class RestService {
 
   /**
    * Obtain the capacity info of the given space
-   * 
+   *
    * @param headers Authorization info
    * @param spaceId space ID
    */
@@ -314,23 +314,23 @@ export class RestService {
   }
 
   /**
-   * Obtain the subscription view of the space
-   * 
+   * Obtain the subscription of the space
+   *
    * @param {string} spaceId
    * @returns {Promise<InternalSpaceSubscriptionView>}
    */
-  async getSpaceSubscriptionView(spaceId: string): Promise<InternalSpaceSubscriptionView> {
+  async getSpaceSubscription(spaceId: string): Promise<InternalSpaceSubscriptionView> {
     const response = await this.httpService.get<InternalSpaceSubscriptionView>(sprintf(this.SPACE_SUBSCRIPTION, { spaceId })).toPromise();
     return response.data;
   }
 
   /**
-   * Obtain the usage view of the space
-   * 
+   * Obtain the usage of the space
+   *
    * @param {string} spaceId
    * @returns {Promise<InternalSpaceUsageView>}
    */
-  async getSpaceUsageView(spaceId: string): Promise<InternalSpaceUsageView> {
+  async getSpaceUsage(spaceId: string): Promise<InternalSpaceUsageView> {
     const response = await this.httpService.get<InternalSpaceUsageView>(sprintf(this.SPACE_USAGES, { spaceId })).toPromise();
     return response.data;
   }
@@ -341,7 +341,7 @@ export class RestService {
     const response = await this.httpService.post<InternalCreateDatasheetVo>(url, creareDatasheetRo, {
       headers: HttpHelper.withSpaceIdHeader(
         HttpHelper.createAuthHeaders(headers),
-      )
+      ),
     }).toPromise();
     return response.data;
   }
@@ -351,7 +351,7 @@ export class RestService {
     const response = await this.httpService.post<InternalCreateDatasheetVo>(url, {}, {
       headers: HttpHelper.withSpaceIdHeader(
         HttpHelper.createAuthHeaders(headers),
-      )
+      ),
     }).toPromise();
     return response.data;
   }
@@ -394,7 +394,7 @@ export class RestService {
 
   /**
    * Create notification
-   * 
+   *
    * @param auth token
    * @param ro notification parameters
    * @return boolean
@@ -414,7 +414,7 @@ export class RestService {
 
   /**
    * Create a notification about that the number of record is about to exceed limit.
-   * 
+   *
    * @param auth authorization
    * @param templateId notified template ID
    * @param toUserId notified user ID
@@ -442,7 +442,7 @@ export class RestService {
 
   /**
    * Obtain the node rules of the given node
-   * 
+   *
    * @param {IAuthHeader} auth header
    * @param {string} spaceId space ID
    * @param {string} nodeId node ID
@@ -452,14 +452,14 @@ export class RestService {
     const url = sprintf(this.LIST_NODE_ROLES, { nodeId });
     const response = await this.httpService.get(
       url,
-      { headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId) }
+      { headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId) },
     ).toPromise();
     return response.data;
   }
 
   /**
    * Obtain the node rules of the given field
-   * 
+   *
    * @param {IAuthHeader} auth header
    * @param {string} dstId datasheet ID
    * @param {string} fieldId field ID

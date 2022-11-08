@@ -1,5 +1,5 @@
-import { Button, colorVars, TextButton, Typography, useThemeColors } from '@vikadata/components';
 import { ConfigConstant, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
+import { Button, colorVars, TextButton, Typography, useThemeColors } from '@vikadata/components';
 import { CloseMiddleOutlined, TitleFavoriteFilled } from '@vikadata/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
@@ -14,10 +14,11 @@ import styles from './styles.module.less';
 
 interface IUsageWarnModalParams {
   alertContent: string;
+  reload?: boolean;
 }
 
 const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
-  alertContent,
+  alertContent, reload
 }) => {
   const colors = useThemeColors();
 
@@ -42,6 +43,16 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
     </div>
   );
 
+  const _goToUpgrade = () => {
+    goToUpgrade();
+    reload && location.reload();
+  };
+
+  const _viewDetail = ()=>{
+    window.open('/pricing', '_blank', 'noopener,noreferrer');
+    reload && location.reload();
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.pageLeft}>
@@ -52,7 +63,7 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
         <Typography variant='h5' className={classnames(styles.textCenter, styles.alertContent)}>
           {alertContent}
         </Typography>
-        <Button color='primary' size={'middle'} className={styles.upgradeBtn} onClick={() => goToUpgrade()} block>
+        <Button color='primary' size={'middle'} className={styles.upgradeBtn} onClick={_goToUpgrade} block>
           <span style={{ position: 'relative', top: 3 }}>
             <Emoji emoji={'star2'} set='apple' size={ConfigConstant.CELL_EMOJI_SIZE} />
           </span>
@@ -62,7 +73,7 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
           isSaaSApp() && <TextButton
             color='default'
             className={styles.checkMorePrivileges}
-            onClick={() => window.open('/pricing', '_blank', 'noopener,noreferrer')}
+            onClick={_viewDetail}
             block
           >
             {t(Strings.check_more_privileges)}
@@ -91,6 +102,7 @@ export const usageWarnModal = (params: IUsageWarnModalParams) => {
   const onModalClose = () => {
     root.unmount();
     container.parentElement!.removeChild(container);
+    params.reload && location.reload();
   };
 
   root.render(
@@ -98,6 +110,7 @@ export const usageWarnModal = (params: IUsageWarnModalParams) => {
       <Modal
         visible
         wrapClassName={styles.modalWrapper}
+        maskClosable={false}
         closeIcon={<CloseMiddleOutlined color={colorVars.fc3} size={8} />}
         onCancel={onModalClose}
         destroyOnClose

@@ -3,8 +3,9 @@ import * as Sentry from '@sentry/node';
 import {
   CollaCommandName, Field, FieldType, IAttachmentValue, IComments, IField, IFieldMap, IFieldUpdatedMap, IJOTAction, IMeta, IObjectDeleteAction,
   IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState, IRemoteChangeset,
-  isSameSet, IViewProperty, jot, OTActionName
+  isSameSet, IViewProperty, jot, OTActionName, ViewType,
 } from '@apitable/core';
+import { DatasheetException } from 'shared/exception';
 import { InjectLogger } from '../../../shared/common';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import dayjs from 'dayjs';
@@ -56,7 +57,7 @@ export class DatasheetOtService {
 
   /**
    * Sets a value in a `Map<key, value[]>`.
-   * 
+   *
    * If the key exists, the value is appended to the value array, otherwise a new value array is created.
    */
   private static setMapValIfExist(map: Map<any, any>, key: any, value: any) {
@@ -195,7 +196,47 @@ export class DatasheetOtService {
       return pre;
     }, []);
 
+    if (resultSet.addViews.length) {
+      const spaceUsages = await this.restService.getSpaceUsage(spaceId);
+      const subscribeInfo = await this.restService.getSpaceSubscription(spaceId);
+      let afterAddGanttViewCountInSpace = spaceUsages.ganttViewNums;
+      let afterAddCalendarCountInSpace = spaceUsages.calendarViewNums;
+
+      resultSet.addViews.map(view => {
+        if (view.type === ViewType.Gantt) {
+          afterAddGanttViewCountInSpace++;
+          return;
+        }
+        if (view.type === ViewType.Calendar) {
+          afterAddCalendarCountInSpace++;
+          return;
+        }
+      });
+
+      if (afterAddGanttViewCountInSpace > subscribeInfo.maxGanttViewsInSpace) {
+        throw new ServerException(DatasheetException.getVIEW_ADD_LIMIT_FOR_GANTTMsg(subscribeInfo.maxGanttViewsInSpace, afterAddGanttViewCountInSpace));
+      }
+
+      if (afterAddCalendarCountInSpace > subscribeInfo.maxCalendarViewsInSpace) {
+        throw new ServerException(DatasheetException.getVIEW_ADD_LIMIT_FOR_CALENDARMsg(subscribeInfo.maxCalendarViewsInSpace, afterAddCalendarCountInSpace));
+      }
+    }
+
     if (resultSet.toCreateRecord.size) {
+      const currentRecordCountInDst = await this.metaService.getRowsNumByDstId(datasheetId);
+      const spaceUsages = await this.restService.getSpaceUsage(spaceId);
+      const subscribeInfo = await this.restService.getSpaceSubscription(spaceId);
+      const afterCreateCountInDst = currentRecordCountInDst + resultSet.toCreateRecord.size;
+      const afterCreateCountInSpace = spaceUsages.recordNums + resultSet.toCreateRecord.size;
+
+      if (afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
+        throw new ServerException(DatasheetException.getRECORD_ADD_LIMIT_PER_DATASHEETMsg(subscribeInfo.maxRowsPerSheet, afterCreateCountInDst));
+      }
+
+      if (afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
+        throw new ServerException(DatasheetException.getRECORD_ADD_LIMIT_WITHIN_SPACEMsg(subscribeInfo.maxRowsInSpace, afterCreateCountInSpace));
+      }
+
       const fieldMap = resultSet.temporaryFieldMap;
 
       for (const [recordId, value] of resultSet.toCreateRecord.entries()) {
@@ -231,7 +272,7 @@ export class DatasheetOtService {
             Sentry.captureMessage('Format error for data being written', {
               extra: {
                 datasheetId,
-                error: JSON.stringify(error)
+                error: JSON.stringify(error),
               },
             });
             continue;
@@ -275,7 +316,7 @@ export class DatasheetOtService {
             Sentry.captureMessage('Format error for data being written', {
               extra: {
                 datasheetId,
-                error: JSON.stringify(error)
+                error: JSON.stringify(error),
               },
             });
             continue;
@@ -564,7 +605,7 @@ export class DatasheetOtService {
         }
         resultSet.toChangeFormulaExpressions.push({
           createExpression: oiData.property.expression,
-          deleteExpression: odData.property.expression, fieldId: oiData.id
+          deleteExpression: odData.property.expression, fieldId: oiData.id,
         });
       }
     }
@@ -794,7 +835,7 @@ export class DatasheetOtService {
             if ('oi' in action) {
               resultSet.temporaryViews[viewIndex] = {
                 ...resultSet.temporaryViews[viewIndex],
-                lockInfo: action['oi']
+                lockInfo: action['oi'],
               };
               return;
             }
@@ -862,7 +903,7 @@ export class DatasheetOtService {
 
   /**
    * Processes data Operation that are related to Meta
-   * 
+   *
    * @param action
    * @param permission
    * @param resultSet
@@ -1114,11 +1155,11 @@ export class DatasheetOtService {
     // ===== Comment collection operation END ====
   }
 
-  transaction = async(
+  transaction = async (
     manager: EntityManager,
     effectMap: Map<string, any>,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) => {
     const beginTime = +new Date();
     this.logger.info(`[${commonData.dstId}] ====> transaction start......`);
@@ -1210,7 +1251,7 @@ export class DatasheetOtService {
 
   /**
    * Update number of references of attachment
-   * 
+   *
    * @param action OT action
    * @param resultSet collector
    * @param fieldMap column data
@@ -1303,7 +1344,7 @@ export class DatasheetOtService {
     manager: EntityManager,
     commonData: ICommonData,
     effectMap: Map<string, any>,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.toCorrectComment.size) {
       return;
@@ -1369,7 +1410,7 @@ export class DatasheetOtService {
 
   /**
    * Batch delete record
-   * 
+   *
    * @param manager database manager
    * @param commonData common data, including userId, uuid, dstId and revision
    * @param resultSet
@@ -1390,7 +1431,7 @@ export class DatasheetOtService {
       isDeleted: true,
       revisionHistory: () => `CONCAT_WS(',', revision_history, ${revision})`,
       revision,
-      updatedBy: userId
+      updatedBy: userId,
     };
     // Check if operator has editable permission for all fields, if so, clear data
     const allFieldCanEdit = commonData.permission.fieldPermissionMap ?
@@ -1428,7 +1469,7 @@ export class DatasheetOtService {
   private async handleBatchDeleteWidget(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (this.logger.isDebugEnabled()) {
       this.logger.debug('[Soft delete widget]');
@@ -1454,7 +1495,7 @@ export class DatasheetOtService {
   private async handleBatchAddWidget(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (this.logger.isDebugEnabled()) {
       this.logger.debug('[Soft recover widget]');
@@ -1492,7 +1533,7 @@ export class DatasheetOtService {
 
   /**
    * Batch update cell data
-   * 
+   *
    * @param manager database manager
    * @param commonData common data, including userId, uuid, dstId and revision
    * @param effectMap effect variable collection
@@ -1504,7 +1545,7 @@ export class DatasheetOtService {
     commonData: ICommonData,
     effectMap: Map<string, any>,
     isDelete: boolean,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     const recordFieldMap = isDelete ? resultSet.cleanRecordCellMap : resultSet.replaceCellMap;
     if (!recordFieldMap.size) {
@@ -1629,7 +1670,7 @@ export class DatasheetOtService {
 
   /**
    * Batch create records
-   * 
+   *
    * @param manager database manager
    * @param commonData common data, including userId, uuid, dstId and revision
    * @param effectMap effect variable collection
@@ -1639,7 +1680,7 @@ export class DatasheetOtService {
     manager: EntityManager,
     commonData: ICommonData,
     effectMap: Map<string, any>,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.toCreateRecord.size) {
       return;
@@ -1867,7 +1908,7 @@ export class DatasheetOtService {
   private async deleteRecordComment(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.toDeleteCommentIds.size) {
       return;
@@ -1900,7 +1941,7 @@ export class DatasheetOtService {
   private async handleCommentEmoji(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.toUpdateCommentEmoji.size) {
       return;
@@ -1943,7 +1984,7 @@ export class DatasheetOtService {
             await manager.createQueryBuilder()
               .update(RecordCommentEntity)
               .set({
-                commentMsg: () => insertEmojiSqlTemp
+                commentMsg: () => insertEmojiSqlTemp,
               })
               .where('dst_id = :dstId', { dstId: dstId })
               .andWhere('record_id = :recordId', { recordId: recordId })
@@ -1957,7 +1998,7 @@ export class DatasheetOtService {
             await manager.createQueryBuilder()
               .update(RecordCommentEntity)
               .set({
-                commentMsg: () => `JSON_REMOVE(comment_msg, '$.emojis.${firstKey}[${oldEmojiIndex}]')`
+                commentMsg: () => `JSON_REMOVE(comment_msg, '$.emojis.${firstKey}[${oldEmojiIndex}]')`,
               })
               .where('dst_id = :dstId', { dstId: dstId })
               .andWhere('record_id = :recordId', { recordId: recordId })
@@ -1974,7 +2015,7 @@ export class DatasheetOtService {
   private async handleRecordAlarm(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     const { dstId } = commonData;
     const profiler = this.logger.startTimer();
@@ -2016,7 +2057,7 @@ export class DatasheetOtService {
   private async createRecordAlarms(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.toCreateAlarms.size) return;
     const { userId, spaceId, dstId } = commonData;
@@ -2079,7 +2120,7 @@ export class DatasheetOtService {
   private async updateRecordAlarms(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.replaceCellMap.size) return;
     const { userId, dstId } = commonData;
@@ -2133,7 +2174,7 @@ export class DatasheetOtService {
           alarmAt: alarmAt,
           status: RecordAlarmStatus.PENDING,
           updatedBy: userId,
-          updatedAt: nowTime.toDate()
+          updatedAt: nowTime.toDate(),
         })
         .where('id = :id', { id: alarmEntity.id })
         .execute();
@@ -2144,7 +2185,7 @@ export class DatasheetOtService {
   private async deleteRecordAlarms(
     manager: EntityManager,
     commonData: ICommonData,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.toDeleteAlarms.size) return;
     const { userId, dstId } = commonData;
@@ -2187,7 +2228,7 @@ export class DatasheetOtService {
 
   /**
    * Initialize some special fields (e.g. AutoNumber)
-   * 
+   *
    * @param manager database manager
    * @param commonData common data, including userId, uuid, dstId and revision
    * @param effectMap effect variable collection
@@ -2197,7 +2238,7 @@ export class DatasheetOtService {
     manager: EntityManager,
     commonData: ICommonData,
     effectMap: Map<string, any>,
-    resultSet: { [key: string]: any }
+    resultSet: { [key: string]: any },
   ) {
     if (!resultSet.initFieldMap.size) {
       return;
@@ -2268,7 +2309,7 @@ export class DatasheetOtService {
           OTActionName.ObjectReplace,
           ['recordMap', recordId, 'recordMeta'],
           newRecordMeta,
-          oldRecordMeta
+          oldRecordMeta,
         );
         recordMapActions.push(recordAction);
       }
@@ -2290,7 +2331,7 @@ export class DatasheetOtService {
   private async handleMeta(
     manager: EntityManager,
     commonData: ICommonData,
-    effectMap: Map<string, any>
+    effectMap: Map<string, any>,
   ) {
     const { userId, dstId, revision } = commonData;
     const metaActions = effectMap.get(EffectConstantName.MetaActions);
@@ -2328,7 +2369,7 @@ export class DatasheetOtService {
 
   /**
    * Create new changeset and store it in database
-   * 
+   *
    * @param manager database manager
    * @param commonData
    * @param remoteChangeset changeset that is about to be stored in database
@@ -2375,13 +2416,13 @@ export class DatasheetOtService {
 
   /**
    * Update remoteChange in effectMap
-   * 
+   *
    * @param effectMap effect variable collection
    * @param metaActions meta related actions
    * @param recordMapActions recordMap related actions
    */
   private updateEffectRemoteChangeset(
-    effectMap: Map<string, any>, metaActions: IJOTAction[] | null, recordMapActions: IJOTAction[] | null
+    effectMap: Map<string, any>, metaActions: IJOTAction[] | null, recordMapActions: IJOTAction[] | null,
   ) {
     const remoteChangeOperations: any[] = [];
     if (metaActions?.length) {
@@ -2412,7 +2453,7 @@ export class DatasheetOtService {
 
   /**
    * Obtain action that change meta
-   * 
+   *
    * @param data carried data
    * @param effectMap effect variable collection
    */
@@ -2458,7 +2499,7 @@ export class DatasheetOtService {
 
   /**
    * Update effectMap in terms of a constantName
-   * 
+   *
    * @param effectMap effect variable collection
    * @param constantName key name in effectMap
    * @param value to-be-updated value

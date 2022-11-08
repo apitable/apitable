@@ -202,7 +202,7 @@ export class DatasheetRecordService {
 
   /**
    * Fetch comments by comment IDs
-   * 
+   *
    * @param dstId       datasheet ID
    * @param recordId    record ID
    * @param commentIds  comment ID set
@@ -281,7 +281,7 @@ export class DatasheetRecordService {
     if (primaryField.type === FieldType.Formula) {
       return 'Formula primary field cannot be shown';
     }
-    
+
     return Field.bindContext(primaryField, store.getState()).cellValueToString(record.data[primaryFieldId]) || '';
   }
 }

@@ -4,7 +4,7 @@ import { IJOTAction, jot } from 'engine/ot';
 import { Strings, t } from 'i18n';
 import { isEmpty } from 'lodash';
 import { DatasheetActions } from 'model';
-import { Selectors, ViewType } from 'store';
+import { Selectors } from 'store';
 import { IViewProperty } from 'store/interface';
 import { ResourceType } from 'types';
 
@@ -23,7 +23,7 @@ export const addViews: ICollaCommandDef<IAddViewsOptions> = {
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, subscribeUsageCheck } = context;
+    const { model: state } = context;
     const { data } = options;
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
@@ -36,32 +36,32 @@ export const addViews: ICollaCommandDef<IAddViewsOptions> = {
       return null;
     }
 
-    const checkViewCount = (viewType: ViewType) => {
-      const spaceInfo = state.space.curSpaceInfo!;
-
-      if(state.pageParams.shareId){
-        return;
-      }
-
-      switch (viewType) {
-        case ViewType.Calendar: {
-          subscribeUsageCheck('maxCalendarViewsInSpace', spaceInfo['calendarViewNums'] + 1);
-          return;
-        }
-        case ViewType.Gantt: {
-          subscribeUsageCheck('maxGanttViewsInSpace', spaceInfo['ganttViewNums'] + 1);
-          return;
-        }
-        case ViewType.Kanban: {
-          subscribeUsageCheck('maxKanbanViewsInSpace', spaceInfo['kanbanViewNums'] + 1);
-          return;
-        }
-        case ViewType.Gallery: {
-          subscribeUsageCheck('maxGalleryViewsInSpace', spaceInfo['galleryViewNums'] + 1);
-          return;
-        }
-      }
-    };
+    // const checkViewCount = (viewType: ViewType) => {
+    //   const spaceInfo = state.space.curSpaceInfo!;
+    //
+    //   if(state.pageParams.shareId){
+    //     return;
+    //   }
+    //
+    //   switch (viewType) {
+    //     case ViewType.Calendar: {
+    //       subscribeUsageCheck('maxCalendarViewsInSpace', spaceInfo['calendarViewNums'] + 1);
+    //       return;
+    //     }
+    //     case ViewType.Gantt: {
+    //       subscribeUsageCheck('maxGanttViewsInSpace', spaceInfo['ganttViewNums'] + 1);
+    //       return;
+    //     }
+    //     case ViewType.Kanban: {
+    //       subscribeUsageCheck('maxKanbanViewsInSpace', spaceInfo['kanbanViewNums'] + 1);
+    //       return;
+    //     }
+    //     case ViewType.Gallery: {
+    //       subscribeUsageCheck('maxGalleryViewsInSpace', spaceInfo['galleryViewNums'] + 1);
+    //       return;
+    //     }
+    //   }
+    // };
 
     const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
       const { startIndex, view } = recordOption;
@@ -71,7 +71,7 @@ export const addViews: ICollaCommandDef<IAddViewsOptions> = {
       if (views.findIndex(item => item.id === view.id) !== -1) {
         throw new Error(t(Strings.error_create_view_failed_duplicate_view_id));
       }
-      checkViewCount(view.type);
+      // checkViewCount(view.type);
       const action = DatasheetActions.addView2Action(snapshot, { startIndex, view });
 
       if (!action) {

@@ -10,7 +10,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   /**
    * Obtain the metadata of a datasheet, ignoring `isDeleted` state.
-   * 
+   *
    * @param dstId datasheet ID
    * @return
    * @author Zoe Zheng
@@ -22,7 +22,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   /**
    * Obtain the metadata list by datasheet ID list
-   * 
+   *
    * @param dstIds datasheet ID array
    * @return
    * @author Zoe Zheng
@@ -34,7 +34,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   /**
    * Obtain the metadata list by datasheet ID list, ignoring `isDeleted` state
-   * 
+   *
    * @param dstIds datasheet ID array
    * @return
    * @author Zoe Zheng
@@ -46,9 +46,17 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectFieldMapByDstId(dstId: string): Promise<{ fieldMap: IFieldMap }> {
     return this.createQueryBuilder('vdm')
-      .select("vdm.meta_data->'$.fieldMap'", 'fieldMap')
+      .select('vdm.meta_data->\'$.fieldMap\'', 'fieldMap')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ fieldMap: IFieldMap }>();
+  }
+
+  countRowsByDstId(dstId: string): Promise<{ count: number }> {
+    return this.createQueryBuilder('vdm')
+      .select('IFNULL(SUM(JSON_LENGTH( vdm.meta_data -> \'$.views[0].rows\' )), 0)', 'count')
+      .where('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .getRawOne<{ count: number }>();
   }
 }

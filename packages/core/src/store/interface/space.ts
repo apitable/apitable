@@ -46,6 +46,9 @@ export interface ISpaceInfo {
   maxSeat: number;
   preDeleted: boolean;
   spaceDomain: string;
+  recordNums: number;
+  calendarViewNums: number;
+  ganttViewNums: number;
   social: {
     enabled: boolean;
     platform: number;
@@ -60,9 +63,9 @@ export interface ISpaceFeatures {
   nodeExportable: boolean; // deprecated
 
   /**
-   * node export level based on permission 
+   * node export level based on permission
    */
-  exportLevel: number; 
+  exportLevel: number;
   mobileShowable: boolean;
   watermarkEnable: boolean;
   allowCopyDataToExternal: boolean;
@@ -75,7 +78,7 @@ export interface ISpaceFeatures {
 
 /**
  * 1 - self-created app
- * 2 - 3rd party app 
+ * 2 - 3rd party app
  */
 export type ISocialAppType = 1 | 2;
 

@@ -23,11 +23,11 @@ export const triggerUsageAlert = (functionName: keyof ISubscription, extra?: IEx
   if (tipType === SubscribeUsageTipType.Alert) {
     if (isMobile) {
       Message.warning({
-        content: t(Strings.mobile_usage_over_limit_tip)
+        content: t(Strings.mobile_usage_over_limit_tip),
       });
       return true;
     }
-    usageWarnModal({ alertContent: content });
+    usageWarnModal({ alertContent: content, reload: extra?.reload });
     return true;
   }
 
@@ -40,4 +40,14 @@ export const triggerUsageAlert = (functionName: keyof ISubscription, extra?: IEx
     },
   });
   return true;
+};
+
+export const triggerUsageAlertForDatasheet = (content: string) => {
+  if (isMobile) {
+    Message.warning({
+      content: t(Strings.mobile_usage_over_limit_tip),
+    });
+    return;
+  }
+  usageWarnModal({ alertContent: content, reload: true });
 };

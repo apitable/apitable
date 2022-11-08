@@ -1,7 +1,7 @@
 import { Url } from '@apitable/core';
 import {
   CollaCommandManager, ComputeRefManager, Engine, Events, IError, IJOTAction, IOperation, IReduxState, IResourceOpsCollect, OP2Event, OPEventManager,
-  OPEventNameEnums, Player, ResourceStashManager, ResourceType, RoomService, Selectors, StoreActions, Strings, t, TrackEvents, UndoManager
+  OPEventNameEnums, Player, ResourceStashManager, ResourceType, RoomService, Selectors, StoreActions, Strings, t, TrackEvents, UndoManager,
 } from 'core';
 import { mainWidgetMessage } from 'iframe_message';
 import localForage from 'localforage';
@@ -19,7 +19,7 @@ const clientWatchedEvents = [
   OPEventNameEnums.RecordMetaUpdated,
   OPEventNameEnums.RecordDeleted,
   OPEventNameEnums.RecordUpdated,
-  OPEventNameEnums.FieldUpdated
+  OPEventNameEnums.FieldUpdated,
 ];
 // Apply remote sync over op.
 export const remoteActions2Operation = (actions: IJOTAction[]) => {
@@ -51,7 +51,7 @@ export class ResourceService implements IResourceService {
       getState: () => {
         return store.getState();
       },
-      op2Event: new OP2Event(clientWatchedEvents)
+      op2Event: new OP2Event(clientWatchedEvents),
     });
     this.computeRefManager = new ComputeRefManager();
   }
@@ -134,7 +134,7 @@ export class ResourceService implements IResourceService {
 
   applyOperations(
     store: Store<IReduxState>,
-    resourceOpsCollects: IResourceOpsCollect[]
+    resourceOpsCollects: IResourceOpsCollect[],
   ) {
     const changesets = resourceOpsCollects;
     const events = this.opEventManager.handleChangesets(changesets);
@@ -154,7 +154,7 @@ export class ResourceService implements IResourceService {
 
   /**
    * @description Simply handle the creation and destruction of rooms, and the creation of undoManager.
-   * The point of this method is that it is the same as opening a datasheet, 
+   * The point of this method is that it is the same as opening a datasheet,
    * but the concept of destroying/creating a room cannot exist in the "template", so this method is more pure,
    * only call when the concept of room is met.
    * @param {string} to
@@ -174,7 +174,7 @@ export class ResourceService implements IResourceService {
       this.store,
       collaEngineMap,
       {
-        onError: (error: IError) => this.onError(error, 'modal'),
+        onError: (error: IError, type: 'modal' | 'subscribeUsage' = 'modal') => this.onError(error, type),
         destroy: () => this.destroy(),
         getRoomIOClear: () => {
           return this.roomIOClear;
@@ -187,16 +187,16 @@ export class ResourceService implements IResourceService {
         },
         setRoomLastSendTime: () => {
           this.roomLastSendTime = Date.now();
-        }
+        },
       },
       this.fetchResource,
       lsStore,
-      localForage
+      localForage,
     );
   }
 
   /**
-   * @description undoManger is bound to the main resource that created the room, 
+   * @description undoManger is bound to the main resource that created the room,
    * and when switching the resource, it is necessary to instantiate undoManager,
    * and bind undoManger to commandManager.
    * @param {string} resourceId
@@ -215,7 +215,7 @@ export class ResourceService implements IResourceService {
   }
 
   /**
-   * @description Determine if the current operation is taking place "in the template", 
+   * @description Determine if the current operation is taking place "in the template",
    * no resource in the template needs to create/destroy the room.
    * @returns {boolean}
    * @private
@@ -236,8 +236,8 @@ export class ResourceService implements IResourceService {
         secure: true,
         query: {
           version,
-          spaceId
-        }
+          spaceId,
+        },
       });
     socket.on('disconnect', (reason) => {
       console.warn('! ' + 'socket disconnect from server');
@@ -331,7 +331,7 @@ export class ResourceService implements IResourceService {
       },
       getRoomId: () => {
         return this.roomService.roomId;
-      }
+      },
     }, this.store);
   }
 
@@ -355,7 +355,7 @@ export class ResourceService implements IResourceService {
   }
 
   /**
-   * @description 1. delete the resource data on the store; 
+   * @description 1. delete the resource data on the store;
    * 2. delete the resource from collaEngineMap provided that the engine has issued an op
    * @param {string} resourceId
    */
@@ -368,7 +368,7 @@ export class ResourceService implements IResourceService {
     return this.applyOperations(this.store, [{
       resourceType,
       resourceId,
-      operations: [remoteActions2Operation(actions)]
+      operations: [remoteActions2Operation(actions)],
     }]);
   }
 
@@ -399,7 +399,7 @@ export class ResourceService implements IResourceService {
         onAcceptSystemOperations: (ops: IOperation[]) => this.applyOperations(this.store, [{
           resourceType,
           resourceId,
-          operations: ops
+          operations: ops,
         }]),
         getUndoManager: () => {
           return this.undoManager;

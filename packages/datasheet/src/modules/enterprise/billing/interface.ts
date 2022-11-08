@@ -7,4 +7,5 @@ export interface IExtra {
   grade?: string;
   // Do not use template information, use this when you want to customize
   message?: string;
+  reload?: boolean;
 }

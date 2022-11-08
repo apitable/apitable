@@ -17,7 +17,7 @@ export interface IAddRecordsOptions {
   groupCellValues?: ICellValue[];
 
   // Fill in the new value added to the cell, cellValues.length must be equal to count;
-  cellValues?: { [fieldId: string]: ICellValue }[]; 
+  cellValues?: { [fieldId: string]: ICellValue }[];
   ignoreFieldPermission?: boolean;
 }
 
@@ -28,7 +28,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
   undoable: true,
 
   execute: (context, options) => {
-    const { model: state, ldcMaintainer, memberFieldMaintainer, fieldMapSnapshot, subscribeUsageCheck } = context;
+    const { model: state, ldcMaintainer, memberFieldMaintainer, fieldMapSnapshot } = context;
     const { viewId, index, count, groupCellValues, cellValues, ignoreFieldPermission } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
@@ -47,12 +47,6 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     }
 
     const recordIds = Object.keys(snapshot.recordMap);
-
-    if (!state.pageParams.shareId) {
-      subscribeUsageCheck('maxRowsPerSheet', recordIds.length);
-      subscribeUsageCheck('maxRowsInSpace', state.space.curSpaceInfo?.recordNums);
-    }
-
     const newRecordIds = getNewIds(IDPrefix.Record, count, recordIds.length ? recordIds : snapshot.meta.views[0].rows.map(item => item.recordId));
 
     if ((recordIds.length + newRecordIds.length) > MAX_RECORD_NUM) {
@@ -92,8 +86,8 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
      * 1. Copy a record, the original data in the target record
      * 2. There is a filter item, if the filter value is a certain value, the filter item will be included
      * 3. There is a group item, adding a record in a group will bring the data of the group
-     * Assuming that a record is added, and the above three parts have corresponding data, 
-     * the weights will decrease in turn, that is, for the same field, 
+     * Assuming that a record is added, and the above three parts have corresponding data,
+     * the weights will decrease in turn, that is, for the same field,
      * the data from the next-level source will be overwritten by the data from the previous-level source.
      */
     const actions = newRecordIds.reduce<IJOTAction[]>((collected, recordId, i) => {
@@ -105,7 +99,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
 
       /**
        * Add a new record, which may be substituted into the initial value due to filtering, grouping, and copying a row.
-       * If permission is set for one of the columns, and the current user does not have editing permission, 
+       * If permission is set for one of the columns, and the current user does not have editing permission,
        * the data of the corresponding column needs to be filtered out when setting the data.
        * Because all data will pass here after processing, unified filtering is performed here
        */
@@ -121,11 +115,11 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
       }
 
       /**
-       * If there is data in the member field in the added record, special processing is required. 
+       * If there is data in the member field in the added record, special processing is required.
        * In the current logic, the member field header will record the unitId of all members in the current column after deduplication,
-       * Therefore, when a new record is added and there is initialization data, 
-       * and the content of the member field exists in the data, 
-       * it is necessary to check whether the newly added unitId exists in the header. 
+       * Therefore, when a new record is added and there is initialization data,
+       * and the content of the member field exists in the data,
+       * it is necessary to check whether the newly added unitId exists in the header.
        * If it does not exist, the data of the member header needs to be updated synchronously
        */
       if (newRecord.data) {
@@ -136,7 +130,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
             continue;
           }
 
-          // There will be column data that does not exist in the row record. After the middle layer strengthens the verification, 
+          // There will be column data that does not exist in the row record. After the middle layer strengthens the verification,
           // this part of the data will cause an error, so only the column data that still exists in the fieldId is retained here.
           _recordData[fieldId] = cellValue;
           fieldMapSnapshot[fieldId] = fieldMap[fieldId];

@@ -1,7 +1,7 @@
+import { Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
 import * as Sentry from '@sentry/react';
-import { ISubscription, Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
 import { IServiceError } from '@vikadata/widget-sdk';
-import { triggerUsageAlert } from 'modules/enterprise/billing';
+import { triggerUsageAlertForDatasheet } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
@@ -17,7 +17,7 @@ export const onError: IServiceError = (error, type) => {
 
     let modalType = error.modalType || 'error';
     let contentMessage = errorMessage + `(${errorCode})`;
-    // TODO: Temporary solutions, forms and tables without permission to insert or edit need to report different errors and 
+    // TODO: Temporary solutions, forms and tables without permission to insert or edit need to report different errors and
     // different error codes to report errors need different copy
     if(errorCode == StatusCode.NOT_PERMISSION || errorCode == StatusCode.NODE_NOT_EXIST) {
       modalType = 'warning';
@@ -58,7 +58,7 @@ export const onError: IServiceError = (error, type) => {
   }
 
   if (type === 'subscribeUsage') {
-    triggerUsageAlert(errorMessage as keyof ISubscription, (error as any).extra);
+    triggerUsageAlertForDatasheet(errorMessage);
     return;
   }
 };

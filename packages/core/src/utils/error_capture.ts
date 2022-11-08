@@ -1,8 +1,13 @@
-import { ErrorCode, ErrorType } from 'types';
-import { Strings, t } from 'i18n';
 import { StatusCode } from 'config';
+import { Strings, t } from 'i18n';
+import { ErrorCode, ErrorType } from 'types';
 
-export const errorCapture = <T extends { event: { onError?(e: any): void } }>() => {
+const OVER_LIMIT_PER_SHEET_RECORDS = '305';
+const OVER_LIMIT_SPACE_RECORDS = '306';
+const OVER_LIMIT_GANTT_VIEW_NUMBER = '307';
+const OVER_LIMIT_CALENDAR_NUMBER = '308';
+
+export const errorCapture = <T extends { event: { onError?(e: any, type?: 'modal' | 'subscribeUsage'): void } }>() => {
   return (_target: T, name: string, descriptor: PropertyDescriptor) => {
     const fn = descriptor.value;
 
@@ -28,6 +33,13 @@ export const errorCapture = <T extends { event: { onError?(e: any): void } }>() 
           return message;
         };
 
+        const getErrorType = (code: string) => {
+          if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, OVER_LIMIT_GANTT_VIEW_NUMBER, OVER_LIMIT_CALENDAR_NUMBER].includes(code)) {
+            return 'subscribeUsage';
+          }
+          return;
+        };
+
         const onError = (e: any) => {
           const code = e.code || ErrorCode.CollaSyncError;
           this.event.onError && this.event.onError({
@@ -35,14 +47,14 @@ export const errorCapture = <T extends { event: { onError?(e: any): void } }>() 
             type: ErrorType.CollaError,
             code: code,
             message: i18nMessage(code, e.message),
-          });
+          }, getErrorType(code));
 
           throw e;
         };
 
         return (...args: any[]) => {
           try {
-            
+
             const promise = boundFn(...args);
             // If it is a promise, you need to listen catch catch
             if (promise instanceof Promise) {
@@ -50,7 +62,7 @@ export const errorCapture = <T extends { event: { onError?(e: any): void } }>() 
                 onError(e);
               });
             }
-           
+
             return promise;
           } catch (e) {
             onError(e);

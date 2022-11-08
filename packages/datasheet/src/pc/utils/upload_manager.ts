@@ -2,8 +2,7 @@ import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue,
 import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
-import { triggerUsageAlert } from 'modules/enterprise/billing';
-import { subscribeUsageCheck } from 'modules/enterprise/billing/subscribe_usage_check';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message, Modal } from 'pc/components/common';
 import { IUploadResponse } from 'pc/components/upload_modal/upload_core';
 import { store } from 'pc/store';
@@ -125,10 +124,12 @@ export class UploadManager {
       };
     }
     this.notifyUploadListUpdate(cellId);
-    this.checkCapacitySizeBilling();
-    if (this.isRequestLimit(cellId)) {
-      return this.execute(cellId);
-    }
+    this.checkCapacitySizeBilling().then(res => {
+      if (this.isRequestLimit(cellId)) {
+        return this.execute(cellId);
+      }
+    });
+
   }
 
   /**
@@ -183,7 +184,7 @@ export class UploadManager {
         return this.execute(cellId);
       }
     } catch (error) {
-      // This is used to handle network errors such as timeouts that 
+      // This is used to handle network errors such as timeouts that
       // prevent further uploads and move the data in the request queue to the failure queue
       this.uploadFailHandle(cellId, uploadItem, options);
       Message.warning({
@@ -195,15 +196,14 @@ export class UploadManager {
   }
 
   private checkCapacitySizeBilling() {
-    // If a prompt has been sent, there is no need to check the dosage again on the same day
-    if (!subscribeUsageCheck.shouldAlertToUser('maxCapacitySizeInBytes', undefined, true)) {
-      return;
-    }
-    Api.searchSpaceSize().then(res => {
-      const { usedCapacity, subscriptionCapacity } = res.data.data;
-      if (usedCapacity > subscriptionCapacity) {
-        triggerUsageAlert('maxCapacitySizeInBytes', { usage: usedCapacity });
-      }
+    return new Promise((resolve) => {
+      Api.searchSpaceSize().then(res => {
+        const { usedCapacity } = res.data.data;
+        const result = triggerUsageAlert(
+          'maxCapacitySizeInBytes', { usage: usedCapacity, alwaysAlert: true, reload: true }, SubscribeUsageTipType.Alert,
+        );
+        !result && resolve(null);
+      });
     });
   }
 
@@ -270,7 +270,7 @@ export class UploadManager {
   private deleteItem(cellId: string) {
     this.uploadMap[cellId].requestQueue = this.uploadMap[
       cellId
-    ].requestQueue.filter((item) => {
+      ].requestQueue.filter((item) => {
       return item.loaded !== item.total;
     });
   }
@@ -292,7 +292,7 @@ export class UploadManager {
     cellId: string,
     fileId: string,
     loaded: number,
-    total: number
+    total: number,
   ) {
     if (!this.uploadMap[cellId]) {
       return;
@@ -365,7 +365,7 @@ export class UploadManager {
 
   public httpRequest(cellId: string, formData: FormData, fileId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const request = async(nvcVal?: string) => {
+      const request = async (nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
           file: formData.get('file') as File,
@@ -404,7 +404,7 @@ export class UploadManager {
       new Blob([file], {
         type: file.type || mime.lookup(file.name) || 'application/octet-stream',
       }),
-      file.name
+      file.name,
     );
     fd.append('nodeId', datasheetId!);
     fd.append('type', type);
@@ -413,7 +413,7 @@ export class UploadManager {
 
   static generateNewFile(
     res: IUploadResponse,
-    fileInfo: { name: string; id: string }
+    fileInfo: { name: string; id: string },
   ) {
     const result: IAttachmentValue = {
       id: fileInfo.id,
@@ -458,7 +458,7 @@ export class UploadManager {
     fileList: File[],
     recordId: string,
     fieldId: string,
-    cellValue: IAttachmentValue[]
+    cellValue: IAttachmentValue[],
   ) {
     const uploadList = this.get(UploadManager.getCellId(recordId, fieldId));
     const uploadListId = uploadList.map((item) => item.fileId);
@@ -489,7 +489,7 @@ export class UploadManager {
     datasheetId: string | undefined,
     fieldId: string,
     recordId: string,
-    cellValue: IAttachmentValue[]
+    cellValue: IAttachmentValue[],
   ) {
     return this.commandManager.execute({
       cmd: CollaCommandName.SetRecords,
@@ -507,7 +507,7 @@ export class UploadManager {
   private defaultCellValue(
     datasheetId: string | undefined,
     recordId: string,
-    fieldId: string
+    fieldId: string,
   ) {
     const state = store.getState();
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
@@ -515,7 +515,7 @@ export class UploadManager {
       state,
       snapshot,
       recordId,
-      fieldId
+      fieldId,
     ) as IAttachmentValue[];
   }
 
@@ -527,9 +527,9 @@ export class UploadManager {
     getCellValueFn?: (
       datasheetId: string | undefined,
       recordId: string,
-      fieldId: string
+      fieldId: string,
     ) => IAttachmentValue[],
-    successFn?: (cellValue: IAttachmentValue[]) => void
+    successFn?: (cellValue: IAttachmentValue[]) => void,
   ) {
     return (res: IUploadResponse) => {
       const newFile = UploadManager.generateNewFile(res, fileInfo);
@@ -545,7 +545,7 @@ export class UploadManager {
           datasheetId,
           fieldId,
           recordId,
-          _cellValue
+          _cellValue,
         );
       }
       return successFn(_cellValue);

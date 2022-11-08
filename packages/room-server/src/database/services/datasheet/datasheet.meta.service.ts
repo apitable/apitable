@@ -33,7 +33,7 @@ export class DatasheetMetaService {
 
   /**
    * Query fieldIds through SQL, reduce memory footprint
-   * 
+   *
    * @param dstId datasheet ID
    * @param filterFieldIds IDs of fields that will be filtered out
    * @param excludedFieldType excluded field types
@@ -53,5 +53,10 @@ export class DatasheetMetaService {
       }
     }
     return fieldIds;
+  }
+
+  async getRowsNumByDstId(dstId: string): Promise<number> {
+    const result = await this.repository.countRowsByDstId(dstId);
+    return result.count;
   }
 }
