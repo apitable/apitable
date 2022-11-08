@@ -232,7 +232,7 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
         assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(vo.getPlan()).isEqualTo("dingtalk_base_no_billing_period");
     }
 
 

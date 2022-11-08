@@ -115,7 +115,7 @@
     "quill-image-drop-and-paste": "^1.1.1",
     "quill-markdown-shortcuts": "^0.0.10",
     "rc-calendar": "^9.15.11",
-    "rc-queue-anim": "^2.0.0",
+    "rc-queue-anim": "^1.8.5",
     "rc-swipeout": "^2.0.11",
     "rc-textarea": "^0.4.5",
     "rc-trigger": "^5.3.3",

@@ -350,7 +350,8 @@
     <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.modular.workspace.model.MemberInfoDTO">
         select id, is_deleted
         from vika_unit_member
-        where user_id = #{userId} and space_id = #{spaceId}  LIMIT 0,1
+        where user_id = #{userId} and space_id = #{spaceId}
+        ORDER BY id desc limit 1
     </select>
 
     <select id="selectMemberIdByUserIdAndSpaceIdExcludeDelete" resultType="java.lang.Long">

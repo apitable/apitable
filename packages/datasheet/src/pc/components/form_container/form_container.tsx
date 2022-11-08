@@ -8,7 +8,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined 
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
 import produce from 'immer';
-import { isArray } from 'lodash';
+import { isArray, debounce } from 'lodash';
 import _map from 'lodash/map';
 import { AnimationItem } from 'lottie-web';
 import Head from 'next/head';
@@ -418,7 +418,7 @@ export const FormContainer: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fillDisabled]);
 
-  // TODO(kailang) 
+  // TODO(kailang)
   // const collectDefaultData = (fieldMap: IFieldMap) => {
   //   const defaultData = {};
   //   for (const fId in fieldMap) {
@@ -530,29 +530,26 @@ export const FormContainer: React.FC = () => {
     }
   }, [loading]);
 
-  const patchRecord = useCallback(
-    (record: IRecord) => {
-      if (unmounted.current) return;
-      const preSnapshot = Selectors.getSnapshot(store.getState(), sourceInfo.datasheetId);
-      if (!preSnapshot) {
-        return;
-      }
-      const newSnapshot = produce(preSnapshot, draft => {
-        const view = draft.meta.views.find(view => view.id === viewId);
-        if (view) {
-          if (!view.rows.find(row => row.recordId === recordId)) {
-            view.rows.push({ recordId });
-          }
-          draft.recordMap[recordId] = record;
+  const patchRecord = debounce((record: IRecord) => {
+    if (unmounted.current) return;
+    const preSnapshot = Selectors.getSnapshot(store.getState(), sourceInfo.datasheetId);
+    if (!preSnapshot) {
+      return;
+    }
+    const newSnapshot = produce(preSnapshot, draft => {
+      const view = draft.meta.views.find(view => view.id === viewId);
+      if (view) {
+        if (!view.rows.find(row => row.recordId === recordId)) {
+          view.rows.push({ recordId });
         }
-        return draft;
-      });
-      clearCache();
-      dispatch(StoreActions.updateSnapshot(datasheetId, newSnapshot));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [datasheetId, dispatch, viewId, recordId, sourceInfo.datasheetId],
-  );
+        draft.recordMap[recordId] = record;
+      }
+      return draft;
+    });
+    clearCache();
+    dispatch(StoreActions.updateSnapshot(datasheetId, newSnapshot));
+  }, 300);
+
   const { run: setFormToStorage } = useDebounceFn(
     formData => {
       const formFieldContainer = getStorage(storageName);

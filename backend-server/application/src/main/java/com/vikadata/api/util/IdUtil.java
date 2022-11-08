@@ -79,6 +79,18 @@ public class IdUtil {
         return IdRulePrefixEnum.WIDGET_PACKAGE.getIdRulePrefixEnum() + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
     }
 
+    public static String createAutomationServiceId() {
+        return IdRulePrefixEnum.AUTOMATION_SERVICE.getIdRulePrefixEnum() + RandomExtendUtil.randomString(AUTOMATION_ID_FIXED_LENGTH);
+    }
+
+    public static String createAutomationTriggerTypeId() {
+        return IdRulePrefixEnum.AUTOMATION_TRIGGER_TYPE.getIdRulePrefixEnum() + RandomExtendUtil.randomString(AUTOMATION_ID_FIXED_LENGTH);
+    }
+
+    public static String createAutomationActionTypeId() {
+        return IdRulePrefixEnum.AUTOMATION_ACTION_TYPE.getIdRulePrefixEnum() + RandomExtendUtil.randomString(AUTOMATION_ID_FIXED_LENGTH);
+    }
+
     public static String createAutomationRobotId() {
         return IdRulePrefixEnum.AUTOMATION_ROBOT.getIdRulePrefixEnum() + RandomExtendUtil.randomString(AUTOMATION_ID_FIXED_LENGTH);
     }

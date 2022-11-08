@@ -161,8 +161,8 @@ export function cellValueToImageSrc(
 
 export const integrateCdnHost = (
   pathName: string,
-  host: string = process.env.NEXT_PUBLIC_QNY1 || Settings.QNY1.value,
 ): string => {
+  const host: string = getHostOfAttachment('QNY1');
   // TODO: delete this. Compatible with old version data
   if (pathName.startsWith('http')) {
     return pathName;

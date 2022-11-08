@@ -106,5 +106,7 @@ public enum GmAction {
 
     CONTACT_INFO_QUERY,
 
+    AUTOMATION_MANAGE,
+
     ;
 }

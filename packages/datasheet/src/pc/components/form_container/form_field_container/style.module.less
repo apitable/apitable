@@ -265,3 +265,14 @@
   padding: 4px 8px;
   opacity: 0.4;
 }
+
+@media screen and (max-width: 768px) {
+  .needPosition,
+  .formFieldItem {
+    :global {
+      .ant-drawer-inline {
+        position: fixed !important;
+      }
+    }
+  }
+}

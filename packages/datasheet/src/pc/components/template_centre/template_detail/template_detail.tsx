@@ -18,10 +18,13 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
+import { useRouter } from 'next/router';
+import { get } from 'lodash';
 import styles from './style.module.less';
 
 export const TemplateDetail: FC = () => {
   const colors = useThemeColors();
+  const router = useRouter();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
   const pageParams = useSelector((state: IReduxState) => state.pageParams);
   const { datasheetId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = pageParams;
@@ -67,11 +70,12 @@ export const TemplateDetail: FC = () => {
     if (mirrorId || activeNodeId) {
       return;
     }
+    const routerTemplateId = get(router.query, 'template_id.0') as string;
     Router.replace(Navigation.TEMPLATE, {
       params: {
         spaceId,
         categoryId,
-        templateId,
+        templateId: templateId || routerTemplateId,
         nodeId: datasheetId || activeNodeId || templateDirectory?.nodeTree.nodeId || '',
       },
     });
