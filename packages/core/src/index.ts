@@ -20,6 +20,5 @@ export * from './modules/shared/player';
 export * from './exports/api';
 export * from './exports/store';
 export * from './modules/database/store/reducers/resource';
-export * from './modules/enterprise/billing_config';
 
 export { JOTApply } from './modules/database/store/reducers/resource';

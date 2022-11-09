@@ -1,5 +1,5 @@
 import { lightColors } from '@vikadata/components';
-import { Api, BillingProducts, getComputeRefManager, IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { Api, SystemConfig, getComputeRefManager, IReduxState, Selectors, Strings, t } from '@apitable/core';
 
 const GradesColor = {
   Bronze: lightColors.rc07,
@@ -19,7 +19,8 @@ export const getBillingInfo = async(spaceId: string) => {
     return;
   }
   const { product, deadline } = data;
-  const productI18nName = BillingProducts[product].i18nName;
+  const billingProduct = SystemConfig.billing;
+  const productI18nName = billingProduct[product].i18nName;
   const subscriptionInfo = {
     ...data,
     deadline: deadline || -1,

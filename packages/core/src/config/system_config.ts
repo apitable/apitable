@@ -1,17 +1,12 @@
 import { APITipConfigInterface, Tips } from 'config/api_tip_config.interface';
 import apiTipConfigJson from './api_tip_config.auto.json';
-import { privateTransform } from './private_transform';
 import systemConfigJson from './system_config.auto.json';
 import { SystemConfigInterfaceNotifications, SystemConfigInterface, Templates, Types } from './system_config.interface';
 
 /**
   * config class, directly get the entire class of SystemConfig
   */
-const SystemConfig: SystemConfigInterface = privateTransform(
-  (systemConfigJson as any) as SystemConfigInterface,
-  'settings',
-  'value',
-);
+const SystemConfig: SystemConfigInterface = systemConfigJson as SystemConfigInterface; 
 
 /**
  * api tip config class
