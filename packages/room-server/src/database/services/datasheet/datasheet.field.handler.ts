@@ -137,7 +137,7 @@ export class DatasheetFieldHandler {
       return;
     }
 
-    // TODO: extract the above codes into a new function, added by troy
+    // TODO(troy): extract the above codes into multiple functions
     // field ID -> linked datasheet ID
     const fieldIdToLinkDstIdMap = new Map<string, string>();
     // Lookup field: linked datasheet ID -> field ID set

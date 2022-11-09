@@ -11,10 +11,9 @@ import { RecordHistoryQueryRo } from '../../ros/record.history.query.ro';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../repositories/datasheet.record.repository';
 import { RecordCommentService } from 'database/services/datasheet/record.comment.service';
-import { $CombinedState, Store } from 'redux';
-import { In } from 'typeorm';
+import { Store } from 'redux';
+import { In, SelectQueryBuilder } from 'typeorm';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
-import { format } from 'path';
 
 @Injectable()
 export class DatasheetRecordService {
@@ -66,25 +65,33 @@ export class DatasheetRecordService {
   }
 
   async getRelatedRecordCells(datasheetId: string, recordIds: string[], fieldKeyNames: string[], isDeleted = false): Promise<RecordMap> {
-    const jsonExtractFieldKeyNames = `JSON_EXTRACT(data, '$.${fieldKeyNames.join('\', \'$.')}')`;
-    const raw = await this.recordRepo
-      .createQueryBuilder()
-      .select('record_id', 'recordId')
-      .addSelect(jsonExtractFieldKeyNames, 'fieldValues')
-      .where('record_id IN(:...recordIds)', { recordIds })
-      .andWhere('dst_id = :datasheetId', { datasheetId })
-      .andWhere('is_deleted = :isDeleted', { isDeleted })
+    const raw = await this.getSelectQueryBuilder(datasheetId, recordIds, fieldKeyNames, isDeleted)
       .getRawMany();
     const records = raw.reduce<any[]>((pre, cur) => {
       const data = {};
-      for(let i = 0; i < fieldKeyNames.length; i++) {
-        data[fieldKeyNames[i]] = cur.fieldValues?cur.fieldValues[i]:undefined;
+      for(const fieldKeyName of fieldKeyNames) {
+        data[fieldKeyName] = cur[fieldKeyName];
       }
       const record = { recordId: cur.recordId, data };
       pre.push(record);
       return pre;
     }, []);
     return this.formatRecordMapWithRelatedCellsOnly(records);
+  }
+
+  private getSelectQueryBuilder(datasheetId: string, recordIds: string[]
+    , fieldKeyNames: string[], isDeleted = false): SelectQueryBuilder<DatasheetRecordEntity> {
+    const selectQueryBuilder = this.recordRepo
+      .createQueryBuilder()
+      .select('record_id', 'recordId');
+    for (const fieldKeyName of fieldKeyNames) {
+      const jsonExtractFieldKeyName = `JSON_EXTRACT(data, '$.${fieldKeyName}')`;
+      selectQueryBuilder.addSelect(jsonExtractFieldKeyName, fieldKeyName);
+    }
+    selectQueryBuilder.where('record_id IN(:...recordIds)', { recordIds })
+      .andWhere('dst_id = :datasheetId', { datasheetId })
+      .andWhere('is_deleted = :isDeleted', { isDeleted });
+    return selectQueryBuilder;
   }
 
   private formatRecordMapWithRelatedCellsOnly(records: DatasheetRecordEntity[]) {    
