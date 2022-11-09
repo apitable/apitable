@@ -31,13 +31,13 @@ const DingTalkAdmin = () => {
         return Message.error({ content: message });
       }
       Message.success({ content: t(Strings.success) });
-      return getAdminDetail();
+      return getAdminDetail(corpId);
     },
     manual: true,
   });
 
   // Get the bound space information
-  const { run: getAdminDetail } = useRequest(() => Api.dingTalkAdminDetail(suiteId, corpId), {
+  const { run: getAdminDetail } = useRequest((_corpId: string) => Api.dingTalkAdminDetail(suiteId, _corpId), {
     onSuccess: res => {
       const { data, success } = res.data;
 
@@ -71,7 +71,7 @@ const DingTalkAdmin = () => {
       socialPlatformMap.socialDingTalk = { [code]: corpId };
       setStorage(StorageName.SocialPlatformMap, socialPlatformMap);
       setCorpId(corpId);
-      return getAdminDetail();
+      return getAdminDetail(corpId);
     },
     onError: () => {
       Message.error({ content: t(Strings.error) });
