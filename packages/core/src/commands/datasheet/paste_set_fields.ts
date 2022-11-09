@@ -2,8 +2,8 @@ import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager
 import { IJOTAction } from 'engine';
 import { Field, TextField } from 'model';
 import { Selectors, ViewType } from 'store';
-import { IViewColumn } from 'store/interface';
-import { getSelectRanges, getViewById, getVisibleColumns } from 'store/selector';
+import { IViewColumn } from '../../store/interfaces';
+import { getSelectRanges, getViewById, getVisibleColumns } from '../../store/selectors';
 import { FieldType, ResourceType } from 'types';
 import { IField, IStandardValue } from 'types/field_types';
 import { fastCloneDeep, NamePrefix } from '../../utils';

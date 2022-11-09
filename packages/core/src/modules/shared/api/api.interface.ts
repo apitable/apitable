@@ -1,6 +1,6 @@
 import { ConfigConstant } from 'config';
 import { TestFunction } from 'config/system_config.interface';
-import { IPageDataBase } from 'store/interface/common';
+import { IPageDataBase } from '../../database/store/interfaces/common';
 import { MemberType } from 'types';
 
 // the interface of Create Notification

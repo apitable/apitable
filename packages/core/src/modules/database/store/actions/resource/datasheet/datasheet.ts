@@ -23,9 +23,9 @@ import {
   TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_KANBAN_GROUP_SETTING_VISIBLE, TOGGLE_ORG_CHART_GRID as TOGGLE_ORG_CHART_RIGHT_PANEL,
   TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL, TOGGLE_WIDGET_PANEL, UPDATE_DATASHEET,
   UPDATE_DATASHEET_COMPUTED, UPDATE_DATASHEET_NAME, UPDATE_SNAPSHOT,
-} from 'store/action_constants';
-import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'store/actions';
-import { getDatasheet, getDatasheetLoading, getMirror } from 'store/selector';
+} from '../../../../../shared/store/action_constants';
+import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from '../../../../../../store/actions';
+import { getDatasheet, getDatasheetLoading, getMirror } from '../../../../../../store/selectors';
 import { FieldType } from 'types';
 import { consistencyCheck } from 'utils';
 

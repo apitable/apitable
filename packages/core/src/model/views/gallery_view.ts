@@ -1,9 +1,9 @@
 import { IJOTAction, OTActionName } from 'engine';
 import { Strings, t } from 'i18n';
 import { LayoutType, ViewType } from 'store';
-import { getViewById, getViewIndex } from 'store/selector';
+import { getViewById, getViewIndex } from '../../store/selectors';
 import { FieldType } from 'types';
-import { IGalleryViewProperty, ISetGalleryStyle, ISnapshot, IViewProperty } from '../../store/interface';
+import { IGalleryViewProperty, ISetGalleryStyle, ISnapshot, IViewProperty } from '../../store/interfaces';
 import { DatasheetActions } from '../datasheet';
 import { CardView } from './card_view';
 import { Settings } from 'config';

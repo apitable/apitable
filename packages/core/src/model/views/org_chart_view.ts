@@ -1,7 +1,7 @@
 import { Strings, t } from 'i18n';
-import { ViewType } from 'store/constants';
-import { IOrgChartViewProperty, ISnapshot, ISetOrgChartStyle, IViewProperty, IOrgChartViewColumn } from '../../store/interface';
-import { getViewById, getViewIndex } from '../../store/selector';
+import { ViewType } from '../../modules/shared/store/constants';
+import { IOrgChartViewProperty, ISnapshot, ISetOrgChartStyle, IViewProperty, IOrgChartViewColumn } from '../../store/interfaces';
+import { getViewById, getViewIndex } from '../../store/selectors';
 import { DatasheetActions } from '../datasheet';
 import { View } from './views';
 import { Settings } from 'config';

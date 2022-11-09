@@ -1,4 +1,4 @@
-import { getResourceWidgetPanels } from 'store/selector';
+import { getResourceWidgetPanels } from '../../store/selectors';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { DatasheetActions } from '../../model/datasheet';

@@ -1,7 +1,7 @@
 import { Strings, t } from 'i18n';
-import { ViewType } from 'store/constants';
-import { IGridViewProperty, ISnapshot, IViewColumn, IViewProperty } from '../../store/interface';
-import { getViewById } from '../../store/selector';
+import { ViewType } from '../../modules/shared/store/constants';
+import { IGridViewProperty, ISnapshot, IViewColumn, IViewProperty } from '../../store/interfaces';
+import { getViewById } from '../../store/selectors';
 import { DatasheetActions } from '../datasheet';
 import { View } from './views';
 import { Settings } from 'config';

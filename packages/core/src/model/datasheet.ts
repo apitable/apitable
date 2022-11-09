@@ -5,11 +5,11 @@ import { getMaxViewCountPerSheet } from 'model/utils';
 import {
   IComments, IMirrorSnapshot, IRecordAlarm, IReduxState, ITemporaryView, IUserInfo, IViewLockInfo, RowHeightLevel, Selectors, ViewType
 } from 'store';
-import { IGridViewColumn, IGridViewProperty, IRecord, ISnapshot, IViewColumn, IViewProperty, IWidgetInPanel, IWidgetPanel } from 'store/interface';
+import { IGridViewColumn, IGridViewProperty, IRecord, ISnapshot, IViewColumn, IViewProperty, IWidgetInPanel, IWidgetPanel } from '../store/interfaces';
 import {
   doFilter, getActiveViewGroupInfo, getCellValue, getFieldMap, getFilterInfo, getFilterInfoExceptInvalid, getGroupInfoWithPermission,
   getResourceActiveWidgetPanel, getResourceWidgetPanels, getViewById, getViewIndex, sortRowsBySortInfo,
-} from 'store/selector';
+} from '../store/selectors';
 import { FilterConjunction, IFilterCondition, IFilterInfo, IGroupInfo, ISortInfo, ResourceType } from 'types';
 import { FieldType, IField } from 'types/field_types';
 import { assertNever, getNewId, getUniqName, IDPrefix, NamePrefix } from 'utils';

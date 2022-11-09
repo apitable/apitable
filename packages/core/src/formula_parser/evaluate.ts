@@ -4,7 +4,7 @@ import { FormulaExprParser } from './parser/parser';
 import { Interpreter, ResolverFunction } from './interpreter/interpreter';
 import { IFieldMap, IFieldPermissionMap, IReduxState, Selectors } from 'store';
 import { TokenType } from './lexer';
-import { getCellValue, getDatasheet, getFieldMap } from 'store/selector';
+import { getCellValue, getDatasheet, getFieldMap } from '../store/selectors';
 import { Field, LookUpField, ArrayValueField } from 'model';
 import { IFormulaContext, IFormulaEvaluateContext, FormulaBaseError } from './functions/basic';
 import { BasicValueType, FieldType, IField } from 'types';

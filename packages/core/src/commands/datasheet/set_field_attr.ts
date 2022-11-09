@@ -1,8 +1,8 @@
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext, ILinkedActions } from 'command_manager';
 import { isEqual } from 'lodash';
 import { Selectors } from 'store';
-import { ISnapshot } from 'store/interface';
-import { getDatasheet, getFieldMap } from 'store/selector';
+import { ISnapshot } from '../../store/interfaces';
+import { getDatasheet, getFieldMap } from '../../store/selectors';
 import { FieldType, IField } from 'types/field_types';
 import { IJOTAction } from 'engine';
 import { Strings, t } from 'i18n';

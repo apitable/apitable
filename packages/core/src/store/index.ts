@@ -1,8 +1,9 @@
-import * as ActionConstants from './action_constants';
+import * as ActionConstants from '../modules/shared/store/action_constants';
 import * as Reducers from './reducers';
-import * as Selectors from './selector';
+import * as Selectors from './selectors';
 import * as StoreActions from './actions';
-export * from './interface';
-export * from './constants';
+export * from './interfaces';
+export * from '../modules/shared/store/constants';
 
 export { ActionConstants, Reducers, Selectors, StoreActions };
+

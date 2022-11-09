@@ -1,5 +1,5 @@
 import xor from 'lodash/xor';
-import { ISnapshot } from 'store/interface/resource';
+import { ISnapshot } from '../modules/database/store/interfaces/resource';
 
 export type IConsistencyErrorInfo = {
   viewId: string;

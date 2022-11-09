@@ -13,7 +13,7 @@ import { IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write
 import { checkTypeSwitch, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, Selectors } from '../../store';
-import { _getLookUpTreeValue, getFieldMap, getFilteredRecords, getSnapshot } from '../../store/selector';
+import { _getLookUpTreeValue, getFieldMap, getFilteredRecords, getSnapshot } from '../../store/selectors';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IField, ILinkField, ILinkIds, ILookUpField, ILookUpProperty,
   INumberFormatFieldProperty, IStandardValue, ITimestamp, IUnitIds, RollUpFuncType

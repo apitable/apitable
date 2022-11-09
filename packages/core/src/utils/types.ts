@@ -6,8 +6,8 @@ import {
   IMultiSelectField,
 } from 'types/field_types';
 import { IGroupInfo } from '../types';
-import { ISnapshot } from 'store/interface';
-import { ViewType } from 'store/constants';
+import { ISnapshot } from '../store/interfaces';
+import { ViewType } from '../modules/shared/store/constants';
 
 export function assertNever(x: never) {
   console.error(`${x} is not a never type`);

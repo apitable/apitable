@@ -4,7 +4,7 @@ import { IJOTAction } from 'engine';
 import { Strings, t } from 'i18n';
 import { GanttView } from 'model';
 import { ISetGanttStyle } from 'store';
-import { getActiveDatasheetId, getDatasheet } from 'store/selector';
+import { getActiveDatasheetId, getDatasheet } from '../../store/selectors';
 import { ResourceType } from 'types';
 
 export type ISetGanttStyleOptions = {

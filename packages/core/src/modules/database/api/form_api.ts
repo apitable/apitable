@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Url from './url.data';
 import { IApiWrapper } from 'store';
-import { IServerFormPack } from 'store/interface/resource/form';
+import { IServerFormPack } from 'modules/database/store/interfaces/resource/form';
 import urlcat from 'urlcat';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;

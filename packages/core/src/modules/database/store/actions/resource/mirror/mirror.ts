@@ -1,13 +1,13 @@
-import { IApiWrapper, ICollaborator, IMirror, IMirrorClient, IReduxState, IServerMirror, ITemporaryView } from 'store/interface';
-import { getDatasheet, getMirror, getMirrorLoading, getMirrorSourceInfo } from 'store/selector';
-import { deleteNode } from 'store/actions/catalog_tree';
+import { IApiWrapper, ICollaborator, IMirror, IMirrorClient, IReduxState, IServerMirror, ITemporaryView } from '../../../../../../store/interfaces';
+import { getDatasheet, getMirror, getMirrorLoading, getMirrorSourceInfo } from '../../../../../../store/selectors';
+import { deleteNode } from '../../../../../space/store/actions/catalog_tree';
 import { StatusCode } from 'config';
 import { AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
 import { fetchMirrorDataPack, fetchMirrorInfo, fetchShareMirrorDataPack, fetchShareMirrorInfo } from '../../../../api/mirror_api';
 import { ActionConstants } from 'store';
 import { batchActions } from 'redux-batched-actions';
-import { CACHE_TEMPORARY_VIEW, UPDATE_MIRROR_INFO, UPDATE_MIRROR_NAME } from 'store/action_constants';
+import { CACHE_TEMPORARY_VIEW, UPDATE_MIRROR_INFO, UPDATE_MIRROR_NAME } from '../../../../../shared/store/action_constants';
 import { datasheetErrorCode, fetchDatasheetPackSuccess } from 'modules/database/store/actions/resource/datasheet';
 
 interface IFetchMirrorSuccess {

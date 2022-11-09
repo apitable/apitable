@@ -5,7 +5,7 @@ import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
 import { IRecordMap, IReduxState, ISnapshot } from 'store';
 import { fastCloneDeep, getNewId, getUniqName, IDPrefix, ActionType, parseAction } from 'utils';
-import { getField, getSnapshot, getDatasheet } from 'store/selector';
+import { getField, getSnapshot, getDatasheet } from '../../store/selectors';
 import { DatasheetActions } from 'model/datasheet';
 import { createNewField, setField } from 'commands/common/field';
 import { TextField } from 'model/field/text_field';

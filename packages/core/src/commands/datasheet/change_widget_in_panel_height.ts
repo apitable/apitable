@@ -1,5 +1,5 @@
 import { ICollaCommandDef, ICollaCommandExecuteContext, ExecuteResult } from 'command_manager';
-import { getWidgetPanels } from 'store/selector';
+import { getWidgetPanels } from '../../store/selectors';
 import { DatasheetActions } from 'model';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';

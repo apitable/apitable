@@ -5,11 +5,11 @@ import {
   FORM_UPDATE_REVISION, MIRROR_CONNECTED, MIRROR_JOT_ACTION, MIRROR_ROOM_INFO_SYNC, MIRROR_UPDATE_REVISION, SET_DASHBOARD_SYNCING,
   SET_DATASHEET_SYNCING, SET_FORM_SYNCING,
   SET_MIRROR_SYNCING, SET_THEME, SWITCH_ACTIVE_PANEL, TOGGLE_WIDGET_PANEL, UPDATE_DASHBOARD, UPDATE_MIRROR, WIDGET_JOT_ACTION, WIDGET_UPDATE_REVISION,
-} from 'store/action_constants';
+} from '../../../../shared/store/action_constants';
 import {
   IChangeResourceSyncingStatus, IChangeWidgetPanelWidth, ICollaborator, IJOTActionPayload, INodeMeta, IResourceErrCode, IRoomInfoSync,
   ISetResourceConnected, ISwitchActivePanel, IToggleWidgetPanelAction, IUpdateRevision, ThemeName,
-} from 'store/interface';
+} from '../../../../../store/interfaces';
 import { ResourceType } from 'types';
 import {
   activeDashboardCollaborator, deactivateDashboardCollaborator, resetDashboard, setDashboardErrorCode, updateDashboardName,

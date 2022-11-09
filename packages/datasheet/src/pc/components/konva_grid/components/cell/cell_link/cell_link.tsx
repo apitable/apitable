@@ -1,6 +1,5 @@
 import { black, getNextShadeColor, Message } from '@vikadata/components';
 import { KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
-import { getCurrentViewBase } from '@apitable/core/dist/store/selector';
 import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
 import { KonvaEventObject } from 'konva/lib/Node';
 import dynamic from 'next/dynamic';
@@ -81,9 +80,10 @@ export const CellLink: FC<ICellProps> = (props) => {
       return;
     }
     const firstViewId = snapshot.meta.views[0].id;
-    let foreignView = getCurrentViewBase(snapshot, firstViewId, foreignDatasheetId, fieldPermissionMap);
+    let foreignView = Selectors.getCurrentViewBase(snapshot, firstViewId, foreignDatasheetId, fieldPermissionMap);
+    
     if (limitToView) {
-      foreignView = getCurrentViewBase(snapshot, limitToView, foreignDatasheetId, fieldPermissionMap) || foreignView;
+      foreignView = Selectors.getCurrentViewBase(snapshot, limitToView, foreignDatasheetId, fieldPermissionMap) || foreignView;
     }
     const hasLimitToView = Boolean(limitToView && foreignView?.id === limitToView);
     return hasLimitToView ? foreignView?.id : undefined;

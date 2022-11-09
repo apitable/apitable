@@ -7,7 +7,7 @@ import { createNewBrotherField, createNewField, IInternalFix } from '../common/f
 import { CollaCommandName, fixOneWayLinkDstId } from '..';
 import { Field, CreatedByField, getMaxFieldCountPerSheet, DatasheetActions } from 'model';
 import { Strings, t } from 'i18n';
-import { getDatasheet } from 'store/selector';
+import { getDatasheet } from '../../store/selectors';
 import { ResourceType } from 'types';
 import { ISetRecordOptions, setRecords } from './set_records';
 

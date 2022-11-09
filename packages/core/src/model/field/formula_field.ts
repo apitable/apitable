@@ -5,7 +5,7 @@ import { ValueTypeMap } from 'model/constants';
 import { ICellValue } from 'model/record';
 import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
 import { IReduxState } from 'store';
-import { getSnapshot } from 'store/selector';
+import { getSnapshot } from '../../store/selectors';
 import { FOperator, FOperatorDescMap, IAPIMetaFormulaFieldProperty, IAPIMetaNoneStringValueFormat, IFilterCondition } from 'types';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IFormulaField, IFormulaProperty, IStandardValue, ITimestamp,

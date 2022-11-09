@@ -1,5 +1,5 @@
 import { ResourceType } from 'types';
-import { getRecord } from 'store/selector';
+import { getRecord } from '../../store/selectors';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
 import { CollaCommandName } from 'commands';
 import { IJOTAction } from 'engine';

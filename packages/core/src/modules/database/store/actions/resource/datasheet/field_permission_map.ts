@@ -1,7 +1,7 @@
-import { IFieldPermissionMap, IFieldRoleSetting, IReduxState } from 'store/interface';
+import { IFieldPermissionMap, IFieldRoleSetting, IReduxState } from '../../../../../../store/interfaces';
 import {
   LOAD_FIELD_PERMISSION_MAP, RESET_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_SETTING
-} from 'store/action_constants';
+} from '../../../../../shared/store/action_constants';
 import { DatasheetApi } from 'api';
 import { batchActions } from 'redux-batched-actions';
 

@@ -1,11 +1,11 @@
 import { Field } from 'model';
 // import 'reflect-metadata';
 import { IRecordCellValue, IReduxState, Selectors } from 'store';
-import { getDatasheet } from 'store/selector/resource';
+import { getDatasheet } from '../modules/database/store/selectors/resource';
 import { BasicOpenValueType } from 'types/field_types_open';
-import { getDashboard } from '../store/selector/resource/dashboard';
-import { getForm } from '../store/selector/resource/form';
-import { getWidget } from '../store/selector/resource/widget';
+import { getDashboard } from '../modules/database/store/selectors/resource/dashboard';
+import { getForm } from '../modules/database/store/selectors/resource/form';
+import { getWidget } from '../modules/database/store/selectors/resource/widget';
 import { ResourceType } from '../types/resource_types';
 
 /**

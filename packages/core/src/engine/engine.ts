@@ -5,12 +5,12 @@ import { IJOTAction, ILocalChangeset, IOperation, IRemoteChangeset, jot } from '
 import { Strings, t } from 'i18n';
 import { Events, Player } from '../modules/shared/player';
 import { IChangesetPack, INetworking } from 'store';
-import { updateRevision } from 'store/actions';
+import { updateRevision } from '../store/actions';
 import { ResourceType, ModalType } from 'types';
 import { ErrorCode, ErrorType, IError } from 'types/error_types';
 import { numbersBetween } from 'utils';
 import { BufferStorage, ILsStore } from './buffer_storage';
-import { getResourcePack } from 'store/selector';
+import { getResourcePack } from '../store/selectors';
 import { UndoManager } from 'command_manager';
 import { ViewPropertyFilter } from 'engine/view_property_filter';
 

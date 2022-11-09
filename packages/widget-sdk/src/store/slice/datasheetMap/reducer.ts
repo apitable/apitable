@@ -1,4 +1,4 @@
-import { REFRESH_SNAPSHOT } from '@apitable/core/dist/store/action_constants';
+import { ActionConstants } from '@apitable/core';
 import { datasheet } from 'core';
 import { IDatasheetMap } from 'interface';
 import { AnyAction } from 'redux';
@@ -46,7 +46,7 @@ export function datasheetMapReducer(
         ...updateState
       };
     }
-    case REFRESH_SNAPSHOT: {
+    case ActionConstants.REFRESH_SNAPSHOT: {
       const datasheetId = (action as AnyAction).datasheetId;
       return {
         ...state,

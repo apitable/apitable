@@ -4,7 +4,7 @@ import { Field } from 'model/field';
 import { 
   GanttColorType, IFieldMap, IGanttViewColumn, IGanttViewProperty, ISetGanttStyle, ISnapshot, IViewProperty, ViewType 
 } from 'store';
-import { getViewIndex } from 'store/selector';
+import { getViewIndex } from '../../store/selectors';
 import { BasicValueType } from 'types';
 import { DatasheetActions } from '../datasheet';
 import { View } from './views';

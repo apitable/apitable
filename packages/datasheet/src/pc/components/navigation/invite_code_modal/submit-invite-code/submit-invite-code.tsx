@@ -1,6 +1,6 @@
 import { Button, Message, TextInput, Typography } from '@vikadata/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
-import { setUsedInviteReward } from '@apitable/core/dist/store/actions';
+import { StoreActions } from '@apitable/core';
 import Image from 'next/image';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { WithTipWrapper } from 'pc/components/common';
@@ -34,7 +34,7 @@ export const SubmitInviteCode: FC<ISubmitInviteCode> = ({ submitAndSuccess, myIn
         } else {
           Message.success({ content: t(Strings.got_v_coins) });
           submitAndSuccess();
-          dispatch(setUsedInviteReward(true));
+          dispatch(StoreActions.setUsedInviteReward(true));
         }
       });
   };

@@ -3,7 +3,7 @@ import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'co
 import { Strings, t } from 'i18n';
 import { DatasheetActions } from 'model';
 import { IMirrorSnapshot, ISnapshot, IWidgetPanel } from 'store';
-import { getMirrorSnapshot, getSnapshot } from 'store/selector';
+import { getMirrorSnapshot, getSnapshot } from '../../store/selectors';
 import { ResourceType } from 'types';
 import { getNewId, getUniqName, IDPrefix } from 'utils';
 

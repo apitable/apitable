@@ -7,7 +7,7 @@ import {
 } from 'store';
 import { BasicValueType } from 'types';
 import { Field } from 'model';
-import { getViewIndex } from 'store/selector';
+import { getViewIndex } from '../../store/selectors';
 import { IJOTAction, integrateCdnHost, OTActionName, Settings } from 'index';
 
 export class CalendarView extends View {

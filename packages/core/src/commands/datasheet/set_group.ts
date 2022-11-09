@@ -1,7 +1,7 @@
 import { IJOTAction } from 'engine/ot';
 import { DatasheetActions } from 'model';
-import { getActiveDatasheetId, getCurrentView, getDatasheet, getFieldPermissionMap, getFieldRoleByFieldId } from 'store/selector';
-import { IGridViewProperty, Role } from 'store/interface';
+import { getActiveDatasheetId, getCurrentView, getDatasheet, getFieldPermissionMap, getFieldRoleByFieldId } from '../../store/selectors';
+import { IGridViewProperty, Role } from '../../store/interfaces';
 import { IGroupInfo, ResourceType } from 'types';
 import { Strings, t } from 'i18n';
 import { CollaCommandName } from 'commands';

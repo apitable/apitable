@@ -1,4 +1,4 @@
-import { IReduxState, IFieldMap, ThemeName, RecordVision, IRecordCellValue } from '../../store/interface';
+import { IReduxState, IFieldMap, ThemeName, RecordVision, IRecordCellValue } from '../../store/interfaces';
 import { FieldType } from '../../types/field_types';
 import { IFormulaContext } from '../functions/basic';
 import { evaluate as _evaluate } from '../evaluate';

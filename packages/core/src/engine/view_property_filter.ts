@@ -4,7 +4,7 @@ import { IJOTAction } from 'engine/ot';
 import { Strings, t } from 'i18n';
 import { DatasheetActions } from 'model';
 import { IFieldMap, IKanbanStyle, IPermissions, IReduxState, IViewProperty, Selectors, StoreActions } from 'store';
-import { getCurrentViewBase, getSnapshot } from 'store/selector';
+import { getCurrentViewBase, getSnapshot } from '../store/selectors';
 import { ErrorCode, ErrorType, IError, IFilterInfo, IGroupInfo, ISortInfo, ResourceType, ModalType } from 'types';
 
 interface IViewPropertyFilterListener {

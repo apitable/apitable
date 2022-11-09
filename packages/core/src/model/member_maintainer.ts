@@ -1,4 +1,4 @@
-import { getSnapshot } from 'store/selector';
+import { getSnapshot } from '../store/selectors';
 import { IJOTAction } from 'engine';
 import { DatasheetActions } from 'model/datasheet';
 import { FieldType, IMemberField } from 'types';

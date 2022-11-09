@@ -1,6 +1,6 @@
 import { DatasheetActions } from 'model';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
-import { ITemporaryView } from 'store/interface';
+import { ITemporaryView } from '../../store/interfaces';
 import { IJOTAction } from 'engine';
 import { Selectors } from 'store';
 import { CollaCommandName } from '..';

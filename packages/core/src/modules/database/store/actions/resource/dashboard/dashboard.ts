@@ -2,13 +2,13 @@ import { DashboardApi } from 'api';
 import { StatusCode } from 'config';
 import { batchActions } from 'redux-batched-actions';
 import { ActionConstants } from 'store';
-import { deleteNode, fetchWidgetsByWidgetIds } from 'store/actions';
-import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from 'store/interface';
-import { getDashboardPack, getInstalledWidgetInDashboard } from 'store/selector';
+import { deleteNode, fetchWidgetsByWidgetIds } from '../../../../../../store/actions';
+import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from '../../../../../../store/interfaces';
+import { getDashboardPack, getInstalledWidgetInDashboard } from '../../../../../../store/selectors';
 import { receiveInstallationWidget } from '../widget';
 import {
   UPDATE_DASHBOARD_NAME, UPDATE_DASHBOARD_INFO
-} from 'store/action_constants';
+} from '../../../../../shared/store/action_constants';
 
 export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any) => void, overWrite = false) => {
   return (dispatch: any, getState: () => IReduxState) => {

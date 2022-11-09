@@ -1,7 +1,7 @@
 import { cloneDeep, findIndex, max, min } from 'lodash';
 import { groupArray } from 'model/utils';
 import { IReduxState, Selectors } from '../../store';
-import { getCellIndex, getVisibleColumns, getVisibleRows, getCellUIIndex } from '../../store/selector';
+import { getCellIndex, getVisibleColumns, getVisibleRows, getCellUIIndex } from '../../store/selectors';
 
 /**
  * cell row / column UUID

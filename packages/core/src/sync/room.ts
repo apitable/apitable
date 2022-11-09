@@ -14,8 +14,8 @@ import 'socket.io-client';
 import { DEFAULT_FIELD_PERMISSION, IResourceRevision, Selectors, StoreActions } from 'store';
 import {
   changeResourceSyncingStatus, resetFieldPermissionMap, roomInfoSync, setResourceConnect, updateFieldPermissionMap, updateFieldPermissionSetting,
-} from 'store/actions';
-import { ICollaborator, IReduxState } from 'store/interface';
+} from '../store/actions';
+import { ICollaborator, IReduxState } from '../store/interfaces';
 import { EnhanceError } from 'sync/enhance_error';
 import { ErrorCode, IError, ModalType, OnOkType, ResourceType } from 'types';
 import { errorCapture, numbersBetween } from 'utils';
