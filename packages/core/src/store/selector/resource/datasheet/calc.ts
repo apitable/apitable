@@ -457,7 +457,7 @@ export const getFilterInfoExceptInvalid = (state: IReduxState, filterInfo?: IFil
       if (!field) {
         return false;
       }
-      return !(Field.bindContext(field, state).hasError);
+      return true;
     }),
   };
 };
@@ -724,9 +724,6 @@ export const getComputeCellValue = (
   }
   switch (field.type) {
     case FieldType.Formula: {
-      if (Field.bindContext(field, state).hasError) {
-        return null;
-      }
       return getFormulaCellValue(state, field as IFormulaField, record, withError);
     }
     case FieldType.LookUp: {

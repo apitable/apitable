@@ -55,7 +55,6 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
   const moreVisible = editable && iconVisible;
   const descVisible = Boolean(desc);
   const permissionVisible = Boolean(permissionInfo);
-  const hasError = Field.bindModel(field).isComputed && Field.bindModel(field).hasError;
   const textOffset = GRID_CELL_VALUE_PADDING + GRID_ICON_COMMON_SIZE + FIELD_HEAD_ICON_GAP_SIZE;
   const autoHeadHeight = _autoHeadHeight && headHeight !== GRID_FIELD_HEAD_HEIGHT;
   let availableTextWidth = width - (
@@ -66,6 +65,10 @@ export const FieldHead: FC<IFieldHeadProps> = memo((props) => {
   // Line feeds are converted to spaces for full display in "Default column header height" mode.
   const fieldName = _autoHeadHeight ? _fieldName : _fieldName.replace(/\r|\n/g, ' ');
   const isGanttNoWrap = viewType === ViewType.Gantt && !autoHeadHeight;
+
+  const hasError = useMemo(() => {
+    return Field.bindModel(field).isComputed && Field.bindModel(field).hasError;
+  }, [field]);
 
   const iconInfoList = useMemo(() => ([
     {

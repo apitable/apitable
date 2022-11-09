@@ -2,7 +2,7 @@ import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, memo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
@@ -21,7 +21,7 @@ interface IViewFieldOptions {
   isAddNewOption?: boolean; // Whether the operation of the current option is to add a new option.
 }
 
-export const ViewFieldOptions: React.FC<IViewFieldOptions> = props => {
+export const ViewFieldOptions: React.FC<IViewFieldOptions> = memo(props => {
   const colors = useThemeColors();
   const { onChange, isAddNewOption, defaultFieldId, existFieldIds, invalidFieldIds = [], invalidTip, isCryptoField, fieldNotFound } = props;
   const currentViewAllField = useSelector(state => Selectors.getCurrentView(state))!.columns;
@@ -62,10 +62,19 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = props => {
     return;
   };
 
-  const options: IOption[] = currentViewAllField.filter(filter).map(item => {
-    const field = fieldMap[item.fieldId];
-    const isFieldInvalid = invalidFieldIds.some(di => di === item.fieldId);
-    const isDisabled = !Field.bindModel(field).canGroup || Field.bindModel(field).hasError;
+  const disabledFieldMap = useMemo(() => {
+    const temp = {};
+    currentViewAllField.forEach(({ fieldId }) => {
+      const field = fieldMap[fieldId];
+      return temp[fieldId] = !Field.bindModel(field).canGroup || Field.bindModel(field).hasError;
+    });
+    return temp;
+  }, [currentViewAllField, fieldMap]);
+
+  const options: IOption[] = currentViewAllField.filter(filter).map(({ fieldId }) => {
+    const field = fieldMap[fieldId];
+    const isFieldInvalid = invalidFieldIds.some(di => di === fieldId);
+    const isDisabled = disabledFieldMap[fieldId];
     return {
       label: field.name,
       value: field.id,
@@ -124,4 +133,4 @@ export const ViewFieldOptions: React.FC<IViewFieldOptions> = props => {
       />
     </div>
   );
-};
+});
