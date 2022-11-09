@@ -5,10 +5,10 @@ import javax.annotation.Resource;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.afs.core.AfsChecker;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.integration.afs.AfsChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

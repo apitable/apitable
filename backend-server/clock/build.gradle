@@ -8,7 +8,6 @@ description = "Vikadata Clock"
 dependencies {
   implementation rootProject.ext.dependencies['redisson']
   implementation rootProject.ext.dependencies['slf4j']
-  testImplementation rootProject.ext.dependencies['embedded-redis']
   testImplementation rootProject.ext.dependencies['junit5']
   testImplementation rootProject.ext.dependencies['assertj']
   testImplementation rootProject.ext.dependencies['awaitility']

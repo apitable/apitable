@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.afs.AfsAutoConfiguration
+com.apitable.starter.afs.autoconfigure.AfsAutoConfiguration

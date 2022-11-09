@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import com.apitable.starter.oss.core.OssClientTemplate;
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enums.attach.AssetType;
 import com.vikadata.api.modular.base.service.IAssetUploadTokenService;
 import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.integration.oss.OssClientTemplate;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 

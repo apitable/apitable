@@ -4,9 +4,12 @@ plugins {
 
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
-  api(project(':vikadata-integration:vikadata-integration-vika'))
   
   implementation(rootProject.ext.dependencies['vika-client']) {
     exclude group: 'commons-logging', module: 'commons-logging'
   }
+  
+  implementation(rootProject.ext.dependencies['hutool'])
+  
+  testImplementation(rootProject.ext.dependencies['junit5'])
 }

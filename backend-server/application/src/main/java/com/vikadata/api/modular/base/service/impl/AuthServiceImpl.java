@@ -22,7 +22,7 @@ import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.autoconfigure.tencent.WebAppProperties;
+import com.apitable.starter.tencent.autoconfigure.WebAppProperties;
 import com.apitable.starter.wx.mp.autoconfigure.WxMpProperties;
 import com.vikadata.api.cache.bean.SocialAuthInfo;
 import com.vikadata.api.component.TaskManager;

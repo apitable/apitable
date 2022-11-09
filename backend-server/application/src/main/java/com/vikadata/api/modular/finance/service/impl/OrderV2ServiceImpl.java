@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pingplusplus.model.Charge;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.autoconfigure.pingpp.PingProperties;
+import com.apitable.starter.pingpp.autoconfigure.PingProperties;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.clock.ClockManager;
 import com.vikadata.api.component.notification.NotificationManager;

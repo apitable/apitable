@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.pingpp.PingPlusPlusAutoConfiguration
+com.apitable.starter.pingpp.autoconfigure.PingPlusPlusAutoConfiguration

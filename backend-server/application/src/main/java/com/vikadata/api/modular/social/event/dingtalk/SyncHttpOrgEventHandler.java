@@ -4,14 +4,14 @@ import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.amqp.core.RabbitSenderService;
+import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventHandler;
+import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventListener;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.modular.social.service.IDingTalkIsvEventService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialTenantService;
 import com.vikadata.api.modular.space.service.ISpaceService;
-import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventHandler;
-import com.apitable.starter.social.dingtalk.autoconfigure.annotation.DingTalkEventListener;
-import com.vikadata.integration.rabbitmq.RabbitSenderService;
 import com.vikadata.social.dingtalk.event.sync.http.OrgMicroAppRemoveEvent;
 import com.vikadata.social.dingtalk.event.sync.http.OrgMicroAppRestoreEvent;
 import com.vikadata.social.dingtalk.event.sync.http.OrgMicroAppScopeUpdateEvent;

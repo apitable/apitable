@@ -38,10 +38,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.vikadata.integration.oss.OssClientTemplate;
-import com.vikadata.integration.oss.OssObject;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.factory.CollaCommandFactory;
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.OssObject;
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.factory.CollaCommandFactory;
 import com.vikadata.scheduler.space.config.properties.ConfigProperties;
 import com.vikadata.scheduler.space.handler.ClearOneWayLinkJobHandler;
 import com.vikadata.scheduler.space.handler.ClearOneWayLinkJobHandler.JobParam.RunFunc;

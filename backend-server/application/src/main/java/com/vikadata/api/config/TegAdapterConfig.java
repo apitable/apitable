@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.apitable.starter.autoconfigure.teg.TegProperties.SmartProxyHeaderProperty;
-import com.apitable.starter.autoconfigure.teg.UnauthorizedResponseCustomizer;
+import com.apitable.starter.teg.autoconfigure.TegProperties.SmartProxyHeaderProperty;
+import com.apitable.starter.teg.autoconfigure.UnauthorizedResponseCustomizer;
 import com.vikadata.api.component.ApiResourceFactory;
 import com.vikadata.api.component.ResourceDefinition;
 import com.vikadata.api.constants.FilterConstants;

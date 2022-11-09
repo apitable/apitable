@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.aegis.XiaomiAutoConfiguration
+com.apitable.starter.aegis.autoconfigure.XiaomiAutoConfiguration

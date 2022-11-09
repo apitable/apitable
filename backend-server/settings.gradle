@@ -33,6 +33,7 @@ include 'code-coverage-report'
 include 'config'
 include 'clock'
 include 'core'
+include 'grpc-model'
 
 include 'vikadata-service:vikadata-db-model'
 include 'vikadata-service:vikadata-mongodb-model'
@@ -49,8 +50,4 @@ file("${rootDir}/vikadata-social").eachDirMatch(~/vikadata-social.*/) {
 
 file("${rootDir}/starters").eachDirMatch(~/.*/) {
   include "starters:${it.name}"
-}
-
-file("${rootDir}/vikadata-integration").eachDirMatch(~/vikadata-integration.*/) {
-  include "vikadata-integration:${it.name}"
 }

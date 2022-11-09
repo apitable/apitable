@@ -25,7 +25,7 @@ dependencies {
   implementation project(':starters:tencent')
   implementation project(':starters:beetl')
   implementation project(':starters:vika')
-  implementation project(':vikadata-integration:vikadata-integration-grpc-model')
+  implementation project(':grpc-model')
   implementation project(':starters:social-feishu')
   implementation project(':starters:social-dingtalk')
   implementation project(':starters:social-wecom')

@@ -86,7 +86,6 @@ ext {
     'xxl'                         : "com.xuxueli:xxl-job-core:${xxl_job_version}",
     'pingpp'                      : "Pingplusplus:pingpp-java:${pingpp_version}",
     'redisson'                    : "org.redisson:redisson:${redisson_version}",
-    'embedded-redis'              : "org.signal:embedded-redis:0.8.2",
     'springfox-starter'           : "io.springfox:springfox-boot-starter:${springfox_version}",
     'auth0'                       : "com.auth0:mvc-auth-commons:1.9.2",
     'swagger2'                    : [

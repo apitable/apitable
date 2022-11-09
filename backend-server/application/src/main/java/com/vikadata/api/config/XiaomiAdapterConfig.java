@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiaomi.aegis.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.autoconfigure.aegis.UnauthorizedResponseCustomizer;
+import com.apitable.starter.aegis.autoconfigure.UnauthorizedResponseCustomizer;
 import com.vikadata.api.component.ApiResourceFactory;
 import com.vikadata.api.component.ResourceDefinition;
 import com.vikadata.api.constants.FilterConstants;
@@ -34,7 +34,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import static com.apitable.starter.autoconfigure.aegis.CasMidunFilter.isIgnoreUrl;
+import static com.apitable.starter.aegis.autoconfigure.CasMidunFilter.isIgnoreUrl;
 import static com.vikadata.api.enums.exception.AuthException.UNAUTHORIZED;
 import static com.xiaomi.aegis.constant.SdkConstants.REQUEST_ATTRIBUTE_USER_INFO_KEY;
 

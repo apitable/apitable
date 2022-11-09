@@ -36,7 +36,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.autoconfigure.beetl.BeetlTemplate;
+import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.vikadata.api.cache.service.UserSpaceRemindRecordService;
 import com.vikadata.api.component.notification.NotificationTemplateId;
 import com.vikadata.api.config.properties.LimitProperties;

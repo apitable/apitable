@@ -17,6 +17,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.socketio.core.SocketClientTemplate;
 import com.vikadata.api.cache.service.LoginUserService;
 import com.vikadata.api.component.notification.observer.CenterNotifyObserver;
 import com.vikadata.api.component.notification.observer.DingTalkIsvNotifyObserver;
@@ -33,9 +34,8 @@ import com.vikadata.api.enums.finance.OrderType;
 import com.vikadata.api.enums.notification.EventType;
 import com.vikadata.api.model.ro.player.NotificationCreateRo;
 import com.vikadata.api.modular.player.service.impl.PlayerNotificationServiceImpl;
-import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.integration.socketio.SocketClientTemplate;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -5,10 +5,10 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.apitable.starter.idaas.core.model.GroupsResponse.GroupResponse;
+import com.apitable.starter.idaas.core.model.UsersResponse.UserResponse;
 import com.vikadata.entity.IdaasGroupBindEntity;
 import com.vikadata.entity.IdaasUserBindEntity;
-import com.vikadata.integration.idaas.model.GroupsResponse.GroupResponse;
-import com.vikadata.integration.idaas.model.UsersResponse.UserResponse;
 
 /**
  * <p>

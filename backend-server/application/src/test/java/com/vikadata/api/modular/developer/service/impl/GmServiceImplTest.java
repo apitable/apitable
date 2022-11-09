@@ -6,6 +6,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
+import com.apitable.starter.vika.core.model.UserContactInfo;
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enums.space.SpaceCertification;
 import com.vikadata.api.lang.SpaceGlobalFeature;
@@ -15,7 +16,6 @@ import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.UserEntity;
-import com.vikadata.integration.vika.model.UserContactInfo;
 
 import static com.vikadata.api.enums.exception.PermissionException.MEMBER_NOT_IN_SPACE;
 import static com.vikadata.api.enums.exception.SpaceException.NOT_SPACE_ADMIN;

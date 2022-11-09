@@ -11,12 +11,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import me.chanjar.weixin.common.error.WxErrorException;
 
+import com.apitable.starter.amqp.core.RabbitSenderService;
 import com.vikadata.api.modular.social.enums.SocialCpIsvMessageProcessStatus;
 import com.vikadata.api.modular.social.mapper.SocialCpIsvMessageMapper;
 import com.vikadata.api.modular.social.service.ISocialCpIsvEntityHandler;
 import com.vikadata.api.modular.social.service.ISocialCpIsvMessageService;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
-import com.vikadata.integration.rabbitmq.RabbitSenderService;
 import com.vikadata.social.wecom.constants.WeComIsvMessageType;
 
 import org.springframework.beans.factory.InitializingBean;

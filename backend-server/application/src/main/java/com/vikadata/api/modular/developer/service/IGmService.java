@@ -2,9 +2,9 @@ package com.vikadata.api.modular.developer.service;
 
 import java.util.List;
 
+import com.apitable.starter.vika.core.model.UserContactInfo;
 import com.vikadata.api.enums.developer.GmAction;
 import com.vikadata.api.enums.space.SpaceCertification;
-import com.vikadata.integration.vika.model.UserContactInfo;
 
 public interface IGmService {
 

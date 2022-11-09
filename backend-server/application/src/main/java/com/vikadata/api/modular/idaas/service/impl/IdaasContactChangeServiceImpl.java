@@ -16,6 +16,9 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.google.common.collect.Lists;
 
+import com.apitable.starter.idaas.core.model.GroupsResponse.GroupResponse;
+import com.apitable.starter.idaas.core.model.UsersResponse.UserResponse;
+import com.apitable.starter.idaas.core.model.UsersResponse.UserResponse.Values;
 import com.vikadata.api.enums.space.UserSpaceStatus;
 import com.vikadata.api.modular.idaas.model.IdaasContactChange;
 import com.vikadata.api.modular.idaas.service.IIdaasContactChangeService;
@@ -33,9 +36,6 @@ import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.TeamEntity;
 import com.vikadata.entity.TeamMemberRelEntity;
 import com.vikadata.entity.UserEntity;
-import com.vikadata.integration.idaas.model.GroupsResponse.GroupResponse;
-import com.vikadata.integration.idaas.model.UsersResponse.UserResponse;
-import com.vikadata.integration.idaas.model.UsersResponse.UserResponse.Values;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

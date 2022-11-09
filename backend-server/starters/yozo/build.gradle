@@ -4,8 +4,7 @@ plugins {
 
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
-  api(project(':vikadata-integration:vikadata-integration-yozo'))
-  
-  implementation rootProject.ext.dependencies['spring-web']
-  implementation rootProject.ext.dependencies['jackson']
+  implementation(rootProject.ext.dependencies['spring-web'])
+  implementation(rootProject.ext.dependencies['jackson'])
+  testImplementation(rootProject.ext.dependencies['spring-test-starter'])
 }

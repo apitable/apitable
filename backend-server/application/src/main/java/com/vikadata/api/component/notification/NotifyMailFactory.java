@@ -21,14 +21,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.autoconfigure.beetl.BeetlTemplate;
-import com.apitable.starter.autoconfigure.mail.EmailMessage;
-import com.apitable.starter.autoconfigure.mail.MailTemplate;
+import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
+import com.apitable.starter.mail.autoconfigure.EmailMessage;
+import com.apitable.starter.mail.autoconfigure.MailTemplate;
+import com.apitable.starter.mail.core.CloudEmailMessage;
+import com.apitable.starter.mail.core.CloudMailSender;
 import com.vikadata.api.config.properties.EmailSendProperties;
 import com.vikadata.api.security.email.TencentMailTemplate;
 import com.vikadata.core.util.SpringContextHolder;
-import com.vikadata.integration.mail.CloudEmailMessage;
-import com.vikadata.integration.mail.CloudMailSender;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

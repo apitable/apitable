@@ -17,12 +17,12 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 
+import com.apitable.starter.sensors.core.DataTracker;
 import com.vikadata.api.enums.action.TrackEventType;
 import com.vikadata.api.model.dto.client.ClientOriginInfo;
 import com.vikadata.api.modular.base.service.SensorsService;
 import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.integration.sensors.DataTracker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

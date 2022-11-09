@@ -10,9 +10,10 @@ import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import com.apitable.starter.autoconfigure.oss.OssProperties;
-import com.apitable.starter.autoconfigure.oss.OssProperties.Callback;
-import com.apitable.starter.autoconfigure.oss.OssProperties.Qiniu;
+import com.apitable.starter.oss.autoconfigure.OssProperties;
+import com.apitable.starter.oss.autoconfigure.OssProperties.Callback;
+import com.apitable.starter.oss.autoconfigure.OssProperties.Qiniu;
+import com.apitable.starter.oss.core.qiniu.QiniuTemporaryClientTemplate;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.enums.attach.AssetType;
@@ -22,7 +23,6 @@ import com.vikadata.api.modular.base.model.AssetUploadNotifyRO;
 import com.vikadata.api.modular.base.model.WidgetUploadNotifyRO;
 import com.vikadata.api.modular.base.service.IAssetCallbackService;
 import com.vikadata.core.support.ResponseData;
-import com.vikadata.integration.oss.qiniu.QiniuTemporaryClientTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

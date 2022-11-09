@@ -31,6 +31,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.UrlFetchResponse;
+import com.apitable.starter.yozo.core.YozoApiException;
+import com.apitable.starter.yozo.core.YozoTemplate;
 import com.vikadata.api.cache.service.SpaceCapacityCacheService;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.enums.attach.AssetType;
@@ -64,10 +68,6 @@ import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.core.util.InputStreamCache;
 import com.vikadata.core.util.MimeTypeMapping;
 import com.vikadata.entity.AssetEntity;
-import com.vikadata.integration.oss.OssClientTemplate;
-import com.vikadata.integration.oss.UrlFetchResponse;
-import com.vikadata.integration.yozo.YozoApiException;
-import com.vikadata.integration.yozo.YozoTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

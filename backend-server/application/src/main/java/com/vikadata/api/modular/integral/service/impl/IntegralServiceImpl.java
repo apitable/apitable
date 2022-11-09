@@ -24,6 +24,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.model.IntegralRewardInfo;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
@@ -38,8 +40,6 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.IntegralHistoryEntity;
 import com.vikadata.entity.UserEntity;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.model.IntegralRewardInfo;
 import com.vikadata.system.config.SystemConfigManager;
 import com.vikadata.system.config.integral.IntegralRule;
 

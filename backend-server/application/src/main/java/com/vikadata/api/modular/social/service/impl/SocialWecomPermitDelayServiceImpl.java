@@ -17,6 +17,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.amqp.core.RabbitSenderService;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
+import com.apitable.starter.social.wecom.autoconfigure.WeComProperties.IsvApp;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.rabbitmq.WeComRabbitConsumer;
 import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
@@ -27,12 +30,9 @@ import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayType;
 import com.vikadata.api.modular.social.mapper.SocialWecomPermitDelayMapper;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.social.service.ISocialWecomPermitDelayService;
-import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
-import com.apitable.starter.social.wecom.autoconfigure.WeComProperties.IsvApp;
 import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.entity.SocialWecomOrderEntity;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;
-import com.vikadata.integration.rabbitmq.RabbitSenderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

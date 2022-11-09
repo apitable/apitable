@@ -17,6 +17,9 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.model.GmPermissionInfo;
+import com.apitable.starter.vika.core.model.UserContactInfo;
 import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationTemplateId;
@@ -41,9 +44,6 @@ import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.UserEntity;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.model.GmPermissionInfo;
-import com.vikadata.integration.vika.model.UserContactInfo;
 import com.vikadata.social.feishu.model.v3.FeishuDeptObject;
 import com.vikadata.social.feishu.model.v3.FeishuUserObject;
 

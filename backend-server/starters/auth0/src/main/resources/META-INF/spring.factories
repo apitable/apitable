@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.auth0.Auth0AutoConfiguration
+com.apitable.starter.auth0.autoconfigure.Auth0AutoConfiguration

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.hutool.core.lang.Dict;
-import com.apitable.starter.autoconfigure.beetl.BeetlAutoConfiguration;
-import com.apitable.starter.autoconfigure.mail.CloudMailAutoConfiguration;
-import com.apitable.starter.autoconfigure.mail.MailAutoConfiguration;
-import com.apitable.starter.autoconfigure.mail.TencentMailAutoConfiguration;
+import com.apitable.starter.beetl.autoconfigure.BeetlAutoConfiguration;
+import com.apitable.starter.mail.autoconfigure.CloudMailAutoConfiguration;
+import com.apitable.starter.mail.autoconfigure.MailAutoConfiguration;
+import com.apitable.starter.mail.autoconfigure.TencentMailAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

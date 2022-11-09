@@ -3,6 +3,7 @@
 }
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
-  api(project(':vikadata-integration:vikadata-integration-socketio'))
-  implementation rootProject.ext.dependencies['socket-io']
+  implementation(rootProject.ext.dependencies['socket-io'])
+  implementation(rootProject.ext.dependencies['slf4j'])
+  implementation(rootProject.ext.dependencies['hutool'])
 }

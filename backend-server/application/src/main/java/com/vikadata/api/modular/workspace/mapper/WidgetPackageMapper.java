@@ -6,6 +6,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.apitable.starter.vika.core.model.GlobalWidgetInfo;
 import com.vikadata.api.model.dto.widget.WidgetPackageDTO;
 import com.vikadata.api.model.dto.widget.WidgetSpaceByDTO;
 import com.vikadata.api.model.ro.widget.WidgetStoreListRo;
@@ -14,7 +15,6 @@ import com.vikadata.api.model.vo.widget.WidgetPackageInfoVo;
 import com.vikadata.api.model.vo.widget.WidgetStoreListInfo;
 import com.vikadata.api.model.vo.widget.WidgetTemplatePackageInfo;
 import com.vikadata.entity.WidgetPackageEntity;
-import com.vikadata.integration.vika.model.GlobalWidgetInfo;
 
 public interface WidgetPackageMapper extends BaseMapper<WidgetPackageEntity> {
 

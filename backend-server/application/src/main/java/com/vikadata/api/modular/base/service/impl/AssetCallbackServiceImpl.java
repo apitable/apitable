@@ -20,6 +20,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.OssStatObject;
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
 import com.vikadata.api.cache.service.AssetCacheService;
 import com.vikadata.api.config.properties.ConstProperties;
@@ -39,13 +41,11 @@ import com.vikadata.api.modular.space.service.ISpaceAssetService;
 import com.vikadata.api.util.PdfToImageUtil;
 import com.vikadata.api.util.StringUtil;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.DigestUtil;
+import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.InputStreamCache;
 import com.vikadata.core.util.MimeTypeMapping;
 import com.vikadata.entity.AssetEntity;
-import com.vikadata.integration.oss.OssClientTemplate;
-import com.vikadata.integration.oss.OssStatObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

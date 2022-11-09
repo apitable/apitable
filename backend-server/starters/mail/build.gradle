@@ -5,7 +5,8 @@ plugins {
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
   implementation(rootProject.ext.dependencies['spring-mail-starter'])
-  api(project(':vikadata-integration:vikadata-integration-mail'))
-  implementation rootProject.ext.dependencies['qcloudses']
-  implementation rootProject.ext.dependencies['hutool-core']
+  implementation(rootProject.ext.dependencies['qcloudses'])
+  implementation(rootProject.ext.dependencies['hutool'])
+  implementation(rootProject.ext.dependencies['slf4j'])
+  testImplementation(rootProject.ext.dependencies['spring-test-starter'])
 }

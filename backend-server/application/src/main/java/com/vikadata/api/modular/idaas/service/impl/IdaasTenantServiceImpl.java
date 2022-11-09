@@ -8,6 +8,12 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.idaas.core.IdaasApiException;
+import com.apitable.starter.idaas.core.IdaasTemplate;
+import com.apitable.starter.idaas.core.api.SystemApi;
+import com.apitable.starter.idaas.core.model.TenantRequest;
+import com.apitable.starter.idaas.core.model.TenantResponse;
+import com.apitable.starter.idaas.core.support.ServiceAccount;
 import com.vikadata.api.enums.exception.IdaasException;
 import com.vikadata.api.modular.idaas.mapper.IdaasTenantMapper;
 import com.vikadata.api.modular.idaas.model.IdaasTenantCreateRo;
@@ -17,12 +23,6 @@ import com.vikadata.api.modular.idaas.service.IIdaasTenantService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.IdaasAppBindEntity;
 import com.vikadata.entity.IdaasTenantEntity;
-import com.vikadata.integration.idaas.IdaasApiException;
-import com.vikadata.integration.idaas.IdaasTemplate;
-import com.vikadata.integration.idaas.api.SystemApi;
-import com.vikadata.integration.idaas.model.TenantRequest;
-import com.vikadata.integration.idaas.model.TenantResponse;
-import com.vikadata.integration.idaas.support.ServiceAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

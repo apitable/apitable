@@ -8,10 +8,10 @@ import cn.hutool.json.JSONUtil;
 import com.xxl.job.core.context.XxlJobHelper;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.model.DingTalkAgentAppInfo;
+import com.apitable.starter.vika.core.model.DingTalkDaTemplateInfo;
 import com.vikadata.core.constants.RedisConstants;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.model.DingTalkAgentAppInfo;
-import com.vikadata.integration.vika.model.DingTalkDaTemplateInfo;
 import com.vikadata.scheduler.space.service.IDingTalkConfigService;
 import com.vikadata.social.dingtalk.DingtalkConfig.AgentApp;
 import com.vikadata.social.dingtalk.config.DingTalkConfigStorage;

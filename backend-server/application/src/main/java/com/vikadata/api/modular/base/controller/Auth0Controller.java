@@ -23,13 +23,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.auth0.core.Auth0Template;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.security.Auth0UserProfile;
 import com.vikadata.api.context.SessionContext;
 import com.vikadata.api.modular.user.service.IUserService;
-import com.vikadata.integration.auth0.Auth0Template;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;

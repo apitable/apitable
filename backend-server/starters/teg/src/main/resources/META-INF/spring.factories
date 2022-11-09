@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.teg.SmartProxyAutoConfiguration
+com.apitable.starter.teg.autoconfigure.SmartProxyAutoConfiguration

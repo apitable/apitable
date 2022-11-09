@@ -17,6 +17,7 @@ import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.amqp.core.RabbitSenderService;
 import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
 import com.apitable.starter.social.wecom.autoconfigure.WeComProperties.IsvApp;
 import com.vikadata.api.config.rabbitmq.TopicRabbitMqConfig;
@@ -34,7 +35,6 @@ import com.vikadata.core.util.DateTimeUtil;
 import com.vikadata.entity.SocialCpIsvMessageEntity;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;
 import com.vikadata.entity.SocialWecomPermitOrderEntity;
-import com.vikadata.integration.rabbitmq.RabbitSenderService;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

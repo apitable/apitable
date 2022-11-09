@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.tencent.WebAppServiceAutoConfiguration
+com.apitable.starter.tencent.autoconfigure.WebAppServiceAutoConfiguration

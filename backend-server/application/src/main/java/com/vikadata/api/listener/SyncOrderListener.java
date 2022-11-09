@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.apitable.starter.vika.core.VikaTemplate;
+import com.apitable.starter.vika.core.model.BillingOrder;
+import com.apitable.starter.vika.core.model.BillingOrderItem;
+import com.apitable.starter.vika.core.model.BillingOrderPayment;
 import com.vikadata.api.event.SyncOrderEvent;
 import com.vikadata.api.modular.finance.service.IOrderItemService;
 import com.vikadata.api.modular.finance.service.IOrderPaymentService;
@@ -12,10 +16,6 @@ import com.vikadata.api.modular.finance.service.IOrderV2Service;
 import com.vikadata.entity.OrderEntity;
 import com.vikadata.entity.OrderItemEntity;
 import com.vikadata.entity.OrderPaymentEntity;
-import com.vikadata.integration.vika.VikaTemplate;
-import com.vikadata.integration.vika.model.BillingOrder;
-import com.vikadata.integration.vika.model.BillingOrderItem;
-import com.vikadata.integration.vika.model.BillingOrderPayment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;

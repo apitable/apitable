@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
-  api(project(':vikadata-integration:vikadata-integration-sms'))
-
   implementation(rootProject.ext.dependencies['qcloudsms'])
   implementation(rootProject.ext.dependencies['yunpian-sms'])
+  implementation(rootProject.ext.dependencies['slf4j'])
+  implementation(rootProject.ext.dependencies['hutool'])
 }

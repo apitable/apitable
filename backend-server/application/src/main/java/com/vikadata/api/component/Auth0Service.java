@@ -4,7 +4,7 @@ import com.auth0.exception.Auth0Exception;
 import com.auth0.json.mgmt.users.User;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.integration.auth0.Auth0Template;
+import com.apitable.starter.auth0.core.Auth0Template;
 import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.beans.factory.annotation.Autowired;

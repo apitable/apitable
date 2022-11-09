@@ -16,6 +16,13 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.model.template.RecommendInfo;
+import com.apitable.starter.vika.core.model.template.Template;
+import com.apitable.starter.vika.core.model.template.TemplateAlbum;
+import com.apitable.starter.vika.core.model.template.TemplateCategory;
+import com.apitable.starter.vika.core.model.template.TemplateCenterConfigInfo;
+import com.apitable.starter.vika.core.model.template.TemplateConfigDatasheetParam;
 import com.vikadata.api.cache.bean.Banner;
 import com.vikadata.api.cache.bean.RecommendConfig;
 import com.vikadata.api.cache.bean.RecommendConfig.AlbumGroup;
@@ -44,13 +51,6 @@ import com.vikadata.entity.TemplateAlbumEntity;
 import com.vikadata.entity.TemplateAlbumRelEntity;
 import com.vikadata.entity.TemplatePropertyEntity;
 import com.vikadata.entity.TemplatePropertyRelEntity;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.model.template.RecommendInfo;
-import com.vikadata.integration.vika.model.template.Template;
-import com.vikadata.integration.vika.model.template.TemplateAlbum;
-import com.vikadata.integration.vika.model.template.TemplateCategory;
-import com.vikadata.integration.vika.model.template.TemplateCenterConfigInfo;
-import com.vikadata.integration.vika.model.template.TemplateConfigDatasheetParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

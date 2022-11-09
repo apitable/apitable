@@ -1,7 +1,7 @@
 package com.apitable.starter.connector.k11.autoconfigure;
 
-import com.apitable.starter.connector.K11Connector;
-import com.apitable.starter.connector.K11Template;
+import com.apitable.starter.connector.k11.K11Connector;
+import com.apitable.starter.connector.k11.K11Template;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

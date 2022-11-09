@@ -19,8 +19,8 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.factory.CollaCommandFactory;
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.factory.CollaCommandFactory;
 import com.vikadata.scheduler.space.SchedulerSpaceApplication;
 import com.vikadata.scheduler.space.handler.ClearOneWayLinkJobHandler;
 import com.vikadata.scheduler.space.handler.FixDatasheetDataHandler;

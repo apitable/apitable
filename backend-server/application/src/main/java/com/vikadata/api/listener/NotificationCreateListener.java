@@ -12,6 +12,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.socketio.core.SocketClientTemplate;
 import com.vikadata.api.component.notification.INotificationFactory;
 import com.vikadata.api.enums.notification.EventType;
 import com.vikadata.api.event.NotificationCreateEvent;
@@ -20,7 +21,6 @@ import com.vikadata.api.model.vo.player.NotificationDetailVo;
 import com.vikadata.api.modular.player.service.IPlayerNotificationService;
 import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.entity.PlayerNotificationEntity;
-import com.vikadata.integration.socketio.SocketClientTemplate;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;

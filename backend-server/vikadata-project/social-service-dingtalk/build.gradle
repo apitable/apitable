@@ -10,7 +10,7 @@ plugins {
 dependencies {
   implementation project(':core')
   implementation project(':starters:swagger')
-  implementation project(':vikadata-integration:vikadata-integration-grpc-model')
+  implementation project(':grpc-model')
   implementation project(':starters:social-dingtalk')
   
   implementation rootProject.ext.dependencies['hutool']

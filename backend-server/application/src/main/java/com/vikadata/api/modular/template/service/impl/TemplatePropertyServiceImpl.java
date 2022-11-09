@@ -18,6 +18,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.vika.core.VikaOperations;
+import com.apitable.starter.vika.core.model.OnlineTemplateInfo;
 import com.vikadata.api.cache.bean.CategoryDto;
 import com.vikadata.api.component.LanguageManager;
 import com.vikadata.api.enums.template.TemplatePropertyType;
@@ -31,8 +33,6 @@ import com.vikadata.api.util.IdUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.TemplatePropertyEntity;
 import com.vikadata.entity.TemplatePropertyRelEntity;
-import com.vikadata.integration.vika.VikaOperations;
-import com.vikadata.integration.vika.model.OnlineTemplateInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

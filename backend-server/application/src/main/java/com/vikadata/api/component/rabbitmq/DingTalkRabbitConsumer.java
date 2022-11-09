@@ -7,10 +7,10 @@ import javax.annotation.Resource;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.amqp.core.RabbitSenderService;
 import com.vikadata.api.modular.social.service.IDingTalkIsvEventService;
 import com.vikadata.api.modular.social.service.ISocialTenantBindService;
 import com.vikadata.api.modular.space.service.ISpaceService;
-import com.vikadata.integration.rabbitmq.RabbitSenderService;
 import com.vikadata.social.dingtalk.event.sync.http.OrgSuiteChangeEvent;
 
 import org.springframework.amqp.core.Message;

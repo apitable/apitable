@@ -4,5 +4,6 @@ plugins {
 
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
-  api(project(':vikadata-integration:vikadata-integration-sensors'))
+  implementation(rootProject.ext.dependencies['sensors'])
+  implementation(rootProject.ext.dependencies['slf4j'])
 }

@@ -4,10 +4,13 @@ import java.util.Objects;
 
 import javax.annotation.Resource;
 
-import com.apitale.starter.autoconfigure.idaas.IdaasProperties;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.idaas.autoconfigure.IdaasProperties;
+import com.apitable.starter.idaas.core.IdaasApiException;
+import com.apitable.starter.idaas.core.IdaasTemplate;
+import com.apitable.starter.idaas.core.model.WellKnowResponse;
 import com.vikadata.api.enums.exception.IdaasException;
 import com.vikadata.api.modular.idaas.mapper.IdaasAppBindMapper;
 import com.vikadata.api.modular.idaas.model.IdaasAppBindRo;
@@ -20,9 +23,6 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.IdaasAppBindEntity;
 import com.vikadata.entity.IdaasAppEntity;
 import com.vikadata.entity.IdaasTenantEntity;
-import com.vikadata.integration.idaas.IdaasApiException;
-import com.vikadata.integration.idaas.IdaasTemplate;
-import com.vikadata.integration.idaas.model.WellKnowResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

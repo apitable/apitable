@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.xxl.XxlAutoConfiguration
+com.apitable.starter.xxl.autoconfigure.XxlAutoConfiguration

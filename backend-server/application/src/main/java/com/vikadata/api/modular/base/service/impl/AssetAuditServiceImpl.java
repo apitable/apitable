@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.oss.core.OssClientTemplate;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.config.properties.ConstProperties.OssBucketInfo;
 import com.vikadata.api.constants.AssetsPublicConstants;
@@ -31,7 +32,6 @@ import com.vikadata.api.modular.base.mapper.AssetAuditMapper;
 import com.vikadata.api.modular.base.service.IAssetAuditService;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.AssetAuditEntity;
-import com.vikadata.integration.oss.OssClientTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

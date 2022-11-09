@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.socketio.SocketioAutoConfiguration
+com.apitable.starter.socketio.autoconfigure.SocketioAutoConfiguration

@@ -14,8 +14,12 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.autoconfigure.oss.OssProperties;
-import com.apitable.starter.autoconfigure.oss.OssProperties.OssType;
+import com.apitable.starter.oss.autoconfigure.OssProperties;
+import com.apitable.starter.oss.autoconfigure.OssProperties.OssType;
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.OssUploadAuth;
+import com.apitable.starter.oss.core.OssUploadPolicy;
+import com.apitable.starter.oss.core.qiniu.QiniuTemporaryClientTemplate;
 import com.vikadata.api.cache.bean.SpaceAssetDTO;
 import com.vikadata.api.cache.service.AssetCacheService;
 import com.vikadata.api.config.properties.ConstProperties;
@@ -43,10 +47,6 @@ import com.vikadata.api.util.StringUtil;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.AssetEntity;
 import com.vikadata.entity.DeveloperAssetEntity;
-import com.vikadata.integration.oss.OssClientTemplate;
-import com.vikadata.integration.oss.OssUploadAuth;
-import com.vikadata.integration.oss.OssUploadPolicy;
-import com.vikadata.integration.oss.qiniu.QiniuTemporaryClientTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,6 @@ import static com.vikadata.api.enums.exception.ParameterException.INCORRECT_ARG;
  * </p>
  *
  * @author Pengap
- * @date 2022/4/6 16:46:25
  */
 @Slf4j
 @Service

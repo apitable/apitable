@@ -4,9 +4,11 @@ plugins {
 
 dependencies {
   implementation(rootProject.ext.dependencies['boot-starter'])
-  api(project(':vikadata-integration:vikadata-integration-oss'))
-
   implementation(rootProject.ext.dependencies['aws'])
   implementation(rootProject.ext.dependencies['minio'])
   implementation(rootProject.ext.dependencies['qiniu'])
+  implementation(rootProject.ext.dependencies['slf4j'])
+  implementation(rootProject.ext.dependencies['hutool'])
+  implementation(rootProject.ext.dependencies['gson'])
+  testImplementation(rootProject.ext.dependencies['spring-test-starter'])
 }

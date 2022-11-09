@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import com.apitable.starter.vika.core.model.GlobalWidgetInfo;
 import com.vikadata.api.model.ro.widget.WidgetPackageBanRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageCreateRo;
 import com.vikadata.api.model.ro.widget.WidgetPackageReleaseRo;
@@ -19,7 +20,6 @@ import com.vikadata.api.model.vo.widget.WidgetReleaseCreateVo;
 import com.vikadata.api.model.vo.widget.WidgetReleaseListVo;
 import com.vikadata.api.modular.developer.model.SingleGlobalWidgetRo;
 import com.vikadata.entity.WidgetPackageEntity;
-import com.vikadata.integration.vika.model.GlobalWidgetInfo;
 public interface IWidgetPackageService extends IService<WidgetPackageEntity> {
 
     /**

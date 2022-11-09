@@ -1,8 +1,0 @@
-plugins {
-  id 'java'
-}
-
-dependencies {
-  implementation rootProject.ext.dependencies['sensors']
-  implementation rootProject.ext.dependencies['slf4j']
-}

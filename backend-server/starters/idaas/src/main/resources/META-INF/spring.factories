@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitale.starter.autoconfigure.idaas.IdaasAutoConfiguration
+com.apitable.starter.idaas.autoconfigure.IdaasAutoConfiguration

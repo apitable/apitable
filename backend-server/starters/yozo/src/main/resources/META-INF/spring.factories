@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.autoconfigure.yozo.YozoAutoConfiguration
+com.apitable.starter.yozo.autoconfigure.YozoAutoConfiguration

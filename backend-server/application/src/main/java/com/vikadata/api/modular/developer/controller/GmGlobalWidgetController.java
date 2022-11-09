@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.vika.core.model.GlobalWidgetInfo;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.context.SessionContext;
@@ -22,7 +23,6 @@ import com.vikadata.api.modular.workspace.service.INodeService;
 import com.vikadata.api.modular.workspace.service.IWidgetPackageService;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.integration.vika.model.GlobalWidgetInfo;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

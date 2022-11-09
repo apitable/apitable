@@ -5,12 +5,12 @@ import javax.annotation.Resource;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.apitable.starter.sms.core.SmsMessage;
+import com.apitable.starter.sms.core.SmsSenderTemplate;
 import com.vikadata.api.auth.ConnectorTemplate;
 import com.vikadata.api.enums.action.SmsCodeType;
 import com.vikadata.api.security.ValidateTarget;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.integration.sms.SmsMessage;
-import com.vikadata.integration.sms.SmsSenderTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
