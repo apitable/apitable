@@ -9,10 +9,12 @@ package com.vikadata.api.security.afs;
  */
 public interface AfsCheckService {
 
-	/**
-	 * incognito verification
-	 *
-	 * @param data The front end gets the value of the get NVC Val function
-	 */
-	void noTraceCheck(String data);
+    boolean getEnabledStatus();
+
+    /**
+     * incognito verification
+     *
+     * @param data The front end gets the value of the get NVC Val function
+     */
+    void noTraceCheck(String data);
 }

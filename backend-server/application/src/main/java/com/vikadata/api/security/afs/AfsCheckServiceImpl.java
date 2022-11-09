@@ -35,6 +35,11 @@ public class AfsCheckServiceImpl implements AfsCheckService {
     private ConstProperties constProperties;
 
     @Override
+    public boolean getEnabledStatus() {
+        return afsChecker != null;
+    }
+
+    @Override
     public void noTraceCheck(String data) {
         if (afsChecker == null) {
             log.info("man machine authentication is not enabled");

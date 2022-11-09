@@ -39,7 +39,6 @@ import com.vikadata.api.enums.exception.ActionException;
 import com.vikadata.api.enums.exception.AuthException;
 import com.vikadata.api.enums.exception.DatabaseException;
 import com.vikadata.api.enums.exception.PermissionException;
-import com.vikadata.api.util.ApiHelper;
 import com.vikadata.api.model.dto.asset.ImageDto;
 import com.vikadata.api.model.dto.space.SpaceAssetDto;
 import com.vikadata.api.model.ro.asset.AttachOfficePreviewRo;
@@ -56,11 +55,12 @@ import com.vikadata.api.modular.space.mapper.SpaceAssetMapper;
 import com.vikadata.api.modular.space.service.ISpaceAssetService;
 import com.vikadata.api.modular.workspace.mapper.NodeMapper;
 import com.vikadata.api.security.afs.AfsCheckService;
+import com.vikadata.api.util.ApiHelper;
 import com.vikadata.api.util.PdfToImageUtil;
 import com.vikadata.core.exception.BusinessException;
+import com.vikadata.core.util.DigestUtil;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.core.util.DigestUtil;
 import com.vikadata.core.util.InputStreamCache;
 import com.vikadata.core.util.MimeTypeMapping;
 import com.vikadata.entity.AssetEntity;
@@ -145,6 +145,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
 
     @Override
     public void checkBeforeUpload(String nodeId, String secret) {
+        if (!afsCheckService.getEnabledStatus()) {
+            return;
+        }
         // get api key
         String apiKey = ApiHelper.getApiKey(HttpContextUtil.getRequest());
         // check whether the api key is valid
