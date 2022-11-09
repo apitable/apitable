@@ -1,6 +1,6 @@
 import { computeCache } from 'compute_manager';
-import { IReduxState, ILinearRow, CellType } from 'store';
-import { getVisibleRows, getVisibleRowsIndexMap } from '../../store/selectors';
+import { IReduxState, ILinearRow, CellType } from '../../exports/store';
+import { getVisibleRows, getVisibleRowsIndexMap } from '../../exports/store/selectors';
 import { IGroupInfo } from 'types';
 
 type GroupTabIds = Map<string, boolean>; // recordId_depth[]

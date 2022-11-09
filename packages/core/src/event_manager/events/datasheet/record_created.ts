@@ -1,6 +1,6 @@
 import { IOperation } from 'engine/ot/interface';
 import { testPath } from 'event_manager';
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../../../exports/store';
 import { ResourceType } from 'types';
 import { transformOpFields } from '../../helper';
 import { IAtomEventType } from '../interface';

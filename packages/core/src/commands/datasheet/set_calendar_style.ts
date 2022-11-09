@@ -3,8 +3,8 @@ import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { Strings, t } from 'i18n';
 import { CalendarView } from 'model';
-import { ISetCalendarStyle } from 'store';
-import { getActiveDatasheetId, getDatasheet } from '../../store/selectors';
+import { ISetCalendarStyle } from '../../exports/store';
+import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 
 export type ISetCalendarStyleOptions = {

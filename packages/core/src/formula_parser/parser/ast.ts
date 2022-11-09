@@ -1,5 +1,5 @@
 import { Token, TokenType } from '../lexer/token';
-import { IFieldMap, IReduxState } from 'store';
+import { IFieldMap, IReduxState } from '../../exports/store';
 import { Field } from 'model';
 import { BasicValueType, IField } from 'types';
 import { ROLLUP_KEY_WORDS } from 'formula_parser/evaluate';

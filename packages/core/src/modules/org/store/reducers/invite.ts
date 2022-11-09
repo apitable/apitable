@@ -1,7 +1,7 @@
 import { IInvite, IUpdateInviteEmailInfoAction, IUpdateTeamTreeInviteAction,
   IUpdateSubTeamTreeInviteAction, ITeamTreeNode, IUpdateLinkListAction, IUpdateInviteLinkInfoAction,
   IUpdateLinkTokenAction, IUpdateMailTokenAction, IUpdateErrCodeAction,
-} from '../../../../store/interfaces';
+} from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 import { produce } from 'immer';
 const defaultState: IInvite = {

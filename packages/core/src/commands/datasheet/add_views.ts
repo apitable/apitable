@@ -4,8 +4,8 @@ import { IJOTAction, jot } from 'engine/ot';
 import { Strings, t } from 'i18n';
 import { isEmpty } from 'lodash';
 import { DatasheetActions } from 'model';
-import { Selectors } from 'store';
-import { IViewProperty } from '../../store/interfaces';
+import { Selectors } from '../../exports/store';
+import { IViewProperty } from '../../exports/store/interfaces';
 import { ResourceType } from 'types';
 
 export interface IAddView {

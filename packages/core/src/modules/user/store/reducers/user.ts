@@ -4,9 +4,9 @@ import {
   ISignOutAction, ISetUserAvatarAction, ISetReqStatusAction, ISetHttpErrInfoAction,
   ISetNicknameAction, IUpdateUserInfoAction, IUpdateUserInfoErrAction,
   IAddWizardNumberAction, ISetActiveRecordId, ISetUsedInviteReward
-} from '../../../../store/interfaces';
+} from '../../../../exports/store/interfaces';
 import { produce } from 'immer';
-import { ActionConstants } from 'store';
+import { ActionConstants } from '../../../../exports/store';
 import axios from 'axios';
 
 type UserActions = ISetUserMeActions | ISetIsLoginActions | ISetLoginErrAction |

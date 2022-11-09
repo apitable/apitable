@@ -1,5 +1,5 @@
 import { uniqBy, isEqual } from 'lodash';
-import { IReduxState, ICollaboratorCursorMap } from '../../../../store/interfaces';
+import { IReduxState, ICollaboratorCursorMap } from '../../../../exports/store/interfaces';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import { getDatasheetClient, getActiveDatasheetId } from './resource';
 

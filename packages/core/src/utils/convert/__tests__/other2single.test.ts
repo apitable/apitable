@@ -1,7 +1,7 @@
 import {
   str2single,
 } from '..';
-import { IReduxState } from '../../../store';
+import { IReduxState } from '../../../exports/store';
 
 import {
   // ISingleSelectField,

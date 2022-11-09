@@ -1,7 +1,7 @@
 import { isEmpty, find } from 'lodash';
 import { IJOTAction } from 'engine/ot';
 import { DatasheetActions } from 'model';
-import { Selectors, IViewColumn } from 'store';
+import { Selectors, IViewColumn } from '../../exports/store';
 import { t, Strings } from 'i18n';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';

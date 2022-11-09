@@ -27,8 +27,8 @@ import {
   IGanttViewProperty, IGridViewColumn, IGridViewProperty, ILinearRow, IMirror, IOrgChartViewColumn, IOrgChartViewProperty, IPermissions, IRecord,
   IRecordAlarm, IRecordAlarmClient, IRecordMap, IRecordSnapshot, IReduxState, ISearchCellResult, ISearchRecordResult, ISearchResult, ISnapshot,
   IStandardValueTable, IViewColumn, IViewProperty, IViewRow, Role,
-} from '../../../../../../store/interfaces';
-import { getGroupBreakpoint } from '../../../../../../store/selectors';
+} from '../../../../../../exports/store/interfaces';
+import { getGroupBreakpoint } from '../../../../../../exports/store/selectors';
 import { getMirror, getMirrorNetworking } from 'modules/database/store/selectors/resource/mirror';
 
 import {

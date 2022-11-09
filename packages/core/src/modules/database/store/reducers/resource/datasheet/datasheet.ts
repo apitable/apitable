@@ -9,7 +9,7 @@ import {
   IAddDatasheetAction, IChangeViewAction, IComputedInfo, IComputedStatus, IDatasheetMap, IDatasheetPack, IDatasheetState, IJOTActionPayload,
   ILoadedDataPackAction, IRecordNodeDesc, IRecordNodeShared, IRefreshSnapshotAction, IResetDatasheetAction, ISetNodeIcon, IUpdateDatasheetAction,
   IUpdateDatasheetNameAction, IUpdateRevision, IUpdateSnapShotAction
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 import { fieldPermissionMap } from 'modules/database/store/reducers/resource/datasheet/field_permission_map';
 import { JOTApply } from '../index';
 import { client } from './client';

@@ -9,7 +9,7 @@ import {
 import {
   IChangeResourceSyncingStatus, IChangeWidgetPanelWidth, ICollaborator, IJOTActionPayload, INodeMeta, IResourceErrCode, IRoomInfoSync,
   ISetResourceConnected, ISwitchActivePanel, IToggleWidgetPanelAction, IUpdateRevision, ThemeName,
-} from '../../../../../store/interfaces';
+} from '../../../../../exports/store/interfaces';
 import { ResourceType } from 'types';
 import {
   activeDashboardCollaborator, deactivateDashboardCollaborator, resetDashboard, setDashboardErrorCode, updateDashboardName,

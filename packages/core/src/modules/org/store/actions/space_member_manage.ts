@@ -5,8 +5,8 @@ import {
   ISubTeamListInSpaceBase,
   ITeamListInSpace,
   IInviteMemberList,
-} from '../../../../store/interfaces';
-import { Api } from 'api';
+} from '../../../../exports/store/interfaces';
+import { Api } from '../../../../exports/api';
 import * as actions from '../../../shared/store/action_constants';
 import { ConfigConstant } from '../../../../config';
 export function updateMemberListInSpace(memberListInSpace: IMemberInfoInSpace[]) {

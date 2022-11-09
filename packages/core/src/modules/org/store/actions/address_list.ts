@@ -1,5 +1,5 @@
-import { ITeamList, ISelectedTeamInfo, IMemberInfoInAddressList, IUserInfo } from '../../../../store/interfaces';
-import { Api } from 'api';
+import { ITeamList, ISelectedTeamInfo, IMemberInfoInAddressList, IUserInfo } from '../../../../exports/store/interfaces';
+import { Api } from '../../../../exports/api';
 import * as actions from '../../../shared/store/action_constants';
 
 export function updateTeamList(teamList: ITeamList[]) {

@@ -1,8 +1,8 @@
 import { computeCache } from 'compute_manager/compute_cache_manager';
 import { ExpCache } from 'formula_parser';
-import { IReduxState, ISnapshot, Selectors } from 'store';
+import { IReduxState, ISnapshot, Selectors } from '../exports/store';
 import { getCurrentView, getFilterInfoBase, getFilterInfo, getFieldMap, getFieldMapIgnorePermission, getPureVisibleRows, getVisibleColumns
-  , getCalendarVisibleColumns, getOrgChartVisibleColumns, getGanttVisibleColumns } from '../store/selectors';
+  , getCalendarVisibleColumns, getOrgChartVisibleColumns, getGanttVisibleColumns } from '../exports/store/selectors';
 import { cache, ICellValueData } from './cache';
 
 export { NO_CACHE } from './cache';

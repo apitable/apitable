@@ -54,7 +54,7 @@ import { MemberField } from './member_field';
 import { CreatedByField } from './created_by_field';
 import { LastModifiedByField } from './last_modified_by_field';
 import { SingleTextField } from './single_text_field';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { Store } from 'redux';
 
 export * from './field';

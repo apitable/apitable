@@ -18,7 +18,7 @@ import {
   ICollaCommandOptionsBase,
 } from './types';
 import { IOperation } from 'engine/ot/interface';
-import { IReduxState, ISubscription, Selectors } from 'store';
+import { IReduxState, ISubscription, Selectors } from '../exports/store';
 import { AnyAction, Store } from 'redux';
 import { LinkedDataConformanceMaintainer, MemberFieldMaintainer } from 'model';
 import { FieldType, ResourceType } from 'types';

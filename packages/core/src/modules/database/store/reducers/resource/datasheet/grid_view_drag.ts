@@ -1,6 +1,6 @@
 import {
   IGridViewDragState, IHoverRecordId, IDragTargetAction, ISetHoverGroupPath, ISetHoverRowOfAddRecord,
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 import {
   SET_DRAG_TARGET, SET_HOVER_RECORD_ID, SET_HOVER_GROUP_PATH, SET_HOVER_ROW_OF_ADD_RECORD,
 } from '../../../../../shared/store/action_constants';

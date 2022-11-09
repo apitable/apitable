@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import { SET_PREVIEW_FILE, SET_PREVIEW_FILE_CELL_ACTIVE, SET_PREVIEW_DEFAULT_ACTIVE } from '../../../shared/store/action_constants';
-import { IPreviewFile, ISetPreviewDefaultAction, ISetPreviewFileAction, ISetPreviewFileCellValueAction } from '../../../../store/interfaces';
+import { IPreviewFile, ISetPreviewDefaultAction, ISetPreviewFileAction, ISetPreviewFileCellValueAction } from '../../../../exports/store/interfaces';
 
 const defaultState: IPreviewFile = {
   datasheetId: undefined,

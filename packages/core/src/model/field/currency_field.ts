@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { DatasheetActions } from '../datasheet';
 import { NumberBaseField } from './number_base_field';
 import { ICellToStringOption, ICellValue } from 'model/record';

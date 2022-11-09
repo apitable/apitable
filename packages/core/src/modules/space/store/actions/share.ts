@@ -1,5 +1,5 @@
-import { ActionConstants } from 'store';
-import { IShareInfo } from '../../../../store/interfaces';
+import { ActionConstants } from '../../../../exports/store';
+import { IShareInfo } from '../../../../exports/store/interfaces';
 
 /**
  * get share info

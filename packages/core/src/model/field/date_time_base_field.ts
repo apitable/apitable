@@ -9,7 +9,7 @@ import { getLanguage, Strings, t } from 'i18n';
 import { isEqual, isNumber } from 'lodash';
 import { DEFAULT_TIMEZONE } from 'model/constants';
 import { isNullValue } from 'model/utils';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { IAPIMetaDateTimeBaseFieldProperty } from 'types/field_api_property_types';
 import {
   BasicValueType, DateFormat, FieldType, ICreatedTimeField, IDateTimeBaseFieldProperty, IDateTimeField, ILastModifiedTimeField, IStandardValue,

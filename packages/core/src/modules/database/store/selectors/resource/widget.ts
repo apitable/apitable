@@ -1,4 +1,4 @@
-import { IReduxState } from '../../../../../store/interfaces';
+import { IReduxState } from '../../../../../exports/store/interfaces';
 
 export const getWidget = (state: IReduxState, id: string) => {
   if (!state.widgetMap) return;

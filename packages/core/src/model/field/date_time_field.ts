@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { DatasheetActions } from '../datasheet';
 import { DateTimeBaseField } from './date_time_base_field';
 import { DateFormat, FieldType, IDateTimeField, IDateTimeFieldProperty, IField, TimeFormat } from 'types/field_types';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { enumKeyToArray, enumToArray } from './validate_schema';
 import { ICellValue } from 'model/record';
 import dayjs from 'dayjs';

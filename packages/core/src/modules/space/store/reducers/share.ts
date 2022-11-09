@@ -1,6 +1,6 @@
 import produce from 'immer';
 import * as actions from '../../../shared/store/action_constants';
-import { IShareInfo, IShareInfoAction } from '../../../../store/interfaces';
+import { IShareInfo, IShareInfoAction } from '../../../../exports/store/interfaces';
 
 const defaultShareInfo = {};
 

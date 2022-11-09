@@ -2,7 +2,7 @@ import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { DatasheetActions, ICellValue } from 'model';
 import { getNewIds, IDPrefix } from 'utils';
 import { IJOTAction } from 'engine';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { FieldType, IField, ILinkField, ResourceType } from 'types';
 import { Strings, t } from 'i18n';
 import { CollaCommandName } from 'commands';

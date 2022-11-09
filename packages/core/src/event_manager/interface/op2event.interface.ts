@@ -1,5 +1,5 @@
 import { IChangeset } from 'engine/ot/interface';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { IAtomEvent, ICombEvent, IOPEvent, IEventInstance, IRealAtomEvent, IVirtualAtomEvent } from './../interface';
 
 // table id: recordId[]

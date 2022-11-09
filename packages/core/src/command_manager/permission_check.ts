@@ -1,6 +1,6 @@
 import { IJOTAction, IObjectDeleteAction, IObjectInsertAction, IObjectReplaceAction, IOperation, OTActionName } from 'engine';
 import { FieldType, IField } from 'types';
-import { IViewProperty } from 'store';
+import { IViewProperty } from '../exports/store';
 
 export class PermissionCheck {
   constructor() { }

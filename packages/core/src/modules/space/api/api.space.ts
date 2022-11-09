@@ -4,7 +4,7 @@ import * as Url from '../../shared/api/url';
 import {
   IApiWrapper, INode, INodesMapItem,
   IParent, IUpdateRoleData,
-} from 'store';
+} from '../../../exports/store';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../../../config/constant';
 const CancelToken = axios.CancelToken;

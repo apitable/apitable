@@ -3,7 +3,7 @@ import { CollaCommandName } from 'commands';
 import { IJOTAction } from 'engine';
 import { zip } from 'lodash';
 import { Field, FillDirection, handleEmptyCellValue, ICell, ICellValue, IRange } from 'model';
-import { IReduxState, ISnapshot, Selectors } from 'store';
+import { IReduxState, ISnapshot, Selectors } from '../../exports/store';
 import { DateFormat, FieldType, IField, ResourceType } from 'types';
 import { fastCloneDeep, transpose, getDate } from 'utils';
 import { setFieldAttr } from './set_field_attr';

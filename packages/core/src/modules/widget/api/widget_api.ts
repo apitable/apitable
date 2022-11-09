@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as Url from './url.widget';
 import Qs from 'qs';
 import urlcat from 'urlcat';
-import { IApiWrapper, IWidget, WidgetPackageType, WidgetReleaseType } from 'store';
+import { IApiWrapper, IWidget, WidgetPackageType, WidgetReleaseType } from '../../../exports/store';
 import { IWidgetTemplateItem } from './widget_api.interface';
 
 // const baseURL = '/nest/v1';

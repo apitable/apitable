@@ -1,6 +1,6 @@
 import { IRobotTaskRuntimeContext, OperatorEnums } from 'automation_manager/interface';
 import { Field } from 'model';
-import { IReduxState } from 'store';
+import { IReduxState } from 'exports/store';
 import { FOperator } from 'types/view_types';
 
 /**

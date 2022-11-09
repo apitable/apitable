@@ -1,6 +1,6 @@
 import { IJOTAction } from 'engine/ot';
 import { DatasheetActions } from 'model';
-import { getActiveDatasheetId, getDatasheet } from '../../store/selectors';
+import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';

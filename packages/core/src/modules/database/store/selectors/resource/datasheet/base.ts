@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 import { GanttRowHeight, NotSupportFieldInstance, PREVIEW_DATASHEET_ID, RowHeightLevel } from '../../../../../shared/store/constants';
-import { IFieldPermissionMap, INetworking, INodeDescription, IReduxState, ISnapshot, Role } from '../../../../../../store/interfaces';
+import { IFieldPermissionMap, INetworking, INodeDescription, IReduxState, ISnapshot, Role } from '../../../../../../exports/store/interfaces';
 import { gridViewActiveFieldStateDefault, gridViewDragStateDefault } from '../../../reducers/resource';
 
 export const getDatasheetPrimaryField = (snapshot: ISnapshot) => {

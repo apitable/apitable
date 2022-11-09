@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as Url from '../../shared/api/url';
 import {
   IApiWrapper, ILogoutResult,
-} from 'store';
+} from '../../../exports/store';
 import {
   ISignIn, 
 } from '../../shared/api/api.interface';

@@ -1,6 +1,6 @@
 import { ExecuteResult, ICollaCommandDef, ICommandOptionBase } from 'command_manager';
 import { WidgetActions } from 'model';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { ResourceType } from 'types';
 
 export interface ISetWidgetDepDstId extends ICommandOptionBase {

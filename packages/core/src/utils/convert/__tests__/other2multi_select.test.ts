@@ -1,7 +1,7 @@
 import { MultiSelectField } from '../../../model';
 import { FieldType, IField } from '../../../types/field_types';
 import { str2multi } from '..';
-import { IReduxState } from '../../../store';
+import { IReduxState } from '../../../exports/store';
 
 function getField(): [MultiSelectField, string[], any[], IField] {
   const table: IField = {

@@ -1,4 +1,4 @@
-import { IDashboardLayout, IDashboardSnapshot } from '../store';
+import { IDashboardLayout, IDashboardSnapshot } from '../exports/store';
 import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
 

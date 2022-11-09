@@ -4,7 +4,7 @@ import {
 import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 import * as Url from './url.data';
 import Qs from 'qs';
-import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack } from 'store';
+import { IActivityListParams, IApiWrapper, IGetRecords, IMeta, IServerDatasheetPack } from '../../../exports/store';
 import { ResourceType } from 'types';
 import urlcat from 'urlcat';
 

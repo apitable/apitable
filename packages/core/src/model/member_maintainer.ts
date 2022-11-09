@@ -1,8 +1,8 @@
-import { getSnapshot } from '../store/selectors';
+import { getSnapshot } from '../exports/store/selectors';
 import { IJOTAction } from 'engine';
 import { DatasheetActions } from 'model/datasheet';
 import { FieldType, IMemberField } from 'types';
-import { IReduxState } from 'store';
+import { IReduxState } from '../exports/store';
 
 /**
  * 

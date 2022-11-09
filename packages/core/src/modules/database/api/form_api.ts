@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as Url from './url.data';
-import { IApiWrapper } from 'store';
+import { IApiWrapper } from '../../../exports/store';
 import { IServerFormPack } from 'modules/database/store/interfaces/resource/form';
 import urlcat from 'urlcat';
 

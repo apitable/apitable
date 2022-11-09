@@ -3,7 +3,7 @@ import * as Url from '../../shared/api/url';
 import {
   IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList,
   IUpdateMemberInfo,
-} from 'store';
+} from '../../../exports/store';
 import { IAxiosResponse } from 'types';
 
 const CancelToken = axios.CancelToken;

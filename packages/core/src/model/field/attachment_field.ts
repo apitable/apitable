@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { ICellValue } from '../record';
 import { ArrayValueField } from './field';
 import { IFilterCondition, FOperator } from 'types/view_types';

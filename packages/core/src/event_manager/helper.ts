@@ -1,6 +1,6 @@
 import { Field } from 'model';
 // import 'reflect-metadata';
-import { IRecordCellValue, IReduxState, Selectors } from 'store';
+import { IRecordCellValue, IReduxState, Selectors } from '../exports/store';
 import { getDatasheet } from '../modules/database/store/selectors/resource';
 import { BasicOpenValueType } from 'types/field_types_open';
 import { getDashboard } from '../modules/database/store/selectors/resource/dashboard';

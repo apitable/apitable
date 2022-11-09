@@ -1,4 +1,4 @@
-import { ICollaborator, IDashboard, INodeMeta, ISourceDatasheetInfo, ITemporaryView, IWidgetPanel, IWidgetPanelStatus } from 'store';
+import { ICollaborator, IDashboard, INodeMeta, ISourceDatasheetInfo, ITemporaryView, IWidgetPanel, IWidgetPanelStatus } from '../../../../../exports/store';
 import * as ActionConstants from '../../../../shared/store/action_constants';
 import * as actions from '../../../../shared/store/action_constants';
 

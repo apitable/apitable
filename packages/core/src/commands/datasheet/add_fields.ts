@@ -1,13 +1,13 @@
 import { ICollaCommandDef, ExecuteResult, ILinkedActions } from 'command_manager';
 import { IJOTAction } from 'engine';
-import { IGridViewProperty, Selectors } from 'store';
+import { IGridViewProperty, Selectors } from '../../exports/store';
 import { FieldType, IField } from 'types/field_types';
 import { getNewIds, IDPrefix } from 'utils';
 import { createNewBrotherField, createNewField, IInternalFix } from '../common/field';
 import { CollaCommandName, fixOneWayLinkDstId } from '..';
 import { Field, CreatedByField, getMaxFieldCountPerSheet, DatasheetActions } from 'model';
 import { Strings, t } from 'i18n';
-import { getDatasheet } from '../../store/selectors';
+import { getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { ISetRecordOptions, setRecords } from './set_records';
 

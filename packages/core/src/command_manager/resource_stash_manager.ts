@@ -1,5 +1,5 @@
 import { Store } from 'redux';
-import { IReduxState, Selectors, StoreActions } from 'store';
+import { IReduxState, Selectors, StoreActions } from '../exports/store';
 import { UndoManager } from './undo_manager';
 import LRU from 'lru-cache';
 import _ from 'lodash';

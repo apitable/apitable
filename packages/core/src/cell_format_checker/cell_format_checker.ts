@@ -1,5 +1,5 @@
 import { AnyAction, Store } from 'redux';
-import { IFieldMap, IReduxState, Selectors } from 'store';
+import { IFieldMap, IReduxState, Selectors } from '../exports/store';
 import { IJOTAction } from 'engine';
 import { Field, ICellValue } from 'model';
 import produce from 'immer';

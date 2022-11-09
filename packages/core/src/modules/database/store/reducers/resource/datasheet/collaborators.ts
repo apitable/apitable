@@ -1,7 +1,7 @@
 import {
   ICollaborator, IActiveDatasheetCollaboratorAction, IDeActiveDatasheetCollaborator,
   ICursorMove, IRoomInfoSync,
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 import * as actions from '../../../../../shared/store/action_constants';
 
 export type ICollaboratorAction = IActiveDatasheetCollaboratorAction | IDeActiveDatasheetCollaborator |

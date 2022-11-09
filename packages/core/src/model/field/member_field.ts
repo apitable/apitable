@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState, IUnitValue, Selectors } from 'store';
+import { IReduxState, IUnitValue, Selectors } from '../../exports/store';
 import { IAPIMetaMember, IAPIMetaMemberFieldProperty, IMemberField, IMemberFieldOpenValue, IMemberProperty } from '../../types';
 import { IStandardValue, IUnitIds } from '../../types/field_types';
 import { MemberBaseField } from './member_base_field';

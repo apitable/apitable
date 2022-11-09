@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../../exports/store';
 import { difference, isString, keyBy, memoize, range } from 'lodash';
 import { getNewId, IDPrefix, isSelectType } from 'utils';
 import { Field } from '../field';

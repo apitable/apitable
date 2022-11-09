@@ -1,4 +1,4 @@
-import { IUserInfo, Selectors } from 'store';
+import { IUserInfo, Selectors } from '../../exports/store';
 import { hasIntersect, isSameSet } from 'utils/array';
 import {
   BasicValueType, IUnitIds, IStandardValue, IUuids,

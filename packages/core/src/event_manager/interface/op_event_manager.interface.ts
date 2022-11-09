@@ -1,6 +1,6 @@
 import { IChangeset } from 'engine/ot/interface';
 import { OP2Event } from 'event_manager/op2event';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { IEventInstance, IOPEvent } from './event.interface';
 import { IEventManager } from './event_manager.interface';
 

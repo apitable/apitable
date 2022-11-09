@@ -1,6 +1,6 @@
 import { EmojisConfig } from 'config/emojis_config';
 import { FormulaField, LookUpField } from 'model';
-import { IUserMap, ViewType } from 'store';
+import { IUserMap, ViewType } from '../exports/store';
 import {
   BasicValueType, DateFormat, FieldType,
   IAPIMetaCurrencyFormat,

@@ -10,7 +10,7 @@ import { batchActions } from 'redux-batched-actions';
 import {
   DateUnitType, IActiveRowInfo, IApiWrapper, IDatasheetPack, IDragTarget, ILoadedDataPackAction, ILoadingRecordAction, INodeMeta, IReduxState,
   IServerDatasheetPack, ISetFieldInfoState, ISnapshot,
-} from 'store';
+} from '../../../../../../exports/store';
 import {
   ACTIVE_EXPORT_VIEW_ID, ACTIVE_OPERATE_VIEW_ID, ADD_DATASHEET, CHANGE_VIEW, CHANGE_WIDGET_PANEL_WIDTH, CLEAR_ACTIVE_ROW_INFO, CLEAR_FIELD_INFO,
   DATAPACK_LOADED, DATAPACK_REQUEST, DATASHEET_CONNECTED, DATASHEET_ERROR_CODE, RECORD_NODE_DESC, REFRESH_SNAPSHOT, RESET_DATASHEET,
@@ -24,8 +24,8 @@ import {
   TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL, TOGGLE_WIDGET_PANEL, UPDATE_DATASHEET,
   UPDATE_DATASHEET_COMPUTED, UPDATE_DATASHEET_NAME, UPDATE_SNAPSHOT,
 } from '../../../../../shared/store/action_constants';
-import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from '../../../../../../store/actions';
-import { getDatasheet, getDatasheetLoading, getMirror } from '../../../../../../store/selectors';
+import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from '../../../../../../exports/store/actions';
+import { getDatasheet, getDatasheetLoading, getMirror } from '../../../../../../exports/store/selectors';
 import { FieldType } from 'types';
 import { consistencyCheck } from 'utils';
 

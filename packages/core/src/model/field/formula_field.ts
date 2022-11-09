@@ -4,8 +4,8 @@ import Joi from 'joi';
 import { ValueTypeMap } from 'model/constants';
 import { ICellValue } from 'model/record';
 import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
-import { IReduxState } from 'store';
-import { getSnapshot } from '../../store/selectors';
+import { IReduxState } from '../../exports/store';
+import { getSnapshot } from '../../exports/store/selectors';
 import { FOperator, FOperatorDescMap, IAPIMetaFormulaFieldProperty, IAPIMetaNoneStringValueFormat, IFilterCondition } from 'types';
 import {
   BasicValueType, FieldType, IComputedFieldFormattingProperty, IDateTimeFieldProperty, IFormulaField, IFormulaProperty, IStandardValue, ITimestamp,

@@ -1,5 +1,5 @@
 import { CURSOR_MOVE, DATASHEET_ACTIVE_COLLABORATOR, DATASHEET_DEACTIVATE_COLLABORATOR } from '../../../../../shared/store/action_constants';
-import { ICursorMove, ICollaborator } from '../../../../../../store/interfaces';
+import { ICursorMove, ICollaborator } from '../../../../../../exports/store/interfaces';
 
 export const activeDatasheetCollaborator = (payload: ICollaborator, resourceId: string) => {
   return {

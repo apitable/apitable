@@ -2,9 +2,9 @@ import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager
 import { IJOTAction, IObjectReplaceAction } from 'engine';
 import { isEqual, omit } from 'lodash';
 import { DatasheetActions, Field, handleEmptyCellValue, ICellValue } from 'model';
-import { AlarmUsersType, IRecordAlarm, Selectors, ViewType } from 'store';
-import { IViewColumn, IViewRow } from '../../store/interfaces';
-import { getActualRowCount, getRangeRows, getSelectRanges, getViewById, getVisibleColumns } from '../../store/selectors';
+import { AlarmUsersType, IRecordAlarm, Selectors, ViewType } from '../../exports/store';
+import { IViewColumn, IViewRow } from '../../exports/store/interfaces';
+import { getActualRowCount, getRangeRows, getSelectRanges, getViewById, getVisibleColumns } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { FieldType, IField, IStandardValue } from 'types/field_types';
 import { getNewId, IDPrefix } from 'utils';

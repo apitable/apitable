@@ -1,7 +1,7 @@
 import { DatasheetActions } from 'model';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
-import { IViewProperty, Selectors } from 'store';
+import { IViewProperty, Selectors } from '../../exports/store';
 import { CollaCommandName } from '..';
 import { ResourceType } from 'types';
 import { manualSaveView } from 'commands/datasheet/manual_save_view';

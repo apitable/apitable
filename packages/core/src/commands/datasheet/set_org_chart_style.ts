@@ -4,8 +4,8 @@ import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { t, Strings } from 'i18n';
 import { OrgChartView } from 'model';
-import { ISetOrgChartStyle } from 'store';
-import { getActiveDatasheetId, getDatasheet } from '../../store/selectors';
+import { ISetOrgChartStyle } from '../../exports/store';
+import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 
 export type ISetOrgChartStyleOptions = ISetOrgChartStyle & {

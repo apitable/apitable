@@ -4,7 +4,7 @@ import { CollaCommandName } from '..';
 import { ResourceType } from 'types';
 import { isEmpty } from 'lodash';
 import { IJOTAction } from '../../engine';
-import { Selectors } from '../../store';
+import { Selectors } from '../../exports/store';
 
 export interface IFixOneWayLinkDstId {
   cmd: CollaCommandName.FixOneWayLinkDstId;

@@ -4,10 +4,10 @@ import { DatasheetActions } from '../datasheet';
 import {
   ICalendarViewColumn, ICalendarViewProperty, IFieldMap, ISetCalendarStyle, ISnapshot, IViewProperty,
   CalendarColorType, ViewType
-} from 'store';
+} from '../../exports/store';
 import { BasicValueType } from 'types';
 import { Field } from 'model';
-import { getViewIndex } from '../../store/selectors';
+import { getViewIndex } from '../../exports/store/selectors';
 import { IJOTAction, integrateCdnHost, OTActionName, Settings } from 'index';
 
 export class CalendarView extends View {

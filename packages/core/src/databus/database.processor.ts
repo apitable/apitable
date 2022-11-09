@@ -1,5 +1,5 @@
 import { Store } from 'redux';
-import { IReduxState } from 'store';
+import { IReduxState } from '../exports/store';
 import { Datasheet, IDataLoader, IDatasheetOptions } from '.';
 
 export class Database {

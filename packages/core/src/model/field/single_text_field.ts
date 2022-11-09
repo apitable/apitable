@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { TextBaseField } from './text_base_field';
 import { FieldType, IField, ISingleTextField, SegmentType, ISegment, IStandardValue } from 'types/field_types';
 import { DatasheetActions } from 'model';

@@ -4,7 +4,7 @@ import { ConfigConstant } from 'config';
 import { IJOTAction } from 'engine/ot';
 import { isEmpty, isEqual, isNumber, isString } from 'lodash';
 import { DatasheetActions, Field, handleEmptyCellValue, ICellValue } from 'model';
-import { IRecordAlarm, Selectors } from 'store';
+import { IRecordAlarm, Selectors } from '../../exports/store';
 import { ResourceType, WithOptional } from 'types';
 import { FieldType, IField, IUnitIds } from 'types/field_types';
 import { getNewId, IDPrefix, num2number, str2number } from 'utils';

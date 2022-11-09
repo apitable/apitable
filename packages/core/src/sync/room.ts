@@ -1,4 +1,4 @@
-import { Api } from 'api';
+import { Api } from '../exports/api';
 import { IResourceOpsCollect } from 'command_manager/command_manager';
 import { ConfigConstant, StatusCode } from 'config';
 import { NodeTypeReg } from 'config/constant';
@@ -11,11 +11,11 @@ import { keyBy, throttle } from 'lodash';
 import { Events, Player } from '../modules/shared/player';
 import { AnyAction, Store } from 'redux';
 import 'socket.io-client';
-import { DEFAULT_FIELD_PERMISSION, IResourceRevision, Selectors, StoreActions } from 'store';
+import { DEFAULT_FIELD_PERMISSION, IResourceRevision, Selectors, StoreActions } from '../exports/store';
 import {
   changeResourceSyncingStatus, resetFieldPermissionMap, roomInfoSync, setResourceConnect, updateFieldPermissionMap, updateFieldPermissionSetting,
-} from '../store/actions';
-import { ICollaborator, IReduxState } from '../store/interfaces';
+} from '../exports/store/actions';
+import { ICollaborator, IReduxState } from '../exports/store/interfaces';
 import { EnhanceError } from 'sync/enhance_error';
 import { ErrorCode, IError, ModalType, OnOkType, ResourceType } from 'types';
 import { errorCapture, numbersBetween } from 'utils';

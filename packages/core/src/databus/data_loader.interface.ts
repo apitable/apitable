@@ -1,4 +1,4 @@
-import { IBaseDatasheetPack } from "store";
+import { IBaseDatasheetPack } from "../exports/store";
 import { IDatabaseOptions } from ".";
 
 export interface IDataLoader {

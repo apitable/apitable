@@ -10,7 +10,7 @@ import {
 } from './api.enterprise.interface';
 import {
   IApiWrapper, QrAction,
-} from 'store';
+} from '../../../exports/store';
 // ***************************** lark
 
 /**

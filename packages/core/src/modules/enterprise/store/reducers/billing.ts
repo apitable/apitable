@@ -1,5 +1,5 @@
 
-import { IBilling, IUpdateSubscriptionAction } from '../../../../store/interfaces';
+import { IBilling, IUpdateSubscriptionAction } from '../../../../exports/store/interfaces';
 import { produce } from 'immer';
 import * as actions from '../../../shared/store/action_constants';
 

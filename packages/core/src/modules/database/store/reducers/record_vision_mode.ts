@@ -1,5 +1,5 @@
 import { SET_RECORD_VISION_MODE } from '../../../shared/store/action_constants';
-import { IRecordVisionAction, RecordVision } from '../../../../store/interfaces';
+import { IRecordVisionAction, RecordVision } from '../../../../exports/store/interfaces';
 import produce from 'immer';
 
 export const recordVision = produce((recordVisionModeDraft: RecordVision = RecordVision.Center, action: IRecordVisionAction) => {

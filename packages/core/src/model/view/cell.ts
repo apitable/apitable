@@ -1,4 +1,4 @@
-import { IReduxState, Selectors } from '../../store';
+import { IReduxState, Selectors } from '../../exports/store';
 import { ICell } from './range';
 
 export enum CellDirection {

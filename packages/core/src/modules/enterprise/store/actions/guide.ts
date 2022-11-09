@@ -1,5 +1,5 @@
 import * as actions from '../../../shared/store/action_constants';
-import { IWizardsConfig, ITriggeredGuideInfo } from '../../../../store/interfaces';
+import { IWizardsConfig, ITriggeredGuideInfo } from '../../../../exports/store/interfaces';
 
 export function updatePendingGuideWizardsIds(guideWizardIds: number[]) {
   return {

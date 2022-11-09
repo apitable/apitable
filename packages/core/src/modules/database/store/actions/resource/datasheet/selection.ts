@@ -1,10 +1,10 @@
 import { ICell, IFieldRanges, IRange, IRecordRanges, Range } from 'model';
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../../../../../../exports/store';
 import {
   CLEAR_SELECTION, CLEAR_SELECTION_BUT_KEEP_CHECKED_RECORD,
   SET_ACTIVE_CELL, SET_FIELD_RANGES, SET_FILL_HANDLE_STATUS, SET_RECORD_SELECTION, SET_SELECTION,
 } from '../../../../../shared/store/action_constants';
-import { IFillHandleStatus } from '../../../../../../store/interfaces';
+import { IFillHandleStatus } from '../../../../../../exports/store/interfaces';
 
 /**
  * set the selection area

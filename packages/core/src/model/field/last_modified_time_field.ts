@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import {
   ILastModifiedTimeField, ILastModifiedTimeFieldProperty, FieldType, IField,
   DateFormat, TimeFormat, CollectType,
@@ -7,7 +7,7 @@ import {
 import { DatasheetActions } from '../datasheet';
 import { DateTimeBaseField } from './date_time_base_field';
 import { ICellValue } from 'model/record';
-import { IRecord } from 'store';
+import { IRecord } from '../../exports/store';
 import { datasheetIdString, enumKeyToArray, enumToArray, joiErrorResult } from './validate_schema';
 import { IOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_write_types';

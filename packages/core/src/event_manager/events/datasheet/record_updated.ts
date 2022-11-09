@@ -1,6 +1,6 @@
 import { EventAtomTypeEnums, EventRealTypeEnums, testPath, transformOpFields } from 'event_manager';
 import { groupBy } from 'lodash';
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../../../exports/store';
 import { ResourceType } from 'types';
 import { IAtomEventType, ICombEventType } from '../interface';
 import { EventSourceTypeEnums, OPEventNameEnums } from './../../const';

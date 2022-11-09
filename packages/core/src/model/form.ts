@@ -1,4 +1,4 @@
-import { IFormProps } from '../store';
+import { IFormProps } from '../exports/store';
 import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
 

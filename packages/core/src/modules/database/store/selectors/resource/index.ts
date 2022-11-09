@@ -1,4 +1,4 @@
-import { IReduxState, IResource } from '../../../../../store/interfaces';
+import { IReduxState, IResource } from '../../../../../exports/store/interfaces';
 import { ResourceType } from 'types';
 import { assertNever } from 'utils';
 import { collaboratorSocketSelector } from '../collaborators';

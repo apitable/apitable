@@ -1,4 +1,4 @@
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { FieldType, IEmailField, IField } from 'types/field_types';
 import { DatasheetActions } from '../datasheet';
 import { TextBaseField } from './text_base_field';

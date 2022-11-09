@@ -3,8 +3,8 @@ import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine/ot';
 import { Strings, t } from 'i18n';
 import { DatasheetActions } from 'model';
-import { RowHeightLevel } from 'store';
-import { getActiveDatasheetId, getDatasheet } from '../../store/selectors';
+import { RowHeightLevel } from '../../exports/store';
+import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 
 export interface ISetRowHeightOptions {

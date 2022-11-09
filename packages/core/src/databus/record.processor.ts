@@ -1,4 +1,4 @@
-import { IRecord, IRecordCellValue } from "store";
+import { IRecord, IRecordCellValue } from "../exports/store";
 import { JsonDataProcessor } from "./json_data_processor.abstractclass"
 
 export class Record extends JsonDataProcessor<IRecord> {

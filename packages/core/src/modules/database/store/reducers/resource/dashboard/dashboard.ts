@@ -1,14 +1,14 @@
 import produce from 'immer';
 import { AnyAction, combineReducers } from 'redux';
-import { ActionConstants } from 'store';
-import { IResetDashboard, ISetDashboardClientAction, ISetDashboardDataAction, ISetDashboardLoadingAction, IUpdateDashboardName } from '../../../../../../store/actions';
-import { IUpdateDashboardInfo } from '../../../../../../store/interfaces';
+import { ActionConstants } from '../../../../../../exports/store';
+import { IResetDashboard, ISetDashboardClientAction, ISetDashboardDataAction, ISetDashboardLoadingAction, IUpdateDashboardName } from '../../../../../../exports/store/actions';
+import { IUpdateDashboardInfo } from '../../../../../../exports/store/interfaces';
 import * as actions from '../../../../../shared/store/action_constants';
 import {
   IChangeResourceSyncingStatus, IDashboard, IDashboardClient, IDashboardMap, IDashboardPack, IJOTActionPayload,
   IResourceErrCode, IRoomInfoSync, ISetResourceConnected, IUpdateResource,
   IUpdateRevision, IDeActiveDashboardCollaborator, IActiveDashboardCollaboratorAction,
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 import { JOTApply } from '../jot_apply';
 
 export const dashboardMap = (state: IDashboardMap = {}, action: IResetDashboard | AnyAction): IDashboardMap => {

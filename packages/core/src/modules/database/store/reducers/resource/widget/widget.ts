@@ -1,6 +1,6 @@
 import { AnyAction, combineReducers } from 'redux';
 import { WIDGET_JOT_ACTION, WIDGET_UPDATE_REVISION } from '../../../../../shared/store/action_constants';
-import { IJOTActionPayload, IUnMountWidget, IWidget } from '../../../../../../store/interfaces';
+import { IJOTActionPayload, IUnMountWidget, IWidget } from '../../../../../../exports/store/interfaces';
 import { RECEIVE_INSTALLATIONS_WIDGET, RESET_WIDGET } from '../../../../../shared/store/action_constants';
 import { JOTApply } from '../index';
 import produce from 'immer';

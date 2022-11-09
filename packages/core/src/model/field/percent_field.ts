@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { FieldType, IField, IPercentField } from 'types/field_types';
 import { DatasheetActions } from '../datasheet';
 import { NumberBaseField } from './number_base_field';

@@ -11,7 +11,7 @@ import {
   ISelectedTeamKeysAction,
   ISelectedTeamRowsAction,
   IUpdateSelectedRowsInSpaceAction,
-} from '../../../../store/interfaces';
+} from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 import { produce } from 'immer';
 

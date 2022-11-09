@@ -4,7 +4,7 @@ import { clearOldBrotherField, setAffectFieldAttr2Action } from 'commands/common
 import { IJOTAction, jot } from 'engine';
 import { Strings, t } from 'i18n';
 import { DatasheetActions } from 'model';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { FieldType, ResourceType } from 'types';
 
 export interface IDeleteFieldOptions {

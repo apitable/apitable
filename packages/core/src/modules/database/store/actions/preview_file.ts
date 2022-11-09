@@ -1,6 +1,6 @@
 import * as actions from '../../../shared/store/action_constants';
 import { IAttachmentValue } from 'types';
-import { IPreviewFile } from '../../../../store/interfaces';
+import { IPreviewFile } from '../../../../exports/store/interfaces';
 
 export const setPreviewFile = (data: IPreviewFile) => {
   return (dispatch: any) => {

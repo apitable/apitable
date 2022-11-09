@@ -1,16 +1,16 @@
-import { DatasheetApi } from 'api';
+import { DatasheetApi } from '../exports/api';
 import { CollaCommandName } from 'commands';
 import { TrackEvents } from 'config';
 import { IJOTAction, ILocalChangeset, IOperation, IRemoteChangeset, jot } from 'engine';
 import { Strings, t } from 'i18n';
 import { Events, Player } from '../modules/shared/player';
-import { IChangesetPack, INetworking } from 'store';
-import { updateRevision } from '../store/actions';
+import { IChangesetPack, INetworking } from '../exports/store';
+import { updateRevision } from '../exports/store/actions';
 import { ResourceType, ModalType } from 'types';
 import { ErrorCode, ErrorType, IError } from 'types/error_types';
 import { numbersBetween } from 'utils';
 import { BufferStorage, ILsStore } from './buffer_storage';
-import { getResourcePack } from '../store/selectors';
+import { getResourcePack } from '../exports/store/selectors';
 import { UndoManager } from 'command_manager';
 import { ViewPropertyFilter } from 'engine/view_property_filter';
 

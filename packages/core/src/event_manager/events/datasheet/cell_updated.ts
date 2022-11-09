@@ -1,7 +1,7 @@
 import { getComputeRefManager } from 'compute_manager';
 import { testPath } from 'event_manager/helper';
 import { Field } from 'model';
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../../../exports/store';
 import { FieldType } from 'types';
 import { ResourceType } from 'types/resource_types';
 import { IAtomEventType } from '../interface';

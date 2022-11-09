@@ -1,4 +1,4 @@
-import { IReduxState } from 'store';
+import { IReduxState } from '../exports/store';
 import { ResourceType } from 'types';
 import { IChangeset, IOperation } from '../engine/ot/interface';
 import {

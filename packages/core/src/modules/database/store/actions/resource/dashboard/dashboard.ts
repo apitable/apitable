@@ -1,10 +1,10 @@
-import { DashboardApi } from 'api';
+import { DashboardApi } from '../../../../../../exports/api';
 import { StatusCode } from 'config';
 import { batchActions } from 'redux-batched-actions';
-import { ActionConstants } from 'store';
-import { deleteNode, fetchWidgetsByWidgetIds } from '../../../../../../store/actions';
-import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from '../../../../../../store/interfaces';
-import { getDashboardPack, getInstalledWidgetInDashboard } from '../../../../../../store/selectors';
+import { ActionConstants } from '../../../../../../exports/store';
+import { deleteNode, fetchWidgetsByWidgetIds } from '../../../../../../exports/store/actions';
+import { IDashboard, IDashboardClient, IReduxState, ICollaborator } from '../../../../../../exports/store/interfaces';
+import { getDashboardPack, getInstalledWidgetInDashboard } from '../../../../../../exports/store/selectors';
 import { receiveInstallationWidget } from '../widget';
 import {
   UPDATE_DASHBOARD_NAME, UPDATE_DASHBOARD_INFO

@@ -1,4 +1,4 @@
-import { IGridViewColumn, IViewColumn, IViewProperty } from '../../store/interfaces';
+import { IGridViewColumn, IViewColumn, IViewProperty } from '../../exports/store/interfaces';
 import { View } from './views';
 
 export abstract class CardView extends View {

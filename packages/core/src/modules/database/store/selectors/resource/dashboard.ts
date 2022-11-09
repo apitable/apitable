@@ -1,5 +1,5 @@
-import { DEFAULT_PERMISSION } from 'store';
-import { IDashboard, IDashboardPack, IReduxState } from '../../../../../store/interfaces';
+import { DEFAULT_PERMISSION } from '../../../../../exports/store';
+import { IDashboard, IDashboardPack, IReduxState } from '../../../../../exports/store/interfaces';
 
 export const getDashboardPack = (state: IReduxState, id?: string): null | undefined | IDashboardPack => {
   const dashboardId = state.pageParams.dashboardId || id;

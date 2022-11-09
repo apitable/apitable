@@ -6,7 +6,7 @@ import {
   IMultiSelectField,
 } from 'types/field_types';
 import { IGroupInfo } from '../types';
-import { ISnapshot } from '../store/interfaces';
+import { ISnapshot } from '../exports/store/interfaces';
 import { ViewType } from '../modules/shared/store/constants';
 
 export function assertNever(x: never) {

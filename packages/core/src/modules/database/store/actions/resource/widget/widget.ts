@@ -1,9 +1,9 @@
 import { readInstallationWidgets } from '../../../../../widget/api/widget_api';
 import { Events, Player } from '../../../../../shared/player';
 import { batchActions } from 'redux-batched-actions';
-import { Selectors } from 'store';
+import { Selectors } from '../../../../../../exports/store';
 import { RECEIVE_INSTALLATIONS_WIDGET, RESET_WIDGET } from '../../../../../shared/store/action_constants';
-import { IReduxState, IUnMountWidget, IWidget } from '../../../../../../store/interfaces';
+import { IReduxState, IUnMountWidget, IWidget } from '../../../../../../exports/store/interfaces';
 
 export const fetchWidgetsByWidgetIds = (
   widgetIds: string[],

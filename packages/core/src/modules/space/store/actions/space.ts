@@ -1,8 +1,8 @@
-import { Api } from 'api';
+import { Api } from '../../../../exports/api';
 import axios from 'axios';
 import { getCustomConfig } from 'config';
-import { ActionConstants } from 'store';
-import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from '../../../../store/interfaces';
+import { ActionConstants } from '../../../../exports/store';
+import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from '../../../../exports/store/interfaces';
 import { initCatalogTree } from './catalog_tree';
 import { getUserMe } from '../../../user/store/actions/user';
 

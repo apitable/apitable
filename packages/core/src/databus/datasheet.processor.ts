@@ -1,4 +1,4 @@
-import { IBaseDatasheetPack, IReduxState } from 'store';
+import { IBaseDatasheetPack, IReduxState } from '../exports/store';
 import { JsonDataProcessor } from './json_data_processor.abstractclass';
 import { Record, DatasheetEventType, IDatasheetEventHandler, DataBus, IDatasheetEvent, ViewNotFoundError } from '.';
 import { IRecordCreation } from './record.processor';

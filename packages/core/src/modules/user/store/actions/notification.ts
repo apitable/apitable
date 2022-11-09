@@ -1,5 +1,5 @@
 import * as actions from '../../../shared/store/action_constants';
-import { INoticeDetail } from '../../../../store/interfaces';
+import { INoticeDetail } from '../../../../exports/store/interfaces';
 
 /**
  * update unread notification count

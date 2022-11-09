@@ -1,5 +1,5 @@
 import { DataBus, DatasheetEventType, IDatasheetDataChangeEvent, Datasheet } from '../';
-import { IReduxState, Reducers } from '../../store';
+import { IReduxState, Reducers } from '../../exports/store';
 import { CollaCommandName } from '../../commands';
 import { SegmentType } from '../../types';
 import { createStore, applyMiddleware } from 'redux';

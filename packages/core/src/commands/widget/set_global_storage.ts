@@ -1,7 +1,7 @@
 import { ExecuteResult, ICollaCommandDef, ICommandOptionBase } from 'command_manager';
 import { Strings, t } from 'i18n';
 import { WidgetActions } from 'model';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { ResourceType } from 'types';
 
 export interface ISetGlobalStorage extends ICommandOptionBase {

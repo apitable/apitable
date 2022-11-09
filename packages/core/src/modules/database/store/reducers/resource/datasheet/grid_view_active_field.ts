@@ -1,6 +1,6 @@
 import {
   ISetFieldInfoAction, IGridViewActiveFieldState, ISetTempSelection, IClearFieldInfoAction,
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 import {
   SET_ACTIVE_FIELD_STATE, CLEAR_FIELD_INFO,
 } from '../../../../../shared/store/action_constants';

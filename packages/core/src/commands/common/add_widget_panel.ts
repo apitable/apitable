@@ -2,8 +2,8 @@ import { CollaCommandName } from 'commands/index';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
 import { Strings, t } from 'i18n';
 import { DatasheetActions } from 'model';
-import { IMirrorSnapshot, ISnapshot, IWidgetPanel } from 'store';
-import { getMirrorSnapshot, getSnapshot } from '../../store/selectors';
+import { IMirrorSnapshot, ISnapshot, IWidgetPanel } from '../../exports/store';
+import { getMirrorSnapshot, getSnapshot } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { getNewId, getUniqName, IDPrefix } from 'utils';
 

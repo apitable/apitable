@@ -1,4 +1,4 @@
-import { INetworking, IReduxState } from '../../../../../store/interfaces';
+import { INetworking, IReduxState } from '../../../../../exports/store/interfaces';
 import { getDatasheetParentId } from 'modules/database/store/selectors/resource/datasheet';
 
 export const getMirror = (state: IReduxState, mirrorId?: string) => {

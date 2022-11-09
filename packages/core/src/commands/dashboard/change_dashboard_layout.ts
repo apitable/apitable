@@ -1,7 +1,7 @@
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { DashboardAction } from '../../model/dashboard';
-import { IDashboardLayout, Selectors } from '../../store';
+import { IDashboardLayout, Selectors } from '../../exports/store';
 import { CollaCommandName } from '..';
 
 export interface IChangeDashboardLayout {

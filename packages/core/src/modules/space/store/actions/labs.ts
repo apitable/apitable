@@ -1,5 +1,5 @@
-import { ActionConstants } from 'store';
-import { ILabs } from '../../../../store/interfaces';
+import { ActionConstants } from '../../../../exports/store';
+import { ILabs } from '../../../../exports/store/interfaces';
 
 /**
  * set labs features

@@ -1,6 +1,6 @@
 import produce from 'immer';
 import * as actions from '../../../shared/store/action_constants';
-import { ILabs, ILabsAction } from '../../../../store/interfaces';
+import { ILabs, ILabsAction } from '../../../../exports/store/interfaces';
 
 const defaultLabs: ILabs = [];
 

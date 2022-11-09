@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { isEqual } from 'lodash';
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../../exports/store';
 import { IAPIMetaFieldProperty } from 'types/field_api_property_types';
 import { IAPIMetaField } from 'types/field_api_types';
 import { IOpenField, IOpenFieldProperty } from 'types/open/open_field_read_types';

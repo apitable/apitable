@@ -1,6 +1,6 @@
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { ResourceType } from 'types';
 import { DashboardAction } from '../../model/dashboard';
 

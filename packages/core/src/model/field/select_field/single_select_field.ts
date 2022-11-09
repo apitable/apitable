@@ -4,7 +4,7 @@ import { find, isString } from 'lodash';
 import { isNullValue } from 'model/utils';
 import { getFieldOptionColor } from 'model/color';
 import { ICellValue } from 'model/record';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../../exports/store';
 import { BasicValueType, FieldType, IField, ISelectFieldProperty, ISingleSelectField, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { FOperator, IFilterCondition, IFilterSingleSelect } from 'types/view_types';

@@ -1,5 +1,5 @@
 import { AnyAction, Store } from 'redux';
-import { IReduxState, ISubscription } from 'store';
+import { IReduxState, ISubscription } from '../exports/store';
 
 export class SubscribeUsageCheck {
 

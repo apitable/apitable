@@ -1,6 +1,6 @@
-import { IInviteEmailInfo, ITeamTreeNode, IInviteLink, IInviteLinkInfo } from '../../../../store/interfaces';
+import { IInviteEmailInfo, ITeamTreeNode, IInviteLink, IInviteLinkInfo } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { Api } from 'api';
+import { Api } from '../../../../exports/api';
 
 export function updateErrCode(code: number | null) {
   return {

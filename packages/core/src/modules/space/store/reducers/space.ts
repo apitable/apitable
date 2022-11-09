@@ -5,7 +5,7 @@ import {
   ISetSpaceReconnectingAction, ISetSpaceConnectedAction, ISetScreenWidth, ISetSideBarVisibleAction, IToggleApiPanelAction,
   ISetMarketplaceAppsAction,ISetSpaceFeaturesAction,
   ISetPreviewModalVisibleAction, ISetActiveSpaceIdAction, ISetEnvs, IToggleSideRecordPanelAction, IToggleRecordFullScreen
-} from '../../../../store/interfaces';
+} from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 
 const defaultSpace = {

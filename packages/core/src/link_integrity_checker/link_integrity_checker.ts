@@ -1,5 +1,5 @@
 import { AnyAction, Store } from 'redux';
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../exports/store';
 import { IJOTAction } from 'engine';
 import { FieldType, IField } from 'types';
 

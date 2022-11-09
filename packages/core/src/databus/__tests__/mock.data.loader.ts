@@ -1,4 +1,4 @@
-import { IBaseDatasheetPack } from '../../store';
+import { IBaseDatasheetPack } from '../../exports/store';
 import { IDataLoader, IDataSelector, ILoadDataOptions } from '../data_loader.interface';
 import { mockDatasheetMap } from './mock.datasheets';
 

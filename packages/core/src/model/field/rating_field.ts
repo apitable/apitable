@@ -5,7 +5,7 @@ import { FieldType, IField, IRatingField, IStandardValue } from 'types/field_typ
 import { str2number } from 'utils/convert';
 import { DatasheetActions } from '../datasheet';
 import { NumberBaseField, commonNumberFields } from './number_base_field';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { FOperator, IFilterNumber } from 'types';
 import { getEmojiIconNativeString } from 'model/utils';
 import { IOpenRatingFieldProperty } from 'types/open/open_field_read_types';

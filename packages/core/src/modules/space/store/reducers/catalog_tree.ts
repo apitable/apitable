@@ -10,7 +10,7 @@ import {
   IUpdateImportModalNodeIdAction, ISetTreeRootIdAction, INodesMapItem, ISetLoadedKeysAction, ISetNodeErrorTypeAction,
   ISetPermissionModalMessageStatusAction , ISetPermissionCommitRemindParameterAction, ISetNoPermissionMembersAction,
   IUpdateMoveToNodeIdsAction,
-} from '../../../../store/interfaces';
+} from '../../../../exports/store/interfaces';
 import { findNode, getUniqName, collectProperty } from 'utils';
 import * as actions from '../../../shared/store/action_constants';
 import { produce } from 'immer';

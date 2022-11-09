@@ -1,4 +1,4 @@
-import { IReduxState, Selectors } from 'store';
+import { IReduxState, Selectors } from '../exports/store';
 import { isServer } from 'utils/env';
 import { computeCache } from './compute_cache_manager';
 import { ComputeRefManager } from './compute_reference_manager';

@@ -4,7 +4,7 @@ import { find, isArray, isString, uniq, uniqBy } from 'lodash';
 import { getFieldOptionColor } from 'model/color';
 import { ICellValue } from 'model/record';
 import { handleEmptyCellValue, isNullValue } from 'model/utils';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../../exports/store';
 import { BasicValueType, FieldType, IField, IMultiSelectField, ISelectFieldProperty, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';

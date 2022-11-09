@@ -2,8 +2,8 @@ import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { DatasheetActions } from '../../model/datasheet';
 import { CollaCommandName } from '..';
-import { getResourceWidgetPanels } from '../../store/selectors';
-import { IWidgetInPanel } from 'store';
+import { getResourceWidgetPanels } from '../../exports/store/selectors';
+import { IWidgetInPanel } from '../../exports/store';
 
 export interface IMoveWidget {
   cmd: CollaCommandName.MoveWidget;

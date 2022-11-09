@@ -1,11 +1,11 @@
-import { Api } from 'api';
+import { Api } from '../../../../exports/api';
 import { ISignIn } from '../../../shared/api/api.interface';
 import { Dispatch } from 'redux';
 import { setActiveSpaceId } from '../../../space/store/actions/space';
 import { BindAccount, QrAction } from '../../../shared/store/constants';
 import { ConfigConstant } from '../../../../config';
 import * as actions from '../../../shared/store/action_constants';
-import { IHttpErr, ILocateIdMap, IReduxState, IUserInfo } from '../../../../store/interfaces';
+import { IHttpErr, ILocateIdMap, IReduxState, IUserInfo } from '../../../../exports/store/interfaces';
 
 /**
  * login

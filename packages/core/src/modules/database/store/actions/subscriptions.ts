@@ -1,5 +1,5 @@
-import { ActionConstants } from 'store';
-import { ISubscriptions } from '../../../../store/interfaces';
+import { ActionConstants } from '../../../../exports/store';
+import { ISubscriptions } from '../../../../exports/store/interfaces';
 import { getSubscriptions } from '../../api/datasheet_api';
 
 /**

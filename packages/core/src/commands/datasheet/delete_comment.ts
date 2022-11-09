@@ -1,10 +1,10 @@
 import { ResourceType } from 'types';
-import { getRecord } from '../../store/selectors';
+import { getRecord } from '../../exports/store/selectors';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
 import { CollaCommandName } from 'commands';
 import { IJOTAction } from 'engine';
 import { DatasheetActions } from 'model';
-import { IComments } from 'store';
+import { IComments } from '../../exports/store';
 
 export interface IDeleteComment {
   cmd: CollaCommandName.DeleteComment;

@@ -12,9 +12,9 @@ import {
   StatType,
   TextField
 } from 'model';
-import { IReduxState, ISnapshot, Selectors, ViewType } from 'store';
+import { IReduxState, ISnapshot, Selectors, ViewType } from '../../exports/store';
 import { KanbanStyleKey } from '../../modules/shared/store/constants';
-import { getDatasheet, getSnapshot } from '../../store/selectors';
+import { getDatasheet, getSnapshot } from '../../exports/store/selectors';
 import { FieldType, IField, ILinkField, ISelectField, readonlyFields } from 'types';
 import { getNewId, getUniqName, IDPrefix, isSelectField } from 'utils';
 import { KanbanView } from '../../model/views/kanban_view';

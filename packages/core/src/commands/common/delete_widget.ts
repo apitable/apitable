@@ -1,6 +1,6 @@
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { DatasheetActions } from 'model';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands/index';
 

@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { FieldType, IField, IHyperlinkSegment, IURLField } from 'types/field_types';
 
 import { DatasheetActions } from '../datasheet';

@@ -1,7 +1,7 @@
 import { Strings, t } from 'i18n';
 import { sum, uniq } from 'lodash';
 import { ICellValue } from 'model';
-import { Selectors, ISnapshot, IReduxState } from 'store';
+import { Selectors, ISnapshot, IReduxState } from '../../exports/store';
 import { BasicValueType, FieldType, IField } from 'types/field_types';
 import { toFixed } from '../../utils/number';
 import { Field } from './field';

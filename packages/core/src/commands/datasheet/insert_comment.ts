@@ -2,7 +2,7 @@
 import { getNewIds, IDPrefix } from 'utils';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';
-import { IComments, Selectors } from 'store';
+import { IComments, Selectors } from '../../exports/store';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { DatasheetActions } from 'model';

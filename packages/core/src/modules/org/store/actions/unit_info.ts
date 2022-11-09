@@ -1,7 +1,7 @@
 import keyBy from 'lodash/keyBy';
 import { RESET_UNIT_INFO, UPDATE_UNIT_MAP, UPDATE_USER_MAP } from '../../../shared/store/action_constants';
-import { IUnitMap } from '../../../../store/interfaces';
-import { Api } from 'api';
+import { IUnitMap } from '../../../../exports/store/interfaces';
+import { Api } from '../../../../exports/api';
 
 export interface IUpdateUnitMapAction {
   type: typeof UPDATE_UNIT_MAP;

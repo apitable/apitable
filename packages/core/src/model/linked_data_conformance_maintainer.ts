@@ -1,7 +1,7 @@
 import { DatasheetActions } from './datasheet';
 import { without } from 'lodash';
 import { ILinkField, FieldType, BasicValueType } from 'types/field_types';
-import { Selectors, ISnapshot, IReduxState } from 'store';
+import { Selectors, ISnapshot, IReduxState } from '../exports/store';
 import { ILinkedActions } from 'command_manager';
 import { handleEmptyCellValue } from './utils';
 

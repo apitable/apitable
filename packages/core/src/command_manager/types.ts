@@ -1,5 +1,5 @@
 import { IOperation } from 'engine';
-import { IFieldMap, IReduxState, ISubscription } from '../store/interfaces';
+import { IFieldMap, IReduxState, ISubscription } from '../exports/store/interfaces';
 import { ILinkedActions } from './command';
 import { LinkedDataConformanceMaintainer, MemberFieldMaintainer } from 'model';
 import { ResourceType } from 'types';

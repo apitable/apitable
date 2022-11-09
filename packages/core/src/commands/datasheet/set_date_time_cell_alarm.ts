@@ -1,7 +1,7 @@
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { CollaCommandName } from 'commands';
 import { DatasheetActions } from 'model';
-import { IRecordAlarm, Selectors } from 'store';
+import { IRecordAlarm, Selectors } from '../../exports/store';
 import { ResourceType, WithOptional } from 'types';
 import { getNewId, IDPrefix } from 'utils';
 

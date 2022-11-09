@@ -10,7 +10,7 @@ import {
   StringOperandNode,
   PureValueOperandNode,
 } from './ast';
-import { IFieldMap, IReduxState } from 'store';
+import { IFieldMap, IReduxState } from '../../exports/store';
 import { Functions } from 'formula_parser/functions';
 import { IField } from 'types';
 import { t, Strings } from 'i18n';

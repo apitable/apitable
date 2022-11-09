@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ConfigConstant } from 'config';
 import * as Url from './url';
 import { ILocalChangeset } from 'engine';
-import { BindAccount, IApiWrapper, IRubbishListParams } from 'store';
+import { BindAccount, IApiWrapper, IRubbishListParams } from '../../../exports/store';
 import { IAxiosResponse, MemberType } from 'types';
 import urlcat from 'urlcat';
 import {

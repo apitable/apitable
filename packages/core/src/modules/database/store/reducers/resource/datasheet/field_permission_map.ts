@@ -1,11 +1,11 @@
 import {
   ILoadFieldPermissionMapAction, IResetFieldPermissionMapAction, IUpdateFieldPermissionMapAction, IUpdateFieldPermissionSettingAction
-} from '../../../../../../store/actions';
+} from '../../../../../../exports/store/actions';
 import {
   LOAD_FIELD_PERMISSION_MAP, RESET_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_SETTING
 } from '../../../../../shared/store/action_constants';
 import produce from 'immer';
-import { IFieldPermissionMap } from '../../../../../../store/interfaces';
+import { IFieldPermissionMap } from '../../../../../../exports/store/interfaces';
 
 type IFieldPermissionAction = IUpdateFieldPermissionMapAction | IResetFieldPermissionMapAction | ILoadFieldPermissionMapAction
   | IUpdateFieldPermissionSettingAction;

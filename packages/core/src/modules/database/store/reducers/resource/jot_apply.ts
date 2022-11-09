@@ -1,5 +1,5 @@
 import { IJOTAction, jot } from 'engine';
-import { IJOTActionPayload } from '../../../../../store/interfaces';
+import { IJOTActionPayload } from '../../../../../exports/store/interfaces';
 
 // TODO: delete here's any @kailang
 export const JOTApply = <T extends { snapshot: any } = { snapshot: any }> (

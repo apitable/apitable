@@ -1,6 +1,6 @@
-import { ISubAdminListData, IPermissionGroup, ISpaceResource } from '../../../../store/interfaces';
+import { ISubAdminListData, IPermissionGroup, ISpaceResource } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { Api } from 'api';
+import { Api } from '../../../../exports/api';
 import { ConfigConstant } from '../../../../config';
 
 export function updateSubAdminListData(info: ISubAdminListData) {

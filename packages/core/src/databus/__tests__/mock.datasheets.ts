@@ -1,4 +1,4 @@
-import { IBaseDatasheetPack, ViewType } from "../../store";
+import { IBaseDatasheetPack, ViewType } from "../../exports/store";
 import { FieldType, SegmentType } from "../../types";
 
 export const mockDatasheetMap: Record<string, IBaseDatasheetPack> = {

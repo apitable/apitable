@@ -1,4 +1,4 @@
-import { INode, INodesMapItem } from '../../../../store/interfaces';
+import { INode, INodesMapItem } from '../../../../exports/store/interfaces';
 /**
  * flat tree(transfer tree structure to one dimension array)
  * 

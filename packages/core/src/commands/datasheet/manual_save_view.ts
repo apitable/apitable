@@ -1,8 +1,8 @@
 import { DatasheetActions } from 'model';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
-import { ITemporaryView } from '../../store/interfaces';
+import { ITemporaryView } from '../../exports/store/interfaces';
 import { IJOTAction } from 'engine';
-import { Selectors } from 'store';
+import { Selectors } from '../../exports/store';
 import { CollaCommandName } from '..';
 import { ResourceType } from 'types';
 

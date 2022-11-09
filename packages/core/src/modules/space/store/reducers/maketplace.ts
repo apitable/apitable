@@ -1,5 +1,5 @@
 import { SET_MARKETPLACE_APPS } from '../../../shared/store/action_constants';
-import { IApp, ISetMarketplaceAppsAction } from '../../../../store/interfaces';
+import { IApp, ISetMarketplaceAppsAction } from '../../../../exports/store/interfaces';
 
 export const marketplaceApps = (state: IApp[] = [], action: ISetMarketplaceAppsAction) => {
   switch (action.type) {

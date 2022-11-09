@@ -1,6 +1,6 @@
-import { ISnapshot } from 'store';
-import { IViewProperty } from '../../store/interfaces';
-import { getViewById } from '../../store/selectors';
+import { ISnapshot } from '../../exports/store';
+import { IViewProperty } from '../../exports/store/interfaces';
+import { getViewById } from '../../exports/store/selectors';
 import { Strings, t } from 'i18n';
 import { IBindViewModal } from '.';
 

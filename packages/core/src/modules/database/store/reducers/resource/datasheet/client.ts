@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { combineReducers } from 'redux';
-import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from '../../../../../../store/actions';
+import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from '../../../../../../exports/store/actions';
 import {
   CHANGE_WIDGET_PANEL_WIDTH, SET_ACTIVE_ROW_INFO, SET_EDIT_STATUS, SET_GANTT_DATE_UNIT_TYPE, SET_GANTT_GRID_WIDTH, SET_GANTT_SETTING_PANEL_WIDTH,
   SET_GRID_VIEW_HOVER_FIELD_ID, SET_GROUPING_COLLAPSE, SET_KANBAN_GROUPING_EXPAND, SET_LOADING_RECORD,
@@ -19,7 +19,7 @@ import { DateUnitType, WhyRecordMoveType } from '../../../../../shared/store/con
 import {
   IActiveRowInfo, ICalendarViewStatus, IDatasheetClientState, IGanttViewStatus, IKanbanViewStatus, ILoadingRecord, ILoadingRecordAction, 
   IOrgChartViewStatus, IWidgetPanelStatus
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 import { collaborators } from './collaborators';
 import { gridViewActiveFieldState } from './grid_view_active_field';
 import { gridViewDragState } from './grid_view_drag';

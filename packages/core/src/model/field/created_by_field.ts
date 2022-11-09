@@ -3,7 +3,7 @@ import { isEqual } from 'lodash';
 import { DatasheetActions } from 'model/datasheet';
 import { ICellValue } from 'model/record';
 import { getApiMetaUserProperty } from 'model/utils';
-import { IRecord, IRecordMap, IReduxState, Selectors } from 'store';
+import { IRecord, IRecordMap, IReduxState, Selectors } from '../../exports/store';
 import { IAPIMetaCreateByFieldProperty } from 'types/field_api_property_types';
 import {
   BasicValueType, FieldType, IAddOpenCreatedByFieldProperty, ICreatedByField, ICreatedByProperty, IField, IJsonSchema, IUuids

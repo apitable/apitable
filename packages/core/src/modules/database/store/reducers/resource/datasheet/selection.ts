@@ -2,7 +2,7 @@ import * as actions from '../../../../../shared/store/action_constants';
 import {
   IClearSelection, IClearSelectionButKeepCheckedRecord, ISelection, ISetActiveCellAction, ISetFieldRanges,
   ISetFillHandleStatus, ISetRecordRange, ISetSelectionAction,
-} from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store/interfaces';
 
 type ISelectionActions = ISetSelectionAction | ISetActiveCellAction |
   ISetRecordRange | IClearSelection | ISetFieldRanges | ISetFillHandleStatus | IClearSelectionButKeepCheckedRecord;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Url from './url.data';
 import Qs from 'qs';
-import { IApiWrapper, IServerMirror } from 'store';
+import { IApiWrapper, IServerMirror } from '../../../exports/store';
 import urlcat from 'urlcat';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;

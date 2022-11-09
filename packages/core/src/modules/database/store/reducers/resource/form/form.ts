@@ -1,7 +1,7 @@
 import produce from 'immer';
 
 import { AnyAction, combineReducers } from 'redux';
-import { IFormMap, IFormClient, IFormState, IJOTActionPayload } from '../../../../../../store/interfaces';
+import { IFormMap, IFormClient, IFormState, IJOTActionPayload } from '../../../../../../exports/store/interfaces';
 import { IResetFormAction } from 'modules/database/store/actions/resource/form';
 import * as actions from '../../../../../shared/store/action_constants';
 import { JOTApply } from '../index';

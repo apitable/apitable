@@ -1,4 +1,4 @@
-import { IReduxState, IUnitMap } from '../../../../store/interfaces';
+import { IReduxState, IUnitMap } from '../../../../exports/store/interfaces';
 import { createSelector } from 'reselect';
 
 export const getUnitMap = (state: IReduxState): IUnitMap | null => {

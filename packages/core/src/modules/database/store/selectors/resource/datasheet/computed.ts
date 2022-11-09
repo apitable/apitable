@@ -3,8 +3,8 @@ import { computeCache } from 'compute_manager/compute_cache_manager';
 
 import {
   CellType
-} from 'store';
-import { ILinearRow, IReduxState, ISearchResult } from '../../../../../../store/interfaces';
+} from '../../../../../../exports/store';
+import { ILinearRow, IReduxState, ISearchResult } from '../../../../../../exports/store/interfaces';
 import { getDatasheetPack } from './base';
 import { getViewByIdWithDefault } from './calc';
 

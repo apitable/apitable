@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { IRecord } from 'store';
+import { IRecord } from '../../exports/store';
 import { FieldType, IField, IAutoNumberField } from 'types/field_types';
 import { DatasheetActions } from '../datasheet';
 import { ICellValue } from 'model/record';

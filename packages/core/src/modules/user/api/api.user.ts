@@ -3,7 +3,7 @@ import * as Url from '../../shared/api/url';
 import {
   IApiWrapper, ILocateIdMap,
   IUserInfo, 
-} from 'store';
+} from '../../../exports/store';
 /**
  * 
  * Get My Info

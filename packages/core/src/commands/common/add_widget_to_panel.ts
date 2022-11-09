@@ -2,7 +2,7 @@ import { CollaCommandName } from 'commands/index';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { DatasheetActions } from 'model';
-import { getResourceWidgetPanels, getResourceWidgetPanelStatus } from '../../store/selectors';
+import { getResourceWidgetPanels, getResourceWidgetPanelStatus } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { addWidgetPanel } from 'commands/common/add_widget_panel';
 

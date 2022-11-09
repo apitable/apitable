@@ -3,7 +3,7 @@ import { ResourceType } from 'types';
 import { CollaCommandName } from '..';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { DashboardAction } from '../../model/dashboard';
-import { IDashboardLayout, Selectors } from '../../store';
+import { IDashboardLayout, Selectors } from '../../exports/store';
 import { DASHBOARD_MAX_WIDGET_COUNT } from 'config/constant';
 
 export interface IAddWidgetToDashboard {

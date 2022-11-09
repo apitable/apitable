@@ -1,5 +1,5 @@
-import { Selectors } from 'store';
-import { IReduxState } from '../../../../store/interfaces';
+import { Selectors } from '../../../../exports/store';
+import { IReduxState } from '../../../../exports/store/interfaces';
 import mirrorState from './mirror_state.json';
 
 // init data

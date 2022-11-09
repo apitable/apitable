@@ -1,11 +1,11 @@
 import { Strings, t } from 'i18n';
 import { KanbanView } from 'model';
-import { ISetKanbanStyleValue } from 'store';
-import { getActiveDatasheetId, getActualRowCount } from '../../store/selectors';
+import { ISetKanbanStyleValue } from '../../exports/store';
+import { getActiveDatasheetId, getActualRowCount } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef } from '../../command_manager';
 import { IJOTAction } from '../../engine/ot';
-import { getDatasheet } from '../../store/selectors';
+import { getDatasheet } from '../../exports/store/selectors';
 import { CollaCommandName } from '..';
 import { addRecords } from './add_records';
 

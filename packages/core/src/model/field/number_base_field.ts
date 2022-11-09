@@ -1,4 +1,4 @@
-import { IReduxState } from 'store';
+import { IReduxState } from '../../exports/store';
 import { isNumber } from 'lodash';
 import { ICellValue } from 'model/record';
 import {

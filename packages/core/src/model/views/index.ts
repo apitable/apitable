@@ -1,4 +1,4 @@
-import { ViewType } from 'store';
+import { ViewType } from '../../exports/store';
 import { DATASHEET_ID } from '../../config/dom_id';
 import { CalendarView } from './calendar_view';
 import { FormView } from './form_view';

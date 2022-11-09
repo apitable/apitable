@@ -1,6 +1,6 @@
 import { computeCache, COMPUTE_REF_MAP_CACHE_KEY, parse, TokenType } from 'index';
 import { Field, LookUpField } from 'model';
-import { IFieldMap, IReduxState, Selectors } from 'store';
+import { IFieldMap, IReduxState, Selectors } from '../exports/store';
 import { FieldType, IField } from 'types';
 
 type IRefMap = Map<string, Set<string>>;

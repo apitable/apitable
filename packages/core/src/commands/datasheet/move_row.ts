@@ -1,7 +1,7 @@
 import { isEmpty } from 'lodash';
 import { IJOTAction, jot } from 'engine/ot';
 import { DatasheetActions } from 'model';
-import { Selectors, DropDirectionType } from 'store';
+import { Selectors, DropDirectionType } from '../../exports/store';
 import { ISetRecordOptions, setRecords } from './set_records';
 import { t, Strings } from 'i18n';
 import { ResourceType } from 'types';

@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import dayjs from 'dayjs';
 import { ICellValue } from 'model/record';
-import { IRecord } from 'store';
+import { IRecord } from '../../exports/store';
 import {
   DateFormat, FieldType, ICreatedTimeField, ICreatedTimeFieldProperty, IField,
   TimeFormat

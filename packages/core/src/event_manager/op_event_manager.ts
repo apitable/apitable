@@ -1,5 +1,5 @@
 import { IChangeset } from 'engine';
-import { IReduxState } from 'store';
+import { IReduxState } from '../exports/store';
 import { EventManager } from './event_manager';
 import { IOPEventManager, IOPEventManagerOptions } from './interface';
 import { ICombEvent, IEventInstance, IRealAtomEvent, IVirtualAtomEvent } from './interface/event.interface';

@@ -1,5 +1,5 @@
 import { SET_RECORD_VISION_MODE } from '../../../shared/store/action_constants';
-import { RecordVision } from '../../../../store/interfaces';
+import { RecordVision } from '../../../../exports/store/interfaces';
 
 export const setRecordVision = (recordVision: RecordVision) => {
   return {

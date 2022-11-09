@@ -1,6 +1,6 @@
 import { IAnyAction } from 'engine';
 import { isString } from 'lodash';
-import { IJOTActionPayload, IReduxState, IViewRow, Selectors, PREVIEW_DATASHEET_ID } from 'store';
+import { IJOTActionPayload, IReduxState, IViewRow, Selectors, PREVIEW_DATASHEET_ID } from '../exports/store';
 import { isServer } from 'utils/env';
 import { cache } from './cache';
 

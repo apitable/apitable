@@ -2,7 +2,7 @@ import { ExecuteFailReason, ExecuteResult, ICollaCommandExecuteContext, ICollaCo
 import { IJOTAction } from 'engine/ot/interface';
 import { CollaCommandName } from 'commands';
 import { ResourceType } from 'types';
-import { IFieldMap } from 'store';
+import { IFieldMap } from '../exports/store';
 
 export interface ILinkedActions {
   datasheetId: string;

@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { ITemplateCentre, IUpdateTemplateCategoryAction, IUpdateTemplateDirectoryAction } from '../../../../store/interfaces';
+import { ITemplateCentre, IUpdateTemplateCategoryAction, IUpdateTemplateDirectoryAction } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 
 const defaultTemplateCentre: ITemplateCentre = {
