@@ -23,7 +23,6 @@ import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { Router } from 'pc/components/route_manager/router';
 import { useGetViewByIdWithDefault, useQuery, useRequest, useResponsive } from 'pc/hooks';
-// import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { ActivitySelectType, KeyCode } from 'pc/utils';
@@ -44,6 +43,7 @@ import { ExpandRecordVisionOption } from './expand_record_vision_option';
 import { IFieldDescCollapseStatus } from './field_editor';
 import { MoreTool } from './more_tool';
 import { RecordOperationArea } from './record_opeation_area';
+import { last } from 'lodash';
 import styles from './style.module.less';
 
 const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
@@ -219,6 +219,9 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     isIndependent && viewId && datasheetId && activeDatasheetId !== datasheetId && dispatch(StoreActions.switchView(datasheetId, viewId));
   }, [isIndependent, datasheetId, viewId, activeDatasheetId]);
 
+  const pathnameArr = window.location.pathname.split('/');
+  const isPathWithRecordId = last(pathnameArr)?.startsWith('rec');
+
   const errorHandle = useMemo(
     () => (errorCode, recordIds?, activeRecordId?) => {
       let customModal;
@@ -267,6 +270,11 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
   );
 
   useEffect(() => {
+    // browser history back check
+    if (!isPathWithRecordId && !activeRecordId) {
+      modalClose();
+      return;
+    }
     if (!independentDataLoading && datasheetErrorCode && datasheetId) {
       errorHandle(datasheetErrorCode);
       return;
@@ -295,7 +303,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
     setRealActiveRecordId(curActiveRecordId);
     errorHandle(datasheetErrorCode, curRecordIds, curActiveRecordId || 'not recordId');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snapshot?.recordMap, datasheetErrorCode, independentDataLoading, pageParamsRecordId]);
+  }, [snapshot?.recordMap, datasheetErrorCode, independentDataLoading, pageParamsRecordId, isPathWithRecordId, activeRecordId]);
 
   const switchRecord = useCallback(
     (index: number) => {
