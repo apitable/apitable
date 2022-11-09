@@ -1,6 +1,6 @@
 import {
   ActionConstants, CacheManager, EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ExpCache, Field, FieldType,
-  JOTApply, OPEventNameEnums, ResourceType, Selectors,
+  JOTApply, NO_CACHE, OPEventNameEnums, ResourceType, Selectors,
   StoreActions, WhyRecordMoveType
 } from '@apitable/core';
 import { mainWidgetMessage, ResourceService } from '@vikadata/widget-sdk';
@@ -47,7 +47,10 @@ const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recor
     const remotePayload = [datasheetId, fieldId, recordId];
     if (fieldId && recordId) {
       const snapshot = Selectors.getSnapshot(state, datasheetId);
-      if (snapshot) {
+      const cellValue = CacheManager.getCellCache(datasheetId, fieldId!, recordId!);
+      const isNoCache = cellValue === NO_CACHE;
+
+      if (snapshot && !isNoCache) {
         nextCache = Selectors.calcCellValueAndString(
           {
             state,
