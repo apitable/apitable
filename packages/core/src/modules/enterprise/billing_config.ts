@@ -1,5 +1,5 @@
 import { Billing, Products } from './billing.interface';
-import Config from './system_config.auto.json';
+import Config from '../../config/system_config.auto.json';
 /**
   * config class, directly get the entire class of SystemConfig
   */

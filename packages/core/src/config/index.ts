@@ -24,7 +24,6 @@ export {
 };
 
 export * from './emojis_config';
-export * from './billing_config';
 export * from './dom_id';
 export * from './konva_id';
 export * from './env';
