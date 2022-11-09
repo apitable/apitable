@@ -769,7 +769,7 @@
         FROM vika_unit_member vom
         LEFT JOIN vika_user vu on vom.user_id = vu.id
         LEFT JOIN vika_unit_team_member_rel voutmr on vom.id = voutmr.member_id
-        LEFT JOIN vika_unit_team vout on voutmr.team_id = vout.id and vout.parent_id != 0 and vout.is_deleted = 0
+        LEFT JOIN vika_unit_team vout on voutmr.team_id = vout.id and vout.is_deleted = 0
         WHERE vom.id IN
         <foreach item="item" index="index" collection="memberIds" open="(" separator="," close=")">
             #{item}
