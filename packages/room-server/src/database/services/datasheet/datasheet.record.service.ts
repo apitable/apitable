@@ -11,9 +11,10 @@ import { RecordHistoryQueryRo } from '../../ros/record.history.query.ro';
 import { RecordMap } from '../../interfaces';
 import { DatasheetRecordRepository } from '../../repositories/datasheet.record.repository';
 import { RecordCommentService } from 'database/services/datasheet/record.comment.service';
-import { Store } from 'redux';
+import { $CombinedState, Store } from 'redux';
 import { In } from 'typeorm';
 import { DatasheetChangesetService } from './datasheet.changeset.service';
+import { format } from 'path';
 
 @Injectable()
 export class DatasheetRecordService {
@@ -48,6 +49,7 @@ export class DatasheetRecordService {
 
   async getRecordsByDstId(dstId: string): Promise<RecordMap> {
     const records = await this.recordRepo.find({
+      select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { dstId, isDeleted: false },
     });
     const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
@@ -56,10 +58,44 @@ export class DatasheetRecordService {
 
   async getRecordsByDstIdAndRecordIds(dstId: string, recordIds: string[], isDeleted = false): Promise<RecordMap> {
     const records = await this.recordRepo.find({
+      select: ['recordId', 'data', 'revisionHistory', 'createdAt', 'updatedAt', 'recordMeta'],
       where: { recordId: In(recordIds), dstId, isDeleted },
     });
     const commentCountMap = await this.recordCommentService.getCommentCountMapByDstId(dstId);
     return this.formatRecordMap(records, commentCountMap, recordIds);
+  }
+
+  async getRelatedRecordCells(datasheetId: string, recordIds: string[], fieldKeyNames: string[], isDeleted = false): Promise<RecordMap> {
+    const jsonExtractFieldKeyNames = `JSON_EXTRACT(data, '$.${fieldKeyNames.join('\', \'$.')}')`;
+    const raw = await this.recordRepo
+      .createQueryBuilder()
+      .select('record_id', 'recordId')
+      .addSelect(jsonExtractFieldKeyNames, 'fieldValues')
+      .where('record_id IN(:...recordIds)', { recordIds })
+      .andWhere('dst_id = :datasheetId', { datasheetId })
+      .andWhere('is_deleted = :isDeleted', { isDeleted })
+      .getRawMany();
+    const records = raw.reduce<any[]>((pre, cur) => {
+      const data = {};
+      for(let i = 0; i < fieldKeyNames.length; i++) {
+        data[fieldKeyNames[i]] = cur.fieldValues?cur.fieldValues[i]:undefined;
+      }
+      const record = { recordId: cur.recordId, data };
+      pre.push(record);
+      return pre;
+    }, []);
+    return this.formatRecordMapWithRelatedCellsOnly(records);
+  }
+
+  private formatRecordMapWithRelatedCellsOnly(records: DatasheetRecordEntity[]) {    
+    return records.reduce<RecordMap>((pre, cur) => {
+      pre[cur.recordId] = {
+        id: cur.recordId,
+        data: cur.data || {},
+        commentCount: undefined
+      };
+      return pre;
+    }, {});
   }
 
   private formatRecordMap(records: DatasheetRecordEntity[], commentCountMap: { [key: string]: number }, recordIds?: string[]): RecordMap {

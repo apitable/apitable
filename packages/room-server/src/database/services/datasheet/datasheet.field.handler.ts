@@ -137,6 +137,7 @@ export class DatasheetFieldHandler {
       return;
     }
 
+    // TODO: extract the above codes into a new function, added by troy
     // field ID -> linked datasheet ID
     const fieldIdToLinkDstIdMap = new Map<string, string>();
     // Lookup field: linked datasheet ID -> field ID set
@@ -226,14 +227,17 @@ export class DatasheetFieldHandler {
     if (!isEmpty(foreignDstIdRecordIdsMap)) {
       // Query linked datasheet data and linked records
       for (const [foreignDstId, recordIds] of Object.entries(foreignDstIdRecordIdsMap)) {
+        const foreignDatasheetDataPack = globalParam.foreignDstMap[foreignDstId];
         if (this.logger.isDebugEnabled()) {
           this.logger.debug(`Query new record [${foreignDstId}] --- [${recordIds}]`);
         }
         // linkedRecordMap of robot event, linked datasheet may be unaccessible, skip
-        if (!globalParam.foreignDstMap[foreignDstId]) { continue; }
+        if (!foreignDatasheetDataPack) { continue; }
 
-        if (globalParam.foreignDstMap[foreignDstId].snapshot.recordMap) {
-          const existRecordIds = [...Object.keys(globalParam.foreignDstMap[foreignDstId].snapshot.recordMap)];
+        const relatedFieldIds = this.getRelatedFieldIds(foreignDstId, foreignDatasheetDataPack, foreignDstIdToLookupFldIdsMap);
+
+        if (foreignDatasheetDataPack.snapshot.recordMap) {
+          const existRecordIds = [...Object.keys(foreignDatasheetDataPack.snapshot.recordMap)];
           if (this.logger.isDebugEnabled()) {
             this.logger.debug(`New record: ${Array.from(recordIds)} - original record: ${existRecordIds} `);
           }
@@ -242,13 +246,14 @@ export class DatasheetFieldHandler {
             this.logger.debug(`after filter: ${theDiff}`);
           }
           if (theDiff.length > 0) {
-            const addRecordMap = await this.fetchRecordMap(foreignDstId, Array.from(new Set<string>(theDiff)));
-            const existRecordMap = globalParam.foreignDstMap[foreignDstId].snapshot.recordMap;
-            globalParam.foreignDstMap[foreignDstId].snapshot.recordMap = { ...addRecordMap, ...existRecordMap };
+            const addRecordMap = await this.fetchRecordMap(foreignDstId, Array.from(new Set<string>(theDiff)), relatedFieldIds);
+            const existRecordMap = foreignDatasheetDataPack.snapshot.recordMap;
+            foreignDatasheetDataPack.snapshot.recordMap = { ...addRecordMap, ...existRecordMap };
             globalParam.dstIdToNewRecFlagMap.set(foreignDstId, true);
           }
         } else {
-          globalParam.foreignDstMap[foreignDstId].snapshot.recordMap = await this.fetchRecordMap(foreignDstId, Array.from(recordIds));
+          foreignDatasheetDataPack.snapshot.recordMap = 
+            await this.fetchRecordMap(foreignDstId, Array.from(recordIds), relatedFieldIds);
         }
       }
     }
@@ -294,6 +299,18 @@ export class DatasheetFieldHandler {
         await this.parseField(foreignDstId, foreignFieldMap, foreignRecordMap, Array.from(fieldIds), globalParam);
       }
     }
+  }
+
+  private getRelatedFieldIds( datasheetId: string, foreignDatasheetData: any
+    , foreignDstIdToLookupFldIdsMap: { [datasheetId: string]: string[] }) {
+    const lookupLinkedFieldIds: string[] = foreignDstIdToLookupFldIdsMap[datasheetId] || [];
+    const relatedFieldIds = new Set<string>([...lookupLinkedFieldIds]);
+    // Get view and field data of linked datasheet
+    const { views } = foreignDatasheetData.snapshot.meta;
+    // Primary field ID
+    const { fieldId } = head((head(views) as IViewProperty).columns)!;
+    relatedFieldIds.add(fieldId);
+    return [...relatedFieldIds];
   }
 
   private async processFormulaField(fieldMap: IFieldMap, formulaField: IFormulaField, globalParam: any, recordMap?: RecordMap) {
@@ -368,8 +385,11 @@ export class DatasheetFieldHandler {
     return foreignDstIdRecordIdsMap;
   }
 
-  private async fetchRecordMap(dstId: string, recordIds: string[]): Promise<RecordMap> {
-    return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
+  private async fetchRecordMap(dstId: string, recordIds: string[], relatedFieldIds: string[]): Promise<RecordMap> {
+    if (relatedFieldIds.length === 0) {
+      return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
+    }
+    return await this.datasheetRecordService.getRelatedRecordCells(dstId, recordIds, relatedFieldIds);
   }
 
   /**
