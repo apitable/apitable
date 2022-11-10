@@ -1,7 +1,7 @@
 import { ISnapshot } from '../../exports/store';
 import { IViewProperty } from '../../exports/store/interfaces';
 import { getViewById } from '../../exports/store/selectors';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { IBindViewModal } from '.';
 
 /**

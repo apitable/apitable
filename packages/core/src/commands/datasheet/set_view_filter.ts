@@ -2,7 +2,7 @@ import { IJOTAction } from 'engine/ot';
 import { DatasheetActions } from 'model';
 import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
 import { IFilterInfo, ResourceType } from 'types';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 

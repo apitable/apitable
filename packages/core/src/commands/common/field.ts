@@ -1,6 +1,6 @@
 import { ICollaCommandExecuteContext, ILinkedActions } from 'command_manager';
 import { IJOTAction } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { isEqual, keyBy } from 'lodash';
 import {
   CreatedByField,

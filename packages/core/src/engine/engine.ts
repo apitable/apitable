@@ -2,7 +2,7 @@ import { DatasheetApi } from '../exports/api';
 import { CollaCommandName } from 'commands';
 import { TrackEvents } from 'config';
 import { IJOTAction, ILocalChangeset, IOperation, IRemoteChangeset, jot } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../exports/i18n';
 import { Events, Player } from '../modules/shared/player';
 import { IChangesetPack, INetworking } from '../exports/store';
 import { updateRevision } from '../exports/store/actions';

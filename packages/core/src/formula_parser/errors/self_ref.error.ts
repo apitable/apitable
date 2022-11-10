@@ -1,4 +1,4 @@
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 
 /**
  * The error for formula expression parser 

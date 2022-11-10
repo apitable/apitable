@@ -1,7 +1,7 @@
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { GalleryView } from 'model';
 import { ISetGalleryStyle } from '../../exports/store';
 import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';

@@ -16,7 +16,7 @@ import {
 import { FOperator, IFilterCondition, IFilterNumber } from 'types/view_types';
 import { Field } from './field';
 import { StatType } from './stat';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { str2number, str2NumericStr, numberToShow, str2Currency, times } from 'utils';
 import { IAPIMetaNumberBaseFieldProperty } from 'types/field_api_property_types';
 import Joi from 'joi';

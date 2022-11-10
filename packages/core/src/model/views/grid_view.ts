@@ -1,4 +1,4 @@
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { ViewType } from '../../modules/shared/store/constants';
 import { IGridViewProperty, ISnapshot, IViewColumn, IViewProperty } from '../../exports/store/interfaces';
 import { getViewById } from '../../exports/store/selectors';

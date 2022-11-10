@@ -1,5 +1,5 @@
 import { ExecuteResult, ICollaCommandDef, ICommandOptionBase } from 'command_manager';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { WidgetActions } from 'model';
 import { Selectors } from '../../exports/store';
 import { ResourceType } from 'types';

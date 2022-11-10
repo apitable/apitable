@@ -1,5 +1,5 @@
 
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 
 /**
  * Params Error Type, used to identify the error type and error message

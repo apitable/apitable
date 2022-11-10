@@ -1,4 +1,4 @@
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { KanbanView } from 'model';
 import { ISetKanbanStyleValue } from '../../exports/store';
 import { getActiveDatasheetId, getActualRowCount } from '../../exports/store/selectors';

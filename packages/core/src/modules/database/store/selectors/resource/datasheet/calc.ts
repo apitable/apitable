@@ -3,7 +3,7 @@ import { computeCache, dataSelfHelper } from 'compute_manager';
 import { ViewPropertyFilter } from 'engine';
 
 import { evaluate } from 'formula_parser';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../../../../../exports/i18n';
 import { produce } from 'immer';
 import { set } from 'lodash';
 import isEqual from 'lodash/isEqual';

@@ -1,7 +1,7 @@
 import { getDstViewDataPack, getShareDstViewDataPack } from '../modules/database/api/datasheet_api';
 import { CollaCommandName } from 'commands';
 import { IJOTAction } from 'engine/ot';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../exports/i18n';
 import { DatasheetActions } from 'model';
 import { IFieldMap, IKanbanStyle, IPermissions, IReduxState, IViewProperty, Selectors, StoreActions } from '../exports/store';
 import { getCurrentViewBase, getSnapshot } from '../exports/store/selectors';

@@ -1,5 +1,5 @@
 import { generateRandomString } from './string';
-import { t, Strings } from '../i18n';
+import { t, Strings } from '../exports/i18n';
 
 const EFFECTIVE_ID_LENGTH = 10;
 

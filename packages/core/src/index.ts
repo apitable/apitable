@@ -7,7 +7,7 @@ export * from './sync';
 export * from './types';
 export * from './utils';
 export * from './config';
-export * from './i18n';
+export * from './exports/i18n';
 export * from './formula_parser';
 export * from './compensator';
 export * from './event_manager';

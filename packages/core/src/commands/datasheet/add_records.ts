@@ -4,7 +4,7 @@ import { getNewIds, IDPrefix } from 'utils';
 import { IJOTAction } from 'engine';
 import { Selectors } from '../../exports/store';
 import { FieldType, IField, ILinkField, ResourceType } from 'types';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { CollaCommandName } from 'commands';
 import { ConfigConstant } from 'config';
 

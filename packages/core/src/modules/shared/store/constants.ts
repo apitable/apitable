@@ -1,4 +1,4 @@
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../../exports/i18n';
 import { FieldType, IField } from 'types';
 
 export const DEFAULT_PERMISSION = {

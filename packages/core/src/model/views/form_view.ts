@@ -1,5 +1,5 @@
 import { View } from './views';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { Settings } from 'config';
 import { integrateCdnHost } from 'utils';
 

@@ -1,7 +1,7 @@
 // Only the JSON type is exported, because the text type is deprecated
 // otherwise. (If you want to use it somewhere, you're welcome to pull it out
 // into a separate module that json0 can depend on).
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import json0 from 'ot-json0/lib/json0';
 import { IJot } from './interface';
 

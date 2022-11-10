@@ -9,7 +9,7 @@ import {
 import { DatasheetActions } from '../datasheet';
 import { isEmpty } from 'lodash';
 import { StatType } from './stat';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { getEmojiIconNativeString, isNullValue } from 'model/utils';
 import { IAPIMetaCheckboxFieldProperty } from 'types';
 import { IOpenCheckboxFieldProperty } from 'types/open/open_field_read_types';

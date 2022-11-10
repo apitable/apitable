@@ -1,6 +1,6 @@
 import { compensator } from 'compensator';
 import { IJOTAction } from 'engine/ot';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../../../../../exports/i18n';
 import produce from 'immer';
 import { Events, Player } from '../../../../../shared/player';
 import { AnyAction, combineReducers } from 'redux';

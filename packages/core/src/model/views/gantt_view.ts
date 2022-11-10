@@ -1,5 +1,5 @@
 import { IJOTAction, OTActionName } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { Field } from 'model/field';
 import { 
   GanttColorType, IFieldMap, IGanttViewColumn, IGanttViewProperty, ISetGanttStyle, ISnapshot, IViewProperty, ViewType 

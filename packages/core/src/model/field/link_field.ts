@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { ICellValue } from 'model/record';
 import { createSelector } from 'reselect';
 import { IReduxState } from '../../exports/store';

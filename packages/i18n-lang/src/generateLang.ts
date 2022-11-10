@@ -12,7 +12,7 @@ const map: HashMap = {
   'en-US': 'en_US',
 };
 const backupLang = 'zh-CN'; // 特定 key 的其他语言文案找不到，就用 zh-CN 文案。
-const keysTypeOutputPath = 'apitable/packages/core/src/i18n/stringkeys.interface.ts'; // key 的接口类型
+const keysTypeOutputPath = 'apitable/packages/core/src/config/stringkeys.interface.ts'; // key 的接口类型
 
 console.log('==========开始============');
 console.log('生成语言包中...');

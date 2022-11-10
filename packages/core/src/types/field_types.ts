@@ -1,4 +1,4 @@
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../exports/i18n';
 import { IFilterInfo } from './view_types';
 /* eslint-disable */
 export type ITextFieldProperty = null;

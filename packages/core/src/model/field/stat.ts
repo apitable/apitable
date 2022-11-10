@@ -1,4 +1,4 @@
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { sum, uniq } from 'lodash';
 import { ICellValue } from 'model';
 import { Selectors, ISnapshot, IReduxState } from '../../exports/store';

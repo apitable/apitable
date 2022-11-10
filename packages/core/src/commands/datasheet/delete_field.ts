@@ -2,7 +2,7 @@ import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager
 import { CollaCommandName } from 'commands';
 import { clearOldBrotherField, setAffectFieldAttr2Action } from 'commands/common/field';
 import { IJOTAction, jot } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { DatasheetActions } from 'model';
 import { Selectors } from '../../exports/store';
 import { FieldType, ResourceType } from 'types';

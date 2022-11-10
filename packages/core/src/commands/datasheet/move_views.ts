@@ -2,7 +2,7 @@ import { isEmpty, find } from 'lodash';
 import { IJOTAction } from 'engine/ot';
 import { DatasheetActions } from 'model';
 import { Selectors } from '../../exports/store';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';

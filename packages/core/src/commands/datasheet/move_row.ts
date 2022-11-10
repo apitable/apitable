@@ -3,7 +3,7 @@ import { IJOTAction, jot } from 'engine/ot';
 import { DatasheetActions } from 'model';
 import { Selectors, DropDirectionType } from '../../exports/store';
 import { ISetRecordOptions, setRecords } from './set_records';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
 import { CollaCommandName } from 'commands';

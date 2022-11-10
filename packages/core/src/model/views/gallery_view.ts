@@ -1,5 +1,5 @@
 import { IJOTAction, OTActionName } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { LayoutType, ViewType } from '../../exports/store';
 import { getViewById, getViewIndex } from '../../exports/store/selectors';
 import { FieldType } from 'types';

@@ -1,6 +1,6 @@
 import { IUnitIds } from 'types/field_types';
 import { FieldType, ITimestamp } from './field_types';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../exports/i18n';
 
 export interface ISortedField {
   fieldId: string;

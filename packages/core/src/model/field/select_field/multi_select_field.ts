@@ -1,4 +1,4 @@
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../../exports/i18n';
 import Joi from 'joi';
 import { find, isArray, isString, uniq, uniqBy } from 'lodash';
 import { getFieldOptionColor } from 'model/color';

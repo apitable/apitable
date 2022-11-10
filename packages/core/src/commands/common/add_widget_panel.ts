@@ -1,6 +1,6 @@
 import { CollaCommandName } from 'commands/index';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { DatasheetActions } from 'model';
 import { IMirrorSnapshot, ISnapshot, IWidgetPanel } from '../../exports/store';
 import { getMirrorSnapshot, getSnapshot } from '../../exports/store/selectors';

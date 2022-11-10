@@ -13,7 +13,7 @@ import {
 import { IFieldMap, IReduxState } from '../../exports/store';
 import { Functions } from 'formula_parser/functions';
 import { IField } from 'types';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { SelfRefError } from 'formula_parser/errors/self_ref.error';
 
 /**

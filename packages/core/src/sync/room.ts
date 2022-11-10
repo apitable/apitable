@@ -5,7 +5,7 @@ import { NodeTypeReg } from 'config/constant';
 import dayjs from 'dayjs';
 import { Engine, ILocalChangeset, IOperation, IRemoteChangeset } from 'engine';
 import { BufferStorage, ILocalForage, ILsStore } from 'engine/buffer_storage';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../exports/i18n';
 import { IO } from 'io';
 import { keyBy, throttle } from 'lodash';
 import { Events, Player } from '../modules/shared/player';

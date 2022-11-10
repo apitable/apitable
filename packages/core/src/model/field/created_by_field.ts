@@ -10,7 +10,7 @@ import {
 } from '../../types';
 import { MemberBaseField, OtherTypeUnitId } from './member_base_field';
 import { datasheetIdString, joiErrorResult } from './validate_schema';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 
 export class CreatedByField extends MemberBaseField {
 

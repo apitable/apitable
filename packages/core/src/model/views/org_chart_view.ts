@@ -1,4 +1,4 @@
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { ViewType } from '../../modules/shared/store/constants';
 import { IOrgChartViewProperty, ISnapshot, ISetOrgChartStyle, IViewProperty, IOrgChartViewColumn } from '../../exports/store/interfaces';
 import { getViewById, getViewIndex } from '../../exports/store/selectors';

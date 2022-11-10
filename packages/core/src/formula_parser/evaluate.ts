@@ -8,7 +8,7 @@ import { getCellValue, getDatasheet, getFieldMap } from '../exports/store/select
 import { Field, LookUpField, ArrayValueField } from 'model';
 import { IFormulaContext, IFormulaEvaluateContext, FormulaBaseError } from './functions/basic';
 import { BasicValueType, FieldType, IField } from 'types';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../exports/i18n';
 import { isFinite, isNumber } from 'lodash';
 import { ConfigConstant } from 'config';
 

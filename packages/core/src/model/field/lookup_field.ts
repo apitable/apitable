@@ -1,7 +1,7 @@
 import { getComputeRefManager } from 'compute_manager';
 import { evaluate, parse, ROLLUP_KEY_WORDS } from 'formula_parser/evaluate';
 import { Functions } from 'formula_parser/functions';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import Joi from 'joi';
 import { isEmpty, uniqWith, zip } from 'lodash';
 import { ValueTypeMap } from 'model/constants';

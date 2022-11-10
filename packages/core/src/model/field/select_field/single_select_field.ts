@@ -1,4 +1,4 @@
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../../exports/i18n';
 import Joi from 'joi';
 import { find, isString } from 'lodash';
 import { isNullValue } from 'model/utils';

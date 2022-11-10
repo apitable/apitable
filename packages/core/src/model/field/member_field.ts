@@ -6,7 +6,7 @@ import { MemberBaseField } from './member_base_field';
 import { ICellValue } from 'model/record';
 import { isEqual, isNil, isString } from 'lodash';
 import { getMemberTypeString } from 'model/utils';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { IOpenMemberFieldProperty, IOpenMemberOption } from 'types/open/open_field_read_types';
 import { IAddOpenMemberFieldProperty, IUpdateOpenMemberFieldProperty } from 'types/open/open_field_write_types';
 

@@ -1,6 +1,6 @@
 import { Settings } from 'config';
 import { IJOTAction, OTActionName } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { DatasheetActions } from 'model';
 import { IFieldMap, IKanbanViewProperty, ISetKanbanStyleValue, ISnapshot, ViewType } from '../../exports/store';
 import { IViewColumn, IViewProperty } from '../../exports/store/interfaces';

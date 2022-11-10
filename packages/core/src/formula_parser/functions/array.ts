@@ -3,7 +3,7 @@ import { BasicValueType, FormulaFuncType } from 'types';
 import { AstNode, ValueOperandNode } from 'formula_parser/parser/ast';
 import { Field } from 'model';
 import dayjs from 'dayjs';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 
 class ArrayFunc extends FormulaFunc {
   static override readonly type = FormulaFuncType.Array;

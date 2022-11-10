@@ -8,7 +8,7 @@ import { DatasheetActions } from '../datasheet';
 import { IAttacheField, FieldType, IAttachmentValue, IStandardValue, IField, BasicValueType } from 'types/field_types';
 import { cellValueToImageSrc } from 'utils';
 import { BasicOpenValueTypeBase, IAttachmentFieldOpenValue } from 'types/field_types_open';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { isNullValue } from 'model/utils';
 import { IAddOpenAttachmentFieldProperty } from 'types';
 

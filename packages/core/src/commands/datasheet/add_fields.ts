@@ -6,7 +6,7 @@ import { getNewIds, IDPrefix } from 'utils';
 import { createNewBrotherField, createNewField, IInternalFix } from '../common/field';
 import { CollaCommandName, fixOneWayLinkDstId } from '..';
 import { Field, CreatedByField, getMaxFieldCountPerSheet, DatasheetActions } from 'model';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { ISetRecordOptions, setRecords } from './set_records';

@@ -9,7 +9,7 @@ import {
 } from '../../types';
 import { MemberBaseField } from './member_base_field';
 import { datasheetIdString, joiErrorResult } from './validate_schema';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { IUpdateOpenLastModifiedByFieldProperty } from 'types/open/open_field_write_types';
 import { IOpenLastModifiedByFieldProperty } from 'types/open/open_field_read_types';
 

@@ -5,7 +5,7 @@ import { ISnapshot } from '../../exports/store/interfaces';
 import { getDatasheet, getFieldMap } from '../../exports/store/selectors';
 import { FieldType, IField } from 'types/field_types';
 import { IJOTAction } from 'engine';
-import { Strings, t } from 'i18n';
+import { Strings, t } from '../../exports/i18n';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';
 import { clearOldBrotherField, createNewBrotherField, IInternalFix, setField } from '../common/field';

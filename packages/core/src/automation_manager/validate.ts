@@ -1,7 +1,7 @@
 
 import { JSONSchema7 } from 'json-schema';
 import { getLiteralOperandValue, getObjectOperandProperty, getOperandValueType, isLiteralOperand, isOperandNullValue } from './utils';
-import { Strings, t } from 'i18n'; 
+import { Strings, t } from '../exports/i18n';
 
 /**
  * override the validate method of rjsf to support expression.

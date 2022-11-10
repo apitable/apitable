@@ -3,7 +3,7 @@ import { IFieldMap, IReduxState } from '../../exports/store';
 import { Field } from 'model';
 import { BasicValueType, IField } from 'types';
 import { ROLLUP_KEY_WORDS } from 'formula_parser/evaluate';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 
 export enum AstNodeType {
   BinaryOperatorNode = 'BinaryOperatorNode',

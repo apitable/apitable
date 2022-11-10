@@ -5,7 +5,7 @@ import 'dayjs/locale/zh-tw';
 import timezone from 'dayjs/plugin/timezone';
 // timezone
 import utc from 'dayjs/plugin/utc';
-import { getLanguage, Strings, t } from 'i18n';
+import { getLanguage, Strings, t } from '../../exports/i18n';
 import { isEqual, isNumber } from 'lodash';
 import { DEFAULT_TIMEZONE } from 'model/constants';
 import { isNullValue } from 'model/utils';

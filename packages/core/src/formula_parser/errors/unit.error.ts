@@ -1,5 +1,5 @@
 
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 
 export class UnitError extends Error {
 

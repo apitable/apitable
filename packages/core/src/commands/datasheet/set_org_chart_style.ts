@@ -2,7 +2,7 @@
 import { CollaCommandName } from 'commands';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
 import { IJOTAction } from 'engine';
-import { t, Strings } from 'i18n';
+import { t, Strings } from '../../exports/i18n';
 import { OrgChartView } from 'model';
 import { ISetOrgChartStyle } from '../../exports/store';
 import { getActiveDatasheetId, getDatasheet } from '../../exports/store/selectors';
