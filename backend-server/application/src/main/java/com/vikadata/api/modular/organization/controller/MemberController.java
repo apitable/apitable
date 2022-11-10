@@ -30,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.annotation.ApiResource;
 import com.vikadata.api.annotation.GetResource;
 import com.vikadata.api.annotation.Notification;
-import com.vikadata.api.util.page.PageObjectParam;
 import com.vikadata.api.annotation.PostResource;
 import com.vikadata.api.component.Auth0Service;
 import com.vikadata.api.component.TaskManager;
@@ -40,9 +39,7 @@ import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.constants.ParamsConstants;
 import com.vikadata.api.context.LoginContext;
 import com.vikadata.api.context.SessionContext;
-import com.vikadata.api.util.page.PageHelper;
 import com.vikadata.api.holder.SpaceHolder;
-import com.vikadata.api.util.page.PageInfo;
 import com.vikadata.api.lang.SpaceGlobalFeature;
 import com.vikadata.api.model.ro.organization.DeleteBatchMemberRo;
 import com.vikadata.api.model.ro.organization.DeleteMemberRo;
@@ -74,6 +71,9 @@ import com.vikadata.api.modular.user.mapper.UserMapper;
 import com.vikadata.api.modular.user.model.UserLangDTO;
 import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.security.afs.AfsCheckService;
+import com.vikadata.api.util.page.PageHelper;
+import com.vikadata.api.util.page.PageInfo;
+import com.vikadata.api.util.page.PageObjectParam;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
@@ -348,11 +348,13 @@ public class MemberController {
                 String returnUrl = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/invitation/callback";
                 String link = auth0Service.createUserInvitationLink(data.getEmail(), returnUrl);
                 iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
-            } else {
+            }
+            else {
                 String link = String.format("%s/workbench?spaceId=%s", constProperties.getServerDomain(), spaceId);
                 iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
             }
-        } else {
+        }
+        else {
             iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail());
         }
         return ResponseData.success();

@@ -41,6 +41,8 @@ import com.vikadata.api.component.TaskManager;
 import com.vikadata.api.component.notification.NotificationManager;
 import com.vikadata.api.component.notification.NotificationRenderField;
 import com.vikadata.api.component.notification.NotificationTemplateId;
+import com.vikadata.api.component.notification.NotifyMailFactory;
+import com.vikadata.api.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.config.properties.ConstProperties;
 import com.vikadata.api.constants.MailPropConstants;
 import com.vikadata.api.context.LoginContext;
@@ -51,9 +53,6 @@ import com.vikadata.api.enums.exception.SpaceException;
 import com.vikadata.api.enums.organization.UnitType;
 import com.vikadata.api.enums.social.SocialPlatformType;
 import com.vikadata.api.enums.space.UserSpaceStatus;
-import com.vikadata.api.event.NodeShareDisableEvent;
-import com.vikadata.api.component.notification.NotifyMailFactory;
-import com.vikadata.api.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.holder.NotificationRenderFieldHolder;
 import com.vikadata.api.model.dto.asset.UploadDataDto;
 import com.vikadata.api.model.dto.organization.MemberDto;
@@ -96,7 +95,6 @@ import com.vikadata.api.modular.user.service.IUserService;
 import com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper;
 import com.vikadata.api.util.CollectionUtil;
 import com.vikadata.api.util.InformationUtil;
-import com.vikadata.boot.autoconfigure.spring.SpringContextHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
@@ -548,6 +546,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 MemberEntity existedMember = emailMemberMap.get(inviteEmail).stream().findFirst().orElseThrow(() -> new BusinessException("invite member error"));
                 // history member can be restored
                 if (existedMember.getIsDeleted()) {
+                    member.setUserId(emailUserMap.get(inviteEmail));
+                    member.setIsActive(emailUserMap.containsKey(inviteEmail));
                     restoreMembers.add(existedMember);
                 }
                 shouldSendInvitationNotify.add(existedMember.getId());
