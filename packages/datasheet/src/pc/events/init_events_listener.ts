@@ -35,6 +35,9 @@ const debounceRefreshSnapshot = debounce((datasheetId) => {
 }, 500);
 
 const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recordId?: string) => {
+  const cellValue = CacheManager.getCellCache(datasheetId, fieldId!, recordId!);
+  const isNoCache = cellValue === NO_CACHE;
+  
   if (!fieldId) {
     CacheManager.removeCellCacheByRecord(datasheetId, recordId!);
   } else {
@@ -47,8 +50,6 @@ const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recor
     const remotePayload = [datasheetId, fieldId, recordId];
     if (fieldId && recordId) {
       const snapshot = Selectors.getSnapshot(state, datasheetId);
-      const cellValue = CacheManager.getCellCache(datasheetId, fieldId!, recordId!);
-      const isNoCache = cellValue === NO_CACHE;
 
       if (snapshot && !isNoCache) {
         nextCache = Selectors.calcCellValueAndString(
