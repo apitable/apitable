@@ -92,6 +92,40 @@ module.exports = withPlugins(plugins, {
   publicRuntimeConfig: {
     staticFolder: getStaticFolder(),
   },
+  // eslint-disable-next-line require-await
+  headers: async() => {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Staffid',
+            value: ':params',
+          },
+          {
+            key: 'Staffname',
+            value: ':params',
+          },
+          {
+            key: 'X-Rio-Seq',
+            value: ':params',
+          },
+          {
+            key: 'x-ext-data',
+            value: ':params',
+          },
+          {
+            key: 'Signature',
+            value: ':params',
+          },
+          {
+            key: 'timestamp',
+            value: ':params',
+          },
+        ],
+      }
+    ]
+  },
   webpack(config, options) {
     const originalEntry = config.entry;
 
