@@ -10,34 +10,31 @@ import com.vikadata.api.support.serializer.ImageSerializer;
 
 /**
  * <p>
- * 小程序发布版本历史视图
+ * Widget Release Version History View
  * </p>
- *
- * @author Pengap
- * @date 2021/7/9
  */
 @Data
-@ApiModel("小程序发布版本历史视图")
+@ApiModel("Widget Release Version History View")
 public class WidgetReleaseListVo {
 
-    @ApiModelProperty(value = "发布本Sha值", position = 1)
+    @ApiModelProperty(value = "Publish this Sha value", position = 1)
     private String releaseSha;
 
-    @ApiModelProperty(value = "版本", example = "1.0.0", position = 2)
+    @ApiModelProperty(value = "EDITION", example = "1.0.0", position = 2)
     private String version;
 
-    @ApiModelProperty(value = "状态(0:待审核,1:审核通过,2:已拒绝)", example = "1", position = 3)
+    @ApiModelProperty(value = "Status (0: to be approved, 1: approved, 2: rejected)", example = "1", position = 3)
     private Integer status;
 
-    @ApiModelProperty(value = "代码地址", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 4)
+    @ApiModelProperty(value = "Code Address", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 4)
     @JsonSerialize(using = ImageSerializer.class)
     private String releaseCodeBundle;
 
-    @ApiModelProperty(value = "源代码地址", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 5)
+    @ApiModelProperty(value = "Source code address", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 5)
     @JsonSerialize(using = ImageSerializer.class)
     private String sourceCodeBundle;
 
-    @ApiModelProperty(value = "当前发布版本", position = 6)
+    @ApiModelProperty(value = "Current release version", position = 6)
     private Boolean currentVersion;
 
     @ApiModelProperty(hidden = true)

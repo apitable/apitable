@@ -13,55 +13,53 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 用户基本信息
+ * Basic user information
  * </p>
- *
- * @author zoe zheng
  */
 @Data
-@ApiModel("用户基本信息")
+@ApiModel("Basic user information")
 @Builder
 public class PlayerBaseVo {
 
-    @ApiModelProperty(value = "用户的Uuid", example = "aadddbccc")
+    @ApiModelProperty(value = "User's Uuid", example = "aadddbccc")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
-    @ApiModelProperty(value = "成员ID", example = "1261273764218")
+    @ApiModelProperty(value = "Member ID", example = "1261273764218")
     @JsonSerialize(using = ToStringSerializer.class, nullsUsing = NullStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "用户名称", example = "zoe")
+    @ApiModelProperty(value = "User Name", example = "zoe")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userName;
 
-    @ApiModelProperty(value = "成员名称", example = "zoe zheng")
+    @ApiModelProperty(value = "Member Name", example = "zoe zheng")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String memberName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "头像", example = "zoe zheng")
+    @ApiModelProperty(value = "HEAD PORTRAIT", example = "zoe zheng")
     private String avatar;
 
-    @ApiModelProperty(value = "所属部门", example = "运营部｜策划部")
+    @ApiModelProperty(value = "DEPARTMENT", example = "Operation Department｜Planning Department")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String team;
 
-    @ApiModelProperty(value = "用户（user）是否修改过昵称")
+    @ApiModelProperty(value = "Whether the user has modified the nickname")
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "成员（member）是否修改过昵称")
+    @ApiModelProperty(value = "Whether the member has modified the nickname")
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "邮箱", example = "52906715@qq.com")
+    @ApiModelProperty(value = "Email", example = "52906715@qq.com")
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String email;
 
     @Deprecated
-    @ApiModelProperty(value = "是否已移除空间站", example = "true", hidden = true)
+    @ApiModelProperty(value = "Whether the space station has been removed", example = "true", hidden = true)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isDeleted;
 
-    @ApiModelProperty(value = "用户player类型1: 空间内成员，并且没有被移除，2 空间外成员已经被移除，3 访客（非空间已登陆/注册用户）", example = "1")
+    @ApiModelProperty(value = "User player type 1: members in the space have not been removed, 2 members outside the space have been removed, and 3 visitors (non space registered users)", example = "1")
     private Integer playerType;
 }

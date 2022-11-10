@@ -8,20 +8,17 @@ import com.vikadata.api.support.serializer.NullBooleanSerializer;
 
 /**
  * <p>
- * 字段权限集
+ * Field permission set
  * </p>
- *
- * @author Chambers
- * @date 2021/4/16
  */
 @Data
 public class FieldPermission {
 
-    @ApiModelProperty(value = "可查看的", example = "true")
+    @ApiModelProperty(value = "Viewable", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean readable;
 
-    @ApiModelProperty(value = "可编辑的", example = "true")
+    @ApiModelProperty(value = "Editable", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean editable;
 }

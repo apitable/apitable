@@ -25,7 +25,7 @@ public class WidgetPackageReleaseV2Ro extends WidgetPackageBaseV2Ro {
     @NotBlank(message = "Space id not blank")
     private String spaceId;
 
-    @ApiModelProperty(value = "widget name", example = "{'zh-CN':'中','en-US':'english'}", position = 14)
+    @ApiModelProperty(value = "widget name", example = "{'zh-CN':'Chinese','en-US':'English'}", position = 14)
     private String name;
 
     @ApiModelProperty(value = "release note", position = 15)

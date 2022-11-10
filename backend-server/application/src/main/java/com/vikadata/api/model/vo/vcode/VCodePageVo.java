@@ -16,60 +16,57 @@ import static com.vikadata.api.constants.DateFormatConstants.TIME_SIMPLE_PATTERN
 
 /**
  * <p>
- * V码分页视图
+ * V code paging view
  * </p>
- *
- * @author Chambers
- * @date 2020/8/25
  */
 @Data
-@ApiModel("V码分页视图")
+@ApiModel("V code paging view")
 public class VCodePageVo {
 
-    @ApiModelProperty(value = "活动名称", dataType = "java.lang.String", example = "XX 渠道推广", position = 1)
+    @ApiModelProperty(value = "Activity Name", dataType = "java.lang.String", example = "XX Channel promotion", position = 1)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String activityName;
 
-    @ApiModelProperty(value = "V码类型(0:官方邀请码;2:兑换码)", dataType = "java.lang.Integer", example = "0", position = 2)
+    @ApiModelProperty(value = "Type of V code (0: official invitation code; 2: exchange code)", dataType = "java.lang.Integer", example = "0", position = 2)
     private Integer type;
 
-    @ApiModelProperty(value = "V码", dataType = "java.lang.String", example = "2Mecwhid", position = 3)
+    @ApiModelProperty(value = "V code", dataType = "java.lang.String", example = "2Mecwhid", position = 3)
     private String code;
 
-    @ApiModelProperty(value = "兑换码兑换模板备注", dataType = "java.lang.String", example = "2Mecwhid", position = 4)
+    @ApiModelProperty(value = "Remarks on exchange code exchange template", dataType = "java.lang.String", example = "2Mecwhid", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String templateComment;
 
-    @ApiModelProperty(value = "单个V码可使用总数(-1 代表无限次数)", dataType = "java.lang.Integer", example = "-1", position = 5)
+    @ApiModelProperty(value = "The total number of times a single V code can be used (- 1 represents an unlimited number of times)", dataType = "java.lang.Integer", example = "-1", position = 5)
     private Integer availableTimes;
 
-    @ApiModelProperty(value = "剩余次数", dataType = "java.lang.Integer", example = "-1", position = 5)
+    @ApiModelProperty(value = "Remaining times", dataType = "java.lang.Integer", example = "-1", position = 5)
     private Integer remainTimes;
 
-    @ApiModelProperty(value = "单人限制使用次数(-1 代表无限次数)", dataType = "java.lang.Integer", example = "1", position = 5)
+    @ApiModelProperty(value = "Single person limited use times (- 1 represents unlimited times)", dataType = "java.lang.Integer", example = "1", position = 5)
     private Integer limitTimes;
 
-    @ApiModelProperty(value = "过期时间", example = "yyyy-MM-dd HH:mm:ss", position = 6)
+    @ApiModelProperty(value = "Expiration time", example = "yyyy-MM-dd HH:mm:ss", position = 6)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime expireTime;
 
-    @ApiModelProperty(value = "指定的使用者", dataType = "java.lang.String", example = "一个靓仔", position = 7)
+    @ApiModelProperty(value = "Specified user", dataType = "java.lang.String", example = "A pretty boy", position = 7)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String assignUser;
 
-    @ApiModelProperty(value = "创建者", dataType = "java.lang.String", example = "张三", position = 8)
+    @ApiModelProperty(value = "Creator", dataType = "java.lang.String", example = "Zhang San", position = 8)
     private String creator;
 
-    @ApiModelProperty(value = "创建时间", example = "2019-01-01 10:12:13", position = 8)
+    @ApiModelProperty(value = "Create time", example = "2019-01-01 10:12:13", position = 8)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "最后修改者", dataType = "java.lang.String", example = "李四", position = 9)
+    @ApiModelProperty(value = "Last Modified By", dataType = "java.lang.String", example = "Li Si", position = 9)
     private String updater;
 
-    @ApiModelProperty(value = "最后修改时间", example = "2019-01-01 10:12:13", position = 9)
+    @ApiModelProperty(value = "Last modified", example = "2019-01-01 10:12:13", position = 9)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updatedAt;

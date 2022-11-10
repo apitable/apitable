@@ -9,22 +9,22 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序移交拥有者请求参数
+ * Widget handover owner request parameters
  * </p>
  *
  * @author Pengap
  * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序移交拥有者请求参数")
+@ApiModel("Widget handover owner request parameters")
 public class WidgetTransferOwnerRo {
 
     @NotBlank
-    @ApiModelProperty(value = "小程序Id", position = 1)
+    @ApiModelProperty(value = "Widget Id", position = 1)
     private String packageId;
 
-    @NotNull(message = "新移交成员ID不能为空")
-    @ApiModelProperty(value = "移交成员Id", position = 2)
+    @NotNull(message = "New handover member ID cannot be empty")
+    @ApiModelProperty(value = "Handover Member Id", position = 2)
     private Long transferMemberId;
 
 }

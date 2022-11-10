@@ -9,20 +9,17 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 上传员工模板请求参数
+ * Upload Employee Template Request Parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/21 20:27
  */
 @Data
-@ApiModel("上传员工模板请求参数")
+@ApiModel("Upload Employee Template Request Parameters")
 public class UploadMemberTemplateRo {
 
-    @NotNull(message = "导入文件不能为空")
-    @ApiModelProperty(value = "导入文件", position = 2, required = true)
+    @NotNull(message = "The import file cannot be empty")
+    @ApiModelProperty(value = "Import File", position = 2, required = true)
     private MultipartFile file;
 
-    @ApiModelProperty(value = "密码登录人机验证，前端获取getNVCVal函数的值（未登录状态下会进行人机验证）", example = "FutureIsComing", position = 3)
+    @ApiModelProperty(value = "Password login for human-machine verification, and the front end obtains the value of get NVC Val function (human-machine verification will be performed when not logged in)", example = "FutureIsComing", position = 3)
     private String data;
 }

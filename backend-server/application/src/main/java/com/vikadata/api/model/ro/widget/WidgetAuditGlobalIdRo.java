@@ -11,34 +11,31 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序审核全局ID请求参数
+ * Widget Audit Global ID Request Parameters
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序审核全局ID请求参数")
+@ApiModel("Widget Audit Global ID Request Parameters")
 public class WidgetAuditGlobalIdRo {
 
     @NotBlank
-    @ApiModelProperty(value = "审核小程序名称", position = 1)
+    @ApiModelProperty(value = "Widget applet name", position = 1)
     private String auditWidgetName;
 
     @NotNull
-    @ApiModelProperty(value = "审核结果", position = 2)
+    @ApiModelProperty(value = "Audit result", position = 2)
     private Boolean auditResult;
 
-    @ApiModelProperty(value = "审核备注", position = 3)
+    @ApiModelProperty(value = "Review remarks", position = 3)
     private String auditRemark;
 
     @NotBlank
     @Email(message = "notice email format error")
-    @ApiModelProperty(value = "通知邮件", position = 4)
+    @ApiModelProperty(value = "Notification Email", position = 4)
     private String noticeEmail;
 
     @NotNull
-    @ApiModelProperty(value = "组件包类型(0:第三方,1:官方)", position = 5)
+    @ApiModelProperty(value = "Package Type(0:Third party,1:Official)", position = 5)
     private Integer packageType;
 
     @NotEmpty

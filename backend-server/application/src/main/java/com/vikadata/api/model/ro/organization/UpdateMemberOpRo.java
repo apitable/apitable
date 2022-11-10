@@ -12,21 +12,18 @@ import javax.validation.constraints.Size;
 
 /**
  * <p>
- * 编辑自己成员信息请求参数
+ * Edit your own member information request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/5/12
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("编辑自己成员信息请求参数")
+@ApiModel("Edit your own member information request parameters")
 public class UpdateMemberOpRo {
 
-    @ApiModelProperty(value = "成员姓名", example = "张三", position = 3)
-    @NotBlank(message = "不能为空")
-    @Size(max = 32, message = "长度不能超过32位")
+    @ApiModelProperty(value = "Member Name", example = "Zhang San", position = 3)
+    @NotBlank(message = "Cannot be empty")
+    @Size(max = 32, message = "The length cannot exceed 32 bits")
     private String memberName;
 }

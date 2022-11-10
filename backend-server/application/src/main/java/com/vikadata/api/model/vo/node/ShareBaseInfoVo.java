@@ -9,19 +9,16 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 节点分享基本信息视图
+ * Node sharing basic information view
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 14:16
  */
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("节点分享基本信息视图")
+@ApiModel("Node sharing basic information view")
 public class ShareBaseInfoVo {
 
-    @ApiModelProperty(value = "分享唯一编码", example = "shrKsX1map5RfYO", position = 1)
+    @ApiModelProperty(value = "Share unique code", example = "shrKsX1map5RfYO", position = 1)
     private String shareId;
 }

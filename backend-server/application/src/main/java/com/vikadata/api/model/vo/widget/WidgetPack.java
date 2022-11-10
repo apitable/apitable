@@ -20,83 +20,80 @@ import java.util.List;
 
 /**
  * <p>
- * 组件包信息（对齐前端结构要求）
+ * Widget package information (alignment with front-end structure requirements)
  * </p>
- *
- * @author Chambers
- * @date 2021/01/11
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("组件包信息")
+@ApiModel("Widget package information")
 public class WidgetPack {
 
-    @ApiModelProperty(value = "组件ID", example = "wdt123", position = 1)
+    @ApiModelProperty(value = "Widget ID", example = "wdt123", position = 1)
     private String id;
 
-    @ApiModelProperty(value = "组件版本号", example = "0", position = 2)
+    @ApiModelProperty(value = "Widget version number", example = "0", position = 2)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long revision;
 
-    @ApiModelProperty(value = "组件包ID", example = "wpkABC", position = 3)
+    @ApiModelProperty(value = "Package ID", example = "wpkABC", position = 3)
     private String widgetPackageId;
 
-    @ApiModelProperty(value = "组件包名称", example = "图表", position = 4)
+    @ApiModelProperty(value = "Widget package name", example = "Chart", position = 4)
     private String widgetPackageName;
 
-    @ApiModelProperty(value = "组件包英文名称（废弃字段）", example = "chart", position = 4)
+    @ApiModelProperty(value = "English name of component package (obsolete field)", example = "chart", position = 4)
     @Deprecated
     private String widgetPackageNameEn;
 
-    @ApiModelProperty(value = "组件包图标", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 5)
+    @ApiModelProperty(value = "Widget package icon", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 5)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String widgetPackageIcon;
 
-    @ApiModelProperty(value = "组件包版本号", example = "v1.0.0", position = 6)
+    @ApiModelProperty(value = "Widget package version number", example = "v1.0.0", position = 6)
     private String widgetPackageVersion;
 
-    @ApiModelProperty(value = "组件快照信息", position = 7)
+    @ApiModelProperty(value = "Widget snapshot information", position = 7)
     private WidgetSnapshot snapshot;
 
-    @ApiModelProperty(value = "组件状态(0:开发中;1:已封禁;2:待发布;3:已发布;4:已下架)", position = 8)
+    @ApiModelProperty(value = "Widget status (0: under development; 1: banned; 2: to be published; 3: published; 4: off the shelf)", position = 8)
     private Integer status;
 
-    @ApiModelProperty(value = "组件作者名称", position = 9)
+    @ApiModelProperty(value = "Widget Author Name", position = 9)
     private String authorName;
 
-    @ApiModelProperty(value = "组件快作者Email", position = 10)
+    @ApiModelProperty(value = "Widget author Email", position = 10)
     private String authorEmail;
 
-    @ApiModelProperty(value = "组件作者图标", position = 11)
+    @ApiModelProperty(value = "Widget Author Icon", position = 11)
     @JsonSerialize(using = ImageSerializer.class)
     private String authorIcon;
 
-    @ApiModelProperty(value = "组件作者网站地址", position = 12)
+    @ApiModelProperty(value = "Widget Author Web Address", position = 12)
     private String authorLink;
 
-    @ApiModelProperty(value = "组件包类型(0:第三方,1:官方)", position = 13)
+    @ApiModelProperty(value = "Widget package type (0: third party, 1: official)", position = 13)
     private Integer packageType;
 
-    @ApiModelProperty(value = "组件发布类型(0:空间站,1:全局)", position = 14)
+    @ApiModelProperty(value = "Widget publishing type (0: space station, 1: global)", position = 14)
     private Integer releaseType;
 
-    @ApiModelProperty(value = "组件代码地址", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 15)
+    @ApiModelProperty(value = "Widget code address", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 15)
     @JsonSerialize(using = ImageSerializer.class)
     private String releaseCodeBundle;
 
-    @ApiModelProperty(value = "是否沙箱", position = 16)
+    @ApiModelProperty(value = "Sandbox or not", position = 16)
     private Boolean sandbox;
 
     @JsonInclude(Include.NON_EMPTY)
-    @ApiModelProperty(value = "审核小程序归属父级小程序Id", notes = "动态key", position = 17)
+    @ApiModelProperty(value = "Audit Applet Parent Applet Id", notes = "Dynamic key", position = 17)
     private String fatherWidgetPackageId;
 
-    @ApiModelProperty(value = "安装环境类型", example = "dashboard", position = 18)
+    @ApiModelProperty(value = "Installation environment type", example = "dashboard", position = 18)
     private List<String> installEnv;
 
-    @ApiModelProperty(value = "运行环境类型", example = "mobile", position = 19)
+    @ApiModelProperty(value = "Operating environment type", example = "mobile", position = 19)
     private List<String> runtimeEnv;
 
 }

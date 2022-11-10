@@ -9,27 +9,24 @@ import lombok.Data;
 
 /**
  * <p>
- * 空间公开邀请链接vo
+ * Space public invitation link vo
  * </p>
- *
- * @author Chambers
- * @date 2020/3/23
  */
 @Data
-@ApiModel("空间公开邀请链接vo")
+@ApiModel("Space public invitation link vo")
 public class SpaceLinkVo {
 
-    @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "上级部门名称", example = "研发部", position = 2)
+    @ApiModelProperty(value = "Name of superior department", example = "R&D Department", position = 2)
     private String parentTeamName;
 
-    @ApiModelProperty(value = "部门名称", example = "前端组", position = 3)
+    @ApiModelProperty(value = "Department name", example = "Front end group", position = 3)
     private String teamName;
 
-    @ApiModelProperty(value = "邀请令牌", example = "qwe31", position = 4)
+    @ApiModelProperty(value = "Invitation Token", example = "qwe31", position = 4)
     private String token;
 }

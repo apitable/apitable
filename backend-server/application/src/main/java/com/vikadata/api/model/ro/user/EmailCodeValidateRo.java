@@ -12,22 +12,19 @@ import com.vikadata.api.constants.PatternConstants;
 
 /**
  * <p>
- * 邮箱验证码校验请求参数
+ * Mailbox verification code verification request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/12/26 15:14
  */
 @Data
-@ApiModel("邮箱验证码校验请求参数")
+@ApiModel("Mailbox verification code verification request parameters")
 public class EmailCodeValidateRo {
 
-    @ApiModelProperty(value = "邮箱地址", example = "xxxx@vikadata.com", position = 1, required = true)
-    @NotBlank(message = "邮箱地址不能为空")
-    @Pattern(regexp = PatternConstants.EMAIL, message = "邮箱格式不正确", flags = Flag.CASE_INSENSITIVE)
+    @ApiModelProperty(value = "e-mail address", example = "xxxx@vikadata.com", position = 1, required = true)
+    @NotBlank(message = "Email address cannot be empty")
+    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags = Flag.CASE_INSENSITIVE)
     private String email;
 
-    @ApiModelProperty(value = "邮箱验证码", example = "123456", position = 2, required = true)
-    @NotBlank(message = "验证码不能为空")
+    @ApiModelProperty(value = "Email verification code", example = "123456", position = 2, required = true)
+    @NotBlank(message = "The verification code cannot be empty")
     private String code;
 }

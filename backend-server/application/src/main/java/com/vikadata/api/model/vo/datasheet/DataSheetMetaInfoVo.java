@@ -8,41 +8,38 @@ import lombok.*;
 
 /**
  * <p>
- * 数表与Meta信息的结果视图
+ * Result view of data table and meta information
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-@ApiModel("数表与Meta信息的结果视图")
+@ApiModel("Result view of data table and meta information")
 public class DataSheetMetaInfoVo {
 
 
-    @ApiModelProperty(value = "数表名称",example = "电商项目工作台", position = 2)
+    @ApiModelProperty(value = "Number table name",example = "E-commerce project workbench", position = 2)
     private String name;
 
-    @ApiModelProperty(value = "数表自定义ID", position = 3)
+    @ApiModelProperty(value = "Number table custom ID", position = 3)
     private String id;
 
-    @ApiModelProperty(value = "版本号",example = "0", position = 4)
+    @ApiModelProperty(value = "Version No",example = "0", position = 4)
     private Long revision;
 
-    @ApiModelProperty(value = "拥有者userId", position = 7)
+    @ApiModelProperty(value = "Owner user Id", position = 7)
     private Long ownerId;
 
-    @ApiModelProperty(value = "创建者userId", position = 8)
+    @ApiModelProperty(value = "Creator user Id", position = 8)
     private Long creatorId;
 
-    @ApiModelProperty(value = "空间id", position = 9)
+    @ApiModelProperty(value = "Space id", position = 9)
     private String spaceId;
 
-    @ApiModelProperty(value = "数表meta集合", position = 10)
+    @ApiModelProperty(value = "Data table meta set", position = 10)
     private JSONObject meta;
 
-	@ApiModelProperty(value = "节点信息与权限", position = 11)
+	@ApiModelProperty(value = "Node Information and Permission", position = 11)
 	private NodeInfoVo nodeInfo;
 }

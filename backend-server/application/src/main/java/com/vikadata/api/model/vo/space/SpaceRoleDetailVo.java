@@ -8,19 +8,16 @@ import java.util.List;
 
 /**
  * <p>
- * 管理员权限信息视图
+ * Administrator permission information view
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/12 17:29
  */
 @Data
-@ApiModel("管理员权限信息视图")
+@ApiModel("Administrator permission information view")
 public class SpaceRoleDetailVo {
 
-	@ApiModelProperty(value = "管理员名称", example = "张三", position = 1)
+	@ApiModelProperty(value = "Administrator Name", example = "Zhang San", position = 1)
 	private String memberName;
 
-	@ApiModelProperty(value = "管理员拥有的权限编码集合", dataType = "List", example = "[\"MANAGE_MEMBER\",\"MANAGE_TEAM\"]", position = 2)
+	@ApiModelProperty(value = "The permission code set owned by the administrator", dataType = "List", example = "[\"MANAGE_MEMBER\",\"MANAGE_TEAM\"]", position = 2)
 	private List<String> resources;
 }

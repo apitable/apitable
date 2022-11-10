@@ -5,18 +5,15 @@ import lombok.Data;
 
 /**
  * <p>
- * 客户端入口模版绑定参数
+ * Client portal template binding parameters
  * </p>
- *
- * @author zoe zheng
- * @date 2020/4/9 7:34 下午
  */
 @Data
 @Builder
 public class NotifyEmailVo {
 
     /**
-     * 发布人
+     * Publisher
      */
     private String publishUser;
 
@@ -24,7 +21,7 @@ public class NotifyEmailVo {
 
     private String content;
     /**
-     * 年份
+     * Particular year
      */
     private int years;
 }

@@ -10,42 +10,39 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 资源上传结果视图
+ * Resource upload result view
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/6/3 15:39
  */
 @Data
-@ApiModel("资源上传结果视图")
+@ApiModel("Resource upload result view")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class AssetUploadResult {
 
-    @ApiModelProperty(value = "文件访问路径", example = "spc10/2019/12/10/159.jpg", position = 1)
+    @ApiModelProperty(value = "File Access Path", example = "spc10/2019/12/10/159.jpg", position = 1)
     private String token;
 
-    @ApiModelProperty(value = "预览图路径", example = "spc10/2019/12/10/159.jpg", position = 2)
+    @ApiModelProperty(value = "Preview Path", example = "spc10/2019/12/10/159.jpg", position = 2)
     private String preview;
 
-    @ApiModelProperty(value = "MIME类型", example = "image/pdf", position = 3)
+    @ApiModelProperty(value = "MIME Type", example = "image/pdf", position = 3)
     private String mimeType;
 
-    @ApiModelProperty(value = "文件大小", example = "1204", position = 4)
+    @ApiModelProperty(value = "File size", example = "1204", position = 4)
     private Long size;
 
-    @ApiModelProperty(value = "云存储类型", example = "QNY", position = 5)
+    @ApiModelProperty(value = "Cloud storage type", example = "QNY", position = 5)
     private String bucket;
 
-    @ApiModelProperty(value = "文件名称", example = "image.jpg", position = 5)
+    @ApiModelProperty(value = "Document name", example = "image.jpg", position = 5)
     private String name;
 
-    @ApiModelProperty(value = "图片高度", example = "100", position = 6)
+    @ApiModelProperty(value = "Picture height", example = "100", position = 6)
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Integer height;
 
-    @ApiModelProperty(value = "图片宽度", example = "80", position = 5)
+    @ApiModelProperty(value = "Image width", example = "80", position = 5)
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Integer width;
 

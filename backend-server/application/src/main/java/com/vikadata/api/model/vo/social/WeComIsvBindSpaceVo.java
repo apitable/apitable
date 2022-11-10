@@ -10,10 +10,10 @@ import lombok.ToString;
 
 /**
  * <p>
- * 企业微信第三方应用绑定的空间站信息
+ * Space information bound by WeCom third-party applications
  * </p>
  */
-@ApiModel("企业微信第三方应用绑定的空间站信息")
+@ApiModel("Space information bound by WeCom third-party applications")
 @Setter
 @Getter
 @Builder
@@ -22,33 +22,33 @@ import lombok.ToString;
 public class WeComIsvBindSpaceVo {
 
     /**
-     * 是否已经登录。0：否；1：是
+     * Whether you have logged in. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否已经登录。0：否；1：是")
+    @ApiModelProperty("Whether you have logged in. 0: No; 1: Yes")
     private Integer logined;
 
     /**
-     * 应用绑定的空间站 ID
+     * Space ID bound by the application
      */
-    @ApiModelProperty("应用绑定的空间站 ID")
+    @ApiModelProperty("Space ID bound by the application")
     private String spaceId;
 
     /**
-     * 是否正在同步通讯录。0：否；1：是
+     * Whether the address book is being synchronized. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否正在同步通讯录。0：否；1：是")
+    @ApiModelProperty("Whether the address book is being synchronized. 0: No; 1: Yes")
     private Integer contactSyncing;
 
     /**
-     * 用户的默认成员名称
+     * User's default member name
      */
-    @ApiModelProperty("用户的默认成员名称")
+    @ApiModelProperty("User's default member name")
     private String defaultName;
 
     /**
-     * 是否需要更改默认名称。0：否；1：是
+     * Whether the default name needs to be changed. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否需要更改默认名称。0：否；1：是")
+    @ApiModelProperty("Whether the default name needs to be changed. 0: No; 1: Yes")
     private Integer shouldRename;
 
 }

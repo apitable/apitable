@@ -4,32 +4,29 @@ import lombok.Data;
 
 /**
  * <p>
- * 日期字段属性
+ * Date Field Properties
  * </p>
- *
- * @author Chambers
- * @date 2020/5/7
  */
 @Data
 public class DateFieldProperty {
 
     /**
-     * 日期格式类型
+     * Date Format Type
      */
     private int dateFormat;
 
     /**
-     * 时间格式类型
+     * Time Format Type
      */
     private int timeFormat;
 
     /**
-     * 是否包含时间
+     * Include time or not
      */
     private boolean includeTime;
 
     /**
-     * 自动填充
+     * Auto Fill
      */
     private boolean autoFill;
 

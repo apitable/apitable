@@ -8,25 +8,22 @@ import lombok.*;
 
 /**
  * <p>
- * 数表meta集合参数
+ * DataSheet meta set parameter
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
-@ApiModel("数表meta集合参数")
+@ApiModel("DataSheet meta set parameter")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class MetaMapRo {
 
-    @ApiModelProperty(value = "数表字段集合", position = 2)
+    @ApiModelProperty(value = "DataSheet field set", position = 2)
     private JSONObject fieldMap;
 
-    @ApiModelProperty(value = "视图数组（存viewId）", position = 3)
+    @ApiModelProperty(value = "View array（Save viewId）", position = 3)
     private JSONArray views;
 
-    @ApiModelProperty(value = "组件面板", position = 4)
+    @ApiModelProperty(value = "Component panel", position = 4)
     private JSONArray widgetPanels;
 }

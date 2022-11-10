@@ -11,22 +11,19 @@ import java.util.List;
 
 /**
  * <p>
- * 移除标签成员请求参数
+ * Remove tag member request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/21 20:27
  */
 @Data
-@ApiModel("移除标签成员请求参数")
+@ApiModel("Remove tag member request parameters")
 public class DeleteTagMemberRo {
 
     @NotNull
-    @ApiModelProperty(value = "成员ID", example = "1", required = true, position = 2)
+    @ApiModelProperty(value = "Member ID", example = "1", required = true, position = 2)
     private Long tagId;
 
     @NotEmpty
     @Size(max = 100)
-    @ApiModelProperty(value = "成员ID集合", dataType = "List", example = "[1,2,3,4]", required = true, position = 3)
+    @ApiModelProperty(value = "Member ID Collection", dataType = "List", example = "[1,2,3,4]", required = true, position = 3)
     private List<Long> memberId;
 }

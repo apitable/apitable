@@ -8,21 +8,18 @@ import lombok.Data;
 
 /**
  * <p>
- * 部门视图
+ * Department View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/21 19:09
  */
 @Data
-@ApiModel("部门视图")
+@ApiModel("Department View")
 public class TeamVo {
 
-    @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "部门名称", example = "研发部", position = 2)
+    @ApiModelProperty(value = "Department name", example = "R&D Department", position = 2)
     private String teamName;
 
     public TeamVo() {}

@@ -8,31 +8,28 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 图片审核结果请求参数
+ * Image audit result request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/21
  */
 @Data
-@ApiModel("图片审核结果请求参数")
+@ApiModel("Image audit result request parameters")
 public class AttachAuditItemsRo {
 
 
-	@ApiModelProperty(value = "处理文件结果的操作指令", position = 1, required = true)
-	@NotNull(message = "处理文件结果的操作指令")
+	@ApiModelProperty(value = "Operation instructions for processing file results", position = 1, required = true)
+	@NotNull(message = "Operation instructions for processing file results")
 	private String cmd;
 
-	@ApiModelProperty(value = "处理文件结果的操作状态码", position = 2, required = true)
-	@NotNull(message = "处理文件结果的操作状态码")
+	@ApiModelProperty(value = "Operation status code of processing file results", position = 2, required = true)
+	@NotNull(message = "Operation status code of processing file results")
 	private String code;
 
-	@ApiModelProperty(value = "处理文件结果的操作描述", position = 2, required = true)
-	@NotNull(message = "处理文件结果的操作描述")
+	@ApiModelProperty(value = "Operation description of processing file results", position = 2, required = true)
+	@NotNull(message = "Operation description of processing file results")
 	private String desc;
 
-	@ApiModelProperty(value = "处理文件的结果", position = 3, required = true)
-	@NotNull(message = "处理文件的结果")
+	@ApiModelProperty(value = "Results of processing files", position = 3, required = true)
+	@NotNull(message = "Results of processing files")
 	private AttachAuditResultDisableRo result;
 
 

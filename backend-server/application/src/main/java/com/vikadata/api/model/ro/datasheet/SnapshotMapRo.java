@@ -6,21 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * 数表Snapshot操作请求参数
- *
- * @author Benson Cheung
- * @since 2019/10/7
+ * DataSheet Snapshot Operation Request Parameters
  */
-@ApiModel("数表Snapshot操作请求参数")
+@ApiModel("DataSheet Snapshot Operation Request Parameters")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class SnapshotMapRo {
 
-    @ApiModelProperty(value = "数表meta集合", position = 2)
+    @ApiModelProperty(value = "DataSheet meta set", position = 2)
     private JSONObject meta;
 
-    @ApiModelProperty(value = "数表记录集合", position = 3)
+    @ApiModelProperty(value = "DataSheet record set", position = 3)
     private JSONObject recordMap;
 }

@@ -17,65 +17,62 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 微信会员信息vo
+ * WeChat member information vo
  * </p>
- *
- * @author Chambers
- * @date 2020/3/3
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("微信会员信息vo")
+@ApiModel("WeChat member information vo")
 public class WechatInfoVo {
 
-    @ApiModelProperty(value = "昵称", example = "这是一个昵称", position = 1)
+    @ApiModelProperty(value = "Nickname", example = "This is a nickname", position = 1)
     private String nickName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "头像", example = "https://wx.qlogo.cn/BRp2a", position = 2)
+    @ApiModelProperty(value = "Avatar", example = "https://wx.qlogo.cn/BRp2a", position = 2)
     private String avatar;
 
-    @ApiModelProperty(value = "手机号码", example = "\"13344445555\"", position = 3)
+    @ApiModelProperty(value = "Phone number", example = "\"13344445555\"", position = 3)
     private String mobile;
 
-    @ApiModelProperty(value = "邮箱", example = "admin@vikadata.com", position = 4)
+    @ApiModelProperty(value = "Email", example = "admin@vikadata.com", position = 4)
     private String email;
 
-    @ApiModelProperty(value = "空间名称", example = "我的工作空间", position = 5)
+    @ApiModelProperty(value = "Space name", example = "My Workspace", position = 5)
     private String spaceName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "空间logo", example = "http://...", position = 6)
+    @ApiModelProperty(value = "Space logo", example = "http://...", position = 6)
     private String spaceLogo;
 
-    @ApiModelProperty(value = "创建者名称", example = "张三", position = 7)
+    @ApiModelProperty(value = "Creator name", example = "Zhang San", position = 7)
     private String creatorName;
 
-    @ApiModelProperty(value = "空间拥有者名称", example = "李四", position = 8)
+    @ApiModelProperty(value = "Space owner name", example = "Li Si", position = 8)
     private String ownerName;
 
-    @ApiModelProperty(value = "创建时间时间戳(毫秒)", example = "1573561644000", position = 9)
+    @ApiModelProperty(value = "Creation timestamp (ms)", example = "1573561644000", position = 9)
     @JsonSerialize(using = LocalDateTimeToMilliSerializer.class)
     private LocalDateTime createTime;
 
-    @ApiModelProperty(value = "现有人数", example = "20", position = 10)
+    @ApiModelProperty(value = "Number of people on hand", example = "20", position = 10)
     private Long memberNumber;
 
-    @ApiModelProperty(value = "部门数量", example = "5", position = 11)
+    @ApiModelProperty(value = "Number of departments", example = "5", position = 11)
     private Long teamNumber;
 
-    @ApiModelProperty(value = "文件数量", example = "5", position = 12)
+    @ApiModelProperty(value = "Number of documents", example = "5", position = 12)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long fileNumber;
 
-    @ApiModelProperty(value = "总记录数", example = "5", position = 13)
+    @ApiModelProperty(value = "Total Records", example = "5", position = 13)
     private Long recordNumber;
 
-    @ApiModelProperty(value = "已用空间(单位：byte)", example = "1024", position = 14)
+    @ApiModelProperty(value = "Used space (unit: byte)", example = "1024", position = 14)
     private Long usedSpace;
 
-    @ApiModelProperty(value = "总容量(单位：byte)", example = "1024", position = 15)
+    @ApiModelProperty(value = "Total capacity (unit: byte)", example = "1024", position = 15)
     private Long maxMemory;
 }

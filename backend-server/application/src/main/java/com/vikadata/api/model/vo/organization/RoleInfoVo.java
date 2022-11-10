@@ -13,7 +13,6 @@ import com.vikadata.api.support.serializer.NullNumberSerializer;
  * <p>
  *     role's info
  * </p>
- * @author tao
  */
 @Data
 @Builder
@@ -28,7 +27,7 @@ public class RoleInfoVo {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
-    @ApiModelProperty(value = "role name", example = "财务", position = 3)
+    @ApiModelProperty(value = "role name", example = "Finance", position = 3)
     private String roleName;
 
     @ApiModelProperty(value = "role's member amount", example = "1", position = 4)

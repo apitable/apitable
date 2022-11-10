@@ -6,23 +6,20 @@ import lombok.Data;
 
 /**
  * <p>
- * 活跃节点请求参数
+ * Active node request parameters
  * </p>
- *
- * @author Chambers
- * @date 2019/11/18
  */
 @Data
-@ApiModel("活跃节点请求参数")
+@ApiModel("Active node request parameters")
 public class ActiveSheetsOpRo {
 
-    @ApiModelProperty(value = "活跃节点id", example = "dst15", position = 1)
+    @ApiModelProperty(value = "Active node id", example = "dst15", position = 1)
     private String nodeId;
 
-    @ApiModelProperty(value = "活跃数表的视图id", example = "views135", position = 2)
+    @ApiModelProperty(value = "View ID of active number table", example = "views135", position = 2)
     private String viewId;
 
-    @ApiModelProperty(value = "位置(0:工作目录;1:星标)", example = "1", position = 3)
+    @ApiModelProperty(value = "Location (0: working directory; 1: star)", example = "1", position = 3)
     private Integer position;
 
 }

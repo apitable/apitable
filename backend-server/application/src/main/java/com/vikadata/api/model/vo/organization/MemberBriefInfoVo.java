@@ -8,28 +8,25 @@ import lombok.Data;
 
 /**
  * <p>
- * 成员基本信息视图
+ * Basic member information view
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
-@ApiModel("成员基本信息视图")
+@ApiModel("Basic member information view")
 public class MemberBriefInfoVo {
 
-    @ApiModelProperty(value = "组织单元 ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Organizational Unit ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitId;
 
-    @ApiModelProperty(value = "成员 ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "成员姓名", example = "张三", position = 2)
+    @ApiModelProperty(value = "Member Name", example = "Zhang San", position = 2)
     private String memberName;
 
-    @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 12)
+    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 12)
     private Boolean isMemberNameModified;
 
 }

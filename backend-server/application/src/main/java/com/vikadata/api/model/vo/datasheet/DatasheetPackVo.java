@@ -13,13 +13,10 @@ import java.util.Map;
 
 /**
  * <p>
- * 初始化数表操作返回参数
+ * Initialize data table operation return parameters
  * </p>
- *
- * @author Benson Cheung
- * @since 2020/01/20
  */
-@ApiModel("数表操作返回参数")
+@ApiModel("Return parameters of data table operation")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -27,16 +24,16 @@ import java.util.Map;
 @Builder(toBuilder = true)
 public class DatasheetPackVo implements Serializable {
 
-    @ApiModelProperty(value = "数表Snapshot集合", position = 2)
+    @ApiModelProperty(value = "Datasheet Snapshot Collection", position = 2)
     private SnapshotMapRo snapshot;
 
-    @ApiModelProperty(value = "数表基本信息", position = 3)
+    @ApiModelProperty(value = "Basic information of digital meter", position = 3)
     private DataSheetInfoVo datasheet;
 
-    @ApiModelProperty(value = "关联数表数据集合", position = 4)
+    @ApiModelProperty(value = "Data set of related number table", position = 4)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private JSONObject foreignDatasheetMap;
 
-    @ApiModelProperty(value = "组织单元Map", position = 5)
+    @ApiModelProperty(value = "Organization Unit Map", position = 5)
     private Map unitMap;
 }

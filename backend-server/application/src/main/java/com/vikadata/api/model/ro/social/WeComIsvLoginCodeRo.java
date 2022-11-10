@@ -15,10 +15,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 企业微信内第三方应用授权登录
+ * Authorized login of third-party applications in WeCom
  * </p>
  */
-@ApiModel("企业微信应用用户登录请求参数")
+@ApiModel("WeCom application user login request parameters")
 @Setter
 @Getter
 @Builder
@@ -27,11 +27,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WeComIsvLoginCodeRo {
 
-    @ApiModelProperty(value = "应用套件 ID", required = true)
+    @ApiModelProperty(value = "Application suit ID", required = true)
     @NotBlank
     private String suiteId;
 
-    @ApiModelProperty(value = "登录授权码", required = true)
+    @ApiModelProperty(value = "Login authorization code", required = true)
     @NotBlank
     private String code;
 

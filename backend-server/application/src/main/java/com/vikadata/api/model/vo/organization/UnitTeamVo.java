@@ -10,39 +10,36 @@ import lombok.Data;
 
 /**
  * <p>
- * 部门单位视图
+ * Department Unit View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/21 01:29
  */
 @Data
-@ApiModel("部门单位视图")
+@ApiModel("Department Unit View")
 public class UnitTeamVo {
 
-    @ApiModelProperty(value = "组织单元ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitId;
 
-    @ApiModelProperty(value = "小组ID", dataType = "java.lang.String", example = "1", position = 2)
+    @ApiModelProperty(value = "Group ID", dataType = "java.lang.String", example = "1", position = 2)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "小组名称", example = "研发部 ｜ 张三", position = 3)
+    @ApiModelProperty(value = "Group name", example = "R&D Department ｜ Zhang San", position = 3)
     private String teamName;
 
-    @ApiModelProperty(value = "部门名称(不加高亮标签)", example = "技术组", position = 3)
+    @ApiModelProperty(value = "Department name (not highlighted)", example = "Technical team", position = 3)
     private String originName;
 
-    @ApiModelProperty(value = "成员数量", example = "3", position = 5)
+    @ApiModelProperty(value = "Number of members", example = "3", position = 5)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
 
-    @ApiModelProperty(value = "是否有子部门和成员", example = "true", position = 6)
+    @ApiModelProperty(value = "Whether there are sub departments and members", example = "true", position = 6)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasChildren;
 
-    @ApiModelProperty(value = "是否有子部门", example = "true", position = 7)
+    @ApiModelProperty(value = "Whether there are sub departments", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasChildrenTeam;
 }

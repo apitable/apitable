@@ -13,23 +13,20 @@ import java.util.List;
 
 /**
  * <p>
- * 分享节点数视图
+ * View of the number of shared nodes
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 14:00
  */
 @Data
-@ApiModel("分享节点数视图")
+@ApiModel("View of the number of shared nodes")
 public class NodeShareTree implements Tree {
 
-    @ApiModelProperty(value = "节点ID", example = "nod10", position = 1)
+    @ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
     private String nodeId;
 
-    @ApiModelProperty(value = "节点名称", example = "节点名称", position = 2)
+    @ApiModelProperty(value = "Node Name", example = "Node Name", position = 2)
     private String nodeName;
 
-    @ApiModelProperty(value = "节点图标", example = ":smile", position = 3)
+    @ApiModelProperty(value = "Node icon", example = ":smile", position = 3)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String icon;
 
@@ -45,10 +42,10 @@ public class NodeShareTree implements Tree {
     @JsonIgnore
     private String extra;
 
-    @ApiModelProperty(value = "节点类型[1:文件夹,2:数表]", example = "1", position = 4)
+    @ApiModelProperty(value = "Node Type[1:Folder,2:Datasheet]", example = "1", position = 4)
     private Integer type;
 
-    @ApiModelProperty(value = "子节点", position = 4)
+    @ApiModelProperty(value = "Child node", position = 4)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeShareTree> children;
 

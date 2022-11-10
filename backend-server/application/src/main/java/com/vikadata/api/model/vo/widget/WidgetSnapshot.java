@@ -14,30 +14,27 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 组件快照信息（对齐前端结构要求）
+ * Widget snapshot information (alignment with front-end structure requirements)
  * </p>
- *
- * @author Chambers
- * @date 2021/01/11
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("组件快照信息")
+@ApiModel("Widget snapshot information")
 @Builder(toBuilder = true)
 public class WidgetSnapshot {
 
-    @ApiModelProperty(value = "组件名称", example = "组件实例名称", position = 1)
+    @ApiModelProperty(value = "Widget Name", example = "Widget instance name", position = 1)
     private String widgetName;
 
-    @ApiModelProperty(value = "数据源数表ID", example = "dst123", position = 2)
+    @ApiModelProperty(value = "Data source table ID", example = "dst123", position = 2)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String datasheetId;
 
-    @ApiModelProperty(value = "存储配置", position = 3)
+    @ApiModelProperty(value = "Storage configuration", position = 3)
     private HashMap<Object,Object> storage;
 
-    @ApiModelProperty(value = "数据源引用来源ID", example = "mir123", position = 4)
+    @ApiModelProperty(value = "Data source reference source ID", example = "mir123", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String sourceId;
 }

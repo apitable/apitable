@@ -15,23 +15,20 @@ import com.vikadata.core.support.deserializer.StringArrayToLongArrayDeserializer
 
 /**
  * <p>
- * 数表字段角色创建请求参数
+ * DataSheet Field Role Creation Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2021/3/29
  */
 @Data
-@ApiModel("数表字段角色创建请求参数")
+@ApiModel("DataSheet Field Role Creation Request Parameters")
 public class FieldRoleCreateRo {
 
-    @NotEmpty(message = "组织单元不能为空")
-    @ApiModelProperty(value = "组织单元ID集合", dataType = "List", example = "10101,10102,10103,10104", required = true, position = 2)
+    @NotEmpty(message = "Organization unit cannot be empty")
+    @ApiModelProperty(value = "Organization Unit ID Collection", dataType = "List", example = "10101,10102,10103,10104", required = true, position = 2)
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 
-    @NotBlank(message = "角色不能为空")
+    @NotBlank(message = "Role cannot be empty")
     @FieldRoleMatch
-    @ApiModelProperty(value = "角色", example = "editor", required = true, position = 3)
+    @ApiModelProperty(value = "Role", example = "editor", required = true, position = 3)
     private String role;
 }

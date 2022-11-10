@@ -8,63 +8,60 @@ import lombok.NoArgsConstructor;
 
 /**
 * <p>
-* 附件审核结果vo
+* Attachment audit result vo
 * </p>
-*
-* @author Benson Cheung
-* @date 2020/03/23
 */
 @Data
-@ApiModel("附件审核结果vo")
+@ApiModel("Attachment audit result vo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class AssetsAuditVo {
 
     /**
-     * 资源ID(关联#vika_asset#id)
+     * Resource ID(Relate#vika_asset#id)
      */
     private Long assetId;
 
     /**
-     * 云端文件存放路径
+     * Cloud file storage path
      */
     private String assetFileUrl;
 
     /**
-     * [冗余]md5摘要
+     * [Redundancy] md 5 Summary
      */
     private String assetChecksum;
 
     /**
-     * 审核结果分数
+     * Audit result score
      */
     private float auditResultScore;
 
 
     /**
-     * 审核结果建议，包括：[“block”,”review”,”pass”]
+     * Suggestions on audit results, including:[“block”,”review”,”pass”]
      */
     private String auditResultSuggestion;
 
     /**
-     * 审核类型，目前支持：pul[色情]/terror[暴恐]/politician[敏感人物]/ads[图片广告识别]
+     * Audit Type, currently supports:pul[Pornographic]/terror[Violent phobia]/politician[Sensitive person]/ads[Image advertisement recognition]
      */
     private String auditScenes;
 
 
     /**
-     * 审核人OpenId
+     * Reviewer Open Id
      */
     private String auditorOpenid;
 
     /**
-     * 审核人名称
+     * Name of reviewer
      */
     private String auditorName;
 
     /**
-     * 是否审核(0:否,1:是)
+     * Approve or not (0: No, 1: Yes)
      */
     private Boolean isAudited;
 

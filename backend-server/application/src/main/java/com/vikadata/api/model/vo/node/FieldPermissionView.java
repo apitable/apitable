@@ -10,24 +10,21 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 字段权限视图
+ * Field Permission View
  * </p>
- *
- * @author Chambers
- * @date 2021/4/28
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("字段权限视图")
+@ApiModel("Field Permission View")
 public class FieldPermissionView {
 
-    @ApiModelProperty(value = "节点ID", example = "dstGxznHFXf9pvF1LZ")
+    @ApiModelProperty(value = "Node ID", example = "dstGxznHFXf9pvF1LZ")
     private String nodeId;
 
-    @ApiModelProperty(value = "数表ID（节点ID / 源数表节点ID）", example = "dstGxznHFXf9pvF1LZ", position = 1)
+    @ApiModelProperty(value = "Datasheet ID（Node ID / Source Datasheet node ID）", example = "dstGxznHFXf9pvF1LZ", position = 1)
     private String datasheetId;
 
-    @ApiModelProperty(value = "数表字段权限信息", dataType = "java.util.Map", position = 2)
+    @ApiModelProperty(value = "Datasheet field permission information", dataType = "java.util.Map", position = 2)
     private Map<String, FieldPermissionInfo> fieldPermissionMap;
 }

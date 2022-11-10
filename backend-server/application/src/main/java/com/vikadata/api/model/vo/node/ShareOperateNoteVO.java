@@ -10,26 +10,23 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 分享操作记录
+ * Share operation records
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 14:16
  */
 @Data
-@ApiModel("节点分享操作记录视图")
+@ApiModel("Node sharing operation record view")
 public class ShareOperateNoteVO {
 
-    @ApiModelProperty(value = "操作者", example = "张三", position = 1)
+    @ApiModelProperty(value = "Operator", example = "Zhang San", position = 1)
     private String operator;
 
-    @ApiModelProperty(value = "动作名称", example = "开启｜关闭｜刷新", position = 2)
+    @ApiModelProperty(value = "Denomination of dive", example = "Open｜Close｜Refresh", position = 2)
     private String action;
 
-    @ApiModelProperty(value = "操作事件", example = "分享｜ 允许他人保存 ｜ 分享链接", position = 3)
+    @ApiModelProperty(value = "Operation event", example = "Share｜ Allow others to save ｜ Share Link", position = 3)
     private String event;
 
-    @ApiModelProperty(value = "操作时间(UTC时间戳)", example = "2020-03-19T16:03:16.000", position = 4)
+    @ApiModelProperty(value = "Operation time (UTC timestamp)", example = "2020-03-19T16:03:16.000", position = 4)
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime timestamp;
 }

@@ -9,25 +9,22 @@ import javax.validation.constraints.Size;
 
 /**
  * <p>
- * 创建模版请求参数
+ * Create Template Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/5/12
  */
 @Data
-@ApiModel("创建模版请求参数")
+@ApiModel("Create Template Request Parameters")
 public class CreateTemplateRo {
 
-    @ApiModelProperty(value = "模板名称", example = "这是一个模板", position = 1, required = true)
-    @NotBlank(message = "模板名称不能为空")
-    @Size(max = 100, message = "名称长度不能超过100位")
+    @ApiModelProperty(value = "Template Name", example = "This is a template", position = 1, required = true)
+    @NotBlank(message = "Template name cannot be empty")
+    @Size(max = 100, message = "The name length cannot exceed 100 bits")
     private String name;
 
-    @ApiModelProperty(value = "创建模版的节点Id", example = "nod10", position = 2, required = true)
-    @NotBlank(message = "节点Id不能为空")
+    @ApiModelProperty(value = "Node Id of template creation", example = "nod10", position = 2, required = true)
+    @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "是否保留数据", example = "true", position = 3)
+    @ApiModelProperty(value = "Whether to retain data", example = "true", position = 3)
     private Boolean data = true;
 }

@@ -8,21 +8,19 @@ import lombok.Data;
 
 /**
  * <p>
- * 企业微信应用租户绑定空间站请求参数
+ * WeCom application tenants bind space station request parameters
  * </p>
- * @author Pengap
- * @date 2021/8/1 18:05:15
  */
 @Data
-@ApiModel("企业微信应用租户绑定空间站请求参数")
+@ApiModel("We Com application tenants bind space station request parameters")
 public class WeComAgentBindSpaceRo {
 
     @NotBlank
-    @ApiModelProperty(value = "空间站标识", example = "spc2123hjhasd")
+    @ApiModelProperty(value = "Space identification", example = "spc2123hjhasd")
     private String spaceId;
 
     @NotBlank
-    @ApiModelProperty(value = "用户允许授权后,重定向返回的code参数", example = "CODE")
+    @ApiModelProperty(value = "The code parameter returned by redirection after the user allows authorization", example = "CODE")
     private String code;
 
 }

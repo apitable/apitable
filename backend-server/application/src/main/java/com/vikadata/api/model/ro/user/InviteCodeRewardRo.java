@@ -9,17 +9,15 @@ import lombok.Data;
 
 /**
  * <p> 
- * 邀请码奖励请求参数
- * </p> 
- * @author Shawn Deng 
- * @date 2022/4/7 21:39
+ * Invitation code reward request parameters
+ * </p>
  */
 @Data
-@ApiModel("邀请码奖励请求参数")
+@ApiModel("Invitation code reward request parameters")
 public class InviteCodeRewardRo {
 
-    @NotBlank(message = "邀请码不能为空")
-    @Size(min = 8, max = 8, message = "邀请码长度只能是8位")
-    @ApiModelProperty(value = "邀请码", example = "12345678", position = 1, required = true)
+    @NotBlank(message = "The invitation code cannot be empty")
+    @Size(min = 8, max = 8, message = "The invitation code can only be 8 digits long")
+    @ApiModelProperty(value = "Invitation code", example = "12345678", position = 1, required = true)
     private String inviteCode;
 }

@@ -11,29 +11,26 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 积分收支记录视图
+ * Integral Revenue&Expense Record View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/9/16 16:32
  */
 @Data
-@ApiModel("积分收支记录视图")
+@ApiModel("Integral Revenue&Expense Record View")
 public class IntegralRecordVO {
 
-    @ApiModelProperty(value = "动作标识", example = "invitation_reward", position = 1)
+    @ApiModelProperty(value = "Action ID", example = "invitation_reward", position = 1)
     private String action;
 
-    @ApiModelProperty(value = "变更类型(0:收入, 1:支出)", example = "0", position = 2)
+    @ApiModelProperty(value = "Change Type (0: Revenue, 1: Expense)", example = "0", position = 2)
     private Integer alterType;
 
-    @ApiModelProperty(value = "变更值(单位:分)", example = "1000", position = 3)
+    @ApiModelProperty(value = "Change value (unit: minutes)", example = "1000", position = 3)
     private String alterValue;
 
-    @ApiModelProperty(value = "参数", position = 4)
+    @ApiModelProperty(value = "Parameter", position = 4)
     private JSONObject params;
 
-    @ApiModelProperty(value = "变更时间", example = "1000", position = 5)
+    @ApiModelProperty(value = "Change time", example = "1000", position = 5)
     @JsonSerialize(using = ChinaLocalDateTimeToUtcSerializer.class)
     private LocalDateTime createdAt;
 }

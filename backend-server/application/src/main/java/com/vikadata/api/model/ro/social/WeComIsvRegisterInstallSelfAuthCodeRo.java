@@ -14,10 +14,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 通过安装维格表的授权链接完成应用安装
+ * Complete the application installation through the authorization link of the installation vika
  * </p>
  */
-@ApiModel("通过安装维格表的授权链接完成应用安装")
+@ApiModel("Complete the application installation through the authorization link of the installation vika")
 @Setter
 @Getter
 @Builder
@@ -26,11 +26,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WeComIsvRegisterInstallSelfAuthCodeRo {
 
-    @ApiModelProperty(value = "临时授权码", required = true)
+    @ApiModelProperty(value = "Temporary authorization code", required = true)
     @NotBlank
     private String authCode;
 
-    @ApiModelProperty(value = "随机状态码", required = true)
+    @ApiModelProperty(value = "Random status code", required = true)
     @NotBlank
     private String state;
 

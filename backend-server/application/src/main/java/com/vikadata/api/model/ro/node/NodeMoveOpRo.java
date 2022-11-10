@@ -7,23 +7,20 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 节点移动请求参数
- *
- * @author Chambers
- * @since 2019/11/01
+ * Node move request parameters
  */
 @Data
-@ApiModel("节点移动请求参数")
+@ApiModel("Node move request parameters")
 public class NodeMoveOpRo {
 
-    @ApiModelProperty(value = "节点Id", example = "nod10", position = 1, required = true)
-    @NotBlank(message = "节点Id不能为空")
+    @ApiModelProperty(value = "Node Id", example = "nod10", position = 1, required = true)
+    @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "目标位置的父类节点Id", example = "nod10", position = 2, required = true)
-	@NotBlank(message = "父类节点Id不能为空")
+    @ApiModelProperty(value = "Parent Node Id of the target location", example = "nod10", position = 2, required = true)
+	@NotBlank(message = "The parent node ID cannot be empty")
     private String parentId;
 
-    @ApiModelProperty(value = "目标位置的前一个节点，为空时即移动到了首位", example = "nod10", position = 3)
+    @ApiModelProperty(value = "The previous node of the target position moves to the first position when it is empty", example = "nod10", position = 3)
     private String preNodeId;
 }

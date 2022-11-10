@@ -6,12 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * 数表Meta操作请求参数
- *
- * @author Benson Cheung
- * @since 2019/10/7
+ * DataSheet Meta Operation Request Parameters
  */
-@ApiModel("数表Meta操作请求参数")
+@ApiModel("DataSheet Meta Operation Request Parameters")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -19,10 +16,10 @@ import lombok.*;
 public class MetaOpRo {
 
 
-    @ApiModelProperty(value = "fieldMap和viewMap数据", example = "", position = 3)
+    @ApiModelProperty(value = "fieldMap and viewMap Data", example = "", position = 3)
     private JSONObject meta;
 
-    @ApiModelProperty(value = "版本号",example = "0", position = 4)
+    @ApiModelProperty(value = "Version No",example = "0", position = 4)
     private Long revision;
 
 }

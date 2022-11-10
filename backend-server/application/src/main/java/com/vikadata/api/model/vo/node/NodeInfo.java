@@ -9,18 +9,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 节点信息视图
+ * Node Information View
  * </p>
- *
- * @author Chambers
- * @date 2021/1/6
  */
 @Data
-@ApiModel("节点信息视图")
+@ApiModel("Node Information View")
 @EqualsAndHashCode(callSuper = true)
 public class NodeInfo extends BaseNodeInfo {
 
-    @ApiModelProperty(value = "节点图标", example = ":smile", position = 4)
+    @ApiModelProperty(value = "Node icon", example = ":smile", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String icon;
 }

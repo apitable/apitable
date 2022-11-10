@@ -9,18 +9,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 收藏节点信息
+ * Favorite node information
  * </p>
- *
- * @author Chambers
- * @date 2020/9/2
  */
 @Data
-@ApiModel("收藏节点信息")
+@ApiModel("Favorite node information")
 @EqualsAndHashCode(callSuper = true)
 public class FavoriteNodeInfo extends NodeInfoVo {
 
-    @ApiModelProperty(value = "收藏节点的前置节点ID", example = "nod11", position = 15)
+    @ApiModelProperty(value = "The predecessor node ID of the favorite node", example = "nod11", position = 15)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String preFavoriteNodeId;
 }

@@ -12,18 +12,15 @@ import com.vikadata.api.constants.PatternConstants;
 
 /**
  * <p>
- * 再次发送邮件邀请成员请求参数
+ * Send an email again to invite member request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/12/11 10:23
  */
 @Data
-@ApiModel("再次发送邮件邀请成员请求参数")
+@ApiModel("Send an email again to invite member request parameters")
 public class InviteMemberAgainRo {
 
-    @NotNull(message = "邮箱不存在，无法再次发送邀请")
-    @ApiModelProperty(value = "邮箱地址,严格校验", example = "123456@qq.com", required = true, position = 1)
-    @Pattern(regexp = PatternConstants.EMAIL, message = "邮箱格式不正确", flags = Flag.CASE_INSENSITIVE)
+    @NotNull(message = "The mailbox does not exist, and the invitation cannot be sent again")
+    @ApiModelProperty(value = "Email address, strictly checked", example = "123456@qq.com", required = true, position = 1)
+    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags = Flag.CASE_INSENSITIVE)
     private String email;
 }

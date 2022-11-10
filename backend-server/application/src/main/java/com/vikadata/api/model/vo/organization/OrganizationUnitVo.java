@@ -10,45 +10,42 @@ import lombok.Data;
 
 /**
  * <p>
- * 组织单元视图
+ * Organization Unit View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
-@ApiModel("组织单元视图")
+@ApiModel("Organization Unit View")
 public class OrganizationUnitVo {
 
-    @ApiModelProperty(value = "ID标识，根据type类型分类，type=1,为部门ID，type=2,为成员ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "ID ID, classified by type, type=1, department ID, type=2, member ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
-    @ApiModelProperty(value = "名称", example = "研发部 | 张三", position = 2)
+    @ApiModelProperty(value = "Name", example = "R&D Department | Zhang San", position = 2)
     private String name;
 
-    @ApiModelProperty(value = "部门名称(不加高亮标签)", example = "技术组", position = 2)
+    @ApiModelProperty(value = "Department name (not highlighted)", example = "Technical team", position = 2)
     private String originName;
 
-    @ApiModelProperty(value = "分类：1-部门，2-成员", example = "1", position = 3)
+    @ApiModelProperty(value = "Classification: 1-department, 2-member", example = "1", position = 3)
     private Integer type;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "成员头像，分类为成员时会返回", example = "http://www.vikadata.com/image.png", position = 4)
+    @ApiModelProperty(value = "Member avatar, which will be returned when classified as a member", example = "http://www.vikadata.com/image.png", position = 4)
     private String avatar;
 
-    @ApiModelProperty(value = "成员所属部门，分类为成员时会返回", example = "运营助理", position = 5)
+    @ApiModelProperty(value = "The department to which the member belongs will be returned when classified as a member", example = "Operation Assistant", position = 5)
     private String teams;
 
-    @ApiModelProperty(value = "成员是否已激活，分类为成员时会返回", example = "true", position = 5)
+    @ApiModelProperty(value = "Whether the member has been activated. When classified as a member, it will return", example = "true", position = 5)
     private Boolean isActive;
 
-    @ApiModelProperty(value = "部门简称，分类为部门时会返回", example = "研", position = 6)
+    @ApiModelProperty(value = "Short name of the department. It will be returned when it is classified as a department", example = "Research and development", position = 6)
     private String shortName;
 
-    @ApiModelProperty(value = "部门成员数量，分类为部门时会返回", example = "3", position = 7)
+    @ApiModelProperty(value = "Number of department members, which will be returned when classified as a department", example = "3", position = 7)
     private Integer memberCount;
 
-    @ApiModelProperty(value = "是否有子部门，分类为部门时会返回", example = "true", position = 8)
+    @ApiModelProperty(value = "If there is a sub department, it will be returned when it is classified as a department", example = "true", position = 8)
     private Boolean hasChildren;
 }

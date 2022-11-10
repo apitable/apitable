@@ -12,21 +12,18 @@ import lombok.Data;
 import com.vikadata.api.constants.PatternConstants;
 
 /**
- * 邮箱验证码请求参数
- *
- * @author Chambers
- * @since 2019/10/14
+ * Mailbox verification code request parameters
  */
 @Data
-@ApiModel("邮箱验证码请求参数")
+@ApiModel("Mailbox verification code request parameters")
 public class EmailOpRo {
 
-    @ApiModelProperty(value = "邮箱", example = "...@vikadata.com", position = 1, required = true)
-    @NotBlank(message = "邮箱不能为空")
-    @Pattern(regexp = PatternConstants.EMAIL, message = "邮箱格式不正确", flags = Flag.CASE_INSENSITIVE)
+    @ApiModelProperty(value = "Email", example = "...@vikadata.com", position = 1, required = true)
+    @NotBlank(message = "Email cannot be empty")
+    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect email format", flags = Flag.CASE_INSENSITIVE)
     private String email;
 
-    @ApiModelProperty(value = "短信验证码类型", dataType = "java.lang.Integer", example = "1", position = 2, required = true)
-    @NotNull(message = "类型不能为空")
+    @ApiModelProperty(value = "SMS verification code type", dataType = "java.lang.Integer", example = "1", position = 2, required = true)
+    @NotNull(message = "Type cannot be empty")
     private Integer type;
 }

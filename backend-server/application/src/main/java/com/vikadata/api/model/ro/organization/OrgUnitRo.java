@@ -10,14 +10,11 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 组织单元请求参数
+ * Org Unit Request Parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/20 10:50
  */
 @Data
-@ApiModel("组织单元请求参数")
+@ApiModel("Org Unit Request Parameters")
 public class OrgUnitRo {
 
     @ApiModelProperty(value = "ID", dataType = "java.lang.String", required = true, example = "120322719823", position = 1)
@@ -25,6 +22,6 @@ public class OrgUnitRo {
     private Long id;
 
     @NotNull
-    @ApiModelProperty(value = "分类，只能接收指定类型，1=部门，2=成员", required = true, example = "1", position = 2)
+    @ApiModelProperty(value = "Classification, only the specified type can be received, 1=department, 2=member", required = true, example = "1", position = 2)
     private Integer type;
 }

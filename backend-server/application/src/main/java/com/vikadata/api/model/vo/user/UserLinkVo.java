@@ -13,23 +13,20 @@ import static com.vikadata.api.constants.DateFormatConstants.TIME_NORM_PATTERN;
 
 /**
  * <p>
- * 帐号关联vo
+ * Account association vo
  * </p>
- *
- * @author Chambers
- * @date 2020/2/28
  */
 @Data
-@ApiModel("帐号关联vo")
+@ApiModel("Account association vo")
 public class UserLinkVo {
 
-    @ApiModelProperty(value = "关联类型：0钉钉；1微信", example = "1", position = 1)
+    @ApiModelProperty(value = "Association Type：0DingTalk；1WeChat", example = "1", position = 1)
     private Integer type;
 
-    @ApiModelProperty(value = "帐号昵称", example = "短歌行", position = 2)
+    @ApiModelProperty(value = "Account nickname", example = "A short song line", position = 2)
     private String nickName;
 
-    @ApiModelProperty(value = "绑定时间", example = "2020年2月2日", position = 3)
+    @ApiModelProperty(value = "Binding time", example = "2020/2/2", position = 3)
     @JsonFormat(pattern = TIME_NORM_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createTime;

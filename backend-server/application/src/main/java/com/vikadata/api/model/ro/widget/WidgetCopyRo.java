@@ -11,21 +11,18 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序复制请求参数
+ * Widget Copy Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/12/23
  */
 @Data
-@ApiModel("小程序复制请求参数")
+@ApiModel("Widget Copy Request Parameters")
 public class WidgetCopyRo {
 
-    @ApiModelProperty(value = "仪表盘ID", required = true, example = "dsb11", position = 1)
-    @NotBlank(message = "仪表盘ID 不能为空")
+    @ApiModelProperty(value = "Dashboard ID", required = true, example = "dsb11", position = 1)
+    @NotBlank(message = "Dashboard ID cannot be empty")
     private String dashboardId;
 
-    @ApiModelProperty(value = "小程序ID 列表", required = true, example = "[\"wdtiJjVmNFcFmNtQFA\", \"wdtSbp8TkH7gTGAYR1\"]", position = 2)
-    @NotEmpty(message = "小程序ID 列表 不能为空")
+    @ApiModelProperty(value = "Widget ID List", required = true, example = "[\"wdtiJjVmNFcFmNtQFA\", \"wdtSbp8TkH7gTGAYR1\"]", position = 2)
+    @NotEmpty(message = "Widget ID list cannot be empty")
     private List<String> widgetIds;
 }

@@ -14,30 +14,27 @@ import java.util.List;
 
 /**
  * <p>
- * 节点角色视图
+ * Node Role View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/28 13:48
  */
 @Data
-@ApiModel("节点角色视图")
+@ApiModel("Node Role View")
 public class NodeRoleVo implements Serializable {
 
 	private static final long serialVersionUID = -3532750242987274847L;
 
-	@ApiModelProperty(value = "角色", example = "manager", position = 1)
+	@ApiModelProperty(value = "Role", example = "manager", position = 1)
 	private String role;
 
-	@ApiModelProperty(value = "部门列表", position = 2)
+	@ApiModelProperty(value = "Department List", position = 2)
 	@JsonSerialize(nullsUsing = NullArraySerializer.class)
 	private List<UnitTeamVo> teams;
 
-	@ApiModelProperty(value = "标签列表", position = 3)
+	@ApiModelProperty(value = "Tag List", position = 3)
 	@JsonSerialize(nullsUsing = NullArraySerializer.class)
 	private List<UnitTagVo> tags;
 
-	@ApiModelProperty(value = "成员列表", position = 4)
+	@ApiModelProperty(value = "Member List", position = 4)
 	@JsonSerialize(nullsUsing = NullArraySerializer.class)
 	private List<UnitMemberVo> members;
 }

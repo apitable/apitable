@@ -9,25 +9,23 @@ import lombok.Data;
 
 /**
  * <p>
- * 企业微信检查应用绑定配置请求参数
+ * WeCom checks the application binding configuration request parameters
  * </p>
- * @author Pengap
- * @date 2021/7/28 16:28:24
  */
 @Data
-@ApiModel("企业微信检查应用绑定配置请求参数")
+@ApiModel("WeCom check application binding configuration request parameters")
 public class WeComCheckConfigRo {
 
     @NotBlank
-    @ApiModelProperty(value = "企业Id", required = true, position = 1)
+    @ApiModelProperty(value = "Enterprise Id", required = true, position = 1)
     private String corpId;
 
     @NotNull
-    @ApiModelProperty(value = "自建应用Id", required = true, position = 2)
+    @ApiModelProperty(value = "Self built application ID", required = true, position = 2)
     private Integer agentId;
 
     @NotBlank
-    @ApiModelProperty(value = "自建应用密钥", required = true, position = 3)
+    @ApiModelProperty(value = "Self built application key", required = true, position = 3)
     private String agentSecret;
 
 }

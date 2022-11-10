@@ -10,21 +10,18 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 删除节点角色请求参数
+ * Delete node role request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/20 13:59
  */
 @Data
-@ApiModel("删除节点角色请求参数")
+@ApiModel("Delete node role request parameters")
 public class DeleteNodeRoleRo {
 
-	@ApiModelProperty(value = "节点ID，不传递代表根节点，即工作目录", example = "nod10", position = 1)
+	@ApiModelProperty(value = "The node ID is not passed to represent the root node, that is, the working directory", example = "nod10", position = 1)
 	private String nodeId;
 
-	@NotNull(message = "组织单元不能为空")
-	@ApiModelProperty(value = "组织单元ID", dataType = "java.lang.String", required = true, example = "71638172638", position = 2)
+	@NotNull(message = "Organization unit cannot be empty")
+	@ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", required = true, example = "71638172638", position = 2)
 	@JsonDeserialize(using = StringToLongDeserializer.class)
 	private Long unitId;
 }

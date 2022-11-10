@@ -17,10 +17,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 邀请未授权的用户
+ * Invite unauthorized users
  * </p>
  */
-@ApiModel("邀请未授权的用户")
+@ApiModel("Invite unauthorized users")
 @Setter
 @Getter
 @Builder
@@ -29,11 +29,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WeComIsvInviteUnauthMemberRo {
 
-    @ApiModelProperty(value = "空间站 ID", required = true)
+    @ApiModelProperty(value = "Space ID", required = true)
     @NotBlank
     private String spaceId;
 
-    @ApiModelProperty(value = "选择邀请的成员票据列表", required = true)
+    @ApiModelProperty(value = "Select Invited Member Ticket List", required = true)
     @NotEmpty
     private List<String> selectedTickets;
 

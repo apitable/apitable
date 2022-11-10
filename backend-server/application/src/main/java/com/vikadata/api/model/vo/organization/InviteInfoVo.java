@@ -8,36 +8,33 @@ import lombok.Data;
 
 /**
  * <p>
- * 邀请信息视图
+ * Invitation Information View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
-@ApiModel("邀请信息视图")
+@ApiModel("Invitation Information View")
 public class InviteInfoVo {
 
-    @ApiModelProperty(value = "空间ID", example = "spcyQkKp9XJEl", position = 1)
+    @ApiModelProperty(value = "Space ID", example = "spcyQkKp9XJEl", position = 1)
     private String spaceId;
 
-    @ApiModelProperty(value = "空间名称", example = "工作空间", position = 2)
+    @ApiModelProperty(value = "Space name", example = "Work space", position = 2)
     private String spaceName;
 
-    @ApiModelProperty(value = "邀请用户", example = "张三", position = 3)
+    @ApiModelProperty(value = "Invite Users", example = "Zhang San", position = 3)
     private String inviter;
 
-    @ApiModelProperty(value = "受邀邮箱", example = "xxxx@vikadata.com", position = 4)
+    @ApiModelProperty(value = "Invited Email", example = "xxxx@vikadata.com", position = 4)
     private String inviteEmail;
 
-    @ApiModelProperty(value = "是否在登录状态", example = "true", position = 5)
+    @ApiModelProperty(value = "Whether it is in login status", example = "true", position = 5)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isLogin;
 
-    @ApiModelProperty(value = "是否受邀邮箱已绑定账户", example = "true", position = 6)
+    @ApiModelProperty(value = "Whether the invited mailbox has an account bound", example = "true", position = 6)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isBound;
 
-    @ApiModelProperty(value = "邀请者的个人邀请码", example = "vikatest", position = 7)
+    @ApiModelProperty(value = "Inviter's personal invitation code", example = "vikatest", position = 7)
     private String inviteCode;
 }

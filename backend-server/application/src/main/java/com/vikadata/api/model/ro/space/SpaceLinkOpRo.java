@@ -10,18 +10,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 空间公开邀请链接请求参数
+ * Space public invitation link request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/3/21
  */
 @Data
-@ApiModel("空间公开邀请链接请求参数")
+@ApiModel("Space public invitation link request parameters")
 public class SpaceLinkOpRo {
 
-    @NotNull(message = "部门ID不能为空")
-    @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1254", position = 1, required = true)
+    @NotNull(message = "Department ID cannot be empty")
+    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1254", position = 1, required = true)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
 

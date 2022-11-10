@@ -11,29 +11,26 @@ import lombok.NoArgsConstructor;
 
 /**
 * <p>
-* 附件预览请求参数ro
+* Attachment preview request parameter ro
 * </p>
-*
-* @author Benson Cheung
-* @date 2021/04/08
 */
 @Data
-@ApiModel("附件预览请求参数ro")
+@ApiModel("Attachment preview request parameter ro")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class AttachOfficePreviewRo {
 
     /**
-     * 云端文件存放路径
+     * Cloud file storage path
      */
-    @NotBlank(message = "云端文件存放路径")
-    @ApiModelProperty(value = "云端文件名/key", example = "space/2020/03/27/1243592950910349313", position = 1)
+    @NotBlank(message = "Cloud file storage path")
+    @ApiModelProperty(value = "Cloud file name/key", example = "space/2020/03/27/1243592950910349313", position = 1)
     private String token;
 
 
-    @NotBlank(message = "云端文件的源文件名称和后缀")
-    @ApiModelProperty(value = "云端文件的源文件名称和后缀", example = "Leida团队书籍.xls", position = 2)
+    @NotBlank(message = "Source file name and suffix of cloud files")
+    @ApiModelProperty(value = "Source file name and suffix of cloud files", example = "Leida Team Books.xls", position = 2)
     private String attname;
 
 }

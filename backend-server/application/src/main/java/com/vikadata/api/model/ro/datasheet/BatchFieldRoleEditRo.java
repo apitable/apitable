@@ -15,22 +15,20 @@ import com.vikadata.core.support.deserializer.StringArrayToLongArrayDeserializer
 
 /**
  * <p>
- * 批量数表字段角色编辑请求参数
+ * Batch data table field role editing request parameters
  * </p>
- *
- * @author tao
  */
 @Data
-@ApiModel("批量数表字段角色编辑请求参数")
+@ApiModel("Batch data table field role editing request parameters")
 public class BatchFieldRoleEditRo {
 
-    @NotEmpty(message = "组织单元不能为空")
-    @ApiModelProperty(value = "组织单元ID集", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
+    @NotEmpty(message = "Organization unit cannot be empty")
+    @ApiModelProperty(value = "Org Unit ID Set", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 
-    @NotBlank(message = "角色不能为空")
+    @NotBlank(message = "Role cannot be empty")
     @FieldRoleMatch
-    @ApiModelProperty(value = "角色", example = "editor", required = true, position = 3)
+    @ApiModelProperty(value = "Role", example = "editor", required = true, position = 3)
     private String role;
 }

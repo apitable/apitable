@@ -8,26 +8,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 手机验证码请求参数
- *
- * @author Chambers
- * @since 2019/10/14
+ * Mobile verification code request parameters
  */
 @Data
-@ApiModel("手机验证码请求参数")
+@ApiModel("Mobile verification code request parameters")
 public class SmsOpRo {
 
-    @ApiModelProperty(value = "区号", example = "+86", position = 1, required = true)
+    @ApiModelProperty(value = "Area code", example = "+86", position = 1, required = true)
     private String areaCode;
 
-    @ApiModelProperty(value = "手机号", example = "131...", position = 1, required = true)
-    @NotBlank(message = "手机号码不能为空")
+    @ApiModelProperty(value = "cell-phone number", example = "131...", position = 1, required = true)
+    @NotBlank(message = "Mobile number cannot be empty")
     private String phone;
 
-    @ApiModelProperty(value = "短信验证码类型", dataType = "java.lang.Integer", example = "1", position = 2, required = true)
-    @NotNull(message = "类型不能为空")
+    @ApiModelProperty(value = "SMS verification code type", dataType = "java.lang.Integer", example = "1", position = 2, required = true)
+    @NotNull(message = "Type cannot be empty")
     private Integer type;
 
-    @ApiModelProperty(value = "人机验证，前端获取getNVCVal函数的值", example = "BornForFuture", position = 3)
+    @ApiModelProperty(value = "Man machine verification, the front end obtains the value of get NVC Val function", example = "BornForFuture", position = 3)
     private String data;
 }

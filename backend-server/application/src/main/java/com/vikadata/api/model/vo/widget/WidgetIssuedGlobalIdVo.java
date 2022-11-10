@@ -6,17 +6,17 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序创建结果视图
+ * Widget Create Result View
  * </p>
  *
  * @author Pengap
  * @date 2021/7/9
  */
 @Data
-@ApiModel("小程序签发全局Id结果视图")
+@ApiModel("Widget Issuing Global Id Result View")
 public class WidgetIssuedGlobalIdVo {
 
-    @ApiModelProperty(value = "全局小程序ID", position = 1)
+    @ApiModelProperty(value = "Global Widget ID", position = 1)
     private String issuedGlobalId;
 
 }

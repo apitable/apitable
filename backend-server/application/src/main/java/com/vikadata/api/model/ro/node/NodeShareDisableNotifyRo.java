@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 节点分享关闭通知请求参数
+ * Node share close notification request parameters
  * </p>
- *
- * @author Chambers
- * @date 2021/3/3
  */
 @Data
 @NoArgsConstructor

@@ -12,43 +12,40 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 节点信息窗vo
+ * Node information window vo
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2022/1/20 09:10:32
  */
 @Data
 @Builder(toBuilder = true)
 public class NodeInfoWindowVo {
 
     /**
-     * 节点ID
+     * Node ID
      * */
     private String nodeId;
 
     /**
-     * 节点名称
+     * Node Name
      * */
     private String nodeName;
 
     /**
-     * 节点类型
+     * Node Type
      * */
     private Integer nodeType;
 
     /**
-     * 节点icon
+     * Node icon
      * */
     private String icon;
 
     /**
-     * 创建人
+     * Created by
      * */
     private MemberInfo creator;
 
     /**
-     * 最近修改人
+     * Recently modified by
      * */
     private MemberInfo lastModifier;
 
@@ -57,28 +54,28 @@ public class NodeInfoWindowVo {
     public static class MemberInfo {
 
         /**
-         * 成员名称
+         * Member Name
          * */
         private String memberName;
 
         /**
-         * 成员头像
+         * Member avatar
          * */
         @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
         private String avatar;
 
         /**
-         * 时间戳
+         * Time stamp
          * */
         private LocalDateTime time;
 
         /**
-         * 成员是否激活
+         * Whether the member is activated
          * */
         private Boolean isActive;
 
         /**
-         * 成员是否删除
+         * Delete member
          * */
         @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
         private Boolean isDeleted;

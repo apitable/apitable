@@ -11,25 +11,22 @@ import javax.validation.constraints.NotBlank;
 
 /**
 * <p>
-* 内容安全-举报信息ro
+* Content security - report information ro
 * </p>
-*
-* @author Benson Cheung
-* @date 2020/03/23
 */
 @Data
-@ApiModel("内容安全-举报信息ro")
+@ApiModel("Content security - report information ro")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class ContentCensorReportRo {
 
-    @NotBlank(message = "被举报的维格表")
-    @ApiModelProperty(value = "被举报的维格表", example = "dstjuHFsxyvH6751p1", position = 1)
+    @NotBlank(message = "Reported vika")
+    @ApiModelProperty(value = "Reported vika", example = "dstjuHFsxyvH6751p1", position = 1)
     private String nodeId;
 
-    @NotBlank(message = "举报原因")
-    @ApiModelProperty(value = "举报原因", example = "色情低俗", position = 4)
+    @NotBlank(message = "Reasons for reporting")
+    @ApiModelProperty(value = "Reasons for reporting", example = "Pornographic and vulgar", position = 4)
     private String reportReason;
 
 

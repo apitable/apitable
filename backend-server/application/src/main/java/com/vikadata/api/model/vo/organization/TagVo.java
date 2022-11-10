@@ -8,20 +8,17 @@ import lombok.Data;
 
 /**
  * <p>
- * 标签视图
+ * Label View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/21 19:09
  */
 @Data
-@ApiModel("标签视图")
+@ApiModel("Label View")
 public class TagVo {
 
-    @ApiModelProperty(value = "标签ID", dataType = "java.lang.String", example = "2", position = 1)
+    @ApiModelProperty(value = "Tag ID", dataType = "java.lang.String", example = "2", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long tagId;
 
-    @ApiModelProperty(value = "标签名称", example = "产品", position = 2)
+    @ApiModelProperty(value = "Label Name", example = "Product", position = 2)
     private String tagName;
 }

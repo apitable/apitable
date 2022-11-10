@@ -8,22 +8,19 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 节点关联请求参数
+ * Node Association Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/11/10
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("节点关联请求参数")
+@ApiModel("Node Association Request Parameters")
 public class NodeRelRo {
 
-    @ApiModelProperty(value = "数表ID", position = 1)
+    @ApiModelProperty(value = "Datasheet ID", position = 1)
     private String datasheetId;
 
-    @ApiModelProperty(value = "视图ID", position = 2)
+    @ApiModelProperty(value = "View ID", position = 2)
     private String viewId;
 
     public NodeRelRo(String viewId) {

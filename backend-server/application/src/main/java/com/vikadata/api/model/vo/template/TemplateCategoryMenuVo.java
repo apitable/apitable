@@ -13,9 +13,6 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
  * <p>
  * Template Center - Template Category Menu View
  * </p>
- *
- * @author Chambers
- * @date 2020/6/2
  */
 @Data
 @NoArgsConstructor
@@ -23,11 +20,11 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 @ApiModel("Template Category Menu View")
 public class TemplateCategoryMenuVo {
 
-    @ApiModelProperty(value = "模板分类code", example = "tpcCq88sqNqEv", position = 1)
+    @ApiModelProperty(value = "Template classification code", example = "tpcCq88sqNqEv", position = 1)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String categoryCode;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "模板分类名称", example = "电视剧", position = 2)
+    @ApiModelProperty(value = "Template Classification Name", example = "TV play", position = 2)
     private String categoryName;
 }

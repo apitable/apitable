@@ -4,21 +4,19 @@ import lombok.Data;
 
 /**
  * <p>
- * 节点空间站信息
+ * Node space information
  * </p>
- * @author Pengap
- * @date 2022/6/7 15:59:44
  */
 @Data
 public class NodeFromSpaceVo {
 
     /**
-     * 节点ID
+     * Node ID
      * */
     private String nodeId;
 
     /**
-     * 空间站ID
+     * Space ID
      * */
     private String spaceId;
 

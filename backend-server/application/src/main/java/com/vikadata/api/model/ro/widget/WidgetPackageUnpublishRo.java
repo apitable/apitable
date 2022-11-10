@@ -8,18 +8,15 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序下架请求参数
+ * Widget removal request parameters
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序下架请求参数")
+@ApiModel("Widget removal request parameters")
 public class WidgetPackageUnpublishRo {
 
-    @ApiModelProperty(value = "小程序包ID", example = "wpkAAA", position = 1)
-    @NotBlank(message = "packageId不能为空")
+    @ApiModelProperty(value = "Widget Package ID", example = "wpkAAA", position = 1)
+    @NotBlank(message = "Package Id cannot be empty")
     private String packageId;
 
 }

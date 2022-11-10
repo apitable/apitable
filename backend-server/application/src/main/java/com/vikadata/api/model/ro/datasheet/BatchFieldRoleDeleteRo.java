@@ -11,15 +11,12 @@ import lombok.Data;
 
 import com.vikadata.core.support.deserializer.StringArrayToLongArrayDeserializer;
 
-/**
- * @author tao
- */
 @Data
-@ApiModel("批量数表字段角色删除请求参数")
+@ApiModel("Batch data table field role deletion request parameter")
 public class BatchFieldRoleDeleteRo {
 
-    @NotEmpty(message = "组织单元不能为空")
-    @ApiModelProperty(value = "组织单元ID集", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
+    @NotEmpty(message = "Organization unit cannot be empty")
+    @ApiModelProperty(value = "Org Unit ID Set", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
     @JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
     private List<Long> unitIds;
 

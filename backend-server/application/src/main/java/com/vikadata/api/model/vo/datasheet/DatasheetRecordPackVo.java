@@ -8,23 +8,20 @@ import lombok.*;
 
 /**
  * <p>
- * 数表与N条记录RecordMap返回结果值
+ * Data table and N records Record Map returns the result value
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/10 11:36
  */
-@ApiModel("数表与N条记录RecordMap返回结果值")
+@ApiModel("Data table and N records Record Map returns the result value")
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class DatasheetRecordPackVo {
 
-	@ApiModelProperty(value = "数表基本信息", position = 1)
+	@ApiModelProperty(value = "Basic information of datasheet", position = 1)
 	DataSheetInfoVo datasheet;
 
-    @ApiModelProperty(value = "N条记录recordMap集合", position = 2)
+    @ApiModelProperty(value = "Record Map Set of N Records", position = 2)
     JSONObject recordMap;
 
 }

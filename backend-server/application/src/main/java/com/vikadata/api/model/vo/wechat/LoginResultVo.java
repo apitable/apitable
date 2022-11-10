@@ -11,39 +11,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>
- * 微信登陆结果vo
- * </p>
  *
- * @author Chambers
- * @date 2020/2/24
+ * <p>
+ * WeChat login result vo
+ * </p>
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("微信登陆结果vo")
+@ApiModel("WeChat login result vo")
 public class LoginResultVo {
 
     @Builder.Default
-    @ApiModelProperty(value = "是否已绑定维格账号", example = "false", position = 1)
+    @ApiModelProperty(value = "Whether the vika account has been bound", example = "false", position = 1)
     private Boolean isBind = false;
 
     @Builder.Default
-    @ApiModelProperty(value = "是否需要创建空间，标识用户没有任何空间关联，作为创建空间引导的标准字段", example = "false", position = 2)
+    @ApiModelProperty(value = "Whether it is necessary to create a space indicates that the user does not have any space association, which is a standard field for space creation guidance", example = "false", position = 2)
     private Boolean needCreate = true;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "昵称", example = "张三，内容为空时需要进入设置昵称页面", position = 3)
+    @ApiModelProperty(value = "Nickname", example = "Zhang San, when the content is empty, you need to enter the screen name setting page", position = 3)
     private String nickName;
 
-    @ApiModelProperty(value = "是否是新注册用户", hidden = true)
+    @ApiModelProperty(value = "Is it a new registered user", hidden = true)
     private boolean newUser;
 
-    @ApiModelProperty(value = "新注册的用户表ID", hidden = true)
+    @ApiModelProperty(value = "New registered user table ID", hidden = true)
     private Long userId;
 
-    @ApiModelProperty(value = "是否已存在union_id", example = "false", position = 4)
+    @ApiModelProperty(value = "Whether the union id already exists", example = "false", position = 4)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasUnion;
 }

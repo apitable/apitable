@@ -7,11 +7,8 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 数表操作表
+ * Operation table of digital meter
  * </p>
- *
- * @author Benson Cheung
- * @since 2019-09-23
  */
 @Data
 @AllArgsConstructor
@@ -19,28 +16,28 @@ import lombok.experimental.Accessors;
 @Builder(toBuilder = true)
 @EqualsAndHashCode
 @Accessors(chain = true)
-@ApiModel("数表操作表")
+@ApiModel("Operation table of digital meter")
 public class DatasheetOperationVo {
 
-    @ApiModelProperty(value = "操作ID", position = 2)
+    @ApiModelProperty(value = "Operation ID", position = 2)
     private String opId;
 
-    @ApiModelProperty(value = "数表ID", position = 3)
+    @ApiModelProperty(value = "Datasheet ID", position = 3)
     private String dstId;
 
-    @ApiModelProperty(value = "操作名称", position = 4)
+    @ApiModelProperty(value = "Operation name", position = 4)
     private String actionName;
 
-    @ApiModelProperty(value = "操作的合集", position = 5)
+    @ApiModelProperty(value = "Collection of operations", position = 5)
     private String actions;
 
-    @ApiModelProperty(value = "类型 1-JOT 2-COT", position = 6)
+    @ApiModelProperty(value = "Type 1-JOT 2-COT", position = 6)
     private Integer type;
 
-    @ApiModelProperty(value = "操作成员ID", position = 7)
+    @ApiModelProperty(value = "Action member ID", position = 7)
     private Long memberId;
 
-    @ApiModelProperty(value = "版本号", position = 8)
+    @ApiModelProperty(value = "Version No", position = 8)
     private Long revision;
 
 

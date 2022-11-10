@@ -13,32 +13,30 @@ import com.vikadata.api.constants.NotificationConstants;
 
 /** 
 * <p> 
-* 撤销通知参数
-* </p> 
-* @author zoe zheng 
-* @date 2021/3/2 3:38 下午
+* Undo notification parameters
+* </p>
 */
 @Data
-@ApiModel("撤销通知参数")
+@ApiModel("Undo notification parameters")
 public class NotificationRevokeRo {
 
-    @ApiModelProperty(value = "被通知用户的uuid(可选)", position = 1 )
+    @ApiModelProperty(value = "Uuid of the notified user (optional)", position = 1 )
     private List<String> uuid;
 
-    @ApiModelProperty(value = "空间ID(可选, uuid和空间ID二选一)", example = "spcHKrd0liUcl", position = 5)
+    @ApiModelProperty(value = "Space ID (optional, either uuid or space ID)", example = "spcHKrd0liUcl", position = 5)
     protected String spaceId = null;
 
-    @NotBlank(message = "模版ID不能为空")
-    @ApiModelProperty(value = "模版ID", example = "user_filed", required = true,
+    @NotBlank(message = "Template ID cannot be empty")
+    @ApiModelProperty(value = "Template ID", example = "user_filed", required = true,
             position = 2)
     private String templateId;
 
-    @ApiModelProperty(value = "版本号(可选)", example = "v0.12.1.release", position = 3)
+    @ApiModelProperty(value = "Version number (optional)", example = "v0.12.1.release", position = 3)
     private String version;
 
-    @ApiModelProperty(value = "过期时间(可选)精确到毫秒", example = "1614587900000", position = 4)
+    @ApiModelProperty(value = "Expiration time (optional) accurate to milliseconds", example = "1614587900000", position = 4)
     private String expireAt;
 
-    @ApiModelProperty(value = "撤销类型:1 已读，2 删除,默认已读", example = "1614587900000", position = 5)
+    @ApiModelProperty(value = "Undo type: 1 read, 2 delete, read by default", example = "1614587900000", position = 5)
     private int revokeType = 1;
 }

@@ -8,22 +8,19 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 图片审核结果请求参数
+ * Image audit result request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/21
  */
 @Data
-@ApiModel("图片审核结果请求参数")
+@ApiModel("Image audit result request parameters")
 public class AttachAuditResultRo {
 
-	@ApiModelProperty(value = "图片所属的标签，一张图片只会有一个标签", position = 1, required = true)
-	@NotNull(message = "图片所属的标签，一张图片只会有一个标签")
+	@ApiModelProperty(value = "The label to which the picture belongs. A picture can only have one label", position = 1, required = true)
+	@NotNull(message = "The label to which the picture belongs. A picture can only have one label")
 	private String label;
 
-	@ApiModelProperty(value = "图片所属标签的置信度", position = 2, required = true)
-	@NotNull(message = "图片所属标签的置信度")
+	@ApiModelProperty(value = "Confidence of the label to which the picture belongs", position = 2, required = true)
+	@NotNull(message = "Confidence of the label to which the picture belongs")
 	private float score;
 
 }

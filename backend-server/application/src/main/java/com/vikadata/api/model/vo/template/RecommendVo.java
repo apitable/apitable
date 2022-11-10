@@ -12,9 +12,6 @@ import com.vikadata.api.cache.bean.Banner;
  * <p>
  * Template Center - Recommend View
  * </p>
- *
- * @author Chambers
- * @date 2020/7/9
  */
 @Data
 @ApiModel("Recommend View")

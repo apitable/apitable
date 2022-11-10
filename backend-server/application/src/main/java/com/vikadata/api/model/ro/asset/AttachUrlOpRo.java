@@ -9,25 +9,22 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 附件URL请求参数
+ * Attachment URL Request Parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/25
  */
 @Data
-@ApiModel("附件请求参数")
+@ApiModel("Attachment Request Parameters")
 public class AttachUrlOpRo {
 
-	@ApiModelProperty(value = "上传文件的URL", position = 1, required = true)
-	@NotNull(message = "文件URL不能为空")
+	@ApiModelProperty(value = "URL of uploaded file", position = 1, required = true)
+	@NotNull(message = "File URL cannot be empty")
 	private String url;
 
-	@ApiModelProperty(value = "类型(0:用户头像/1:空间logo/2:数表附件)", example = "0", position = 2, required = true)
-	@NotNull(message = "类型不能为空")
-	@Max(value = 2, message = "类型错误")
+	@ApiModelProperty(value = "Type (0: user profile 1: space logo 2: data table attachment)", example = "0", position = 2, required = true)
+	@NotNull(message = "Type cannot be empty")
+	@Max(value = 2, message = "ERROR IN TYPE")
 	private Integer type;
 
-	@ApiModelProperty(value = "数表节点Id（数表附件须传）", example = "dst10", position = 4)
+	@ApiModelProperty(value = "Data meter node Id (data meter attachment must be transferred)", example = "dst10", position = 4)
 	private String nodeId;
 }

@@ -8,18 +8,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 活动状态参数
+ * Activity Status Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/6/9
  */
 @Data
-@ApiModel("活动状态参数")
+@ApiModel("Activity Status Parameters")
 public class ActivityStatusRo {
 
-    @ApiModelProperty(value = "引导ID。具体信息查看 airtable 的 config表", dataType = "java.lang.Integer", example = "1", required = true)
-    @NotNull(message = "引导ID不能为空")
+    @ApiModelProperty(value = "Boot ID. See the config table of the airtable for specific information", dataType = "java.lang.Integer", example = "1", required = true)
+    @NotNull(message = "Boot ID cannot be empty")
     private Integer wizardId;
 
 }

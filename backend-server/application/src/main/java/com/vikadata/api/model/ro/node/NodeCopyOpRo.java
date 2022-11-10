@@ -7,19 +7,16 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 节点复制请求参数
- *
- * @author Chambers
- * @since 2019/11/01
+ * Node replication request parameters
  */
 @Data
-@ApiModel("节点复制请求参数")
+@ApiModel("Node replication request parameters")
 public class NodeCopyOpRo {
 
-    @ApiModelProperty(value = "节点Id", example = "nod10", position = 1, required = true)
-    @NotBlank(message = "节点Id不能为空")
+    @ApiModelProperty(value = "Node Id", example = "nod10", position = 1, required = true)
+    @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "是否需要复制数据", example = "true", position = 4)
+    @ApiModelProperty(value = "Need to copy data", example = "true", position = 4)
     private Boolean data;
 }

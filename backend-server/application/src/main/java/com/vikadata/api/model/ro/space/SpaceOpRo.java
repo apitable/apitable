@@ -11,21 +11,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * 空间请求参数
- *
- * @author Chambers
- * @since 2019/10/8
+ * Space request parameters
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("空间请求参数")
+@ApiModel("Space request parameters")
 public class SpaceOpRo {
 
-    @ApiModelProperty(value = "名称", example = "这是一个空间", position = 1, required = true)
-    @NotBlank(message = "名称不能为空")
-    @Size(min = 2, max = 100, message = "空间名称长度需为2-100位")
+    @ApiModelProperty(value = "Name", example = "This is a space", position = 1, required = true)
+    @NotBlank(message = "Name cannot be empty")
+    @Size(min = 2, max = 100, message = "The space name must be 2-100 characters in length")
     private String name;
 
 }

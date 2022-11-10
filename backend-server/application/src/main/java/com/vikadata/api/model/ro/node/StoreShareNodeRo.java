@@ -8,21 +8,18 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * 转存分享节点请求参数
+ * Transfer sharing node request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/26 13:19
  */
 @Data
-@ApiModel("转存分享节点请求参数")
+@ApiModel("Transfer sharing node request parameters")
 public class StoreShareNodeRo {
 
-    @NotBlank(message = "空间ID不能为空")
-    @ApiModelProperty(value = "空间ID", example = "spc20cjiwis2", position = 1)
+    @NotBlank(message = "Space ID cannot be empty")
+    @ApiModelProperty(value = "Space ID", example = "spc20cjiwis2", position = 1)
     private String spaceId;
 
-    @NotBlank(message = "分享ID不能为空")
-    @ApiModelProperty(value = "分享ID", example = "shrSJ921CNsj", position = 2)
+    @NotBlank(message = "The share ID cannot be empty")
+    @ApiModelProperty(value = "Share ID", example = "shrSJ921CNsj", position = 2)
     private String shareId;
 }

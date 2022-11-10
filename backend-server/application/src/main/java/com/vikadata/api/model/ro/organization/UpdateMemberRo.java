@@ -13,40 +13,37 @@ import java.util.List;
 
 /**
  * <p>
- * 编辑成员信息请求参数
+ * Edit member information request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/20 10:50
  */
 @Data
-@ApiModel("编辑成员信息请求参数")
+@ApiModel("Edit member information request parameters")
 public class UpdateMemberRo {
 
 	@NotNull
-	@ApiModelProperty(value = "成员ID", required = true, dataType = "java.lang.String", example = "1", position = 2)
+	@ApiModelProperty(value = "Member ID", required = true, dataType = "java.lang.String", example = "1", position = 2)
 	@JsonDeserialize(using = StringToLongDeserializer.class)
 	private Long memberId;
 
-	@ApiModelProperty(value = "成员姓名", example = "张三", position = 3)
-    @Size(max = 32, message = "长度不能超过32位")
+	@ApiModelProperty(value = "Member Name", example = "Zhang San", position = 3)
+    @Size(max = 32, message = "The length cannot exceed 32 bits")
 	private String memberName;
 
-	@ApiModelProperty(value = "职位", example = "经理", position = 4)
+	@ApiModelProperty(value = "Position", example = "Manager", position = 4)
 	private String position;
 
-	@ApiModelProperty(value = "电子邮箱", example = "example@qq.com", position = 5)
+	@ApiModelProperty(value = "email", example = "example@qq.com", position = 5)
 	private String email;
 
-	@Size(max = 60, message = "工号不能大于60个字符")
-	@ApiModelProperty(value = "工号", example = "\"143613308\"", position = 6)
+	@Size(max = 60, message = "The job number cannot be more than 60 characters")
+	@ApiModelProperty(value = "Job No", example = "\"143613308\"", position = 6)
 	private String jobNumber;
 
-	@ApiModelProperty(value = "归属部门ID", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 7)
+	@ApiModelProperty(value = "Department ID", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 7)
 	@JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
 	private List<Long> teamIds;
 
-	@ApiModelProperty(value = "归属标签ID集合", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 8)
+	@ApiModelProperty(value = "Attribution tag ID set", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 8)
 	@JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
 	private List<Long> tagIds;
 }

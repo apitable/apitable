@@ -7,27 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>
- * 此处写注释
- * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/27 17:34:48
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("实验室功能设置 请求对象")
+@ApiModel("Laboratory function setting request object")
 public class UserLabsFeatureRo {
 
-    @ApiModelProperty(value = "空间站ID，留空则标识设置用户级别功能", dataType = "java.lang.String", example = "spc6e2CeZLBFN", position = 1)
+    @ApiModelProperty(value = "Space ID, if left blank, identify the user level function", dataType = "java.lang.String", example = "spc6e2CeZLBFN", position = 1)
     private String spaceId;
 
-    @ApiModelProperty(value = "需要操作的实验室功能唯一标识", dataType = "java.lang.String", example = "render_prompt", position = 2)
+    @ApiModelProperty(value = "Unique identification of the laboratory function to be operated", dataType = "java.lang.String", example = "render_prompt", position = 2)
     private String key;
 
-    @ApiModelProperty(value = "是否开启", dataType = "java.lang.Boolean", example = "true", position = 3)
+    @ApiModelProperty(value = "Whether to open", dataType = "java.lang.Boolean", example = "true", position = 3)
     private Boolean isEnabled;
 }

@@ -8,25 +8,22 @@ import lombok.Data;
 
 /**
  * <p>
- * 节点分享设置参数视图
+ * Node Share Setting Parameter View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 14:00
  */
 @Data
-@ApiModel("节点分享设置参数视图")
+@ApiModel("Node Share Setting Parameter View")
 public class NodeShareSettingPropsVO {
 
-    @ApiModelProperty(value = "是否仅能查看", example = "true", position = 1)
+    @ApiModelProperty(value = "Can only view", example = "true", position = 1)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean onlyRead;
 
-    @ApiModelProperty(value = "是否允许被编辑", example = "true", position = 2)
+    @ApiModelProperty(value = "Allow edit", example = "true", position = 2)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean canBeEdited;
 
-    @ApiModelProperty(value = "是否允许被转存", example = "true", position = 3)
+    @ApiModelProperty(value = "Allow to be transferred", example = "true", position = 3)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean canBeStored;
 }

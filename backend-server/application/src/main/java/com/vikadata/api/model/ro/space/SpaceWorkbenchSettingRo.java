@@ -6,21 +6,19 @@ import lombok.Data;
 
 /**
  * <p>
- * 空间管理 - 工作台设置 请求参数
+ * Space Management - Workbench Set Request Parameters
  * </p>
  *
- * 状态字段与读库序列化对象保持一致
+ * The status field is consistent with the serialized object of the read library
  * @see com.vikadata.api.lang.SpaceGlobalFeature
- * @author Chambers
- * @date 2021/4/8
  */
 @Data
-@ApiModel("空间管理 - 工作台设置 请求参数")
+@ApiModel("Space Management - Workbench Set Request Parameters")
 public class SpaceWorkbenchSettingRo {
 
-    @ApiModelProperty(value = "节点全员可导出状态", example = "true", position = 1)
+    @ApiModelProperty(value = "All members of the node can be exported", example = "true", position = 1)
     private Boolean nodeExportable;
 
-    @ApiModelProperty(value = "全局水印开启状态", example = "true", position = 1)
+    @ApiModelProperty(value = "Global Watermark On Status", example = "true", position = 1)
     private Boolean watermarkEnable;
 }

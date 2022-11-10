@@ -9,40 +9,37 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 数表视图
+ * Digital Meter View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/13 17:23
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("数表页面")
+@ApiModel("Data table page")
 public class DatasheetListVo {
 
-    @ApiModelProperty(value = "数表ID", position = 2)
+    @ApiModelProperty(value = "Meter ID", position = 2)
     private String id;
 
-    @ApiModelProperty(value = "名称", position = 3)
+    @ApiModelProperty(value = "Name", position = 3)
     private String name;
 
-    @ApiModelProperty(value = "类型 0-无类型 1-数表", position = 4)
+    @ApiModelProperty(value = "Type 0 - No type 1 - Number table", position = 4)
     private Integer type;
 
-    @ApiModelProperty(value = "空间id", position = 5)
+    @ApiModelProperty(value = "Space id", position = 5)
     private String spaceId;
 
-    @ApiModelProperty(value = "拥有者userid", position = 6)
+    @ApiModelProperty(value = "Owner userid", position = 6)
     private String ownerId;
 
-    @ApiModelProperty(value = "创建者userid", position = 7)
+    @ApiModelProperty(value = "Creator userid", position = 7)
     private String creatorId;
 
-    @ApiModelProperty(value = "排序", position = 8)
+    @ApiModelProperty(value = "Sort", position = 8)
     private Integer sequence;
 
-    @ApiModelProperty(value = "版本号", position = 9)
+    @ApiModelProperty(value = "Version No", position = 9)
     private Long revision;
 }

@@ -13,8 +13,6 @@ import com.vikadata.core.support.deserializer.StringToLongDeserializer;
  * <p>
  *      role member unit request parameter
  * </p>
- *
- * @author tao
  */
 @Data
 @ApiModel("role member unit request parameter")

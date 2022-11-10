@@ -8,21 +8,18 @@ import lombok.Data;
 
 /**
  * <p>
- * 二维码的统计数据视图
+ * Statistical data view of QR code
  * </p>
- *
- * @author Chambers
- * @date 2020/8/24
  */
 @Data
-@ApiModel("二维码的统计数据视图")
+@ApiModel("Statistical data view of QR code")
 public class QrCodeStatisticsVo {
 
-    @ApiModelProperty(value = "访问人数", dataType = "java.lang.Integer", example = "15", position = 1)
+    @ApiModelProperty(value = "Number of visitors", dataType = "java.lang.Integer", example = "15", position = 1)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer viewUserCount;
 
-    @ApiModelProperty(value = "访问总数", dataType = "java.lang.Integer", example = "20", position = 2)
+    @ApiModelProperty(value = "Total Visits", dataType = "java.lang.Integer", example = "20", position = 2)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer viewCount;
 }

@@ -11,24 +11,21 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p> 
- * 排行榜信息
- * </p> 
- *
- * @author Chambers
- * @date 2021/5/31
+ * Leaderboard information
+ * </p>
  */
 @Data
-@ApiModel("排行榜信息")
+@ApiModel("Leaderboard information")
 public class LeaderboardVo {
 
-    @ApiModelProperty(value = "头像", example = "null", position = 1)
+    @ApiModelProperty(value = "Head portrait", example = "null", position = 1)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 
-    @ApiModelProperty(value = "用户昵称", example = "余**", position = 1)
+    @ApiModelProperty(value = "User nickname", example = "Zhang San", position = 1)
     @JsonSerialize(using = NicknameEncryptSerializer.class)
     private String nickname;
 
-    @ApiModelProperty(value = "邀请总数", example = "35", position = 2)
+    @ApiModelProperty(value = "Total invitations", example = "35", position = 2)
     private Integer count;
 }

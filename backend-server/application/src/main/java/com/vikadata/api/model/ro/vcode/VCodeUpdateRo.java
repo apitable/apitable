@@ -12,29 +12,26 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * V码修改请求参数
+ * V code modification request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/8/12
  */
 @Data
-@ApiModel("V码修改请求参数")
+@ApiModel("V code modification request parameters")
 public class VCodeUpdateRo {
 
-    @ApiModelProperty(value = "兑换模板ID(仅类型为兑换码时可修改)", dataType = "java.lang.String", example = "1296402001573097473", position = 1)
+    @ApiModelProperty(value = "Redemption template ID (modifiable only when the type is redemption code)", dataType = "java.lang.String", example = "1296402001573097473", position = 1)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long templateId;
 
-    @ApiModelProperty(value = "可使用总数", dataType = "java.lang.Integer", example = "100", position = 2)
-    @Min(value = -1, message = "可使用总数设置错误")
+    @ApiModelProperty(value = "Total Available", dataType = "java.lang.Integer", example = "100", position = 2)
+    @Min(value = -1, message = "Total number available setting error")
     private Integer availableTimes;
 
-    @ApiModelProperty(value = "单人限制使用次数", dataType = "java.lang.Integer", example = "5", position = 3)
-    @Min(value = -1, message = "单人限制使用次数设置错误")
+    @ApiModelProperty(value = "Limit the number of uses per person", dataType = "java.lang.Integer", example = "5", position = 3)
+    @Min(value = -1, message = "Wrong setting of single person limit")
     private Integer limitTimes;
 
-    @ApiModelProperty(value = "过期时间", example = "2020-03-18T15:29:59.000Z/yyyy-MM-dd( HH:mm(:ss)(.SSS))", position = 4)
+    @ApiModelProperty(value = "Expiration time", example = "2020-03-18T15:29:59.000Z/yyyy-MM-dd( HH:mm(:ss)(.SSS))", position = 4)
     @JsonDeserialize(using = DateFormatToLocalDateTimeDeserializer.class)
     private LocalDateTime expireTime;
 

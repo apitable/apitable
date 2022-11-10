@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 关联字段属性
+ * Associated Field Properties
  * </p>
- *
- * @author Chambers
- * @date 2020/3/17
  */
 @Data
 @NoArgsConstructor
@@ -20,22 +17,22 @@ import lombok.NoArgsConstructor;
 public class LinkFieldProperty {
 
 	/**
-	 * 关联数表ID
+	 * Associated number table ID
 	 */
 	private String foreignDatasheetId;
 
 	/**
-	 * 关联数表兄弟字段ID
+	 * Brother field ID of related number table
 	 */
 	private String brotherFieldId;
 
 	/**
-	 * 限制只在对应 viewId 可选 record
+	 * Only records can be selected for the corresponding viewId
 	 */
 	private String limitToView;
 
 	/**
-	 * 是否限制只允许关联一条记录
+	 * Whether to restrict the association of only one record
 	 */
 	private Boolean limitSingleRecord;
 }

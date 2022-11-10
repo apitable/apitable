@@ -8,21 +8,18 @@ import lombok.*;
 import java.util.List;
 
 /**
- * 数表SnapshotOP操作请求参数
- *
- * @author Benson Cheung
- * @since 2019/10/7
+ * DataSheet Snapshot OP Operation Request Parameters
  */
-@ApiModel("数表SnapshotOP操作请求参数")
+@ApiModel("DataSheet Snapshot OP Operation Request Parameters")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class OperationMapRo {
 
-    @ApiModelProperty(value = "操作指令", position = 1)
+    @ApiModelProperty(value = "Operation instruction", position = 1)
     private  String cmd;
 
-    @ApiModelProperty(value = "数表记录集合", position = 2)
+    @ApiModelProperty(value = "DataSheet record set", position = 2)
     private List<JSONObject> actions;
 }

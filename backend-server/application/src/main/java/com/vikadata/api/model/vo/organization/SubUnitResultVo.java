@@ -9,19 +9,16 @@ import java.util.List;
 
 /**
  * <p>
- * 下属组织单元结果视图
+ * Subordinate Org Unit Result View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/21 01:03
  */
 @Data
-@ApiModel("下属组织单元结果视图")
+@ApiModel("Subordinate Org Unit Result View")
 public class SubUnitResultVo {
 
-	@ApiModelProperty(value = "部门列表", position = 1)
+	@ApiModelProperty(value = "Department List", position = 1)
 	private List<UnitTeamVo> teams = new ArrayList<>();
 
-	@ApiModelProperty(value = "成员列表", position = 2)
+	@ApiModelProperty(value = "Member List", position = 2)
 	private List<UnitMemberVo> members = new ArrayList<>();
 }

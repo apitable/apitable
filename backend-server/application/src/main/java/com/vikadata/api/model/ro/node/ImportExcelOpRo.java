@@ -15,14 +15,14 @@ import javax.validation.constraints.NotNull;
  * @since 2019/11/6
  */
 @Data
-@ApiModel("导入数表请求参数")
+@ApiModel("Import data table request parameters")
 public class ImportExcelOpRo {
 
-    @ApiModelProperty(value = "父节点Id", example = "nod10", position = 1, required = true)
-    @NotBlank(message = "父节点Id不能为空")
+    @ApiModelProperty(value = "Parent Node Id", example = "nod10", position = 1, required = true)
+    @NotBlank(message = "The parent node ID cannot be empty")
     private String parentId;
 
-    @ApiModelProperty(value = "导入文件", position = 3, required = true)
-    @NotNull(message = "导入文件不能为空")
+    @ApiModelProperty(value = "Import File", position = 3, required = true)
+    @NotNull(message = "The import file cannot be empty")
     private MultipartFile file;
 }

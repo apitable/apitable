@@ -8,28 +8,25 @@ import lombok.Data;
 
 /**
  * <p>
- * 添加客户端release版本请求参数
+ * Add the client release version request parameter
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/12 23:58
  */
 @Data
-@ApiModel("添加客户端release版本请求参数")
+@ApiModel("Add the client release version request parameter")
 public class ClientBuildRo {
 
-    @NotBlank(message = "版本号不允许为空")
-    @ApiModelProperty(value = "版本号", dataType = "java.lang.String", example = "aaaa", required = true)
+    @NotBlank(message = "The version number cannot be empty")
+    @ApiModelProperty(value = "Version No", dataType = "java.lang.String", example = "aaaa", required = true)
     private String version;
 
-    @NotBlank(message = "base64Encode之后的html内容,不允许为空")
-    @ApiModelProperty(value = "html内容", dataType = "java.lang.String", required = true, example = "aaaaadd")
+    @NotBlank(message = "The html content after base64Encode cannot be empty")
+    @ApiModelProperty(value = "Html content", dataType = "java.lang.String", required = true, example = "aaaaadd")
     private String htmlContent;
 
-    @ApiModelProperty(value = "版本描述", dataType = "java.lang.String", required = true, example = "构建")
+    @ApiModelProperty(value = "Version Description", dataType = "java.lang.String", required = true, example = "构建")
     private String description;
 
-    @NotBlank(message = "发版用户不能为空")
-    @ApiModelProperty(value = "发版用户", dataType = "java.lang.String", required = true, example = "zhengxu@vikadta.com")
+    @NotBlank(message = "The publishing user cannot be empty")
+    @ApiModelProperty(value = "Publishing user", dataType = "java.lang.String", required = true, example = "zhengxu@vikadta.com")
     private String publishUser;
 }

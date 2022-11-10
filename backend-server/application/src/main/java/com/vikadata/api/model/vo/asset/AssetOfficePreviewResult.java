@@ -9,20 +9,17 @@ import lombok.Setter;
 
 /**
  * <p>
- * office文档预览结果视图
+ * Office Document Preview Result View
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/3/22 15:39
  */
 @Data
-@ApiModel("office文档预览结果视图")
+@ApiModel("Office Document Preview Result View")
 public class AssetOfficePreviewResult {
 
-    @ApiModelProperty(value = "转换后的预览地址", example = "{'data': 'http://xxx'}", position = 1)
+    @ApiModelProperty(value = "Preview address after conversion", example = "{'data': 'http://xxx'}", position = 1)
     private Data data;
 
-    @ApiModelProperty(value = "返回结果的信息提示", example = "操作成功", position = 2)
+    @ApiModelProperty(value = "Information prompt of returned results", example = "Operation succeeded", position = 2)
     private String message;
 
     @ApiModelProperty(value = "code", example = "0", position = 3)

@@ -6,16 +6,14 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序商店列表扩展信息视图
+ * Widget Store List Extended Information View
  * </p>
- * @author Pengap
- * @date 2021/9/16 13:40:33
  */
 @Data
-@ApiModel("小程序商店列表扩展信息视图")
+@ApiModel("Widget Store List Extended Information View")
 public class WidgetStoreListExtraInfo {
 
-    @ApiModelProperty(value = "小程序官网地址", position = 1)
+    @ApiModelProperty(value = "Widget official website address", position = 1)
     private String website;
 
 }

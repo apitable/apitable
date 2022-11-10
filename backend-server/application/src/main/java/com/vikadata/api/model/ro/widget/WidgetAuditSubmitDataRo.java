@@ -10,29 +10,26 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序审核submit参数
+ * Widget audit submit parameter
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序审核submit参数")
+@ApiModel("Widget audit submit parameter")
 public class WidgetAuditSubmitDataRo {
 
     @NotBlank
-    @ApiModelProperty(value = "小程序Id", position = 1)
+    @ApiModelProperty(value = "Widget Id", position = 1)
     private String globalPackageId;
 
     @NotBlank
-    @ApiModelProperty(value = "submit版本", position = 2)
+    @ApiModelProperty(value = "Submit version", position = 2)
     private String submitVersion;
 
     @NotNull
-    @ApiModelProperty(value = "审核结果", position = 3)
+    @ApiModelProperty(value = "Audit result", position = 3)
     private Boolean auditResult;
 
-    @ApiModelProperty(value = "审核备注", position = 4)
+    @ApiModelProperty(value = "Review remarks", position = 4)
     private String auditRemark;
 
     @NotEmpty

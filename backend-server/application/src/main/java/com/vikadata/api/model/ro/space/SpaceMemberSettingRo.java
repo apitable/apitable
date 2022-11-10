@@ -6,25 +6,23 @@ import lombok.Data;
 
 /**
  * <p>
- * 空间管理 - 普通成员设置 请求参数
+ * Space management - common members set request parameters
  * </p>
  *
- * 状态字段与读库序列化对象保持一致
+ * The status field is consistent with the serialized object of the read library
  * @see com.vikadata.api.lang.SpaceGlobalFeature
- * @author Chambers
- * @date 2021/4/8
  */
 @Data
-@ApiModel("空间管理 - 普通成员设置 请求参数")
+@ApiModel("Space management - common members set request parameters")
 public class SpaceMemberSettingRo {
 
-    @ApiModelProperty(value = "全员可邀请状态", example = "true", position = 1)
+    @ApiModelProperty(value = "Invitable status of all staff", example = "true", position = 1)
     private Boolean invitable;
 
-    @ApiModelProperty(value = "允许他人申请加入空间状态", example = "false", position = 2)
+    @ApiModelProperty(value = "Allow others to apply for space status", example = "false", position = 2)
     private Boolean joinable;
 
-    @ApiModelProperty(value = "显示成员手机号", example = "false", position = 3)
+    @ApiModelProperty(value = "Display member's mobile number", example = "false", position = 3)
     private Boolean mobileShowable;
 
 }

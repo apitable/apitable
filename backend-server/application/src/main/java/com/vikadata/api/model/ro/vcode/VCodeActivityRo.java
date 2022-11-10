@@ -8,22 +8,19 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * V码活动请求参数
+ * Code V activity request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/8/14
  */
 @Data
-@ApiModel("V码活动请求参数")
+@ApiModel("Code V activity request parameters")
 public class VCodeActivityRo {
 
-    @ApiModelProperty(value = "活动名称", example = "XX 渠道推广", position = 1, required = true)
-    @NotBlank(message = "名称不能为空")
+    @ApiModelProperty(value = "Activity Name", example = "XX Channel promotion", position = 1, required = true)
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
-    @ApiModelProperty(value = "场景值", example = "XX_channel_popularize", position = 2, required = true)
-    @NotBlank(message = "场景值不能为空")
+    @ApiModelProperty(value = "Scene Values", example = "XX_channel_popularize", position = 2, required = true)
+    @NotBlank(message = "The scene value cannot be empty")
     private String scene;
 
 }

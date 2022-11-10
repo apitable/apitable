@@ -8,26 +8,23 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 图片审核结果请求参数
+ * Image audit result request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/21
  */
 @Data
-@ApiModel("图片审核结果请求参数")
+@ApiModel("Image audit result request parameters")
 public class AttachAuditScenesRo {
 
-	@ApiModelProperty(value = "图片敏感人物审核结果", position = 1, required = true)
-	@NotNull(message = "图片鉴黄结果")
+	@ApiModelProperty(value = "Audit results of image sensitive persons", position = 1, required = true)
+	@NotNull(message = "Yellow identification results of pictures")
 	private String politician;
 
-	@ApiModelProperty(value = "图片鉴黄审核结果", position = 2, required = true)
-	@NotNull(message = "图片鉴黄结果")
+	@ApiModelProperty(value = "Photo Yellow Identification Review Results", position = 2, required = true)
+	@NotNull(message = "Yellow identification results of pictures")
 	private AttachAuditPulpResultRo pulp;
 
 
-	@ApiModelProperty(value = "图片暴恐审核结果", position = 3, required = true)
-	@NotNull(message = "图片暴恐审核结果")
+	@ApiModelProperty(value = "Audit Results of Photo Violence", position = 3, required = true)
+	@NotNull(message = "Audit Results of Photo Violence")
 	private String terror;
 }

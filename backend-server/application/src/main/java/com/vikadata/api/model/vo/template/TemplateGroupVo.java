@@ -15,9 +15,6 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
  * <p>
  * Template Center - Recommend Custom Template Group View
  * </p>
- *
- * @author Chambers
- * @date 2020/7/9
  */
 @Data
 @NoArgsConstructor

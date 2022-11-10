@@ -9,30 +9,27 @@ import com.vikadata.api.support.serializer.DesensitizedSecretSerializer;
 
 /**
  * <p>
- * 企业微信已绑定配置文件视图
+ * WeCom Bound Profile View
  * </p>
- *
- * @author Pengap
- * @date 2021/8/1 15:57:39
  */
 @Data
-@ApiModel("企业微信已绑定配置文件视图")
+@ApiModel("WeCom Bound Profile View")
 public class WeComBindConfigVo {
 
-    @ApiModelProperty(value = "企业Id", position = 1)
+    @ApiModelProperty(value = "Enterprise Id", position = 1)
     private String corpId;
 
-    @ApiModelProperty(value = "自建应用Id", position = 2)
+    @ApiModelProperty(value = "Self built application ID", position = 2)
     private Integer agentId;
 
-    @ApiModelProperty(value = "自建应用密钥", position = 3)
+    @ApiModelProperty(value = "Self built application key", position = 3)
     @JsonSerialize(using = DesensitizedSecretSerializer.class)
     private String agentSecret;
 
-    @ApiModelProperty(value = "自建应用状态（0：启用，1：停用）", position = 4)
+    @ApiModelProperty(value = "Self built application status (0: enabled, 1: disabled)", position = 4)
     private Integer agentStatu;
 
-    @ApiModelProperty(value = "企业专属域名", example = "spcxqmlr2lusd.enp.vika.ltd", position = 5)
+    @ApiModelProperty(value = "Enterprise exclusive domain name", example = "spcxqmlr2lusd.enp.vika.ltd", position = 5)
     private String domainName;
 
 }

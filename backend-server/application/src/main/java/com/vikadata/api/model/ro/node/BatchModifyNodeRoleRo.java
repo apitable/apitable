@@ -14,25 +14,23 @@ import com.vikadata.core.support.deserializer.StringArrayToLongArrayDeserializer
 
 /**
  * <p>
- * 批量修改节点角色请求参数
+ * Batch Modify Node Role Request Parameters
  * </p>
- *
- * @author tao
  */
 @Data
-@ApiModel("批量修改组织单元角色请求参数")
+@ApiModel("Batch Modify Org Unit Role Request Parameters")
 public class BatchModifyNodeRoleRo {
 
-	@NotBlank(message = "节点ID不能为空")
-	@ApiModelProperty(value = "节点ID", example = "nod10", position = 1)
+	@NotBlank(message = "Node ID cannot be empty")
+	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
 	private String nodeId;
 
-	@NotEmpty(message = "组织单元不能为空")
-	@ApiModelProperty(value = "组织单元ID集", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
+	@NotEmpty(message = "Organization unit cannot be empty")
+	@ApiModelProperty(value = "Org Unit ID Set", dataType = "java.util.List", required = true, example = "[\"1\",\"2\",\"3\"]", position = 2)
 	@JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
 	private List<Long> unitIds;
 
-	@ApiModelProperty(value = "角色", example = "readonly", position = 3, required = true)
-	@NotBlank(message = "角色不能为空")
+	@ApiModelProperty(value = "Role", example = "readonly", position = 3, required = true)
+	@NotBlank(message = "Role cannot be empty")
 	private String role;
 }

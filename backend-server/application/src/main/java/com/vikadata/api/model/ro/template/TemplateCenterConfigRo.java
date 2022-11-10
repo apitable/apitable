@@ -8,9 +8,6 @@ import lombok.Data;
  * <p>
  * Template Center Config Ro
  * </p>
- *
- * @author Chambers
- * @date 2022/9/22
  */
 @Data
 @ApiModel("Template Center Config Request Object")

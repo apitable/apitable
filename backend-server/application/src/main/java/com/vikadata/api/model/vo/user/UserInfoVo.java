@@ -30,157 +30,154 @@ import static com.vikadata.api.constants.DateFormatConstants.TIME_SIMPLE_PATTERN
 
 /**
  * <p>
- * 账户信息视图
+ * Account Information View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/5 15:38
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("账户信息视图")
+@ApiModel("Account Information View")
 public class UserInfoVo implements Serializable {
 
     private static final long serialVersionUID = 6771376557632188356L;
 
-    @ApiModelProperty(value = "用户ID(实际返回是uuid)", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "User ID (the actual return is uuid)", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 
-    @ApiModelProperty(value = "用户UUID", example = "1261273764218", position = 1)
+    @ApiModelProperty(value = "User UUID", example = "1261273764218", position = 1)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "昵称", example = "张三", position = 2)
+    @ApiModelProperty(value = "Nickname", example = "Zhang San", position = 2)
     private String nickName;
 
-    @ApiModelProperty(value = "手机区号", example = "+1", position = 3)
+    @ApiModelProperty(value = "Mobile phone area code", example = "+1", position = 3)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String areaCode;
 
-    @ApiModelProperty(value = "手机号码", example = "\"13344445555\"", position = 3)
+    @ApiModelProperty(value = "Phone number", example = "\"13344445555\"", position = 3)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String mobile;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "邮箱", example = "admin@vikadata.com", position = 4)
+    @ApiModelProperty(value = "Email", example = "admin@vikadata.com", position = 4)
     private String email;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "头像", example = "null", position = 5)
+    @ApiModelProperty(value = "Avatar", example = "null", position = 5)
     private String avatar;
 
-    @ApiModelProperty(value = "注册时间", example = "2019-01-01 10:12:13", position = 6)
+    @ApiModelProperty(value = "Registration time", example = "2019-01-01 10:12:13", position = 6)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime signUpTime;
 
-    @ApiModelProperty(value = "最后登录时间", example = "2019-01-01 10:12:13", position = 6)
+    @ApiModelProperty(value = "Last logon time", example = "2019-01-01 10:12:13", position = 6)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime lastLoginTime;
 
-    @ApiModelProperty(value = "绑定第三方的信息", position = 6)
+    @ApiModelProperty(value = "Bind third-party information", position = 6)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<UserLinkVo> thirdPartyInformation;
 
-    @ApiModelProperty(value = "是否需要设置密码，标识用户没有密码，作为初始化设置密码引导的标准字段", example = "false", position = 7)
+    @ApiModelProperty(value = "Whether to set a password is required. It indicates that the user does not have a password. It is a standard field for initialization and password setting", example = "false", position = 7)
     private Boolean needPwd;
 
     @Builder.Default
-    @ApiModelProperty(value = "是否需要创建空间，标识用户没有任何空间关联，作为创建空间引导的标准字段", example = "false", position = 7)
+    @ApiModelProperty(value = "Whether it is necessary to create a space indicates that the user does not have any space association, which is a standard field for space creation guidance", example = "false", position = 7)
     private Boolean needCreate = true;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "空间id", example = "spcx2yLGGedWc", position = 8)
+    @ApiModelProperty(value = "Space id", example = "spcx2yLGGedWc", position = 8)
     private String spaceId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "空间名称", example = "我的工作空间", position = 9)
+    @ApiModelProperty(value = "Space name", example = "My Workspace", position = 9)
     private String spaceName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "空间logo", example = "http://...", position = 10)
+    @ApiModelProperty(value = "Space logo", example = "http://...", position = 10)
     private String spaceLogo;
 
     @JsonSerialize(using = ToStringSerializer.class, nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "空间对应的成员ID", example = "101", position = 11)
+    @ApiModelProperty(value = "Member ID corresponding to the space", example = "101", position = 11)
     private Long memberId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "空间对应的成员名称", example = "成员1", position = 12)
+    @ApiModelProperty(value = "Member name corresponding to the space", example = "Member 1", position = 12)
     private String memberName;
 
     @JsonSerialize(using = ToStringSerializer.class, nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "空间对应成员的组织单元ID", example = "101", position = 11)
+    @ApiModelProperty(value = "Organization unit ID of the corresponding member of the space", example = "101", position = 11)
     private Long unitId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "空间里打开的数表节点ID", example = "dst151d", position = 13)
+    @ApiModelProperty(value = "ID of the open data table node in the space", example = "dst151d", position = 13)
     private String activeNodeId;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "数表里打开的视图ID", example = "views135", position = 14)
+    @ApiModelProperty(value = "ID of the view opened in the meter", example = "views135", position = 14)
     private String activeViewId;
 
-    @ApiModelProperty(value = "活动节点位置(0:工作目录;1:星标)", example = "0", position = 14)
+    @ApiModelProperty(value = "Active node location (0: working directory; 1: star)", example = "0", position = 14)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer activeNodePos;
 
     @Builder.Default
-    @ApiModelProperty(value = "是否是空间管理员,标识是否显示空间管理菜单", example = "false", position = 15)
+    @ApiModelProperty(value = "Whether it is a space administrator, and whether the space management menu is displayed", example = "false", position = 15)
     private Boolean isAdmin = false;
 
     @Builder.Default
-    @ApiModelProperty(value = "是否主管理员", example = "false", position = 15)
+    @ApiModelProperty(value = "Primary administrator or not", example = "false", position = 15)
     private Boolean isMainAdmin = false;
 
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    @ApiModelProperty(value = "是否账号注销冷静期(冷静期允许恢复账号)", example = "false", position = 16)
+    @ApiModelProperty(value = "Whether the account is cancelled during the cooling off period (account recovery is allowed during the cooling off period)", example = "false", position = 16)
     private Boolean isPaused = false;
 
-    @ApiModelProperty(value = "账号销毁时间", example = "2022-01-03 00:00:00", position = 17)
+    @ApiModelProperty(value = "Account destruction time", example = "2022-01-03 00:00:00", position = 17)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     private LocalDateTime closeAt;
 
     @Builder.Default
-    @ApiModelProperty(value = "空间是否是删除状态", example = "false", position = 18)
+    @ApiModelProperty(value = "Whether the space is deleted", example = "false", position = 18)
     private Boolean isDelSpace = false;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "开发者访问令牌", example = "uskPtGBUw8EuVKoo3X6", position = 19)
+    @ApiModelProperty(value = "Developer Access Token", example = "uskPtGBUw8EuVKoo3X6", position = 19)
     private String apiKey;
 
-    @ApiModelProperty(value = "引导相关状态值", example = "{\"1\":1, \"3\":5}", position = 20)
+    @ApiModelProperty(value = "Boot related status values", example = "{\"1\":1, \"3\":5}", position = 20)
     @JsonSerialize(nullsUsing = NullJsonObjectSerializer.class)
     private JSONObject wizards;
 
-    @ApiModelProperty(value = "个人邀请码", example = "vikatest", position = 21)
+    @ApiModelProperty(value = "Personal invitation code", example = "vikatest", position = 21)
     private String inviteCode;
 
-    @ApiModelProperty(value = "空间站域名", position = 22)
+    @ApiModelProperty(value = "Space station domain name", position = 22)
     private String spaceDomain;
 
-    @ApiModelProperty(value = "用户所在空间是否修改过站内昵称(废弃)", position = 23)
+    @ApiModelProperty(value = "Whether the user's space has changed the internal nickname (abandoned)", position = 23)
     private Boolean isNameModified;
 
-    @ApiModelProperty(value = "用户是否是新人", position = 23)
+    @ApiModelProperty(value = "Whether the user is new", position = 23)
     private Boolean isNewComer;
 
-    @ApiModelProperty(value = "(企业微信情况下使用)用户（user）是否修改过昵称", position = 23)
+    @ApiModelProperty(value = "(Used in WeCom)Whether the user has modified the nickname", position = 23)
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "(企业微信情况下使用)成员（member）是否修改过昵称", position = 24)
+    @ApiModelProperty(value = "(Used in WeCom)Whether the member has modified the nickname", position = 24)
     private Boolean isMemberNameModified;
 
-    @ApiModelProperty(value = "是否发送订阅相关通知", notes = "读取「ConstProperties」配置文件的值", position = 25)
+    @ApiModelProperty(value = "Whether to send subscription related notifications", notes = "Read「ConstProperties」Value of profile", position = 25)
     private Boolean sendSubscriptionNotify;
 
-    @ApiModelProperty(value = "是否使用过邀请奖励", notes = "标识是否使用过邀请奖励", position = 26)
+    @ApiModelProperty(value = "Have you ever used invitation rewards", notes = "Identify whether invitation rewards have been used", position = 26)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean usedInviteReward;
 
@@ -200,7 +197,7 @@ public class UserInfoVo implements Serializable {
         this.setSignUpTime(loginUserDto.getSignUpTime());
         this.setLastLoginTime(loginUserDto.getLastLoginTime());
         this.setIsPaused(loginUserDto.getIsPaused());
-        // 避免已经登录的账号有LoginUserDto缓存，会导致NPE
+        // Avoid Login User Dto cache the logged in account, which will lead to NPE
         if (null == this.getIsPaused()) {
             this.setIsPaused(false);
         }

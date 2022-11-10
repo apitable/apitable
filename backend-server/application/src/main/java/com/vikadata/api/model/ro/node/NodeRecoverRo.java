@@ -8,20 +8,17 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * 节点恢复请求参数
+ * Node recovery request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/8/15
  */
 @Data
-@ApiModel("节点恢复请求参数")
+@ApiModel("Node recovery request parameters")
 public class NodeRecoverRo {
 
-    @ApiModelProperty(value = "节点Id", example = "nod10", position = 1, required = true)
-    @NotBlank(message = "节点Id不能为空")
+    @ApiModelProperty(value = "Node Id", example = "nod10", position = 1, required = true)
+    @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "目标位置的父类节点Id", example = "nod10", position = 2)
+    @ApiModelProperty(value = "Parent Node Id of the target location", example = "nod10", position = 2)
     private String parentId;
 }

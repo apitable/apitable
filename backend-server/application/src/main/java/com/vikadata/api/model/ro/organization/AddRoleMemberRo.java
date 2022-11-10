@@ -13,8 +13,6 @@ import lombok.Data;
  * <p>
  *      Add role members request parameter
  * </p>
- *
- * @author tao
  */
 @Data
 @ApiModel("Add role members request")

@@ -13,47 +13,44 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * V码创建请求参数
+ * V code creation request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/8/12
  */
 @Data
-@ApiModel("V码创建请求参数")
+@ApiModel("V code creation request parameters")
 public class VCodeCreateRo {
 
-    @ApiModelProperty(value = "创建数量", dataType = "java.lang.Integer", example = "1", position = 1, required = true)
-    @NotNull(message = "数量不能为空")
-    @Min(value = 1, message = "数量必须大于或等于1")
+    @ApiModelProperty(value = "Create quantity", dataType = "java.lang.Integer", example = "1", position = 1, required = true)
+    @NotNull(message = "Quantity cannot be empty")
+    @Min(value = 1, message = "Quantity must be greater than or equal to 1")
     private Integer count;
 
-    @ApiModelProperty(value = "V码类型(0:官方邀请码;2:兑换码)", dataType = "java.lang.Integer", example = "0", position = 2, required = true)
-    @NotNull(message = "类型不能为空")
+    @ApiModelProperty(value = "Type of V code (0: official invitation code; 2: exchange code)", dataType = "java.lang.Integer", example = "0", position = 2, required = true)
+    @NotNull(message = "Type cannot be empty")
     private Integer type;
 
-    @ApiModelProperty(value = "活动ID", dataType = "java.lang.String", example = "1296402001573097473", position = 3, required = true)
-    @NotNull(message = "活动ID不能为空")
+    @ApiModelProperty(value = "Activity ID", dataType = "java.lang.String", example = "1296402001573097473", position = 3, required = true)
+    @NotNull(message = "Activity ID cannot be empty")
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long activityId;
 
-    @ApiModelProperty(value = "兑换模板ID(类型为兑换码时必须)", dataType = "java.lang.String", example = "1296405974262652930", position = 4)
+    @ApiModelProperty(value = "Redemption template ID (required when the type is redemption code)", dataType = "java.lang.String", example = "1296405974262652930", position = 4)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long templateId;
 
-    @ApiModelProperty(value = "单个V码可使用总数(-1 代表无限次数，默认1次)", dataType = "java.lang.Integer", example = "-1", position = 5)
-    @Min(value = -1, message = "可使用总数设置错误")
+    @ApiModelProperty(value = "The total number of times a single V code can be used (- 1 represents an unlimited number of times, 1 by default)", dataType = "java.lang.Integer", example = "-1", position = 5)
+    @Min(value = -1, message = "Total number available setting error")
     private Integer availableTimes = 1;
 
-    @ApiModelProperty(value = "单个V码单人限制使用次数，默认1次", dataType = "java.lang.Integer", example = "1", position = 6)
-    @Min(value = -1, message = "单人限制使用次数设置错误")
+    @ApiModelProperty(value = "Single V code can only be used by one person. The default is 1 time", dataType = "java.lang.Integer", example = "1", position = 6)
+    @Min(value = -1, message = "Wrong setting of single person limit")
     private Integer limitTimes = 1;
 
-    @ApiModelProperty(value = "过期时间", example = "2020-03-18T15:29:59.000Z/yyyy-MM-dd( HH:mm(:ss)(.SSS))", position = 7)
+    @ApiModelProperty(value = "Expiration time", example = "2020-03-18T15:29:59.000Z/yyyy-MM-dd( HH:mm(:ss)(.SSS))", position = 7)
     @JsonDeserialize(using = DateFormatToLocalDateTimeDeserializer.class)
     private LocalDateTime expireTime;
 
-    @ApiModelProperty(value = "指定可使用用户的账号手机号", example = "12580", position = 8)
+    @ApiModelProperty(value = "Specify the mobile phone number of the user's account", example = "12580", position = 8)
     private String mobile;
 
 }

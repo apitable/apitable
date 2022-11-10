@@ -1,12 +1,5 @@
 package com.vikadata.api.model.vo.marketplace;
 
-/**
- *
- *
- * @author Benson Cheung
- * @date 2021/3/31 下午2:12
- */
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,22 +11,19 @@ import lombok.NoArgsConstructor;
 import com.vikadata.api.support.serializer.NullBooleanSerializer;
 
 /**
- * 应用市场-空间站应用视图
- *
- * @author Benson Cheung
- * @date 2021/3/31 下午2:12
+ * Application Market - Space Station Application View
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("第三方平台集成-空间站应用视图")
+@ApiModel("Third party platform integration - space station application view")
 public class MarketplaceSpaceAppVo {
 
-    @ApiModelProperty(value = "应用ID", example = "app112", position = 1)
+    @ApiModelProperty(value = "App ID", example = "app112", position = 1)
     private String appId;
 
-    @ApiModelProperty(value = "此空间站是否已开通(0:否,1:是)", example = "0", position = 9)
+    @ApiModelProperty(value = "Whether this space station has been opened (0: No, 1: Yes)", example = "0", position = 9)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean status;
 

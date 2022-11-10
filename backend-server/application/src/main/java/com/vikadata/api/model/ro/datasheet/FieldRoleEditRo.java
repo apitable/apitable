@@ -13,22 +13,20 @@ import com.vikadata.core.support.deserializer.StringToLongDeserializer;
 
 /**
  * <p>
- * 数表字段角色编辑请求参数
+ * DataSheet field role editing request parameters
  * </p>
- *
- * @author Chambers
  */
 @Data
-@ApiModel("数表字段角色编辑请求参数")
+@ApiModel("DataSheet field role editing request parameters")
 public class FieldRoleEditRo {
 
-    @NotNull(message = "组织单元不能为空")
-    @ApiModelProperty(value = "组织单元ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
+    @NotNull(message = "Organization unit cannot be empty")
+    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long unitId;
 
-    @NotBlank(message = "角色不能为空")
+    @NotBlank(message = "Role cannot be empty")
     @FieldRoleMatch
-    @ApiModelProperty(value = "角色", example = "editor", required = true, position = 3)
+    @ApiModelProperty(value = "Role", example = "editor", required = true, position = 3)
     private String role;
 }

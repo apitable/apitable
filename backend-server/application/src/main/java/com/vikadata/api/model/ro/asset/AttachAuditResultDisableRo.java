@@ -8,18 +8,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 图片审核结果请求参数
+ * Image audit result request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/21
  */
 @Data
-@ApiModel("图片审核结果请求参数")
+@ApiModel("Image audit result request parameters")
 public class AttachAuditResultDisableRo {
 
-	@ApiModelProperty(value = "文件是否被禁用的标识，true表示文件已被禁用，false表示文件没有被禁用。(需在增量审核配置，开启【自动禁用】功能)", position = 1, required = true)
-	@NotNull(message = "文件是否被禁用的标识")
+	@ApiModelProperty(value = "Indicates whether the file is disabled. True indicates that the file is disabled, and false indicates that the file is not disabled. (You need to enable the [Auto Disable] function in the incremental audit configuration)", position = 1, required = true)
+	@NotNull(message = "Identification of whether the file is disabled")
 	private boolean disable;
 
 	private AttachAuditScenesResultRo result;

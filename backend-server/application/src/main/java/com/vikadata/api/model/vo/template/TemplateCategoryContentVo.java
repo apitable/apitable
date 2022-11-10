@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
  * <p>
  * Template Center - Template Category Content View
  * </p>
- *
- * @author Chambers
- * @date 2022/9/14
  */
 @Data
 @NoArgsConstructor

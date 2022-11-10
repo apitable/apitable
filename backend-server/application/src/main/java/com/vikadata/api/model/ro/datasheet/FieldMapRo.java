@@ -10,34 +10,31 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 数表字段请求参数
+ * DataSheet field request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
-@ApiModel("数表字段请求参数")
+@ApiModel("DataSheet field request parameters")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class FieldMapRo {
 
-    @ApiModelProperty(value = "字段自定义Id", position = 2)
+    @ApiModelProperty(value = "Field Custom Id", position = 2)
     private String id;
 
-    @ApiModelProperty(value = "字段名称", position = 3)
+    @ApiModelProperty(value = "Field Name", position = 3)
     private String name;
 
-    @ApiModelProperty(value = "描述", position = 4)
+    @ApiModelProperty(value = "Describe", position = 4)
     private String desc;
 
-    @ApiModelProperty(value = "字段类型 1-文本「Text」2-数字「NUMBER」 3-单选 「SINGLESELECT」4-多选「MULTISELECT」 5-日期「DATETIME」 6-附件「ATTACHMENT」 7-关联「LINK」", position = 5)
+    @ApiModelProperty(value = "Field Type 1-Text「Text」2-Number「NUMBER」 3-Single choice 「SINGLESELECT」4-Multiple choice「MULTISELECT」 5-Date「DATETIME」 6-Enclosure「ATTACHMENT」 7-Relation「LINK」", position = 5)
     private Integer type;
 
-    @ApiModelProperty(value = "属性", position = 6)
+    @ApiModelProperty(value = "Attribute", position = 6)
     private JSONObject property;
 
-    @ApiModelProperty(value = "是否设置为表单必填项", position = 7)
+    @ApiModelProperty(value = "Set as required in the form", position = 7)
     private Boolean required;
 }

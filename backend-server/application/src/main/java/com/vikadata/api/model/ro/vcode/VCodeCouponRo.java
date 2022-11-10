@@ -8,21 +8,18 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * V码兑换券模板请求参数
+ * Request parameters of V code coupon template
  * </p>
- *
- * @author Chambers
- * @date 2020/8/20
  */
 @Data
-@ApiModel("V码兑换券模板请求参数")
+@ApiModel("Request parameters of V code coupon template")
 public class VCodeCouponRo {
 
-    @ApiModelProperty(value = "兑换数", example = "10", position = 1, required = true)
-    @NotNull(message = "兑换数不能为空")
+    @ApiModelProperty(value = "Exchange amount", example = "10", position = 1, required = true)
+    @NotNull(message = "The exchange amount cannot be blank")
     private Integer count;
 
-    @ApiModelProperty(value = "备注", example = "种子用户福利兑换模板", position = 2)
+    @ApiModelProperty(value = "Remarks", example = "Seed user benefit exchange template", position = 2)
     private String comment;
 
 }

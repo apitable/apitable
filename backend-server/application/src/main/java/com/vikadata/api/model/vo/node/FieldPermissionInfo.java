@@ -13,35 +13,33 @@ import com.vikadata.api.support.serializer.NullBooleanSerializer;
 import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
- * 字段权限视图信息
- * @author Shawn Deng
- * @date 2021-04-15 10:24:47
+ * Field Permission View Information
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("字段权限视图信息")
+@ApiModel("Field Permission View Information")
 public class FieldPermissionInfo {
 
-    @ApiModelProperty(value = "字段ID", example = "fldUQZGaNqSg2", position = 1)
+    @ApiModelProperty(value = "Field ID", example = "fldUQZGaNqSg2", position = 1)
     private String fieldId;
 
-    @ApiModelProperty(value = "数表字段角色配置属性", position = 2)
+    @ApiModelProperty(value = "Data Table Field Role Configuration Attribute", position = 2)
     private FieldRoleSetting setting;
 
-    @ApiModelProperty(value = "是否拥有权限", example = "true", position = 3)
+    @ApiModelProperty(value = "Whether you have permission", example = "true", position = 3)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasRole;
 
-    @ApiModelProperty(value = "角色", example = "true", position = 4)
+    @ApiModelProperty(value = "Role", example = "true", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String role;
 
-    @ApiModelProperty(value = "是否可以管理列角色", example = "true", position = 5)
+    @ApiModelProperty(value = "Whether column roles can be managed", example = "true", position = 5)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean manageable;
 
-    @ApiModelProperty(value = "字段权限集", position = 6)
+    @ApiModelProperty(value = "Field permission set", position = 6)
     private FieldPermission permission;
 }

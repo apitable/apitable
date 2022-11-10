@@ -9,22 +9,19 @@ import lombok.NoArgsConstructor;
 
 /**
 * <p>
-* 小程序码vo
+* Applet code vo
 * </p>
-*
-* @author Chambers
-* @date 2020/2/21
 */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("小程序码vo")
+@ApiModel("Applet code vo")
 public class MaCodeVo {
 
-	@ApiModelProperty(value = "唯一标识", example = "fa23r2thu", position = 1)
+	@ApiModelProperty(value = "Unique identification", example = "fa23r2thu", position = 1)
 	private String mark;
 
-	@ApiModelProperty(value = "小程序码的base64编码", example = "124bi132", position = 2)
+	@ApiModelProperty(value = "Base 64 encoding of small program code", example = "124bi132", position = 2)
 	private String encode;
 }

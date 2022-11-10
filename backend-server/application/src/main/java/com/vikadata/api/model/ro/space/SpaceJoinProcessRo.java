@@ -10,22 +10,19 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 空间加入申请处理的请求参数
+ * Request parameters for space joining application processing
  * </p>
- *
- * @author Chambers
- * @date 2020/10/29
  */
 @Data
-@ApiModel("空间加入申请处理的请求参数")
+@ApiModel("Request parameters for space joining application processing")
 public class SpaceJoinProcessRo {
 
-    @ApiModelProperty(value = "通知ID", dataType = "java.lang.String", required = true, example = "761263712638")
+    @ApiModelProperty(value = "Notification ID", dataType = "java.lang.String", required = true, example = "761263712638")
     @JsonDeserialize(using = StringToLongDeserializer.class)
-    @NotNull(message = "通知ID不能为空")
+    @NotNull(message = "Notification ID cannot be empty")
     private Long notifyId;
 
-    @ApiModelProperty(value = "是否同意", dataType = "java.lang.Boolean", required = true, example = "true")
-    @NotNull(message = "是否同意不能为空")
+    @ApiModelProperty(value = "Agree or not", dataType = "java.lang.Boolean", required = true, example = "true")
+    @NotNull(message = "Agree or not cannot be blank")
     private Boolean agree;
 }

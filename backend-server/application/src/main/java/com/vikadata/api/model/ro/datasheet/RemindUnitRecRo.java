@@ -10,26 +10,23 @@ import lombok.Data;
 
 /**
  * <p>
- * 组织单元和记录请求参数
+ * Org Unit and Record Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/6/8
  */
 @Data
-@ApiModel("组织单元和记录请求参数")
+@ApiModel("Org Unit and Record Request Parameters")
 public class RemindUnitRecRo {
 
-    @ApiModelProperty(value = "记录ID列表", example = "[\"rec037CbsaKcN\",\"recFa9VgsXMrS\"]", position = 1)
+    @ApiModelProperty(value = "Record ID List", example = "[\"rec037CbsaKcN\",\"recFa9VgsXMrS\"]", position = 1)
     private List<String> recordIds;
 
-    @ApiModelProperty(value = "组织单元ID列表", example = "[1217029304827183105,1217029304827183106]", position = 2, required = true)
-    @NotEmpty(message = "组织单元列表不能为空")
+    @ApiModelProperty(value = "Org Unit ID List", example = "[1217029304827183105,1217029304827183106]", position = 2, required = true)
+    @NotEmpty(message = "The organizational unit list cannot be empty")
     private List<Long> unitIds;
 
-    @ApiModelProperty(value = "记录标题", example = "这是一个记录", position = 3)
+    @ApiModelProperty(value = "Record Title", example = "This is a record", position = 3)
     private String recordTitle;
 
-    @ApiModelProperty(value = "列名", example = "这是一个列名", position = 4)
+    @ApiModelProperty(value = "Column name", example = "This is a column name", position = 4)
     private String fieldName;
 }

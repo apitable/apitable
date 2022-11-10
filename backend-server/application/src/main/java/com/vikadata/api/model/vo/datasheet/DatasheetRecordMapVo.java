@@ -8,23 +8,20 @@ import lombok.*;
 
 /**
  * <p>
- * 数表多条记录RecordMap返回结果值
+ * Record Map returns the result value of multiple records in the data table
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
-@ApiModel("数表多条记录RecordMap返回结果值")
+@ApiModel("Record Map returns the result value of multiple records in the data table")
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class DatasheetRecordMapVo {
 
-    @ApiModelProperty(value = "数表ID", hidden = true)
+    @ApiModelProperty(value = "Datasheet ID", hidden = true)
     String dstId;
 
-    @ApiModelProperty(value = "记录recordMap集合", position = 1)
+    @ApiModelProperty(value = "Record Map Collection", position = 1)
     JSONObject recordMap;
 
 }

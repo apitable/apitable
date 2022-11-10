@@ -6,17 +6,14 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序包登录授权请求参数
+ * Widget Package Login Authorization Request Parameters
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序包登录授权请求参数")
+@ApiModel("Widget Package Login Authorization Request Parameters")
 public class WidgetPackageAuthRo {
 
-    @ApiModelProperty(value = "组件包ID", example = "wpkBBB", position = 1)
+    @ApiModelProperty(value = "Package ID", example = "wpkBBB", position = 1)
     private String packageId;
 
 }

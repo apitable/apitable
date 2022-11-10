@@ -9,19 +9,16 @@ import java.util.List;
 
 /**
  * <p>
- * 搜索结果视图
+ * Search Results View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
-@ApiModel("搜索结果视图")
+@ApiModel("Search Results View")
 public class SearchResultVo {
 
-    @ApiModelProperty(value = "部门列表", position = 1)
+    @ApiModelProperty(value = "Department List", position = 1)
     private List<SearchTeamResultVo> teams = new ArrayList<>();
 
-    @ApiModelProperty(value = "成员列表", position = 2)
+    @ApiModelProperty(value = "Member List", position = 2)
     private List<SearchMemberResultVo> members = new ArrayList<>();
 }

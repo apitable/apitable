@@ -11,27 +11,24 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * V码活动视图
+ * Code V active view
  * </p>
- *
- * @author Chambers
- * @date 2020/8/15
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("V码活动视图")
+@ApiModel("Code V active view")
 public class VCodeActivityVo {
 
-    @ApiModelProperty(value = "活动ID", dataType = "java.lang.String", example = "1456", position = 1)
+    @ApiModelProperty(value = "Activity ID", dataType = "java.lang.String", example = "1456", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long activityId;
 
-    @ApiModelProperty(value = "活动名称", dataType = "java.lang.String", example = "某某渠道推广", position = 2)
+    @ApiModelProperty(value = "Activity Name", dataType = "java.lang.String", example = "Promotion of XX channel", position = 2)
     private String name;
 
-    @ApiModelProperty(value = "场景值", dataType = "java.lang.String", example = "XX_channel_popularize", position = 3)
+    @ApiModelProperty(value = "Scene Values", dataType = "java.lang.String", example = "XX_channel_popularize", position = 3)
     private String scene;
 
 }

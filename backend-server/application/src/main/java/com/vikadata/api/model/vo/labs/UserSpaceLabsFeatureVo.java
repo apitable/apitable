@@ -14,20 +14,17 @@ import java.util.Map;
 
 /**
  * <p>
- * 用户以及所在空间站的所有实验性功能状态值对象
+ * Users and all experimental functional status value objects of the space station
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/26 16:28:29
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("用户空间站所有可用实验室功能状态值对象")
+@ApiModel("All available laboratory function status value objects of user space station")
 public class UserSpaceLabsFeatureVo {
 
-    @ApiModelProperty(value = "所有可用实验室功能的状态集", position = 1)
+    @ApiModelProperty(value = "State set of all available lab functions", position = 1)
     @JsonSerialize(nullsUsing = NullObjectSerializer.class)
     private Map<String, List<FeatureVo>> features;
 

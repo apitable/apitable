@@ -14,9 +14,6 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
  * <p>
  * Template Center - Albums View
  * </p>
- *
- * @author Chambers
- * @date 2022/9/14
  */
 @Data
 @NoArgsConstructor

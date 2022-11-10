@@ -12,23 +12,20 @@ import javax.validation.constraints.Size;
 
 /**
  * <p>
- * 新增部门请求参数
+ * New department request parameter
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/26 18:30
  */
 @Data
-@ApiModel("新增部门请求参数")
+@ApiModel("New department request parameter")
 public class CreateTeamRo {
 
     @NotBlank
-    @Size(min = 1, max = 100, message = "部门名称不能超过100个字符")
-    @ApiModelProperty(value = "部门名称", required = true, example = "财务部", position = 1)
+    @Size(min = 1, max = 100, message = "Department name cannot exceed 100 characters")
+    @ApiModelProperty(value = "Department name", required = true, example = "Finance Department", position = 1)
     private String name;
 
     @NotNull
-    @ApiModelProperty(value = "父级ID,如果父级是根,则为0", dataType = "java.lang.String", example = "0", position = 2)
+    @ApiModelProperty(value = "Parent ID, 0 if the parent is root", dataType = "java.lang.String", example = "0", position = 2)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long superId;
 }

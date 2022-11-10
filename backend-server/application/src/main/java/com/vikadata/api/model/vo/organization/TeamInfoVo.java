@@ -14,45 +14,42 @@ import com.vikadata.api.support.serializer.NullNumberSerializer;
 
 /**
  * <p>
- * 部门信息
+ * Department information
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("部门信息")
+@ApiModel("Department information")
 public class TeamInfoVo {
 
-    @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "部门名称", example = "研发部", position = 2)
+    @ApiModelProperty(value = "Department name", example = "R&D Department", position = 2)
     private String teamName;
 
-    @ApiModelProperty(value = "父级ID,如果父级是根,则为0", dataType = "java.lang.String", example = "0", position = 3)
+    @ApiModelProperty(value = "Parent ID, 0 if the parent is root", dataType = "java.lang.String", example = "0", position = 3)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
-    @ApiModelProperty(value = "父级部门名称", example = "科研中心", position = 3)
+    @ApiModelProperty(value = "Parent department name", example = "Scientific Research Center", position = 3)
     private String parentTeamName;
 
-    @ApiModelProperty(value = "部门成员数量", example = "3", position = 4)
+    @ApiModelProperty(value = "Number of department members", example = "3", position = 4)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer memberCount;
 
-    @ApiModelProperty(value = "已激活部门成员数量", example = "3", position = 5)
+    @ApiModelProperty(value = "Number of activated department members", example = "3", position = 5)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer activateMemberCount;
 
-    @ApiModelProperty(value = "排序号", example = "1", position = 6)
+    @ApiModelProperty(value = "Sort No", example = "1", position = 6)
     private Integer sequence;
 
-    @ApiModelProperty(value = "是否有子部门", example = "true", position = 7)
+    @ApiModelProperty(value = "Whether there are sub departments", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasChildren;
 }

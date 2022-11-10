@@ -17,56 +17,53 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 组织单元信息视图
+ * Organization Unit Information View
  * </p>
- *
- * @author Chambers
- * @date 2020/6/5
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("组织单元信息视图")
+@ApiModel("Organization Unit Information View")
 public class UnitInfoVo {
 
-    @ApiModelProperty(value = "组织单元ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitId;
 
-    @ApiModelProperty(value = "分类：1-部门，3-成员", example = "1", position = 2)
+    @ApiModelProperty(value = "Classification: 1-department, 3-member", example = "1", position = 2)
     private Integer type;
 
-    @ApiModelProperty(value = "组织单元关联ID（依据类型可能是teamId、memberId）", dataType = "java.lang.String", example = "1", position = 2)
+    @ApiModelProperty(value = "Organization unit association ID (may be team ID or member ID according to the type)", dataType = "java.lang.String", example = "1", position = 2)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long unitRefId;
 
-    @ApiModelProperty(value = "部门/成员名称", example = "研发部｜张三", position = 3)
+    @ApiModelProperty(value = "Department/Member Name", example = "R&D Department｜Zhang San", position = 3)
     private String name;
 
-    @ApiModelProperty(value = "用户ID(实际返回是uuid)", dataType = "java.lang.String", example = "1", position = 4)
+    @ApiModelProperty(value = "User ID (the actual return is uuid)", dataType = "java.lang.String", example = "1", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 
     @Deprecated
-    @ApiModelProperty(value = "成员对应的用户UUID", hidden = true)
+    @ApiModelProperty(value = "User UUID corresponding to the member", hidden = true)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
-    @ApiModelProperty(value = "成员头像", example = "http://www.vikadata.com/image.png", position = 5)
+    @ApiModelProperty(value = "Member avatar", example = "http://www.vikadata.com/image.png", position = 5)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 
-    @ApiModelProperty(value = "成员是否已激活", example = "true", position = 6)
+    @ApiModelProperty(value = "Whether the member has been activated", example = "true", position = 6)
     private Boolean isActive;
 
-    @ApiModelProperty(value = "组织单元是否被删除", example = "false", position = 7)
+    @ApiModelProperty(value = "Whether the organization unit is deleted", example = "false", position = 7)
     private Boolean isDeleted;
 
-    @ApiModelProperty(value = "用户（user）是否修改过昵称", position = 8)
+    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 8)
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 9)
+    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 9)
     private Boolean isMemberNameModified;
 
     @ApiModelProperty(value = "email", example = "test@vikadata.com", position = 10)

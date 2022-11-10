@@ -10,10 +10,10 @@ import lombok.ToString;
 
 /**
  * <p>
- * 企业微信第三方应用登录后的信息
+ * Information of WeCom third-party application after login
  * </p>
  */
-@ApiModel("企业微信第三方应用登录后的信息")
+@ApiModel("Information of WeCom third-party application after login")
 @Setter
 @Getter
 @Builder
@@ -22,51 +22,51 @@ import lombok.ToString;
 public class WeComIsvUserLoginVo {
 
     /**
-     * 是否已经登录。0：否；1：是
+     * Whether you have logged in. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否已经登录。0：否；1：是")
+    @ApiModelProperty("Whether you have logged in. 0: No; 1: Yes")
     private Integer logined;
 
     /**
-     * 应用套件 ID
+     * App Suite ID
      */
-    @ApiModelProperty("应用套件 ID")
+    @ApiModelProperty("App Suite ID")
     private String suiteId;
 
     /**
-     * 授权的企业 ID
+     * Authorized enterprise ID
      */
-    @ApiModelProperty("授权的企业 ID")
+    @ApiModelProperty("Authorized enterprise ID")
     private String authCorpId;
 
     /**
-     * 应用绑定的空间站 ID
+     * Space ID bound by the application
      */
-    @ApiModelProperty("应用绑定的空间站 ID")
+    @ApiModelProperty("Space ID bound by the application")
     private String spaceId;
 
     /**
-     * 是否正在同步通讯录。0：否；1：是
+     * Whether the address book is being synchronized. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否正在同步通讯录。0：否；1：是")
+    @ApiModelProperty("Whether the address book is being synchronized. 0: No; 1: Yes")
     private Integer contactSyncing;
 
     /**
-     * 用户的默认成员名称
+     * User's default member name
      */
-    @ApiModelProperty("用户的默认成员名称")
+    @ApiModelProperty("User's default member name")
     private String defaultName;
 
     /**
-     * 是否需要更改默认名称。0：否；1：是
+     * Whether the default name needs to be changed. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否需要更改默认名称。0：否；1：是")
+    @ApiModelProperty("Whether the default name needs to be changed. 0: No; 1: Yes")
     private Integer shouldRename;
 
     /**
-     * 是否需要再次手动授权。0：否；1：是
+     * Whether manual authorization is required again. 0: No; 1: Yes
      */
-    @ApiModelProperty("是否需要再次手动授权。0：否；1：是")
+    @ApiModelProperty("Whether manual authorization is required again. 0: No; 1: Yes")
     private Integer shouldReAuth;
 
 }

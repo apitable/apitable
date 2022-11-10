@@ -12,30 +12,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 节点请求参数
- *
- * @author Troy
- * @since 2022/03/29
+ * Node Request Parameters
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("节点请求参数")
+@ApiModel("Node Request Parameters")
 public class CreateDatasheetRo {
 
-    @ApiModelProperty(value = "名称", example = "这是一个节点", position = 1, required = true)
-    @Size(max = 100, message = "名称长度不能超过100位")
+    @ApiModelProperty(value = "Name", example = "This is a node", position = 1, required = true)
+    @Size(max = 100, message = "The name length cannot exceed 100 bits")
     private String name;
 
-    @ApiModelProperty(value = "父类节点Id", example = "nod10", position = 2)
-    @NotBlank(message = "父类节点Id不能为空")
+    @ApiModelProperty(value = "Parent Node Id", example = "nod10", position = 2)
+    @NotBlank(message = "The parent node ID cannot be empty")
     private String folderId;
 
-    @ApiModelProperty(value = "目标位置的前一个节点，为空时即移动到了首位", example = "nod10", position = 3)
+    @ApiModelProperty(value = "The previous node of the target position moves to the first position when it is empty", example = "nod10", position = 3)
     private String preNodeId;
 
-    @ApiModelProperty(value = "描述", example = "这是个表格", position = 4)
+    @ApiModelProperty(value = "Description", example = "This is a table", position = 4)
     private String description;
 
     public NodeOpRo tranferToNodeOpRo() {

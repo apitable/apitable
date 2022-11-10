@@ -6,37 +6,34 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序包请求参数
+ * Widget Package Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/12/23
  */
 @Data
-@ApiModel("小程序包请求参数")
+@ApiModel("Widget Package Request Parameters")
 public class WidgetPackageRo {
 
-    @ApiModelProperty(value = "小程序包ID", example = "wpkCKtqGTjzM7")
+    @ApiModelProperty(value = "Widget Package ID", example = "wpkCKtqGTjzM7")
     private String widgetPackageId;
 
-    @ApiModelProperty(value = "名称", example = "图表", position = 1)
+    @ApiModelProperty(value = "Name", example = "Chart", position = 1)
     private String name;
 
-    @ApiModelProperty(value = "英文名称", example = "chart", position = 2)
+    @ApiModelProperty(value = "English name", example = "chart", position = 2)
     private String nameEn;
 
-    @ApiModelProperty(value = "图标", example = "space/2020/12/23/aqa", position = 3)
+    @ApiModelProperty(value = "Icon", example = "space/2020/12/23/aqa", position = 3)
     private String icon;
 
-    @ApiModelProperty(value = "封面图", example = "space/2020/12/23/aqa", position = 3)
+    @ApiModelProperty(value = "Cover", example = "space/2020/12/23/aqa", position = 3)
     private String cover;
 
-    @ApiModelProperty(value = "描述", example = "这是一个图表小程序的描述", position = 4)
+    @ApiModelProperty(value = "Describe", example = "This is the description of a chart applet", position = 4)
     private String description;
 
-    @ApiModelProperty(value = "版本号", example = "v1.0.0", position = 5)
+    @ApiModelProperty(value = "Version No", example = "v1.0.0", position = 5)
     private String version;
 
-    @ApiModelProperty(value = "小程序包状态(0:待审核;1:不通过;2:待发布;3:已上线;4:已下架)", example = "3", position = 6)
+    @ApiModelProperty(value = "Widget package status(0:To be reviewed;1:Fail;2:To be released;3:Online;4:Off shelf)", example = "3", position = 6)
     private Integer status;
 }

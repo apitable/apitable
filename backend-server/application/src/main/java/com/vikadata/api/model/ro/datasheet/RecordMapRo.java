@@ -9,34 +9,31 @@ import lombok.*;
 
 /**
  * <p>
- * 数表记录Record请求参数
+ * DataSheet record request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
-@ApiModel("数表记录Record请求参数")
+@ApiModel("DataSheet record request parameters")
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecordMapRo {
 
-    @ApiModelProperty(value = "记录ID", position = 2)
+    @ApiModelProperty(value = "Record ID", position = 2)
     private String id;
 
-    @ApiModelProperty(value = "一行记录的数据（对应每个字段Field）", position = 3)
+    @ApiModelProperty(value = "Data recorded in one row (corresponding to each field)", position = 3)
     private JSONObject data;
 
-    @ApiModelProperty(value = "按排序的历史版本号，是原 Operation 的revision，数组下标是当前 record 的 revision", position = 5)
+    @ApiModelProperty(value = "The historical version number sorted is the revision of the original operation, and the array subscript is the revision of the current record", position = 5)
     private String revisionHistory;
 
-    @ApiModelProperty(value = "版本号", position = 6)
+    @ApiModelProperty(value = "Version No", position = 6)
     private Long revision;
 
     @JsonIgnore
     @TableLogic
-    @ApiModelProperty(value = "删除标记(0:否,1:是)", position = 7)
+    @ApiModelProperty(value = "Delete tag (0: No, 1: Yes)", position = 7)
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "recordMeta fieldUpdatedMap", position = 8)

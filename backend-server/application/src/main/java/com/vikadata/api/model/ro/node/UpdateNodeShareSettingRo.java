@@ -8,17 +8,14 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * 更改节点分享设置请求参数
+ * Change node sharing setting request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/10/19 14:59
  */
 @Data
-@ApiModel("更改节点分享设置请求参数")
+@ApiModel("Change node sharing setting request parameters")
 public class UpdateNodeShareSettingRo {
 
-    @NotBlank(message = "分享设置参数不能为空")
-    @ApiModelProperty(value = "分享设置参数字符串", dataType = "string", required = true, example = "\"{\"onlyRead\": true}\"")
+    @NotBlank(message = "Share setting parameter cannot be empty")
+    @ApiModelProperty(value = "Share setting parameter string", dataType = "string", required = true, example = "\"{\"onlyRead\": true}\"")
     private String props;
 }

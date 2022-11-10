@@ -7,26 +7,23 @@ import lombok.Data;
 
 /**
  * <p>
- * 资源直传Token结果视图
+ * Resource Direct Transfer Token Result View
  * </p>
- *
- * @author Pengap
- * @date 2022/4/6 17:32:02
  */
 @Data
-@ApiModel("资源直传Token结果视图")
+@ApiModel("Resource Direct Transfer Token Result View")
 public class AssetUploadTokenVo {
 
-    @ApiModelProperty(value = "上传凭证", position = 1)
+    @ApiModelProperty(value = "Upload voucher", position = 1)
     private String uploadToken;
 
-    @ApiModelProperty(value = "资源名", position = 2)
+    @ApiModelProperty(value = "Resource name", position = 2)
     private String resourceKey;
 
-    @ApiModelProperty(value = "上传类型（QINIU:七牛云）", position = 3)
+    @ApiModelProperty(value = "Upload type (QINIU: Qiniu Cloud)", position = 3)
     private String uploadType;
 
-    @ApiModelProperty(value = "端点", position = 4)
+    @ApiModelProperty(value = "Endpoint", position = 4)
     private String endpoint;
 
 }

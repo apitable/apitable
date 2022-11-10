@@ -19,34 +19,31 @@ import static com.vikadata.api.constants.DateFormatConstants.TIME_SIMPLE_PATTERN
 
 /**
  * <p>
- * V码活动分页视图
+ * V code active paging view
  * </p>
- *
- * @author Chambers
- * @date 2020/8/15
  */
 @Data
-@ApiModel("V码活动分页视图")
+@ApiModel("V code active paging view")
 @EqualsAndHashCode(callSuper = true)
 public class VCodeActivityPageVo extends VCodeActivityVo {
 
-    @ApiModelProperty(value = "创建者", dataType = "java.lang.String", example = "张三", position = 4)
+    @ApiModelProperty(value = "Creator", dataType = "java.lang.String", example = "Zhang San", position = 4)
     private String creator;
 
-    @ApiModelProperty(value = "创建时间", example = "2019-01-01 10:12:13", position = 4)
+    @ApiModelProperty(value = "Create time", example = "2019-01-01 10:12:13", position = 4)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "最后修改者", dataType = "java.lang.String", example = "李四", position = 5)
+    @ApiModelProperty(value = "Last Modified By", dataType = "java.lang.String", example = "Li Si", position = 5)
     private String updater;
 
-    @ApiModelProperty(value = "最后修改时间", example = "2019-01-01 10:12:13", position = 5)
+    @ApiModelProperty(value = "Last modified", example = "2019-01-01 10:12:13", position = 5)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updatedAt;
 
-    @ApiModelProperty(value = "活动二维码信息", position = 6)
+    @ApiModelProperty(value = "Activity QR code information", position = 6)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<QrCodeBaseInfo> qrCodeList;
 }

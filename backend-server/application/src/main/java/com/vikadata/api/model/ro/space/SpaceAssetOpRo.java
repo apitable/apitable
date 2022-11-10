@@ -12,36 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 空间附件资源请求参数
- *
- * @author Chambers
- * @since 2020/3/31
+ * Space attachment resource request parameters
  */
 @Data
-@ApiModel("空间附件资源请求参数")
+@ApiModel("Space attachment resource request parameters")
 public class SpaceAssetOpRo {
 
-    @ApiModelProperty(value = "写入token集合", position = 1)
+    @ApiModelProperty(value = "Write the token set", position = 1)
     private List<OpAssetRo> addToken = new ArrayList<>();
 
-    @ApiModelProperty(value = "删除token集合", position = 2)
+    @ApiModelProperty(value = "Delete token collection", position = 2)
     private List<OpAssetRo> removeToken = new ArrayList<>();
 
-    @ApiModelProperty(value = "数表节点Id", example = "dst10", position = 3, required = true)
-    @NotBlank(message = "数表ID不能为空")
+    @ApiModelProperty(value = "DataSheet Node Id", example = "dst10", position = 3, required = true)
+    @NotBlank(message = "DataSheet ID cannot be empty")
     private String nodeId;
 
     @Getter
     @Setter
-    @ApiModel("附件资源请求参数")
+    @ApiModel("Attachment resource request parameters")
     public static class OpAssetRo {
 
-        @ApiModelProperty(value = "附件token", position = 1, required = true)
-        @NotNull(message = "token不能为空")
+        @ApiModelProperty(value = "Attachment token", position = 1, required = true)
+        @NotNull(message = "Token cannot be empty")
         private String token;
 
-        @ApiModelProperty(value = "附件名称", position = 2, required = true)
-        @NotNull(message = "附件名称不能为空")
+        @ApiModelProperty(value = "Attachment name", position = 2, required = true)
+        @NotNull(message = "Attachment name cannot be empty")
         private String name;
     }
 

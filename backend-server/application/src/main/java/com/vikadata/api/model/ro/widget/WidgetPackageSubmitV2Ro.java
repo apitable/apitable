@@ -28,18 +28,18 @@ public class WidgetPackageSubmitV2Ro extends WidgetPackageBaseV2Ro {
     @Pattern(regexp = PatternConstants.URL_HTTP, message = "website address format error")
     private String website;
 
-    @ApiModelProperty(value = "widget's name", example = "{'zh-CN':'中','en-US':'英'}", position = 4)
+    @ApiModelProperty(value = "widget's name", example = "{'zh-CN':'Chinese','en-US':'English'}", position = 4)
     private String name;
 
-    @ApiModelProperty(value = "发布说明", position = 5)
+    @ApiModelProperty(value = "Release Notes", position = 5)
     private String releaseNote;
 
-    @ApiModelProperty(value = "是否沙箱", position = 6)
+    @ApiModelProperty(value = "Sandbox or not", position = 6)
     private Boolean sandbox;
 
-    @ApiModelProperty(value = "安装环境类型", example = "dashboard", position = 7)
+    @ApiModelProperty(value = "Installation environment type", example = "dashboard", position = 7)
     private List<String> installEnv;
 
-    @ApiModelProperty(value = "运行环境类型", example = "mobile", position = 8)
+    @ApiModelProperty(value = "Operating environment type", example = "mobile", position = 8)
     private List<String> runtimeEnv;
 }

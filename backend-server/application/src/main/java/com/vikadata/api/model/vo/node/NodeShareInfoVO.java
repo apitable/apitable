@@ -14,87 +14,84 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 节点分享信息视图
+ * Node share information view
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 14:00
  */
 @Data
-@ApiModel("节点分享信息视图")
+@ApiModel("Node share information view")
 public class NodeShareInfoVO {
 
-    @ApiModelProperty(value = "分享唯一标识", example = "shrKsX1map5RfYO", position = 1)
+    @ApiModelProperty(value = "Share Unique ID", example = "shrKsX1map5RfYO", position = 1)
     private String shareId;
 
-    @ApiModelProperty(value = "空间ID", example = "spceDumyiMKU2", position = 2)
+    @ApiModelProperty(value = "Space ID", example = "spceDumyiMKU2", position = 2)
     private String spaceId;
 
-    @ApiModelProperty(value = "空间名称", example = "维格智数空间", position = 3)
+    @ApiModelProperty(value = "Space name", example = "vika space", position = 3)
     private String spaceName;
 
-    @ApiModelProperty(value = "分享的节点树", position = 4)
+    @ApiModelProperty(value = "Shared node tree", position = 4)
     private NodeShareTree shareNodeTree;
 
     @Deprecated
-    @ApiModelProperty(value = "分享节点ID", example = "nod10", position = 4)
+    @ApiModelProperty(value = "Share node ID", example = "nod10", position = 4)
     private String shareNodeId;
 
     @Deprecated
-    @ApiModelProperty(value = "分享节点类型", example = "1", position = 4)
+    @ApiModelProperty(value = "Share node type", example = "1", position = 4)
     private Integer shareNodeType;
 
     @Deprecated
-    @ApiModelProperty(value = "分享节点名称", example = "这是一个节点", position = 5)
+    @ApiModelProperty(value = "Share node name", example = "This is a node", position = 5)
     private String shareNodeName;
 
     @Deprecated
-    @ApiModelProperty(value = "分享节点图标", example = ":smile", position = 6)
+    @ApiModelProperty(value = "Share node icon", example = ":smile", position = 6)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String shareNodeIcon;
 
-    @ApiModelProperty(value = "是否允许他人转存", example = "true", position = 7)
+    @ApiModelProperty(value = "Allow others to deposit", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowSaved;
 
-    @ApiModelProperty(value = "是否允许他人编辑", example = "true", position = 7)
+    @ApiModelProperty(value = "Allow others to edit", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowEdit;
 
-    @ApiModelProperty(value = "是否允许他人申请加入空间", example = "true", position = 7)
+    @ApiModelProperty(value = "Whether to allow others to apply for joining the space", example = "true", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowApply;
 
-    @ApiModelProperty(value = "是否允许他人复制数据至站外", example = "true", position = 8)
+    @ApiModelProperty(value = "Whether to allow others to copy data outside the station", example = "true", position = 8)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowCopyDataToExternal;
 
-    @ApiModelProperty(value = "是否允许他人下载附件", example = "true", position = 9)
+    @ApiModelProperty(value = "Allow others to download attachments", example = "true", position = 9)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowDownloadAttachment;
 
     @Deprecated
-    @ApiModelProperty(value = "是否文件夹", example = "false", position = 10)
+    @ApiModelProperty(value = "Folder or not", example = "false", position = 10)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isFolder;
 
     @Deprecated
-    @ApiModelProperty(value = "子节点树，如果分享的是文件夹，里面是子节点树，如果分享是数表，则没有", position = 11)
+    @ApiModelProperty(value = "Sub node tree. If the shared folder is a sub node tree, if the shared table is a number table, there is no sub node tree", position = 11)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<NodeShareTree> nodeTree;
 
-    @ApiModelProperty(value = "最后修改者", example = "张三", position = 12)
+    @ApiModelProperty(value = "Last Modified By", example = "Zhang San", position = 12)
     private String lastModifiedBy;
 
-    @ApiModelProperty(value = "头像地址", example = "http://wwww.vikadata.com/2019/11/12/17123187253.png", position = 13)
+    @ApiModelProperty(value = "Head portrait address", example = "http://wwww.vikadata.com/2019/11/12/17123187253.png", position = 13)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String lastModifiedAvatar;
 
-    @ApiModelProperty(value = "是否在登录", example = "false", position = 14)
+    @ApiModelProperty(value = "Login or not", example = "false", position = 14)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean hasLogin;
 
-    @ApiModelProperty(value = "是否开启「视图手动保存」实验功能", example = "true", position = 15)
+    @ApiModelProperty(value = "Whether to open「View manual save」Experimental function", example = "true", position = 15)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean featureViewManualSave;
 

@@ -15,9 +15,6 @@ import com.vikadata.api.support.serializer.NullArraySerializer;
  * <p>
  * Template Center - Template Search Result View
  * </p>
- *
- * @author Chambers
- * @date 2022/9/16
  */
 @Data
 @NoArgsConstructor

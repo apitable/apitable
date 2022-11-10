@@ -12,26 +12,23 @@ import java.util.List;
 
 /**
  * <p>
- * 添加节点角色请求参数
+ * Add node role request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/20 13:59
  */
 @Data
-@ApiModel("添加节点角色请求参数")
+@ApiModel("Add node role request parameters")
 public class AddNodeRoleRo {
 
-	@NotBlank(message = "节点ID不能为空")
-	@ApiModelProperty(value = "节点ID", example = "nod10", position = 1)
+	@NotBlank(message = "Node ID cannot be empty")
+	@ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
 	private String nodeId;
 
-	@NotEmpty(message = "组织单元不能为空")
-	@ApiModelProperty(value = "组织单元ID集合", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", required = true, position = 2)
+	@NotEmpty(message = "Organization unit cannot be empty")
+	@ApiModelProperty(value = "Organization Unit ID Collection", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", required = true, position = 2)
 	@JsonDeserialize(using = StringArrayToLongArrayDeserializer.class)
 	private List<Long> unitIds;
 
-	@ApiModelProperty(value = "角色", example = "editor", position = 3, required = true)
-	@NotBlank(message = "角色不能为空")
+	@ApiModelProperty(value = "Role", example = "editor", position = 3, required = true)
+	@NotBlank(message = "Role cannot be empty")
 	private String role;
 }

@@ -9,21 +9,18 @@ import java.util.List;
 
 /**
  * <p>
- * 修改节点角色请求参数
+ * Modify node role request parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/20 13:59
  */
 @Data
-@ApiModel("修改节点角色请求参数")
+@ApiModel("Modify node role request parameters")
 public class UpdateRoleRo {
 
-    @NotBlank(message = "节点ID不能为空")
-    @ApiModelProperty(value = "节点ID", example = "nod10", position = 1)
+    @NotBlank(message = "Node ID cannot be empty")
+    @ApiModelProperty(value = "Node ID", example = "nod10", position = 1)
     private String nodeId;
 
-    @ApiModelProperty(value = "节点角色继承上级模式，为false时，需要传递roles参数", example = "false", position = 2)
+    @ApiModelProperty(value = "The node role inherits the parent mode. If it is false, the roles parameter needs to be passed", example = "false", position = 2)
     private Boolean extend;
 
     private List<NodeRoleRo> roles;

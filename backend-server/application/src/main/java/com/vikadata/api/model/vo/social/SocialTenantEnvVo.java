@@ -11,36 +11,33 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 第三方集成租户环境配置视图
+ * Third party integrated tenant environment configuration view
  * </p>
- *
- * @author Pengap
- * @date 2021/8/24 16:51:58
  */
 @Data
-@ApiModel("第三方集成租户环境配置视图")
+@ApiModel("Third party integrated tenant environment configuration view")
 public class SocialTenantEnvVo {
 
-    @ApiModelProperty(value = "域名", position = 1)
+    @ApiModelProperty(value = "Domain name", position = 1)
     private String domainName;
 
-    @ApiModelProperty(value = "租户集成环境集合", position = 2)
+    @ApiModelProperty(value = "Tenant Integration Environment Collection", position = 2)
     private Map<String, Object> envs;
 
     @Data
     @Builder(toBuilder = true)
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel("集成企业微信环境视图")
+    @ApiModel("Integrated WeCom environment view")
     public static class WeComEnv {
 
-        @ApiModelProperty(value = "企业微信-企业Id", position = 1)
+        @ApiModelProperty(value = "WeCom-Enterprise Id", position = 1)
         private String corpId;
 
-        @ApiModelProperty(value = "企业微信-自建应用Id", position = 2)
+        @ApiModelProperty(value = "WeCom-Self built application ID", position = 2)
         private String agentId;
 
-        @ApiModelProperty(value = "企业微信-是否启用", position = 3)
+        @ApiModelProperty(value = "WeCom-Enable", position = 3)
         private Boolean enabled;
 
     }

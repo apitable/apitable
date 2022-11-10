@@ -9,28 +9,25 @@ import lombok.NoArgsConstructor;
 
 /**
 * <p>
-* 钉钉扫码登陆返回结果vo
+* DingTalk Scan Code Login Return Result vo
 * </p>
-*
-* @author Chambers
-* @date 2019/12/5
 */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("钉钉扫码登陆结果vo")
+@ApiModel("DingTalk Scan Code Login Return Result vo")
 public class DingLoginResultVo {
 
-    @ApiModelProperty(value = "是否已绑定维格账号", example = "false", position = 1)
+    @ApiModelProperty(value = "Whether the vika account has been bound", example = "false", position = 1)
     private Boolean isBind;
 
-    @ApiModelProperty(value = "昵称", example = "张三", position = 2)
+    @ApiModelProperty(value = "Nickname", example = "Zhang San", position = 2)
     private String nick;
 
-    @ApiModelProperty(value = "开放应用内的唯一标识", example = "liSii8KC", position = 3)
+    @ApiModelProperty(value = "Unique identification within open applications", example = "liSii8KC", position = 3)
     private String openId;
 
-    @ApiModelProperty(value = "开发者企业内的唯一标识", example = "PiiiPyQqBNBii0HnCJ3zljcuAiEiE", position = 4)
+    @ApiModelProperty(value = "Unique ID in the developer enterprise", example = "PiiiPyQqBNBii0HnCJ3zljcuAiEiE", position = 4)
     private String unionId;
 }

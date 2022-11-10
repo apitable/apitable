@@ -8,20 +8,18 @@ import lombok.Data;
 
 /** 
 * <p> 
-* 用户通知列表参数
-* </p> 
-* @author zoe zheng 
-* @date 2021/3/1 10:16 上午
+* User notification list parameters
+* </p>
 */
 @Data
-@ApiModel("用户通知列表参数")
+@ApiModel("User notification list parameters")
 public class NotificationListRo {
     @Max(1)
-    @ApiModelProperty(value = "是否已读1已读,0未读,默认未读", allowableValues = "range[0,1]",
+    @ApiModelProperty(value = "Read 1 Read, 0 Unread, Default Unread", allowableValues = "range[0,1]",
             dataType = "Integer",
         example = "1")
     private Integer isRead = 0;
 
-    @ApiModelProperty(value = "通知类型，默认为系统通知system", example = "system")
+    @ApiModelProperty(value = "Notification type, default to system notification system", example = "system")
     private String notifyType = "system";
 }

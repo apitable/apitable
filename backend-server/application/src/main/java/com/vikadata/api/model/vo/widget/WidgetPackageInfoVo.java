@@ -9,56 +9,53 @@ import com.vikadata.api.support.serializer.ImageSerializer;
 
 /**
  * <p>
- * 小程序包信息视图
+ * Applet Package Information View
  * </p>
- *
- * @author Pengap
- * @date 2021/7/9
  */
 @Data
-@ApiModel("小程序包信息视图")
+@ApiModel("Applet Package Information View")
 public class WidgetPackageInfoVo {
 
-    @ApiModelProperty(value = "组件包ID", example = "wpkABC", position = 1)
+    @ApiModelProperty(value = "Package ID", example = "wpkABC", position = 1)
     private String packageId;
 
-    @ApiModelProperty(value = "组件名称-根据请求Accept-Language返回，默认：zh-CN，目前支持列表：「en-US/zh-CN」", example = "图表", position = 2)
+    @ApiModelProperty(value = "Widget name - returned according to the request Accept Language. Default:zh-CN，Current Support List：「en-US/zh-CN」", example = "Chart", position = 2)
     private String name;
 
-    @ApiModelProperty(value = "组件包图标", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 3)
+    @ApiModelProperty(value = "Widget package icon", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 3)
     @JsonSerialize(using = ImageSerializer.class)
     private String icon;
 
-    @ApiModelProperty(value = "组件包封面图", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 4)
+    @ApiModelProperty(value = "Cover drawing of component package", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 4)
     @JsonSerialize(using = ImageSerializer.class)
     private String cover;
 
-    @ApiModelProperty(value = "组件描述-根据请求Accept-Language返回，默认：zh-CN，目前支持列表：「en-US/zh-CN」", example = "这是一个图表小程序的描述", position = 5)
+    @ApiModelProperty(value = "Widget description - returned according to the request Accept Language, default: zh CN, current support list:「en-US/zh-CN」", example = "This is the description of a chart applet", position = 5)
     private String description;
 
-    @ApiModelProperty(value = "组件包版本号", example = "1.0.0", position = 6)
+    @ApiModelProperty(value = "Widget package version number", example = "1.0.0", position = 6)
     private String version;
 
-    @ApiModelProperty(value = "组件包状态(0:开发中;1:已封禁;2:待发布;3:已发布;4:已下架)", example = "3", position = 7)
+    @ApiModelProperty(value = "Widget package status (0: under development; 1: banned; 2: to be published; 3: published; 4: off the shelf)", example = "3", position = 7)
     private Integer status;
 
-    @ApiModelProperty(value = "作者名", position = 8)
+    @ApiModelProperty(value = "Author Name", position = 8)
     private String authorName;
 
-    @ApiModelProperty(value = "作者图标", position = 9)
+    @ApiModelProperty(value = "Author icon", position = 9)
     @JsonSerialize(using = ImageSerializer.class)
     private String authorIcon;
 
-    @ApiModelProperty(value = "作者Email", position = 10)
+    @ApiModelProperty(value = "Author Email", position = 10)
     private String authorEmail;
 
-    @ApiModelProperty(value = "作者网站地址", position = 11)
+    @ApiModelProperty(value = "Author website address", position = 11)
     private String authorLink;
 
-    @ApiModelProperty(value = "组件包类型(0:第三方,1:官方)", position = 12)
+    @ApiModelProperty(value = "Widget package type (0: third party, 1: official)", position = 12)
     private Integer packageType;
 
-    @ApiModelProperty(value = "0：发布到空间站中的组件商店，1：发布到全局应用商店", position = 13)
+    @ApiModelProperty(value = "0: Publish to the component store in the space station, 1: Publish to the global app store", position = 13)
     private Integer releaseType;
 
 }

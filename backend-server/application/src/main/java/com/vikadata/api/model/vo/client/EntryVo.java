@@ -5,11 +5,8 @@ import lombok.Data;
 
 /**
  * <p>
- * 客户端入口模版绑定参数
+ * Client portal template binding parameters
  * </p>
- *
- * @author zoe zheng
- * @date 2020/4/9 7:34 下午
  */
 @Data
 @Builder
@@ -22,7 +19,7 @@ public class EntryVo {
     private String metaContent;
 
     /**
-     * 返回给客户端当前环境
+     * Return to the client's current environment
      */
     private String env;
 

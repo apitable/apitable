@@ -6,16 +6,14 @@ import lombok.Data;
 
 /**
  * <p>
- * 企业微信应用用户登录返回信息
+ * WeCom application user login return information
  * </p>
- * @author Pengap
- * @date 2021/8/19 15:53:12
  */
 @Data
-@ApiModel("企业微信应用用户登录返回信息")
+@ApiModel("WeCom application user login return information")
 public class WeComUserLoginVo {
 
-    @ApiModelProperty(value = "应用绑定的空间站ID", position = 1)
+    @ApiModelProperty(value = "Space ID bound by the application", position = 1)
     private String bindSpaceId;
 
 }

@@ -15,20 +15,17 @@ import com.vikadata.core.support.serializer.NumberListToStringListSerializer;
 
 /**
  * <p>
- * 成员归属的组织单元
+ * Organizational unit to which the member belongs
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/4/13 14:41
  */
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("成员归属的组织单元")
+@ApiModel("Organizational unit to which the member belongs")
 public class MemberUnitsVo {
 
-    @ApiModelProperty(value = "组织单元ID列表", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 1)
+    @ApiModelProperty(value = "Org Unit ID List", dataType = "List", example = "[\"10101\",\"10102\",\"10103\",\"10104\"]", position = 1)
     @JsonSerialize(using = NumberListToStringListSerializer.class, nullsUsing = NullArraySerializer.class)
     private List<Long> unitIds;
 }

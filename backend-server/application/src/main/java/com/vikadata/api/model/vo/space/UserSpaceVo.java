@@ -10,23 +10,20 @@ import java.util.Collection;
 
 /**
  * <p>
- * 用户在指定空间的资源信息
+ * User's resource information in the specified space
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/2/12 02:33
  */
 @Data
-@ApiModel("用户在空间的资源信息视图")
+@ApiModel("User's resource information view in the space")
 public class UserSpaceVo {
 
-    @ApiModelProperty(value = "空间名称", example = "我的工作空间", position = 1)
+    @ApiModelProperty(value = "Space name", example = "My Workspace", position = 1)
     private String spaceName;
 
-    @ApiModelProperty(value = "是否主管理员", example = "true", position = 2)
+    @ApiModelProperty(value = "Primary administrator or not", example = "true", position = 2)
     private Boolean mainAdmin;
 
-    @ApiModelProperty(value = "权限", dataType = "List", example = "[\"MANAGE_TEAM\",\"MANAGE_MAIN_ADMIN\"]", position = 3)
+    @ApiModelProperty(value = "Permission", dataType = "List", example = "[\"MANAGE_TEAM\",\"MANAGE_MAIN_ADMIN\"]", position = 3)
     @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
     private Collection<String> permissions;
 }

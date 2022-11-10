@@ -9,20 +9,17 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 企业微信应用绑定空间站信息
+ * WeCom application binding space information
  * </p>
- *
- * @author Pengap
- * @date 2021/8/28 19:03:54
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("企业微信应用绑定空间站信息")
+@ApiModel("WeCom application binding space information")
 public class WeComBindSpaceVo {
 
-    @ApiModelProperty(value = "应用绑定的空间站ID", position = 1)
+    @ApiModelProperty(value = "Space ID bound by the application", position = 1)
     private String bindSpaceId;
 
 }

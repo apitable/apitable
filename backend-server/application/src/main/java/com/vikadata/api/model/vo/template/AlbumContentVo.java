@@ -19,9 +19,6 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
  * <p>
  * Template Center - Template Album Content View
  * </p>
- *
- * @author Chambers
- * @date 2022/9/14
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

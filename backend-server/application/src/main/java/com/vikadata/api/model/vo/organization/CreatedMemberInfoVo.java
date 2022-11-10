@@ -10,20 +10,17 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 空间站数据创建人视图
+ * Space Station Data Creator View
  * </p>
- *
- * @author Pengap
- * @date 2021/7/29 18:23:33
  */
 @Data
-@ApiModel("数据创建人视图")
+@ApiModel("Data Creator View")
 public class CreatedMemberInfoVo {
 
-    @ApiModelProperty(value = "节点创建人-名称", position = 8)
+    @ApiModelProperty(value = "Node Creator - Name", position = 8)
     private String memberName;
 
-    @ApiModelProperty(value = "节点创建人-头像", example = "http://wwww.vikadata.com/2019/11/12/17123187253.png", position = 9)
+    @ApiModelProperty(value = "Node Creator - avatar", example = "http://wwww.vikadata.com/2019/11/12/17123187253.png", position = 9)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String avatar;
 

@@ -14,28 +14,25 @@ import static com.vikadata.api.constants.DateFormatConstants.TIME_SIMPLE_PATTERN
 
 /**
  * <p>
- * 公众号二维码分页vo
+ * Official account QR code page vo
  * </p>
- *
- * @author Chambers
- * @date 2020/8/24
  */
 @Data
-@ApiModel("公众号二维码分页vo")
+@ApiModel("Official account QR code page vo")
 @EqualsAndHashCode(callSuper = true)
 public class QrCodePageVo extends QrCodeBaseInfo {
 
-    @ApiModelProperty(value = "场景值", dataType = "java.lang.String", example = "XX_channel_popularize", position = 5)
+    @ApiModelProperty(value = "Scene Values", dataType = "java.lang.String", example = "XX_channel_popularize", position = 5)
     private String scene;
 
-    @ApiModelProperty(value = "创建者", dataType = "java.lang.String", example = "张三", position = 6)
+    @ApiModelProperty(value = "Creator", dataType = "java.lang.String", example = "Zhang San", position = 6)
     private String creator;
 
-    @ApiModelProperty(value = "创建时间", example = "2019-01-01 10:12:13", position = 6)
+    @ApiModelProperty(value = "Create time", example = "2019-01-01 10:12:13", position = 6)
     @JsonFormat(pattern = TIME_SIMPLE_PATTERN)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createdAt;
 
-    @ApiModelProperty(value = "统计数据", position = 7)
+    @ApiModelProperty(value = "Statistical data", position = 7)
     private QrCodeStatisticsVo statistics;
 }

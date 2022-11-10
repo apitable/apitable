@@ -10,23 +10,20 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 节点数量vo
+ * Number of nodes vo
  * </p>
- *
- * @author Chambers
- * @date 2020/1/10
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("节点数量vo")
+@ApiModel("Number of nodes vo")
 public class NodeCountVo {
 
-    @ApiModelProperty(value = "文件夹数量", example = "5", position = 1)
+    @ApiModelProperty(value = "Number of folders", example = "5", position = 1)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer folderNumber;
 
-    @ApiModelProperty(value = "文件数量", example = "20", position = 2)
+    @ApiModelProperty(value = "Number of documents", example = "20", position = 2)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer fileNumber;
 

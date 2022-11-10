@@ -9,56 +9,53 @@ import lombok.*;
 
 /**
  * <p>
- * 数表信息的结果视图
+ * Result view of data table information
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-@ApiModel("数表信息的结果视图")
+@ApiModel("Result view of data table information")
 public class DataSheetInfoVo {
 
-    @ApiModelProperty(value = "节点描述", position = 1)
+    @ApiModelProperty(value = "Node Description", position = 1)
     private String description;
 
-    @ApiModelProperty(value = "节点是否被分享", position = 1)
+    @ApiModelProperty(value = "Whether the node is shared", position = 1)
     private Boolean nodeShared;
 
-    @ApiModelProperty(value = "节点权限是否被设置", position = 2)
+    @ApiModelProperty(value = "Whether the node permission is set", position = 2)
     private Boolean nodePermitSet;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "数表icon", example = "smile", position = 2)
+    @ApiModelProperty(value = "Digital meter icon", example = "smile", position = 2)
     private String icon;
 
-    @ApiModelProperty(value = "数表名称", example = "电商项目工作台", position = 2)
+    @ApiModelProperty(value = "Number table name", example = "E-commerce project workbench", position = 2)
     private String name;
 
-    @ApiModelProperty(value = "数表自定义ID", position = 3)
+    @ApiModelProperty(value = "Number table custom ID", position = 3)
     private String id;
 
-    @ApiModelProperty(value = "父节点Id", example = "nod10", position = 4)
+    @ApiModelProperty(value = "Parent Node Id", example = "nod10", position = 4)
     private String parentId;
 
-    @ApiModelProperty(value = "版本号", example = "0", position = 4)
+    @ApiModelProperty(value = "Version No", example = "0", position = 4)
     private Long revision;
 
-    @ApiModelProperty(value = "拥有者", position = 7)
+    @ApiModelProperty(value = "Owner", position = 7)
     private Long ownerId;
 
-    @ApiModelProperty(value = "创建者", position = 8)
+    @ApiModelProperty(value = "Creator", position = 8)
     private Long creatorId;
 
-    @ApiModelProperty(value = "空间id", position = 9)
+    @ApiModelProperty(value = "Space id", position = 9)
     private String spaceId;
 
-    @ApiModelProperty(value = "角色", example = "editor", position = 13)
+    @ApiModelProperty(value = "Role", example = "editor", position = 13)
     private String role;
 
-    @ApiModelProperty(value = "节点权限", position = 14)
+    @ApiModelProperty(value = "Node Permissions", position = 14)
     private NodePermissionView permissions;
 }

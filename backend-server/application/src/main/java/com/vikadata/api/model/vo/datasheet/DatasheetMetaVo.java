@@ -6,18 +6,15 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * 数表Meta结果值
- *
- * @author Benson Cheung
- * @since 2019/10/7
+ * Data Table Meta Result Value
  */
-@ApiModel("数表Meta结果值")
+@ApiModel("Data Table Meta Result Value")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class DatasheetMetaVo {
 
-    @ApiModelProperty(value = "fieldMap和viewMap数据", position = 3)
+    @ApiModelProperty(value = "Field Map and View Map Data", position = 3)
     private JSONObject meta;
 }

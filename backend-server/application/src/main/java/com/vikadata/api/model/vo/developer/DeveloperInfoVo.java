@@ -6,16 +6,13 @@ import lombok.Data;
 
 /**
  * <p>
- * 开发者配置信息视图
+ * Developer Configuration Information View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/5/27 15:40
  */
 @Data
-@ApiModel("开发者配置信息视图")
+@ApiModel("Developer Configuration Information View")
 public class DeveloperInfoVo {
 
-    @ApiModelProperty(value = "访问令牌", example = "张三", position = 1)
+    @ApiModelProperty(value = "Access Token", example = "Zhang San", position = 1)
     private String apiKey;
 }

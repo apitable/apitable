@@ -10,22 +10,19 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Size;
 
 /**
- * 空间编辑请求参数
- *
- * @author Chambers
- * @since 2019/11/01
+ * Space Edit Request Parameters
  */
-@ApiModel("空间编辑请求参数")
+@ApiModel("Space Edit Request Parameters")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class SpaceUpdateOpRo {
 
-    @ApiModelProperty(value = "名称", example = "这是一个新的空间名称", position = 1)
-    @Size(max = 100, message = "空间名称长度需为2-100位")
+    @ApiModelProperty(value = "Name", example = "This is a new space name", position = 1)
+    @Size(max = 100, message = "The space name must be 2-100 characters in length")
     private String name;
 
-    @ApiModelProperty(value = "图标", example = "https://...", position = 2)
+    @ApiModelProperty(value = "Icon", example = "https://...", position = 2)
     private String logo;
 }

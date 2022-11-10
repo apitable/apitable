@@ -10,13 +10,10 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 关联数据的Datapack数据集合的操作返回参数
+ * Operation return parameters of DataPack data set of associated data
  * </p>
- *
- * @author Benson Cheung
- * @since 2020/01/20
  */
-@ApiModel("关联数表DataPack数据集合的操作返回参数")
+@ApiModel("Operation return parameters of the associated number table Data Pack data set")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -24,10 +21,10 @@ import java.io.Serializable;
 @Builder(toBuilder = true)
 public class LinkDatasheetPackVo implements Serializable {
 
-    @ApiModelProperty(value = "关联数表Snapshot集合", position = 2)
+    @ApiModelProperty(value = "Correlation Number Table Snapshot Set", position = 2)
     private SnapshotMapRo snapshot;
 
-    @ApiModelProperty(value = "关联数表基本信息", position = 3)
+    @ApiModelProperty(value = "Basic information of related number table", position = 3)
     private DataSheetInfoVo datasheet;
 
 }

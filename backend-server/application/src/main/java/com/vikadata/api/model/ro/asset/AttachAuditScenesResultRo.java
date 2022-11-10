@@ -8,30 +8,27 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 图片审核结果请求参数
+ * Image audit result request parameters
  * </p>
- *
- * @author Benson Cheung
- * @date 2020/03/21
  */
 @Data
-@ApiModel("图片审核结果请求参数")
+@ApiModel("Image audit result request parameters")
 public class AttachAuditScenesResultRo {
 
-	@ApiModelProperty(value = "状态码0成功，1等待处理，2正在处理，3处理失败，4通知提交失败。", position = 3, required = true)
-	@NotNull(message = "处理队列名")
+	@ApiModelProperty(value = "The status code 0 is successful, 1 is waiting for processing, 2 is processing, 3 processing failed, and 4 notification submission failed.", position = 3, required = true)
+	@NotNull(message = "Processing queue name")
 	private String code;
 
-	@ApiModelProperty(value = "消息结果", position = 2, required = true)
-	@NotNull(message = "消息结果")
+	@ApiModelProperty(value = "Message Results", position = 2, required = true)
+	@NotNull(message = "Message Results")
 	private String message;
 
-	@ApiModelProperty(value = "状态码0成功，1等待处理，2正在处理，3处理失败，4通知提交失败。", position = 3, required = true)
-	@NotNull(message = "处理队列名")
+	@ApiModelProperty(value = "The status code 0 is successful, 1 is waiting for processing, 2 is processing, 3 processing failed, and 4 notification submission failed.", position = 3, required = true)
+	@NotNull(message = "Processing queue name")
 	private AttachAuditScenesRo scenes;
 
-	@ApiModelProperty(value = "处理队列名", position = 2, required = true)
-	@NotNull(message = "处理队列名")
+	@ApiModelProperty(value = "Processing queue name", position = 2, required = true)
+	@NotNull(message = "Processing queue name")
 	private String suggestion;
 
 }

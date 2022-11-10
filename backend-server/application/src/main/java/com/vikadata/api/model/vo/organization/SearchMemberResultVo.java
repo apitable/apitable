@@ -17,40 +17,37 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 搜索成员结果视图
+ * Search Member Results View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/8 11:41
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("搜索成员结果视图")
+@ApiModel("Search Member Results View")
 public class SearchMemberResultVo {
 
-    @ApiModelProperty(value = "成员ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "成员姓名", example = "张三", position = 2)
+    @ApiModelProperty(value = "Member Name", example = "Zhang San", position = 2)
     private String memberName;
 
-    @ApiModelProperty(value = "成员姓名(不加高亮标签)", example = "张三", position = 2)
+    @ApiModelProperty(value = "Member name (not highlighted)", example = "Zhang San", position = 2)
     private String originName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "头像", example = "https://...", position = 3)
+    @ApiModelProperty(value = "Head portrait", example = "https://...", position = 3)
     private String avatar;
 
-    @ApiModelProperty(value = "所属部门", example = "技术组", position = 4)
+    @ApiModelProperty(value = "Department", example = "Technical team", position = 4)
     private String team;
 
-    @ApiModelProperty(value = "用户（user）是否修改过昵称", position = 5)
+    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 5)
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "成员（member）是否修改过昵称", position = 6)
+    @ApiModelProperty(value = "Whether the member has modified the nickname", position = 6)
     private Boolean isMemberNameModified;
 
     @ApiModelProperty(value = "member is active", position = 7)

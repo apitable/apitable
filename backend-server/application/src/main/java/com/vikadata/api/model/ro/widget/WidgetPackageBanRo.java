@@ -9,22 +9,19 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序封禁/解封请求参数
+ * Blocking of widget/Unsealing request parameters
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序封禁/解封请求参数")
+@ApiModel("Blocking of widget/Unsealing request parameters")
 public class WidgetPackageBanRo {
 
-    @ApiModelProperty(value = "小程序包ID", example = "wpkAAA", position = 1)
-    @NotBlank(message = "packageId不能为空")
+    @ApiModelProperty(value = "Widget Package ID", example = "wpkAAA", position = 1)
+    @NotBlank(message = "Package Id cannot be empty")
     private String packageId;
 
-    @ApiModelProperty(value = "封禁：false,解禁：true", example = "false", position = 2)
-    @NotNull(message = "操作状态不能为空")
+    @ApiModelProperty(value = "Blocking: false, unblocking: true", example = "false", position = 2)
+    @NotNull(message = "The operation status cannot be empty")
     private Boolean unban;
 
 }

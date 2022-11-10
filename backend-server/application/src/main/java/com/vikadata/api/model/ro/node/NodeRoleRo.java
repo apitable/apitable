@@ -9,24 +9,16 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Shawn Deng
- * @date 2020/5/7 17:56
- */
 @Data
-@ApiModel("节点角色参数")
+@ApiModel("Node Role Parameters")
 public class NodeRoleRo {
 
-    @NotNull(message = "组织单元不能为空")
-    @ApiModelProperty(value = "组织单元ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
+    @NotNull(message = "Organization unit cannot be empty")
+    @ApiModelProperty(value = "Org Unit ID", dataType = "java.lang.String", required = true, example = "761263712638", position = 2)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long unitId;
 
-    @ApiModelProperty(value = "角色", example = "readonly", position = 3, required = true)
-    @NotBlank(message = "角色不能为空")
+    @ApiModelProperty(value = "Role", example = "readonly", position = 3, required = true)
+    @NotBlank(message = "Role cannot be empty")
     private String role;
 }

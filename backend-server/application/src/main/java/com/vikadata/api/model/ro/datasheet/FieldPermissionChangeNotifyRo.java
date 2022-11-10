@@ -13,11 +13,8 @@ import com.vikadata.api.model.vo.node.FieldPermission;
 
 /**
  * <p>
- * 字段权限变更通知请求参数
+ * Field Permission Change Notice Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2021/3/31
  */
 @Data
 @NoArgsConstructor

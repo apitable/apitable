@@ -9,23 +9,20 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 数表记录Record中Data的Field结构请求参数
+ * Field structure request parameters of data in the datasheet record Record
  * </p>
- *
- * @author Benson Cheung
- * @date 2019/09/20 11:36
  */
-@ApiModel("数表记录Record中Data的Field结构请求参数")
+@ApiModel("Field structure request parameters of data in the datasheet record Record")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class RecordDataRo {
 
-    @ApiModelProperty(value = "记录值", position = 1)
+    @ApiModelProperty(value = "Record value", position = 1)
     private String text;
 
-    @ApiModelProperty(value = "字段类型", position = 2)
+    @ApiModelProperty(value = "Field Type", position = 2)
     private Integer type;
 
 

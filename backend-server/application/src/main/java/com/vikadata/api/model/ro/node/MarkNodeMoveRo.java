@@ -8,20 +8,17 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * <p>
- * 星标节点移动请求参数
+ * Star mark node move request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/8/15
  */
 @Data
-@ApiModel("星标节点移动请求参数")
+@ApiModel("Star mark node move request parameters")
 public class MarkNodeMoveRo {
 
-    @ApiModelProperty(value = "节点Id", example = "nod10", position = 1, required = true)
-    @NotBlank(message = "节点Id不能为空")
+    @ApiModelProperty(value = "Node Id", example = "nod10", position = 1, required = true)
+    @NotBlank(message = "Node Id cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "目标位置的前一个节点，为空时即移动到了首位", example = "nod10", position = 2)
+    @ApiModelProperty(value = "The previous node of the target position moves to the first position when it is empty", example = "nod10", position = 2)
     private String preNodeId;
 }

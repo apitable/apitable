@@ -13,21 +13,18 @@ import com.vikadata.core.support.deserializer.StringToLongDeserializer;
 
 /**
  * <p>
- * 邀请成员参数
+ * Invite Member Parameters
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/12/11 10:23
  */
 @Data
-@ApiModel("邀请成员参数")
+@ApiModel("Invite Member Parameters")
 public class InviteMemberRo {
 
-    @ApiModelProperty(value = "邮箱地址,严格校验", example = "123456@qq.com", required = true, position = 1)
-    @Pattern(regexp = PatternConstants.EMAIL, message = "邮箱格式不正确", flags = Flag.CASE_INSENSITIVE)
+    @ApiModelProperty(value = "Email address, strictly checked", example = "123456@qq.com", required = true, position = 1)
+    @Pattern(regexp = PatternConstants.EMAIL, message = "Incorrect mailbox format", flags = Flag.CASE_INSENSITIVE)
     private String email;
 
-    @ApiModelProperty(value = "分配部门ID,可选,如果不传递，则默认加入空间的根部门下面", dataType = "java.lang.String", example = "16272126", position = 2)
+    @ApiModelProperty(value = "Assign department ID, optional. If it is not transferred, it will be added under the root door of the space by default", dataType = "java.lang.String", example = "16272126", position = 2)
     @JsonDeserialize(using = StringToLongDeserializer.class)
     private Long teamId;
 }

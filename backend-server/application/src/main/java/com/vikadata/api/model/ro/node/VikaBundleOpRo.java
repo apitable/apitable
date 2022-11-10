@@ -9,26 +9,23 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * Vika Bundle 请求参数
+ * Vika Bundle request parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/5/6
  */
 @Data
-@ApiModel("Vika Bundle 请求参数")
+@ApiModel("Vika Bundle request parameters")
 public class VikaBundleOpRo {
 
-    @ApiModelProperty(value = "上传文件", position = 1, required = true)
-    @NotNull(message = "文件不能为空")
+    @ApiModelProperty(value = "Upload files", position = 1, required = true)
+    @NotNull(message = "File cannot be empty")
     private MultipartFile file;
 
-    @ApiModelProperty(value = "父类节点ID", example = "fodSf4PZBNwut", position = 2)
+    @ApiModelProperty(value = "Parent class node ID", example = "fodSf4PZBNwut", position = 2)
     private String parentId;
 
-    @ApiModelProperty(value = "前置节点ID", example = "nod10", position = 3)
+    @ApiModelProperty(value = "Predecessor node ID", example = "nod10", position = 3)
     private String preNodeId;
 
-    @ApiModelProperty(value = "密码", example = "***", position = 4)
+    @ApiModelProperty(value = "Password", example = "***", position = 4)
     private String password;
 }

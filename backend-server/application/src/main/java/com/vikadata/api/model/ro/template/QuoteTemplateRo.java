@@ -8,23 +8,20 @@ import lombok.Data;
 
 /**
  * <p>
- * 引用模版请求参数
+ * Reference Template Request Parameters
  * </p>
- *
- * @author Chambers
- * @date 2020/5/23
  */
 @Data
-@ApiModel("引用模版请求参数")
+@ApiModel("Reference Template Request Parameters")
 public class QuoteTemplateRo {
 
-    @ApiModelProperty(value = "模版ID", example = "tplHTbkg7qbNJ", position = 1, required = true)
-    @NotBlank(message = "模版ID不能为空")
+    @ApiModelProperty(value = "Template ID", example = "tplHTbkg7qbNJ", position = 1, required = true)
+    @NotBlank(message = "Template ID cannot be empty")
     private String templateId;
 
-    @ApiModelProperty(value = "父节点ID", example = "fodSf4PZBNwut", position = 2, required = true)
+    @ApiModelProperty(value = "Parent node ID", example = "fodSf4PZBNwut", position = 2, required = true)
     private String parentId;
 
-    @ApiModelProperty(value = "是否保留数据", example = "true", position = 3)
+    @ApiModelProperty(value = "Whether to retain data", example = "true", position = 3)
     private Boolean data = true;
 }

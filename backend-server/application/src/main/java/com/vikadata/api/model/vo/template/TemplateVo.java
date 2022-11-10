@@ -16,59 +16,56 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 模版视图
+ * Template View
  * </p>
- *
- * @author Chambers
- * @date 2020/5/22
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("模版视图")
+@ApiModel("Template View")
 public class TemplateVo {
 
-    @ApiModelProperty(value = "模版ID", example = "tplHTbkg7qbNJ", position = 1)
+    @ApiModelProperty(value = "Template ID", example = "tplHTbkg7qbNJ", position = 1)
     private String templateId;
 
-    @ApiModelProperty(value = "模板名称", example = "这是一个模板", position = 2)
+    @ApiModelProperty(value = "Template Name", example = "This is a template", position = 2)
     private String templateName;
 
-    @ApiModelProperty(value = "模版映射的节点Id", example = "nod10", position = 3)
+    @ApiModelProperty(value = "Node Id of template mapping", example = "nod10", position = 3)
     private String nodeId;
 
-    @ApiModelProperty(value = "节点类型", example = "1", position = 4)
+    @ApiModelProperty(value = "Node Type", example = "1", position = 4)
     private Integer nodeType;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "封面图", example = "http://...", position = 5)
+    @ApiModelProperty(value = "Cover", example = "http://...", position = 5)
     private String cover;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "描述", example = "这是一个showcase", position = 6)
+    @ApiModelProperty(value = "Describe", example = "This is a showcase", position = 6)
     private String description;
 
-    @ApiModelProperty(value = "创建者用户ID(实际返回是uuid)", dataType = "java.lang.String", example = "1", position = 6)
+    @ApiModelProperty(value = "Creator user ID (the actual return is uuid)", dataType = "java.lang.String", example = "1", position = 6)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String userId;
 
-    @ApiModelProperty(value = "创建者用户UUID", dataType = "java.lang.String", example = "1", position = 6)
+    @ApiModelProperty(value = "Creator User UUID", dataType = "java.lang.String", example = "1", position = 6)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String uuid;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "创建者头像", example = "public/2020/...", position = 7)
+    @ApiModelProperty(value = "Creator's avatar", example = "public/2020/...", position = 7)
     private String avatar;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
-    @ApiModelProperty(value = "创建者昵称", example = "张三", position = 8)
+    @ApiModelProperty(value = "Creator nickname", example = "Zhang San", position = 8)
     private String nickName;
 
-    @ApiModelProperty(value = "用户（user）是否修改过昵称", position = 9)
+    @ApiModelProperty(value = "Whether the user has modified the nickname", position = 9)
     private Boolean isNickNameModified;
 
-    @ApiModelProperty(value = "模版标签", example = "[\"aaa\", \"bbb\"]", position = 10)
+    @ApiModelProperty(value = "Template label", example = "[\"aaa\", \"bbb\"]", position = 10)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> tags;
 

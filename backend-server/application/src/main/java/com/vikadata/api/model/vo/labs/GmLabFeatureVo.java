@@ -15,40 +15,37 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * GM命令返回创建后的实验性功能 值对象
+ * GM command returns the created experimental function value object
  * </p>
- *
- * @author 胡海平(Humphrey Hu)
- * @date 2021/10/26 21:05:06
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("GM命令返回创建后的实验性功能")
+@ApiModel("GM command returns the experimental function after creation")
 public class GmLabFeatureVo {
 
-    @ApiModelProperty(value = "实验室功能唯一标识", dataType = "java.lang.String", example = "render_prompt|async_compute|robot|widget_center", position = 1)
+    @ApiModelProperty(value = "Unique identification of laboratory function", dataType = "java.lang.String", example = "render_prompt|async_compute|robot|widget_center", position = 1)
     private String featureKey;
 
-    @ApiModelProperty(value = "实验室功能作用域", dataType = "java.lang.String", example = "user|space", position = 2)
+    @ApiModelProperty(value = "Lab Functional Scope", dataType = "java.lang.String", example = "user|space", position = 2)
     private String featureScope;
 
-    @ApiModelProperty(value = "实验室功能类别", dataType = "java.lang.String", example = "static|review|normal", position = 3)
+    @ApiModelProperty(value = "Laboratory function category", dataType = "java.lang.String", example = "static|review|normal", position = 3)
     private String type;
 
-    @ApiModelProperty(value = "申请内测功能的神奇表单地址", dataType = "java.lang.String", position = 4)
+    @ApiModelProperty(value = "Address of magic form for applying for internal test function", dataType = "java.lang.String", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String url;
 
-    @ApiModelProperty(value = "实验室功能开启状态", dataType = "java.lang.Boolean", example = "true|false", position = 5)
+    @ApiModelProperty(value = "Laboratory function opening status", dataType = "java.lang.Boolean", example = "true|false", position = 5)
     private Boolean open;
 
     @CreatedDate
-    @ApiModelProperty(value = "创建时间", dataType = "java.time.LocalDateTime", example = "2021-10-26T12:34:56", position = 6)
+    @ApiModelProperty(value = "Create time", dataType = "java.time.LocalDateTime", example = "2021-10-26T12:34:56", position = 6)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @ApiModelProperty(value = "更新时间", dataType = "java.time.LocalDateTime", example = "2021-10-26T12:34:56", position = 7)
+    @ApiModelProperty(value = "Update time", dataType = "java.time.LocalDateTime", example = "2021-10-26T12:34:56", position = 7)
     private LocalDateTime updatedAt;
 }

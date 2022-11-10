@@ -9,20 +9,18 @@ import com.vikadata.api.support.serializer.ImageSerializer;
 
 /**
  * <p>
- * 模版小程序包信息视图
+ * Template Widget Package Information View
  * </p>
- * @author Pengap
- * @date 2021/9/16 13:40:33
  */
 @Data
-@ApiModel("模版小程序包扩展信息视图")
+@ApiModel("Template Widget Package Extension Information View")
 public class WidgetTemplatePackageExtraInfo {
 
-    @ApiModelProperty(value = "开源地址", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 1)
+    @ApiModelProperty(value = "Open source address", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 1)
     @JsonSerialize(using = ImageSerializer.class)
     private String widgetOpenSource;
 
-    @ApiModelProperty(value = "模版扩展封面图", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 2)
+    @ApiModelProperty(value = "Template Extension Cover", example = "https://s1.vika.cn/code/2020/12/23/aqa", position = 2)
     @JsonSerialize(using = ImageSerializer.class)
     private String templateCover;
 

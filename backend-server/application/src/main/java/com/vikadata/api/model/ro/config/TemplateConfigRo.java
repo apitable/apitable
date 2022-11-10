@@ -8,33 +8,32 @@ import lombok.Data;
 
 /**
  * <p>
- *     模板中心相关配置请求参数
+ *     Template Center Related Configuration Request Parameters
  * </p>
- * @author tao
  */
 @Data
-@ApiModel("模板中心相关配置请求参数")
+@ApiModel("Template Center Related Configuration Request Parameters")
 public class TemplateConfigRo {
 
-    @ApiModelProperty(value = "类型：1、热门推荐；2、上架模板", example = "1", position = 1, required = true)
-    @NotNull(message = "类型不能为空")
+    @ApiModelProperty(value = "Type: 1. Popular recommendation; 2. Shelf formwork", example = "1", position = 1, required = true)
+    @NotNull(message = "Type cannot be empty")
     private Integer type;
 
-    @ApiModelProperty(value = "节点ID", example = "dstxxx", position = 2, required = true)
-    @NotNull(message = "配置表不能为空")
+    @ApiModelProperty(value = "Node ID", example = "dstxxx", position = 2, required = true)
+    @NotNull(message = "The configuration table cannot be empty")
     private String nodeId;
 
-    @ApiModelProperty(value = "节点视图ID", example = "viwxxx", position = 3, required = true)
-    @NotNull(message = "配置视图不能为空")
+    @ApiModelProperty(value = "Node View ID", example = "viwxxx", position = 3, required = true)
+    @NotNull(message = "Configuration view cannot be empty")
     private String nodeView;
 
-    @ApiModelProperty(value = "语言", example = "zh_CN", position = 4, required = true)
-    @NotNull(message = "语言不能为空")
+    @ApiModelProperty(value = "Language", example = "zh_CN", position = 4, required = true)
+    @NotNull(message = "Language cannot be empty")
     private String lang;
 
-    @ApiModelProperty(value = "上架模板分类表id", example = "viwxxx", position = 5, required = true)
+    @ApiModelProperty(value = "Listing template classification table id", example = "viwxxx", position = 5, required = true)
     private String categoryDatasheetId;
 
-    @ApiModelProperty(value = "节点视图ID", example = "viwxxx", position = 6, required = true)
+    @ApiModelProperty(value = "Node View ID", example = "viwxxx", position = 6, required = true)
     private String categoryDatasheetView;
 }

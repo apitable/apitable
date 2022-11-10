@@ -8,17 +8,15 @@ import lombok.Data;
 
 /**
  * <p>
- * 验证码校验请求参数
+ * Verification code verification request parameters
  * </p>
- * @author Pengap
- * @date 2021/10/20 20:38:34
  */
 @Data
-@ApiModel("手机验证码校验请求参数")
+@ApiModel("Mobile verification code verification request parameters")
 public class CodeValidateRo {
 
-    @ApiModelProperty(value = "验证码", example = "123456", position = 3, required = true)
-    @NotBlank(message = "验证码不能为空")
+    @ApiModelProperty(value = "Verification Code", example = "123456", position = 3, required = true)
+    @NotBlank(message = "The verification code cannot be empty")
     private String code;
 
 }

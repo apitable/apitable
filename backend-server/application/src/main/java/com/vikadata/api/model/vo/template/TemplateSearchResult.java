@@ -11,29 +11,26 @@ import com.vikadata.api.support.serializer.NullArraySerializer;
 
 /**
  * <p>
- * 模板搜索结果
+ * Template Search Results
  * </p>
- *
- * @author Chambers
- * @date 2020/11/2
  */
 @Data
-@ApiModel("模板搜索结果")
+@ApiModel("Template Search Results")
 public class TemplateSearchResult {
 
-    @ApiModelProperty(value = "模版ID", example = "tplHTbkg7qbNJ", position = 1)
+    @ApiModelProperty(value = "Template ID", example = "tplHTbkg7qbNJ", position = 1)
     private String templateId;
 
-    @ApiModelProperty(value = "模板名称", example = "这是一个模板", position = 2)
+    @ApiModelProperty(value = "Template Name", example = "This is a template", position = 2)
     private String templateName;
 
-    @ApiModelProperty(value = "模板分类code", example = "tpcCq88sqNqEv", position = 1)
+    @ApiModelProperty(value = "Template classification code", example = "tpcCq88sqNqEv", position = 1)
     private String categoryCode;
 
-    @ApiModelProperty(value = "模板分类名称", example = "电视剧", position = 2)
+    @ApiModelProperty(value = "Template Classification Name", example = "TV play", position = 2)
     private String categoryName;
 
-    @ApiModelProperty(value = "标签名称", example = "电视剧", position = 2)
+    @ApiModelProperty(value = "Label Name", example = "TV play", position = 2)
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> tags;
 

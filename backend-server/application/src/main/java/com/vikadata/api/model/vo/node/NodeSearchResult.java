@@ -9,18 +9,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 节点搜索结果
+ * Node Search Results
  * </p>
- *
- * @author Chambers
- * @date 2020/9/4
  */
 @Data
-@ApiModel("节点搜索结果")
+@ApiModel("Node Search Results")
 @EqualsAndHashCode(callSuper = true)
 public class NodeSearchResult extends NodeInfoVo {
 
-    @ApiModelProperty(value = "上级路径", example = "nod11", position = 15)
+    @ApiModelProperty(value = "Parent Path", example = "nod11", position = 15)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String superiorPath;
 }

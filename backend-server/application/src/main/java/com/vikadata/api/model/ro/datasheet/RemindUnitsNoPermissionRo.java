@@ -17,10 +17,10 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * <p>
- * 提及人时获取对指定节点无权限的成员
+ * Get members who have no permission on the specified node when mentioning people
  * </p>
  */
-@ApiModel("提及人时获取对指定节点无权限的成员")
+@ApiModel("Get members who have no permission on the specified node when mentioning people")
 @Setter
 @Getter
 @Builder
@@ -29,11 +29,11 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class RemindUnitsNoPermissionRo {
 
-    @ApiModelProperty(value = "节点 ID", required = true)
+    @ApiModelProperty(value = "Node ID", required = true)
     @NotBlank
     private String nodeId;
 
-    @ApiModelProperty(value = "组织单元 ID 列表", required = true)
+    @ApiModelProperty(value = "Organizational Unit ID List", required = true)
     @NotEmpty
     private List<Long> unitIds;
 

@@ -6,16 +6,13 @@ import lombok.Data;
 
 /**
  * <p>
- * 节点转存结果视图
+ * Node Transfer Result View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/3/24 14:16
  */
 @Data
-@ApiModel("节点转存结果视图")
+@ApiModel("Node Transfer Result View")
 public class StoreNodeInfoVO {
 
-    @ApiModelProperty(value = "新节点ID", example = "nod2818jsak", position = 1)
+    @ApiModelProperty(value = "New Node ID", example = "nod2818jsak", position = 1)
     private String nodeId;
 }

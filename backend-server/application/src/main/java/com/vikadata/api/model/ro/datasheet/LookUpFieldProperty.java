@@ -4,27 +4,24 @@ import lombok.Data;
 
 /**
  * <p>
- * lookup 字段属性
+ * lookup Field Properties
  * </p>
- *
- * @author Chambers
- * @date 2020/5/13
  */
 @Data
 public class LookUpFieldProperty {
 
     /**
-     * 映射关联字段ID
+     * Mapping associated field ID
      */
     private String relatedLinkFieldId;
 
     /**
-     * lookup 目标字段ID
+     * lookup Target Field ID
      */
     private String lookUpTargetFieldId;
 
     /**
-     * 数表ID
+     * DataSheet ID
      */
     private String datasheetId;
 }

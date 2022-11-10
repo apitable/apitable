@@ -16,85 +16,83 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 小程序商店列表信息视图
+ * Widget Store List Information View
  * </p>
- * @author Pengap
- * @date 2021/9/28 14:56:57
  */
 @Data
-@ApiModel("小程序商店列表信息视图")
+@ApiModel("Widget Store List Information View")
 public class WidgetStoreListInfo {
 
-    @ApiModelProperty(value = "组件包ID", example = "wpkABC", position = 1)
+    @ApiModelProperty(value = "Package ID", example = "wpkABC", position = 1)
     private String widgetPackageId;
 
-    @ApiModelProperty(value = "组件包名称", example = "图表", position = 2)
+    @ApiModelProperty(value = "Widget package name", example = "Chart", position = 2)
     private String name;
 
-    @ApiModelProperty(value = "组件包图标", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 3)
+    @ApiModelProperty(value = "Widget package icon", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 3)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String icon;
 
-    @ApiModelProperty(value = "组件包封面图", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 3)
+    @ApiModelProperty(value = "Cover drawing of component package", example = "https://s1.vika.cn/space/2020/12/23/aqa", position = 3)
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String cover;
 
-    @ApiModelProperty(value = "描述", example = "这是一个图表小程序的描述", position = 4)
+    @ApiModelProperty(value = "DESCRIBE", example = "This is the description of a chart applet", position = 4)
     private String description;
 
-    @ApiModelProperty(value = "组件包版本号", example = "1.0.0", position = 5)
+    @ApiModelProperty(value = "Widget package version number", example = "1.0.0", position = 5)
     private String version;
 
-    @ApiModelProperty(value = "作者名", position = 6)
+    @ApiModelProperty(value = "Author Name", position = 6)
     private String authorName;
 
-    @ApiModelProperty(value = "作者图标", position = 7)
+    @ApiModelProperty(value = "Author icon", position = 7)
     @JsonSerialize(using = ImageSerializer.class)
     private String authorIcon;
 
-    @ApiModelProperty(value = "作者Email", position = 8)
+    @ApiModelProperty(value = "Author Email", position = 8)
     private String authorEmail;
 
-    @ApiModelProperty(value = "作者网站地址", position = 9)
+    @ApiModelProperty(value = "Author website address", position = 9)
     private String authorLink;
 
-    @ApiModelProperty(value = "组件包类型(0:第三方,1:官方)", position = 10)
+    @ApiModelProperty(value = "Widget package type (0: third party, 1: official)", position = 10)
     private Integer packageType;
 
-    @ApiModelProperty(value = "0：发布到空间站中的组件商店，1：发布到全局应用商店", position = 11)
+    @ApiModelProperty(value = "0: Publish to the component store in the space station, 1: Publish to the global app store", position = 11)
     private Integer releaseType;
 
-    @ApiModelProperty(value = "组件包状态(0:待审核;1:不通过;2:待发布;3:已上线;4:已下架)", example = "3", position = 12)
+    @ApiModelProperty(value = "Widget package status (0: to be approved; 1: not passed; 2: to be released; 3: online; 4: offline)", example = "3", position = 12)
     private Integer status;
 
-    @ApiModelProperty(value = "是否他人授权的小程序(false:否,true:是)", example = "false", position = 13)
+    @ApiModelProperty(value = "Whether the applet is authorized by others (false: no, true: yes)", example = "false", position = 13)
     private Boolean isEmpower;
 
-    @ApiModelProperty(value = "小程序拥有者UUID", position = 14)
+    @ApiModelProperty(value = "Widget Owner UUID", position = 14)
     private String ownerUuid;
 
-    @ApiModelProperty(value = "小程序拥有者MemberId", position = 15)
+    @ApiModelProperty(value = "Widget Owner Member Id", position = 15)
     private String ownerMemberId;
 
-    @ApiModelProperty(value = "小程序商店列表扩展信息", position = 16)
+    @ApiModelProperty(value = "Widget Store List Extension Information", position = 16)
     private WidgetStoreListExtraInfo extras;
 
     @JsonIgnore
-    @ApiModelProperty(value = "安装环境编码", example = "01", position = 17)
+    @ApiModelProperty(value = "Installation environment code", example = "01", position = 17)
     private String installEnvCode;
 
     @JsonIgnore
-    @ApiModelProperty(value = "运行环境编码", example = "01", position = 18)
+    @ApiModelProperty(value = "Operating environment code", example = "01", position = 18)
     private String runtimeEnvCode;
 
-    @ApiModelProperty(value = "安装环境", example = "panel", position = 19)
+    @ApiModelProperty(value = "Installation environment", example = "panel", position = 19)
     private List<String> installEnv;
 
-    @ApiModelProperty(value = "运行环境", example = "mobile", position = 20)
+    @ApiModelProperty(value = "Operating environment", example = "mobile", position = 20)
     private List<String> runtimeEnv;
 
     @Deprecated
-    @ApiModelProperty(value = "权限 - 废弃，统到resource判断", example = "[\"UNPUBLISH_WIDGET\",\"TRANSFER_WIDGET\"]", hidden = true)
+    @ApiModelProperty(value = "Permission - Obsolete, unified to resource for judgment", example = "[\"UNPUBLISH_WIDGET\",\"TRANSFER_WIDGET\"]", hidden = true)
     @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
     private List<String> permissions;
 

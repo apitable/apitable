@@ -13,34 +13,31 @@ import java.util.List;
 
 /**
  * <p>
- * 部门树形视图
+ * Department Tree View
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
-@ApiModel("部门树形视图")
+@ApiModel("Department Tree View")
 public class TeamTreeVo implements Tree {
 
-    @ApiModelProperty(value = "部门ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Department ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
-    @ApiModelProperty(value = "部门名称", example = "研发部", position = 2)
+    @ApiModelProperty(value = "Department name", example = "R&D Department", position = 2)
     private String teamName;
 
-    @ApiModelProperty(value = "父级ID,如果父级是根,则为0", dataType = "java.lang.String", example = "0", position = 3)
+    @ApiModelProperty(value = "Parent ID, 0 if the parent is root", dataType = "java.lang.String", example = "0", position = 3)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
-    @ApiModelProperty(value = "部门成员数量", example = "3", position = 4)
+    @ApiModelProperty(value = "Number of department members", example = "3", position = 4)
     private Integer memberCount;
 
-    @ApiModelProperty(value = "排序号", example = "1", position = 5)
+    @ApiModelProperty(value = "Sort No", example = "1", position = 5)
     private Integer sequence;
 
-    @ApiModelProperty(value = "子部门", position = 7)
+    @ApiModelProperty(value = "Subsidiary department", position = 7)
     private List<TeamTreeVo> children = new ArrayList<>();
 
     @JsonIgnore

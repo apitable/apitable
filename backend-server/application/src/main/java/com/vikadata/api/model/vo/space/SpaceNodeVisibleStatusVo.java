@@ -9,19 +9,16 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 空间的工作目录设置信息视图
+ * Working directory setting information view of a space
  * </p>
- *
- * @author Chambers
- * @date 2019/11/14
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel("空间的工作目录设置信息视图")
+@ApiModel("Working directory setting information view of a space")
 public class SpaceNodeVisibleStatusVo {
 
-	@ApiModelProperty(value = "空间ID", example = "spc10", position = 1)
+	@ApiModelProperty(value = "Space ID", example = "spc10", position = 1)
 	private boolean visibleStatus;
 }

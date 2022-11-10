@@ -11,23 +11,20 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 用户基本信息
+ * Basic user information
  * </p>
- *
- * @author zoe zheng
- * @date 2020/8/28 10:59 上午
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("用户基本信息")
+@ApiModel("Basic user information")
 public class UserBaseInfoVo {
 
-    @ApiModelProperty(value = "当前用户标识", example = "123", position = 1)
+    @ApiModelProperty(value = "Current user ID", example = "123", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
-    @ApiModelProperty(value = "当前用户唯一标识", example = "123", position = 2)
+    @ApiModelProperty(value = "Unique ID of the current user", example = "123", position = 2)
     private String uuid;
 }

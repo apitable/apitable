@@ -6,20 +6,17 @@ import lombok.Data;
 
 /**
  * <p>
- * 小程序审核-待审查列表请求参数
+ * Widget Audit - Pending Review List Request Parameters
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
-@ApiModel("小程序审核-待审查列表请求参数")
+@ApiModel("Widget Audit - Pending Review List Request Parameters")
 public class WidgetAuditWaitReviewListRo {
 
-    @ApiModelProperty(value = "审核小程序名称", position = 1)
+    @ApiModelProperty(value = "Audit widget name", position = 1)
     private String searchKeyword;
 
-    @ApiModelProperty(value = "指定返回语言", example = "zh-CN", position = 3, hidden = true)
+    @ApiModelProperty(value = "Specify the return language", example = "zh-CN", position = 3, hidden = true)
     private String language;
 
 }

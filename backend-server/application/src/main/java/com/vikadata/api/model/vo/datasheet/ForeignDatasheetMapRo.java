@@ -5,21 +5,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 /**
- * 关联数表ForeignDatasheetMap合集请求参数
- *
- * @author Benson Cheung
- * @since 2020/01/20
+ * Foreign Datasheet Map Collection Request Parameter
  */
-@ApiModel("关联数表ForeignDatasheetMap合集请求参数")
+@ApiModel("Foreign Datasheet Map Collection Request Parameter")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 public class ForeignDatasheetMapRo {
 
-    @ApiModelProperty(value = "关联数表ID", position = 2)
+    @ApiModelProperty(value = "Associated datasheet ID", position = 2)
     private  String datasheetId;
 
-    @ApiModelProperty(value = "关联数据的Datapack数据集合", position = 3)
+    @ApiModelProperty(value = "DataPack data set of associated data", position = 3)
     private LinkDatasheetPackVo datasheetPackVo;
 }

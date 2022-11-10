@@ -8,23 +8,20 @@ import java.util.List;
 
 /**
  * <p>
- * 模板解析结果视图
+ * Template resolution result view
  * </p>
- *
- * @author Shawn Deng
- * @date 2019/11/4 19:13
  */
 @Data
-@ApiModel("模板解析结果视图")
+@ApiModel("Template resolution result view、")
 public class UploadParseResultVO {
 
-    @ApiModelProperty(value = "解析总数", example = "100", position = 1)
+    @ApiModelProperty(value = "Total number of resolutions", example = "100", position = 1)
     private Integer rowCount;
 
-    @ApiModelProperty(value = "解析成功条数", example = "198", position = 2)
+    @ApiModelProperty(value = "Number of successful parsing", example = "198", position = 2)
     private Integer successCount;
 
-    @ApiModelProperty(value = "解析失败条数", example = "2", position = 3)
+    @ApiModelProperty(value = "Number of failed parsing", example = "2", position = 3)
     private Integer errorCount;
 
     private List<ParseErrorRecordVO> errorList;

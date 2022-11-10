@@ -12,35 +12,32 @@ import com.vikadata.api.support.serializer.NullStringSerializer;
 
 /**
  * <p>
- * 节点成员视图
+ * Node Member View
  * </p>
- *
- * @author Shawn Deng
- * @date 2020/7/16 16:29
  */
 @Data
-@ApiModel("字段成员视图")
+@ApiModel("Field Member View")
 public class FieldRoleMemberVo {
 
-    @ApiModelProperty(value = "成员ID", dataType = "java.lang.String", example = "1", position = 1)
+    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String", example = "1", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
-    @ApiModelProperty(value = "成员名称", example = "研发部｜张三", position = 2)
+    @ApiModelProperty(value = "Member Name", example = "R&D Department ｜ Zhang San", position = 2)
     private String memberName;
 
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
-    @ApiModelProperty(value = "成员头像", example = "https://vika.cn/image.png", position = 3)
+    @ApiModelProperty(value = "Member avatar", example = "https://vika.cn/image.png", position = 3)
     private String avatar;
 
-    @ApiModelProperty(value = "成员所属部门", example = "运营部｜产品部｜研发部", position = 4)
+    @ApiModelProperty(value = "Member's Department", example = "Operation Department | Product Department | R&D Department", position = 4)
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String teams;
 
-    @ApiModelProperty(value = "角色", example = "manager", position = 5)
+    @ApiModelProperty(value = "Role", example = "manager", position = 5)
     private String role;
 
-    @ApiModelProperty(value = "组织单元是成员时，标注是否是管理员", example = "false", position = 6)
+    @ApiModelProperty(value = "When an organization unit is a member, indicate whether it is an administrator", example = "false", position = 6)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isAdmin;
 }

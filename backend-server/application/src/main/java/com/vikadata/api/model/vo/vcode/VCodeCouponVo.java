@@ -11,27 +11,24 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * V码兑换券模板视图
+ * View of V-code coupon template
  * </p>
- *
- * @author Chambers
- * @date 2020/8/15
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@ApiModel("V码兑换券模板视图")
+@ApiModel("View of V-code coupon template")
 public class VCodeCouponVo {
 
-    @ApiModelProperty(value = "兑换券模板ID", dataType = "java.lang.String", example = "1456", position = 1)
+    @ApiModelProperty(value = "Exchange coupon template ID", dataType = "java.lang.String", example = "1456", position = 1)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long templateId;
 
-    @ApiModelProperty(value = "兑换数", dataType = "java.lang.Integer", example = "10", position = 2)
+    @ApiModelProperty(value = "Exchange amount", dataType = "java.lang.Integer", example = "10", position = 2)
     private Integer count;
 
-    @ApiModelProperty(value = "备注", dataType = "java.lang.String", example = "种子用户福利兑换模板", position = 3)
+    @ApiModelProperty(value = "Remarks", dataType = "java.lang.String", example = "Seed user benefit exchange template", position = 3)
     private String comment;
 
 }

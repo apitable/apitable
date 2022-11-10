@@ -22,9 +22,6 @@ import com.vikadata.api.constants.PatternConstants;
  * <p>
  * widget package based information
  * </p>
- *
- * @author Pengap
- * @date 2021/7/8
  */
 @Data
 @ApiModel("widget package request based information")
@@ -50,7 +47,7 @@ public class WidgetPackageBaseV2Ro {
     @Pattern(regexp = PatternConstants.URL_HTTP, message = "Author website address format error")
     private String authorLink;
 
-    @ApiModelProperty(value = "widget description", example = "{'zh-CN':'中','en-US':'english'}", position = 7)
+    @ApiModelProperty(value = "widget description", example = "{'zh-CN':'Chinese','en-US':'English'}", position = 7)
     private String description;
 
     @ApiModelProperty(value = "release code link", position = 8)
@@ -73,7 +70,7 @@ public class WidgetPackageBaseV2Ro {
     @Data
     public static class I18nField {
 
-        @ApiModelProperty(value = "中文", position = 1)
+        @ApiModelProperty(value = "Chinese", position = 1)
         @JsonProperty("zh-CN")
         @JsonInclude(Include.NON_EMPTY)
         private String zhCN;
