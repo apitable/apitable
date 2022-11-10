@@ -43,7 +43,7 @@ import { LookupFieldPanel } from 'pc/components/multi_grid/format/format_lookup/
 import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
 import { Select, TextButton } from '@vikadata/components';
 import { FieldPermissionLock } from 'pc/components/field_permission';
-import { StringKeysType } from '@apitable/core/dist/i18n/stringkeys.interface';
+import { StringKeysType } from '@apitable/core';
 import { FilterModal } from 'pc/components/common/modal/filter_modal/filter_modal';
 
 const Option = Select.Option;

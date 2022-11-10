@@ -2,7 +2,6 @@ import { FC } from 'react';
 import * as React from 'react';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
 import {
-  ERROR_STR,
   IFromUserInfo,
   INoticeDetail,
   integrateCdnHost,
@@ -26,6 +25,7 @@ import { isArray } from 'lodash';
 import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 import ReactDOMServer from 'react-dom/server';
 
+const ERROR_STR = '[ERROR STR]';
 dayjs.extend(relativeTime);
 dayjs.extend(Calendar);
 

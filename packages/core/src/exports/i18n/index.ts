@@ -3,6 +3,7 @@
  */
 import { I18N } from '../../modules/shared/i18n/i18n.class';
 import { StringKeysMapType, StringKeysType } from '../../config/stringkeys.interface';
+export * from '../../config/stringkeys.interface';
 
 // String.key will return key, for compatibility 
 export const Strings = new Proxy({}, {
