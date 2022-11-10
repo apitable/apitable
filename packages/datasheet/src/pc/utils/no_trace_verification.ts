@@ -1,5 +1,6 @@
 import { Modal } from '@vikadata/components';
 import { ConfigConstant, isPrivateDeployment } from '@apitable/core';
+import { getEnvVariables } from "pc/utils/env";
 import * as React from 'react';
 
 /**
@@ -24,7 +25,9 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
     successCallback(data);
   };
 
-  window['AWSC'].use('nvc', (state, module) => {
+  const env = getEnvVariables();
+
+  !env.DISABLE_AWSC && window['AWSC'].use('nvc', (state, module) => {
     window['nvc'] = module.init({
       appkey: ConfigConstant.nvcAppkey,
       scene: 'nvc_login', // nvc_login and nc_login

@@ -28,6 +28,7 @@ export const getEnvVars = () => {
     CLOUD_DISABLE_USE_APP_STORE: process.env.CLOUD_DISABLE_USE_APP_STORE === 'true',
     CLOUD_DISABLE_ACCOUNT_MANAGEMENT: process.env.CLOUD_DISABLE_ACCOUNT_MANAGEMENT === 'true',
     CLOUD_DISABLE_SCAN_CODE_TO_LOGIN: process.env.CLOUD_DISABLE_SCAN_CODE_TO_LOGIN === 'true',
+    DISABLE_AWSC: process.env.DISABLE_AWSC === 'true',
     QNY1: process.env.QNY1,
     QNY2: process.env.QNY2,
     QNY3: process.env.QNY3,
