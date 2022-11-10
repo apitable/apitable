@@ -60,7 +60,7 @@ const FeishuSyncConcat: React.FC<IFeishuSyncConcat> = (props) => {
               </div>
               {
                 [1, 2, 3].map((v) => (
-                  <div className={cls(styles.completeCircleGroup, styles[`completeCircleGroup${v}`])}>
+                  <div key={v} className={cls(styles.completeCircleGroup, styles[`completeCircleGroup${v}`])}>
                     <div className={styles.completeCircleBig} />
                     <div className={styles.completeCircleSmall} />
                   </div>

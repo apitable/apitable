@@ -231,8 +231,8 @@ export const TemplateCategorySide: FC = () => {
                             <span className={styles.name} dangerouslySetInnerHTML={{ __html: item.templateName }} />
                           </Typography>
                           <Typography className={styles.tags} variant='body3'>
-                            {item.tags.map(tag => (
-                              <span className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
+                            {item.tags.map((tag, index) => (
+                              <span key={index} className={styles.tag} dangerouslySetInnerHTML={{ __html: tag }} />
                             ))}
                           </Typography>
                         </div>

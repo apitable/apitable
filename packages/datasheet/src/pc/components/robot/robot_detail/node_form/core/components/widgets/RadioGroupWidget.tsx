@@ -27,7 +27,7 @@ export const RadioGroupWidget = ({
   return (
     <Radio.Group onChange={_onChange} value={_value}>
       {
-        (enumOptions as any[])?.map(item => <Radio value={item.value}>{item.label}</Radio>)
+        (enumOptions as any[])?.map(item => <Radio key={item.value} value={item.value}>{item.label}</Radio>)
       }
     </Radio.Group>
   );

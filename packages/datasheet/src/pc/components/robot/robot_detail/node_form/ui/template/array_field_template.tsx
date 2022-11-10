@@ -53,7 +53,7 @@ export const ArrayFieldTemplate = (props: IArrayFieldTemplateProps) => {
   const marginTop = props.items.length > 0 ? 8 : 0;
   return (
     <div>
-      {props.items.map(element => <ArrayFieldItem {...element} />)}
+      {props.items.map(element => <ArrayFieldItem {...element} key={element.key} />)}
       {props.canAdd && (
         <div style={{ marginTop }}>
           <Button onClick={props.onAddClick} size="small" >+ {t(Strings.robot_action_send_web_request_add_header_button)}</Button>

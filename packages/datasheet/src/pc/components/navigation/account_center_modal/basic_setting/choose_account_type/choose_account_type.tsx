@@ -64,6 +64,7 @@ export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
             const checked = accountType === item.value;
             return (
               <Radio
+                key={item.value}
                 value={item.value}
                 className={classNames(styles.radio, {
                   [styles.checked]: checked,

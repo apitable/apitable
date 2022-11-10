@@ -72,6 +72,7 @@ export const ImageBox: React.FC<IImageBoxProps> = ({
             showType === ImageShowType.Thumbnail ?
               <div className={styles.indexThumbnailWrapper}>
                 {showImages.map((imgSrc, index) => <span
+                  key={index}
                   className={classNames(styles.thumbnailItem, {
                     [styles.activeThumb]: index === currentIndex,
                   })}

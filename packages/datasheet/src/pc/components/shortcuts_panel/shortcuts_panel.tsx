@@ -54,7 +54,7 @@ export const ShortcutsPanel: FC = () => {
                     <>
                       <Space key={key} >
                         {key.split(browser.is('Windows') ? ' + ' : ' ').map(item => (
-                          <div className={styles.keyItem}>{item}</div>
+                          <div key={item} className={styles.keyItem}>{item}</div>
                         ))}
                       </Space>
                       <span className={styles.or}>{index !== shortcutKey.keys.length - 1 && t(Strings.or)}</span>

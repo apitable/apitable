@@ -128,7 +128,7 @@ export const SubscribeHeader: React.FC<ISubscribeHeaderProps> = (props) => {
             return;
           }
           const active = item.level === levelTab;
-          return <div onClick={() => { setLevelTab(item.level as any); }} className={classnames({ [styles.active]: active })}>
+          return <div key={index} onClick={() => { setLevelTab(item.level as any); }} className={classnames({ [styles.active]: active })}>
             {item.levelIcon}
             <Typography
               variant={active ? 'h7' : 'body2'}

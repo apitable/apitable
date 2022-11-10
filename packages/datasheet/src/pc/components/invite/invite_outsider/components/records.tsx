@@ -70,14 +70,14 @@ export const Records: FC<IRecordsProps> = ({ records, title, subTitle, showDetai
             if (index === HeaderConfig.length - 1){
               return showDetail ? (<Col {...ColConfig}>{item.header}</Col>) : null;
             }
-            return <Col {...ColConfig}>{item.header}</Col>;
+            return <Col key={index} {...ColConfig}>{item.header}</Col>;
           })
         }
       </Row>
       <div className={styles.recordsWrap}>
         {
-          curRecords.map(item => (
-            <Row className={styles.records}>
+          curRecords.map((item, index) => (
+            <Row key={index} className={styles.records}>
               <Col {...ColConfig}><div className={classNames(styles.colContent, styles.firstCol)}>{item.name}</div></Col>
               <Col {...ColConfig}><div className={styles.colContent}>{item.team}</div></Col>
               <Col {...ColConfig}><div className={styles.colContent}>{item.email}</div></Col>

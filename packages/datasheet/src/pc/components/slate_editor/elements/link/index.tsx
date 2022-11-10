@@ -158,13 +158,17 @@ const Link = React.memo(({ element, children, attributes }: IElementRenderProps<
     onPopupVisibleChange={handleVisibleChange}
     zIndex={Z_INDEX.TOOLBAR_LINK_INPUT}
   >
-    <a {...attributes} href={link}
+    <a
+      {...attributes}
+      href={link}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMove}
       onMouseLeave={handleEnd}
       onMouseUp={handleEnd}
       className={styles.link}
-      target="_blank">
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {children}
     </a>
   </RcTrigger>;

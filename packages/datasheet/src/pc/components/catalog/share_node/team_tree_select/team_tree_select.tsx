@@ -90,7 +90,7 @@ export const TeamTreeSelect: FC<ITeamTreeSelectProps> = ({ className, onChange }
         );
       }
 
-      return <TreeItem isLeaf={!item.hasChildren} nodeId={item.teamId} label={nodeLabel} />;
+      return <TreeItem key={item.teamId} isLeaf={!item.hasChildren} nodeId={item.teamId} label={nodeLabel} />;
     });
   };
 

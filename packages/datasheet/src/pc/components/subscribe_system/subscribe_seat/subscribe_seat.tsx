@@ -64,7 +64,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
     ) : seatList.map((item, index) => {
       const active = seat === item;
       const isDisabled = isUpgrade && item <= Number(subscription?.maxSeats);
-      return <WrapperTooltip wrapper={isDisabled} tip={t(Strings.subscribe_disabled_seat)}>
+      return <WrapperTooltip key={index} wrapper={isDisabled} tip={t(Strings.subscribe_disabled_seat)}>
         <div
           className={classnames({
             [styles.seatCard]: true,

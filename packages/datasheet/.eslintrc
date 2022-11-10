@@ -1,12 +1,11 @@
 {
   "extends": [
-    "../../.eslintrc"
-//    "next"
-  ]
-  //  "parserOptions": {
-  //    "project": [
-  //      "./tsconfig.json"
-  //    ]
-  //    // Specify it only for TypeScript files
-  //  }
+    "../../.eslintrc",
+//    "next/core-web-vitals",
+    "next"
+  ],
+  "rules": {
+    "react/display-name": 0,
+    "react/no-find-dom-node": 0
+  }
 }

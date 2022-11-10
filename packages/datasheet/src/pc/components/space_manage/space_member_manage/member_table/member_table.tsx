@@ -181,7 +181,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
       align: 'center',
       render: value => {
         const text = value ? value.map(team => team.fullHierarchyTeamName).join(' & ') : [];
-        const tipsTitle = value ? (value.map(team => <div className={styles.teamItem}>
+        const tipsTitle = value ? (value.map((team, index) => <div key={index} className={styles.teamItem}>
           <p>-</p><p>{team.fullHierarchyTeamName}</p>
         </div>)) : '';
         return (

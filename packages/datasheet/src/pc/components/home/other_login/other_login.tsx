@@ -131,13 +131,12 @@ export const OtherLogin: FC<{ afterLogin?(data: string, loginMode: ConfigConstan
           }
           const obj = {
             id: item.id,
-            key: item.name,
             onClick: item.onClick,
             'data-sensors-click': true,
             className: styles.btn,
           };
           return (
-            <div {...obj}>
+            <div key={item.name} {...obj}>
               <Image src={item.img} alt={item.name} />
             </div>
           );

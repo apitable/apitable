@@ -157,7 +157,7 @@ export const KanbanFieldSettingModal: React.FC<IKanbanFieldSettingModalProps> = 
             <Radio.Group value={groupFieldId} className={styles.radioGroup} onChange={radioChange}>
               {
                 canUseKanbanFields.map(field => {
-                  return <div className={styles.radioWrapper}>
+                  return <div key={field.id} className={styles.radioWrapper}>
                     <Radio value={field.id} key={field.id} className={styles.radio} disabled={isCryptoField && field.id === groupFieldId}>
                       {!isCryptoField && getFieldTypeIcon(field.type)}
                       {field.name}

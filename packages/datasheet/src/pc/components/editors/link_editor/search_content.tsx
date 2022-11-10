@@ -336,7 +336,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
                       {<TComponent
                         tkey={t(Strings.add_new_record_by_name)}
                         params={{
-                          span: searchValue && <>"<span className={style.searchValue}>{searchValue}</span>"</>,
+                          span: searchValue && <span className={style.searchValue}>{searchValue}</span>,
                         }}
                       />}
                     </Button>
@@ -364,7 +364,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
               <TComponent
                 tkey={t(Strings.add_new_record_by_name)}
                 params={{
-                  span: searchValue && <>"<span className={style.searchValue}>{searchValue}</span>"</>,
+                  span: searchValue && <span className={style.searchValue}>{searchValue}</span>,
                 }}
               />
             }

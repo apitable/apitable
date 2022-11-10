@@ -8,7 +8,12 @@ export const Header = () => {
     <Box padding={24}>
       <Box display={'flex'} alignItems={'center'} paddingBottom={'4px'}>
         <Typography variant="h6">{t(Strings.tab_role)}</Typography>
-        <a style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }} target={'_blank'} href={Settings.role_help_url.value}>
+        <a
+          style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }}
+          target={'_blank'}
+          href={Settings.role_help_url.value}
+          rel="noreferrer"
+        >
           <InformationSmallOutlined color={colors.textCommonTertiary} size={16} />
         </a>
       </Box>

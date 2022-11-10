@@ -60,6 +60,7 @@ const RatingEditorMobileBase: React.FC<IRatingEditorMobileProps> = props => {
         <div className={style.rateItemList}>
           {[...Array(max + 1).keys()].map((item, index) => (
             <RateItem
+              key={index}
               onChange={value => {
                 onChange(value);
                 setVisible(false);

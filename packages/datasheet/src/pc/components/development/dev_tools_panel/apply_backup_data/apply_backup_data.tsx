@@ -98,7 +98,7 @@ export const ApplyBackupData = () => {
 
     {
       backupTimeList.map((timestamp, index) => {
-        return <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        return <div key={index} style={{ marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant={'body2'}>
             {dayjs(timestamp).format('YYYY-MM-DD hh:mm:ss')}
           </Typography>

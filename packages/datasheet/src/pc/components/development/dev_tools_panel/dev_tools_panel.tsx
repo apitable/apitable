@@ -74,10 +74,10 @@ interface IDevToolsPanel {
 export const DevToolsPanel: React.FC<IDevToolsPanel> = ({ onClose = (visible: false) => { } }) => {
   const [name, setName] = useState<MenuItemName>(MenuItemName.Empty);
   const contentMap = useMemo(() => [
-    <DevMenu onClick={setName} />,
-    <BatchDeleteNode />,
-    <TestFunctions />,
-    <ApplyBackupData />
+    <DevMenu onClick={setName} key="devMenu" />,
+    <BatchDeleteNode key="batchDeleteNode" />,
+    <TestFunctions key="testFunctions" />,
+    <ApplyBackupData key="applyBackupData" />
   ], []);
 
   return <Container onClose={onClose}>

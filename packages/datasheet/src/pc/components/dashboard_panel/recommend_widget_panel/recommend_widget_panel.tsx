@@ -134,7 +134,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
             <main>
               {
                 recommendList.length ? recommendList.map(item => {
-                  return <section className={styles.widgetItem}>
+                  return <section className={styles.widgetItem} key={item.widgetId}>
                     <div className={styles.widgetContainers}>
                       <div className={styles.widgetIconBox}>
                         <Image src={item.widgetPackageIcon} alt='' width={16} height={16} />

@@ -32,6 +32,7 @@ export const SubscribeTime: React.FC<ISubscribeTimeProps> = (props) => {
         const active = subscribeLongs === item.month;
         const showDiscountDeadline = Number(item.priceDiscount) !== 0;
         return <div
+          key={index}
           className={classnames({ [styles.active]: active })}
           onClick={() => { setSubscribeLongs(item.month); }}
           onMouseOver={() => { setHoverSubscribeLongs(index); }}

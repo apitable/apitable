@@ -50,7 +50,7 @@ export const BatchDeleteNode: React.FC = () => {
   }, [treeList, isSafeEnv]);
 
   if (!isSafeEnv) {
-    return <div>'该功能不可用'</div>;
+    return <div>该功能不可用</div>;
   }
 
   const selectAll = () => {

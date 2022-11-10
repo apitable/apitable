@@ -180,8 +180,9 @@ const RoleListSearchContent: React.FC<{
   return (
     <div className={styles.roleListSearchWrap}>
       <Scrollbars style={{ width: '100%', height: '100%' }}>
-        {list.map(role => (
+        {list.map((role, index) => (
           <RoleItem
+            key={index}
             role={role}
             onClick={onClick}
             icon={<Avatar id={role.roleId} title={role.roleName} size={AvatarSize.Size32} type={AvatarType.Team} />}

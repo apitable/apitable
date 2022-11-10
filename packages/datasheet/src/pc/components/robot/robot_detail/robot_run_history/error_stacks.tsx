@@ -12,8 +12,8 @@ export const ErrorStacks = (props: IErrorStacksProps) => {
     boxShadow={`inset 1px 0px 0px ${theme.color.fc5}`}
   >
     {
-      props.errorStacks?.map(error => {
-        return <Typography color={theme.color.red[500]} variant="body4">
+      props.errorStacks?.map((error, index) => {
+        return <Typography key={index} color={theme.color.red[500]} variant="body4">
           {error.message}
         </Typography>;
       })

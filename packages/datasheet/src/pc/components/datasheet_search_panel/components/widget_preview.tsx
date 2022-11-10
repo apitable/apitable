@@ -1,5 +1,5 @@
 import { Button, useThemeColors } from '@vikadata/components';
-import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
+import { integrateCdnHost, Settings, Strings, t, widget } from '@apitable/core';
 import { CheckOutlined } from '@vikadata/icons';
 import classNames from 'classnames';
 import { difference } from 'lodash';
@@ -36,6 +36,7 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
             installedWidgets.map(item => {
               return (
                 <div
+                  key={item.widgetId}
                   className={classNames(
                     {
                       [styles.selected]: selectedWidgetIds.includes(item.widgetId),

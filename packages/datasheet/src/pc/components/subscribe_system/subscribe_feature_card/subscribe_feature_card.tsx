@@ -22,7 +22,7 @@ export const SubscribeFeatureCard: React.FC<ISubscribeFeatureCardProps> = (props
     </p>
     {
       levelInfo.levelDesc.map(item => {
-        return <p className={styles.item}>
+        return <p key={item} className={styles.item}>
           <CheckOutlined color={levelInfo.activeColor} />
           <Typography variant={'body3'} color={colors.fc2} className={styles.text}>
             {item}

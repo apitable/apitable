@@ -335,7 +335,7 @@ const Log = (): JSX.Element => {
           <span className={styles.label}>{t(Strings.space_log_operator)}</span>
           <div className={styles.operatorRenderer}>
             {renderMemberNames().map((member, i, members) => (
-              <span className={styles.operator}>
+              <span key={i} className={styles.operator}>
                 {member}
                 {i < members.length - 1 ? ',' : ''}
               </span>

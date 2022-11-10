@@ -169,8 +169,8 @@ export const SubscribePayBar: React.FC<ISubscribePayBarProps> = (props) => {
             {t(Strings.view_detail)}
           </Typography>
           {
-            discountPriceDetail.map(item => {
-              return <div className={classnames(styles.line, styles.justifySpaceBetween)}>
+            discountPriceDetail.map((item, index) => {
+              return <div key={index} className={classnames(styles.line, styles.justifySpaceBetween)}>
                 <Typography variant={'body2'} component={'span'} color={colors.secondLevelText}>
                   {item.desc}
                 </Typography>

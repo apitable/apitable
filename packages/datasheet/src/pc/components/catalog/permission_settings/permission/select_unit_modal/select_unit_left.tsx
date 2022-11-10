@@ -225,8 +225,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
       return React.createElement(Radio, {
         value: item.unitId,
         disabled: source === SelectUnitSource.Admin && ('teamId' in item || (disableIdList && disableIdList.includes((item as IMember).memberId))),
-        children,
-      });
+      }, children);
     }
     const shouldDisableCheckbox =
       (disableList && disableList.includes(item.unitId)) ||
@@ -240,9 +239,8 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     return React.createElement(Checkbox, {
       value: item.unitId,
       onChange: e => onChangeChecked(e, item),
-      children,
       disabled: shouldDisableCheckbox,
-    });
+    }, children);
   };
 
   const MemberItem = (inSearch = false) => (item: IMember) => {

@@ -16,7 +16,7 @@ export const KanbanSkeleton = () => {
       {
         list.map((v) => {
           return (
-            <div className={styles.board}>
+            <div key={v.rows} className={styles.board}>
               <div
                 className={styles.colorLine}
                 style={{ background: v.color }}

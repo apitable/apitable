@@ -25,6 +25,7 @@ export const SubscribePayMethod: React.FC<ISubscribePayMethodProps> = (props) =>
         // }
         const active = pay === index;
         return <div
+          key={item.payId}
           className={styles.tab} onClick={() => { setPay(index); }}
           onMouseOver={() => { setHoverPay(index); }}
           onMouseOut={() => { setHoverPay(undefined); }}

@@ -84,6 +84,7 @@ export const MirrorListInner: React.FC<IMirrorListInner> = props => {
             {mirrorList.map(item => {
               return (
                 <div
+                  key={item.nodeId}
                   className={styles.listItem}
                   onClick={() => {
                     linkTo(item.nodeId);

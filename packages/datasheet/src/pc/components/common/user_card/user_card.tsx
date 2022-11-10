@@ -170,10 +170,10 @@ export const UserCard: FC<IUserCard> = ({
                 <div className={styles.infoWrapper}>
                   <p>{t(Strings.role_member_table_header_team)}</p>
                   <div className={styles.teamList}>
-                    { memberInfo ?
-                      memberInfo?.teamData?.map(item => {
+                    {memberInfo ?
+                      memberInfo?.teamData?.map((item, index) => {
                         return(
-                          <div className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
+                          <div key={index} className={styles.teamItem}><p>-</p><p className={styles.teamText}>{item.fullHierarchyTeamName}</p></div>
                         );
                       }) : isAlien ? t(Strings.alien_tip_in_user_card) : '-' 
                     }
