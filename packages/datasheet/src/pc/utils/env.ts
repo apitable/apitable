@@ -4,11 +4,15 @@ import { browser } from 'modules/shared/browser';
 import { IInitializationData } from 'typings';
 
 export function getInitializationData(): IInitializationData {
-  return Object.assign({
+  const base = {
     env: 'development',
     envVars: getEnvVars(),
     locale: 'zh-CN',
-  }, window.__initialization_data__ || {});
+  };
+
+  if (process.env.SSR) return base as IInitializationData;
+
+  return Object.assign(base, window.__initialization_data__ || {});
 }
 
 export function getEnvVariables() {

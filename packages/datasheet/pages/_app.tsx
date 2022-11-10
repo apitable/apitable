@@ -60,7 +60,7 @@ import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
 import { IClientInfo } from '../utils/interface';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -368,5 +368,6 @@ reportWebVitals();
 MyApp.getInitialProps = getInitialProps;
 
 const beforeCapture = (scope: Scope) => {
+  debugger
   scope.setTag('PageCrash', true);
 };
