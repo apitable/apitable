@@ -12,7 +12,7 @@ import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import { AccountManager } from './account_manager';
-import { AccountWallet } from './account_wallet';
+import { AccountWallet } from '../../../../modules/enterprise/account_wallet/account_wallet';
 import { BasicSetting } from './basic_setting';
 import { DeveloperConfiguration } from './developer_configuration';
 import { ModifyPassword } from './modify_password';

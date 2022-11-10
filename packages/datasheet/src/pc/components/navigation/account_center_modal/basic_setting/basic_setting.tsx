@@ -309,8 +309,8 @@ export const BasicSetting: FC = () => {
         <div className={styles.mobileSetting}>
           {items
             .filter(_ => _.visible)
-            .map(({ onClick, label }) => (
-              <div className={classNames(styles.linkItem)} onClick={onClick}>
+            .map(({ onClick, label }, index) => (
+              <div key={index} className={classNames(styles.linkItem)} onClick={onClick}>
                 <label className={styles.label}>{label}</label>
                 <div className={styles.value}>
                   <ChevronRightOutlined />

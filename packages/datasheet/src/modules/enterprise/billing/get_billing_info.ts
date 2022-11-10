@@ -19,7 +19,7 @@ export const getBillingInfo = async(spaceId: string) => {
     return;
   }
   const { product, deadline } = data;
-  const billingProduct = SystemConfig.billing;
+  const billingProduct = SystemConfig.billing.products;
   const productI18nName = billingProduct[product].i18nName;
   const subscriptionInfo = {
     ...data,
