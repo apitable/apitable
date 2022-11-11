@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { cellValueToImageSrc, IAttachmentValue } from '@apitable/core';
+import { ApiTipConstant, cellValueToImageSrc, IAttachmentValue } from '@apitable/core';
 import { FILE_UPLOAD_TMP_PATH, InjectLogger, JavaApiPath, USER_HTTP_DECORATE } from '../../../shared/common';
 import { AttachmentTypeEnum } from 'shared/enums/attachment.enum';
 import { ApiException } from '../../../shared/exception/api.exception';
@@ -37,7 +37,7 @@ export class AttachmentService {
    * @returns 
    */
   public async uploadAttachment(dstId: string, file: IFileInterface, auth: IAuthHeader): Promise<AttachmentDto> {
-    if (!file) throw ApiException.tipError('api_upload_invalid_file');
+    if (!file) throw ApiException.tipError(ApiTipConstant.api_upload_invalid_file);
     const newPath = path.join(file.destination, file.originalName);
     let res;
     try {
@@ -56,10 +56,10 @@ export class AttachmentService {
     } catch (e) {
       this.unlinkFile(newPath);
       this.logger.error(e.stack || e, ['Uploading attachment failed']);
-      throw ApiException.tipError('api_server_error', { value: 1 });
+      throw ApiException.tipError(ApiTipConstant.api_server_error, { value: 1 });
     }
 
-    if (!res) throw ApiException.tipError('api_server_error', { value: 1 });
+    if (!res) throw ApiException.tipError(ApiTipConstant.api_server_error, { value: 1 });
     if (res.code && res.code === JavaService.SUCCESS_CODE) {
       return {
         token: res.data.token,
@@ -72,7 +72,7 @@ export class AttachmentService {
         url: cellValueToImageSrc(res.data as IAttachmentValue),
       };
     }
-    throw ApiException.tipError('api_upload_attachment_error', { message: res.message });
+    throw ApiException.tipError(ApiTipConstant.api_upload_attachment_error, { message: res.message });
   }
 
   /**
@@ -97,7 +97,7 @@ export class AttachmentService {
   getFileUploadHandler(dstId: string, newFiles: IFileInterface[], req, reply) {
     return async(field, file, filename, encoding, mimetype) => {
       if (!filename) {
-        const err = ApiException.tipError('api_upload_invalid_file_name');
+        const err = ApiException.tipError(ApiTipConstant.api_upload_invalid_file_name);
         const errMsg = await this.i18n.translate(err.message, {
           lang: req[USER_HTTP_DECORATE]?.locale,
         });

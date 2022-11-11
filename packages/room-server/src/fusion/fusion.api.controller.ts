@@ -1,4 +1,4 @@
-import { ICollaCommandOptions } from '@apitable/core';
+import { ApiTipConstant, ICollaCommandOptions } from '@apitable/core';
 import {
   Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
 } from '@nestjs/common';
@@ -12,7 +12,6 @@ import { FusionApiService } from 'fusion/services/fusion.api.service';
 import { I18nService } from 'nestjs-i18n';
 import { DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants, USER_HTTP_DECORATE } from 'shared/common';
 import { NodePermissionEnum } from 'shared/enums/node.permission.enum';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { ApiException } from 'shared/exception';
 import { RedisLock } from 'shared/helpers/redis.lock';
 import { ApiCacheInterceptor, apiCacheTTLFactory } from 'shared/interceptor/api.cache.interceptor';
@@ -148,7 +147,7 @@ export class FusionApiController {
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
     if (spaceCapacityOverLimit) {
-      const error = ApiException.tipError('api_space_capacity_over_limit');
+      const error = ApiException.tipError(ApiTipConstant.api_space_capacity_over_limit);
       return Promise.reject(error);
     }
     const results = await this.restService.getUploadPresignedUrl({ token: req.headers.authorization }, datasheet.nodeId, query.count);
@@ -180,7 +179,7 @@ export class FusionApiController {
     const datasheet = req[DATASHEET_HTTP_DECORATE];
     const spaceCapacityOverLimit = await this.restService.capacityOverLimit({ token: req.headers.authorization }, datasheet.spaceId);
     if (spaceCapacityOverLimit) {
-      const error = ApiException.tipError('api_space_capacity_over_limit');
+      const error = ApiException.tipError(ApiTipConstant.api_space_capacity_over_limit);
       return Promise.reject(error);
     }
     const service = this.attachService;
@@ -197,11 +196,11 @@ export class FusionApiController {
         if (err instanceof ApiException) {
           localError = err;
         } else {
-          localError = ApiException.tipError('api_upload_attachment_error');
+          localError = ApiException.tipError(ApiTipConstant.api_upload_attachment_error);
         }
       }
       if (newFiles.length > 1) {
-        localError = ApiException.tipError('api_upload_attachment_exceed_limit');
+        localError = ApiException.tipError(ApiTipConstant.api_upload_attachment_exceed_limit);
       }
       if (localError) {
         reply.statusCode = localError.getTip().statusCode;
@@ -295,7 +294,7 @@ export class FusionApiController {
     if (result) {
       return ApiResponse.success(undefined);
     }
-    throw ApiException.tipError('api_delete_error');
+    throw ApiException.tipError(ApiTipConstant.api_delete_error);
   }
 
   @Get('/datasheets/:datasheetId/fields')
@@ -314,7 +313,7 @@ export class FusionApiController {
     if (metaFields) {
       return ApiResponse.success({ fields: metaFields });
     }
-    throw ApiException.tipError('api_server_error');
+    throw ApiException.tipError(ApiTipConstant.api_server_error);
   }
 
   @Get('/datasheets/:datasheetId/views')
@@ -333,7 +332,7 @@ export class FusionApiController {
     if (metaViews) {
       return ApiResponse.success({ views: metaViews });
     }
-    throw ApiException.tipError('api_server_error');
+    throw ApiException.tipError(ApiTipConstant.api_server_error);
   }
 
   @Get('/spaces')
@@ -372,7 +371,7 @@ export class FusionApiController {
     const metaFields: any = await this.fusionApiService.getFieldList(datasheetId, { viewId: '' });
     const duplicatedName = metaFields.filter(field => field.name === createRo.name);
     if (duplicatedName.length > 0) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsMustUnique, { property: 'name' });
+      throw ApiException.tipError(ApiTipConstant.api_params_must_unique, { property: 'name' });
     }
     const fieldCreateDto = await this.fusionApiService.addField(datasheetId, createRo);
     return ApiResponse.success(fieldCreateDto);
@@ -398,10 +397,10 @@ export class FusionApiController {
     const metaFields: any = await this.fusionApiService.getFieldList(datasheetId, { viewId: '' });
     const existFieldId = metaFields.filter(field => field.id === fieldId);
     if (existFieldId.length === 0) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsNotExists, { property: 'fieldId', value: fieldId });
+      throw ApiException.tipError(ApiTipConstant.api_params_not_exists, { property: 'fieldId', value: fieldId });
     }
     if (metaFields[0].id === fieldId) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsPrimaryFieldNotAllowedToDelete, { property: 'name' });
+      throw ApiException.tipError(ApiTipConstant.api_params_primary_field_not_allowed_to_delete, { property: 'name' });
     }
     await this.fusionApiService.deleteField(datasheetId, fieldId, fieldDeleteRo.conversion);
     return ApiResponse.success({});

@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
-import { CacheManager, clearCachedSelectors, computeCache, ExpCache } from '@apitable/core';
+import { ApiTipConstant, CacheManager, clearCachedSelectors, computeCache, ExpCache } from '@apitable/core';
 import { InjectLogger, SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from '../common';
 import { ApiUsageEntity } from '../../fusion/entities/api.usage.entity';
 import { ApiHttpMethod } from '../enums';
@@ -45,7 +45,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
         // database error
         if (err instanceof QueryFailedError) {
           this.logger.error('FusionApiDBException', err?.stack, err?.message);
-          return throwError(ApiException.tipError('api_server_error'));
+          return throwError(ApiException.tipError(ApiTipConstant.api_server_error));
         }
         return throwError(err);
       }),

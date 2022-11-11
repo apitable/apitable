@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { ApiException } from '../../exception';
 import { ApiDatasheetGuard } from 'shared/middleware/guard/api.datasheet.guard';
+import { ApiTipConstant } from '@apitable/core';
 
 describe('ApiDatasheetGuard', () => {
   let app;
@@ -41,7 +42,7 @@ describe('ApiDatasheetGuard', () => {
           datasheetId: null,
         },
       });
-      const error = ApiException.tipError('api_datasheet_not_exist');
+      const error = ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });
@@ -50,7 +51,7 @@ describe('ApiDatasheetGuard', () => {
       (context.switchToHttp().getRequest as jest.Mock).mockReturnValueOnce({
         datasheet: null,
       });
-      const error = ApiException.tipError('api_datasheet_not_exist');
+      const error = ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });
@@ -66,7 +67,7 @@ describe('ApiDatasheetGuard', () => {
         },
       });
       (memberRepository.selectSpaceIdsByUserId as jest.Mock).mockReturnValueOnce(['bbb']);
-      const error = ApiException.tipError('api_datasheet_not_visible');
+      const error = ApiException.tipError(ApiTipConstant.api_datasheet_not_visible);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });

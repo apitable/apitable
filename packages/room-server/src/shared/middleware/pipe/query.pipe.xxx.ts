@@ -2,7 +2,7 @@
 import { REQUEST } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FieldType, IMeta, ViewType } from '@apitable/core';
+import { ApiTipConstant, FieldType, IMeta, ViewType } from '@apitable/core';
 import { AppModule } from 'app.module';
 import { OrderEnum } from '../../enums';
 import { ApiException } from '../../exception/api.exception';
@@ -32,7 +32,7 @@ describe('QueryPipe', () => {
       expect(true);
     });
     it('sort.field error--zh-CN', () => {
-      const error = ApiException.tipError('api_param_sort_field_not_exists');
+      const error = ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
       expect(() => {
         pipe.validateSort([{ order: OrderEnum.DESC, field: 'aa' }], {
           Number: { id: 'aa', name: 'number', type: FieldType.Number, property: { precision: 0, defaultValue: null }
@@ -41,7 +41,7 @@ describe('QueryPipe', () => {
       }).toThrow(error);
     });
     it('viewId not exists error--zh-CN', () => {
-      const error = ApiException.tipError('api_query_params_view_id_not_exists');
+      const error = ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists);
       const meta: IMeta = {
         fieldMap: {
           fldg3EBXhzE8K: {

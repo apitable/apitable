@@ -1,6 +1,6 @@
+import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 
 export class ActionCreateRo {
   @ApiProperty({
@@ -8,28 +8,28 @@ export class ActionCreateRo {
     required: true,
     example: 'arbxxxxxx',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
-    robotId: string;
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  robotId: string;
 
   @ApiProperty({
     type: String,
     required: true,
     example: 'aatxxxxxxx',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
-    actionTypeId: string;
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  actionTypeId: string;
 
   @ApiProperty({
     type: String,
     required: false,
     example: 'aatxxxxxxx',
   })
-    prevActionId: string;
+  prevActionId: string;
 
   @ApiProperty({
     type: Object,
     required: false,
     example: {},
   })
-    input: object;
+  input: object;
 }

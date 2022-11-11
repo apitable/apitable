@@ -1,6 +1,6 @@
+import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 
 export class ChangesetRo {
   @ApiProperty({
@@ -9,8 +9,8 @@ export class ChangesetRo {
     example: 'dst0Yj5aNeoHldqvf6',
     description: 'datasheet ID',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
-    dstId: string;
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  dstId: string;
 
   @ApiProperty({
     type: String,
@@ -18,6 +18,6 @@ export class ChangesetRo {
     example: '0Yj5aNeoHldqvf6',
     description: 'message ID',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
-    messageId: string;
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  messageId: string;
 }

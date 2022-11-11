@@ -9,6 +9,7 @@ import { ApiResponse } from '../../fusion/vos/api.response';
 import { I18nService } from 'nestjs-i18n';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import sha1 from 'sha1';
+import { ApiTipConstant } from '@apitable/core';
 
 /**
  * Rate limiter middleware
@@ -46,7 +47,7 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
         next();
       })
       .catch(async() => {
-        const err = ApiException.tipError('api_frequently_error');
+        const err = ApiException.tipError(ApiTipConstant.api_frequently_error);
         res.setHeader('Content-Type', 'application/json');
         res.statusCode = err.getTip().statusCode;
         const errMsg = await this.i18n.translate(err.getMessage());

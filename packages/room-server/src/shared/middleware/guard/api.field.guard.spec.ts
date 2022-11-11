@@ -1,3 +1,4 @@
+import { ApiTipConstant } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import '@vikadata/i18n-lang';
@@ -40,7 +41,7 @@ describe('ApiDatasheetGuard', () => {
           datasheetId: 'abc'
         },
       });
-      const error = ApiException.tipError('api_params_instance_space_id_error');
+      const error = ApiException.tipError(ApiTipConstant.api_params_instance_space_id_error);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });
@@ -52,7 +53,7 @@ describe('ApiDatasheetGuard', () => {
           spaceId: 'abc',
         },
       });
-      const error = ApiException.tipError('api_datasheet_not_exist');
+      const error = ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });
@@ -65,7 +66,7 @@ describe('ApiDatasheetGuard', () => {
           spaceId: 'bbb',
         },
       });
-      const error = ApiException.tipError('api_datasheet_not_exist');
+      const error = ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });
@@ -83,7 +84,7 @@ describe('ApiDatasheetGuard', () => {
         },
       });
       (memberRepository.selectSpaceIdsByUserId as jest.Mock).mockReturnValueOnce(['bbb']);
-      const error = ApiException.tipError('api_datasheet_not_visible');
+      const error = ApiException.tipError(ApiTipConstant.api_datasheet_not_visible);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });
@@ -101,7 +102,7 @@ describe('ApiDatasheetGuard', () => {
         },
       });
       (memberRepository.selectSpaceIdsByUserId as jest.Mock).mockReturnValueOnce(['bbb']);
-      const error = ApiException.tipError('api_forbidden_because_of_not_in_space');
+      const error = ApiException.tipError(ApiTipConstant.api_forbidden_because_of_not_in_space);
       return guard.canActivate(context ).catch(e => {
         return expect(e).toStrictEqual(error);
       });

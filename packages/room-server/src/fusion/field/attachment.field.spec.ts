@@ -1,4 +1,4 @@
-import { CellFormatEnum, FieldType, getNewId, IAttacheField, ICellValue, IDPrefix, IReduxState, Reducers } from '@apitable/core';
+import { ApiTipConstant, CellFormatEnum, FieldType, getNewId, IAttacheField, ICellValue, IDPrefix, IReduxState, Reducers } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
@@ -52,7 +52,7 @@ describe('AttachmentField', () => {
     });
 
     it('Non array--zh-CN--should throw type error', async () => {
-      const error = ApiException.tipError('api_param_attachment_array_type_error');
+      const error = ApiException.tipError(ApiTipConstant.api_param_attachment_array_type_error);
 
       const fieldValues: IFieldValue = {
         token: 'space/2020/06/20/38f89e81bb83496da5d8af6a0ba637ec',
@@ -69,7 +69,7 @@ describe('AttachmentField', () => {
     });
 
     it('required parameter validation token--zh-CN--should throw not exists error', async () => {
-      const error = ApiException.tipError('api_params_instance_attachment_token_error');
+      const error = ApiException.tipError(ApiTipConstant.api_params_instance_attachment_token_error);
 
       const fieldValues: IFieldValue = [
         {
@@ -87,7 +87,7 @@ describe('AttachmentField', () => {
     });
 
     it('required parameter validation name--zh-CN--should throw ServerException', async () => {
-      const error = ApiException.tipError('api_params_instance_attachment_name_error');
+      const error = ApiException.tipError(ApiTipConstant.api_params_instance_attachment_name_error);
 
       const fieldValues: IFieldValue = [
         {
@@ -105,7 +105,7 @@ describe('AttachmentField', () => {
     });
 
     it('token type validation[string]--zh-CN--should throw type error', async () => {
-      const error = ApiException.tipError('api_param_attachment_token_type_error');
+      const error = ApiException.tipError(ApiTipConstant.api_param_attachment_token_type_error);
       expect(() => {
         fieldClass.validate(
           [
@@ -125,7 +125,7 @@ describe('AttachmentField', () => {
     });
 
     it('name type verification [string]--zh-CN--should throw type error', async () => {
-      const error = ApiException.tipError('api_param_attachment_name_type_error');
+      const error = ApiException.tipError(ApiTipConstant.api_param_attachment_name_type_error);
       const fieldValues = [
         {
           name: 2222,
@@ -163,7 +163,7 @@ describe('AttachmentField', () => {
           return undefined;
         },
       );
-      const error = ApiException.tipError('api_param_attachment_not_exists');
+      const error = ApiException.tipError(ApiTipConstant.api_param_attachment_not_exists);
       // The assertion for a promise must be returned.
       expect.assertions(1);
 

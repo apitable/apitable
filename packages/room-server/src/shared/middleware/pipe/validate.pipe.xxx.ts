@@ -6,6 +6,7 @@ import { AppModule } from 'app.module';
 import { ApiException } from '../../exception/api.exception';
 import { ValidationPipe } from 'shared/middleware/pipe/validation.pipe';
 import { RecordQueryRo } from '../../../fusion/ros/record.query.ro';
+import { ApiTipConstant } from '@apitable/core';
 
 describe('ValidationPipe', () => {
   let app;
@@ -49,7 +50,7 @@ describe('ValidationPipe', () => {
         type: 'query',
         metatype: RecordQueryRo,
       }).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_param_sort_field_not_exists'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists));
       });
     });
     it('sort.field null error', () => {
@@ -57,7 +58,7 @@ describe('ValidationPipe', () => {
         type: 'query',
         metatype: RecordQueryRo,
       }).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_param_sort_field_not_exists'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists));
       });
     });
     it('sort.order null error', () => {
@@ -65,7 +66,7 @@ describe('ValidationPipe', () => {
         type: 'query',
         metatype: RecordQueryRo,
       }).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_params_invalid_order_sort'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_params_invalid_order_sort));
       });
     });
     it('sort.order "" error', () => {
@@ -73,7 +74,7 @@ describe('ValidationPipe', () => {
         type: 'query',
         metatype: RecordQueryRo,
       }).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_params_invalid_order_sort'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_params_invalid_order_sort));
       });
     });
     it('sort.order "aa" error', () => {
@@ -81,7 +82,7 @@ describe('ValidationPipe', () => {
         type: 'query',
         metatype: RecordQueryRo,
       }).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_params_invalid_order_sort'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_params_invalid_order_sort));
       });
     });
   });

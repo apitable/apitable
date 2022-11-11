@@ -1,10 +1,9 @@
+import { ApiTipConstant } from '@apitable/core';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsIn, IsOptional, Max, Min } from 'class-validator';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 
 export class RecordHistoryQueryRo {
-
   @ApiPropertyOptional({
     type: Number,
     required: true,
@@ -12,8 +11,8 @@ export class RecordHistoryQueryRo {
     description: 'type(0: All, 1: History, 2: Comment), default: 0',
   })
   @Type(() => Number)
-  @IsIn([0, 1, 2], { context: { tipId: ApiTipIdEnum.apiParamsInvalidValue }})
-    type = 0;
+  @IsIn([0, 1, 2], { message: ApiTipConstant.api_params_invalid_value, context: {} })
+  type = 0;
 
   @ApiPropertyOptional({
     type: Number,
@@ -21,8 +20,8 @@ export class RecordHistoryQueryRo {
     description: 'Limited days, default is 14, maximum is 730 days',
   })
   @Type(() => Number)
-  @Max(730, { context: { tipId: ApiTipIdEnum.apiParamsMaxError, value: 730 }})
-    limitDays = 14;
+  @Max(730, { message: ApiTipConstant.api_params_max_error, context: { value: 730 } })
+  limitDays = 14;
 
   @ApiPropertyOptional({
     type: Number,
@@ -32,20 +31,20 @@ export class RecordHistoryQueryRo {
   })
   @Type(() => Number)
   @IsOptional()
-  @Min(1, { context: { tipId: ApiTipIdEnum.apiParamsMinError }})
-  @Max(100, { context: { tipId: ApiTipIdEnum.apiParamsMaxError, value: 100 }})
-    pageSize = 10;
+  @Min(1, { message: ApiTipConstant.api_params_min_error, context: {} })
+  @Max(100, { message: ApiTipConstant.api_params_max_error, context: { value: 100 } })
+  pageSize = 10;
 
   @ApiPropertyOptional({
     type: Number,
     example: 10,
-    description: '(Optional) Specify the current largest revision, return the record witch is smaller than the revision, ' + 
-    'and default is the largest revision',
+    description:
+      '(Optional) Specify the current largest revision, return the record witch is smaller than the revision, ' +
+      'and default is the largest revision',
   })
   // For parameter validation
   @Type(() => Number)
   @IsOptional()
-  @Min(1, { context: { tipId: ApiTipIdEnum.apiParamsMinError }})
-    maxRevision: string;
-
+  @Min(1, { message: ApiTipConstant.api_params_min_error, context: {} })
+  maxRevision: string;
 }

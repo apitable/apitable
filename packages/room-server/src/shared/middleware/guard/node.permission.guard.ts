@@ -4,6 +4,7 @@ import { NODE_PERMISSION_REFLECTOR_KEY } from '../../common';
 import { ApiException } from '../../exception/api.exception';
 import { NodePermission } from '../../interfaces';
 import { NodePermissionService } from 'database/services/node/node.permission.service';
+import { ApiTipConstant } from '@apitable/core';
 
 @Injectable()
 export class NodePermissionGuard implements CanActivate {
@@ -39,7 +40,7 @@ export class NodePermissionGuard implements CanActivate {
     const nodePermission: NodePermission = await this.permissionService.getNodeRole(dstId, auth);
     for (const permission of permissions) {
       if (!nodePermission[permission]) {
-        throw ApiException.tipError('api_node_permission_error');
+        throw ApiException.tipError(ApiTipConstant.api_node_permission_error);
       }
     }
     return true;

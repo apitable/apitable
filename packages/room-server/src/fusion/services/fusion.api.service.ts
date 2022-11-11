@@ -1,4 +1,5 @@
 import {
+  ApiTipConstant,
   CacheManager,
   CollaCommandName,
   Conversion,
@@ -7,7 +8,6 @@ import {
   getViewTypeString,
   ICollaCommandOptions,
   IDeleteRecordData,
-  IField,
   ILocalChangeset,
   IMeta,
   IOperation,
@@ -17,7 +17,6 @@ import {
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { DatasheetPack } from 'database/interfaces';
 import { CommandService } from 'database/services/command/command.service';
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
@@ -42,7 +41,6 @@ import {
   USER_HTTP_DECORATE,
 } from 'shared/common';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { ApiException, DatasheetException, ServerException } from 'shared/exception';
 import { IAuthHeader, ILinkedRecordMap, IServerConfig } from 'shared/interfaces';
 import { IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
@@ -227,7 +225,7 @@ export class FusionApiService {
     const interStore = await this.datasheetService.fillBaseSnapshotStoreByDstIds([datasheetId]);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) {
-      throw ApiException.tipError(ApiTipIdEnum.apiInsertError);
+      throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
     await this.applyChangeSet(datasheetId, changeSets, auth);
   }
@@ -302,7 +300,7 @@ export class FusionApiService {
 
         // Command execution failed
         if (!execResult || execResult.result !== ExecuteResult.Success) {
-          throw ApiException.tipError('api_update_error');
+          throw ApiException.tipError(ApiTipConstant.api_update_error);
         }
 
         await this.applyChangeSet(dstId, changesets, auth);
@@ -372,7 +370,7 @@ export class FusionApiService {
         const { execResult, extra } = event;
         const { changesets } = extra as { changesets: ILocalChangeset[] }
         if (!execResult || execResult.result !== ExecuteResult.Success) {
-          throw ApiException.tipError('api_insert_error');
+          throw ApiException.tipError(ApiTipConstant.api_insert_error);
         }
         this.combChangeSetsOp(changesets, dstId, updateFieldOperations);
         userId = await this.applyChangeSet(dstId, changesets, auth);
@@ -420,7 +418,7 @@ export class FusionApiService {
     const { result, changeSets } = this.commandService.execute<{}>(options, store);
     // command执行失败
     if (!result || result.result !== ExecuteResult.Success) {
-      throw ApiException.tipError('api_delete_error');
+      throw ApiException.tipError(ApiTipConstant.api_delete_error);
     }
     await this.applyChangeSet(dstId, changeSets, auth);
     return true;
@@ -551,7 +549,7 @@ export class FusionApiService {
     };
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) {
-      throw ApiException.tipError(ApiTipIdEnum.apiInsertError);
+      throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
     await this.applyChangeSet(dstId, changeSets, auth);
     return result.data.toString();
@@ -565,7 +563,7 @@ export class FusionApiService {
     };
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
     if (!result || result.result !== ExecuteResult.Success) {
-      throw ApiException.tipError(ApiTipIdEnum.apiInsertError);
+      throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
     await this.applyChangeSet(datasheetId, changeSets, auth);
   }
@@ -584,7 +582,7 @@ export class FusionApiService {
           dstId,
           updateFieldOperations,
         });
-        throw ApiException.tipError('api_insert_error');
+        throw ApiException.tipError(ApiTipConstant.api_insert_error);
       }
       thisResourceChangeSet.operations = [...updateFieldOperations, ...thisResourceChangeSet.operations];
     }
@@ -599,7 +597,7 @@ export class FusionApiService {
         const { execResult, extra } = event;
         const { changesets } = extra as { changesets: ILocalChangeset[] }
         if (!execResult || execResult.result !== ExecuteResult.Success) {
-          throw ApiException.tipError('api_insert_error');
+          throw ApiException.tipError(ApiTipConstant.api_insert_error);
         }
         updateFieldOperations.push(...flatten(changesets.map(changeSet => changeSet.operations)));
       },

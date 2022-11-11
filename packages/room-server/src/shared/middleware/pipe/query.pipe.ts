@@ -1,6 +1,6 @@
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { FieldKeyEnum, IFieldMap, IMeta } from '@apitable/core';
+import { ApiTipConstant, FieldKeyEnum, IFieldMap, IMeta } from '@apitable/core';
 import { DATASHEET_META_HTTP_DECORATE } from '../../common';
 import { ApiException } from '../../exception/api.exception';
 import { keyBy } from 'lodash';
@@ -39,7 +39,7 @@ export class QueryPipe implements PipeTransform {
 
   validateSort(sort: SortRo[], fieldMap: IFieldMap): SortRo[] {
     return sort.reduce<SortRo[]>((pre, cur) => {
-      if (!fieldMap[cur.field]) throw ApiException.tipError('api_param_sort_field_not_exists');
+      if (!fieldMap[cur.field]) throw ApiException.tipError(ApiTipConstant.api_param_sort_field_not_exists);
       pre.push(<SortRo>{ field: fieldMap[cur.field].id, order: cur.order.toLowerCase() });
       return pre;
     }, []);
@@ -51,13 +51,13 @@ export class QueryPipe implements PipeTransform {
     views.forEach(view => {
       if (view.id === viewId) exist = true;
     });
-    if (!exist) throw ApiException.tipError('api_query_params_view_id_not_exists', { viewId });
+    if (!exist) throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
   }
 
   validateFields(fields: string[], fieldMap: IFieldMap) {
     const notExists = fields.filter(field => {
       return !fieldMap[field];
     });
-    if (notExists.length) throw ApiException.tipError('api_query_params_invalid_fields', { fields: notExists.join(', ') });
+    if (notExists.length) throw ApiException.tipError(ApiTipConstant.api_query_params_invalid_fields, { fields: notExists.join(', ') });
   }
 }

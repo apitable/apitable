@@ -4,9 +4,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ApiException } from '../../exception/api.exception';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { FieldCreateRo } from '../../../fusion/ros/field.create.ro';
 import { CreateFieldPipe } from './create.field.pipe';
+import { ApiTipConstant } from '@apitable/core';
 
 describe('CreateFieldPipe', () => {
   let app;
@@ -29,15 +29,14 @@ describe('CreateFieldPipe', () => {
 
     it('missing field name, should return 400 code', () => {
       const ro: FieldCreateRo = new FieldCreateRo('', 'Text');
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue
-        , { property: 'name' });
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'name' });
       expect(() => {
         pipe.validate(ro);
       }).toThrow(error);
     });
 
     it('name is oversize, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'name', value: 100 });
+      const error = ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'name', value: 100 });
       expect(() => {
         const name = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         const ro: FieldCreateRo = new FieldCreateRo(name, '');
@@ -47,8 +46,7 @@ describe('CreateFieldPipe', () => {
 
     it('invalid field type, should return 400 code', () => {
       const ro: FieldCreateRo = new FieldCreateRo('abc', 'Textt');
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue
-        , { property: 'type', value: ro.type });
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'type', value: ro.type });
       expect(() => {
         pipe.validate(ro);
       }).toThrow(error);
@@ -57,8 +55,7 @@ describe('CreateFieldPipe', () => {
     it('invalid field property, should return 400 code', () => {
       const field: FieldCreateRo = new FieldCreateRo('abc', 'number');
       field.property = {};
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue
-        , { property: 'property', value: field.property });
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'property', value: field.property });
       expect(() => {
         pipe.validate(field);
       }).toThrow(error);

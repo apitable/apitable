@@ -8,7 +8,7 @@ import { CreateDatasheetPipe } from './create.datasheet.pipe';
 import { REQUEST } from '@nestjs/core';
 import { DatasheetFieldCreateRo } from '../../../fusion/ros/datasheet.field.create.ro';
 import { DatasheetCreateRo } from '../../../fusion/ros/datasheet.create.ro';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
+import { ApiTipConstant } from '@apitable/core';
 
 describe('CreateDatasheetPipe', () => {
   let app;
@@ -31,7 +31,7 @@ describe('CreateDatasheetPipe', () => {
 
   describe('transform', () => {
     it('name is oversize, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'name', value: 100 });
+      const error = ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'name', value: 100 });
       expect(() => {
         const name = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         const ro: DatasheetCreateRo = new DatasheetCreateRo(name, '');
@@ -40,7 +40,7 @@ describe('CreateDatasheetPipe', () => {
     });
 
     it('description is oversize, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'description', value: 500 });
+      const error = ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'description', value: 500 });
       expect(() => {
         const content = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         let desc = content;
@@ -53,7 +53,7 @@ describe('CreateDatasheetPipe', () => {
     });
 
     it('missing field name, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'field.name' });
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'field.name' });
       const field: DatasheetFieldCreateRo = {
         name: '',
         type: 'Text'
@@ -67,7 +67,7 @@ describe('CreateDatasheetPipe', () => {
     });
 
     it('field name is not unique, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsMustUnique, { property: 'field.name' });
+      const error = ApiException.tipError(ApiTipConstant.api_params_must_unique, { property: 'field.name' });
       const field: DatasheetFieldCreateRo = {
         name: 'abc',
         type: 'Text'
@@ -81,7 +81,7 @@ describe('CreateDatasheetPipe', () => {
     });
 
     it('fields is oversize, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxCountError, { property: 'fields', value: 200 });
+      const error = ApiException.tipError(ApiTipConstant.api_params_max_count_error, { property: 'fields', value: 200 });
       const field: DatasheetFieldCreateRo = {
         name: 'abc',
         type: 'Text'
@@ -121,7 +121,7 @@ describe('CreateDatasheetPipe', () => {
   describe('validate primary field type', () => {
     it('the primary field.type is invalid, should return 400 code', () => {
       const type = 'SingleSelect';
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidPrimaryFieldTypeError, { value: type });
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_primary_field_type_error, { value: type });
       expect(() => {
         pipe.validatePrimaryFieldType(type);
       }).toThrow(error);
@@ -132,7 +132,7 @@ describe('CreateDatasheetPipe', () => {
   describe('validate fields', () => {
 
     it('field.name is oversize, should return 400 code', () => {
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'field.name', value: 100 });
+      const error = ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'field.name', value: 100 });
       expect(() => {
         const fieldName = 'fasdfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffabc';
         const fields: DatasheetFieldCreateRo[] = [{
@@ -150,7 +150,7 @@ describe('CreateDatasheetPipe', () => {
         name: 'abc',
         type: 'Textt'
       }];
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value
         , { property: `fields[${fields[0].name}].type`, value: fields[0].type });
       expect(() => {
         pipe.validateFields(fields);
@@ -163,7 +163,7 @@ describe('CreateDatasheetPipe', () => {
         type: 'number',
         property: {}
       }];
-      const error = ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue
+      const error = ApiException.tipError(ApiTipConstant.api_params_invalid_value
         , { property: `fields[${fields[0].name}].property`, value: fields[0].property });
       expect(() => {
         pipe.validateFields(fields);

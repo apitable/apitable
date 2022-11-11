@@ -6,6 +6,7 @@ import { ApiException, CommonException, ServerException } from '../../exception'
 import { WINSTON_MODULE_PROVIDER } from 'shared/logger/winston.constants';
 import { RestService } from 'shared/services/rest/rest.service';
 import { ApiUsageGuard } from './api.usage.guard';
+import { ApiTipConstant } from '@apitable/core';
 
 describe('ApiUsageGuard', () => {
   let app;
@@ -41,7 +42,7 @@ describe('ApiUsageGuard', () => {
         },
       );
       return guard.canActivate(context ).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_server_error'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_server_error));
       });
     });
     it('usage not isAllowOverLimit throws an error', () => {
@@ -57,7 +58,7 @@ describe('ApiUsageGuard', () => {
         },
       );
       return guard.canActivate(context ).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_forbidden_because_of_usage'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_forbidden_because_of_usage));
       });
     });
     it('java api not response throws an error', () => {
@@ -67,7 +68,7 @@ describe('ApiUsageGuard', () => {
         },
       );
       return guard.canActivate(context ).catch(e => {
-        return expect(e).toStrictEqual(ApiException.tipError('api_forbidden'));
+        return expect(e).toStrictEqual(ApiException.tipError(ApiTipConstant.api_forbidden));
       });
     });
   });

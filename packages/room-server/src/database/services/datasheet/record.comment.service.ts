@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICommentContent, ICommentMsg, IListInsertAction } from '@apitable/core';
 import { JavaApiPath } from '../../../shared/common';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
-import { ApiException } from '../../../shared/exception/api.exception';
 import { IAuthHeader } from '../../../shared/interfaces';
 import { CommentDto } from '../../dtos/comment.dto';
 import { CommentListVo } from '../../vos/comment.list.vo';

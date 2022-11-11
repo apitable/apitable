@@ -1,5 +1,6 @@
 // import '@vikadata/i18n-lang';
 // import { REQUEST } from '@nestjs/core';
+import { ApiTipConstant } from '@apitable/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'app.module';
@@ -32,7 +33,7 @@ describe('ApiAuthGuard', () => {
 
   describe('canActivate', () => {
     it('request user null error', () => {
-      const error = ApiException.tipError('api_unauthorized');
+      const error = ApiException.tipError(ApiTipConstant.api_unauthorized);
       (context.switchToHttp().getRequest as jest.Mock).mockReturnValueOnce({
         user: null,
       });

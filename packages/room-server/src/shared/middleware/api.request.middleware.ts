@@ -1,3 +1,4 @@
+import { ApiTipConstant } from '@apitable/core';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ApiException } from '../exception/api.exception';
 
@@ -10,7 +11,7 @@ import { ApiException } from '../exception/api.exception';
 export class ApiRequestMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void): any {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
-      throw ApiException.tipError('api_unauthorized');
+      throw ApiException.tipError(ApiTipConstant.api_unauthorized);
     }
     next();
   }

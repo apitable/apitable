@@ -1,10 +1,9 @@
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { getFieldTypeByString, getNewId, IDPrefix
-  , getFieldClass, IField, Field, IReduxState, getMaxFieldCountPerSheet, FieldTypeDescriptionMap } from '@apitable/core';
+  , getFieldClass, IField, Field, IReduxState, getMaxFieldCountPerSheet, FieldTypeDescriptionMap, ApiTipConstant } from '@apitable/core';
 import { REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, SPACE_ID_HTTP_DECORATE } from '../../common';
 import { NodeEntity } from '../../../database/entities/node.entity';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { ApiException } from '../../exception';
 import { genDatasheetDescriptionDto } from '../../../database/dtos/datasheet.description.dto';
 import { DatasheetCreateRo } from '../../../fusion/ros/datasheet.create.ro';
@@ -16,19 +15,19 @@ export class CreateDatasheetPipe implements PipeTransform {
 
   transform(ro: DatasheetCreateRo): DatasheetCreateRo {
     if(ro.name && ro.name.length > 100){
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'name', value: 100 });
+      throw ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'name', value: 100 });
     }
     if(ro.fields && ro.fields.length > 0) {
       const fieldLenthLimit = getMaxFieldCountPerSheet();
       if(ro.fields.length > fieldLenthLimit) {
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsMaxCountError, { property: 'fields', value: fieldLenthLimit });
+        throw ApiException.tipError(ApiTipConstant.api_params_max_count_error, { property: 'fields', value: fieldLenthLimit });
       }
       this.validateFields(ro.fields);
       this.validatePrimaryFieldType(ro.fields[0].type);
     }
     if(ro.description) {
       if(ro.description.length > 500){
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'description', value: 500 });
+        throw ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'description', value: 500 });
       }
       ro.description = JSON.stringify(genDatasheetDescriptionDto(ro.description));
     }
@@ -67,7 +66,7 @@ export class CreateDatasheetPipe implements PipeTransform {
     const fieldType = getFieldTypeByString(type as any)!;
     const canBePrimaryField = FieldTypeDescriptionMap[fieldType].canBePrimaryField;
     if(!canBePrimaryField) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidPrimaryFieldTypeError, { value: type });
+      throw ApiException.tipError(ApiTipConstant.api_params_invalid_primary_field_type_error, { value: type });
     }
   }
 
@@ -80,20 +79,20 @@ export class CreateDatasheetPipe implements PipeTransform {
       return seen.size === seen.add(field.name).size;
     });
     if (hasDuplicatedFieldName) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsMustUnique, { property: 'field.name' });
+      throw ApiException.tipError(ApiTipConstant.api_params_must_unique, { property: 'field.name' });
     }
   }
 
   public validate(field: DatasheetFieldCreateRo) {
     if(!field.name) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'field.name' });
+      throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'field.name' });
     }
     if(field.name.length > 100){
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsMaxLengthError, { property: 'field.name', value: 100 });
+      throw ApiException.tipError(ApiTipConstant.api_params_max_length_error, { property: 'field.name', value: 100 });
     }
     const fieldType = getFieldTypeByString(field.type as any)!;
     if(!fieldType) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: `fields[${field.name}].type`, value: field.type });
+      throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: `fields[${field.name}].type`, value: field.type });
     }
     const fieldInfo = {
       id: getNewId(IDPrefix.Field),
@@ -104,7 +103,7 @@ export class CreateDatasheetPipe implements PipeTransform {
     const fieldContext = Field.bindContext(fieldInfo, {} as IReduxState); 
     const { error } = fieldContext.validateAddOpenFieldProperty(field.property||null);
     if (error) {
-      throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: `fields[${field.name}].property`, value: field.property });
+      throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: `fields[${field.name}].property`, value: field.property });
     }
     return true;
   }
@@ -114,22 +113,22 @@ export class CreateDatasheetPipe implements PipeTransform {
     const isPreNodeGiven: boolean = this.request.body['preNodeId']?true:false;
     if(isFolderGiven) {
       if(!folder) {
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'folderId' });
+        throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'folderId' });
       } else if(spaceId !== folder.spaceId){
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'folderId' });
+        throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'folderId' });
       }
     }
     if(isPreNodeGiven) {
       if(!preNode) {
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'preNodeId' });
+        throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'preNodeId' });
       } else if(spaceId !== preNode.spaceId){
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'preNodeId' });
+        throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'preNodeId' });
       }
     }
 
     if(isFolderGiven && isPreNodeGiven) {
       if(preNode.parentId !== folder.nodeId) {
-        throw ApiException.tipError(ApiTipIdEnum.apiParamsInvalidValue, { property: 'preNodeId' });
+        throw ApiException.tipError(ApiTipConstant.api_params_invalid_value, { property: 'preNodeId' });
       }
     }
     return true;

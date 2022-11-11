@@ -4,6 +4,7 @@ import { validate, ValidationError } from 'class-validator';
 import { ApiException, ApiTipId } from '../../exception/api.exception';
 import { IValidationPipeOptions } from '../../interfaces';
 import * as qs from 'qs';
+import { ApiTipConstant } from '@apitable/core';
 
 /**
  * Global parameter validation pipe
@@ -37,7 +38,7 @@ export class ValidationPipe implements PipeTransform {
         parseArrays: true,
       }));
     } catch (e) {
-      throw ApiException.tipError('api_param_default_error');
+      throw ApiException.tipError(ApiTipConstant.api_param_default_error);
     }
     // return the first error
     const errors = await validate(object);

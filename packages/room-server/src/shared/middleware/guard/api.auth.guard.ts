@@ -1,3 +1,4 @@
+import { ApiTipConstant } from '@apitable/core';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { USER_HTTP_DECORATE } from '../../common';
 import { ApiException } from '../../exception';
@@ -13,7 +14,7 @@ export class ApiAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user = request[USER_HTTP_DECORATE];
     // unauthorized
-    if (!user) throw ApiException.tipError('api_unauthorized');
+    if (!user) throw ApiException.tipError(ApiTipConstant.api_unauthorized);
     return true;
   }
 }

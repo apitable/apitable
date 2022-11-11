@@ -1,6 +1,6 @@
+import { ApiTipConstant } from '@apitable/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDefined } from 'class-validator';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { ICellValueMap } from 'shared/interfaces';
 
 export class FieldUpdateRo {
@@ -15,7 +15,7 @@ export class FieldUpdateRo {
       'Review Date': '2019-10-30T00:00:00.000Z',
     },
   })
-  @IsDefined({ context: { tipId: ApiTipIdEnum.apiParamsInstanceError, property: 'records', value: 'fields' } })
+  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'records', value: 'fields' } })
   fields: ICellValueMap;
 
   @ApiProperty({
@@ -24,6 +24,6 @@ export class FieldUpdateRo {
     description: 'record Id',
     example: 'recV3ElniQavTNyJG',
   })
-  @IsDefined({ context: { tipId: ApiTipIdEnum.apiParamsInstanceError, property: 'records', value: 'recordId' } })
+  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'records', value: 'recordId' } })
   recordId: string;
 }

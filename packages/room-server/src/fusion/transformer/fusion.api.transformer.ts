@@ -1,4 +1,5 @@
 import {
+  ApiTipConstant,
   CellFormatEnum, CollaCommandName, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta, INode, IRecordMap,
   IReduxState, ISnapshot, ISortedField, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors,
 } from '@apitable/core';
@@ -271,7 +272,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     if (query.viewId) {
       const queryView = findView(query.viewId);
       if (!queryView) {
-        throw ApiException.tipError('api_query_params_view_id_not_exists', { viewId: query.viewId });
+        throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId: query.viewId });
       }
       view.name = queryView.name;
       view.id = query.viewId;

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  ApiTipConstant,
   ConfigConstant, EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, ExecuteResult, FieldType, ICollaCommandOptions, IFormProps,
   ILocalChangeset, IMeta, IServerDatasheetPack, OPEventNameEnums, ResourceType, Selectors, StoreActions, transformOpFields
 } from '@apitable/core';
@@ -207,7 +208,7 @@ export class FormService {
     }
     const interStore = this.commandService.fullFillStore(datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
-    if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError('api_insert_error');
+    if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError(ApiTipConstant.api_insert_error);
     // Client submission has been applied to store. Wait for room to acknowledgment
     const roomChangeSets = await this.applyChangeSet(formId, dstId, changeSets, shareId, auth);
     // console.log('changeSets', JSON.stringify(changeSets), JSON.stringify(roomChangeSets));

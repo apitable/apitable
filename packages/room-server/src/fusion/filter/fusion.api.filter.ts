@@ -1,4 +1,5 @@
 import {
+  ApiTipConstant,
   evaluate, expressionTransform, Field, FieldKeyEnum, FieldType, getNewId, IDPrefix, IFieldMap, IFormulaField, IReduxState, ISnapshot, IViewColumn,
   IViewProperty, IViewRow, parse, Selectors
 } from '@apitable/core';
@@ -103,7 +104,7 @@ export class FusionApiFilter {
     if (viewId) {
       const view = Selectors.getViewById(snapshot, viewId);
       if (!view) {
-        throw ApiException.tipError('api_query_params_view_id_not_exists', { viewId });
+        throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
       }
       return (view.columns as IViewColumn[]).map(column => {
         const field = fieldMap[column.fieldId];
@@ -143,7 +144,7 @@ export class FusionApiFilter {
     const exprTransform = expressionTransform(expression, { fieldMap: snapshot.meta.fieldMap, fieldPermissionMap }, 'id');
     const result: any = parse(exprTransform, { field, fieldMap: snapshot.meta.fieldMap, state }, true);
     if (result.hasOwnProperty('error')) {
-      throw ApiException.tipError('api_param_formula_error', { message: result.error.message });
+      throw ApiException.tipError(ApiTipConstant.api_param_formula_error, { message: result.error.message });
     }
     return exprTransform;
   }

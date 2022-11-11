@@ -1,11 +1,10 @@
 import { ArgumentMetadata, Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { FieldKeyEnum, FieldType, ICellValue, IField, ISelectField, SelectField } from '@apitable/core';
+import { ApiTipConstant, FieldKeyEnum, FieldType, ICellValue, IField, ISelectField, SelectField } from '@apitable/core';
 import {
   DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_HTTP_DECORATE, DATASHEET_LINKED, DATASHEET_MEMBER_FIELD, DATASHEET_META_HTTP_DECORATE, InjectLogger
 } from '../../common';
 import { FieldTypeEnum } from 'shared/enums/field.type.enum';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 import { ApiException } from '../../exception/api.exception';
 import { FastifyRequest } from 'fastify';
 import { IFieldRoTransformOptions, IFieldValue, IFieldValueMap } from '../../interfaces';
@@ -105,7 +104,7 @@ export class FieldPipe implements PipeTransform {
           }
         }
       }
-      if (!Object.keys(fields).length) throw ApiException.tipError('api_params_invalid_fields_value');
+      if (!Object.keys(fields).length) throw ApiException.tipError(ApiTipConstant.api_params_invalid_fields_value);
       record.fields = fields;
       records.push(record);
     }
@@ -133,7 +132,7 @@ export class FieldPipe implements PipeTransform {
     // without validator
     if (!validator) {
       this.logger.error(JSON.stringify({ validator: FieldTypeEnum.get(field.type).name, trace: 'field validator not found' }));
-      FieldManager.findService(FieldTypeEnum.get(FieldType.NotSupport).name).throwException(field, ApiTipIdEnum.apiParamsInvalidValue);
+      FieldManager.findService(FieldTypeEnum.get(FieldType.NotSupport).name).throwException(field, ApiTipConstant.api_params_invalid_value);
     }
     return validator;
   }

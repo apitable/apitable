@@ -1,3 +1,4 @@
+import { ApiTipConstant } from '@apitable/core';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { NODE_INFO } from '../../common';
 import { ApiException } from '../../exception';
@@ -15,7 +16,7 @@ export class ApiNodeGuard implements CanActivate {
     const nodeInfo = request[NODE_INFO];
     if (!nodeInfo?.spaceId) {
       // TODO: why the node is not in any space?
-      throw ApiException.tipError('api_datasheet_not_exist');
+      throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
     }
     return true;
   }

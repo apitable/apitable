@@ -1,7 +1,7 @@
+import { ApiTipConstant } from '@apitable/core';
 import { object } from '@hapi/joi';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { ApiTipIdEnum } from 'shared/enums/string.enum';
 
 export class TriggerCreateRo {
   @ApiProperty({
@@ -9,16 +9,16 @@ export class TriggerCreateRo {
     required: true,
     example: 'arbxxxxxx',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
-    robotId: string;
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  robotId: string;
 
   @ApiProperty({
     type: String,
     required: true,
     example: 'attxxxxxxx',
   })
-  @IsNotEmpty({ context: { tipId: ApiTipIdEnum.apiParamsEmptyError }})
-    triggerTypeId: string;
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  triggerTypeId: string;
 
   @ApiProperty({
     type: object,
@@ -26,5 +26,5 @@ export class TriggerCreateRo {
     example: '{}',
     description: 'trigger input',
   })
-    input: object;
+  input: object;
 }

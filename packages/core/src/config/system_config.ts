@@ -35,13 +35,13 @@ const NotificationTypes = Notifications.types;
 const NotificationTemplates = Notifications.templates;
 
 const NoticeTypesConstant = jsonToObject(Notifications.types) as {
-  [key in keyof Types]: string;
+  [key in keyof Types]: key;
 };
 const NoticeTemplatesConstant = jsonToObject(Notifications.templates) as {
-  [key in keyof Templates]: string;
+  [key in keyof Templates]: key;
 };
 const ApiTipConstant = jsonToObject(ApiTipConfig.api.tips) as {
-  [key in keyof Tips]: string;
+  [key in keyof Tips]: key;
 };
 
 export {
