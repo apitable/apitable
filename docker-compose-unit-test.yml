@@ -102,6 +102,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: builder
+    volumes:
+      - ./packages/room-server/coverage:/tmp/vikadata/packages/room-server/coverage
     environment:
       - TZ=Asia/Singapore
       - MYSQL_HOST=test-mysql
@@ -119,8 +121,8 @@ services:
       - RABBITMQ_USERNAME=vika
       - RABBITMQ_PASSWORD=password
       - INSTANCE_COUNT=1
-      - APPLICATION_NAME=TEST_NEST_REST_SERVER
-    entrypoint: yarn test:ut:room
+      - APPLICATION_NAME=NEST_REST_SERVER
+    # remove default command，use run unit-test-room (yarn test:ut:room:cov | yarn test:ut:room)
 
   unit-test-backend:
     container_name: unit-test-backend

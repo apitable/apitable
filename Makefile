@@ -134,11 +134,14 @@ pre: ## 启动 datasheet 准备（打包 core、icons、components、widget）
 lint: ## eslint 检测
 	- yarn lint
 
-build-room: ## 编译room server
-	yarn workspaces focus @vikadata/room-server
+build-core: ## 编译core
+	yarn workspaces focus @apitable/core @vikadata/i18n-lang root
 	yarn build:i18n
 	yarn build:core
-	yarn build:room-server
+
+build-room: ## 编译room server
+	yarn workspaces focus @vikadata/room-server root
+	yarn build:sr
 
 test-e2e: ## 启动集成测试
 	yarn cy:run
@@ -148,56 +151,54 @@ test-e2e-open: ## 启动调试集成测试
 ###### 【core unit test】 ######
 
 test-ut-core:
-	yarn workspaces focus @apitable/core @vikadata/i18n-lang root
-	yarn build:i18n
-	yarn build:core
+	make build-core
 	yarn test:core
+
+test-ut-core-cov:
+	make build-core
+	yarn test:core:cov
 
 ###### 【core unit test】 ######
 
 ###### 【room server unit test】 ######
-sikp-initdb=false
+SIKP_INITDB=false
+RUN_TEST_ROOM_MODE=docker
 
 _test_init_db:
+	@echo "${GREEN} Run Test Room Mode:$(RUN_TEST_ROOM_MODE) ${RESET}"
 	@echo "${YELLOW}pull [init-db:latest] the latest image...${RESET}"
 	docker-compose -f docker-compose-unit-test.yml pull test-initdb
-	docker-compose -f docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
+ifeq ($(RUN_TEST_ROOM_MODE),docker)
+	docker-compose -f docker-compose-unit-test.yml run --rm \
+	-e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+	test-initdb
+else ifeq ($(RUN_TEST_ROOM_MODE),local)
+	docker-compose -f docker-compose-unit-test.yml run --rm \
+	-e DB_HOST=test-mysql \
+	test-initdb
+endif
 	@echo "${GREEN}initialize unit test db completed...${RESET}"
 
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
-# test-ut-room-local:
-#     export MYSQL_HOST=127.0.0.1
-#     export MYSQL_PORT=23306
-#     export MYSQL_USERNAME=vika
-#     export MYSQL_PASSWORD=password
-#     export MYSQL_DATABASE=vika_test
-#     export MYSQL_USE_SSL=false
-#     export REDIS_HOST=127.0.0.1
-#     export REDIS_PORT=26379
-#     export REDIS_DB=4
-#     export REDIS_PASSWORD=
-#     export RABBITMQ_HOST=127.0.0.1
-#     export RABBITMQ_PORT=25672
-#     export RABBITMQ_USERNAME=vika
-#     export RABBITMQ_PASSWORD=password
-#     export INSTANCE_COUNT=1
-#     export APPLICATION_NAME=TEST_NEST_REST_SERVER
 test-ut-room-local:
 	make _test_clean
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
-ifeq ($(sikp-initdb),false)
+	docker-compose -f docker-compose-unit-test.yml up -d test-redis test-mysql test-rabbitmq
+ifeq ($(SIKP_INITDB),false)
 	sleep 20
-	make _test_init_db
+	make _test_init_db RUN_TEST_ROOM_MODE=local
 endif
 	make build-room
+	MYSQL_HOST=127.0.0.1 MYSQL_PORT=23306 MYSQL_USERNAME=vika MYSQL_PASSWORD=password MYSQL_DATABASE=vika_test MYSQL_USE_SSL=false \
+	REDIS_HOST=127.0.0.1 REDIS_PORT=26379 REDIS_DB=4 REDIS_PASSWORD= \
+	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=25672 RABBITMQ_USERNAME=vika RABBITMQ_PASSWORD=password \
+	INSTANCE_COUNT=1 APPLICATION_NAME=NEST_REST_SERVER \
 	yarn test:ut:room
 	make _test_clean
 
 test-ut-room-docker:
+	@echo "${LIGHTPURPLE}Working dir：$(shell pwd)${RESET}"
 	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
 	make _test_clean
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
@@ -210,8 +211,12 @@ test-ut-room-docker:
 		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
 		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
 		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
-		unit-test-room
+		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test，clean up images...${RESET}"
+	if [ -d "./packages/room-server/coverage" ]; then \
+		echo 'fkfkkfkfkdfaksdjfkladsjfjl;asdkj'; \
+		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-server/coverage; \
+	fi
 	make _test_clean
 
 ###### 【room server unit test】 ######

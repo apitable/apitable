@@ -6,6 +6,9 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
+  "transformIgnorePatterns": [
+    "^.+\\.js$"
+  ],
   "moduleDirectories": [
     "src",
     "node_modules"
