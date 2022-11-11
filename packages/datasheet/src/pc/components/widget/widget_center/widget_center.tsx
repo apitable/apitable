@@ -199,10 +199,7 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const VikaWidgetPackageItem = () => (
     <div className={styles.widgetPackageItem}>
       <div className={styles.imgBox}>
-        <div className={styles.headImg} onClick={() => isReview && expandReviewInfo(props)}>
-          <Image src={integrateCdnHost(cover)} alt={''} layout={'fill'} />
-        </div>
-
+        <img src={cover} className={styles.headImg} alt={''} onClick={() => isReview && expandReviewInfo(props)} />
         <div className={styles.authorIconWrap}>
           <div className={styles.arcBoxLeft} />
           <div className={styles.avatarWrap}>
