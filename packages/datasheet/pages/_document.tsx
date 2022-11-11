@@ -41,6 +41,7 @@ class MyDocument extends Document<{ clientInfo: IClientInfo }> {
               locale:'${clientInfo.locale}',
               userInfo: ${clientInfo.userInfo},
               wizards: ${clientInfo.wizards},
+              headers:${clientInfo.headers},
             };
           `}
             </Script>

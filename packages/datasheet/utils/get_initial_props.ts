@@ -10,25 +10,44 @@ export interface IUserInfoError {
   message: string;
 }
 
+// for baidu ruliu
+const FILTER_HEADERS = ['Staffid', 'Staffname', 'X-Rio-Seq', 'x-ext-data', 'Signature', 'timestamp'];
+
+const filterCustomHeader = (headers?: Record<string, string | string[] | undefined>): Record<string, string> => {
+  if (!headers) return {};
+  const _headers = {};
+  for (const k in headers) {
+    if (!FILTER_HEADERS.includes(k)) {
+      continue;
+    }
+    _headers[k] = headers[k];
+  }
+  return _headers;
+};
+
 export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const envVars = getEnvVars();
   const cookie = context.ctx.req?.headers.cookie;
+  const filterHeaders = filterCustomHeader(context.ctx.req?.headers);
 
   const baseResponse = {
     env: process.env.ENV,
     version: process.env.WEB_CLIENT_VERSION,
-    envVars: JSON.stringify(envVars)
+    envVars: JSON.stringify(envVars),
+    headers: JSON.stringify(filterHeaders)
   };
 
   const host = process.env.API_PROXY;
 
   if (!host) {
-    return baseResponse;
+    return {
+      clientInfo: baseResponse
+    };
   }
 
   axios.defaults.baseURL = host + Url.BASE_URL;
   const language = context.ctx.req?.headers['accept-language'];
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...filterHeaders };
 
   if (cookie) {
     headers.cookie = cookie;

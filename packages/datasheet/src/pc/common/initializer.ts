@@ -75,6 +75,12 @@ function initAxios(store) {
 
   axios.interceptors.request.use((config) => {
     redirectIfUserApplyLogout();
+    const customHeaders = window.__initialization_data__.headers;
+    if (customHeaders && Object.keys(customHeaders).length) {
+      for (const k in customHeaders) {
+        config.headers[k] = customHeaders[k];
+      }
+    }
     return config;
   });
 

@@ -9,4 +9,5 @@ export interface IClientInfo {
   env: string
   version: string
   envVars: string
+  headers: Record<string, string | string[] | undefined>
 }
