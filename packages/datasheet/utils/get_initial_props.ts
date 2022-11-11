@@ -17,7 +17,7 @@ const filterCustomHeader = (headers?: Record<string, string | string[] | undefin
   if (!headers) return {};
   const _headers = {};
   for (const k in headers) {
-    if (!FILTER_HEADERS.includes(k)) {
+    if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
       continue;
     }
     _headers[k] = headers[k];
@@ -47,7 +47,7 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
 
   axios.defaults.baseURL = host + Url.BASE_URL;
   const language = context.ctx.req?.headers['accept-language'];
-  const headers: Record<string, string> = { ...filterHeaders };
+  const headers: Record<string, string> = {};
 
   if (cookie) {
     headers.cookie = cookie;
@@ -58,6 +58,11 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   }
 
   const spaceId = context.ctx.query?.spaceId || '';
+
+  axios.interceptors.request.use(config => {
+    config.headers.common = { ...config.headers.common, ...filterHeaders };
+    return config;
+  });
 
   const res = await axios.get('/client/info', { params: { spaceId }, headers: headers });
 

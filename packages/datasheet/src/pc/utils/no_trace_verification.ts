@@ -1,6 +1,6 @@
 import { Modal } from '@vikadata/components';
 import { ConfigConstant, isPrivateDeployment } from '@apitable/core';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 
 /**
@@ -10,7 +10,9 @@ import * as React from 'react';
  */
 export const initNoTraceVerification = (successCallback: React.Dispatch<React.SetStateAction<string | null>>,
   renderTo: string = ConfigConstant.CaptchaIds.DEFAULT) => {
-  if (isPrivateDeployment()) {
+  if (process.env.SSR) return;
+  const env = getEnvVariables();
+  if (isPrivateDeployment() || env.DISABLE_AWSC) {
     return;
   }
   if (!window['AWSC']) {
@@ -25,9 +27,7 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
     successCallback(data);
   };
 
-  const env = getEnvVariables();
-
-  !env.DISABLE_AWSC && window['AWSC'].use('nvc', (state, module) => {
+  window['AWSC'].use('nvc', (state, module) => {
     window['nvc'] = module.init({
       appkey: ConfigConstant.nvcAppkey,
       scene: 'nvc_login', // nvc_login and nc_login
@@ -42,7 +42,9 @@ export const initNoTraceVerification = (successCallback: React.Dispatch<React.Se
 };
 
 export const execNoTraceVerification = (callback: (data?: string) => void) => {
-  if (isPrivateDeployment()) {
+  if (process.env.SSR) return;
+  const env = getEnvVariables();
+  if (isPrivateDeployment() || env.DISABLE_AWSC) {
     callback(undefined);
     return;
   }
