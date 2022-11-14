@@ -4,7 +4,7 @@ import { difference, keyBy } from 'lodash';
 import { dispatch } from 'pc/worker/store';
 import { ReactElement, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getSocialWecomUnitName, isSocialWecom } from './home/social_platform';
+import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 
 interface IAlarmTipTextProps {
   datasheetId: string,

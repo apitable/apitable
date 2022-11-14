@@ -5,16 +5,16 @@ import cls from 'classnames';
 import dayjs from 'dayjs';
 import { keyBy, pick } from 'lodash';
 import { memberStash } from 'modules/space/member_stash/member_stash';
-import { AlarmTipText } from 'pc/components/alarm_tip_text';
+import { AlarmTipText } from 'modules/enterprise/alarm/alarm_tip_text';
 import { Message } from 'pc/components/common';
-import { FieldSelect } from 'pc/components/editors/date_time_editor/date_time_alarm/field_select/field_select';
+import { FieldSelect } from 'modules/enterprise/alarm/date_time_alarm/field_select/field_select';
 import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
 import { stopPropagation } from 'pc/utils';
 import { ALARM_SUBTRACT, ALL_ALARM_SUBTRACT, CURRENT_ALARM_SUBTRACT, INNER_DAY_ALARM_SUBTRACT } from 'pc/utils/constant';
 import { dispatch } from 'pc/worker/store';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { TimePicker } from '../time_picker_only';
+import { TimePicker } from 'pc/components/editors/date_time_editor/time_picker_only';
 import styles from './style.module.less';
 
 const inDayKeys = Object.keys(INNER_DAY_ALARM_SUBTRACT);
@@ -44,7 +44,7 @@ export const fakeMemberField = {
   }
 };
 
-export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
+const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
   const { datasheetId, recordId, fieldId, timeValue, dateValue, includeTime, curAlarm, handleDateTimeChange, handleDateAlarm } = props;
   const alarmTarget = curAlarm?.target;
   const isAlarmMemberField = alarmTarget === AlarmUsersType.Field;
@@ -264,3 +264,5 @@ export const DateTimeAlarm = (props: IDateTimeAlarmProps) => {
     </div>
   );
 };
+
+export default DateTimeAlarm;

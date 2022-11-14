@@ -34,10 +34,12 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { isLegalDateKey } from '../../../utils/keycode';
 import { IBaseEditorProps, IEditor } from '../interface';
-import { DateTimeAlarm } from './date_time_alarm';
 import { DatePickerMobile } from './mobile';
 import style from './style.module.less';
 import { TimePicker } from './time_picker_only';
+import dynamic from 'next/dynamic';
+
+const DateTimeAlarm = dynamic(() => import('modules/enterprise/alarm/date_time_alarm/date_time_alarm'), { ssr: false });
 
 dayjs.extend(customParseFormat);
 

@@ -18,7 +18,7 @@ import {
 } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
-import { convertAlarmStructure } from 'pc/components/editors/date_time_editor/date_time_alarm/utils';
+import { convertAlarmStructure } from 'modules/enterprise/alarm/date_time_alarm/utils';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { IEditor } from 'pc/components/editors/interface';
 import { RatingEditor } from 'pc/components/editors/rating_editor';

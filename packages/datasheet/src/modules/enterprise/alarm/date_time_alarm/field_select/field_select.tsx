@@ -4,7 +4,7 @@ import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
-import { FieldList } from 'pc/components/editors/date_time_editor/date_time_alarm/field_select/field_list';
+import { FieldList } from 'modules/enterprise/alarm/date_time_alarm/field_select/field_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { colorVars } from '@vikadata/components';
 import Trigger from 'rc-trigger';

@@ -32,10 +32,9 @@ import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useContext, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Tooltip } from 'pc/components/common';
 import EditorTitleContext from '../editor_title_context';
 import { FieldDescWithTitle } from './field_desc_with_title';
-import { MobileAlarm } from './mobile_alarm';
+import { MobileAlarm } from 'modules/enterprise/alarm/mobile_alarm';
 import styles from './style.module.less';
 
 interface IFieldTitleProps {

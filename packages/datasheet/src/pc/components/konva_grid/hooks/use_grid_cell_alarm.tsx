@@ -6,7 +6,7 @@ import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/compo
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { ReactNode, useContext, useMemo } from 'react';
-import { AlarmIcon } from '../components/alarm_icon/alarm_icon';
+import { AlarmIcon } from 'modules/enterprise/alarm/alarm_icon/alarm_icon';
 
 interface IUseCellAlarmProps {
   instance: GridCoordinate;

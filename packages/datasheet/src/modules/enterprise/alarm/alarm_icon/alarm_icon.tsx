@@ -1,6 +1,6 @@
 import { KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { NotificationSmallOutlined } from '@vikadata/icons';
-import { AlarmTipText } from 'pc/components/alarm_tip_text';
+import { AlarmTipText } from 'modules/enterprise/alarm/alarm_tip_text';
 import { generateTargetName, getDayjs } from 'pc/components/gantt_view';
 import { Icon } from 'pc/components/konva_components';
 import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
