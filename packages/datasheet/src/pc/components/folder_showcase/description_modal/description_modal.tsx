@@ -49,11 +49,6 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
     },
     { wait: 500 },
   );
-  useMount(() => {
-    if (nodeInfo.description) {
-      setTimeout(() => setValue(polyfillData(nodeInfo.description)));
-    }
-  });
 
   const { screenIsAtLeast } = useResponsive();
   const isPc = screenIsAtLeast(ScreenSize.md);
