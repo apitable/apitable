@@ -18,7 +18,7 @@ export class FusionApiFilter {
   private static readonly FIELD_NAME = 'Virtual';
 
   /**
-   * Filter filedMap according to the incomingfields, fields may be IDs or names (currently only names are considered)
+   * Filter fieldMap according to the given fields, fields may be IDs or names (currently only names are considered)
    *
    * @param filedMap
    * @param fieldKey
@@ -78,19 +78,18 @@ export class FusionApiFilter {
    * @param view
    * @param store
    */
-  getVisibleRows(query: RecordQueryRo, view: IViewProperty, store: Store<IReduxState>): IViewRow[] | null {
-    const state = store.getState();
+  getVisibleRows(filterByFormula: string | undefined, view: IViewProperty, state: IReduxState): IViewRow[] {
     const snapshot = Selectors.getSnapshot(state);
-    if (query.filterByFormula) {
-      const expression = this.validateExpression(query.filterByFormula, state);
+    if (filterByFormula) {
+      const expression = this.validateExpression(filterByFormula, state);
       view.rows = this.formulaFilter(expression, view.rows, snapshot, state);
 
       if (!view.rows.length) {
-        return null;
+        return [];
       }
     }
-    const rows = Selectors.getVisibleRowsBase(store.getState(), snapshot, view);
-    return rows && rows.length ? rows : null;
+    const rows = Selectors.getVisibleRowsBase(state, snapshot, view);
+    return rows || [];
   }
 
   getVisibleFieldList(dstId: string, state: IReduxState, query: FieldQueryRo) {
@@ -149,8 +148,7 @@ export class FusionApiFilter {
     return exprTransform;
   }
 
-  getColumnsByViewId(store: Store<IReduxState>, dstId: string, viewId: string) {
-    const state: IReduxState = store.getState();
+  getColumnsByViewId(state: IReduxState, dstId: string, viewId?: string): IViewColumn[] {
     const datasheet = Selectors.getDatasheet(state, dstId);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, dstId);
     // The fieldMap after permission processing

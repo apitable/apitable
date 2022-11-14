@@ -7,7 +7,7 @@
     "noImplicitReturns": false,
     "noImplicitThis": false,
     "experimentalDecorators": true,
-    "target": "es2017",
+    "target": "es2020",
     "types": ["jest", "node"],
     "sourceMap": true,
     "outDir": "./dist",

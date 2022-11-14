@@ -9,7 +9,6 @@ import {
   IError,
   ILocalChangeset,
   INodeMeta,
-  IOperation,
   IReduxState,
   IResourceOpsCollect,
   IServerDatasheetPack,
@@ -18,9 +17,9 @@ import {
   IUserInfo,
   IUserValue,
   Reducers,
-  ResourceType,
+  resourceOpsToChangesets,
   Selectors,
-  StoreActions
+  StoreActions,
 } from '@apitable/core';
 import { InjectLogger } from '../../../shared/common';
 import { applyMiddleware, createStore, Store } from 'redux';
@@ -34,16 +33,16 @@ import { Logger } from 'winston';
  */
 @Injectable()
 export class CommandService {
-  constructor(
-    @InjectLogger() private readonly logger: Logger
-  ) { }
+  constructor(@InjectLogger() private readonly logger: Logger) {}
 
   fullFillStore(datasheetPack: IServerDatasheetPack, userInfo?: IUserInfo): any {
     const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
-    store.dispatch(StoreActions.setPageParams({
-      datasheetId: datasheetPack.datasheet.id,
-      spaceId: datasheetPack.datasheet.spaceId
-    }));
+    store.dispatch(
+      StoreActions.setPageParams({
+        datasheetId: datasheetPack.datasheet.id,
+        spaceId: datasheetPack.datasheet.spaceId,
+      }),
+    );
 
     if (datasheetPack.foreignDatasheetMap) {
       Object.keys(datasheetPack.foreignDatasheetMap).forEach(dstId => {
@@ -129,35 +128,20 @@ export class CommandService {
     const manager = this.getCommandManager(store, changeSets);
     const result = manager.execute<R>(options);
     // Apply changes into store after execution succeeds
-    if (result && result.result == ExecuteResult.Success)
+    if (result && result.result == ExecuteResult.Success) {
       changeSets.forEach(cs => {
         store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
       });
+    }
     return { changeSets, result };
   }
 
-  getCommandManager(store: any, changeSets: ILocalChangeset[]) {
+  getCommandManager(store: Store<IReduxState>, changeSets: ILocalChangeset[]) {
     return new CollaCommandManager(
       {
         // After all ops in command have been applied to state, here is reached.
         handleCommandExecuted: (resourceOpsCollects: IResourceOpsCollect[]) => {
-          resourceOpsCollects.forEach(collect => {
-            const { resourceId, resourceType, operations } = collect;
-            // One datasheet, one changeset
-            const existChangeSet = changeSets.find(cs => cs.resourceId === resourceId);
-            const datasheet = Selectors.getDatasheet(store.getState(), resourceId);
-            if (existChangeSet) {
-              existChangeSet.operations.push(...operations);
-            } else {
-              changeSets.push({
-                baseRevision: datasheet.revision,
-                messageId: generateRandomString(),
-                resourceId,
-                resourceType,
-                operations,
-              });
-            }
-          });
+          changeSets.push(...resourceOpsToChangesets(resourceOpsCollects, store.getState()));
         },
         handleCommandExecuteError: (error: IError) => {
           this.logger.error('CommandExecuteError', { error });

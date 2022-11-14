@@ -10,7 +10,6 @@ import {
   ResourceIdPrefix,
   ResourceType,
 } from '@apitable/core';
-import { NodeTypeReg } from '@apitable/core/dist/config/constant';
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@vikadata/nestjs-redis';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
@@ -274,15 +273,15 @@ export class OtService {
     // Fill in resourceType if it is null
     if (changeset.resourceType == null) {
       switch (resourceId.substr(0, 3)) {
-        case NodeTypeReg.DATASHEET: {
+        case ConfigConstant.NodeTypeReg.DATASHEET: {
           changeset.resourceType = ResourceType.Datasheet;
           break;
         }
-        case NodeTypeReg.DASHBOARD: {
+        case ConfigConstant.NodeTypeReg.DASHBOARD: {
           changeset.resourceType = ResourceType.Dashboard;
           break;
         }
-        case NodeTypeReg.WIDGET: {
+        case ConfigConstant.NodeTypeReg.WIDGET: {
           changeset.resourceType = ResourceType.Widget;
           break;
         }

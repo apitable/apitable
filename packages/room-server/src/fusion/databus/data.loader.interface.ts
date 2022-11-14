@@ -1,5 +1,4 @@
-import { IBaseDatasheetPack } from "../exports/store";
-import { IDatabaseOptions } from ".";
+import { IBaseDatasheetPack } from "@apitable/core";
 
 export interface IDataLoader {
   loadDatasheetPack(dstId: string, options: ILoadDatasheetPackOptions): Promise<IBaseDatasheetPack>;
@@ -8,7 +7,6 @@ export interface IDataLoader {
 }
 
 export interface ILoadDatasheetPackOptions {
-  databaseOptions: IDatabaseOptions;
 }
 
 export interface IDataSelector<T> {

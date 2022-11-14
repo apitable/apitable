@@ -1,7 +1,23 @@
 import {
   ApiTipConstant,
-  CellFormatEnum, CollaCommandName, getEmojiIconNativeString, ICellValue, ICollaCommandOptions, IField, IFieldMap, IMeta, INode, IRecordMap,
-  IReduxState, ISnapshot, ISortedField, ISpaceInfo, IViewColumn, IViewProperty, IViewRow, Selectors,
+  CellFormatEnum,
+  CollaCommandName,
+  getEmojiIconNativeString,
+  ICellValue,
+  ICollaCommandOptions,
+  IField,
+  IFieldMap,
+  IMeta,
+  INode,
+  IRecordMap,
+  IReduxState,
+  ISnapshot,
+  ISortedField,
+  ISpaceInfo,
+  IViewColumn,
+  IViewProperty,
+  IViewRow,
+  Selectors,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
@@ -12,7 +28,15 @@ import { OrderEnum } from 'shared/enums';
 import { FieldTypeEnum } from 'shared/enums/field.type.enum';
 import { ApiException } from 'shared/exception';
 import { getAPINodeType } from 'shared/helpers/fusion.helper';
-import { ICellValueMap, IFieldValue, IFieldValueMap, IFieldVoTransformOptions, IRecordsTransformOptions } from 'shared/interfaces';
+import {
+  ICellValueMap,
+  IFieldValue,
+  IFieldValueMap,
+  IFieldVoTransformOptions,
+  IRecordsTransformOptions,
+  IRecordTransformOptions,
+  IViewInfoOptions,
+} from 'shared/interfaces';
 import { IAPIFolderNode, IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { Logger } from 'winston';
@@ -27,9 +51,7 @@ import { PageVo } from '../vos/page.vo';
 
 @Injectable()
 export class FusionApiTransformer implements IFieldTransformInterface {
-  constructor(
-    @InjectLogger() private readonly logger: Logger
-  ) {}
+  constructor(@InjectLogger() private readonly logger: Logger) {}
 
   getUpdateFieldCommandOptions(dstId: string, field: IField, meta: IMeta): ICollaCommandOptions {
     return {
@@ -60,12 +82,14 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   getUpdateRecordCommandOptions(dstId: string, records: FieldUpdateRo[], meta: IMeta): ICollaCommandOptions {
-    const data = records.reduce<{
-      recordId: string;
-      fieldId: string;
-      field?: IField; // [Optional], pass in field information. Applies to addRecords on fields that have not yet been applied to a snapshot
-      value: ICellValue;
-    }[]>((pre, cur) => {
+    const data = records.reduce<
+      {
+        recordId: string;
+        fieldId: string;
+        field?: IField; // [Optional], pass in field information. Applies to addRecords on fields that have not yet been applied to a snapshot
+        value: ICellValue;
+      }[]
+    >((pre, cur) => {
       Object.keys(cur.fields).forEach(fieldId => {
         pre.push({ recordId: cur.recordId, fieldId, value: cur.fields[fieldId] });
       });
@@ -148,39 +172,53 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       return null;
     }
     const recordMap = snapshot.recordMap;
-    const fieldKeys = Object.keys(options.fieldMap);
+    const fieldIds = Object.keys(options.fieldMap);
     const columnMap = keyBy(options.columns, 'fieldId');
+    const recordOptions: IRecordTransformOptions = {
+      fieldMap: options.fieldMap,
+      store: options.store,
+      recordMap,
+      fieldIds,
+      columnMap,
+    };
     options.rows.map(row => {
-      const fields: IFieldValueMap = {};
-      const record = recordMap[row.recordId];
-      if (record) {
-        fieldKeys.forEach(field => {
-          // Filter hidden
-          const column = columnMap[options.fieldMap[field].id];
-          if (column && !column.hidden) {
-            const cellValue = Selectors.getCellValue(
-              options.store.getState(),
-              Selectors.getSnapshot(options.store.getState()),
-              row.recordId,
-              options.fieldMap[field].id,
-            );
-            fields[field] = this.voTransform(cellValue, options.fieldMap[field], {
-              fieldMap: options.fieldMap,
-              record,
-              store: options.store,
-              cellFormat,
-            });
-          }
-        });
-        dto.push({
-          recordId: recordMap[row.recordId].id,
-          createdAt: recordMap[row.recordId].createdAt,
-          updatedAt: recordMap[row.recordId].updatedAt,
-          fields,
-        });
+      const record = this.recordVoTransform(row.recordId, recordOptions, cellFormat);
+      if (record !== null) {
+        dto.push(record);
       }
     });
     return { records: dto };
+  }
+
+  public recordVoTransform(recordId: string, options: IRecordTransformOptions, cellFormat = CellFormatEnum.JSON): ApiRecordDto | null {
+    const { store, fieldIds, recordMap, columnMap, fieldMap } = options;
+    const state = store.getState();
+    const snapshot = Selectors.getSnapshot(state);
+    const fields: IFieldValueMap = {};
+    const record = recordMap[recordId];
+    if (record) {
+      fieldIds.forEach(field => {
+        // Filter hidden
+        const column = columnMap[fieldMap[field].id];
+        if (column && !column.hidden) {
+          const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldMap[field].id);
+          fields[field] = this.voTransform(cellValue, fieldMap[field], {
+            fieldMap,
+            record,
+            store,
+            cellFormat,
+          });
+        }
+      });
+      return {
+        recordId: recordMap[recordId].id,
+        createdAt: recordMap[recordId].createdAt,
+        updatedAt: recordMap[recordId].updatedAt,
+        fields,
+      };
+    } else {
+      return null;
+    }
   }
 
   // eslint-disable-next-line require-await
@@ -221,7 +259,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
    * @param findView the default view info
    * @return ISortedField[]
    */
-  getGroupInfo(query: RecordQueryRo, findView?: (viewId?: string) => IViewProperty): ISortedField[] {
+  getGroupInfo(query: RecordQueryRo, store: Store<IReduxState>, datasheetId: string): ISortedField[] {
     let rules = [];
     // sort with desc in front
     if (query.sort) {
@@ -229,8 +267,8 @@ export class FusionApiTransformer implements IFieldTransformInterface {
         rules.push({ fieldId: sort.field, desc: sort.order === OrderEnum.DESC });
       });
     }
-    if (!query.recordIds && query.viewId && findView) {
-      const view = findView(query.viewId);
+    if (!query.recordIds && query.viewId) {
+      const view = Selectors.getViewByIdWithDefault(store.getState(), datasheetId, query.viewId);
       // compatible with old data
       if (view && view.sortInfo) {
         if (Array.isArray(view.sortInfo)) {
@@ -255,27 +293,40 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     });
   }
 
-  getViewByViewIdOrDefault(state: IReduxState, datasheetId: string) {
-    return (viewId?: string) => {
-      return Selectors.getViewByIdWithDefault(state, datasheetId, viewId);
-    };
-  }
+  getViewInfo(options: IViewInfoOptions): IViewProperty {
+    const { partialRecordsInDst, viewId, sortRules, snapshot, state } = options;
+    if (!partialRecordsInDst && viewId) {
+      const view = Selectors.getViewByIdWithDefault(state, snapshot.datasheetId, viewId);
+      // compatible with old data
+      if (view && view.sortInfo) {
+        if (Array.isArray(view.sortInfo)) {
+          sortRules.push(...view.sortInfo);
+        }
+        if (view.sortInfo.rules) {
+          sortRules.push(...view.sortInfo.rules);
+        }
+      }
+      if (view && view.groupInfo) {
+        if (Array.isArray(view.groupInfo)) {
+          sortRules.push(...view.groupInfo);
+        }
+      }
+    }
 
-  getViewInfo(query: RecordQueryRo, snapshot: ISnapshot, store: Store<IReduxState>): IViewProperty {
-    const findView = this.getViewByViewIdOrDefault(store.getState(), snapshot.datasheetId);
     // Default first, use the order of the first view rows + user-defined order
     const view: IViewProperty = {
-      ...findView(),
-      groupInfo: this.getGroupInfo(query, findView),
+      ...Selectors.getViewByIdWithDefault(state, snapshot.datasheetId),
+      groupInfo: sortRules,
     };
+
     // Use the sorting/filtering criteria inside the view
-    if (query.viewId) {
-      const queryView = findView(query.viewId);
+    if (viewId) {
+      const queryView = Selectors.getViewByIdWithDefault(state, snapshot.datasheetId, viewId);
       if (!queryView) {
-        throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId: query.viewId });
+        throw ApiException.tipError(ApiTipConstant.api_query_params_view_id_not_exists, { viewId });
       }
       view.name = queryView.name;
-      view.id = query.viewId;
+      view.id = viewId;
       view.columns = queryView.columns;
       view.filterInfo = queryView.filterInfo;
       view.rows = queryView.rows;
@@ -287,8 +338,9 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       view.filterInfo = undefined;
       view.columns = (view.columns as IViewColumn[]).map(item => ({ fieldId: item.fieldId }));
     }
+
     // First use the sort using the incoming recordId + user-defined sort
-    if (query.recordIds) {
+    if (partialRecordsInDst) {
       view.rows = this.getRecordRows(snapshot.recordMap);
     }
     return view;

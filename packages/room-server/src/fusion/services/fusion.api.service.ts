@@ -12,8 +12,10 @@ import {
   IMeta,
   IOperation,
   IServerDatasheetPack,
+  ISortedField,
   IViewRow,
   NoticeTemplatesConstant,
+  Selectors,
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -62,8 +64,10 @@ import { ApiResponse } from '../vos/api.response';
 import { DatasheetCreateDto, FieldCreateDto } from '../vos/datasheet.create.vo';
 import { ListVo } from '../vos/list.vo';
 import { PageVo } from '../vos/page.vo';
-import * as dbus from '@apitable/core/dist/databus';
-import { DataBusService } from 'database/services/databus/databus.service';
+import * as dbus from 'fusion/databus';
+import { DataBusService } from 'fusion/services/databus/databus.service';
+import { OrderEnum } from 'shared/enums';
+import { ApiRecordDto } from 'fusion/dtos/api.record.dto';
 
 @Injectable()
 export class FusionApiService {
@@ -85,8 +89,7 @@ export class FusionApiService {
     private readonly databusService: DataBusService,
     @InjectLogger() private readonly logger: Logger,
     @Inject(REQUEST) private readonly request: FastifyRequest,
-  ) {
-  }
+  ) {}
 
   public async getSpaceList(): Promise<IAPISpace[]> {
     const authHeader = { token: this.request.headers.authorization };
@@ -149,53 +152,97 @@ export class FusionApiService {
    * @param query query criteria
    * @param auth  authorization inf
    */
-  public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo | null> {
-    const db = await this.databusService.databus.getDatabase({ auth });
-    const dst = await db.getDatasheet(dstId, {
+  public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo> {
+    const dst = await this.databusService.getDatasheet(dstId, {
+      auth,
       recordIds: query.recordIds,
-      store: async dst => {
+      createStore: async dst => {
         const userInfo = await this.userService.getUserInfoBySpaceId(auth, dst.datasheet.spaceId);
         return this.commandService.fullFillStore(dst, userInfo);
       },
     });
 
-    return dst.transform(async options => {
-      const { datasheetPack, store } = options;
-      /*
-     * Query the records of a specific view with the current user in the view's filter criteria.
-     * fullFillStore needs to be populated with user information.
-     */
-      const view = this.transform.getViewInfo(query, datasheetPack.snapshot, store);
-      if (!view) {
-        return null;
-      }
-      const rows = this.filter.getVisibleRows(query, view, store);
-      if (!rows) {
-        return null;
-      }
-      // Get the columns needed for the results
-      const fieldMap = this.filter.fieldMapFilter(datasheetPack.snapshot.meta.fieldMap, query.fieldKey, query.fields);
-      // Transform
-      return this.transform.recordPageVoTransform(
-      
-        {
-            rows,
-            fieldMap,
-            store,
-            columns: view.columns,
-          },
-     
-        query,
-      );
+    const view = await dst.getView({
+      getViewInfo: state => {
+        const snapshot = Selectors.getSnapshot(state, dst.id);
+        if (!snapshot) {
+          // TODO what if viewId is empty?
+          return {
+            viewId: query.viewId,
+            rows: [],
+            columns: [],
+            fieldMap: {},
+          };
+        }
+
+        const sortRules: ISortedField[] = [];
+        // sort with desc in front
+        if (query.sort) {
+          query.sort.forEach(sort => {
+            sortRules.push({ fieldId: sort.field, desc: sort.order === OrderEnum.DESC });
+          });
+        }
+
+        /*
+         * Query the records of a specific view with the current user in the view's filter criteria.
+         * fullFillStore needs to be populated with user information.
+         */
+        const view = this.transform.getViewInfo({
+          partialRecordsInDst: !!query.recordIds,
+          viewId: query.viewId || undefined,
+          sortRules,
+          snapshot,
+          state,
+        });
+
+        const rows = this.filter.getVisibleRows(query.filterByFormula || undefined, view, state);
+        if (rows.length === 0) {
+          return {
+            // TODO what if viewId is empty?
+            viewId: query.viewId,
+            rows: [],
+            columns: [],
+            fieldMap: {},
+          };
+        }
+
+        // Get the columns needed for the results
+        const fieldMap = this.filter.fieldMapFilter(snapshot.meta.fieldMap, query.fieldKey, query.fields);
+
+        return {
+          viewId: view.id,
+          rows,
+          columns: view.columns,
+          fieldMap,
+        };
+      },
     });
+
+    const maxRecords = query.maxRecords && query.maxRecords < view.numRows ? query.maxRecords : view.numRows;
+
+    const records = await view.getRecords({
+      maxRecords,
+      pagination: {
+        pageNum: query.pageNum,
+        pageSize: query.pageSize,
+      },
+    });
+
+    const recordVos = this.getRecordViewObjects(records);
+
+    return {
+      total: maxRecords,
+      records: recordVos,
+      pageNum: query.pageNum,
+      pageSize: records.length,
+    };
   }
 
   public async getFieldCreateDtos(datasheetId: string): Promise<FieldCreateDto[]> {
     const meta: IMeta = await this.metaService.getMetaDataByDstId(datasheetId);
-    return Object.keys(meta.fieldMap)
-      .map(fieldId => {
-        return { id: fieldId, name: meta.fieldMap[fieldId].name };
-      });
+    return Object.keys(meta.fieldMap).map(fieldId => {
+      return { id: fieldId, name: meta.fieldMap[fieldId].name };
+    });
   }
 
   public async addField(datasheetId: string, fieldCreateRo: FieldCreateRo): Promise<FieldCreateDto> {
@@ -217,10 +264,12 @@ export class FusionApiService {
     const auth = { token: this.request.headers.authorization };
     const options: ICollaCommandOptions = {
       cmd: CollaCommandName.DeleteField,
-      data: [{
-        deleteBrotherField: conversion === Conversion.Delete,
-        fieldId,
-      }],
+      data: [
+        {
+          deleteBrotherField: conversion === Conversion.Delete,
+          fieldId,
+        },
+      ],
     };
     const interStore = await this.datasheetService.fillBaseSnapshotStoreByDstIds([datasheetId]);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
@@ -276,67 +325,66 @@ export class FusionApiService {
     });
     const auth = { token: this.request.headers.authorization };
 
-    const database = await this.databusService.databus.getDatabase({ auth });
-    const datasheet = await database.getDatasheet(dstId, {
-      store: async (datasheetPack) => this.commandService.fullFillStore(datasheetPack),
+    const datasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
       recordIds,
       linkedRecordMap,
-    })
+    });
 
     const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta);
-    let unchanged = false;
-    datasheet.addEventHandler({
-      type: dbus.DatasheetEventType.CommandExecuted,
-      handle: async (event: dbus.IDatasheetCommandExecutedEvent): Promise<void> => {
-        const { execResult, extra } = event;
-        const { changesets } = extra as { changesets: ILocalChangeset[] }
-        this.combChangeSetsOp(changesets, dstId, updateFieldOperations);
+    const result = await datasheet.doCommand(options);
 
-        // No change required
-        if (execResult.result === ExecuteResult.None) {
-          unchanged = true;
-          return;
-        }
-
-        // Command execution failed
-        if (!execResult || execResult.result !== ExecuteResult.Success) {
-          throw ApiException.tipError(ApiTipConstant.api_update_error);
-        }
-
-        await this.applyChangeSet(dstId, changesets, auth);
-      },
-    });
-    await datasheet.doCommand(options);
-
-    if (unchanged) {
-      return datasheet.transform(async options => {
-        const { store } = options;
-        return this.transform.recordsVoTransform({
+    // No change required
+    if (result.result === ExecuteResult.None) {
+      const view = await datasheet.getView({
+        getViewInfo: () => ({
+          viewId: meta.views[0].id,
           rows,
-          fieldMap,
-          store,
           columns: meta.views[0].columns,
-        });
-      })
+          fieldMap,
+        }),
+      });
+      const records = await view.getRecords({});
+      return {
+        records: this.getRecordViewObjects(records),
+      };
     }
 
-    const newDatasheet = await database.getDatasheet(dstId, {
-      store: async (datasheetPack) => this.commandService.fullFillStore(datasheetPack),
+    // Command execution failed
+    if (result.result !== ExecuteResult.Success) {
+      throw ApiException.tipError('api_update_error');
+    }
+
+    const changesets = result.extra as ILocalChangeset[];
+    this.combChangeSetsOp(changesets, dstId, updateFieldOperations);
+
+    await this.applyChangeSet(dstId, changesets, auth);
+
+    const newDatasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
       recordIds,
       linkedRecordMap,
-    })
+    });
 
     CacheManager.clear();
 
-    return newDatasheet.transform(async options => {
-      const { store } = options;
-      return this.transform.recordsVoTransform({
-        rows,
-        fieldMap,
-        store,
-        columns: this.filter.getColumnsByViewId(store, dstId, viewId),
-      });
-    })
+    const newView = await newDatasheet.getView({
+      getViewInfo: state => {
+        return {
+          // TODO what if viewId is empty ?
+          viewId,
+          rows,
+          fieldMap,
+          columns: this.filter.getColumnsByViewId(state, newDatasheet.id, viewId),
+        };
+      },
+    });
+
+    const records = await newView.getRecords({});
+
+    return {
+      records: this.getRecordViewObjects(records),
+    };
   }
 
   /**
@@ -353,31 +401,23 @@ export class FusionApiService {
     // Convert written fields
     const options: ICollaCommandOptions = this.transform.getAddRecordCommandOptions(dstId, body.records, meta);
     const auth = { token: this.request.headers.authorization };
-    const database = await this.databusService.databus.getDatabase({ auth });
-    const datasheet = await database.getDatasheet(dstId, {
-      store: async dst => this.commandService.fullFillStore(dst),
+    const datasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
       recordIds: [],
       linkedRecordMap: this.request[DATASHEET_LINKED],
     });
 
     const updateFieldOperations = await this.getFieldUpdateOps(datasheet, meta);
 
-    let userId: string | undefined;
-    let recordIds: string[] | undefined;
-    datasheet.addEventHandler({
-      type: dbus.DatasheetEventType.CommandExecuted,
-      handle: async (event: dbus.IDatasheetCommandExecutedEvent): Promise<void> => {
-        const { execResult, extra } = event;
-        const { changesets } = extra as { changesets: ILocalChangeset[] }
-        if (!execResult || execResult.result !== ExecuteResult.Success) {
-          throw ApiException.tipError(ApiTipConstant.api_insert_error);
-        }
-        this.combChangeSetsOp(changesets, dstId, updateFieldOperations);
-        userId = await this.applyChangeSet(dstId, changesets, auth);
-        recordIds = execResult.data as string[];
-      },
-    });
-    await datasheet.doCommand(options);
+    const result = await datasheet.doCommand(options);
+    if (result.result !== ExecuteResult.Success) {
+      throw ApiException.tipError('api_insert_error');
+    }
+
+    const changesets = result.extra as ILocalChangeset[];
+    this.combChangeSetsOp(changesets, dstId, updateFieldOperations);
+    const userId = await this.applyChangeSet(dstId, changesets, auth);
+    const recordIds = result.data as string[];
 
     // API submission requires a record source for tracking the source of the record
     this.datasheetRecordSourceService.createRecordSource(userId, dstId, dstId, recordIds, SourceTypeEnum.OPEN_API);
@@ -385,21 +425,40 @@ export class FusionApiService {
       return { recordId };
     });
 
-    const newDatasheet = await database.getDatasheet(dstId, {
-      store: async (datasheetPack) => this.commandService.fullFillStore(datasheetPack),
+    const newDatasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
       recordIds: recordIds!,
       linkedRecordMap: this.request[DATASHEET_LINKED],
     });
 
-    return newDatasheet.transform(async (options) => {
-      const { store } = options;
-      return this.transform.recordsVoTransform({
-        rows,
-        fieldMap,
-        store,
-        columns: this.filter.getColumnsByViewId(store, dstId, viewId),
-      });
-    })
+    const newView = await newDatasheet.getView({
+      getViewInfo: state => {
+        return {
+          // TODO what if viewId is empty ?
+          viewId,
+          rows,
+          fieldMap,
+          columns: this.filter.getColumnsByViewId(state, newDatasheet.id, viewId),
+        };
+      },
+    });
+
+    const records = await newView.getRecords({});
+
+    return {
+      records: this.getRecordViewObjects(records),
+    };
+  }
+
+  private getRecordViewObjects(records: dbus.Record[]): ApiRecordDto[] {
+    const vos: ApiRecordDto[] = [];
+    for (const record of records) {
+      const vo = record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options));
+      if (vo) {
+        vos.push(vo);
+      }
+    }
+    return vos;
   }
 
   /**
@@ -413,14 +472,17 @@ export class FusionApiService {
     await this.fusionApiRecordService.validateRecordExists(dstId, recordIds, 'api_param_record_not_exists');
     const options = this.transform.getDeleteRecordCommandOptions(recordIds);
     const auth = { token: this.request.headers.authorization };
-    const datasheetPack: IServerDatasheetPack = await this.datasheetService.fetchDataPack(dstId, auth, { recordIds });
-    const store = this.commandService.fullFillStore(datasheetPack);
-    const { result, changeSets } = this.commandService.execute<{}>(options, store);
-    // command执行失败
-    if (!result || result.result !== ExecuteResult.Success) {
-      throw ApiException.tipError(ApiTipConstant.api_delete_error);
+    const datasheet = await this.databusService.getDatasheet(dstId, {
+      auth,
+      recordIds,
+    });
+    const result = await datasheet.doCommand(options);
+    // command execution failed
+    if (result.result !== ExecuteResult.Success) {
+      throw ApiException.tipError('api_delete_error');
     }
-    await this.applyChangeSet(dstId, changeSets, auth);
+    const changesets = result.extra as ILocalChangeset[];
+    await this.applyChangeSet(dstId, changesets, auth);
     return true;
   }
 
@@ -591,26 +653,18 @@ export class FusionApiService {
   private async getFieldUpdateOps(dst: dbus.Datasheet, meta: IMeta): Promise<IOperation[]> {
     const updateFieldOperations: IOperation[] = [];
 
-    const handler: dbus.IDatasheetCommandExecutedEventHandler = {
-      type: dbus.DatasheetEventType.CommandExecuted,
-      async handle(event: dbus.IDatasheetCommandExecutedEvent): Promise<void> {
-        const { execResult, extra } = event;
-        const { changesets } = extra as { changesets: ILocalChangeset[] }
-        if (!execResult || execResult.result !== ExecuteResult.Success) {
-          throw ApiException.tipError(ApiTipConstant.api_insert_error);
-        }
-        updateFieldOperations.push(...flatten(changesets.map(changeSet => changeSet.operations)));
-      },
-    };
-
-    dst.addEventHandler(handler);
     const enrichedSelectFields = this.request[DATASHEET_ENRICH_SELECT_FIELD];
     for (const fieldId in enrichedSelectFields) {
       const field = enrichedSelectFields[fieldId];
       const fieldUpdateOptions = this.transform.getUpdateFieldCommandOptions(dst.id, field, meta);
-      await dst.doCommand(fieldUpdateOptions);
+      const result = await dst.doCommand(fieldUpdateOptions);
+      if (result.result !== ExecuteResult.Success) {
+        throw ApiException.tipError('api_insert_error');
+      }
+
+      const changesets = result.extra as ILocalChangeset[];
+      updateFieldOperations.push(...flatten(changesets.map(changeSet => changeSet.operations)));
     }
-    dst.removeEventHandler(handler);
 
     return updateFieldOperations;
   }

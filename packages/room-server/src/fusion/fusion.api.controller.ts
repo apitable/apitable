@@ -1,6 +1,20 @@
 import { ApiTipConstant, ICollaCommandOptions } from '@apitable/core';
 import {
-  Body, CacheTTL, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req, Res, UseGuards, UseInterceptors,
+  Body,
+  CacheTTL,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
 import { RedisService } from '@vikadata/nestjs-redis';
@@ -70,8 +84,7 @@ export class FusionApiController {
     private readonly restService: RestService,
     private readonly redisService: RedisService,
     private readonly i18n: I18nService,
-  ) {
-  }
+  ) {}
 
   @Get('/datasheets/:datasheetId/records')
   @ApiOperation({
@@ -85,15 +98,7 @@ export class FusionApiController {
   @CacheTTL(apiCacheTTLFactory)
   public async findAll(@Param() param: RecordParamRo, @Query(QueryPipe) query: RecordQueryRo, @Req() request): Promise<RecordPageVo> {
     const pageVo = await this.fusionApiService.getRecords(param.datasheetId, query, { token: request.headers.authorization });
-    if (pageVo) {
-      return ApiResponse.success(pageVo);
-    }
-    return ApiResponse.success({
-      pageSize: 0,
-      records: [],
-      pageNum: 1,
-      total: 0,
-    });
+    return ApiResponse.success(pageVo);
   }
 
   @Post('/datasheets/:datasheetId/records')
@@ -102,15 +107,15 @@ export class FusionApiController {
     description:
       'Up to 10 records can be created in a single request.' +
       'You need to bring `Content-Type: application/json` in the Request Header to submit data in raw json format. \n' +
-      'The POST data is a JSON object, which should contain an array: \`records\`, the records array contains multiple records to be created. \n' +
-      'The object \`fields\` contains the values of the fields to be created in a record,' +
+      'The POST data is a JSON object, which should contain an array: `records`, the records array contains multiple records to be created. \n' +
+      'The object `fields` contains the values of the fields to be created in a record,' +
       'and can contain any number of field values, not necessarily all of them. If there are field defaults set,' +
       'field values that are not passed in will be saved according to the default values at the time the fields were set.',
     deprecated: false,
   })
   @ApiBody({
     description: 'Add record parameters',
-    type: RecordCreateRo
+    type: RecordCreateRo,
   })
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
@@ -227,8 +232,7 @@ export class FusionApiController {
 
   @Patch('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary:
-      'Update Records',
+    summary: 'Update Records',
     description:
       'Update several records of a datasheet. ' +
       'When submitted using the PUT method, only the fields that are specified will have their data updated, ' +
@@ -236,8 +240,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiBody({
-    description:
-      'Update record parameters',
+    description: 'Update record parameters',
     type: RecordUpdateRo,
   })
   @ApiProduces('application/json')
@@ -247,7 +250,7 @@ export class FusionApiController {
   public async updateRecord(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,
-    @Body(FieldPipe) body: RecordUpdateRo
+    @Body(FieldPipe) body: RecordUpdateRo,
   ): Promise<RecordListVo> {
     const listVo = await this.fusionApiService.updateRecords(param.datasheetId, body, query.viewId);
     return ApiResponse.success(listVo);
@@ -255,8 +258,7 @@ export class FusionApiController {
 
   @Put('/datasheets/:datasheetId/records')
   @ApiOperation({
-    summary:
-      'Update Records',
+    summary: 'Update Records',
     description:
       'Update several records of a datasheet. ' +
       'When submitted using the PUT method, only the fields that are specified will have their data updated, ' +
@@ -264,8 +266,7 @@ export class FusionApiController {
     deprecated: false,
   })
   @ApiBody({
-    description:
-      'Update record parameters',
+    description: 'Update record parameters',
     type: RecordUpdateRo,
   })
   @ApiProduces('application/json')
@@ -275,7 +276,7 @@ export class FusionApiController {
   public async updateRecordOfPut(
     @Param() param: RecordParamRo,
     @Query() query: RecordViewQueryRo,
-    @Body(FieldPipe) body: RecordUpdateRo
+    @Body(FieldPipe) body: RecordUpdateRo,
   ): Promise<RecordListVo> {
     const listVo = await this.fusionApiService.updateRecords(param.datasheetId, body, query.viewId);
     return ApiResponse.success(listVo);
@@ -299,10 +300,8 @@ export class FusionApiController {
 
   @Get('/datasheets/:datasheetId/fields')
   @ApiOperation({
-    summary:
-      'Query all fields of a datasheet',
-    description:
-      'All fields of the datasheet, without paging',
+    summary: 'Query all fields of a datasheet',
+    description: 'All fields of the datasheet, without paging',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -318,10 +317,8 @@ export class FusionApiController {
 
   @Get('/datasheets/:datasheetId/views')
   @ApiOperation({
-    summary:
-      'Query all views of a datasheet',
-    description:
-      'A datasheet can create up to 30 views and return them all at once when requesting a view, without paging.',
+    summary: 'Query all views of a datasheet',
+    description: 'A datasheet can create up to 30 views and return them all at once when requesting a view, without paging.',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -337,10 +334,8 @@ export class FusionApiController {
 
   @Get('/spaces')
   @ApiOperation({
-    summary:
-      'Query space list',
-    description:
-      'Returns a list of spaces for the current user. Returns it all at once, without paging.',
+    summary: 'Query space list',
+    description: 'Returns a list of spaces for the current user. Returns it all at once, without paging.',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -365,9 +360,11 @@ export class FusionApiController {
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiFieldGuard)
-  public async createField(@Param('spaceId') spaceId: string
-    , @Param('datasheetId') datasheetId: string
-    , @Body(CreateFieldPipe) createRo: FieldCreateRo): Promise<FieldCreateVo> {
+  public async createField(
+    @Param('spaceId') spaceId: string,
+    @Param('datasheetId') datasheetId: string,
+    @Body(CreateFieldPipe) createRo: FieldCreateRo,
+  ): Promise<FieldCreateVo> {
     const metaFields: any = await this.fusionApiService.getFieldList(datasheetId, { viewId: '' });
     const duplicatedName = metaFields.filter(field => field.name === createRo.name);
     if (duplicatedName.length > 0) {
@@ -390,10 +387,12 @@ export class FusionApiController {
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiFieldGuard)
-  public async deleteField(@Param('spaceId') spaceId: string
-    , @Param('datasheetId') datasheetId: string
-    , @Param('fieldId') fieldId: string
-    , @Body() fieldDeleteRo: FieldDeleteRo): Promise<FieldDeleteVo> {
+  public async deleteField(
+    @Param('spaceId') spaceId: string,
+    @Param('datasheetId') datasheetId: string,
+    @Param('fieldId') fieldId: string,
+    @Body() fieldDeleteRo: FieldDeleteRo,
+  ): Promise<FieldDeleteVo> {
     const metaFields: any = await this.fusionApiService.getFieldList(datasheetId, { viewId: '' });
     const existFieldId = metaFields.filter(field => field.id === fieldId);
     if (existFieldId.length === 0) {
@@ -419,8 +418,11 @@ export class FusionApiController {
   @ApiProduces('application/json')
   @ApiConsumes('application/json')
   @UseGuards(ApiSpaceGuard)
-  public async createDatasheet(@Param() param: SpaceParamRo
-    , @Body(CreateDatasheetPipe) createRo: DatasheetCreateRo, @Req() request): Promise<DatasheetCreateVo> {
+  public async createDatasheet(
+    @Param() param: SpaceParamRo,
+    @Body(CreateDatasheetPipe) createRo: DatasheetCreateRo,
+    @Req() request,
+  ): Promise<DatasheetCreateVo> {
     const { spaceId } = param;
     const authHeader = { token: request.headers.authorization };
     const vo: InternalCreateDatasheetVo = await this.restService.createDatasheet(spaceId, authHeader, createRo);
@@ -441,10 +443,8 @@ export class FusionApiController {
 
   @Get('/spaces/:spaceId/nodes')
   @ApiOperation({
-    summary:
-      'Query the list of space station level 1 document nodes',
-    description:
-      'Returns a list of file nodes at the specified space station level. Returns it all at once, without paging.',
+    summary: 'Query the list of space station level 1 document nodes',
+    description: 'Returns a list of file nodes at the specified space station level. Returns it all at once, without paging.',
     deprecated: false,
   })
   @ApiProduces('application/json')
@@ -493,21 +493,14 @@ export class FusionApiController {
    */
   @Post('datasheets/:datasheetId/executeCommand')
   @ApiOperation({
-    summary:
-      'Create the op of the resource',
-    description:
-      'For flexibility reasons and for internal automation testing, provide an interface to freely create commands',
+    summary: 'Create the op of the resource',
+    description: 'For flexibility reasons and for internal automation testing, provide an interface to freely create commands',
     deprecated: false,
   })
   @ApiProduces('application/json')
-  public async executeCommand(
-    @Body() body: ICollaCommandOptions,
-    @Param('datasheetId') datasheetId: string,
-    @Req() request,
-  ) {
+  public async executeCommand(@Body() body: ICollaCommandOptions, @Param('datasheetId') datasheetId: string, @Req() request) {
     const commandBody = body;
     const token = request.headers.authorization;
     return await this.fusionApiService.executeCommand(datasheetId, commandBody, { token });
   }
 }
-

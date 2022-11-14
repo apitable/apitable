@@ -1,4 +1,5 @@
-import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IViewColumn, IViewRow } from '@apitable/core';
+import { CellFormatEnum, ICellValue, IFieldMap, IRecord, IRecordMap, IReduxState, ISnapshot, ISortedField, IViewColumn, IViewRow } from '@apitable/core';
+import { Store } from 'redux';
 
 export interface IApiRecord {
   recordId: string;
@@ -10,9 +11,9 @@ export interface IApiDatasheetField {
   id: string;
   name: string;
   type: string;
-  desc?: string
-  property?: Object
-  permissionLevel?: string
+  desc?: string;
+  property?: Object;
+  permissionLevel?: string;
 }
 
 export interface IApiDatasheetView {
@@ -61,7 +62,7 @@ export interface IFieldVoTransformOptions {
    */
   cellFormat: CellFormatEnum;
 
-  store?: any;
+  store?: Store<IReduxState>;
 }
 
 export interface ICellValueMap {
@@ -86,7 +87,23 @@ export interface IRecordsTransformOptions {
   rows: IViewRow[];
   columns: IViewColumn[];
   fieldMap: IFieldMap;
-  store: any;
+  store: Store<IReduxState>;
+}
+
+export interface IRecordTransformOptions {
+  fieldMap: IFieldMap;
+  store: Store<IReduxState>;
+  recordMap: IRecordMap;
+  fieldIds: string[];
+  columnMap: Record<string, IViewColumn>;
+}
+
+export interface IViewInfoOptions {
+  partialRecordsInDst: boolean,
+  viewId?: string;
+  sortRules: ISortedField[];
+  snapshot: ISnapshot;
+  state: IReduxState;
 }
 
 export interface IFieldRoTransformOptions {
@@ -152,5 +169,5 @@ export interface IFetchDataOriginOptions {
 }
 
 export interface INodeExtra {
-  showRecordHistory: boolean
+  showRecordHistory: boolean;
 }

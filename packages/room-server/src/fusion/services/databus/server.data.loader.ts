@@ -1,5 +1,5 @@
 import { IServerDatasheetPack } from "@apitable/core";
-import { IDataLoader, IDataSelector, ILoadDataOptions, ILoadDatasheetPackOptions } from "@apitable/core/dist/databus";
+import { IDataLoader, IDataSelector, ILoadDataOptions, ILoadDatasheetPackOptions } from "fusion/databus";
 import { DatasheetService } from "database/services/datasheet/datasheet.service";
 import { IAuthHeader, IFetchDataOptions } from "shared/interfaces";
 
@@ -8,7 +8,7 @@ export class ServerDataLoader implements IDataLoader {
   }
 
   loadDatasheetPack(dstId: string, options: IServerLoadDatasheetPackOptions): Promise<IServerDatasheetPack> {
-    const { databaseOptions: { auth } } = options;
+    const { auth } = options;
     return this.datasheetService.fetchDataPack(dstId, auth, options);
   }
 
@@ -18,7 +18,5 @@ export class ServerDataLoader implements IDataLoader {
 }
 
 export interface IServerLoadDatasheetPackOptions extends ILoadDatasheetPackOptions, IFetchDataOptions {
-  databaseOptions: {
-    auth: IAuthHeader
-  }
+  auth: IAuthHeader
 }

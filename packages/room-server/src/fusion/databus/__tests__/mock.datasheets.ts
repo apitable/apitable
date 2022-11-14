@@ -1,5 +1,4 @@
-import { IBaseDatasheetPack, ViewType } from "../../exports/store";
-import { FieldType, SegmentType } from "../../types";
+import { IBaseDatasheetPack, ViewType, FieldType, SegmentType } from "@apitable/core";
 
 export const mockDatasheetMap: Record<string, IBaseDatasheetPack> = {
   dst1: {
