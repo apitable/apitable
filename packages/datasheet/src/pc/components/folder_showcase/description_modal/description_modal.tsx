@@ -3,7 +3,7 @@ import * as React from 'react';
 import { BaseModal } from 'pc/components/common';
 import { IShowCaseData, Selectors } from '@apitable/core';
 import styles from './style.module.less';
-import { useMount, useDebounceFn } from 'ahooks';
+import { useDebounceFn } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import { useCatalogTreeRequest, useImageUpload, useResponsive } from 'pc/hooks';
 import { useSelector } from 'react-redux';
