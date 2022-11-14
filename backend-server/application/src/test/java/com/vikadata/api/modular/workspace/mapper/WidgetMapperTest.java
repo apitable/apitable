@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
-import com.vikadata.api.modular.workspace.model.NodeWidgetDto;
+
+import com.vikadata.api.enterprise.widget.mapper.WidgetMapper;
+import com.vikadata.api.workspace.model.NodeWidgetDto;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.widget.WidgetBaseInfo;
-import com.vikadata.api.model.dto.widget.WidgetDTO;
-import com.vikadata.api.model.vo.widget.WidgetInfo;
+import com.vikadata.api.enterprise.widget.dto.WidgetBaseInfo;
+import com.vikadata.api.enterprise.widget.dto.WidgetDTO;
+import com.vikadata.api.enterprise.widget.vo.WidgetInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

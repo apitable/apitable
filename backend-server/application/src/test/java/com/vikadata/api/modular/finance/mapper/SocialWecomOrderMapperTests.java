@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.billing.mapper.SocialWecomOrderMapper;
 import com.vikadata.entity.SocialWecomOrderEntity;
 
 import org.springframework.test.context.jdbc.Sql;

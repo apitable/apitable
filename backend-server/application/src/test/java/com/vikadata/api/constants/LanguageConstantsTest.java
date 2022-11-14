@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.constants.LanguageConstants;
 import com.vikadata.system.config.i18n.I18nTypes;
 
 /**

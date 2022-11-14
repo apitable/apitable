@@ -4,25 +4,26 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.vikadata.api.model.dto.organization.MemberDto;
-import com.vikadata.api.modular.space.mapper.SpaceMapper;
-import com.vikadata.entity.SpaceEntity;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.context.SessionContext;
-import com.vikadata.api.enums.action.EmailCodeType;
-import com.vikadata.api.enums.action.LoginType;
-import com.vikadata.api.enums.action.SmsCodeType;
-import com.vikadata.api.model.ro.user.LoginRo;
-import com.vikadata.api.model.vo.user.UserInfoVo;
-import com.vikadata.api.security.CodeValidateScope;
-import com.vikadata.api.security.ValidateCodeProcessor;
-import com.vikadata.api.security.ValidateCodeProcessorManage;
-import com.vikadata.api.security.ValidateCodeType;
-import com.vikadata.api.security.ValidateTarget;
+import com.vikadata.api.user.ro.LoginRo;
+import com.vikadata.api.base.enums.EmailCodeType;
+import com.vikadata.api.base.enums.LoginType;
+import com.vikadata.api.base.enums.SmsCodeType;
+import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.shared.security.CodeValidateScope;
+import com.vikadata.api.shared.security.ValidateCodeProcessor;
+import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
+import com.vikadata.api.shared.security.ValidateCodeType;
+import com.vikadata.api.shared.security.ValidateTarget;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.vo.UserInfoVo;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.entity.SpaceEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -193,10 +194,10 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testCheckSpaceRewardCapacity(){
-        MemberDto firstMemberDto = new MemberDto();
-        firstMemberDto.setId(123L);
-        firstMemberDto.setSpaceId("spc123");
-        firstMemberDto.setMemberName("firstUser");
+        MemberDTO firstMemberDTO = new MemberDTO();
+        firstMemberDTO.setId(123L);
+        firstMemberDTO.setSpaceId("spc123");
+        firstMemberDTO.setMemberName("firstUser");
         SpaceEntity space = SpaceEntity.builder()
             .id(IdWorker.getId())
             .spaceId("spc123")
@@ -204,7 +205,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
             .build();
         spaceMapper.insert(space);
         // match space stations and issue rewards
-        iAuthService.checkSpaceRewardCapacity(firstMemberDto.getUserId(), firstMemberDto.getMemberName(), "spc123");
+        iAuthService.checkSpaceRewardCapacity(firstMemberDTO.getUserId(), firstMemberDTO.getMemberName(), "spc123");
         // query reward records
         Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity("spc123");
         assertThat(number).isEqualTo(314572800);

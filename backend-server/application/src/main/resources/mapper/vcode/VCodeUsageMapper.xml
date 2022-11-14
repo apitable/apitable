@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.vcode.mapper.VCodeUsageMapper">
+<mapper namespace="com.vikadata.api.enterprise.vcode.mapper.VCodeUsageMapper">
     <select id="countByCodeAndType" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM vika_code_usage
@@ -11,7 +11,7 @@
         </if>
     </select>
 
-    <select id="selectInvitorUserId" resultType="com.vikadata.api.model.dto.vcode.VCodeDTO">
+    <select id="selectInvitorUserId" resultType="com.vikadata.api.enterprise.vcode.dto.VCodeDTO">
         SELECT vc.ref_id AS userId, vc.`code` AS vCode, vc.type
         FROM vika_code_usage vcu
                  JOIN vika_code vc ON vcu.`code` = vc.`code` AND vc.type IN (0, 1)

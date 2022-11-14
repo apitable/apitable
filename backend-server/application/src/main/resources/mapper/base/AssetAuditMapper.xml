@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.base.mapper.AssetAuditMapper">
+<mapper namespace="com.vikadata.api.asset.mapper.AssetAuditMapper">
 
-    <select id="getArtificialAssetsAuditList" resultType="com.vikadata.api.model.vo.asset.AssetsAuditVo">
+    <select id="getArtificialAssetsAuditList" resultType="com.vikadata.api.asset.vo.AssetsAuditVo">
         SELECT asset_id,
                asset_file_url,
                asset_checksum,

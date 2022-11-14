@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.vo.space.SpaceRoleVo;
+import com.vikadata.api.space.mapper.SpaceRoleMapper;
+import com.vikadata.api.space.vo.SpaceRoleVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

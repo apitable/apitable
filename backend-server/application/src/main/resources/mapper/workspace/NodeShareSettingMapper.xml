@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.NodeShareSettingMapper">
+<mapper namespace="com.vikadata.api.workspace.mapper.NodeShareSettingMapper">
 
     <select id="selectByShareId" resultType="com.vikadata.entity.NodeShareSettingEntity">
         SELECT *
@@ -62,7 +62,7 @@
         LIMIT 0,1
     </select>
 
-    <select id="selectDtoByShareId" resultType="com.vikadata.api.model.dto.node.NodeShareDTO">
+    <select id="selectDtoByShareId" resultType="com.vikadata.api.workspace.dto.NodeShareDTO">
         SELECT vn.space_id, vum.id operator
         FROM vika_node_share_setting vnss
         JOIN vika_node vn ON vnss.node_id = vn.node_id AND vn.is_rubbish = 0
@@ -71,7 +71,7 @@
         LIMIT 0,1
     </select>
 
-    <select id="selectDtoByNodeIds" resultType="com.vikadata.api.model.dto.node.NodeShareDTO">
+    <select id="selectDtoByNodeIds" resultType="com.vikadata.api.workspace.dto.NodeShareDTO">
         SELECT node_id, share_id
         FROM vika_node_share_setting
         WHERE node_id IN

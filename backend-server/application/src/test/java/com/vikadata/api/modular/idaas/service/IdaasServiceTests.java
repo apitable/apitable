@@ -13,11 +13,14 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.modular.idaas.model.IdaasAppBindRo;
-import com.vikadata.api.modular.idaas.model.IdaasAppBindVo;
-import com.vikadata.api.modular.idaas.model.IdaasTenantCreateRo;
-import com.vikadata.api.modular.idaas.model.IdaasTenantCreateRo.ServiceAccount;
-import com.vikadata.api.modular.idaas.model.IdaasTenantCreateVo;
+import com.vikadata.api.enterprise.idaas.model.IdaasAppBindRo;
+import com.vikadata.api.enterprise.idaas.model.IdaasAppBindVo;
+import com.vikadata.api.enterprise.idaas.model.IdaasTenantCreateRo;
+import com.vikadata.api.enterprise.idaas.model.IdaasTenantCreateRo.ServiceAccount;
+import com.vikadata.api.enterprise.idaas.model.IdaasTenantCreateVo;
+import com.vikadata.api.enterprise.idaas.service.IIdaasAppBindService;
+import com.vikadata.api.enterprise.idaas.service.IIdaasContactService;
+import com.vikadata.api.enterprise.idaas.service.IIdaasTenantService;
 
 /**
  * <p>

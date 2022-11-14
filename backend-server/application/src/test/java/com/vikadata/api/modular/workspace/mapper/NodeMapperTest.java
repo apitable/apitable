@@ -8,11 +8,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.node.UrlNodeInfoDTO;
-import com.vikadata.api.model.vo.node.BaseNodeInfo;
-import com.vikadata.api.model.vo.node.NodeInfo;
-import com.vikadata.api.model.vo.node.NodeInfoTreeVo;
-import com.vikadata.api.model.vo.node.NodeInfoVo;
+import com.vikadata.api.workspace.dto.UrlNodeInfoDTO;
+import com.vikadata.api.workspace.mapper.NodeMapper;
+import com.vikadata.api.workspace.vo.BaseNodeInfo;
+import com.vikadata.api.workspace.vo.NodeInfo;
+import com.vikadata.api.workspace.vo.NodeInfoTreeVo;
+import com.vikadata.api.workspace.vo.NodeInfoVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

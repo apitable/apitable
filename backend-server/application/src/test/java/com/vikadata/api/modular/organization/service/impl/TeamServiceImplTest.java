@@ -14,8 +14,9 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.model.vo.organization.TeamTreeVo;
-import com.vikadata.api.modular.organization.model.MemberTeamPathInfo;
+import com.vikadata.api.organization.service.impl.TeamMemberRelServiceImpl;
+import com.vikadata.api.organization.vo.TeamTreeVo;
+import com.vikadata.api.organization.model.MemberTeamPathInfo;
 import com.vikadata.entity.TeamEntity;
 import com.vikadata.entity.TeamMemberRelEntity;
 

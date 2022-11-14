@@ -9,14 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.component.clock.ClockManager;
+import com.vikadata.api.enterprise.billing.core.DefaultOrderArguments;
+import com.vikadata.api.enterprise.billing.core.OrderArguments;
+import com.vikadata.api.enterprise.billing.util.BillingConfigManager;
+import com.vikadata.api.enterprise.billing.util.model.BillingPlanPrice;
+import com.vikadata.api.enterprise.billing.util.model.ProductEnum;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.finance.core.DefaultOrderArguments;
-import com.vikadata.api.modular.finance.core.OrderArguments;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedSubscriptionCheck;
-import com.vikadata.api.util.billing.BillingConfigManager;
-import com.vikadata.api.util.billing.model.BillingPlanPrice;
-import com.vikadata.api.util.billing.model.ProductEnum;
+import com.vikadata.api.shared.component.clock.ClockManager;
 import com.vikadata.system.config.billing.Price;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -2,7 +2,7 @@ package com.vikadata.api.util.billing;
 
 import org.junit.jupiter.api.Test;
 
-import static com.vikadata.api.util.billing.BillingUtil.legacyPlanId;
+import static com.vikadata.api.enterprise.billing.util.BillingUtil.legacyPlanId;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

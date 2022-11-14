@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.vo.vcode.VCodeActivityPageVo;
-import com.vikadata.api.model.vo.vcode.VCodeActivityVo;
+import com.vikadata.api.enterprise.vcode.mapper.VCodeActivityMapper;
+import com.vikadata.api.enterprise.vcode.vo.VCodeActivityPageVo;
+import com.vikadata.api.enterprise.vcode.vo.VCodeActivityVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

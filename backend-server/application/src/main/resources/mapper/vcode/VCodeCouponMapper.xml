@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.vcode.mapper.VCodeCouponMapper">
+<mapper namespace="com.vikadata.api.enterprise.vcode.mapper.VCodeCouponMapper">
 
     <select id="countById" resultType="java.lang.Integer">
         SELECT COUNT(*)
@@ -26,13 +26,13 @@
         WHERE id = #{id} AND is_deleted = 0
     </update>
 
-    <resultMap id="BaseInfo" type="com.vikadata.api.model.vo.vcode.VCodeCouponVo">
+    <resultMap id="BaseInfo" type="com.vikadata.api.enterprise.vcode.vo.VCodeCouponVo">
         <result column="id" property="templateId"/>
         <result column="total_count" property="count"/>
         <result column="comment" property="comment"/>
     </resultMap>
 
-    <resultMap id="DetailInfo" extends="BaseInfo" type="com.vikadata.api.model.vo.vcode.VCodeCouponPageVo">
+    <resultMap id="DetailInfo" extends="BaseInfo" type="com.vikadata.api.enterprise.vcode.vo.VCodeCouponPageVo">
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
         <result column="creator" property="creator"/>

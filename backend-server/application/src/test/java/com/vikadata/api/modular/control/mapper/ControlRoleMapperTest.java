@@ -7,8 +7,9 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.workspace.model.ControlRoleInfo;
-import com.vikadata.api.modular.workspace.model.ControlRoleUnitDTO;
+import com.vikadata.api.enterprise.control.mapper.ControlRoleMapper;
+import com.vikadata.api.workspace.model.ControlRoleInfo;
+import com.vikadata.api.workspace.model.ControlRoleUnitDTO;
 import com.vikadata.entity.ControlRoleEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

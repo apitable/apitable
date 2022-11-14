@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.util.billing.model.SubscribePlanInfo;
+import com.vikadata.api.enterprise.billing.util.model.SubscribePlanInfo;
 
 import org.springframework.test.context.TestPropertySource;
 

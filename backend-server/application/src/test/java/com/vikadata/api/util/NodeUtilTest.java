@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.model.vo.node.SimpleSortableNodeInfo;
+import com.vikadata.api.workspace.vo.SimpleSortableNodeInfo;
 
-import static com.vikadata.api.util.NodeUtil.sortNode;
+import static com.vikadata.api.shared.util.NodeUtil.sortNode;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
 

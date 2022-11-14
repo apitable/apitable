@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.WidgetPackageMapper">
+<mapper namespace="com.vikadata.api.enterprise.widget.mapper.WidgetPackageMapper">
 
-    <select id="selectWidgetPackageList" resultType="com.vikadata.api.model.vo.widget.WidgetPackageInfo">
+    <select id="selectWidgetPackageList" resultType="com.vikadata.api.enterprise.widget.vo.WidgetPackageInfo">
         SELECT vwp.package_id AS widgetPackageId,
                IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${language}"'), vwp.i18n_name ->> '$."${language}"', vwp.i18n_name ->> '$."en-US"') AS name,
                vwp.name_en,
@@ -39,7 +39,7 @@
         ORDER BY vwp.release_type DESC, vwp.created_at
     </select>
 
-    <select id="selectByPackageIdsIncludeDelete" resultType="com.vikadata.api.model.dto.widget.WidgetPackageDTO">
+    <select id="selectByPackageIdsIncludeDelete" resultType="com.vikadata.api.enterprise.widget.dto.WidgetPackageDTO">
         SELECT vwp.id, vwp.package_id,
                IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${language}"'), vwp.i18n_name ->> '$."${language}"', vwp.i18n_name ->> '$."en-US"') AS name,
                IF(JSON_CONTAINS_PATH(vwp.i18n_description, 'one', '$."${language}"'), vwp.i18n_description ->> '$."${language}"', vwp.i18n_description ->> '$."en-US"') AS description,
@@ -132,7 +132,7 @@
           AND is_deleted = 0
     </update>
 
-    <select id="selectWidgetPackageInfoByPackageIdOrSpaceId" resultType="com.vikadata.api.model.vo.widget.WidgetPackageInfoVo">
+    <select id="selectWidgetPackageInfoByPackageIdOrSpaceId" resultType="com.vikadata.api.enterprise.widget.vo.WidgetPackageInfoVo">
         SELECT vwp.package_id,
                IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${language}"'), vwp.i18n_name ->> '$."${language}"', vwp.i18n_name ->> '$."en-US"') AS name,
                vwp.icon,
@@ -160,7 +160,7 @@
         </choose>
     </select>
 
-    <resultMap id="widgetTemplatePackageInfoResultMap" type="com.vikadata.api.model.vo.widget.WidgetTemplatePackageInfo">
+    <resultMap id="widgetTemplatePackageInfoResultMap" type="com.vikadata.api.enterprise.widget.vo.WidgetTemplatePackageInfo">
         <result column="widgetPackageId" property="widgetPackageId"/>
         <result column="name" property="name"/>
         <result column="icon" property="icon"/>
@@ -195,7 +195,7 @@
         ORDER BY vwpas.widget_sort
     </select>
 
-    <resultMap id="selectWidgetStoreListResultMap" type="com.vikadata.api.model.vo.widget.WidgetStoreListInfo">
+    <resultMap id="selectWidgetStoreListResultMap" type="com.vikadata.api.enterprise.widget.vo.WidgetStoreListInfo">
         <result column="widgetPackageId" property="widgetPackageId"/>
         <result column="name" property="name"/>
         <result column="icon" property="icon"/>
@@ -260,7 +260,7 @@
           ORDER BY vwpas.widget_sort
     </select>
 
-    <select id="selectWidgetSpaceBy" resultType="com.vikadata.api.model.dto.widget.WidgetSpaceByDTO">
+    <select id="selectWidgetSpaceBy" resultType="com.vikadata.api.enterprise.widget.dto.WidgetSpaceByDTO">
         SELECT vwpas.space_id,
                vum.member_name AS authorName,
                vu.avatar       AS authorIcon,

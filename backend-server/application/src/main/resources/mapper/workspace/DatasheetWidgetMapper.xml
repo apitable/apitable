@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.DatasheetWidgetMapper">
+<mapper namespace="com.vikadata.api.workspace.mapper.DatasheetWidgetMapper">
     <select id="selectByWidgetId" resultType="com.vikadata.entity.DatasheetWidgetEntity">
         SELECT *
         FROM vika_datasheet_widget
@@ -13,7 +13,7 @@
         WHERE dst_id = #{dstId}
     </select>
 
-    <select id="selectDtoByWidgetIds" resultType="com.vikadata.api.model.dto.widget.DatasheetWidgetDTO">
+    <select id="selectDtoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO">
         SELECT dst_id, widget_id, source_id
         FROM vika_datasheet_widget
         WHERE widget_id IN

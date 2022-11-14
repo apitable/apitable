@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.user.mapper.UserLinkMapper">
+<mapper namespace="com.vikadata.api.user.mapper.UserLinkMapper">
     <select id="selectUserIdByUnionIdAndType" resultType="java.lang.Long">
         SELECT user_id
         FROM vika_user_link
@@ -28,7 +28,7 @@
         AND `type` = #{type}
     </update>
 
-    <select id="selectVoByUserId" resultType="com.vikadata.api.cache.bean.AccountLinkDto">
+    <select id="selectVoByUserId" resultType="com.vikadata.api.shared.cache.bean.AccountLinkDto">
         SELECT `type`, nick_name, created_at create_time
         FROM vika_user_link
         WHERE user_id = #{userId}

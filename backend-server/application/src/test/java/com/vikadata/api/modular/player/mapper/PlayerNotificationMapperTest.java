@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.player.NotificationModelDto;
-import com.vikadata.api.model.ro.player.NotificationPageRo;
+import com.vikadata.api.player.dto.NotificationModelDTO;
+import com.vikadata.api.player.mapper.PlayerNotificationMapper;
+import com.vikadata.api.player.ro.NotificationPageRo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -32,7 +33,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
         notificationPageRo.setIsRead(1);
         notificationPageRo.setNotifyType("member");
         notificationPageRo.setRowNo(1);
-        List<NotificationModelDto> entities = playerNotificationMapper.selectPlayerNotificationPage(notificationPageRo, 41L, 1);
+        List<NotificationModelDTO> entities = playerNotificationMapper.selectPlayerNotificationPage(notificationPageRo, 41L, 1);
         assertThat(entities).isNotEmpty();
     }
 
@@ -70,7 +71,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/player-notification-data.sql")
     void testSelectDtoByTypeAndIsRead() {
-        List<NotificationModelDto> entities = playerNotificationMapper.selectDtoByTypeAndIsRead(41L, 1);
+        List<NotificationModelDTO> entities = playerNotificationMapper.selectDtoByTypeAndIsRead(41L, 1);
         assertThat(entities).isNotEmpty();
     }
 

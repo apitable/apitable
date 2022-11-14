@@ -8,7 +8,7 @@ import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.component.clock.ClockManager;
+import com.vikadata.api.shared.component.clock.ClockManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;

@@ -10,9 +10,10 @@ import cn.hutool.core.util.ArrayUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.util.billing.model.BillingPlanFeature;
-import com.vikadata.api.util.billing.model.ProductChannel;
-import com.vikadata.api.util.billing.model.ProductEnum;
+import com.vikadata.api.enterprise.billing.util.BillingConfigManager;
+import com.vikadata.api.enterprise.billing.util.model.BillingPlanFeature;
+import com.vikadata.api.enterprise.billing.util.model.ProductChannel;
+import com.vikadata.api.enterprise.billing.util.model.ProductEnum;
 import com.vikadata.system.config.billing.Event;
 import com.vikadata.system.config.billing.Plan;
 import com.vikadata.system.config.billing.Price;

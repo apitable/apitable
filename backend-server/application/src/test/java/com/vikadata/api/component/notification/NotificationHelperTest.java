@@ -3,6 +3,8 @@ package com.vikadata.api.component.notification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.component.notification.NotificationHelper;
+
 public class NotificationHelperTest {
 
     @Test

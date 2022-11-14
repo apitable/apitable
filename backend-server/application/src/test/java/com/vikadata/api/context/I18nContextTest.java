@@ -5,7 +5,8 @@ import java.util.Locale;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.constants.LanguageConstants;
+import com.vikadata.api.shared.constants.LanguageConstants;
+import com.vikadata.api.shared.context.I18nContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

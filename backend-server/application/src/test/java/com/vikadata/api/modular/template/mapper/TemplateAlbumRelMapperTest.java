@@ -9,7 +9,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enums.template.TemplateAlbumRelType;
+import com.vikadata.api.template.enums.TemplateAlbumRelType;
+import com.vikadata.api.template.mapper.TemplateAlbumRelMapper;
 import com.vikadata.entity.TemplateAlbumRelEntity;
 
 import org.springframework.test.context.jdbc.Sql;

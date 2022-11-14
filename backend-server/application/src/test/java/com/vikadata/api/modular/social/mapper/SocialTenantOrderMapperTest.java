@@ -5,7 +5,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enums.social.SocialPlatformType;
+import com.vikadata.api.enterprise.social.mapper.SocialTenantOrderMapper;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

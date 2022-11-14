@@ -3,6 +3,7 @@ package com.vikadata.api.modular.social.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.social.mapper.SocialUserMapper;
 import com.vikadata.entity.SocialUserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

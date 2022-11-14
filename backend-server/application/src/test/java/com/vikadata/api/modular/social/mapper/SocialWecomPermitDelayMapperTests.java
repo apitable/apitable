@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayProcessStatus;
-import com.vikadata.api.modular.social.enums.SocialCpIsvPermitDelayType;
+import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitDelayProcessStatus;
+import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitDelayType;
+import com.vikadata.api.enterprise.social.mapper.SocialWecomPermitDelayMapper;
 import com.vikadata.entity.SocialWecomPermitDelayEntity;
 
 import org.springframework.test.context.jdbc.Sql;

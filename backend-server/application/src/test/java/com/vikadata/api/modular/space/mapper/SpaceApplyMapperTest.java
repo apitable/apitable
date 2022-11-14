@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.space.SpaceApplyDto;
+import com.vikadata.api.space.dto.SpaceApplyDTO;
+import com.vikadata.api.space.mapper.SpaceApplyMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -27,7 +28,7 @@ public class SpaceApplyMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({ "/testdata/space-apply-data.sql", "/testdata/player-notification-data.sql" })
     void testSelectSpaceApplyDto() {
-        SpaceApplyDto entity = spaceApplyMapper.selectSpaceApplyDto(45L, 41L, "assigned_to_group", "\"id\"", "\"status\"");
+        SpaceApplyDTO entity = spaceApplyMapper.selectSpaceApplyDto(45L, 41L, "assigned_to_group", "\"id\"", "\"status\"");
         assertThat(entity).isNotNull();
     }
 

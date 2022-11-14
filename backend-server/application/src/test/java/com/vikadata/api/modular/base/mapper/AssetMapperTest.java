@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.FileHelper;
+import com.vikadata.api.asset.mapper.AssetMapper;
 import com.vikadata.entity.AssetEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

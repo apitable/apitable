@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.organization.mapper.TeamMapper">
+<mapper namespace="com.vikadata.api.organization.mapper.TeamMapper">
 
     <select id="selectRootIdBySpaceId" resultType="java.lang.Long">
         SELECT id
@@ -22,7 +22,7 @@
           and is_deleted = 0
     </select>
 
-    <resultMap id="teamInfo" type="com.vikadata.api.model.vo.organization.TeamInfoVo">
+    <resultMap id="teamInfo" type="com.vikadata.api.organization.vo.TeamInfoVo">
         <result column="team_id" property="teamId"/>
         <result column="team_name" property="teamName"/>
         <result column="parent_id" property="parentId"/>
@@ -152,7 +152,7 @@
         FROM sub_ids;
     </select>
 
-    <select id="selectByTeamName" resultType="com.vikadata.api.model.vo.organization.SearchTeamResultVo">
+    <select id="selectByTeamName" resultType="com.vikadata.api.organization.vo.SearchTeamResultVo">
         SELECT vod.id                             as team_id,
                vod.team_name                      as team_name,
                vod1.team_name                     as parent_name,
@@ -177,7 +177,7 @@
           AND vod.is_deleted = 0
     </select>
 
-    <resultMap id="memberPageVo" type="com.vikadata.api.model.vo.organization.MemberPageVo">
+    <resultMap id="memberPageVo" type="com.vikadata.api.organization.vo.MemberPageVo">
         <result column="id" property="memberId"/>
         <result column="avatar" property="avatar"/>
         <result column="nick_name" property="nickName"/>
@@ -283,7 +283,7 @@
         GROUP BY vodmr.member_id
     </select>
 
-    <resultMap id="teamMemberDto" type="com.vikadata.api.model.dto.organization.TeamMemberDto">
+    <resultMap id="teamMemberDto" type="com.vikadata.api.organization.dto.TeamMemberDTO">
         <result column="id" property="teamId"/>
         <result column="team_name" property="teamName"/>
         <result column="parent_id" property="parentId"/>
@@ -391,7 +391,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectUnitTeamVoByTeamId" resultType="com.vikadata.api.model.vo.organization.UnitTeamVo">
+    <select id="selectUnitTeamVoByTeamId" resultType="com.vikadata.api.organization.vo.UnitTeamVo">
         SELECT vou.id as unitId,
         vout.id as teamId,
         vout.team_name
@@ -401,7 +401,7 @@
         and vout.id = #{teamId}
     </select>
 
-    <select id="selectUnitTeamVoByTeamIds" resultType="com.vikadata.api.model.vo.organization.UnitTeamVo">
+    <select id="selectUnitTeamVoByTeamIds" resultType="com.vikadata.api.organization.vo.UnitTeamVo">
         SELECT vou.id as unitId,
                vout.id as teamId,
                vout.team_name
@@ -428,7 +428,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.modular.organization.model.TeamBaseInfoDTO">
+    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.model.TeamBaseInfoDTO">
         SELECT id, team_name
         FROM vika_unit_team
         WHERE id IN
@@ -476,7 +476,7 @@
         SELECT DISTINCT * FROM tree_view
     </select>
 
-    <select id="selectChildTreeByTeamIds" resultType="com.vikadata.api.modular.organization.model.TeamCteInfo">
+    <select id="selectChildTreeByTeamIds" resultType="com.vikadata.api.organization.model.TeamCteInfo">
         WITH RECURSIVE tree_view ( id, parent_id ) AS (
         SELECT id, parent_id
         FROM vika_unit_team
@@ -493,7 +493,7 @@
         SELECT DISTINCT * FROM tree_view
     </select>
 
-    <select id="selectParentTreeByTeamIds" resultType="com.vikadata.api.modular.organization.model.TeamPathInfo">
+    <select id="selectParentTreeByTeamIds" resultType="com.vikadata.api.organization.model.TeamPathInfo">
         WITH RECURSIVE tree_view ( id, team_name, parent_id ) AS (
         SELECT id, team_name, parent_id
         FROM vika_unit_team

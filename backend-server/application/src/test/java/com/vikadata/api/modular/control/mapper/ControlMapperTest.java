@@ -7,9 +7,10 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.control.ControlType;
-import com.vikadata.api.modular.control.model.ControlTypeDTO;
-import com.vikadata.api.modular.control.model.ControlUnitDTO;
+import com.vikadata.api.enterprise.control.infrastructure.ControlType;
+import com.vikadata.api.enterprise.control.mapper.ControlMapper;
+import com.vikadata.api.enterprise.control.model.ControlTypeDTO;
+import com.vikadata.api.enterprise.control.model.ControlUnitDTO;
 import com.vikadata.entity.ControlEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

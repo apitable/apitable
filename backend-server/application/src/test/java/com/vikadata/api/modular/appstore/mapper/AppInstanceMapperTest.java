@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.appstore.mapper.AppInstanceMapper;
 import com.vikadata.entity.AppInstanceEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

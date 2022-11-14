@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.client.ClientEntryDetailDto;
-import com.vikadata.api.util.VikaVersion;
+import com.vikadata.api.client.dto.ClientEntryDetailDto;
+import com.vikadata.api.client.mapper.ClientReleaseVersionMapper;
+import com.vikadata.api.shared.util.VikaVersion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

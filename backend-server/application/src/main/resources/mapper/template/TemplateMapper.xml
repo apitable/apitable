@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.template.mapper.TemplateMapper">
-    <resultMap id="TemplateDtoMap" type="com.vikadata.api.model.dto.template.TemplateDto">
+<mapper namespace="com.vikadata.api.template.mapper.TemplateMapper">
+    <resultMap id="TemplateDtoMap" type="com.vikadata.api.template.dto.TemplateDto">
         <result column="template_id" property="templateId"/>
         <result column="node_id" property="nodeId"/>
         <result column="name" property="name"/>
@@ -92,19 +92,19 @@
         WHERE vt.template_id = #{templateId} AND vt.is_deleted = 0
     </select>
 
-    <select id="selectInfoByTempId" resultType="com.vikadata.api.model.dto.template.TemplateInfo">
+    <select id="selectInfoByTempId" resultType="com.vikadata.api.template.dto.TemplateInfo">
         SELECT node_id, type_id, `name`, template_id
         FROM vika_template
         WHERE template_id = #{templateId} AND is_deleted = 0
     </select>
 
-    <select id="selectInfoById" resultType="com.vikadata.api.model.dto.template.TemplateInfo">
+    <select id="selectInfoById" resultType="com.vikadata.api.template.dto.TemplateInfo">
         SELECT template_id, node_id
         FROM vika_template
         WHERE id = #{id} AND is_deleted = 0
     </select>
 
-    <select id="selectInfoByTypeId" resultType="com.vikadata.api.model.dto.template.TemplateInfo">
+    <select id="selectInfoByTypeId" resultType="com.vikadata.api.template.dto.TemplateInfo">
         SELECT id, template_id, node_id, `name`
         FROM vika_template
         WHERE type_id = #{typeId} AND is_deleted = 0
@@ -116,7 +116,7 @@
         WHERE template_id = #{tempId} AND type = #{type} AND is_deleted = 0
     </select>
 
-    <select id="selectByTemplateIds" resultType="com.vikadata.api.modular.template.model.OnlineTemplateDto">
+    <select id="selectByTemplateIds" resultType="com.vikadata.api.template.model.OnlineTemplateDto">
         SELECT vt.template_id, vt.name AS template_name, vtp.property_name, vtp.property_code, vtp.property_type
         FROM vika_template vt
         LEFT JOIN vika_template_property_rel vtpr ON vt.template_id = vtpr.template_id

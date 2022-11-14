@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.vo.asset.AssetsAuditVo;
+import com.vikadata.api.asset.vo.AssetsAuditVo;
+import com.vikadata.api.asset.mapper.AssetAuditMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

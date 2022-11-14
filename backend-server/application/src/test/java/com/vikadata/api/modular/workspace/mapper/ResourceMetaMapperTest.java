@@ -6,6 +6,7 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.workspace.mapper.ResourceMetaMapper;
 import com.vikadata.entity.ResourceMetaEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

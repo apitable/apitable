@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.model.vo.template.AlbumContentVo;
-import com.vikadata.api.model.vo.template.AlbumVo;
-import com.vikadata.api.modular.template.service.ITemplateAlbumService;
+import com.vikadata.api.template.vo.AlbumContentVo;
+import com.vikadata.api.template.vo.AlbumVo;
+import com.vikadata.api.template.service.ITemplateAlbumService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

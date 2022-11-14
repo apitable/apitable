@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceAssetMapper">
+<mapper namespace="com.vikadata.api.space.mapper.SpaceAssetMapper">
 
     <update id="updateIsDeletedByNodeIds">
         UPDATE vika_space_asset
@@ -23,13 +23,13 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectDto" resultType="com.vikadata.api.model.dto.space.SpaceAssetDto">
+    <select id="selectDto" resultType="com.vikadata.api.space.dto.SpaceAssetDTO">
         SELECT id, cite, type
         FROM vika_space_asset
         WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId} AND is_deleted = 0
     </select>
 
-    <select id="selectDtoByAssetIdsAndType" resultType="com.vikadata.api.model.dto.space.SpaceAssetDto">
+    <select id="selectDtoByAssetIdsAndType" resultType="com.vikadata.api.space.dto.SpaceAssetDTO">
         SELECT id, cite, asset_checksum, type
         FROM vika_space_asset t
         WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND type = #{type}
@@ -42,7 +42,7 @@
     </select>
 
     <select id="selectNodeAssetDto"
-            resultType="com.vikadata.api.model.dto.space.NodeAssetDto">
+            resultType="com.vikadata.api.space.dto.NodeAssetDTO">
         SELECT node_id,
                asset_id,
                asset_checksum AS checksum,

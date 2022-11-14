@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.user.mapper.UserMapper">
+<mapper namespace="com.vikadata.api.user.mapper.UserMapper">
 
     <select id="selectUserNameById" resultType="java.lang.String">
         SELECT nick_name
@@ -26,14 +26,14 @@
         WHERE email = #{email} AND is_deleted = 0
     </select>
 
-    <select id="selectByMobile" resultType="com.vikadata.entity.UserEntity">
+    <select id="selectByMobile" resultType="com.vikadata.api.user.entity.UserEntity">
         SELECT *
         FROM vika_user
         WHERE mobile_phone = #{mobilePhone} AND is_deleted = 0
         LIMIT 0,1
     </select>
 
-    <select id="selectByMobilePhoneIn" resultType="com.vikadata.entity.UserEntity">
+    <select id="selectByMobilePhoneIn" resultType="com.vikadata.api.user.entity.UserEntity">
         SELECT *
         FROM vika_user
         WHERE mobile_phone IN
@@ -43,7 +43,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectByEmail" resultType="com.vikadata.entity.UserEntity">
+    <select id="selectByEmail" resultType="com.vikadata.api.user.entity.UserEntity">
         SELECT * FROM vika_user WHERE email = #{email} AND is_deleted = 0
         LIMIT 0,1
     </select>
@@ -54,7 +54,7 @@
         WHERE email = #{email} AND is_deleted = 0
     </select>
 
-    <select id="selectByEmails" resultType="com.vikadata.entity.UserEntity">
+    <select id="selectByEmails" resultType="com.vikadata.api.user.entity.UserEntity">
         SELECT *
         FROM vika_user
         WHERE email IN
@@ -85,7 +85,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectByIds" resultType="com.vikadata.entity.UserEntity">
+    <select id="selectByIds" resultType="com.vikadata.api.user.entity.UserEntity">
         SELECT vu.avatar, vu.email, vu.id, vu.nick_name, vu.uuid
         FROM vika_user vu
         WHERE vu.id IN
@@ -95,7 +95,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectByUuIds" resultType="com.vikadata.entity.UserEntity">
+    <select id="selectByUuIds" resultType="com.vikadata.api.user.entity.UserEntity">
         SELECT *
         FROM vika_user vu
         WHERE vu.uuid IN
@@ -148,7 +148,7 @@
         AND vu.email IS NOT NULL
     </select>
 
-    <select id="selectLocaleInEmailsWithDefaultLocale" resultType="com.vikadata.api.modular.user.model.UserLangDTO">
+    <select id="selectLocaleInEmailsWithDefaultLocale" resultType="com.vikadata.api.user.model.UserLangDTO">
         SELECT id, IFNULL(locale, #{defaultLocale}) as locale, email FROM vika_user
         WHERE email IN
         <foreach collection="emails" item="email" index="index" open="(" close=")" separator=",">
@@ -157,19 +157,19 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectLocaleByEmail" resultType="com.vikadata.api.modular.user.model.UserLangDTO">
+    <select id="selectLocaleByEmail" resultType="com.vikadata.api.user.model.UserLangDTO">
         SELECT id, locale, email FROM vika_user
         WHERE email = #{email}
         AND is_deleted = 0
     </select>
 
-    <select id="selectLocaleByEmailWithDefaultLocale" resultType="com.vikadata.api.modular.user.model.UserLangDTO">
+    <select id="selectLocaleByEmailWithDefaultLocale" resultType="com.vikadata.api.user.model.UserLangDTO">
         SELECT id, IFNULL(locale, #{defaultLocale}) as locale, email FROM vika_user
         WHERE email = #{email}
         AND is_deleted = 0
     </select>
 
-    <select id="selectLocaleAndEmailByIds" resultType="com.vikadata.api.modular.user.model.UserLangDTO">
+    <select id="selectLocaleAndEmailByIds" resultType="com.vikadata.api.user.model.UserLangDTO">
         SELECT id, locale, email FROM vika_user
         WHERE id IN
         <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
@@ -178,7 +178,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectPausedUsers" resultType="com.vikadata.api.modular.user.model.UserInPausedDto">
+    <select id="selectPausedUsers" resultType="com.vikadata.api.user.model.UserInPausedDto">
         SELECT id as user_id FROM vika_user
         WHERE id IN
         <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
@@ -187,7 +187,7 @@
         AND is_paused = 1 AND is_deleted = 0
     </select>
 
-    <select id="selectInviteUserInfoByUserId" resultType="com.vikadata.api.modular.space.model.InviteUserInfo">
+    <select id="selectInviteUserInfoByUserId" resultType="com.vikadata.api.space.model.InviteUserInfo">
         SELECT id as userId, nick_name as userName, avatar
         FROM vika_user
         WHERE id = #{userId}

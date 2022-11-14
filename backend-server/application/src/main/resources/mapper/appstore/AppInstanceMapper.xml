@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.appstore.mapper.AppInstanceMapper">
+<mapper namespace="com.vikadata.api.enterprise.appstore.mapper.AppInstanceMapper">
     <select id="selectBySpaceIdAndAppId"
             resultType="com.vikadata.entity.AppInstanceEntity">
         SELECT *

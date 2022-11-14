@@ -16,11 +16,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.component.LanguageManager;
-import com.vikadata.api.component.notification.NotifyMailFactory;
-import com.vikadata.api.config.properties.EmailSendProperties;
-import com.vikadata.api.constants.MailPropConstants;
-import com.vikadata.api.util.IdUtil;
+import com.vikadata.api.shared.component.LanguageManager;
+import com.vikadata.api.shared.component.notification.NotifyMailFactory;
+import com.vikadata.api.shared.config.properties.EmailSendProperties;
+import com.vikadata.api.shared.constants.MailPropConstants;
+import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;

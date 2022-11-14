@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.WidgetMapper">
+<mapper namespace="com.vikadata.api.enterprise.widget.mapper.WidgetMapper">
     <select id="selectCountBySpaceIdAndWidgetIds" resultType="java.lang.Integer">
         SELECT count(1)
         FROM vika_widget
@@ -11,7 +11,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectWidgetBaseInfoByWidgetIds" resultType="com.vikadata.api.model.dto.widget.WidgetBaseInfo">
+    <select id="selectWidgetBaseInfoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.WidgetBaseInfo">
         SELECT node_id, widget_id, package_id AS widgetPackageId, name, storage, revision
         FROM vika_widget
         WHERE widget_id IN
@@ -21,7 +21,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectInfoBySpaceIdAndNodeType" resultType="com.vikadata.api.model.vo.widget.WidgetInfo">
+    <select id="selectInfoBySpaceIdAndNodeType" resultType="com.vikadata.api.enterprise.widget.vo.WidgetInfo">
         SELECT vw.widget_id,
                vw.name      AS widgetName,
                vwp.cover    AS widgetPackageCover,
@@ -39,7 +39,7 @@
         ORDER BY vw.created_at DESC
     </select>
 
-    <select id="selectInfoByNodeId" resultType="com.vikadata.api.model.vo.widget.WidgetInfo">
+    <select id="selectInfoByNodeId" resultType="com.vikadata.api.enterprise.widget.vo.WidgetInfo">
         SELECT vw.widget_id,
                vw.name      AS widgetName,
                vwp.cover    AS widgetPackageCover,
@@ -56,7 +56,7 @@
         ORDER BY vw.created_at DESC
     </select>
 
-    <select id="selectNodeWidgetDtoByNodeIds" resultType="com.vikadata.api.modular.workspace.model.NodeWidgetDto">
+    <select id="selectNodeWidgetDtoByNodeIds" resultType="com.vikadata.api.workspace.model.NodeWidgetDto">
         SELECT vw.name       AS widgetName,
                vdw.dst_id    AS dstId,
                vw.node_id    AS nodeId
@@ -70,7 +70,7 @@
         ORDER BY vw.created_at DESC
     </select>
 
-    <select id="selectWidgetDtoByWidgetIds" resultType="com.vikadata.api.model.dto.widget.WidgetDTO">
+    <select id="selectWidgetDtoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.WidgetDTO">
         SELECT vw.widget_id, vw.node_id, vdw.dst_id, vdw.source_id
         FROM vika_widget vw
         JOIN vika_datasheet_widget vdw ON vw.widget_id = vdw.widget_id

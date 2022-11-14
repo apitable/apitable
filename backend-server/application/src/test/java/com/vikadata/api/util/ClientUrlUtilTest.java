@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.util.ClientUriUtil;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**

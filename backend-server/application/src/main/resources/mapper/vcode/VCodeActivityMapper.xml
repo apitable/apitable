@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.vcode.mapper.VCodeActivityMapper">
+<mapper namespace="com.vikadata.api.enterprise.vcode.mapper.VCodeActivityMapper">
 
     <select id="selectAllScene" resultType="java.lang.String">
         SELECT scene
@@ -37,20 +37,20 @@
         WHERE id = #{id} AND is_deleted = 0
     </select>
 
-    <resultMap id="BaseInfo" type="com.vikadata.api.model.vo.vcode.VCodeActivityVo">
+    <resultMap id="BaseInfo" type="com.vikadata.api.enterprise.vcode.vo.VCodeActivityVo">
         <result column="id" property="activityId"/>
         <result column="name" property="name"/>
         <result column="scene" property="scene"/>
     </resultMap>
 
-    <resultMap id="DetailInfo" extends="BaseInfo" type="com.vikadata.api.model.vo.vcode.VCodeActivityPageVo">
+    <resultMap id="DetailInfo" extends="BaseInfo" type="com.vikadata.api.enterprise.vcode.vo.VCodeActivityPageVo">
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
         <result column="creator" property="creator"/>
         <result column="updater" property="updater"/>
-        <collection property="qrCodeList" ofType="com.vikadata.api.model.vo.wechat.QrCodeBaseInfo"
+        <collection property="qrCodeList" ofType="com.vikadata.api.enterprise.wechat.vo.QrCodeBaseInfo"
                     column="{scene=scene,appId=appId}"
-                    select="com.vikadata.api.modular.wechat.mapper.WechatMpQrcodeMapper.selectBaseInfo">
+                    select="com.vikadata.api.enterprise.wechat.mapper.WechatMpQrcodeMapper.selectBaseInfo">
         </collection>
     </resultMap>
 

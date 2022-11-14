@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enums.social.SocialPlatformType;
-import com.vikadata.api.modular.social.enums.SocialAppType;
-import com.vikadata.api.modular.social.model.SpaceBindTenantInfoDTO;
-import com.vikadata.api.modular.social.model.TenantBindDTO;
+import com.vikadata.api.enterprise.social.mapper.SocialTenantBindMapper;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.enterprise.social.model.SpaceBindTenantInfoDTO;
+import com.vikadata.api.enterprise.social.model.TenantBindDTO;
 import com.vikadata.entity.SocialTenantBindEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,19 +6,19 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.space.model.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.node.NodeOpRo;
-import com.vikadata.api.model.vo.node.NodeInfoVo;
-import com.vikadata.api.modular.organization.service.ITeamService;
-import com.vikadata.api.modular.workspace.service.INodeService;
+import com.vikadata.api.workspace.ro.NodeOpRo;
+import com.vikadata.api.workspace.vo.NodeInfoVo;
+import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.api.enums.node.NodeType;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.vikadata.api.enums.exception.PermissionException.ROOT_NODE_OP_DENIED;
+import static com.vikadata.api.workspace.enums.PermissionException.ROOT_NODE_OP_DENIED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

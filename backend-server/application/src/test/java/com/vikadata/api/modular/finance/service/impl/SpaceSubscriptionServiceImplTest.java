@@ -14,28 +14,28 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.finance.BundleState;
-import com.vikadata.api.enums.finance.SubscriptionState;
+import com.vikadata.api.enterprise.billing.enums.BundleState;
+import com.vikadata.api.enterprise.billing.enums.SubscriptionState;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.space.mapper.SpaceMapper;
-import com.vikadata.api.modular.space.model.SpaceSubscriptionDto;
-import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
-import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
-import com.vikadata.api.modular.user.mapper.UserMapper;
-import com.vikadata.api.util.billing.BillingConfigManager;
-import com.vikadata.api.util.billing.BillingUtil;
-import com.vikadata.api.util.billing.model.ProductChannel;
-import com.vikadata.api.util.billing.model.SubscribePlanInfo;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.model.SpaceSubscriptionDto;
+import com.vikadata.api.space.model.vo.SpaceCapacityPageVO;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.enterprise.billing.util.BillingConfigManager;
+import com.vikadata.api.enterprise.billing.util.BillingUtil;
+import com.vikadata.api.enterprise.billing.util.model.ProductChannel;
+import com.vikadata.api.enterprise.billing.util.model.SubscribePlanInfo;
 import com.vikadata.entity.BundleEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.SubscriptionEntity;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.system.config.billing.Price;
 import com.vikadata.system.config.billing.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.vikadata.api.constants.AssetsPublicConstants.CAPACITY_HEX;
+import static com.vikadata.api.shared.constants.AssetsPublicConstants.CAPACITY_HEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {

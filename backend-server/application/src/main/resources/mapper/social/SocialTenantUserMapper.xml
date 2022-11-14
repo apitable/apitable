@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantUserMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantUserMapper">
     <insert id="insertBatch">
         INSERT INTO vika_social_tenant_user(id, app_id, tenant_id, open_id, union_id)
         VALUES
@@ -94,7 +94,7 @@
     </delete>
 
     <select id="selectOpenIdAndUnionIdByTenantId"
-            resultType="com.vikadata.api.modular.social.model.SocialTenantUserDTO">
+            resultType="com.vikadata.api.enterprise.social.model.SocialTenantUserDTO">
         SELECT open_id, union_id
         FROM vika_social_tenant_user
         WHERE tenant_id = #{tenantId} AND app_id = #{appId}

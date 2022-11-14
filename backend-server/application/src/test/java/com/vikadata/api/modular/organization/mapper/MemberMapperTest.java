@@ -8,24 +8,24 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.organization.MemberDto;
-import com.vikadata.api.model.dto.organization.SearchMemberDto;
-import com.vikadata.api.model.dto.organization.SpaceMemberDto;
-import com.vikadata.api.model.dto.organization.SpaceMemberIdDto;
-import com.vikadata.api.model.dto.player.PlayerBaseDto;
-import com.vikadata.api.model.vo.datasheet.FieldRoleMemberVo;
-import com.vikadata.api.model.vo.node.NodeRoleMemberVo;
-import com.vikadata.api.model.vo.organization.MemberInfoVo;
-import com.vikadata.api.model.vo.organization.SearchMemberVo;
-import com.vikadata.api.model.vo.organization.UnitMemberVo;
-import com.vikadata.api.model.vo.space.MainAdminInfoVo;
-import com.vikadata.api.modular.organization.model.MemberBaseInfoDTO;
-import com.vikadata.api.modular.organization.model.MemberTeamInfoDTO;
-import com.vikadata.api.modular.social.model.TenantMemberDto;
-import com.vikadata.api.modular.workspace.model.MemberInfoDTO;
+import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.organization.dto.SearchMemberDTO;
+import com.vikadata.api.organization.dto.SpaceMemberDTO;
+import com.vikadata.api.organization.dto.SpaceMemberIdDTO;
+import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.player.dto.PlayerBaseDTO;
+import com.vikadata.api.workspace.vo.FieldRoleMemberVo;
+import com.vikadata.api.workspace.vo.NodeRoleMemberVo;
+import com.vikadata.api.organization.vo.MemberInfoVo;
+import com.vikadata.api.organization.vo.SearchMemberVo;
+import com.vikadata.api.organization.vo.UnitMemberVo;
+import com.vikadata.api.space.vo.MainAdminInfoVo;
+import com.vikadata.api.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.organization.model.MemberTeamInfoDTO;
+import com.vikadata.api.enterprise.social.model.TenantMemberDto;
+import com.vikadata.api.workspace.model.MemberInfoDTO;
 import com.vikadata.entity.MemberEntity;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.annotation.Resource;
@@ -41,7 +41,7 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-member-data.sql")
     void testSelectInactiveMemberByEmail() {
-        List<MemberDto> entities = memberMapper.selectInactiveMemberByEmail("24@vikadata.com");
+        List<MemberDTO> entities = memberMapper.selectInactiveMemberByEmail("24@vikadata.com");
         assertThat(entities).isNotEmpty();
     }
 
@@ -55,7 +55,7 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/testdata/unit-member-data.sql", "/testdata/unit-data.sql"})
     void testSelectByName() {
-        List<SearchMemberDto> entities = memberMapper.selectByName("spc41", "41");
+        List<SearchMemberDTO> entities = memberMapper.selectByName("spc41", "41");
         assertThat(entities).isNotEmpty();
     }
 
@@ -111,21 +111,21 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-member-data.sql")
     void testSelectDtoByUserIdAndSpaceId() {
-        MemberDto entity = memberMapper.selectDtoByUserIdAndSpaceId(41L, "spc41");
+        MemberDTO entity = memberMapper.selectDtoByUserIdAndSpaceId(41L, "spc41");
         assertThat(entity).isNotNull();
     }
 
     @Test
     @Sql({"/testdata/unit-member-data.sql", "/testdata/user-data.sql"})
     void testSelectDtoByMemberId() {
-        MemberDto entity = memberMapper.selectDtoByMemberId(41L);
+        MemberDTO entity = memberMapper.selectDtoByMemberId(41L);
         assertThat(entity).isNotNull();
     }
 
     @Test
     @Sql({"/testdata/unit-member-data.sql", "/testdata/user-data.sql"})
     void testSelectMemberDtoByUserIdAndSpaceId() {
-        MemberDto entity = memberMapper.selectMemberDtoByUserIdAndSpaceId(41L, "spc41");
+        MemberDTO entity = memberMapper.selectMemberDtoByUserIdAndSpaceId(41L, "spc41");
         assertThat(entity).isNotNull();
     }
 
@@ -307,14 +307,14 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-member-data.sql")
     void testSelectMemberInfoByMemberIdsIncludeDelete() {
-        List<PlayerBaseDto> entities = memberMapper.selectMemberInfoByMemberIdsIncludeDelete(CollUtil.newArrayList(41L));
+        List<PlayerBaseDTO> entities = memberMapper.selectMemberInfoByMemberIdsIncludeDelete(CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
     @Sql("/testdata/unit-member-data.sql")
     void testSelectDtoBySpaceIdAndUserIds() {
-        List<MemberDto> entities = memberMapper.selectDtoBySpaceIdAndUserIds("spc41", CollUtil.newArrayList(41L));
+        List<MemberDTO> entities = memberMapper.selectDtoBySpaceIdAndUserIds("spc41", CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
     }
 
@@ -454,7 +454,7 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-member-data.sql")
     void testSelectMembersBySpaceIds() {
-        List<SpaceMemberDto> entities = memberMapper.selectMembersBySpaceIds(CollUtil.newArrayList("spc41"));
+        List<SpaceMemberDTO> entities = memberMapper.selectMembersBySpaceIds(CollUtil.newArrayList("spc41"));
         assertThat(entities).isNotEmpty();
     }
 
@@ -482,7 +482,7 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-member-data.sql")
     void testSelectMemberIdsByUserIdAndSpaceIds() {
-        List<SpaceMemberIdDto> dtos = memberMapper.selectMemberIdsByUserIdAndSpaceIds(45L, Collections.singletonList("spc45"));
+        List<SpaceMemberIdDTO> dtos = memberMapper.selectMemberIdsByUserIdAndSpaceIds(45L, Collections.singletonList("spc45"));
         assertThat(dtos.size()).isEqualTo(1);
     }
 

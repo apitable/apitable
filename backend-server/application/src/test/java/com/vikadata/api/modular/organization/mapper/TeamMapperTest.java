@@ -5,18 +5,20 @@ import java.util.List;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.vikadata.api.modular.organization.model.TeamCteInfo;
+
+import com.vikadata.api.organization.mapper.TeamMapper;
+import com.vikadata.api.organization.model.TeamCteInfo;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.organization.TeamMemberDto;
-import com.vikadata.api.model.vo.organization.MemberPageVo;
-import com.vikadata.api.model.vo.organization.SearchTeamResultVo;
-import com.vikadata.api.model.vo.organization.TeamInfoVo;
-import com.vikadata.api.model.vo.organization.UnitTeamVo;
-import com.vikadata.api.modular.organization.model.TeamBaseInfoDTO;
-import com.vikadata.api.modular.organization.model.TeamPathInfo;
+import com.vikadata.api.organization.dto.TeamMemberDTO;
+import com.vikadata.api.organization.vo.MemberPageVo;
+import com.vikadata.api.organization.vo.SearchTeamResultVo;
+import com.vikadata.api.organization.vo.TeamInfoVo;
+import com.vikadata.api.organization.vo.UnitTeamVo;
+import com.vikadata.api.organization.model.TeamBaseInfoDTO;
+import com.vikadata.api.organization.model.TeamPathInfo;
 import com.vikadata.entity.TeamEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -142,7 +144,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/unit-team-data.sql")
     void testSelectTeamsBySpaceId() {
-        List<TeamMemberDto> entities = teamMapper.selectTeamsBySpaceId("spc41", 0L);
+        List<TeamMemberDTO> entities = teamMapper.selectTeamsBySpaceId("spc41", 0L);
         assertThat(entities).isNotEmpty();
     }
 
@@ -157,7 +159,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Sql({ "/testdata/unit-team-data.sql", "/testdata/unit-team-member-rel-data.sql",
             "/testdata/unit-member-data.sql" })
     void testSelectTeamsByIds() {
-        List<TeamMemberDto> entities = teamMapper.selectTeamsByIds(CollUtil.newArrayList(45L));
+        List<TeamMemberDTO> entities = teamMapper.selectTeamsByIds(CollUtil.newArrayList(45L));
         assertThat(entities).isNotEmpty();
     }
 
@@ -255,7 +257,7 @@ public class TeamMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/testdata/unit-team-data.sql", "/testdata/unit-team-member-rel-data.sql", "/testdata/unit-member-data.sql"})
     void testSelectMemberTeamsBySpaceIdAndTeamIds(){
-        List<TeamMemberDto> entities = teamMapper.selectMemberTeamsBySpaceIdAndTeamIds("spc41", CollUtil.newArrayList(41L));
+        List<TeamMemberDTO> entities = teamMapper.selectMemberTeamsBySpaceIdAndTeamIds("spc41", CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
     }
 

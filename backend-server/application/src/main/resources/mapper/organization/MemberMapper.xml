@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.organization.mapper.MemberMapper">
+<mapper namespace="com.vikadata.api.organization.mapper.MemberMapper">
 
-    <select id="selectInactiveMemberByEmail" resultType="com.vikadata.api.model.dto.organization.MemberDto">
+    <select id="selectInactiveMemberByEmail" resultType="com.vikadata.api.organization.dto.MemberDTO">
         select id, space_id
         from vika_unit_member
         where email = #{email}
@@ -12,7 +12,7 @@
           and mobile IS NULL
     </select>
 
-    <select id="selectInactiveMemberByMobile" resultType="com.vikadata.api.model.dto.organization.MemberDto">
+    <select id="selectInactiveMemberByMobile" resultType="com.vikadata.api.organization.dto.MemberDTO">
         SELECT id, space_id
         FROM vika_unit_member
         WHERE mobile = #{mobile} AND is_active = 0 AND user_id IS NULL AND is_deleted = 0
@@ -26,13 +26,13 @@
           AND is_deleted = 0
     </select>
 
-    <resultMap id="searchMemberDto" type="com.vikadata.api.model.dto.organization.SearchMemberDto">
+    <resultMap id="searchMemberDto" type="com.vikadata.api.organization.dto.SearchMemberDTO">
         <result column="unit_id" property="unitId"/>
         <result column="member_id" property="memberId"/>
         <result column="member_name" property="memberName"/>
         <result column="avatar" property="avatar"/>
         <result column="is_active" property="isActive"/>
-        <collection property="team" ofType="com.vikadata.api.model.dto.organization.MemberTeamDto">
+        <collection property="team" ofType="com.vikadata.api.organization.dto.MemberTeamDTO">
             <result column="team_id" property="teamId"/>
             <result column="team_name" property="teamName"/>
         </collection>
@@ -122,7 +122,7 @@
         AND is_deleted = 0
     </select>
 
-    <resultMap id="memberInfo" type="com.vikadata.api.model.vo.organization.MemberInfoVo">
+    <resultMap id="memberInfo" type="com.vikadata.api.organization.vo.MemberInfoVo">
         <result column="member_id" property="memberId"/>
         <result column="avatar" property="avatar"/>
         <result column="nick_name" property="nickName"/>
@@ -138,11 +138,11 @@
         <result column="updated_at" property="updatedAt"/>
         <result column="is_nick_name_modified" property="isNickNameModified"/>
         <result column="is_member_name_modified" property="isMemberNameModified"/>
-        <collection property="teams" ofType="com.vikadata.api.model.vo.organization.TeamVo">
+        <collection property="teams" ofType="com.vikadata.api.organization.vo.TeamVo">
             <result column="team_id" property="teamId"/>
             <result column="team_name" property="teamName"/>
         </collection>
-        <collection property="tags" ofType="com.vikadata.api.model.vo.organization.TagVo">
+        <collection property="tags" ofType="com.vikadata.api.organization.vo.TagVo">
             <result column="tag_id" property="tagId"/>
             <result column="tag_name" property="tagName"/>
         </collection>
@@ -248,7 +248,7 @@
         where id = #{id}
     </select>
 
-    <select id="selectDtoByUserIdAndSpaceId" resultType="com.vikadata.api.model.dto.organization.MemberDto">
+    <select id="selectDtoByUserIdAndSpaceId" resultType="com.vikadata.api.organization.dto.MemberDTO">
         SELECT id, member_name
         FROM vika_unit_member
         WHERE user_id = #{userId}
@@ -256,7 +256,7 @@
           AND is_deleted = 0 LIMIT 0,1
     </select>
 
-    <select id="selectDtoByMemberId" resultType="com.vikadata.api.model.dto.organization.MemberDto">
+    <select id="selectDtoByMemberId" resultType="com.vikadata.api.organization.dto.MemberDTO">
         select m.id, m.user_id, m.space_id, m.member_name, u.avatar, m.is_social_name_modified
         from vika_unit_member m,
              vika_user u
@@ -265,7 +265,7 @@
           and m.id = #{memberId}
     </select>
 
-    <select id="selectMemberDtoByUserIdAndSpaceId" resultType="com.vikadata.api.model.dto.organization.MemberDto">
+    <select id="selectMemberDtoByUserIdAndSpaceId" resultType="com.vikadata.api.organization.dto.MemberDTO">
         select m.id, m.user_id, m.space_id, m.member_name, u.avatar, m.is_active, m.is_deleted
         from vika_unit_member m,
              vika_user u
@@ -347,7 +347,7 @@
         where user_id = #{userId} and space_id = #{spaceId} and is_deleted = 0 LIMIT 0,1
     </select>
 
-    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.modular.workspace.model.MemberInfoDTO">
+    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.workspace.model.MemberInfoDTO">
         select id, is_deleted
         from vika_unit_member
         where user_id = #{userId} and space_id = #{spaceId}
@@ -497,7 +497,7 @@
         WHERE id = #{memberId} and space_id = #{spaceId} and is_deleted = 0
     </select>
 
-    <select id="selectLikeMemberName" resultType="com.vikadata.api.model.vo.organization.SearchMemberVo">
+    <select id="selectLikeMemberName" resultType="com.vikadata.api.organization.vo.SearchMemberVo">
         SELECT vom.id as                                                                          member_id,
                vu.avatar,
                vom.member_name,
@@ -522,7 +522,7 @@
         GROUP BY vom.id
     </select>
 
-    <select id="selectLikeMemberNameByOpenIds" resultType="com.vikadata.api.model.vo.organization.SearchMemberVo">
+    <select id="selectLikeMemberNameByOpenIds" resultType="com.vikadata.api.organization.vo.SearchMemberVo">
         SELECT vom.id as                     member_id,
                vu.avatar,
                vom.member_name,
@@ -550,7 +550,7 @@
         GROUP BY vom.id
     </select>
 
-    <select id="selectAdminInfoBySpaceId" resultType="com.vikadata.api.model.vo.space.MainAdminInfoVo">
+    <select id="selectAdminInfoBySpaceId" resultType="com.vikadata.api.space.vo.MainAdminInfoVo">
         SELECT vom.member_name AS name,
                vu.code AS areaCode,
                vu.avatar,
@@ -564,7 +564,7 @@
         WHERE vom.space_id = #{spaceId} AND vom.is_deleted = 0
     </select>
 
-    <select id="selectUnitMemberByMemberId" resultType="com.vikadata.api.model.vo.organization.UnitMemberVo">
+    <select id="selectUnitMemberByMemberId" resultType="com.vikadata.api.organization.vo.UnitMemberVo">
         SELECT
             vou.id as unit_id,
             vom.id as member_id,
@@ -585,7 +585,7 @@
         GROUP BY vom.id
     </select>
 
-    <select id="selectUnitMemberByMemberIds" resultType="com.vikadata.api.model.vo.organization.UnitMemberVo">
+    <select id="selectUnitMemberByMemberIds" resultType="com.vikadata.api.organization.vo.UnitMemberVo">
         SELECT
         vou.id as unit_id,
         vom.id as member_id,
@@ -698,7 +698,7 @@
         </foreach>
     </select>
 
-    <select id="selectMemberInfoByMemberIdsIncludeDelete" resultType="com.vikadata.api.model.dto.player.PlayerBaseDto">
+    <select id="selectMemberInfoByMemberIdsIncludeDelete" resultType="com.vikadata.api.player.dto.PlayerBaseDTO">
         SELECT vom.id as member_id, vu.avatar, vom.member_name, vu.email, vom.is_deleted as is_member_deleted, vu.uuid,
         vu.nick_name as user_name, GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') team,
         IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
@@ -714,7 +714,7 @@
         GROUP BY vom.id
     </select>
 
-    <select id="selectDtoBySpaceIdAndUserIds" resultType="com.vikadata.api.model.dto.organization.MemberDto">
+    <select id="selectDtoBySpaceIdAndUserIds" resultType="com.vikadata.api.organization.dto.MemberDTO">
         SELECT max(id) AS id, user_id
         FROM vika_unit_member
         WHERE space_id = #{spaceId} AND user_id IN
@@ -757,7 +757,7 @@
         WHERE id = #{entity.id}
     </update>
 
-    <select id="selectNodeRoleMemberByIds" resultType="com.vikadata.api.model.vo.node.NodeRoleMemberVo">
+    <select id="selectNodeRoleMemberByIds" resultType="com.vikadata.api.workspace.vo.NodeRoleMemberVo">
         SELECT
             vom.id as member_id,
             vom.member_name as member_name,
@@ -783,7 +783,7 @@
         )
     </select>
 
-    <select id="selectFieldRoleMemberByIds" resultType="com.vikadata.api.model.vo.datasheet.FieldRoleMemberVo">
+    <select id="selectFieldRoleMemberByIds" resultType="com.vikadata.api.workspace.vo.FieldRoleMemberVo">
         SELECT
         vom.id as member_id,
         vom.member_name as member_name,
@@ -856,7 +856,7 @@
         WHERE id = #{memberId}
     </select>
 
-    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.modular.organization.model.MemberBaseInfoDTO">
+    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.model.MemberBaseInfoDTO">
         SELECT vum.id,
                vum.member_name,
                vu.avatar,
@@ -935,7 +935,7 @@
         AND is_active = 1
     </select>
 
-    <select id="selectMemberOpenIdBySpaceId" resultType="com.vikadata.api.modular.social.model.TenantMemberDto">
+    <select id="selectMemberOpenIdBySpaceId" resultType="com.vikadata.api.enterprise.social.model.TenantMemberDto">
         SELECT id as member_id, open_id, member_name
         FROM vika_unit_member
         WHERE space_id = #{spaceId} AND open_id is not null AND is_deleted = 0
@@ -960,7 +960,7 @@
          SELECT * FROM vika_unit_member WHERE user_id = #{userId} AND is_deleted = 0
     </select>
 
-    <select id="selectMembersBySpaceIds" resultType="com.vikadata.api.model.dto.organization.SpaceMemberDto">
+    <select id="selectMembersBySpaceIds" resultType="com.vikadata.api.organization.dto.SpaceMemberDTO">
         SELECT
             vum.user_id,
             vum.space_id,
@@ -1054,7 +1054,7 @@
         WHERE member_id = #{memberId}
     </select>
 
-    <select id="selectMemberIdsByUserIdAndSpaceIds" resultType="com.vikadata.api.model.dto.organization.SpaceMemberIdDto">
+    <select id="selectMemberIdsByUserIdAndSpaceIds" resultType="com.vikadata.api.organization.dto.SpaceMemberIdDTO">
         SELECT id, space_id
         FROM vika_unit_member
         WHERE user_id = #{userId}
@@ -1073,7 +1073,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectTeamIdsByMemberIds" resultType="com.vikadata.api.modular.organization.model.MemberTeamInfoDTO">
+    <select id="selectTeamIdsByMemberIds" resultType="com.vikadata.api.organization.model.MemberTeamInfoDTO">
         SELECT member_id, team_id
         FROM vika_unit_team_member_rel
         WHERE member_id IN

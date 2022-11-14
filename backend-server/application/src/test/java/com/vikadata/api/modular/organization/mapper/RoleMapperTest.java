@@ -8,8 +8,9 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.organization.model.RoleBaseInfoDto;
-import com.vikadata.api.modular.organization.model.RoleInfoDTO;
+import com.vikadata.api.organization.mapper.RoleMapper;
+import com.vikadata.api.organization.model.RoleBaseInfoDto;
+import com.vikadata.api.organization.model.RoleInfoDTO;
 
 import org.springframework.test.context.jdbc.Sql;
 

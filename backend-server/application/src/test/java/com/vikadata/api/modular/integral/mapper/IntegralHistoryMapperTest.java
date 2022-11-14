@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.vo.integral.IntegralRecordVO;
+import com.vikadata.api.enterprise.integral.mapper.IntegralHistoryMapper;
+import com.vikadata.api.user.vo.IntegralRecordVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

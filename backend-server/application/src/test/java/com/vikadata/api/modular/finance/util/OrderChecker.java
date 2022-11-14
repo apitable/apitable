@@ -5,9 +5,9 @@ import java.util.function.Predicate;
 
 import cn.hutool.core.util.BooleanUtil;
 
-import com.vikadata.api.enums.finance.OrderStatus;
-import com.vikadata.api.enums.finance.OrderType;
-import com.vikadata.api.modular.finance.service.IOrderV2Service;
+import com.vikadata.api.enterprise.billing.enums.OrderStatus;
+import com.vikadata.api.enterprise.billing.enums.OrderType;
+import com.vikadata.api.enterprise.billing.service.IOrderV2Service;
 import com.vikadata.entity.OrderEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;

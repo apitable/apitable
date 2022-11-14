@@ -10,15 +10,15 @@ import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.holder.SpaceHolder;
+import com.vikadata.api.shared.holder.SpaceHolder;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.space.AddSpaceRoleRo;
-import com.vikadata.api.model.vo.space.SpaceRoleDetailVo;
-import com.vikadata.api.modular.space.mapper.SpaceMemberRoleRelMapper;
-import com.vikadata.api.modular.space.mapper.SpaceRoleResourceRelMapper;
-import com.vikadata.api.modular.space.service.ISpaceRoleService;
+import com.vikadata.api.space.ro.AddSpaceRoleRo;
+import com.vikadata.api.space.vo.SpaceRoleDetailVo;
+import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
+import com.vikadata.api.space.mapper.SpaceRoleResourceRelMapper;
+import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;

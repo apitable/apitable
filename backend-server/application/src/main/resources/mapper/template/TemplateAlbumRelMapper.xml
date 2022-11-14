@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.template.mapper.TemplateAlbumRelMapper">
+<mapper namespace="com.vikadata.api.template.mapper.TemplateAlbumRelMapper">
     <select id="selectAlbumIdByRelateIdAndType" resultType="java.lang.String">
         SELECT album_id
         FROM vika_template_album_rel

@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.workbench.WidgetPackageStatus;
-import com.vikadata.api.enums.workbench.WidgetPackageType;
-import com.vikadata.api.enums.workbench.WidgetReleaseType;
-import com.vikadata.api.model.ro.asset.AssetUploadTokenRo;
-import com.vikadata.api.model.ro.widget.WidgetPackageBaseRo.I18nField;
-import com.vikadata.api.model.vo.asset.AssetUploadTokenVo;
-import com.vikadata.api.modular.base.service.IAssetUploadTokenService;
-import com.vikadata.api.modular.user.service.IUserService;
-import com.vikadata.api.modular.workspace.service.IWidgetPackageService;
-import com.vikadata.api.util.IdUtil;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.enterprise.widget.enums.WidgetPackageStatus;
+import com.vikadata.api.enterprise.widget.enums.WidgetPackageType;
+import com.vikadata.api.enterprise.widget.enums.WidgetReleaseType;
+import com.vikadata.api.asset.ro.AssetUploadTokenRo;
+import com.vikadata.api.enterprise.widget.ro.WidgetPackageBaseRo.I18nField;
+import com.vikadata.api.asset.vo.AssetUploadTokenVo;
+import com.vikadata.api.asset.service.IAssetUploadTokenService;
+import com.vikadata.api.user.service.IUserService;
+import com.vikadata.api.enterprise.widget.service.IWidgetPackageService;
+import com.vikadata.api.shared.util.IdUtil;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.entity.WidgetPackageEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

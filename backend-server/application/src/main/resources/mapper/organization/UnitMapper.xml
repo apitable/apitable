@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.organization.mapper.UnitMapper">
+<mapper namespace="com.vikadata.api.organization.mapper.UnitMapper">
     <insert id="insertBatch">
         INSERT INTO vika_unit(id, space_id, unit_type, unit_ref_id)
         VALUES
@@ -26,7 +26,7 @@
     </select>
 
 
-    <select id="selectByRefId" resultType="com.vikadata.entity.UnitEntity">
+    <select id="selectByRefId" resultType="com.vikadata.api.user.entity.UnitEntity">
         SELECT *
         FROM vika_unit
         WHERE unit_ref_id = #{refId} AND is_deleted = 0
@@ -109,7 +109,7 @@
         </foreach>
     </update>
 
-    <select id="selectByRefIds" resultType="com.vikadata.entity.UnitEntity">
+    <select id="selectByRefIds" resultType="com.vikadata.api.user.entity.UnitEntity">
         SELECT *
         FROM vika_unit
         WHERE unit_ref_id IN
@@ -119,7 +119,7 @@
         </foreach>
     </select>
 
-    <select id="selectByUnitIds" resultType="com.vikadata.entity.UnitEntity">
+    <select id="selectByUnitIds" resultType="com.vikadata.api.user.entity.UnitEntity">
         SELECT *
         FROM vika_unit
         WHERE id IN

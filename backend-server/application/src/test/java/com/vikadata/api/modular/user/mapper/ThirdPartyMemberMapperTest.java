@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.user.ThirdPartyMemberInfo;
-import com.vikadata.api.model.dto.wechat.WechatMemberDto;
+import com.vikadata.api.user.dto.ThirdPartyMemberInfo;
+import com.vikadata.api.user.dto.WechatMemberDto;
+import com.vikadata.api.user.mapper.ThirdPartyMemberMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

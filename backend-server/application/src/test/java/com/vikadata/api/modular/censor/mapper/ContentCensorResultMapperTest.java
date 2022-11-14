@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.vo.censor.ContentCensorResultVo;
+import com.vikadata.api.enterprise.censor.mapper.ContentCensorResultMapper;
+import com.vikadata.api.enterprise.censor.vo.ContentCensorResultVo;
 import com.vikadata.entity.ContentCensorResultEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

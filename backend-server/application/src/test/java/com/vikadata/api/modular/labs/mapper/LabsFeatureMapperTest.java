@@ -6,6 +6,7 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.labs.mapper.LabsFeatureMapper;
 import com.vikadata.entity.LabsFeaturesEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

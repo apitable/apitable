@@ -2,6 +2,8 @@ package com.vikadata.api.validator;
 
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.validator.ExportLevelValidator;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

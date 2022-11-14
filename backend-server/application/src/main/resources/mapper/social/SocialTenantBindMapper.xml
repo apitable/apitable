@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantBindMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantBindMapper">
     <select id="selectCountBySpaceId" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM vika_social_tenant_bind
@@ -42,7 +42,7 @@
     </delete>
 
     <select id="selectBaseInfoBySpaceId"
-            resultType="com.vikadata.api.modular.social.model.TenantBindDTO">
+            resultType="com.vikadata.api.enterprise.social.model.TenantBindDTO">
         SELECT vstb.space_id, vstb.tenant_id, vst.app_id
         FROM vika_social_tenant vst
         LEFT JOIN vika_social_tenant_bind vstb ON vst.tenant_id = vstb.tenant_id AND ((vstb.app_id is
@@ -88,7 +88,7 @@
     </select>
 
     <select id="selectSpaceBindTenantInfoByPlatform"
-            resultType="com.vikadata.api.modular.social.model.SpaceBindTenantInfoDTO">
+            resultType="com.vikadata.api.enterprise.social.model.SpaceBindTenantInfoDTO">
         SELECT vstb.space_id,
         vst.tenant_id,
         vst.app_id,

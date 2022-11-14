@@ -6,7 +6,8 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.widget.DatasheetWidgetDTO;
+import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
+import com.vikadata.api.workspace.mapper.DatasheetWidgetMapper;
 import com.vikadata.entity.DatasheetWidgetEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

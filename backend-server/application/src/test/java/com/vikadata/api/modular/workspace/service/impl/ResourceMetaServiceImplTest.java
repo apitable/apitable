@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.model.dto.node.NodeDescParseDTO;
-import com.vikadata.api.modular.workspace.service.IResourceMetaService;
+import com.vikadata.api.workspace.dto.NodeDescParseDTO;
+import com.vikadata.api.workspace.service.IResourceMetaService;
 
 import org.springframework.core.io.ClassPathResource;
 

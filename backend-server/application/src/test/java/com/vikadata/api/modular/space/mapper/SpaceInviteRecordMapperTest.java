@@ -3,6 +3,7 @@ package com.vikadata.api.modular.space.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.space.mapper.SpaceInviteRecordMapper;
 import com.vikadata.entity.SpaceInviteRecordEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

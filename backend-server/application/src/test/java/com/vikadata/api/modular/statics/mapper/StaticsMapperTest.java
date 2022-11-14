@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.statics.model.NodeStaticsVO;
-import com.vikadata.api.modular.statics.model.NodeTypeStatics;
+import com.vikadata.api.space.mapper.StaticsMapper;
+import com.vikadata.api.space.model.NodeStaticsVO;
+import com.vikadata.api.space.model.NodeTypeStatics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

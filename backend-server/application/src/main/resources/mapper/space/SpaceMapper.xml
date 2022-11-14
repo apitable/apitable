@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceMapper">
+<mapper namespace="com.vikadata.api.space.mapper.SpaceMapper">
     <select id="selectSpaceNameBySpaceId" resultType="java.lang.String">
         SELECT name
         FROM vika_space
@@ -29,7 +29,7 @@
         </foreach>
     </select>
 
-    <resultMap id="spaceVO" type="com.vikadata.api.model.vo.space.SpaceVO">
+    <resultMap id="spaceVO" type="com.vikadata.api.space.vo.SpaceVO">
         <result column="space_id" property="spaceId"/>
         <result column="name" property="name"/>
         <result column="logo" property="logo"/>
@@ -69,7 +69,7 @@
         WHERE vs.is_deleted = 0
     </select>
 
-    <select id="selectAdminInfoDto" resultType="com.vikadata.api.model.dto.space.SpaceAdminInfoDto">
+    <select id="selectAdminInfoDto" resultType="com.vikadata.api.space.dto.SpaceAdminInfoDTO">
         SELECT t.owner memberId, u.code as areaCode, u.mobile_phone AS mobile, u.email, m.member_name, t.name spaceName
         FROM vika_space t
                  JOIN vika_unit_member m ON t.space_id = m.space_id AND t.owner = m.id AND m.is_deleted = 0
@@ -162,7 +162,7 @@
           AND t.is_deleted = 0
     </select>
 
-    <select id="selectBaseSpaceInfo" resultType="com.vikadata.api.model.dto.space.BaseSpaceInfoDto">
+    <select id="selectBaseSpaceInfo" resultType="com.vikadata.api.space.dto.BaseSpaceInfoDTO">
         SELECT space_id, name, logo
         FROM vika_space
         WHERE space_id IN

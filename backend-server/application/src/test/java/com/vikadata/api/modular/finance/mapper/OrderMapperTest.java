@@ -3,6 +3,7 @@ package com.vikadata.api.modular.finance.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.billing.mapper.OrderMapper;
 import com.vikadata.entity.OrderEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

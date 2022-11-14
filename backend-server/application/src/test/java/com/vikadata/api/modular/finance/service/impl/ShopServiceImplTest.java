@@ -7,10 +7,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.modular.finance.model.ProductPriceVo;
-import com.vikadata.api.util.billing.model.ProductEnum;
+import com.vikadata.api.enterprise.billing.model.ProductPriceVo;
+import com.vikadata.api.enterprise.billing.util.model.ProductEnum;
 
-import static com.vikadata.api.util.billing.OrderUtil.toCurrencyUnit;
+import static com.vikadata.api.enterprise.billing.util.OrderUtil.toCurrencyUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

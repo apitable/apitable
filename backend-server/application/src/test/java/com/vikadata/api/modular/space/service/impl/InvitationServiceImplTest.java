@@ -6,17 +6,17 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.space.model.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.space.mapper.InvitationMapper;
-import com.vikadata.api.modular.space.model.InvitationUserDTO;
-import com.vikadata.api.modular.workspace.model.CreateNodeDto;
-import com.vikadata.api.util.IdUtil;
+import com.vikadata.api.space.mapper.InvitationMapper;
+import com.vikadata.api.space.model.InvitationUserDTO;
+import com.vikadata.api.workspace.model.CreateNodeDto;
+import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.api.enums.node.NodeType;
+import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.entity.InvitationEntity;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

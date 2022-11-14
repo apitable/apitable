@@ -3,6 +3,7 @@ package com.vikadata.api.modular.marketplace.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.marketplace.mapper.MarketplaceSpaceAppMapper;
 import com.vikadata.entity.MarketplaceSpaceAppRelEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,18 +8,18 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.control.permission.FieldPermission;
-import com.vikadata.api.control.permission.NodePermission;
-import com.vikadata.api.control.role.ControlRole;
-import com.vikadata.api.control.role.ControlRoleManager;
-import com.vikadata.api.control.role.FieldReaderRole;
-import com.vikadata.api.control.role.NodeEditorRole;
-import com.vikadata.api.control.role.NodeManagerRole;
-import com.vikadata.api.control.role.NodeOwnerRole;
-import com.vikadata.api.control.role.NodeReaderRole;
-import com.vikadata.api.control.role.NodeUpdaterRole;
-import com.vikadata.api.control.role.RoleConstants.Field;
-import com.vikadata.api.control.role.RoleConstants.Node;
+import com.vikadata.api.enterprise.control.infrastructure.permission.FieldPermission;
+import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.enterprise.control.infrastructure.role.ControlRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
+import com.vikadata.api.enterprise.control.infrastructure.role.FieldReaderRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.NodeEditorRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.NodeManagerRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.NodeOwnerRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.NodeReaderRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.NodeUpdaterRole;
+import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Field;
+import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;

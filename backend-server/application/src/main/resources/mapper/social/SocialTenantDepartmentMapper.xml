@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantDepartmentMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantDepartmentMapper">
     <insert id="insertBatch">
         INSERT INTO vika_social_tenant_department(id, tenant_id, space_id, department_id,
         open_department_id, parent_id, parent_open_department_id, department_name, department_order)
@@ -80,7 +80,7 @@
         AND space_id = #{spaceId}
     </delete>
 
-    <select id="selectTenantBindTeamListBySpaceId" resultType="com.vikadata.api.modular.social.model.TenantDepartmentBindDTO">
+    <select id="selectTenantBindTeamListBySpaceId" resultType="com.vikadata.api.enterprise.social.model.TenantDepartmentBindDTO">
         SELECT vstd.id,
                vut.team_name  AS departmentName,
                vstd.department_id,

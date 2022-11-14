@@ -3,6 +3,8 @@ package com.vikadata.api.util;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.util.VikaVersion;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

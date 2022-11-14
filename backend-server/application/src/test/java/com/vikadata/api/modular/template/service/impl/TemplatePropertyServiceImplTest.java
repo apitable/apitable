@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.cache.bean.CategoryDto;
-import com.vikadata.api.enums.template.TemplatePropertyType;
-import com.vikadata.api.modular.template.mapper.TemplatePropertyMapper;
-import com.vikadata.api.modular.template.mapper.TemplatePropertyRelMapper;
-import com.vikadata.api.modular.template.model.TemplatePropertyDto;
-import com.vikadata.api.modular.template.model.TemplatePropertyRelDto;
-import com.vikadata.api.modular.template.service.ITemplatePropertyService;
+import com.vikadata.api.shared.cache.bean.CategoryDto;
+import com.vikadata.api.template.enums.TemplatePropertyType;
+import com.vikadata.api.template.mapper.TemplatePropertyMapper;
+import com.vikadata.api.template.mapper.TemplatePropertyRelMapper;
+import com.vikadata.api.template.model.TemplatePropertyDto;
+import com.vikadata.api.template.model.TemplatePropertyRelDto;
+import com.vikadata.api.template.service.ITemplatePropertyService;
 
 import org.springframework.boot.test.mock.mockito.SpyBean;
 

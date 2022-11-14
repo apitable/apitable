@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.social.SocialPlatformType;
-import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
-import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
-import com.vikadata.api.util.billing.LarkPlanConfigManager;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.enterprise.billing.strategy.SocialOrderStrategyFactory;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.enterprise.billing.util.LarkPlanConfigManager;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.social.feishu.enums.PricePlanType;

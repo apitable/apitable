@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.constants.IntegralActionCodeConstants;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.shared.constants.IntegralActionCodeConstants;
+import com.vikadata.api.user.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;

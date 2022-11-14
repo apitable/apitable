@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.idaas.mapper.IdaasAppMapper;
 import com.vikadata.entity.IdaasAppEntity;
 
 import org.springframework.test.context.jdbc.Sql;

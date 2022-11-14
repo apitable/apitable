@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.integral.mapper.IntegralHistoryMapper">
+<mapper namespace="com.vikadata.api.enterprise.integral.mapper.IntegralHistoryMapper">
     <select id="selectTotalIntegralValueByUserId" resultType="java.lang.Integer">
         SELECT total_integral
         FROM vika_integral_history
@@ -9,11 +9,11 @@
         LIMIT 0,1
     </select>
 
-    <resultMap id="integralRecord" type="com.vikadata.api.model.vo.integral.IntegralRecordVO">
+    <resultMap id="integralRecord" type="com.vikadata.api.user.vo.IntegralRecordVO">
         <result column="action_code" property="action"/>
         <result column="alter_type" property="alterType"/>
         <result column="alter_integral" property="alterValue"/>
-        <result column="parameter" property="params" typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
+        <result column="parameter" property="params" typeHandler="com.vikadata.api.shared.util.ibatis.JsonHandler"/>
         <result column="created_at" property="createdAt"/>
     </resultMap>
 

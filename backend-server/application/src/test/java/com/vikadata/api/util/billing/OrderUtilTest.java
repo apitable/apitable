@@ -5,9 +5,11 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import static com.vikadata.api.util.billing.OrderUtil.centsToYuan;
-import static com.vikadata.api.util.billing.OrderUtil.toCurrencyUnit;
-import static com.vikadata.api.util.billing.OrderUtil.yuanToCents;
+import com.vikadata.api.enterprise.billing.util.OrderUtil;
+
+import static com.vikadata.api.enterprise.billing.util.OrderUtil.centsToYuan;
+import static com.vikadata.api.enterprise.billing.util.OrderUtil.toCurrencyUnit;
+import static com.vikadata.api.enterprise.billing.util.OrderUtil.yuanToCents;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withinPercentage;

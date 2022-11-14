@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.modular.appstore.enums.AppType;
+import com.vikadata.api.enterprise.appstore.enums.AppType;
+import com.vikadata.api.enterprise.appstore.model.InstanceConfig;
+import com.vikadata.api.enterprise.appstore.model.LarkInstanceConfig;
+import com.vikadata.api.enterprise.appstore.model.LarkInstanceConfigProfile;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

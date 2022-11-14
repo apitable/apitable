@@ -14,17 +14,17 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIsvTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.component.clock.ClockManager;
-import com.vikadata.api.enums.social.SocialPlatformType;
+import com.vikadata.api.shared.component.clock.ClockManager;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.finance.model.SocialOrderContext;
-import com.vikadata.api.modular.finance.service.ISocialWecomOrderService;
-import com.vikadata.api.modular.finance.strategy.SocialOrderStrategyFactory;
-import com.vikadata.api.modular.finance.strategy.impl.WeComOrderServiceImpl;
-import com.vikadata.api.modular.social.factory.SocialFactory;
-import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
-import com.vikadata.api.util.billing.WeComPlanConfigManager;
-import com.vikadata.api.util.billing.model.ProductChannel;
+import com.vikadata.api.enterprise.billing.model.SocialOrderContext;
+import com.vikadata.api.enterprise.billing.service.ISocialWecomOrderService;
+import com.vikadata.api.enterprise.billing.strategy.SocialOrderStrategyFactory;
+import com.vikadata.api.enterprise.billing.strategy.impl.WeComOrderServiceImpl;
+import com.vikadata.api.enterprise.social.factory.SocialFactory;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.enterprise.billing.util.WeComPlanConfigManager;
+import com.vikadata.api.enterprise.billing.util.model.ProductChannel;
 import com.vikadata.clock.ClockUtil;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
 import com.vikadata.social.wecom.event.order.WeComOrderRefundEvent;
@@ -34,8 +34,8 @@ import com.vikadata.social.wecom.model.WxCpIsvPermanentCodeInfo;
 import com.vikadata.system.config.billing.Plan;
 import com.vikadata.system.config.billing.Price;
 
-import static com.vikadata.api.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
-import static com.vikadata.api.util.billing.BillingConfigManager.getFreePlan;
+import static com.vikadata.api.shared.constants.TimeZoneConstants.DEFAULT_TIME_ZONE;
+import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getFreePlan;
 import static java.lang.Thread.sleep;
 
 /**

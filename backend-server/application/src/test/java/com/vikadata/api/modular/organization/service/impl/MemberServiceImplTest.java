@@ -6,10 +6,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.space.UserSpaceStatus;
+import com.vikadata.api.organization.enums.UserSpaceStatus;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.entity.MemberEntity;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;

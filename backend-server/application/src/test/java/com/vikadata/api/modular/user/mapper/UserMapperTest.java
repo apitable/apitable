@@ -3,14 +3,15 @@ package com.vikadata.api.modular.user.mapper;
 import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
-import com.vikadata.api.modular.space.model.InviteUserInfo;
+import com.vikadata.api.space.model.InviteUserInfo;
 import org.apache.ibatis.cursor.Cursor;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.user.model.UserLangDTO;
-import com.vikadata.api.modular.user.model.UserInPausedDto;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.user.model.UserLangDTO;
+import com.vikadata.api.user.model.UserInPausedDto;
+import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

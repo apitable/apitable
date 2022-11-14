@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.player.mapper.PlayerNotificationMapper">
-    <select id="selectPlayerNotificationPage" resultType="com.vikadata.api.model.dto.player.NotificationModelDto">
+<mapper namespace="com.vikadata.api.player.mapper.PlayerNotificationMapper">
+    <select id="selectPlayerNotificationPage" resultType="com.vikadata.api.player.dto.NotificationModelDTO">
         SELECT vpn.id,vpn.to_user, vpn.notify_body, vpn.is_read, vpn.created_at, vpn.from_user,
         vpn.notify_type, vpn.template_id, vpn.node_id, vpn.space_id,vpn.updated_at,rowNo
         FROM vika_player_notification vpn
@@ -66,7 +66,7 @@
         WHERE id = #{id}
         AND is_deleted = 0
     </select>
-    <select id="selectDtoByTypeAndIsRead" resultType="com.vikadata.api.model.dto.player.NotificationModelDto">
+    <select id="selectDtoByTypeAndIsRead" resultType="com.vikadata.api.player.dto.NotificationModelDTO">
         SELECT vpn.id,vpn.to_user, vpn.notify_body, vpn.is_read, vpn.created_at, vpn.from_user,
         vpn.notify_type, vpn.template_id, vpn.node_id, vpn.space_id,vpn.updated_at
         FROM vika_player_notification vpn

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.idaas.mapper.IdaasGroupBindMapper;
 import com.vikadata.entity.IdaasGroupBindEntity;
 
 import org.springframework.test.context.jdbc.Sql;

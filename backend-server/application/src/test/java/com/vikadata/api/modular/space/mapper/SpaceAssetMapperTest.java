@@ -7,8 +7,9 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.space.NodeAssetDto;
-import com.vikadata.api.model.dto.space.SpaceAssetDto;
+import com.vikadata.api.space.dto.NodeAssetDTO;
+import com.vikadata.api.space.dto.SpaceAssetDTO;
+import com.vikadata.api.space.mapper.SpaceAssetMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -30,7 +31,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/space-asset-data.sql")
     void testSelectDto() {
-        SpaceAssetDto entity = spaceAssetMapper.selectDto("spc41", "ni41", 41L);
+        SpaceAssetDTO entity = spaceAssetMapper.selectDto("spc41", "ni41", 41L);
         assertThat(entity).isNotNull();
     }
 
@@ -38,7 +39,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/space-asset-data.sql")
     void testSelectDtoByAssetIdsAndType() {
-        List<SpaceAssetDto> entities = spaceAssetMapper.selectDtoByAssetIdsAndType("spc41", "ni41", 2, CollUtil.newArrayList(41L));
+        List<SpaceAssetDTO> entities = spaceAssetMapper.selectDtoByAssetIdsAndType("spc41", "ni41", 2, CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
     }
 
@@ -46,7 +47,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/space-asset-data.sql")
     void testSelectNodeAssetDto() {
-        List<NodeAssetDto> entities = spaceAssetMapper.selectNodeAssetDto(CollUtil.newArrayList("ni41"));
+        List<NodeAssetDTO> entities = spaceAssetMapper.selectNodeAssetDto(CollUtil.newArrayList("ni41"));
         assertThat(entities).isNotEmpty();
     }
 

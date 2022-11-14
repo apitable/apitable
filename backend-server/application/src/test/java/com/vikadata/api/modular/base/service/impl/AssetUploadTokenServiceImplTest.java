@@ -8,9 +8,9 @@ import org.mockito.Mockito;
 
 import com.apitable.starter.oss.core.OssClientTemplate;
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.attach.AssetType;
-import com.vikadata.api.modular.base.service.IAssetUploadTokenService;
-import com.vikadata.api.modular.workspace.service.INodeService;
+import com.vikadata.api.asset.enums.AssetType;
+import com.vikadata.api.asset.service.IAssetUploadTokenService;
+import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.boot.test.mock.mockito.MockBean;

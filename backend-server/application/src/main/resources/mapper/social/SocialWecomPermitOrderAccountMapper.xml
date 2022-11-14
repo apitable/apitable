@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialWecomPermitOrderAccountMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountMapper">
     <select id="selectByActiveCodes" resultType="com.vikadata.entity.SocialWecomPermitOrderAccountEntity">
         SELECT *
         FROM vika_social_wecom_permit_order_account
@@ -20,8 +20,7 @@
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         AND expire_time &lt; #{expireTime}
-        AND activate_status IN (${@com.vikadata.api.modular.social.enums.SocialCpIsvPermitActivateStatus@ACTIVATED.getValue},
-        ${@com.vikadata.api.modular.social.enums.SocialCpIsvPermitActivateStatus@EXPIRED.getValue})
+        AND activate_status IN (2,3)
         AND is_deleted = 0
     </select>
 

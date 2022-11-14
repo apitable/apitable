@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialWecomPermitOrderAccountBindMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountBindMapper">
     <select id="selectActiveCodesByOrderId" resultType="java.lang.String">
         SELECT active_code
         FROM vika_social_wecom_permit_order_account_bind

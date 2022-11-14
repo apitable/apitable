@@ -5,11 +5,11 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.enums.lang.ExportLevelEnum;
-import com.vikadata.api.model.ro.space.SpaceSecuritySettingRo;
+import com.vikadata.api.enterprise.control.infrastructure.ExportLevelEnum;
+import com.vikadata.api.space.ro.SpaceSecuritySettingRo;
+import com.vikadata.api.space.model.SpaceGlobalFeature;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

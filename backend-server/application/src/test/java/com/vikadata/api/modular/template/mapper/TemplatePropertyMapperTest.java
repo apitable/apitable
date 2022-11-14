@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.template.model.TemplateKeyWordSearchDto;
-import com.vikadata.api.modular.template.model.TemplatePropertyDto;
-import com.vikadata.api.modular.template.model.TemplatePropertyRelDto;
+import com.vikadata.api.template.mapper.TemplatePropertyMapper;
+import com.vikadata.api.template.model.TemplateKeyWordSearchDto;
+import com.vikadata.api.template.model.TemplatePropertyDto;
+import com.vikadata.api.template.model.TemplatePropertyRelDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

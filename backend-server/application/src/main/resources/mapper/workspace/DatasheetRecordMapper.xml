@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.DatasheetRecordMapper">
+<mapper namespace="com.vikadata.api.workspace.mapper.DatasheetRecordMapper">
 
-    <resultMap id="datasheetRecordVo" type="com.vikadata.api.model.vo.datasheet.DatasheetRecordVo">
+    <resultMap id="datasheetRecordVo" type="com.vikadata.api.workspace.vo.DatasheetRecordVo">
         <result column="record_id" property="id"/>
-        <result column="data" property="data" typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
-        <result column="revision_history" property="revisionHistory" typeHandler="com.vikadata.api.util.ibatis.IntArrayTypeHandler"/>
+        <result column="data" property="data" typeHandler="com.vikadata.api.shared.util.ibatis.JsonHandler"/>
+        <result column="revision_history" property="revisionHistory" typeHandler="com.vikadata.api.shared.util.ibatis.IntArrayTypeHandler"/>
         <result column="revision" property="revision"/>
         <result column="recordMeta" property="recordMeta"/>
     </resultMap>
 
-    <resultMap id="dataSheetRecordDto" type="com.vikadata.api.model.dto.datasheet.DataSheetRecordDto">
+    <resultMap id="dataSheetRecordDto" type="com.vikadata.api.workspace.dto.DataSheetRecordDTO">
         <result column="id" property="id"/>
         <result column="dst_id" property="dstId"/>
         <result column="record_id" property="recordId"/>
-        <result column="data" property="data" typeHandler="com.vikadata.api.util.ibatis.JsonHandler"/>
+        <result column="data" property="data" typeHandler="com.vikadata.api.shared.util.ibatis.JsonHandler"/>
     </resultMap>
 
-    <resultMap id="dataSheetRecordGroupDto" type="com.vikadata.api.model.dto.datasheet.DataSheetRecordGroupDto">
+    <resultMap id="dataSheetRecordGroupDto" type="com.vikadata.api.workspace.dto.DataSheetRecordGroupDTO">
         <result column="dst_id" property="dstId"/>
         <collection property="recordVoList" resultMap="datasheetRecordVo"/>
     </resultMap>

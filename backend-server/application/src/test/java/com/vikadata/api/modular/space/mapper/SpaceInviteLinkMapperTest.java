@@ -6,8 +6,9 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.space.SpaceLinkDto;
-import com.vikadata.api.model.vo.space.SpaceLinkVo;
+import com.vikadata.api.space.dto.SpaceLinkDTO;
+import com.vikadata.api.space.mapper.SpaceInviteLinkMapper;
+import com.vikadata.api.space.vo.SpaceLinkVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -36,7 +37,7 @@ public class SpaceInviteLinkMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/space-invite-link-data.sql")
     void testSelectDtoByToken() {
-        SpaceLinkDto entity = spaceInviteLinkMapper.selectDtoByToken("token");
+        SpaceLinkDTO entity = spaceInviteLinkMapper.selectDtoByToken("token");
         assertThat(entity).isNotNull();
     }
 

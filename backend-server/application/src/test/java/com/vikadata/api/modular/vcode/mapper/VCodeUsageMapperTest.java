@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.vcode.VCodeDTO;
+import com.vikadata.api.enterprise.vcode.mapper.VCodeUsageMapper;
+import com.vikadata.api.enterprise.vcode.dto.VCodeDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

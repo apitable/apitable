@@ -11,9 +11,9 @@ import me.chanjar.weixin.cp.bean.message.WxCpMessageSendResult;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.modular.social.event.wecom.WeComCardFactory;
-import com.vikadata.api.modular.social.service.IWeComService;
-import com.vikadata.api.util.UrlQueryExtend;
+import com.vikadata.api.enterprise.social.event.wecom.WeComCardFactory;
+import com.vikadata.api.enterprise.social.service.IWeComService;
+import com.vikadata.api.shared.util.UrlQueryExtend;
 import com.vikadata.social.wecom.WeComConfig;
 import com.vikadata.social.wecom.WeComConfig.OperateEnpDdns;
 import com.vikadata.social.wecom.WeComTemplate;

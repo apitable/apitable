@@ -6,7 +6,8 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.template.model.TemplatePropertyRelDto;
+import com.vikadata.api.template.mapper.TemplatePropertyRelMapper;
+import com.vikadata.api.template.model.TemplatePropertyRelDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

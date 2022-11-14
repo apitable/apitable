@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.model.vo.organization.SubUnitResultVo;
-import com.vikadata.api.modular.organization.service.IOrganizationService;
+import com.vikadata.api.organization.vo.SubUnitResultVo;
+import com.vikadata.api.organization.service.IOrganizationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceResourceMapper">
+<mapper namespace="com.vikadata.api.space.mapper.SpaceResourceMapper">
 
-    <select id="selectAllResource" resultType="com.vikadata.api.cache.bean.SpaceResourceDto">
+    <select id="selectAllResource" resultType="com.vikadata.api.shared.cache.bean.SpaceResourceDto">
         SELECT vr.resource_code,
                vr.resource_name,
                vr.resource_desc,
@@ -14,7 +14,7 @@
                  JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
     </select>
 
-    <select id="selectResourceByMemberId" resultType="com.vikadata.api.cache.bean.SpaceResourceDto">
+    <select id="selectResourceByMemberId" resultType="com.vikadata.api.shared.cache.bean.SpaceResourceDto">
         SELECT vr.resource_code,
                vr.resource_name,
                vr.resource_desc,
@@ -39,7 +39,7 @@
         AND assignable = 1
     </select>
 
-    <resultMap id="groupResource" type="com.vikadata.api.modular.space.model.SpaceGroupResourceDto">
+    <resultMap id="groupResource" type="com.vikadata.api.space.model.SpaceGroupResourceDto">
         <result property="groupCode" column="group_code"/>
         <result property="groupName" column="group_name"/>
         <result property="groupDesc" column="group_desc"/>
@@ -58,7 +58,7 @@
         WHERE vr.assignable = 1
     </select>
 
-    <resultMap id="menuResource" type="com.vikadata.api.modular.space.model.SpaceMenuResourceDto">
+    <resultMap id="menuResource" type="com.vikadata.api.space.model.SpaceMenuResourceDto">
         <result property="menuCode" column="menu_code"/>
         <collection property="resources" ofType="java.lang.String">
             <result column="resource_code"/>
@@ -91,7 +91,7 @@
         WHERE vsmrr.member_id = #{memberId}
     </select>
 
-    <resultMap id="memberResource" type="com.vikadata.api.modular.space.model.SpaceMemberResourceDto">
+    <resultMap id="memberResource" type="com.vikadata.api.space.model.SpaceMemberResourceDto">
         <result property="memberId" column="member_id"/>
         <collection property="resources" ofType="java.lang.String">
             <result column="resource_code"/>

@@ -6,7 +6,8 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.node.NodeDescDTO;
+import com.vikadata.api.workspace.dto.NodeDescDTO;
+import com.vikadata.api.workspace.mapper.NodeDescMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

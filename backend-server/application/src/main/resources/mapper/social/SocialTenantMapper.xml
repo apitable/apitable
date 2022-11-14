@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantMapper">
     <select id="selectTenantIdByAppId" resultType="java.lang.String">
         SELECT tenant_id
         FROM vika_social_tenant

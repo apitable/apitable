@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.organization.mapper.RoleMemberMapper">
+<mapper namespace="com.vikadata.api.organization.mapper.RoleMemberMapper">
 
     <select id="selectUnitRefIdsByRoleId" resultType="java.lang.Long">
         SELECT DISTINCT vurm.unit_ref_id
@@ -27,7 +27,7 @@
     </delete>
 
     <select id="selectRoleMembersByRoleIds"
-            resultType="com.vikadata.api.modular.organization.model.RoleMemberInfoDTO">
+            resultType="com.vikadata.api.organization.model.RoleMemberInfoDTO">
         SELECT vu.id as unit_id,
         vurm.role_id as role_id,
         vurm.unit_ref_id as unit_ref_id,
@@ -41,7 +41,7 @@
     </select>
 
     <select id="selectRoleMembersByRoleId"
-            resultType="com.vikadata.api.modular.organization.model.RoleMemberInfoDTO">
+            resultType="com.vikadata.api.organization.model.RoleMemberInfoDTO">
         SELECT vu.id            as unit_id,
                vurm.unit_ref_id as unit_ref_id,
                vurm.unit_type   as unit_type
@@ -70,7 +70,7 @@
     </select>
 
     <select id="selectRoleMembersByRoleIdAndUnitRefIds"
-            resultType="com.vikadata.api.modular.organization.model.RoleMemberInfoDTO">
+            resultType="com.vikadata.api.organization.model.RoleMemberInfoDTO">
         SELECT vu.id as unit_id,
         vurm.unit_ref_id as unit_ref_id,
         vurm.unit_type as unit_type

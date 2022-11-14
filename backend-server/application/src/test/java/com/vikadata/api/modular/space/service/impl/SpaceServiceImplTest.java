@@ -5,19 +5,19 @@ import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.social.SocialPlatformType;
-import com.vikadata.api.lang.SpaceGlobalFeature;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.space.model.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.finance.service.impl.SpaceSubscriptionServiceImpl;
-import com.vikadata.api.modular.social.enums.SocialAppType;
-import com.vikadata.api.modular.social.service.ISocialTenantService;
-import com.vikadata.api.modular.space.model.SpaceCapacityUsedInfo;
-import com.vikadata.api.modular.space.model.SpaceUpdateOperate;
-import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.enterprise.billing.service.impl.SpaceSubscriptionServiceImpl;
+import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.enterprise.social.service.ISocialTenantService;
+import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
+import com.vikadata.api.space.model.SpaceUpdateOperate;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

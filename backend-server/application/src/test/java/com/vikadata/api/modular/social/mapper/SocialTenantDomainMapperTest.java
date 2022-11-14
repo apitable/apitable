@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.social.model.SpaceBindDomainDTO;
+import com.vikadata.api.enterprise.social.mapper.SocialTenantDomainMapper;
+import com.vikadata.api.enterprise.social.model.SpaceBindDomainDTO;
 import com.vikadata.entity.SocialTenantDomainEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,9 +6,10 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.datasheet.DataSheetRecordDto;
-import com.vikadata.api.model.dto.datasheet.DataSheetRecordGroupDto;
-import com.vikadata.api.model.vo.datasheet.DatasheetRecordVo;
+import com.vikadata.api.workspace.dto.DataSheetRecordDTO;
+import com.vikadata.api.workspace.dto.DataSheetRecordGroupDTO;
+import com.vikadata.api.workspace.mapper.DatasheetRecordMapper;
+import com.vikadata.api.workspace.vo.DatasheetRecordVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -30,7 +31,7 @@ public class DatasheetRecordMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/datasheet-record-data.sql")
     void testSelectDtoByDstId() {
-        List<DataSheetRecordDto> entities = datasheetRecordMapper.selectDtoByDstId("dst0ZDEBxQPJxoaQ1h");
+        List<DataSheetRecordDTO> entities = datasheetRecordMapper.selectDtoByDstId("dst0ZDEBxQPJxoaQ1h");
         assertThat(entities).isNotEmpty();
     }
 
@@ -38,14 +39,14 @@ public class DatasheetRecordMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/datasheet-record-data.sql")
     void testSelectDtoByDstIds() {
-        List<DataSheetRecordDto> entities = datasheetRecordMapper.selectDtoByDstIds(CollUtil.newArrayList("dst0ZDEBxQPJxoaQ1h"));
+        List<DataSheetRecordDTO> entities = datasheetRecordMapper.selectDtoByDstIds(CollUtil.newArrayList("dst0ZDEBxQPJxoaQ1h"));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
     @Sql("/testdata/datasheet-record-data.sql")
     void testSelectGroupDtoByDstIds() {
-        List<DataSheetRecordGroupDto> entities = datasheetRecordMapper.selectGroupDtoByDstIds(CollUtil.newArrayList("dst0ZDEBxQPJxoaQ1h"));
+        List<DataSheetRecordGroupDTO> entities = datasheetRecordMapper.selectGroupDtoByDstIds(CollUtil.newArrayList("dst0ZDEBxQPJxoaQ1h"));
         assertThat(entities);
     }
 

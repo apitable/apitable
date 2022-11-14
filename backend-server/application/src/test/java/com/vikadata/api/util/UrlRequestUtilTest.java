@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.util.UrlRequestUtil;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

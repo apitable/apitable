@@ -12,7 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.social.enums.SocialCpIsvPermitActivateStatus;
+import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitActivateStatus;
+import com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountMapper;
 import com.vikadata.entity.SocialWecomPermitOrderAccountEntity;
 
 import org.springframework.test.context.jdbc.Sql;

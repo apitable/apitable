@@ -11,18 +11,18 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.component.notification.NotificationFactory;
-import com.vikadata.api.component.notification.NotificationManager;
-import com.vikadata.api.component.notification.NotificationTemplateId;
-import com.vikadata.api.model.dto.player.NotificationModelDto;
-import com.vikadata.api.modular.player.service.IPlayerNotificationService;
+import com.vikadata.api.shared.component.notification.NotificationFactory;
+import com.vikadata.api.shared.component.notification.NotificationManager;
+import com.vikadata.api.shared.component.notification.NotificationTemplateId;
+import com.vikadata.api.player.dto.NotificationModelDTO;
+import com.vikadata.api.player.service.IPlayerNotificationService;
 import com.vikadata.system.config.notification.NotificationTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.vikadata.api.constants.NotificationConstants.BODY_EXTRAS;
-import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST;
-import static com.vikadata.api.constants.NotificationConstants.EXTRA_TOAST_URL;
+import static com.vikadata.api.shared.constants.NotificationConstants.BODY_EXTRAS;
+import static com.vikadata.api.shared.constants.NotificationConstants.EXTRA_TOAST;
+import static com.vikadata.api.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -51,7 +51,7 @@ public class PlayerNotificationServiceImplTest extends AbstractIntegrationTest {
         }
         NotificationManager.me().playerNotify(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY,
                 Collections.singletonList(userId), 0L, null, extras);
-        List<NotificationModelDto> notify = iPlayerNotificationService.getUserNotificationByTypeAndIsRead(userId,
+        List<NotificationModelDTO> notify = iPlayerNotificationService.getUserNotificationByTypeAndIsRead(userId,
                 0);
         JSONObject extrasObj = JSONUtil.parseObj(notify.get(0).getNotifyBody());
         assertThat(extrasObj.getByPath(BODY_EXTRAS + "." + EXTRA_TOAST + "." + EXTRA_TOAST_URL)).isEqualTo(template.getUrl());

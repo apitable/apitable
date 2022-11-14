@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.finance.SubscriptionState;
-import com.vikadata.api.util.billing.model.ProductCategory;
+import com.vikadata.api.enterprise.billing.mapper.SubscriptionMapper;
+import com.vikadata.api.enterprise.billing.enums.SubscriptionState;
+import com.vikadata.api.enterprise.billing.util.model.ProductCategory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

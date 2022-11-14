@@ -1,12 +1,12 @@
 package com.vikadata.api.modular.workspace.cli;
 
-import com.vikadata.api.enums.widget.InstallEnvType;
-import com.vikadata.api.enums.widget.RuntimeEnvType;
+import com.vikadata.api.enterprise.widget.enums.InstallEnvType;
+import com.vikadata.api.enterprise.widget.enums.RuntimeEnvType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.util.WidgetReleaseVersionUtils;
+import com.vikadata.api.shared.util.WidgetReleaseVersionUtils;
 
 import java.util.ArrayList;
 import java.util.List;

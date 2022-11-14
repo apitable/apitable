@@ -5,8 +5,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.cache.bean.AccountLinkDto;
-import com.vikadata.api.enums.user.LinkType;
+import com.vikadata.api.shared.cache.bean.AccountLinkDto;
+import com.vikadata.api.user.enums.LinkType;
+import com.vikadata.api.user.mapper.UserLinkMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

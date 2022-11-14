@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enums.social.SocialPlatformType;
-import com.vikadata.api.modular.social.model.SocialTenantUserDTO;
+import com.vikadata.api.enterprise.social.mapper.SocialTenantUserMapper;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.enterprise.social.model.SocialTenantUserDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

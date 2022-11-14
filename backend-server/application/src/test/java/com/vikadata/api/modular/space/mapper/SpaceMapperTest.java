@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.space.BaseSpaceInfoDto;
-import com.vikadata.api.model.dto.space.SpaceAdminInfoDto;
-import com.vikadata.api.model.vo.space.SpaceVO;
+import com.vikadata.api.space.dto.BaseSpaceInfoDTO;
+import com.vikadata.api.space.dto.SpaceAdminInfoDTO;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.vo.SpaceVO;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({ "/testdata/space-data.sql", "/testdata/unit-member-data.sql", "/testdata/user-data.sql"})
     void testSelectAdminInfoDto() {
-        SpaceAdminInfoDto entity = spaceMapper.selectAdminInfoDto("spc41");
+        SpaceAdminInfoDTO entity = spaceMapper.selectAdminInfoDto("spc41");
         assertThat(entity).isNotNull();
     }
 
@@ -96,7 +97,7 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/space-data.sql")
     void testSelectBaseSpaceInfo() {
-        List<BaseSpaceInfoDto> entities = spaceMapper.selectBaseSpaceInfo(CollUtil.newArrayList("spc41"));
+        List<BaseSpaceInfoDTO> entities = spaceMapper.selectBaseSpaceInfo(CollUtil.newArrayList("spc41"));
         assertThat(entities).isNotEmpty();
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.social.mapper.SocialTenantDomainMapper">
+<mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantDomainMapper">
 
     <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantDomainEntity">
         SELECT *
@@ -35,7 +35,7 @@
           AND vstd.is_deleted = 0
     </select>
 
-    <select id="selectSpaceDomainBySpaceIds" resultType="com.vikadata.api.modular.social.model.SpaceBindDomainDTO">
+    <select id="selectSpaceDomainBySpaceIds" resultType="com.vikadata.api.enterprise.social.model.SpaceBindDomainDTO">
         SELECT vstd.space_id,
                vstd.domain_name,
                vstd.status
@@ -53,7 +53,7 @@
         WHERE space_id = #{spaceId}
     </update>
 
-    <select id="selectSpaceDomainByDomainName" resultType="com.vikadata.api.modular.social.model.SpaceBindDomainDTO">
+    <select id="selectSpaceDomainByDomainName" resultType="com.vikadata.api.enterprise.social.model.SpaceBindDomainDTO">
         SELECT  vstd.space_id,
                 vstd.domain_name,
                 vstd.status

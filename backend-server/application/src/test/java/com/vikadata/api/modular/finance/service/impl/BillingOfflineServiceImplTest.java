@@ -9,31 +9,30 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.component.clock.ClockManager;
-import com.vikadata.api.enums.finance.OrderType;
+import com.vikadata.api.enterprise.billing.core.DefaultOrderArguments;
+import com.vikadata.api.enterprise.billing.core.OrderArguments;
+import com.vikadata.api.enterprise.billing.enums.OrderType;
+import com.vikadata.api.enterprise.billing.util.BillingConfigManager;
+import com.vikadata.api.enterprise.billing.util.model.ProductChannel;
+import com.vikadata.api.enterprise.billing.util.model.ProductEnum;
+import com.vikadata.api.enterprise.gm.model.CreateBusinessOrderRo;
+import com.vikadata.api.enterprise.gm.model.CreateEntitlementWithAddOn;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.modular.developer.model.CreateBusinessOrderRo;
-import com.vikadata.api.modular.developer.model.CreateEntitlementWithAddOn;
-import com.vikadata.api.modular.finance.core.DefaultOrderArguments;
-import com.vikadata.api.modular.finance.core.OrderArguments;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedBundleCheck;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedSpaceEntitlementCheck;
 import com.vikadata.api.modular.finance.util.EntitlementChecker.ExpectedSubscriptionCheck;
-import com.vikadata.api.modular.space.model.vo.SpaceCapacityPageVO;
-import com.vikadata.api.util.billing.BillingConfigManager;
-import com.vikadata.api.util.billing.model.ProductChannel;
-import com.vikadata.api.util.billing.model.ProductEnum;
+import com.vikadata.api.shared.component.clock.ClockManager;
+import com.vikadata.api.space.model.vo.SpaceCapacityPageVO;
 import com.vikadata.system.config.billing.Price;
 
-import static com.vikadata.api.util.billing.BillingConfigManager.getBillingConfig;
-import static com.vikadata.api.util.billing.BillingConfigManager.getFreePlan;
-import static com.vikadata.api.util.billing.BillingConfigManager.getPlan;
+import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getBillingConfig;
+import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getFreePlan;
+import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getPlan;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
 

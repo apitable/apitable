@@ -11,7 +11,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.organization.model.RoleMemberInfoDTO;
+import com.vikadata.api.organization.mapper.RoleMemberMapper;
+import com.vikadata.api.organization.model.RoleMemberInfoDTO;
 
 import org.springframework.test.context.jdbc.Sql;
 

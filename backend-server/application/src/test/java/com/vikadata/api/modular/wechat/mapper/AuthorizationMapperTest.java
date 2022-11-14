@@ -3,6 +3,7 @@ package com.vikadata.api.modular.wechat.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.wechat.mapper.AuthorizationMapper;
 import com.vikadata.entity.WechatAuthorizationEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

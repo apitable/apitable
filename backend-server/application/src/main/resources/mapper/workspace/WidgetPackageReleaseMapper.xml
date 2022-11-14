@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.WidgetPackageReleaseMapper">
+<mapper namespace="com.vikadata.api.enterprise.widget.mapper.WidgetPackageReleaseMapper">
     <select id="selectReleaseShaToId" resultType="java.lang.Long">
         SELECT vwpr.id
         FROM vika_widget_package_release vwpr
@@ -11,7 +11,7 @@
         LIMIT 1;
     </select>
 
-    <select id="selectReleasePage" resultType="com.vikadata.api.model.vo.widget.WidgetReleaseListVo">
+    <select id="selectReleasePage" resultType="com.vikadata.api.enterprise.widget.vo.WidgetReleaseListVo">
         SELECT vwpr.id as releaseId,
                vwpr.release_sha,
                vwpr.version,
@@ -23,7 +23,7 @@
           AND vwpr.is_deleted = 0
     </select>
 
-    <select id="selectWaitReviewWidgetList" resultMap="com.vikadata.api.modular.workspace.mapper.WidgetPackageMapper.selectWidgetStoreListResultMap">
+    <select id="selectWaitReviewWidgetList" resultMap="com.vikadata.api.enterprise.widget.mapper.WidgetPackageMapper.selectWidgetStoreListResultMap">
         SELECT vwp.package_id AS widgetPackageId,
         IF(JSON_CONTAINS_PATH(vwp.i18n_name, 'one', '$."${condition.language}"'), vwp.i18n_name ->> '$."${condition.language}"', vwp.i18n_name ->> '$."en-US"') AS name,
         vwp.icon,
@@ -55,7 +55,7 @@
         </if>
     </select>
 
-    <select id="selectLastWidgetVersionInfoByFatherWidgetId" resultType="com.vikadata.api.model.dto.widget.LastSubmitWidgetVersionDTO">
+    <select id="selectLastWidgetVersionInfoByFatherWidgetId" resultType="com.vikadata.api.enterprise.widget.dto.LastSubmitWidgetVersionDTO">
         SELECT vwp.id AS lastPackageId,
                vwpr.id AS lastPackageReleaseId,
                vwpas.id AS lastPackageAuthSpaceId

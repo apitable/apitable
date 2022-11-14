@@ -6,10 +6,11 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.cache.bean.SpaceResourceDto;
-import com.vikadata.api.modular.space.model.SpaceGroupResourceDto;
-import com.vikadata.api.modular.space.model.SpaceMemberResourceDto;
-import com.vikadata.api.modular.space.model.SpaceMenuResourceDto;
+import com.vikadata.api.shared.cache.bean.SpaceResourceDto;
+import com.vikadata.api.space.mapper.SpaceResourceMapper;
+import com.vikadata.api.space.model.SpaceGroupResourceDto;
+import com.vikadata.api.space.model.SpaceMemberResourceDto;
+import com.vikadata.api.space.model.SpaceMenuResourceDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

@@ -1,1 +1,0 @@
-package com.vikadata.api.modular.organization.service;

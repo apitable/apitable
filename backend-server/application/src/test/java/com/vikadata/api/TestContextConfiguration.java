@@ -1,8 +1,8 @@
 package com.vikadata.api;
 
-import com.vikadata.api.modular.finance.service.IBundleService;
-import com.vikadata.api.modular.finance.service.IOrderV2Service;
-import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
+import com.vikadata.api.enterprise.billing.service.IBundleService;
+import com.vikadata.api.enterprise.billing.service.IOrderV2Service;
+import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
 import com.vikadata.api.modular.finance.util.EntitlementChecker;
 import com.vikadata.api.modular.finance.util.OrderChecker;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.space.mapper.SpaceApplyMapper">
+<mapper namespace="com.vikadata.api.space.mapper.SpaceApplyMapper">
     <select id="countBySpaceIdAndCreatedByAndStatus" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM vika_space_apply
@@ -9,7 +9,7 @@
           AND status = #{status}
     </select>
 
-    <select id="selectSpaceApplyDto" resultType="com.vikadata.api.model.dto.space.SpaceApplyDto">
+    <select id="selectSpaceApplyDto" resultType="com.vikadata.api.space.dto.SpaceApplyDTO">
         SELECT vsa.id                                                         AS applyId,
                vsa.space_id,
                vsa.`status`,

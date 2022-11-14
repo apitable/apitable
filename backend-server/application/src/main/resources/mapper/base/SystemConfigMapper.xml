@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.base.mapper.SystemConfigMapper">
+<mapper namespace="com.vikadata.api.base.mapper.SystemConfigMapper">
 
     <select id="selectIdByTypeAndLang" resultType="java.lang.Long">
         select id
@@ -24,7 +24,7 @@
     </select>
 
     <select id="selectConfigDtoByType"
-            resultType="com.vikadata.api.modular.base.model.SystemConfigDTO">
+            resultType="com.vikadata.api.base.model.SystemConfigDTO">
         SELECT id, i18n_name
         FROM vika_system_config
         WHERE `type` = #{type}

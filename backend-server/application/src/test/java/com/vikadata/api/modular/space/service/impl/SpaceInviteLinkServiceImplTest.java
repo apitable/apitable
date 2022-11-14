@@ -9,15 +9,15 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.mock.bean.MockInvitation;
-import com.vikadata.api.modular.control.service.IControlRoleService;
-import com.vikadata.api.modular.organization.service.IUnitService;
-import com.vikadata.api.modular.space.mapper.SpaceMapper;
-import com.vikadata.api.modular.space.model.vo.SpaceSubscribeVo;
-import com.vikadata.api.modular.space.service.ISpaceInviteLinkService;
+import com.vikadata.api.enterprise.control.service.IControlRoleService;
+import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.entity.ControlRoleEntity;
 import com.vikadata.entity.SpaceEntity;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

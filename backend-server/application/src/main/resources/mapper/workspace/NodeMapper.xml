@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.workspace.mapper.NodeMapper">
+<mapper namespace="com.vikadata.api.workspace.mapper.NodeMapper">
     <insert id="insertBatch">
         INSERT INTO vika_node(id, space_id, parent_id, pre_node_id, node_id, node_name, icon, type, cover, is_template,
         created_by, updated_by)
@@ -118,7 +118,7 @@
     </select>
 
     <select id="selectSubNodeInfo"
-            resultType="com.vikadata.api.model.vo.node.SimpleSortableNodeInfo">
+            resultType="com.vikadata.api.workspace.vo.SimpleSortableNodeInfo">
         SELECT node_id, pre_node_id
         FROM vika_node
         WHERE parent_id = #{parentId} and is_rubbish = 0
@@ -206,7 +206,7 @@
         limit 0,50
     </select>
 
-    <resultMap id="nodeInfo" type="com.vikadata.api.model.vo.node.BaseNodeInfo">
+    <resultMap id="nodeInfo" type="com.vikadata.api.workspace.vo.BaseNodeInfo">
         <result column="node_id" property="nodeId"/>
         <result column="node_name" property="nodeName"/>
         <result column="type" property="type"/>
@@ -247,7 +247,7 @@
         AND is_template = 0
     </select>
 
-    <select id="selectInfoByNodeIds" resultType="com.vikadata.api.model.vo.node.NodeInfo">
+    <select id="selectInfoByNodeIds" resultType="com.vikadata.api.workspace.vo.NodeInfo">
         SELECT node_id, node_name, type, icon
         FROM vika_node
         WHERE node_id IN
@@ -257,7 +257,7 @@
         AND is_rubbish = 0
     </select>
 
-    <resultMap id="nodeInfoMap" type="com.vikadata.api.model.vo.node.NodeInfoVo" extends="nodeInfo">
+    <resultMap id="nodeInfoMap" type="com.vikadata.api.workspace.vo.NodeInfoVo" extends="nodeInfo">
         <result column="space_id" property="spaceId"/>
         <result column="parent_id" property="parentId"/>
         <result column="pre_node_id" property="preNodeId"/>
@@ -315,7 +315,7 @@
         GROUP BY vn.node_id
     </select>
 
-    <resultMap id="nodeInfoTree" type="com.vikadata.api.model.vo.node.NodeInfoTreeVo" extends="nodeInfoMap"/>
+    <resultMap id="nodeInfoTree" type="com.vikadata.api.workspace.vo.NodeInfoTreeVo" extends="nodeInfoMap"/>
 
     <select id="selectNodeInfoTreeByNodeIds" resultMap="nodeInfoTree">
         SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type,
@@ -397,7 +397,7 @@
         )SELECT DISTINCT node_id FROM pre
     </select>
 
-    <select id="selectShareTreeByNodeId" resultType="com.vikadata.api.model.vo.node.NodeShareTree">
+    <select id="selectShareTreeByNodeId" resultType="com.vikadata.api.workspace.vo.NodeShareTree">
         WITH RECURSIVE pre (node_id, node_name, icon, parent_id, pre_node_id, type, cover, extra) AS
         (SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id,vn.pre_node_id, vn.type, vn.cover, vn.extra
         FROM vika_node vn
@@ -429,7 +429,7 @@
         FROM pre
     </select>
 
-    <select id="selectShareTree" resultType="com.vikadata.api.model.vo.node.NodeShareTree">
+    <select id="selectShareTree" resultType="com.vikadata.api.workspace.vo.NodeShareTree">
         SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id, vn.pre_node_id, vn.type, vn.cover
         FROM vika_node vn
         WHERE vn.is_rubbish = 0 AND vn.node_id IN
@@ -466,7 +466,7 @@
         ORDER BY lvl DESC
     </select>
 
-    <select id="selectParentNodeListByNodeId" resultType="com.vikadata.api.model.vo.node.NodePathVo">
+    <select id="selectParentNodeListByNodeId" resultType="com.vikadata.api.workspace.vo.NodePathVo">
         WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS (
         SELECT n.node_id,
         IF(n.parent_id = '0', s.NAME, n.node_name) node_name,
@@ -490,7 +490,7 @@
         ORDER BY lvl DESC
     </select>
 
-    <select id="selectParentNodeByNodeIds" resultType="com.vikadata.api.model.dto.node.NodeBaseInfoDTO">
+    <select id="selectParentNodeByNodeIds" resultType="com.vikadata.api.workspace.dto.NodeBaseInfoDTO">
         WITH RECURSIVE parent_view (node_id, node_name, parent_id) AS (
         SELECT n.node_id, n.node_name, n.parent_id
         FROM vika_node n
@@ -610,7 +610,7 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.vikadata.api.modular.workspace.model.SimpleNodeInfo">
+    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.vikadata.api.workspace.model.SimpleNodeInfo">
         WITH RECURSIVE parent_view ( node_id, parent_id, extend, lvl ) AS (
         SELECT
         n.node_id,
@@ -658,7 +658,7 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.vikadata.api.model.dto.node.NodeBaseInfoDTO">
+    <select id="selectBaseNodeInfoByNodeIdsIncludeDelete" resultType="com.vikadata.api.workspace.dto.NodeBaseInfoDTO">
         SELECT node_id, node_name, icon, type
         FROM vika_node
         WHERE node_id IN
@@ -685,7 +685,7 @@
         LIMIT #{size}
     </select>
 
-    <select id="selectRubbishNodeInfo" resultType="com.vikadata.api.model.vo.node.RubbishNodeVo">
+    <select id="selectRubbishNodeInfo" resultType="com.vikadata.api.workspace.vo.RubbishNodeVo">
         SELECT vn.node_id, vn.space_id, vn.node_name, vn.type, vn.icon, vn.updated_at AS deletedAt, vn.deleted_path AS
         delPath,
         vu.uuid, vu.avatar, vum.member_name, #{retainDay} AS retainDay,
@@ -702,7 +702,7 @@
         ORDER BY vn.updated_at DESC
     </select>
 
-    <select id="selectNodeBaseInfoByNodeId" resultType="com.vikadata.api.model.dto.node.NodeBaseInfoDTO">
+    <select id="selectNodeBaseInfoByNodeId" resultType="com.vikadata.api.workspace.dto.NodeBaseInfoDTO">
         SELECT node_id, node_name, icon
         FROM vika_node
         WHERE node_id = #{nodeId} AND is_rubbish = 0 AND is_deleted = 0
@@ -748,7 +748,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectSpaceIdAndNodeNameByNodeId" resultType="com.vikadata.api.model.dto.node.UrlNodeInfoDTO">
+    <select id="selectSpaceIdAndNodeNameByNodeId" resultType="com.vikadata.api.workspace.dto.UrlNodeInfoDTO">
         SELECT space_id, node_name
         FROM vika_node
         WHERE node_id = #{nodeId}
@@ -756,7 +756,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectSpaceIdAndNodeNameByNodeIds" resultType="com.vikadata.api.model.dto.node.UrlNodeInfoDTO">
+    <select id="selectSpaceIdAndNodeNameByNodeIds" resultType="com.vikadata.api.workspace.dto.UrlNodeInfoDTO">
         SELECT space_id, node_name, node_id
         FROM vika_node
         WHERE node_id IN

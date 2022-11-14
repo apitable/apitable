@@ -9,13 +9,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enums.organization.UnitType;
-import com.vikadata.api.util.page.PageHelper;
-import com.vikadata.api.util.page.PageInfo;
+import com.vikadata.api.organization.enums.UnitType;
+import com.vikadata.api.shared.util.page.PageHelper;
+import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.organization.RoleMemberUnitRo;
-import com.vikadata.api.model.vo.organization.RoleMemberVo;
-import com.vikadata.api.modular.organization.service.IUnitService;
+import com.vikadata.api.organization.ro.RoleMemberUnitRo;
+import com.vikadata.api.organization.vo.RoleMemberVo;
+import com.vikadata.api.organization.service.IUnitService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

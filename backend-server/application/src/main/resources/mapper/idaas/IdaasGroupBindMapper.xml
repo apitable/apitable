@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.idaas.mapper.IdaasGroupBindMapper">
+<mapper namespace="com.vikadata.api.enterprise.idaas.mapper.IdaasGroupBindMapper">
     <select id="selectAllBySpaceId" resultType="com.vikadata.entity.IdaasGroupBindEntity">
         SELECT *
         FROM vika_idaas_group_bind

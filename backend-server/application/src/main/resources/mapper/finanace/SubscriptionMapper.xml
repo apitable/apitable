@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.modular.finance.mapper.SubscriptionMapper">
+<mapper namespace="com.vikadata.api.enterprise.billing.mapper.SubscriptionMapper">
     <select id="selectBySubscriptionId"
             resultType="com.vikadata.entity.SubscriptionEntity">
         SELECT *
@@ -62,7 +62,7 @@
         </foreach>
     </update>
 
-    <resultMap id="spaceSubscriptionDto" type="com.vikadata.api.modular.space.model.SpaceSubscriptionDto">
+    <resultMap id="spaceSubscriptionDto" type="com.vikadata.api.space.model.SpaceSubscriptionDto">
         <result column="product_category" property="productCategory"/>
         <result column="plan_id" property="planId"/>
         <result column="metadata" property="metadata"/>

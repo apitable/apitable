@@ -7,8 +7,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vikadata.api.config.MybatisPlusConfig;
-import com.vikadata.api.config.properties.MybatisPlusExpandProperties;
+import com.vikadata.api.shared.config.MybatisPlusConfig;
+import com.vikadata.api.shared.config.properties.MybatisPlusExpandProperties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

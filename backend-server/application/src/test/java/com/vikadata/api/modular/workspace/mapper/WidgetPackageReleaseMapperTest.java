@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.dto.widget.LastSubmitWidgetVersionDTO;
-import com.vikadata.api.model.ro.widget.WidgetStoreListRo;
-import com.vikadata.api.model.vo.widget.WidgetReleaseListVo;
-import com.vikadata.api.model.vo.widget.WidgetStoreListInfo;
+import com.vikadata.api.enterprise.widget.mapper.WidgetPackageReleaseMapper;
+import com.vikadata.api.enterprise.widget.dto.LastSubmitWidgetVersionDTO;
+import com.vikadata.api.enterprise.widget.ro.WidgetStoreListRo;
+import com.vikadata.api.enterprise.widget.vo.WidgetReleaseListVo;
+import com.vikadata.api.enterprise.widget.vo.WidgetStoreListInfo;
 import com.vikadata.entity.WidgetPackageReleaseEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

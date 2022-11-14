@@ -4,12 +4,12 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import com.vikadata.api.modular.finance.core.Bundle;
-import com.vikadata.api.modular.finance.core.Subscription;
-import com.vikadata.api.modular.finance.service.IBundleService;
-import com.vikadata.api.modular.finance.service.ISpaceSubscriptionService;
-import com.vikadata.api.util.billing.model.ProductEnum;
-import com.vikadata.api.util.billing.model.SubscribePlanInfo;
+import com.vikadata.api.enterprise.billing.core.Bundle;
+import com.vikadata.api.enterprise.billing.core.Subscription;
+import com.vikadata.api.enterprise.billing.service.IBundleService;
+import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
+import com.vikadata.api.enterprise.billing.util.model.ProductEnum;
+import com.vikadata.api.enterprise.billing.util.model.SubscribePlanInfo;
 import com.vikadata.system.config.billing.Plan;
 
 import static org.assertj.core.api.Assertions.assertThat;

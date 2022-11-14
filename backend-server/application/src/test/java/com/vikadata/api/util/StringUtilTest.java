@@ -3,6 +3,8 @@ package com.vikadata.api.util;
 import cn.hutool.core.lang.Dict;
 import org.junit.jupiter.api.Test;
 
+import com.vikadata.api.shared.util.StringUtil;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StringUtilTest {

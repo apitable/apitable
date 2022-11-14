@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.model.vo.wechat.QrCodePageVo;
+import com.vikadata.api.enterprise.wechat.mapper.WechatMpQrcodeMapper;
+import com.vikadata.api.enterprise.wechat.vo.QrCodePageVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

@@ -6,18 +6,18 @@ import cn.hutool.core.collection.CollUtil;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.control.role.RoleConstants.Node;
+import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.model.ro.node.NodeOpRo;
-import com.vikadata.api.modular.control.service.IControlRoleService;
-import com.vikadata.api.modular.organization.service.IMemberService;
-import com.vikadata.api.modular.organization.service.ITeamService;
-import com.vikadata.api.modular.organization.service.IUnitService;
-import com.vikadata.api.modular.workspace.model.ControlRoleInfo;
-import com.vikadata.api.modular.workspace.service.INodeRoleService;
-import com.vikadata.api.modular.workspace.service.INodeService;
-import com.vikadata.api.enums.node.NodeType;
-import com.vikadata.entity.UserEntity;
+import com.vikadata.api.workspace.ro.NodeOpRo;
+import com.vikadata.api.enterprise.control.service.IControlRoleService;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.workspace.model.ControlRoleInfo;
+import com.vikadata.api.workspace.service.INodeRoleService;
+import com.vikadata.api.workspace.service.INodeService;
+import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.model.dto.datasheet.DatasheetMetaDTO;
-import com.vikadata.api.modular.workspace.service.IDatasheetMetaService;
-import com.vikadata.api.modular.workspace.service.IDatasheetService;
+import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
+import com.vikadata.api.workspace.service.IDatasheetMetaService;
+import com.vikadata.api.workspace.service.IDatasheetService;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 

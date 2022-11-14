@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.enums.attach.AssetType;
-import com.vikadata.api.model.vo.asset.AssetUploadResult;
-import com.vikadata.api.modular.base.service.IAssetCallbackService;
+import com.vikadata.api.asset.enums.AssetType;
+import com.vikadata.api.asset.vo.AssetUploadResult;
+import com.vikadata.api.asset.service.IAssetCallbackService;
 import com.vikadata.core.exception.BusinessException;
 
 import static org.assertj.core.api.Assertions.assertThat;

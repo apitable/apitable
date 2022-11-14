@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.modular.vcode.mapper.VCodeMapper">
+<mapper namespace="com.vikadata.api.enterprise.vcode.mapper.VCodeMapper">
 
     <select id="countByCode" resultType="java.lang.Integer">
         SELECT COUNT(*)
@@ -114,7 +114,7 @@
         LIMIT 1
     </select>
 
-    <select id="selectDetailInfo" resultType="com.vikadata.api.model.vo.vcode.VCodePageVo">
+    <select id="selectDetailInfo" resultType="com.vikadata.api.enterprise.vcode.vo.VCodePageVo">
         SELECT vc.type, vc.code, vc.available_times, vc.remain_times, vc.limit_times, vc.expired_at AS expireTime,
         vc.created_at, vc.updated_at, vu.nick_name AS creator, vu2.nick_name AS updater,
         vca.name AS activityName, vcct.comment AS templateComment, vu3.nick_name AS assignUser

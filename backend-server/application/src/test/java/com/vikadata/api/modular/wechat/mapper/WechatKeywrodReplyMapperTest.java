@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
+import com.vikadata.api.enterprise.wechat.mapper.WechatKeywordReplyMapper;
 import com.vikadata.entity.WechatKeywordReplyEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

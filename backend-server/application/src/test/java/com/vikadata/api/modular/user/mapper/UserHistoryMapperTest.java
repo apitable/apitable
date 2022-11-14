@@ -6,8 +6,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.modular.user.model.PausedUserHistoryDto;
-import com.vikadata.entity.UserHistoryEntity;
+import com.vikadata.api.user.mapper.UserHistoryMapper;
+import com.vikadata.api.user.model.PausedUserHistoryDto;
+import com.vikadata.api.user.entity.UserHistoryEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
