@@ -8,7 +8,7 @@ import clx from 'classnames';
 import { isMac, isWxWork } from 'pc/utils/os';
 import { IS_QQBROWSER } from 'pc/utils/env';
 
-import { useDebounceFn, useUpdateEffect } from 'ahooks';
+import { useDebounceFn } from 'ahooks';
 
 import { EditorContext } from './context';
 
@@ -78,6 +78,9 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
   const editor = useMemo(() => withVika(withMeta(withEventBus(withHistory(withReact(createEditor() as ReactEditor))))), []);
   editor.mode = mode;
   const [value, setValue] = useState(() => {
+    if (!propsValue) {
+      return defaultValue;
+    }
     const propsMeta = (propsValue as IEditorData).meta;
     let nextValue = propsMeta ? (propsValue as IEditorData).document : propsValue;
     if (!Array.isArray(nextValue)) {
@@ -163,7 +166,7 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
     Editor.normalize(editor, { force: true });
   }, { wait: 300 });
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     if (!propsValue) {
       if (value !== defaultValue) {
         setValue(defaultValue);
