@@ -1,0 +1,10 @@
+Usage reminders for the number of forms in the "${SPACE_NAME}" space
+
+--------------------------------------------------------------------------------
+
+The maximum number of calendar views to be used in the Space is ${SPECIFICATION} . So far, ${USAGE} has been used, and you can upgrade to get higher usage.
+DETAILS
+${URL}
+copyright © 2019-${YEARS} vikadata.All rights reserved.
+Contact us
+${CONTACT_URL}

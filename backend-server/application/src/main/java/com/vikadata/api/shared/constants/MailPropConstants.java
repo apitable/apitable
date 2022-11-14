@@ -56,4 +56,36 @@ public class MailPropConstants {
     public static final String SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED = "subject.subscribed.record.cell.updated";
 
     public static final String SUBJECT_SUBSCRIBED_RECORD_COMMENTED = "subject.subscribed.record.commented";
+
+    public static final String SUBJECT_SUBSCRIBED_DATASHEET_LIMIT = "subject.subscribed.datasheet.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_DATASHEET_RECORD_LIMIT = "subject.subscribed.datasheet.record.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_CAPACITY_LIMIT = "subject.subscribed.capacity.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_SEATS_LIMIT = "subject.subscribed.seats.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_RECORD_LIMIT = "subject.subscribed.record.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_API_LIMIT = "subject.subscribed.api.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_CALENDAR_LIMIT = "subject.subscribed.calendar.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_FORM_LIMIT = "subject.subscribed.form.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_MIRROR_LIMIT = "subject.subscribed.mirror.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_GANNT_LIMIT = "subject.subscribed.gannt.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_FIELD_PERMISSION_LIMIT = "subject.subscribed.field.permission.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_FILE_PERMISSION_LIMIT = "subject.subscribed.file.permission.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_ADMIN_LIMIT = "subject.subscribed.admin.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_RAINBOW_LABEL_LIMIT = "subject.subscribed.rainbow.label.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_TIME_MACHINE_LIMIT = "subject.subscribed.time.machine.limit";
+
+    public static final String SUBJECT_SUBSCRIBED_TRASH_LIMIT = "subject.subscribed.trash.limit";
 }

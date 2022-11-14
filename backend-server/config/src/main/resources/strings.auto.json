@@ -3109,12 +3109,13 @@
             "en_US": "By subscription"
         },
         "capacity_limit": {
-            "zh_CN": "空间站容量已超出上限，升级可获得用量",
-            "en_US": "Your Space has reached its maximum capacity. You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站附件容量上限为 <a class=\"specification\"></a> G，当前已使用 <a class=\"usage\"></a> G，升级可获得更高用量。",
+            "en_US": "The maximum number of attachment capacities to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站容量已超出上限，升級可獲得用量"
         },
         "capacity_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的附件容量包已超出上限（{USAGE}GB/{SPECIFICATION}GB）",
+            "en_US": "Usage reminders for the number of attachment capacities in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的附件容量包已超出上限（{USAGE}GB/{SPECIFICATION}GB）"
         },
         "capacity_reach_limit": {
@@ -4843,12 +4844,13 @@
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
         },
         "datasheet_limit": {
-            "zh_CN": "空间站的维格表数量已超出上限，升级可获得更高用量",
-            "en_US": "Your Space has exceeded the limit on the number of datasheets. You can upgrade the plan to get more usage.",
-            "zh_HK": "空間站的維格表數量已超出上限，升級可獲得更高用量"
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站文件节点数上限为 <a class=\"specification\"></a> 个，当前已创建 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of file nodes to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
+            "zh_HK": "你管理的「<a class=\"spaceName\"></a>」空間站檔案節點數上限為 <a class=\"specification\"></a> 個，當前已創建 <a class=\"usage\"></a> 個，升級可獲得更高用量。"
         },
         "datasheet_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的维格表数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of nodes in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的維格表數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "datasheet_manager_label": {
@@ -4867,12 +4869,13 @@
             "zh_HK": "你僅可查看此表格的內容"
         },
         "datasheet_record_limit": {
-            "zh_CN": "空间站的「<a class=\"nodeName\"></a>」维格表记录数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space's \"<a class=\"nodeName\"></a>\" datasheet has the maximum number of records (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站的「<a class=\"nodeName\"></a>」单张维格表记录数上限为 <a class=\"specification\"></a> 行，当前已创建 <a class=\"usage\"></a> 行，升级可获得更高用量。",
+            "en_US": "The maximum number of records to be used in the \"<a class=\"nodeName\"></a>\" datasheet is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been created, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的「<a class=\"nodeName\"></a>」維格表記錄數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "datasheet_record_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的「{NODE_NAME}」维格表记录数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of records in the \"${NODE_NAME}\" datasheet ",
             "zh_HK": "「{SPACE_NAME}」空間站的「{NODE_NAME}」維格表記錄數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "date_after_or_equal": {
@@ -20914,12 +20917,13 @@
             "zh_HK": "空間站等級"
         },
         "space_admin_limit": {
-            "zh_CN": "空间站管理员数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of admins (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站子管理员数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of sub-admins to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站管理員數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_admin_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的管理员数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of sub-admins in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的管理員數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_admins_3_up": {
@@ -20933,12 +20937,13 @@
             "zh_HK": "升級到白銀級空間站，就可以添加更多管理員"
         },
         "space_api_limit": {
-            "zh_CN": "空间站 API 用量已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space's API usage has exceeded the limit (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站每月API调用上限为 <a class=\"specification\"></a> 次，当前已使用 <a class=\"usage\"></a> 次，升级可获得更高用量。",
+            "en_US": "The maximum number of api usages per month to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站 API 用量已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_api_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的 API 用量已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of api usages per month in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的 API 用量已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_assigned_to_group": {
@@ -20952,8 +20957,8 @@
             "zh_HK": "<a class=\"memberName\"></a>將你分配到空間站「<a class=\"spaceName\"></a>」的角色「<a class=\"roleName\"></a>」"
         },
         "space_calendar_limit": {
-            "zh_CN": "空间站日历视图数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of calendar views (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站日历视图数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of calendar views to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站日曆視圖數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_calendar_limit_email_title": {
@@ -21037,21 +21042,32 @@
             "zh_HK": "將小程序發送至儀錶盤"
         },
         "space_field_permission_limit": {
-            "zh_CN": "空间站列权限数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of fields with limited permissions (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站列权限数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of field permissions to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站列權限數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_field_permission_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的列权限使用数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of field permissions in the \"${SPACE_NAME}\" space",
             "zh_HK": "「{SPACE_NAME}」空間站的列權限使用數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
+        "space_file_permission_limit": {
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站文件权限数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of file permissions to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage."
+        },
+        "space_file_permission_limit_email_title": {
+            "zh_CN": "「${SPACE_NAME}」空间站的文件权限数的用量提醒",
+            "en_US": "Usage reminders for the number of file permissions in the \"${SPACE_NAME}\" space",
+            "zh_HK": "「${SPACE_NAME}」空間站的檔案許可權數的用量提醒"
+        },
         "space_form_limit": {
-            "zh_CN": "空间站神奇表单数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of forms (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站神奇表单数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of forms to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站神奇表單數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_form_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的神奇表单使用数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of forms in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的神奇表單使用數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_free_capacity_expansion": {
@@ -21060,12 +21076,13 @@
             "zh_HK": "免費擴容"
         },
         "space_gantt_limit": {
-            "zh_CN": "空间站甘特视图数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of gantt views (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站甘特视图数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of gantt views to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站甘特視圖數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_gantt_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的甘特视图使用数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of gannt views in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的甘特視圖使用數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_guide_step_one_desc": {
@@ -21272,6 +21289,15 @@
             "zh_CN": "「{SPACE_NAME}」空间站的成员数已超出上限（{USAGE}/{SPECIFICATION}）",
             "zh_HK": "「{SPACE_NAME}」空間站的成員數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
+        "space_mirror_limit": {
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站镜像数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of mirrors to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage."
+        },
+        "space_mirror_limit_email_title": {
+            "zh_CN": "「${SPACE_NAME}」空间站的镜像数的用量提醒",
+            "en_US": "Usage reminders for the number of mirrors in the \"${SPACE_NAME}\" space",
+            "zh_HK": "「${SPACE_NAME}」空間站的鏡像數的用量提醒"
+        },
         "space_name": {
             "zh_CN": "空间站名称",
             "en_US": "Space name",
@@ -21312,12 +21338,13 @@
             "zh_HK": "「{SPACE_NAME}」空間站正在使用白銀級空間站專屬功能「彩虹標籤彩色色系」"
         },
         "space_record_limit": {
-            "zh_CN": "空间站总记录数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of records (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站总记录数上限为 <a class=\"specification\"></a> 行，当前已使用 <a class=\"usage\"></a> 行，升级可获得更高用量。",
+            "en_US": "The maximum number of total records to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站總記錄數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_record_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的记录数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of total records in the \"${SPACE_NAME}\" space",
             "zh_HK": "「{SPACE_NAME}」空間站的記錄數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_seat_info": {
@@ -21326,12 +21353,13 @@
             "zh_HK": "空間站人數：${num} 人"
         },
         "space_seats_limit": {
-            "zh_CN": "空间站现有付费成员数已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升级可获得更高用量",
-            "en_US": "Your Space has the maximum number of paid members (<a class=\"usage\"></a>/<a class=\"specification\"></a>). You can upgrade the plan to get more usage.",
+            "zh_CN": "你管理的「<a class=\"spaceName\"></a>」空间站付费成员数上限为 <a class=\"specification\"></a> 个，当前已使用 <a class=\"usage\"></a> 个，升级可获得更高用量。",
+            "en_US": "The maximum number of seats to be used in the \"<a class=\"spaceName\"></a>\" Space is <a class=\"specification\"></a> . So far, <a class=\"usage\"></a> has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站現有付費成員數已超出上限（<a class=\"usage\"></a>/<a class=\"specification\"></a>），升級可獲得更高用量"
         },
         "space_seats_limit_email_title": {
             "zh_CN": "「{SPACE_NAME}」空间站的付费席位数已超出上限（{USAGE}/{SPECIFICATION}）",
+            "en_US": "Usage reminders for the number of seats in the \"${SPACE_NAME}\" space ",
             "zh_HK": "「{SPACE_NAME}」空間站的付費席位數已超出上限（{USAGE}/{SPECIFICATION}）"
         },
         "space_setting": {

@@ -44,8 +44,8 @@ public class SpaceCapacityCacheServiceImpl implements SpaceCapacityCacheService 
 
     @Override
     public void del(String spaceId) {
-        // String key = StrUtil.format(GENERAL_STATICS, "space:capacity", spaceId);
-        // redisTemplate.delete(key);
+        String key = StrUtil.format(GENERAL_STATICS, "space:capacity", spaceId);
+        redisTemplate.delete(key);
     }
 
 }

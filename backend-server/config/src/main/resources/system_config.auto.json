@@ -1831,7 +1831,6 @@
             },
             "capacity_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1840,15 +1839,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.capacity.limit",
+                "billing_notify": [],
                 "format_string": "capacity_limit",
                 "id": "capacity_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "datasheet_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1857,15 +1857,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.datasheet.limit",
+                "billing_notify": [],
                 "format_string": "datasheet_limit",
                 "id": "datasheet_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "datasheet_record_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1874,15 +1875,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.datasheet.record.limit",
+                "billing_notify": [],
                 "format_string": "datasheet_record_limit",
                 "id": "datasheet_record_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_admin_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1891,15 +1893,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.admin.limit",
+                "billing_notify": [],
                 "format_string": "space_admin_limit",
                 "id": "space_admin_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_api_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1908,15 +1911,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.api.limit",
+                "billing_notify": [],
                 "format_string": "space_api_limit",
                 "id": "space_api_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_calendar_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1925,10 +1929,12 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.calendar.limit",
+                "billing_notify": [],
                 "format_string": "space_calendar_limit",
                 "id": "space_calendar_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_certification_fail_notify": {
@@ -1990,7 +1996,6 @@
             },
             "space_field_permission_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -1999,15 +2004,34 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.field.permission.limit",
+                "billing_notify": [],
                 "format_string": "space_field_permission_limit",
                 "id": "space_field_permission_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
+                "is_component": true
+            },
+            "space_file_permission_limit": {
+                "can_jump": true,
+                "to_tag": "space_admins",
+                "notifications_type": "space",
+                "formatString": [
+                    "space_file_permission_limit"
+                ],
+                "is_notification": true,
+                "is_mail": true,
+                "is_browser": true,
+                "mail_template_subject": "subject.subscribed.file.permission.limit",
+                "billing_notify": [],
+                "format_string": "space_file_permission_limit",
+                "id": "space_file_permission_limit",
+                "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_form_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2016,15 +2040,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.form.limit",
+                "billing_notify": [],
                 "format_string": "space_form_limit",
                 "id": "space_form_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_gantt_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2033,10 +2058,12 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.gannt.limit",
+                "billing_notify": [],
                 "format_string": "space_gantt_limit",
                 "id": "space_gantt_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_lark_notify": {
@@ -2071,6 +2098,24 @@
                 "systemControl": true,
                 "is_component": true
             },
+            "space_mirror_limit": {
+                "can_jump": true,
+                "to_tag": "space_admins",
+                "notifications_type": "space",
+                "formatString": [
+                    "space_mirror_limit"
+                ],
+                "is_notification": true,
+                "is_mail": true,
+                "is_browser": true,
+                "mail_template_subject": "subject.subscribed.mirror.limit",
+                "billing_notify": [],
+                "format_string": "space_mirror_limit",
+                "id": "space_mirror_limit",
+                "url": "/management",
+                "frequency": 1,
+                "is_component": true
+            },
             "space_name_change": {
                 "can_jump": true,
                 "to_tag": "all_members",
@@ -2098,7 +2143,6 @@
             },
             "space_rainbow_label_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2107,15 +2151,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.rainbow.label.limit",
+                "billing_notify": [],
                 "format_string": "space_rainbow_label_limit",
                 "id": "space_rainbow_label_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_record_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2124,10 +2169,12 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.record.limit",
+                "billing_notify": [],
                 "format_string": "space_record_limit",
                 "id": "space_record_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_recover": {
@@ -2145,7 +2192,6 @@
             },
             "space_seats_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2154,10 +2200,12 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.seats.limit",
+                "billing_notify": [],
                 "format_string": "space_seats_limit",
                 "id": "space_seats_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_subscription_end_notify": {
@@ -2188,7 +2236,6 @@
             },
             "space_time_machine_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2197,15 +2244,16 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.time.machine.limit",
+                "billing_notify": [],
                 "format_string": "space_time_machine_limit",
                 "id": "space_time_machine_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_trash_limit": {
                 "can_jump": true,
-                "times": 1,
                 "to_tag": "space_admins",
                 "notifications_type": "space",
                 "formatString": [
@@ -2214,10 +2262,12 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.trash.limit",
+                "billing_notify": [],
                 "format_string": "space_trash_limit",
                 "id": "space_trash_limit",
                 "url": "/management",
-                "systemControl": true,
+                "frequency": 1,
                 "is_component": true
             },
             "space_trial": {

@@ -45,8 +45,21 @@ import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_RECORD
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_REGISTER;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_REMOVE_MEMBER;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_ADMIN_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_API_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_CALENDAR_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_CAPACITY_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_DATASHEET_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_DATASHEET_RECORD_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_FIELD_PERMISSION_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_FILE_PERMISSION_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_FORM_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_GANNT_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_MIRROR_LIMIT;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_CELL_UPDATED;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_COMMENTED;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_RECORD_LIMIT;
+import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_SUBSCRIBED_SEATS_LIMIT;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_TASK_REMINDER;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_VERIFY_CODE;
 import static com.vikadata.api.shared.constants.MailPropConstants.SUBJECT_WARN_NOTIFY;
@@ -334,6 +347,58 @@ public class NotifyMailFactory {
                 case SUBJECT_SUBSCRIBED_RECORD_COMMENTED:
                     htmlBtl = "subscribed-record-commented-html.btl";
                     textBtl = "subscribed-record-commented-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_DATASHEET_LIMIT:
+                    htmlBtl = "subscribed-datasheet-limit-html.btl";
+                    textBtl = "subscribed-datasheet-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_DATASHEET_RECORD_LIMIT:
+                    htmlBtl = "subscribed-datasheet-record-html.btl";
+                    textBtl = "subscribed-datasheet-record-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_CAPACITY_LIMIT:
+                    htmlBtl = "subscribed-capacity-html.btl";
+                    textBtl = "subscribed-capacity-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_SEATS_LIMIT:
+                    htmlBtl = "subscribed-seats-limit-html.btl";
+                    textBtl = "subscribed-seats-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_RECORD_LIMIT:
+                    htmlBtl = "subscribed-record-limit-html.btl";
+                    textBtl = "subscribed-record-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_API_LIMIT:
+                    htmlBtl = "subscribed-api-limit-html.btl";
+                    textBtl = "subscribed-api-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_CALENDAR_LIMIT:
+                    htmlBtl = "subscribed-calendar-limit-html.btl";
+                    textBtl = "subscribed-calendar-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_FORM_LIMIT:
+                    htmlBtl = "subscribed-form-limit-html.btl";
+                    textBtl = "subscribed-form-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_MIRROR_LIMIT:
+                    htmlBtl = "subscribed-mirror-limit-html.btl";
+                    textBtl = "subscribed-mirror-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_GANNT_LIMIT:
+                    htmlBtl = "subscribed-gannt-limit-html.btl";
+                    textBtl = "subscribed-gannt-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_FIELD_PERMISSION_LIMIT:
+                    htmlBtl = "subscribed-field-permission-limit-html.btl";
+                    textBtl = "subscribed-field-permission-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_FILE_PERMISSION_LIMIT:
+                    htmlBtl = "subscribed-file-permission-limit-html.btl";
+                    textBtl = "subscribed-file-permission-limit-text.btl";
+                    break;
+                case SUBJECT_SUBSCRIBED_ADMIN_LIMIT:
+                    htmlBtl = "subscribed-admin-limit-html.btl";
+                    textBtl = "subscribed-admin-limit-text.btl";
                     break;
                 default:
                     break;

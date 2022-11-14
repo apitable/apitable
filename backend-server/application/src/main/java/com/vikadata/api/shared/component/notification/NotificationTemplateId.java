@@ -103,9 +103,13 @@ public enum NotificationTemplateId {
 
     SPACE_FORM_LIMIT("space_form_limit"),
 
+    SPACE_MIRROR_LIMIT("space_mirror_limit"),
+
     SPACE_GANTT_LIMIT("space_gantt_limit"),
 
     SPACE_FIELD_PERMISSION_LIMIT("space_field_permission_limit"),
+
+    SPACE_FILE_PERMISSION_LIMIT("space_file_permission_limit"),
 
     SPACE_ADMIN_LIMIT("space_admin_limit"),
 
@@ -150,6 +154,9 @@ public enum NotificationTemplateId {
     SPACE_CERTIFICATION_FAIL_NOTIFY("space_certification_fail_notify"),
 
     ACTIVITY_INTEGRAL_INCOME_NOTIFY("activity_integral_income_notify"),
+
+    SPACE_RAINBOW_LABEL_LIMIT("space_rainbow_label_limit"),
+
 
     /**
      * new user welcome notify---->to users

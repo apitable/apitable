@@ -91,6 +91,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
+import static com.vikadata.api.shared.constants.NotificationConstants.EMAIL_CONTACT_URL;
 import static com.vikadata.api.shared.constants.NotificationConstants.EMAIL_CREATED_AT;
 import static com.vikadata.api.shared.constants.NotificationConstants.EMAIL_DATASHEET_URL;
 import static com.vikadata.api.shared.constants.NotificationConstants.EMAIL_MEMBER_NAME;
@@ -672,6 +673,12 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
                     dict.set(EMAIL_DATASHEET_URL, notifyUr.toString());
                 }
             }
+        }
+        else {
+            String url = constProperties.getServerDomain() + template.getUrl();
+            String contactUrl = constProperties.getServerDomain() + "/?home=1";
+            dict.set(EMAIL_URL, url);
+            dict.set(EMAIL_CONTACT_URL, contactUrl);
         }
         return dict;
     }
