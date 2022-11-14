@@ -42,16 +42,16 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
   const nodeId = useSelector(state => Selectors.getNodeId(state))!;
   const { updateNodeDescriptionReq } = useCatalogTreeRequest();
   const { uploadImage } = useImageUpload();
-  const { run: updateNodeDescrition } = useRequest(updateNodeDescriptionReq, { manual: true });
+  const { run: updateNodeDescription } = useRequest(updateNodeDescriptionReq, { manual: true });
   const { run: sendUpdateDesc } = useDebounceFn(
     async(nodeId, desc) => {
-      await updateNodeDescrition(nodeId, desc);
+      await updateNodeDescription(nodeId, desc);
     },
     { wait: 500 },
   );
   useMount(() => {
     if (nodeInfo.description) {
-      setValue(polyfillData(nodeInfo.description));
+      setTimeout(() => setValue(polyfillData(nodeInfo.description)));
     }
   });
 
