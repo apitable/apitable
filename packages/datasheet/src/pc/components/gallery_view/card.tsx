@@ -132,11 +132,11 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }) => {
     drop() {
       commitMove();
     },
-    hover(item: IDragItem, monitor: DropTargetMonitor) {
+    hover(item, monitor: DropTargetMonitor) {
       if (!ref.current) {
         return;
       }
-      let dragIndex = item.index;
+      let dragIndex = (item as IDragItem).index;
       let hoverIndex = index;
 
       if (dragIndex === hoverIndex) {

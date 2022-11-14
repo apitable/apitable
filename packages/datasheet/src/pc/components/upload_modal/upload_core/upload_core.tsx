@@ -1,11 +1,15 @@
-import { IAttachmentValue, IField, RowHeightLevel, moveArrayElement } from '@apitable/core';
+import { IAttachmentValue, IField, moveArrayElement, RowHeightLevel } from '@apitable/core';
 import classNames from 'classnames';
+import type { Identifier } from 'dnd-core';
 import produce from 'immer';
+import { ItemTypes } from 'pc/components/gallery_view/constant';
+import { IDragItem } from 'pc/components/gallery_view/interface';
 import { resourceService } from 'pc/resource_service';
 import { UploadManager } from 'pc/utils';
-import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { DndProvider, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { stopPropagation } from '../../../utils/dom';
 import { PreviewItem } from '../preview_item/preview_item';
 import { UploadItem } from '../upload_item';
@@ -35,44 +39,103 @@ export enum UploadCoreSize {
   // Small = 'Small'
 }
 
-const SortableItem = SortableElement(({
-  item,
-  idx,
-  cellValue,
-  recordId,
-  field,
-  readonly,
-  onSave,
-  datasheetId
-}) => {
-  return (
-    <PreviewItem
-      {...item}
-      index={idx}
-      cellValue={cellValue}
-      datasheetId={datasheetId}
-      key={item.id}
-      recordId={recordId}
-      field={field}
-      readonly={readonly}
-      onSave={onSave}
-    />
+const SortableItem = (
+  {
+    item,
+    id,
+    idx,
+    cellValue,
+    recordId,
+    field,
+    readonly,
+    onSave,
+    datasheetId,
+    onSortEnd,
+    onMove
+  }
+) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [, drop] = useDrop<IDragItem, void, { handlerId: Identifier | null }>(
+    {
+      accept: ItemTypes.CARD,
+      drop(item: IDragItem, monitor) {
+        onSortEnd();
+      },
+      hover(item: IDragItem, monitor: DropTargetMonitor) {
+        if (!ref.current) {
+          return;
+        }
+        const dragIndex = item.index;
+        const hoverIndex = idx;
+
+        // Don't replace items with themselves
+        if (dragIndex === hoverIndex) {
+          return;
+        }
+        const dragItemRect = monitor.getClientOffset()!;
+        const dropItemRect = ref.current?.getBoundingClientRect();
+        if (!(
+          dragItemRect.x > dropItemRect.x && dragItemRect.x < dropItemRect.x + dropItemRect.width &&
+          dragItemRect.y > dropItemRect.y && dragItemRect.y < dropItemRect.y + dropItemRect.height
+        )) {
+          return;
+        }
+        if (item.id === id) {
+          return;
+        }
+        onMove({ oldIndex: dragIndex, newIndex: hoverIndex });
+        item.index = hoverIndex;
+
+      },
+    }
   );
-});
 
-const SortableList = SortableContainer(({
-  cellValue,
-  datasheetId,
-  recordId,
-  rowHeightLevel,
-  field,
-  uploadList,
-  readonly,
-  deleteUploadItem,
-  onSave,
-  getCellValueFn,
-}) => {
+  const [, drag] = useDrag({
+    type: ItemTypes.CARD,
+    item: () => {
+      return { id: item.id, index: idx };
+    },
+    collect: (monitor: any) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
+  drag(drop(ref));
+
+  return (
+    <div ref={ref}>
+      <PreviewItem
+        {...item}
+        index={idx}
+        cellValue={cellValue}
+        datasheetId={datasheetId}
+        key={item.id}
+        recordId={recordId}
+        field={field}
+        readonly={readonly}
+        onSave={onSave}
+      />
+    </div>
+
+  );
+};
+
+const SortableList = (
+  {
+    cellValue,
+    datasheetId,
+    recordId,
+    rowHeightLevel,
+    field,
+    uploadList,
+    readonly,
+    deleteUploadItem,
+    onSave,
+    getCellValueFn,
+    onSortEnd,
+    onMove
+  }
+) => {
   return (
     <div className={styles.sortContainer}>
       {
@@ -80,7 +143,7 @@ const SortableList = SortableContainer(({
           return (
             <SortableItem
               key={value.id}
-              index={index}
+              id={value.id}
               idx={index}
               item={value}
               datasheetId={datasheetId}
@@ -89,6 +152,8 @@ const SortableList = SortableContainer(({
               field={field}
               readonly={readonly}
               onSave={onSave}
+              onSortEnd={onSortEnd}
+              onMove={onMove}
             />
           );
         })
@@ -115,7 +180,7 @@ const SortableList = SortableContainer(({
       }
     </div>
   );
-});
+};
 
 export const UploadCore: React.FC<IUploadCoreProps> = props => {
   const {
@@ -138,8 +203,12 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
     },
   );
 
-  const cellValue: IAttachmentValue[] = useMemo(() => {
+  const [cellValue, setCellValue] = useState(() => {
     return (_cellValue || []).flat();
+  });
+
+  useEffect(() => {
+    setCellValue(_cellValue);
   }, [_cellValue]);
 
   const uploadCoreSize = useMemo(() => {
@@ -167,12 +236,16 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
     });
   }
 
-  const onSortEnd = ({ oldIndex, newIndex }) => {
+  const onSortEnd = () => {
+    onSave && onSave(cellValue);
+  };
+
+  const onMove = ({ oldIndex, newIndex }) => {
     const produceCellValue = produce(cellValue, draft => {
       moveArrayElement(draft, oldIndex, newIndex);
       return draft;
     });
-    onSave && onSave(produceCellValue);
+    setCellValue(produceCellValue);
   };
 
   return (
@@ -201,21 +274,23 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
           [styles[`columnCount${columnCount}`]]: true,
         })}
       >
-        <SortableList
-          cellValue={cellValue}
-          onSortEnd={onSortEnd}
-          axis="xy"
-          datasheetId={datasheetId}
-          recordId={recordId}
-          field={field}
-          distance={1}
-          uploadList={uploadList}
-          readonly={readonly}
-          rowHeightLevel={rowHeightLevel}
-          deleteUploadItem={deleteUploadItem}
-          onSave={onSave}
-          getCellValueFn={getCellValueFn}
-        />
+        <DndProvider backend={HTML5Backend}>
+          <SortableList
+            cellValue={cellValue}
+            onSortEnd={onSortEnd}
+            datasheetId={datasheetId}
+            recordId={recordId}
+            field={field}
+            uploadList={uploadList}
+            readonly={readonly}
+            rowHeightLevel={rowHeightLevel}
+            deleteUploadItem={deleteUploadItem}
+            onSave={onSave}
+            getCellValueFn={getCellValueFn}
+            onMove={onMove}
+          />
+        </DndProvider>
+
       </div>
     </div>
   );
