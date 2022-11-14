@@ -1,4 +1,5 @@
 import { Api, Url } from '@apitable/core';
+import { FILTER_HEADERS } from './constant';
 import axios from 'axios';
 import { getEnvVars } from 'get_env';
 import { NextPageContext } from 'next';
@@ -9,9 +10,6 @@ export interface IUserInfoError {
   code: number;
   message: string;
 }
-
-// for baidu ruliu
-const FILTER_HEADERS = ['Staffid', 'Staffname', 'X-Rio-Seq', 'x-ext-data', 'Signature', 'timestamp'];
 
 const filterCustomHeader = (headers?: Record<string, string | string[] | undefined>): Record<string, string> => {
   if (!headers) return {};
@@ -47,7 +45,7 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
 
   axios.defaults.baseURL = host + Url.BASE_URL;
   const language = context.ctx.req?.headers['accept-language'];
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...filterHeaders };
 
   if (cookie) {
     headers.cookie = cookie;
@@ -60,7 +58,11 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const spaceId = context.ctx.query?.spaceId || '';
 
   axios.interceptors.request.use(config => {
-    config.headers.common = { ...config.headers.common, ...filterHeaders };
+    console.log('-------------- web-server log start ---------------');
+    console.log('header from gateway', context.ctx.req?.headers);
+    console.log('filter header', filterHeaders);
+    console.log('custom header:', config.headers);
+    console.log('-------------- web-server log end ---------------');
     return config;
   });
 

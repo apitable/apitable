@@ -7,6 +7,7 @@
  * @see https://nextjs.org/docs/messages/middleware-upgrade-guide
  * @see https://github.com/vercel/next.js/discussions/29750
  */
+import { FILTER_HEADERS } from './utils/constant';
 import { NextRequest, NextResponse } from 'next/server';
 
 /*
@@ -35,8 +36,17 @@ const canaryTestingByFillUpUrlPathFlag = async(request: NextRequest): Promise<Ne
 
   if (urlCheck(url.pathname)) {
     const headers = {
-      cookie: request.headers.get('cookie')!
+      cookie: request.headers.get('cookie')!,
     };
+
+    for (const [k, v] of request.headers.entries()) {
+      if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
+        continue;
+      }
+      headers[k] = v;
+    }
+
+    console.log('middleware request header:', headers);
 
     const host = process.env.API_PROXY || url.origin;
     const clientInfoApi = new URL(host + '/api/v1/client/info');
