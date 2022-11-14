@@ -16,7 +16,7 @@ interface IBeforeUpload {
   setFile: (info: any) => void;
 }
 export const BeforeUpload: FC<IBeforeUpload> = ({ setFile, setKid, setErr, setPreviewList }) => {
-  const downloadUrl = window.location.protocol + '//' + window.location.host + Url.DOWNLOAD_MEMBER_FILE;
+  const downloadUrl = window.location.origin + Url.BASE_URL + Url.DOWNLOAD_MEMBER_FILE;
   const colors = useThemeColors();
   const showFileErr = () => {
     setKid(KidType.Fail);

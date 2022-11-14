@@ -1,4 +1,3 @@
-import { BASE_URL } from '../shared/url';
 // ================ Contacts related =======================
 // Address Book - Query the department list of the specified space
 export const TEAM_LIST = '/org/team/branch';
@@ -42,7 +41,7 @@ export const SEND_INVITE = '/org/member/sendInvite';
 // space station-mail invites external members again
 export const RESEND_INVITE = '/org/member/sendInviteSingle';
 // Space station - download employee information form template
-export const DOWNLOAD_MEMBER_FILE = BASE_URL + '/org/member/downloadTemplate';
+export const DOWNLOAD_MEMBER_FILE = '/org/member/downloadTemplate';
 // space station - upload employee information form
 export const UPLOAD_MEMBER_FILE = '/org/member/uploadExcel';
 // space station-sub-admin-fuzzy search member
