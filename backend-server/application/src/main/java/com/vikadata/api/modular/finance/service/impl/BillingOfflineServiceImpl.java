@@ -481,6 +481,12 @@ public class BillingOfflineServiceImpl implements IBillingOfflineService {
     @Override
     public void createGiftCapacityOrder(Long userId, String userName, String spaceId) {
         log.info("Order a 300MB add-on subscription plan to invite users to increase the capacity of the add-on.");
+        // Get space subscription info
+        SubscribePlanInfo planInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
+        // If the capacity of the space is unlimited, it will not be rewarded capacity
+        if (planInfo.getBasePlan().getFeatures().contains("storage_capacity_unlimited")) {
+            return;
+        }
         CreateEntitlementWithAddOn createEntitlementWithAddOn = new CreateEntitlementWithAddOn();
         createEntitlementWithAddOn.setSpaceId(spaceId);
         createEntitlementWithAddOn.setPlanId("capacity_300_MB");

@@ -92,10 +92,14 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
     public void testPriceHundredV1AndOneYearOrder() {
         String spaceId = "spc" + IdWorker.get32UUID();
         SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        trailEvent.setServiceStartTime(getClock().getNow(testTimeZone).minusDays(15).toInstant().toEpochMilli());
+        trailEvent.setServiceStopTime(getClock().getNow(testTimeZone).minusDays(1).toInstant().toEpochMilli());
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
         SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_100_1_per_year.json");
+        event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
+        event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
         SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
