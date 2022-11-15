@@ -62,6 +62,9 @@
         "api_apifox_upload_url": {
             "value": "https://www.apifox.cn/apidoc/project-613370/api-13867674-run?path[datasheetId]=${datasheetId}&environment[token]=${token}"
         },
+        "api_panel_help_url": {
+            "value": "/developers/api/introduction/"
+        },
         "api_rate_day": {
             "value": "1000000"
         },
@@ -71,8 +74,41 @@
         "api_rate_second": {
             "value": "10"
         },
+        "api_times_per_day": {
+            "value": "1000000"
+        },
+        "api_times_per_hour": {
+            "value": "0"
+        },
+        "api_times_per_minute": {
+            "value": "100"
+        },
+        "api_times_per_second": {
+            "value": "10"
+        },
         "apifox_link": {
             "value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
+        },
+        "assistant": {
+            "value": "true"
+        },
+        "assistant_activity_train_camp_end_time": {
+            "value": "2022-08-31 23:59"
+        },
+        "assistant_activity_train_camp_start_time": {
+            "value": "2022-03-31 00:00"
+        },
+        "assistant_release_history_url": {
+            "value": "https://bbs.vika.cn/column/details/13"
+        },
+        "automation_action_send_msg_to_dingtalk": {
+            "value": "true"
+        },
+        "automation_action_send_msg_to_feishu": {
+            "value": "true"
+        },
+        "automation_action_send_msg_to_wecom": {
+            "value": "true"
         },
         "billing_default_billing_period": {
             "value": "annual"
@@ -82,6 +118,18 @@
         },
         "billing_default_seats": {
             "value": "50"
+        },
+        "billing_enterprise_qr_code": {
+            "value": "space/2022/02/16/cf2f386d300142a19268c487b351d6bb"
+        },
+        "billing_pay_contact_us": {
+            "value": "space/2022/02/17/b32ecd3a5dcb43a1add4d320632c6d2a"
+        },
+        "billing_pay_success_qr_code": {
+            "value": "space/2022/02/17/b7cd077fca35444aa02fba4d11f2c1ba"
+        },
+        "billing_space_upgrade_url": {
+            "value": "vika.cn/space/空间站id/upgrade"
         },
         "blank_mirror_list_image": {
             "value": "space/2022/05/23/d880e95a4a204492b20d8725c61c998c"
@@ -116,11 +164,23 @@
         "datasheet_max_view_count_per_sheet": {
             "value": "60"
         },
+        "datasheet_unlogin_user_avatar": {
+            "value": "space/2020/09/11/744b39b7ed5240e1b257553f683ed6cd"
+        },
         "default_avatar": {
             "value": "space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e"
         },
         "default_widget_template_url": {
             "value": "/develop/widget/wpk2jJ7qZS0VG/0.0.11/61433a73e4b0ed4bd1e2e8e1.zip"
+        },
+        "delete_account_step1_cover": {
+            "value": "space/2022/01/11/05fb6ad3c03b4b4da95156313b5d7777"
+        },
+        "delete_account_step2_email_icon": {
+            "value": "space/2022/01/11/b0d06adfb14d457b9db266349edbf656"
+        },
+        "delete_account_step2_mobile_icon": {
+            "value": "space/2022/01/11/ba4572da263c46ccb94843046a2a8e6c"
         },
         "deploy_mode": {
             "value": "cloud"
@@ -158,6 +218,12 @@
         "education_url": {
             "value": "https://edu.vika.cn"
         },
+        "emoji_database_32": {
+            "value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"
+        },
+        "emoji_database_64": {
+            "value": "space/2021/03/23/c88653f7b7424d10bef058c345f6df6d"
+        },
         "emoji-apple-32": {
             "value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"
         },
@@ -169,6 +235,9 @@
         },
         "error_message_qrcode": {
             "value": "{   \"website\": \"/space/2022/04/26/51352131c1d74332b8ab8a57483b0f3f?attname=66_8c5b355964c515a9d2ce55bc423e5a18.png\",   \"wecom\": \"/space/2022/04/26/2c706fa40e3442d8b643a30ee22f5572?attname=66_8d7dce3b6ff28bc245a2db34bf4ab55a.png\",   \"dingtalk\": \"/space/2022/05/17/9bb75b8710e040be9fb99d7b28a6ad0e?attname=125_f2112b2006e4b42cc4b0e7a320f87da7.png\",   \"feishu\": \"https://u.vika.cn/z9ygm\" }"
+        },
+        "experimental_features_unsynchronized_view_intro_img": {
+            "value": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
         },
         "feishu_bind_help": {
             "value": "https://vikadata.feishu.cn/docs/doccnE9bGAtFXqGlMwkRgutgtsd"
@@ -203,6 +272,9 @@
         "feisu_register_link_in_login": {
             "value": "https://u.vika.cn/qmdp3"
         },
+        "field_cascade": {
+            "value": "true"
+        },
         "folder_showcase_banners": {
             "value": "space/2021/12/29/7306be86fc6d4cac9d8de9b4a787b1fa,space/2021/12/29/58073bbfe0f64dc7bd2f5f44a123c172,space/2021/12/29/e36e93966aa049e1ba7fd53907c2265f,space/2021/12/29/ebd570b6ee3b429f8c2e51e1b1df6657,space/2021/12/29/7eb38331f61240dcb74b1fce3a90c6bc,space/2021/12/29/a8c5df5eba2e4c07a78bdca6b9613579"
         },
@@ -230,8 +302,50 @@
         "guide_api_getting_start": {
             "value": "/developers/api/introduction/"
         },
+        "help_assistant": {
+            "value": "true"
+        },
+        "help_contact_us_type": {
+            "value": "qrcode"
+        },
+        "help_developers_center_url": {
+            "value": "https://vika.cn/developers"
+        },
+        "help_download_app": {
+            "value": "true"
+        },
         "help_intro_custom_subdomain": {
             "value": "/help/intro_custom_subdomain"
+        },
+        "help_join_chatgroup_url": {
+            "value": "https://vika.cn/chatgroup/"
+        },
+        "help_official_website_url": {
+            "value": "vika.cn?home=1"
+        },
+        "help_product_roadmap_url": {
+            "value": "https://bbs.vika.cn/page/product_roadmap"
+        },
+        "help_solution_url": {
+            "value": "https://vika.cn/solutions/"
+        },
+        "help_subscribe_demonstrate_form_url": {
+            "value": "https://vika.cn/share/shrFVCtHXQwYm3DVgNn91"
+        },
+        "help_user_community_url": {
+            "value": "{\"dev\":\"https://bbs.vika.cn\",\"prod\":\"https://bbs.vika.cn\"}"
+        },
+        "help_user_community_url_dev": {
+            "value": "https://bbs.vika.cn"
+        },
+        "help_user_community_url_prod": {
+            "value": "https://bbs.vika.cn"
+        },
+        "help_user_feedback_url": {
+            "value": "https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP"
+        },
+        "help_video_tutorials_url": {
+            "value": "https://edu.vika.cn"
         },
         "icp1": {
             "value": "https://beian.miit.gov.cn/"
@@ -239,9 +353,111 @@
         "icp2": {
             "value": "http://www.beian.gov.cn/portal/registerSystemInfo"
         },
+        "integration_apifox_url": {
+            "value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
+        },
+        "integration_dingtalk_da": {
+            "value": "https://h5.dingtalk.com/dingtalk-da/index.html"
+        },
+        "integration_dingtalk_help_url": {
+            "value": "https://help.vika.cn/docs/guide/integration-dingtalk"
+        },
+        "integration_dingtalk_login_appid_dev": {
+            "value": "dingoaumy4mh7oesecamid"
+        },
+        "integration_dingtalk_login_appid_prod": {
+            "value": "dingoam9aailglcervwmzh"
+        },
+        "integration_dingtalk_login_appid_staging": {
+            "value": "dingoa5koclicxm2mdx5yx"
+        },
+        "integration_dingtalk_upgrade_url": {
+            "value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521B71035D4F4F2DADF5E69AE3825326C7F%26token%3D65482d6a78796151887e033769bebfd8%26shareUid%3DBCB170692B0B56DA0C22819901B68B80&dtaction=os"
+        },
+        "integration_feishu_help": {
+            "value": "vika维格表 使用指南"
+        },
+        "integration_feishu_help_url": {
+            "value": "https://help.vika.cn/docs/guide/integration-lark"
+        },
+        "integration_feishu_login_appid_dev": {
+            "value": "cli_9f3930dd7d7ad00c"
+        },
+        "integration_feishu_login_appid_prod": {
+            "value": "cli_9f614b454434500e"
+        },
+        "integration_feishu_login_appid_staging": {
+            "value": "cli_a08120b120fad00e"
+        },
+        "integration_feishu_manage_open_url": {
+            "value": "https://applink.feishu.cn/client/bot/open"
+        },
+        "integration_feishu_seats_form_url": {
+            "value": "https://u.vika.cn/pb7cj"
+        },
+        "integration_feishu_upgrade_url": {
+            "value": "https://feishu.cn/admin/appCenter/manage/cli_9f614b454434500e"
+        },
+        "integration_feishu_upgrade_url_dev": {
+            "value": "https://feishu.cn/admin/appCenter/manage/cli_a28611a8b9e2900d"
+        },
+        "integration_feisu_register_link_in_login": {
+            "value": "https://u.vika.cn/qmdp3"
+        },
         "integration_official_template_category": {},
         "integration_official_template_choice": {
             "value": "{\"header\":[{\"templateIds\":[\"tplumddN5Cs5p\"],\"image\":\"space/2020/06/24/48cc66c99e4844b69cb3eec8611d20ff\",\"bannerDesc\":{\"title\":\"项目管理杀手，适用任意组织\",\"desc\":\"无论小组织、个体户、中小企业，亦或是500强企业\"}},{\"templateIds\":[\"tpl6M8vTZgRUY\"],\"image\":\"space/2020/06/24/605bdffa5f7442d4a742803103217164\",\"bannerDesc\":{\"title\":\"智慧门店系统，内外管理无忧\",\"desc\":\"你的生意小能手，每个细节，你细品\"}},{\"templateIds\":[\"tplp0Gj7aWSKc\"],\"image\":\"space/2020/06/24/b72c625ac5a24ece90cc1196542a4d8d\",\"bannerDesc\":{\"title\":\"漫威爱好者，有种你进来\",\"desc\":\"我上看下看，左看右看，原来每个视图都不简单\"}}],\"category\":[{\"title\":\"其他用户喜欢的模板\",\"templateIds\":[\"tplgZ8za3Ra1Q\",\"tplQz0s17xd3r\",\"tplujdd1bKxgU\",\"tpls0HwnN1Rwi\",\"tplKSMbGKjvt3\",\"tplvme7EURrnx\"]}]}"
+        },
+        "integration_wecom_bind_help_center": {
+            "value": "/help"
+        },
+        "integration_wecom_bind_success_icon": {
+            "value": "/space/2021/09/16/124e249b651f4934949ae39839e3ee77"
+        },
+        "integration_wecom_custom_subdomain_help_url": {
+            "value": "/help/intro_custom_subdomain"
+        },
+        "integration_wecom_help_url": {
+            "value": "https://help.vika.cn/docs/guide/integration-wecom"
+        },
+        "integration_wecom_login_qrcode_js": {
+            "value": "http://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.4.js"
+        },
+        "integration_wecom_qrcode_css": {
+            "value": "/space/2021/08/02/6b5374b4b3ba42aba69022ae2b13a577"
+        },
+        "integration_wecom_shop_cms": {
+            "value": "/help/integration-wecom/"
+        },
+        "integration_wecom_shop_corpid_dev": {
+            "value": "ww11761d11177ae10b"
+        },
+        "integration_wecom_shop_corpid_prod": {
+            "value": "ww11761d11177ae10b"
+        },
+        "integration_wecom_shop_corpid_staging": {
+            "value": "ww11761d11177ae10b"
+        },
+        "integration_wecom_shop_corpid_test": {
+            "value": "ww11761d11177ae10b"
+        },
+        "integration_wecom_shop_suiteid_dev": {
+            "value": "wwc98ec5fc01dfdaeb"
+        },
+        "integration_wecom_shop_suiteid_prod": {
+            "value": "ww0506baa4d734acb9"
+        },
+        "integration_wecom_shop_suiteid_staging": {
+            "value": "ww514bd11dfd0f294f"
+        },
+        "integration_wecom_shop_suiteid_test": {
+            "value": "ww3dd616a360b3ce97"
+        },
+        "integration_wecom_upgrade_guide_url": {
+            "value": "/wecom-integration/#upgrade"
+        },
+        "integration_yozosoft_help_url": {
+            "value": "https://help.vika.cn/docs/guide/integration-yozosoft"
         },
         "introduction_video": {
             "value": "space/2022/04/14/aff988f37b6849b1bf438a73d8721ae2"
@@ -316,6 +532,39 @@
         "link_to_wecom_shop_cms": {
             "value": "/help/integration-wecom/"
         },
+        "login_agree_terms_of_service": {
+            "value": "75"
+        },
+        "login_ai_course_url": {
+            "value": "https://vika.cn/ai-course/"
+        },
+        "login_icp1_url": {
+            "value": "https://beian.miit.gov.cn/"
+        },
+        "login_icp2_url": {
+            "value": "http://www.beian.gov.cn/portal/registerSystemInfo"
+        },
+        "login_introduction_video": {
+            "value": "space/2022/04/14/aff988f37b6849b1bf438a73d8721ae2"
+        },
+        "login_join_chatgroup_url": {
+            "value": "https://vika.cn/chatgroup/"
+        },
+        "login_privacy_policy": {
+            "value": "维格隐私政策"
+        },
+        "login_privacy_policy_url": {
+            "value": "/privacy-policy"
+        },
+        "login_private_deployment_form_url": {
+            "value": "https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL"
+        },
+        "login_service_agreement": {
+            "value": "维格服务协议"
+        },
+        "login_service_agreement_url": {
+            "value": "/service-agreement"
+        },
         "minimum_version_require": {
             "value": "0.5.0"
         },
@@ -336,6 +585,12 @@
         },
         "official_avatar": {
             "value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
+        },
+        "onboarding_customer_service_background_img_url": {
+            "value": "https://s1.vika.cn/space/2022/02/28/20566ca6516d477c913f5ca79e554c68"
+        },
+        "onboarding_customer_service_qrcode_avatar_img_url": {
+            "value": "https://s1.vika.cn/space/2022/02/25/1730b0599510406fb7ce1b7c9ed78393"
         },
         "org_chart_setting_help_url": {
             "value": "https://help.vika.cn/docs/guide/manual-architecture-view"
@@ -397,6 +652,9 @@
         "qq_connect_web_appid_staging": {
             "value": "101907413"
         },
+        "record_comments_help_url": {
+            "value": "https://help.vika.cn/docs/guide/records-comments"
+        },
         "recorded_comments": {
             "value": "https://help.vika.cn/docs/guide/records-comments"
         },
@@ -424,10 +682,70 @@
         "space_corp_cert_url": {
             "value": "https://vika.cn/share/shrQetZLnGRnHXoKfJvTC?fldUC8FmVjHEv={spaceId}"
         },
+        "space_enterprise_certification_form": {
+            "value": "https://vika.cn/share/shrQetZLnGRnHXoKfJvTC?fldUC8FmVjHEv={spaceId}"
+        },
+        "space_setting_integrations_dingtalk": {
+            "value": "true"
+        },
+        "space_setting_integrations_feishu": {
+            "value": "true"
+        },
+        "space_setting_integrations_preview_office_file": {
+            "value": "true"
+        },
+        "space_setting_integrations_wecom": {
+            "value": "true"
+        },
+        "space_setting_list_of_enable_all_lab_features": {
+            "value": "[\"spcXXXXX\"]"
+        },
+        "space_setting_role_empty_img": {
+            "value": "space/2022/08/03/3fbdff65d66547a8ab796e1b808d45b0"
+        },
+        "space_setting_role_help_url": {
+            "value": "https://help.vika.cn/docs/guide/manual/use-space/role/%20readme"
+        },
+        "space_settings_invite_user_to_get_v_coins": {
+            "value": "true"
+        },
+        "space_settings_upgrade": {
+            "value": "true"
+        },
         "subscribe_demonstrate": {
             "value": "https://vika.cn/share/shrFVCtHXQwYm3DVgNn91"
         },
+        "system_configuration_default_language": {
+            "value": "zh_CN"
+        },
+        "system_configuration_default_theme": {
+            "value": "light"
+        },
+        "system_configuration_error_msg_qrcode": {
+            "value": "{   \"website\": \"/space/2022/04/26/51352131c1d74332b8ab8a57483b0f3f?attname=66_8c5b355964c515a9d2ce55bc423e5a18.png\",   \"wecom\": \"/space/2022/04/26/2c706fa40e3442d8b643a30ee22f5572?attname=66_8d7dce3b6ff28bc245a2db34bf4ab55a.png\",   \"dingtalk\": \"/space/2022/05/17/9bb75b8710e040be9fb99d7b28a6ad0e?attname=125_f2112b2006e4b42cc4b0e7a320f87da7.png\",   \"feishu\": \"https://u.vika.cn/z9ygm\" }"
+        },
+        "system_configuration_logo_with_name_white_font": {
+            "value": "/space/2021/09/17/5c69f63932da4be7aa0965d3b0e543c4"
+        },
+        "system_configuration_minmum_version_require": {
+            "value": "0.5.0"
+        },
+        "system_configuration_official_avatar": {
+            "value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
+        },
+        "system_configuration_official_logo": {
+            "value": "/space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
+        },
+        "system_configuration_server_error_bg_img": {
+            "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
+        },
+        "system_configuration_version": {
+            "value": "0.5.0"
+        },
         "template_customization": {
+            "value": "https://u.vika.cn/vb9h5"
+        },
+        "template_feedback_form_url": {
             "value": "https://u.vika.cn/vb9h5"
         },
         "template_space_id": {
@@ -436,14 +754,143 @@
         "trash_url": {
             "value": "https://help.vika.cn/docs/guide/manual-trash/"
         },
+        "user_account_deleted_bg_img": {
+            "value": "space/2022/01/11/35106645c2614d11bea689a540d13787"
+        },
+        "user_account_deleted_img": {
+            "value": "space/2022/01/11/5bb30117e4934522af081a05eb4fd903"
+        },
         "user_feedback_url": {
             "value": "/chatgroup/"
+        },
+        "user_guide_welcome_developer_center_url": {
+            "value": "/help/developers/"
+        },
+        "user_guide_welcome_faq_url": {
+            "value": "https://help.vika.cn/docs/category/questions"
+        },
+        "user_guide_welcome_introduction_video": {
+            "value": "{ \"title\":\"玩转一张维格表\", \"video\":\"space/2020/12/21/cb7bdf6fe22146068111d46915587fb2\", \"autoPlay\":true }"
+        },
+        "user_guide_welcome_product_manual_url": {
+            "value": "https://help.vika.cn/docs/guide/manual-1-what-is-vikadata/"
+        },
+        "user_guide_welcome_quick_start_video": {
+            "value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\", \"autoPlay\":true}"
+        },
+        "user_guide_welcome_template1_icon": {
+            "value": "现有的 icon 链接"
+        },
+        "user_guide_welcome_template1_url": {
+            "value": "/template/tpchFkNFaaJMC/tplDYzZqqwpRQ"
+        },
+        "user_guide_welcome_template2_icon": {
+            "value": "现有的 icon 链接"
+        },
+        "user_guide_welcome_template2_url": {
+            "value": "/template/tpc76og2J6D8p/tplDBUKmXFo7c"
+        },
+        "user_guide_welcome_template3_icon": {
+            "value": "现有的 icon 链接"
+        },
+        "user_guide_welcome_template3_url": {
+            "value": "/template/tpcMixDKM5f3s/tplaglc40487X"
+        },
+        "user_guide_welcome_what_is_datasheet_video": {
+            "value": "{ \"title\":\"什么是维格表\", \"video\":\"space/2022/02/21/94cb82f9ffd84a5499c8931a224ad234\", \"autoPlay\":true }"
+        },
+        "user_setting_account_bind": {
+            "value": "true"
+        },
+        "user_setting_account_bind_dingtalk": {
+            "value": "true"
+        },
+        "user_setting_account_bind_qq": {
+            "value": "true"
+        },
+        "user_setting_account_bind_qq_web_appid_dev": {
+            "value": "101907145"
+        },
+        "user_setting_account_bind_qq_web_appid_prod": {
+            "value": "101911260"
+        },
+        "user_setting_account_bind_qq_web_appid_staging": {
+            "value": "101907413"
+        },
+        "user_setting_account_bind_wechat": {
+            "value": "true"
+        },
+        "user_setting_account_bind_wechat_appid_dev": {
+            "value": "wx3ccd2f6264309a7c"
+        },
+        "user_setting_account_bind_wechat_appid_prod": {
+            "value": "wx1c297da2ee48065b"
+        },
+        "user_setting_account_bind_wechat_appid_staging": {
+            "value": "wxd964fb3aa5278241"
+        },
+        "user_setting_account_wallet_help_url": {
+            "value": "https://help.vika.cn/docs/guide/about-wallet"
+        },
+        "user_setting_default_avatar": {
+            "value": "space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e"
+        },
+        "user_setting_delete_account_help_url": {
+            "value": "https://help.vika.cn/docs/guide/faq-cancel-account"
         },
         "version": {
             "value": "0.5.0"
         },
+        "view_architecture_empty_graphics_img": {
+            "value": "space/2021/11/19/b1c660a317fb4068bd312d16671308a1"
+        },
+        "view_architecture_empty_record_list_img": {
+            "value": "space/2021/11/19/73c1cda56b3d4d448416d9b69c757598"
+        },
+        "view_architecture_guide_video": {
+            "value": "space/2021/11/18/428b94bb262845afabf46efff8e082b5"
+        },
+        "view_architecture_setting_help_url": {
+            "value": "https://help.vika.cn/docs/guide/manual-architecture-view"
+        },
+        "view_calendar_guide_create": {
+            "value": "space/2021/08/16/bda3a4c51ebc444ea9f26d4573987257"
+        },
+        "view_calendar_guide_no_permission": {
+            "value": "space/2022/05/23/4206adbf0aaa43bf90342fd0e568dc73"
+        },
+        "view_calendar_guide_video": {
+            "value": "space/2021/08/06/e3a4e480768c4b4d8d01ea4a269bf2bb"
+        },
+        "view_calendar_setting_help_url": {
+            "value": "https://help.vika.cn/docs/guide/manual-calendar-view"
+        },
+        "view_form_guide_video": {
+            "value": "space/2020/12/25/f0ecc536d7324df888d165cb73cd22c6"
+        },
+        "view_gallery_guide_video": {
+            "value": "space/2020/09/15/4383ec2f8eb041599396df0f18d99f5a"
+        },
+        "view_gantt_config_color_help_url": {
+            "value": "https://bbs.vika.cn/article/134"
+        },
+        "view_gantt_guide_video": {
+            "value": "space/2021/06/02/8bd6c5263ba444aabc138ed051b83c8c"
+        },
+        "view_gantt_set_task_relation_help_url": {
+            "value": "https://help.vika.cn/docs/guide/manual-gantt-view/#%E8%AE%BE%E7%BD%AE%E4%BB%BB%E5%8A%A1%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"
+        },
+        "view_grid_guide_video": {
+            "value": "space/2020/09/16/77e941353d8141b69f684e2592350ec7"
+        },
+        "view_kanban_guide_video": {
+            "value": "space/2020/09/11/c964bcf3ec48458dae7fbdc55a59856b"
+        },
         "view_manual_save_modal_img": {
             "value": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
+        },
+        "view_mirror_list_empty_img": {
+            "value": "space/2022/05/23/d880e95a4a204492b20d8725c61c998c"
         },
         "vika_classroom_url": {
             "value": "https://edu.vika.cn"
@@ -569,11 +1016,17 @@
         "welcome_what_is_vikasheet": {
             "value": "{ \"title\":\"什么是维格表\", \"video\":\"space/2022/02/21/94cb82f9ffd84a5499c8931a224ad234\", \"autoPlay\":true }"
         },
+        "widget_center_feature_not_unturned_on_img": {
+            "value": "/space/2021/12/27/cc7c3d706c8e4443a0e9b79673a078e0"
+        },
         "widget_center_help": {
             "value": "https://help.vika.cn/docs/guide/intro-widget-center/"
         },
         "widget_center_help_link": {
             "value": "#"
+        },
+        "widget_center_help_url": {
+            "value": "https://help.vika.cn/docs/guide/intro-widget-center/"
         },
         "widget_center_lab_unused_banner": {
             "value": "/space/2021/12/27/cc7c3d706c8e4443a0e9b79673a078e0"
@@ -581,28 +1034,64 @@
         "widget_center_space_empty": {
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
         },
+        "widget_center_space_widget_empty_img": {
+            "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
+        },
         "widget_cli_min_version": {
             "value": "0.0.12"
+        },
+        "widget_cli_miumum_version": {
+            "value": "0.0.12"
+        },
+        "widget_create_widget_help_url": {
+            "value": "/developers/widget/introduction"
         },
         "widget_cret_invalid_help": {
             "value": "/developers/widget/quick-start#"
         },
+        "widget_custom_widget_empty_img": {
+            "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
+        },
         "widget_default_cover": {
             "value": "/space/2021/11/09/f82a5c9cb6c74452b824e17b03f20f67"
         },
+        "widget_default_cover_img": {
+            "value": "/space/2021/11/09/f82a5c9cb6c74452b824e17b03f20f67"
+        },
+        "widget_default_template_url": {
+            "value": "/develop/widget/wpk2jJ7qZS0VG/0.0.11/61433a73e4b0ed4bd1e2e8e1.zip"
+        },
         "widget_develop_init_help": {
+            "value": "/developers/widget/quick-start#"
+        },
+        "widget_develop_init_help_url": {
             "value": "/developers/widget/quick-start#"
         },
         "widget_develop_install_help": {
             "value": "/developers/widget/quick-start#"
         },
+        "widget_develop_install_help_url": {
+            "value": "/developers/widget/quick-start#"
+        },
         "widget_develop_preview_help": {
+            "value": "/developers/widget/quick-start#"
+        },
+        "widget_develop_preview_help_url": {
             "value": "/developers/widget/quick-start#"
         },
         "widget_develop_start_help": {
             "value": "/developers/widget/quick-start#"
         },
+        "widget_develop_start_help_url": {
+            "value": "/developers/widget/quick-start#"
+        },
         "widget_empty": {
+            "value": "space/2022/05/23/c5096fdb5d674985a49725e23f72cdc7"
+        },
+        "widget_how_to_close_browser_restriction_help_url": {
+            "value": "/developers/widget/quick-start#"
+        },
+        "widget_panel_empty_img": {
             "value": "space/2022/05/23/c5096fdb5d674985a49725e23f72cdc7"
         },
         "widget_publish_modal_img": {
@@ -610,6 +1099,24 @@
         },
         "widget_release_help": {
             "value": "/developers/widget/quick-start#"
+        },
+        "widget_release_help_url": {
+            "value": "/developers/widget/quick-start#"
+        },
+        "workbench_folder_default_cover_list": {
+            "value": "space/2021/12/29/7306be86fc6d4cac9d8de9b4a787b1fa,space/2021/12/29/58073bbfe0f64dc7bd2f5f44a123c172,space/2021/12/29/e36e93966aa049e1ba7fd53907c2265f,space/2021/12/29/ebd570b6ee3b429f8c2e51e1b1df6657,space/2021/12/29/7eb38331f61240dcb74b1fce3a90c6bc,space/2021/12/29/a8c5df5eba2e4c07a78bdca6b9613579"
+        },
+        "workbench_max_node_number_show_invite_and_new_node": {
+            "value": "13"
+        },
+        "workbench_no_permission_img": {
+            "value": "/space/2022/09/07/6e95e804d5f44fe4a0dec81d228b0286?attname=filecannotbeaccessed%402x.png"
+        },
+        "workbench_node_share_help_url": {
+            "value": "https://help.vika.cn/docs/guide/manual-share"
+        },
+        "workbench_trash_help_url": {
+            "value": "https://help.vika.cn/docs/guide/manual-trash/"
         }
     },
     "shortcut_keys": [
@@ -6854,9 +7361,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.capacity.limit",
                 "billing_notify": [],
                 "format_string": "capacity_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "datasheet_limit": {
@@ -6869,7 +7378,7 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
-                "mail_template_subject": "subject.subscribed.sheet.limit",
+                "mail_template_subject": "subject.subscribed.datasheet.limit",
                 "billing_notify": [],
                 "format_string": "datasheet_limit",
                 "url": "/management",
@@ -6886,9 +7395,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.datasheet.record.limit",
                 "billing_notify": [],
                 "format_string": "datasheet_record_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_admin_limit": {
@@ -6901,9 +7412,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.admin.limit",
                 "billing_notify": [],
                 "format_string": "space_admin_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_api_limit": {
@@ -6916,9 +7429,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.api.limit",
                 "billing_notify": [],
                 "format_string": "space_api_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_calendar_limit": {
@@ -6931,9 +7446,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.calendar.limit",
                 "billing_notify": [],
                 "format_string": "space_calendar_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_certification_fail_notify": {
@@ -6998,9 +7515,28 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.field.permission.limit",
                 "billing_notify": [],
                 "format_string": "space_field_permission_limit",
                 "url": "/management",
+                "frequency": 1,
+                "is_component": true
+            },
+            "space_file_permission_limit": {
+                "can_jump": true,
+                "to_tag": "space_admins",
+                "notifications_type": "space",
+                "formatString": [
+                    "space_file_permission_limit"
+                ],
+                "is_notification": true,
+                "is_mail": true,
+                "is_browser": true,
+                "mail_template_subject": "subject.subscribed.file.permission.limit",
+                "billing_notify": [],
+                "format_string": "space_file_permission_limit",
+                "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_form_limit": {
@@ -7013,9 +7549,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.form.limit",
                 "billing_notify": [],
                 "format_string": "space_form_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_gantt_limit": {
@@ -7028,9 +7566,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.gannt.limit",
                 "billing_notify": [],
                 "format_string": "space_gantt_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_lark_notify": {
@@ -7060,6 +7600,23 @@
                 "is_browser": true,
                 "format_string": "space_members_limit",
                 "url": "/management",
+                "is_component": true
+            },
+            "space_mirror_limit": {
+                "can_jump": true,
+                "to_tag": "space_admins",
+                "notifications_type": "space",
+                "formatString": [
+                    "space_mirror_limit"
+                ],
+                "is_notification": true,
+                "is_mail": true,
+                "is_browser": true,
+                "mail_template_subject": "subject.subscribed.mirror.limit",
+                "billing_notify": [],
+                "format_string": "space_mirror_limit",
+                "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_name_change": {
@@ -7095,9 +7652,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.rainbow.label.limit",
                 "billing_notify": [],
                 "format_string": "space_rainbow_label_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_record_limit": {
@@ -7110,9 +7669,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.record.limit",
                 "billing_notify": [],
                 "format_string": "space_record_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_recover": {
@@ -7137,9 +7698,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.seats.limit",
                 "billing_notify": [],
                 "format_string": "space_seats_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_subscription_end_notify": {
@@ -7175,9 +7738,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.time.machine.limit",
                 "billing_notify": [],
                 "format_string": "space_time_machine_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_trash_limit": {
@@ -7190,9 +7755,11 @@
                 "is_notification": true,
                 "is_mail": true,
                 "is_browser": true,
+                "mail_template_subject": "subject.subscribed.trash.limit",
                 "billing_notify": [],
                 "format_string": "space_trash_limit",
                 "url": "/management",
+                "frequency": 1,
                 "is_component": true
             },
             "space_trial": {
@@ -7806,6 +8373,253 @@
                 "channel": "aliyun",
                 "name": [
                     "atlas"
+                ]
+            }
+        },
+        "notify": {
+            "max_rows_per_sheet": {
+                "id": "max_rows_per_sheet",
+                "link_string_id": [
+                    "max_rows_per_sheet"
+                ],
+                "引用名称": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+                "模板名称": "单个维格表行数已达上限",
+                "link_notification_id": [
+                    "datasheet_record_limit"
+                ]
+            },
+            "max_sheet_nums": {
+                "id": "max_sheet_nums",
+                "link_string_id": [
+                    "max_sheet_nums"
+                ],
+                "引用名称": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "文件数量已达上限",
+                "link_notification_id": [
+                    "datasheet_limit"
+                ]
+            },
+            "max_seats": {
+                "id": "max_seats",
+                "link_string_id": [
+                    "max_seats"
+                ],
+                "引用名称": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "付费席位数量上限",
+                "link_notification_id": [
+                    "space_seats_limit"
+                ]
+            },
+            "max_gallery_views_in_space": {
+                "id": "max_gallery_views_in_space",
+                "link_string_id": [
+                    "max_gallery_views_in_space"
+                ],
+                "引用名称": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "相册视图已达上限通知"
+            },
+            "max_rows_in_space": {
+                "id": "max_rows_in_space",
+                "link_string_id": [
+                    "max_rows_in_space"
+                ],
+                "引用名称": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+                "模板名称": "空间站记录数已达上限通知",
+                "link_notification_id": [
+                    "space_record_limit"
+                ]
+            },
+            "max_capacity_size_in_bytes": {
+                "id": "max_capacity_size_in_bytes",
+                "link_string_id": [
+                    "max_capacity_size_in_bytes"
+                ],
+                "引用名称": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。",
+                "模板名称": "空间站容量包已达上限",
+                "link_notification_id": [
+                    "capacity_limit"
+                ]
+            },
+            "max_kanban_views_in_space": {
+                "id": "max_kanban_views_in_space",
+                "link_string_id": [
+                    "max_kanban_views_in_space"
+                ],
+                "引用名称": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "看板视图已达上限通知"
+            },
+            "max_gantt_views_in_space": {
+                "id": "max_gantt_views_in_space",
+                "link_string_id": [
+                    "max_gantt_views_in_space"
+                ],
+                "引用名称": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "甘特视图已达上限通知",
+                "link_notification_id": [
+                    "space_gantt_limit"
+                ]
+            },
+            "max_calendar_views_in_space": {
+                "id": "max_calendar_views_in_space",
+                "link_string_id": [
+                    "max_calendar_views_in_space"
+                ],
+                "引用名称": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "日历视图已达上限通知",
+                "link_notification_id": [
+                    "space_calendar_limit"
+                ]
+            },
+            "max_form_views_in_space,max_form_views_in_space": {
+                "id": [
+                    "max_form_views_in_space",
+                    "max_form_views_in_space"
+                ],
+                "link_string_id": [
+                    "max_form_views_in_space",
+                    "max_mirror_nums"
+                ],
+                "引用名称": [
+                    "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                    "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
+                ],
+                "模板名称": "神奇表单已达上限通知",
+                "link_notification_id": [
+                    "space_form_limit",
+                    "space_mirror_limit"
+                ]
+            },
+            "max_admin_nums": {
+                "id": "max_admin_nums",
+                "link_string_id": [
+                    "max_admin_nums"
+                ],
+                "引用名称": "空间站的子管理数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "管理员已达上限通知",
+                "link_notification_id": [
+                    "space_admin_limit"
+                ]
+            },
+            "max_remain_trash_days": {
+                "id": "max_remain_trash_days",
+                "link_string_id": [
+                    "max_remain_trash_days"
+                ],
+                "引用名称": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。",
+                "模板名称": "历史文件超限使用通知",
+                "link_notification_id": [
+                    "space_trash_limit"
+                ]
+            },
+            "max_remain_timemachine_days": {
+                "id": "max_remain_timemachine_days",
+                "link_string_id": [
+                    "max_remain_timemachine_days"
+                ],
+                "引用名称": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。",
+                "模板名称": "历史记录超限使用通知",
+                "link_notification_id": [
+                    "space_time_machine_limit"
+                ]
+            },
+            "max_api_call": {
+                "id": "max_api_call",
+                "link_string_id": [
+                    "max_api_call"
+                ],
+                "引用名称": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。",
+                "模板名称": "API用量已达上限通知",
+                "link_notification_id": [
+                    "space_api_limit"
+                ]
+            },
+            "rainbow_label": {
+                "id": "rainbow_label",
+                "link_string_id": [
+                    "rainbow_label"
+                ],
+                "引用名称": "你正在体验高级功能：彩虹标签，升级可解锁该功能。",
+                "模板名称": "彩虹标签彩色色系使用通知",
+                "link_notification_id": [
+                    "space_rainbow_label_limit"
+                ]
+            },
+            "field_permission_nums": {
+                "id": "field_permission_nums",
+                "link_string_id": [
+                    "field_permission_nums"
+                ],
+                "引用名称": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "列权限已达上限通知",
+                "link_notification_id": [
+                    "space_field_permission_limit",
+                    "space_file_permission_limit"
+                ]
+            },
+            "integration_dingtalk": {
+                "id": "integration_dingtalk",
+                "link_string_id": [
+                    "integration_dingtalk"
+                ],
+                "引用名称": "你正在体验高级功能：钉钉集成，升级可解锁该功能。",
+                "模板名称": "钉钉集成使用通知",
+                "link_notification_id": [
+                    "space_dingtalk_notify"
+                ]
+            },
+            "integration_feishu": {
+                "id": "integration_feishu",
+                "link_string_id": [
+                    "integration_feishu"
+                ],
+                "引用名称": "你正在体验高级功能：飞书集成，升级可解锁该功能。",
+                "模板名称": "飞书集成使用通知",
+                "link_notification_id": [
+                    "space_lark_notify"
+                ]
+            },
+            "integration_we_com": {
+                "id": "integration_we_com",
+                "link_string_id": [
+                    "integration_we_com"
+                ],
+                "引用名称": "你正在体验高级功能：企业微信集成，升级可解锁该功能。",
+                "模板名称": "企业微信集成使用通知",
+                "link_notification_id": [
+                    "space_wecom_notify"
+                ]
+            },
+            "integration_yozo_office": {
+                "id": "integration_yozo_office",
+                "link_string_id": [
+                    "integration_yozo_office"
+                ],
+                "引用名称": "你正在体验高级功能：office 文件预览，升级可解锁该功能。",
+                "模板名称": "永中 Office使用通知",
+                "link_notification_id": [
+                    "space_yozooffice_notify"
+                ]
+            },
+            "watermark": {
+                "id": "watermark",
+                "link_string_id": [
+                    "watermark"
+                ],
+                "引用名称": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
+                "模板名称": "全局水印使用通知",
+                "link_notification_id": [
+                    "space_watermark_notify"
+                ]
+            },
+            "max_mirror_nums": {
+                "id": "max_mirror_nums",
+                "link_string_id": [
+                    "max_mirror_nums"
+                ],
+                "引用名称": "空间站的镜像数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "最大镜像数",
+                "link_notification_id": [
+                    "space_mirror_limit"
                 ]
             }
         }

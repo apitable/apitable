@@ -6,7 +6,6 @@ export const CREATE_NOTIFICATION = '/player/notification/create';
 export const NOTIFICATION_STATISTICS = '/player/notification/statistics';
 export const TRANSFER_NOTICE_TO_READ = '/player/notification/read';
 
-export const SUBSCRIBE_REMIND = '/player/notification/subscribe/remind';
 export const SUBSCRIBE_ACTIVE_EVENT = '/events/active';
 
 // Beginner's guide

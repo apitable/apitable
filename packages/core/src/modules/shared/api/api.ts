@@ -773,21 +773,12 @@ export function unBindEmail(code: string) {
 }
 
 /**
- * billing system usage tips
- * @param params
- * @returns
- */
-export function subscribeRemind(params: { nodeId?: string; spaceId: string; specification?: string; templateId: string; usage: string }) {
-  return axios.post(Url.SUBSCRIBE_REMIND, params);
-}
-
-/**
  * get labs features
  * @param spaceId
  * @returns
  */
 export function getLabsFeature(spaceId: string) {
-    return axios.get(urlcat(Url.GET_LABS_FEATURE, { spaceId }));
+  return axios.get(urlcat(Url.GET_LABS_FEATURE, { spaceId }));
 }
 
 /**

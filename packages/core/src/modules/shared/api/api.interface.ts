@@ -9,12 +9,15 @@ export interface ICreateNotification {
   spaceId?: string; // Space id
   nodeId?: string; // Node ID
   fromUserId?: string; // the user ID who send the notification. System Notification user id is 0.
-  toUserId?: string[]; // the user that get notification. 
+  toUserId?: string[]; // the user that get notification.
   toMemberId?: string[];
   body?: {
     extras: {
       viewId?: string; // Datasheet View ID
       recordIds?: string; // the Records Rows ID
+      nodeName?: string // when templateId = "datasheet_record_limit"
+      specification?: number
+      usage?: number
     };
   };
 }
@@ -234,6 +237,7 @@ export interface ISubscribeActiveEventResponse {
   endDate: string;
   startDate: string;
 }
+
 export type IGetRoleListResponse = IGetRoleListResponseItem[];
 
 export interface IGetRoleListResponseItem {

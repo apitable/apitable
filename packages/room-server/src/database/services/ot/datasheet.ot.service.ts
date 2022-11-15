@@ -5,6 +5,7 @@ import {
   IObjectInsertAction, IObjectReplaceAction, IOperation, IRecord, IRecordAlarm, IRecordCellValue, IRecordMeta, IReduxState, IRemoteChangeset,
   isSameSet, IViewProperty, jot, OTActionName, ViewType,
 } from '@apitable/core';
+import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { DatasheetException } from 'shared/exception';
 import { InjectLogger } from '../../../shared/common';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
@@ -49,6 +50,7 @@ export class DatasheetOtService {
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
     private readonly recordAlarmService: DatasheetRecordAlarmService,
+    private readonly datasheetService: DatasheetService,
   ) { }
 
   private static isAttachField(cellValue: any): boolean {
@@ -214,10 +216,30 @@ export class DatasheetOtService {
       });
 
       if (afterAddGanttViewCountInSpace > subscribeInfo.maxGanttViewsInSpace) {
+        this.restService.createNotification(resultSet.auth, [{
+          spaceId,
+          templateId: 'space_gantt_limit',
+          body: {
+            extras: {
+              usage: afterAddGanttViewCountInSpace,
+              specification: subscribeInfo.maxGanttViewsInSpace
+            }
+          }
+        }]);
         throw new ServerException(DatasheetException.getVIEW_ADD_LIMIT_FOR_GANTTMsg(subscribeInfo.maxGanttViewsInSpace, afterAddGanttViewCountInSpace));
       }
 
       if (afterAddCalendarCountInSpace > subscribeInfo.maxCalendarViewsInSpace) {
+        this.restService.createNotification(resultSet.auth, [{
+          spaceId,
+          templateId: 'space_calendar_limit',
+          body: {
+            extras: {
+              usage: afterAddCalendarCountInSpace,
+              specification: subscribeInfo.maxCalendarViewsInSpace,
+            }
+          }
+        }]);
         throw new ServerException(DatasheetException.getVIEW_ADD_LIMIT_FOR_CALENDARMsg(subscribeInfo.maxCalendarViewsInSpace, afterAddCalendarCountInSpace));
       }
     }
@@ -230,10 +252,32 @@ export class DatasheetOtService {
       const afterCreateCountInSpace = Number(spaceUsages.recordNums) + Number(resultSet.toCreateRecord.size);
 
       if (afterCreateCountInDst > subscribeInfo.maxRowsPerSheet) {
+        const datasheetEntity = await this.datasheetService.getDatasheet(datasheetId);
+        this.restService.createNotification(resultSet.auth, [{
+          spaceId,
+          templateId: 'datasheet_record_limit',
+          body: {
+            extras: {
+              usage: afterCreateCountInDst,
+              specification: subscribeInfo.maxRowsPerSheet,
+              nodeName: datasheetEntity.dstName
+            }
+          }
+        }]);
         throw new ServerException(DatasheetException.getRECORD_ADD_LIMIT_PER_DATASHEETMsg(subscribeInfo.maxRowsPerSheet, afterCreateCountInDst));
       }
 
       if (afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
+        this.restService.createNotification(resultSet.auth, [{
+          spaceId,
+          templateId: 'datasheet_limit',
+          body: {
+            extras: {
+              usage: afterCreateCountInSpace,
+              specification: subscribeInfo.maxRowsInSpace,
+            }
+          }
+        }]);
         throw new ServerException(DatasheetException.getRECORD_ADD_LIMIT_WITHIN_SPACEMsg(subscribeInfo.maxRowsInSpace, afterCreateCountInSpace));
       }
 
@@ -1155,7 +1199,7 @@ export class DatasheetOtService {
     // ===== Comment collection operation END ====
   }
 
-  transaction = async (
+  transaction = async(
     manager: EntityManager,
     effectMap: Map<string, any>,
     commonData: ICommonData,

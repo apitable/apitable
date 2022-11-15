@@ -1,6 +1,6 @@
-import { byteMG, isPrivateDeployment, ISubscription, Strings, SubscribeUsageCheck, t } from '@apitable/core';
-import { underscore } from 'naming-style';
+import { Api, byteMG, isPrivateDeployment, ISubscription, Strings, SubscribeUsageCheck, SystemConfig, t } from '@apitable/core';
 import { IExtra } from 'modules/enterprise/billing/interface';
+import { underscore } from 'naming-style';
 import { store as storeState } from 'pc/store';
 import { isMobileApp } from 'pc/utils/env';
 import store, { StoreAPI } from 'store2';
@@ -38,7 +38,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
         grade: extra?.grade || '',
       });
 
-    // this.triggerNotifyAdmin(functionName, extra);
+    this.triggerNotifyAdmin(functionName, extra);
 
     return {
       content,
@@ -50,7 +50,7 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
   /**
    * @description Depending on business requirements, the same usage warning will only appear once in a day
    * The data is stored in localstorage, before each prompt, check if the prompt appears in local, and pop up the prompt only if it does not.
-   * In addition, warnings for usage alerts need to be sent to the administrator, but they are only sent once a day, 
+   * In addition, warnings for usage alerts need to be sent to the administrator, but they are only sent once a day,
    * so it means that only the first triggered warning will be notified
    */
   shouldAlertToUser(functionName: keyof ISubscription, usage?: any, readonly?: boolean) {
@@ -101,24 +101,24 @@ class SubscribeUsageCheckEnhance extends SubscribeUsageCheck {
 
     return false;
   }
-  
-  // private triggerNotifyAdmin(functionName: keyof ISubscription, extra?: Record<string, any>) {
-  //   const state = storeState.getState();
-  //   const spaceId = state.space.activeId;
-  //   const result = this.storage.get(spaceId);
-  //   const subscription = state.billing.subscription!;
-  //   if (result.alertFunctionName.length !== 1) {
-  //     return;
-  //   }
-  //   // const idMap = SystemConfig.billing.notify;
-  //   const idMap = {};
-  //   Api.subscribeRemind({
-  //     usage: extra?.usage + '',
-  //     specification: subscription[functionName] + '',
-  //     templateId: idMap?.[underscore(functionName)]?.link_notification_id?.[0] || '',
-  //     spaceId: spaceId!,
-  //   });
-  // }
+
+  private triggerNotifyAdmin(functionName: keyof ISubscription, extra?: IExtra) {
+    const state = storeState.getState();
+    const spaceId = state.space.activeId!;
+    const subscription = state.billing.subscription!;
+    const idMap = SystemConfig.billing['notify'];
+
+    Api.createNotification([{
+      spaceId,
+      templateId: idMap?.[underscore(functionName)]?.link_notification_id?.[0] || '',
+      body: {
+        extras: {
+          usage: extra?.usage,
+          specification: Number(subscription[functionName]),
+        }
+      }
+    }]);
+  }
 }
 
 export const subscribeUsageCheck = new SubscribeUsageCheckEnhance(storeState);

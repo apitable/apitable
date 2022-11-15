@@ -1,4 +1,4 @@
-import { IPermissions, IFieldPermissionMap } from '@apitable/core';
+import { IFieldPermissionMap, IPermissions } from '@apitable/core';
 
 /**
  * @deprecated server response data
@@ -18,7 +18,7 @@ export interface INodePermissionBase {
   nodeFavorite?: boolean;
   fieldPermissionMap?: IFieldPermissionMap;
   isGhostNode?: boolean;
-    isDeleted?: boolean;
+  isDeleted?: boolean;
 }
 
 export type NodePermission = INodePermissionBase & IPermissions;
