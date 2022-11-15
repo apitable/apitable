@@ -11,14 +11,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * <p>
  * node visited history
  * </p>
- * @author zoe zheng
- * @date 2022/9/6 17:56
  */
 @Data
 @NoArgsConstructor
@@ -33,6 +32,7 @@ public class NodeRecentlyBrowsedSchema {
     /**
      * space id (linked#vika_space#space_id)
      */
+    @Indexed(name = "idx_space_id")
     private String spaceId;
 
     /**
@@ -43,6 +43,7 @@ public class NodeRecentlyBrowsedSchema {
     /**
      * member ID(linked#vika_unit_member#id)
      */
+    @Indexed(name = "idx_member_id")
     private Long memberId;
 
     /**

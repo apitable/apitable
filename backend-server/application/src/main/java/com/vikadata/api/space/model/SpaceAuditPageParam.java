@@ -29,4 +29,6 @@ public class SpaceAuditPageParam {
     private Integer pageNo;
 
     private Integer pageSize;
+
+    private List<String> nodeIds;
 }

@@ -198,6 +198,8 @@ public class ConstProperties {
      */
     private Integer spaceSeniorCertificationCapacity = 10;
 
+    private StorageType storageType;
+
     public OssBucketInfo getOssBucketByAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new).getOrDefault(BucketKey.VK_ASSETS_LTD, new OssBucketInfo());
     }
@@ -213,6 +215,10 @@ public class ConstProperties {
         VK_ASSETS_LTD,
         // new open bucket
         VK_PUBLIC_ASSETS_LTD,
+    }
+
+    public enum StorageType {
+        MYSQL, MONGO, Redis
     }
 
     @Data

@@ -88,6 +88,7 @@ vikadata:
     v-code-length: 8
     qr-code-reply-id: ${QRCODE_REPLY_ID:HH_VkCYNwTeiuExIgriGZxrjKYxm-SGUCO7DSvPegSE}
     ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
+    storage-type: ${STORAGE_TYPE:}
   limit:
     space-max-count: ${SPACE_MAX_COUNT:10}
     max-file-size: ${EXPORT_MAX_FILE_SIZE:20971520}

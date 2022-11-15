@@ -1,6 +1,5 @@
 package com.vikadata.api.shared.listener;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,23 +10,18 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
-import com.vikadata.api.shared.constants.AuditConstants;
-import com.vikadata.api.space.enums.AuditSpaceAction;
-import com.vikadata.api.space.enums.AuditSpaceCategory;
-import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
-import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.vikadata.api.shared.util.information.ClientOriginInfo;
-import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.shared.component.adapter.MultiDatasourceAdapterTemplate;
 import com.vikadata.api.organization.model.UnitInfoDTO;
 import com.vikadata.api.organization.service.IUnitService;
-import com.vikadata.api.space.repository.AuditSpaceRepository;
+import com.vikadata.api.shared.constants.AuditConstants;
+import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
+import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
+import com.vikadata.api.space.enums.AuditSpaceAction;
+import com.vikadata.api.space.enums.AuditSpaceCategory;
 import com.vikadata.api.template.mapper.TemplateMapper;
 import com.vikadata.api.workspace.mapper.NodeMapper;
-import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.NodeEntity;
-import com.vikadata.schema.AuditSpaceSchema;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -71,21 +65,17 @@ public class AuditSpaceListener {
     private IUnitService iUnitService;
 
     @Resource
-    private MemberMapper memberMapper;
-
-    @Resource
     private TemplateMapper templateMapper;
 
     @Resource
     private NodeMapper nodeMapper;
 
     @Resource
-    private AuditSpaceRepository auditSpaceRepository;
+    private MultiDatasourceAdapterTemplate multiDatasourceAdapterTemplate;
 
     @Async(DEFAULT_EXECUTOR_BEAN_NAME)
     @TransactionalEventListener(fallbackExecution = true, classes = AuditSpaceEvent.class)
     public void onApplicationEvent(AuditSpaceEvent event) {
-        ClientOriginInfo clientOriginInfo = InformationUtil.getClientOriginInfo(true, false);
         AuditSpaceArg arg = event.getArg();
         String spaceId = arg.getSpaceId();
         AuditSpaceAction action = arg.getAction();
@@ -114,22 +104,7 @@ public class AuditSpaceListener {
             default:
                 break;
         }
-
-        // Query operator's member information
-        MemberEntity member = memberMapper.selectByUserIdAndSpaceIdIgnoreDelete(arg.getUserId(), spaceId);
-        AuditSpaceSchema schema = AuditSpaceSchema.builder()
-                .userId(arg.getUserId())
-                .spaceId(spaceId)
-                .memberId(member.getId())
-                .memberName(member.getMemberName())
-                .ipAddress(clientOriginInfo.getIp())
-                .userAgent(clientOriginInfo.getUserAgent())
-                .category(category.name().toLowerCase())
-                .action(action.getAction())
-                .info(info)
-                .createdAt(LocalDateTime.now())
-                .build();
-        auditSpaceRepository.save(schema);
+        multiDatasourceAdapterTemplate.saveSpaceAudit(arg.getUserId(), spaceId, action, info);
     }
 
     private String appendNodeInfo(String nodeId, AuditSpaceAction action, JSONObject info) {

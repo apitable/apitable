@@ -2,18 +2,8 @@ package com.vikadata.api.workspace.service;
 
 import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.schema.NodeRecentlyBrowsedSchema;
+
 public interface INodeRecentlyBrowsedService {
-    /**
-     * update or insert a new record
-     *
-     * @param memberId member id
-     * @param spaceId space id
-     * @param nodeId node id
-     * @param nodeType node type
-     * 
-     * 
-     */
-    void saveOrUpdate(Long memberId, String spaceId, String nodeId, NodeType nodeType);
 
     /**
      * get mongo document by member id and node type
@@ -21,8 +11,8 @@ public interface INodeRecentlyBrowsedService {
      * @param memberId member id
      * @param nodeType node type
      * @return NodeRecentlyBrowsedEntity
-     * 
-     * 
+     *
+     *
      */
     NodeRecentlyBrowsedSchema getByMemberIdAndNodeType(Long memberId, NodeType nodeType);
 
@@ -33,8 +23,8 @@ public interface INodeRecentlyBrowsedService {
      * @param spaceId space id
      * @param nodeId node id
      * @param nodeType node type
-     * 
-     * 
+     *
+     *
      */
     void saveMemberBrowsedNodeId(Long memberId, String spaceId, String nodeId, NodeType nodeType);
 
