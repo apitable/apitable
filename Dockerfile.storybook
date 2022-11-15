@@ -9,7 +9,7 @@ COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
 # components
 COPY packages/components/package.json ./packages/components/
 
-RUN yarn workspaces focus @vikadata/components root
+RUN yarn workspaces focus @apitable/components root
 
 # Build static files
 FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS builder

@@ -1,8 +1,8 @@
 // Define a React component renderer for our code blocks.
 import { getExpressionChainList, IExpressionChainNode } from './helper';
 import { IJsonSchema, INodeOutputSchema } from '../../interface';
-import { Box, useTheme, Typography } from '@vikadata/components';
-import { FormOutlined } from '@vikadata/icons';
+import { Box, useTheme, Typography } from '@apitable/components';
+import { FormOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
 
 export const MagicVariableElement = props => {

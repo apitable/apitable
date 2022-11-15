@@ -1,6 +1,6 @@
-import { Box, Typography, useTheme, IconButton } from '@vikadata/components';
+import { Box, Typography, useTheme, IconButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ErrorFilled, RunFilled, SuccessFilled } from '@vikadata/icons';
+import { ErrorFilled, RunFilled, SuccessFilled } from '@apitable/icons';
 import { timeFormatter } from 'pc/utils';
 import { useState } from 'react';
 import { IRobotRunHistoryItem } from '../../interface';

@@ -1,4 +1,4 @@
-import { Loading } from '@vikadata/components';
+import { Loading } from '@apitable/components';
 import { Api, IUserInfo, Strings, t } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { useRequest } from 'pc/hooks';

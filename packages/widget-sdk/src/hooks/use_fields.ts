@@ -20,7 +20,7 @@ import { getFieldMap, getFieldPermissionMap, getView } from '../store';
  *
  * ### Example
  * ```js
- * import { useFields, useActiveViewId } from '@vikadata/widget-sdk';
+ * import { useFields, useActiveViewId } from '@apitable/widget-sdk';
  *
  * // Show all field names
  * function FieldNames() {
@@ -45,7 +45,7 @@ export function useFields(viewId: string | undefined, query?: IFieldQuery): Fiel
  *
  * ### Example
  * ```js
- * import { useFields, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useFields, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Show all field names corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function FieldNames() {

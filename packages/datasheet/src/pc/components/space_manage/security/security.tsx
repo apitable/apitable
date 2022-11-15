@@ -1,4 +1,4 @@
-import { Skeleton, Typography } from '@vikadata/components';
+import { Skeleton, Typography } from '@apitable/components';
 import { ISocialAppType, StoreActions, Strings, t } from '@apitable/core';
 import { isBoolean } from 'lodash';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';

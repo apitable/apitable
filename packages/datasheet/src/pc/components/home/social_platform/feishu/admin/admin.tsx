@@ -1,4 +1,4 @@
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { Api, Settings, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Loading } from 'pc/components/common';

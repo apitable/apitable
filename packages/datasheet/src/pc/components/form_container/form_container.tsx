@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/react';
-import { Button, ContextMenu, TextButton, useThemeColors } from '@vikadata/components';
+import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
   Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
   IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, Player, Selectors, StatusCode, StoreActions, string2Segment, Strings, t,
 } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@vikadata/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@apitable/icons';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
 import produce from 'immer';

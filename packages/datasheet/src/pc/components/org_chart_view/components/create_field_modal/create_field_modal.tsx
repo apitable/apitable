@@ -1,4 +1,4 @@
-import { Button, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import Image from 'next/image';

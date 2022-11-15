@@ -1,4 +1,4 @@
-import { Button, Message, TextInput, Typography } from '@vikadata/components';
+import { Button, Message, TextInput, Typography } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { StoreActions } from '@apitable/core';
 import Image from 'next/image';

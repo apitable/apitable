@@ -1,6 +1,6 @@
-import { Button, ButtonGroup, useThemeColors } from '@vikadata/components';
+import { Button, ButtonGroup, useThemeColors } from '@apitable/components';
 import { IUserInfo, Navigation, Strings, t } from '@apitable/core';
-import { NewtabOutlined } from '@vikadata/icons';
+import { NewtabOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';

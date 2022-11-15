@@ -1,5 +1,5 @@
 {
-  "name": "@vikadata/components",
+  "name": "@apitable/components",
   "version": "0.15.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@rjsf/core": "^4.2.3",
-    "@vikadata/icons": "*",
+    "@apitable/icons": "*",
     "@vikadata/react-contexify": "^5.0.5",
     "@vikadata/react-window": "1.8.7",
     "ahooks": "^3.5.0",

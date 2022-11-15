@@ -1,4 +1,4 @@
-import { Checkbox } from '@vikadata/components';
+import { Checkbox } from '@apitable/components';
 import { IWidgetProps } from '../../interface';
 
 export const CheckboxWidget = (props: IWidgetProps) => {

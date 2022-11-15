@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 interface IDividerProps {
   height?: number;

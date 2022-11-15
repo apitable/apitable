@@ -3,7 +3,7 @@ import { useKeyPress } from 'ahooks';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { store } from 'pc/store';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';

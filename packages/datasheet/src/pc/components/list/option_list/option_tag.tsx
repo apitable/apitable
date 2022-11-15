@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './style.module.less';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import classnames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { ISelectFieldOption, Selectors, ThemeName } from '@apitable/core';

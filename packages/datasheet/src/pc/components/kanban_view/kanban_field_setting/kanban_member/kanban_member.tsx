@@ -1,6 +1,6 @@
 import { FieldType, getNewId, getUniqName, IDPrefix, MemberField, Strings, t } from '@apitable/core';
 import { Switch } from 'antd';
-import { TextInput, Button } from '@vikadata/components';
+import { TextInput, Button } from '@apitable/components';
 import { useState } from 'react';
 import * as React from 'react';
 import { useCheckRepeatName } from '../../hooks/use_check_repeat_name';

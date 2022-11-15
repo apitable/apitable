@@ -4,7 +4,7 @@ import { t, Strings } from '@apitable/core';
 import { WithTipTextInput } from 'pc/components/common';
 import styles from './style.module.less';
 import { TComponent } from 'pc/components/common/t_component';
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 interface IConfirmAgainModalProps {
   confirmText: string;
   setConfirmText: React.Dispatch<React.SetStateAction<string>>;

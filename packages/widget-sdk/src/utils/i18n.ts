@@ -18,7 +18,7 @@ const ERROR_STR = '[ERROR STR]';
  *
  * ## Example
  * ``` js
- * import { t } from '@vikadata/widget-sdk';
+ * import { t } from '@apitable/widget-sdk';
  *
  * const strings = {
  *   total: {

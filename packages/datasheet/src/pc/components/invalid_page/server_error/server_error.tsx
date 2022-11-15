@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { integrateCdnHost, Strings, t, Settings } from '@apitable/core';
 import Image from 'next/image';
 import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';

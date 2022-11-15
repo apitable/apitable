@@ -2,7 +2,7 @@
 import { memo, useContext, useState } from 'react';
 import * as React from 'react';
 import { useDrop } from 'react-dnd';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import { PRE_RECORD, RECORD } from './constants';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
@@ -11,7 +11,7 @@ import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMove
 import { resourceService } from 'pc/resource_service';
 import { CalendarContext } from './calendar_context';
 import { getPosition } from './utils';
-import { ITask, useThemeColors } from '@vikadata/components';
+import { ITask, useThemeColors } from '@apitable/components';
 import { dispatch } from 'pc/worker/store';
 import { store } from 'pc/store';
 interface IDrop {

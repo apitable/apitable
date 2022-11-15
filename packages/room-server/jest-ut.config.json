@@ -17,6 +17,6 @@
     "dotenv/config"
   ],
   "setupFilesAfterEnv": [
-    "@vikadata/i18n-lang"
+    "@apitable/i18n-lang"
   ]
 }

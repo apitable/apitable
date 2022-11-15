@@ -1,6 +1,6 @@
-import { Button, Skeleton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Skeleton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { PopUpTitle } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

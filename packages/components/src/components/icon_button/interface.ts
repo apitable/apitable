@@ -1,5 +1,5 @@
 import React, { ElementType } from 'react';
-import { IIconProps } from '@vikadata/icons';
+import { IIconProps } from '@apitable/icons';
 
 export interface IIconButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   /**

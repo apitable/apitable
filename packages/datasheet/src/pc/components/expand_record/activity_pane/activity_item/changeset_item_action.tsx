@@ -1,6 +1,6 @@
 import { FieldType, IDPrefix, IField, IJOTAction, LINK_REG, SegmentType, Selectors, string2Segment } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
-import { ArrowRightOutlined } from '@vikadata/icons';
+import { useThemeColors } from '@apitable/components';
+import { ArrowRightOutlined } from '@apitable/icons';
 import cls from 'classnames';
 import { has, intersectionWith, isEqual, xorBy } from 'lodash';
 import { FieldTitle } from 'pc/components/expand_record/field_editor';

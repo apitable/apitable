@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Navigation, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { Tree } from 'antd';
 import classNames from 'classnames';

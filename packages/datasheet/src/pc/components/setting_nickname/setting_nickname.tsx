@@ -1,4 +1,4 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Form, Input } from 'antd';

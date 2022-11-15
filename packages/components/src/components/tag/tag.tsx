@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import Color from 'color';
-import { CloseSmallOutlined } from '@vikadata/icons';
+import { CloseSmallOutlined } from '@apitable/icons';
 import { useProviderTheme } from 'hooks';
 
 export interface ITagProps {

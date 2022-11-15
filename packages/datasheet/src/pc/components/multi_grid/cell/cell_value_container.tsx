@@ -1,6 +1,6 @@
 import { Field, IField, IGridViewColumn, IGroupInfo, ILinearRowRecord, Range, RecordMoveType, RowHeightLevel, Selectors } from '@apitable/core';
 import classNames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { CELL_CLASS } from 'pc/utils';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';

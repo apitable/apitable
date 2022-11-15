@@ -14,7 +14,7 @@ import * as React from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import styles from './style.module.less';
 import { useRequest } from 'pc/hooks';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { getVerifyData, IDelSpaceConfig, VerifyTypes } from 'pc/components/navigation/account_center_modal/utils';
 
 export interface IDelSpaceModalProps {

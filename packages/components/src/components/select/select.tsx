@@ -1,4 +1,4 @@
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway, useToggle } from 'ahooks';
 import Color from 'color';
 import { SelectItem } from 'components/select/select_item';

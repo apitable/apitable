@@ -1,6 +1,6 @@
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
-import { Button, useThemeColors } from '@vikadata/components';
-import { CheckOutlined } from '@vikadata/icons';
+import { Button, useThemeColors } from '@apitable/components';
+import { CheckOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { difference } from 'lodash';
 import Image from 'next/image';

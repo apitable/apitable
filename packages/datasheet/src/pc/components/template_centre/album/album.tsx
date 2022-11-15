@@ -1,6 +1,6 @@
 import { getLanguage, Navigation, Strings, t, Api } from '@apitable/core';
-import { Button, Typography, Loading } from '@vikadata/components';
-import { DescriptionOutlined, ShareOutlined } from '@vikadata/icons';
+import { Button, Typography, Loading } from '@apitable/components';
+import { DescriptionOutlined, ShareOutlined } from '@apitable/icons';
 import MarkdownIt from 'markdown-it';
 import Image from 'next/image';
 import { Message } from 'pc/components/common/message/message';

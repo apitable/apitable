@@ -1,5 +1,5 @@
 // TODO Reconstructing the address book
-import { Button, TextButton, ThemeProvider } from '@vikadata/components';
+import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { BaseModal } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

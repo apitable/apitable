@@ -3,12 +3,12 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { Api, ConfigConstant, DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import classnames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import Trigger from 'rc-trigger';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
 import { MirrorListInner } from 'pc/components/mirror/mirror_list/mirror_list_inner';
 import { TComponent } from 'pc/components/common/t_component';
-import { MirrorOutlined } from '@vikadata/icons';
+import { MirrorOutlined } from '@apitable/icons';
 import { IForeignFormProps, IMirrorItem } from './interface';
 
 export const MirrorList: FC<IForeignFormProps> = props => {

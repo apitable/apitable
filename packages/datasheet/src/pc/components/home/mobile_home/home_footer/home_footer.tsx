@@ -1,5 +1,5 @@
 import { getCustomConfig, isPrivateDeployment, Navigation, Strings, t } from '@apitable/core';
-import { ButtonGroup, LinkButton } from '@vikadata/components';
+import { ButtonGroup, LinkButton } from '@apitable/components';
 import { Router } from 'pc/components/route_manager/router';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { FC } from 'react';

@@ -1,4 +1,4 @@
-import { colorVars, TextButton, useThemeColors } from '@vikadata/components';
+import { colorVars, TextButton, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
   DATASHEET_ID,
@@ -21,7 +21,7 @@ import {
   UN_GROUP,
   ViewType,
 } from '@apitable/core';
-import { ApiOutlined, ChevronDownOutlined, RecoverOutlined, RobotOutlined, SettingFilled, WidgetOutlined } from '@vikadata/icons';
+import { ApiOutlined, ChevronDownOutlined, RecoverOutlined, RobotOutlined, SettingFilled, WidgetOutlined } from '@apitable/icons';
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';

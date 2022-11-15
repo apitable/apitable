@@ -1,7 +1,7 @@
 import SuccessIcon from 'static/icon/common/common_icon_success.svg';
 import InfoIcon from 'static/icon/common/common_icon_default.svg';
-import { colorVars } from '@vikadata/components';
-import { WarnFilled, ErrorFilled } from '@vikadata/icons';
+import { colorVars } from '@apitable/components';
+import { WarnFilled, ErrorFilled } from '@apitable/icons';
 // const modulesFiles = require.context('./modules', true, /.js$/)
 
 enum StatusType {

@@ -1,6 +1,6 @@
-import { Button, LinkButton, TextButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, LinkButton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Settings, Strings, t } from '@apitable/core';
-import { SettingOutlined } from '@vikadata/icons';
+import { SettingOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message';

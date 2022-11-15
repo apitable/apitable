@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ITypographyProps, Typography, useThemeColors } from '@vikadata/components';
+import { ITypographyProps, Typography, useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
 
 export interface IWithTipWrapperProps extends ITypographyProps {

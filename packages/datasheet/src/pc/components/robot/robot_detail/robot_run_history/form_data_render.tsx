@@ -1,5 +1,5 @@
 import { t, Strings, data2Operand } from '@apitable/core';
-import { Box, useTheme, Typography } from '@vikadata/components';
+import { Box, useTheme, Typography } from '@apitable/components';
 import { INodeSchema } from '../../interface';
 import { retrieveSchema } from '../node_form/core/utils';
 import { KeyValueDisplay } from './common';

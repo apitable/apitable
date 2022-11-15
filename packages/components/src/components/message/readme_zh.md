@@ -22,7 +22,7 @@ const onBaseTypeClick = (type) => {
 ```tsx
 import { Button } from "../button";
 import { Message } from "./message";
-import { ArrowRightOutlined } from "@vikadata/icons";
+import { ArrowRightOutlined } from "@apitable/icons";
 
 const hiddenIconClick = () => {
   Message.success({ content: "不展示Icon的Message", icon: null });

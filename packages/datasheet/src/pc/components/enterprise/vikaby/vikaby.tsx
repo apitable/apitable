@@ -1,10 +1,10 @@
-import { ThemeProvider, useThemeColors } from '@vikadata/components';
+import { ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant, DATASHEET_ID, Events, isPrivateDeployment, Player, ScreenWidth, Selectors, Settings, StoreActions, Strings, t, VIKABY_ID,
 } from '@apitable/core';
 import {
   AdviseOutlined, ClassroomOutlined, FixedOutlined, InviteSmallFilled, RoadmapOutlined, TaskOutlined, ViewContactOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { Popover } from 'antd';
 import classNames from 'classnames';

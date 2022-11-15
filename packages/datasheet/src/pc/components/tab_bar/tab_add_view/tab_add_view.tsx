@@ -2,8 +2,8 @@ import {
   CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, Events, ExecuteResult, getViewClass, IReduxState, IViewProperty, Player,
   Selectors, Strings, t, ViewType,
 } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
-import { IUseListenTriggerInfo } from '@vikadata/components';
+import { AddOutlined } from '@apitable/icons';
+import { IUseListenTriggerInfo } from '@apitable/components';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';

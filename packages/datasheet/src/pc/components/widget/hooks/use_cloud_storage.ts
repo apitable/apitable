@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CloudStorage } from '@vikadata/widget-sdk';
+import { CloudStorage } from '@apitable/widget-sdk';
 import { resourceService } from 'pc/resource_service';
 
 /**

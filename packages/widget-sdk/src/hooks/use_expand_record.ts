@@ -12,7 +12,7 @@ import { useMeta } from './use_meta';
  * 
  * ### Example
  * ```js
- * import { useExpandRecord, useRecords } from '@vikadata/widget-sdk';
+ * import { useExpandRecord, useRecords } from '@apitable/widget-sdk';
  *
  * // expand first record
  * function ExpandFirstRecord() {

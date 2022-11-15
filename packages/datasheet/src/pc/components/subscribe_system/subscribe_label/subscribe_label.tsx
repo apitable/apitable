@@ -1,4 +1,4 @@
-import { Tooltip, Typography, useThemeColors } from '@vikadata/components';
+import { Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { ISocialAppType, isPrivateDeployment, SocialAppType, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { isMobileApp } from 'pc/utils/env';

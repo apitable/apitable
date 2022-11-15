@@ -1,4 +1,4 @@
-import { ThemeName } from '@vikadata/components';
+import { ThemeName } from '@apitable/components';
 
 export const initTheme = () => {
   const query = new URLSearchParams(window.location.search);

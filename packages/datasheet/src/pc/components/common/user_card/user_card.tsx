@@ -1,6 +1,6 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IRoleMember, IShareSettings, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { SettingOutlined } from '@vikadata/icons';
+import { SettingOutlined } from '@apitable/icons';
 import { Avatar, Loading, Tag } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';

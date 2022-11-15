@@ -11,7 +11,7 @@ import {
   DatasheetActions,
 } from '@apitable/core';
 import { Tooltip } from 'pc/components/common';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import * as React from 'react';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';

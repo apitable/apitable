@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@vikadata/components';
+import { ThemeProvider } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ConfigProvider, Table, Tabs } from 'antd';
 import { ColumnsType } from 'antd/lib/table';

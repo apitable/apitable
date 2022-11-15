@@ -1,4 +1,4 @@
-import { lightColors } from '@vikadata/components';
+import { lightColors } from '@apitable/components';
 import classnames from 'classnames';
 import React, { FC } from 'react';
 import styles from './style.module.less';

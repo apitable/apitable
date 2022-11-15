@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import * as React from 'react';
 import { stopPropagation } from 'pc/utils';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import styles from './styles.module.less';
 import { FlowContext } from 'pc/components/org_chart_view/context/flow_context';
 import classNames from 'classnames';

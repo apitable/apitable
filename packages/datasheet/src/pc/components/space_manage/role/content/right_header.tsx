@@ -1,4 +1,4 @@
-import { Box, Button, Space, Typography, useThemeColors } from '@vikadata/components';
+import { Box, Button, Space, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { useContext } from 'react';
 import { RoleContext } from '../context';

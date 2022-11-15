@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { VerificationCodeFilled } from '@vikadata/icons';
+import { VerificationCodeFilled } from '@apitable/icons';
 import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
-import { Button, ITextInputProps, TextInput } from '@vikadata/components';
+import { Button, ITextInputProps, TextInput } from '@apitable/components';
 import { useBoolean, useMount, useInterval } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import styles from './style.module.less';

@@ -1,7 +1,7 @@
-import { Loading } from '@vikadata/components';
+import { Loading } from '@apitable/components';
 import { getLanguage, Selectors, StoreActions } from '@apitable/core';
-import { IExpandRecordProps, mainWidgetMessage, RuntimeEnv } from '@vikadata/widget-sdk';
-import { WidgetMessageType } from '@vikadata/widget-sdk/dist/iframe_message/interface';
+import { IExpandRecordProps, mainWidgetMessage, RuntimeEnv } from '@apitable/widget-sdk';
+import { WidgetMessageType } from '@apitable/widget-sdk/dist/iframe_message/interface';
 import { useUnmount } from 'ahooks';
 import classnames from 'classnames';
 import { getDependenceByDstIds } from 'modules/enterprise/billing';

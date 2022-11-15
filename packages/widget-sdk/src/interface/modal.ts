@@ -3,7 +3,7 @@ import {
   DateFormat, ICollaborator, IFieldPermissionMap, ILabs, IPageParams, IPermissions, IReduxState, ISelection, IShareInfo, ISnapshot, IUnitInfo,
   IViewRow, IWidget, TimeFormat, WidgetPackageStatus, WidgetReleaseType, IMirrorMap, IActiveRowInfo, IUserInfo
 } from 'core';
-import { ThemeName } from '@vikadata/components';
+import { ThemeName } from '@apitable/components';
 import { IResourceService } from '../resource/interface';
 
 /** Cell row and column unique identifiers uuid */

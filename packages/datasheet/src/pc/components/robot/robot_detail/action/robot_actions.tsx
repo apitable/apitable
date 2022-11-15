@@ -1,4 +1,4 @@
-import { Box } from '@vikadata/components';
+import { Box } from '@apitable/components';
 import { useDebounceFn } from 'ahooks';
 import axios from 'axios';
 import { useMemo } from 'react';

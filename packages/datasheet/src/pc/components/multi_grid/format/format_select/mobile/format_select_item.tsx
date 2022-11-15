@@ -2,7 +2,7 @@ import { ISelectFieldOption } from '@apitable/core';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import IconDelete from 'static/icon/common/common_icon_close_small.svg';

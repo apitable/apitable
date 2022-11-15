@@ -1,8 +1,8 @@
 import { ILinearRow, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import { GridLayout } from './layout';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';
-import { colors } from '@vikadata/components';
+import { colors } from '@apitable/components';
 
 const AddOutlinedPath = AddOutlined.toString();
 

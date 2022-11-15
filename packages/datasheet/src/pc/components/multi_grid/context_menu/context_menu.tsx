@@ -7,7 +7,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FieldMenu } from './field_menu';
 import { GRID_RECORD_MENU, RecordMenu } from './record_menu';
-import { useContextMenu } from '@vikadata/components';
+import { useContextMenu } from '@apitable/components';
 import { isIPad13 } from 'react-device-detect';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 

@@ -1,4 +1,4 @@
-import { ThemeName } from '@vikadata/components';
+import { ThemeName } from '@apitable/components';
 import { IWidgetConfig, IWidgetState } from 'interface';
 import React from 'react';
 import { Provider } from 'react-redux';

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@vikadata/components';
+import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import Image from 'next/image';
 import { useState, useCallback } from 'react';

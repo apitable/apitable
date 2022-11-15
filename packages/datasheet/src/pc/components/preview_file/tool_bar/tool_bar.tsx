@@ -14,12 +14,12 @@ import {
   NewtabOutlined,
   RotateOutlined,
   UnfullscreenOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import IconZoomIn from 'static/icon/datasheet/datasheet_icon_zoom_in.svg';
 import IconZoomOut from 'static/icon/datasheet/datasheet_icon_zoom_out.svg';
 import { IPreviewToolItem, PreviewToolItem } from './tool_item';
 import { Message } from 'pc/components/common';
-import { Loading, useThemeColors } from '@vikadata/components';
+import { Loading, useThemeColors } from '@apitable/components';
 import { getFile } from '../preview_main/util';
 import FileSaver from 'file-saver';
 import { useSelector } from 'react-redux';

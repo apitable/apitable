@@ -2,7 +2,7 @@ import { FC, useRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import LeftScrollIcon from 'static/icon/workbench/workbench_tab_arrow_left.svg';
 import RightScrollIcon from 'static/icon/workbench/workbench_tab_arrow_right.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
 import { ConfigConstant } from '@apitable/core';
 

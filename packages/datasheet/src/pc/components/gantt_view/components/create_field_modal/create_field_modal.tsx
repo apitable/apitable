@@ -1,4 +1,4 @@
-import { Button, Typography } from '@vikadata/components';
+import { Button, Typography } from '@apitable/components';
 import {
   CollaCommandName, DateTimeField, ExecuteResult, FieldType, GanttStyleKeyType, getNewIds, getUniqName, IDPrefix, Selectors, Strings, t
 } from '@apitable/core';

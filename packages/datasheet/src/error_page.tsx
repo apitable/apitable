@@ -1,7 +1,7 @@
 /*
  * The fallback page displayed when the React global crashes
  */
-import { Button, colorVars, LinkButton, Typography } from '@vikadata/components';
+import { Button, colorVars, LinkButton, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import * as React from 'react';

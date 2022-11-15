@@ -1,6 +1,6 @@
 import { utils } from '@rjsf/core';
 import { IFieldTemplateProps } from '../../core/interface';
-import { Typography, useTheme } from '@vikadata/components';
+import { Typography, useTheme } from '@apitable/components';
 
 const { getSchemaType } = utils;
 

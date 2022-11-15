@@ -1,4 +1,4 @@
-import { DefaultFilled, ErrorFilled, InformationSmallOutlined, SuccessFilled, WarnFilled } from '@vikadata/icons';
+import { DefaultFilled, ErrorFilled, InformationSmallOutlined, SuccessFilled, WarnFilled } from '@apitable/icons';
 import { Box } from 'components/box';
 import { Button } from 'components/button';
 import { TextButton } from 'components/text_button';

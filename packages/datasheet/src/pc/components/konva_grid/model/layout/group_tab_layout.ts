@@ -1,7 +1,7 @@
 import { ILinearRow, RowHeightLevel, Strings, t } from '@apitable/core';
-import { LockNonzeroOutlined } from '@vikadata/icons';
+import { LockNonzeroOutlined } from '@apitable/icons';
 import { GridLayout } from './layout';
-import { colors } from '@vikadata/components';
+import { colors } from '@apitable/components';
 import { cellHelper } from '../../utils';
 import { IRenderStyleProps } from '../../interface';
 import { GRID_GROUP_OFFSET, GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH } from '../../constant';

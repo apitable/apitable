@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@vikadata/components';
+import { Box, Typography, useTheme } from '@apitable/components';
 
 interface IErrorStacksProps {
   errorStacks?: { message: any }[];

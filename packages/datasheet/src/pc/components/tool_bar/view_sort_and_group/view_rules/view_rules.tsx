@@ -1,6 +1,6 @@
 import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import CheckedIcon from 'static/icon/datasheet/column/datasheet_icon_checkbox.svg';

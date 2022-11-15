@@ -1,4 +1,4 @@
-import { ITask } from '@vikadata/components';
+import { ITask } from '@apitable/components';
 import { 
   IFieldMap, ICalendarViewColumn, ISnapshot, ICalendarViewStyle, 
   IViewProperty, ICalendarViewStatus, IPermissions, ICell } from '@apitable/core';

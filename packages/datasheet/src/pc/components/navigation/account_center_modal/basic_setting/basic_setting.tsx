@@ -15,7 +15,7 @@ import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { ImageCropUpload } from 'pc/components/common/image_crop_upload';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { LinkButton, Button, Typography, stopPropagation, useThemeColors } from '@vikadata/components';
+import { LinkButton, Button, Typography, stopPropagation, useThemeColors } from '@apitable/components';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useUserRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
@@ -34,7 +34,7 @@ import { StatusIconFunc } from 'pc/components/common/icon';
 import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'pc/components/home/social_platform';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import classNames from 'classnames';
-import { ChevronRightOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined } from '@apitable/icons';
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, {

@@ -1,4 +1,4 @@
-import { Box, useTheme, Typography } from '@vikadata/components';
+import { Box, useTheme, Typography } from '@apitable/components';
 import useSWR from 'swr';
 import { nestReq } from '../../api';
 import { useNodeTypeByIds } from '../../hooks';

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, colors, LinkButton } from '@vikadata/components';
+import { Button, ButtonGroup, colors, LinkButton } from '@apitable/components';
 import { Api, ApiInterface, getCustomConfig, Navigation, Settings, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Space } from 'antd';

@@ -93,7 +93,7 @@ import { StoryType } from './constants';
 ## 使用
 
 ```jsx
-import { purple, deepPurple, black } from '@vikadata/components';
+import { purple, deepPurple, black } from '@apitable/components';
 ```
 
 以 `purple` 举例，色板将紫色分为了 11 个区域，purple[50]、purple[100]、purple[200]... purple[1000]，浅色到深色。
@@ -243,7 +243,7 @@ export const deepPurple = {
 ### getActionColor
 
 ```jsx
-import { getActionColor } from '@vikadata/components';
+import { getActionColor } from '@apitable/components';
 ```
 
 解析调色板中的颜色获取 hover、active 状态的颜色。例如：`purple[400]` 通过 `getActionColor` 计算的结果如下：
@@ -263,7 +263,7 @@ import { getActionColor } from '@vikadata/components';
 ### getContrastText
 
 ```jsx
-import { getContrastText } from '@vikadata/components';
+import { getContrastText } from '@apitable/components';
 ```
 
 根据背景色，自动生成前景文字颜色。让整体效果视觉体验更加舒适、友好：
@@ -291,7 +291,7 @@ import { getContrastText } from '@vikadata/components';
 ## convertHexToRGB
 
 ```jsx
-import { convertHexToRGB } from '@vikadata/components';
+import { convertHexToRGB } from '@apitable/components';
 ```
 
 支持对调色板和其他颜色从 `HEX` 格式颜色转成 `RGB`，并且支持透明度配置，兼容以下用法：

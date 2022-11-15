@@ -1,9 +1,9 @@
-import { IconButton, Typography, useContextMenu, useThemeColors } from '@vikadata/components';
+import { IconButton, Typography, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant, IReduxState, IRightClickInfo, isIdassPrivateDeployment, Navigation, Selectors, shallowEqual, StoreActions, Strings, t,
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
-import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@vikadata/icons';
+import { AddOutlined, FavoriteFilled, SearchOutlined, TitleWorkFilled } from '@apitable/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';

@@ -1,4 +1,4 @@
-import { Box } from '@vikadata/components';
+import { Box } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import produce from 'immer';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';

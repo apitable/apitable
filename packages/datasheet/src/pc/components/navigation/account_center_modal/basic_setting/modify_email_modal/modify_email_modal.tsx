@@ -18,7 +18,7 @@ import {
 } from 'pc/components/common';
 import { addWizardNumberAndApiRun } from 'modules/enterprise/guide/utils';
 import { useSetState } from 'pc/hooks';
-import { TextInput } from '@vikadata/components';
+import { TextInput } from '@apitable/components';
 import { Verify } from '../modify_mobile_modal/verify';
 import { usePlatform } from 'pc/hooks/use_platform';
 

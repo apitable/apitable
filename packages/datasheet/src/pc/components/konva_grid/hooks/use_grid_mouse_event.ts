@@ -1,4 +1,4 @@
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import {
   CellType, CollaCommandName, ConfigConstant, ExecuteResult, FieldType, KONVA_DATASHEET_ID, Range, RowHeightLevel, Selectors, StoreActions, Strings, t
 } from '@apitable/core';

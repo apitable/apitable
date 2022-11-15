@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Api } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import { Checkbox } from 'antd';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Modal } from 'pc/components/common';
 
 export const BatchDeleteNode: React.FC = () => {

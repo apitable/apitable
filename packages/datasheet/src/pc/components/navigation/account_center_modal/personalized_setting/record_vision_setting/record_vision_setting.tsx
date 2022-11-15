@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Select, Typography } from '@vikadata/components';
+import { Select, Typography } from '@apitable/components';
 import styles from './style.module.less';
 import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@apitable/core';
 import { useDispatch, useSelector } from 'react-redux';

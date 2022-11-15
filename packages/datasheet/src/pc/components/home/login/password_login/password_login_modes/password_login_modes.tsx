@@ -1,6 +1,6 @@
-import { TextInput, Typography } from '@vikadata/components';
+import { TextInput, Typography } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Strings, t } from '@apitable/core';
-import { EmailSigninFilled } from '@vikadata/icons';
+import { EmailSigninFilled } from '@apitable/icons';
 import { useSetState, useUpdateEffect } from 'ahooks';
 import { Tabs } from 'antd';
 import { IPhoneInputRefProps, PasswordInput, PhoneInput, WithTipWrapper } from 'pc/components/common';

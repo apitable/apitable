@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { CheckedFilled, UncheckedOutlined } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { CheckedFilled, UncheckedOutlined } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 
 import styles from './checkbox.module.less';
 

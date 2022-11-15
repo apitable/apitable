@@ -6,7 +6,7 @@ import { areEqual, GridChildComponentProps } from '@vikadata/react-window';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import { TComponent } from 'pc/components/common/t_component';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { FIELD_HEAD_CLASS, OPERATE_HEAD_CLASS, OPERATE_BUTTON_CLASS, ButtonOperateType, GHOST_RECORD_ID } from 'pc/utils';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';

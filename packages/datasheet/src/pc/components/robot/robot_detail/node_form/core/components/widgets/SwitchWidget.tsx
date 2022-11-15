@@ -1,4 +1,4 @@
-import { Box, Switch } from '@vikadata/components';
+import { Box, Switch } from '@apitable/components';
 import { IWidgetProps } from '../../interface';
 
 export const SwitchWidget = (props: IWidgetProps) => {

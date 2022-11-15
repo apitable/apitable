@@ -1,4 +1,4 @@
-import { ContextMenu, IContextMenuClickState } from '@vikadata/components';
+import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing/trigger_usage_alert';
 import { MobileContextMenu } from 'pc/components/common';

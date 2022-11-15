@@ -4,9 +4,9 @@ import styles from './style.module.less';
 import { Strings, t, IReduxState, ConfigConstant } from '@apitable/core';
 import { Tooltip, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { shallowEqual, useSelector } from 'react-redux';
-import { IconButton, Skeleton } from '@vikadata/components';
+import { IconButton, Skeleton } from '@apitable/components';
 import { useNotificationCreate } from 'pc/hooks';
-import { EditOutlined } from '@vikadata/icons';
+import { EditOutlined } from '@apitable/icons';
 export const ChangeName = () => {
   
   const { spaceInfo, spaceResource, spaceId, userInfo } = useSelector((state: IReduxState) => ({

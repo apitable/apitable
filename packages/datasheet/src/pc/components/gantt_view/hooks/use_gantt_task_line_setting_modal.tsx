@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';
-import { ClearOutlined, ConnectOutlined } from '@vikadata/icons';
+import { ClearOutlined, ConnectOutlined } from '@apitable/icons';
 import { KonvaGanttViewContext, generateTargetName, IScrollState } from 'pc/components/gantt_view';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { Icon, ToolTip } from 'pc/components/konva_components';
@@ -9,7 +9,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { Selectors, CollaCommandName, t, Strings, KONVA_DATASHEET_ID, ConfigConstant } from '@apitable/core';
 import { getRecordName } from 'pc/components/expand_record';
-import { lightColors, Message } from '@vikadata/components';
+import { lightColors, Message } from '@apitable/components';
 import { Text, autoSizerCanvas } from 'pc/components/konva_components';
 import { rgbaToHex } from 'pc/utils';
 

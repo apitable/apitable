@@ -1,7 +1,7 @@
 import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { useDebounce } from 'ahooks';
 import { ButtonPlus, Tooltip } from 'pc/components/common';
-import { Loading, useThemeColors } from '@vikadata/components';
+import { Loading, useThemeColors } from '@apitable/components';
 import { KeyCode } from 'pc/utils';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import IconNext from 'static/icon/common/common_icon_pulldown_line.svg';
 import IconPrev from 'static/icon/common/common_icon_up_line.svg';
 import styles from './styles.module.less';
-import { CancelFilled, SearchOutlined } from '@vikadata/icons';
+import { CancelFilled, SearchOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { dispatch } from 'pc/worker/store';

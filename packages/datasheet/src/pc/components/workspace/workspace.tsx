@@ -1,5 +1,5 @@
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { CollapseOutlined, ExpandOutlined } from '@vikadata/icons';
+import { CollapseOutlined, ExpandOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';

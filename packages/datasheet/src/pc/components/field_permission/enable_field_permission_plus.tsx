@@ -1,4 +1,4 @@
-import { Box, IOption, Skeleton } from '@vikadata/components';
+import { Box, IOption, Skeleton } from '@apitable/components';
 import {
   ConfigConstant, DatasheetApi, IFieldPermissionMember, IFieldPermissionRole, IMember, IUnitValue, MemberType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';

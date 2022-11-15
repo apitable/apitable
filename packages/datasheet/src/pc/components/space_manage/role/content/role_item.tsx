@@ -1,5 +1,5 @@
-import { MoreStandOutlined, MultiplemembersFilled } from '@vikadata/icons';
-import { Typography, useContextMenu } from '@vikadata/components';
+import { MoreStandOutlined, MultiplemembersFilled } from '@apitable/icons';
+import { Typography, useContextMenu } from '@apitable/components';
 import { useContext } from 'react';
 import classNames from 'classnames';
 

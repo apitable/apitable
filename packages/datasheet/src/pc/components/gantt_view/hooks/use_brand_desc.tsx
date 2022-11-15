@@ -1,4 +1,4 @@
-import { getThemeName, ThemeName } from '@vikadata/components';
+import { getThemeName, ThemeName } from '@apitable/components';
 import { getLanguage } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import { KonvaGridContext } from 'pc/components/konva_grid';

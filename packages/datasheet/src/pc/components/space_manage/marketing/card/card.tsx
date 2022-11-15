@@ -1,4 +1,4 @@
-import { Button, Typography } from '@vikadata/components';
+import { Button, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import * as React from 'react';
 import { useContext, useState } from 'react';

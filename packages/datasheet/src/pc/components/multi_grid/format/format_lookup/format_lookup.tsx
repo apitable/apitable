@@ -22,7 +22,7 @@ import { Message, Modal, Tooltip } from 'pc/components/common';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';
 import { TComponent } from 'pc/components/common/t_component';
 import { store } from 'pc/store';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -41,7 +41,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { MobileSelect } from 'pc/components/common';
 import { LookupFieldPanel } from 'pc/components/multi_grid/format/format_lookup/look_field_panel';
 import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
-import { Select, TextButton } from '@vikadata/components';
+import { Select, TextButton } from '@apitable/components';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { StringKeysType } from '@apitable/core';
 import { FilterModal } from 'pc/components/common/modal/filter_modal/filter_modal';

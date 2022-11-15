@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { CollaCommandName, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import { Modal } from 'antd-mobile';

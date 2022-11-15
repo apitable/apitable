@@ -1,4 +1,4 @@
-import { ThemeName, Typography, useThemeColors } from '@vikadata/components';
+import { ThemeName, Typography, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
   IReduxState,

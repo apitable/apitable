@@ -2,7 +2,7 @@
 // https://storybook.js.org/docs/react/essentials/controls
 
 import React from 'react';
-import { LockOutlined, ShareFilled, RankFilled, WebsiteOutlined } from '@vikadata/icons';
+import { LockOutlined, ShareFilled, RankFilled, WebsiteOutlined } from '@apitable/icons';
 
 export const iconComponents = {
   LockOutlined: <LockOutlined currentColor />,

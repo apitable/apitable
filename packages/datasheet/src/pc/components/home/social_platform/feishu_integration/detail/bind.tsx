@@ -1,6 +1,6 @@
-import { LinkButton, Loading, Message, useThemeColors } from '@vikadata/components';
+import { LinkButton, Loading, Message, useThemeColors } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
-import { ChevronLeftOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined } from '@apitable/icons';
 import { useRouter } from 'next/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';

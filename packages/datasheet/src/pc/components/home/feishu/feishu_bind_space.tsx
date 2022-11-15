@@ -1,4 +1,4 @@
-import { Button, Skeleton } from '@vikadata/components';
+import { Button, Skeleton } from '@apitable/components';
 import { Api, ISpaceInfo, Navigation, Settings, StatusCode, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';

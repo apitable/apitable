@@ -1,10 +1,10 @@
 import { ErrorBoundary } from '@sentry/react';
-import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@vikadata/components';
+import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
   Strings, t,
 } from '@apitable/core';
-import { AttentionOutlined, CommentOutlined } from '@vikadata/icons';
+import { AttentionOutlined, CommentOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { expandRecordManager } from 'modules/database/expand_record_manager';

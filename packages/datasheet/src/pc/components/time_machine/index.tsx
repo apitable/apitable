@@ -1,9 +1,9 @@
-import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@vikadata/components';
+import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@apitable/components';
 import {
   Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, numbersBetween,
   PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
-import { CloseMiddleOutlined, InformationSmallOutlined } from '@vikadata/icons';
+import { CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { useScroll } from 'ahooks';
 import { message } from 'antd';
 import dayjs from 'dayjs';

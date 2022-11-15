@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { FC, memo, useContext } from 'react';
 import { EdgeProps, getSmoothStepPath } from '@vikadata/react-flow-renderer';
 import { FlowContext } from '../../context/flow_context';

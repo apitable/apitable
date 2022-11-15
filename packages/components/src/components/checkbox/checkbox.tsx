@@ -1,4 +1,4 @@
-import { SelectOutlined } from '@vikadata/icons';
+import { SelectOutlined } from '@apitable/icons';
 import { useKeyPress } from 'ahooks';
 import React, { useRef, useState, useEffect } from 'react';
 import { CheckboxIconWrapper, CheckboxWrapper } from './styled';

@@ -1,5 +1,5 @@
 import { getCustomConfig, HomeId, Navigation, Strings, t } from '@apitable/core';
-import { MobileDingdingFilled, MobileFeishuFilled, MobileQqFilled, MobileWechatFilled, MobileWecomFilled } from '@vikadata/icons';
+import { MobileDingdingFilled, MobileFeishuFilled, MobileQqFilled, MobileWechatFilled, MobileWecomFilled } from '@apitable/icons';
 import { Space } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';

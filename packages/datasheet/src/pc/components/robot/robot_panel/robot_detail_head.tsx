@@ -1,12 +1,12 @@
 import {
   Box, ContextMenu, IconButton, TextButton, Tooltip, Typography, useContextMenu
-} from '@vikadata/components';
+} from '@apitable/components';
 import { Message } from 'pc/components/common';
 import { Selectors, Strings, t } from '@apitable/core';
 import {
   ChevronLeftOutlined,
   DeleteOutlined, EditDescribeOutlined, EditOutlined, HistoryOutlined, InformationSmallOutlined, MoreStandOutlined
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useSelector } from 'react-redux';
 import { deleteRobot, refreshRobotList } from '../api';

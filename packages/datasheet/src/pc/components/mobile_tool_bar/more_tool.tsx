@@ -5,7 +5,7 @@ import RedoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_redo.svg'
 import UndoIcon from 'static/icon/datasheet/viewtoolbar/datasheet_icon_undo.svg';
 import WorkingDirIcon from 'static/icon/workbench/catalogue/work.svg';
 import styles from './style.module.less';
-import { LinkButton, IconButton, useThemeColors } from '@vikadata/components';
+import { LinkButton, IconButton, useThemeColors } from '@apitable/components';
 import { shallowEqual, useSelector } from 'react-redux';
 import { resourceService } from 'pc/resource_service';
 import { Selectors, Strings, t } from '@apitable/core';

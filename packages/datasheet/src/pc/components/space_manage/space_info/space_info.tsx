@@ -1,4 +1,4 @@
-import { useContextMenu } from '@vikadata/components';
+import { useContextMenu } from '@apitable/components';
 import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';

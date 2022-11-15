@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from './style.module.less';
-import { UpgradeColorfulFilled } from '@vikadata/icons';
+import { UpgradeColorfulFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import { getLanguage, Strings, t } from '@apitable/core';
 

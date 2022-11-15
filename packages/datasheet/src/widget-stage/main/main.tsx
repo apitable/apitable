@@ -1,4 +1,4 @@
-import { GlobalContextProvider } from '@vikadata/widget-sdk';
+import { GlobalContextProvider } from '@apitable/widget-sdk';
 import classnames from 'classnames';
 import React from 'react';
 import styles from './style.module.less';

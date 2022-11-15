@@ -1,4 +1,4 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';

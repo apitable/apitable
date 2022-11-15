@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, ITemplateTree, Navigation, Selectors } from '@apitable/core';
 import { Tree } from 'antd';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';

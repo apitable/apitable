@@ -1,4 +1,4 @@
-import { indigo } from '@vikadata/components';
+import { indigo } from '@apitable/components';
 import { ConfigConstant, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { getFieldLock } from 'pc/components/field_permission';

@@ -24,7 +24,7 @@ const config: Config.InitialOptions = {
     '^.+\\.(css|less|scss)$': 'babel-jest'
   },
   setupFiles: [
-    '@vikadata/i18n-lang'
+    '@apitable/i18n-lang'
   ]
 };
 

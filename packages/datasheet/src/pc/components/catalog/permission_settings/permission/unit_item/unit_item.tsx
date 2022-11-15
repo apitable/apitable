@@ -1,4 +1,4 @@
-import { useThemeColors, WrapperTooltip } from '@vikadata/components';
+import { useThemeColors, WrapperTooltip } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import classnames from 'classnames';

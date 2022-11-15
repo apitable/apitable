@@ -6,7 +6,7 @@ import styles from '../styles.module.less';
 import { Input } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { Select, Switch } from '@vikadata/components';
+import { Select, Switch } from '@apitable/components';
 
 interface IFormateNumberProps {
   currentField: IField;

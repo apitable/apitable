@@ -1,5 +1,5 @@
-import { Typography, useThemeColors } from '@vikadata/components';
-import { FolderNormalFilled } from '@vikadata/icons';
+import { Typography, useThemeColors } from '@apitable/components';
+import { FolderNormalFilled } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Emoji } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';

@@ -1,4 +1,4 @@
-import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@vikadata/components';
+import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { MODAL_FOOTER_BTN_CONFIRM } from 'pc/utils/test_id_constant';

@@ -1,6 +1,6 @@
-import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@vikadata/components';
+import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/components';
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
-import { SearchOutlined } from '@vikadata/icons';
+import { SearchOutlined } from '@apitable/icons';
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';

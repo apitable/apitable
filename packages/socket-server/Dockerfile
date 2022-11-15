@@ -9,7 +9,7 @@ COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
 COPY packages/socket-server/package.json ./packages/socket-server/
 
 # install packages cache
-RUN yarn workspaces focus @vikadata/websocket root
+RUN yarn workspaces focus @apitable/websocket root
 
 # stage builder
 FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS builder
@@ -25,7 +25,7 @@ COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
 
 COPY packages/socket-server ./packages/socket-server
 
-RUN yarn workspace @vikadata/websocket build
+RUN yarn workspace @apitable/websocket build
 
 # stage run
 FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS runner

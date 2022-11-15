@@ -7,7 +7,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';

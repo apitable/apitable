@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Select, ThemeName, Typography } from '@vikadata/components';
+import { Select, ThemeName, Typography } from '@apitable/components';
 import { useLocalStorageState } from 'ahooks';
 import styles from './style.module.less';
 import { StoreActions, Strings, t, TrackEvents } from '@apitable/core';

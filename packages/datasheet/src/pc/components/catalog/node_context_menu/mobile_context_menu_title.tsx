@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styles from './style.module.less';
 import { Space } from 'antd';
 import { getNodeIcon } from '../tree/node_icon';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { INodesMapItem, Strings, t } from '@apitable/core';
 import { Tag } from 'pc/components/common';
 

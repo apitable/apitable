@@ -1,4 +1,4 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Drawer, Form, Input } from 'antd';
 import cls from 'classnames';

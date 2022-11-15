@@ -6,8 +6,8 @@ import DeleteIcon from 'static/icon/common/common_icon_delete.svg';
 import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
 import RenameIcon from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
 import styles from './style.module.less';
-import { DragOutlined } from '@vikadata/icons';
-import { stopPropagation, useThemeColors } from '@vikadata/components';
+import { DragOutlined } from '@apitable/icons';
+import { stopPropagation, useThemeColors } from '@apitable/components';
 import { useResponsive } from 'pc/hooks/use_responsive';
 import { ScreenSize } from 'pc/components/common/component_display';
 

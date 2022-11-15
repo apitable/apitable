@@ -1,4 +1,4 @@
-import { Button, Typography } from '@vikadata/components';
+import { Button, Typography } from '@apitable/components';
 import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { Steps } from 'antd';
 import classNames from 'classnames';

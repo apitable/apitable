@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Typography } from '@vikadata/components';
+import { Avatar, Box, Button, Typography } from '@apitable/components';
 import Image from 'next/image';
 import { useRobot, useRobotContext } from '../../hooks';
 import { IStepProps } from '../interface';

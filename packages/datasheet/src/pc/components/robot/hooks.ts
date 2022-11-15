@@ -1,4 +1,4 @@
-// import { Message } from '@vikadata/components';
+// import { Message } from '@apitable/components';
 import { ConfigConstant, getLanguage, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { useAllColumns } from 'pc/hooks';

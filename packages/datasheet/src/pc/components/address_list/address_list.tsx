@@ -1,4 +1,4 @@
-import { Alert } from '@vikadata/components';
+import { Alert } from '@apitable/components';
 import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';

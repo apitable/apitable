@@ -3,14 +3,14 @@ import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
 import { useRef } from 'react';
 import * as React from 'react';
 import { SortableElement as sortableElement, SortableHandle as sortableHandle } from 'react-sortable-hoc';
 import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import styles from '../styles.module.less';
-import { DragOutlined } from '@vikadata/icons';
+import { DragOutlined } from '@apitable/icons';
 
 export interface IFormatSelectItem {
   item: ISelectFieldOption;

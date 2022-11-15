@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@vikadata/components';
+import { Typography, useTheme } from '@apitable/components';
 import * as React from 'react';
 import MarkdownIt from 'markdown-it';
 import styles from './style.module.less';

@@ -18,7 +18,7 @@ import { getWidgetDatasheet } from 'store';
  *
  * ### Example
  * ```js
- * import { useRecord } from '@vikadata/widget-sdk';
+ * import { useRecord } from '@apitable/widget-sdk';
  *
  * // Show record title
  * function RecordTitle() {
@@ -39,7 +39,7 @@ export function useRecord(recordId: string | undefined): Record;
  *
  * ### Example
  * ```js
- * import { useRecord, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useRecord, useDatasheet } from '@apitable/widget-sdk';
  * 
  * // Show the primary key of record the corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function RecordTitle() {

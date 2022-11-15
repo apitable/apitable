@@ -1,5 +1,5 @@
 {
-  "name": "@vikadata/widget-sdk",
+  "name": "@apitable/widget-sdk",
   "version": "0.15.0",
   "description": "vika widget sdk",
   "engines": {
@@ -40,7 +40,7 @@
     "@apitable/core": "*",
     "@types/localforage": "^0.0.34",
     "@types/resize-observer-browser": "^0.1.5",
-    "@vikadata/components": "*",
+    "@apitable/components": "*",
     "ahooks": "^3.5.0",
     "attr-accept": "^2.1.0",
     "bowser": "^2.11.0",

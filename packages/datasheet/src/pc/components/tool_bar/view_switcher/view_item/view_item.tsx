@@ -1,11 +1,11 @@
 import { Selectors, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ViewIcon } from '../view_icon';
 import { OperateItem } from './operate_item';
-import { AutosaveOutlined } from '@vikadata/icons';
+import { AutosaveOutlined } from '@apitable/icons';
 import { Tooltip } from 'antd';
 
 interface IViewItemOwnProps {

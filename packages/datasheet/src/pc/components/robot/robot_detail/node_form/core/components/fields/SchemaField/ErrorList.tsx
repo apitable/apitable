@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@vikadata/components';
+import { Typography, useTheme } from '@apitable/components';
 
 interface IErrorListProps {
   errors: string[];

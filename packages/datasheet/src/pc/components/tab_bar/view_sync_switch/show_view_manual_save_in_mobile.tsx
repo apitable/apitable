@@ -1,6 +1,6 @@
-import { colorVars, Typography } from '@vikadata/components';
+import { colorVars, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { CloseMiddleOutlined, DefaultFilled } from '@vikadata/icons';
+import { CloseMiddleOutlined, DefaultFilled } from '@apitable/icons';
 import { createRoot } from 'react-dom/client';
 import styles from './style.module.less';
 

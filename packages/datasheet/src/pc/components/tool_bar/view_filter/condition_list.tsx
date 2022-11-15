@@ -13,7 +13,7 @@ import {
 } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Col, Row } from 'antd';
-import { IconButton, colorVars } from '@vikadata/components';
+import { IconButton, colorVars } from '@apitable/components';
 import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';

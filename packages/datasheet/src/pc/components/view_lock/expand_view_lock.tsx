@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@vikadata/components';
+import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { ViewLock } from 'pc/components/view_lock/view_lock';
 import { store } from 'pc/store';

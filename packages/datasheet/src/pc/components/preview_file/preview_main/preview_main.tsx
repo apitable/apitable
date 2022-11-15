@@ -16,7 +16,7 @@ import { ITransFormInfo } from '../preview_file.interface';
 import { Message } from 'pc/components/common';
 import mime from 'mime-types';
 import useFrameSetState from '../preview_type/preview_image/hooks/use_frame_state';
-import { stopPropagation, useThemeColors } from '@vikadata/components';
+import { stopPropagation, useThemeColors } from '@apitable/components';
 import { useKeyPress } from 'ahooks';
 import { useSelector } from 'react-redux';
 import { isFocusingInput } from './util';

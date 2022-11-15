@@ -1,4 +1,4 @@
-import { Button, Skeleton } from '@vikadata/components';
+import { Button, Skeleton } from '@apitable/components';
 import { getMaxManageableSpaceCount, ISpaceInfo, Strings, t } from '@apitable/core';
 import { useRequest } from 'ahooks';
 import { Space, Tabs } from 'antd';

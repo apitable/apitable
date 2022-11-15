@@ -15,7 +15,7 @@ import {
   Api,
 } from '@apitable/core';
 import styles from './style.module.less';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { ExpandLink, FetchForeignTimes } from 'pc/components/expand_record/expand_link';
 import { ExpandAttachment, ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
 import { TextEditor } from 'pc/components/editors/text_editor';

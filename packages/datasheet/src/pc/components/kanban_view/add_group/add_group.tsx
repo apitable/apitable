@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 import { MemberFieldHead, OptionFieldHead } from '../group_header';
 import { useCommand } from '../hooks/use_command';
 import styles from '../styles.module.less';
-import { AddOutlined } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { AddOutlined } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 import { useClickAway } from 'ahooks';
 
 interface IAddGroup {

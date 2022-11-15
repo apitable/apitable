@@ -1,6 +1,6 @@
-import { Button, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { CheckOutlined, ShareStarFilled } from '@vikadata/icons';
+import { CheckOutlined, ShareStarFilled } from '@apitable/icons';
 import { ILevelInfo } from 'pc/components/subscribe_system/config';
 import styles from 'pc/components/subscribe_system/styles.module.less';
 import * as React from 'react';

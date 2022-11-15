@@ -4,7 +4,7 @@ import cx from 'classnames';
 import styles from './style.module.less';
 import { Progress } from 'antd';
 import { CardTitle } from '../../ui';
-import { useThemeColors, Skeleton } from '@vikadata/components';
+import { useThemeColors, Skeleton } from '@apitable/components';
 import { ProgressProps } from 'antd/lib/progress';
 import { IMultiLineItemProps } from '../../interface';
 import { t, Strings } from '@apitable/core';

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { store } from 'pc/store';
 import { Selectors } from '@apitable/core';
-import { Loading, useThemeMode } from '@vikadata/components';
+import { Loading, useThemeMode } from '@apitable/components';
 import { resourceService } from 'pc/resource_service';
 import { IWidgetLoaderRefs, WidgetLoader } from '../../widget_loader';
-import { IExpandRecordProps, RuntimeEnv, WidgetProvider } from '@vikadata/widget-sdk';
+import { IExpandRecordProps, RuntimeEnv, WidgetProvider } from '@apitable/widget-sdk';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 
 export const WidgetBlock = React.memo((props: {

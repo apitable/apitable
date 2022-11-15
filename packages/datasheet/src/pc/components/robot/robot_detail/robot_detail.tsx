@@ -1,5 +1,5 @@
 
-import { Box } from '@vikadata/components';
+import { Box } from '@apitable/components';
 import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
 import { useState, useRef } from 'react';
 import { useActionTypes, useRobot, useTriggerTypes } from '../hooks';

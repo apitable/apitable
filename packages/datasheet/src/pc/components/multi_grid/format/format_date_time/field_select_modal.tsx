@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { BaseModal } from 'pc/components/common';
-import { Button, TextButton } from '@vikadata/components';
+import { Button, TextButton } from '@apitable/components';
 import { IDateTimeBaseField, Selectors, IViewColumn, Strings, t, ILastModifiedByField, FieldType } from '@apitable/core';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { Switch } from 'antd';

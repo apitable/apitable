@@ -1,6 +1,6 @@
 import { StoreActions, Strings, t } from '@apitable/core';
-import { IconButton, LinkButton, useThemeColors } from '@vikadata/components';
-import { CancelFilled } from '@vikadata/icons';
+import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
+import { CancelFilled } from '@apitable/icons';
 import { useUnmount } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';

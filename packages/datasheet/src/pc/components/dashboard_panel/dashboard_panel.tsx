@@ -1,5 +1,5 @@
 import { Selectors, StatusCode } from '@apitable/core';
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import 'react-grid-layout/css/styles.css';
 import { useSelector } from 'react-redux';
 import { ServerError } from '../invalid_page/server_error';

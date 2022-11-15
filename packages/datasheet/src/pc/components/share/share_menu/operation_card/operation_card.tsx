@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@vikadata/components';
+import { Button, IconButton } from '@apitable/components';
 import { AutoTestID } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';

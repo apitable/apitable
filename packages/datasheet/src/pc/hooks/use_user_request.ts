@@ -1,5 +1,5 @@
 import { Api, ApiInterface, ConfigConstant, IReduxState, IUnitValue, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
-import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
+import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { openSliderVerificationModal } from 'pc/components/common/slider_verification';

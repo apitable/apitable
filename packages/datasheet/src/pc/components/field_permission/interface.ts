@@ -1,5 +1,5 @@
 import { IField, IUnitValue } from '@apitable/core';
-import { IOption, IDoubleOptions } from '@vikadata/components';
+import { IOption, IDoubleOptions } from '@apitable/components';
 
 export interface IFieldPermissionProps {
   field: IField;

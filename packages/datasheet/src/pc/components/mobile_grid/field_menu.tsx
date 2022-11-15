@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 import {
   BasicValueType, CollaCommandName, ExecuteResult, Field, FieldType, FieldTypeDescriptionMap, getMaxFieldCountPerSheet, getUniqName, IReduxState,
@@ -7,7 +7,7 @@ import {
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
   FilterOutlined, HideFilled, LockOutlined
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { Message, MobileContextMenu } from 'pc/components/common';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';

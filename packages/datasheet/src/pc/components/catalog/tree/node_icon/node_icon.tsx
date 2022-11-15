@@ -1,4 +1,4 @@
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import { ConfigConstant, EmojisConfig } from '@apitable/core';
 import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
 import { Emoji } from 'pc/components/common';

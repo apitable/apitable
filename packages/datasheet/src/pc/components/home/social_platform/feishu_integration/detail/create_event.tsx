@@ -1,4 +1,4 @@
-import { Button, Message } from '@vikadata/components';
+import { Button, Message } from '@apitable/components';
 import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';

@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';

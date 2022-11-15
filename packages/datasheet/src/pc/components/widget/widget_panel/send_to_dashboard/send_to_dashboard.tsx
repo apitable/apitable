@@ -1,6 +1,6 @@
-import { Button, Skeleton, useThemeColors } from '@vikadata/components';
+import { Button, Skeleton, useThemeColors } from '@apitable/components';
 import { Api, CollaCommandName, ConfigConstant, ExecuteResult, Navigation, Selectors, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
-import { DashboardOutlined } from '@vikadata/icons';
+import { DashboardOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Emoji, Message, Modal } from 'pc/components/common';

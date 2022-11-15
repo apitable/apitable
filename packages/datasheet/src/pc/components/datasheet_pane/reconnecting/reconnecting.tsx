@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal } from 'antd';
 import { useSelector } from 'react-redux';
 import WarningIcon from 'static/icon/common/common_icon_warning.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import styles from './styles.module.less';
 import { t, Strings } from '@apitable/core';
 

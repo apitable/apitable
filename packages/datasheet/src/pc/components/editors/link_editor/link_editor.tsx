@@ -4,7 +4,7 @@ import { JumpIconMode, LinkJump } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useResponsive } from 'pc/hooks';
-import { useThemeColors, Skeleton } from '@vikadata/components';
+import { useThemeColors, Skeleton } from '@apitable/components';
 import { stopPropagation, KeyCode } from 'pc/utils';
 
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';

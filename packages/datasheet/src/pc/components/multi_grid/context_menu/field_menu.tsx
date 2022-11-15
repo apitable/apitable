@@ -1,4 +1,4 @@
-import { ContextMenu, useThemeColors } from '@vikadata/components';
+import { ContextMenu, useThemeColors } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, DATASHEET_ID, Events, ExecuteResult, Field, FieldOperateType, FieldType, FieldTypeDescriptionMap,
   getMaxFieldCountPerSheet, getUniqName, isSelectField, Player, Selectors, SetFieldFrom, StoreActions, Strings, t, ToolBarMenuCardOpenState, ViewType
@@ -6,7 +6,7 @@ import {
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined,
   FilterOutlined, FreezeOutlined, GroupOutlined, HideFilled, LockOutlined
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';

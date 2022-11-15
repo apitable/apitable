@@ -10,7 +10,7 @@ import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { useState } from 'react';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { WrapperTooltip, useThemeColors } from '@vikadata/components';
+import { WrapperTooltip, useThemeColors } from '@apitable/components';
 import { useClickAway } from 'ahooks';
 
 interface IViewSelect {

@@ -1,4 +1,4 @@
-import { Button, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Events, IReduxState, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';

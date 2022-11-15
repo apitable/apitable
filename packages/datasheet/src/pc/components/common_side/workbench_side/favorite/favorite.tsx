@@ -1,4 +1,4 @@
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';

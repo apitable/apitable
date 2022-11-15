@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 import { StoreActions, ResourceType } from 'core';
 import { WidgetProvider } from './widget_context';
 import { GlobalContext } from './global_context';
-import { ThemeName } from '@vikadata/components';
+import { ThemeName } from '@apitable/components';
 
 export interface IWidgetStandAloneProps {
   id: string;

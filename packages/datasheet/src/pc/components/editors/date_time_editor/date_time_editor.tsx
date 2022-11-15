@@ -1,4 +1,4 @@
-import { Loading, lightColors } from '@vikadata/components';
+import { Loading, lightColors } from '@apitable/components';
 import {
   DATASHEET_ID,
   DateFormat,
@@ -17,7 +17,7 @@ import {
   t,
   WithOptional,
 } from '@apitable/core';
-import { NotificationSmallOutlined } from '@vikadata/icons';
+import { NotificationSmallOutlined } from '@apitable/icons';
 import { usePrevious } from 'ahooks';
 import enUS from 'antd/es/date-picker/locale/en_US';
 import zhCN from 'antd/es/date-picker/locale/zh_CN';

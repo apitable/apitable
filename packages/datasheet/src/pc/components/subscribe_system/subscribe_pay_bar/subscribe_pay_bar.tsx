@@ -1,4 +1,4 @@
-import { Button, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Api, ApiInterface, ISubscription, str2Currency, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { Message, Modal } from 'pc/components/common';

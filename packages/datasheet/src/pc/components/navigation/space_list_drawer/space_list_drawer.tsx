@@ -3,7 +3,7 @@ import { Drawer } from 'antd';
 import styles from './style.module.less';
 import { SpaceList } from './space_list/space_list';
 import CloseIcon from 'static/icon/common/common_icon_close_small.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useResponsive } from 'pc/hooks';
 import classnames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';

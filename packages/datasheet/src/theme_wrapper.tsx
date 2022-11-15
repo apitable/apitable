@@ -1,4 +1,4 @@
-import { ThemeName, ThemeProvider } from '@vikadata/components';
+import { ThemeName, ThemeProvider } from '@apitable/components';
 import { Selectors, StoreActions } from '@apitable/core';
 import { useKeyPress, useLocalStorageState } from 'ahooks';
 import { SystemTheme } from 'pc/common/theme';

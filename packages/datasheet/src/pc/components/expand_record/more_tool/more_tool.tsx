@@ -11,8 +11,8 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { IconButton, LinkButton, useThemeColors } from '@vikadata/components';
-import { AttentionOutlined, EditDescribeOutlined } from '@vikadata/icons';
+import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
+import { AttentionOutlined, EditDescribeOutlined } from '@apitable/icons';
 
 import { Popover } from 'pc/components/common/mobile/popover';
 import { Message } from 'pc/components/common';

@@ -1,4 +1,4 @@
-import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { Api, ApiInterface, ConfigConstant, integrateCdnHost, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';

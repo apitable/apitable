@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChangeEvent, KeyboardEvent, ForwardRefRenderFunction, useImperativeHandle, useState, forwardRef, CSSProperties } from 'react';
-import { TextInput } from '@vikadata/components';
+import { TextInput } from '@apitable/components';
 import { TComponent } from 'pc/components/common/t_component';
 import classnames from 'classnames';
 import styles from './styles.module.less';

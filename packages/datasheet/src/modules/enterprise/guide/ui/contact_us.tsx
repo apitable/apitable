@@ -1,9 +1,9 @@
-import { Button, Message, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Message, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Settings } from '@apitable/core';
 import {
   AdviseSmallOutlined, BugOutlined, CloseMiddleOutlined, InformationLargeOutlined, ServeOutlined, SolutionSmallOutlined, TitleFavoriteFilled,
   ZanOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import Image from 'next/image';

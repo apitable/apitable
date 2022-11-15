@@ -1,5 +1,5 @@
 import { Strings, t } from '@apitable/core';
-import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
+import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Spin } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';

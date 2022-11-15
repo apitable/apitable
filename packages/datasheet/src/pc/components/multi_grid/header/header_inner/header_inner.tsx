@@ -1,4 +1,4 @@
-import { colorVars, useContextMenu, useThemeColors } from '@vikadata/components';
+import { colorVars, useContextMenu, useThemeColors } from '@apitable/components';
 import { DATASHEET_ID, Field, FieldOperateType, IField, Selectors, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';

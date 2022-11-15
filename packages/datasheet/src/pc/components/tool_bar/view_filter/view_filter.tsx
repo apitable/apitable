@@ -17,7 +17,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
-import { useThemeColors, useListenVisualHeight } from '@vikadata/components';
+import { useThemeColors, useListenVisualHeight } from '@apitable/components';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import classNames from 'classnames';

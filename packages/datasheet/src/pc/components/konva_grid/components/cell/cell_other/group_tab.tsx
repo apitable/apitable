@@ -1,5 +1,5 @@
 import { KONVA_DATASHEET_ID, StoreActions } from '@apitable/core';
-import { TriangleDown16Filled, TriangleRight16Filled } from '@vikadata/icons';
+import { TriangleDown16Filled, TriangleRight16Filled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { Icon, Rect } from 'pc/components/konva_components';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';

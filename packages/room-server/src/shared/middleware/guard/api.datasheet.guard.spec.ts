@@ -1,4 +1,4 @@
-// import '@vikadata/i18n-lang';
+// import '@apitable/i18n-lang';
 // import { REQUEST } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';

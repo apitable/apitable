@@ -1,4 +1,4 @@
-import { Button, TextButton, TextInput } from '@vikadata/components';
+import { Button, TextButton, TextInput } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { Tooltip } from 'pc/components/common';
 import { useEmailInviteInModal } from 'pc/hooks';

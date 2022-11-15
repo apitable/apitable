@@ -1,5 +1,5 @@
 import { IAttachmentValue, Strings, t } from '@apitable/core';
-import { DownloadOutlined } from '@vikadata/icons';
+import { DownloadOutlined } from '@apitable/icons';
 import { message } from 'antd';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common';

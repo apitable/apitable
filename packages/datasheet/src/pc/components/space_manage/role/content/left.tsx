@@ -1,6 +1,6 @@
 import { Api, StatusCode, Strings, t } from '@apitable/core';
-import { Button, ContextMenu, Message } from '@vikadata/components';
-import { AddOutlined, DeleteOutlined, EditOutlined } from '@vikadata/icons';
+import { Button, ContextMenu, Message } from '@apitable/components';
+import { AddOutlined, DeleteOutlined, EditOutlined } from '@apitable/icons';
 import { Avatar, AvatarSize, AvatarType, SearchEmpty, SearchInput } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useContext, useEffect, useMemo, useState } from 'react';

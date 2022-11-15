@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Progress } from 'antd';
 import { Strings , t } from '@apitable/core';
 import { Message } from 'pc/components/common';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
 
 interface IProcessing {

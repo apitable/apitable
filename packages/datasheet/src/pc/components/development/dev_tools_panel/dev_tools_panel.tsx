@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import * as React from 'react';
-import { Button } from '@vikadata/components';
-import { CloseLargeOutlined } from '@vikadata/icons';
+import { Button } from '@apitable/components';
+import { CloseLargeOutlined } from '@apitable/icons';
 import { BatchDeleteNode } from 'pc/components/development/dev_tools_panel/batch_delete_node/batch_delete_node';
 import { TestFunctions } from './test_functions';
 import { ApplyBackupData } from 'pc/components/development/dev_tools_panel/apply_backup_data';

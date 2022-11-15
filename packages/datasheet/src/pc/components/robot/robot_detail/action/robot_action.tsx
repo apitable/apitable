@@ -1,4 +1,4 @@
-// import { Message } from '@vikadata/components';
+// import { Message } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import { Message, Modal } from 'pc/components/common';
 import { useCallback } from 'react';

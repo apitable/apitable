@@ -1,5 +1,5 @@
-import { useThemeColors } from '@vikadata/components';
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { useThemeColors } from '@apitable/components';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';

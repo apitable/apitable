@@ -1,8 +1,8 @@
-import { Alert, Typography, useListenVisualHeight, useThemeColors } from '@vikadata/components';
+import { Alert, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant, DATASHEET_ID, FormView, getMaxViewCountPerSheet, getViewAnalyticsId, getViewClass, Selectors, Strings, t, ViewType
 } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';

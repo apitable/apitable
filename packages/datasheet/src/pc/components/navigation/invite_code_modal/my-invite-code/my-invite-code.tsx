@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FC } from 'react';

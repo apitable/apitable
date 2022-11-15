@@ -1,4 +1,4 @@
-import { Box, ModalPro as Modal } from '@vikadata/components';
+import { Box, ModalPro as Modal } from '@apitable/components';
 import { useState } from 'react';
 import { useRobotContext } from '../hooks';
 import { Steps } from 'pc/components/common';

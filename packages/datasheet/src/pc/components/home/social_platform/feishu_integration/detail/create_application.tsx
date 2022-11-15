@@ -1,9 +1,9 @@
-import { Button, Message } from '@vikadata/components';
+import { Button, Message } from '@apitable/components';
 import { Tooltip } from 'pc/components/common';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import classNames from 'classnames';
-import { CopyOutlined } from '@vikadata/icons';
+import { CopyOutlined } from '@apitable/icons';
 import { Strings, t, Api } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FormItem, IFormItem } from '../../wecom_integration/components/form_item';

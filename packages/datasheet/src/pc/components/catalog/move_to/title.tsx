@@ -1,5 +1,5 @@
-import { ChevronLeftOutlined } from '@vikadata/icons';
-import { Button, Typography, useThemeColors } from '@vikadata/components';
+import { ChevronLeftOutlined } from '@apitable/icons';
+import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 

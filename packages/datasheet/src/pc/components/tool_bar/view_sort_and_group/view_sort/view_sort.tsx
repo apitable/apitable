@@ -12,8 +12,8 @@ import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
 import { ViewFieldOptionsMobile } from '../view_field_options/view_field_options_mobile';
 import { SyncViewTip } from '../../sync_view_tip';
-import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors } from '@vikadata/components';
-import { InformationLargeOutlined } from '@vikadata/icons';
+import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
+import { InformationLargeOutlined } from '@apitable/icons';
 import { resourceService } from 'pc/resource_service';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 

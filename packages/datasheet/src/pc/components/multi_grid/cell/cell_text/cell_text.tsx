@@ -14,7 +14,7 @@ import {
   SymbolAlign,
 } from '@apitable/core';
 import classNames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import IconEmail from 'static/icon/datasheet/column/datasheet_icon_email.svg';
 import IconPhone from 'static/icon/datasheet/column/datasheet_icon_phone.svg';

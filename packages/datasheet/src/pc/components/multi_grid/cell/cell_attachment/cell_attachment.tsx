@@ -1,6 +1,6 @@
-import { Tooltip, useThemeColors } from '@vikadata/components';
+import { Tooltip, useThemeColors } from '@apitable/components';
 import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, RowHeight, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { uniqBy } from 'lodash';
 import Image from 'next/image';

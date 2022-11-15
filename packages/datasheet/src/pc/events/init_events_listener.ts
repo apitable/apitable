@@ -3,7 +3,7 @@ import {
   JOTApply, OPEventNameEnums, ResourceType, Selectors,
   StoreActions, WhyRecordMoveType
 } from '@apitable/core';
-import { mainWidgetMessage, ResourceService } from '@vikadata/widget-sdk';
+import { mainWidgetMessage, ResourceService } from '@apitable/widget-sdk';
 import produce, { current } from 'immer';
 import { debounce, difference } from 'lodash';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';

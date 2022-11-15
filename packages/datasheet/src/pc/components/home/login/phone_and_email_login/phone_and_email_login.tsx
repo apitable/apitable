@@ -1,6 +1,6 @@
-import { lightColors, LinkButton } from '@vikadata/components';
+import { lightColors, LinkButton } from '@apitable/components';
 import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, Navigation, Strings, t } from '@apitable/core';
-import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@vikadata/icons';
+import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 
 import { polyfillMode } from 'pc/components/home/login';

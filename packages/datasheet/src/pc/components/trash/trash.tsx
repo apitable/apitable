@@ -1,4 +1,4 @@
-import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import { last } from 'lodash';

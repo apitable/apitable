@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
 import { resourceService } from 'pc/resource_service';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { initNoTraceVerification, UploadManager } from 'pc/utils';
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';

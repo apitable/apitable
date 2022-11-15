@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 // FIXME:THEME
-import { colors } from '@vikadata/components';
+import { colors } from '@apitable/components';
 import BronzeCardBg from 'static/icon/space/img_bronze.png';
 import SilverCardBg from 'static/icon/space/img_silver.png';
 import GoldenCardBg from 'static/icon/space/img_golden.png';
@@ -11,7 +11,7 @@ import SilverCardSkin from 'static/icon/space/img_silver_skin.png';
 import BronzeCardSkin from 'static/icon/space/img_bronze_skin.png';
 import cx from 'classnames';
 // import { showSeatsUpgrading, showLevelCompare, showLevelRenewing } from 'pc/components/subscription';
-import { BronzeFilled, SilverFilled, GoldFilled, EnterpriseFilled } from '@vikadata/icons';
+import { BronzeFilled, SilverFilled, GoldFilled, EnterpriseFilled } from '@apitable/icons';
 import { ISpaceLevelInfo, ISpaceLevelType, Position } from './interface';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';

@@ -1,4 +1,4 @@
-import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@vikadata/components';
+import { Button, IButtonProps, IButtonType, ITextButtonProps, TextButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Popover, Space } from 'antd';
 import { PopoverProps } from 'antd/lib/popover';

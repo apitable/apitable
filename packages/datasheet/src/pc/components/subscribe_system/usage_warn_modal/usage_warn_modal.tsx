@@ -1,6 +1,6 @@
 import { ConfigConstant, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
-import { Button, colorVars, TextButton, Typography, useThemeColors } from '@vikadata/components';
-import { CloseMiddleOutlined, TitleFavoriteFilled } from '@vikadata/icons';
+import { Button, colorVars, TextButton, Typography, useThemeColors } from '@apitable/components';
+import { CloseMiddleOutlined, TitleFavoriteFilled } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Emoji } from 'pc/components/common';

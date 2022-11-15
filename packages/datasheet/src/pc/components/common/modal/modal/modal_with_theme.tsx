@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@vikadata/components';
+import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { Modal as AntdModal } from 'antd';
 import React from 'react';

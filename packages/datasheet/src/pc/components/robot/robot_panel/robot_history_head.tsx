@@ -1,6 +1,6 @@
-import { Box, TextButton, Typography } from '@vikadata/components';
+import { Box, TextButton, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ChevronLeftOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined } from '@apitable/icons';
 import { useRobot } from '../hooks';
 
 export const RobotRunHistoryHead = () => {

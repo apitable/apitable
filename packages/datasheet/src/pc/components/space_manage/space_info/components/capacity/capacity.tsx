@@ -3,7 +3,7 @@ import styles from './style.module.less';
 import { Progress } from 'antd';
 import { byteMGArr, byteMG, normalByteMGArr, Strings, t } from '@apitable/core';
 import { CardTitle, InfoHighlightTitle } from '../../ui';
-import { Typography, TextButton, useThemeColors, Skeleton } from '@vikadata/components';
+import { Typography, TextButton, useThemeColors, Skeleton } from '@apitable/components';
 import { getPercent } from '../../utils';
 import classNames from 'classnames';
 // import { showCapacityUpgrading } from 'pc/components/subscription';

@@ -4,7 +4,7 @@ import { FixedSizeList as List } from '@vikadata/react-window';
 import { LinkButton } from '../../link_button';
 import { Typography } from '../../typography';
 import { IconButton } from '../../icon_button';
-import { NarrowRecordOutlined, CloseMiddleOutlined } from '@vikadata/icons';
+import { NarrowRecordOutlined, CloseMiddleOutlined } from '@apitable/icons';
 import { MoreDiv, MoreListDiv, MoreHeader, DrawerStyled, ListItemStyled } from './styled';
 import { CalendarContext } from '../calendar_context';
 import { DETAIL_WEEKS, MAX_LEVEL } from '../constants';

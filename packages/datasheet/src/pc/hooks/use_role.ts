@@ -1,4 +1,4 @@
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { Api, ApiInterface } from '@apitable/core';
 import { useCallback, useMemo, useState } from 'react';
 

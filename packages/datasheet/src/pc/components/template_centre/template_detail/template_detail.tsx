@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, Settings, StoreActions } from '@apitable/core';
 import { useMount, useRequest, useUnmount } from 'ahooks';
 import { openTryoutSku } from 'dingtalk-design-libs';

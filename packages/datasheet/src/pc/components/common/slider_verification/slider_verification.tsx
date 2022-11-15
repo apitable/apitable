@@ -2,7 +2,7 @@ import { ConfigConstant, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { FC } from 'react';
 import styles from './style.module.less';
-import { Modal, Typography, colorVars } from '@vikadata/components';
+import { Modal, Typography, colorVars } from '@apitable/components';
 
 export const SliderVerification: FC = props => {
 

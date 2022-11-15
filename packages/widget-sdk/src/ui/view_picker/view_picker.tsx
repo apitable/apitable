@@ -1,6 +1,6 @@
 import { useCloudStorage, useMeta, useViewsMeta } from '../../hooks';
 import React from 'react';
-import { Select } from '@vikadata/components';
+import { Select } from '@apitable/components';
 import { useMount } from 'ahooks';
 import { InstallPosition, IOption, IViewPicker } from 'interface';
 import { noop } from 'lodash';
@@ -66,7 +66,7 @@ const ViewPickerBase = (props: IViewPicker) => {
  *
  * ``` ts
  * import React, { useState } from 'react';
- * import { ViewPicker } from '@vikadata/widget-sdk';
+ * import { ViewPicker } from '@apitable/widget-sdk';
  * const Example = () => {
  *   const [viewId, setViewId] = useState()
  *   return <ViewPicker viewId={viewId} onChange={option => setViewId(option.value)} />
@@ -78,7 +78,7 @@ const ViewPickerBase = (props: IViewPicker) => {
  *
  * ``` ts
  * import React from 'react';
- * import { ViewPicker, useCloudStorage } from '@vikadata/widget-sdk';
+ * import { ViewPicker, useCloudStorage } from '@apitable/widget-sdk';
  * const ExampleCloud = () => {
  *   const [viewId, setViewId] = useCloudStorage('selectViewId');
  *   return <ViewPicker viewId={viewId} onChange={option => setViewId(option.value)} />;

@@ -9,10 +9,10 @@ import { Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Tooltip } from 'pc/components/common';
 import classNames from 'classnames';
-import { DragOutlined } from '@vikadata/icons';
+import { DragOutlined } from '@apitable/icons';
 
 interface IOperateColumnOwnProperty {
   isHeader: boolean;

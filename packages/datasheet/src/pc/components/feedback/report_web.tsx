@@ -11,7 +11,7 @@ import RcTrigger from 'rc-trigger';
 import { t, Strings, Settings } from '@apitable/core';
 import { ContextmenuItem } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
-import { InformationSmallOutlined } from '@vikadata/icons';
+import { InformationSmallOutlined } from '@apitable/icons';
 
 interface IReportWeb {
   nodeId: string;
@@ -23,7 +23,7 @@ export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
   /** Control the display of the modal box for filling in the reason for reporting */
   const [reasonModalVisible, setReasonModalVisible] = useState(false);
   const isFeishu = navigator.userAgent.toLowerCase().indexOf('lark') > -1;
-  // import { IContextMenuData } from '@vikadata/components'; 'error'
+  // import { IContextMenuData } from '@apitable/components'; 'error'
   const menuData: any[] = [
     [
       {

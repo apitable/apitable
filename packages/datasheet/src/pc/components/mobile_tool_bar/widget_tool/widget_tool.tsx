@@ -1,6 +1,6 @@
-import { IconButton } from '@vikadata/components';
+import { IconButton } from '@apitable/components';
 import { ResourceType, Selectors } from '@apitable/core';
-import { WidgetOutlined } from '@vikadata/icons';
+import { WidgetOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { WidgetPanel } from 'pc/components/widget';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';

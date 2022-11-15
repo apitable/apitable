@@ -3,8 +3,8 @@ import styles from './style.module.less';
 import { useSelector } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common';
-import { useThemeColors } from '@vikadata/components';
-import { Typography } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
+import { Typography } from '@apitable/components';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 
 export const AdminInfo: FC = () => {

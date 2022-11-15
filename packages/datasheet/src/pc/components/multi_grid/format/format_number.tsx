@@ -17,7 +17,7 @@ import {
   DefaultCommaStyle,
 } from '@apitable/core';
 import styles from './styles.module.less';
-import { Select, Switch } from '@vikadata/components';
+import { Select, Switch } from '@apitable/components';
 import { SelectValue } from 'antd/lib/select';
 import { NumberEditor } from 'pc/components/editors/number_editor';
 import { Input } from 'antd';

@@ -6,7 +6,7 @@ import { connectWidgetStore } from '../store/connector';
 import { uniqueId } from 'lodash';
 import { IWidgetStore } from 'store';
 import { Store } from 'redux';
-import { ThemeName } from '@vikadata/components';
+import { ThemeName } from '@apitable/components';
 /**
  * 1. provide the ability to read and write to the data source of the widget.
  * 2. provide the ability to read and write to the datasheet data.

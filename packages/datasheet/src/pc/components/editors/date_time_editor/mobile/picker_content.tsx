@@ -1,6 +1,6 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { DateRange, IRecordAlarmClient, Strings, t, WithOptional } from '@apitable/core';
-import { NotificationSmallOutlined } from '@vikadata/icons';
+import { NotificationSmallOutlined } from '@apitable/icons';
 import { DatePicker } from 'antd-mobile';
 import classNames from 'classnames';
 import dayjs from 'dayjs';

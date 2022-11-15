@@ -1,9 +1,9 @@
-import { Button, Checkbox, colorVars } from '@vikadata/components';
+import { Button, Checkbox, colorVars } from '@apitable/components';
 import { Tooltip } from 'pc/components/common';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';
-import { CopyOutlined } from '@vikadata/icons';
+import { CopyOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
 import { FormItem } from '../../wecom_integration/components/form_item';

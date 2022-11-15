@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ConfigConstant, hiddenMobile, t, Strings } from '@apitable/core';
-import { PhonenumberFilled, EmailSigninFilled } from '@vikadata/icons';
+import { PhonenumberFilled, EmailSigninFilled } from '@apitable/icons';
 import { store } from 'pc/store';
 
 export enum VerifyTypes {

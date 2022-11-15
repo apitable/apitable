@@ -21,7 +21,7 @@ const getInstallPosition = (state: IWidgetState) => {
  *
  * ### Example
  * ```js
- * import { useMeta } from '@vikadata/widget-sdk';
+ * import { useMeta } from '@apitable/widget-sdk';
  *
  * // Show the datasheet and author associated with the widget
  * function Meta() {

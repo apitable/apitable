@@ -95,7 +95,7 @@ const getSelectedFieldIds = (state: IWidgetState, currentDatasheetId?: string, v
  * 
  * ### Example
  * ```js
- * import { useSelection, useRecords, useFields, useActiveViewId } from '@vikadata/widget-sdk';
+ * import { useSelection, useRecords, useFields, useActiveViewId } from '@apitable/widget-sdk';
  *
  * // Render the currently selection information
  * function Selection() {

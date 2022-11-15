@@ -13795,9 +13795,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vikadata/components@*, @vikadata/components@workspace:packages/components":
+"@apitable/components@*, @apitable/components@workspace:packages/components":
   version: 0.0.0-use.local
-  resolution: "@vikadata/components@workspace:packages/components"
+  resolution: "@apitable/components@workspace:packages/components"
   dependencies:
     "@mdx-js/react": ^1.6.22
     "@rjsf/core": ^4.2.3
@@ -13827,7 +13827,7 @@ __metadata:
     "@types/resize-observer-browser": ^0.1.5
     "@types/styled-components": ^5.1.26
     "@types/styled-system": ^5.1.11
-    "@vikadata/icons": "*"
+    "@apitable/icons": "*"
     "@vikadata/react-contexify": ^5.0.5
     "@vikadata/react-window": 1.8.7
     ahooks: ^3.5.0
@@ -13865,9 +13865,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vikadata/cypress@workspace:packages/cypress":
+"@apitable/cypress@workspace:packages/cypress":
   version: 0.0.0-use.local
-  resolution: "@vikadata/cypress@workspace:packages/cypress"
+  resolution: "@apitable/cypress@workspace:packages/cypress"
   dependencies:
     "@cypress/browserify-preprocessor": ^3.0.1
     "@cypress/code-coverage": ^3.9.9
@@ -13884,9 +13884,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vikadata/datasheet@workspace:packages/datasheet":
+"@apitable/datasheet@workspace:packages/datasheet":
   version: 0.0.0-use.local
-  resolution: "@vikadata/datasheet@workspace:packages/datasheet"
+  resolution: "@apitable/datasheet@workspace:packages/datasheet"
   dependencies:
     "@apitable/core": "*"
     "@futpib/dagre": ^0.8.5-pre1
@@ -13930,13 +13930,13 @@ __metadata:
     "@types/sharp": ^0
     "@types/socket.io-client": ^1.4.36
     "@types/worker-plugin": ^5
-    "@vikadata/components": "*"
+    "@apitable/components": "*"
     "@vikadata/eslint-config-vika": ^1.0.0
-    "@vikadata/i18n-lang": "*"
-    "@vikadata/icons": "*"
+    "@apitable/i18n-lang": "*"
+    "@apitable/icons": "*"
     "@vikadata/react-flow-renderer": ^9.7.3
     "@vikadata/react-window": 1.8.7
-    "@vikadata/widget-sdk": "*"
+    "@apitable/widget-sdk": "*"
     "@webcomponents/shadydom": ^1.9.0
     ahooks: ^3.5.0
     antd: 4.23.5
@@ -14090,17 +14090,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vikadata/i18n-lang@*, @vikadata/i18n-lang@workspace:packages/i18n-lang":
+"@apitable/i18n-lang@*, @apitable/i18n-lang@workspace:packages/i18n-lang":
   version: 0.0.0-use.local
-  resolution: "@vikadata/i18n-lang@workspace:packages/i18n-lang"
+  resolution: "@apitable/i18n-lang@workspace:packages/i18n-lang"
   dependencies:
     typescript: ^4.8.2
   languageName: unknown
   linkType: soft
 
-"@vikadata/icons@*, @vikadata/icons@workspace:packages/icons":
+"@apitable/icons@*, @apitable/icons@workspace:packages/icons":
   version: 0.0.0-use.local
-  resolution: "@vikadata/icons@workspace:packages/icons"
+  resolution: "@apitable/icons@workspace:packages/icons"
   dependencies:
     "@types/react": ^17.0.2
     "@types/react-highlight-words": ^0.16.1
@@ -14176,9 +14176,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vikadata/room-server@workspace:packages/room-server":
+"@apitable/room-server@workspace:packages/room-server":
   version: 0.0.0-use.local
-  resolution: "@vikadata/room-server@workspace:packages/room-server"
+  resolution: "@apitable/room-server@workspace:packages/room-server"
   dependencies:
     "@apitable/core": "*"
     "@aws-sdk/client-s3": ^3.47.0
@@ -14216,7 +14216,7 @@ __metadata:
     "@types/sha1": ^1
     "@types/supertest": ^2.0.10
     "@types/winston": ^2.4.4
-    "@vikadata/i18n-lang": "*"
+    "@apitable/i18n-lang": "*"
     "@vikadata/nestjs-redis": 1.3.3
     cache-manager: ^3.6.0
     chai: ^4.2.0
@@ -14299,9 +14299,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vikadata/websocket@workspace:packages/socket-server":
+"@apitable/websocket@workspace:packages/socket-server":
   version: 0.0.0-use.local
-  resolution: "@vikadata/websocket@workspace:packages/socket-server"
+  resolution: "@apitable/websocket@workspace:packages/socket-server"
   dependencies:
     "@grpc/grpc-js": ~1.7.1
     "@grpc/proto-loader": ^0.7.3
@@ -14348,9 +14348,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vikadata/widget-sdk@*, @vikadata/widget-sdk@workspace:packages/widget-sdk":
+"@apitable/widget-sdk@*, @apitable/widget-sdk@workspace:packages/widget-sdk":
   version: 0.0.0-use.local
-  resolution: "@vikadata/widget-sdk@workspace:packages/widget-sdk"
+  resolution: "@apitable/widget-sdk@workspace:packages/widget-sdk"
   dependencies:
     "@apitable/core": "*"
     "@testing-library/react-hooks": ^7.0.1
@@ -14365,7 +14365,7 @@ __metadata:
     "@types/resize-observer-browser": ^0.1.5
     "@types/socket.io-client": ^1.4.36
     "@types/styled-components": ^5.1.26
-    "@vikadata/components": "*"
+    "@apitable/components": "*"
     ahooks: ^3.5.0
     attr-accept: ^2.1.0
     babel-jest: ^26.6.0

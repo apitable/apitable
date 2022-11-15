@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import classNames from 'classnames';
-import { Button, Checkbox } from '@vikadata/components';
+import { Button, Checkbox } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 
 import styles from './styles.module.less';

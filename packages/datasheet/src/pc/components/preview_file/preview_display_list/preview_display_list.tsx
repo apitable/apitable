@@ -1,4 +1,4 @@
-import { stopPropagation } from '@vikadata/components';
+import { stopPropagation } from '@apitable/components';
 import { IAttachmentValue, isWebp } from '@apitable/core';
 import { browser } from 'modules/shared/browser';
 import { memo, useCallback } from 'react';

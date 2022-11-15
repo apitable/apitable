@@ -3,7 +3,7 @@ import { APIMetaFieldType as CoreFieldType, DateFormat, TimeFormat } from 'core'
 /**
  * An enum of Vika's field types
  * ``` ts
- * import { FieldType } from '@vikadata/widget-sdk'
+ * import { FieldType } from '@apitable/widget-sdk'
  * console.log(FieldType.Number)
  * ```
  * 

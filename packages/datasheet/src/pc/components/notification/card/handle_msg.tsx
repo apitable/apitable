@@ -1,7 +1,7 @@
 import NotificationIcon from 'static/icon/datasheet/datasheet_icon_notification.svg';
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
-import { Button, IconButton, useThemeColors } from '@vikadata/components';
+import { Button, IconButton, useThemeColors } from '@apitable/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { INoticeDetail, Strings, t } from '@apitable/core';
 import styles from './style.module.less';

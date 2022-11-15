@@ -1,4 +1,4 @@
-import { Button, TextButton } from '@vikadata/components';
+import { Button, TextButton } from '@apitable/components';
 import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@apitable/core';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';

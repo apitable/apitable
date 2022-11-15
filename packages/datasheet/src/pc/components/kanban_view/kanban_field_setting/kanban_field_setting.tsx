@@ -1,4 +1,4 @@
-import { Button, ThemeProvider } from '@vikadata/components';
+import { Button, ThemeProvider } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import { Modal, Radio } from 'antd';

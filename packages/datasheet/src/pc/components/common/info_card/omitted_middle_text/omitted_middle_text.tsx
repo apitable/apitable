@@ -1,6 +1,6 @@
 import styles from './style.module.less';
 import { FC } from 'react';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 export const OmittedMiddleText: FC<{ suffixCount: number; children: string }> = ({
   suffixCount = 5,

@@ -1,8 +1,8 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import {
   Api, IMemberField, IReduxState, IUnitIds, MemberField, MemberType, OtherTypeUnitId, RowHeightLevel, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
+import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
 import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import { ButtonPlus } from 'pc/components/common';

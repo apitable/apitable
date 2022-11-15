@@ -1,5 +1,5 @@
 import { DateUnitType, KONVA_DATASHEET_ID } from '@apitable/core';
-import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined, ChevronRightOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { getStyleConfig } from 'pc/common/style_config';
 import { GANTT_MONTH_TIMELINE_HEIGHT, GANTT_TAB_BAR_HEIGHT, GANTT_TIMELINE_HEIGHT, GanttCoordinate, PointPosition } from 'pc/components/gantt_view';

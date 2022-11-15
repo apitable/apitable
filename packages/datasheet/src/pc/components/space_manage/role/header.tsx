@@ -1,6 +1,6 @@
-import { Box, Typography, useThemeColors } from '@vikadata/components';
+import { Box, Typography, useThemeColors } from '@apitable/components';
 import { Settings, Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@vikadata/icons';
+import { InformationSmallOutlined } from '@apitable/icons';
 
 export const Header = () => {
   const colors = useThemeColors();

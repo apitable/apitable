@@ -1,6 +1,6 @@
-import { Skeleton, Typography } from '@vikadata/components';
+import { Skeleton, Typography } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
-import { CopyOutlined } from '@vikadata/icons';
+import { CopyOutlined } from '@apitable/icons';
 import dayjs from 'dayjs';
 import { Message } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';

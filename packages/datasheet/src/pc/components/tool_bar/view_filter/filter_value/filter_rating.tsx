@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { useDebounceFn } from 'ahooks';
 import { IEditor } from 'pc/components/editors/interface';

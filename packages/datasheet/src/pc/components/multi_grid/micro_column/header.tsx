@@ -1,5 +1,5 @@
 import { IField } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { FC } from 'react';
 import { getFieldTypeIcon } from '../field_setting';
 import styles from './styles.module.less';

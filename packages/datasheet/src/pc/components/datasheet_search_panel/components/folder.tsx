@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './style.module.less';
 import FolderIcon from 'static/icon/datasheet/datasheet_icon_folder_normal.svg';
 import ArrowIcon from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 // richContent: Search results are returned as rich text tags for display highlighting
 export const Folder: React.FC<{ id: string, onClick?(id: string), richContent?: boolean }> = props => {

@@ -1,6 +1,6 @@
-import { ThemeProvider, Typography, useThemeColors } from '@vikadata/components';
+import { ThemeProvider, Typography, useThemeColors } from '@apitable/components';
 import { Api, ApiInterface, IApiWrapper, integrateCdnHost, Settings, str2Currency, Strings, t } from '@apitable/core';
-import { AlipayFilled, BankFilled, WechatpayFilled } from '@vikadata/icons';
+import { AlipayFilled, BankFilled, WechatpayFilled } from '@apitable/icons';
 import { Modal } from 'antd';
 import { AxiosResponse } from 'axios';
 import Image from 'next/image';

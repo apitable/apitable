@@ -2,7 +2,7 @@ import { IUserInfo, Settings, Strings, t } from '@apitable/core';
 import { AvatarSize, Avatar, Logo } from 'pc/components/common';
 import * as React from 'react';
 import styles from './styles.module.less';
-import { Space, ThemeName } from '@vikadata/components';
+import { Space, ThemeName } from '@apitable/components';
 
 export const FeishuIntegrationHeader: React.FC<{userInfo: IUserInfo}> = (props) => {
   const { userInfo: user } = props;

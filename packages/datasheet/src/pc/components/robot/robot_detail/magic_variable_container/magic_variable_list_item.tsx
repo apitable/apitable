@@ -1,6 +1,6 @@
-import { Box, Button, ListDeprecate, stopPropagation, useTheme } from '@vikadata/components';
+import { Box, Button, ListDeprecate, stopPropagation, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ChevronRightOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined } from '@apitable/icons';
 import { useHover } from 'ahooks';
 import { useRef } from 'react';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';

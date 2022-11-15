@@ -1,4 +1,4 @@
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import {
   CollaCommandName,
   DATASHEET_ID,

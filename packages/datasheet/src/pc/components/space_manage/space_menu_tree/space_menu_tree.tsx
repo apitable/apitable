@@ -1,6 +1,6 @@
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import { ConfigConstant, getCustomConfig, IReduxState, isPrivateDeployment, Navigation as NavigationConst, Strings, t } from '@apitable/core';
-import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@vikadata/icons';
+import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
 import { Tree } from 'antd';
 import { useRouter } from 'next/router';
 import { ScreenSize } from 'pc/components/common/component_display';

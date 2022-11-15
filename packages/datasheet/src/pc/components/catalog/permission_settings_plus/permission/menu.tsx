@@ -1,4 +1,4 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 import styles from './style.module.less';

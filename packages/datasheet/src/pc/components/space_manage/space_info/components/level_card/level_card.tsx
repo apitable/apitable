@@ -1,6 +1,6 @@
-import { Button, ButtonGroup, Typography, useThemeColors } from '@vikadata/components';
+import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { InformationSmallOutlined } from '@vikadata/icons';
+import { InformationSmallOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';

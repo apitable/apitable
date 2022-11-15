@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SubAdmin } from 'pc/components/space_manage/sub_admin';
 import { MainAdmin } from 'pc/components/space_manage/main_admin';
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 

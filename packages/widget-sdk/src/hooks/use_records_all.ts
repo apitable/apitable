@@ -18,7 +18,7 @@ import { getWidgetDatasheet } from 'store';
  * 
  * ### Example
  * ```js
- * import { useRecordsAll, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useRecordsAll, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Show record title
  * function RecordsTitle() {

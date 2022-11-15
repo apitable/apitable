@@ -1,4 +1,4 @@
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { Navigation, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { ServerError } from 'pc/components/invalid_page/server_error';
 import { Mirror } from 'pc/components/mirror/mirror';

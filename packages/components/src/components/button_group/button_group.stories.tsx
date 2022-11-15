@@ -6,7 +6,7 @@ import { IButtonGroupProps } from './interface';
 import { Button } from '../button';
 import { IconButton } from '../icon_button';
 import { LinkButton } from '../link_button';
-import { LockOutlined, ShareFilled, RankFilled, WebsiteOutlined } from '@vikadata/icons';
+import { LockOutlined, ShareFilled, RankFilled, WebsiteOutlined } from '@apitable/icons';
 
 const COMPONENT_NAME = 'Button Group';
 

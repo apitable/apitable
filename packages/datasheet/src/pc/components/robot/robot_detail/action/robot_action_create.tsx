@@ -1,6 +1,6 @@
-import { Box, ContextMenu, TextButton, Tooltip, useContextMenu } from '@vikadata/components';
+import { Box, ContextMenu, TextButton, Tooltip, useContextMenu } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import { flatContextData } from 'pc/utils';
 import { mutate } from 'swr';
 import { createAction } from '../../api';

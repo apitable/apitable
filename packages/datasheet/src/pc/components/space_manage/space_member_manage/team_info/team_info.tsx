@@ -9,7 +9,7 @@ import {
   Strings,
   isIdassPrivateDeployment
 } from '@apitable/core';
-import { Button, Alert } from '@vikadata/components';
+import { Button, Alert } from '@apitable/components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Tooltip, Modal } from 'pc/components/common';
 import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';

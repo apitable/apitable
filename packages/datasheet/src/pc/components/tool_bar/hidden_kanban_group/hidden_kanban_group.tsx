@@ -1,4 +1,4 @@
-import { Button, Typography, useThemeColors, useListenVisualHeight } from '@vikadata/components';
+import { Button, Typography, useThemeColors, useListenVisualHeight } from '@apitable/components';
 import {
   FieldType,
   IKanbanViewProperty,
@@ -13,7 +13,7 @@ import {
   t,
   UN_GROUP,
 } from '@apitable/core';
-import { DragOutlined } from '@vikadata/icons';
+import { DragOutlined } from '@apitable/icons';
 import { Switch } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';

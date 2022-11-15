@@ -1,5 +1,5 @@
-import { Button, colorVars } from '@vikadata/components';
-import { confirm } from '@vikadata/components/dist/components/modal/components/confirm';
+import { Button, colorVars } from '@apitable/components';
+import { confirm } from '@apitable/components/dist/components/modal/components/confirm';
 import { Settings, Strings, t } from '@apitable/core';
 import parser from 'html-react-parser';
 import Image from 'next/image';

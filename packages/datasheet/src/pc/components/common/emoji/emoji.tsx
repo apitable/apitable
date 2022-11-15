@@ -1,4 +1,4 @@
-import { colorVars, Loading, Skeleton, TextButton } from '@vikadata/components';
+import { colorVars, Loading, Skeleton, TextButton } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import * as React from 'react';

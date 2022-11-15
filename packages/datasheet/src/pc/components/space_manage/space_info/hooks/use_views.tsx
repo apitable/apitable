@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { ViewGanttGreyOutlined, ViewCalendarFilled, FormOutlined, MirrorOutlined } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { ViewGanttGreyOutlined, ViewCalendarFilled, FormOutlined, MirrorOutlined } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
 import { calcPercent } from './utils';
 import { Strings, t } from '@apitable/core';

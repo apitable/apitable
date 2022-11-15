@@ -7,7 +7,7 @@ import { CellValue } from '../multi_grid/cell/cell_value';
 import { store } from 'pc/store';
 import styles from './styles.module.less';
 import { FieldTitle } from '../expand_record/field_editor/field_title';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import IconMore from 'static/icon/common/common_icon_more_stand.svg';
 import { FIELD_HEAD_CLASS } from 'pc/utils';
 import classNames from 'classnames';

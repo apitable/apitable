@@ -2,7 +2,7 @@ import { FieldType, IField, ISegment, SegmentType, ICellValue, Field } from '@ap
 import classNames from 'classnames';
 import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
-import { useThemeColors, LinkButton } from '@vikadata/components';
+import { useThemeColors, LinkButton } from '@apitable/components';
 import {
   ChangeEvent, default as React,
   forwardRef, memo, useImperativeHandle, useRef, useState,

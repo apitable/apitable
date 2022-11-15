@@ -1,4 +1,4 @@
-import { IconButton, LinkButton, useContextMenu, useThemeColors } from '@vikadata/components';
+import { IconButton, LinkButton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
   Field,
@@ -13,7 +13,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { AddOutlined, EditDescribeFilled, EditDescribeOutlined, MoreOutlined } from '@vikadata/icons';
+import { AddOutlined, EditDescribeFilled, EditDescribeOutlined, MoreOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';

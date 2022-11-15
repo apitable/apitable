@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as React from 'react';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import IconViewList from 'static/icon/datasheet/viewtoolbar/datasheet_icon_viewlist.svg';
 import { Toolbar } from '../tool_bar';

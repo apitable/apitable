@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { WecomFilled } from '@vikadata/icons';
+import { WecomFilled } from '@apitable/icons';
 import styles from './style.module.less';
 import { wecomLogin, wecomQuickLogin } from '../other_login';
 import { Strings, t } from '@apitable/core';

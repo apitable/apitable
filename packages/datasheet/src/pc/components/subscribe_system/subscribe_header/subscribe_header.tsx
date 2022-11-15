@@ -1,4 +1,4 @@
-import { Avatar, Typography, useThemeColors } from '@vikadata/components';
+import { Avatar, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';

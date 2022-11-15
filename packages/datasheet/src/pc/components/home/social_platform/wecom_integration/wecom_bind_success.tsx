@@ -1,6 +1,6 @@
-import { Button, TextInput, useThemeColors } from '@vikadata/components';
+import { Button, TextInput, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Navigation, Settings, Strings, t } from '@apitable/core';
-import { CopyOutlined, InformationSmallOutlined, NewtabOutlined } from '@vikadata/icons';
+import { CopyOutlined, InformationSmallOutlined, NewtabOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { ButtonPlus, Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

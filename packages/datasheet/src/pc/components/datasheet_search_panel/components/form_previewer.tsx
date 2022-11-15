@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classnames from 'classnames';

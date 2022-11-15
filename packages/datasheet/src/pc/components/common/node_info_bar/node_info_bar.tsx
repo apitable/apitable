@@ -13,7 +13,7 @@ import { ShareContext } from 'pc/components/share';
 import { Tooltip } from '../tooltip';
 import classNames from 'classnames';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 
 export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;

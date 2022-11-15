@@ -2,7 +2,7 @@ import { IParent } from '@apitable/core';
 import { Breadcrumb } from 'antd';
 import { HorizontalScroll } from 'pc/components/common';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import RightArrowIcon from 'static/icon/common/common_icon_level_right.svg';
 

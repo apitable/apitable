@@ -3,12 +3,12 @@ import { EnableFieldPermissionPlus } from 'pc/components/field_permission/enable
 import { Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import styles from 'pc/components/field_permission/styles.module.less';
-import { black, Tooltip, useThemeColors, ThemeProvider } from '@vikadata/components';
+import { black, Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { PermissionModalHeader } from './permission_modal_header';
-import { InformationSmallOutlined } from '@vikadata/icons/dist/components';
+import { InformationSmallOutlined } from '@apitable/icons/dist/components';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 

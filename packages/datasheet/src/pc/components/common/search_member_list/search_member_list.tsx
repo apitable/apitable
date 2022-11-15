@@ -1,4 +1,4 @@
-import { TextInput } from '@vikadata/components';
+import { TextInput } from '@apitable/components';
 import { ISearchMemberData, Strings, t } from '@apitable/core';
 import cls from 'classnames';
 import Image from 'next/image';

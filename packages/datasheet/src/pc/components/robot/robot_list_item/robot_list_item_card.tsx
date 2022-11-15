@@ -1,6 +1,6 @@
-import { Avatar, Box, Switch, Typography, useTheme } from '@vikadata/components';
+import { Avatar, Box, Switch, Typography, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined } from '@apitable/icons';
 
 import Image from 'next/image';
 import { stopPropagation } from 'pc/utils';

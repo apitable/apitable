@@ -1,4 +1,4 @@
-import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { Settings, Strings, t, ThemeName } from '@apitable/core';
 import { Logo } from 'pc/components/common';
 import styles from './style.module.less';

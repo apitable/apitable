@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { InformationSmallOutlined } from '@vikadata/icons';
-import { ChevronDownOutlined } from '@vikadata/icons';
-import { Tooltip } from '@vikadata/components';
+import { InformationSmallOutlined } from '@apitable/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
+import { Tooltip } from '@apitable/components';
 
 const h = styled.div<{ hasCollapse?: boolean }>`
   display: flex;

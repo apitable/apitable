@@ -1,4 +1,4 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import parser from 'html-react-parser';
 import Image from 'next/image';

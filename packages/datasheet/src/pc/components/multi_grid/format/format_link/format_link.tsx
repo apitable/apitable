@@ -1,4 +1,4 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { IField, ILinkField, Selectors, Strings, t } from '@apitable/core';
 import { Switch } from 'antd';
 import classNames from 'classnames';

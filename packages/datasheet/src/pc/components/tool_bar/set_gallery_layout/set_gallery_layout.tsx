@@ -11,7 +11,7 @@ import GalleryIcon from 'static/icon/datasheet/gallery/datasheet_icon_tiling_big
 import GalleryListIcon from 'static/icon/datasheet/gallery/datasheet_icon_list_big.svg';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import { useThemeColors, useListenVisualHeight } from '@vikadata/components';
+import { useThemeColors, useListenVisualHeight } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'pc/components/common';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';

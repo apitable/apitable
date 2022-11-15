@@ -5,7 +5,7 @@ import { InlineNodeName } from 'pc/components/common/inline_node_name';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { TComponent } from 'pc/components/common/t_component';
 import { useSelectIndex } from 'pc/hooks';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { getFieldTypeIcon, checkComputeRef } from '../../field_setting';

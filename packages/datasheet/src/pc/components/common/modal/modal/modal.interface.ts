@@ -1,4 +1,4 @@
-import { IButtonProps, IButtonType, ITextButtonProps } from '@vikadata/components';
+import { IButtonProps, IButtonType, ITextButtonProps } from '@apitable/components';
 import { ModalFuncProps as AntdModalFuncProps, ModalProps } from 'antd/lib/modal';
 import React from 'react';
 

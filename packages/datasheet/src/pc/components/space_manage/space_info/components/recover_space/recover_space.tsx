@@ -1,5 +1,5 @@
 import { Api, IReduxState, Strings, t } from '@apitable/core';
-import { Button, TextButton, useThemeColors } from '@vikadata/components';
+import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Modal as ModalMobile } from 'antd-mobile';
 import cls from 'classnames';
 import dayjs from 'dayjs';

@@ -22,9 +22,9 @@ import {
   GotoLargeOutlined,
   Brokenlink1Outlined,
   SelectOutlined
-} from '@vikadata/icons';
+} from '@apitable/icons';
 
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 
 import { ElementType, MarkType, ALIGN } from '../../constant';
 

@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t, Settings } from '@apitable/core';
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';

@@ -1,6 +1,6 @@
-import { lightColors, LinkButton } from '@vikadata/components';
+import { lightColors, LinkButton } from '@apitable/components';
 import { isPrivateDeployment, Strings, t } from '@apitable/core';
-import { ShareQrcodeOutlined, WorkbenchLargeOutlined } from '@vikadata/icons';
+import { ShareQrcodeOutlined, WorkbenchLargeOutlined } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import { PhoneAndEmailLogin } from 'pc/components/home/login/phone_and_email_login';
 

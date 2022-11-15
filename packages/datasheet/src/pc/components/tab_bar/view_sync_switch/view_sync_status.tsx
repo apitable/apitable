@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 import classNames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { AutoSaveLottie } from 'pc/components/tab_bar/view_sync_switch/auto_save_lottie';
 import Trigger from 'rc-trigger';
 import { useClickAway, useToggle } from 'ahooks';

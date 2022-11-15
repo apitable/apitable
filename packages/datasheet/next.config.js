@@ -60,7 +60,7 @@ const plugins = [[withLess, {
 
     }
   }
-}], [withTM(['@vikadata/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])],
+}], [withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])],
 [withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })]

@@ -1,6 +1,6 @@
-import { Button, Checkbox, Divider, useThemeColors } from '@vikadata/components';
+import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
 import { ResourceType, Selectors, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { ApiOutlined, BookOutlined, DebugOutlined } from '@vikadata/icons';
+import { ApiOutlined, BookOutlined, DebugOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

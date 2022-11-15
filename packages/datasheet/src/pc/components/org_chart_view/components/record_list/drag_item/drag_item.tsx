@@ -7,7 +7,7 @@ import styles from './styles.module.less';
 import { DragNodeType } from 'pc/components/org_chart_view/constants';
 import { FlowContext } from 'pc/components/org_chart_view/context/flow_context';
 import { INode } from 'pc/components/org_chart_view/interfaces';
-import { useContextMenu } from '@vikadata/components';
+import { useContextMenu } from '@apitable/components';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 
 interface IDrag {

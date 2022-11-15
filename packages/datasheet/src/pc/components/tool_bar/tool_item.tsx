@@ -1,4 +1,4 @@
-import { TextButton, Button } from '@vikadata/components';
+import { TextButton, Button } from '@apitable/components';
 import { useResponsive } from 'pc/hooks';
 import { ReactNode } from 'react';
 import * as React from 'react';

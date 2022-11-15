@@ -6,7 +6,7 @@ import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Select, useThemeColors } from '@vikadata/components';
+import { Select, useThemeColors } from '@apitable/components';
 import { snake } from 'naming-style';
 
 export const DateDuration = [

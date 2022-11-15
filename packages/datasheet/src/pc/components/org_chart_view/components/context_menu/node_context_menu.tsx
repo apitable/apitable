@@ -1,4 +1,4 @@
-import { ContextMenu, useThemeColors } from '@vikadata/components';
+import { ContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowUpOutlined,
@@ -9,7 +9,7 @@ import {
   ExpandRecordOutlined, EyeCloseOutlined,
 
   EyeNormalOutlined
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';

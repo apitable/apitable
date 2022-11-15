@@ -1,6 +1,6 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { DragOutlined } from '@vikadata/icons';
+import { DragOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { changeView } from 'pc/hooks';

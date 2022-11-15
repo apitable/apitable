@@ -1,4 +1,4 @@
-import { Button, Typography } from '@vikadata/components';
+import { Button, Typography } from '@apitable/components';
 import { Api, ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import { pickBy } from 'lodash';
 import Image from 'next/image';

@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';

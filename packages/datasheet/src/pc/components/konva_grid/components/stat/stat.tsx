@@ -1,8 +1,8 @@
-import { black, ILightOrDarkThemeColors } from '@vikadata/components';
+import { black, ILightOrDarkThemeColors } from '@apitable/components';
 import {
   Field, getFieldResultByStatType, Group as GroupClass, ILinearRow, KONVA_DATASHEET_ID, Selectors, StatType, Strings, t, ViewType
 } from '@apitable/core';
-import { TriangleDown16Filled } from '@vikadata/icons';
+import { TriangleDown16Filled } from '@apitable/icons';
 import { intersection } from 'lodash';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';

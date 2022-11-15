@@ -4,8 +4,8 @@ import {
   LockFilled,
   TitleRecycleClosedFilled,
   AdministratorsFilled
-} from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+} from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 import { IHooksParams, IMultiLineItemProps } from '../interface';
 import { calcPercent } from './utils';
 import { Strings, t } from '@apitable/core';

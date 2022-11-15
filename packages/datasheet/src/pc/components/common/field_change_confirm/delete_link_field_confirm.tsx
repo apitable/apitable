@@ -1,4 +1,4 @@
-import { Button, TextButton, ThemeProvider } from '@vikadata/components';
+import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { CollaCommandName, ILinkField, Selectors, Strings, t } from '@apitable/core';
 import { useLocalStorageState } from 'ahooks';
 import { Modal, Radio } from 'antd';

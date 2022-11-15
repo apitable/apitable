@@ -1,4 +1,4 @@
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import dayjs from 'dayjs';

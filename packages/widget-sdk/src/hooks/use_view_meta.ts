@@ -39,7 +39,7 @@ export const pickViewProperty = (view: IViewProperty): IViewMeta => {
  * 
  * ### Example
  * ```js
- * import { useViewMeta, useActiveViewId } from '@vikadata/widget-sdk';
+ * import { useViewMeta, useActiveViewId } from '@apitable/widget-sdk';
  *
  * // Show name of the currently view.
  * function ViewName() {
@@ -62,7 +62,7 @@ export function useViewMeta(viewId: string | undefined): IViewMeta;
  * 
  * ### Example
  * ```js
- * import { useViewMeta, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useViewMeta, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Show the current view name of the corresponding datasheetId(dstXXXXXXXX) datasheet.
  * function ViewName() {

@@ -9,14 +9,14 @@ import { Divider } from 'antd';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { stopPropagation } from 'pc/utils';
 import IconClose from 'static/icon/datasheet/datasheet_icon_exit.svg';
-import { DoubleSelect, Typography, Button, useThemeColors } from '@vikadata/components';
+import { DoubleSelect, Typography, Button, useThemeColors } from '@apitable/components';
 import { IUnitPermissionSelectProps } from './interface';
 import classnames from 'classnames';
 import { useClickAway } from 'ahooks';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { MobileSelect } from 'pc/components/common';
-import { AddOutlined, CheckOutlined } from '@vikadata/icons';
+import { AddOutlined, CheckOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common/message/message';
 
 export const UnitPermissionSelect: React.FC<IUnitPermissionSelectProps> = props => {

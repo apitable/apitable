@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Typography, ITypographyProps, useThemeColors } from '@vikadata/components';
-import { InformationLargeOutlined } from '@vikadata/icons';
+import { Typography, ITypographyProps, useThemeColors } from '@apitable/components';
+import { InformationLargeOutlined } from '@apitable/icons';
 import styles from './style.module.less';
 import classNames from 'classnames';
 

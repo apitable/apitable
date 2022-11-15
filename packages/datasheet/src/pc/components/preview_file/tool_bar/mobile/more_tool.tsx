@@ -7,9 +7,9 @@ import style from './style.module.less';
 import { Popover } from 'pc/components/common/mobile/popover';
 import { Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
-import { LinkButton, useThemeColors } from '@vikadata/components';
+import { LinkButton, useThemeColors } from '@apitable/components';
 import { copy2clipBoard } from 'pc/utils';
-import { ColumnUrlOutlined } from '@vikadata/icons';
+import { ColumnUrlOutlined } from '@apitable/icons';
 
 interface IMoreToolProps {
   readonly: boolean;

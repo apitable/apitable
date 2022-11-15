@@ -1,4 +1,4 @@
-import { CopyOutlined, DeleteOutlined } from '@vikadata/icons';
+import { CopyOutlined, DeleteOutlined } from '@apitable/icons';
 
 import { Tooltip } from 'antd';
 import * as React from 'react';

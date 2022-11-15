@@ -19,7 +19,7 @@ import { getFieldMap, getFieldPermissionMap, getFieldRoleByFieldId } from 'store
  *
  * ### Example
  * ```js
- * import { useField } from '@vikadata/widget-sdk';
+ * import { useField } from '@apitable/widget-sdk';
  *
  * // show field name
  * function FieldName() {
@@ -42,7 +42,7 @@ export function useField(fieldId: string | undefined): Field | undefined;
  * 
  * ### Example
  * ```js
- * import { useField, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useField, useDatasheet } from '@apitable/widget-sdk';
  *
  * // show field name corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function FieldName() {

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useCloudStorage, useMeta, ErrorBoundary, IWidgetState, widgetMessage, initWidgetCliSocket, WidgetCliSocketType } from '@vikadata/widget-sdk';
-import { useWidgetComponent } from '@vikadata/widget-sdk/dist/hooks/private/use_widget_loader';
-import { Loading, LinkButton, colors } from '@vikadata/components';
+import { useCloudStorage, useMeta, ErrorBoundary, IWidgetState, widgetMessage, initWidgetCliSocket, WidgetCliSocketType } from '@apitable/widget-sdk';
+import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
+import { Loading, LinkButton, colors } from '@apitable/components';
 import styles from './style.module.less';
-import { ErrorFilled, InformationSmallOutlined } from '@vikadata/icons';
+import { ErrorFilled, InformationSmallOutlined } from '@apitable/icons';
 import { Strings, t, WidgetPackageStatus, Settings } from '@apitable/core';
-import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
+import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useSelector } from 'react-redux';
 
 interface IErrorWidget {

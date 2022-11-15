@@ -2,8 +2,8 @@ import {
   Api, CollaCommandName, ConfigConstant, DATASHEET_ID, DatasheetActions, ExecuteResult, getMaxViewCountPerSheet, getUniqName, IPermissions,
   IViewProperty, Selectors, StoreActions, Strings, t, ViewType,
 } from '@apitable/core';
-import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@vikadata/components';
-import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@vikadata/icons';
+import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
+import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
 import dynamic from 'next/dynamic';
 import { triggerUsageAlert } from 'modules/enterprise/billing';

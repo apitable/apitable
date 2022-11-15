@@ -4,7 +4,7 @@ import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 import InviteIcon from 'static/icon/space/space_icon_invite.svg';
 import { expandInviteModal } from 'pc/components/invite';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useSelector } from 'react-redux';
 

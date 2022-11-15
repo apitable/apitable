@@ -1,8 +1,8 @@
 import { useContext, useRef, useState } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
-import { ExpandRecordOutlined } from '@vikadata/icons';
-import { Typography, IconButton } from '@vikadata/components';
+import { ExpandRecordOutlined } from '@apitable/icons';
+import { Typography, IconButton } from '@apitable/components';
 import { FieldEditor } from 'pc/components/expand_record/field_editor';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { useClickAway, useMount } from 'ahooks';

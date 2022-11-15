@@ -4,4 +4,4 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-import '@vikadata/i18n-lang';
+import '@apitable/i18n-lang';

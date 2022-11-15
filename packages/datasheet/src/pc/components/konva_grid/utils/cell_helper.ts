@@ -1,4 +1,4 @@
-import { colors, ThemeName } from '@vikadata/components';
+import { colors, ThemeName } from '@apitable/components';
 import {
   Api,
   ArrayValueField,

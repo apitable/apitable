@@ -2,8 +2,8 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Group, ILinearRow, KONVA_DATASHEET_ID, Selectors, setComplement, StoreActions, Strings, t } from '@apitable/core';
-import { ContextMenu, useContextMenu } from '@vikadata/components';
-import { CopyOutlined } from '@vikadata/icons';
+import { ContextMenu, useContextMenu } from '@apitable/components';
+import { CopyOutlined } from '@apitable/icons';
 
 import { ExpandType } from 'pc/components/multi_grid/cell/virtual_cell/cell_group_tab/group_tab/group_tab';
 import { MouseDownType } from 'pc/components/selection_wrapper';

@@ -18,7 +18,7 @@ import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { ExecuteFilterFn } from '../interface';
 import styles from './style.module.less';
-import { Select, useThemeColors } from '@vikadata/components';
+import { Select, useThemeColors } from '@apitable/components';
 
 interface IFilterOperateProps {
   conditions: IFilterCondition[];

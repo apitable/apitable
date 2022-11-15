@@ -1,5 +1,5 @@
 import { Field, IField, KONVA_DATASHEET_ID, Strings, t, ViewType } from '@apitable/core';
-import { EditGanttDescribeFilled, IIconProps, MoreStandOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
+import { EditGanttDescribeFilled, IIconProps, MoreStandOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';

@@ -1,4 +1,4 @@
-import { Button, colorVars, Message, Modal, Typography } from '@vikadata/components';
+import { Button, colorVars, Message, Modal, Typography } from '@apitable/components';
 import { Events, Player } from '@apitable/core';
 import { LS_DATASHEET_NAMESPACE } from '@apitable/core/dist/config/constant';
 import dayjs from 'dayjs';

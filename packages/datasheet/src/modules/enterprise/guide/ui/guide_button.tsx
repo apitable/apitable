@@ -1,4 +1,4 @@
-import { Button, TextButton } from '@vikadata/components';
+import { Button, TextButton } from '@apitable/components';
 
 import cls from 'classnames';
 import { ButtonSize } from 'pc/components/common/button_base';

@@ -7,7 +7,7 @@ import { CustomChildren } from 'pc/components/editors/date_time_editor/mobile/pi
 import dayjs, { Dayjs } from 'dayjs';
 import styles from '../style.module.less';
 import { IFilterDateProps } from 'pc/components/tool_bar/view_filter/interface';
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 
 export const DateRangePickerMobile: React.FC<IFilterDateProps & {
   rangePickerChange(date: (Dayjs | null)[] | null);

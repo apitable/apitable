@@ -1,4 +1,4 @@
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import {
   MirrorArchitectureFilled,
   MirrorCalendarFilled,
@@ -7,7 +7,7 @@ import {
   MirrorGridFilled,
   MirrorKanbanFilled,
   MirrorOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { ViewType } from '@apitable/core';
 
 export const gstMirrorIconByViewType = (viewType: ViewType, color: string = colorVars.thirdLevelText) => {

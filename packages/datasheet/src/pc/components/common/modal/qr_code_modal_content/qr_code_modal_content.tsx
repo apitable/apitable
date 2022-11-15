@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './style.module.less';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { t, Strings } from '@apitable/core';
 import { store } from 'pc/store';

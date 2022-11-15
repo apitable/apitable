@@ -1,4 +1,4 @@
-import { contextMenuHideAll } from '@vikadata/components';
+import { contextMenuHideAll } from '@apitable/components';
 import {
   CellType,
   DATASHEET_ID,

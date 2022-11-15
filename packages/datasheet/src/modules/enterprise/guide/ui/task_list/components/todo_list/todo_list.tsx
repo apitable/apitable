@@ -2,8 +2,8 @@ import { FC } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import classNames from 'classnames';
-import { CheckOutlined } from '@vikadata/icons';
-import { blackBlue, deepPurple } from '@vikadata/components';
+import { CheckOutlined } from '@apitable/icons';
+import { blackBlue, deepPurple } from '@apitable/components';
 
 export enum TodoState {
   Empty = 'Empty',

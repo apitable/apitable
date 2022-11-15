@@ -1,10 +1,10 @@
 import { FC, useContext } from 'react';
 import { EdgeProps, getEdgeCenter, getMarkerEnd, useStoreState } from '@vikadata/react-flow-renderer';
 import { CollaCommandName, Strings, t } from '@apitable/core';
-import { IconButton, useThemeColors } from '@vikadata/components';
+import { IconButton, useThemeColors } from '@apitable/components';
 import { resourceService } from 'pc/resource_service';
 import { FlowContext } from '../../context/flow_context';
-import { DeleteOutlined } from '@vikadata/icons';
+import { DeleteOutlined } from '@apitable/icons';
 import { Tooltip } from 'antd';
 import styles from './styles.module.less';
 

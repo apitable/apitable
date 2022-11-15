@@ -6,7 +6,7 @@ import { ISpaceProps } from './interface';
 import { Box, Button, Checkbox, Switch } from '../index';
 import { Radio } from '../radio/radio';
 import { LinkButton } from '../link_button';
-import { ColumnLinktableFilled } from '@vikadata/icons';
+import { ColumnLinktableFilled } from '@apitable/icons';
 
 const COMPONENT_NAME = 'Space';
 

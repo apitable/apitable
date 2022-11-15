@@ -1,4 +1,4 @@
-import { Button, LinkButton, useThemeColors } from '@vikadata/components';
+import { Button, LinkButton, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName, ExecuteResult, Field, FieldType, ILinkField, ILinkIds, IReduxState, ISegment, IViewRow, SegmentType, Selectors, StoreActions,
   Strings, t, TextBaseField,

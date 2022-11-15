@@ -83,7 +83,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "setupFiles": [
-      "@vikadata/i18n-lang"
+      "@apitable/i18n-lang"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { LinkButton, Typography, useThemeColors } from '@apitable/components';
 import {
   Api, CollaCommandName, ConfigConstant, DatasheetApi, IActivityListParams, ICommentMsg, IJOTAction, integrateCdnHost, IRemoteChangeset, MemberType,
   OPEventNameEnums, OtherTypeUnitId, ResourceType, Selectors, Settings, StoreActions, Strings, t, WithOptional,

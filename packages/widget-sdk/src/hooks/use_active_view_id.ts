@@ -21,7 +21,7 @@ const getActiveViewId = (state: IWidgetState, currentDatasheetId?: string) => {
  *
  * ### Example
  * ```js
- * import { useActiveViewId, useViewMeta } from '@vikadata/widget-sdk';
+ * import { useActiveViewId, useViewMeta } from '@apitable/widget-sdk';
  *
  * // Render the currently selected view name
  * function ActiveView() {

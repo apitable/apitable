@@ -1,7 +1,7 @@
 import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import classNames from 'classnames';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../../styles.module.less';

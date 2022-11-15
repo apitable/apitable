@@ -1,8 +1,8 @@
-import { Box, Button, IconButton, Typography, useTheme } from '@vikadata/components';
+import { Box, Button, IconButton, Typography, useTheme } from '@apitable/components';
 import {
   ConfigConstant, EmptyNullOperand, IExpression, ILiteralOperand, OperandTypeEnums, OperatorEnums, Selectors, Strings, t
 } from '@apitable/core';
-import { AddOutlined, DeleteOutlined, ErrorFilled } from '@vikadata/icons';
+import { AddOutlined, DeleteOutlined, ErrorFilled } from '@apitable/icons';
 import produce from 'immer';
 import { isEqual, set } from 'lodash';
 import { useAllColumns } from 'pc/hooks';

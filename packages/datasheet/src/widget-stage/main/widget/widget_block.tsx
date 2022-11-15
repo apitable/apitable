@@ -1,4 +1,4 @@
-import { Loading, useThemeMode } from '@vikadata/components';
+import { Loading, useThemeMode } from '@apitable/components';
 import { StoreActions } from '@apitable/core';
 import {
   widgetMessage, initWidgetMessage, iframeWidgetDatasheetSelector, iframeWidgetDashboardSelector,
@@ -6,8 +6,8 @@ import {
   UPDATE_UNIT_INFO, setErrorCodeAction, widgetStore, refreshUsedDatasheetClientAction, getWidgetDatasheet, SET_SHARE_INFO,
   refreshUsedDatasheetSimpleAction,
   refreshCalcCache, setMirrorAction, expireCalcCache, SET_USER_INFO, RuntimeEnv
-} from '@vikadata/widget-sdk';
-import { MouseListenerType } from '@vikadata/widget-sdk/dist/iframe_message/interface';
+} from '@apitable/widget-sdk';
+import { MouseListenerType } from '@apitable/widget-sdk/dist/iframe_message/interface';
 import React, { useCallback, useEffect, useState } from 'react';
 import { WidgetLoader } from './widget_loader';
 

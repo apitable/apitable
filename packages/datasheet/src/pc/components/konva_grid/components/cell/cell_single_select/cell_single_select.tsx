@@ -1,6 +1,6 @@
-import { getNextShadeColor, ThemeName } from '@vikadata/components';
+import { getNextShadeColor, ThemeName } from '@apitable/components';
 import { KONVA_DATASHEET_ID } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
+import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect, Text } from 'pc/components/konva_components';

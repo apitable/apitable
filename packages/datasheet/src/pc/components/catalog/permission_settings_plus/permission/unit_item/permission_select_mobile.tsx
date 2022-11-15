@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { IRoleOption } from 'pc/components/catalog/permission_settings_plus/permission/unit_item/interface';
 import styles from './style.module.less';
 import classNames from 'classnames';
 import classnames from 'classnames';
-import { CheckOutlined } from '@vikadata/icons';
+import { CheckOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
 import { MobileSelect } from 'pc/components/common';
 

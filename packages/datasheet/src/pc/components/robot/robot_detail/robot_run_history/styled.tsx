@@ -1,4 +1,4 @@
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 import styled, { css } from 'styled-components';
 
 export const StyledArrowIcon = styled.span <{ rotated: boolean }>`

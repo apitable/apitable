@@ -1,4 +1,4 @@
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import styles from './style.module.less';
 import { FormContainer } from '../form_container';
 

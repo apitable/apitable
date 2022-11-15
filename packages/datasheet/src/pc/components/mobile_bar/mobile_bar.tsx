@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { useSideBarVisible } from 'pc/hooks';

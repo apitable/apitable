@@ -3,10 +3,10 @@ import {
   GanttStyleKeyType, getNewId, getUniqName, IDPrefix, IGanttViewColumn, IGanttViewProperty, IGanttViewStatus, ILinkField, ISetRecordOptions,
   LinkFieldSet, Selectors, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
-import { black, IOption, Select, Switch, Tooltip, Typography } from '@vikadata/components';
+import { black, IOption, Select, Switch, Tooltip, Typography } from '@apitable/components';
 import {
   AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';

@@ -1,10 +1,10 @@
 import { FC, useContext } from 'react';
 import { FlowContext } from '../../context/flow_context';
-import { ContextMenu, useThemeColors } from '@vikadata/components';
+import { ContextMenu, useThemeColors } from '@apitable/components';
 import { ORG_EDGE_MENU } from '../../constants';
 import {
   DeleteOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import {
   CollaCommandName,
   t,

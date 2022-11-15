@@ -1,5 +1,5 @@
 {
-  "name": "@vikadata/room-server",
+  "name": "@apitable/room-server",
   "version": "0.15.0",
   "description": "nodejs room server",
   "author": "APITable PTE. LTD.<support@apitable.com>",
@@ -48,7 +48,7 @@
     "@sentry/tracing": "^7.2.0",
     "@sentry/types": "^7.2.0",
     "@types/node-os-utils": "^1.2.0",
-    "@vikadata/i18n-lang": "*",
+    "@apitable/i18n-lang": "*",
     "@vikadata/nestjs-redis": "1.3.3",
     "cache-manager": "^3.6.0",
     "class-transformer": "^0.3.1",

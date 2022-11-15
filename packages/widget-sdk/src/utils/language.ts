@@ -11,7 +11,7 @@ export enum LangType {
  * 
  * ## Example
  * ``` js
- * import { getLanguage, LangType } from '@vikadata/widget-sdk';
+ * import { getLanguage, LangType } from '@apitable/widget-sdk';
  * 
  * if (getLanguage() === LangType.ZhCN) {
  *   console.log('Current system language is Chinese');

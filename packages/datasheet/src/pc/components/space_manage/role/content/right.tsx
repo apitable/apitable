@@ -1,6 +1,6 @@
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { Api, MemberType, Strings, t, UnitItem } from '@apitable/core';
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import React from 'react';
 import { useCallback, useContext, useEffect, useImperativeHandle, useState } from 'react';
 import { defaultPage, IPageInfo, RoleTable } from './role_table';

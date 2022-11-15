@@ -1,4 +1,4 @@
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import dynamic from 'next/dynamic';
 import { PrivateRoute } from 'pc/components/route_manager/private_route';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';

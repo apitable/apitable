@@ -1,4 +1,4 @@
-import { CloseLargeOutlined, DefaultFilled, ErrorFilled, SuccessFilled, WarnFilled } from '@vikadata/icons';
+import { CloseLargeOutlined, DefaultFilled, ErrorFilled, SuccessFilled, WarnFilled } from '@apitable/icons';
 import { Box, IconButton, Typography } from 'components';
 import { useProviderTheme } from 'hooks';
 import React, { useState } from 'react';

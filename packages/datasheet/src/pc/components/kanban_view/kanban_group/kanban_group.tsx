@@ -15,8 +15,8 @@ import { sum } from 'lodash';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { MARGIN_DISTANCE } from './rows/rows';
-import { Button, useThemeColors } from '@vikadata/components';
-import { AddOutlined } from '@vikadata/icons';
+import { Button, useThemeColors } from '@apitable/components';
+import { AddOutlined } from '@apitable/icons';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 interface IKanbanGroupProps {
   groupId: string;

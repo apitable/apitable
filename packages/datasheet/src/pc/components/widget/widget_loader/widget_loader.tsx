@@ -1,13 +1,13 @@
-import * as components from '@vikadata/components';
-import { LinkButton, Loading, useThemeColors } from '@vikadata/components';
+import * as components from '@apitable/components';
+import { LinkButton, Loading, useThemeColors } from '@apitable/components';
 import * as core from '@apitable/core';
 import { Settings, Strings, t, WidgetPackageStatus } from '@apitable/core';
-import * as icons from '@vikadata/icons';
-import { ErrorFilled, InformationSmallOutlined } from '@vikadata/icons';
-import * as widgetSdk from '@vikadata/widget-sdk';
-import { ErrorBoundary, initWidgetCliSocket, useCloudStorage, useMeta, WidgetCliSocketType } from '@vikadata/widget-sdk';
-import { useWidgetComponent } from '@vikadata/widget-sdk/dist/hooks/private/use_widget_loader';
-import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
+import * as icons from '@apitable/icons';
+import { ErrorFilled, InformationSmallOutlined } from '@apitable/icons';
+import * as widgetSdk from '@apitable/widget-sdk';
+import { ErrorBoundary, initWidgetCliSocket, useCloudStorage, useMeta, WidgetCliSocketType } from '@apitable/widget-sdk';
+import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
+import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import * as React from 'react';
 import { useEffect, useImperativeHandle } from 'react';
 import ReactDom from 'react-dom';
@@ -19,10 +19,10 @@ import styles from './styles.module.less';
     // Register the widget dependency package to window in order for the widget to load properly.
     window['_React'] = React;
     window['_ReactDom'] = ReactDom;
-    window['_@vikadata/components'] = components;
-    window['_@vikadata/widget-sdk'] = widgetSdk;
+    window['_@apitable/components'] = components;
+    window['_@apitable/widget-sdk'] = widgetSdk;
     window['_@apitable/core'] = core;
-    window['_@vikadata/icons'] = icons;
+    window['_@apitable/icons'] = icons;
   }
 })();
 

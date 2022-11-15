@@ -19,7 +19,7 @@ const viewSelector = (state: IWidgetState, datasheetId?: string) => {
  * 
  * ### Example
  * ```js
- * import { useViewIds, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useViewIds, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Display the total number of views 
  * function ViewCount() {

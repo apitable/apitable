@@ -1,5 +1,5 @@
 import { BasicValueType } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import CheckBoxIcon from 'static/icon/datasheet/column/datasheet_icon_checkbox.svg';
 import NumberIcon from 'static/icon/datasheet/column/datasheet_icon_figure.svg';

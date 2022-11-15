@@ -1,4 +1,4 @@
-import { Button, TextButton, Typography, useThemeColors, Pagination } from '@vikadata/components';
+import { Button, TextButton, Typography, useThemeColors, Pagination } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Table } from 'antd';

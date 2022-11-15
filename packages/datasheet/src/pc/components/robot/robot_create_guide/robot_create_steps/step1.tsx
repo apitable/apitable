@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Avatar, Box, Button, TextInput, Typography } from '@vikadata/components';
+import { Avatar, Box, Button, TextInput, Typography } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';

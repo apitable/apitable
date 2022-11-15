@@ -1,4 +1,4 @@
-import { CheckOutlined } from '@vikadata/icons';
+import { CheckOutlined } from '@apitable/icons';
 import { FC } from 'react';
 import styles from './style.module.less';
 

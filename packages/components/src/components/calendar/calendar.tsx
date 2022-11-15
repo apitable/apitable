@@ -5,7 +5,7 @@ import { IconButton } from '../icon_button';
 import { Tooltip } from '../tooltip';
 import { Month } from './month';
 import { CalendarDiv, WeekDiv, HeaderDiv, HeaderLeftDiv } from './styled';
-import { ChevronRightOutlined, ChevronLeftOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined, ChevronLeftOutlined } from '@apitable/icons';
 import { ICalendar } from './interface';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import { WEEKS, TODAY, MONTH_TOGGLE, TOUCH_TIP, FORMAT_MONTH } from './constants';

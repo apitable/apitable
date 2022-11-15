@@ -6,7 +6,7 @@ import produce from 'immer';
 import { MobileSelect } from 'pc/components/common';
 import { useResponsive } from 'pc/hooks';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Select } from '@vikadata/components';
+import { Select } from '@apitable/components';
 
 interface IConjunctionProps {
   conjunction: string;

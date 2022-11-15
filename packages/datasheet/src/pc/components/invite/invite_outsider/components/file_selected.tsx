@@ -1,4 +1,4 @@
-import { Button, TextButton, useThemeColors } from '@vikadata/components';
+import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { ButtonPlus } from 'pc/components/common';

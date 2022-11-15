@@ -2,8 +2,8 @@ import { useCallback, useContext, useRef, useState } from 'react';
 import * as React from 'react';
 import RcTrigger from 'rc-trigger';
 import { Tooltip } from 'antd';
-import { HighlightFilled } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { HighlightFilled } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Transforms } from 'slate';
 

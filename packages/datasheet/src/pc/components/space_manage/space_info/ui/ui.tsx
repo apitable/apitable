@@ -1,5 +1,5 @@
-import { Button, Skeleton, Typography, useThemeColors } from '@vikadata/components';
-import { ChevronRightOutlined } from '@vikadata/icons';
+import { Button, Skeleton, Typography, useThemeColors } from '@apitable/components';
+import { ChevronRightOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';

@@ -1,4 +1,4 @@
-import { ITheme, Select, useTheme } from '@vikadata/components';
+import { ITheme, Select, useTheme } from '@apitable/components';
 import { FieldType, IField } from '@apitable/core';
 import {
   AccountFilled, ColumnAttachmentFilled,
@@ -17,7 +17,7 @@ import {
   ColumnRatingFilled, ColumnSingleFilled, ColumnTextFilled,
   ColumnUrlOutlined,
   LockFilled
-} from '@vikadata/icons';
+} from '@apitable/icons';
 
 const FieldIconMap = {
   [FieldType.DeniedField]: LockFilled,

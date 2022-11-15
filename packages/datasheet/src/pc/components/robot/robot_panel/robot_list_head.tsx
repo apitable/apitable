@@ -1,6 +1,6 @@
-import { Box, IconButton, TextButton, Tooltip, Typography, useTheme } from '@vikadata/components';
+import { Box, IconButton, TextButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { AddOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@vikadata/icons';
+import { AddOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useAddNewRobot, useShowRobot } from '../hooks';

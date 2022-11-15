@@ -1,4 +1,4 @@
-import { Button, LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { Api, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 import classnames from 'classnames';

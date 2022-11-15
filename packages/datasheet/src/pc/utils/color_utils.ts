@@ -1,4 +1,4 @@
-import { rgba2hex, colors, convertHexToRGB } from '@vikadata/components';
+import { rgba2hex, colors, convertHexToRGB } from '@apitable/components';
 import { ThemeName } from '@apitable/core';
 import Color from 'color';
 

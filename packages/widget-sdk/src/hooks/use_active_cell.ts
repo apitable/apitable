@@ -24,7 +24,7 @@ const getActiveCell = (state: IWidgetState, currentDatasheetId?: string) => {
  *
  * ### Example
  * ```js
- * import { useActiveCell, useRecord } from '@vikadata/widget-sdk';
+ * import { useActiveCell, useRecord } from '@apitable/widget-sdk';
  *
  * // Render the value of currently selected cell
  * function ActiveCell() {

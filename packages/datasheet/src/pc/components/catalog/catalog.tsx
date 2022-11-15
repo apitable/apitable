@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { Tree } from './tree';
 import { getContextTypeByNodeType } from 'pc/utils';
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_side_context';
 
 export const CatalogBase: React.FC = () => {

@@ -12,7 +12,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { PopUpTitle } from 'pc/components/common';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { resourceService } from 'pc/resource_service';
-import { IUseListenTriggerInfo, useListenVisualHeight } from '@vikadata/components';
+import { IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 
 interface IViewSetting {
   close(e: React.MouseEvent): void;

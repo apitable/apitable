@@ -1,6 +1,6 @@
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
-import { colors } from '@vikadata/components';
-import { CloseSmallOutlined } from '@vikadata/icons';
+import { colors } from '@apitable/components';
+import { CloseSmallOutlined } from '@apitable/icons';
 import { useDebounceEffect } from 'ahooks';
 import { Message } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';

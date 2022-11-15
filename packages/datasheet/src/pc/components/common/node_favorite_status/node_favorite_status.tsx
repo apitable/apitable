@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 import styles from './style.module.less';
-import { FavoriteOutlined, FavoriteFilled } from '@vikadata/icons';
+import { FavoriteOutlined, FavoriteFilled } from '@apitable/icons';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { useRequest } from 'pc/hooks';
 import { t, Strings, IReduxState } from '@apitable/core';

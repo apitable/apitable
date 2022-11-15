@@ -1,5 +1,5 @@
 import { BroadcastTypes, IReduxState, Selectors } from '@apitable/core';
-import { IServiceError, ResourceService } from '@vikadata/widget-sdk';
+import { IServiceError, ResourceService } from '@apitable/widget-sdk';
 import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { Store } from 'redux';
 import { Clipboard } from '../common/clipboard';

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { IMemberInfoInSpace, Strings, t, Api } from '@apitable/core';
-import { TextButton } from '@vikadata/components';
+import { TextButton } from '@apitable/components';
 import DescribeIcon from 'static/icon/datasheet/rightclick/datasheet_icon_edit_describe.svg';
 import styles from './style.module.less';
 import { Identity } from '../../identity';

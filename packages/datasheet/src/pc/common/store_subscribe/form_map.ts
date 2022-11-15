@@ -1,5 +1,5 @@
 import { ResourceType } from '@apitable/core';
-import { eqSet } from '@vikadata/widget-sdk';
+import { eqSet } from '@apitable/widget-sdk';
 import { difference } from 'lodash';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

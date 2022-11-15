@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
-import { Typography, IconButton, ContextMenu, Button } from '@vikadata/components';
-import { SettingOutlined, InfoFilled, DeleteOutlined } from '@vikadata/icons';
+import { Typography, IconButton, ContextMenu, Button } from '@apitable/components';
+import { SettingOutlined, InfoFilled, DeleteOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
 import { DELETE_SPACE_CONTEXT_MENU_ID, SpaceLevelInfo } from '../../utils';
 import { ChangeLogo } from '../change_logo/change_logo';

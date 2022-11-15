@@ -1,11 +1,11 @@
-import { IconButton, Button, useThemeColors } from '@vikadata/components';
+import { IconButton, Button, useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import {
   AddOutlined,
   ListOutlined,
   OrgZoomOutOutlined,
   FitviewOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { useStoreState } from '@vikadata/react-flow-renderer';
 import { Divider, Tooltip } from 'antd';
 import { FC, useContext } from 'react';

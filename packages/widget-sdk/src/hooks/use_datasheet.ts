@@ -18,7 +18,7 @@ import { widgetMessage } from 'iframe_message';
  * @returns Datasheet instance
  * ### Example
  * ```js
- * import { useDatasheet } from '@vikadata/widget-sdk';
+ * import { useDatasheet } from '@apitable/widget-sdk';
  *
  * function AddRecord() {
  *   const datasheet = useDatasheet();

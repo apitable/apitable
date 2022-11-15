@@ -7,7 +7,7 @@ import styles from './styles.module.less';
 import { store } from 'pc/store';
 import githubIcon from 'static/icon/common/github_octopus.png';
 import { Loading } from 'pc/components/common';
-import { LinkButton, ButtonGroup } from '@vikadata/components';
+import { LinkButton, ButtonGroup } from '@apitable/components';
 import dynamic from 'next/dynamic';
 import { CodeLanguage, CodeType } from './enum';
 

@@ -8,7 +8,7 @@ import settingStyles from '../../field_setting/styles.module.less';
 import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { Select } from '@vikadata/components';
+import { Select } from '@apitable/components';
 
 interface IFormatDateTime {
   currentField: IField;

@@ -1,11 +1,11 @@
 /* eslint-disable no-script-url */
-import { Tooltip, Typography, useThemeColors } from '@vikadata/components';
+import { Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
 import {
   AdviseOutlined, BookOutlined, ClassroomOutlined, CodeFilled, CommunityOutlined, CourseOutlined, DemoOutlined, DownloadOutlined,
   EditDescribeOutlined, GuideOutlined, InformationLargeOutlined, InformationSmallOutlined, JoinOutlined, KeyboardShortcutsOutlined, RoadmapOutlined,
   SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebsiteOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import classnames from 'classnames';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'pc/components/enterprise/vikaby';

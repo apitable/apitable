@@ -1,4 +1,4 @@
-import { Alert } from '@vikadata/components';
+import { Alert } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { FC } from 'react';
 import styles from './style.module.less';

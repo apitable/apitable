@@ -1,4 +1,4 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { useRouter } from 'next/router';

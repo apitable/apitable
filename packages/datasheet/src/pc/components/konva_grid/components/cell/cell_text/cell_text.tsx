@@ -1,5 +1,5 @@
 import { FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, Field, ISegment } from '@apitable/core';
-import { ColumnEmailNonzeroFilled, ColumnPhoneFilled, ColumnUrlOutlined } from '@vikadata/icons';
+import { ColumnEmailNonzeroFilled, ColumnPhoneFilled, ColumnUrlOutlined } from '@apitable/icons';
 import { Icon, Text } from 'pc/components/konva_components';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';

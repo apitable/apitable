@@ -1,5 +1,5 @@
 import { View } from '../view';
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { IReduxState, Selectors } from '@apitable/core';
 import { connect } from 'react-redux';
 import styles from './style.module.less';

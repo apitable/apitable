@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { FlowContext } from 'pc/components/org_chart_view/context/flow_context';
 import { FC, useContext } from 'react';
 import styles from '../styles.module.less';

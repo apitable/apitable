@@ -1,4 +1,4 @@
-import { colors } from '@vikadata/components';
+import { colors } from '@apitable/components';
 import { IReduxState, IUserInfo } from '@apitable/core';
 import Konva from 'konva';
 import { debounce } from 'lodash';

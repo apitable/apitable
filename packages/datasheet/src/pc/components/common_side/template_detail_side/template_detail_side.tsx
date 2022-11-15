@@ -1,4 +1,4 @@
-import { LinkButton, Skeleton, useThemeColors } from '@vikadata/components';
+import { LinkButton, Skeleton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';

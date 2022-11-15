@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 import IconDot from 'static/icon/common/common_icon_more.svg';
 import { useClickAway } from 'ahooks';
 
-import { useContextMenu, useThemeColors } from '@vikadata/components';
+import { useContextMenu, useThemeColors } from '@apitable/components';
 
 import { useCommand } from '../hooks/use_command';
 import { MemberFieldHead } from './member_field_head';

@@ -1,6 +1,6 @@
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useState } from 'react';
 import * as React from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
@@ -12,7 +12,7 @@ import { ViewFieldOptionsMobile } from '../view_field_options/view_field_options
 import { ViewRules } from '../view_rules';
 import { ButtonPlus } from 'pc/components/common';
 import { Col, Row } from 'antd';
-import { DragOutlined } from '@vikadata/icons';
+import { DragOutlined } from '@apitable/icons';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 
 interface ICommonViewSetProps {

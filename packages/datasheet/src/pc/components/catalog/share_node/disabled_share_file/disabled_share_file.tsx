@@ -1,6 +1,6 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, IReduxState, Settings, Strings, t } from '@apitable/core';
-import { EyeNormalOutlined } from '@vikadata/icons';
+import { EyeNormalOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from 'pc/components/catalog/share_node/public_link/style.module.less';

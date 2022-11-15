@@ -1,11 +1,11 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Calendar, Tooltip, useThemeColors } from '@vikadata/components';
+import { Button, Calendar, Tooltip, useThemeColors } from '@apitable/components';
 import { Drag } from './drag';
 import { Drop } from './drop';
 import { RecordList } from './record_list';
-import { ClearOutlined, ListOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
+import { ClearOutlined, ListOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
   BasicValueType,

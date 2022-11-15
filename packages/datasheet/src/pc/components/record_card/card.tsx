@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { CardBody } from './card_body';
 import { CardHeader } from './card_header';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 //  Common card component for Gallery and Kanban views
 interface IRecordCardProps {

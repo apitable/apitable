@@ -14,7 +14,7 @@ import {
 } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'antd';
-import { Select, Typography, IOption, IconButton, Switch, useThemeColors } from '@vikadata/components';
+import { Select, Typography, IOption, IconButton, Switch, useThemeColors } from '@apitable/components';
 import {
   InformationSmallOutlined,
   ColumnLinktableFilled,
@@ -22,7 +22,7 @@ import {
   ClassroomOutlined,
   ChevronRightOutlined,
   AddOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { resourceService } from 'pc/resource_service';
 import styles from './style.module.less';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';

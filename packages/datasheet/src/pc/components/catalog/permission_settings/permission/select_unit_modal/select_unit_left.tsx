@@ -26,7 +26,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { useSelector } from 'react-redux';
 import { ScreenSize } from 'pc/components/common/component_display';
 import classnames from 'classnames';
-import { Loading, stopPropagation, useThemeColors } from '@vikadata/components';
+import { Loading, stopPropagation, useThemeColors } from '@apitable/components';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
 

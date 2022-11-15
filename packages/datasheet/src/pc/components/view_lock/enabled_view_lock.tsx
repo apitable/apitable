@@ -1,4 +1,4 @@
-import { Avatar, Button, Message, Typography } from '@vikadata/components';
+import { Avatar, Button, Message, Typography } from '@apitable/components';
 import { Api, CollaCommandName, ExecuteResult, IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import keyBy from 'lodash/keyBy';

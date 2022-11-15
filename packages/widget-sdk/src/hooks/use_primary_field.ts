@@ -16,7 +16,7 @@ import { getFieldMap, getFieldPermissionMap, getWidgetDatasheet } from 'store';
  *
  * ### Example
  * ```js
- * import { usePrimaryField, useDatasheet } from '@vikadata/widget-sdk';
+ * import { usePrimaryField, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Show primary field name
  * function PrimaryFieldName() {

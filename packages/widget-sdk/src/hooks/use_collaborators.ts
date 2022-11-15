@@ -30,7 +30,7 @@ const getCurrentCollaborators = (state: IWidgetState) => {
  *
  * ### Example
  * ```js
- * import { useCollaborators } from '@vikadata/widget-sdk';
+ * import { useCollaborators } from '@apitable/widget-sdk';
  *
  * // show the currently environment collaborator of the widget
  * function Meta() {

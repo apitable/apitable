@@ -16,7 +16,7 @@ COPY packages/widget-sdk/package.json ./packages/widget-sdk/
 # datasheet main
 COPY packages/datasheet/package.json ./packages/datasheet/
 
-RUN yarn workspaces focus @vikadata/datasheet root
+RUN yarn workspaces focus @apitable/datasheet root
 
 # stage builder
 FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS builder

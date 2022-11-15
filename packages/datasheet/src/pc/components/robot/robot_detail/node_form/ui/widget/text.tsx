@@ -1,5 +1,5 @@
 import { IWidgetProps } from '../../core/interface';
-import { TextInput, applyDefaultTheme } from '@vikadata/components';
+import { TextInput, applyDefaultTheme } from '@apitable/components';
 import styled, { css } from 'styled-components';
 import { useControllableValue } from 'ahooks';
 

@@ -1,4 +1,4 @@
-import { Loading, Message } from '@vikadata/components';
+import { Loading, Message } from '@apitable/components';
 import { Api, Navigation, Strings, t } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';

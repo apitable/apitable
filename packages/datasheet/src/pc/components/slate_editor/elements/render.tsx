@@ -2,7 +2,7 @@ import * as React from 'react';
 import omit from 'lodash/omit';
 import styles from './style.module.less';
 
-// import { useThemeColors } from '@vikadata/components';
+// import { useThemeColors } from '@apitable/components';
 
 import { ElementType, NodeType, LIST_ITEM_TYPE_DICT, HIGHLIGHT_COLORS } from '../constant';
 import { IElementRenderProps, ILeafRenderProps, IElement } from '../interface/element';

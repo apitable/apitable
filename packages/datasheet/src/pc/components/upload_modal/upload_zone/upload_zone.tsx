@@ -7,10 +7,10 @@ import { stopPropagation } from 'pc/utils';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { ICommonTabRef } from '../upload_tab';
 import styles from './styles.module.less';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import { browser } from 'modules/shared/browser';
 
 interface IUploadZonProps {

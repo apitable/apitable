@@ -1,7 +1,7 @@
 import {
   ConfigConstant, integrateCdnHost, IReduxState, ITemplate, ITemplateCategory, Navigation, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import { Col, Row } from 'antd';
 import { TemplateListContext } from 'context/template_list';
 import parser from 'html-react-parser';

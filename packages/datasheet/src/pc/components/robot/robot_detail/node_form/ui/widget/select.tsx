@@ -1,5 +1,5 @@
 import { t, Strings } from '@apitable/core';
-import { Select } from '@vikadata/components';
+import { Select } from '@apitable/components';
 import { IWidgetProps } from '../../core/interface';
 import { literal2Operand, operand2Literal } from '../utils';
 

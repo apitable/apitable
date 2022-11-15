@@ -1,5 +1,5 @@
 import { Strings, t } from '@apitable/core';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';

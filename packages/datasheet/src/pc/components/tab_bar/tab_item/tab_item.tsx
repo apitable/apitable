@@ -8,7 +8,7 @@ import { ICustomViewProps } from '../tab/tab';
 import styles from './style.module.less';
 import { stopPropagation } from '../../../utils/dom';
 import { Tooltip } from 'pc/components/common';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { ViewLockIcon } from 'pc/components/view_lock/view_lock_icon';
 
 export interface ITabbarItemProps {

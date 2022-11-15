@@ -1,6 +1,6 @@
 import { Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
 import * as Sentry from '@sentry/react';
-import { IServiceError } from '@vikadata/widget-sdk';
+import { IServiceError } from '@apitable/widget-sdk';
 import { triggerUsageAlertForDatasheet } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';

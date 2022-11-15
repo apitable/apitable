@@ -1,4 +1,4 @@
-import { IconButton } from '@vikadata/components';
+import { IconButton } from '@apitable/components';
 import { CutMethod, getImageThumbSrc, integrateCdnHost, isGif, Settings, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';

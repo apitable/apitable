@@ -13,7 +13,7 @@ import { copy2clipBoard } from 'pc/utils';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 import {
   DeleteOutlined,
@@ -24,7 +24,7 @@ import {
   ColumnUrlOutlined,
   CopyOutlined,
   ExpandRecordOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 
 import { notifyWithUndo } from '../notify';
 import { NotifyKey } from '../notify/notify.interface';

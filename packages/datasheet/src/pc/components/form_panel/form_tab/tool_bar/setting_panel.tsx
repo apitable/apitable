@@ -4,9 +4,9 @@ import { Strings, t } from '@apitable/core';
 import styles from './style.module.less';
 import { Checkbox } from 'antd';
 import { IToolBarBase } from './interface';
-import { InformationSmallOutlined } from '@vikadata/icons';
+import { InformationSmallOutlined } from '@apitable/icons';
 import { Tooltip } from 'antd';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 enum IFormOptionType {
   CoverVisible = 'CoverVisible',

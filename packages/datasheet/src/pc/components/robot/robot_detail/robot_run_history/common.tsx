@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography, useTheme } from '@vikadata/components';
+import { Box, Typography, useTheme } from '@apitable/components';
 
 interface IKeyValueDisplayProps {
   label: string;

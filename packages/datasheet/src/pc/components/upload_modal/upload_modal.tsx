@@ -1,7 +1,7 @@
 import { IAttachmentValue, IField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import { BulkDownload } from '../preview_file/preview_main/bulk_download';
 import { Memory } from './memory';
 import styles from './styles.module.less';
 import { UploadCore } from './upload_core';
-import { CloseMiddleOutlined } from '@vikadata/icons';
+import { CloseMiddleOutlined } from '@apitable/icons';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 
 interface IUploadAttachment {

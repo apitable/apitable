@@ -1,4 +1,4 @@
-import { stopPropagation, ThemeProvider } from '@vikadata/components';
+import { stopPropagation, ThemeProvider } from '@apitable/components';
 import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, Settings, StoreActions } from '@apitable/core';
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';

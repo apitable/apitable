@@ -1,6 +1,6 @@
 import { useFields } from '../../hooks';
 import React from 'react';
-import { Select } from '@vikadata/components';
+import { Select } from '@apitable/components';
 import { IFieldPicker, IOption } from 'interface';
 import { noop } from 'lodash';
 import { Strings, t } from 'core';
@@ -15,7 +15,7 @@ import { Strings, t } from 'core';
  * Common usage.
  * ``` ts
  * import React, { useState } from 'react';
- * import { FieldPicker, useActiveViewId } from '@vikadata/widget-sdk';
+ * import { FieldPicker, useActiveViewId } from '@apitable/widget-sdk';
  * const Example = () => {
  *   const viewId = useActiveViewId();
  *   const [fieldId, setFieldId] = useState()
@@ -26,7 +26,7 @@ import { Strings, t } from 'core';
  * Use {@link useCloudStorage} implementing persistent storage.
  * ``` ts
  * import React, { useState } from 'react';
- * import { FieldPicker, useActiveViewId, useCloudStorage } from '@vikadata/widget-sdk';
+ * import { FieldPicker, useActiveViewId, useCloudStorage } from '@apitable/widget-sdk';
  * const ExampleCloud = () => {
  *   const viewId = useActiveViewId();
  *   const [fieldId, setFieldId] = useCloudStorage('selectFieldId');

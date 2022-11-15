@@ -1,4 +1,4 @@
-import { Button, TextInput } from '@vikadata/components';
+import { Button, TextInput } from '@apitable/components';
 import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { useRequest } from 'pc/hooks';

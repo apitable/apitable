@@ -2,7 +2,7 @@ import { IField, IRatingField, Strings, t } from '@apitable/core';
 import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 import { SelectValue } from 'antd/lib/select';
 import { Emoji } from 'pc/components/common';
-import { Select, Button, useThemeColors } from '@vikadata/components';
+import { Select, Button, useThemeColors } from '@apitable/components';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';

@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Form, Input } from 'antd';
 import Image from 'next/image';

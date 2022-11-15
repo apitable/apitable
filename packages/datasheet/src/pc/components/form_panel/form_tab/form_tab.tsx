@@ -1,4 +1,4 @@
-import { LinkButton, useThemeColors } from '@vikadata/components';
+import { LinkButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, ResourceType, Selectors, Strings, t, ViewType, WORKBENCH_SIDE_ID } from '@apitable/core';
 import { useSize } from 'ahooks';
 import classNames from 'classnames';

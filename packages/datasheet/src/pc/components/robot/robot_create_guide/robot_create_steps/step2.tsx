@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@vikadata/components';
+import { Avatar, Box, Button, Select, Tooltip, useTheme } from '@apitable/components';
 import { useState, useCallback } from 'react';
 import { mutate } from 'swr';
 import { createTrigger, getRobotBaseInfo } from '../../api';

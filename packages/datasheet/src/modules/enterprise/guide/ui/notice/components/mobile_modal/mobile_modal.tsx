@@ -1,5 +1,5 @@
-import { CloseMiddleOutlined } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { CloseMiddleOutlined } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 import { FC } from 'react';
 import styles from './style.module.less';
 

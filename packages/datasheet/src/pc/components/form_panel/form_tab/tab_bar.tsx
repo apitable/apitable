@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { FormTab } from './form_tab';
 import styles from './style.module.less';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { Space } from 'antd';
 
 export const TabBar: FC<{ loading: boolean }> = ({ loading }) => {

@@ -1,4 +1,4 @@
-import { lightColors } from '@vikadata/components';
+import { lightColors } from '@apitable/components';
 import { Api, SystemConfig, getComputeRefManager, IReduxState, Selectors, Strings, t } from '@apitable/core';
 
 const GradesColor = {

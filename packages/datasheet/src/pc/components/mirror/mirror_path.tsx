@@ -1,4 +1,4 @@
-import { Message, useThemeColors } from '@vikadata/components';
+import { Message, useThemeColors } from '@apitable/components';
 import { ConfigConstant, INodeMeta, IPermissions, ISourceDatasheetInfo, Navigation, Selectors, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import throttle from 'lodash/throttle';

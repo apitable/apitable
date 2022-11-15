@@ -1,4 +1,4 @@
-import { Button, Checkbox, IUseListenTriggerInfo, Select, Typography, useListenVisualHeight, useThemeColors } from '@vikadata/components';
+import { Button, Checkbox, IUseListenTriggerInfo, Select, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import {
   CalendarStyleKeyType,
   CollaCommandName,
@@ -14,7 +14,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@vikadata/icons';
+import { DragOutlined, EditDescribeOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { Switch, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { Message } from 'pc/components/common';

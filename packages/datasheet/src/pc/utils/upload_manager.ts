@@ -1,5 +1,5 @@
 import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@apitable/core';
-import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
+import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';

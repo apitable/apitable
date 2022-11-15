@@ -1,5 +1,5 @@
 import { FieldType } from '@apitable/core';
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import {
   ColumnAttachmentFilled,
   ColumnAutonumberFilled,
@@ -24,7 +24,7 @@ import {
   ColumnPhoneFilled,
   ColumnLookupFilled,
   ColumnRatingFilled,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 
 const FieldIconMap = {
   [FieldType.Text]: ColumnLongtextFilled,

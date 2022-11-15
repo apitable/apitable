@@ -1,4 +1,4 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import {
   Api,
   ConfigConstant,
@@ -16,7 +16,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { ChevronRightOutlined, CopyOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined, CopyOutlined } from '@apitable/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';

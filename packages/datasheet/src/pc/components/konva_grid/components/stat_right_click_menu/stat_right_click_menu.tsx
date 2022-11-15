@@ -1,8 +1,8 @@
 
 import * as React from 'react';
 import { KONVA_DATASHEET_ID, t, Strings } from '@apitable/core';
-import { ContextMenu, useContextMenu, useThemeColors } from '@vikadata/components';
-import { CopyOutlined } from '@vikadata/icons';
+import { ContextMenu, useContextMenu, useThemeColors } from '@apitable/components';
+import { CopyOutlined } from '@apitable/icons';
 
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import { stopPropagation } from 'pc/utils/dom';

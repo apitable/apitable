@@ -1,4 +1,4 @@
-import { CloseLargeOutlined } from '@vikadata/icons';
+import { CloseLargeOutlined } from '@apitable/icons';
 import { useKeyPress, useUnmount } from 'ahooks';
 import { Box } from 'components/box';
 import { IconButton } from 'components/icon_button';

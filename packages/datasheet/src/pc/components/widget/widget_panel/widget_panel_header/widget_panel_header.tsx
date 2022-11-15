@@ -1,5 +1,5 @@
 import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { ChevronLeftOutlined, CloseLargeOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined, CloseLargeOutlined } from '@apitable/icons';
 import RcTrigger from 'rc-trigger';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
@@ -10,7 +10,7 @@ import { expandWidgetCenter, InstallPosition } from '../../widget_center/widget_
 import styles from './style.module.less';
 import { WidgetPanelList } from './widget_panel_list';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
-import { IconButton, useThemeColors } from '@vikadata/components';
+import { IconButton, useThemeColors } from '@apitable/components';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { WrapperTooltip } from './wrapper_tooltip';

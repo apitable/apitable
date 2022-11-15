@@ -1,5 +1,5 @@
 import { IAttachmentValue, KONVA_DATASHEET_ID } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Rect } from 'pc/components/konva_components';
 import { GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_VALUE_PADDING, KonvaGridContext } from 'pc/components/konva_grid';

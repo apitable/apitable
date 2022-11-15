@@ -1,4 +1,4 @@
-import { deepPurple } from '@vikadata/components';
+import { deepPurple } from '@apitable/components';
 import { Strings, t, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';

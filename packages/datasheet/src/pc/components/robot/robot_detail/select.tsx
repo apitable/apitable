@@ -1,4 +1,4 @@
-import { Select as SelectBase } from '@vikadata/components';
+import { Select as SelectBase } from '@apitable/components';
 import { useControllableValue } from 'ahooks';
 
 /**

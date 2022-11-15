@@ -1,4 +1,4 @@
-import { Loading } from '@vikadata/components';
+import { Loading } from '@apitable/components';
 import { integrateCdnHost, Settings, t, Strings } from '@apitable/core';
 import { useQuery } from 'pc/hooks';
 import { getWecomConfig } from 'pc/utils/get_config';

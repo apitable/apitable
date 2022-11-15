@@ -1,4 +1,4 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@apitable/core';
 import { useMount, useSize, useUnmount } from 'ahooks';
 import classNames from 'classnames';

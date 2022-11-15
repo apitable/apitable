@@ -8,7 +8,7 @@ import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import { RecordCard } from '../../../record_card/card';
 import styles from '../styles.module.less';
-import { useContextMenu } from '@vikadata/components';
+import { useContextMenu } from '@apitable/components';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 
 // Spacing between top and bottom cards

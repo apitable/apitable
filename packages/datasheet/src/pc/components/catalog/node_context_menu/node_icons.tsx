@@ -30,8 +30,8 @@ import {
   IIconProps, MirrorOutlined, EditDescribeOutlined,
   CalenderRightOutlined,
   MovefileOutlined
-} from '@vikadata/icons';
-import { colorVars } from '@vikadata/components';
+} from '@apitable/icons';
+import { colorVars } from '@apitable/components';
 
 /**
  * Node icon type, external use of this enumeration as configuration

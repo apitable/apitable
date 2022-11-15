@@ -3,7 +3,7 @@ import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { store } from 'pc/store';
 import { resourceService } from 'pc/resource_service';
-import { ContextMenu, useContextMenu } from '@vikadata/components';
+import { ContextMenu, useContextMenu } from '@apitable/components';
 import { CollaCommandName, Field, getStatTypeList, KONVA_DATASHEET_ID, Selectors, StatType } from '@apitable/core';
 import { getFieldStatType } from 'pc/components/multi_grid/cell/stat_option';
 import { MouseDownType } from 'pc/components/selection_wrapper';

@@ -7,7 +7,7 @@ import {
   StoreActions,
 } from '@apitable/core';
 import { store } from 'pc/store';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { CellValue } from '../cell/cell_value';

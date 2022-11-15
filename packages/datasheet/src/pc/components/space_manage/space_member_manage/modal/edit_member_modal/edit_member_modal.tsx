@@ -1,5 +1,5 @@
 import { ConfigConstant, IReduxState, ITeamsInSpace, IUpdateMemberInfo, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
-import { TextInput, Button, TextButton, colorVars } from '@vikadata/components';
+import { TextInput, Button, TextButton, colorVars } from '@apitable/components';
 import { Avatar } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';

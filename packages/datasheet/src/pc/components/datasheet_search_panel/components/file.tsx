@@ -2,9 +2,9 @@ import * as React from 'react';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import FileIcon from 'static/icon/datasheet/datasheet_icon_file_normal.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
-import { MirrorOutlined } from '@vikadata/icons';
+import { MirrorOutlined } from '@apitable/icons';
 
 const Budget: React.FC = props => {
   return (

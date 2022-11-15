@@ -1,9 +1,9 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import {
   ADDRESS_ID, Api, ConfigConstant, Events, getCustomConfig, IApi, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player,
   StoreActions, Strings, t,
 } from '@apitable/core';
-import { AddOutlined, AddressOutlined } from '@vikadata/icons';
+import { AddOutlined, AddressOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { expandMemberInfo } from 'pc/components/address_list/expand_member_info';

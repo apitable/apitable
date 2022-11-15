@@ -6,7 +6,7 @@ import {
   ColumnLongtextFilled, ColumnLookupNonzeroFilled, AccountFilled, ColumnPercentFilled, ColumnPhoneFilled, ColumnRatingFilled,
   ColumnMultipleFilled, ColumnSingleNonzeroFilled, ColumnUrlOutlined, ColumnFigureFilled, ColumnEmailNonzeroFilled,
   ColumnLinktableFilled, ColumnCalendarNonzeroFilled, ColumnTextNonzeroFilled, 
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { Icon } from 'pc/components/konva_components';
 
 const ColumnLongtextFilledPath = ColumnLongtextFilled.toString();

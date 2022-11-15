@@ -4,16 +4,13 @@ image:
 
 tasks:
   - name: init and run
-    # 提前预先编译
     init: |
       yarn install
       yarn build:dst:pre
-    # 启动程序运行命令
     command: |
       yarn sd:r
-  # 一个独立的命令行窗口用于自由编辑
   - name: command line for free
-    command: echo "Hi, Vikaer"
+    command: echo "Welcome to APITable"
     openMode: split-right
               
 

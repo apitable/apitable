@@ -21,7 +21,7 @@ import { printableKey, isNumeralKey, stopPropagation } from 'pc/utils';
 import { Input } from 'antd';
 import { Tooltip } from 'pc/components/common';
 import isNumber from 'lodash/isNumber';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useDebounceFn } from 'ahooks';
 
 export interface INumberEditorProps extends IBaseEditorProps {

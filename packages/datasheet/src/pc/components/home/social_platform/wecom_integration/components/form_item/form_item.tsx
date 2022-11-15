@@ -1,4 +1,4 @@
-import { TextInput } from '@vikadata/components';
+import { TextInput } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import * as React from 'react';

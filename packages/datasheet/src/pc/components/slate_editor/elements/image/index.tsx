@@ -1,5 +1,5 @@
-import { useThemeColors } from '@vikadata/components';
-import { DeleteOutlined } from '@vikadata/icons';
+import { useThemeColors } from '@apitable/components';
+import { DeleteOutlined } from '@apitable/icons';
 import { message, Spin } from 'antd';
 import dynamic from 'next/dynamic';
 import NextImage from 'next/image';

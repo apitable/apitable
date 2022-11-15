@@ -1,5 +1,5 @@
 import { DATASHEET_ID, DropDirectionType, Selectors } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';

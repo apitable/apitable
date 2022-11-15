@@ -6,7 +6,7 @@ import IconMedium from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhigh
 import IconTail from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_high_normal.svg';
 import IconExtraTall from 'static/icon/datasheet/viewtoolbar/datasheet_icon_rowhight_extremhigh_normal.svg';
 import classNames from 'classnames';
-import { colorVars, Checkbox, Divider, useListenVisualHeight } from '@vikadata/components';
+import { colorVars, Checkbox, Divider, useListenVisualHeight } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { resourceService } from 'pc/resource_service';

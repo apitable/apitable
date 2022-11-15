@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './styles.module.less';
 import MemberIcon from 'static/icon/space/space_icon_account.svg';
-import { getThemeColors } from '@vikadata/components';
+import { getThemeColors } from '@apitable/components';
 
 interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;

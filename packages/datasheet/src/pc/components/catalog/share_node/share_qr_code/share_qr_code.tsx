@@ -1,4 +1,4 @@
-import { Button, IconButton, useThemeColors } from '@vikadata/components';
+import { Button, IconButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';

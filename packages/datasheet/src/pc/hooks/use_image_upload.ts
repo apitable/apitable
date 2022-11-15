@@ -2,7 +2,7 @@ import { getImageThumbSrc, Settings, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { shallowEqual, useSelector } from 'react-redux';
 import { UploadManager } from '../utils/upload_manager';
-import { uploadAttachToS3, UploadType } from '@vikadata/widget-sdk';
+import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 
 export const useImageUpload = () => {
   const { folderId, datasheetId } = useSelector(state => {

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Tooltip } from 'antd';
-import { LockNonzeroOutlined } from '@vikadata/icons';
+import { LockNonzeroOutlined } from '@apitable/icons';
 // import { useSelector } from 'react-redux';
 import { IViewProperty, /* Selectors,  */Strings, t } from '@apitable/core';
 import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 export const ViewLockIcon: React.FC<{ viewId: string, view: IViewProperty }> = ({ viewId, view }) => {
   // const currentView = useSelector(Selectors.getCurrentView);

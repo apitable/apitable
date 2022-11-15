@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import styles from './style.module.less';
 import { Strings, t, Api } from '@apitable/core';
 import { Card } from './card';
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import { ApplicantType } from './interface';
 import { useRequest } from 'pc/hooks';
 import { compact } from 'lodash';

@@ -1,7 +1,7 @@
 Tag
 
 ```tsx
-import {EyeNomalOutlined} from '@vikadata/icons';
+import {EyeNomalOutlined} from '@apitable/icons';
 
 <>
   <Tag icon={<EyeNomalOutlined currentColor />} closable>Darker</Tag>

@@ -4,7 +4,7 @@ import { FC, useRef, useState } from 'react';
 import * as React from 'react';
 import styles from './style.module.less';
 import { Modal } from 'pc/components/common';
-import { Button, ButtonGroup } from '@vikadata/components';
+import { Button, ButtonGroup } from '@apitable/components';
 import QueueAnim from 'rc-queue-anim';
 import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
 import { useNotificationRequest, useResponsive } from 'pc/hooks';

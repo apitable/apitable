@@ -1,6 +1,6 @@
 import { t, Strings } from '@apitable/core';
-import { Button, IconButton } from '@vikadata/components';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@vikadata/icons';
+import { Button, IconButton } from '@apitable/components';
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
 import styled from 'styled-components';
 import { IArrayFieldTemplateProps } from '../../core/interface';
 

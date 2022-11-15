@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styles from './styles.module.less';
 import classnames from 'classnames';
-import { CheckOutlined } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { CheckOutlined } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 
 export interface IStepsProps {
   current: number;

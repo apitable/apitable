@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@vikadata/components';
+import { Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { IUISchemaLayoutGroup } from '../../interface';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';

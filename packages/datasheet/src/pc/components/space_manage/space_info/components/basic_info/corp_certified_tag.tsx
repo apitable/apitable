@@ -2,7 +2,7 @@ import styles from './corp_certified_tag.module.less';
 import classnames from 'classnames';
 import { Strings, t, isPrivateDeployment } from '@apitable/core';
 import IconCertified from 'static/icon/space/space_icon_certified.svg';
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import { Tooltip } from 'pc/components/common';
 import { buildSpaceCertSheetUrl } from './helper';
 import { isMobileApp } from 'pc/utils/env';

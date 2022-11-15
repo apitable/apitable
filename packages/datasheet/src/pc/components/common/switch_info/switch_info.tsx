@@ -1,4 +1,4 @@
-import { ISwitchProps, Switch } from '@vikadata/components';
+import { ISwitchProps, Switch } from '@apitable/components';
 import { PermissionType, IPermissionInfo } from 'pc/components/space_manage/security';
 import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label/subscribe_label';
 import { FC } from 'react';

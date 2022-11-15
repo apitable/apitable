@@ -13,7 +13,7 @@ import {
   Strings,
 } from '@apitable/core';
 import styles from './style.module.less';
-import { TextInput, Button } from '@vikadata/components';
+import { TextInput, Button } from '@apitable/components';
 import classNames from 'classnames';
 import { useRequest } from 'pc/hooks';
 import { useSetState } from 'pc/hooks';

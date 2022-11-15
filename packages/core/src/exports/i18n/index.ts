@@ -25,7 +25,7 @@ export function getLanguage() {
   return language || 'zh-CN';
 }
 
-require('@vikadata/i18n-lang');
+require('@apitable/i18n-lang');
 
 // global singleton of I18N
 const i18n = I18N.createByLanguagePacks(_global.vika_i18n, getLanguage());

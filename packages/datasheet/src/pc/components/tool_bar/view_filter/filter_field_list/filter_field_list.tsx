@@ -23,7 +23,7 @@ import { ExecuteFilterFn } from '../interface';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';
-import { IOption, Select, useThemeColors } from '@vikadata/components';
+import { IOption, Select, useThemeColors } from '@apitable/components';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'pc/components/common';

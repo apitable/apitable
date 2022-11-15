@@ -5,7 +5,7 @@ import * as React from 'react';
 import style from './style.module.less';
 import { Emoji } from 'pc/components/common/emoji';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useState } from 'react';
 import { RateItem } from './rate_item';
 import { t } from '@apitable/core';

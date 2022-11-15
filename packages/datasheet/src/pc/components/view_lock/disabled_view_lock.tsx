@@ -1,4 +1,4 @@
-import { Button, Message, Typography } from '@vikadata/components';
+import { Button, Message, Typography } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Strings, t } from '@apitable/core';
 import { Input } from 'antd';
 import styles from 'pc/components/view_lock/style.module.less';

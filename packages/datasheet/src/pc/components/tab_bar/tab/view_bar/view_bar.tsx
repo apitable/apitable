@@ -1,6 +1,6 @@
 import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayElement, Selectors, Strings, t, ViewType } from '@apitable/core';
-import { ChevronDownOutlined } from '@vikadata/icons';
-import { TextButton, useContextMenu } from '@vikadata/components';
+import { ChevronDownOutlined } from '@apitable/icons';
+import { TextButton, useContextMenu } from '@apitable/components';
 import cls from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ToolHandleType } from 'pc/components/tool_bar/interface';

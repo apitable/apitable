@@ -6,8 +6,8 @@ import {
   Api, ConfigConstant, INodeRoleMap,
   IUnitValue, Settings, StoreActions, Strings, t,
 } from '@apitable/core';
-import { IOption, Skeleton, Typography } from '@vikadata/components';
-import { InformationSmallOutlined, ChevronRightOutlined } from '@vikadata/icons';
+import { IOption, Skeleton, Typography } from '@apitable/components';
+import { InformationSmallOutlined, ChevronRightOutlined } from '@apitable/icons';
 import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { permissionMenuData } from 'pc/utils';
 import { ScreenSize } from 'pc/components/common/component_display';

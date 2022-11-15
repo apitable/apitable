@@ -1,6 +1,6 @@
-import { Button, TextButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, Settings, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, PlayFilled } from '@vikadata/icons';
+import { ChevronRightOutlined, PlayFilled } from '@apitable/icons';
 import Image from 'next/image';
 import { showModal } from 'modules/enterprise/guide/ui';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

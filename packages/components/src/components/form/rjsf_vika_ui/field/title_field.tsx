@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FieldProps } from '@rjsf/core';
 import styled, { css } from 'styled-components';
-import { InformationSmallOutlined } from '@vikadata/icons';
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { InformationSmallOutlined } from '@apitable/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { Tooltip } from 'components';
 
 const h = styled.div<{ hasCollapse?: boolean }>`

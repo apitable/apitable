@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { ITextInputProps, TextInput } from '@vikadata/components';
-import { EyeCloseOutlined, EyeNormalOutlined, LockFilled } from '@vikadata/icons';
+import { ITextInputProps, TextInput } from '@apitable/components';
+import { EyeCloseOutlined, EyeNormalOutlined, LockFilled } from '@apitable/icons';
 import { useBoolean } from 'ahooks';
 import styles from './style.module.less';
 

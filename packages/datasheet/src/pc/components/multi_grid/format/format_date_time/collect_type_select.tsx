@@ -7,7 +7,7 @@ import { AutoLayout } from '../../field_setting/auto_layout';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import IconEdit from 'static/icon/datasheet/rightclick/datasheet_icon_rename.svg';
-import { TextButton, useThemeColors } from '@vikadata/components';
+import { TextButton, useThemeColors } from '@apitable/components';
 import RcTrigger from 'rc-trigger';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';

@@ -8,7 +8,7 @@ import { UserCardTrigger } from 'pc/components/common/user_card/user_card_trigge
 import { TriggerProps } from 'rc-trigger';
 import { MemberType } from '@apitable/core';
 import MemberIcon from 'static/icon/space/space_icon_account.svg';
-import { getThemeColors } from '@vikadata/components';
+import { getThemeColors } from '@apitable/components';
 
 interface ITriggerBase {
   action: TriggerProps['action'];

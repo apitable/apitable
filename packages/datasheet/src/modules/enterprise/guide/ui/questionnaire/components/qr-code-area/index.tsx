@@ -2,7 +2,7 @@ import { useMount } from 'ahooks';
 import QRCode from 'qrcode';
 import { FC } from 'react';
 import styles from './style.module.less';
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import classNames from 'classnames';
 
 type IQrCodeAreaProps = {

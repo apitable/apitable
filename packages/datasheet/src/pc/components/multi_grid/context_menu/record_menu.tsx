@@ -1,9 +1,9 @@
-import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@vikadata/components';
+import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
 import { CollaCommandName, DatasheetApi, ExecuteResult, Selectors, StoreActions, Strings, t, View, ViewType } from '@apitable/core';
 import {
   ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, ArrowUpOutlined, AttentionOutlined, ColumnUrlOutlined, CopyOutlined, DeleteOutlined,
   DuplicateOutlined, ExpandRecordOutlined,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { isInteger } from 'lodash';
 import difference from 'lodash/difference';

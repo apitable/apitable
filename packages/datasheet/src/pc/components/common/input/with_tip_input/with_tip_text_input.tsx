@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ITextInputProps, TextInput } from '@vikadata/components';
+import { ITextInputProps, TextInput } from '@apitable/components';
 import styles from './style.module.less';
 
 export interface IWithTipTextInputProps extends ITextInputProps {

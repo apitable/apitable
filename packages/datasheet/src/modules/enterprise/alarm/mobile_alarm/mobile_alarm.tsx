@@ -1,9 +1,9 @@
-import { IconButton, List, Switch, TextButton, Typography, useThemeColors } from '@vikadata/components';
+import { IconButton, List, Switch, TextButton, Typography, useThemeColors } from '@apitable/components';
 import {
   AlarmUsersType, Api, CollaCommandName, FieldType, IAlarmTypeKeys, ICellValue, IDPrefix, IMemberField, IRecordAlarmClient, Selectors, StoreActions,
   Strings, t, WithOptional,
 } from '@apitable/core';
-import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined, ChevronRightOutlined } from '@apitable/icons';
 import { DatePicker } from 'antd-mobile';
 import cls from 'classnames';
 import dayjs from 'dayjs';

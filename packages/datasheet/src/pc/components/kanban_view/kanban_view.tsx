@@ -32,7 +32,7 @@ import { useCommand } from './hooks/use_command';
 import { KanbanFieldSettingModal } from './kanban_field_setting';
 import { KanbanGroup } from './kanban_group/kanban_group';
 import styles from './styles.module.less';
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { GroupHeadMenu } from 'pc/components/kanban_view/group_header/head_more_option';
 import ReactDOM from 'react-dom';
 import CSSMotion from 'rc-motion';

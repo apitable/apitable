@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { isNull } from 'util';

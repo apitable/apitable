@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Strings, t, Url } from '@apitable/core';
 import { Upload } from 'antd';
 import * as React from 'react';

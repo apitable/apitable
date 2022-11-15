@@ -1,4 +1,4 @@
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { Api, Navigation, Strings, t } from '@apitable/core';
 import { Spin } from 'antd';
 import { Router } from 'pc/components/route_manager/router';

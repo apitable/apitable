@@ -1,4 +1,4 @@
-import { ChevronLeftOutlined, ChevronRightOutlined } from '@vikadata/icons';
+import { ChevronLeftOutlined, ChevronRightOutlined } from '@apitable/icons';
 import React, { memo, FC, useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from 'react';
 import { IOption, Select } from 'components/select';
 import {

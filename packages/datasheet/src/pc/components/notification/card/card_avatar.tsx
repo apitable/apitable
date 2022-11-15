@@ -3,7 +3,7 @@ import * as React from 'react';
 import { AvatarBase } from 'pc/components/common/avatar/avatar_base';
 import { Avatar, AvatarSize, AvatarType, IAvatarProps, Logo } from 'pc/components/common';
 import { NoticeTypesConstant } from '../utils';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import OfficialIcon from 'static/icon/workbench/notification/workbench_icon_notification_offcial.svg';
 import styles from './style.module.less';
 import classNames from 'classnames';

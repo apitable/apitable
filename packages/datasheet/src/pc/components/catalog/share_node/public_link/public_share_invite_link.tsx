@@ -4,8 +4,8 @@ import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
 
 import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@vikadata/components';
-import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@vikadata/icons';
+import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@apitable/components';
+import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@apitable/icons';
 
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';

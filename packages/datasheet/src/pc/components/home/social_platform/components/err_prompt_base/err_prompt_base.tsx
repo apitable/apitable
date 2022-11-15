@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import classNames from 'classnames';
 import Image from 'next/image';
 import { Wrapper } from 'pc/components/common';

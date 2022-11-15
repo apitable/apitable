@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { colors, IconButton } from '@vikadata/components';
+import { colors, IconButton } from '@apitable/components';
 import { Tooltip } from 'pc/components/common';
-import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@vikadata/icons';
+import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@apitable/icons';
 import styles from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { RecordVision, StoreActions, Strings, t, TrackEvents } from '@apitable/core';

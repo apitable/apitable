@@ -1,4 +1,4 @@
-import { ThemeName, ThemeProvider } from '@vikadata/components';
+import { ThemeName, ThemeProvider } from '@apitable/components';
 import { useEffect, useState } from 'react';
 import { getTheme, switchTheme } from './theme';
 

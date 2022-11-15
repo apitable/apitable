@@ -5,7 +5,7 @@ WORKDIR /tmp/vikadata
 
 COPY .yarn ./.yarn
 
-# install packages 可以使用缓存
+# install packages can use cache
 COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
 
 COPY packages/i18n-lang/package.json ./packages/i18n-lang/
@@ -14,7 +14,7 @@ COPY packages/core/package.json ./packages/core/
 
 COPY packages/room-server/package.json ./packages/room-server/
 
-RUN yarn workspaces focus @vikadata/room-server root
+RUN yarn workspaces focus @apitable/room-server root
 
 # stage builder
 FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS builder
@@ -43,20 +43,20 @@ WORKDIR /home/vikadata
 
 ENV NODE_ENV production
 
-# agenthub配置
+# agenthub
 COPY --from=builder /tmp/vikadata/packages/room-server/app-config.json /root/
 COPY --from=builder /tmp/vikadata /home/vikadata
 
 # pm2
 RUN npm install pm2 --global
 
-# local 配置
+# local 
 #ENV APP_ID 87508
 #ENV APP_SECRET f945aafb5a96077fe001b51e445250468da09756
 #ENV NODE_LOG_DIR /home/vikadata/packages/room-server/logs
 #ENV ENABLE_NODE_LOG YES
 EXPOSE 3333
-# grpc接口的端口
+# grpc port
 EXPOSE 3334
 # 部署类型
 ENV DEPLOY_TYPE="SaaS"

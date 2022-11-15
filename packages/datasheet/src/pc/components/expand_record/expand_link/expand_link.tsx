@@ -1,6 +1,6 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { RecordCard } from 'pc/components/common/record_card';

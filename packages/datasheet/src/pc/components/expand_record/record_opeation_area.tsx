@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { StoreActions, Strings, t, TrackEvents } from '@apitable/core';
-import { GotoLargeOutlined, CloseMiddleOutlined, FullscreenOutlined, UnfullscreenOutlined } from '@vikadata/icons';
-import { IconButton, LinkButton } from '@vikadata/components';
+import { GotoLargeOutlined, CloseMiddleOutlined, FullscreenOutlined, UnfullscreenOutlined } from '@apitable/icons';
+import { IconButton, LinkButton } from '@apitable/components';
 
 import { RecordPageTurn } from './record_page_turn/record_page_turn';
 
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import styles from './style.module.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tooltip } from 'antd';

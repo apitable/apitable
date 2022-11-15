@@ -1,4 +1,4 @@
-import { Button, IconButton, TextButton } from '@vikadata/components';
+import { Button, IconButton, TextButton } from '@apitable/components';
 import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Modal, Radio } from 'antd';
 import classnames from 'classnames';

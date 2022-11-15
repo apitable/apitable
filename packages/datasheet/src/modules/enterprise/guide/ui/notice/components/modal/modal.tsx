@@ -1,6 +1,6 @@
-import { IconButton } from '@vikadata/components';
+import { IconButton } from '@apitable/components';
 import { useMount } from 'ahooks';
-import { CloseMiddleOutlined } from '@vikadata/icons';
+import { CloseMiddleOutlined } from '@apitable/icons';
 import { FC, useState } from 'react';
 import styles from './style.module.less';
 import { CSSTransition } from 'react-transition-group';

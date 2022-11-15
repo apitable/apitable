@@ -1,5 +1,5 @@
 import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import classNames from 'classnames';
 import produce from 'immer';
 import { Message } from 'pc/components/common';

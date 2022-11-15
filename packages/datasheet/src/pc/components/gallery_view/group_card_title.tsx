@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import * as React from 'react';
 import { Selectors, Strings, t, ConfigConstant } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { store } from 'pc/store';
 import styles from './style.module.less';

@@ -1,6 +1,6 @@
-import { Loading, Message, useThemeColors } from '@vikadata/components';
+import { Loading, Message, useThemeColors } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
-import { DefaultFilled } from '@vikadata/icons';
+import { DefaultFilled } from '@apitable/icons';
 import { useRouter } from 'next/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';

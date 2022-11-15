@@ -2,6 +2,6 @@
 
 const cypress = require('..');
 
-describe('@vikadata/cypress', () => {
+describe('@apitable/cypress', () => {
   it('needs tests');
 });

@@ -1,4 +1,4 @@
-import { getThemeColors, lightColors } from '@vikadata/components';
+import { getThemeColors, lightColors } from '@apitable/components';
 import { CutMethod, getImageThumbSrc } from '@apitable/core';
 import * as React from 'react';
 

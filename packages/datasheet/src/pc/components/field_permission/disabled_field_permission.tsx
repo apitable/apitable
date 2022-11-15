@@ -1,4 +1,4 @@
-import { Button, Message } from '@vikadata/components';
+import { Button, Message } from '@apitable/components';
 import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { triggerUsageAlert } from 'modules/enterprise/billing';

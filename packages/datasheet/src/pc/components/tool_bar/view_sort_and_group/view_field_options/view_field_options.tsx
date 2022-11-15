@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
-import { IOption, Select, WrapperTooltip, useThemeColors } from '@vikadata/components';
+import { IOption, Select, WrapperTooltip, useThemeColors } from '@apitable/components';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 
 interface IViewFieldOptions {

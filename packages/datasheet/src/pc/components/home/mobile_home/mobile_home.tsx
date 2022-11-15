@@ -1,4 +1,4 @@
-import { LinkButton, useThemeColors } from '@vikadata/components';
+import { LinkButton, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import Image from 'next/image';

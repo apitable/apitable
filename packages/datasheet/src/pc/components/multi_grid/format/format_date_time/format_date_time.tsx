@@ -21,7 +21,7 @@ import { FieldSelectModal } from './field_select_modal';
 import { Divider } from 'pc/components/common/divider';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSelect } from 'pc/components/common';
-import { Select } from '@vikadata/components';
+import { Select } from '@apitable/components';
 
 interface IFormatDateTime {
   currentField: IDateTimeBaseField;

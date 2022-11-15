@@ -1,5 +1,5 @@
 import { WidgetProps } from '@rjsf/core';
-import { Checkbox } from '@vikadata/components';
+import { Checkbox } from '@apitable/components';
 
 const selectValue = (value: any, selected: any, all: any) => {
   const at = all.indexOf(value);

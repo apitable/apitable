@@ -8,7 +8,7 @@ import { getCurrentElement, isMarkActive, getValidSelection, getValidElementType
 import { MARK_LIST, SELECT_ELEMENT, ALIGN, ALIGN_LIST, ElementType, Z_INDEX, MarkType } from '../../constant';
 import Icons from '../icons';
 import { EditorContext } from '../../context';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 import { Select } from '../select';
 import { LinkInput } from './link_input';

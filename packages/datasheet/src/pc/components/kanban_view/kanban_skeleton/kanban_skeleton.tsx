@@ -1,4 +1,4 @@
-import { useThemeColors, Skeleton } from '@vikadata/components';
+import { useThemeColors, Skeleton } from '@apitable/components';
 import styles from './styles.module.less';
 
 export const KanbanSkeleton = () => {

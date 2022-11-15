@@ -1,4 +1,4 @@
-import { Divider, IconButton, Loading, useContextMenu, useThemeColors } from '@vikadata/components';
+import { Divider, IconButton, Loading, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
   ExecuteResult,
@@ -12,9 +12,9 @@ import {
 } from '@apitable/core';
 import {
   CloseMiddleOutlined, DragOutlined, MoreOutlined, RefreshOutlined, SettingOutlined, WidgetExpandOutlined, WidgetNarrowOutlined,
-} from '@vikadata/icons';
-import { mainWidgetMessage, RuntimeEnv } from '@vikadata/widget-sdk';
-import { WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
+} from '@apitable/icons';
+import { mainWidgetMessage, RuntimeEnv } from '@apitable/widget-sdk';
+import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useToggle } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 export const View: React.FC<{ 
   id: string,

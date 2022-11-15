@@ -6,8 +6,8 @@ import classNames from 'classnames';
 import { changeView } from 'pc/hooks';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import styles from './style.module.less';
-import { useThemeColors } from '@vikadata/components';
-import { AutosaveOutlined } from '@vikadata/icons';
+import { useThemeColors } from '@apitable/components';
+import { AutosaveOutlined } from '@apitable/icons';
 import { isInContainer } from 'pc/utils';
 
 export const ViewSwitcherHorizontal: React.FC = () => {

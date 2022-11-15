@@ -1,4 +1,4 @@
-import { ThemeName } from '@vikadata/components';
+import { ThemeName } from '@apitable/components';
 import { store } from 'pc/store';
 
 let preTheme: ThemeName;

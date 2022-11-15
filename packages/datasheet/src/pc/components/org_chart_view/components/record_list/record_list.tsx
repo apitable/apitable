@@ -1,6 +1,6 @@
 import { useState, Fragment, FC, useCallback, useContext } from 'react';
-import { Typography, Button, ListDeprecate, IconButton, useThemeColors } from '@vikadata/components';
-import { AddOutlined, CloseMiddleOutlined } from '@vikadata/icons';
+import { Typography, Button, ListDeprecate, IconButton, useThemeColors } from '@apitable/components';
+import { AddOutlined, CloseMiddleOutlined } from '@apitable/icons';
 import { DragItem } from './drag_item';
 import { DropWrapper } from '../drop_wrapper';
 import styles from './styles.module.less';

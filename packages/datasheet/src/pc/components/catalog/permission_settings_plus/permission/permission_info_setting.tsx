@@ -1,6 +1,6 @@
-import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@vikadata/components';
+import { Box, LinkButton, TextButton, Typography, useThemeColors } from '@apitable/components';
 import { IRoleMember, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, MultiplemembersFilled } from '@vikadata/icons';
+import { ChevronDownOutlined, ChevronUpOutlined, LockOutlined, MultiplemembersFilled } from '@apitable/icons';
 import { Dropdown } from 'antd';
 import classNames from 'classnames';
 import { ScreenSize } from 'pc/components/common/component_display';

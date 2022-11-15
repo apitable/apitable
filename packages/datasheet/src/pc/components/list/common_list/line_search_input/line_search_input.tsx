@@ -4,7 +4,7 @@ import styles from './style.module.less';
 import classNames from 'classnames';
 import { Strings, t } from '@apitable/core';
 import ClearIcon from 'static/icon/datasheet/datasheet_icon_attachment_cancel.svg';
-import { stopPropagation, useThemeColors } from '@vikadata/components';
+import { stopPropagation, useThemeColors } from '@apitable/components';
 
 interface ILineSearchInputProps {
   value?: string;

@@ -3,7 +3,7 @@ import { Avatar } from './index';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { IAvatarProps } from './interface';
-import { ExpandOutlined } from '@vikadata/icons';
+import { ExpandOutlined } from '@apitable/icons';
 import { AvatarGroup } from './avatar_group';
 
 const LOGO = 'https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a';

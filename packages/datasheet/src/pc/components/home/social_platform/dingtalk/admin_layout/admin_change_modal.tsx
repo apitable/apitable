@@ -1,4 +1,4 @@
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { useSpaceInfo } from 'pc/hooks';
 import { getSocialWecomUnitName } from '../..';

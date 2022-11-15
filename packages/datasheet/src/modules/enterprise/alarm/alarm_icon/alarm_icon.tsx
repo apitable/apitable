@@ -1,11 +1,11 @@
 import { KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
-import { NotificationSmallOutlined } from '@vikadata/icons';
+import { NotificationSmallOutlined } from '@apitable/icons';
 import { AlarmTipText } from 'modules/enterprise/alarm/alarm_tip_text';
 import { generateTargetName, getDayjs } from 'pc/components/gantt_view';
 import { Icon } from 'pc/components/konva_components';
 import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useContext } from 'react';
 
 const NotificationSmallOutlinedPath = NotificationSmallOutlined.toString();

@@ -9,8 +9,8 @@ import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import styles from './style.module.less';
 import { SortableHandle } from 'react-sortable-hoc';
-import { DragOutlined } from '@vikadata/icons';
-import { useThemeColors } from '@vikadata/components';
+import { DragOutlined } from '@apitable/icons';
+import { useThemeColors } from '@apitable/components';
 
 interface IOptionItem {
   curOption: ISelectFieldOption;

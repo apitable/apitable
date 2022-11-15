@@ -1,4 +1,4 @@
-import { Button, TextButton, useThemeColors } from '@vikadata/components';
+import { Button, TextButton, useThemeColors } from '@apitable/components';
 import {
   expressionTransform,
   Field,

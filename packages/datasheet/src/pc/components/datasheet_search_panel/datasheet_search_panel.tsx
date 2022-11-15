@@ -22,7 +22,7 @@ import { FolderContent, ICommonNode } from 'pc/components/datasheet_search_panel
 import { SearchResult } from 'pc/components/datasheet_search_panel/search_result';
 import { SubColumn } from 'pc/components/datasheet_search_panel/sub_column';
 import { useResponsive } from 'pc/hooks';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { KeyCode, stopPropagation } from 'pc/utils';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';

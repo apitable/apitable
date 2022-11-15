@@ -1,6 +1,6 @@
 import { ILinearRow } from '@apitable/core';
 import { GridLayout } from './layout';
-import { colors } from '@vikadata/components';
+import { colors } from '@apitable/components';
 import { GRID_GROUP_OFFSET, GRID_ROW_HEAD_WIDTH } from '../../constant';
 
 export class BlankRowLayout extends GridLayout {

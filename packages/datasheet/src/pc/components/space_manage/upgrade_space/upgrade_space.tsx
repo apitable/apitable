@@ -1,4 +1,4 @@
-import { Skeleton } from '@vikadata/components';
+import { Skeleton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Trial } from 'pc/components/space_manage/log/trial';
 import { showUpgradeContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';

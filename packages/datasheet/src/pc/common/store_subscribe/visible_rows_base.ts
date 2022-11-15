@@ -1,6 +1,6 @@
 import { store } from 'pc/store';
 import { Selectors, visibleRowsBaseCacheManage } from '@apitable/core';
-import { mainWidgetMessage } from '@vikadata/widget-sdk';
+import { mainWidgetMessage } from '@apitable/widget-sdk';
 import { getDependenceDstIds } from 'modules/enterprise/billing';
 
 store.subscribe(function visibleRowsBase() {

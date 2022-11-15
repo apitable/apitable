@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import { Radio } from 'antd';

@@ -10,7 +10,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { IEditor } from 'pc/components/editors/interface';
 import { FormContext } from '../form_context';
 import { useSelector } from 'react-redux';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Message } from 'pc/components/common';
 
 export type IFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;

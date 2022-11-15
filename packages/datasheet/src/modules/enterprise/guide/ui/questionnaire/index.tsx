@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { ICustomConfig, integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
 import { Checkbox, Input, Modal as AntdModal, Radio } from 'antd';
 import classNames from 'classnames';

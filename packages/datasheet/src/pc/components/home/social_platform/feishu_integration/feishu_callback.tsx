@@ -1,4 +1,4 @@
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { Loading } from 'pc/components/common';
 import { useQuery } from 'pc/hooks';
 import * as React from 'react';

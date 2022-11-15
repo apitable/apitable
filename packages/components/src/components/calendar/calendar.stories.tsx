@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { WarningTriangleNonzeroFilled } from '@vikadata/icons';
+import { WarningTriangleNonzeroFilled } from '@apitable/icons';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { StoryType } from '../../stories/constants';

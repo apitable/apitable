@@ -1,4 +1,4 @@
-import { Button, LinkButton } from '@vikadata/components';
+import { Button, LinkButton } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, IApi, Selectors, Strings, t } from '@apitable/core';
 import { useClickAway, useUpdateEffect } from 'ahooks';
 import cls from 'classnames';

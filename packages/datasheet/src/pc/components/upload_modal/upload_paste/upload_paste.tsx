@@ -1,5 +1,5 @@
 import { resourceService } from 'pc/resource_service';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 
 import {
   forwardRef,

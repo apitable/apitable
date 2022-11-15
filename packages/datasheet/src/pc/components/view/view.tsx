@@ -1,6 +1,6 @@
-import { ContextMenu, Message, useThemeColors } from '@vikadata/components';
+import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Selectors, StoreActions, Strings, SystemConfig, t, ViewType } from '@apitable/core';
-import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@vikadata/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditDescribeOutlined, EditOutlined, HideFilled } from '@apitable/icons';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { MobileGrid } from 'pc/components/mobile_grid';

@@ -2,8 +2,8 @@ import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC } from 'react';
 import { Settings, Strings, t } from '@apitable/core';
-import { GotoLargeOutlined } from '@vikadata/icons';
-import { Button, black, ContextMenu, useContextMenu } from '@vikadata/components';
+import { GotoLargeOutlined } from '@apitable/icons';
+import { Button, black, ContextMenu, useContextMenu } from '@apitable/components';
 import styles from './style.module.less';
 import { flatContextData } from 'pc/utils';
 

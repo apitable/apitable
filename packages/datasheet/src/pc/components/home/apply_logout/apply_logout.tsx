@@ -1,4 +1,4 @@
-import { Button, colorVars, Typography } from '@vikadata/components';
+import { Button, colorVars, Typography } from '@apitable/components';
 import {
   Api, getCustomConfig, integrateCdnHost, IReduxState, isPrivateDeployment, Navigation, Settings, StoreActions, Strings, t
 } from '@apitable/core';

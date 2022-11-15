@@ -1,5 +1,5 @@
 import { isValidElement } from 'react';
-import { IContextMenuItemProps } from '@vikadata/components';
+import { IContextMenuItemProps } from '@apitable/components';
 
 const generateKey = (contextItem: IContextMenuItemProps, text2Id: boolean, index: number) => {
   const { id, text } = contextItem;

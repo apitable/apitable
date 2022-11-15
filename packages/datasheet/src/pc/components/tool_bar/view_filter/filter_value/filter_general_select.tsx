@@ -1,5 +1,5 @@
 import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, IUnitValue, IUserValue, Selectors, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -8,7 +8,7 @@ import { OptionList } from 'pc/components/list';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { CellCreatedBy } from 'pc/components/multi_grid/cell/cell_created_by';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import Trigger from 'rc-trigger';
 import { useRef, useState } from 'react';
 import * as React from 'react';

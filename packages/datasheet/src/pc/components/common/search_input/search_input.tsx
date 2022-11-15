@@ -1,4 +1,4 @@
-import { TextInput } from '@vikadata/components';
+import { TextInput } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { InputProps } from 'antd/lib/input';
 import classnames from 'classnames';

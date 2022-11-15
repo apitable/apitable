@@ -1,4 +1,4 @@
-import { Loading, Message } from '@vikadata/components';
+import { Loading, Message } from '@apitable/components';
 import { Api, integrateCdnHost, isPrivateDeployment, Settings, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useRef, useState } from 'react';

@@ -2,7 +2,7 @@ import { IField } from '@apitable/core';
 import { CommonList } from 'pc/components/list/common_list';
 import { Check } from 'pc/components/list/common_list/check';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import styles from './style.module.less';
 interface IFieldListPops {

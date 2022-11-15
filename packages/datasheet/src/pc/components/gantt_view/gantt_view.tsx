@@ -1,4 +1,4 @@
-import { useTheme } from '@vikadata/components';
+import { useTheme } from '@apitable/components';
 import {
   BasicValueType,
   CellType,

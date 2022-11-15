@@ -1,4 +1,4 @@
-import { Button, LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import Image from 'next/image';

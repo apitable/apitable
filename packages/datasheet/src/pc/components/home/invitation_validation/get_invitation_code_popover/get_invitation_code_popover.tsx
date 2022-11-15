@@ -1,6 +1,6 @@
-import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { CloseLargeOutlined } from '@vikadata/icons';
+import { CloseLargeOutlined } from '@apitable/icons';
 import { Popover } from 'antd';
 import classNames from 'classnames';
 import Image from 'next/image';

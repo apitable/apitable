@@ -8,7 +8,7 @@ import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import styles from './style.module.less';
 import { TreeView, TreeItem } from 'pc/components/common/tree_view';
 import CheckIcon from 'static/icon/common/common_tip_success_small.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import classnames from 'classnames';
 import RcTrigger from 'rc-trigger';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

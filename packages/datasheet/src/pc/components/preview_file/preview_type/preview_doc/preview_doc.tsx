@@ -1,5 +1,5 @@
 import { IAttachmentValue, IUserInfo, Settings, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { FileType, getDownloadSrc, stopPropagation } from 'pc/utils';
 import * as React from 'react';
 import { NoSupport } from '../no_support';

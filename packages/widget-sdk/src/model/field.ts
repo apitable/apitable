@@ -144,7 +144,7 @@ export class Field {
    *
    * #### Example
    * ```js
-   * import { FieldType } from '@vikadata/widget-sdk';
+   * import { FieldType } from '@apitable/widget-sdk';
    *
    * if (myField.type === FieldType.Currency) {
    *     console.log(myField.options.symbol);

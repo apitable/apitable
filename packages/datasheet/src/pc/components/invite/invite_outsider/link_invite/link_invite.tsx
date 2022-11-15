@@ -1,5 +1,5 @@
 import { Api, IReduxState, ITeamList, StoreActions, Strings, t } from '@apitable/core';
-import { Button, ButtonGroup, Skeleton, useThemeColors } from '@vikadata/components';
+import { Button, ButtonGroup, Skeleton, useThemeColors } from '@apitable/components';
 import { Input, TreeSelect } from 'antd';
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';

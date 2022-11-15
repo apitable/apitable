@@ -6,9 +6,9 @@ import {
   ForwardRefRenderFunction,
 } from 'react';
 import { useSize } from 'ahooks';
-import { Select, TextInput, ITextInputProps, IOption } from '@vikadata/components';
+import { Select, TextInput, ITextInputProps, IOption } from '@apitable/components';
 import { SystemConfig, t, Strings } from '@apitable/core';
-import { PhonenumberFilled } from '@vikadata/icons';
+import { PhonenumberFilled } from '@apitable/icons';
 import styles from './style.module.less';
 
 // Area code and city collection

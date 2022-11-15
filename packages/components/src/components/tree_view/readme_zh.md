@@ -109,7 +109,7 @@ const Tree = () => {
 自定义展开/折叠图标
 
 ```tsx
-import { ChevronRightOutlined } from "@vikadata/icons";
+import { ChevronRightOutlined } from "@apitable/icons";
 
 const treeData = [
   {

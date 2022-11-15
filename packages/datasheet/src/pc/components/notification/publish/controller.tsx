@@ -1,4 +1,4 @@
-import { colors } from '@vikadata/components';
+import { colors } from '@apitable/components';
 import { Api, INoticeDetail, Navigation, StoreActions } from '@apitable/core';
 import { showVikaby } from 'pc/components/enterprise/vikaby/vikaby';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';

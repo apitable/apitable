@@ -1,4 +1,4 @@
-import { Loading, Message } from '@vikadata/components';
+import { Loading, Message } from '@apitable/components';
 import { ConfigConstant, Api } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { useRoleRequest } from 'pc/hooks/use_role';

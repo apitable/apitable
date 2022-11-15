@@ -1,5 +1,5 @@
 import React from 'react';
-import { AutosaveOutlined, LockNonzeroOutlined, CalenderRightOutlined } from '@vikadata/icons';
+import { AutosaveOutlined, LockNonzeroOutlined, CalenderRightOutlined } from '@apitable/icons';
 import { black } from 'colors';
 import { Switch } from '../switch';
 import { ContextMenu, useContextMenu } from './index';

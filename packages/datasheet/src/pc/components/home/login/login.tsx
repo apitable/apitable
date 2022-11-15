@@ -1,6 +1,6 @@
-import { LinkButton, useThemeColors } from '@vikadata/components';
+import { LinkButton, useThemeColors } from '@apitable/components';
 import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, isPrivateDeployment, Navigation, Strings, t } from '@apitable/core';
-import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@vikadata/icons';
+import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@apitable/icons';
 import { configResponsive, useResponsive, useToggle } from 'ahooks';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';

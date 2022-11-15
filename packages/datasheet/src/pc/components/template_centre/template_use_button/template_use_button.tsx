@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@apitable/core';
 import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Modal } from 'pc/components/common';

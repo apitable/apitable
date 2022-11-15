@@ -1,6 +1,6 @@
 import { memo, useContext } from 'react';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
-import { useContextMenu } from '@vikadata/components';
+import { useContextMenu } from '@apitable/components';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { RecordItem } from '../../record_item';

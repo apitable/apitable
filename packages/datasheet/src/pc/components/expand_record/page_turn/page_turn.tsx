@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Tooltip } from 'antd';
-import { IconButton, colorVars } from '@vikadata/components';
+import { IconButton, colorVars } from '@apitable/components';
 
 import IconNext from 'static/icon/datasheet/activity/datasheet_icon_activity_under.svg';
 import IconPre from 'static/icon/datasheet/activity/datasheet_icon_activity_up.svg';

@@ -1,4 +1,4 @@
-import { useTheme } from '@vikadata/components';
+import { useTheme } from '@apitable/components';
 
 export const NodeSpectator = () => {
   const theme = useTheme();

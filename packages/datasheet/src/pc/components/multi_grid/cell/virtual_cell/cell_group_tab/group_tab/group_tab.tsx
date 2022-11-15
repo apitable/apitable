@@ -19,7 +19,7 @@ import {
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 import { store } from 'pc/store';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import styles from './style.module.less';
 import { Strings, t } from '@apitable/core';
 import { LanguageSetting } from './language_setting';

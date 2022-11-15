@@ -4,7 +4,7 @@ import { Tooltip } from '../tooltip';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ISelectProps } from './interface';
-import { FavoriteOutlined, WarningTriangleNonzeroFilled } from '@vikadata/icons';
+import { FavoriteOutlined, WarningTriangleNonzeroFilled } from '@apitable/icons';
 
 const COMPONENT_NAME = 'Select';
 

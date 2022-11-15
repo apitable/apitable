@@ -14,7 +14,7 @@ import { identity, pickBy } from 'lodash';
  * ### Example
  * ``` ts
  * import React, { useState } from 'react';
- * import { upload, useDatasheet } from '@vikadata/widget-sdk';
+ * import { upload, useDatasheet } from '@apitable/widget-sdk';
  *
  * function UploadFile() {
  *   const datasheet = useDatasheet();

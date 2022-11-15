@@ -1,4 +1,4 @@
-import { Box, IOption, Skeleton } from '@vikadata/components';
+import { Box, IOption, Skeleton } from '@apitable/components';
 import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';

@@ -1,11 +1,11 @@
-import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors } from '@vikadata/components';
+import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import {
   Api, CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
   Settings, StoreActions, Strings, SystemConfig, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
 } from '@apitable/core';
 import {
   AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled,
-} from '@vikadata/icons';
+} from '@apitable/icons';
 import { useMount } from 'ahooks';
 import { Tabs } from 'antd';
 import classNames from 'classnames';

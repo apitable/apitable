@@ -1,7 +1,7 @@
 import {
   ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
 } from '@apitable/core';
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import { Col, Row } from 'antd';
 import { TemplateRecommendContext } from 'context/template_recommend';
 import { take, takeRight } from 'lodash';

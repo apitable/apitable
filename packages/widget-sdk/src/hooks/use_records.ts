@@ -20,7 +20,7 @@ import { Selectors } from '@apitable/core';
  * 
  * ### Example
  * ```js
- * import { useRecords, useActiveViewId } from '@vikadata/widget-sdk';
+ * import { useRecords, useActiveViewId } from '@apitable/widget-sdk';
  *
  * // Show record name
  * function RecordsTitle() {
@@ -45,7 +45,7 @@ export function useRecords(viewId: string | undefined, query?: IRecordQuery): Re
  * 
  * ### Example
  * ```js
- * import { useRecords, useViewsMeta, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useRecords, useViewsMeta, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Show the primary key of records the corresponding to the datasheetId(dstXXXXXXXX) datasheet
  * function RecordsTitle() {

@@ -2,7 +2,7 @@ import {
   Api, collectProperty, ConfigConstant, DEFAULT_PERMISSION, INode, INodeChangeSocketData, INodeMeta, IPermissions, IReduxState, ResourceType,
   Selectors, StatusCode, StoreActions, Strings, t
 } from '@apitable/core';
-import { ErrorFilled, WarnFilled } from '@vikadata/icons';
+import { ErrorFilled, WarnFilled } from '@apitable/icons';
 import { has } from 'lodash';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';

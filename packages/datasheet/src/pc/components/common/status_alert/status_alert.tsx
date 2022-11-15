@@ -1,6 +1,6 @@
 import styles from './style.module.less';
-import { DefaultFilled } from '@vikadata/icons';
-import { Typography } from '@vikadata/components';
+import { DefaultFilled } from '@apitable/icons';
+import { Typography } from '@apitable/components';
 import * as React from 'react';
 
 interface IStatusAlertProps {

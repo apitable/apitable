@@ -11,7 +11,7 @@ import { WidgetConfigContext } from '../context';
  * 
  * ### Example
  * ```js
- * import { useSettingsButton } from '@vikadata/widget-sdk';
+ * import { useSettingsButton } from '@apitable/widget-sdk';
  *
  * // Show a widget with  a settings screen
  * function ComponentWithSettings() {

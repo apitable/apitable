@@ -1,11 +1,11 @@
 import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
-import { NotificationSmallOutlined } from '@vikadata/icons';
+import { NotificationSmallOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { AlarmTipText } from 'modules/enterprise/alarm/alarm_tip_text';
 import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';

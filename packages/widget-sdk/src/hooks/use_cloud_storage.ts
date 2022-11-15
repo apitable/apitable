@@ -23,7 +23,7 @@ import { usePermission } from './private/use_permission';
  * 
  * ### Example
  * ```js
- * import { useCloudStorage } from '@vikadata/widget-sdk';
+ * import { useCloudStorage } from '@apitable/widget-sdk';
  *
  * // A simple counter
  * function Counter() {

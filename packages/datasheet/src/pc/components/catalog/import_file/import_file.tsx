@@ -1,4 +1,4 @@
-import { TextButton, useThemeColors } from '@vikadata/components';
+import { TextButton, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Progress, Upload } from 'antd';
 import { Message, Modal } from 'pc/components/common';

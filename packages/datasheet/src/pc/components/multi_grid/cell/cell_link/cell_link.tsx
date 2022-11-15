@@ -1,6 +1,6 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Field, ILinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';

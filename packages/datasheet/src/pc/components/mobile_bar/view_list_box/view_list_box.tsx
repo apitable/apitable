@@ -5,7 +5,7 @@ import styles from './style.module.less';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import classNames from 'classnames';
 import IconCheck from 'static/icon/account/account_icon_checkbox_select.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { changeView } from 'pc/hooks';
 
 interface IViewListBox {

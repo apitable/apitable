@@ -1,4 +1,4 @@
-import { Button, LinkButton, stopPropagation, Typography } from '@vikadata/components';
+import { Button, LinkButton, stopPropagation, Typography } from '@apitable/components';
 import { Navigation, SpacePathType, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';

@@ -47,7 +47,7 @@ import {
   FIELD_HEAD_ICON_GAP_SIZE,
   FIELD_HEAD_TEXT_MIN_WIDTH
 } from 'pc/components/konva_grid';
-import { useTheme } from '@vikadata/components';
+import { useTheme } from '@apitable/components';
 import { autoSizerCanvas } from '../konva_components';
 import { getFieldLock } from '../field_permission';
 

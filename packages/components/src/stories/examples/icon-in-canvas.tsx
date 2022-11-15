@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { TitleFavoriteFilled } from '@vikadata/icons';
+import { TitleFavoriteFilled } from '@apitable/icons';
 
 export const IconUseInCanvas = () => {
   useEffect(()=>{

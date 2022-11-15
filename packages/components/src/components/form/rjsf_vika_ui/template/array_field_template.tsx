@@ -1,5 +1,5 @@
 import { ArrayFieldTemplateProps } from '@rjsf/core';
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@vikadata/icons';
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
 import { Button } from 'components/button';
 import { IconButton } from 'components/icon_button';
 import React from 'react';

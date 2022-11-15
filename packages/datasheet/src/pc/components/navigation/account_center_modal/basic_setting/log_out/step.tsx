@@ -1,4 +1,4 @@
-import { Button, LinkButton, useThemeColors } from '@vikadata/components';
+import { Button, LinkButton, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, Navigation, Strings, t } from '@apitable/core';
 import { Message, NormalModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';

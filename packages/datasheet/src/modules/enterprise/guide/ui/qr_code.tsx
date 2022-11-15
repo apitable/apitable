@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { isSocialPlatformEnabled, isDingtalkFunc, isWecomFunc, isLarkFunc } from 'pc/components/home/social_platform';
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { useSelector } from 'react-redux';
 import { IReduxState, Settings, integrateCdnHost, ConfigConstant } from '@apitable/core';
 

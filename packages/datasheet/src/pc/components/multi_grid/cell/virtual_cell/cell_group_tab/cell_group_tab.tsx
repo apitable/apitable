@@ -2,7 +2,7 @@ import { IGroupInfo, ILinearRowGroupTab } from '@apitable/core';
 import classNames from 'classnames';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
 // FIXME:THEME
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import { GROUP_TITLE } from 'pc/utils';
 import * as React from 'react';
 import { useShowKeepSortBorder } from '../../hooks';

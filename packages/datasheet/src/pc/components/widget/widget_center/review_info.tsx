@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, LinkButton, Modal, Space, Typography } from '@vikadata/components';
+import { Avatar, Box, Divider, LinkButton, Modal, Space, Typography } from '@apitable/components';
 import { IWidgetPackage, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import * as React from 'react';

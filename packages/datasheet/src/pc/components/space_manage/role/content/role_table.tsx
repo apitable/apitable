@@ -1,4 +1,4 @@
-import { Typography, LinkButton, Box, useThemeColors, Pagination } from '@vikadata/components';
+import { Typography, LinkButton, Box, useThemeColors, Pagination } from '@apitable/components';
 import { Table, ConfigProvider } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';

@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { isGif, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 import Image from 'next/image';

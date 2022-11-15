@@ -11,7 +11,7 @@ import styles from './style.module.less';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
 import { Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 
 const { Panel } = Collapse;
 

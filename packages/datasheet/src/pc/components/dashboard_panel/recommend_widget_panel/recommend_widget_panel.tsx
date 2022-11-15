@@ -1,6 +1,6 @@
-import { Button, IconButton, Skeleton, useThemeColors } from '@vikadata/components';
+import { Button, IconButton, Skeleton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, integrateCdnHost, IReduxState, Settings, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
-import { ChevronRightOutlined, CloseLargeOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined, CloseLargeOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import { Message, Tooltip } from 'pc/components/common';
 import { SearchPanel, SubColumnType } from 'pc/components/datasheet_search_panel';

@@ -1,10 +1,10 @@
-import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@vikadata/components';
+import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName, ConfigConstant, ExecuteResult, integrateCdnHost, isPrivateDeployment, ResourceType, Selectors, Settings, StoreActions, Strings, t,
   WidgetApi, WidgetApiInterface,
 } from '@apitable/core';
-import { CopyOutlined, ErrorFilled, GuideOutlined, InformationSmallOutlined } from '@vikadata/icons';
-import { loadWidgetCheck, WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
+import { CopyOutlined, ErrorFilled, GuideOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import filenamify from 'filenamify';

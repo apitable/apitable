@@ -1,6 +1,6 @@
-import { IconButton, useThemeColors } from '@vikadata/components';
+import { IconButton, useThemeColors } from '@apitable/components';
 import { getCustomConfig, IReduxState, Strings, t, isPrivateDeployment } from '@apitable/core';
-import { CloseLargeOutlined } from '@vikadata/icons';
+import { CloseLargeOutlined } from '@apitable/icons';
 import { Drawer } from 'antd';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';

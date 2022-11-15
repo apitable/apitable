@@ -1,13 +1,13 @@
 import { getLanguage, Strings, t } from '@apitable/core';
-import { SelectMarkFilled } from '@vikadata/icons';
-import { Skeleton, Tooltip } from '@vikadata/components';
+import { SelectMarkFilled } from '@apitable/icons';
+import { Skeleton, Tooltip } from '@apitable/components';
 import classnames from 'classnames';
 import { ILevelInfo, SubscribePageType } from 'pc/components/subscribe_system/config';
 import styles from 'pc/components/subscribe_system/styles.module.less';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { InformationSmallOutlined } from '@vikadata/icons';
+import { InformationSmallOutlined } from '@apitable/icons';
 
 interface ISubscribeSeatProps {
   seatList: number[];

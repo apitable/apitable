@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Box } from 'konva/lib/shapes/Transformer';
 import dynamic from 'next/dynamic';
 import { FC, memo, useCallback, useEffect, useMemo, useRef } from 'react';

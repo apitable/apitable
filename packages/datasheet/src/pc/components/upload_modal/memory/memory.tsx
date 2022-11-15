@@ -1,6 +1,6 @@
 import { Api, byteMG, IAttachmentValue, Strings, t } from '@apitable/core';
 import { Progress } from 'antd';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

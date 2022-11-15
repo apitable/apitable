@@ -1,5 +1,5 @@
 import { SelectValue } from 'antd/lib/select';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import ArrowIcon from 'static/icon/common/common_icon_pulldown_line.svg';

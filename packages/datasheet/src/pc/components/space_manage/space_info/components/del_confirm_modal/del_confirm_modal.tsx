@@ -1,4 +1,4 @@
-import { Button, useThemeColors } from '@vikadata/components';
+import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Strings, t } from '@apitable/core';
 import { Drawer } from 'antd';
 import Image from 'next/image';

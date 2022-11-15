@@ -135,12 +135,12 @@ lint: ## eslint 检测
 	- yarn lint
 
 build-core: ## 编译core
-	yarn workspaces focus @apitable/core @vikadata/i18n-lang root
+	yarn workspaces focus @apitable/core @apitable/i18n-lang root
 	yarn build:i18n
 	yarn build:core
 
 build-room: ## 编译room server
-	yarn workspaces focus @vikadata/room-server root
+	yarn workspaces focus @apitable/room-server root
 	yarn build:sr
 
 test-e2e: ## 启动集成测试

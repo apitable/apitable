@@ -1,7 +1,7 @@
 import { Select } from 'antd';
 import { SelectValue, SelectProps } from 'antd/lib/select';
 import classNames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { useCallback } from 'react';
 import * as React from 'react';
 import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';

@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState, useEffect, Fragment } from 'react';
 import TreeViewContext, { Modules } from './tree_view_context';
-import { TriangleRight16Filled, LoadingFilled } from '@vikadata/icons';
+import { TriangleRight16Filled, LoadingFilled } from '@apitable/icons';
 import { TreeItem } from './tree_item';
 import { isEqual, isNull } from 'lodash';
 import styled, { createGlobalStyle } from 'styled-components';

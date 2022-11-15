@@ -1,6 +1,6 @@
-import { Box, IconButton, Tooltip, Typography, useTheme } from '@vikadata/components';
+import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { WarningTriangleFilled } from '@vikadata/icons';
+import { WarningTriangleFilled } from '@apitable/icons';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';

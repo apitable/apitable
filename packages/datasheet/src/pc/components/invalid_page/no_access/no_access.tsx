@@ -1,4 +1,4 @@
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';

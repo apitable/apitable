@@ -1,4 +1,4 @@
-import { LinkButton, Typography, useThemeColors } from '@vikadata/components';
+import { LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Table } from 'antd';
 import axios from 'axios';

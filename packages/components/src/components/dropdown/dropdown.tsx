@@ -3,7 +3,7 @@ import { IDropdownProps } from './interface';
 import { DropdownStyled } from './styled';
 import { ContextMenu } from '../context_menu'; 
 import { useContextMenu } from '@vikadata/react-contexify';
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 
 const CONTEXT_MENU_ID = 'CONTEXT_MENU_ID';
 

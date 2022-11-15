@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from '@vikadata/components';
+import { Box, Button, Typography, useTheme } from '@apitable/components';
 import { Api, Strings, SystemConfig, t } from '@apitable/core';
 import Image from 'next/image';
 import { isWecomFunc } from 'pc/components/home/social_platform';

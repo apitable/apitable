@@ -1,4 +1,4 @@
-import { Box, useTheme, ThemeProvider } from '@vikadata/components';
+import { Box, useTheme, ThemeProvider } from '@apitable/components';
 import { memo } from 'react';
 import { SWRConfig } from 'swr';
 import { Selectors } from '@apitable/core';

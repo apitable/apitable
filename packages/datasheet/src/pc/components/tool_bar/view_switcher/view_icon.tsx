@@ -1,11 +1,11 @@
 import { ViewType } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import GalleryIcon from 'static/icon/datasheet/view/datasheet_icon_gallery.svg';
 import GridIcon from 'static/icon/datasheet/view/datasheet_icon_grid.svg';
 import KanbanIcon from 'static/icon/datasheet/view/datasheet_icon_kanban.svg';
 import CalendarIcon from 'static/icon/datasheet/view/datasheet_icon_calendar.svg';
-import { ViewGanttOutlined, ViewArchitectureFilled } from '@vikadata/icons';
+import { ViewGanttOutlined, ViewArchitectureFilled } from '@apitable/icons';
 
 const viewIconMap = {
   [ViewType.Grid]: GridIcon,

@@ -1,6 +1,6 @@
-import { Typography } from '@vikadata/components';
+import { Typography } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
-import { ClockFilled } from '@vikadata/icons';
+import { ClockFilled } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import styles from 'pc/components/subscribe_system/styles.module.less';
 import { SubscribeLevelTab } from 'pc/components/subscribe_system/subscribe_header/subscribe_header';

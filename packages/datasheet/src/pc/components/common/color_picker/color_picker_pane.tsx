@@ -1,4 +1,4 @@
-import { colorVars, useThemeColors } from '@vikadata/components';
+import { colorVars, useThemeColors } from '@apitable/components';
 import { ISelectFieldOption, Strings, t } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';

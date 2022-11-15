@@ -39,7 +39,7 @@ import { CellMultiText } from './cell_multi_text';
  * 
  * ```tsx
  * import React from 'react';
- * import { useActiveCell, CellValue } from '@vikadata/widget-sdk';
+ * import { useActiveCell, CellValue } from '@apitable/widget-sdk';
  * 
  * export const CellValueUI = () => {
  *   const activeCell = useActiveCell();
@@ -65,7 +65,7 @@ import { CellMultiText } from './cell_multi_text';
  * 
  * ```tsx
  * import React from 'react';
- * import { useActiveCell, CellValue } from '@vikadata/widget-sdk';
+ * import { useActiveCell, CellValue } from '@apitable/widget-sdk';
  * 
  * export const CellValueUI = ({ cellValue }) => {
  *   const activeCell = useActiveCell();

@@ -9,7 +9,7 @@ This component is complementary to the `t` function and is used to render compon
 ```jsx
 import React from 'react';
 import { TComponent } from '.';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import { Tag } from '../tag';
 
 export function TComponentDemo() {

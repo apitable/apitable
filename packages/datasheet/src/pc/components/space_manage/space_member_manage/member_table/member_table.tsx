@@ -1,5 +1,5 @@
 import { ConfigConstant, IMemberInfoInSpace, IReduxState, isIdassPrivateDeployment, StoreActions, Strings, t } from '@apitable/core';
-import { lightColors, List, Pagination } from '@vikadata/components';
+import { lightColors, List, Pagination } from '@apitable/components';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import { Modal, Tooltip } from 'pc/components/common';

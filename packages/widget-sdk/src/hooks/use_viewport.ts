@@ -9,7 +9,7 @@ import { WidgetConfigContext } from '../context';
  * 
  * ### Example
  * ```js
- * import { useViewport } from '@vikadata/widget-sdk';
+ * import { useViewport } from '@apitable/widget-sdk';
  *
  * // Full-screen display and control of the widget
  * function Viewport() {

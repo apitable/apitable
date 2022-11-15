@@ -12,7 +12,7 @@ import classNames from 'classnames';
 import { intersection } from 'lodash';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
 import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';

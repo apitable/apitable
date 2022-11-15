@@ -21,7 +21,7 @@ export interface ISession {
  *
  * ### Example
  * ```js
- * import { useSession } from '@vikadata/widget-sdk';
+ * import { useSession } from '@apitable/widget-sdk';
  *
  * // Show the currently users name of the widget.
  * function Meta() {

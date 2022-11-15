@@ -3,7 +3,7 @@ import { TextInput } from './index';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ITextInputProps } from './text_input.interface';
-import { PhonenumberFilled } from '@vikadata/icons';
+import { PhonenumberFilled } from '@apitable/icons';
 
 const COMPONENT_NAME = 'TextInput';
 

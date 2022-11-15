@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story } from '@storybook/react';
-import { DownloadOutlined } from '@vikadata/icons';
+import { DownloadOutlined } from '@apitable/icons';
 import { iconArg } from '../../stories/args';
 import { TextButton } from './index';
 import { StoryType } from '../../stories/constants';

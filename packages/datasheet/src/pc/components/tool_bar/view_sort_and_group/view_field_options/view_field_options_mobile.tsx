@@ -1,5 +1,5 @@
 import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';

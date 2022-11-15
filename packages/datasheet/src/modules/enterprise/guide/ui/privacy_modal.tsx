@@ -1,4 +1,4 @@
-import { Button, lightColors, Typography } from '@vikadata/components';
+import { Button, lightColors, Typography } from '@apitable/components';
 
 import { Settings, Strings, t } from '@apitable/core';
 import { Modal as AntdModal } from 'antd';

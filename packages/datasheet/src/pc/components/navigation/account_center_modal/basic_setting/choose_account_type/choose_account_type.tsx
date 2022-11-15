@@ -1,4 +1,4 @@
-import { Typography, useThemeColors } from '@vikadata/components';
+import { Typography, useThemeColors } from '@apitable/components';
 import { hiddenMobile, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Radio, Space } from 'antd';
 import classNames from 'classnames';

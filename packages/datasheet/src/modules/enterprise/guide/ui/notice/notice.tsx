@@ -1,4 +1,4 @@
-import { Button, ThemeProvider } from '@vikadata/components';
+import { Button, ThemeProvider } from '@apitable/components';
 import { Selectors, TrackEvents } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { ComponentDisplay } from 'pc/components/common/component_display';

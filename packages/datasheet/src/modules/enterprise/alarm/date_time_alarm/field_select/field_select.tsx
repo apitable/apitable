@@ -1,12 +1,12 @@
 import { FieldType, IFieldMap, Strings, t } from '@apitable/core';
-import { ChevronDownOutlined } from '@vikadata/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { FieldList } from 'modules/enterprise/alarm/date_time_alarm/field_select/field_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { colorVars } from '@vikadata/components';
+import { colorVars } from '@apitable/components';
 import Trigger from 'rc-trigger';
 import { useMemo, useRef, useState } from 'react';
 import * as React from 'react';

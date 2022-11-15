@@ -1,7 +1,7 @@
 import { REQUEST } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-// import '@vikadata/i18n-lang';
+// import '@apitable/i18n-lang';
 import { AppModule } from 'app.module';
 import { ApiException } from '../../exception/api.exception';
 import { ValidationPipe } from 'shared/middleware/pipe/validation.pipe';

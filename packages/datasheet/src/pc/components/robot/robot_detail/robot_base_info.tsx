@@ -1,5 +1,5 @@
 import { t, Strings } from '@apitable/core';
-import { Avatar, Box, Switch, TextInput, Typography, useTheme } from '@vikadata/components';
+import { Avatar, Box, Switch, TextInput, Typography, useTheme } from '@apitable/components';
 import Image from 'next/image';
 import * as React from 'react';
 import { updateRobotDescription, updateRobotName } from '../api';

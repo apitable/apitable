@@ -4,7 +4,7 @@ import { useSlate, ReactEditor } from 'slate-react';
 import RcTrigger from 'rc-trigger';
 import Icons from '../../icons';
 import { Input, Tooltip } from 'antd';
-import { Button } from '@vikadata/components';
+import { Button } from '@apitable/components';
 import clx from 'classnames';
 import { useClickAway } from 'ahooks';
 

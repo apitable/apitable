@@ -4,7 +4,7 @@ import { Form, Checkbox } from 'antd';
 import { useRequest } from 'pc/hooks';
 import { useSetState } from 'pc/hooks';
 import { ConfigConstant, t, Strings, StatusCode, AutoTestID, isEmail, Settings, isPhoneNumber } from '@apitable/core';
-import { Button, Typography, ThemeProvider, ThemeName } from '@vikadata/components';
+import { Button, Typography, ThemeProvider, ThemeName } from '@apitable/components';
 import { clearStorage } from 'pc/utils/storage';
 import { IdentifyingCodeModes, IIdentifyingCodeConfig } from 'pc/components/home/login/identifying_code_login/identifying_code_modes';
 import { useQuery } from 'pc/hooks';

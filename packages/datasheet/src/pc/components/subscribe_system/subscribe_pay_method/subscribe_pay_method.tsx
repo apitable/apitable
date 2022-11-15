@@ -1,5 +1,5 @@
-import { Typography } from '@vikadata/components';
-import { SelectMarkFilled } from '@vikadata/icons';
+import { Typography } from '@apitable/components';
+import { SelectMarkFilled } from '@apitable/icons';
 import classnames from 'classnames';
 import { ILevelInfo } from 'pc/components/subscribe_system/config';
 import { payMethodConfig } from 'pc/components/subscribe_system/order_info/order_info';

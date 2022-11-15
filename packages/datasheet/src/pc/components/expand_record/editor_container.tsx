@@ -1,6 +1,6 @@
-import { TextButton, useThemeColors } from '@vikadata/components';
+import { TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t, ViewType } from '@apitable/core';
-import { TriangleDown16Filled, TriangleRight16Filled } from '@vikadata/icons';
+import { TriangleDown16Filled, TriangleRight16Filled } from '@apitable/icons';
 import classNames from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useGetViewByIdWithDefault } from 'pc/hooks';

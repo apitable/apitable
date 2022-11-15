@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { loadWidgetCheck, WidgetLoadError } from '@vikadata/widget-sdk/dist/initialize_widget';
+import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { ResourceType, Selectors } from '@apitable/core';
 import { useSelector } from 'react-redux';
 import { useCounter } from 'ahooks';

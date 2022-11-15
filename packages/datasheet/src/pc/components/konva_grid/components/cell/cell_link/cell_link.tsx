@@ -1,6 +1,6 @@
-import { black, getNextShadeColor, Message } from '@vikadata/components';
+import { black, getNextShadeColor, Message } from '@apitable/components';
 import { KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined, CloseSmallOutlined } from '@vikadata/icons';
+import { AddOutlined, CloseSmallOutlined } from '@apitable/icons';
 import { KonvaEventObject } from 'konva/lib/Node';
 import dynamic from 'next/dynamic';
 import { expandRecordInCenter } from 'pc/components/expand_record';

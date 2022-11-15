@@ -27,7 +27,7 @@ export const viewSelector = (state: IWidgetState, datasheetId?: string) => {
  *
  * ### Example
  * ```js
- * import { useViewsMeta, useDatasheet } from '@vikadata/widget-sdk';
+ * import { useViewsMeta, useDatasheet } from '@apitable/widget-sdk';
  *
  * // Show all views name
  * function ViewNames() {

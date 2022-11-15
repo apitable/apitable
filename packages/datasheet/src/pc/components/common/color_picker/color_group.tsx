@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { ISelectFieldOption, Selectors } from '@apitable/core';
 import classNames from 'classnames';
 import { setColor } from 'pc/components/multi_grid/format';

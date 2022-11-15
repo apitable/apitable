@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Api, INode, Navigation, Strings, t } from '@apitable/core';
 import { useClickAway } from 'ahooks';
 import type { InputRef } from 'antd';

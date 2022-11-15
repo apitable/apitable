@@ -8,7 +8,7 @@ import { PointPosition, KonvaGanttViewContext, GanttCoordinate, IScrollState, ge
 import { CollaCommandName, Selectors, KONVA_DATASHEET_ID, ConfigConstant, 
   t, Strings, fastCloneDeep, ExecuteResult, ISetRecordOptions 
 } from '@apitable/core';
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 import { detectCyclesStack, getTaskLineName } from 'pc/components/gantt_view/utils/task_line';
 import { onDragScrollSpacing } from 'pc/components/gantt_view/utils';
 import { autoTaskScheduling } from '../utils';

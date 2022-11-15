@@ -1,4 +1,4 @@
-import { TextButton, useThemeColors } from '@vikadata/components';
+import { TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { NetworkStatus } from 'pc/components/network_status';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
@@ -11,7 +11,7 @@ import { default as React, useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import styles from './style.module.less';
-import { AddFilled, AddOutlined, ImportOutlined, WidgetExpandOutlined } from '@vikadata/icons';
+import { AddFilled, AddOutlined, ImportOutlined, WidgetExpandOutlined } from '@apitable/icons';
 import { useFullscreen } from 'ahooks';
 import { useSize } from 'ahooks';
 import { InlineNodeName } from 'pc/components/common/inline_node_name';

@@ -1,6 +1,6 @@
-import { Box, LinkButton, Loading, Message, TextInput, useThemeColors } from '@vikadata/components';
+import { Box, LinkButton, Loading, Message, TextInput, useThemeColors } from '@apitable/components';
 import { Api, ApiInterface, ConfigConstant, INode, INodesMapItem, IParent, Strings, t } from '@apitable/core';
-import { ChevronRightOutlined, SearchOutlined } from '@vikadata/icons';
+import { ChevronRightOutlined, SearchOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import throttle from 'lodash/throttle';

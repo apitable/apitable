@@ -4,7 +4,7 @@ import { useSelector, shallowEqual } from 'react-redux';
 import { Selectors, t, Strings, IFormProps, CollaCommandName, DATASHEET_ID } from '@apitable/core';
 import Trigger from 'rc-trigger';
 import classNames from 'classnames';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import styles from './style.module.less';
 import { SettingPanel } from './setting_panel';
 import { ShareModal } from './share_modal';

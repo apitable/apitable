@@ -1,4 +1,4 @@
-import { IconButton } from '@vikadata/components';
+import { IconButton } from '@apitable/components';
 import { BindAccount, ConfigConstant, IReduxState, QrAction, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';

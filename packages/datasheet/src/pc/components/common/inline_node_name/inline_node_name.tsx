@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { EmojiPopover } from 'pc/components/catalog/emoji_popover';
 import { Tooltip } from '../tooltip';
 import { getNodeTypeByNodeId } from 'pc/utils';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 

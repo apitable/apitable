@@ -2,7 +2,7 @@ import {
   CollaCommandName, DatasheetActions, Events, ExecuteResult, Field, FieldType, FieldTypeDescriptionMap, getFieldClass, getNewId, IDPrefix, IField,
   ISegment, IViewColumn, Player, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
-import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@vikadata/components';
+import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';

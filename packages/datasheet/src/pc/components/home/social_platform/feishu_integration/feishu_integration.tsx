@@ -1,4 +1,4 @@
-import { Loading } from '@vikadata/components';
+import { Loading } from '@apitable/components';
 import { Api, IUserInfo } from '@apitable/core';
 import FeishuSyncConcat from 'pc/components/home/social_platform/feishu_integration/feishu_sync_concat';
 import { useRequest } from 'pc/hooks';

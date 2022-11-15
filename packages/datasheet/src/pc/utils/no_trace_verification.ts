@@ -1,4 +1,4 @@
-import { Modal } from '@vikadata/components';
+import { Modal } from '@apitable/components';
 import { ConfigConstant, isPrivateDeployment } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';

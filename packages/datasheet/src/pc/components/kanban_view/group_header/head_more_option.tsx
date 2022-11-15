@@ -1,8 +1,8 @@
 import { Selectors, Strings, t, UN_GROUP } from '@apitable/core';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { ContextMenu, useThemeColors } from '@vikadata/components';
-import { AddOutlined, EditOutlined, NarrowRecordOutlined, DeleteOutlined, HideFilled } from '@vikadata/icons';
+import { ContextMenu, useThemeColors } from '@apitable/components';
+import { AddOutlined, EditOutlined, NarrowRecordOutlined, DeleteOutlined, HideFilled } from '@apitable/icons';
 import { flatContextData } from 'pc/utils';
 
 export const KANBAN_GROUP_MORE = 'KANBAN_GROUP_MORE';

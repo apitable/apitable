@@ -1,4 +1,4 @@
-// import { Message } from '@vikadata/components';
+// import { Message } from '@apitable/components';
 import { Message } from 'pc/components/common';
 import { EmptyNullOperand, IExpression, OperatorEnums, Selectors, Strings, t, integrateCdnHost } from '@apitable/core';
 import produce from 'immer';

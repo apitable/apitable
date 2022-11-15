@@ -1,5 +1,5 @@
 import { Api, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { DescriptionOutlined } from '@vikadata/icons';
+import { DescriptionOutlined } from '@apitable/icons';
 import { Modal } from 'antd';
 import classNames from 'classnames';
 import { debounce } from 'lodash';

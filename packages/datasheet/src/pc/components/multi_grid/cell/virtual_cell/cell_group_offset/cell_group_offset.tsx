@@ -1,6 +1,6 @@
 import { CellType, ILinearRow, ILinearRowBlank } from '@apitable/core';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/grid_views';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import * as React from 'react';
 import { useIsRecordWillMove } from '../../hooks';
 import { useIsGroupCollapsing } from '../../hooks/use_is_group_collapsing';

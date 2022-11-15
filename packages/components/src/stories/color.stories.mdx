@@ -93,7 +93,7 @@ Colors are organized in the pattern of `hue` + `color weight`
 ## Usage
 
 ```jsx
-import { purple, deepPurple, black } from '@vikadata/components';
+import { purple, deepPurple, black } from '@apitable/components';
 ```
 
 Taking `purple` as an example, the color palette divides purple into 11 regions, purple[50], purple[100], purple[200]... purple[1000], from light to dark.
@@ -245,7 +245,7 @@ export const deepPurple = {
 ### getActionColor
 
 ```jsx
-import { getActionColor } from '@vikadata/components';
+import { getActionColor } from '@apitable/components';
 ```
 
 Parse the colors in the palette to get the colors of the hover and active states. For example: `purple[400]` The result calculated by `getActionColor` is as follows:
@@ -265,7 +265,7 @@ The effect of using `Button` is as follows:
 ### getContrastText
 
 ```jsx
-import { getContrastText } from '@vikadata/components';
+import { getContrastText } from '@apitable/components';
 ```
 
 Based on the background color, the foreground text color is automatically generated. Make the overall effect visual experience more comfortable and friendly:
@@ -293,7 +293,7 @@ Based on the background color, the foreground text color is automatically genera
 ## convertHexToRGB
 
 ```jsx
-import { convertHexToRGB } from '@vikadata/components';
+import { convertHexToRGB } from '@apitable/components';
 ```
 
 Supports converting color palettes and other colors from `HEX` format to `RGB`, and supports transparency configuration, compatible with the following usages:

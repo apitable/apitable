@@ -1,4 +1,4 @@
-import { DefaultFilled, ErrorFilled, SuccessFilled, WarnFilled } from '@vikadata/icons';
+import { DefaultFilled, ErrorFilled, SuccessFilled, WarnFilled } from '@apitable/icons';
 import React from 'react';
 
 export const IconMap: any = {

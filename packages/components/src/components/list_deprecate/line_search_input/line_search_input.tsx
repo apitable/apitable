@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchOutlined } from '@vikadata/icons';
+import { SearchOutlined } from '@apitable/icons';
 import { ILineSearchInputProps } from './interface';
 import { PrefixIcon, StyledSearchInputContainer, SuffixIcon } from './styled';
 import { useKeyPress } from 'ahooks';

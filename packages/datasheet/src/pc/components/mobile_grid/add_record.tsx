@@ -2,7 +2,7 @@ import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_r
 import * as React from 'react';
 import styles from './styles.module.less';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { ExecuteResult } from '@apitable/core';
 import { expandRecordIdNavigate } from '../expand_record';
 

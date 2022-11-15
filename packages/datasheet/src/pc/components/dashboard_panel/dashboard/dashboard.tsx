@@ -1,9 +1,9 @@
-import { ContextMenu, Message, useThemeColors } from '@vikadata/components';
+import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName, Events, IWidget, Navigation, Player, Selectors, StoreActions, Strings, SystemConfig, t, WidgetApi, WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@vikadata/icons';
+import { AddOutlined, CodeFilled, DeleteOutlined, EditOutlined, GotoLargeOutlined, SettingOutlined } from '@apitable/icons';
 import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';

@@ -9,7 +9,7 @@ import { FocusHolder } from '../focus_holder';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { RatingEditorMobile } from './rating_editor_mobile';
 import { isNumberKey, isTouchDevice } from 'pc/utils';
-import { Message } from '@vikadata/components';
+import { Message } from '@apitable/components';
 
 export interface IRatingEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;

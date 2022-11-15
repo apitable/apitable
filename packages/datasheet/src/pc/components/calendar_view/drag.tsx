@@ -3,7 +3,7 @@ import { memo, useContext } from 'react';
 import * as React from 'react';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import { RECORD, CALENDAR_RECORD_MENU, FORMAT_DATE } from './constants';
-import { ITask, useContextMenu } from '@vikadata/components';
+import { ITask, useContextMenu } from '@apitable/components';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CalendarContext } from './calendar_context';
 import { RecordItem } from './record_item';

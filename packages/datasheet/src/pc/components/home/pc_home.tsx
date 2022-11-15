@@ -1,4 +1,4 @@
-import { ButtonGroup, lightColors, LinkButton } from '@vikadata/components';
+import { ButtonGroup, lightColors, LinkButton } from '@apitable/components';
 import { AutoTestID, getCustomConfig, isIdassPrivateDeployment, isPrivateDeployment, Navigation, Settings, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import Image from 'next/image';

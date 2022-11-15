@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { isImage, RowHeightLevel, Strings, t } from '@apitable/core';
 import { Progress } from 'antd';
 import Image from 'next/image';

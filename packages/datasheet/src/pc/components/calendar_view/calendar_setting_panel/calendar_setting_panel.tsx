@@ -1,6 +1,6 @@
 import { FC, useContext, useMemo } from 'react';
-import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@vikadata/components';
-import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@vikadata/icons';
+import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@apitable/components';
+import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,

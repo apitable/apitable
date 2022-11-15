@@ -1,4 +1,4 @@
-import { ContextMenu, useThemeColors } from '@vikadata/components';
+import { ContextMenu, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
   ConfigConstant,
@@ -11,7 +11,7 @@ import {
   WidgetPackageStatus,
   WidgetReleaseType,
 } from '@apitable/core';
-import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, InformationSmallOutlined, SettingOutlined } from '@vikadata/icons';
+import { CodeFilled, DashboardOutlined, DeleteOutlined, EditOutlined, InformationSmallOutlined, SettingOutlined } from '@apitable/icons';
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';

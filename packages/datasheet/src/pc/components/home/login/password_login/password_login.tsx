@@ -1,4 +1,4 @@
-import { Button, ThemeName, ThemeProvider } from '@vikadata/components';
+import { Button, ThemeName, ThemeProvider } from '@apitable/components';
 import { AutoTestID, ConfigConstant, getCustomConfig, isEmail, isPhoneNumber, StatusCode, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Form } from 'antd';

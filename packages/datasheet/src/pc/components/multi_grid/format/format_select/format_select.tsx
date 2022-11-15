@@ -1,4 +1,4 @@
-import { Typography, Divider, useThemeColors } from '@vikadata/components';
+import { Typography, Divider, useThemeColors } from '@apitable/components';
 import {
   Field,
   IField,

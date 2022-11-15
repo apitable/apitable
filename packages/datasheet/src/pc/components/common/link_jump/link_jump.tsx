@@ -1,4 +1,4 @@
-import { useThemeColors } from '@vikadata/components';
+import { useThemeColors } from '@apitable/components';
 import { Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Tooltip } from 'antd';
 import path from 'path-browserify';

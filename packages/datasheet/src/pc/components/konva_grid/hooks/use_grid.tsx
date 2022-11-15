@@ -1,6 +1,6 @@
-import { blackBlue } from '@vikadata/components';
+import { blackBlue } from '@apitable/components';
 import { CellType, FieldType, ILookUpField, KONVA_DATASHEET_ID, LOOKUP_VALUE_FUNC_SET, RollUpFuncType, Selectors, Strings, t } from '@apitable/core';
-import { AddOutlined } from '@vikadata/icons';
+import { AddOutlined } from '@apitable/icons';
 import dynamic from 'next/dynamic';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon, Line, Rect } from 'pc/components/konva_components';

@@ -1,6 +1,6 @@
-import { WidgetStandAloneProvider } from '@vikadata/widget-sdk';
-import { useWidgetComponent } from '@vikadata/widget-sdk/dist/hooks/private/use_widget_loader';
-import { Button, TextInput } from '@vikadata/components';
+import { WidgetStandAloneProvider } from '@apitable/widget-sdk';
+import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
+import { Button, TextInput } from '@apitable/components';
 import { useLocalStorageState } from 'ahooks';
 import styles from './style.module.less';
 

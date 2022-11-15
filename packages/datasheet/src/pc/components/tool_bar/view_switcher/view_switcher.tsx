@@ -28,7 +28,7 @@ import classNames from 'classnames';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useViewAction } from './action';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { Alert, Button, useThemeColors, IUseListenTriggerInfo, useListenVisualHeight } from '@vikadata/components';
+import { Alert, Button, useThemeColors, IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 import { useUnmount } from 'ahooks';
 
 interface IViewSwitcherProperty {

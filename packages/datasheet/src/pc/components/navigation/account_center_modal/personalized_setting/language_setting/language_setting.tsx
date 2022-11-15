@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Select, Typography } from '@vikadata/components';
+import { Select, Typography } from '@apitable/components';
 import { Message } from 'pc/components/common';
 import { useRequest } from 'pc/hooks';
 import styles from './style.module.less';

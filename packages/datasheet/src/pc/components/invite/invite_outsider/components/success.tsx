@@ -3,7 +3,7 @@ import SuccessIcon from 'static/icon/common/common_tip_success_small.svg';
 import styles from './style.module.less';
 import { IUploadFileResponse } from '../interface';
 import WarnIcon from 'static/icon/common/common_tip_default_small.svg';
-import { Button, TextButton } from '@vikadata/components';
+import { Button, TextButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { Records } from './records';
 
