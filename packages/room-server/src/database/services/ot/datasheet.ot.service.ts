@@ -9,16 +9,13 @@ import { DatasheetService } from 'database/services/datasheet/datasheet.service'
 import { DatasheetException } from 'shared/exception';
 import { InjectLogger } from '../../../shared/common';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
-import dayjs from 'dayjs';
 import { DatasheetChangesetEntity } from '../../entities/datasheet.changeset.entity';
 import { DatasheetEntity } from '../../entities/datasheet.entity';
 import { DatasheetMetaEntity } from '../../entities/datasheet.meta.entity';
-import { DatasheetRecordAlarmEntity } from '../../entities/datasheet.record.alarm.entity';
 import { DatasheetRecordEntity } from '../../entities/datasheet.record.entity';
 import { RecordCommentEntity } from '../../entities/record.comment.entity';
 import { WidgetEntity } from '../../entities/widget.entity';
 import { SourceTypeEnum } from 'shared/enums/changeset.source.type.enum';
-import { RecordAlarmStatus } from 'shared/enums/record.alarm.enum';
 import { CommonException } from '../../../shared/exception/common.exception';
 import { ExceptionUtil } from '../../../shared/exception/exception.util';
 import { OtException } from '../../../shared/exception/ot.exception';
@@ -35,9 +32,9 @@ import { Logger } from 'winston';
 import { RecordMap } from '../../interfaces';
 import { RestService } from '../../../shared/services/rest/rest.service';
 import { DatasheetMetaService } from '../datasheet/datasheet.meta.service';
-import { DatasheetRecordAlarmService } from '../datasheet/datasheet.record.alarm.service';
 import { DatasheetRecordService } from '../datasheet/datasheet.record.service';
 import { WidgetService } from '../widget/widget.service';
+import { DatasheetRecordAlarmBaseService } from 'database/services/alarm/datasheet.record.alarm.base.service';
 
 @Injectable()
 export class DatasheetOtService {
@@ -49,7 +46,7 @@ export class DatasheetOtService {
     private readonly metaService: DatasheetMetaService,
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
-    private readonly recordAlarmService: DatasheetRecordAlarmService,
+    private readonly recordAlarmService: DatasheetRecordAlarmBaseService,
     private readonly datasheetService: DatasheetService,
   ) { }
 
@@ -1248,7 +1245,7 @@ export class DatasheetOtService {
     // ======== Create/delete comment emoji END ========
 
     // ======== Create/delete datetime alarm BEGIN ========
-    await this.handleRecordAlarm(manager, commonData, resultSet);
+    await this.recordAlarmService.handleRecordAlarms(manager, commonData, resultSet);
     // ======== Create/delete datetime alarm END ========
 
     // Update database parallelly
@@ -2054,220 +2051,6 @@ export class DatasheetOtService {
     }
     const endTime = +new Date();
     this.logger.info(`[${dstId}] ====> Finished batch modifying comment emoji......duration: ${endTime - beginTime}ms`);
-  }
-
-  private async handleRecordAlarm(
-    manager: EntityManager,
-    commonData: ICommonData,
-    resultSet: { [key: string]: any },
-  ) {
-    const { dstId } = commonData;
-    const profiler = this.logger.startTimer();
-    this.logger.info(`[${dstId}] ====> Start processing alarm`);
-
-    // delete alarms
-    await this.deleteRecordAlarms(manager, commonData, resultSet);
-    // create alarms
-    await this.createRecordAlarms(manager, commonData, resultSet);
-    // TODO refactor: should be handled by event in the future
-    // update alarms, collect record alarms requiring update in CellValue changes of datatime fields from replaceCellMap
-    await this.updateRecordAlarms(manager, commonData, resultSet);
-
-    profiler.done({ message: `[${dstId}] ====> Finished processing alarm` });
-  }
-
-  private getFieldValueOfRecord(recordId: string, record: IRecord, targetFieldId: string, resultSet: { [key: string]: any }) {
-    if (resultSet.toCreateRecord.size) {
-      const addRecordData = resultSet.toCreateRecord.get(recordId) || {};
-      if (addRecordData[targetFieldId]) {
-        return addRecordData[targetFieldId];
-      }
-    }
-
-    if (resultSet.replaceCellMap.size) {
-      const fieldData = resultSet.replaceCellMap.get(recordId) || [];
-
-      const matchedFieldData = fieldData.filter(({ fieldId }) => fieldId === targetFieldId);
-      if (matchedFieldData.length > 0) {
-        return matchedFieldData[0].data;
-      }
-    }
-
-    if (!record) return null;
-
-    return record.data[targetFieldId];
-  }
-
-  private async createRecordAlarms(
-    manager: EntityManager,
-    commonData: ICommonData,
-    resultSet: { [key: string]: any },
-  ) {
-    if (!resultSet.toCreateAlarms.size) return;
-    const { userId, spaceId, dstId } = commonData;
-
-    const profiler = this.logger.startTimer();
-    this.logger.info(`Starting creating alarms. Size: ${resultSet.toCreateAlarms.size}`);
-
-    const involvedRecordIds = Array.from(resultSet.toCreateAlarms.keys()) as string[];
-    const involvedRecordMap: RecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, involvedRecordIds);
-
-    const newAlarmEntities = involvedRecordIds.reduce((acc, recordId: string) => {
-      resultSet.toCreateAlarms.get(recordId).forEach((alarm: IRecordAlarm) => {
-        const record = involvedRecordMap[recordId];
-        const dateCellValue = this.getFieldValueOfRecord(recordId, record, alarm.fieldId, resultSet) as number;
-
-        const alarmEntity = this.recordAlarmService.convertRecordAlarmToEntity(alarm, dateCellValue, spaceId, dstId, recordId, userId);
-        if (alarmEntity) {
-          acc.push(alarmEntity);
-          // Record updated alarms to avoid re-processing in updateRecordAlarms phase
-          resultSet.updatedAlarmIds.push(alarmEntity.alarmId);
-        }
-      });
-      return acc;
-    }, []);
-
-    // Batch create alarms
-    await this.recordAlarmService.batchCreateRecordAlarms(newAlarmEntities, userId);
-
-    // TODO refactor: O(2N) -> O(N)
-    // Write alarms into datasheet_record.field_update_info (RecordMeta)
-    await Promise.all(involvedRecordIds.map((recordId: string) => {
-      const createAlarms = resultSet.toCreateAlarms.get(recordId) || [];
-      if (!involvedRecordMap[recordId]) {
-        return null;
-      }
-
-      const recordMeta = involvedRecordMap[recordId].recordMeta || {};
-      const existFieldExtraMap = recordMeta.fieldExtraMap || {};
-
-      const fieldUpdatedMapChanges = createAlarms.reduce((acc, cur: IRecordAlarm) => {
-        const alarmCopy = { ...cur };
-        delete alarmCopy.recordId;
-        delete alarmCopy.fieldId;
-
-        acc[cur.fieldId] = { ...existFieldExtraMap[cur.fieldId], alarm: alarmCopy };
-        return acc;
-      }, {});
-
-      recordMeta.fieldExtraMap = Object.assign(existFieldExtraMap, fieldUpdatedMapChanges);
-
-      return manager.createQueryBuilder()
-        .update(DatasheetRecordEntity)
-        .set({ recordMeta: recordMeta })
-        .where([{ dstId, recordId }])
-        .execute();
-    }));
-    profiler.done({ message: 'Finished creating alarms' });
-  }
-
-  private async updateRecordAlarms(
-    manager: EntityManager,
-    commonData: ICommonData,
-    resultSet: { [key: string]: any },
-  ) {
-    if (!resultSet.replaceCellMap.size) return;
-    const { userId, dstId } = commonData;
-
-    const profiler = this.logger.startTimer();
-    this.logger.info(`Start updating alarm. Size: ${resultSet.replaceCellMap.size}`);
-
-    const fieldMap = resultSet.temporaryFieldMap;
-
-    const involvedRecordIds = [];
-    const involvedFieldIds = [];
-    Array.from(resultSet.replaceCellMap.keys()).forEach((recordId: string) => {
-      const fieldData = resultSet.replaceCellMap.get(recordId);
-      fieldData.forEach(({ fieldId, data }) => {
-        const field = fieldMap[fieldId] as IField;
-        if (field && field.type === FieldType.DateTime) {
-          involvedRecordIds.push(recordId);
-          involvedFieldIds.push(fieldId);
-        }
-      });
-    });
-
-    const relatedAlarms = await this.recordAlarmService.getRecordAlarmsByRecordIdsAndFieldIds(dstId, involvedRecordIds, involvedFieldIds);
-    if (isEmpty(relatedAlarms)) return;
-
-    const involvedAlarms = relatedAlarms.filter((alarm) => !resultSet.updatedAlarmIds.includes(alarm.alarmId));
-    if (isEmpty(involvedAlarms)) return;
-
-    const involvedRecordMap: RecordMap = await this.recordService.getRecordsByDstIdAndRecordIds(dstId, involvedRecordIds);
-    const nowTime = dayjs(new Date());
-
-    // TypeORM does not support update multiple entities to different values.
-    // See  https://github.com/typeorm/typeorm/issues/5126
-    involvedAlarms.forEach((alarmEntity: DatasheetRecordAlarmEntity) => {
-      const record = involvedRecordMap[alarmEntity.recordId];
-      if (!record.recordMeta.fieldExtraMap) return;
-
-      const dateCellValue = this.getFieldValueOfRecord(record.id, record, alarmEntity.fieldId, resultSet);
-      if (!dateCellValue) return;
-
-      const fieldExtraInfo = record.recordMeta.fieldExtraMap[alarmEntity.fieldId];
-      if (!fieldExtraInfo || !fieldExtraInfo.alarm) return;
-
-      const alarmMeta = fieldExtraInfo.alarm;
-      const alarmAt = this.recordAlarmService.calculateAlarmAt(dateCellValue, alarmMeta.time, alarmMeta.subtract);
-      if (!alarmAt || nowTime.isAfter(alarmAt)) return;
-
-      manager.createQueryBuilder()
-        .update(DatasheetRecordAlarmEntity)
-        .set({
-          alarmAt: alarmAt,
-          status: RecordAlarmStatus.PENDING,
-          updatedBy: userId,
-          updatedAt: nowTime.toDate(),
-        })
-        .where('id = :id', { id: alarmEntity.id })
-        .execute();
-    });
-    profiler.done({ message: 'Finished updating alarms' });
-  }
-
-  private async deleteRecordAlarms(
-    manager: EntityManager,
-    commonData: ICommonData,
-    resultSet: { [key: string]: any },
-  ) {
-    if (!resultSet.toDeleteAlarms.size) return;
-    const { userId, dstId } = commonData;
-
-    const profiler = this.logger.startTimer();
-    this.logger.info(`Start deleting alarms. Size: ${resultSet.toDeleteAlarms.size}`);
-
-    let deletedAlarmIds = [];
-    const deletedAlarmRecordIdsByFieldId = {};
-    Array.from(resultSet.toDeleteAlarms.keys()).forEach((recordId: string) => {
-      const deleteAlarms = resultSet.toDeleteAlarms.get(recordId) || [];
-      if (isEmpty(deleteAlarms)) return;
-      deletedAlarmIds = deletedAlarmIds.concat(deleteAlarms.map((alarm: IRecordAlarm) => alarm.id));
-
-      deleteAlarms.forEach((alarm: IRecordAlarm) => {
-        if (!deletedAlarmRecordIdsByFieldId[alarm.fieldId]) {
-          deletedAlarmRecordIdsByFieldId[alarm.fieldId] = [];
-        }
-        deletedAlarmRecordIdsByFieldId[alarm.fieldId].push(recordId);
-      });
-    });
-
-    // Batch delete alarms
-    await this.recordAlarmService.batchDeleteRecordAlarms(deletedAlarmIds, userId);
-
-    // Batch delete alarms from datasheet_record.field_update_info (RecordMeta)
-    await Promise.all(Object.keys(deletedAlarmRecordIdsByFieldId).map((fieldId: string) => {
-      const relatedRecordIds = deletedAlarmRecordIdsByFieldId[fieldId];
-      const jsonParam = `'$.fieldExtraMap.${fieldId}.alarm'`;
-
-      return manager.createQueryBuilder()
-        .update(DatasheetRecordEntity)
-        .set({ recordMeta: () => `JSON_REMOVE(field_updated_info, ${jsonParam})` })
-        .where('dstId = :dstId', { dstId: dstId })
-        .andWhere('recordId IN (:recordIds)', { recordIds: relatedRecordIds })
-        .execute();
-    }));
-    profiler.done({ message: 'Finished deleting alarms' });
   }
 
   /**

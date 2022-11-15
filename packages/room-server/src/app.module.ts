@@ -54,7 +54,7 @@ import { UnitTeamService } from 'database/services/unit/unit.team.service';
 import { UserService } from 'database/services/user/user.service';
 import { WidgetService } from 'database/services/widget/widget.service';
 import { EnterpriseModule } from 'enterprise/enterprise.module';
-import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
+import { QueueWorkerModule } from 'enterprise/queue/queue.worker.module';
 import { EntryModule } from 'entry.module';
 import { FusionApiModule } from 'fusion/fusion.api.module';
 import { GrpcClientModule } from 'grpc/client/grpc.client.module';

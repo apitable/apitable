@@ -9,10 +9,10 @@ import { RecordMap } from '../../../database/interfaces';
 import { QueueSenderService } from 'shared/services/queue/queue.sender.service';
 import { CommandService } from 'database/services/command/command.service';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
-import { DatasheetRecordAlarmService } from 'database/services/datasheet/datasheet.record.alarm.service';
 import { DatasheetRecordService } from 'database/services/datasheet/datasheet.record.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { Logger } from 'winston';
+import { DatasheetRecordAlarmBaseService } from 'database/services/alarm/datasheet.record.alarm.base.service';
 
 @Injectable()
 export class SchedTaskService {
@@ -23,7 +23,7 @@ export class SchedTaskService {
     private readonly datasheetService: DatasheetService,
     private readonly datasheetMetaService: DatasheetMetaService,
     private readonly recordService: DatasheetRecordService,
-    private readonly recordAlarmService: DatasheetRecordAlarmService,
+    private readonly recordAlarmService: DatasheetRecordAlarmBaseService,
   ) { }
 
   @Cron('0,30 * * * * *')

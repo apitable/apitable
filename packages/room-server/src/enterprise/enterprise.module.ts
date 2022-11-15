@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { QueueWorkerModule } from './shared/queue.worker.module';
+import { QueueWorkerModule } from './queue/queue.worker.module';
 import { SchedTaskService } from '../shared/services/sched_task/sched.task.service';
 import { SharedModule } from 'shared/shared.module';
 

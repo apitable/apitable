@@ -22,7 +22,7 @@ import { UnitService } from 'database/services/unit/unit.service';
 import { UnitTagService } from 'database/services/unit/unit.tag.service';
 import { UnitTeamService } from 'database/services/unit/unit.team.service';
 import { UserService } from 'database/services/user/user.service';
-import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
+import { QueueWorkerModule } from 'enterprise/queue/queue.worker.module';
 import {
   AttachmentField, AutoNumberField, CheckboxField, CreatedByField, CreatedTimeField, CurrencyField, DateTimeField, EmailField, FormulaField,
   LastModifiedByField, LastModifiedTimeField, LinkField, LookUpField, MemberField, MultiSelectField, NumberField, PercentField, PhoneField,

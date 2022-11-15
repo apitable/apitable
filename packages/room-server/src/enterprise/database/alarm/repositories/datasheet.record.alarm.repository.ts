@@ -1,4 +1,4 @@
-import { DatasheetRecordAlarmEntity } from '../entities/datasheet.record.alarm.entity';
+import { DatasheetRecordAlarmEntity } from '../../../../database/entities/datasheet.record.alarm.entity';
 import { RecordAlarmStatus } from 'shared/enums/record.alarm.enum';
 import { isEmpty } from 'lodash';
 import { EntityRepository, Repository } from 'typeorm';
@@ -23,7 +23,7 @@ export class DatasheetRecordAlarmRepository extends Repository<DatasheetRecordAl
     dstId: string,
     recordIds: string[],
     fieldIds: string[]
-  ): Promise<DatasheetRecordAlarmEntity[] | null> {
+  ): Promise<DatasheetRecordAlarmEntity[]> {
     return await this.createQueryBuilder('alarm')
       .where('alarm.isDeleted = :isDeleted', { isDeleted: false })
       .andWhere('alarm.dstId = :dstId', { dstId: dstId })

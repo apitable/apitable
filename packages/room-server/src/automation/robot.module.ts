@@ -23,37 +23,37 @@ import { UserService } from 'database/services/user/user.service';
 
 @Module({
   imports: [
-  SharedModule,
-  TypeOrmModule.forFeature([
-    AutomationTriggerRepository,
-    AutomationActionRepository,
-    AutomationRobotRepository,
-    AutomationRunHistoryRepository,
+    SharedModule,
+    TypeOrmModule.forFeature([
+      AutomationTriggerRepository,
+      AutomationActionRepository,
+      AutomationRobotRepository,
+      AutomationRunHistoryRepository,
     ]),
-  // UserServiceModule,
-  TypeOrmModule.forFeature([UserRepository]),
-  TypeOrmModule.forFeature([
-    NodeRepository,
-    AutomationTriggerRepository,
-    AutomationRobotRepository,
-    AutomationRunHistoryRepository,
-    AutomationServiceRepository,
-    AutomationTriggerTypeRepository,
-    AutomationActionTypeRepository
+    // UserServiceModule,
+    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([
+      NodeRepository,
+      AutomationTriggerRepository,
+      AutomationRobotRepository,
+      AutomationRunHistoryRepository,
+      AutomationServiceRepository,
+      AutomationTriggerTypeRepository,
+      AutomationActionTypeRepository
     ]),
   ],
   providers: [
-  AutomationService,
-  UserService,
+    AutomationService,
+    UserService,
   ],
   controllers: [
-  RobotController,
-  RobotRunHistoryController,
-  RobotActionTypeController,
-  RobotTriggerTypeController,
-  RobotActionController,
-  RobotTriggerController,
-  RobotServiceController,
+    RobotController,
+    RobotRunHistoryController,
+    RobotActionTypeController,
+    RobotTriggerTypeController,
+    RobotActionController,
+    RobotTriggerController,
+    RobotServiceController,
   ],
-  })
+})
 export class RobotModule { }

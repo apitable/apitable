@@ -11,7 +11,6 @@ import { AutomationService } from 'automation/services/automation.service';
 import { DatasheetChangesetRepository } from 'database/repositories/datasheet.changeset.repository';
 import { DatasheetChangesetSourceRepository } from 'database/repositories/datasheet.changeset.source.repository';
 import { DatasheetMetaRepository } from 'database/repositories/datasheet.meta.repository';
-import { DatasheetRecordAlarmRepository } from 'database/repositories/datasheet.record.alarm.repository';
 import { DatasheetRecordRepository } from 'database/repositories/datasheet.record.repository';
 import { DatasheetRecordSourceRepository } from 'database/repositories/datasheet.record.source.repository';
 import { DatasheetRecordSubscriptionRepository } from 'database/repositories/datasheet.record.subscription.repository';
@@ -38,7 +37,6 @@ import { DatasheetChangesetService } from 'database/services/datasheet/datasheet
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
 import { DatasheetFieldHandler } from 'database/services/datasheet/datasheet.field.handler';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
-import { DatasheetRecordAlarmService } from 'database/services/datasheet/datasheet.record.alarm.service';
 import { DatasheetRecordService } from 'database/services/datasheet/datasheet.record.service';
 import { DatasheetRecordSourceService } from 'database/services/datasheet/datasheet.record.source.service';
 import { DatasheetRecordSubscriptionService } from 'database/services/datasheet/datasheet.record.subscription.service';
@@ -66,7 +64,7 @@ import { UnitTagService } from 'database/services/unit/unit.tag.service';
 import { UnitTeamService } from 'database/services/unit/unit.team.service';
 import { UserService } from 'database/services/user/user.service';
 import { WidgetService } from 'database/services/widget/widget.service';
-import { QueueWorkerModule } from 'enterprise/shared/queue.worker.module';
+import { QueueWorkerModule } from 'enterprise/queue/queue.worker.module';
 import { GrpcClientModule } from 'grpc/client/grpc.client.module';
 // import { DatasheetServiceModule } from '_modules/datasheet.service.module';
 // import { ResourceServiceModule } from '_modules/resource.service.module';
@@ -75,6 +73,7 @@ import { RestService } from 'shared/services/rest/rest.service';
 import { JavaModule } from './services/java/java.module';
 import { ClientStorage } from './services/socket/client.storage';
 import { RoomResourceRelService } from './services/socket/room.resource.rel.service';
+import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module';
 
 @Global()
 @Module({
@@ -156,7 +155,6 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
       RecordCommentRepository,
       DatasheetChangesetRepository,
       DatasheetChangesetSourceRepository,
-      DatasheetRecordAlarmRepository,
     ]),
     // UserServiceModule,
     TypeOrmModule.forFeature([UserRepository]),
@@ -182,6 +180,7 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     //   }),
     TypeOrmModule.forFeature([UnitRepository, UnitMemberRepository, UnitTagRepository, UnitTeamRepository, UserRepository]),
     // UserServiceModule,
+    AlarmDynamicModule.forRoot(),
   ],
   providers: [
     RestService,
@@ -237,7 +236,6 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     ComputeFieldReferenceManager,
     DatasheetChangesetService,
     DatasheetChangesetSourceService,
-    DatasheetRecordAlarmService,
     UserService,
     WidgetService,
     UnitService,
@@ -273,7 +271,6 @@ import { RoomResourceRelService } from './services/socket/room.resource.rel.serv
     ComputeFieldReferenceManager,
     DatasheetChangesetService,
     DatasheetChangesetSourceService,
-    DatasheetRecordAlarmService,
   ],
 })
 export class GlobalModule {}

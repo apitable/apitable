@@ -4,6 +4,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { DatasheetRecordAlarmService } from './datasheet.record.alarm.service';
 import { AppModule } from 'app.module';
 import dayjs from 'dayjs';
+import { DatasheetRecordAlarmBaseService } from 'database/services/alarm/datasheet.record.alarm.base.service';
 
 describe('datasheet record alarm service', () => {
   let app: INestApplication;
@@ -24,7 +25,7 @@ describe('datasheet record alarm service', () => {
   let alarmService: DatasheetRecordAlarmService;
 
   beforeEach(() => {
-    alarmService = module.get(DatasheetRecordAlarmService);
+    alarmService = module.get(DatasheetRecordAlarmBaseService);
   });
 
   describe('calculate record alarm at', () => {
@@ -55,7 +56,7 @@ describe('datasheet record alarm service', () => {
       expect(dayjs(alarmAt).diff(nowTime)).toEqual(0);
     });
 
-    // todo: set utc timezone for jest
+    // todo(wuchen): set utc timezone for jest
     // it('should calculate alarm at with alarm at time but empty subtract', () => {
     //   const nowTime = dayjs('2022-03-28T13:30:00Z');
     //   const alarmAtTime = '12:00';
@@ -74,7 +75,7 @@ describe('datasheet record alarm service', () => {
       expect(dayjs(alarmAt).diff(nowTime, 'minute')).toEqual(-5);
     });
 
-    // todo: set utc timezone for jest
+    // todo(wuchen): set utc timezone for jest
     // it('should calculate alarm at with alarm at time and subtract', async() => {
     //   const nowTime = dayjs('2022-03-28T13:30:00Z');
     //   const alarmAtTime = '12:00';
