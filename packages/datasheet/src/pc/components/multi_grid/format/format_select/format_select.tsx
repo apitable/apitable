@@ -1,32 +1,22 @@
-import { Typography, Divider, useThemeColors } from '@apitable/components';
+import { Divider, Typography, useThemeColors } from '@apitable/components';
 import {
-  Field,
-  IField,
-  ISelectField,
-  ISelectFieldProperty,
-  isSelectField,
-  moveArrayElement,
-  SelectField,
-  Selectors,
-  Strings,
-  t,
-  ThemeName,
+  Field, IField, ISelectField, ISelectFieldProperty, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t, ThemeName,
 } from '@apitable/core';
+import classNames from 'classnames';
 import produce from 'immer';
+import { omit } from 'lodash';
 import { OptionSetting } from 'pc/components/common/color_picker';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
 import { createRainbowColorsArr } from 'pc/utils/color_utils';
-import { Dispatch, SetStateAction, useState } from 'react';
 import * as React from 'react';
+import { Dispatch, SetStateAction } from 'react';
+import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
-import { SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
 import { FormatSelectMobile } from './mobile/format_select_mobile';
-import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
-import { omit } from 'lodash';
-import classNames from 'classnames';
 
 interface IFormatSelect {
   currentField: ISelectField;
@@ -48,12 +38,28 @@ export function setColor(index: number, theme: ThemeName) {
   return ColorWheel[index % COLOR_COUNT];
 }
 
-export const SortableContainer = sortableContainer(({ children }) => {
-  return <div className={styles.sortableContainer}>{children}</div>;
-});
+interface ISortableContainerProps {
+  onSortEnd: (result: DropResult, provided: ResponderProvided) => void;
+  onDragUpdate?: (initial: DragUpdate, provided: ResponderProvided) => void;
+}
+
+const SortableContainer: React.FC<ISortableContainerProps> = ({ onDragUpdate, onSortEnd, children }) => {
+  return <DragDropContext onDragEnd={onSortEnd} onDragUpdate={onDragUpdate}>
+    <Droppable droppableId='droppable'>
+      {(provided, snapshot) => (
+        <div
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+        >
+          {children}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>;
+};
 
 const FormatSelectBase = (props: IFormatSelect) => {
-  const [draggingId, setDraggingId] = useState<string | undefined>();
   const colors = useThemeColors();
 
   const { currentField, setCurrentField, isMulti, datasheetId } = props;
@@ -75,8 +81,12 @@ const FormatSelectBase = (props: IFormatSelect) => {
     });
   }
 
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    setDraggingId(undefined);
+  const onSortEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    const oldIndex = result.source.index;
+    const newIndex = result.destination.index;
     const _currentField = produce(currentField, draft => {
       moveArrayElement(draft.property.options, oldIndex, newIndex);
       return draft;
@@ -114,7 +124,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
     <>
       {Boolean(isPreview && options.length) && <div className={styles.preview}>{t(Strings.to_select_tip)}</div>}
       <div style={listStyle} className={classNames(styles.selection, styles.selectList)}>
-        <SortableContainer useDragHandle onSortEnd={onSortEnd} distance={5}>
+        <SortableContainer onSortEnd={onSortEnd}>
           {options.map((item, index) => {
             return (
               <FormatSelectItem
@@ -122,8 +132,6 @@ const FormatSelectBase = (props: IFormatSelect) => {
                 item={item}
                 index={index}
                 onOptionChange={onOptionChange}
-                draggingId={draggingId}
-                setDraggingId={setDraggingId}
                 currentField={currentField}
                 setCurrentField={setCurrentField}
                 addNewItem={addNewItem}
@@ -139,7 +147,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
       {options.length > 0 && (
         <div className={styles.section}>
           <Divider className={styles.divider} />
-          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant="body3">
+          <Typography className={styles.defaultValueTitle} color={colors.fc3} variant='body3'>
             {t(Strings.default_value)}
           </Typography>
           <FilterGeneralSelect

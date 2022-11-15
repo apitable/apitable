@@ -89,12 +89,12 @@
 }
 
 .inputError {
-  border: 1px solid var(--errorColor)  !important;
+  border: 1px solid var(--errorColor) !important;
   box-shadow: none !important;
 }
 
 .inputFocus {
-  border: 1px solid var(--primaryColor)  !important;
+  border: 1px solid var(--primaryColor) !important;
   box-shadow: none !important;
 }
 
@@ -123,7 +123,7 @@
   margin: 0;
 
   svg {
-    fill: var(--fourthLevelText)!important;
+    fill: var(--fourthLevelText) !important;
   }
 }
 
@@ -149,7 +149,7 @@
 
   svg {
     margin-right: 0 !important;
-    fill: var(--fourthLevelText)!important;
+    fill: var(--fourthLevelText) !important;
   }
 }
 
@@ -202,7 +202,7 @@
 .customSelect {
   height: 40px;
 
-  &>div {
+  & > div {
     background-color: transparent !important;
     box-shadow: none !important;
     padding-left: 0 !important;
@@ -257,17 +257,21 @@
     flex: 1;
     .ellipsis();
   }
+
   .formatItemPrecision {
     flex-shrink: 0;
   }
+
   &[data-align="default"] {
     .formatItemSymbol {
       text-align: right;
     }
+
     .formatItemPrecision {
       margin-left: 2px;
     }
   }
+
   &[data-align="right"] {
     display: inline-block;
     width: 100%;
@@ -311,7 +315,7 @@
 
 .selectList {
   // min-height: 38px;
-  // max-height: 200px;
+  max-height: 250px;
   flex-shrink: 0;
 }
 

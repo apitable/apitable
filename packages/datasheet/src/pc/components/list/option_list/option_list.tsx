@@ -4,7 +4,8 @@ import {
 } from '@apitable/core';
 import classNames from 'classnames';
 import { CommonList } from 'pc/components/list/common_list';
-import { SortableContainer, SortableItem } from 'pc/components/multi_grid/format';
+import { SortableElement as sortableElement } from 'react-sortable-hoc';
+import { SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -14,6 +15,12 @@ import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <div className={styles.sortableContainer}>{children}</div>;
+});
+
+const SortableItem = sortableElement(({ children }) => <>{children}</>);
 
 export const OptionList: React.FC<IOptionListProps> = (props) => {
   const {

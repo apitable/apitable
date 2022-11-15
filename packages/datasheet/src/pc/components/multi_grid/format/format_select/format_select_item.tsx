@@ -1,32 +1,28 @@
+import { useThemeColors } from '@apitable/components';
 import { IField, ISelectField, ISelectFieldOption } from '@apitable/core';
+import { DragOutlined } from '@apitable/icons';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import produce from 'immer';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { useThemeColors } from '@apitable/components';
 import { stopPropagation } from 'pc/utils';
-import { useRef } from 'react';
 import * as React from 'react';
-import { SortableElement as sortableElement, SortableHandle as sortableHandle } from 'react-sortable-hoc';
+import { useRef } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import IconDelete from 'static/icon/common/common_icon_delete.svg';
 import styles from '../styles.module.less';
-import { DragOutlined } from '@apitable/icons';
 
 export interface IFormatSelectItem {
   item: ISelectFieldOption;
   index: number;
   onOptionChange: (type: OptionSetting, id: string, value: number | string) => void;
-  draggingId: string | undefined;
-  setDraggingId: React.Dispatch<React.SetStateAction<string | undefined>>;
   currentField: ISelectField;
   setCurrentField: React.Dispatch<React.SetStateAction<IField>>;
   addNewItem: () => void;
 }
 
-export const SortableItem = sortableElement(({ children }) => <>{children}</>);
-
 export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
-  const { item, index, onOptionChange, draggingId, setDraggingId, currentField, setCurrentField, addNewItem } = props;
+  const { item, index, onOptionChange, currentField, setCurrentField, addNewItem } = props;
   const colorPickerRef = useRef(null);
   const colors = useThemeColors();
   const onChange = (index, e) => {
@@ -67,32 +63,22 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
     addNewItem();
   };
 
-  const onDragHandleMouseDown = (e: React.MouseEvent) => {
-    stopPropagation(e);
-    setDraggingId(item.id);
-  };
-
-  const onDragHandleMouseUp = (e: React.MouseEvent) => {
-    stopPropagation(e);
-    setDraggingId(undefined);
-  };
-
-  const DragHandle = sortableHandle(() => (
-    <div
-      className={classNames(styles.iconMove, {
-        [styles.dragging]: draggingId === item.id,
-      })}
-      onMouseDown={onDragHandleMouseDown}
-      onMouseUp={onDragHandleMouseUp}
-    >
-      <DragOutlined size={10} color={colors.thirdLevelText} />
-    </div>
-  ));
-
-  return (
-    <SortableItem index={index}>
-      <div className={styles.selectionItem}>
-        <DragHandle />
+  return <Draggable key={item.id} draggableId={item.id} index={index}>
+    {(provided, snapshot) => (
+      <div
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        className={styles.selectionItem}
+      >
+        <div
+          className={classNames(styles.iconMove, {
+            [styles.dragging]: snapshot.isDragging,
+          })}
+          {...provided.dragHandleProps}
+        >
+          <DragOutlined size={10} color={colors.thirdLevelText} />
+        </div>
         <div onClick={stopPropagation} ref={colorPickerRef}>
           <ColorPicker onChange={onOptionChange} option={item} mask />
         </div>
@@ -109,6 +95,6 @@ export const FormatSelectItem: React.FC<IFormatSelectItem> = props => {
           <IconDelete width={15} height={15} fill={colors.fourthLevelText} />
         </div>
       </div>
-    </SortableItem>
-  );
+    )}
+  </Draggable>;
 };
