@@ -7,7 +7,7 @@ import { Modal, Typography, colorVars } from '@apitable/components';
 export const SliderVerification: FC = props => {
 
   useMount(() => {
-    window['nvc'].getNC({ renderTo: ConfigConstant.CaptchaIds.DEFAULT });
+    window['nvc']?.getNC({ renderTo: ConfigConstant.CaptchaIds.DEFAULT });
   });
 
   return (

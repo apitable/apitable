@@ -1,16 +1,18 @@
-import * as Sentry from '@sentry/react';
 import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
   Api, AutoTestID, CacheManager, ConfigConstant, Events, ExpCache, Field, FieldOperateType, FieldType, FormApi, getNewId, IDPrefix, IField, IFieldMap,
-  IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, Player, Selectors, StatusCode, StoreActions, string2Segment, Strings, t,
+  IFormState, IRecord, ISegment, isPrivateDeployment, Navigation, OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS, Player, Selectors,
+  StatusCode, StoreActions, string2Segment, Strings, t,
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@apitable/icons';
+import * as Sentry from '@sentry/react';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
 import produce from 'immer';
-import { isArray, debounce } from 'lodash';
+import { debounce, isArray } from 'lodash';
 import _map from 'lodash/map';
 import { AnimationItem } from 'lottie-web';
+import { triggerUsageAlertForDatasheet } from 'modules/enterprise/billing';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common/logo';
@@ -327,27 +329,34 @@ export const FormContainer: React.FC = () => {
     if (shareId) {
       return FormApi.addShareFormRecord(id, shareId, postData)
         .then(response => {
-          const { success, code, data } = response.data;
+          const { success, code, data, message } = response.data;
           if (success) {
             return onSubmitSuccess(data.recordId, shareId);
           }
-          const isOverLimit = code === StatusCode.SPACE_CAPACITY_OVER_LIMIT;
-          warningTip(isOverLimit ? t(Strings.form_space_capacity_over_limit) : t(Strings.form_error_tip));
+          handleAddRecordError(code, message);
         })
         .catch(() => networkErrorTip())
         .finally(() => setLoading(false));
     }
     return FormApi.addFormRecord(id, postData)
       .then(response => {
-        const { success, code, data } = response.data;
+        const { success, code, data, message } = response.data;
         if (success) {
           return onSubmitSuccess(data.recordId);
         }
-        const isOverLimit = code === StatusCode.SPACE_CAPACITY_OVER_LIMIT;
-        warningTip(isOverLimit ? t(Strings.form_space_capacity_over_limit) : t(Strings.form_error_tip));
+        handleAddRecordError(code, message);
       })
       .catch(() => networkErrorTip())
       .finally(() => setLoading(false));
+  };
+
+  const handleAddRecordError = (code: number, errMsg: string) => {
+    let str = t(Strings.form_error_tip);
+    if (code === StatusCode.SPACE_CAPACITY_OVER_LIMIT) str = t(Strings.form_space_capacity_over_limit);
+    if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS].includes(String(code))) {
+      return triggerUsageAlertForDatasheet(errMsg);
+    }
+    warningTip(str);
   };
 
   const onSubmitSuccess = (realRecordId: string, shareId?: string) => {
@@ -627,7 +636,8 @@ export const FormContainer: React.FC = () => {
       }}
     >
       <Head>
-        <meta property='og:description' content={serialize(formProps.description) || '维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师'} />
+        <meta property='og:description'
+          content={serialize(formProps.description) || '维格表, 积木式多媒体数据表格, 维格表技术首创者, 数据整理神器, 让人人都是数据设计师'} />
       </Head>
       <div className={classnames(styles.formContainer, 'vikaFormContainer')} id={AutoTestID.FORM_CONTAINER}>
         {/* Form completion page */}

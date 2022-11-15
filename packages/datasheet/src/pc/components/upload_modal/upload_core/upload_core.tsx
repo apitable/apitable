@@ -215,7 +215,7 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
     if (propsSize) {
       return propsSize;
     }
-    const count = cellValue.length + uploadList.length;
+    const count = Number(cellValue?.length) + uploadList.length;
     return count > 0 ? UploadCoreSize.Normal : UploadCoreSize.Big;
   }, [cellValue, uploadList, propsSize]);
 

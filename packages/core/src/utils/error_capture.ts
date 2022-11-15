@@ -2,8 +2,8 @@ import { StatusCode } from 'config';
 import { Strings, t } from '../exports/i18n';
 import { ErrorCode, ErrorType } from 'types';
 
-const OVER_LIMIT_PER_SHEET_RECORDS = '305';
-const OVER_LIMIT_SPACE_RECORDS = '306';
+export const OVER_LIMIT_PER_SHEET_RECORDS = '305';
+export const OVER_LIMIT_SPACE_RECORDS = '306';
 const OVER_LIMIT_GANTT_VIEW_NUMBER = '307';
 const OVER_LIMIT_CALENDAR_NUMBER = '308';
 
