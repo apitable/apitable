@@ -17,7 +17,7 @@ const WecomBindSuccess: React.FC = () => {
     <div className={styles.wecomBindSuccess}>
       <span className={styles.successImg}>
         <Image
-          src={integrateCdnHost(Settings.wecom_bind_success_icon.value)}
+          src={integrateCdnHost(Settings.integration_wecom_bind_success_icon.value)}
           alt='success-icon'
         />
       </span>
@@ -28,7 +28,7 @@ const WecomBindSuccess: React.FC = () => {
           <span>{t(Strings.integration_app_wecom_config_item1_title)}</span>
           <Tooltip title={t(Strings.click_to_view_instructions)}>
             <a
-              href={Settings.help_intro_custom_subdomain.value}
+              href={Settings.integration_wecom_custom_subdomain_help_url.value}
               target='_blank'
               rel='noopener noreferrer'
               style={{

@@ -160,7 +160,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invitable]);
-  
+
   /**
    * Copy invitation link
    */
@@ -195,7 +195,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     subLabel: t(Strings.share_and_save_desc),
     disabled: Boolean(isShareMirror)
   }];
-  
+
   let value = '';
   if (shareSettings) {
     const { canBeEdited, onlyRead } = shareSettings.props;
@@ -230,7 +230,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
-          <a href={Settings.share_url.value} rel="noopener noreferrer" target="_blank">
+          <a href={Settings.workbench_node_share_help_url.value} rel="noopener noreferrer" target="_blank">
             <InformationSmallOutlined currentColor />
           </a>
         </Tooltip>

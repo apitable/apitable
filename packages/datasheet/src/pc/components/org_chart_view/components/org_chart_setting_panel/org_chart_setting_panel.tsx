@@ -124,7 +124,7 @@ export const OrgChartSettingPanel: React.FC<IOrgChartSettingPanelProps> = props 
           </Typography>
           <Tooltip title={t(Strings.calendar_setting_help_tips)}>
             <a
-              href={Settings.org_chart_setting_help_url.value}
+              href={Settings.view_architecture_setting_help_url.value}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.helpIcon}

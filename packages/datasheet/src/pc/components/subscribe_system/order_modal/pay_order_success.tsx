@@ -138,7 +138,7 @@ export const showOrderModalAfterPay = (descColor: string, orderType: IOrderType)
         {t(Strings.upgrade_success_2_desc)}
       </Typography>
     </>,
-    qrCodeUrl: integrateCdnHost(Settings.pay_success_qr_code.value),
+    qrCodeUrl: integrateCdnHost(Settings.billing_pay_success_qr_code.value),
   });
 };
 
@@ -146,7 +146,7 @@ export const showOrderContactUs = () => {
   showOrderModal({
     modalTitle: t(Strings.contact_model_title),
     modalSubTitle: t(Strings.contact_model_desc),
-    qrCodeUrl: integrateCdnHost(Settings.pay_contact_us.value),
+    qrCodeUrl: integrateCdnHost(Settings.billing_pay_contact_us.value),
   });
 };
 
@@ -154,6 +154,6 @@ export const showUpgradeContactUs = () => {
   showOrderModal({
     modalTitle: t(Strings.contact_model_title),
     modalSubTitle: t(Strings.space_dashboard_contact_desc),
-    qrCodeUrl: integrateCdnHost(Settings.pay_success_qr_code.value),
+    qrCodeUrl: integrateCdnHost(Settings.billing_pay_success_qr_code.value),
   });
 };

@@ -9,7 +9,7 @@ import { AdminLayout, IAdminData } from '../../dingtalk';
 const config = {
   adminTitle: t(Strings.feishu_admin_panel_title),
   adminDesc: t(Strings.feishu_admin_panel_message),
-  helpLink: Settings.link_to_lark_cms.value,
+  helpLink: Settings.integration_feishu_help_url.value,
 };
 
 const FeishuAdmin = () => {

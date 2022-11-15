@@ -48,8 +48,8 @@ export const AddFirstNode: FC<IAddFirstNodeProps> = props => {
             }}
             src={
               addMode
-                ? integrateCdnHost(Settings.org_guide_add_first_node_cover_1.value)
-                : integrateCdnHost(Settings.org_guide_add_first_node_cover_2.value)
+                ? integrateCdnHost(Settings.view_architecture_empty_record_list_img.value)
+                : integrateCdnHost(Settings.view_architecture_empty_graphics_img.value)
             }
             width={232}
             height={176}

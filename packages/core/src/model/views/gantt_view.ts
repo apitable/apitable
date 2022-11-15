@@ -1,8 +1,8 @@
 import { IJOTAction, OTActionName } from 'engine';
 import { Strings, t } from '../../exports/i18n';
 import { Field } from 'model/field';
-import { 
-  GanttColorType, IFieldMap, IGanttViewColumn, IGanttViewProperty, ISetGanttStyle, ISnapshot, IViewProperty, ViewType 
+import {
+  GanttColorType, IFieldMap, IGanttViewColumn, IGanttViewProperty, ISetGanttStyle, ISnapshot, IViewProperty, ViewType
 } from '../../exports/store';
 import { getViewIndex } from '../../exports/store/selectors';
 import { BasicValueType } from 'types';
@@ -26,7 +26,7 @@ export class GanttView extends View {
     return {
       title: t(Strings.gantt_view),
       desc: t(Strings.gantt_guide_desc),
-      videoGuide: integrateCdnHost(Settings.gantt_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_gantt_guide_video.value),
     };
   }
 
@@ -108,3 +108,4 @@ export class GanttView extends View {
     });
   };
 }
+

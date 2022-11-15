@@ -71,7 +71,7 @@ export const Welcome: FC = () => {
           backgroundColor: colors.deepPurple[50],
           activeBackgroundColor: colors.deepPurple[100],
           isVideo: true,
-          onClick: () => showModal(JSON.parse(Settings.welcome_what_is_vikasheet.value)),
+          onClick: () => showModal(JSON.parse(Settings.user_guide_welcome_what_is_datasheet_video.value)),
         },
         {
           id: 'welcome_module_2',
@@ -81,7 +81,7 @@ export const Welcome: FC = () => {
           backgroundColor: colors.pink[50],
           activeBackgroundColor: colors.pink[100],
           isVideo: true,
-          onClick: () => showModal(JSON.parse(Settings.welcome_quick_start.value)),
+          onClick: () => showModal(JSON.parse(Settings.user_guide_welcome_quick_start_video.value)),
         },
         {
           id: 'welcome_module_3',
@@ -91,7 +91,7 @@ export const Welcome: FC = () => {
           backgroundColor: colors.indigo[50],
           activeBackgroundColor: colors.indigo[100],
           isVideo: true,
-          onClick: () => showModal(JSON.parse(Settings.welcome_get_vika.value)),
+          onClick: () => showModal(JSON.parse(Settings.user_guide_welcome_introduction_video.value)),
         },
       ],
     },
@@ -113,7 +113,7 @@ export const Welcome: FC = () => {
           color: colors.teal[500],
           backgroundColor: colors.teal[50],
           activeBackgroundColor: colors.teal[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.welcome_module4_url.value}`, { method: Method.Push }),
+          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_template1_url.value}`, { method: Method.Push }),
         },
         {
           id: 'welcome_module_5',
@@ -122,7 +122,7 @@ export const Welcome: FC = () => {
           color: colors.tangerine[500],
           backgroundColor: colors.tangerine[50],
           activeBackgroundColor: colors.tangerine[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.welcome_module5_url.value}`, { method: Method.Push }),
+          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_template2_url.value}`, { method: Method.Push }),
         },
         {
           id: 'welcome_module_6',
@@ -131,7 +131,7 @@ export const Welcome: FC = () => {
           color: colors.blue[500],
           backgroundColor: colors.blue[50],
           activeBackgroundColor: colors.blue[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.welcome_module6_url.value}`, { method: Method.Push }),
+          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_template3_url.value}`, { method: Method.Push }),
         },
       ],
     },
@@ -140,7 +140,7 @@ export const Welcome: FC = () => {
       rightBtn: (
         <TextButton
           className={styles.moreTemplateBtn}
-          onClick={() => navigationToUrl(`${window.location.origin}${Settings.wecom_bind_help_center.value}${plm}`)}
+          onClick={() => navigationToUrl(`${window.location.origin}${Settings.integration_wecom_bind_help_center.value}${plm}`)}
         >
           <Typography variant='body4' color={colors.fc3}>
             {t(Strings.welcome_more_help)}
@@ -156,7 +156,7 @@ export const Welcome: FC = () => {
           color: colors.green[500],
           backgroundColor: colors.green[50],
           activeBackgroundColor: colors.green[100],
-          onClick: () => navigationToUrl(Settings.welcome_module8_url.value, { method: Method.NewTab }),
+          onClick: () => navigationToUrl(Settings.user_guide_welcome_product_manual_url.value, { method: Method.NewTab }),
         },
         {
           id: 'welcome_module_7',
@@ -165,7 +165,7 @@ export const Welcome: FC = () => {
           color: colors.red[500],
           backgroundColor: colors.red[50],
           activeBackgroundColor: colors.red[100],
-          onClick: () => navigationToUrl(Settings.welcome_module7_url.value, { method: Method.NewTab }),
+          onClick: () => navigationToUrl(Settings.user_guide_welcome_faq_url.value, { method: Method.NewTab }),
         },
         {
           id: 'welcome_module_9',
@@ -174,7 +174,7 @@ export const Welcome: FC = () => {
           color: colors.purple[500],
           backgroundColor: colors.purple[50],
           activeBackgroundColor: colors.purple[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.welcome_module9_url.value}${plm}`),
+          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_developer_center_url.value}${plm}`),
         },
       ],
     },

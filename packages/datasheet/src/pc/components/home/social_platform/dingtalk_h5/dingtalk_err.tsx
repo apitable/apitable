@@ -10,7 +10,7 @@ const DingtalkUnboundErr = () => {
       desc={t(Strings.feishu_configure_err_of_configuring)}
       btnText={t(Strings.know_more)}
       onClick={() => {
-        navigationToUrl(window.location.origin + Settings.link_to_dingtalk_cms.value, { clearQuery: true });
+        navigationToUrl(window.location.origin + Settings.integration_dingtalk_help_url.value, { clearQuery: true });
       }}
     />
   );

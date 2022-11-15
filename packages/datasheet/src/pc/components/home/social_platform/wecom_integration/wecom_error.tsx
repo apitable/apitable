@@ -14,7 +14,7 @@ const ErrorConfig = {
     title: t(Strings.error_get_wecom_identity),
     desc: t(Strings.error_get_wecom_identity_tips_bound),
     btnText: t(Strings.help_center),
-    btnUrl: window.location.origin + Settings.link_to_wecom_cms.value
+    btnUrl: window.location.origin + Settings.integration_wecom_help_url.value
   },
   [StatusCode.WECOM_NO_EXIST]: {
     title: t(Strings.wecom_login_fail_tips_title),
@@ -62,7 +62,7 @@ const ErrorConfig = {
     title: t(Strings.error_get_wecom_identity),
     desc: t(Strings.error_get_wecom_identity_tips),
     btnText: t(Strings.help_center),
-    btnUrl: window.location.origin + Settings.link_to_wecom_cms.value
+    btnUrl: window.location.origin + Settings.integration_wecom_help_url.value
   }
 };
 

@@ -141,7 +141,7 @@ export const RecommendWidgetPanel: React.FC<IRecommendWidgetPanelProps> = (props
                       </div>
                       <div className={styles.widgetCover}>
                         <Image
-                          src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover.value)}
+                          src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover_img.value)}
                           alt=''
                           layout={'fill'}
                         />

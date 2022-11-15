@@ -17,7 +17,7 @@ export const Reading: FC<IReadingProps> = props => {
     <div className={styles.content}>
       <div className={styles.top}>
         <Image
-          src={integrateCdnHost(Settings.modal_logout_step1_cover.value)}
+          src={integrateCdnHost(Settings.delete_account_step1_cover.value)}
           width={size}
           height={size}
         />

@@ -11,14 +11,14 @@ export const Header = () => {
         <a
           style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }}
           target={'_blank'}
-          href={Settings.role_help_url.value}
+          href={Settings.space_setting_role_help_url.value}
           rel="noreferrer"
         >
           <InformationSmallOutlined color={colors.textCommonTertiary} size={16} />
         </a>
       </Box>
       <Typography variant="body3">
-        <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_header_desc, { url: Settings.role_help_url.value }) }} />
+        <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_header_desc, { url: Settings.space_setting_role_help_url.value }) }} />
       </Typography>
     </Box>
   );

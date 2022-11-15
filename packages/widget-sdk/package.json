@@ -37,10 +37,10 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
+    "@apitable/components": "*",
     "@apitable/core": "*",
     "@types/localforage": "^0.0.34",
     "@types/resize-observer-browser": "^0.1.5",
-    "@apitable/components": "*",
     "ahooks": "^3.5.0",
     "attr-accept": "^2.1.0",
     "bowser": "^2.11.0",

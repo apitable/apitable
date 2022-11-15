@@ -55,7 +55,7 @@ export const WidgetPreview: React.FC<IWidgetPreviewProps> = props => {
                       <Image src={item.widgetPackageIcon} alt="" width={16} height={16} />
                     </div>
                     <Image
-                      src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover.value)}
+                      src={item.widgetPackageCover || integrateCdnHost(Settings.widget_default_cover_img.value)}
                       alt=""
                       width={'100%'}
                       height={100}

@@ -87,7 +87,7 @@ const FeishuErr: FC<{
         desc: t(Strings.feishu_configure_err_of_identity),
         btnText: t(Strings.know_more),
         onClick: () => {
-          navigationToUrl(Settings.feishu_bind_help.value);
+          navigationToUrl(Settings.integration_feishu_help.value);
         },
       },
       select_valid: {
@@ -95,7 +95,7 @@ const FeishuErr: FC<{
         desc: t(Strings.feishu_configure_err_of_select_valid),
         btnText: t(Strings.know_more),
         onClick: () => {
-          navigationToUrl(Settings.feishu_bind_help.value);
+          navigationToUrl(Settings.integration_feishu_help.value);
         },
       },
       configuring: {
@@ -103,7 +103,7 @@ const FeishuErr: FC<{
         desc: t(Strings.feishu_configure_err_of_configuring),
         btnText: t(Strings.know_more),
         onClick: () => {
-          navigationToUrl(Settings.feishu_bind_help.value);
+          navigationToUrl(Settings.integration_feishu_help.value);
         },
       },
     };
@@ -118,7 +118,7 @@ const FeishuErr: FC<{
       desc: msg || t(Strings.something_went_wrong),
       btnText: t(Strings.know_more),
       onClick: () => {
-        navigationToUrl(Settings.feishu_bind_help.value);
+        navigationToUrl(Settings.integration_feishu_help.value);
       },
     };
   }, [key, msg, info]);

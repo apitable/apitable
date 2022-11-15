@@ -57,7 +57,7 @@ export class GridView extends View {
     return {
       title: t(Strings.grid_view),
       desc: t(Strings.grid_guide_desc),
-      videoGuide: integrateCdnHost(Settings.grid_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_grid_guide_video.value),
     };
   }
 }

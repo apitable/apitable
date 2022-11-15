@@ -18,7 +18,7 @@ import styles from './style.module.less';
 
 export const TemplateDetailSide: React.FC = () => {
   const colors = useThemeColors();
-  const officialLogo = integrateCdnHost(Settings.official_avatar.value);
+  const officialLogo = integrateCdnHost(Settings.system_configuration_official_avatar.value);
 
   const categoryId = useSelector(state => state.pageParams.categoryId);
   const spaceId = useSelector(state => state.space.activeId);

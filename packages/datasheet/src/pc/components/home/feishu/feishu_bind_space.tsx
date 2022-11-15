@@ -86,7 +86,7 @@ const FeiShuBindSpace = () => {
           title: t(Strings.please_note),
           okText: t(Strings.submit_requirements),
           onOk: () => {
-            window.open(Settings.feishu_seats_form.value);
+            window.open(Settings.integration_feishu_seats_form_url.value);
           },
           content: t(Strings.feishu_bind_space_need_upgrade, {
             maxSeat: String(curSpace?.maxSeat),

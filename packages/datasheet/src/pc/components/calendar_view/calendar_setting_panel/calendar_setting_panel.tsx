@@ -181,7 +181,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
           </Typography>
           <Tooltip content={t(Strings.calendar_setting_help_tips)}>
             <a
-              href={Settings.calendar_setting_help_url.value}
+              href={Settings.view_calendar_setting_help_url.value}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.helpIcon}

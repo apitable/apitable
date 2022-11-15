@@ -12,7 +12,7 @@ export const DisabledShareFile = ({ style }: { style?: React.CSSProperties }) =>
   const colors = useThemeColors();
   return <div className={styles.disabledFileSharable} style={style}>
     <div style={{ marginBottom: 24 }}>
-      <Image src={integrateCdnHost(Settings.calendar_guide_no_permission.value)} alt='' width={260} height={150} />
+      <Image src={integrateCdnHost(Settings.view_calendar_guide_no_permission.value)} alt='' width={260} height={150} />
     </div>
     <Typography variant={'h7'}>
       {t(Strings.disabled_file_shared)}

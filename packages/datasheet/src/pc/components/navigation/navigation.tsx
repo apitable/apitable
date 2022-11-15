@@ -257,8 +257,8 @@ export const Navigation: FC = () => {
   const isWecomSpace = isSocialWecom(space);
 
   const handleClickUpgradeBtn = () => {
-    // Dingtalk: Click the upgrade button on the left side. 
-    // Upgrade pop-up window pops up (different pop-up components used for mobile and PC). 
+    // Dingtalk: Click the upgrade button on the left side.
+    // Upgrade pop-up window pops up (different pop-up components used for mobile and PC).
     // Click on the pop-up to jump to the app details page (let the user go to pay)
     if (isDingTalkSpace) {
       isMobile ? setUpgradePopup(true) : showModalInDingTalk(IDingTalkModalType.Upgrade);
@@ -273,7 +273,7 @@ export const Navigation: FC = () => {
         setUpgradePopup(true);
       } else {
         if (user?.isAdmin) {
-          navigationToUrl(Settings.feishu_upgrade_url.value);
+          navigationToUrl(Settings.integration_feishu_upgrade_url.value);
         } else {
           showModalInFeiShu();
         }

@@ -16,7 +16,7 @@ import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
 
-const defaultBanner = integrateCdnHost(Settings.folder_showcase_banners.value.split(',')[0]);
+const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 
 export interface ITemplateChoiceProps {
   setUsingTemplate: React.Dispatch<React.SetStateAction<string>>;
@@ -189,9 +189,9 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
         </Col>
       </Row>
       {
-        env.TEMPLATE_CUSTOMIZATION && !isMobileApp() &&
+        env.TEMPLATE_FEEDBACK_FORM_URL && !isMobileApp() &&
         <Typography className={styles.notFoundTip} variant='body2' align='center'>
-          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_CUSTOMIZATION}`)}>
+          <span className={styles.text} onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`)}>
             {t(Strings.template_not_found)}
           </span>
         </Typography>

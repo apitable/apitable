@@ -110,7 +110,7 @@ const triggerBase = {
     overflow: { adjustX: true, adjustY: true },
   },
   scrollTarget: `#${NOTIFICATION_ID.NOTICE_LIST_WRAPPER}`,
-  spareSrc: integrateCdnHost(Settings.anonymous_avatar.value),
+  spareSrc: integrateCdnHost(Settings.datasheet_unlogin_user_avatar.value),
 };
 
 const unitTagBase = {

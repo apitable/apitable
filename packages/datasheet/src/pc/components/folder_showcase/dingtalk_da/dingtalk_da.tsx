@@ -20,7 +20,7 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
   const { show } = useContextMenu({ id: DINGTALK_DA });
 
   const linkToPublish = () => {
-    const url = new URL(Settings.link_to_dingtalk_da.value);
+    const url = new URL(Settings.integration_dingtalk_da.value);
 
     url.searchParams.append('bizAppId', bizAppId);
     url.searchParams.append('suiteKey', suiteKey);
@@ -33,7 +33,7 @@ export const DingTalkDa: FC<IDingTalkDaProps> = (props) => {
   };
 
   const linkToAdmin = () => {
-    const url = new URL(Settings.link_to_dingtalk_da.value);
+    const url = new URL(Settings.integration_dingtalk_da.value);
 
     url.searchParams.append('corpId', corpId);
     url.searchParams.append('ddtab', 'true');

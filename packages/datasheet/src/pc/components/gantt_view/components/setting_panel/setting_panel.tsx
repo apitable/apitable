@@ -457,8 +457,8 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
             {t(Strings.gantt_color_setting)}
           </Typography>
           {
-            env.GANTT_CONFIG_COLOR_HELP_URL && <Tooltip content={t(Strings.gantt_config_color_help)}>
-              <a href={env.GANTT_CONFIG_COLOR_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
+            env.VIEW_GANTT_CONFIG_COLOR_HELP_URL && <Tooltip content={t(Strings.gantt_config_color_help)}>
+              <a href={env.VIEW_GANTT_CONFIG_COLOR_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
                 <InformationSmallOutlined color={colors.thirdLevelText} />
               </a>
             </Tooltip>
@@ -569,7 +569,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
             {t(Strings.gantt_dependency_setting)}
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
-            <a href={Settings.gantt_config_task_contact_help_url.value} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
+            <a href={Settings.view_gantt_set_task_relation_help_url.value} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>

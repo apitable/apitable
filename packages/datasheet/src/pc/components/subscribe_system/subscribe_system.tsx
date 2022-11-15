@@ -133,9 +133,9 @@ export const SubScribeSystem = () => {
       for (const v of data) {
         if (getPageType() === SubscribePageType.Renewal && subscription?.maxSeats !== v.seat) {
           /**
-           * The product specifications have been changed so that each product only corresponds to one type of seat, 
-           * so the logic here is that if the current user's space station seat is different from 
-           * the number of seats given by the product and the user is in the renewal phase, 
+           * The product specifications have been changed so that each product only corresponds to one type of seat,
+           * so the logic here is that if the current user's space station seat is different from
+           * the number of seats given by the product and the user is in the renewal phase,
            * the user will be prompted that the renewal plan does not exist
            */
           Modal.warning({
@@ -240,7 +240,7 @@ export const SubScribeSystem = () => {
                 {t(Strings.custom_enterprise)}
               </Typography>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Image alt={''} style={{ borderRadius: '8px' }} src={integrateCdnHost(Settings.enterprise_qr_code.value)} width={232} height={232} />
+                <Image alt={''} style={{ borderRadius: '8px' }} src={integrateCdnHost(Settings.billing_enterprise_qr_code.value)} width={232} height={232} />
               </div>
             </div>
             <div style={{ height: 46 }} />

@@ -17,14 +17,14 @@ export const Empty: React.FC<{ onClick: () => void }> = props => {
     >
       <Box width={480}>
         <Box textAlign={'center'} marginBottom={24}>
-          <img width={320} height={228.57} src={integrateCdnHost(Settings.role_empty.value)} alt="role" />
+          <img width={320} height={228.57} src={integrateCdnHost(Settings.space_setting_role_empty_img.value)} alt="role" />
         </Box>
         <Typography variant="h5" align="center">
           {t(Strings.manage_role_empty_title)}
         </Typography>
         <Box marginTop={'8px'}>
           <Typography variant="body2">
-            <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_empty_desc1, { url: Settings.role_help_url.value }) }} />
+            <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_empty_desc1, { url: Settings.space_setting_role_help_url.value }) }} />
           </Typography>
         </Box>
         <Box borderRadius={'4px'} backgroundColor={colors.bgCommonLower} padding={'8px'} marginTop={'8px'}>

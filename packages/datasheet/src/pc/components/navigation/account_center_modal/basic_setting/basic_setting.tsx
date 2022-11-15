@@ -135,7 +135,7 @@ export const BasicSetting: FC = () => {
               className: styles.cancelBtn,
               onClick: e => {
                 stopPropagation(e);
-                window.open(Settings.know_how_to_logout.value);
+                window.open(Settings.user_setting_delete_account_help_url.value);
               },
             } as any,
             cancelText: t(Strings.know_how_to_logout),

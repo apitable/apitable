@@ -60,7 +60,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   };
 
   const linkToCommunity = () => {
-    navigationToUrl(env.VIKA_COMMUNITY_URL_PROD!);
+    navigationToUrl(env.HELP_USER_COMMUNITY_URL_PROD!);
   };
   const menuData = [
     [
@@ -73,8 +73,8 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.vika_small_classroom),
-        onClick: () => navigationToUrl(env.VIKA_CLASSROOM_URL!),
-        hidden: isMobile || !env.VIKA_CLASSROOM_URL,
+        onClick: () => navigationToUrl(env.HELP_VIDEO_TUTORIALS_URL!),
+        hidden: isMobile || !env.HELP_VIDEO_TUTORIALS_URL,
       },
       {
         icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
@@ -102,13 +102,13 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <AdviseOutlined />,
         text: t(Strings.vomit_a_slot),
-        onClick: () => navigationToUrl(Settings['user_feedback_url'].value),
+        onClick: () => navigationToUrl(Settings['help_user_feedback_url'].value),
         hidden: isPrivateDeployment(),
       },
       {
         icon: <DemoOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.subscribe_demonstrate),
-        onClick: () => navigationToUrl(Settings['subscribe_demonstrate'].value),
+        onClick: () => navigationToUrl(Settings['help_subscribe_demonstrate_form_url'].value),
         hidden: isMobile || isPrivateDeployment(),
       },
       {
@@ -124,7 +124,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <CommunityOutlined />,
         text: t(Strings.vika_community),
         onClick: linkToCommunity,
-        hidden: !env.VIKA_COMMUNITY_URL_PROD
+        hidden: !env.HELP_USER_COMMUNITY_URL_PROD
       },
       {
         icon: <InformationSmallOutlined />,
@@ -149,7 +149,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <CodeFilled />,
         text: t(Strings.api_sdk),
-        onClick: () => navigationToUrl(isPrivateDeployment() ? `${window.location.origin}/help/developers` : Settings.developers_center_url.value),
+        onClick: () => navigationToUrl(isPrivateDeployment() ? `${window.location.origin}/help/developers` : Settings.help_developers_center_url.value),
       },
       {
         icon: <DownloadOutlined />,

@@ -138,7 +138,7 @@ const Trash: FC = () => {
     }
     triggerUsageAlert(
       'maxRemainTrashDays',
-      // Here maxRemainTrashDays is obtained as the value in billing, 
+      // Here maxRemainTrashDays is obtained as the value in billing,
       // which is actually the maximum allowed, so in order to trigger the popup, you need +1.
       { usage: maxRemainTrashDays + 1, alwaysAlert: true },
       SubscribeUsageTipType.Alert,
@@ -151,7 +151,7 @@ const Trash: FC = () => {
         <div className={styles.title}>
           {t(Strings.trash)}
           <Tooltip title={t(Strings.form_tour_desc)} trigger='hover' placement='right'>
-            <a href={Settings.trash_url.value} rel='noopener noreferrer' target='_blank'>
+            <a href={Settings.workbench_trash_help_url.value} rel='noopener noreferrer' target='_blank'>
               <HelpIcon
                 style={{
                   cursor: 'pointer',

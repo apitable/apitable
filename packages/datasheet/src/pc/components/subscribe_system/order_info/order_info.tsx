@@ -138,7 +138,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
     if (pay === 2) {
       return <div className={styles.bankPay}>
         <Image src={QrCodePng} alt='qrcode background' layout={'fill'} />
-        <Image src={integrateCdnHost(Settings.enterprise_qr_code.value)} width={224} height={224} />
+        <Image src={integrateCdnHost(Settings.billing_enterprise_qr_code.value)} width={224} height={224} />
       </div>;
     }
     return <Image src={''} />;

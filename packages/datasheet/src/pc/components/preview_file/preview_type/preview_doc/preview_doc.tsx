@@ -46,7 +46,7 @@ export const PreviewDoc: React.FC<IPreviewDoc> = ({
               textDecoration: 'underline',
               fontSize: 12,
             }}
-            href={Settings.link_preview_office_cms.value}
+            href={Settings.integration_yozosoft_help_url.value}
             target='_blank' rel="noreferrer"
           >
             {t(Strings.preview_see_more)}

@@ -20,7 +20,7 @@ export class CalendarView extends View {
     return {
       title: t(Strings.calendar_view),
       desc: t(Strings.calendar_view_desc),
-      videoGuide: integrateCdnHost(Settings.calendar_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_calendar_guide_video.value),
     };
   }
 

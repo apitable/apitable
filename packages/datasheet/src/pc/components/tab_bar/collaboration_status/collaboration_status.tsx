@@ -17,7 +17,7 @@ function sortByCreateTime(c1: ICollaborator, c2: ICollaborator) {
 
 export function getCollaboratorAvatar(colla: ICollaborator) {
   return isAlien(colla) ?
-    integrateCdnHost(Settings.anonymous_avatar.value) :
+    integrateCdnHost(Settings.datasheet_unlogin_user_avatar.value) :
     colla.avatar;
 }
 

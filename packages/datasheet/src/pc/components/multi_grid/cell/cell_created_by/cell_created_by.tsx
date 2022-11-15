@@ -86,7 +86,7 @@ export const CellCreatedBy: React.FC<ICellCreatedByProps> = props => {
                   type: MemberType.Member,
                   userId: OtherTypeUnitId.Alien,
                   unitId: OtherTypeUnitId.Alien,
-                  avatar: integrateCdnHost(Settings.anonymous_avatar.value),
+                  avatar: integrateCdnHost(Settings.datasheet_unlogin_user_avatar.value),
                   name: t(Strings.anonymous),
                   isActive: true,
                   isSelf: true,

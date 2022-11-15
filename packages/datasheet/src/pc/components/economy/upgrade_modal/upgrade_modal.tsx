@@ -50,7 +50,7 @@ export const UpgradeInWecomContent: React.FC<{ onClick: () => void }> = (props) 
       <Button
         onClick={() => {
           props.onClick();
-          window.location.href = Settings.wecom_upgrade_guide_url.value;
+          window.location.href = Settings.integration_wecom_upgrade_guide_url.value;
         }}
         color='primary'
         block
@@ -71,7 +71,7 @@ export const UpgradeInDDContent: React.FC<{ onClick: () => void }> = (props) => 
       <span className={styles.des}>{parser(t(Strings.dingtalk_activity_upgrade_guidance))}</span>
       <Button
         onClick={() => {
-          navigationToUrl(Settings.dingtalk_upgrade_url.value);
+          navigationToUrl(Settings.integration_dingtalk_upgrade_url.value);
           props.onClick();
         }}
         color='primary'

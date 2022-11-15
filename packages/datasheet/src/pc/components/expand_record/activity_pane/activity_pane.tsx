@@ -103,7 +103,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
             <div className={styles.paneTitle}>
               {t(Strings.activity)}
               <Tooltip title={t(Strings.activity_tip)} trigger={'hover'}>
-                <a href={Settings.recorded_comments.value} rel="noopener noreferrer" target="_blank">
+                <a href={Settings.record_comments_help_url.value} rel="noopener noreferrer" target="_blank">
                   <HelpIcon
                     style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
                     fill={colors.thirdLevelText}

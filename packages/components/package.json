@@ -10,8 +10,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@rjsf/core": "^4.2.3",
     "@apitable/icons": "*",
+    "@rjsf/core": "^4.2.3",
     "@vikadata/react-contexify": "^5.0.5",
     "@vikadata/react-window": "1.8.7",
     "ahooks": "^3.5.0",

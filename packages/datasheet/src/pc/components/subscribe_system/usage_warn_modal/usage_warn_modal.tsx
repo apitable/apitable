@@ -25,7 +25,7 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
   const renderAvatar = opacity => (
     <div className={styles.avatar} style={{ borderColor: `rgba(123, 103, 238, ${opacity})` }}>
       <div className={styles.avatarIcon}>
-        <Image src={Settings.customer_qrcode_url.value} alt='' width={64} height={64} />
+        <Image src={Settings.onboarding_customer_service_qrcode_avatar_img_url.value} alt='' width={64} height={64} />
       </div>
       <div className={styles.avatarStar}>
         <TitleFavoriteFilled color={colors.fc14} size='12px' />
@@ -39,7 +39,7 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
       <div className={styles.qrCodeImageCorner} />
       <div className={styles.qrCodeImageCorner} />
       <div className={styles.qrCodeImageCorner} />
-      <Image width={size - 20} height={size - 20} src={integrateCdnHost(Settings.pay_contact_us.value)} />
+      <Image width={size - 20} height={size - 20} src={integrateCdnHost(Settings.billing_pay_contact_us.value)} />
     </div>
   );
 

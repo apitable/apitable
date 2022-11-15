@@ -16,7 +16,7 @@ import { IFilterMemberProps } from '../interface';
 import { FilterGeneralSelect } from './filter_general_select';
 
 interface IExFilterMemberProps extends IFilterMemberProps {
-  // Filter member = I (currently visiting user) is a client state. 
+  // Filter member = I (currently visiting user) is a client state.
   // This state is not present in the event and the corresponding UI needs to hide this filter condition.
   hiddenClientOption?: boolean;
 }
@@ -46,7 +46,7 @@ export const FilterMember: React.FC<IExFilterMemberProps> = props => {
           type: MemberType.Member,
           userId: OtherTypeUnitId.Alien,
           unitId: OtherTypeUnitId.Alien,
-          avatar: integrateCdnHost(Settings.anonymous_avatar.value),
+          avatar: integrateCdnHost(Settings.datasheet_unlogin_user_avatar.value),
           name: t(Strings.anonymous),
           isActive: true,
           isDelete: false,

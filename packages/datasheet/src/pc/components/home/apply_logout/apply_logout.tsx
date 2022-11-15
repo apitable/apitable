@@ -99,7 +99,7 @@ const ApplyLogout: FC = () => {
       <div
         className={styles.content}
         style={{
-          backgroundImage: `url(${integrateCdnHost(Settings.page_apply_logout_bg.value)})`,
+          backgroundImage: `url(${integrateCdnHost(Settings.user_account_deleted_bg_img.value)})`,
           backgroundSize: 'cover'
         }}
       >
@@ -111,7 +111,7 @@ const ApplyLogout: FC = () => {
           <Image
             width={240}
             height={180}
-            src={integrateCdnHost(Settings.page_apply_logout.value)}
+            src={integrateCdnHost(Settings.user_account_deleted_img.value)}
           />
           <Typography variant='h6'>
             {t(Strings.we_already_received_your_apply)}

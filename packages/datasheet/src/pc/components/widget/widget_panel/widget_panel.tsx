@@ -28,7 +28,7 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
     <div className={styles.emptyPanel}>
       {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseLargeOutlined} />}
       <span className={styles.ikon}>
-        <Image src={integrateCdnHost(Settings.widget_empty.value)} alt="" width={240} height={180} />
+        <Image src={integrateCdnHost(Settings.widget_panel_empty_img.value)} alt="" width={240} height={180} />
       </span>
 
       <p className={styles.desc}>{t(isMobile ? Strings.is_empty_widget_panel_mobile : Strings.is_empty_widget_panel_pc)}</p>

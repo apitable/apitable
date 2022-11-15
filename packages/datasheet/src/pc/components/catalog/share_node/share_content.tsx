@@ -117,7 +117,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
         <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
           <span>{t(Strings.collaborate_and_share)}</span>
           <Tooltip title={t(Strings.support)} trigger={'hover'}>
-            <a href={Settings.share_url.value} rel='noopener noreferrer' target='_blank'>
+            <a href={Settings.workbench_node_share_help_url.value} rel='noopener noreferrer' target='_blank'>
               <InformationSmallOutlined currentColor />
             </a>
           </Tooltip>

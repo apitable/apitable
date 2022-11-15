@@ -103,7 +103,7 @@ export class OrgChartView extends View {
     return {
       title: t(Strings.org_chart_view),
       desc: t(Strings.org_guide_desc),
-      videoGuide: integrateCdnHost(Settings.org_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_architecture_guide_video.value),
     };
   }
 }

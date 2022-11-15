@@ -14,7 +14,7 @@ const getDevWidgetHttpOrigin = (bundleUrl: string) => {
 export enum WidgetLoadError {
   // url dose not meet specifications
   UrlIllegal = 1,
-  // packageId not match 
+  // packageId not match
   PackageIdNotMatch = 2,
   // browser loading https restriction not lifted
   CretInvalid = 3,
@@ -67,7 +67,7 @@ export function initializeWidget(Component: React.FC, widgetPackageId: string | 
 
 /**
  * distinguish whether the browser restriction is not lifted when the widget loads with an error
- * @param bundleUrl 
+ * @param bundleUrl
  */
 export function checkCretInvalid(bundleUrl) {
   return new Promise((resolve, reject) => {
@@ -113,7 +113,7 @@ export function getWidgetConfig(bundleUrl) {
 /**
  * check for widget dev mode loading
  * @param bundleUrl path of the widget bundleUrl
- * @param widgetPackageId 
+ * @param widgetPackageId
  */
 export function loadWidgetCheck(bundleUrl, widgetPackageId) {
   return new Promise<IWidgetConfig>((resolve, reject) => {
@@ -138,8 +138,8 @@ interface ICliInfo {
  * a > b return 1
  * a = b return 0
  * a < b return -1
- * @param a 
- * @param b 
+ * @param a
+ * @param b
  */
 function checkVersion(a, b) {
   const x = a.split('.').map(e => parseInt(e, 10));
@@ -166,7 +166,7 @@ export function checkCliVersion(bundleUrl) {
     axios.get<ICliInfo>(`${getDevWidgetHttpOrigin(bundleUrl)}/widget-cli/info?v=${Date.now()}`)
       .then(res => {
         const cliInfo = res.data;
-        const minSupportVersion = SystemConfig.settings.widget_cli_min_version.value;
+        const minSupportVersion = SystemConfig.settings.widget_cli_miumum_version.value;
         if (checkVersion(cliInfo.version, minSupportVersion) === -1) {
           reject(WidgetLoadError.CliLowVersion);
           return;

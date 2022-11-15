@@ -59,7 +59,7 @@ export const ApiPanel: React.FC = () => {
         {t(Strings.api_panel_title)}
         <Button
           onClick={() => {
-            window.open(Settings.guide_api_getting_start.value, '_blank', 'noopener=yes,noreferrer=yes');
+            window.open(Settings.api_panel_help_url.value, '_blank', 'noopener=yes,noreferrer=yes');
           }}
           variant="fill"
           color={colors.blackBlue[1000]}
@@ -71,7 +71,7 @@ export const ApiPanel: React.FC = () => {
         <Divider orientation="vertical" style={{ margin: 0, background: colors.fc5, opacity: 0.3 }} />
         <Button
           onClick={() => {
-            window.open(Settings.apifox_link.value, '_blank', 'noopener=yes,noreferrer=yes');
+            window.open(Settings.integration_apifox_url.value, '_blank', 'noopener=yes,noreferrer=yes');
           }}
           variant="fill"
           color={colors.blackBlue[1000]}

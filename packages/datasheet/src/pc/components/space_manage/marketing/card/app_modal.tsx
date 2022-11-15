@@ -132,7 +132,7 @@ export const AppModal: FC<IModalProps> = props => {
       return;
     }
 
-    // Enterprise micro self-built application rules have been changed, for enterprises that have opened self-built applications, 
+    // Enterprise micro self-built application rules have been changed, for enterprises that have opened self-built applications,
     // the second pop-up window is needed to confirm when deactivating, and open directly to jump to help documents
     if (type === AppType.Wecom) {
       if (isOpen) {
@@ -269,7 +269,7 @@ export const AppModal: FC<IModalProps> = props => {
             }}
             key="wecom-tip-key"
           >
-            <LinkButton underline={false} href={Settings.chatgroup_url.value} target='_blank' color="primary">
+            <LinkButton underline={false} href={Settings.login_join_chatgroup_url.value} target='_blank' color="primary">
               {t(Strings.integration_wecom_disable_contact)}
             </LinkButton>
             <div>

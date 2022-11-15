@@ -38,7 +38,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
             <div className={styles.imgContent}>
               {
                 isHiddenQRCode() ?
-                  <Image src={integrateCdnHost(Settings.no_permission_img_url.value)} width={230} height={200} />
+                  <Image src={integrateCdnHost(Settings.workbench_no_permission_img.value)} width={230} height={200} />
                   :
                   <>
                     <Image src={integrateCdnHost(t(Strings.no_permission_img_url))} width={340} height={190} />
@@ -47,7 +47,7 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
                     </div>
                   </>
               }
-              
+
             </div>
             <h6>{t(Strings.no_file_permission)}</h6>
             <div className={styles.tidiv}>{desc || t(Strings.no_file_permission_content)}</div>
@@ -67,11 +67,11 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
           <div className={styles.content}>
             {
               isHiddenQRCode() ?
-                <Image src={integrateCdnHost(Settings.no_permission_img_url.value)} width={230} height={200} />
+                <Image src={integrateCdnHost(Settings.workbench_no_permission_img.value)} width={230} height={200} />
                 :
                 <Image src={NoPermissionPng} alt={t(Strings.no_permission)} />
             }
-            
+
             <div className={styles.tidiv}>{t(Strings.not_found_this_file)}</div>
             <div className={styles.tidiv}>{t(Strings.please_contact_admin_if_you_have_any_problem)}</div>
             <div className={styles.btnWrap}>

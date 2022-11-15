@@ -14,21 +14,21 @@ export const ServerError: FC = () => {
     window.location.reload();
   };
 
-  console.log('Settings.server_error_page_bg.value', Settings.server_error_page_bg.value);
+  console.log('Settings.server_error_page_bg.value', Settings.system_configuration_server_error_bg_img.value);
   return (
     <div className={styles.serverPageWrapper}>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileBar />
         <div className={styles.serverError}>
           <div className={styles.container}>
-            { isHiddenQRCode() ? 
-              <Image src={integrateCdnHost(Settings.server_error_page_bg.value)} alt="server error" width={230} height={230} /> 
-              : 
-              <Image src={ServerErrorPng} alt="server error" /> 
+            {isHiddenQRCode() ?
+              <Image src={integrateCdnHost(Settings.system_configuration_server_error_bg_img.value)} alt='server error' width={230} height={230} />
+              :
+              <Image src={ServerErrorPng} alt='server error' />
             }
             <div className={styles.tip}>{t(Strings.server_error_tip)}</div>
             <div className={styles.button}>
-              <Button color="primary" size="large" block onClick={refresh}>
+              <Button color='primary' size='large' block onClick={refresh}>
                 {t(Strings.refresh)}
               </Button>
             </div>
@@ -40,11 +40,12 @@ export const ServerError: FC = () => {
         <div className={styles.serverError}>
           <div className={styles.container}>
             <div className={styles.imgContent}>
-              { isHiddenQRCode() ? 
-                <Image src={integrateCdnHost(Settings.server_error_page_bg.value)} alt="server error" width={230} height={230} />
-                : 
+              {isHiddenQRCode() ?
+                <Image src={integrateCdnHost(Settings.system_configuration_server_error_bg_img.value)} alt='server error' width={230} height={230} />
+                :
                 <>
-                  <Image src={integrateCdnHost(t(Strings.server_error_page_bg))} alt="server error" width={468} height={362} />
+                  <Image src={integrateCdnHost(Settings.system_configuration_server_error_bg_img.value)} alt='server error' width={468}
+                    height={362} />
                   <div className={styles.qrcode}>
                     <ServiceQrCode />
                   </div>
@@ -53,7 +54,7 @@ export const ServerError: FC = () => {
             </div>
             <div className={styles.tip}>{t(Strings.server_error_tip)}</div>
             <div className={styles.button}>
-              <Button color="primary" size="middle" block onClick={refresh}>
+              <Button color='primary' size='middle' block onClick={refresh}>
                 {t(Strings.refresh)}
               </Button>
             </div>

@@ -85,7 +85,7 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
         <div className={styles.configInfo}>
           <div className={styles.title}>
             <span>{t(Strings.widget_loader_developing_title)}</span>
-            <a href={Settings.widget_release_help.value} target="_blank" className={styles.helpIcon} rel="noreferrer">
+            <a href={Settings.widget_release_help_url.value} target="_blank" className={styles.helpIcon} rel="noreferrer">
               <InformationSmallOutlined size={16} color={colors.fourthLevelText} />
             </a>
           </div>
@@ -111,7 +111,7 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
           <ErrorWidget
             content={t(Strings.widget_loader_error_cret_invalid)}
             actionText={t(Strings.widget_loader_error_cret_invalid_action_text)}
-            action={() => window.open(Settings.widget_cret_invalid_help.value)}
+            action={() => window.open(Settings.widget_how_to_close_browser_restriction_help_url.value)}
           />
         );
         default: return <ErrorWidget content={t(Strings.widget_load_error)} />;

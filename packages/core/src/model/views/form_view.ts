@@ -8,7 +8,7 @@ export class FormView extends View {
     return {
       title: t(Strings.form_view),
       desc: t(Strings.form_view_desc),
-      videoGuide: integrateCdnHost(Settings.form_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_form_guide_video.value),
     };
   }
   static generateDefaultProperty() {

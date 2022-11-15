@@ -127,7 +127,7 @@ const WidgetCreateModal: React.FC<IWidgetCreateModalProps> = (props) => {
     <div className={styles.modalHeader}>
       <Typography variant={'h6'} component={'div'}>{t(Strings.create_widget)}</Typography>
       <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-        <a href={Settings.create_widget_help.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+        <a href={Settings.widget_create_widget_help_url.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
           <InformationSmallOutlined color={colors.fc3} />
         </a>
       </CommonTooltip>
@@ -255,7 +255,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
   const userInfo = useSelector(state => state.user.info);
   const [urlError, setUrlError] = useState<string>();
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
-  const defaultTemplateUrl = integrateCdnHost(Settings.default_widget_template_url.value);
+  const defaultTemplateUrl = integrateCdnHost(Settings.widget_default_template_url.value);
   const [isCopiedIndex, setIsCopiedIndex] = useState<number | null>(null);
   const { run: getWidgetTemplate } = useRequest(WidgetApi.getTemplateList, { manual: true });
   const [sourceCodeUrl, setSourceCodeUrl] = useState<string | undefined>();
@@ -291,7 +291,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
         { label: t(Strings.widget_step_install_content_label1), type: 'info' },
         { label: t(Strings.widget_step_install_content_label2), type: 'info', value: 'npm install -g @vikadata/widget-cli' },
       ],
-      helpLink: Settings.widget_develop_install_help.value,
+      helpLink: Settings.widget_develop_install_help_url.value,
     },
     {
       title: t(Strings.widget_step_init_title),
@@ -305,7 +305,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
           }),
         desc: !userInfo?.apiKey && !userInfo?.spaceId && parser(t(Strings.widget_step_init_content_desc)),
       }],
-      helpLink: Settings.widget_develop_init_help.value,
+      helpLink: Settings.widget_develop_init_help_url.value,
     },
     {
       title: t(Strings.widget_step_start_title),
@@ -319,7 +319,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
           desc: t(Strings.widget_step_start_content_desc2),
         },
       ],
-      helpLink: Settings.widget_develop_start_help.value,
+      helpLink: Settings.widget_develop_start_help_url.value,
     },
     {
       title: t(Strings.widget_step_dev_title),
@@ -327,7 +327,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
       content: [{
         label: t(Strings.widget_step_dev_content_label), placeholder: t(Strings.widget_dev_url_input_placeholder), type: 'input', value: devUrl,
       }],
-      helpLink: Settings.widget_develop_preview_help.value,
+      helpLink: Settings.widget_develop_preview_help_url.value,
     },
   ];
   const steps = [
@@ -540,7 +540,7 @@ const WidgetDevConfigModal: React.FC<IExpandWidgetDevConfigProps> = (props) => {
         <Typography variant={'h6'} component={'div'} style={{ marginBottom: 8, display: 'flex', alignItems: 'center' }}>
           <span className={styles.stepContentTitleMain}>{t(Strings.preview_widget)}</span>
           <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-            <a href={Settings.widget_develop_preview_help.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+            <a href={Settings.widget_develop_preview_help_url.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
               <InformationSmallOutlined size={16} color={colors.thirdLevelText} />
             </a>
           </CommonTooltip>
@@ -609,7 +609,7 @@ export const expandPublishHelp = (props?: { onClose?(): void }) => {
           <Typography variant={'h6'} component={'div'} style={{ marginBottom: 24, display: 'flex', alignItems: 'center' }}>
             <span className={styles.stepContentTitleMain}>{t(Strings.widget_operate_publish_help)}</span>
             <CommonTooltip title={t(Strings.create_widget_step_tooltip)} placement='top'>
-              <a href={Settings.widget_release_help.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+              <a href={Settings.widget_release_help_url.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
                 <InformationSmallOutlined size={16} color={colorVars.thirdLevelText} />
               </a>
             </CommonTooltip>

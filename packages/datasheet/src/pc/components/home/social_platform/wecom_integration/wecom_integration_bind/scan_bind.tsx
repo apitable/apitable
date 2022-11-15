@@ -35,14 +35,14 @@ export const ScanBind: React.FC<IScanBindProps> = React.memo((props) => {
 
   const generateQrCode = useCallback(() => {
     new WwLogin({
-      id : 'loginQrCode',  
+      id : 'loginQrCode',
       appid : corpId,
       agentid : agentId,
       redirect_uri: encodeURIComponent(
         // eslint-disable-next-line max-len
         `${window.location.protocol}//${domainName}/user/wecom/integration/binding?configSha=${configSha}&corpId=${corpId}&domainName=${domainName}&spaceId=${spaceId}`
       ),
-      href: !isPrivateDeployment() ? integrateCdnHost(Settings.wecom_qrcode_css.value) : undefined
+      href: !isPrivateDeployment() ? integrateCdnHost(Settings.integration_wecom_qrcode_css.value) : undefined
     });
   }, [corpId, agentId, configSha, domainName, spaceId]);
 

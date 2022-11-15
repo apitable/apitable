@@ -21,7 +21,7 @@ export const Copyright = () => {
       <Typography variant="body3" className={styles.title} color={colors.secondLevelText}>
         {t(Strings.vika_copyright)}
       </Typography>
-      <LinkButton underline={false} href={Settings.chatgroup_url.value} target="_blank">{t(Strings.contact_us)}</LinkButton>
+      <LinkButton underline={false} href={Settings.login_join_chatgroup_url.value} target="_blank">{t(Strings.contact_us)}</LinkButton>
     </footer>
   );
 };

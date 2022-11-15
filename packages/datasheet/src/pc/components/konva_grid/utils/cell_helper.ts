@@ -829,7 +829,7 @@ export class CellHelper extends KonvaDrawer {
           type: MemberType.Member,
           uuid: OtherTypeUnitId.Alien,
           unitId: OtherTypeUnitId.Alien,
-          avatar: `${Settings.QNY1.value}${Settings.anonymous_avatar.value}`,
+          avatar: `${Settings.QNY1.value}${Settings.datasheet_unlogin_user_avatar.value}`,
           name: t(Strings.anonymous),
           isActive: true,
           isSelf: true,
@@ -938,8 +938,8 @@ export class CellHelper extends KonvaDrawer {
     /**
      * What is currentResourceId?
      * See here: issue #1229
-     * When currentResourceId exists, it means that the current link field is not rendered directly, 
-     * but indirectly by way of lookup, so when there is an intermediate route, 
+     * When currentResourceId exists, it means that the current link field is not rendered directly,
+     * but indirectly by way of lookup, so when there is an intermediate route,
      * it is necessary to find out on whose (which table) basis the data of the associated table is requested.
      * currentDatasheetId is the id of the table (or mirror) that is acting as a springboard at this time
      * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
@@ -987,7 +987,7 @@ export class CellHelper extends KonvaDrawer {
 
     /**
      * Because the front-end only maintains a portion of the data in the association table that has already been associated.
-     * When the recordId associated with the current table does not exist in the associated table snapshot, 
+     * When the recordId associated with the current table does not exist in the associated table snapshot,
      * it means that this associated record is a new associated record.
      * In this case, you need to load the record data of this new associated record into the associated table snapshot.
      */

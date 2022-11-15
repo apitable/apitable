@@ -9,7 +9,7 @@ import styles from './style.module.less';
 
 export const IntroductionVideo: FC = () => {
   const env = getEnvVariables();
-  const videoSrc = integrateCdnHost(env.INTRODUCTION_VIDEO || '');
+  const videoSrc = integrateCdnHost(env.LOGIN_INTRODUCTION_VIDEO || '');
 
   return (
     <div className={styles.introductionVideo}>

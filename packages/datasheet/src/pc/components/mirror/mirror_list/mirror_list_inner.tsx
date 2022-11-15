@@ -21,7 +21,7 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }) => {
   return (
     <div className={styles.blackInner}>
       <div className={styles.imgBox}>
-        <Image src={integrateCdnHost(Settings.blank_mirror_list_image.value)} alt="" width={160} height={120} />
+        <Image src={integrateCdnHost(Settings.view_mirror_list_empty_img.value)} alt="" width={160} height={120} />
       </div>
       <span className={styles.emptyText}>{t(Strings.black_mirror_list_tip)}</span>
       <Button color={'primary'} onClick={createMirrorNode} disabled={!mirrorCreatable}>

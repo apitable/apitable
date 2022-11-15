@@ -17,7 +17,7 @@ import styles from './style.module.less';
 
 export const MobileHome: FC = () => {
   const env = getEnvVariables();
-  const videoSrc = integrateCdnHost(env.INTRODUCTION_VIDEO || '');
+  const videoSrc = integrateCdnHost(env.LOGIN_INTRODUCTION_VIDEO || '');
   const colors = useThemeColors();
   const query = useQuery();
   const quickLogin = query.get('quickLogin') || 'on';

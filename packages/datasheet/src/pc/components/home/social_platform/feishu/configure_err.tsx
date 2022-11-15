@@ -19,7 +19,7 @@ const FeishuConfigureErr = () => {
           desc: t(Strings.feishu_configure_of_authorize_err),
           btnText: t(Strings.entry_space),
           onClick: () => {
-            navigationToUrl(Settings.feishu_bind_help.value);
+            navigationToUrl(Settings.integration_feishu_help.value);
           },
         };
       }
@@ -29,7 +29,7 @@ const FeishuConfigureErr = () => {
           desc: t(Strings.feishu_configure_of_idetiity_err),
           btnText: t(Strings.know_more),
           onClick: () => {
-            navigationToUrl(Settings.feishu_bind_help.value);
+            navigationToUrl(Settings.integration_feishu_help.value);
           },
         };
       }
@@ -39,7 +39,7 @@ const FeishuConfigureErr = () => {
           desc: t(Strings.something_went_wrong),
           btnText: t(Strings.know_more),
           onClick: () => {
-            navigationToUrl(Settings.feishu_bind_help.value);
+            navigationToUrl(Settings.integration_feishu_help.value);
           },
         };
       }

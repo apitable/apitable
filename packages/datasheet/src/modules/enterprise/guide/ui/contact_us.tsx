@@ -146,7 +146,7 @@ const Modal: FC<IGuideContactUsOptions> = props => {
   const renderAvatar = (opacity) => (
     <div className={`${prefix}-avatar`} style={{ borderColor: `rgba(123, 103, 238, ${opacity})` }}>
       <div className={`${prefix}-avatar-icon`}>
-        <Image src={Settings.customer_qrcode_url.value} alt='' width={64} height={64} />
+        <Image src={Settings.onboarding_customer_service_qrcode_avatar_img_url.value} alt='' width={64} height={64} />
       </div>
       <div className={`${prefix}-avatar-star`}>
         <TitleFavoriteFilled color={colors.fc14} size='12px' />
@@ -195,7 +195,7 @@ const Modal: FC<IGuideContactUsOptions> = props => {
           </div>
         </div>
       ) : (
-        <div className={`${prefix}-guide`} style={{ backgroundImage: `url(${Settings.customer_qrcode_background_image.value})` }}>
+        <div className={`${prefix}-guide`} style={{ backgroundImage: `url(${Settings.onboarding_customer_service_background_img_url.value})` }}>
           {renderAvatar(1)}
           <Typography className={`${prefix}-guide-welcome`} variant='h4'>{questionnaire.title}</Typography>
           <Typography className={`${prefix}-guide-tip`} variant='body4'>{questionnaire.tip}</Typography>

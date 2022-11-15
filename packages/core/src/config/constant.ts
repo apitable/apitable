@@ -1,9 +1,10 @@
+import { Settings } from 'config/system_config';
 import { Strings, t } from '../exports/i18n';
 
 export const MAX_ROBOT_COUNT_PER_DST = 30; // The maximum number of robots in a single table
 
 // When you click the file for the first time, to activate the novice guide, you need to add a class
-export const FIRST_FILE_IN_GUIDE_CLASS = 'FIRST_FILE_IN_GUIDE_CLASS'; 
+export const FIRST_FILE_IN_GUIDE_CLASS = 'FIRST_FILE_IN_GUIDE_CLASS';
 
 // table area related
 export const UPPER_LEFT_REGION = 0;
@@ -231,6 +232,7 @@ export enum Modules {
   SHARE = 'SHARE',
   TEAM_TREE = 'TEAM_TREE',
 }
+
 /** Indicates the type of menu, each different type of menu corresponds to a different menu list */
 export enum ContextMenuType {
   DEFAULT = 'DEFAULT', // default menu for working directory
@@ -298,7 +300,7 @@ export enum CaptchaIds {
 }
 
 export enum LoginMode {
-  PASSWORD = 'password', 
+  PASSWORD = 'password',
   IDENTIFYING_CODE = 'identifying_code', // verify coe
   MAIL = 'mail', // email account
   PHONE = 'phone', // mobile phone number
@@ -346,7 +348,7 @@ export const PROGRESS_NORMAL = 'normal';
 export const PROGRESS_EXCEPTION = 'exception';
 
 // space - basic space information
-export const ROOT_TEAM_ID = '0'; 
+export const ROOT_TEAM_ID = '0';
 export const SPACE_NAME_LENGTH = 100;
 
 // space-members-members list query pages number
@@ -431,7 +433,7 @@ export enum WizardIdConstant {
   RELEASE_WIDGET_GUIDE = 47,
   CONTACT_US_GUIDE = 64,
   VIKABY_UPDATE_LOGS_HISTORY = 67,
-  AGREE_TERMS_OF_SERVICE = 76,
+  AGREE_TERMS_OF_SERVICE = Number(Settings.login_agree_terms_of_service.value),
 
   // org chart view
   ORG_VIEW_CREATE = 78, // Click the "Create Schema View button" -> show the video "How to use Schema View"

@@ -36,7 +36,7 @@ export const FeishuIntegrationHeader: React.FC<{userInfo: IUserInfo}> = (props) 
           <a
             target="_blank"
             className={styles.helpItem}
-            href={Settings.wecom_bind_help_center.value} rel="noreferrer"
+            href={Settings.integration_wecom_bind_help_center.value} rel="noreferrer"
           >{t(Strings.help_center)}</a>
           {renderAvatar()}
         </div>

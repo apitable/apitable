@@ -122,7 +122,7 @@ export class KanbanView extends CardView {
     return {
       title: t(Strings.kanban_view),
       desc: t(Strings.kanban_guide_desc),
-      videoGuide: integrateCdnHost(Settings.kanban_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_kanban_guide_video.value),
     };
   }
 }

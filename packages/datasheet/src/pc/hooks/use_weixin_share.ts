@@ -53,8 +53,8 @@ export const useWeixinShare = (info?: IInfo) => {
       const { appId, nonceStr, timestamp, signature } = data;
 
       wx.config({
-        debug: false, 
-        appId, 
+        debug: false,
+        appId,
         timestamp,
         nonceStr,
         signature,
@@ -82,7 +82,7 @@ export const useWeixinShare = (info?: IInfo) => {
         title, // Share title
         desc: nodeDesc, // Share Description
         link: url, // Share the link, the link domain or path must be the same as the corresponding public JS secure domain on the current page
-        imgUrl: integrateCdnHost(Settings.vika_logo.value), // Share icon
+        imgUrl: integrateCdnHost(Settings.system_configuration_official_logo.value), // Share icon
         success() {
           console.log(t(Strings.share_succeed));
         }
@@ -91,7 +91,7 @@ export const useWeixinShare = (info?: IInfo) => {
       wx.updateTimelineShareData({
         title,
         link: url,
-        imgUrl: integrateCdnHost(Settings.vika_logo.value),
+        imgUrl: integrateCdnHost(Settings.system_configuration_official_logo.value),
         success() {
           console.log(t(Strings.share_succeed));
         }

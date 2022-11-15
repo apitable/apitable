@@ -30,7 +30,7 @@ const FeiShuAdminLogin = () => {
             content: t(Strings.feishu_admin_login_err_message),
             okText: t(Strings.feishu_admin_login_err_to_register),
             onOk: () => {
-              navigationToUrl(Settings.feisu_register_link_in_login.value);
+              navigationToUrl(Settings.integration_feisu_register_link_in_login.value);
             },
           });
           return;

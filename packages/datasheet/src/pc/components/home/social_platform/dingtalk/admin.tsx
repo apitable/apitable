@@ -10,7 +10,7 @@ import { AdminLayout, IAdminData } from './admin_layout';
 const config = {
   adminTitle: t(Strings.dingtalk_admin_panel_title),
   adminDesc: t(Strings.dingtalk_admin_panel_message),
-  helpLink: Settings.link_to_dingtalk_cms.value,
+  helpLink: Settings.integration_dingtalk_help_url.value,
 };
 
 const DingTalkAdmin = () => {
@@ -63,7 +63,7 @@ const DingTalkAdmin = () => {
 
       /**
        * The corpId needs to be stored in localStorage.
-       * After a browser refresh, the login interface needs to be called again and the corpId 
+       * After a browser refresh, the login interface needs to be called again and the corpId
        * needs to be passed back to the backend with the current corporate ID
        */
       const corpId = data.corpId;

@@ -33,7 +33,7 @@ const customTips = {
 export const CoverImgUploader: React.FC<ICoverImgUploaderProps> = props => {
   const { formId, mode, coverUrl, updateProps } = props;
   const [isModalShow, setModalShow] = useState(false);
-  const officialImgs = Settings.folder_showcase_banners.value.split(',');
+  const officialImgs = Settings.workbench_folder_default_cover_list.value.split(',');
   const coverImgUrl = coverUrl || getImageThumbSrc(integrateCdnHost(officialImgs[0]), officialImgParams);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

@@ -23,7 +23,7 @@ const PrivacyModal: FC<IPrivacyModalProps> = props => {
   const { desktop } = usePlatform();
 
   const _isMobileApp = isMobileApp();
-  const linkToPrivacyPolicy = _isMobileApp ? Settings.link_to_privacy_policy_in_app.value : Settings.link_to_privacy_policy.value;
+  const linkToPrivacyPolicy = _isMobileApp ? Settings.login_privacy_policy.value : Settings.login_privacy_policy_url.value;
 
   return (
     <AntdModal

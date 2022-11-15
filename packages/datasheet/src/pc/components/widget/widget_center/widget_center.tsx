@@ -389,7 +389,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     return <div className={styles.modalHeader}>
       <Typography variant={'h4'} component={'span'} ellipsis style={{ marginRight: '4px' }}>{t(Strings.widget_center)}</Typography>
       <Tooltip content={t(Strings.widget_center_help_tooltip)} placement='right-center'>
-        <a href={Settings.widget_center_help.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+        <a href={Settings.widget_center_help_url.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
           <InformationLargeOutlined size={24} color={colors.fc3} />
         </a>
       </Tooltip>
@@ -564,7 +564,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
                   showMenu={showMenu}
                 /> :
                 <div className={styles.listEmpty}>
-                  <Image src={integrateCdnHost(Settings.widget_center_space_empty.value)} alt='' width={240} height={180} />
+                  <Image src={integrateCdnHost(Settings.widget_center_space_widget_empty_img.value)} alt='' width={240} height={180} />
                   <p className={styles.emptyTitle}>{t(Strings.is_empty_widget_center_space)}</p>
                   <p className={styles.emptyDesc}>{t(Strings.widget_center_space_introduction)}</p>
                   <div className={styles.emptyFooter}>
@@ -599,7 +599,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
           <Scrollbars renderThumbVertical={renderThumb} style={{ width: '100%', height: '100%' }}>
             <TabItemIntroduction
               introduction={
-                'Review the list of widget, ' + 
+                'Review the list of widget, ' +
                 'install the preview to clear the widget installed in the panel or dashboard after processing the review results.'
               }
             />

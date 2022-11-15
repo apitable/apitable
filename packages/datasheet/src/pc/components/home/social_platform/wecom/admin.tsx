@@ -10,7 +10,7 @@ import { AdminLayout, IAdminData } from '../dingtalk/admin_layout';
 const config = {
   adminTitle: t(Strings.wecom_admin_title),
   adminDesc: t(Strings.wecom_admin_desc),
-  helpLink: Settings.link_to_wecom_shop_cms.value,
+  helpLink: Settings.integration_wecom_shop_cms.value,
 };
 
 const WecomAdmin = () => {
@@ -85,7 +85,7 @@ const WecomAdmin = () => {
         }
         return;
       }
-      
+
       const { authCorpId: corpId, cpUserId } = data;
       const socialPlatformMap = getStorage(StorageName.SocialPlatformMap) || {};
       socialPlatformMap.socialWecom = { corpId, cpUserId };

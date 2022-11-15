@@ -29,7 +29,7 @@ export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
       {
         icon: <AdviseIcon />,
         text: t(Strings.vomit_a_slot),
-        onClick: () => navigationToUrl(Settings['user_feedback_url'].value),
+        onClick: () => navigationToUrl(Settings['help_user_feedback_url'].value),
       },
       {
         icon: <InformationSmallOutlined />,

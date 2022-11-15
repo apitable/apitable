@@ -155,9 +155,9 @@ export const AccountWallet: FC = () => {
   return (
     <div className={styles.accountWalletWrapper}>
       {
-        env.ACCOUNT_WALLET_HELP && <div className={styles.title}>
+        env.USER_SETTING_ACCOUNT_WALLET_HELP_URL && <div className={styles.title}>
           {t(Strings.account_wallet)}
-          <a href={env.ACCOUNT_WALLET_HELP} target='_blank' rel='noreferrer'><InfoIcon /></a>
+          <a href={env.USER_SETTING_ACCOUNT_WALLET_HELP_URL} target='_blank' rel='noreferrer'><InfoIcon /></a>
         </div>
       }
       <div className={styles.content}>

@@ -86,7 +86,7 @@ export class GalleryView extends CardView {
     return {
       title: t(Strings.gallery_view),
       desc: t(Strings.gallery_guide_desc),
-      videoGuide: integrateCdnHost(Settings.gallery_guide_video.value),
+      videoGuide: integrateCdnHost(Settings.view_gallery_guide_video.value),
     };
   }
 }

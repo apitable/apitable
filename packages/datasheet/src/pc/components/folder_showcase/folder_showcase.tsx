@@ -176,7 +176,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
   useEffect(() => {
     setShowcaseData(undefined);
     getNodeShowcase(folderId!, shareId);
-    setBanners(Settings.folder_showcase_banners.value.split(','));
+    setBanners(Settings.workbench_folder_default_cover_list.value.split(','));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [folderId]);
 
@@ -475,7 +475,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         }
         customTips={customTips}
         previewShape={IPreviewShape.Square}
-        officialImgs={Settings.folder_showcase_banners.value.split(',')}
+        officialImgs={Settings.workbench_folder_default_cover_list.value.split(',')}
         cancel={() => toggleIsBannerModal()}
       />
       <Share nodeId={shareNodeId} onClose={() => setShareNodeId('')} />
@@ -487,13 +487,13 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
             [
               {
                 icon: makeNodeIconComponent(NodeIcon.Permission),
-                text: t(Strings.permission_setting), 
+                text: t(Strings.permission_setting),
                 onClick: () => dispatch(StoreActions.updatePermissionModalNodeId(nodeInfo.id)),
                 hidden: !permissions.nodeAssignable,
               },
               {
                 icon: makeNodeIconComponent(NodeIcon.Template),
-                text: t(Strings.save_as_template), 
+                text: t(Strings.save_as_template),
                 onClick: () => toggleIsGenerateTemplate(),
                 hidden: !permissions.templateCreatable,
               },

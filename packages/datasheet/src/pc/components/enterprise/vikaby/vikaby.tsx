@@ -51,10 +51,10 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
   const sessionPosition = sessionStorage.getItem(VIKABY_POSITION_SESSION_KEY);
   const initPosition = sessionPosition ? JSON.parse(sessionPosition) : VIKABY_DEFAULT_POSITION;
   /**
-   * Whether the todo card is displayed in document.body or in vikaby's element, 
+   * Whether the todo card is displayed in document.body or in vikaby's element,
    * the former is currently used as the latter option will trigger a drag event when the todo is clicked
    */
-   
+
   const [taskCardVisible, { set: setTaskCardVisible }] = useToggle(defaultExpandTodo);
   const [menuVisible, { toggle: toggleMenuVisible, set: setMenuVisible }] = useToggle(defaultExpandMenu);
   const [dialogVisible, { set: setDialogVisible }] = useToggle(defaultExpandDialog);
@@ -86,17 +86,17 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
       icon: <InviteSmallFilled />,
       title: t(Strings.vikaby_activity_train_camp),
       onClick: () => {
-        const url = Settings.activity_train_camp_url.value;
+        const url = Settings.login_ai_course_url.value;
         navigationToUrl(url);
       },
-      invalid: !(dayjs().isAfter(Settings.activity_train_camp_start_time.value) && dayjs().isBefore(Settings.activity_train_camp_end_time.value)),
+      invalid: !(dayjs().isAfter(Settings.assistant_activity_train_camp_start_time.value) && dayjs().isBefore(Settings.assistant_activity_train_camp_end_time.value)),
     },
     !isWecom && {
       icon: <RoadmapOutlined color={colors.thirdLevelText} />,
       title: t(Strings.vikaby_menu_releases_history),
       id: VIKABY_ID.UPDATE_LOGS_HISTORY,
       onClick: () => {
-        const url = Settings.release_log_history_url.value;
+        const url = Settings.assistant_release_history_url.value;
         navigationToUrl(url);
         setMenuVisible(false);
       },
@@ -109,10 +109,10 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
         setMenuVisible(false);
       },
     },
-    !isWecom && env.VIKA_CLASSROOM_URL && {
+    !isWecom && env.HELP_VIDEO_TUTORIALS_URL && {
       icon: <ClassroomOutlined color={colors.thirdLevelText} />,
       title: t(Strings.vika_small_classroom),
-      onClick: () => navigationToUrl(env.VIKA_CLASSROOM_URL!),
+      onClick: () => navigationToUrl(env.HELP_VIDEO_TUTORIALS_URL!),
       invalid: isMobileApp(),
     },
     {
@@ -130,7 +130,7 @@ export const Vikaby: FC<IVikabyBase> = ({ defaultExpandMenu, defaultExpandTodo, 
       icon: <AdviseOutlined color={colors.thirdLevelText} />,
       title: t(Strings.user_feedback),
       onClick: () => {
-        navigationToUrl(Settings['user_feedback_url'].value);
+        navigationToUrl(Settings['help_user_feedback_url'].value);
         setMenuVisible(false);
       },
     },

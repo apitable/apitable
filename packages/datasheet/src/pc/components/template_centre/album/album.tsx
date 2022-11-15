@@ -185,9 +185,9 @@ const AlbumDetail = () => {
             </Button>
           </div>
           {
-            env.TEMPLATE_CUSTOMIZATION && <div
+            env.TEMPLATE_FEEDBACK_FORM_URL && <div
               className={styles.albumAdvise}
-              onClick={() => navigationToUrl(`${env.TEMPLATE_CUSTOMIZATION}`)}
+              onClick={() => navigationToUrl(`${env.TEMPLATE_FEEDBACK_FORM_URL}`)}
             >
               <Image layout='fill' objectFit='contain' src={isZh ? albumTemplateZhPng : albumTemplateEnPng} alt='' />
             </div>

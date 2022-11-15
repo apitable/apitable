@@ -19,14 +19,14 @@ export const WecomQrCode: React.FC = () => {
   useEffect(() => {
     if (!isLoadingScript && corpId && agentId) {
       new WwLogin({
-        id : 'wecomLoginQrCode',  
+        id : 'wecomLoginQrCode',
         appid : corpId,
         agentid : agentId,
         redirect_uri: encodeURIComponent(
           // eslint-disable-next-line max-len
           `${callbackUrl}?agentId=${agentId}&corpId=${corpId}`
         ),
-        href: integrateCdnHost(Settings.wecom_qrcode_css.value)
+        href: integrateCdnHost(Settings.integration_wecom_qrcode_css.value)
       });
     }
   }, [isLoadingScript, corpId, agentId, callbackUrl]);

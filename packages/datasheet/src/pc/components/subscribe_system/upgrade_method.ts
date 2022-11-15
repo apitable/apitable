@@ -36,7 +36,7 @@ export const goToUpgrade = () => {
     // Feishu
     if (social.platform === 3) {
       if (user?.isAdmin) {
-        return navigationToUrl(Settings.feishu_upgrade_url.value);
+        return navigationToUrl(Settings.integration_feishu_upgrade_url.value);
       }
       return showModalInFeiShu();
     }

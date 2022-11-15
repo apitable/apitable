@@ -26,7 +26,7 @@ export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
     {
       value: AccountType.MOBILE,
       alt: 'mobile',
-      imgSrc: integrateCdnHost(Settings.modal_logout_step2_icon_mobile.value),
+      imgSrc: integrateCdnHost(Settings.delete_account_step2_mobile_icon.value),
       h7: t(Strings.send_verification_code_to, {
         mobile: `${areaCode} ${hiddenMobile(mobile!)}`,
       }),
@@ -34,7 +34,7 @@ export const ChooseAccountType: FC<IChooseAccountTypeProps> = props => {
     },
     {
       value: AccountType.EMAIL,
-      imgSrc: integrateCdnHost(Settings.modal_logout_step2_icon_mail.value),
+      imgSrc: integrateCdnHost(Settings.delete_account_step2_email_icon.value),
       alt: 'email',
       h7: email,
       body4: t(Strings.verify_via_email),
