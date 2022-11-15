@@ -697,6 +697,9 @@
         "space_setting_integrations_wecom": {
             "value": "true"
         },
+        "space_setting_invite_user_to_get_v_coins": {
+            "value": "true"
+        },
         "space_setting_list_of_enable_all_lab_features": {
             "value": "[\"spcXXXXX\"]"
         },
@@ -706,10 +709,7 @@
         "space_setting_role_help_url": {
             "value": "https://help.vika.cn/docs/guide/manual/use-space/role/%20readme"
         },
-        "space_settings_invite_user_to_get_v_coins": {
-            "value": "true"
-        },
-        "space_settings_upgrade": {
+        "space_setting_upgrade": {
             "value": "true"
         },
         "subscribe_demonstrate": {
@@ -8470,23 +8470,15 @@
                     "space_calendar_limit"
                 ]
             },
-            "max_form_views_in_space,max_form_views_in_space": {
-                "id": [
-                    "max_form_views_in_space",
+            "max_form_views_in_space": {
+                "id": "max_form_views_in_space",
+                "link_string_id": [
                     "max_form_views_in_space"
                 ],
-                "link_string_id": [
-                    "max_form_views_in_space",
-                    "max_mirror_nums"
-                ],
-                "引用名称": [
-                    "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-                    "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。"
-                ],
+                "引用名称": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
                 "模板名称": "神奇表单已达上限通知",
                 "link_notification_id": [
-                    "space_form_limit",
-                    "space_mirror_limit"
+                    "space_form_limit"
                 ]
             },
             "max_admin_nums": {
@@ -8620,6 +8612,17 @@
                 "模板名称": "最大镜像数",
                 "link_notification_id": [
                     "space_mirror_limit"
+                ]
+            },
+            "node_permission_nums": {
+                "id": "node_permission_nums",
+                "link_string_id": [
+                    "node_permission_nums"
+                ],
+                "引用名称": "空间站的文件权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
+                "模板名称": "文件权限已达上限通知",
+                "link_notification_id": [
+                    "space_file_permission_limit"
                 ]
             }
         }

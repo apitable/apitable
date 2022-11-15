@@ -123,48 +123,15 @@ export enum AddSubAdminCategory {
 
 export interface Billing {
     products: { [key: string]: Product };
-    notify:   Notify;
+    notify:   { [key: string]: Notify };
 }
 
 export interface Notify {
-    max_rows_per_sheet:                                FieldPermissionNums;
-    max_sheet_nums:                                    FieldPermissionNums;
-    max_seats:                                         FieldPermissionNums;
-    max_gallery_views_in_space:                        FieldPermissionNums;
-    max_rows_in_space:                                 FieldPermissionNums;
-    max_capacity_size_in_bytes:                        FieldPermissionNums;
-    max_kanban_views_in_space:                         FieldPermissionNums;
-    max_gantt_views_in_space:                          FieldPermissionNums;
-    max_calendar_views_in_space:                       FieldPermissionNums;
-    "max_form_views_in_space,max_form_views_in_space": MaxFormViewsInSpaceMaxFormViewsInSpace;
-    max_admin_nums:                                    FieldPermissionNums;
-    max_remain_trash_days:                             FieldPermissionNums;
-    max_remain_timemachine_days:                       FieldPermissionNums;
-    max_api_call:                                      FieldPermissionNums;
-    rainbow_label:                                     FieldPermissionNums;
-    field_permission_nums:                             FieldPermissionNums;
-    integration_dingtalk:                              FieldPermissionNums;
-    integration_feishu:                                FieldPermissionNums;
-    integration_we_com:                                FieldPermissionNums;
-    integration_yozo_office:                           FieldPermissionNums;
-    watermark:                                         FieldPermissionNums;
-    max_mirror_nums:                                   FieldPermissionNums;
-}
-
-export interface FieldPermissionNums {
     id:                    string;
     link_string_id:        string[];
     引用名称:                  string;
     模板名称:                  string;
     link_notification_id?: string[];
-}
-
-export interface MaxFormViewsInSpaceMaxFormViewsInSpace {
-    id:                   string[];
-    link_string_id:       string[];
-    引用名称:                 string[];
-    模板名称:                 string;
-    link_notification_id: string[];
 }
 
 export interface Product {
@@ -943,11 +910,11 @@ export interface Settings {
     space_setting_integrations_feishu:                   CustomerServiceQrCode;
     space_setting_integrations_preview_office_file:      CustomerServiceQrCode;
     space_setting_integrations_wecom:                    CustomerServiceQrCode;
+    space_setting_invite_user_to_get_v_coins:            CustomerServiceQrCode;
     space_setting_list_of_enable_all_lab_features:       CustomerServiceQrCode;
     space_setting_role_empty_img:                        CustomerServiceQrCode;
     space_setting_role_help_url:                         CustomerServiceQrCode;
-    space_settings_invite_user_to_get_v_coins:           CustomerServiceQrCode;
-    space_settings_upgrade:                              CustomerServiceQrCode;
+    space_setting_upgrade:                               CustomerServiceQrCode;
     subscribe_demonstrate:                               CustomerServiceQrCode;
     system_configuration_default_language:               CustomerServiceQrCode;
     system_configuration_default_theme:                  CustomerServiceQrCode;
