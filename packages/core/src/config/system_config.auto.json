@@ -8544,7 +8544,6 @@
                 "引用名称": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
                 "模板名称": "列权限已达上限通知",
                 "link_notification_id": [
-                    "space_field_permission_limit",
                     "space_file_permission_limit"
                 ]
             },
