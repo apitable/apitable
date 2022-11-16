@@ -93,6 +93,7 @@ module.exports = withPlugins(plugins, {
     staticFolder: getStaticFolder(),
   },
   webpack(config, options) {
+    config.resolve.symlinks = false
     const originalEntry = config.entry;
 
     config.entry = async() => {
