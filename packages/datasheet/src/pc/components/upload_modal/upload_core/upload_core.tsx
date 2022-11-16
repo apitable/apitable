@@ -16,6 +16,9 @@ import { UploadItem } from '../upload_item';
 import { UploadTab } from '../upload_tab';
 import styles from './styles.module.less';
 import { IUploadFileList } from './upload_core.interface';
+import withScrolling from 'pc/components/react-dnd-scrolling';
+
+const ScrollingComponent = withScrolling('div');
 
 interface IUploadCoreProps {
   recordId: string;
@@ -275,22 +278,23 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
         })}
       >
         <DndProvider backend={HTML5Backend}>
-          <SortableList
-            cellValue={cellValue}
-            onSortEnd={onSortEnd}
-            datasheetId={datasheetId}
-            recordId={recordId}
-            field={field}
-            uploadList={uploadList}
-            readonly={readonly}
-            rowHeightLevel={rowHeightLevel}
-            deleteUploadItem={deleteUploadItem}
-            onSave={onSave}
-            getCellValueFn={getCellValueFn}
-            onMove={onMove}
-          />
+          <ScrollingComponent>
+            <SortableList
+              cellValue={cellValue}
+              onSortEnd={onSortEnd}
+              datasheetId={datasheetId}
+              recordId={recordId}
+              field={field}
+              uploadList={uploadList}
+              readonly={readonly}
+              rowHeightLevel={rowHeightLevel}
+              deleteUploadItem={deleteUploadItem}
+              onSave={onSave}
+              getCellValueFn={getCellValueFn}
+              onMove={onMove}
+            />
+          </ScrollingComponent>
         </DndProvider>
-
       </div>
     </div>
   );
