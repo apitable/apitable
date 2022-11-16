@@ -172,6 +172,7 @@
       }
     ],
     "require-await": 2,
+    "@typescript-eslint/ban-ts-comment": 0,
     // 对象
     "object-curly-spacing": [
       "warn",

@@ -6,7 +6,8 @@ import { GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/compo
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { ReactNode, useContext, useMemo } from 'react';
-import { AlarmIcon } from 'modules/enterprise/alarm/alarm_icon/alarm_icon';
+// @ts-ignore
+import { AlarmIcon } from 'enterprise';
 
 interface IUseCellAlarmProps {
   instance: GridCoordinate;
@@ -58,7 +59,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
         if (columnIndex > columnCount - 1) break;
         const { fieldId } = visibleColumns[columnIndex];
         if (columnIndex <= frozenColumnCount - 1) {
-          if (fieldMap[fieldId]?.type === FieldType.DateTime) {
+          if (fieldMap[fieldId]?.type === FieldType.DateTime && AlarmIcon) {
             frozenDateAlarms.push(
               <AlarmIcon
                 key={`${rowIndex}-${columnIndex}`}
@@ -74,7 +75,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
           }
           continue;
         }
-        if (fieldMap[fieldId]?.type === FieldType.DateTime) {
+        if (fieldMap[fieldId]?.type === FieldType.DateTime && AlarmIcon) {
           dateAlarms.push(
             <AlarmIcon
               key={`${rowIndex}-${columnIndex}`}

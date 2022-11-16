@@ -332,7 +332,6 @@ const SlateEditor = (props, ref) => {
     setVisible(false);
   };
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   return (
     <div className={styles.slateEditor} style={{ ...calcContainerStyle(maxRow) }}>
       <Slate editor={editor} value={value} onChange={changeHandler}>

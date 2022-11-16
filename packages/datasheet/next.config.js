@@ -116,6 +116,7 @@ module.exports = withPlugins(plugins, {
       ...config.resolve.alias,
       pc: path.resolve(__dirname, './src/pc'),
       static: path.resolve(__dirname, './public/static'),
+      enterprise: process.env.IS_ENTERPRISE ? path.resolve(__dirname, './src/modules/enterprise') : path.resolve(__dirname, './src/noop')
     };
     const oneOf = config.module.rules.find((rule) => typeof rule.oneOf === 'object');
     if (oneOf) {

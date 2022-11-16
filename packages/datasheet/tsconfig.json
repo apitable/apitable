@@ -11,6 +11,9 @@
       "pc": [
         "./src/pc"
       ],
+      "enterprise": [
+        "../../../enterprise/datasheet"
+      ]
     },
     "module": "esnext",
     "baseUrl": "./src",

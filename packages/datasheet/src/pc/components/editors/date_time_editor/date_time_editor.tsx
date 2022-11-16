@@ -36,10 +36,9 @@ import { isLegalDateKey } from '../../../utils/keycode';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { DatePickerMobile } from './mobile';
 import style from './style.module.less';
-import { TimePicker } from './time_picker_only';
-import dynamic from 'next/dynamic';
-
-const DateTimeAlarm = dynamic(() => import('modules/enterprise/alarm/date_time_alarm/date_time_alarm'), { ssr: false });
+import { TimePicker } from './time_picker_only'
+// @ts-ignore
+import { DateTimeAlarm } from 'enterprise';
 
 dayjs.extend(customParseFormat);
 
@@ -445,7 +444,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
                   renderFooter={() =>
-                    showAlarm && (
+                    showAlarm && DateTimeAlarm && (
                       <DateTimeAlarm
                         datasheetId={datasheetId}
                         recordId={recordId || ''}

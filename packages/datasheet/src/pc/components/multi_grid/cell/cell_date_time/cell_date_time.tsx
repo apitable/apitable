@@ -2,7 +2,6 @@ import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, sha
 import { NotificationSmallOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { AlarmTipText } from 'modules/enterprise/alarm/alarm_tip_text';
 import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { useThemeColors } from '@apitable/components';
@@ -11,6 +10,8 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './styles.module.less';
+// @ts-ignore
+import { AlarmTipText } from 'enterprise';
 
 interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;
@@ -57,7 +58,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
       )}
       {showAlarm && Boolean(alarm) && date && Boolean(snapshot) && (
         <Tooltip
-          title={<AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
+          title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
         >
           <span className={styles.alarm} onClick={toggleEdit}>
             <NotificationSmallOutlined color={colors.deepPurple[500]} size={14} />
