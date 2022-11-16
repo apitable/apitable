@@ -34,6 +34,13 @@ import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
 import me.chanjar.weixin.cp.bean.WxCpTpContactSearchResp;
 
 import com.vikadata.api.base.enums.DatabaseException;
+import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.enterprise.social.enums.SocialNameModified;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.enterprise.social.model.TenantMemberDto;
+import com.vikadata.api.enterprise.social.service.ISocialCpIsvService;
+import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
+import com.vikadata.api.enterprise.social.service.ISocialTenantService;
 import com.vikadata.api.organization.dto.MemberDTO;
 import com.vikadata.api.organization.dto.SearchMemberDTO;
 import com.vikadata.api.organization.dto.UploadDataDTO;
@@ -74,25 +81,18 @@ import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.constants.MailPropConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.enums.SocialNameModified;
-import com.vikadata.api.enterprise.social.model.TenantMemberDto;
-import com.vikadata.api.enterprise.social.service.ISocialCpIsvService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
+import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
+import com.vikadata.api.shared.util.CollectionUtil;
+import com.vikadata.api.shared.util.ibatis.ExpandServiceImpl;
+import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.api.space.enums.InviteType;
 import com.vikadata.api.space.enums.SpaceException;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
 import com.vikadata.api.space.mapper.SpaceApplyMapper;
 import com.vikadata.api.space.mapper.SpaceInviteLinkMapper;
 import com.vikadata.api.space.mapper.SpaceInviteRecordMapper;
 import com.vikadata.api.space.mapper.StaticsMapper;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.shared.util.CollectionUtil;
-import com.vikadata.api.shared.util.information.InformationUtil;
-import com.vikadata.api.shared.util.ibatis.ExpandServiceImpl;
 import com.vikadata.api.user.entity.UnitEntity;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.model.UserLangDTO;
@@ -537,6 +537,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 MemberEntity existedMember = emailMemberMap.get(inviteEmail).stream().findFirst().orElseThrow(() -> new BusinessException("invite member error"));
                 // history member can be restored
                 if (existedMember.getIsDeleted()) {
+                    member.setUserId(emailUserMap.get(inviteEmail));
+                    member.setIsActive(emailUserMap.containsKey(inviteEmail));
                     restoreMembers.add(existedMember);
                 }
                 shouldSendInvitationNotify.add(existedMember.getId());

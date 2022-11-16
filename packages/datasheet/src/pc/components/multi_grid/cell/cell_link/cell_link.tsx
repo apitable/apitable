@@ -63,7 +63,8 @@ export const CellLink: React.FC<ICellLink> = props => {
       const snapshot = datasheet && datasheet.snapshot;
       const datasheetErrorCode = Selectors.getDatasheetErrorCode(state, field.property.foreignDatasheetId);
       const strList = linkRecordIds.map(recordId => {
-        if (datasheetErrorCode === StatusCode.NODE_NOT_EXIST) {
+        const cellString = (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId);
+        if (cellString === null && datasheetErrorCode === StatusCode.NODE_NOT_EXIST) {
           return NO_PERMISSION;
         }
         if (!snapshot) {
@@ -77,7 +78,7 @@ export const CellLink: React.FC<ICellLink> = props => {
           emptyRecords.push(recordId);
           return NO_DATA;
         }
-        return (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId);
+        return cellString;
       });
 
       /**

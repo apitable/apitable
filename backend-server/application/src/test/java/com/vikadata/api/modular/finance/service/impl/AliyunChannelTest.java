@@ -1,5 +1,6 @@
 package com.vikadata.api.modular.finance.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -19,5 +20,15 @@ public class AliyunChannelTest extends AbstractIntegrationTest {
         SubscribePlanInfo planInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(userSpace.getSpaceId());
         assertThat(planInfo).isNotNull();
         assertThat(planInfo.getBasePlan().getId()).isEqualTo("atlas_unlimited");
+    }
+
+    @Test
+    public void testUnLimitCapacityNotCreateGiftCapacityOrder(){
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        SubscribePlanInfo planInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(mockUserSpace.getSpaceId());
+        assertThat(planInfo.getBasePlan().getId()).isEqualTo("atlas_unlimited");
+        iBillingOfflineService.createGiftCapacityOrder(IdWorker.getId(), "testUser", mockUserSpace.getSpaceId());
+        Long number = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(mockUserSpace.getSpaceId());
+        assertThat(number).isEqualTo(0L);
     }
 }

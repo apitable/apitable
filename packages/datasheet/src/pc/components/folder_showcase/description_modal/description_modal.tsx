@@ -3,7 +3,7 @@ import * as React from 'react';
 import { BaseModal } from 'pc/components/common';
 import { IShowCaseData, Selectors } from '@apitable/core';
 import styles from './style.module.less';
-import { useMount, useDebounceFn } from 'ahooks';
+import { useDebounceFn } from 'ahooks';
 import { useRequest } from 'pc/hooks';
 import { useCatalogTreeRequest, useImageUpload, useResponsive } from 'pc/hooks';
 import { useSelector } from 'react-redux';
@@ -42,18 +42,13 @@ export const DescriptionModal: FC<IDescriptionModalProps> = props => {
   const nodeId = useSelector(state => Selectors.getNodeId(state))!;
   const { updateNodeDescriptionReq } = useCatalogTreeRequest();
   const { uploadImage } = useImageUpload();
-  const { run: updateNodeDescrition } = useRequest(updateNodeDescriptionReq, { manual: true });
+  const { run: updateNodeDescription } = useRequest(updateNodeDescriptionReq, { manual: true });
   const { run: sendUpdateDesc } = useDebounceFn(
     async(nodeId, desc) => {
-      await updateNodeDescrition(nodeId, desc);
+      await updateNodeDescription(nodeId, desc);
     },
     { wait: 500 },
   );
-  useMount(() => {
-    if (nodeInfo.description) {
-      setValue(polyfillData(nodeInfo.description));
-    }
-  });
 
   const { screenIsAtLeast } = useResponsive();
   const isPc = screenIsAtLeast(ScreenSize.md);

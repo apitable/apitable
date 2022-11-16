@@ -44,7 +44,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
         }
         // database error
         if (err instanceof QueryFailedError) {
-          this.logger.error('FusionApiDBException', err?.stack, err?.message);
+          this.logger.error('FusionApiDBException', err);
           return throwError(ApiException.tipError(ApiTipConstant.api_server_error));
         }
         return throwError(err);

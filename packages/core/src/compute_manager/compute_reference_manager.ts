@@ -1,7 +1,8 @@
-import { computeCache, COMPUTE_REF_MAP_CACHE_KEY, parse, TokenType } from 'index';
+import { computeCache, COMPUTE_REF_MAP_CACHE_KEY, parse, TokenType, fastCloneDeep } from 'index';
 import { Field, LookUpField } from 'model';
 import { IFieldMap, IReduxState, Selectors } from '../exports/store';
 import { FieldType, IField } from 'types';
+import { slice } from 'lodash';
 
 type IRefMap = Map<string, Set<string>>;
 // Reference management for computed fields
@@ -61,17 +62,58 @@ export class ComputeRefManager {
   }
 
   // Check if there is a circular reference, if it exists, it will not pass
-  public checkRef(key: string, _visitedNode?: Set<string>): boolean {
-    const visitedNode = _visitedNode || new Set<string>();
-    if (visitedNode.has(key)) {
-      return false;
+  public checkRef(node: string): boolean {
+    const sourceAdj = Object.fromEntries(this.refMap.entries());
+    const color: { [key: string]: number | null } = {};
+    const cycleStack: string[] = [];
+    const stackAdj: string[][] = [];
+    const cycles: string[][] = [];
+
+    const findCycle = (node: string) => {
+      cycleStack.push(node);
+      const nodeAdj = sourceAdj[node] ? Array.from(sourceAdj[node]) : [];
+      stackAdj.push(fastCloneDeep(nodeAdj));
+  
+      while(cycleStack.length) {
+        const source = cycleStack[cycleStack.length - 1];
+        const targets = stackAdj[stackAdj.length - 1] || [];
+  
+        if (targets?.length) {
+          color[source] = 1;
+          const target = targets[0];
+          // Just find a circle and return
+          if (color[target] === 1) {
+            const start = cycleStack.indexOf(target);
+            const cycle = slice(cycleStack, start);
+            cycle.push(target);
+            cycles.push(cycle);
+            return;
+          } else if (color[target] === undefined) {
+            cycleStack.push(target);
+            const nextAdj = sourceAdj[target] ? Array.from(sourceAdj[target]) : [];
+            stackAdj.push(fastCloneDeep(nextAdj));
+          } else if (color[target] === 2) {
+            const lastAdj = stackAdj[stackAdj.length - 1];
+            const index = lastAdj.indexOf(target);
+            stackAdj[stackAdj.length - 1].splice(index,1);
+          }
+        } else {
+          color[source] = 2;
+          cycleStack.pop();
+          stackAdj.pop();
+          if(stackAdj.length > 0) {
+            const lastAdj = stackAdj[stackAdj.length - 1];
+            const index = lastAdj.indexOf(source);
+            stackAdj[stackAdj.length - 1].splice(index,1);
+          }
+        }
+      }
+    };
+  
+    if(color[node] == null) {
+      findCycle(node);
     }
-    const ref = this.reRefMap.get(key);
-    visitedNode.add(key);
-    if (ref) {
-      return Array.from(ref).every(key => this.checkRef(key, new Set(visitedNode)));
-    }
-    return true;
+    return !Boolean(cycles.length);
   }
 
   /**

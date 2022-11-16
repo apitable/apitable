@@ -14,8 +14,8 @@ enum ActionFlag {
  * for remember relation fields change.
  * the Map below string,they are: datasheetId => brotherFieldId => linkedRecordId
  * two Set strings are recordId, means add or delete.
- * 
- * During the process of selection area delete and batch paste, 
+ *
+ * During the process of selection area delete and batch paste,
  * it would happen affects different  datasheet's different brotherField's different linkedRecord
  * And also, add or delete recordId
  *
@@ -142,6 +142,11 @@ export class LinkedDataConformanceMaintainer {
 
         datasheet.forEach((field, fieldId) => {
           field.forEach((changeIds, recordId) => {
+            if (!snapshot) {
+              console.error(`${datasheetId} for snapshot is not exit`);
+              return;
+            }
+
             if (!snapshot.recordMap[recordId]) {
               console.error(`record: ${recordId} in datasheet: ${datasheetId} does not exist！`);
               return;

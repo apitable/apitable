@@ -27,23 +27,11 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
-import com.vikadata.api.shared.component.scanner.annotation.GetResource;
-import com.vikadata.api.shared.component.notification.annotation.Notification;
-import com.vikadata.api.shared.util.page.PageObjectParam;
-import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.shared.component.Auth0Service;
-import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.component.notification.NotificationManager;
-import com.vikadata.api.shared.component.notification.NotificationTemplateId;
-import com.vikadata.api.shared.config.properties.ConstProperties;
-import com.vikadata.api.shared.constants.ParamsConstants;
-import com.vikadata.api.shared.context.LoginContext;
-import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.shared.util.page.PageHelper;
-import com.vikadata.api.shared.holder.SpaceHolder;
-import com.vikadata.api.shared.util.page.PageInfo;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.enterprise.billing.service.IBlackListService;
+import com.vikadata.api.enterprise.common.afs.AfsCheckService;
+import com.vikadata.api.organization.enums.DeleteMemberType;
+import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.ro.DeleteBatchMemberRo;
 import com.vikadata.api.organization.ro.DeleteMemberRo;
 import com.vikadata.api.organization.ro.InviteMemberAgainRo;
@@ -54,31 +42,43 @@ import com.vikadata.api.organization.ro.UpdateMemberOpRo;
 import com.vikadata.api.organization.ro.UpdateMemberRo;
 import com.vikadata.api.organization.ro.UpdateMemberTeamRo;
 import com.vikadata.api.organization.ro.UploadMemberTemplateRo;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.organization.service.IRoleService;
+import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.organization.vo.MemberInfoVo;
 import com.vikadata.api.organization.vo.MemberPageVo;
 import com.vikadata.api.organization.vo.MemberUnitsVo;
 import com.vikadata.api.organization.vo.RoleVo;
 import com.vikadata.api.organization.vo.SearchMemberVo;
 import com.vikadata.api.organization.vo.UploadParseResultVO;
-import com.vikadata.api.enterprise.billing.service.IBlackListService;
-import com.vikadata.api.organization.enums.DeleteMemberType;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.organization.mapper.TeamMapper;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.organization.service.IRoleService;
-import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.shared.component.Auth0Service;
+import com.vikadata.api.shared.component.TaskManager;
+import com.vikadata.api.shared.component.notification.NotificationManager;
+import com.vikadata.api.shared.component.notification.NotificationTemplateId;
+import com.vikadata.api.shared.component.notification.annotation.Notification;
+import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
+import com.vikadata.api.shared.component.scanner.annotation.GetResource;
+import com.vikadata.api.shared.component.scanner.annotation.PostResource;
+import com.vikadata.api.shared.config.properties.ConstProperties;
+import com.vikadata.api.shared.constants.ParamsConstants;
+import com.vikadata.api.shared.context.LoginContext;
+import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.shared.holder.SpaceHolder;
+import com.vikadata.api.shared.util.page.PageHelper;
+import com.vikadata.api.shared.util.page.PageInfo;
+import com.vikadata.api.shared.util.page.PageObjectParam;
 import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.model.SpaceGlobalFeature;
 import com.vikadata.api.space.model.SpaceUpdateOperate;
 import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.user.model.UserLangDTO;
 import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.MemberEntity;
-import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -90,17 +90,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.vikadata.api.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_DESC;
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_PARAM;
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
+import static com.vikadata.api.base.enums.ParameterException.NO_ARG;
 import static com.vikadata.api.organization.enums.OrganizationException.DELETE_MEMBER_PARAM_ERROR;
 import static com.vikadata.api.organization.enums.OrganizationException.DELETE_SPACE_ADMIN_ERROR;
 import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EMAIL_HAS_ACTIVE;
 import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EMAIL_NOT_FOUND;
 import static com.vikadata.api.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
 import static com.vikadata.api.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
-import static com.vikadata.api.base.enums.ParameterException.NO_ARG;
+import static com.vikadata.api.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
+import static com.vikadata.api.shared.constants.PageConstants.PAGE_DESC;
+import static com.vikadata.api.shared.constants.PageConstants.PAGE_PARAM;
+import static com.vikadata.api.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 import static com.vikadata.core.constants.RedisConstants.GENERAL_LOCKED;
 
 @RestController
@@ -348,11 +348,13 @@ public class MemberController {
                 String returnUrl = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/invitation/callback";
                 String link = auth0Service.createUserInvitationLink(data.getEmail(), returnUrl);
                 iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
-            } else {
+            }
+            else {
                 String link = String.format("%s/workbench?spaceId=%s", constProperties.getServerDomain(), spaceId);
                 iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
             }
-        } else {
+        }
+        else {
             iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail());
         }
         return ResponseData.success();

@@ -77,7 +77,17 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
 
   const editor = useMemo(() => withVika(withMeta(withEventBus(withHistory(withReact(createEditor() as ReactEditor))))), []);
   editor.mode = mode;
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(() => {
+    if (!propsValue) {
+      return defaultValue;
+    }
+    const propsMeta = (propsValue as IEditorData).meta;
+    let nextValue = propsMeta ? (propsValue as IEditorData).document : propsValue;
+    if (!Array.isArray(nextValue)) {
+      nextValue = defaultValue;
+    }
+    return nextValue;
+  });
   const imeInputText = useRef('');
 
   // Synchronize the api used to update the editor
@@ -157,7 +167,6 @@ const SlateEditorBase: FC<ISlateEditorProps> = ((props) => {
   }, { wait: 300 });
 
   useEffect(() => {
-
     if (!propsValue) {
       if (value !== defaultValue) {
         setValue(defaultValue);
