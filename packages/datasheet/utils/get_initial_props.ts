@@ -58,11 +58,6 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const spaceId = context.ctx.query?.spaceId || '';
 
   axios.interceptors.request.use(config => {
-    console.log('-------------- web-server log start ---------------');
-    console.log('header from gateway', context.ctx.req?.headers);
-    console.log('filter header', filterHeaders);
-    console.log('custom header:', config.headers);
-    console.log('-------------- web-server log end ---------------');
     return config;
   });
 
