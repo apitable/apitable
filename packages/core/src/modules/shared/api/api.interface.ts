@@ -16,8 +16,8 @@ export interface ICreateNotification {
       viewId?: string; // Datasheet View ID
       recordIds?: string; // the Records Rows ID
       nodeName?: string // when templateId = "datasheet_record_limit"
-      specification?: number
-      usage?: number
+      specification?: number | string
+      usage?: number | string
     };
   };
 }

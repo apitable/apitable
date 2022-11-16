@@ -467,7 +467,6 @@ __metadata:
     react-display-name: ^0.2.5
     react-dnd: ^16.0.1
     react-dnd-html5-backend: ^16.0.1
-    react-dnd-scrolling: 1.2.4
     react-dom: 18.2.0
     react-dropzone: ^11.2.0
     react-grid-layout: ^1.2.0
@@ -26367,7 +26366,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:3.x, hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -39162,23 +39161,6 @@ fsevents@^1.2.7:
   dependencies:
     dnd-core: ^16.0.1
   checksum: e2368bf85d5632a5cd867b743feb54c9052d909ea5331608860fa455edf3c633ac791f5b338e3db29b19ea8670c0ba5fb43c9c1c2510760bea030811d726cdfa
-  languageName: node
-  linkType: hard
-
-"react-dnd-scrolling@npm:1.2.4":
-  version: 1.2.4
-  resolution: "react-dnd-scrolling@npm:1.2.4"
-  dependencies:
-    hoist-non-react-statics: 3.x
-    lodash.throttle: ^4.1.1
-    prop-types: 15.x
-    raf: ^3.4.1
-    react-display-name: ^0.2.5
-  peerDependencies:
-    react: 16.x || 17.x || 18.x
-    react-dnd: 10.x || 11.x || 14.x || 15.x || 16.x
-    react-dom: 16.x || 17.x || 18.x
-  checksum: 41d98e1758d64baf8cafa777ea38d9721e0ffaf3e4bc200a2d9f1e6c9b969e057e73badb1ecde4772fbb3a097d0507b171b82ebb0aa8d7d80c7a476ec382470f
   languageName: node
   linkType: hard
 
