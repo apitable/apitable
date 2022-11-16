@@ -19,10 +19,10 @@ import styles from './styles.module.less';
     // Register the widget dependency package to window in order for the widget to load properly.
     window['_React'] = React;
     window['_ReactDom'] = ReactDom;
-    window['_@apitable/components'] = components;
-    window['_@apitable/widget-sdk'] = widgetSdk;
-    window['_@apitable/core'] = core;
-    window['_@apitable/icons'] = icons;
+    window['_@vikadata/components'] = components;
+    window['_@vikadata/widget-sdk'] = widgetSdk;
+    window['_@vikadata/core'] = core;
+    window['_@vikadata/icons'] = icons;
   }
 })();
 

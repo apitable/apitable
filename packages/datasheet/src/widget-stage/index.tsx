@@ -17,10 +17,10 @@ import { ThemeWrap } from './theme_wrap';
   if (!process.env.SSR) {
     window['_React'] = React;
     window['_ReactDom'] = ReactDOM;
-    window['_@apitable/components'] = components;
-    window['_@apitable/widget-sdk'] = widgetSdk;
-    window['_@apitable/core'] = core;
-    window['_@apitable/icons'] = icons;
+    window['_@vikadata/components'] = components;
+    window['_@vikadata/widget-sdk'] = widgetSdk;
+    window['_@vikadata/core'] = core;
+    window['_@vikadata/icons'] = icons;
   }
 })();
 
