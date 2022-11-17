@@ -295,17 +295,18 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     if (!partialRecordsInDst && viewId) {
       const view = Selectors.getViewByIdWithDefault(state, snapshot.datasheetId, viewId);
       // compatible with old data
-      if (view && view.sortInfo) {
-        if (Array.isArray(view.sortInfo)) {
-          sortRules.push(...view.sortInfo);
+      if (view) {
+        if (view.groupInfo) {
+          if (Array.isArray(view.groupInfo)) {
+            sortRules.push(...view.groupInfo);
+          }
         }
-        if (view.sortInfo.rules) {
-          sortRules.push(...view.sortInfo.rules);
-        }
-      }
-      if (view && view.groupInfo) {
-        if (Array.isArray(view.groupInfo)) {
-          sortRules.push(...view.groupInfo);
+        if (view.sortInfo) {
+          if (Array.isArray(view.sortInfo)) {
+            sortRules.push(...view.sortInfo);
+          } else if (view.sortInfo.rules) {
+            sortRules.push(...view.sortInfo.rules);
+          }
         }
       }
     }
