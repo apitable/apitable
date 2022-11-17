@@ -7,7 +7,7 @@ This guide helps you get started developing APITable.
 Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
 
 - `git`
-- `docker`
+- [docker](https://docs.docker.com/engine/install/)
 - `docker-compose v2`
 - `make`
 - [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
@@ -41,11 +41,30 @@ brew install --cask docker
 brew install make
 ```
 
+## Linux
+
+On CentOS / RHEL or other Linux distribution with `yum`
+
+```bash
+sudo yum install git
+sudo yum install make
+sudo yum install docker
+```
+
+On Ubuntu / Debian or other Linux distribution with `apt`
+
+```bash
+sudo apt update
+sudo apt install git
+sudo apt install make
+sudo apt install docker
+```
+
 
 ## Windows
 
 If you are running APITable on Windows 10/11, we recommend installing [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/), [Ubuntu on WSL](https://ubuntu.com/wsl) and [Windows Terminal](https://aka.ms/terminal),
-you can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
+You can learn more about Windows Subsystem for Linux (WSL) in [the official site](https://learn.microsoft.com/en-us/windows/wsl).
 
 Install missing dependencies on Ubuntu using `apt`:
 
@@ -53,6 +72,7 @@ Install missing dependencies on Ubuntu using `apt`:
 sudo apt update
 sudo apt install git
 sudo apt install make
+sudo apt install docker
 ```
 
 
@@ -72,6 +92,8 @@ make
 
 ## IDE
 
-### Visual Studio Code
+We recommend you use `Visual Studio Code` or `Intellij IDEA` for your IDE.
 
-### Intellij IDEA
+APITable have prepared these two IDE's debug configs.
+
+Just open APITable's root directory with IDE.
