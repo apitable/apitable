@@ -94,7 +94,7 @@ export interface IRecordTransformOptions {
   fieldMap: IFieldMap;
   store: Store<IReduxState>;
   recordMap: IRecordMap;
-  fieldIds: string[];
+  fieldKeys: string[];
   columnMap: Record<string, IViewColumn>;
 }
 

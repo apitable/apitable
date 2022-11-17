@@ -72,7 +72,7 @@ export class DatasheetRecordService {
       for(const fieldKeyName of fieldKeyNames) {
         data[fieldKeyName] = cur[fieldKeyName];
       }
-      const record = { recordId: cur.recordId, data };
+      const record = { recordId: cur.recordId, data, recordMeta: { fieldUpdatedMap: cur.fieldUpdatedMap } };
       pre.push(record);
       return pre;
     }, []);
@@ -88,6 +88,7 @@ export class DatasheetRecordService {
       const jsonExtractFieldKeyName = `JSON_EXTRACT(data, '$.${fieldKeyName}')`;
       selectQueryBuilder.addSelect(jsonExtractFieldKeyName, fieldKeyName);
     }
+    selectQueryBuilder.addSelect('JSON_EXTRACT(field_updated_info, \'$.fieldUpdatedMap\')', 'fieldUpdatedMap');
     selectQueryBuilder.where('record_id IN(:...recordIds)', { recordIds })
       .andWhere('dst_id = :datasheetId', { datasheetId })
       .andWhere('is_deleted = :isDeleted', { isDeleted });
@@ -99,6 +100,7 @@ export class DatasheetRecordService {
       pre[cur.recordId] = {
         id: cur.recordId,
         data: cur.data || {},
+        recordMeta: cur.recordMeta,
         commentCount: undefined
       };
       return pre;

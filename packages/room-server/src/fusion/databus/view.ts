@@ -56,13 +56,13 @@ export class View {
     }
 
     const recordMap = snapshot.recordMap;
-    const fieldIds = Object.keys(this.fieldMap);
+    const fieldKeys = Object.keys(this.fieldMap);
     const columnMap = keyBy(this.columns, 'fieldId');
     const voTransformOptions: IRecordTransformOptions = {
       fieldMap: this.fieldMap,
       store: this.store,
       recordMap,
-      fieldIds,
+      fieldKeys,
       columnMap,
     };
 

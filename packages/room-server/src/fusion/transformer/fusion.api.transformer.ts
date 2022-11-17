@@ -11,7 +11,6 @@ import {
   INode,
   IRecordMap,
   IReduxState,
-  ISnapshot,
   ISortedField,
   ISpaceInfo,
   IViewColumn,
@@ -172,13 +171,13 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       return null;
     }
     const recordMap = snapshot.recordMap;
-    const fieldIds = Object.keys(options.fieldMap);
+    const fieldKeys = Object.keys(options.fieldMap);
     const columnMap = keyBy(options.columns, 'fieldId');
     const recordOptions: IRecordTransformOptions = {
       fieldMap: options.fieldMap,
       store: options.store,
       recordMap,
-      fieldIds,
+      fieldKeys,
       columnMap,
     };
     options.rows.map(row => {
@@ -191,17 +190,15 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   public recordVoTransform(recordId: string, options: IRecordTransformOptions, cellFormat = CellFormatEnum.JSON): ApiRecordDto | null {
-    const { store, fieldIds, recordMap, columnMap, fieldMap } = options;
-    const state = store.getState();
-    const snapshot = Selectors.getSnapshot(state);
+    const { store, fieldKeys, recordMap, columnMap, fieldMap } = options;
     const fields: IFieldValueMap = {};
     const record = recordMap[recordId];
     if (record) {
-      fieldIds.forEach(field => {
+      fieldKeys.forEach(field => {
         // Filter hidden
         const column = columnMap[fieldMap[field].id];
         if (column && !column.hidden) {
-          const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldMap[field].id);
+          const cellValue = Selectors.getCellValue(store.getState(), Selectors.getSnapshot(options.store.getState()), recordId, fieldMap[field].id);
           fields[field] = this.voTransform(cellValue, fieldMap[field], {
             fieldMap,
             record,
@@ -211,7 +208,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
         }
       });
       return {
-        recordId: recordMap[recordId].id,
+        recordId,
         createdAt: recordMap[recordId].createdAt,
         updatedAt: recordMap[recordId].updatedAt,
         fields,
