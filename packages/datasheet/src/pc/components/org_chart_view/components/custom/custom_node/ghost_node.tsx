@@ -1,5 +1,5 @@
 import { ISetRecordOptions, moveArrayElement } from '@apitable/core';
-import { Handle, NodeProps, Position } from '@vikadata/react-flow-renderer';
+import { Handle, NodeProps, Position } from '@apitable/react-flow';
 import classNames from 'classnames';
 import { without } from 'lodash';
 import { DragNodeType, GHOST_NODE_SIZE } from 'pc/components/org_chart_view/constants';

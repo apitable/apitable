@@ -2,7 +2,7 @@ import {
   IField, IFieldRanges, IFilterInfo, IGridViewProperty,
   IGroupInfo, IReduxState, ISortInfo, Selectors, DATASHEET_ID, t, Strings,
 } from '@apitable/core';
-import { areEqual, GridChildComponentProps } from '@vikadata/react-window';
+import { areEqual, GridChildComponentProps } from 'react-window';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import { TComponent } from 'pc/components/common/t_component';

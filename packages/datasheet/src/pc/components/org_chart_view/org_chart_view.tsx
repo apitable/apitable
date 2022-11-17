@@ -19,7 +19,7 @@ import {
   getUniqName,
   ISetRecordOptions,
 } from '@apitable/core';
-import { ReactFlowProvider } from '@vikadata/react-flow-renderer';
+import { ReactFlowProvider } from '@apitable/react-flow';
 import { useSize } from 'ahooks';
 import { useLocalStorageState } from 'ahooks';
 import { resourceService } from 'pc/resource_service';

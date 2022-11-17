@@ -2,7 +2,7 @@ import { useContextMenu } from '@apitable/components';
 import { useUpdateEffect } from 'ahooks';
 import { FC, useContext, useRef } from 'react';
 import * as React from 'react';
-import ReactFlow, { Edge, OnLoadParams, useStoreState, useZoomPanHelper } from '@vikadata/react-flow-renderer';
+import ReactFlow, { Edge, OnLoadParams, useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { DragLayer, CustomEdge, BezierEdge, CustomNode } from './components/custom';
 import {
   DEFAULT_ZOOM,

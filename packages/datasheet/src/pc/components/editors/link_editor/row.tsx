@@ -1,6 +1,6 @@
 import { memo, PropsWithChildren } from 'react';
 import * as React from 'react';
-import { ListChildComponentProps } from '@vikadata/react-window';
+import { ListChildComponentProps } from 'react-window';
 import classNames from 'classnames';
 import style from './style.module.less';
 import { Selectors } from '@apitable/core';

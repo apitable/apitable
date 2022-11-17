@@ -7,7 +7,7 @@ import {
   VariableSizeList as List,
   VariableSizeGrid as Grid,
   GridOnScrollProps,
-} from '@vikadata/react-window';
+} from 'react-window';
 import {
   Cell,
   CellTitle,
@@ -350,7 +350,7 @@ export const MobileGrid: React.FC<IMobileGridProps> = ({
           itemKey={generateItemKey()}
           width={width}
           height={GRID_HEIGHT}
-          scrollSize={0}
+          
           ref={gridRef}
           outerRef={gridOuterRef}
           onScroll={isIOS ? onHorizontalScroll : onAndroidScroll}

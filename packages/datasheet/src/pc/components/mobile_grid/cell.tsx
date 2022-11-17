@@ -1,7 +1,7 @@
 import { shallowEqual, useSelector } from 'react-redux';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
-import { GridChildComponentProps, ListChildComponentProps } from '@vikadata/react-window';
+import { GridChildComponentProps, ListChildComponentProps } from 'react-window';
 import { BasicValueType, Field, Selectors } from '@apitable/core';
 import { CellValue } from '../multi_grid/cell/cell_value';
 import { store } from 'pc/store';

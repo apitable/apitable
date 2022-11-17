@@ -1,6 +1,6 @@
 import { useThemeColors } from '@apitable/components';
 import { FC, memo } from 'react';
-import { EdgeProps, getBezierPath } from '@vikadata/react-flow-renderer';
+import { EdgeProps, getBezierPath } from '@apitable/react-flow';
 
 export const BezierEdge: FC<EdgeProps> = memo(({
   id,

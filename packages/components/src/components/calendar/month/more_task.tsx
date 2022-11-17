@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Popover } from 'antd';
-import { FixedSizeList as List } from '@vikadata/react-window';
+import { FixedSizeList as List } from 'react-window';
 import { LinkButton } from '../../link_button';
 import { Typography } from '../../typography';
 import { IconButton } from '../../icon_button';

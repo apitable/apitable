@@ -1,6 +1,6 @@
 import { useContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import { DropDirectionType, Selectors, Strings, t, StoreActions } from '@apitable/core';
-import { areEqual } from '@vikadata/react-window';
+import { areEqual } from 'react-window';
 import classNames from 'classnames';
 import { XYCoord } from 'dnd-core';
 import { ScreenSize } from 'pc/components/common/component_display';

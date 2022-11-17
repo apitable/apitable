@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import ReactFlow, { Elements, PanOnScrollMode, useZoomPanHelper } from '@vikadata/react-flow-renderer';
+import ReactFlow, { Elements, PanOnScrollMode, useZoomPanHelper } from '@apitable/react-flow';
 import { CustomCycleEdge } from '../custom/custom_cycle_edge';
 import { CycleNode } from '../custom/cycle_node';
 import { CustomEdge } from '../custom';

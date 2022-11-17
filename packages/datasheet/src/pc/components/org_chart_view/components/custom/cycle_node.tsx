@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { NodeProps } from '@vikadata/react-flow-renderer';
+import { NodeProps } from '@apitable/react-flow';
 import styles from './styles.module.less';
 import { INodeData } from '../../interfaces';
 

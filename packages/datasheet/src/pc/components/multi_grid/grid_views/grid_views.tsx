@@ -1,7 +1,7 @@
 import {
   CellType, Events, IGridViewColumn, IGridViewProperty, ILinearRow, Player, RowHeight, Selectors, StoreActions, ViewType
 } from '@apitable/core';
-import { GridOnScrollProps, VariableSizeGrid as Grid } from '@vikadata/react-window';
+import { GridOnScrollProps, VariableSizeGrid as Grid } from 'react-window';
 import { useMount, useUpdateEffect } from 'ahooks';
 import { browser } from 'modules/shared/browser';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
@@ -387,7 +387,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
         style={gridStyle}
         width={fixedColumnWidth + (groupLevel ? GROUP_OFFSET * (groupLevel - 1) : 0)}
         ref={upperLeftRef}
-        scrollSize={0}
+        
       >
         {HeaderLeft}
       </Grid>
@@ -403,7 +403,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
         style={{ ...gridStyle, left: fixedColumnWidth + GROUP_OFFSET * (groupLevel ? groupLevel - 1 : 0) }}
         width={unFixedColumnWidth + (groupLevel === 3 ? GROUP_OFFSET : 0)}
         ref={upperRightRef}
-        scrollSize={0}
+        
         onScroll={syncScroll(upperRightRef)}
       >
         {HeaderRight}
@@ -423,7 +423,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
         width={fixedColumnWidth + (groupLevel ? GROUP_OFFSET * (groupLevel - 1) : 0)}
         ref={bottomLeftRef}
         onScroll={syncScroll(bottomLeftRef)}
-        scrollSize={0}
+        
       >
         {CellLeft}
       </Grid>
@@ -444,7 +444,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
         }}
         width={unFixedColumnWidth + (groupLevel === 3 ? GROUP_OFFSET : 0)}
         ref={bottomRightRef}
-        scrollSize={0}
+        
         onScroll={syncScroll(bottomRightRef)}
       >
         {CellRight}
@@ -465,7 +465,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
           style={{ ...gridStyle, zIndex: 1 }}
           width={fixedColumnWidth + (groupLevel ? GROUP_OFFSET * (groupLevel - 1) : 0)}
           ref={groupStatLeftRef}
-          scrollSize={0}
+          
         >
           {StatOptionForGridLeft}
         </Grid>
@@ -481,7 +481,7 @@ export const GridViewsBase: React.ForwardRefRenderFunction<{}, IGridViewOwnProps
           style={{ ...gridStyle, left: fixedColumnWidth + GROUP_OFFSET * (groupLevel ? groupLevel - 1 : 0), zIndex: 1 }}
           width={unFixedColumnWidth + (groupLevel === 3 ? GROUP_OFFSET : 0)}
           ref={groupStatRightRef}
-          scrollSize={0}
+          
           onScroll={syncScroll(groupStatRightRef)}
         >
           {StatOptionForGridRight}

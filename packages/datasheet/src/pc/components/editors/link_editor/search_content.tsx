@@ -3,7 +3,7 @@ import {
   CollaCommandName, ExecuteResult, Field, FieldType, ILinkField, ILinkIds, IReduxState, ISegment, IViewRow, SegmentType, Selectors, StoreActions,
   Strings, t, TextBaseField,
 } from '@apitable/core';
-import { Align, FixedSizeList } from '@vikadata/react-window';
+import { Align, FixedSizeList } from 'react-window';
 import { useDebounce, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import Fuse from 'fuse.js';

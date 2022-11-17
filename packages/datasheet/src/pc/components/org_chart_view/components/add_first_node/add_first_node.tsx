@@ -1,7 +1,7 @@
 import { Button, Typography } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
-import { OnLoadParams, useStoreState } from '@vikadata/react-flow-renderer';
+import { OnLoadParams, useStoreState } from '@apitable/react-flow';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext } from 'react';

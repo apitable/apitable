@@ -12,7 +12,7 @@ import {
 } from '@apitable/core';
 import { INode } from '../../interfaces';
 import { resourceService } from 'pc/resource_service';
-import { useStoreState } from '@vikadata/react-flow-renderer';
+import { useStoreState } from '@apitable/react-flow';
 import { flatContextData } from 'pc/utils';
 
 export const EdgeContextMenu: FC = props => {

@@ -1,5 +1,5 @@
 import { ConfigConstant, ExecuteResult, FieldType, IKanbanViewProperty, Selectors, Strings, t, UN_GROUP, ViewType } from '@apitable/core';
-import { VariableSizeList } from '@vikadata/react-window';
+import { VariableSizeList } from 'react-window';
 import classNames from 'classnames';
 import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -141,7 +141,7 @@ export const KanbanGroup: React.FC<IKanbanGroupProps> = props => {
   }, []);
 
   useEffect(() => {
-    listRef.current && listRef.current.resetAfterIndex(0);
+    listRef.current && listRef.current.resetAfterIndex(0, true);
   }, [rows]);
 
   function scrollToItem(index: number) {

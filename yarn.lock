@@ -210,11 +210,11 @@ __metadata:
     "@types/react-dom": 17.0.11
     "@types/react-highlight-words": ^0.16.1
     "@types/react-is": ^17.0.0
+    "@types/react-window": 1.8.1
     "@types/resize-observer-browser": ^0.1.5
     "@types/styled-components": ^5.1.26
     "@types/styled-system": ^5.1.11
     "@vikadata/react-contexify": ^5.0.5
-    "@vikadata/react-window": 1.8.7
     ahooks: ^3.5.0
     antd: 4.23.5
     babel-jest: 26.6.0
@@ -235,6 +235,7 @@ __metadata:
     react-highlight-words: ^0.16.0
     react-is: ^17.0.2
     react-laag: ^2.0.4
+    react-window: ^1.8.8
     resize-observer-polyfill: ^1.5.1
     storybook-addon-designs: ^6.1.0
     styled-components: 5.3.6
@@ -324,6 +325,7 @@ __metadata:
     "@apitable/core": "*"
     "@apitable/i18n-lang": "*"
     "@apitable/icons": "*"
+    "@apitable/react-flow": ^9.6.11
     "@apitable/widget-sdk": "*"
     "@futpib/dagre": ^0.8.5-pre1
     "@huse/click-outside": ^1.0.1
@@ -366,9 +368,6 @@ __metadata:
     "@types/sharp": ^0
     "@types/socket.io-client": ^1.4.36
     "@types/worker-plugin": ^5
-    "@vikadata/eslint-config-vika": ^1.0.0
-    "@vikadata/react-flow-renderer": ^9.7.3
-    "@vikadata/react-window": 1.8.7
     "@webcomponents/shadydom": ^1.9.0
     ahooks: ^3.5.0
     antd: 4.23.5
@@ -484,6 +483,7 @@ __metadata:
     react-transition-group: ^4.4.2
     react-use-intercom: ^2.0.0
     react-virtualized-auto-sizer: 1.0.2
+    react-window: ^1.8.8
     redux: 4.2.0
     redux-batched-actions: 0.5.0
     redux-thunk: 2.4.1
@@ -552,6 +552,25 @@ __metadata:
     rxjs: ^6
     uuid: ^8
   checksum: 247271f310bbfcc494a2bad1832ad913db2cef62aedd2b8c9619942aa6d4c3c01b759c279afd94de6d6de88b0421fcaffffff9794e847a87f5580bc860bbc898
+  languageName: node
+  linkType: hard
+
+"@apitable/react-flow@npm:^9.6.11":
+  version: 9.6.11
+  resolution: "@apitable/react-flow@npm:9.6.11"
+  dependencies:
+    "@babel/runtime": ^7.15.4
+    classcat: ^5.0.3
+    d3-selection: ^3.0.0
+    d3-zoom: ^3.0.0
+    fast-deep-equal: ^3.1.3
+    react-draggable: ^4.4.4
+    react-redux: 7.2.5
+    redux: ^4.1.1
+  peerDependencies:
+    react: 16 || 17
+    react-dom: 16 || 17
+  checksum: 0092f92c6d70c753e6df2b27d61dea8f45fb56bd49d50f9f27ed22948dc05b99a5674990af36a1e2e80e952969fc79af9eca32ec17ccea18c014a6d262c5bd97
   languageName: node
   linkType: hard
 
@@ -12382,278 +12401,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/d3-array@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-array@npm:3.0.1"
-  checksum: 40ae207a86a48078e6270d232790bb39141949b8f5a225c39bcdba24a87471acd552ff3ab8f8d28a570698a5e25e9656da895c91d776833f8360f0da992be066
-  languageName: node
-  linkType: hard
-
-"@types/d3-axis@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-axis@npm:3.0.1"
-  dependencies:
-    "@types/d3-selection": "*"
-  checksum: ac3f9f86eee0c3e50876e0c4467200413c7f6904008e3e80ac5e2499ed33f4e328f2ebedd08d0e715c4703ae287f315f5652daae7e630a26e8fd272b7232e02e
-  languageName: node
-  linkType: hard
-
-"@types/d3-brush@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-brush@npm:3.0.1"
-  dependencies:
-    "@types/d3-selection": "*"
-  checksum: 520e6af41b234cb66d99f3bdab661b7abe2dc024bf8d76332924df7f9d8feb02b34db2dc9430e8f1e315b9b41cba8a5f246e1a0aec46bfe8f84f38c4ff55a4c8
-  languageName: node
-  linkType: hard
-
-"@types/d3-chord@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-chord@npm:3.0.1"
-  checksum: ee15c3fdb0ffbaab356b9cf79e4f2dd4c31ee200fb610f52e102f5f81d70c7c4b56470f2720d1af909b546bebce8b0ca3e3f5d1797daac4f18834b5345cfa4ac
-  languageName: node
-  linkType: hard
-
-"@types/d3-color@npm:*":
-  version: 3.0.2
-  resolution: "@types/d3-color@npm:3.0.2"
-  checksum: 9009aa52e41638442ca4884666e694f177b650b46df5d2495f80437659545c9f3afd598ab95c4ff6d0d13e445df4bd893a89887ca3d34239279a37215d148873
-  languageName: node
-  linkType: hard
-
-"@types/d3-contour@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-contour@npm:3.0.1"
-  dependencies:
-    "@types/d3-array": "*"
-    "@types/geojson": "*"
-  checksum: 2f7d7f94913caf529730afed45ad73d057b143ba11d36e1918efc2fd2f52610f48e4510d9b34b606792048c53d405910da1d5014d8dd57f2e064b26ed5578c4c
-  languageName: node
-  linkType: hard
-
-"@types/d3-delaunay@npm:*":
-  version: 6.0.0
-  resolution: "@types/d3-delaunay@npm:6.0.0"
-  checksum: 8012edee7f64b6e01f2bafc17ade8e0bea0e87df55d6b42e20059d081226a6c441dd7cb4276de810133e1c44ae2508bc3dba58387f60087ace58d0e1c139a2f7
-  languageName: node
-  linkType: hard
-
-"@types/d3-dispatch@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-dispatch@npm:3.0.1"
-  checksum: cd60dfff9077e89b713538ff6df7938e742a872a7371d2b67ccf365ca569edcfe62339f44280ee875b6e690e32c032e377a09eded478f85361088eef0b6dfa3c
-  languageName: node
-  linkType: hard
-
-"@types/d3-drag@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-drag@npm:3.0.1"
-  dependencies:
-    "@types/d3-selection": "*"
-  checksum: d83b66cd2e0a5c288b32daefdf8b4e611db21f9ad1d6335ae2edc4aed43e03cd9030e4b6aace81195589a4110b44dbe0f44decd413f7aa60626715659a74d4b8
-  languageName: node
-  linkType: hard
-
-"@types/d3-dsv@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-dsv@npm:3.0.0"
-  checksum: f145219dae2f899bfd581241ee4eb8b755dc56873f2af4e3b60086e56e1979e844d8d2fd99c08be77ff33e648af13a93edcf6a4b892a56936f4b258d44494b77
-  languageName: node
-  linkType: hard
-
-"@types/d3-ease@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-ease@npm:3.0.0"
-  checksum: 1be7c993643b5a08332e0ee146375a3845545d8deb423db5d152e0b061524385d2345ceccf968f75f605247b940dd3f9a144335fee2e7d935cddaf187afb7095
-  languageName: node
-  linkType: hard
-
-"@types/d3-fetch@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-fetch@npm:3.0.1"
-  dependencies:
-    "@types/d3-dsv": "*"
-  checksum: 5238f007e1749d533dfe80f925c31c3d602134de0229d5b153ebd166a8650c0bf057ef54835e5b6d7cedcdb09cf6eeb0e5615e4f35cb3d455845f4594b23554b
-  languageName: node
-  linkType: hard
-
-"@types/d3-force@npm:*":
-  version: 3.0.3
-  resolution: "@types/d3-force@npm:3.0.3"
-  checksum: 1082a07c028b454fccbb250381e1388818606faff0a7b81d80bc4ab53c5f86f2618fcbb12226402880476d96be9bb24c6c38f175c5e697e94ea4cf8af389be6c
-  languageName: node
-  linkType: hard
-
-"@types/d3-format@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-format@npm:3.0.1"
-  checksum: 6819fae7e7c3fce1e44cd56e9b6d8ea5508f708cb7a42793edf82ff914b120bf6cddc35208b1b33ec82615ab82b843c284709f9cea5c3fe1ea5f012106b3d32c
-  languageName: node
-  linkType: hard
-
-"@types/d3-geo@npm:*":
-  version: 3.0.2
-  resolution: "@types/d3-geo@npm:3.0.2"
-  dependencies:
-    "@types/geojson": "*"
-  checksum: 23ecb29d818ef62e8a7a8fd97bcea8b9e36ce52035fe8e102fb567f223b7b530716a4dd6d4e66bb353720b027aba76fea60279ffdeb2d6a7ab89e6e3571bca32
-  languageName: node
-  linkType: hard
-
-"@types/d3-hierarchy@npm:*":
-  version: 3.0.2
-  resolution: "@types/d3-hierarchy@npm:3.0.2"
-  checksum: d215dd0d2bbd6f3cf0cc15af314a27814e655771658cb3a3a7b00d5fab3de36aa08b396973c6da594f828a716d04019e17c67f8cd661167e40ef91f4abefd260
-  languageName: node
-  linkType: hard
-
-"@types/d3-interpolate@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-interpolate@npm:3.0.1"
-  dependencies:
-    "@types/d3-color": "*"
-  checksum: 29ce472968b9e6611bdf0eeedaf89e8d6066190b52ced011d16d8183b8b9f8e6dd6516ca2b85242594942896299b42f37504d44e635f8fba3090c2c58594e21b
-  languageName: node
-  linkType: hard
-
-"@types/d3-path@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-path@npm:3.0.0"
-  checksum: af7f45ea912cddd794c03384baba856f11e1f9b57a49d05a66a61968dafaeb86e0e42394883118b9b8ccadce21a5f25b1f9a88ad05235e1dc6d24c3e34a379ff
-  languageName: node
-  linkType: hard
-
-"@types/d3-polygon@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-polygon@npm:3.0.0"
-  checksum: 2b4fbd864e6e40c8f63c56c46ed27f63c18d4b9b8c6f03c48bda048bc29e0d77c01763122a3cf85cce89acb12c4a65f3cd7b1d87b53ced8bf6ce341831b30190
-  languageName: node
-  linkType: hard
-
-"@types/d3-quadtree@npm:*":
-  version: 3.0.2
-  resolution: "@types/d3-quadtree@npm:3.0.2"
-  checksum: 2a831a80590df125b07bc573c081449823e85159bb8fafbfee9f211dbe402840aeb01f4b04b4b47b0f28394daee29c8a10185f9acf17b6a8be649a377aff006b
-  languageName: node
-  linkType: hard
-
-"@types/d3-random@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-random@npm:3.0.1"
-  checksum: 7ed9f83ee3c0b02510767bf15551984c229491d694c3c9a45a8eb80b27f7eb5f9096a48011c8cae6787b3e36321a6aaf2fe0efed8685a669481927a3d08e6b8a
-  languageName: node
-  linkType: hard
-
-"@types/d3-scale-chromatic@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-scale-chromatic@npm:3.0.0"
-  checksum: e06afffd2725570aa90cb3050eb96a94727264948d9256e56807ab582aba379168d84d1d98bcaa275bf38375148b35dfe13697e06fc7565dd17ac7e2acb11980
-  languageName: node
-  linkType: hard
-
-"@types/d3-scale@npm:*":
-  version: 4.0.1
-  resolution: "@types/d3-scale@npm:4.0.1"
-  dependencies:
-    "@types/d3-time": "*"
-  checksum: 062f227554b6d01d4e6c658e18ebc596457d0e2d599d368e62c7665cb2bd8d9ef107519466787fab2632374e5a7f61c9d27258587e4f04e3d02d50467148e321
-  languageName: node
-  linkType: hard
-
-"@types/d3-selection@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-selection@npm:3.0.1"
-  checksum: 6733caaf1a579a0c5d5e905867f51eb061a8216244ac749c8a8cb679d6e8661c6e3e78de3d999e1f107224322bd69ff0f71fb834015f9d780d46181adf42273c
-  languageName: node
-  linkType: hard
-
-"@types/d3-shape@npm:*":
-  version: 3.0.2
-  resolution: "@types/d3-shape@npm:3.0.2"
-  dependencies:
-    "@types/d3-path": "*"
-  checksum: 61dfec6dc35d88b12765449bdc4a6e3ff02947c63dbdf8a1d90ccce5fe4e0a90a8e8fe87bf29138722be36e220c919858f6fd48bf56061e565078f018fa3ec5d
-  languageName: node
-  linkType: hard
-
-"@types/d3-time-format@npm:*":
-  version: 4.0.0
-  resolution: "@types/d3-time-format@npm:4.0.0"
-  checksum: ac3a841b0cd6e7f4d4c6c2cd09a2662facea6993c16b10f40fdf84f55adf7be59a6d08fd6ac1c42c27c7340f3b5eeafef968b45b052a5476a580c78a991668db
-  languageName: node
-  linkType: hard
-
-"@types/d3-time@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-time@npm:3.0.0"
-  checksum: e76adb056daccf80107f4db190ac6deb77e8774f00362bb6c76f178e67f2f217422fe502b654edbc9ac6451f6619045b9f6f5fe0db1ec5520e2ada377af7c72e
-  languageName: node
-  linkType: hard
-
-"@types/d3-timer@npm:*":
-  version: 3.0.0
-  resolution: "@types/d3-timer@npm:3.0.0"
-  checksum: 1ec86b3808de6ecfa93cfdf34254761069658af0cc1d9540e8353dbcba161cdf1296a0724187bd17433b2ff16563115fd20b85fc89d5e809ff28f9b1ab134b42
-  languageName: node
-  linkType: hard
-
-"@types/d3-transition@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-transition@npm:3.0.1"
-  dependencies:
-    "@types/d3-selection": "*"
-  checksum: 7e9bd99bf54e52c839d229367ec5ffdd84e6fd83544381ad7c69db4b47f23a658f733ea7a6d551bc340d37affce76513dab5f8df80053bd8c1a8101ff58115c7
-  languageName: node
-  linkType: hard
-
-"@types/d3-zoom@npm:*":
-  version: 3.0.1
-  resolution: "@types/d3-zoom@npm:3.0.1"
-  dependencies:
-    "@types/d3-interpolate": "*"
-    "@types/d3-selection": "*"
-  checksum: f813b3e6f27efc8508d6a2d575c21d0b1ba338160e498b901bc103d813c47ce609f691912a4ef73e9678cdbbdebbee81fecaf7432f777e9a8a54bf4087c21eba
-  languageName: node
-  linkType: hard
-
-"@types/d3@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@types/d3@npm:7.0.0"
-  dependencies:
-    "@types/d3-array": "*"
-    "@types/d3-axis": "*"
-    "@types/d3-brush": "*"
-    "@types/d3-chord": "*"
-    "@types/d3-color": "*"
-    "@types/d3-contour": "*"
-    "@types/d3-delaunay": "*"
-    "@types/d3-dispatch": "*"
-    "@types/d3-drag": "*"
-    "@types/d3-dsv": "*"
-    "@types/d3-ease": "*"
-    "@types/d3-fetch": "*"
-    "@types/d3-force": "*"
-    "@types/d3-format": "*"
-    "@types/d3-geo": "*"
-    "@types/d3-hierarchy": "*"
-    "@types/d3-interpolate": "*"
-    "@types/d3-path": "*"
-    "@types/d3-polygon": "*"
-    "@types/d3-quadtree": "*"
-    "@types/d3-random": "*"
-    "@types/d3-scale": "*"
-    "@types/d3-scale-chromatic": "*"
-    "@types/d3-selection": "*"
-    "@types/d3-shape": "*"
-    "@types/d3-time": "*"
-    "@types/d3-time-format": "*"
-    "@types/d3-timer": "*"
-    "@types/d3-transition": "*"
-    "@types/d3-zoom": "*"
-  checksum: 4d07bd9bcde795782976e9f40b818a1eef2ebc3778d8687e09f748831e6088c20b5d8a4455e82c11f99c9dca9e1bdde68576862c525459a76492f17d6c0f3a8b
-  languageName: node
-  linkType: hard
-
 "@types/dagre@npm:^0":
   version: 0.7.46
   resolution: "@types/dagre@npm:0.7.46"
@@ -12772,13 +12519,6 @@ __metadata:
   dependencies:
     form-data: "*"
   checksum: c3f6c8932726970d49d67a23410d5eef0e1ad0be418163ccc3d73a4cbaa0dcd71e0e29acbe2779aab85ed8f47cb0e8f6b67028480da3b0f7d074c5a3416b2400
-  languageName: node
-  linkType: hard
-
-"@types/geojson@npm:*":
-  version: 7946.0.8
-  resolution: "@types/geojson@npm:7946.0.8"
-  checksum: 6049a39b025cfe323d5cf87333d87c133ec963cdbd349c49295bee779827ee4b46a3041fd8bd2e7a4b02d6d1e26f3002968875928941bbed08477bfd5f6f9284
   languageName: node
   linkType: hard
 
@@ -13591,18 +13331,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-redux@npm:^7.1.19":
-  version: 7.1.19
-  resolution: "@types/react-redux@npm:7.1.19"
-  dependencies:
-    "@types/hoist-non-react-statics": ^3.3.0
-    "@types/react": "*"
-    hoist-non-react-statics: ^3.3.0
-    redux: ^4.0.0
-  checksum: 32a1b21f6a5e45cd6e78fdb4b86974ea444a35539c3c1270d66132527b2c45051f9642a3e2296616c72407dc019d0629c0183bcca64fbf3ba19443484cb70df7
-  languageName: node
-  linkType: hard
-
 "@types/react-redux@npm:^7.1.20, @types/react-redux@npm:^7.1.24":
   version: 7.1.24
   resolution: "@types/react-redux@npm:7.1.24"
@@ -13709,17 +13437,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 8e25aaeac17c48e1f60544dc583c3ea770cd3d3ffdea944a1da3069db6a7d3a374d3a8bdac726150404318203c1b564135ce93e3b69bd5c06d7f262463b5525d
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^16.9.41":
-  version: 16.14.5
-  resolution: "@types/react@npm:16.14.5"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 5dd962b769e88e4390dbfb93cdb99f5db964d80c1da92bf8c34a570971cae2c1bbe0c399bace0d070ef4a253d41aa8f40c6ac7c5bc6979ef24c95740819380e6
   languageName: node
   linkType: hard
 
@@ -14323,15 +14040,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vikadata/eslint-config-vika@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@vikadata/eslint-config-vika@npm:1.0.0"
-  peerDependencies:
-    eslint: ">= 3"
-  checksum: b16b47352ac91dae652197e2685d7a85d28cf1bca81ec9c7064ecbea0cc11fb384b40444aa0b7fea39b5b00e765ac4ca3866b6ed3d5827b50117d657b1f2e7d4
-  languageName: node
-  linkType: hard
-
 "@vikadata/react-contexify@npm:^5.0.5":
   version: 5.0.5
   resolution: "@vikadata/react-contexify@npm:5.0.5"
@@ -14341,41 +14049,6 @@ __metadata:
     react: ">=16"
     react-dom: ">=16"
   checksum: c47c8ad35958093394f997b44129979332880cc77334a9c50b61f135740a4c0e699323e1b913110589d586c1089e8edb35769def9e0398ae50acec8e5dc8bb4a
-  languageName: node
-  linkType: hard
-
-"@vikadata/react-flow-renderer@npm:^9.7.3":
-  version: 9.7.3
-  resolution: "@vikadata/react-flow-renderer@npm:9.7.3"
-  dependencies:
-    "@babel/runtime": ^7.15.4
-    "@types/d3": ^7.0.0
-    "@types/react-redux": ^7.1.19
-    classcat: ^5.0.3
-    d3-selection: ^3.0.0
-    d3-zoom: ^3.0.0
-    fast-deep-equal: ^3.1.3
-    react-draggable: ^4.4.4
-    react-redux: ^7.2.5
-    redux: ^4.1.1
-  peerDependencies:
-    react: 16 || 17
-    react-dom: 16 || 17
-  checksum: f1aeb2de8727311eb01dff6edef18315554faee2878891d56e15193ce858be9508139c68df1a40891cb746a94ea810bd6062391e9a4eb817f75c91256cca9cfb
-  languageName: node
-  linkType: hard
-
-"@vikadata/react-window@npm:1.8.7":
-  version: 1.8.7
-  resolution: "@vikadata/react-window@npm:1.8.7"
-  dependencies:
-    "@babel/runtime": ^7.0.0
-    "@types/react": ^16.9.41
-    memoize-one: ^5.1.1
-  peerDependencies:
-    react: ^15.0.0 || ^16.0.0
-    react-dom: ^15.0.0 || ^16.0.0
-  checksum: a77263fd783e1ad1af19730650d0e72f62079392d31f287eca13f8c3cdd3141b6d99dfc88e7e480d68fa5de7a44e68d4bc2a19f646e2186701f7ab439d9bc476
   languageName: node
   linkType: hard
 
@@ -33067,6 +32740,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"memoize-one@npm:>=3.1.1 <6":
+  version: 5.2.1
+  resolution: "memoize-one@npm:5.2.1"
+  checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
+  languageName: node
+  linkType: hard
+
 "memoize-one@npm:^4.0.0":
   version: 4.1.0
   resolution: "memoize-one@npm:4.1.0"
@@ -39682,6 +39362,27 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-redux@npm:7.2.5":
+  version: 7.2.5
+  resolution: "react-redux@npm:7.2.5"
+  dependencies:
+    "@babel/runtime": ^7.12.1
+    "@types/react-redux": ^7.1.16
+    hoist-non-react-statics: ^3.3.2
+    loose-envify: ^1.4.0
+    prop-types: ^15.7.2
+    react-is: ^16.13.1
+  peerDependencies:
+    react: ^16.8.3 || ^17
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 04ac4a4178067cbcfc05506dfea9f7e01730093a5752f050567f7ae4a38c03c96da9d8fed051f8ab1ecede5ea8a15ee41c5f6c5eeb7f04f37e4d13e431ec7830
+  languageName: node
+  linkType: hard
+
 "react-redux@npm:8.0.4":
   version: 8.0.4
   resolution: "react-redux@npm:8.0.4"
@@ -39732,27 +39433,6 @@ fsevents@^1.2.7:
     react-native:
       optional: true
   checksum: 369a2bdcf87915659af9e5c55abfd9f52a84e43e0d12dcc108ed17dbe6933558b7b7fc12caa9c10c1a10a8be7df89454b6c96989d8573fedec1a772c94a1f145
-  languageName: node
-  linkType: hard
-
-"react-redux@npm:^7.2.5":
-  version: 7.2.5
-  resolution: "react-redux@npm:7.2.5"
-  dependencies:
-    "@babel/runtime": ^7.12.1
-    "@types/react-redux": ^7.1.16
-    hoist-non-react-statics: ^3.3.2
-    loose-envify: ^1.4.0
-    prop-types: ^15.7.2
-    react-is: ^16.13.1
-  peerDependencies:
-    react: ^16.8.3 || ^17
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 04ac4a4178067cbcfc05506dfea9f7e01730093a5752f050567f7ae4a38c03c96da9d8fed051f8ab1ecede5ea8a15ee41c5f6c5eeb7f04f37e4d13e431ec7830
   languageName: node
   linkType: hard
 
@@ -39937,6 +39617,19 @@ fsevents@^1.2.7:
     react: ^15.3.0 || ^16.0.0-alpha
     react-dom: ^15.3.0 || ^16.0.0-alpha
   checksum: e29dc664c3d1f151f799792b6b1c079a279aa13557c7beb8622d30f366a09c398c0d966d2f749861435e68b31309c76c3ac8640b132c4b346162a4253e022e23
+  languageName: node
+  linkType: hard
+
+"react-window@npm:^1.8.8":
+  version: 1.8.8
+  resolution: "react-window@npm:1.8.8"
+  dependencies:
+    "@babel/runtime": ^7.0.0
+    memoize-one: ">=3.1.1 <6"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: a19f43b9015fb84e16db983617dac618a8b298881d2ca96ffc2fb00534afd958ee57a00fd0017733b56f8c34dd84e5be59337877aed3c66329ed3b84e8d018ba
   languageName: node
   linkType: hard
 

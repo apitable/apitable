@@ -1,4 +1,4 @@
-import { ArrowHeadType, Elements } from '@vikadata/react-flow-renderer';
+import { ArrowHeadType, Elements } from '@apitable/react-flow';
 import { lightColors } from '@apitable/components';
 import { CYCLE_NODE_WIDTH, CYCLE_NODE_HEIGHT, NodeType } from '../constants';
 import { IAdj, INodesMap, INode } from '../interfaces';

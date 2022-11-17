@@ -1,7 +1,7 @@
 import { useMemo, useRef, useImperativeHandle } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { FixedSizeList as List, Align } from '@vikadata/react-window';
+import { FixedSizeList as List, Align } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Selectors, IViewProperty } from '@apitable/core';
 import style from './style.module.less';

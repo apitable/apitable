@@ -1,6 +1,6 @@
 import { useThemeColors } from '@apitable/components';
 import { FC, memo, useContext } from 'react';
-import { EdgeProps, getSmoothStepPath } from '@vikadata/react-flow-renderer';
+import { EdgeProps, getSmoothStepPath } from '@apitable/react-flow';
 import { FlowContext } from '../../context/flow_context';
 import { useDragLayer, DragLayerMonitor } from 'react-dnd';
 import { useMount } from 'ahooks';

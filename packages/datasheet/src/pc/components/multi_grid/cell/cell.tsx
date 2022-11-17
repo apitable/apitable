@@ -4,7 +4,7 @@ import {
   ILinearRow,
   RecordMoveType, Selectors, Strings, t,
 } from '@apitable/core';
-import { GridChildComponentProps } from '@vikadata/react-window';
+import { GridChildComponentProps } from 'react-window';
 import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';

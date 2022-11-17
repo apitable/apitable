@@ -17,7 +17,7 @@ import dagre from '@futpib/dagre';
 import { createGhostNodes } from './create_ghost_nodes';
 import { markHiddenNodes } from './mark_hidden_nodes';
 import { getCycleElements } from './get_cycle_elements';
-import { isNode, Position } from '@vikadata/react-flow-renderer';
+import { isNode, Position } from '@apitable/react-flow';
 
 // https://www.notion.so/cb051fc572b6462abc2d05ede0eaf91c
 export const findCycles = (nodes: Array<string>, adj: IAdj) => {

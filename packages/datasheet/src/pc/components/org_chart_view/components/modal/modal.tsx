@@ -8,7 +8,7 @@ import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { useClickAway, useMount } from 'ahooks';
 import styles from './styles.module.less';
 import { FlowContext } from '../../context/flow_context';
-import { useStoreState, useZoomPanHelper } from '@vikadata/react-flow-renderer';
+import { useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { QUICK_ADD_MODAL_WIDTH, QUICK_ADD_MODAL_HEIGHT } from '../../constants';
 
 interface IModalProps {

@@ -21,7 +21,7 @@ import { useCellEditorVisibleStyle } from '../hooks';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { SearchContent } from './search_content';
 import style from './style.module.less';
-import { Align } from '@vikadata/react-window';
+import { Align } from 'react-window';
 import { Divider } from 'antd';
 
 export enum LinkEditorModalLayout {

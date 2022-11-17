@@ -1,4 +1,4 @@
-import { Edge, Node as FlowNode } from '@vikadata/react-flow-renderer';
+import { Edge, Node as FlowNode } from '@apitable/react-flow';
 import { DragNodeType } from './constants';
 
 export enum NodeHandleState {

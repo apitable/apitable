@@ -19,7 +19,7 @@ import { MembersDetail } from '../../permission_settings/permission/members_deta
 import { UnitItem } from '../../permission_settings/permission/unit_item';
 import { TeamTreeSelect } from '../team_tree_select';
 import styles from './style.module.less';
-import { FixedSizeList as List } from '@vikadata/react-window';
+import { FixedSizeList as List } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 export interface ITeamworkProps {

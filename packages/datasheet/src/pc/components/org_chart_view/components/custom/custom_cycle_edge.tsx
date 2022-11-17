@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react';
-import { EdgeProps, getEdgeCenter, getMarkerEnd, useStoreState } from '@vikadata/react-flow-renderer';
+import { EdgeProps, getEdgeCenter, getMarkerEnd, useStoreState } from '@apitable/react-flow';
 import { CollaCommandName, Strings, t } from '@apitable/core';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { resourceService } from 'pc/resource_service';

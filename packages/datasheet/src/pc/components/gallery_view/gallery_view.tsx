@@ -12,7 +12,7 @@ import {
   IGridViewProperty,
   ViewType,
 } from '@apitable/core';
-import { VariableSizeGrid as Grid } from '@vikadata/react-window';
+import { VariableSizeGrid as Grid } from 'react-window';
 import { useDebounceFn } from 'ahooks';
 import cls from 'classnames';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';

@@ -1,4 +1,4 @@
-import { useStoreState, useZoomPanHelper } from '@vikadata/react-flow-renderer';
+import { useStoreState, useZoomPanHelper } from '@apitable/react-flow';
 import { useContext, useLayoutEffect } from 'react';
 import { CARD_WIDTH, BOUNDS_PADDING } from '../../constants';
 import { FlowContext } from '../../context/flow_context';

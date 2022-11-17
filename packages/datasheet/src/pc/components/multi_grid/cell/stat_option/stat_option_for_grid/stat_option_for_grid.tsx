@@ -1,4 +1,4 @@
-import { GridChildComponentProps } from '@vikadata/react-window';
+import { GridChildComponentProps } from 'react-window';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
