@@ -68,7 +68,6 @@ services:
       - socket-server
       - minio
       - rabbitmq
-      - mongo1
     healthcheck:
       test: ["CMD-SHELL", "curl -sS 'http://localhost:8081' || exit 1"]
       interval: 30s
@@ -168,6 +167,7 @@ services:
       - room-server
       - socket-server
       - imageproxy-server
+      - web-server
 
   minio:
     image: ${IMAGE_MINIO}
@@ -281,87 +281,86 @@ services:
   #   restart: always
   #   networks:
   #     - apitable
-    #  ################
-  mongo1:
-    image: ${IMAGE_MONGODB}
-    user: "${UID}:${GID}"
-    volumes:
-      - ${DATA_PATH}/.data/mongo1:/data/db
-    ports:
-      - "27017:27017"
-    expose:
-      - 27017
-    restart: always
-    environment:
-      - TZ=${TIMEZONE}
-    networks:
-      - apitable
-    entrypoint: [ "mongod","--port","27017", "--bind_ip_all",   "--replSet", "rs0" ]
-    healthcheck:
-      test: mongo --eval 'db.runCommand("ping").ok' localhost:27017/test --quiet
-      interval: 15s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  #  ################
+  # mongo1:
+  #   image: ${IMAGE_MONGODB}
+  #   user: "${UID}:${GID}"
+  #   volumes:
+  #     - ${DATA_PATH}/.data/mongo1:/data/db
+  #   ports:
+  #     - "27017:27017"
+  #   expose:
+  #     - 27017
+  #   restart: always
+  #   environment:
+  #     - TZ=${TIMEZONE}
+  #   networks:
+  #     - apitable
+  #   entrypoint: [ "mongod","--port","27017", "--bind_ip_all",   "--replSet", "rs0" ]
+  #   healthcheck:
+  #     test: mongo --eval 'db.runCommand("ping").ok' localhost:27017/test --quiet
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 10s
 
-  mongo2:
-    image: ${IMAGE_MONGODB}
-    user: "${UID}:${GID}"
-    volumes:
-      - ${DATA_PATH}/.data/mongo2:/data/db
-    ports:
-      - "27027:27027"
-    expose:
-      - 27027
-    restart: always
-    environment:
-      - TZ=${TIMEZONE}
-    networks:
-      - apitable
-    entrypoint: [ "mongod","--port","27027", "--bind_ip_all",   "--replSet", "rs0" ]
-    healthcheck:
-      test: mongo --eval 'db.runCommand("ping").ok' localhost:27027/test --quiet
-      interval: 15s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-  mongo3:
-    image: ${IMAGE_MONGODB}
-    user: "${UID}:${GID}"
-    volumes:
-      - ${DATA_PATH}/.data/mongo3:/data/db
-    ports:
-      - 27037:27037
-    expose:
-      - 27037
-    restart: always
-    environment:
-      - TZ=${TIMEZONE}
-    networks:
-      - apitable
-    entrypoint: [ "mongod","--port","27037", "--bind_ip_all",   "--replSet", "rs0" ]
-    depends_on:
-      - mongo1
-      - mongo2
-    healthcheck:
-      # test: ["CMD","mongo","--host","mongo1","--port","27017",  "--eval", 'rs.initiate( { _id : "rs0",members: [{ _id: 0,     host: "mongo1:27017" },{ _id: 1, host: "mongo2:27027" },{   _id: 2, host: "mongo3:27037" }   ]})']
-      test: mongo --eval 'db.runCommand("ping").ok' localhost:27037/test --quiet
-      interval: 15s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  # mongo2:
+  #   image: ${IMAGE_MONGODB}
+  #   user: "${UID}:${GID}"
+  #   volumes:
+  #     - ${DATA_PATH}/.data/mongo2:/data/db
+  #   ports:
+  #     - "27027:27027"
+  #   expose:
+  #     - 27027
+  #   restart: always
+  #   environment:
+  #     - TZ=${TIMEZONE}
+  #   networks:
+  #     - apitable
+  #   entrypoint: [ "mongod","--port","27027", "--bind_ip_all",   "--replSet", "rs0" ]
+  #   healthcheck:
+  #     test: mongo --eval 'db.runCommand("ping").ok' localhost:27027/test --quiet
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 10s
+  # mongo3:
+  #   image: ${IMAGE_MONGODB}
+  #   user: "${UID}:${GID}"
+  #   volumes:
+  #     - ${DATA_PATH}/.data/mongo3:/data/db
+  #   ports:
+  #     - 27037:27037
+  #   expose:
+  #     - 27037
+  #   restart: always
+  #   environment:
+  #     - TZ=${TIMEZONE}
+  #   networks:
+  #     - apitable
+  #   entrypoint: [ "mongod","--port","27037", "--bind_ip_all",   "--replSet", "rs0" ]
+  #   depends_on:
+  #     - mongo1
+  #     - mongo2
+  #   healthcheck:
+  #     # test: ["CMD","mongo","--host","mongo1","--port","27017",  "--eval", 'rs.initiate( { _id : "rs0",members: [{ _id: 0,     host: "mongo1:27017" },{ _id: 1, host: "mongo2:27027" },{   _id: 2, host: "mongo3:27037" }   ]})']
+  #     test: mongo --eval 'db.runCommand("ping").ok' localhost:27037/test --quiet
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 10s
 
-  init-mongo:
-    image: ${IMAGE_MONGODB}
-    networks:
-      - apitable
-    command: >
-      sh -c "mongo --host mongo1 --port 27017 --eval 'rs.initiate( { _id : \"rs0\",members: [{ _id: 0,     host: \"mongo1:27017\" },{ _id: 1, host: \"mongo2:27027\" },{   _id: 2, host: \"mongo3:27037\" }   ]})' && \
-      mongo mongodb://mongo1:27017,mongo2:27027,mongo3:27037/${MONGO_DATABASE}?replicaSet=rs0 --eval \"if(db.getUser('${MONGO_USERNAME}')==null) db.createUser({user: '${MONGO_USERNAME}', pwd: '${MONGO_PASSWORD}', roles: [ { role: 'readWrite', db: '${MONGO_DATABASE}' } ] })\" "
-    depends_on:
-      mongo3:
-        condition: service_healthy
-
+  # init-mongo:
+  #   image: ${IMAGE_MONGODB}
+  #   networks:
+  #     - apitable
+  #   command: >
+  #     sh -c "mongo --host mongo1 --port 27017 --eval 'rs.initiate( { _id : \"rs0\",members: [{ _id: 0,     host: \"mongo1:27017\" },{ _id: 1, host: \"mongo2:27027\" },{   _id: 2, host: \"mongo3:27037\" }   ]})' && \
+  #     mongo mongodb://mongo1:27017,mongo2:27027,mongo3:27037/${MONGO_DATABASE}?replicaSet=rs0 --eval \"if(db.getUser('${MONGO_USERNAME}')==null) db.createUser({user: '${MONGO_USERNAME}', pwd: '${MONGO_PASSWORD}', roles: [ { role: 'readWrite', db: '${MONGO_DATABASE}' } ] })\" "
+  #   depends_on:
+  #     mongo3:
+  #       condition: service_healthy
 
   # #### init data
   init-db:
@@ -427,11 +426,13 @@ services:
       - /bin/sh
       - -c
       - |
-        sleep 180
+        sleep 30
         curl -X POST http://backend-server:8081/api/v1/gm/new/users
     networks:
       - apitable
     depends_on:
+      init-db:
+        condition: service_completed_successfully
       backend-server:
         condition: service_healthy
 
