@@ -17,7 +17,7 @@ import { FormDataPack } from '../../interfaces';
 import { OtService } from 'database/services/ot/ot.service';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 import { CommandService } from 'database/services/command/command.service';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import { promisify } from 'util';
 import { Logger } from 'winston';
 import { DatasheetChangesetSourceService } from '../datasheet/datasheet.changeset.source.service';

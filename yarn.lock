@@ -539,12 +539,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@apitable/nestjs-redis@npm:1.3.4":
+  version: 1.3.4
+  resolution: "@apitable/nestjs-redis@npm:1.3.4"
+  dependencies:
+    "@nestjs/common": ^7.4.4
+    "@nestjs/core": ^7.4.4
+    "@types/ioredis": "*"
+    "@types/uuid": "*"
+    ioredis: ^4
+    reflect-metadata: "*"
+    rxjs: ^6
+    uuid: ^8
+  checksum: 247271f310bbfcc494a2bad1832ad913db2cef62aedd2b8c9619942aa6d4c3c01b759c279afd94de6d6de88b0421fcaffffff9794e847a87f5580bc860bbc898
+  languageName: node
+  linkType: hard
+
 "@apitable/room-server@workspace:packages/room-server":
   version: 0.0.0-use.local
   resolution: "@apitable/room-server@workspace:packages/room-server"
   dependencies:
     "@apitable/core": "*"
     "@apitable/i18n-lang": "*"
+    "@apitable/nestjs-redis": 1.3.4
     "@aws-sdk/client-s3": ^3.47.0
     "@golevelup/nestjs-rabbitmq": ^2.2.0
     "@grpc/grpc-js": ^1.4.3
@@ -580,7 +597,6 @@ __metadata:
     "@types/sha1": ^1
     "@types/supertest": ^2.0.10
     "@types/winston": ^2.4.4
-    "@vikadata/nestjs-redis": 1.3.3
     cache-manager: ^3.6.0
     chai: ^4.2.0
     class-transformer: ^0.3.1
@@ -14313,22 +14329,6 @@ __metadata:
   peerDependencies:
     eslint: ">= 3"
   checksum: b16b47352ac91dae652197e2685d7a85d28cf1bca81ec9c7064ecbea0cc11fb384b40444aa0b7fea39b5b00e765ac4ca3866b6ed3d5827b50117d657b1f2e7d4
-  languageName: node
-  linkType: hard
-
-"@vikadata/nestjs-redis@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@vikadata/nestjs-redis@npm:1.3.3"
-  dependencies:
-    "@nestjs/common": ^7.4.4
-    "@nestjs/core": ^7.4.4
-    "@types/ioredis": "*"
-    "@types/uuid": "*"
-    ioredis: ^4
-    reflect-metadata: "*"
-    rxjs: ^6
-    uuid: ^8
-  checksum: 788c9fe435ff5c4f3e2eb9d5bdbc2b14da7478d4e632b2d11bb635331662961bb7ccb7230bdc3a317eb24e50d6d63ab77ce12a196ac387cc0a92be85f934a4b9
   languageName: node
   linkType: hard
 

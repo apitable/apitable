@@ -21,23 +21,23 @@
     "no-case-declarations": 0,
     "no-multi-spaces": "warn",
     "no-prototype-builtins": 0,
-    // 不允许直接使用原型链上的内置函数
+    // Direct use of built-in functions on the prototype chain is not allowed
     "@typescript-eslint/ban-types": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "prefer-spread": 0,
     "no-async-promise-executor": 0,
-    // Promise 中不允许包裹 async 执行函数
+    // Promises are not allowed to wrap async execution functions
     "prefer-rest-params": 0,
-    // 使用 rest 替换 arguments
+    // replace arguments with rest
     "@typescript-eslint/no-inferrable-types": 0,
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/no-non-null-asserted-optional-chain": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
-    // 不允许使用呢 ts 的 ！做断言
+    // Do not allow the use of ts! make assertion
     "@typescript-eslint/no-explicit-any": 0,
-    // 不允许使用 any
+    // any is not allowed
     "semi": "off",
     "@typescript-eslint/semi": 1,
     "comma-dangle": [
@@ -45,7 +45,7 @@
       "only-multiline"
     ],
     "max-len": [
-      // 单行允许的最多的字符数
+      // The maximum number of characters allowed on a single line
       "warn",
       {
         "code": 150
@@ -59,7 +59,7 @@
         "allowEmptyCatch": true
       }
     ],
-    // 函数的圆括号前是否允许空格
+    // Whether spaces are allowed before the parentheses of the function
     "space-before-function-paren": [
       "warn",
       "never"
@@ -99,9 +99,9 @@
           "PascalCase"
         ],
         "leadingUnderscore": "allow",
-        // 变量名以 _ 开头
+        // variable names start with _
         "trailingUnderscore": "forbid"
-        // 变量名以 _ 结尾
+        // variable names end with _
       },
       {
         "selector": "parameter",
@@ -126,7 +126,7 @@
     "react/jsx-wrap-multilines": 0,
     "no-fallthrough": 1,
     "no-unused-expressions": 0,
-    // 禁止出现未使用过的表达式
+    // disallow unused expressions
     "quote-props": [
       "warn",
       "as-needed"
@@ -160,9 +160,9 @@
       }
     ],
     "no-inner-declarations": 0,
-    // "default-case": 1, // 要求 switch 语句中有 default 分支
+    // "default-case": 1, // requires a default case in the switch statement
     "no-else-return": 1,
-    // 禁止 if 语句中有 return 之后有 else
+    // Prohibit else in the if statement after return
     "array-bracket-spacing": 1,
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
@@ -173,7 +173,7 @@
     ],
     "require-await": 2,
     "@typescript-eslint/ban-ts-comment": 0,
-    // 对象
+    // object
     "object-curly-spacing": [
       "warn",
       "always",

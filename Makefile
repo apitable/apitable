@@ -105,22 +105,16 @@ datasheet-test: ## 启动 datasheet package 测试
 core: ## 启动 core package
 	yarn start:core
 
-server: ## 启动 room-server package
-	yarn start:room-server
-server-build: ## 打包 room-server package
-	yarn build:room-server
-server-test: ## 启动 room-server package 测试
-	yarn start:room-server
 
 components: ## 启动 components package
 	yarn start:components
 components-build: ## 打包 components package
 	yarn build:components
 
-conf: ## 同步数表配置
-	yarn scripts:makeconfig
-java: ## 生成 java code，默认 ../vikadata-master 为 java 工程
-	export VIKA_SERVER_PATH=$$PWD/../vikadata-master && yarn scripts:makeconfig-javacode
+# conf: ## 同步数表配置
+# 	yarn scripts:makeconfig
+# java: ## 生成 java code，默认 ../vikadata-master 为 java 工程
+# 	export VIKA_SERVER_PATH=$$PWD/../vikadata-master && yarn scripts:makeconfig-javacode
 
 # install: ## npm 包安装
 # 	- yarn config get npmRegistryServer
@@ -134,14 +128,31 @@ pre: ## 启动 datasheet 准备（打包 core、icons、components、widget）
 lint: ## eslint 检测
 	- yarn lint
 
-build-core: ## 编译core
+
+################################ build
+
+build: ## build
+	make build-local
+
+
+build-local:
+	make _build-core
+	make _build-room
+
+_build-core: ## 编译core
 	yarn workspaces focus @apitable/core @apitable/i18n-lang root
 	yarn build:i18n
 	yarn build:core
 
-build-room: ## 编译room server
+_build-room: ## 编译room server
 	yarn workspaces focus @apitable/room-server root
 	yarn build:sr
+	yarn build:room-server
+
+################################ test
+
+test: ## do test, unit tests, integration tests and so on.
+	make _test-ut-core-cov
 
 test-e2e: ## 启动集成测试
 	yarn cy:run
@@ -150,12 +161,12 @@ test-e2e-open: ## 启动调试集成测试
 
 ###### 【core unit test】 ######
 
-test-ut-core:
-	make build-core
+_test-ut-core:
+	make _build-core
 	yarn test:core
 
-test-ut-core-cov:
-	make build-core
+_test-ut-core-cov:
+	make _build-core
 	yarn test:core:cov
 
 ###### 【core unit test】 ######
@@ -189,10 +200,10 @@ ifeq ($(SIKP_INITDB),false)
 	sleep 20
 	make _test_init_db RUN_TEST_ROOM_MODE=local
 endif
-	make build-room
-	MYSQL_HOST=127.0.0.1 MYSQL_PORT=23306 MYSQL_USERNAME=vika MYSQL_PASSWORD=password MYSQL_DATABASE=vika_test MYSQL_USE_SSL=false \
+	make _build-room
+	MYSQL_HOST=127.0.0.1 MYSQL_PORT=23306 MYSQL_USERNAME=apitable MYSQL_PASSWORD=password MYSQL_DATABASE=apitable_test MYSQL_USE_SSL=false \
 	REDIS_HOST=127.0.0.1 REDIS_PORT=26379 REDIS_DB=4 REDIS_PASSWORD= \
-	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=25672 RABBITMQ_USERNAME=vika RABBITMQ_PASSWORD=password \
+	RABBITMQ_HOST=127.0.0.1 RABBITMQ_PORT=25672 RABBITMQ_USERNAME=apitable RABBITMQ_PASSWORD=password \
 	INSTANCE_COUNT=1 APPLICATION_NAME=NEST_REST_SERVER \
 	yarn test:ut:room
 	make _test_clean
@@ -228,15 +239,76 @@ test-ut-backend-docker:
 
 ###### 【backend server unit test】 ######
 
-buildpush: ## build all and push all to hub.docker.io registry
+buildpush-docker: ## build all and push all to hub.docker.io registry
 	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin ;\
 	$(BUILDER) --push
 	
 .PHONY: build
-build: ## build all containers
+build-docker: ## build all containers
 	$(BUILDER)
 
+
+.PHONY: _build-socket-server
+_build-docker-socket-server:
+	$(BUILDER) socket-server 
+
+.PHONY: _build-init-db
+_build-docker-init-db:
+	$(BUILDER) init-db
+.PHONY: _build-backend-server
+_build-docker-backend-server:
+	$(BUILDER) backend-server
+
 ###### development environtments ######
+
+
+define RUN_LOCAL_TXT
+Which service do you want to start run?
+  1) backend-server
+  2) room-server
+  3) socket-server
+  4) web-server
+endef
+export RUN_LOCAL_TXT
+
+_check_env: ## check if .env files exists
+	@FILE=$$ENV_FILE ;\
+	if [ ! -f "$$FILE" ]; then \
+			echo "$$FILE does not exist. Please 'make env' first" ;\
+			exit 1 ;\
+	fi
+
+run: _check_env ## run local code to development environemnt with docker env
+	make run-local
+
+.PHONY: run-local
+run-local: ## run services with local programming language envinroment
+	@echo "$$RUN_LOCAL_TXT"
+	@read -p "ENTER THE NUMBER: " SERVICE ;\
+ 	if [ "$$SERVICE" = "1" ]; then make _run-local-backend-server; fi ;\
+ 	if [ "$$SERVICE" = "2" ]; then make _run-local-room-server; fi ;\
+ 	if [ "$$SERVICE" = "3" ]; then make _run-local-socket-server ;fi ;\
+ 	if [ "$$SERVICE" = "4" ]; then make _run-local-web-server; fi
+
+_run-local-backend-server:
+	source scripts/export-env.sh $$ENV_FILE;\
+	cd backend-server ;\
+	java -jar application/build/libs/application.jar
+
+_run-local-room-server:
+	source scripts/export-env.sh $$ENV_FILE;\
+	yarn start:room-server
+
+_run-local-web-server:
+	source scripts/export-env.sh $$ENV_FILE;\
+	yarn sd:r
+
+_run-local-socket-server:
+	source scripts/export-env.sh $$ENV_FILE;\
+	cd packages/socket-server ;\
+	yarn run start:dev
+
+
 
 define DEVENV_TXT
 Which devenv do you want to start run?
@@ -260,7 +332,7 @@ devenv: ## debug all devenv services with docker compose up -d
 
 
 .PHONY: devenv-up
-devenv-up: ## debug all devenv services with docker compose up -d
+devenv-up: 
 	$(_DEVENV) up -d
 
 .PHONY: devenv-down
@@ -271,17 +343,6 @@ devenv-logs: ## follow all devenv services logs
 	$(_DEVENV) logs -f
 devenv-ps:
 	$(_DEVENV) ps
-
-.PHONY: build-init-db
-build-init-db:
-	$(BUILDER) init-db
-.PHONY: build-backend-server
-build-backend-server:
-	$(BUILDER) backend-server
-
-.PHONY: install-backend-server
-_install-backend-server: ## graldew install backend-server dependencies
-	$(RUNNER) backend-server ./gradlew build -x test
 
 .PHONY: devenv-backend-server
 devenv-backend-server:
@@ -297,10 +358,6 @@ devenv-room-server:
 	$(RUNNER) room-server yarn start:room-server
 
 
-.PHONY: build-socket-server
-build-socket-server:
-	$(BUILDER) socket-server 
-
 .PHONY: devenv-socket-server
 devenv-socket-server:
 	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn run start:dev"
@@ -310,58 +367,39 @@ devenv-socket-server:
 install: install-local
 	@echo 'Install Finished'
 
-.PHONY: install-docker
-install-docker: _install-web-server _install-backend-server _install-socket-server _install-room-server ## install all dependencies with docker devenv
-	@echo 'Install Finished'
-
-.PHONY: _install-socket-server
-_install-socket-server:
-	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
-	 
-.PHONY: _install-web-server
-_install-web-server: ## install web-server dependencies
-	$(RUNNER) web-server sh -c "yarn install && yarn build:dst:pre"
-
-.PHONY: _install-room-server
-_install-room-server:
-	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
- 
 .PHONY: install-local
 install-local: ## install all dependencies with local programming language environment
 	yarn install && yarn build:dst:pre
 	cd packages/socket-server && yarn
 	cd backend-server && ./gradlew build -x test
 
+.PHONY: install-docker
+install-docker: _install-docker-web-server _install-docker-backend-server _install-docker-socket-server _install-docker-room-server ## install all dependencies with docker devenv
+	@echo 'Install Finished'
+
+.PHONY: _install-docker-backend-server
+_install-docker-backend-server: 
+	$(RUNNER) backend-server ./gradlew build -x test
+
+.PHONY: _install-docker-socket-server
+_install-docker-socket-server:
+	$(RUNNER) socket-server sh -c "cd packages/socket-server/ && yarn"
+	 
+.PHONY: _install-docker-web-server
+_install-docker-web-server: 
+	$(RUNNER) web-server sh -c "yarn install && yarn build:dst:pre"
+
+.PHONY: _install-docker-room-server
+_install-docker-room-server:
+	$(RUNNER) room-server sh -c "yarn install && yarn build:dst:pre"
+ 
+
 .PHONY:
 clean: ## clean and delete git ignore and dirty files
 	git clean -fxd
+
 ###### buildpush ######
 
-
-buildpush-init-db: ## build and push the `init-db`container 
-	cd init-db ;\
-	make buildpush
-
-buildpush-roomserver: ## ghcr.io/vikadata/vika/room-server
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
-	build_docker room-server
-
-buildpush-webserver: ## ghcr.io/vikadata/vika/web-server
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
-	source scripts/build_web.sh build_saas
-
-buildpush-componentdoc: ## ghcr.io/vikadata/vika/component-doc
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
-	build_docker component-doc
-
-buildpush-webserver-op: ## ghcr.io/vikadata/vika/web-server
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
-  	source scripts/build_web.sh build_op
-
-buildpush-socketserver:
-	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)";\
-	export DOCKERFILE=./packages/socket-server/Dockerfile;\
-	build_docker socket-server
 
 proto:
 	export TS_PROTO_OUT_PATH=packages/room-server/src/grpc/generated/;\
@@ -373,15 +411,15 @@ proto:
 # bumpversion 
 .PHONY: patch
 patch: # bump version number patch
-	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion patch
+	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" apitable/bumpversion:latest bumpversion patch
 
 .PHONY: minor
 minor: # bump version number patch
-	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion minor
+	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" apitable/bumpversion:latest bumpversion minor
 
 .PHONY: major
 major: # bump version number patch
-	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" ghcr.io/vikadata/vika/bumpversion:latest bumpversion major
+	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" apitable/bumpversion:latest bumpversion major
 
 ### data environement
 .PHONY: dataenv
@@ -441,6 +479,23 @@ ifdef CR_PAT
 	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin ;\
 	docker compose pull
 endif
+
+
+######################################## init-db
+
+INIT_DB_DOCKER_PATH=apitable/init-db
+
+db-plan: ## init-db dry update
+	cd init-db ;\
+	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
+	docker run --rm --env-file $$ENV_FILE -e ACTION=updateSQL ${INIT_DB_DOCKER_PATH}
+
+db-apply: ## init-db update database structure (use .env)
+	cd init-db ;\
+	docker build -f Dockerfile . --tag=${INIT_DB_DOCKER_PATH}
+	docker run --rm --env-file $$ENV_FILE -e ACTION=update ${INIT_DB_DOCKER_PATH}
+
+
 
 ### help
 .PHONY: search

@@ -1,10 +1,6 @@
 
 SHELL := /bin/bash
 
-.PHONY: patch
-patch: # bump version number patch
-	docker run --rm -it --user $(shell id -u):$(shell id -g) -v "$(shell pwd):/app" vikadata/bumpversion bumpversion patch
-
 docker_build_app:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
 	export BUILD_ARG="--build-arg JAR_PATH=application/build/libs/*.jar --build-arg PORT=8081"; \

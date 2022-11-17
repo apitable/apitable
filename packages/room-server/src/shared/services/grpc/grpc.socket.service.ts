@@ -2,7 +2,7 @@ import { ICollaborator, OtErrorCode } from '@apitable/core';
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
 import { IRoomChannelMessage } from 'database/services/ot/ot.interface';

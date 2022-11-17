@@ -11,7 +11,7 @@ import {
   ResourceType,
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
 import { DatasheetRecordSubscriptionService } from 'database/services/datasheet/datasheet.record.subscription.service';

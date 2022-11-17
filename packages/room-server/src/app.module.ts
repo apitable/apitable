@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RedisModule, RedisModuleOptions } from '@vikadata/nestjs-redis';
+import { RedisModule, RedisModuleOptions } from '@apitable/nestjs-redis';
 import { ActuatorModule } from 'actuator/actuator.module';
 import { enableScheduler } from 'app.environment';
 import { AutomationActionTypeRepository } from 'automation/repositories/automation.action.type.repository';

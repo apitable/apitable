@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CacheKeys, InjectLogger, REF_STORAGE_EXPIRE_TIME } from '../../../shared/common';
 import { difference, intersection } from 'lodash';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import * as util from 'util';
 import { Logger } from 'winston';
 

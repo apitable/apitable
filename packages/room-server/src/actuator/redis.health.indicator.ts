@@ -3,7 +3,7 @@ import {
   HealthCheckError,
   HealthIndicator,
 } from '@nestjs/terminus';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {

@@ -17,7 +17,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import { AttachmentDto } from 'database/dtos/attachment.dto';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
 import { AttachmentUploadRo } from 'database/ros/attachment.upload.ro';

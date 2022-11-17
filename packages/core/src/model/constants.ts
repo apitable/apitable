@@ -3,7 +3,7 @@ import { BasicValueType } from 'types';
 // album(gallery) view has no cover field ID
 export const NO_COVER_FIELD_ID = 'NO_COVER_FIELD_ID';
 
-export const DEFAULT_TIMEZONE = 'Asia/Shanghai';
+export const DEFAULT_TIMEZONE = 'Asia/Singapore';
 
 export const ValueTypeMap = {
   [BasicValueType.Number]: 'number',

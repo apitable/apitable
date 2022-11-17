@@ -1,4 +1,4 @@
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable } from '@nestjs/common';
 import * as util from 'util';
 import { CacheKeys, STORAGE_EXPIRE_TIME } from '../../common';

@@ -9,8 +9,8 @@ services:
       - unit-test
     environment:
       - TZ=Asia/Singapore
-      - MYSQL_DATABASE=vika_test
-      - MYSQL_USER=vika
+      - MYSQL_DATABASE=apitable_test
+      - MYSQL_USER=apitable
       - MYSQL_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
     command: ['mysqld', '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
@@ -46,9 +46,9 @@ services:
       - unit-test
     environment:
       - TZ=Asia/Singapore
-      - RABBITMQ_USERNAME=vika
+      - RABBITMQ_USERNAME=apitable
       - RABBITMQ_PASSWORD=password
-      - RABBITMQ_DEFAULT_USER=vika
+      - RABBITMQ_DEFAULT_USER=apitable
       - RABBITMQ_DEFAULT_PASS=password
     healthcheck:
       test: rabbitmq-diagnostics -q ping
@@ -68,10 +68,10 @@ services:
       - ./init-db/src/main/resources/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     environment:
       - TZ=Asia/Singapore
-      - MONGO_INITDB_DATABASE=vika_test
-      - MONGO_USERNAME=vika
+      - MONGO_INITDB_DATABASE=apitable_test
+      - MONGO_USERNAME=apitable
       - MONGO_PASSWORD=password
-      - MONGO_INITDB_ROOT_USERNAME=vika
+      - MONGO_INITDB_ROOT_USERNAME=apitable
       - MONGO_INITDB_ROOT_PASSWORD=password
     healthcheck:
       test: ['CMD', 'mongo', '--eval', "db.adminCommand('ping')"]
@@ -90,8 +90,8 @@ services:
       - ACTION=update
       - DB_HOST=test-mysql
       - DB_PORT=3306
-      - DB_NAME=vika_test
-      - DB_USERNAME=vika
+      - DB_NAME=apitable_test
+      - DB_USERNAME=apitable
       - DB_PASSWORD=password
 
   unit-test-room:
@@ -100,7 +100,7 @@ services:
       - unit-test
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: packaging/Dockerfile.room-server
       target: builder
     volumes:
       - ./packages/room-server/coverage:/tmp/vikadata/packages/room-server/coverage
@@ -108,9 +108,9 @@ services:
       - TZ=Asia/Singapore
       - MYSQL_HOST=test-mysql
       - MYSQL_PORT=3306
-      - MYSQL_USERNAME=vika
+      - MYSQL_USERNAME=apitable
       - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=vika_test
+      - MYSQL_DATABASE=apitable_test
       - MYSQL_USE_SSL=false
       - REDIS_HOST=test-redis
       - REDIS_PORT=6379
@@ -118,7 +118,7 @@ services:
       - REDIS_PASSWORD=
       - RABBITMQ_HOST=test-rabbitmq
       - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=vika
+      - RABBITMQ_USERNAME=apitable
       - RABBITMQ_PASSWORD=password
       - INSTANCE_COUNT=1
       - APPLICATION_NAME=NEST_REST_SERVER
@@ -136,21 +136,21 @@ services:
       - JVM_OPTS="-Xms3200m -Xmx3200m"
       - MYSQL_HOST=test-mysql
       - MYSQL_PORT=3306
-      - MYSQL_USERNAME=vika
+      - MYSQL_USERNAME=apitable
       - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=vika_test
+      - MYSQL_DATABASE=apitable_test
       - REDIS_HOST=test-redis
       - REDIS_PORT=6379
       - REDIS_DB=3
       - REDIS_PASSWORD=
       - RABBITMQ_HOST=test-rabbitmq
       - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=vika
+      - RABBITMQ_USERNAME=apitable
       - RABBITMQ_PASSWORD=password
       - MONGO_HOST=test-mongo:27017
-      - MONGO_USERNAME=vika
+      - MONGO_USERNAME=apitable
       - MONGO_PASSWORD=password
-      - MONGO_DATABASE=vika_test
+      - MONGO_DATABASE=apitable_test
     entrypoint: ./gradlew testCodeCoverageReport --stacktrace
 
 networks:

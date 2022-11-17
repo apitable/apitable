@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.vika.ltd/fe/datasheet.git"
+    "url": "https://github.com/apitable/apitable.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

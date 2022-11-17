@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, MemoryHealthIndicator, TypeOrmHealthIndicator } from '@nestjs/terminus';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import { EnvConfigKey } from '../shared/common';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
 import { IActuatorConfig } from '../shared/interfaces';

@@ -4,7 +4,7 @@ import { AppModule } from 'app.module';
 import { NODE_LIMITER_PREFIX } from '../common';
 import { IBaseRateLimiter } from '../interfaces';
 import { NodeRateLimiterMiddleware } from 'shared/middleware/node.rate.limiter.middleware';
-import { RedisService } from '@vikadata/nestjs-redis';
+import { RedisService } from '@apitable/nestjs-redis';
 import sha1 from 'sha1';
 import { I18nService } from 'nestjs-i18n';
 

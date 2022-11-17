@@ -6,7 +6,7 @@ WORKDIR /workspace-install
 COPY .yarn/ ./.yarn/
 COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
 
-# datasheet 工程所需的依赖
+# datasheet dependencies packages
 COPY packages/components/package.json ./packages/components/
 COPY packages/core/package.json ./packages/core/
 COPY packages/i18n-lang/package.json ./packages/i18n-lang/
