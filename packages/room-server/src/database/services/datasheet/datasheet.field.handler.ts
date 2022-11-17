@@ -386,10 +386,7 @@ export class DatasheetFieldHandler {
   }
 
   private async fetchRecordMap(dstId: string, recordIds: string[], relatedFieldIds: string[]): Promise<RecordMap> {
-    if (relatedFieldIds.length === 0) {
-      return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
-    }
-    return await this.datasheetRecordService.getRelatedRecordCells(dstId, recordIds, relatedFieldIds);
+    return await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, recordIds);
   }
 
   /**
