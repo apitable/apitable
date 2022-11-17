@@ -267,7 +267,7 @@ export class DatasheetOtService {
       if (afterCreateCountInSpace > subscribeInfo.maxRowsInSpace) {
         this.restService.createNotification(resultSet.auth, [{
           spaceId,
-          templateId: 'datasheet_limit',
+          templateId: 'space_record_limit',
           body: {
             extras: {
               usage: afterCreateCountInSpace,

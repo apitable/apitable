@@ -278,7 +278,7 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
         })}
       >
         <DndProvider backend={HTML5Backend}>
-          <ScrollingComponent>
+          <ScrollingComponent className={styles.scrollBox}>
             <SortableList
               cellValue={cellValue}
               onSortEnd={onSortEnd}
