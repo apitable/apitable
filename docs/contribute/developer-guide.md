@@ -3,12 +3,32 @@
 This guide helps you get started developing APITable.
 
 ## Dependencies
-Make sure you have the following dependencies installed before setting up your developer environment:
+
+Make sure you have the following dependencies and programming languages installed before setting up your developer environment:
 
 - `git`
 - `docker`
 - `docker-compose v2`
 - `make`
+- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
+- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
+
+
+## Programming Language
+
+If you are using macOS or Linux.
+We recommend install programming language with SDK manager `sdkman` and `nvm`.
+
+```bash
+# quick install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+# quick install sdkman
+curl -s "https://get.sdkman.io" | bash
+# install nodejs 
+nvm install 16.15.0 && nvm use 16.15.0
+# install java development kit
+sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
+```
 
 ## macOS
 
@@ -33,22 +53,6 @@ Install missing dependencies on Ubuntu using `apt`:
 sudo apt update
 sudo apt install git
 sudo apt install make
-```
-
-
-## Local Programming Language Environment
-
-APITable use `docker` to run everything. It is unnecessary to set up programming language environment.
-But if you want to do so, we recommend following these SDK manager installed.
-
-- [sdkman](https://sdkman.io/): for install `java`, Java SDK 8
-- [nvm](https://github.com/nvm-sh/nvm): for install `node`, NodeJS v16.15.0
-
-Then install programming langauge environment locally:
-
-```bash
-sdk install java 8.0.342-amzn && sdk use java 8.0.342-amzn
-nvm install 16.15.0 && nvm use 16.15.0 && corepack enable
 ```
 
 
