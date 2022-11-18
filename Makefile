@@ -427,7 +427,7 @@ dataenv:
 	source scripts/export-env.sh $$ENV_FILE;\
 	make dataenv-up
 
-DATAENV_SERVICES := mysql minio redis rabbitmq mongo1 mongo2 mongo3 init-db init-data-mysql init-data-minio init-mongo
+DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-data-mysql init-data-minio
 
 .PHONY: dataenv-up
 dataenv-up: _dataenv-volumes
@@ -439,9 +439,6 @@ _dataenv-volumes: ## create data folder with current user permissions
 		$$DATA_PATH/.data/minio/config \
 		$$DATA_PATH/.data/redis \
 		$$DATA_PATH/.data/rabbitmq \
-		$$DATA_PATH/.data/mongo1 \
-		$$DATA_PATH/.data/mongo2 \
-		$$DATA_PATH/.data/mongo3
 
 dataenv-down:
 	$(_DATAENV) down

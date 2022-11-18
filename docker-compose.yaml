@@ -265,23 +265,6 @@ services:
     networks:
       - apitable
 
-  # mongodb:
-  #   image: ${IMAGE_MONGODB}
-  #   user: "${UID}:${GID}"
-  #   volumes:
-  #     - ${DATA_PATH}/.data/mongo:/data/db
-  #   #    ports:
-  #   #      - 27017
-  #   expose:
-  #     - "27017"
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-  #     - TZ=${TIMEZONE}
-  #   restart: always
-  #   networks:
-  #     - apitable
-  #  ################
   # mongo1:
   #   image: ${IMAGE_MONGODB}
   #   user: "${UID}:${GID}"
