@@ -13,7 +13,8 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useSelector } from 'react-redux';
 import { ScreenSize } from '../common/component_display';
-import { OFFICE_APP_ID } from '../space_manage/marketing';
+// @ts-ignore
+import { OFFICE_APP_ID } from 'enterprise';
 import { IExpandPreviewModalFuncProps } from './preview_file.interface';
 import { PreviewMain } from './preview_main';
 import { isFocusingInput } from './preview_main/util';

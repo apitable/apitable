@@ -9,6 +9,8 @@ import { FC } from 'react';
 import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
 import { directDownload } from '../tool_bar';
 import styles from './style.module.less';
+// @ts-ignore
+import { Marketing } from 'enterprise';
 
 interface INoSupportProps {
   icon?: React.ReactNode;
@@ -59,12 +61,12 @@ export const NoSupport: FC<INoSupportProps> = props => {
           {Notice[type].error}
         </Typography>
 
-        {Notice[type].tip && (
+        {Marketing && Notice[type].tip && (
           <Typography variant='body4' className={styles.tip}>
             {Notice[type].tip}
           </Typography>
         )}
-        {isMainAdmin && (
+        {Marketing && isMainAdmin && (
           <div className={styles.btnGroup}>
             {!isMobile && (
               <Button

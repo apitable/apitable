@@ -17,6 +17,8 @@ import DashBoardIcon from 'static/icon/space/space_icon_dashboard_normal.svg';
 import AddressIcon from 'static/icon/space/space_icon_manage_address_normal.svg';
 import WorkBenchIcon from 'static/icon/space/space_icon_manage_workingtable_normal.svg';
 import styles from './style.module.less';
+// @ts-ignore
+import { Marketing } from 'enterprise';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -111,7 +113,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.space_manage_menu_social),
     key: 'marketing',
     icon: <ApplicationIcon />,
-    valid: isMainAdmin && !marketplaceDisable && !isMobileApp(),
+    valid: isMainAdmin && !marketplaceDisable && !isMobileApp() && Boolean(Marketing),
     routeAddress: '/marketing',
   },
   {
