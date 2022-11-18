@@ -78,11 +78,11 @@ export const MobileHome: FC = () => {
             </Space>
           </div>
           <div className={styles.icp}>
-            <LinkButton className={styles.icpBtn} href={Settings['icp1'].value} underline={false} color={colors.fc3} target='_blank'>
+            <LinkButton className={styles.icpBtn} href={Settings['login_icp1_url'].value} underline={false} color={colors.fc3} target='_blank'>
               {t(Strings.icp1)}
             </LinkButton>
             <div className={styles.line} />
-            <LinkButton className={styles.icpBtn} href={Settings['icp2'].value} underline={false} color={colors.fc3} target='_blank'>
+            <LinkButton className={styles.icpBtn} href={Settings['login_icp2_url'].value} underline={false} color={colors.fc3} target='_blank'>
               {t(Strings.icp2)}
             </LinkButton>
           </div>

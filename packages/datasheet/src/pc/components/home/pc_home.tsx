@@ -160,11 +160,11 @@ const PcHome: FC = () => {
             </div>
             {
               !isRenderServer() && <div className={styles.icp}>
-                <LinkButton className={styles.icpBtn} href={Settings['icp1'].value} underline={false} color={lightColors.black[500]} target='_blank'>
+                <LinkButton className={styles.icpBtn} href={Settings['login_icp1_url'].value} underline={false} color={lightColors.black[500]} target='_blank'>
                   {t(Strings.icp1)}
                 </LinkButton>
                 <div className={styles.line} />
-                <LinkButton className={styles.icpBtn} href={Settings['icp2'].value} underline={false} color={lightColors.black[500]} target='_blank'>
+                <LinkButton className={styles.icpBtn} href={Settings['login_icp2_url'].value} underline={false} color={lightColors.black[500]} target='_blank'>
                   {t(Strings.icp2)}
                 </LinkButton>
               </div>
