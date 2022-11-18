@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Skeleton, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import {
-  Api, CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
-  Settings, StoreActions, Strings, SystemConfig, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
+  CollaCommandName, ConfigConstant, Events, ExecuteResult, IMember, integrateCdnHost, IWidget, IWidgetPackage, Player, ResourceType, Selectors,
+  Settings, StoreActions, Strings, t, UnitItem, WidgetApi, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType,
 } from '@apitable/core';
 import {
   AddOutlined, ColumnUrlOutlined, DefaultFilled, HandoverOutlined, InformationLargeOutlined, MoreOutlined, UnpublishOutlined, WarnFilled,
@@ -14,7 +14,6 @@ import Image from 'next/image';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { Avatar, AvatarSize, Message, UserCardTrigger } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';
 import { useQuery, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -199,7 +198,12 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
   const VikaWidgetPackageItem = () => (
     <div className={styles.widgetPackageItem}>
       <div className={styles.imgBox}>
-        <img src={cover} className={styles.headImg} alt={''} onClick={() => isReview && expandReviewInfo(props)} />
+        <img
+          src={cover}
+          className={styles.headImg}
+          alt={''}
+          onClick={() => isReview && expandReviewInfo(props)}
+        />
         <div className={styles.authorIconWrap}>
           <div className={styles.arcBoxLeft} />
           <div className={styles.avatarWrap}>
@@ -298,7 +302,6 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
 const WidgetPackageItem = React.memo(WidgetPackageItemBase);
 
 const WidgetPackageList = (props: IWidgetPackageListProps) => {
-  const isShowWidget = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.widget_center.feature_key));
   const { installPosition, onModalClose, needPlaceholder, data, releaseType, showMenu } = props;
   const dashboardId = useSelector(state => state.pageParams.dashboardId);
   const manageable = useResourceManageable();
@@ -325,7 +328,7 @@ const WidgetPackageList = (props: IWidgetPackageListProps) => {
         ))
       }
       {/* Dashboard does not provide a widget creation portal. */}
-      {releaseType === WidgetReleaseType.Space && isShowWidget && (
+      {releaseType === WidgetReleaseType.Space && (
         <WrapperTooltip
           wrapper={!canCreateWidget}
           tip={!manageable ? t(Strings.no_permission_create_widget) : t(Strings.tooltip_cannot_create_widget_from_dashboard)}
@@ -357,10 +360,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
   const contextMenuRef = useRef<IContextMenuMethods>(null);
   const [selectMemberModal, setSelectMemberModal] = useState(false);
   const listStatus = useRef<WidgetReleaseType[]>([]);
-  const isShowWidget = useSelector(state => Selectors.labsFeatureOpen(state, SystemConfig.test_function.widget_center.feature_key));
   const [packageListMap, setPackageListMap] = useState<{ [key in WidgetReleaseType]?: IWidgetPackage[] }>({});
-  const { data: labsFeatureListData, loading: labsListLoading } = useRequest(Api.getLabsFeatureList);
-  const applyOpenFunction = useApplyOpenFunction();
   const query = useQuery();
   const showPreview = query.get('widget_preview');
   const fetchPackageList = useCallback(async(type: WidgetReleaseType = WidgetReleaseType.Global, refresh?: boolean) => {
@@ -481,21 +481,15 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     return <div style={{ ...style, ...thumbStyle }} {...props} />;
   };
 
-  const applyOpenTestFunction = () => {
-    const { space: spaceLabs = [] } = labsFeatureListData!.data.data.features;
-    const { url } = spaceLabs.find(lab => lab.key === SystemConfig.test_function.widget_center.feature_key) || {};
-    url && applyOpenFunction(url);
-  };
-
   const EmptyButtonWrapper = ({ children }) => {
-    if (isShowWidget && !manageable) {
+    if (!manageable) {
       return (
         <WrapperTooltip style={{ width: '100%' }} wrapper tip={t(Strings.no_permission_create_widget)}>
           {children}
         </WrapperTooltip>
       );
     }
-    if (isShowWidget && dashboardId) {
+    if (dashboardId) {
       return (
         <WrapperTooltip style={{ width: '100%' }} wrapper tip={t(Strings.tooltip_cannot_create_widget_from_dashboard)}>
           {children}
@@ -568,24 +562,16 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
                     <EmptyButtonWrapper>
                       <Button
                         color='primary'
-                        disabled={(isShowWidget && !manageable) || (!isShowWidget && labsListLoading) || (isShowWidget && Boolean(dashboardId))}
-                        onClick={isShowWidget ? createWidget : applyOpenTestFunction}
+                        disabled={!manageable || Boolean(dashboardId)}
+                        onClick={createWidget}
                         block
                       >
-                        {isShowWidget
-                          ?
-                          <div className={styles.buttonWrap}>
-                            <IconAdd width={16} height={16} fill={'white'} />
-                            {t(Strings.create_widget)}
-                          </div>
-                          :
-                          t(Strings.test_function_btnmodal_btntext)
-                        }
+                        <div className={styles.buttonWrap}>
+                          <IconAdd width={16} height={16} fill={'white'} />
+                          {t(Strings.create_widget)}
+                        </div>
                       </Button>
                     </EmptyButtonWrapper>
-                    {!isShowWidget && <div className={styles.tips}>
-                      {t(Strings.test_function_form_submit_tip)}
-                    </div>}
                   </div>
                 </div>
               )
