@@ -424,6 +424,7 @@ major: # bump version number patch
 ### data environement
 .PHONY: dataenv
 dataenv:
+	source scripts/export-env.sh $$ENV_FILE;\
 	make dataenv-up
 
 DATAENV_SERVICES := mysql minio redis rabbitmq mongo1 mongo2 mongo3 init-db init-data-mysql init-data-minio init-mongo
