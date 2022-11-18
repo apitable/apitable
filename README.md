@@ -249,9 +249,8 @@ APITable use these common conventions:
     <img src="docs/static/ScreenShot6.png" alt="APITable Screenshot Image" />
 </p>
 
-- Invite
 
-(.....)
+
 ## 🥰 License
 
 > This repository contains the source code for the Open Source edition of APITable, released under the AGPL.
