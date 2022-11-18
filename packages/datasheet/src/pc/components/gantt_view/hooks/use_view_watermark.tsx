@@ -1,7 +1,8 @@
 import { ReactNode, useContext, useMemo, useRef } from 'react';
 import { autoSizerCanvas, Text } from 'pc/components/konva_components';
 import { store } from 'pc/store';
-import { getWatermarkText } from 'pc/hooks';
+// @ts-ignore
+import { getWatermarkText } from 'enterprise';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 
 interface IUseViewWatermark {
@@ -26,7 +27,7 @@ export const useViewWatermark = (props: IUseViewWatermark) => {
     const userInfo = state.user.info;
     if (!userInfo) return null;
 
-    const text = getWatermarkText(userInfo);
+    const text = getWatermarkText ? getWatermarkText(userInfo) : '';
     textSizer.current.setFont({ fontSize: 12 });
     const { width, height } = textSizer.current.measureText(text); 
     const countX = Math.ceil(containerWidth / (width + DEFAULT_GAP));

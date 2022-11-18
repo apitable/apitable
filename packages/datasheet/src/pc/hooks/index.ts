@@ -23,7 +23,6 @@ export * from './use_space';
 export * from './use_check_input';
 export * from './use_image_upload';
 export * from './use_get_view_by_id_with_default';
-export * from './use_watermark';
 export * from './use_dispatch';
 export * from './use_all_columns';
 export * from './use_request';
