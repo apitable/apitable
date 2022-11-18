@@ -1,7 +1,6 @@
 import { IReduxState, StoreActions } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { values } from 'lodash';
-import { IntercomWrapper } from 'modules/enterprise/intercom';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSideBar } from 'pc/components/mobile_side_bar';
@@ -16,6 +15,8 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { isDingtalkSkuPage, isSocialWecom } from '../home/social_platform';
 import { useWxTitleMap } from '../konva_grid';
+// @ts-ignore
+import { IntercomWrapper } from 'enterprise';
 
 export const SideWrapper = props => {
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);

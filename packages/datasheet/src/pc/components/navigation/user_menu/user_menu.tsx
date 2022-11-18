@@ -52,6 +52,8 @@ import ExitIcon from 'static/icon/space/space_icon_logout.svg';
 import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
+// @ts-ignore
+import { isEnterprise } from 'enterprise';
 
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -296,6 +298,8 @@ export const UserMenu: FC<IUserMenuProps> = props => {
   // Enterprise Micro Browser + Enterprise Micro Third Party Space Station + Unbound Mobile
   const hiddenMobileRes = isWecomFunc() && isWecomSpace && !mobile;
 
+  console.log('isEnterprise', isEnterprise);
+
   return (
     <div className={styles.userMenuWrapper} ref={userMenuRef}>
       <div className={styles.userMenuTop}>
@@ -406,7 +410,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             </div>
           )}
           {isMobile && items.filter(item => item.visible).map(item => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
-          {!isMobile && !isMobileApp() && !isWecomSpace && !isPrivateDeployment() && (
+          {!isMobile && !isMobileApp() && !isWecomSpace && !isPrivateDeployment() && isEnterprise && (
             <div className={styles.inviteCodeBtnWrap}>
               <div
                 className={styles.inviteCodeBtn}

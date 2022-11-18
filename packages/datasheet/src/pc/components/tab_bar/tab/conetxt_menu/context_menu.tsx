@@ -6,7 +6,6 @@ import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickSta
 import { AutosaveOutlined, CalenderRightOutlined, LockNonzeroOutlined } from '@apitable/icons';
 import { Modal as ModalComponent, Spin } from 'antd';
 import dynamic from 'next/dynamic';
-import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { makeNodeIconComponent, NodeIcon } from 'pc/components/catalog/node_context_menu';
 import { Modal } from 'pc/components/common';
 import { confirmViewAutoSave } from 'pc/components/tab_bar/view_sync_switch/popup_content';
@@ -21,6 +20,8 @@ import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// @ts-ignore
+import { triggerUsageAlert } from 'enterprise';
 
 const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 

@@ -6,7 +6,7 @@ type HashMap = { [key: string]: string };
 // 配置项
 const inputPath = 'apitable/packages/i18n-lang/src/config/strings.auto.json'; // 解析源
 const allPkgPath = 'apitable/packages/i18n-lang/src/config/strings.json'; // 全语言包导出的位置
-// const pkgsPath = 'apitable/packages/datasheet/src/static/lang'; // 各种语言包
+// const pkgsPath = 'static/lang'; // 各种语言包
 const map: HashMap = {
   'zh-CN': 'zh_CN',
   'en-US': 'en_US',

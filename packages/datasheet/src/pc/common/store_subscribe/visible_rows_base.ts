@@ -1,7 +1,8 @@
 import { store } from 'pc/store';
 import { Selectors, visibleRowsBaseCacheManage } from '@apitable/core';
 import { mainWidgetMessage } from '@apitable/widget-sdk';
-import { getDependenceDstIds } from 'modules/enterprise/billing';
+// @ts-ignore
+import { getDependenceDstIds } from 'enterprise';
 
 store.subscribe(function visibleRowsBase() {
   const state = store.getState();

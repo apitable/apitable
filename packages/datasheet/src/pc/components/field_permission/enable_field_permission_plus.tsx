@@ -6,7 +6,6 @@ import { permission } from '@apitable/core/dist/config/constant';
 import { useMount, useToggle } from 'ahooks';
 import { Switch } from 'antd';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing/trigger_usage_alert';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { UnitItem } from 'pc/components/catalog/permission_settings_plus/permission/unit_item';
 import { Message } from 'pc/components/common/message/message';
@@ -18,6 +17,8 @@ import { dispatch } from 'pc/worker/store';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PermissionInfoSetting } from '../catalog/permission_settings_plus/permission/permission_info_setting';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 const defaultSetting = { formSheetAccessible: false };
 

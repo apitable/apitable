@@ -8,7 +8,6 @@ import {
 } from '@apitable/icons';
 import classnames from 'classnames';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'pc/components/enterprise/vikaby';
 import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { inSocialApp } from 'pc/components/home/social_platform';
@@ -22,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
 import { isHiddenQRCode } from 'pc/utils/env';
 import { useIntercom } from 'react-use-intercom';
+// @ts-ignore
+import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
 
 export interface IHelpProps {
   className?: string;

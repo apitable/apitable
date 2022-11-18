@@ -1,7 +1,6 @@
 import { Strings, t } from '@apitable/core';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
-import { getBillingInfo } from 'modules/enterprise/billing/get_billing_info';
 import { ContextName } from 'modules/shared/shortcut_key/enum';
 import { ShortcutContext } from 'modules/shared/shortcut_key/shortcut_key';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
@@ -16,6 +15,8 @@ import React, { FC, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
 import styles from './style.module.less';
+// @ts-ignore
+import { getBillingInfo } from 'enterprise';
 
 const ModalBase: FC<IModalProps> = (props) => {
   const {

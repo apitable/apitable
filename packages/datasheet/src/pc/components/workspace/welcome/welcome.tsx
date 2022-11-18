@@ -2,7 +2,6 @@ import { Button, TextButton, Typography, useThemeColors } from '@apitable/compon
 import { ConfigConstant, IReduxState, Navigation, Settings, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@apitable/icons';
 import Image from 'next/image';
-import { showModal } from 'modules/enterprise/guide/ui';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
 import { MobileBar } from 'pc/components/mobile_bar';
@@ -25,6 +24,8 @@ import QuickStartPng from 'static/icon/workbench/welcome/quick_start_shadow.png'
 import VikaSheetPng from 'static/icon/workbench/welcome/vikasheet_shadow.png';
 import { CreateDataSheetModal } from './create_datasheet_modal';
 import styles from './style.module.less';
+// @ts-ignore
+import { showModal } from 'enterprise';
 
 export const Welcome: FC = () => {
   const colors = useThemeColors();

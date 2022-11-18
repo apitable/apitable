@@ -1,13 +1,14 @@
 import { Button } from '@apitable/components';
 import { integrateCdnHost, Strings, t, Settings } from '@apitable/core';
 import Image from 'next/image';
-import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { FC } from 'react';
 import ServerErrorPng from 'static/icon/common/common_img_500.png';
 import styles from './style.module.less';
 import { isHiddenQRCode } from 'pc/utils/env';
+// @ts-ignore
+import { ServiceQrCode } from 'enterprise';
 
 export const ServerError: FC = () => {
   const refresh = () => {

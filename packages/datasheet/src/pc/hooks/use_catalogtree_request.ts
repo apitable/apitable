@@ -2,12 +2,13 @@ import {
   Api, ConfigConstant, INodesMapItem, IOptNode, IReduxState, IUpdateRoleData, Navigation, ResourceIdPrefix, ResourceType, Selectors, StatusCode,
   StoreActions, Strings, t,
 } from '@apitable/core';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { shallowEqual, useSelector } from 'react-redux';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();

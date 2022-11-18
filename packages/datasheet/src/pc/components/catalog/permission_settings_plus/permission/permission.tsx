@@ -2,7 +2,6 @@ import { Box, IOption, Skeleton } from '@apitable/components';
 import { Api, ConfigConstant, INodePermissionData, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { useToggle } from 'ahooks';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
@@ -15,6 +14,8 @@ import { MembersDetail } from './members_detail';
 import { PermissionInfoSetting } from './permission_info_setting';
 import styles from './style.module.less';
 import { UnitList } from './unit_list';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface IPermissionSettingProps {
   data: INodePermissionData;

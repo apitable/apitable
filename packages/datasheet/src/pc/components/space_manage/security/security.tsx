@@ -1,7 +1,6 @@
 import { Skeleton, Typography } from '@apitable/components';
 import { ISocialAppType, StoreActions, Strings, t } from '@apitable/core';
 import { isBoolean } from 'lodash';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { SwitchInfo } from 'pc/components/common';
 import { isSocialPlatformEnabled, SocialPlatformMap } from 'pc/components/home/social_platform';
 import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
@@ -10,6 +9,8 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 enum SwitchType {
   AllowInvite = 'invitable',

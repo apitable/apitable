@@ -9,15 +9,11 @@
 import { StoreActions, IWizardsConfig, Api, ConfigConstant } from '@apitable/core';
 import { store } from 'pc/store';
 import { batchActions } from 'redux-batched-actions';
-import {
-  getPrevAndNextStepIdsInCurWizard, getPrevAndNextIdInArr,
-  getWizardInfo, addWizardNumberAndApiRun
-} from 'modules/enterprise/guide/utils';
-import { Guide } from 'modules/enterprise/guide';
 import { IOpenGuideNextStepProps, ISkipCurrentWizardProps, ISetWizardCompletedProps } from './interface';
-import { openVikaby } from 'pc/components/enterprise/vikaby';
 import { isTimeRulePassed } from 'modules/shared/player/rules';
 import { isMobileApp } from 'pc/utils/env';
+// @ts-ignore
+import { openVikaby, Guide, getPrevAndNextStepIdsInCurWizard, getPrevAndNextIdInArr, getWizardInfo, addWizardNumberAndApiRun } from 'enterprise';
 
 export const TriggerCommands = {
   open_vikaby: (props) => {

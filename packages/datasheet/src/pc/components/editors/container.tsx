@@ -30,7 +30,6 @@ import {
 import { isEqual, noop } from 'lodash';
 import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
-import { convertAlarmStructure } from 'modules/enterprise/alarm/date_time_alarm/utils';
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -64,6 +63,8 @@ import { TextEditor } from './text_editor';
 import { expandRecordIdNavigate } from '../expand_record';
 import { useUnmount } from 'ahooks';
 import { setEndEditCell } from './end_edit_cell';
+// @ts-ignore
+import { convertAlarmStructure } from 'enterprise';
 
 export interface IEditorPosition {
   width: number;

@@ -4,7 +4,6 @@ import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { destroyVikaby, showVikaby } from 'pc/components/enterprise/vikaby';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
@@ -23,6 +22,8 @@ import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
+// @ts-ignore
+import { destroyVikaby, showVikaby } from 'enterprise';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {

@@ -1,11 +1,12 @@
 import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@apitable/core';
-import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useDispatch, useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
+// @ts-ignore
+import { triggerUsageAlert } from 'enterprise';
 
 export const useNotificationRequest = () => {
   const dispatch = useDispatch();

@@ -1,9 +1,6 @@
 import { useContextMenu } from '@apitable/components';
 import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
-import { subscribeUsageCheck } from 'modules/enterprise/billing/subscribe_usage_check';
-import { ScrollBar } from 'modules/enterprise/guide/scroll_bar';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
@@ -15,6 +12,8 @@ import { SpaceContext } from './context';
 import { ISpaceLevelType, LevelType } from './interface';
 import { Lg, Md, Sm, Xs } from './layout';
 import { DELETE_SPACE_CONTEXT_MENU_ID } from './utils';
+// @ts-ignore
+import { ScrollBar, SubscribeUsageTipType, triggerUsageAlert, subscribeUsageCheck } from 'enterprise';
 
 export const SpaceInfo = () => {
   const { spaceInfo, spaceFeatures, subscription, spaceId } = useSelector(

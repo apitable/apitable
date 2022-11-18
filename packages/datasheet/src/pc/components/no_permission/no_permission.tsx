@@ -2,7 +2,6 @@ import { Button } from '@apitable/components';
 import { Api, integrateCdnHost, IReduxState, Navigation, StoreActions, Strings, t, Settings } from '@apitable/core';
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';
-import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible } from 'pc/hooks';
 import { FC } from 'react';
@@ -12,6 +11,8 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
 import { isHiddenQRCode } from 'pc/utils/env';
+// @ts-ignore
+import { ServiceQrCode } from 'enterprise';
 
 export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
   const pageParams = useSelector((state: IReduxState) => state.pageParams);

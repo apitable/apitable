@@ -1,6 +1,5 @@
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing/trigger_usage_alert';
 import { MobileContextMenu } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IDatasheetPanelInfo } from 'pc/components/common_side/workbench_side';
@@ -15,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface INodeContextMenuProps {
   onHidden: () => void;

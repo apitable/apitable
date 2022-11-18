@@ -2,7 +2,8 @@ import { StoreActions, CacheManager } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { memberStash } from '../../../modules/space/member_stash/member_stash';
-import { getBillingInfo } from '../../../modules/enterprise/billing';
+// @ts-ignore
+import { getBillingInfo } from 'enterprise';
 
 let spaceId: string | null;
 

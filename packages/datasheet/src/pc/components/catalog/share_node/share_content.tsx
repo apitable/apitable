@@ -1,4 +1,3 @@
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cls from 'classnames';
@@ -17,6 +16,8 @@ import { PublicShareInviteLink } from './public_link';
 import { MembersDetail } from '../permission_settings/permission/members_detail';
 import styles from './style.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface IShareContentProps {
   /** Information about the node being operated on */

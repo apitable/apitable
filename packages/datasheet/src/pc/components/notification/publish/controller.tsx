@@ -1,6 +1,5 @@
 import { colors } from '@apitable/components';
 import { Api, INoticeDetail, Navigation, StoreActions } from '@apitable/core';
-import { showVikaby } from 'pc/components/enterprise/vikaby/vikaby';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { isSocialDingTalk } from 'pc/components/home/social_platform';
 import { Method } from 'pc/components/route_manager/const';
@@ -13,6 +12,8 @@ import { getPlatformType } from 'pc/utils/os';
 import { dispatch } from 'pc/worker/store';
 import { showBannerAlert } from '../banner_alert';
 import { isUserInOldVersionOrLocal, NoticeTemplatesConstant, requestWebNotification, stringToActions } from '../utils';
+// @ts-ignore
+import { showVikaby } from 'enterprise';
 
 export interface IToast {
   btnText?: string;

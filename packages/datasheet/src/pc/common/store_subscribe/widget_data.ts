@@ -4,7 +4,8 @@ import {
   IDatasheetClient, IDatasheetMainSimple, mainWidgetMessage, IWidgetDashboardState, iframeWidgetDashboardSelector
 } from '@apitable/widget-sdk';
 import { updateCache } from './visible_rows_base';
-import { getDependenceDstIds } from 'modules/enterprise/billing';
+// @ts-ignore
+import { getDependenceDstIds } from 'enterprise';
 
 let client: IDatasheetClient = {
   selection: undefined,

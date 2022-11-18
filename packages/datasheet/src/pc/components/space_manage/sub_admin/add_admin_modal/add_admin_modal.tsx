@@ -1,6 +1,5 @@
 import { Button, TextButton } from '@apitable/components';
 import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@apitable/core';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -12,6 +11,8 @@ import { shallowEqual, useSelector } from 'react-redux';
 import AddIcon from 'static/icon/common/common_icon_add_content.svg';
 import { PermissionCard } from '../permission_card';
 import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),

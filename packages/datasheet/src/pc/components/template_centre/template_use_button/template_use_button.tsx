@@ -1,6 +1,5 @@
 import { Button } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t } from '@apitable/core';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Modal } from 'pc/components/common';
 import { LoginModal } from 'pc/components/home/login_modal';
 import { Router } from 'pc/components/route_manager/router';
@@ -11,6 +10,8 @@ import { useSelector } from 'react-redux';
 import IconArrowRight from 'static/icon/datasheet/rightclick/datasheet_icon_insert_right.svg';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;

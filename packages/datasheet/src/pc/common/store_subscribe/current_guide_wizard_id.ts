@@ -1,8 +1,10 @@
 import { StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
-import { getWizardInfo } from 'modules/enterprise/guide/utils';
 import { startActions } from 'modules/shared/apphook/trigger_commands';
 import { batchActions } from 'redux-batched-actions';
+// @ts-ignore
+import { getWizardInfo } from 'enterprise';
+
 let curId = -1;
 
 store.subscribe(function currentGuideWizardIdInHook() {

@@ -1,12 +1,14 @@
 import * as React from 'react';
 import styles from './style.module.less';
 import { Button } from '@apitable/components';
-import { ServiceQrCode } from 'modules/enterprise/guide/ui/qr_code';
 import { t, Strings } from '@apitable/core';
 import { store } from 'pc/store';
 import { Provider } from 'react-redux';
 import { upperFirst } from 'lodash';
 import { isHiddenQRCode } from 'pc/utils/env';
+// @ts-ignore
+import { ServiceQrCode } from 'enterprise';
+
 interface IModalContentProps {
   content: string;
   onOk: () => void;

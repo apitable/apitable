@@ -4,7 +4,6 @@ import { IExpandRecordProps, mainWidgetMessage, RuntimeEnv } from '@apitable/wid
 import { WidgetMessageType } from '@apitable/widget-sdk/dist/iframe_message/interface';
 import { useUnmount } from 'ahooks';
 import classnames from 'classnames';
-import { getDependenceByDstIds } from 'modules/enterprise/billing';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -15,6 +14,8 @@ import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import { IWidgetLoaderRefs } from '../../widget_loader';
 import styles from './style.module.less';
+// @ts-ignore
+import { getDependenceByDstIds } from 'enterprise';
 
 interface IWidgetTask {
   widgetId: string;

@@ -1,13 +1,14 @@
 import { Button, Message } from '@apitable/components';
 import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import Image from 'next/image';
-import { triggerUsageAlert } from 'modules/enterprise/billing';
 import { Modal } from 'pc/components/common';
 import { IDisabledPermission } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import permissionImage from 'static/icon/datasheet/datasheet_img_field_permission.png';
+// @ts-ignore
+import { triggerUsageAlert } from 'enterprise';
 
 export const DisabledFieldPermission: React.FC<IDisabledPermission> = (props) => {
   const { setPermissionStatus, field } = props;

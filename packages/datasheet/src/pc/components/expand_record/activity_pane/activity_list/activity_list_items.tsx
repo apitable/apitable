@@ -8,7 +8,6 @@ import axios, { CancelTokenSource } from 'axios';
 import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } from 'lodash';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { resourceService } from 'pc/resource_service';
@@ -22,6 +21,8 @@ import { ActivityContext } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
 import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 const LoadingOutlined = dynamic(() => import('@ant-design/icons/LoadingOutlined'), { ssr: false });
 

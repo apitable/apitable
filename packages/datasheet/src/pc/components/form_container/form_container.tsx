@@ -12,7 +12,6 @@ import produce from 'immer';
 import { debounce, isArray } from 'lodash';
 import _map from 'lodash/map';
 import { AnimationItem } from 'lottie-web';
-import { triggerUsageAlertForDatasheet } from 'modules/enterprise/billing';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common/logo';
@@ -39,6 +38,8 @@ import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
+// @ts-ignore
+import { triggerUsageAlertForDatasheet } from 'enterprise';
 
 enum IFormContentType {
   Form = 'Form',

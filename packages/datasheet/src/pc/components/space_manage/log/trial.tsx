@@ -2,12 +2,13 @@ import { Strings, t } from '@apitable/core';
 import { Button } from '@apitable/components';
 import classnames from 'classnames';
 import Image from 'next/image';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import styles from 'pc/components/space_manage/log/styles.module.less';
 import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import UnauthorizedPng from 'static/icon/audit/audit_unauthorized_img.png';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 interface ITrialProps {
   setShowTrialModal: Dispatch<SetStateAction<boolean>>;

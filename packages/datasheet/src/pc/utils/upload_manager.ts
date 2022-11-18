@@ -2,11 +2,12 @@ import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue,
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { uniqBy } from 'lodash';
 import mime from 'mime-types';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { Message, Modal } from 'pc/components/common';
 import { IUploadResponse } from 'pc/components/upload_modal/upload_core';
 import { store } from 'pc/store';
 import { byte2Mb, execNoTraceVerification } from 'pc/utils';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;

@@ -31,9 +31,10 @@ import { KeyCode } from 'pc/utils';
 import ReactDOM from 'react-dom';
 import { Modal } from './components/modal';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { getWizardRunCount } from 'modules/enterprise/guide';
 import { store } from 'pc/store';
 import { ScrollBar } from './components/scroll_bar';
+// @ts-ignore
+import { getWizardRunCount } from 'enterprise';
 
 export const OrgChart: FC = () => {
 

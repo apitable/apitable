@@ -1,11 +1,12 @@
 import { Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
 import * as Sentry from '@sentry/react';
 import { IServiceError } from '@apitable/widget-sdk';
-import { triggerUsageAlertForDatasheet } from 'modules/enterprise/billing';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Router } from 'pc/components/route_manager/router';
+// @ts-ignore
+import { triggerUsageAlertForDatasheet } from 'enterprise';
 
 export const onError: IServiceError = (error, type) => {
   const { isShowQrcode, title, code, message: errorMessage } = error;

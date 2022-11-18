@@ -18,7 +18,6 @@ import {
 } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
-import { convertAlarmStructure } from 'modules/enterprise/alarm/date_time_alarm/utils';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { IEditor } from 'pc/components/editors/interface';
 import { RatingEditor } from 'pc/components/editors/rating_editor';
@@ -44,6 +43,8 @@ import { ExpandLink } from '../expand_link';
 import { ExpandLookUp } from '../expand_lookup';
 import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
+// @ts-ignore
+import { convertAlarmStructure } from 'enterprise';
 
 export interface ICommonProps {
   style: React.CSSProperties;

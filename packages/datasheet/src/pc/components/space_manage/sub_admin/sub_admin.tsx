@@ -3,7 +3,6 @@ import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreAction
 import { useMount } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { InfoCard, Modal } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { useNotificationCreate } from 'pc/hooks';
@@ -13,6 +12,8 @@ import ReactDOMServer from 'react-dom/server';
 import { shallowEqual, useSelector } from 'react-redux';
 import { AddAdminModal, ModalType } from './add_admin_modal';
 import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 // Some permissions that are no longer used, but because the old space will still return the corresponding data, 
 // the front-end to do the filtering of these permissions

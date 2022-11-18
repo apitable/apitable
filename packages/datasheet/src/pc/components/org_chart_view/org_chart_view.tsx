@@ -46,7 +46,8 @@ import styles from './styles.module.less';
 import { IFuncUpdater } from 'ahooks/lib/createUseStorageState';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { getWizardRunCount } from 'modules/enterprise/guide';
+// @ts-ignore
+import { getWizardRunCount } from 'enterprise';
 
 export interface IOrgChartViewProps {
   width: number;

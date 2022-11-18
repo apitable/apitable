@@ -1,9 +1,10 @@
 import { TriggerCommands } from '../../../modules/shared/apphook/trigger_commands';
 import { StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
-import { Guide, isEqualArr, addWizardNumberAndApiRun } from 'modules/enterprise/guide';
-import { getWizardInfo } from 'modules/enterprise/guide/utils';
 import { Step } from '@apitable/core/src/config/system_config.interface';
+// @ts-ignore
+import { Guide, isEqualArr, addWizardNumberAndApiRun, getWizardInfo } from 'enterprise';
+
 let curSteps: number[] = [];
 
 store.subscribe(function currentStepInHook() {

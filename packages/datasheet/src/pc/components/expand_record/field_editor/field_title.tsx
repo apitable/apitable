@@ -34,8 +34,9 @@ import { useContext, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EditorTitleContext from '../editor_title_context';
 import { FieldDescWithTitle } from './field_desc_with_title';
-import { MobileAlarm } from 'modules/enterprise/alarm/mobile_alarm';
 import styles from './style.module.less';
+// @ts-ignore
+import { MobileAlarm } from 'enterprise';
 
 interface IFieldTitleProps {
   isFocus?: boolean;

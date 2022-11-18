@@ -16,11 +16,12 @@ import {
   WithTipWrapper,
   IdentifyingCodeInput,
 } from 'pc/components/common';
-import { addWizardNumberAndApiRun } from 'modules/enterprise/guide/utils';
 import { useSetState } from 'pc/hooks';
 import { TextInput } from '@apitable/components';
 import { Verify } from '../modify_mobile_modal/verify';
 import { usePlatform } from 'pc/hooks/use_platform';
+// @ts-ignore
+import { addWizardNumberAndApiRun } from 'enterprise';
 
 export interface IModifyEmailModalProps {
   setEmailModal: React.Dispatch<React.SetStateAction<boolean>>;

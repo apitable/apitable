@@ -3,7 +3,6 @@ import { Api, IReduxState, Navigation, Settings, StoreActions, Strings, t } from
 import classnames from 'classnames';
 import { last } from 'lodash';
 import Image from 'next/image';
-import { SubscribeUsageTipType, triggerUsageAlert } from 'modules/enterprise/billing';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
@@ -21,6 +20,8 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface ITrashItem {
   nodeId: string;

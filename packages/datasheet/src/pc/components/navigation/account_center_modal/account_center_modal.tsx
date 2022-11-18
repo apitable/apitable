@@ -12,7 +12,6 @@ import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import IconSide from 'static/icon/miniprogram/nav/nav_icon_drawer.svg';
 import { AccountManager } from './account_manager';
-import { AccountWallet } from '../../../../modules/enterprise/account_wallet/account_wallet';
 import { BasicSetting } from './basic_setting';
 import { DeveloperConfiguration } from './developer_configuration';
 import { ModifyPassword } from './modify_password';
@@ -21,6 +20,8 @@ import { PersonalizedSetting } from './personalized_setting';
 import styles from './style.module.less';
 import { TestFunction } from './test_function';
 import { useResponsive } from 'pc/hooks';
+// @ts-ignore
+import { AccountWallet } from 'enterprise';
 
 export enum AccountCenterModules {
   BasicSetting = 'BasicSetting',

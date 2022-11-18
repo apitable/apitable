@@ -1,10 +1,11 @@
 import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
 import Image from 'next/image';
-import { ScrollBar } from 'modules/enterprise/guide/scroll_bar';
 import { File, Folder, View } from 'pc/components/datasheet_search_panel/components';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import * as React from 'react';
 import EmptyFolderImg from 'static/icon/datasheet/datasheet_img_folder_default.png';
+// @ts-ignore
+import { ScrollBar } from 'enterprise';
 
 export interface IViewNode {
   nodeId: string;
