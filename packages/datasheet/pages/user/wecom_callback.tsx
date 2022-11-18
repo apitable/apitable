@@ -1,10 +1,10 @@
-import dynamic from 'next/dynamic';
 import React from 'react';
+// @ts-ignore
+import { WecomLogin } from 'enterprise';
 
-const WecomLoginWithNoSSR = dynamic(() => import('pc/components/home/social_platform/wecom_integration/wecom_login'), { ssr: false });
 
 const App = () => {
-  return <WecomLoginWithNoSSR />;
+  return <WecomLogin />;
 };
 
 export default App;

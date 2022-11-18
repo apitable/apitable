@@ -1,9 +1,10 @@
 import { Selectors } from '@apitable/core';
-import { WecomOpenDataType } from 'pc/components/address_list';
 import { useState, useEffect } from 'react';
 import { isObject } from 'lodash';
 import { isSocialWecom } from 'pc/components/home/social_platform';
 import { useSelector } from 'react-redux';
+// @ts-ignore
+import { WecomOpenDataType } from 'enterprise';
 
 interface IWxTitleMap {
   userNames?: { name: string, unitId: string }[];

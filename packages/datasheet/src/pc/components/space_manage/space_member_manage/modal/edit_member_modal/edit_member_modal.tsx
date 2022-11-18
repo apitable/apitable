@@ -14,8 +14,9 @@ import styles from './style.module.less';
 import { useMemberManage } from 'pc/hooks';
 import { isPrimaryOrOwnFunc } from '../../utils';
 import { isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'pc/components/home/social_platform';
-import { WecomOpenData } from 'pc/components/address_list';
 import { Tooltip } from 'pc/components/common';
+// @ts-ignore
+import { WecomOpenData } from 'enterprise';
 
 interface IModalProps {
   cancelModalVisible: () => void;

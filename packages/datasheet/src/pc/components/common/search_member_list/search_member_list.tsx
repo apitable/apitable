@@ -2,7 +2,6 @@ import { TextInput } from '@apitable/components';
 import { ISearchMemberData, Strings, t } from '@apitable/core';
 import cls from 'classnames';
 import Image from 'next/image';
-import { WecomOpenData } from 'pc/components/address_list';
 import { getSocialWecomUnitName, isSocialWecom } from 'pc/components/home/social_platform';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
@@ -11,6 +10,8 @@ import SearchIcon from 'static/icon/common/common_icon_search_normal.svg';
 import SearchImage from 'static/icon/common/common_img_search_default.png';
 import { InfoCard } from '../index';
 import styles from './style.module.less';
+// @ts-ignore
+import { WecomOpenData } from 'enterprise';
 
 interface ISearchMemberListProps {
   onChange: (value: string) => void;

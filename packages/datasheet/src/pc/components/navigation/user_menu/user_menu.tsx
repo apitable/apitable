@@ -298,8 +298,6 @@ export const UserMenu: FC<IUserMenuProps> = props => {
   // Enterprise Micro Browser + Enterprise Micro Third Party Space Station + Unbound Mobile
   const hiddenMobileRes = isWecomFunc() && isWecomSpace && !mobile;
 
-  console.log('isEnterprise', isEnterprise);
-
   return (
     <div className={styles.userMenuWrapper} ref={userMenuRef}>
       <div className={styles.userMenuTop}>

@@ -5,9 +5,10 @@ import { useRouter } from 'next/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { FormItem } from '../wecom_integration/components/form_item';
 import { copyButton } from './detail/create_application';
 import styles from './styles.module.less';
+// @ts-ignore
+import { WecomFormItem } from 'enterprise';
 
 export const defaultFieldConfig = {
   appId: '',
@@ -88,7 +89,7 @@ const FeishuConfig: React.FC = () => {
   };
   return (
     <>
-      <div className={styles.wecomConfig}>
+      <div className={styles.feishuConfig}>
         <div className={styles.configTitle}>
           {`${t(Strings.application_integration_information)}-${t(Strings.marketplace_integration_app_name_feishu)}`}
         </div>
@@ -99,7 +100,7 @@ const FeishuConfig: React.FC = () => {
         <div className={styles.infoWrap}>
           <div className={styles.infoTitle}>{t(Strings.lark_integration_config_title)}</div>
           {Object.keys(schema2).map(key => (
-            <FormItem key={key} formData={formData || {}} formItem={{ ...schema2[key], key }} />
+            <WecomFormItem key={key} formData={formData || {}} WecomFormItem={{ ...schema2[key], key }} />
           ))}
         </div>
       </div>

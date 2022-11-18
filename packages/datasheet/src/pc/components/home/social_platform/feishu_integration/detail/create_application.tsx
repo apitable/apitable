@@ -6,9 +6,10 @@ import classNames from 'classnames';
 import { CopyOutlined } from '@apitable/icons';
 import { Strings, t, Api } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
-import { FormItem, IFormItem } from '../../wecom_integration/components/form_item';
 import { IFeishuConfigParams } from '../interface';
 import styles from './styles.module.less';
+// @ts-ignore
+import { WecomFormItem, IWecomFormItem } from 'enterprise';
 
 export interface IConfigForm {
   appId: string;
@@ -50,7 +51,7 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = props => {
     appSecret: '',
   });
 
-  const handleChange = (e, item: IFormItem) => {
+  const handleChange = (e, item: IWecomFormItem) => {
     const value = e.target.value;
     if (value.length > 0) {
       setFormError({ ...formError, [item.key]: '' });
@@ -131,7 +132,7 @@ export const CreateApplication: React.FC<ICreateApplicationProps> = props => {
           <div className={styles.formDesc} dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step2_content) }} />
           <div className={styles.formContent}>
             {Object.keys(schema1).map(key => (
-              <FormItem key={key} formData={formData} formItem={{ ...schema1[key], key }} error={formError[key]} onChange={handleChange} />
+              <WecomFormItem key={key} formData={formData} formItem={{ ...schema1[key], key }} error={formError[key]} onChange={handleChange} />
             ))}
           </div>
         </div>

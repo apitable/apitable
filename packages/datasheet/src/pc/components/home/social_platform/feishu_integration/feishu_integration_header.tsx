@@ -26,7 +26,7 @@ export const FeishuIntegrationHeader: React.FC<{userInfo: IUserInfo}> = (props) 
   };
 
   return (
-    <div className={styles.wecomIntegrationHeader}>
+    <div className={styles.feishuIntegrationHeader}>
       <div className={styles.headerContainer}>
         <div className={styles.headerLeft}>
           <Logo className={styles.logo} theme={ThemeName.Light} />

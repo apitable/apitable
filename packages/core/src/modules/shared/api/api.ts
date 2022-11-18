@@ -29,7 +29,6 @@ import {
   ITemplateRecommendResponse,
   IUpdateSecuritySetting,
 } from './api.interface';
-
 export * from '../../enterprise/api/api.enterprise';
 export * from '../../user/api/api.auth';
 export * from '../../user/api/api.user';

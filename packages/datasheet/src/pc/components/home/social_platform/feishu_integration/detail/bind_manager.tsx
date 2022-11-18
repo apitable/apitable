@@ -3,7 +3,8 @@ import * as React from 'react';
 import { Loading, Message } from '@apitable/components';
 import classNames from 'classnames';
 import { Strings, t } from '@apitable/core';
-import { IScriptRef, Script } from '../../wecom_integration/components/srcipt';
+// @ts-ignore
+import { IScriptRef, Script } from 'enterprise';
 
 import styles from './styles.module.less';
 import { IFeishuConfigParams } from '../interface';

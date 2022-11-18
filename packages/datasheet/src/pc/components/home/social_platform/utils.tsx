@@ -1,10 +1,11 @@
 import { ConfigConstant, ISocialAppType, ISocialPlatformType, ISpaceBasicInfo, ISpaceInfo, Strings, t } from '@apitable/core';
 import dd from 'dingtalk-jsapi';
 import Image from 'next/image';
-import { WecomOpenData, WecomOpenDataType } from 'pc/components/address_list';
 import { store } from 'pc/store';
 import * as React from 'react';
 import { SocialPlatformMap } from './config';
+// @ts-ignore
+import { WecomOpenData, WecomOpenDataType } from 'enterprise';
 
 export interface IFormatSelectOptionData extends ISpaceInfo {
   value: string;

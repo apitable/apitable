@@ -3,9 +3,10 @@ import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import styles from './styles.module.less';
 import { Strings, t, Api } from '@apitable/core';
-import { FormItem, IFormItem } from '../../wecom_integration/components/form_item';
 import classNames from 'classnames';
 import { IFeishuConfigParams } from '../interface';
+// @ts-ignore
+import { WecomFormItem, IWecomFormItem } from 'enterprise';
 
 export interface IConfigForm {
   encryptKey: string;
@@ -66,7 +67,7 @@ export const CreateEvent: React.FC<ICreateEvent> = props => {
   }, []);
 
   const handleChange = useCallback(
-    (e, item: IFormItem) => {
+    (e, item: IWecomFormItem) => {
       const value = e.target.value;
       if (value.length > 0) {
         setFormError(val => ({ ...val, [item.key]: '' }));
@@ -124,7 +125,7 @@ export const CreateEvent: React.FC<ICreateEvent> = props => {
           <div className={styles.formDesc} dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step4_content) }} />
           <div className={styles.formContent}>
             {Object.keys(schema1).map(key => (
-              <FormItem key={key} formData={formData} formItem={{ ...schema1[key], key }} error={formError[key]} onChange={handleChange} />
+              <WecomFormItem key={key} formData={formData} formItem={{ ...schema1[key], key }} error={formError[key]} onChange={handleChange} />
             ))}
           </div>
         </div>

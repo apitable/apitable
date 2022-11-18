@@ -5,7 +5,7 @@ import { useRequest } from 'pc/hooks';
 import * as React from 'react';
 import { useState } from 'react';
 import { Copyright } from '../ui';
-import styles from '../wecom_integration/styles.module.less';
+import styles from './styles.module.less';
 import { FeishuIntegrationHeader } from './feishu_integration_header';
 
 const FeishuIntegration: React.FC = ({ children }) => {
@@ -22,8 +22,8 @@ const FeishuIntegration: React.FC = ({ children }) => {
   }
 
   return (
-    <div className={styles.wecomIntegrationWrap}>
-      <div className={styles.wecomIntegration}>
+    <div className={styles.feishuIntegrationWrap}>
+      <div className={styles.feishuIntegration}>
         <FeishuIntegrationHeader userInfo={userInfo} />
         <div className={styles.container}>
           {children ? children : <FeishuSyncConcat spaceId={userInfo.spaceId} />}

@@ -21,8 +21,9 @@ import WecomIcon from 'static/icon/signin/signin_img_wecom.png';
 import { DingdingQrCode } from '../dingding_qr_code';
 import { QrCode } from '../qr_code/qr_code';
 import { isWecomFunc } from '../social_platform';
-import { WecomQrCode } from '../wecom_qr_code';
 import styles from './style.module.less';
+// @ts-ignore
+import { WecomQrCode } from 'enterprise';
 
 export const OtherLogin: FC<{ afterLogin?(data: string, loginMode: ConfigConstant.LoginMode): void }> = props => {
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);

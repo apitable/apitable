@@ -6,9 +6,10 @@ import styles from './styles.module.less';
 import { CopyOutlined } from '@apitable/icons';
 import { Strings, t } from '@apitable/core';
 import { copy2clipBoard } from 'pc/utils';
-import { FormItem } from '../../wecom_integration/components/form_item';
 import classNames from 'classnames';
 import { IFeishuConfigParams } from '../interface';
+// @ts-ignore
+import { WecomFormItem } from 'enterprise';
 
 interface ICreateRouter {
   nextStep: () => void;
@@ -80,7 +81,7 @@ export const CreateRouter: React.FC<ICreateRouter> = props => {
           <div className={styles.formDesc} dangerouslySetInnerHTML={{ __html: t(Strings.lark_integration_step3_content) }} />
           <div className={styles.formContent}>
             {Object.keys(schema).map(key => (
-              <FormItem key={key} formData={formData} formItem={{ ...schema[key], key }} />
+              <WecomFormItem key={key} formData={formData} formItem={{ ...schema[key], key }} />
             ))}
           </div>
         </div>
