@@ -216,7 +216,7 @@ test-ut-room-docker:
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
 	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 	sleep 20
-	make _test_init_db
+	make _test_init_db RUN_TEST_ROOM_MODE=docker
 	docker-compose -f docker-compose-unit-test.yml build unit-test-room
 	docker-compose -f docker-compose-unit-test.yml run --rm \
 		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
@@ -225,10 +225,12 @@ test-ut-room-docker:
 		unit-test-room yarn test:ut:room:cov
 	@echo "${GREEN}finished unit test，clean up images...${RESET}"
 	if [ -d "./packages/room-server/coverage" ]; then \
-		echo 'fkfkkfkfkdfaksdjfkladsjfjl;asdkj'; \
 		sudo chown -R $(shell id -u):$(shell id -g) ./packages/room-server/coverage; \
 	fi
 	make _test_clean
+
+_clean_room_jest_coverage:
+	rm -fr ./packages/room-server/coverage || true
 
 ###### 【room server unit test】 ######
 

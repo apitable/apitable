@@ -1,3 +1,4 @@
+import '@apitable/i18n-lang';
 import { LoggerService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -6,7 +7,6 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import '@apitable/i18n-lang';
 import { environment, isDevMode, isProdMode } from 'app.environment';
 import { AppModule } from 'app.module';
 import helmet from 'fastify-helmet';
