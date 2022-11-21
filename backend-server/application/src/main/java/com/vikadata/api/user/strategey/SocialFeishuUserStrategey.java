@@ -83,7 +83,7 @@ public class SocialFeishuUserStrategey extends AbstractCreateSocialUser {
             ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
             // Shence burial site - registration
             Long finalUserId = userId;
-            String scene = "飞书ISV";
+            String scene = "Lark ISV";
             TaskManager.me().execute(() -> sensorsService.track(finalUserId, TrackEventType.REGISTER, scene, origin));
         }
         // Associate the members of the tenant space

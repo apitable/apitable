@@ -19,7 +19,7 @@ public class DeveloperAssetServiceImpl extends ServiceImpl<DeveloperAssetMapper,
 
     @Override
     public boolean saveAssetInDeveloper(Long assetId, Long createdBy, String assetChecksum, DeveloperAssetType developerAssetType, String originalFileName, long fileSize) {
-        log.info("新增开发者附件记录");
+        log.info("Added developer attachment record");
         DeveloperAssetEntity entity = DeveloperAssetEntity.builder()
                 .assetId(assetId)
                 .assetChecksum(assetChecksum)

@@ -39,7 +39,7 @@ import static com.vikadata.api.workspace.enums.PermissionException.NODE_OPERATIO
 
 @RestController
 @ApiResource(path = "/internal")
-@Api(tags = "内部服务-用户接口")
+@Api(tags = "Internal Service - Node Interface")
 public class InternalNodeController {
 
     @Resource

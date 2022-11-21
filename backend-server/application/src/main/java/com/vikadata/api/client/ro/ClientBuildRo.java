@@ -23,7 +23,7 @@ public class ClientBuildRo {
     @ApiModelProperty(value = "Html content", dataType = "java.lang.String", required = true, example = "aaaaadd")
     private String htmlContent;
 
-    @ApiModelProperty(value = "Version Description", dataType = "java.lang.String", required = true, example = "构建")
+    @ApiModelProperty(value = "Version Description", dataType = "java.lang.String", required = true, example = "build")
     private String description;
 
     @NotBlank(message = "The publishing user cannot be empty")

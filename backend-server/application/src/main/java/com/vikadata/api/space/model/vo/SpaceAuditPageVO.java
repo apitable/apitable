@@ -49,7 +49,7 @@ public class SpaceAuditPageVO {
         @ApiModelProperty(value = "avatar url", example = "http://wwww.vikadata.com/2019/11/12/17123187253.png", position = 2)
         private String avatar;
 
-        @ApiModelProperty(value = "member name", example = "张三", position = 3)
+        @ApiModelProperty(value = "member name", example = "Tony", position = 3)
         private String memberName;
 
         @ApiModelProperty(value = "is active", example = "true", position = 4)

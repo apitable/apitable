@@ -15,11 +15,9 @@ spring:
   data:
     mongodb:
       uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST:''}/${MONGO_DATABASE:vika_dev}?${MONGO_PARAMS:}
-  # Redis配置
+  # Redis
   redis:
-    # redis服务器主机，本地开发是公网地址，线上环境是内网地址
     host: ${REDIS_HOST:127.0.0.1}
-    # redis服务器用户
     username: ${REDIS_USERNAME:}
     password: ${REDIS_PASSWORD:}
     port: ${REDIS_PORT:6379}

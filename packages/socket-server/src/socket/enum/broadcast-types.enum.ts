@@ -10,11 +10,6 @@ export enum BroadcastTypes {
   SERVER_ROOM_CHANGE = 'SERVER_ROOM_CHANGE',
 
   /**
-   * There are new active collaborators
-   */
-  ACTIVATE_COLLABORATOR = 'ACTIVATE_COLLABORATOR',
-
-  /**
    * There are newly activated collaboration (multi) people
    */
   ACTIVATE_COLLABORATORS = 'ACTIVATE_COLLABORATORS',

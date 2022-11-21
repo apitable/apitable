@@ -27,14 +27,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author Shawn Deng
- * @date 2021-04-01 19:41:14
- */
 @RestController
 @ApiResource(path = "/internal")
-@Api(tags = "内部服务-节点权限接口")
+@Api(tags = "Internal Service - Node Permission Interface")
 public class InternalNodePermissionController {
 
     @Resource
@@ -44,10 +39,10 @@ public class InternalNodePermissionController {
     private INodeService iNodeService;
 
     @GetResource(path = "/node/{nodeId}/permission", requiredPermission = false)
-    @ApiOperation(value = "获取节点的权限", notes = "获取节点的权限")
+    @ApiOperation(value = "Get Node permission")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "nodeId", value = "节点ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-            @ApiImplicitParam(name = "shareId", value = "分享ID", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
+            @ApiImplicitParam(name = "nodeId", value = "Node ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "shareId", value = "Share ID", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
     })
     public ResponseData<DatasheetPermissionView> getNodePermission(@PathVariable("nodeId") String nodeId,
             @RequestParam(value = "shareId", required = false) String shareId) {

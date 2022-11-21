@@ -254,7 +254,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                 }
             }
             else {
-                log.error("上传操作过于频繁，请稍后重试。hash:{}", body.getHash());
+                log.error("Upload operation is too frequent, please try again later. Hash:{}", body.getHash());
                 throw new BusinessException("Upload operation is too frequent, please try again later.");
             }
         }
@@ -305,7 +305,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                         ossTemplate.upload(bucketName, pdfImgStreamCache.getInputStream(), pdfImgUploadPath.get(), MediaType.IMAGE_JPEG_VALUE, pdfImgChecksum);
                     }
                     catch (IOException e) {
-                        log.error("PDF预览图资源上传失败", e);
+                        log.error("Failed to upload PDF preview resource", e);
                     }
                 });
         return pdfImgUploadPath.get();

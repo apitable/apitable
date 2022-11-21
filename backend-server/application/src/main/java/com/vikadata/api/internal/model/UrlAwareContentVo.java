@@ -3,16 +3,9 @@ package com.vikadata.api.internal.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author tao
- */
 @Data
-@ApiModel("网址内容识别结果")
-public class UrlAwareContentVo{
+@ApiModel("URL Content Recognition Results")
+public class UrlAwareContentVo {
 
     private Boolean isAware;
 

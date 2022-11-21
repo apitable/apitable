@@ -12,11 +12,11 @@ import lombok.Data;
 public class ClientInfoVO {
 
     @Deprecated
-    @ApiModelProperty(value = "application environment ", example = "production", position = 1, hidden = true, notes = "这个参数交给前端web_server维护")
+    @ApiModelProperty(value = "application environment ", example = "production", position = 1, hidden = true)
     private String env;
 
     @Deprecated
-    @ApiModelProperty(value = "Application version", example = "v0.12.1-release.3", position = 2, hidden = true, notes = "这个参数交给前端web_server维护")
+    @ApiModelProperty(value = "Application version", example = "v0.12.1-release.3", position = 2, hidden = true)
     private String version;
 
     @ApiModelProperty(value = "Client language set globally by the user", example = "zh-CN", position = 3)

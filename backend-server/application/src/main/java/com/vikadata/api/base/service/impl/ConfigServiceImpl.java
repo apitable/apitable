@@ -50,7 +50,7 @@ public class ConfigServiceImpl implements IConfigService {
 
     @Override
     public void generateWizardConfig(Long userId, ConfigRo ro) {
-        log.info("「{}」更新引导配置。rollback:{}", userId, ro.getRollback());
+        log.info("「{}」update wizard config。rollback:{}", userId, ro.getRollback());
         String key = StrUtil.format(GENERAL_CONFIG, "wizards", ro.getLang());
         boolean rollback = BooleanUtil.isTrue(ro.getRollback());
         Object config = redisTemplate.opsForValue().get(key);
@@ -58,7 +58,7 @@ public class ConfigServiceImpl implements IConfigService {
         if (rollback) {
             Object preConfig = redisTemplate.opsForValue().get(preKey);
             if (preConfig == null || config == null) {
-                throw new BusinessException("上个版本的配置不存在，回退失败");
+                throw new BusinessException("The configuration of the previous version does not exist, and the rollback fails");
             }
             // The old and new configuration is exchanged, and the original configuration is retained for 14 days for rollback again
             redisTemplate.opsForValue().set(key, preConfig, 7, TimeUnit.DAYS);
@@ -69,7 +69,7 @@ public class ConfigServiceImpl implements IConfigService {
         else {
             String content = ro.getContent();
             if (StrUtil.isBlank(content)) {
-                throw new BusinessException("配置内容不能为空");
+                throw new BusinessException("Configuration content cannot be empty");
             }
             redisTemplate.opsForValue().set(key, content, 7, TimeUnit.DAYS);
             // Alternate between old and new, the original configuration is retained for 14 days for rollback

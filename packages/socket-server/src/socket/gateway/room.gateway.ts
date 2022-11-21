@@ -30,8 +30,9 @@ export class RoomGateway {
   }
 
   @SubscribeMessage(RequestTypes.LEAVE_ROOM)
-  async leaveRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<boolean> {
-    return await this.roomService.leaveRoom(message, client);
+  leaveRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): boolean {
+    this.roomService.leaveRoom(message, client);
+    return true;
   }
 
   @UseInterceptors(ExecuteTimeInterceptor)

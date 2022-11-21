@@ -37,7 +37,7 @@ public class RestTemplateServiceImpl implements RestTemplateService {
 
     @Override
     public void disableNodeShareNotify(List<NodeShareDisableNotifyRo> message) {
-        log.info("关闭节点分享通知");
+        log.info("Close node sharing notification");
         HttpHeaders headers = new HttpHeaders();
         headers.put("token", Collections.singletonList(socketProperties.getToken()));
         String url = socketProperties.getDomain() + socketProperties.getDisableNodeShareNotify();
@@ -45,13 +45,13 @@ public class RestTemplateServiceImpl implements RestTemplateService {
         String result = restTemplate.postForObject(url, request, String.class);
         Integer code = JSONUtil.parseObj(result).getInt("code");
         if (!code.equals(DEFAULT_SUCCESS_CODE)) {
-            throw new BusinessException("关闭节点分享通知调用失败！Msg: " + JSONUtil.parseObj(result).getStr("message"));
+            throw new BusinessException("Failed to close the node share notification call！Msg: " + JSONUtil.parseObj(result).getStr("message"));
         }
     }
 
     @Override
     public void fieldPermissionChangeNotify(FieldPermissionChangeNotifyRo message) {
-        log.info("字段权限变更通知");
+        log.info("Field permission change notification");
         HttpHeaders headers = new HttpHeaders();
         headers.put("token", Collections.singletonList(socketProperties.getToken()));
         String url = socketProperties.getDomain() + socketProperties.getFieldPermissionChangeNotify();
@@ -59,7 +59,7 @@ public class RestTemplateServiceImpl implements RestTemplateService {
         String result = restTemplate.postForObject(url, request, String.class);
         Integer code = JSONUtil.parseObj(result).getInt("code");
         if (!code.equals(DEFAULT_SUCCESS_CODE)) {
-            throw new BusinessException("字段权限变更通知调用失败！Msg: " + JSONUtil.parseObj(result).getStr("message"));
+            throw new BusinessException("Field permission change notification call failed！Msg: " + JSONUtil.parseObj(result).getStr("message"));
         }
     }
 }

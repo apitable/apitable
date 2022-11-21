@@ -104,7 +104,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       // Filter exception that isn't necessary to be reported.
       message.cookie = undefined;
       message.token = undefined;
-      Sentry.captureException(e, { extra: { message } });
+      Sentry.captureException(e, { extra: { message }});
     }
     return ApiResponse.error(errMsg, statusCode);
   }
@@ -206,7 +206,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
    * @param {string[]} socketIds
    * @returns {Promise<{collaborators: ICollaborator[]}>}
    */
-  async getActiveCollaborators(message: IWatchRoomMessage, spaceId: string, socketIds: string[]) {
+  async getActiveCollaborators(spaceId: string, socketIds: string[]) {
     if (!spaceId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }

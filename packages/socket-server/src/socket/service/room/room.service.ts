@@ -54,7 +54,7 @@ export class RoomService {
     },
     callback: () => ({ code: ServerErrorCode.NetworkError, success: false, message: 'Network Error' }),
   })
-  async watchRoom(message: any, socket: Socket, server?: any): Promise<any | null> {
+  async watchRoom(message: any, socket: Socket, server: any): Promise<any | null> {
     const room = message.roomId;
     const createTime = Date.now();
     const isExistRoom = socket.rooms.has(room);
@@ -68,7 +68,7 @@ export class RoomService {
     });
 
     if (isExistRoom) {
-      this.logger.log(`traceId[${traceId}] User are already in room，
+      this.logger.log(`traceId[${traceId}] User are already in room,
       socketId: ${socket.id} has already in room: ${JSON.stringify(socket.rooms[room])}`);
     }
     // notifies nest-server to handle `WatchRoom` messages
@@ -97,7 +97,7 @@ export class RoomService {
       }
     } else if (isExistRoom) {
       // Authentication failed and is already in `room`, disconnect
-      await this.leaveRoom({ roomId: room }, socket);
+      this.leaveRoom({ roomId: room }, socket);
     }
 
     const endTime = +new Date();
@@ -105,7 +105,7 @@ export class RoomService {
       action: 'WatchRoom',
       traceId: traceId,
       ms: endTime - createTime,
-      message: `WatchRoom End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`,
+      message: `WatchRoom End roomId:[${message.roomId}] Success, total time: ${endTime - createTime}ms`,
     });
     return result;
   }
@@ -114,7 +114,7 @@ export class RoomService {
     // get all rooms of the datasheet resource
     const roomIds = [message.roomId];
     // custom request to get multiple service node pod sockets
-    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (_err: any, replies: string | any[]) => {
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(_err: any, replies: string | any[]) => {
       this.logger.log({ message: 'WatchRoom:ServerSideEmit', replies });
       // no room connection return directly
       if (!replies.length) {
@@ -131,8 +131,8 @@ export class RoomService {
         return;
       }
       const _grpcMetadata = initGlobalGrpcMetadata();
-      const _message = this.injectMessage(socket, message, true, true);
-      _message.socketIds = [...new Set([..._message.socketIds, ...socketIds])];
+      const _message = this.injectMessage(socket, message, true);
+      _message.socketIds = socketIds;
       _message.spaceId = spaceId;
       const result = await this.nestClient.getActiveCollaborators(_message, _grpcMetadata);
       socket.broadcast.to(socket.id).emit(BroadcastTypes.ACTIVATE_COLLABORATORS, {
@@ -141,15 +141,14 @@ export class RoomService {
     });
   }
 
-  async leaveRoom(message: any, socket: Socket): Promise<boolean> {
+  leaveRoom(message: any, socket: Socket) {
     const room = message.roomId;
     // to prevent when you are the only one, disconnection will report an error
     if (socket.nsp.adapter.rooms.has(room)) {
       socket.leave(room);
-      await socket.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: socket.id, ...message });
+      socket.broadcast.to(room).emit(BroadcastTypes.DEACTIVATE_COLLABORATOR, { socketId: socket.id, ...message });
       this.logger.log({ message: 'User are leave room', room, socketId: socket.id });
     }
-    return Promise.resolve(true);
   }
 
   @Retryable({
@@ -188,7 +187,7 @@ export class RoomService {
       action: 'RoomChange',
       traceId: traceId,
       ms: endTime - createTime,
-      message: `RoomChange End roomId:[${message.roomId}] Success，total time: ${endTime - createTime}ms`,
+      message: `RoomChange End roomId:[${message.roomId}] Success, total time: ${endTime - createTime}ms`,
     });
     return result;
   }
@@ -241,7 +240,7 @@ export class RoomService {
     message.clientId = socket.id;
     if (!isNil(message.roomId) && isNeedSocketIds) {
       if (socket.nsp.adapter.rooms.has(message.roomId)) {
-        message.socketIds = [...[socket.id], ...Object.keys(socket.nsp.adapter.rooms.get(message.roomId))];
+        message.socketIds = [...[socket.id], ...socket.nsp.adapter.rooms.get(message.roomId)];
       } else {
         message.socketIds = [socket.id];
       }
@@ -252,13 +251,13 @@ export class RoomService {
   /**
    * Node sharing is turned off
    */
-  async broadcastNodeShareDisabled(server: any, message: NodeShareDisableRo[]) {
+  broadcastNodeShareDisabled(server: any, message: NodeShareDisableRo[]) {
     // there is no communication room return directly
     if (!Object.keys(server.sockets).length) {
       return;
     }
 
-    await message.map(ro => {
+    message.forEach(ro => {
       server.to(ro.nodeId).emit(BroadcastTypes.NODE_SHARE_DISABLED, { shareIds: ro.shareIds });
       return;
     });
@@ -270,7 +269,7 @@ export class RoomService {
   async broadcastFieldPermissionChange(server: any, message: FieldPermissionChangeRo) {
     // get all rooms of the datasheet resource
     const roomIds = await this.nestService.getResourceRelateRoomIds(message.datasheetId);
-    const { event, changes, ...args } = message;
+    const { event, ...args } = message;
     // Field permission closures or attribute changes are broadcast directly to each room
     if (event === BroadcastTypes.FIELD_PERMISSION_DISABLE || event === BroadcastTypes.FIELD_PERMISSION_SETTING_CHANGE) {
       roomIds.map(roomId => {
@@ -279,8 +278,11 @@ export class RoomService {
       });
       return;
     }
+    if (server.adapter.rooms.has(message.datasheetId)) {
+      await this.broadcastFieldPermissionChangeToUser(server, message, [...server.adapter.rooms.get(message.datasheetId)]);
+    }
     // custom request to get multiple service node pod sockets
-    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async (err: string, replies: string | any[]) => {
+    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(err: string, replies: string | any[]) => {
       if (err) {
         throw new RuntimeException(err);
       }
@@ -300,30 +302,34 @@ export class RoomService {
       if (!socketIds.length) {
         return;
       }
+      await this.broadcastFieldPermissionChangeToUser(server, message, socketIds);
+    });
+  }
 
-      const infos = await this.nestService.getSocketInfos(socketIds);
-      // Build User ID - Permission Map
-      const uuidToPermissionInfoMap = new Map<string, any>();
-      for (const { uuids, ...permissionInfo } of changes) {
-        for (const uuid of uuids) {
-          uuidToPermissionInfoMap.set(uuid, permissionInfo);
-        }
+  private async broadcastFieldPermissionChangeToUser(server: any, message: FieldPermissionChangeRo, socketIds: string[]) {
+    const { event, changes, ...args } = message;
+    const infos = await this.nestService.getSocketInfos(socketIds);
+    // Build User ID - Permission Map
+    const uuidToPermissionInfoMap = new Map<string, any>();
+    for (const { uuids, ...permissionInfo } of changes) {
+      for (const uuid of uuids) {
+        uuidToPermissionInfoMap.set(uuid, permissionInfo);
       }
-      // broadcast to each socket
-      await infos.map(info => {
-        // Sharing page connection, only broadcast field permission is on
-        if (info.shareId) {
-          if (event === BroadcastTypes.FIELD_PERMISSION_ENABLE) {
-            server.to(info.socketId).emit(event, args);
-          }
-          return;
-        }
-        // The connection within the station is broadcast only to the user whose privileges have changed
-        if (info.userId && uuidToPermissionInfoMap.has(info.userId)) {
-          server.to(info.socketId).emit(event, { ...uuidToPermissionInfoMap.get(info.userId), ...args });
+    }
+    // broadcast to each socket
+    infos.forEach(info => {
+      // Sharing page connection, only broadcast field permission is on
+      if (info.shareId) {
+        if (event === BroadcastTypes.FIELD_PERMISSION_ENABLE) {
+          server.to(info.socketId).emit(event, args);
         }
         return;
-      });
+      }
+      // The connection within the station is broadcast only to the user whose privileges have changed
+      if (info.userId && uuidToPermissionInfoMap.has(info.userId)) {
+        server.to(info.socketId).emit(event, { ...uuidToPermissionInfoMap.get(info.userId), ...args });
+      }
+      return;
     });
   }
 
