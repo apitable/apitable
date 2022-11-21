@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { ArgsProps } from 'antd/lib/message';
+import { ConfigOptions, ArgsProps } from 'antd/lib/message';
 import WarningIcon from 'static/icon/common/common_icon_warning.svg';
 import SuccessIcon from 'static/icon/common/common_icon_success.svg';
 import ErrorIcon from 'static/icon/common/common_icon_error.svg';
@@ -10,7 +10,9 @@ message.config({
   top: 80,
 });
 
-type IMessageProps = Partial<Omit<ArgsProps, 'type'>>;
+type IMessageProps = ConfigOptions & {
+  content?: ArgsProps['content'];
+};
 const duration = 3;
 const success = (props: IMessageProps) => {
   const config = {

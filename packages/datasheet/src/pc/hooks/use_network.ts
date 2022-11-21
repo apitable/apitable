@@ -42,7 +42,7 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
     }
     if (IOConnecting) {
       if (!templateId) {
-        hideMsgRef.current = Message.warning({ content: t(Strings.network_state_disconnection), duration: 0 });
+        hideMsgRef.current = Message.warning({ content: t(Strings.network_state_disconnection), duration: 0, maxCount: 1 });
       }
       setStatus(Network.Loading);
       return;
