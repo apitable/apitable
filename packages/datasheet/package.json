@@ -129,6 +129,7 @@
     "react-display-name": "^0.2.5",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-dropzone": "^11.2.0",
     "react-grid-layout": "^1.2.0",

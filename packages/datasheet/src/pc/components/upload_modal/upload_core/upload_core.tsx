@@ -5,11 +5,12 @@ import produce from 'immer';
 import { ItemTypes } from 'pc/components/gallery_view/constant';
 import { IDragItem } from 'pc/components/gallery_view/interface';
 import { resourceService } from 'pc/resource_service';
-import { UploadManager } from 'pc/utils';
+import { isTouchDevice, UploadManager } from 'pc/utils';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DndProvider, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend'
 import { stopPropagation } from '../../../utils/dom';
 import { PreviewItem } from '../preview_item/preview_item';
 import { UploadItem } from '../upload_item';
@@ -277,7 +278,7 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
           [styles[`columnCount${columnCount}`]]: true,
         })}
       >
-        <DndProvider backend={HTML5Backend}>
+        <DndProvider backend={isTouchDevice() ? TouchBackend : HTML5Backend}>
           <ScrollingComponent className={styles.scrollBox}>
             <SortableList
               cellValue={cellValue}
