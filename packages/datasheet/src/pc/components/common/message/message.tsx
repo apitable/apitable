@@ -11,7 +11,9 @@ message.config({
 });
 
 type IMessageProps = ConfigOptions & {
+  key?: string;
   content?: ArgsProps['content'];
+  onClose?: ArgsProps['onClose'];
 };
 const duration = 3;
 const success = (props: IMessageProps) => {
