@@ -1,11 +1,9 @@
 import { ApiTipConstant } from '@apitable/core';
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { ApiException } from '../exception/api.exception';
+import { ApiException } from 'shared/exception';
 
 /**
  * request context middleware
- * @author Zoe zheng
- * @date 2020/7/24 2:16 PM
  */
 @Injectable()
 export class ApiRequestMiddleware implements NestMiddleware {

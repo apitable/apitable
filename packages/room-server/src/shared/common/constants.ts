@@ -32,6 +32,7 @@ export class SwaggerConstants {
   public static readonly TAG = 'Fusion Open API';
   public static readonly DATASHEET_TAG = 'Datasheet';
   public static readonly AUTH_BEAR_DESCRIPTION = 'Developer token';
+  public static readonly ENTERPRISE_TAG = 'Enterprise';
 }
 
 // authorization prefix
@@ -132,3 +133,12 @@ export class EnvConfigKey {
   public static readonly API_LIMIT = 'api_limit';
   public static readonly ACTUATOR = 'actuator';
 }
+
+/**
+ * the maximum number of node embedlink
+ */
+export const NODE_MAX_EMBED_LINK_COUNTS = process.env.NODE_MAX_EMBED_LINK_COUNTS ? parseInt(process.env.NODE_MAX_EMBED_LINK_COUNTS, 10) : 30;
+
+export const SERVER_DOMAIN = process.env.SERVER_DOMAIN ? process.env.SERVER_DOMAIN : 'https://vika.cn';
+
+export const EMBED_LINK_URL_TEMPLATE = SERVER_DOMAIN + '/embed/%s';

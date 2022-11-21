@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import { IMeta } from '@apitable/core';
-import { ServerException, PermissionException } from '../../../shared/exception';
-import { IBaseException } from '../../../shared/exception/base.exception';
-import { DatasheetMetaRepository } from '../../repositories/datasheet.meta.repository';
+import { Injectable } from '@nestjs/common';
+import { DatasheetMetaRepository } from 'database/repositories/datasheet.meta.repository';
+import { PermissionException, ServerException } from 'shared/exception';
+import { IBaseException } from 'shared/exception/base.exception';
 
 @Injectable()
 export class DatasheetMetaService {
@@ -47,7 +47,7 @@ export class DatasheetMetaService {
     if (raw && raw.fieldMap) {
       for (const fieldId in raw.fieldMap) {
         // sort key fields
-        if ((!excludedFieldType || !excludedFieldType.has(raw.fieldMap[fieldId].type) && !filterFieldIds.includes(fieldId))) {
+        if (!excludedFieldType || (!excludedFieldType.has(raw.fieldMap[fieldId].type) && !filterFieldIds.includes(fieldId))) {
           fieldIds.push(fieldId);
         }
       }
@@ -58,5 +58,14 @@ export class DatasheetMetaService {
   async getRowsNumByDstId(dstId: string): Promise<number> {
     const result = await this.repository.countRowsByDstId(dstId);
     return result.count;
+  }
+
+  async getViewIdsByDstId(dstId: string): Promise<string[] | null> {
+    return await this.repository.selectViewIdsByDstId(dstId);
+  }
+
+  async isViewIdExist(dstId: string, viewId: string): Promise<boolean> {
+    const viewIds = await this.getViewIdsByDstId(dstId);
+    return viewIds && viewIds.includes(viewId);
   }
 }

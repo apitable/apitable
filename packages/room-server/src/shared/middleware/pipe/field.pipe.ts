@@ -1,22 +1,26 @@
+import { ApiTipConstant, FieldKeyEnum, FieldType, ICellValue, IField, ISelectField, SelectField } from '@apitable/core';
 import { ArgumentMetadata, Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { ApiTipConstant, FieldKeyEnum, FieldType, ICellValue, IField, ISelectField, SelectField } from '@apitable/core';
-import {
-  DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_HTTP_DECORATE, DATASHEET_LINKED, DATASHEET_MEMBER_FIELD, DATASHEET_META_HTTP_DECORATE, InjectLogger
-} from '../../common';
-import { FieldTypeEnum } from 'shared/enums/field.type.enum';
-import { ApiException } from '../../exception/api.exception';
-import { FastifyRequest } from 'fastify';
-import { IFieldRoTransformOptions, IFieldValue, IFieldValueMap } from '../../interfaces';
-import { flatten, keyBy } from 'lodash';
 import { DatasheetRecordService } from 'database/services/datasheet/datasheet.record.service';
-import { FieldManager } from '../../../fusion/field.manager';
+import { FastifyRequest } from 'fastify';
+import { FieldManager } from 'fusion/field.manager';
+import { flatten, keyBy } from 'lodash';
+import {
+  API_MAX_MODIFY_RECORD_COUNTS,
+  DATASHEET_ENRICH_SELECT_FIELD,
+  DATASHEET_HTTP_DECORATE,
+  DATASHEET_LINKED,
+  DATASHEET_MEMBER_FIELD,
+  DATASHEET_META_HTTP_DECORATE,
+  InjectLogger,
+} from 'shared/common';
+import { FieldTypeEnum } from 'shared/enums/field.type.enum';
+import { ApiException } from 'shared/exception';
+import { IFieldRoTransformOptions, IFieldValue, IFieldValueMap } from 'shared/interfaces';
 import { Logger } from 'winston';
 
 /**
  * Field pipe transformer, get fieldId, memberId and spaceId by fieldName
- * @author Zoe zheng
- * @date 2020/8/7 5:45 PM
  */
 @Injectable()
 export class FieldPipe implements PipeTransform {
@@ -24,17 +28,8 @@ export class FieldPipe implements PipeTransform {
     private readonly recordService: DatasheetRecordService,
     @InjectLogger() private readonly logger: Logger,
     @Inject(REQUEST) private readonly request: FastifyRequest,
-  ) { }
+  ) {}
 
-  /**
-   * field transform
-   * @param value
-   * @param type
-   * @param metatype
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/8/4 4:05 PM
-   */
   async transform(value: any, { type, metatype }: ArgumentMetadata): Promise<any> {
     const datasheet = this.request[DATASHEET_HTTP_DECORATE];
     const meta = this.request[DATASHEET_META_HTTP_DECORATE];
@@ -53,7 +48,9 @@ export class FieldPipe implements PipeTransform {
           this.validate(fieldValue, field, { field: value.fieldKey === FieldKeyEnum.NAME ? field.name : field.id });
           // options field
           if ([FieldType.SingleSelect, FieldType.MultiSelect].includes(field.type)) {
-            const { property: { options }} = (field as ISelectField);
+            const {
+              property: { options },
+            } = field as ISelectField;
             const existOptions: typeof options = this.request[DATASHEET_ENRICH_SELECT_FIELD][field.id]?.property.options || options;
             if (fieldValue == null) {
               fields[field.id] = null;
@@ -81,7 +78,7 @@ export class FieldPipe implements PipeTransform {
             const foreignDatasheetId = field.property.foreignDatasheetId;
             const linkRecordIds: string[] = [];
             if (fields[field.id]) {
-              linkRecordIds.push(...fields[field.id] as string[]);
+              linkRecordIds.push(...(fields[field.id] as string[]));
             }
             // complete the information if it is link type field
             if (record.recordId) {
@@ -98,7 +95,7 @@ export class FieldPipe implements PipeTransform {
               }
             }
           }
-          // transform member field 
+          // transform member field
           if (field.type === FieldType.Member && field.property.shouldSendMsg && fields[field.id]) {
             this.request[DATASHEET_MEMBER_FIELD].add(fieldKey);
           }
@@ -107,6 +104,9 @@ export class FieldPipe implements PipeTransform {
       if (!Object.keys(fields).length) throw ApiException.tipError(ApiTipConstant.api_params_invalid_fields_value);
       record.fields = fields;
       records.push(record);
+    }
+    if (records.length > API_MAX_MODIFY_RECORD_COUNTS) {
+      throw ApiException.tipError(ApiTipConstant.api_params_records_max_count_error, { count: API_MAX_MODIFY_RECORD_COUNTS });
     }
     value.records = records;
     return value;

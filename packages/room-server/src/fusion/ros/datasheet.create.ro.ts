@@ -1,18 +1,16 @@
-import { ApiTipConstant, Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IDPrefix, IField, IReduxState } from '@apitable/core';
+import { Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IDPrefix, IField, IReduxState } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDefined, IsOptional, ValidateNested } from 'class-validator';
+import { IsOptional, ValidateNested } from 'class-validator';
 import { DatasheetFieldCreateRo } from './datasheet.field.create.ro';
 
 export class DatasheetCreateRo {
-
   @ApiProperty({
     type: String,
     required: true,
     description: 'datasheet name',
-    example: 'New dataSheet'
+    example: 'New dataSheet',
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'datasheet', value: 'name' } })
   name: string;
 
   @ApiPropertyOptional({
@@ -21,6 +19,7 @@ export class DatasheetCreateRo {
     example: 'viwG9l1VPD6nH',
     description: 'datasheet description, plain text only',
   })
+  @IsOptional()
   description: string;
 
   @ApiPropertyOptional({
@@ -43,19 +42,24 @@ export class DatasheetCreateRo {
     type: [DatasheetFieldCreateRo],
     required: false,
     description: 'List of fields to be created',
-    example: [{
-      name: 'Title',
-      type: 'TEXT',
-      isPrimary: true
-    }, {
-      name: 'Options',
-      type: 'SingleSelect',
-      property: {
-        options: [{
-          name: 'abc'
-        }]
-      }
-    }],
+    example: [
+      {
+        name: 'Title',
+        type: 'TEXT',
+        isPrimary: true,
+      },
+      {
+        name: 'Options',
+        type: 'SingleSelect',
+        property: {
+          options: [
+            {
+              name: 'abc',
+            },
+          ],
+        },
+      },
+    ],
   })
   @IsOptional()
   // @ArrayMaxSize(200, { message: ApiTipConstant.api_params_max_count_error, context: { value: 200 }})
@@ -105,5 +109,4 @@ export class DatasheetCreateRo {
     }
     return foreignDatasheetIds;
   }
-
 }

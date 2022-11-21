@@ -1,10 +1,10 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ApiTipConstant } from '@apitable/core';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { plainToClass, Transform, Type } from 'class-transformer';
 import { IsOptional, Max, Min, ValidateIf, ValidateNested } from 'class-validator';
-import { API_DEFAULT_PAGE_SIZE, API_MAX_PAGE_SIZE } from '../../shared/common';
+import { API_DEFAULT_PAGE_SIZE, API_MAX_PAGE_SIZE } from 'shared/common';
 import { objStringToArray } from 'shared/helpers/fusion.helper';
-import { IApiPaginateRo } from '../../shared/interfaces';
+import { IApiPaginateRo } from 'shared/interfaces';
 import { SortRo } from './sort.ro';
 
 /**
@@ -27,18 +27,19 @@ export abstract class PageRo implements IApiPaginateRo {
   @Max(API_MAX_PAGE_SIZE, {
     message: ApiTipConstant.api_params_pagesize_max_error,
   })
-    pageSize: number = API_DEFAULT_PAGE_SIZE;
+  pageSize: number = API_DEFAULT_PAGE_SIZE;
 
   @ApiPropertyOptional({
     type: Number,
     example: 1000,
-    description: '(Optional) Specify the total number of returned records.' +
-    'If this parameter is used with PageSize, and the value of this parameter is less than Total (total record), return this parameter',
+    description:
+      '(Optional) Specify the total number of returned records.' +
+      'If this parameter is used with PageSize, and the value of this parameter is less than Total (total record), return this parameter',
   })
   @Type(() => Number)
   @IsOptional()
   @Min(1, { message: ApiTipConstant.api_params_maxrecords_min_error })
-    maxRecords: number;
+  maxRecords: number;
 
   @ApiPropertyOptional({
     type: Number,
@@ -49,22 +50,22 @@ export abstract class PageRo implements IApiPaginateRo {
   @Type(() => Number)
   @IsOptional()
   @Min(1, { message: ApiTipConstant.api_params_pagenum_min_error })
-    pageNum = 1;
+  pageNum = 1;
 
   @ApiPropertyOptional({
     type: [SortRo],
     isArray: true,
     description:
-      'Sort the records of the specified datasheet. A array consisting of multiple "sorting objects".' + 
+      'Sort the records of the specified datasheet. A array consisting of multiple "sorting objects".' +
       'The structure of a Sort Object is {"Order": "Desc", "Field": "Customer ID"}' +
-      'URL parameter form: sort[][field] = flDaj8zbpzj1x & sort[][order] = asc, ' + 
+      'URL parameter form: sort[][field] = flDaj8zbpzj1x & sort[][order] = asc, ' +
       'Note: If this parameter is used with the viewId parameter, ' +
-      'the sorting conditions specified in this parameter will cover the sorting conditions in the view'
+      'the sorting conditions specified in this parameter will cover the sorting conditions in the view',
   })
   @Type(() => SortRo)
   @Transform(value => plainToClass(SortRo, objStringToArray(value), {}), { toClassOnly: true })
   // TODO: This annotation has a bug that cannot pass the OPTIONS, so ignoring the incorrect verification of the format
   @ValidateNested({ message: ApiTipConstant.api_params_instance_sort_error })
   @IsOptional()
-    sort: SortRo[];
+  sort: SortRo[];
 }

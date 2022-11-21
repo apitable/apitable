@@ -1,13 +1,12 @@
+import { ApiTipConfig, ApiTipConstant, ConfigConstant, Strings, t } from '@apitable/core';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, LoggerService } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { ApiTipConfig, ApiTipConstant, Strings, t, ConfigConstant } from '@apitable/core';
-import { USER_HTTP_DECORATE } from '../common';
-import { ApiException } from '../exception';
-import { ServerException } from '../exception/server.exception';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
-import { IExceptionOption, IHttpErrorResponse } from 'shared/interfaces/http.interfaces';
 import { I18nService } from 'nestjs-i18n';
+import { USER_HTTP_DECORATE } from 'shared/common';
+import { ApiException, ServerException } from 'shared/exception';
+import { IExceptionOption, IHttpErrorResponse } from 'shared/interfaces/http.interfaces';
 
 /**
  * Global exception filter
@@ -17,8 +16,7 @@ import { I18nService } from 'nestjs-i18n';
  */
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerService, private readonly i18n: I18nService) {
-  }
+  constructor(private logger: LoggerService, private readonly i18n: I18nService) {}
 
   async catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -34,7 +32,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         request.headers.authorization = undefined;
         request.headers.cookie = undefined;
       }
-      
+
       Sentry.captureException(exception, {
         extra: {
           ip: request.ip,
@@ -46,7 +44,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           replyHeaders: response.getHeaders(),
           msg: exception?.message,
           method: request.method,
-          stack: exception?.stack
+          stack: exception?.stack,
         },
       });
     }
@@ -68,6 +66,17 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       if (httpStatusCode === HttpStatus.NOT_FOUND) {
         // 404 means API not found
         errMsg = t(Strings[ApiTipConfig.api.tips[ApiTipConstant.api_not_exists].id]);
+      }
+      if (httpStatusCode === HttpStatus.BAD_REQUEST) {
+        const errorMessages = exception.getResponse()['message'][0].split('.');
+        errMsg = errorMessages[errorMessages.length - 1];
+        if (ApiTipConstant[errMsg]) {
+          errMsg = await this.i18n.translate(errMsg, {
+            lang: request[USER_HTTP_DECORATE]?.locale,
+          });
+          // TODO Does not meet the http status specification, the parameter error should be 400
+          httpStatusCode = HttpStatus.OK;
+        }
       } else {
         const errorOption: IExceptionOption = exception.getResponse() as IExceptionOption;
         errMsg = typeof errorOption === 'string' ? errorOption : errorOption.message;

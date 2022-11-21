@@ -29,8 +29,9 @@ import { UnitTagRepository } from 'database/repositories/unit.tag.repository';
 import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
 import { UserRepository } from 'database/repositories/user.repository';
 import { WidgetRepository } from 'database/repositories/widget.repository';
-import { CommandService } from 'database/services/command/command.service';
+import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module';
 import { CommandOptionsService } from 'database/services/command/command.options.service';
+import { CommandService } from 'database/services/command/command.service';
 import { DashboardService } from 'database/services/dashboard/dashboard.service';
 import { ComputeFieldReferenceManager } from 'database/services/datasheet/compute.field.reference.manager';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
@@ -70,10 +71,10 @@ import { GrpcClientModule } from 'grpc/client/grpc.client.module';
 // import { ResourceServiceModule } from '_modules/resource.service.module';
 import { HttpConfigService } from 'shared/services/config/http.config.service';
 import { RestService } from 'shared/services/rest/rest.service';
+import { IsNodeExistConstraint } from 'shared/validations/validation.constraint';
 import { JavaModule } from './services/java/java.module';
 import { ClientStorage } from './services/socket/client.storage';
 import { RoomResourceRelService } from './services/socket/room.resource.rel.service';
-import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module';
 
 @Global()
 @Module({
@@ -251,6 +252,9 @@ import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module
     UnitMemberService,
     UnitTagService,
     UnitTeamService,
+
+    // validation
+    IsNodeExistConstraint,
   ],
   exports: [
     RestService,
@@ -271,6 +275,7 @@ import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module
     ComputeFieldReferenceManager,
     DatasheetChangesetService,
     DatasheetChangesetSourceService,
+    IsNodeExistConstraint,
   ],
 })
 export class GlobalModule {}

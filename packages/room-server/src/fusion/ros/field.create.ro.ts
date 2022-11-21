@@ -1,27 +1,31 @@
 import {
-  ApiTipConstant, Field, FieldType, getFieldClass, getFieldTypeByString, getNewId, IAddOpenFieldProperty, IDPrefix, IField, IReduxState
+  Field,
+  FieldType,
+  getFieldClass,
+  getFieldTypeByString,
+  getNewId,
+  IAddOpenFieldProperty,
+  IDPrefix,
+  IField,
+  IReduxState,
 } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDefined } from 'class-validator';
 
 export class FieldCreateRo {
-
   @ApiProperty({
     type: String,
     required: true,
     description: 'Field name',
-    example: 'field name'
+    example: 'field name',
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'name' } })
   name: string;
 
   @ApiProperty({
     type: String,
     required: true,
     description: 'Field type',
-    example: ''
+    example: '',
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'type' } })
   type: string;
 
   @ApiPropertyOptional({
@@ -52,7 +56,7 @@ export class FieldCreateRo {
         name: this.name,
         type: fieldType,
         property,
-      }
+      },
     };
   }
 
@@ -63,5 +67,4 @@ export class FieldCreateRo {
     }
     return null;
   }
-
 }

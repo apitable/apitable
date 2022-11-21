@@ -9,7 +9,7 @@ export class ChangesetRo {
     example: 'dst0Yj5aNeoHldqvf6',
     description: 'datasheet ID',
   })
-  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error })
   dstId: string;
 
   @ApiProperty({
@@ -18,6 +18,6 @@ export class ChangesetRo {
     example: '0Yj5aNeoHldqvf6',
     description: 'message ID',
   })
-  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error })
   messageId: string;
 }

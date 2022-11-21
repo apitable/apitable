@@ -1,8 +1,7 @@
 import { ApiTipConstant, FieldKeyEnum } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { ArrayMaxSize, ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
-import { API_MAX_MODIFY_RECORD_COUNTS } from 'shared/common';
+import { ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
 import { FieldCreateRo } from './record.field.create.ro';
 
 export class RecordCreateRo {
@@ -33,12 +32,6 @@ export class RecordCreateRo {
   })
   @Type(() => FieldCreateRo)
   @ArrayNotEmpty({ message: ApiTipConstant.api_params_records_empty_error })
-  @ArrayMaxSize(API_MAX_MODIFY_RECORD_COUNTS, {
-    message: ApiTipConstant.api_params_records_max_count_error,
-    context: {
-      count: API_MAX_MODIFY_RECORD_COUNTS,
-    },
-  })
   @ValidateNested()
   records: FieldCreateRo[];
 

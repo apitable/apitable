@@ -1,7 +1,18 @@
 import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 import {
-  CheckboxFieldPropertyDto, CurrencyFieldPropertyDto, DateTimeFieldPropertyDto, FormulaFieldPropertyDto, LinkFieldPropertyDto, LookupFieldPropertyDto,
-  MemberFieldPropertyDto, NumberFieldPropertyDto, RatingFieldPropertyDto, SelectFieldPropertyDto, SingleTextPropertyDto, UserPropertyDto,
+  CheckboxFieldPropertyDto,
+  CurrencyFieldPropertyDto,
+  DateTimeFieldPropertyDto,
+  FormulaFieldPropertyDto,
+  LinkFieldPropertyDto,
+  LookupFieldPropertyDto,
+  MemberFieldPropertyDto,
+  NumberFieldPropertyDto,
+  RatingFieldPropertyDto,
+  SelectFieldPropertyDto,
+  SingleTextPropertyDto,
+  UserPropertyDto,
 } from 'fusion/dtos/field.property.dto';
 import { FieldPermissionEnum, FieldTypeTextEnum } from 'shared/enums/field.type.enum';
 import { IApiDatasheetField } from 'shared/interfaces';
@@ -33,6 +44,7 @@ export class DatasheetFieldDto implements IApiDatasheetField {
     description: 'field description',
     example: 'do not change it, it was generated automatically',
   })
+  @IsOptional()
   desc?: string;
 
   @ApiPropertyOptional({

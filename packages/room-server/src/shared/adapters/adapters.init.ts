@@ -1,30 +1,51 @@
+import { generateRandomString } from '@apitable/core';
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { generateRandomString } from '@apitable/core';
-import { isProdMode } from 'app.environment';
-import {
-  AUTHORIZATION_PREFIX, DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_HTTP_DECORATE, DATASHEET_LINKED, DATASHEET_MEMBER_FIELD,
-  DATASHEET_META_HTTP_DECORATE, NODE_INFO, REQUEST_AT, REQUEST_HOOK_FOLDER, REQUEST_HOOK_PRE_NODE, REQUEST_ID, SERVER_TIME
-  , SPACE_ID_HTTP_DECORATE, SwaggerConstants, USER_HTTP_DECORATE,
-} from '../common';
-import { FusionApiVersion } from '../enums';
-import { FastifyInstance } from 'fastify';
-import {
-  CheckboxFieldPropertyDto, CurrencyFieldPropertyDto, DateTimeFieldPropertyDto, FormulaFieldPropertyDto, LinkFieldPropertyDto, LookupFieldPropertyDto,
-  MemberFieldPropertyDto, NumberFieldPropertyDto, RatingFieldPropertyDto, SelectFieldPropertyDto, SingleTextPropertyDto, UserPropertyDto,
-} from '../../fusion/dtos/field.property.dto';
-import { NodeRepository } from '../../database/repositories/node.repository';
+import { enableSwagger } from 'app.environment';
+import { NodeRepository } from 'database/repositories/node.repository';
 import { DatasheetMetaService } from 'database/services/datasheet/datasheet.meta.service';
 import { DatasheetService } from 'database/services/datasheet/datasheet.service';
 import { DeveloperService } from 'database/services/developer/developer.service';
-// import { ResourceServiceModule } from '../../_modules/resource.service.module';
+import { FastifyInstance } from 'fastify';
+import {
+  CheckboxFieldPropertyDto,
+  CurrencyFieldPropertyDto,
+  DateTimeFieldPropertyDto,
+  FormulaFieldPropertyDto,
+  LinkFieldPropertyDto,
+  LookupFieldPropertyDto,
+  MemberFieldPropertyDto,
+  NumberFieldPropertyDto,
+  RatingFieldPropertyDto,
+  SelectFieldPropertyDto,
+  SingleTextPropertyDto,
+  UserPropertyDto,
+} from 'fusion/dtos/field.property.dto';
 import { MiddlewareModule } from 'shared/middleware/middleware.module';
-import { GlobalModule } from '../global.module';
 import { SharedModule } from 'shared/shared.module';
+import {
+  AUTHORIZATION_PREFIX,
+  DATASHEET_ENRICH_SELECT_FIELD,
+  DATASHEET_HTTP_DECORATE,
+  DATASHEET_LINKED,
+  DATASHEET_MEMBER_FIELD,
+  DATASHEET_META_HTTP_DECORATE,
+  NODE_INFO,
+  REQUEST_AT,
+  REQUEST_HOOK_FOLDER,
+  REQUEST_HOOK_PRE_NODE,
+  REQUEST_ID,
+  SERVER_TIME,
+  SPACE_ID_HTTP_DECORATE,
+  SwaggerConstants,
+  USER_HTTP_DECORATE,
+} from '../common';
+import { FusionApiVersion } from '../enums';
+import { GlobalModule } from '../global.module';
 
 export const initSwagger = (app: INestApplication) => {
   // wouldn't be enabled in production
-  if (!isProdMode) {
+  if (enableSwagger) {
     const options = new DocumentBuilder()
       .setTitle(SwaggerConstants.TITLE)
       .setDescription(SwaggerConstants.DESCRIPTION)
@@ -48,10 +69,10 @@ export const initSwagger = (app: INestApplication) => {
         DateTimeFieldPropertyDto,
         LinkFieldPropertyDto,
         LookupFieldPropertyDto,
-        FormulaFieldPropertyDto
+        FormulaFieldPropertyDto,
       ],
     });
-    SwaggerModule.setup('nest/docs', app, document);
+    SwaggerModule.setup('nest/v1/docs', app, document);
   }
 };
 
@@ -80,8 +101,10 @@ export const initHttpHook = (app: INestApplication) => {
     if (request.params['nodeId']) {
       const nodeRepository = app.select(GlobalModule).get(NodeRepository);
       const nodeInfo = await nodeRepository.getNodeInfo(request.params['nodeId']);
-      request[NODE_INFO] = nodeInfo;
-      request[SPACE_ID_HTTP_DECORATE] = nodeInfo.spaceId;
+      if (nodeInfo) {
+        request[NODE_INFO] = nodeInfo;
+        request[SPACE_ID_HTTP_DECORATE] = nodeInfo.spaceId;
+      }
     }
     // datasheetId param should be defined in the fusion api controller by query parameter(datasheets/:datasheetId)
     if (request.params['datasheetId']) {
@@ -103,7 +126,6 @@ export const initHttpHook = (app: INestApplication) => {
       const folderId = request.body['folderId'];
       const folder = await nodeRepository.getNodeInfo(folderId);
       request[REQUEST_HOOK_FOLDER] = folder;
-
     }
     if (request.body && request.body['preNodeId']) {
       const nodeRepository = app.select(GlobalModule).get(NodeRepository);

@@ -161,6 +161,8 @@ export type StringKeysMapType = {
   'api_delete_error': 'api_delete_error',
   'api_delete_error_foreign_datasheet_deleted': 'api_delete_error_foreign_datasheet_deleted',
   'api_embed_link_id_not_exist': 'api_embed_link_id_not_exist',
+  'api_embed_link_instance_limit': 'api_embed_link_instance_limit',
+  'api_embed_link_limit': 'api_embed_link_limit',
   'api_enterprise_limit': 'api_enterprise_limit',
   'api_example_request': 'api_example_request',
   'api_example_response': 'api_example_response',

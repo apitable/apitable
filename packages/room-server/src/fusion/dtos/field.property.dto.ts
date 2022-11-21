@@ -1,5 +1,6 @@
 import { BasicValueType, RollUpFuncType } from '@apitable/core';
 import { ApiExtraModels, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 import { DatasheetFieldDto } from 'fusion/dtos/datasheet.field.dto';
 import { ExtraModel } from 'shared/common';
 import { UnitTypeTextEnum } from 'shared/enums';
@@ -31,6 +32,7 @@ class MemberProperty {
     example: 'https://s1.vika.cn/default/avatar001.jpg',
     description: 'avatar',
   })
+  @IsOptional()
   avatar?: string;
 }
 
@@ -189,11 +191,9 @@ export class DateTimeFieldPropertyDto {
     example: 'YYYY/MM/DD HH:mm',
     description:
       'Date Format ' +
-
       '\n The value of the date field returns a timestamp, with no restrictions on formatting. ' +
       'The format information in the field properties can be used for formatting, see dayjs format for the meaning' +
-
-      '\n If you don\'t want to deal with date formatting and want the returned results to be consistent with the view display, ' +
+      "\n If you don't want to deal with date formatting and want the returned results to be consistent with the view display, " +
       'you can assign cellFormat to string in the query parameters, and the returned content will all be strings',
   })
   format: string;

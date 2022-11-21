@@ -10,6 +10,6 @@ export class FieldCreateRo {
     description: 'The columns and data corresponding to the data to be created',
     example: { Currency: 5.53, Select: 'Select 1' },
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'records', value: 'fields' } })
+  @IsDefined({ message: ApiTipConstant.api_params_instance_fields_error })
   fields: ICellValueMap;
 }

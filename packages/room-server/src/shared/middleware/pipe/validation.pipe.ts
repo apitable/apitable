@@ -1,10 +1,10 @@
+import { ApiTipConstant } from '@apitable/core';
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
-import { ApiException, ApiTipId } from '../../exception/api.exception';
-import { IValidationPipeOptions } from '../../interfaces';
 import * as qs from 'qs';
-import { ApiTipConstant } from '@apitable/core';
+import { ApiException, ApiTipId } from 'shared/exception';
+import { IValidationPipeOptions } from '../../interfaces';
 
 /**
  * Global parameter validation pipe
@@ -18,25 +18,19 @@ export class ValidationPipe implements PipeTransform {
     this.options = options;
   }
 
-  /**
-   * validate parameters
-   * @param value parameter value
-   * @param type parameter type
-   * @param metatype parameter metatype
-   * @return
-   * @author Zoe Zheng
-   * @date 2020/8/4 4:05 PM
-   */
   async transform(value: any, { type, metatype }: ArgumentMetadata): Promise<any> {
     if (!metatype || !ValidationPipe.toValidate(metatype)) {
       return value;
     }
     let object;
     try {
-      object = plainToClass(metatype, qs.parse(value, {
-        allowDots: true,
-        parseArrays: true,
-      }));
+      object = plainToClass(
+        metatype,
+        qs.parse(value, {
+          allowDots: true,
+          parseArrays: true,
+        }),
+      );
     } catch (e) {
       throw ApiException.tipError(ApiTipConstant.api_param_default_error);
     }

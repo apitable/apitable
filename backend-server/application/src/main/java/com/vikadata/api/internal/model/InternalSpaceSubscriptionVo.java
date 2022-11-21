@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import com.vikadata.api.shared.support.serializer.NullNumberSerializer;
+import com.vikadata.api.shared.support.serializer.NullBooleanSerializer;
 
 /**
  * attachment capacity information view for spaces
@@ -37,4 +38,8 @@ public class InternalSpaceSubscriptionVo {
     @ApiModelProperty(value = "Maximum number of calendar views (unit: pieces)", example = "10", position = 6)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxCalendarViewsInSpace;
+
+    @ApiModelProperty(value = "Is it possible to call enterprise-level APIs", example = "true", position = 7)
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean canCallEnterpriseApi;
 }

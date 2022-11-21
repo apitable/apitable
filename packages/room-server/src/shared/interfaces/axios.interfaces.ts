@@ -32,6 +32,7 @@ export interface IAuthHeader {
   cookie?: string;
   token?: string;
   internal?: boolean;
+  userId?: string;
 }
 
 export interface IApiRequestDetail {

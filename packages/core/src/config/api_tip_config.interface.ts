@@ -35,6 +35,7 @@ export interface Tips {
     api_space_capacity_over_limit:                        APIAddRowFailedWrongLengthOfValueClass;
     api_query_params_view_id_not_exists:                  APIAddRowFailedWrongLengthOfValueClass;
     api_params_not_exists:                                APIAddRowFailedWrongLengthOfValueClass;
+    api_param_view_not_exists:                            APIAddRowFailedWrongLengthOfValueClass;
     api_params_must_unique:                               APIAddRowFailedWrongLengthOfValueClass;
     api_param_node_id_not_empty_key:                      APIAddRowFailedWrongLengthOfValueClass;
     api_param_payload_banner_logo_type_error:             APIAddRowFailedWrongLengthOfValueClass;
@@ -55,6 +56,8 @@ export interface Tips {
     api_param_embed_link_id_not_empty:                    APIAddRowFailedWrongLengthOfValueClass;
     api_enterprise_limit:                                 APIAddRowFailedWrongLengthOfValueClass;
     api_embed_link_id_not_exist:                          APIAddRowFailedWrongLengthOfValueClass;
+    api_embed_link_limit:                                 APIAddRowFailedWrongLengthOfValueClass;
+    api_embed_link_instance_limit:                        APIAddRowFailedWrongLengthOfValueClass;
     api_forbidden_because_of_not_in_space:                APIAddRowFailedWrongLengthOfValueClass;
     api_param_invalid_space_id_value:                     APIAddRowFailedWrongLengthOfValueClass;
     api_param_sort_field_not_exists:                      APIAddRowFailedWrongLengthOfValueClass;
@@ -63,7 +66,6 @@ export interface Tips {
     api_upload_attachment_oversize:                       APIAddRowFailedWrongLengthOfValueClass;
     api_upload_attachment_exceed_capacity_limit:          APIAddRowFailedWrongLengthOfValueClass;
     api_upload_attachment_not_editable:                   APIAddRowFailedWrongLengthOfValueClass;
-    api_param_view_not_exists:                            APIAddRowFailedWrongLengthOfValueClass;
     api_param_record_not_exists:                          APIAddRowFailedWrongLengthOfValueClass;
     api_param_attachment_not_exists:                      APIAddRowFailedWrongLengthOfValueClass;
     api_param_unit_not_exists:                            APIAddRowFailedWrongLengthOfValueClass;

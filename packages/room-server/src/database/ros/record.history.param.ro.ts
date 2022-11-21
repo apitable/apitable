@@ -9,7 +9,7 @@ export class RecordHistoryParamRo {
     example: 'dst0Yj5aNeoHldqvf6',
     description: 'datasheet ID',
   })
-  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error })
   dstId: string;
 
   @ApiProperty({
@@ -18,6 +18,6 @@ export class RecordHistoryParamRo {
     example: 'rec0Yj5aNeoHldqvf6',
     description: 'record ID',
   })
-  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
+  @IsNotEmpty({ message: ApiTipConstant.api_params_empty_error })
   recId: string;
 }

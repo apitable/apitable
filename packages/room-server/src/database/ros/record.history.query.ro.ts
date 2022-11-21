@@ -10,8 +10,9 @@ export class RecordHistoryQueryRo {
     example: 0,
     description: 'type(0: All, 1: History, 2: Comment), default: 0',
   })
+  @IsOptional()
   @Type(() => Number)
-  @IsIn([0, 1, 2], { message: ApiTipConstant.api_params_invalid_value, context: {} })
+  @IsIn([0, 1, 2], { message: ApiTipConstant.api_params_invalid_value })
   type = 0;
 
   @ApiPropertyOptional({
@@ -19,6 +20,7 @@ export class RecordHistoryQueryRo {
     example: 14,
     description: 'Limited days, default is 14, maximum is 730 days',
   })
+  @IsOptional()
   @Type(() => Number)
   @Max(730, { message: ApiTipConstant.api_params_max_error, context: { value: 730 } })
   limitDays = 14;

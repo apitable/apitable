@@ -1,8 +1,7 @@
 import { ApiTipConstant, FieldKeyEnum } from '@apitable/core';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ArrayMaxSize, ArrayNotEmpty, IsEnum, ValidateNested } from 'class-validator';
-import { API_MAX_MODIFY_RECORD_COUNTS } from 'shared/common';
+import { ArrayNotEmpty, IsEnum, IsOptional, ValidateNested } from 'class-validator';
 import { FieldUpdateRo } from './record.field.update.ro';
 
 export class RecordUpdateRo {
@@ -28,11 +27,8 @@ export class RecordUpdateRo {
     ],
   })
   @Type(() => FieldUpdateRo)
-  @ArrayNotEmpty({ message: ApiTipConstant.api_params_empty_error, context: {} })
-  @ArrayMaxSize(API_MAX_MODIFY_RECORD_COUNTS, {
-    message: ApiTipConstant.api_params_max_count_error,
-    context: { value: API_MAX_MODIFY_RECORD_COUNTS },
-  })
+  @ArrayNotEmpty({ message: ApiTipConstant.api_params_empty_error })
+  @IsOptional()
   @ValidateNested()
   records: FieldUpdateRo[];
 
@@ -41,7 +37,7 @@ export class RecordUpdateRo {
     description: '[Optional], what the fields map is made of key. id or name, default is name',
     default: FieldKeyEnum.NAME,
   })
-  @IsEnum(FieldKeyEnum, { message: ApiTipConstant.api_params_invalid_value, context: {} })
+  @IsEnum(FieldKeyEnum, { message: ApiTipConstant.api_params_invalid_value })
   fieldKey: FieldKeyEnum = FieldKeyEnum.NAME;
 
   @Expose()

@@ -1,5 +1,5 @@
 import { IFieldMap } from '@apitable/core';
-import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
+import { DatasheetMetaEntity } from 'database/entities/datasheet.meta.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 @EntityRepository(DatasheetMetaEntity)
@@ -46,7 +46,7 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   selectFieldMapByDstId(dstId: string): Promise<{ fieldMap: IFieldMap }> {
     return this.createQueryBuilder('vdm')
-      .select('vdm.meta_data->\'$.fieldMap\'', 'fieldMap')
+      .select("vdm.meta_data->'$.fieldMap'", 'fieldMap')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ fieldMap: IFieldMap }>();
@@ -54,9 +54,20 @@ export class DatasheetMetaRepository extends Repository<DatasheetMetaEntity> {
 
   countRowsByDstId(dstId: string): Promise<{ count: number }> {
     return this.createQueryBuilder('vdm')
-      .select('IFNULL(SUM(JSON_LENGTH( vdm.meta_data -> \'$.views[0].rows\' )), 0)', 'count')
+      .select("IFNULL(SUM(JSON_LENGTH( vdm.meta_data -> '$.views[0].rows' )), 0)", 'count')
       .where('vdm.dst_id = :dstId', { dstId })
       .andWhere('vdm.is_deleted = 0')
       .getRawOne<{ count: number }>();
+  }
+
+  selectViewIdsByDstId(dstId: string): Promise<string[] | null> {
+    return this.createQueryBuilder('vdm')
+      .select("vdm.meta_data->'$.views[*].id'", 'viewId')
+      .where('vdm.dst_id = :dstId', { dstId })
+      .andWhere('vdm.is_deleted = 0')
+      .getRawOne<{ viewId: string[] }>()
+      .then(result => {
+        return result && result.viewId ? result.viewId : null;
+      });
   }
 }

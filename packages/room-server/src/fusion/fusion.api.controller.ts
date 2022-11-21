@@ -1,4 +1,5 @@
 import { ApiTipConstant, ICollaCommandOptions } from '@apitable/core';
+import { RedisService } from '@apitable/nestjs-redis';
 import {
   Body,
   CacheTTL,
@@ -17,14 +18,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
-import { RedisService } from '@apitable/nestjs-redis';
 import { AttachmentDto } from 'database/dtos/attachment.dto';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
 import { AttachmentUploadRo } from 'database/ros/attachment.upload.ro';
 import { AttachmentService } from 'database/services/attachment/attachment.service';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
+import { RecordDeleteVo } from 'fusion/vos/record.delete.vo';
 import { I18nService } from 'nestjs-i18n';
-import { DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants, USER_HTTP_DECORATE } from 'shared/common';
+import { API_MAX_MODIFY_RECORD_COUNTS, DATASHEET_HTTP_DECORATE, NodePermissions, SwaggerConstants, USER_HTTP_DECORATE } from 'shared/common';
 import { NodePermissionEnum } from 'shared/enums/node.permission.enum';
 import { ApiException } from 'shared/exception';
 import { RedisLock } from 'shared/helpers/redis.lock';
@@ -63,7 +64,6 @@ import { AssetView, AttachmentVo } from './vos/attachment.vo';
 import { DatasheetCreateDto, DatasheetCreateVo, FieldCreateVo } from './vos/datasheet.create.vo';
 import { FieldDeleteVo } from './vos/field.delete.vo';
 import { FieldListVo } from './vos/field.list.vo';
-import { RecordDeleteVo } from './vos/record.delete.vo';
 import { RecordListVo } from './vos/record.list.vo';
 import { RecordPageVo } from './vos/record.page.vo';
 import { ViewListVo } from './vos/view.list.vo';
@@ -291,6 +291,9 @@ export class FusionApiController {
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
   public async deleteRecord(@Param() param: RecordParamRo, @Query() query: RecordDeleteRo): Promise<RecordDeleteVo> {
+    if (query.recordIds.length > API_MAX_MODIFY_RECORD_COUNTS) {
+      throw ApiException.tipError(ApiTipConstant.api_params_records_max_count_error, { count: API_MAX_MODIFY_RECORD_COUNTS });
+    }
     const result = await this.fusionApiService.deleteRecord(param.datasheetId, query.recordIds);
     if (result) {
       return ApiResponse.success(undefined);

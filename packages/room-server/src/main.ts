@@ -1,5 +1,4 @@
-import '@apitable/i18n-lang';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -7,8 +6,9 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { environment, isDevMode, isProdMode } from 'app.environment';
+import { environment, isDevMode } from 'app.environment';
 import { AppModule } from 'app.module';
+import { useContainer } from 'class-validator';
 import helmet from 'fastify-helmet';
 import fastifyMultipart from 'fastify-multipart';
 import { protobufPackage } from 'grpc/generated/serving/SocketServingService';
@@ -21,7 +21,6 @@ import { SentryTraces } from 'shared/helpers/sentry/sentry.traces.sampler';
 import { HttpResponseInterceptor } from 'shared/interceptor';
 import { TracingHandlerInterceptor } from 'shared/interceptor/sentry.handlers.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'shared/logger/winston.constants';
-import { ValidationPipe } from 'shared/middleware/pipe/validation.pipe';
 import { ZIPKIN_MODULE_OPTIONS, ZIPKIN_MODULE_PROVIDER } from 'shared/services/zipkin/zipkin.constants';
 import { IZipkinModuleOptions } from 'shared/services/zipkin/zipkin.interface';
 import { ZipkinService } from 'shared/services/zipkin/zipkin.service';
@@ -101,10 +100,7 @@ async function bootstrap() {
       new Sentry.Integrations.OnUnhandledRejection({ mode: 'warn' }),
     ],
     tracesSampler: new SentryTraces(sentrySampleRate).tracesSampler(),
-    ignoreErrors: [
-      'ServerException',
-      'ApiException'
-    ]
+    ignoreErrors: ['ServerException', 'ApiException'],
   });
 
   // express performance traces
@@ -122,8 +118,8 @@ async function bootstrap() {
   // global pipes for custom validation
   nestApp.useGlobalPipes(
     new ValidationPipe({
-      // tip parameters
-      enableErrorDetail: !isProdMode,
+      transform: true,
+      stopAtFirstError: true,
     }),
   );
 
@@ -149,8 +145,9 @@ async function bootstrap() {
       },
     },
   });
-  await nestApp.startAllMicroservicesAsync();
-  nestApp.enableShutdownHooks();
+  await nestApp.startAllMicroservices();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useContainer(nestApp.select(AppModule), { fallbackOnErrors: true });
   // listening port
   await nestApp.listen(+PORT, '0.0.0.0');
   // print server info

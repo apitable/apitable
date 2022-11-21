@@ -1,4 +1,3 @@
-
 export class InternalSpaceSubscriptionView {
   maxRowsPerSheet: number; // The maximum record allowed per datasheet
   maxRowsInSpace: number; // The maximum record allowed by the current space
@@ -6,6 +5,7 @@ export class InternalSpaceSubscriptionView {
   maxKanbanViewsInSpace: number; // The maximum number of kanban views allowed in the space
   maxGanttViewsInSpace: number; // The maximum quantity of the allowable Gantt view in the space
   maxCalendarViewsInSpace: number; // The maximum number of calendar views allowed in the space
+  canCallEnterpriseApi: boolean; // Is it possible to call enterprise-level APIs
 }
 
 export class InternalSpaceUsageView {
@@ -16,7 +16,7 @@ export class InternalSpaceUsageView {
   calendarViewNums: number; // The number of all calender views in the space
 }
 
-export class InternalCreateDatasheetVo{
+export class InternalCreateDatasheetVo {
   datasheetId: string;
   createdAt: number;
 }

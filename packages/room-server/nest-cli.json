@@ -2,7 +2,6 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "plugins": ["@nestjs/swagger/plugin"],
     "assets": [
       {
         "include": "**/*.yaml",
@@ -22,14 +21,5 @@
       }
     ],
     "watchAssets": true
-  },
-  "plugins": [
-    {
-      "name": "@nestjs/swagger/plugin",
-      "options": {
-        "classValidatorShim": true,
-        "dtoFileNameSuffix": [".ro.ts", ".vo.ts", ".dto.ts"]
-      }
-    }
-  ]
+  }
 }

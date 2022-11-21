@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class AttachmentDto {
   @ApiProperty({
@@ -6,54 +7,56 @@ export class AttachmentDto {
     example: 'space/2020/07/28/6fdc652231a8480398e302606ae28213',
     description: 'token, part of attachment access path',
   })
-    token: string;
+  token: string;
 
   @ApiProperty({
     type: String,
     example: '9d4911932181f254433a86b05797f9a6.jpeg',
-    description: 'attachment\'s original name',
+    description: "attachment's original name",
   })
-    name: string;
+  name: string;
 
   @ApiProperty({
     type: Number,
     example: 7194,
-    description: 'attachment\'s size',
+    description: "attachment's size",
   })
-    size: number;
+  size: number;
 
   @ApiProperty({
     type: Number,
     example: 479,
-    description: 'attachment\'s width',
+    description: "attachment's width",
   })
-    width: number;
+  width: number;
 
   @ApiProperty({
     type: Number,
     example: 478,
-    description: 'attachment\'s height',
+    description: "attachment's height",
   })
-    height: number;
+  height: number;
 
   @ApiProperty({
     type: String,
     example: 'image/jpeg',
-    description: 'attachment\'s mimeType',
+    description: "attachment's mimeType",
   })
-    mimeType: string;
+  mimeType: string;
 
   @ApiPropertyOptional({
     type: String,
     example: '***',
     description: 'preview of pdf, only works for pdf',
   })
-    preview?: string;
+  @IsOptional()
+  preview?: string;
 
   @ApiPropertyOptional({
     type: String,
     example: '***',
-    description: 'attachment\'s access path',
+    description: "attachment's access path",
   })
-    url: string;
+  @IsOptional()
+  url: string;
 }

@@ -15,7 +15,6 @@ export class FieldUpdateRo {
       'Review Date': '2019-10-30T00:00:00.000Z',
     },
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'records', value: 'fields' } })
   fields: ICellValueMap;
 
   @ApiProperty({
@@ -24,6 +23,6 @@ export class FieldUpdateRo {
     description: 'record Id',
     example: 'recV3ElniQavTNyJG',
   })
-  @IsDefined({ message: ApiTipConstant.api_params_instance_error, context: { property: 'records', value: 'recordId' } })
+  @IsDefined({ message: ApiTipConstant.api_params_instance_recordid_error })
   recordId: string;
 }

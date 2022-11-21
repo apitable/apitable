@@ -5,19 +5,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.enterprise.control.service.IControlRoleService;
+import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.entity.ControlRoleEntity;
 import com.vikadata.entity.SpaceEntity;
-import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -64,7 +65,7 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
         MockInvitation invitation = prepareInvitationToken();
         UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");
         iSpaceInviteLinkService.join(user.getId(), invitation.getToken(), invitation.getNodeId());
-        Long memberId  = iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), invitation.getSpaceId());
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(user.getId(), invitation.getSpaceId());
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
         List<ControlRoleEntity> controls = iControlRoleService.getByControlId(invitation.getNodeId());
         List<Long> unitIds = controls.stream().map(ControlRoleEntity::getUnitId).collect(Collectors.toList());
@@ -72,6 +73,7 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled()
     public void testJoinSpaceByNodeInvitationTokenWithRewardCapacity() {
         MockInvitation invitation = prepareInvitationToken();
         UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");

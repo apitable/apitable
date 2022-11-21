@@ -1,27 +1,32 @@
+import {
+  IFieldPermissionMap,
+  IFieldPermissionRoleListData,
+  INode,
+  INodeRoleMap,
+  ISpaceInfo,
+  ISpacePermissionManage,
+  IUserInfo,
+} from '@apitable/core';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import {
-  IFieldPermissionMap, IFieldPermissionRoleListData, INode, INodeRoleMap, ISpaceInfo, ISpacePermissionManage, ISubscription, IUserInfo,
-} from '@apitable/core';
-import { CommonStatusCode, InjectLogger } from '../../common';
-import { CommonException, PermissionException, ServerException } from '../../exception';
-import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from '../../interfaces';
+import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from 'database/interfaces';
+import { DatasheetCreateRo } from 'fusion/ros/datasheet.create.ro';
+import { AssetVo } from 'fusion/vos/attachment.vo';
 import { keyBy } from 'lodash';
-import { DatasheetCreateRo } from '../../../fusion/ros/datasheet.create.ro';
-import { AssetVo } from '../../../fusion/vos/attachment.vo';
-import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from '../../../database/interfaces';
 import { lastValueFrom } from 'rxjs';
+import { CommonStatusCode, InjectLogger } from 'shared/common';
+import { CommonException, PermissionException, ServerException } from 'shared/exception';
+import { HttpHelper } from 'shared/helpers';
+import { IAuthHeader, IHttpSuccessResponse, INotificationCreateRo, IOpAttachCiteRo, IUserBaseInfo, NodePermission } from 'shared/interfaces';
+import { IAssetDTO } from 'shared/services/rest/rest.interface';
 import { sprintf } from 'sprintf-js';
 import { Logger } from 'winston';
-import { HttpHelper } from '../../helpers';
-import { IAssetDTO } from './rest.interface';
 
 /**
  * RestApi service
  */
 @Injectable()
 export class RestService {
-
   private GET_ME = 'internal/user/get/me'; // user basic profile
   private GET_USER_INFO = 'user/me'; // user basic profile + space member profile
   private SESSION = 'internal/user/session';
@@ -54,60 +59,71 @@ export class RestService {
   // List user infos with the given column permission
   private LIST_FIELD_ROLES = 'datasheet/%(dstId)s/field/%(fieldId)s/listRole';
 
-  constructor(
-    private readonly httpService: HttpService,
-    @InjectLogger() private readonly logger: Logger,
-  ) {
+  constructor(private readonly httpService: HttpService, @InjectLogger() private readonly logger: Logger) {
     // Intercept request
-    this.httpService.axiosRef.interceptors.request.use((config) => {
-      this.logger.info('Remote call address:' + config.url);
-      config.headers['X-Internal-Request'] = 'yes';
-      return config;
-    }, (error) => {
-      this.logger.error('Remote call failed', error);
-      throw new ServerException(CommonException.SERVER_ERROR);
-    });
-    this.httpService.axiosRef.interceptors.response.use((res) => {
-      const restResponse = res.data as IHttpSuccessResponse<any>;
-      if (!restResponse.success) {
-        this.logger.error(`Server request failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
-        // 403 not in this space
-        if (restResponse.code === 201 || restResponse.code === 403) {
-          throw new ServerException(CommonException.UNAUTHORIZED);
-        }
-        // node not exist
-        if (restResponse.code === 600) {
-          throw new ServerException(PermissionException.NODE_NOT_EXIST);
-        }
-        // access to node is denied
-        if (restResponse.code === 601) {
-          throw new ServerException(PermissionException.ACCESS_DENIED);
-        }
-        // operation on node is denied
-        if (restResponse.code === 602) {
-          throw new ServerException(PermissionException.OPERATION_DENIED);
-        }
+    this.httpService.axiosRef.interceptors.request.use(
+      config => {
+        this.logger.info('Remote call address:' + config.url);
+        config.headers['X-Internal-Request'] = 'yes';
+        return config;
+      },
+      error => {
+        this.logger.error('Remote call failed', error);
         throw new ServerException(CommonException.SERVER_ERROR);
-      }
-      return restResponse;
-    }, error => {
-      // Request failed, may be network issue or HttpException
-      this.logger.error('Request failed, may be network issue or server issue');
-      this.logger.error(error);
-      throw new ServerException(CommonException.SERVER_ERROR);
-    });
+      },
+    );
+    this.httpService.axiosRef.interceptors.response.use(
+      res => {
+        const restResponse = res.data as IHttpSuccessResponse<any>;
+        if (!restResponse.success) {
+          this.logger.error(`Server request failed, error code:[${restResponse.code}], error:[${restResponse.message}]`);
+          // 403 not in this space
+          if (restResponse.code === 201 || restResponse.code === 403) {
+            throw new ServerException(CommonException.UNAUTHORIZED);
+          }
+          // node not exist
+          if (restResponse.code === 600) {
+            throw new ServerException(PermissionException.NODE_NOT_EXIST);
+          }
+          // access to node is denied
+          if (restResponse.code === 601) {
+            throw new ServerException(PermissionException.ACCESS_DENIED);
+          }
+          // operation on node is denied
+          if (restResponse.code === 602) {
+            throw new ServerException(PermissionException.OPERATION_DENIED);
+          }
+          if (restResponse.code === PermissionException.SPACE_NOT_EXIST.code) {
+            throw new ServerException(PermissionException.SPACE_NOT_EXIST);
+          }
+          if (restResponse.code === PermissionException.NO_ALLOW_OPERATE.code) {
+            throw new ServerException(PermissionException.NO_ALLOW_OPERATE);
+          }
+          throw new ServerException(CommonException.SERVER_ERROR);
+        }
+        return restResponse;
+      },
+      error => {
+        // Request failed, may be network issue or HttpException
+        this.logger.error('Request failed, may be network issue or server issue');
+        this.logger.error(error);
+        throw new ServerException(CommonException.SERVER_ERROR);
+      },
+    );
   }
 
   /**
    * Obtain user info of the current user in a given space, including basic info and member info in the space.
    */
   async getUserInfoBySpaceId(headers: IAuthHeader, spaceId: string): Promise<IUserInfo> {
-    const response = await this.httpService.get(this.GET_USER_INFO, {
-      headers: HttpHelper.createAuthHeaders(headers),
-      params: {
-        spaceId,
-      },
-    }).toPromise();
+    const response = await this.httpService
+      .get(this.GET_USER_INFO, {
+        headers: HttpHelper.createAuthHeaders(headers),
+        params: {
+          spaceId,
+        },
+      })
+      .toPromise();
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`Obtain self user info in a space : ${JSON.stringify(response.data)}`);
     }
@@ -115,9 +131,11 @@ export class RestService {
   }
 
   async fetchMe(headers: IAuthHeader): Promise<IUserBaseInfo> {
-    const response = await this.httpService.get(this.GET_ME, {
-      headers: HttpHelper.createAuthHeaders(headers),
-    }).toPromise();
+    const response = await this.httpService
+      .get(this.GET_ME, {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+      .toPromise();
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`Obtain self own info: ${JSON.stringify(response.data)}`);
     }
@@ -125,17 +143,21 @@ export class RestService {
   }
 
   async hasLogin(cookie: string): Promise<boolean> {
-    const response = await this.httpService.get(this.SESSION, {
-      headers: HttpHelper.createAuthHeaders({ cookie }),
-    }).toPromise();
+    const response = await this.httpService
+      .get(this.SESSION, {
+        headers: HttpHelper.createAuthHeaders({ cookie }),
+      })
+      .toPromise();
     return response.data;
   }
 
   async getNodePermission(headers: IAuthHeader, nodeId: string, shareId?: string): Promise<NodePermission> {
-    const response = await this.httpService.get(sprintf(this.GET_NODE_PERMISSION, { nodeId }), {
-      headers: HttpHelper.createAuthHeaders(headers),
-      params: { shareId },
-    }).toPromise();
+    const response = await this.httpService
+      .get(sprintf(this.GET_NODE_PERMISSION, { nodeId }), {
+        headers: HttpHelper.createAuthHeaders(headers),
+        params: { shareId },
+      })
+      .toPromise();
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${nodeId}] Obtain node permission: ${JSON.stringify(response.data)}`);
     }
@@ -143,10 +165,12 @@ export class RestService {
   }
 
   async getFieldPermission(headers: IAuthHeader, nodeId: string, shareId?: string): Promise<IFieldPermissionMap> {
-    const response = await this.httpService.get(sprintf(this.GET_FIELD_PERMISSION, { nodeId }), {
-      headers: HttpHelper.createAuthHeaders(headers),
-      params: { shareId },
-    }).toPromise();
+    const response = await this.httpService
+      .get(sprintf(this.GET_FIELD_PERMISSION, { nodeId }), {
+        headers: HttpHelper.createAuthHeaders(headers),
+        params: { shareId, userId: headers.userId },
+      })
+      .toPromise();
     if (this.logger.isDebugEnabled()) {
       this.logger.debug(`[${nodeId}] Obtain field permission: ${JSON.stringify(response.data)}`);
     }
@@ -154,8 +178,12 @@ export class RestService {
   }
 
   async delFieldPermission(headers: IAuthHeader, dstId: string, fieldIds: string[]) {
-    await this.httpService.post(sprintf(this.DEL_FIELD_PERMISSION, { dstId }), null,
-      { headers: HttpHelper.createAuthHeaders(headers), params: { fieldIds: fieldIds.join(',') }}).toPromise();
+    await this.httpService
+      .post(sprintf(this.DEL_FIELD_PERMISSION, { dstId }), null, {
+        headers: HttpHelper.createAuthHeaders(headers),
+        params: { fieldIds: fieldIds.join(',') },
+      })
+      .toPromise();
   }
 
   async capacityOverLimit(headers: IAuthHeader, spaceId: string): Promise<boolean> {
@@ -165,9 +193,11 @@ export class RestService {
       return false;
     }
     authHeaders['X-Space-Id'] = spaceId;
-    const response = await this.httpService.get(sprintf(this.SPACE_CAPACITY, { spaceId }), {
-      headers: authHeaders,
-    }).toPromise();
+    const response = await this.httpService
+      .get(sprintf(this.SPACE_CAPACITY, { spaceId }), {
+        headers: authHeaders,
+      })
+      .toPromise();
     if (response.data?.isAllowOverLimit) {
       return false;
     }
@@ -175,24 +205,30 @@ export class RestService {
   }
 
   async getUploadPresignedUrl(headers: IAuthHeader, nodeId: string, count: number): Promise<AssetVo[]> {
-    const response = await lastValueFrom(this.httpService.get(this.GET_UPLOAD_PRESIGNED_URL, {
-      headers: HttpHelper.createAuthHeaders(headers),
-      params: { nodeId, count },
-    }));
+    const response = await lastValueFrom(
+      this.httpService.get(this.GET_UPLOAD_PRESIGNED_URL, {
+        headers: HttpHelper.createAuthHeaders(headers),
+        params: { nodeId, count },
+      }),
+    );
     return response.data;
   }
 
   async getAssetInfo(token: string): Promise<IAssetDTO | undefined> {
-    const response = await lastValueFrom(this.httpService.get(this.GET_ASSET, {
-      params: { token },
-    }));
+    const response = await lastValueFrom(
+      this.httpService.get(this.GET_ASSET, {
+        params: { token },
+      }),
+    );
     return response.data;
   }
 
   async checkSpacePermission(headers: IAuthHeader): Promise<boolean> {
-    const response = await this.httpService.get(this.SPACE_RESOURCE, {
-      headers: HttpHelper.createAuthHeaders(headers),
-    }).toPromise();
+    const response = await this.httpService
+      .get(this.SPACE_RESOURCE, {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+      .toPromise();
     const data: ISpacePermissionManage = response.data;
     if (!data.spaceResource) {
       return false;
@@ -202,13 +238,15 @@ export class RestService {
   }
 
   async fetchWidget(headers: IAuthHeader, widgetIds: string | string[], linkId?: string): Promise<WidgetMap> {
-    const response = await this.httpService.get(this.GET_WIDGET, {
-      headers: HttpHelper.createAuthHeaders(headers),
-      params: {
-        widgetIds,
-        linkId,
-      },
-    }).toPromise();
+    const response = await this.httpService
+      .get(this.GET_WIDGET, {
+        headers: HttpHelper.createAuthHeaders(headers),
+        params: {
+          widgetIds,
+          linkId,
+        },
+      })
+      .toPromise();
     const data = response.data;
     return keyBy(data, 'id');
   }
@@ -258,42 +296,44 @@ export class RestService {
    * @param spaceId space ID
    */
   getApiUsage(headers: IAuthHeader, spaceId: string): Promise<any> {
-    return this.httpService.get(sprintf(this.API_USAGES, { spaceId }), {
-      headers: HttpHelper.createAuthHeaders(headers),
-    }).toPromise();
+    return this.httpService
+      .get(sprintf(this.API_USAGES, { spaceId }), {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+      .toPromise();
   }
 
   async getSpaceList(headers: IAuthHeader): Promise<ISpaceInfo[]> {
-    const response = await this.httpService.get(this.SPACE_LIST, {
-      headers: HttpHelper.createAuthHeaders(headers),
-    }).toPromise();
+    const response = await this.httpService
+      .get(this.SPACE_LIST, {
+        headers: HttpHelper.createAuthHeaders(headers),
+      })
+      .toPromise();
     return response.data;
   }
 
   async getNodeDetail(headers: IAuthHeader, nodeId: string, spaceId?: string): Promise<INode> {
     // node detail
-    const nodeInfo = await this.httpService.get<INode>(this.NODE_DETAIL, {
-      headers: HttpHelper.withSpaceIdHeader(
-        HttpHelper.createAuthHeaders(headers),
-        spaceId,
-      ),
-      params: {
-        nodeIds: nodeId,
-      },
-    }).toPromise();
+    const nodeInfo = await this.httpService
+      .get<INode>(this.NODE_DETAIL, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+        params: {
+          nodeIds: nodeId,
+        },
+      })
+      .toPromise();
 
     const res = nodeInfo.data[0];
     // children nodes of a directory
     if (res.hasChildren) {
-      const nodeChildren = await this.httpService.get<INode[]>(this.NODE_CHILDREN, {
-        headers: HttpHelper.withSpaceIdHeader(
-          HttpHelper.createAuthHeaders(headers),
-          spaceId,
-        ),
-        params: {
-          nodeId,
-        },
-      }).toPromise();
+      const nodeChildren = await this.httpService
+        .get<INode[]>(this.NODE_CHILDREN, {
+          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+          params: {
+            nodeId,
+          },
+        })
+        .toPromise();
       res.children = nodeChildren.data;
     }
     return res;
@@ -301,15 +341,14 @@ export class RestService {
 
   async getNodeList(headers: IAuthHeader, spaceId: string): Promise<INode[] | undefined> {
     // Obtain node list
-    const response = await this.httpService.get<INode>(this.NODE_TREE, {
-      headers: HttpHelper.withSpaceIdHeader(
-        HttpHelper.createAuthHeaders(headers),
-        spaceId,
-      ),
-      params: {
-        depth: 1,
-      },
-    }).toPromise();
+    const response = await this.httpService
+      .get<INode>(this.NODE_TREE, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers), spaceId),
+        params: {
+          depth: 1,
+        },
+      })
+      .toPromise();
     return response.data.children;
   }
 
@@ -335,24 +374,27 @@ export class RestService {
     return response.data;
   }
 
-  public async createDatasheet(spaceId: string, headers: IAuthHeader,
-    creareDatasheetRo: DatasheetCreateRo): Promise<InternalCreateDatasheetVo> {
+  public async createDatasheet(spaceId: string, headers: IAuthHeader, creareDatasheetRo: DatasheetCreateRo): Promise<InternalCreateDatasheetVo> {
     const url = sprintf(this.CREATE_DATASHEET_API_URL, { spaceId });
-    const response = await this.httpService.post<InternalCreateDatasheetVo>(url, creareDatasheetRo, {
-      headers: HttpHelper.withSpaceIdHeader(
-        HttpHelper.createAuthHeaders(headers),
-      ),
-    }).toPromise();
+    const response = await this.httpService
+      .post<InternalCreateDatasheetVo>(url, creareDatasheetRo, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
+      })
+      .toPromise();
     return response.data;
   }
 
   public async deleteNode(spaceId: string, datasheetId: string, headers: IAuthHeader): Promise<InternalCreateDatasheetVo> {
     const url = sprintf(this.DELETE_NODE_API_URL, { spaceId, nodeId: datasheetId });
-    const response = await this.httpService.post<InternalCreateDatasheetVo>(url, {}, {
-      headers: HttpHelper.withSpaceIdHeader(
-        HttpHelper.createAuthHeaders(headers),
-      ),
-    }).toPromise();
+    const response = await this.httpService
+      .post<InternalCreateDatasheetVo>(
+        url,
+        {},
+        {
+          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
+        },
+      )
+      .toPromise();
     return response.data;
   }
 
@@ -370,26 +412,31 @@ export class RestService {
     headers: IAuthHeader,
     spaceId: string,
     nodeId: string,
-    templateId: 'space_record_limit' |
-      'datasheet_record_limit' |
-      'max_gallery_views_in_space' |
-      'max_kanban_views_in_space' |
-      'space_gantt_limit' |
-      'space_calendar_limit',
+    templateId:
+      | 'space_record_limit'
+      | 'datasheet_record_limit'
+      | 'max_gallery_views_in_space'
+      | 'max_kanban_views_in_space'
+      | 'space_gantt_limit'
+      | 'space_calendar_limit',
     specification: number,
     usage: number,
   ) {
-    this.httpService.post<any>(this.SUBSCRIBE_REMIND, {
-      nodeId,
-      spaceId,
-      specification: specification + '',
-      templateId,
-      usage: usage + '',
-    }, {
-      headers: HttpHelper.withSpaceIdHeader(
-        HttpHelper.createAuthHeaders(headers),
-      ),
-    }).toPromise();
+    this.httpService
+      .post<any>(
+        this.SUBSCRIBE_REMIND,
+        {
+          nodeId,
+          spaceId,
+          specification: specification + '',
+          templateId,
+          usage: usage + '',
+        },
+        {
+          headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(headers)),
+        },
+      )
+      .toPromise();
   }
 
   /**
@@ -423,8 +470,7 @@ export class RestService {
    * @param usage usage
    * @param count usage capacity
    */
-  createRecordLimitRemind(auth: IAuthHeader, templateId: string, toUserId: string[],
-    spaceId: string, nodeId: string, count: number, usage?: number) {
+  createRecordLimitRemind(auth: IAuthHeader, templateId: string, toUserId: string[], spaceId: string, nodeId: string, count: number, usage?: number) {
     const ro: INotificationCreateRo = {
       spaceId,
       nodeId,
@@ -450,10 +496,9 @@ export class RestService {
    */
   async getNodePermissionRoleList(auth: IAuthHeader, spaceId: string, nodeId: string): Promise<INodeRoleMap> {
     const url = sprintf(this.LIST_NODE_ROLES, { nodeId });
-    const response = await this.httpService.get(
-      url,
-      { headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId) },
-    ).toPromise();
+    const response = await this.httpService
+      .get(url, { headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId) })
+      .toPromise();
     return response.data;
   }
 

@@ -1,47 +1,51 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ICommentMsg } from '@apitable/core';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class CommentDto {
   @ApiProperty({
     type: Number,
     description: 'time of leaving a comment, timestamp',
   })
-    createdAt: number;
+  createdAt: number;
 
   @ApiProperty({
     type: Number,
     description: 'time of editing a comment, timestamp',
   })
-    updatedAt?: number;
+  updatedAt?: number;
 
   @ApiProperty({
     type: String,
     description: 'comment ID',
   })
-    commentId: string;
+  commentId: string;
 
   @ApiPropertyOptional({
     type: String,
-    description: 'comment creator\'s uuid',
+    description: "comment creator's uuid",
     deprecated: true,
   })
-    createdBy?: string;
+  @IsOptional()
+  createdBy?: string;
 
   @ApiPropertyOptional({
     type: String,
-    description: 'comment creator\'s unitId',
+    description: "comment creator's unitId",
   })
-    unitId: string;
+  @IsOptional()
+  unitId: string;
 
   @ApiProperty({
     type: Object,
     description: 'comment message',
   })
-    commentMsg: ICommentMsg;
+  commentMsg: ICommentMsg;
 
   @ApiPropertyOptional({
     type: Number,
     description: 'comment revision',
   })
-    revision?: number;
+  @IsOptional()
+  revision?: number;
 }

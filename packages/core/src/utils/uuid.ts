@@ -1,5 +1,5 @@
+import { Strings, t } from 'exports/i18n';
 import { generateRandomString } from './string';
-import { t, Strings } from '../exports/i18n';
 
 const EFFECTIVE_ID_LENGTH = 10;
 
@@ -16,6 +16,7 @@ export enum IDPrefix {
   Editor = 'edt',
   SPACE = 'spc',
   DateTimeAlarm = 'dta',
+  EmbedLink = 'emb',
 }
 
 /**
@@ -58,13 +59,13 @@ export function getNewIds(prefix: IDPrefix, num: number, ids: string[] = []): st
 export type NamePrefixString = string;
 export const NamePrefix = {
   Field: t(Strings.field), // 'Field',
-  GridView: t(Strings.grid_view), 
-  KanbanView: t(Strings.kanban_view), 
+  GridView: t(Strings.grid_view),
+  KanbanView: t(Strings.kanban_view),
   GalleryView: t(Strings.gallery_view),
-  FormView: t(Strings.form_view), 
-  CalendarView: t(Strings.calendar_view), 
-  GanttView: t(Strings.gantt_view), 
-  OrgChartView: t(Strings.org_chart_view), 
+  FormView: t(Strings.form_view),
+  CalendarView: t(Strings.calendar_view),
+  GanttView: t(Strings.gantt_view),
+  OrgChartView: t(Strings.org_chart_view),
   View: t(Strings.view), // 'View',
 };
 

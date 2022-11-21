@@ -1,17 +1,16 @@
-import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
 import { ApiTipConstant, CacheManager, clearCachedSelectors, computeCache, ExpCache } from '@apitable/core';
-import { InjectLogger, SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from '../common';
-import { ApiUsageEntity } from '../../fusion/entities/api.usage.entity';
-import { ApiHttpMethod } from '../enums';
-import { ApiException } from '../exception/api.exception';
-import { ServerException } from '../exception/server.exception';
-import { getApiVersionFromUrl } from 'shared/helpers/fusion.helper';
-import { ApiResponse } from '../../fusion/vos/api.response';
-import { ApiUsageRepository } from '../../fusion/repositories/api.usage.repository';
+import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
+import { ApiUsageEntity } from 'fusion/entities/api.usage.entity';
+import { ApiUsageRepository } from 'fusion/repositories/api.usage.repository';
+import { ApiResponse } from 'fusion/vos/api.response';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { ApiHttpMethod } from 'shared/enums';
+import { ApiException, ServerException } from 'shared/exception';
+import { getApiVersionFromUrl } from 'shared/helpers/fusion.helper';
 import { QueryFailedError } from 'typeorm';
 import { Logger } from 'winston';
+import { InjectLogger, SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from '../common';
 
 /**
  * <p>
@@ -23,15 +22,12 @@ import { Logger } from 'winston';
  */
 @Injectable()
 export class ApiUsageInterceptor implements NestInterceptor {
-  constructor(
-    @InjectLogger() private readonly logger: Logger,
-    private readonly apiUsageRepository: ApiUsageRepository) {
-  }
+  constructor(@InjectLogger() private readonly logger: Logger, private readonly apiUsageRepository: ApiUsageRepository) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
     const request = context.switchToHttp().getRequest();
     this.clearApiCache();
-    return next.handle().pipe(
+    return (next.handle().pipe(
       tap((data: ApiResponse<any>) => {
         this.clearApiCache();
         this.apiUsage(request, data);
@@ -49,7 +45,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
         }
         return throwError(err);
       }),
-    ) as any as Promise<any>;
+    ) as any) as Promise<any>;
   }
 
   /**
@@ -68,7 +64,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
 
   apiUsage(request: any, response?: ApiResponse<any>, error?: any) {
     const apiUsageEntity = new ApiUsageEntity();
-    apiUsageEntity.dstId = request.params.datasheetId;
+    apiUsageEntity.dstId = request.params.datasheetId || request.params.nodeId;
     apiUsageEntity.spaceId = request[SPACE_ID_HTTP_DECORATE];
     apiUsageEntity.userId = request[USER_HTTP_DECORATE].id;
     apiUsageEntity.reqIp = request.headers['x-real-ip'] || request.ip;

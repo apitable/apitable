@@ -85,15 +85,20 @@ public class InternalFieldPermissionController {
     @ApiOperation(value = "get field permissions")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "nodeId", value = "node id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-            @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
+            @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi"),
+            @ApiImplicitParam(name = "userId", value = "user id", required = true, dataTypeClass = String.class, paramType = "query", example = "123")
     })
     public ResponseData<FieldPermissionView> getFieldPermission(@PathVariable("nodeId") String nodeId,
-            @RequestParam(value = "shareId", required = false) String shareId) {
+            @RequestParam(value = "shareId", required = false) String shareId, @RequestParam(value = "userId", required = false) String userId) {
         // Get the space ID, the method includes judging whether the node exists
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
-        // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
-        Long userId = StrUtil.isNotBlank(shareId) ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : SessionContext.getUserId();
-        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+        // embedLink pass userid by room-server
+        if (StrUtil.isBlank(userId)) {
+            // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
+            userId = StrUtil.isNotBlank(shareId) ? StrUtil.toString(iNodeShareSettingService.getUpdatedByByShareId(shareId)) :
+                    SessionContext.getUserId().toString();
+        }
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(Long.parseLong(userId), spaceId);
         // permission to get all fields of the data table
         return ResponseData.success(iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId));
     }
