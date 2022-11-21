@@ -23,7 +23,8 @@ export enum Navigation {
   FEISHU,
   DINGTALK,
   WECOM,
-  WECOM_SHOP_CALLBACK
+  WECOM_SHOP_CALLBACK,
+  EMBED_SPACE
 }
 
 export enum SpacePathType {

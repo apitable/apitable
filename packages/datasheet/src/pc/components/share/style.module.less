@@ -1,10 +1,13 @@
 @import "~pc/styles/lib_var.less";
 @import "~pc/styles/lib_mixins.less";
 
-.share {
+.iframeShare {
   flex: 1;
   display: flex;
   flex-direction: row;
+}
+
+.share {
   position: relative;
   overflow: hidden;
   height: 100%;
@@ -200,7 +203,9 @@
     // Compatible with safari bug
     transform: translateZ(0);
   }
+}
 
+.containerAfter {
   &:after {
     content: " ";
     display: block;
@@ -212,6 +217,8 @@
     bottom: 0;
   }
 }
+
+
 
 .noFolder {
   background: var(--defaultBg);
@@ -273,5 +280,19 @@
     position: absolute;
     top: 87px;
     left: 0;
+  }
+}
+
+.brandContainer {
+  width: 100%;
+  height: 40px;
+  background-color: var(--bgCommonDefault);
+  border-top: 1px solid var(--borderCommon);
+  padding: 10px 16px;
+  position: fixed;
+  bottom: 0;
+  img {
+    height: 20px;
+    width: 75px;
   }
 }

@@ -51,6 +51,13 @@ export const fetchTemplateDatasheetPack = (dstId: string) => {
 };
 
 /**
+ * get embed datasheet pack
+ */
+export function fetchEmbedDatasheetPack(embedId: string, dstId: string) {
+  return axios.get(urlcat(Url.READ_EMBED_DATAPACK, { embedId, dstId }), { baseURL });
+}
+
+/**
  * get related datasheet pack in the same space. support resource: datasheet, form, mirror
  * 
  * @param resourceId 

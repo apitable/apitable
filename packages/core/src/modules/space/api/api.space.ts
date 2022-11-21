@@ -583,6 +583,16 @@ export function readShareInfo(shareId: string, headers?: Record<string, string>)
   });
 }
 
+/**
+ * get embed Info
+ */
+
+export function getEmbedLinkInfo(linkId: string, headers?: Record<string, string>) {
+  return axios.get(Url.EMBED_LINK_INFO + `/${linkId}`, {
+    headers,
+  });
+}
+
 export function storeShareData(shareId: string, spaceId: string) {
   return axios.post(Url.STORE_SHARE_DATA, {
     spaceId,
@@ -649,3 +659,4 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
     },
   });
 }
+

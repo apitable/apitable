@@ -95,6 +95,35 @@ export class RouterStrategy implements IRouterStrategy {
     return [path, query, clearQuery];
   };
 
+  static [Navigation.EMBED_SPACE] = ({ params, query, clearQuery }: IFunctionParams) => {
+    let path;
+    const commonParams = [
+      '/embed',
+      params?.embedId,
+      params?.nodeId,
+    ];
+    if (dashboardReg.test(`/${params?.nodeId}`)) {
+      path = joinPath([
+        ...commonParams,
+        params!.widgetId,
+      ]);
+    } else if (mirrorIdReg.test(`/${params?.nodeId}`)) {
+      path = joinPath([
+        ...commonParams,
+        params!.datasheetId,
+        params!.viewId,
+        params!.recordId,
+      ]);
+    } else {
+      path = joinPath([
+        ...commonParams,
+        params?.viewId,
+        params?.recordId || params?.widgetId,
+      ]);
+    }
+    return [path, query, clearQuery];
+  };
+
   static [Navigation.TEMPLATE] = ({ params, query, clearQuery }: IFunctionParams): IFunctionResult => {
     let path;
     const commonParams = [

@@ -14,6 +14,8 @@ import { Tooltip } from '../tooltip';
 import classNames from 'classnames';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
 import { Typography } from '@apitable/components';
+import { isIframe } from 'pc/utils/env';
+import { useSelector } from 'react-redux';
 
 export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;
@@ -55,6 +57,7 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
   const { renameNodeReq } = useCatalogTreeRequest();
   const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
+  const embedId = useSelector(state => state.pageParams.embedId);
 
   useEffect(() => {
     setNewName(name);
@@ -170,7 +173,7 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
         {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) &&
           <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
         }
-        {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) &&
+        {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) && !isIframe() && !embedId &&
           <Tooltip title={getPermissionTip()}>
             <Tag
               className={styles.tag}

@@ -702,6 +702,7 @@ export interface IPageParams {
   resourceId?: string;
   nodeId?: string;
   mirrorId?: string;
+  embedId?: string;
 }
 
 export interface ICollaboratorParams {

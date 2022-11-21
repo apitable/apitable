@@ -18,6 +18,7 @@ import { ISubscriptions } from '../../modules/database/store/interfaces/subscrip
 import { RecordVision } from '../../modules/database/store/interfaces/record_vision_mode';
 import { IRightPane } from '../../modules/database/store/interfaces/right_pane';
 import { IPreviewFile } from '../../modules/database/store/interfaces/preview_file';
+import { IEmbedInfo } from '../../modules/embed/store/interfaces/embed';
 
 export * from '../../modules/database/store/interfaces/resource';
 export * from '../../modules/space/store/interfaces/catalog_tree';
@@ -42,6 +43,7 @@ export * from '../../modules/space/store/interfaces/labs';
 export * from '../../modules/database/store/interfaces/subscriptions';
 export * from '../../modules/database/store/interfaces/record_vision_mode';
 export * from '../../modules/database/store/interfaces/preview_file';
+export * from '../../modules/embed/store/interfaces/embed';
 
 export interface IReduxState {
 
@@ -77,4 +79,5 @@ export interface IReduxState {
 
   recordVision: RecordVision;
   previewFile: IPreviewFile;
+  embedInfo: IEmbedInfo;
 }

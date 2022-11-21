@@ -17,6 +17,12 @@ export * from '../../space/api/url.appstore';
 export const BASE_URL = '/api/v1';
 
 /**
+ * Nest Base Url
+ */
+
+export const NEST_BASE_URL = '/nest/v1';
+
+/**
  * Upload attachments
  */
 export const UPLOAD_ATTACH = '/base/attach/upload';
@@ -58,3 +64,6 @@ export const UPLOAD_PRESIGNED_URL = '/asset/upload/preSignedUrl';
 export const UPLOAD_CALLBACK = 'asset/upload/callback';
 
 // ============ Character related end =====================//
+
+// Get EmbedLink Info
+export const EMBED_LINK_INFO = 'embedlinks';

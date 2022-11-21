@@ -61,6 +61,8 @@ import { ToolHandleType } from './interface';
 import styles from './style.module.less';
 import { ToolItem } from './tool_item';
 import { Undo } from './undo';
+import { get } from 'lodash';
+import { isIframe } from 'pc/utils/env';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -84,14 +86,15 @@ const ToolbarBase = () => {
   const [isFindOpen, setIsFindOpen] = useState(false);
   const [iconRotation, setIconRotation] = useState(false);
   const [winWidth, setWinWidth] = useState(0);
-  const { shareId, templateId, datasheetId, viewId, mirrorId } = useSelector(state => {
-    const { shareId, templateId, datasheetId, viewId, mirrorId } = state.pageParams;
+  const { shareId, templateId, datasheetId, viewId, mirrorId, embedId } = useSelector(state => {
+    const { shareId, templateId, datasheetId, viewId, mirrorId, embedId } = state.pageParams;
     return {
       shareId,
       templateId,
       datasheetId,
       viewId,
       mirrorId,
+      embedId
     };
   }, shallowEqual);
 
@@ -174,6 +177,9 @@ const ToolbarBase = () => {
   }, [groupIds, hiddenGroupMap]);
 
   const dispatch = useDispatch();
+
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+
   // The logic of inserting rows in the toolbar is special and is handled here by itself. 
   // Always in the first, no grouped data is brought in.
   const appendRecord = () => {
@@ -350,6 +356,31 @@ const ToolbarBase = () => {
     ShortcutActionManager.trigger(toggleKey);
   };
 
+  const embedSetting = useMemo(() => {
+    const defaultValue = {
+      basicTools: true,
+      shareBtn: true,
+      widgetBtn: true,
+      apiBtn: true,
+      formBtn: true,
+      historyBtn: true,
+      robotBtn: true
+    };
+    if(!embedId) {
+      return defaultValue;
+    } 
+    return {
+      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false),
+      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false),
+      widgetBtn: get(embedInfo, 'viewControl.toolBar.widgetBtn', false),
+      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false),
+      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false),
+      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false),
+      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false)
+    };
+
+  }, [embedInfo, embedId]);
+
   // The configuration array traversal for rendering, you need to manually specify a non-repeating key for the component, 
   // usually the component name can be, repeatedly rendered components are followed by a number.
   const featureToolItems = [
@@ -371,12 +402,12 @@ const ToolbarBase = () => {
     {
       component: <ForeignForm key="foreignForm" className={styles.toolbarItem} showLabel={showIconBarLabel} />,
       key: 'foreignForm',
-      show: isGridView && !shareId && !templateId && !mirrorId,
+      show: isGridView && !shareId && !templateId && !mirrorId && embedSetting.formBtn,
     },
     {
       component: <MirrorList key="mirror" className={styles.toolbarItem} showLabel={showIconBarLabel} />,
       key: 'mirror',
-      show: !shareId && !templateId && !mirrorId,
+      show: !shareId && !templateId && !mirrorId && !embedId,
     },
     {
       component: (
@@ -392,7 +423,7 @@ const ToolbarBase = () => {
         />
       ),
       key: 'api',
-      show: !isGanttView && !shareId && !templateId && !mirrorId,
+      show: !isGanttView && !shareId && !templateId && !mirrorId && embedSetting.apiBtn,
     },
     {
       component: (
@@ -408,7 +439,7 @@ const ToolbarBase = () => {
         />
       ),
       key: 'widget',
-      show: true,
+      show: embedSetting.widgetBtn,
     },
     {
       component: (
@@ -423,7 +454,7 @@ const ToolbarBase = () => {
         />
       ),
       key: 'robot',
-      show: !mirrorId && !shareId && !templateId, // Open the portal only in the preview environment before going online.
+      show: !mirrorId && !shareId && !templateId && embedSetting.robotBtn, // Open the portal only in the preview environment before going online.
     },
     {
       component: (
@@ -444,13 +475,13 @@ const ToolbarBase = () => {
 
   return (
     <div className={styles.toolbar} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
-      {!isMobile && <Undo className={styles.toolbarLeft} />}
+      {!isMobile && !embedId && !isIframe() && <Undo className={styles.toolbarLeft} />}
 
       <div className={classNames(styles.toolbarMiddle, { [styles.toolbarOnlyIcon]: !showIconBarLabel })}>
-        {isGalleryView &&
+        {isGalleryView && !embedId && 
           !isMobile &&
           GalleryLayoutNode(activeView! as IGalleryViewProperty, showIconBarLabel, !visualizationEditable || disabledWithMirror)}
-        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && (
+        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && !embedId && !isIframe() && (
           <ToolItem
             showLabel={showIconBarLabel}
             disabled={!permissions.rowCreatable}
@@ -461,7 +492,7 @@ const ToolbarBase = () => {
             id={'toolInsertRecord'}
           />
         )}
-        {isKanbanView && kanbanFieldId && !isMobile && (
+        {isKanbanView && kanbanFieldId && !isMobile && !embedId && (
           <ToolItem
             showLabel={showIconBarLabel}
             className={styles.toolbarItem}
@@ -476,7 +507,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {isGanttView && !isMobile && (
+        {isGanttView && !isMobile && !embedId && (
           <ToolItem
             showLabel={showIconBarLabel}
             className={styles.toolbarItem}
@@ -488,7 +519,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {isCalendarView && !isMobile && (
+        {isCalendarView && !isMobile && !embedId && (
           <ToolItem
             showLabel={showIconBarLabel}
             className={styles.toolbarItem}
@@ -500,7 +531,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {isOrgView && !isMobile && (
+        {isOrgView && !isMobile && !embedId && (
           <ToolItem
             id={DATASHEET_ID.TOOL_BAR_VIEW_SETTING}
             showLabel={showIconBarLabel}
@@ -513,7 +544,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {!((isCalendarView || isGanttView) && isMobile) && (
+        {!((isCalendarView || isGanttView) && isMobile) && !embedId && (
           <Display type={ToolHandleType.HideField}>
             {/**
              * Component writing needs to be wrapped under div (rc-trigger restriction used in Display).
@@ -533,7 +564,7 @@ const ToolbarBase = () => {
             </div>
           </Display>
         )}
-        {isGanttView && (
+        {isGanttView && !embedId && (
           <Display type={ToolHandleType.HideExclusiveField}>
             <div>
               <HideFieldNode
@@ -569,7 +600,7 @@ const ToolbarBase = () => {
           </Display>
         )}
 
-        {!isOrgView && (
+        {!isOrgView && !embedId && (
           <Display type={ToolHandleType.ViewFilter}>
             <div>
               <FilterNode
@@ -581,7 +612,7 @@ const ToolbarBase = () => {
           </Display>
         )}
 
-        {!isOrgView && !isCalendarView && !isKanbanView && !isMobile && (
+        {!isOrgView && !isCalendarView && !isKanbanView && !isMobile && !embedId && (
           <Display type={ToolHandleType.ViewGroup}>
             <ToolItem
               id={'toolGroup'}
@@ -605,7 +636,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!isOrgView && !isCalendarView && (
+        {!isOrgView && !isCalendarView && !embedId && (
           <Display type={ToolHandleType.ViewSort}>
             <ToolItem
               id={'toolSort'}
@@ -621,7 +652,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!isOrgView && !isCalendarView && !isKanbanView && !isGalleryView && !isMobile && (
+        {!isOrgView && !isCalendarView && !isKanbanView && !isGalleryView && !isMobile && !embedId && (
           <Display type={ToolHandleType.ChangeRowHeight}>
             <ToolItem
               id={'toolRowHeight'}
@@ -639,7 +670,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && (
+        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && embedSetting.shareBtn && !isIframe() && (
           <Display type={ToolHandleType.Share}>
             <ToolItem
               showLabel={showIconBarLabel}

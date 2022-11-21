@@ -18,6 +18,7 @@ const widgetIdReg = /\/(wdt\w+)/;
 export const dashboardReg = /\/(dsb\w+)/;
 export const resourceReg = /\/((dsb|dst)\w+)/;
 export const mirrorIdReg = /\/((mir)\w+)/;
+export const embedIdReg = /\/(emb\w{8,})/;
 
 export const getRegResult = (path: string, reg: RegExp) => {
   const r = path.match(reg);
@@ -39,13 +40,14 @@ export const getPageParams = (path: string) => {
   const dashboardId = getRegResult(path, dashboardReg);
   const resourceId = getRegResult(path, resourceReg);
   const mirrorId = getRegResult(path, mirrorIdReg);
+  const embedId = getRegResult(path, embedIdReg);
   const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId;
 
   return {
     datasheetId, viewId, shareId, recordId,
     fieldId, folderId, formId, templateId, categoryId, memberId,
     widgetId, dashboardId,
-    resourceId, nodeId, mirrorId,
+    resourceId, nodeId, mirrorId, embedId
   };
 };
 

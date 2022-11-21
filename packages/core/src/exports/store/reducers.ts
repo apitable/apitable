@@ -22,6 +22,7 @@ import { labs } from '../../modules/space/store/reducers/labs';
 import { subscriptions } from '../../modules/database/store/reducers/subscriptions';
 import { recordVision } from '../../modules/database/store/reducers/record_vision_mode';
 import { previewFile } from '../../modules/database/store/reducers/preview_file';
+import { embedInfo } from '../../modules/embed/store/reducers/embed';
 
 import { IReduxState } from './interfaces';
 
@@ -34,6 +35,7 @@ export const onlyResourceReducers = combineReducers<Partial<IReduxState>>({
   pageParams,
   space,
   unitInfo,
+  embedInfo
 });
 
 export const rootReducers = combineReducers<IReduxState>({
@@ -64,4 +66,5 @@ export const rootReducers = combineReducers<IReduxState>({
   labs,
   subscriptions,
   previewFile,
+  embedInfo
 });

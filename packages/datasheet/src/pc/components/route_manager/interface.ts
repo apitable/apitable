@@ -29,6 +29,7 @@ export interface IParams {
   datasheetId?: string;
   wecomPath?: 'error' | 'integration' | 'integration/bind_success';
   wecomShopPath?: 'login' | 'unbound_err' | 'social_login';
+  embedId?: string;
 }
 
 export interface IQuery {

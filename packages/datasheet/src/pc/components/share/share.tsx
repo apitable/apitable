@@ -1,5 +1,5 @@
 import { useThemeColors } from '@apitable/components';
-import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { findNode, IShareInfo, Navigation, Selectors, StoreActions, Strings, t, Settings, integrateCdnHost } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Message } from 'pc/components/common/message';
@@ -25,6 +25,7 @@ import { INodeTree, IShareSpaceInfo } from './interface';
 import { ShareFail } from './share_fail';
 import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
+import { isIframe } from 'pc/utils/env';
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
 
@@ -224,10 +225,40 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
     allowApply &&
     !loading &&
     !spaceListLoading &&
-    (!realSpaceId || (spaceList.every(({ spaceId }) => spaceId !== shareSpaceId)))
+    (!realSpaceId || (spaceList.every(({ spaceId }) => spaceId !== shareSpaceId))) &&
+    !isIframe()
   );
 
   const singleFormShare = formId && nodeTree?.nodeId === formId;
+
+  const isIframeShowSharemenu = nodeTree?.children?.length === 0 && isIframe();
+
+  const DataSheetComponent = () => {
+    return(
+      <div
+        className={classNames(styles.gridContainer, {
+          [styles.containerAfter]: !isIframe(),
+          [styles.iframeShareContainer]: isIframe(),
+        })}
+        style={{
+          height: '100%',
+          width: isIframeShowSharemenu ? '100%' : '',
+          padding: shareId && !isIframe() ? '16px 15px 0 0' : '',
+          paddingBottom: isIframe() ? '40px' : '16px',
+          background: shareId && !isIframe() ? colors.primaryColor : '',
+          borderLeft: shareId && !sideBarVisible && !isIframe() ? `16px solid ${colors.primaryColor}` : '',
+        }}
+      >
+        <div className={styles.wrapper} onDoubleClick={judgeAllowEdit}>
+          {getComponent()}
+        </div>
+        {applicationJoinAlertVisible && (
+          <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName} defaultVisible={shareSpace.allowApply} />
+        )}
+      </div>
+    );
+  };
+
   return (
     <ShareContext.Provider value={{ shareInfo: shareSpace }}>
       <Head>
@@ -242,12 +273,14 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
         className={classNames(styles.share, {
           [styles.hiddenCatalog]: !sideBarVisible,
           [styles.formShare]: formId && nodeTree?.nodeId !== formId, // The form is shared through a folder
+          [styles.iframeShare]: !isIframe(),
+          [styles.iframeShareContainer]: isIframe()
         })}
       >
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           {singleFormShare ? (
             <FormPanel loading={loading} />
-          ) : (
+          ) : !isIframeShowSharemenu ? (
             <SplitPane
               split='vertical'
               minSize={320}
@@ -276,25 +309,13 @@ const Share: React.FC<IShareProps> = ({ shareInfo }) => {
                   </div>
                 </Tooltip>
               </div>
-              <div
-                className={styles.gridContainer}
-                style={{
-                  height: '100%',
-                  padding: shareId ? '16px 15px 16px 0' : '',
-                  background: shareId ? colors.primaryColor : '',
-                  borderLeft: shareId && !sideBarVisible ? '16px solid ' + colors.primaryColor : '',
-                }}
-              >
-                <div className={styles.wrapper} onDoubleClick={judgeAllowEdit}>
-                  {getComponent()}
-                </div>
-                {applicationJoinAlertVisible && (
-                  <ApplicationJoinSpaceAlert spaceId={shareSpaceId} spaceName={shareSpaceName} defaultVisible={shareSpace.allowApply} />
-                )}
-              </div>
+              <DataSheetComponent />
             </SplitPane>
-          )}
+          ) : <DataSheetComponent />}
         </ComponentDisplay>
+        {isIframe() && <div className={styles.brandContainer} >
+          <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt="vika_brand" />
+        </div>}
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <ShareMobile
             shareSpace={shareSpace}

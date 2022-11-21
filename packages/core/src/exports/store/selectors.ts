@@ -7,3 +7,4 @@ export * from '../../modules/database/store/selectors/resource';
 export * from '../../modules/org/store/selectors/unit_info';
 export * from '../../modules/space/store/selectors/space';
 export * from '../../modules/space/store/selectors/labs';
+export * from '../../modules/embed/store/selectors/embed';

@@ -40,7 +40,7 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
   const [viewList, setViewList] = useState(views);
   const datasheetLoading = useSelector(state => Selectors.getDatasheetLoading(state));
   const permissions = useSelector((state: IReduxState) => Selectors.getPermissions(state));
-  const { datasheetId: activeNodeId, viewId: activeViewId } = useSelector(state => state.pageParams);
+  const { datasheetId: activeNodeId, viewId: activeViewId, embedId } = useSelector(state => state.pageParams);
   const folderId = useSelector(state => Selectors.getDatasheetParentId(state));
   const [iconHighlight, setIconHighlight] = useState(false);
   const [hoverIndex, setHoverIndex] = useState(-1);
@@ -56,6 +56,8 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
 
   const { contextMenu, onSetContextMenu } = useContextMenu();
 
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+
   const handleInputBlur = (e: React.FocusEvent) => {
     if (!errMsg) {
       const inputValue = (e.target as any).value;
@@ -70,8 +72,14 @@ export const ViewBar: React.FC<IViewBarProps> = props => {
     if (!views) {
       return;
     }
-    setViewList(views);
-  }, [views]);
+    let newViews;
+    if(embedId && embedInfo.viewControl?.viewId) {
+      newViews = views.filter(view => view.id === embedInfo.viewControl?.viewId);
+    } else {
+      newViews = views;
+    }
+    setViewList(newViews);
+  }, [views, embedId, embedInfo]);
 
   const handleItemClick = (e: React.MouseEvent, id: string) => {
     switchView(e, id);

@@ -19,6 +19,7 @@ import { TabAddView } from '../tab_add_view';
 import styles from './style.module.less';
 import { ViewBar } from './view_bar';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
+import { get } from 'lodash';
 
 export interface ITabStateProps {
   width: number;
@@ -27,9 +28,9 @@ export interface ITabStateProps {
 export type ICustomViewProps = Pick<IViewProperty, 'name' | 'id' | 'type'>;
 
 export const Tab: FC<ITabStateProps> = memo(props => {
-  const { datasheetId, viewId: activeView, templateId, shareId } = useSelector(state => {
-    const { datasheetId, viewId: activeView, templateId, shareId } = state.pageParams;
-    return { datasheetId, viewId: activeView, templateId, shareId };
+  const { datasheetId, viewId: activeView, templateId, shareId, embedId } = useSelector(state => {
+    const { datasheetId, viewId: activeView, templateId, shareId, embedId } = state.pageParams;
+    return { datasheetId, viewId: activeView, templateId, shareId, embedId };
   }, shallowEqual);
   const datasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state));
   const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
@@ -74,6 +75,9 @@ export const Tab: FC<ITabStateProps> = memo(props => {
   const { sideBarVisible } = useSideBarVisible();
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
   // const [iconHighlight, setIconHighlight] = useState(false);
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+
+  const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
 
   useEffect(() => {
     if (!activeView) {
@@ -122,7 +126,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
           )
         }
       </div>
-      <ViewBar
+      { isShowViewbar && <ViewBar
         editIndex={editIndex}
         setEditIndex={setEditIndex}
         views={views || []}
@@ -138,7 +142,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
           />
         )}
         {...props}
-      />
+      />}
       {
         !templateId &&
         <div className={styles.status}>

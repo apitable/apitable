@@ -19,3 +19,4 @@ export * from '../../modules/space/store/actions/labs';
 export * from '../../modules/database/store/actions/subscriptions';
 export * from '../../modules/database/store/actions/record_vision_mode';
 export * from '../../modules/database/store/actions/preview_file';
+export * from '../../modules/embed/store/actions/embed';

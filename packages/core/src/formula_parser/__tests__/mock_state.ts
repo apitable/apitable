@@ -393,7 +393,8 @@ export const generateMockState = (fieldMap: IFieldMap): IReduxState => ({
     editable: true,
     onChange: () => {},
     disabledDownload: false,
-  }
+  },
+  embedInfo: {}
 });
 
 export const mockState = {
