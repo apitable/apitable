@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -72,6 +73,7 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    @Disabled
     public void testJoinSpaceByNodeInvitationTokenWithRewardCapacity() {
         MockInvitation invitation = prepareInvitationToken();
         UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");
