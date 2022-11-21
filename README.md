@@ -69,6 +69,35 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
       <a href="#">Team Management</a>
     </th>
   </tr>
+ <tr>
+    <td width="30%">
+      <a href="#">
+        <img src="docs/static/cover.png" />
+      </a>
+    </td>
+    <td width="30%">
+        <a href="#">
+            <img src="docs/static/cover.png" />
+        </a>
+    </td>
+    <td width="30%">
+        <a href="#">
+            <img src="docs/static/cover.png" />
+        </a>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <a href="#">Embed</a>
+    </th>
+    <th>
+      <a href="#">API Panel</a>
+    </th>
+    <th>
+      <a href="#">Team Management</a>
+    </th>
+  </tr>
+   
 </table>
 
 
