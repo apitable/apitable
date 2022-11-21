@@ -64,7 +64,7 @@ export const SearchResult: React.FC<ISearchResultProps> = (props) => {
     }
     return (
       <>
-        <h4 className={styles.nodeTitle}>{t(Strings.vikadata)}</h4>
+        <h4 className={styles.nodeTitle}>{t(Strings.system_configuration_product_name)}</h4>
         <div className={styles.nodeListContent}>
           {files.map(node => {
             return (

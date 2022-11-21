@@ -31,7 +31,7 @@ export const useView = ({ spaceInfo, subscription }: IHooksParams): IMultiLineIt
         unit: t(Strings.unit_piece),
         total: subscription?.maxFormViewsInSpace,
         used: spaceInfo?.formViewNums,
-        name: t(Strings.vika_form),
+        name: t(Strings.view_form),
         icon: <FormOutlined color={colors.black[500]} />,
         percent: calcPercent(spaceInfo?.formViewNums, subscription?.maxFormViewsInSpace),
         showProgress: true,

@@ -26,7 +26,7 @@ export const useWeixinShare = (info?: IInfo) => {
     if (datasheet && datasheet.name) {
       return datasheet.name;
     }
-    return t(Strings.vikadata);
+    return t(Strings.system_configuration_product_name);
   });
 
   const nodeDesc = useSelector((state) => {

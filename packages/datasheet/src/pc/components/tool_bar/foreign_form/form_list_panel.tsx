@@ -53,7 +53,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
         datasheetId,
         viewId,
       },
-      viewName ? `${viewName}${t(Strings.key_of_adjective)}${t(Strings.vika_form)}` : undefined,
+      viewName ? `${viewName}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` : undefined,
     );
   };
 
@@ -111,7 +111,7 @@ export const FormListPanel: FC<IFormListPanelProps> = (props) => {
   return (
     <div className={styles.panelContainer} id={DATASHEET_ID.FORM_LIST_PANEL}>
       <h4 className={styles.header}>
-        {t(Strings.vika_form)}
+        {t(Strings.view_form)}
         <Tooltip title={t(Strings.form_tour_desc)}>
           <a href={t(Strings.form_tour_link)} className={styles.helpBtn} target='_blank' rel='noreferrer'>
             <InformationLargeOutlined color={colors.fc3} />

@@ -104,7 +104,7 @@ export const ForeignForm: FC<IForeignFormProps> = (props) => {
           text={
             formList.length ?
               <TComponent tkey={t(Strings.view_foreign_form_count)} params={{ count: formList.length }} /> :
-              t(Strings.vika_form)
+              t(Strings.view_form)
           }
           icon={
             <FormIcon

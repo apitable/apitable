@@ -38,8 +38,8 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
      */
     const hostField = context.field;
     const state = context.state;
-    // TODO: The first phase of column permissions, 
-    // because the middle layer does not actively push data, 
+    // TODO: The first phase of column permissions,
+    // because the middle layer does not actively push data,
     // and getFieldMap actively masks the data, so here we temporarily use the datasheet to get the fieldmap directly
     const datasheet = getDatasheet(state, context.field.property.datasheetId)!;
     const fieldMap = datasheet.snapshot.meta.fieldMap;
@@ -54,7 +54,7 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
 
     const field = fieldMap[fieldId];
     if (!field && !fieldRole) {
-      throw new Error(t(Strings.not_found_vika_field_the_name_as, {
+      throw new Error(t(Strings.view_field_search_not_found_tip, {
         value: fieldId,
       }));
     }
@@ -65,7 +65,7 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
 
     // String type fields need special treatment. Convert Segment|id type to pure string;
     const fieldBasicValueType = Field.bindContext(field, state).basicValueType;
-    // Currently "", [], false will be converted to null when getCellValue, 
+    // Currently "", [], false will be converted to null when getCellValue,
     // in order to ensure the correct calculation result of the formula, the boolean type needs to be converted null => false
     if (fieldBasicValueType === BasicValueType.Boolean) {
       return Boolean(cellValue);

@@ -94,7 +94,7 @@ export const GetInvitationCodePopover: FC = ({ children }) => {
           <Logo className={styles.logo} size="large" text={false} />
         </div>
         <Typography className={styles.figcaption} variant="body3" color={colors.thirdLevelText} align="center">
-          {t(Strings.vika_official_accounts)}
+          {t(Strings.system_configuration_company_official_account)}
         </Typography>
       </div>
     );

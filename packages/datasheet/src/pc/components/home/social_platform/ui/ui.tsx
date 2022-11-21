@@ -19,7 +19,7 @@ export const Copyright = () => {
   return (
     <footer className={styles.copyright}>
       <Typography variant="body3" className={styles.title} color={colors.secondLevelText}>
-        {t(Strings.vika_copyright)}
+        {t(Strings.system_configuration_company_copyright)}
       </Typography>
       <LinkButton underline={false} href={Settings.login_join_chatgroup_url.value} target="_blank">{t(Strings.contact_us)}</LinkButton>
     </footer>

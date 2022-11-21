@@ -47,7 +47,7 @@ export const FormPreviewer: React.FC<IFormPreviewerProps> = props => {
   }, [currentView]);
 
   const onFormCreate = () => {
-    const viewName = currentView.name ? `${currentView.name}${t(Strings.key_of_adjective)}${t(Strings.vika_form)}` : undefined;
+    const viewName = currentView.name ? `${currentView.name}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` : undefined;
     onChange({ datasheetId, viewId, viewName });
   };
   useMount(() => {

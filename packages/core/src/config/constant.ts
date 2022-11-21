@@ -52,7 +52,7 @@ export const orderedNode = [
   },
   {
     type: NodeType.FORM,
-    name: t(Strings.vika_form),
+    name: t(Strings.view_form),
   },
   {
     type: NodeType.DASHBOARD,

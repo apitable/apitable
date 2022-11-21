@@ -541,7 +541,7 @@ export const HiddenField: React.FC<IHiddenFieldProps> = props => {
             )}
             <div className={styles.coverSetting} style={{ margin: '24px 0 4px' }}>
               <span className={styles.label}>
-                {t(Strings.vika_column)}
+                {t(Strings.view_filed)}
                 {activeView.type === ViewType.Calendar && (
                   <Tooltip title={t(Strings.hidden_field_calendar_tips)} trigger={['hover']}>
                     <span className={styles.tip}>

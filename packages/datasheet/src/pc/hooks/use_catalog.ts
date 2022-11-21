@@ -55,7 +55,7 @@ export const useCatalog = () => {
         }
         return acc;
       }, 0);
-      nodeName = existForm ? `${t(Strings.vika_form)}${existForm + 1}` : t(Strings.vika_form);
+      nodeName = existForm ? `${t(Strings.view_form)}${existForm + 1}` : t(Strings.view_form);
     }
     addNode(parentNodeId, type, nodeName, undefined, extra);
   };

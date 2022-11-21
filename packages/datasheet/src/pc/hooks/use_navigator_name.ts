@@ -41,7 +41,7 @@ export const useNavigatorName = () => {
 
     function getCurrentGUIInfo() {
       const { pageTitle } = getCustomConfig();
-      let name = pageTitle || t(Strings.vikadata);
+      let name = pageTitle || t(Strings.system_configuration_product_name);
       let nodeIcon = '';
 
       if (nodeId && treeNodesMap && treeNodesMap[nodeId!]) {
@@ -50,7 +50,7 @@ export const useNavigatorName = () => {
       }
 
       if (categoryId || isMatchTemplate) {
-        name = isSkuPage ? t(Strings.vikadata) : t(Strings.nav_templates);
+        name = isSkuPage ? t(Strings.system_configuration_product_name) : t(Strings.nav_templates);
       }
 
       if (isMatchContacts) {

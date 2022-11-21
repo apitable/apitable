@@ -73,7 +73,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       },
       {
         icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
-        text: t(Strings.vika_small_classroom),
+        text: t(Strings.help_video_tutorials),
         onClick: () => navigationToUrl(env.HELP_VIDEO_TUTORIALS_URL!),
         hidden: isMobile || !env.HELP_VIDEO_TUTORIALS_URL,
       },
@@ -114,7 +114,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       },
       {
         icon: <VikabyOutlined color={colors.thirdLevelText} />,
-        text: t(Strings.vikaby_helper),
+        text: t(Strings.assistant),
         id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
         onClick: vikabyHelperClick,
         hidden: isMobile || isPrivateDeployment() || isMobileApp(),
@@ -123,7 +123,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
     [
       {
         icon: <CommunityOutlined />,
-        text: t(Strings.vika_community),
+        text: t(Strings.help_user_community),
         onClick: linkToCommunity,
         hidden: !env.HELP_USER_COMMUNITY_URL_PROD
       },

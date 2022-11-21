@@ -115,7 +115,7 @@ export const UsingTemplateModal: FC<IUsingTemplateModalProps> = props => {
   return (
     <BaseModal
       className={styles.baseModal}
-      title={t(Strings.template_centre_create_vika_used_by_template)}
+      title={t(Strings.template_center_use_to_create_datasheets)}
       onCancel={handleCancel}
       onOk={onOk}
       okButtonProps={{ loading, id: TEMPLATE_CENTER_ID.CONFIRM_BTN_IN_TEMPLATE_MODAL, disabled }}

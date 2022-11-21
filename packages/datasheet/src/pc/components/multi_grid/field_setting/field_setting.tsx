@@ -522,7 +522,7 @@ export const FieldSettingBase: React.FC<IFieldSettingProps> = props => {
           open
           onClose={hideOperateBox}
           height='90%'
-          title={t(Strings.choose_type_of_vika_field)}
+          title={t(Strings.datasheet_choose_field_type)}
           footer={
             <Button color='primary' size='large' block onClick={() => onSubmit()}>
               {t(Strings.confirm)}

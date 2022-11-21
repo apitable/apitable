@@ -198,7 +198,7 @@ export const ContextMenu: React.FC<IContextMenuProps> = props => {
     triggerUsageAlert('maxFormViewsInSpace', { usage: spaceInfo!.formViewNums + 1 });
     const activeViewName = viewList.find(item => item.id === activeViewId)?.name;
     const nodeName = activeViewName ?
-      `${activeViewName}${t(Strings.key_of_adjective)}${t(Strings.vika_form)}` :
+      `${activeViewName}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` :
       undefined;
     addTreeNode(folderId, ConfigConstant.NodeType.FORM, {
       datasheetId: activeNodeId,

@@ -38,7 +38,7 @@ export const ShareLink: React.FC<IShareLinkProps> = props => {
     }
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 1000);
-    const shareText = t(Strings.vika_share_link_template, {
+    const shareText = t(Strings.workbench_share_link_template, {
       nickName: userInfo!.memberName || t(Strings.friend),
       nodeName: shareSettings.nodeName,
     });

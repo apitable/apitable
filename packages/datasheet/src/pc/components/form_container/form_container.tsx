@@ -603,7 +603,7 @@ export const FormContainer: React.FC = () => {
       patchRecord({ id: recordId, data: nextFormData, commentCount: 0 });
     }
     if (hasChange) {
-      Message.info({ content: t(Strings.vika_form_change_tip) });
+      Message.info({ content: t(Strings.view_form_field_changed_tip) });
       prevFieldMap.current = fieldMap;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

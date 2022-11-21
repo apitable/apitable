@@ -15,7 +15,7 @@ export interface IKanbanOptionProps {
 
 export const KanbanOption: React.FC<IKanbanOptionProps> = props => {
   const { command, onClose, fieldMap } = props;
-  const defaultName = getUniqName(t(Strings.vika_column), Object.keys(fieldMap).map(id => fieldMap[id].name));
+  const defaultName = getUniqName(t(Strings.view_filed), Object.keys(fieldMap).map(id => fieldMap[id].name));
   const { errTip, onChange, value } = useCheckRepeatName();
 
   function submit() {

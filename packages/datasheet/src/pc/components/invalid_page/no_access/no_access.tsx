@@ -17,7 +17,7 @@ export const NoAccess: FC = () => {
         <Logo size='large' />
       </div>
       <div className={styles.noAccessImage}>
-        <Image src={NoAccessImage} alt={t(Strings.vikadata)} />
+        <Image src={NoAccessImage} alt={t(Strings.system_configuration_product_name)} />
       </div>
       <h1>{t(Strings.space_not_access)}</h1>
       <Button color='primary' onClick={returnHome}>{t(Strings.back_to_space)}</Button>

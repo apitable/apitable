@@ -70,7 +70,7 @@ export const stringToActions = (arr: string[], id: string, url?: string) => {
 };
 
 const createWebNotification = (data:{title?: string, options?: NotificationOptions | undefined, onClick?: ()=>void}) => {
-  const { title = t(Strings.vikadata), options, onClick } = data;
+  const { title = t(Strings.system_configuration_product_name), options, onClick } = data;
   const webNotification = new Notification(title, {
     icon: integrateCdnHost(Settings.system_configuration_official_logo.value),
     tag: 'vika',

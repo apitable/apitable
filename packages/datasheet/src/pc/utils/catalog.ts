@@ -38,7 +38,7 @@ export const nodeConfigData = [
   {
     type: ConfigConstant.NodeType.FORM,
     icon: NodeIcon.Form,
-    name: t(Strings.vika_form),
+    name: t(Strings.view_form),
   },
   {
     type: ConfigConstant.NodeType.DASHBOARD,

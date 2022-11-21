@@ -30,7 +30,7 @@ export const PcSsoIdaasHome: FC = () => {
             </div>
             <div className={styles.qrCode}>
               <Image src={`${process.env.PUBLIC_URL}/signin_img_officialaccounts_qrcode.png`} alt='OfficialAccount Code' layout={'fill'} />
-              <div className={styles.caption}>{t(Strings.vika_star)}</div>
+              <div className={styles.caption}>{t(Strings.signin_idaas_official_account)}</div>
             </div>
           </Space>
         </div>

@@ -112,7 +112,7 @@ export const LinkInvite: FC<ILinkInviteProps> = ({ shareId }) => {
     }
   };
 
-  const inviteText = t(Strings.vika_invite_link_template, {
+  const inviteText = t(Strings.contacts_invite_link_template, {
     nickName: userInfo!.nickName || t(Strings.friend),
     spaceName: userInfo!.spaceName,
   });

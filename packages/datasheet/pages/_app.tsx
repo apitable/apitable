@@ -73,7 +73,7 @@ interface IMyAppProps {
   pathUrl: string;
 }
 
-const initWorker = async () => {
+const initWorker = async() => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -237,7 +237,7 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   const userInfo = clientInfo && clientInfo.userInfo ? JSON.parse(clientInfo.userInfo) : undefined;
   return <>
     <Head>
-      <title>{t(Strings.vikadata)}</title>
+      <title>{t(Strings.system_configuration_product_name)}</title>
       <meta name='description' content={t(Strings.client_meta_label_desc)} />
       <meta
         name='keywords'
