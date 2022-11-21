@@ -105,8 +105,27 @@ export const useSpaceRequest = () => {
     });
   };
 
+  /**
+   * Get embed info
+   * @param nodeId 
+   * @param data 
+   */
+  const getEmbedInfoReq = (
+    embedId: string,
+  ) => {
+    return Api.getEmbedLinkInfo(embedId).then(res => {
+      const { success, data } = res.data;
+      if (success) {
+        dispatch(StoreActions.setLoading(false));
+        return data;
+      }
+      return null;
+    });
+  };
+
   return {
-    changeSpaceNameReq, getSpaceListReq, applyJoinSpaceReq, spaceFeaturesReq,
+    changeSpaceNameReq, getSpaceListReq, applyJoinSpaceReq, spaceFeaturesReq, getEmbedInfoReq,
     checkEmailReq, updateMemberSettingReq, updateWorkbenchSettingReq, updateSecuritySettingReq
   };
 };
+

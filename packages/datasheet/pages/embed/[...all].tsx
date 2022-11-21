@@ -1,5 +1,3 @@
-import { Api, Url } from '@apitable/core';
-import axios from 'axios';
 import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
 import { getRegResult, embedIdReg } from 'pc/hooks';
@@ -13,9 +11,7 @@ const App = (props) => {
   </>;
 };
 
-export const getServerSideProps = async(context: NextPageContext) => {
-  const host = process.env.API_PROXY;
-  axios.defaults.baseURL = host + Url.NEST_BASE_URL;
+export const getServerSideProps = (context: NextPageContext) => {
 
   if (!context.req?.url) {
     return { props: {}};
@@ -35,17 +31,11 @@ export const getServerSideProps = async(context: NextPageContext) => {
     headers.cookie = cookie;
   }
 
-  const res = await Api.getEmbedLinkInfo(embedId, headers);
-  const { success, data } = res.data;
-  if (success) {
-    return {
-      props: {
-        embedInfo: data
-      }
-    };
-  }
   return {
-    props: {}
+    props: {
+      embedId,
+      headers
+    }
   };
 };
 

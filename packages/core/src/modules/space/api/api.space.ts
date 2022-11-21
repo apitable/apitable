@@ -586,9 +586,10 @@ export function readShareInfo(shareId: string, headers?: Record<string, string>)
 /**
  * get embed Info
  */
-
+const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
 export function getEmbedLinkInfo(linkId: string, headers?: Record<string, string>) {
   return axios.get(Url.EMBED_LINK_INFO + `/${linkId}`, {
+    baseURL,
     headers,
   });
 }

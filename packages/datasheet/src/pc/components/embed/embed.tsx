@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Head from 'next/head';
 import { Tooltip } from 'pc/components/common/tooltip';
 import { Router } from 'pc/components/route_manager/router';
-import { usePageParams, useSideBarVisible, useUserRequest, useRequest } from 'pc/hooks';
+import { usePageParams, useSideBarVisible, useRequest, useSpaceRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -13,28 +13,27 @@ import Packup from 'static/icon/workbench/packup.svg';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
-import { ShareMenu } from '../share/share_menu';
 import { INodeTree } from '../share/interface';
-import { ShareFail } from '../share/share_fail';
 import styles from '../share/style.module.less';
 
 interface IEmbedProps {
-  embedInfo: any | undefined;
+  embedId: string;
 }
 
-const Embed: React.FC<IEmbedProps> = ({ embedInfo }) => {
+const Embed: React.FC<IEmbedProps> = (embedProps) => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-
+  const { embedId } = embedProps;
   const { datasheetId, folderId } = useSelector(state => state.pageParams);
   const treeNodesMap = useSelector(state => state.catalogTree.treeNodesMap);
   const [nodeTree, setNodeTree] = useState<INodeTree>();
-  const [visible, setVisible] = useState(false);
+
   const [embedClose, setEmbedClose] = useState(false);
-  const { getLoginStatusReq } = useUserRequest();
-  const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
+  const { getEmbedInfoReq } = useSpaceRequest();
+ 
   const dispatch = useAppDispatch();
   const [embedConfig, setEmbedCofig] = useState<IEmbedInfo>();
-
+  const { data: embedInfo } = useRequest<any>(() => getEmbedInfoReq(embedId));
+  
   usePageParams();
 
   useEffect(() => {
@@ -43,22 +42,11 @@ const Embed: React.FC<IEmbedProps> = ({ embedInfo }) => {
 
   useEffect(() => {
     if (!embedInfo) {
-      return;
-    }
-
-    if (!embedInfo.hasLogin) {
-      dispatch(StoreActions.setLoading(false));
-      return;
-    }
-    getLoginStatus({ spaceId: embedInfo.spaceId }, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [embedInfo]);
-
-  useEffect(() => {
-    if (!embedInfo) {
       setEmbedClose(true);
       return;
-    }
+    } 
+    setEmbedClose(false);
+    
     const { 
       nodeId, 
       shareNodeName = '"新建维格表 4"', 
@@ -91,7 +79,6 @@ const Embed: React.FC<IEmbedProps> = ({ embedInfo }) => {
       return;
     }
     setTimeout(() => {
-      console.log('share navigationTo');
       Router.push(Navigation.EMBED_SPACE,{
         params: { embedId: embedSpaceInfo.linkId, nodeId },
       });
@@ -102,7 +89,7 @@ const Embed: React.FC<IEmbedProps> = ({ embedInfo }) => {
 
   // Embed Close
   if (embedClose) {
-    return <ShareFail />;
+    return <></>;
   }
 
   const handleClick = () => {
@@ -193,9 +180,6 @@ const Embed: React.FC<IEmbedProps> = ({ embedInfo }) => {
             resizerStyle={{ backgroundColor: 'transparent', minWidth: 'auto' }}
           >
             <div className={styles.splitLeft}>
-              {sideBarVisible && (
-                <ShareMenu shareSpace={embedInfo} shareNode={nodeTree} visible={visible} setVisible={setVisible} loading={loading} />
-              )}
               <Tooltip
                 title={!sideBarVisible ? t(Strings.expand_pane) : t(Strings.hide_pane)}
                 placement={!sideBarVisible ? 'right' : 'bottom'}
