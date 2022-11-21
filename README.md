@@ -38,8 +38,40 @@ If you just want try out APITable[^info], using our hosted version at [apitable.
 
 If you want to install APITable on your local or cloud, See [Installation](#installation)
 
-
 ## 🔥 Features
+
+<table>
+  <tr>
+    <td width="30%">
+      <a href="#">
+        <img src="docs/static/cover.png" />
+      </a>
+    </td>
+    <td width="30%">
+        <a href="#">
+            <img src="docs/static/cover.png" />
+        </a>
+    </td>
+    <td width="30%">
+        <a href="#">
+            <img src="docs/static/cover.png" />
+        </a>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <a href="#">Embed</a>
+    </th>
+    <th>
+      <a href="#">API Panel</a>
+    </th>
+    <th>
+      <a href="#">Team Management</a>
+    </th>
+  </tr>
+</table>
+
+
 
 APITable provides incredible powerful features, from the personal to the Enterprise.
 
