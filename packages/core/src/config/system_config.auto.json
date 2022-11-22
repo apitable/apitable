@@ -20,9 +20,6 @@
         "_version_type": {
             "value": "local"
         },
-        "account_wallet_help": {
-            "value": "https://help.vika.cn/docs/guide/about-wallet"
-        },
         "activity_center_end_time": {
             "value": "2021-05-30 19:30"
         },
@@ -35,17 +32,8 @@
         "activity_train_camp_start_time": {
             "value": "2022-03-31 00:00"
         },
-        "activity_train_camp_url": {
-            "value": "https://vika.cn/ai-course/"
-        },
         "agree_terms_of_service": {
             "value": "75"
-        },
-        "anonymous_avatar": {
-            "value": "space/2020/09/11/744b39b7ed5240e1b257553f683ed6cd"
-        },
-        "ap_rate_hour": {
-            "value": "0"
         },
         "api_apiffox_patch_url": {
             "value": "https://www.apifox.cn/apidoc/project-613370/api-13867672-run?path[datasheetId]=${datasheetId}&query[viewId]=${viewId}&environment[token]=${token}&environment[body]=${body}"
@@ -65,15 +53,6 @@
         "api_panel_help_url": {
             "value": "/developers/api/introduction/"
         },
-        "api_rate_day": {
-            "value": "1000000"
-        },
-        "api_rate_inute": {
-            "value": "100"
-        },
-        "api_rate_second": {
-            "value": "10"
-        },
         "api_times_per_day": {
             "value": "1000000"
         },
@@ -85,9 +64,6 @@
         },
         "api_times_per_second": {
             "value": "10"
-        },
-        "apifox_link": {
-            "value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
         },
         "assistant": {
             "value": "true"
@@ -131,47 +107,11 @@
         "billing_space_upgrade_url": {
             "value": "vika.cn/space/空间站id/upgrade"
         },
-        "blank_mirror_list_image": {
-            "value": "space/2022/05/23/d880e95a4a204492b20d8725c61c998c"
-        },
-        "calendar_guide_create": {
-            "value": "space/2021/08/16/bda3a4c51ebc444ea9f26d4573987257"
-        },
-        "calendar_guide_no_permission": {
-            "value": "space/2022/05/23/4206adbf0aaa43bf90342fd0e568dc73"
-        },
-        "calendar_guide_video": {
-            "value": "space/2021/08/06/e3a4e480768c4b4d8d01ea4a269bf2bb"
-        },
-        "calendar_setting_help_url": {
-            "value": "https://help.vika.cn/docs/guide/manual-calendar-view"
-        },
-        "chatgroup_url": {
-            "value": "https://vika.cn/chatgroup/"
-        },
-        "create_widget_help": {
-            "value": "/developers/widget/introduction"
-        },
-        "customer_qrcode_background_image": {
-            "value": "https://s1.vika.cn/space/2022/02/28/20566ca6516d477c913f5ca79e554c68"
-        },
-        "customer_qrcode_url": {
-            "value": "https://s1.vika.cn/space/2022/02/25/1730b0599510406fb7ce1b7c9ed78393"
-        },
-        " customer_service_qr_code": {
-            "value": "space/2021/04/21/c355dc46eb7f4e82a5e90c8d1fac16a8"
-        },
         "datasheet_max_view_count_per_sheet": {
             "value": "60"
         },
         "datasheet_unlogin_user_avatar": {
             "value": "space/2020/09/11/744b39b7ed5240e1b257553f683ed6cd"
-        },
-        "default_avatar": {
-            "value": "space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e"
-        },
-        "default_widget_template_url": {
-            "value": "/develop/widget/wpk2jJ7qZS0VG/0.0.11/61433a73e4b0ed4bd1e2e8e1.zip"
         },
         "delete_account_step1_cover": {
             "value": "space/2022/01/11/05fb6ad3c03b4b4da95156313b5d7777"
@@ -182,38 +122,11 @@
         "delete_account_step2_mobile_icon": {
             "value": "space/2022/01/11/ba4572da263c46ccb94843046a2a8e6c"
         },
-        "deploy_mode": {
-            "value": "cloud"
-        },
-        "developers_center_url": {
-            "value": "https://vika.cn/developers"
-        },
-        "ding_talk_login_appid_dev": {
-            "value": "dingoaumy4mh7oesecamid"
-        },
-        "ding_talk_login_appid_pro": {
-            "value": "dingoam9aailglcervwmzh"
-        },
         "dingtalk_login_appid_dev": {
             "value": "dingoaumy4mh7oesecamid"
         },
         "dingtalk_login_appid_prod": {
             "value": "dingoam9aailglcervwmzh"
-        },
-        "dingtalk_login_appid_staging": {
-            "value": "dingoa5koclicxm2mdx5yx"
-        },
-        "dingtalk_login_callback_dev": {
-            "value": "https://integration.vika.ltd/user/dingtalk/callback"
-        },
-        "dingtalk_login_callback_prod": {
-            "value": "https://vika.cn/user/dingtalk/callback"
-        },
-        "dingtalk_login_callback_staging": {
-            "value": "https://staging.vika.ltd/user/dingtalk/callback"
-        },
-        "dingtalk_upgrade_url": {
-            "value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521B71035D4F4F2DADF5E69AE3825326C7F%26token%3D65482d6a78796151887e033769bebfd8%26shareUid%3DBCB170692B0B56DA0C22819901B68B80&dtaction=os"
         },
         "education_url": {
             "value": "https://edu.vika.cn"
@@ -224,83 +137,17 @@
         "emoji_database_64": {
             "value": "space/2021/03/23/c88653f7b7424d10bef058c345f6df6d"
         },
-        "emoji-apple-32": {
-            "value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"
-        },
-        "emoji-apple-64": {
-            "value": "space/2021/03/23/c88653f7b7424d10bef058c345f6df6d"
-        },
-        "enterprise_qr_code": {
-            "value": "space/2022/02/16/cf2f386d300142a19268c487b351d6bb"
-        },
-        "error_message_qrcode": {
-            "value": "{   \"website\": \"/space/2022/04/26/51352131c1d74332b8ab8a57483b0f3f?attname=66_8c5b355964c515a9d2ce55bc423e5a18.png\",   \"wecom\": \"/space/2022/04/26/2c706fa40e3442d8b643a30ee22f5572?attname=66_8d7dce3b6ff28bc245a2db34bf4ab55a.png\",   \"dingtalk\": \"/space/2022/05/17/9bb75b8710e040be9fb99d7b28a6ad0e?attname=125_f2112b2006e4b42cc4b0e7a320f87da7.png\",   \"feishu\": \"https://u.vika.cn/z9ygm\" }"
-        },
         "experimental_features_unsynchronized_view_intro_img": {
             "value": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
-        },
-        "feishu_bind_help": {
-            "value": "https://vikadata.feishu.cn/docs/doccnE9bGAtFXqGlMwkRgutgtsd"
-        },
-        "feishu_callback_pathname": {
-            "value": "/social/feishu/auth/callback"
         },
         "feishu_login_appid": {
             "value": "cli_9f3930dd7d7ad00c"
         },
-        "feishu_login_appid_dev": {
-            "value": "cli_9f3930dd7d7ad00c"
-        },
-        "feishu_login_appid_prod": {
-            "value": "cli_9f614b454434500e"
-        },
-        "feishu_login_appid_staging": {
-            "value": "cli_a08120b120fad00e"
-        },
-        "feishu_manage_open_url": {
-            "value": "https://applink.feishu.cn/client/bot/open"
-        },
-        "feishu_seats_form": {
-            "value": "https://u.vika.cn/pb7cj"
-        },
-        "feishu_upgrade_url": {
-            "value": "https://feishu.cn/admin/appCenter/manage/cli_9f614b454434500e"
-        },
-        "feishu_upgrade_url_dev": {
-            "value": "https://feishu.cn/admin/appCenter/manage/cli_a28611a8b9e2900d"
-        },
-        "feisu_register_link_in_login": {
-            "value": "https://u.vika.cn/qmdp3"
-        },
         "field_cascade": {
             "value": "true"
         },
-        "folder_showcase_banners": {
-            "value": "space/2021/12/29/7306be86fc6d4cac9d8de9b4a787b1fa,space/2021/12/29/58073bbfe0f64dc7bd2f5f44a123c172,space/2021/12/29/e36e93966aa049e1ba7fd53907c2265f,space/2021/12/29/ebd570b6ee3b429f8c2e51e1b1df6657,space/2021/12/29/7eb38331f61240dcb74b1fce3a90c6bc,space/2021/12/29/a8c5df5eba2e4c07a78bdca6b9613579"
-        },
-        "form_guide_video": {
-            "value": "space/2020/12/25/f0ecc536d7324df888d165cb73cd22c6"
-        },
-        "gallery_guide_video": {
-            "value": "space/2020/09/15/4383ec2f8eb041599396df0f18d99f5a"
-        },
-        "gantt_config_color_help_url": {
-            "value": "https://bbs.vika.cn/article/134"
-        },
-        "gantt_config_task_contact_help_url": {
-            "value": "https://help.vika.cn/docs/guide/manual-gantt-view/#%E8%AE%BE%E7%BD%AE%E4%BB%BB%E5%8A%A1%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"
-        },
-        "gantt_guide_video": {
-            "value": "space/2021/06/02/8bd6c5263ba444aabc138ed051b83c8c"
-        },
         "grades_info": {
             "value": "/pricing/"
-        },
-        "grid_guide_video": {
-            "value": "space/2020/09/16/77e941353d8141b69f684e2592350ec7"
-        },
-        "guide_api_getting_start": {
-            "value": "/developers/api/introduction/"
         },
         "help_assistant": {
             "value": "true"
@@ -313,9 +160,6 @@
         },
         "help_download_app": {
             "value": "true"
-        },
-        "help_intro_custom_subdomain": {
-            "value": "/help/intro_custom_subdomain"
         },
         "help_join_chatgroup_url": {
             "value": "https://vika.cn/chatgroup/"
@@ -347,12 +191,7 @@
         "help_video_tutorials_url": {
             "value": "https://edu.vika.cn"
         },
-        "icp1": {
-            "value": "https://beian.miit.gov.cn/"
-        },
-        "icp2": {
-            "value": "http://www.beian.gov.cn/portal/registerSystemInfo"
-        },
+        "icp1": {},
         "integration_apifox_url": {
             "value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
         },
@@ -360,7 +199,10 @@
             "value": "https://h5.dingtalk.com/dingtalk-da/index.html"
         },
         "integration_dingtalk_help_url": {
-            "value": "https://help.vika.cn/docs/guide/integration-dingtalk"
+            "value": "https://help.vika.cn/docs/guide/integration-dingtalk",
+            "marketplace": {
+                "integration": "ina9134969049653777"
+            }
         },
         "integration_dingtalk_login_appid_dev": {
             "value": "dingoaumy4mh7oesecamid"
@@ -378,7 +220,13 @@
             "value": "vika维格表 使用指南"
         },
         "integration_feishu_help_url": {
-            "value": "https://help.vika.cn/docs/guide/integration-lark"
+            "value": "https://help.vika.cn/docs/guide/integration-lark",
+            "marketplace": {
+                "integration": "cli_9f3930dd7d7ad00c, cli_a08120b120fad00e, cli_9f614b454434500e"
+            }
+        },
+        "integration_feishu_login_appid": {
+            "value": "cli_9f3930dd7d7ad00c"
         },
         "integration_feishu_login_appid_dev": {
             "value": "cli_9f3930dd7d7ad00c"
@@ -404,10 +252,6 @@
         "integration_feisu_register_link_in_login": {
             "value": "https://u.vika.cn/qmdp3"
         },
-        "integration_official_template_category": {},
-        "integration_official_template_choice": {
-            "value": "{\"header\":[{\"templateIds\":[\"tplumddN5Cs5p\"],\"image\":\"space/2020/06/24/48cc66c99e4844b69cb3eec8611d20ff\",\"bannerDesc\":{\"title\":\"项目管理杀手，适用任意组织\",\"desc\":\"无论小组织、个体户、中小企业，亦或是500强企业\"}},{\"templateIds\":[\"tpl6M8vTZgRUY\"],\"image\":\"space/2020/06/24/605bdffa5f7442d4a742803103217164\",\"bannerDesc\":{\"title\":\"智慧门店系统，内外管理无忧\",\"desc\":\"你的生意小能手，每个细节，你细品\"}},{\"templateIds\":[\"tplp0Gj7aWSKc\"],\"image\":\"space/2020/06/24/b72c625ac5a24ece90cc1196542a4d8d\",\"bannerDesc\":{\"title\":\"漫威爱好者，有种你进来\",\"desc\":\"我上看下看，左看右看，原来每个视图都不简单\"}}],\"category\":[{\"title\":\"其他用户喜欢的模板\",\"templateIds\":[\"tplgZ8za3Ra1Q\",\"tplQz0s17xd3r\",\"tplujdd1bKxgU\",\"tpls0HwnN1Rwi\",\"tplKSMbGKjvt3\",\"tplvme7EURrnx\"]}]}"
-        },
         "integration_wecom_bind_help_center": {
             "value": "/help"
         },
@@ -418,7 +262,10 @@
             "value": "/help/intro_custom_subdomain"
         },
         "integration_wecom_help_url": {
-            "value": "https://help.vika.cn/docs/guide/integration-wecom"
+            "value": "https://help.vika.cn/docs/guide/integration-wecom",
+            "marketplace": {
+                "integration": "ina5200279359980055"
+            }
         },
         "integration_wecom_login_qrcode_js": {
             "value": "http://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.4.js"
@@ -457,80 +304,13 @@
             "value": "/wecom-integration/#upgrade"
         },
         "integration_yozosoft_help_url": {
-            "value": "https://help.vika.cn/docs/guide/integration-yozosoft"
+            "value": "https://help.vika.cn/docs/guide/integration-yozosoft",
+            "marketplace": {
+                "integration": "ina5645957505507647"
+            }
         },
         "introduction_video": {
             "value": "space/2022/04/14/aff988f37b6849b1bf438a73d8721ae2"
-        },
-        "invite_code_image_dev": {
-            "value": "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQGP8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAySHhMaXRYLVM5cVAxMDAwMGcwN0IAAgS9e0dfAwQAAAAA"
-        },
-        "invite_code_image_pro": {
-            "value": "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQG88DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyblJNS3hKTkVjMG0xMDAwMDAwN28AAgQS72lfAwQAAAAA"
-        },
-        "kanban_guide_video": {
-            "value": "space/2020/09/11/c964bcf3ec48458dae7fbdc55a59856b"
-        },
-        "know_how_to_logout": {
-            "value": "https://help.vika.cn/docs/guide/faq-cancel-account"
-        },
-        "labs_open_spaces": {
-            "value": "[\"spcXXXXX\"]"
-        },
-        "language": {
-            "value": "zh_CN"
-        },
-        "link_preview_office_cms": {
-            "value": "https://help.vika.cn/docs/guide/integration-yozosoft",
-            "marketplace": {
-                "integration": [
-                    "rec1nwpDcbrRD"
-                ]
-            }
-        },
-        "link_to_dingtalk_cms": {
-            "value": "https://help.vika.cn/docs/guide/integration-dingtalk",
-            "marketplace": {
-                "integration": [
-                    "receWCEAL0MzS"
-                ]
-            }
-        },
-        "link_to_dingtalk_da": {
-            "value": "https://h5.dingtalk.com/dingtalk-da/index.html"
-        },
-        "link_to_lark_cms": {
-            "value": "https://help.vika.cn/docs/guide/integration-lark",
-            "marketplace": {
-                "integration": [
-                    "recG3ge9EYmU4",
-                    "recJGXPlEZp4A",
-                    "recyY2kpy7Bp2"
-                ]
-            }
-        },
-        "link_to_privacy_policy": {
-            "value": "/privacy-policy"
-        },
-        "link_to_privacy_policy_in_app": {
-            "value": "https://vikadata.feishu.cn/docs/doccnXvWiTJZoWzoxHzJIjaDqph"
-        },
-        "link_to_terms_of_service": {
-            "value": "/service-agreement"
-        },
-        "link_to_terms_of_service_in_app": {
-            "value": "https://vikadata.feishu.cn/docs/doccnaLCi96we71zlUTC3uia3fb"
-        },
-        "link_to_wecom_cms": {
-            "value": "https://help.vika.cn/docs/guide/integration-wecom",
-            "marketplace": {
-                "integration": [
-                    "rec1BLDeSLjLr"
-                ]
-            }
-        },
-        "link_to_wecom_shop_cms": {
-            "value": "/help/integration-wecom/"
         },
         "login_agree_terms_of_service": {
             "value": "75"
@@ -565,24 +345,6 @@
         "login_service_agreement_url": {
             "value": "/service-agreement"
         },
-        "minimum_version_require": {
-            "value": "0.5.0"
-        },
-        "modal_logout_step1_cover": {
-            "value": "space/2022/01/11/05fb6ad3c03b4b4da95156313b5d7777"
-        },
-        "modal_logout_step2_icon_mail": {
-            "value": "space/2022/01/11/b0d06adfb14d457b9db266349edbf656"
-        },
-        "modal_logout_step2_icon_mobile": {
-            "value": "space/2022/01/11/ba4572da263c46ccb94843046a2a8e6c"
-        },
-        "no_permission_img_url": {
-            "value": "/space/2022/09/07/6e95e804d5f44fe4a0dec81d228b0286?attname=filecannotbeaccessed%402x.png"
-        },
-        "node_count_trigger": {
-            "value": "13"
-        },
         "official_avatar": {
             "value": "space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
         },
@@ -592,38 +354,14 @@
         "onboarding_customer_service_qrcode_avatar_img_url": {
             "value": "https://s1.vika.cn/space/2022/02/25/1730b0599510406fb7ce1b7c9ed78393"
         },
-        "org_chart_setting_help_url": {
-            "value": "https://help.vika.cn/docs/guide/manual-architecture-view"
-        },
-        "org_guide_add_first_node_cover_1": {
-            "value": "space/2021/11/19/73c1cda56b3d4d448416d9b69c757598"
-        },
-        "org_guide_add_first_node_cover_2": {
-            "value": "space/2021/11/19/b1c660a317fb4068bd312d16671308a1"
-        },
-        "org_guide_video": {
-            "value": "space/2021/11/18/428b94bb262845afabf46efff8e082b5"
-        },
         "page_apply_logout": {
             "value": "space/2022/01/11/5bb30117e4934522af081a05eb4fd903"
         },
         "page_apply_logout_bg": {
             "value": "space/2022/01/11/35106645c2614d11bea689a540d13787"
         },
-        "pay_contact_us": {
-            "value": "space/2022/02/17/b32ecd3a5dcb43a1add4d320632c6d2a"
-        },
-        "pay_success_qr_code": {
-            "value": "space/2022/02/17/b7cd077fca35444aa02fba4d11f2c1ba"
-        },
         "permission_config_in_workbench_page": {
             "value": "[{\"key\":0,\"title\":\"表格内的操作权限\",\"detail\":[{\"title\":\"编辑视图工具栏\",\"permissions\":[0,1,2]},{\"title\":\"编辑视图列表\",\"permissions\":[0,1,2]},{\"title\":\"导出视图数据\",\"permissions\":[0,1]},{\"title\":\"增删维格列\",\"permissions\":[0,1]},{\"title\":\"编辑维格列属性（列名/类型/描述）\",\"permissions\":[0,1]},{\"title\":\"编辑维格列样式（列宽/统计栏）\",\"permissions\":[0,1]},{\"title\":\"编辑行（增删/拖动）\",\"permissions\":[0,1,2]},{\"title\":\"编辑单元格（增删改数据）\",\"permissions\":[0,1,2]},{\"title\":\" 撤销，重做\",\"permissions\":[0,1,2]}]},{\"key\":1,\"title\":\"对文件（夹）的操作权限\",\"detail\":[{\"title\":\"设置文件（夹）权限\",\"permissions\":[0,1]},{\"title\":\"将继承切换为指定权限\",\"permissions\":[0,1]},{\"title\":\"将指定切换为继承权限\",\"permissions\":[0]},{\"title\":\"新建文件（夹）\",\"permissions\":[0,1]},{\"title\":\"导入文件\",\"permissions\":[0,1]},{\"title\":\"导出文件\",\"permissions\":[0,1]},{\"title\":\"复制文件（当前文件&上级文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"移动文件（当前文件&目标文件夹权限）\",\"permissions\":[0,1]},{\"title\":\"重命名文件（夹）\",\"permissions\":[0,1]},{\"title\":\"删除文件（夹）\",\"permissions\":[0,1]},{\"title\":\"分享文件（夹）\",\"permissions\":[0,1,2]},{\"title\":\"保存为模板\",\"permissions\":[0,1]}]}]"
-        },
-        "private_deployment_form": {
-            "value": "https://vika.cn/share/shrVrGPclBql6w9ysUHzR/fomed5397fFJfdcRvL"
-        },
-        "product_roadmap": {
-            "value": "https://bbs.vika.cn/page/product_roadmap"
         },
         "QNY1": {
             "value": "https://s1.vika.cn/"
@@ -634,53 +372,14 @@
         "QNY3": {
             "value": "https://s1-applets.vika.cn/"
         },
-        "qq_callback_dev": {
-            "value": "http://integration.vika.ltd/user/qq_connect/callback"
-        },
-        "qq_callback_prod": {
-            "value": "http://vika.cn/user/qq_connect/callback"
-        },
-        "qq_callback_staging": {
-            "value": "http://staging.vika.ltd/user/qq_connect/callback"
-        },
-        "qq_connect_web_appid_dev": {
-            "value": "101907145"
-        },
-        "qq_connect_web_appid_prod": {
-            "value": "101911260"
-        },
-        "qq_connect_web_appid_staging": {
-            "value": "101907413"
-        },
         "record_comments_help_url": {
             "value": "https://help.vika.cn/docs/guide/records-comments"
-        },
-        "recorded_comments": {
-            "value": "https://help.vika.cn/docs/guide/records-comments"
-        },
-        "release_log_history_url": {
-            "value": "https://bbs.vika.cn/column/details/13"
-        },
-        "role_empty": {
-            "value": "space/2022/08/03/3fbdff65d66547a8ab796e1b808d45b0"
-        },
-        "role_help_url": {
-            "value": "https://help.vika.cn/docs/guide/manual/use-space/role/%20readme"
         },
         "server_error_page_bg": {
             "value": "/space/2022/09/07/cbaf2ee93be24f6bbe361a85db0efba7?attname=theserverisundermaintenance.%402x.png"
         },
         "share_iframe_brand": {
             "value": "space/2021/12/09/3b09b857cee04a12b6b02cd63bb90a81?attname=%E7%BB%B4%E6%A0%BC%E8%A1%A8logo.svg"
-        },
-        "share_url": {
-            "value": "https://help.vika.cn/docs/guide/manual-share"
-        },
-        "solution": {
-            "value": "https://vika.cn/solutions/"
-        },
-        "space_corp_cert_url": {
-            "value": "https://vika.cn/share/shrQetZLnGRnHXoKfJvTC?fldUC8FmVjHEv={spaceId}"
         },
         "space_enterprise_certification_form": {
             "value": "https://vika.cn/share/shrQetZLnGRnHXoKfJvTC?fldUC8FmVjHEv={spaceId}"
@@ -712,9 +411,6 @@
         "space_setting_upgrade": {
             "value": "true"
         },
-        "subscribe_demonstrate": {
-            "value": "https://vika.cn/share/shrFVCtHXQwYm3DVgNn91"
-        },
         "system_configuration_default_language": {
             "value": "zh_CN"
         },
@@ -742,26 +438,17 @@
         "system_configuration_version": {
             "value": "0.5.0"
         },
-        "template_customization": {
-            "value": "https://u.vika.cn/vb9h5"
-        },
         "template_feedback_form_url": {
             "value": "https://u.vika.cn/vb9h5"
         },
         "template_space_id": {
             "value": "spcNA5eN3Sj6Q"
         },
-        "trash_url": {
-            "value": "https://help.vika.cn/docs/guide/manual-trash/"
-        },
         "user_account_deleted_bg_img": {
             "value": "space/2022/01/11/35106645c2614d11bea689a540d13787"
         },
         "user_account_deleted_img": {
             "value": "space/2022/01/11/5bb30117e4934522af081a05eb4fd903"
-        },
-        "user_feedback_url": {
-            "value": "/chatgroup/"
         },
         "user_guide_welcome_developer_center_url": {
             "value": "/help/developers/"
@@ -838,9 +525,6 @@
         "user_setting_delete_account_help_url": {
             "value": "https://help.vika.cn/docs/guide/faq-cancel-account"
         },
-        "version": {
-            "value": "0.5.0"
-        },
         "view_architecture_empty_graphics_img": {
             "value": "space/2021/11/19/b1c660a317fb4068bd312d16671308a1"
         },
@@ -886,141 +570,11 @@
         "view_kanban_guide_video": {
             "value": "space/2020/09/11/c964bcf3ec48458dae7fbdc55a59856b"
         },
-        "view_manual_save_modal_img": {
-            "value": "space/2021/11/30/854742d76eaa46bba848d80f358f9cdf"
-        },
         "view_mirror_list_empty_img": {
             "value": "space/2022/05/23/d880e95a4a204492b20d8725c61c998c"
         },
-        "vika_classroom_url": {
-            "value": "https://edu.vika.cn"
-        },
-        "vika_community_url": {
-            "value": "{\"dev\":\"https://bbs.vika.cn\",\"prod\":\"https://bbs.vika.cn\"}"
-        },
-        "vika_community_url_dev": {
-            "value": "https://bbs.vika.cn"
-        },
-        "vika_community_url_prod": {
-            "value": "https://bbs.vika.cn"
-        },
-        "vika_logo": {
-            "value": "/space/2021/12/07/aaac193704834e9a9e4af27a1535826a"
-        },
-        "vika_logo_white": {
-            "value": "/space/2021/09/17/5c69f63932da4be7aa0965d3b0e543c4"
-        },
-        "vika_official_template_category": {},
-        "vika_official_template_choice": {
-            "value": "{\"header\":[{\"templateIds\":[\"tplMuNH7HynUc\"],\"image\":\"space/2020/06/24/48cc66c99e4844b69cb3eec8611d20ff\",\"bannerDesc\":{\"title\":\"项目管理杀手，适用任意组织\",\"desc\":\"无论小组织、个体户、中小企业，亦或是500强企业\"}},{\"templateIds\":[\"tplJWLtuEXP73\"],\"image\":\"space/2020/06/24/605bdffa5f7442d4a742803103217164\",\"bannerDesc\":{\"title\":\"智慧门店系统，内外管理无忧\",\"desc\":\"你的生意小能手，每个细节，你细品\"}},{\"templateIds\":[\"tplaglc40487X\"],\"image\":\"space/2020/06/24/b72c625ac5a24ece90cc1196542a4d8d\",\"bannerDesc\":{\"title\":\"漫威爱好者，有种你进来\",\"desc\":\"我上看下看，左看右看，原来每个视图都不简单\"}}],\"category\":[{\"title\":\"其他用户喜欢的模板\",\"templateIds\":[\"tplwtBKVQm6ja\",\"tplKeJSxLhf2R\",\"tplXdfgkBWXNh\",\"tplPgWJnbWCpV\",\"tplgzv5eFdnr6\",\"tpljUgjhMM3GE\"]}]}"
-        },
-        "wechat_mp_appid_dev": {
-            "value": "wx3ccd2f6264309a7c"
-        },
-        "wechat_mp_appid_prod": {
-            "value": "wx1c297da2ee48065b"
-        },
-        "wechat_mp_appid_staging": {
-            "value": "wxd964fb3aa5278241"
-        },
-        "wechat_mp_callback_dev": {
-            "value": "https://integration.vika.ltd/user/wechat/callback"
-        },
-        "wechat_mp_callback_prod": {
-            "value": "https://vika.cn/user/wechat/callback"
-        },
-        "wechat_mp_callback_staging": {
-            "value": "https://staging.vika.ltd/user/wechat/callback"
-        },
-        "wecom_bind_help_center": {
-            "value": "/help"
-        },
-        "wecom_bind_success_icon": {
-            "value": "/space/2021/09/16/124e249b651f4934949ae39839e3ee77"
-        },
-        "wecom_callback_path": {
-            "value": "/user/wecom/callback"
-        },
-        "wecom_integration_logo": {
-            "value": "/space/2021/09/17/5c69f63932da4be7aa0965d3b0e543c4"
-        },
-        "wecom_login_qrcode_js": {
-            "value": "http://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.4.js"
-        },
-        "wecom_qrcode_css": {
-            "value": "/space/2021/08/02/6b5374b4b3ba42aba69022ae2b13a577"
-        },
-        "wecom_shop_callback_dev": {
-            "value": "https://integration.vika.ltd/user/wecom_shop/callback"
-        },
-        "wecom_shop_callback_prod": {
-            "value": "https://vika.cn/user/wecom_shop/callback"
-        },
-        "wecom_shop_callback_staging": {
-            "value": "https://staging.vika.ltd/user/wecom_shop/callback"
-        },
-        "wecom_shop_callback_test": {
-            "value": "https://test.vika.ltd/user/wecom_shop/callback"
-        },
-        "wecom_shop_corpid_dev": {
-            "value": "ww11761d11177ae10b"
-        },
-        "wecom_shop_corpid_prod": {
-            "value": "ww11761d11177ae10b"
-        },
-        "wecom_shop_corpid_staging": {
-            "value": "ww11761d11177ae10b"
-        },
-        "wecom_shop_corpid_test": {
-            "value": "ww11761d11177ae10b"
-        },
-        "wecom_shop_suiteid_dev": {
-            "value": "wwc98ec5fc01dfdaeb"
-        },
-        "wecom_shop_suiteid_prod": {
-            "value": "ww0506baa4d734acb9"
-        },
-        "wecom_shop_suiteid_staging": {
-            "value": "ww514bd11dfd0f294f"
-        },
-        "wecom_shop_suiteid_test": {
-            "value": "ww3dd616a360b3ce97"
-        },
-        "wecom_upgrade_guide_url": {
-            "value": "/wecom-integration/#upgrade"
-        },
-        "welcome_get_vika": {
-            "value": "{ \"title\":\"玩转一张维格表\", \"video\":\"space/2020/12/21/cb7bdf6fe22146068111d46915587fb2\", \"autoPlay\":true }"
-        },
-        "welcome_module4_url": {
-            "value": "/template/tpchFkNFaaJMC/tplDYzZqqwpRQ"
-        },
-        "welcome_module5_url": {
-            "value": "/template/tpc76og2J6D8p/tplDBUKmXFo7c"
-        },
-        "welcome_module6_url": {
-            "value": "/template/tpcMixDKM5f3s/tplaglc40487X"
-        },
-        "welcome_module7_url": {
-            "value": "https://help.vika.cn/docs/category/questions"
-        },
-        "welcome_module8_url": {
-            "value": "https://help.vika.cn/docs/guide/manual-1-what-is-vikadata/"
-        },
-        "welcome_module9_url": {
-            "value": "/help/developers/"
-        },
-        "welcome_quick_start": {
-            "value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\", \"autoPlay\":true}"
-        },
-        "welcome_what_is_vikasheet": {
-            "value": "{ \"title\":\"什么是维格表\", \"video\":\"space/2022/02/21/94cb82f9ffd84a5499c8931a224ad234\", \"autoPlay\":true }"
-        },
         "widget_center_feature_not_unturned_on_img": {
             "value": "/space/2021/12/27/cc7c3d706c8e4443a0e9b79673a078e0"
-        },
-        "widget_center_help": {
-            "value": "https://help.vika.cn/docs/guide/intro-widget-center/"
         },
         "widget_center_help_link": {
             "value": "#"
@@ -1028,17 +582,8 @@
         "widget_center_help_url": {
             "value": "https://help.vika.cn/docs/guide/intro-widget-center/"
         },
-        "widget_center_lab_unused_banner": {
-            "value": "/space/2021/12/27/cc7c3d706c8e4443a0e9b79673a078e0"
-        },
-        "widget_center_space_empty": {
-            "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
-        },
         "widget_center_space_widget_empty_img": {
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
-        },
-        "widget_cli_min_version": {
-            "value": "0.0.12"
         },
         "widget_cli_miumum_version": {
             "value": "0.0.12"
@@ -1046,14 +591,8 @@
         "widget_create_widget_help_url": {
             "value": "/developers/widget/introduction"
         },
-        "widget_cret_invalid_help": {
-            "value": "/developers/widget/quick-start#"
-        },
         "widget_custom_widget_empty_img": {
             "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
-        },
-        "widget_default_cover": {
-            "value": "/space/2021/11/09/f82a5c9cb6c74452b824e17b03f20f67"
         },
         "widget_default_cover_img": {
             "value": "/space/2021/11/09/f82a5c9cb6c74452b824e17b03f20f67"
@@ -1061,44 +600,23 @@
         "widget_default_template_url": {
             "value": "/develop/widget/wpk2jJ7qZS0VG/0.0.11/61433a73e4b0ed4bd1e2e8e1.zip"
         },
-        "widget_develop_init_help": {
-            "value": "/developers/widget/quick-start#"
-        },
         "widget_develop_init_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
-        "widget_develop_install_help": {
             "value": "/developers/widget/quick-start#"
         },
         "widget_develop_install_help_url": {
             "value": "/developers/widget/quick-start#"
         },
-        "widget_develop_preview_help": {
-            "value": "/developers/widget/quick-start#"
-        },
         "widget_develop_preview_help_url": {
-            "value": "/developers/widget/quick-start#"
-        },
-        "widget_develop_start_help": {
             "value": "/developers/widget/quick-start#"
         },
         "widget_develop_start_help_url": {
             "value": "/developers/widget/quick-start#"
-        },
-        "widget_empty": {
-            "value": "space/2022/05/23/c5096fdb5d674985a49725e23f72cdc7"
         },
         "widget_how_to_close_browser_restriction_help_url": {
             "value": "/developers/widget/quick-start#"
         },
         "widget_panel_empty_img": {
             "value": "space/2022/05/23/c5096fdb5d674985a49725e23f72cdc7"
-        },
-        "widget_publish_modal_img": {
-            "value": "/space/2021/10/08/18343b0891a74bdb9ca0b36b6c543e3b"
-        },
-        "widget_release_help": {
-            "value": "/developers/widget/quick-start#"
         },
         "widget_release_help_url": {
             "value": "/developers/widget/quick-start#"
@@ -3411,7 +2929,7 @@
                 "url": "https://s1.vika.cn/space/2021/12/08/8742173785d34efc905ba1fd23227cc0"
             },
             "app_id": "cli_9f3930dd7d7ad00c",
-            "link_to_cms": "link_to_lark_cms",
+            "link_to_cms": "integration_feishu_help_url",
             "app_type": "LARK_STORE",
             "btn_card": {
                 "btn_text": "marketplace_integration_btncard_btntext_open",
@@ -3425,7 +2943,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_9f3930dd7d7ad00c",
                 "app_description": "marketplace_integration_app_dec_feishu",
                 "btn_type": "primary",
-                "help_link": "link_to_lark_cms"
+                "help_link": "integration_feishu_help_url"
             }
         },
         "cli_a08120b120fad00e": {
@@ -3461,7 +2979,7 @@
                 "url": "https://s1.vika.cn/space/2021/12/08/8742173785d34efc905ba1fd23227cc0"
             },
             "app_id": "cli_a08120b120fad00e",
-            "link_to_cms": "link_to_lark_cms",
+            "link_to_cms": "integration_feishu_help_url",
             "app_type": "LARK_STORE",
             "btn_card": {
                 "btn_text": "marketplace_integration_btncard_btntext_open",
@@ -3475,7 +2993,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_a08120b120fad00e",
                 "app_description": "marketplace_integration_app_dec_feishu",
                 "btn_type": "primary",
-                "help_link": "link_to_lark_cms"
+                "help_link": "integration_feishu_help_url"
             }
         },
         "cli_9f614b454434500e": {
@@ -3511,7 +3029,7 @@
                 "url": "https://s1.vika.cn/space/2021/12/08/8742173785d34efc905ba1fd23227cc0"
             },
             "app_id": "cli_9f614b454434500e",
-            "link_to_cms": "link_to_lark_cms",
+            "link_to_cms": "integration_feishu_help_url",
             "app_type": "LARK_STORE",
             "btn_card": {
                 "btn_text": "marketplace_integration_btncard_btntext_open",
@@ -3525,7 +3043,7 @@
                 "btn_action": "https://app.feishu.cn/app/cli_9f614b454434500e",
                 "app_description": "marketplace_integration_app_dec_feishu",
                 "btn_type": "primary",
-                "help_link": "link_to_lark_cms"
+                "help_link": "integration_feishu_help_url"
             }
         },
         "ina5200279359980055": {
@@ -3562,7 +3080,7 @@
                 "url": "https://s1.vika.cn/space/2021/12/08/772be217f729479985295ae30dc63291"
             },
             "app_id": "ina5200279359980055",
-            "link_to_cms": "link_to_wecom_cms",
+            "link_to_cms": "integration_wecom_help_url",
             "app_type": "WECOM_STORE",
             "btn_card": {
                 "btn_text": "marketplace_integration_btncard_btntext_open",
@@ -3574,7 +3092,7 @@
                 "btn_text": "0",
                 "app_description": "marketplace_integration_app_dec_wechatcp",
                 "btn_type": "primary",
-                "help_link": "link_to_wecom_cms"
+                "help_link": "integration_wecom_help_url"
             }
         },
         "ina9134969049653777": {
@@ -3611,7 +3129,7 @@
                 "url": "https://s1.vika.cn/space/2021/12/08/46a769fdf74d4c0f8676f3ccca358643"
             },
             "app_id": "ina9134969049653777",
-            "link_to_cms": "link_to_dingtalk_cms",
+            "link_to_cms": "integration_dingtalk_help_url",
             "app_type": "DINGTALK_STORE",
             "btn_card": {
                 "btn_text": "marketplace_integration_btncard_btntext_open",
@@ -3624,7 +3142,7 @@
                 "btn_action": "/help/integration-dingtalk/",
                 "app_description": "marketplace_integration_app_dec_dingtalk",
                 "btn_type": "primary",
-                "help_link": "link_to_dingtalk_cms"
+                "help_link": "integration_dingtalk_help_url"
             }
         },
         "ina5645957505507647": {
@@ -3661,7 +3179,7 @@
                 "url": "https://s1.vika.cn/space/2021/12/08/18efb2fce9a64dc08262fc5cc8f0eac1"
             },
             "app_id": "ina5645957505507647",
-            "link_to_cms": "link_preview_office_cms",
+            "link_to_cms": "integration_yozosoft_help_url",
             "app_type": "OFFICE_PREVIEW",
             "btn_card": {
                 "btn_text": "marketplace_integration_btncard_btntext_authorize",
@@ -3672,7 +3190,7 @@
                 "btn_text": "marketplace_integration_btncard_appsbtntext_read_more",
                 "app_description": "marketplace_integration_app_dec_office_preview",
                 "btn_type": "primary",
-                "help_link": "link_preview_office_cms"
+                "help_link": "integration_yozosoft_help_url"
             }
         }
     },
@@ -8419,8 +7937,8 @@
                 "link_string_id": [
                     "max_rows_in_space"
                 ],
-                "引用名称": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-                "模板名称": "空间站记录数已达上限通知",
+                "引用名称": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+                "模板名称": "空间站记录总数",
                 "link_notification_id": [
                     "space_record_limit"
                 ]
