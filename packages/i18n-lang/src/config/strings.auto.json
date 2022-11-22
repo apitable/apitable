@@ -784,14 +784,6 @@
             "zh_CN": "指定的嵌入链接不存在，请调整 linkId 后再试",
             "en_US": "The specified embed link does not exist, please adjust the linkId and try again"
         },
-        "api_embed_link_instance_limit": {
-            "zh_CN": "抱歉, 新建嵌入链接目前支持数表",
-            "en_US": "Sorry, the new embed link currently supports count tables"
-        },
-        "api_embed_link_limit": {
-            "zh_CN": "抱歉, 新建嵌入链接不能超过{value}个",
-            "en_US": " Sorry, new embed links cannot exceed {value}"
-        },
         "api_enterprise_limit": {
             "zh_CN": "抱歉, 此API暂未开放",
             "en_US": "Sorry, this API is not open yet"
@@ -1224,10 +1216,6 @@
         "api_param_history_btn_type_error": {
             "zh_CN": "historyBtn 需要传入boolean类型",
             "en_US": "historyBtn must be a boolean value"
-        },
-        "api_param_invailid_datasheet_name": {
-            "zh_CN": "数表 name 不能为空",
-            "en_US": "datasheet name cannot be empty\n"
         },
         "api_param_invalid_rating_field": {
             "zh_CN": "评分字段的值不能小于 0（值只能为 0 到 5 的任一数字）",
@@ -1913,71 +1901,6 @@
             "zh_CN": "选项倒序",
             "en_US": "Descending",
             "zh_HK": "選項倒序"
-        },
-        "assistant": {
-            "zh_CN": "维格小助手",
-            "en_US": "Vikaby assistant",
-            "zh_HK": "維格小助手"
-        },
-        "assistant_activity_train_camp": {
-            "zh_CN": "限时福利",
-            "en_US": "Time-limited welfare",
-            "zh_HK": "限時福利"
-        },
-        "assistant_beginner_task": {
-            "zh_CN": "新手任务",
-            "en_US": "Beginner tasks",
-            "zh_HK": "新手任務"
-        },
-        "assistant_beginner_task_1_what_is_datasheet": {
-            "zh_CN": "什么是维格表",
-            "en_US": "What is vikadata?",
-            "zh_HK": "什麼是維格表"
-        },
-        "assistant_beginner_task_2_quick_start": {
-            "zh_CN": "一分钟快速入门",
-            "en_US": "Vikadata's hierarchy",
-            "zh_HK": "一分鐘快速入門"
-        },
-        "assistant_beginner_task_3_how_to_use_datasheet": {
-            "zh_CN": "玩转一张维格表",
-            "en_US": "How to use a datasheet",
-            "zh_HK": "玩轉一張維格表"
-        },
-        "assistant_beginner_task_4_share_and_invite": {
-            "zh_CN": "分享和邀请成员",
-            "en_US": "Share and invite friends",
-            "zh_HK": "分享和邀請成員"
-        },
-        "assistant_beginner_task_5_onboarding": {
-            "zh_CN": "智能引导",
-            "en_US": "Smart onboarding",
-            "zh_HK": "智能引導"
-        },
-        "assistant_beginner_task_6_bind_email": {
-            "zh_CN": "邮箱绑定",
-            "en_US": "Bind email",
-            "zh_HK": "郵箱綁定"
-        },
-        "assistant_beginner_task_title1": {
-            "zh_CN": "欢迎来到维格表",
-            "en_US": "Welcome to vikadata",
-            "zh_HK": "歡迎來到維格表"
-        },
-        "assistant_beginner_task_title2": {
-            "zh_CN": "跟着指引开始你的维格之旅吧～",
-            "en_US": "Follow the guide and start your journey in vikadata~",
-            "zh_HK": "跟著指引開始你的維格之旅吧～"
-        },
-        "assistant_hide": {
-            "zh_CN": "取消悬浮",
-            "en_US": "Hide Vikaby",
-            "zh_HK": "取消懸浮"
-        },
-        "assistant_release_history": {
-            "zh_CN": "历史更新",
-            "en_US": "Update history",
-            "zh_HK": "歷史更新"
         },
         "associated_element": {
             "zh_CN": "关联元素",
@@ -4440,11 +4363,6 @@
             "en_US": "Contacts",
             "zh_HK": "通訊錄配置"
         },
-        "contacts_invite_link_template": {
-            "zh_CN": "【维格表】- ${nickName}邀请你加入「${spaceName}」空间站，为了更好的体验，建议通过电脑浏览器访问。",
-            "en_US": "From vikadata: ${nickName} invited you to join \"${spaceName}\" Space. Open it via a computer browser for a better experience.",
-            "zh_HK": "【維格表】- ${nickName}邀請你加入「${spaceName}」空間站，為了更好的體驗，建議通過電腦瀏覽器訪問。"
-        },
         "contacts_management": {
             "zh_CN": "通讯录管理",
             "en_US": "Contacts",
@@ -5002,11 +4920,6 @@
             "zh_CN": "抱歉，你的维格表超过了 1000 行的限制",
             "en_US": "Your datasheet has the maximum number of records",
             "zh_HK": "抱歉，你的維格表超過了 1000 行的限制"
-        },
-        "datasheet_choose_field_type": {
-            "zh_CN": "选择维格列类型",
-            "en_US": "Select field type",
-            "zh_HK": "選擇維格列類型"
         },
         "datasheet_count": {
             "zh_CN": "文件节点数量",
@@ -8638,7 +8551,7 @@
             "zh_HK": "DATETIME_FORMAT(\"2020-10-01\", \"DD-MM-YYYY\")\n=> 01-10-2020\n\nDATETIME_FORMAT(\"2020-10-01\", \"YYYY / MM / DD\")\n=>2020/10/01\n\nDATETIME_FORMAT(\"2020-10-01\", \"MM.DD\")\n=>10.01\n\nDATETIME_FORMAT(TODAY(), \"DD-MM-YYYY\")\n=> 01-10-2020"
         },
         "function_datetime_format_summary": {
-            "zh_CN": "将日期以自定义的形式格式化为文本。\n\n【date】是需要被格式化的日期。\n【output_specifier】是选择的格式化说明符。比如说明符可以是：\n\"DD-MM-YYYY\"表示\"日-月-年\"，见例子一；\n\" YYYY / MM / DD\"表示\"年/月/日\"，见例子二；\n\"MM.DD\"表示\"月.日\"，见例子三。\n\n日期经过格式化后，将变为一串文本。\n\n本函数支持的日期格式化说明符请看下方链接。",
+            "zh_CN": "将日期以自定义的形式格式化为文本。\n\n【date】是需要被格式化的日期。\n【specified_output_format】是选择的格式化说明符。比如说明符可以是：\n\"DD-MM-YYYY\"表示\"日-月-年\"，见例子一；\n\" YYYY / MM / DD\"表示\"年/月/日\"，见例子二；\n\"MM.DD\"表示\"月.日\"，见例子三。\n\n日期经过格式化后，将变为一串文本。\n\n本函数支持的日期格式化说明符请看下方链接。",
             "en_US": "Formats a datetime into a specified string. For an explanation of how to use this function with date fields, click here. For a list of supported format specifiers, please click here.",
             "zh_HK": "將日期以自定義的形式格式化為文本。\n\n【date】是需要被格式化的日期。\n【specified_output_format】是選擇的格式化說明符。比如說明符可以是：\n\"DD-MM-YYYY\"表示\"日-月-年\"，見例子一；\n\" YYYY / MM / DD\"表示\"年/月/日\"，見例子二；\n\"MM.DD\"表示\"月.日\"，見例子三。\n\n日期經過格式化後，將變為一串文本。\n\n本函數支持的日期格式化說明符請看下方鏈接。"
         },
@@ -10047,10 +9960,6 @@
             "en_US": "For teams or organizations with complex business procedures",
             "zh_HK": "適用於有復雜業務流程的團隊或組織"
         },
-        "gold_seat_200_desc": {
-            "zh_CN": "200人",
-            "en_US": "200"
-        },
         "golden_grade": {
             "zh_CN": "黄金级",
             "en_US": "Gold",
@@ -10369,16 +10278,6 @@
             "zh_CN": "畅游帮助中心",
             "en_US": "Help Resources",
             "zh_HK": "暢遊幫助中心"
-        },
-        "help_user_community": {
-            "zh_CN": "维格社区",
-            "en_US": "Vika Community",
-            "zh_HK": "維格社區"
-        },
-        "help_video_tutorials": {
-            "zh_CN": "维格课堂",
-            "en_US": "Video tutorials",
-            "zh_HK": "維格課堂"
         },
         "hidden": {
             "zh_CN": "折叠",
@@ -12399,11 +12298,6 @@
             "en_US": "Empty phone number",
             "zh_HK": "手機號不能為空"
         },
-        "login_privacy_policy": {
-            "zh_CN": "《维格隐私政策》",
-            "en_US": "<Privacy Policy>",
-            "zh_HK": "《維格隱私政策》"
-        },
         "login_register": {
             "zh_CN": "登录/注册",
             "en_US": "Log in/Sign up",
@@ -13193,7 +13087,7 @@
             "zh_HK": "本空間站支持查看 ${specification}  天內的歷史文件，升級後可查看更久的歷史文件。"
         },
         "max_rows_in_space": {
-            "zh_CN": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+            "zh_CN": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
             "billing_notify": [],
             "en_US": "The maximum number of records in space is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "空間站記錄數上限為 ${specification} 行，當前已創建 ${usage} 行，升級可獲得更高用量。"
@@ -13623,8 +13517,8 @@
             "zh_HK": "帳號密碼登錄"
         },
         "mobile_function_over_limit_tip": {
-            "zh_CN": "须前往PC端升级后才可解锁该高级功能",
-            "en_US": "Available after upgrade",
+            "zh_CN": "须升级后才可解锁功能和提高用量",
+            "en_US": "Available after upgrad",
             "zh_HK": "須升級後解鎖功能和提高用量"
         },
         "mobile_show_allow": {
@@ -13643,9 +13537,7 @@
             "zh_HK": "更多「空間站管理」的功能請前往電腦網頁端操作"
         },
         "mobile_usage_over_limit_tip": {
-            "zh_CN": "功能用量已超限，请前往PC端升级后可完成此操作",
-            "en_US": "Usage over limits. Please go to the PC to upgrade.",
-            "zh_HK": "功能用量已超限，請前往PC端升級後可完成此操作"
+            "zh_CN": "您正在使用高级功能"
         },
         "modal_content_confirm_revoke_logout": {
             "zh_CN": "确认要恢复账号吗？",
@@ -14884,10 +14776,6 @@
             "zh_CN": "官方网站",
             "en_US": "Official website",
             "zh_HK": "官方網站"
-        },
-        "og_page_title": {
-            "zh_CN": "维格表",
-            "en_US": "vikadata"
         },
         "okay": {
             "zh_CN": "好的",
@@ -17150,10 +17038,6 @@
             "zh_CN": "隐私协议",
             "en_US": "Privacy Policy",
             "zh_HK": "隱私協議"
-        },
-        "privacy_policy_title": {
-            "zh_CN": "维格隐私政策",
-            "en_US": "Privacy policy"
         },
         "privacy_protection": {
             "zh_CN": "《隐私保护》",
@@ -20980,11 +20864,6 @@
             "en_US": "Sign up",
             "zh_HK": "註冊"
         },
-        "signin_idaas_official_account": {
-            "zh_CN": "维格星球",
-            "en_US": "Vika Planet",
-            "zh_HK": "維格星球"
-        },
         "silver": {
             "zh_CN": "白银级",
             "en_US": "Silver",
@@ -21013,14 +20892,6 @@
             "zh_CN": "URL",
             "en_US": "URL",
             "zh_HK": "URL"
-        },
-        "silver_seat_100_desc": {
-            "zh_CN": "100人",
-            "en_US": "100"
-        },
-        "silver_seat_2_desc": {
-            "zh_CN": "2人(买一送一)",
-            "en_US": "2(50% OFF)"
         },
         "singapore": {
             "zh_CN": "新加坡",
@@ -22519,26 +22390,6 @@
             "en_US": "Syria",
             "zh_HK": "敘利亞"
         },
-        "system_configuration_company_copyright": {
-            "zh_CN": "copyright @ 2019-2021 深圳维格云科技有限公司.All rights reserved.",
-            "en_US": "copyright @ 2019-2021 深圳维格云科技有限公司.All rights reserved.",
-            "zh_HK": "copyright @ 2019-2021 深圳維格雲科技有限公司.All rights reserved."
-        },
-        "system_configuration_company_name_short": {
-            "zh_CN": "vika",
-            "en_US": "vika",
-            "zh_HK": "vika"
-        },
-        "system_configuration_company_official_account": {
-            "zh_CN": "官方公众号",
-            "en_US": "Official account",
-            "zh_HK": "官方公眾號"
-        },
-        "system_configuration_product_name": {
-            "zh_CN": "维格表",
-            "en_US": "vikadata",
-            "zh_HK": "維格表"
-        },
         "system_message": {
             "zh_CN": "系统消息",
             "en_US": "System message",
@@ -22804,11 +22655,6 @@
             "zh_CN": "专题分享链接已复制成功",
             "en_US": "The sharing link has been copied successfully"
         },
-        "template_center_use_to_create_datasheets": {
-            "zh_CN": "使用模板创建维格表",
-            "en_US": "Use template to create datasheet",
-            "zh_HK": "使用模板創建維格表"
-        },
         "template_centre": {
             "zh_CN": "维格模板中心",
             "en_US": "Templates",
@@ -22926,10 +22772,6 @@
             "zh_CN": " 服务条款",
             "en_US": "Terms of service",
             "zh_HK": " 服務條款"
-        },
-        "terms_of_service_title": {
-            "zh_CN": "维格服务协议",
-            "en_US": "Service Agreement"
         },
         "test": {
             "zh_CN": "测试",
@@ -24279,16 +24121,6 @@
             "en_US": "View field permissions (Beta)",
             "zh_HK": "查看列權限 (Beta)"
         },
-        "view_field_search_not_found_tip": {
-            "zh_CN": "未找到名称为“${value}”的维格列",
-            "en_US": "Column named  \"${value}\" unfound",
-            "zh_HK": "未找到名稱為“${value}”的維格列"
-        },
-        "view_filed": {
-            "zh_CN": "维格列",
-            "en_US": "Field",
-            "zh_HK": "維格列"
-        },
         "view_find": {
             "zh_CN": "查找一个视图",
             "en_US": "Find a view",
@@ -24308,16 +24140,6 @@
             "zh_CN": "想要规范化录入数据？使用神奇表单试试",
             "en_US": "Want to populate data to your datasheet in a uniform way? Form is the best choice",
             "zh_HK": "想要規範化錄入數據？使用神奇表單試試"
-        },
-        "view_form": {
-            "zh_CN": "神奇表单",
-            "en_US": "Form",
-            "zh_HK": "神奇表單"
-        },
-        "view_form_field_changed_tip": {
-            "zh_CN": "当前表单有字段新增/类型变更",
-            "en_US": "The form has a new field or type change",
-            "zh_HK": "當前表單有字段新增/類型變更"
         },
         "view_full_catalog": {
             "zh_CN": "查看完整工作目录",
@@ -25883,11 +25705,6 @@
             "zh_CN": "显示全局水印",
             "en_US": "Show watermarks",
             "zh_HK": "顯示全局水印"
-        },
-        "workbench_share_link_template": {
-            "zh_CN": "【维格表】- ${nickName}给你分享了《${nodeName}》，为了更好的体验，建议通过电脑浏览器访问",
-            "en_US": "From vikadata: ${nickName} shared the \"${nodeName}\" file with you. Open it via a computer browser for a better experience.",
-            "zh_HK": "【維格表】- ${nickName}給你分享了《${nodeName}》，為了更好的體驗，建議通過電腦瀏覽器訪問"
         },
         "workbench_side_space_template": {
             "zh_CN": "空间站模版",
