@@ -191,6 +191,7 @@
         "help_video_tutorials_url": {
             "value": "https://edu.vika.cn"
         },
+        "icp1": {},
         "integration_apifox_url": {
             "value": "https://www.apifox.cn/apidoc/project-613370/doc-806641"
         },
@@ -200,9 +201,7 @@
         "integration_dingtalk_help_url": {
             "value": "https://help.vika.cn/docs/guide/integration-dingtalk",
             "marketplace": {
-                "integration": [
-                    "receWCEAL0MzS"
-                ]
+                "integration": "ina9134969049653777"
             }
         },
         "integration_dingtalk_login_appid_dev": {
@@ -223,12 +222,11 @@
         "integration_feishu_help_url": {
             "value": "https://help.vika.cn/docs/guide/integration-lark",
             "marketplace": {
-                "integration": [
-                    "recyY2kpy7Bp2",
-                    "recG3ge9EYmU4",
-                    "recJGXPlEZp4A"
-                ]
+                "integration": "cli_9f3930dd7d7ad00c, cli_a08120b120fad00e, cli_9f614b454434500e"
             }
+        },
+        "integration_feishu_login_appid": {
+            "value": "cli_9f3930dd7d7ad00c"
         },
         "integration_feishu_login_appid_dev": {
             "value": "cli_9f3930dd7d7ad00c"
@@ -266,9 +264,7 @@
         "integration_wecom_help_url": {
             "value": "https://help.vika.cn/docs/guide/integration-wecom",
             "marketplace": {
-                "integration": [
-                    "rec1BLDeSLjLr"
-                ]
+                "integration": "ina5200279359980055"
             }
         },
         "integration_wecom_login_qrcode_js": {
@@ -310,9 +306,7 @@
         "integration_yozosoft_help_url": {
             "value": "https://help.vika.cn/docs/guide/integration-yozosoft",
             "marketplace": {
-                "integration": [
-                    "rec1nwpDcbrRD"
-                ]
+                "integration": "ina5645957505507647"
             }
         },
         "introduction_video": {
@@ -7943,7 +7937,7 @@
                 "link_string_id": [
                     "max_rows_in_space"
                 ],
-                "引用名称": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+                "引用名称": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
                 "模板名称": "空间站记录总数",
                 "link_notification_id": [
                     "space_record_limit"

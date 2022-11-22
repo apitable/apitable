@@ -578,7 +578,7 @@ export interface ActionGuide {
 }
 
 export interface Events {
-    _:                                             Empty;
+    _:                                             Icp1;
     address_shown:                                 AddressShown;
     app_error_logger:                              AddressShown;
     app_modal_confirm:                             AddressShown;
@@ -636,7 +636,7 @@ export interface Events {
     workbench_space_list_shown:                    AddressShown;
 }
 
-export interface Empty {
+export interface Icp1 {
 }
 
 export interface AddressShown {
@@ -748,6 +748,7 @@ export interface Settings {
     help_user_community_url_prod:                        Qny1;
     help_user_feedback_url:                              Qny1;
     help_video_tutorials_url:                            Qny1;
+    icp1:                                                Icp1;
     integration_apifox_url:                              Qny1;
     integration_dingtalk_da:                             Qny1;
     integration_dingtalk_help_url:                       IntegrationHelpURL;
@@ -757,6 +758,7 @@ export interface Settings {
     integration_dingtalk_upgrade_url:                    Qny1;
     integration_feishu_help:                             Qny1;
     integration_feishu_help_url:                         IntegrationHelpURL;
+    integration_feishu_login_appid:                      Qny1;
     integration_feishu_login_appid_dev:                  Qny1;
     integration_feishu_login_appid_prod:                 Qny1;
     integration_feishu_login_appid_staging:              Qny1;
@@ -903,7 +905,7 @@ export interface IntegrationHelpURL {
 }
 
 export interface IntegrationDingtalkHelpURLMarketplace {
-    integration: string[];
+    integration: string;
 }
 
 export interface ShortcutKey {
