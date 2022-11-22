@@ -139,6 +139,6 @@ export class EnvConfigKey {
  */
 export const NODE_MAX_EMBED_LINK_COUNTS = process.env.NODE_MAX_EMBED_LINK_COUNTS ? parseInt(process.env.NODE_MAX_EMBED_LINK_COUNTS, 10) : 30;
 
-export const SERVER_DOMAIN = process.env.SERVER_DOMAIN ? process.env.SERVER_DOMAIN : 'https://vika.cn';
+export const SERVER_DOMAIN = process.env.SERVER_DOMAIN ? process.env.SERVER_DOMAIN : '';
 
 export const EMBED_LINK_URL_TEMPLATE = SERVER_DOMAIN + '/embed/%s';
