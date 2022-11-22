@@ -13537,7 +13537,7 @@
             "zh_HK": "更多「空間站管理」的功能請前往電腦網頁端操作"
         },
         "mobile_usage_over_limit_tip": {
-            "zh_CN": "您正在使用高级功能"
+            "zh_CN": "功能用量已超限，请前往PC端升级空间站"
         },
         "modal_content_confirm_revoke_logout": {
             "zh_CN": "确认要恢复账号吗？",
