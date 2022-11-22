@@ -68,7 +68,7 @@ public class InternalSpaceController {
         return ResponseData.success(iSpaceService.getInternalSpaceUsageVo(spaceId));
     }
 
-    @GetResource(path = "/space/{spaceId}/apiUsages", requiredLogin = false)
+    @GetResource(path = "/space/{spaceId}/apiUsages", requiredPermission = false)
     @ApiOperation(value = "get api usage information of a specified space", notes = "Provides the authentication function of the middle layer request, and queries the API usage information in the subscription plan corresponding to the space.")
     public ResponseData<InternalSpaceApiUsageVo> apiUsages(@PathVariable("spaceId") String spaceId) {
         iSpaceService.checkExist(spaceId);
