@@ -1,16 +1,14 @@
+import { getCustomConfig } from 'config';
 import { EmojisConfig } from 'config/emojis_config';
 import { FormulaField, LookUpField } from 'model';
+import { IOpenComputedFormat } from 'types/open/open_field_read_types';
 import { IUserMap, ViewType } from '../exports/store';
 import {
-  BasicValueType, DateFormat, FieldType,
-  IAPIMetaCurrencyFormat,
-  IAPIMetaDateTimeFormat,
-  IAPIMetaNoneStringValueFormat, IAPIMetaNumberFormat, IAPIMetaUser, IComputedFieldFormattingProperty,
-  IDateTimeFieldPropertyFormat, INumberBaseFieldPropertyFormat, IPercentFormat, MemberType, TimeFormat,
+  BasicValueType, DateFormat, FieldType, IAPIMetaCurrencyFormat, IAPIMetaDateTimeFormat, IAPIMetaNoneStringValueFormat, IAPIMetaNumberFormat,
+  IAPIMetaUser, IComputedFieldFormattingProperty, IDateTimeFieldPropertyFormat, INumberBaseFieldPropertyFormat, IPercentFormat, MemberType,
+  TimeFormat,
 } from '../types';
 import { APIMetaFieldPropertyFormatEnums, APIMetaFieldType, APIMetaMemberType, APIMetaViewType } from './../types/field_api_enums';
-import { getCustomConfig, Settings } from 'config';
-import { IOpenComputedFormat } from 'types/open/open_field_read_types';
 import { CurrencyField, DateTimeField, NumberField } from './field';
 import { PercentField } from './field/percent_field';
 
@@ -258,15 +256,15 @@ export const getApiMetaUserProperty = (uuids: string[], userMap?: IUserMap | nul
 };
 
 export const getMaxViewCountPerSheet = () => {
-  return getCustomConfig().maxViewCountPerSheet || Settings.datasheet_max_view_count_per_sheet.value || 30;
+  return getCustomConfig().MAXIMUM_VIEW_COUNT_PER_DATASHEET || 30;
 };
 
 export const getMaxManageableSpaceCount = () => {
-  return getCustomConfig().maxManageableSpaceCount || 10;
+  return getCustomConfig().MAXIMUM_MANAGEABLE_SPACE_COUNT_PER_USER || 10;
 };
 
 export const getMaxFieldCountPerSheet = () => {
-  return getCustomConfig().maxFieldCountPerSheet || 200;
+  return getCustomConfig().MAXIMUM_FIELD_COUNT_PER_DATASHEET || 200;
 };
 
 /**

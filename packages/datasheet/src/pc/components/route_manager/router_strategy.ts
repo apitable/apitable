@@ -1,9 +1,10 @@
-import { getCustomConfig, Navigation } from '@apitable/core';
+import { Navigation } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { getNodeId, joinPath } from 'pc/components/route_manager/helper';
 import { IParams, IQuery } from 'pc/components/route_manager/interface';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { dashboardReg, mirrorIdReg } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IFunctionParams {
   path?: Navigation,
@@ -224,9 +225,9 @@ export class RouterStrategy implements IRouterStrategy {
   };
 
   static [Navigation.LOGIN] = ({ query }: IFunctionParams): IFunctionResult => {
-    const { redirectUrlOnUnAuthorization } = getCustomConfig();
-    if (redirectUrlOnUnAuthorization) {
-      location.href = redirectUrlOnUnAuthorization + encodeURIComponent(location.href);
+    const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL } = getEnvVariables();
+    if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
+      location.href = LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL + encodeURIComponent(location.href);
       return [];
     }
     return ['/login', query, true];

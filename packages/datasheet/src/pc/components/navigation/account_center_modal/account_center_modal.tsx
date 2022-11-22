@@ -46,7 +46,8 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
   const [activeItem, setActiveItem] = useState(props.defaultActiveItem || ((isPrivateDeployment() && isMobile) ? 1 : 0));
   const [showNav, setShowNav] = useState(false);
   const userInfo = useSelector((state: IReduxState) => state.user.info);
-  const { socialLinkDisable, accountWalletDisable } = getCustomConfig();
+  const { socialLinkDisable } = getCustomConfig();
+  const { ACCOUNT_WALLET_VISIBLE } = getEnvVariables();
   const env = getEnvVariables();
 
   const { mobile } = usePlatform();
@@ -73,7 +74,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       key: AccountCenterModules.AccountWallet,
       name: t(Strings.account_wallet),
       component: <AccountWallet />,
-      hidden: accountWalletDisable || isMobileApp(),
+      hidden: !ACCOUNT_WALLET_VISIBLE || isMobileApp(),
     },
     {
       key: AccountCenterModules.AccountManager,
@@ -111,7 +112,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
           <IconSide width={20} height={20} fill={onClickNav ? colors.fc1 : colors.white} />
         </div>
         <span>{title}</span>
-        <IconButton icon={CloseLargeOutlined} onClick={onClose} size="large" />
+        <IconButton icon={CloseLargeOutlined} onClick={onClose} size='large' />
       </div>
     );
   };
@@ -157,7 +158,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
           visible
           maskClosable
           closable={false}
-          placement="bottom"
+          placement='bottom'
           bodyStyle={{
             padding: 16,
           }}
@@ -165,7 +166,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
           {listData[activeItem].component}
           <Drawer
             visible={showNav}
-            placement="left"
+            placement='left'
             closable={false}
             title={<CustomTitle title={listData[activeItem].name} onClose={() => setShowNav(false)} onClickNav={null} />}
             onClose={() => setShowNav(false)}

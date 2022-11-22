@@ -10047,6 +10047,10 @@
             "en_US": "For teams or organizations with complex business procedures",
             "zh_HK": "適用於有復雜業務流程的團隊或組織"
         },
+        "gold_seat_200_desc": {
+            "zh_CN": "200人",
+            "en_US": "200"
+        },
         "golden_grade": {
             "zh_CN": "黄金级",
             "en_US": "Gold",
@@ -14879,6 +14883,10 @@
             "en_US": "Official website",
             "zh_HK": "官方網站"
         },
+        "og_page_title": {
+            "zh_CN": "维格表",
+            "en_US": "vikadata"
+        },
         "okay": {
             "zh_CN": "好的",
             "en_US": "OK",
@@ -17140,6 +17148,10 @@
             "zh_CN": "隐私协议",
             "en_US": "Privacy Policy",
             "zh_HK": "隱私協議"
+        },
+        "privacy_policy_title": {
+            "zh_CN": "维格隐私政策",
+            "en_US": "Privacy policy"
         },
         "privacy_protection": {
             "zh_CN": "《隐私保护》",
@@ -21000,6 +21012,14 @@
             "en_US": "URL",
             "zh_HK": "URL"
         },
+        "silver_seat_100_desc": {
+            "zh_CN": "100人",
+            "en_US": "100"
+        },
+        "silver_seat_2_desc": {
+            "zh_CN": "2人(买一送一)",
+            "en_US": "2(50% OFF)"
+        },
         "singapore": {
             "zh_CN": "新加坡",
             "en_US": "Singapore",
@@ -22904,6 +22924,10 @@
             "zh_CN": " 服务条款",
             "en_US": "Terms of service",
             "zh_HK": " 服務條款"
+        },
+        "terms_of_service_title": {
+            "zh_CN": "维格服务协议",
+            "en_US": "Service Agreement"
         },
         "test": {
             "zh_CN": "测试",

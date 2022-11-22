@@ -1,28 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
-import * as React from 'react';
-import { useSelector } from 'react-redux';
-import { useLocalStorageState } from 'ahooks';
-import { Selectors, Strings, t, CollaCommandName, Settings } from '@apitable/core';
-
-import { CommentEditor } from './comment_editor';
-import { ActivityList } from './activity_list/activity_list';
-import { MobileContextMenu, Tooltip } from 'pc/components/common';
-import { Modal } from 'pc/components/common/mobile/modal';
-import IconDelete from 'static/icon/common/common_icon_delete.svg';
-import HelpIcon from 'static/icon/common/common_icon_information.svg';
-import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
-import { resourceService } from 'pc/resource_service';
-import { ActivityContext } from './activity_context';
-import { ActivitySelectType, ACTIVITY_SELECT_MAP } from 'pc/utils';
-import styles from './style.module.less';
 import { IconButton, useThemeColors } from '@apitable/components';
+import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
+import { CloseMiddleOutlined } from '@apitable/icons';
+import { useLocalStorageState } from 'ahooks';
 import { Dropdown, Menu } from 'antd';
 import classNames from 'classnames';
 import { pick } from 'lodash';
-import { CloseMiddleOutlined } from '@apitable/icons';
-import { useResponsive } from 'pc/hooks';
+import { MobileContextMenu, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { Modal } from 'pc/components/common/mobile/modal';
+import { useResponsive } from 'pc/hooks';
+import { resourceService } from 'pc/resource_service';
+import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import * as React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import IconDelete from 'static/icon/common/common_icon_delete.svg';
+import HelpIcon from 'static/icon/common/common_icon_information.svg';
+import IconArrow from 'static/icon/common/common_icon_pulldown_line.svg';
+import { ActivityContext } from './activity_context';
+import { ActivityList } from './activity_list/activity_list';
+
+import { CommentEditor } from './comment_editor';
 import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
+import styles from './style.module.less';
 
 export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
@@ -103,7 +104,7 @@ export const ActivityPaneBase: React.FC<IActivityPaneProps> = props => {
             <div className={styles.paneTitle}>
               {t(Strings.activity)}
               <Tooltip title={t(Strings.activity_tip)} trigger={'hover'}>
-                <a href={Settings.record_comments_help_url.value} rel="noopener noreferrer" target="_blank">
+                <a href={getEnvVariables().RECORD_ACTIVITY_HELP_URL} rel="noopener noreferrer" target="_blank">
                   <HelpIcon
                     style={{ cursor: 'pointer', verticalAlign: '-0.125em', marginLeft: 4, display: 'inline-block' }}
                     fill={colors.thirdLevelText}

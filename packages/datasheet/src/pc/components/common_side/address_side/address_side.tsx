@@ -1,7 +1,6 @@
 import { Button } from '@apitable/components';
 import {
-  ADDRESS_ID, Api, ConfigConstant, Events, getCustomConfig, IApi, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player,
-  StoreActions, Strings, t,
+  ADDRESS_ID, Api, ConfigConstant, Events, IApi, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player, StoreActions, Strings, t,
 } from '@apitable/core';
 import { AddOutlined, AddressOutlined } from '@apitable/icons';
 import { Input } from 'antd';
@@ -18,6 +17,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSideBarVisible, useUserRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -81,9 +81,9 @@ export const AddressSide: React.FC = () => {
     dispatch(StoreActions.getMemberInfoData(memberId));
   };
 
-  const { syncTeamsAndMembersLinkId = '' } = getCustomConfig();
+  const { CUSTOM_SYNC_CONTACTS_LINKID = '' } = getEnvVariables();
 
-  const isSyncingMembers = syncTeamsAndMembersLinkId && isAdmin;
+  const isSyncingMembers = CUSTOM_SYNC_CONTACTS_LINKID && isAdmin;
   const btnSize = isSyncingMembers ? 'large' : 'middle';
 
   const OperateButton = React.useMemo(() => {
@@ -114,7 +114,7 @@ export const AddressSide: React.FC = () => {
                         }
                         return prev;
                       },
-                      { members: [], linkId: syncTeamsAndMembersLinkId, teamIds: [] },
+                      { members: [], linkId: CUSTOM_SYNC_CONTACTS_LINKID, teamIds: [] },
                     );
 
                     Message.loading({ content: t(Strings.syncing) });
@@ -159,7 +159,7 @@ export const AddressSide: React.FC = () => {
     }
 
     return <div className={styles.empty} />;
-  }, [loading, isMobile, teamClick, inviteRes, syncTeamsAndMembersLinkId, dispatch, userInfo, isSyncingMembers, btnSize]);
+  }, [loading, isMobile, teamClick, inviteRes, CUSTOM_SYNC_CONTACTS_LINKID, dispatch, userInfo, isSyncingMembers, btnSize]);
 
   return (
     <div className={styles.leftContent}>

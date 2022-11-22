@@ -1,17 +1,17 @@
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { FC, useState } from 'react';
-import { ReportReason } from './report_reason';
-import FeedbackIcon from 'static/icon/common/common_icon_feedback.svg';
-import AdviseIcon from 'static/icon/workbench/workbench_icon_advise.svg';
-import ReportIcon from 'static/icon/datasheet/datasheet_icon_prosecute.svg';
-import JoinCommunityIcon from 'static/icon/common/group.svg';
-import { ButtonPlus, MobileContextMenu, Modal } from 'pc/components/common';
-import styles from './style.module.less';
-import RcTrigger from 'rc-trigger';
-import { t, Strings, Settings } from '@apitable/core';
-import { ContextmenuItem } from 'pc/components/common';
-import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { Strings, t } from '@apitable/core';
 import { InformationSmallOutlined } from '@apitable/icons';
+import { ButtonPlus, ContextmenuItem, MobileContextMenu, Modal } from 'pc/components/common';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { getEnvVariables } from 'pc/utils/env';
+import RcTrigger from 'rc-trigger';
+import { FC, useState } from 'react';
+import FeedbackIcon from 'static/icon/common/common_icon_feedback.svg';
+import JoinCommunityIcon from 'static/icon/common/group.svg';
+import ReportIcon from 'static/icon/datasheet/datasheet_icon_prosecute.svg';
+import AdviseIcon from 'static/icon/workbench/workbench_icon_advise.svg';
+import { ComponentDisplay, ScreenSize } from '../common/component_display';
+import { ReportReason } from './report_reason';
+import styles from './style.module.less';
 
 interface IReportWeb {
   nodeId: string;
@@ -29,7 +29,7 @@ export const ReportWeb: FC<IReportWeb> = ({ nodeId }) => {
       {
         icon: <AdviseIcon />,
         text: t(Strings.vomit_a_slot),
-        onClick: () => navigationToUrl(Settings['help_user_feedback_url'].value),
+        onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
       },
       {
         icon: <InformationSmallOutlined />,

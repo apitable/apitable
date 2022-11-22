@@ -1,12 +1,14 @@
 /* eslint-disable no-script-url */
 import { Tooltip, Typography, useThemeColors } from '@apitable/components';
-import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { ConfigConstant, isPrivateDeployment, NAV_ID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import {
   AdviseOutlined, BookOutlined, ClassroomOutlined, CodeFilled, CommunityOutlined, CourseOutlined, DemoOutlined, DownloadOutlined,
   EditDescribeOutlined, GuideOutlined, InformationLargeOutlined, InformationSmallOutlined, JoinOutlined, KeyboardShortcutsOutlined, RoadmapOutlined,
   SolutionOutlined, ViewContactOutlined, VikabyOutlined, WebsiteOutlined,
 } from '@apitable/icons';
 import classnames from 'classnames';
+// @ts-ignore
+import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ContextmenuItem, MobileContextMenu } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -14,15 +16,12 @@ import { inSocialApp } from 'pc/components/home/social_platform';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
-import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isHiddenQRCode, isMobileApp } from 'pc/utils/env';
 import RcTrigger from 'rc-trigger';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './style.module.less';
-import { isHiddenQRCode } from 'pc/utils/env';
 import { useIntercom } from 'react-use-intercom';
-// @ts-ignore
-import { openVikaby, VIKABY_POSITION_SESSION_KEY } from 'enterprise';
+import styles from './style.module.less';
 
 export interface IHelpProps {
   className?: string;
@@ -68,19 +67,19 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <SolutionOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.solution),
-        onClick: () => navigationToUrl(Settings['solution'].value),
+        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SOLUTION_URL),
         hidden: isMobile || isPrivateDeployment(),
       },
       {
         icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.help_video_tutorials),
-        onClick: () => navigationToUrl(env.HELP_VIDEO_TUTORIALS_URL!),
-        hidden: isMobile || !env.HELP_VIDEO_TUTORIALS_URL,
+        onClick: () => navigationToUrl(env.HELP_MENU_VIDEO_TUTORIALS_URL!),
+        hidden: isMobile || !env.HELP_MENU_VIDEO_TUTORIALS_URL,
       },
       {
         icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.product_roadmap),
-        onClick: () => navigationToUrl(Settings['product_roadmap'].value),
+        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL),
         hidden: isMobile || isPrivateDeployment(),
       },
       {
@@ -103,13 +102,13 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <AdviseOutlined />,
         text: t(Strings.vomit_a_slot),
-        onClick: () => navigationToUrl(Settings['help_user_feedback_url'].value),
+        onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
         hidden: isPrivateDeployment(),
       },
       {
         icon: <DemoOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.subscribe_demonstrate),
-        onClick: () => navigationToUrl(Settings['help_subscribe_demonstrate_form_url'].value),
+        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SUBSCRIBE_DEMONSTRATE_FORM_URL),
         hidden: isMobile || isPrivateDeployment(),
       },
       {
@@ -150,7 +149,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <CodeFilled />,
         text: t(Strings.api_sdk),
-        onClick: () => navigationToUrl(isPrivateDeployment() ? `${window.location.origin}/help/developers` : Settings.help_developers_center_url.value),
+        onClick: () => navigationToUrl(isPrivateDeployment() ? `${window.location.origin}/help/developers` : getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL),
       },
       {
         icon: <DownloadOutlined />,

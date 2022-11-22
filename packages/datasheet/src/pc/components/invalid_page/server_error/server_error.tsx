@@ -1,21 +1,21 @@
 import { Button } from '@apitable/components';
-import { integrateCdnHost, Strings, t, Settings } from '@apitable/core';
+import { integrateCdnHost, Strings, t } from '@apitable/core';
+// @ts-ignore
+import { ServiceQrCode } from 'enterprise';
 import Image from 'next/image';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
+import { getEnvVariables, isHiddenQRCode } from 'pc/utils/env';
 import { FC } from 'react';
 import ServerErrorPng from 'static/icon/common/common_img_500.png';
 import styles from './style.module.less';
-import { isHiddenQRCode } from 'pc/utils/env';
-// @ts-ignore
-import { ServiceQrCode } from 'enterprise';
 
 export const ServerError: FC = () => {
   const refresh = () => {
     window.location.reload();
   };
 
-  console.log('Settings.server_error_page_bg.value', Settings.system_configuration_server_error_bg_img.value);
+  console.log('Settings.server_error_page_bg.value', getEnvVariables().SYSTEM_CONFIGURATION_SERVER_ERROR_BG_IMG);
   return (
     <div className={styles.serverPageWrapper}>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
@@ -23,7 +23,7 @@ export const ServerError: FC = () => {
         <div className={styles.serverError}>
           <div className={styles.container}>
             {isHiddenQRCode() ?
-              <Image src={integrateCdnHost(Settings.system_configuration_server_error_bg_img.value)} alt='server error' width={230} height={230} />
+              <Image src={integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_SERVER_ERROR_BG_IMG!)} alt='server error' width={230} height={230} />
               :
               <Image src={ServerErrorPng} alt='server error' />
             }
@@ -42,10 +42,10 @@ export const ServerError: FC = () => {
           <div className={styles.container}>
             <div className={styles.imgContent}>
               {isHiddenQRCode() ?
-                <Image src={integrateCdnHost(Settings.system_configuration_server_error_bg_img.value)} alt='server error' width={230} height={230} />
+                <Image src={integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_SERVER_ERROR_BG_IMG!)} alt='server error' width={230} height={230} />
                 :
                 <>
-                  <Image src={integrateCdnHost(Settings.system_configuration_server_error_bg_img.value)} alt='server error' width={468}
+                  <Image src={integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_SERVER_ERROR_BG_IMG!)} alt='server error' width={468}
                     height={362} />
                   <div className={styles.qrcode}>
                     <ServiceQrCode />

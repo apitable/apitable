@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
-import { useCloudStorage, useMeta, ErrorBoundary, IWidgetState, widgetMessage, initWidgetCliSocket, WidgetCliSocketType } from '@apitable/widget-sdk';
-import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
-import { Loading, LinkButton, colors } from '@apitable/components';
-import styles from './style.module.less';
+import { colors, LinkButton, Loading } from '@apitable/components';
+import { Strings, t, WidgetPackageStatus } from '@apitable/core';
 import { ErrorFilled, InformationSmallOutlined } from '@apitable/icons';
-import { Strings, t, WidgetPackageStatus, Settings } from '@apitable/core';
+import { ErrorBoundary, initWidgetCliSocket, IWidgetState, useCloudStorage, useMeta, WidgetCliSocketType, widgetMessage } from '@apitable/widget-sdk';
+import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
+import { getEnvVariables } from 'pc/utils/env';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import styles from './style.module.less';
 
 interface IErrorWidget {
   title?: string;
@@ -65,7 +66,7 @@ export const WidgetLoader: React.FC<{
       <div className={styles.configInfo}>
         <div className={styles.title}>
           <span>{t(Strings.widget_loader_developing_title)}</span>
-          <a href={Settings.widget_release_help_url.value} target="_blank" className={styles.helpIcon} rel="noreferrer">
+          <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
             <InformationSmallOutlined size={16} color={colors.fc4}/>
           </a>
         </div>
@@ -89,7 +90,7 @@ export const WidgetLoader: React.FC<{
         <ErrorWidget
           content={t(Strings.widget_loader_error_cret_invalid)}
           actionText={t(Strings.widget_loader_error_cret_invalid_action_text)}
-          action={() => window.open(Settings.widget_how_to_close_browser_restriction_help_url.value)}
+          action={() => window.open(getEnvVariables().WIDGET_HOW_TO_CLOSE_BROWSER_RESTRICTION_HELP_URL)}
         />
       );
       default: return <ErrorWidget content={t(Strings.widget_load_error)} />;

@@ -1,6 +1,6 @@
-import { Settings } from '@apitable/core';
+import { getEnvVariables } from 'pc/utils/env';
 
 export const buildSpaceCertSheetUrl = (spaceId: string) => {
-  const formUrlTemplate = Settings.space_enterprise_certification_form.value;
+  const formUrlTemplate = getEnvVariables().SPACE_ENTERPRISE_CERTIFICATION_FORM_URL!;
   return formUrlTemplate.replace('{spaceId}', spaceId);
 };

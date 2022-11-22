@@ -1,23 +1,21 @@
-import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import cls from 'classnames';
-import {
-  Api, ConfigConstant, INodeRoleMap,
-  IUnitValue, Settings, StoreActions, Strings, t,
-} from '@apitable/core';
 import { IOption, Skeleton, Typography } from '@apitable/components';
-import { InformationSmallOutlined, ChevronRightOutlined } from '@apitable/icons';
-import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
-import { permissionMenuData } from 'pc/utils';
-import { ScreenSize } from 'pc/components/common/component_display';
-import { Avatar, Message } from 'pc/components/common';
-import { Tooltip } from 'pc/components/common/tooltip';
-import { PublicShareInviteLink } from './public_link';
-import { MembersDetail } from '../permission_settings/permission/members_detail';
-import styles from './style.module.less';
-import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
+import { Api, ConfigConstant, INodeRoleMap, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
+import { ChevronRightOutlined, InformationSmallOutlined } from '@apitable/icons';
+import cls from 'classnames';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { Avatar, Message } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
+import { Tooltip } from 'pc/components/common/tooltip';
+import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
+import { NodeChangeInfoType, useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { permissionMenuData } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { MembersDetail } from '../permission_settings/permission/members_detail';
+import { PublicShareInviteLink } from './public_link';
+import styles from './style.module.less';
 
 export interface IShareContentProps {
   /** Information about the node being operated on */
@@ -118,7 +116,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
         <Typography variant='h7' className={cls(styles.shareFloor, styles.shareTitle)}>
           <span>{t(Strings.collaborate_and_share)}</span>
           <Tooltip title={t(Strings.support)} trigger={'hover'}>
-            <a href={Settings.workbench_node_share_help_url.value} rel='noopener noreferrer' target='_blank'>
+            <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
               <InformationSmallOutlined currentColor />
             </a>
           </Tooltip>

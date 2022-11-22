@@ -1,34 +1,23 @@
-import {
-  IBreadCrumbData,
-  IMember,
-  ITeam,
-  IUnit,
-  Selectors,
-  Strings,
-  t,
-  getCustomConfig,
-  ISpaceInfo,
-  ISpaceBasicInfo,
-  UnitItem,
-} from '@apitable/core';
-import { Breadcrumb, Radio, Checkbox, Tabs } from 'antd';
-import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
-import { ReactChild, useCallback, useEffect, useState } from 'react';
-import * as React from 'react';
-import styles from './style.module.less';
-import LevelRightIcon from 'static/icon/common/common_icon_right_line.svg';
-import { SearchResult } from '../search_result';
-import { SelectUnitSource } from '.';
-import { RadioChangeEvent } from 'antd/lib/radio';
-import { useDebounceFn, useMount } from 'ahooks';
-import { useCatalogTreeRequest, useResponsive, useRequest } from 'pc/hooks';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import { useSelector } from 'react-redux';
-import { ScreenSize } from 'pc/components/common/component_display';
-import classnames from 'classnames';
 import { Loading, stopPropagation, useThemeColors } from '@apitable/components';
+import { IBreadCrumbData, IMember, ISpaceBasicInfo, ISpaceInfo, ITeam, IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
+import { useDebounceFn, useMount } from 'ahooks';
+import { Breadcrumb, Checkbox, Radio, Tabs } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { RadioChangeEvent } from 'antd/lib/radio';
+import classnames from 'classnames';
+import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 'pc/components/common';
+import { ScreenSize } from 'pc/components/common/component_display';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
+import { getEnvVariables } from 'pc/utils/env';
+import * as React from 'react';
+import { ReactChild, useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import LevelRightIcon from 'static/icon/common/common_icon_right_line.svg';
+import { SelectUnitSource } from '.';
+import { SearchResult } from '../search_result';
+import styles from './style.module.less';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;
@@ -97,10 +86,10 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
   let linkId = useSelector(Selectors.getLinkId);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo) || defaultSpaceInfo;
 
-  const { syncTeamsAndMembersLinkId } = getCustomConfig();
+  const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
-  if (syncTeamsAndMembersLinkId && source === SelectUnitSource.SyncMember) {
-    linkId = syncTeamsAndMembersLinkId;
+  if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {
+    linkId = CUSTOM_SYNC_CONTACTS_LINKID;
   }
 
   const { screenIsAtMost } = useResponsive();
@@ -191,7 +180,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     setClickedTeamId(teamId);
     getSubUnitList(teamId, linkId);
   };
-  
+
   const onClickTeamItem = (unit: ITeam) => {
     if (unitListloading || !canEntrySubItem(unit)) {
       return;
@@ -400,10 +389,10 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
     const roleList = isRole ? (data as IRoleItem[]) : [];
     const members = units?.members || [];
     const teams = units?.teams || [];
-  
+
     const onCheckAllChange = () => {
       if (isSingleSelect) return;
-  
+
       if (!checkedAll) {
         const newCheckedList: UnitItem[] = Object.values(units)
           .flat()
@@ -427,7 +416,7 @@ export const SelectUnitLeft: React.FC<ISelectUnitLeftProps> = props => {
 
         setCheckedList(data);
       } else {
-  
+
         const newCheckedList = checkedList.filter(listItem => {
           let isExist = true;
           Object.values(units).forEach(eachUnits => {

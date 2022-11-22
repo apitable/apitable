@@ -1,4 +1,4 @@
-import { Settings } from 'config/system_config';
+import { getCustomConfig } from 'config/env';
 import { Strings, t } from '../exports/i18n';
 
 export const MAX_ROBOT_COUNT_PER_DST = 30; // The maximum number of robots in a single table
@@ -433,7 +433,7 @@ export enum WizardIdConstant {
   RELEASE_WIDGET_GUIDE = 47,
   CONTACT_US_GUIDE = 64,
   VIKABY_UPDATE_LOGS_HISTORY = 67,
-  AGREE_TERMS_OF_SERVICE = Number(Settings.login_agree_terms_of_service.value),
+  AGREE_TERMS_OF_SERVICE = Number(getCustomConfig().LOGIN_AGREE_TERMS_OF_SERVICE_WIZARD_ID),
 
   // org chart view
   ORG_VIEW_CREATE = 78, // Click the "Create Schema View button" -> show the video "How to use Schema View"

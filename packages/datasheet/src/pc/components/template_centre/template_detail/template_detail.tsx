@@ -1,8 +1,10 @@
 import { useThemeColors } from '@apitable/components';
-import { AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, Settings, StoreActions } from '@apitable/core';
+import { AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, StoreActions } from '@apitable/core';
 import { useMount, useRequest, useUnmount } from 'ahooks';
 import { openTryoutSku } from 'dingtalk-design-libs';
 import dd from 'dingtalk-jsapi';
+import { get } from 'lodash';
+import { useRouter } from 'next/router';
 import { Loading } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';
@@ -15,11 +17,10 @@ import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
-import { useRouter } from 'next/router';
-import { get } from 'lodash';
 import styles from './style.module.less';
 
 export const TemplateDetail: FC = () => {
@@ -62,7 +63,7 @@ export const TemplateDetail: FC = () => {
     getTemplateDirectory(templateId, isPrivate, categoryId);
     // Use the spaceId of the official template space in the configuration table under the official template to query
     if (templateId && categoryId !== 'tpcprivate') {
-      dispatch(StoreActions.fetchMarketplaceApps(Settings.template_space_id.value));
+      dispatch(StoreActions.fetchMarketplaceApps(getEnvVariables().TEMPLATE_SPACE_ID!));
     }
   }, [templateId, getTemplateDirectory, categoryId, dispatch, spaceId]);
 

@@ -1,11 +1,12 @@
 import { Button, ButtonGroup, colors, LinkButton } from '@apitable/components';
-import { Api, ApiInterface, getCustomConfig, Navigation, Settings, Strings, t } from '@apitable/core';
+import { Api, ApiInterface, Navigation, Settings, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import Image from 'next/image';
 import { Message } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useUserRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import React, { FC, useState } from 'react';
 import { ISubmitRequestParam } from '../login/identifying_code_login';
 import { PasswordLogin } from '../login/password_login';
@@ -45,10 +46,10 @@ export const PcSsoIdaasHome: FC = () => {
 };
 
 export const SsoNav: FC = () => {
-  const { siteUrl } = getCustomConfig();
+  const { LOGIN_OFFICIAL_WEBSITE_URL } = getEnvVariables();
   const jumpOfficialWebsite = () => {
-    if (siteUrl) {
-      window.open(siteUrl, '__blank');
+    if (LOGIN_OFFICIAL_WEBSITE_URL) {
+      window.open(LOGIN_OFFICIAL_WEBSITE_URL, '__blank');
       return;
     }
     Router.newTab(Navigation.HOME, { query: { home: 1 }});

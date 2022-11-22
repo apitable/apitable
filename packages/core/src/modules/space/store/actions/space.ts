@@ -86,7 +86,7 @@ export const setSpaceErr = (err: ISpaceErr | null) => {
 
 /**
  * set current loading state
- * 
+ *
  * @param status current state
  */
 export const setSpaceLoading = (statu: boolean) => {
@@ -98,7 +98,7 @@ export const setSpaceLoading = (statu: boolean) => {
 
 /**
  * set current space info
- * @param spaceInfo 
+ * @param spaceInfo
  */
 export const setSpaceInfo = (spaceInfo: Partial<ISpaceBasicInfo>) => {
   return {
@@ -108,7 +108,7 @@ export const setSpaceInfo = (spaceInfo: Partial<ISpaceBasicInfo>) => {
 };
 /**
  * set space features
- * @param spaceInfo 
+ * @param spaceInfo
  */
 export const setSpaceFeatures = (data: Partial<ISpaceFeatures>) => {
   return {
@@ -181,9 +181,9 @@ export const toggleRecordFullScreen = (status?: boolean) => {
 
 /**
  * get space info
- * @param spaceId 
- * @param ignoreTimeLimit 
- * @returns 
+ * @param spaceId
+ * @param ignoreTimeLimit
+ * @returns
  */
 export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) => {
   return (dispatch: any, getState: () => IReduxState) => {
@@ -207,7 +207,7 @@ export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) 
 
 /**
  * get workbench settings info
- * @returns 
+ * @returns
  */
 export const getSpaceFeatures = () => {
   return (dispatch: any) => {
@@ -229,12 +229,12 @@ export const setMarketPlaceApps = (apps: IApp[]) => {
 
 /**
  * get space's 3rd apps list
- * @param spaceId 
- * @returns 
+ * @param spaceId
+ * @returns
  */
 export const fetchMarketplaceApps = (spaceId: string) => {
   return (dispatch: any) => {
-    if (getCustomConfig().marketplaceDisable) {
+    if (!getCustomConfig().SPACE_INTEGRATION_PAGE_VISIBLE) {
       dispatch(setMarketPlaceApps([]));
       return;
     }

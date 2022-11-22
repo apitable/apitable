@@ -1,13 +1,15 @@
 import { Typography } from '@apitable/components';
-import { ConfigConstant, getCustomConfig, IReduxState, isPrivateDeployment, Navigation as NavigationConst, Strings, t } from '@apitable/core';
+import { ConfigConstant, IReduxState, isPrivateDeployment, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
 import { Tree } from 'antd';
+// @ts-ignore
+import { Marketing } from 'enterprise';
 import { useRouter } from 'next/router';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { ReactText, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -17,8 +19,6 @@ import DashBoardIcon from 'static/icon/space/space_icon_dashboard_normal.svg';
 import AddressIcon from 'static/icon/space/space_icon_manage_address_normal.svg';
 import WorkBenchIcon from 'static/icon/space/space_icon_manage_workingtable_normal.svg';
 import styles from './style.module.less';
-// @ts-ignore
-import { Marketing } from 'enterprise';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -137,7 +137,7 @@ export const SpaceMenuTree: React.FC = () => {
   );
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { marketplaceDisable } = getCustomConfig();
+  const { SPACE_INTEGRATION_PAGE_VISIBLE } = getEnvVariables();
   const [menuTree, setMenuTree] = useState<ISpaceNavInfo[]>([]);
 
   const onSelect = (key: ReactText[]) => {
@@ -156,13 +156,13 @@ export const SpaceMenuTree: React.FC = () => {
       return;
     }
     const { mainAdmin, permissions } = spaceResource;
-    const navList = getSpaceNavList(mainAdmin, permissions, marketplaceDisable, appType == null);
+    const navList = getSpaceNavList(mainAdmin, permissions, !SPACE_INTEGRATION_PAGE_VISIBLE, appType == null);
     if (isMobile) {
       setMenuTree(navList.slice(0, 1));
       return;
     }
     setMenuTree(navList);
-  }, [spaceResource, marketplaceDisable, appType, isMobile]);
+  }, [spaceResource, SPACE_INTEGRATION_PAGE_VISIBLE, appType, isMobile]);
 
   const renderTreeNode = (data: ISpaceNavInfo[]) => {
     if (!spaceResource || !data || !data.length) {

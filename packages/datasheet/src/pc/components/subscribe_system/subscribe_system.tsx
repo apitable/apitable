@@ -1,11 +1,11 @@
 import { LinkButton, Typography, useThemeColors } from '@apitable/components';
-import { Api, ApiInterface, ConfigConstant, integrateCdnHost, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { Api, ApiInterface, ConfigConstant, integrateCdnHost, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
@@ -19,6 +19,7 @@ import { SubscribePayMethod } from 'pc/components/subscribe_system/subscribe_pay
 import { SubscribeSeat } from 'pc/components/subscribe_system/subscribe_seat/subscribe_seat';
 import { SubscribeTime } from 'pc/components/subscribe_system/subscribe_time/subscribe_time';
 import { useQuery, useUserRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './styles.module.less';
@@ -240,7 +241,7 @@ export const SubScribeSystem = () => {
                 {t(Strings.custom_enterprise)}
               </Typography>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Image alt={''} style={{ borderRadius: '8px' }} src={integrateCdnHost(Settings.billing_enterprise_qr_code.value)} width={232} height={232} />
+                <Image alt={''} style={{ borderRadius: '8px' }} src={integrateCdnHost(getEnvVariables().BILLING_ENTERPRISE_CONTACT_US_QRCODE_IMG!)} width={232} height={232} />
               </div>
             </div>
             <div style={{ height: 46 }} />

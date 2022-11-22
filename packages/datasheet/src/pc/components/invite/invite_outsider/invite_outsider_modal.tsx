@@ -30,13 +30,13 @@ interface IInviteOutsiderTabsProps {
 
 export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
   const { cancelModal, resUpdate, shareId } = props;
-  const { emailInvitationDisable, showLabelInInviteModal } = getCustomConfig();
+  const { emailInvitationDisable } = getCustomConfig();
+  const { CONTACTS_MODAL_BULK_IMPORT_VISIBLE, CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE } = getEnvVariables();
   // Availability of invitees
   const [memberInvited, setMemberInvited] = useState(false);
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
   const isAdmin = useSelector(state => state.user.info?.isAdmin);
   const isOrgIsolated = useSelector(state => state.space.spaceFeatures?.orgIsolated);
-  const env = getEnvVariables();
   useMount(() => {
     Player.doTrigger(Events.invite_entrance_modal_shown);
   });
@@ -56,26 +56,33 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
 
   const { screenIsAtLeast } = useResponsive();
   const isPC = screenIsAtLeast(ScreenSize.md);
-  const innerLabel = showLabelInInviteModal ? '(' + t(Strings.private_internal_person_only) + ')' : '';
-  const outerLabel = showLabelInInviteModal ? '(' + t(Strings.private_external_person_only) + ')' : '';
+  const innerLabel = CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE ?
+    '(' + t(Strings.private_internal_person_only) + ')' : '';
+  const outerLabel = CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE ?
+    '(' + t(Strings.private_external_person_only) + ')' : '';
 
   return (
-    <Tabs defaultActiveKey='inviteViaLink' className={classNames({ [styles.showLabel]: showLabelInInviteModal })}>
+    <Tabs defaultActiveKey='inviteViaLink'
+      className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}>
       <TabPane tab={t(Strings.link_invite) + innerLabel} key='inviteViaLink'>
         <LinkInvite shareId={shareId} />
       </TabPane>
       {!emailInvitationDisable && (isAdmin || !isOrgIsolated) && (
         <>
-          <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab' style={{ height: '100%' }}>
-            <InputEmail
-              cancel={cancelModal}
-              setMemberInvited={setMemberInvited}
-              shareId={shareId}
-              secondVerify={secondVerify}
-              setSecondVerify={setSecondVerify}
-            />
-          </TabPane>
-          {isPC && !shareId && !env.HIDDEN_BATCH_IMPORT_USER && (
+          {
+            CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE &&
+            <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab' style={{ height: '100%' }}>
+              <InputEmail
+                cancel={cancelModal}
+                setMemberInvited={setMemberInvited}
+                shareId={shareId}
+                secondVerify={secondVerify}
+                setSecondVerify={setSecondVerify}
+              />
+            </TabPane>
+          }
+
+          {isPC && !shareId && CONTACTS_MODAL_BULK_IMPORT_VISIBLE && (
             <TabPane tab={t(Strings.batch_import) + outerLabel} key='fileOfTab'>
               <ImportFile
                 closeModal={cancelModal}

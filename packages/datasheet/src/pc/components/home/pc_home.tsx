@@ -1,5 +1,5 @@
 import { ButtonGroup, lightColors, LinkButton } from '@apitable/components';
-import { AutoTestID, getCustomConfig, isIdassPrivateDeployment, isPrivateDeployment, Navigation, Settings, Strings, t } from '@apitable/core';
+import { AutoTestID, isIdassPrivateDeployment, isPrivateDeployment, Navigation, Settings, Strings, t } from '@apitable/core';
 import { Space } from 'antd';
 import Image from 'next/image';
 import { Logo } from 'pc/components/common';
@@ -21,12 +21,12 @@ import styles from './style.module.less';
 
 const PcHome: FC = () => {
   const isWecom = useSelector(state => state.space.envs?.weComEnv?.enabled || isWecomFunc());
-  const { siteUrl, introduceVideoDisable } = getCustomConfig();
+  const { LOGIN_OFFICIAL_WEBSITE_URL,LOGIN_INTRODUCTION_VIDEO_VISIBLE } = getEnvVariables();
   const env = getEnvVariables();
 
   const jumpOfficialWebsite = () => {
-    if (siteUrl) {
-      window.open(siteUrl, '__blank');
+    if (LOGIN_OFFICIAL_WEBSITE_URL) {
+      window.open(LOGIN_OFFICIAL_WEBSITE_URL, '__blank');
       return;
     }
     Router.newTab(Navigation.HOME, { query: { home: 1 }});
@@ -69,7 +69,7 @@ const PcHome: FC = () => {
                 <div className={styles.logoSlogan}>{t(Strings.login_logo_slogan)}</div>
               </div>
               <div className={styles.placeholder} />
-              {!introduceVideoDisable &&
+              {LOGIN_INTRODUCTION_VIDEO_VISIBLE &&
                 <div className={styles.video}>
                   <IntroductionVideo />
                 </div>
@@ -160,11 +160,13 @@ const PcHome: FC = () => {
             </div>
             {
               !isRenderServer() && <div className={styles.icp}>
-                <LinkButton className={styles.icpBtn} href={Settings['login_icp1_url'].value} underline={false} color={lightColors.black[500]} target='_blank'>
+                <LinkButton className={styles.icpBtn} href={Settings['login_icp1_url'].value} underline={false} color={lightColors.black[500]}
+                  target='_blank'>
                   {t(Strings.icp1)}
                 </LinkButton>
                 <div className={styles.line} />
-                <LinkButton className={styles.icpBtn} href={Settings['login_icp2_url'].value} underline={false} color={lightColors.black[500]} target='_blank'>
+                <LinkButton className={styles.icpBtn} href={Settings['login_icp2_url'].value} underline={false} color={lightColors.black[500]}
+                  target='_blank'>
                   {t(Strings.icp2)}
                 </LinkButton>
               </div>

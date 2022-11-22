@@ -1,5 +1,5 @@
-import { ConfigConstant, integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { Button, colorVars, TextButton, Typography, useThemeColors } from '@apitable/components';
+import { ConfigConstant, integrateCdnHost, Strings, t } from '@apitable/core';
 import { CloseMiddleOutlined, TitleFavoriteFilled } from '@apitable/icons';
 import classnames from 'classnames';
 import Image from 'next/image';
@@ -8,6 +8,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { goToUpgrade } from 'pc/components/subscribe_system';
 import { isSaaSApp } from 'pc/components/subscribe_system/usage_warn_modal/utils';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import styles from './styles.module.less';
@@ -25,7 +26,7 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
   const renderAvatar = opacity => (
     <div className={styles.avatar} style={{ borderColor: `rgba(123, 103, 238, ${opacity})` }}>
       <div className={styles.avatarIcon}>
-        <Image src={Settings.onboarding_customer_service_qrcode_avatar_img_url.value} alt='' width={64} height={64} />
+        <Image src={getEnvVariables().ONBOARDING_CUSTOMER_SERVICE_QRCODE_AVATAR_IMG!} alt='' width={64} height={64} />
       </div>
       <div className={styles.avatarStar}>
         <TitleFavoriteFilled color={colors.fc14} size='12px' />
@@ -39,7 +40,7 @@ const UsageWarnModalInner: React.FC<IUsageWarnModalParams> = ({
       <div className={styles.qrCodeImageCorner} />
       <div className={styles.qrCodeImageCorner} />
       <div className={styles.qrCodeImageCorner} />
-      <Image width={size - 20} height={size - 20} src={integrateCdnHost(Settings.billing_pay_contact_us.value)} />
+      <Image width={size - 20} height={size - 20} src={integrateCdnHost(getEnvVariables().BILLING_PAYMENT_PAGE_CONTACT_US_IMG!)} />
     </div>
   );
 

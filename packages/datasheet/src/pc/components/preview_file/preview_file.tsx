@@ -1,20 +1,21 @@
 import { stopPropagation, ThemeProvider } from '@apitable/components';
-import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, Settings, StoreActions } from '@apitable/core';
+import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
+// @ts-ignore
+import { OFFICE_APP_ID } from 'enterprise';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { KeyCode } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useSelector } from 'react-redux';
 import { ScreenSize } from '../common/component_display';
-// @ts-ignore
-import { OFFICE_APP_ID } from 'enterprise';
 import { IExpandPreviewModalFuncProps } from './preview_file.interface';
 import { PreviewMain } from './preview_main';
 import { isFocusingInput } from './preview_main/util';
@@ -65,7 +66,7 @@ const PreviewFileModal: React.FC<IPreviewFileModal> = props => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  const _spaceId = spaceId || shareInfo?.spaceId || Settings.template_space_id.value;
+  const _spaceId = spaceId || shareInfo?.spaceId || getEnvVariables().TEMPLATE_SPACE_ID!;
 
   const officePreviewEnable = marketplaceApps.find(app => app.appId === OFFICE_APP_ID)?.status ? true : false;
 

@@ -1,5 +1,5 @@
 import { lightColors, LinkButton } from '@apitable/components';
-import { ApiInterface, AutoTestID, ConfigConstant, getCustomConfig, Navigation, Strings, t } from '@apitable/core';
+import { ApiInterface, AutoTestID, ConfigConstant, Navigation, Strings, t } from '@apitable/core';
 import { DingdingFilled, FeishuFilled, QqFilled, WechatFilled } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 
@@ -14,29 +14,24 @@ import { dingdingLogin, feishuLogin, qqLogin, wechatLogin } from 'pc/components/
 import { Router } from 'pc/components/route_manager/router';
 
 import { useUserRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import Trigger from 'rc-trigger';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 export const PhoneAndEmailLogin = (): JSX.Element => {
-  const {
-    loginMode,
-    resetPasswordDisable,
-    ssoLogin,
-    supportAccountType,
-  } = getCustomConfig();
-
-  const toggleLoginModBtnVisible = !supportAccountType;
+  const { ACCOUNT_RESET_PASSWORD_VISIBLE, LOGIN_SSO_VISIBLE, LOGIN_DEFAULT_ACCOUNT_TYPE, LOGIN_DEFAULT_VERIFY_TYPE } = getEnvVariables();
+  const toggleLoginModBtnVisible = !LOGIN_DEFAULT_ACCOUNT_TYPE;
   const isWecom = useSelector(state => state.space.envs?.weComEnv?.enabled);
   const { loginOrRegisterReq } = useUserRequest();
   const [isPopupVisible, { toggle: popupVisibleToggle }] = useToggle(false);
-  const commonDefaultMod = polyfillMode(localStorage.getItem('vika_login_mod')) || loginMode;
-  const defaultMod = ssoLogin ? ConfigConstant.SSO_LOGIN : commonDefaultMod;
+  const commonDefaultMod = polyfillMode(localStorage.getItem('vika_login_mod')) || LOGIN_DEFAULT_VERIFY_TYPE;
+  const defaultMod = LOGIN_SSO_VISIBLE ? ConfigConstant.SSO_LOGIN : commonDefaultMod;
   const [mod, setMod] = React.useState(defaultMod);
 
   const changeLoginMod = () => {
     let currentMod = 'identifying_code';
-    if (ssoLogin) {
+    if (LOGIN_SSO_VISIBLE) {
       currentMod = mod === ConfigConstant.PASSWORD_LOGIN ? ConfigConstant.SSO_LOGIN : ConfigConstant.PASSWORD_LOGIN;
     } else {
       currentMod = mod === ConfigConstant.IDENTIFY_CODE_LOGIN ?
@@ -72,7 +67,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
         break;
       case ConfigConstant.PASSWORD_LOGIN:
         loginComponent = <PasswordLogin submitRequest={submitRequest} />;
-        changeModText = ssoLogin ? t(Strings.sso_login) : t(Strings.verification_code_login);
+        changeModText = LOGIN_SSO_VISIBLE ? t(Strings.sso_login) : t(Strings.verification_code_login);
         break;
       case ConfigConstant.SSO_LOGIN:
         loginComponent = <SSOLogin submitRequest={submitRequest} />;
@@ -142,7 +137,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
                 {t(Strings.other_login)}
               </LinkButton>
             </Trigger>
-            {!resetPasswordDisable &&
+            {ACCOUNT_RESET_PASSWORD_VISIBLE &&
               <LinkButton
                 underline={false}
                 component='button'
@@ -168,7 +163,7 @@ export const PhoneAndEmailLogin = (): JSX.Element => {
                 </LinkButton>
               }
             </div>
-            {!resetPasswordDisable &&
+            {ACCOUNT_RESET_PASSWORD_VISIBLE &&
               <LinkButton
                 underline={false}
                 component='button'

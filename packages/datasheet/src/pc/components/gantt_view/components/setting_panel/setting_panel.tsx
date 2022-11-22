@@ -1,9 +1,9 @@
+import { black, IOption, Select, Switch, Tooltip, Typography } from '@apitable/components';
 import {
   BasicValueType, CollaCommandName, ConfigConstant, DateTimeField, DEFAULT_WORK_DAYS, ExecuteResult, Field, FieldType, GanttColorType,
   GanttStyleKeyType, getNewId, getUniqName, IDPrefix, IGanttViewColumn, IGanttViewProperty, IGanttViewStatus, ILinkField, ISetRecordOptions,
-  LinkFieldSet, Selectors, Settings, StoreActions, Strings, t,
+  LinkFieldSet, Selectors, StoreActions, Strings, t,
 } from '@apitable/core';
-import { black, IOption, Select, Switch, Tooltip, Typography } from '@apitable/components';
 import {
   AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
 } from '@apitable/icons';
@@ -569,7 +569,7 @@ export const SettingPanel: FC<ISettingPanelProps> = memo(({ ganttViewStatus }) =
             {t(Strings.gantt_dependency_setting)}
           </Typography>
           <Tooltip content={t(Strings.gantt_config_color_help)}>
-            <a href={Settings.view_gantt_set_task_relation_help_url.value} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
+            <a href={getEnvVariables().GANTT_SET_TASK_RELATION_HELP_URL} target='_blank' rel='noopener noreferrer' className={styles.helpIcon}>
               <InformationSmallOutlined color={colors.thirdLevelText} />
             </a>
           </Tooltip>

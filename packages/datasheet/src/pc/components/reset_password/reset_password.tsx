@@ -1,9 +1,10 @@
 import { Button, ThemeName, ThemeProvider, Typography } from '@apitable/components';
-import { ConfigConstant, getCustomConfig, Navigation, StatusCode, Strings, t } from '@apitable/core';
+import { ConfigConstant, Navigation, StatusCode, Strings, t } from '@apitable/core';
 import { Form } from 'antd';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC } from 'react';
 import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
@@ -32,10 +33,8 @@ const ResetPassword: FC = () => {
     password: '',
     secondPassword: ''
   });
-  const {
-    supportAccountType
-  } = getCustomConfig();
-  const [mode, setMode] = React.useState(supportAccountType || ConfigConstant.LoginMode.PHONE);
+  const { LOGIN_DEFAULT_ACCOUNT_TYPE } = getEnvVariables();
+  const [mode, setMode] = React.useState(LOGIN_DEFAULT_ACCOUNT_TYPE || ConfigConstant.LoginMode.PHONE);
   const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string, identifyingCodeErrMsg: string, passwordErrMsg: string }>(defaultErrMsg);
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
@@ -121,7 +120,7 @@ const ResetPassword: FC = () => {
                 defaultIdentifyingCodeMode={ConfigConstant.LoginMode.PHONE}
                 error={{ accountErrMsg: errMsg.accountErrMsg, identifyingCodeErrMsg: errMsg.identifyingCodeErrMsg }}
                 onChange={handleIdentifyingCodeChange}
-                mode={supportAccountType as IdentifyingCodeModes}
+                mode={LOGIN_DEFAULT_ACCOUNT_TYPE as IdentifyingCodeModes}
               />
               <Typography variant='body2' className={styles.gap}>{t(Strings.input_new_password)}</Typography>
               <WithTipWrapper tip={errMsg.passwordErrMsg}>

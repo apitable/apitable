@@ -1,16 +1,17 @@
 import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
-import { ResourceType, Selectors, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { ApiOutlined, BookOutlined, DebugOutlined } from '@apitable/icons';
 import { Tabs } from 'antd';
-import { useEffect, useState } from 'react';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import IconDelete from 'static/icon/common/common_icon_close_small.svg';
 import { Message } from '../common';
 import { InlineNodeName } from '../common/inline_node_name';
 import { AccountCenterModal } from '../navigation/account_center_modal';
-import { FieldCode } from './field_codes/field_codes';
 import { CodeLanguage, CodeType } from './field_codes/enum';
+import { FieldCode } from './field_codes/field_codes';
 import { FieldDocs } from './field_docs';
 import styles from './styles.module.less';
 
@@ -32,6 +33,7 @@ export const ApiPanel: React.FC = () => {
     const widgetPanelStatus = Selectors.getResourceWidgetPanelStatus(state, datasheetId, ResourceType.Datasheet);
     return widgetPanelStatus?.opening;
   });
+  const { APIFOX_HOME_URL } = getEnvVariables();
 
   useEffect(() => {
     if (isWidgetPanelOpening && isApiPanelOpen) {
@@ -59,21 +61,21 @@ export const ApiPanel: React.FC = () => {
         {t(Strings.api_panel_title)}
         <Button
           onClick={() => {
-            window.open(Settings.api_panel_help_url.value, '_blank', 'noopener=yes,noreferrer=yes');
+            window.open(getEnvVariables().API_PANEL_HELP_URL, '_blank', 'noopener=yes,noreferrer=yes');
           }}
-          variant="fill"
+          variant='fill'
           color={colors.blackBlue[1000]}
           prefixIcon={<BookOutlined />}
           className={styles.linkButton}
         >
           {t(Strings.document_detail)}
         </Button>
-        <Divider orientation="vertical" style={{ margin: 0, background: colors.fc5, opacity: 0.3 }} />
+        <Divider orientation='vertical' style={{ margin: 0, background: colors.fc5, opacity: 0.3 }} />
         <Button
           onClick={() => {
-            window.open(Settings.integration_apifox_url.value, '_blank', 'noopener=yes,noreferrer=yes');
+            window.open(APIFOX_HOME_URL, '_blank', 'noopener=yes,noreferrer=yes');
           }}
-          variant="fill"
+          variant='fill'
           color={colors.blackBlue[1000]}
           prefixIcon={<DebugOutlined />}
           className={styles.linkButton}
@@ -85,7 +87,7 @@ export const ApiPanel: React.FC = () => {
         <InlineNodeName nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />
       </h2>
 
-      <IconDelete className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} width={24} height={24} fill="white" />
+      <IconDelete className={styles.iconDelete} onClick={() => dispatch(StoreActions.toggleApiPanel())} width={24} height={24} fill='white' />
 
       <div className={styles.operationArea}>
         <div className={styles.switchApiToken}>
@@ -101,10 +103,10 @@ export const ApiPanel: React.FC = () => {
       </div>
 
       <Tabs defaultActiveKey={paneType} onChange={setPaneType} hideAdd>
-        <Tabs.TabPane tab={t(Strings.api_fields)} key="fields">
+        <Tabs.TabPane tab={t(Strings.api_fields)} key='fields'>
           <FieldDocs />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_get)} key="get">
+        <Tabs.TabPane tab={t(Strings.api_get)} key='get'>
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -114,7 +116,7 @@ export const ApiPanel: React.FC = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_add)} key="add">
+        <Tabs.TabPane tab={t(Strings.api_add)} key='add'>
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -124,7 +126,7 @@ export const ApiPanel: React.FC = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_update)} key="update">
+        <Tabs.TabPane tab={t(Strings.api_update)} key='update'>
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -134,7 +136,7 @@ export const ApiPanel: React.FC = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_delete)} key="delete">
+        <Tabs.TabPane tab={t(Strings.api_delete)} key='delete'>
           <FieldCode
             language={language}
             setLanguage={setLanguage}
@@ -144,7 +146,7 @@ export const ApiPanel: React.FC = () => {
             showApiToken={showApiToken}
           />
         </Tabs.TabPane>
-        <Tabs.TabPane tab={t(Strings.api_upload)} key="upload">
+        <Tabs.TabPane tab={t(Strings.api_upload)} key='upload'>
           <FieldCode
             language={language}
             setLanguage={setLanguage}

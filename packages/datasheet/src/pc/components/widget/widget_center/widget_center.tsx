@@ -17,6 +17,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useQuery, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -386,7 +387,7 @@ export const WidgetCenterModal: React.FC<IWidgetCenterModalProps> = (props) => {
     return <div className={styles.modalHeader}>
       <Typography variant={'h4'} component={'span'} ellipsis style={{ marginRight: '4px' }}>{t(Strings.widget_center)}</Typography>
       <Tooltip content={t(Strings.widget_center_help_tooltip)} placement='right-center'>
-        <a href={Settings.widget_center_help_url.value} target='_blank' className={styles.helpIcon} rel='noreferrer'>
+        <a href={getEnvVariables().WIDGET_CENTER_HELP_URL} target='_blank' className={styles.helpIcon} rel='noreferrer'>
           <InformationLargeOutlined size={24} color={colors.fc3} />
         </a>
       </Tooltip>

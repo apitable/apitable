@@ -1,10 +1,11 @@
 import { Button, LinkButton, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
-import { integrateCdnHost, Navigation, Selectors, Settings, Strings, t } from '@apitable/core';
+import { integrateCdnHost, Navigation, Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { isMobile } from 'react-device-detect';
 import { createRoot } from 'react-dom/client';
@@ -138,7 +139,7 @@ export const showOrderModalAfterPay = (descColor: string, orderType: IOrderType)
         {t(Strings.upgrade_success_2_desc)}
       </Typography>
     </>,
-    qrCodeUrl: integrateCdnHost(Settings.billing_pay_success_qr_code.value),
+    qrCodeUrl: integrateCdnHost(getEnvVariables().BILLING_PAY_SUCCESS_QRCODE_IMG!),
   });
 };
 
@@ -146,7 +147,7 @@ export const showOrderContactUs = () => {
   showOrderModal({
     modalTitle: t(Strings.contact_model_title),
     modalSubTitle: t(Strings.contact_model_desc),
-    qrCodeUrl: integrateCdnHost(Settings.billing_pay_contact_us.value),
+    qrCodeUrl: integrateCdnHost(getEnvVariables().BILLING_PAYMENT_PAGE_CONTACT_US_IMG!),
   });
 };
 
@@ -154,6 +155,6 @@ export const showUpgradeContactUs = () => {
   showOrderModal({
     modalTitle: t(Strings.contact_model_title),
     modalSubTitle: t(Strings.space_dashboard_contact_desc),
-    qrCodeUrl: integrateCdnHost(Settings.billing_pay_success_qr_code.value),
+    qrCodeUrl: integrateCdnHost(getEnvVariables().BILLING_PAY_SUCCESS_QRCODE_IMG!),
   });
 };

@@ -1,18 +1,18 @@
-import { getCustomConfig } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { getSpaceNavList } from 'pc/components/space_manage/space_menu_tree';
+import { getEnvVariables } from 'pc/utils/env';
 import { useSelector } from 'react-redux';
 
 export const ManageAuth = ({ children }) => {
   const spaceResource = useSelector(state => state.spacePermissionManage.spaceResource);
-  const { marketplaceDisable } = getCustomConfig();
+  const { SPACE_INTEGRATION_PAGE_VISIBLE } = getEnvVariables();
   const router = useRouter();
   const { subPage } = router.query as { subPage: string };
   if (!spaceResource) {
     return null;
   }
   const { mainAdmin, permissions } = spaceResource;
-  const spaceNavList = getSpaceNavList(mainAdmin, permissions, marketplaceDisable);
+  const spaceNavList = getSpaceNavList(mainAdmin, permissions, !SPACE_INTEGRATION_PAGE_VISIBLE);
   const checkAuth = (spaceNavList, valid?: boolean) => {
     let route;
     for (const nav of spaceNavList) {

@@ -1,39 +1,22 @@
 import { Button, useThemeColors } from '@apitable/components';
 import {
-  Api,
-  ConfigConstant,
-  Events,
-  getCustomConfig,
-  hiddenMobile,
-  IReduxState,
-  isIdassPrivateDeployment,
-  isPrivateDeployment,
-  NAV_ID,
-  Player,
-  Selectors,
-  Settings,
-  StoreActions,
-  Strings,
-  t,
+  Api, ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, NAV_ID, Player, Selectors, StoreActions,
+  Strings, t,
 } from '@apitable/core';
 import { ChevronRightOutlined, CopyOutlined } from '@apitable/icons';
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';
 import dd from 'dingtalk-jsapi';
+// @ts-ignore
+import { isEnterprise } from 'enterprise';
 import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
 import { Avatar, AvatarSize, ImageCropUpload, Message, Modal, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import {
-  getSocialWecomUnitName,
-  inSocialApp,
-  isSocialDingTalk,
-  isSocialFeiShu,
-  isSocialPlatformEnabled,
-  isSocialWecom,
-  isWecomFunc,
+  getSocialWecomUnitName, inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom, isWecomFunc,
 } from 'pc/components/home/social_platform';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
@@ -52,8 +35,6 @@ import ExitIcon from 'static/icon/space/space_icon_logout.svg';
 import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
-// @ts-ignore
-import { isEnterprise } from 'enterprise';
 
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -250,8 +231,8 @@ export const UserMenu: FC<IUserMenuProps> = props => {
   );
 
   const _isMobileApp = isMobileApp();
-  const linkToPrivacyPolicy = _isMobileApp ? Settings.login_privacy_policy.value : Settings.login_privacy_policy_url.value;
-  const linkToTermsOfService = _isMobileApp ? Settings.login_service_agreement.value : Settings.login_service_agreement_url.value;
+  const linkToPrivacyPolicy = _isMobileApp ? Strings.PRIVACY_POLICY_STRING : getEnvVariables().PRIVACY_POLICY_URL;
+  const linkToTermsOfService = _isMobileApp ? Strings.SERVICE_AGREEMENT_STRING : getEnvVariables().SERVICE_AGREEMENT_URL;
 
   const items = [
     {
@@ -446,7 +427,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
           )}
         </div>
       </ComponentDisplay>
-      {!inSocialApp() && !getCustomConfig().logoutDisable && (
+      {!inSocialApp() && getEnvVariables().ACCOUNT_LOGOUT_VISIBLE && (
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.btnWrap}>
             <Button variant="jelly" onClick={signOut} block size="large">

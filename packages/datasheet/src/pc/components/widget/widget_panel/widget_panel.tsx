@@ -1,11 +1,12 @@
 import { Button, IconButton, Skeleton } from '@apitable/components';
-import { Events, integrateCdnHost, IWidgetPanelStatus, Player, ResourceType, Selectors, Settings, Strings, t } from '@apitable/core';
+import { Events, integrateCdnHost, IWidgetPanelStatus, Player, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { CloseLargeOutlined } from '@apitable/icons';
 import { useMount } from 'ahooks';
-import Image from 'next/image';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import Image from 'next/image';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { shallowEqual, useSelector } from 'react-redux';
 import IconAdd from 'static/icon/common/common_icon_add_content.svg';
 import { useManageWidgetMap } from '../hooks';
@@ -28,7 +29,7 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void }) => {
     <div className={styles.emptyPanel}>
       {onClosePanel && <IconButton onClick={onClosePanel} className={styles.closeIcon} icon={CloseLargeOutlined} />}
       <span className={styles.ikon}>
-        <Image src={integrateCdnHost(Settings.widget_panel_empty_img.value)} alt="" width={240} height={180} />
+        <Image src={integrateCdnHost(getEnvVariables().WIDGET_PANEL_EMPTY_IMG!)} alt="" width={240} height={180} />
       </span>
 
       <p className={styles.desc}>{t(isMobile ? Strings.is_empty_widget_panel_mobile : Strings.is_empty_widget_panel_pc)}</p>

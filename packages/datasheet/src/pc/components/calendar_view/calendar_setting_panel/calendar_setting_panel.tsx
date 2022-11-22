@@ -1,29 +1,30 @@
-import { FC, useContext, useMemo } from 'react';
 import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@apitable/components';
-import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import {
   BasicValueType, CalendarColorType, CalendarStyleKeyType, CollaCommandName, ConfigConstant, DateTimeField, ExecuteResult, Field, FieldType, getNewId,
-  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, IDPrefix, Settings, StoreActions, Strings, t
+  getUniqName, ICalendarViewColumn, ICalendarViewProperty, ICalendarViewStyle, IDPrefix, StoreActions, Strings, t
 } from '@apitable/core';
+import { AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { ColorPicker, OptionSetting } from 'pc/components/common/color_picker';
-import { setStorage, StorageName } from 'pc/utils/storage';
-import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { resourceService } from 'pc/resource_service';
-import { setColor } from 'pc/components/multi_grid/format';
-import { CalendarContext } from '../calendar_context';
-import styles from './styles.module.less';
-import { batchActions } from 'redux-batched-actions';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { FieldPermissionLock } from 'pc/components/field_permission';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { setColor } from 'pc/components/multi_grid/format';
+import { resourceService } from 'pc/resource_service';
+import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import { setStorage, StorageName } from 'pc/utils/storage';
+import { FC, useContext, useMemo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { batchActions } from 'redux-batched-actions';
+import { CalendarContext } from '../calendar_context';
+import styles from './styles.module.less';
 
 const UNUSED_END_DATE = 'unusedEndDate';
 
 interface ICalendarSettingPanel {
-  calendarStyle: ICalendarViewStyle
+  calendarStyle: ICalendarViewStyle;
 }
 
 export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle }) => {
@@ -50,6 +51,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
       cacheTheme: state.theme,
     };
   }, shallowEqual);
+  const { CALENDAR_SETTING_HELP_URL } = getEnvVariables();
   const fieldOptions = useMemo(() => {
     const options = columns.map(({ fieldId }) => {
       const field = fieldMap[fieldId];
@@ -176,14 +178,14 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
     <div className={styles.settingPanelContainer}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <Typography variant="h6">
+          <Typography variant='h6'>
             {t(Strings.calendar_setting)}
           </Typography>
           <Tooltip content={t(Strings.calendar_setting_help_tips)}>
             <a
-              href={Settings.view_calendar_setting_help_url.value}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={CALENDAR_SETTING_HELP_URL}
+              target='_blank'
+              rel='noopener noreferrer'
               className={styles.helpIcon}
             >
               <InformationSmallOutlined color={colors.thirdLevelText} />
@@ -200,14 +202,14 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
       <div className={styles.guideWrap} onClick={onPlayGuideVideo}>
         <span className={styles.left}>
           <ClassroomOutlined size={16} color={colors.primaryColor} />
-          <Typography variant="body3" color={colors.secondLevelText}>
+          <Typography variant='body3' color={colors.secondLevelText}>
             {t(Strings.calendar_play_guide_video_title)}
           </Typography>
         </span>
         <ChevronRightOutlined size={16} color={colors.thirdLevelText} />
       </div>
       <div className={styles.setting}>
-        <Typography className={styles.settingTitle} variant="h7">
+        <Typography className={styles.settingTitle} variant='h7'>
           {t(Strings.calendar_date_time_setting)}
         </Typography>
         <div className={styles.settingLayout}>
@@ -289,7 +291,7 @@ export const CalendarSettingPanel: FC<ICalendarSettingPanel> = ({ calendarStyle 
           }}
           mask
           triggerComponent={
-            <Typography variant="body3" className={styles.more} component={'span'}>
+            <Typography variant='body3' className={styles.more} component={'span'}>
               {t(Strings.calendar_color_more)}
             </Typography>
           }

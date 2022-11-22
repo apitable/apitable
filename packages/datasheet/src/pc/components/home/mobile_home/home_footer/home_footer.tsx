@@ -1,5 +1,5 @@
-import { getCustomConfig, isPrivateDeployment, Navigation, Strings, t } from '@apitable/core';
 import { ButtonGroup, LinkButton } from '@apitable/components';
+import { isPrivateDeployment, Navigation, Strings, t } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { FC } from 'react';
@@ -7,7 +7,7 @@ import { FC } from 'react';
 import styles from './style.module.less';
 
 export const HomeFooter: FC = props => {
-  const { siteUrl } = getCustomConfig();
+  const { LOGIN_OFFICIAL_WEBSITE_URL } = getEnvVariables();
   const env = getEnvVariables();
 
   if (isMobileApp()) {
@@ -53,8 +53,8 @@ export const HomeFooter: FC = props => {
           component='button'
           underline={false}
           onClick={() => {
-            if (siteUrl) {
-              window.open(siteUrl, '__blank');
+            if (LOGIN_OFFICIAL_WEBSITE_URL) {
+              window.open(LOGIN_OFFICIAL_WEBSITE_URL, '__blank');
               return;
             }
             Router.newTab(Navigation.HOME, { query: { home: 1 }});

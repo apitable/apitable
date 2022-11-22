@@ -1,12 +1,13 @@
-import * as React from 'react';
-import { getDoc } from './examples';
-import mdStyles from './markdown.module.less';
-import { CodeLanguage } from './enum';
+import { ModalType, Strings, t } from '@apitable/core';
 import template from 'lodash/template';
 import { Modal } from 'pc/components/common';
-import { ModalType, Strings, t, Settings } from '@apitable/core';
+import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { CodeLanguage } from './enum';
+import { getDoc } from './examples';
+import mdStyles from './markdown.module.less';
 
 export interface IDocInnerHtmlProps {
   language: CodeLanguage;
@@ -14,12 +15,14 @@ export interface IDocInnerHtmlProps {
   showApiToken?: boolean;
 }
 
+const { APIFOX_DEBUG_PATCH_URL, APIFOX_DEBUG_POST_URL, APIFOX_DEBUG_DELETE_URL, APIFOX_DEBUG_GET_URL, APIFOX_DEBUG_UPLOAD_URL } = getEnvVariables();
+
 const shellDebugMap = {
-  GET: Settings.api_apifox_get_url.value,
-  PATCH: Settings.api_apiffox_patch_url.value,
-  DELETE: Settings.api_apifox_delete_url.value,
-  POST: Settings.api_apiffox_post_url.value,
-  UPLOAD: Settings.api_apifox_upload_url.value,
+  GET: APIFOX_DEBUG_GET_URL,
+  PATCH: APIFOX_DEBUG_PATCH_URL,
+  DELETE: APIFOX_DEBUG_DELETE_URL,
+  POST: APIFOX_DEBUG_POST_URL,
+  UPLOAD: APIFOX_DEBUG_UPLOAD_URL,
 };
 
 export const DEBUG_BUTTON_CLASS_NAME = 'markdown-it-code-button-debug';

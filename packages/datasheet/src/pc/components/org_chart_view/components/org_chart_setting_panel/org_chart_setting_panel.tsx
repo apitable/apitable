@@ -1,34 +1,21 @@
-import { useContext, useMemo } from 'react';
-import * as React from 'react';
+import { IconButton, IOption, Select, Switch, Typography, useThemeColors } from '@apitable/components';
 import {
-  FieldType,
-  IOrgChartViewProperty,
-  Selectors,
-  CollaCommandName,
-  OrgChartStyleKeyType,
-  t,
-  Strings,
-  ILinkField,
-  ConfigConstant,
-  Settings,
+  CollaCommandName, ConfigConstant, FieldType, ILinkField, IOrgChartViewProperty, OrgChartStyleKeyType, Selectors, Strings, t,
 } from '@apitable/core';
-import { useSelector } from 'react-redux';
-import { Tooltip } from 'antd';
-import { Select, Typography, IOption, IconButton, Switch, useThemeColors } from '@apitable/components';
 import {
-  InformationSmallOutlined,
-  ColumnLinktableFilled,
-  CloseMiddleOutlined,
-  ClassroomOutlined,
-  ChevronRightOutlined,
-  AddOutlined,
+  AddOutlined, ChevronRightOutlined, ClassroomOutlined, CloseMiddleOutlined, ColumnLinktableFilled, InformationSmallOutlined,
 } from '@apitable/icons';
-import { resourceService } from 'pc/resource_service';
-import styles from './style.module.less';
+import { Tooltip } from 'antd';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { FlowContext } from '../../context/flow_context';
 import { FieldPermissionLock } from 'pc/components/field_permission';
+import { resourceService } from 'pc/resource_service';
+import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
+import * as React from 'react';
+import { useContext, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { FlowContext } from '../../context/flow_context';
+import styles from './style.module.less';
 
 interface IOrgChartSettingPanelProps {
   onClose: () => void;
@@ -124,7 +111,7 @@ export const OrgChartSettingPanel: React.FC<IOrgChartSettingPanelProps> = props 
           </Typography>
           <Tooltip title={t(Strings.calendar_setting_help_tips)}>
             <a
-              href={Settings.view_architecture_setting_help_url.value}
+              href={getEnvVariables().ARCHITECTURE_SETTING_HELP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.helpIcon}

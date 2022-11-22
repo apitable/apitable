@@ -1,9 +1,10 @@
-import { Api, getCustomConfig, Navigation, Selectors, StatusCode, StoreActions } from '@apitable/core';
+import { Api, Navigation, Selectors, StatusCode, StoreActions } from '@apitable/core';
 import { useRouter } from 'next/router';
 import { NoAccess } from 'pc/components/invalid_page/no_access';
 import { Router } from 'pc/components/route_manager/router';
 import { usePageParams, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
@@ -48,9 +49,9 @@ export const PrivateRoute: FC = ({ children, ...rest }) => {
   }
 
   const RedirectComponent = () => {
-    const { redirectUrlOnUnAuthorization } = getCustomConfig();
-    if (redirectUrlOnUnAuthorization) {
-      location.href = redirectUrlOnUnAuthorization + encodeURIComponent(location.href);
+    const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL } = getEnvVariables();
+    if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
+      location.href = LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL + encodeURIComponent(location.href);
       return null;
     }
     const { href } = process.env.SSR ? { href: '' } : location;

@@ -1,19 +1,17 @@
-import { useState, useRef, FC, memo } from 'react';
-import * as React from 'react';
-import { Form, Checkbox } from 'antd';
-import { useRequest } from 'pc/hooks';
-import { useSetState } from 'pc/hooks';
-import { ConfigConstant, t, Strings, StatusCode, AutoTestID, isEmail, Settings, isPhoneNumber } from '@apitable/core';
-import { Button, Typography, ThemeProvider, ThemeName } from '@apitable/components';
-import { clearStorage } from 'pc/utils/storage';
-import { IdentifyingCodeModes, IIdentifyingCodeConfig } from 'pc/components/home/login/identifying_code_login/identifying_code_modes';
-import { useQuery } from 'pc/hooks';
-import styles from './style.module.less';
+import { Button, ThemeName, ThemeProvider, Typography } from '@apitable/components';
+import { AutoTestID, ConfigConstant, isEmail, isPhoneNumber, StatusCode, Strings, t } from '@apitable/core';
+import { Checkbox, Form } from 'antd';
+import { Modal } from 'pc/components/common/mobile/modal';
 import { Modal as AntModal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
+import { IdentifyingCodeModes, IIdentifyingCodeConfig } from 'pc/components/home/login/identifying_code_login/identifying_code_modes';
+import { useQuery, useRequest, useSetState } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
-import { Modal } from 'pc/components/common/mobile/modal';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import { clearStorage } from 'pc/utils/storage';
+import * as React from 'react';
+import { FC, memo, useRef, useState } from 'react';
+import styles from './style.module.less';
 
 export interface ISubmitRequestParam {
   areaCode: string;
@@ -75,8 +73,8 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
   const automationTestingData = query.get('vikaTest');
 
   const _isMobileApp = isMobileApp();
-  const linkToPrivacyPolicy = _isMobileApp ? Settings.login_privacy_policy.value : Settings.login_privacy_policy_url.value;
-  const linkToTermsOfService = _isMobileApp ? Settings.login_service_agreement.value : Settings.login_service_agreement_url.value;
+  const linkToPrivacyPolicy = _isMobileApp ? Strings.PRIVACY_POLICY_STRING : getEnvVariables().PRIVACY_POLICY_URL;
+  const linkToTermsOfService = _isMobileApp ? Strings.SERVICE_AGREEMENT_STRING : getEnvVariables().SERVICE_AGREEMENT_URL;
 
   const signIn = async(nvcVal?: string) => {
     clearStorage();

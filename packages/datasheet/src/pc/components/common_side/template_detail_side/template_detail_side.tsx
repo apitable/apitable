@@ -1,5 +1,5 @@
 import { LinkButton, Skeleton, useThemeColors } from '@apitable/components';
-import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
+import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
 import classNames from 'classnames';
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -7,6 +7,7 @@ import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
 import { copy2clipBoard } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import BackIcon from 'static/icon/common/common_icon_left_line.svg';
@@ -18,7 +19,7 @@ import styles from './style.module.less';
 
 export const TemplateDetailSide: React.FC = () => {
   const colors = useThemeColors();
-  const officialLogo = integrateCdnHost(Settings.system_configuration_official_avatar.value);
+  const officialLogo = integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_AVATAR!);
 
   const categoryId = useSelector(state => state.pageParams.categoryId);
   const spaceId = useSelector(state => state.space.activeId);

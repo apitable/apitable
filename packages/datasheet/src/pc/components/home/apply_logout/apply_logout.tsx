@@ -1,7 +1,5 @@
 import { Button, colorVars, Typography } from '@apitable/components';
-import {
-  Api, getCustomConfig, integrateCdnHost, IReduxState, isPrivateDeployment, Navigation, Settings, StoreActions, Strings, t
-} from '@apitable/core';
+import { Api, integrateCdnHost, IReduxState, isPrivateDeployment, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import Image from 'next/image';
@@ -13,6 +11,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useUserRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.less';
@@ -58,11 +57,11 @@ const ApplyLogout: FC = () => {
     });
   };
 
-  const { siteUrl } = getCustomConfig();
+  const { LOGIN_OFFICIAL_WEBSITE_URL } = getEnvVariables();
 
   const jumpOfficialWebsite = () => {
-    if (siteUrl) {
-      window.open(siteUrl, '__blank');
+    if (LOGIN_OFFICIAL_WEBSITE_URL) {
+      window.open(LOGIN_OFFICIAL_WEBSITE_URL, '__blank');
       return;
     }
     Router.newTab(Navigation.HOME, { query: { home: 1 }});

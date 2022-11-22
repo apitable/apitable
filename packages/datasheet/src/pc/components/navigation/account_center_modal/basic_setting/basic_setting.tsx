@@ -1,40 +1,28 @@
-import {
-  hiddenMobile,
-  IReduxState,
-  StatusCode,
-  StoreActions,
-  Settings,
-  Strings,
-  t,
-  isPrivateDeployment,
-  isIdassPrivateDeployment,
-} from '@apitable/core';
-import { useRequest } from 'pc/hooks';
+import { Button, LinkButton, stopPropagation, Typography, useThemeColors } from '@apitable/components';
+import { hiddenMobile, IReduxState, isIdassPrivateDeployment, isPrivateDeployment, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { ChevronRightOutlined } from '@apitable/icons';
 import { Spin } from 'antd';
+import classNames from 'classnames';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { StatusIconFunc } from 'pc/components/common/icon';
+import { ImageCropUpload, IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { Message } from 'pc/components/common/message';
-import { ImageCropUpload } from 'pc/components/common/image_crop_upload';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { LinkButton, Button, Typography, stopPropagation, useThemeColors } from '@apitable/components';
-import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_upload';
-import { useUserRequest } from 'pc/hooks';
+import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'pc/components/home/social_platform';
+import { IUnbindType, UnBindModal } from 'pc/components/navigation/account_center_modal/basic_setting/un_bind_modal';
+import { useRequest, useUserRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
-import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
+import { FC, useEffect, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { defaultAvatars } from './default_avatar';
+import { Logout } from './log_out';
+import { StepStatus } from './log_out/enum';
 import { ModifyEmailModal } from './modify_email_modal';
 import { ModifyMobileModal } from './modify_mobile_modal';
 import { ModifyNameModal } from './modify_name_modal';
 import styles from './style.module.less';
-import { defaultAvatars } from './default_avatar';
-import { IUnbindType, UnBindModal } from 'pc/components/navigation/account_center_modal/basic_setting/un_bind_modal';
-import { Logout } from './log_out';
-import { StepStatus } from './log_out/enum';
-import { StatusIconFunc } from 'pc/components/common/icon';
-import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'pc/components/home/social_platform';
-import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import classNames from 'classnames';
-import { ChevronRightOutlined } from '@apitable/icons';
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, {
@@ -135,7 +123,7 @@ export const BasicSetting: FC = () => {
               className: styles.cancelBtn,
               onClick: e => {
                 stopPropagation(e);
-                window.open(Settings.user_setting_delete_account_help_url.value);
+                window.open(getEnvVariables().ACCOUNT_DELELTE_HELP_URL);
               },
             } as any,
             cancelText: t(Strings.know_how_to_logout),

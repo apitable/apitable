@@ -1,6 +1,7 @@
 import { Box, Typography, useThemeColors } from '@apitable/components';
-import { Settings, Strings, t } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 import { InformationSmallOutlined } from '@apitable/icons';
+import { getEnvVariables } from 'pc/utils/env';
 
 export const Header = () => {
   const colors = useThemeColors();
@@ -11,14 +12,14 @@ export const Header = () => {
         <a
           style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }}
           target={'_blank'}
-          href={Settings.space_setting_role_help_url.value}
+          href={getEnvVariables().SPACE_ROLE_HELP_URL}
           rel="noreferrer"
         >
           <InformationSmallOutlined color={colors.textCommonTertiary} size={16} />
         </a>
       </Box>
       <Typography variant="body3">
-        <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_header_desc, { url: Settings.space_setting_role_help_url.value }) }} />
+        <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_header_desc, { url: getEnvVariables().SPACE_ROLE_HELP_URL }) }} />
       </Typography>
     </Box>
   );

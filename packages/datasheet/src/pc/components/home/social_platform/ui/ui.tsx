@@ -1,6 +1,7 @@
 import { LinkButton, Typography, useThemeColors } from '@apitable/components';
-import { Settings, Strings, t, ThemeName } from '@apitable/core';
+import { Strings, t, ThemeName } from '@apitable/core';
 import { Logo } from 'pc/components/common';
+import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 
 export const Header = (props) => {
@@ -21,7 +22,7 @@ export const Copyright = () => {
       <Typography variant="body3" className={styles.title} color={colors.secondLevelText}>
         {t(Strings.system_configuration_company_copyright)}
       </Typography>
-      <LinkButton underline={false} href={Settings.login_join_chatgroup_url.value} target="_blank">{t(Strings.contact_us)}</LinkButton>
+      <LinkButton underline={false} href={getEnvVariables().JOIN_CHATGROUP_PAGE_URL} target="_blank">{t(Strings.contact_us)}</LinkButton>
     </footer>
   );
 };

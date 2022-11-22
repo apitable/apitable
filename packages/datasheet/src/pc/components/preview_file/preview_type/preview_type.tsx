@@ -1,6 +1,6 @@
-import { getCustomConfig } from '@apitable/core';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { getEnvVariables } from 'pc/utils/env';
 import { FileType, getDownloadSrc, isWhatFileType, renderFileIconUrl } from 'pc/utils/file_type';
 import * as React from 'react';
 import { memo } from 'react';
@@ -33,7 +33,7 @@ export const PreviewType: React.FC<IPreviewTypeBase> = memo(props => {
 
   const fileType = isWhatFileType({ name: file.name, type: file.mimeType });
 
-  const { marketplaceDisable } = getCustomConfig();
+  const { SPACE_INTEGRATION_PAGE_VISIBLE } = getEnvVariables();
 
   const commonImgProps = {
     src: renderFileIconUrl({ name: file.name, type: file.mimeType }),
@@ -87,7 +87,7 @@ export const PreviewType: React.FC<IPreviewTypeBase> = memo(props => {
       return PreviewDocComponent;
     }
     case FileType.Doc: {
-      if (marketplaceDisable) {
+      if (!SPACE_INTEGRATION_PAGE_VISIBLE) {
         return DefaultNoSupportComponent;
       }
       return PreviewDocComponent;

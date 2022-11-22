@@ -1,19 +1,11 @@
 import { Button } from '@apitable/components';
-import {
-  Api,
-  getCustomConfig,
-  IReduxState,
-  Navigation,
-  StatusCode,
-  StoreActions,
-  Strings,
-  t
-} from '@apitable/core';
+import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { Message, Wrapper } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InviteImage from 'static/icon/common/common_img_invite.png';
@@ -38,10 +30,10 @@ const LinkConfirm: FC = () => {
         dispatch(StoreActions.updateInviteLinkInfo(null));
         dispatch(StoreActions.updateErrCode(null));
       } else if (code === StatusCode.UN_AUTHORIZED) {
-        const { redirectUrlOnUnAuthorization } = getCustomConfig();
-        if (redirectUrlOnUnAuthorization) {
+        const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL } = getEnvVariables();
+        if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
           const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}`;
-          location.href = `${redirectUrlOnUnAuthorization}${redirectUri}`;
+          location.href = `${LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL}${redirectUri}`;
           return;
         }
         Router.push(Navigation.INVITE, {

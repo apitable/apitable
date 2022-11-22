@@ -1,5 +1,6 @@
 import { Box, Button, Typography, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
+import { getEnvVariables } from 'pc/utils/env';
 import { useContext } from 'react';
 import { RoleContext } from './context';
 
@@ -24,7 +25,7 @@ export const Empty: React.FC<{ onClick: () => void }> = props => {
         </Typography>
         <Box marginTop={'8px'}>
           <Typography variant="body2">
-            <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_empty_desc1, { url: Settings.space_setting_role_help_url.value }) }} />
+            <span dangerouslySetInnerHTML={{ __html: t(Strings.manage_role_empty_desc1, { url: getEnvVariables().SPACE_ROLE_HELP_URL }) }} />
           </Typography>
         </Box>
         <Box borderRadius={'4px'} backgroundColor={colors.bgCommonLower} padding={'8px'} marginTop={'8px'}>

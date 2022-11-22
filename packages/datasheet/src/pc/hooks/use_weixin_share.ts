@@ -1,7 +1,8 @@
-import { Api, integrateCdnHost, IReduxState, Selectors, Settings, Strings, t } from '@apitable/core';
+import { Api, integrateCdnHost, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { isObject } from 'lodash';
 import { browser } from 'modules/shared/browser';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
+import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -82,7 +83,7 @@ export const useWeixinShare = (info?: IInfo) => {
         title, // Share title
         desc: nodeDesc, // Share Description
         link: url, // Share the link, the link domain or path must be the same as the corresponding public JS secure domain on the current page
-        imgUrl: integrateCdnHost(Settings.system_configuration_official_logo.value), // Share icon
+        imgUrl: integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_LOGO!), // Share icon
         success() {
           console.log(t(Strings.share_succeed));
         }
@@ -91,7 +92,7 @@ export const useWeixinShare = (info?: IInfo) => {
       wx.updateTimelineShareData({
         title,
         link: url,
-        imgUrl: integrateCdnHost(Settings.system_configuration_official_logo.value),
+        imgUrl: integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_LOGO!),
         success() {
           console.log(t(Strings.share_succeed));
         }

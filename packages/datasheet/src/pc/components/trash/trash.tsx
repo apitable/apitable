@@ -1,6 +1,8 @@
 import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@apitable/components';
-import { Api, IReduxState, Navigation, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { last } from 'lodash';
 import Image from 'next/image';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
@@ -8,6 +10,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { formIdReg, mirrorIdReg, useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import HelpIcon from 'static/icon/common/common_icon_information.svg';
@@ -20,8 +23,6 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { TComponent } from '../common/t_component';
 import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface ITrashItem {
   nodeId: string;
@@ -152,7 +153,7 @@ const Trash: FC = () => {
         <div className={styles.title}>
           {t(Strings.trash)}
           <Tooltip title={t(Strings.form_tour_desc)} trigger='hover' placement='right'>
-            <a href={Settings.workbench_trash_help_url.value} rel='noopener noreferrer' target='_blank'>
+            <a href={getEnvVariables().TRASH_HELP_URL} rel='noopener noreferrer' target='_blank'>
               <HelpIcon
                 style={{
                   cursor: 'pointer',

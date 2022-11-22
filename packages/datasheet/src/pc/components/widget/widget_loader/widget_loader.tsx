@@ -1,13 +1,14 @@
 import * as components from '@apitable/components';
 import { LinkButton, Loading, useThemeColors } from '@apitable/components';
 import * as core from '@apitable/core';
-import { Settings, Strings, t, WidgetPackageStatus } from '@apitable/core';
+import { Strings, t, WidgetPackageStatus } from '@apitable/core';
 import * as icons from '@apitable/icons';
 import { ErrorFilled, InformationSmallOutlined } from '@apitable/icons';
 import * as widgetSdk from '@apitable/widget-sdk';
 import { ErrorBoundary, initWidgetCliSocket, useCloudStorage, useMeta, WidgetCliSocketType } from '@apitable/widget-sdk';
 import { useWidgetComponent } from '@apitable/widget-sdk/dist/hooks/private/use_widget_loader';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect, useImperativeHandle } from 'react';
 import ReactDom from 'react-dom';
@@ -85,7 +86,7 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
         <div className={styles.configInfo}>
           <div className={styles.title}>
             <span>{t(Strings.widget_loader_developing_title)}</span>
-            <a href={Settings.widget_release_help_url.value} target="_blank" className={styles.helpIcon} rel="noreferrer">
+            <a href={getEnvVariables().WIDGET_RELEASE_HELP_URL} target="_blank" className={styles.helpIcon} rel="noreferrer">
               <InformationSmallOutlined size={16} color={colors.fourthLevelText} />
             </a>
           </div>
@@ -111,7 +112,7 @@ const WidgetLoaderBase: React.ForwardRefRenderFunction<
           <ErrorWidget
             content={t(Strings.widget_loader_error_cret_invalid)}
             actionText={t(Strings.widget_loader_error_cret_invalid_action_text)}
-            action={() => window.open(Settings.widget_how_to_close_browser_restriction_help_url.value)}
+            action={() => window.open(getEnvVariables().WIDGET_HOW_TO_CLOSE_BROWSER_RESTRICTION_HELP_URL)}
           />
         );
         default: return <ErrorWidget content={t(Strings.widget_load_error)} />;

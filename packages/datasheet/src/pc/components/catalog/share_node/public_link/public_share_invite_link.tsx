@@ -1,24 +1,25 @@
-import { FC, useState, useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@apitable/components';
+
+import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { ColumnUrlOutlined, InformationSmallOutlined, ShareQrcodeOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
-
-import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@apitable/components';
-import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined } from '@apitable/icons';
-
-import { useCatalogTreeRequest } from 'pc/hooks';
-import { copy2clipBoard } from 'pc/utils';
 import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
+import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+
+import { useCatalogTreeRequest } from 'pc/hooks';
+import { useInviteRequest } from 'pc/hooks/use_invite_request';
+import { copy2clipBoard } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
+import { FC, useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareLink } from '../share/share_link';
+import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
 import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
-import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
-import { useInviteRequest } from 'pc/hooks/use_invite_request';
-import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
-import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -230,7 +231,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
-          <a href={Settings.workbench_node_share_help_url.value} rel="noopener noreferrer" target="_blank">
+          <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel="noopener noreferrer" target="_blank">
             <InformationSmallOutlined currentColor />
           </a>
         </Tooltip>

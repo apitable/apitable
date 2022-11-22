@@ -1,5 +1,5 @@
 import { ThemeProvider, Typography, useThemeColors } from '@apitable/components';
-import { Api, ApiInterface, IApiWrapper, integrateCdnHost, Settings, str2Currency, Strings, t } from '@apitable/core';
+import { Api, ApiInterface, IApiWrapper, integrateCdnHost, str2Currency, Strings, t } from '@apitable/core';
 import { AlipayFilled, BankFilled, WechatpayFilled } from '@apitable/icons';
 import { Modal } from 'antd';
 import { AxiosResponse } from 'axios';
@@ -8,6 +8,7 @@ import { Message } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { showOrderContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { store } from 'pc/store';
+import { getEnvVariables } from 'pc/utils/env';
 import pingpp from 'pingpp-js';
 import qr from 'qr-image';
 import * as React from 'react';
@@ -138,7 +139,7 @@ export const OrderInfo: React.FC<IOrderInfo> = (props) => {
     if (pay === 2) {
       return <div className={styles.bankPay}>
         <Image src={QrCodePng} alt='qrcode background' layout={'fill'} />
-        <Image src={integrateCdnHost(Settings.billing_enterprise_qr_code.value)} width={224} height={224} />
+        <Image src={integrateCdnHost(getEnvVariables().BILLING_ENTERPRISE_CONTACT_US_QRCODE_IMG!)} width={224} height={224} />
       </div>;
     }
     return <Image src={''} />;

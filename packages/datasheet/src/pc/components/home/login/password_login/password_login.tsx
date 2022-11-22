@@ -1,10 +1,11 @@
 import { Button, ThemeName, ThemeProvider } from '@apitable/components';
-import { AutoTestID, ConfigConstant, getCustomConfig, isEmail, isPhoneNumber, StatusCode, Strings, t } from '@apitable/core';
+import { AutoTestID, ConfigConstant, isEmail, isPhoneNumber, StatusCode, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Form } from 'antd';
 import { useRequest, useSetState } from 'pc/hooks';
 import { useQuery } from 'pc/hooks/use_home';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { clearStorage } from 'pc/utils/storage';
 import { FC, useEffect, useState } from 'react';
 import { ISubmitRequestParam } from '../identifying_code_login';
@@ -29,17 +30,14 @@ const initMode = (supportAccountType: IdentifyingCodeModes | undefined): Identif
 };
 
 export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }) => {
-
-  const {
-    supportAccountType
-  } = getCustomConfig();
+  const { LOGIN_DEFAULT_ACCOUNT_TYPE } = getEnvVariables();
   const [data, setData] = useState<IPasswordData>({
     areaCode: '',
     account: '',
     credential: ''
   });
   const [errMsg, setErrMsg] = useSetState(defaultErrMsg);
-  const [mode, setMode] = useState(initMode(supportAccountType as IdentifyingCodeModes));
+  const [mode, setMode] = useState(initMode(LOGIN_DEFAULT_ACCOUNT_TYPE as IdentifyingCodeModes));
   const [nvcSuccessData, setNvcSuccessData] = useState<string | null>(null);
   const { run: login, loading } = useRequest(submitRequest, { manual: true });
   const query = useQuery();
@@ -153,7 +151,7 @@ export const PasswordLogin: FC<IPasswordLoginProps> = ({ submitRequest, config }
           <PasswordLoginModes
             error={errMsg}
             defaultPasswordMode={mode as IdentifyingCodeModes}
-            mode={supportAccountType as IdentifyingCodeModes}
+            mode={LOGIN_DEFAULT_ACCOUNT_TYPE as IdentifyingCodeModes}
             onChange={handleChange}
             onModeChange={handleModeChange}
             config={config}

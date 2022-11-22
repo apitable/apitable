@@ -1,7 +1,7 @@
-import { SystemConfig, t, Strings, integrateCdnHost, Settings } from '@apitable/core';
+import { integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import { SystemConfigInterfaceNotifications, Templates, Types } from '@apitable/core/src/config/system_config.interface';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { getInitializationData } from 'pc/utils/env';
+import { getEnvVariables, getInitializationData } from 'pc/utils/env';
 import semver from 'semver';
 
 const jsonToObject = (object) => {
@@ -72,7 +72,7 @@ export const stringToActions = (arr: string[], id: string, url?: string) => {
 const createWebNotification = (data:{title?: string, options?: NotificationOptions | undefined, onClick?: ()=>void}) => {
   const { title = t(Strings.system_configuration_product_name), options, onClick } = data;
   const webNotification = new Notification(title, {
-    icon: integrateCdnHost(Settings.system_configuration_official_logo.value),
+    icon: integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_LOGO!),
     tag: 'vika',
     ...options,
   });
