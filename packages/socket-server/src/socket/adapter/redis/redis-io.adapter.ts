@@ -42,7 +42,7 @@ export class RedisIoAdapter extends IoAdapter implements WebSocketAdapter {
       return next();
     });
     // custom hook: return to current service sockets
-    server.on(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, (roomIds: string[], cb: (arg0: any[]) => void) => {
+    server.of(GatewayConstants.ROOM_NAMESPACE).on(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, (roomIds: string[], cb: (arg0: any[]) => void) => {
       if (server._path !== GatewayConstants.ROOM_PATH) {
         return cb(null);
       }

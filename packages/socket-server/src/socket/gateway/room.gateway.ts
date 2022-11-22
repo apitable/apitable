@@ -26,7 +26,7 @@ export class RoomGateway {
 
   @SubscribeMessage(RequestTypes.WATCH_ROOM)
   async watchRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<any | null> {
-    return await this.roomService.watchRoom(message, client, this.server);
+    return await this.roomService.watchRoom(message, client);
   }
 
   @SubscribeMessage(RequestTypes.LEAVE_ROOM)
