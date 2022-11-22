@@ -79,7 +79,7 @@ public class BillingConfigManagerTest {
         BillingPlanFeature planFeature = BillingConfigManager.buildPlanFeature(freePlan, Collections.emptyList());
         Assertions.assertThat(planFeature.getMaxSeats()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getMaxSheetNums()).isEqualTo(-1);
-        Assertions.assertThat(planFeature.getMaxApiCall()).isEqualTo(500000);
+        Assertions.assertThat(planFeature.getMaxApiCall()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getMaxGanttViewsInSpace()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getMaxCalendarViewsInSpace()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getMaxFormViewsInSpace()).isEqualTo(-1);
@@ -315,7 +315,7 @@ public class BillingConfigManagerTest {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.SILVER);
         // What plans are must-haves for the silver package
         Integer[] months = array(1, 6, 12);
-        Integer[] seats = array(100);
+        Integer[] seats = array(2, 100);
         assertEquals(priceList.size(), months.length * seats.length);
     }
 
