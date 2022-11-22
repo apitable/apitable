@@ -40,9 +40,9 @@ export const View: React.FC = () => {
   const query = useQuery();
   const activeRecordId = query.get('activeRecordId');
   const views = useSelector(Selectors.getViewsList);
-  const { datasheetId, mirrorId, shareId, templateId } = useSelector(state => {
-    const { datasheetId, mirrorId, shareId, templateId } = state.pageParams;
-    return { datasheetId, mirrorId, shareId, templateId };
+  const { datasheetId, mirrorId, shareId, templateId, embedId } = useSelector(state => {
+    const { datasheetId, mirrorId, shareId, templateId, embedId } = state.pageParams;
+    return { datasheetId, mirrorId, shareId, templateId, embedId };
   }, shallowEqual);
   const isSideRecordOpen = useSelector(state => state.space.isSideRecordOpen);
   const router = useRouter();
@@ -73,10 +73,10 @@ export const View: React.FC = () => {
   }, [rows, activeRecordId, datasheetId, views, isSideRecordOpen, router]);
 
   useEffect(() => {
-    if (!datasheetId || shareId || templateId) return;
+    if (!datasheetId || shareId || templateId || embedId) return;
 
     store.dispatch(StoreActions.getSubscriptionsAction(datasheetId, mirrorId));
-  }, [datasheetId, mirrorId, shareId, templateId]);
+  }, [datasheetId, mirrorId, shareId, templateId, embedId]);
 
   useExpandWidget();
 

@@ -17,7 +17,7 @@ export * from './datasheet_map';
 export * from './computed_status';
 export * from './mirror_id';
 export * from './mirror_map';
-
+export * from './embed_id';
 // export const initSubscribe = (store: Store<any>) => {
 //   datasheetMapSubscribe(store);
 // };

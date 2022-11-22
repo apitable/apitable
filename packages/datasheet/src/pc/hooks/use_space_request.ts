@@ -116,7 +116,6 @@ export const useSpaceRequest = () => {
     return Api.getEmbedLinkInfo(embedId).then(res => {
       const { success, data } = res.data;
       if (success) {
-        dispatch(StoreActions.setLoading(false));
         return data;
       }
       return null;
