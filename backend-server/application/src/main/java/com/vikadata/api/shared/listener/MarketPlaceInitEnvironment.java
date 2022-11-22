@@ -6,9 +6,9 @@ import java.util.Map.Entry;
 
 import cn.hutool.core.util.ArrayUtil;
 
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.marketplace.App;
-import com.vikadata.system.config.marketplace.MarketPlaceConfig;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.marketplace.App;
+import com.vikadata.api.shared.sysconfig.marketplace.MarketPlaceConfig;
 
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;

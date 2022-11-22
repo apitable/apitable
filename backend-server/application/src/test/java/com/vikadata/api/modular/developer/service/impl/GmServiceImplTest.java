@@ -8,20 +8,20 @@ import org.junit.jupiter.api.Test;
 
 import com.apitable.starter.vika.core.model.UserContactInfo;
 import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.space.enums.SpaceCertification;
 import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
-import com.vikadata.api.user.entity.UserEntity;
 
-import static com.vikadata.api.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 import static com.vikadata.api.space.enums.SpaceException.NOT_SPACE_ADMIN;
 import static com.vikadata.api.space.enums.SpaceException.NO_ALLOW_OPERATE;
 import static com.vikadata.api.space.enums.SpaceException.SPACE_ALREADY_CERTIFIED;
 import static com.vikadata.api.user.enums.UserException.USER_NOT_EXIST;
+import static com.vikadata.api.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -93,10 +93,11 @@ public class GmServiceImplTest extends AbstractIntegrationTest {
         Long userId = prepareUserData(uuid);
         Long memberId = prepareSpaceMemberData(spaceId, userId);
         prepareSpaceDataWithOwner(spaceId, memberId);
-        SpaceSubscribeVo beforeSubscribe = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo beforeSubscribe = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         iGmService.spaceCertification(spaceId, uuid, SpaceCertification.BASIC);
-        SpaceSubscribeVo afterSubscribe = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        assertThat(5 * 1024 * 1024 * 1024L).isEqualTo(afterSubscribe.getMaxCapacitySizeInBytes() - beforeSubscribe.getMaxCapacitySizeInBytes());
+        SubscriptionInfo afterSubscribe = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
+        long expectSize = afterSubscribe.getFeature().getCapacitySize().getValue() - beforeSubscribe.getFeature().getCapacitySize().getValue();
+        assertThat(expectSize).isEqualTo(5 * 1024 * 1024 * 1024L);
     }
 
     @Test

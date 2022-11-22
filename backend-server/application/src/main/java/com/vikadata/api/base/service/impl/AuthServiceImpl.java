@@ -24,48 +24,49 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.starter.tencent.autoconfigure.WebAppProperties;
 import com.apitable.starter.wx.mp.autoconfigure.WxMpProperties;
+import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.asset.vo.AssetUploadResult;
 import com.vikadata.api.base.enums.ActionException;
+import com.vikadata.api.base.service.IAuthService;
+import com.vikadata.api.enterprise.common.afs.AfsCheckService;
+import com.vikadata.api.enterprise.integral.enums.IntegralAlterType;
+import com.vikadata.api.enterprise.integral.service.IIntegralService;
+import com.vikadata.api.enterprise.vcode.enums.VCodeException;
+import com.vikadata.api.enterprise.vcode.enums.VCodeType;
+import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
+import com.vikadata.api.enterprise.vcode.service.IVCodeService;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
+import com.vikadata.api.interfaces.billing.model.EntitlementRemark;
+import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.shared.cache.bean.SocialAuthInfo;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.constants.IntegralActionCodeConstants;
-import com.vikadata.api.enterprise.vcode.enums.VCodeException;
-import com.vikadata.api.user.enums.LinkType;
-import com.vikadata.api.user.enums.ThirdPartyMemberType;
-import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.organization.dto.MemberDTO;
-import com.vikadata.api.user.dto.ThirdPartyMemberInfo;
-import com.vikadata.api.user.dto.UserLoginResult;
-import com.vikadata.api.user.dto.UserRegisterResult;
-import com.vikadata.api.user.ro.LoginRo;
-import com.vikadata.api.asset.service.IAssetService;
-import com.vikadata.api.base.service.IAuthService;
-import com.vikadata.api.enterprise.billing.service.IBillingOfflineService;
-import com.vikadata.api.enterprise.integral.enums.IntegralAlterType;
-import com.vikadata.api.enterprise.integral.service.IIntegralService;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.user.mapper.ThirdPartyMemberMapper;
-import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.api.user.service.IUserLinkService;
-import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
-import com.vikadata.api.enterprise.vcode.service.IVCodeService;
 import com.vikadata.api.shared.security.CodeValidateScope;
 import com.vikadata.api.shared.security.ValidateCodeProcessor;
 import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
 import com.vikadata.api.shared.security.ValidateCodeType;
 import com.vikadata.api.shared.security.ValidateTarget;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.integral.IntegralRule;
 import com.vikadata.api.shared.util.RandomExtendUtil;
-import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.api.user.dto.ThirdPartyMemberInfo;
+import com.vikadata.api.user.dto.UserLoginResult;
+import com.vikadata.api.user.dto.UserRegisterResult;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.enums.LinkType;
+import com.vikadata.api.user.enums.ThirdPartyMemberType;
+import com.vikadata.api.user.mapper.ThirdPartyMemberMapper;
+import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.user.ro.LoginRo;
+import com.vikadata.api.user.service.IUserLinkService;
+import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.integral.IntegralRule;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
@@ -144,7 +145,7 @@ public class AuthServiceImpl implements IAuthService {
     private IMemberService iMemberService;
 
     @Resource
-    private IBillingOfflineService iBillingOfflineService;
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -354,6 +355,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UserLoginResult loginUsingEmailCode(LoginRo loginRo) {
         UserLoginResult result = new UserLoginResult();
         String email = loginRo.getUsername();
@@ -403,7 +405,7 @@ public class AuthServiceImpl implements IAuthService {
         // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
         // Invite new users to join the space station to reward attachment capacity, asynchronous operation
-        TaskManager.me().execute(() -> this.checkSpaceRewardCapacity(user.getId(), user.getNickName(), spaceId));
+        this.checkSpaceRewardCapacity(user.getId(), user.getNickName(), spaceId);
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
     }
@@ -587,7 +589,7 @@ public class AuthServiceImpl implements IAuthService {
     public void checkSpaceRewardCapacity(Long userId, String userName, String spaceId) {
         // the invited members are successfully activated, and the space station will receive a 300M accessory capacity
         if (spaceId != null) {
-            iBillingOfflineService.createGiftCapacityOrder(userId, userName, spaceId);
+            entitlementServiceFacade.addGiftCapacity(spaceId, new EntitlementRemark(userId, userName));
         }
     }
 

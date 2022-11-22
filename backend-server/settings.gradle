@@ -30,8 +30,6 @@ rootProject.name = 'backend'
 
 include 'code-coverage-report'
 
-include 'config'
-include 'clock'
 include 'core'
 include 'grpc-model'
 

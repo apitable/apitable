@@ -3,8 +3,8 @@ package com.vikadata.api;
 import com.vikadata.api.enterprise.billing.service.IBundleService;
 import com.vikadata.api.enterprise.billing.service.IOrderV2Service;
 import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
-import com.vikadata.api.modular.finance.util.EntitlementChecker;
-import com.vikadata.api.modular.finance.util.OrderChecker;
+import com.vikadata.api.enterprise.billing.util.EntitlementChecker;
+import com.vikadata.api.enterprise.billing.util.OrderChecker;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

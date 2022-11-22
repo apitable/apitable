@@ -17,33 +17,34 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.config.properties.LimitProperties;
 import com.vikadata.api.enterprise.control.infrastructure.ControlRoleDict;
 import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
 import com.vikadata.api.enterprise.control.infrastructure.ControlType;
 import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
 import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
-import com.vikadata.api.workspace.enums.PermissionException;
-import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
-import com.vikadata.api.workspace.vo.BaseNodeInfo;
-import com.vikadata.api.workspace.vo.RubbishNodeVo;
 import com.vikadata.api.enterprise.control.service.IControlService;
-import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
+import com.vikadata.api.shared.clock.spring.ClockManager;
+import com.vikadata.api.shared.component.TaskManager;
+import com.vikadata.api.shared.config.properties.LimitProperties;
 import com.vikadata.api.space.service.ISpaceAssetService;
+import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
+import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.workspace.enums.PermissionException;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.workspace.service.IDatasheetService;
 import com.vikadata.api.workspace.service.INodeRoleService;
 import com.vikadata.api.workspace.service.INodeRubbishService;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.workspace.enums.NodeException;
-import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.workspace.vo.BaseNodeInfo;
+import com.vikadata.api.workspace.vo.RubbishNodeVo;
 import com.vikadata.core.util.ExceptionUtil;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.vikadata.api.enterprise.billing.enums.BillingException.PLAN_FEATURE_OVER_LIMIT;
+import static com.vikadata.api.workspace.enums.NodeException.RUBBISH_NODE_NOT_EXIST;
 
 @Slf4j
 @Service
@@ -71,7 +72,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
     private INodeRoleService iNodeRoleService;
 
     @Resource
-    private ISpaceSubscriptionService iSpaceSubscriptionService;
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private LimitProperties limitProperties;
@@ -83,7 +84,8 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         boolean allowOverLimit = isOverLimit && Boolean.TRUE.equals(limitProperties.getIsAllowOverLimit());
 
         // Obtain the maximum storage days of the rubbish corresponding to the space subscription plan.
-        long subscriptionRemainDays = iSpaceSubscriptionService.getPlanTrashRemainDays(spaceId);
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        long subscriptionRemainDays = subscriptionInfo.getFeature().getRemainTrashDays().getValue();
         long retainDay = allowOverLimit ? limitProperties.getRubbishMaxRetainDay() : subscriptionRemainDays;
         // Push back start time (not included)
         LocalDateTime beginTime = LocalDateTime.of(LocalDate.now().minusDays(retainDay), LocalTime.MAX);
@@ -93,7 +95,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         if (StrUtil.isNotBlank(lastNodeId)) {
             LocalDateTime rubbishUpdatedAt = nodeMapper.selectRubbishUpdatedAtByNodeId(lastNodeId);
             // If the last node is not in the rubbish (recovered or completely deleted), the location fails and an abnormal service status code is returned. The client can request the last node again.
-            ExceptionUtil.isNotNull(rubbishUpdatedAt, NodeException.RUBBISH_NODE_NOT_EXIST);
+            ExceptionUtil.isNotNull(rubbishUpdatedAt, RUBBISH_NODE_NOT_EXIST);
             // It cannot be loaded for more than the number of days saved in the reading plan.
             if (rubbishUpdatedAt.compareTo(beginTime) <= 0) {
                 return new ArrayList<>();
@@ -189,13 +191,13 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         log.info("Check whether the rubbish node [{}] exists and whether the member [{}] has permission", nodeId, memberId);
         // Query the modification time of the rubbish node to determine whether it exists.
         LocalDateTime rubbishUpdatedAt = nodeMapper.selectRubbishUpdatedAtByNodeId(nodeId);
-        ExceptionUtil.isNotNull(rubbishUpdatedAt, NodeException.RUBBISH_NODE_NOT_EXIST);
+        ExceptionUtil.isNotNull(rubbishUpdatedAt, RUBBISH_NODE_NOT_EXIST);
 
         // Obtain the maximum storage days of the rubbish corresponding to the space subscription plan.
         long retainDay = Boolean.TRUE.equals(limitProperties.getIsAllowOverLimit()) ?
-                limitProperties.getRubbishMaxRetainDay() : iSpaceSubscriptionService.getPlanTrashRemainDays(spaceId);
+                limitProperties.getRubbishMaxRetainDay() : entitlementServiceFacade.getSpaceSubscription(spaceId).getFeature().getRemainTrashDays().getValue();
         // Subscription function restriction check
-        ExceptionUtil.isTrue(rubbishUpdatedAt.isAfter(LocalDateTime.of(LocalDate.now().minusDays(retainDay), LocalTime.MAX)), PLAN_FEATURE_OVER_LIMIT);
+        ExceptionUtil.isTrue(rubbishUpdatedAt.isAfter(LocalDateTime.of(ClockManager.me().getLocalDateNow().minusDays(retainDay), LocalTime.MAX)), RUBBISH_NODE_NOT_EXIST);
 
         // Check node permissions
         ControlRoleDict roleDict = controlTemplate.fetchRubbishNodeRole(memberId, Collections.singletonList(nodeId));

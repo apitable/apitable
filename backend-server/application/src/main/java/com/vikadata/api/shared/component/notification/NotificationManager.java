@@ -18,6 +18,8 @@ import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.starter.socketio.core.SocketClientTemplate;
+import com.vikadata.api.player.ro.NotificationCreateRo;
+import com.vikadata.api.player.service.impl.PlayerNotificationServiceImpl;
 import com.vikadata.api.shared.cache.service.LoginUserService;
 import com.vikadata.api.shared.component.notification.observer.CenterNotifyObserver;
 import com.vikadata.api.shared.component.notification.observer.DingTalkIsvNotifyObserver;
@@ -30,9 +32,6 @@ import com.vikadata.api.shared.component.notification.subject.CenterNotifySubjec
 import com.vikadata.api.shared.component.notification.subject.SocialNotifyContext;
 import com.vikadata.api.shared.component.notification.subject.SocialNotifySubject;
 import com.vikadata.api.shared.constants.NotificationConstants;
-import com.vikadata.api.enterprise.billing.enums.OrderType;
-import com.vikadata.api.player.ro.NotificationCreateRo;
-import com.vikadata.api.player.service.impl.PlayerNotificationServiceImpl;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.core.util.SpringContextHolder;
 
@@ -220,11 +219,11 @@ public class NotificationManager {
      * @param planTitle billing plan name
      * @param amount billing paid price
      */
-    public void sendSubscribeNotify(String spaceId, Long fromUserId, Long expireAt, String planTitle, Integer amount, OrderType orderType) {
+    public void sendSubscribeNotify(String spaceId, Long fromUserId, Long expireAt, String planTitle, Integer amount, String orderType) {
         Dict paidExtra = Dict.create().set(PLAN_NAME, planTitle)
                 .set(EXPIRE_AT, expireAt.toString())
                 .set(PAY_FEE, String.format("¥%.2f", amount.doubleValue() / 100))
-                .set("orderType", orderType != null ? orderType.name() : StrUtil.EMPTY);
+                .set("orderType", orderType);
         playerNotify(NotificationTemplateId.SPACE_VIKA_PAID_NOTIFY,
                 Collections.singletonList(fromUserId), 0L, spaceId, paidExtra);
     }

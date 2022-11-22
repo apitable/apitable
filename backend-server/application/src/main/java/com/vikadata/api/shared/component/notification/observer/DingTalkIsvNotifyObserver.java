@@ -19,8 +19,8 @@ import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.enterprise.social.enums.SocialAppType;
 import com.vikadata.api.enterprise.social.service.IDingTalkInternalIsvService;
 import com.vikadata.api.shared.util.VikaStrings;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.notification.SocialTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.SocialTemplate;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

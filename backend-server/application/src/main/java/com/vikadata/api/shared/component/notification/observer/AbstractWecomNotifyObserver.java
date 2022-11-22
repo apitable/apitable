@@ -13,8 +13,8 @@ import me.chanjar.weixin.cp.bean.message.WxCpMessage;
 import com.vikadata.api.shared.component.notification.subject.SocialNotifyContext;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.shared.util.VikaStrings;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.notification.SocialTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.SocialTemplate;
 
 /**
  * <p>

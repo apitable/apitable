@@ -15,8 +15,10 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.shared.component.adapter.MultiDatasourceAdapterTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
 import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.space.enums.SubscribeFunctionException;
@@ -25,7 +27,6 @@ import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
 import com.vikadata.api.space.service.ISpaceAuditService;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.system.config.SystemConfigManager;
 
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
             .map(Entry::getKey).collect(Collectors.toList());
 
     @Resource
-    private ISpaceSubscriptionService iSpaceSubscriptionService;
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private NodeMapper nodeMapper;
@@ -49,7 +50,8 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
     @Override
     public PageInfo<SpaceAuditPageVO> getSpaceAuditPageVO(String spaceId, SpaceAuditPageParam param) {
         // Gets the number of days the space subscription plan is available for audit query
-        long queryDays = iSpaceSubscriptionService.getPlanAuditQueryDays(spaceId);
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        long queryDays = subscriptionInfo.getFeature().getAuditQueryDays().getValue();
         LocalDateTime today = LocalDateTimeUtil.beginOfDay(LocalDateTime.now());
         LocalDateTime beginTime = param.getBeginTime();
         // check start time

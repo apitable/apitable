@@ -22,8 +22,8 @@ import com.vikadata.api.player.service.IPlayerActivityService;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.PlayerActivityEntity;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.wizard.Wizard;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.wizard.Wizard;
 
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;

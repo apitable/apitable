@@ -20,32 +20,33 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.space.enums.InviteType;
+import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
 import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.space.dto.SpaceLinkDTO;
-import com.vikadata.api.space.vo.SpaceLinkInfoVo;
-import com.vikadata.api.space.service.IAuditInviteRecordService;
-import com.vikadata.api.enterprise.billing.service.IBillingOfflineService;
+import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
+import com.vikadata.api.interfaces.billing.model.EntitlementRemark;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.ITeamMemberRelService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
+import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.space.dto.SpaceLinkDTO;
+import com.vikadata.api.space.enums.InviteType;
 import com.vikadata.api.space.mapper.SpaceInviteLinkMapper;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.mapper.SpaceResourceMapper;
 import com.vikadata.api.space.model.InvitationUserDTO;
 import com.vikadata.api.space.model.SpaceMemberResourceDto;
+import com.vikadata.api.space.service.IAuditInviteRecordService;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
+import com.vikadata.api.space.vo.SpaceLinkInfoVo;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.entity.SpaceInviteLinkEntity;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -104,14 +105,14 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     private ISocialTenantBindService iSocialTenantBindService;
 
     @Resource
-    private IBillingOfflineService iBillingOfflineService;
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private IInvitationService invitationService;
 
     @Override
     public String saveOrUpdate(String spaceId, Long teamId, Long memberId) {
-        // whether a space can create an invite link
+        // whether a space can create an invitation link
         boolean isBindSocial = iSocialTenantBindService.getSpaceBindStatus(spaceId);
         ExceptionUtil.isFalse(isBindSocial, NO_ALLOW_OPERATE);
         String teamSpaceId = teamMapper.selectSpaceIdById(teamId);
@@ -331,7 +332,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         String key = RedisConstants.getUserInvitedJoinSpaceKey(userId, spaceId);
         if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
             // Order a 300 MB add-on subscription plan to invite users to increase the capacity of the add-on
-            iBillingOfflineService.createGiftCapacityOrder(userId, userName, spaceId);
+            entitlementServiceFacade.addGiftCapacity(spaceId, new EntitlementRemark(userId, userName));
             redisTemplate.delete(key);
         }
     }

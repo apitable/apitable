@@ -14,15 +14,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.enterprise.billing.strategy.SocialOrderStrategyFactory;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.enterprise.billing.util.LarkPlanConfigManager;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
+import com.vikadata.api.shared.sysconfig.billing.Price;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.social.feishu.enums.PricePlanType;
 import com.vikadata.social.feishu.event.app.OrderPaidEvent;
-import com.vikadata.system.config.billing.Price;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -80,12 +80,12 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
         // init now time
         final OffsetDateTime nowTime = OffsetDateTime.of(2022, 6, 7, 19, 10, 30, 0, testTimeZone);
         getClock().setTime(nowTime);
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        assertThat(vo.getOnTrial()).isTrue();
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
+        assertThat(subscriptionInfo.onTrial()).isTrue();
         LocalDateTime startDate =
                 LocalDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(event.getPayTime())), testTimeZone);
         LocalDateTime endDate = startDate.plusDays(15);
-        assertThat(endDate.toLocalDate()).isEqualTo(vo.getDeadline());
+        assertThat(endDate.toLocalDate()).isEqualTo(subscriptionInfo.getEndDate());
     }
 
     @Test
@@ -97,10 +97,10 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
 
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_10_1_per_year.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(Objects.requireNonNull(event).getPricePlanId());
-        assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.onTrial()).isFalse();
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -115,9 +115,9 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
 
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_20_1_upgrade.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscription = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(Objects.requireNonNull(event).getPricePlanId());
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscription.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -133,12 +133,12 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
 
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/base_20_1_upgrade.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
-        SpaceSubscribeVo vo20 = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo before = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         // Renewal upgrade to 30 people for trial, to be effective
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(getOrderPaidEvent(
                 "social/feishu/order/base_30_1_renew_trail.json"));
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        assertThat(vo.getPlan()).isEqualTo(vo20.getPlan());
+        SubscriptionInfo after = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
+        assertThat(after.getBasePlan()).isEqualTo(before.getBasePlan());
     }
 
     @Test
@@ -160,9 +160,9 @@ public class LarkOrderServiceImplTest extends AbstractIntegrationTest {
         // 5 After renewal and upgrade, upgrade the original scheme again
         OrderPaidEvent event = getOrderPaidEvent("social/feishu/order/enterprise_30_1_upgrade_after_renew.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.FEISHU).retrieveOrderPaidEvent(event);
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscription = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = LarkPlanConfigManager.getPriceByLarkPlanId(Objects.requireNonNull(event).getPricePlanId());
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscription.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
 

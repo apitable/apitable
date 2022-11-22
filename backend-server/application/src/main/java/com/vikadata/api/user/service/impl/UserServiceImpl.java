@@ -112,7 +112,7 @@ import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.entity.UserHistoryEntity;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;

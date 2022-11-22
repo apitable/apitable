@@ -19,8 +19,8 @@ import com.vikadata.api.shared.util.VikaStrings;
 import com.vikadata.social.dingtalk.message.ActionCardMessage;
 import com.vikadata.social.dingtalk.message.Message;
 import com.vikadata.social.dingtalk.message.element.SingleActionCard;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.notification.SocialTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.SocialTemplate;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.service.IPlayerNotificationService;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.stereotype.Component;
 

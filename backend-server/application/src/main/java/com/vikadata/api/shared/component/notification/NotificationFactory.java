@@ -62,8 +62,8 @@ import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.entity.AppInstanceEntity;
 import com.vikadata.entity.SocialTenantEntity;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

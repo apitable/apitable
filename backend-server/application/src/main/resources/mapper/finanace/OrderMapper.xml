@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.OrderMapper">
-    <select id="selectByOrderId" resultType="com.vikadata.entity.OrderEntity">
+    <select id="selectByOrderId" resultType="com.vikadata.api.enterprise.billing.entity.OrderEntity">
         SELECT *
         FROM vika_billing_order
         WHERE order_id = #{orderId}
@@ -15,7 +15,7 @@
         AND channel_order_id = #{channelOrderId}
     </select>
 
-    <select id="selectByOrderIds" resultType="com.vikadata.entity.OrderEntity">
+    <select id="selectByOrderIds" resultType="com.vikadata.api.enterprise.billing.entity.OrderEntity">
         SELECT * FROM vika_billing_order
         WHERE order_id IN
         <foreach item="item" index="index" collection="orderIds" open="(" separator=","
@@ -26,7 +26,7 @@
     </select>
 
     <select id="selectBySpaceIdAndOrderType"
-            resultType="com.vikadata.entity.OrderEntity">
+            resultType="com.vikadata.api.enterprise.billing.entity.OrderEntity">
         SELECT * FROM vika_billing_order
         WHERE space_id = #{spaceId} AND order_type = #{orderType} AND is_deleted = 0
     </select>

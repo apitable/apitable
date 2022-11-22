@@ -83,7 +83,7 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.entity.PlayerNotificationEntity;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,11 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.base.enums.ValidateType;
-import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
-import com.vikadata.api.shared.component.scanner.annotation.GetResource;
-import com.vikadata.api.shared.component.notification.annotation.Notification;
-import com.vikadata.api.shared.util.page.PageObjectParam;
-import com.vikadata.api.shared.component.scanner.annotation.PostResource;
+import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
 import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetService;
@@ -30,47 +25,45 @@ import com.vikadata.api.shared.cache.service.UserSpaceService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
+import com.vikadata.api.shared.component.notification.annotation.Notification;
+import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
+import com.vikadata.api.shared.component.scanner.annotation.GetResource;
+import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.constants.AuditConstants;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.space.enums.AuditSpaceAction;
-import com.vikadata.api.space.enums.SpaceException;
+import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.vikadata.api.shared.util.page.PageHelper;
-import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
-import com.vikadata.api.shared.util.page.PageInfo;
+import com.vikadata.api.shared.security.CodeValidateScope;
+import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
+import com.vikadata.api.shared.security.ValidateCodeType;
+import com.vikadata.api.shared.security.ValidateTarget;
+import com.vikadata.api.space.enums.AuditSpaceAction;
+import com.vikadata.api.space.enums.SpaceException;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.model.GetSpaceListFilterCondition;
 import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.model.SpaceUpdateOperate;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.ro.SpaceDeleteRo;
 import com.vikadata.api.space.ro.SpaceMemberSettingRo;
 import com.vikadata.api.space.ro.SpaceOpRo;
 import com.vikadata.api.space.ro.SpaceSecuritySettingRo;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.ro.SpaceWorkbenchSettingRo;
+import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.space.vo.CreateSpaceResultVo;
 import com.vikadata.api.space.vo.SpaceInfoVO;
 import com.vikadata.api.space.vo.SpaceVO;
 import com.vikadata.api.space.vo.UserSpaceVo;
-import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
-import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.space.mapper.SpaceMapper;
-import com.vikadata.api.space.model.GetSpaceListFilterCondition;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
-import com.vikadata.api.space.model.vo.SpaceCapacityPageVO;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
-import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.shared.security.CodeValidateScope;
-import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
-import com.vikadata.api.shared.security.ValidateCodeType;
-import com.vikadata.api.shared.security.ValidateTarget;
-import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,8 +71,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_PARAM;
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 import static com.vikadata.api.space.enums.SpaceException.DELETE_SPACE_ERROR;
 
 @RestController
@@ -107,32 +98,7 @@ public class SpaceController {
     private UserActiveSpaceService userActiveSpaceService;
 
     @Resource
-    private ISpaceSubscriptionService iSpaceSubscriptionService;
-
-    @Resource
     private IUserService iUserService;
-
-    @GetResource(path = "/capacity", requiredPermission = false, requiredLogin = false)
-    @ApiOperation(value = "Get space capacity info")
-    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
-    public ResponseData<InternalSpaceCapacityVo> capacity() {
-        String spaceId = LoginContext.me().getSpaceId();
-        InternalSpaceCapacityVo vo = iSpaceService.getSpaceCapacityVo(spaceId);
-        vo.setIsAllowOverLimit(true);
-        return ResponseData.success(vo);
-    }
-
-    @GetResource(path = "/capacity/detail", requiredPermission = false)
-    @ApiOperation(value = "Get space capacity detail info")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW"),
-        @ApiImplicitParam(name = "isExpire", value = "Whether the attachment capacity has expired. By default, it has not expired", dataTypeClass = Boolean.class, paramType = "query", example = "true"),
-        @ApiImplicitParam(name = PAGE_PARAM, value = "paging parameter", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
-    })
-    public ResponseData<PageInfo<SpaceCapacityPageVO>> getCapacityDetail(@RequestParam(name = "isExpire", defaultValue = "false") Boolean isExpire, @PageObjectParam Page page) {
-        String spaceId = LoginContext.me().getSpaceId();
-        return ResponseData.success(PageHelper.build(iSpaceSubscriptionService.getSpaceCapacityDetail(spaceId, isExpire, page)));
-    }
 
     @GetResource(path = "/resource", requiredPermission = false)
     @ApiOperation(value = "Get user space resource")
@@ -367,7 +333,6 @@ public class SpaceController {
     @ApiOperation(value = "Gets subscription information for the space")
     @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<SpaceSubscribeVo> subscribe(@PathVariable("spaceId") String spaceId) {
-        SpaceSubscribeVo result = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        return ResponseData.success(result);
+        return ResponseData.success(iSpaceService.getSpaceSubscriptionInfo(spaceId));
     }
 }

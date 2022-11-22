@@ -41,6 +41,9 @@ ext {
     'spring-security-cas'         : 'org.springframework.security:spring-security-cas',
     // Spring Integration Dependencies
     'spring-integration-redis'    : 'org.springframework.integration:spring-integration-redis',
+    // Spring Plugin
+    'spring-plugin-core'          : 'org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE',
+    'spring-plugin-metadata'      : 'org.springframework.plugin:spring-plugin-metadata:2.0.0.RELEASE',
     //'prometheus'                  : 'io.micrometer:micrometer-registry-prometheus',
     'prometheus'                  : 'io.prometheus:simpleclient_pushgateway',
     'mysql'                       : 'mysql:mysql-connector-java',

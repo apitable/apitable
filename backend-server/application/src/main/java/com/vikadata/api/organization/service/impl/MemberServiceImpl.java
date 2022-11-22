@@ -70,7 +70,7 @@ import com.vikadata.api.organization.vo.UploadParseResultVO;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
 import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
 import com.vikadata.api.shared.cache.service.UserSpaceService;
-import com.vikadata.api.shared.component.Auth0Service;
+import com.vikadata.api.enterprise.auth0.service.Auth0Service;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;

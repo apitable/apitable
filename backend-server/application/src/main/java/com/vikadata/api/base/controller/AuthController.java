@@ -36,7 +36,7 @@ import com.vikadata.api.user.dto.UserLoginResult;
 import com.vikadata.api.user.ro.LoginRo;
 import com.vikadata.api.user.vo.UserInfoVo;
 import com.vikadata.api.base.service.IAuthService;
-import com.vikadata.api.enterprise.billing.service.IBlackListService;
+import com.vikadata.api.enterprise.gm.service.IBlackListService;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.enterprise.social.service.ISocialTenantDomainService;
 import com.vikadata.api.user.service.IUserService;

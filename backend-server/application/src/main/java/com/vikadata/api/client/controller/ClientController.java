@@ -26,7 +26,7 @@ import com.vikadata.api.shared.util.ClientUriUtil;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.user.vo.UserInfoVo;
 import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.system.config.i18n.I18nTypes;
+import com.vikadata.api.shared.sysconfig.i18n.I18nTypes;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisCallback;
