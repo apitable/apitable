@@ -7,7 +7,7 @@ import { SpaceLevelInfo } from '../utils';
 import { useCapacity, useApi, useFile, useRecord, useMember, useView, useOthers } from '../hooks';
 import { isSocialPlatformEnabled, inSocialApp, isSocialFeiShu } from 'pc/components/home/social_platform';
 import { buildSpaceCertSheetUrl } from '../components/basic_info/helper';
-import { isMobileApp } from 'pc/utils/env';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
 
 interface ICardProps {
@@ -44,7 +44,7 @@ export const useCards = (props: ILayoutProps) => {
   }, [spaceInfo]);
 
   // Opened by a third-party space station or through a third-party browser
-  const isSocial = isSocialEnabled || inSocialApp() || isSocialFeiShu();
+  const isSocial = isSocialEnabled || inSocialApp() || isSocialFeiShu() || !getEnvVariables().SPACE_ENTERPRISE_CERTIFICATION_FORM_URL;
 
   return useMemo(() => {
     return {
@@ -68,7 +68,7 @@ export const useCards = (props: ILayoutProps) => {
           {...memberData}
           isMobile={isMobile}
           level={level}
-          shape="line"
+          shape='line'
           unit={t(Strings.people)}
           trailColor={trailColor}
           strokeColor={strokeColor}
@@ -82,7 +82,7 @@ export const useCards = (props: ILayoutProps) => {
           {...props}
           {...apiData}
           isMobile={isMobile}
-          shape="circle"
+          shape='circle'
           unit={t(Strings.times_unit)}
           trailColor={trailColor}
           strokeColor={strokeColor}
@@ -92,7 +92,7 @@ export const useCards = (props: ILayoutProps) => {
       ),
 
       CapacityCard: (props: ICardProps) => {
-        // If it is a third-party environment, use Card (without complimentary space information), 
+        // If it is a third-party environment, use Card (without complimentary space information),
         // otherwise use CapacityWithRewardCard (with complimentary information)
         return isSocial ? (
           <Card
@@ -104,7 +104,7 @@ export const useCards = (props: ILayoutProps) => {
             remainPercent={capacityData.allRemainPercent}
             isMobile={isMobile}
             usedTextIsFloat
-            shape="circle"
+            shape='circle'
             trailColor={trailColor}
             strokeColor={strokeColor}
             title={t(Strings.space_capacity)}
@@ -149,7 +149,7 @@ export const useCards = (props: ILayoutProps) => {
           {...props}
           {...fileData}
           isMobile={isMobile}
-          shape="circle"
+          shape='circle'
           unit={t(Strings.unit_ge)}
           trailColor={trailColor}
           strokeColor={strokeColor}
@@ -163,7 +163,7 @@ export const useCards = (props: ILayoutProps) => {
           {...props}
           {...recordData}
           isMobile={isMobile}
-          shape="circle"
+          shape='circle'
           unit={t(Strings.row)}
           trailColor={trailColor}
           strokeColor={strokeColor}

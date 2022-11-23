@@ -20,6 +20,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
+import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
 import * as React from 'react';
 import { KeyboardEvent, useRef } from 'react';
@@ -74,7 +75,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
 
   const hasSelection = selection && selection.length;
   const onlyOperateOneRecord = (() => {
-    // Selections and selected records are mutually exclusive; 
+    // Selections and selected records are mutually exclusive;
     // if a selection exists, there will be no selected records, and if a selected record exists, there will be no selection.
     if (hasSelection) {
       const selectRecords = Selectors.getRangeRecords(store.getState(), selection[0]);
@@ -301,7 +302,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
         text: subOrUnsubText,
-        hidden: isCalendar || !!shareId || !!templateId,
+        hidden: isCalendar || !!shareId || !!templateId || !getEnvVariables().RECORD_WATCHING_VISIBLE,
         onClick: ({ props: { recordId }}) => onSubOrUnsub(recordId),
       },
     ],
@@ -376,7 +377,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
         hidden: isCalendar,
         onClick: onCopy,
       },
-      // TODO: paste because of browser security restrictions, 
+      // TODO: paste because of browser security restrictions,
       // need to save a copy of the content before processing data, and does not support external content copy
       // {
       //   icon: <PasteOutlined color={colors.thirdLevelText} />,

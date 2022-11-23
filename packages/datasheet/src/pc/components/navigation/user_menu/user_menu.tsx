@@ -54,7 +54,7 @@ const customTips = {
 
 export const UserMenu: FC<IUserMenuProps> = props => {
   const colors = useThemeColors();
-  const env = getEnvVariables();
+  const { ACCOUNT_LOGOUT_VISIBLE, HIDDEN_BIND_PHONE, ACCOUNT_VCOIN_VISIBLE } = getEnvVariables();
   const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
     (state: IReduxState) => ({
       userInfo: state.user.info,
@@ -231,8 +231,8 @@ export const UserMenu: FC<IUserMenuProps> = props => {
   );
 
   const _isMobileApp = isMobileApp();
-  const linkToPrivacyPolicy = _isMobileApp ? Strings.PRIVACY_POLICY_STRING : getEnvVariables().PRIVACY_POLICY_URL;
-  const linkToTermsOfService = _isMobileApp ? Strings.SERVICE_AGREEMENT_STRING : getEnvVariables().SERVICE_AGREEMENT_URL;
+  const linkToPrivacyPolicy = _isMobileApp ? Strings.privacy_policy_title : getEnvVariables().PRIVACY_POLICY_URL;
+  const linkToTermsOfService = _isMobileApp ? Strings.terms_of_service_title : getEnvVariables().SERVICE_AGREEMENT_URL;
 
   const items = [
     {
@@ -331,13 +331,13 @@ export const UserMenu: FC<IUserMenuProps> = props => {
               </button>
             )}
             {inEditName && (
-              <Tooltip title={t(Strings.member_err)} placement="top" visible={nameLengthErr}>
+              <Tooltip title={t(Strings.member_err)} placement='top' visible={nameLengthErr}>
                 <Input
                   defaultValue={memberName}
                   className={classNames(styles.input, {
                     [styles.err]: nameLengthErr,
                   })}
-                  size="small"
+                  size='small'
                   autoFocus
                   onChange={inputChange}
                   onPressEnter={onPressEnter}
@@ -365,7 +365,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
       <div className={styles.userMenuCenter}>
         <div className={styles.menuListWrapper}>
           <div className={styles.centerTitle}>{t(Strings.personal_info)}</div>
-          {!hiddenMobileRes && !env.HIDDEN_BIND_PHONE && (
+          {!hiddenMobileRes && !HIDDEN_BIND_PHONE && (
             <div className={styles.centerItem}>
               <span className={styles.label}>{t(Strings.phone_number)}</span>
               {mobile ? hiddenMobile(mobile) : t(Strings.unbound)}
@@ -389,7 +389,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             </div>
           )}
           {isMobile && items.filter(item => item.visible).map(item => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
-          {!isMobile && !isMobileApp() && !isWecomSpace && !isPrivateDeployment() && isEnterprise && (
+          {!isMobile && !isMobileApp() && !isWecomSpace && ACCOUNT_VCOIN_VISIBLE && isEnterprise && (
             <div className={styles.inviteCodeBtnWrap}>
               <div
                 className={styles.inviteCodeBtn}
@@ -408,7 +408,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>
-              <Image src={Vikaji} alt="vikaji" width={36} height={36} />
+              <Image src={Vikaji} alt='vikaji' width={36} height={36} />
             </div>
           </ComponentDisplay>
         )}
@@ -427,10 +427,10 @@ export const UserMenu: FC<IUserMenuProps> = props => {
           )}
         </div>
       </ComponentDisplay>
-      {!inSocialApp() && getEnvVariables().ACCOUNT_LOGOUT_VISIBLE && (
+      {!inSocialApp() && ACCOUNT_LOGOUT_VISIBLE && (
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
           <div className={styles.btnWrap}>
-            <Button variant="jelly" onClick={signOut} block size="large">
+            <Button variant='jelly' onClick={signOut} block size='large'>
               {t(Strings.logout)}
             </Button>
           </div>

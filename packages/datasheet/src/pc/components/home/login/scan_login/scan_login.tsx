@@ -9,6 +9,7 @@ import { QRCodeBase } from 'pc/components/home/qr_code';
 import { isWecomFunc } from 'pc/components/home/social_platform';
 
 import { useQuery } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { isDesktop } from 'pc/utils/os';
 import * as React from 'react';
 import { isMobile } from 'react-device-detect';
@@ -66,6 +67,7 @@ export const ScanLogin = ({
     id: 'wechat_login_btn',
     img: WechatIcon,
     name: t(Strings.wechat),
+    hidden: !getEnvVariables().SOCIAL_LOGIN_WECHAT_VISIBLE,
     onClick: () => {
       settingReference();
       setCurrentScan('wechat');
@@ -74,6 +76,7 @@ export const ScanLogin = ({
     id: 'dingding_login_btn',
     img: DingdingIcon,
     name: t(Strings.dingtalk),
+    hidden: !getEnvVariables().SOCIAL_LOGIN_DINGTALK_VISIBLE,
     onClick: () => {
       settingReference();
       settingInviteData();
@@ -83,7 +86,7 @@ export const ScanLogin = ({
     id: 'feishu_login_btn',
     img: LarkIcon,
     name: t(Strings.lark),
-    hidden: isInvitePage,
+    hidden: isInvitePage || !getEnvVariables().INTEGRATIONS_FEISHU_VISIBLE,
     onClick: () => {
       settingReference();
       feishuLogin();
@@ -92,7 +95,7 @@ export const ScanLogin = ({
     id: 'wecom_login_btn',
     img: WecomIcon,
     name: t(Strings.wecom),
-    hidden: !isWecomDomain || !isMobile,
+    hidden: !isWecomDomain || !isMobile || getEnvVariables().INTEGRATIONS_WECOM_VISIBLE,
     onClick: () => {
       settingReference();
       wecomLogin();
@@ -110,7 +113,7 @@ export const ScanLogin = ({
     id: 'qq_login_btn',
     img: QQIcon,
     name: t(Strings.qq),
-    hidden: isDesktop(),
+    hidden: isDesktop() || !getEnvVariables().SOCIAL_LOGIN_QQ_VISIBLE,
     onClick: () => {
       settingReference();
       settingInviteData();

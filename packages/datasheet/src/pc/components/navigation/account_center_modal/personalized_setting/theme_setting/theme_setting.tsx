@@ -21,7 +21,7 @@ const options = [{
 
 export const ThemeSetting: FC = () => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', {
-    defaultValue: getEnvVariables().THEME || ThemeName.Light
+    defaultValue: getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName || ThemeName.Light
   });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export const ThemeSetting: FC = () => {
 
   return (
     <div className={styles.themeSetting}>
-      <Typography variant="h7" className={styles.title}>{t(Strings.theme_setting)}</Typography>
+      <Typography variant='h7' className={styles.title}>{t(Strings.theme_setting)}</Typography>
       <Select
         options={options}
         value={systemTheme === SystemTheme.Open ? 'system' : (theme || ThemeName.Light)}

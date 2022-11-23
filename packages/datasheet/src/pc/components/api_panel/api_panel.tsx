@@ -71,17 +71,19 @@ export const ApiPanel: React.FC = () => {
           {t(Strings.document_detail)}
         </Button>
         <Divider orientation='vertical' style={{ margin: 0, background: colors.fc5, opacity: 0.3 }} />
-        <Button
-          onClick={() => {
-            window.open(APIFOX_HOME_URL, '_blank', 'noopener=yes,noreferrer=yes');
-          }}
-          variant='fill'
-          color={colors.blackBlue[1000]}
-          prefixIcon={<DebugOutlined />}
-          className={styles.linkButton}
-        >
-          {t(Strings.request_in_api_panel)}
-        </Button>
+        {
+          APIFOX_HOME_URL && <Button
+            onClick={() => {
+              window.open(APIFOX_HOME_URL, '_blank', 'noopener=yes,noreferrer=yes');
+            }}
+            variant='fill'
+            color={colors.blackBlue[1000]}
+            prefixIcon={<DebugOutlined />}
+            className={styles.linkButton}
+          >
+            {t(Strings.request_in_api_panel)}
+          </Button>
+        }
       </h1>
       <h2 className={styles.panelName}>
         <InlineNodeName nodeId={datasheetId} nodeName={datasheet?.name} nodeIcon={datasheet?.icon} withIcon />

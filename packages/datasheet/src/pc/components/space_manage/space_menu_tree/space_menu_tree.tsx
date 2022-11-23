@@ -1,5 +1,5 @@
 import { Typography } from '@apitable/components';
-import { ConfigConstant, IReduxState, isPrivateDeployment, Navigation as NavigationConst, Strings, t } from '@apitable/core';
+import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
@@ -55,7 +55,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.space_log_title),
     key: 'log',
     icon: <AuditOutlined />,
-    valid: isMainAdmin,
+    valid: isMainAdmin && getEnvVariables().SPACE_LOGS_VISIBLE,
     routeAddress: '/log',
   },
   {
@@ -69,7 +69,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     title: t(Strings.upgrade_space),
     key: 'upgrade',
     icon: <RocketOutlined />,
-    valid: Boolean(isSelfVika && !isMobileApp() && !isPrivateDeployment()),
+    valid: Boolean(isSelfVika && !isMobileApp() && getEnvVariables().SPACE_UPGRADE_PAGE_VISIBLE),
     routeAddress: '/upgrade',
   },
   {

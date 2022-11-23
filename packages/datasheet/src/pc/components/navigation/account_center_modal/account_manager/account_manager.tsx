@@ -137,18 +137,19 @@ scope=snsapi_login&state=STATE&redirect_uri=${callbackUrl}`;
     name: t(Strings.dingtalk),
     img: DingDingPng,
     onClick: clickDingDing,
-    hidden: isDesktop(),
+    hidden: isDesktop() || !getEnvVariables().SOCIAL_LOGIN_DINGTALK_VISIBLE,
   }, {
     mod: 'WECHAT',
     name: t(Strings.wechat),
     img: WeChatPng,
     onClick: clickWechat,
+    hidden: !getEnvVariables().SOCIAL_LOGIN_WECHAT_VISIBLE
   }, {
     mod: 'QQ',
     name: t(Strings.qq),
     img: QQPng,
     onClick: clickQQ,
-    hidden: isDesktop(),
+    hidden: isDesktop() || !getEnvVariables().SOCIAL_LOGIN_QQ_VISIBLE,
   }];
 
   return (

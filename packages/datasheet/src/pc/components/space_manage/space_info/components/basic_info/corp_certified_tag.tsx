@@ -1,11 +1,11 @@
-import styles from './corp_certified_tag.module.less';
-import classnames from 'classnames';
-import { Strings, t, isPrivateDeployment } from '@apitable/core';
-import IconCertified from 'static/icon/space/space_icon_certified.svg';
 import { colorVars } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
+import classnames from 'classnames';
 import { Tooltip } from 'pc/components/common';
+import { getEnvVariables, isMobileApp } from 'pc/utils/env';
+import IconCertified from 'static/icon/space/space_icon_certified.svg';
+import styles from './corp_certified_tag.module.less';
 import { buildSpaceCertSheetUrl } from './helper';
-import { isMobileApp } from 'pc/utils/env';
 
 type Props = {
   spaceId: string;
@@ -35,7 +35,7 @@ const CertifiedTag = () => (
 const UncertifiedTag = ({ spaceId }: {spaceId: string}) => {
   const formUrl = buildSpaceCertSheetUrl(spaceId);
 
-  if (isMobileApp() || isPrivateDeployment()) {
+  if (isMobileApp() || !getEnvVariables().SPACE_ENTERPRISE_CERTIFICATION_FORM_URL) {
     return null;
   }
 

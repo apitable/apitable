@@ -7,6 +7,7 @@ import { InfoCard, Modal } from 'pc/components/common';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { useNotificationCreate } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -15,7 +16,7 @@ import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
-// Some permissions that are no longer used, but because the old space will still return the corresponding data, 
+// Some permissions that are no longer used, but because the old space will still return the corresponding data,
 // the front-end to do the filtering of these permissions
 const UNUSED_PERMISSION = ['MANAGE_NORMAL_MEMBER'];
 
@@ -186,6 +187,10 @@ export const SubAdmin: FC = () => {
       },
     },
   ];
+
+  if (!getEnvVariables().SPACE_SUB_ADMIN_VISIBLE) {
+    return <></>;
+  }
 
   return (
     <div className={styles.subAdmin}>

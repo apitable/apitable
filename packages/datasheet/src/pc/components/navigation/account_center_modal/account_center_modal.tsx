@@ -80,7 +80,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       key: AccountCenterModules.AccountManager,
       name: t(Strings.account_ass_manage),
       component: <AccountManager />,
-      hidden: socialLinkDisable || mobile || isMobileApp() || isSocialWecom() || env.HIDDEN_ACCOUNT_LINK_MANAGER,
+      hidden: socialLinkDisable || mobile || isMobileApp() || isSocialWecom() || !env.USER_SETTING_SOCIAL_LOGIN_VISIBLE,
     },
     {
       key: AccountCenterModules.DeveloperConfiguration,

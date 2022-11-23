@@ -15,6 +15,7 @@ import { expandFieldPermission } from 'pc/components/field_permission';
 import { getShowFieldName } from 'pc/components/multi_grid/context_menu/utils';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
@@ -68,7 +69,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   const deleteField = useDeleteField(field.id, datasheetId);
   const commandManager = resourceService.instance!.commandManager;
   /**
-   * Give a warning when a field is deleted during collaboration. 
+   * Give a warning when a field is deleted during collaboration.
    * Ends rendering early.
    */
   useEffect(() => {
@@ -222,7 +223,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
         onClick: () => {
           expandFieldPermission(field);
         },
-        disabled: !fieldPermissionManageable,
+        disabled: !fieldPermissionManageable || !getEnvVariables().FIELD_PERMISSION_VISIBLE,
         hidden(arg) {
           const { props: { fieldId }} = arg;
 

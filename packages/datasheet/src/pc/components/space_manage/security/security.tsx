@@ -5,6 +5,7 @@ import { SwitchInfo } from 'pc/components/common';
 import { isSocialPlatformEnabled, SocialPlatformMap } from 'pc/components/home/social_platform';
 import { labelMap, SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { useRequest, useSpaceRequest } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -49,6 +50,7 @@ type ISwitchDataItem = {
     disabledWhenSocialPlatEnabled?: boolean;
     grade?: SubscribeGrade;
     permissionList?: IPermissionInfo[];
+    hidden?: boolean
   };
 };
 
@@ -69,6 +71,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: getEnvVariables().SECURITY_MEMBER_INVITE_USER_VISIBLE
     },
     [SwitchType.JoinSpace]: {
       switchText: t(Strings.security_setting_apply_join_space_title),
@@ -85,6 +88,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: getEnvVariables().SECURITY_USER_APPLY_TO_JOIN_SPACE_VISIBLE
     },
     [SwitchType.ShareNode]: {
       switchText: t(Strings.security_setting_share_title),
@@ -100,6 +104,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: !getEnvVariables().SECURITY_MEMBER_CREATE_PUBLIC_LINK_VISIBLE,
     },
   },
   {
@@ -117,6 +122,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: !getEnvVariables().SECURITY_MEMBER_MODIFY_ROOT_CATALOG_VISIBLE
     },
     [SwitchType.ExportLevel]: {
       switchText: t(Strings.security_setting_export_data_title),
@@ -135,6 +141,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Gold,
+      hidden: !getEnvVariables().SECURITY_SPECIFY_MEMBER_TO_EXPORT_DATA_VISIBLE,
       permissionList: [
         {
           value: PermissionType.Readable,
@@ -172,6 +179,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: !getEnvVariables().SECURITY_MEMBER_DOWNLOAD_ATTCHMENT_VISIBLE,
     },
     [SwitchType.CopyCellData]: {
       switchText: t(Strings.security_setting_copy_cell_data_title),
@@ -187,6 +195,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: !getEnvVariables().SECURITY_MEMBER_COPY_DATA_VISIBLE,
     },
   },
   {
@@ -204,6 +213,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Gold,
+      hidden: !getEnvVariables().SECURITY_SHOW_MEMBER_PHONE_NUMBER_VISIBLE
     },
     [SwitchType.WatermarkEnable]: {
       switchText: t(Strings.security_show_watermark),
@@ -215,6 +225,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: !getEnvVariables().SECURITY_GLOBAL_WATERMARK_VISIBLE
     },
     [SwitchType.OrgIsolated]: {
       switchText: t(Strings.security_address_list_isolation),
@@ -230,6 +241,7 @@ export const SwitchData: ISwitchDataItem[] = [
         );
       },
       grade: SubscribeGrade.Enterprise,
+      hidden: !getEnvVariables().SECURITY_CONTACTS_ISOLATION_VISIBLE
     },
   },
 ];
@@ -305,7 +317,10 @@ export const Security: FC = () => {
       return (
         <div key={index} className={styles.optionSection}>
           {Object.keys(sectionData).map((key, index) => {
-            const { switchText, tipContent, grade, onClickBefore, permissionList = [] } = sectionData[key];
+            const { switchText, tipContent, grade, onClickBefore, permissionList = [], hidden } = sectionData[key];
+            if (hidden) {
+              return <></>;
+            }
             const permissionType = spaceFeatures?.[key];
             let checked = !Boolean(permissionType);
             if (reversedSwitches.includes(key as SwitchType)) {

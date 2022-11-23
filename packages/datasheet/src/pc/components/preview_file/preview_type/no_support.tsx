@@ -4,6 +4,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { FileType } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC } from 'react';
 import IconDownload from 'static/icon/datasheet/datasheet_icon_download.svg';
@@ -66,7 +67,7 @@ export const NoSupport: FC<INoSupportProps> = props => {
             {Notice[type].tip}
           </Typography>
         )}
-        {Marketing && isMainAdmin && (
+        {Marketing && isMainAdmin && getEnvVariables().INTEGRATIONS_YOZOSOFT_VISIBLE && (
           <div className={styles.btnGroup}>
             {!isMobile && (
               <Button

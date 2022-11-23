@@ -26,6 +26,7 @@ import { useGetViewByIdWithDefault, useQuery, useRequest, useResponsive } from '
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { ActivitySelectType, KeyCode } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { dispatch } from 'pc/worker/store';
 import * as React from 'react';
@@ -72,6 +73,8 @@ const SubscribeButton = ({ active, onSubOrUnsub }): JSX.Element => {
     setUpdating(false);
   };
   const colors = useThemeColors();
+
+  if (!getEnvVariables().RECORD_WATCHING_VISIBLE) return <></>;
 
   return (
     <Tooltip title={active ? t(Strings.cancel_watch_record_button_tooltips) : t(Strings.watch_record_button_tooltips)}>
@@ -139,7 +142,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     }
     modalClose();
   };
-  
+
   document.body.onkeydown = monitorBodyFocus;
 
   const wrapperProps = {
@@ -236,7 +239,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
               customModal.destroy();
             },
             modalButtonType: 'warning',
-            okText: t(Strings.submit), 
+            okText: t(Strings.submit),
           }));
           break;
         case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
@@ -379,7 +382,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   const view = useGetViewByIdWithDefault(datasheetId, props.viewId)!;
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
-  const _dispatch = useDispatch(); 
+  const _dispatch = useDispatch();
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -416,8 +419,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
       setCommentPane(true);
     } else if (query.has('comment')) {
       setCommentPane(true);
-    }
-    else if (isMobile) {
+    } else if (isMobile) {
       setCommentPane(false);
     } else if (cacheType?.[datasheetId] === ActivitySelectType.NONE) {
       setCommentPane(false);
@@ -709,7 +711,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 onClose={() => {
                   handleCacheType(ActivitySelectType.NONE);
                   setCommentPane(false);
-                }} 
+                }}
                 style={
                   isColumnLayout
                     ? {

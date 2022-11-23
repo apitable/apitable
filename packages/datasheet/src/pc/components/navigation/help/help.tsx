@@ -60,7 +60,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
   };
 
   const linkToCommunity = () => {
-    navigationToUrl(env.HELP_USER_COMMUNITY_URL_PROD!);
+    navigationToUrl(env.HELP_MENU_USER_COMMUNITY_URL!);
   };
   const menuData = [
     [
@@ -68,7 +68,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <SolutionOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.solution),
         onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_SOLUTION_URL),
-        hidden: isMobile || isPrivateDeployment(),
+        hidden: isMobile || !getEnvVariables().HELP_MENU_SOLUTION_URL,
       },
       {
         icon: <ClassroomOutlined color={colors.thirdLevelText} size={16} />,
@@ -80,13 +80,13 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <RoadmapOutlined color={colors.thirdLevelText} size={16} />,
         text: t(Strings.product_roadmap),
         onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL),
-        hidden: isMobile || isPrivateDeployment(),
+        hidden: isMobile || !getEnvVariables().HELP_MENU_PRODUCT_ROADMAP_URL,
       },
       {
         icon: <JoinOutlined />,
         text: t(Strings.join_the_community),
-        onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : `${window.location.origin}/chatgroup/`),
-        hidden: isPrivateDeployment(),
+        onClick: () => navigationToUrl(isFeishu ? `${window.location.origin}/feishu/` : getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL),
+        hidden: isPrivateDeployment() || !getEnvVariables().HELP_MENU_JOIN_CHATGROUP_URL,
       },
       {
         icon: <GuideOutlined />,
@@ -116,7 +116,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         text: t(Strings.assistant),
         id: NAV_ID.HELP_MENU_BEGINNER_GUIDE,
         onClick: vikabyHelperClick,
-        hidden: isMobile || isPrivateDeployment() || isMobileApp(),
+        hidden: isMobile || isPrivateDeployment() || isMobileApp() || !getEnvVariables().ASSISTANT_VISIBLE,
       },
     ],
     [
@@ -124,7 +124,7 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
         icon: <CommunityOutlined />,
         text: t(Strings.help_user_community),
         onClick: linkToCommunity,
-        hidden: !env.HELP_USER_COMMUNITY_URL_PROD
+        hidden: !env.HELP_MENU_USER_COMMUNITY_URL
       },
       {
         icon: <InformationSmallOutlined />,
@@ -144,18 +144,20 @@ export const Help: FC<IHelpProps> = ({ className, templateActived }) => {
       {
         icon: <WebsiteOutlined />,
         text: t(Strings.official_website_without_abbr),
-        onClick: () => navigationToUrl(`${window.location.origin}/?home=1`),
+        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL),
+        hidden: !getEnvVariables().HELP_MENU_OFFICIAL_WEBSITE_URL
       },
       {
         icon: <CodeFilled />,
         text: t(Strings.api_sdk),
-        onClick: () => navigationToUrl(isPrivateDeployment() ? `${window.location.origin}/help/developers` : getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL),
+        onClick: () => navigationToUrl(getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL),
+        hidden: !getEnvVariables().HELP_MENU_DEVELOPERS_CENTER_URL
       },
       {
         icon: <DownloadOutlined />,
         text: t(Strings.download_client),
         onClick: () => navigationToUrl(`${window.location.origin}/download/`),
-        hidden: isMobile || inSocialApp() || isPrivateDeployment(),
+        hidden: isMobile || inSocialApp() || isPrivateDeployment() || !getEnvVariables().HELP_MENU_DOWNLOAD_APP_VISIBLE,
       },
       {
         icon: <KeyboardShortcutsOutlined />,

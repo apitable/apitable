@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ThemeWrapper: React.FC = (props) => {
-  const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', { defaultValue: getEnvVariables().THEME || ThemeName.Light });
+  const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', { defaultValue: (getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName) || ThemeName.Light });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
   const cacheTheme = useSelector(Selectors.getTheme);

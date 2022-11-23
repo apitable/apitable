@@ -3,6 +3,7 @@ import { black } from '@apitable/components';
 import { ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { colorVars } from '@apitable/components';
+import { getEnvVariables } from 'pc/utils/env';
 import { isMobile } from 'react-device-detect';
 import { makeNodeIconComponent, NodeIcon } from './node_icons';
 
@@ -74,6 +75,7 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     'data-sensors-click': true,
     id: WORKBENCH_SIDE_ID.OPERATE_ITEM_SET_PERMISSIONS,
     onClick,
+    hidden: !getEnvVariables().FILE_PERMISSION_VISIBLE
   })],
   [ContextItemKey.Share, (onClick: () => void, hidden: boolean) => ({
     icon: makeNodeIconComponent(NodeIcon.Share),

@@ -73,8 +73,8 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
   const automationTestingData = query.get('vikaTest');
 
   const _isMobileApp = isMobileApp();
-  const linkToPrivacyPolicy = _isMobileApp ? Strings.PRIVACY_POLICY_STRING : getEnvVariables().PRIVACY_POLICY_URL;
-  const linkToTermsOfService = _isMobileApp ? Strings.SERVICE_AGREEMENT_STRING : getEnvVariables().SERVICE_AGREEMENT_URL;
+  const linkToPrivacyPolicy = _isMobileApp ? Strings.privacy_policy_title : getEnvVariables().PRIVACY_POLICY_URL;
+  const linkToTermsOfService = _isMobileApp ? Strings.terms_of_service_title : getEnvVariables().SERVICE_AGREEMENT_URL;
 
   const signIn = async(nvcVal?: string) => {
     clearStorage();

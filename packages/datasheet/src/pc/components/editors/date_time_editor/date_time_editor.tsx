@@ -29,6 +29,7 @@ import { isEqual } from 'lodash';
 import { Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { printableKey, stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { forwardRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -36,7 +37,7 @@ import { isLegalDateKey } from '../../../utils/keycode';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { DatePickerMobile } from './mobile';
 import style from './style.module.less';
-import { TimePicker } from './time_picker_only'
+import { TimePicker } from './time_picker_only';
 // @ts-ignore
 import { DateTimeAlarm } from 'enterprise';
 
@@ -154,7 +155,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
         timeOpen: true,
       });
     }
-    if (!this.props.showAlarm) {
+    if (!this.props.showAlarm && !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE) {
       this.setState({
         dateOpen: false,
       });
@@ -413,7 +414,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
         onClick={e => e.stopPropagation}
         onWheel={stopPropagation}
       >
-        <Tooltip visible={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement="top">
+        <Tooltip visible={isIllegal} getTooltipContainer={this.getCalendarContainer} title={t(Strings.date_cell_input_tips)} placement='top'>
           <div className={style.dateWrapper}>
             <div
               className={classNames(style.dateContent, {
@@ -425,7 +426,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   ref={this.setDateEditorRef}
                   format={dateFormat}
                   locale={locale}
-                  prefixCls="cp-calendar"
+                  prefixCls='cp-calendar'
                   className={dateInputClassName}
                   placeholder={editable ? dateFormat.toLowerCase() : ''}
                   showDateInput={false}
@@ -444,7 +445,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
                   renderFooter={() =>
-                    showAlarm && DateTimeAlarm && (
+                    showAlarm && !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && (
                       <DateTimeAlarm
                         datasheetId={datasheetId}
                         recordId={recordId || ''}
@@ -466,7 +467,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
               </React.Suspense>
               {field.property.includeTime && (
                 <TimePicker
-                  prefixCls="cp-time-picker"
+                  prefixCls='cp-time-picker'
                   className={style.timeInput}
                   placeholder={editable ? timeFormat.toLowerCase() : ''}
                   getPopupContainer={this.getCalendarContainer}
@@ -483,7 +484,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                 />
               )}
             </div>
-            {showAlarm && Boolean(this.props.curAlarm) && (
+            {showAlarm && !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>
                 <NotificationSmallOutlined color={lightColors.deepPurple[500]} size={14} />
               </span>

@@ -18,6 +18,7 @@ import { Deserializer, SlateEditor } from 'pc/components/slate_editor';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
 import { useCatalogTreeRequest, usePrevious, useRequest, useWeixinShare } from 'pc/hooks';
 import { flatContextData } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
@@ -489,7 +490,7 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
                 icon: makeNodeIconComponent(NodeIcon.Permission),
                 text: t(Strings.permission_setting),
                 onClick: () => dispatch(StoreActions.updatePermissionModalNodeId(nodeInfo.id)),
-                hidden: !permissions.nodeAssignable,
+                hidden: !permissions.nodeAssignable || !getEnvVariables().FILE_PERMISSION_VISIBLE,
               },
               {
                 icon: makeNodeIconComponent(NodeIcon.Template),

@@ -10,6 +10,7 @@ import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest }
 import { NodeChangeInfoType } from 'pc/hooks/use_catalog';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -102,7 +103,7 @@ export const Teamwork: FC<ITeamworkProps> = ({ nodeId, jumpPublicLink }) => {
             {t(Strings.check_detail)}
           </span>
         </div>
-        {nodeAssignable ? (
+        {nodeAssignable && getEnvVariables().FILE_PERMISSION_VISIBLE ? (
           <div className={styles.permissionSettingBtn} onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(nodeId))}>
             {t(Strings.permission_setting)}
             <RightArrowIcon />

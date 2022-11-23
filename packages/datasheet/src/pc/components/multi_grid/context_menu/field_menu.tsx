@@ -19,6 +19,7 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { flatContextData } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import * as React from 'react';
 import { memo, useMemo, useRef } from 'react';
@@ -302,6 +303,9 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
         disabled: !Boolean(fieldPermissionManageable),
         disabledTip: t(Strings.set_field_permission_no_access),
         hidden(arg) {
+          if (!getEnvVariables().FIELD_PERMISSION_VISIBLE) {
+            return true;
+          }
           if (!arg['props']) {
             return true;
           }
