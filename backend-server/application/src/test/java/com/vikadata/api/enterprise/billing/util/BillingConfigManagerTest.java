@@ -76,7 +76,7 @@ public class BillingConfigManagerTest {
         SubscriptionFeature planFeature = buildPlanFeature(freePlan, Collections.emptyList());
         Assertions.assertThat(planFeature.getSeat().getValue()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getSheetNums().getValue()).isEqualTo(-1);
-        Assertions.assertThat(planFeature.getApiCallNums().getValue()).isEqualTo(500000);
+        Assertions.assertThat(planFeature.getApiCallNums().getValue()).isEqualTo(-1L);
         Assertions.assertThat(planFeature.getGanttViews().getValue()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getCalendarViews().getValue()).isEqualTo(-1);
         Assertions.assertThat(planFeature.getFormViews().getValue()).isEqualTo(-1);
@@ -292,7 +292,7 @@ public class BillingConfigManagerTest {
         List<Price> priceList = BillingConfigManager.getPriceList(ProductEnum.SILVER);
         // What plans are must-haves for the silver package
         Integer[] months = array(1, 6, 12);
-        Integer[] seats = array(100);
+        Integer[] seats = array(2, 100);
         assertEquals(priceList.size(), months.length * seats.length);
     }
 
