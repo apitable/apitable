@@ -73,7 +73,7 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled()
+    @Disabled
     public void testJoinSpaceByNodeInvitationTokenWithRewardCapacity() {
         MockInvitation invitation = prepareInvitationToken();
         UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");

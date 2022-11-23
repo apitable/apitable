@@ -26,6 +26,8 @@ public class Price {
 
     private Integer seat;
 
+    private String seatDesc;
+
     private boolean online;
 
     private String priceListId;

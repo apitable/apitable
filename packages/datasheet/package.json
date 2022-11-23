@@ -114,6 +114,7 @@
     "quill-image-drop-and-paste": "^1.1.1",
     "quill-markdown-shortcuts": "^0.0.10",
     "raf": "^3.4.1",
+    "rc-align": "^4.0.12",
     "rc-calendar": "^9.15.11",
     "rc-queue-anim": "^1.8.5",
     "rc-swipeout": "^2.0.11",
