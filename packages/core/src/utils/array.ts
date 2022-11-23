@@ -14,7 +14,7 @@ export function moveArrayElement<T>(array: T[], from: number, to: number): boole
     return false;
   }
 
-  const fromItem = array[from];
+  const fromItem = array[from]!;
 
   array.splice(from, 1);
   array.splice(to, 0, fromItem);

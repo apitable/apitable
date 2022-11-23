@@ -32,7 +32,7 @@ export function composeOperation(preOperation: IOperation, curOperation: IOperat
   if (
     curOperation.actions.length === preOperation.actions.length &&
     curOperation.actions.length === 1 &&
-    preOperation.actions[0].p.length === curOperation.actions[0].p.length
+    preOperation.actions[0]!.p.length === curOperation.actions[0]!.p.length
   ) {
     // filter the same actions as od, oi or li, ld
     const actions = jot.compose(curOperation.actions, preOperation.actions).filter((action: any) => {

@@ -58,7 +58,7 @@ export enum RangeDirection {
 
 const EMPTY_CELL = { recordId: '', fieldId: '' };
 
-const isNumberInRange = (n: number, range: number[]) => {
+const isNumberInRange = (n: number, range: readonly [number, number]) => {
   const [min, max] = range;
   if (n < min || n > max) return false;
   return true;
@@ -142,12 +142,12 @@ export class Range {
     const visibleColumns = Selectors.getVisibleColumns(state);
     return {
       start: {
-        recordId: visibleRows[indexRange.record.min].recordId,
-        fieldId: visibleColumns[indexRange.field.min].fieldId,
+        recordId: visibleRows[indexRange.record.min]!.recordId,
+        fieldId: visibleColumns[indexRange.field.min]!.fieldId,
       },
       end: {
-        recordId: visibleRows[indexRange.record.max].recordId,
-        fieldId: visibleColumns[indexRange.field.max].fieldId,
+        recordId: visibleRows[indexRange.record.max]!.recordId,
+        fieldId: visibleColumns[indexRange.field.max]!.fieldId,
       },
     };
   }
@@ -163,11 +163,11 @@ export class Range {
     const recordIndexRange = [
       indexRange.record.min,
       indexRange.record.max,
-    ];
+    ] as const;
     const fieldIndexRange = [
       indexRange.field.min,
       indexRange.field.max,
-    ];
+    ] as const;
 
     return isNumberInRange(currentCell.recordIndex, recordIndexRange)
       && isNumberInRange(currentCell.fieldIndex, fieldIndexRange);
@@ -222,23 +222,23 @@ export class Range {
     switch (direction) {
       case FillDirection.Top:
         return {
-          start: { recordId: visibleRows[minRecordIndex - 1].recordId, fieldId: visibleColumns[maxFieldIndex].fieldId },
-          end: { recordId: hoverCell.recordId, fieldId: visibleColumns[minFieldIndex].fieldId },
+          start: { recordId: visibleRows[minRecordIndex - 1]!.recordId, fieldId: visibleColumns[maxFieldIndex]!.fieldId },
+          end: { recordId: hoverCell.recordId, fieldId: visibleColumns[minFieldIndex]!.fieldId },
         };
       case FillDirection.Below:
         return {
-          start: { recordId: visibleRows[maxRecordIndex + 1].recordId, fieldId: visibleColumns[minFieldIndex].fieldId },
-          end: { recordId: hoverCell.recordId, fieldId: visibleColumns[maxFieldIndex].fieldId },
+          start: { recordId: visibleRows[maxRecordIndex + 1]!.recordId, fieldId: visibleColumns[minFieldIndex]!.fieldId },
+          end: { recordId: hoverCell.recordId, fieldId: visibleColumns[maxFieldIndex]!.fieldId },
         };
       case FillDirection.Right:
         return {
-          start: { recordId: visibleRows[minRecordIndex].recordId, fieldId: visibleColumns[maxFieldIndex + 1].fieldId },
-          end: { recordId: visibleRows[maxRecordIndex].recordId, fieldId: hoverCell.fieldId },
+          start: { recordId: visibleRows[minRecordIndex]!.recordId, fieldId: visibleColumns[maxFieldIndex + 1]!.fieldId },
+          end: { recordId: visibleRows[maxRecordIndex]!.recordId, fieldId: hoverCell.fieldId },
         };
       case FillDirection.Left:
         return {
-          start: { recordId: visibleRows[maxRecordIndex].recordId, fieldId: visibleColumns[minFieldIndex - 1].fieldId },
-          end: { recordId: visibleRows[minRecordIndex].recordId, fieldId: hoverCell.fieldId },
+          start: { recordId: visibleRows[maxRecordIndex]!.recordId, fieldId: visibleColumns[minFieldIndex - 1]!.fieldId },
+          end: { recordId: visibleRows[minRecordIndex]!.recordId, fieldId: hoverCell.fieldId },
         };
     }
   }
@@ -263,12 +263,12 @@ export class Range {
 
     const res = {
       start: {
-        recordId: visibleRows[Math.min(selfIndexRange!.record.min, otherIndexRange!.record.min)].recordId,
-        fieldId: visibleColumns[Math.min(selfIndexRange!.field.min, otherIndexRange!.field.min)].fieldId,
+        recordId: visibleRows[Math.min(selfIndexRange!.record.min, otherIndexRange!.record.min)]!.recordId,
+        fieldId: visibleColumns[Math.min(selfIndexRange!.field.min, otherIndexRange!.field.min)]!.fieldId,
       },
       end: {
-        recordId: visibleRows[Math.max(selfIndexRange!.record.max, otherIndexRange!.record.max)].recordId,
-        fieldId: visibleColumns[Math.max(selfIndexRange!.field.max, otherIndexRange!.field.max)].fieldId,
+        recordId: visibleRows[Math.max(selfIndexRange!.record.max, otherIndexRange!.record.max)]!.recordId,
+        fieldId: visibleColumns[Math.max(selfIndexRange!.field.max, otherIndexRange!.field.max)]!.fieldId,
       },
     };
     return res;
@@ -340,9 +340,9 @@ export class Range {
     if (breakpoints.length) {
       const nextBreakpointIndex = findIndex(breakpoints, bp => bp > (isDownExpand ? maxRangeRowIndex : minRangeRowIndex));
       if (nextBreakpointIndex > -1) {
-        const nextBreakpoint = breakpoints[nextBreakpointIndex];
+        const nextBreakpoint = breakpoints[nextBreakpointIndex]!;
         const currentBreakpointIndex = nextBreakpointIndex - 1;
-        const currentBreakpoint = breakpoints[currentBreakpointIndex];
+        const currentBreakpoint = breakpoints[currentBreakpointIndex]!;
         const isGroupRangeUpEdge = currentBreakpoint === minRangeRowIndex; // Whether the selection has covered the top edge of a group
         const isGroupRangeDownEdge = nextBreakpoint === maxRangeRowIndex + 1; // Whether the selection has covered the bottom edge of a group
         // Whether the selection range is smaller than the group where the active cell is located
@@ -358,8 +358,8 @@ export class Range {
          */
         const maxRangeOffset = (isDownExpand || (isGroupRangeUpEdge && isActiveCellInCurrentGroup)) ? -1 : 0;
 
-        minRowIndex = (isGroupRangeUpEdge ? breakpoints[currentBreakpointIndex - 1] + minRangeOffset : currentBreakpoint + minRangeOffset) || 0;
-        maxRowIndex = (isGroupRangeDownEdge ? breakpoints[nextBreakpointIndex + 1] + maxRangeOffset : nextBreakpoint + maxRangeOffset) || maxRowIndex;
+        minRowIndex = (isGroupRangeUpEdge ? breakpoints[currentBreakpointIndex - 1]! + minRangeOffset : currentBreakpoint + minRangeOffset) || 0;
+        maxRowIndex = (isGroupRangeDownEdge ? breakpoints[nextBreakpointIndex + 1]! + maxRangeOffset : nextBreakpoint + maxRangeOffset) || maxRowIndex;
         minRowIndexInAllRange = (isGroupRangeUpEdge && isGroupRangeDownEdge) ? 0 : currentBreakpoint;
         maxRowIndexInAllRange = (isGroupRangeUpEdge && isGroupRangeDownEdge) ? visibleRowsCount - 1 : nextBreakpoint - 1;
       }
@@ -444,8 +444,8 @@ export class Range {
     const rowIndexMap = Selectors.getPureVisibleRowsIndexMap(state);
     const rows = Selectors.getPureVisibleRows(state);
     const columns = Selectors.getVisibleColumns(state);
-    const firstFieldId = columns[0].fieldId;
-    const lastFieldId = columns[columns.length - 1].fieldId;
+    const firstFieldId = columns[0]!.fieldId;
+    const lastFieldId = columns[columns.length - 1]!.fieldId;
     const sortedRowIndexList = recordIds
       .reduce((acc, recordId) => {
         if (rowIndexMap.has(recordId)) {
@@ -462,11 +462,11 @@ export class Range {
       const maxRowIndex = max(rowIndexRange);
       return {
         start: {
-          recordId: rows[minRowIndex!].recordId,
+          recordId: rows[minRowIndex!]!.recordId,
           fieldId: firstFieldId,
         },
         end: {
-          recordId: rows[maxRowIndex!].recordId,
+          recordId: rows[maxRowIndex!]!.recordId,
           fieldId: lastFieldId,
         },
       };

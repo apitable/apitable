@@ -24,7 +24,7 @@ export class MagicVariableParser<T> extends MagicVariableParserABC<T> {
 
   // parse expression and return value
   _exec(expression: IExpression, globalContext: T): any {
-    const operatorFunc = this.sysFunctionMap[expression.operator];
+    const operatorFunc = this.sysFunctionMap[expression.operator]!;
     if (this.passFunctions.length && this.passFunctions.includes(operatorFunc)) {
       return null;
     }

@@ -39,7 +39,7 @@ export const fieldPermissionMap = (state = {}, action: IFieldPermissionAction) =
         if (!draft || !draft[fieldId]) {
           return draft;
         }
-        draft[fieldId].setting = setting;
+        draft[fieldId]!.setting = setting;
         return draft;
       });
     }

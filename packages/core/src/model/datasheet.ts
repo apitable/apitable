@@ -44,7 +44,7 @@ function getDefaultNewRecordDataByGroup(
   }
 
   groupInfos.forEach((group, i) => {
-    recordData[group.fieldId] = groupCellValues[i];
+    recordData[group.fieldId] = groupCellValues[i]!;
   });
   return recordData;
 }
@@ -90,13 +90,13 @@ function getDefaultNewRecordDataByFilter(
       continue;
     }
 
-    const conditionGroup = conditionGroups[fieldId];
+    const conditionGroup = conditionGroups[fieldId]!;
     const isMultiValueField = Field.bindContext(field, state).isMultiValueField();
     const candidate = new Set<any>();
 
     // 2.1. Collect all candidate values of all conditions
     for (let i = 0, ii = conditionGroup.length; i < ii; i++) {
-      const condition = conditionGroup[i];
+      const condition = conditionGroup[i]!;
       const currentValue = Field.bindContext(field, state).defaultValueForCondition(condition);
       if (currentValue == null) {
         continue;
@@ -182,7 +182,7 @@ export class DatasheetActions {
         columns: view.columns.map((col, i) => {
           if (i < 1) return { ...col, statType: StatType.CountAll };
 
-          if ([FieldType.Number, FieldType.Currency].includes(snapshot.meta.fieldMap?.[col.fieldId]?.type)) {
+          if ([FieldType.Number, FieldType.Currency].includes(snapshot.meta.fieldMap?.[col.fieldId]?.type as any)) {
             return { ...col, statType: StatType.Sum };
           }
 
@@ -212,7 +212,7 @@ export class DatasheetActions {
     const views = snapshot.meta.views;
     let index = -1;
     for (let i = 0, l = views.length; i < l; i++) {
-      if (views[i].id === viewId) {
+      if (views[i]!.id === viewId) {
         index = i;
         break;
       }
@@ -274,7 +274,7 @@ export class DatasheetActions {
       const rlt: IJOTAction[] = [];
       value.forEach(item => {
         const fieldId = item.fieldId;
-        const view = views[viewIndex];
+        const view = views[viewIndex]!;
         const columns = view['columns'];
         const modifyColumnIndex = columns.findIndex(column => column.fieldId === fieldId);
         const oldItem = columns[modifyColumnIndex];
@@ -293,7 +293,7 @@ export class DatasheetActions {
     return [{
       n: OTActionName.ObjectReplace,
       p: ['meta', 'views', viewIndex, key],
-      od: views[viewIndex][key],
+      od: views[viewIndex]![key],
       oi: value,
     }];
   }
@@ -562,7 +562,7 @@ export class DatasheetActions {
 
     const view = snapshot.meta.views[viewIndex] as IGridViewProperty;
     const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
-    const column = view.columns[columnIndex];
+    const column = view.columns[columnIndex]!;
     if (columnIndex < 0 || ![ViewType.Grid, ViewType.Gantt].includes(view.type) || column.width === width) {
       return null;
     }
@@ -586,7 +586,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const view = snapshot.meta.views[viewIndex];
+    const view = snapshot.meta.views[viewIndex]!;
     const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
     if (columnIndex < 0 || columnIndex === target) {
       return null;
@@ -615,7 +615,7 @@ export class DatasheetActions {
 
     const view = snapshot.meta.views[viewIndex] as IGridViewProperty;
     const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
-    const column = view.columns[columnIndex];
+    const column = view.columns[columnIndex]!;
     if (columnIndex < 0 || ![ViewType.Grid, ViewType.Gantt].includes(view.type) || column.statType === statType) {
       return null;
     }
@@ -774,7 +774,7 @@ export class DatasheetActions {
     }
 
     // oldCellValue, don't use `getCellValue`, because it may be a computed field
-    const cv = snapshot.recordMap[recordId].data[fieldId];
+    const cv = snapshot.recordMap[recordId]!.data[fieldId];
     const oldCellValue = cv == null ? null : cv;
 
     // non-computed field, check whether value has changed
@@ -904,7 +904,7 @@ export class DatasheetActions {
         // when delete date, remove alarm
         // TODO(kailang) ObjectDelete has did this
         Object.keys(fieldMap).forEach(fieldId => {
-          if (fieldMap[fieldId].type === FieldType.DateTime) {
+          if (fieldMap[fieldId]!.type === FieldType.DateTime) {
             const alarm = Selectors.getDateTimeCellAlarm(snapshot, recordId, fieldId);
             if (alarm) {
               const alarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
@@ -1012,7 +1012,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const view = snapshot.meta.views[viewIndex];
+    const view = snapshot.meta.views[viewIndex]!;
     const recordIndex = view.rows.findIndex(row => row.recordId === recordId);
     if (recordIndex < 0) {
       return null;
@@ -1036,7 +1036,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const view = snapshot.meta.views[viewIndex];
+    const view = snapshot.meta.views[viewIndex]!;
 
     // when clear sorts, delete sort field directly
     if (!sortInfo) {
@@ -1106,7 +1106,7 @@ export class DatasheetActions {
     if (viewIndex < 0) {
       return null;
     }
-    const view = snapshot.meta.views[viewIndex];
+    const view = snapshot.meta.views[viewIndex]!;
 
     if (!validateFilterInfo(filterInfo)) {
       console.error('illegal filter condition!');
@@ -1147,7 +1147,7 @@ export class DatasheetActions {
     if (viewIndex < 0) {
       return null;
     }
-    const view = snapshot.meta.views[viewIndex];
+    const view = snapshot.meta.views[viewIndex]!;
 
     if (viewLock === null) {
       return {
@@ -1174,7 +1174,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const view = snapshot.meta.views[viewIndex];
+    const view = snapshot.meta.views[viewIndex]!;
     if (isEqual(view.groupInfo, groupInfo)) {
       return null;
     }
@@ -1252,7 +1252,7 @@ export class DatasheetActions {
     }
 
     for (const fieldId in fieldMap) {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       const defaultValue = Field.bindContext(field, state).defaultValue();
       if (defaultValue != null) {
         record.data[field.id] = defaultValue;
@@ -1305,7 +1305,7 @@ export class DatasheetActions {
   static getDefaultFieldName(fieldMap: { [fieldId: string]: IField }): string {
     const names: string[] = [];
     for (const id in fieldMap) {
-      names.push(fieldMap[id].name);
+      names.push(fieldMap[id]!.name);
     }
     return getUniqName(NamePrefix.Field, names);
   }
@@ -1391,7 +1391,7 @@ export class DatasheetActions {
     }
 
     for (let i = 0; i < recordIds.length; i++) {
-      const record = recordMap[recordIds[i]];
+      const record = recordMap[recordIds[i]!]!;
       const cellValue = getCellValue(state, snapshot, record.id, fieldId);
       if (isEntity || cellValue != null) {
         cellValues.push(cellValue);
@@ -1411,7 +1411,7 @@ export class DatasheetActions {
   ): IJOTAction[] | null {
     const { recordId, datasheetId, insertComments } = options;
     const recordMap = Selectors.getSnapshot(state, datasheetId)!.recordMap;
-    const record: IRecord = recordMap[recordId];
+    const record: IRecord = recordMap[recordId]!;
     const { comments = [] } = record;
 
     if (insertComments) {
@@ -1610,7 +1610,7 @@ export class DatasheetActions {
         {
           n: OTActionName.ObjectReplace,
           p: ['widgetPanels', index, 'name'],
-          od: widgetPanels[index].name,
+          od: widgetPanels[index]!.name,
           oi: newPanel.name,
         },
       ];
@@ -1620,7 +1620,7 @@ export class DatasheetActions {
       {
         n: OTActionName.ObjectReplace,
         p: ['meta', 'widgetPanels', index, 'name'],
-        od: widgetPanels[index].name,
+        od: widgetPanels[index]!.name,
         oi: newPanel.name,
       },
     ];
@@ -1703,7 +1703,7 @@ export class DatasheetActions {
     { widgetPanelIndex, widgetIndex, widgetHeight, datasheetId }: { widgetPanelIndex: number, widgetIndex: number, widgetHeight: number, datasheetId: string }
   ): IJOTAction[] | null {
     const activeWidgetPanel = getResourceActiveWidgetPanel(state, datasheetId, ResourceType.Datasheet)!;
-    const widget = activeWidgetPanel.widgets[widgetIndex];
+    const widget = activeWidgetPanel.widgets[widgetIndex]!;
     return [
       {
         n: OTActionName.ObjectReplace,
@@ -1766,7 +1766,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const localView = snapshot.meta.views[viewIndex];
+    const localView = snapshot.meta.views[viewIndex]!;
     const action: IJOTAction[] = [];
 
     const integrationView = { ...omit(serverView, ViewPropertyFilter.ignoreViewProperty), ...omit(localView, ViewPropertyFilter.ignoreViewProperty) };
@@ -1809,7 +1809,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const localView = snapshot.meta.views[viewIndex];
+    const localView = snapshot.meta.views[viewIndex]!;
     const action: IJOTAction[] = [];
     const integrationView = { ...omit(localView, ViewPropertyFilter.ignoreViewProperty), ...omit(serverView, ViewPropertyFilter.ignoreViewProperty) };
     for (const key in integrationView) {
@@ -1851,7 +1851,7 @@ export class DatasheetActions {
       return null;
     }
 
-    const view = views[viewIndex];
+    const view = views[viewIndex]!;
 
     if (view.autoSave == null) {
       return {

@@ -26,8 +26,8 @@ export class Group {
     computeCache.set('groupBreakpoint', this.groupBreakpoint);
   }
   addBreakpointAndSetGroupTab(groupFieldId: string, breakIndex: number, fieldId: string, depth: number) {
-    if (this.groupBreakpoint[groupFieldId].includes(breakIndex)) return;
-    this.groupBreakpoint[groupFieldId].push(breakIndex);
+    if (this.groupBreakpoint[groupFieldId]!.includes(breakIndex)) return;
+    this.groupBreakpoint[groupFieldId]!.push(breakIndex);
     if (fieldId) {
       this.groupTabIdMap.set(`${fieldId}_${depth}`, true);
     }
@@ -61,7 +61,7 @@ export class Group {
     const rowIndexMap = getVisibleRowsIndexMap(state);
     const rows = getVisibleRows(state);
     const startVisibleRowIndex = rowIndexMap.get(recordId);
-    const breakPoints = this.groupBreakpoint[this.groupArray[depth]];
+    const breakPoints = this.groupBreakpoint[this.groupArray[depth]!];
     if (!breakPoints) return [];
     const breakPointIndex = breakPoints.findIndex(i => i === startVisibleRowIndex);
     const endVisibleRowIndex = breakPoints[breakPointIndex + 1];
@@ -80,7 +80,7 @@ export class Group {
     const rowIndexMap = getVisibleRowsIndexMap(state);
     const visibleRows = getVisibleRows(state);
     const startVisibleRowIndex = rowIndexMap.get(recordId);
-    const breakPointArray = this.groupBreakpoint[this.groupArray[depth]];
+    const breakPointArray = this.groupBreakpoint[this.groupArray[depth]!];
     if (!breakPointArray) return [];
     const breakPointIndex = breakPointArray.findIndex(i => i === startVisibleRowIndex);
     const endVisibleRowIndex = breakPointArray[breakPointIndex + 1];
@@ -102,7 +102,7 @@ export class Group {
     const res: ILinearRow[] = [];
     let breakPointGroupLevel = 0;
     for (const [index, fid] of this.groupArray.entries()) {
-      if (this.groupBreakpoint[fid].includes(breakIndex)) {
+      if (this.groupBreakpoint[fid]!.includes(breakIndex)) {
         breakPointGroupLevel = index;
         break;
       }
@@ -188,7 +188,7 @@ export class Group {
    */
   getDepthGroupBreakPoints() {
     const groupLength = this.groupArray.length;
-    const depthGroupId = this.groupArray[groupLength - 1];
-    return this.groupBreakpoint[depthGroupId];
+    const depthGroupId = this.groupArray[groupLength - 1]!;
+    return this.groupBreakpoint[depthGroupId]!;
   }
 }

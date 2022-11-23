@@ -9,7 +9,7 @@ const DEFAULT_LANG: string = 'en-US';
 export class I18N {
 
   private _langPackLoader: ILanguagePackerLoader;
-  private _language: string;
+  private _language!: string;
 
   /**
    * I18N factory that create a I18N object with static languages packs json data.

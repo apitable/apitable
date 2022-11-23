@@ -31,7 +31,7 @@ export const moveWidget: ICollaCommandDef<IMoveWidget> = {
       return null;
     }
 
-    const widgets = widgetPanels[activePanelIndex].widgets;
+    const widgets = widgetPanels[activePanelIndex]!.widgets;
     const installedWidgetIds = widgets.map(widget => widget.id);
     const ids = layout.map(v => v.id);
     const _ids = [...new Set([...ids, ...installedWidgetIds])];

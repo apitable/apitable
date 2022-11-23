@@ -26,7 +26,7 @@ export enum IDPrefix {
  * @returns {string}
  */
 export function getNewId(prefix: IDPrefix, ids: string[] = []): string {
-  return getNewIds(prefix, 1, ids)[0];
+  return getNewIds(prefix, 1, ids)[0]!;
 }
 
 /**

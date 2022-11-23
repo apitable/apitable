@@ -11,10 +11,10 @@ describe('convert op to OPEvent', () => {
     const op2event = new OP2Event(watchedEvents);
     // create record
     const events1 = op2event.parseOps2Events(createRecordOps as IChangeset[]);
-    expect(events1[0].eventName).toEqual('RecordCreated');
+    expect(events1[0]!.eventName).toEqual('RecordCreated');
     // duplicate record
     const events2 = op2event.parseOps2Events(duplicateRecordOps as IChangeset[]);
-    expect(events2[0].eventName).toEqual('RecordCreated');
+    expect(events2[0]!.eventName).toEqual('RecordCreated');
   });
 
   it('delete record', () => {
@@ -42,12 +42,12 @@ describe('convert op to OPEvent', () => {
 
     // Calculate virtual events
     const events3 = op2event.makeVirtualEvents(events2, state as any);
-    expect(events3[0].realType).toEqual('VIRTUAL');
+    expect(events3[0]!.realType).toEqual('VIRTUAL');
 
     const watchedEvents2 = [OPEventNameEnums.RecordUpdated];
     const op2event2 = new OP2Event(watchedEvents2);
     // atomic event => compound event
     const events4 = op2event2.makeCombEvents([...events1, ...events2, ...events3]);
-    expect(events4[0].eventName).toEqual('RecordUpdated');
+    expect(events4[0]!.eventName).toEqual('RecordUpdated');
   });
 });

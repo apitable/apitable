@@ -47,7 +47,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     }
 
     const recordIds = Object.keys(snapshot.recordMap);
-    const newRecordIds = getNewIds(IDPrefix.Record, count, recordIds.length ? recordIds : snapshot.meta.views[0].rows.map(item => item.recordId));
+    const newRecordIds = getNewIds(IDPrefix.Record, count, recordIds.length ? recordIds : snapshot.meta.views[0]!.rows.map(item => item.recordId));
 
     if ((recordIds.length + newRecordIds.length) > MAX_RECORD_NUM) {
       throw new Error(t(Strings.max_record_num_per_dst));
@@ -58,7 +58,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     const fieldMap = snapshot.meta.fieldMap;
 
     for (const fieldId in fieldMap) {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       if (field.type === FieldType.Link && field.property.brotherFieldId) {
         linkFieldIds.push(field);
       }
@@ -133,9 +133,9 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
           // There will be column data that does not exist in the row record. After the middle layer strengthens the verification,
           // this part of the data will cause an error, so only the column data that still exists in the fieldId is retained here.
           _recordData[fieldId] = cellValue;
-          fieldMapSnapshot[fieldId] = fieldMap[fieldId];
+          fieldMapSnapshot[fieldId] = fieldMap[fieldId]!;
 
-          if (fieldMap[fieldId].type !== FieldType.Member) {
+          if (fieldMap[fieldId]!.type !== FieldType.Member) {
             continue;
           }
 
@@ -146,7 +146,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
             continue;
           }
 
-          memberFieldMap[fieldId].push(...unitIds);
+          memberFieldMap[fieldId]!.push(...unitIds);
         }
         newRecord.data = _recordData;
       }
@@ -176,7 +176,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
       return collected;
     }, []);
     for (const [fieldId, cellValueForUnitIds] of Object.entries(memberFieldMap)) {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       const unitIds = field.property.unitIds || [];
       const _unitIds = [...new Set([...unitIds, ...cellValueForUnitIds])];
       if (_unitIds.length === unitIds.length) {

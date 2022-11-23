@@ -29,7 +29,7 @@ export interface ISetRecordsOptions {
 function collectMemberProperty(datasheetId: string, actions: IJOTAction[], context: ICollaCommandExecuteContext) {
   const { model: state, memberFieldMaintainer } = context;
   const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
-  const isAddFieldAction = actions.map(item => item.p[3]).some(fieldId => !fieldMap[fieldId]);
+  const isAddFieldAction = actions.map(item => item.p[3]!).some(fieldId => !fieldMap[fieldId]);
   if (isAddFieldAction) {
     return actions;
   }
@@ -40,7 +40,7 @@ function collectMemberProperty(datasheetId: string, actions: IJOTAction[], conte
   // Collect OI (written) data into operateRecordIds, and also collect related fieldIds into memberFieldIds
   actions.forEach(item => {
     const fieldId = item.p[3] as string;
-    const field = fieldMap[fieldId];
+    const field = fieldMap[fieldId]!;
 
     if (field.type !== FieldType.Member) {
       return;
@@ -58,7 +58,7 @@ function collectMemberProperty(datasheetId: string, actions: IJOTAction[], conte
   // Put the data collected according to fieldId into the property of the corresponding field
   memberFieldIds.forEach(fieldId => {
     const collectUnitIds = unitIdsMap.get(fieldId) || [];
-    const field = fieldMap[fieldId];
+    const field = fieldMap[fieldId]!;
     // The unitIds of members are dynamically calculated, which will cause the position of the kanban to change in the kanban. 
     // Therefore, in the data collection, the unitIds stored in the property and all the data of the collected cells are merged, 
     // and the duplicates are removed.

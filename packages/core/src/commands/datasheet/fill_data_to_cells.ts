@@ -39,9 +39,9 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
 
   if (fieldType === FieldType.Number){
     if (Math.max(...nums) > (1e16 -1)){ return { type: 'copy' };}
-    const diff = nums[1] - nums[0];
+    const diff = nums[1]! - nums[0]!;
     for (let i = 2; i < nums.length; i++) {
-      const newDiff = nums[i] - nums[i-1];
+      const newDiff = nums[i]! - nums[i-1]!;
       if (Math.abs(newDiff - diff) > DELTA){
         return { type: 'copy' };
       }
@@ -54,9 +54,9 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
 
     // The format of the time is different without the corresponding calculation logic
     if (includeTime) { // When the specific point is reached
-      const diff = _nums[1] - _nums[0];
+      const diff = _nums[1]! - _nums[0]!;
       for (let i = 2; i < _nums.length; i++) {
-        const newDiff = _nums[i] - _nums[i-1];
+        const newDiff = _nums[i]! - _nums[i-1]!;
         if (Math.abs(newDiff - diff) > DELTA){
           return { type: 'copy' };
         }
@@ -65,9 +65,9 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
     }
     if ([DateFormat['YYYY/MM/DD'], DateFormat['YYYY-MM-DD'], DateFormat['DD/MM/YYYY'],
       DateFormat['MM-DD'], DateFormat['DD']].includes(dateFormat)) { // When the date arrives, the filled date defaults to 0:00
-      const diff = dayjs(_nums[1]).diff(_nums[0], 'day');
+      const diff = dayjs(_nums[1]).diff(_nums[0]!, 'day');
       for (let i = 2; i < _nums.length; i++) {
-        const newDiff = dayjs(_nums[i]).diff(_nums[i-1], 'day');
+        const newDiff = dayjs(_nums[i]).diff(_nums[i-1]!, 'day');
         if (Math.abs(newDiff - diff) > DELTA){
           return { type: 'copy' };
         }
@@ -75,18 +75,18 @@ function patternFinder(selectCellCol: ICell[], fieldType: FieldType, state: IRed
       return { type: 'dateArithmetic', args: { dDiff: diff, dUnit: 'day' }};
     } else if ([DateFormat['YYYY-MM'], DateFormat['MM']].includes(dateFormat)){ 
       // When it comes to the month, the filled date defaults to the 1st of the month
-      const diff = dayjs(_nums[1]).diff(_nums[0], 'month');
+      const diff = dayjs(_nums[1]).diff(_nums[0]!, 'month');
       for (let i = 2; i < _nums.length; i++) {
-        const newDiff = dayjs(_nums[i]).diff(_nums[i-1], 'month');
+        const newDiff = dayjs(_nums[i]).diff(_nums[i-1]!, 'month');
         if (Math.abs(newDiff - diff) > DELTA){
           return { type: 'copy' };
         }
       }
       return { type: 'dateArithmetic', args: { dDiff: diff, dUnit: 'month' }};
     } else if (dateFormat === DateFormat['YYYY']) { // When it comes to the year, the filled date defaults to January 1 of the current year
-      const diff = dayjs(_nums[1]).diff(_nums[0], 'year');
+      const diff = dayjs(_nums[1]).diff(_nums[0]!, 'year');
       for (let i = 2; i < _nums.length; i++) {
-        const newDiff = dayjs(_nums[i]).diff(_nums[i-1], 'year');
+        const newDiff = dayjs(_nums[i]).diff(_nums[i-1]!, 'year');
         if (Math.abs(newDiff - diff) > DELTA){
           return { type: 'copy' };
         }
@@ -128,8 +128,8 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
 
       for (let i = 0; i < fillCells.length; i++) {
         const cellIndex = i % selectCells.length;
-        const selectCell = selectCells[cellIndex];
-        const fillCell = fillCells[i];
+        const selectCell = selectCells[cellIndex]!;
+        const fillCell = fillCells[i]!;
         const fieldId = fillCell.fieldId;
         const field = Selectors.getField(state, fieldId, datasheetId);
         let cellValue = Selectors.getCellValue(state, snapshot, selectCell.recordId, selectCell.fieldId);
@@ -149,10 +149,10 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
         fieldId: string;
         value: number;
       }[] = [];
-      const lastCell = selectCellCol.slice(-1)[0];
+      const lastCell = selectCellCol.slice(-1)[0]!;
       const base = Selectors.getCellValue(state, snapshot, lastCell.recordId, lastCell.fieldId);
       for (let i = 0; i < fillRangeCells.length; i++) {
-        const cell = fillRangeCells[i];
+        const cell = fillRangeCells[i]!;
         let value;
         if (unit === 'time') {
           value = diff*(i+1) + base;
@@ -189,15 +189,15 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
       const tFillRangeCells = transpose(fillRangeCells);
 
       for (let j = 0; j < tSelectRangeCells.length; j++) { // Calculate by column
-        const tSelectCellCol = tSelectRangeCells[j];
-        const tFillCellCol = tFillRangeCells[j];
+        const tSelectCellCol = tSelectRangeCells[j]!;
+        const tFillCellCol = tFillRangeCells[j]!;
 
         if (direction === FillDirection.Top) {
           tSelectCellCol.reverse();
           tFillCellCol.reverse();
         }
 
-        const fieldId = tSelectCellCol[0].fieldId;
+        const fieldId = tSelectCellCol[0]!.fieldId;
         const field = Selectors.getField(state, fieldId, datasheetId);
         // Determine the column type, find rules for time and numbers
         if (field.type === FieldType.Number || field.type === FieldType.DateTime){
@@ -231,7 +231,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
     const updateFillFieldsProperty = (selectFields: IField[], fillFields: IField[], selectCells: ICell[]) => {
       const newFillFields: IField[] = [];
       for (const [index, field] of fillFields.entries()) {
-        const selectField = selectFields[index % selectFields.length];
+        const selectField = selectFields[index % selectFields.length]!;
         const stdValues = selectCells.filter(cell => cell.fieldId === selectField.id).map(cell => {
           let cellValue = Selectors.getCellValue(state, snapshot, cell.recordId, cell.fieldId);
           cellValue = handleEmptyCellValue(cellValue, Field.bindContext(selectField, state).basicValueType);
@@ -280,12 +280,12 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
 
       const fillFields = Selectors.getRangeFields(state, fillRange, datasheetId)!;
       let newFillFields = fillFields;
-      const selectFields = Selectors.getRangeFields(state, selectionRange[0], datasheetId)!;
+      const selectFields = Selectors.getRangeFields(state, selectionRange[0]!, datasheetId)!;
       newFillFields = updateFillFieldsProperty(selectFields, fillFields, selectCells);
       for (let i = 0; i < fillCells.length; i++) {
         const cellIndex = i % selectCells.length;
-        const selectCell = selectCells[cellIndex];
-        const fillCell = fillCells[i];
+        const selectCell = selectCells[cellIndex]!;
+        const fillCell = fillCells[i]!;
         const fillField = newFillFields.find(f => f.id === fillCell.fieldId)!;
         const selectField = Selectors.getField(state, selectCell.fieldId, datasheetId);
         let selectCellValue = Selectors.getCellValue(state, snapshot, selectCell.recordId, selectCell.fieldId);
@@ -308,7 +308,7 @@ export const fillDataToCell: ICollaCommandDef<IFillDataToCellOptions> = {
       if (!fillRange || !selectionRange) {
         return;
       }
-      const selectionRangeCells = Selectors.getCellMatrixFromRange(state, selectionRange[0]);
+      const selectionRangeCells = Selectors.getCellMatrixFromRange(state, selectionRange[0]!);
       const fillRangeCells = Selectors.getCellMatrixFromRange(state, fillRange);
       if (!(selectionRangeCells && fillRangeCells)) {
         return;

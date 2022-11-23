@@ -63,18 +63,21 @@ function resolverWrapper(context: IFormulaContext): ResolverFunction {
     const recordSnapshot = { meta: { fieldMap: fieldMap }, recordMap: { [record.id]: record }};
     const cellValue = getCellValue(state, recordSnapshot, record.id, fieldId, false, datasheet.id, true);
 
+    // TODO what if field is undefined?
     // String type fields need special treatment. Convert Segment|id type to pure string;
-    const fieldBasicValueType = Field.bindContext(field, state).basicValueType;
+    const fieldBasicValueType = Field.bindContext(field!, state).basicValueType;
     // Currently "", [], false will be converted to null when getCellValue, 
     // in order to ensure the correct calculation result of the formula, the boolean type needs to be converted null => false
     if (fieldBasicValueType === BasicValueType.Boolean) {
       return Boolean(cellValue);
     }
     if (fieldBasicValueType === BasicValueType.String) {
-      return Field.bindContext(field, state).cellValueToString(cellValue as any);
+      // TODO what if field is undefined?
+      return Field.bindContext(field!, state).cellValueToString(cellValue as any);
     }
     if (fieldBasicValueType === BasicValueType.Array) {
-      return (Field.bindContext(field, state) as ArrayValueField).cellValueToArray(cellValue as any);
+      // TODO what if field is undefined?
+      return (Field.bindContext(field!, state) as ArrayValueField).cellValueToArray(cellValue as any);
     }
     return cellValue;
   };
@@ -124,7 +127,7 @@ export function parse(
 
   const lexer = new FormulaExprLexer(expression);
   if (lexer.errors.length) {
-    ExpCache.set(datasheetId, field.id, expression, { error: lexer.errors[0] });
+    ExpCache.set(datasheetId, field.id, expression, { error: lexer.errors[0]! });
   } else {
     try {
       const ast = new FormulaExprParser(lexer, context).parse();
@@ -204,7 +207,7 @@ export function expressionTransform(
   if (to === 'id') {
     revertFieldMap = {};
     for (const key in fieldMap) {
-      const field = fieldMap[key];
+      const field = fieldMap[key]!;
       revertFieldMap[field.name] = field;
     }
   }

@@ -162,8 +162,8 @@ export abstract class SelectField extends Field {
       if (!arr2[i]) {
         return 1;
       }
-      const index1 = mapOptions.get(arr1[i]) as number;
-      const index2 = mapOptions.get(arr2[i]) as number;
+      const index1 = mapOptions.get(arr1[i]!) as number;
+      const index2 = mapOptions.get(arr2[i]!) as number;
       if (index1 !== index2) {
         return index1 > index2 ? 1 : -1;
       }
@@ -323,10 +323,10 @@ export abstract class SelectField extends Field {
 }
 
 // TODO: wait for PRD for specific logic
-function getOptionColor(colors: number[]) {
+function getOptionColor(colors: number[]): number {
   if (colors.length < 10) {
     const diffColors = difference(range(10), colors);
-    return diffColors[0];
+    return diffColors[0]!;
   }
   return colors.length % 10;
 }

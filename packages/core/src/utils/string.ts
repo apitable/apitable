@@ -118,7 +118,7 @@ export function parseAllUrl(value: string): ISegment[] {
 
   while (execResult) {
     const startIndex = execResult.index;
-    const regExpMatch = execResult[0];
+    const regExpMatch = execResult[0]!;
 
     if (startIndex !== lastEndIndex) {
       valueArray.push({
@@ -186,14 +186,14 @@ export function string2Segment(str: string): ISegment[] {
   }
 
   urlMatch.forEach(element => {
-    const text = element[0];
+    const text = element[0]!;
     const hasScheme = Boolean(element[15]);
     const index = element.index!;
     urlTmp[index] = { text, hasScheme, type: SegmentType.Url };
   });
 
   emailMatch.forEach(ele => {
-    const text = ele[0];
+    const text = ele[0]!;
     const index = ele.index!;
     urlTmp[index] = { text, type: SegmentType.Email };
   });
@@ -209,7 +209,7 @@ export function string2Segment(str: string): ISegment[] {
         });
         seg = '';
       }
-      const { text, type } = urlTmp[cur];
+      const { text, type } = urlTmp[cur]!;
       segmentList.push({
         type,
         text,

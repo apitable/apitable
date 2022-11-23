@@ -12,7 +12,7 @@ function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<an
   if (params.length !== 1) {
     return false;
   }
-  if (params[0].node.valueType === BasicValueType.Array) {
+  if (params[0]!.node.valueType === BasicValueType.Array) {
     return true;
   }
   return false;
@@ -34,7 +34,7 @@ export class If extends LogicalFunc {
       return BasicValueType.String;
     }
 
-    const [, value1Node, value2Node] = params;
+    const [, value1Node, value2Node] = params as [AstNode, AstNode, AstNode];
     if ([value1Node.valueType, value2Node.valueType].some(v => v === BasicValueType.Array)) {
       return BasicValueType.String;
     }
@@ -219,9 +219,9 @@ export class Switch extends LogicalFunc {
     // Only when the return type of the value of all matched expressions is Number/Boolean/DateTime/String, 
     // it is inferred as the return value of the corresponding type
     const argsLength = params.length - 1;
-    let resultType: BasicValueType | null = argsLength & 1 ? params[argsLength].valueType : null;
+    let resultType: BasicValueType | null = argsLength & 1 ? params[argsLength]!.valueType : null;
     for (let i = 2; i <= argsLength; i += 2) {
-      const curParams = params[i];
+      const curParams = params[i]!;
       // If the matched expression contains BLANK, it is determined by other return types
       if (curParams.token.value.toUpperCase() === 'BLANK') continue;
       if (resultType != null && resultType !== curParams.valueType) {
@@ -235,11 +235,11 @@ export class Switch extends LogicalFunc {
 
   static override func(params: IFormulaParam[]): string | number | null {
     params = handleLookupNullValue(params);
-    let targetValue = params[0].value;
+    let targetValue = params[0]!.value;
     const argsLength = params.length - 1;
     const switchCount = Math.floor(argsLength / 2);
-    const defaultValue: any = argsLength & 1 ? params[argsLength].value : null;
-    const isDateTimeType = params[0].node.innerValueType === BasicValueType.DateTime; // Do special handling for DateTime types
+    const defaultValue: any = argsLength & 1 ? params[argsLength]!.value : null;
+    const isDateTimeType = params[0]!.node.innerValueType === BasicValueType.DateTime; // Do special handling for DateTime types
 
     // Specially handle the matching of Array type fields to BLANK
     const isEmptyArray = (param: IFormulaParam) => param.node.valueType === BasicValueType.Array && !param.value?.length; 
@@ -247,12 +247,12 @@ export class Switch extends LogicalFunc {
     if (isDateTimeType) {
       targetValue = dayjs(targetValue).valueOf();
     }
-    if (isEmptyArray(params[0])) {
+    if (isEmptyArray(params[0]!)) {
       targetValue = null;
     }
     if (switchCount > 0) {
       for (let i = 0; i < switchCount; i++) {
-        const currentParam = params[i * 2 + 1];
+        const currentParam = params[i * 2 + 1]!;
         let currentValue = currentParam.value;
 
         if (isDateTimeType) {
@@ -262,7 +262,7 @@ export class Switch extends LogicalFunc {
           currentValue = null;
         }
         if (targetValue === currentValue) {
-          return params[i * 2 + 2].value;
+          return params[i * 2 + 2]!.value;
         }
       }
     }

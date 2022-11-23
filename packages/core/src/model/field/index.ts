@@ -250,8 +250,8 @@ export const bindModel = (() => {
 
     if (cache[field.type]) {
       // When the instance already exists, you only need to modify the this.field property to meet the data initialization requirements.
-      cache[field.type].field = field;
-      cache[field.type].state = state;
+      cache[field.type]!.field = field;
+      cache[field.type]!.state = state;
       return cache[field.type];
     }
 

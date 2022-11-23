@@ -36,14 +36,14 @@ export const addWidgetToPanel: ICollaCommandDef<IAddWidgetToPanel> = {
       }
     } else {
       const widgetPanelStatus = getResourceWidgetPanelStatus(state, resourceId, resourceType);
-      const activePanelId = widgetPanelStatus?.activePanelId || widgetPanels[0].id;
+      const activePanelId = widgetPanelStatus?.activePanelId || widgetPanels[0]!.id;
       panelIndex = widgetPanels.findIndex(item => item.id === activePanelId);
 
       if (panelIndex < 0) {
         return null;
       }
 
-      installationIndex = widgetPanels[panelIndex].widgets.length;
+      installationIndex = widgetPanels[panelIndex]!.widgets.length;
     }
 
     const addWidgetToPanelAction = resourceType === ResourceType.Datasheet ?

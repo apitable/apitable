@@ -45,7 +45,7 @@ export const fetchDashboardPack = (dashboardId: string, successFn?: (props?: any
       return Promise.resolve({ dispatch, getState, response, dashboardId });
     }).catch((err: any) => {
       if (state.catalogTree.treeNodesMap[dashboardId]) {
-        dispatch(deleteNode({ nodeId: dashboardId, parentId: state.catalogTree.treeNodesMap[dashboardId].parentId }));
+        dispatch(deleteNode({ nodeId: dashboardId, parentId: state.catalogTree.treeNodesMap[dashboardId]!.parentId }));
       }
       dispatch(setDashboardErrorCode(dashboardId, StatusCode.COMMON_ERR));
       throw err;

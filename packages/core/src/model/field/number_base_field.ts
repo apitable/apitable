@@ -178,7 +178,7 @@ export abstract class NumberBaseField extends Field {
     if (data.length === 0) {
       return null;
     }
-    const { text, value } = data[0];
+    const { text, value } = data[0]!;
     // Convert from Number & Formula related fields
     if (commonNumberFields.has(sourceType) && this.validate(value)) {
       return value;

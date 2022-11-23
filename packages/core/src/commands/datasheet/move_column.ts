@@ -60,8 +60,8 @@ export const moveColumn: ICollaCommandDef<IMoveColumnOptions> = {
 
     const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
       const { fieldId, overTargetId, direction } = recordOption;
-      const originColumnIndex = columnIndexMapById[fieldId];
-      const targetColumnIndex = columnIndexMapById[overTargetId!];
+      const originColumnIndex = columnIndexMapById[fieldId]!;
+      const targetColumnIndex = columnIndexMapById[overTargetId!]!;
       let targetIndex = originColumnIndex > targetColumnIndex ? targetColumnIndex + 1 : targetColumnIndex;
       if (direction === DropDirectionType.BEFORE) {
         targetIndex--;

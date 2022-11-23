@@ -171,12 +171,12 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     }
     case actions.SET_NODE_NAME: {
       const { nodeId, nodeName } = action.payload;
-      draftCatalogTree.treeNodesMap[nodeId].nodeName = nodeName;
+      draftCatalogTree.treeNodesMap[nodeId]!.nodeName = nodeName;
       return draftCatalogTree;
     }
     case actions.SET_NODE_ERROR_TYPE: {
       const { nodeId, errType } = action.payload;
-      draftCatalogTree.treeNodesMap[nodeId].errType = errType;
+      draftCatalogTree.treeNodesMap[nodeId]!.errType = errType;
       return draftCatalogTree;
     }
     case actions.ADD_NODE_TO_MAP: {
@@ -186,8 +186,8 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     }
     case actions.REFRESH_TREE: {
       const childNodeIds = action.payload.map(item => item.nodeId);
-      draftCatalogTree.treeNodesMap[action.payload[0].parentId].children = childNodeIds;
-      const parentNode = draftCatalogTree.treeNodesMap[action.payload[0].parentId];
+      draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]!.children = childNodeIds;
+      const parentNode = draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]!;
       if (!parentNode.hasChildren && action.payload.length) {
         parentNode.hasChildren = true;
       }
@@ -242,9 +242,9 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     }
     case actions.NODE_MOVE_TO: {
       const { nodeId, targetNodeId, pos } = action.payload;
-      const prevName = draftCatalogTree.treeNodesMap[nodeId].nodeName;
+      const prevName = draftCatalogTree.treeNodesMap[nodeId]!.nodeName;
       moveTo(draftCatalogTree.treeNodesMap, nodeId, targetNodeId, pos);
-      if (prevName !== draftCatalogTree.treeNodesMap[nodeId].nodeName) {
+      if (prevName !== draftCatalogTree.treeNodesMap[nodeId]!.nodeName) {
         draftCatalogTree.editNodeId = nodeId;
       }
       return draftCatalogTree;
@@ -252,7 +252,7 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     case actions.UPDATE_TREE_NODES_MAP: {
       const { nodeId, data } = action.payload;
       if (!draftCatalogTree.treeNodesMap[nodeId]) { return draftCatalogTree; }
-      draftCatalogTree.treeNodesMap[nodeId] = { ...draftCatalogTree.treeNodesMap[nodeId], ...data };
+      draftCatalogTree.treeNodesMap[nodeId] = { ...draftCatalogTree.treeNodesMap[nodeId]!, ...data };
       return draftCatalogTree;
     }
     case actions.CLEAR_NODE: {
@@ -359,10 +359,10 @@ const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
 
   const deleteIds = collectProperty(treeNodesMap, nodeId);
   if (parentNode) {
-    const nextNodeId = parentNode.children[parentNode.children.findIndex(item => item === nodeId) + 1];
+    const nextNodeId = parentNode.children[parentNode.children.findIndex(item => item === nodeId) + 1]!;
     const nextNode = treeNodesMap[nextNodeId];
     if (nextNode && nextNode.preNodeId === nodeId) {
-      nextNode.preNodeId = treeNodesMap[nodeId].preNodeId;
+      nextNode.preNodeId = treeNodesMap[nodeId]!.preNodeId;
     }
     parentNode.children = parentNode.children.filter(id => id !== nodeId);
   }
@@ -413,10 +413,10 @@ const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'chi
       catalogTree.loadedKeys = [...catalogTree.loadedKeys, nodeId];
     }
     if (isCoverChildren) {
-      treeNodesMap[nodeId] = { ...treeNodesMap[nodeId], ...node };
+      treeNodesMap[nodeId] = { ...treeNodesMap[nodeId]!, ...node };
     } else {
       const children = treeNodesMap[nodeId]?.children || node.children;
-      treeNodesMap[nodeId] = { ...treeNodesMap[nodeId], ...node, children };
+      treeNodesMap[nodeId] = { ...treeNodesMap[nodeId]!, ...node, children: children! };
     }
 
     if (!parentNode) {
@@ -433,7 +433,7 @@ const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'chi
     }
     // update parent node's first child node's prevNodeId property
     if (parentNode.children.length && !parentNode.children.includes(nodeId)) {
-      treeNodesMap[parentNode.children[0]].preNodeId = '';
+      treeNodesMap[parentNode.children[0]!]!.preNodeId = '';
     }
     // whether this node has been added to children
     let isAdded = false;
@@ -470,12 +470,12 @@ const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'chi
 const updateHasChildren = (treeNodesMap: ITreeNodesMap, parentId: string) => {
   const parentNode = treeNodesMap[parentId];
   if (!parentNode) { return; }
-  if (parentNode.children.length && !treeNodesMap[parentId].hasChildren) {
-    treeNodesMap[parentId].hasChildren = true;
+  if (parentNode.children.length && !treeNodesMap[parentId]!.hasChildren) {
+    treeNodesMap[parentId]!.hasChildren = true;
     return;
   }
-  if (!parentNode.children.length && treeNodesMap[parentId].hasChildren) {
-    treeNodesMap[parentId].hasChildren = false;
+  if (!parentNode.children.length && treeNodesMap[parentId]!.hasChildren) {
+    treeNodesMap[parentId]!.hasChildren = false;
   }
 };
 
@@ -485,8 +485,8 @@ const moveTo = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: strin
   }
 
   // the parent node id for the dragged node
-  const parentNodeId = treeNodesMap[nodeId].parentId;
-  const targetParentNodeId = treeNodesMap[targetNodeId].parentId;
+  const parentNodeId = treeNodesMap[nodeId]!.parentId;
+  const targetParentNodeId = treeNodesMap[targetNodeId]!.parentId;
   // if two nodes' parents are the same, it means that they are moved in the same level
   if (parentNodeId === targetParentNodeId) {
     sameLevelMove(treeNodesMap, nodeId, targetNodeId, pos);
@@ -505,27 +505,27 @@ const moveTo = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: strin
  * @param pos relative target node's position
  */
 const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: string, pos: number) => {
-  const parentNodeId = treeNodesMap[nodeId].parentId;
+  const parentNodeId = treeNodesMap[nodeId]!.parentId;
   const parentNode = treeNodesMap[parentNodeId];
-  const targetParentNode = treeNodesMap[treeNodesMap[targetNodeId].parentId];
+  const targetParentNode = treeNodesMap[treeNodesMap[targetNodeId]!.parentId]!;
   const dragNode = treeNodesMap[nodeId];
 
   if (!parentNode || !dragNode) { return; }
   const nextNodeId = parentNode.children[parentNode.children.findIndex(id => id === nodeId) + 1];
   // whether affect the preNodeId of the next node of the moved node
-  if (nextNodeId && treeNodesMap[nextNodeId].preNodeId === nodeId) {
-    treeNodesMap[nextNodeId].preNodeId = dragNode.preNodeId;
+  if (nextNodeId && treeNodesMap[nextNodeId]!.preNodeId === nodeId) {
+    treeNodesMap[nextNodeId]!.preNodeId = dragNode.preNodeId;
   }
   // update the node which is affected by the target position
   if (pos === -1) {
-    dragNode.preNodeId = treeNodesMap[targetNodeId].preNodeId;
-    treeNodesMap[targetNodeId].preNodeId = nodeId;
+    dragNode.preNodeId = treeNodesMap[targetNodeId]!.preNodeId;
+    treeNodesMap[targetNodeId]!.preNodeId = nodeId;
   }
   if (pos === 1) {
     dragNode.preNodeId = targetNodeId;
     const nextNodeIdOfTargetNode = targetParentNode.children[targetParentNode.children.findIndex(id => id === targetNodeId) + 1];
-    if (nextNodeIdOfTargetNode && treeNodesMap[nextNodeIdOfTargetNode].preNodeId === targetNodeId) {
-      treeNodesMap[nextNodeIdOfTargetNode].preNodeId = nodeId;
+    if (nextNodeIdOfTargetNode && treeNodesMap[nextNodeIdOfTargetNode]!.preNodeId === targetNodeId) {
+      treeNodesMap[nextNodeIdOfTargetNode]!.preNodeId = nodeId;
     }
   }
 
@@ -552,8 +552,8 @@ const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId
  * @param pos relative target node's position
  */
 const crossLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId: string, pos: number) => {
-  const parentNodeId = treeNodesMap[nodeId].parentId;
-  const targetParentNodeId = pos === 0 ? targetNodeId : treeNodesMap[targetNodeId].parentId;
+  const parentNodeId = treeNodesMap[nodeId]!.parentId;
+  const targetParentNodeId = pos === 0 ? targetNodeId : treeNodesMap[targetNodeId]!.parentId;
   const parentNode = treeNodesMap[parentNodeId];
   const targetParentNode = treeNodesMap[targetParentNodeId];
   const dragNode = treeNodesMap[nodeId];
@@ -578,9 +578,9 @@ const crossLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeI
   }
 
   // last modified the parent node of the moved node
-  treeNodesMap[nodeId].parentId = targetParentNodeId;
+  treeNodesMap[nodeId]!.parentId = targetParentNodeId;
   const names = getPropertyByTree(treeNodesMap, targetParentNodeId, [nodeId], 'nodeName');
-  treeNodesMap[nodeId].nodeName = getUniqName(treeNodesMap[nodeId].nodeName, names);
+  treeNodesMap[nodeId]!.nodeName = getUniqName(treeNodesMap[nodeId]!.nodeName, names);
 };
 
 /**
@@ -598,7 +598,7 @@ export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, e
   }
   return node.children.reduce((names, nodeId) => {
     if (!exceptArr.includes(nodeId)) {
-      names.push(treeNodesMap[nodeId][property]);
+      names.push(treeNodesMap[nodeId]![property]);
     }
     return names;
   }, [] as any[]);
@@ -664,7 +664,7 @@ export const addSingleNodeToTree = (tree: ITreeNode[], newNode: INode) => {
  * @returns 
  */
 export const addMultiNodeToTree = (tree: ITreeNode[], newNodes: INode[]) => {
-  const { parentId } = newNodes[0];
+  const { parentId } = newNodes[0]!;
   const parentNode = findNode(tree, parentId);
   if (!parentNode) { return; }
   const formatNodes = newNodes.map(item => ({ nodeId: item.nodeId, children: [] }));
@@ -702,11 +702,11 @@ export const removeFavoriteNode = (catalogTree: ICatalogTree, removeNodeId: stri
   const removeIndex = favoriteTreeNodeIds.findIndex(id => id === removeNodeId);
 
   if (favoriteTreeNodeIds.length > 1 && removeIndex !== favoriteTreeNodeIds.length - 1) {
-    const nextNodeId = favoriteTreeNodeIds[removeIndex + 1];
+    const nextNodeId = favoriteTreeNodeIds[removeIndex + 1]!;
 
-    treeNodesMap[nextNodeId].preFavoriteNodeId = removeIndex === 0 ? '' : treeNodesMap[removeNodeId].preFavoriteNodeId;
+    treeNodesMap[nextNodeId]!.preFavoriteNodeId = removeIndex === 0 ? '' : treeNodesMap[removeNodeId]!.preFavoriteNodeId;
   }
 
   catalogTree.favoriteTreeNodeIds = favoriteTreeNodeIds.filter(id => id !== removeNodeId);
-  delete treeNodesMap[removeNodeId].preFavoriteNodeId;
+  delete treeNodesMap[removeNodeId]!.preFavoriteNodeId;
 };

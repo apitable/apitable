@@ -26,7 +26,7 @@ export const changeWidgetInPanelHeight: ICollaCommandDef<IChangeWidgetInPanelHei
 
     if (widgetPanelIndex < 0) { return null; }
 
-    const widgets = widgetPanels[widgetPanelIndex].widgets;
+    const widgets = widgetPanels[widgetPanelIndex]!.widgets;
     const widgetIndex = widgets.findIndex(item => item.id === widgetId);
     
     if (widgetIndex < 0) { return null; }

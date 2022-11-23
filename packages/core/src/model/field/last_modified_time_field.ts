@@ -26,8 +26,8 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     includeTime: Joi.boolean().required(),
   }).required();
 
-  static defaultDateFormat: string = DateFormat[0];
-  static defaultTimeFormat: string = TimeFormat[0];
+  static defaultDateFormat: string = DateFormat[0]!;
+  static defaultTimeFormat: string = TimeFormat[0]!;
 
   static createDefault(fieldMap: { [fieldId: string]: IField }): ILastModifiedTimeField {
     return {
@@ -86,7 +86,7 @@ export class LastModifiedTimeField extends DateTimeBaseField {
     const fieldIds = isAllField ? Object.keys(updatedMap) : fieldIdCollection;
     const timestamps = fieldIds.reduce((acc, fieldId) => {
       if (updatedMap[fieldId]?.at) {
-        acc.push(updatedMap[fieldId].at!);
+        acc.push(updatedMap[fieldId]!.at!);
       }
       return acc;
     }, [] as number[]);
@@ -96,8 +96,8 @@ export class LastModifiedTimeField extends DateTimeBaseField {
   override get openFieldProperty(): IOpenLastModifiedTimeFieldProperty {
     const { includeTime, dateFormat, timeFormat, collectType, fieldIdCollection } = this.field.property;
     return {
-      dateFormat: DateFormat[dateFormat],
-      timeFormat: TimeFormat[timeFormat],
+      dateFormat: DateFormat[dateFormat]!,
+      timeFormat: TimeFormat[timeFormat]!,
       includeTime,
       collectType,
       fieldIdCollection

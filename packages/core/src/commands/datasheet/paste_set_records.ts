@@ -109,7 +109,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
               id: getNewId(IDPrefix.DateTimeAlarm),
               ...omit(alarm, 'id'),
               // If the copy is another member, the alarm set by others will be changed to himself
-              alarmUsers: userInfo && alarm.alarmUsers?.[0].type === AlarmUsersType.Member ? [{
+              alarmUsers: userInfo && alarm.alarmUsers?.[0]!.type === AlarmUsersType.Member ? [{
                 type: AlarmUsersType.Member,
                 data: userInfo.unitId,
               }] : alarm.alarmUsers,
@@ -124,18 +124,18 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
                */
               let isMerged = false;
               defaultAlarmActions.forEach((action, idx) => {
-                if (isEqual(action.p, curAlarmActions[0].p)) {
-                  defaultAlarmActions[idx].oi = {
-                    ...curAlarmActions[0].oi,
+                if (isEqual(action.p, curAlarmActions[0]!.p)) {
+                  defaultAlarmActions[idx]!.oi = {
+                    ...curAlarmActions[0]!.oi,
                     ...action.oi,
                   };
                   isMerged = true;
                 }
               });
               if (!isMerged) {
-                defaultAlarmActions.push(curAlarmActions[0]);
+                defaultAlarmActions.push(curAlarmActions[0]!);
               }
-              realAlarmActions.push(curAlarmActions[1]);
+              realAlarmActions.push(curAlarmActions[1]!);
             } else {
               realAlarmActions.push(...curAlarmActions);
             }
@@ -169,7 +169,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
     }
 
     // In the case where only one cell is copied, paste over the selection
-    const singleCellPaste = stdValues.length === 1 && stdValues[0].length === 1;
+    const singleCellPaste = stdValues.length === 1 && stdValues[0]!.length === 1;
     if (singleCellPaste) {
       const ranges = getSelectRanges(state)!;
       const range = ranges[0]!;
@@ -181,18 +181,18 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
       for (const row of rows) {
         const recordId = row.recordId;
         for (const field of fields) {
-          pushPasteValue(stdValues[0][0], field, recordId, recordIds?.[0]);
+          pushPasteValue(stdValues[0]![0]!, field, recordId, recordIds?.[0]);
         }
       }
       // When multiple cells are copied, the negative value area shall prevail, the selection area is irrelevant
     } else {
       for (let i = 0; stdValues[i] && recordIdsToPaste[i]; i++) {
-        const recordId = recordIdsToPaste[i];
-        const stdValuesRow = stdValues[i];
+        const recordId = recordIdsToPaste[i]!;
+        const stdValuesRow = stdValues[i]!;
         for (let c = 0; stdValuesRow[c] && columnsToPaste[c]; c++) {
-          const fieldId = columnsToPaste[c].fieldId;
-          const stdValue = stdValuesRow[c];
-          const field = fieldMap[fieldId];
+          const fieldId = columnsToPaste[c]!.fieldId;
+          const stdValue = stdValuesRow[c]!;
+          const field = fieldMap[fieldId]!;
           pushPasteValue(stdValue, field, recordId, recordIds?.[i]);
         }
       }
@@ -213,12 +213,12 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
       const recordValues: { [fieldId: string]: ICellValue }[] = [];
       const oldRecordIds: string[] = [];
       for (let row = 0; newStdValues[row]; row++) {
-        const stdValuesRow = newStdValues[row];
+        const stdValuesRow = newStdValues[row]!;
         const cellValues: { [fieldId: string]: ICellValue } = {};
         // Convert a line to a record
         for (let column = 0; stdValuesRow[column] && columnsToPaste[column]; column++) {
-          const fieldId = columnsToPaste[column].fieldId;
-          const stdValue = stdValuesRow[column];
+          const fieldId = columnsToPaste[column]!.fieldId;
+          const stdValue = stdValuesRow[column]!;
           const field = fieldMap[fieldId];
           if (!field || field.type === FieldType.NotSupport) {
             continue;
@@ -228,7 +228,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
           cellValues[fieldId] = value;
         }
         recordValues.push(cellValues);
-        recordIds && oldRecordIds.push(recordIds[recordIdsToPaste.length + row]);
+        recordIds && oldRecordIds.push(recordIds[recordIdsToPaste.length + row]!);
       }
       const rst = addRecords.execute(context, {
         cmd: CollaCommandName.AddRecords,
@@ -248,7 +248,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
         const newRecordIds = rst.data as string[];
         recordValues.forEach((rv, cvIndex) => {
           Object.keys(rv).forEach(fId => {
-            addAlarm(rv[fId], fieldMap[fId], newRecordIds[cvIndex], oldRecordIds[cvIndex]);
+            addAlarm(rv[fId]!, fieldMap[fId]!, newRecordIds[cvIndex]!, oldRecordIds[cvIndex]!);
           });
         });
       }

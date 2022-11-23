@@ -5,21 +5,21 @@ import { mergeContext } from './mock_state';
 import { ParamsCountError } from '../errors/params_count.error';
 
 const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>) => {
-  const fieldMap = ctx.state.datasheetMap['dst123'].datasheet!.snapshot.meta.fieldMap;
+  const fieldMap = ctx.state.datasheetMap['dst123']!.datasheet!.snapshot.meta.fieldMap;
   // Convert each field
   for (const id in fieldMap) {
-    if (fieldMap[id].type === FieldType.Text) {
+    if (fieldMap[id]!.type === FieldType.Text) {
       ctx.record.data[id] = [{ type: 1, text: ctx.record.data[id] }] as any;
     }
 
-    if (ctx.record.data[id] && fieldMap[id].type === FieldType.MultiSelect) {
-      fieldMap[id].property.options = (ctx.record.data[id] as any[]).map(v => {
+    if (ctx.record.data[id] && fieldMap[id]!.type === FieldType.MultiSelect) {
+      fieldMap[id]!.property.options = (ctx.record.data[id] as any[]).map(v => {
         return { id: String(v), name: String(v), color: 0 };
       });
       ctx.record.data[id] = (ctx.record.data[id] as any[]).map(String);
     }
   }
-  return _evaluate(expression, { ...ctx, field: fieldMap.x }, true, true);
+  return _evaluate(expression, { ...ctx, field: fieldMap.x! }, true, true);
 };
 
 describe('Numeric function test', () => {

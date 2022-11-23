@@ -193,8 +193,8 @@ export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaFie
     return {
       type: APIMetaFieldPropertyFormatEnums.DateTime,
       format: {
-        dateFormat: DateFormat[dateFormat],
-        timeFormat: TimeFormat[timeFormat],
+        dateFormat: DateFormat[dateFormat]!,
+        timeFormat: TimeFormat[timeFormat]!,
         includeTime,
       },
     };
@@ -242,7 +242,7 @@ export const getApiMetaUserProperty = (uuids: string[], userMap?: IUserMap | nul
   if (userMap) {
     options = uuids.reduce<IAPIMetaUser[]>((pre, uuid) => {
       if (userMap[uuid]) {
-        const { name, avatar } = userMap[uuid];
+        const { name, avatar } = userMap[uuid]!;
         pre.push({
           id: uuid,
           name,

@@ -55,7 +55,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     const { fieldPropertyEditable, fieldCreatable } = Selectors.getPermissions(state);
 
     function enrichColumnProperty(column: IViewColumn, stdValues: IStandardValue[]) {
-      const oldField = fieldMap[column.fieldId];
+      const oldField = fieldMap[column.fieldId]!;
       if (!fieldPropertyEditable) {
         return;
       }
@@ -82,12 +82,12 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     }
 
     // In the case where only one cell is copied, enrich field property on the selection column
-    const singleCellPaste = stdValues.length === 1 && stdValues[0].length === 1;
+    const singleCellPaste = stdValues.length === 1 && stdValues[0]!.length === 1;
     if (singleCellPaste) {
       const ranges = getSelectRanges(state)!;
       const range = ranges[0]!;
       const fields = Selectors.getRangeFields(state, range, datasheetId)!;
-      let stdValue = stdValues[0][0];
+      let stdValue = stdValues[0]![0]!;
       const data = stdValue.data.filter(d => d.text);
       stdValue = { ...stdValue, data };
       for (const field of fields) {
@@ -95,7 +95,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
       }
     } else {
       for (let i = 0, ii = columnsToPaste.length; i < ii; i++) {
-        const column = columnsToPaste[i];
+        const column = columnsToPaste[i]!;
         const stdValueField = stdValues.reduce((result, stdValueRow) => {
           const stdValue = stdValueRow[i];
           if (stdValue) {
@@ -114,7 +114,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     if (fieldCreatable && newFields.length > 0) {
       const fieldNames = new Set<string>();
       for (const fieldId in fieldMap) {
-        fieldNames.add(fieldMap[fieldId].name);
+        fieldNames.add(fieldMap[fieldId]!.name);
       }
       newFields = newFields.map(field => {
         const originName = field.name;
@@ -135,7 +135,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
         fieldNames.add(name);
         if (field.type === FieldType.LookUp) {
           const relatedLinkFieldId = field.property.relatedLinkFieldId;
-          if (!fieldMap[relatedLinkFieldId] || fieldMap[relatedLinkFieldId].type !== FieldType.Link) {
+          if (!fieldMap[relatedLinkFieldId] || fieldMap[relatedLinkFieldId]!.type !== FieldType.Link) {
             return {
               name,
               type: FieldType.Text,

@@ -13,7 +13,7 @@ export class KanbanView extends CardView {
 
   static findGroupFieldId(srcView: IViewProperty, fieldMap: IFieldMap) {
     const column = srcView.columns.find(item => {
-      const field = fieldMap[item.fieldId];
+      const field = fieldMap[item.fieldId]!;
       return field.type === FieldType.SingleSelect ||
         (field.type === FieldType.Member && !field.property.isMulti);
     });
@@ -24,7 +24,7 @@ export class KanbanView extends CardView {
     if (!column) {
       return [];
     }
-    const field = fieldMap[column.fieldId];
+    const field = fieldMap[column.fieldId]!;
     if (field.type === FieldType.Member) {
       return field.property.unitIds;
     }

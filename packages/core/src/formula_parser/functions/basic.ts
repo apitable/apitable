@@ -92,5 +92,5 @@ export abstract class FormulaFunc {
 }
 
 export const isArrayTypeParam = (params: IFormulaParam[]) => {
-  return params.length === 1 && Array.isArray(params[0].value);
+  return params.length === 1 && Array.isArray(params[0]!.value);
 };

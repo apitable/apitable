@@ -199,7 +199,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
         const newField: ILinkField = {
           id: brotherFieldId,
           type: FieldType.Link,
-          name: getUniqName(preDatasheet.name, foreignFieldIds.map(id => foreignSnapshot.meta.fieldMap[id].name)),
+          name: getUniqName(preDatasheet.name, foreignFieldIds.map(id => foreignSnapshot.meta.fieldMap[id]!.name)),
           property: {
             foreignDatasheetId: datasheetId,
             brotherFieldId: sourceField.id,
@@ -356,7 +356,7 @@ function patchFieldValues(
   const sourceActions: IJOTAction[] = [];
   function eachFieldValue(fieldId: string, recordMap: IRecordMap, cb: (rid: string, v?: string[]) => void) {
     for (const recordId in recordMap) {
-      const record = recordMap[recordId];
+      const record = recordMap[recordId]!;
       const linkCellValue = record.data && record.data[fieldId];
       cb(recordId, linkCellValue as string[] | undefined);
     }
@@ -373,7 +373,7 @@ function patchFieldValues(
         return false;
       }
       if (foreignLinkRecordValueMap[rid]) {
-        foreignLinkRecordValueMap[rid].push(recordId);
+        foreignLinkRecordValueMap[rid]!.push(recordId);
       } else {
         foreignLinkRecordValueMap[rid] = [recordId];
       }

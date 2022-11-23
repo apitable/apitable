@@ -26,7 +26,7 @@ export const getSearchResultArray = (state: IReduxState, searchKeyword: string):
   return computeCache.get(cacheKey) || [];
 };
 
-export const getPureVisibleRowsFormComputed = (state: IReduxState, dsId?: string) => {
+export const getPureVisibleRowsFormComputed = (state: IReduxState, dsId?: string | void) => {
   const datasheetPack = getDatasheetPack(state, dsId);
   const pureVisibleRows = datasheetPack?.computedInfo?.pureVisibleRows;
   if (!pureVisibleRows) {

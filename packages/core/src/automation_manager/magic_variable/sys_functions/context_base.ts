@@ -11,7 +11,7 @@ export function getNodeOutput(_context: IRobotTaskRuntimeContext, nodeId: string
   if (!_context.executedNodeIds.includes(nodeId)) {
     throw Error(`${nodeId} Does Not Executed!`);
   }
-  return _context.context[nodeId].output;
+  return _context.context[nodeId]!.output;
 }
 
 // for now we have 3 trigger of apitable, their output will be like this:

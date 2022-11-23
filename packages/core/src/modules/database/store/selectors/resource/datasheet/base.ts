@@ -1,24 +1,32 @@
 import get from 'lodash/get';
 import { GanttRowHeight, NotSupportFieldInstance, PREVIEW_DATASHEET_ID, RowHeightLevel } from '../../../../../shared/store/constants';
-import { IFieldPermissionMap, INetworking, INodeDescription, IReduxState, ISnapshot, Role } from '../../../../../../exports/store/interfaces';
+import {
+  IDatasheetState,
+  IFieldPermissionMap,
+  INetworking,
+  INodeDescription,
+  IReduxState,
+  ISnapshot,
+  Role,
+} from '../../../../../../exports/store/interfaces';
 import { gridViewActiveFieldStateDefault, gridViewDragStateDefault } from '../../../reducers/resource';
 
 export const getDatasheetPrimaryField = (snapshot: ISnapshot) => {
-  const firstView = snapshot.meta.views[0];
-  const firstColumn = firstView.columns[0];
+  const firstView = snapshot.meta.views[0]!;
+  const firstColumn = firstView.columns[0]!;
   const fieldMap = snapshot.meta.fieldMap;
   return fieldMap[firstColumn.fieldId];
 };
 
 /**
- * get a datasheet pack, 
- * a datasheet pack contains the state information of the datasheet (loading, etc.), 
+ * get a datasheet pack,
+ * a datasheet pack contains the state information of the datasheet (loading, etc.),
  * the basic snapshot data, and the calculated information after calculation
- * @param state 
- * @param id 
- * @returns 
+ * @param state
+ * @param id
+ * @returns
  */
-export const getDatasheetPack = (state: IReduxState, id?: string) => {
+export const getDatasheetPack = (state: IReduxState, id?: string | void) => {
   const datasheetId = id || state.pageParams.datasheetId;
   if (!datasheetId) {
     return;
@@ -33,11 +41,11 @@ export const getDatasheetPack = (state: IReduxState, id?: string) => {
 
 /**
  * get the snapshot of datasheet
- * @param state 
- * @param id 
- * @returns 
+ * @param state
+ * @param id
+ * @returns
  */
-export const getDatasheet = (state: IReduxState, id?: string) => {
+export const getDatasheet = (state: IReduxState, id?: string | void): IDatasheetState | null | undefined => {
   const datasheetPack = getDatasheetPack(state, id);
   return datasheetPack && datasheetPack.datasheet;
 };
@@ -85,12 +93,12 @@ export const getDatasheetConnected = (state: IReduxState, id?: string) => {
   return getDatasheetNetworking(state, id)?.connected;
 };
 
-export const getDatasheetClient = (state: IReduxState, id?: string) => {
+export const getDatasheetClient = (state: IReduxState, id?: string | void) => {
   const datasheetPack = getDatasheetPack(state, id);
   return datasheetPack?.client;
 };
 
-export const getSnapshot = (state: IReduxState, id?: string) => {
+export const getSnapshot = (state: IReduxState, id?: string | void): ISnapshot | undefined => {
   const datasheet = getDatasheet(state, id);
   return datasheet?.snapshot;
 };
@@ -105,7 +113,7 @@ export const getHighlightFieldId = (state: IReduxState, id?: string) => {
 };
 
 // get current datasheet's column permission
-export const getFieldPermissionMap = (state: IReduxState, id?: string) => {
+export const getFieldPermissionMap = (state: IReduxState, id?: string | void): IFieldPermissionMap | undefined => {
   const datasheetPack = getDatasheetPack(state, id);
   return datasheetPack?.fieldPermissionMap;
 };
@@ -114,7 +122,7 @@ export const getFieldRoleByFieldId = (fieldPermissionMap: IFieldPermissionMap | 
   if (!fieldPermissionMap || !fieldPermissionMap[fieldId]) {
     return null;
   }
-  const role = fieldPermissionMap[fieldId].role;
+  const role = fieldPermissionMap[fieldId]!.role;
   return role || Role.None;
 };
 
@@ -122,10 +130,10 @@ export const getFormSheetAccessibleByFieldId = (fieldPermissionMap: IFieldPermis
   if (!fieldPermissionMap || !fieldPermissionMap[fieldId]) {
     return true;
   }
-  return fieldPermissionMap[fieldId].setting.formSheetAccessible;
+  return fieldPermissionMap[fieldId]!.setting.formSheetAccessible;
 };
 
-export const getSearchKeyword = (state: IReduxState, dstId?: string): string | undefined => {
+export const getSearchKeyword = (state: IReduxState, dstId?: string | void): string | undefined => {
   const dstClient = getDatasheetClient(state, dstId);
   return dstClient?.searchKeyword;
 };
@@ -274,7 +282,7 @@ export const getWidgetPanelStatus = (state: IReduxState, datasheetId?: string) =
 };
 
 export const getGanttRowHeightFromLevel = (level?: RowHeightLevel): number => {
-  return level == null ? GanttRowHeight.Short : GanttRowHeight[RowHeightLevel[level]];
+  return level == null ? GanttRowHeight.Short : GanttRowHeight[RowHeightLevel[level]!];
 };
 
 export const getGanttViewStatus = (state: IReduxState, datasheetId?: string) => {

@@ -52,10 +52,10 @@ export class Cell {
     if (breakpoints.length) {
       const nextBreakpointIndex = breakpoints.findIndex(bp => bp > recordIndex);
       if (nextBreakpointIndex > -1) {
-        const nextBreakpoint = breakpoints[nextBreakpointIndex];
-        const currentBreakpoint = breakpoints[nextBreakpointIndex - 1];
+        const nextBreakpoint = breakpoints[nextBreakpointIndex]!;
+        const currentBreakpoint = breakpoints[nextBreakpointIndex - 1]!;
         minRowIndex = (currentBreakpoint === recordIndex ? breakpoints[nextBreakpointIndex - 2] : currentBreakpoint) || 0;
-        maxRowIndex = (nextBreakpoint === recordIndex + 1 ? breakpoints[nextBreakpointIndex + 1] - 1 : nextBreakpoint - 1) || maxRowIndex;
+        maxRowIndex = (nextBreakpoint === recordIndex + 1 ? breakpoints[nextBreakpointIndex + 1]! - 1 : nextBreakpoint - 1) || maxRowIndex;
       }
     }
 

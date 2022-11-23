@@ -152,7 +152,7 @@ export class LinkedDataConformanceMaintainer {
               return;
             }
 
-            const fieldType = snapshot.meta.fieldMap[fieldId] && snapshot.meta.fieldMap[fieldId].type;
+            const fieldType = snapshot.meta.fieldMap[fieldId] && snapshot.meta.fieldMap[fieldId]!.type;
             // Make sure that the cell is populated only when the foreign key field is indeed the relation field type.
             const cellValueInLinkedCell = fieldType === FieldType.Link ?
               Selectors.getCellValue(state, snapshot, recordId, fieldId, undefined, undefined, true) as string[] || [] : [];

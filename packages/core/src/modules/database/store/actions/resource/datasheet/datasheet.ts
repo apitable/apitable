@@ -107,7 +107,7 @@ const getActiveViewFromData = (datasheet: INodeMeta, snapshot: ISnapshot, getSta
   if (getState && getState().pageParams.datasheetId === datasheet.id) {
     return getState().pageParams.viewId;
   }
-  return snapshot.meta.views[0].id;
+  return snapshot.meta.views[0]!.id;
 };
 
 export function receiveDataPack<T extends IServerDatasheetPack = IServerDatasheetPack>(
@@ -192,7 +192,7 @@ export function fetchDatasheet(
       dispatch(requestDatasheetPack(datasheetId));
       return fetchDatasheetApi(datasheetId, shareId, templateId, embedId, recordIds).then(response => {
         if (!response.data.success && state.catalogTree.treeNodesMap[datasheetId]) {
-          dispatch(deleteNode({ nodeId: datasheetId, parentId: state.catalogTree.treeNodesMap[datasheetId].parentId }));
+          dispatch(deleteNode({ nodeId: datasheetId, parentId: state.catalogTree.treeNodesMap[datasheetId]!.parentId }));
         }
         return Promise.resolve({ datasheetId, responseBody: response.data, dispatch, getState });
       }).catch(e => {
@@ -238,7 +238,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
         return Promise.resolve({ datasheetId: foreignDstId, responseBody: response.data, dispatch, getState });
       }).catch(e => {
         if (state.catalogTree.treeNodesMap[foreignDstId]) {
-          dispatch(deleteNode({ nodeId: foreignDstId, parentId: state.catalogTree.treeNodesMap[foreignDstId].parentId }));
+          dispatch(deleteNode({ nodeId: foreignDstId, parentId: state.catalogTree.treeNodesMap[foreignDstId]!.parentId }));
         }
         dispatch(datasheetErrorCode(foreignDstId, StatusCode.COMMON_ERR));
         throw e;
@@ -309,7 +309,7 @@ export function fetchDatasheetPackSuccess(
     const dispatchActions: AnyAction[] = [];
     if (data.foreignDatasheetMap) {
       Object.keys(data.foreignDatasheetMap).forEach(datasheetPack => {
-        const foreignDatasheetPack = data.foreignDatasheetMap![datasheetPack];
+        const foreignDatasheetPack = data.foreignDatasheetMap![datasheetPack]!;
         dispatchActions.push(receiveDataPack(foreignDatasheetPack, true));
         if (foreignDatasheetPack.fieldPermissionMap) {
           dispatchActions.push(loadFieldPermissionMap(foreignDatasheetPack.fieldPermissionMap, foreignDatasheetPack.datasheet.id));

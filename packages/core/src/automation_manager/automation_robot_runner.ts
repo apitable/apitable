@@ -61,9 +61,9 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
     globalContext.currentNodeId = actionId;
     const start = new Date().getTime();
     // get instance of the action by id
-    const actionInstance = globalContext.robot.actionsById[actionId];
+    const actionInstance = globalContext.robot.actionsById[actionId]!;
     // get type of the action
-    const actionType = globalContext.robot.actionTypesById[actionInstance.typeId];
+    const actionType = globalContext.robot.actionTypesById[actionInstance.typeId]!;
     // TODO: validate input
     // if (this.validateActionInput(actionType, actionRuntimeInput)) {}
     let output: IActionOutput | undefined;
@@ -125,7 +125,7 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
   }
   getRuntimeActionInput(actionId: string, globalContext: IRobotTaskRuntimeContext): any {
     return this.inputParser.render(
-      globalContext.robot.actionsById[actionId].input,
+      globalContext.robot.actionsById[actionId]!.input,
       globalContext
     );
   }

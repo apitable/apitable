@@ -15,7 +15,7 @@ export class GalleryView extends CardView {
 
     // the first attachment field set as default cover field
     const initCoverField = srcView.columns.find(col =>
-      snapshot.meta.fieldMap[col.fieldId].type === FieldType.Attachment,
+      snapshot.meta.fieldMap[col.fieldId]!.type === FieldType.Attachment,
     );
 
     return {
@@ -43,7 +43,7 @@ export class GalleryView extends CardView {
     }
 
     if (!srcView) {
-      srcView = views[0];
+      srcView = views[0]!;
     }
 
     return {

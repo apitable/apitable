@@ -38,8 +38,8 @@ export const deleteWidget: ICollaCommandDef<IDeleteWidgetAction> = {
     }
 
     const deleteWidgetAction = resourceType === ResourceType.Datasheet ?
-      DatasheetActions.deleteWidget2Action(state, { widgetPanelIndex, widget: widgets[widgetIndex], widgetIndex }) :
-      DatasheetActions.deleteMirrorWidget2Action(state, { widgetPanelIndex, widget: widgets[widgetIndex], widgetIndex });
+      DatasheetActions.deleteWidget2Action(state, { widgetPanelIndex, widget: widgets[widgetIndex]!, widgetIndex }) :
+      DatasheetActions.deleteMirrorWidget2Action(state, { widgetPanelIndex, widget: widgets[widgetIndex]!, widgetIndex });
 
     return {
       result: ExecuteResult.Success,

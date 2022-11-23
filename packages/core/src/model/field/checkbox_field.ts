@@ -120,13 +120,13 @@ export class CheckboxField extends Field {
     if (isEmpty(stdValue) || isEmpty(stdValue.data)) {
       return null;
     }
-    if (trueText.includes(stdValue.data[0].text)) {
+    if (trueText.includes(stdValue.data[0]!.text)) {
       return true;
     }
-    if (falseText.includes(stdValue.data[0].text)) {
+    if (falseText.includes(stdValue.data[0]!.text)) {
       return null;
     }
-    if (stdValue.data[0].text) {
+    if (stdValue.data[0]!.text) {
       return true;
     }
     return null;

@@ -41,7 +41,7 @@ export function fetchForm(formId: string, successFn?: (props?: any) => void) {
       return Promise.resolve({ formId, response, dispatch, shareId });
     }).catch(e => {
       if (state.catalogTree.treeNodesMap[formId]) {
-        dispatch(deleteNode({ nodeId: formId, parentId: state.catalogTree.treeNodesMap[formId].parentId }));
+        dispatch(deleteNode({ nodeId: formId, parentId: state.catalogTree.treeNodesMap[formId]!.parentId }));
       }
       dispatch(formErrorCode(formId, StatusCode.COMMON_ERR));
       throw e;

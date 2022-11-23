@@ -60,8 +60,8 @@ export const testPath = (pathList: (string | number)[], testPathList: string[], 
   } = { pass: true };
 
   for (let i = 0; i < testPathList.length; i++) {
-    if (testPathList[i].startsWith(':')) {
-      const pathKey = testPathList[i].slice(1);
+    if (testPathList[i]!.startsWith(':')) {
+      const pathKey = testPathList[i]!.slice(1);
       res[pathKey] = pathList[i];
       continue;
     }
@@ -113,8 +113,8 @@ export const transformOpFields = (props: ITransformOpFieldsProps) => {
   const eventFields: { [key: string]: BasicOpenValueType | null } = {};
   const newFields = { ...recordData };
   Object.keys(snapshot?.meta.fieldMap).forEach(fieldId => {
-    const field = snapshot.meta.fieldMap[fieldId];
-    let cellValue = recordData[fieldId];
+    const field = snapshot.meta.fieldMap[fieldId]!;
+    let cellValue = recordData[fieldId]!;
     // FIXME: Only fill in what is not, there is a problem here. 
     // The change to of op is the latest, and the one obtained from the database search may be old. subject to op
     // There is no field value in recordData, indicating that it is a calculated field. 

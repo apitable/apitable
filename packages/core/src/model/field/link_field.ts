@@ -17,12 +17,12 @@ import { IOpenMagicLinkFieldProperty } from 'types/open/open_field_read_types';
 
 export const getTextRecordMap =
   createSelector<IReduxState, string | void, IReduxState | undefined, ISnapshot | undefined, { [text: string]: string }>(
-    [state => state, (state, datasheetId?: string) => getSnapshot(state, datasheetId)], (state, snapshot) => {
+    [state => state, (state, datasheetId?: string | void) => getSnapshot(state, datasheetId)], (state, snapshot) => {
       if (!snapshot) {
         return {};
       }
-      const fieldId = snapshot.meta.views[0].columns[0].fieldId;
-      const field = snapshot.meta.fieldMap[fieldId];
+      const fieldId = snapshot.meta.views[0]!.columns[0]!.fieldId;
+      const field = snapshot.meta.fieldMap[fieldId]!;
       const textRecordMap = {};
       Object.values(snapshot.recordMap).forEach(record => {
         const value = getCellValue(state!, snapshot, record.id, fieldId);
@@ -162,7 +162,7 @@ export class LinkField extends ArrayValueField {
     if (!view) {
       return;
     }
-    const fieldId = view.columns[0].fieldId;
+    const fieldId = view.columns[0]!.fieldId;
     const foreignPrimaryField = getFieldMap(this.state, foreignDatasheetId)!;
     return foreignPrimaryField[fieldId];
   }
@@ -245,8 +245,8 @@ export class LinkField extends ArrayValueField {
 
     // If it is data from the current field, write it directly.
     if (stdValue.data[0] && stdValue.data[0].datasheetId === this.field.property.foreignDatasheetId) {
-      return stdValue.data.map((val: { text: string, recordId: string }) => {
-        return val.recordId;
+      return stdValue.data.map(val => {
+        return (val as {text:string,recordId:string}).recordId;
       });
     }
 
@@ -256,10 +256,10 @@ export class LinkField extends ArrayValueField {
     // Determine whether the current configuration item allows adding multiple associated records, 
     // and if it is allowed, cut it according to ","
     if (!this.field.property.limitSingleRecord) {
-      const splitText = texts[0].split(/, ?/);
+      const splitText = texts[0]!.split(/, ?/);
       if (splitText.length > 1) {
         // Both before and after the split are added to the candidate array to try to match
-        texts = [texts[0], ...splitText];
+        texts = [texts[0]!, ...splitText];
       }
     }
     const cellValue = texts.reduce<string[]>((pre, text) => {

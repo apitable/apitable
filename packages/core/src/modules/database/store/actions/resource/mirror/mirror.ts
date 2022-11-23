@@ -96,7 +96,7 @@ const fetchSuccess = (
         return Promise.resolve({ datasheetId: sourceDatasheetId, responseBody: response.data, dispatch, getState, isPartOfData: Boolean(recordIds) });
       }).catch(e => {
         if (state.catalogTree.treeNodesMap[sourceDatasheetId]) {
-          dispatch(deleteNode({ nodeId: sourceDatasheetId, parentId: state.catalogTree.treeNodesMap[sourceDatasheetId].parentId }));
+          dispatch(deleteNode({ nodeId: sourceDatasheetId, parentId: state.catalogTree.treeNodesMap[sourceDatasheetId]!.parentId }));
         }
         dispatch(datasheetErrorCode(sourceDatasheetId, StatusCode.COMMON_ERR));
         throw e;

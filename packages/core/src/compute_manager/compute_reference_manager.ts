@@ -35,7 +35,7 @@ export class ComputeRefManager {
    * @param fieldMap 
    * @param refMap 
    */
-  private getRefDstIds(dstId: string, fieldMap: IFieldMap, refMap: IRefMap) {
+  private getRefDstIds(dstId: string, fieldMap: IFieldMap, refMap: IRefMap): string[] {
     const fieldIds = Object.keys(fieldMap);
     const allKeys = fieldIds.map(fid => `${dstId}-${fid}`);
     const allDependenceKeys = new Set<string>();
@@ -57,7 +57,7 @@ export class ComputeRefManager {
       }
     });
 
-    const dstSet = new Set(Array.from(allDependenceKeys).map(key => key.split('-')[0]));
+    const dstSet = new Set(Array.from(allDependenceKeys).map(key => key.split('-')[0]!));
     return Array.from(dstSet);
   }
 
@@ -71,16 +71,16 @@ export class ComputeRefManager {
 
     const findCycle = (node: string) => {
       cycleStack.push(node);
-      const nodeAdj = sourceAdj[node] ? Array.from(sourceAdj[node]) : [];
+      const nodeAdj = sourceAdj[node] ? Array.from(sourceAdj[node]!) : [];
       stackAdj.push(fastCloneDeep(nodeAdj));
   
       while(cycleStack.length) {
-        const source = cycleStack[cycleStack.length - 1];
+        const source = cycleStack[cycleStack.length - 1]!;
         const targets = stackAdj[stackAdj.length - 1] || [];
   
         if (targets?.length) {
           color[source] = 1;
-          const target = targets[0];
+          const target = targets[0]!;
           // Just find a circle and return
           if (color[target] === 1) {
             const start = cycleStack.indexOf(target);
@@ -90,21 +90,21 @@ export class ComputeRefManager {
             return;
           } else if (color[target] === undefined) {
             cycleStack.push(target);
-            const nextAdj = sourceAdj[target] ? Array.from(sourceAdj[target]) : [];
+            const nextAdj = sourceAdj[target] ? Array.from(sourceAdj[target]!) : [];
             stackAdj.push(fastCloneDeep(nextAdj));
           } else if (color[target] === 2) {
-            const lastAdj = stackAdj[stackAdj.length - 1];
+            const lastAdj = stackAdj[stackAdj.length - 1]!;
             const index = lastAdj.indexOf(target);
-            stackAdj[stackAdj.length - 1].splice(index,1);
+            stackAdj[stackAdj.length - 1]!.splice(index,1);
           }
         } else {
           color[source] = 2;
           cycleStack.pop();
           stackAdj.pop();
           if(stackAdj.length > 0) {
-            const lastAdj = stackAdj[stackAdj.length - 1];
+            const lastAdj = stackAdj[stackAdj.length - 1]!;
             const index = lastAdj.indexOf(source);
-            stackAdj[stackAdj.length - 1].splice(index,1);
+            stackAdj[stackAdj.length - 1]!.splice(index,1);
           }
         }
       }
@@ -206,7 +206,7 @@ export class ComputeRefManager {
             const linkSnapshot = Selectors.getSnapshot(state, linkDstId);
             if (linkSnapshot) {
               const linkPrimaryField = Selectors.getDatasheetPrimaryField(linkSnapshot);
-              const key = `${linkDstId}-${linkPrimaryField.id}`;
+              const key = `${linkDstId}-${linkPrimaryField!.id}`;
               this.addReRef(`${datasheetId}-${field.id}`, new Set([key]));
               this.addRef(key, `${datasheetId}-${field.id}`);
             }
