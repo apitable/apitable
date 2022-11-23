@@ -35,7 +35,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
     </p>;
   }
 
-  if (isUpgrade) {
+  if (isUpgrade && levelInfo.level !== paySystemConfig.SILVER.level) {
     return <p className={styles.maxSeat}>
       {t(Strings.subscribe_upgrade_choose_member, {
         old_member_num: Number(subscription?.maxSeats),
@@ -83,6 +83,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
           }}
         >
           {item} {getLanguage() === 'zh-CN' && t(Strings.people)}
+          {levelInfo.level === paySystemConfig.SILVER.level && index == 0 && <span>(买一送一)</span>}
           {
             active &&
             <SelectMarkFilled size={24} className={styles.checked} color={levelInfo.activeColor} />
