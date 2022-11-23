@@ -1,22 +1,11 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { utils } from '../../core';
 import { IObjectFieldTemplateProps } from '../../core/interface';
 import { getOptions } from '../utils';
+import styles from './style.module.less';
+import cls from 'classnames';
 
 const { canExpand } = utils;
-
-const ObjectFieldTemplateWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  .field-object {
-    padding-top: 0!important;
-  }
-`;
-const InlineObjectChildren = styled.div<{ inline?: boolean }>`
-  display: ${(props) => props.inline ? 'flex' : 'block'};  
-  align-items: flex-start;
-`;
 
 const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
   const { properties, uiSchema } = props;
@@ -31,7 +20,7 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
             const thisRowFields = properties.filter(ele => rowFieldNames.includes(ele.name));
             if (thisRowFields.length) {
               const width = isInline ? `${Math.round(100 / thisRowFields.length)}%` : '100%';
-              return <InlineObjectChildren inline={isInline} key={index}>
+              return <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })} key={index}>
                 {thisRowFields.map((element, index: number) => (
                   <div
                     key={index} // FIXME: better key
@@ -40,7 +29,7 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
                     {element.content}
                   </div>
                 ))}
-              </InlineObjectChildren>;
+              </div>;
             }
             return null;
           })
@@ -51,7 +40,7 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
 
   const width = isInline ? `${Math.round(100 / properties.length)}%` : '100%';
   return (
-    <InlineObjectChildren inline={isInline}>
+    <div className={cls(styles.inlineObjectChildren, { [styles.inline]: isInline })}>
       {properties.map((element: any, index: number) => (
         <div
           key={index} // FIXME: better key
@@ -60,7 +49,7 @@ const ObjectFieldLayout = (props: IObjectFieldTemplateProps) => {
           {element.content}
         </div>
       ))}
-    </InlineObjectChildren>
+    </div>
   );
 };
 
@@ -86,7 +75,7 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
   // const isInline = Boolean(uiSchema['ui:options']?.inline);
   // if (currentObjectDepth > 3) return null;
   return (
-    <ObjectFieldTemplateWrapper>
+    <div className={styles.objectFieldTemplateWrapper}>
       {(uiSchema['ui:title'] || title) && (
         showTitle && <TitleField
           id={idSchema.$id}
@@ -108,15 +97,6 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
       {
         !collapse && <div>
           <ObjectFieldLayout {...props} />
-          {/* <InlineObjectChildren inline={isInline}>
-            {properties.map((element: any, index: number) => (
-              <div
-                style={{ marginBottom: '10px', marginRight: '4px', width: '100%' }}
-              >
-                {element.content}
-              </div>
-            ))}
-          </InlineObjectChildren> */}
           {canExpand(schema, uiSchema, formData) && (
 
             <button
@@ -127,7 +107,7 @@ export const ObjectFieldTemplate = (props: IObjectFieldTemplateProps) => {
         </div>
       }
 
-    </ObjectFieldTemplateWrapper>
+    </div>
   );
 };
 

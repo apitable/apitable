@@ -208,7 +208,6 @@
     "raw-loader": "^4.0.2",
     "react-app-rewire-postcss": "^3.0.2",
     "react-dev-utils": "^11.0.3",
-    "styled-components": "5.2.3",
     "stylelint": "13.9.0",
     "svgo-loader": "3.0.0",
     "typescript": "^4.8.2",

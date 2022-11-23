@@ -1,5 +1,5 @@
 import { ISpaceBasicInfo, ISpaceFeatures, ISubscription } from '@apitable/core';
-import { CSSProperties } from 'styled-components';
+import { CSSProperties } from 'react';
 
 export enum LevelType {
   Bronze = 'bronze',

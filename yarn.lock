@@ -499,7 +499,6 @@ __metadata:
     slate-react: 0.66.1
     socket.io-client: 2.2.0
     store2: ^2.12.0
-    styled-components: 5.2.3
     stylelint: 13.9.0
     svgo-loader: 3.0.0
     swr: ^1.3.0
@@ -6112,7 +6111,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/is-prop-valid@npm:0.8.8, @emotion/is-prop-valid@npm:^0.8.2, @emotion/is-prop-valid@npm:^0.8.6, @emotion/is-prop-valid@npm:^0.8.8":
+"@emotion/is-prop-valid@npm:0.8.8, @emotion/is-prop-valid@npm:^0.8.2, @emotion/is-prop-valid@npm:^0.8.6":
   version: 0.8.8
   resolution: "@emotion/is-prop-valid@npm:0.8.8"
   dependencies:
@@ -43471,28 +43470,6 @@ resolve@^2.0.0-next.3:
     hey-listen: ^1.0.8
     tslib: ^1.10.0
   checksum: b7d2c3dd668bb6c1e7f29032b2bf72c4bb3104abdfb59ceb683fa68cc11da669d3808110763ec01d6104f1c68d34f839ea6bab9e257401dc908bfe3a420787ff
-  languageName: node
-  linkType: hard
-
-"styled-components@npm:5.2.3":
-  version: 5.2.3
-  resolution: "styled-components@npm:5.2.3"
-  dependencies:
-    "@babel/helper-module-imports": ^7.0.0
-    "@babel/traverse": ^7.4.5
-    "@emotion/is-prop-valid": ^0.8.8
-    "@emotion/stylis": ^0.8.4
-    "@emotion/unitless": ^0.7.4
-    babel-plugin-styled-components: ">= 1.12.0"
-    css-to-react-native: ^3.0.0
-    hoist-non-react-statics: ^3.0.0
-    shallowequal: ^1.1.0
-    supports-color: ^5.5.0
-  peerDependencies:
-    react: ">= 16.8.0"
-    react-dom: ">= 16.8.0"
-    react-is: ">= 16.8.0"
-  checksum: 12e5cc02b8edf3caceffd2d4e323a617b1eb5de2b4073e09acedc5b75f9b05c9493de5434de3d38dd28a2d759e9cd7d03f7fb3d0185f632c6fe848cbb962a732
   languageName: node
   linkType: hard
 

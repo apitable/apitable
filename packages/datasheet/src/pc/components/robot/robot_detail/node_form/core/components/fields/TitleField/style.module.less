@@ -1,0 +1,53 @@
+.h {
+  display: flex;
+  align-items: center;
+  position: relative;
+  &.hasCollapse {
+    cursor: pointer;
+  }
+}
+
+.h1 {
+  font-size: 16px;
+}
+
+.h2 {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(201,201,201,1);
+    margin-right: 8px;
+    border-radius: 6px;
+  }
+}
+
+.h3 {
+  font-size: 12px;
+  padding-bottom: 8px;
+  color: #8C8C8C;
+}
+
+.suffixIcon {
+  transition: transform 0.3s;
+  cursor: pointer;
+  position: absolute;
+  right: 4px;
+  &.isIconRotate {
+    transform: rotate(180deg);
+  }
+}
+
+.dropIcon {
+  vertical-align: middle;
+}
+
+.helpIcon {
+  vertical-align: -0.125em;
+}
+
