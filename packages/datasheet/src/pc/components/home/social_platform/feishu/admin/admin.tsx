@@ -4,7 +4,8 @@ import { useMount } from 'ahooks';
 import { Loading } from 'pc/components/common';
 import { useQuery, useRequest } from 'pc/hooks';
 import { useState } from 'react';
-import { AdminLayout, IAdminData } from '../../dingtalk';
+// @ts-ignore
+import { AdminLayout, IAdminData } from 'enterprise';
 
 const config = {
   adminTitle: t(Strings.feishu_admin_panel_title),
@@ -56,11 +57,14 @@ const FeishuAdmin = () => {
     <>
       {
         data ?
-          <AdminLayout
-            data={data}
-            config={config}
-            onChange={changeAdmin}
-          /> :
+          (
+            AdminLayout &&
+            <AdminLayout
+              data={data}
+              config={config}
+              onChange={changeAdmin}
+            />
+          ) :
           <Loading />
       }
     </>

@@ -1,7 +1,8 @@
 import { ConfigConstant } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { Loading } from 'pc/components/common';
-import ContactSyncing from 'pc/components/home/social_platform/dingtalk/contact_syncing/contact_syncing';
+// @ts-ignore
+import { ContactSyncing } from 'enterprise';
 // import { Navigation } from '@apitable/core';
 import { useQuery } from 'pc/hooks';
 import { getWecomShopConfig } from 'pc/utils/get_config';
@@ -38,7 +39,7 @@ const WecomLogin = () => {
     <>
       {
         isSyncing ?
-          <ContactSyncing /> :
+          (ContactSyncing && <ContactSyncing />) :
           <Loading />
       }
     </>

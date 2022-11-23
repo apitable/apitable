@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const DingTalkLoginWithNoSSR = dynamic(() => import('pc/components/home/social_platform/dingtalk/login'), { ssr: false });
+// @ts-ignore
+const DingTalkLoginWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.DingTalkLogin;
+}), { ssr: false });
 
 const App = () => {
-  return <DingTalkLoginWithNoSSR />;
+  return DingTalkLoginWithNoSSR && <DingTalkLoginWithNoSSR />;
 };
 
 export default App;
