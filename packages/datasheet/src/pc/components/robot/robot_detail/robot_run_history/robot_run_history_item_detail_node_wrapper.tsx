@@ -1,11 +1,12 @@
 import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
-import { WarningTriangleFilled } from '@apitable/icons';
+import { WarningTriangleFilled, ChevronDownOutlined } from '@apitable/icons';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
-import { DropIcon, StyledArrowIcon } from './styled';
+import styles from 'style.module.less';
+import cls from 'classnames';
 
 interface IRobotRunHistoryNodeDetail {
   index: number;
@@ -56,11 +57,12 @@ export const RobotRunHistoryNodeWrapper = (props: React.PropsWithChildren<IRobot
           </Box>
         }
       </Box>
-      <StyledArrowIcon rotated={showDetail}>
+      <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
         <IconButton
-          icon={DropIcon}
+          icon={ChevronDownOutlined}
+          className={styles.dropIcon}
           onClick={() => setShowDetail(!showDetail)} />
-      </StyledArrowIcon>
+      </span>
     </Box>
     {
       showDetail && <Box marginTop="16px">

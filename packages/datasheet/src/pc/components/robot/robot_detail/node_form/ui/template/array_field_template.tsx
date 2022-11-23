@@ -1,13 +1,8 @@
 import { t, Strings } from '@apitable/core';
 import { Button, IconButton } from '@apitable/components';
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@apitable/icons';
-import styled from 'styled-components';
+import styles from './style.module.less';
 import { IArrayFieldTemplateProps } from '../../core/interface';
-
-const InlineArrayItem = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 type IArrayFieldItems = Pick<IArrayFieldTemplateProps, 'items'>;
 type IArrayFieldItem = IArrayFieldItems['items'][number];
@@ -16,7 +11,7 @@ const ArrayFieldItem = (props: IArrayFieldItem) => {
   const isUpDisable = props.disabled || props.readonly || !props.hasMoveUp;
   const isDownDisable = props.disabled || props.readonly || !props.hasMoveDown;
   return (
-    <InlineArrayItem>
+    <div className={styles.inlineArrayItem}>
       {props.children}
       {props.hasToolbar && (
         <>
@@ -45,7 +40,7 @@ const ArrayFieldItem = (props: IArrayFieldItem) => {
           )}
         </>
       )}
-    </InlineArrayItem>
+    </div>
   );
 };
 

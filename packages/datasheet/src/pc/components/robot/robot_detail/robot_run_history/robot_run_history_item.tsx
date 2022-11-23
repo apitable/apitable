@@ -1,11 +1,13 @@
 import { Box, Typography, useTheme, IconButton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { ErrorFilled, RunFilled, SuccessFilled } from '@apitable/icons';
+import { ErrorFilled, RunFilled, SuccessFilled, ChevronDownOutlined } from '@apitable/icons';
 import { timeFormatter } from 'pc/utils';
 import { useState } from 'react';
 import { IRobotRunHistoryItem } from '../../interface';
 import { RobotRunHistoryItemDetail } from './robot_run_history_item_detail';
-import { DropIcon, StyledArrowIcon } from './styled';
+import styles from 'style.module.less';
+import cls from 'classnames';
+
 interface IRobotRunHistoryItemProps {
   item: IRobotRunHistoryItem;
 }
@@ -79,11 +81,12 @@ export const RobotRunHistoryItem = ({ item }: IRobotRunHistoryItemProps) => {
           </Typography>
           <Box width="16px" />
           {
-            !isRunning && <StyledArrowIcon rotated={showDetail}>
+            !isRunning && <span className={cls(styles.arrowIcon, { [styles.rotated]: showDetail })}>
               <IconButton
-                icon={DropIcon}
+                icon={ChevronDownOutlined}
+                className={styles.dropIcon}
                 onClick={toggleDetail} />
-            </StyledArrowIcon>
+            </span>
           }
         </Box>
       </Box>
