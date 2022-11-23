@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.apitable.starter.teg.autoconfigure.TegProperties.SmartProxyHeaderProperty;
 
+import org.springframework.core.Ordered;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
@@ -26,7 +27,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 /**
  * smartProxy Filter
  */
-public class SmartProxyFilter extends OncePerRequestFilter {
+public class SmartProxyFilter extends OncePerRequestFilter implements Ordered {
 
     private static final Logger log = LoggerFactory.getLogger(SmartProxyFilter.class);
 
@@ -39,6 +40,11 @@ public class SmartProxyFilter extends OncePerRequestFilter {
     public SmartProxyFilter(UnauthorizedResponseCustomizer customizer,TegProperties properties) {
         this.customizer = customizer;
         this.properties = properties;
+    }
+
+    @Override
+    public int getOrder() {
+        return HIGHEST_PRECEDENCE - 100;
     }
 
     @Override
