@@ -407,7 +407,7 @@ proto:
 	export TS_PROTO_OUT_PATH=packages/room-server/src/grpc/generated/;\
   	$(RUNNER) proto-generic sh scripts/compile.proto.sh;\
 	export TS_PROTO_OUT_PATH=packages/socket-server/src/grpc/generated/;\
-	export JAVA_PROTO_OUT_PATH=backend-server/vikadata-integration/vikadata-integration-grpc-model/src/main/proto;\
+	export JAVA_PROTO_OUT_PATH=backend-server/grpc-model/src/main/proto;\
 	$(RUNNER) proto-generic sh scripts/compile.proto.sh
 
 # bumpversion 

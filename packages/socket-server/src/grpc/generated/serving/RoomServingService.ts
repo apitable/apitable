@@ -14,6 +14,7 @@ export interface WatchRoomRo {
   socketIds: string[];
   shareId?: string | undefined;
   spaceId?: string | undefined;
+  embedLinkId?: string | undefined;
 }
 
 export interface WatchRoomVo {
@@ -127,7 +128,15 @@ export interface NodeDeleteRo {
 }
 
 function createBaseWatchRoomRo(): WatchRoomRo {
-  return { roomId: "", clientId: "", cookie: "", socketIds: [], shareId: undefined, spaceId: undefined };
+  return {
+    roomId: "",
+    clientId: "",
+    cookie: "",
+    socketIds: [],
+    shareId: undefined,
+    spaceId: undefined,
+    embedLinkId: undefined,
+  };
 }
 
 export const WatchRoomRo = {
@@ -149,6 +158,9 @@ export const WatchRoomRo = {
     }
     if (message.spaceId !== undefined) {
       writer.uint32(50).string(message.spaceId);
+    }
+    if (message.embedLinkId !== undefined) {
+      writer.uint32(58).string(message.embedLinkId);
     }
     return writer;
   },
@@ -178,6 +190,9 @@ export const WatchRoomRo = {
         case 6:
           message.spaceId = reader.string();
           break;
+        case 7:
+          message.embedLinkId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -194,6 +209,7 @@ export const WatchRoomRo = {
       socketIds: Array.isArray(object?.socketIds) ? object.socketIds.map((e: any) => String(e)) : [],
       shareId: isSet(object.shareId) ? String(object.shareId) : undefined,
       spaceId: isSet(object.spaceId) ? String(object.spaceId) : undefined,
+      embedLinkId: isSet(object.embedLinkId) ? String(object.embedLinkId) : undefined,
     };
   },
 
@@ -209,6 +225,7 @@ export const WatchRoomRo = {
     }
     message.shareId !== undefined && (obj.shareId = message.shareId);
     message.spaceId !== undefined && (obj.spaceId = message.spaceId);
+    message.embedLinkId !== undefined && (obj.embedLinkId = message.embedLinkId);
     return obj;
   },
 
@@ -220,6 +237,7 @@ export const WatchRoomRo = {
     message.socketIds = object.socketIds?.map((e) => e) || [];
     message.shareId = object.shareId ?? undefined;
     message.spaceId = object.spaceId ?? undefined;
+    message.embedLinkId = object.embedLinkId ?? undefined;
     return message;
   },
 };

@@ -4,6 +4,7 @@ export interface IWatchRoomMessage {
   roomId: string;
   shareId?: string;
   cookie?: string;
+  embedLinkId?: string;
 }
 
 export interface IClientRoomChangeResult {
