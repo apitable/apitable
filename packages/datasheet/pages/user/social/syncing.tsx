@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const ContactSyncingWithNoSSR = dynamic(() => import('pc/components/home/social_platform/dingtalk/contact_syncing/contact_syncing'), { ssr: false });
+// @ts-ignore
+const ContactSyncingWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.ContactSyncing;
+}), { ssr: false });
 
 const App = () => {
-  return <ContactSyncingWithNoSSR />;
+  return ContactSyncingWithNoSSR && <ContactSyncingWithNoSSR />;
 };
 
 export default App;
