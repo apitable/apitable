@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.base.enums.ValidateType;
+import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
@@ -55,6 +56,7 @@ import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.ro.SpaceWorkbenchSettingRo;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.space.vo.CreateSpaceResultVo;
+import com.vikadata.api.space.vo.SpaceCapacityVO;
 import com.vikadata.api.space.vo.SpaceInfoVO;
 import com.vikadata.api.space.vo.SpaceVO;
 import com.vikadata.api.space.vo.UserSpaceVo;
@@ -99,6 +101,15 @@ public class SpaceController {
 
     @Resource
     private IUserService iUserService;
+
+    @GetResource(path = "/capacity", requiredLogin = false)
+    @ApiOperation(value = "Get space capacity info")
+    @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
+    public ResponseData<SpaceCapacityVO> capacity() {
+        String spaceId = LoginContext.me().getSpaceId();
+        InternalSpaceCapacityVo view = iSpaceService.getSpaceCapacityVo(spaceId);
+        return ResponseData.success(new SpaceCapacityVO(view.getUsedCapacity(), view.getCurrentBundleCapacity()));
+    }
 
     @GetResource(path = "/resource", requiredPermission = false)
     @ApiOperation(value = "Get user space resource")
