@@ -25,9 +25,8 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     @Override
     public InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId) {
         SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
-        SubscriptionFeature planFeature = subscriptionInfo.getFeature();
         BillingAssembler assembler = new BillingAssembler();
-        return assembler.toVo(planFeature);
+        return assembler.toVo(subscriptionInfo);
     }
 
     @Override
