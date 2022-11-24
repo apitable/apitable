@@ -16,6 +16,7 @@ export const UserCardTrigger: FC<IUserCardTrigger> = props => {
   const { userId, memberId, spareName, spareSrc, spaceName, children, action = ['click'], isAlien,
     destroyPopupOnHide = true, scrollTarget, permissionVisible, isDeleted, isActive, avatarProps, ...rest } = props;
   const shareId = useSelector((state: IReduxState) => state.pageParams.shareId);
+  const embedId = useSelector((state: IReduxState) => state.pageParams.embedId);
   const [cardVisible, setCardVisible] = useState(false);
   const ref = useRef<any>();
 
@@ -37,7 +38,7 @@ export const UserCardTrigger: FC<IUserCardTrigger> = props => {
     return null;
   }
 
-  if (shareId) {
+  if (shareId || embedId) {
     return children;
   }
   return (

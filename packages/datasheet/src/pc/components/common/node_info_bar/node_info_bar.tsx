@@ -170,7 +170,7 @@ export const NodeInfoBar: FC<INodeInfoBarProps> = ({ data, hiddenModule, style }
             </div>
           )
         }
-        {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) &&
+        {!hiddenModule?.favorite && (!editing || (editing && isDatasheet)) && !embedId &&
           <NodeFavoriteStatus nodeId={nodeId} enabled={favoriteEnabled} />
         }
         {!hiddenModule?.permission && (!editing || (editing && isDatasheet)) && !isIframe() && !embedId &&

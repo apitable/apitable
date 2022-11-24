@@ -359,7 +359,7 @@ const WrapperWithTheme = props => {
 const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
-  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId } = useSelector(
+  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useSelector(
     state => ({
       nodeName: mirrorId ? Selectors.getMirror(state, mirrorId)?.name : Selectors.getDatasheet(state, datasheetId)!.name,
       allowShowCommentPane: Selectors.allowShowCommentPane(state),
@@ -367,6 +367,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
       snapshot: Selectors.getSnapshot(state, datasheetId)!,
       shareId: state.pageParams.shareId,
       templateId: state.pageParams.templateId,
+      embedId: state.pageParams.embedId
     }),
     shallowEqual,
   );
@@ -659,7 +660,8 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                   }}
                 />
               )}
-              {!shareId && !templateId && <SubscribeButton active={subscriptions.includes(activeRecordId)} onSubOrUnsub={() => onSubOrUnsub()} />}
+              {!shareId && !templateId && !embedId &&
+                <SubscribeButton active={subscriptions.includes(activeRecordId)} onSubOrUnsub={() => onSubOrUnsub()} />}
             </div>
           </div>
           <div className={classNames(styles.expandRecordWrapper, { [styles.columnLayout]: isColumnLayout })}>
