@@ -212,7 +212,10 @@ export class DatasheetOtService {
         }
       });
 
-      if (subscribeInfo.maxGanttViewsInSpace !== -1 && afterAddGanttViewCountInSpace > subscribeInfo.maxGanttViewsInSpace) {
+      const checkGanttViewsNum = afterAddGanttViewCountInSpace !== spaceUsages.ganttViewNums;
+      const checkCalendarViewsNum = afterAddCalendarCountInSpace !== spaceUsages.calendarViewNums;
+
+      if (subscribeInfo.maxGanttViewsInSpace !== -1 && checkGanttViewsNum && afterAddGanttViewCountInSpace > subscribeInfo.maxGanttViewsInSpace) {
         this.restService.createNotification(resultSet.auth, [{
           spaceId,
           templateId: 'space_gantt_limit',
@@ -226,7 +229,7 @@ export class DatasheetOtService {
         throw new ServerException(DatasheetException.getVIEW_ADD_LIMIT_FOR_GANTTMsg(subscribeInfo.maxGanttViewsInSpace, afterAddGanttViewCountInSpace));
       }
 
-      if (subscribeInfo.maxCalendarViewsInSpace !== -1 && afterAddCalendarCountInSpace > subscribeInfo.maxCalendarViewsInSpace) {
+      if (subscribeInfo.maxCalendarViewsInSpace !== -1 && checkCalendarViewsNum && afterAddCalendarCountInSpace > subscribeInfo.maxCalendarViewsInSpace) {
         this.restService.createNotification(resultSet.auth, [{
           spaceId,
           templateId: 'space_calendar_limit',

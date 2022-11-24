@@ -55,11 +55,6 @@ export const getInitialProps = async (context: { ctx: NextPageContext }) => {
   }
 
   const spaceId = context.ctx.query?.spaceId || '';
-
-  axios.interceptors.request.use(config => {
-    return config;
-  });
-
   const res = await axios.get('/client/info', { params: { spaceId }, headers: headers });
 
   Array.isArray(res.headers['set-cookie']) && setClientCookie(res.headers['set-cookie'], context.ctx);
