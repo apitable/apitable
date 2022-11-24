@@ -1,6 +1,7 @@
 import { Skeleton } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { Trial } from 'pc/components/space_manage/log/trial';
+// @ts-ignore
+import { Trial } from 'enterprise';
 import { showUpgradeContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { getEnvVariables } from 'pc/utils/env';
 import { useEffect, useRef, useState } from 'react';
@@ -60,7 +61,7 @@ const UpgradeSpace = () => {
   }, [spaceId, product]);
 
   if (showTrialModal) {
-    return <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
+    return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)}/>;
   }
 
   const iframeSrc = location.origin + '/pricing/';

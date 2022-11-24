@@ -6,7 +6,8 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { QrCode } from 'pc/components/home/qr_code/qr_code';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { Trial } from 'pc/components/space_manage/log/trial';
+// @ts-ignore
+import { Trial } from 'enterprise';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -79,7 +80,7 @@ export const AccountManager: FC = () => {
   }, [userInfo?.thirdPartyInformation]);
 
   if (showTrialModal) {
-    return <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.account_ass_manage)} />;
+    return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.account_ass_manage)} />;
   }
 
   // Unbind third-party accounts
