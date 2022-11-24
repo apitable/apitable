@@ -7,7 +7,6 @@
  * @see https://nextjs.org/docs/messages/middleware-upgrade-guide
  * @see https://github.com/vercel/next.js/discussions/29750
  */
-import { FILTER_HEADERS } from './utils/constant';
 import { NextRequest, NextResponse } from 'next/server';
 
 /*
@@ -30,7 +29,7 @@ const urlCheck = (path: string) => {
  *  @param request next request object
  *  @see https://vikadata.feishu.cn/docx/doxcnD8Syt3UxJUTlRGRhxbLC3f [Gateway grayscale processing flow]
  */
-const canaryTestingByFillUpUrlPathFlag = async(request: NextRequest): Promise<NextResponse> => {
+const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<NextResponse> => {
   const url = request.nextUrl.clone();
   const searchParams = url.searchParams;
 
@@ -39,12 +38,12 @@ const canaryTestingByFillUpUrlPathFlag = async(request: NextRequest): Promise<Ne
       cookie: request.headers.get('cookie')!,
     };
 
-    for (const [k, v] of request.headers.entries()) {
-      if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
-        continue;
-      }
-      headers[k] = v;
-    }
+    // for (const [k, v] of request.headers.entries()) {
+    //   if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
+    //     continue;
+    //   }
+    //   headers[k] = v;
+    // }
 
     console.log('middleware request header:', headers);
 
