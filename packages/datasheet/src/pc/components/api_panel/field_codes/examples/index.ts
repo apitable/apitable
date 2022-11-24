@@ -48,7 +48,7 @@ export const getDocHtml = (lang: CodeLanguage, method: string, context: any) => 
   }
 
   const mdText = template(initSDK + '\n' + partDoc)(context);
-  return md.render(mdText);
+  return md.render(mdText, method);
 };
 
 export const getDoc = (lang, context) => {

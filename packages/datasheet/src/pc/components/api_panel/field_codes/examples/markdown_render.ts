@@ -10,18 +10,37 @@ import { copyOutlinedStr, debugOutlinedStr } from '../icons';
 import { DEBUG_BUTTON_CLASS_NAME } from '../doc_inner_html';
 import { getEnvVariables } from 'pc/utils/env';
 
-const isSassProduction = () => {
-  return getEnvVariables().ENV === 'vika-production';
-};
-
 new Clipboard('.markdown-it-code-button-copy');
+const { APIFOX_DEBUG_PATCH_URL, APIFOX_DEBUG_POST_URL, APIFOX_DEBUG_DELETE_URL, APIFOX_DEBUG_GET_URL, APIFOX_DEBUG_UPLOAD_URL } = getEnvVariables();
+
+const displayDebuggerButton = (str: string, lang: string) => {
+  if (lang !== 'shell') {
+    return false;
+  }
+  if (str.includes('POST') && !APIFOX_DEBUG_POST_URL) {
+    return false;
+  }
+  if (str.includes('PATCH') && !APIFOX_DEBUG_PATCH_URL) {
+    return false;
+  }
+  if (str.includes('DELETE') && !APIFOX_DEBUG_DELETE_URL) {
+    return false;
+  }
+  if (str.includes('/attachments') && !APIFOX_DEBUG_UPLOAD_URL) {
+    return false;
+  }
+  if (!str.includes('curl -X') && !APIFOX_DEBUG_GET_URL) {
+    return false;
+  }
+  return true;
+};
 
 const md = new MarkdownIt({
   highlight: (str, lang, ...d) => {
     if (lang) {
       const langObject = Prism.languages[lang];
       // Online commissioning
-      const onlineDebugButton = `<button ${lang === 'shell' && isSassProduction() ? '' : 'style="display: none"'} class="${DEBUG_BUTTON_CLASS_NAME}"
+      const onlineDebugButton = `<button ${displayDebuggerButton(str,lang) ? '' : 'style="display: none"'} class="${DEBUG_BUTTON_CLASS_NAME}"
       >${debugOutlinedStr}${t(Strings.request_in_api_panel_curl)}</button>`;
       try {
         return (
@@ -35,7 +54,9 @@ const md = new MarkdownIt({
               ${onlineDebugButton}
           </pre>`
         );
-      } catch (err) { console.warn('! ' + err); }
+      } catch (err) {
+        console.warn('! ' + err);
+      }
     }
     return `<pre class="language-${lang}"><code>` + md.utils.escapeHtml(str) + '</code></pre>';
   },

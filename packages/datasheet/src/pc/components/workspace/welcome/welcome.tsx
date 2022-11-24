@@ -1,31 +1,29 @@
 import { Button, TextButton, Typography, useThemeColors } from '@apitable/components';
-import { ConfigConstant, IReduxState, Navigation, Settings, Strings, t } from '@apitable/core';
+import { ConfigConstant, integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@apitable/icons';
+// @ts-ignore
+import { showModal } from 'enterprise';
+import { get } from 'lodash';
 import Image from 'next/image';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
-import { isSocialPlatformEnabled, isSocialWecom } from 'pc/components/home/social_platform';
+import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { FC, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import WelcomeIcon from 'static/icon/datasheet/datasheet_img_welcome@2x.png';
-import ApiPng from 'static/icon/workbench/welcome/api_shadow.png';
-import BookPng from 'static/icon/workbench/welcome/book_shadow.png';
-import ErpPng from 'static/icon/workbench/welcome/erp_shadow.png';
-import FaqPng from 'static/icon/workbench/welcome/faq_shadow.png';
-import GetVikaPng from 'static/icon/workbench/welcome/get_vika_shadow.png';
-import MoviePng from 'static/icon/workbench/welcome/movie_shadow.png';
-import PmoPng from 'static/icon/workbench/welcome/pmo_shadow.png';
-import QuickStartPng from 'static/icon/workbench/welcome/quick_start_shadow.png';
-import VikaSheetPng from 'static/icon/workbench/welcome/vikasheet_shadow.png';
 import { CreateDataSheetModal } from './create_datasheet_modal';
 import styles from './style.module.less';
-// @ts-ignore
-import { showModal } from 'enterprise';
+
+const openUrl = (url:string)=>{
+  if(url.includes('http')){
+    return url;
+  }
+  return `${window.location.origin}${url}`;
+};
 
 export const Welcome: FC = () => {
   const colors = useThemeColors();
@@ -49,137 +47,10 @@ export const Welcome: FC = () => {
   const isBindWecom = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.WECOM);
   const isBindFeishu = spaceInfo && isSocialPlatformEnabled(spaceInfo, ConfigConstant.SocialType.FEISHU);
 
-  const isWecomSpace = isSocialWecom(spaceInfo);
+  // const isWecomSpace = isSocialWecom(spaceInfo);
 
   const plm = isBindDingTalk ? '?plm=dingtalk' : isBindWecom ? '?plm=wecom' : isBindFeishu ? '?plm=feishu' : '';
-  const data = [
-    {
-      title: t(Strings.welcome_sub_title1),
-      rightBtn: (isWecomSpace || !env.EDUCATION_URL) ? null : (
-        <TextButton className={styles.moreTemplateBtn} onClick={() => navigationToUrl(env.EDUCATION_URL, { method: Method.NewTab })}>
-          <Typography variant='body4' color={colors.fc3}>
-            {t(Strings.more_education)}
-          </Typography>
-          <ChevronRightOutlined size={16} color={colors.fc3} />
-        </TextButton>
-      ),
-      modules: [
-        {
-          id: 'welcome_module_1',
-          name: t(Strings.welcome_module1),
-          img: VikaSheetPng,
-          color: colors.fc0,
-          backgroundColor: colors.deepPurple[50],
-          activeBackgroundColor: colors.deepPurple[100],
-          isVideo: true,
-          onClick: () => showModal(JSON.parse(Settings.user_guide_welcome_what_is_datasheet_video.value)),
-        },
-        {
-          id: 'welcome_module_2',
-          name: t(Strings.welcome_module2),
-          img: QuickStartPng,
-          color: colors.pink[500],
-          backgroundColor: colors.pink[50],
-          activeBackgroundColor: colors.pink[100],
-          isVideo: true,
-          onClick: () => showModal(JSON.parse(Settings.user_guide_welcome_quick_start_video.value)),
-        },
-        {
-          id: 'welcome_module_3',
-          name: t(Strings.welcome_module3),
-          img: GetVikaPng,
-          color: colors.indigo[500],
-          backgroundColor: colors.indigo[50],
-          activeBackgroundColor: colors.indigo[100],
-          isVideo: true,
-          onClick: () => showModal(JSON.parse(Settings.user_guide_welcome_introduction_video.value)),
-        },
-      ],
-    },
-    {
-      title: t(Strings.welcome_sub_title2),
-      rightBtn: (
-        <TextButton className={styles.moreTemplateBtn} onClick={() => Router.push(Navigation.TEMPLATE)}>
-          <Typography variant='body4' color={colors.fc3}>
-            {t(Strings.more_template)}
-          </Typography>
-          <ChevronRightOutlined size={16} color={colors.fc3} />
-        </TextButton>
-      ),
-      modules: [
-        {
-          id: 'welcome_module_4',
-          name: t(Strings.welcome_module4),
-          img: PmoPng,
-          color: colors.teal[500],
-          backgroundColor: colors.teal[50],
-          activeBackgroundColor: colors.teal[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_template1_url.value}`, { method: Method.Push }),
-        },
-        {
-          id: 'welcome_module_5',
-          name: t(Strings.welcome_module5),
-          img: ErpPng,
-          color: colors.tangerine[500],
-          backgroundColor: colors.tangerine[50],
-          activeBackgroundColor: colors.tangerine[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_template2_url.value}`, { method: Method.Push }),
-        },
-        {
-          id: 'welcome_module_6',
-          name: t(Strings.welcome_module6),
-          img: MoviePng,
-          color: colors.blue[500],
-          backgroundColor: colors.blue[50],
-          activeBackgroundColor: colors.blue[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_template3_url.value}`, { method: Method.Push }),
-        },
-      ],
-    },
-    {
-      title: t(Strings.welcome_sub_title3),
-      rightBtn: (
-        <TextButton
-          className={styles.moreTemplateBtn}
-          onClick={() => navigationToUrl(`${window.location.origin}${Settings.integration_wecom_bind_help_center.value}${plm}`)}
-        >
-          <Typography variant='body4' color={colors.fc3}>
-            {t(Strings.welcome_more_help)}
-          </Typography>
-          <ChevronRightOutlined size={16} color={colors.fc3} />
-        </TextButton>
-      ),
-      modules: [
-        {
-          id: 'welcome_module_8',
-          name: t(Strings.welcome_module8),
-          img: BookPng,
-          color: colors.green[500],
-          backgroundColor: colors.green[50],
-          activeBackgroundColor: colors.green[100],
-          onClick: () => navigationToUrl(Settings.user_guide_welcome_product_manual_url.value, { method: Method.NewTab }),
-        },
-        {
-          id: 'welcome_module_7',
-          name: t(Strings.welcome_module7),
-          img: FaqPng,
-          color: colors.red[500],
-          backgroundColor: colors.red[50],
-          activeBackgroundColor: colors.red[100],
-          onClick: () => navigationToUrl(Settings.user_guide_welcome_faq_url.value, { method: Method.NewTab }),
-        },
-        {
-          id: 'welcome_module_9',
-          name: t(Strings.welcome_module9),
-          img: ApiPng,
-          color: colors.purple[500],
-          backgroundColor: colors.purple[50],
-          activeBackgroundColor: colors.purple[100],
-          onClick: () => navigationToUrl(`${window.location.origin}${Settings.user_guide_welcome_developer_center_url.value}${plm}`),
-        },
-      ],
-    },
-  ];
+  const data = JSON.parse(env.WELCOME_CONFIG || '');
 
   if (!treeNodesMap[rootId] || !spaceId) {
     return <></>;
@@ -207,36 +78,57 @@ export const Welcome: FC = () => {
                         {!isMobile && (
                           <div className={styles.titleWrapper}>
                             <Typography className={styles.title} variant='body1' color={colors.fc2}>
-                              {item.title}
+                              {t(Strings[item.moduleTitleKey])}
                             </Typography>
-                            {item.rightBtn && <div className={styles.rightBtn}>{item.rightBtn}</div>}
+                            {item.moreOperation && <div className={styles.rightBtn}>
+                              <TextButton
+                                className={styles.moreTemplateBtn}
+                                onClick={() => navigationToUrl(openUrl(`${item.moreOperation.linkUrl}`))}
+                              >
+                                <Typography variant='body4' color={colors.fc3}>
+                                  {t(Strings[item.moreOperation.textKay])}
+                                </Typography>
+                                <ChevronRightOutlined size={16} color={colors.fc3} />
+                              </TextButton>
+                            </div>}
                           </div>
                         )}
                         <div className={styles.moduleContainer}>
-                          {(item.modules as any).map(module => (
-                            <div
-                              key={module.id}
+                          {(item.cards as any).map(card => {
+                            return <div
+                              key={card.id}
                               className={styles.moduleItem}
-                              style={{ backgroundColor: downModuleId === module.id ? module.activeBackgroundColor : module.backgroundColor }}
-                              onClick={module.onClick}
-                              onMouseDown={() => setDownModuleId(module.id)}
+                              style={{
+                                backgroundColor: downModuleId === card.id ? get(colors, card.activeBackgroundColor) :
+                                  get(colors, card.backgroundColor)
+                              }}
+                              onClick={() => {
+                                if (card.video) {
+                                  showModal(card.video);
+                                  return;
+                                }
+                                navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
+                                  method: card.linkNewTab === 'true' ? Method.NewTab : Method.Push
+                                });
+                              }}
+                              onMouseDown={() => setDownModuleId(card.id)}
                               onMouseUp={() => setDownModuleId('')}
-                              onTouchStart={() => setDownModuleId(module.id)}
+                              onTouchStart={() => setDownModuleId(card.id)}
                               onTouchEnd={() => setDownModuleId('')}
                             >
-                              {module.isVideo && (
+                              {card.Video && (
                                 <div className={styles.videoBtn}>
                                   <PlayFilled size={20} />
                                 </div>
                               )}
                               <span className={styles.moduleImg}>
-                                <Image src={module.img} alt={module.name} />
+                                <Image src={integrateCdnHost(card.img)} alt={card.text} width={34} height={34} />
                               </span>
-                              <Typography variant='body3' className={styles.moduleName} color={module.color}>
-                                {module.name}
+                              <Typography variant='body3' className={styles.moduleName} color={colors[card.color]}>
+                                {t(Strings[card.textKey])}
                               </Typography>
-                            </div>
-                          ))}
+                            </div>;
+                          })}
                         </div>
                       </div>
                     ))}
@@ -253,27 +145,38 @@ export const Welcome: FC = () => {
                 </Typography>
                 <div className={styles.container}>
                   {data.map(item =>
-                    (item.modules as any).map(module => (
+                    (item.cards as any).map(card => (
                       <div
-                        key={module.id}
+                        key={card.id}
                         className={styles.moduleItem}
-                        style={{ backgroundColor: downModuleId === module.id ? module.activeBackgroundColor : module.backgroundColor }}
-                        onClick={module.onClick}
-                        onTouchStart={() => setDownModuleId(module.id)}
+                        style={{
+                          backgroundColor: downModuleId === card.id ? get(colors, card.activeBackgroundColor) :
+                            get(colors, card.backgroundColor)
+                        }}
+                        onClick={() => {
+                          if (card.video) {
+                            showModal(card.video);
+                            return;
+                          }
+                          navigationToUrl(openUrl(`${card.linkUrl}${plm}`), {
+                            method: card.linkNewTab === 'true' ? Method.NewTab : Method.Push
+                          });
+                        }}
+                        onTouchStart={() => setDownModuleId(card.id)}
                         onTouchEnd={() => setDownModuleId('')}
-                        onMouseDown={() => setDownModuleId(module.id)}
+                        onMouseDown={() => setDownModuleId(card.id)}
                         onMouseUp={() => setDownModuleId('')}
                       >
-                        {module.isVideo && (
+                        {card.video && (
                           <div className={styles.videoBtn}>
                             <PlayFilled size={20} />
                           </div>
                         )}
                         <div className={styles.moduleImg}>
-                          <Image src={module.img} alt={module.name} width={34} height={34} />
+                          <Image src={integrateCdnHost(card.img)} alt={card.name} width={34} height={34} />
                         </div>
-                        <Typography variant='body3' className={styles.moduleName} color={module.color}>
-                          {module.name}
+                        <Typography variant='body3' className={styles.moduleName} color={colors[card.color]}>
+                          {t(Strings[card.textKey])}
                         </Typography>
                       </div>
                     )),
