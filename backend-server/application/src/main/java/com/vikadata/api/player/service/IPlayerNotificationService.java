@@ -16,7 +16,7 @@ import com.vikadata.api.player.dto.NotificationModelDTO;
 import com.vikadata.api.player.vo.NotificationDetailVo;
 import com.vikadata.api.player.vo.NotificationStatisticsVo;
 import com.vikadata.entity.PlayerNotificationEntity;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 /**
  * <p>

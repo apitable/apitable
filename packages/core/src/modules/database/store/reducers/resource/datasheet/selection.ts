@@ -22,7 +22,7 @@ function setRecord(state: ISelection | null, { payload }: ISetRecordRange): ISel
   }
 
   const result = state.recordRanges.filter(item => item !== payload[0]);
-  if (result.length === state.recordRanges.length) result.push(payload[0]);
+  if (result.length === state.recordRanges.length) result.push(payload[0]!);
 
   return {
     recordRanges: result,

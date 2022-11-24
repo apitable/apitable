@@ -35,8 +35,8 @@ export class DateTimeField extends DateTimeBaseField {
     return helpers.error('valid date');
   }).allow(null).required();
 
-  static defaultDateFormat: string = DateFormat[0];
-  static defaultTimeFormat: string = TimeFormat[0];
+  static defaultDateFormat: string = DateFormat[0]!;
+  static defaultTimeFormat: string = TimeFormat[0]!;
 
   static createDefault(fieldMap: { [fieldId: string]: IField }): IDateTimeField {
     return {
@@ -81,8 +81,8 @@ export class DateTimeField extends DateTimeBaseField {
   override get openFieldProperty(): IOpenDateTimeFieldProperty {
     const { autoFill, includeTime, dateFormat, timeFormat } = this.field.property;
     return {
-      dateFormat: DateFormat[dateFormat],
-      timeFormat: TimeFormat[timeFormat],
+      dateFormat: DateFormat[dateFormat]!,
+      timeFormat: TimeFormat[timeFormat]!,
       autoFill,
       includeTime
     };

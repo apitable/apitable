@@ -424,7 +424,7 @@ export class LookUpField extends ArrayValueField {
     if (!foreignSnapshot) {
       return;
     }
-    const field = foreignSnapshot.meta.fieldMap[lookUpTargetFieldId];
+    const field = foreignSnapshot.meta.fieldMap[lookUpTargetFieldId]!;
     return {
       field,
       datasheetId: foreignDatasheetId,
@@ -457,7 +457,7 @@ export class LookUpField extends ArrayValueField {
 
     if (expression) {
       const snapshot = getSnapshot(this.state, datasheetId)!;
-      const record = snapshot.recordMap[recordId];
+      const record = snapshot.recordMap[recordId]!;
       return evaluate(expression, { field: this.field, record, state: this.state }, withError);
     }
     const entityField = this.getLookUpEntityField();
@@ -638,7 +638,7 @@ export class LookUpField extends ArrayValueField {
 
     let res = 0;
     for (let index = 0; index < zipCellValue.length; index++) {
-      const [cv1, cv2] = zipCellValue[index];
+      const [cv1, cv2] = zipCellValue[index]!;
       res = Field.bindContext(entityField, this.state).compare(cv1 as ICellValue, cv2 as ICellValue);
       if (index === zipCellValue.length - 1) {
         return res;

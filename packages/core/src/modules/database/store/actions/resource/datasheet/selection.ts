@@ -16,7 +16,7 @@ export const setSelection = (ranges: IRange | IRange[]): any => (dispatch: any, 
   const datasheetId = state.pageParams.datasheetId;
   const selectionState = Selectors.getDatasheetClient(state)!.selection;
   const payload = Array.isArray(ranges) ? ranges : [ranges];
-  const range = payload[0];
+  const range = payload[0]!;
 
   if (!selectionState || !selectionState.ranges || !selectionState.activeCell) {
     return dispatch({

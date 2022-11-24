@@ -4,7 +4,7 @@ import { useQuery } from 'pc/hooks';
 import { useMemo } from 'react';
 import BoundImage from 'static/icon/common/common_img_feishu_binding.png';
 import FailureImage from 'static/icon/common/common_img_share_linkfailure.png';
-import { ErrPromptBase, IErrPromptBase } from '../components/err_prompt_base';
+import { ErrPromptBase, IErrPromptBase } from 'pc/components/home/social_platform/components/err_prompt_base';
 import { SocialPlatformMap } from '../config';
 
 const FeishuConfigureErr = () => {

@@ -23,8 +23,8 @@ import com.vikadata.api.shared.constants.NotificationConstants;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
 import com.vikadata.core.util.SpringContextHolder;
-import com.vikadata.system.config.I18nConfigManager;
-import com.vikadata.system.config.i18n.I18nTypes;
+import com.vikadata.api.shared.sysconfig.I18nConfigManager;
+import com.vikadata.api.shared.sysconfig.i18n.I18nTypes;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.AntPathMatcher;

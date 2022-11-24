@@ -91,7 +91,7 @@ const CellFunc: React.FC<ChildProps & ICellFuncOwnProps> = props => {
     );
   }
 
-  const record = Selectors.getRecord(state, rows[type === CellType.TITLE ? index : rowIndex].recordId, datasheetId);
+  const record = Selectors.getRecord(state, rows[type === CellType.TITLE ? index : rowIndex].recordId, datasheetId)!;
   const field = fieldMap[type === CellType.TITLE ? firstColumn.fieldId : remainingColumns[columnIndex].fieldId];
   const cellValue = Selectors.getCellValue(state, {
     meta: { fieldMap: { [field.id]: field }},

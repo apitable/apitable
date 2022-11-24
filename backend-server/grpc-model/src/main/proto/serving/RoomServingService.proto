@@ -36,6 +36,7 @@ message WatchRoomRo {
   repeated string socket_ids = 4;
   optional string share_id = 5;
   optional string space_id = 6;
+  optional string embed_link_id = 7;
 }
 
 message WatchRoomVo {

@@ -93,7 +93,7 @@ export class FormulaExprLexer implements ILexer {
       return null;
     }
 
-    const token = this.matches[this.currentIndex];
+    const token = this.matches[this.currentIndex]!;
     return token;
   }
 
@@ -104,7 +104,7 @@ export class FormulaExprLexer implements ILexer {
       return null;
     }
 
-    const token = this.matches[this.currentIndex];
+    const token = this.matches[this.currentIndex]!;
     return token;
   }
 
@@ -144,8 +144,8 @@ export class FormulaExprLexer implements ILexer {
 
   private tokenizer(index: number, str: string, nextStr?: string): Token {
     for (let i = 0; i < EXPR_GRAMMAR.length; i++) {
-      const key = EXPR_GRAMMAR[i].key;
-      const regex = EXPR_GRAMMAR[i].exp;
+      const key = EXPR_GRAMMAR[i]!.key;
+      const regex = EXPR_GRAMMAR[i]!.exp;
       const type = key;
 
       if (regex.test(str)) {

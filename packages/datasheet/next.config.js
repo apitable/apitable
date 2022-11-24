@@ -204,7 +204,7 @@ module.exports = withPlugins(plugins, {
               { name: 'removeStyleElement' },
               { name: 'removeAttrs', params: { attrs: '(stroke|fill)' }},
             ],
-          },
+          }
         },
       ],
     });

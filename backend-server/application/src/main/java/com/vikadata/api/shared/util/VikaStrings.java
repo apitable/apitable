@@ -7,8 +7,8 @@ import javax.validation.constraints.NotNull;
 import cn.hutool.core.util.StrUtil;
 
 import com.vikadata.api.shared.constants.LanguageConstants;
-import com.vikadata.system.config.I18nConfigManager;
-import com.vikadata.system.config.i18n.I18nTypes;
+import com.vikadata.api.shared.sysconfig.I18nConfigManager;
+import com.vikadata.api.shared.sysconfig.i18n.I18nTypes;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 

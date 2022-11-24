@@ -15,7 +15,7 @@ function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<an
   if (params.length !== 1) {
     return false;
   }
-  if (params[0].node.valueType === BasicValueType.Array) {
+  if (params[0]!.node.valueType === BasicValueType.Array) {
     return true;
   }
   return false;
@@ -210,7 +210,7 @@ export class CountIf extends ArrayFunc {
   }
 
   static override func(params: IFormulaParam<any>[]): number {
-    const [{ node: rangeNode, value: range }, { node: conditionNode, value: condition }] = params;
+    const [{ node: rangeNode, value: range }, { node: conditionNode, value: condition }] = params as [IFormulaParam<any>, IFormulaParam<any>];
     const symbol = params[2]?.value || '=';
     const reg = /^(=)|(!=|！=)|(>)|(<)$/g;
     const finalSymbol = symbol.replace(reg, (_m: string, $1?: string, $2?: string, $3?: string, $4?: string) => {

@@ -65,7 +65,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
     };
 
     const addComputeEventContext = (context: string, state: IReduxState) => {
-      const [datasheetId, recordId, fieldId] = context.split('-');
+      const [datasheetId, recordId, fieldId] = context.split('-') as [string, string, string];
       // 1. A cell is updated, this cell corresponds to the field
       const updateCellField = Selectors.getField(state, fieldId, datasheetId);
       if (!updateCellField) {
@@ -77,7 +77,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
         return;
       }
       fieldRefs.forEach(refId => {
-        const [_datasheetId, _fieldId] = refId.split('-');
+        const [_datasheetId, _fieldId] = refId.split('-') as [string, string];
         const fieldMap = Selectors.getFieldMap(state, _datasheetId)!;
         // 3. Depends on one of the fields of this field
         const field = fieldMap[_fieldId];
@@ -161,7 +161,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
 
     // The context from which the virtual event came
     while (computeEventContextQueue.length) {
-      const context = computeEventContextQueue[0];
+      const context = computeEventContextQueue[0]!;
       computeEventContextQueue.shift();
       addComputeEventContext(context, state);
     }

@@ -12,43 +12,119 @@ import isObject from 'lodash/isObject';
 import sortBy from 'lodash/sortBy';
 
 import {
-  DatasheetActions, Field, Group, handleEmptyCellValue, IAutomaticallyField, ICell, ICellValue, IRange, LookUpField, MemberField, Range,
+  DatasheetActions,
+  Field,
+  Group,
+  handleEmptyCellValue,
+  IAutomaticallyField,
+  ICell,
+  ICellValue,
+  IRange,
+  LookUpField,
+  MemberField,
+  Range,
 } from 'model';
 import createCachedSelector from 're-reselect';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 
 import {
-  CellType, DEFAULT_COLUMN_WIDTH, DEFAULT_PERMISSION, PREVIEW_DATASHEET_ID, RecordMoveType, RowHeight, RowHeightLevel, ScreenWidth, SearchResultType,
-  UN_GROUP, ViewType, WhyRecordMoveType,
+  CellType,
+  DEFAULT_COLUMN_WIDTH,
+  DEFAULT_PERMISSION,
+  PREVIEW_DATASHEET_ID,
+  RecordMoveType,
+  RowHeight,
+  RowHeightLevel,
+  ScreenWidth,
+  SearchResultType,
+  UN_GROUP,
+  ViewType,
+  WhyRecordMoveType,
 } from '../../../../../shared/store/constants';
 
 import {
-  AlarmUsersType, IActiveUpdateRowInfo, ICalendarViewColumn, ICalendarViewProperty, IDatasheetState, IFieldMap, IFieldPermissionMap, IGanttViewColumn,
-  IGanttViewProperty, IGridViewColumn, IGridViewProperty, ILinearRow, IMirror, IOrgChartViewColumn, IOrgChartViewProperty, IPermissions, IRecord,
-  IRecordAlarm, IRecordAlarmClient, IRecordMap, IRecordSnapshot, IReduxState, ISearchCellResult, ISearchRecordResult, ISearchResult, ISnapshot,
-  IStandardValueTable, IViewColumn, IViewProperty, IViewRow, Role,
+  AlarmUsersType,
+  IActiveUpdateRowInfo,
+  ICalendarViewColumn,
+  ICalendarViewProperty,
+  IDatasheetState,
+  IFieldMap,
+  IFieldPermissionMap,
+  IGalleryViewProperty,
+  IGanttViewColumn,
+  IGanttViewProperty,
+  IGridViewColumn,
+  IGridViewProperty,
+  ILinearRow,
+  IMirror,
+  IOrgChartViewColumn,
+  IOrgChartViewProperty,
+  IPermissions,
+  IRecord,
+  IRecordAlarm,
+  IRecordAlarmClient,
+  IRecordMap,
+  IRecordSnapshot,
+  IReduxState,
+  ISearchCellResult,
+  ISearchRecordResult,
+  ISearchResult,
+  ISnapshot,
+  IStandardValueTable,
+  IViewColumn,
+  IViewProperty,
+  IViewRow,
+  Role,
 } from '../../../../../../exports/store/interfaces';
 import { getGroupBreakpoint } from '../../../../../../exports/store/selectors';
 import { getMirror, getMirrorNetworking } from 'modules/database/store/selectors/resource/mirror';
 
 import {
-  BasicValueType, FieldType, FilterConjunction, FOperator, IAttachmentValue, IField, IFilterCondition, IFilterInfo, IFormulaField, IGroupInfo,
-  ILinkIds, ILookUpField, IMemberField, ISortedField, IStandardValue, IUnitIds, RollUpFuncType,
+  BasicValueType,
+  FieldType,
+  FilterConjunction,
+  FOperator,
+  IAttachmentValue,
+  IField,
+  IFilterCondition,
+  IFilterInfo,
+  IFormulaField,
+  IGroupInfo,
+  ILinkIds,
+  ILookUpField,
+  IMemberField,
+  ISortedField,
+  IStandardValue,
+  IUnitIds,
+  RollUpFuncType,
 } from 'types';
 
 import {
-  getActiveDatasheetId, getActiveRecordId, getActiveRowInfo, getDatasheet, getDatasheetClient, getDatasheetConnected, getField, getFieldPermissionMap,
-  getFieldRoleByFieldId, getGroupingCollapseIds, getIsSearching, getRecord, getSearchKeyword, getSearchResultCursorIndex, getSnapshot,
+  getActiveDatasheetId,
+  getActiveRecordId,
+  getActiveRowInfo,
+  getDatasheet,
+  getDatasheetClient,
+  getDatasheetConnected,
+  getField,
+  getFieldPermissionMap,
+  getFieldRoleByFieldId,
+  getGroupingCollapseIds,
+  getIsSearching,
+  getRecord,
+  getSearchKeyword,
+  getSearchResultCursorIndex,
+  getSnapshot,
 } from './base';
 
 import { getLinearRowsFormComputed, getPureVisibleRowsFormComputed, getSearchResultArray } from './computed';
 
 /**
- * 
- * Field class needs to depend on the root state to calculate, 
- * we need to pass the root state to the selector, 
+ *
+ * Field class needs to depend on the root state to calculate,
+ * we need to pass the root state to the selector,
  * but we don't want to break the selector cache.
- * 
+ *
  * consider most cases, memorize the root state as a parameter is meaningless,
  * so we make an assumption here,
  * if the user passes the root state as a parameter,
@@ -56,19 +132,16 @@ import { getLinearRowsFormComputed, getPureVisibleRowsFormComputed, getSearchRes
  */
 const createSelectorIgnoreState = createSelectorCreator(defaultMemoize, (pre, next) => {
   // if compare to root state, always return true
-  if (isObject(pre) && isObject(next) && ('isStateRoot' in pre) && ('isStateRoot' in next)) {
+  if (isObject(pre) && isObject(next) && 'isStateRoot' in pre && 'isStateRoot' in next) {
     return true;
   }
   // common reference comparison
   return pre === next;
 });
 
-export const createDeepEqualSelector = createSelectorCreator(
-  defaultMemoize,
-  isEqual,
-);
+export const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
 
-const defaultKeySelector = (state: IReduxState, datasheetId: string) => datasheetId || getActiveDatasheetId(state);
+const defaultKeySelector = (state: IReduxState, datasheetId: string | undefined | void) => datasheetId || getActiveDatasheetId(state);
 
 const workerCompute = () => (global as any).useWorkerCompute;
 
@@ -79,12 +152,12 @@ export const getDatasheetIds = createDeepEqualSelector(
 
 /**
  * get current active view
- * 
- * @param state 
- * @param id 
- * @returns 
+ *
+ * @param state
+ * @param id
+ * @returns
  */
-export const getActiveView = (state: IReduxState, id?: string) => {
+export const getActiveView = (state: IReduxState, id?: string | void): string | undefined => {
   const datasheet = getDatasheet(state, id);
   if (!datasheet) {
     return undefined;
@@ -93,13 +166,13 @@ export const getActiveView = (state: IReduxState, id?: string) => {
   if (viewList.findIndex(item => item.id === datasheet.activeView) !== -1) {
     return datasheet.activeView;
   }
-  return viewList[0].id;
+  return viewList[0]!.id;
 };
 
 /**
  * get current search result's one record(cell)
- * @param state 
- * @returns 
+ * @param state
+ * @returns
  */
 export const getCurrentSearchItem = (state: IReduxState) => {
   const searchKeyword = getSearchKeyword(state);
@@ -121,8 +194,7 @@ export const getVisibleColumnsBase = (view?: IViewProperty) => {
 };
 
 // calc and get a width of a column
-export const getColumnWidth = (column: IGridViewColumn) => (!column || column.width == null) ?
-  DEFAULT_COLUMN_WIDTH : column.width;
+export const getColumnWidth = (column: IGridViewColumn) => (!column || column.width == null ? DEFAULT_COLUMN_WIDTH : column.width);
 
 export const getViewById = (snapshot: ISnapshot, viewId: string) => {
   return snapshot.meta.views.find(view => view.id === viewId);
@@ -133,7 +205,7 @@ export const getViewIndex = (snapshot: ISnapshot, viewId: string) => {
 };
 
 const filterColumnsByPermission = (columns: IViewColumn[], fieldPermissionMap: IFieldPermissionMap | undefined) => {
-  return columns.filter((column) => {
+  return columns.filter(column => {
     // TODO: column permission delete this logic (2nd phase)
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
     return fieldRole !== Role.None;
@@ -141,13 +213,12 @@ const filterColumnsByPermission = (columns: IViewColumn[], fieldPermissionMap: I
 };
 
 export const getCurrentViewBase = (
-  snapshot: ISnapshot,
+  snapshot: ISnapshot | undefined,
   viewId: string | undefined,
   datasheetId?: string,
   fieldPermissionMap?: IFieldPermissionMap | undefined,
   mirror?: IMirror | null,
 ) => {
-
   if (!viewId) {
     return;
   }
@@ -162,31 +233,33 @@ export const getCurrentViewBase = (
   if (permissionColumns.length !== view.columns.length) {
     return {
       ...view,
-      columns: permissionColumns
+      columns: permissionColumns,
     };
   }
   return view;
 };
-export const getCurrentView = createCachedSelector<IReduxState,
-  string | void,
-  ISnapshot | null | undefined,
+export const getCurrentView = createCachedSelector<
+  IReduxState,
+  string | undefined | void,
+  ISnapshot | undefined,
   string | undefined,
   string | undefined,
-  IFieldPermissionMap | undefined | void,
+  IFieldPermissionMap | undefined,
   IMirror | undefined | null,
-  IViewProperty | undefined>(
-    [
-      getSnapshot,
-      getActiveView,
-      (state, datasheetId) => datasheetId || getActiveDatasheetId(state),
-      getFieldPermissionMap,
-      (state) => getMirror(state)
-    ],
-    getCurrentViewBase,
-  )({
+  IViewProperty | undefined
+>(
+  [
+    getSnapshot,
+    getActiveView,
+    (state, datasheetId) => datasheetId || getActiveDatasheetId(state),
+    getFieldPermissionMap,
+    (state: IReduxState) => getMirror(state),
+  ],
+  getCurrentViewBase,
+)({
   // keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
-    keySelector: defaultKeySelector
-  });
+  keySelector: defaultKeySelector,
+});
 
 export const getViewByIdWithDefault = (state: IReduxState, datasheetId: string, viewId?: string) => {
   const snapshot = getSnapshot(state, datasheetId);
@@ -194,7 +267,7 @@ export const getViewByIdWithDefault = (state: IReduxState, datasheetId: string, 
   if (!snapshot) {
     return null;
   }
-  const firstViewId = snapshot.meta.views[0].id;
+  const firstViewId = snapshot.meta.views[0]!.id;
 
   let defaultView = getCurrentViewBase(snapshot, firstViewId, datasheetId, fieldPermissionMap, getMirror(state));
   if (viewId) {
@@ -232,7 +305,6 @@ export const calcCellValue = (
   const instance = Field.bindContext(field, state);
 
   if (instance.isComputed) {
-
     try {
       let cv = getComputeCellValue(state, snapshot, recordId, fieldId, withError);
       cv = handleEmptyCellValue(cv, instance.basicValueType);
@@ -246,15 +318,15 @@ export const calcCellValue = (
 
 /**
  * get cell value
- * 
- * @param state 
- * @param snapshot 
- * @param recordId 
- * @param fieldId 
- * @param withError 
- * @param datasheetId 
- * @param ignoreFieldPermission 
- * @returns 
+ *
+ * @param state
+ * @param snapshot
+ * @param recordId
+ * @param fieldId
+ * @param withError
+ * @param datasheetId
+ * @param ignoreFieldPermission
+ * @returns
  */
 export const getCellValue = (
   state: IReduxState,
@@ -300,7 +372,7 @@ export const getCellValue = (
   return res.cellValue;
 };
 
-export const getTemporaryView = (snapshot: ISnapshot, viewId: string, _datasheetId?: string, mirror?: IMirror | null) => {
+export const getTemporaryView = (snapshot: ISnapshot | undefined, viewId: string, _datasheetId?: string, mirror?: IMirror | null) => {
   const temporaryView = mirror?.temporaryView;
 
   if (!snapshot) {
@@ -311,57 +383,64 @@ export const getTemporaryView = (snapshot: ISnapshot, viewId: string, _datasheet
   if (!temporaryView || mirror?.sourceInfo.datasheetId !== snapshot.datasheetId) {
     return originView;
   }
-  // in mirror, if any view config is modified, 
+  // in mirror, if any view config is modified,
   // the original table's view config will not affect the mirror, so here directly use the mirror's cache data
   return {
     id: originView!.id,
     type: originView!.type,
     rows: originView!.rows,
-    ...temporaryView
+    ...temporaryView,
   } as IViewProperty;
 };
 
-export const getFilterInfoBase = createCachedSelector<IReduxState,
-  string | undefined, ISnapshot | undefined, IViewProperty | undefined, IFilterInfo | undefined>([getSnapshot,
-    getCurrentView],
-  (snapshot, view,) => {
-    if (!view || !snapshot) {
-      return;
+export const getFilterInfoBase = createCachedSelector<
+  IReduxState,
+  string | undefined,
+  ISnapshot | undefined,
+  IViewProperty | undefined,
+  IFilterInfo | undefined
+>([getSnapshot, getCurrentView], (snapshot, view) => {
+  if (!view || !snapshot) {
+    return;
+  }
+
+  return view.filterInfo;
+})(defaultKeySelector);
+
+export const getFilterInfo = createCachedSelector<
+  IReduxState,
+  string | undefined | void,
+  ISnapshot | undefined,
+  string | undefined,
+  IMirror | undefined | null,
+  IFilterInfo | undefined
+>([getSnapshot, getActiveView, state => getMirror(state)], (snapshot, viewId, mirror) => {
+  if (!snapshot || !viewId) {
+    return;
+  }
+  const view = getViewById(snapshot, viewId);
+  if (!view) {
+    return;
+  }
+  if (mirror?.id) {
+    const originViewConditionIds = view.filterInfo?.conditions.map(item => item.conditionId) || [];
+    const filterInfo = mirror.temporaryView?.filterInfo;
+    const mirrorConditions = filterInfo?.conditions.filter(item => {
+      return !originViewConditionIds.includes(item.conditionId);
+    });
+
+    if (!mirrorConditions) {
+      return mirror.temporaryView?.filterInfo;
     }
-
-    return view.filterInfo;
-  })(defaultKeySelector);
-
-export const getFilterInfo = createCachedSelector<IReduxState,
-  string | undefined | void, ISnapshot | undefined, string | undefined, IMirror | undefined | null, IFilterInfo | undefined>(
-    [getSnapshot, getActiveView, state => getMirror(state)], (snapshot, viewId, mirror) => {
-      if (!snapshot || !viewId) {
-        return;
-      }
-      const view = getViewById(snapshot, viewId);
-      if (!view) {
-        return;
-      }
-      if (mirror?.id) {
-        const originViewConditionIds = view.filterInfo?.conditions.map(item => item.conditionId) || [];
-        const filterInfo = mirror.temporaryView?.filterInfo;
-        const mirrorConditions = filterInfo?.conditions.filter(item => {
-          return !originViewConditionIds.includes(item.conditionId);
-        });
-
-        if (!mirrorConditions) {
-          return mirror.temporaryView?.filterInfo;
-        }
-        return {
-          conjunction: filterInfo!.conjunction,
-          conditions: mirrorConditions
-        };
-      }
-      return view.filterInfo;
-    }
-  )({
-    keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
-  });
+    return {
+      conjunction: filterInfo!.conjunction,
+      conditions: mirrorConditions,
+    };
+  }
+  return view.filterInfo;
+})({
+  keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
+});
 
 const doFilterOperations = (state: IReduxState, condition: IFilterCondition, snapshot: ISnapshot, record: IRecord, repeatRows?: string[]) => {
   /**
@@ -372,9 +451,9 @@ const doFilterOperations = (state: IReduxState, condition: IFilterCondition, sna
     return true;
   }
   const { fieldId } = condition;
-  const field = snapshot.meta.fieldMap[fieldId];
+  const field = snapshot.meta.fieldMap[fieldId]!;
 
-  // currently, we don't filter data by the columns without permission, 
+  // currently, we don't filter data by the columns without permission,
   // so we need to ignore the permission check when get `cellValue`
   const cellValue = getCellValue(state, snapshot, record.id, fieldId, undefined, undefined, true);
   try {
@@ -389,13 +468,7 @@ const doFilterOperations = (state: IReduxState, condition: IFilterCondition, sna
 /**
  * check whether a record match the filterCondition
  */
-const checkConditions = (
-  state: IReduxState,
-  snapshot: ISnapshot,
-  record: IRecord,
-  filterInfo: IFilterInfo,
-  repeatRows?: string[],
-) => {
+const checkConditions = (state: IReduxState, snapshot: ISnapshot, record: IRecord, filterInfo: IFilterInfo, repeatRows?: string[]) => {
   const conditions = filterInfo.conditions;
 
   if (filterInfo.conjunction === FilterConjunction.And) {
@@ -406,15 +479,17 @@ const checkConditions = (
     return conditions.some(condition => doFilterOperations(state, condition, snapshot, record, repeatRows));
   }
 
-  throw new Error(t(Strings.error_wrong_conjunction_type, {
-    conjunction: filterInfo.conjunction,
-  }));
+  throw new Error(
+    t(Strings.error_wrong_conjunction_type, {
+      conjunction: filterInfo.conjunction,
+    }),
+  );
 };
 
 export function doFilter(state: IReduxState, condition: IFilterCondition, field: IField, cellValue: ICellValue) {
   const fieldMethod = Field.bindContext(field, state);
   /**
-   *  isEmpty, isNotEmpty 
+   *  isEmpty, isNotEmpty
    *  call the common business logic
    */
   if (condition.operator === FOperator.IsEmpty || condition.operator === FOperator.IsNotEmpty) {
@@ -462,7 +537,10 @@ export const getFilterInfoExceptInvalid = (state: IReduxState, filterInfo?: IFil
   };
 };
 
-const getFilterRowsBase = (state: IReduxState, { filterInfo, rows, snapshot, recordMap }: { filterInfo?: IFilterInfo, rows: IViewRow[], snapshot: ISnapshot, recordMap: IRecordMap }) => {
+const getFilterRowsBase = (
+  state: IReduxState,
+  { filterInfo, rows, snapshot, recordMap }: { filterInfo?: IFilterInfo; rows: IViewRow[]; snapshot: ISnapshot; recordMap: IRecordMap },
+) => {
   if (!filterInfo) {
     return rows;
   }
@@ -474,13 +552,17 @@ const getFilterRowsBase = (state: IReduxState, { filterInfo, rows, snapshot, rec
   if (isRepeatCondition) {
     if (isAnd) {
       rows = findRepeatRow(state, snapshot, rows, isRepeatCondition.fieldId, true) as IViewRow[];
-      set(filterInfo, 'conditions', filterInfo.conditions.filter(condition => condition.operator !== FOperator.IsRepeat));
+      set(
+        filterInfo,
+        'conditions',
+        filterInfo.conditions.filter(condition => condition.operator !== FOperator.IsRepeat),
+      );
     } else {
       repeatRows = findRepeatRow(state, snapshot, rows, isRepeatCondition.fieldId) as string[];
     }
   }
   const result = rows.filter(row => {
-    return checkConditions(state, snapshot, recordMap[row.recordId], filterInfo, repeatRows);
+    return checkConditions(state, snapshot, recordMap[row.recordId]!, filterInfo, repeatRows);
   });
   return result;
 };
@@ -492,22 +574,22 @@ export const getFilteredRows = (state: IReduxState, snapshot?: ISnapshot, view?:
   const recordMap = snapshot.recordMap;
   const rows = view.rows.filter(row => recordMap[row.recordId]);
 
-  // pass in `view`, because it has been processed by mirror, 
-  // so the `filterInfo` we get may be the temporary data of mirror operation, 
-  // so if we read it directly from `views`, 
+  // pass in `view`, because it has been processed by mirror,
+  // so the `filterInfo` we get may be the temporary data of mirror operation,
+  // so if we read it directly from `views`,
   // we can't do data isolation for the source table
   const _filterInfo = state?.pageParams?.mirrorId ? snapshot.meta.views.find(item => item.id === view.id)!.filterInfo : view.filterInfo;
   const filterInfo = getFilterInfoExceptInvalid(state, _filterInfo, snapshot.datasheetId);
   const viewRows = getFilterRowsBase(state, { filterInfo, rows, snapshot, recordMap });
 
   /**
-   * 
+   *
    * getVisibleRowsBase sometimes needs to process the data of the associated table,
-   * if we judge the existence of mirror only, 
+   * if we judge the existence of mirror only,
    * it will cause an error situation where the data source is the associated table and the filter condition is the local table.
-   * 
+   *
    * so, here we need to judge whether the snapshot provided and the table bound by the mirror are the same
-   * 
+   *
    */
   if (state?.pageParams?.mirrorId && state?.pageParams?.datasheetId === snapshot.datasheetId) {
     const mirror = getMirror(state, state.pageParams.mirrorId)!;
@@ -526,24 +608,25 @@ export const getFilteredRows = (state: IReduxState, snapshot?: ISnapshot, view?:
 
 export const getGroupFields = (view: IViewProperty, fieldMap: { [id: string]: IField }, fieldPermissionMap?: IFieldPermissionMap): IField[] => {
   const fields: IField[] = [];
-  view.groupInfo && view.groupInfo.forEach(gp => {
-    const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, gp.fieldId);
-    if (fieldRole === Role.None) {
-      fields.push({
-        id: gp.fieldId,
-        type: FieldType.NotSupport,
-        name: t(Strings.crypto_field),
-        property: null,
-      });
-      return;
-    }
-    const field = fieldMap[gp.fieldId];
-    if (field) {
-      fields.push(field);
-    } else {
-      console.warn('! ' + `can't find group field ${gp.fieldId} on datasheet`);
-    }
-  });
+  view.groupInfo &&
+    view.groupInfo.forEach(gp => {
+      const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, gp.fieldId);
+      if (fieldRole === Role.None) {
+        fields.push({
+          id: gp.fieldId,
+          type: FieldType.NotSupport,
+          name: t(Strings.crypto_field),
+          property: null,
+        });
+        return;
+      }
+      const field = fieldMap[gp.fieldId];
+      if (field) {
+        fields.push(field);
+      } else {
+        console.warn('! ' + `can't find group field ${gp.fieldId} on datasheet`);
+      }
+    });
   return fields;
 };
 
@@ -552,29 +635,42 @@ export const getGroupFields = (view: IViewProperty, fieldMap: { [id: string]: IF
  */
 const findRepeatRow = (state: IReduxState, snapshot: ISnapshot, rows: IViewRow[], fieldId: string, isAnd?: boolean) => {
   const map = new Map();
-  const field = snapshot.meta.fieldMap[fieldId];
+  const field = snapshot.meta.fieldMap[fieldId]!;
   const fieldMethod = Field.bindContext(field, state);
   const values = DatasheetActions.getCellValuesByFieldId(state, snapshot, fieldId, undefined, true);
   if (values?.length) {
     for (const row of rows) {
-      const needTranslate = [FieldType.Currency, FieldType.SingleText, FieldType.Text, FieldType.URL, FieldType.Phone, FieldType.Email,
-        FieldType.DateTime, FieldType.CreatedTime, FieldType.LastModifiedTime, FieldType.Number, FieldType.Percent];
+      const needTranslate = [
+        FieldType.Currency,
+        FieldType.SingleText,
+        FieldType.Text,
+        FieldType.URL,
+        FieldType.Phone,
+        FieldType.Email,
+        FieldType.DateTime,
+        FieldType.CreatedTime,
+        FieldType.LastModifiedTime,
+        FieldType.Number,
+        FieldType.Percent,
+      ];
       let cellValue = getCellValue(state, snapshot, row.recordId, fieldId);
       const lookUpField = findRealField(state, field);
       const rollUpType = field.property?.rollUpType || RollUpFuncType.VALUES;
-      const isNeedSort = Array.isArray(cellValue) && (
-        (field.type === FieldType.LookUp && rollUpType === RollUpFuncType.VALUES) ||
-        ([FieldType.MultiSelect, FieldType.Member].includes(field.type))
-        || field.type === FieldType.Link
-      );
+      const isNeedSort =
+        Array.isArray(cellValue) &&
+        ((field.type === FieldType.LookUp && rollUpType === RollUpFuncType.VALUES) ||
+          [FieldType.MultiSelect, FieldType.Member].includes(field.type) ||
+          field.type === FieldType.Link);
 
       // whether or not to sort
       if (isNeedSort) {
-        cellValue = sortBy(cellValue as any[], o => typeof o === 'object' ? o.text : o) as ICellValue;
+        cellValue = sortBy(cellValue as any[], o => (typeof o === 'object' ? o.text : o)) as ICellValue;
       }
       // whether or not call cellValueToString to convert to string
-      if (needTranslate.includes(field.type) ||
-        (FieldType.LookUp === field.type && lookUpField &&
+      if (
+        needTranslate.includes(field.type) ||
+        (FieldType.LookUp === field.type &&
+          lookUpField &&
           ![FieldType.SingleSelect, FieldType.MultiSelect, FieldType.Link].includes(lookUpField.type))
       ) {
         cellValue = fieldMethod.cellValueToString(cellValue, { hideUnit: true }) || '';
@@ -609,9 +705,7 @@ export const findRealField = <T extends IField>(state: IReduxState, propsField: 
   return Field.bindContext(propsField, state).getLookUpEntityField() as RealFieldReturn<T>;
 };
 
-export const getKanbanGroupMapBase = (
-  rows: IViewRow[], kanbanFieldId?: string, snapshot?: ISnapshot, fieldPermissionMap?: IFieldPermissionMap,
-) => {
+export const getKanbanGroupMapBase = (rows: IViewRow[], kanbanFieldId?: string, snapshot?: ISnapshot, fieldPermissionMap?: IFieldPermissionMap): { [key: string]: IRecord[] } | undefined => {
   if (!kanbanFieldId) {
     return;
   }
@@ -621,13 +715,13 @@ export const getKanbanGroupMapBase = (
   if (fieldRole === Role.None) {
     return {
       UN_GROUP: rows.map(row => {
-        return recordMap[row.recordId];
+        return recordMap[row.recordId]!;
       }),
     };
   }
 
   const fieldMap = snapshot!.meta.fieldMap;
-  const field = fieldMap[kanbanFieldId];
+  const field = fieldMap[kanbanFieldId]!;
   const groupMap = getGroupValueMap(field);
 
   for (const { recordId } of rows) {
@@ -639,19 +733,18 @@ export const getKanbanGroupMapBase = (
     const fieldData = record.data[kanbanFieldId];
 
     if (fieldData == null) {
-      groupMap[UN_GROUP].push(record);
+      groupMap[UN_GROUP]!.push(record);
       continue;
     }
     try {
-
       if (field.type === FieldType.Member) {
         const id = MemberField.polyfillOldData(fieldData as IUnitIds)?.[0];
-        id && groupMap[id].push(record);
+        id && groupMap[id]!.push(record);
 
         continue;
       }
 
-      groupMap[fieldData as string].push(record);
+      groupMap[fieldData as string]!.push(record);
     } catch (e) {
       console.warn('! ' + `${fieldData} is not exist,check kanban data`);
     }
@@ -680,10 +773,13 @@ const getGroupValueMap = (field: IField) => {
   } else {
     sourceData = (field as IMemberField).property.unitIds || [];
   }
-  return sourceData.reduce<{ [key: string]: IRecord[] }>((map, item) => {
-    map[item] = [];
-    return map;
-  }, { [UN_GROUP]: [] });
+  return sourceData.reduce<{ [key: string]: IRecord[] }>(
+    (map, item) => {
+      map[item] = [];
+      return map;
+    },
+    { [UN_GROUP]: [] },
+  );
 };
 
 export const getGroupInfoWithPermission = (state: IReduxState, groupInfo: IGroupInfo, datasheetId?: string) => {
@@ -702,18 +798,11 @@ export const getGroupInfoWithPermission = (state: IReduxState, groupInfo: IGroup
   });
 };
 
-export const getFormulaCellValue = (
-  state: IReduxState,
-  field: IFormulaField,
-  record: IRecord,
-  withError?: boolean,
-): ICellValue => {
+export const getFormulaCellValue = (state: IReduxState, field: IFormulaField, record: IRecord, withError?: boolean): ICellValue => {
   return evaluate(field.property.expression, { field, record, state }, withError, false);
 };
 
-export const getComputeCellValue = (
-  state: IReduxState, snapshot: IRecordSnapshot, recordId: string, fieldId: string, withError?: boolean,
-) => {
+export const getComputeCellValue = (state: IReduxState, snapshot: IRecordSnapshot, recordId: string, fieldId: string, withError?: boolean) => {
   const recordMap = snapshot.recordMap;
   const fieldMap = snapshot.meta.fieldMap;
   const field = fieldMap[fieldId];
@@ -750,23 +839,21 @@ export const getComputeCellValue = (
 };
 
 /**
- * 
+ *
  * non-calc field value, get by record.data and fieldId
- * 
- * @param state 
- * @param snapshot 
- * @param recordId 
- * @param fieldId 
- * @param datasheetId 
- * @returns 
+ *
+ * @param state
+ * @param snapshot
+ * @param recordId
+ * @param fieldId
+ * @param datasheetId
+ * @returns
  */
-export const getEntityCellValue = (
-  state: IReduxState, snapshot: IRecordSnapshot, recordId: string, fieldId: string, datasheetId?: string,
-) => {
+export const getEntityCellValue = (state: IReduxState, snapshot: IRecordSnapshot, recordId: string, fieldId: string, datasheetId?: string) => {
   const recordMap = snapshot.recordMap;
   const fieldMap = snapshot.meta.fieldMap;
   const field = fieldMap[fieldId];
-  // TODO: if cannot find this id when get entity cell value, 
+  // TODO: if cannot find this id when get entity cell value,
   // it means that the server missed the data. The frontend needs to add a remedy to actively load the missing fields.
   if (!recordMap[recordId] && datasheetId) {
     const client = state.datasheetMap[datasheetId]?.client;
@@ -775,7 +862,7 @@ export const getEntityCellValue = (
       dataSelfHelper.addRecord(datasheetId, recordId, fieldId);
     }
   }
-  const recordData = recordMap[recordId] && recordMap[recordId].data;
+  const recordData = recordMap[recordId] && recordMap[recordId]!.data;
   if (!field || !recordData) {
     return null;
   }
@@ -784,13 +871,7 @@ export const getEntityCellValue = (
   return cv;
 };
 
-export const _getLookUpTreeValue = (
-  state: IReduxState,
-  snapshot: ISnapshot,
-  recordId: string,
-  fieldId: string,
-  datasheetId?: string,
-) => {
+export const _getLookUpTreeValue = (state: IReduxState, snapshot: ISnapshot, recordId: string, fieldId: string, datasheetId?: string) => {
   const fieldMap = snapshot.meta.fieldMap;
   const field = fieldMap[fieldId];
   if (!field) {
@@ -821,7 +902,7 @@ export const getFieldMapBase = (datasheet: IDatasheetState | null | undefined, f
   for (const k in fieldMap) {
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, k);
     if (fieldRole === Role.None) {
-      // room-server currently don't do data filter for no permission fields, 
+      // room-server currently don't do data filter for no permission fields,
       // so do it in selector
       continue;
     }
@@ -830,17 +911,26 @@ export const getFieldMapBase = (datasheet: IDatasheetState | null | undefined, f
   return _fieldMap;
 };
 
-export const getFieldMap = createCachedSelector<IReduxState,
-  string | void, undefined | IDatasheetState | null, IFieldPermissionMap | undefined, IFieldMap | null | undefined>(
-    [getDatasheet, getFieldPermissionMap],
-    getFieldMapBase,
-  )(defaultKeySelector);
+export const getFieldMap = createCachedSelector<
+  IReduxState,
+  string | undefined | void,
+  undefined | IDatasheetState | null,
+  IFieldPermissionMap | undefined,
+  IFieldMap | null | undefined
+>(
+  [getDatasheet, getFieldPermissionMap],
+  getFieldMapBase,
+)(defaultKeySelector);
 
-export const getFieldMapIgnorePermission = createCachedSelector<IReduxState,
-  string | void, undefined | IDatasheetState | null, IFieldMap | null | undefined>(
-    [getDatasheet],
-    getFieldMapBase,
-  )(defaultKeySelector);
+export const getFieldMapIgnorePermission = createCachedSelector<
+  IReduxState,
+  string | undefined | void,
+  IDatasheetState | undefined | null,
+  IFieldMap | null | undefined
+>(
+  [getDatasheet],
+  getFieldMapBase,
+)(defaultKeySelector);
 
 /**
  * magic links filter record ids
@@ -865,37 +955,35 @@ export const getFilteredRecords = (state: IReduxState, snapshot: ISnapshot, reco
     if (!recordMap[recordId]) {
       return false;
     }
-    return checkConditions(state, snapshot, recordMap[recordId], _filterInfo!);
+    return checkConditions(state, snapshot, recordMap[recordId]!, _filterInfo!);
   });
   return result;
 };
 
-export const calcCellValueAndString = (
-  {
-    state,
-    snapshot,
-    fieldId,
-    recordId,
-    datasheetId,
-    withError,
-    ignoreFieldPermission,
-  }: {
-    state: IReduxState,
-    snapshot: IRecordSnapshot,
-    fieldId: string,
-    recordId: string,
-    datasheetId?: string,
-    withError?: boolean,
-    ignoreFieldPermission?: boolean
-  },
-): {
-  cellValue: any,
-  cellStr: any,
-  ignoreCache?: boolean
+export const calcCellValueAndString = ({
+  state,
+  snapshot,
+  fieldId,
+  recordId,
+  datasheetId,
+  withError,
+  ignoreFieldPermission,
+}: {
+  state: IReduxState;
+  snapshot: IRecordSnapshot;
+  fieldId: string;
+  recordId: string;
+  datasheetId?: string;
+  withError?: boolean;
+  ignoreFieldPermission?: boolean;
+}): {
+  cellValue: any;
+  cellStr: any;
+  ignoreCache?: boolean;
 } => {
   const cellValue = calcCellValue(state, snapshot, fieldId, recordId, withError, datasheetId, ignoreFieldPermission);
   const fieldMap = snapshot.meta.fieldMap;
-  const field = fieldMap[fieldId];
+  const field = fieldMap[fieldId]!;
   if (cellValue == null) {
     return {
       cellValue,
@@ -914,7 +1002,7 @@ export const calcCellValueAndString = (
   return {
     cellValue,
     cellStr: instance.cellValueToString(cellValue),
-    ignoreCache: workerCompute() ? false : !instance.isComputed
+    ignoreCache: workerCompute() ? false : !instance.isComputed,
   };
 };
 
@@ -934,9 +1022,7 @@ export const getStringifyCellValue = (
   if (cacheValue !== NO_CACHE) {
     return cacheValue.cellStr;
   }
-  cacheValue = calcCellValueAndString(
-    { state, snapshot, recordId, fieldId, withError, datasheetId: dsId }
-  );
+  cacheValue = calcCellValueAndString({ state, snapshot, recordId, fieldId, withError, datasheetId: dsId });
 
   if (!(cacheValue as any).ignoreCache) {
     CacheManager.setCellCache(dsId, fieldId, recordId, cacheValue);
@@ -1022,11 +1108,7 @@ export function sortRowsBySortInfo(state: IReduxState, rows: IViewRow[], sortRul
       // same as filter, sort remove the check of column permission
       const cv1 = getCellValue(state, snapshot, prev.recordId, field.id, undefined, undefined, true);
       const cv2 = getCellValue(state, snapshot, current.recordId, field.id, undefined, undefined, true);
-      const res = fieldMethod.compare(
-        cv1,
-        cv2,
-        true,
-      );
+      const res = fieldMethod.compare(cv1, cv2, true);
       const sign = rule.desc ? -1 : 1;
       return res * sign;
     }, 0);
@@ -1044,7 +1126,7 @@ function getKeepSortRows(state: IReduxState, view: IViewProperty, snapshot: ISna
 
 /**
  * the sort on search result
- * 
+ *
  * @param {IReduxState} state
  * @param {IViewProperty} view
  * @param {ISnapshot} snapshot
@@ -1074,18 +1156,18 @@ const getSortRowsByKanbanGroup = (state: IReduxState, view: IViewProperty, snaps
   if (!kanbanGroupMap) {
     return rows;
   }
-  const groupIds = field.type === FieldType.SingleSelect
-    ? field.property.options.map(item => item.id)
-    : (field as IMemberField).property.unitIds;
+  const groupIds = field.type === FieldType.SingleSelect ? field.property.options.map(item => item.id) : (field as IMemberField).property.unitIds;
   if (!Array.isArray(groupIds)) {
     return rows;
   }
-  const flatRows = [UN_GROUP, ...groupIds].map(groupId => {
-    if (!kanbanGroupMap[groupId]) {
-      return [];
-    }
-    return kanbanGroupMap[groupId].map(record => ({ recordId: record.id }));
-  }).flat();
+  const flatRows = [UN_GROUP, ...groupIds]
+    .map(groupId => {
+      if (!kanbanGroupMap[groupId]) {
+        return [];
+      }
+      return kanbanGroupMap[groupId]!.map((record: IRecord) => ({ recordId: record.id }));
+    })
+    .flat();
   return flatRows;
 };
 
@@ -1111,16 +1193,18 @@ export const getSortRowsByGroup = (state: IReduxState, view: IViewProperty, snap
 
   // rows, sort by group
   return rows.sort((row1, row2) => {
-    return groups.reduce((prev, field, index) => {
-      if (prev !== 0) {
-        return prev;
-      }
-      const cv1 = getCellValue(state, snapshot, row1.recordId, field.id);
-      const cv2 = getCellValue(state, snapshot, row2.recordId, field.id);
-      const res = Field.bindContext(field, state).compare(cv1, cv2);
-      const sign = descOrders[index] ? -1 : 1;
-      return res * sign;
-    }, 0) || 1;
+    return (
+      groups.reduce((prev, field, index) => {
+        if (prev !== 0) {
+          return prev;
+        }
+        const cv1 = getCellValue(state, snapshot, row1.recordId, field.id);
+        const cv2 = getCellValue(state, snapshot, row2.recordId, field.id);
+        const res = Field.bindContext(field, state).compare(cv1, cv2);
+        const sign = descOrders[index] ? -1 : 1;
+        return res * sign;
+      }, 0) || 1
+    );
   });
 };
 
@@ -1156,10 +1240,10 @@ export const getVisibleRowsBase = (state: IReduxState, snapshot?: ISnapshot, vie
     return getSearchRows(state, snapshot!, cache, view, searchKeyword);
   }
   /**
-   * 
+   *
    * first time, if no cache, it means the first time to load, then add to subscribe pool
    * otherwise, cache expired, then recalculate cache
-   * 
+   *
    */
   const visibleRowsBase = cache || getVisibleRowsBaseComputed(state, snapshot, view);
   if (isMirror) {
@@ -1168,37 +1252,36 @@ export const getVisibleRowsBase = (state: IReduxState, snapshot?: ISnapshot, vie
     visibleRowsBaseCacheManage.set(snapshot.datasheetId, view.id, visibleRowsBase);
   }
   /**
-   * 
+   *
    * !!! first, filter and sort, sort performance is better. But to ensure the order of search results,
    * need to execute full-text search after sorting.
-   * 
+   *
    * during the search process, the search result will be cached at one time, used to switch the search result.
-   * 
+   *
    */
 
   // global, match by text accurately
   return getSearchRows(state, snapshot!, visibleRowsBase, view, searchKeyword);
 };
 
-export const getPureVisibleRows = createCachedSelector<IReduxState,
-  string | void,
+export const getPureVisibleRows = createCachedSelector<
+  IReduxState,
+  string | undefined | void,
   IViewRow[] | undefined,
   IReduxState,
   ISnapshot | undefined,
   IViewProperty | undefined,
   string | undefined,
-  IViewRow[]>(
-    [getPureVisibleRowsFormComputed, state => state, getSnapshot, getCurrentView, getSearchKeyword],
-    (cacheRows, ...params) => {
-      if (cacheRows) {
-        return cacheRows;
-      }
-      return getVisibleRowsBase(...params);
-    },
-  )({
-    selectorCreator: createSelectorIgnoreState,
-    keySelector: defaultKeySelector,
-  });
+  IViewRow[]
+>([getPureVisibleRowsFormComputed, (state: IReduxState) => state, getSnapshot, getCurrentView, getSearchKeyword], (cacheRows, ...params) => {
+  if (cacheRows) {
+    return cacheRows;
+  }
+  return getVisibleRowsBase(...params);
+})({
+  selectorCreator: createSelectorIgnoreState,
+  keySelector: defaultKeySelector,
+});
 
 export const getVisibleRowsIndexMapBase = (visibleRows: IViewRow[]) => {
   return new Map(visibleRows?.map((item, index) => [item.recordId, index]));
@@ -1206,16 +1289,19 @@ export const getVisibleRowsIndexMapBase = (visibleRows: IViewRow[]) => {
 
 export const getPureVisibleRowsIndexMap = createSelector([getPureVisibleRows], getVisibleRowsIndexMapBase);
 
-export const getRowsIndexMap = createSelector<IReduxState, string | void, IViewProperty | undefined, Map<string, number>>(
-  [getCurrentView], view => {
+export const getRowsIndexMap = createSelector<IReduxState, string | undefined | void, IViewProperty | undefined, Map<string, number>>(
+  [getCurrentView],
+  view => {
     if (!view) {
       return new Map();
     }
     return new Map(view.rows.map((item, index) => [item.recordId, index]));
-  });
+  },
+);
 
-export const getColumnIndexMap = createSelector<IReduxState, string | void, IViewProperty | undefined, { [id: string]: number }>(
-  [getCurrentView], view => {
+export const getColumnIndexMap = createSelector<IReduxState, string | undefined, IViewProperty | undefined, { [id: string]: number }>(
+  [getCurrentView],
+  view => {
     const columnsMap: { [id: string]: number } = {};
     if (!view) {
       return columnsMap;
@@ -1224,25 +1310,27 @@ export const getColumnIndexMap = createSelector<IReduxState, string | void, IVie
       columnsMap[v.fieldId] = k;
     }
     return columnsMap;
-  });
+  },
+);
 
-export const getVisibleColumns = createCachedSelector<IReduxState,
-  string | void,
-  IViewProperty | void | null,
+export const getVisibleColumns = createCachedSelector<
+  IReduxState,
+  string | undefined | void,
+  IViewProperty | undefined,
   IFieldPermissionMap | undefined,
-  IViewColumn[]>(
-    [getCurrentView, getFieldPermissionMap],
-    (view?: IViewProperty, fieldPermissionMap?) => {
-      // ignore the first column as hidden
-      return view ? view.columns.filter((item, i) => {
+  IViewColumn[]
+>([getCurrentView, getFieldPermissionMap], (view?: IViewProperty, fieldPermissionMap?) => {
+  // ignore the first column as hidden
+  return view
+    ? view.columns.filter((item, i) => {
         const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
         if (fieldRole === Role.None) {
           return false;
         }
         return !(item.hidden && i !== 0);
-      }) : [];
-    },
-  )(defaultKeySelector);
+      })
+    : [];
+})(defaultKeySelector);
 
 export const getVisibleColumnsMap = createSelector([getVisibleColumns], columns => {
   return new Map(columns.map((item, index) => [item.fieldId, index]));
@@ -1252,51 +1340,40 @@ export const findColumnIndexById = (state: IReduxState, id: string): number => {
   const columnsMap = getVisibleColumnsMap(state);
   const index = columnsMap.get(id);
   if (!isNumber(index)) {
-    throw new Error(t(Strings.error_not_exist_id, {
-      id,
-    }));
+    throw new Error(
+      t(Strings.error_not_exist_id, {
+        id,
+      }),
+    );
   }
   return index;
 };
 
 // reselect for non-frozen columns
-export const getExceptFrozenColumns = createSelector(
-  [getVisibleColumns, getCurrentView],
-  (columns: IGridViewColumn[], view?: IViewProperty) => {
-    return (!view || (view.type !== ViewType.Grid && view.type !== ViewType.Gantt)) ? [] : columns.slice(view.frozenColumnCount);
-  },
-);
+export const getExceptFrozenColumns = createSelector([getVisibleColumns, getCurrentView], (columns: IGridViewColumn[], view?: IViewProperty) => {
+  return !view || (view.type !== ViewType.Grid && view.type !== ViewType.Gantt) ? [] : columns.slice(view.frozenColumnCount);
+});
 
 // reselect for frozen columns
-export const getFrozenColumns = createSelector(
-  [getVisibleColumns, getCurrentView],
-  (columns: IGridViewColumn[], view?: IViewProperty) => {
-    return (!view || (view.type !== ViewType.Grid && view.type !== ViewType.Gantt)) ? [] : columns.slice(0, view.frozenColumnCount);
-  },
-);
+export const getFrozenColumns = createSelector([getVisibleColumns, getCurrentView], (columns: IGridViewColumn[], view?: IViewProperty) => {
+  return !view || (view.type !== ViewType.Grid && view.type !== ViewType.Gantt) ? [] : columns.slice(0, view.frozenColumnCount);
+});
 
 // TODO: memory special attention
-const getStdValueMatrixFromIds = (
-  state: IReduxState,
-  snapshot: ISnapshot,
-  ids: { rows: IViewRow[]; columns: IViewColumn[] },
-): IStandardValue[][] => {
+const getStdValueMatrixFromIds = (state: IReduxState, snapshot: ISnapshot, ids: { rows: IViewRow[]; columns: IViewColumn[] }): IStandardValue[][] => {
   const { rows, columns } = ids;
   return rows.map(row => {
     const recordId = row.recordId;
     return columns.map(column => {
       const fieldId = column.fieldId;
-      const field = snapshot.meta.fieldMap[fieldId];
+      const field = snapshot.meta.fieldMap[fieldId]!;
       const cellValue = getCellValue(state, snapshot, recordId, fieldId);
       return Field.bindContext(field, state).cellValueToStdValue(cellValue);
     });
   });
 };
 
-const getCellMatrix = (
-  rows: IViewRow[],
-  columns: IViewColumn[],
-): ICell[][] => {
+const getCellMatrix = (rows: IViewRow[], columns: IViewColumn[]): ICell[][] => {
   return rows.map(row => {
     const recordId = row.recordId;
     return columns.map(column => {
@@ -1307,7 +1384,7 @@ const getCellMatrix = (
 };
 
 // get current active view's filter info
-export const getActiveViewFilterInfo = createSelector([getCurrentView], (view: IViewProperty) => {
+export const getActiveViewFilterInfo = createSelector([getCurrentView], (view: IViewProperty | undefined) => {
   if (!view?.filterInfo) {
     return null;
   }
@@ -1315,12 +1392,12 @@ export const getActiveViewFilterInfo = createSelector([getCurrentView], (view: I
 });
 
 // get current active view's sort info
-export const getActiveViewSortInfo = createSelector([getCurrentView], (view: IViewProperty) => {
+export const getActiveViewSortInfo = createSelector([getCurrentView], (view: IViewProperty | undefined) => {
   return view?.sortInfo;
 });
 
 // get current active view's group info
-export const getActiveViewGroupInfo = createSelector([getCurrentView], (view: IViewProperty) => {
+export const getActiveViewGroupInfo = createSelector([getCurrentView], (view: IViewProperty | undefined) => {
   if (!view?.groupInfo) {
     return [];
   }
@@ -1371,10 +1448,7 @@ export const getRecordMoveType = createSelectorIgnoreState(
     if (!nextRecordSnapshot) {
       return RecordMoveType.Deleted;
     }
-    const isRecordEffectPositionCellValueChanged = (
-      recordSnapshot: IRecordSnapshot,
-      nextRecordSnapshot: IRecordSnapshot,
-    ) => {
+    const isRecordEffectPositionCellValueChanged = (recordSnapshot: IRecordSnapshot, nextRecordSnapshot: IRecordSnapshot) => {
       const view = getCurrentView(state)!;
       const fieldMap = getFieldMap(state)!;
       const fieldPermissionMap = getFieldPermissionMap(state);
@@ -1394,12 +1468,12 @@ export const getRecordMoveType = createSelectorIgnoreState(
       });
       return _fieldsWhichMakeRecordMove.some(fieldId => {
         /**
-         * 
+         *
          * getCellValue, the argument recordSnapshot will not take effect on formula, formula always get the newest value.
          * so, store the value of formula field in the old recordSnapshot, to handle the case of formula field pre-sort.
          */
-        const field = fieldMap[fieldId];
-        let cv1 = recordSnapshot.recordMap[recordId]?.data[fieldId];
+        const field = fieldMap[fieldId]!;
+        let cv1 = recordSnapshot.recordMap[recordId]?.data[fieldId] ?? null;
         cv1 = handleEmptyCellValue(cv1, Field.bindContext(field, state).basicValueType);
         const cv2 = getCellValue(state, nextRecordSnapshot, recordId, fieldId);
         return !Field.bindContext(field, state).eq(cv1, cv2);
@@ -1417,10 +1491,14 @@ export const getRecordMoveType = createSelectorIgnoreState(
       return RecordMoveType.WillMove;
     }
     return NOT_MOVE;
-  });
+  },
+);
 
 const getVisibleRowsInner = (
-  state: IReduxState, visibleRows: IViewRow[], recordMoveType: RecordMoveType, activeRowInfo: ReturnType<typeof getActiveRowInfo>,
+  state: IReduxState,
+  visibleRows: IViewRow[],
+  recordMoveType: RecordMoveType,
+  activeRowInfo: ReturnType<typeof getActiveRowInfo>,
 ) => {
   if (!visibleRows) {
     return [];
@@ -1428,7 +1506,9 @@ const getVisibleRowsInner = (
   if (!activeRowInfo) {
     return visibleRows;
   }
-  const { positionInfo: { recordId, visibleRowIndex }} = activeRowInfo;
+  const {
+    positionInfo: { recordId, visibleRowIndex },
+  } = activeRowInfo;
   const snapshot = getSnapshot(state);
   const nextVisibleRows = produce(visibleRows, draftVisibleRows => {
     if ([RecordMoveType.OutOfView, RecordMoveType.WillMove].includes(recordMoveType)) {
@@ -1451,14 +1531,9 @@ export const getVisibleRows = createSelectorIgnoreState(
   getVisibleRowsInner,
 );
 
-export const getKanbanGroupMap = createSelector([
-  getVisibleRows,
-  getKanbanFieldId,
-  getSnapshot,
-  getFieldPermissionMap,
-], getKanbanGroupMapBase);
+export const getKanbanGroupMap = createSelector([getVisibleRows, getKanbanFieldId, getSnapshot, getFieldPermissionMap], getKanbanGroupMapBase);
 
-export const getVisibleRowIds = createSelector([getVisibleRows], (visibleRows) => {
+export const getVisibleRowIds = createSelector([getVisibleRows], visibleRows => {
   return visibleRows.map(row => row.recordId);
 });
 
@@ -1514,12 +1589,12 @@ export const getSelection = (state: IReduxState) => {
   const selection = client && client.selection;
 
   // whether activeCell move out
-  if (selection && selection.activeCell && !(isCellVisible(state, selection.activeCell))) {
+  if (selection && selection.activeCell && !isCellVisible(state, selection.activeCell)) {
     return null;
   }
   // the start of the selection area and the end of the selection area are removed
   if (selection && selection.ranges) {
-    const { start, end } = selection.ranges[0];
+    const { start, end } = selection.ranges[0]!;
     if (!isCellVisible(state, start) || !isCellVisible(state, end)) {
       return null;
     }
@@ -1562,13 +1637,10 @@ export const getCellMatrixFromSelection = (state: IReduxState): ICell[][] | null
   if (!selectionRanges.length) {
     return null;
   }
-  return getCellMatrixFromRange(state, selectionRanges[0]);
+  return getCellMatrixFromRange(state, selectionRanges[0]!);
 };
 
-export const getCellMatrixFromRange = (
-  state: IReduxState,
-  range: IRange,
-): ICell[][] | null => {
+export const getCellMatrixFromRange = (state: IReduxState, range: IRange): ICell[][] | null => {
   const datasheet = getDatasheet(state);
   const snapshot = datasheet && datasheet.snapshot;
   if (!snapshot) {
@@ -1590,10 +1662,7 @@ export const getCellMatrixFromRange = (
   return getCellMatrix(rows, columns);
 };
 
-export const getStdValueTableFromRange = (
-  state: IReduxState,
-  range: IRange,
-): IStandardValueTable | null => {
+export const getStdValueTableFromRange = (state: IReduxState, range: IRange): IStandardValueTable | null => {
   const datasheet = getDatasheet(state);
   const snapshot = datasheet && datasheet.snapshot;
   if (!snapshot) {
@@ -1613,7 +1682,7 @@ export const getStdValueTableFromRange = (
   const rows = getVisibleRows(state).slice(...rowSlice);
   const columns = getVisibleColumns(state).slice(...columnSlice);
   const stdValueMatrix = getStdValueMatrixFromIds(state, snapshot, { rows, columns });
-  const fieldDataArr = columns.map(column => snapshot.meta.fieldMap[column.fieldId]);
+  const fieldDataArr = columns.map(column => snapshot.meta.fieldMap[column.fieldId]!);
   return {
     datasheetId: state.pageParams.datasheetId,
     viewId: view.id,
@@ -1692,7 +1761,7 @@ export const getColumnByFieldId = (state: IReduxState, fieldId: string) => {
 };
 
 export const getRowHeightFromLevel = (level?: RowHeightLevel): number => {
-  return level == null ? RowHeight.Short : RowHeight[RowHeightLevel[level]];
+  return level == null ? RowHeight.Short : RowHeight[RowHeightLevel[level]!];
 };
 
 /**
@@ -1710,10 +1779,10 @@ export const getSelectRecordIds = createSelectorIgnoreState(
     }
     // otherwise return the checked records
     return checkedRecordIds || [];
-  });
+  },
+);
 
 export const isCellInSelection = (state: IReduxState, cell: ICell): boolean => {
-
   const selection = getSelection(state);
   if (!selection) {
     return false;
@@ -1728,7 +1797,7 @@ export const isCellInSelection = (state: IReduxState, cell: ICell): boolean => {
   });
 };
 
-export const getCellIndex = (state: IReduxState, cell: ICell): { recordIndex: number, fieldIndex: number } | null => {
+export const getCellIndex = (state: IReduxState, cell: ICell): { recordIndex: number; fieldIndex: number } | null => {
   const visibleRowIndexMap = getVisibleRowsIndexMap(state);
   const visibleColumnIndexMap = getVisibleColumnsMap(state);
   if (isCellVisible(state, cell)) {
@@ -1740,15 +1809,19 @@ export const getCellIndex = (state: IReduxState, cell: ICell): { recordIndex: nu
   return null;
 };
 
-export const getCellByIndex = (state: IReduxState, cellIndex: {
-  recordIndex: number; fieldIndex: number
-}) => {
+export const getCellByIndex = (
+  state: IReduxState,
+  cellIndex: {
+    recordIndex: number;
+    fieldIndex: number;
+  },
+) => {
   const { recordIndex, fieldIndex } = cellIndex;
   const visibleRows = getVisibleRows(state);
   const visibleColumns = getVisibleColumns(state);
   const cell = {
-    recordId: visibleRows[recordIndex].recordId,
-    fieldId: visibleColumns[fieldIndex].fieldId,
+    recordId: visibleRows[recordIndex]!.recordId,
+    fieldId: visibleColumns[fieldIndex]!.fieldId,
   };
   if (isCellVisible(state, cell)) {
     return cell;
@@ -1779,7 +1852,7 @@ export const getFixedCellValue = (state: IReduxState, snapshot: ISnapshot, recor
   return getCellValue(state, snapshot, recordId, fieldId);
 };
 
-export const getGroupLevel = createSelector([getActiveViewGroupInfo], (groupInfo) => {
+export const getGroupLevel = createSelector([getActiveViewGroupInfo], groupInfo => {
   return groupInfo.length;
 });
 
@@ -1791,7 +1864,7 @@ function getLinearRowsBase(state: IReduxState, visibleRows: IViewRow[], groupInf
   const groupLevel = groupInfo.length;
   let preRow: IViewRow = { recordId: '' };
   const lastRow: IViewRow = { recordId: '' };
-  const groupingCollapseSet: Map<string, boolean> = new Map(groupingCollapseIds && groupingCollapseIds.map((v) => [v, true]));
+  const groupingCollapseSet: Map<string, boolean> = new Map(groupingCollapseIds && groupingCollapseIds.map(v => [v, true]));
   let globalFilterDepth = Infinity;
 
   // the row number before the record, reset when grouping occurs.
@@ -1818,11 +1891,7 @@ function getLinearRowsBase(state: IReduxState, visibleRows: IViewRow[], groupInf
       const field = getField(state, fieldId);
       const cv1 = getFixedCellValue(state, snapshot, preRow.recordId, fieldId);
       const cv2 = getFixedCellValue(state, snapshot, row.recordId, fieldId);
-      if (
-        !row.recordId ||
-        !preRow.recordId ||
-        !(Field.bindContext(field, state).compare(cv1, cv2) === 0)
-      ) {
+      if (!row.recordId || !preRow.recordId || !(Field.bindContext(field, state).compare(cv1, cv2) === 0)) {
         shouldGenGroupLinearRows = true;
         groupInfo.slice(groupItemIndex).forEach((groupItem, subIndex) => {
           groupSketch.addBreakpointAndSetGroupTab(groupItem.fieldId, index, row.recordId, subIndex + groupItemIndex);
@@ -1842,7 +1911,12 @@ function getLinearRowsBase(state: IReduxState, visibleRows: IViewRow[], groupInf
       displayRowIndex = 0;
       groupHeadRecordId = row.recordId;
       const { groupLinearRows, filterDepth } = groupSketch.genGroupLinearRows(
-        index, row.recordId, preRow.recordId, groupingCollapseSet, globalFilterDepth, groupTabIds,
+        index,
+        row.recordId,
+        preRow.recordId,
+        groupingCollapseSet,
+        globalFilterDepth,
+        groupTabIds,
       );
       globalFilterDepth = filterDepth;
       res.push(...groupLinearRows);
@@ -1872,7 +1946,7 @@ function getLinearRowsBase(state: IReduxState, visibleRows: IViewRow[], groupInf
 
 /**
  * guide `react-window` to draw table's structured data, the hierarchy is reflected by depth.
- * 
+ *
  * [
  *    Blank 0
  *    GroupTab 0
@@ -1892,13 +1966,14 @@ export const getLinearRows = createSelectorIgnoreState(
       return computedLinearRows;
     }
     return getLinearRowsBase(state, visibleRows, groupInfo, groupingCollapseIds);
-  });
+  },
+);
 
 export const getLinearRowsIndexMap = createSelector([getLinearRows], linearRows => {
   return new Map(linearRows.map((row, index) => [`${row.type}_${row.recordId}`, index]));
 });
 
-export const getCellUIIndex = (state: IReduxState, cell: ICell): { rowIndex: number, columnIndex: number } | null => {
+export const getCellUIIndex = (state: IReduxState, cell: ICell): { rowIndex: number; columnIndex: number } | null => {
   const visibleColumnIndexMap = getVisibleColumnsMap(state);
   const linearRowIndexMap = getLinearRowsIndexMap(state);
   if (isCellVisible(state, cell)) {
@@ -1942,13 +2017,14 @@ export const getGanttLinearRows = createSelectorIgnoreState(
   [state => state, getVisibleRows, getActiveViewGroupInfo],
   (state: IReduxState, visibleRows, groupInfo): ILinearRow[] => {
     return getLinearRowsBase(state, visibleRows, groupInfo);
-  });
+  },
+);
 
-export const getCurrentGalleryViewStyle = createSelector([getCurrentView], (view: IViewProperty) => {
-  if (view.type !== ViewType.Gallery) {
+export const getCurrentGalleryViewStyle = createSelector([getCurrentView], (view: IViewProperty | undefined) => {
+  if (view!.type !== ViewType.Gallery) {
     return;
   }
-  return view.style;
+  return (view as IGalleryViewProperty).style;
 });
 
 const getIntegratePermissionWithFieldBase = (
@@ -1968,24 +2044,23 @@ const getIntegratePermissionWithFieldBase = (
   };
 };
 
-const getIntegratePermissionWithField = createCachedSelector<IReduxState,
+const getIntegratePermissionWithField = createCachedSelector<
+  IReduxState,
   {
     permission: IPermissions;
     datasheetId?: string;
     mirrorId?: string;
     fieldId?: string;
-    fieldPermissionMap?: IFieldPermissionMap
+    fieldPermissionMap?: IFieldPermissionMap;
   },
   IPermissions,
-  IPermissions>(
-    getIntegratePermissionWithFieldBase,
-    permission => {
-      return permission;
-    },
-  )({
-    keySelector: (state, { datasheetId, mirrorId }) => mirrorId || datasheetId || getActiveDatasheetId(state),
-    selectorCreator: createDeepEqualSelector,
-  });
+  IPermissions
+>(getIntegratePermissionWithFieldBase, permission => {
+  return permission;
+})({
+  keySelector: (state, { datasheetId, mirrorId }) => mirrorId || datasheetId || getActiveDatasheetId(state),
+  selectorCreator: createDeepEqualSelector,
+});
 
 export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId?: string, sourceMirrorId?: string): IPermissions => {
   const datasheet = getDatasheet(state, datasheetId);
@@ -1997,8 +2072,8 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
 
   // only in the mirror, the permission should be integrated with field permission
   // which means the url of datasheetId should be the same as "the datasheetId to query"
-  const nodePermission = mirrorId && (datasheet?.id === getActiveDatasheetId(state) || sourceMirrorId) ? getMirror(state, mirrorId)?.permissions :
-    datasheet?.permissions;
+  const nodePermission =
+    mirrorId && (datasheet?.id === getActiveDatasheetId(state) || sourceMirrorId) ? getMirror(state, mirrorId)?.permissions : datasheet?.permissions;
   const blackSpace = state.billing?.subscription?.blackSpace;
 
   if (blackSpace) {
@@ -2009,16 +2084,15 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
   if (screenWidth && screenWidth < ScreenWidth.md) {
     // smallScreen temporary not allow edit
     // TODO: mobile will support edit in the future
-    const permission = datasheet ? getIntegratePermissionWithField(
-      state,
-      {
-        permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
-        datasheetId,
-        fieldPermissionMap,
-        fieldId: fieldId,
-        mirrorId,
-      },
-    ) : {};
+    const permission = datasheet
+      ? getIntegratePermissionWithField(state, {
+          permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+          datasheetId,
+          fieldPermissionMap,
+          fieldId: fieldId,
+          mirrorId,
+        })
+      : {};
     return {
       ...DEFAULT_PERMISSION,
       ...permission,
@@ -2033,16 +2107,13 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
 
   // share / templates page, return permission directly
   if (state.pageParams.shareId || state.pageParams.templateId) {
-    return getIntegratePermissionWithField(
-      state,
-      {
-        permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
-        datasheetId,
-        fieldPermissionMap,
-        fieldId: fieldId,
-        mirrorId,
-      },
-    );
+    return getIntegratePermissionWithField(state, {
+      permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+      datasheetId,
+      fieldPermissionMap,
+      fieldId: fieldId,
+      mirrorId,
+    });
   }
 
   /**
@@ -2059,16 +2130,13 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
     return DEFAULT_PERMISSION;
   }
 
-  return getIntegratePermissionWithField(
-    state,
-    {
-      permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
-      datasheetId,
-      fieldPermissionMap,
-      fieldId: fieldId,
-      mirrorId,
-    },
-  );
+  return getIntegratePermissionWithField(state, {
+    permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+    datasheetId,
+    fieldPermissionMap,
+    fieldId: fieldId,
+    mirrorId,
+  });
 };
 
 export const getViewRowHeight = (state: IReduxState) => {
@@ -2090,34 +2158,34 @@ export const getFilterConditionValue = (state: IReduxState, conditionId: string)
   const filterInfo = getCurrentView(state)!.filterInfo;
 
   if (filterInfo) {
-    const result = filterInfo.conditions.find(
-      item => {
-        return item.conditionId === conditionId;
-      },
-    );
+    const result = filterInfo.conditions.find(item => {
+      return item.conditionId === conditionId;
+    });
     return result && result.value ? result.value : null;
   }
   return null;
 };
 
-export const getKanbanGroupMapIds = createSelector([getFieldMap, getKanbanFieldId,
-  getFieldPermissionMap], (fieldMap, kanbanFieldId, fieldPermissionMap) => {
-  if (!kanbanFieldId) {
-    return [];
-  }
-  const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId);
-  if (fieldRole === Role.None) {
-    return [];
-  }
-  const field = fieldMap![kanbanFieldId];
-  if (!field) {
-    return [];
-  }
-  if (field.type === FieldType.SingleSelect) {
-    return field.property.options.map(item => item.id);
-  }
-  return (field as IMemberField).property.unitIds;
-});
+export const getKanbanGroupMapIds = createSelector(
+  [getFieldMap, getKanbanFieldId, getFieldPermissionMap],
+  (fieldMap, kanbanFieldId, fieldPermissionMap) => {
+    if (!kanbanFieldId) {
+      return [];
+    }
+    const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId);
+    if (fieldRole === Role.None) {
+      return [];
+    }
+    const field = fieldMap![kanbanFieldId]!;
+    if (!field) {
+      return [];
+    }
+    if (field.type === FieldType.SingleSelect) {
+      return field.property.options.map(item => item.id);
+    }
+    return (field as IMemberField).property.unitIds;
+  },
+);
 
 export const getQueryMeta = createSelector(
   [getVisibleColumns, getActiveDatasheetId, getActiveViewFilterInfo, getActiveViewGroupInfo, getActiveViewSortInfo],
@@ -2167,17 +2235,17 @@ export const getKanbanViewStatus = (state: IReduxState, datasheetId?: string) =>
   return client.kanbanViewStatus;
 };
 
-export const getCalendarVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | null | void, ICalendarViewColumn[]>(
+export const getCalendarVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | undefined, ICalendarViewColumn[]>(
   [getCurrentView],
-  (view?: ICalendarViewProperty) => {
-    return view ? view.columns.filter((item, i) => !(item.hiddenInCalendar && i !== 0)) : [];
+  (view?: IViewProperty) => {
+    return view ? (view as ICalendarViewProperty).columns.filter((item, i) => !(item.hiddenInCalendar && i !== 0)) : [];
   },
 )(defaultKeySelector);
 
-export const getOrgChartVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | null | void, IOrgChartViewColumn[]>(
+export const getOrgChartVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | undefined, IOrgChartViewColumn[]>(
   [getCurrentView],
-  (view?: IOrgChartViewProperty) => {
-    return view ? view.columns.filter((item: IOrgChartViewColumn, i) => !(item.hiddenInOrgChart && i !== 0)) : [];
+  (view?: IViewProperty) => {
+    return view ? (view as IOrgChartViewProperty).columns.filter((item: IOrgChartViewColumn, i) => !(item.hiddenInOrgChart && i !== 0)) : [];
   },
 )(defaultKeySelector);
 
@@ -2197,10 +2265,10 @@ export const getGanttStyle = (state: IReduxState) => {
   return view.style;
 };
 
-export const getGanttVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | null | void, IGanttViewColumn[]>(
+export const getGanttVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | undefined, IGanttViewColumn[]>(
   [getCurrentView],
-  (view?: IGanttViewProperty) => {
-    return view ? view.columns.filter((item, _i) => !item.hiddenInGantt) : [];
+  (view?: IViewProperty) => {
+    return view ? (view as IGanttViewProperty).columns.filter(item => !item.hiddenInGantt) : [];
   },
 )(defaultKeySelector);
 
@@ -2258,21 +2326,24 @@ export const getGalleryGroupedRows = createSelectorIgnoreState(
     if (groupInfo && groupInfo.length === 0) {
       return groupedRows;
     }
-    const fieldId = groupInfo[0].fieldId;
+    const fieldId = groupInfo[0]!.fieldId;
     const field = snapshot.meta.fieldMap[fieldId];
 
     let preRecordId = '';
     let tempGroupedRows: string[] = [];
     for (let index = 0; index < records.length; index++) {
-      const record = records[index];
+      const record = records[index]!;
       const recordId = record.recordId;
       if (index === 0) {
         tempGroupedRows.push(record.recordId);
       } else {
-        if (field && Field.bindContext(field, state).compare(
-          getCellValue(state, snapshot, preRecordId, fieldId),
-          getCellValue(state, snapshot, recordId, fieldId),
-        )) {
+        if (
+          field &&
+          Field.bindContext(field, state).compare(
+            getCellValue(state, snapshot, preRecordId, fieldId),
+            getCellValue(state, snapshot, recordId, fieldId),
+          )
+        ) {
           groupedRows.push(tempGroupedRows);
           tempGroupedRows = [record.recordId];
         } else {
@@ -2286,14 +2357,10 @@ export const getGalleryGroupedRows = createSelectorIgnoreState(
       }
     }
     return groupedRows;
-  });
+  },
+);
 
-export const getDateTimeCellAlarm = (
-  snapshot: IRecordSnapshot,
-  recordId: string,
-  fieldId: string,
-): IRecordAlarm | undefined => {
-
+export const getDateTimeCellAlarm = (snapshot: IRecordSnapshot, recordId: string, fieldId: string): IRecordAlarm | undefined => {
   // notification center open card without snapshot
   const recordMeta = snapshot?.recordMap?.[recordId]?.recordMeta;
   if (!recordMeta) {
@@ -2307,16 +2374,12 @@ export const getDateTimeCellAlarm = (
 };
 
 /**
- * 
+ *
  * a method for front-end use
  * attention: this method return a new data structure, can not be used in useSelector
- * 
+ *
  */
-export const getDateTimeCellAlarmForClient = (
-  snapshot: IRecordSnapshot,
-  recordId: string,
-  fieldId: string,
-): IRecordAlarmClient | undefined => {
+export const getDateTimeCellAlarmForClient = (snapshot: IRecordSnapshot, recordId: string, fieldId: string): IRecordAlarmClient | undefined => {
   const alarm = getDateTimeCellAlarm(snapshot, recordId, fieldId);
 
   if (!alarm) {
@@ -2327,17 +2390,17 @@ export const getDateTimeCellAlarmForClient = (
     return;
   }
 
-  if (alarm.alarmUsers[0].type === AlarmUsersType.Field) {
+  if (alarm.alarmUsers[0]!.type === AlarmUsersType.Field) {
     const fieldMap = snapshot.meta.fieldMap;
     return {
       ...alarm,
       target: AlarmUsersType.Field,
-      alarmUsers: alarm.alarmUsers.map(item => item.data).filter(fieldId => fieldMap[fieldId] && fieldMap[fieldId].type === FieldType.Member)
+      alarmUsers: alarm.alarmUsers.map(item => item.data).filter(fieldId => fieldMap[fieldId] && fieldMap[fieldId]!.type === FieldType.Member),
     };
   }
   return {
     ...alarm,
     target: AlarmUsersType.Member,
-    alarmUsers: alarm.alarmUsers.map(item => item.data)
+    alarmUsers: alarm.alarmUsers.map(item => item.data),
   };
 };

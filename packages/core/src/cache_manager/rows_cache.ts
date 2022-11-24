@@ -132,7 +132,7 @@ class VisibleRowsBaseCache {
       });
     });
     if (shouldUpdateAction) {
-      const viewIds = Array.from(viewIndexSet).map(viewIndex => Selectors.getViewsList(state, action.datasheetId)?.[viewIndex]?.id).filter(Boolean);
+      const viewIds = Array.from(viewIndexSet).map(viewIndex => Selectors.getViewsList(state, action.datasheetId)?.[viewIndex]?.id).filter(Boolean) as string[];
       this.updateVisibleRowsBaseCacheData = {
         datasheetId,
         viewIds

@@ -26,7 +26,7 @@ export class CalendarView extends View {
 
   static findDateTimeFieldIds(srcView: IViewProperty, fieldMap: IFieldMap) {
     const filterIds = srcView.columns.filter(({ fieldId }) => {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       return Field.bindModel(field).basicValueType === BasicValueType.DateTime;
     }).map(column => column.fieldId);
     return filterIds;

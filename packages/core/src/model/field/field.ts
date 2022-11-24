@@ -76,7 +76,7 @@ export abstract class Field {
    */
   getApiMeta(dstId?: string): IAPIMetaField {
     const views = Selectors.getViewsList(this.state, dstId);
-    const firstFieldId = views[0].columns[0].fieldId;
+    const firstFieldId = views[0]!.columns[0]!.fieldId;
 
     const res: IAPIMetaField = {
       id: this.field.id,
@@ -393,7 +393,7 @@ export abstract class Field {
    */
   getOpenField(dstId?: string): IOpenField {
     const views = Selectors.getViewsList(this.state, dstId);
-    const firstFieldId = views[0].columns[0].fieldId;
+    const firstFieldId = views[0]!.columns[0]!.fieldId;
     const { id, name, desc: description, type, required } = this.field;
     const res: IOpenField = {
       id,

@@ -146,7 +146,7 @@ export class Record {
    * 
    */
   get commentCount() {
-    const record = this.getRecordData();
+    const record = this.getRecordData()!;
     return record.commentCount;
   }
 }

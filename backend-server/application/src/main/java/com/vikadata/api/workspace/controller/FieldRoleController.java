@@ -19,42 +19,43 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.base.enums.ParameterException;
+import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder;
+import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder.ControlId;
+import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
+import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.enterprise.control.model.FieldControlProp;
+import com.vikadata.api.enterprise.control.service.IControlService;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder;
-import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder.ControlId;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.shared.listener.event.FieldPermissionEvent;
-import com.vikadata.api.shared.listener.event.FieldPermissionEvent.Arg;
 import com.vikadata.api.shared.holder.MemberHolder;
 import com.vikadata.api.shared.holder.SpaceHolder;
+import com.vikadata.api.shared.listener.event.FieldPermissionEvent;
+import com.vikadata.api.shared.listener.event.FieldPermissionEvent.Arg;
+import com.vikadata.api.shared.validator.NodeMatch;
+import com.vikadata.api.space.enums.SpaceException;
+import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
+import com.vikadata.api.workspace.enums.PermissionException;
 import com.vikadata.api.workspace.ro.BatchFieldRoleDeleteRo;
 import com.vikadata.api.workspace.ro.BatchFieldRoleEditRo;
 import com.vikadata.api.workspace.ro.FieldRoleCreateRo;
 import com.vikadata.api.workspace.ro.FieldRoleDeleteRo;
 import com.vikadata.api.workspace.ro.FieldRoleEditRo;
 import com.vikadata.api.workspace.ro.RoleControlOpenRo;
-import com.vikadata.api.workspace.vo.FieldCollaboratorVO;
-import com.vikadata.api.workspace.vo.FieldPermissionInfo;
-import com.vikadata.api.workspace.vo.FieldPermissionView;
-import com.vikadata.api.enterprise.control.model.FieldControlProp;
-import com.vikadata.api.enterprise.control.service.IControlService;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.workspace.service.IFieldRoleService;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.INodeShareService;
-import com.vikadata.api.shared.validator.NodeMatch;
-import com.vikadata.api.space.enums.SpaceException;
-import com.vikadata.api.workspace.enums.PermissionException;
-import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.api.workspace.vo.FieldCollaboratorVO;
+import com.vikadata.api.workspace.vo.FieldPermissionInfo;
+import com.vikadata.api.workspace.vo.FieldPermissionView;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,21 +99,21 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/permission/enable", requiredPermission = false)
     @ApiOperation(value = "Enable field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> enableRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId,
-        @RequestBody(required = false) RoleControlOpenRo roleControlOpenRo) {
+            @PathVariable("fieldId") String fieldId,
+            @RequestBody(required = false) RoleControlOpenRo roleControlOpenRo) {
         // column operation permission pre check
         iFieldRoleService.checkFieldPermissionBeforeEnable(dstId, fieldId);
         // The permissions at the node must be above manageable.
         controlTemplate.checkNodePermission(MemberHolder.get(), dstId, NodePermission.MANAGE_NODE,
-            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+                status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         // Whether the field is enabled to prevent repeated operations.
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         iControlService.checkControlStatus(controlId.toString(),
-            status -> ExceptionUtil.isFalse(status, PermissionException.FIELD_PERMISSION_HAS_ENABLE));
+                status -> ExceptionUtil.isFalse(status, PermissionException.FIELD_PERMISSION_HAS_ENABLE));
         // enable role
         // Determine whether the user's open field permission inherits the default
         boolean includeExtend = ObjectUtil.isNotNull(roleControlOpenRo)
@@ -120,8 +121,8 @@ public class FieldRoleController {
         iFieldRoleService.enableFieldRole(SessionContext.getUserId(), dstId, fieldId, includeExtend);
         // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_ENABLE).datasheetId(dstId).fieldId(fieldId)
-            .uuid(LoginContext.me().getLoginUser().getUuid()).includeExtend(includeExtend)
-            .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
+                .uuid(LoginContext.me().getLoginUser().getUuid()).includeExtend(includeExtend)
+                .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
     }
@@ -129,11 +130,11 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/permission/disable", requiredPermission = false)
     @ApiOperation(value = "Disable field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> disableRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId) {
+            @PathVariable("fieldId") String fieldId) {
         // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         // Check whether the operator can operate the field role change, only the administrator and creator can
@@ -142,7 +143,7 @@ public class FieldRoleController {
         iControlService.removeControl(SessionContext.getUserId(), controlId.getControlIds(), true);
         // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_DISABLE).datasheetId(dstId).fieldId(fieldId)
-            .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
+                .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
     }
@@ -150,11 +151,11 @@ public class FieldRoleController {
     @GetResource(path = "/datasheet/{dstId}/field/{fieldId}/listRole", requiredPermission = false)
     @ApiOperation(value = "Gets the field role infos in datasheet.")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<FieldCollaboratorVO> listRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId) {
+            @PathVariable("fieldId") String fieldId) {
         FieldCollaboratorVO fieldCollaboratorVO = iFieldRoleService.getFieldRoles(dstId, fieldId);
         return ResponseData.success(fieldCollaboratorVO);
     }
@@ -162,12 +163,12 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/addRole", requiredPermission = false)
     @ApiOperation(value = "Add field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> addRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId,
-        @Valid @RequestBody FieldRoleCreateRo data) {
+            @PathVariable("fieldId") String fieldId,
+            @Valid @RequestBody FieldRoleCreateRo data) {
         // whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         // check whether the operator can operate the field role change, only the administrator and creator can
@@ -178,8 +179,8 @@ public class FieldRoleController {
         iFieldRoleService.addFieldRole(SessionContext.getUserId(), controlId.toString(), data.getUnitIds(), data.getRole());
         // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId)
-            .role(data.getRole()).changedUnitIds(data.getUnitIds())
-            .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
+                .role(data.getRole()).changedUnitIds(data.getUnitIds())
+                .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
     }
@@ -187,8 +188,8 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/editRole", requiredPermission = false)
     @ApiOperation(value = "Edit field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     @Deprecated
     public ResponseData<Void> editRole(@PathVariable("dstId") @NodeMatch String dstId,
@@ -207,8 +208,8 @@ public class FieldRoleController {
             @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> batchEditRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId,
-        @RequestBody @Valid BatchFieldRoleEditRo data) {
+            @PathVariable("fieldId") String fieldId,
+            @RequestBody @Valid BatchFieldRoleEditRo data) {
         // Whether the field permission is already closed to prevent operation errors
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         // Check whether the operator can operate the field role change, only the administrator and creator can
@@ -219,8 +220,8 @@ public class FieldRoleController {
         iFieldRoleService.editFieldRole(SessionContext.getUserId(), controlId.toString(), data.getUnitIds(), data.getRole());
         // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId)
-            .role(data.getRole()).changedUnitIds(data.getUnitIds())
-            .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
+                .role(data.getRole()).changedUnitIds(data.getUnitIds())
+                .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
     }
@@ -228,12 +229,12 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/deleteRole", method = RequestMethod.DELETE, requiredPermission = false)
     @ApiOperation(value = "Delete field role")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG"),
     })
     public ResponseData<Void> deleteRole(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId,
-        @RequestBody @Valid FieldRoleDeleteRo data) {
+            @PathVariable("fieldId") String fieldId,
+            @RequestBody @Valid FieldRoleDeleteRo data) {
         // whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         // check whether the operator can operate the field role change, only the administrator and creator can
@@ -244,7 +245,7 @@ public class FieldRoleController {
         String role = iFieldRoleService.deleteFieldRole(controlId.toString(), dstId, data.getUnitId());
         // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_CHANGE).datasheetId(dstId).fieldId(fieldId).delUnitIds(CollUtil.newArrayList(data.getUnitId()))
-            .role(role).operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
+                .role(role).operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
     }
@@ -278,12 +279,12 @@ public class FieldRoleController {
     @PostResource(path = "/datasheet/{dstId}/field/{fieldId}/updateRoleSetting", requiredPermission = false)
     @ApiOperation(value = "Update field role setting")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
-        @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
+            @ApiImplicitParam(name = "dstId", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
+            @ApiImplicitParam(name = "fieldId", value = "field id", required = true, dataTypeClass = String.class, paramType = "path", example = "fldRg1cGlAFWG")
     })
     public ResponseData<Void> updateRoleSetting(@PathVariable("dstId") @NodeMatch String dstId,
-        @PathVariable("fieldId") String fieldId,
-        @RequestBody @Valid FieldControlProp prop) {
+            @PathVariable("fieldId") String fieldId,
+            @RequestBody @Valid FieldControlProp prop) {
         // Whether the field is already closed to prevent repeated operations
         ControlId controlId = ControlIdBuilder.fieldId(dstId, fieldId);
         // Check whether the operator can operate the field role change, only the administrator and creator can
@@ -292,7 +293,7 @@ public class FieldRoleController {
         iFieldRoleService.updateFieldRoleProp(SessionContext.getUserId(), controlId.toString(), prop);
         // Publish events, remotely call socket broadcast
         Arg arg = Arg.builder().event(FIELD_PERMISSION_SETTING_CHANGE).datasheetId(dstId).fieldId(fieldId).setting(prop)
-            .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
+                .operator(LoginContext.me().getUserSpaceDto(SpaceHolder.get()).getMemberName()).build();
         SpringContextHolder.getApplicationContext().publishEvent(new FieldPermissionEvent(this, arg));
         return ResponseData.success();
     }
@@ -300,11 +301,11 @@ public class FieldRoleController {
     @GetResource(path = "/datasheet/field/permission", requiredLogin = false)
     @ApiOperation(value = "Get multi datasheet field permission")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "dstIds", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "query", example = "dstCgcfixAKyeeNsaP,dstGxznHFXf9pvF1LZ"),
-        @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
+            @ApiImplicitParam(name = "dstIds", value = "datasheet id", required = true, dataTypeClass = String.class, paramType = "query", example = "dstCgcfixAKyeeNsaP,dstGxznHFXf9pvF1LZ"),
+            @ApiImplicitParam(name = "shareId", value = "share id", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
     })
     public ResponseData<List<FieldPermissionView>> getMultiDatasheetFieldPermission(@RequestParam("dstIds") List<String> dstIds,
-        @RequestParam(value = "shareId", required = false) String shareId) {
+            @RequestParam(value = "shareId", required = false) String shareId) {
         Long memberId = null;
         if (StrUtil.isBlank(shareId)) {
             // inside the station
@@ -314,7 +315,9 @@ public class FieldRoleController {
         }
         else {
             // off site sharing
-            iNodeShareService.checkShareIfExist(shareId);
+            if (shareId.startsWith(IdRulePrefixEnum.SHARE.getIdRulePrefixEnum())) {
+                iNodeShareService.checkShareIfExist(shareId);
+            }
         }
         List<FieldPermissionView> views = new ArrayList<>(dstIds.size());
         for (String dstId : dstIds) {

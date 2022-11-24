@@ -15,7 +15,7 @@ import com.vikadata.api.player.vo.NotificationDetailVo;
 import com.vikadata.api.player.vo.PlayerBaseVo;
 import com.vikadata.api.enterprise.social.enums.SocialAppType;
 import com.vikadata.api.enterprise.social.model.TenantBindDTO;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 /**
  * <p>

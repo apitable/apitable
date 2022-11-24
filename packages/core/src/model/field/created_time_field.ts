@@ -19,8 +19,8 @@ export class CreatedTimeField extends DateTimeBaseField {
     timeFormat: Joi.string().allow(...enumToArray(TimeFormat)).required(),
     includeTime: Joi.boolean().required(),
   }).required();
-  static defaultDateFormat: string = DateFormat[0];
-  static defaultTimeFormat: string = TimeFormat[0];
+  static defaultDateFormat: string = DateFormat[0]!;
+  static defaultTimeFormat: string = TimeFormat[0]!;
 
   static createDefault(fieldMap: { [fieldId: string]: IField }): ICreatedTimeField {
     return {
@@ -72,8 +72,8 @@ export class CreatedTimeField extends DateTimeBaseField {
   override get openFieldProperty(): IOpenCreatedTimeFieldProperty {
     const { includeTime, dateFormat, timeFormat } = this.field.property;
     return {
-      dateFormat: DateFormat[dateFormat],
-      timeFormat: TimeFormat[timeFormat],
+      dateFormat: DateFormat[dateFormat]!,
+      timeFormat: TimeFormat[timeFormat]!,
       includeTime
     };
   }

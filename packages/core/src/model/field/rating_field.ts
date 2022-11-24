@@ -60,7 +60,7 @@ export class RatingField extends NumberBaseField {
     if (data.length === 0) {
       return null;
     }
-    const cValue = commonNumberFields.has(sourceType) ? data[0].value : str2number(data[0].text);
+    const cValue = commonNumberFields.has(sourceType) ? data[0]!.value : str2number(data[0]!.text);
     if (!cValue) return null;
     if (cValue && cValue >= this.field.property.max) return this.field.property.max;
     if (cValue != null && cValue < 1) return null;

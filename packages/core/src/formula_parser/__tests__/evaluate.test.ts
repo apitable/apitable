@@ -46,7 +46,7 @@ const testEvaluate = (tests: any) => {
     const [expression, context, expectedResult] = test;
     // Convert the text field
     for (const id in fieldMap) {
-      if (fieldMap[id].type === FieldType.Text) {
+      if (fieldMap[id]!.type === FieldType.Text) {
         context[id] = [{ type: 1, text: context[id] }];
       }
     }
@@ -339,7 +339,7 @@ describe('FormulaEvaluate', () => {
   });
 
   it('should evaluate "and-or" expressions', () => {
-    fieldMap.b.type = FieldType.Number;
+    fieldMap.b!.type = FieldType.Number;
     const tests = [
       ['{a} && {b} || {c}', { a: false, b: false, c: true }, true],
       ['({a} && {b}) || {c}', { a: false, b: false, c: true }, true],
@@ -349,7 +349,7 @@ describe('FormulaEvaluate', () => {
     ];
 
     testEvaluate(tests);
-    fieldMap.b.type = FieldType.Text;
+    fieldMap.b!.type = FieldType.Text;
   });
 
   it('should evaluate "not" expressions', () => {

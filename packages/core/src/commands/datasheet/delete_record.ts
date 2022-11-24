@@ -25,7 +25,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
 
     const linkField: ILinkField[] = [];
     for (const fieldId in snapshot.meta.fieldMap) {
-      const field = snapshot.meta.fieldMap[fieldId];
+      const field = snapshot.meta.fieldMap[fieldId]!;
       if (field.type === FieldType.Link) {
         linkField.push(field);
       }
@@ -59,7 +59,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
             if (!reLinkRecords[id]) {
               reLinkRecords[id] = [];
             }
-            reLinkRecords[id].push(v.id);
+            reLinkRecords[id]!.push(v.id);
           });
         }
       });
@@ -72,13 +72,13 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
         return;
       }
       linkField.forEach((field: ILinkField) => {
-        let oldValue: string[] | null = null;
+        let oldValue: string[] | undefined
         // two tables are associated
         if (field.property.brotherFieldId) {
-          oldValue = record.data[field.id] as string[] | null;
+          oldValue = record.data[field.id] as string[] | undefined;
         } else {
           // self-association
-          oldValue = fieldRelinkMap[field.id][record.id] || null;
+          oldValue = fieldRelinkMap[field.id]![record.id] || undefined;
           // LinkedActions are not generated when the self-table is associated and the associated record contains the deleted record itself
           oldValue = oldValue?.filter(item => !data.includes(item));
         }

@@ -63,7 +63,7 @@ export class DashboardAction {
     const actions: IJOTAction[] = [];
 
     oldLayout.map((oldPosition, index) => {
-      const newPosition = layout[index];
+      const newPosition = layout[index]!;
       for (const k in oldPosition) {
         actions.push({
           n: OTActionName.ObjectReplace,

@@ -61,7 +61,7 @@ export const moveRow: ICollaCommandDef<IMoveRowOptions> = {
             originRowIndex,
             rowIndexMap: JSON.stringify(recordMap),
             recordIds: JSON.stringify(Object.keys(snapshot.recordMap)),
-            rows: JSON.stringify(snapshot.meta.views[0].rows)
+            rows: JSON.stringify(snapshot.meta.views[0]!.rows)
           },
         });
         return collected;

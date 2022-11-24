@@ -450,7 +450,7 @@ export const addNodeToFavoriteTree = (nodeIds: string[], parentId = '') => {
 export const removeFavorite = (nodeId: string) => {
   return (dispatch: Dispatch, getState: () => IReduxState) => {
     const state = getState();
-    const type = state.catalogTree.treeNodesMap[nodeId].type;
+    const type = state.catalogTree.treeNodesMap[nodeId]!.type;
     dispatch(updateNodeInfo(nodeId, type, { nodeFavorite: false }));
     dispatch({
       type: actions.REMOVE_FAVORITE_NODE,

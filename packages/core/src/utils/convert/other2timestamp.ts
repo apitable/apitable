@@ -37,7 +37,7 @@ export function str2time(value: string, _field?: IDateTimeField) {
   // if (!dateTime.isValid()) {
   //   return null;
   // }
-  const [hh, mm] = value.split(':');
+  const [hh, mm] = value.split(':') as [string, string];
   const hours = parseInt(hh, 10);
   const minutes = parseInt(mm, 10);
   if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {

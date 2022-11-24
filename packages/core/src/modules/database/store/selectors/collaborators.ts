@@ -48,7 +48,7 @@ export const collaboratorCursorSelector = createSelector(
       }).forEach(r => {
         const key = `${r.fieldId}_${r.recordId}`;
         if (collaboratorCursorMap.hasOwnProperty(key)) {
-          collaboratorCursorMap[key].push(r);
+          collaboratorCursorMap[key]!.push(r);
         } else {
           collaboratorCursorMap[key] = [r];
         }

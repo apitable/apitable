@@ -78,8 +78,8 @@ const UnitMapBase = new Map([
 
 const UnitMap = new Map<string, Units>();
 UnitMapBase.forEach((v, k) => {
-  UnitMap.set(v[0], k);
-  UnitMap.set(v[1], k);
+  UnitMap.set(v[0]!, k);
+  UnitMap.set(v[1]!, k);
 });
 
 const getPureUnit = (unitStr: string) => {
@@ -260,8 +260,8 @@ export class Dateadd extends DateFunc {
       throw new ParamsCountError(ParamsErrorType.AtLeastCount, 'DATEADD', 3);
     }
 
-    const unit = params[2].token.value.slice(1, -1);
-    if (params[2].token.type === TokenType.String && !UnitMap.get(unit)) {
+    const unit = params[2]!.token.value.slice(1, -1);
+    if (params[2]!.token.type === TokenType.String && !UnitMap.get(unit)) {
       throw new UnitError(unit);
     }
   }
@@ -286,7 +286,7 @@ export class DatetimeDiffUtil extends DateFunc {
   }
 
   static calc(params: IFormulaParam<number | string>[], float?: boolean): string | number | null {
-    const [{ value: dateFrom }, { value: dateTo }] = params;
+    const [{ value: dateFrom }, { value: dateTo }] = params as [IFormulaParam<number | string>, IFormulaParam<number | string>];
 
     if (dateFrom == null || dateTo == null) {
       return null;
@@ -305,7 +305,7 @@ export class DatetimeDiff extends DatetimeDiffUtil {
       throw new ParamsCountError(ParamsErrorType.NotEquals, 'DATETIME_DIFF', 2);
     }
     const unit = params[2]?.token.value.slice(1, -1);
-    if (params[2]?.token.type === TokenType.String && !UnitMap.get(unit)) {
+    if (params[2]?.token.type === TokenType.String && unit && !UnitMap.get(unit)) {
       throw new UnitError(unit);
     }
   }
@@ -433,12 +433,12 @@ export class WorkDay extends DateFunc {
   }
 
   static override func(params: IFormulaParam<number | string>[]): number | null {
-    let startDate = getDayjs(params[0].value);
+    let startDate = getDayjs(params[0]!.value);
     const startDay = startDate.day();
     // Specify which days the weekend is
     const weekends = [0, 6];
     // number of working days elapsed
-    const totalWorkDays = Number(params[1].value);
+    const totalWorkDays = Number(params[1]!.value);
 
     if (typeof totalWorkDays !== 'number') {
       return null;
@@ -482,13 +482,13 @@ export class WorkDay extends DateFunc {
     let finalDate = skipWeekends(endDate);
 
     // holiday list
-    const holidayStrList = params.length > 2 ? String(params[2].value).split(',') : [];
+    const holidayStrList = params.length > 2 ? String(params[2]!.value).split(',') : [];
     const holidays = holidayStrList.filter(v => v !== 'null').map(v => getDayjs(v.trim()));
 
     // calculate holidays
     for (let i = 0; i < holidays.length; i++) {
-      const holiday = holidays[i];
-      const [_start, _end] = totalWorkDays >= 0 ? [getDayjs(params[0].value), finalDate] : [finalDate, getDayjs(params[0].value)];
+      const holiday = holidays[i]!;
+      const [_start, _end] = totalWorkDays >= 0 ? [getDayjs(params[0]!.value), finalDate] : [finalDate, getDayjs(params[0]!.value)];
 
       if (holiday.isBefore(_start, 'date') || holiday.isSame(totalWorkDays >= 0 ? _start : _end, 'date') || holiday.isAfter(_end, 'date')) {
         continue;
@@ -514,11 +514,11 @@ export class WorkDayDiff extends DateFunc {
   }
 
   static override func(params: IFormulaParam<number | string>[]): number {
-    let startDate = getDayjs(params[0].value);
-    let endDate = getDayjs(params[1].value);
+    let startDate = getDayjs(params[0]!.value);
+    let endDate = getDayjs(params[1]!.value);
     const isMinus = startDate.valueOf() > endDate.valueOf(); // Whether with a negative sign
     isMinus && ([startDate, endDate] = [endDate, startDate]);
-    const holidayStrList = params.length > 2 ? String(params[2].value).split(',') : [];
+    const holidayStrList = params.length > 2 ? String(params[2]!.value).split(',') : [];
     const holidays = holidayStrList.filter(v => v !== 'null').map(v => getDayjs(v.trim()));
     const weekends = [0, 6]; // specify which days are the weekends
 
@@ -544,7 +544,7 @@ export class WorkDayDiff extends DateFunc {
 
     // calculate holidays
     for (let i = 0; i < holidays.length; i++) {
-      const holiday = holidays[i];
+      const holiday = holidays[i]!;
       const holidayDay = holiday.day();
       if (
         endDate.isAfter(holiday, 'date') &&

@@ -150,16 +150,16 @@ export class UndoManager {
   private transformStack(stack: IUndoCommand[], remoteActions: IJOTAction[]) {
     const newStack: IUndoCommand[] = [];
     for (let i = stack.length - 1; i >= 0; i--) {
-      const stackActions = stack[i].result.actions;
+      const stackActions = stack[i]!.result.actions;
       if (this.checkTransformSquareOverLimit(stackActions.length, remoteActions.length)) {
         break;
       }
       const [left, right] = jot.transformX(stackActions, remoteActions);
       newStack.push(
         {
-          ...stack[i],
+          ...stack[i]!,
           result: {
-            ...stack[i].result,
+            ...stack[i]!.result,
             actions: left
           }
         }

@@ -9,7 +9,7 @@ import { IBindViewModal } from '.';
  */
 export abstract class View {
   static bindModel: IBindViewModal;
-  static getSrcView(snapshot: ISnapshot, activeViewId: string | null | undefined) {
+  static getSrcView(snapshot: ISnapshot, activeViewId: string | null | undefined): IViewProperty {
     const views = snapshot.meta.views;
     let srcView: IViewProperty | undefined;
     if (activeViewId) {
@@ -17,7 +17,7 @@ export abstract class View {
     }
 
     if (!srcView) {
-      srcView = views[0];
+      srcView = views[0]!;
     }
     return srcView;
   }

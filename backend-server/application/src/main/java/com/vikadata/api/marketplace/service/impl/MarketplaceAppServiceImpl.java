@@ -28,7 +28,7 @@ import com.vikadata.api.space.enums.SpaceException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.MarketplaceSpaceAppRelEntity;
-import com.vikadata.system.config.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
 
 import org.springframework.stereotype.Service;
 

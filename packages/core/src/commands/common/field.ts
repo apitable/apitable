@@ -40,7 +40,7 @@ function changeFieldSetting(
       // delete records without options
       const optionIdMap = keyBy((newField as ISelectField).property.options, 'id');
       for (const recordId in snapshot.recordMap) {
-        const cellValue = snapshot.recordMap[recordId].data[newField.id];
+        const cellValue = snapshot.recordMap[recordId]!.data[newField.id];
 
         let convertValue = cellValue;
         if (Array.isArray(cellValue)) {
@@ -53,7 +53,8 @@ function changeFieldSetting(
           const action = DatasheetActions.setRecord2Action(snapshot, {
             recordId,
             fieldId: newField.id,
-            value: convertValue,
+            // TODO what if convertValue is null ? value does not accept null
+            value: convertValue!,
           });
           action && actions.push(action);
         }
@@ -64,7 +65,7 @@ function changeFieldSetting(
       // When switching the associated datasheetId, you need to clear the value of the cell
       if (oldField.property.foreignDatasheetId !== (newField as ILinkField).property.foreignDatasheetId) {
         for (const recordId in snapshot.recordMap) {
-          const cellValue = snapshot.recordMap[recordId].data[newField.id];
+          const cellValue = snapshot.recordMap[recordId]!.data[newField.id];
           if (cellValue) {
             const action = DatasheetActions.setRecord2Action(snapshot, {
               recordId,
@@ -81,7 +82,7 @@ function changeFieldSetting(
     case FieldType.Rating: {
       if (newField.property.max < oldField.property.max) {
         for (const recordId in snapshot.recordMap) {
-          const cellValue = snapshot.recordMap[recordId].data[newField.id];
+          const cellValue = snapshot.recordMap[recordId]!.data[newField.id];
           if (cellValue && cellValue > newField.property.max) {
             const action = DatasheetActions.setRecord2Action(snapshot, {
               recordId,
@@ -418,7 +419,7 @@ export function createNewBrotherField(state: IReduxState, newField: ILinkField, 
    */
   const actions = createNewField(foreignSnapshot, {
     id: foreignFieldNewId,
-    name: getUniqName(currentDatasheet.name, foreignFieldIds.map(id => foreignFieldMap[id].name)),
+    name: getUniqName(currentDatasheet.name, foreignFieldIds.map(id => foreignFieldMap[id]!.name)),
     type: FieldType.Link,
     property: {
       foreignDatasheetId: currentDatasheet.id,

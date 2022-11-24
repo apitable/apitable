@@ -20,15 +20,15 @@ export function num2number(num: number): number | null {
  * (because large numbers will be automatically converted back to scientific notation, recorded in string mode)
  * @param value The numbers in js will be converted to part of the data in scientific notation
  */
-function e2number(value: string) {
-  const val = value.split('e');
+function e2number(value: string): string {
+  const val = value.split('e') as [string, string];
   const p = parseInt(val[1], 10); // get the index value
   if (p === 0) {
     return val[0];
   }
 
   const num = val[0].split('.');
-  const dotLeft: string = num[0]; // value to the left of the decimal point
+  const dotLeft: string = num[0]!; // value to the left of the decimal point
   const dotRight: string = num[1] || ''; // value to the right of the decimal point
 
   if (p > 0) {

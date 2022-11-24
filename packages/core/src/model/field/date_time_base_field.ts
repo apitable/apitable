@@ -153,11 +153,11 @@ export abstract class DateTimeBaseField extends Field {
   }
 
   get dateFormat(): string {
-    return DateFormat[this.field.property.dateFormat];
+    return DateFormat[this.field.property.dateFormat]!;
   }
 
   get timeFormat(): string {
-    return TimeFormat[this.field.property.timeFormat];
+    return TimeFormat[this.field.property.timeFormat]!;
   }
 
   get mergeFormat(): string {
@@ -225,7 +225,7 @@ export abstract class DateTimeBaseField extends Field {
     if (cv2 === null) {
       return 1;
     }
-    const dateFormat = DateFormat[property?.dateFormat || defaultProps.dateFormat];
+    const dateFormat = DateFormat[property?.dateFormat || defaultProps.dateFormat]!;
     const hasYear = dateFormat.includes('YYYY');
 
     // In the case of sorting and including the year, just use the original timestamp to compare
@@ -292,15 +292,15 @@ export abstract class DateTimeBaseField extends Field {
       return null;
     }
 
-    let value = stdVal.data[0].text;
+    let value = stdVal.data[0]!.text;
 
     if (!value) {
       return null;
     }
 
-    const isOperateFromDate = stdVal.sourceType === FieldType.DateTime && stdVal.data[0].originValue;
+    const isOperateFromDate = stdVal.sourceType === FieldType.DateTime && stdVal.data[0]!.originValue;
     if (isOperateFromDate) {
-      value = stdVal.data[0].originValue;
+      value = stdVal.data[0]!.originValue;
     }
     const _value = isOperateFromDate ? value : dateStrReplaceCN(value);
     let datetime = dayjs(_value);

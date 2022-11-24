@@ -30,50 +30,10 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
 import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Privilege;
 
-import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.shared.cache.bean.UserSpaceDto;
-import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
-import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.component.notification.NotificationManager;
-import com.vikadata.api.shared.component.notification.NotificationRenderField;
-import com.vikadata.api.shared.component.notification.NotificationTemplateId;
-import com.vikadata.api.shared.config.properties.ConstProperties;
-import com.vikadata.api.shared.config.properties.LimitProperties;
-import com.vikadata.api.shared.constants.AuditConstants;
-import com.vikadata.api.shared.constants.MailPropConstants;
-import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.space.enums.AuditSpaceAction;
-import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
-import com.vikadata.api.space.enums.SpaceException;
-import com.vikadata.api.organization.enums.UnitType;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.organization.enums.UserSpaceStatus;
-import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
-import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.vikadata.api.shared.component.notification.NotifyMailFactory;
-import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.dto.MapDTO;
-import com.vikadata.api.organization.dto.MemberDTO;
-import com.vikadata.api.space.dto.SpaceAdminInfoDTO;
-import com.vikadata.api.space.ro.SpaceUpdateOpRo;
-import com.vikadata.api.space.vo.SpaceInfoVO;
-import com.vikadata.api.space.vo.SpaceSocialConfig;
-import com.vikadata.api.space.vo.SpaceVO;
-import com.vikadata.api.space.vo.UserSpaceVo;
 import com.vikadata.api.asset.service.IAssetService;
-import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
-import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
-import com.vikadata.api.internal.model.InternalSpaceUsageVo;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.organization.mapper.TeamMapper;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.organization.service.ITeamMemberRelService;
-import com.vikadata.api.organization.service.ITeamService;
-import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.enterprise.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.enterprise.social.factory.SocialFactory;
 import com.vikadata.api.enterprise.social.mapper.SocialTenantMapper;
@@ -85,59 +45,102 @@ import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
 import com.vikadata.api.enterprise.social.service.ISocialTenantDomainService;
 import com.vikadata.api.enterprise.social.service.ISocialTenantService;
 import com.vikadata.api.enterprise.social.service.IWeComService;
-import com.vikadata.api.space.mapper.SpaceMapper;
-import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
-import com.vikadata.api.space.model.GetSpaceListFilterCondition;
-import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
-import com.vikadata.api.space.service.IInvitationService;
-import com.vikadata.api.space.service.ISpaceInviteLinkService;
-import com.vikadata.api.space.service.ISpaceRoleService;
-import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.space.model.ControlStaticsVO;
-import com.vikadata.api.space.model.DatasheetStaticsVO;
-import com.vikadata.api.space.model.NodeTypeStatics;
-import com.vikadata.api.space.service.IStaticsService;
-import com.vikadata.api.template.service.ITemplateService;
-import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.workspace.model.CreateNodeDto;
-import com.vikadata.api.workspace.model.NodeCopyOptions;
-import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.workspace.service.INodeShareSettingService;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
+import com.vikadata.api.interfaces.billing.model.SubscriptionFeature;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
+import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
+import com.vikadata.api.internal.model.InternalSpaceUsageVo;
+import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.organization.enums.UnitType;
+import com.vikadata.api.organization.enums.UserSpaceStatus;
+import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.organization.mapper.TeamMapper;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.organization.service.ITeamMemberRelService;
+import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.shared.cache.bean.UserSpaceDto;
+import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.component.TaskManager;
+import com.vikadata.api.shared.component.notification.NotificationManager;
+import com.vikadata.api.shared.component.notification.NotificationRenderField;
+import com.vikadata.api.shared.component.notification.NotificationTemplateId;
+import com.vikadata.api.shared.component.notification.NotifyMailFactory;
+import com.vikadata.api.shared.config.properties.ConstProperties;
+import com.vikadata.api.shared.config.properties.LimitProperties;
+import com.vikadata.api.shared.constants.AuditConstants;
+import com.vikadata.api.shared.constants.MailPropConstants;
+import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
+import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
+import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
 import com.vikadata.api.shared.security.ValidateCodeType;
 import com.vikadata.api.shared.security.ValidateTarget;
 import com.vikadata.api.shared.util.IdUtil;
-import com.vikadata.api.enterprise.billing.util.model.BillingPlanFeature;
-import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.api.space.assembler.SubscribeAssembler;
+import com.vikadata.api.space.dto.MapDTO;
+import com.vikadata.api.space.dto.SpaceAdminInfoDTO;
+import com.vikadata.api.space.enums.AuditSpaceAction;
+import com.vikadata.api.space.enums.SpaceException;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
+import com.vikadata.api.space.model.ControlStaticsVO;
+import com.vikadata.api.space.model.DatasheetStaticsVO;
+import com.vikadata.api.space.model.GetSpaceListFilterCondition;
+import com.vikadata.api.space.model.NodeTypeStatics;
+import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
+import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.model.SpaceUpdateOperate;
+import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.space.ro.SpaceUpdateOpRo;
+import com.vikadata.api.space.service.IInvitationService;
+import com.vikadata.api.space.service.ISpaceInviteLinkService;
+import com.vikadata.api.space.service.ISpaceRoleService;
+import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.space.service.IStaticsService;
+import com.vikadata.api.space.vo.SpaceInfoVO;
+import com.vikadata.api.space.vo.SpaceSocialConfig;
+import com.vikadata.api.space.vo.SpaceVO;
+import com.vikadata.api.space.vo.UserSpaceVo;
+import com.vikadata.api.template.service.ITemplateService;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.service.IUserService;
+import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
+import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.workspace.model.CreateNodeDto;
+import com.vikadata.api.workspace.model.NodeCopyOptions;
+import com.vikadata.api.workspace.service.INodeService;
+import com.vikadata.api.workspace.service.INodeShareSettingService;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.core.constants.RedisConstants;
-import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.entity.SpaceEntity;
-import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.vikadata.api.shared.constants.NotificationConstants.NEW_SPACE_NAME;
-import static com.vikadata.api.shared.constants.NotificationConstants.OLD_SPACE_NAME;
+import static com.vikadata.api.enterprise.social.enums.SocialException.USER_NOT_EXIST;
+import static com.vikadata.api.enterprise.social.enums.SocialException.USER_NOT_VISIBLE_WECOM;
 import static com.vikadata.api.organization.enums.OrganizationException.CREATE_MEMBER_ERROR;
 import static com.vikadata.api.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
+import static com.vikadata.api.shared.constants.NotificationConstants.NEW_SPACE_NAME;
+import static com.vikadata.api.shared.constants.NotificationConstants.OLD_SPACE_NAME;
+import static com.vikadata.api.space.enums.SpaceException.NO_ALLOW_OPERATE;
+import static com.vikadata.api.space.enums.SpaceException.SPACE_NOT_EXIST;
+import static com.vikadata.api.space.enums.SpaceException.SPACE_QUIT_FAILURE;
 import static com.vikadata.api.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
 import static com.vikadata.api.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 import static com.vikadata.api.workspace.enums.PermissionException.SET_MAIN_ADMIN_FAIL;
 import static com.vikadata.api.workspace.enums.PermissionException.TRANSFER_SELF;
-import static com.vikadata.api.enterprise.social.enums.SocialException.USER_NOT_EXIST;
-import static com.vikadata.api.enterprise.social.enums.SocialException.USER_NOT_VISIBLE_WECOM;
-import static com.vikadata.api.space.enums.SpaceException.NO_ALLOW_OPERATE;
-import static com.vikadata.api.space.enums.SpaceException.SPACE_NOT_EXIST;
-import static com.vikadata.api.space.enums.SpaceException.SPACE_QUIT_FAILURE;
 
 @Service
 @Slf4j
@@ -192,7 +195,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     private ConstProperties constProperties;
 
     @Resource
-    private ISpaceSubscriptionService iSpaceSubscriptionService;
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private ITemplateService iTemplateService;
@@ -458,11 +461,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // get space domains
         Map<String, String> spaceDomains = iSocialTenantDomainService.getSpaceDomainBySpaceIdsToMap(spaceIds);
         // batch query subscriptions
-        Map<String, BillingPlanFeature> spacePlanFeatureMap = iSpaceSubscriptionService.getSubscriptionFeatureBySpaceIds(spaceIds);
+        Map<String, SubscriptionFeature> spacePlanFeatureMap = entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
         // setting information
         spaceMaps.forEach((spaceId, spaceVO) -> {
-            BillingPlanFeature planFeature = spacePlanFeatureMap.get(spaceId);
-            spaceVO.setMaxSeat(planFeature.getMaxSeats());
+            SubscriptionFeature planFeature = spacePlanFeatureMap.get(spaceId);
+            spaceVO.setMaxSeat(planFeature.getSeat().getValue());
             spaceVO.setSpaceDomain(spaceDomains.get(spaceId));
         });
         if (condition != null) {
@@ -488,7 +491,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         long recordCount = iStaticsService.getDatasheetRecordTotalCountBySpaceId(spaceId);
         // used space statistics
         long capacityUsedSize = spaceCapacityCacheService.getSpaceCapacity(spaceId);
-        // APIusage statistics
+        // API usage statistics
         long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId);
         // file control amount
         ControlStaticsVO controlStaticsVO = iStaticsService.getFieldRoleTotalCountBySpaceId(spaceId);
@@ -583,25 +586,27 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     public SpaceCapacityUsedInfo getSpaceCapacityUsedInfo(String spaceId, Long capacityUsedSize) {
         SpaceCapacityUsedInfo spaceCapacityUsedInfo = new SpaceCapacityUsedInfo();
         // space subscription plan attachment capacity
-        Long currentBundleCapacity = iSpaceSubscriptionService.getSpaceSubscription(spaceId).getSubscriptionCapacity();
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        // Plan total capacity except gift capacity
+        Long planCapacity = subscriptionInfo.getTotalCapacity().getValue() - subscriptionInfo.getGiftCapacity().getValue();
         // If the used attachment capacity is less than the space subscription plan capacity, the current used attachment capacity is the current package used capacity.
-        if (capacityUsedSize <= currentBundleCapacity) {
+        if (capacityUsedSize <= planCapacity) {
             spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(capacityUsedSize);
             // Because the package capacity is preferred, the complimentary attachment capacity has been used to be 0.
             spaceCapacityUsedInfo.setGiftCapacityUsedSizes(0L);
         }
         else {
-            spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(currentBundleCapacity);
+            spaceCapacityUsedInfo.setCurrentBundleCapacityUsedSizes(planCapacity);
             // complimentary attachment capacity
-            Long giftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
+            Long giftCapacity = subscriptionInfo.getGiftCapacity().getValue();
             // If the attachment capacity is used in excess,
             // the used complimentary attachment capacity is equal to the size of the complimentary assert capacity.
-            if (capacityUsedSize > currentBundleCapacity + giftCapacity) {
+            if (capacityUsedSize > subscriptionInfo.getTotalCapacity().getValue()) {
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
             }
             else {
-                // no excess
-                spaceCapacityUsedInfo.setGiftCapacityUsedSizes(capacityUsedSize - currentBundleCapacity);
+                // gift capacity used left
+                spaceCapacityUsedInfo.setGiftCapacityUsedSizes(capacityUsedSize - planCapacity);
             }
         }
         return spaceCapacityUsedInfo;
@@ -629,14 +634,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // used space statistics
         Long usedCapacity = spaceCapacityCacheService.getSpaceCapacity(spaceId);
         // space subscription plan attachment capacity
-        Long currentBundleCapacity = iSpaceSubscriptionService.getPlanMaxCapacity(spaceId);
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        Long totalCapacity = subscriptionInfo.getTotalCapacity().getValue();
         // complimentary attachment capacity
-        Long unExpireGiftCapacity = iSpaceSubscriptionService.getSpaceUnExpireGiftCapacity(spaceId);
-        // total capacity of space assert
-        Long totalCapacity = currentBundleCapacity + unExpireGiftCapacity;
+        Long unExpireGiftCapacity = subscriptionInfo.getGiftCapacity().getValue();
         return InternalSpaceCapacityVo.builder()
                 .usedCapacity(usedCapacity)
-                .currentBundleCapacity(currentBundleCapacity)
+                .currentBundleCapacity(totalCapacity)
                 .unExpireGiftCapacity(unExpireGiftCapacity)
                 .totalCapacity(totalCapacity)
                 .build();
@@ -694,9 +698,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void removeMainAdmin(String spaceId) {
-
         baseMapper.removeSpaceOwnerId(spaceId, null);
-
     }
 
     @Override
@@ -977,6 +979,17 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         boolean exist = ObjectUtil.isNotNull(memberId);
         consumer.accept(exist);
+    }
+
+    @Override
+    public SpaceSubscribeVo getSpaceSubscriptionInfo(String spaceId) {
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscribeAssembler assembler = new SubscribeAssembler();
+        SpaceSubscribeVo result = assembler.toVo(subscriptionInfo);
+        SpaceGlobalFeature spaceGlobalFeature = getSpaceGlobalFeature(spaceId);
+        boolean blackSpace = subscriptionInfo.isFree() ? ObjectUtil.defaultIfNull(spaceGlobalFeature.getBlackSpace(), Boolean.FALSE) : Boolean.FALSE;
+        result.setBlackSpace(blackSpace);
+        return result;
     }
 
 }

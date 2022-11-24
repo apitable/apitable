@@ -22,11 +22,11 @@ export class OrgChartView extends View {
 
     // the first attachment field set as default cover field
     const initCoverField = srcView.columns.find(col =>
-      snapshot.meta.fieldMap[col.fieldId].type === FieldType.Attachment,
+      snapshot.meta.fieldMap[col.fieldId]!.type === FieldType.Attachment,
     );
 
     const linkField = srcView.columns.find(col => {
-      const field = snapshot.meta.fieldMap[col.fieldId];
+      const field = snapshot.meta.fieldMap[col.fieldId]!;
       return field.type === FieldType.Link && field.property.foreignDatasheetId === snapshot.datasheetId;
     })!;
 
@@ -86,7 +86,7 @@ export class OrgChartView extends View {
     }
 
     if (!srcView) {
-      srcView = views[0];
+      srcView = views[0]!;
     }
 
     return {

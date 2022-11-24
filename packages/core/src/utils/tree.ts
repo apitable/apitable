@@ -9,7 +9,7 @@ export const collectProperty = (treeNodesMap: ITreeNodesMap, rootId: string) => 
     return node.children.reduce((prev, nodeId) => {
       prev.push(nodeId);
       if (treeNodesMap[nodeId]) {
-        prev.push(...findId(treeNodesMap[nodeId]));
+        prev.push(...findId(treeNodesMap[nodeId]!));
       }
       return prev;
     }, [] as string[]);
@@ -45,9 +45,9 @@ export const findNode = (tree: ITreeNode[], nodeId: string): ITreeNode | null =>
  */
 export function genarateExpandedKeys(treeNodesMap: ITreeNodesMap, expandedKeys: string[], nodeId: string) {
   const expanded: string[] = [];
-  while (treeNodesMap[nodeId].parentId !== '0') {
-    const parentId = treeNodesMap[nodeId].parentId;
-    if (!expandedKeys.includes(parentId) && treeNodesMap[parentId].type !== ConfigConstant.NodeType.ROOT) {
+  while (treeNodesMap[nodeId]!.parentId !== '0') {
+    const parentId = treeNodesMap[nodeId]!.parentId;
+    if (!expandedKeys.includes(parentId) && treeNodesMap[parentId]!.type !== ConfigConstant.NodeType.ROOT) {
       expanded.push(parentId);
     }
     nodeId = parentId;
@@ -74,11 +74,11 @@ export const getExpandNodeIds = (data: ITreeNodesMap, nodeId: string, end: any =
   const expandNodeIds: string[] = [];
   // If the chain is found to be broken when searching up the chain recursively, give up this operation directly
   if (!data[nodeId]) { return []; }
-  if (data[nodeId].type === ConfigConstant.NodeType.ROOT) {
+  if (data[nodeId]!.type === ConfigConstant.NodeType.ROOT) {
     return expandNodeIds;
   }
   if (favoriteTreeNodeIds.includes(nodeId)) return expandNodeIds;
-  const parentNodeId = data[nodeId].parentId;
+  const parentNodeId = data[nodeId]!.parentId;
   if (parentNodeId !== end) {
     expandNodeIds.push(parentNodeId, ...getExpandNodeIds(data, parentNodeId, end, favoriteTreeNodeIds));
   }

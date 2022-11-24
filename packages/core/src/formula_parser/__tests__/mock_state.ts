@@ -122,7 +122,7 @@ const fieldMap: IFieldMap = {
 };
 
 export const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>, isTransform = true) => {
-  const fieldMap = ctx.state.datasheetMap['dst123'].datasheet!.snapshot.meta.fieldMap;
+  const fieldMap = ctx.state.datasheetMap['dst123']!.datasheet!.snapshot.meta.fieldMap;
   // Convert each field
   for (const id in fieldMap) {
     if (!fieldMap[id]) {
@@ -135,11 +135,11 @@ export const evaluate = (expression: string, ctx: Omit<IFormulaContext, 'field'>
         },
       };
     }
-    if (fieldMap[id].type === FieldType.Text && isTransform) {
+    if (fieldMap[id]!.type === FieldType.Text && isTransform) {
       ctx.record.data[id] = [{ type: 1, text: ctx.record.data[id] }] as any;
     }
   }
-  return _evaluate(expression, { ...ctx, field: fieldMap.x }, true, true);
+  return _evaluate(expression, { ...ctx, field: fieldMap.x! }, true, true);
 };
 
 export const mergeContext = (recordData: IRecordCellValue, _fieldMap?: IFieldMap) => {

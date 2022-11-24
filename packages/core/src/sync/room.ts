@@ -198,17 +198,17 @@ export class RoomService {
       for (const resourceId in opBufferMap) {
         if (changesetMap[resourceId]) {
           const changeset = BufferStorage.ops2Changeset(
-            opBufferMap[resourceId],
-            changesetMap[resourceId].baseRevision + 1,
+            opBufferMap[resourceId]!,
+            changesetMap[resourceId]!.baseRevision + 1,
             resourceId,
-            changesetMap[resourceId].resourceType
+            changesetMap[resourceId]!.resourceType
           );
           changesets.push(changeset);
           continue;
         }
-        const opBuffer = opBufferMap[resourceId];
-        const revision = opBuffer[0].revision;
-        const resourceType = opBuffer[0].resourceType;
+        const opBuffer = opBufferMap[resourceId]!;
+        const revision = opBuffer[0]!.revision;
+        const resourceType = opBuffer[0]!.resourceType;
         const changeset = BufferStorage.ops2Changeset(opBuffer, revision as number, resourceId, resourceType as ResourceType);
 
         if (opBuffer.every(operation => !operation.mainLinkDstId)) {
@@ -271,7 +271,8 @@ export class RoomService {
   async watch() {
     const state = this.store.getState();
     const shareId = state.pageParams.shareId;
-    const watchResponse = await this.io.watch<IWatchResponse, any>(this.roomId, shareId).catch(e => {
+    const embedId = state.pageParams.embedId;
+    const watchResponse = await this.io.watch<IWatchResponse, any>(this.roomId, shareId, embedId).catch(e => {
       throw new EnhanceError(e);
     });
 

@@ -32,7 +32,7 @@ export const fixOneWayLinkDstId: ICollaCommandDef<IFixOneWayLinkDstId> = {
       return null;
     }
 
-    const field = snapshot.meta.fieldMap[fieldId];
+    const field = snapshot.meta.fieldMap[fieldId]!;
 
     const actions = data.reduce<IJOTAction[]>((collected, linkFieldOption) => {
       if (!linkFieldOption) return collected;

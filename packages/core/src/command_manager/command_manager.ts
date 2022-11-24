@@ -64,7 +64,7 @@ export class CollaCommandManager {
   ) {
     const commandNames = Object.keys(COLLA_COMMAND_MAP);
     commandNames.forEach(commandName => {
-      this.register(commandName, COLLA_COMMAND_MAP[commandName]);
+      this.register(commandName, COLLA_COMMAND_MAP[commandName]!);
     });
     this.cellFormatChecker = new CellFormatChecker(store);
     this.linkIntegrityChecker = new LinkIntegrityChecker(store);
@@ -319,7 +319,7 @@ export class CollaCommandManager {
 
     if (_fieldMapSnapshot && Object.keys(_fieldMapSnapshot).length) {
       for (const id in _fieldMapSnapshot) {
-        const field = _fieldMapSnapshot[id];
+        const field = _fieldMapSnapshot[id]!;
         fieldTypeMap[id] = field.type;
       }
 

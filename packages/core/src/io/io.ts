@@ -27,7 +27,7 @@ export class IO {
     return true;
   }
 
-  async watch<T extends IWatchResponse, P>(roomId: string, shareId: string | undefined, params?: P): Promise<T | void> {
+  async watch<T extends IWatchResponse, P>(roomId: string, shareId: string | undefined, embedId?: string, params?: P): Promise<T | void> {
     await this.waitToConnect();
     return new Promise<T | void>((resolve, reject) => {
       if (!this.socket.connected) {
@@ -37,7 +37,7 @@ export class IO {
       let retryTimes = 3;
 
       const emit = (interval: NodeJS.Timeout) => {
-        this.socket.emit(SyncRequestTypes.WATCH_ROOM, { ...params, roomId, shareId }, (msg: T) => {
+        this.socket.emit(SyncRequestTypes.WATCH_ROOM, { ...params, roomId, shareId, embedLinkId: embedId }, (msg: T) => {
           interval && clearInterval(interval as any);
 
           if ('success' in msg && msg.success) {

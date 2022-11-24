@@ -148,7 +148,7 @@ export class PermissionCheck {
   collectByView(action: IJOTAction, permission: any, resultSet: { [key: string]: any }) {
     // Operations related to this table require editable roles or above
     if (resultSet.datasheetId === resultSet.mainDatasheetId) {
-      const view = resultSet.temporaryViews[action.p[2]] as IViewProperty;
+      const view = resultSet.temporaryViews[action.p[2]!] as IViewProperty;
       if (action.p.length === 3) {
         // new view operation(includes duplicate view)
         if ('li' in action) {

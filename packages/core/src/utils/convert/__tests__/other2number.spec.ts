@@ -5,8 +5,8 @@ import cases from './other2number.test.json';
 describe('test convert text to number', () => {
   it('should convert string to number correctly', () => {
     for (let i = 0; i < cases.length; i++) {
-      const { args, expected } = cases[i];
-      const result = str2number.apply(null, args);
+      const { args, expected } = cases[i]!;
+      const result = str2number.apply(null, args as [string]);
       assert.deepEqual(result, expected, `case: str2number("${args.join(', ')}")`);
     }
 

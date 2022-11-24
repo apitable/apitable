@@ -63,7 +63,7 @@ export class OPEventRecordUpdated extends ICombEventType {
     Object.keys(groupEvents).forEach(dstRecordId => {
       const [datasheetId, recordId] = dstRecordId.split('-');
       // log all cell update events
-      const events = groupEvents[dstRecordId];
+      const events = groupEvents[dstRecordId]!;
       const recordChange = {};
       const diffFields: string[] = [];
       // console.log('comb events', events);

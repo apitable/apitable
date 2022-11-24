@@ -25,8 +25,8 @@ import com.vikadata.social.feishu.card.module.Action;
 import com.vikadata.social.feishu.card.module.Div;
 import com.vikadata.social.feishu.card.module.Module;
 import com.vikadata.social.feishu.card.objects.Text;
-import com.vikadata.system.config.SystemConfigManager;
-import com.vikadata.system.config.notification.SocialTemplate;
+import com.vikadata.api.shared.sysconfig.SystemConfigManager;
+import com.vikadata.api.shared.sysconfig.notification.SocialTemplate;
 
 /**
  * <p>

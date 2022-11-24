@@ -27,8 +27,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.billing.service.IBlackListService;
+import com.vikadata.api.enterprise.auth0.service.Auth0Service;
 import com.vikadata.api.enterprise.common.afs.AfsCheckService;
+import com.vikadata.api.enterprise.gm.service.IBlackListService;
 import com.vikadata.api.organization.enums.DeleteMemberType;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
@@ -51,7 +52,6 @@ import com.vikadata.api.organization.vo.MemberUnitsVo;
 import com.vikadata.api.organization.vo.RoleVo;
 import com.vikadata.api.organization.vo.SearchMemberVo;
 import com.vikadata.api.organization.vo.UploadParseResultVO;
-import com.vikadata.api.shared.component.Auth0Service;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
@@ -327,7 +327,7 @@ public class MemberController {
         // check black space
         iBlackListService.checkBlackSpace(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        // Again send an email to invite members
+        // Again email invite members
         MemberEntity member = memberMapper.selectBySpaceIdAndEmail(spaceId, data.getEmail());
         ExceptionUtil.isNotNull(member, INVITE_EMAIL_NOT_FOUND);
         ExceptionUtil.isFalse(member.getIsActive(), INVITE_EMAIL_HAS_ACTIVE);

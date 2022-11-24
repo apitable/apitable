@@ -93,7 +93,7 @@ export class ViewPropertyFilter {
     }
 
     const state = this._getState();
-    const viewIndex = path[2];
+    const viewIndex = path[2]!;
     const snapshot = Selectors.getSnapshot(state, this._datasheetId);
 
     if (!snapshot) {

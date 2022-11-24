@@ -25,9 +25,9 @@ export function convertToNumber(value: ICellValue): number | null {
  */
 export function e2number(value: string) {
   const val = value.split('e');
-  const p = parseInt(val[1], 10); // get index value
-  const num = val[0].split('.');
-  const dotLeft: string = num[0]; // value to the left of the decimal point
+  const p = parseInt(val[1]!, 10); // get index value
+  const num = val[0]!.split('.');
+  const dotLeft: string = num[0]!; // value to the left of the decimal point
   const dotRight: string = num[1] || ''; // right value of decimal point
 
   if (p > 0) {
@@ -132,7 +132,7 @@ export function numberToShow(value: number, precision = 0): string | null {
 
   let str = value.toString();
 
-  const integerCount = str.split('.')[0].length;
+  const integerCount = str.split('.')[0]!.length;
   const demarcationLen = 17; // 17 digits represent the demarcation point for scientific notation
   // When the integer number is greater than 17, it needs to be displayed in scientific notation form
   if (integerCount >= demarcationLen || (str.includes('e') && !str.includes('e-'))) {
@@ -186,26 +186,26 @@ export function byteMGArr(bytes: number, isCell = true) :[number, string, number
   if (bytes <= minMb) {
     // 0-0.1MB directly displays 0.1MB, <0MB directly displays 0MB
     const res = bytes <= 0 ? 0 : isCell ? 0.1 : 0;
-    return [res, CapacityUnit[2], res * Math.pow(1024, 2)];
+    return [res, CapacityUnit[2]!, res * Math.pow(1024, 2)];
   }
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   if (i < 2) {
     const num = bytes / Math.pow(1024, 2);
     const res = isCell ? decimalCeil(num) : normalDecimal(num);
-    return [res, CapacityUnit[2], res * Math.pow(1024, 2)];
+    return [res, CapacityUnit[2]!, res * Math.pow(1024, 2)];
   }
   if (i === 2 || i === 3) {
     const num = bytes / Math.pow(1024, i);
     const res = isCell ? decimalCeil(num) : normalDecimal(num);
-    return (res === 1024 && i === 2) ? [1, CapacityUnit[i + 1], Math.pow(1024, 3)]
-      : [res, CapacityUnit[i], res * Math.pow(1024, i)];
+    return (res === 1024 && i === 2) ? [1, CapacityUnit[i + 1]!, Math.pow(1024, 3)]
+      : [res, CapacityUnit[i]!, res * Math.pow(1024, i)];
   }
   if (i > 3) {
     const num = bytes / Math.pow(1024, 3);
     const res = isCell ? decimalCeil(num) : normalDecimal(num);
-    return [res, CapacityUnit[3], res * Math.pow(1024, 3)];
+    return [res, CapacityUnit[3]!, res * Math.pow(1024, 3)];
   }
-  return [bytes, CapacityUnit[0], bytes];
+  return [bytes, CapacityUnit[0]!, bytes];
 }
 export function byteMG(bytes: number) {
   if (bytes === Number.POSITIVE_INFINITY) {
@@ -237,7 +237,7 @@ export function strip(num: number, precision = 15): number {
 // get the number of digits after the decimal point
 export function digitLength(num: number): number {
   const eSplit = num.toString().split(/[eE]/);
-  const dLen = (eSplit[0].split('.')[1] || '').length;
+  const dLen = (eSplit[0]!.split('.')[1] || '').length;
   const power = Number(eSplit[1]) || 0;
   const len = dLen - power;
   return len > 0 ? len : 0;

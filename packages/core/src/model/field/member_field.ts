@@ -54,7 +54,7 @@ export class MemberField extends MemberBaseField {
     if (unitMap) {
       this.field.property.unitIds.forEach(unitId => {
         if (unitMap.hasOwnProperty(unitId)) {
-          const { name, type, avatar } = unitMap[unitId];
+          const { name, type, avatar } = unitMap[unitId]!;
           options.push({
             id: unitId,
             name,
@@ -181,7 +181,7 @@ export class MemberField extends MemberBaseField {
       if (!unitMap[id]) {
         return '';
       }
-      return unitMap[id].name;
+      return unitMap[id]!.name;
     });
   }
 
@@ -216,8 +216,8 @@ export class MemberField extends MemberBaseField {
       if (unitMap.hasOwnProperty(unitId)) {
         units.push({
           id: unitId,
-          type: getMemberTypeString(unitMap[unitId].type),
-          name: unitMap[unitId].name,
+          type: getMemberTypeString(unitMap[unitId]!.type),
+          name: unitMap[unitId]!.name,
           avatar: unitMap[unitId]?.avatar,
         });
       }
@@ -260,7 +260,7 @@ export class MemberField extends MemberBaseField {
     if (unitMap) {
       this.field.property.unitIds.forEach(unitId => {
         if (unitMap.hasOwnProperty(unitId)) {
-          const { name, type, avatar } = unitMap[unitId];
+          const { name, type, avatar } = unitMap[unitId]!;
           options.push({
             id: unitId,
             name,

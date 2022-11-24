@@ -48,7 +48,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
     if (!snapshot || data.length === 0) {
       return null;
     }
-    const isOverLimit = data.length + snapshot.meta.views[0].columns.length > maxFieldCountPerSheet;
+    const isOverLimit = data.length + snapshot.meta.views[0]!.columns.length > maxFieldCountPerSheet;
     if (isOverLimit) {
       throw new Error(t(Strings.columns_count_limit_tips, {
         column_limit: maxFieldCountPerSheet,
@@ -60,7 +60,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
     let newFieldId = '';
     const linkedActions: ILinkedActions[] = [];
     const actions = data.reduce<IJOTAction[]>((collected, fieldOption, index) => {
-      newFieldId = newFieldIds[index];
+      newFieldId = newFieldIds[index]!;
       const { index: columnIndex, viewId } = fieldOption;
       const view = snapshot.meta.views.find(view => view.id === viewId);
       const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
@@ -127,7 +127,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
       if (copyCell) {
         const recordData = Object.keys(recordMap).reduce<ISetRecordOptions[]>((data, recordId) => {
           if (!fieldId) return data;
-          const value = recordMap[recordId].data[fieldId];
+          const value = recordMap[recordId]!.data[fieldId];
 
           if (!value) return data;
           data.push({
@@ -153,10 +153,10 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
 
       if (internalFix?.changeOneWayLinkDstId && linkedActions.length) {
         const fixOneWayLinkData = {
-          oldBrotherFieldId: snapshot.meta.fieldMap[fieldId!].property.brotherFieldId,
-          newBrotherFieldId: linkedActions[0].actions[0]['li']['fieldId'],
+          oldBrotherFieldId: snapshot.meta.fieldMap[fieldId!]!.property.brotherFieldId,
+          newBrotherFieldId: linkedActions[0]!.actions[0]!['li']['fieldId'],
         };
-        linkedActions[0].actions[linkedActions[0].actions.length - 1]['oi'].property.brotherFieldId = fieldId;
+        linkedActions[0]!.actions[linkedActions[0]!.actions.length - 1]!['oi'].property.brotherFieldId = fieldId;
         // Fix one-way association column DstId
         const result = fixOneWayLinkDstId.execute(context, {
           cmd: CollaCommandName.FixOneWayLinkDstId,

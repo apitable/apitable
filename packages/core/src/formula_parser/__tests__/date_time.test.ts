@@ -458,7 +458,7 @@ describe('DateTime function test', () => {
         mergeContext({ a: 0, b: '456', c: new Date('2020/6/6 00:00:00').getTime(), d: ['opt1', 'opt2'] }),
       );
     } catch (error) {
-      expect(error.message).toBe('#Error!');
+      expect((error as Error).message).toBe('#Error!');
     }
 
     expect(evaluate(
@@ -544,13 +544,13 @@ describe('DateTime function test', () => {
     try {
       getDayjs(null);
     } catch (error) {
-      expect(error.message).toBe('#Error!');
+      expect((error as Error).message).toBe('#Error!');
     }
 
     try {
       getDayjs('null');
     } catch (error) {
-      expect(error.message).toBe('#Error!');
+      expect((error as Error).message).toBe('#Error!');
     }
 
     expect(getDayjs('1636965086541')).toEqual(dayjs(1636965086541));

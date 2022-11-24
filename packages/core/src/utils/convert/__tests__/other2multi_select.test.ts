@@ -27,9 +27,9 @@ describe('文本转多选 field 对应的 record 值', () => {
     const [field, names, ids, oldFiled] = getField();
     const test = [
       { args: '44', expected: null },
-      { args: names[0], expected: [ids[0]] },
-      { args: names[1], expected: [ids[1]] },
-      { args: names[2], expected: [ids[2]] },
+      { args: names[0]!, expected: [ids[0]] },
+      { args: names[1]!, expected: [ids[1]] },
+      { args: names[2]!, expected: [ids[2]] },
       { args: null, expected: null },
     ];
     test.forEach(t => {
@@ -40,9 +40,9 @@ describe('文本转多选 field 对应的 record 值', () => {
     const [field, names, ids, oldFiled] = getField();
     const test = [
       { args: '44', expected: null },
-      { args: names[0], expected: [ids[0]] },
-      { args: names[1], expected: [ids[1]] },
-      { args: names[2], expected: [ids[2]] },
+      { args: names[0]!, expected: [ids[0]] },
+      { args: names[1]!, expected: [ids[1]] },
+      { args: names[2]!, expected: [ids[2]] },
       { args: null, expected: null },
     ];
     test.forEach(t => {
@@ -53,9 +53,9 @@ describe('文本转多选 field 对应的 record 值', () => {
     const [field, names, ids, oldFiled] = getField();
     const test = [
       { args: '44', expected: null },
-      { args: names[0], expected: [ids[0]] },
-      { args: names[1], expected: [ids[1]] },
-      { args: names[2], expected: [ids[2]] },
+      { args: names[0]!, expected: [ids[0]] },
+      { args: names[1]!, expected: [ids[1]] },
+      { args: names[2]!, expected: [ids[2]] },
       { args: null, expected: null },
     ];
     test.forEach(t => {

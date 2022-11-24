@@ -1,8 +1,8 @@
 import { ICollaborator, OtErrorCode } from '@apitable/core';
+import { RedisService } from '@apitable/nestjs-redis';
 import { Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
-import { RedisService } from '@apitable/nestjs-redis';
 import { NodeService } from 'database/services/node/node.service';
 import { NodeShareSettingService } from 'database/services/node/node.share.setting.service';
 import { IRoomChannelMessage } from 'database/services/ot/ot.interface';
@@ -104,7 +104,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       // Filter exception that isn't necessary to be reported.
       message.cookie = undefined;
       message.token = undefined;
-      Sentry.captureException(e, { extra: { message }});
+      Sentry.captureException(e, { extra: { message } });
     }
     return ApiResponse.error(errMsg, statusCode);
   }
@@ -148,9 +148,11 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     if (isTemplate) {
       throw new ServerException(PermissionException.ACCESS_DENIED);
     }
-    if (message.shareId) {
-      // authorize share link
-      await this.watchRoomLogger('checkNodeHasOpenShare', this.nodeShareSettingService.checkNodeHasOpenShare(message.shareId, nodeId));
+    if (message.shareId || message.embedLinkId) {
+      if (message.shareId) {
+        // authorize share link
+        await this.watchRoomLogger('checkNodeHasOpenShare', this.nodeShareSettingService.checkNodeHasOpenShare(message.shareId, nodeId));
+      }
       const { uuid } = await this.watchRoomLogger('getMeNullable', this.userService.getMeNullable(message.cookie || ''));
       userId = uuid;
     } else {
@@ -163,17 +165,14 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       userId = user.uuid;
     }
     // store current user info
-    await this.watchRoomLogger('set', this.clientStorage.set(
-      clientId,
-      { userId, socketId: clientId, createTime, shareId: message.shareId }
-    ));
+    await this.watchRoomLogger('set', this.clientStorage.set(clientId, { userId, socketId: clientId, createTime, shareId: message.shareId }));
     // Obtain collaborator list of the room, ordered by join-time.
     const collaborators = (await this.watchRoomLogger('mget', this.clientStorage.mget<ICollaborator>(socketIds))).filter(Boolean).sort();
     // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
       spaceId = await this.watchRoomLogger('getSpaceIdByNodeId', this.nodeService.getSpaceIdByNodeId(nodeId));
-      const userInfos = await this.watchRoomLogger('getUserInfo', this.userService.getUserInfo(spaceId, (roomUserIds as string[])));
+      const userInfos = await this.watchRoomLogger('getUserInfo', this.userService.getUserInfo(spaceId, roomUserIds as string[]));
       // Fill in info for logged-in users.
       collaborators
         .filter(collaborator => collaborator.userId)
@@ -216,7 +215,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
     // Filter users who are not logged in
     const roomUserIds = collaborators.map(collaborator => collaborator.userId).filter(Boolean);
     if (roomUserIds.length) {
-      const userInfos = await this.userService.getUserInfo(spaceId, (roomUserIds as string[]));
+      const userInfos = await this.userService.getUserInfo(spaceId, roomUserIds as string[]);
       // Fill in info for logged-in users.
       collaborators
         .filter(collaborator => collaborator.userId)
@@ -266,7 +265,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       const redis = this.redisService.getClient().duplicate();
       const number = await redis.publish(VIKA_NEST_CHANNEL, message);
       if (!number) {
-        this.logger.error('socket service isn\'t started', { message, channel: VIKA_NEST_CHANNEL });
+        this.logger.error("socket service isn't started", { message, channel: VIKA_NEST_CHANNEL });
       } else {
         this.logger.info('IP publish succeeded', { message, channel: VIKA_NEST_CHANNEL });
       }
@@ -285,5 +284,4 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       await this.publishIp(1);
     }
   }
-
 }

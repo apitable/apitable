@@ -43,10 +43,10 @@ const getColorValue = (color: string, alpha: number) => {
  * @param index option.color
  */
 export function getFieldOptionColor(index: number) {
-  const hue = COLOR_INDEX_NAME[index % COLOR_INDEX_NAME.length];
+  const hue = COLOR_INDEX_NAME[index % COLOR_INDEX_NAME.length]!;
   const level = Math.floor(index / COLOR_INDEX_NAME.length);
   const baseColorValue = COLOR_MAP[hue];
-  const value = getColorValue(baseColorValue, COLOR_LEVEL_ALPHA[level]);
+  const value = getColorValue(baseColorValue, COLOR_LEVEL_ALPHA[level]!);
   return {
     name: `${hue}_${level}`,
     value,

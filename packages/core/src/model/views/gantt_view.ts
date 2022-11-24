@@ -32,7 +32,7 @@ export class GanttView extends View {
 
   static findDateTimeFieldIds(srcView: IViewProperty, fieldMap: IFieldMap) {
     const filterIds = srcView.columns.filter(({ fieldId }) => {
-      const field = fieldMap[fieldId];
+      const field = fieldMap[fieldId]!;
       return Field.bindModel(field).basicValueType === BasicValueType.DateTime;
     }).map(column => column.fieldId);
     return filterIds;
@@ -43,8 +43,8 @@ export class GanttView extends View {
     const dateTimeFieldIds = this.findDateTimeFieldIds(srcView, snapshot.meta.fieldMap);
 
     return {
-      startFieldId: dateTimeFieldIds[0],
-      endFieldId: dateTimeFieldIds[1] || dateTimeFieldIds[0],
+      startFieldId: dateTimeFieldIds[0]!,
+      endFieldId: dateTimeFieldIds[1] || dateTimeFieldIds[0]!,
       colorOption: {
         type: GanttColorType.Custom,
         fieldId: '',

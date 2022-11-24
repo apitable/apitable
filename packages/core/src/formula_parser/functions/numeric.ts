@@ -15,7 +15,7 @@ function isArrayParam(params: IFormulaParam<any>[]): params is [IFormulaParam<an
   if (params.length !== 1) {
     return false;
   }
-  if (params[0].node.valueType === BasicValueType.Array) {
+  if (params[0]!.node.valueType === BasicValueType.Array) {
     return true;
   }
   return false;
@@ -25,7 +25,7 @@ function isArrayNodes(nodes?: AstNode[]) {
   if (!nodes || nodes.length !== 1) {
     return false;
   }
-  if (nodes[0].valueType === BasicValueType.Array) {
+  if (nodes[0]!.valueType === BasicValueType.Array) {
     return true;
   }
   return false;

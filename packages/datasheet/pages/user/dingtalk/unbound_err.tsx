@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const DingtalkUnboundErrWithNoSSR = dynamic(() => import('pc/components/home/social_platform/dingtalk_h5/dingtalk_err'), { ssr: false });
+// @ts-ignore
+const DingtalkUnboundErrWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.DingtalkUnboundErr;
+}), { ssr: false });
 
 const App = () => {
-  return <DingtalkUnboundErrWithNoSSR />;
+  return DingtalkUnboundErrWithNoSSR && <DingtalkUnboundErrWithNoSSR />;
 };
 
 export default App;

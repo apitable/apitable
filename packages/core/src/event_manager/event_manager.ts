@@ -26,7 +26,7 @@ export class EventManager implements IEventManager {
       options,
     };
     if (this.eventListenerMap[eventName]) {
-      this.eventListenerMap[eventName].push(eventListener);
+      this.eventListenerMap[eventName]!.push(eventListener);
     } else {
       this.eventListenerMap[eventName] = [eventListener];
     }

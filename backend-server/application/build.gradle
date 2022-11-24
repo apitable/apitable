@@ -8,9 +8,7 @@ plugins {
 }
 
 dependencies {
-  implementation project(':clock')
   implementation project(':core')
-  implementation project(':config')
   implementation project(':vikadata-service:vikadata-mongodb-model')
   implementation project(':vikadata-service:vikadata-db-model')
   
@@ -95,11 +93,15 @@ dependencies {
   testImplementation rootProject.ext.dependencies['testcontainers-mysql']
   testImplementation 'org.rnorth.visible-assertions:visible-assertions:2.1.2'
   testImplementation("org.json:json:${json_java_version}")
+  
+  // for clock module
+  testImplementation rootProject.ext.dependencies['assertj']
+  testImplementation rootProject.ext.dependencies['awaitility']
+  
+  // for enterprise
+  implementation rootProject.ext.dependencies['spring-plugin-core']
+  implementation rootProject.ext.dependencies['spring-plugin-metadata']
 }
-
-// configurations {
-//   testImplementation.exclude group: 'org.json', module: 'json'
-// }
 
 jar {
   enabled = false

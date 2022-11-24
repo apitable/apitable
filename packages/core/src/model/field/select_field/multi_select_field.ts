@@ -238,7 +238,7 @@ export class MultiSelectField extends SelectField {
     }
     const result: string[] = [];
     for (let i = 0, l = cellValue.length; i < l; i++) {
-      const option = this.findOptionById(cellValue[i]);
+      const option = this.findOptionById(cellValue[i]!);
       if (option) {
         result.push(option.name);
       }
@@ -285,7 +285,7 @@ export class MultiSelectField extends SelectField {
     return cellValue.reduce((prev, curr) => {
       if (optionMap.has(curr)) {
         const optionIndex = optionMap.get(curr) as number;
-        const option = this.field.property.options[optionIndex];
+        const option = this.field.property.options[optionIndex]!;
         prev.push({
           id: option.id,
           name: option.name,

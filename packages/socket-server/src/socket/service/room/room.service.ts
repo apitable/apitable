@@ -1,7 +1,6 @@
 import { MetadataValue } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
 import { GrpcClient } from 'grpc/client/grpc.client';
 import { Value } from 'grpc/generated/google/protobuf/struct';
 import { Retryable } from 'grpc/util/retry.decorator';
@@ -54,7 +53,7 @@ export class RoomService {
     },
     callback: () => ({ code: ServerErrorCode.NetworkError, success: false, message: 'Network Error' }),
   })
-  async watchRoom(message: any, socket: Socket, server: any): Promise<any | null> {
+  async watchRoom(message: any, socket: Socket): Promise<any | null> {
     const room = message.roomId;
     const createTime = Date.now();
     const isExistRoom = socket.rooms.has(room);
@@ -93,7 +92,7 @@ export class RoomService {
 
         // Call an asynchronous customRequest to get the collaborator given to the other nodes,
         // broadcasting the new user and joining the room for that client
-        this.complementaryCollaborator(server, message, socket, result.data.spaceId);
+        this.complementaryCollaborator(message, socket, result.data.spaceId);
       }
     } else if (isExistRoom) {
       // Authentication failed and is already in `room`, disconnect
@@ -110,12 +109,12 @@ export class RoomService {
     return result;
   }
 
-  private complementaryCollaborator(server: any, message: any, socket: Socket, spaceId: string) {
+  private complementaryCollaborator(message: any, socket: Socket, spaceId: string) {
     // get all rooms of the datasheet resource
     const roomIds = [message.roomId];
     // custom request to get multiple service node pod sockets
-    server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(_err: any, replies: string | any[]) => {
-      this.logger.log({ message: 'WatchRoom:ServerSideEmit', replies });
+    socket.nsp.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(_err: any, replies: string | any[]) => {
+      this.logger.log({ message: 'WatchRoom:ServerSideEmit', replies, err: `${_err}` });
       // no room connection return directly
       if (!replies.length) {
         return;
@@ -283,11 +282,7 @@ export class RoomService {
     }
     // custom request to get multiple service node pod sockets
     server.serverSideEmit(SocketEventEnum.CLUSTER_SOCKET_ID_EVENT, roomIds, async(err: string, replies: string | any[]) => {
-      if (err) {
-        throw new RuntimeException(err);
-      }
-      this.logger.log({ message: 'FieldPermission:ServerSideEmit', replies });
-
+      this.logger.log({ message: 'FieldPermission:ServerSideEmit', replies, err: `${err}` });
       // no room connection return directly
       if (!replies.length) {
         return;

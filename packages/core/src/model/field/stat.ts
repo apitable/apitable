@@ -103,7 +103,7 @@ const statAverage = (cellValues: ICellValue[], field: IField, state: IReduxState
 
 // Number & date field calculation
 const statMax = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
-  let res: number | number[] = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+  let res: number | number[] = (cellValues as (number | null)[]).reduce<number>((accumulator, cellValue: number | null) =>
     Math.max(accumulator, typeof cellValue ==='number' ? cellValue : -Infinity), -Infinity);
   if (!isFinite(res)) return Infinity;
   const instance = Field.bindContext(field, state);
@@ -113,7 +113,7 @@ const statMax = (cellValues: ICellValue[], field: IField, state: IReduxState) =>
 
 // Number & date field calculation
 const statMin = (cellValues: ICellValue[], field: IField, state: IReduxState) => {
-  let res: number | number[] = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+  let res: number | number[] = (cellValues as (number | null)[]).reduce<number>((accumulator, cellValue: number | null) =>
     Math.min(accumulator, typeof cellValue ==='number' ? cellValue : Infinity), Infinity);
   if (!isFinite(res)) return -Infinity;
   const instance = Field.bindContext(field, state);
@@ -122,10 +122,10 @@ const statMin = (cellValues: ICellValue[], field: IField, state: IReduxState) =>
 };
 
 const statDateRangeOfDays = (cellValues: ICellValue[]) => {
-  const max = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+  const max = (cellValues as (number | null)[]).reduce<number>((accumulator, cellValue: number | null) =>
     Math.max(accumulator, cellValue || -Infinity), -Infinity) as number;
 
-  const min = cellValues.reduce<number>((accumulator, cellValue: number | null) =>
+  const min = (cellValues as (number | null)[]).reduce<number>((accumulator, cellValue: number | null) =>
     Math.min(accumulator, cellValue || Infinity), Infinity) as number;
 
   if (!isFinite(min)) return 0;
@@ -134,10 +134,10 @@ const statDateRangeOfDays = (cellValues: ICellValue[]) => {
 };
 
 const statDateRangeOfMonths = (cellValues: ICellValue[]) => {
-  const max = cellValues.reduce((accumulator: number, cellValue: number | null) =>
+  const max = (cellValues as (number | null)[]).reduce((accumulator: number, cellValue: number | null) =>
     Math.max(accumulator, cellValue || -Infinity), -Infinity) as number;
 
-  const min = cellValues.reduce((accumulator: number, cellValue: number | null) =>
+  const min = (cellValues as (number | null)[]).reduce((accumulator: number, cellValue: number | null) =>
     Math.min(accumulator, cellValue || Infinity), Infinity) as number;
 
   if (!isFinite(min)) return 0;

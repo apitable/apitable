@@ -25,7 +25,7 @@ export const filterDatasheetOp = (state: IDatasheetState, action: IJOTAction[]) 
     if (state.isPartOfData) {
       // if p[0] is recordMap, then p[1] is recordId
       // if action.p.length > 2, then action has setRecord feature
-      return !(action.p[0] === 'recordMap' && action.p.length > 2 && !state.snapshot.recordMap[action.p[1]]);
+      return !(action.p[0] === 'recordMap' && action.p.length > 2 && !state.snapshot.recordMap[action.p[1]!]);
     }
     return true;
   });

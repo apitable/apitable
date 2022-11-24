@@ -8,7 +8,7 @@ const getFormPack = (state: IReduxState, id?: string): IFormPack | null => {
   if (!formId) {
     return null;
   }
-  return state.formMap[formId];
+  return state.formMap[formId] ?? null;
 };
 
 export const getForm = (state: IReduxState, id?: string): IFormState | null => {

@@ -158,7 +158,7 @@ export class SingleSelectField extends SelectField {
     if (data.length === 0) {
       return null;
     }
-    const currentOptionText = data[0].text;
+    const currentOptionText = data[0]!.text;
     const option = this.field.property.options.find(opt => opt.name === currentOptionText);
     return option ? option.id : null;
   }

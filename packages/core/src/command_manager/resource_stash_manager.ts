@@ -42,7 +42,7 @@ export class ResourceStashManager {
       if (linkDstAndField == null) {
         return;
       }
-      const dstId = linkDstAndField.split('-')[0];
+      const dstId = linkDstAndField.split('-')[0]!;
 
       if (activeDstIds.includes(dstId)) {
         return;

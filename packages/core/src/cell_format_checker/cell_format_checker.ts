@@ -18,8 +18,8 @@ export class CellFormatChecker {
   private convertValue(fieldId: string, recordId: string, cellValue: ICellValue, fieldMapSnapshot: IFieldMap, datasheetId: string) {
     const state = this.store.getState();
     const currentField = Selectors.getField(state, fieldId, datasheetId);
-    const previousField = fieldMapSnapshot[fieldId];
-    if (fieldMapSnapshot[currentField.id].type === currentField.type) {
+    const previousField = fieldMapSnapshot[fieldId]!;
+    if (fieldMapSnapshot[currentField.id]!.type === currentField.type) {
       return CellFormatChecker.checkValueValid(cellValue, currentField, state);
     }
 

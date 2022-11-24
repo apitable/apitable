@@ -5,7 +5,8 @@ import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { useState } from 'react';
-import { AdminLayout, IAdminData } from '../dingtalk/admin_layout';
+// @ts-ignore
+import { AdminLayout, IAdminData } from 'enterprise';
 
 const config = {
   adminTitle: t(Strings.wecom_admin_title),
@@ -117,11 +118,14 @@ const WecomAdmin = () => {
     <>
       {
         data ?
-          <AdminLayout
-            data={data}
-            config={config}
-            onChange={changeAdmin}
-          /> :
+          (
+            AdminLayout && 
+            <AdminLayout
+              data={data}
+              config={config}
+              onChange={changeAdmin}
+            />
+          ) :
           <Loading />
       }
     </>

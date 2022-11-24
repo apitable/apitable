@@ -33,10 +33,10 @@ export const insertComment: ICollaCommandDef<IInsertComment> = {
 
     const actions: IJOTAction[] = [];
 
-    const recordComments = recordMap[recordId].comments;
+    const recordComments = recordMap[recordId]!.comments;
     const commentIds = recordComments ? recordComments.map(item => item.commentId) : [];
     const action = comments.reduce<IJOTAction[]>((collection, comment) => {
-      const commentId = getNewIds(IDPrefix.Comment, 1, commentIds)[0];
+      const commentId = getNewIds(IDPrefix.Comment, 1, commentIds)[0]!;
       commentIds.push(commentId);
       const insertAction = DatasheetActions.insertComment2Action(
         state,

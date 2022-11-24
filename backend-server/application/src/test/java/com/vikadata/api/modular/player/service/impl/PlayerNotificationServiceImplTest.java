@@ -16,7 +16,7 @@ import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.player.dto.NotificationModelDTO;
 import com.vikadata.api.player.service.IPlayerNotificationService;
-import com.vikadata.system.config.notification.NotificationTemplate;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

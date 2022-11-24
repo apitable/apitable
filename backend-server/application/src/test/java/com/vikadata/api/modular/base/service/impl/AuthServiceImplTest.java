@@ -123,7 +123,6 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         loginRo.setUsername(mobile);
         loginRo.setType(LoginType.SMS_CODE);
         loginRo.setCredential(validCode);
-        loginRo.setSpaceId("spc123");
 
         AtomicReference<Long> userId = new AtomicReference<>();
 
@@ -165,7 +164,6 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         loginRo.setUsername(email);
         loginRo.setType(LoginType.EMAIL_CODE);
         loginRo.setCredential(validCode);
-        loginRo.setSpaceId("spc123");
 
         AtomicReference<Long> userId = new AtomicReference<>();
 

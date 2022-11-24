@@ -198,6 +198,10 @@ export class UploadManager {
 
   private checkCapacitySizeBilling() {
     return new Promise((resolve) => {
+      const shareId = store.getState().pageParams.shareId;
+      if (shareId) {
+        return resolve(null);
+      }
       Api.searchSpaceSize().then(res => {
         const { usedCapacity } = res.data.data;
         const result = triggerUsageAlert(
@@ -271,7 +275,7 @@ export class UploadManager {
   private deleteItem(cellId: string) {
     this.uploadMap[cellId].requestQueue = this.uploadMap[
       cellId
-      ].requestQueue.filter((item) => {
+    ].requestQueue.filter((item) => {
       return item.loaded !== item.total;
     });
   }
@@ -366,7 +370,7 @@ export class UploadManager {
 
   public httpRequest(cellId: string, formData: FormData, fileId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const request = async (nvcVal?: string) => {
+      const request = async(nvcVal?: string) => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
           file: formData.get('file') as File,

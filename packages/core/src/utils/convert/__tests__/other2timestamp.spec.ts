@@ -25,14 +25,14 @@ describe('other2timestamp', () => {
   it('should convert string to timestamp correctly', () => {
     const { validCases, invalidCases, validDDMMYYCases } = cases;
     for (let i = 0; i < invalidCases.length; i++) {
-      const { args, expected } = invalidCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = invalidCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case ${i}: str2timestamp(${args.join(',')})`);
     }
 
     for (let i = 0; i < validCases.length; i++) {
-      const { args, expected } = validCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = validCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case: str2timestamp(${args.join(',')})`);
     }
 
@@ -40,42 +40,42 @@ describe('other2timestamp', () => {
     // field.property.dateFormat = DateFormat['YYYY/MM/DD'];
 
     for (let i = 0; i < validCases.length; i++) {
-      const { args, expected } = validCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = validCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case: str2timestamp(${args.join(',')})`);
     }
 
     for (let i = 0; i < invalidCases.length; i++) {
-      const { args, expected } = invalidCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = invalidCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case: str2timestamp(${args.join(',')})`);
     }
 
     // field.property.dateFormat = DateFormat['YYYY-MM-DD'];
 
     for (let i = 0; i < validCases.length; i++) {
-      const { args, expected } = validCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = validCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case: str2timestamp(${args.join(',')})`);
     }
 
     for (let i = 0; i < invalidCases.length; i++) {
-      const { args, expected } = invalidCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = invalidCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case: str2timestamp(${args.join(',')})`);
     }
 
     // field.property.dateFormat = DateFormat['DD/MM/YYYY'];
 
     for (let i = 0; i < validDDMMYYCases.length; i++) {
-      const { args, expected } = validDDMMYYCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = validDDMMYYCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case ${i}: str2timestamp(${args.join(',')})`);
     }
 
     for (let i = 0; i < invalidCases.length; i++) {
-      const { args, expected } = invalidCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = invalidCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case ${i}: str2timestamp(${args.join(',')})`);
     }
 
@@ -96,8 +96,8 @@ describe('other2timestamp', () => {
     // expect(date.getDate()).toEqual(expectDate.getDate());
 
     for (let i = 0; i < invalidCases.length; i++) {
-      const { args, expected } = invalidCases[i];
-      const result = str2timestamp(args[0]);
+      const { args, expected } = invalidCases[i]!;
+      const result = str2timestamp(args[0]!);
       assert.deepEqual(result, expected, `bad case: str2timestamp(${args.join(',')})`);
     }
   });

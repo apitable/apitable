@@ -70,7 +70,7 @@ export class MemberFieldMaintainer {
       const fieldMap = snapshot.meta.fieldMap;
 
       memberFieldMap.forEach((cellValueForUnitIds, fieldId) => {
-        const field = fieldMap[fieldId];
+        const field = fieldMap[fieldId]!;
 
         // here, do a redundant check for field type, as a fallback behavior
         if (field.type !== FieldType.Member) {

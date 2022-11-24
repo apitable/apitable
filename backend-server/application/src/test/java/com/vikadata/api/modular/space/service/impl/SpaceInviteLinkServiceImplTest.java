@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.enterprise.control.service.IControlRoleService;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.space.mapper.SpaceMapper;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.core.constants.RedisConstants;
@@ -73,14 +73,14 @@ public class SpaceInviteLinkServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Disabled()
+    @Disabled
     public void testJoinSpaceByNodeInvitationTokenWithRewardCapacity() {
         MockInvitation invitation = prepareInvitationToken();
         UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");
         String key = RedisConstants.getUserInvitedJoinSpaceKey(user.getId(), invitation.getSpaceId());
         redisTemplate.opsForValue().set(key, user.getId(), 5, TimeUnit.MINUTES);
         iSpaceInviteLinkService.join(user.getId(), invitation.getToken(), invitation.getNodeId());
-        SpaceSubscribeVo subscribeVo = iSpaceSubscriptionService.getSpaceSubscription(invitation.getSpaceId());
-        assertThat(subscribeVo.getAddOnPlans()).contains("capacity_300_MB");
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(invitation.getSpaceId());
+        assertThat(subscriptionInfo.getAddOnPlans()).contains("capacity_300_MB");
     }
 }

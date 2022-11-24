@@ -29,7 +29,7 @@ export function str2single(value: string[] | string | null,
   if (Array.isArray(value) && oldField.type === FieldType.MultiSelect) {
     value = value as string[];
     if (value.length > 0) {
-      const id = value[0];
+      const id = value[0]!;
       const option = newField.findOptionById(id);
       return option ? option.id : null;
     }

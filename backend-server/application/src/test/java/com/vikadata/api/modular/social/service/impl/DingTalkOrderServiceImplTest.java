@@ -14,23 +14,23 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.enterprise.billing.enums.ProductChannel;
 import com.vikadata.api.enterprise.billing.service.ISocialDingTalkOrderService;
 import com.vikadata.api.enterprise.billing.service.ISocialDingTalkRefundService;
 import com.vikadata.api.enterprise.billing.strategy.SocialOrderStrategyFactory;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.enterprise.billing.util.BillingConfigManager;
 import com.vikadata.api.enterprise.billing.util.DingTalkPlanConfigManager;
-import com.vikadata.api.enterprise.billing.util.model.ProductChannel;
+import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.enterprise.social.service.ISocialTenantService;
+import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
+import com.vikadata.api.shared.sysconfig.billing.Plan;
+import com.vikadata.api.shared.sysconfig.billing.Price;
 import com.vikadata.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.social.dingtalk.event.order.SyncHttpMarketOrderEvent;
 import com.vikadata.social.dingtalk.event.order.SyncHttpMarketServiceCloseEvent;
-import com.vikadata.system.config.billing.Plan;
-import com.vikadata.system.config.billing.Price;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,9 +68,9 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
         // Payment scheme for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
-        assertThat(vo.getOnTrial()).isTrue();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        SubscriptionInfo info = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
+        assertThat(info.onTrial()).isTrue();
+        assertThat(info.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -86,10 +86,10 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.onTrial()).isFalse();
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -105,10 +105,10 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.onTrial()).isFalse();
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -130,9 +130,9 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusMonths(3).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -149,11 +149,11 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SyncHttpMarketServiceCloseEvent event = getOrderRefundEvent("social/dingtalk/order/base_10_1_per_year_refund.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
 
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         // Payment scheme for order purchase
         Plan plan = BillingConfigManager.getFreePlan(ProductChannel.DINGTALK);
-        assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(plan).getId());
+        assertThat(subscriptionInfo.onTrial()).isFalse();
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(plan).getId());
     }
 
     @Test
@@ -176,9 +176,9 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -201,9 +201,9 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
     @Test
@@ -226,11 +226,11 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
         SyncHttpMarketServiceCloseEvent event = getOrderRefundEvent("social/dingtalk/order/base_20_1_per_year_upgrade.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
 
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         // Payment scheme for order purchase
         Plan plan = BillingConfigManager.getFreePlan(ProductChannel.DINGTALK);
-        assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(plan).getId());
+        assertThat(subscriptionInfo.onTrial()).isFalse();
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(plan).getId());
     }
 
     @Test
@@ -249,10 +249,10 @@ public class DingTalkOrderServiceImplTest extends AbstractIntegrationTest {
 
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/standard_200_3_renew_per_month.json"));
 
-        SpaceSubscribeVo vo = iSpaceSubscriptionService.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
-        assertThat(vo.getOnTrial()).isFalse();
-        assertThat(vo.getPlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
+        assertThat(subscriptionInfo.onTrial()).isFalse();
+        assertThat(subscriptionInfo.getBasePlan()).isEqualTo(Objects.requireNonNull(price).getPlanId());
     }
 
 
