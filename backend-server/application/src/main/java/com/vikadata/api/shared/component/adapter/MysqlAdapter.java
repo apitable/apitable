@@ -9,6 +9,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -31,9 +32,12 @@ public class MysqlAdapter extends AbstractDatasourceAdapter {
 
     private static final String COMMA = ",";
 
+    private static final String DEFAULT_DESCEND_COLUMNS = "id";
+
     @Override
     public PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParam param) {
         Page<SpaceAuditEntity> page = new Page<>(param.getPageNo(), param.getPageSize());
+        page.addOrder(OrderItem.descs(DEFAULT_DESCEND_COLUMNS));
         IPage<SpaceAuditEntity> result = SpringContextHolder.getBean(SpaceAuditMapper.class).selectSpaceAuditPage(page, spaceId, param);
         if (result.getTotal() == 0) {
             return PageHelper.build(param.getPageNo(), param.getPageSize(), 0, new ArrayList<>());
