@@ -227,6 +227,11 @@
       fill: var(--textBrandDefault);
     }
   }
+  :global {
+    .outerTrigger {
+      color: var(--primaryColor);
+    }
+  }
 }
 
 // More ways to invite
@@ -345,6 +350,26 @@
       color: var(--textBrandDefault) !important;
       font-size: 14px !important;
     }
+  }
+}
+
+.mobileWrapper {
+  background: var(--defaultBg);
+  border-radius: 8px;
+  padding: 0 16px;
+}
+
+.mobileOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+
+  &:not(:first-child) {
+    border-top: 1px solid var(--lineColor);
+  }
+  p:nth-child(2) {
+    color: var(--thirdLevelText);
   }
 }
 
