@@ -6,7 +6,6 @@ export * from './rename_input';
 export * from './message';
 export * from './info_card';
 export * from './search_member_list';
-export * from './switch_info';
 export * from './search_team_and_member';
 export * from './horizontal_scroll';
 export * from './search_empty';

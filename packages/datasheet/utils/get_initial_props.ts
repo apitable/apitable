@@ -1,5 +1,4 @@
 import { Api, Url } from '@apitable/core';
-import { FILTER_HEADERS } from './constant';
 import axios from 'axios';
 import { getEnvVars } from 'get_env';
 import { NextPageContext } from 'next';
@@ -14,16 +13,16 @@ export interface IUserInfoError {
 const filterCustomHeader = (headers?: Record<string, string | string[] | undefined>): Record<string, string> => {
   if (!headers) return {};
   const _headers = {};
-  for (const k in headers) {
-    if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
-      continue;
-    }
-    _headers[k] = headers[k];
-  }
+  // for (const k in headers) {
+  //   if (!FILTER_HEADERS.map(item => item.toUpperCase()).includes(k.toUpperCase())) {
+  //     continue;
+  //   }
+  //   _headers[k] = headers[k];
+  // }
   return _headers;
 };
 
-export const getInitialProps = async(context: { ctx: NextPageContext }) => {
+export const getInitialProps = async (context: { ctx: NextPageContext }) => {
   const envVars = getEnvVars();
   const cookie = context.ctx.req?.headers.cookie;
   const filterHeaders = filterCustomHeader(context.ctx.req?.headers);
