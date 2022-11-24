@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
 
-import { Api, ConfigConstant, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
 import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
 import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined, CheckOutlined } from '@apitable/icons';
 
