@@ -1,29 +1,29 @@
-import { NodeEntity } from '../entities/node.entity';
-import { INodeExtra } from '../../shared/interfaces';
+import { NodeEntity } from 'database/entities/node.entity';
+import { NodeBaseInfo } from 'database/interfaces';
+import { INodeExtra } from 'shared/interfaces';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(NodeEntity)
 export class NodeRepository extends Repository<NodeEntity> {
-
   /**
    * Obtain the number of nodes with the given node ID
    */
   selectCountByNodeId(nodeId: string): Promise<number> {
-    return this.count({ where: { nodeId, isRubbish: false }});
+    return this.count({ where: { nodeId, isRubbish: false } });
   }
 
   /**
    * Obtain the number of templates with the given node ID
    */
   selectTemplateCountByNodeId(nodeId: string): Promise<number> {
-    return this.count({ where: { nodeId, isTemplate: true, isRubbish: false }});
+    return this.count({ where: { nodeId, isTemplate: true, isRubbish: false } });
   }
 
   /**
    * Obtain the number of nodes with the given parent node ID
    */
   selectCountByParentId(parentId: string): Promise<number> {
-    return this.count({ where: { parentId, isRubbish: false }});
+    return this.count({ where: { parentId, isRubbish: false } });
   }
 
   /**
@@ -58,7 +58,7 @@ export class NodeRepository extends Repository<NodeEntity> {
         `,
       [nodeId],
     );
-    return raws.reduce((pre: string[], cur: { nodeId: string; }) => {
+    return raws.reduce((pre: string[], cur: { nodeId: string }) => {
       pre.push(cur.nodeId);
       return pre;
     }, []);
@@ -66,9 +66,9 @@ export class NodeRepository extends Repository<NodeEntity> {
 
   /**
    * Obtain the path to the root node of a given node.
-   * 
+   *
    * The returned node ID array includes the given node and does not include the root node.
-   * 
+   *
    * Example: for a path of 3 nodes, the returned array is `[nodeId, parentId, grandparentId, great-grandparentId]`
    */
   async selectParentPathByNodeId(nodeId: string): Promise<string[]> {
@@ -92,7 +92,7 @@ export class NodeRepository extends Repository<NodeEntity> {
         `,
       [nodeId],
     );
-    return raws.reduce((pre: string[], cur: { nodeId: string; }) => {
+    return raws.reduce((pre: string[], cur: { nodeId: string }) => {
       pre.push(cur.nodeId);
       return pre;
     }, []);
@@ -111,5 +111,21 @@ export class NodeRepository extends Repository<NodeEntity> {
       .where('vn.node_id = :nodeId', { nodeId })
       .andWhere('vn.is_rubbish = 0')
       .getRawOne();
+  }
+
+  selectNodeNameAndIconByNodeId(nodeId: string): Promise<NodeBaseInfo | undefined> {
+    return this.findOne({
+      select: ['nodeName', 'icon'],
+      where: [{ nodeId, isRubbish: false }],
+    }).then(result => {
+      if (result) {
+        return {
+          id: nodeId,
+          nodeName: result.nodeName,
+          icon: result.icon || '',
+        };
+      }
+      return undefined;
+    });
   }
 }

@@ -784,6 +784,14 @@
             "zh_CN": "指定的嵌入链接不存在，请调整 linkId 后再试",
             "en_US": "The specified embed link does not exist, please adjust the linkId and try again"
         },
+        "api_embed_link_instance_limit": {
+            "zh_CN": "抱歉, 新建嵌入链接目前支持数表",
+            "en_US": "Sorry, the new embed link currently supports count tables"
+        },
+        "api_embed_link_limit": {
+            "zh_CN": "抱歉, 新建嵌入链接不能超过{value}个",
+            "en_US": " Sorry, new embed links cannot exceed {value}"
+        },
         "api_enterprise_limit": {
             "zh_CN": "抱歉, 此API暂未开放",
             "en_US": "Sorry, this API is not open yet"
@@ -1262,7 +1270,7 @@
             "zh_HK": "field:{field} 多選字段的選項必須是字符串"
         },
         "api_param_node_id_not_empty_key": {
-            "zh_CN": "nodeId不能位空",
+            "zh_CN": "nodeId不能为空",
             "en_US": "nodeId should not be empty"
         },
         "api_param_number_field_type_error": {
@@ -13185,7 +13193,7 @@
             "zh_HK": "本空間站支持查看 ${specification}  天內的歷史文件，升級後可查看更久的歷史文件。"
         },
         "max_rows_in_space": {
-            "zh_CN": "空间站记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+            "zh_CN": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
             "billing_notify": [],
             "en_US": "The maximum number of records in space is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "空間站記錄數上限為 ${specification} 行，當前已創建 ${usage} 行，升級可獲得更高用量。"
@@ -13615,8 +13623,8 @@
             "zh_HK": "帳號密碼登錄"
         },
         "mobile_function_over_limit_tip": {
-            "zh_CN": "须升级后才可解锁功能和提高用量",
-            "en_US": "Available after upgrad",
+            "zh_CN": "须前往PC端升级后才可解锁该高级功能",
+            "en_US": "Available after upgrade",
             "zh_HK": "須升級後解鎖功能和提高用量"
         },
         "mobile_show_allow": {
@@ -13635,7 +13643,9 @@
             "zh_HK": "更多「空間站管理」的功能請前往電腦網頁端操作"
         },
         "mobile_usage_over_limit_tip": {
-            "zh_CN": "功能用量已超限，请前往PC端升级空间站"
+            "zh_CN": "功能用量已超限，请前往PC端升级后可完成此操作",
+            "en_US": "Usage over limits. Please go to the PC to upgrade.",
+            "zh_HK": "功能用量已超限，請前往PC端升級後可完成此操作"
         },
         "modal_content_confirm_revoke_logout": {
             "zh_CN": "确认要恢复账号吗？",
