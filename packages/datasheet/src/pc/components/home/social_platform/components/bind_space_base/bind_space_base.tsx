@@ -7,7 +7,8 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import * as React from 'react';
 import { forwardRef, useImperativeHandle, useState } from 'react';
-import { CustomSelect } from '../../../feishu/custom_select';
+//@ts-ignore
+import { CustomSelect } from 'enterprise/lark/feishu/custom_select';
 import { SocialPlatformMap } from '../../config';
 import { IFormatSelectOptionData } from '../../utils';
 import styles from './style.module.less';
@@ -79,7 +80,7 @@ const BindSpaceBase = (props: IBindSpaceBase, ref) => {
                 className={styles.mobileSelectWrap}
               />
             ) : (
-              <CustomSelect
+              CustomSelect && <CustomSelect
                 value={value}
                 onChange={handleChange}
                 optionData={optionData || []}

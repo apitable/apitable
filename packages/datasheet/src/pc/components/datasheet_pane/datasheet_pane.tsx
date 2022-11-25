@@ -29,6 +29,7 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
+import { get } from 'lodash';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
@@ -41,7 +42,11 @@ const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_p
   ),
 });
 
-const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, preview, testFunctions, handleExitTest, mirrorId }) => {
+const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, 
+  preview, testFunctions, handleExitTest, mirrorId, embedId }) => {
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+
+  const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <div className={classNames(styles.dataspaceRight, 'dataspaceRight', loading && styles.loading)} style={{ height: '100%' }}>
@@ -49,9 +54,9 @@ const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, d
           <>
             {!mirrorId && (
               <>
-                <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+                {isShowViewbar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
                   <TabBar loading={loading} />
-                </ComponentDisplay>
+                </ComponentDisplay>}
                 <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
                   <MobileToolBar loading={loading} />
                 </ComponentDisplay>
@@ -91,11 +96,11 @@ const DefaultPanelWidth = {
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
 
 const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
-  const { shareId, datasheetId, templateId, mirrorId } = useSelector(state => {
-    const { shareId, datasheetId, templateId, mirrorId } = state.pageParams;
-    return { shareId, datasheetId, templateId, mirrorId };
+  const { shareId, datasheetId, templateId, mirrorId, embedId } = useSelector(state => {
+    const { shareId, datasheetId, templateId, mirrorId, embedId } = state.pageParams;
+    return { shareId, datasheetId, templateId, mirrorId, embedId };
   }, shallowEqual);
-  const isShareMode = shareId || templateId;
+  const isShareMode = shareId || templateId || embedId;
   const { isMobile } = useResponsive();
   const rightPanelWidth = useSelector(state => state.rightPane.width);
   const datasheetErrorCode = useSelector(state => Selectors.getDatasheetErrorCode(state));
@@ -331,6 +336,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
       preview={preview}
       testFunctions={testFunctions}
       handleExitTest={handleExitTest}
+      embedId={embedId}
     />
   );
 

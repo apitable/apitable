@@ -55,7 +55,7 @@ const MobileSelectBase: React.FC<IMobileSelectProps> = props => {
       )}
       {hasOuterTrigger && (
         <div
-          className={styles.outerTrigger}
+          className={classNames('outerTrigger', styles.outerTrigger)}
           onClick={() => setVisible(true)}
         >
           {triggerComponent}

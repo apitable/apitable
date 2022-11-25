@@ -132,7 +132,12 @@ export const SubScribeSystem = () => {
       const seatList: number[] = [];
       // const monthPrice: IQueryOrderPriceResponse[] = [];
       for (const v of data) {
-        if (getPageType() === SubscribePageType.Renewal && subscription?.maxSeats !== v.seat) {
+        if (
+          getPageType() === SubscribePageType.Renewal &&
+          subscription?.maxSeats !== 2 &&
+          subscription?.maxSeats !== 100 &&
+          subscription?.maxSeats !== 200
+        ) {
           /**
            * The product specifications have been changed so that each product only corresponds to one type of seat,
            * so the logic here is that if the current user's space station seat is different from
@@ -285,7 +290,9 @@ export const SubScribeSystem = () => {
                       />
                     </Typography>
                   ) : (
-                    <div className={styles.horizontalDisplaySeat} style={{ marginBottom: getPageType() === SubscribePageType.Subscribe ? 40 : 0 }}>
+                    <div className={levelInfo.level !== paySystemConfig.SILVER.level ? styles.horizontalDisplaySeat : styles.hasMultiSeat} style={{
+                      marginBottom: getPageType() === SubscribePageType.Subscribe ? 40 : 0
+                    }}>
                       <SubscribeSeat
                         seatList={seatList}
                         seat={seat}

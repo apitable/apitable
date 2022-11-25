@@ -7,10 +7,9 @@ let preRecordId: string | null;
 store.subscribe(function routeRecordChange() {
   const state = store.getState();
   const isLogin = state.user.isLogin;
-  const { viewId, recordId, shareId } = state.pageParams;
-
+  const { viewId, recordId, shareId, embedId } = state.pageParams;
   // Share page to expand cards even if you are not logged in
-  if (!isLogin && !shareId) {
+  if (!isLogin && !shareId && !embedId) {
     return;
   }
 
@@ -32,7 +31,7 @@ store.subscribe(function routeRecordChange() {
   }
 
   preRecordId = recordId;
-
+  
   if (!isSideRecordOpen && state.recordVision === RecordVision.Side) {
     store.dispatch((StoreActions.toggleSideRecord(true)));
   }

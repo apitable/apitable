@@ -49,7 +49,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
     
     const { 
       nodeId, 
-      shareNodeName = '"新建维格表 4"', 
+      shareNodeName, 
       embedNodeType = 2, 
       nodeTree = [], 
       shareNodeIcon = '', 

@@ -2,7 +2,7 @@ import { getLanguage, Strings, t } from '@apitable/core';
 import { SelectMarkFilled } from '@apitable/icons';
 import { Skeleton, Tooltip } from '@apitable/components';
 import classnames from 'classnames';
-import { ILevelInfo, SubscribePageType } from 'pc/components/subscribe_system/config';
+import { ILevelInfo, paySystemConfig, SubscribePageType } from 'pc/components/subscribe_system/config';
 import styles from 'pc/components/subscribe_system/styles.module.less';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
   const subscription = useSelector(state => state.billing.subscription);
   const isUpgrade = pageType === SubscribePageType.Upgrade;
 
-  if (pageType === SubscribePageType.Subscribe) {
+  if (pageType === SubscribePageType.Subscribe && levelInfo.level !== paySystemConfig.SILVER.level) {
     return <p className={styles.maxSeat}>
       {t(Strings.subscribe_new_choose_member, { member_num: seatList[0] })}
       <Tooltip content={t(Strings.subscribe_new_choose_member_tips, { member_num: seatList[0] })}>
@@ -35,7 +35,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
     </p>;
   }
 
-  if (isUpgrade) {
+  if (isUpgrade && levelInfo.level !== paySystemConfig.SILVER.level) {
     return <p className={styles.maxSeat}>
       {t(Strings.subscribe_upgrade_choose_member, {
         old_member_num: Number(subscription?.maxSeats),
@@ -83,6 +83,7 @@ export const SubscribeSeat: React.FC<ISubscribeSeatProps> = (props) => {
           }}
         >
           {item} {getLanguage() === 'zh-CN' && t(Strings.people)}
+          {levelInfo.level === paySystemConfig.SILVER.level && index == 0 && <span>(买一送一)</span>}
           {
             active &&
             <SelectMarkFilled size={24} className={styles.checked} color={levelInfo.activeColor} />

@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const FeiShuAdminLoginWithNoSSR = dynamic(() => import('pc/components/home/feishu/feishu_admin_login'), { ssr: false });
+// @ts-ignore
+const FeiShuAdminLoginWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeiShuAdminLogin;
+}), { ssr: false });
 
 const App = () => {
-  return <FeiShuAdminLoginWithNoSSR />;
+  return FeiShuAdminLoginWithNoSSR && <FeiShuAdminLoginWithNoSSR />;
 };
 
 export default App;

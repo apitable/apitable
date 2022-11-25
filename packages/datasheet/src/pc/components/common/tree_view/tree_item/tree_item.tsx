@@ -6,6 +6,8 @@ import { FC, useContext, useRef, useState } from 'react';
 import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import TreeViewContext from '../tree_view_context';
 import './style.module.less';
+import { useResponsive } from 'pc/hooks';
+import { ScreenSize } from '../../component_display';
 
 export interface ITreeItemProps {
   label: React.ReactNode | string;
@@ -37,6 +39,9 @@ const TreeItemBase: FC<ITreeItemProps> = ({
   } = useContext(TreeViewContext);
   const nodeRef = useRef<any>(null);
 
+  const { screenIsAtMost } = useResponsive();
+  const isMobile = screenIsAtMost(ScreenSize.md);
+
   const dragRef = useRef<HTMLDivElement>(null);
   const [dropPosition, setDropPosition] = useState<null | number>(null);
   const [hoverNodeId, setHoverNodeId] = useState('');
@@ -50,7 +55,7 @@ const TreeItemBase: FC<ITreeItemProps> = ({
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    canDrag: () => draggable && treeDraggable,
+    canDrag: () => draggable && treeDraggable && !isMobile,
   });
 
   const [{ isOver }, dndDrop] = useDrop({

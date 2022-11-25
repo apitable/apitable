@@ -1,25 +1,25 @@
-import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography } from '@apitable/components';
-
-import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
-import { ColumnUrlOutlined, InformationSmallOutlined, ShareQrcodeOutlined } from '@apitable/icons';
+import { FC, useState, useEffect } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
-import { Message, Modal } from 'pc/components/common';
-import { TComponent } from 'pc/components/common/t_component';
-import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+
+import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
+import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
+import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined, CheckOutlined } from '@apitable/icons';
 
 import { useCatalogTreeRequest } from 'pc/hooks';
-import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import { copy2clipBoard } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
-import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
+import { Message, Modal, MobileSelect } from 'pc/components/common';
+import { TComponent } from 'pc/components/common/t_component';
 import { ShareLink } from '../share/share_link';
-import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
 import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
+import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
+import { useInviteRequest } from 'pc/hooks/use_invite_request';
+import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
+import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -28,6 +28,7 @@ export interface IPublicShareLinkProps {
 
 export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMobile }) => {
   const dispatch = useDispatch();
+  const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { generateLinkReq } = useInviteRequest();
   const { run: getShareSettings, data: shareSettings } =
@@ -231,7 +232,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
-          <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel="noopener noreferrer" target="_blank">
+          <a href={Settings.workbench_node_share_help_url.value} rel="noopener noreferrer" target="_blank">
             <InformationSmallOutlined currentColor />
           </a>
         </Tooltip>
@@ -241,13 +242,46 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           <>
             <div className={styles.sharePerson}>
               <Typography className={styles.sharePersonContent} variant='body2'>{t(Strings.get_link_person_on_internet)}</Typography>
-              <DoubleSelect
-                value={value}
-                disabled={false}
-                onSelected={(op, index) => handleShareAuthClick(op)}
-                triggerCls={styles.doubleSelect}
-                options={Permission}
-              />
+              {isMobile ? (
+                <MobileSelect
+                  triggerComponent={
+                    <div className={styles.mobileRoleSelect}>
+                      {Permission.filter(item => item.value === value)[0].label}
+                      {<PulldownIcon className={styles.arrowIcon} width={16} height={16} fill={colors.fourthLevelText} />}
+                    </div>
+                  }
+                  renderList={({ setVisible }) => {
+                    return (
+                      <div className={styles.mobileWrapper}>
+                        {Permission.map((item) => (
+                          <div
+                            className={styles.mobileOption}
+                            key={item.value}
+                            onClick={() => {
+                              handleShareAuthClick(item);
+                              setVisible(false);
+                            }}
+                          >
+                            <div>
+                              <Typography variant={'body2'}>{item.label}</Typography>
+                              <Typography variant={'body4'}>{item.subLabel}</Typography>
+                            </div>
+                            {item.value === value && <CheckOutlined color={colors.primaryColor} />}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }}
+                />
+                ) : (
+                <DoubleSelect
+                  value={value}
+                  disabled={false}
+                  onSelected={(op, index) => handleShareAuthClick(op)}
+                  triggerCls={styles.doubleSelect}
+                  options={Permission}
+                />
+              )}
             </div>
             <ShareLink
               shareName={treeNodesMap[shareSettings.nodeId]?.nodeName}

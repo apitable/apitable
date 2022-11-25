@@ -33,7 +33,7 @@ export function clearExpandModal() {
 export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: boolean) => {
   const state = store.getState();
   const spaceId = state.space.activeId;
-  const { datasheetId, viewId, shareId, templateId, categoryId, mirrorId } = state.pageParams;
+  const { datasheetId, viewId, shareId, templateId, categoryId, mirrorId, embedId } = state.pageParams;
 
   const urlObj = new URL(location.href);
   const searchParams = urlObj.searchParams;
@@ -50,7 +50,6 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
     prev[key] = value;
     return prev;
   }, {});
-
   if (shareId) {
     const params = { nodeId: mirrorId || datasheetId, viewId, recordId, shareId, datasheetId };
     isReplace ? Router.replace(Navigation.SHARE_SPACE, { params, clearQuery: true, query }) :
@@ -60,6 +59,10 @@ export const expandRecordIdNavigate = debounce((recordId?: string, isReplace?: b
     const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, categoryId, templateId, datasheetId };
     isReplace ? Router.replace(Navigation.TEMPLATE, { params, clearQuery: true, query }) :
       Router.push(Navigation.TEMPLATE, { params, clearQuery: true, query });
+  } else if (embedId) {
+    const params = { nodeId: mirrorId || datasheetId, viewId, recordId, embedId, datasheetId };
+    isReplace ? Router.replace(Navigation.EMBED_SPACE, { params, clearQuery: true, query }) :
+      Router.push(Navigation.EMBED_SPACE, { params, clearQuery: true, query });
   } else {
     const params = { nodeId: mirrorId || datasheetId, viewId, spaceId, recordId, datasheetId };
     isReplace ? Router.replace(Navigation.WORKBENCH, { params, clearQuery: true, query }) :
