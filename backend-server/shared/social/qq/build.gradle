@@ -1,0 +1,10 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+  api(project(':shared:social:common'))
+
+  implementation rootProject.ext.dependencies['jackson']
+  implementation rootProject.ext.dependencies['slf4j']
+}

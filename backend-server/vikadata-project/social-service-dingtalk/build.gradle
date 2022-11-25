@@ -8,10 +8,10 @@ plugins {
 }
 
 dependencies {
-  implementation project(':core')
-  implementation project(':starters:swagger')
+  implementation project(':shared:core')
+  implementation project(':shared:starters:swagger')
   implementation project(':grpc-model')
-  implementation project(':starters:social-dingtalk')
+  implementation project(':shared:starters:social-dingtalk')
   
   implementation rootProject.ext.dependencies['hutool']
   implementation rootProject.ext.dependencies['p6spy-starter']
