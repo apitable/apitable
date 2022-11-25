@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const FeiShuConfigureWithNoSSR = dynamic(() => import('pc/components/home/feishu/feishu_configure'), { ssr: false });
+// @ts-ignore
+const FeiShuConfigureWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeiShuConfigure;
+}), { ssr: false });
 
 const App = () => {
-  return <FeiShuConfigureWithNoSSR />;
+  return FeiShuConfigureWithNoSSR && <FeiShuConfigureWithNoSSR />;
 };
 
 export default App;

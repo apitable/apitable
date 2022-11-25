@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const FeishuIntegrationWithNoSSR = dynamic(() => import('pc/components/home/social_platform/feishu_integration/feishu_integration'), { ssr: false });
+// @ts-ignore
+const FeishuIntegrationWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeishuIntegration;
+}), { ssr: false });
 
 const App = () => {
-  return <FeishuIntegrationWithNoSSR />;
+  return FeishuIntegrationWithNoSSR && <FeishuIntegrationWithNoSSR />;
 };
 
 export default App;

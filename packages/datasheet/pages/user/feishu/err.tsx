@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const FeishuErrWithNoSSR = dynamic(() => import('pc/components/home/feishu/feishu_err'), { ssr: false });
+// @ts-ignore
+const FeishuErrWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeishuErr;
+}), { ssr: false });
 
 const App = () => {
-  return <FeishuErrWithNoSSR />;
+  return FeishuErrWithNoSSR && <FeishuErrWithNoSSR />;
 };
 
 export default App;

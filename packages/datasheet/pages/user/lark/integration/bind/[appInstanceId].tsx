@@ -1,11 +1,18 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const FeishuIntegrationWithNoSSR = dynamic(() => import('pc/components/home/social_platform/feishu_integration/feishu_integration'), { ssr: false });
-const FeishuIntegrationBindWithNoSSR = dynamic(() => import('pc/components/home/social_platform/feishu_integration/detail/bind'), { ssr: false });
+// @ts-ignore
+const FeishuIntegrationWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeishuIntegration;
+}), { ssr: false });
+
+// @ts-ignore
+const FeishuIntegrationBindWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeishuIntegrationBind;
+}), { ssr: false });
 
 const App = () => {
-  return <FeishuIntegrationWithNoSSR>
+  return FeishuIntegrationWithNoSSR && FeishuIntegrationBindWithNoSSR && <FeishuIntegrationWithNoSSR>
     <FeishuIntegrationBindWithNoSSR />
   </FeishuIntegrationWithNoSSR>;
 };

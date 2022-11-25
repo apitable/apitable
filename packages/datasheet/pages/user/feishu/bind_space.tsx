@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const FeiShuBindSpaceWithNoSSR = dynamic(() => import('pc/components/home/feishu/feishu_bind_space'), { ssr: false });
+// @ts-ignore
+const FeiShuBindSpaceWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.FeiShuBindSpace;
+}), { ssr: false });
 
 const App = () => {
-  return <FeiShuBindSpaceWithNoSSR />;
+  return FeiShuBindSpaceWithNoSSR && <FeiShuBindSpaceWithNoSSR />;
 };
 
 export default App;
