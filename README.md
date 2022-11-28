@@ -295,10 +295,10 @@ APITable use these common conventions:
     <img src="https://s1.vika.cn/space/2022/11/28/9fd42ba3c3304954b856a224fc720d2b" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/ScreenShot2.png" alt="APITable Screenshot Image" />
+    <img src="https://s1.vika.cn/space/2022/11/28/1a336a261908446fbb96de2a6ccfbd6d" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/ScreenShot3.png" alt="APITable Screenshot Image" />
+    <img src="https://s1.vika.cn/space/2022/11/28/f7ad2b04ae984bf2a368537bba8e89d2" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/ScreenShot4.png" alt="APITable Screenshot Image" />
