@@ -20,6 +20,7 @@ import styles from './style.module.less';
 import { ViewBar } from './view_bar';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
 import { get } from 'lodash';
+import classNames from 'classnames';
 
 export interface ITabStateProps {
   width: number;
@@ -78,6 +79,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
+  const isOnlyView = embedId ? get(embedInfo, 'viewControl.viewId', false) : false;
 
   useEffect(() => {
     if (!activeView) {
@@ -107,7 +109,7 @@ export const Tab: FC<ITabStateProps> = memo(props => {
     <div
       className={styles.nav}
     >
-      <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
+      { !isOnlyView && <div className={styles.nodeName} style={{ paddingLeft: !sideBarVisible ? 16 : '' }}>
         {
           datasheetName && (
             <NodeInfoBar
@@ -125,13 +127,15 @@ export const Tab: FC<ITabStateProps> = memo(props => {
             />
           )
         }
-      </div>
+      </div>}
       { isShowViewbar && <ViewBar
         editIndex={editIndex}
         setEditIndex={setEditIndex}
         views={views || []}
         switchView={switchView}
-        className={styles.viewBarWrapper}
+        className={classNames(styles.viewBarWrapper, {
+          [styles.embedView]:isOnlyView
+        })}
         extra={views && views.length > 0 && viewCreatable && (
           <TabAddView
             viewCount={views ? views.length : 0}
