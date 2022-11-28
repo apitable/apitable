@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_space_member_role_rel")
+@TableName(keepGlobalPrefix = true, value = "space_member_role_rel")
 public class SpaceMemberRoleRelEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

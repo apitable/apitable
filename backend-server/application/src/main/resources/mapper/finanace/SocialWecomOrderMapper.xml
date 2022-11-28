@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.SocialWecomOrderMapper">
     <select id="selectAllOrders" resultType="com.vikadata.entity.SocialWecomOrderEntity">
         SELECT *
-        FROM vika_billing_social_wecom_order
+        FROM ${tablePrefix}billing_social_wecom_order
         WHERE paid_corp_id = #{paidCorpId}
         AND suite_id = #{suiteId}
         <if test="orderStatuses != null and orderStatuses.size() != 0">
@@ -19,14 +19,14 @@
 
     <select id="selectByOrderId" resultType="com.vikadata.entity.SocialWecomOrderEntity">
         SELECT *
-        FROM vika_billing_social_wecom_order
+        FROM ${tablePrefix}billing_social_wecom_order
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>
 
     <select id="selectFirstPaidOrder" resultType="com.vikadata.entity.SocialWecomOrderEntity">
         SELECT *
-        FROM vika_billing_social_wecom_order
+        FROM ${tablePrefix}billing_social_wecom_order
         WHERE paid_corp_id = #{paidCorpId}
         AND suite_id = #{suiteId}
         AND order_status = 1
@@ -37,7 +37,7 @@
 
     <select id="selectLastPaidOrder" resultType="com.vikadata.entity.SocialWecomOrderEntity">
         SELECT *
-        FROM vika_billing_social_wecom_order
+        FROM ${tablePrefix}billing_social_wecom_order
         WHERE paid_corp_id = #{paidCorpId}
         AND suite_id = #{suiteId}
         AND order_status = 1
@@ -47,20 +47,20 @@
     </select>
 
     <select id="selectIdByOrderId" resultType="java.lang.Long">
-        SELECT id FROM vika_billing_social_wecom_order
+        SELECT id FROM ${tablePrefix}billing_social_wecom_order
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>
 
     <select id="selectPreOrderStatusById" resultType="java.lang.Integer">
-        SELECT order_status FROM vika_billing_social_wecom_order
+        SELECT order_status FROM ${tablePrefix}billing_social_wecom_order
         WHERE id &lt; #{id}
         AND is_deleted = 0
         ORDER BY created_at DESC LIMIT 1
     </select>
 
     <update id="updateOrderStatusByOrderId">
-        UPDATE vika_billing_social_wecom_order SET order_status = #{orderStatus}
+        UPDATE ${tablePrefix}billing_social_wecom_order SET order_status = #{orderStatus}
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </update>

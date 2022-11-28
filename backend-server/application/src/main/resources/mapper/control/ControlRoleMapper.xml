@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.control.mapper.ControlRoleMapper">
     <select id="selectByControlId" resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND is_deleted = 0
     </select>
 
     <select id="selectByControlIds" resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id IN
         <foreach item="item" index="index" collection="controlIds" open="(" separator=","
                  close=")">
@@ -23,7 +23,7 @@
     <select id="selectByControlIdAndUnitId"
             resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id = #{unitId}
         AND is_deleted = 0
@@ -31,7 +31,7 @@
 
     <select id="selectUnitIdAndControlIdAndRoleCode" resultType="java.lang.Long">
         SELECT unit_id
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND role_code = #{roleCode}
         AND is_deleted = 0
@@ -39,7 +39,7 @@
 
     <select id="selectRoleCodeByControlIdAndUnitId" resultType="java.lang.String">
         SELECT role_code
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id = #{unitId}
         AND is_deleted = 0
@@ -49,7 +49,7 @@
     <select id="selectControlRoleInfoByControlIdAndUnitIds"
             resultType="com.vikadata.api.workspace.model.ControlRoleInfo">
         SELECT unit_id, role_code as role
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id in
             <foreach collection="unitIds" item="unitId" open="(" close=")" separator=",">
@@ -61,7 +61,7 @@
     <select id="selectControlRoleInfoByControlIds"
             resultType="com.vikadata.api.workspace.model.ControlRoleInfo">
         SELECT control_id, unit_id, role_code role
-        FROM vika_control_role vnp
+        FROM ${tablePrefix}control_role vnp
         WHERE vnp.control_id IN
         <foreach item="item" index="index" collection="controlIds" open="(" separator=","
                  close=")">
@@ -73,15 +73,15 @@
     <select id="selectControlRoleUnitDtoByControlId"
             resultType="com.vikadata.api.workspace.model.ControlRoleUnitDTO">
         SELECT vcr.unit_id, vu.unit_type, vu.unit_ref_id, vcr.role_code role
-        FROM vika_control_role vcr
-        JOIN vika_unit vu on vcr.unit_id = vu.id AND vu.is_deleted = 0
+        FROM ${tablePrefix}control_role vcr
+        JOIN ${tablePrefix}unit vu on vcr.unit_id = vu.id AND vu.is_deleted = 0
         WHERE vcr.control_id = #{controlId}
         AND vcr.is_deleted = 0
         ORDER BY vcr.created_at
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_control_role(id, control_id, unit_id, role_code,
+        INSERT INTO ${tablePrefix}control_role(id, control_id, unit_id, role_code,
         created_by, updated_by)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
@@ -93,7 +93,7 @@
     </insert>
 
     <update id="updateRoleCodeByControlIdAndUnitIds">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET role_code = #{role}, updated_by = #{userId}
         WHERE control_id = #{controlId} AND unit_id IN
         <foreach item="item" index="index" collection="unitIds" open="(" separator=","
@@ -104,7 +104,7 @@
     </update>
 
     <update id="updateRoleCodeByIds">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET role_code = #{role}, updated_by = #{userId}
         WHERE id IN
         <foreach item="item" index="index" collection="ids" open="(" separator=","
@@ -115,7 +115,7 @@
     </update>
 
     <delete id="deleteByIds">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET is_deleted = 1
         WHERE id IN
         <foreach item="item" index="index" collection="ids" open="(" separator=","
@@ -125,7 +125,7 @@
     </delete>
 
     <delete id="deleteByControlIds">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET is_deleted = 1, updated_by = #{userId}
         WHERE control_id IN
         <foreach item="item" index="index" collection="controlIds" open="(" separator=","
@@ -135,7 +135,7 @@
     </delete>
 
     <delete id="deleteByUnitIds">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET is_deleted = 1
         WHERE unit_id IN
         <foreach item="item" index="index" collection="unitIds" open="(" separator=","
@@ -145,7 +145,7 @@
     </delete>
 
     <delete id="deleteByControlIdAndUnitId">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET is_deleted = 1
         WHERE control_id = #{controlId}
         AND unit_id = #{unitId}
@@ -153,7 +153,7 @@
 
     <select id="selectDeletedRole" resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id IN
         <foreach item="item" index="index" collection="unitIds" open="(" separator=","
@@ -165,7 +165,7 @@
     </select>
 
     <update id="updateIsDeletedByIds">
-        UPDATE vika_control_role
+        UPDATE ${tablePrefix}control_role
         SET is_deleted = #{isDeleted}, updated_by = #{userId}
         WHERE id IN
         <foreach item="item" index="index" collection="ids" open="(" separator=","
@@ -176,7 +176,7 @@
 
     <select id="selectDeletedRoleByRoleCodes" resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id IN
         <foreach item="item" index="index" collection="unitIds" open="(" separator=","
@@ -193,7 +193,7 @@
 
     <select id="selectByControlIdAndUnitIdAndRoleCode" resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id = #{unitId}
         AND role_code = #{roleCode}
@@ -204,7 +204,7 @@
 
     <select id="selectByControlIdAndUnitIds" resultType="com.vikadata.entity.ControlRoleEntity">
         SELECT *
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id IN
         <foreach item="unitId" index="index" collection="unitIds" open="(" separator=","
@@ -217,7 +217,7 @@
     </select>
 
     <select id="selectIdByControlIds" resultType="java.lang.Long">
-        SELECT id from vika_control_role
+        SELECT id from ${tablePrefix}control_role
         WHERE control_id IN
         <foreach item="item" index="index" collection="controlIds" open="(" separator=","
                  close=")">
@@ -227,7 +227,7 @@
     </select>
 
     <select id="selectIdByUnitIds" resultType="java.lang.Long">
-        SELECT id from vika_control_role
+        SELECT id from ${tablePrefix}control_role
         WHERE unit_id IN
         <foreach item="item" index="index" collection="unitIds" open="(" separator=","
                  close=")">
@@ -237,7 +237,7 @@
     </select>
 
     <select id="selectIdByControlIdAndUnitIds" resultType="java.lang.Long">
-        SELECT id from vika_control_role
+        SELECT id from ${tablePrefix}control_role
         WHERE control_id = #{controlId} AND unit_id IN
         <foreach item="item" index="index" collection="unitIds" open="(" separator=","
                  close=")">
@@ -248,7 +248,7 @@
 
     <select id="selectIdByControlIdAndUnitId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_control_role
+        FROM ${tablePrefix}control_role
         WHERE control_id = #{controlId}
         AND unit_id = #{unitId}
         AND is_deleted = 0

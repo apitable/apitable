@@ -1,4 +1,4 @@
-INSERT INTO `vika_social_tenant_department` (`id`, `tenant_id`, `space_id`,
+INSERT INTO `social_tenant_department` (`id`, `tenant_id`, `space_id`,
                                                         `department_id`,
                                                         `open_department_id`, `parent_id`,
                                                         `parent_open_department_id`,

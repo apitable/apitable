@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_api_statistics_daily")
+@TableName(keepGlobalPrefix = true, value = "api_statistics_daily")
 public class ApiStatisticsDailyEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

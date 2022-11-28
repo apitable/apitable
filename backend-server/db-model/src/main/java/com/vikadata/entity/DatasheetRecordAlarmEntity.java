@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_datasheet_record_alarm")
+@TableName(keepGlobalPrefix = true, value = "datasheet_record_alarm")
 public class DatasheetRecordAlarmEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

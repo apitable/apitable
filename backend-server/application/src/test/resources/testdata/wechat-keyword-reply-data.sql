@@ -1,4 +1,4 @@
-INSERT INTO `vika_wechat_keyword_reply` (`id`, `app_id`, `rule_name`,
+INSERT INTO `wechat_keyword_reply` (`id`, `app_id`, `rule_name`,
                                          `match_mode`, `reply_mode`, `keyword`,
                                          `content`, `type`, `news_info`,
                                          `created_at`, `updated_at`)

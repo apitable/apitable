@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_wechat_mp_log")
+@TableName(keepGlobalPrefix = true, value = "wechat_mp_log")
 public class WechatMpLogEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

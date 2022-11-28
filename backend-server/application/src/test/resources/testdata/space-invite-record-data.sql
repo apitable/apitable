@@ -1,4 +1,4 @@
-INSERT INTO `vika_space_invite_record` (`id`, `invite_member_id`,
+INSERT INTO `space_invite_record` (`id`, `invite_member_id`,
                                                    `invite_space_id`, `invite_space_name`,
                                                    `invite_email`, `invite_token`,
                                                    `invite_url`, `send_status`,

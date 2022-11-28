@@ -18,8 +18,10 @@ public abstract class TestSuiteWithDB {
 
     protected abstract List<String> configureExcludeTables();
 
+    protected abstract String tablePrefix();
+
     protected void cleanAllTables() {
-        UnitTestUtil.clearDB(configureJdbcTemplate(), configureExcludeTables());
+        UnitTestUtil.clearDB(configureJdbcTemplate(), configureExcludeTables(), tablePrefix());
     }
 
     protected void unsetCache() {

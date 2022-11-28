@@ -4,19 +4,19 @@
 
     <select id="selectIdByNodeId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_node_desc
+        FROM ${tablePrefix}node_desc
         WHERE node_id = #{nodeId}
     </select>
 
     <select id="selectDescriptionByNodeId" resultType="java.lang.String">
         SELECT `description`
-        FROM vika_node_desc
+        FROM ${tablePrefix}node_desc
         WHERE node_id = #{nodeId}
     </select>
 
     <select id="selectByNodeIds" resultType="com.vikadata.api.workspace.dto.NodeDescDTO">
         SELECT node_id, `description`
-        FROM vika_node_desc
+        FROM ${tablePrefix}node_desc
         WHERE node_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -24,13 +24,13 @@
     </select>
 
     <update id="updateDescByNodeId">
-        UPDATE vika_node_desc
+        UPDATE ${tablePrefix}node_desc
         SET `description` = #{desc}
         WHERE node_id = #{nodeId}
     </update>
 
     <insert id="insertBatch">
-        INSERT INTO vika_node_desc(id, node_id, description)
+        INSERT INTO ${tablePrefix}node_desc(id, node_id, description)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">

@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.space.mapper.SpaceRoleResourceRelMapper">
 
     <insert id="insertBatch">
-        INSERT INTO vika_space_role_resource_rel(id, role_code, resource_code)
+        INSERT INTO ${tablePrefix}space_role_resource_rel(id, role_code, resource_code)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
@@ -13,19 +13,19 @@
     </insert>
 
     <delete id="deleteByRoleCode">
-        DELETE FROM vika_space_role_resource_rel
+        DELETE FROM ${tablePrefix}space_role_resource_rel
         WHERE role_code = #{roleCode}
     </delete>
 
     <delete id="deleteByRoleCodeAndResourceCodes">
-        DELETE FROM vika_space_role_resource_rel
+        DELETE FROM ${tablePrefix}space_role_resource_rel
         WHERE role_code = #{roleCode} and resource_code in
         <foreach item="item" index="index" collection="resourceCodes" open="(" separator="," close=")">
             #{item}
         </foreach>
     </delete>
     <select id="selectRoleCodeByResourceCodes" resultType="string">
-        SELECT role_code from vika_space_role_resource_rel
+        SELECT role_code from ${tablePrefix}space_role_resource_rel
         WHERE resource_code IN
         <foreach item="item" index="index" collection="resourceCodes" open="(" separator="," close=")">
             #{item}
@@ -34,7 +34,7 @@
     </select>
 
     <delete id="batchDeleteByRoleCodes">
-        DELETE FROM vika_space_role_resource_rel
+        DELETE FROM ${tablePrefix}space_role_resource_rel
         WHERE role_code IN
         <foreach item="item" index="index" collection="roleCodes" open="(" separator="," close=")">
             #{item}
@@ -43,7 +43,7 @@
 
     <select id="selectResourceCodesByRoleCode" resultType="string">
         SELECT resource_code
-        FROM vika_space_role_resource_rel
+        FROM ${tablePrefix}space_role_resource_rel
         WHERE role_code = #{roleCode}
     </select>
 </mapper>

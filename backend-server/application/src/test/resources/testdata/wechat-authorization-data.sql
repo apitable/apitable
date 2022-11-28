@@ -1,4 +1,4 @@
-INSERT INTO `vika_wechat_authorization` (`id`, `authorizer_appid`,
+INSERT INTO `wechat_authorization` (`id`, `authorizer_appid`,
                                                     `authorizer_access_token`,
                                                     `access_token_expire`,
                                                     `authorizer_refresh_token`,

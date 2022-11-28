@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.workspace.mapper.ResourceMetaMapper">
     <select id="selectByResourceIds" resultType="com.vikadata.entity.ResourceMetaEntity">
         SELECT *
-        FROM vika_resource_meta
+        FROM ${tablePrefix}resource_meta
         WHERE resource_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -12,12 +12,12 @@
 
     <select id="selectMetaDataByResourceId" resultType="java.lang.String">
         SELECT meta_data
-        FROM vika_resource_meta
+        FROM ${tablePrefix}resource_meta
         WHERE resource_id = #{resourceId}
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_resource_meta(id, resource_id, resource_type, meta_data,
+        INSERT INTO ${tablePrefix}resource_meta(id, resource_id, resource_type, meta_data,
         created_by, updated_by)
         VALUE
         <foreach item="item" index="index" collection="entities" separator=",">
@@ -32,7 +32,7 @@
         SELECT
             COALESCE(MAX(JSON_LENGTH( vrm.meta_data -> '$.layout[*].id' )), 0)
         FROM
-            vika_resource_meta vrm
+            ${tablePrefix}resource_meta vrm
         WHERE
             vrm.resource_id = #{dashboardId} AND vrm.is_deleted = 0
     </select>

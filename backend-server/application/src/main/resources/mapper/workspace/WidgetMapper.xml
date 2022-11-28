@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.enterprise.widget.mapper.WidgetMapper">
     <select id="selectCountBySpaceIdAndWidgetIds" resultType="java.lang.Integer">
         SELECT count(1)
-        FROM vika_widget
+        FROM ${tablePrefix}widget
         WHERE space_id = #{spaceId} AND widget_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -13,7 +13,7 @@
 
     <select id="selectWidgetBaseInfoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.WidgetBaseInfo">
         SELECT node_id, widget_id, package_id AS widgetPackageId, name, storage, revision
-        FROM vika_widget
+        FROM ${tablePrefix}widget
         WHERE widget_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -28,10 +28,10 @@
                vwp.icon     AS widgetPackageIcon,
                vdw.dst_id   AS datasheetId,
                vn.node_name AS datasheetName
-        FROM vika_widget vw
-                 JOIN vika_widget_package vwp ON vw.package_id = vwp.package_id
-                 JOIN vika_datasheet_widget vdw ON vw.widget_id = vdw.widget_id
-                 JOIN vika_node vn ON vw.node_id = vn.node_id AND vn.type = #{nodeType}
+        FROM ${tablePrefix}widget vw
+                 JOIN ${tablePrefix}widget_package vwp ON vw.package_id = vwp.package_id
+                 JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+                 JOIN ${tablePrefix}node vn ON vw.node_id = vn.node_id AND vn.type = #{nodeType}
                     AND vn.is_rubbish = 0 AND vn.is_template = 0
         WHERE vw.space_id = #{spaceId}
           AND vw.is_deleted = 0
@@ -46,10 +46,10 @@
                vwp.icon     AS widgetPackageIcon,
                vdw.dst_id   AS datasheetId,
                vd.dst_name  AS datasheetName
-        FROM vika_widget vw
-                 JOIN vika_widget_package vwp ON vw.package_id = vwp.package_id
-                 JOIN vika_datasheet_widget vdw ON vw.widget_id = vdw.widget_id
-                 JOIN vika_datasheet vd ON vdw.dst_id = vd.dst_id AND vd.is_deleted = 0
+        FROM ${tablePrefix}widget vw
+                 JOIN ${tablePrefix}widget_package vwp ON vw.package_id = vwp.package_id
+                 JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+                 JOIN ${tablePrefix}datasheet vd ON vdw.dst_id = vd.dst_id AND vd.is_deleted = 0
         WHERE vw.node_id = #{nodeId}
           AND vw.is_deleted = 0
           AND vwp.status = 3
@@ -60,8 +60,8 @@
         SELECT vw.name       AS widgetName,
                vdw.dst_id    AS dstId,
                vw.node_id    AS nodeId
-        FROM vika_widget vw
-        JOIN vika_datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+        FROM ${tablePrefix}widget vw
+        JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
         WHERE vw.node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
@@ -72,9 +72,9 @@
 
     <select id="selectWidgetDtoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.WidgetDTO">
         SELECT vw.widget_id, vw.node_id, vdw.dst_id, vdw.source_id
-        FROM vika_widget vw
-        JOIN vika_datasheet_widget vdw ON vw.widget_id = vdw.widget_id
-        JOIN vika_node vn ON vw.node_id = vn.node_id AND vn.is_rubbish = 0 AND vn.is_template = 0
+        FROM ${tablePrefix}widget vw
+        JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+        JOIN ${tablePrefix}node vn ON vw.node_id = vn.node_id AND vn.is_rubbish = 0 AND vn.is_template = 0
         WHERE vw.widget_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -84,7 +84,7 @@
 
     <select id="selectSpaceIdByWidgetIds" resultType="java.lang.String">
         SELECT DISTINCT space_id
-        FROM vika_widget
+        FROM ${tablePrefix}widget
         WHERE widget_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -94,16 +94,16 @@
 
     <select id="selectWidgetIdsByNodeId" resultType="java.lang.String">
         SELECT widget_id
-        FROM vika_widget
+        FROM ${tablePrefix}widget
         WHERE node_id = #{nodeId}
           AND is_deleted = 0
     </select>
 
     <select id="selectDataSourceDstIdsByNodeIds" resultType="java.lang.String">
         SELECT DISTINCT vdw.dst_id
-        FROM vika_widget vw
-                 JOIN vika_datasheet_widget vdw ON vw.widget_id = vdw.widget_id
-                 JOIN vika_node vn ON vn.node_id = vdw.dst_id AND vn.is_rubbish = 0
+        FROM ${tablePrefix}widget vw
+                 JOIN ${tablePrefix}datasheet_widget vdw ON vw.widget_id = vdw.widget_id
+                 JOIN ${tablePrefix}node vn ON vn.node_id = vdw.dst_id AND vn.is_rubbish = 0
         WHERE vw.node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
             #{item}
@@ -111,7 +111,7 @@
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_widget(id, space_id, node_id, package_id, widget_id, name, storage, created_by, updated_by)
+        INSERT INTO ${tablePrefix}widget(id, space_id, node_id, package_id, widget_id, name, storage, created_by, updated_by)
         VALUES
         <foreach item="entity" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
@@ -123,7 +123,7 @@
 
     <select id="selectSpaceIdByWidgetIdIncludeDeleted" resultType="java.lang.String">
         SELECT space_id
-        FROM vika_widget
+        FROM ${tablePrefix}widget
         WHERE widget_id = #{widgetId}
     </select>
 </mapper>

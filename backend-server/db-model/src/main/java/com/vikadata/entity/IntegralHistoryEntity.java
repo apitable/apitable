@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_integral_history")
+@TableName(keepGlobalPrefix = true, value = "integral_history")
 public class IntegralHistoryEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

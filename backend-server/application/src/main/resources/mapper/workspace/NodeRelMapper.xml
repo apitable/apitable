@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.workspace.mapper.NodeRelMapper">
     <select id="selectMainNodeIdsByRelNodeIds" resultType="java.lang.String">
         SELECT DISTINCT main_node_id
-        FROM vika_node_rel
+        FROM ${tablePrefix}node_rel
         WHERE rel_node_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -12,13 +12,13 @@
 
     <select id="selectByRelNodeId" resultType="com.vikadata.entity.NodeRelEntity">
         SELECT *
-        FROM vika_node_rel
+        FROM ${tablePrefix}node_rel
         WHERE rel_node_id = #{relNodeId}
     </select>
 
     <select id="selectByRelNodeIds" resultType="com.vikadata.entity.NodeRelEntity">
         SELECT *
-        FROM vika_node_rel
+        FROM ${tablePrefix}node_rel
         WHERE rel_node_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -28,14 +28,14 @@
     <select id="selectNodeRelDTO"
             resultType="com.vikadata.api.workspace.dto.NodeRelDTO">
         SELECT vn.type, vnr.rel_node_id, vnr.extra
-        FROM vika_node_rel vnr
-                     JOIN vika_node vn
+        FROM ${tablePrefix}node_rel vnr
+                     JOIN ${tablePrefix}node vn
                 ON vnr.rel_node_id = vn.node_id AND vn.is_rubbish = 0
         WHERE main_node_id = #{mainNodeId}
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_node_rel(id, main_node_id, rel_node_id, extra, created_by)
+        INSERT INTO ${tablePrefix}node_rel(id, main_node_id, rel_node_id, extra, created_by)
         VALUE
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">

@@ -1,4 +1,4 @@
-INSERT INTO `vika_widget_package_release` (`id`, `release_sha`, `version`, `package_id`,
+INSERT INTO `widget_package_release` (`id`, `release_sha`, `version`, `package_id`,
                                            `release_user_id`, `release_code_bundle`,
                                            `source_code_bundle`, `secret_key`,
                                            `status`, `release_note`, `is_deleted`,

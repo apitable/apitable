@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_node_share_operate")
+@TableName(keepGlobalPrefix = true, value = "node_share_operate")
 public class NodeShareOperateEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

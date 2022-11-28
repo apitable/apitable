@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.SocialDingTalkOrderMapper">
     <select id="selectStatusByOrderId" resultType="java.lang.Integer">
         SELECT status
-        FROM vika_billing_social_dingtalk_order
+        FROM ${tablePrefix}billing_social_dingtalk_order
         WHERE order_id = #{orderId}
         AND tenant_id = #{tenantId}
         AND app_id = #{appId}
@@ -12,14 +12,14 @@
 
     <select id="selectOrderDataByTenantIdAndAppId" resultType="java.lang.String">
         SELECT order_data
-        FROM vika_billing_social_dingtalk_order
+        FROM ${tablePrefix}billing_social_dingtalk_order
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         AND `status` = 0;
     </select>
 
     <update id="updateStatusByTenantIdAndAppIdAndOrderId">
-        UPDATE vika_billing_social_dingtalk_order
+        UPDATE ${tablePrefix}billing_social_dingtalk_order
         SET `status` = #{status}
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
@@ -28,7 +28,7 @@
 
     <select id="selectOrderIdByTenantIdAndAppIdAndItemCode" resultType="java.lang.String">
         SELECT order_id
-        FROM vika_billing_social_dingtalk_order
+        FROM ${tablePrefix}billing_social_dingtalk_order
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         AND item_code = #{itemCode};

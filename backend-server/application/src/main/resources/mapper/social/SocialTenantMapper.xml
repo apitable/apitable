@@ -4,33 +4,33 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantMapper">
     <select id="selectTenantIdByAppId" resultType="java.lang.String">
         SELECT tenant_id
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId}
     </select>
 
     <select id="selectByAppIdAndTenantId"
             resultType="com.vikadata.entity.SocialTenantEntity">
         SELECT *
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId} AND tenant_id = #{tenantId}
     </select>
 
     <select id="selectCountByAppIdAndTenantId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId}
         AND tenant_id = #{tenantId}
     </select>
 
     <update id="setTenantOpen">
-        UPDATE vika_social_tenant
+        UPDATE ${tablePrefix}social_tenant
         SET status = 1
         WHERE app_id = #{appId}
         AND tenant_id = #{tenantId}
     </update>
 
     <update id="setTenantStop">
-        UPDATE vika_social_tenant
+        UPDATE ${tablePrefix}social_tenant
         SET status = 0
         WHERE app_id = #{appId}
         AND tenant_id = #{tenantId}
@@ -38,25 +38,25 @@
 
     <delete id="deleteByAppId">
         DELETE
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId}
     </delete>
 
     <update id="updateScopeByTenantId">
-        UPDATE vika_social_tenant
+        UPDATE ${tablePrefix}social_tenant
         SET status = 1, contact_auth_scope = #{scope}
         WHERE tenant_id = #{tenantId}
     </update>
 
     <select id="selectCountByTenantId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE tenant_id = #{tenantId}
     </select>
 
     <select id="selectAgentIdByTenantIdAndAppId" resultType="java.lang.String">
         SELECT auth_info ->> '$.appAuthInfo.agentId'
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         AND status = 1
@@ -64,26 +64,26 @@
 
     <select id="selectAuthScopeByTenantId" resultType="java.lang.String">
         SELECT contact_auth_scope
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE tenant_id = #{tenantId}
     </select>
 
     <update id="updateTenantStatus">
-        UPDATE vika_social_tenant
+        UPDATE ${tablePrefix}social_tenant
         SET status = #{enabled}
         WHERE app_id = #{appId} AND tenant_id = #{tenantId}
     </update>
 
     <select id="selectTenantStatusByTenantIdAndAppId" resultType="java.lang.Integer">
         SELECT status
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
     </select>
 
     <select id="selectIsvAgentIdByTenantIdAndAppId" resultType="java.lang.String">
         SELECT auth_info -> '$.authInfo.agent[*].agentid'
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         AND status = 1
@@ -92,7 +92,7 @@
     </select>
 
     <select id="selectByTenantIds" resultType="com.vikadata.entity.SocialTenantEntity">
-        SELECT * FROM vika_social_tenant
+        SELECT * FROM ${tablePrefix}social_tenant
         WHERE tenant_id IN
         <foreach item="item" index="index" collection="tenantIds" open="(" separator=","
                  close=")">
@@ -102,20 +102,20 @@
     </select>
 
     <delete id="deleteByTenantId">
-        DELETE FROM vika_social_tenant
+        DELETE FROM ${tablePrefix}social_tenant
         WHERE tenant_id = #{tenantId}
     </delete>
 
     <select id="selectByPlatformTypeAndAppType" resultType="com.vikadata.entity.SocialTenantEntity">
         SELECT *
-        from vika_social_tenant
+        from ${tablePrefix}social_tenant
         WHERE platform = #{platformType.value}
         AND app_type = #{appType.type}
     </select>
 
     <select id="selectPermanentCodeByAppIdAndTenantId" resultType="java.lang.String">
         SELECT permanent_code
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId}
         AND tenant_id = #{tenantId}
         AND status = 1
@@ -123,7 +123,7 @@
 
     <select id="selectCreatedAtByAppIdAndTenantId" resultType="java.time.LocalDateTime">
         SELECT created_at
-        FROM vika_social_tenant
+        FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId}
         AND tenant_id = #{tenantId}
         AND status = 1

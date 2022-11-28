@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_space_apply")
+@TableName(keepGlobalPrefix = true, value = "space_apply")
 public class SpaceApplyEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

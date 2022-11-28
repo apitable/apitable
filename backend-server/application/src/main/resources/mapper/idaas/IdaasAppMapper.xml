@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.idaas.mapper.IdaasAppMapper">
     <select id="selectByClientId" resultType="com.vikadata.entity.IdaasAppEntity">
         SELECT *
-        FROM vika_idaas_app
+        FROM ${tablePrefix}idaas_app
         WHERE client_id = #{clientId}
         AND is_deleted = 0
     </select>

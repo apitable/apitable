@@ -5,7 +5,7 @@
 
     <select id="selectIdByTypeAndLang" resultType="java.lang.Long">
         select id
-        from vika_system_config
+        from ${tablePrefix}system_config
         where type = #{type}
         <if test="lang != null and lang != ''">
             and i18n_name = #{lang}
@@ -15,7 +15,7 @@
 
     <select id="selectConfigMapByType" resultType="java.lang.String">
         select config_map
-        from vika_system_config
+        from ${tablePrefix}system_config
         where type = #{type}
         <if test="lang != null and lang != ''">
           and i18n_name = #{lang}
@@ -26,13 +26,13 @@
     <select id="selectConfigDtoByType"
             resultType="com.vikadata.api.base.model.SystemConfigDTO">
         SELECT id, i18n_name
-        FROM vika_system_config
+        FROM ${tablePrefix}system_config
         WHERE `type` = #{type}
           AND is_deleted = 0
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_system_config(id, type, i18n_name, config_map, created_by,
+        INSERT INTO ${tablePrefix}system_config(id, type, i18n_name, config_map, created_by,
                                        updated_by)
                 VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
@@ -44,7 +44,7 @@
     </insert>
 
     <update id="removeByIds">
-        UPDATE vika_system_config
+        UPDATE ${tablePrefix}system_config
         SET is_deleted = 1,
             updated_by = #{updatedBy}
                 WHERE id IN

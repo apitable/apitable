@@ -129,6 +129,13 @@ vikadata:
       agent-id: ${ONEACCESS_WECOM_AGENT_ID:1000065}
       base-api-url: ${ONEACCESS_BASE_API_URL:https://exampe.wecom.com}
 
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: ${DATABASE_TABLE_PREFIX:vika_}
+  configuration-properties:
+    tablePrefix: ${DATABASE_TABLE_PREFIX:vika_}
+
 vikadata-starter:
   socketio:
     client:

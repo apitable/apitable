@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_idaas_tenant")
+@TableName(keepGlobalPrefix = true, value = "idaas_tenant")
 public class IdaasTenantEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

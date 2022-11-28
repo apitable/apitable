@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_wechat_auth_permission")
+@TableName(keepGlobalPrefix = true, value = "wechat_auth_permission")
 public class WechatAuthPermissionEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

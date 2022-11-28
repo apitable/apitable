@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_audit_upload_parse_record")
+@TableName(keepGlobalPrefix = true, value = "audit_upload_parse_record")
 public class AuditUploadParseRecordEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

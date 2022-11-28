@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_billing_social_wecom_order")
+@TableName(keepGlobalPrefix = true, value = "billing_social_wecom_order")
 public class SocialWecomOrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

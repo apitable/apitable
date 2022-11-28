@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.idaas.mapper.IdaasGroupBindMapper">
     <select id="selectAllBySpaceId" resultType="com.vikadata.entity.IdaasGroupBindEntity">
         SELECT *
-        FROM vika_idaas_group_bind
+        FROM ${tablePrefix}idaas_group_bind
         WHERE space_id = #{spaceId}
         AND is_deleted = 0
     </select>
 
     <select id="selectAllBySpaceIdIgnoreDeleted" resultType="com.vikadata.entity.IdaasGroupBindEntity">
         SELECT *
-        FROM vika_idaas_group_bind
+        FROM ${tablePrefix}idaas_group_bind
         WHERE space_id = #{spaceId}
     </select>
 </mapper>

@@ -4,21 +4,21 @@
 <mapper namespace="com.vikadata.api.enterprise.idaas.mapper.IdaasUserBindMapper">
     <select id="selectByUserId" resultType="com.vikadata.entity.IdaasUserBindEntity">
         SELECT *
-        FROM vika_idaas_user_bind
+        FROM ${tablePrefix}idaas_user_bind
         WHERE user_id = #{userId}
         AND is_deleted = 0
     </select>
 
     <select id="selectAllByUserIdsIgnoreDeleted" resultType="com.vikadata.entity.IdaasUserBindEntity">
         SELECT *
-        FROM vika_idaas_user_bind
+        FROM ${tablePrefix}idaas_user_bind
         WHERE user_id IN
         <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
     </select>
 
     <select id="selectAllByVikaUserIdsIgnoreDeleted" resultType="com.vikadata.entity.IdaasUserBindEntity">
         SELECT *
-        FROM vika_idaas_user_bind
+        FROM ${tablePrefix}idaas_user_bind
         WHERE vika_user_id IN
         <foreach collection="vikaUserIds" item="vikaUserId" open="(" separator="," close=")">#{vikaUserId}</foreach>
     </select>

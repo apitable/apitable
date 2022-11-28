@@ -1,4 +1,4 @@
-INSERT INTO `vika_space_asset` (`id`, `space_id`, `node_id`, `asset_id`,
+INSERT INTO `space_asset` (`id`, `space_id`, `node_id`, `asset_id`,
                                            `asset_checksum`, `cite`, `type`,
                                            `source_name`, `file_size`, `height`, `width`,
                                            `is_deleted`)

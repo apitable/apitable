@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_social_wecom_permit_delay")
+@TableName(keepGlobalPrefix = true, value = "social_wecom_permit_delay")
 public class SocialWecomPermitDelayEntity {
 
     private static final long serialVersionUID = 1L;

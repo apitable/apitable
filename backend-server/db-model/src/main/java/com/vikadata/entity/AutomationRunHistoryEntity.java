@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_automation_run_history")
+@TableName(keepGlobalPrefix = true, value = "automation_run_history")
 public class AutomationRunHistoryEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

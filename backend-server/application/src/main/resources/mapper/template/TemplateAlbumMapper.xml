@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.template.mapper.TemplateAlbumMapper">
     <select id="selectAllAlbumIdsByI18nName" resultType="java.lang.String">
         SELECT album_id
-        FROM vika_template_album
+        FROM ${tablePrefix}template_album
         WHERE i18n_name = #{i18nName}
           AND is_deleted = 0
     </select>
@@ -12,7 +12,7 @@
     <select id="selectAlbumVosByAlbumIds"
             resultType="com.vikadata.api.template.vo.AlbumVo">
         SELECT album_id, name, cover, description
-        FROM vika_template_album
+        FROM ${tablePrefix}template_album
                 WHERE album_id IN
         <foreach item="item" index="index" collection="albumIds" open="(" separator=","
                  close=")">
@@ -24,7 +24,7 @@
     <select id="selectAlbumVosByI18nNameAndNameLike"
             resultType="com.vikadata.api.template.vo.AlbumVo">
         SELECT album_id, name, cover, description
-        FROM vika_template_album
+        FROM ${tablePrefix}template_album
         WHERE `name` LIKE concat('%', #{likeName}, '%')
           AND i18n_name = #{i18nName}
           AND is_deleted = 0
@@ -41,7 +41,7 @@
                author_logo,
                author_desc,
                created_at
-        FROM vika_template_album
+        FROM ${tablePrefix}template_album
         WHERE album_id = #{albumId}
           AND is_deleted = 0
     </select>
@@ -49,12 +49,12 @@
     <select id="selectAllTemplateAlbumDto"
             resultType="com.vikadata.api.template.model.TemplateAlbumDto">
         SELECT id, album_id, i18n_name, name
-        FROM vika_template_album
+        FROM ${tablePrefix}template_album
         WHERE is_deleted = 0
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_template_album(id, album_id, i18n_name, name, cover, description,
+        INSERT INTO ${tablePrefix}template_album(id, album_id, i18n_name, name, cover, description,
                                         content, author_name, author_logo, author_desc,
                                         created_by, updated_by)
                 VALUES
@@ -69,7 +69,7 @@
     </insert>
 
     <update id="removeByAlbumIds">
-        UPDATE vika_template_album
+        UPDATE ${tablePrefix}template_album
         SET is_deleted = 1,
             updated_by = #{updatedBy}
                 WHERE album_id IN

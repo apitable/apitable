@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_node_favorite")
+@TableName(keepGlobalPrefix = true, value = "node_favorite")
 public class NodeFavoriteEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

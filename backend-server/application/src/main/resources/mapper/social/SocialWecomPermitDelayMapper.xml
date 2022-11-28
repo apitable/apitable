@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitDelayMapper">
     <select id="selectByProcessStatuses" resultType="com.vikadata.entity.SocialWecomPermitDelayEntity">
         SELECT *
-        FROM vika_social_wecom_permit_delay
+        FROM ${tablePrefix}social_wecom_permit_delay
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         AND delay_type = #{delayType}
@@ -17,7 +17,7 @@
 
     <select id="selectBySuiteIdAndProcessStatus" resultType="com.vikadata.entity.SocialWecomPermitDelayEntity">
         SELECT *
-        FROM vika_social_wecom_permit_delay
+        FROM ${tablePrefix}social_wecom_permit_delay
         WHERE process_status = #{processStatus}
         AND suite_id = #{suiteId}
         AND is_deleted = 0

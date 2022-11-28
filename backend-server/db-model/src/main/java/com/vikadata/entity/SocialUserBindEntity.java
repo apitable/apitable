@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_social_user_bind")
+@TableName(keepGlobalPrefix = true, value = "social_user_bind")
 public class SocialUserBindEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.idaas.mapper.IdaasAppBindMapper">
     <select id="selectBySpaceId" resultType="com.vikadata.entity.IdaasAppBindEntity">
         SELECT *
-        FROM vika_idaas_app_bind
+        FROM ${tablePrefix}idaas_app_bind
         WHERE space_id = #{spaceId}
         AND is_deleted = 0
     </select>

@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_datasheet_changeset_source")
+@TableName(keepGlobalPrefix = true, value = "datasheet_changeset_source")
 public class DatasheetChangesetSourceEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

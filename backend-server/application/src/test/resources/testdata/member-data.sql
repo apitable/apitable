@@ -1,4 +1,4 @@
-INSERT INTO `vika_unit_member` (`id`, `user_id`, `space_id`, `member_name`, `job_number`,
+INSERT INTO `unit_member` (`id`, `user_id`, `space_id`, `member_name`, `job_number`,
                                 `position`, `mobile`, `email`, `open_id`, `status`,
                                 `name_modified`, `is_social_name_modified`, `is_point`,
                                 `is_active`, `is_admin`)

@@ -5,13 +5,13 @@
 
     <select id="selectUnitRefIdsByRoleId" resultType="java.lang.Long">
         SELECT DISTINCT vurm.unit_ref_id
-        FROM vika_unit_role_member vurm
+        FROM ${tablePrefix}unit_role_member vurm
         WHERE role_id = #{roleId}
     </select>
 
     <delete id="deleteByRoleIdAndUnitRefIds">
         DELETE
-        FROM vika_unit_role_member
+        FROM ${tablePrefix}unit_role_member
         WHERE role_id = #{roleId}
         AND unit_ref_id in
         <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
@@ -22,7 +22,7 @@
 
     <delete id="deleteByRoleId">
         DELETE
-        FROM vika_unit_role_member
+        FROM ${tablePrefix}unit_role_member
         WHERE role_id = #{roleId}
     </delete>
 
@@ -32,8 +32,8 @@
         vurm.role_id as role_id,
         vurm.unit_ref_id as unit_ref_id,
         vurm.unit_type as unit_type
-        FROM vika_unit_role_member vurm
-        JOIN vika_unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        FROM ${tablePrefix}unit_role_member vurm
+        JOIN ${tablePrefix}unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
         WHERE vurm.role_id in
         <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
             #{roleId}
@@ -45,8 +45,8 @@
         SELECT vu.id            as unit_id,
                vurm.unit_ref_id as unit_ref_id,
                vurm.unit_type   as unit_type
-        FROM vika_unit_role_member vurm
-                 JOIN vika_unit vu
+        FROM ${tablePrefix}unit_role_member vurm
+                 JOIN ${tablePrefix}unit vu
                       ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
         WHERE vurm.role_id = #{roleId}
         ORDER BY vurm.unit_ref_id
@@ -54,7 +54,7 @@
 
     <delete id="deleteByUnitRefIds">
         DELETE
-        FROM vika_unit_role_member
+        FROM ${tablePrefix}unit_role_member
         WHERE unit_ref_id IN
         <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
                  close=")">
@@ -65,7 +65,7 @@
     <select id="selectRoleIdsByUnitRefId"
             resultType="java.lang.Long">
         SELECT role_id
-        FROM vika_unit_role_member
+        FROM ${tablePrefix}unit_role_member
         WHERE unit_ref_id = #{unitRefId}
     </select>
 
@@ -74,8 +74,8 @@
         SELECT vu.id as unit_id,
         vurm.unit_ref_id as unit_ref_id,
         vurm.unit_type as unit_type
-        FROM vika_unit_role_member vurm
-        JOIN vika_unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        FROM ${tablePrefix}unit_role_member vurm
+        JOIN ${tablePrefix}unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
         WHERE vurm.role_id = #{roleId}
         AND vurm.unit_ref_id IN
         <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
@@ -87,7 +87,7 @@
 
     <select id="selectCountByRoleId" resultType="java.lang.Integer">
         SELECT count(*)
-        FROM vika_unit_role_member
+        FROM ${tablePrefix}unit_role_member
         WHERE role_id = #{roleId}
     </select>
 </mapper>

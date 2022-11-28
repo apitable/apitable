@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.labs.mapper.LabsApplicantMapper">
 
     <select id="selectUserFeaturesByApplicant" resultType="java.lang.String">
-        SELECT feature_key FROM vika_labs_applicant vla
+        SELECT feature_key FROM ${tablePrefix}labs_applicant vla
         WHERE vla.applicant IN
         <foreach collection="applicants" index="index" item="item" open="(" separator=","
                  close=")">
@@ -14,19 +14,19 @@
 
     <select id="selectFeatureKeyByType" resultType="java.lang.String">
         SELECT feature_key
-        FROM vika_labs_features
+        FROM ${tablePrefix}labs_features
         WHERE type = #{type} AND is_deleted = 0
     </select>
 
     <select id="selectApplicantAndFeatureKey" resultType="com.vikadata.entity.LabsApplicantEntity">
-        SELECT * FROM vika_labs_applicant vla WHERE
+        SELECT * FROM ${tablePrefix}labs_applicant vla WHERE
         vla.applicant = #{applicant} AND
         vla.feature_key = #{featureKey} AND
         vla.is_deleted = 0
     </select>
 
     <update id="updateIsDeletedById">
-        UPDATE vika_labs_applicant vla SET vla.is_deleted = #{isDeleted}
+        UPDATE ${tablePrefix}labs_applicant vla SET vla.is_deleted = #{isDeleted}
         WHERE vla.id = #{id}
     </update>
 </mapper>

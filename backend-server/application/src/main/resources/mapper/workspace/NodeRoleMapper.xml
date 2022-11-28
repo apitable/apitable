@@ -4,7 +4,7 @@
 
     <select id="selectResourceCodesByRoleCode" resultType="java.lang.String">
         SELECT resource_code
-        FROM vika_node_role_resource_rel
+        FROM ${tablePrefix}node_role_resource_rel
         WHERE role_code = #{roleCode}
     </select>
 </mapper>

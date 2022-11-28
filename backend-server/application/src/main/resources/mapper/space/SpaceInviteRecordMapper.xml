@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.space.mapper.SpaceInviteRecordMapper">
 
     <update id="expireBySpaceIdAndEmail">
-        update vika_space_invite_record vir
+        update ${tablePrefix}space_invite_record vir
         set vir.is_expired = 1
         where vir.invite_email = #{email} and vir.invite_space_id IN
         <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
@@ -12,7 +12,7 @@
     </update>
 
     <update id="expireBySpaceIdAndEmails">
-        update vika_space_invite_record vir
+        update ${tablePrefix}space_invite_record vir
         set vir.is_expired = 1
         where vir.invite_space_id = #{spaceId} and vir.invite_email IN
         <foreach item="item" index="index" collection="emails" open="(" separator="," close=")">
@@ -22,7 +22,7 @@
 
     <select id="selectByInviteToken" resultType="com.vikadata.entity.SpaceInviteRecordEntity">
         SELECT *
-        FROM vika_space_invite_record
+        FROM ${tablePrefix}space_invite_record
         WHERE invite_token = #{inviteToken} and send_status = 1
     </select>
 </mapper>

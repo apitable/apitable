@@ -1,9 +1,11 @@
 package com.vikadata.api.enterprise.billing.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.enterprise.billing.mapper.SubscriptionMapper;
 import com.vikadata.api.enterprise.billing.enums.SubscriptionState;
 import com.vikadata.api.enterprise.billing.enums.ProductCategory;
@@ -18,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Subscription Billing System - Subscription Mapper Test
  * </p>
  */
-public class SubscriptionMapperTest extends AbstractIntegrationTest {
+@Disabled
+public class SubscriptionMapperTest extends AbstractMyBatisMapperTest {
 
     @Autowired
     private SubscriptionMapper subscriptionMapper;

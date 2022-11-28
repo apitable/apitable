@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_control_role")
+@TableName(keepGlobalPrefix = true, value = "control_role")
 public class ControlRoleEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

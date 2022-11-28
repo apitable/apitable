@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_billing_social_dingtalk_refund")
+@TableName(keepGlobalPrefix = true, value = "billing_social_dingtalk_refund")
 public class SocialDingtalkRefundEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

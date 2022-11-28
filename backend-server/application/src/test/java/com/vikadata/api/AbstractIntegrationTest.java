@@ -5,6 +5,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
@@ -66,6 +67,7 @@ import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.sql.script.enhance.TablePrefixUtil;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.api.workspace.model.CreateNodeDto;
@@ -106,6 +108,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
+
+    @Value("${mybatis-plus.configuration-properties.tablePrefix}")
+    protected String tablePrefix;
 
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
@@ -211,6 +216,16 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Override
     protected List<String> configureExcludeTables() {
         return Collections.unmodifiableList(excludeTables);
+    }
+
+    @Override
+    protected String tablePrefix() {
+        return this.tablePrefix;
+    }
+
+    protected void execute(String sql) {
+        String newSql = TablePrefixUtil.changeTablePrefix(sql, this.tablePrefix);
+        jdbcTemplate.execute(newSql);
     }
 
     @Override

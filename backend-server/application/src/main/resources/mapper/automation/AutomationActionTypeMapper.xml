@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.automation.mapper.AutomationActionTypeMapper">
     <select id="getActionTypeIdByEndpoint" resultType="java.lang.String">
         SELECT tt.action_type_id
-        FROM vika_automation_action_type tt
+        FROM ${tablePrefix}automation_action_type tt
         WHERE tt.endpoint = #{endpoint}
           AND tt.is_deleted = 0
     </select>
 
     <select id="selectIdByActionTypeId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_automation_action_type
+        FROM ${tablePrefix}automation_action_type
         WHERE action_type_id = #{actionTypeId}
           AND is_deleted = 0 LIMIT 1
     </select>

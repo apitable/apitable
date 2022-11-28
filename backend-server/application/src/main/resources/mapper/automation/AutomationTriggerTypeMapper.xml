@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.automation.mapper.AutomationTriggerTypeMapper">
     <select id="selectIdByTriggerTypeId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_automation_trigger_type
+        FROM ${tablePrefix}automation_trigger_type
         WHERE trigger_type_id = #{triggerTypeId}
           AND is_deleted = 0 LIMIT 1
     </select>
 
     <select id="getTriggerTypeByEndpoint" resultType="java.lang.String">
         SELECT tt.trigger_type_id
-        FROM vika_automation_trigger_type tt
+        FROM ${tablePrefix}automation_trigger_type tt
         WHERE tt.endpoint = #{endpoint}
           AND tt.is_deleted = 0;
     </select>

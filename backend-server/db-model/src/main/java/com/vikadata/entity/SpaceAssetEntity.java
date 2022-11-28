@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_space_asset")
+@TableName(keepGlobalPrefix = true, value = "space_asset")
 public class SpaceAssetEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

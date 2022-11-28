@@ -1,4 +1,4 @@
-INSERT INTO `vika_idaas_app` (`id`,
+INSERT INTO `idaas_app` (`id`,
                               `tenant_name`,
                               `client_id`,
                               `client_secret`,

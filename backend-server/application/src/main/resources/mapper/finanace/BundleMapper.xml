@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.BundleMapper">
     <select id="selectByBundleId" resultType="com.vikadata.api.enterprise.billing.entity.BundleEntity">
         SELECT *
-        FROM vika_billing_bundle
+        FROM ${tablePrefix}billing_bundle
         WHERE bundle_id = #{bundleId}
           AND is_deleted = 0
     </select>
 
     <select id="selectByBundleIds" resultType="com.vikadata.api.enterprise.billing.entity.BundleEntity">
         SELECT *
-        FROM vika_billing_bundle
+        FROM ${tablePrefix}billing_bundle
         WHERE bundle_id IN
         <foreach item="item" index="index" collection="bundleIds" open="(" separator=","
                  close=")">
@@ -22,14 +22,14 @@
 
     <select id="selectBySpaceId" resultType="com.vikadata.api.enterprise.billing.entity.BundleEntity">
         SELECT *
-        FROM vika_billing_bundle
+        FROM ${tablePrefix}billing_bundle
         WHERE space_id = #{spaceId}
           AND is_deleted = 0
     </select>
 
     <select id="selectBySpaceIds" resultType="com.vikadata.api.enterprise.billing.entity.BundleEntity">
         SELECT *
-        FROM vika_billing_bundle
+        FROM ${tablePrefix}billing_bundle
         WHERE space_id IN
         <foreach item="item" index="index" collection="spaceIds" open="(" separator=","
                  close=")">
@@ -40,14 +40,14 @@
 
     <select id="selectBySpaceIdAndByState" resultType="com.vikadata.api.enterprise.billing.entity.BundleEntity">
         SELECT *
-        FROM vika_billing_bundle
+        FROM ${tablePrefix}billing_bundle
         WHERE space_id = #{spaceId}
         AND state = #{state.name}
         AND is_deleted = 0
     </select>
 
     <update id="updateIsDeletedByBundleIds">
-        UPDATE vika_billing_bundle
+        UPDATE ${tablePrefix}billing_bundle
         SET is_deleted = #{isDeleted}
         WHERE bundle_id IN
         <foreach item="item" index="index" collection="bundleIds" open="(" separator="," close=")">

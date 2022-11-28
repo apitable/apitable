@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountBindMapper">
     <select id="selectActiveCodesByOrderId" resultType="java.lang.String">
         SELECT active_code
-        FROM vika_social_wecom_permit_order_account_bind
+        FROM ${tablePrefix}social_wecom_permit_order_account_bind
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>
 
     <select id="selectCountByOrderId" resultType="int">
         SELECT COUNT(*)
-        FROM vika_social_wecom_permit_order_account_bind
+        FROM ${tablePrefix}social_wecom_permit_order_account_bind
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>

@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.SocialDingTalkRefundMapper">
     <select id="selectStatusByOrderId" resultType="java.lang.Integer">
         SELECT `status`
-        FROM vika_billing_social_dingtalk_refund
+        FROM ${tablePrefix}billing_social_dingtalk_refund
         WHERE order_id = #{orderId}
         AND app_id = #{appId}
         AND tenant_id = #{appId}
     </select>
 
     <update id="updateStatusByTenantIdAndAppIdAndOrderId">
-        UPDATE vika_billing_social_dingtalk_refund
+        UPDATE ${tablePrefix}billing_social_dingtalk_refund
         SET `status` = #{status}
         WHERE order_id = #{orderId}
         AND tenant_id = #{tenantId}

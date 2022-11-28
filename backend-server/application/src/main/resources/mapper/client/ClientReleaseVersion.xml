@@ -4,21 +4,21 @@
 
     <select id="selectClientEntryDetailByVersion" resultType="com.vikadata.api.client.dto.ClientEntryDetailDto">
         select id, html_content, version, publish_user, `description`
-        from vika_client_release_version
+        from ${tablePrefix}client_release_version
         where version = #{version}
         order by id desc
         limit 0,1
     </select>
 
     <select id="selectClientLatestVersionByOffset" resultType="java.lang.String">
-        select version from vika_client_release_version order by id desc limit #{offset}, 1
+        select version from ${tablePrefix}client_release_version order by id desc limit #{offset}, 1
     </select>
 
     <select id="selectClientLatestVersion" resultType="java.lang.String">
-        select version from vika_client_release_version order by id desc limit 1
+        select version from ${tablePrefix}client_release_version order by id desc limit 1
     </select>
 
     <select id="selectTotalCount" resultType="java.lang.Long">
-        select count(1) from vika_client_release_version
+        select count(1) from ${tablePrefix}client_release_version
     </select>
 </mapper>

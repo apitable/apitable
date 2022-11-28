@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_template")
+@TableName(keepGlobalPrefix = true, value = "template")
 public class TemplateEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_unit_role")
+@TableName(keepGlobalPrefix = true, value = "unit_role")
 public class RoleEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

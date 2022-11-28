@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_space_menu")
+@TableName(keepGlobalPrefix = true, value = "space_menu")
 public class SpaceMenuEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

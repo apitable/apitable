@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_marketplace_space_app_rel")
+@TableName(keepGlobalPrefix = true, value = "marketplace_space_app_rel")
 public class MarketplaceSpaceAppRelEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

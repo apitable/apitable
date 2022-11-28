@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialCpIsvMessageMapper">
     <update id="updateStatusById">
-        update vika_social_cp_isv_event_log
+        update ${tablePrefix}social_cp_isv_event_log
         set process_status = #{status}
         where id = #{id}
     </update>

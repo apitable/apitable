@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountMapper">
     <select id="selectByActiveCodes" resultType="com.vikadata.entity.SocialWecomPermitOrderAccountEntity">
         SELECT *
-        FROM vika_social_wecom_permit_order_account
+        FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         AND active_code IN
@@ -16,7 +16,7 @@
 
     <select id="selectByExpireTime" resultType="com.vikadata.entity.SocialWecomPermitOrderAccountEntity">
         SELECT *
-        FROM vika_social_wecom_permit_order_account
+        FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         AND expire_time &lt; #{expireTime}
@@ -26,7 +26,7 @@
 
     <select id="selectActiveCodes" resultType="java.lang.String">
         SELECT active_code
-        FROM vika_social_wecom_permit_order_account
+        FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         <if test="activateStatuses != null and activateStatuses.size() != 0">
@@ -40,7 +40,7 @@
 
     <select id="selectActiveCodesByActiveCodesAndStatus" resultType="java.lang.String">
         SELECT active_code
-        FROM vika_social_wecom_permit_order_account
+        FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         AND active_code IN
@@ -58,7 +58,7 @@
 
     <select id="selectCpUserIdsByStatus" resultType="java.lang.String">
         SELECT cp_user_id
-        FROM vika_social_wecom_permit_order_account
+        FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         <if test="activateStatuses != null and activateStatuses.size() != 0">
@@ -71,7 +71,7 @@
     </select>
 
     <update id="updateActiveStatusByActiveCodes">
-        UPDATE vika_social_wecom_permit_order_account
+        UPDATE ${tablePrefix}social_wecom_permit_order_account
         SET activate_status = #{activeStatus}
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}

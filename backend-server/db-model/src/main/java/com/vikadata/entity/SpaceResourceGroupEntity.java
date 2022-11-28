@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_space_resource_group")
+@TableName(keepGlobalPrefix = true, value = "space_resource_group")
 public class SpaceResourceGroupEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

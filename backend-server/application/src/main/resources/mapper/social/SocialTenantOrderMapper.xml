@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantOrderMapper">
     <select id="selectCountByChannelOrderId" resultType="java.lang.Integer">
-        SELECT count(*) FROM vika_social_tenant_order
+        SELECT count(*) FROM ${tablePrefix}social_tenant_order
         WHERE channel_order_id = #{channelOrderId}
         AND tenant_id = #{tenantId}
         AND app_id = #{appId}
@@ -12,7 +12,7 @@
     </select>
 
     <select id="selectOrderDataByTenantIdAndAppId" resultType="java.lang.String">
-        SELECT order_data FROM vika_social_tenant_order
+        SELECT order_data FROM ${tablePrefix}social_tenant_order
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         AND platform = #{platform.value}

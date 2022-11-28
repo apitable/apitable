@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_social_wecom_permit_order")
+@TableName(keepGlobalPrefix = true, value = "social_wecom_permit_order")
 public class SocialWecomPermitOrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-INSERT INTO `vika_idaas_user_bind` (`id`,
+INSERT INTO `idaas_user_bind` (`id`,
                                     `tenant_name`,
                                     `user_id`,
                                     `nick_name`,

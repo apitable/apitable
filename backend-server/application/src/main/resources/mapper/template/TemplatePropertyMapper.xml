@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.template.mapper.TemplatePropertyMapper">
     <select id="selectPropertyNameByPropertyCodeIn" resultType="java.lang.String">
         SELECT property_name
-        FROM vika_template_property
+        FROM ${tablePrefix}template_property
                 WHERE property_code IN
         <foreach item="item" index="index" collection="propertyCodes" open="("
                  separator="," close=")">
@@ -16,7 +16,7 @@
     <select id="selectTemplatePropertiesWithI18n"
             resultType="com.vikadata.api.template.model.TemplatePropertyDto">
         SELECT id as property_id, property_name, property_code, property_type, i18n_name
-        FROM vika_template_property vtp
+        FROM ${tablePrefix}template_property vtp
         WHERE i18n_name = #{lang}
           and is_deleted = 0
     </select>
@@ -25,8 +25,8 @@
             resultType="com.vikadata.api.template.model.TemplatePropertyDto">
         SELECT vtp.id as property_id, vtp.property_name, vtp.property_code,
         vtp.property_type
-        FROM vika_template_property vtp
-        LEFT JOIN vika_template_property_rel vtpr ON vtp.property_code = vtpr.property_code
+        FROM ${tablePrefix}template_property vtp
+        LEFT JOIN ${tablePrefix}template_property_rel vtpr ON vtp.property_code = vtpr.property_code
         WHERE vtp.is_deleted = 0
         AND vtp.i18n_name = #{lang}
         <if test="type != null">
@@ -39,12 +39,12 @@
     <select id="selectAllTemplatePropertyDto"
             resultType="com.vikadata.api.template.model.TemplatePropertyDto">
         SELECT id AS property_id, property_type, property_code, property_name, i18n_name
-        FROM vika_template_property
+        FROM ${tablePrefix}template_property
         WHERE is_deleted = 0
     </select>
 
     <update id="updateUpdatedByByPropertyCodes">
-        UPDATE vika_template_property
+        UPDATE ${tablePrefix}template_property
         SET updated_by = #{updatedBy}
                 WHERE property_code IN
         <foreach item="item" index="index" collection="propertyCodes" open="("
@@ -54,7 +54,7 @@
     </update>
 
     <update id="removeByPropertyCodes">
-        UPDATE vika_template_property
+        UPDATE ${tablePrefix}template_property
         SET is_deleted = 1,
             updated_by = #{updatedBy}
                 WHERE property_code IN
@@ -65,7 +65,7 @@
     </update>
 
     <insert id="insertBatch">
-        INSERT INTO vika_template_property(id, property_name, property_code,
+        INSERT INTO ${tablePrefix}template_property(id, property_name, property_code,
         property_type, i18n_name, created_by, updated_by)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
@@ -77,7 +77,7 @@
     </insert>
 
     <delete id="deleteBatchByIds">
-        UPDATE vika_template_property SET is_deleted = 1, updated_by = #{updatedBy}
+        UPDATE ${tablePrefix}template_property SET is_deleted = 1, updated_by = #{updatedBy}
         WHERE id IN
         <foreach item="item" index="index" collection="ids" open="(" separator=","
                  close=")">
@@ -87,7 +87,7 @@
 
     <select id="selectIdByCodeAndType" resultType="java.lang.Long">
         SELECT id
-        from vika_template_property
+        from ${tablePrefix}template_property
         WHERE property_code = #{code}
           AND property_type = #{type}
           AND is_deleted = 0
@@ -97,8 +97,8 @@
             resultType="com.vikadata.api.template.model.TemplatePropertyRelDto">
         SELECT vtp.id as property_id, vtp.property_name, vtp.property_code,
         vtp.property_type, vtpr.template_id
-        FROM vika_template_property vtp
-        LEFT JOIN vika_template_property_rel vtpr ON vtp.property_code = vtpr.property_code
+        FROM ${tablePrefix}template_property vtp
+        LEFT JOIN ${tablePrefix}template_property_rel vtpr ON vtp.property_code = vtpr.property_code
         WHERE vtpr.template_id IN
         <foreach item="item" index="index" collection="templateIds" open="(" separator=","
                  close=")">
@@ -118,9 +118,9 @@
                vtp.property_type,
                locate(#{keyWord}, vt.name)           as name_index,
                locate(#{keyWord}, vtp.property_name) as property_name_index
-        FROM vika_template_property_rel vtpr
-                 LEFT JOIN vika_template_property vtp ON vtpr.property_code = vtp.property_code
-                 LEFT JOIN vika_template vt on vtpr.template_id = vt.template_id
+        FROM ${tablePrefix}template_property_rel vtpr
+                 LEFT JOIN ${tablePrefix}template_property vtp ON vtpr.property_code = vtp.property_code
+                 LEFT JOIN ${tablePrefix}template vt on vtpr.template_id = vt.template_id
         WHERE vtp.is_deleted = 0
           AND vtp.i18n_name = #{lang}
           AND (vt.name LIKE CONCAT('%', #{keyWord}, '%')
@@ -130,12 +130,12 @@
 
     <delete id="deleteBatch">
         DELETE
-        FROM vika_template_property;
+        FROM ${tablePrefix}template_property;
     </delete>
 
     <select id="countByI18n" resultType="java.lang.Integer">
         select count(*)
-        from vika_template_property
+        from ${tablePrefix}template_property
         where i18n_name = #{lang}
           and is_deleted = 0;
     </select>

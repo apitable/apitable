@@ -4,20 +4,20 @@
 <mapper namespace="com.vikadata.api.template.mapper.TemplateAlbumRelMapper">
     <select id="selectAlbumIdByRelateIdAndType" resultType="java.lang.String">
         SELECT album_id
-        FROM vika_template_album_rel
+        FROM ${tablePrefix}template_album_rel
         WHERE relate_id = #{relateId}
           AND `type` = #{type}
     </select>
 
     <select id="selectRelateIdByAlbumIdAndType" resultType="java.lang.String">
         SELECT relate_id
-        FROM vika_template_album_rel
+        FROM ${tablePrefix}template_album_rel
         WHERE album_id = #{albumId}
           AND `type` = #{type}
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_template_album_rel(id, album_id, type, relate_id)
+        INSERT INTO ${tablePrefix}template_album_rel(id, album_id, type, relate_id)
                 VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
@@ -28,6 +28,6 @@
 
     <delete id="deleteBatch">
         DELETE
-        FROM vika_template_album_rel
+        FROM ${tablePrefix}template_album_rel
     </delete>
 </mapper>

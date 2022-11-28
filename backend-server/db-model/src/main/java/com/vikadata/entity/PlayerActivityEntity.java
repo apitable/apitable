@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_player_activity")
+@TableName(keepGlobalPrefix = true, value = "player_activity")
 public class PlayerActivityEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

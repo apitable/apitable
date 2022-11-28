@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -19,6 +20,8 @@ import com.vikadata.api.organization.vo.TeamTreeVo;
 import com.vikadata.api.organization.model.MemberTeamPathInfo;
 import com.vikadata.entity.TeamEntity;
 import com.vikadata.entity.TeamMemberRelEntity;
+
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +36,7 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         String resourceName = "testdata/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
 
         List<TeamTreeVo> treeVos = iTeamService.getMemberTeamTree("spczdmQDfBAn5", teamIds);
         assertThat(treeVos.size()).isEqualTo(3);
@@ -45,7 +48,7 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         String resourceName = "testdata/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
 
         List<TeamTreeVo> treeVos = iTeamService.getMemberAllTeamsVO("spczdmQDfBAn5", teamIds);
         assertThat(treeVos.size()).isEqualTo(9);
@@ -56,7 +59,7 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         String resourceName = "testdata/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
 
         List<TeamTreeVo> treeVos = iTeamService.build("spczdmQDfBAn5", 1279306279580438529L);
         assertThat(treeVos.size()).isEqualTo(13);
@@ -68,7 +71,7 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         String resourceName = "testdata/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
 
         List<TeamTreeVo> treeVos = iTeamService.buildTree("spczdmQDfBAn5", teamIds);
         assertThat(treeVos.size()).isEqualTo(4);

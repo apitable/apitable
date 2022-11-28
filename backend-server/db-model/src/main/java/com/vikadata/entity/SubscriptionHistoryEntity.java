@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_billing_subscription_history")
+@TableName(keepGlobalPrefix = true, value = "billing_subscription_history")
 public class SubscriptionHistoryEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

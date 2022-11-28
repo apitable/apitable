@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_social_tenant_domain")
+@TableName(keepGlobalPrefix = true, value = "social_tenant_domain")
 public class SocialTenantDomainEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

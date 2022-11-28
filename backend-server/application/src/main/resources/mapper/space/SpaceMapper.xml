@@ -3,26 +3,26 @@
 <mapper namespace="com.vikadata.api.space.mapper.SpaceMapper">
     <select id="selectSpaceNameBySpaceId" resultType="java.lang.String">
         SELECT name
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id = #{spaceId}
     </select>
 
     <select id="selectBySpaceId" resultType="com.vikadata.entity.SpaceEntity">
         SELECT *
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id = #{spaceId}
         AND is_deleted = 0
     </select>
 
     <select id="selectBySpaceIdIgnoreDeleted" resultType="com.vikadata.entity.SpaceEntity">
         SELECT *
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id = #{spaceId}
     </select>
 
     <select id="selectBySpaceIds" resultType="com.vikadata.entity.SpaceEntity">
         SELECT *
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id IN
         <foreach collection="spaceIds" open="(" close=")" item="item" separator=",">
             #{item}
@@ -51,10 +51,10 @@
         IF(m.`is_point` = 1, 1, 0) point,
         IF(vstb.id IS NOT NULL, 1, 0) enabled,
         IF(vst.id IS NOT NULL, vst.platform, 0) AS platform
-        FROM vika_space vs
-        JOIN vika_unit_member m ON vs.space_id = m.space_id AND m.is_deleted = 0 AND m.user_id = #{userId}
-        LEFT JOIN vika_social_tenant_bind vstb ON vstb.space_id = vs.space_id
-        LEFT JOIN vika_social_tenant vst ON vst.tenant_id = vstb.tenant_id AND vst.`status` = 1 AND ((vstb.app_id is
+        FROM ${tablePrefix}space vs
+        JOIN ${tablePrefix}unit_member m ON vs.space_id = m.space_id AND m.is_deleted = 0 AND m.user_id = #{userId}
+        LEFT JOIN ${tablePrefix}social_tenant_bind vstb ON vstb.space_id = vs.space_id
+        LEFT JOIN ${tablePrefix}social_tenant vst ON vst.tenant_id = vstb.tenant_id AND vst.`status` = 1 AND ((vstb.app_id is
         NULL ) OR (vst.app_id = vstb.app_id))
         WHERE vs.is_deleted = 0
         GROUP BY m.updated_at, m.`status`, vs.space_id
@@ -63,37 +63,37 @@
 
     <select id="getAdminSpaceCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_space vs
-                 JOIN vika_unit_member vum
+        FROM ${tablePrefix}space vs
+                 JOIN ${tablePrefix}unit_member vum
             ON vs.space_id = vum.space_id AND vs.owner = vum.id AND vum.user_id = #{userId} AND vum.is_deleted = 0
         WHERE vs.is_deleted = 0
     </select>
 
     <select id="selectAdminInfoDto" resultType="com.vikadata.api.space.dto.SpaceAdminInfoDTO">
         SELECT t.owner memberId, u.code as areaCode, u.mobile_phone AS mobile, u.email, m.member_name, t.name spaceName
-        FROM vika_space t
-                 JOIN vika_unit_member m ON t.space_id = m.space_id AND t.owner = m.id AND m.is_deleted = 0
-                 JOIN vika_user u ON m.user_id = u.id AND u.is_deleted = 0
+        FROM ${tablePrefix}space t
+                 JOIN ${tablePrefix}unit_member m ON t.space_id = m.space_id AND t.owner = m.id AND m.is_deleted = 0
+                 JOIN ${tablePrefix}user u ON m.user_id = u.id AND u.is_deleted = 0
         WHERE t.space_id = #{spaceId}
           AND t.is_deleted = 0
     </select>
 
     <select id="selectSpaceMainAdmin" resultType="java.lang.Long">
         SELECT owner
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id = #{spaceId}
         AND is_deleted = 0
     </select>
 
     <select id="selectPropsBySpaceId" resultType="java.lang.String">
         SELECT props
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id = #{spaceId}
         AND is_deleted = 0
     </select>
 
     <update id="updateSpaceOwnerId">
-        UPDATE vika_space
+        UPDATE ${tablePrefix}space
                 SET owner = #{memberId}
         <if test="updatedBy != null">
             , updated_by = #{updatedBy}
@@ -102,13 +102,13 @@
     </update>
 
     <update id="removeSpaceOwnerId">
-        UPDATE vika_space
+        UPDATE ${tablePrefix}space
         SET owner = NULL<if test="updatedBy != null">, updated_by = #{updatedBy}</if>
         WHERE space_id = #{spaceId}
     </update>
 
     <update id="updateProps">
-        UPDATE vika_space
+        UPDATE ${tablePrefix}space
         <set>
             props = JSON_SET(props,
             <foreach collection="list" item="item" separator=",">
@@ -123,14 +123,14 @@
     </update>
 
     <update id="updatePreDeletionTimeBySpaceId">
-        UPDATE vika_space
+        UPDATE ${tablePrefix}space
         SET pre_deletion_time = #{time}, updated_by = #{updatedBy}
         WHERE space_id = #{spaceId}
         AND is_deleted = 0
     </update>
 
     <update id="updateIsDeletedBySpaceIdIn">
-        UPDATE vika_space
+        UPDATE ${tablePrefix}space
         SET is_deleted = 1
         WHERE space_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
@@ -140,7 +140,7 @@
 
     <select id="countBySpaceId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id = #{spaceId}
         <choose>
             <when test="preDel != null and preDel">
@@ -155,8 +155,8 @@
 
     <select id="selectSpaceIdByUserIdAndName" resultType="java.lang.String">
         SELECT t.space_id
-        FROM vika_space t
-                 JOIN vika_unit_member vum
+        FROM ${tablePrefix}space t
+                 JOIN ${tablePrefix}unit_member vum
             ON t.space_id = vum.space_id AND t.owner = vum.id AND vum.user_id = #{userId} AND vum.is_deleted = 0
         WHERE t.name LIKE CONCAT(#{name}, '%')
           AND t.is_deleted = 0
@@ -164,7 +164,7 @@
 
     <select id="selectBaseSpaceInfo" resultType="com.vikadata.api.space.dto.BaseSpaceInfoDTO">
         SELECT space_id, name, logo
-        FROM vika_space
+        FROM ${tablePrefix}space
         WHERE space_id IN
         <foreach collection="spaceIds" index="index" item="item" open="(" separator="," close=")">
             #{item}
@@ -173,8 +173,8 @@
 
     <select id="selectByUserId" resultType="com.vikadata.entity.SpaceEntity">
         SELECT t.*
-        FROM vika_space t
-        JOIN vika_unit_member m ON t.space_id = m.space_id AND m.is_deleted = 0 AND m.user_id = #{userId}
+        FROM ${tablePrefix}space t
+        JOIN ${tablePrefix}unit_member m ON t.space_id = m.space_id AND m.is_deleted = 0 AND m.user_id = #{userId}
         WHERE t.is_deleted = 0
         ORDER BY m.updated_at DESC, `status` DESC
     </select>

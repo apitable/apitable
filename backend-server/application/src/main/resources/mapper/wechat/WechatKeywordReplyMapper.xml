@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.enterprise.wechat.mapper.WechatKeywordReplyMapper">
 
     <insert id="insertBatchWechatKeywordReply">
-        INSERT INTO vika_wechat_keyword_reply(id, app_id, rule_name, match_mode, reply_mode, keyword, content, type, news_info)
+        INSERT INTO ${tablePrefix}wechat_keyword_reply(id, app_id, rule_name, match_mode, reply_mode, keyword, content, type, news_info)
         VALUES
         <foreach item="item" index="index" collection="list" separator=",">
             <trim prefix="(" suffix=")">
@@ -14,11 +14,11 @@
     </insert>
 
     <delete id="deleteKeywordReplies">
-        delete from vika_wechat_keyword_reply where app_id = #{appId}
+        delete from ${tablePrefix}wechat_keyword_reply where app_id = #{appId}
     </delete>
 
     <select id="findRepliesByKeyword" resultType="com.vikadata.entity.WechatKeywordReplyEntity">
-        select * from vika_wechat_keyword_reply where app_id = #{appId} and keyword = #{keyword}
+        select * from ${tablePrefix}wechat_keyword_reply where app_id = #{appId} and keyword = #{keyword}
     </select>
 
 </mapper>

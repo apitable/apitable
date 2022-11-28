@@ -1,4 +1,4 @@
-INSERT INTO `vika_template` (`id`, `template_id`, `node_id`, `type`, `type_id`,
+INSERT INTO `template` (`id`, `template_id`, `node_id`, `type`, `type_id`,
                              `category_code`, `category_name`, `name`,
                              `used_times`, `is_deleted`, `created_by`,
                              `updated_by`)

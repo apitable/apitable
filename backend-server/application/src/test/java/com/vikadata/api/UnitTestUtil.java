@@ -29,9 +29,9 @@ import org.springframework.util.CollectionUtils;
  */
 public class UnitTestUtil {
 
-    public static final String LIQUIBASE_TABLE_PREFIX = "vika_db_changelog";
+    public static final String LIQUIBASE_TABLE_PREFIX = "db_changelog";
 
-    public static final String ASSET_TABLE_NAME = "vika_asset";
+    public static final String ASSET_TABLE_NAME = "asset";
 
     private static final Logger logger = LoggerFactory.getLogger(UnitTestUtil.class);
 
@@ -42,23 +42,24 @@ public class UnitTestUtil {
         }
     }
 
-    public static void clearDB(JdbcTemplate jdbcTemplate, List<String> excludeTables) {
+    public static void clearDB(JdbcTemplate jdbcTemplate, List<String> excludeTables, String tablePrefix) {
         String catalog = getDbName(jdbcTemplate);
         logger.info("prepare db for unit test, schema: {}", catalog);
         // Here is in the ci environment, clean up all table data in the database in My SQL in ci, it will not be executed in local development, because vika test is specified
-        List<String> tableNames = getTableNames(jdbcTemplate, catalog);
+        List<String> tableNames = getTableNames(jdbcTemplate, catalog, tablePrefix);
         if (catalog.equals("vikadata")) {
             // In order to prevent developers from connecting to the use environment or test environment, it is not allowed to operate the database name of the relevant vikadata word
             throw new RuntimeException("may be you should not use db name which called 「vikadata」");
         }
-        tableNames.removeIf(tableName -> tableName.equals(ASSET_TABLE_NAME));
+        tableNames.removeIf(tableName -> tableName.equals(tablePrefix + ASSET_TABLE_NAME));
         List<String> rows = getAssetTableExcludeRows();
         if (!rows.isEmpty()) {
             String whereClause = StrUtil.format("file_url not in({})",
                     CollUtil.join(rows, ",", "'", "'"));
-            JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, ASSET_TABLE_NAME, whereClause);
+            JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, tablePrefix + ASSET_TABLE_NAME, whereClause);
         }
-        filterTableNames(tableNames, excludeTables);
+        List<String> excludeTablesWithTablePrefix = excludeTables.stream().map(excludeTable -> tablePrefix + excludeTable).collect(Collectors.toList());
+        filterTableNames(tableNames, excludeTablesWithTablePrefix);
         JdbcTestUtils.deleteFromTables(jdbcTemplate, ArrayUtil.toArray(tableNames, String.class));
     }
 
@@ -75,10 +76,10 @@ public class UnitTestUtil {
         }
     }
 
-    private static List<String> getTableNames(JdbcTemplate jdbcTemplate, String database) {
+    private static List<String> getTableNames(JdbcTemplate jdbcTemplate, String database, String tablePrefix) {
         final String sql = StrUtil.format(
                 "SELECT table_name FROM information_schema.tables WHERE table_name not like '{}%' AND table_schema = '{}'"
-                , LIQUIBASE_TABLE_PREFIX, database);
+                , tablePrefix + LIQUIBASE_TABLE_PREFIX, database);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
         return mapList.stream().map(m -> m.get("table_name").toString()).collect(Collectors.toList());
     }

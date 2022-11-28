@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_wechat_keyword_reply")
+@TableName(keepGlobalPrefix = true, value = "wechat_keyword_reply")
 public class WechatKeywordReplyEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

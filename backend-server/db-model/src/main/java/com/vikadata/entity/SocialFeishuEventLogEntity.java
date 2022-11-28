@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_social_feishu_event_log")
+@TableName(keepGlobalPrefix = true, value = "social_feishu_event_log")
 public class SocialFeishuEventLogEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

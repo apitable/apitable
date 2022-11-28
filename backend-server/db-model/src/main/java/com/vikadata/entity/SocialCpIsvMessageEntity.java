@@ -22,7 +22,7 @@ import lombok.experimental.Tolerate;
 @ToString
 @EqualsAndHashCode
 @Builder
-@TableName("vika_social_cp_isv_event_log")
+@TableName(keepGlobalPrefix = true, value = "social_cp_isv_event_log")
 public class SocialCpIsvMessageEntity {
 
     /**

@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_third_party_member")
+@TableName(keepGlobalPrefix = true, value = "third_party_member")
 public class ThirdPartyMemberEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

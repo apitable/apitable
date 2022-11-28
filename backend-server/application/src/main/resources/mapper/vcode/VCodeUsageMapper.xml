@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.vcode.mapper.VCodeUsageMapper">
     <select id="countByCodeAndType" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_code_usage
+        FROM ${tablePrefix}code_usage
         WHERE code = #{code} AND `type` = #{type}
         <if test="operator != null">
             AND operator = #{operator}
@@ -13,8 +13,8 @@
 
     <select id="selectInvitorUserId" resultType="com.vikadata.api.enterprise.vcode.dto.VCodeDTO">
         SELECT vc.ref_id AS userId, vc.`code` AS vCode, vc.type
-        FROM vika_code_usage vcu
-                 JOIN vika_code vc ON vcu.`code` = vc.`code` AND vc.type IN (0, 1)
+        FROM ${tablePrefix}code_usage vcu
+                 JOIN ${tablePrefix}code vc ON vcu.`code` = vc.`code` AND vc.type IN (0, 1)
         WHERE vcu.operator = #{userId}
           AND vcu.type = 1
         LIMIT 1

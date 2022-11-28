@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.enterprise.integral.mapper.IntegralHistoryMapper">
     <select id="selectTotalIntegralValueByUserId" resultType="java.lang.Integer">
         SELECT total_integral
-        FROM vika_integral_history
+        FROM ${tablePrefix}integral_history
         WHERE user_id = #{userId}
         ORDER BY id DESC
         LIMIT 0,1
@@ -19,33 +19,33 @@
 
     <select id="selectPageByUserId" resultMap="integralRecord">
         SELECT action_code, alter_type, alter_integral, parameter, created_at
-        FROM vika_integral_history
+        FROM ${tablePrefix}integral_history
         WHERE user_id = #{userId}
     </select>
 
     <select id="selectCountByUserIdAndKeyValue" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_integral_history
+        FROM ${tablePrefix}integral_history
         WHERE user_id = #{userId}
           AND JSON_EXTRACT(parameter, CONCAT('$.', #{key})) = #{val}
     </select>
 
     <update id="updateParameterById">
-        UPDATE vika_integral_history
+        UPDATE ${tablePrefix}integral_history
         SET parameter = #{parameter}
         WHERE id = #{id}
     </update>
 
     <select id="selectCountByUserIdAndActionCode" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_integral_history
+        FROM ${tablePrefix}integral_history
         WHERE user_id = #{userId}
           AND action_code = #{actionCode}
     </select>
 
     <select id="selectCountByUserIdAndActionCodes" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_integral_history
+        FROM ${tablePrefix}integral_history
         WHERE user_id = #{userId} AND action_code IN
         <foreach item="item" index="index" collection="actionCodes" open="(" separator=","
                  close=")">

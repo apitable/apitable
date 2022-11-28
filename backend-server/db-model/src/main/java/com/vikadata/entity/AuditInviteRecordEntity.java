@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_audit_invite_record")
+@TableName(keepGlobalPrefix = true, value = "audit_invite_record")
 public class AuditInviteRecordEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

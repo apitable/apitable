@@ -4,13 +4,13 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.OrderPaymentMapper">
     <select id="selectByTransactionId"
             resultType="com.vikadata.api.enterprise.billing.entity.OrderPaymentEntity">
-        SELECT * FROM vika_billing_order_payment
+        SELECT * FROM  ${tablePrefix}billing_order_payment
         WHERE payment_transaction_id = #{payTransactionId} AND is_deleted = 0
     </select>
 
     <select id="selectByOrderId"
             resultType="com.vikadata.api.enterprise.billing.entity.OrderPaymentEntity">
-        SELECT * FROM vika_billing_order_payment
+        SELECT * FROM  ${tablePrefix}billing_order_payment
         WHERE order_id = #{orderId} AND is_deleted = 0
     </select>
 </mapper>

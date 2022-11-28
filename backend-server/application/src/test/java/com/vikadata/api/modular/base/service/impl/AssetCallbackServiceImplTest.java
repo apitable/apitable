@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import cn.hutool.core.io.IoUtil;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -43,7 +44,7 @@ public class AssetCallbackServiceImplTest extends AbstractIntegrationTest {
     public void testLoadAssetUploadResultUsingDatasheetAsset() {
         InputStream inputStream = FileHelper.getInputStreamFromResource("testdata/asset-data.sql");
         String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
 
         List<String> resourceKeys = new ArrayList<>();
         resourceKeys.add("space/2022/03/22/cc3737c2aef54d499502f4941ab81841");

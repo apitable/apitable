@@ -3,19 +3,19 @@
 <mapper namespace="com.vikadata.api.workspace.mapper.DatasheetWidgetMapper">
     <select id="selectByWidgetId" resultType="com.vikadata.entity.DatasheetWidgetEntity">
         SELECT *
-        FROM vika_datasheet_widget
+        FROM ${tablePrefix}datasheet_widget
         WHERE widget_id = #{widgetId}
     </select>
 
     <select id="selectByDstId" resultType="com.vikadata.entity.DatasheetWidgetEntity">
         SELECT *
-        FROM vika_datasheet_widget
+        FROM ${tablePrefix}datasheet_widget
         WHERE dst_id = #{dstId}
     </select>
 
     <select id="selectDtoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO">
         SELECT dst_id, widget_id, source_id
-        FROM vika_datasheet_widget
+        FROM ${tablePrefix}datasheet_widget
         WHERE widget_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -23,7 +23,7 @@
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_datasheet_widget(id, space_id, dst_id, widget_id, source_id)
+        INSERT INTO ${tablePrefix}datasheet_widget(id, space_id, dst_id, widget_id, source_id)
                 VALUES
         <foreach item="entity" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">

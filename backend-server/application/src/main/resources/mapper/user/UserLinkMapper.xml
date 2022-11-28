@@ -5,7 +5,7 @@
 <mapper namespace="com.vikadata.api.user.mapper.UserLinkMapper">
     <select id="selectUserIdByUnionIdAndType" resultType="java.lang.Long">
         SELECT user_id
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE union_id = #{unionId}
         AND `type` = #{type}
         LIMIT 1
@@ -13,7 +13,7 @@
 
     <select id="selectUnionIdByUserIdAndType" resultType="java.lang.String">
         SELECT union_id
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE user_id = #{userId}
         AND `type` = #{type}
         AND union_id IS NOT NULL
@@ -21,7 +21,7 @@
     </select>
 
     <update id="updateNickNameAndUnionIdByOpenId">
-        UPDATE vika_user_link
+        UPDATE ${tablePrefix}user_link
         SET nick_name = #{nickName},
         union_id = #{unionId}
         WHERE open_id = #{openId}
@@ -30,27 +30,27 @@
 
     <select id="selectVoByUserId" resultType="com.vikadata.api.shared.cache.bean.AccountLinkDto">
         SELECT `type`, nick_name, created_at create_time
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE user_id = #{userId}
         AND union_id IS NOT NULL
     </select>
 
     <delete id="deleteByUserIdAndType">
         DELETE
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE user_id = #{userId}
         AND `type` = #{type}
     </delete>
 
     <delete id="deleteByUserId">
         DELETE
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE user_id = #{userId}
     </delete>
 
     <delete id="deleteByUnionIds">
         DELETE
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE union_id IN
         <foreach item="item" index="index" collection="unionIds" open="(" separator="," close=")">
             #{item}
@@ -58,7 +58,7 @@
     </delete>
 
     <select id="selectUserIdByUnionIdAndOpenIdAndType" resultType="java.lang.Long">
-        SELECT user_id FROM vika_user_link
+        SELECT user_id FROM ${tablePrefix}user_link
         WHERE union_id = #{unionId}
         AND open_id = #{openId}
         AND `type` = #{type.type}
@@ -67,7 +67,7 @@
 
     <delete id="deleteByOpenIds">
         DELETE
-        FROM vika_user_link
+        FROM ${tablePrefix}user_link
         WHERE open_id IN
         <foreach item="item" index="index" collection="openIds" open="(" separator=","
                  close=")">

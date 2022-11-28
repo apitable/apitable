@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_social_edition_changelog_wecom")
+@TableName(keepGlobalPrefix = true, value = "social_edition_changelog_wecom")
 public class SocialEditionChangelogWecomEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

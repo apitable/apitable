@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_system_config")
+@TableName(keepGlobalPrefix = true, value = "system_config")
 public class SystemConfigEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

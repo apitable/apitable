@@ -1,1 +1,1 @@
-INSERT INTO `vika_unit_tag` (`id`, `group_id`, `space_id`, `tag_name`, `sequence`) VALUES (41, 41, 41, 'a', 41);
+INSERT INTO `unit_tag` (`id`, `group_id`, `space_id`, `tag_name`, `sequence`) VALUES (41, 41, 41, 'a', 41);

@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_resource_changeset")
+@TableName(keepGlobalPrefix = true, value = "resource_changeset")
 public class ResourceChangesetEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

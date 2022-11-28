@@ -5,6 +5,7 @@ import java.util.List;
 import cn.hutool.core.collection.CollUtil;
 import com.vikadata.api.space.model.InviteUserInfo;
 import org.apache.ibatis.cursor.Cursor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;

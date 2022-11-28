@@ -17,9 +17,9 @@
                vwp.author_icon,
                vwp.package_type,
                vwp.release_type
-        FROM vika_widget_package vwp
-            INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
-            LEFT JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+            INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+            LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
         WHERE vwp.is_deleted = 0
             AND vwp.is_template = 0
             AND
@@ -59,8 +59,8 @@
                vwp.widget_body ->> '$.fatherWidgetId' as fatherWidgetId,
                vwpr.install_env_code,
                vwpr.runtime_env_code
-        FROM vika_widget_package vwp
-                LEFT JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id
+        FROM ${tablePrefix}widget_package vwp
+                LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id
         WHERE vwp.package_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -69,20 +69,20 @@
 
     <select id="selectIdByPackageId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_widget_package
+        FROM ${tablePrefix}widget_package
         WHERE package_id = #{widgetPackageId}
           AND is_deleted = 0
     </select>
 
     <select id="selectStatusByPackageId" resultType="java.lang.Integer">
         SELECT status
-        FROM vika_widget_package
+        FROM ${tablePrefix}widget_package
         WHERE package_id = #{widgetPackageId}
           AND is_deleted = 0
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_widget_package(id, package_id, name, name_en, icon, cover, description, version, status, created_by)
+        INSERT INTO ${tablePrefix}widget_package(id, package_id, name, name_en, icon, cover, description, version, status, created_by)
         VALUE
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
@@ -93,34 +93,34 @@
     </insert>
 
     <update id="updateInstalledNumByPackageId">
-        UPDATE vika_widget_package
+        UPDATE ${tablePrefix}widget_package
         SET installed_num = installed_num + #{times}
         WHERE package_id = #{widgetPackageId}
     </update>
 
     <select id="countNumByPackageId" resultType="boolean">
         SELECT COUNT(*)
-        FROM vika_widget_package vwp
+        FROM ${tablePrefix}widget_package vwp
         WHERE vwp.package_id = #{packageId}
         LIMIT 1
     </select>
 
     <select id="selectWidgetByPackageId" resultType="com.vikadata.entity.WidgetPackageEntity">
         SELECT *
-        FROM vika_widget_package vwp
+        FROM ${tablePrefix}widget_package vwp
         WHERE vwp.package_id = #{packageId}
           AND vwp.is_deleted = 0
     </select>
 
     <select id="selectWidgetStatusByPackageId" resultType="int">
         SELECT vwp.status
-        FROM vika_widget_package vwp
+        FROM ${tablePrefix}widget_package vwp
         WHERE vwp.package_id = #{packageId}
           AND vwp.is_deleted = 0
     </select>
 
     <update id="updateStatusAndReleaseIdByPackageId">
-        UPDATE vika_widget_package
+        UPDATE ${tablePrefix}widget_package
         <set>
             status = #{status}
             <if test="releaseId != null or (status == 1 and releaseId == null)">
@@ -146,9 +146,9 @@
                vwp.author_link,
                vwp.package_type,
                vwp.release_type
-        FROM vika_widget_package vwp
-             LEFT JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id
-             LEFT JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.type = 0
+        FROM ${tablePrefix}widget_package vwp
+             LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id
+             LEFT JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.type = 0
         WHERE vwp.is_deleted = 0
         <choose>
             <when test="spaceId != null and spaceId != ''">
@@ -183,9 +183,9 @@
                vwpr.source_code_bundle,
                vwp.widget_body ->> '$.widgetOpenSource' as widgetOpenSource,
                vwp.widget_body ->> '$.templateCover' as templateCover
-        FROM vika_widget_package vwp
-            INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
-            INNER JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+            INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+            INNER JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
         WHERE vwp.release_type = 1
           AND vwp.is_template = 1
           AND vwpr.STATUS = 1
@@ -233,9 +233,9 @@
                vwpas.widget_sort,
                vwpr.install_env_code,
                vwpr.runtime_env_code
-        FROM vika_widget_package vwp
-             INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
-             LEFT JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+             INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+             LEFT JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
         WHERE vwp.is_deleted = 0
           AND vwp.is_template = 0
           <choose>
@@ -267,10 +267,10 @@
                vu.uuid         AS ownerUuid,
                vwp.owner,
                vum.id          AS ownerMemberId
-        FROM vika_widget_package vwp
-             INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
-             LEFT JOIN vika_user vu ON vwp.owner = vu.id AND vu.is_deleted = 0
-             INNER JOIN vika_unit_member vum ON vum.user_id = vu.id AND vum.space_id = vwpas.space_id AND vum.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+             INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+             LEFT JOIN ${tablePrefix}user vu ON vwp.owner = vu.id AND vu.is_deleted = 0
+             INNER JOIN ${tablePrefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = vwpas.space_id AND vum.is_deleted = 0
         WHERE vwp.is_deleted = 0
           AND vwp.release_type = 0
           AND vwpas.type = 0
@@ -282,8 +282,8 @@
                NULL            AS ownerUuid,
                NULL            AS owner,
                NULL            AS ownerMemberId
-        FROM vika_widget_package vwp
-             INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+             INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
         WHERE vwp.is_deleted = 0
           AND vwp.release_type = 1
           AND vwpas.type = 0
@@ -292,8 +292,8 @@
 
     <select id="selectMaxWidgetSort" resultType="int">
         SELECT IF(vwp.release_type = 1, IFNULL(MAX(vwpas.widget_sort), 1), IFNULL(MAX(vwpas.widget_sort), 10000)) AS max_sort
-        FROM vika_widget_package vwp
-              INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+              INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
         WHERE vwp.is_deleted = 0
         <choose>
             <when test="releaseType != null or releaseType == 1">
@@ -307,7 +307,7 @@
     </select>
 
     <update id="singleUpdateGlobalAndTemplateConfig">
-        UPDATE vika_widget_package vwp ,vika_widget_package_auth_space vwpas
+        UPDATE ${tablePrefix}widget_package vwp ,${tablePrefix}widget_package_auth_space vwpas
         <set>
             <if test="globalWidgetInfo.isTemplate != null">
                 vwp.is_template = #{globalWidgetInfo.isTemplate},
@@ -337,29 +337,29 @@
 
     <select id="selectGlobalWidgetSort" resultType="java.lang.Integer">
         SELECT vwpas.widget_sort
-        FROM vika_widget_package vwp
-        INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
         WHERE vwp.is_deleted = 0 AND vwp.release_type = 1 AND vwp.status = 3 AND vwpas.type = 0 AND vwp.package_id = #{packageId}
     </select>
 
     <select id="countByIssuedIdArchive" resultType="int">
         SELECT COUNT(*)
-        FROM vika_widget_package vwp
+        FROM ${tablePrefix}widget_package vwp
         WHERE vwp.widget_body -> '$.issuedIdArchive.dstId' = #{dstId}
           AND vwp.widget_body -> '$.issuedIdArchive.recordId' = #{recotdId}
     </select>
 
     <select id="countByAuditSubmitResultArchive" resultType="int">
         SELECT COUNT(*)
-        FROM vika_widget_package vwp
+        FROM ${tablePrefix}widget_package vwp
         WHERE vwp.widget_body -> '$.auditSubmitResultArchive.dstId' = #{dstId}
         AND vwp.widget_body -> '$.auditSubmitResultArchive.recordId' = #{recotdId}
     </select>
 
     <select id="selectByFatherWidgetIdAndVersion" resultType="com.vikadata.entity.WidgetPackageEntity">
         SELECT vwp.*
-        FROM vika_widget_package vwp,
-             vika_widget_package_release vwpr
+        FROM ${tablePrefix}widget_package vwp,
+             ${tablePrefix}widget_package_release vwpr
         WHERE vwp.package_id = vwpr.package_id
           AND vwp.widget_body -> '$.fatherWidgetId' = #{fatherWidgetId}
           AND vwpr.version = #{version}
@@ -368,7 +368,7 @@
     </select>
 
     <update id="updateWidgetBodyById">
-        UPDATE vika_widget_package
+        UPDATE ${tablePrefix}widget_package
         SET widget_body = #{widgetBody}
         WHERE id = #{id}
     </update>

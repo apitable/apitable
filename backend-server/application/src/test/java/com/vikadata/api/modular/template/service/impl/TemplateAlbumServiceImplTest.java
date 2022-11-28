@@ -65,12 +65,12 @@ public class TemplateAlbumServiceImplTest extends AbstractIntegrationTest {
     private void initAlbumData() {
         InputStream inputStream = FileHelper.getInputStreamFromResource("testdata/template/album.sql");
         String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
     }
 
     private void initAlbumRelData() {
         InputStream inputStream = FileHelper.getInputStreamFromResource("testdata/template/album-rel.sql");
         String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
-        jdbcTemplate.execute(sql);
+        execute(sql);
     }
 }

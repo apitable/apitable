@@ -10,8 +10,8 @@
                vr.group_code,
                vsrg.group_name,
                vsrg.group_desc
-        FROM vika_space_resource vr
-                 JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_resource_group vsrg on vsrg.group_code = vr.group_code
     </select>
 
     <select id="selectResourceByMemberId" resultType="com.vikadata.api.shared.cache.bean.SpaceResourceDto">
@@ -22,16 +22,16 @@
                vr.group_code,
                vsrg.group_name,
                vsrg.group_desc
-        FROM vika_space_resource vr
-                 JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
-                 JOIN vika_space_role_resource_rel vsrrr on vr.resource_code = vsrrr.resource_code
-                 JOIN vika_space_role vsr on vsr.role_code = vsrrr.role_code
-                 JOIN vika_space_member_role_rel vsmrrr ON vsmrrr.role_code = vsr.role_code and vsmrrr.member_id = #{memberId}
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_resource_group vsrg on vsrg.group_code = vr.group_code
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr on vr.resource_code = vsrrr.resource_code
+                 JOIN ${tablePrefix}space_role vsr on vsr.role_code = vsrrr.role_code
+                 JOIN ${tablePrefix}space_member_role_rel vsmrrr ON vsmrrr.role_code = vsr.role_code and vsmrrr.member_id = #{memberId}
     </select>
 
     <select id="selectAssignableCountInResourceCode" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_space_resource
+        FROM ${tablePrefix}space_resource
         WHERE resource_code IN
         <foreach collection="resourceCodes" open="(" separator="," close=")" index="index" item="item">
             #{item}
@@ -53,8 +53,8 @@
                vsrg.group_name,
                vsrg.group_desc,
                vr.resource_code
-        FROM vika_space_resource vr
-                 JOIN vika_space_resource_group vsrg on vsrg.group_code = vr.group_code
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_resource_group vsrg on vsrg.group_code = vr.group_code
         WHERE vr.assignable = 1
     </select>
 
@@ -68,15 +68,15 @@
     <select id="selectMenuResource" resultMap="menuResource">
         SELECT vsm.menu_code,
                vr.resource_code
-        FROM vika_space_resource vr
-                 JOIN vika_space_menu_resource_rel vsmrr on vr.resource_code = vsmrr.resource_code
-                 JOIN vika_space_menu vsm on vsmrr.menu_code = vsm.menu_code
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_menu_resource_rel vsmrr on vr.resource_code = vsmrr.resource_code
+                 JOIN ${tablePrefix}space_menu vsm on vsmrr.menu_code = vsm.menu_code
         WHERE vr.assignable = 1
     </select>
 
     <select id="selectResourceCodesByGroupCode" resultType="java.lang.String">
         SELECT resource_code
-        FROM vika_space_resource
+        FROM ${tablePrefix}space_resource
         WHERE group_code IN
         <foreach item="item" index="index" collection="groupCodes" open="(" separator="," close=")">
             #{item}
@@ -86,8 +86,8 @@
 
     <select id="selectResourceCodesByMemberId" resultType="java.lang.String">
         SELECT vsrrr.resource_code
-        FROM vika_space_member_role_rel vsmrr
-                 JOIN vika_space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
         WHERE vsmrr.member_id = #{memberId}
     </select>
 
@@ -101,8 +101,8 @@
     <select id="selectMemberResource" resultMap="memberResource">
         SELECT vsmrr.member_id,
                vsrrr.resource_code
-        FROM vika_space_member_role_rel vsmrr
-                 JOIN vika_space_role_resource_rel vsrrr ON vsrrr.role_code = vsmrr.role_code
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr ON vsrrr.role_code = vsmrr.role_code
         WHERE vsmrr.member_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}

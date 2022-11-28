@@ -1,4 +1,4 @@
-INSERT INTO `vika_client_release_version` (`id`, `version`, `description`,
+INSERT INTO `client_release_version` (`id`, `version`, `description`,
                                            `publish_user`, `html_content`)
 VALUES (1999999999999999991, 'feature.7446',
         'e18520d5d 2020-10-23 19:39:50 | [Mayne] feat: lab color',

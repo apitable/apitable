@@ -4,25 +4,25 @@
 
     <select id="selectBySpaceId" resultType="java.lang.String">
         SELECT msa.app_id
-        FROM vika_marketplace_space_app_rel msa
+        FROM ${tablePrefix}marketplace_space_app_rel msa
         WHERE msa.space_id = #{spaceId}
     </select>
 
     <select id="selectCountBySpaceIdAndAppId" resultType="java.lang.Integer">
         SELECT count(*)
-        FROM vika_marketplace_space_app_rel msa
+        FROM ${tablePrefix}marketplace_space_app_rel msa
         WHERE msa.space_id = #{spaceId} and msa.app_id = #{appId}
     </select>
 
     <delete id="deleteBySpaceIdAndAppId">
         DELETE
-        FROM vika_marketplace_space_app_rel msa
+        FROM ${tablePrefix}marketplace_space_app_rel msa
         WHERE msa.space_id = #{spaceId} and msa.app_id = #{appId}
     </delete>
 
     <select id="selectBySpaceIdAndAppId"
             resultType="com.vikadata.entity.MarketplaceSpaceAppRelEntity">
-        SELECT * FROM vika_marketplace_space_app_rel
+        SELECT * FROM ${tablePrefix}marketplace_space_app_rel
         WHERE space_id = #{spaceId} and app_id = #{appId}
     </select>
 </mapper>

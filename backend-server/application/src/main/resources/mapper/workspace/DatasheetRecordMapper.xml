@@ -31,28 +31,28 @@
     </sql>
 
     <select id="selectListByDstId" resultMap="datasheetRecordVo">
-        select  <include refid="RecordVo_Column_List"/> from vika_datasheet_record
+        select  <include refid="RecordVo_Column_List"/> from ${tablePrefix}datasheet_record
         where dst_id = #{dstId} and is_deleted = 0
     </select>
 
     <select id="selectListByIds" resultMap="datasheetRecordVo">
-        select  <include refid="RecordVo_Column_List"/> from vika_datasheet_record
+        select  <include refid="RecordVo_Column_List"/> from ${tablePrefix}datasheet_record
         where dst_id = #{dstId}
         and record_id in <foreach collection="recordList" item="item" index="index" open="(" separator="," close=")">#{item}</foreach>
         and is_deleted = 0
     </select>
 
     <select id="countBySpaceId" resultType="java.lang.Long">
-        select COUNT(*) from vika_datasheet_record r, vika_datasheet t
+        select COUNT(*) from ${tablePrefix}datasheet_record r, ${tablePrefix}datasheet t
         where r.dst_id = t.dst_id and r.is_deleted = 0 and t.is_deleted = 0 and t.space_id = #{spaceId}
     </select>
 
     <select id="countByDstId" resultType="java.lang.Integer">
-        select COUNT(*) from vika_datasheet_record where dst_id = #{dstId} and is_deleted = 0
+        select COUNT(*) from ${tablePrefix}datasheet_record where dst_id = #{dstId} and is_deleted = 0
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_datasheet_record(id, record_id, dst_id, data, field_updated_info, created_by, updated_by)
+        INSERT INTO ${tablePrefix}datasheet_record(id, record_id, dst_id, data, field_updated_info, created_by, updated_by)
         VALUES
         <foreach collection="entities" item="element" index="index" separator=",">
             <trim prefix="(" suffix=")">
@@ -62,17 +62,17 @@
     </insert>
 
     <select id="selectByConditionAndDeleted" resultType="com.vikadata.entity.DatasheetRecordEntity">
-        select  <include refid="Base_Column_List"/> from vika_datasheet_record
+        select  <include refid="Base_Column_List"/> from ${tablePrefix}datasheet_record
         where dst_id = #{dstId} and record_id = #{recordId}
     </select>
 
     <select id="selectRecordVoByConditions"  resultMap="datasheetRecordVo">
-        select  <include refid="RecordVo_Column_List"/> from vika_datasheet_record
+        select  <include refid="RecordVo_Column_List"/> from ${tablePrefix}datasheet_record
         where dst_id = #{dstId} and record_id = #{recordId} and is_deleted = 0
     </select>
 
     <update id="updateByConditions" parameterType="com.vikadata.entity.DatasheetRecordEntity">
-        update vika_datasheet_record rec
+        update ${tablePrefix}datasheet_record rec
         set
         <if test="record.data != null">
             rec.data = #{record.data},
@@ -86,19 +86,19 @@
 
     <select id="selectCountByDstId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_datasheet_record
+        FROM ${tablePrefix}datasheet_record
         WHERE dst_id = #{dstId} and is_deleted = 0
     </select>
 
     <select id="selectDtoByDstId" resultMap="dataSheetRecordDto">
         SELECT id, record_id, `data`
-        FROM vika_datasheet_record
+        FROM ${tablePrefix}datasheet_record
         WHERE dst_id = #{dstId} AND is_deleted = 0
     </select>
 
     <select id="selectDtoByDstIds" resultMap="dataSheetRecordDto">
         SELECT id, dst_id, record_id, `data`
-        FROM vika_datasheet_record
+        FROM ${tablePrefix}datasheet_record
         WHERE dst_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -108,7 +108,7 @@
 
     <select id="selectGroupDtoByDstIds" resultMap="dataSheetRecordGroupDto">
         SELECT dst_id, record_id, `data`
-        FROM vika_datasheet_record
+        FROM ${tablePrefix}datasheet_record
         WHERE dst_id IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}

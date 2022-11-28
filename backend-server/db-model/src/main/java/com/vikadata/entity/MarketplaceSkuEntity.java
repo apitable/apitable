@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_marketplace_sku")
+@TableName(keepGlobalPrefix = true, value = "marketplace_sku")
 public class MarketplaceSkuEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

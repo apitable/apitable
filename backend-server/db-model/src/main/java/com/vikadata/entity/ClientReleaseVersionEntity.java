@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_client_release_version")
+@TableName(keepGlobalPrefix = true, value = "client_release_version")
 public class ClientReleaseVersionEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

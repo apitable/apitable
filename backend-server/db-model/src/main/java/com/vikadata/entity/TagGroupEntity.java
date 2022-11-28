@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_unit_tag_group")
+@TableName(keepGlobalPrefix = true, value = "unit_tag_group")
 public class TagGroupEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

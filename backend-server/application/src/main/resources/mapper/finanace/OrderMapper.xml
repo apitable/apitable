@@ -4,19 +4,19 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.OrderMapper">
     <select id="selectByOrderId" resultType="com.vikadata.api.enterprise.billing.entity.OrderEntity">
         SELECT *
-        FROM vika_billing_order
+        FROM ${tablePrefix}billing_order
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>
 
     <select id="selectOrderBySpaceIdChannelOrderId" resultType="java.lang.String">
-        SELECT order_id FROM vika_billing_order
+        SELECT order_id FROM ${tablePrefix}billing_order
         WHERE space_id = #{spaceId}
         AND channel_order_id = #{channelOrderId}
     </select>
 
     <select id="selectByOrderIds" resultType="com.vikadata.api.enterprise.billing.entity.OrderEntity">
-        SELECT * FROM vika_billing_order
+        SELECT * FROM  ${tablePrefix}billing_order
         WHERE order_id IN
         <foreach item="item" index="index" collection="orderIds" open="(" separator=","
                  close=")">
@@ -27,7 +27,7 @@
 
     <select id="selectBySpaceIdAndOrderType"
             resultType="com.vikadata.api.enterprise.billing.entity.OrderEntity">
-        SELECT * FROM vika_billing_order
+        SELECT * FROM  ${tablePrefix}billing_order
         WHERE space_id = #{spaceId} AND order_type = #{orderType} AND is_deleted = 0
     </select>
 </mapper>

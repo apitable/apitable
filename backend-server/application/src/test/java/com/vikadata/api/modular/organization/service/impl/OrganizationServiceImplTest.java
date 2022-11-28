@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
@@ -29,6 +30,7 @@ public class OrganizationServiceImplTest extends AbstractIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     @Test
+    @Disabled
     void testLoadMemberFirstTeams() throws IOException {
         List<Long> teamIds = CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L, 1283285207447699457L);
         String resourceName = "testdata/orgIsolated-vut-data.sql";

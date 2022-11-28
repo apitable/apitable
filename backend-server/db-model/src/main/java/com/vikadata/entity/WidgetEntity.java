@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_widget")
+@TableName(keepGlobalPrefix = true, value = "widget")
 public class WidgetEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

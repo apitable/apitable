@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_idaas_group_bind")
+@TableName(keepGlobalPrefix = true, value = "idaas_group_bind")
 public class IdaasGroupBindEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

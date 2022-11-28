@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.idaas.mapper.IdaasTenantMapper">
     <select id="selectByTenantName" resultType="com.vikadata.entity.IdaasTenantEntity">
         SELECT *
-        FROM vika_idaas_tenant
+        FROM ${tablePrefix}idaas_tenant
         WHERE tenant_name = #{tenantName}
         AND is_deleted = 0
     </select>

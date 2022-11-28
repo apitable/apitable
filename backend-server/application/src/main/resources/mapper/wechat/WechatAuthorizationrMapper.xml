@@ -4,13 +4,13 @@
 
     <select id="countByAuthorizerAppid" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_wechat_authorization
+        FROM ${tablePrefix}wechat_authorization
         WHERE authorizer_appid = #{authorizerAppid}
     </select>
 
     <select id="findByAuthorizerAppid" resultType="com.vikadata.entity.WechatAuthorizationEntity">
         SELECT *
-        FROM vika_wechat_authorization
+        FROM ${tablePrefix}wechat_authorization
         WHERE authorizer_appid = #{authorizerAppid}
     </select>
 </mapper>

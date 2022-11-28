@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_code_coupon_template")
+@TableName(keepGlobalPrefix = true, value = "code_coupon_template")
 public class CodeCouponTemplateEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

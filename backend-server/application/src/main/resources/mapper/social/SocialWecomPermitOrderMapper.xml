@@ -4,13 +4,13 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderMapper">
     <select id="selectByOrderId" resultType="com.vikadata.entity.SocialWecomPermitOrderEntity">
         SELECT *
-        FROM vika_social_wecom_permit_order
+        FROM ${tablePrefix}social_wecom_permit_order
         WHERE order_id = #{orderId}
         AND is_deleted = 0
     </select>
     <select id="selectByOrderStatuses" resultType="com.vikadata.entity.SocialWecomPermitOrderEntity">
         SELECT *
-        FROM vika_social_wecom_permit_order
+        FROM ${tablePrefix}social_wecom_permit_order
         WHERE auth_corp_id = #{authCorpId}
         AND suite_id = #{suiteId}
         AND order_status IN

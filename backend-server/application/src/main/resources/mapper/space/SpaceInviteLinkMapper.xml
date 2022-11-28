@@ -7,27 +7,27 @@
         t.invite_token AS token,
         vut.team_name,
         vut2.team_name AS parent_team_name
-        FROM vika_space_invite_link t
-        LEFT JOIN vika_unit_team vut ON vut.id = t.team_id AND vut.is_deleted = 0
-        LEFT JOIN vika_unit_team vut2 ON vut2.id = vut.parent_id AND vut2.is_deleted = 0
+        FROM ${tablePrefix}space_invite_link t
+        LEFT JOIN ${tablePrefix}unit_team vut ON vut.id = t.team_id AND vut.is_deleted = 0
+        LEFT JOIN ${tablePrefix}unit_team vut2 ON vut2.id = vut.parent_id AND vut2.is_deleted = 0
         WHERE t.creator = #{memberId} AND t.is_deleted = 0
         ORDER BY t.created_at DESC
     </select>
 
     <select id="selectIdByTeamIdAndMemberId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_space_invite_link
+        FROM ${tablePrefix}space_invite_link
         WHERE team_id = #{teamId} AND creator = #{memberId}
     </select>
 
     <update id="updateInviteTokenById">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET invite_token = #{token}, is_deleted = 0
         WHERE id = #{id}
     </update>
 
     <update id="delByTeamIdAndMemberId">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET is_deleted = 1
         WHERE creator IN
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
@@ -50,28 +50,28 @@
         vum.member_name,
         vum.is_admin AS isMainAdmin,
         if(vsmrr.id IS NULL, 0, 1) AS isAdmin
-        FROM vika_space_invite_link t
-        LEFT JOIN vika_space vs ON vs.space_id = t.space_id AND vs.is_deleted = 0 AND vs.pre_deletion_time IS NULL
-        LEFT JOIN vika_unit_team vut ON vut.id = t.team_id AND vut.is_deleted = 0
-        LEFT JOIN vika_unit_member vum ON vum.id = t.creator AND vum.is_deleted = 0
-        LEFT JOIN vika_space_member_role_rel vsmrr ON vsmrr.member_id = t.creator
+        FROM ${tablePrefix}space_invite_link t
+        LEFT JOIN ${tablePrefix}space vs ON vs.space_id = t.space_id AND vs.is_deleted = 0 AND vs.pre_deletion_time IS NULL
+        LEFT JOIN ${tablePrefix}unit_team vut ON vut.id = t.team_id AND vut.is_deleted = 0
+        LEFT JOIN ${tablePrefix}unit_member vum ON vum.id = t.creator AND vum.is_deleted = 0
+        LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vsmrr.member_id = t.creator
         WHERE t.invite_token = #{token} AND t.is_deleted = 0
     </select>
 
     <update id="updateInviteNumByInviteToken">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET invite_num = invite_num + 1
         WHERE invite_token = #{token} AND is_deleted = 0
     </update>
 
     <select id="selectCreatorBySpaceId" resultType="java.lang.Long">
         SELECT DISTINCT creator
-        FROM vika_space_invite_link
+        FROM ${tablePrefix}space_invite_link
         WHERE space_id = #{spaceId} AND is_deleted = 0
     </select>
 
     <update id="updateByTeamIdAndCreators">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET is_deleted = 1
         WHERE team_id = #{teamId} and creator IN
         <foreach item="item" index="index" collection="creators" open="(" separator="," close=")">
@@ -80,7 +80,7 @@
     </update>
 
     <update id="updateByTeamIdsAndCreator">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET is_deleted = 1
         WHERE creator = #{creator} and team_id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
@@ -89,7 +89,7 @@
     </update>
 
     <update id="updateByCreators">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET is_deleted = 1
         WHERE creator IN
         <foreach item="item" index="index" collection="creators" open="(" separator="," close=")">
@@ -98,13 +98,13 @@
     </update>
 
     <update id="updateByTeamId">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET is_deleted = 1
         WHERE team_id = #{teamId}
     </update>
 
     <update id="updateBatchByTeamId">
-        UPDATE vika_space_invite_link
+        UPDATE ${tablePrefix}space_invite_link
         SET is_deleted = 1
         WHERE team_id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
@@ -114,13 +114,13 @@
 
     <select id="selectIdByTeamId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_space_invite_link
+        FROM ${tablePrefix}space_invite_link
         WHERE team_id = #{teamId} AND is_deleted = 0
     </select>
 
     <select id="selectIdByTeamIds" resultType="java.lang.Long">
         SELECT id
-        FROM vika_space_invite_link
+        FROM ${tablePrefix}space_invite_link
         WHERE team_id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
             #{item}

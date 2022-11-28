@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_player_notification")
+@TableName(keepGlobalPrefix = true, value = "player_notification")
 public class PlayerNotificationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

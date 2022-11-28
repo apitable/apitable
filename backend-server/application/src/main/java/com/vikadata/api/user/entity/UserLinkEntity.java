@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_user_link")
+@TableName(keepGlobalPrefix = true, value = "user_link")
 public class UserLinkEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

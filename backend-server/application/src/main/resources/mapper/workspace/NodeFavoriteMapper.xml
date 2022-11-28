@@ -4,33 +4,33 @@
 
     <select id="selectOrderNodeIdByMemberId" resultType="java.lang.String">
         WITH RECURSIVE pre (node_id) AS (
-        SELECT node_id FROM vika_node_favorite WHERE member_id = #{memberId} AND pre_node_id IS NULL
+        SELECT node_id FROM ${tablePrefix}node_favorite WHERE member_id = #{memberId} AND pre_node_id IS NULL
         UNION
         SELECT vnf.node_id FROM pre p
-        JOIN vika_node_favorite vnf ON p.node_id = vnf.pre_node_id AND vnf.member_id = #{memberId}
+        JOIN ${tablePrefix}node_favorite vnf ON p.node_id = vnf.pre_node_id AND vnf.member_id = #{memberId}
         ) SELECT * FROM pre
     </select>
 
     <select id="selectNodeIdByMemberId" resultType="java.lang.String">
         SELECT node_id
-        FROM vika_node_favorite
+        FROM ${tablePrefix}node_favorite
         WHERE member_id = #{memberId}
     </select>
 
     <select id="countByMemberIdAndNodeId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_node_favorite
+        FROM ${tablePrefix}node_favorite
         WHERE member_id = #{memberId} AND node_id = #{nodeId}
     </select>
 
     <select id="selectPreNodeIdByMemberIdAndNodeId" resultType="java.lang.String">
         SELECT pre_node_id
-        FROM vika_node_favorite
+        FROM ${tablePrefix}node_favorite
         WHERE member_id = #{memberId} AND node_id = #{nodeId}
     </select>
 
     <update id="updatePreNodeIdByMemberIdAndPreNodeId">
-        UPDATE vika_node_favorite
+        UPDATE ${tablePrefix}node_favorite
         SET pre_node_id = #{newPreNodeId}
         WHERE member_id = #{memberId}
         <choose>
@@ -42,13 +42,13 @@
     </update>
 
     <update id="updatePreNodeIdByMemberIdAndNodeId">
-        UPDATE vika_node_favorite
+        UPDATE ${tablePrefix}node_favorite
         SET pre_node_id = #{preNodeId}
         WHERE member_id = #{memberId} AND node_id = #{nodeId}
     </update>
 
     <delete id="deleteByMemberIdAndNodeId">
-        DELETE FROM vika_node_favorite
+        DELETE FROM ${tablePrefix}node_favorite
         WHERE member_id = #{memberId} AND node_id = #{nodeId}
     </delete>
 </mapper>

@@ -1,4 +1,4 @@
-INSERT INTO `vika_template_album_rel` (`id`, `album_id`, `type`, `relate_id`)
+INSERT INTO `template_album_rel` (`id`, `album_id`, `type`, `relate_id`)
 VALUES (1575471716237357063, 'albn5UgHThZj2', 0, 'tpcE7fyADP99W'),
        (1575471716237357066, 'albSr5vHPgzGG', 0, 'tpccZzzJ9TvS8'),
        (1575471716241551368, 'alb671STQDHvt', 1, 'tplHRx6j4Ewbv'),

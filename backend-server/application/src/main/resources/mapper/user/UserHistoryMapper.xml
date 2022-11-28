@@ -5,7 +5,7 @@
 <mapper namespace="com.vikadata.api.user.mapper.UserHistoryMapper">
 
     <select id="selectLatest" resultType="com.vikadata.api.user.entity.UserHistoryEntity">
-        SELECT * FROM vika_user_history vuh
+        SELECT * FROM ${tablePrefix}user_history vuh
         WHERE vuh.user_id = #{userId}
         AND vuh.user_status = #{userStatus}
         ORDER BY vuh.created_at DESC
@@ -13,13 +13,13 @@
     </select>
 
     <update id="updateUpdateUserByUserId">
-        UPDATE vika_user_history vuh
+        UPDATE ${tablePrefix}user_history vuh
         SET vuh.updated_by = #{updateUser}
         WHERE vuh.user_Id = #{userId}
     </update>
 
     <select id="selectUserHistoryDtos" resultType="com.vikadata.api.user.model.PausedUserHistoryDto">
-        SELECT vuh.user_id, vuh.nick_name, vuh.created_at FROM vika_user_history vuh
+        SELECT vuh.user_id, vuh.nick_name, vuh.created_at FROM ${tablePrefix}user_history vuh
         WHERE
         vuh.created_at between #{createdAtBefore} AND #{createdAtAfter}
         AND vuh.user_status = #{userStatus}

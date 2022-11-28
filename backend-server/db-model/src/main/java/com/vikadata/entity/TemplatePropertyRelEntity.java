@@ -25,7 +25,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_template_property_rel")
+@TableName(keepGlobalPrefix = true, value = "template_property_rel")
 public class TemplatePropertyRelEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

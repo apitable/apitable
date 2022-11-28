@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.billing.mapper.SocialFeishuOrderMapper">
     <select id="selectStatusByOrderId" resultType="java.lang.Integer">
         SELECT status
-        FROM vika_billing_social_feishu_order
+        FROM ${tablePrefix}billing_social_feishu_order
         WHERE order_id = #{orderId}
         AND tenant_id = #{tenantId}
         AND app_id = #{appId}
@@ -12,14 +12,14 @@
 
     <select id="selectOrderDataByTenantIdAndAppId" resultType="java.lang.String">
         SELECT order_data
-        FROM vika_billing_social_feishu_order
+        FROM ${tablePrefix}billing_social_feishu_order
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         AND `status` = 0;
     </select>
 
     <update id="updateStatusByTenantIdAndAppIdAndOrderId">
-        UPDATE vika_billing_social_feishu_order
+        UPDATE ${tablePrefix}billing_social_feishu_order
         SET `status` = #{status}
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}

@@ -1,4 +1,4 @@
-INSERT INTO `vika_space` (`id`, `space_id`, `name`, `props`,
+INSERT INTO `space` (`id`, `space_id`, `name`, `props`,
                           `is_invite`, `is_forbid`, `allow_apply`,
                           `is_deleted`, `owner`, `creator`)
 VALUES (41, 'spc41', '41 Space',

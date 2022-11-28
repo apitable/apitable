@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.user.mapper.UserBindMapper">
     <select id="selectByExternalKey" resultType="java.lang.Long">
         SELECT user_id
-        FROM vika_user_bind
+        FROM ${tablePrefix}user_bind
         where external_key = #{externalKey}
         LIMIT 1
     </select>

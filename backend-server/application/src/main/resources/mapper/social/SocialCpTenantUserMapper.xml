@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialCpTenantUserMapper">
     <insert id="insertBatch">
-        INSERT INTO vika_social_cp_tenant_user(id, tenant_id, app_id, cp_user_id)
+        INSERT INTO ${tablePrefix}social_cp_tenant_user(id, tenant_id, app_id, cp_user_id)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
@@ -15,13 +15,13 @@
     <select id="selectOpenIdsByTenantId"
             resultType="com.vikadata.api.enterprise.social.model.CpTenantUserDTO">
         SELECT id AS cpTenantUserId, cp_user_id AS cpUserId
-        FROM vika_social_cp_tenant_user
+        FROM ${tablePrefix}social_cp_tenant_user
         WHERE tenant_id = #{tenantId}
           AND app_id = #{appId}
     </select>
 
     <delete id="batchDeleteByCorpAgent">
-        DELETE FROM vika_social_cp_tenant_user
+        DELETE FROM ${tablePrefix}social_cp_tenant_user
         WHERE
         tenant_id = #{tenantId} AND app_id = #{appId} AND
         cp_user_id IN
@@ -33,7 +33,7 @@
     <select id="selectByTenantIdAndAppIdAndCpUserId"
             resultType="com.vikadata.entity.SocialCpTenantUserEntity">
         SELECT *
-        FROM vika_social_cp_tenant_user
+        FROM ${tablePrefix}social_cp_tenant_user
         WHERE tenant_id = #{tenantId}
           AND app_id = #{appId}
           AND cp_user_id = #{cpUserId}
@@ -42,7 +42,7 @@
     <select id="selectByTenantIdAndAppIdAndCpUserIds"
             resultType="com.vikadata.entity.SocialCpTenantUserEntity">
         SELECT *
-        FROM vika_social_cp_tenant_user
+        FROM ${tablePrefix}social_cp_tenant_user
         WHERE tenant_id = #{tenantId}
           AND app_id = #{appId}
           AND cp_user_id IN
@@ -56,11 +56,11 @@
         SELECT vsctu.*
         FROM (
             SELECT cp_tenant_user_id
-            FROM `vika_social_cp_user_bind`
+            FROM `${tablePrefix}social_cp_user_bind`
             WHERE `user_id` = #{userId}
         ) vscub INNER JOIN (
             SELECT *
-            FROM `vika_social_cp_tenant_user`
+            FROM `${tablePrefix}social_cp_tenant_user`
             WHERE `tenant_id` = #{tenantId}
             AND `app_id` = #{appId}
         ) vsctu ON vscub.cp_tenant_user_id = vsctu.id
@@ -68,7 +68,7 @@
 
     <select id="selectIdByTenantIdAndAppIdAndCpUserId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_social_cp_tenant_user
+        FROM ${tablePrefix}social_cp_tenant_user
         WHERE tenant_id = #{tenantId}
           AND app_id = #{appId}
           AND cp_user_id = #{cpUserId}

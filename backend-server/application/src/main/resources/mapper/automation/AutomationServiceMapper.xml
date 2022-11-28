@@ -4,14 +4,14 @@
 <mapper namespace="com.vikadata.api.enterprise.automation.mapper.AutomationServiceMapper">
     <select id="selectIdByServiceId" resultType="java.lang.Long">
         SELECT id
-        FROM vika_automation_service
+        FROM ${tablePrefix}automation_service
         WHERE service_id = #{serviceId}
           AND is_deleted = 0 LIMIT 1
     </select>
 
     <select id="selectIdBySlugIncludeDeleted" resultType="java.lang.Long">
         SELECT id
-        FROM vika_automation_service
+        FROM ${tablePrefix}automation_service
         WHERE slug = #{slug} LIMIT 1
     </select>
 </mapper>

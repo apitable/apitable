@@ -4,7 +4,7 @@
 
     <select id="getStatisticsData" resultType="com.vikadata.api.enterprise.wechat.vo.QrCodeStatisticsVo">
         SELECT COUNT(distinct union_id) AS viewUserCount, COUNT(*) AS viewCount
-        FROM vika_wechat_mp_log
+        FROM ${tablePrefix}wechat_mp_log
         WHERE app_id = #{appId} AND scene = #{scene}
     </select>
 </mapper>

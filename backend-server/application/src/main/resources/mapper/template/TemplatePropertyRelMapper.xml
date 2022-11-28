@@ -4,11 +4,11 @@
 <mapper namespace="com.vikadata.api.template.mapper.TemplatePropertyRelMapper">
     <delete id="deleteBatch">
         DELETE
-        from vika_template_property_rel;
+        from ${tablePrefix}template_property_rel;
     </delete>
 
     <insert id="insertBatch">
-        INSERT INTO vika_template_property_rel(id, template_id, property_id, property_code,
+        INSERT INTO ${tablePrefix}template_property_rel(id, template_id, property_id, property_code,
         property_order)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
@@ -21,13 +21,13 @@
 
     <select id="selectTemplateIdsByPropertyId" resultType="java.lang.String">
         SELECT template_id
-        from vika_template_property_rel
+        from ${tablePrefix}template_property_rel
         where property_id = #{propertyId}
     </select>
 
     <delete id="deleteBatchIn">
         DELETE
-        from vika_template_property_rel where property_id in
+        from ${tablePrefix}template_property_rel where property_id in
         <foreach item="item" index="index" collection="propertyIds" open="(" separator=","
                  close=")">
             #{item}
@@ -36,7 +36,7 @@
 
     <select id="selectTemplateIdsByPropertyIds" resultType="com.vikadata.api.template.model.TemplatePropertyRelDto">
         SELECT property_code, template_id
-        from vika_template_property_rel where property_code in
+        from ${tablePrefix}template_property_rel where property_code in
         <foreach item="item" index="index" collection="propertyCodes" open="(" separator=","
                  close=")">
             #{item}

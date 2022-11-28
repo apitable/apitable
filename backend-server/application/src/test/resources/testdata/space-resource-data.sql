@@ -1,4 +1,4 @@
-INSERT INTO `vika_space_resource` (`id`, `group_code`, `resource_code`,
+INSERT INTO `space_resource` (`id`, `group_code`, `resource_code`,
                                               `resource_name`, `resource_url`,
                                               `resource_desc`, `assignable`, `is_enabled`)
 VALUES (41, 'MANAGE_SPACE', 'MANAGE_WORKBENCH', 'manage configuration', NULL,

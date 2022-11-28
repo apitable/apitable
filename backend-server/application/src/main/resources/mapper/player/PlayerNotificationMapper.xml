@@ -4,11 +4,11 @@
     <select id="selectPlayerNotificationPage" resultType="com.vikadata.api.player.dto.NotificationModelDTO">
         SELECT vpn.id,vpn.to_user, vpn.notify_body, vpn.is_read, vpn.created_at, vpn.from_user,
         vpn.notify_type, vpn.template_id, vpn.node_id, vpn.space_id,vpn.updated_at,rowNo
-        FROM vika_player_notification vpn
+        FROM ${tablePrefix}player_notification vpn
         INNER JOIN (
         (
         SELECT id, (@rowNum:=@rowNum-1) as rowNo
-        FROM vika_player_notification vp, (SELECT (@rowNum :=#{totalCount}) ) b
+        FROM ${tablePrefix}player_notification vp, (SELECT (@rowNum :=#{totalCount}) ) b
         WHERE vp.to_user = #{toUser}
         AND vp.is_deleted = 0
         <if test="notificationPageRo.isRead != null">
@@ -37,7 +37,7 @@
     </select>
     <select id="selectTotalCountByRoAndToUser" resultType="integer">
         SELECT count(*)
-        FROM vika_player_notification vpn
+        FROM ${tablePrefix}player_notification vpn
         WHERE vpn.to_user = #{toUser}
         AND vpn.is_deleted = 0
         <if test="notificationPageRo.isRead != null">
@@ -49,27 +49,27 @@
     </select>
     <select id="selectCountByUserIdAndIsRead" resultType="integer">
         SELECT count(*)
-        FROM vika_player_notification
+        FROM ${tablePrefix}player_notification
         WHERE to_user = #{toUser}
         AND is_read = #{isRead}
         AND is_deleted = 0
     </select>
     <select id="selectTotalCountByUserId" resultType="integer">
         SELECT count(*)
-        FROM vika_player_notification
+        FROM ${tablePrefix}player_notification
         WHERE to_user = #{toUser}
         AND is_deleted = 0
     </select>
     <select id="selectNotifyBodyById" resultType="string">
         SELECT notify_body
-        FROM vika_player_notification
+        FROM ${tablePrefix}player_notification
         WHERE id = #{id}
         AND is_deleted = 0
     </select>
     <select id="selectDtoByTypeAndIsRead" resultType="com.vikadata.api.player.dto.NotificationModelDTO">
         SELECT vpn.id,vpn.to_user, vpn.notify_body, vpn.is_read, vpn.created_at, vpn.from_user,
         vpn.notify_type, vpn.template_id, vpn.node_id, vpn.space_id,vpn.updated_at
-        FROM vika_player_notification vpn
+        FROM ${tablePrefix}player_notification vpn
         WHERE vpn.to_user = #{toUser}
         AND vpn.is_read = #{isRead}
         AND vpn.is_deleted = 0
@@ -77,7 +77,7 @@
     </select>
 
     <insert id="insertBatch">
-        INSERT INTO vika_player_notification(id,space_id,to_user,from_user,node_id,template_id,notify_type,notify_body)
+        INSERT INTO ${tablePrefix}player_notification(id,space_id,to_user,from_user,node_id,template_id,notify_type,notify_body)
         VALUES
         <foreach item="item" index="index" collection="notificationEntities" separator=",">
             <trim prefix="(" suffix=")">
@@ -87,7 +87,7 @@
     </insert>
 
     <update id="updateReadIsTrueByIds">
-        UPDATE vika_player_notification
+        UPDATE ${tablePrefix}player_notification
         SET is_read = 1
         WHERE id in
         <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
@@ -96,14 +96,14 @@
         AND is_deleted = 0;
     </update>
     <update id="updateReadIsTrueByUserId">
-        UPDATE vika_player_notification
+        UPDATE ${tablePrefix}player_notification
         SET is_read = 1
         where to_user = #{toUser}
         AND is_deleted = 0
         AND template_id != 'space_join_apply';
     </update>
     <update id="deleteNotificationByIds">
-        UPDATE vika_player_notification
+        UPDATE ${tablePrefix}player_notification
         SET is_deleted = 1
         WHERE id in
         <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
@@ -112,20 +112,20 @@
         AND is_deleted = 0;
     </update>
     <update id="updateNotifyBodyById">
-        UPDATE vika_player_notification
+        UPDATE ${tablePrefix}player_notification
         SET notify_body = #{body}
         WHERE id = #{id}
     </update>
 
     <update id="updateNotifyBodyByIdAndKey">
-        UPDATE vika_player_notification
+        UPDATE ${tablePrefix}player_notification
         SET notify_body = JSON_REPLACE(notify_body, CONCAT('$.', #{key}), #{val})
         WHERE id = #{id}
         AND JSON_EXTRACT(notify_body, CONCAT('$.', #{key})) = 0
     </update>
 
     <update id="updateBatchByUserIdsAndTemplateId">
-        UPDATE vika_player_notification
+        UPDATE ${tablePrefix}player_notification
         <set>
             <if test="revokeRo != null and revokeRo.revokeType == 1">
                 is_read =1,

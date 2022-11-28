@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_datasheet_meta")
+@TableName(keepGlobalPrefix = true, value = "datasheet_meta")
 public class DatasheetMetaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

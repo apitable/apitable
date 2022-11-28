@@ -3,37 +3,37 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantBindMapper">
     <select id="selectCountBySpaceId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId}
     </select>
 
     <select id="selectCountByTenantId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
     </select>
 
     <select id="selectTenantIdBySpaceId" resultType="java.lang.String">
         SELECT tenant_id
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId}
     </select>
 
     <select id="selectSpaceIdByTenantId" resultType="java.lang.String">
         SELECT space_id
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
     </select>
 
     <delete id="deleteBySpaceIdAndTenantId">
         DELETE
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId} AND tenant_id = #{tenantId}
     </delete>
 
     <delete id="deleteBatchByTenantId">
         DELETE
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id IN
         <foreach item="item" index="index" collection="tenantIds" open="(" separator=","
                  close=")">
@@ -44,22 +44,22 @@
     <select id="selectBaseInfoBySpaceId"
             resultType="com.vikadata.api.enterprise.social.model.TenantBindDTO">
         SELECT vstb.space_id, vstb.tenant_id, vst.app_id
-        FROM vika_social_tenant vst
-        LEFT JOIN vika_social_tenant_bind vstb ON vst.tenant_id = vstb.tenant_id AND ((vstb.app_id is
+        FROM ${tablePrefix}social_tenant vst
+        LEFT JOIN ${tablePrefix}social_tenant_bind vstb ON vst.tenant_id = vstb.tenant_id AND ((vstb.app_id is
         NULL ) OR (vst.app_id = vstb.app_id))
         WHERE vstb.space_id = #{spaceId}
     </select>
 
     <select id="selectCountByTenantIdAndAppId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
     </select>
 
     <select id="selectSpaceIdByTenantIdAndAppId" resultType="java.lang.String">
         SELECT space_id
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         LIMIT 0,1
@@ -67,7 +67,7 @@
 
     <select id="selectByTenantIdAndAppId" resultType="com.vikadata.entity.SocialTenantBindEntity">
         SELECT *
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
         LIMIT 0,1
@@ -75,14 +75,14 @@
 
     <delete id="deleteBySpaceId">
         DELETE
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId}
     </delete>
 
     <select id="selectCountBySpaceIdAndPlatform" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant_bind vstb
-        LEFT JOIN vika_social_tenant vst on vstb.app_id = vst.app_id
+        FROM ${tablePrefix}social_tenant_bind vstb
+        LEFT JOIN ${tablePrefix}social_tenant vst on vstb.app_id = vst.app_id
         WHERE vstb.space_id = #{spaceId}
         AND vst.platform = #{platform}
     </select>
@@ -97,8 +97,8 @@
         vst.auth_mode,
         vst.auth_info AS auth_info_str,
         vst.status
-        FROM vika_social_tenant_bind vstb,
-        vika_social_tenant vst
+        FROM ${tablePrefix}social_tenant_bind vstb,
+        ${tablePrefix}social_tenant vst
         WHERE vstb.tenant_id = vst.tenant_id
         AND vstb.app_id = vst.app_id
         AND vstb.space_id = #{spaceId}
@@ -109,37 +109,37 @@
 
     <select id="selectSpaceIdsByTenantIdAndAppId" resultType="java.lang.String">
         SELECT space_id
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
         AND app_id = #{appId}
     </select>
 
     <select id="selectSpaceIdByPlatformTypeAndAppType" resultType="java.lang.String">
         SELECT space_id
-        FROM vika_social_tenant_bind vstb
-        JOIN vika_social_tenant vst ON vst.tenant_id = vstb.tenant_id
+        FROM ${tablePrefix}social_tenant_bind vstb
+        JOIN ${tablePrefix}social_tenant vst ON vst.tenant_id = vstb.tenant_id
         WHERE vst.platform = #{platformType.value}
         AND vst.app_type = #{appType.type}
         AND vst.status = 1
     </select>
 
     <delete id="deleteByTenantIdAndSpaceId">
-        DELETE FROM vika_social_tenant_bind
+        DELETE FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId} AND space_id = #{spaceId}
     </delete>
 
     <select id="selectBySpaceIdAndTenantId" resultType="com.vikadata.entity.SocialTenantBindEntity">
-        SELECT * from vika_social_tenant_bind
+        SELECT * from ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId} AND tenant_id = #{tenantId}
     </select>
 
     <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantBindEntity">
-        SELECT * FROM vika_social_tenant_bind
+        SELECT * FROM ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId} LIMIT 0,1
     </select>
 
     <select id="selectSpaceIdsByTenantIdsAndAppIds" resultType="java.lang.String">
-        SELECT space_id FROM vika_social_tenant_bind
+        SELECT space_id FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id IN
         <foreach item="tenantId" index="index" collection="tenantIds" open="(" separator="," close=")">
             #{tenantId}
@@ -152,7 +152,7 @@
 
     <select id="selectAllSpaceIdsByAppId" resultType="java.lang.String">
         SELECT space_id
-        FROM vika_social_tenant_bind
+        FROM ${tablePrefix}social_tenant_bind
         WHERE app_id = #{appId}
     </select>
 </mapper>

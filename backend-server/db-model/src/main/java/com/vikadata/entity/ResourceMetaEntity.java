@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_resource_meta")
+@TableName(keepGlobalPrefix = true, value = "resource_meta")
 public class ResourceMetaEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

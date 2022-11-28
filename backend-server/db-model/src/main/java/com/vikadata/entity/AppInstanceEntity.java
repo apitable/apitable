@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_app_instance")
+@TableName(keepGlobalPrefix = true, value = "app_instance")
 public class AppInstanceEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_automation_action")
+@TableName(keepGlobalPrefix = true, value = "automation_action")
 public class AutomationActionEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

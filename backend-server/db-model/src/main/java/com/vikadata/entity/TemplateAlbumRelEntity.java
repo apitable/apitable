@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_template_album_rel")
+@TableName(keepGlobalPrefix = true, value = "template_album_rel")
 public class TemplateAlbumRelEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

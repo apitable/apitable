@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_wechat_member")
+@TableName(keepGlobalPrefix = true, value = "wechat_member")
 public class WechatMemberEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

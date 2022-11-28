@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_content_censor_result")
+@TableName(keepGlobalPrefix = true, value = "content_censor_result")
 public class ContentCensorResultEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

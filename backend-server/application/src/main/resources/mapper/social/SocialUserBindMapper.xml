@@ -3,20 +3,20 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialUserBindMapper">
     <select id="selectUserIdByUnionId" resultType="java.lang.Long">
         SELECT user_id
-        FROM vika_social_user_bind
+        FROM ${tablePrefix}social_user_bind
         WHERE union_id = #{unionId}
         LIMIT 1
     </select>
 
     <select id="selectUnionIdByUserId" resultType="java.lang.String">
         SELECT union_id
-        FROM vika_social_user_bind
+        FROM ${tablePrefix}social_user_bind
         WHERE user_id = #{userId}
     </select>
 
     <select id="selectByUnionIds" resultType="com.vikadata.entity.SocialUserBindEntity">
         SELECT *
-        FROM vika_social_user_bind
+        FROM ${tablePrefix}social_user_bind
         WHERE union_id IN
         <foreach item="item" index="index" collection="unionIds" open="(" separator="," close=")">
             #{item}
@@ -25,7 +25,7 @@
 
     <delete id="deleteByUnionIds">
         DELETE
-        FROM vika_social_user_bind
+        FROM ${tablePrefix}social_user_bind
         WHERE union_id IN
         <foreach item="item" index="index" collection="unionIds" open="(" separator=","
                  close=")">
@@ -35,14 +35,14 @@
 
     <delete id="deleteByUserId">
         DELETE
-        FROM vika_social_user_bind
+        FROM ${tablePrefix}social_user_bind
         WHERE user_id = #{userId}
     </delete>
 
     <select id="selectOpenIdByTenantIdAndUserId" resultType="java.lang.String">
         SELECT vstu.open_id
-        FROM vika_social_user_bind vsub
-        JOIN vika_social_tenant_user vstu ON vstu.union_id = vsub.union_id
+        FROM ${tablePrefix}social_user_bind vsub
+        JOIN ${tablePrefix}social_tenant_user vstu ON vstu.union_id = vsub.union_id
         AND vstu.tenant_id = #{tenantId} AND vstu.app_id = #{appId}
         WHERE vsub.user_id = #{userId}
     </select>

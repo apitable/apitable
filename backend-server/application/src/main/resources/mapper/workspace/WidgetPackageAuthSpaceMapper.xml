@@ -4,7 +4,7 @@
 
     <select id="selectSpaceIdByPackageId" resultType="java.lang.String">
         SELECT vwpas.space_id
-        FROM vika_widget_package_auth_space vwpas
+        FROM ${tablePrefix}widget_package_auth_space vwpas
         WHERE vwpas.package_id = #{packageId} AND vwpas.type = 0
           AND vwpas.is_deleted = 0
     </select>

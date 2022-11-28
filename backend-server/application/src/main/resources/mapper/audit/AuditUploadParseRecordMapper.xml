@@ -5,7 +5,7 @@
     <select id="selectLastBySpaceId"
             resultType="com.vikadata.entity.AuditUploadParseRecordEntity">
         select *
-        from vika_audit_upload_parse_record
+        from ${tablePrefix}audit_upload_parse_record
         where space_id = #{spaceId}
         order by id desc
         limit 0, 1

@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_widget_package_auth_space")
+@TableName(keepGlobalPrefix = true, value = "widget_package_auth_space")
 public class WidgetPackageAuthSpaceEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialEditionChangelogWeComMapper">
     <select id="selectLastChangeLog" resultType="com.vikadata.entity.SocialEditionChangelogWecomEntity">
         SELECT *
-        FROM vika_social_edition_changelog_wecom
+        FROM ${tablePrefix}social_edition_changelog_wecom
         WHERE suite_id = #{suiteId}
         AND paid_corp_id = #{paidCorpId}
         AND is_deleted = 0

@@ -4,18 +4,18 @@
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialFeishuEventLogMapper">
     <select id="selectCountByUuid" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_feishu_event_log
+        FROM ${tablePrefix}social_feishu_event_log
         WHERE uuid = #{uuid}
     </select>
 
     <select id="selectByUuid" resultType="com.vikadata.entity.SocialFeishuEventLogEntity">
         SELECT *
-        FROM vika_social_feishu_event_log
+        FROM ${tablePrefix}social_feishu_event_log
         WHERE uuid = #{uuid}
     </select>
 
     <update id="updateStatusTrueByUuid">
-        UPDATE vika_social_feishu_event_log
+        UPDATE ${tablePrefix}social_feishu_event_log
         SET status = 1
         WHERE uuid = #{uuid}
     </update>
@@ -23,7 +23,7 @@
     <select id="selectLatestByTenantKeyAndType"
             resultType="java.lang.String">
         SELECT event_data
-        FROM vika_social_feishu_event_log
+        FROM ${tablePrefix}social_feishu_event_log
         WHERE tenant_key = #{tenantKey}
           AND type = #{type}
         ORDER BY id DESC

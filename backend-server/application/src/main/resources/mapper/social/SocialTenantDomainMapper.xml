@@ -5,14 +5,14 @@
 
     <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantDomainEntity">
         SELECT *
-        FROM vika_social_tenant_domain vstd
+        FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.space_id = #{spaceId}
           AND vstd.is_deleted = 0
     </select>
 
     <select id="selectBySpaceIds" resultType="com.vikadata.entity.SocialTenantDomainEntity">
         SELECT *
-        FROM vika_social_tenant_domain vstd
+        FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.space_id IN
         <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
             #{item}
@@ -22,14 +22,14 @@
 
     <select id="countTenantDomainName" resultType="int">
         SELECT COUNT(*)
-        FROM vika_social_tenant_domain vstd
+        FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.domain_prefix = #{domainPrefix}
           AND vstd.is_deleted = 0
     </select>
 
     <select id="selectSpaceIdByDomainName" resultType="java.lang.String">
         SELECT vstd.space_id
-        FROM vika_social_tenant_domain vstd
+        FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.domain_name = #{domainName}
           AND vstd.status = 1
           AND vstd.is_deleted = 0
@@ -39,7 +39,7 @@
         SELECT vstd.space_id,
                vstd.domain_name,
                vstd.status
-        FROM vika_social_tenant_domain vstd
+        FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.is_deleted = 0
           AND vstd.space_id IN
         <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
@@ -48,7 +48,7 @@
     </select>
 
     <update id="updateStatusBySpaceId">
-        UPDATE vika_social_tenant_domain
+        UPDATE ${tablePrefix}social_tenant_domain
         SET status = #{domainStatus}
         WHERE space_id = #{spaceId}
     </update>
@@ -57,13 +57,13 @@
         SELECT  vstd.space_id,
                 vstd.domain_name,
                 vstd.status
-        FROM vika_social_tenant_domain vstd
+        FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.domain_name = #{domainName}
           AND vstd.is_deleted = 0
     </select>
 
     <delete id="deleteSpaceDomainBySpaceIds">
-        UPDATE vika_social_tenant_domain
+        UPDATE ${tablePrefix}social_tenant_domain
         SET status = 0, is_deleted = 1
         WHERE space_id IN
         <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">

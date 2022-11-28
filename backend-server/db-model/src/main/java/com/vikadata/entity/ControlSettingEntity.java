@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_control_setting")
+@TableName(keepGlobalPrefix = true, value = "control_setting")
 public class ControlSettingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-INSERT INTO `vika_social_wecom_permit_order` (`id`, `suite_id`, `auth_corp_id`,
+INSERT INTO `social_wecom_permit_order` (`id`, `suite_id`, `auth_corp_id`,
                                               `order_id`, `order_type`, `order_status`,
                                               `price`, `base_account_count`,
                                               `external_account_count`, `duration_months`,

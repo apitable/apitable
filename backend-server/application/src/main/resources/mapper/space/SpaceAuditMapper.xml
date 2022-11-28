@@ -4,7 +4,7 @@
 <mapper namespace="com.vikadata.api.space.mapper.SpaceAuditMapper">
     <select id="selectSpaceAuditPage" resultType="com.vikadata.entity.SpaceAuditEntity">
         SELECT *
-        FROM vika_space_audit vom
+        FROM ${tablePrefix}space_audit vom
                 WHERE space_id = #{spaceId}
         <if test="param.memberIds != null and param.memberIds.size() != 0">
             AND member_id IN
@@ -38,7 +38,7 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO vika_space_audit(id, space_id, member_id, member_name, ip_address,
+        INSERT INTO ${tablePrefix}space_audit(id, space_id, member_id, member_name, ip_address,
                                      user_agent, category, action, info, created_by)
         VALUES (#{entity.id}, #{entity.spaceId}, #{entity.memberId},
                 #{entity.memberName}, #{entity.ipAddress}, #{entity.userAgent},

@@ -4,7 +4,7 @@
 
     <select id="selectByMenuCodes" resultType="com.vikadata.entity.SpaceMenuEntity">
         SELECT *
-        FROM vika_space_menu vsm
+        FROM ${tablePrefix}space_menu vsm
         WHERE vsm.menu_code in
         <foreach collection="menuCodes" index="index" item="item" open="(" close=")" separator=",">
             #{item}

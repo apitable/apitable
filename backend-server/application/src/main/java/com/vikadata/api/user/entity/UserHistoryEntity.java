@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_user_history")
+@TableName(keepGlobalPrefix = true, value = "user_history")
 public class UserHistoryEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

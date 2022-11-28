@@ -1,4 +1,4 @@
-INSERT INTO `vika_idaas_group_bind` (`id`,
+INSERT INTO `idaas_group_bind` (`id`,
                                      `tenant_name`,
                                      `group_id`,
                                      `group_name`,

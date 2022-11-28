@@ -12,12 +12,12 @@
                auditor_openid,
                auditor_name,
                is_audited
-        FROM vika_asset_audit
+        FROM ${tablePrefix}asset_audit
         WHERE audit_result_suggestion = 'review' and audit_scenes = 'pulp' and is_audited = 0
     </select>
 
     <update id="updateByAssetId">
-        update vika_asset_audit
+        update ${tablePrefix}asset_audit
         set is_audited              = 1,
             audit_result_suggestion = #{auditResultSuggestion},
             auditor_name            = #{auditorName},

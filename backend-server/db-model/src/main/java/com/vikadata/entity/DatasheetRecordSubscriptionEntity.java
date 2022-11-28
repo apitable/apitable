@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_datasheet_record_subscription")
+@TableName(keepGlobalPrefix = true, value = "datasheet_record_subscription")
 public class DatasheetRecordSubscriptionEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -15,14 +15,14 @@
                trg.trigger_id,
                trg.trigger_type_id,
                trg.input
-        FROM vika_automation_trigger trg
-                 JOIN vika_automation_robot rbt
+        FROM ${tablePrefix}automation_trigger trg
+                 JOIN ${tablePrefix}automation_robot rbt
                       ON rbt.seq_id = #{seqId} and rbt.resource_id = #{resourceId} and rbt.robot_id = trg.robot_id and rbt.is_active = 1
         WHERE trg.is_deleted = 0;
     </select>
 
     <update id="updateInput">
-        UPDATE vika_automation_trigger
+        UPDATE ${tablePrefix}automation_trigger
         SET input = #{input},
             trigger_type_id = #{triggerTypeId}
         WHERE trigger_id = #{triggerId}

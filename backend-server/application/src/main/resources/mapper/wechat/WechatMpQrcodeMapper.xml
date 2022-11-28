@@ -12,7 +12,7 @@
     <select id="selectBaseInfo" resultMap="BaseInfo">
         <if test="appId != null and appId != ''">
             SELECT id, type, ticket, url
-            FROM vika_wechat_mp_qrcode
+            FROM ${tablePrefix}wechat_mp_qrcode
             WHERE app_id = #{appId}
               AND scene = #{scene}
               AND is_deleted = 0
@@ -31,14 +31,14 @@
 
     <select id="selectDetailInfo" resultMap="DetailInfo">
         SELECT vwmq.id, vwmq.type, vwmq.scene, vwmq.ticket, vwmq.url, vwmq.created_at, vu.nick_name, #{appId} AS appId
-        FROM vika_wechat_mp_qrcode vwmq
-        LEFT JOIN vika_user vu ON vwmq.created_by = vu.id
+        FROM ${tablePrefix}wechat_mp_qrcode vwmq
+        LEFT JOIN ${tablePrefix}user vu ON vwmq.created_by = vu.id
         WHERE vwmq.app_id = #{appId} AND vwmq.is_deleted = 0
         ORDER BY vwmq.id DESC
     </select>
 
     <update id="removeByIdAndAppId">
-        UPDATE vika_wechat_mp_qrcode
+        UPDATE ${tablePrefix}wechat_mp_qrcode
         SET is_deleted = 1, updated_by = #{userId}
         WHERE id = #{id} AND app_id = #{appId} AND is_deleted = 0
     </update>

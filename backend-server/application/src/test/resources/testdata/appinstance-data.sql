@@ -1,5 +1,5 @@
 --
-INSERT INTO `vika_app_instance` (`id`, `app_id`, `space_id`, `app_instance_id`,
+INSERT INTO `app_instance` (`id`, `app_id`, `space_id`, `app_instance_id`,
                                  `app_key`, `app_secret`, `type`, `config`,
                                  `created_by`,
                                  `updated_by`)

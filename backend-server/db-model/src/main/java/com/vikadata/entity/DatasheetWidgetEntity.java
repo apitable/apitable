@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_datasheet_widget")
+@TableName(keepGlobalPrefix = true, value = "datasheet_widget")
 public class DatasheetWidgetEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

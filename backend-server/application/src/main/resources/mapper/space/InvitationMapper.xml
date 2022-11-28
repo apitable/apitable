@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.space.mapper.InvitationMapper">
     <select id="selectByMemberIdAndSpaceIdAndNodeId" resultType="com.vikadata.entity.InvitationEntity">
         SELECT *
-        FROM vika_invitation
+        FROM ${tablePrefix}invitation
         WHERE creator = #{memberId}
         AND space_id = #{spaceId}
         AND node_id = #{nodeId}
@@ -11,7 +11,7 @@
     </select>
 
     <update id="updateStatusBySpaceIdAndNodeIdNotEmpty">
-        UPDATE vika_invitation
+        UPDATE ${tablePrefix}invitation
         SET status = #{status}
         WHERE space_id = #{spaceId}
         AND node_id != ''
@@ -20,13 +20,13 @@
 
     <select id="selectByInviteToken" resultType="com.vikadata.entity.InvitationEntity">
         SELECT *
-        FROM vika_invitation
+        FROM ${tablePrefix}invitation
         WHERE invite_token = #{inviteToken}
         AND is_deleted = 0
     </select>
 
     <update id="updateInviteNumByInviteToken">
-        UPDATE vika_invitation
+        UPDATE ${tablePrefix}invitation
         SET invite_num = invite_num + 1
         WHERE invite_token = #{inviteToken}
         AND is_deleted = 0
@@ -35,7 +35,7 @@
 
     <select id="selectByInviteTokenAndNodeId" resultType="com.vikadata.entity.InvitationEntity">
         SELECT *
-        FROM vika_invitation
+        FROM ${tablePrefix}invitation
         WHERE invite_token = #{inviteToken}
         AND node_id = #{nodeId}
         AND is_deleted = 0

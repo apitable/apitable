@@ -1,4 +1,4 @@
-INSERT INTO `vika_unit_team` (`id`, `space_id`, `parent_id`, `team_name`, `team_level`, `sequence`, `is_deleted`, `created_at`, `updated_at`)
+INSERT INTO `unit_team` (`id`, `space_id`, `parent_id`, `team_name`, `team_level`, `sequence`, `is_deleted`, `created_at`, `updated_at`)
 VALUES (1236155491650899970, 'spczdmQDfBAn5', 0, 'Space', 1, 1, 0, '2020-03-07 13:03:30', '2021-05-27 18:49:03'),
        (1236159916641619970, 'spczdmQDfBAn5', 1236155491650899970, 'Engineering', 1, 1, 0, '2020-03-07 13:21:05', '2022-03-01 14:50:20'),
        (1236159923558027266, 'spczdmQDfBAn5', 1236155491650899970, 'Product', 1, 2, 0, '2020-03-07 13:21:07', '2022-03-01 14:50:13'),

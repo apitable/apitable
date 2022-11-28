@@ -1,4 +1,4 @@
-INSERT INTO `vika_idaas_tenant` (`id`,
+INSERT INTO `idaas_tenant` (`id`,
                                  `tenant_name`,
                                  `service_account`,
                                  `is_deleted`,

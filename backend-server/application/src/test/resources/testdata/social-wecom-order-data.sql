@@ -1,4 +1,4 @@
-INSERT INTO `vika_billing_social_wecom_order` (`id`, `order_id`, `order_status`,
+INSERT INTO `billing_social_wecom_order` (`id`, `order_id`, `order_status`,
                                                `order_type`,
                                                `paid_corp_id`, `operator_id`,
                                                `suite_id`, `edition_id`, `price`,

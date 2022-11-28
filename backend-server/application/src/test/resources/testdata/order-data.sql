@@ -1,4 +1,4 @@
-INSERT INTO `vika_billing_order` (`id`, `space_id`, `order_id`,
+INSERT INTO `billing_order` (`id`, `space_id`, `order_id`,
                                              `order_channel`, `channel_order_id`,
                                              `order_type`, `currency`, `amount`, `state`,
                                              `created_time`, `is_paid`, `paid_time`,

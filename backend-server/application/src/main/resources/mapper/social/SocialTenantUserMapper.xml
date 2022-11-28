@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantUserMapper">
     <insert id="insertBatch">
-        INSERT INTO vika_social_tenant_user(id, app_id, tenant_id, open_id, union_id)
+        INSERT INTO ${tablePrefix}social_tenant_user(id, app_id, tenant_id, open_id, union_id)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
@@ -14,38 +14,38 @@
 
     <select id="selectUnionIdsByTenantId" resultType="java.lang.String">
         SELECT union_id
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND app_id = #{appId}
     </select>
 
     <select id="selectOpenIdsByTenantId" resultType="java.lang.String">
         SELECT open_id
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND app_id = #{appId}
     </select>
 
     <delete id="deleteByTenantId">
-        DELETE FROM vika_social_tenant_user
+        DELETE FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND app_id = #{appId}
     </delete>
 
     <select id="selectCountByTenantIdAndOpenId" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId}
         AND open_id = #{openId} AND app_id = #{appId}
     </select>
 
     <select id="selectUnionIdByOpenId" resultType="java.lang.String">
         SELECT union_id
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND open_id = #{openId} AND app_id = #{appId}
         LIMIT 0, 1
     </select>
 
     <select id="selectUnionIdsByOpenIds" resultType="java.lang.String">
         SELECT union_id
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND open_id IN
         <foreach item="item" index="index" collection="openIds" open="(" separator=","
                  close=")">
@@ -56,7 +56,7 @@
 
     <select id="selectOpenIdByAppIdAndTenantIdAndUnionIds" resultType="java.lang.String">
         SELECT open_id
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND union_id IN
         <foreach item="item" index="index" collection="unionIds" open="(" separator=","
                  close=")">
@@ -66,12 +66,12 @@
     </select>
 
     <delete id="deleteByTenantIdAndOpenId">
-        DELETE FROM vika_social_tenant_user
+        DELETE FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND open_id = #{openId} AND app_id = #{appId}
     </delete>
 
     <delete id="deleteBatchByOpenId">
-        DELETE FROM vika_social_tenant_user
+        DELETE FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND open_id IN
         <foreach item="item" index="index" collection="openIds" open="(" separator=","
                  close=")">
@@ -81,27 +81,27 @@
     </delete>
 
     <select id="selectOpenIdByUnionIdAndPlatform" resultType="java.lang.String">
-        SELECT open_id from vika_social_tenant_user vstu
-        LEFT JOIN vika_social_tenant vst on vst.tenant_id = vstu.tenant_id
+        SELECT open_id from ${tablePrefix}social_tenant_user vstu
+        LEFT JOIN ${tablePrefix}social_tenant vst on vst.tenant_id = vstu.tenant_id
         WHERE union_id = #{unionId}
         AND vst.platform = #{platformType.value}
         LIMIT 0, 1
     </select>
 
     <delete id="deleteByAppIdAndTenantId">
-        DELETE FROM vika_social_tenant_user
+        DELETE FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND app_id = #{appId}
     </delete>
 
     <select id="selectOpenIdAndUnionIdByTenantId"
             resultType="com.vikadata.api.enterprise.social.model.SocialTenantUserDTO">
         SELECT open_id, union_id
-        FROM vika_social_tenant_user
+        FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND app_id = #{appId}
     </select>
 
     <delete id="deleteBatchByTenantIdAndOpenId">
-        DELETE FROM vika_social_tenant_user
+        DELETE FROM ${tablePrefix}social_tenant_user
         WHERE tenant_id = #{tenantId} AND open_id IN
         <foreach item="item" index="index" collection="openIds" open="(" separator=","
                  close=")">

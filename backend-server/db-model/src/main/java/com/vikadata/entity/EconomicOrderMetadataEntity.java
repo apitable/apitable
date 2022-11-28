@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode
-@TableName("vika_economic_order_metadata")
+@TableName(keepGlobalPrefix = true, value = "economic_order_metadata")
 public class EconomicOrderMetadataEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

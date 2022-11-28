@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.enterprise.widget.mapper.WidgetPackageReleaseMapper">
     <select id="selectReleaseShaToId" resultType="java.lang.Long">
         SELECT vwpr.id
-        FROM vika_widget_package_release vwpr
+        FROM ${tablePrefix}widget_package_release vwpr
         WHERE vwpr.release_sha = #{releaseSha}
             <if test="releaseStatus != null">
                 AND vwpr.status = #{releaseStatus}
@@ -18,7 +18,7 @@
                vwpr.status,
                vwpr.release_code_bundle,
                vwpr.source_code_bundle
-        FROM vika_widget_package_release vwpr
+        FROM ${tablePrefix}widget_package_release vwpr
         WHERE vwpr.package_id = #{packageId}
           AND vwpr.is_deleted = 0
     </select>
@@ -41,9 +41,9 @@
         vwp.install_env_code,
         vwp.runtime_env_code,
         vwpas.widget_sort
-        FROM vika_widget_package vwp
-        INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
-        INNER JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+        INNER JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
         WHERE vwp.is_deleted = 0
         AND vwp.is_template = 0
         AND vwp.release_type = 10
@@ -59,9 +59,9 @@
         SELECT vwp.id AS lastPackageId,
                vwpr.id AS lastPackageReleaseId,
                vwpas.id AS lastPackageAuthSpaceId
-        FROM vika_widget_package vwp
-        INNER JOIN vika_widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
-        INNER JOIN vika_widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
+        FROM ${tablePrefix}widget_package vwp
+        INNER JOIN ${tablePrefix}widget_package_auth_space vwpas ON vwp.package_id = vwpas.package_id AND vwpas.is_deleted = 0
+        INNER JOIN ${tablePrefix}widget_package_release vwpr ON vwp.release_id = vwpr.id AND vwpr.is_deleted = 0
         WHERE vwp.is_deleted = 0
         AND widget_body -> '$.fatherWidgetId' = #{fatherWidgetId}
         LIMIT 1
@@ -69,8 +69,8 @@
 
     <select id="selectByFatherWidgetIdAndVersion" resultType="com.vikadata.entity.WidgetPackageReleaseEntity">
         SELECT vwpr.*
-        FROM vika_widget_package vwp,
-             vika_widget_package_release vwpr
+        FROM ${tablePrefix}widget_package vwp,
+             ${tablePrefix}widget_package_release vwpr
         WHERE vwp.package_id = vwpr.package_id
           AND vwp.widget_body -> '$.fatherWidgetId' = #{fatherWidgetId}
           AND vwpr.version = #{version}
