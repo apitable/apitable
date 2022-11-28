@@ -24,6 +24,8 @@ FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS builder
 ARG SEMVER_FULL="development"
 ARG NEXT_ASSET_PREFIX=""
 ARG NEXT_PUBLIC_ASSET_PREFIX=""
+ENV BUILD_VERSION ${SEMVER_FULL}
+
 
 WORKDIR /app
 

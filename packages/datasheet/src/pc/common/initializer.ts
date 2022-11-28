@@ -2,7 +2,7 @@
  * Initialization functions, used for some non-constructor type things that need to be initialized and executed at startup again
  */
 import { RewriteFrames } from '@sentry/integrations';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { Integrations } from '@sentry/tracing';
 import { Api, getLanguage, injectStore, Navigation, Selectors, StatusCode, StoreActions, Strings, t, Url } from '@apitable/core';
 import axios from 'axios';
@@ -129,7 +129,7 @@ function initAxios(store) {
               const reference = (new URLSearchParams(window.location.search)).get('reference')?.toString();
               store.dispatch(StoreActions.setUserMe(null));
               store.dispatch(StoreActions.setIsLogin(false));
-              Router.redirect(Navigation.LOGIN, { query: { reference }});
+              Router.redirect(Navigation.LOGIN, { query: { reference } });
             },
           });
         }
@@ -220,17 +220,18 @@ function initBugTracker() {
     enabled: true,
     dsn,
     integrations: [
-      new Integrations.BrowserTracing(),
-      new RewriteFrames(),
+      new Integrations.BrowserTracing()!,
+      new RewriteFrames()!,
       /**
        * @description Sentry's handling of requestAnimationFrame in Chrome 74 can be problematic and lead to unexpected errors
        * Currently rewriting the check for requestAnimationFrame based on the method provided in Sentry's issue
        * @issue https://github.com/getsentry/sentry-javascript/issues/3388
        * @type {boolean}
        */
-      new Sentry.Integrations.TryCatch({
-        requestAnimationFrame: false,
-      })]
+      // new Sentry.Integrations.TryCatch({
+      //   requestAnimationFrame: false,
+      // })
+    ]
     ,
     environment: getInitializationData().env,
     release: getReleaseVersion(),

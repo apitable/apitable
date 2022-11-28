@@ -1,4 +1,4 @@
-import { ErrorBoundary } from '@sentry/react';
+import { ErrorBoundary } from '@sentry/nextjs';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,
@@ -139,7 +139,7 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
     }
     modalClose();
   };
-  
+
   document.body.onkeydown = monitorBodyFocus;
 
   const wrapperProps = {
@@ -236,7 +236,7 @@ const Wrapper: React.FC<IExpandRecordWrapperProp> = props => {
               customModal.destroy();
             },
             modalButtonType: 'warning',
-            okText: t(Strings.submit), 
+            okText: t(Strings.submit),
           }));
           break;
         case StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST:
@@ -379,7 +379,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
   const view = useGetViewByIdWithDefault(datasheetId, props.viewId)!;
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
-  const _dispatch = useDispatch(); 
+  const _dispatch = useDispatch();
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });
@@ -709,7 +709,7 @@ const ExpandRecordComponentBase: React.FC<IExpandRecordComponentProp> = props =>
                 onClose={() => {
                   handleCacheType(ActivitySelectType.NONE);
                   setCommentPane(false);
-                }} 
+                }}
                 style={
                   isColumnLayout
                     ? {
