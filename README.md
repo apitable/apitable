@@ -3,7 +3,7 @@
 
 </p>
 <p align="center">
-    <img src="https://s1.vika.cn/space/2022/11/28/a6dc9b0d9ee9498fa087b196257d3d2c" alt="APITable Cover Image" />
+    <img src="docs/static/1.png" alt="APITable Cover Image" />
 </p>
 
 
@@ -63,7 +63,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
       <a href="#">Realtime Collaboration</a>
     </th>
     <th>
-      <a href="#">API Panel</a>
+      <a href="#">Automatic Form</a>
     </th>
     <th>
       <a href="#">Team Management</a>
@@ -292,24 +292,35 @@ APITable use these common conventions:
 
 ## 📺 Screenshot
 <p align="center">
-    <img src="https://s1.vika.cn/space/2022/11/28/9fd42ba3c3304954b856a224fc720d2b" alt="APITable Screenshot Image" />
+    <img src="docs/static/2.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="https://s1.vika.cn/space/2022/11/28/1a336a261908446fbb96de2a6ccfbd6d" alt="APITable Screenshot Image" />
+    <img src="docs/static/3.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="https://s1.vika.cn/space/2022/11/28/f7ad2b04ae984bf2a368537bba8e89d2" alt="APITable Screenshot Image" />
+    <img src="docs/static/4.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/ScreenShot4.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/5.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/ScreenShot5.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/6.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/ScreenShot6.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/7.png" alt="APITable Screenshot Image" />
 </p>
-
+<p align="center">
+    <img src="docs/static/8.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/9.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/10.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/11.png" alt="APITable Screenshot Image" />
+</p>
 
 
 ## 🥰 License
