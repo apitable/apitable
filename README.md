@@ -49,7 +49,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
     </td>
     <td width="30%">
         <a href="#">
-            <img src="docs/static/cover.png" />
+            <img src="docs/static/apitble_github_gif2.gif" />
         </a>
     </td>
     <td width="30%">
