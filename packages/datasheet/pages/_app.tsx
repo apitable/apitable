@@ -106,12 +106,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize the user system
-    initPlayer();
-    console.log('Current version number: ' + getReleaseVersion());
-  }, []);
-
-  useEffect(() => {
     const handleStart = (url) => {
       if (loading !== LoadingStatus.None) {
         return;
@@ -254,11 +248,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
 
     }
-    getUser();
+    getUser().then(() => {
+      import('../src/preIndex');
+      // Initialize the user system
+      initPlayer();
+      console.log('Current version number: ' + getReleaseVersion());
+    });
   }, []);
 
   useEffect(() => {
-    import('../src/preIndex');
     import('element-scroll-polyfill');
     import('polyfill-object.fromentries');
     elementClosest(window);
