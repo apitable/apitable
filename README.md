@@ -60,7 +60,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
   </tr>
   <tr>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">Realtime Collaboration</a>
     </th>
     <th>
       <a href="#">API Panel</a>
