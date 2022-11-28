@@ -35,7 +35,7 @@ import 'pc/components/home/social_platform/components/common.less';
 import 'pc/components/invite/invite.common.less';
 import { Router } from 'pc/components/route_manager/router';
 import { initEventListen } from 'pc/events';
-import { getRegResult, LOGIN_SUCCESS, shareIdReg, useQuery, getPageParams, spaceIdReg } from 'pc/hooks';
+import { getRegResult, LOGIN_SUCCESS, shareIdReg, getPageParams, spaceIdReg } from 'pc/hooks';
 import { init as initPlayer } from 'modules/shared/player/init';
 import { initResourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -171,7 +171,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       const pathUrl = window.location.pathname;
       const { nodeId } = getPageParams(pathUrl || '');
-      const query = useQuery();
+      const query = new URLSearchParams(window.location.search);
       const spaceId = query.get('spaceId') || '';
       let userInfoError: IUserInfoError | undefined;
 
