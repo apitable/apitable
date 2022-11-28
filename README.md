@@ -292,7 +292,7 @@ APITable use these common conventions:
 
 ## 📺 Screenshot
 <p align="center">
-    <img src="docs/static/ScreenShot1.png" alt="APITable Screenshot Image" />
+    <img src="https://s1.vika.cn/space/2022/11/28/9fd42ba3c3304954b856a224fc720d2b" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
     <img src="docs/static/ScreenShot2.png" alt="APITable Screenshot Image" />
