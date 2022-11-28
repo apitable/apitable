@@ -1,4 +1,4 @@
-CREATE TABLE `vika_wechat_keyword_reply`
+CREATE TABLE `${table.prefix}wechat_keyword_reply`
 (
     `id`         bigint(20) unsigned NOT NULL COMMENT '主键',
     `app_id`     varchar(50)         NOT NULL COMMENT '公众号Appid（关联#vika_wechat_authorization#authorizer_appid）',

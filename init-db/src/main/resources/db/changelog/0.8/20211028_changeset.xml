@@ -8,7 +8,7 @@
     <changeSet id="V0.8-20211028-001" author="Chambers" labels="user">
         <comment>用户表增加UUID唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_user`
+            ALTER TABLE `${table.prefix}user`
             ADD UNIQUE INDEX `uk_uuid`(`uuid`) USING BTREE;
         </sql>
     </changeSet>

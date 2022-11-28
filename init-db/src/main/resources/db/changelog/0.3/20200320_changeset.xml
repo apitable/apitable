@@ -8,20 +8,20 @@
     <changeSet id="V0.3-20200320-001" author="ShawnDeng" labels="node">
         <comment>新增节点角色对应的分享节点资源</comment>
         <sql>
-            INSERT INTO `vika_node_resource`(`id`, `resource_code`, `resource_name`, `resource_type`, `resource_desc`, `field_name`)
+            INSERT INTO `${table.prefix}node_resource`(`id`, `resource_code`, `resource_name`, `resource_type`, `resource_desc`, `field_name`)
             VALUES (1240944087364255746, 'SHARE_NODE', '分享节点', 0, '具有此资源的角色,，可以在分享节点', 'sharable');
-            INSERT INTO `vika_node_role_resource_rel`(`id`, `role_code`, `resource_code`)
+            INSERT INTO `${table.prefix}node_role_resource_rel`(`id`, `role_code`, `resource_code`)
             VALUES (1240944087364255747, 'administrator', 'SHARE_NODE');
-            INSERT INTO `vika_node_role_resource_rel`(`id`, `role_code`, `resource_code`)
+            INSERT INTO `${table.prefix}node_role_resource_rel`(`id`, `role_code`, `resource_code`)
             VALUES (1240944087364255748, 'manager', 'SHARE_NODE');
         </sql>
         <rollback>
-            <delete tableName="vika_node_resource">
+            <delete tableName="${table.prefix}node_resource">
                 <where>
                     resource_code = 'SHARE_NODE'
                 </where>
             </delete>
-            <delete tableName="vika_node_role_resource_rel">
+            <delete tableName="${table.prefix}node_role_resource_rel">
                 <where>
                     resource_code = 'SHARE_NODE'
                 </where>

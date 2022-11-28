@@ -8,7 +8,7 @@
     <changeSet id="v0.4.0-20200405-001" author="Kelly" labels="developer">
         <comment>新增模板表</comment>
         <sql>
-            CREATE TABLE `vika_developer_template` (
+            CREATE TABLE `${table.prefix}developer_template` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `type` tinyint(2) unsigned NOT NULL COMMENT '类型 (0:PreInstall官方预装,1:Space用户空间站自己的,2:Marketplace发布到市场，属于Sku的一部分)',
             `type_id` bigint(20) DEFAULT NULL COMMENT '官方预装、Space编号、对应的SKU',
@@ -27,7 +27,7 @@
     <changeSet id="v0.4.0-20200405-002" author="Kelly" labels="developer">
         <comment>新增Applet云程序表</comment>
         <sql>
-            CREATE TABLE `vika_developer_applet` (
+            CREATE TABLE `${table.prefix}developer_applet` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '关联的工作间ID(关联#vika_space#space_id, parent!=0的space)',
             `applet_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '类似其它开放平台的appId,全局唯一',
@@ -45,7 +45,7 @@
     <changeSet id="v0.4.0-20200405-003" author="Kelly" labels="developer">
         <comment>新增GM总部管理员表</comment>
         <sql>
-            CREATE TABLE `vika_developer_gm` (
+            CREATE TABLE `${table.prefix}developer_gm` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `user_id` bigint(20) DEFAULT NULL COMMENT '对应的user',
             `phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '电话号码',
@@ -62,7 +62,7 @@
     <changeSet id="v0.4.0-20200405-004" author="Kelly" labels="developer">
         <comment>新增云钩表</comment>
         <sql>
-            CREATE TABLE `vika_developer_webhook` (
+            CREATE TABLE `${table.prefix}developer_webhook` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `applet_id` bigint(20) DEFAULT NULL COMMENT '对应的云程序',
             `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
@@ -77,7 +77,7 @@
     <changeSet id="v0.4.0-20200405-005" author="Kelly" labels="eco">
         <comment>新增账户表</comment>
         <sql>
-            CREATE TABLE `vika_eco_account` (
+            CREATE TABLE `${table.prefix}eco_account` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `type` tinyint(2) unsigned NOT NULL COMMENT '0:属于Space的账户，类似「企业银行账户」的概念，基于空间站的支付，如订阅、卖模板、云程序，都以Space作为主体，并受到空间管理的约束 \n 1:个人账户，类似个人银行, 由于我们大部分交易，都以空间站作为主体, 因此，如果个人要进行提现利得, 需要将账户的钱转移',
             `type_id` bigint(20) DEFAULT NULL COMMENT '对应类型(space或user)的关联编号',
@@ -104,7 +104,7 @@
     <changeSet id="v0.4.0-20200405-007" author="Kelly" labels="marketplace">
         <comment>新增SKU表</comment>
         <sql>
-            CREATE TABLE `vika_marketplace_sku` (
+            CREATE TABLE `${table.prefix}marketplace_sku` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `type` tinyint(2) unsigned NOT NULL COMMENT '0:Template模板，1:Applet云程序',
             `type_id` bigint(20) DEFAULT NULL COMMENT '对应type的关联编号',
@@ -121,7 +121,7 @@
     <changeSet id="v0.4.0-20200405-008" author="Kelly" labels="marketplace">
         <comment>新增SPU表</comment>
         <sql>
-            CREATE TABLE `vika_marketplace_product` (
+            CREATE TABLE `${table.prefix}marketplace_product` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品的名字',
             `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品的介绍',
@@ -137,7 +137,7 @@
     <changeSet id="v0.4.0-20200405-008" author="Kelly" labels="player">
         <comment>新增评论表(Comment)</comment>
         <sql>
-            CREATE TABLE `vika_player_comment` (
+            CREATE TABLE `${table.prefix}player_comment` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
 
             `type` tinyint(2) unsigned NOT NULL COMMENT '评论的类别，0:record',
@@ -158,7 +158,7 @@
     <changeSet id="v0.4.0-20200405-009" author="Kelly" labels="player">
         <comment>新增通知表(Notification)</comment>
         <sql>
-            CREATE TABLE `vika_player_notification` (
+            CREATE TABLE `${table.prefix}player_notification` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `user_id` bigint(20) DEFAULT NULL COMMENT '通知的user',
             `template` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '通知模板',
@@ -178,14 +178,14 @@
         node.space_id -> node.station_id
         -->
         <sql>
-            ALTER TABLE `vika_space` ADD COLUMN `parent_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父space(空间站)'
+            ALTER TABLE `${table.prefix}space` ADD COLUMN `parent_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父space(空间站)'
             AFTER `id`;
         </sql>
     </changeSet>
     <changeSet id="v0.4.0-20200405-011" author="Kelly" labels="base">
         <comment>Key-Value字典表(Dict)</comment>
         <sql>
-            CREATE TABLE `vika_dict` (
+            CREATE TABLE `${table.prefix}dict` (
             `key` varchar(255) unsigned NOT NULL COMMENT '主键',
             `value` json DEFAULT NULL COMMENT '值',
             `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '删除标记(0:否,1:是)',
@@ -202,7 +202,7 @@
     <changeSet id="v0.4.0-20200411-001" author="Kelly" labels="eco">
         <comment>新增资源文件节点表</comment>
         <sql>
-            CREATE TABLE `vika_node_asset_file` (
+            CREATE TABLE `${table.prefix}node_asset_file` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对应的节点',
             `space_asset_id` bigint(20) DEFAULT NULL COMMENT '对应的空间附件',
@@ -218,7 +218,7 @@
     <changeSet id="v0.4.0-20200420-001" author="Kelly" labels="node">
         <comment>新增维格文稿表</comment>
         <sql>
-            CREATE TABLE `vika_doc` (
+            CREATE TABLE `${table.prefix}doc` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '对应的节点',
             `data` json DEFAULT NULL COMMENT '文稿内容',

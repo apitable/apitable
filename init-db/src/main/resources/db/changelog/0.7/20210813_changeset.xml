@@ -6,17 +6,17 @@
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="V0.7-20210813-001" author="Pengap" labels="social">
-        <comment>删除vika_social_tenant_domain表tenant_id字段</comment>
+        <comment>删除`${table.prefix}social_tenant_domain`表tenant_id字段</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_domain`
+            ALTER TABLE `${table.prefix}social_tenant_domain`
             DROP COLUMN `tenant_id`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.7-20210813-002" author="Pengap" labels="social">
-        <comment>添加vika_social_tenant_domain表domain_prefix字段</comment>
+        <comment>添加`${table.prefix}social_tenant_domain`表domain_prefix字段</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_domain`
+            ALTER TABLE `${table.prefix}social_tenant_domain`
             ADD COLUMN `domain_prefix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业专属域名前缀' AFTER `space_id`;
         </sql>
     </changeSet>

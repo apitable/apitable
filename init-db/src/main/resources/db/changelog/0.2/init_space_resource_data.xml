@@ -10,10 +10,10 @@
         <sqlFile path="db/changelog/0.2/space_resource_data.sql"/>
         <rollback>
             <!--删除数据-->
-            <delete tableName="vika_space_menu"/>
-            <delete tableName="vika_space_menu_resource_rel"/>
-            <delete tableName="vika_space_resource"/>
-            <delete tableName="vika_space_resource_group"/>
+            <delete tableName="${table.prefix}space_menu"/>
+            <delete tableName="${table.prefix}space_menu_resource_rel"/>
+            <delete tableName="${table.prefix}space_resource"/>
+            <delete tableName="${table.prefix}space_resource_group"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

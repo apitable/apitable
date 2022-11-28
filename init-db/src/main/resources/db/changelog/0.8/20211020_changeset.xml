@@ -8,7 +8,7 @@
     <changeSet id="V0.8-20211020-001" author="Mayne" labels="automation">
         <comment>新建 automation robot 运行历史表</comment>
         <sql>
-            CREATE TABLE `vika_automation_run_history`
+            CREATE TABLE `${table.prefix}automation_run_history`
             (
                 `id`          bigint(20) UNSIGNED                                          NOT NULL COMMENT '主键',
                 `task_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义运行任务ID',

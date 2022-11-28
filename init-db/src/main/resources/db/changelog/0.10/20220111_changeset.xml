@@ -7,7 +7,7 @@
     <changeSet id="V0.10-20220111-001" author="Shawn" labels="apps">
         <comment>应用商店-新增应用实例表</comment>
         <sql>
-            CREATE TABLE `vika_app_instance`
+            CREATE TABLE `${table.prefix}app_instance`
             (
                 `id`              bigint(20) unsigned NOT NULL COMMENT '主键',
                 `app_id`          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商店应用ID',

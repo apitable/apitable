@@ -1,5 +1,5 @@
 -- 开放者平台表
-CREATE TABLE `vika_developer`
+CREATE TABLE `${table.prefix}developer`
 (
     `id`         bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `user_id`    bigint(20) unsigned                                          NOT NULL COMMENT '用户ID',

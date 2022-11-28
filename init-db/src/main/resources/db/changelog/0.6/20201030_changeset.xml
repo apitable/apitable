@@ -7,7 +7,7 @@
     <changeSet id="V0.6-20201030-001" author="Chambers" labels="space">
         <comment>修改工作空间申请表失效原因字段的注释，与邀请记录审计表受邀类型统一</comment>
         <sql>
-            ALTER TABLE `vika_space_apply`
+            ALTER TABLE `${table.prefix}space_apply`
             MODIFY COLUMN `failure_reason` tinyint(2) UNSIGNED NULL DEFAULT NULL COMMENT '失效原因(0:邮箱邀请;1:通讯录导入;2:邀请链接)' AFTER `status`;
         </sql>
     </changeSet>

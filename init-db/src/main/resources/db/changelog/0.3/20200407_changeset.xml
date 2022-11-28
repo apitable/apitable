@@ -7,7 +7,7 @@
     <changeSet id="V0.3-20200407-001" author="ZoeZheng" labels="build">
         <comment>客户端版本发布表</comment>
         <sql>
-            CREATE TABLE `vika_client_release_version` (
+            CREATE TABLE `${table.prefix}client_release_version` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `version` varchar(50) NOT NULL  COMMENT '版本号',
             `describe` varchar(255) NOT NULL  COMMENT '版本描述',
@@ -19,28 +19,28 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='版本发布表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_client_release_version"/>
+            <dropTable tableName="${table.prefix}client_release_version"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.3-20200407-002" author="ZoeZheng" labels="build">
         <comment>维格数表版本发布表修改字段</comment>
         <sql>
-            ALTER TABLE vika_client_release_version change  `describe`  `description`  varchar(255) not null comment '版本描述';
+            ALTER TABLE ${table.prefix}client_release_version change  `describe`  `description`  varchar(255) not null comment '版本描述';
         </sql>
     </changeSet>
 
     <changeSet id="V0.3-20200407-003" author="ZoeZheng" labels="build">
         <comment>维格数表版本发布表</comment>
         <sql>
-            ALTER TABLE vika_client_release_version add COLUMN `publish_user` varchar(50)  NOT NULL  COMMENT '版本发布用户' AFTER `description`;
+            ALTER TABLE ${table.prefix}client_release_version add COLUMN `publish_user` varchar(50)  NOT NULL  COMMENT '版本发布用户' AFTER `description`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.3-20200407-004" author="Shawn" labels="build">
         <comment>修改用户表的mobile字段为可空</comment>
         <sql>
-            ALTER TABLE `vika_user` MODIFY COLUMN `mobile_phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '手机号码' AFTER `nick_name`;
+            ALTER TABLE `${table.prefix}user` MODIFY COLUMN `mobile_phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '手机号码' AFTER `nick_name`;
         </sql>
     </changeSet>
 </databaseChangeLog>

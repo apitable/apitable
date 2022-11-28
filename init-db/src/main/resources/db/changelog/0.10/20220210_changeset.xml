@@ -7,7 +7,7 @@
     <changeSet id="V0.10-20220210-001" author="刘斌华" labels="WeCom">
         <comment>第三方平台集成-企业微信租户用户表增加 OpenUserId</comment>
         <sql>
-            alter table `vika_social_cp_tenant_user`
+            alter table `${table.prefix}social_cp_tenant_user`
             add column `cp_open_user_id` varchar(255) null comment '第三方平台全局 OpenUserId 平台唯一' after `cp_user_id`;
         </sql>
     </changeSet>

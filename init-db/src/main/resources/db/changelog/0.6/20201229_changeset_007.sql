@@ -1,4 +1,4 @@
-CREATE TABLE `vika_social_user`
+CREATE TABLE `${table.prefix}social_user`
 (
     `id`         bigint(20) unsigned                                           NOT NULL COMMENT '主键',
     `union_id`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户在平台唯一标识',

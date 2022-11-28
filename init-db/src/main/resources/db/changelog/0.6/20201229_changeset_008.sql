@@ -1,4 +1,4 @@
-CREATE TABLE `vika_social_user_bind`
+CREATE TABLE `${table.prefix}social_user_bind`
 (
     `id`         bigint(20) unsigned                                           NOT NULL COMMENT '主键',
     `user_id`    bigint(20) unsigned                                           NOT NULL COMMENT '维格用户ID',

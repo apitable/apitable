@@ -8,7 +8,7 @@
     <changeSet id="V0.8-20211029-001" author="Chambers" labels="asset">
         <comment>资源审核表表增加 file_url 索引</comment>
         <sql>
-            ALTER TABLE `vika_asset_audit`
+            ALTER TABLE `${table.prefix}asset_audit`
             ADD INDEX `idx_file_url`(`asset_file_url`) USING BTREE;
         </sql>
     </changeSet>
@@ -16,7 +16,7 @@
     <changeSet id="V0.8-20211029-002" author="HumphreyHu" labels="labs">
         <comment>修改实验性功能申请表 created_by 的数据类型</comment>
         <sql>
-            ALTER TABLE `vika_labs_applicant`
+            ALTER TABLE `${table.prefix}labs_applicant`
             MODIFY COLUMN `created_by` bigint(20) NOT NULL COMMENT '申请创建人'
         </sql>
     </changeSet>

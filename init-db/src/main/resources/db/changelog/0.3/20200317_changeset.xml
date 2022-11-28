@@ -8,7 +8,7 @@
     <changeSet id="V0.3-20200317-001" author="ShawnDeng" labels="node">
         <comment>创建工作台-节点分享设置表</comment>
         <sql>
-            CREATE TABLE `vika_node_share_setting`  (
+            CREATE TABLE `${table.prefix}node_share_setting`  (
             `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
             `node_id` varchar(50) NOT NULL COMMENT '节点ID',
             `share_id` varchar(64) NULL COMMENT '分享唯一ID',
@@ -21,14 +21,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点分享设置表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_share_setting"/>
+            <dropTable tableName="${table.prefix}node_share_setting"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.3-20200317-002" author="ShawnDeng" labels="node">
         <comment>创建工作台-节点分享设置操作记录表</comment>
         <sql>
-            CREATE TABLE `vika_node_share_operate`  (
+            CREATE TABLE `${table.prefix}node_share_operate`  (
             `id` bigint(20) UNSIGNED NOT NULL COMMENT '主键',
             `share_id` varchar(64) NOT NULL COMMENT '节点分享唯一编码',
             `operate_event` tinyint(2) UNSIGNED NOT NULL COMMENT '操作事件类型(0:开启分享,1:关闭分享,2:开启转存,3:关闭转存,4:刷新链接)',
@@ -38,14 +38,14 @@
             )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT = '工作台-节点分享设置操作记录表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_share_operate"/>
+            <dropTable tableName="${table.prefix}node_share_operate"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.3-20200317-003" author="Chambers" labels="node">
         <comment>创建节点描述表</comment>
         <sql>
-            CREATE TABLE `vika_node_desc` (
+            CREATE TABLE `${table.prefix}node_desc` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义节点ID',
             `description` text COLLATE utf8mb4_unicode_ci COMMENT '节点描述',
@@ -56,14 +56,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点描述表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_desc"/>
+            <dropTable tableName="${table.prefix}node_desc"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.3-20200317-004" author="Chambers" labels="space">
         <comment>创建空间公开邀请链接表</comment>
         <sql>
-            CREATE TABLE `vika_space_invite_link` (
+            CREATE TABLE `${table.prefix}space_invite_link` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',
             `team_id` bigint(20) NOT NULL COMMENT '部门ID(关联#vika_unit_team#id)',
@@ -78,14 +78,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作空间-公开邀请链接';
         </sql>
         <rollback>
-            <dropTable tableName="vika_space_invite_link"/>
+            <dropTable tableName="${table.prefix}space_invite_link"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.3-20200317-005" author="Chambers" labels="audit">
         <comment>创建审计-邀请记录</comment>
         <sql>
-            CREATE TABLE `vika_audit_invite_record` (
+            CREATE TABLE `${table.prefix}audit_invite_record` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[冗余]空间ID(关联#vika_space#space_id)',
             `inviter` bigint(20) NOT NULL COMMENT '邀请者成员ID(关联#vika_unit_member#id)',
@@ -96,7 +96,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='审计-邀请记录';
         </sql>
         <rollback>
-            <dropTable tableName="vika_audit_invite_record"/>
+            <dropTable tableName="${table.prefix}audit_invite_record"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

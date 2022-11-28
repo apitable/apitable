@@ -8,7 +8,7 @@
     <changeSet id="V0.8-20211015-001" author="Zoe" labels="user">
         <comment>users表新增language字段</comment>
         <sql>
-            ALTER TABLE `vika_user` ADD COLUMN `locale` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言' AFTER remark;
+            ALTER TABLE `${table.prefix}user` ADD COLUMN `locale` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言' AFTER remark;
         </sql>
     </changeSet>
 

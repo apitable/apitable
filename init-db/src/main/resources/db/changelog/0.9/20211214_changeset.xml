@@ -7,19 +7,19 @@
     <changeSet id="V0.9-20211214-001" author="Shawn" labels="eco">
         <comment>bundle表允许base_plan_name为空</comment>
         <sql>
-            ALTER TABLE `vika_economic_bundle` MODIFY COLUMN `base_plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '基础产品订阅计划' AFTER `bundle_id`;
+            ALTER TABLE `${table.prefix}economic_bundle` MODIFY COLUMN `base_plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '基础产品订阅计划' AFTER `bundle_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.9-20211214-002" author="Shawn" labels="eco">
         <comment>subscription表允许plan_id为空</comment>
         <sql>
-            ALTER TABLE `vika_economic_subscription` MODIFY COLUMN `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '计划标识' AFTER `subscription_id`;
+            ALTER TABLE `${table.prefix}economic_subscription` MODIFY COLUMN `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '计划标识' AFTER `subscription_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.9-20211214-003" author="Shawn" labels="eco">
         <comment>增加经济系统模块的标签表</comment>
         <sql>
-            CREATE TABLE `vika_economic_tag`
+            CREATE TABLE `${table.prefix}economic_tag`
             (
                 `id`          bigint unsigned NOT NULL COMMENT '主键',
                 `tag_id`      varchar(100) COLLATE utf8mb4_unicode_ci                      NOT NULL COMMENT '标签标识',
@@ -37,7 +37,7 @@
     <changeSet id="V0.9-20211214-004" author="Shawn" labels="eco">
         <comment>经济系统标签表增加object_id索引</comment>
         <sql>
-            ALTER TABLE `vika_economic_tag` ADD INDEX `idx_object_id`(`object_id`) USING BTREE COMMENT '对象标识唯一';
+            ALTER TABLE `${table.prefix}economic_tag` ADD INDEX `idx_object_id`(`object_id`) USING BTREE COMMENT '对象标识唯一';
         </sql>
     </changeSet>
 </databaseChangeLog>

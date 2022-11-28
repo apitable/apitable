@@ -7,7 +7,7 @@
     <changeSet id="V0.6-20210121-001" author="Chambers" labels="workbench">
         <comment>资源操作变更合集表，字段 resource_id 设置为非空</comment>
         <sql>
-            ALTER TABLE `vika_resource_changeset`
+            ALTER TABLE `${table.prefix}resource_changeset`
             MODIFY COLUMN `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT
             '资源ID(node_id/widget_id/..)' AFTER `id`;
         </sql>
@@ -15,7 +15,7 @@
     <changeSet id="V0.6-20210121-002" author="Chambers" labels="workbench">
         <comment>资源操作变更合集表，字段 message_id 设置为非空</comment>
         <sql>
-            ALTER TABLE `vika_resource_changeset`
+            ALTER TABLE `${table.prefix}resource_changeset`
             MODIFY COLUMN `message_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT
             'changeset请求的唯一标识，用于保证changeset的唯一' AFTER `resource_type`;
         </sql>

@@ -8,7 +8,7 @@
     <changeSet id="V0.12-20220314-001" author="Pengap" labels="social">
         <comment>第三方平台集成-企业租户专属域名表增加空间ID索引</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_domain`
+            ALTER TABLE `${table.prefix}social_tenant_domain`
             ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
         </sql>
     </changeSet>

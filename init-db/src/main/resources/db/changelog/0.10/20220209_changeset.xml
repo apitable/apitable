@@ -7,7 +7,7 @@
     <changeSet id="V0.10-20220209-002" author="shawn" labels="social">
         <comment>增加部门绑定open_department_id</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_department_bind`
+            ALTER TABLE `${table.prefix}social_tenant_department_bind`
                 ADD COLUMN `tenant_open_department_id` varchar(255) NULL COMMENT '租户下的部门开放唯一标识' AFTER `tenant_department_id`;
         </sql>
     </changeSet>

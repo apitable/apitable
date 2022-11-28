@@ -7,13 +7,13 @@
     <changeSet id="V0.6-20210111-001" author="Chambers" labels="widget">
         <comment>组件表删除字段数表ID</comment>
         <sql>
-            ALTER TABLE `vika_widget` DROP COLUMN `dst_id`;
+            ALTER TABLE `${table.prefix}widget` DROP COLUMN `dst_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20210111-002" author="Chambers" labels="widget">
         <comment>组件表增加节点ID索引</comment>
         <sql>
-            ALTER TABLE `vika_widget` ADD INDEX `k_node_id`(`node_id`) USING BTREE;
+            ALTER TABLE `${table.prefix}widget` ADD INDEX `k_node_id`(`node_id`) USING BTREE;
         </sql>
     </changeSet>
 </databaseChangeLog>

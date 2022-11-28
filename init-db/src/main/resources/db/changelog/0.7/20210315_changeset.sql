@@ -1,4 +1,4 @@
-CREATE TABLE `vika_control`
+CREATE TABLE `${table.prefix}control`
 (
     `id`           bigint(20) unsigned                                           NOT NULL COMMENT '主键',
     `space_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '空间ID',

@@ -1,4 +1,4 @@
-CREATE TABLE `vika_kb_account_user`
+CREATE TABLE `${table.prefix}kb_account_user`
 (
     `id`            bigint(20)                                                   NOT NULL COMMENT '主键',
     `user_id`       bigint(20)                                                   NOT NULL COMMENT '维格用户ID',

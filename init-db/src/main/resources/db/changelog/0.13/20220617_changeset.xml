@@ -7,7 +7,7 @@
     <changeSet id="V0.13-20220617-001" author="Shawn" labels="billing">
         <comment>bundle_history更改字段类型</comment>
         <sql>
-            ALTER TABLE `vika_billing_bundle_history` 
+            ALTER TABLE `${table.prefix}billing_bundle_history`
                 MODIFY COLUMN `change_type` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '变更类型' AFTER `target_row_id`;
         </sql>
     </changeSet>
@@ -15,7 +15,7 @@
     <changeSet id="V0.13-20220617-002" author="Shawn" labels="billing">
         <comment>subscription_history更改字段类型</comment>
         <sql>
-            ALTER TABLE `vika_billing_subscription_history` 
+            ALTER TABLE `${table.prefix}billing_subscription_history`
                 MODIFY COLUMN `change_type` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '变更类型' AFTER `target_row_id`;
         </sql>
     </changeSet>

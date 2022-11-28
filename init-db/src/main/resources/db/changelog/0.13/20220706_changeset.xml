@@ -7,7 +7,7 @@
     <changeSet id="V0.13-20220706-001" author="刘斌华" labels="企微接口许可">
         <comment>企微服务商接口许可下单信息</comment>
         <sql>
-            CREATE TABLE `vika_social_wecom_permit_order`
+            CREATE TABLE `${table.prefix}social_wecom_permit_order`
             (
                 `id`                     bigint(20) unsigned NOT NULL COMMENT '主键 ID',
                 `suite_id`               varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
@@ -35,7 +35,7 @@
     <changeSet id="V0.13-20220706-002" author="刘斌华" labels="企微接口许可">
         <comment>企微服务商接口许可账号信息</comment>
         <sql>
-            CREATE TABLE `vika_social_wecom_permit_order_account`
+            CREATE TABLE `${table.prefix}social_wecom_permit_order_account`
             (
                 `id`              bigint(20) unsigned NOT NULL COMMENT '主键 ID',
                 `suite_id`        varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
@@ -59,7 +59,7 @@
     <changeSet id="V0.13-20220706-003" author="刘斌华" labels="企微接口许可">
         <comment>企微服务商接口许可账号绑定信息</comment>
         <sql>
-            CREATE TABLE `vika_social_wecom_permit_order_account_bind`
+            CREATE TABLE `${table.prefix}social_wecom_permit_order_account_bind`
             (
                 `id`           bigint(20) unsigned NOT NULL COMMENT '主键 ID',
                 `suite_id`     varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',

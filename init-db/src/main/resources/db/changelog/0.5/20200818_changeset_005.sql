@@ -1,4 +1,4 @@
-CREATE TABLE `vika_code`
+CREATE TABLE `${table.prefix}code`
 (
     `id`              bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `type`            tinyint(2) unsigned                                          NOT NULL COMMENT '类型(0:官方邀请码;1:个人邀请码;2:兑换码)',

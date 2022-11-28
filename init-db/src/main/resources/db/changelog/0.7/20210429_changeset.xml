@@ -6,7 +6,7 @@
     <changeSet id="V0.7-20210429-001" author="Chambers" labels="space">
         <comment>空间表字段数据汇总</comment>
         <sql>
-            UPDATE vika_space
+            UPDATE ${table.prefix}space
             SET props = JSON_SET(props, '$.invitable', is_invite, '$.joinable',
             allow_apply, '$.nodeExportable', IF(is_forbid, 0, 1)),
             updated_at = updated_at;

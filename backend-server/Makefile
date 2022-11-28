@@ -26,17 +26,17 @@ _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
 _test_dockers: ## run depends container in test step
-	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
-	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-mongo-$${CI_GROUP_TAG:-0} test-mongo
-	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
-	docker-compose -f ../docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
+	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-mongo-$${CI_GROUP_TAG:-0} test-mongo
+	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
+	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 
 _test_init_db: ## Initialize the database in test step
-	docker-compose -f ../docker-compose-unit-test.yml pull test-initdb
-	docker-compose -f ../docker-compose-unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
+	docker-compose -f ../docker-compose.unit-test.yml pull test-initdb
+	docker-compose -f ../docker-compose.unit-test.yml run --rm -e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} test-initdb
 
 _test_unit_test: ## unittest and codecov upload
-	docker-compose -f ../docker-compose-unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
+	docker-compose -f ../docker-compose.unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
 		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
 		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
 		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \

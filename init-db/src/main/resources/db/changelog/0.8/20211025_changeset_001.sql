@@ -1,4 +1,4 @@
-CREATE TABLE `vika_labs_applicant`
+CREATE TABLE `${table.prefix}labs_applicant`
 (
    `id`             bigint(20) unsigned NOT NULL                                                       COMMENT '主键',
    `applicant_type` tinyint(2) unsigned NOT NULL                                                       COMMENT '申请者类型(0:user_feature, 1:space_feature)',

@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210401-001" author="Benson" labels="markplace">
         <comment>新增应用开通记录表</comment>
         <sql>
-            CREATE TABLE `vika_marketplace_space_app_rel` (
+            CREATE TABLE `${table.prefix}marketplace_space_app_rel` (
             `id` bigint unsigned NOT NULL COMMENT '主键',
             `app_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',

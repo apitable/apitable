@@ -1,4 +1,4 @@
-CREATE TABLE `vika_marketplace_sku`
+CREATE TABLE `${table.prefix}marketplace_sku`
 (
     `id`         bigint(20) unsigned NOT NULL COMMENT '主键',
     `type`       tinyint(2) unsigned NOT NULL COMMENT '0:Template模板，1:Applet云程序',

@@ -1,4 +1,4 @@
-CREATE TABLE `vika_player_notification`
+CREATE TABLE `${table.prefix}player_notification`
 (
     `id`          bigint(20) UNSIGNED NOT NULL COMMENT '主键',
     `space_id`    varchar(32)                  DEFAULT NULL COMMENT '空间ID',

@@ -7,28 +7,28 @@
     <changeSet id="V0.5-20200928-001" author="Chambers" labels="base">
         <comment>基础资源表新增bucket字段</comment>
         <sql>
-            ALTER TABLE `vika_asset`
+            ALTER TABLE `${table.prefix}asset`
             ADD COLUMN `bucket` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '存储桶标志' AFTER `head_sum`;
         </sql>
     </changeSet>
     <changeSet id="V0.5-20200928-002" author="Chambers" labels="base">
         <comment>基础资源表新增mime_type字段</comment>
         <sql>
-            ALTER TABLE `vika_asset`
+            ALTER TABLE `${table.prefix}asset`
             ADD COLUMN `mime_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'MimeType' AFTER `file_url`;
         </sql>
     </changeSet>
     <changeSet id="V0.5-20200928-003" author="Chambers" labels="base">
         <comment>基础资源表新增pre_view字段</comment>
         <sql>
-            ALTER TABLE `vika_asset`
+            ALTER TABLE `${table.prefix}asset`
             ADD COLUMN `preview` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '预览图令牌' AFTER `extension_name`;
         </sql>
     </changeSet>
     <changeSet id="V0.5-20200928-004" author="Chambers" labels="unit">
         <comment>成员表新增名称修改标志</comment>
         <sql>
-            ALTER TABLE `vika_unit_member`
+            ALTER TABLE `${table.prefix}unit_member`
             ADD COLUMN `name_modified` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '成员名称是否被指定修改过标志(0:否,1:是)' AFTER `status`;
         </sql>
     </changeSet>

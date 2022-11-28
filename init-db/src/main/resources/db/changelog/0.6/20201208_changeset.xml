@@ -7,35 +7,35 @@
     <changeSet id="V0.6-20201208-001" author="Chambers" labels="third_party">
         <comment>微信公众号日志表，scene 字段增加长度</comment>
         <sql>
-            ALTER TABLE `vika_wechat_mp_log`
+            ALTER TABLE `${table.prefix}wechat_mp_log`
             MODIFY COLUMN `scene` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '场景值' AFTER `event_type`;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20201208-002" author="Chambers" labels="node">
         <comment>节点角色权限设置表，新增唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_node_permission`
+            ALTER TABLE `${table.prefix}node_permission`
             ADD UNIQUE INDEX `uk_node_unit_role`(`node_id`, `unit_id`, `role_code`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20201208-003" author="Chambers" labels="node">
         <comment>节点角色权限设置表，删除索引 k_node_id</comment>
         <sql>
-            ALTER TABLE `vika_node_permission`
+            ALTER TABLE `${table.prefix}node_permission`
             DROP INDEX `k_node_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20201208-004" author="Chambers" labels="node">
         <comment>节点角色权限设置表，删除索引 k_unit_id</comment>
         <sql>
-            ALTER TABLE `vika_node_permission`
+            ALTER TABLE `${table.prefix}node_permission`
             DROP INDEX `k_unit_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20201208-005" author="Chambers" labels="node">
         <comment>节点角色权限设置表，删除索引 k_role_code</comment>
         <sql>
-            ALTER TABLE `vika_node_permission`
+            ALTER TABLE `${table.prefix}node_permission`
             DROP INDEX `k_role_code`;
         </sql>
     </changeSet>

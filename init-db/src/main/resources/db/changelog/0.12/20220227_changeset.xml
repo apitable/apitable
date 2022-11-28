@@ -7,7 +7,7 @@
     <changeSet id="V0.12-20220227-001" author="Zoe" labels="order">
         <comment>经济系统-订单表-修改产品类型字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` MODIFY COLUMN `product` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品类型';
+            ALTER TABLE `${table.prefix}economic_order` MODIFY COLUMN `product` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品类型';
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -7,14 +7,14 @@
     <changeSet id="V0.6-20210223-001" author="Chambers" labels="third_party">
         <comment>微信公众号日志表，scene 字段增加长度</comment>
         <sql>
-            ALTER TABLE `vika_wechat_mp_log`
+            ALTER TABLE `${table.prefix}wechat_mp_log`
             MODIFY COLUMN `scene` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '场景值' AFTER `event_type`;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20210223-002" author="Chambers" labels="third_party">
         <comment>用户第三方平台关联表，type 字段补充备注</comment>
         <sql>
-            ALTER TABLE `vika_user_link`
+            ALTER TABLE `${table.prefix}user_link`
             MODIFY COLUMN `type` tinyint(2) UNSIGNED NULL DEFAULT 1 COMMENT '第三方类型(0:钉钉;1:微信;2:QQ;3:飞书)' AFTER `nick_name`;
         </sql>
     </changeSet>

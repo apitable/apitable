@@ -7,7 +7,7 @@
     <changeSet id="V0.6-20210125-001" author="Zoe" labels="space">
         <comment>修改vika_space_asset中type备注</comment>
         <sql>
-            ALTER TABLE `vika_space_asset`
+            ALTER TABLE `${table.prefix}space_asset`
             MODIFY COLUMN `type` tinyint(2) unsigned NOT NULL COMMENT '类型 (0:用户头像1:空间logo2:数表附件3:缩略图4:节点描述图)';
         </sql>
     </changeSet>

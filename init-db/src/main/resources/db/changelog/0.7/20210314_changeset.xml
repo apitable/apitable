@@ -7,28 +7,28 @@
     <changeSet id="V0.7-20210314-001" author="Chambers" labels="datasheet">
         <comment>修改记录资源表的dst_id为非空</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_record_source`
+            ALTER TABLE `${table.prefix}datasheet_record_source`
             MODIFY COLUMN `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)' AFTER `id`;
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210314-002" author="Chambers" labels="datasheet">
         <comment>修改记录资源表的record_id为</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_record_source`
+            ALTER TABLE `${table.prefix}datasheet_record_source`
             MODIFY COLUMN `record_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据记录ID(关联#vika_datasheet_record#record_id)' AFTER `dst_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210314-003" author="Chambers" labels="datasheet">
         <comment>修改记录资源表的source_id为非空</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_record_source`
+            ALTER TABLE `${table.prefix}datasheet_record_source`
             MODIFY COLUMN `source_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '来源ID' AFTER `record_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210314-004" author="Chambers" labels="datasheet">
         <comment>修改记录资源表的type注释</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_record_source`
+            ALTER TABLE `${table.prefix}datasheet_record_source`
             MODIFY COLUMN `type` tinyint(2) UNSIGNED NOT NULL COMMENT '数据来源类型(0:收集表;1:API)' AFTER `source_id`;
         </sql>
     </changeSet>

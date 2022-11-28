@@ -1,4 +1,4 @@
-CREATE TABLE `vika_player_answer`
+CREATE TABLE `${table.prefix}player_answer`
 (
     `id`            bigint(20) unsigned                                           NOT NULL COMMENT '主键',
     `question_id`   int(10)                                                       NOT NULL COMMENT '问题ID',

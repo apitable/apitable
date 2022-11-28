@@ -7,7 +7,7 @@
     <changeSet id="V0.10-20220218-001" author="shawn" labels="order">
         <comment>计费系统-增加支付订单表</comment>
         <sql>
-            CREATE TABLE `vika_economic_order_payment` (
+            CREATE TABLE `${table.prefix}economic_order_payment` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间站ID',
             `order_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单号',
@@ -33,12 +33,12 @@
     <changeSet id="V0.10-20220218-002" author="shawn" labels="order">
         <comment>计费系统-订单表增加订单号索引</comment>
         <sql>
-            alter table `vika_economic_order` ADD UNIQUE INDEX `uk_order_no`(`order_no`) USING BTREE;
+            alter table `${table.prefix}economic_order` ADD UNIQUE INDEX `uk_order_no`(`order_no`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220218-003" author="shawn" labels="order">
         <comment>计费系统-订单表增加空间id索引</comment>
         <sql>
-            alter table `vika_economic_order` ADD INDEX `k_space_id`(`space_id`) USING BTREE;        </sql>
+            alter table `${table.prefix}economic_order` ADD INDEX `k_space_id`(`space_id`) USING BTREE;        </sql>
     </changeSet>
 </databaseChangeLog>

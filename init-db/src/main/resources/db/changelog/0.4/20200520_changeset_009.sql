@@ -1,4 +1,4 @@
-CREATE TABLE `vika_marketplace_product`
+CREATE TABLE `${table.prefix}marketplace_product`
 (
     `id`          bigint(20) unsigned NOT NULL COMMENT '主键',
     `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品名称',

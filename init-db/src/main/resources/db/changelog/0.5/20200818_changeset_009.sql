@@ -1,4 +1,4 @@
-CREATE TABLE `vika_wechat_mp_log`
+CREATE TABLE `${table.prefix}wechat_mp_log`
 (
     `id`           bigint(20) unsigned NOT NULL COMMENT '主键',
     `app_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '应用 appid',

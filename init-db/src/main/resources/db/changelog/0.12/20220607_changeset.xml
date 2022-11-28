@@ -8,7 +8,7 @@
     <changeSet id="V0.12-20220607-001" author="Chambers" labels="developer">
         <comment>新增API每日统计表</comment>
         <sql>
-            CREATE TABLE `vika_api_statistics_daily`
+            CREATE TABLE `${table.prefix}api_statistics_daily`
             (
                 `id`              bigint unsigned NOT NULL COMMENT '主键',
                 `space_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '空间ID(关联#vika_space#space_id)',
@@ -26,7 +26,7 @@
     <changeSet id="V0.12-20220607-002" author="Chambers" labels="developer">
         <comment>新增API月度统计表</comment>
         <sql>
-            CREATE TABLE `vika_api_statistics_monthly`
+            CREATE TABLE `${table.prefix}api_statistics_monthly`
             (
                 `id`              bigint unsigned NOT NULL COMMENT '主键',
                 `space_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '空间ID(关联#vika_space#space_id)',

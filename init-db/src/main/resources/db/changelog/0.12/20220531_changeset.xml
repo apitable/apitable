@@ -8,7 +8,7 @@
     <changeSet id="V0.12-20220531-001" author="Chambers" labels="base">
         <comment>新增系统配置表</comment>
         <sql>
-            CREATE TABLE `vika_system_config`
+            CREATE TABLE `${table.prefix}system_config`
             (
                 `id`         bigint unsigned NOT NULL COMMENT '主键',
                 `type`       tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '类型(0:引导配置;1:模板中心热门推荐)',
@@ -27,7 +27,7 @@
     <changeSet id="V0.12-20220531-002" author="Chambers" labels="template">
         <comment>模版属性表新增字段i18n_name</comment>
         <sql>
-            ALTER TABLE `vika_template_property`
+            ALTER TABLE `${table.prefix}template_property`
                 ADD COLUMN `i18n_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'zh_CN' COMMENT 'i18n键' AFTER `property_code`;
         </sql>
     </changeSet>
@@ -35,7 +35,7 @@
     <changeSet id="V0.12-20220531-003" author="Chambers" labels="template">
         <comment>模版属性关联表新增字段property_code</comment>
         <sql>
-            ALTER TABLE `vika_template_property_rel`
+            ALTER TABLE `${table.prefix}template_property_rel`
                 ADD COLUMN `property_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '属性code' AFTER `property_id`;
         </sql>
     </changeSet>
@@ -43,7 +43,7 @@
     <changeSet id="V0.12-20220531-004" author="Chambers" labels="template">
         <comment>模版属性关联表新增property_code字段索引</comment>
         <sql>
-            ALTER TABLE `vika_template_property_rel`
+            ALTER TABLE `${table.prefix}template_property_rel`
                 ADD INDEX `idx_property_code`(`property_code`) USING BTREE;
         </sql>
     </changeSet>
@@ -51,7 +51,7 @@
     <changeSet id="V0.12-20220531-005" author="Chambers" labels="template">
         <comment>模版属性关联表删除property_id字段索引</comment>
         <sql>
-            ALTER TABLE `vika_template_property_rel`
+            ALTER TABLE `${table.prefix}template_property_rel`
             DROP INDEX `idx_property_id`;
         </sql>
     </changeSet>

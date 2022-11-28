@@ -1,4 +1,4 @@
-CREATE TABLE `vika_social_tenant_bind`
+CREATE TABLE `${table.prefix}social_tenant_bind`
 (
     `id`                   bigint(20) unsigned                     NOT NULL COMMENT '主键',
     `space_id`             varchar(50) COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '维格空间站ID',

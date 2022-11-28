@@ -7,7 +7,7 @@
     <changeSet id="V0.8-20211101-001" author="HumphreyHu" labels="labs">
         <comment>为实验性功能申请表中is_deleted字段新增默认值</comment>
         <sql>
-            ALTER TABLE `vika_labs_applicant`
+            ALTER TABLE `${table.prefix}labs_applicant`
                 MODIFY COLUMN `is_deleted` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记(0:否, 1:是)' AFTER `feature_key`;
         </sql>
     </changeSet>
@@ -15,7 +15,7 @@
     <changeSet id="V0.8-20211101-002" author="HumphreyHu" labels="labs">
         <comment>为实验性功能表is_deleted字段新增默认值</comment>
         <sql>
-            ALTER TABLE `vika_labs_features`
+            ALTER TABLE `${table.prefix}labs_features`
                 MODIFY COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记(0:否, 1:是)' AFTER `url`;
         </sql>
     </changeSet>
@@ -23,7 +23,7 @@
     <changeSet id="V0.8-20211101-003" author="Chambers" labels="vcode">
         <comment>V码表增加 ref_id 索引</comment>
         <sql>
-            ALTER TABLE `vika_code`
+            ALTER TABLE `${table.prefix}code`
             ADD INDEX `idx_ref_id`(`ref_id`) USING BTREE;
         </sql>
     </changeSet>

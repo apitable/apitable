@@ -8,7 +8,7 @@
     <changeSet id="V0.2-20200312-033" author="ShawnDeng" labels="user">
         <comment>创建用户表</comment>
         <sql>
-            CREATE TABLE `vika_user` (
+            CREATE TABLE `${table.prefix}user` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户ID',
             `nick_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '昵称',
@@ -28,14 +28,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_user"/>
+            <dropTable tableName="${table.prefix}user"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.2-20200312-034" author="ShawnDeng" labels="user">
         <comment>创建用户第三方平台关联表</comment>
         <sql>
-            CREATE TABLE `vika_user_link` (
+            CREATE TABLE `${table.prefix}user_link` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID(关联#vika_user#id)',
             `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '开放应用内的唯一标识',
@@ -49,14 +49,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户第三方平台关联表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_user_link"/>
+            <dropTable tableName="${table.prefix}user_link"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.2-20200312-035" author="ShawnDeng" labels="user">
         <comment>创建用户微信授权管理表</comment>
         <sql>
-            CREATE TABLE `vika_wechat_auth_permission` (
+            CREATE TABLE `${table.prefix}wechat_auth_permission` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `auth_id` bigint(20) NOT NULL COMMENT '授权方ID(关联#vika_wechat_authorization#id)',
             `permission_id` bigint(20) NOT NULL COMMENT '权限集ID',
@@ -66,14 +66,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户微信授权管理表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_wechat_auth_permission"/>
+            <dropTable tableName="${table.prefix}wechat_auth_permission"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.2-20200312-036" author="ShawnDeng" labels="user">
         <comment>创建用户表</comment>
         <sql>
-            CREATE TABLE `vika_wechat_authorization` (
+            CREATE TABLE `${table.prefix}wechat_authorization` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `authorizer_appid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '授权方 appid',
             `authorizer_access_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '接口调用令牌',
@@ -96,14 +96,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户微信授权方信息表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_wechat_authorization"/>
+            <dropTable tableName="${table.prefix}wechat_authorization"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.2-20200312-037" author="ShawnDeng" labels="user">
         <comment>创建用户微信信息表</comment>
         <sql>
-            CREATE TABLE `vika_wechat_member` (
+            CREATE TABLE `${table.prefix}wechat_member` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `open_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '微信用户的唯一标识',
             `union_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户在微信开放平台的唯一标识符',
@@ -125,7 +125,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户微信信息表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_wechat_member"/>
+            <dropTable tableName="${table.prefix}wechat_member"/>
         </rollback>
     </changeSet>
 

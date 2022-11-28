@@ -1,4 +1,4 @@
-CREATE TABLE `vika_datasheet_record_comment`
+CREATE TABLE `${table.prefix}datasheet_record_comment`
 (
     `id`          bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `dst_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数表ID',

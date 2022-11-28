@@ -7,7 +7,7 @@
     <changeSet id="V0.13-20220801-001" author="刘斌华" labels="企微服务商">
         <comment>企微服务商接口许可延时任务处理信息</comment>
         <sql>
-            CREATE TABLE `vika_social_wecom_permit_delay`
+            CREATE TABLE `${table.prefix}social_wecom_permit_delay`
             (
                 `id`              bigint(20) NOT NULL COMMENT '主键 ID',
                 `suite_id`        varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用套件 ID',
@@ -26,7 +26,7 @@
     <changeSet id="V0.13-20220801-002" author="刘斌华" labels="企微服务商">
         <comment>企微服务商接口许可延时任务处理信息</comment>
         <sql>
-            ALTER TABLE `vika_social_wecom_permit_delay`
+            ALTER TABLE `${table.prefix}social_wecom_permit_delay`
                 MODIFY COLUMN `process_status` tinyint(1) NOT NULL COMMENT '处理状态。0：待处理；1：已下单；2：已完成' AFTER `first_auth_time`;
         </sql>
     </changeSet>

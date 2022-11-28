@@ -7,14 +7,14 @@
     <changeSet id="V0.6-20210118-001" author="Chambers" labels="widget">
         <comment>数表组件关联表，增加唯一索引组件ID</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_widget`
+            ALTER TABLE `${table.prefix}datasheet_widget`
             ADD UNIQUE INDEX `uk_widget_id`(`widget_id`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.6-20210118-002" author="Chambers" labels="widget">
         <comment>数表组件关联表，删除索引组件ID</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_widget` DROP INDEX `k_widget_id`;
+            ALTER TABLE `${table.prefix}datasheet_widget` DROP INDEX `k_widget_id`;
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -7,14 +7,14 @@
     <changeSet id="V0.4-20200608-001" author="Shawn" labels="node">
         <comment>节点分享表增加允许编辑</comment>
         <sql>
-            ALTER TABLE `vika_node_share_setting`
+            ALTER TABLE `${table.prefix}node_share_setting`
             ADD COLUMN `allow_edit` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否允许他人编辑(0:否,1:是)' AFTER `allow_save`;
         </sql>
     </changeSet>
     <changeSet id="V0.4-20200608-002" author="Chambers" labels="player">
         <comment>新增玩家系统-活动表</comment>
         <sql>
-            CREATE TABLE `vika_player_activity` (
+            CREATE TABLE `${table.prefix}player_activity` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `user_id` bigint(20) NOT NULL COMMENT '用户ID(关联#vika_user#id)',
             `actions` json DEFAULT NULL COMMENT '动作集合体',

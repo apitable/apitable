@@ -8,7 +8,7 @@
     <changeSet id="V0.12-20220308-001" author="Shawn" labels="appstore">
         <comment>应用实例表增加app_key索引</comment>
         <sql>
-            ALTER TABLE `vika_app_instance`
+            ALTER TABLE `${table.prefix}app_instance`
                 ADD INDEX `k_app_key` (`app_key`) COMMENT '配置应用标识索引';
         </sql>
     </changeSet>

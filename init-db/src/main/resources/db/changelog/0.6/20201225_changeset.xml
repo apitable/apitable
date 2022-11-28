@@ -7,7 +7,7 @@
     <changeSet id="V0.6-20201225-001" author="Chambers" labels="widget">
         <comment>组件表，dst_id 字段取消设置为非空</comment>
         <sql>
-            ALTER TABLE `vika_widget`
+            ALTER TABLE `${table.prefix}widget`
             MODIFY COLUMN `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL
             COMMENT '数表ID(关联#vika_datasheet#dst_id)' AFTER `id`;
         </sql>
@@ -15,7 +15,7 @@
     <changeSet id="V0.6-20201225-002" author="Chambers" labels="widget">
         <comment>组件表，新增索引 idx_dst_id</comment>
         <sql>
-            ALTER TABLE `vika_widget`
+            ALTER TABLE `${table.prefix}widget`
             ADD INDEX `idx_dst_id`(`dst_id`) USING BTREE;
         </sql>
     </changeSet>

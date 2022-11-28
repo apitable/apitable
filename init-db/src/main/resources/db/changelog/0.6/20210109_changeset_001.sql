@@ -1,4 +1,4 @@
-CREATE TABLE `vika_datasheet_widget`
+CREATE TABLE `${table.prefix}datasheet_widget`
 (
     `id`         bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `space_id`   varchar(50) COLLATE utf8mb4_unicode_ci                       NOT NULL COMMENT '空间ID',

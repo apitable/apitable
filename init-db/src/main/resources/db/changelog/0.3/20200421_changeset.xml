@@ -7,7 +7,7 @@
     <changeSet id="V0.3-20200421-001" author="Shawn" labels="audit">
         <comment>系统级别审计表</comment>
         <sql>
-            CREATE TABLE `vika_audit_system` (
+            CREATE TABLE `${table.prefix}audit_system` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `user_id` bigint(20) NOT NULL COMMENT '用户ID(关联#vika_user#id)',
             `action` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户行为',
@@ -20,7 +20,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统行为审计表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_audit_system"/>
+            <dropTable tableName="${table.prefix}audit_system"/>
         </rollback>
     </changeSet>
 

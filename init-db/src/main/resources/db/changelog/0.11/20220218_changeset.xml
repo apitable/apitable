@@ -7,19 +7,19 @@
     <changeSet id="V0.11-20220218-001" author="Zoe" labels="social">
         <comment>基础-用户第三方平台关联表-新增索引</comment>
         <sql>
-            ALTER TABLE `vika_user_link` ADD INDEX `idx_open_id`(`open_id`, `type`) USING BTREE COMMENT 'openId索引';
+            ALTER TABLE `${table.prefix}user_link` ADD INDEX `idx_open_id`(`open_id`, `type`) USING BTREE COMMENT 'openId索引';
         </sql>
     </changeSet>
     <changeSet id="V0.11-20220218-002" author="zoe" labels="social">
         <comment>第三方平台集成-企业租户用户表-删除索引</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_user` DROP INDEX `uk_tenant_user`;
+            ALTER TABLE `${table.prefix}social_tenant_user` DROP INDEX `uk_tenant_user`;
         </sql>
     </changeSet>
     <changeSet id="V0.11-20220218-003" author="zoe" labels="social">
         <comment>第三方平台集成-企业租户用户表--添加唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_user`
+            ALTER TABLE `${table.prefix}social_tenant_user`
                 ADD UNIQUE INDEX uk_tenant_user (`tenant_id`, `open_id`, `union_id`, `app_id`);
         </sql>
     </changeSet>

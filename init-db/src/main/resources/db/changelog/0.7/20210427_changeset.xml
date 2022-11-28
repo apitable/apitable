@@ -6,7 +6,7 @@
     <changeSet id="V0.7-20210427-001" author="Chamber" labels="control">
         <comment>新增权限控制角色表</comment>
         <sql>
-            CREATE TABLE `vika_control_role`
+            CREATE TABLE `${table.prefix}control_role`
             (
             `id`         bigint(20) unsigned                                           NOT NULL COMMENT '主键',
             `control_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源控制标识',
@@ -26,21 +26,21 @@
     <changeSet id="V0.7-20210427-002" author="Chamber" labels="control">
         <comment>权限控制表删除唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_control`
+            ALTER TABLE `${table.prefix}control`
             DROP INDEX `uk_control_unit_role`;
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210427-003" author="Chamber" labels="control">
         <comment>权限控制表删除字段unit_id</comment>
         <sql>
-            ALTER TABLE `vika_control`
+            ALTER TABLE `${table.prefix}control`
             DROP COLUMN `unit_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210427-004" author="Chamber" labels="control">
         <comment>权限控制表删除字段role_code</comment>
         <sql>
-            ALTER TABLE `vika_control`
+            ALTER TABLE `${table.prefix}control`
             DROP COLUMN `role_code`;
         </sql>
     </changeSet>

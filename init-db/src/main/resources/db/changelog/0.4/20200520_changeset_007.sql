@@ -1,4 +1,4 @@
-CREATE TABLE `vika_template`
+CREATE TABLE `${table.prefix}template`
 (
     `id`            bigint(20) unsigned NOT NULL COMMENT '主键',
     `node_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '模板的本质是映射一个静态的node及其数据',

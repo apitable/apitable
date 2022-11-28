@@ -7,7 +7,7 @@
     <changeSet id="V0.13-20220725-001" author="Chambers" labels="node">
         <comment>节点分享表新增索引share_id</comment>
         <sql>
-            ALTER TABLE `vika_node_share_setting`
+            ALTER TABLE `${table.prefix}node_share_setting`
                 ADD INDEX `idx_share_id`(`share_id`) USING BTREE;
         </sql>
     </changeSet>
@@ -15,7 +15,7 @@
     <changeSet id="V0.13-20220725-002" author="Shawn" labels="social">
         <comment>节点分享表新增索引share_id</comment>
         <sql>
-            ALTER TABLE `vika_social_user_bind`
+            ALTER TABLE `${table.prefix}social_user_bind`
                 ADD INDEX `k_union_id`(`union_id` ASC) USING BTREE;
         </sql>
     </changeSet>
@@ -23,7 +23,7 @@
     <changeSet id="V0.13-20220725-003" author="Shawn" labels="social">
         <comment>节点分享表新增索引share_id</comment>
         <sql>
-            ALTER TABLE `vika_control_role`
+            ALTER TABLE `${table.prefix}control_role`
                 ADD INDEX `k_unit_id`(`unit_id`) USING BTREE;
         </sql>
     </changeSet>

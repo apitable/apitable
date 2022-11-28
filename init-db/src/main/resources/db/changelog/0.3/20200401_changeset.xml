@@ -8,14 +8,14 @@
     <changeSet id="V0.3-20200401-001" author="Shawn" labels="space">
         <comment>空间表增加全员可分配节点角色字段</comment>
         <sql>
-            ALTER TABLE `vika_space` ADD COLUMN `node_assignable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '全员可分配节点角色(0:关闭,1:开启)' AFTER `node_visible`;
+            ALTER TABLE `${table.prefix}space` ADD COLUMN `node_assignable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '全员可分配节点角色(0:关闭,1:开启)' AFTER `node_visible`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.3-20200401-002" author="Chambers" labels="space">
         <comment>空间公开邀请链接表新增唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_space_invite_link` ADD UNIQUE INDEX `uk_team_creator_id`(`team_id`, `creator`) USING BTREE;
+            ALTER TABLE `${table.prefix}space_invite_link` ADD UNIQUE INDEX `uk_team_creator_id`(`team_id`, `creator`) USING BTREE;
         </sql>
     </changeSet>
 </databaseChangeLog>

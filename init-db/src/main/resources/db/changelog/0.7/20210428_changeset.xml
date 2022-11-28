@@ -6,7 +6,7 @@
     <changeSet id="V0.7-20210428-001" author="Shawn" labels="economic">
         <comment>新增经济系统模块-订单表</comment>
         <sql>
-            CREATE TABLE `vika_economic_order`
+            CREATE TABLE `${table.prefix}economic_order`
             (
             `id`                   bigint(20) unsigned                                           NOT NULL COMMENT '主键',
             `order_no`             varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '订单号',

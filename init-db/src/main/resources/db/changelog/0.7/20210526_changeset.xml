@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210526-001" author="Zoe" labels="asset">
         <comment>asset表增加索引</comment>
         <sql>
-            ALTER TABLE `vika_asset`
+            ALTER TABLE `${table.prefix}asset`
             ADD INDEX `k_file_url` (`file_url`(20)) COMMENT '附件url索引';
         </sql>
     </changeSet>

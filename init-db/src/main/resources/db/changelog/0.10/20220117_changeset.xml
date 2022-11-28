@@ -7,7 +7,7 @@
     <changeSet id="V0.10-20220117-001" author="刘斌华" labels="WeCom">
         <comment>第三方系统-企业微信第三方服务商回调通知信息记录</comment>
         <sql>
-            CREATE TABLE `vika_social_cp_isv_event_log`
+            CREATE TABLE `${table.prefix}social_cp_isv_event_log`
             (
                 `id`           bigint(20) UNSIGNED NOT NULL COMMENT '主键',
                 `type`         tinyint(4) UNSIGNED NOT NULL COMMENT '消息通知类型。1：create_auth，授权成功；2：change_auth，变更授权；3：cancel_auth，取消授权；11：suite_ticket，第三方服务 suite_ticket；21：change_contact，应用变更成员',
@@ -30,21 +30,21 @@
     <changeSet id="V0.10-20220117-002" author="刘斌华" labels="WeCom">
         <comment>第三方租户增加授权模式等信息-</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant`
+            ALTER TABLE `${table.prefix}social_tenant`
             ADD COLUMN `auth_mode` tinyint(2) UNSIGNED NOT NULL DEFAULT 1 COMMENT '授权模式。1：企业授权；2：成员授权' AFTER `contact_auth_scope`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220117-003" author="刘斌华" labels="WeCom">
         <comment>第三方租户增加授权模式等信息-</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant`
+            ALTER TABLE `${table.prefix}social_tenant`
             ADD COLUMN `permanent_code` varchar(256) NULL COMMENT '永久授权码' AFTER `auth_mode`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220117-004" author="Chambers" labels="widget">
         <comment>数表组件关联表，增加字段引用来源ID</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_widget`
+            ALTER TABLE `${table.prefix}datasheet_widget`
             ADD COLUMN `source_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '小程序引用来源ID，如镜像' AFTER `widget_id`;
         </sql>
     </changeSet>

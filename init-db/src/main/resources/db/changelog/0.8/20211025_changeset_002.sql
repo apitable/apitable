@@ -1,4 +1,4 @@
-CREATE TABLE `vika_labs_features`
+CREATE TABLE `${table.prefix}labs_features`
 (
       `id`          bigint(20) unsigned NOT NULL                                                        COMMENT '主键',
       `feature_key` varchar(255)        NOT NULL                                                        COMMENT '实验室功能唯一标识',

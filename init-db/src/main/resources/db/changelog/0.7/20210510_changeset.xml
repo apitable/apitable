@@ -6,7 +6,7 @@
     <changeSet id="V0.7-20210510-001" author="Chambers" labels="user">
         <comment>用户表新增区号字段</comment>
         <sql>
-            ALTER TABLE `vika_user`
+            ALTER TABLE `${table.prefix}user`
             ADD COLUMN `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '区号' AFTER `nick_name`;
         </sql>
     </changeSet>

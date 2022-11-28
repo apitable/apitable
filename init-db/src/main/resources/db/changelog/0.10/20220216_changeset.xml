@@ -7,41 +7,41 @@
     <changeSet id="V0.10-20220216-001" author="shawn" labels="order">
         <comment>计费功能-订单表增加席位字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order`
+            ALTER TABLE `${table.prefix}economic_order`
                 ADD COLUMN seat int(10) unsigned default '0' not null comment '席位数' AFTER `plan_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220216-002" author="shawn" labels="order">
         <comment>计费功能-订单表增加月数字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order`
+            ALTER TABLE `${table.prefix}economic_order`
                 ADD COLUMN month int(10) unsigned default '0' not null comment '月数' AFTER `seat`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220216-003" author="shawn" labels="order">
         <comment>计费功能-订单表删除plan_id字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` DROP COLUMN `plan_id`;
+            ALTER TABLE `${table.prefix}economic_order` DROP COLUMN `plan_id`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220216-004" author="shawn" labels="order">
         <comment>计费功能-订单表增加创建时间</comment>
         <sql>
-            ALTER TABLE `vika_economic_order`
+            ALTER TABLE `${table.prefix}economic_order`
                 ADD COLUMN created_time timestamp not null comment '订单创建时间' after `status`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220216-005" author="shawn" labels="order">
         <comment>计费功能-订单表增加产品类型</comment>
         <sql>
-            ALTER TABLE `vika_economic_order`
+            ALTER TABLE `${table.prefix}economic_order`
                 ADD COLUMN product varchar(10) not null comment '产品类型' after `order_no`;
         </sql>
     </changeSet>
     <changeSet id="V0.10-20220216-006" author="shawn" labels="order">
         <comment>计费功能-订单支付表删除唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` DROP INDEX `uk_order_no`;
+            ALTER TABLE `${table.prefix}economic_order` DROP INDEX `uk_order_no`;
         </sql>
     </changeSet>
 </databaseChangeLog>

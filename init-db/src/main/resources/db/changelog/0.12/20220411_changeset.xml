@@ -8,35 +8,35 @@
     <changeSet id="V0.12-20220411-001" author="Pengap" labels="developer_asset">
         <comment>工作台-开发者资源表新增空间站ID</comment>
         <sql>
-            ALTER TABLE `vika_developer_asset` ADD COLUMN `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '空间ID(关联#vika_space#space_id)' AFTER `id`;
+            ALTER TABLE `${table.prefix}developer_asset` ADD COLUMN `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '空间ID(关联#vika_space#space_id)' AFTER `id`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.12-20220411-002" author="Pengap" labels="developer_asset">
         <comment>工作台-开发者资源表新增节点ID</comment>
         <sql>
-            ALTER TABLE `vika_developer_asset` ADD COLUMN `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '自定义节点ID' AFTER `space_id`;
+            ALTER TABLE `${table.prefix}developer_asset` ADD COLUMN `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '自定义节点ID' AFTER `space_id`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.12-20220411-003" author="Pengap" labels="asset">
         <comment>资源表新增存储桶名称字段</comment>
         <sql>
-            ALTER TABLE `vika_asset` ADD COLUMN `bucket_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '存储桶名称' AFTER `bucket`;
+            ALTER TABLE `${table.prefix}asset` ADD COLUMN `bucket_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '存储桶名称' AFTER `bucket`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.12-20220411-004" author="Pengap" labels="developer_asset">
         <comment>工作台-开发者资源表新增存储桶名称字段</comment>
         <sql>
-            ALTER TABLE `vika_developer_asset` ADD COLUMN `bucket_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '存储桶名称' AFTER `node_id`;
+            ALTER TABLE `${table.prefix}developer_asset` ADD COLUMN `bucket_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '存储桶名称' AFTER `node_id`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.12-20220411-005" author="Pengap" labels="developer_asset">
         <comment>工作台-开发者资源表新增空间站和节点ID查询索引</comment>
         <sql>
-            ALTER TABLE `vika_developer_asset` ADD INDEX `uk_space_node`(`space_id`, `node_id`) USING BTREE;
+            ALTER TABLE `${table.prefix}developer_asset` ADD INDEX `uk_space_node`(`space_id`, `node_id`) USING BTREE;
         </sql>
     </changeSet>
 

@@ -8,7 +8,7 @@
     <changeSet id="V0.8-20210907-001" author="Chambers" labels="unit">
         <comment>成员表新增索引idx_user_id</comment>
         <sql>
-            ALTER TABLE `vika_unit_member`
+            ALTER TABLE `${table.prefix}unit_member`
             ADD INDEX `idx_user_id`(`user_id`) USING BTREE COMMENT '用户ID索引';
         </sql>
     </changeSet>
@@ -16,7 +16,7 @@
     <changeSet id="V0.8-20210907-002" author="Chambers" labels="unit">
         <comment>成员表修改字段status的注释</comment>
         <sql>
-            ALTER TABLE `vika_unit_member`
+            ALTER TABLE `${table.prefix}unit_member`
             MODIFY COLUMN `status` tinyint(2) UNSIGNED NULL DEFAULT 0 COMMENT '用户的空间状态(0:非活跃;1:活跃;2:预删除)' AFTER `open_id`;
         </sql>
     </changeSet>

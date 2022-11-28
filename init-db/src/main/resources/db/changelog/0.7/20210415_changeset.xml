@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210415-001" author="Zoe" labels="datasheet">
         <comment>修改变更集记录类型描述</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_changeset_source`
+            ALTER TABLE `${table.prefix}datasheet_changeset_source`
             MODIFY COLUMN `source_type` TINYINT ( 2 ) UNSIGNED NOT NULL DEFAULT 0 COMMENT '数据来源类型(0:user_interface,1:openapi,2:relation_effect)';
         </sql>
     </changeSet>

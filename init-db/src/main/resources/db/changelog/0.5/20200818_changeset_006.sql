@@ -1,4 +1,4 @@
-CREATE TABLE `vika_code_usage`
+CREATE TABLE `${table.prefix}code_usage`
 (
     `id`            bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `type`          tinyint(2) unsigned                                          NOT NULL COMMENT '类型(0:领取;1:使用)',

@@ -8,13 +8,13 @@
     <changeSet id="V0.12-20220317-001" author="Zoe" labels="datasheet">
         <comment>工作台-新建数表记录通知表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet_record_alarm`
+            CREATE TABLE `${table.prefix}datasheet_record_alarm`
             (
                 `id`           BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT '主键',
                 `alarm_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '闹钟ID',
-                `space_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(关联#vika_space#space_id)',
-                `dst_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
-                `record_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '记录ID(关联#vika_datasheet_record#record_id)',
+                `space_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(关联#space#space_id)',
+                `dst_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#datasheet#dst_id)',
+                `record_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '记录ID(关联#datasheet_record#record_id)',
                 `field_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表列ID',
                 `alarm_at`     timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP COMMENT '通知时间',
                 `alarm_status` tinyint   NOT NULL                                           DEFAULT '0' COMMENT '状态：0-默认、1-处理中、2-处理成功、3-处理失败',

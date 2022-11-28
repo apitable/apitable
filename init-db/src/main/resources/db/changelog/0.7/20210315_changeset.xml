@@ -7,14 +7,14 @@
     <changeSet id="V0.7-20210315-001" author="Shawn" labels="unit">
         <comment>member增加索引</comment>
         <sql>
-            ALTER TABLE `vika_unit_member`
+            ALTER TABLE `${table.prefix}unit_member`
             ADD INDEX `k_space_id` (`space_id`) COMMENT '空间ID索引';
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210315-002" author="Shawn" labels="unit">
         <comment>team增加索引</comment>
         <sql>
-            ALTER TABLE `vika_unit_team`
+            ALTER TABLE `${table.prefix}unit_team`
             ADD INDEX `k_space_id` (`space_id`) COMMENT '空间ID索引',
             ADD INDEX `k_parent_id` (`parent_id`) COMMENT '父级ID索引';
         </sql>
@@ -22,7 +22,7 @@
     <changeSet id="V0.7-20210315-003" author="Shawn" labels="unit">
         <comment>team增加索引</comment>
         <sql>
-            ALTER TABLE `vika_node_rel`
+            ALTER TABLE `${table.prefix}node_rel`
             ADD INDEX `k_main_node_id` (`main_node_id`) COMMENT '主节点索引',
             ADD INDEX `k_rel_node_id` (`rel_node_id`) COMMENT '关联节点索引';
         </sql>
@@ -30,28 +30,28 @@
     <changeSet id="V0.7-20210315-004" author="Shawn" labels="space">
         <comment>team增加索引</comment>
         <sql>
-            ALTER TABLE `vika_space_member_role_rel`
+            ALTER TABLE `${table.prefix}space_member_role_rel`
             ADD INDEX `k_space_id` (`space_id`) COMMENT '空间ID索引';
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210315-005" author="Shawn" labels="space">
         <comment>unit增加索引</comment>
         <sql>
-            ALTER TABLE `vika_unit`
+            ALTER TABLE `${table.prefix}unit`
             ADD INDEX `k_space_id` (`space_id`) COMMENT '空间ID索引';
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210315-006" author="Shawn" labels="space">
         <comment>social_tenant增加索引</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant`
+            ALTER TABLE `${table.prefix}social_tenant`
             ADD INDEX `k_tenant_id` (`tenant_id`) COMMENT '租户ID索引';
         </sql>
     </changeSet>
     <changeSet id="V0.7-20210315-007" author="Shawn" labels="space">
         <comment>social_tenant增加索引</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_bind`
+            ALTER TABLE `${table.prefix}social_tenant_bind`
             ADD INDEX `k_tenant_id` (`tenant_id`) COMMENT '租户ID索引';
         </sql>
     </changeSet>

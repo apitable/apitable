@@ -7,7 +7,7 @@
     <changeSet id="V0.13-20220822-001" author="刘子敬" labels="finance">
         <comment>订阅计费系统-订阅表新增元数据字段</comment>
         <sql>
-            ALTER TABLE `vika_billing_subscription`
+            ALTER TABLE `${table.prefix}billing_subscription`
                 ADD COLUMN `metadata` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据' AFTER `phase`;
         </sql>
     </changeSet>

@@ -7,7 +7,7 @@
     <changeSet id="V0.6-20201209-001" author="Chambers" labels="datasheet">
         <comment>数表记录来源表，新增字段 source_id</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_record_source`
+            ALTER TABLE `${table.prefix}datasheet_record_source`
             ADD COLUMN `source_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '来源ID' AFTER `record_id`;
         </sql>
     </changeSet>

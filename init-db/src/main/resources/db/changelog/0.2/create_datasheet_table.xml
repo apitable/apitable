@@ -7,7 +7,7 @@
     <changeSet id="V0.2-20200312-004" author="ShawnDeng" labels="datasheet">
         <comment>创建数据表格表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet` (
+            CREATE TABLE `${table.prefix}datasheet` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '自定义ID',
             `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表节点Id(关联#vika_node#node_id)',
@@ -23,13 +23,13 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数据表格表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_datasheet"/>
+            <dropTable tableName="${table.prefix}datasheet"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-005" author="ShawnDeng" labels="datasheet">
         <comment>创建数表操作变更合集表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet_changeset` (
+            CREATE TABLE `${table.prefix}datasheet_changeset` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `message_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'changeset请求的唯一标识，用于保证changeset的唯一',
             `dst_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID',
@@ -43,13 +43,13 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表操作变更合集表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_datasheet_changeset"/>
+            <dropTable tableName="${table.prefix}datasheet_changeset"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-006" author="ShawnDeng" labels="datasheet">
         <comment>创建数表元数据表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet_meta` (
+            CREATE TABLE `${table.prefix}datasheet_meta` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表自定义ID(关联#vika_datasheet#dst_id)',
             `meta_data` json DEFAULT NULL COMMENT '元数据',
@@ -61,13 +61,13 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表元数据表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_datasheet_meta"/>
+            <dropTable tableName="${table.prefix}datasheet_meta"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-007" author="ShawnDeng" labels="datasheet">
         <comment>创建数表操作表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet_operation` (
+            CREATE TABLE `${table.prefix}datasheet_operation` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `op_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作ID',
             `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
@@ -84,13 +84,13 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表操作表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_datasheet_operation"/>
+            <dropTable tableName="${table.prefix}datasheet_operation"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-008" author="ShawnDeng" labels="datasheet">
         <comment>创建数表记录表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet_record` (
+            CREATE TABLE `${table.prefix}datasheet_record` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `record_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '操作ID',
             `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
@@ -105,7 +105,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-数表记录表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_datasheet_record"/>
+            <dropTable tableName="${table.prefix}datasheet_record"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

@@ -8,13 +8,13 @@
     <changeSet id="V0.12-20220409-001" author="Shawn" labels="member">
         <comment>通讯录成员表增加手机号索引</comment>
         <sql>
-            alter table `vika_unit_member` add index `idx_mobile`(`mobile`) USING BTREE COMMENT '手机号索引'
+            alter table `${table.prefix}unit_member` add index `idx_mobile`(`mobile`) USING BTREE COMMENT '手机号索引'
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220409-002" author="Shawn" labels="member">
         <comment>通讯录成员表增加邮箱索引</comment>
         <sql>
-            alter table `vika_unit_member` add index `idx_email`(`email`) USING BTREE COMMENT '邮箱索引'
+            alter table `${table.prefix}unit_member` add index `idx_email`(`email`) USING BTREE COMMENT '邮箱索引'
         </sql>
     </changeSet>
 

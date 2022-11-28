@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210414-001" author="Zoe" labels="datasheet">
         <comment>新增changeset的来源表</comment>
         <sql>
-            CREATE TABLE `vika_datasheet_changeset_source` (
+            CREATE TABLE `${table.prefix}datasheet_changeset_source` (
             `id` BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT '主键',
             `dst_id` VARCHAR ( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',
             `resource_id` VARCHAR ( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源ID',

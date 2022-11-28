@@ -5,7 +5,7 @@
     <changeSet id="V0.13-20220613-001" author="Shawn" labels="billing">
         <comment>新增订阅套餐历史变更表</comment>
         <sql>
-            CREATE TABLE `vika_billing_bundle_history` (
+            CREATE TABLE `${table.prefix}billing_bundle_history` (
                 `id` bigint unsigned NOT NULL COMMENT '主键',
                 `target_row_id` bigint NOT NULL COMMENT '记录行ID',
                 `change_type` varchar(6) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '变更类型',
@@ -29,7 +29,7 @@
     <changeSet id="V0.13-20220613-002" author="Shawn" labels="billing">
         <comment>新增订阅历史变更表</comment>
         <sql>
-            CREATE TABLE `vika_billing_subscription_history` (
+            CREATE TABLE `${table.prefix}billing_subscription_history` (
                 `id` bigint unsigned NOT NULL COMMENT '主键',
                 `target_row_id` bigint NOT NULL COMMENT '记录行ID',
                 `change_type` varchar(6) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '变更类型',

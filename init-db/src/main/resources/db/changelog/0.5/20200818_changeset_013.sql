@@ -1,4 +1,4 @@
-CREATE TABLE `vika_api_usage`
+CREATE TABLE `${table.prefix}api_usage`
 (
     `id`          bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `user_id`     bigint(20) unsigned                                          NOT NULL COMMENT '用户ID',

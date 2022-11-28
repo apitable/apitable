@@ -7,7 +7,7 @@
     <changeSet id="V0.13-20220929-001" author="Chambers" labels="template">
         <comment>create template album table</comment>
         <sql>
-            CREATE TABLE `vika_template_album`
+            CREATE TABLE `${table.prefix}template_album`
             (
                 `id`          bigint unsigned NOT NULL COMMENT 'Primary Key',
                 `album_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT 'Template Album Custom ID',
@@ -34,7 +34,7 @@
     <changeSet id="V0.13-20220929-002" author="Chambers" labels="template">
         <comment>create template album rel table</comment>
         <sql>
-            CREATE TABLE `vika_template_album_rel`
+            CREATE TABLE `${table.prefix}template_album_rel`
             (
                 `id`         bigint unsigned NOT NULL COMMENT 'Primary Key',
                 `album_id`   varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Template Album Custom ID',

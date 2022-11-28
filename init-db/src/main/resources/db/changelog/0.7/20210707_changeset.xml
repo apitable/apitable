@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210707-001" author="Pengap" labels="widget">
         <comment>组件包表增加i18n_name字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `i18n_name` json NULL COMMENT '国际化组件名称' AFTER `package_id`;
         </sql>
     </changeSet>
@@ -15,7 +15,7 @@
     <changeSet id="V0.7-20210707-002" author="Pengap" labels="widget">
         <comment>组件包表增加i18n_description字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `i18n_description` json NULL COMMENT '国际化组件描述' AFTER `i18n_name`;
         </sql>
     </changeSet>
@@ -23,7 +23,7 @@
     <changeSet id="V0.7-20210707-003" author="Pengap" labels="widget">
         <comment>组件包表增加author_name字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `author_name` varchar(50) NULL COMMENT '作者名' AFTER `cover`;
         </sql>
     </changeSet>
@@ -31,7 +31,7 @@
     <changeSet id="V0.7-20210707-004" author="Pengap" labels="widget">
         <comment>组件包表增加author_email字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `author_email` varchar(100) NULL COMMENT '作者email' AFTER `author_name`;
         </sql>
     </changeSet>
@@ -39,7 +39,7 @@
     <changeSet id="V0.7-20210707-005" author="Pengap" labels="widget">
         <comment>组件包表增加author_link字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `author_link` varchar(255) NULL COMMENT '作者网站地址' AFTER `author_email`;
         </sql>
     </changeSet>
@@ -47,7 +47,7 @@
     <changeSet id="V0.7-20210707-006" author="Pengap" labels="widget">
         <comment>组件包表增加package_type字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `package_type` tinyint(2) NOT NULL COMMENT '组件包类型(0:第三方,1:官方)' AFTER `author_link`;
         </sql>
     </changeSet>
@@ -55,7 +55,7 @@
     <changeSet id="V0.7-20210707-007" author="Pengap" labels="widget">
         <comment>组件包表增加release_type字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `release_type` tinyint(2) NOT NULL COMMENT '0：发布到空间站中的组件商店，1：发布到全局应用商店（只有 package_type 为 0 才允许）' AFTER `package_type`;
         </sql>
     </changeSet>
@@ -63,7 +63,7 @@
     <changeSet id="V0.7-20210707-008" author="Pengap" labels="widget">
         <comment>组件包表增加release_id字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             ADD COLUMN `release_id` bigint NULL COMMENT 'release版本id，当前激活的版本，可为空，空的时候，在组建商店只展示给创建者' AFTER `status`;
         </sql>
     </changeSet>
@@ -71,7 +71,7 @@
     <changeSet id="V0.7-20210707-009" author="Pengap" labels="widget">
         <comment>组件包表修改注释</comment>
         <sql>
-            ALTER TABLE `vika_widget_package`
+            ALTER TABLE `${table.prefix}widget_package`
             MODIFY COLUMN `status` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态(0:开发中,1:已封禁,2:待发布,3:已发布,4:已下架-全局暂不开放)目前保留3，4' AFTER `cover`,
             MODIFY COLUMN `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '封面图TOKEN' AFTER `icon`,
             MODIFY COLUMN `installed_num` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '安装次数' AFTER `status`,
@@ -85,7 +85,7 @@
     <changeSet id="V0.7-20210707-010" author="Pengap" labels="widget">
         <comment>新建-组件发布历史表</comment>
         <sql>
-            CREATE TABLE `vika_widget_package_release` (
+            CREATE TABLE `${table.prefix}widget_package_release` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `release_sha` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '版本摘要唯一标识(id+package_id+version生成)',
             `version` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '版本号,package_id下唯一',
@@ -111,7 +111,7 @@
     <changeSet id="V0.7-20210707-011" author="Pengap" labels="widget">
         <comment>新建-组件授权空间表</comment>
         <sql>
-            CREATE TABLE `vika_widget_package_auth_space` (
+            CREATE TABLE `${table.prefix}widget_package_auth_space` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `package_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组件包ID',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',

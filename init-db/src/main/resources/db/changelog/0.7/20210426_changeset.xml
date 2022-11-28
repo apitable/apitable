@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210426-001" author="Chamber" labels="control">
         <comment>控制单元表新增唯一索引</comment>
         <sql>
-            ALTER TABLE `vika_control`
+            ALTER TABLE `${table.prefix}control`
             ADD UNIQUE INDEX `uk_control_unit_role`(`control_id`, `unit_id`, `role_code`) USING BTREE;
         </sql>
     </changeSet>

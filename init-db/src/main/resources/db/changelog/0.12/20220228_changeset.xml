@@ -7,7 +7,7 @@
     <changeSet id="V0.12-20220228-001" author="Zoe" labels="order">
         <comment>第三方-新建第三方订单表</comment>
         <sql>
-            CREATE TABLE `vika_social_tenant_order` (
+            CREATE TABLE `${table.prefix}social_tenant_order` (
                 `id` BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT '主键',
                 `channel_order_id` VARCHAR ( 100 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '渠道订单号',
                 `app_id` VARCHAR ( 255 ) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
@@ -26,7 +26,7 @@
     <changeSet id="V0.12-20220228-002" author="Shawn" labels="appstore">
         <comment>应用市场-应用实例表增加应用类型</comment>
         <sql>
-            ALTER TABLE `vika_app_instance`
+            ALTER TABLE `${table.prefix}app_instance`
                 ADD COLUMN `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '应用类型' AFTER `app_secret`;
         </sql>
     </changeSet>

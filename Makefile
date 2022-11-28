@@ -178,13 +178,13 @@ RUN_TEST_ROOM_MODE=docker
 _test_init_db:
 	@echo "${GREEN} Run Test Room Mode:$(RUN_TEST_ROOM_MODE) ${RESET}"
 	@echo "${YELLOW}pull [init-db:latest] the latest image...${RESET}"
-	docker-compose -f docker-compose-unit-test.yml pull test-initdb
+	docker-compose -f docker-compose.unit-test.yml pull test-initdb
 ifeq ($(RUN_TEST_ROOM_MODE),docker)
-	docker-compose -f docker-compose-unit-test.yml run --rm \
+	docker-compose -f docker-compose.unit-test.yml run --rm \
 	-e DB_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
 	test-initdb
 else ifeq ($(RUN_TEST_ROOM_MODE),local)
-	docker-compose -f docker-compose-unit-test.yml run --rm \
+	docker-compose -f docker-compose.unit-test.yml run --rm \
 	-e DB_HOST=test-mysql \
 	test-initdb
 endif
@@ -195,7 +195,7 @@ _test_clean: ## clean the docker in test step
 
 test-ut-room-local:
 	make _test_clean
-	docker-compose -f docker-compose-unit-test.yml up -d test-redis test-mysql test-rabbitmq
+	docker-compose -f docker-compose.unit-test.yml up -d test-redis test-mysql test-rabbitmq
 ifeq ($(SIKP_INITDB),false)
 	sleep 20
 	make _test_init_db RUN_TEST_ROOM_MODE=local
@@ -212,13 +212,13 @@ test-ut-room-docker:
 	@echo "${LIGHTPURPLE}Working dir：$(shell pwd)${RESET}"
 	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
 	make _test_clean
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
-	docker-compose -f docker-compose-unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	docker-compose -f docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
+	docker-compose -f docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
+	docker-compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 	sleep 20
 	make _test_init_db RUN_TEST_ROOM_MODE=docker
-	docker-compose -f docker-compose-unit-test.yml build unit-test-room
-	docker-compose -f docker-compose-unit-test.yml run --rm \
+	docker-compose -f docker-compose.unit-test.yml build unit-test-room
+	docker-compose -f docker-compose.unit-test.yml run --rm \
 		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
 		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
 		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \

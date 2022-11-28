@@ -7,35 +7,35 @@
     <changeSet id="V0.12-20220224-001" author="Zoe" labels="order">
         <comment>经济系统-订单表-新增订单渠道字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` ADD `order_channel` varchar(20) CHARACTER SET utf8mb4 COLLATE
+            ALTER TABLE `${table.prefix}economic_order` ADD `order_channel` varchar(20) CHARACTER SET utf8mb4 COLLATE
                     utf8mb4_unicode_ci DEFAULT 'vika' COMMENT '订单渠道(vika,lark,dingtalk,wecom)' AFTER `order_no`;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-002" author="Zoe" labels="order">
         <comment>经济系统-订单表-新增渠道订单号字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` ADD `channel_order_id` varchar(100) CHARACTER SET utf8mb4 COLLATE
+            ALTER TABLE `${table.prefix}economic_order` ADD `channel_order_id` varchar(100) CHARACTER SET utf8mb4 COLLATE
                 utf8mb4_unicode_ci DEFAULT NULL COMMENT '其他渠道订单号' AFTER `order_channel`;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-003" author="Zoe" labels="order">
         <comment>经济系统-订单表-新增订单阶段字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` ADD `order_phase` varchar(20) CHARACTER SET utf8mb4 COLLATE
+            ALTER TABLE `${table.prefix}economic_order` ADD `order_phase` varchar(20) CHARACTER SET utf8mb4 COLLATE
                 utf8mb4_unicode_ci DEFAULT 'fixedterm' COMMENT '订单阶段(trial:试用,fixedterm:固定期限)' AFTER `expire_time`;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-004" author="Zoe" labels="order">
         <comment>经济系统-订单表-修改订单类型字段</comment>
         <sql>
-            ALTER TABLE `vika_economic_order` MODIFY COLUMN `type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT
+            ALTER TABLE `${table.prefix}economic_order` MODIFY COLUMN `type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT
                 '订单类型(0: 新购, 1: 升级, 2: 续订)';
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-005" author="Zoe" labels="order">
         <comment>计费系统-增加订单自定义键值对参数表</comment>
         <sql>
-            CREATE TABLE `vika_economic_order_metadata`
+            CREATE TABLE `${table.prefix}economic_order_metadata`
             (
                 `id`            bigint(20) unsigned NOT NULL COMMENT '主键',
                 `order_no`      varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '订单号',
@@ -52,35 +52,35 @@
     <changeSet id="V0.12-20220224-006" author="Chambers" labels="space">
         <comment>空间申请表增加空间ID索引</comment>
         <sql>
-            ALTER TABLE `vika_space_apply`
+            ALTER TABLE `${table.prefix}space_apply`
                 ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-007" author="Chambers" labels="space">
         <comment>空间邀请链接表增加空间ID索引</comment>
         <sql>
-            ALTER TABLE `vika_space_invite_link`
+            ALTER TABLE `${table.prefix}space_invite_link`
                 ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-008" author="Chambers" labels="space">
         <comment>空间邀请链接表增加创建者成员ID索引</comment>
         <sql>
-            ALTER TABLE `vika_space_invite_link`
+            ALTER TABLE `${table.prefix}space_invite_link`
                 ADD INDEX `idx_creator`(`creator`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-009" author="Chambers" labels="template">
         <comment>模板表增加类型标识ID索引</comment>
         <sql>
-            ALTER TABLE `vika_template`
+            ALTER TABLE `${table.prefix}template`
                 ADD INDEX `idx_type_id`(`type_id`) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220224-010" author="Chambers" labels="vcode">
         <comment>V码使用记录表增加操作者ID索引</comment>
         <sql>
-            ALTER TABLE `vika_code_usage`
+            ALTER TABLE `${table.prefix}code_usage`
                 ADD INDEX `idx_operator`(`operator`) USING BTREE;
         </sql>
     </changeSet>

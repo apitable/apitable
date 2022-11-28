@@ -8,7 +8,7 @@
     <changeSet id="V0.7-20210731-001" author="Zoe" labels="template">
         <comment>新建模版属性表</comment>
         <sql>
-            CREATE TABLE `vika_template_property` (
+            CREATE TABLE `${table.prefix}template_property` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `property_type` tinyint unsigned NOT NULL COMMENT '类型 (0:分类,1:标签)',
             `property_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '属性名称',
@@ -31,7 +31,7 @@
     <changeSet id="V0.7-20210731-002" author="Zoe" labels="template">
         <comment>新建模版属性关联表</comment>
         <sql>
-            CREATE TABLE `vika_template_property_rel` (
+            CREATE TABLE `${table.prefix}template_property_rel` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `template_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '自定义模板ID',
             `property_id` bigint DEFAULT NULL COMMENT '属性表ID(关联#vika_template_property#id)',

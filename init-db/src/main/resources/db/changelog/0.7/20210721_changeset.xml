@@ -8,7 +8,7 @@
     <changeSet id="V0.7-20210721-001" author="Pengap" labels="widget">
         <comment>修改widget_package_release表secrect_key字段</comment>
         <sql>
-            ALTER TABLE `vika_widget_package_release`
+            ALTER TABLE `${table.prefix}widget_package_release`
             CHANGE COLUMN `secrect_key` `secret_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '源码加密密钥' AFTER `source_code_bundle`;
         </sql>
     </changeSet>
@@ -16,7 +16,7 @@
     <changeSet id="V0.7-20210721-002" author="Pengap" labels="widget">
         <comment>新建-工作台开发者资源表</comment>
         <sql>
-            CREATE TABLE `vika_developer_asset` (
+            CREATE TABLE `${table.prefix}developer_asset` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `type` tinyint unsigned NOT NULL COMMENT '类型 (0:小组件)',
             `source_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名，本次上传的文件名',
@@ -40,28 +40,28 @@
     <changeSet id="V0.7-20210721-003" author="Zoe" labels="social">
         <comment>vika_social_tenant_bind添加app_id字段兼容企业内部应用</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_bind` ADD COLUMN app_id varchar(255) NULL DEFAULT NULL COMMENT '应用标识';
+            ALTER TABLE `${table.prefix}social_tenant_bind` ADD COLUMN app_id varchar(255) NULL DEFAULT NULL COMMENT '应用标识';
         </sql>
     </changeSet>
 
     <changeSet id="V0.7-20210721-004" author="Zoe" labels="social">
         <comment>vika_social_tenant添加auth_info字段保存企业授权信息</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant` ADD COLUMN auth_info json null comment '企业授权信息';
+            ALTER TABLE `${table.prefix}social_tenant` ADD COLUMN auth_info json null comment '企业授权信息';
         </sql>
     </changeSet>
 
     <changeSet id="V0.7-20210721-005" author="Zoe" labels="social">
         <comment>调整vika_social_tenant_bind中app_id字段的位置</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant_bind` MODIFY COLUMN app_id varchar(255) NULL DEFAULT NULL COMMENT '应用标识' AFTER `tenant_department_id`;
+            ALTER TABLE `${table.prefix}social_tenant_bind` MODIFY COLUMN app_id varchar(255) NULL DEFAULT NULL COMMENT '应用标识' AFTER `tenant_department_id`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.7-20210721-006" author="Zoe" labels="social">
         <comment>调整vika_social_tenant中auth_info字段的位置</comment>
         <sql>
-            ALTER TABLE `vika_social_tenant` MODIFY COLUMN auth_info json null comment '企业授权信息' AFTER `contact_auth_scope`;
+            ALTER TABLE `${table.prefix}social_tenant` MODIFY COLUMN auth_info json null comment '企业授权信息' AFTER `contact_auth_scope`;
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -8,7 +8,7 @@
     <changeSet id="V0.13-20220608-001" author="Shawn" labels="finance">
         <comment>订阅计费系统-订阅套餐表</comment>
         <sql>
-            CREATE TABLE `vika_billing_bundle` (
+            CREATE TABLE `${table.prefix}billing_bundle` (
                 `id` bigint unsigned NOT NULL COMMENT '主键',
                 `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',
                 `bundle_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅套餐ID',
@@ -29,7 +29,7 @@
     <changeSet id="V0.13-20220608-002" author="Shawn" labels="finance">
         <comment>订阅计费系统-订阅表</comment>
         <sql>
-            CREATE TABLE `vika_billing_subscription` (
+            CREATE TABLE `${table.prefix}billing_subscription` (
                 `id` bigint unsigned NOT NULL COMMENT '主键',
                 `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',
                 `bundle_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅套餐ID',
@@ -57,7 +57,7 @@
     <changeSet id="V0.13-20220608-003" author="Shawn" labels="finance">
         <comment>订阅计费系统-订单表</comment>
         <sql>
-            CREATE TABLE `vika_billing_order` (
+            CREATE TABLE `${table.prefix}billing_order` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间站ID',
                 `order_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号',
@@ -88,7 +88,7 @@
     <changeSet id="V0.13-20220608-004" author="Shawn" labels="finance">
         <comment>订阅计费系统-订单项目表</comment>
         <sql>
-            CREATE TABLE `vika_billing_order_item` (
+            CREATE TABLE `${table.prefix}billing_order_item` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间标识',
                 `order_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号',
@@ -118,7 +118,7 @@
     <changeSet id="V0.13-20220608-005" author="Shawn" labels="finance">
         <comment>订阅计费系统-订单自定义键值对参数表</comment>
         <sql>
-            CREATE TABLE `vika_billing_order_metadata` (
+            CREATE TABLE `${table.prefix}billing_order_metadata` (
                 `id` bigint unsigned NOT NULL COMMENT '主键',
                 `order_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号',
                 `order_channel` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'vika' COMMENT '订单渠道',
@@ -134,7 +134,7 @@
     <changeSet id="V0.13-20220608-006" author="Shawn" labels="finance">
         <comment>订阅计费系统-订单交易表</comment>
         <sql>
-            CREATE TABLE `vika_billing_order_payment` (
+            CREATE TABLE `${table.prefix}billing_order_payment` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `order_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号',
                 `payment_transaction_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '支付交易号',
@@ -162,7 +162,7 @@
     <changeSet id="V0.13-20220608-007" author="Shawn" labels="finance">
         <comment>订阅计费系统-钉钉商店渠道订单表</comment>
         <sql>
-            CREATE TABLE `vika_billing_social_dingtalk_order` (
+            CREATE TABLE `${table.prefix}billing_social_dingtalk_order` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `app_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
                 `tenant_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '租户标识',
@@ -184,7 +184,7 @@
     <changeSet id="V0.13-20220608-008" author="Shawn" labels="finance">
         <comment>订阅计费系统-钉钉渠道退款订单表</comment>
         <sql>
-            CREATE TABLE `vika_billing_social_dingtalk_refund` (
+            CREATE TABLE `${table.prefix}billing_social_dingtalk_refund` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `app_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
                 `tenant_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '租户标识',
@@ -206,7 +206,7 @@
     <changeSet id="V0.13-20220608-009" author="Shawn" labels="finance">
         <comment>订阅计费系统-飞书商店渠道订单表</comment>
         <sql>
-            CREATE TABLE `vika_billing_social_feishu_order` (
+            CREATE TABLE `${table.prefix}billing_social_feishu_order` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `app_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
                 `tenant_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '租户标识',
@@ -227,7 +227,7 @@
     <changeSet id="V0.13-20220608-010" author="Shawn" labels="finance">
         <comment>订阅计费系统-企微商店渠道订单表</comment>
         <sql>
-            CREATE TABLE `vika_billing_social_wecom_order` (
+            CREATE TABLE `${table.prefix}billing_social_wecom_order` (
                 `id` bigint NOT NULL COMMENT '主键',
                 `order_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业微信的订单号',
                 `order_status` tinyint(1) NOT NULL COMMENT '订单状态。0:待支付;1:已支付;2:已取消;3:支付过期;4:申请退款中;5:退款成功;6:退款被拒绝',

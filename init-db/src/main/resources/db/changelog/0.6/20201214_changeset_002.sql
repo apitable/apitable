@@ -1,4 +1,4 @@
-CREATE TABLE `vika_widget`
+CREATE TABLE `${table.prefix}widget`
 (
     `id`         bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `dst_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数表ID(关联#vika_datasheet#dst_id)',

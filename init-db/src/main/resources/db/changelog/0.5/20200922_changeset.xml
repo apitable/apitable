@@ -7,7 +7,7 @@
     <changeSet id="V0.5-20200922-001" author="Shawn" labels="user">
         <comment>user表的手机号码作为索引，不允许重复</comment>
         <sql>
-            ALTER TABLE `vika_user` ADD UNIQUE INDEX `uk_phone`(`mobile_phone`) COMMENT '手机号唯一索引';
+            ALTER TABLE `${table.prefix}user` ADD UNIQUE INDEX `uk_phone`(`mobile_phone`) COMMENT '手机号唯一索引';
         </sql>
     </changeSet>
 </databaseChangeLog>

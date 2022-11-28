@@ -7,7 +7,7 @@
     <changeSet id="V0.2-20200312-011" author="ShawnDeng" labels="node">
         <comment>创建节点表</comment>
         <sql>
-            CREATE TABLE `vika_node` (
+            CREATE TABLE `${table.prefix}node` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',
             `parent_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '父节点Id',
@@ -24,14 +24,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node"/>
+            <dropTable tableName="${table.prefix}node"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.2-20200312-012" author="ShawnDeng" labels="node">
         <comment>创建节点权限设置表</comment>
         <sql>
-            CREATE TABLE `vika_node_permission` (
+            CREATE TABLE `${table.prefix}node_permission` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID',
             `node_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '节点ID',
@@ -45,14 +45,14 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点角色权限设置表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_permission"/>
+            <dropTable tableName="${table.prefix}node_permission"/>
         </rollback>
     </changeSet>
 
     <changeSet id="V0.2-20200312-013" author="ShawnDeng" labels="node">
         <comment>创建节点资源表</comment>
         <sql>
-            CREATE TABLE `vika_node_resource` (
+            CREATE TABLE `${table.prefix}node_resource` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `resource_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源编码',
             `resource_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源名称',
@@ -66,13 +66,13 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点资源表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_resource"/>
+            <dropTable tableName="${table.prefix}node_resource"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-014" author="ShawnDeng" labels="node">
         <comment>创建节点角色表</comment>
         <sql>
-            CREATE TABLE `vika_node_role` (
+            CREATE TABLE `${table.prefix}node_role` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `role_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色编码',
             `role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色名称',
@@ -85,13 +85,13 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点角色表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_role"/>
+            <dropTable tableName="${table.prefix}node_role"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-015" author="ShawnDeng" labels="node">
         <comment>创建节点角色资源关联表</comment>
         <sql>
-            CREATE TABLE `vika_node_role_resource_rel` (
+            CREATE TABLE `${table.prefix}node_role_resource_rel` (
             `id` bigint(20) unsigned NOT NULL COMMENT '主键',
             `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '节点角色编码',
             `resource_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '节点资源编码',
@@ -102,7 +102,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作台-节点角色资源关联表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_node_role_resource_rel"/>
+            <dropTable tableName="${table.prefix}node_role_resource_rel"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

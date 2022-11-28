@@ -1,4 +1,4 @@
-CREATE TABLE `vika_integral_history`
+CREATE TABLE `${table.prefix}integral_history`
 (
     `id`              bigint(20)                                                   NOT NULL COMMENT '主键',
     `user_id`         bigint(20)                                                   NOT NULL COMMENT '用户表',

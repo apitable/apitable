@@ -5,9 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet id="V0.2-20200312-001" author="ShawnDeng" labels="base">
-        <comment>创建附件资源表</comment>
+        <comment>Create Table: Attachments Assets</comment>
         <sql>
-            CREATE TABLE `vika_asset` (
+            CREATE TABLE `${table.prefix}asset` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '整个文件的Hash，MD5摘要',
             `head_sum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '资源文件前32个字节的Base64',
@@ -22,13 +22,13 @@
             ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '基础-资源文件表' ROW_FORMAT = Dynamic;
         </sql>
         <rollback>
-            <dropTable tableName="vika_asset"/>
+            <dropTable tableName="${table.prefix}asset"/>
         </rollback>
     </changeSet>
     <changeSet id="V0.2-20200312-002" author="ShawnDeng" labels="base">
         <comment>创建通讯录文件上传解析记录表</comment>
         <sql>
-            CREATE TABLE `vika_audit_upload_parse_record` (
+            CREATE TABLE `${table.prefix}audit_upload_parse_record` (
             `id` bigint(20) NOT NULL COMMENT '主键',
             `space_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '空间ID(vika_space#space_id)',
             `file_save_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '文件保存相对路径',
@@ -41,7 +41,7 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='审计模块-通讯录文件上传解析记录表';
         </sql>
         <rollback>
-            <dropTable tableName="vika_audit_upload_parse_record"/>
+            <dropTable tableName="${table.prefix}audit_upload_parse_record"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>

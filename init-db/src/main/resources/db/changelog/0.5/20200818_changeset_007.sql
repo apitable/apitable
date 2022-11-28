@@ -1,4 +1,4 @@
-CREATE TABLE `vika_code_coupon_template`
+CREATE TABLE `${table.prefix}code_coupon_template`
 (
     `id`          bigint(20) unsigned NOT NULL COMMENT '主键',
     `type`        tinyint(2) unsigned NOT NULL                                  DEFAULT '0' COMMENT '类型(0:兑换卷)',

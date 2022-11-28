@@ -8,14 +8,14 @@
     <changeSet id="V0.9-20211126-001" author="Shawn" labels="developer">
         <comment>apiUsage表增加空间ID字段</comment>
         <sql>
-            ALTER TABLE `vika_api_usage` ADD COLUMN `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '空间ID(关联#vika_space#space_id)' AFTER `user_id`;
+            ALTER TABLE `${table.prefix}api_usage` ADD COLUMN `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '空间ID(关联#vika_space#space_id)' AFTER `user_id`;
         </sql>
     </changeSet>
 
     <changeSet id="V0.9-20211126-002" author="Shawn" labels="developer">
         <comment>apiUsage表增加空间ID字段索引</comment>
         <sql>
-            ALTER TABLE `vika_api_usage` ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
+            ALTER TABLE `${table.prefix}api_usage` ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -7,16 +7,16 @@
     <changeSet id="V0.3-20200420-001" author="Shawn" labels="node">
         <comment>节点表增加列索引</comment>
         <sql>
-            ALTER TABLE `vika_node`
+            ALTER TABLE `${table.prefix}node`
             ADD INDEX `IX_Parent_id` (`parent_id`) ,
             ADD INDEX `IX_Pre_node_id` (`pre_node_id`);
         </sql>
     </changeSet>
 
     <changeSet id="V0.3-20200420-002" author="Shawn" labels="node">
-        <comment>vika_datasheet_meta表增加dst_id索引</comment>
+        <comment>${table.prefix}datasheet_meta表增加dst_id索引</comment>
         <sql>
-            ALTER TABLE `vika_datasheet_meta`
+            ALTER TABLE `${table.prefix}datasheet_meta`
             ADD INDEX `IX_Dst_id` (`dst_id`);
         </sql>
     </changeSet>

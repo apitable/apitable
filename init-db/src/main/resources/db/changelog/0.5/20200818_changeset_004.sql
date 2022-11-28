@@ -1,4 +1,4 @@
-CREATE TABLE `vika_code_activity`
+CREATE TABLE `${table.prefix}code_activity`
 (
     `id`         bigint(20) unsigned                                           NOT NULL COMMENT '主键',
     `name`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '活动名称',

@@ -1,4 +1,4 @@
-CREATE TABLE `vika_resource_changeset`
+CREATE TABLE `${table.prefix}resource_changeset`
 (
     `id`          bigint(20) unsigned NOT NULL COMMENT '主键',
     `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '资源ID(node_id/widget_id/..)',

@@ -8,7 +8,7 @@
     <changeSet id="V0.9-20211125-001" author="Shawn" labels="economic">
         <comment>增加订阅捆绑包表</comment>
         <sql>
-            CREATE TABLE `vika_economic_bundle` (
+            CREATE TABLE `${table.prefix}economic_bundle` (
                 `id` bigint(20) unsigned NOT NULL COMMENT '主键',
                 `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间唯一标识字符',
                 `bundle_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅组合包唯一标识',
@@ -29,7 +29,7 @@
     <changeSet id="V0.9-20211125-002" author="Shawn" labels="economic">
         <comment>增加订阅信息表</comment>
         <sql>
-            CREATE TABLE `vika_economic_subscription` (
+            CREATE TABLE `${table.prefix}economic_subscription` (
               `id` bigint(20) unsigned NOT NULL COMMENT '主键',
               `bundle_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅组合包唯一标识',
               `subscription_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订阅ID',

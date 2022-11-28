@@ -9,10 +9,12 @@ CMD ["sh", "-c", "echo ${ACTION}; docker-entrypoint.sh \
                     --username=${DB_USERNAME} \
                     --password=${DB_PASSWORD} \
                     --driver=\"com.mysql.cj.jdbc.Driver\" \
-                    --database-changelog-table-name=vika_db_changelog \
-                    --database-changelog-lock-table-name=vika_db_changelog_lock \
+                    --database-changelog-table-name=\"${DATABASE_TABLE_PREFIX:=vika_}db_changelog\" \
+                    --database-changelog-lock-table-name=\"${DATABASE_TABLE_PREFIX:=vika_}db_changelog_lock\" \
                     --url=\"jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=utf8&autoReconnect=true&useSSL=true\" \
-                     ${ACTION:=update}"]
+                     ${ACTION:=update} \
+                    -Dtable.prefix=${DATABASE_TABLE_PREFIX:=vika_}"]
+
 
 
                      

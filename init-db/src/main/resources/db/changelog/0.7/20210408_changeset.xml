@@ -7,7 +7,7 @@
     <changeSet id="V0.7-20210408-001" author="chambers" labels="space">
         <comment>空间表新增设置属性参数</comment>
         <sql>
-            ALTER TABLE `vika_space` ADD COLUMN `props` json NOT NULL DEFAULT ('{}') COMMENT '选项参数' AFTER `level`;
+            ALTER TABLE `${table.prefix}space` ADD COLUMN `props` json NOT NULL DEFAULT ('{}') COMMENT '选项参数' AFTER `level`;
         </sql>
     </changeSet>
 </databaseChangeLog>

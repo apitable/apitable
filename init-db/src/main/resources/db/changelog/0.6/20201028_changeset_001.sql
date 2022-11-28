@@ -1,4 +1,4 @@
-CREATE TABLE `vika_space_apply`
+CREATE TABLE `${table.prefix}space_apply`
 (
     `id`             bigint(20) unsigned                                          NOT NULL COMMENT '主键',
     `space_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间ID(关联#vika_space#space_id)',

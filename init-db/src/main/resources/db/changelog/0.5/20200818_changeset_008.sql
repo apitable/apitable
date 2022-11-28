@@ -1,4 +1,4 @@
-CREATE TABLE `vika_third_party_member`
+CREATE TABLE `${table.prefix}third_party_member`
 (
     `id`          bigint(20) unsigned NOT NULL COMMENT '主键',
     `app_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  DEFAULT NULL COMMENT '应用 appid',

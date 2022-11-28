@@ -8,13 +8,13 @@
     <changeSet id="V0.12-20220321-001" author="Shawn" labels="user">
         <comment>用户-新增邮箱索引</comment>
         <sql>
-            ALTER TABLE `vika_user` ADD INDEX `k_email` (`email`) COMMENT '邮箱索引';
+            ALTER TABLE `${table.prefix}user` ADD INDEX `k_email` (`email`) COMMENT '邮箱索引';
         </sql>
     </changeSet>
     <changeSet id="V0.12-20220321-002" author="Shawn" labels="user">
         <comment>用户关联表-新增union_id索引</comment>
         <sql>
-            ALTER TABLE `vika_user_link` ADD INDEX `k_union_id` (`union_id`) COMMENT '唯一ID索引';
+            ALTER TABLE `${table.prefix}user_link` ADD INDEX `k_union_id` (`union_id`) COMMENT '唯一ID索引';
         </sql>
     </changeSet>
 

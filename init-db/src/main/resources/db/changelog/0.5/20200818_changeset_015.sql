@@ -1,4 +1,4 @@
-CREATE TABLE `vika_kb_account_space`
+CREATE TABLE `${table.prefix}kb_account_space`
 (
     `id`            bigint(20)                                                   NOT NULL COMMENT '主键',
     `space_id`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '空间唯一标识字符',

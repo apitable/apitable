@@ -1,5 +1,5 @@
 -- 内容举报记录表
-CREATE TABLE `vika_content_censor_report`
+CREATE TABLE `${table.prefix}content_censor_report`
 (
     `id`            bigint(20)                             NOT NULL COMMENT '主键',
     `user_id`       bigint(20) unsigned                             DEFAULT NULL COMMENT '举报者用户ID(关联#vika_user#id)',

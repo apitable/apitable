@@ -8,7 +8,7 @@
     <changeSet id="V0.7-20210805-001" author="Pengap" labels="social">
         <comment>新建-第三方平台集成-企业微信租户用户表</comment>
         <sql>
-            CREATE TABLE `vika_social_cp_tenant_user` (
+            CREATE TABLE `${table.prefix}social_cp_tenant_user` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `tenant_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业标识',
             `app_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',
@@ -26,7 +26,7 @@
     <changeSet id="V0.7-20210805-002" author="Pengap" labels="social">
         <comment>新建-第三方平台集成-企业微信用户绑定表</comment>
         <sql>
-            CREATE TABLE `vika_social_cp_user_bind` (
+            CREATE TABLE `${table.prefix}social_cp_user_bind` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `user_id` bigint unsigned NOT NULL COMMENT '维格用户ID(关联#vika_user#id)',
             `cp_tenant_user_id` bigint unsigned NOT NULL COMMENT '企业微信租户用户ID(关联#vika_social_cp_tenant_user#id)',
@@ -43,7 +43,7 @@
     <changeSet id="V0.7-20210805-003" author="Pengap" labels="social">
         <comment>新建-第三方平台集成-企业微信空间绑定域名表</comment>
         <sql>
-            CREATE TABLE `vika_social_tenant_domain` (
+            CREATE TABLE `${table.prefix}social_tenant_domain` (
             `id` bigint UNSIGNED NOT NULL COMMENT '主键',
             `tenant_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业标识(关联#vika_social_tenant#id)',
             `space_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '企业绑定的空间站标识',

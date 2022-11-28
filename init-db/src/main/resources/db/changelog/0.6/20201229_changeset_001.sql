@@ -1,4 +1,4 @@
-CREATE TABLE `vika_social_feishu_event_log`
+CREATE TABLE `${table.prefix}social_feishu_event_log`
 (
     `id`         bigint(20) unsigned                                           NOT NULL COMMENT '主键',
     `app_id`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '应用标识',

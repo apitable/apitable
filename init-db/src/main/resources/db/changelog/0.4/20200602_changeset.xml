@@ -7,7 +7,7 @@
     <changeSet id="V0.4-20200602-001" author="Chambers" labels="template">
         <comment>模板中心-模版表 新增分类code字段</comment>
         <sql>
-            ALTER TABLE `vika_template`
+            ALTER TABLE `${table.prefix}template`
             ADD COLUMN `category_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '分类code' AFTER `type_id`;
         </sql>
     </changeSet>
@@ -15,7 +15,7 @@
     <changeSet id="V0.4-20200602-002" author="Chambers" labels="space">
         <comment>工作台-权限资源分组表 增加模板相关数据</comment>
         <sql>
-            INSERT INTO `vika_space_resource_group`(id, group_code, group_name, group_desc)
+            INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
             VALUES (1235489086546259978, 'MANAGE_TEMPLATE', '管理模板中心', '可在工作目录创建模板、在模板中心删除模板');
         </sql>
     </changeSet>
@@ -23,9 +23,9 @@
     <changeSet id="V0.4-20200602-003" author="Chambers" labels="space">
         <comment>工作台-权限资源表 增加模板相关数据</comment>
         <sql>
-            INSERT INTO `vika_space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
             VALUES (1235489086546259979, 'MANAGE_TEMPLATE', 'CREATE_TEMPLATE', '创建模板', NULL, '具有此资源的角色，可以在工作目录创建模板', 1);
-            INSERT INTO `vika_space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
             VALUES (1235489086546259980, 'MANAGE_TEMPLATE', 'DELETE_TEMPLATE', '删除模板', NULL, '具有此资源的角色，可以在模板中心删除模板', 1);
         </sql>
     </changeSet>
@@ -33,9 +33,9 @@
     <changeSet id="V0.4-20200602-004" author="Chambers" labels="space">
         <comment>工作空间-菜单表 增加模板相关数据</comment>
         <sql>
-            INSERT INTO `vika_space_menu`(id, parent_code, menu_code, menu_name, menu_url, sequence)
+            INSERT INTO `${table.prefix}space_menu`(id, parent_code, menu_code, menu_name, menu_url, sequence)
             VALUES (1235489086546259981, NULL, 'ManageTemp', '模板管理', NULL, 5);
-            INSERT INTO `vika_space_menu`(id, parent_code, menu_code, menu_name, menu_url, sequence)
+            INSERT INTO `${table.prefix}space_menu`(id, parent_code, menu_code, menu_name, menu_url, sequence)
             VALUES (1235489086546259982, 'ManageTemp', 'ManageTemp-TemplateCenter', '管理模板中心', NULL, 1);
         </sql>
     </changeSet>
@@ -43,9 +43,9 @@
     <changeSet id="V0.4-20200602-005" author="Chambers" labels="space">
         <comment>工作台-菜单资源关联表 增加模板相关数据</comment>
         <sql>
-            INSERT INTO `vika_space_menu_resource_rel`(id, menu_code, resource_code)
+            INSERT INTO `${table.prefix}space_menu_resource_rel`(id, menu_code, resource_code)
             VALUES (1235489096457400323, 'ManageTemp-TemplateCenter', 'CREATE_TEMPLATE');
-            INSERT INTO `vika_space_menu_resource_rel`(id, menu_code, resource_code)
+            INSERT INTO `${table.prefix}space_menu_resource_rel`(id, menu_code, resource_code)
             VALUES (1235489096457400324, 'ManageTemp-TemplateCenter', 'DELETE_TEMPLATE');
         </sql>
     </changeSet>

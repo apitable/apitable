@@ -1,4 +1,4 @@
-CREATE TABLE `vika_social_tenant_department`
+CREATE TABLE `${table.prefix}social_tenant_department`
 (
     `id`                        bigint(20) unsigned                     NOT NULL COMMENT '主键',
     `tenant_id`                 varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '企业标识',
