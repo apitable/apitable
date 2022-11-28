@@ -40,14 +40,14 @@ app.prepare().then(() => {
     );
 
     server.use(createProxyMiddleware('/room', {
-      target: process.env.API_PROXY || process.env.API_SOCKET_SERVER || 'http://127.0.0.1:3005',
+      target: process.env.API_PROXY || process.env.API_SOCKET_SERVER_ROOM || 'http://127.0.0.1:3005',
       ws: true,
       changeOrigin: true,
       cookieDomainRewrite: ''
     }));
 
     server.use(createProxyMiddleware('/notification', {
-      target: process.env.API_PROXY || process.env.API_SOCKET_SERVER || 'http://127.0.0.1:3002',
+      target: process.env.API_PROXY || process.env.API_SOCKET_SERVER_NOTIFICATION || 'http://127.0.0.1:3002',
       ws: true,
       changeOrigin: true,
       cookieDomainRewrite: ''
