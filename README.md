@@ -42,19 +42,14 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
 
 <table>
   <tr>
-    <td width="30%">
+    <td width="50%">
       <a href="#">
         <img src="docs/static//apitble_github_gif1.gif" />
       </a>
     </td>
-    <td width="30%">
+    <td width="50%">
         <a href="#">
             <img src="docs/static/apitble_github_gif2.gif" />
-        </a>
-    </td>
-    <td width="30%">
-        <a href="#">
-            <img src="docs/static/apitble_github_gif3.gif" />
         </a>
     </td>
   </tr>
@@ -65,31 +60,42 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
     <th>
       <a href="#">Automatic Form</a>
     </th>
-    <th>
-      <a href="#">API-first Panel</a>
-    </th>
+    
   </tr>
  <tr>
-    <td width="30%">
+    <td width="50%">
+        <a href="#">
+            <img src="docs/static/apitble_github_gif3.gif" />
+        </a>
+    </td>
+    <td width="50%">
       <a href="#">
         <img src="docs/static/apitble_github_gif3.gif" />
       </a>
     </td>
-    <td width="30%">
+ </tr>
+ <tr>
+    <th>
+      <a href="#">API-first Panel</a>
+    </th>
+    <th>
+      <a href="#">Unlimited table links</a>
+    </th>
+</tr>
+ <tr>
+    <td width="50%">
         <a href="#">
             <img src="docs/static/5.png" />
         </a>
     </td>
-    <td width="30%">
+    <td width="50%">
         <a href="#">
             <img src="docs/static/apitble_github_gif2.gif" />
         </a>
     </td>
   </tr>
-  <tr>
-    <th>
-      <a href="#">Unlimited table links</a>
-    </th>
+ 
+<tr>
     <th>
       <a href="#">Powerful Rows/Columns Permissions</a>
     </th>
