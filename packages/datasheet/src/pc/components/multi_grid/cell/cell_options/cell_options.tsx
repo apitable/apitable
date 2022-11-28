@@ -147,9 +147,9 @@ export const CellOptions: React.FC<ICellOptionsProps> = props => {
                 key={props.keyPrefix ? `${props.keyPrefix}-${index}` : item + index}
               >
                 <div className={classNames('optionText', styles.optionText)} style={{ color }}>
-                  <span className={styles.name}>
+                  <Typography variant="body4" className={styles.name} ellipsis>
                     {inquiryValueByKey('name', item, field, cacheTheme)}
-                  </span>
+                  </Typography>
                 </div>
                 {
                   showDeleteIcon(iconColor, inquiryValueByKey('color', item, field, cacheTheme), index)
