@@ -61,11 +61,15 @@ const statCountAll = (records: string[]) => {
 };
 
 const statEmpty = (cellValues: ICellValue[]) => {
-  return cellValues.filter(cellValue => !cellValue).length;
+  return cellValues.filter(cellValue => {
+    return cellValue == null || (Array.isArray(cellValue) && !cellValue.length);
+  }).length;
 };
 
 const statFilled = (cellValues: ICellValue[]) => {
-  return cellValues.filter(cellValue => cellValue).length;
+  return cellValues.filter(cellValue => {
+    return Array.isArray(cellValue) ? cellValue.length : (cellValue != null);
+  }).length;
 };
 
 const statUnique = (cellValues: ICellValue[], _field: IField) => {
