@@ -3,7 +3,7 @@
 
 </p>
 <p align="center">
-    <img src="docs/static/cover.png" alt="APITable Cover Image" />
+    <img src="https://s1.vika.cn/space/2022/11/28/a6dc9b0d9ee9498fa087b196257d3d2c" alt="APITable Cover Image" />
 </p>
 
 
