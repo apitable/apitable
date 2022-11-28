@@ -44,7 +44,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
   <tr>
     <td width="30%">
       <a href="#">
-        <img src="https://s1.vika.cn/space/2022/11/28/885d5b5b9c804b1b9736b5fd19a20fa3" />
+        <img src="docs/static//apitble_github_gif1.gif" />
       </a>
     </td>
     <td width="30%">
