@@ -54,7 +54,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
     </td>
     <td width="30%">
         <a href="#">
-            <img src="docs/static/cover.png" />
+            <img src="docs/static/apitble_github_gif3.gif" />
         </a>
     </td>
   </tr>
@@ -66,35 +66,35 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
       <a href="#">Automatic Form</a>
     </th>
     <th>
-      <a href="#">Team Management</a>
+      <a href="#">API-first Panel</a>
     </th>
   </tr>
  <tr>
     <td width="30%">
       <a href="#">
-        <img src="docs/static/cover.png" />
+        <img src="docs/static/apitble_github_gif2.gif" />
       </a>
     </td>
     <td width="30%">
         <a href="#">
-            <img src="docs/static/cover.png" />
+            <img src="docs/static/apitble_github_gif3.gif" />
         </a>
     </td>
     <td width="30%">
         <a href="#">
-            <img src="docs/static/cover.png" />
+            <img src="docs/static/apitble_github_gif2.gif" />
         </a>
     </td>
   </tr>
   <tr>
     <th>
+      <a href="#">Unlimited table links</a>
+    </th>
+    <th>
+      <a href="#">Powerful Rows/Columns Permissions</a>
+    </th>
+    <th>
       <a href="#">Embed</a>
-    </th>
-    <th>
-      <a href="#">API Panel</a>
-    </th>
-    <th>
-      <a href="#">Team Management</a>
     </th>
   </tr>
    
