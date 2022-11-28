@@ -1,4 +1,4 @@
-import { findNode, Navigation, Selectors, StoreActions, Strings, t, Settings, integrateCdnHost, IEmbedInfo } from '@apitable/core';
+import { findNode, Navigation, Selectors, StoreActions, Strings, t, Settings, integrateCdnHost, IEmbedInfo, ConfigConstant } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Tooltip } from 'pc/components/common/tooltip';
@@ -15,6 +15,7 @@ import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
 import { INodeTree } from '../share/interface';
 import styles from '../share/style.module.less';
+import { EmbedFail } from './embed_fail';
 
 interface IEmbedProps {
   embedId: string;
@@ -32,7 +33,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
  
   const dispatch = useAppDispatch();
   const [embedConfig, setEmbedCofig] = useState<IEmbedInfo>();
-  const { data: embedInfo } = useRequest<any>(() => getEmbedInfoReq(embedId));
+  const { data: embedData } = useRequest<any>(() => getEmbedInfoReq(embedId));
   
   usePageParams();
 
@@ -41,28 +42,27 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
   }, [sideBarVisible]);
 
   useEffect(() => {
-    if (!embedInfo) {
+    if (!embedData) {
       setEmbedClose(true);
       return;
     } 
     setEmbedClose(false);
-    
-    const { 
-      nodeId, 
-      shareNodeName, 
-      embedNodeType = 2, 
+    const { embedInfo, nodeInfo, spaceId } = embedData;
+    const {  
       nodeTree = [], 
       shareNodeIcon = '', 
       payload: embedSetting, 
-      ...embedSpaceInfo 
+      linkId
     } = embedInfo;
+
+    const { nodeName, id: nodeId, icon } = nodeInfo;
 
     setSideBarVisible(false);
     setNodeTree({
       nodeId,
-      nodeName: shareNodeName,
-      type: embedNodeType,
-      icon: shareNodeIcon,
+      nodeName,
+      type: ConfigConstant.NodeType.DATASHEET,
+      icon: icon,
       children: nodeTree,
     });
 
@@ -71,8 +71,8 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
       return;
     }
 
-    dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId, nodeName: shareNodeName, icon: shareNodeIcon }])));
-    dispatch(StoreActions.fetchMarketplaceApps(embedSpaceInfo.spaceId as string));
+    dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId, nodeName, icon: shareNodeIcon }])));
+    dispatch(StoreActions.fetchMarketplaceApps(spaceId as string));
 
     dispatch(StoreActions.setEmbedInfo({ ...embedSetting }));
     if (datasheetId) {
@@ -80,16 +80,16 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
     }
     setTimeout(() => {
       Router.push(Navigation.EMBED_SPACE,{
-        params: { embedId: embedSpaceInfo.linkId, nodeId },
+        params: { embedId: linkId, nodeId },
       });
     }, 0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(embedInfo)]);
+  }, [JSON.stringify(embedData)]);
 
   // Embed Close
   if (embedClose) {
-    return <></>;
+    return <EmbedFail />;
   }
 
   const handleClick = () => {
@@ -151,7 +151,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
   return (
     <>
       <Head>
-        <meta property='og:title' content={embedInfo?.shareNodeName || '维格表'} />
+        <meta property='og:title' content={embedData?.nodeInfo?.nodeName || '维格表'} />
         <meta property='og:type' content='website' />
         <meta property='og:url' content={window.location.href} />
         <meta property='og:image' content='https://s1.vika.cn/space/2021/12/01/992611616a744743a75c4b916e982dd6' />

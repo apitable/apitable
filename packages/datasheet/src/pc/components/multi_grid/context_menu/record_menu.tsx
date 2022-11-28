@@ -63,7 +63,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
   const dispatch = useDispatch();
   const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
   const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const { mirrorId, shareId, templateId } = useSelector(state => state.pageParams);
+  const { mirrorId, shareId, templateId, embedId } = useSelector(state => state.pageParams);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const beforeInputRef = useRef<IInputEditor>(null);
   const afterInputRef = useRef<IInputEditor>(null);
@@ -279,7 +279,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       {
         icon: <ColumnUrlOutlined color={colors.thirdLevelText} />,
         text: t(Strings.menu_copy_record_url, { recordShowName }),
-        hidden: !onlyOperateOneRecord,
+        hidden: !onlyOperateOneRecord || !!embedId,
         onClick: ({ props: { recordId }}) => {
           copyLink(recordId);
         },
@@ -302,7 +302,7 @@ export const RecordMenu: React.FC<IRecordMenuProps> = props => {
       {
         icon: <AttentionOutlined color={colors.thirdLevelText} />,
         text: subOrUnsubText,
-        hidden: isCalendar || !!shareId || !!templateId || !getEnvVariables().RECORD_WATCHING_VISIBLE,
+        hidden: isCalendar || !!shareId || !!templateId || !getEnvVariables().RECORD_WATCHING_VISIBLE || !!embedId,
         onClick: ({ props: { recordId }}) => onSubOrUnsub(recordId),
       },
     ],

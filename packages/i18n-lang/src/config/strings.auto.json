@@ -6140,6 +6140,10 @@
             "终端": "APP",
             "zh_HK": "請輸入郵箱"
         },
+        "embed_failed": {
+            "zh_CN": "嵌入链接已失效",
+            "en_US": "Embed link is deleted"
+        },
         "emoji_activity": {
             "zh_CN": "活动和事件",
             "en_US": "Activities",
@@ -10087,7 +10091,7 @@
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"1 元\",\"gold\":\"1.5 元\",\"enterprise\":\"按需定制\"}"
         },
         "grade_price_by_month": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"680元 /月\",\n  \"gold\": \"2,800元 /月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \" 680元 /月\",\n  \"gold\": \" 2,800元 /月\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"free\",\"silver\":\"about 36 yuan per person/month\",\"gold\":\"about 43.8 yuan per person/month\",\"enterprise\":\"customized on demand\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 36 元 人/月\",\"gold\":\"約 43.8 元 人/月\",\"enterprise\":\"按需定制\"}"
         },
@@ -10097,7 +10101,7 @@
             "zh_HK": "{\"bronze\":\"\",\"silver\":\"\",\"gold\":\"\",\"enterprise\":\"\"}"
         },
         "grade_price_by_year": {
-            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \"6,800 /年\",\n  \"gold\": \"26,800 /年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
+            "zh_CN": "{\n  \"bronze\": \"免费\",\n  \"silver\": \" 6,800元 /年\",\n  \"gold\": \" 26,800元 /年\",\n  \"enterprise\": \"按需定制\",\n  \"community\": \"免费\",\n  \"custom\": \"按需定制\"\n}",
             "en_US": "{\"bronze\":\"免费\",\"silver\":\"368 元 人/年\",\"gold\":\"538.8 元 人/年\",\"enterprise\":\"按需定制\"}",
             "zh_HK": "{\"bronze\":\"免費\",\"silver\":\"約 368 元 人/年\",\"gold\":\"約 538.8 元 人/年\",\"enterprise\":\"按需定制\"}"
         },

@@ -1244,6 +1244,7 @@ export type StringKeysMapType = {
   'email_err': 'email_err',
   'email_invite': 'email_invite',
   'email_placeholder': 'email_placeholder',
+  'embed_failed': 'embed_failed',
   'emoji_activity': 'emoji_activity',
   'emoji_custom': 'emoji_custom',
   'emoji_flags': 'emoji_flags',
