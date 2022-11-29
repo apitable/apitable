@@ -1,7 +1,6 @@
 import { getEnvVars } from 'get_env';
-import { NextPageContext } from 'next';
 
-export const getInitialProps = async(context: { ctx: NextPageContext }) => {
+export const getInitialProps = async() => {
   const envVars = getEnvVars();
   return {
     env: process.env.ENV,
