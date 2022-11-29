@@ -1,7 +1,7 @@
 import {
   consistencyCheck, CollaCommandName, Events, IJOTAction, IUserInfo, OTActionName, Player, ResourceType, Selectors, Strings, t,
 } from '@apitable/core';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { Modal } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

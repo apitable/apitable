@@ -1,5 +1,5 @@
 // import App from 'next/app'
-import { Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { StoreActions, Strings, t, Api, StatusCode, Navigation } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { Scope } from '@sentry/browser';
 import classNames from 'classnames';
@@ -35,7 +35,7 @@ import 'pc/components/home/social_platform/components/common.less';
 import 'pc/components/invite/invite.common.less';
 import { Router } from 'pc/components/route_manager/router';
 import { initEventListen } from 'pc/events';
-import { getRegResult, LOGIN_SUCCESS, shareIdReg } from 'pc/hooks';
+import { getRegResult, LOGIN_SUCCESS, shareIdReg, getPageParams, spaceIdReg } from 'pc/hooks';
 import { init as initPlayer } from 'modules/shared/player/init';
 import { initResourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -58,9 +58,8 @@ import '../src/index.less';
 import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
-import { getInitialProps } from '../utils/get_initial_props';
-import { IClientInfo } from '../utils/interface';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
+import axios from 'axios';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -68,9 +67,9 @@ const { publicRuntimeConfig } = getConfig();
 
 declare const window: any;
 
-interface IMyAppProps {
-  clientInfo: IClientInfo;
-  pathUrl: string;
+export interface IUserInfoError {
+  code: number;
+  message: string;
 }
 
 const initWorker = async() => {
@@ -95,7 +94,7 @@ enum LoadingStatus {
   Complete
 }
 
-function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
@@ -103,12 +102,8 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     }
     return LoadingStatus.None;
   });
-
-  useEffect(() => {
-    // Initialize the user system
-    initPlayer();
-    console.log('Current version number: ' + getReleaseVersion());
-  }, []);
+  const [userData, setUserData] = useState(null);
+  const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
     const handleStart = (url) => {
@@ -163,53 +158,105 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
   }, [loading]);
 
   useEffect(() => {
-    if (!clientInfo || !clientInfo.userInfo || clientInfo.userInfo === 'null') {
-      return;
-    }
+    const getUser = async () => {
+      const res = await axios.get('/client/info');
+      let userInfo = JSON.parse(res.data.userInfo);
+      setUserData(userInfo);
 
-    if (clientInfo.userInfoError) {
-      if (clientInfo.userInfoError.code === StatusCode.INVALID_SPACE) {
-        Modal.error({
-          title: t(Strings.get_verification_code_err_title),
-          content: t(Strings.enter_unactive_space_err_message),
-          okText: t(Strings.submit),
-          onOk: () => {
-            Router.push(Navigation.HOME);
-          },
-        });
+      const pathUrl = window.location.pathname;
+      const { nodeId } = getPageParams(pathUrl || '');
+      const query = new URLSearchParams(window.location.search);
+      const spaceId = query.get('spaceId') || '';
+      let userInfoError: IUserInfoError | undefined;
+
+      /**
+       * If there is no nodeId or spaceId in the pathUrl, the userInfo returned by user/me and client/info is actually the same, so there is no need to repeat the request.
+       */
+      if (
+        pathUrl &&
+        (
+          pathUrl.startsWith('/workbench') ||
+          pathUrl.startsWith('/org') ||
+          pathUrl.startsWith('/notification') ||
+          pathUrl.startsWith('/management') ||
+          pathUrl.includes('/tpl') ||
+          pathUrl.includes('/space') ||
+          pathUrl.includes('/login')
+        ) &&
+        (nodeId || spaceId)
+      ) {
+        const spaceId = getRegResult(pathUrl, spaceIdReg);
+        const res = await Api.getUserMe({ nodeId, spaceId }, false);
+        const { data, success, message, code } = res.data;
+
+        if (success) {
+          userInfo = data;
+        } else {
+          userInfoError = {
+            code,
+            message
+          };
+        }
+      }
+
+      setUserLoading(false);
+
+
+      if (!userInfo) return;
+
+      if (userInfoError) {
+        if (userInfoError.code === StatusCode.INVALID_SPACE) {
+          Modal.error({
+            title: t(Strings.get_verification_code_err_title),
+            content: t(Strings.enter_unactive_space_err_message),
+            okText: t(Strings.submit),
+            onOk: () => {
+              Router.push(Navigation.HOME);
+            },
+          });
+          return;
+        }
+        store.dispatch(
+          StoreActions.updateUserInfoErr({
+            code: userInfoError.code,
+            msg: userInfoError.message,
+          }),
+        );
         return;
       }
+
+      const _batchActions: any[] = [
+        StoreActions.setIsLogin(true),
+        StoreActions.setUserMe(userInfo),
+        StoreActions.setLoading(false),
+        StoreActions.updateUserInfoErr(null),
+      ];
+      if (!getRegResult(pathUrl, shareIdReg)) {
+        // This is to avoid initializing the space resource more than once under the share route
+        _batchActions.push(StoreActions.setActiveSpaceId(userInfo.spaceId));
+      }
+
       store.dispatch(
-        StoreActions.updateUserInfoErr({
-          code: clientInfo.userInfoError.code,
-          msg: clientInfo.userInfoError.message,
-        }),
+        batchActions(
+          _batchActions,
+          LOGIN_SUCCESS,
+        ),
       );
-      return;
-    }
-    const userInfo = JSON.parse(clientInfo.userInfo);
 
-    const _batchActions: any[] = [
-      StoreActions.setIsLogin(true),
-      StoreActions.setUserMe(userInfo),
-      StoreActions.setLoading(false),
-      StoreActions.updateUserInfoErr(null),
-    ];
-    if (!getRegResult(pathUrl, shareIdReg)) {
-      // This is to avoid initializing the space resource more than once under the share route
-      _batchActions.push(StoreActions.setActiveSpaceId(userInfo.spaceId));
-    }
+      window.__initialization_data__.userInfo = userInfo;
+      window.__initialization_data__.locale = res.data.locale;
+      window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
 
-    store.dispatch(
-      batchActions(
-        _batchActions,
-        LOGIN_SUCCESS,
-      ),
-    );
-  }, [clientInfo, clientInfo?.userInfo, pathUrl]);
+    }
+    getUser().then(() => {
+      import('../src/preIndex');
+      // Initialize the user system
+      initPlayer();
+      console.log('Current version number: ' + getReleaseVersion());
+    });
+  }, []);
 
   useEffect(() => {
-    import('../src/preIndex');
     import('element-scroll-polyfill');
     import('polyfill-object.fromentries');
     elementClosest(window);
@@ -234,7 +281,6 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     })();
   }, []);
 
-  const userInfo = clientInfo && clientInfo.userInfo ? JSON.parse(clientInfo.userInfo) : undefined;
   return <>
     <Head>
       <title>{t(Strings.system_configuration_product_name)}</title>
@@ -317,25 +363,25 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
     <Script src='https://res.wx.qq.com/open/js/jweixin-1.2.0.js' referrerPolicy='origin' />
     <Script src='https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js' referrerPolicy='origin' />
     <Script src='https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js' />
-    <Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
-      <div className={classNames({ 'script-loading-wrap': loading !== LoadingStatus.Complete }, '__next_main')}>
-        <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
+    {<Sentry.ErrorBoundary fallback={ErrorPage} beforeCapture={beforeCapture}>
+      <div className={classNames({ 'script-loading-wrap': ((loading !== LoadingStatus.Complete) || userLoading) }, '__next_main')}>
+        {!userLoading && <div style={{ display: loading !== LoadingStatus.Complete ? 'none' : 'block' }} onScroll={onScroll}>
           <Provider store={store}>
             <RouterProvider>
               <ThemeWrapper>
-                <Component {...pageProps} userInfo={userInfo} />
+                <Component {...pageProps} userInfo={userData}/>
               </ThemeWrapper>
             </RouterProvider>
           </Provider>
-        </div>
+        </div>}
         {
-          loading !== LoadingStatus.Complete && <div className='main-img-wrap' style={{ height: 'auto' }}>
-            <span className='script-loading-logo-img'>
-              <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt='logo' layout={'fill'} />
+          ((loading !== LoadingStatus.Complete) || userLoading) && <div className="main-img-wrap" style={{ height: 'auto' }}>
+            <span className="script-loading-logo-img">
+              <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt="logo" layout={'fill'}/>
             </span>
-            <span className='script-loading-vika-img'>
+            <span className="script-loading-vika-img">
               <Image
-                alt='vika'
+                alt="vika"
                 layout={'fill'}
                 object-fit={'contain'}
                 src={`${publicRuntimeConfig.staticFolder}/logo_text_dark.svg`}
@@ -343,9 +389,8 @@ function MyApp({ Component, pageProps, clientInfo, pathUrl }: AppProps & IMyAppP
             </span>
           </div>
         }
-
       </div>
-    </Sentry.ErrorBoundary>
+    </Sentry.ErrorBoundary>}
 
   </>;
 }
@@ -364,8 +409,6 @@ const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
 
 export default MyApp;
 reportWebVitals();
-
-MyApp.getInitialProps = getInitialProps;
 
 const beforeCapture = (scope: Scope) => {
   scope.setTag('PageCrash', true);

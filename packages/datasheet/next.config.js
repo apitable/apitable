@@ -7,6 +7,7 @@ const withPlugins = require('next-compose-plugins');
 const withTM = require('next-transpile-modules');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 const isProd = process.env.NODE_ENV === 'production';
+const {withSentryConfig} = require("@sentry/nextjs");
 
 /**
  * Stolen from https://stackoverflow.com/questions/10776600/testing-for-equality-of-regular-expressions
@@ -44,7 +45,7 @@ const localIdent = (loaderContext, localIdentName, localName, options) => {
 
 // Overrides for css-loader plugin
 function cssLoaderOptions(modules) {
-  const { getLocalIdent, ...others } = modules;
+  const {getLocalIdent, ...others} = modules;
   return {
     ...others,
     getLocalIdent: getLocalIdent || localIdent,
@@ -53,17 +54,10 @@ function cssLoaderOptions(modules) {
   };
 }
 
-const plugins = [[withLess, {
-  lessLoaderOptions: {
-    lessOptions: {
-      paths: [path.resolve(__dirname, './src')],
-
-    }
-  }
-}], [withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])],
-[withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})]
+const plugins = [
+  [withLess, {lessLoaderOptions: {lessOptions: {paths: [path.resolve(__dirname, './src')]}}}],
+  [withTM(['@apitable/components', 'antd', 'rc-pagination', 'rc-util', 'rc-picker', 'rc-notification', '@ant-design/icons', 'rc-calendar'])],
+  [withBundleAnalyzer({enabled: process.env.ANALYZE === 'true',})],
 ];
 
 // use local public folder for editions, e.g. apitable
@@ -73,7 +67,7 @@ const getStaticFolder = () => {
   return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
 };
 
-module.exports = withPlugins(plugins, {
+module.exports = withPlugins(plugins, withSentryConfig({
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
@@ -96,7 +90,7 @@ module.exports = withPlugins(plugins, {
     config.resolve.symlinks = false
     const originalEntry = config.entry;
 
-    config.entry = async() => {
+    config.entry = async () => {
       /**
        * 在 ie11 ，会出现 shadow 错误，根据 issue 里面的讨论方案，可以采用以下的 polyfill 解决
        */
@@ -126,8 +120,8 @@ module.exports = withPlugins(plugins, {
       });
       if (moduleSassRule) {
         // Get the config object for css-loader plugin
-        const cssLoader = moduleSassRule.use.find(({ loader }) => loader.includes('css-loader'));
-        const lessLoader = moduleSassRule.use.find(({ loader }) => loader.includes('less-loader'));
+        const cssLoader = moduleSassRule.use.find(({loader}) => loader.includes('css-loader'));
+        const lessLoader = moduleSassRule.use.find(({loader}) => loader.includes('less-loader'));
         if (cssLoader) {
           cssLoader.options = {
             ...cssLoader.options,
@@ -164,7 +158,7 @@ module.exports = withPlugins(plugins, {
       // });
     }
 
-    const { webpack } = options;
+    const {webpack} = options;
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /canvas|jsdom/,
@@ -198,11 +192,11 @@ module.exports = withPlugins(plugins, {
           loader: 'svgo-loader',
           options: {
             plugins: [
-              { name: 'removeNonInheritableGroupAttrs' },
-              { name: 'removeXMLNS' },
-              { name: 'collapseGroups' },
-              { name: 'removeStyleElement' },
-              { name: 'removeAttrs', params: { attrs: '(stroke|fill)' }},
+              {name: 'removeNonInheritableGroupAttrs'},
+              {name: 'removeXMLNS'},
+              {name: 'collapseGroups'},
+              {name: 'removeStyleElement'},
+              {name: 'removeAttrs', params: {attrs: '(stroke|fill)'}},
             ],
           }
         },
@@ -228,4 +222,15 @@ module.exports = withPlugins(plugins, {
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-});
+  sentry: {
+    disableServerWebpackPlugin: true,
+    hideSourceMaps: true
+  }
+}, {
+  url: 'https://sentry.vika.ltd',
+  authToken: '8064f23ee6414768883ca149622f3941b2d8a043fc9846cb8d7a4af26feb2879',
+  project: 'web-server',
+  dsn: 'https://d486e5409b1d4439ad0f250598cde620@sentry.vika.ltd/3',
+  org: 'sentry',
+  release: process.env.BUILD_VERSION
+}));

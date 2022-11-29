@@ -5,7 +5,7 @@ import {
   StatusCode, StoreActions, string2Segment, Strings, t,
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, EditDescribeOutlined, EditOutlined } from '@apitable/icons';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { useDebounceFn, useMount, useUnmount } from 'ahooks';
 import classnames from 'classnames';
 import produce from 'immer';
