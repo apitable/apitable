@@ -16,7 +16,7 @@ interface IClientInfo {
 class MyDocument extends Document<IClientInfo> {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
-    const initData = await getInitialProps({ ctx });
+    const initData = await getInitialProps();
     return {
       ...initialProps,
       ...initData,
