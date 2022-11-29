@@ -1323,12 +1323,12 @@ export const getVisibleColumns = createCachedSelector<
   // ignore the first column as hidden
   return view
     ? view.columns.filter((item, i) => {
-        const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
-        if (fieldRole === Role.None) {
-          return false;
-        }
-        return !(item.hidden && i !== 0);
-      })
+      const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
+      if (fieldRole === Role.None) {
+        return false;
+      }
+      return !(item.hidden && i !== 0);
+    })
     : [];
 })(defaultKeySelector);
 
@@ -2086,12 +2086,12 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
     // TODO: mobile will support edit in the future
     const permission = datasheet
       ? getIntegratePermissionWithField(state, {
-          permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
-          datasheetId,
-          fieldPermissionMap,
-          fieldId: fieldId,
-          mirrorId,
-        })
+        permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+        datasheetId,
+        fieldPermissionMap,
+        fieldId: fieldId,
+        mirrorId,
+      })
       : {};
     return {
       ...DEFAULT_PERMISSION,
@@ -2106,7 +2106,7 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
   }
 
   // share / templates page, return permission directly
-  if (state.pageParams.shareId || state.pageParams.templateId) {
+  if (state.pageParams.shareId || state.pageParams.templateId || state.pageParams.embedId) {
     return getIntegratePermissionWithField(state, {
       permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
       datasheetId,
