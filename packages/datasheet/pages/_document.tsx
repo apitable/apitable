@@ -2,23 +2,14 @@ import getConfig from 'next/config';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
-import { getInitialProps } from '../utils/get_initial_props';
+import { getEnvVars } from 'get_env';
 import '../utils/init_private';
-import { IClientInfo } from '../utils/interface';
 
 const { publicRuntimeConfig } = getConfig();
 
-class MyDocument extends Document<{ clientInfo: IClientInfo }> {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx);
-    const initData = await getInitialProps({ ctx }) as any;
-    return {
-      ...initialProps,
-      clientInfo: initData.clientInfo,
-    };
-  }
+class MyDocument extends Document {
   render() {
-    const clientInfo = this.props.clientInfo;
+    const envVars = getEnvVars();
     return (
       <Html>
         <Head>
@@ -32,22 +23,19 @@ class MyDocument extends Document<{ clientInfo: IClientInfo }> {
           <NextScript />
           <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
           {
-            clientInfo && <Script id='__initialization_data__' strategy={'beforeInteractive'}>
+            <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`
-          window.__initialization_data__ = {  
-              env:'${clientInfo.env}',
-              version:'${clientInfo.version}',
-              envVars: ${clientInfo.envVars},
-              locale:'${clientInfo.locale}',
-              userInfo: ${clientInfo.userInfo},
-              wizards: ${clientInfo.wizards},
-              headers:${clientInfo.headers},
+          window.__initialization_data__ = {
+              env: '${process.env.ENV}',
+              version: '${process.env.WEB_CLIENT_VERSION}',
+              envVars: ${JSON.stringify(envVars)},
+              locale:'zh-CN',
+              userInfo: null,
+              wizards: null,
             };
           `}
             </Script>
           }
-          {/* injection of custom configs of editions, e.g. APITable */}
-          <script src="/custom/custom_config.js" defer />
         </body>
       </Html>
     );

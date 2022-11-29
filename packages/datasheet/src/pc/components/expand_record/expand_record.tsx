@@ -1,4 +1,4 @@
-import { ErrorBoundary } from '@sentry/react';
+import { ErrorBoundary } from '@sentry/nextjs';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api, DatasheetApi, FieldOperateType, Navigation, RecordVision, ResourceIdPrefix, ResourceType, Selectors, SetFieldFrom, StatusCode, StoreActions,

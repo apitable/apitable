@@ -1,5 +1,5 @@
 import { Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { IServiceError } from '@apitable/widget-sdk';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
