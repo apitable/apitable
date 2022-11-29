@@ -2,7 +2,7 @@ import getConfig from 'next/config';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
-import { getEnvVars } from 'get_env';
+import { getInitialProps } from '../utils/get_initial_props';
 import '../utils/init_private';
 
 const { publicRuntimeConfig } = getConfig();
@@ -16,12 +16,10 @@ interface IClientInfo {
 class MyDocument extends Document<IClientInfo> {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
-    const envVars = getEnvVars();
+    const initData = await getInitialProps({ ctx });
     return {
       ...initialProps,
-      env: process.env.ENV,
-      version: process.env.WEB_CLIENT_VERSION,
-      envVars: JSON.stringify(envVars),
+      ...initData,
     };
   }
   render() {
