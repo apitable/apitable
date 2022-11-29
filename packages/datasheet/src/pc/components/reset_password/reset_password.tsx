@@ -8,6 +8,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 import { FC } from 'react';
 import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
+import { initMode } from '../home/login/identifying_code_login/identifying_code_login';
 import { IdentifyingCodeModes, IIdentifyingCodeData } from '../home/login/identifying_code_login/identifying_code_modes';
 import styles from './style.module.less';
 
@@ -117,7 +118,7 @@ const ResetPassword: FC = () => {
                 smsType={ConfigConstant.SmsTypes.MODIFY_PASSWORD}
                 emailType={ConfigConstant.EmailCodeType.COMMON}
                 onModeChange={onModeChange}
-                defaultIdentifyingCodeMode={ConfigConstant.LoginMode.PHONE}
+                defaultIdentifyingCodeMode={initMode()}
                 error={{ accountErrMsg: errMsg.accountErrMsg, identifyingCodeErrMsg: errMsg.identifyingCodeErrMsg }}
                 onChange={handleIdentifyingCodeChange}
                 mode={LOGIN_DEFAULT_ACCOUNT_TYPE as IdentifyingCodeModes}

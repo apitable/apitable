@@ -33,7 +33,7 @@ export interface IIdentifyingCodeLoginProps {
   config?: IIdentifyingCodeConfig;
 }
 
-const initMode = (mode: IdentifyingCodeModes | undefined): IdentifyingCodeModes => {
+export const initMode = (mode?: IdentifyingCodeModes): IdentifyingCodeModes => {
   if (mode) return mode;
 
   const localStoredMode = localStorage.getItem('vika-preference-login-mode');
