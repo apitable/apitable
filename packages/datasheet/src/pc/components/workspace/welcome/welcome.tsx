@@ -18,8 +18,8 @@ import WelcomeIcon from 'static/icon/datasheet/datasheet_img_welcome@2x.png';
 import { CreateDataSheetModal } from './create_datasheet_modal';
 import styles from './style.module.less';
 
-const openUrl = (url:string)=>{
-  if(url.includes('http')){
+const openUrl = (url: string) => {
+  if (url.includes('http')) {
     return url;
   }
   return `${window.location.origin}${url}`;
@@ -50,7 +50,7 @@ export const Welcome: FC = () => {
   // const isWecomSpace = isSocialWecom(spaceInfo);
 
   const plm = isBindDingTalk ? '?plm=dingtalk' : isBindWecom ? '?plm=wecom' : isBindFeishu ? '?plm=feishu' : '';
-  const data = JSON.parse(env.WELCOME_CONFIG || '');
+  const data = (env.WELCOME_CONFIG ? Object.values(JSON.parse(env.WELCOME_CONFIG)) : []) as Record<string, any>[];
 
   if (!treeNodesMap[rootId] || !spaceId) {
     return <></>;
