@@ -7,9 +7,12 @@ import '../utils/init_private';
 
 const { publicRuntimeConfig } = getConfig();
 
+const envVars = getEnvVars();
+const env = process.env.ENV;
+const version = process.env.WEB_CLIENT_VERSION;
+
 class MyDocument extends Document {
   render() {
-    const envVars = getEnvVars();
     return (
       <Html>
         <Head>
@@ -26,8 +29,8 @@ class MyDocument extends Document {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`
           window.__initialization_data__ = {
-              env: '${process.env.ENV}',
-              version: '${process.env.WEB_CLIENT_VERSION}',
+              env: '${env}',
+              version: '${version}',
               envVars: ${JSON.stringify(envVars)},
               locale:'zh-CN',
               userInfo: null,
