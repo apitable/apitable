@@ -1,6 +1,7 @@
 import {
   ApiTipConstant,
   CacheManager,
+  CellFormatEnum,
   CollaCommandName,
   Conversion,
   ExecuteResult,
@@ -228,7 +229,7 @@ export class FusionApiService {
       },
     });
 
-    const recordVos = this.getRecordViewObjects(records);
+    const recordVos = this.getRecordViewObjects(records, query.cellFormat);
 
     return {
       total: maxRecords,
@@ -450,10 +451,10 @@ export class FusionApiService {
     };
   }
 
-  private getRecordViewObjects(records: dbus.Record[]): ApiRecordDto[] {
+  private getRecordViewObjects(records: dbus.Record[], cellFormat: CellFormatEnum = CellFormatEnum.JSON): ApiRecordDto[] {
     const vos: ApiRecordDto[] = [];
     for (const record of records) {
-      const vo = record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options));
+      const vo = record.getViewObject<ApiRecordDto>((id, options) => this.transform.recordVoTransform(id, options, cellFormat));
       if (vo) {
         vos.push(vo);
       }
