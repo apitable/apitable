@@ -30,8 +30,6 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface Window {
     __initialization_data__: IInitializationData;
-
-    __vika_custom_config__: ICustomConfig;
   }
 
   const WwLogin: any;

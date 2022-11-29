@@ -255,6 +255,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apitable/core@workspace:packages/core"
   dependencies:
+    "@apitable/i18n": ^1.0.2
     "@types/color": ^3.0.1
     "@types/jest": ^29.2.1
     "@types/lodash": 4.14.161
@@ -524,6 +525,16 @@ __metadata:
     typescript: ^4.8.2
   languageName: unknown
   linkType: soft
+
+"@apitable/i18n@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@apitable/i18n@npm:1.0.2"
+  dependencies:
+    apitable: ^0.8.1
+    lodash: ^4.17.21
+  checksum: ffa84cb49e8f7fc0cd966f7917f00a6c3e933262df5a04e037487f1325a310f91803d5d8c7577bc0a50617951b920df9e99626b7f1d83bea7f6af2424a2c1bb1
+  languageName: node
+  linkType: hard
 
 "@apitable/icons@*, @apitable/icons@workspace:packages/icons":
   version: 0.0.0-use.local
@@ -15193,6 +15204,17 @@ __metadata:
     normalize-path: ^3.0.0
     picomatch: ^2.0.4
   checksum: c951385862bf114807d594bdffccb769bd7219ddc14f24fc135cde075ad2477a97991567b8bb5032d4f279f96897f0c2af6468a350a6c674ac0a5ee3b62a26d6
+  languageName: node
+  linkType: hard
+
+"apitable@npm:^0.8.1":
+  version: 0.8.2
+  resolution: "apitable@npm:0.8.2"
+  dependencies:
+    axios: ^0.19.2
+    form-data: ^3.0.0
+    qs: ^6.9.4
+  checksum: 5c3d9526374100e75837a4b3b5c99b548e7aab1df2007f8a77ecc0e218e5c2ec5f8666fda6d44cd38f3e2f2659f48d9ae5a99a1a952f4651e67b604f9988f1a7
   languageName: node
   linkType: hard
 

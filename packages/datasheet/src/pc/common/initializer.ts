@@ -13,14 +13,12 @@ import { store } from 'pc/store';
 import { getEnvVariables, getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
 import '../../modules/shared/apphook/hook_bindings';
 import { initCronjobs } from './cronjob';
-import { initialConfig } from './initial_config';
 import './store_subscribe';
 import { APITable } from '../../modules/shared/apitable_lib';
 
 declare let window: any;
 if (!process.env.SSR && window !== undefined) {
   window.APITable = APITable;
-  initialConfig();
 }
 
 const isMatch = (staticUrl: string, url: string) => {

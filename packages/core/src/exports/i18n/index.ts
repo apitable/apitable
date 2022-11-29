@@ -1,7 +1,7 @@
 /*
  * read strings.auto.json,  go translation
  */
-import { I18N } from '../../modules/shared/i18n/i18n.class';
+import { I18N } from '@apitable/i18n';
 import { StringKeysMapType, StringKeysType } from '../../config/stringkeys.interface';
 export * from '../../config/stringkeys.interface';
 
