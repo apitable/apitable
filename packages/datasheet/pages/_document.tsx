@@ -7,12 +7,25 @@ import '../utils/init_private';
 
 const { publicRuntimeConfig } = getConfig();
 
-const envVars = getEnvVars();
-const env = process.env.ENV;
-const version = process.env.WEB_CLIENT_VERSION;
+interface IClientInfo {
+  env: string
+  version: string
+  envVars: string
+}
 
-class MyDocument extends Document {
+class MyDocument extends Document<IClientInfo> {
+  static async getInitialProps(ctx) {
+    const initialProps = await Document.getInitialProps(ctx);
+    const envVars = getEnvVars();
+    return {
+      ...initialProps,
+      env: process.env.ENV,
+      version: process.env.WEB_CLIENT_VERSION,
+      envVars: JSON.stringify(envVars),
+    };
+  }
   render() {
+    const { env, version, envVars } = this.props;
     return (
       <Html>
         <Head>
@@ -31,7 +44,7 @@ class MyDocument extends Document {
           window.__initialization_data__ = {
               env: '${env}',
               version: '${version}',
-              envVars: ${JSON.stringify(envVars)},
+              envVars: ${envVars},
               locale:'zh-CN',
               userInfo: null,
               wizards: null,
