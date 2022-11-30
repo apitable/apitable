@@ -38,8 +38,75 @@ If you just want try out APITable[^info], using our hosted version at [apitable.
 
 If you want to install APITable on your local or cloud, See [Installation](#installation)
 
-
 ## 🔥 Features
+
+<table>
+  <tr>
+    <td width="50%">
+      <a href="#">
+        <img src="docs/static/feature-realtime.gif" />
+      </a>
+    </td>
+    <td width="50%">
+        <a href="#">
+            <img src="docs/static/feature-form.gif" />
+        </a>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <a href="#">Realtime Collaboration</a>
+    </th>
+    <th>
+      <a href="#">Automatic Form</a>
+    </th>
+    
+  </tr>
+ <tr>
+    <td width="50%">
+        <a href="#">
+            <img src="docs/static/feature-apipanel.gif" />
+        </a>
+    </td>
+    <td width="50%">
+      <a href="#">
+        <img src="docs/static/feature-apipanel.gif" />
+      </a>
+    </td>
+ </tr>
+ <tr>
+    <th>
+      <a href="#">API-first Panel</a>
+    </th>
+    <th>
+      <a href="#">Unlimited table links</a>
+    </th>
+</tr>
+ <tr>
+    <td width="50%">
+        <a href="#">
+            <img src="docs/static/feature-apipanel.gif" />
+        </a>
+    </td>
+    <td width="50%">
+        <a href="#">
+            <img src="docs/static/feature-apipanel.gif" />
+        </a>
+    </td>
+  </tr>
+ 
+<tr>
+    <th>
+      <a href="#">Powerful Rows/Columns Permissions</a>
+    </th>
+    <th>
+      <a href="#">Embed</a>
+    </th>
+  </tr>
+   
+</table>
+
+
 
 APITable provides incredible powerful features, from the personal to the Enterprise.
 
@@ -50,7 +117,7 @@ APITable provides incredible powerful features, from the personal to the Enterpr
     - **100k+** Data Rows real-time collaboration available.
     - Full-stack API access, from Data to `Metadata`.
     - One-direction / Bi-direction Table Link and `Infinite Cross Links` 
-    - Community-friendly programming languages and framework, TypeScript(React + NestJS) and Java (Spring Boot)
+    - Community-friendly programming languages and framework, TypeScript([NextJS](https://nextjs.org/) + [NestJS](https://nestjs.com/)) and Java ([Spring Boot](https://spring.io/projects/spring-boot))
 - Beautiful and Rich Database-Spreadsheet UI
     - `CRUD`: Create, Read, Update and Delete on Tables, Columns, and Rows
     - `Fields Operations`: sort, filter, grouping, hide/unhide, height setting.
@@ -93,8 +160,7 @@ and more and more with extensible widgets and plugins.
 
 Why you must know APITable for your next software?
 
-
-- As a Management Software
+- As a super management software
     - Flexible Project Management & Task/Issues Managements.
     - Marketing Leads Management. 
     - Most flexible and connectable CRM.
@@ -103,13 +169,14 @@ Why you must know APITable for your next software?
     - Flexible ERP.
     - Low-code and no-code platform.
     - ......and more, APITable puts 1000 softwares in your own.
-- As a Visual Database infrastructure
+- As a visual database infrastructure
     - **Embed** APITable into your own software UIs.
     - Visual Database with REST API.
     - Admin dashboard.
     - Central configuration management.
     - All-in-one enterprise database that **connect all** your software.
     - ......and more, APITable connects everything.
+- Also, it is open source and extensible
 
 ## 💞 API-oriented
 
@@ -147,7 +214,7 @@ curl https://apitable.github.io/install.sh | bash -c
 
 Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
 
-If you want to set up your local development environment, read our [developer guide](./docs/contribute/developer-guide.md)
+If you want to set up your local development environment, read our [Developer Guide](./docs/contribute/developer-guide.md)
 
 
 ## 🧑‍💻 Contributing
@@ -156,35 +223,19 @@ Welcome, and thank you for your interest in contributing to APITable!
 
 There are many ways in which you can contribute, beyond writing code. 
 
-You can read this repository’s [contributing guidelines](./CONTRIBUTING.md) to learn how to contribute.
+You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
 
 Here help you quick start the process of contributing to APITable.
 
-### Run for development
+### Development environment
 
-APITable uses Docker to run everything, so relax that Java and NodeJS are unnecessary installed for your local machine.
-
-Make sure you have `docker` & `make` installed locally.
-
-Then you run development environment by one command:
-
-```bash
-# docker compose up the development environment with local code
-make devenv-up
-```
-
-Input `make` command to see the help.
-
-```bash
-# help
-make
-```
+Learn how to set up your local environment, in our [Developer Guide](./docs/contribute/developer-guide.md).
 
 ### Git workflow basic
 
 Here's a general APITable git workflow:
 
-1. Create an issue and describe your idea -> [APITable issues](https://github.com/apitable/apitable/issues)
+1. Create an issue and describe features you want -> [APITable issues](https://github.com/apitable/apitable/issues)
 2. Fork this project -> [Fork APITable project](https://github.com/apitable/apitable/fork)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
@@ -192,15 +243,16 @@ Here's a general APITable git workflow:
 6. Create a new Pull Request -> [Create pull request across forks](https://github.com/apitable/apitable/compare)
 
 
-### Conventions
+### Work conventions
 
-APITable use common use conventions:
+APITable use these common conventions:
 
-- What's our Git branching model? -> [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
-- How to collaborate on your fork projects? -> [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
-- How to write good commit message? -> [Conventional Commits](https://www.conventionalcommits.org/)
-- How to versioning and tagging? -> [Semantic Versioning](https://semver.org/)
-- What is the Java Coding Guideline? -> [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
+- What's our Git branching model? [Gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- How to collaborate on your fork projects? [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- How to write good commit message? [Conventional Commits](https://www.conventionalcommits.org/)
+- What's our changelog format? [Keep Changelog](https://keepachangelog.com/en/1.0.0/)
+- How to versioning and tagging? [Semantic Versioning](https://semver.org/)
+- What is the Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
 ## 🛣 Roadmap
@@ -245,10 +297,38 @@ APITable use common use conventions:
 
 
 ## 📺 Screenshot
+<p align="center">
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
+</p>
+<p align="center">
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
+</p>
 
-- Invite
 
-(.....)
 ## 🥰 License
 
 > This repository contains the source code for the Open Source edition of APITable, released under the AGPL.

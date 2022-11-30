@@ -8,6 +8,11 @@ data
 logs
 .logs
 
+# Ignore Gradle build output directory
+**/.gradle
+**/build
+**/bin
+
 /blueprint-templates
 
 # dependencies
