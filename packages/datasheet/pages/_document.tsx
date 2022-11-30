@@ -8,22 +8,23 @@ import '../utils/init_private';
 const { publicRuntimeConfig } = getConfig();
 
 interface IClientInfo {
-  env: string
-  version: string
-  envVars: string
+  env: string;
+  version: string;
+  envVars: string;
+  locale: string;
 }
 
 class MyDocument extends Document<IClientInfo> {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
-    const initData = await getInitialProps();
+    const initData = await getInitialProps({ ctx }) as any;
     return {
       ...initialProps,
       ...initData,
     };
   }
   render() {
-    const { env, version, envVars } = this.props;
+    const { env, version, envVars, locale } = this.props;
     return (
       <Html>
         <Head>
@@ -43,7 +44,7 @@ class MyDocument extends Document<IClientInfo> {
               env: '${env}',
               version: '${version}',
               envVars: ${envVars},
-              locale:'zh-CN',
+              locale:'${locale}',
               userInfo: null,
               wizards: null,
             };

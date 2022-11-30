@@ -41,11 +41,7 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
     }
 
     window.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('touchstart', onMouseDown);
-    return () => {
-      window.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('touchstart', onMouseDown);
-    };
+    return () => window.removeEventListener('mousedown', onMouseDown);
   }, []);
 
   return (
