@@ -24,6 +24,13 @@ export const getServerSideProps = async(context: NextPageContext) => {
   axios.defaults.baseURL = host + Url.BASE_URL;
   const headers = getRequestHeaders(context);
 
+  const userMeRes = await Api.getUserMe({}, false, headers);
+  const { data: userInfo } = userMeRes.data;
+
+  if (userInfo) {
+    return { props: {}};
+  }
+
   const res = await Api.templateRecommend(headers);
 
   const { success, data } = res.data;

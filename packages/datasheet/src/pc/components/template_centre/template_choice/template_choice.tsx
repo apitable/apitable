@@ -1,14 +1,15 @@
-import {
-  ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
-} from '@apitable/core';
 import { Typography } from '@apitable/components';
+import {
+  Api, ConfigConstant, getImageThumbSrc, integrateCdnHost, IReduxState, Navigation, Settings, Strings, t, TEMPLATE_CENTER_ID,
+} from '@apitable/core';
+import { ITemplateRecommendResponse } from '@apitable/core/dist/modules/shared/api/api.interface';
 import { Col, Row } from 'antd';
 import { TemplateRecommendContext } from 'context/template_recommend';
 import { take, takeRight } from 'lodash';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -28,10 +29,24 @@ export const imgUrl = (token: string, imageHeight: number) => {
 
 export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
   const { setUsingTemplate } = props;
+  const [_templateRecommendData, setTemplateRecommendData] = useState<ITemplateRecommendResponse>();
   const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
   const spaceId = useSelector((state: IReduxState) => state.space.activeId);
   const { recommendData: templateRecommendData } = useContext(TemplateRecommendContext);
   const env = getEnvVariables();
+
+  useEffect(() => {
+    if (templateRecommendData) {
+      setTemplateRecommendData(templateRecommendData);
+      return;
+    }
+    Api.templateRecommend().then(res => {
+      const { data, success } = res.data;
+      if (success) {
+        setTemplateRecommendData(data);
+      }
+    });
+  }, [templateRecommendData]);
 
   const openTemplateDetail = ({ templateId }) => {
     Router.push(Navigation.TEMPLATE, {
@@ -51,18 +66,19 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
       },
     });
   };
-  if (!templateRecommendData) {
+  if (!_templateRecommendData) {
+    console.log({ cc: _templateRecommendData });
     return null;
   }
 
-  const carouselItems = take(templateRecommendData.top, templateRecommendData.top?.length - 2);
+  const carouselItems = take(_templateRecommendData.top, _templateRecommendData.top?.length - 2);
   const firstTop = carouselItems[0];
 
   return (
     <div className={styles.templateChoiceWrapper}>
       <Row className={styles.templateChoice}>
         <Col span={24}>
-          {templateRecommendData.top &&
+          {_templateRecommendData.top &&
             <>
               <div className={styles.topBannerWrapper} id={TEMPLATE_CENTER_ID.TOP_HOT_BANNER}>
                 {carouselItems.length === 1 ? (
@@ -107,7 +123,7 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
               </div>
               <div className={styles.recommendWrapper}>
                 {
-                  takeRight(templateRecommendData.top, 2).map(template => (
+                  takeRight(_templateRecommendData.top, 2).map(template => (
                     <div className={styles.recommendItem} key={template.image}>
                       <TemplateItem
                         height={160}
@@ -127,7 +143,7 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
               </div>
             </>
           }
-          {templateRecommendData.albumGroups?.map(albumGroup => (
+          {_templateRecommendData.albumGroups?.map(albumGroup => (
             <Row key={albumGroup.name}>
               <Col span={24} className={styles.category}>
                 <Row className={styles.categoryName}>
@@ -156,7 +172,7 @@ export const TemplateChoice: FC<ITemplateChoiceProps> = props => {
             </Row>
           ))}
           {
-            templateRecommendData.templateGroups && templateRecommendData.templateGroups.map(category => (
+            _templateRecommendData.templateGroups && _templateRecommendData.templateGroups.map(category => (
               <Row key={category.name}>
                 <Col span={24} className={styles.category}>
                   <Row className={styles.categoryName}>
