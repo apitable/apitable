@@ -3,7 +3,7 @@
 
 </p>
 <p align="center">
-    <img src="docs/static/1.png" alt="APITable Cover Image" />
+    <img src="docs/static/cover.png" alt="APITable Cover Image" />
 </p>
 
 
@@ -44,12 +44,12 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
   <tr>
     <td width="50%">
       <a href="#">
-        <img src="docs/static//apitble_github_gif1.gif" />
+        <img src="docs/static/feature-realtime.gif" />
       </a>
     </td>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/apitble_github_gif2.gif" />
+            <img src="docs/static/feature-form.gif" />
         </a>
     </td>
   </tr>
@@ -65,12 +65,12 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
  <tr>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/apitble_github_gif3.gif" />
+            <img src="docs/static/feature-apipanel.gif" />
         </a>
     </td>
     <td width="50%">
       <a href="#">
-        <img src="docs/static/apitble_github_gif3.gif" />
+        <img src="docs/static/feature-apipanel.gif" />
       </a>
     </td>
  </tr>
@@ -85,12 +85,12 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
  <tr>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/5.png" />
+            <img src="docs/static/feature-apipanel.gif" />
         </a>
     </td>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/apitble_github_gif2.gif" />
+            <img src="docs/static/feature-apipanel.gif" />
         </a>
     </td>
   </tr>
@@ -298,34 +298,34 @@ APITable use these common conventions:
 
 ## 📺 Screenshot
 <p align="center">
-    <img src="docs/static/2.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/3.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-auto-form.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/4.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-api-panel.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/5.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-permissions.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/6.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-extensible.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/7.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-automation.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/8.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-marketing.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/9.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-hr.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/10.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-it.png" alt="APITable Screenshot Image" />
 </p>
 <p align="center">
-    <img src="docs/static/11.png" alt="APITable Screenshot Image" />
+    <img src="docs/static/screenshot-sales.png" alt="APITable Screenshot Image" />
 </p>
 
 
