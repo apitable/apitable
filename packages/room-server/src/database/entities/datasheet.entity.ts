@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/entities/base.entity';
 /**
  * Workbench-Datasheet
  */
-@Entity('vika_datasheet')
+@Entity(`datasheet`)
 export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'dst_id',

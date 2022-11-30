@@ -5,7 +5,7 @@ import { IResourceMeta, ResourceType } from '@apitable/core';
 /**
  * The metadata table corresponding to the resource, such as Form/Dashboard
  */
-@Entity('vika_resource_meta')
+@Entity(`resource_meta`)
 export class ResourceMetaEntity extends BaseEntity {
   @Column({
     name: 'resource_id',

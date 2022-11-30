@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
-@Entity('vika_unit_member')
+@Entity(`unit_member`)
 export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'user_id',

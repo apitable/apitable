@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 /**
  * Workbench-Node Relationship
  */
-@Entity('vika_node_rel')
+@Entity(`node_rel`)
 export class NodeRelEntity {
   @PrimaryColumn('bigint')
     id: string;

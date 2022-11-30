@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 /**
  * Workbench-Datasheet Changeset Source
  */
-@Entity('vika_datasheet_changeset_source')
+@Entity(`datasheet_changeset_source`)
 export class DatasheetChangesetSourceEntity {
   @PrimaryColumn('bigint')
     id: string;

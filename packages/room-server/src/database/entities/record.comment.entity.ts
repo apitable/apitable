@@ -5,7 +5,7 @@ import { ICommentMsg } from '@apitable/core';
 /**
  * Workbench-Record Comment
  */
-@Entity('vika_datasheet_record_comment')
+@Entity(`datasheet_record_comment`)
 export class RecordCommentEntity extends BaseEntity {
   @Column({
     name: 'dst_id',

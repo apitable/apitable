@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/entities/base.entity';
 /**
  * Workbench-Datasheet Record Subscription
  */
-@Entity('vika_datasheet_record_subscription')
+@Entity(`datasheet_record_subscription`)
 export class DatasheetRecordSubscriptionEntity extends BaseEntity {
   @PrimaryColumn('bigint')
     id: string;

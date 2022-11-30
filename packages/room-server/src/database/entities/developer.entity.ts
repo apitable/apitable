@@ -1,10 +1,11 @@
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { IdWorker } from 'shared/helpers/snowflake';
+import { BaseEntity } from 'shared/entities/base.entity';
 
 /**
  * Workbench-Developer
  */
-@Entity('vika_developer')
+@Entity(`developer`)
 export class DeveloperEntity {
   @Column({
     name: 'user_id',

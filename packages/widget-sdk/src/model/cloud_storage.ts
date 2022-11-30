@@ -85,7 +85,7 @@ export class CloudStorage {
    *     if (cloudStorage.hasPermissionToSet()) {
    *         await cloudStorage.setAsync('favoriteColor', color);
    *     }
-   *     // cloudStorage updates have been saved to vika servers.
+   *     // cloudStorage updates have been saved to APITable servers.
    *     alert('favoriteColor has been updated');
    * }
    * ```

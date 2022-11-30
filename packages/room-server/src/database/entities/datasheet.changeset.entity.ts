@@ -5,7 +5,7 @@ import { IOperation } from '@apitable/core';
 /**
  * Workbench-Digital table operation change collection table
  */
-@Entity('vika_datasheet_changeset')
+@Entity(`datasheet_changeset`)
 export class DatasheetChangesetEntity extends BaseEntity {
 
   @Column({

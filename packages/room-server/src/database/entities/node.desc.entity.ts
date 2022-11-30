@@ -1,9 +1,10 @@
+import { BaseEntity } from 'shared/entities/base.entity';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
  * Workbench-Node Description
  */
-@Entity('vika_node_desc')
+@Entity(`node_desc`)
 export class NodeDescEntity {
   @PrimaryColumn('bigint')
     id: string;

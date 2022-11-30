@@ -2,12 +2,12 @@ services:
   init-settings:
     image: ${IMAGE_SERVICE_REGISTRY}/${IMAGE_INIT_SETTINGS}
     volumes:
-      - ${DATA_PATH}/.data/settings/vika:/tmp/vika
+      - ${DATA_PATH}/.data/settings/apitable:/tmp/apitable
     command:
       - /bin/sh
       - -c 
       - |
-        rm -rf /tmp/vika/* && cp -afr /settings/* /tmp/vika
+        rm -rf /tmp/apitable/* && cp -afr /settings/* /tmp/apitable
         echo "init-settings done"
 
   web-server:
@@ -21,7 +21,7 @@ services:
       - apitable
     user: 0:0
     volumes:
-      - ${DATA_PATH}/.data/settings/vika:/tmp/vika
+      - ${DATA_PATH}/.data/settings/apitable:/tmp/apitable
     security_opt:
       - label:user:root
       - label:role:root
@@ -29,7 +29,7 @@ services:
       - /bin/sh
       - -c
       - |
-        [ -f /tmp/vika/run.sh ] &&  sh /tmp/vika/run.sh
+        [ -f /tmp/apitable/run.sh ] &&  sh /tmp/apitable/run.sh
         node server.js
     depends_on:
       backend-server:

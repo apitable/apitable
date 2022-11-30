@@ -5,7 +5,7 @@ import { IRecordCellValue, IRecordMeta } from '@apitable/core';
 /**
  * Workbench-Datasheet Record
  */
-@Entity('vika_datasheet_record')
+@Entity(`datasheet_record`)
 export class DatasheetRecordEntity extends BaseEntity {
   @Column({
     name: 'record_id',

@@ -5,7 +5,7 @@ import { IMeta } from '@apitable/core';
 /**
  * Workbench-Datasheet Meta
  */
-@Entity('vika_datasheet_meta')
+@Entity(`datasheet_meta`)
 export class DatasheetMetaEntity extends BaseEntity {
 
   @Column( {

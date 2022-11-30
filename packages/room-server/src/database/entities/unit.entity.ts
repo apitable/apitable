@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/entities/base.entity';
 /**
  * Organizational structure-Organization unit table
  */
-@Entity('vika_unit')
+@Entity(`unit`)
 export class UnitEntity extends BaseEntity {
   @Column({
     name: 'space_id',

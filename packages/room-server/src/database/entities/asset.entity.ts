@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/entities/base.entity';
 /**
  * Asset
  */
-@Entity('vika_asset')
+@Entity(`asset`)
 export class AssetEntity extends BaseEntity {
   @Column({
     name: 'checksum',

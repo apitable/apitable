@@ -5,7 +5,7 @@ import { IFormProps } from '@apitable/core';
 /**
  * Workbench-Node
  */
-@Entity('vika_node')
+@Entity(`node`)
 export class NodeEntity extends BaseEntity {
   @Column({
     name: 'type',

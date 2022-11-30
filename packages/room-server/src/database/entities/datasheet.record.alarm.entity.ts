@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../shared/entities/base.entity';
 
-@Entity('vika_datasheet_record_alarm')
+@Entity(`datasheet_record_alarm`)
 export class DatasheetRecordAlarmEntity extends BaseEntity {
   @Column({
     name: 'alarm_id',

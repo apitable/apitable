@@ -111,15 +111,6 @@ components: ## 启动 components package
 components-build: ## 打包 components package
 	yarn build:components
 
-# conf: ## 同步数表配置
-# 	yarn scripts:makeconfig
-# java: ## 生成 java code，默认 ../vikadata-master 为 java 工程
-# 	export VIKA_SERVER_PATH=$$PWD/../vikadata-master && yarn scripts:makeconfig-javacode
-
-# install: ## npm 包安装
-# 	- yarn config get npmRegistryServer
-# 	- yarn -v
-# 	- yarn install
 icon: ## 同步设计 icons 并打包
 	- yarn sync:icons
 	- yarn build:icons
@@ -405,10 +396,10 @@ clean: ## clean and delete git ignore and dirty files
 
 proto:
 	export TS_PROTO_OUT_PATH=packages/room-server/src/grpc/generated/;\
-  	$(RUNNER) proto-generic sh scripts/compile.proto.sh;\
+  $(RUNNER) protoc sh scripts/compile.proto.sh;\
 	export TS_PROTO_OUT_PATH=packages/socket-server/src/grpc/generated/;\
-	export JAVA_PROTO_OUT_PATH=backend-server/grpc-model/src/main/proto;\
-	$(RUNNER) proto-generic sh scripts/compile.proto.sh
+	export JAVA_PROTO_OUT_PATH=backend-server/vikadata-integration/vikadata-integration-grpc-model/src/main/proto;\
+	$(RUNNER) protoc sh scripts/compile.proto.sh
 
 # bumpversion 
 .PHONY: patch
@@ -469,16 +460,7 @@ ps: ## docker compose ps
 
 .PHONY: pull
 pull: ## pull all containers and ready to up
-ifndef CR_PAT
-	read -p "Please enter CR_PAT: " CR_PAT ;\
-	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin ;\
 	docker compose pull
-endif
-ifdef CR_PAT
-	echo $$CR_PAT | docker login ghcr.io -u vikadata --password-stdin ;\
-	docker compose pull
-endif
-
 
 ######################################## init-db
 

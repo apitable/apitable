@@ -5,7 +5,7 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 /**
  * Workbench-Node Share Settings
  */
-@Entity('vika_node_share_setting')
+@Entity(`node_share_setting`)
 export class NodeShareSettingEntity {
   
   @PrimaryColumn('bigint')

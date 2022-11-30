@@ -1,11 +1,12 @@
 import { IOperation, ResourceType } from '@apitable/core';
+import { BaseEntity } from 'shared/entities/base.entity';
 import { IdWorker } from 'shared/helpers/snowflake';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
  * Resource related operation collection, which includes datasheet
  */
-@Entity('vika_resource_changeset')
+@Entity(`resource_changeset`)
 export class ResourceChangesetEntity {
   @PrimaryColumn('bigint')
     id: string;

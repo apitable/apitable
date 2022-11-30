@@ -1,7 +1,7 @@
 import { IdWorker } from 'shared/helpers/snowflake';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('vika_automation_run_history')
+@Entity(`automation_run_history`)
 export class AutomationRunHistoryEntity {
   @PrimaryColumn('bigint')
     id: string;

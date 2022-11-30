@@ -1,11 +1,12 @@
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { IdWorker } from 'shared/helpers';
 import { IApiRequestDetail, IApiResponseDetail } from 'shared/interfaces';
+import { BaseEntity } from 'shared/entities/base.entity';
 
 /**
  * Workbench - api request information record form
  */
-@Entity('vika_api_usage')
+@Entity(`api_usage`)
 export class ApiUsageEntity {
   @PrimaryColumn('bigint')
   id: string;

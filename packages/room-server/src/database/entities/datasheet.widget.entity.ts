@@ -1,7 +1,7 @@
 import { IdWorker } from '../../shared/helpers';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('vika_datasheet_widget')
+@Entity(`datasheet_widget`)
 export class DatasheetWidgetEntity {
   @PrimaryColumn('bigint')
     id: string;

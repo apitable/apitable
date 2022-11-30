@@ -4,7 +4,7 @@ import { BaseEntity } from '../../shared/entities/base.entity';
 /**
  * Workbench-Datasheet Operation
  */
-@Entity('vika_datasheet_operation')
+@Entity(`datasheet_operation`)
 export class DatasheetOperationEntity extends BaseEntity {
 
   @Column({

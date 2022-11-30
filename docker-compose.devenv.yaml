@@ -80,9 +80,8 @@ services:
       - apitable
     command: sh -c "cd packages/socket-server/ && yarn && yarn run start:dev"
 
-  proto-generic:
-    build:
-      dockerfile: scripts/protos/Dockerfile
+  protoc:
+    image: apitable/protoc
     working_dir: /devenv
     environment:
       - PROTO_PATH=scripts/protos

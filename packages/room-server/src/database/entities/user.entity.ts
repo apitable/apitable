@@ -4,7 +4,7 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 /**
  * Workbench-User
  */
-@Entity('vika_user')
+@Entity(`user`)
 export class UserEntity {
   @Column({
     name: 'uuid',
