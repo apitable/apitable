@@ -245,7 +245,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       );
 
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.locale = res.data.locale;
       window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
 
     }
