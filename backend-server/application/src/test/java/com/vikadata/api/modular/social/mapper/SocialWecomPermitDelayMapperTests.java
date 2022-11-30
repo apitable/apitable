@@ -13,7 +13,7 @@ import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitDelayProcessStatus;
 import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitDelayType;
 import com.vikadata.api.enterprise.social.mapper.SocialWecomPermitDelayMapper;
-import com.vikadata.entity.SocialWecomPermitDelayEntity;
+import com.vikadata.api.enterprise.social.entity.SocialWecomPermitDelayEntity;
 
 import org.springframework.test.context.jdbc.Sql;
 

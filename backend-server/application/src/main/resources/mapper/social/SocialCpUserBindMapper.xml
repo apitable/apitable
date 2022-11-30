@@ -8,7 +8,7 @@
         WHERE cp_tenant_user_id = #{cpTenantUserId}
     </select>
 
-    <select id="selectByCpTenantUserIds" resultType="com.vikadata.entity.SocialCpUserBindEntity">
+    <select id="selectByCpTenantUserIds" resultType="com.vikadata.api.enterprise.social.entity.SocialCpUserBindEntity">
         SELECT *
         FROM ${tablePrefix}social_cp_user_bind
         WHERE cp_tenant_user_id IN

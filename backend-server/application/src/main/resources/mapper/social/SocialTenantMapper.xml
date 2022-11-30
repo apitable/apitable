@@ -9,7 +9,7 @@
     </select>
 
     <select id="selectByAppIdAndTenantId"
-            resultType="com.vikadata.entity.SocialTenantEntity">
+            resultType="com.vikadata.api.enterprise.social.entity.SocialTenantEntity">
         SELECT *
         FROM ${tablePrefix}social_tenant
         WHERE app_id = #{appId} AND tenant_id = #{tenantId}
@@ -91,7 +91,7 @@
         AND app_type = 2
     </select>
 
-    <select id="selectByTenantIds" resultType="com.vikadata.entity.SocialTenantEntity">
+    <select id="selectByTenantIds" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantEntity">
         SELECT * FROM ${tablePrefix}social_tenant
         WHERE tenant_id IN
         <foreach item="item" index="index" collection="tenantIds" open="(" separator=","
@@ -106,7 +106,7 @@
         WHERE tenant_id = #{tenantId}
     </delete>
 
-    <select id="selectByPlatformTypeAndAppType" resultType="com.vikadata.entity.SocialTenantEntity">
+    <select id="selectByPlatformTypeAndAppType" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantEntity">
         SELECT *
         from ${tablePrefix}social_tenant
         WHERE platform = #{platformType.value}

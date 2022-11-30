@@ -17,54 +17,55 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.base.enums.AuthException;
 import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.service.SensorsService;
-import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
-import com.vikadata.api.shared.component.scanner.annotation.GetResource;
-import com.vikadata.api.shared.component.notification.annotation.Notification;
-import com.vikadata.api.shared.component.scanner.annotation.PostResource;
+import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
+import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
+import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
+import com.vikadata.api.enterprise.gm.enums.GmAction;
+import com.vikadata.api.enterprise.gm.service.IGmService;
+import com.vikadata.api.interfaces.social.event.TemplateQuoteEvent;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
 import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
 import com.vikadata.api.shared.cache.service.UserSpaceService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
+import com.vikadata.api.shared.component.notification.annotation.Notification;
+import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
+import com.vikadata.api.shared.component.scanner.annotation.GetResource;
+import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.constants.AuditConstants;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
-import com.vikadata.api.space.enums.AuditSpaceAction;
-import com.vikadata.api.enterprise.gm.enums.GmAction;
+import com.vikadata.api.shared.holder.SpaceHolder;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.vikadata.api.shared.holder.SpaceHolder;
 import com.vikadata.api.shared.util.information.ClientOriginInfo;
+import com.vikadata.api.shared.util.information.InformationUtil;
+import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.template.dto.TemplateInfo;
+import com.vikadata.api.template.enums.TemplateException;
+import com.vikadata.api.template.mapper.TemplateMapper;
+import com.vikadata.api.template.model.TemplateSearchDTO;
 import com.vikadata.api.template.ro.CreateTemplateRo;
 import com.vikadata.api.template.ro.QuoteTemplateRo;
 import com.vikadata.api.template.ro.TemplateCenterConfigRo;
-import com.vikadata.api.workspace.vo.NodeInfoVo;
+import com.vikadata.api.template.service.ITemplateCenterConfigService;
+import com.vikadata.api.template.service.ITemplateService;
 import com.vikadata.api.template.vo.RecommendVo;
 import com.vikadata.api.template.vo.TemplateCategoryContentVo;
 import com.vikadata.api.template.vo.TemplateCategoryMenuVo;
 import com.vikadata.api.template.vo.TemplateDirectoryVo;
 import com.vikadata.api.template.vo.TemplateSearchResultVo;
 import com.vikadata.api.template.vo.TemplateVo;
-import com.vikadata.api.enterprise.gm.service.IGmService;
-import com.vikadata.api.enterprise.social.service.IDingTalkDaService;
-import com.vikadata.api.template.mapper.TemplateMapper;
-import com.vikadata.api.template.model.TemplateSearchDTO;
-import com.vikadata.api.template.service.ITemplateCenterConfigService;
-import com.vikadata.api.template.service.ITemplateService;
 import com.vikadata.api.workspace.model.NodeCopyOptions;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.shared.util.information.InformationUtil;
-import com.vikadata.api.template.enums.TemplateException;
-import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.api.workspace.vo.NodeInfoVo;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
+import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -106,7 +107,7 @@ public class TemplateController {
     private SensorsService sensorsService;
 
     @Resource
-    private IDingTalkDaService iDingTalkDaService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
@@ -141,7 +142,6 @@ public class TemplateController {
         });
         return ResponseData.success(new TemplateSearchResultVo(result.getAlbums(), result.getTemplates()));
     }
-
 
     @GetResource(path = "/template/recommend", requiredLogin = false)
     @ApiOperation(value = "Get Template Recommend Content")
@@ -223,7 +223,7 @@ public class TemplateController {
         // Cumulative template usage times
         TaskManager.me().execute(() -> templateMapper.updateUsedTimesByTempId(ro.getTemplateId(), 1));
         // DingTalk template application creation
-        TaskManager.me().execute(() -> iDingTalkDaService.handleTemplateQuoted(spaceId, nodeId, ro.getTemplateId(), memberId));
+        TaskManager.me().execute(() -> socialServiceFacade.eventCall(new TemplateQuoteEvent(spaceId, nodeId, ro.getTemplateId(), memberId)));
         // Publish space audit event
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.QUOTE_TEMPLATE).userId(userId).spaceId(spaceId).nodeId(nodeId)
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, ro.getTemplateId()).set(AuditConstants.TEMPLATE_NAME, info.getName()).set(AuditConstants.RECORD_COPYABLE, ro.getData())).build();

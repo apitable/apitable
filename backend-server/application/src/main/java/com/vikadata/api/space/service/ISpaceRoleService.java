@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.shared.util.page.PageInfo;
+import com.vikadata.api.space.enums.SpaceResourceGroupCode;
 import com.vikadata.api.space.ro.AddSpaceRoleRo;
 import com.vikadata.api.space.ro.UpdateSpaceRoleRo;
 import com.vikadata.api.space.vo.SpaceRoleDetailVo;
@@ -103,6 +104,13 @@ public interface ISpaceRoleService extends IService<SpaceRoleEntity> {
      * @param spaceId space id
      */
     void deleteBySpaceId(String spaceId);
+
+    /**
+     * get space disable resource group code if social connect
+     * @param spaceId space id
+     * @return
+     */
+    List<SpaceResourceGroupCode> getSpaceDisableResourceCodeIfSocialConnect(String spaceId);
 
     /**
      * Check whether the resource permission granted to the sub-administrator contains the disabled permission

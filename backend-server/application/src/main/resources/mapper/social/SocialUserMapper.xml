@@ -11,7 +11,7 @@
         </foreach>
     </insert>
 
-    <select id="selectByUnionId" resultType="com.vikadata.entity.SocialUserEntity">
+    <select id="selectByUnionId" resultType="com.vikadata.api.enterprise.social.entity.SocialUserEntity">
         SELECT *
         FROM ${tablePrefix}social_user
         WHERE union_id = #{unionId}

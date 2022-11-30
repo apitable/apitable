@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -16,35 +18,37 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
+import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.SpaceMenuResourceGroupDto;
 import com.vikadata.api.shared.cache.bean.SpaceResourceGroupDto;
 import com.vikadata.api.shared.cache.service.SpaceResourceService;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
 import com.vikadata.api.shared.context.LoginContext;
-import com.vikadata.api.space.enums.SpaceException;
-import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
+import com.vikadata.api.shared.util.RoleBuildUtil;
+import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
-import com.vikadata.api.space.ro.AddSpaceRoleRo;
-import com.vikadata.api.space.ro.UpdateSpaceRoleRo;
-import com.vikadata.api.space.vo.RoleResourceVo;
-import com.vikadata.api.space.vo.SpaceRoleDetailVo;
-import com.vikadata.api.space.vo.SpaceRoleVo;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.enterprise.social.service.ISocialService;
+import com.vikadata.api.space.enums.SpaceException;
+import com.vikadata.api.space.enums.SpaceResourceGroupCode;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.space.mapper.SpaceResourceMapper;
 import com.vikadata.api.space.mapper.SpaceRoleMapper;
 import com.vikadata.api.space.mapper.SpaceRoleResourceRelMapper;
 import com.vikadata.api.space.model.SpaceGroupResourceDto;
+import com.vikadata.api.space.ro.AddSpaceRoleRo;
+import com.vikadata.api.space.ro.UpdateSpaceRoleRo;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.space.service.ISpaceMemberRoleRelService;
 import com.vikadata.api.space.service.ISpaceResourceService;
 import com.vikadata.api.space.service.ISpaceRoleResourceRelService;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.shared.util.RoleBuildUtil;
+import com.vikadata.api.space.vo.RoleResourceVo;
+import com.vikadata.api.space.vo.SpaceRoleDetailVo;
+import com.vikadata.api.space.vo.SpaceRoleVo;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.MemberEntity;
@@ -54,11 +58,11 @@ import com.vikadata.entity.SpaceRoleEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.vikadata.api.space.enums.SpaceException.NOT_IN_SPACE;
 import static com.vikadata.api.workspace.enums.PermissionException.CREATE_SUB_ADMIN_ERROR;
 import static com.vikadata.api.workspace.enums.PermissionException.DELETE_ROLE_ERROR;
 import static com.vikadata.api.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 import static com.vikadata.api.workspace.enums.PermissionException.OP_MEMBER_IS_SUB_ADMIN;
-import static com.vikadata.api.space.enums.SpaceException.NOT_IN_SPACE;
 
 @Service
 @Slf4j
@@ -98,7 +102,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     private SpaceMapper spaceMapper;
 
     @Resource
-    private ISocialService iSocialService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Override
     public List<Long> getSpaceAdminsWithWorkbenchManage(String spaceId) {
@@ -345,11 +349,22 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     }
 
     @Override
+    public List<SpaceResourceGroupCode> getSpaceDisableResourceCodeIfSocialConnect(String spaceId) {
+        SocialConnectInfo bindTenantInfo = socialServiceFacade.getConnectInfo(spaceId);
+        if (bindTenantInfo != null) {
+            return bindTenantInfo.getDisableResourceGroupCodes();
+        }
+        return Stream.of("MANAGE_NORMAL_MEMBER", "MANAGE_TEAM", "MANAGE_MEMBER")
+                .map(SpaceResourceGroupCode::valueOf).collect(Collectors.toList());
+    }
+
+    @Override
     public void checkAdminResourceChangeAllow(String spaceId, List<String> operateResourceCodes) {
         log.info("In the third party integration is enabled，check whether the sub-administrator has permissions to change permission");
-        List<String> disableRoleGroupCodes = iSocialService.getSocialDisableRoleGroupCode(spaceId);
+        List<SpaceResourceGroupCode> disableRoleGroupCodes = getSpaceDisableResourceCodeIfSocialConnect(spaceId);
         if (CollUtil.isNotEmpty(disableRoleGroupCodes)) {
-            ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, disableRoleGroupCodes), SpaceException.NO_ALLOW_OPERATE);
+            List<String> codes = disableRoleGroupCodes.stream().map(SpaceResourceGroupCode::getCode).collect(Collectors.toList());
+            ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, codes), SpaceException.NO_ALLOW_OPERATE);
         }
     }
 

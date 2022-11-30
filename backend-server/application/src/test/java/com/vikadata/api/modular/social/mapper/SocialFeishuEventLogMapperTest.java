@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.enterprise.social.mapper.SocialFeishuEventLogMapper;
-import com.vikadata.entity.SocialFeishuEventLogEntity;
+import com.vikadata.api.enterprise.social.entity.SocialFeishuEventLogEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

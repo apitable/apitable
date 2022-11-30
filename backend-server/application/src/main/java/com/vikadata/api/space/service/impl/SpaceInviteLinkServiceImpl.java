@@ -20,11 +20,11 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
 import com.vikadata.api.enterprise.vcode.enums.VCodeType;
 import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
 import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
 import com.vikadata.api.interfaces.billing.model.EntitlementRemark;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
@@ -102,7 +102,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     private RedisLockRegistry redisLockRegistry;
 
     @Resource
-    private ISocialTenantBindService iSocialTenantBindService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private EntitlementServiceFacade entitlementServiceFacade;
@@ -113,7 +113,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     @Override
     public String saveOrUpdate(String spaceId, Long teamId, Long memberId) {
         // whether a space can create an invitation link
-        boolean isBindSocial = iSocialTenantBindService.getSpaceBindStatus(spaceId);
+        boolean isBindSocial = socialServiceFacade.checkSocialBind(spaceId);
         ExceptionUtil.isFalse(isBindSocial, NO_ALLOW_OPERATE);
         String teamSpaceId = teamMapper.selectSpaceIdById(teamId);
         // Verify that the department exists and is in the same space
@@ -221,7 +221,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         ExceptionUtil.isTrue(ObjectUtil.isNotNull(dto) && ObjectUtil.isNotNull(dto.getSpaceId())
                 && ObjectUtil.isNotNull(dto.getTeamId()) && ObjectUtil.isNotNull(dto.getMemberId()), INVITE_EXPIRE);
         // Determine whether the space has a third party enabled
-        boolean isBoundSocial = iSocialTenantBindService.getSpaceBindStatus(dto.getSpaceId());
+        boolean isBoundSocial = socialServiceFacade.checkSocialBind(dto.getSpaceId());
         ExceptionUtil.isFalse(isBoundSocial, INVITE_EXPIRE);
         // If the user has historical members in the space, the previous member ID can be reused directly; when the user is in the space but not in the designated department, he/she joins the department
         boolean isExist = this.joinTeamIfInSpace(userId, dto.getSpaceId(), dto.getTeamId());

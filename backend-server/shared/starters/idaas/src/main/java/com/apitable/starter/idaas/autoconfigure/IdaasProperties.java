@@ -1,9 +1,7 @@
 package com.apitable.starter.idaas.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 @ConfigurationProperties(prefix = "vikadata-starter.idaas")
 public class IdaasProperties {
     private boolean enabled = false;

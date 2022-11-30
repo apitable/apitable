@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountMapper">
-    <select id="selectByActiveCodes" resultType="com.vikadata.entity.SocialWecomPermitOrderAccountEntity">
+    <select id="selectByActiveCodes" resultType="com.vikadata.api.enterprise.social.entity.SocialWecomPermitOrderAccountEntity">
         SELECT *
         FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}
@@ -14,7 +14,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectByExpireTime" resultType="com.vikadata.entity.SocialWecomPermitOrderAccountEntity">
+    <select id="selectByExpireTime" resultType="com.vikadata.api.enterprise.social.entity.SocialWecomPermitOrderAccountEntity">
         SELECT *
         FROM ${tablePrefix}social_wecom_permit_order_account
         WHERE auth_corp_id = #{authCorpId}

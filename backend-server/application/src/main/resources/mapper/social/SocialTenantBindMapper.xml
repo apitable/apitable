@@ -65,7 +65,7 @@
         LIMIT 0,1
     </select>
 
-    <select id="selectByTenantIdAndAppId" resultType="com.vikadata.entity.SocialTenantBindEntity">
+    <select id="selectByTenantIdAndAppId" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity">
         SELECT *
         FROM ${tablePrefix}social_tenant_bind
         WHERE tenant_id = #{tenantId}
@@ -128,12 +128,12 @@
         WHERE tenant_id = #{tenantId} AND space_id = #{spaceId}
     </delete>
 
-    <select id="selectBySpaceIdAndTenantId" resultType="com.vikadata.entity.SocialTenantBindEntity">
+    <select id="selectBySpaceIdAndTenantId" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity">
         SELECT * from ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId} AND tenant_id = #{tenantId}
     </select>
 
-    <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantBindEntity">
+    <select id="selectBySpaceId" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity">
         SELECT * FROM ${tablePrefix}social_tenant_bind
         WHERE space_id = #{spaceId} LIMIT 0,1
     </select>

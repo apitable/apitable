@@ -61,7 +61,7 @@ import com.vikadata.api.user.enums.ThirdPartyMemberType;
 import com.vikadata.api.user.mapper.ThirdPartyMemberMapper;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.user.ro.LoginRo;
-import com.vikadata.api.user.service.IUserLinkService;
+import com.vikadata.api.enterprise.user.service.IUserLinkService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;

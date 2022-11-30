@@ -7,14 +7,12 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.shared.config.security.Auth0UserProfile;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.model.UserInPausedDto;
+import com.vikadata.api.user.model.UserLangDTO;
 import com.vikadata.api.user.ro.DtBindOpRo;
 import com.vikadata.api.user.ro.UserOpRo;
 import com.vikadata.api.user.vo.UserInfoVo;
-import com.vikadata.api.user.model.SocialUser;
-import com.vikadata.api.user.model.User;
-import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.model.UserInPausedDto;
-import com.vikadata.api.user.entity.UserEntity;
 
 /**
  * <p>
@@ -103,22 +101,6 @@ public interface IUserService extends IService<UserEntity> {
     Long createByExternalSystem(String externalId, String nickName, String avatar, String email, String remark);
 
     /**
-     * Create User
-     *
-     * @param user User
-     * @return user id
-     */
-    Long createSocialUser(User user);
-
-    /**
-     * Create Lark User
-     *
-     * @param user User
-     * @return user id
-     */
-    Long createUser(SocialUser user);
-
-    /**
      * create user
      *
      * @param user user entity
@@ -141,23 +123,6 @@ public interface IUserService extends IService<UserEntity> {
      * @return user id
      */
     Long createUserByAuth0IfNotExist(com.auth0.json.mgmt.users.User user);
-
-    /**
-     * Create enterprise WeChat third-party associated users
-     *
-     * @param user User information
-     * @return vika user ID
-     */
-    Long createWeComUser(SocialUser user);
-
-    /**
-     * Activate the specified space
-     *
-     * @param userId User ID
-     * @param spaceId Space ID
-     * @param openId Open Unique ID
-     */
-    void activeTenantSpace(Long userId, String spaceId, String openId);
 
     /**
      * Create Account
@@ -363,22 +328,6 @@ public interface IUserService extends IService<UserEntity> {
      * @return UserInPausedDto List
      */
     List<UserInPausedDto> getPausedUserDtos(List<Long> userIds);
-
-    /**
-     * <p>
-     *     Obtain the mail user ID and the system language set by the user according to the mail list<br/>
-     *     There is no record line corresponding to email in the database, and the modified email still exists in the result list, and the corresponding language is "browser language"<br/>
-     *     It is better not to include non-existent emails
-     * </p>
-     * <br/>
-     * <p>
-     *     Note: Asynchronous method calls may be abnormal
-     * </p>
-     *
-     * @param emails Email list
-     * @return List with user id, system language and email
-     */
-    List<UserLangDTO> getLangByEmails(List<String> emails);
 
     /**
      * <p>

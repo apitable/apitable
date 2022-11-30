@@ -289,7 +289,7 @@ public class NodeController {
         ShowcaseVo.Social social = null;
         if (StrUtil.isNotBlank(extra.getDingTalkCorpId())) {
             social = new Social(extra.getDingTalkDaStatus(), extra.getDingTalkSuiteKey(),
-                    extra.getDingTalkCorpId());
+                    extra.getDingTalkCorpId(), extra.getSourceTemplateId(), extra.getShowTips());
         }
         ShowcaseVo vo = new ShowcaseVo(nodeId, node.getNodeName(), node.getType(), node.getIcon(), node.getCover(),
                 description, role.getRoleTag(), permissions, nodeFavorite, createdMemberInfo, node.getUpdatedAt(),

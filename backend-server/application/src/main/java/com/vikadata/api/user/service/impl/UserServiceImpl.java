@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -31,6 +30,26 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vikadata.api.asset.service.IAssetService;
+import com.vikadata.api.base.enums.DatabaseException;
+import com.vikadata.api.base.service.IAuthService;
+import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
+import com.vikadata.api.enterprise.integral.service.IIntegralService;
+import com.vikadata.api.enterprise.vcode.dto.VCodeDTO;
+import com.vikadata.api.enterprise.vcode.enums.VCodeException;
+import com.vikadata.api.enterprise.vcode.enums.VCodeType;
+import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
+import com.vikadata.api.enterprise.vcode.service.IVCodeService;
+import com.vikadata.api.enterprise.vcode.service.IVCodeUsageService;
+import com.vikadata.api.interfaces.social.enums.SocialNameModified;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.social.model.SocialUserBind;
+import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.player.ro.NotificationCreateRo;
+import com.vikadata.api.player.service.IPlayerActivityService;
+import com.vikadata.api.player.service.IPlayerNotificationService;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.bean.OpenedSheet;
 import com.vikadata.api.shared.cache.bean.UserLinkInfo;
@@ -42,7 +61,7 @@ import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetService;
 import com.vikadata.api.shared.cache.service.UserSpaceService;
 import com.vikadata.api.shared.component.LanguageManager;
 import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.component.notification.NotificationFactory;
+import com.vikadata.api.shared.component.notification.INotificationFactory;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.config.properties.ConstProperties;
@@ -52,67 +71,38 @@ import com.vikadata.api.shared.constants.LanguageConstants;
 import com.vikadata.api.shared.constants.NotificationConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.user.enums.UserClosingException;
-import com.vikadata.api.enterprise.vcode.enums.VCodeException;
-import com.vikadata.api.user.enums.LinkType;
-import com.vikadata.api.user.enums.UserOperationType;
-import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.organization.dto.MemberDTO;
-import com.vikadata.api.enterprise.vcode.dto.VCodeDTO;
-import com.vikadata.api.player.ro.NotificationCreateRo;
-import com.vikadata.api.space.ro.SpaceUpdateOpRo;
-import com.vikadata.api.user.ro.DtBindOpRo;
-import com.vikadata.api.user.ro.UserOpRo;
-import com.vikadata.api.user.vo.UserInfoVo;
-import com.vikadata.api.user.vo.UserLinkVo;
-import com.vikadata.api.asset.service.IAssetService;
-import com.vikadata.api.base.service.IAuthService;
-import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
-import com.vikadata.api.enterprise.integral.service.IIntegralService;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.player.service.IPlayerActivityService;
-import com.vikadata.api.player.service.IPlayerNotificationService;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.enums.SocialNameModified;
-import com.vikadata.api.enterprise.social.mapper.SocialUserBindMapper;
-import com.vikadata.api.enterprise.social.service.ISocialCpTenantUserService;
-import com.vikadata.api.enterprise.social.service.ISocialCpUserBindService;
-import com.vikadata.api.enterprise.social.service.ISocialUserBindService;
-import com.vikadata.api.space.mapper.SpaceMapper;
-import com.vikadata.api.space.service.ISpaceInviteLinkService;
-import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.user.model.SocialUser;
-import com.vikadata.api.user.model.User;
-import com.vikadata.api.user.mapper.UserLinkMapper;
-import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.service.IUserBindService;
-import com.vikadata.api.user.service.IUserHistoryService;
-import com.vikadata.api.user.service.IUserLinkService;
-import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.user.strategey.CreateSocialUserSimpleFactory;
-import com.vikadata.api.user.strategey.CreateSocialUserStrategey;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
-import com.vikadata.api.enterprise.vcode.service.IVCodeService;
-import com.vikadata.api.enterprise.vcode.service.IVCodeUsageService;
-import com.vikadata.api.workspace.service.INodeShareService;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 import com.vikadata.api.shared.util.ApiHelper;
 import com.vikadata.api.shared.util.RandomExtendUtil;
-import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.space.ro.SpaceUpdateOpRo;
+import com.vikadata.api.space.service.ISpaceInviteLinkService;
+import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.entity.UserHistoryEntity;
+import com.vikadata.api.user.enums.UserClosingException;
+import com.vikadata.api.user.enums.UserOperationType;
+import com.vikadata.api.user.mapper.UserLinkMapper;
+import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.user.model.UserInPausedDto;
+import com.vikadata.api.user.model.UserLangDTO;
+import com.vikadata.api.user.ro.DtBindOpRo;
+import com.vikadata.api.user.ro.UserOpRo;
+import com.vikadata.api.enterprise.user.service.IUserBindService;
+import com.vikadata.api.enterprise.user.service.IUserHistoryService;
+import com.vikadata.api.user.service.IUserService;
+import com.vikadata.api.user.vo.UserInfoVo;
+import com.vikadata.api.user.vo.UserLinkVo;
+import com.vikadata.api.workspace.service.INodeShareService;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.core.constants.RedisConstants;
-import com.vikadata.api.user.model.UserInPausedDto;
 import com.vikadata.entity.DeveloperEntity;
 import com.vikadata.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
-import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.api.user.entity.UserHistoryEntity;
-import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -122,12 +112,12 @@ import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
+import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
 import static com.vikadata.api.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.vikadata.api.shared.constants.NotificationConstants.EXTRA_TOAST;
 import static com.vikadata.api.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static com.vikadata.api.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
-import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EMAIL_HAS_LINK;
-import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EMAIL_NOT_EXIT;
 import static com.vikadata.api.user.enums.UserException.LINK_EMAIL_ERROR;
 import static com.vikadata.api.user.enums.UserException.LINK_FAILURE;
 import static com.vikadata.api.user.enums.UserException.MOBILE_NO_EXIST;
@@ -157,9 +147,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Resource
     private UserLinkMapper userLinkMapper;
-
-    @Resource
-    private SocialUserBindMapper socialUserBindMapper;
 
     @Resource
     private IAssetService iAssetService;
@@ -222,25 +209,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private IAuthService iAuthService;
 
     @Resource
-    private ISocialCpTenantUserService iSocialCpTenantUserService;
-
-    @Resource
-    private ISocialCpUserBindService iSocialCpUserBindService;
-
-    @Resource
-    private ISocialUserBindService iSocialUserBindService;
-
-    @Resource
     private IUserHistoryService iUserHistoryService;
-
-    @Resource
-    private CreateSocialUserSimpleFactory createSocialUserSimpleFactory;
 
     @Resource
     private UserMapper userMapper;
 
     @Resource
-    private IUserLinkService iUserLinkService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private IMemberService iMemberService;
@@ -252,7 +227,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private IUserBindService iUserBindService;
 
     @Resource
-    private NotificationFactory notificationFactory;
+    private INotificationFactory notificationFactory;
 
     private static final int QUERY_LOCALE_IN_EMAILS_LIMIT = 200;
 
@@ -332,7 +307,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 if (!flag) {
                     throw new BusinessException(SIGN_IN_ERROR);
                 }
-                iSocialUserBindService.create(selectUser.getId(), externalId);
+                socialServiceFacade.createSocialUser(new SocialUserBind(selectUser.getId(), externalId));
                 return selectUser.getId();
             }
         }
@@ -365,42 +340,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Create personal invitation code
         ivCodeService.createPersonalInviteCode(user.getId());
         // Create Associated User
-        iSocialUserBindService.create(user.getId(), externalId);
+        socialServiceFacade.createSocialUser(new SocialUserBind(user.getId(), externalId));
         return user.getId();
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long createSocialUser(User user) {
-        log.info("Create Tenant Associated User");
-        // Obtain policies according to different tenant types to create users
-        CreateSocialUserStrategey strategy = createSocialUserSimpleFactory.getStrategy(user.getSocialPlatformType().getValue());
-        return strategy.createSocialUser(user);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long createUser(SocialUser user) {
-        String avatar = iAssetService.downloadAndUploadUrl(user.getAvatar());
-        UserEntity entity = UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .nickName(user.getNickName())
-                .avatar(avatar)
-                .lastLoginTime(LocalDateTime.now())
-                .build();
-        saveUser(entity);
-        // Create user activity record
-        iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(entity.getId());
-        // Create Associated User
-        iSocialUserBindService.create(entity.getId(), user.getUnionId());
-        boolean isLink = iUserLinkService.isUserLink(user.getUnionId(), LinkType.FEISHU.getType());
-        if (!isLink) {
-            iUserLinkService.createThirdPartyLink(entity.getId(), user.getOpenId(), user.getUnionId(),
-                    user.getNickName(), LinkType.FEISHU.getType());
-        }
-        return entity.getId();
     }
 
     @Override
@@ -482,51 +423,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .avatar(avatar)
                 .email(email)
                 .build();
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long createWeComUser(SocialUser user) {
-        String avatar = iAssetService.downloadAndUploadUrl(user.getAvatar());
-        UserEntity entity = UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .code(user.getAreaCode())
-                .mobilePhone(user.getTelephoneNumber())
-                .nickName(user.getNickName())
-                .avatar(avatar)
-                .email(user.getEmailAddress())
-                .lastLoginTime(LocalDateTime.now())
-                .isSocialNameModified(user.getSocialAppType() == SocialAppType.ISV ?
-                        SocialNameModified.NO.getValue() : SocialNameModified.NO_SOCIAL.getValue())
-                .build();
-        saveUser(entity);
-        // Create user activity record
-        iPlayerActivityService.createUserActivityRecord(entity.getId());
-        // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(entity.getId());
-        // Create Associated User
-        Long cpTenantUserId = iSocialCpTenantUserService.getCpTenantUserId(user.getTenantId(), user.getAppId(), user.getOpenId());
-        if (Objects.isNull(cpTenantUserId)) {
-            cpTenantUserId = iSocialCpTenantUserService.create(user.getTenantId(), user.getAppId(), user.getOpenId(), user.getUnionId());
-        }
-        boolean isBind = iSocialCpUserBindService.isCpTenantUserIdBind(entity.getId(), cpTenantUserId);
-        if (!isBind) {
-            iSocialCpUserBindService.create(entity.getId(), cpTenantUserId);
-        }
-        return entity.getId();
-    }
-
-    @Override
-    public void activeTenantSpace(Long userId, String spaceId, String openId) {
-        // Activate the member of the tenant space where the association is located
-        MemberEntity member = iMemberService.getBySpaceIdAndOpenId(spaceId, openId);
-        if (member != null && member.getUserId() == null) {
-            MemberEntity updatedMember = new MemberEntity();
-            updatedMember.setId(member.getId());
-            updatedMember.setUserId(userId);
-            updatedMember.setIsActive(true);
-            iMemberService.updateById(updatedMember);
-        }
     }
 
     @Override
@@ -1008,10 +904,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public void unbind(Long userId, Integer type) {
-        log.info("Create (user) billing account");
         String linkUnionId = userLinkMapper.selectUnionIdByUserIdAndType(userId, type);
         // Delete third-party integration association
-        socialUserBindMapper.deleteByUnionIds(Collections.singletonList(linkUnionId));
+        socialServiceFacade.deleteByUnionId(Collections.singletonList(linkUnionId));
         // Delete account association
         userLinkMapper.deleteByUserIdAndType(userId, type);
     }
@@ -1119,8 +1014,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         memberMapper.clearMemberInfoByUserId(user.getId());
         // Physically delete the user's third-party association binding information
         userLinkMapper.deleteByUserId(user.getId());
-        iSocialUserBindService.deleteByUserId(user.getId());
-        iSocialCpUserBindService.deleteByUserId(user.getId());
+        socialServiceFacade.deleteUser(user.getId());
         // Write the "Logout Completed" record to the history table. 0 represents the system user
         UserHistoryEntity userHistory = UserHistoryEntity.builder()
                 .userId(user.getId())
@@ -1189,12 +1083,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             return null;
         }
         return splits[RandomUtil.randomInt(0, splits.length)];
-    }
-
-    @Override
-    public List<UserLangDTO> getLangByEmails(List<String> emails) {
-        String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
-        return this.getLangByEmails(defaultLang, emails);
     }
 
     @Override

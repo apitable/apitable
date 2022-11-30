@@ -10,27 +10,28 @@ import javax.validation.Valid;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.vikadata.api.organization.model.MemberIsolatedInfo;
-import com.vikadata.api.organization.service.IOrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.organization.mapper.TeamMapper;
+import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
+import com.vikadata.api.organization.model.MemberIsolatedInfo;
+import com.vikadata.api.organization.ro.CreateTeamRo;
+import com.vikadata.api.organization.ro.UpdateTeamRo;
+import com.vikadata.api.organization.service.IOrganizationService;
+import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.organization.vo.MemberPageVo;
+import com.vikadata.api.organization.vo.OrganizationUnitVo;
+import com.vikadata.api.organization.vo.TeamInfoVo;
+import com.vikadata.api.organization.vo.TeamTreeVo;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.context.LoginContext;
-import com.vikadata.api.organization.ro.CreateTeamRo;
-import com.vikadata.api.organization.ro.UpdateTeamRo;
-import com.vikadata.api.organization.vo.MemberPageVo;
-import com.vikadata.api.organization.vo.OrganizationUnitVo;
-import com.vikadata.api.organization.vo.TeamInfoVo;
-import com.vikadata.api.organization.vo.TeamTreeVo;
-import com.vikadata.api.organization.mapper.TeamMapper;
-import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
-import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.space.model.SpaceUpdateOperate;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.core.support.ResponseData;
@@ -72,6 +73,9 @@ public class TeamController {
 
     @Resource
     private IOrganizationService iOrganizationService;
+
+    @Resource
+    private SocialServiceFacade socialServiceFacade;
 
     @GetResource(path = "/tree", name = "Search the space's teams")
     @ApiOperation(value = "Search the space's teams", notes = "Search the space's teams. result is tree.", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -212,7 +216,7 @@ public class TeamController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> createTeam(@RequestBody @Valid CreateTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.ADD_TEAM);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.ADD_TEAM);
         String teamName = data.getName();
         Long superId = data.getSuperId();
         // get root team id
@@ -228,7 +232,7 @@ public class TeamController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateTeam(@RequestBody @Valid UpdateTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_TEAM);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_TEAM);
         // Query whether to modify the parent department
         TeamEntity department = iTeamService.getById(data.getTeamId());
         ExceptionUtil.isNotNull(department, GET_TEAM_ERROR);
@@ -262,7 +266,7 @@ public class TeamController {
     })
     public ResponseData<Void> deleteTeam(@PathVariable("teamId") Long teamId) {
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_TEAM);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_TEAM);
         // the root department cannot be deleted
         ExceptionUtil.isTrue(teamId != 0, DELETE_ROOT_ERROR);
         // check whether team exists

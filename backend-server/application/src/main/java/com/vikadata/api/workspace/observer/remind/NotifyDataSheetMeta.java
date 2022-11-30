@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import com.vikadata.api.shared.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.workspace.ro.RemindExtraRo;
 
 /**
@@ -48,18 +47,7 @@ public class NotifyDataSheetMeta {
 
     String notifyId;
 
-    String socialTenantId;
-
-    String socialAppId;
-
-    /**
-     * app type(1: internal, 2: isv)
-     */
-    Integer appType;
-
-    MailRemindParameter mailRemindParameter;
-
-    IMRemindParameter imRemindParameter;
+    RemindParameter remindParameter;
 
     @Getter
     @Setter
@@ -77,24 +65,4 @@ public class NotifyDataSheetMeta {
         @Nonnull
         String notifyUrl;
     }
-
-    @Getter
-    @Setter
-    public static class MailRemindParameter extends RemindParameter {
-
-        @Nullable
-        List<MailWithLang> sendEmails;
-    }
-
-    @Getter
-    @Setter
-    public static class IMRemindParameter extends RemindParameter {
-
-        @Nullable
-        String fromOpenId;
-
-        @Nullable
-        List<String> sendOpenIds;
-    }
-
 }

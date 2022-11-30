@@ -39,46 +39,35 @@ import lombok.extern.slf4j.Slf4j;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
+import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
+import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
+import com.vikadata.api.enterprise.widget.service.IWidgetService;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
+import com.vikadata.api.organization.enums.UnitType;
+import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
+import com.vikadata.api.organization.mapper.UnitMapper;
+import com.vikadata.api.organization.service.IRoleService;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.service.IPlayerNotificationService;
 import com.vikadata.api.shared.cache.service.UserSpaceRemindRecordService;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.config.properties.LimitProperties;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.workspace.enums.CellType;
-import com.vikadata.api.workspace.enums.DateFormat;
-import com.vikadata.api.workspace.enums.FieldType;
-import com.vikadata.api.workspace.observer.remind.RemindType;
-import com.vikadata.api.workspace.enums.TimeFormat;
-import com.vikadata.api.workspace.enums.DataSheetException;
-import com.vikadata.api.workspace.enums.NodeException;
-import com.vikadata.api.organization.enums.UnitType;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
+import com.vikadata.api.shared.util.IdUtil;
+import com.vikadata.api.shared.util.VikaStrings;
+import com.vikadata.api.user.entity.UnitEntity;
+import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.workspace.dto.DataSheetRecordDTO;
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
 import com.vikadata.api.workspace.dto.SnapshotDTO;
-import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
-import com.vikadata.api.workspace.ro.DateFieldProperty;
-import com.vikadata.api.workspace.ro.FieldMapRo;
-import com.vikadata.api.workspace.ro.LinkFieldProperty;
-import com.vikadata.api.workspace.ro.MetaMapRo;
-import com.vikadata.api.workspace.ro.MetaOpRo;
-import com.vikadata.api.workspace.ro.RecordMapRo;
-import com.vikadata.api.workspace.ro.RemindMemberRo;
-import com.vikadata.api.workspace.ro.SnapshotMapRo;
-import com.vikadata.api.workspace.ro.ViewMapRo;
-import com.vikadata.api.workspace.vo.DatasheetMetaVo;
-import com.vikadata.api.workspace.vo.DatasheetRecordMapVo;
-import com.vikadata.api.workspace.vo.DatasheetRecordVo;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
-import com.vikadata.api.organization.mapper.UnitMapper;
-import com.vikadata.api.organization.service.IRoleService;
-import com.vikadata.api.enterprise.social.model.TenantBindDTO;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.workspace.enums.CellType;
+import com.vikadata.api.workspace.enums.DataSheetException;
+import com.vikadata.api.workspace.enums.DateFormat;
+import com.vikadata.api.workspace.enums.FieldType;
+import com.vikadata.api.workspace.enums.NodeException;
+import com.vikadata.api.workspace.enums.TimeFormat;
 import com.vikadata.api.workspace.mapper.DatasheetMapper;
 import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
 import com.vikadata.api.workspace.mapper.DatasheetRecordMapper;
@@ -88,21 +77,29 @@ import com.vikadata.api.workspace.model.NodeCopyOptions;
 import com.vikadata.api.workspace.observer.DatasheetObserver;
 import com.vikadata.api.workspace.observer.DatasheetRemindObserver;
 import com.vikadata.api.workspace.observer.RemindMemberOpSubject;
+import com.vikadata.api.workspace.observer.remind.MailRemind;
 import com.vikadata.api.workspace.observer.remind.NotifyDataSheetMeta;
-import com.vikadata.api.workspace.observer.remind.RemindSubjectType;
+import com.vikadata.api.workspace.observer.remind.RemindType;
+import com.vikadata.api.workspace.ro.DateFieldProperty;
+import com.vikadata.api.workspace.ro.FieldMapRo;
+import com.vikadata.api.workspace.ro.LinkFieldProperty;
+import com.vikadata.api.workspace.ro.MetaMapRo;
+import com.vikadata.api.workspace.ro.MetaOpRo;
+import com.vikadata.api.workspace.ro.RecordMapRo;
+import com.vikadata.api.workspace.ro.RemindMemberRo;
+import com.vikadata.api.workspace.ro.SnapshotMapRo;
+import com.vikadata.api.workspace.ro.ViewMapRo;
 import com.vikadata.api.workspace.service.IDatasheetMetaService;
 import com.vikadata.api.workspace.service.IDatasheetRecordService;
 import com.vikadata.api.workspace.service.IDatasheetService;
-import com.vikadata.api.enterprise.widget.service.IWidgetService;
-import com.vikadata.api.shared.util.IdUtil;
-import com.vikadata.api.shared.util.VikaStrings;
+import com.vikadata.api.workspace.vo.DatasheetMetaVo;
+import com.vikadata.api.workspace.vo.DatasheetRecordMapVo;
+import com.vikadata.api.workspace.vo.DatasheetRecordVo;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.DatasheetEntity;
 import com.vikadata.entity.DatasheetRecordEntity;
-import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.entity.TeamMemberRelEntity;
-import com.vikadata.api.user.entity.UnitEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -158,12 +155,6 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private IPlayerNotificationService playerNotificationService;
 
     @Resource
-    private ISocialTenantService iSocialTenantService;
-
-    @Resource
-    private ISocialTenantBindService iSocialTenantBindService;
-
-    @Resource
     private IWidgetService iWidgetService;
 
     @Resource
@@ -175,6 +166,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Resource
     private IRoleService iRoleService;
 
+    @Resource
+    private SocialServiceFacade socialServiceFacade;
 
     @Override
     public void batchSave(List<DatasheetEntity> entities) {
@@ -296,7 +289,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             datasheetRecordService.copyRecords(userId, sourceDstId, datasheet.getDstId(), nodeCopyDTO, options.isRetainRecordMeta());
         }
         else {
-            // Remove the original record Id in each view rows and fill in a blank line.
+            // Remove the original record id in each view rows and fill in a blank line.
             JSONArray rows = JSONUtil.createArray();
             String recordId = IdUtil.createRecordId();
             JSONObject recordJson = JSONUtil.createObj();
@@ -444,7 +437,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             fieldMap.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo1));
         }
         metaMapRo.setFieldMap(fieldMap);
-        // If there is a delete column, the corresponding delete processing is columns in the view.
+        // If there is a delete column, the corresponding to delete processing is columns in the view.
         this.delViewFieldId(metaMapRo, delFieldIdsInView, delFieldIds);
         // copy panel
         this.copyWidgetPanels(userId, spaceId, destDstId, metaMapRo, newNodeMap);
@@ -452,29 +445,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * add column processing to the datasheet
-     */
-    private void addColumn(MetaMapRo metaMapRo, FieldMapRo fieldMapRo) {
-        // processing filedMap
-        JSONObject fieldMap1 = metaMapRo.getFieldMap();
-        fieldMap1.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo));
-        metaMapRo.setFieldMap(fieldMap1);
-        // columns processing in view
-        JSONObject fieldJson = JSONUtil.createObj();
-        fieldJson.set("fieldId", fieldMapRo.getId());
-        JSONArray views = JSONUtil.createArray();
-        metaMapRo.getViews().jsonIter().forEach(view -> {
-            ViewMapRo viewMapRo = JSONUtil.toBean(view, ViewMapRo.class);
-            JSONArray columns = viewMapRo.getColumns();
-            columns.add(fieldJson);
-            viewMapRo.setColumns(columns);
-            views.add(viewMapRo);
-        });
-        metaMapRo.setViews(views);
-    }
-
-    /**
-     * Deletes the view that contains the attribute information of the specified field Id
+     * Deletes the view that contains the attribute information of the specified field id
      */
     private void delViewFieldId(MetaMapRo metaMapRo, List<String> delFieldIds, List<String> delFieldIdsInFilter) {
         if (CollUtil.isNotEmpty(delFieldIds) || CollUtil.isNotEmpty(delFieldIdsInFilter)) {
@@ -505,29 +476,29 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 viewMapRo.setGroupInfo(groupInfo);
                 //style processing
                 JSONObject style = viewMapRo.getStyle();
-                if(!JSONUtil.isNull(style)){
+                if (!JSONUtil.isNull(style)) {
                     Object object = style.get("coverFieldId");
-                    if(object != null && delFieldIds.contains(object.toString())){
+                    if (object != null && delFieldIds.contains(object.toString())) {
                         style.set("coverFieldId", null);
                         viewMapRo.setStyle(style);
                     }
                     Object object1 = style.get("kanbanFieldId");
-                    if(object1 != null && delFieldIds.contains(object1.toString())){
+                    if (object1 != null && delFieldIds.contains(object1.toString())) {
                         style.set("kanbanFieldId", null);
                         viewMapRo.setStyle(style);
                     }
                     Object object2 = style.get("startFieldId");
-                    if (object2 != null && delFieldIds.contains(object2.toString())){
+                    if (object2 != null && delFieldIds.contains(object2.toString())) {
                         style.set("startFieldId", null);
                         viewMapRo.setStyle(style);
                     }
                     Object object3 = style.get("endFieldId");
-                    if(object3 != null && delFieldIds.contains(object3.toString())){
+                    if (object3 != null && delFieldIds.contains(object3.toString())) {
                         style.set("endFieldId", null);
                         viewMapRo.setStyle(style);
                     }
                     Object object4 = style.get("linkFieldId");
-                    if(object4 != null && delFieldIds.contains(object4.toString())){
+                    if (object4 != null && delFieldIds.contains(object4.toString())) {
                         style.set("linkFieldId", null);
                         viewMapRo.setStyle(style);
                     }
@@ -539,7 +510,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     }
 
     /**
-     * Deletes the object containing the specified field Id from the object array
+     * Deletes the object containing the specified field id from the object array
      */
     private JSONArray delInfoIfExistFieldId(List<String> delFieldIds, JSONArray filterInfo) {
         if (!JSONUtil.isNull(filterInfo)) {
@@ -756,7 +727,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             fieldMap.set(fieldMapRo.getId(), JSONUtil.parseObj(fieldMapRo));
         }
         metaMapRo.setFieldMap(fieldMap);
-        // If there is a delete column, the corresponding delete processing is columns in the view.
+        // If there is a delete column, the corresponding to delete processing is columns in the view.
         this.delViewFieldId(metaMapRo, delFieldIdsInView, delFieldIds);
         return delFieldIds;
     }
@@ -781,7 +752,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         if (notify) {
             // split roles into members and teams
             Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
-            // You self don't need to send notifications, filter
+            // self don't need to send notifications, filter
             Long memberId = userId == null ? -2L : memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
             // Gets the organizational unit of the member type, the corresponding member.
             Map<Long, Long> unitIdToMemberIdMap = units.stream()
@@ -893,38 +864,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
                     // Default-Subscribe to Mail Notifications
                     if (!templateId.equals(NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
-                        remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(RemindSubjectType.EMIL));
+                        remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
                     }
                     // Check whether the space is bound to third-party integration
-                    TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(meta.getSpaceId());
-                    if (bindInfo != null) {
-                        String appId = bindInfo.getAppId();
-                        if (StrUtil.isBlank(appId)) {
-                            log.warn("[remind notification]-third party im configuration missing，TenantId：{}，please check for missing app id", bindInfo.getTenantId());
-                        }
-                        else {
-                            SocialTenantEntity tenantEntity = iSocialTenantService.getByAppIdAndTenantId(appId, bindInfo.getTenantId());
-                            SocialPlatformType platform = tenantEntity != null ? SocialPlatformType.toEnum(tenantEntity.getPlatform()) : null;
-                            String remindSubjectType = RemindSubjectType.transform2ImSubject(platform);
-                            if (StrUtil.isBlank(remindSubjectType)) {
-                                log.warn("[remind notification]- third-party IM [{}] does not subscribe to push service", platform);
-                            }
-                            else {
-                                DatasheetObserver observer = datasheetRemindObservers.get(remindSubjectType);
-                                if (null == observer) {
-                                    log.warn("[remind notification]- third-party IM [{}] subscription push service is not enabled", platform);
-                                }
-                                else {
-                                    meta.setSocialTenantId(bindInfo.getTenantId())
-                                            .setSocialAppId(appId)
-                                            .setAppType(Optional.ofNullable(tenantEntity)
-                                                    .map(SocialTenantEntity::getAppType)
-                                                    .orElse(null));
-                                    // subscribe to third party im notifications
-                                    remindMemberOpSubject.registerObserver(observer);
-                                }
-                            }
-                        }
+                    SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
+                    if (connectInfo != null && connectInfo.isEnabled() && StrUtil.isNotBlank(connectInfo.getAppId())) {
+                        // transform social connect app type, register remind observer
+                        DatasheetObserver observer = datasheetRemindObservers.get(connectInfo.getRemindObserver());
+                        remindMemberOpSubject.registerObserver(observer);
                     }
                     // message pushed to observer
                     remindMemberOpSubject.sendNotify(meta);

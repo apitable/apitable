@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
-import com.vikadata.api.user.service.IUserHistoryService;
+import com.vikadata.api.enterprise.user.service.IUserHistoryService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.shared.util.page.PageObjectParam;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;

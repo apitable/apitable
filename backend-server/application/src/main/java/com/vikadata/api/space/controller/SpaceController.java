@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.base.enums.ValidateType;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
@@ -102,6 +103,9 @@ public class SpaceController {
     @Resource
     private IUserService iUserService;
 
+    @Resource
+    private SocialServiceFacade socialServiceFacade;
+
     @GetResource(path = "/capacity", requiredLogin = false)
     @ApiOperation(value = "Get space capacity info")
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spczJrh2i3tLW")
@@ -174,7 +178,7 @@ public class SpaceController {
     @ApiImplicitParam(name = "spaceId", value = "space id", required = true, dataTypeClass = String.class, paramType = "path", example = "spc8mXUeiXyVo")
     public ResponseData<Void> delete(@PathVariable("spaceId") String spaceId, @RequestBody @Valid SpaceDeleteRo param) {
         // This operation cannot be performed when binding to a third party
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
         if (param.getType() == ValidateType.EMAIL_CODE) {
             ValidateTarget target = ValidateTarget.create(loginUserDto.getEmail());
@@ -207,7 +211,7 @@ public class SpaceController {
     public ResponseData<Void> del() {
         String spaceId = LoginContext.me().getSpaceId();
         // This operation cannot be performed when binding to a third party
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         // Check whether the space is in the pre-deleted state
         int count = SqlTool.retCount(spaceMapper.countBySpaceId(spaceId, true));
         ExceptionUtil.isTrue(count > 0, SpaceException.NOT_DELETED);

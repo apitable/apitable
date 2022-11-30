@@ -54,7 +54,4 @@ public class NotificationCreateRo {
 
     @ApiModelProperty(value = "Notification ID (optional)", example = "1614587900000", position = 10)
     private String notifyId = null;
-
-    @ApiModelProperty(value = "Third party notification type (optional) platform (1: WeCom, 2: DingTalk, 3: Lark)", example = "2", position = 11)
-    private Integer socialPlatformType;
 }

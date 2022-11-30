@@ -935,7 +935,7 @@
         AND is_active = 1
     </select>
 
-    <select id="selectMemberOpenIdBySpaceId" resultType="com.vikadata.api.enterprise.social.model.TenantMemberDto">
+    <select id="selectMemberOpenIdBySpaceId" resultType="com.vikadata.api.organization.dto.TenantMemberDto">
         SELECT id as member_id, open_id, member_name
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId} AND open_id is not null AND is_deleted = 0

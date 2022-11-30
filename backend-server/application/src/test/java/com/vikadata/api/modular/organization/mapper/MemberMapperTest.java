@@ -22,7 +22,7 @@ import com.vikadata.api.organization.vo.UnitMemberVo;
 import com.vikadata.api.space.vo.MainAdminInfoVo;
 import com.vikadata.api.organization.model.MemberBaseInfoDTO;
 import com.vikadata.api.organization.model.MemberTeamInfoDTO;
-import com.vikadata.api.enterprise.social.model.TenantMemberDto;
+import com.vikadata.api.organization.dto.TenantMemberDto;
 import com.vikadata.api.workspace.model.MemberInfoDTO;
 import com.vikadata.entity.MemberEntity;
 

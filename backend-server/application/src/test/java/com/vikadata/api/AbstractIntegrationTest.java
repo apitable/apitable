@@ -5,7 +5,6 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
@@ -22,6 +21,7 @@ import com.vikadata.api.enterprise.billing.core.Bundle;
 import com.vikadata.api.enterprise.billing.core.OrderArguments;
 import com.vikadata.api.enterprise.billing.core.OrderPrice;
 import com.vikadata.api.enterprise.billing.entity.OrderPaymentEntity;
+import com.vikadata.api.enterprise.billing.entity.SocialWecomOrderEntity;
 import com.vikadata.api.enterprise.billing.enums.OrderChannel;
 import com.vikadata.api.enterprise.billing.enums.OrderPhase;
 import com.vikadata.api.enterprise.billing.enums.OrderStatus;
@@ -37,22 +37,24 @@ import com.vikadata.api.enterprise.billing.service.IOrderV2Service;
 import com.vikadata.api.enterprise.billing.service.IShopService;
 import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
 import com.vikadata.api.enterprise.billing.service.ISubscriptionService;
+import com.vikadata.api.enterprise.billing.util.EntitlementChecker;
+import com.vikadata.api.enterprise.billing.util.OrderChecker;
+import com.vikadata.api.enterprise.billing.util.OrderChecker.ExpectedOrderCheck;
 import com.vikadata.api.enterprise.billing.util.OrderUtil;
 import com.vikadata.api.enterprise.billing.util.model.BillingPlanPrice;
 import com.vikadata.api.enterprise.gm.service.IGmService;
 import com.vikadata.api.enterprise.integral.service.IIntegralService;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.enterprise.social.entity.SocialTenantEntity;
 import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.enterprise.social.enums.SocialTenantAuthMode;
+import com.vikadata.api.enterprise.social.service.ISocialCpIsvService;
 import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
 import com.vikadata.api.enterprise.social.service.ISocialTenantService;
 import com.vikadata.api.enterprise.vcode.service.IVCodeService;
+import com.vikadata.api.enterprise.social.enums.SocialAppType;
 import com.vikadata.api.internal.service.IFieldService;
 import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.enterprise.billing.util.EntitlementChecker;
-import com.vikadata.api.enterprise.billing.util.OrderChecker;
-import com.vikadata.api.enterprise.billing.util.OrderChecker.ExpectedOrderCheck;
 import com.vikadata.api.organization.ro.RoleMemberUnitRo;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.IRoleMemberService;
@@ -66,16 +68,14 @@ import com.vikadata.api.shared.sysconfig.billing.Price;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.sql.script.enhance.TablePrefixUtil;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.api.workspace.model.CreateNodeDto;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.EconomicOrderMetadataEntity;
-import com.vikadata.entity.SocialTenantEntity;
-import com.vikadata.entity.SocialWecomOrderEntity;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,6 +201,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected ISubscriptionService iSubscriptionService;
+
+    @Autowired
+    protected ISocialCpIsvService iSocialCpIsvService;
 
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
@@ -333,7 +336,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
                 .status(true)
                 .build();
         iSocialTenantService.createOrUpdateByTenantAndApp(tenantEntity);
-        SpaceEntity spaceEntity = iSpaceService.createWeComIsvSpaceWithoutUser(String.format("%s'Space", authCorpName));
+        SpaceEntity spaceEntity = iSocialCpIsvService.createWeComIsvSpaceWithoutUser(String.format("%s'Space", authCorpName));
         String spaceId = spaceEntity.getSpaceId();
         iSocialTenantBindService.addTenantBind(tenantEntity.getAppId(), tenantEntity.getTenantId(), spaceId);
         String rootNodeId = iNodeService.createChildNode(-1L, CreateNodeDto.builder()

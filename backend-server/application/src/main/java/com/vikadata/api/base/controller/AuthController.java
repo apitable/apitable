@@ -21,28 +21,28 @@ import com.apitable.starter.auth0.core.Auth0Template;
 import com.vikadata.api.base.enums.LoginType;
 import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.model.LogoutVO;
+import com.vikadata.api.base.service.IAuthService;
 import com.vikadata.api.base.service.SensorsService;
+import com.vikadata.api.enterprise.common.afs.AfsCheckService;
+import com.vikadata.api.enterprise.gm.service.IBlackListService;
+import com.vikadata.api.enterprise.k11.template.ConnectorTemplate;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
+import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.enterprise.k11.template.ConnectorTemplate;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.config.properties.CookieProperties;
 import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.util.information.ClientOriginInfo;
+import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.api.user.dto.UserLoginResult;
 import com.vikadata.api.user.ro.LoginRo;
-import com.vikadata.api.user.vo.UserInfoVo;
-import com.vikadata.api.base.service.IAuthService;
-import com.vikadata.api.enterprise.gm.service.IBlackListService;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantDomainService;
 import com.vikadata.api.user.service.IUserService;
+import com.vikadata.api.user.vo.UserInfoVo;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
-import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.HttpContextUtil;
 
@@ -84,7 +84,7 @@ public class AuthController {
     private IMemberService iMemberService;
 
     @Resource
-    private ISocialTenantDomainService iSocialTenantDomainService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private IBlackListService iBlackListService;
@@ -181,7 +181,7 @@ public class AuthController {
             HttpServletRequest request) {
         Long userId = SessionContext.getUserId();
 
-        // try to return Space Id
+        // try to return SpaceId
         spaceId = tryReturnSpaceId(nodeId, spaceId, userId, request);
 
         // Get user information
@@ -193,7 +193,7 @@ public class AuthController {
         return ResponseData.success(userInfo);
     }
 
-    // Before getting the user information, try to return the Space Id first
+    // Before getting the user information, try to return the Space id first
     private String tryReturnSpaceId(String nodeId, String spaceId, Long userId, HttpServletRequest request) {
         if (StrUtil.isNotBlank(nodeId)) {
             // 1.Use url - NodeId to locate the space and return the bound domain name
@@ -202,7 +202,7 @@ public class AuthController {
         if (StrUtil.isBlank(spaceId)) {
             // 2.The user does not actively locate the space station behavior - use the current access domain name to locate the space station
             String remoteHost = HttpContextUtil.getRemoteHost(request);
-            String domainBindSpaceId = iSocialTenantDomainService.getSpaceIdByDomainName(remoteHost);
+            String domainBindSpaceId = socialServiceFacade.getSpaceIdByDomainName(remoteHost);
             if (StrUtil.isNotBlank(domainBindSpaceId)) {
                 // Exception: The registrant uses an exclusive domain name, and then logs in with an account and password;
                 // Return to the exclusive domain name space station The current registrant does not have permission to operate the space;
@@ -224,16 +224,16 @@ public class AuthController {
     private String returnSpaceDomain(String spaceId, String userSpaceId) {
         // Returns the domain name information, and returns the public domain name if there is no credential acquisition or search
         if (StrUtil.isNotBlank(spaceId)) {
-            // 3.If the precondition space Id is not empty, return the bound domain name directly
-            return iSocialTenantDomainService.getDomainNameBySpaceId(spaceId, false);
+            // 3.If the precondition space id is not empty, return the bound domain name directly
+            return socialServiceFacade.getDomainNameBySpaceId(spaceId, false);
         }
         else {
             // 4.If there is none, operate according to the last active space
             if (StrUtil.isBlank(userSpaceId)) {
-                return iSocialTenantDomainService.getSpaceDefaultDomainName();
+                return constProperties.defaultServerDomain();
             }
             else {
-                return iSocialTenantDomainService.getDomainNameBySpaceId(userSpaceId, false);
+                return socialServiceFacade.getDomainNameBySpaceId(userSpaceId, false);
             }
         }
     }

@@ -26,7 +26,7 @@
         </foreach>
     </select>
 
-    <select id="selectByTenantId" resultType="com.vikadata.entity.SocialTenantDepartmentBindEntity">
+    <select id="selectByTenantId" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantDepartmentBindEntity">
         SELECT *
         FROM ${tablePrefix}social_tenant_department_bind
         WHERE tenant_id = #{tenantId} AND space_id = #{spaceId} GROUP BY tenant_department_id

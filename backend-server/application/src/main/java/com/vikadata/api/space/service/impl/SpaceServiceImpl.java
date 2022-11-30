@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -26,28 +25,14 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
-import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Privilege;
 
 import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.enterprise.social.enums.SocialTenantAuthMode;
-import com.vikadata.api.enterprise.social.factory.SocialFactory;
-import com.vikadata.api.enterprise.social.mapper.SocialTenantMapper;
-import com.vikadata.api.enterprise.social.model.SpaceBindTenantInfoDTO;
-import com.vikadata.api.enterprise.social.model.TenantBindDTO;
-import com.vikadata.api.enterprise.social.service.ISocialCpIsvService;
-import com.vikadata.api.enterprise.social.service.ISocialService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantDomainService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.enterprise.social.service.IWeComService;
 import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
 import com.vikadata.api.interfaces.billing.model.SubscriptionFeature;
 import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
 import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
 import com.vikadata.api.internal.model.InternalSpaceUsageVo;
 import com.vikadata.api.organization.dto.MemberDTO;
@@ -85,6 +70,7 @@ import com.vikadata.api.space.dto.MapDTO;
 import com.vikadata.api.space.dto.SpaceAdminInfoDTO;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.space.enums.SpaceException;
+import com.vikadata.api.space.enums.SpaceResourceGroupCode;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.space.model.ControlStaticsVO;
@@ -93,7 +79,6 @@ import com.vikadata.api.space.model.GetSpaceListFilterCondition;
 import com.vikadata.api.space.model.NodeTypeStatics;
 import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
 import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
 import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.service.IInvitationService;
@@ -115,12 +100,10 @@ import com.vikadata.api.workspace.model.NodeCopyOptions;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.INodeShareSettingService;
 import com.vikadata.core.constants.RedisConstants;
-import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.MemberEntity;
-import com.vikadata.entity.SocialTenantEntity;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -128,8 +111,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.vikadata.api.enterprise.social.enums.SocialException.USER_NOT_EXIST;
-import static com.vikadata.api.enterprise.social.enums.SocialException.USER_NOT_VISIBLE_WECOM;
 import static com.vikadata.api.organization.enums.OrganizationException.CREATE_MEMBER_ERROR;
 import static com.vikadata.api.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.vikadata.api.shared.constants.NotificationConstants.NEW_SPACE_NAME;
@@ -204,28 +185,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     private IStaticsService iStaticsService;
 
     @Resource
-    private ISocialTenantBindService iSocialTenantBindService;
-
-    @Resource
-    private SocialTenantMapper socialTenantMapper;
-
-    @Resource
-    private ISocialService iSocialService;
-
-    @Resource
-    private ISocialTenantService iSocialTenantService;
-
-    @Resource
-    private IWeComService iWeComService;
-
-    @Resource
-    private ISocialCpIsvService socialCpIsvService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private INodeShareSettingService iNodeShareSettingService;
-
-    @Resource
-    private ISocialTenantDomainService iSocialTenantDomainService;
 
     @Resource
     private LimitProperties limitProperties;
@@ -326,22 +289,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SpaceEntity createWeComIsvSpaceWithoutUser(String spaceName) {
-
-        String spaceId = IdUtil.createSpaceId();
-        SpaceEntity space = SocialFactory.createSocialBindBindSpaceInfo(spaceId, spaceName, null, null, null);
-        boolean isSaved = save(space);
-        ExceptionUtil.isTrue(isSaved, SpaceException.CREATE_SPACE_ERROR);
-        // create root department
-        Long rootTeamId = iTeamService.createRootTeam(spaceId, spaceName);
-        iUnitService.create(spaceId, UnitType.TEAM, rootTeamId);
-
-        return space;
-
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
     public void updateSpace(Long userId, String spaceId, SpaceUpdateOpRo spaceOpRo) {
         log.info("edit space information");
         SpaceEntity entity = this.getBySpaceId(spaceId);
@@ -425,7 +372,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // delete member（must be after deleting user）
         memberMapper.delBySpaceIds(spaceIds, null);
         // delete space exclusive domain name
-        iSocialTenantDomainService.removeDomain(spaceIds);
+        socialServiceFacade.removeDomainBySpaceIds(spaceIds);
     }
 
     @Override
@@ -459,7 +406,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         Map<String, SpaceVO> spaceMaps = list.stream().collect(Collectors.toMap(SpaceVO::getSpaceId, v -> v, (k1, k2) -> k1));
         List<String> spaceIds = new ArrayList<>(spaceMaps.keySet());
         // get space domains
-        Map<String, String> spaceDomains = iSocialTenantDomainService.getSpaceDomainBySpaceIdsToMap(spaceIds);
+        Map<String, String> spaceDomains = socialServiceFacade.getDomainNameMap(spaceIds);
         // batch query subscriptions
         Map<String, SubscriptionFeature> spacePlanFeatureMap = entitlementServiceFacade.getSpaceSubscriptions(spaceIds);
         // setting information
@@ -562,19 +509,16 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
             vo.setDelTime(entity.getPreDeletionTime().plusDays(7));
         }
         // obtain third party information
-        TenantBindDTO tenantBindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
+        SocialConnectInfo socialConnectInfo = socialServiceFacade.getConnectInfo(spaceId);
         SpaceSocialConfig bindInfo = new SpaceSocialConfig();
-        if (ObjectUtil.isNotNull(tenantBindInfo)) {
-            if (StrUtil.isNotBlank(tenantBindInfo.getAppId())) {
-                SocialTenantEntity socialTenant = socialTenantMapper.selectByAppIdAndTenantId(tenantBindInfo.getAppId(), tenantBindInfo.getTenantId());
-                if (socialTenant != null && socialTenant.getStatus()) {
-                    bindInfo.setEnabled(true);
-                    bindInfo.setPlatform(socialTenant.getPlatform());
-                    bindInfo.setAppType(socialTenant.getAppType());
-                    bindInfo.setAuthMode(socialTenant.getAuthMode());
-                    // is it synchronizing the contact
-                    bindInfo.setContactSyncing(isContactSyncing(spaceId));
-                }
+        if (ObjectUtil.isNotNull(socialConnectInfo)) {
+            if (socialConnectInfo.isEnabled()) {
+                bindInfo.setEnabled(true);
+                bindInfo.setPlatform(socialConnectInfo.getPlatform());
+                bindInfo.setAppType(socialConnectInfo.getAppType());
+                bindInfo.setAuthMode(socialConnectInfo.getAuthMode());
+                // is it synchronizing the contact
+                bindInfo.setContactSyncing(isContactSyncing(spaceId));
             }
         }
         vo.setSocial(bindInfo);
@@ -751,9 +695,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         userSpaceVo.setMainAdmin(userSpaceDto.isMainAdmin());
         Set<String> resourceGroupCodes = userSpaceDto.getResourceGroupCodes();
         if (CollUtil.isNotEmpty(resourceGroupCodes)) {
-            List<String> disabledResourceGroupCodes = iSocialService.getSocialDisableRoleGroupCode(spaceId);
+            List<SpaceResourceGroupCode> disabledResourceGroupCodes = iSpaceRoleService.getSpaceDisableResourceCodeIfSocialConnect(spaceId);
             if (CollUtil.isNotEmpty(disabledResourceGroupCodes)) {
-                disabledResourceGroupCodes.forEach(resourceGroupCodes::remove);
+                disabledResourceGroupCodes.forEach(code -> resourceGroupCodes.remove(code.getCode()));
             }
             userSpaceVo.setPermissions(resourceGroupCodes);
         }
@@ -793,107 +737,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
 
     @Override
     public void checkCanOperateSpaceUpdate(String spaceId) {
-        boolean isBoundSocial = iSocialTenantBindService.getSpaceBindStatus(spaceId);
+        boolean isBoundSocial = socialServiceFacade.checkSocialBind(spaceId);
         ExceptionUtil.isFalse(isBoundSocial, NO_ALLOW_OPERATE);
-    }
-
-    @Override
-    public void checkCanOperateSpaceUpdate(String spaceId, SpaceUpdateOperate spaceUpdateOperate) {
-        TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
-        if (spaceUpdateOperate == null) {
-            ExceptionUtil.isTrue(bindInfo == null, NO_ALLOW_OPERATE);
-        }
-        // filter dingtalk
-        if (bindInfo != null && bindInfo.getAppId() != null) {
-            SocialTenantEntity entity = iSocialTenantService.getByAppIdAndTenantId(bindInfo.getAppId(),
-                    bindInfo.getTenantId());
-            if (SocialPlatformType.DINGTALK.getValue().equals(entity.getPlatform()) && SocialAppType.ISV.equals(SocialAppType.of(entity.getAppType()))) {
-                if (SpaceUpdateOperate.dingTalkIsvCanOperated(spaceUpdateOperate)) {
-                    return;
-                }
-            }
-            else if (SocialPlatformType.WECOM.getValue().equals(entity.getPlatform()) &&
-                    SocialAppType.ISV.getType() == entity.getAppType() &&
-                    SpaceUpdateOperate.weComIsvCanOperated(spaceUpdateOperate)) {
-                return;
-            }
-            else if (SocialPlatformType.FEISHU.getValue().equals(entity.getPlatform()) &&
-                    SocialAppType.ISV.getType() == entity.getAppType() &&
-                    SpaceUpdateOperate.larIsvCanOperated(spaceUpdateOperate)) {
-                return;
-            }
-            if (spaceUpdateOperate == SpaceUpdateOperate.DELETE_SPACE) {
-                // feishu space cannot be deleted
-                ExceptionUtil.isFalse(SocialPlatformType.FEISHU.getValue().equals(entity.getPlatform())
-                        && SocialAppType.ISV.equals(SocialAppType.of(entity.getAppType())), NO_ALLOW_OPERATE);
-                ExceptionUtil.isFalse(entity.getStatus(), NO_ALLOW_OPERATE);
-                return;
-            }
-        }
-        ExceptionUtil.isTrue(bindInfo == null, NO_ALLOW_OPERATE);
-    }
-
-    @Override
-    public void checkCanOperateSpaceUpdate(String spaceId, Long opMemberId, Long acceptMemberId, SpaceUpdateOperate[] spaceUpdateOperates) {
-        log.info("check that user can operate space updates，space：{}，operation：{}", spaceId, spaceUpdateOperates);
-        SpaceBindTenantInfoDTO spaceBindTenant = iSocialTenantBindService.getSpaceBindTenantInfoByPlatform(spaceId, null, null);
-        if (null == spaceBindTenant) {
-            return;
-        }
-        ExceptionUtil.isFalse(ArrayUtil.isEmpty(spaceUpdateOperates), NO_ALLOW_OPERATE);
-        ExceptionUtil.isTrue(spaceBindTenant.getStatus(), NO_ALLOW_OPERATE);
-        // Dingtalk and feishu all allow to modify the master administrator
-        if (SocialPlatformType.DINGTALK.getValue().equals(spaceBindTenant.getPlatform())
-                || SocialPlatformType.FEISHU.getValue().equals(spaceBindTenant.getPlatform())) {
-            return;
-        }
-        if (SocialPlatformType.WECOM.getValue().equals(spaceBindTenant.getPlatform()) &&
-                ArrayUtil.contains(spaceUpdateOperates, SpaceUpdateOperate.UPDATE_MAIN_ADMIN)) {
-            // Check whether the operation member has a visible area of wecom
-            String opOpenId = iMemberService.getOpenIdByMemberId(opMemberId);
-            String acceptOpenId = iMemberService.getOpenIdByMemberId(acceptMemberId);
-            log.info("verify binding wecpm space「{}」，replace main administrator operation，original administrator：{}，change administrator：{}", spaceId, opMemberId, acceptMemberId);
-            try {
-                if (SocialAppType.ISV.getType() == spaceBindTenant.getAppType()) {
-                    // The administrator authorization mode of the wecom  provider is only judged.
-                    // because there is no visible scope for member authorization.
-                    if (SocialTenantAuthMode.ADMIN.getValue() == spaceBindTenant.getAuthMode()) {
-                        SocialTenantEntity socialTenantEntity = iSocialTenantService
-                                .getByAppIdAndTenantId(spaceBindTenant.getAppId(), spaceBindTenant.getTenantId());
-                        // If necessary, refresh access_token first
-                        socialCpIsvService.refreshAccessToken(spaceBindTenant.getAppId(), spaceBindTenant.getTenantId(), socialTenantEntity.getPermanentCode());
-                        Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
-                        Privilege privilege = agent.getPrivilege();
-                        boolean isOpViewable = socialCpIsvService.judgeViewable(socialTenantEntity.getTenantId(), opOpenId, socialTenantEntity.getAppId(),
-                                privilege.getAllowUsers(), privilege.getAllowParties(), privilege.getAllowTags());
-                        if (!isOpViewable) {
-                            throw new BusinessException(USER_NOT_VISIBLE_WECOM);
-                        }
-                        boolean isAcceptViewable = socialCpIsvService.judgeViewable(socialTenantEntity.getTenantId(), acceptOpenId, socialTenantEntity.getAppId(),
-                                privilege.getAllowUsers(), privilege.getAllowParties(), privilege.getAllowTags());
-                        if (!isAcceptViewable) {
-                            throw new BusinessException(USER_NOT_VISIBLE_WECOM);
-                        }
-                    }
-                }
-                else {
-                    iWeComService.getWeComUserByWeComUserId(spaceBindTenant.getTenantId(), Integer.valueOf(spaceBindTenant.getAppId()), opOpenId);
-                    iWeComService.getWeComUserByWeComUserId(spaceBindTenant.getTenantId(), Integer.valueOf(spaceBindTenant.getAppId()), acceptOpenId);
-                }
-            }
-            catch (BusinessException e) {
-                if (e.getCode().equals(USER_NOT_EXIST.getCode())) {
-                    throw new BusinessException(USER_NOT_VISIBLE_WECOM);
-                }
-                throw e;
-            }
-            catch (WxErrorException e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-        else {
-            throw new BusinessException(NO_ALLOW_OPERATE);
-        }
     }
 
     @Override

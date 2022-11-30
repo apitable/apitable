@@ -17,11 +17,11 @@ import org.slf4j.LoggerFactory;
 
 import com.apitable.starter.teg.autoconfigure.TegProperties.SmartProxyHeaderProperty;
 import com.apitable.starter.teg.autoconfigure.UnauthorizedResponseCustomizer;
-import com.vikadata.api.shared.component.scanner.ApiResourceFactory;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.shared.component.ResourceDefinition;
+import com.vikadata.api.shared.component.scanner.ApiResourceFactory;
 import com.vikadata.api.shared.constants.FilterConstants;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.social.mapper.SocialUserBindMapper;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -110,8 +110,8 @@ final class JwtProxyUserDetailFilter extends OncePerRequestFilter {
         if (StrUtil.isBlank(jwtStaffName)) {
             throw new ServletException(UNAUTHORIZED.getMessage());
         }
-        SocialUserBindMapper socialUserBindMapper = beanFactory.getBean(SocialUserBindMapper.class);
-        Long userId = socialUserBindMapper.selectUserIdByUnionId(jwtStaffName);
+        SocialServiceFacade socialServiceFacade = beanFactory.getBean(SocialServiceFacade.class);
+        Long userId = socialServiceFacade.getUserIdByUnionId(jwtStaffName);
         if (userId == null) {
             // Unsynced users are not allowed to log in
             log.info("User does not exist, please create user first[{}]", jwtStaffName);

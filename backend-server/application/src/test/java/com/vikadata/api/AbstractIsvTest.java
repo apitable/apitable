@@ -16,8 +16,8 @@ import com.vikadata.api.workspace.model.CreateNodeDto;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.api.workspace.enums.NodeType;
-import com.vikadata.entity.SocialTenantBindEntity;
-import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.social.wecom.event.order.WeComOrderPaidEvent;
 
@@ -100,7 +100,7 @@ public abstract class AbstractIsvTest extends AbstractIntegrationTest {
                 .build();
         iSocialTenantService.createOrUpdateByTenantAndApp(tenantEntity);
         // 2 create its space
-        SpaceEntity spaceEntity = iSpaceService.createWeComIsvSpaceWithoutUser(String.format("%s's space'", authCorpName));
+        SpaceEntity spaceEntity = iSocialCpIsvService.createWeComIsvSpaceWithoutUser(String.format("%s's space'", authCorpName));
         String spaceId = spaceEntity.getSpaceId();
         // 2.1 bind space to the tenant
         iSocialTenantBindService.addTenantBind(tenantEntity.getAppId(), tenantEntity.getTenantId(), spaceId);

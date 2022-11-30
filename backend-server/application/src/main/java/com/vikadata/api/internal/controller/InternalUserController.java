@@ -22,7 +22,7 @@ import com.vikadata.api.user.enums.UserClosingException;
 import com.vikadata.api.user.enums.UserException;
 import com.vikadata.api.user.enums.UserOperationType;
 import com.vikadata.api.user.vo.UserBaseInfoVo;
-import com.vikadata.api.user.service.IUserHistoryService;
+import com.vikadata.api.enterprise.user.service.IUserHistoryService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;

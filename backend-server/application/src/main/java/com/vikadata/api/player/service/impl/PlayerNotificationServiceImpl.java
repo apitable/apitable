@@ -42,34 +42,36 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cursor.Cursor;
 
 import com.vikadata.api.client.service.IClientReleaseVersionService;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.player.dto.NotificationModelDTO;
+import com.vikadata.api.player.enums.NotificationException;
 import com.vikadata.api.player.mapper.PlayerNotificationMapper;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.ro.NotificationListRo;
 import com.vikadata.api.player.ro.NotificationPageRo;
 import com.vikadata.api.player.ro.NotificationRevokeRo;
 import com.vikadata.api.player.service.IPlayerNotificationService;
+import com.vikadata.api.player.vo.NotificationDetailVo;
+import com.vikadata.api.player.vo.NotificationStatisticsVo;
+import com.vikadata.api.player.vo.PlayerBaseVo;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.component.ClientEntryTemplateConfig;
 import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.component.notification.NotificationFactory;
+import com.vikadata.api.shared.component.notification.INotificationFactory;
 import com.vikadata.api.shared.component.notification.NotificationHelper;
 import com.vikadata.api.shared.component.notification.NotificationRenderMap;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.component.notification.NotificationToTag;
+import com.vikadata.api.shared.component.notification.NotifyMailFactory;
+import com.vikadata.api.shared.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.shared.config.properties.ClientProperties;
 import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.constants.NotificationConstants;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.player.enums.NotificationException;
 import com.vikadata.api.shared.listener.event.NotificationCreateEvent;
-import com.vikadata.api.shared.component.notification.NotifyMailFactory;
-import com.vikadata.api.shared.component.notification.NotifyMailFactory.MailWithLang;
-import com.vikadata.api.player.dto.NotificationModelDTO;
-import com.vikadata.api.player.vo.NotificationDetailVo;
-import com.vikadata.api.player.vo.NotificationStatisticsVo;
-import com.vikadata.api.player.vo.PlayerBaseVo;
-import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
+import com.vikadata.api.shared.util.VikaStrings;
 import com.vikadata.api.space.service.ISpaceMemberRoleRelService;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.space.service.ISpaceService;
@@ -77,13 +79,11 @@ import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.user.model.UserLangDTO;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.shared.util.VikaStrings;
-import com.vikadata.core.util.SpringContextHolder;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.core.constants.RedisConstants;
+import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.entity.PlayerNotificationEntity;
-import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -121,7 +121,7 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
     private ClientEntryTemplateConfig clientTemplateConfig;
 
     @Resource
-    private NotificationFactory notificationFactory;
+    private INotificationFactory notificationFactory;
 
     @Resource
     private ClientProperties clientProperties;
@@ -218,7 +218,9 @@ public class PlayerNotificationServiceImpl extends ServiceImpl<PlayerNotificatio
             }
             userIds = getSpaceUserIdByMemberIdAndToTag(ro.getSpaceId(), toMemberIds, toTag);
         }
-        ExceptionUtil.isNotEmpty(userIds, NotificationException.USER_EMPTY_ERROR);
+        if (CollUtil.isEmpty(userIds)) {
+            throw new BusinessException(NotificationException.USER_EMPTY_ERROR);
+        }
         // Member's notice
         if (NotificationTemplateId.recordNotify(NotificationTemplateId.getValue(ro.getTemplateId()))) {
             createMemberMentionedNotify(userIds, template, ro);

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.enterprise.social.mapper.SocialTenantMapper;
-import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

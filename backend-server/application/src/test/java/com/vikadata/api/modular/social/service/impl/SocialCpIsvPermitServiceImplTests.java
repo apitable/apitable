@@ -31,9 +31,9 @@ import com.vikadata.api.enterprise.social.service.ISocialWecomPermitOrderService
 import com.vikadata.api.enterprise.social.service.IsocialWecomPermitOrderAccountBindService;
 import com.apitable.starter.social.wecom.autoconfigure.WeComProperties;
 import com.vikadata.core.util.DateTimeUtil;
-import com.vikadata.entity.SocialTenantBindEntity;
-import com.vikadata.entity.SocialWecomPermitOrderAccountEntity;
-import com.vikadata.entity.SocialWecomPermitOrderEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity;
+import com.vikadata.api.enterprise.social.entity.SocialWecomPermitOrderAccountEntity;
+import com.vikadata.api.enterprise.social.entity.SocialWecomPermitOrderEntity;
 import com.vikadata.social.wecom.WeComTemplate;
 import com.vikadata.social.wecom.WxCpIsvPermitServiceImpl;
 import com.vikadata.social.wecom.WxCpIsvServiceImpl;

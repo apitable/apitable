@@ -27,43 +27,23 @@ import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
 
-import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
-import com.vikadata.api.shared.component.notification.subject.SocialNotifyContext;
-import com.vikadata.api.shared.config.properties.ConstProperties;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
+import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.player.dto.NotificationModelDTO;
 import com.vikadata.api.player.dto.PlayerBaseDTO;
-import com.vikadata.api.space.dto.BaseSpaceInfoDTO;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.vo.NotificationDetailVo;
 import com.vikadata.api.player.vo.PlayerBaseVo;
-import com.vikadata.api.enterprise.appstore.enums.AppType;
-import com.vikadata.api.enterprise.appstore.model.LarkInstanceConfig;
-import com.vikadata.api.enterprise.appstore.model.LarkInstanceConfigProfile;
-import com.vikadata.api.enterprise.appstore.service.IAppInstanceService;
-import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.enterprise.social.constants.LarkConstants;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.event.wecom.WeComCardFactory;
-import com.vikadata.api.enterprise.social.event.wecom.WeComIsvCardFactory;
-import com.vikadata.api.enterprise.social.mapper.SocialTenantBindMapper;
-import com.vikadata.api.enterprise.social.model.TenantBindDTO;
-import com.vikadata.api.enterprise.social.service.IDingTalkInternalIsvService;
-import com.vikadata.api.enterprise.social.service.IDingTalkService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.space.mapper.SpaceMapper;
-import com.vikadata.api.workspace.mapper.NodeMapper;
-import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.core.constants.RedisConstants;
-import com.vikadata.entity.AppInstanceEntity;
-import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.sysconfig.SystemConfigManager;
 import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
+import com.vikadata.api.space.dto.BaseSpaceInfoDTO;
+import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.mapper.UserMapper;
+import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
+import com.vikadata.api.workspace.mapper.NodeMapper;
+import com.vikadata.core.constants.RedisConstants;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -95,24 +75,6 @@ public class NotificationFactory implements INotificationFactory {
 
     @Resource
     private ConstProperties constProperties;
-
-    @Resource
-    private SocialTenantBindMapper socialTenantBindMapper;
-
-    @Resource
-    private ISocialTenantBindService iSocialTenantBindService;
-
-    @Resource
-    private ISocialTenantService iSocialTenantService;
-
-    @Resource
-    private IDingTalkInternalIsvService iDingTalkInternalIsvService;
-
-    @Resource
-    private IDingTalkService iDingTalkService;
-
-    @Resource
-    private IAppInstanceService iAppInstanceService;
 
     @Override
     public NotificationTemplate getTemplateById(String templateId) {
@@ -307,21 +269,6 @@ public class NotificationFactory implements INotificationFactory {
     }
 
     @Override
-    public List<Long> getSocialUserIds(SocialPlatformType platformType) {
-        List<String> spaceIds = socialTenantBindMapper.selectSpaceIdByPlatformTypeAndAppType(platformType,
-                SocialAppType.ISV);
-        List<Long> userIds = new ArrayList<>();
-        List<List<String>> split = CollUtil.split(spaceIds, 1000);
-        for (List<String> spcIds : split) {
-            List<Long> tmpUserIds = memberMapper.selectUserIdBySpaceIds(spcIds);
-            if (!tmpUserIds.isEmpty()) {
-                userIds.addAll(tmpUserIds);
-            }
-        }
-        return userIds.stream().distinct().collect(Collectors.toList());
-    }
-
-    @Override
     public Boolean frequencyLimited(Long userId, NotificationTemplate template, String nonce) {
         if (template.getFrequency() != null) {
             String key = RedisConstants.getUserNotifyFrequencyKey(userId, template.getId(), nonce);
@@ -353,110 +300,5 @@ public class NotificationFactory implements INotificationFactory {
             long between = LocalDateTimeUtil.between(now, endOfDay, ChronoUnit.SECONDS);
             redisTemplate.opsForValue().set(key, Long.valueOf("1"), between, TimeUnit.SECONDS);
         }
-    }
-
-    @Override
-    public SocialNotifyContext buildSocialNotifyContext(String spaceId) {
-        if (StrUtil.isBlank(spaceId)) {
-            log.warn("Lost space id");
-            return null;
-        }
-        TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
-        if (bindInfo == null || StrUtil.isBlank(bindInfo.getAppId())) {
-            log.warn("space no bind social:{}", spaceId);
-            return null;
-        }
-        SocialTenantEntity tenantEntity = iSocialTenantService.getByAppIdAndTenantId(bindInfo.getAppId(), bindInfo.getTenantId());
-        if (tenantEntity == null || !tenantEntity.getStatus()) {
-            return null;
-        }
-        SocialAppType appType = SocialAppType.of(tenantEntity.getAppType());
-        if (appType == null) {
-            return null;
-        }
-        SocialPlatformType platform = SocialPlatformType.toEnum(tenantEntity.getPlatform());
-        SocialNotifyContext context = new SocialNotifyContext();
-        context.setAppId(tenantEntity.getAppId());
-        context.setAppType(appType);
-        context.setPlatform(platform);
-        context.setTenantId(tenantEntity.getTenantId());
-        String entryUrl = getSocialAppEntryUrl(bindInfo, platform, appType);
-        if (StrUtil.isBlank(entryUrl)) {
-            return null;
-        }
-        context.setEntryUrl(entryUrl);
-        String agentId = getSocialAppAgentId(tenantEntity);
-        if (StrUtil.isBlank(agentId)) {
-            return null;
-        }
-        context.setAgentId(agentId);
-        return context;
-    }
-
-    @Override
-    public String getSocialAppEntryUrl(TenantBindDTO bindInfo, SocialPlatformType platform, SocialAppType appType) {
-        if (platform.equals(SocialPlatformType.WECOM)) {
-            if (appType.equals(SocialAppType.INTERNAL)) {
-                return WeComCardFactory.WECOM_CALLBACK_PATH;
-            }
-            if (appType.equals(SocialAppType.ISV)) {
-                return WeComIsvCardFactory.WECOM_ISV_LOGIN_PATH;
-            }
-        }
-        if (platform.equals(SocialPlatformType.DINGTALK)) {
-            if (appType.equals(SocialAppType.INTERNAL)) {
-                return NotificationHelper.DINGTALK_ENTRY_URL;
-            }
-            if (appType.equals(SocialAppType.ISV)) {
-                return NotificationHelper.DINGTALK_ISV_ENTRY_URL;
-            }
-        }
-        if (platform.equals(SocialPlatformType.FEISHU)) {
-            if (appType.equals(SocialAppType.ISV)) {
-                return LarkConstants.ISV_ENTRY_URL;
-            }
-            if (appType.equals(SocialAppType.INTERNAL)) {
-                AppInstanceEntity instance = iAppInstanceService.getInstanceBySpaceIdAndAppType(bindInfo.getSpaceId(),
-                        AppType.LARK);
-                if (instance == null) {
-                    return null;
-                }
-                LarkInstanceConfig instanceConfig = LarkInstanceConfig.fromJsonString(instance.getConfig());
-                LarkInstanceConfigProfile profile = (LarkInstanceConfigProfile) instanceConfig.getProfile();
-                if (StrUtil.isBlank(profile.getAppKey())) {
-                    return null;
-                }
-                if (!profile.getAppKey().equals(bindInfo.getAppId())) {
-                    return null;
-                }
-                return LarkConstants.formatInternalEntryUrl(instance.getAppInstanceId());
-            }
-        }
-        return null;
-    }
-
-    private String getSocialAppAgentId(SocialTenantEntity entity) {
-        SocialPlatformType platform = SocialPlatformType.toEnum(entity.getPlatform());
-        SocialAppType appType = SocialAppType.of(entity.getAppType());
-        if (platform.equals(SocialPlatformType.WECOM)) {
-            if (SocialAppType.ISV.equals(appType)) {
-                Agent agent = JSONUtil.toBean(entity.getContactAuthScope(), Agent.class);
-                return agent.getAgentId().toString();
-            }
-            return entity.getAppId();
-        }
-        if (platform.equals(SocialPlatformType.DINGTALK)) {
-            if (SocialAppType.ISV.equals(appType)) {
-                IsvAppProperty bizApp = iDingTalkInternalIsvService.getIsvAppConfig(entity.getAppId());
-                return bizApp.getAppId();
-            }
-            if (SocialAppType.INTERNAL.equals(appType)) {
-                return iDingTalkService.getAgentIdByAppIdAndTenantId(entity.getAppId(), entity.getTenantId());
-            }
-        }
-        if (platform.equals(SocialPlatformType.FEISHU)) {
-            return entity.getAppId();
-        }
-        return null;
     }
 }

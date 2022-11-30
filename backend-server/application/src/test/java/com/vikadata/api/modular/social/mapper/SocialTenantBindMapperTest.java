@@ -13,7 +13,7 @@ import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.enterprise.social.enums.SocialAppType;
 import com.vikadata.api.enterprise.social.model.SpaceBindTenantInfoDTO;
 import com.vikadata.api.enterprise.social.model.TenantBindDTO;
-import com.vikadata.entity.SocialTenantBindEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

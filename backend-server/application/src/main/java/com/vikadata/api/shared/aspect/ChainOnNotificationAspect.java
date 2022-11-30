@@ -13,22 +13,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 
-import com.vikadata.api.shared.component.notification.annotation.Notification;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationHelper;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
+import com.vikadata.api.shared.component.notification.annotation.Notification;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import static com.vikadata.api.shared.aspect.AspectOrderConstants.CHAIN_ON_AUDIT_NOTIFICATION_ORDER;
 
 /**
  * <p>
@@ -39,7 +36,6 @@ import static com.vikadata.api.shared.aspect.AspectOrderConstants.CHAIN_ON_AUDIT
  */
 @Aspect
 @Component
-@Order(CHAIN_ON_AUDIT_NOTIFICATION_ORDER)
 @Slf4j
 public class ChainOnNotificationAspect extends BaseAspectSupport {
 

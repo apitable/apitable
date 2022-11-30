@@ -10,7 +10,6 @@ import com.apitable.starter.oss.core.OssClientTemplate;
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.asset.enums.AssetType;
 import com.vikadata.api.asset.service.IAssetUploadTokenService;
-import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.exception.BusinessException;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,9 +24,6 @@ public class AssetUploadTokenServiceImplTest extends AbstractIntegrationTest {
 
     @MockBean
     private OssClientTemplate ossTemplate;
-
-    @MockBean
-    private INodeService iNodeService;
 
     @Test
     public void testCreateSpaceAssetPreSignedUrlParameterException() {

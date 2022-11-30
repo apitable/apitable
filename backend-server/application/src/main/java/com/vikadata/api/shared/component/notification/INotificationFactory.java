@@ -5,17 +5,13 @@ import java.util.Map;
 
 import cn.hutool.json.JSONObject;
 
-import com.vikadata.api.shared.component.notification.subject.SocialNotifyContext;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
 import com.vikadata.api.player.dto.NotificationModelDTO;
-import com.vikadata.api.space.dto.BaseSpaceInfoDTO;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.vo.NotificationDetailVo;
 import com.vikadata.api.player.vo.PlayerBaseVo;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.model.TenantBindDTO;
 import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
+import com.vikadata.api.space.dto.BaseSpaceInfoDTO;
+import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
 
 /**
  * <p>
@@ -170,14 +166,6 @@ public interface INotificationFactory {
     Map<Long, PlayerBaseVo> getPlayerBaseInfo(List<Long> memberIds, List<Long> userIds);
 
     /**
-     * get user id from social platform
-     *
-     * @param platformType social platform type
-     * @return user id
-     */
-    List<Long> getSocialUserIds(SocialPlatformType platformType);
-
-    /**
      * check notification frequency
      * @param userId user id
      * @param template template
@@ -193,21 +181,4 @@ public interface INotificationFactory {
      * @param nonce random string
      */
     void addUserNotifyFrequency(Long userId, NotificationTemplate template, String nonce);
-
-    /**
-     * build social notify context
-     *
-     * @param spaceId space id
-     * @return social notify context
-     */
-    SocialNotifyContext buildSocialNotifyContext(String spaceId);
-
-    /**
-     * get entry address
-     * @param bindInfo tenant bind info
-     * @param platform social platform
-     * @param appType app type
-     * @return entry address
-     */
-    String getSocialAppEntryUrl(TenantBindDTO bindInfo, SocialPlatformType platform, SocialAppType appType);
 }

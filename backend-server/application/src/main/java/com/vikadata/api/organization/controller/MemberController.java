@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.enterprise.auth0.service.Auth0Service;
 import com.vikadata.api.enterprise.common.afs.AfsCheckService;
 import com.vikadata.api.enterprise.gm.service.IBlackListService;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.organization.enums.DeleteMemberType;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
@@ -154,6 +155,9 @@ public class MemberController {
     @Resource
     private ServerProperties serverProperties;
 
+    @Resource
+    private SocialServiceFacade socialServiceFacade;
+
     @GetResource(path = "/search")
     @ApiImplicitParams({
             @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl"),
@@ -172,9 +176,7 @@ public class MemberController {
 
         String spaceId = LoginContext.me().getSpaceId();
         List<SearchMemberVo> resultList = iMemberService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter, className);
-
         return ResponseData.success(resultList);
-
     }
 
     @GetResource(path = "/list")
@@ -366,7 +368,7 @@ public class MemberController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> addMember(@RequestBody @Valid TeamAddMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
         iMemberService.addTeamMember(spaceId, data);
         return ResponseData.success();
     }
@@ -377,7 +379,7 @@ public class MemberController {
     public ResponseData<Void> update(@RequestBody @Valid UpdateMemberOpRo opRo) {
         Long memberId = LoginContext.me().getMemberId();
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
         iMemberService.updateMember(memberId, opRo);
         return ResponseData.success();
     }
@@ -387,7 +389,7 @@ public class MemberController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateInfo(@RequestBody @Valid UpdateMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
         iMemberService.updateMember(data);
         return ResponseData.success();
     }
@@ -397,7 +399,7 @@ public class MemberController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<Void> updateTeam(@RequestBody @Valid UpdateMemberTeamRo data) {
         String spaceId = LoginContext.me().getSpaceId();
-        iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+        socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
         List<Long> memberIds = data.getMemberIds();
         List<Long> teamIds = data.getNewTeamIds();
         iMemberService.updateMemberByTeamId(spaceId, memberIds, teamIds);
@@ -415,7 +417,7 @@ public class MemberController {
         MemberEntity member = iMemberService.getById(memberId);
         ExceptionUtil.isNotNull(member, NOT_EXIST_MEMBER);
         if (type == DeleteMemberType.FROM_TEAM) {
-            iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+            socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
             // delete member from department
             ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L), DELETE_MEMBER_PARAM_ERROR);
             iMemberService.batchDeleteMemberFromTeam(spaceId, Collections.singletonList(memberId), data.getTeamId());
@@ -447,7 +449,7 @@ public class MemberController {
         List<MemberEntity> members = iMemberService.listByIds(memberIds);
         ExceptionUtil.isNotEmpty(members, NOT_EXIST_MEMBER);
         if (type == DeleteMemberType.FROM_TEAM) {
-            iSpaceService.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
+            socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.UPDATE_MEMBER);
             //delete members from a department in batches
             ExceptionUtil.isTrue(data.getTeamId() != null && !data.getTeamId().equals(0L), DELETE_MEMBER_PARAM_ERROR);
             iMemberService.batchDeleteMemberFromTeam(spaceId, data.getMemberId(), data.getTeamId());

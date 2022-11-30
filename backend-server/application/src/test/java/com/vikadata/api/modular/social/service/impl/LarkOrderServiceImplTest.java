@@ -19,7 +19,7 @@ import com.vikadata.api.enterprise.billing.util.LarkPlanConfigManager;
 import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.shared.sysconfig.billing.Price;
-import com.vikadata.entity.SocialTenantBindEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.social.feishu.enums.PricePlanType;
 import com.vikadata.social.feishu.event.app.OrderPaidEvent;

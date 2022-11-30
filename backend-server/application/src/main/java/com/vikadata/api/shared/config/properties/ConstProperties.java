@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -237,4 +239,8 @@ public class ConstProperties {
     private String grayCallbackDomain;
     /* Gray Config End */
 
+
+    public String defaultServerDomain() {
+        return ReUtil.replaceAll(serverDomain, "http://|https://", StrUtil.EMPTY);
+    }
 }

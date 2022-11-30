@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.shared.context.LoginContext;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -25,7 +24,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Pengap
  */
 @Slf4j
-@Configuration(proxyBeanMethods = false)
 public class I18nInterceptor extends AbstractServletSupport implements HandlerInterceptor {
 
     private final Set<String> INCLUDE_SERVLET_PATH = Sets.newHashSet("/client/info", "/client/entry", "/user/me");

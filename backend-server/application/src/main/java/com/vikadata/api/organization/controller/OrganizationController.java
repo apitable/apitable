@@ -217,7 +217,7 @@ public class OrganizationController {
         @ApiImplicitParam(name = "searchEmail", value = "whether to search for emails", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query")
     })
     public ResponseData<List<UnitInfoVo>> loadOrSearch(@Valid LoadSearchDTO params) {
-        // sharing node/template: unlogin users invoke processing
+        // sharing node/template: un login users invoke processing
         Long userId = null;
         String spaceId;
         Long sharer = null;

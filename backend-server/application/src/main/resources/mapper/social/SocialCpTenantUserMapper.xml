@@ -31,7 +31,7 @@
     </delete>
 
     <select id="selectByTenantIdAndAppIdAndCpUserId"
-            resultType="com.vikadata.entity.SocialCpTenantUserEntity">
+            resultType="com.vikadata.api.enterprise.social.entity.SocialCpTenantUserEntity">
         SELECT *
         FROM ${tablePrefix}social_cp_tenant_user
         WHERE tenant_id = #{tenantId}
@@ -40,7 +40,7 @@
     </select>
 
     <select id="selectByTenantIdAndAppIdAndCpUserIds"
-            resultType="com.vikadata.entity.SocialCpTenantUserEntity">
+            resultType="com.vikadata.api.enterprise.social.entity.SocialCpTenantUserEntity">
         SELECT *
         FROM ${tablePrefix}social_cp_tenant_user
         WHERE tenant_id = #{tenantId}
@@ -52,7 +52,7 @@
     </select>
 
     <select id="selectByTenantIdAndAppIdAndUserId"
-            resultType="com.vikadata.entity.SocialCpTenantUserEntity">
+            resultType="com.vikadata.api.enterprise.social.entity.SocialCpTenantUserEntity">
         SELECT vsctu.*
         FROM (
             SELECT cp_tenant_user_id

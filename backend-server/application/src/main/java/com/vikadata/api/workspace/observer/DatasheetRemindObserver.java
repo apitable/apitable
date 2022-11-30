@@ -1,14 +1,13 @@
 package com.vikadata.api.workspace.observer;
 
 import com.vikadata.api.workspace.observer.remind.NotifyDataSheetMeta;
-import com.vikadata.api.workspace.observer.remind.RemindSubjectType.RemindSubjectEnum;
+import com.vikadata.api.workspace.observer.remind.RemindChannel;
 
 public interface DatasheetRemindObserver extends DatasheetObserver {
 
-    RemindSubjectEnum getRemindType();
+    RemindChannel getRemindType();
 
     void notifyMemberAction(NotifyDataSheetMeta meta);
 
     void notifyCommentAction(NotifyDataSheetMeta meta);
-
 }

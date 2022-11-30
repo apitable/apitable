@@ -8,7 +8,7 @@
         WHERE uuid = #{uuid}
     </select>
 
-    <select id="selectByUuid" resultType="com.vikadata.entity.SocialFeishuEventLogEntity">
+    <select id="selectByUuid" resultType="com.vikadata.api.enterprise.social.entity.SocialFeishuEventLogEntity">
         SELECT *
         FROM ${tablePrefix}social_feishu_event_log
         WHERE uuid = #{uuid}

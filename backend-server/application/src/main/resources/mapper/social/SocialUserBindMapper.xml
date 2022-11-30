@@ -14,7 +14,7 @@
         WHERE user_id = #{userId}
     </select>
 
-    <select id="selectByUnionIds" resultType="com.vikadata.entity.SocialUserBindEntity">
+    <select id="selectByUnionIds" resultType="com.vikadata.api.enterprise.social.entity.SocialUserBindEntity">
         SELECT *
         FROM ${tablePrefix}social_user_bind
         WHERE union_id IN

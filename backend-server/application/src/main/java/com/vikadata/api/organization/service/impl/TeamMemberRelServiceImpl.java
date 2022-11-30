@@ -12,10 +12,10 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vikadata.api.organization.enums.OrganizationException;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.organization.service.ITeamMemberRelService;
-import com.vikadata.api.organization.enums.OrganizationException;
 import com.vikadata.api.shared.util.ibatis.ExpandServiceImpl;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.TeamMemberRelEntity;
@@ -68,7 +68,6 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
         return baseMapper.selectMemberIdsByTeamId(teamId);
     }
 
-
     @Override
     public void removeByMemberId(Long memberId) {
         baseMapper.deleteByMemberId(Collections.singletonList(memberId));
@@ -91,5 +90,10 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     public void removeByTeamIds(Collection<Long> teamIds) {
         log.info("Delete the binding relationships between member and department");
         baseMapper.deleteByTeamIds(teamIds);
+    }
+
+    @Override
+    public void removeByTeamIdsAndMemberId(Long memberId, List<Long> teamIds) {
+        baseMapper.deleteByTeamIdsAndMemberId(memberId, teamIds);
     }
 }

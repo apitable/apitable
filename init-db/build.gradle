@@ -22,8 +22,8 @@ liquibase {
       changeLogFile "src/main/resources/db/changelog/db.changelog-master.xml"
       logLevel "warning"
       classpath "src/main/resources/"
-      databaseChangeLogTableName 'vika_db_changelog'
-      databaseChangeLogLockTableName 'vika_db_changelog_lock'
+      databaseChangeLogTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog"
+      databaseChangeLogLockTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog_lock"
       outputFile "update.sql"
     }
   }

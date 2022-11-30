@@ -3,7 +3,6 @@ package com.vikadata.api.organization.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -12,12 +11,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.cp.bean.WxCpTpAuthInfo.Agent;
-import me.chanjar.weixin.cp.bean.WxCpTpContactSearchResp;
 
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
@@ -27,6 +23,7 @@ import com.vikadata.api.organization.model.TeamCteInfo;
 import com.vikadata.api.organization.service.IOrganizationService;
 import com.vikadata.api.organization.service.IRoleService;
 import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.organization.vo.SubUnitResultVo;
 import com.vikadata.api.organization.vo.UnitInfoVo;
 import com.vikadata.api.organization.vo.UnitMemberVo;
@@ -35,16 +32,8 @@ import com.vikadata.api.organization.vo.UnitTeamVo;
 import com.vikadata.api.shared.cache.service.UserSpaceRemindRecordService;
 import com.vikadata.api.shared.cache.service.UserSpaceService;
 import com.vikadata.api.shared.config.properties.LimitProperties;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.organization.service.IUnitService;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
-import com.vikadata.api.enterprise.social.service.ISocialCpIsvService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.workspace.service.impl.NodeRoleServiceImpl;
 import com.vikadata.api.shared.util.information.InformationUtil;
-import com.vikadata.entity.SocialTenantBindEntity;
-import com.vikadata.entity.SocialTenantEntity;
+import com.vikadata.api.workspace.service.impl.NodeRoleServiceImpl;
 
 import org.springframework.stereotype.Service;
 
@@ -63,15 +52,6 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Resource
     private TeamMemberRelMapper teamMemberRelMapper;
-
-    @Resource
-    private ISocialTenantService socialTenantService;
-
-    @Resource
-    private ISocialTenantBindService socialTenantBindService;
-
-    @Resource
-    private ISocialCpIsvService socialCpIsvService;
 
     @Resource
     private ITeamService iTeamService;
@@ -94,6 +74,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Resource
     private NodeRoleServiceImpl nodeRoleService;
 
+    @Resource
+    private SocialServiceFacade socialServiceFacade;
+
     @Override
     public UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord, String highlightClassName) {
         log.info("search organizational unit");
@@ -110,7 +93,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
                 });
                 unitSearchResultVo.setTeams(unitTeamVoList);
             }
-            //fuzzy search members
+            // fuzzy search members
             List<Long> memberIds = memberMapper.selectMemberIdsLikeName(spaceId, likeWord);
             if (CollUtil.isNotEmpty(memberIds)) {
                 List<UnitMemberVo> unitMemberList = findUnitMemberVo(memberIds);
@@ -122,48 +105,24 @@ public class OrganizationServiceImpl implements IOrganizationService {
                 unitSearchResultVo.setMembers(unitMemberList);
             }
 
-            SocialTenantBindEntity bindEntity = socialTenantBindService.getBySpaceId(spaceId);
-            SocialTenantEntity socialTenantEntity = Optional.ofNullable(bindEntity)
-                    .map(bind -> {
-                        SocialTenantEntity tenantEntity = socialTenantService
-                                .getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId());
+            List<String> openIds = socialServiceFacade.fuzzySearchIfSatisfyCondition(spaceId, likeWord);
+            if (CollUtil.isNotEmpty(openIds)) {
+                // Populate the returned result with the un-renamed members
+                List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, openIds);
+                if (CollUtil.isNotEmpty(socialMemberIds)) {
+                    List<UnitMemberVo> unitMemberList = findUnitMemberVo(socialMemberIds);
+                    unitMemberList.forEach(member -> {
+                        member.setOriginName(member.getMemberName());
+                        // Wecom usernames need to be front-end rendered, and search results do not return highlighting
+                        member.setMemberName(member.getMemberName());
+                    });
 
-                        return tenantEntity;
-                    })
-                    .orElse(null);
-            if (Objects.nonNull(socialTenantEntity)
-                    && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
-                    && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-                // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
-                String suiteId = socialTenantEntity.getAppId();
-                String authCorpId = socialTenantEntity.getTenantId();
-                Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
-                Integer agentId = agent.getAgentId();
-                try {
-                    WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, likeWord, 1);
-                    List<String> cpUserIds = queryResult.getUser().getUserid();
-                    if (CollUtil.isNotEmpty(cpUserIds)) {
-                        // Populate the returned result with the un-renamed members
-                        List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, cpUserIds);
-                        if (CollUtil.isNotEmpty(socialMemberIds)) {
-                            List<UnitMemberVo> unitMemberList = findUnitMemberVo(socialMemberIds);
-                            unitMemberList.forEach(member -> {
-                                member.setOriginName(member.getMemberName());
-                                // Wecom user names need to be front-end rendered, and search results do not return highlighting
-                                member.setMemberName(member.getMemberName());
-                            });
-
-                            if (Objects.isNull(unitSearchResultVo.getMembers())) {
-                                unitSearchResultVo.setMembers(unitMemberList);
-                            }
-                            else {
-                                unitSearchResultVo.getMembers().addAll(unitMemberList);
-                            }
-                        }
+                    if (Objects.isNull(unitSearchResultVo.getMembers())) {
+                        unitSearchResultVo.setMembers(unitMemberList);
                     }
-                }
-                catch (WxErrorException ex) {
-                    log.error("Failed to search users from wecom isv.", ex);
+                    else {
+                        unitSearchResultVo.getMembers().addAll(unitMemberList);
+                    }
                 }
             }
         }
@@ -319,30 +278,11 @@ public class OrganizationServiceImpl implements IOrganizationService {
         List<Long> roleIds = iRoleService.getRoleIdsByKeyWord(spaceId, likeWord);
         refIds.addAll(roleIds);
 
-        // social wecom logic
-        SocialTenantEntity socialTenantEntity = Optional.ofNullable(socialTenantBindService.getBySpaceId(spaceId))
-                .map(bind -> socialTenantService.getByAppIdAndTenantId(bind.getAppId(), bind.getTenantId()))
-                .orElse(null);
-        if (Objects.nonNull(socialTenantEntity)
-                && SocialPlatformType.WECOM.getValue().equals(socialTenantEntity.getPlatform())
-                && SocialAppType.ISV.getType() == socialTenantEntity.getAppType()) {
-            // If it is the space bound to the wecom, it is necessary to query the qualified users in the wecom contacts.
-            String suiteId = socialTenantEntity.getAppId();
-            String authCorpId = socialTenantEntity.getTenantId();
-            Agent agent = JSONUtil.toBean(socialTenantEntity.getContactAuthScope(), Agent.class);
-            Integer agentId = agent.getAgentId();
-            try {
-                WxCpTpContactSearchResp.QueryResult queryResult = socialCpIsvService.search(suiteId, authCorpId, agentId, likeWord, 1);
-                List<String> cpUserIds = queryResult.getUser().getUserid();
-                if (CollUtil.isNotEmpty(cpUserIds)) {
-                    // Populate the returned result with the un-renamed members
-                    List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, cpUserIds);
-                    refIds.addAll(socialMemberIds);
-                }
-            }
-            catch (WxErrorException ex) {
-                log.error("Failed to search users from wecom isv.", ex);
-            }
+        List<String> openIds = socialServiceFacade.fuzzySearchIfSatisfyCondition(spaceId, likeWord);
+        if (CollUtil.isNotEmpty(openIds)) {
+            // Populate the returned result with the un-renamed members
+            List<Long> socialMemberIds = memberMapper.selectMemberIdsLikeNameByOpenIds(spaceId, openIds);
+            refIds.addAll(socialMemberIds);
         }
         return refIds;
     }
@@ -384,7 +324,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         log.info("Load the first department id of the organization tree to which a member belongs");
         // Member's department's and all sub-departments' id and parentId
         List<TeamCteInfo> teamsInfo = teamMapper.selectChildTreeByTeamIds(spaceId, teamIds);
-        // the member's team and all sub-teams' id
+        // the member's team and all child teams id
         List<Long> teamIdList = teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
         // Filter out the departments that do not need to be loaded
         return teamsInfo.stream()

@@ -11,7 +11,7 @@ import cn.hutool.json.JSONUtil;
 
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.service.LoginUserService;
-import com.vikadata.api.enterprise.social.enums.SocialNameModified;
+import com.vikadata.api.interfaces.social.enums.SocialNameModified;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.api.user.entity.UserEntity;

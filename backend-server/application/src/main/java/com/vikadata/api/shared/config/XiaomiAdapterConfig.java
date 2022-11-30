@@ -15,11 +15,11 @@ import com.xiaomi.aegis.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.starter.aegis.autoconfigure.UnauthorizedResponseCustomizer;
-import com.vikadata.api.shared.component.scanner.ApiResourceFactory;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.shared.component.ResourceDefinition;
+import com.vikadata.api.shared.component.scanner.ApiResourceFactory;
 import com.vikadata.api.shared.constants.FilterConstants;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.social.mapper.SocialUserBindMapper;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.support.ResponseData;
 
@@ -67,7 +67,7 @@ public class XiaomiAdapterConfig {
     @Bean
     FilterRegistrationBean<CasProxyUserDetailFilter> casProxyUserDetailFilter(BeanFactory beanFactory, ApiResourceFactory resourceFactory) {
         FilterRegistrationBean<CasProxyUserDetailFilter> filterRegistrationBean =
-            new FilterRegistrationBean<>(new CasProxyUserDetailFilter(beanFactory, resourceFactory));
+                new FilterRegistrationBean<>(new CasProxyUserDetailFilter(beanFactory, resourceFactory));
         filterRegistrationBean.setOrder(FilterConstants.TRACE_REQUEST_FILTER);
         filterRegistrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
         return filterRegistrationBean;
@@ -105,8 +105,8 @@ final class CasProxyUserDetailFilter extends OncePerRequestFilter {
         if (StrUtil.isBlank(miUsername)) {
             throw new ServletException(UNAUTHORIZED.getMessage());
         }
-        SocialUserBindMapper socialUserBindMapper = beanFactory.getBean(SocialUserBindMapper.class);
-        Long userId = socialUserBindMapper.selectUserIdByUnionId(miUsername);
+        SocialServiceFacade socialServiceFacade = beanFactory.getBean(SocialServiceFacade.class);
+        Long userId = socialServiceFacade.getUserIdByUnionId(miUsername);
         if (userId == null) {
             String remark = String.format("%s(%s)", userInfoVO.getDisplayName(), userInfoVO.getDepartmentName());
             userId = beanFactory.getBean(IUserService.class).createByExternalSystem(miUsername, userInfoVO.getName(), userInfoVO.getAvatar(), userInfoVO.getEmail(), remark);

@@ -58,4 +58,11 @@ public interface ITeamMemberRelService extends IService<TeamMemberRelEntity> {
      * @param teamIds team ids
      */
     void removeByTeamIds(Collection<Long> teamIds);
+
+    /**
+     * remove by member id and team id list
+     * @param memberId member id
+     * @param teamIds team id list
+     */
+    void removeByTeamIdsAndMemberId(Long memberId, List<Long> teamIds);
 }

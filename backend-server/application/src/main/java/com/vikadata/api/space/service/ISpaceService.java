@@ -10,7 +10,6 @@ import com.vikadata.api.internal.model.InternalSpaceUsageVo;
 import com.vikadata.api.space.model.GetSpaceListFilterCondition;
 import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
 import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
 import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.vo.SpaceInfoVO;
@@ -53,14 +52,6 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return space id
      */
     String createSpace(UserEntity user, String spaceName);
-
-    /**
-     * Create a space that does not contain user information
-     *
-     * @param spaceName spaceName
-     * @return {@link SpaceEntity}
-     */
-    SpaceEntity createWeComIsvSpaceWithoutUser(String spaceName);
 
     /**
      * @param userId userId
@@ -225,24 +216,6 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @param spaceId space id
      */
     void checkCanOperateSpaceUpdate(String spaceId);
-
-    /**
-     * Check whether spatial data is allowed to be manipulated，member,team
-     *
-     * @param spaceId space id
-     * @param spaceUpdateOperates spaceUpdateOperates
-     */
-    void checkCanOperateSpaceUpdate(String spaceId, SpaceUpdateOperate spaceUpdateOperates);
-
-    /**
-     * Check whether space resources are allowed to be manipulated
-     *
-     * @param spaceId                space id
-     * @param opMemberId             opMemberId
-     * @param acceptMemberId         the accept action member id
-     * @param spaceUpdateOperates    spaceUpdateOperates
-     */
-    void checkCanOperateSpaceUpdate(String spaceId, Long opMemberId, Long acceptMemberId, SpaceUpdateOperate[] spaceUpdateOperates);
 
     /**
      * @param linkId linkId（sharing id or template id）

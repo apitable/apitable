@@ -21,7 +21,7 @@ import com.vikadata.api.shared.cache.service.UserSpaceService;
 import com.vikadata.api.space.enums.SpaceException;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.UnitMapper;
-import com.vikadata.api.enterprise.social.enums.SocialNameModified;
+import com.vikadata.api.interfaces.social.enums.SocialNameModified;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.space.mapper.SpaceResourceMapper;

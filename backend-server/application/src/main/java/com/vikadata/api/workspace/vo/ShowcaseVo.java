@@ -90,6 +90,14 @@ public class ShowcaseVo {
 
         @ApiModelProperty(value = "DingTalk isv authorized Enterprise Id", position = 3)
         private String dingTalkCorpId;
+
+        @ApiModelProperty(value = "Source template Id", position = 4)
+        @JsonSerialize(nullsUsing = NullStringSerializer.class)
+        private String sourceTemplateId;
+
+        @ApiModelProperty(value = "Whether to display the prompt of successful creation", position = 5)
+        @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+        private Boolean showTips;
     }
 
     @Data

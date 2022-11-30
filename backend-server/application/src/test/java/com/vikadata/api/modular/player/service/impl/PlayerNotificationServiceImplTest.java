@@ -11,11 +11,11 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.shared.component.notification.NotificationFactory;
-import com.vikadata.api.shared.component.notification.NotificationManager;
-import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.player.dto.NotificationModelDTO;
 import com.vikadata.api.player.service.IPlayerNotificationService;
+import com.vikadata.api.shared.component.notification.INotificationFactory;
+import com.vikadata.api.shared.component.notification.NotificationManager;
+import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class PlayerNotificationServiceImplTest extends AbstractIntegrationTest {
     private IPlayerNotificationService iPlayerNotificationService;
 
     @Autowired
-    private NotificationFactory notificationFactory;
+    private INotificationFactory notificationFactory;
 
     @Test
     public void testCreateNewUserWelcomeNotification() {

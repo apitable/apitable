@@ -3,14 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vikadata.api.enterprise.social.mapper.SocialTenantDomainMapper">
 
-    <select id="selectBySpaceId" resultType="com.vikadata.entity.SocialTenantDomainEntity">
+    <select id="selectBySpaceId" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantDomainEntity">
         SELECT *
         FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.space_id = #{spaceId}
           AND vstd.is_deleted = 0
     </select>
 
-    <select id="selectBySpaceIds" resultType="com.vikadata.entity.SocialTenantDomainEntity">
+    <select id="selectBySpaceIds" resultType="com.vikadata.api.enterprise.social.entity.SocialTenantDomainEntity">
         SELECT *
         FROM ${tablePrefix}social_tenant_domain vstd
         WHERE vstd.space_id IN

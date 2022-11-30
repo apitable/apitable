@@ -14,7 +14,7 @@ import com.vikadata.api.space.model.SpaceGlobalFeature;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.entity.MemberEntity;
-import com.vikadata.entity.SocialTenantBindEntity;
+import com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 
 import static com.vikadata.api.space.enums.SpaceException.NOT_SPACE_ADMIN;

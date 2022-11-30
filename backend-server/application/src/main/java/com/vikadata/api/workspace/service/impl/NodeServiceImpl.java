@@ -36,7 +36,6 @@ import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.apitable.starter.social.dingtalk.autoconfigure.DingTalkProperties.IsvAppProperty;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -53,11 +52,9 @@ import com.vikadata.api.enterprise.control.infrastructure.ControlRoleDict;
 import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
 import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
 import com.vikadata.api.enterprise.control.infrastructure.role.ControlRole;
-import com.vikadata.api.enterprise.social.model.TenantBindDTO;
-import com.vikadata.api.enterprise.social.service.IDingTalkInternalIsvService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
 import com.vikadata.api.enterprise.widget.mapper.WidgetMapper;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
 import com.vikadata.api.organization.dto.MemberDTO;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.service.IMemberService;
@@ -230,13 +227,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private IGrpcClientService grpcClientService;
 
     @Resource
-    private ISocialTenantBindService iSocialTenantBindService;
-
-    @Resource
-    private ISocialTenantService iSocialTenantService;
-
-    @Resource
-    private IDingTalkInternalIsvService iDingTalkInternalIsvService;
+    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -1723,14 +1714,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             extras = nodeMapper.selectExtraByNodeId(nodeId);
         }
         NodeExtraDTO nodeExtraDTO = JSONUtil.toBean(extras, NodeExtraDTO.class);
-        TenantBindDTO bindInfo = iSocialTenantBindService.getTenantBindInfoBySpaceId(spaceId);
-        if (bindInfo != null && bindInfo.getAppId() != null) {
-            if (iSocialTenantService.isTenantActive(bindInfo.getTenantId(), bindInfo.getAppId())) {
-                IsvAppProperty app = iDingTalkInternalIsvService.getIsvAppConfig(bindInfo.getAppId());
-                if (app != null) {
-                    extraVo.setDingTalkSuiteKey(app.getSuiteKey());
+        SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
+        if (connectInfo != null && connectInfo.getAppId() != null) {
+            if (connectInfo.isEnabled()) {
+                String suiteKey = socialServiceFacade.getSuiteKeyByDingtalkSuiteId(connectInfo.getAppId());
+                if (suiteKey != null) {
+                    extraVo.setDingTalkSuiteKey(suiteKey);
                     extraVo.setDingTalkDaStatus(nodeExtraDTO.getDingTalkDaStatus());
-                    extraVo.setDingTalkCorpId(bindInfo.getTenantId());
+                    extraVo.setDingTalkCorpId(connectInfo.getTenantId());
                 }
             }
         }
