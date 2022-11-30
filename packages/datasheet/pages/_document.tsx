@@ -2,14 +2,28 @@ import getConfig from 'next/config';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
-import { getEnvVars } from 'get_env';
+import { getInitialProps } from '../utils/get_initial_props';
 import '../utils/init_private';
 
 const { publicRuntimeConfig } = getConfig();
 
-class MyDocument extends Document {
+interface IClientInfo {
+  env: string
+  version: string
+  envVars: string
+}
+
+class MyDocument extends Document<IClientInfo> {
+  static async getInitialProps(ctx) {
+    const initialProps = await Document.getInitialProps(ctx);
+    const initData = await getInitialProps();
+    return {
+      ...initialProps,
+      ...initData,
+    };
+  }
   render() {
-    const envVars = getEnvVars();
+    const { env, version, envVars } = this.props;
     return (
       <Html>
         <Head>
@@ -26,9 +40,9 @@ class MyDocument extends Document {
             <Script id='__initialization_data__' strategy={'beforeInteractive'}>
               {`
           window.__initialization_data__ = {
-              env: '${process.env.ENV}',
-              version: '${process.env.WEB_CLIENT_VERSION}',
-              envVars: ${JSON.stringify(envVars)},
+              env: '${env}',
+              version: '${version}',
+              envVars: ${envVars},
               locale:'zh-CN',
               userInfo: null,
               wizards: null,
