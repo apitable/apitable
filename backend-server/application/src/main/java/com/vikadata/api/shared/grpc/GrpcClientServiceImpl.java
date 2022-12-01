@@ -69,9 +69,6 @@ import static com.vikadata.api.shared.constants.AssetsPublicConstants.CAPACITY_H
 
 /**
  * nest grpc client
- *
- * @author Zoe Zheng
- * @date 2021-03-22 17:33:40
  */
 @Service
 @Slf4j
@@ -90,7 +87,7 @@ public class GrpcClientServiceImpl implements IGrpcClientService {
             return simpleStub.copyNodeEffectOt(ro);
         }
         catch (StatusRuntimeException e) {
-            log.error("复制节点错误", e);
+            log.error("Copy node error", e);
             return BasicResult.newBuilder().setCode(ERROR_CODE).setSuccess(false).setMessage(e.getMessage()).build();
         }
     }

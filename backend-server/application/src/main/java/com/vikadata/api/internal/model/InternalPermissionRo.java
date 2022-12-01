@@ -8,22 +8,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author Chambers
- * @date 2021/12/13
- */
 @Data
-@ApiModel("内部接口-权限请求参数")
+@ApiModel("Internal Interface - Permission Request Parameters")
 public class InternalPermissionRo {
 
-    @ApiModelProperty(value = "节点ID列表", required = true, example = "[\"fomtujwf5eSWKiMaVw\",\"dstbw4CZFURbchgP17\"]", position = 1)
-    @NotEmpty(message = "节点ID列表不能为空")
+    @ApiModelProperty(value = "Node ID list", required = true, example = "[\"fomtujwf5eSWKiMaVw\",\"dstbw4CZFURbchgP17\"]", position = 1)
+    @NotEmpty(message = "Node ID list cannot be empty")
     private List<String> nodeIds;
 
-    @ApiModelProperty(value = "节点分享ID", dataType = "java.lang.String", example = "shr8T8vAfehg3yj3McmDG", position = 2)
+    @ApiModelProperty(value = "Node Share Id", dataType = "java.lang.String", example = "shr8T8vAfehg3yj3McmDG", position = 2)
     private String shareId;
 }

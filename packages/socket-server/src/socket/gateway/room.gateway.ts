@@ -26,12 +26,13 @@ export class RoomGateway {
 
   @SubscribeMessage(RequestTypes.WATCH_ROOM)
   async watchRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<any | null> {
-    return await this.roomService.watchRoom(message, client, this.server);
+    return await this.roomService.watchRoom(message, client);
   }
 
   @SubscribeMessage(RequestTypes.LEAVE_ROOM)
-  async leaveRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): Promise<boolean> {
-    return await this.roomService.leaveRoom(message, client);
+  leaveRoom(@MessageBody() message: any, @ConnectedSocket() client: Socket): boolean {
+    this.roomService.leaveRoom(message, client);
+    return true;
   }
 
   @UseInterceptors(ExecuteTimeInterceptor)

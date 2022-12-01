@@ -12,7 +12,7 @@ export class NodeController {
   constructor(private readonly roomGateway: RoomGateway, private readonly roomService: RoomService) {}
 
   @Post('/disableShare')
-  async disableNodeShare(@Body() message: NodeShareDisableRo[]) {
-    await this.roomService.broadcastNodeShareDisabled(this.roomGateway.server, message);
+  disableNodeShare(@Body() message: NodeShareDisableRo[]) {
+    this.roomService.broadcastNodeShareDisabled(this.roomGateway.server, message);
   }
 }

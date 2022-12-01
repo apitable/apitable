@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @ApiModel("Attachment resource upload voucher result VO")
 public class AssetUploadCertificateVO {
 
-    @ApiModelProperty(value = "资源名，文件访问相对路径（可能非最终的值）", example = "spc10/2019/12/10/159.jpg", position = 1)
+    @ApiModelProperty(value = "File Access Path(possibly non-final value)", example = "spc10/2019/12/10/159.jpg", position = 1)
     private String token;
 
-    @ApiModelProperty(value = "上传请求URL", example = "https://bucket.s3.us-east-1.amazon.com/resourceKey?X-Amz-Algorithm=AWS4-HMAC-SHA256", position = 3)
+    @ApiModelProperty(value = "Upload request URL", example = "https://bucket.s3.us-east-1.amazon.com/resourceKey?X-Amz-Algorithm=AWS4-HMAC-SHA256", position = 3)
     private String uploadUrl;
 
-    @ApiModelProperty(value = "上传请求方式", example = "POST", position = 4)
+    @ApiModelProperty(value = "Upload request method", example = "POST", position = 4)
     private String uploadRequestMethod;
 }

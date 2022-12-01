@@ -6,7 +6,7 @@ import lombok.Data;
 public class PausedUserHistoryRo {
 
     /**
-     * 冷静期天数.
+     * Days of cooling off period
      */
     private int limitDays;
 

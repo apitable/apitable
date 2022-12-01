@@ -30,7 +30,7 @@
 | \ | watch | After the client is loaded, a socket will be allocated to connect to the co-server |
 | USER_CHANGES | sendUserChanges | The user generates a change request and sends it to the collaborative server |
 | SWITCH_DATASHEET | switchDatasheet | User switches from one sheet (which may not exist) to another sheet |
-| ACTIVATE_COLLABORATOR | Activate collaborators | Display user avatar in the interface |
+| ACTIVATE_COLLABORATORS | Activate collaborators | Display user avatar in the interface |
 | DEACTIVATE_COLLABORATOR | Deactivate collaborators | Hide user avatars, users will automatically deactivate collaborators when closing the page |
 | ENGAGEMENT_CURSOR | sendCursor | When the user clicks on a cell, the active cell cursor is sent to the collaborative server |
 | \ | unwatch | Client disconnects from companion |
@@ -42,6 +42,6 @@
 |-------------------|----------------------------|- -----------------------------------------|
 | NEW_CHANGES | handleNewChanges | Change requests made by other users in the room |
 | ENGAGEMENT_CURSOR | handleCursor | Other users in the room, the active cell cursor changes |
-| ACTIVATE_COLLABORATOR | handleUserEnter | New collaborator activated |
+| ACTIVATE_COLLABORATORS | handleUserEnter | New collaborator activated |
 | DEACTIVATE_COLLABORATOR | handleUserLeave | A collaborator has left |
 | SWITCH_DATASHEET | handleUserSwitchDatasheet | A user switched to another sheet, but did not leave the room |

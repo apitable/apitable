@@ -120,7 +120,7 @@ public class SocialWeComUserStrategey extends AbstractCreateSocialUser {
                         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
                         // Shence burial site - registration
                         Long finalBindUserId = bindUserId;
-                        String scene = "企业微信";
+                        String scene = "Wecom";
                         TaskManager.me().execute(() -> sensorsService.track(finalBindUserId, TrackEventType.REGISTER, scene, origin));
                     }
                     else {

@@ -95,7 +95,7 @@ public class SensorsServiceImpl implements SensorsService {
     @Override
     public void eventTrack(Long userId, TrackEventType eventType, Map<String, Object> properties, ClientOriginInfo originInfo) {
         if (dataTracker == null) {
-            log.info("该环境关闭神策日志记录");
+            log.info("Sensors logging is turned off for this environment");
             return;
         }
         String distinctId;
@@ -134,7 +134,7 @@ public class SensorsServiceImpl implements SensorsService {
                 return id.toString();
             }
             catch (URISyntaxException e) {
-                log.info("解析cookie获取匿名ID失败");
+                log.info("Failed to parse cookie to obtain anonymous ID");
                 e.printStackTrace();
             }
         }

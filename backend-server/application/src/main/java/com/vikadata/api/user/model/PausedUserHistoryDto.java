@@ -11,19 +11,10 @@ import lombok.Data;
 @Data
 public class PausedUserHistoryDto {
 
-    /**
-     * 用户ID
-     */
     private Long userId;
 
-    /**
-     * 用户昵称
-     */
     private String nickName;
 
-    /**
-     * 创建时间
-     */
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;

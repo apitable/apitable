@@ -100,7 +100,7 @@ public class AssetController {
 
     @GetResource(name = "Paging query pictures that need manual review", path = "/readReviews", requiredLogin = false, requiredPermission = false)
     @ApiOperation(value = "Paging query pictures that need manual review", notes = "Paging query pictures that need manual review")
-    @ApiImplicitParam(name = PAGE_PARAM, value = "分页参数，说明看接口描述", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
+    @ApiImplicitParam(name = PAGE_PARAM, value = "Page params", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_SIMPLE_EXAMPLE)
     @SuppressWarnings("rawtypes")
     public ResponseData<PageInfo<AssetsAuditVo>> readReviews(@PageObjectParam Page page) {
         String auditorUserId = SessionContext.getDingtalkUserId();

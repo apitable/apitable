@@ -68,7 +68,7 @@ public class SocialDingTalkUserStrategey extends AbstractCreateSocialUser {
             ClientOriginInfo origin = InformationUtil.getClientOriginInfo(false, true);
             // Shence burial site - registration
             Long finalUserId = userId;
-            String scene = "钉钉";
+            String scene = "DingTalk";
             TaskManager.me().execute(() -> sensorsService.track(finalUserId, TrackEventType.REGISTER, scene, origin));
         }
         if (!iUserLinkService.checkUserLinkExists(userId, unionId, openId)) {

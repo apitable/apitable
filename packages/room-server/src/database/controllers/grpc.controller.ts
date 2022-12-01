@@ -72,7 +72,7 @@ export class GrpcController {
   @GrpcMethod('RoomServingService', 'getActiveCollaborators')
   async getActiveCollaborators(data: WatchRoomRo): Promise<GetActiveCollaboratorsVo> {
     try {
-      const result = await this.grpcSocketService.getActiveCollaborators(data as any, data.spaceId || '', data.socketIds || []);
+      const result = await this.grpcSocketService.getActiveCollaborators(data.spaceId || '', data.socketIds || []);
       return ApiResponse.success(result);
     } catch (error) {
       return this.grpcSocketService.errorCatch(error, data);

@@ -680,19 +680,6 @@ export class RoomService {
    * Activate the collaborator. After calling this method, 
    * the avatar of the current user will be displayed on the interface of all collaborators who open this table
    */
-  handleActiveCollaborator(data: ICollaborator) {
-    console.log('active collaborator', data);
-    const collaEngine = this.getCollaEngine();
-    if (!collaEngine) {
-      return;
-    }
-    this.store.dispatch(StoreActions.activeCollaborator(data, this.roomId, collaEngine.resourceType));
-  }
-
-  /**
-   * Activate the collaborator. After calling this method, 
-   * the avatar of the current user will be displayed on the interface of all collaborators who open this table
-   */
   handleActiveCollaborators(data: { collaborators: ICollaborator[] }) {
     console.log('active collaborators', data);
     const collaEngine = this.getCollaEngine();
@@ -804,10 +791,6 @@ export class RoomService {
 
     this.io.on<IEngagementCursorData & { datasheetId: string }>(BroadcastTypes.ENGAGEMENT_CURSOR, (data) => {
       this.handleCursor(data);
-    });
-
-    this.io.on<ICollaborator>(BroadcastTypes.ACTIVATE_COLLABORATOR, data => {
-      this.handleActiveCollaborator(data);
     });
 
     this.io.on<{ collaborators: ICollaborator[] }>(BroadcastTypes.ACTIVATE_COLLABORATORS, data => {

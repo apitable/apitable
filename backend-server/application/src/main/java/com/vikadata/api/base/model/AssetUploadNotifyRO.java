@@ -19,7 +19,7 @@ public class AssetUploadNotifyRO {
     @NotNull(message = "Type cannot be null")
     private Integer type;
 
-    @ApiModelProperty(value = "资源名列表", example = "[\"spc10/2019/12/10/159\", \"spc10/2019/12/10/168\"]", position = 2)
+    @ApiModelProperty(value = "List of resource names", example = "[\"spc10/2019/12/10/159\", \"spc10/2019/12/10/168\"]", position = 2)
     private List<String> resourceKeys;
 
 }
