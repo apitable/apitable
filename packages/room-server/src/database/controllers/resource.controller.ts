@@ -32,9 +32,15 @@ export class ResourceController {
 
   @Get(['resources/:resourceId/changesets', 'resource/:resourceId/changesets'])
   async getChangesetList(
+    @Headers('cookie') cookie: string, 
     @Param('resourceId') resourceId: string,
     @Query() query: { revisions: string | number[]; resourceType: ResourceType },
   ): Promise<ChangesetView[]> {
+    // check if the user belongs to this space
+    const { userId } = await this.userService.getMe({ cookie });
+    await this.nodeService.checkUserForNode(userId, resourceId);
+    // check the user has the privileges of the node
+    await this.nodeService.checkNodePermission(resourceId, { cookie });
     return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.revisions);
   }
 
