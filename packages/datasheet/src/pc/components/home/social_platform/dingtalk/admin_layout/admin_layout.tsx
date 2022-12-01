@@ -97,7 +97,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
   const colors = useThemeColors();
   const { data, config, onChange } = props;
   const { tenantKey, tenantName, avatar, spaces } = data;
-  const { adminTitle, adminDesc, helpLink } = config;
+  const { adminTitle, adminDesc } = config;
 
   const handleSubmit = (spaceId, mainAdminUserName, values) => {
     if (values.length < 0) return;
