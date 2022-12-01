@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { Avatar, AvatarSize, AvatarType, Modal } from 'pc/components/common';
+import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { FC } from 'react';
 import BronzeImg from 'static/icon/space/space_img_bronze.png';
 import GradeEnterpriseImg from 'static/icon/space/space_img_enterprise.png';
@@ -202,7 +203,16 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
           <div className={styles.headerRight}>
             <LinkButton
               underline={false}
-              href={window.location.origin + Settings.integration_dingtalk_help_url.value}
+              onClick={() => {
+                if (window.location.href.includes('dingtalk')) {
+                  navigationToUrl(Settings.integration_dingtalk_help_url.value, { clearQuery: true });
+                  return;
+                }
+                if (window.location.href.includes('feishu')) {
+                  navigationToUrl(Settings.integration_feishu_help_url.value, { clearQuery: true });
+                  return;
+                }
+              }}
               target='_blank'
               color={colors.defaultBg}
               className={styles.helper}
