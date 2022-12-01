@@ -80,7 +80,7 @@ export interface IAdminData {
   avatar: string;
   tenantKey: string;
   tenantName: string;
-  spaces: ISpace[]
+  spaces: ISpace[];
 }
 
 interface IAdminLayoutProps {
@@ -119,7 +119,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
   };
 
   const onClick = (spaceId, mainAdminUserName, mainAdminUserId) => {
-    axios.defaults.headers['X-Space-Id'] =spaceId;
+    axios.defaults.headers['X-Space-Id'] = spaceId;
     expandUnitModal({
       source: SelectUnitSource.Admin,
       onSubmit: values => handleSubmit(spaceId, mainAdminUserName, values),
@@ -138,7 +138,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
       render: (value, record) =>
         (<span style={{ display: 'flex' }}>
           <Avatar src={record.spaceLogo} size={AvatarSize.Size20} id={record.spaceId} title={value} type={AvatarType.Space} />
-          <span style={{ marginLeft:'4px' }}>{value}</span>
+          <span style={{ marginLeft: '4px' }}>{value}</span>
         </span>)
     },
     {
@@ -155,7 +155,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
         return (
           <span className={styles.levelWrapper}>
             <span className={styles.level}>
-              <Image src={LevelConfig[value.toLowerCase()]?.img} width={24} height={24}/>
+              <Image src={LevelConfig[value.toLowerCase()]?.img} width={24} height={24} />
             </span>
             {LevelConfig[value.toLowerCase()]?.text}
           </span>
@@ -177,7 +177,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
           <div style={{ display: 'flex' }}>
             <LinkButton
               underline={false}
-              style={{ marginRight:'8px' }}
+              style={{ marginRight: '8px' }}
               onClick={() => onClick(record.spaceId, record.mainAdminUserName, record?.mainAdminUserId)}
             >
               {t(Strings.change_main_admin)}
@@ -185,7 +185,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
             <LinkButton
               underline={false}
               href={window.location.origin + `/space/${record.spaceId}/workbench`}
-              target="_blank"
+              target='_blank'
             >
               {t(Strings.entry_space)}
             </LinkButton>
@@ -203,7 +203,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
             <LinkButton
               underline={false}
               href={window.location.origin + Settings.integration_dingtalk_help_url.value}
-              target="_blank"
+              target='_blank'
               color={colors.defaultBg}
               className={styles.helper}
             >
@@ -217,9 +217,9 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
             />
             <Typography
               className={styles.name}
-              variant="body2"
+              variant='body2'
               color={colors.thirdLevelText}
-              align="center"
+              align='center'
             >
               {tenantName}
             </Typography>
