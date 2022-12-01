@@ -10,22 +10,20 @@ import javax.annotation.Resource;
 import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.shared.listener.event.NodeShareDisableEvent;
-import com.vikadata.api.workspace.dto.NodeShareDTO;
-import com.vikadata.api.workspace.ro.NodeShareDisableNotifyRo;
-import com.vikadata.api.workspace.vo.BaseNodeInfo;
 import com.vikadata.api.base.service.RestTemplateService;
+import com.vikadata.api.shared.listener.event.NodeShareDisableEvent;
+import com.vikadata.api.shared.util.MultiValueMapUtils;
+import com.vikadata.api.workspace.dto.NodeShareDTO;
+import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.workspace.mapper.NodeShareSettingMapper;
+import com.vikadata.api.workspace.ro.NodeShareDisableNotifyRo;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.shared.util.MultiValueMapUtils;
-import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.workspace.vo.BaseNodeInfo;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import static com.vikadata.api.shared.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_BEAN_NAME;
 
 /**
  * <p>
@@ -51,7 +49,7 @@ public class NodeShareDisableListener implements ApplicationListener<NodeShareDi
     private RestTemplateService restTemplateService;
 
     @Override
-    @Async(DEFAULT_EXECUTOR_BEAN_NAME)
+    @Async
     public void onApplicationEvent(NodeShareDisableEvent event) {
         List<String> nodeIds = event.getNodeIds();
         List<NodeShareDTO> shareDTOList = nodeShareSettingMapper.selectDtoByNodeIds(nodeIds);

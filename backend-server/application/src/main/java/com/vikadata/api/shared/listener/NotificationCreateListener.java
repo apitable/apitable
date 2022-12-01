@@ -13,20 +13,18 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.starter.socketio.core.SocketClientTemplate;
-import com.vikadata.api.shared.component.notification.INotificationFactory;
-import com.vikadata.api.shared.component.notification.EventType;
-import com.vikadata.api.shared.listener.event.NotificationCreateEvent;
 import com.vikadata.api.player.dto.NotificationModelDTO;
-import com.vikadata.api.player.vo.NotificationDetailVo;
 import com.vikadata.api.player.service.IPlayerNotificationService;
+import com.vikadata.api.player.vo.NotificationDetailVo;
+import com.vikadata.api.shared.component.notification.EventType;
+import com.vikadata.api.shared.component.notification.INotificationFactory;
+import com.vikadata.api.shared.listener.event.NotificationCreateEvent;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.entity.PlayerNotificationEntity;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import static com.vikadata.api.shared.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_BEAN_NAME;
 
 /**
  * <p>
@@ -51,7 +49,7 @@ public class NotificationCreateListener implements ApplicationListener<Notificat
     @Resource
     private INotificationFactory notificationFactory;
 
-    @Async(DEFAULT_EXECUTOR_BEAN_NAME)
+    @Async
     @Override
     public void onApplicationEvent(NotificationCreateEvent event) {
         List<PlayerNotificationEntity> entityList = event.getEntityList();

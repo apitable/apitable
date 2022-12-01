@@ -10,9 +10,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
-import com.vikadata.api.shared.component.adapter.MultiDatasourceAdapterTemplate;
 import com.vikadata.api.organization.model.UnitInfoDTO;
 import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.shared.component.adapter.MultiDatasourceAdapterTemplate;
 import com.vikadata.api.shared.constants.AuditConstants;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
@@ -27,7 +27,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import static com.vikadata.api.shared.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_BEAN_NAME;
 import static com.vikadata.api.shared.constants.AuditConstants.NODE_DELETED_PATH;
 import static com.vikadata.api.shared.constants.AuditConstants.NODE_ID;
 import static com.vikadata.api.shared.constants.AuditConstants.NODE_NAME;
@@ -73,7 +72,7 @@ public class AuditSpaceListener {
     @Resource
     private MultiDatasourceAdapterTemplate multiDatasourceAdapterTemplate;
 
-    @Async(DEFAULT_EXECUTOR_BEAN_NAME)
+    @Async
     @TransactionalEventListener(fallbackExecution = true, classes = AuditSpaceEvent.class)
     public void onApplicationEvent(AuditSpaceEvent event) {
         AuditSpaceArg arg = event.getArg();

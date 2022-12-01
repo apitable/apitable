@@ -8,7 +8,7 @@ import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.stereotype.Component;
 
-import static com.vikadata.api.shared.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_BEAN_NAME;
+import static org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration.APPLICATION_TASK_EXECUTOR_BEAN_NAME;
 
 /**
  * <p>
@@ -26,6 +26,6 @@ public class TaskManager {
     }
 
     public void execute(Runnable runnable) {
-        SpringContextHolder.getBean(DEFAULT_EXECUTOR_BEAN_NAME, Executor.class).execute(runnable);
+        SpringContextHolder.getBean(APPLICATION_TASK_EXECUTOR_BEAN_NAME, Executor.class).execute(runnable);
     }
 }

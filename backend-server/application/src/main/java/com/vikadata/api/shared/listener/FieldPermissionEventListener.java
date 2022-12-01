@@ -23,6 +23,7 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vikadata.api.base.service.RestTemplateService;
 import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder;
 import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder.ControlId;
 import com.vikadata.api.enterprise.control.infrastructure.role.ControlRole;
@@ -30,32 +31,30 @@ import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManage
 import com.vikadata.api.enterprise.control.infrastructure.role.FieldEditorRole;
 import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Field;
 import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
-import com.vikadata.api.organization.enums.UnitType;
-import com.vikadata.api.shared.listener.event.FieldPermissionEvent;
-import com.vikadata.api.shared.listener.event.FieldPermissionEvent.Arg;
-import com.vikadata.api.workspace.ro.FieldPermissionChangeNotifyRo;
-import com.vikadata.api.workspace.ro.FieldPermissionChangeNotifyRo.ChangeObject;
-import com.vikadata.api.workspace.vo.FieldRoleSetting;
-import com.vikadata.api.workspace.vo.FieldPermission;
-import com.vikadata.api.workspace.vo.NodeRoleMemberVo;
-import com.vikadata.api.base.service.RestTemplateService;
 import com.vikadata.api.enterprise.control.service.IControlRoleService;
 import com.vikadata.api.enterprise.control.service.IControlService;
-import com.vikadata.api.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.organization.enums.UnitType;
 import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.organization.model.MemberBaseInfoDTO;
 import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.shared.listener.event.FieldPermissionEvent;
+import com.vikadata.api.shared.listener.event.FieldPermissionEvent.Arg;
+import com.vikadata.api.shared.util.MultiValueMapUtils;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.workspace.model.ControlRoleUnitDTO;
+import com.vikadata.api.workspace.ro.FieldPermissionChangeNotifyRo;
+import com.vikadata.api.workspace.ro.FieldPermissionChangeNotifyRo.ChangeObject;
 import com.vikadata.api.workspace.service.INodeRoleService;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.api.shared.util.MultiValueMapUtils;
+import com.vikadata.api.workspace.vo.FieldPermission;
+import com.vikadata.api.workspace.vo.FieldRoleSetting;
+import com.vikadata.api.workspace.vo.NodeRoleMemberVo;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import static com.vikadata.api.shared.config.AsyncTaskExecutorConfig.DEFAULT_EXECUTOR_BEAN_NAME;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -98,7 +97,7 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
     private RestTemplateService restTemplateService;
 
     @Override
-    @Async(DEFAULT_EXECUTOR_BEAN_NAME)
+    @Async
     public void onApplicationEvent(FieldPermissionEvent event) {
         Arg arg = event.getArg();
         FieldPermissionChangeNotifyRo notifyRo = BeanUtil.copyProperties(arg, FieldPermissionChangeNotifyRo.class);
@@ -146,7 +145,7 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 // load member information
                 List<MemberBaseInfoDTO> members = memberMapper.selectBaseInfoDTOByIds(memberIds);
                 Map<Long, String> memberIdToUuidMap = members.stream().filter(info -> info.getUuid() != null)
-                    .collect(Collectors.toMap(MemberBaseInfoDTO::getId, MemberBaseInfoDTO::getUuid));
+                        .collect(Collectors.toMap(MemberBaseInfoDTO::getId, MemberBaseInfoDTO::getUuid));
                 // no active members exist just end
                 if (memberIdToUuidMap.isEmpty()) {
                     return;
@@ -207,19 +206,19 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
         String nodeId = iNodeRoleService.getClosestEnabledRoleNode(arg.getDatasheetId());
         // check all members of a node
         List<NodeRoleMemberVo> roleMembers =
-            nodeId == null ? iNodeRoleService.getNodeRoleMembers(spaceId)
-                : iNodeRoleService.getNodeRoleMembers(spaceId, nodeId);
+                nodeId == null ? iNodeRoleService.getNodeRoleMembers(spaceId)
+                        : iNodeRoleService.getNodeRoleMembers(spaceId, nodeId);
         // With the node manageable group, take out the corresponding user uuid
         Map<Boolean, List<String>> isManagerToUuidsMap = roleMembers.stream()
-            .filter(vo -> vo.getUuid() != null && (vo.getIsAdmin() || !vo.getUuid().equals(arg.getUuid())))
-            .collect(Collectors.groupingBy(vo -> {
-                    if (BooleanUtil.isFalse(arg.getIncludeExtend())) {
-                        return vo.getIsAdmin().equals(Boolean.TRUE);
-                    }
-                    return vo.getIsAdmin().equals(Boolean.TRUE) || ControlRoleManager.parseNodeRole(vo.getRole())
-                            .isGreaterThan(ControlRoleManager.parseNodeRole(Node.READER));
-                },
-                Collectors.mapping(NodeRoleMemberVo::getUuid, Collectors.toList())));
+                .filter(vo -> vo.getUuid() != null && (vo.getIsAdmin() || !vo.getUuid().equals(arg.getUuid())))
+                .collect(Collectors.groupingBy(vo -> {
+                            if (BooleanUtil.isFalse(arg.getIncludeExtend())) {
+                                return vo.getIsAdmin().equals(Boolean.TRUE);
+                            }
+                            return vo.getIsAdmin().equals(Boolean.TRUE) || ControlRoleManager.parseNodeRole(vo.getRole())
+                                    .isGreaterThan(ControlRoleManager.parseNodeRole(Node.READER));
+                        },
+                        Collectors.mapping(NodeRoleMemberVo::getUuid, Collectors.toList())));
 
         List<ChangeObject> changes = new ArrayList<>(isManagerToUuidsMap.size());
         // If include Extend is false: Broadcast the column editable permission set to workbench administrators and column permission enablers.
@@ -251,9 +250,9 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
         }
         // Filter org units with no changes and administrators
         Map<String, List<ControlRoleUnitDTO>> fieldRoleControlMap = controlRoles.stream()
-            .filter(dto -> !changedUnitIds.contains(dto.getUnitId()) && !admins.contains(dto.getUnitRefId()))
-            .sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(t.getRole()).getBits()).reversed())
-            .collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
+                .filter(dto -> !changedUnitIds.contains(dto.getUnitId()) && !admins.contains(dto.getUnitRefId()))
+                .sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(t.getRole()).getBits()).reversed())
+                .collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
         if (fieldRoleControlMap.isEmpty()) {
             return memberRoleMap;
         }

@@ -1,7 +1,6 @@
 package com.vikadata.api.shared.config;
 
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,22 +8,15 @@ import org.slf4j.MDC;
 
 import com.vikadata.api.shared.holder.UserHolder;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.core.spring.task.VisibleThreadPoolTaskExecutor;
 import com.vikadata.social.feishu.FeishuConfigStorageHolder;
 
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
+import org.springframework.boot.task.TaskExecutorCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor;
-import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
+import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -36,31 +28,25 @@ import org.springframework.web.context.request.RequestContextHolder;
  * @author Shawn Deng
  */
 @Configuration(proxyBeanMethods = false)
-@EnableAsync
 @Slf4j
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
+@EnableAsync
+public class AsyncTaskExecutorConfig {
 
-    public static final String DEFAULT_EXECUTOR_BEAN_NAME =
-            AsyncAnnotationBeanPostProcessor.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
-
-    private final BeanFactory beanFactory;
-
-    public AsyncTaskExecutorConfig(BeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
+    @Bean
+    TaskExecutorCustomizer taskExecutorCustomizer() {
+        return executor -> {
+            executor.setCorePoolSize(4);
+            executor.setMaxPoolSize(50);
+            executor.setQueueCapacity(500);
+            executor.setKeepAliveSeconds(3000);
+            executor.setThreadNamePrefix("thread-task-");
+            executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        };
     }
 
-    @Override
-    @Bean(name = DEFAULT_EXECUTOR_BEAN_NAME)
-    public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor executor = new VisibleThreadPoolTaskExecutor();
-        executor.setCorePoolSize(4);
-        executor.setMaxPoolSize(50);
-        executor.setQueueCapacity(500);
-        executor.setKeepAliveSeconds(3000);
-        executor.setThreadNamePrefix("vika-task-");
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-        executor.setTaskDecorator(runnable -> {
+    @Bean
+    TaskDecorator taskDecorator() {
+        return runnable -> {
             RequestAttributes context = RequestContextHolder.getRequestAttributes();
             LocaleContext localeContext = LocaleContextHolder.getLocaleContext();
             Map<String, String> mdcContext = MDC.getCopyOfContextMap();
@@ -89,19 +75,6 @@ public class AsyncTaskExecutorConfig extends AsyncConfigurerSupport {
                     UserHolder.remove();
                 }
             };
-        });
-        executor.initialize();
-        return new LazyTraceExecutor(beanFactory, executor);
-    }
-
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) -> {
-            if (!(ex instanceof BusinessException)) {
-                log.error("Annotate asynchronous task exceptions and clean up asynchronous thread variables.", ex);
-            }
-            FeishuConfigStorageHolder.remove();
-            UserHolder.remove();
         };
     }
 }
