@@ -89,7 +89,7 @@ function initAxios(store) {
       data,
       message = 'Error',
     } = response.data;
-    const IGNORE_PATH_REG = /^\/(share|template|notify|embed)/;
+    const IGNORE_PATH_REG = /^\/(share|template|notify)/;
     if (
       success && data && response.config.url?.startsWith('/nest/v1/') &&
       !IGNORE_PATH_REG.test(location.pathname)
@@ -124,7 +124,9 @@ function initAxios(store) {
             content: t(Strings.login_status_expired_content),
             okText: t(Strings.login_status_expired_button),
             onOk: () => {
-              const reference = (new URLSearchParams(window.location.search)).get('reference')?.toString();
+              const IS_EMBED_LINK_REG = /^\/embed/;
+              const reference = !IS_EMBED_LINK_REG.test(location.pathname) ? 
+                (new URLSearchParams(window.location.search)).get('reference')?.toString() : window.location.href;
               store.dispatch(StoreActions.setUserMe(null));
               store.dispatch(StoreActions.setIsLogin(false));
               Router.redirect(Navigation.LOGIN, { query: { reference } });

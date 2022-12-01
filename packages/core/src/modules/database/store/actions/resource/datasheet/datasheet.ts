@@ -1,6 +1,5 @@
 import {
   fetchDatasheetPack, fetchForeignDatasheetPack, fetchShareDatasheetPack, fetchShareForeignDatasheetPack, fetchTemplateDatasheetPack,
-  fetchEmbedDatasheetPack
 } from '../../../../api/datasheet_api';
 import { StatusCode } from 'config';
 import { Strings, t } from '../../../../../../exports/i18n';
@@ -156,16 +155,13 @@ interface IFetchDatasheetSuccess {
   getState: () => IReduxState;
 }
 
-export const fetchDatasheetApi = (datasheetId: string, shareId?: string, templateId?: string, embedId?: string, recordIds?: string | string[]) => {
+export const fetchDatasheetApi = (datasheetId: string, shareId?: string, templateId?: string, recordIds?: string | string[]) => {
   let requestMethod = fetchDatasheetPack;
   if (shareId) {
     requestMethod = () => fetchShareDatasheetPack(shareId, datasheetId);
   }
   if (templateId) {
     requestMethod = fetchTemplateDatasheetPack;
-  }
-  if(embedId) {
-    requestMethod = () => fetchEmbedDatasheetPack(embedId, datasheetId);
   }
   return requestMethod(datasheetId, recordIds);
 };
@@ -180,7 +176,7 @@ export function fetchDatasheet(
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
     const datasheet = getDatasheet(state, datasheetId);
-    const { shareId, templateId, embedId } = state.pageParams;
+    const { shareId, templateId } = state.pageParams;
     const { recordIds } = extra || {};
     const datasheetLoading = getDatasheetLoading(state, datasheetId);
 
@@ -190,7 +186,7 @@ export function fetchDatasheet(
 
     if (!datasheet || datasheet.isPartOfData || overWrite) {
       dispatch(requestDatasheetPack(datasheetId));
-      return fetchDatasheetApi(datasheetId, shareId, templateId, embedId, recordIds).then(response => {
+      return fetchDatasheetApi(datasheetId, shareId, templateId, recordIds).then(response => {
         if (!response.data.success && state.catalogTree.treeNodesMap[datasheetId]) {
           dispatch(deleteNode({ nodeId: datasheetId, parentId: state.catalogTree.treeNodesMap[datasheetId]!.parentId }));
         }

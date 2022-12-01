@@ -1,7 +1,7 @@
 import { Api, StoreActions } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-// import { memberStash } from '../../../modules/space/member_stash/member_stash';
+import { memberStash } from '../../../modules/space/member_stash/member_stash';
 
 let embedId: string | undefined;
 
@@ -28,5 +28,5 @@ store.subscribe(function embedIdChange() {
     }
   });
 
-  // memberStash.loadMemberList(embedId);
+  memberStash.loadMemberList(embedId);
 });

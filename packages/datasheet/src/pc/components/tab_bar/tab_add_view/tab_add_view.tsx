@@ -43,6 +43,7 @@ export const TabAddView: React.FC<ITabAddView> = props => {
     }, [ref],
   );
   const { info } = useSelector(state => state.user);
+  const emmbedId = useSelector(state => state.pageParams.embedId);
   const {
     panelVisible,
     panelInfo,
@@ -133,7 +134,6 @@ export const TabAddView: React.FC<ITabAddView> = props => {
         </span>
       </div>
     );
-
     if (!disabled) {
       return (
         <div className={styles.addViewBtnWrap}>{content}</div>
@@ -156,7 +156,7 @@ export const TabAddView: React.FC<ITabAddView> = props => {
 
   return (
     <>
-      <RcTrigger
+      { !emmbedId && <RcTrigger
         action={permissions.viewCreatable && !disabled ? ['click'] : ['']}
         popup={
           <ViewIntroduceList
@@ -179,7 +179,7 @@ export const TabAddView: React.FC<ITabAddView> = props => {
         mask
       >
         {renderBtn()}
-      </RcTrigger>
+      </RcTrigger> }
       {
         panelVisible && (
           <SearchPanel
