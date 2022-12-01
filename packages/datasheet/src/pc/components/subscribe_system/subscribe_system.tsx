@@ -3,9 +3,9 @@ import { Api, ApiInterface, ConfigConstant, integrateCdnHost, Navigation, Settin
 import { useUpdateEffect } from 'ahooks';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { Message, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
@@ -116,6 +116,16 @@ export const SubScribeSystem = () => {
         return;
       }
 
+      const isIncorrectRenewalProduct = () => {
+        if (getPageType() !== SubscribePageType.Renewal) {
+          return false;
+        }
+        if (levelInfo.level === paySystemConfig.SILVER.level && subscription?.maxSeats !== 2 && subscription?.maxSeats !== 100) {
+          return true;
+        }
+        return levelInfo.level === paySystemConfig.GOLD.level && subscription?.maxSeats !== 200;
+      };
+
       /**
        * Data structure of priceInfoCache.current:
        * {
@@ -131,12 +141,7 @@ export const SubScribeSystem = () => {
       const seatList: number[] = [];
       // const monthPrice: IQueryOrderPriceResponse[] = [];
       for (const v of data) {
-        if (
-          getPageType() === SubscribePageType.Renewal &&
-          subscription?.maxSeats !== 2 &&
-          subscription?.maxSeats !== 100 &&
-          subscription?.maxSeats !== 200
-        ) {
+        if (isIncorrectRenewalProduct()) {
           /**
            * The product specifications have been changed so that each product only corresponds to one type of seat,
            * so the logic here is that if the current user's space station seat is different from

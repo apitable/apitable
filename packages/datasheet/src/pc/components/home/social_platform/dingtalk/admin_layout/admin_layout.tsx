@@ -1,5 +1,5 @@
 import { LinkButton, Typography, useThemeColors } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { Settings, Strings, t } from '@apitable/core';
 import { Table } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -202,7 +202,7 @@ export const AdminLayout: FC<IAdminLayoutProps> = (props) => {
           <div className={styles.headerRight}>
             <LinkButton
               underline={false}
-              href={window.location.origin + helpLink}
+              href={window.location.origin + Settings.integration_dingtalk_help_url.value}
               target="_blank"
               color={colors.defaultBg}
               className={styles.helper}
