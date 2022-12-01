@@ -105,7 +105,7 @@ export class RestService {
       },
       error => {
         // Request failed, may be network issue or HttpException
-        this.logger.error('Request failed, may be network issue or server issue');
+        this.logger.error('Request failed, may be network issue or server issue.');
         this.logger.error(error);
         throw new ServerException(CommonException.SERVER_ERROR);
       },
