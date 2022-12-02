@@ -48,10 +48,6 @@ springfox:
   documentation:
     enabled: ${SPRINGFOX_ENABLED:false}
 
-decorator:
-  datasource:
-    enabled: ${DECORATOR_ENABLED:false}
-
 grpc:
   server:
     port: ${DINGTALK_GRPC_PORT:9092}

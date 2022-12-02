@@ -423,7 +423,3 @@ grpc:
 springfox:
   documentation:
     enabled: ${SPRINGFOX_ENABLED:false}
-
-decorator:
-  datasource:
-    enabled: ${DECORATOR_ENABLED:false}

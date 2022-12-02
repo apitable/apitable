@@ -14,7 +14,7 @@ dependencies {
   implementation project(':shared:starters:social-dingtalk')
   
   implementation rootProject.ext.dependencies['hutool']
-  implementation rootProject.ext.dependencies['p6spy-starter']
+  implementation rootProject.ext.dependencies['p6spy']
   implementation rootProject.ext.dependencies['okhttp3']
   implementation rootProject.ext.dependencies['swagger2']
   implementation rootProject.ext.dependencies['spring-retry']
