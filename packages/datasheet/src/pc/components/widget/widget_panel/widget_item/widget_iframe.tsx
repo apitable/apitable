@@ -286,7 +286,7 @@ export const WidgetIframeBase: React.ForwardRefRenderFunction<IWidgetLoaderRefs,
       }}
       ref={iframeRef}
       onLoad={() => {
-        setIframeOnload(true);
+        setTimeout(() => setIframeOnload(true), 2000);
       }}
       src={`${WIDGET_IFRAME_PATH}/?widgetId=${widgetId}&lang=${getLanguage()}&isSocialWecom=${isWecom}&runtimeEnv=${runtimeEnv}`} />
   </>;

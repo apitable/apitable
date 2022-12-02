@@ -104,7 +104,7 @@ export class GrpcSocketService implements OnApplicationBootstrap, OnApplicationS
       // Filter exception that isn't necessary to be reported.
       message.cookie = undefined;
       message.token = undefined;
-      Sentry.captureException(e, { extra: { message } });
+      Sentry.captureException(e, { extra: { message }});
     }
     return ApiResponse.error(errMsg, statusCode);
   }

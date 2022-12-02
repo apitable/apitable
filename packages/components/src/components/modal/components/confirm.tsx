@@ -110,6 +110,7 @@ export const confirm = (props: IModalFuncProps): IModalRef => {
           footer={CustomFooter}
           // closeIcon={null}
           closable={closable}
+          zIndex={1100}
           centered
           {...rest}
         >

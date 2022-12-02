@@ -1,15 +1,19 @@
+import add from 'date-fns/add';
 import differenceInDays from 'date-fns/differenceInDays';
+import format from 'date-fns/format';
 import isAfter from 'date-fns/isAfter';
 import isBefore from 'date-fns/isBefore';
-import min from 'date-fns/min';
+import isValid from 'date-fns/isValid';
 import max from 'date-fns/max';
-import add from 'date-fns/add';
-import format from 'date-fns/format';
+import min from 'date-fns/min';
 import subDays from 'date-fns/subDays';
+import { COUNT, Direction, FORMAT, FORMAT_MONTH, MONTHS } from './constants';
 import { ILevel, ILevelResult, IResizeFormat } from './interface';
-import { COUNT, MONTHS, FORMAT, FORMAT_MONTH, Direction } from './constants';
 
 const date2Day = (date: Date) => {
+  if (!isValid(date)) {
+    return new Date();
+  }
   return new Date(format(date, FORMAT));
 };
 
@@ -40,19 +44,19 @@ export const resizeFormat = (resizeData: IResizeFormat) => {
     if (!isWarning && isAfter(calcStartDate, endDate)) {
       startDate = endDate;
     } else if (
-    // The left stretch of abnormal records cannot be greater than the original start date
+      // The left stretch of abnormal records cannot be greater than the original start date
       !(isWarning && isAfter(calcStartDate, startDate))
     ) {
       startDate = calcStartDate;
-    } 
+    }
   }
   return { startDate, endDate };
 };
 
 /**
  * Get the number of days in the current month
- * @param year 
- * @param month 
+ * @param year
+ * @param month
  */
 export const daysInMonth = (year: number, month: number) => {
   const d = new Date(year, month - 1, 0);
@@ -61,10 +65,10 @@ export const daysInMonth = (year: number, month: number) => {
 
 /**
  * Get the week of the first day of the current month
- * @param year 
- * @param month 
+ * @param year
+ * @param month
  */
-export const firstDayOfMonth = (year: number, month:number) => {
+export const firstDayOfMonth = (year: number, month: number) => {
   const d = new Date(year, month - 1, 1);
   const day = d.getDay();
   return day === 0 ? 7 : day;
@@ -76,7 +80,7 @@ export const formatDate = (year: number, month: number, lang: string) => {
 
 /**
  * Get current calendar panel data
- * @param step 
+ * @param step
  */
 export const getPanelData = (step: number) => {
   const now = new Date();
@@ -93,7 +97,7 @@ export const getPanelData = (step: number) => {
   const data: { day: number, month: number }[] = [];
   let i = 1;
   const count = COUNT + (days + firstDay - 1 > COUNT ? 7 : 0);
-  while(count >= i) {
+  while (count >= i) {
     if (firstDay >= i + 1) {
       data.push({
         day: preDays - firstDay + i + 1,
@@ -122,7 +126,7 @@ export const getPanelData = (step: number) => {
 export const isMouseEvent = (event: MouseEvent | TouchEvent): event is MouseEvent => {
   return Boolean(
     ((event as MouseEvent).clientX || (event as MouseEvent).clientX === 0) &&
-      ((event as MouseEvent).clientY || (event as MouseEvent).clientY === 0),
+    ((event as MouseEvent).clientY || (event as MouseEvent).clientY === 0),
   );
 };
 
@@ -150,7 +154,7 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
       return task;
     });
   }
-  
+
   const rowTasks = updateTasks.filter(task =>
     (!isAfter(date2Day(task.startDate || task.endDate), endDate) && !isAfter(startDate, task.endDate || task.startDate)) ||
     // The start date is greater than the end date. Exception task processing
@@ -172,14 +176,14 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
       right: left + len,
       isStart: diffStart >= 0 || isWarning,
       isEmptyStart: !task.startDate,
-      isEnd: diffEnd >=0 || isWarning,
+      isEnd: diffEnd >= 0 || isWarning,
       isEmptyEnd: !task.endDate,
       warn: isWarning,
     };
   });
   const levels: ILevelResult[][] = [];
   let j: number;
-  for(let i = 0; i < rowTasks.length; i++) {
+  for (let i = 0; i < rowTasks.length; i++) {
     const task = rowTasks[i];
     for (j = 0; j < levels.length; j++) {
       const isOver = levels[j].some(seg =>
@@ -194,6 +198,6 @@ export const getLevels = ({ week, year, tasks, resizeMsg }: ILevel) => {
   return levels;
 };
 
-export const formatDayValue = (month, day, lang: 'en' | 'zh', ) => {
+export const formatDayValue = (month, day, lang: 'en' | 'zh',) => {
   return lang === 'zh' ? `${month}月${day}日` : `${MONTHS[month - 1]} ${day}`;
 };
