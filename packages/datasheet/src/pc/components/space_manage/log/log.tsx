@@ -1,7 +1,6 @@
 import {
   Api, ConfigConstant, DEFAULT_TIMEZONE, getLanguage, IMember, IReduxState, MemberType, Strings, SystemConfig, t, UnitItem,
 } from '@apitable/core';
-// import { DownloadOutlined } from '@apitable/icons';
 import { Audit } from '@apitable/core/src/config/system_config.interface';
 import { Button, IconButton } from '@apitable/components';
 import { ReloadOutlined, SearchOutlined } from '@apitable/icons';
@@ -211,7 +210,8 @@ const Log = (): JSX.Element => {
 
     if (res?.data?.success) {
       setTotal(res.data?.data?.total ?? 0);
-      setTableData(res.data?.data?.records?.map(record => ({
+      setTableData(res.data?.data?.records?.map((record, index) => ({
+        id: index,
         action: record?.action,
         createdAt: record?.createdAt ? dayjs(record.createdAt).tz(DEFAULT_TIMEZONE).format('YYYY-MM-DD HH:mm:ss') : '',
         operator: record?.operator || {},
@@ -219,7 +219,7 @@ const Log = (): JSX.Element => {
       })) || []);
     }
   }, { manual: true });
-
+  
   const auditTypeOptions = useMemo(() => auditTypeMapToList(SystemConfig.audit as any), []);
   const isWecomSpace = isSocialWecom(spaceInfo);
 
@@ -453,7 +453,7 @@ const Log = (): JSX.Element => {
           current: pagination.pageNum,
           total,
         }}
-        rowKey={(record: any) => `${record.createdAt}-${record.operator.memberId}`}
+        rowKey={(record: any) => `${record.createdAt}-${record.operator.memberId}-${record.id}`}
       />
     </div>
   );
