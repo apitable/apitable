@@ -29,7 +29,7 @@
             </otherwise>
         </choose>
         <if test="param.nodeIds != null and param.nodeIds.size() != 0">
-            AND JSON_EXTRACT(info, '$.nodeId') IN
+            AND info ->> '$.nodeId' IN
             <foreach item="item" index="index" collection="param.nodeIds" open="("
                      separator="," close=")">
                 #{item}
