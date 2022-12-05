@@ -58,6 +58,7 @@ export interface Tips {
     api_embed_link_id_not_exist:                          APIAddRowFailedWrongLengthOfValueClass;
     api_embed_link_limit:                                 APIAddRowFailedWrongLengthOfValueClass;
     api_embed_link_instance_limit:                        APIAddRowFailedWrongLengthOfValueClass;
+    api_param_embed_permission_type_error:                APIAddRowFailedWrongLengthOfValueClass;
     api_forbidden_because_of_not_in_space:                APIAddRowFailedWrongLengthOfValueClass;
     api_param_invalid_space_id_value:                     APIAddRowFailedWrongLengthOfValueClass;
     api_param_sort_field_not_exists:                      APIAddRowFailedWrongLengthOfValueClass;

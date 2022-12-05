@@ -248,6 +248,7 @@ export type StringKeysMapType = {
   'api_param_default_error': 'api_param_default_error',
   'api_param_email_field_type_error': 'api_param_email_field_type_error',
   'api_param_embed_link_id_not_empty': 'api_param_embed_link_id_not_empty',
+  'api_param_embed_permission_type_error': 'api_param_embed_permission_type_error',
   'api_param_form_btn_type_error': 'api_param_form_btn_type_error',
   'api_param_formula_error': 'api_param_formula_error',
   'api_param_history_btn_type_error': 'api_param_history_btn_type_error',

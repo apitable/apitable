@@ -707,7 +707,6 @@
         "and": {
             "zh_CN": "和",
             "en_US": "and",
-            "终端": "APP",
             "zh_HK": "和"
         },
         "andorra": {
@@ -1211,6 +1210,10 @@
         "api_param_embed_link_id_not_empty": {
             "zh_CN": "linkId 不能为空",
             "en_US": "linkId should not be empty"
+        },
+        "api_param_embed_permission_type_error": {
+            "zh_CN": "permissionType 必须是以下值之一: readOnly,publicEdit,privateEdit",
+            "en_US": "permissionType must be one of the following values: readOnly,publicEdit,privateEdit"
         },
         "api_param_form_btn_type_error": {
             "zh_CN": "formBtn 需要传入boolean类型",
@@ -1739,67 +1742,56 @@
         "app_launch_guide_text_1": {
             "zh_CN": "千人同时操作一张维格表，高效实时协同",
             "en_US": "Thousands of members operate one datasheet at the same time, efficient real-time collaboration",
-            "终端": "APP",
             "zh_HK": "千人同時操作一張維格表，高效實時協同"
         },
         "app_launch_guide_text_2": {
             "zh_CN": "动态数据仪表盘，实时关注重点数据",
             "en_US": "Dynamic data dashboard, focus on key data in real time",
-            "终端": "APP",
             "zh_HK": "動態數據儀錶盤，實時關注重點數據"
         },
         "app_launch_guide_text_3": {
             "zh_CN": "随需而变，全面适配不同场景需求",
             "en_US": "Change as needed, fully adapt to the needs of different scenarios",
-            "终端": "APP",
             "zh_HK": "隨需而變，全面適配不同場景需求"
         },
         "app_launch_guide_text_4": {
             "zh_CN": "多维视图任意变换，展示个性化数据",
             "en_US": "Switch multi-dimensional views at your will  to display personalized data",
-            "终端": "APP",
             "zh_HK": "多維視圖任意變換，展示個性化數據"
         },
         "app_launch_guide_title_1": {
             "zh_CN": "团队协作",
             "en_US": "Teamwork",
-            "终端": "APP",
             "zh_HK": "團隊協作"
         },
         "app_launch_guide_title_2": {
             "zh_CN": "数据可视化",
             "en_US": "Data visualization",
-            "终端": "APP",
             "zh_HK": "數據可視化"
         },
         "app_launch_guide_title_3": {
             "zh_CN": "海量模板",
             "en_US": "Massive templates",
-            "终端": "APP",
             "zh_HK": "海量模板"
         },
         "app_launch_guide_title_4": {
             "zh_CN": "丰富视图",
             "en_US": "Multiple Views",
-            "终端": "APP",
             "zh_HK": "豐富視圖"
         },
         "app_load_failed": {
             "zh_CN": "加载失败，请刷新后再试",
             "en_US": "Loading failed, please refresh and try again",
-            "终端": "APP",
             "zh_HK": "加載失敗，請刷新後再試"
         },
         "app_modal_content_policy": {
             "zh_CN": "感谢你使用维格表的服务，以下政策将帮助你了解维格表收集、使用、保存你的个人信息的情况，以及你所享有的相关权利。\\n请你查阅",
             "en_US": "Thank you for using our services, the following policies will help you understand the collection, usage, and storage of your personal information, and your related rights. \\nPlease check",
-            "终端": "APP",
             "zh_HK": "感謝你使用維格表的服務，以下政策將幫助你了解維格表收集、使用、保存你的個人信息的情況，以及你所享有的相關權利。 \\n請你查閱"
         },
         "app_modal_content_policy_suffix": {
             "zh_CN": "，点击同意开始接受我们的服务。",
             "en_US": "Click agree to start receiving our service.",
-            "终端": "APP",
             "zh_HK": "，點擊同意開始接受我們的服務。"
         },
         "app_opening": {
@@ -1810,13 +1802,11 @@
         "app_reload": {
             "zh_CN": "重新加载",
             "en_US": "Try loading again",
-            "终端": "APP",
             "zh_HK": "重新加載"
         },
         "app_timeout_to_refresh": {
             "zh_CN": "网络连接超时，请刷新后再试",
             "en_US": "The network connection timed out, please refresh and try again",
-            "终端": "APP",
             "zh_HK": "網絡連接超時，請刷新後再試"
         },
         "application_integration_information": {
@@ -2609,7 +2599,6 @@
         "back": {
             "zh_CN": "返回",
             "en_US": "Return",
-            "终端": "APP",
             "zh_HK": "返回"
         },
         "back_login": {
@@ -3776,7 +3765,6 @@
         "click_to_agree": {
             "zh_CN": "点击同意",
             "en_US": "Click to agree ",
-            "终端": "APP",
             "zh_HK": "點擊同意"
         },
         "click_to_compare_with_detail": {
@@ -4271,7 +4259,6 @@
         "confirm": {
             "zh_CN": "确定",
             "en_US": "Confirm",
-            "终端": "APP",
             "zh_HK": "確定"
         },
         "confirm_activate_space_tips": {
@@ -4287,7 +4274,6 @@
         "confirm_and_continue": {
             "zh_CN": "同意并继续",
             "en_US": "OK",
-            "终端": "APP",
             "zh_HK": "同意並繼續"
         },
         "confirm_cancel": {
@@ -5762,12 +5748,7 @@
         "dingtalk_single_record_member_mention_title": {
             "zh_CN": "🔔成员通知",
             "en_US": "🔔 You're mentioned in a record",
-            "zh_HK": "🔔成員通知",
-            "notifications": {
-                "social_templates copy": [
-                    "rec8zOy6kD7Xr"
-                ]
-            }
+            "zh_HK": "🔔成員通知"
         },
         "dingtalk_social_deactivate_tip": {
             "zh_CN": "如需停用应用，请前往「钉钉企业管理后台 > 工作台 > 维格表应用」进行操作",
@@ -5851,7 +5832,6 @@
         "disagree_and_exit": {
             "zh_CN": "不同意并退出应用",
             "en_US": "Cancel & Exit",
-            "终端": "APP",
             "zh_HK": "不同意並退出應用"
         },
         "disconnect_from_the_server": {
@@ -6137,7 +6117,6 @@
         "email_placeholder": {
             "zh_CN": "请输入邮箱",
             "en_US": "Enter email address",
-            "终端": "APP",
             "zh_HK": "請輸入郵箱"
         },
         "embed_failed": {
@@ -6341,7 +6320,6 @@
         },
         "enterprise": {
             "zh_CN": "企业级",
-            "废弃时间": 1668565922901,
             "en_US": "Enterprise",
             "zh_HK": "企業級"
         },
@@ -7501,7 +7479,6 @@
         },
         "field_permission_nums": {
             "zh_CN": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of field permissions to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的列權限使用數上限為 ${specification} 個，目前已開啟 ${usage} 個，升級可獲得更高用量。"
         },
@@ -10018,7 +9995,6 @@
         "go_login": {
             "zh_CN": "去登录",
             "en_US": "Log in ",
-            "终端": "APP",
             "zh_HK": "去登錄"
         },
         "go_to": {
@@ -10746,7 +10722,6 @@
         "input_confirmation_password": {
             "zh_CN": "确认密码",
             "en_US": "Confirm new password",
-            "终端": "APP",
             "zh_HK": "確認密碼"
         },
         "input_formula": {
@@ -10757,7 +10732,6 @@
         "input_new_password": {
             "zh_CN": "新密码",
             "en_US": "New password",
-            "终端": "APP",
             "zh_HK": "新密碼"
         },
         "insert_above": {
@@ -10987,19 +10961,16 @@
         },
         "integration_dingtalk": {
             "zh_CN": "你正在体验高级功能：钉钉集成，升级可解锁该功能。",
-            "billing_notify": [],
             "en_US": "DingTalk Integration",
             "zh_HK": "你正在體驗高級功能：釘釘集成，升級可解鎖該功能。"
         },
         "integration_feishu": {
             "zh_CN": "你正在体验高级功能：飞书集成，升级可解锁该功能。",
-            "billing_notify": [],
             "en_US": "feishu integration",
             "zh_HK": "你正在體驗高級功能：飛書集成，升級可解鎖該功能。"
         },
         "integration_we_com": {
             "zh_CN": "你正在体验高级功能：企业微信集成，升级可解锁该功能。",
-            "billing_notify": [],
             "en_US": "wecom integration",
             "zh_HK": "你正在體驗高級功能：企業微信集成，升級可解鎖該功能。"
         },
@@ -11025,7 +10996,6 @@
         },
         "integration_yozo_office": {
             "zh_CN": "你正在体验高级功能：office 文件预览，升级可解锁该功能。",
-            "billing_notify": [],
             "en_US": "YOZO Office integration",
             "zh_HK": "你正在體驗高級功能：office 文件預覽，升級可解鎖該功能。"
         },
@@ -11757,7 +11727,6 @@
         },
         "lark": {
             "zh_CN": "飞书",
-            "废弃时间": 1657618477851,
             "en_US": "Lark",
             "zh_HK": "飛書"
         },
@@ -12034,12 +12003,7 @@
         "lark_single_record_member_mention_title": {
             "zh_CN": "**有人在记录中提及你**",
             "en_US": "** You're mentioned in a record**",
-            "zh_HK": "**有人在記錄中提及你**",
-            "notifications": {
-                "social_templates copy": [
-                    "recy1zceaxmVN"
-                ]
-            }
+            "zh_HK": "**有人在記錄中提及你**"
         },
         "lark_subscribed_record_cell_updated": {
             "zh_CN": "**记录:** {recordTitle}\n**原内容:** {oldDisplayValue}\n**修改后的内容:** {newDisplayValue}\n**修改人:** {memberName}\n**维格表:** {nodeName}",
@@ -12049,12 +12013,7 @@
         "lark_subscribed_record_cell_updated_title": {
             "zh_CN": "**关注的记录被修改**",
             "en_US": "**Someone has changed the record you are watching in**",
-            "zh_HK": "**關注的記錄被修改**",
-            "notifications": {
-                "social_templates copy": [
-                    "recPg3T3IameG"
-                ]
-            }
+            "zh_HK": "**關注的記錄被修改**"
         },
         "lark_subscribed_record_commented": {
             "zh_CN": "**记录:** {recordTitle}\n**评论的内容:** {content}\n**评论人:** {memberName}\n**维格表:** {nodeName}",
@@ -12064,12 +12023,7 @@
         "lark_subscribed_record_commented_title": {
             "zh_CN": "**关注的记录有一条新评论**",
             "en_US": "**The record you are watching received a new comment**",
-            "zh_HK": "**關注的記錄有一條新評論**",
-            "notifications": {
-                "social_templates copy": [
-                    "recbhTobcvgFG"
-                ]
-            }
+            "zh_HK": "**關注的記錄有一條新評論**"
         },
         "lark_version_enterprise": {
             "zh_CN": "飞书企业版",
@@ -12284,7 +12238,6 @@
         "loading": {
             "zh_CN": "加载中",
             "en_US": "Loading...",
-            "终端": "APP",
             "zh_HK": "加載中"
         },
         "loading_file": {
@@ -12358,7 +12311,6 @@
         "login": {
             "zh_CN": "登录",
             "en_US": "Log in",
-            "终端": "APP",
             "zh_HK": "登錄"
         },
         "login_failed": {
@@ -12384,13 +12336,11 @@
         "login_logo_slogan": {
             "zh_CN": "多维表格首创者，面向API的易用低代码平台",
             "en_US": "Low-code platform with API-first Database-Spreadsheet",
-            "终端": "APP",
             "zh_HK": "多維表格首創者，面向API的易用低代碼平台"
         },
         "login_logo_slogan_mobile": {
             "zh_CN": "多维表格首创者",
             "en_US": "API-first Database-Spreadsheet",
-            "终端": "APP",
             "zh_HK": "多維表格首創者"
         },
         "login_mobile_format_err": {
@@ -12411,13 +12361,11 @@
         "login_register": {
             "zh_CN": "登录/注册",
             "en_US": "Log in/Sign up",
-            "终端": "APP",
             "zh_HK": "登錄/註冊"
         },
         "login_slogan": {
             "zh_CN": "面向API的易用低代码平台",
             "en_US": "API-first Database-Spreadsheet",
-            "终端": "APP",
             "zh_HK": "面嚮API的易用低代碼平臺"
         },
         "login_status_expired_button": {
@@ -12782,7 +12730,6 @@
         "mail": {
             "zh_CN": "邮箱",
             "en_US": "Email",
-            "终端": "APP",
             "zh_HK": "郵箱"
         },
         "mail_invite_fail": {
@@ -13109,13 +13056,11 @@
         },
         "max_admin_nums": {
             "zh_CN": "空间站的子管理数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of sub-admin in space is ${specification}. So far, there are ${usage} admins, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的子管理數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_api_call": {
             "zh_CN": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The API usage of this space has reached the limit（ ${usage}/${specification} ）， and you can upgrade to get higher usage.",
             "zh_HK": "空間站的API用量已超出上限（ ${usage}/${specification} ），升級可獲得更高用量。"
         },
@@ -13126,13 +13071,11 @@
         },
         "max_calendar_views_in_space": {
             "zh_CN": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of calendar views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的日曆視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_capacity_size_in_bytes": {
             "zh_CN": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum attachment capacity to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的附件容量上限為 ${specification} ，當前已上傳 ${usage} ，升級可獲得更高用量。"
         },
@@ -13143,31 +13086,26 @@
         },
         "max_form_views_in_space": {
             "zh_CN": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of forms to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的神奇表單數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_gallery_views_in_space": {
             "zh_CN": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of Gallery views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的相冊視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_gantt_views_in_space": {
             "zh_CN": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of Gantt views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的甘特視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_kanban_views_in_space": {
             "zh_CN": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of Kanban views to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的看板視圖數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
         "max_mirror_nums": {
             "zh_CN": "空间站的镜像数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of mirror to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的神奇表單數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
@@ -13186,37 +13124,31 @@
         },
         "max_remain_timemachine_days": {
             "zh_CN": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。",
-            "billing_notify": [],
             "en_US": "The space only shows the record activity within ${specification} days, upgrade to view more record activity.",
             "zh_HK": "空間站僅顯示 ${specification}  天內的記錄動態，升級後可查看更久的動態。"
         },
         "max_remain_trash_days": {
             "zh_CN": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。",
-            "billing_notify": [],
             "en_US": "This space supports viewing historical files within ${specification} days, upgrade to view more historical files ",
             "zh_HK": "本空間站支持查看 ${specification}  天內的歷史文件，升級後可查看更久的歷史文件。"
         },
         "max_rows_in_space": {
             "zh_CN": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of records in space is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "空間站記錄數上限為 ${specification} 行，當前已創建 ${usage} 行，升級可獲得更高用量。"
         },
         "max_rows_per_sheet": {
             "zh_CN": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of records in one datasheet is ${specification}. So far, ${usage} records have been created, and you can upgrade to get higher usage.",
             "zh_HK": "單張維格表記錄數上限為 ${specification} 行，當前已創建 ${usage} 行，升級可獲得更高用量。"
         },
         "max_seats": {
             "zh_CN": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of seats in the space is ${specification}, and ${usage} are currently invited, and you can upgrade to get higher usage.",
             "zh_HK": "空間站的席位數上限為 ${specification} 個，當前已邀請 ${usage} 個，升級可獲得更高用量。"
         },
         "max_sheet_nums": {
             "zh_CN": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of file nodes to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage.",
             "zh_HK": "文件節點數上限為 ${specification} 個，當前已創建 ${usage} 個，升級可獲得更高用量。"
         },
@@ -13423,7 +13355,6 @@
         "message_code": {
             "zh_CN": "获取验证码",
             "en_US": "Send",
-            "终端": "APP",
             "zh_HK": "獲取驗證碼"
         },
         "message_coping": {
@@ -14112,7 +14043,6 @@
         "next_step": {
             "zh_CN": "下一步",
             "en_US": "Next",
-            "终端": "APP",
             "zh_HK": "下一步"
         },
         "nicaragua": {
@@ -14527,7 +14457,6 @@
         },
         "node_permission_nums": {
             "zh_CN": "空间站的文件权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
-            "billing_notify": [],
             "en_US": "The maximum number of node permissions to be used in space is ${specification}. So far, ${usage} has been used, and you can upgrade to get higher usage."
         },
         "node_with_link_share_reminder": {
@@ -15524,7 +15453,6 @@
         "password": {
             "zh_CN": "密码",
             "en_US": "Password",
-            "终端": "APP",
             "zh_HK": "密碼"
         },
         "password_length_err": {
@@ -15535,7 +15463,6 @@
         "password_login": {
             "zh_CN": "密码登录",
             "en_US": "Log in with password",
-            "终端": "APP",
             "zh_HK": "密碼登錄"
         },
         "password_not_identical_err": {
@@ -15949,7 +15876,6 @@
         "phone_number": {
             "zh_CN": "手机号",
             "en_US": "Phone",
-            "终端": "APP",
             "zh_HK": "手機號"
         },
         "pick_field_or_function": {
@@ -15995,7 +15921,6 @@
         "placeholder_enter_your_verification_code": {
             "zh_CN": "请输入验证码",
             "en_US": "Enter verification code",
-            "终端": "APP",
             "zh_HK": "請輸入驗證碼"
         },
         "placeholder_input": {
@@ -16036,7 +15961,6 @@
         "placeholder_input_mobile": {
             "zh_CN": "请输入手机号",
             "en_US": "Enter your phone number",
-            "终端": "APP",
             "zh_HK": "請輸入手機號"
         },
         "placeholder_input_new_nickname": {
@@ -16047,13 +15971,11 @@
         "placeholder_input_new_password_again": {
             "zh_CN": "请再次输入新密码",
             "en_US": "Enter your new password again",
-            "终端": "APP",
             "zh_HK": "請再次輸入新密碼"
         },
         "placeholder_input_new_password_with_given_rules": {
             "zh_CN": "请输入 8-24 位字母加数字组合的新密码",
             "en_US": "Enter a new password with 8-24 letters and numbers",
-            "终端": "APP",
             "zh_HK": "請輸入 8-24 位字母加數字組合的新密碼"
         },
         "placeholder_input_new_phone": {
@@ -16069,7 +15991,6 @@
         "placeholder_input_password": {
             "zh_CN": "请输入密码",
             "en_US": "Enter a password",
-            "终端": "APP",
             "zh_HK": "請輸入密碼"
         },
         "placeholder_input_password_again": {
@@ -16882,7 +16803,6 @@
         "please_note": {
             "zh_CN": "温馨提示",
             "en_US": "Note",
-            "终端": "APP",
             "zh_HK": "溫馨提示"
         },
         "please_read_carefully": {
@@ -16933,7 +16853,6 @@
         "press_again_to_exit": {
             "zh_CN": "再次点击退出!",
             "en_US": "Press again to exit!",
-            "终端": "APP",
             "zh_HK": "再次點擊退出!"
         },
         "preview": {
@@ -17147,7 +17066,6 @@
         "privacy_policy": {
             "zh_CN": "《隐私协议》",
             "en_US": "<Privacy Policy>",
-            "终端": "APP",
             "zh_HK": "《隱私協議》"
         },
         "privacy_policy_pure_string": {
@@ -17376,7 +17294,6 @@
         },
         "rainbow_label": {
             "zh_CN": "你正在体验高级功能：彩虹标签，升级可解锁该功能。",
-            "billing_notify": [],
             "en_US": "Rainbow tags and more themes",
             "zh_HK": "你正在體驗高級功能：彩虹標籤，升級可解鎖該功能。"
         },
@@ -17586,7 +17503,6 @@
         "refresh": {
             "zh_CN": "刷新",
             "en_US": "Refresh",
-            "终端": "APP",
             "zh_HK": "刷新"
         },
         "refresh_manually": {
@@ -17953,7 +17869,6 @@
         "reset_password": {
             "zh_CN": "重置密码",
             "en_US": "Reset password",
-            "终端": "APP",
             "zh_HK": "重置密碼"
         },
         "reset_password_need_message_verify_code_tip": {
@@ -18039,7 +17954,6 @@
         "retrieve_password": {
             "zh_CN": "忘记密码",
             "en_US": "Forgot password",
-            "终端": "APP",
             "zh_HK": "忘記密碼"
         },
         "reunion_island": {
@@ -18398,9 +18312,9 @@
             "zh_HK": "請填寫必填項"
         },
         "robot_config_help_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-automation-robot/#how_config_robot",
-            "en_US": "https://help.vika.cn/docs/guide/manual-automation-robot/#how_config_robot",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-automation-robot/#how_config_robot"
+            "zh_CN": "https://help.vika.cn/docs/guide/manual-automation-robot/#how-to-config-robot",
+            "en_US": "https://help.vika.cn/docs/guide/manual-automation-robot/#how-to-config-robot",
+            "zh_HK": "https://help.vika.cn/docs/guide/manual-automation-robot/#how-to-config-robot"
         },
         "robot_config_incomplete_tooltip": {
             "zh_CN": "请先完成配置",
@@ -20226,7 +20140,6 @@
         "select_phone_code": {
             "zh_CN": "选择国家和地区",
             "en_US": "Select country and region",
-            "终端": "APP",
             "zh_HK": "選擇國家和地區"
         },
         "select_sort_rule": {
@@ -20480,7 +20393,6 @@
         "set_new_password": {
             "zh_CN": "设置新密码",
             "en_US": "Set a new password",
-            "终端": "APP",
             "zh_HK": "設置新密碼"
         },
         "set_nickname": {
@@ -21094,12 +21006,7 @@
         "social_dingtalk_subscribed_record_cell_updated_title": {
             "zh_CN": "关注的记录被修改",
             "en_US": "Records modified by others",
-            "zh_HK": "關注的記錄被修改",
-            "notifications": {
-                "social_templates copy": [
-                    "recSLnaXHbcIr"
-                ]
-            }
+            "zh_HK": "關注的記錄被修改"
         },
         "social_dingtalk_subscribed_record_commented": {
             "zh_CN": "### 关注的记录有一条新评论\n\n**记录:** {recordTitle}\n\n**评论的内容:** {content}\n\n**评论人:** {memberName}\n\n**维格表:** {nodeName}",
@@ -21109,12 +21016,7 @@
         "social_dingtalk_subscribed_record_commented_title": {
             "zh_CN": "关注的记录有一条新评论",
             "en_US": "Record received a new comment",
-            "zh_HK": "關注的記錄有一條新評論",
-            "notifications": {
-                "social_templates copy": [
-                    "recMdXxGr1JIE"
-                ]
-            }
+            "zh_HK": "關注的記錄有一條新評論"
         },
         "social_dingtalk_task_reminder": {
             "zh_CN": "### 🔔表中的记录已到提醒时间\n\n**记录标题：** {recordTitle}\n\n**到期时间：** {taskExpireAt}\n\n**所在表：** {nodeName}",
@@ -21129,12 +21031,7 @@
         "social_lark_task_reminder_title": {
             "zh_CN": "**表中的记录已到提醒时间**",
             "en_US": "** The record in the datasheet has reached the reminder time * *",
-            "zh_HK": "**表中的記錄已到提醒時間**",
-            "notifications": {
-                "social_templates copy": [
-                    "recwyPz9I1OVg"
-                ]
-            }
+            "zh_HK": "**表中的記錄已到提醒時間**"
         },
         "social_media": {
             "zh_CN": "新媒体运营",
@@ -21169,13 +21066,7 @@
         "social_task_reminder_title": {
             "zh_CN": "🔔 表中的记录已到提醒时间",
             "en_US": "🔔 Reminder",
-            "zh_HK": "🔔 表中的記錄已到提醒時間",
-            "notifications": {
-                "social_templates copy": [
-                    "recRkZamjppbd",
-                    "reczGXSYPC6y1"
-                ]
-            }
+            "zh_HK": "🔔 表中的記錄已到提醒時間"
         },
         "social_wecom_single_record_member_mention": {
             "zh_CN": "记录：{recordTitle}\n提及人：{memberName}\n维格表：{nodeName}",
@@ -22923,7 +22814,6 @@
         "terms_of_service": {
             "zh_CN": "《服务条款》",
             "en_US": "<Terms of Service>",
-            "终端": "APP",
             "zh_HK": "《服務條款》"
         },
         "terms_of_service_pure_string": {
@@ -23748,7 +23638,6 @@
         },
         "unbind": {
             "zh_CN": "解绑",
-            "废弃时间": 1668568404259,
             "en_US": "Unbind",
             "zh_HK": "解綁"
         },
@@ -24080,7 +23969,6 @@
         "user_feedback": {
             "zh_CN": "反馈问题",
             "en_US": "Give feedback",
-            "终端": "APP",
             "zh_HK": "反饋問題"
         },
         "user_log_out": {
@@ -24199,7 +24087,6 @@
         "verification_code": {
             "zh_CN": "验证码",
             "en_US": "Verification code",
-            "终端": "APP",
             "zh_HK": "驗證碼"
         },
         "verification_code_error_message": {
@@ -24210,7 +24097,6 @@
         "verification_code_login": {
             "zh_CN": "验证码登录/注册",
             "en_US": "Log in with verification code",
-            "终端": "APP",
             "zh_HK": "驗證碼登錄/註冊"
         },
         "verify_account_title": {
@@ -24704,7 +24590,6 @@
         },
         "watermark": {
             "zh_CN": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
-            "billing_notify": [],
             "en_US": "You are experiencing the ${grade} space exclusive feature, which will be unlocked when you upgrade",
             "zh_HK": "你正在體驗${grade}空間站專屬功能，升級後可以解鎖該功能"
         },
@@ -24908,12 +24793,7 @@
         "wecom_single_record_member_mention_title": {
             "zh_CN": "有人在记录中提及你",
             "en_US": " You're mentioned in a record",
-            "zh_HK": "有人在記錄中提及你",
-            "notifications": {
-                "social_templates copy": [
-                    "rec9aOlARGasl"
-                ]
-            }
+            "zh_HK": "有人在記錄中提及你"
         },
         "wecom_social_deactivate_tip": {
             "zh_CN": "如需停用应用，请前往「企业微信管理后台 > 应用管理 > 维格表 > 删除应用」",
@@ -24933,22 +24813,12 @@
         "wecom_subscribed_record_cell_updated_title": {
             "zh_CN": "关注的记录被修改",
             "en_US": "Someone has changed the record you are watching in",
-            "zh_HK": "關注的記錄被修改",
-            "notifications": {
-                "social_templates copy": [
-                    "rec5qcIuCsYkz"
-                ]
-            }
+            "zh_HK": "關注的記錄被修改"
         },
         "wecom_subscribed_record_commented_title": {
             "zh_CN": "关注的记录有一条新评论",
             "en_US": "The record you are watching received a new comment",
-            "zh_HK": "關注的記錄有一條新評論",
-            "notifications": {
-                "social_templates copy": [
-                    "recvTOkeCYFKO"
-                ]
-            }
+            "zh_HK": "關注的記錄有一條新評論"
         },
         "wecom_sync_address_error": {
             "zh_CN": "你已被移出企业微信应用可见范围，同步通讯录将使空间站缺失主管理员，请更换主管理员后再同步通讯录",
