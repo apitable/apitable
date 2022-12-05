@@ -57,29 +57,6 @@ services:
       retries: 5
       start_period: 5s
 
-  test-mongo:
-    container_name: test-mongo
-    image: mongo:5.0.6
-    ports:
-      - '7017:27017'
-    networks:
-      - unit-test
-    volumes:
-      - ./init-db/src/main/resources/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    environment:
-      - TZ=Asia/Singapore
-      - MONGO_INITDB_DATABASE=apitable_test
-      - MONGO_USERNAME=apitable
-      - MONGO_PASSWORD=password
-      - MONGO_INITDB_ROOT_USERNAME=apitable
-      - MONGO_INITDB_ROOT_PASSWORD=password
-    healthcheck:
-      test: ['CMD', 'mongo', '--eval', "db.adminCommand('ping')"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 10s
-
   test-initdb:
     container_name: test-initdb
     image: ${INITDB_IMAGE:-docker.vika.ltd/vikadata/vika/init-db:latest-alpha}
@@ -147,10 +124,6 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=apitable
       - RABBITMQ_PASSWORD=password
-      - MONGO_HOST=test-mongo:27017
-      - MONGO_USERNAME=apitable
-      - MONGO_PASSWORD=password
-      - MONGO_DATABASE=apitable_test
     entrypoint: ./gradlew testCodeCoverageReport --stacktrace
 
 networks:

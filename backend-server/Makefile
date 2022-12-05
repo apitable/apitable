@@ -27,7 +27,6 @@ _test_clean: ## clean the docker in test step
 
 _test_dockers: ## run depends container in test step
 	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
-	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-mongo-$${CI_GROUP_TAG:-0} test-mongo
 	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
 	docker-compose -f ../docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
 
@@ -40,7 +39,6 @@ _test_unit_test: ## unittest and codecov upload
 		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
 		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
 		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
-		-e MONGO_HOST=test-mongo-$${CI_GROUP_TAG:-0} \
 		-e BACKEND_GRPC_PORT=0 \
 		unit-test-backend
 

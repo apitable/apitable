@@ -34,7 +34,6 @@ include 'shared:core'
 include 'grpc-model'
 
 include 'db-model'
-include 'mongodb-model'
 include 'application'
 
 include 'vikadata-project:social-service-dingtalk'

@@ -1,3 +1,0 @@
-db.vika_audit_space.createIndex({spaceId: 1}, {name:'idx_space', background: true});
-db.vika_audit_space.createIndex({memberId: 1}, {name:'idx_member', background: true});
-db.vika_audit_space.createIndex({action: 1}, {name:'idx_action', background: true});

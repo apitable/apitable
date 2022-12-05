@@ -47,7 +47,6 @@ ext {
     //'prometheus'                  : 'io.micrometer:micrometer-registry-prometheus',
     'prometheus'                  : 'io.prometheus:simpleclient_pushgateway',
     'mysql'                       : 'mysql:mysql-connector-java',
-    'mongodb'                     : 'org.springframework.boot:spring-boot-starter-data-mongodb',
     'lombok'                      : 'org.projectlombok:lombok',
     'jackson'                     : 'com.fasterxml.jackson.core:jackson-databind',
     'jackson-datatype'            : 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310',

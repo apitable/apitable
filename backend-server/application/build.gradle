@@ -9,7 +9,6 @@ plugins {
 
 dependencies {
   implementation project(':shared:core')
-  implementation project(':mongodb-model')
   implementation project(':db-model')
   
   implementation project(':shared:starters:afs')
@@ -61,7 +60,6 @@ dependencies {
   implementation rootProject.ext.dependencies['prometheus']
   implementation rootProject.ext.dependencies['mybatis-plus-starter']
   runtimeOnly rootProject.ext.dependencies['mysql']
-  implementation rootProject.ext.dependencies['mongodb']
   implementation rootProject.ext.dependencies['easyexcel']
   implementation rootProject.ext.dependencies['p6spy']
   implementation rootProject.ext.dependencies['servlet-api']
