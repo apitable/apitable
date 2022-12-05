@@ -29,9 +29,9 @@ import { UnitTagRepository } from 'database/repositories/unit.tag.repository';
 import { UnitTeamRepository } from 'database/repositories/unit.team.repository';
 import { UserRepository } from 'database/repositories/user.repository';
 import { WidgetRepository } from 'database/repositories/widget.repository';
+import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module';
 import { AttachmentService } from 'database/services/attachment/attachment.service';
 import { DashboardService } from 'database/services/dashboard/dashboard.service';
-import { DataBusService } from 'fusion/services/databus/databus.service';
 import { ComputeFieldReferenceManager } from 'database/services/datasheet/compute.field.reference.manager';
 import { DatasheetChangesetService } from 'database/services/datasheet/datasheet.changeset.service';
 import { DatasheetChangesetSourceService } from 'database/services/datasheet/datasheet.changeset.source.service';
@@ -64,6 +64,7 @@ import { WidgetService } from 'database/services/widget/widget.service';
 import { QueueWorkerModule } from 'enterprise/queue/queue.worker.module';
 import { FusionApiFilter } from 'fusion/filter/fusion.api.filter';
 import { ApiUsageRepository } from 'fusion/repositories/api.usage.repository';
+import { DataBusService } from 'fusion/services/databus/databus.service';
 import { FusionApiRecordService } from 'fusion/services/fusion.api.record.service';
 import { FusionApiService } from 'fusion/services/fusion.api.service';
 import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer';
@@ -75,7 +76,6 @@ import { LoggerConfigService } from './services/config/logger.config.service';
 import { ZipkinConfigService } from './services/config/zipkin.config.service';
 import { JavaModule } from './services/java/java.module';
 import { ZipkinModule } from './services/zipkin/zipkin.module';
-import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module';
 
 @Module({
   imports: [
@@ -94,10 +94,8 @@ import { AlarmDynamicModule } from 'database/services/alarm/alarm.dynamic.module
     LoggerModule.forRootAsync({
       useClass: LoggerConfigService,
     }),
-    TypeOrmModule.forFeature([UserRepository]),
-    TypeOrmModule.forFeature([WidgetRepository]),
+    TypeOrmModule.forFeature([UserRepository, WidgetRepository]),
     TypeOrmModule.forFeature([ApiUsageRepository]),
-    TypeOrmModule.forFeature([UserRepository]),
     TypeOrmModule.forFeature([DatasheetRecordRepository]),
     TypeOrmModule.forFeature([ResourceMetaRepository, DatasheetWidgetRepository]),
     GrpcClientModule,
