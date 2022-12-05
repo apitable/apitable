@@ -12,11 +12,11 @@
         "outDir": "./dist"
       },
       {
-        "include": "**/*.proto",
+        "include": "./grpc/**/*.proto",
         "outDir": "./dist"
       },
       {
-        "include": "**/*.lua",
+        "include": "./shared/**/*.lua",
         "outDir": "./dist"
       }
     ],
