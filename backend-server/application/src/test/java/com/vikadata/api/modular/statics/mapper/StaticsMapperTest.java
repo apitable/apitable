@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.space.mapper.StaticsMapper;
-import com.vikadata.api.space.model.NodeStaticsVO;
-import com.vikadata.api.space.model.NodeTypeStatics;
+import com.vikadata.api.space.dto.NodeStaticsDTO;
+import com.vikadata.api.space.dto.NodeTypeStaticsDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -87,14 +87,14 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/testdata/node-data.sql")
     void testSelectNodeStaticsBySpaceId() {
-        NodeStaticsVO entity = staticsMapper.selectNodeStaticsBySpaceId("spc41");
+        NodeStaticsDTO entity = staticsMapper.selectNodeStaticsBySpaceId("spc41");
         assertThat(entity).isNotNull();
     }
 
     @Test
     @Sql("/testdata/node-data.sql")
     void testSelectNodeTypeStaticsBySpaceId() {
-        List<NodeTypeStatics> entity = staticsMapper.selectNodeTypeStaticsBySpaceId("spc41");
+        List<NodeTypeStaticsDTO> entity = staticsMapper.selectNodeTypeStaticsBySpaceId("spc41");
         assertThat(entity).isNotNull();
     }
 

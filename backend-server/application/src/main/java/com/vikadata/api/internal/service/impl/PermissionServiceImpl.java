@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +16,16 @@ import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManage
 import com.vikadata.api.enterprise.control.infrastructure.role.NodeRole;
 import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.internal.service.IPermissionService;
-import com.vikadata.api.space.enums.SpaceResourceGroupCode;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.workspace.vo.DatasheetPermissionView;
-import com.vikadata.api.workspace.vo.FieldPermissionView;
 import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.space.service.ISpaceMemberRoleRelService;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.service.IFieldRoleService;
 import com.vikadata.api.workspace.service.INodeFavoriteService;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.INodeShareSettingService;
+import com.vikadata.api.workspace.vo.DatasheetPermissionView;
+import com.vikadata.api.workspace.vo.FieldPermissionView;
 
 import org.springframework.stereotype.Service;
 
@@ -62,9 +59,6 @@ public class PermissionServiceImpl implements IPermissionService {
 
     @Resource
     private ControlTemplate controlTemplate;
-
-    @Resource
-    private ISpaceMemberRoleRelService iSpaceMemberRoleRelService;
 
     @Override
     public List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds, String shareId) {
@@ -140,19 +134,6 @@ public class PermissionServiceImpl implements IPermissionService {
         return views;
     }
 
-    @Override
-    public boolean checkMemberIsAdmin(String spaceId, Long memberId, List<String> resourceGroupCodes) {
-        if (CollUtil.isEmpty(resourceGroupCodes)) {
-            resourceGroupCodes = SpaceResourceGroupCode.codes();
-        }
-        List<Long> memberAdminIds = iSpaceMemberRoleRelService.getMemberId(spaceId, resourceGroupCodes);
-        Long adminMemberId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
-        if (adminMemberId != null) {
-            memberAdminIds.add(adminMemberId);
-        }
-        return CollUtil.contains(memberAdminIds, memberId);
-    }
-
     private DatasheetPermissionView getEmptyPermissionView(Long userId, String uuid, Long memberId, String nodeId, String shareId) {
         DatasheetPermissionView emptyPermissionView = new DatasheetPermissionView();
         emptyPermissionView.setUserId(userId);
@@ -166,5 +147,4 @@ public class PermissionServiceImpl implements IPermissionService {
         emptyPermissionView.setNodeId(nodeId);
         return emptyPermissionView;
     }
-
 }

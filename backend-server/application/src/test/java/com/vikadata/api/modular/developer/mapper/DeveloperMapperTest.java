@@ -3,7 +3,7 @@ package com.vikadata.api.modular.developer.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
+import com.vikadata.api.user.mapper.DeveloperMapper;
 import com.vikadata.entity.DeveloperEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

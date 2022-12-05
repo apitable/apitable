@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.api.space.model.ControlStaticsVO;
-import com.vikadata.api.space.model.NodeStaticsVO;
-import com.vikadata.api.space.model.NodeTypeStatics;
+import com.vikadata.api.space.dto.ControlStaticsDTO;
+import com.vikadata.api.space.dto.NodeStaticsDTO;
+import com.vikadata.api.space.dto.NodeTypeStaticsDTO;
 
 /**
  * <p>
@@ -94,21 +94,21 @@ public interface StaticsMapper {
      * @param spaceId space id
      * @return number
      */
-    ControlStaticsVO countFieldControlBySpaceId(@Param("spaceId") String spaceId);
+    ControlStaticsDTO countFieldControlBySpaceId(@Param("spaceId") String spaceId);
 
     /**
      * Query node statistics
      * @param spaceId space id
      * @return number
      */
-    NodeStaticsVO selectNodeStaticsBySpaceId(@Param("spaceId") String spaceId);
+    NodeStaticsDTO selectNodeStaticsBySpaceId(@Param("spaceId") String spaceId);
 
     /**
      * Query node type statistics list
      * @param spaceId space id
      * @return Node Type Statistics
      */
-    List<NodeTypeStatics> selectNodeTypeStaticsBySpaceId(@Param("spaceId") String spaceId);
+    List<NodeTypeStaticsDTO> selectNodeTypeStaticsBySpaceId(@Param("spaceId") String spaceId);
 
     /**
      * Query the view statistics of all tables in the space

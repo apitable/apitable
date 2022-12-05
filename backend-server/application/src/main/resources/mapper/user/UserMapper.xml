@@ -187,7 +187,7 @@
         AND is_paused = 1 AND is_deleted = 0
     </select>
 
-    <select id="selectInviteUserInfoByUserId" resultType="com.vikadata.api.space.model.InviteUserInfo">
+    <select id="selectInviteUserInfoByUserId" resultType="com.vikadata.api.space.vo.InviteUserInfo">
         SELECT id as userId, nick_name as userName, avatar
         FROM ${tablePrefix}user
         WHERE id = #{userId}

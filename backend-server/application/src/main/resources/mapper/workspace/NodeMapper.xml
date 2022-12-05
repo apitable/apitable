@@ -610,7 +610,7 @@
         AND is_rubbish = 0
     </select>
 
-    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.vikadata.api.workspace.model.SimpleNodeInfo">
+    <select id="selectAllParentNodeIdsByNodeIds" resultType="com.vikadata.api.workspace.dto.SimpleNodeInfo">
         WITH RECURSIVE parent_view ( node_id, parent_id, extend, lvl ) AS (
         SELECT
         n.node_id,

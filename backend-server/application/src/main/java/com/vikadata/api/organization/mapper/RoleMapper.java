@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.api.organization.model.RoleInfoDTO;
+import com.vikadata.api.organization.dto.RoleInfoDTO;
 import com.vikadata.api.shared.util.ibatis.ExpandBaseMapper;
-import com.vikadata.api.organization.model.RoleBaseInfoDto;
-import com.vikadata.entity.RoleEntity;
+import com.vikadata.api.organization.dto.RoleBaseInfoDto;
+import com.vikadata.api.organization.entity.RoleEntity;
 
 public interface RoleMapper extends ExpandBaseMapper<RoleEntity> {
 

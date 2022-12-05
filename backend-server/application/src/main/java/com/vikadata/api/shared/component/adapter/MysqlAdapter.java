@@ -18,13 +18,13 @@ import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.space.mapper.SpaceAuditMapper;
-import com.vikadata.api.space.model.SpaceAuditDTO;
-import com.vikadata.api.space.model.SpaceAuditPageParam;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditDTO;
+import com.vikadata.api.space.dto.SpaceAuditPageParamDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.api.workspace.mapper.NodeVisitRecordMapper;
 import com.vikadata.core.util.SpringContextHolder;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.NodeVisitRecordEntity;
 import com.vikadata.entity.SpaceAuditEntity;
 
@@ -35,7 +35,7 @@ public class MysqlAdapter extends AbstractDatasourceAdapter {
     private static final String DEFAULT_DESCEND_COLUMNS = "id";
 
     @Override
-    public PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParam param) {
+    public PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParamDTO param) {
         Page<SpaceAuditEntity> page = new Page<>(param.getPageNo(), param.getPageSize());
         page.addOrder(OrderItem.descs(DEFAULT_DESCEND_COLUMNS));
         IPage<SpaceAuditEntity> result = SpringContextHolder.getBean(SpaceAuditMapper.class).selectSpaceAuditPage(page, spaceId, param);

@@ -27,7 +27,7 @@ import com.vikadata.api.workspace.dto.NodeDescParseDTO;
 import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
 import com.vikadata.api.workspace.mapper.DatasheetWidgetMapper;
 import com.vikadata.api.workspace.mapper.ResourceMetaMapper;
-import com.vikadata.api.workspace.model.DashboardMeta;
+import com.vikadata.api.workspace.dto.DashboardMeta;
 import com.vikadata.api.workspace.service.IDatasheetService;
 import com.vikadata.api.workspace.service.IResourceMetaService;
 import com.vikadata.api.enterprise.widget.service.IWidgetService;

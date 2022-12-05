@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.enterprise.control.infrastructure.ExportLevelEnum;
 import com.vikadata.api.space.ro.SpaceSecuritySettingRo;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

@@ -7,7 +7,7 @@ import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.workspace.vo.DatasheetRecordMapVo;
-import com.vikadata.api.workspace.model.NodeCopyDTO;
+import com.vikadata.api.workspace.dto.NodeCopyDTO;
 import com.vikadata.entity.DatasheetRecordEntity;
 
 public interface IDatasheetRecordService extends IService<DatasheetRecordEntity> {

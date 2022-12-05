@@ -6,7 +6,7 @@ import java.util.List;
 import cn.hutool.core.collection.CollUtil;
 
 import com.vikadata.api.enterprise.widget.mapper.WidgetMapper;
-import com.vikadata.api.workspace.model.NodeWidgetDto;
+import com.vikadata.api.workspace.dto.NodeWidgetDto;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

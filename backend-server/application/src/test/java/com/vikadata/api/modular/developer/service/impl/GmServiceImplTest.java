@@ -10,10 +10,10 @@ import com.apitable.starter.vika.core.model.UserContactInfo;
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.space.enums.SpaceCertification;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.api.enterprise.social.entity.SocialTenantBindEntity;
 import com.vikadata.entity.SpaceEntity;
 

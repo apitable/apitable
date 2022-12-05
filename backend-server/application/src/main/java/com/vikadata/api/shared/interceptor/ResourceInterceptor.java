@@ -11,7 +11,7 @@ import cn.hutool.core.util.ArrayUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.shared.constants.ParamsConstants;
-import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
+import com.vikadata.api.user.mapper.DeveloperMapper;
 import com.vikadata.api.base.enums.AuthException;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;

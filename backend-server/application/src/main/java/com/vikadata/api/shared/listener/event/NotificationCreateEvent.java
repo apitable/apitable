@@ -2,7 +2,7 @@ package com.vikadata.api.shared.listener.event;
 
 import java.util.List;
 
-import com.vikadata.entity.PlayerNotificationEntity;
+import com.vikadata.api.player.entity.PlayerNotificationEntity;
 
 import org.springframework.context.ApplicationEvent;
 

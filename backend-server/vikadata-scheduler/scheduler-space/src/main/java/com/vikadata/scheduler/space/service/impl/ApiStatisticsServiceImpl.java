@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 
@@ -15,13 +16,13 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 
-import com.vikadata.entity.ApiStatisticsDailyEntity;
-import com.vikadata.entity.ApiStatisticsMonthlyEntity;
-import com.vikadata.entity.ApiUsageEntity;
 import com.vikadata.scheduler.space.mapper.developer.ApiStatisticsMapper;
 import com.vikadata.scheduler.space.model.ApiRecordDto;
 import com.vikadata.scheduler.space.model.SpaceApiStatisticsDto;
 import com.vikadata.scheduler.space.model.SpaceApiUsageDto;
+import com.vikadata.scheduler.space.pojo.ApiStatisticsDaily;
+import com.vikadata.scheduler.space.pojo.ApiStatisticsMonthly;
+import com.vikadata.scheduler.space.pojo.ApiUsage;
 import com.vikadata.scheduler.space.service.IApiStatisticsService;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -50,12 +51,12 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
     public void syncApiUsageDailyData(List<SpaceApiUsageDto> spaceApiUsageDtoList) {
         // build data
         LocalDateTime now = LocalDateTime.now();
-        List<ApiStatisticsDailyEntity> apiStatisticsDailyEntities = new ArrayList<>();
+        List<ApiStatisticsDaily> apiStatisticsDailyEntities = new ArrayList<>();
         for (SpaceApiUsageDto spaceApiUsageInfo : spaceApiUsageDtoList) {
             if (StrUtil.isBlank(spaceApiUsageInfo.getSpaceId())) {
                 continue;
             }
-            ApiStatisticsDailyEntity apiStatisticsDailyEntity = new ApiStatisticsDailyEntity();
+            ApiStatisticsDaily apiStatisticsDailyEntity = new ApiStatisticsDaily();
             apiStatisticsDailyEntity.setId(IdWorker.getId());
             apiStatisticsDailyEntity.setSpaceId(spaceApiUsageInfo.getSpaceId());
             apiStatisticsDailyEntity.setStatisticsTime(spaceApiUsageInfo.getStatisticsTime());
@@ -69,8 +70,8 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
             return;
         }
         // Synchronize API daily usage data to the daily statistics table
-        List<List<ApiStatisticsDailyEntity>> split = CollUtil.split(apiStatisticsDailyEntities, 1000);
-        for (List<ApiStatisticsDailyEntity> list : split) {
+        List<List<ApiStatisticsDaily>> split = CollUtil.split(apiStatisticsDailyEntities, 1000);
+        for (List<ApiStatisticsDaily> list : split) {
             apiStatisticsMapper.insertApiUsageDailyInfo(list);
         }
     }
@@ -80,12 +81,12 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
     public void syncApiUsageMonthlyData(List<SpaceApiUsageDto> spaceApiUsageDtoList) {
         // build data
         LocalDateTime now = LocalDateTime.now();
-        List<ApiStatisticsMonthlyEntity> apiStatisticsMonthlyEntities = new ArrayList<>();
+        List<ApiStatisticsMonthly> apiStatisticsMonthlyEntities = new ArrayList<>();
         for (SpaceApiUsageDto spaceApiUsageInfo : spaceApiUsageDtoList) {
             if (StrUtil.isBlank(spaceApiUsageInfo.getSpaceId())) {
                 continue;
             }
-            ApiStatisticsMonthlyEntity apiStatisticsMonthlyEntity = new ApiStatisticsMonthlyEntity();
+            ApiStatisticsMonthly apiStatisticsMonthlyEntity = new ApiStatisticsMonthly();
             apiStatisticsMonthlyEntity.setId(IdWorker.getId());
             apiStatisticsMonthlyEntity.setSpaceId(spaceApiUsageInfo.getSpaceId());
             apiStatisticsMonthlyEntity.setStatisticsTime(spaceApiUsageInfo.getStatisticsTime());
@@ -96,8 +97,8 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
             apiStatisticsMonthlyEntities.add(apiStatisticsMonthlyEntity);
         }
         // Synchronize API monthly usage information to the monthly statistics table
-        List<List<ApiStatisticsMonthlyEntity>> split = CollUtil.split(apiStatisticsMonthlyEntities, 1000);
-        for (List<ApiStatisticsMonthlyEntity> list : split) {
+        List<List<ApiStatisticsMonthly>> split = CollUtil.split(apiStatisticsMonthlyEntities, 1000);
+        for (List<ApiStatisticsMonthly> list : split) {
             apiStatisticsMapper.insertApiUsageMonthlyInfo(list);
         }
     }
@@ -123,7 +124,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
             // Query the next date of the API usage meter
             // (There is no need for the next day, there may be some days in the middle that there is no call record)
             // Daily statistics for the date when there is a record
-            ApiUsageEntity nextDayFirstRecord = apiStatisticsMapper.selectNextDayFirstRecord(beginId, endOfDay);
+            ApiUsage nextDayFirstRecord = apiStatisticsMapper.selectNextDayFirstRecord(beginId, endOfDay);
             boolean flag = nextDayFirstRecord != null;
             // Meetup Query Statistics
             List<SpaceApiUsageDto> spaceApiUsageDtoList = apiStatisticsMapper.selectSpaceApiUsageDaily(beginId, flag ? nextDayFirstRecord.getId() : null);
@@ -142,7 +143,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
 
     private SpaceApiStatisticsDto getDailyStatisticsBeginDate() {
         // Get the last record of the API daily usage statistics table, and start the statistics from the next day (normally, yesterday)
-        ApiStatisticsDailyEntity apiStatisticsDailyEntity = apiStatisticsMapper.selectLastApiUsageDailyRecord();
+        ApiStatisticsDaily apiStatisticsDailyEntity = apiStatisticsMapper.selectLastApiUsageDailyRecord();
         if (apiStatisticsDailyEntity != null) {
             // Query API usage tables in reverse order, the largest table ID of the day
             Long lastDayMaxId = apiStatisticsMapper.selectMaxIdDaily(apiStatisticsDailyEntity.getStatisticsTime());
@@ -150,7 +151,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
             return new SpaceApiStatisticsDto(dateTime, lastDayMaxId + 1);
         }
         // Query the first record of the API usage meter, start counting from the first day
-        ApiUsageEntity apiUsageEntity = apiStatisticsMapper.selectFirstApiUsageRecord();
+        ApiUsage apiUsageEntity = apiStatisticsMapper.selectFirstApiUsageRecord();
         if (apiUsageEntity != null) {
             return new SpaceApiStatisticsDto(LocalDateTimeUtil.beginOfDay(apiUsageEntity.getCreatedAt()), apiUsageEntity.getId());
         }
@@ -160,7 +161,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
     @Override
     public void spaceApiUsageMonthlyStatistics() throws ParseException {
         // Get the last record of the API monthly usage statistics table
-        ApiStatisticsMonthlyEntity apiStatisticsMonthlyLastEntity = apiStatisticsMapper.selectLastApiUsageMonthlyRecord();
+        ApiStatisticsMonthly apiStatisticsMonthlyLastEntity = apiStatisticsMapper.selectLastApiUsageMonthlyRecord();
         // Initialize the API monthly usage statistics table
         if (apiStatisticsMonthlyLastEntity == null) {
             // Query the first record of the API usage meter
@@ -181,7 +182,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
         }
         else {
             // Get the month of the previous month
-            SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
+            SimpleDateFormat month = new SimpleDateFormat("yyyy-MM", Locale.CHINA);
             String previousMonth = month.format(DateUtil.lastMonth());
             // Get the statistics time of the last data in the monthly statistics table
             String lastApiUsageMonthlyStatisticsTime = apiStatisticsMonthlyLastEntity.getStatisticsTime();
@@ -200,7 +201,7 @@ public class ApiStatisticsServiceImpl implements IApiStatisticsService {
 
     private List<Long> spaceApiUsageMinRecordIds(ApiRecordDto firstRecord) throws ParseException {
         // get current month
-        SimpleDateFormat month = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat month = new SimpleDateFormat("yyyy-MM", Locale.CHINA);
         // Difference between the first record and the current month
         long betweenMonth = DateUtil.betweenMonth(new Date(), month.parse(firstRecord.getMonthTime()), true);
         // Query the monthly minimum API usage record ID

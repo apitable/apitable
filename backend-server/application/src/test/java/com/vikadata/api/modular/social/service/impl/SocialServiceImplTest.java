@@ -10,8 +10,8 @@ import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.enterprise.social.service.ISocialService;
 import com.vikadata.api.enterprise.social.service.ISocialTenantService;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
+import com.vikadata.api.space.enums.SpaceUpdateOperate;
 import com.vikadata.core.exception.BusinessException;
 
 import static org.assertj.core.api.Assertions.assertThat;

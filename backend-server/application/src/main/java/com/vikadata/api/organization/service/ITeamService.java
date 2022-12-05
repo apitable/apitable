@@ -13,9 +13,9 @@ import com.vikadata.api.organization.vo.MemberPageVo;
 import com.vikadata.api.organization.vo.TeamInfoVo;
 import com.vikadata.api.organization.vo.TeamTreeVo;
 import com.vikadata.api.organization.vo.UnitTeamVo;
-import com.vikadata.api.organization.model.MemberIsolatedInfo;
-import com.vikadata.api.organization.model.MemberTeamPathInfo;
-import com.vikadata.entity.TeamEntity;
+import com.vikadata.api.organization.dto.MemberIsolatedInfo;
+import com.vikadata.api.organization.vo.MemberTeamPathInfo;
+import com.vikadata.api.organization.entity.TeamEntity;
 
 public interface ITeamService extends IService<TeamEntity> {
 

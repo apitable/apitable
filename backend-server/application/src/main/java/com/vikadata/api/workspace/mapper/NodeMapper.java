@@ -17,7 +17,7 @@ import com.vikadata.api.workspace.vo.NodePathVo;
 import com.vikadata.api.workspace.vo.NodeShareTree;
 import com.vikadata.api.workspace.vo.RubbishNodeVo;
 import com.vikadata.api.workspace.vo.SimpleSortableNodeInfo;
-import com.vikadata.api.workspace.model.SimpleNodeInfo;
+import com.vikadata.api.workspace.dto.SimpleNodeInfo;
 import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.entity.NodeEntity;
 

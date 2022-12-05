@@ -1,8 +1,8 @@
 package com.vikadata.api.space.service;
 
 import com.vikadata.api.shared.util.page.PageInfo;
-import com.vikadata.api.space.model.SpaceAuditPageParam;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditPageParamDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 
 public interface ISpaceAuditService {
 
@@ -13,5 +13,5 @@ public interface ISpaceAuditService {
      * @param param     param
      * @return SpaceAuditPageVO
      */
-    PageInfo<SpaceAuditPageVO> getSpaceAuditPageVO(String spaceId, SpaceAuditPageParam param);
+    PageInfo<SpaceAuditPageVO> getSpaceAuditPageVO(String spaceId, SpaceAuditPageParamDTO param);
 }

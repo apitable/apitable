@@ -37,7 +37,7 @@ import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.space.mapper.SpaceResourceMapper;
 import com.vikadata.api.space.mapper.SpaceRoleMapper;
 import com.vikadata.api.space.mapper.SpaceRoleResourceRelMapper;
-import com.vikadata.api.space.model.SpaceGroupResourceDto;
+import com.vikadata.api.space.dto.SpaceGroupResourceDto;
 import com.vikadata.api.space.ro.AddSpaceRoleRo;
 import com.vikadata.api.space.ro.UpdateSpaceRoleRo;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
@@ -51,7 +51,7 @@ import com.vikadata.api.space.vo.SpaceRoleDetailVo;
 import com.vikadata.api.space.vo.SpaceRoleVo;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceMemberRoleRelEntity;
 import com.vikadata.entity.SpaceRoleEntity;
 

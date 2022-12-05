@@ -329,7 +329,7 @@
     </select>
 
     <select id="selectBySpaceIdAndName"
-            resultType="com.vikadata.entity.TeamEntity">
+            resultType="com.vikadata.api.organization.entity.TeamEntity">
         SELECT *
         FROM ${tablePrefix}unit_team vod
         WHERE vod.space_id = #{spaceId}
@@ -354,7 +354,7 @@
         ORDER BY vod.sequence
     </select>
 
-    <select id="selectByTeamIdsIgnoreDelete" resultType="com.vikadata.entity.TeamEntity">
+    <select id="selectByTeamIdsIgnoreDelete" resultType="com.vikadata.api.organization.entity.TeamEntity">
         SELECT *
         FROM ${tablePrefix}unit_team
         WHERE id IN
@@ -363,7 +363,7 @@
         </foreach>
     </select>
 
-    <select id="selectAllBySpaceId" resultType="com.vikadata.entity.TeamEntity">
+    <select id="selectAllBySpaceId" resultType="com.vikadata.api.organization.entity.TeamEntity">
         SELECT *
         FROM ${tablePrefix}unit_team
         WHERE space_id = #{spaceId}
@@ -428,7 +428,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.model.TeamBaseInfoDTO">
+    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.dto.TeamBaseInfoDTO">
         SELECT id, team_name
         FROM ${tablePrefix}unit_team
         WHERE id IN
@@ -462,7 +462,7 @@
         ORDER BY parent_id
     </select>
 
-    <select id="selectTreeByTeamName" resultType="com.vikadata.entity.TeamEntity">
+    <select id="selectTreeByTeamName" resultType="com.vikadata.api.organization.entity.TeamEntity">
         WITH RECURSIVE tree_view ( id, team_name, parent_id, space_id ) AS (
                 SELECT id, team_name, parent_id, space_id
                 FROM ${tablePrefix}unit_team
@@ -476,7 +476,7 @@
         SELECT DISTINCT * FROM tree_view
     </select>
 
-    <select id="selectChildTreeByTeamIds" resultType="com.vikadata.api.organization.model.TeamCteInfo">
+    <select id="selectChildTreeByTeamIds" resultType="com.vikadata.api.organization.dto.TeamCteInfo">
         WITH RECURSIVE tree_view ( id, parent_id ) AS (
         SELECT id, parent_id
         FROM ${tablePrefix}unit_team
@@ -493,7 +493,7 @@
         SELECT DISTINCT * FROM tree_view
     </select>
 
-    <select id="selectParentTreeByTeamIds" resultType="com.vikadata.api.organization.model.TeamPathInfo">
+    <select id="selectParentTreeByTeamIds" resultType="com.vikadata.api.organization.dto.TeamPathInfo">
         WITH RECURSIVE tree_view ( id, team_name, parent_id ) AS (
         SELECT id, team_name, parent_id
         FROM ${tablePrefix}unit_team

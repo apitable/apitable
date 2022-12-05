@@ -2,9 +2,9 @@ package com.vikadata.api.organization.factory;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.vikadata.api.organization.enums.UserSpaceStatus;
-import com.vikadata.entity.MemberEntity;
-import com.vikadata.entity.TeamEntity;
-import com.vikadata.entity.TeamMemberRelEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
+import com.vikadata.api.organization.entity.TeamEntity;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 public class OrganizationFactory {
 

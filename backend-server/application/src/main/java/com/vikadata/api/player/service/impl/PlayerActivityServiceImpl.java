@@ -21,7 +21,7 @@ import com.vikadata.api.player.mapper.PlayerActivityMapper;
 import com.vikadata.api.player.service.IPlayerActivityService;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.entity.PlayerActivityEntity;
+import com.vikadata.api.player.entity.PlayerActivityEntity;
 import com.vikadata.api.shared.sysconfig.SystemConfigManager;
 import com.vikadata.api.shared.sysconfig.wizard.Wizard;
 

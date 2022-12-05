@@ -13,7 +13,7 @@ import com.vikadata.api.enterprise.control.service.IControlRoleService;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.organization.service.IUnitService;
-import com.vikadata.api.workspace.model.ControlRoleInfo;
+import com.vikadata.api.workspace.dto.ControlRoleInfo;
 import com.vikadata.api.workspace.service.INodeRoleService;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.enums.NodeType;

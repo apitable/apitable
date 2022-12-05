@@ -4,8 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import com.vikadata.api.space.model.SpaceGlobalFeature;
-
 /**
  * <p>
  * Space Management - Workbench Set Request Parameters

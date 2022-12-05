@@ -2,10 +2,10 @@ package com.vikadata.api.space.service;
 
 import java.util.List;
 
-import com.vikadata.api.space.model.ControlStaticsVO;
-import com.vikadata.api.space.model.DatasheetStaticsVO;
-import com.vikadata.api.space.model.NodeStaticsVO;
-import com.vikadata.api.space.model.NodeTypeStatics;
+import com.vikadata.api.space.dto.ControlStaticsDTO;
+import com.vikadata.api.space.dto.DatasheetStaticsDTO;
+import com.vikadata.api.space.dto.NodeStaticsDTO;
+import com.vikadata.api.space.dto.NodeTypeStaticsDTO;
 
 /**
  * <p>
@@ -84,7 +84,7 @@ public interface IStaticsService {
      * @param spaceId space id
      * @return ControlStaticsVO
      */
-    ControlStaticsVO getFieldRoleTotalCountBySpaceId(String spaceId);
+    ControlStaticsDTO getFieldRoleTotalCountBySpaceId(String spaceId);
 
     /**
      * Get the working directory statistics view of the space
@@ -92,7 +92,7 @@ public interface IStaticsService {
      * @param spaceId space id
      * @return NodeStaticsVO
      */
-    NodeStaticsVO getNodeStaticsBySpaceId(String spaceId);
+    NodeStaticsDTO getNodeStaticsBySpaceId(String spaceId);
 
     /**
      * Get the node type statistics view of the space
@@ -100,7 +100,7 @@ public interface IStaticsService {
      * @param spaceId space id
      * @return NodeTypeStatics
      */
-    List<NodeTypeStatics> getNodeTypeStaticsBySpaceId(String spaceId);
+    List<NodeTypeStaticsDTO> getNodeTypeStaticsBySpaceId(String spaceId);
 
     /**
      * Get the statistics view of the space table
@@ -108,5 +108,5 @@ public interface IStaticsService {
      * @param spaceId space id
      * @return DatasheetStaticsVO
      */
-    DatasheetStaticsVO getDatasheetStaticsBySpaceId(String spaceId);
+    DatasheetStaticsDTO getDatasheetStaticsBySpaceId(String spaceId);
 }

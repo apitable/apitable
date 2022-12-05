@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.organization.enums.UserSpaceStatus;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.api.user.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;

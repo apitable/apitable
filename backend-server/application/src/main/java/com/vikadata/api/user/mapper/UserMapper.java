@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vikadata.api.space.model.InviteUserInfo;
+import com.vikadata.api.space.vo.InviteUserInfo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.cursor.Cursor;
 

@@ -17,8 +17,8 @@ import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.util.page.PageInfo;
-import com.vikadata.api.space.model.SpaceAuditPageParam;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditPageParamDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 import com.vikadata.api.space.service.ISpaceAuditService;
 import com.vikadata.core.support.ResponseData;
 
@@ -60,7 +60,7 @@ public class SpaceAuditController {
         // check whether it is cross space
         LoginContext.me().getUserSpaceDto(spaceId);
         // get spatial audit paging information
-        SpaceAuditPageParam param = SpaceAuditPageParam.builder()
+        SpaceAuditPageParamDTO param = SpaceAuditPageParamDTO.builder()
                 .beginTime(beginTime)
                 .endTime(endTime)
                 .memberIds(memberIds)

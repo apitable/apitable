@@ -32,7 +32,7 @@ import com.vikadata.api.workspace.vo.DatasheetRecordMapVo;
 import com.vikadata.api.workspace.vo.DatasheetRecordVo;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.workspace.mapper.DatasheetRecordMapper;
-import com.vikadata.api.workspace.model.NodeCopyDTO;
+import com.vikadata.api.workspace.dto.NodeCopyDTO;
 import com.vikadata.api.workspace.service.IDatasheetRecordService;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.entity.DatasheetRecordEntity;

@@ -22,8 +22,8 @@ import com.vikadata.api.shared.sysconfig.SystemConfigManager;
 import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.space.enums.SubscribeFunctionException;
-import com.vikadata.api.space.model.SpaceAuditPageParam;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditPageParamDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 import com.vikadata.api.space.service.ISpaceAuditService;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.core.util.ExceptionUtil;
@@ -48,7 +48,7 @@ public class SpaceAuditServiceImpl implements ISpaceAuditService {
     private MultiDatasourceAdapterTemplate multiDatasourceAdapterTemplate;
 
     @Override
-    public PageInfo<SpaceAuditPageVO> getSpaceAuditPageVO(String spaceId, SpaceAuditPageParam param) {
+    public PageInfo<SpaceAuditPageVO> getSpaceAuditPageVO(String spaceId, SpaceAuditPageParamDTO param) {
         // Gets the number of days the space subscription plan is available for audit query
         SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
         long queryDays = subscriptionInfo.getFeature().getAuditQueryDays().getValue();

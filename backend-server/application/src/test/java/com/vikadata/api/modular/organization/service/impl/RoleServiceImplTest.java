@@ -16,7 +16,7 @@ import com.vikadata.api.organization.ro.RoleMemberUnitRo;
 import com.vikadata.api.organization.vo.RoleInfoVo;
 import com.vikadata.api.organization.vo.RoleMemberVo;
 import com.vikadata.api.organization.vo.RoleVo;
-import com.vikadata.api.organization.model.RoleBaseInfoDto;
+import com.vikadata.api.organization.dto.RoleBaseInfoDto;
 import com.vikadata.api.user.entity.UserEntity;
 
 import static java.util.stream.Collectors.toList;

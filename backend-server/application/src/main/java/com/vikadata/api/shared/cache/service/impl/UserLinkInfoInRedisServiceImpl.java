@@ -12,7 +12,7 @@ import com.vikadata.api.shared.cache.bean.AccountLinkDto;
 import com.vikadata.api.shared.cache.bean.UserLinkInfo;
 import com.vikadata.api.shared.cache.service.UserLinkInfoService;
 import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
+import com.vikadata.api.user.mapper.DeveloperMapper;
 import com.vikadata.api.player.mapper.PlayerActivityMapper;
 import com.vikadata.api.user.mapper.UserLinkMapper;
 import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.shared.util.ibatis.ExpandBaseMapper;
-import com.vikadata.entity.TeamMemberRelEntity;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 public interface TeamMemberRelMapper extends ExpandBaseMapper<TeamMemberRelEntity> {
 

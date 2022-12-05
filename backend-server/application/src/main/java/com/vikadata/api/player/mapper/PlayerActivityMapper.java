@@ -5,7 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.entity.PlayerActivityEntity;
+import com.vikadata.api.player.entity.PlayerActivityEntity;
 
 /**
  * <p>

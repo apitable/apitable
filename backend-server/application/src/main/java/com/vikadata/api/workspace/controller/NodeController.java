@@ -83,7 +83,7 @@ import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.workspace.mapper.NodeDescMapper;
 import com.vikadata.api.workspace.mapper.NodeFavoriteMapper;
 import com.vikadata.api.workspace.mapper.NodeShareSettingMapper;
-import com.vikadata.api.workspace.model.NodeCopyEffectDTO;
+import com.vikadata.api.workspace.dto.NodeCopyEffectDTO;
 import com.vikadata.api.workspace.service.IDatasheetService;
 import com.vikadata.api.workspace.service.INodeDescService;
 import com.vikadata.api.workspace.service.INodeRelService;

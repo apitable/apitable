@@ -18,7 +18,7 @@ import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.space.enums.SpaceApplyStatus;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.space.dto.SpaceApplyDTO;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.service.IMemberService;

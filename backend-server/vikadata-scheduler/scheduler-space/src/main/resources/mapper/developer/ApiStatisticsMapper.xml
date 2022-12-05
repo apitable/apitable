@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vikadata.scheduler.space.mapper.developer.ApiStatisticsMapper">
-    <select id="selectFirstApiUsageRecord" resultType="com.vikadata.entity.ApiUsageEntity">
+    <select id="selectFirstApiUsageRecord" resultType="com.vikadata.scheduler.space.pojo.ApiUsage">
         SELECT *
         FROM vika_api_usage
         ORDER BY id ASC LIMIT 1
     </select>
 
     <select id="selectNextDayFirstRecord"
-            resultType="com.vikadata.entity.ApiUsageEntity">
+            resultType="com.vikadata.scheduler.space.pojo.ApiUsage">
         SELECT *
         FROM vika_api_usage
         WHERE id &gt; #{id}
@@ -89,14 +89,14 @@
         ORDER BY statistics_time
     </select>
 
-    <select id="selectLastApiUsageDailyRecord" resultType="com.vikadata.entity.ApiStatisticsDailyEntity">
+    <select id="selectLastApiUsageDailyRecord" resultType="com.vikadata.scheduler.space.pojo.ApiStatisticsDaily">
         SELECT *
         FROM vika_api_statistics_daily
         ORDER BY id DESC
         LIMIT 1
     </select>
 
-    <select id="selectLastApiUsageMonthlyRecord" resultType="com.vikadata.entity.ApiStatisticsMonthlyEntity">
+    <select id="selectLastApiUsageMonthlyRecord" resultType="com.vikadata.scheduler.space.pojo.ApiStatisticsMonthly">
         SELECT *
         FROM vika_api_statistics_monthly
         ORDER BY id DESC

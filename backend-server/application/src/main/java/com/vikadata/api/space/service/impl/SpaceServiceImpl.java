@@ -73,13 +73,13 @@ import com.vikadata.api.space.enums.SpaceException;
 import com.vikadata.api.space.enums.SpaceResourceGroupCode;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
-import com.vikadata.api.space.model.ControlStaticsVO;
-import com.vikadata.api.space.model.DatasheetStaticsVO;
-import com.vikadata.api.space.model.GetSpaceListFilterCondition;
-import com.vikadata.api.space.model.NodeTypeStatics;
-import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.space.dto.ControlStaticsDTO;
+import com.vikadata.api.space.dto.DatasheetStaticsDTO;
+import com.vikadata.api.space.dto.GetSpaceListFilterCondition;
+import com.vikadata.api.space.dto.NodeTypeStaticsDTO;
+import com.vikadata.api.space.dto.SpaceCapacityUsedInfo;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
@@ -95,15 +95,15 @@ import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
 import com.vikadata.api.workspace.enums.NodeType;
-import com.vikadata.api.workspace.model.CreateNodeDto;
-import com.vikadata.api.workspace.model.NodeCopyOptions;
+import com.vikadata.api.workspace.dto.CreateNodeDto;
+import com.vikadata.api.workspace.dto.NodeCopyOptions;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.INodeShareSettingService;
 import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -441,22 +441,22 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // API usage statistics
         long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId);
         // file control amount
-        ControlStaticsVO controlStaticsVO = iStaticsService.getFieldRoleTotalCountBySpaceId(spaceId);
-        long nodeRoleNums = controlStaticsVO != null ? controlStaticsVO.getNodeRoleCount() : 0L;
-        long fieldRoleNums = controlStaticsVO != null ? controlStaticsVO.getFieldRoleCount() : 0L;
+        ControlStaticsDTO controlStaticsDTO = iStaticsService.getFieldRoleTotalCountBySpaceId(spaceId);
+        long nodeRoleNums = controlStaticsDTO != null ? controlStaticsDTO.getNodeRoleCount() : 0L;
+        long fieldRoleNums = controlStaticsDTO != null ? controlStaticsDTO.getFieldRoleCount() : 0L;
         // node statistics
-        List<NodeTypeStatics> nodeTypeStatics = iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
-        long sheetNums = nodeTypeStatics.stream()
+        List<NodeTypeStaticsDTO> nodeTypeStaticDTOS = iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
+        long sheetNums = nodeTypeStaticDTOS.stream()
                 .filter(condition -> NodeType.toEnum(condition.getType()).isFileNode())
-                .mapToLong(NodeTypeStatics::getTotal).sum();
-        long mirrorNums = nodeTypeStatics.stream()
+                .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
+        long mirrorNums = nodeTypeStaticDTOS.stream()
                 .filter(condition -> NodeType.MIRROR == NodeType.toEnum(condition.getType()))
-                .mapToLong(NodeTypeStatics::getTotal).sum();
+                .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
 
-        Map<Integer, Integer> typeStaticsMap = nodeTypeStatics.stream().collect(Collectors.toMap(NodeTypeStatics::getType, NodeTypeStatics::getTotal));
+        Map<Integer, Integer> typeStaticsMap = nodeTypeStaticDTOS.stream().collect(Collectors.toMap(NodeTypeStaticsDTO::getType, NodeTypeStaticsDTO::getTotal));
         long formViewNums = typeStaticsMap.containsKey(NodeType.FORM.getNodeType()) ? typeStaticsMap.get(NodeType.FORM.getNodeType()) : 0L;
         // table view statistics
-        DatasheetStaticsVO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
+        DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         SpaceInfoVO vo = SpaceInfoVO.builder()
                 .spaceName(entity.getName())
                 .spaceLogo(entity.getLogo())
@@ -564,7 +564,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         long recordNums = iStaticsService.getDatasheetRecordTotalCountBySpaceId(spaceId);
         vo.setRecordNums(recordNums);
         // table view statistics
-        DatasheetStaticsVO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
+        DatasheetStaticsDTO viewVO = iStaticsService.getDatasheetStaticsBySpaceId(spaceId);
         vo.setGalleryViewNums(viewVO.getGalleryViews());
         vo.setKanbanViewNums(viewVO.getKanbanViews());
         vo.setGanttViewNums(viewVO.getGanttViews());

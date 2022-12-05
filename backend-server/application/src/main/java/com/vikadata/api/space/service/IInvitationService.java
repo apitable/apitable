@@ -3,7 +3,7 @@ package com.vikadata.api.space.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.space.vo.SpaceLinkInfoVo;
-import com.vikadata.api.space.model.InvitationUserDTO;
+import com.vikadata.api.space.dto.InvitationUserDTO;
 import com.vikadata.entity.InvitationEntity;
 
 public interface IInvitationService extends IService<InvitationEntity> {

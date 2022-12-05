@@ -18,7 +18,7 @@ import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.organization.service.ITeamMemberRelService;
 import com.vikadata.api.shared.util.ibatis.ExpandServiceImpl;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.entity.TeamMemberRelEntity;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 import org.springframework.stereotype.Service;
 

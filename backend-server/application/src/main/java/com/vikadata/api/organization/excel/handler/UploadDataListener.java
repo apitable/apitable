@@ -23,7 +23,7 @@ import com.vikadata.api.organization.dto.UploadDataDTO;
 import com.vikadata.api.organization.vo.ParseErrorRecordVO;
 import com.vikadata.api.shared.util.excel.ExcelDataValidateException;
 import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 
 /**
  * <p>

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.vikadata.entity.TeamMemberRelEntity;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 public interface ITeamMemberRelService extends IService<TeamMemberRelEntity> {
 

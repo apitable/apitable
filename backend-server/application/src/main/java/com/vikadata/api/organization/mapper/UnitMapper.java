@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.organization.enums.UnitType;
 import com.vikadata.api.shared.util.ibatis.ExpandBaseMapper;
-import com.vikadata.api.user.entity.UnitEntity;
+import com.vikadata.api.organization.entity.UnitEntity;
 
 public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.vikadata.api.organization.mapper.AuditUploadParseRecordMapper">
 
     <select id="selectLastBySpaceId"
-            resultType="com.vikadata.entity.AuditUploadParseRecordEntity">
+            resultType="com.vikadata.api.organization.entity.AuditUploadParseRecordEntity">
         select *
         from ${tablePrefix}audit_upload_parse_record
         where space_id = #{spaceId}

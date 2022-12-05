@@ -6,7 +6,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.space.vo.SpaceLinkInfoVo;
-import com.vikadata.api.space.model.InvitationUserDTO;
+import com.vikadata.api.space.dto.InvitationUserDTO;
 import com.vikadata.entity.SpaceInviteLinkEntity;
 
 public interface ISpaceInviteLinkService extends IService<SpaceInviteLinkEntity> {

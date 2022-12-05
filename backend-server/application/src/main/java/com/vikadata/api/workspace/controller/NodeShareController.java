@@ -34,7 +34,7 @@ import com.vikadata.api.workspace.vo.NodeShareInfoVO;
 import com.vikadata.api.workspace.vo.NodeShareSettingInfoVO;
 import com.vikadata.api.workspace.vo.ShareBaseInfoVo;
 import com.vikadata.api.workspace.vo.StoreNodeInfoVO;
-import com.vikadata.api.workspace.model.NodeSharePropsDTO;
+import com.vikadata.api.workspace.dto.NodeSharePropsDTO;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.INodeShareService;
 import com.vikadata.api.workspace.enums.PermissionException;

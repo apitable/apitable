@@ -62,8 +62,8 @@
         AND meta_data LIKE CONCAT('%', #{keyword}, '%') AND is_deleted = 0
     </select>
 
-    <resultMap id="snapshot" type="com.vikadata.api.workspace.model.DatasheetSnapshot">
-        <result column="meta_data" property="meta" typeHandler="com.vikadata.api.workspace.typehandler.DatasheetMetaTypeHandler"/>
+    <resultMap id="snapshot" type="com.vikadata.api.workspace.dto.DatasheetSnapshot">
+        <result column="meta_data" property="meta" typeHandler="com.vikadata.api.workspace.support.DatasheetMetaTypeHandler"/>
     </resultMap>
 
     <select id="selectByDstId" resultMap="snapshot">

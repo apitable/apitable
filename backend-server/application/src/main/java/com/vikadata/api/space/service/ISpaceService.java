@@ -7,10 +7,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
 import com.vikadata.api.internal.model.InternalSpaceUsageVo;
-import com.vikadata.api.space.model.GetSpaceListFilterCondition;
-import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.space.dto.GetSpaceListFilterCondition;
+import com.vikadata.api.space.dto.SpaceCapacityUsedInfo;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceSubscribeVo;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.vo.SpaceInfoVO;
 import com.vikadata.api.space.vo.SpaceVO;

@@ -6,14 +6,14 @@ import cn.hutool.json.JSONObject;
 
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.space.enums.AuditSpaceAction;
-import com.vikadata.api.space.model.SpaceAuditPageParam;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditPageParamDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 import com.vikadata.api.workspace.enums.NodeType;
 
 
 public interface DatasourceAdapter {
 
-    PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParam param);
+    PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParamDTO param);
 
     void createSpaceAuditRecord(Long userId, String spaceId, AuditSpaceAction action, JSONObject info);
 

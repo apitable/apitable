@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import com.vikadata.api.organization.model.MemberTeamPathInfo;
+import com.vikadata.api.organization.vo.MemberTeamPathInfo;
 import com.vikadata.api.shared.support.serializer.ImageSerializer;
 import com.vikadata.api.shared.support.serializer.NullBooleanSerializer;
 import com.vikadata.api.shared.support.serializer.NullNumberSerializer;

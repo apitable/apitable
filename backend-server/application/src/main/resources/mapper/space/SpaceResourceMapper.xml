@@ -39,7 +39,7 @@
         AND assignable = 1
     </select>
 
-    <resultMap id="groupResource" type="com.vikadata.api.space.model.SpaceGroupResourceDto">
+    <resultMap id="groupResource" type="com.vikadata.api.space.dto.SpaceGroupResourceDto">
         <result property="groupCode" column="group_code"/>
         <result property="groupName" column="group_name"/>
         <result property="groupDesc" column="group_desc"/>
@@ -58,7 +58,7 @@
         WHERE vr.assignable = 1
     </select>
 
-    <resultMap id="menuResource" type="com.vikadata.api.space.model.SpaceMenuResourceDto">
+    <resultMap id="menuResource" type="com.vikadata.api.space.dto.SpaceMenuResourceDto">
         <result property="menuCode" column="menu_code"/>
         <collection property="resources" ofType="java.lang.String">
             <result column="resource_code"/>
@@ -91,7 +91,7 @@
         WHERE vsmrr.member_id = #{memberId}
     </select>
 
-    <resultMap id="memberResource" type="com.vikadata.api.space.model.SpaceMemberResourceDto">
+    <resultMap id="memberResource" type="com.vikadata.api.space.dto.SpaceMemberResourceDto">
         <result property="memberId" column="member_id"/>
         <collection property="resources" ofType="java.lang.String">
             <result column="resource_code"/>

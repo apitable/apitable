@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import com.vikadata.api.organization.vo.RoleInfoVo;
 import com.vikadata.api.organization.vo.RoleVo;
-import com.vikadata.api.organization.model.RoleBaseInfoDto;
+import com.vikadata.api.organization.dto.RoleBaseInfoDto;
 
 public interface IRoleService {
 

@@ -29,9 +29,9 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.core.constants.RedisConstants;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
-import com.vikadata.api.user.entity.UnitEntity;
+import com.vikadata.api.organization.entity.UnitEntity;
 
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.entity.AssetEntity;
 import com.vikadata.scheduler.space.model.AssetDto;
+import com.vikadata.scheduler.space.pojo.Asset;
 
 /**
  * <p>
@@ -28,6 +28,6 @@ public interface AssetMapper {
      * @param entity entity
      * @return number of execution results
      */
-    int insertEntity(@Param("entity") AssetEntity entity);
+    int insertEntity(@Param("entity") Asset entity);
 
 }

@@ -12,7 +12,7 @@ import com.vikadata.api.enterprise.billing.strategy.SocialOrderStrategyFactory;
 import com.vikadata.api.enterprise.social.enums.SocialAppType;
 import com.vikadata.api.enterprise.social.enums.SocialTenantAuthMode;
 import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.workspace.model.CreateNodeDto;
+import com.vikadata.api.workspace.dto.CreateNodeDto;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.api.workspace.enums.NodeType;

@@ -81,7 +81,6 @@ ext {
     'wx-mp'                       : "com.github.binarywang:weixin-java-mp:${wx_java_sdk_version}",
     'wx-miniapp'                  : "com.github.binarywang:weixin-java-miniapp:${wx_java_sdk_version}",
     'wx-cp'                       : "com.github.binarywang:weixin-java-cp:${wx_java_sdk_version}",
-    'wx-pay'                      : "com.github.binarywang:weixin-java-pay:${wx_java_sdk_version}",
     'socket-io'                   : "io.socket:socket.io-client:${socketio_version}",
     'xxl'                         : "com.xuxueli:xxl-job-core:${xxl_job_version}",
     'pingpp'                      : "Pingplusplus:pingpp-java:${pingpp_version}",

@@ -11,10 +11,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xxl.job.core.context.XxlJobHelper;
 
+import com.vikadata.scheduler.space.config.properties.InternalProperties;
 import com.vikadata.scheduler.space.model.PausedUserHistoryDto;
 import com.vikadata.scheduler.space.model.PausedUserHistoryRo;
-import com.vikadata.entity.IntegralHistoryEntity;
-import com.vikadata.scheduler.space.config.properties.InternalProperties;
 import com.vikadata.scheduler.space.model.ResponseDataDto;
 import com.vikadata.scheduler.space.service.IUserService;
 

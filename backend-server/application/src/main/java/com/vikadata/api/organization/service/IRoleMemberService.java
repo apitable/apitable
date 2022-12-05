@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import com.vikadata.api.organization.ro.RoleMemberUnitRo;
 import com.vikadata.api.organization.vo.RoleMemberVo;
-import com.vikadata.api.organization.model.RoleMemberInfoDTO;
+import com.vikadata.api.organization.dto.RoleMemberInfoDTO;
 
 public interface IRoleMemberService {
 

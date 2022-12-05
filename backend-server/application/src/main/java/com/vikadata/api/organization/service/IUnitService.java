@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.organization.enums.UnitType;
 import com.vikadata.api.organization.vo.UnitInfoVo;
-import com.vikadata.api.organization.model.UnitInfoDTO;
-import com.vikadata.api.user.entity.UnitEntity;
+import com.vikadata.api.organization.dto.UnitInfoDTO;
+import com.vikadata.api.organization.entity.UnitEntity;
 
 public interface IUnitService extends IService<UnitEntity> {
 

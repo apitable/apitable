@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.space.mapper.InvitationMapper;
-import com.vikadata.api.space.model.InvitationUserDTO;
-import com.vikadata.api.workspace.model.CreateNodeDto;
+import com.vikadata.api.space.dto.InvitationUserDTO;
+import com.vikadata.api.workspace.dto.CreateNodeDto;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.api.workspace.enums.NodeType;

@@ -19,7 +19,7 @@ import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.workspace.mapper.NodeRelMapper;
 import com.vikadata.api.workspace.observer.DatasheetRemindObserver;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.NodeRelEntity;
 
 import org.springframework.data.redis.core.RedisTemplate;

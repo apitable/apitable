@@ -3,7 +3,7 @@ package com.vikadata.api.organization.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.entity.AuditUploadParseRecordEntity;
+import com.vikadata.api.organization.entity.AuditUploadParseRecordEntity;
 
 /**
  * <p>

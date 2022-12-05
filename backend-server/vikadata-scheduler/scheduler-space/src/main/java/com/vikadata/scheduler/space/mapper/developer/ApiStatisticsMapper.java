@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.entity.ApiStatisticsDailyEntity;
-import com.vikadata.entity.ApiStatisticsMonthlyEntity;
-import com.vikadata.entity.ApiUsageEntity;
 import com.vikadata.scheduler.space.model.ApiRecordDto;
 import com.vikadata.scheduler.space.model.SpaceApiUsageDto;
+import com.vikadata.scheduler.space.pojo.ApiStatisticsDaily;
+import com.vikadata.scheduler.space.pojo.ApiStatisticsMonthly;
+import com.vikadata.scheduler.space.pojo.ApiUsage;
 
 /**
  * <p>
@@ -24,7 +24,7 @@ public interface ApiStatisticsMapper {
      *
      * @return ApiUsageEntity
      */
-    ApiUsageEntity selectFirstApiUsageRecord();
+    ApiUsage selectFirstApiUsageRecord();
 
     /**
      * Query the first record after the specified ID and creation time the next day
@@ -33,7 +33,7 @@ public interface ApiStatisticsMapper {
      * @param createdAt createdAt
      * @return ApiUsageEntity
      */
-    ApiUsageEntity selectNextDayFirstRecord(@Param("id") Long id, @Param("createdAt") LocalDateTime createdAt);
+    ApiUsage selectNextDayFirstRecord(@Param("id") Long id, @Param("createdAt") LocalDateTime createdAt);
 
     /**
      * Query daily maximum table ID
@@ -90,14 +90,14 @@ public interface ApiStatisticsMapper {
      *
      * @return ApiStatisticsDailyEntity
      */
-    ApiStatisticsDailyEntity selectLastApiUsageDailyRecord();
+    ApiStatisticsDaily selectLastApiUsageDailyRecord();
 
     /**
      * query the last record in the monthly API usage statistics table
      *
      * @return ApiStatisticsMonthlyEntity
      */
-    ApiStatisticsMonthlyEntity selectLastApiUsageMonthlyRecord();
+    ApiStatisticsMonthly selectLastApiUsageMonthlyRecord();
 
     /**
      * batch insert api usage daily statistics
@@ -105,7 +105,7 @@ public interface ApiStatisticsMapper {
      * @param apiStatisticsDailyEntities apiStatisticsDailyEntities
      * @return number of execution results
      */
-    int insertApiUsageDailyInfo(@Param("apiStatisticsDailyEntities") List<ApiStatisticsDailyEntity> apiStatisticsDailyEntities);
+    int insertApiUsageDailyInfo(@Param("apiStatisticsDailyEntities") List<ApiStatisticsDaily> apiStatisticsDailyEntities);
 
     /**
      * batch insert api usage monthly statistics
@@ -113,5 +113,5 @@ public interface ApiStatisticsMapper {
      * @param apiStatisticsMonthlyEntities apiStatisticsMonthlyEntities
      * @return number of execution results
      */
-    int insertApiUsageMonthlyInfo(@Param("apiStatisticsMonthlyEntities") List<ApiStatisticsMonthlyEntity> apiStatisticsMonthlyEntities);
+    int insertApiUsageMonthlyInfo(@Param("apiStatisticsMonthlyEntities") List<ApiStatisticsMonthly> apiStatisticsMonthlyEntities);
 }

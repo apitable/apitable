@@ -62,7 +62,7 @@
         </foreach>
     </update>
 
-    <resultMap id="spaceSubscriptionDto" type="com.vikadata.api.space.model.SpaceSubscriptionDto">
+    <resultMap id="spaceSubscriptionDto" type="com.vikadata.api.space.dto.SpaceSubscriptionDto">
         <result column="product_category" property="productCategory"/>
         <result column="plan_id" property="planId"/>
         <result column="metadata" property="metadata"/>

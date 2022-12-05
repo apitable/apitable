@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
-import com.vikadata.entity.TeamMemberRelEntity;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

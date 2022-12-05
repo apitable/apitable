@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
 import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
-import com.vikadata.api.workspace.model.DatasheetSnapshot;
+import com.vikadata.api.workspace.dto.DatasheetSnapshot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;

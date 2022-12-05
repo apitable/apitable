@@ -15,7 +15,7 @@ import com.vikadata.api.organization.vo.SearchMemberResultVo;
 import com.vikadata.api.organization.vo.SearchMemberVo;
 import com.vikadata.api.organization.vo.UploadParseResultVO;
 import com.vikadata.api.organization.dto.TenantMemberDto;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
 import com.vikadata.api.workspace.vo.DatasheetMetaVo;
-import com.vikadata.api.workspace.model.DatasheetSnapshot;
+import com.vikadata.api.workspace.dto.DatasheetSnapshot;
 import com.vikadata.entity.DatasheetMetaEntity;
 
 public interface DatasheetMetaMapper extends BaseMapper<DatasheetMetaEntity> {

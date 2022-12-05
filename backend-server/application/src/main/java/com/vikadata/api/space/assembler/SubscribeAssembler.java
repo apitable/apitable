@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 
 import com.vikadata.api.interfaces.billing.model.SubscriptionFeature;
 import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
-import com.vikadata.api.space.model.vo.SpaceSubscribeVo;
+import com.vikadata.api.space.vo.SpaceSubscribeVo;
 
 public class SubscribeAssembler {
 

@@ -8,7 +8,7 @@ import java.util.Set;
 import com.vikadata.api.workspace.vo.NodeRoleMemberVo;
 import com.vikadata.api.workspace.vo.NodeRoleUnit;
 import com.vikadata.api.organization.vo.UnitMemberVo;
-import com.vikadata.api.workspace.model.ControlRoleInfo;
+import com.vikadata.api.workspace.dto.ControlRoleInfo;
 
 public interface INodeRoleService {
 

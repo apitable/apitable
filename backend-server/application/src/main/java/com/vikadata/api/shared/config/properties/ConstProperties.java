@@ -76,12 +76,6 @@ public class ConstProperties {
      */
     private String quoteEnTemplateId = "tpll8mltwrZMT";
 
-    /**
-     * @deprecated open-source
-     */
-    @Deprecated
-    private Long gmConfigUnit;
-
     private String integralRewardConfig = "https://integration.vika.ltd,usk8qo1Dk9PbecBlaqFIvbb,dst9qAYY0ud1E3Av4f,viwPFbZIozOUs";
 
     /**

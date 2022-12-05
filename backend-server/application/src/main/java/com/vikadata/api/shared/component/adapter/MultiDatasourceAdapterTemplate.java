@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.space.enums.AuditSpaceAction;
-import com.vikadata.api.space.model.SpaceAuditPageParam;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditPageParamDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 import com.vikadata.api.workspace.enums.NodeType;
 
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MultiDatasourceAdapterTemplate {
 
-    public PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParam param) {
+    public PageInfo<SpaceAuditPageVO> getSpaceAuditPage(String spaceId, SpaceAuditPageParamDTO param) {
         DatasourceAdapter adapter = this.getDatasourceAdapter();
         return adapter.getSpaceAuditPage(spaceId, param);
     }

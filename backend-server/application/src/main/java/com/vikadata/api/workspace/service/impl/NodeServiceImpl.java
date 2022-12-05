@@ -3,7 +3,6 @@ package com.vikadata.api.workspace.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,7 +39,6 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.EncryptedDocumentException;
@@ -77,7 +75,7 @@ import com.vikadata.api.shared.util.VikaStrings;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.space.enums.SpaceException;
 import com.vikadata.api.space.mapper.SpaceAssetMapper;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.space.service.ISpaceAssetService;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.space.service.ISpaceService;
@@ -94,15 +92,15 @@ import com.vikadata.api.workspace.enums.ViewType;
 import com.vikadata.api.workspace.listener.CsvReadListener;
 import com.vikadata.api.workspace.listener.ExcelSheetsDataListener;
 import com.vikadata.api.workspace.listener.MultiSheetReadListener;
-import com.vikadata.api.workspace.listener.NodeData;
+import com.vikadata.api.workspace.dto.NodeData;
 import com.vikadata.api.workspace.mapper.DatasheetMapper;
 import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.workspace.mapper.NodeShareSettingMapper;
-import com.vikadata.api.workspace.model.CreateNodeDto;
-import com.vikadata.api.workspace.model.NodeCopyEffectDTO;
-import com.vikadata.api.workspace.model.NodeCopyOptions;
-import com.vikadata.api.workspace.model.NodeExtraDTO;
+import com.vikadata.api.workspace.dto.CreateNodeDto;
+import com.vikadata.api.workspace.dto.NodeCopyEffectDTO;
+import com.vikadata.api.workspace.dto.NodeCopyOptions;
+import com.vikadata.api.workspace.dto.NodeExtraDTO;
 import com.vikadata.api.workspace.ro.CreateDatasheetRo;
 import com.vikadata.api.workspace.ro.FieldMapRo;
 import com.vikadata.api.workspace.ro.ImportExcelOpRo;
@@ -1151,7 +1149,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<String> dstIds = nodeTypeToNodeIdsMap.get(NodeType.DATASHEET.getNodeType()).stream()
                 .map(NodeShareTree::getNodeId).collect(Collectors.toList());
         // All the datasheets are in the filter list. Similarly, all the images of the forms are skipped for transfer.
-        if (filterNodeIds.containsAll(dstIds)) {
+        if (CollUtil.containsAll(filterNodeIds, dstIds)) {
             filterNodeIds.addAll(nodeIds);
             nodeTypeToNodeIdsMap.remove(NodeType.DATASHEET.getNodeType());
             return;
@@ -1258,10 +1256,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             List<List<Object>> sheetsData = sheetsDataListener.getSheetData();
             List<List<Object>> assembleData = new ArrayList<>();
             // assemble header and table data
-            if (CollectionUtils.isNotEmpty(sheetHeader)) {
+            if (CollectionUtil.isNotEmpty(sheetHeader)) {
                 assembleData.add(sheetHeader);
             }
-            if (CollectionUtils.isNotEmpty(sheetsData)) {
+            if (CollectionUtil.isNotEmpty(sheetsData)) {
                 assembleData.addAll(sheetsData);
             }
             readAll.put(readSheet.getSheetName(), assembleData);
@@ -1278,10 +1276,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<Object> sheetHeader = sheetsDataListener.getSheetHeader();
         List<List<Object>> sheetData = sheetsDataListener.getSheetData();
         List<List<Object>> assembleData = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(sheetHeader)) {
+        if (CollectionUtil.isNotEmpty(sheetHeader)) {
             assembleData.add(sheetHeader);
         }
-        if (CollectionUtils.isNotEmpty(sheetData)) {
+        if (CollectionUtil.isNotEmpty(sheetData)) {
             assembleData.addAll(sheetData);
         }
         return assembleData;
@@ -1753,27 +1751,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 .nodeType(node.getType())
                 .icon(node.getIcon())
                 .creator(memberInfo)
-                .build();
-    }
-
-    private MemberInfo getNodeLastUpdateInfo(NodeEntity node) {
-        // query the datasheet information of the node
-        DatasheetEntity datasheet = datasheetMapper.selectByDstId(node.getNodeId());
-        // get the latest node information and the member id
-        Long memberId = node.getUpdatedAt().isAfter(datasheet.getUpdatedAt()) ?
-                node.getUpdatedBy() : datasheet.getUpdatedBy();
-        // get the latest modification time
-        LocalDateTime modifyDateTime = node.getUpdatedAt().isAfter(datasheet.getUpdatedAt()) ?
-                node.getUpdatedAt() : datasheet.getUpdatedAt();
-        // query member information
-        MemberDTO memberDto = memberMapper.selectMemberDtoByUserIdAndSpaceId(memberId, node.getSpaceId());
-        // construct member information objects
-        return MemberInfo.builder()
-                .memberName(memberDto.getMemberName())
-                .avatar(memberDto.getAvatar())
-                .time(modifyDateTime)
-                .isActive(memberDto.getIsActive())
-                .isDeleted(memberDto.getIsDeleted())
                 .build();
     }
 

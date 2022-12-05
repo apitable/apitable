@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.vikadata.api.player.dto.NotificationModelDTO;
 import com.vikadata.api.player.ro.NotificationPageRo;
 import com.vikadata.api.player.ro.NotificationRevokeRo;
-import com.vikadata.entity.PlayerNotificationEntity;
+import com.vikadata.api.player.entity.PlayerNotificationEntity;
 
 /**
  * <p>

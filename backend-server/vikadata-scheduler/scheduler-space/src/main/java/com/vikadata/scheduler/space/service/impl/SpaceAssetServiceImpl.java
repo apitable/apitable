@@ -24,14 +24,12 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.xxl.job.core.context.XxlJobHelper;
 
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.OssObject;
 import com.vikadata.core.util.DigestUtil;
 import com.vikadata.core.util.InputStreamCache;
 import com.vikadata.core.util.MimeTypeMapping;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.entity.AssetEntity;
-import com.vikadata.entity.SpaceAssetEntity;
-import com.apitable.starter.oss.core.OssClientTemplate;
-import com.apitable.starter.oss.core.OssObject;
 import com.vikadata.scheduler.space.cache.service.RedisService;
 import com.vikadata.scheduler.space.config.properties.ConfigProperties;
 import com.vikadata.scheduler.space.enums.NodeType;
@@ -47,6 +45,8 @@ import com.vikadata.scheduler.space.model.DataSheetRecordDto;
 import com.vikadata.scheduler.space.model.NodeDto;
 import com.vikadata.scheduler.space.model.SpaceAssetDto;
 import com.vikadata.scheduler.space.model.SpaceAssetKeyDto;
+import com.vikadata.scheduler.space.pojo.Asset;
+import com.vikadata.scheduler.space.pojo.SpaceAsset;
 import com.vikadata.scheduler.space.service.ISpaceAssetService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -292,7 +292,7 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
         List<String> tokenList = needCreateList.stream().map(SpaceAssetDto::getFileUrl).collect(Collectors.toList());
         List<AssetDto> assetDtoList = assetMapper.selectDtoByTokens(tokenList);
         Map<String, AssetDto> assetDtoMap = assetDtoList.stream().collect(Collectors.toMap(AssetDto::getFileUrl, dto -> dto));
-        List<SpaceAssetEntity> insertList = new ArrayList<>();
+        List<SpaceAsset> insertList = new ArrayList<>();
         for (SpaceAssetDto dto : needCreateList) {
             AssetDto assetDto = assetDtoMap.get(dto.getFileUrl());
             if (assetDto == null) {
@@ -305,16 +305,15 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
                 }
                 assetDtoMap.put(dto.getFileUrl(), assetDto);
             }
-            SpaceAssetEntity entity = SpaceAssetEntity.builder()
-                    .id(IdWorker.getId())
-                    .spaceId(nodIdToSpcIdMap.get(dto.getNodeId()))
-                    .nodeId(dto.getNodeId())
-                    .assetId(assetDto.getId())
-                    .assetChecksum(assetDto.getChecksum())
-                    .cite(dto.getCite())
-                    .type(NodeType.DATASHEET.getNodeType())
-                    .fileSize(assetDto.getFileSize())
-                    .build();
+            SpaceAsset entity = new SpaceAsset();
+            entity.setId(IdWorker.getId());
+            entity.setSpaceId(nodIdToSpcIdMap.get(dto.getNodeId()));
+            entity.setNodeId(dto.getNodeId());
+            entity.setAssetId(assetDto.getId());
+            entity.setAssetChecksum(assetDto.getChecksum());
+            entity.setCite(dto.getCite());
+            entity.setType(NodeType.DATASHEET.getNodeType());
+            entity.setFileSize(assetDto.getFileSize());
             insertList.add(entity);
         }
         if (CollUtil.isNotEmpty(insertList)) {
@@ -331,14 +330,13 @@ public class SpaceAssetServiceImpl implements ISpaceAssetService {
         if (object == null) {
             return null;
         }
-        AssetEntity entity = AssetEntity.builder()
-                .id(IdWorker.getId())
-                .checksum(object.getContentDigest())
-                .bucket(configProperties.getOssType())
-                .fileUrl(path)
-                .fileSize(object.getContentLength().intValue())
-                .mimeType(object.getContentType())
-                .build();
+        Asset entity = new Asset();
+        entity.setId(IdWorker.getId());
+        entity.setChecksum(object.getContentDigest());
+        entity.setBucket(configProperties.getOssType());
+        entity.setFileUrl(path);
+        entity.setFileSize(object.getContentLength().intValue());
+        entity.setMimeType(object.getContentType());
 
         try (InputStreamCache streamCache = new InputStreamCache(object.getInputStream(), object.getContentLength() <= 0 ? object.getInputStream().available() : object.getContentLength())) {
             if (StrUtil.isNotBlank(entity.getMimeType())) {

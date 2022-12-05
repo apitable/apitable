@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.service.IAuthService;
-import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
+import com.vikadata.api.user.mapper.DeveloperMapper;
 import com.vikadata.api.enterprise.integral.service.IIntegralService;
 import com.vikadata.api.enterprise.vcode.dto.VCodeDTO;
 import com.vikadata.api.enterprise.vcode.enums.VCodeException;
@@ -101,7 +101,7 @@ import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.DeveloperEntity;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;

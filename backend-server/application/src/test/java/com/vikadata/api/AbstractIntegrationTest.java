@@ -72,7 +72,7 @@ import com.vikadata.api.sql.script.enhance.TablePrefixUtil;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.enums.NodeType;
-import com.vikadata.api.workspace.model.CreateNodeDto;
+import com.vikadata.api.workspace.dto.CreateNodeDto;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.entity.EconomicOrderEntity;
 import com.vikadata.entity.EconomicOrderMetadataEntity;
@@ -109,7 +109,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
-    @Value("${mybatis-plus.configuration-properties.tablePrefix}")
+    @Value("${mybatis-plus.configuration-properties.tablePrefix:vika_}")
     protected String tablePrefix;
 
     @Autowired

@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import com.vikadata.api.organization.model.MemberTeamPathInfo;
 import com.vikadata.api.shared.support.serializer.ImageSerializer;
 import com.vikadata.api.shared.support.serializer.NullStringSerializer;
 import io.swagger.annotations.ApiModel;

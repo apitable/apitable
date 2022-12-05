@@ -3,9 +3,9 @@ package com.vikadata.api.space.mapper;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vikadata.api.shared.cache.bean.SpaceResourceDto;
-import com.vikadata.api.space.model.SpaceGroupResourceDto;
-import com.vikadata.api.space.model.SpaceMemberResourceDto;
-import com.vikadata.api.space.model.SpaceMenuResourceDto;
+import com.vikadata.api.space.dto.SpaceGroupResourceDto;
+import com.vikadata.api.space.dto.SpaceMemberResourceDto;
+import com.vikadata.api.space.dto.SpaceMenuResourceDto;
 import com.vikadata.entity.SpaceResourceEntity;
 import org.apache.ibatis.annotations.Param;
 

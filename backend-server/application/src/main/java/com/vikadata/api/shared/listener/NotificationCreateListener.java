@@ -20,7 +20,7 @@ import com.vikadata.api.shared.component.notification.EventType;
 import com.vikadata.api.shared.component.notification.INotificationFactory;
 import com.vikadata.api.shared.listener.event.NotificationCreateEvent;
 import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.entity.PlayerNotificationEntity;
+import com.vikadata.api.player.entity.PlayerNotificationEntity;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.labs.mapper.LabsFeatureMapper">
+<mapper namespace="com.vikadata.api.space.mapper.LabsFeatureMapper">
     <select id="selectAllByFeatureKeys" resultType="com.vikadata.entity.LabsFeaturesEntity">
         SELECT * FROM ${tablePrefix}labs_features vlf
         WHERE vlf.feature_key IN

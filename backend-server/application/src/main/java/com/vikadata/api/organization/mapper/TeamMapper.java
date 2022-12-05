@@ -13,10 +13,10 @@ import com.vikadata.api.organization.vo.MemberPageVo;
 import com.vikadata.api.organization.vo.SearchTeamResultVo;
 import com.vikadata.api.organization.vo.TeamInfoVo;
 import com.vikadata.api.organization.vo.UnitTeamVo;
-import com.vikadata.api.organization.model.TeamBaseInfoDTO;
-import com.vikadata.api.organization.model.TeamCteInfo;
-import com.vikadata.api.organization.model.TeamPathInfo;
-import com.vikadata.entity.TeamEntity;
+import com.vikadata.api.organization.dto.TeamBaseInfoDTO;
+import com.vikadata.api.organization.dto.TeamCteInfo;
+import com.vikadata.api.organization.dto.TeamPathInfo;
+import com.vikadata.api.organization.entity.TeamEntity;
 
 public interface TeamMapper extends BaseMapper<TeamEntity> {
 

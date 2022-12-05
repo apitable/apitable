@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.vikadata.api.workspace.vo.NodeShareInfoVO;
 import com.vikadata.api.workspace.vo.NodeShareSettingInfoVO;
-import com.vikadata.api.workspace.model.NodeSharePropsDTO;
+import com.vikadata.api.workspace.dto.NodeSharePropsDTO;
 
 public interface INodeShareService {
 

@@ -29,7 +29,6 @@ dependencies {
   implementation project(':shared:starters:wx-miniapp')
   implementation project(':shared:starters:wx-open')
   implementation project(':shared:starters:wx-mp')
-  implementation project(':shared:starters:wx-pay')
   implementation project(':shared:starters:yozo')
   implementation project(':shared:starters:aegis')
   implementation project(':shared:starters:pingpp')

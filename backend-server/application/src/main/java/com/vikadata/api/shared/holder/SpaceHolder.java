@@ -1,6 +1,6 @@
 package com.vikadata.api.shared.holder;
 
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 
 /**
  * <p>

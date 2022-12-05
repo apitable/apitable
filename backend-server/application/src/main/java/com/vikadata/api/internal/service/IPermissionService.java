@@ -18,13 +18,4 @@ public interface IPermissionService {
      * @return DatasheetPermissionViews
      */
     List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds, String shareId);
-
-    /**
-     * check that the member is not an admin of the space
-     * @param spaceId space id
-     * @param memberId member id
-     * @param resourceGroupCodes permission
-     * @return boolean
-     */
-    boolean checkMemberIsAdmin(String spaceId, Long memberId, List<String> resourceGroupCodes);
 }

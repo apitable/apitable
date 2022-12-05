@@ -14,7 +14,6 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 
 import com.vikadata.api.shared.util.CollectionUtil;
 
@@ -124,7 +123,7 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
     }
 
     private boolean isBlankRow(List<Object> list) {
-        if (CollectionUtils.isEmpty(list)) {
+        if (CollectionUtil.isEmpty(list)) {
             return true;
         }
         int count = 0;

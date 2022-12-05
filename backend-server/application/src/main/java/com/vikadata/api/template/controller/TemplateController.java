@@ -60,7 +60,7 @@ import com.vikadata.api.template.vo.TemplateCategoryMenuVo;
 import com.vikadata.api.template.vo.TemplateDirectoryVo;
 import com.vikadata.api.template.vo.TemplateSearchResultVo;
 import com.vikadata.api.template.vo.TemplateVo;
-import com.vikadata.api.workspace.model.NodeCopyOptions;
+import com.vikadata.api.workspace.dto.NodeCopyOptions;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.vo.NodeInfoVo;
 import com.vikadata.core.support.ResponseData;

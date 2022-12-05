@@ -11,7 +11,7 @@ import com.vikadata.api.workspace.enums.FieldType;
 import com.vikadata.api.workspace.ro.MetaMapRo;
 import com.vikadata.api.workspace.ro.RemindMemberRo;
 import com.vikadata.api.workspace.ro.SnapshotMapRo;
-import com.vikadata.api.workspace.model.NodeCopyOptions;
+import com.vikadata.api.workspace.dto.NodeCopyOptions;
 import com.vikadata.entity.DatasheetEntity;
 
 public interface IDatasheetService extends IService<DatasheetEntity> {

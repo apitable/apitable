@@ -23,12 +23,12 @@ import com.vikadata.api.enterprise.billing.util.BillingConfigManager;
 import com.vikadata.api.enterprise.billing.util.EntitlementChecker.ExpectedBundleCheck;
 import com.vikadata.api.enterprise.billing.util.EntitlementChecker.ExpectedSpaceEntitlementCheck;
 import com.vikadata.api.enterprise.billing.util.EntitlementChecker.ExpectedSubscriptionCheck;
-import com.vikadata.api.enterprise.gm.model.CreateBusinessOrderRo;
-import com.vikadata.api.enterprise.gm.model.CreateEntitlementWithAddOn;
+import com.vikadata.api.enterprise.gm.ro.CreateBusinessOrderRo;
+import com.vikadata.api.enterprise.gm.ro.CreateEntitlementWithAddOn;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.shared.clock.spring.ClockManager;
 import com.vikadata.api.shared.sysconfig.billing.Price;
-import com.vikadata.api.space.model.vo.SpaceCapacityPageVO;
+import com.vikadata.api.space.vo.SpaceCapacityPageVO;
 
 import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getBillingConfig;
 import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getFreePlan;

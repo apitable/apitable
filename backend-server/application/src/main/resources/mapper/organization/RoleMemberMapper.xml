@@ -27,7 +27,7 @@
     </delete>
 
     <select id="selectRoleMembersByRoleIds"
-            resultType="com.vikadata.api.organization.model.RoleMemberInfoDTO">
+            resultType="com.vikadata.api.organization.dto.RoleMemberInfoDTO">
         SELECT vu.id as unit_id,
         vurm.role_id as role_id,
         vurm.unit_ref_id as unit_ref_id,
@@ -41,7 +41,7 @@
     </select>
 
     <select id="selectRoleMembersByRoleId"
-            resultType="com.vikadata.api.organization.model.RoleMemberInfoDTO">
+            resultType="com.vikadata.api.organization.dto.RoleMemberInfoDTO">
         SELECT vu.id            as unit_id,
                vurm.unit_ref_id as unit_ref_id,
                vurm.unit_type   as unit_type
@@ -70,7 +70,7 @@
     </select>
 
     <select id="selectRoleMembersByRoleIdAndUnitRefIds"
-            resultType="com.vikadata.api.organization.model.RoleMemberInfoDTO">
+            resultType="com.vikadata.api.organization.dto.RoleMemberInfoDTO">
         SELECT vu.id as unit_id,
         vurm.unit_ref_id as unit_ref_id,
         vurm.unit_type as unit_type

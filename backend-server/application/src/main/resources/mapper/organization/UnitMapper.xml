@@ -26,7 +26,7 @@
     </select>
 
 
-    <select id="selectByRefId" resultType="com.vikadata.api.user.entity.UnitEntity">
+    <select id="selectByRefId" resultType="com.vikadata.api.organization.entity.UnitEntity">
         SELECT *
         FROM ${tablePrefix}unit
         WHERE unit_ref_id = #{refId} AND is_deleted = 0
@@ -109,7 +109,7 @@
         </foreach>
     </update>
 
-    <select id="selectByRefIds" resultType="com.vikadata.api.user.entity.UnitEntity">
+    <select id="selectByRefIds" resultType="com.vikadata.api.organization.entity.UnitEntity">
         SELECT *
         FROM ${tablePrefix}unit
         WHERE unit_ref_id IN
@@ -119,7 +119,7 @@
         </foreach>
     </select>
 
-    <select id="selectByUnitIds" resultType="com.vikadata.api.user.entity.UnitEntity">
+    <select id="selectByUnitIds" resultType="com.vikadata.api.organization.entity.UnitEntity">
         SELECT *
         FROM ${tablePrefix}unit
         WHERE id IN

@@ -347,7 +347,7 @@
         where user_id = #{userId} and space_id = #{spaceId} and is_deleted = 0 LIMIT 0,1
     </select>
 
-    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.workspace.model.MemberInfoDTO">
+    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.vikadata.api.workspace.dto.MemberInfoDTO">
         select id, is_deleted
         from ${tablePrefix}unit_member
         where user_id = #{userId} and space_id = #{spaceId}
@@ -363,7 +363,7 @@
     </select>
 
     <select id="selectBySpaceIdAndEmail"
-            resultType="com.vikadata.entity.MemberEntity">
+            resultType="com.vikadata.api.organization.entity.MemberEntity">
         select *
         from ${tablePrefix}unit_member vom
         where vom.email = #{email}
@@ -373,7 +373,7 @@
     </select>
 
     <select id="selectBySpaceIdAndEmailIgnoreDeleted"
-            resultType="com.vikadata.entity.MemberEntity">
+            resultType="com.vikadata.api.organization.entity.MemberEntity">
         select *
         from ${tablePrefix}unit_member
         where email = #{email} and space_id = #{spaceId}
@@ -381,7 +381,7 @@
     </select>
 
     <select id="selectBySpaceIdAndEmailsIgnoreDeleted"
-            resultType="com.vikadata.entity.MemberEntity">
+            resultType="com.vikadata.api.organization.entity.MemberEntity">
         select *
         from ${tablePrefix}unit_member
         where space_id = #{spaceId} AND email IN
@@ -390,7 +390,7 @@
         </foreach>
     </select>
 
-    <select id="selectAdminBySpaceId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectAdminBySpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM `${tablePrefix}unit_member`
         WHERE `space_id` = #{spaceId}
@@ -398,7 +398,7 @@
         AND `is_deleted` = 0
     </select>
 
-    <select id="selectAdminListBySpaceId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectAdminListBySpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM `${tablePrefix}unit_member`
         WHERE `space_id` = #{spaceId}
@@ -491,7 +491,7 @@
         where id = #{memberId} and is_deleted = 0
     </update>
 
-    <select id="selectMemberIdAndSpaceId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectMemberIdAndSpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE id = #{memberId} and space_id = #{spaceId} and is_deleted = 0
@@ -629,7 +629,7 @@
         WHERE space_id = #{spaceId} AND is_deleted = 0
     </select>
 
-    <select id="selectBindSocialListBySpaceIdWithOffset" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectBindSocialListBySpaceIdWithOffset" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM `${tablePrefix}unit_member`
         WHERE `space_id` = #{spaceId}
@@ -724,14 +724,14 @@
         GROUP BY user_id
     </select>
 
-    <select id="selectByUserIdAndSpaceIdIgnoreDelete" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectByUserIdAndSpaceIdIgnoreDelete" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE user_id = #{userId} AND space_id = #{spaceId}
         ORDER BY id DESC LIMIT 0,1
     </select>
 
-    <select id="selectByMemberIdsIgnoreDelete" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectByMemberIdsIgnoreDelete" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE id IN
@@ -844,7 +844,7 @@
         WHERE open_id = #{openId} AND space_id = #{spaceId} LIMIT 0,1
     </select>
 
-    <select id="selectByIdIgnoreDelete" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectByIdIgnoreDelete" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE id = #{memberId}
@@ -856,7 +856,7 @@
         WHERE id = #{memberId}
     </select>
 
-    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.model.MemberBaseInfoDTO">
+    <select id="selectBaseInfoDTOByIds" resultType="com.vikadata.api.organization.dto.MemberBaseInfoDTO">
         SELECT vum.id,
                vum.member_name,
                vu.avatar,
@@ -879,7 +879,7 @@
         </foreach>)
     </select>
 
-    <select id="selectBySpaceId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectBySpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId}
@@ -889,13 +889,13 @@
         ORDER BY created_at DESC
     </select>
 
-    <select id="selectBySpaceIdAndOpenId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectBySpaceIdAndOpenId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId} AND open_id = #{openId} AND is_deleted = 0
     </select>
 
-    <select id="selectBySpaceIdAndOpenIds" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectBySpaceIdAndOpenIds" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId}
@@ -906,14 +906,14 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectByUserIdAndSpaceId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectByUserIdAndSpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE user_id = #{userId} AND space_id = #{spaceId} AND is_deleted = 0
         ORDER BY id DESC LIMIT 0,1
     </select>
 
-    <select id="selectByUserIdsAndSpaceId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectByUserIdsAndSpaceId" resultType="com.vikadata.api.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
         WHERE user_id IN <foreach collection="userIds" item="userId" open="(" separator="," close=")">#{userId}</foreach>
@@ -956,7 +956,7 @@
         ORDER BY id LIMIT 1
     </select>
 
-    <select id="selectByUserId" resultType="com.vikadata.entity.MemberEntity">
+    <select id="selectByUserId" resultType="com.vikadata.api.organization.entity.MemberEntity">
          SELECT * FROM ${tablePrefix}unit_member WHERE user_id = #{userId} AND is_deleted = 0
     </select>
 
@@ -1073,7 +1073,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectTeamIdsByMemberIds" resultType="com.vikadata.api.organization.model.MemberTeamInfoDTO">
+    <select id="selectTeamIdsByMemberIds" resultType="com.vikadata.api.organization.dto.MemberTeamInfoDTO">
         SELECT member_id, team_id
         FROM ${tablePrefix}unit_team_member_rel
         WHERE member_id IN

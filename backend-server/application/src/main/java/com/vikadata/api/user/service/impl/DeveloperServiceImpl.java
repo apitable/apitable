@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.gm.mapper.DeveloperMapper;
+import com.vikadata.api.user.mapper.DeveloperMapper;
 import com.vikadata.api.user.service.IDeveloperService;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.shared.util.ApiHelper;

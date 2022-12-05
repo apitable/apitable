@@ -20,11 +20,11 @@ import com.vikadata.api.organization.vo.MemberInfoVo;
 import com.vikadata.api.organization.vo.SearchMemberVo;
 import com.vikadata.api.organization.vo.UnitMemberVo;
 import com.vikadata.api.space.vo.MainAdminInfoVo;
-import com.vikadata.api.organization.model.MemberBaseInfoDTO;
-import com.vikadata.api.organization.model.MemberTeamInfoDTO;
+import com.vikadata.api.organization.dto.MemberBaseInfoDTO;
+import com.vikadata.api.organization.dto.MemberTeamInfoDTO;
 import com.vikadata.api.organization.dto.TenantMemberDto;
-import com.vikadata.api.workspace.model.MemberInfoDTO;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.workspace.dto.MemberInfoDTO;
+import com.vikadata.api.organization.entity.MemberEntity;
 
 import org.springframework.test.context.jdbc.Sql;
 

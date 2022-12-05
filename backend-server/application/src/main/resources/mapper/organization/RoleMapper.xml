@@ -34,7 +34,7 @@
     </select>
 
     <select id="selectBySpaceId"
-            resultType="com.vikadata.api.organization.model.RoleInfoDTO">
+            resultType="com.vikadata.api.organization.dto.RoleInfoDTO">
         SELECT vur.id        as id,
                vu.id         as unitId,
                vur.role_name as role_name,
@@ -48,7 +48,7 @@
     </select>
 
     <select id="selectRoleInfoDtoByIds"
-            resultType="com.vikadata.api.organization.model.RoleInfoDTO">
+            resultType="com.vikadata.api.organization.dto.RoleInfoDTO">
         SELECT vur.id as id,
         vu.id as unitId,
         vur.role_name as role_name,
@@ -80,7 +80,7 @@
     </select>
 
     <select id="selectRoleBaseInfoDtoByIds"
-            resultType="com.vikadata.api.organization.model.RoleBaseInfoDto">
+            resultType="com.vikadata.api.organization.dto.RoleBaseInfoDto">
         SELECT id, role_name
         FROM ${tablePrefix}unit_role
         WHERE id in
@@ -91,7 +91,7 @@
     </select>
 
     <select id="selectRoleInfoDtoByIdsAndSpaceId"
-            resultType="com.vikadata.api.organization.model.RoleInfoDTO">
+            resultType="com.vikadata.api.organization.dto.RoleInfoDTO">
         SELECT vur.id as id,
         vu.id as unitId,
         vur.role_name as role_name,

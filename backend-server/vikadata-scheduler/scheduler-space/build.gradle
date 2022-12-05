@@ -8,7 +8,6 @@ plugins {
 
 dependencies {
   implementation project(':shared:core')
-  implementation project(':db-model')
   implementation project(':shared:starters:xxl')
   implementation project(':shared:starters:oss')
   implementation project(':shared:starters:vika')

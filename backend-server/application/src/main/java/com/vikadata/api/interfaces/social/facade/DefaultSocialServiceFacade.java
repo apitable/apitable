@@ -7,7 +7,7 @@ import java.util.Map;
 import com.vikadata.api.interfaces.social.event.SocialEvent;
 import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
 import com.vikadata.api.interfaces.social.model.SocialUserBind;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
+import com.vikadata.api.space.enums.SpaceUpdateOperate;
 
 public class DefaultSocialServiceFacade implements SocialServiceFacade {
 

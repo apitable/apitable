@@ -72,7 +72,7 @@
         </foreach>
     </select>
     <select id="selectByMemberIds"
-            resultType="com.vikadata.entity.TeamMemberRelEntity">
+            resultType="com.vikadata.api.organization.entity.TeamMemberRelEntity">
         SELECT voutmr.*
         FROM ${tablePrefix}unit_team_member_rel voutmr
         JOIN ${tablePrefix}unit_team vout ON voutmr.team_id = vout.id AND vout.is_deleted = 0
@@ -82,7 +82,7 @@
         </foreach>
     </select>
 
-    <select id="selectByTeamIds" resultType="com.vikadata.entity.TeamMemberRelEntity">
+    <select id="selectByTeamIds" resultType="com.vikadata.api.organization.entity.TeamMemberRelEntity">
         SELECT vodmr.*
         FROM ${tablePrefix}unit_team_member_rel vodmr
         JOIN ${tablePrefix}unit_team vout ON vodmr.team_id = vout.id AND vout.is_deleted = 0

@@ -41,7 +41,7 @@ import com.vikadata.api.interfaces.billing.model.SubscriptionFeatures.SubscribeF
 import com.vikadata.api.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.Watermark;
 import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.mock.bean.MockUserSpace;
-import com.vikadata.api.space.model.SpaceCapacityUsedInfo;
+import com.vikadata.api.space.dto.SpaceCapacityUsedInfo;
 import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.boot.test.mock.mockito.MockBean;

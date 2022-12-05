@@ -8,9 +8,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.api.organization.model.RoleMemberInfoDTO;
+import com.vikadata.api.organization.dto.RoleMemberInfoDTO;
 import com.vikadata.api.shared.util.ibatis.ExpandBaseMapper;
-import com.vikadata.entity.RoleMemberEntity;
+import com.vikadata.api.organization.entity.RoleMemberEntity;
 
 public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
 

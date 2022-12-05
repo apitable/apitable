@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.entity.SpaceAssetEntity;
 import com.vikadata.scheduler.space.model.SpaceAssetDto;
+import com.vikadata.scheduler.space.pojo.SpaceAsset;
 
 /**
  * <p>
@@ -37,6 +37,6 @@ public interface SpaceAssetMapper {
      * @param entities entities
      * @return number of execution results
      */
-    int insertList(@Param("entities") List<SpaceAssetEntity> entities);
+    int insertList(@Param("entities") List<SpaceAsset> entities);
 
 }

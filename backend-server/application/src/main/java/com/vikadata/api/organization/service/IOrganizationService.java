@@ -7,7 +7,7 @@ import com.vikadata.api.organization.vo.UnitInfoVo;
 import com.vikadata.api.organization.vo.UnitMemberVo;
 import com.vikadata.api.organization.vo.UnitSearchResultVo;
 import com.vikadata.api.organization.vo.UnitTeamVo;
-import com.vikadata.api.organization.model.LoadSearchDTO;
+import com.vikadata.api.organization.dto.LoadSearchDTO;
 
 public interface IOrganizationService {
 

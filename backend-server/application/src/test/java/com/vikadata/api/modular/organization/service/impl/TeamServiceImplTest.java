@@ -10,18 +10,15 @@ import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
 import com.vikadata.api.organization.service.impl.TeamMemberRelServiceImpl;
 import com.vikadata.api.organization.vo.TeamTreeVo;
-import com.vikadata.api.organization.model.MemberTeamPathInfo;
-import com.vikadata.entity.TeamEntity;
-import com.vikadata.entity.TeamMemberRelEntity;
-
-import org.springframework.test.context.jdbc.Sql;
+import com.vikadata.api.organization.vo.MemberTeamPathInfo;
+import com.vikadata.api.organization.entity.TeamEntity;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

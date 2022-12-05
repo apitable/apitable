@@ -10,7 +10,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
-import com.vikadata.api.organization.model.UnitInfoDTO;
+import com.vikadata.api.organization.dto.UnitInfoDTO;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.shared.component.adapter.MultiDatasourceAdapterTemplate;
 import com.vikadata.api.shared.constants.AuditConstants;

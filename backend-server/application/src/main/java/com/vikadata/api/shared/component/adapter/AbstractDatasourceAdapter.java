@@ -14,18 +14,18 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
 import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.organization.model.MemberBaseInfoDTO;
+import com.vikadata.api.organization.dto.MemberBaseInfoDTO;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.organization.vo.UnitInfoVo;
 import com.vikadata.api.shared.constants.AuditConstants;
 import com.vikadata.api.shared.util.information.ClientOriginInfo;
 import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.api.space.enums.AuditSpaceCategory;
-import com.vikadata.api.space.model.SpaceAuditDTO;
-import com.vikadata.api.space.model.vo.SpaceAuditPageVO;
+import com.vikadata.api.space.dto.SpaceAuditDTO;
+import com.vikadata.api.space.vo.SpaceAuditPageVO;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.core.util.SpringContextHolder;
-import com.vikadata.entity.MemberEntity;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.NodeEntity;
 
 

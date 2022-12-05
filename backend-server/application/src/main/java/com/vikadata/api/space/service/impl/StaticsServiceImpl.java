@@ -21,10 +21,10 @@ import com.vikadata.api.enterprise.control.infrastructure.ControlType;
 import com.vikadata.api.enterprise.control.mapper.ControlMapper;
 import com.vikadata.api.enterprise.control.model.ControlTypeDTO;
 import com.vikadata.api.space.mapper.StaticsMapper;
-import com.vikadata.api.space.model.ControlStaticsVO;
-import com.vikadata.api.space.model.DatasheetStaticsVO;
-import com.vikadata.api.space.model.NodeStaticsVO;
-import com.vikadata.api.space.model.NodeTypeStatics;
+import com.vikadata.api.space.dto.ControlStaticsDTO;
+import com.vikadata.api.space.dto.DatasheetStaticsDTO;
+import com.vikadata.api.space.dto.NodeStaticsDTO;
+import com.vikadata.api.space.dto.NodeTypeStaticsDTO;
 import com.vikadata.api.space.service.IStaticsService;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.shared.util.DateHelper;
@@ -168,8 +168,8 @@ public class StaticsServiceImpl implements IStaticsService {
     }
 
     @Override
-    public ControlStaticsVO getFieldRoleTotalCountBySpaceId(String spaceId) {
-        ControlStaticsVO vo = new ControlStaticsVO(0L, 0L);
+    public ControlStaticsDTO getFieldRoleTotalCountBySpaceId(String spaceId) {
+        ControlStaticsDTO vo = new ControlStaticsDTO(0L, 0L);
         List<ControlTypeDTO> controls = controlMapper.selectControlTypeDTO(spaceId);
         if (controls.isEmpty()) {
             return vo;
@@ -220,18 +220,18 @@ public class StaticsServiceImpl implements IStaticsService {
     }
 
     @Override
-    public NodeStaticsVO getNodeStaticsBySpaceId(String spaceId) {
+    public NodeStaticsDTO getNodeStaticsBySpaceId(String spaceId) {
         return staticsMapper.selectNodeStaticsBySpaceId(spaceId);
     }
 
     @Override
-    public List<NodeTypeStatics> getNodeTypeStaticsBySpaceId(String spaceId) {
+    public List<NodeTypeStaticsDTO> getNodeTypeStaticsBySpaceId(String spaceId) {
         return staticsMapper.selectNodeTypeStaticsBySpaceId(spaceId);
     }
 
     @Override
-    public DatasheetStaticsVO getDatasheetStaticsBySpaceId(String spaceId) {
-        DatasheetStaticsVO viewVO = new DatasheetStaticsVO();
+    public DatasheetStaticsDTO getDatasheetStaticsBySpaceId(String spaceId) {
+        DatasheetStaticsDTO viewVO = new DatasheetStaticsDTO();
         List<String> objects = staticsMapper.selectDstViewStaticsBySpaceId(spaceId);
         if (CollUtil.isNotEmpty(objects)) {
             objects.stream()

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.space.model.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.workspace.ro.NodeOpRo;
 import com.vikadata.api.workspace.vo.NodeInfoVo;

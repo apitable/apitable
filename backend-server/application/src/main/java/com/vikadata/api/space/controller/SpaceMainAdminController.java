@@ -22,7 +22,7 @@ import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.space.ro.SpaceMainAdminChangeOpRo;
 import com.vikadata.api.space.vo.MainAdminInfoVo;
 import com.vikadata.api.organization.mapper.MemberMapper;
-import com.vikadata.api.space.model.SpaceUpdateOperate;
+import com.vikadata.api.space.enums.SpaceUpdateOperate;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.core.support.ResponseData;
