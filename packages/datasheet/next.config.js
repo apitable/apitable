@@ -9,6 +9,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer');
 const isProd = process.env.NODE_ENV === 'production';
 const {withSentryConfig} = require("@sentry/nextjs");
 
+const isIntranetEnv = process.env.BUILD_VERSION?.includes('alpha') || process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
+
 /**
  * Stolen from https://stackoverflow.com/questions/10776600/testing-for-equality-of-regular-expressions
  */
@@ -67,7 +69,11 @@ const getStaticFolder = () => {
   return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
 };
 
-module.exports = withPlugins(plugins, withSentryConfig({
+const _withSentryConfig = isProd && !isIntranetEnv ? withSentryConfig : (nextConfig, sentryConfig) => {
+  return nextConfig
+}
+
+module.exports = withPlugins(plugins, _withSentryConfig({
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   images: {
