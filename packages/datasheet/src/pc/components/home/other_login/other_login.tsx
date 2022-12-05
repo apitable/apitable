@@ -280,7 +280,7 @@ export const wecomLogin = (reference?: string) => {
         closeIcon={<IconButton icon={() => <CloseIcon />} />}
         className={styles.dingdingCodeModal}
       >
-        <WecomQrCode />
+        <WecomQrCode/>
       </Modal>
     </Provider>);
 };
