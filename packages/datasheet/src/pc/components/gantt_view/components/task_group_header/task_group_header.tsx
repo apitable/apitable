@@ -122,6 +122,7 @@ const TaskGroupHeader: FC<ITaskGroupHeaderProps> = (props) => {
         x={(startOffset ?? endOffset)!}
         y={y}
         onClick={toggleExpandStatus}
+        onTap={toggleExpandStatus}
       >
         <Icon
           name={KONVA_DATASHEET_ID.GANTT_GROUP_TOGGLE_BUTTON}

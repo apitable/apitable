@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { useSize } from 'ahooks';
 import { Select, TextInput, ITextInputProps, IOption } from '@apitable/components';
-import { SystemConfig, t, Strings } from '@apitable/core';
+import { SystemConfig, t, Strings, getLanguage } from '@apitable/core';
 import { PhonenumberFilled } from '@apitable/icons';
 import styles from './style.module.less';
 
@@ -22,6 +22,10 @@ const optionData = (() => {
       value: `+${areaCode}`,
       label: `${t(Strings[country])}（+${areaCode}）`
     });
+  }
+  const lang = getLanguage().split('-')[0];
+  if (lang === 'en') {
+    tempArr.sort((a, b) => a.label.localeCompare(b.label));
   }
   return tempArr;
 })();
