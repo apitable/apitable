@@ -259,7 +259,7 @@
             "value": "/space/2021/09/16/124e249b651f4934949ae39839e3ee77"
         },
         "integration_wecom_custom_subdomain_help_url": {
-            "value": "/help/intro_custom_subdomain"
+            "value": "https://help.vika.cn/docs/guide/intro_custom_subdomain"
         },
         "integration_wecom_help_url": {
             "value": "https://help.vika.cn/docs/guide/integration-wecom",
@@ -274,7 +274,7 @@
             "value": "/space/2021/08/02/6b5374b4b3ba42aba69022ae2b13a577"
         },
         "integration_wecom_shop_cms": {
-            "value": "/help/integration-wecom/"
+            "value": "https://help.vika.cn/docs/guide/integration-wecom"
         },
         "integration_wecom_shop_corpid_dev": {
             "value": "ww11761d11177ae10b"
