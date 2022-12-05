@@ -1,19 +1,18 @@
 import { colors } from '@apitable/components';
 import { Api, INoticeDetail, Navigation, StoreActions } from '@apitable/core';
+// @ts-ignore
+import { showOrderModalAfterPay, showVikaby } from 'enterprise';
 import { IDingTalkModalType, showTipInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { isSocialDingTalk } from 'pc/components/home/social_platform';
 import { Method } from 'pc/components/route_manager/const';
 import { IQuery } from 'pc/components/route_manager/interface';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
-import { showOrderModalAfterPay } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { store } from 'pc/store';
 import { getPlatformType } from 'pc/utils/os';
 import { dispatch } from 'pc/worker/store';
 import { showBannerAlert } from '../banner_alert';
 import { isUserInOldVersionOrLocal, NoticeTemplatesConstant, requestWebNotification, stringToActions } from '../utils';
-// @ts-ignore
-import { showVikaby } from 'enterprise';
 
 export interface IToast {
   btnText?: string;

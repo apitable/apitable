@@ -1,7 +1,8 @@
 import { StoreActions } from '@apitable/core';
+// @ts-ignore
+import { SubScribeSystem } from 'enterprise';
 import { useRouter } from 'next/router';
 import { PrivateRoute } from 'pc/components/route_manager/private_route';
-import { SubScribeSystem } from 'pc/components/subscribe_system';
 import { useDispatch } from 'react-redux';
 
 const RedirectUpgradeSpaceId = ({ children }: { children: JSX.Element }) => {

@@ -3,10 +3,10 @@ import { Strings, t } from '@apitable/core';
 import { InformationSmallOutlined } from '@apitable/icons';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
+// @ts-ignore
+import { showUpgradeContactUs, SubscribePageType } from 'enterprise';
 import Image from 'next/image';
 import { Tooltip } from 'pc/components/common';
-import { SubscribePageType } from 'pc/components/subscribe_system/config';
-import { showUpgradeContactUs } from 'pc/components/subscribe_system/order_modal/pay_order_success';
 import { isMobileApp } from 'pc/utils/env';
 import * as React from 'react';
 import { FC, useMemo } from 'react';

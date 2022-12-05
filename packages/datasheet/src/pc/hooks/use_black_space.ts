@@ -1,6 +1,7 @@
 import { Strings, t } from '@apitable/core';
+// @ts-ignore
+import { goToUpgrade } from 'enterprise';
 import { showBannerAlert } from 'pc/components/notification/banner_alert';
-import { goToUpgrade } from 'pc/components/subscribe_system';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 

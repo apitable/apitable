@@ -2,8 +2,9 @@ import { IAttachmentValue, Strings, t } from '@apitable/core';
 import { DownloadOutlined } from '@apitable/icons';
 import { message } from 'antd';
 import classNames from 'classnames';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel } from 'enterprise';
 import { Message } from 'pc/components/common';
-import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label';
 import { FC, useState } from 'react';
 import styles from './style.module.less';
 import { bulkDownload } from './util';

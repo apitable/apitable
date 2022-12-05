@@ -2,12 +2,11 @@ import { Button, Skeleton, TextButton, Typography, useThemeColors } from '@apita
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import classnames from 'classnames';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeGrade, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { last } from 'lodash';
 import Image from 'next/image';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
 import { Router } from 'pc/components/route_manager/router';
-import { SubscribeGrade } from 'pc/components/subscribe_system/subscribe_label';
 import { formIdReg, mirrorIdReg, useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { getEnvVariables } from 'pc/utils/env';

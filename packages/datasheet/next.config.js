@@ -9,7 +9,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer');
 const isProd = process.env.NODE_ENV === 'production';
 const {withSentryConfig} = require("@sentry/nextjs");
 
-const isIntranetEnv = process.env.BUILD_VERSION?.includes('alpha') || process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
+const isIntranetEnv = process.env.BUILD_VERSION?.includes('test') || process.env.BUILD_VERSION?.includes('op_')
 
 /**
  * Stolen from https://stackoverflow.com/questions/10776600/testing-for-equality-of-regular-expressions

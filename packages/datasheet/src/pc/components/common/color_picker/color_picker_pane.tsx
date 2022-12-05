@@ -3,7 +3,9 @@ import { ISelectFieldOption, Strings, t } from '@apitable/core';
 import { useUnmount } from 'ahooks';
 import { Input } from 'antd';
 import cls from 'classnames';
-import { SubscribeGrade, SubscribeLabel } from 'pc/components/subscribe_system/subscribe_label';
+// @ts-ignore
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
 import * as React from 'react';
@@ -14,8 +16,6 @@ import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
 import { OptionSetting } from './enum';
 import styles from './style.module.less';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
 export interface IColorPickerPane {
   option: ISelectFieldOption;
