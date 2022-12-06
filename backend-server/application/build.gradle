@@ -18,7 +18,6 @@ dependencies {
   implementation project(':shared:starters:sensors')
   implementation project(':shared:starters:oss')
   implementation project(':shared:starters:socketio')
-  implementation project(':shared:starters:swagger')
   implementation project(':shared:starters:tencent')
   implementation project(':shared:starters:beetl')
   implementation project(':shared:starters:vika')

@@ -415,7 +415,3 @@ grpc:
         authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
 #      address: ${DINGTALK_GRPC_ADDRESS:static://localhost:9092}
 #      negotiationType: PLAINTEXT
-
-springfox:
-  documentation:
-    enabled: ${SPRINGFOX_ENABLED:false}
