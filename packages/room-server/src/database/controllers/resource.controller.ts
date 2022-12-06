@@ -15,6 +15,7 @@ import { ChangesetService } from 'database/services/resource/changeset.service';
 import { ResourceService } from 'database/services/resource/resource.service';
 import { UserService } from 'database/services/user/user.service';
 import { OtService } from 'database/services/ot/ot.service';
+import { ServerException, PermissionException } from 'shared/exception';
 
 @Controller('nest/v1')
 export class ResourceController {
@@ -45,6 +46,21 @@ export class ResourceController {
     if (query.revisions?.length > 0) {
       return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), 
         +query.revisions[0], +query.revisions[query.revisions.length-1]);
+    }
+    return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
+  }
+
+  @Get('shares/:shareId/resources/:resourceId/changesets')
+  async getShareChangesetList(
+    @Param('shareId') shareId: string, @Param('resourceId') resourceId: string,
+    @Query() query: { sourceId: string, resourceType: ResourceType; startRevision: number; endRevision: number },
+  ): Promise<ChangesetView[]> {
+    await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, query.sourceId || resourceId);
+    await this.resourceService.checkResourceEntry(resourceId, query.resourceType, query.sourceId);
+    // Share limit can only load the most recent 100 versions
+    const maxRevision = await this.changesetService.getMaxRevision(resourceId, query.resourceType);
+    if (maxRevision - query.startRevision >= 100) {
+      throw new ServerException(PermissionException.OPERATION_DENIED);
     }
     return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
   }

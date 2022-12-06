@@ -88,8 +88,10 @@ export function fetchChangesets<T>(
   startRevision: number, 
   endRevision: number, 
   sourceId?: string,
+  shareId?: string
 ) {
-  return axios.get<T>(urlcat(Url.READ_CHANGESET, { resourceId }), {
+  const url = shareId ? urlcat(Url.READ_SHARE_CHANGESET, { shareId, resourceId }) : urlcat(Url.READ_CHANGESET, { resourceId });
+  return axios.get<T>(url, {
     baseURL,
     params: {
       resourceType,

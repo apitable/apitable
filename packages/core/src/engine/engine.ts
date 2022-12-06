@@ -234,7 +234,7 @@ export class Engine {
   private async fetchMissVersion(startRevision: number, endRevision: number): Promise<IRemoteChangeset[]> {
     console.log('fetchingMissVersion', this.resourceId, startRevision, endRevision);
     const result = await DatasheetApi.fetchChangesets<IChangesetPack>(this.resourceId, this.resourceType, 
-      startRevision, endRevision, this.getState().pageParams.nodeId);
+      startRevision, endRevision, this.getState().pageParams.nodeId, this.getState().pageParams.shareId);
     if (result.data.success) {
       console.log('fetchMissVersion success: ', result.data.data);
 
