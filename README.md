@@ -41,7 +41,18 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
 ## 🔥 Features
 
 <table>
+  
   <tr>
+    <th>
+      <a href="#">Realtime Collaboration</a>
+    </th>
+    <th>
+      <a href="#">Automatic Form</a>
+    </th>
+    
+  </tr> 
+    
+   <tr>
     <td width="50%">
       <a href="#">
         <img src="docs/static/feature-realtime.gif" />
@@ -53,15 +64,16 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
         </a>
     </td>
   </tr>
+
   <tr>
     <th>
-      <a href="#">Realtime Collaboration</a>
+      <a href="#">API-first Panel</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">Unlimited cross-table links</a>
     </th>
+</tr>   
     
-  </tr>
  <tr>
     <td width="50%">
         <a href="#">
@@ -74,14 +86,16 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
       </a>
     </td>
  </tr>
+   
  <tr>
     <th>
-      <a href="#">API-first Panel</a>
+      <a href="#">Powerful Rows/Columns Permissions</a>
     </th>
     <th>
-      <a href="#">Unlimited table links</a>
+      <a href="#">Embed</a>
     </th>
-</tr>
+  </tr>   
+
  <tr>
     <td width="50%">
         <a href="#">
@@ -95,14 +109,6 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
     </td>
   </tr>
  
-<tr>
-    <th>
-      <a href="#">Powerful Rows/Columns Permissions</a>
-    </th>
-    <th>
-      <a href="#">Embed</a>
-    </th>
-  </tr>
    
 </table>
 
