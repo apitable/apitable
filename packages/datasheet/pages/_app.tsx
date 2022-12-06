@@ -95,7 +95,16 @@ enum LoadingStatus {
   Complete
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp(props: AppProps) {
+  const router = useRouter();
+  const isWidget = router.asPath.includes('widget-stage');
+  if (isWidget) {
+    return <props.Component {...props.pageProps} />;
+  }
+  return MyAppMain(props); 
+}
+
+function MyAppMain({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(() => {
     if (router.asPath.includes('widget-stage')) {
@@ -159,7 +168,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [loading]);
 
   useEffect(() => {
-    const getUser = async () => {
+    const getUser = async() => {
       const res = await axios.get('/client/info');
       let userInfo = JSON.parse(res.data.userInfo);
       setUserData(userInfo);
@@ -201,7 +210,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
 
       setUserLoading(false);
-
 
       if (!userInfo) return;
 
@@ -247,7 +255,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       window.__initialization_data__.userInfo = userInfo;
       window.__initialization_data__.wizards = JSON.parse(res.data.wizards);
 
-    }
+    };
     getUser().then(() => {
       import('../src/preIndex');
       // Initialize the user system
