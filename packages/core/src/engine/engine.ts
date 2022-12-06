@@ -8,7 +8,6 @@ import { IChangesetPack, INetworking } from '../exports/store';
 import { updateRevision } from '../exports/store/actions';
 import { ResourceType, ModalType } from 'types';
 import { ErrorCode, ErrorType, IError } from 'types/error_types';
-import { numbersBetween } from 'utils';
 import { BufferStorage, ILsStore } from './buffer_storage';
 import { getResourcePack } from '../exports/store/selectors';
 import { UndoManager } from 'command_manager';
@@ -228,13 +227,17 @@ export class Engine {
     throw new Error('Data returned in wrong format, please refresh and try again');
   }
 
-  private async fetchMissVersion(revisions: number[]): Promise<IRemoteChangeset[]> {
-    console.log('fetchingMissVersion', this.resourceId, revisions);
-    const result = await DatasheetApi.fetchChangesets<IChangesetPack>(this.resourceId, this.resourceType, revisions);
+  /**
+   * @param startRevision inclusive
+   * @param endRevision   exclusive
+   */
+  private async fetchMissVersion(startRevision: number, endRevision: number): Promise<IRemoteChangeset[]> {
+    console.log('fetchingMissVersion', this.resourceId, startRevision, endRevision);
+    const result = await DatasheetApi.fetchChangesets<IChangesetPack>(this.resourceId, this.resourceType, startRevision, endRevision);
     if (result.data.success) {
       console.log('fetchMissVersion success: ', result.data.data);
 
-      if (revisions.length !== result.data.data.length) {
+      if (endRevision - startRevision !== result.data.data.length) {
         throw new Error(t(Strings.error_the_length_of_changeset_is_inconsistent));
       }
       return result.data.data;
@@ -319,7 +322,7 @@ export class Engine {
       return;
     }
 
-    const changesetList = await this.fetchMissVersion(numbersBetween(revision, revisionUpgradeTo));
+    const changesetList = await this.fetchMissVersion(revision + 1, revisionUpgradeTo);
     changesetList.forEach(cs => {
       this.applyNewChanges(cs);
     });
@@ -347,7 +350,7 @@ export class Engine {
     console.log('checkLocalDiffChanges: ', { baseRevision, revision });
 
     if (baseRevision < revision) {
-      let changesetList = await this.fetchMissVersion(numbersBetween(baseRevision, revision + 1));
+      let changesetList = await this.fetchMissVersion(baseRevision + 1, revision + 1);
       /**
         * Check if localChangeset is already in changesetList, if so
         * 1. It means that localChangeset has been applied to the snapshot, so it does not need to be sent locally

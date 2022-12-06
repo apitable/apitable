@@ -30,18 +30,22 @@ export class ResourceController {
     private readonly otService: OtService,
   ) {}
 
+  // TODO: deprecate revisions parameter
   @Get(['resources/:resourceId/changesets', 'resource/:resourceId/changesets'])
   async getChangesetList(
-    @Headers('cookie') cookie: string, 
-    @Param('resourceId') resourceId: string,
-    @Query() query: { revisions: string | number[]; resourceType: ResourceType },
+    @Headers('cookie') cookie: string, @Param('resourceId') resourceId: string,
+    @Query() query: { revisions: string | number[]; resourceType: ResourceType; startRevision: number; endRevision: number },
   ): Promise<ChangesetView[]> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, resourceId);
     // check the user has the privileges of the node
     await this.nodeService.checkNodePermission(resourceId, { cookie });
-    return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.revisions);
+    if (query.revisions?.length > 0) {
+      return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), 
+        +query.revisions[0], +query.revisions[query.revisions.length-1]);
+    }
+    return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
   }
 
   @Get(['resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack', 'resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack'])
