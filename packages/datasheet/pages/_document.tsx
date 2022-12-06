@@ -51,6 +51,8 @@ class MyDocument extends Document<IClientInfo> {
           `}
             </Script>
           }
+          {/* injection of custom configs of editions, e.g. APITable */}
+          <script src="/custom/custom_config.js" defer />
         </body>
       </Html>
     );
