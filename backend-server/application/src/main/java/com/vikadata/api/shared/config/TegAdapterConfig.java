@@ -22,6 +22,7 @@ import com.vikadata.api.shared.component.ResourceDefinition;
 import com.vikadata.api.shared.component.scanner.ApiResourceFactory;
 import com.vikadata.api.shared.constants.FilterConstants;
 import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.shared.util.ApiHelper;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -103,6 +104,12 @@ final class JwtProxyUserDetailFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
+        }
+
+        String apiKey = ApiHelper.getApiKey(request);
+        if (StrUtil.isNotBlank(apiKey)) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
         // Get Identity Single Sign On

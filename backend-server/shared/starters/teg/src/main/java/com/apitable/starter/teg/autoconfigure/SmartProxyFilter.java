@@ -72,7 +72,7 @@ public class SmartProxyFilter extends OncePerRequestFilter implements Ordered {
             String extData = request.getHeader(SmartProxyHeaderProperty.REQUEST_X_EXT_DATA);
             if (!StringUtils.hasText(signature) && !StringUtils.hasText(staffName)) {
                 // No signature information, no verification
-                log.error("No signature data identifying teg-Smart Proxy,url:{}", serverPath);
+                log.info("No signature data identifying teg-Smart Proxy,url:{}", serverPath);
                 // Does not identify teg-Smart Proxy identity, returns custom content
                 filterChain.doFilter(request, response);
                 return;
