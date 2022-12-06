@@ -709,6 +709,7 @@ export interface Settings {
     assistant:                                           Qny1;
     assistant_activity_train_camp_end_time:              Qny1;
     assistant_activity_train_camp_start_time:            Qny1;
+    assistant_ai_course_url:                             Qny1;
     assistant_release_history_url:                       Qny1;
     automation_action_send_msg_to_dingtalk:              Qny1;
     automation_action_send_msg_to_feishu:                Qny1;
@@ -766,9 +767,10 @@ export interface Settings {
     integration_feishu_seats_form_url:                   Qny1;
     integration_feishu_upgrade_url:                      Qny1;
     integration_feishu_upgrade_url_dev:                  Qny1;
-    integration_feisu_register_link_in_login:            Qny1;
+    integration_feisu_register_now_url:                  Qny1;
     integration_wecom_bind_help_center:                  Qny1;
-    integration_wecom_bind_success_icon:                 Qny1;
+    integration_wecom_bind_help_center_url:              Qny1;
+    integration_wecom_bind_success_icon_img:             Qny1;
     integration_wecom_custom_subdomain_help_url:         Qny1;
     integration_wecom_help_url:                          IntegrationHelpURL;
     integration_wecom_login_qrcode_js:                   Qny1;
@@ -786,7 +788,6 @@ export interface Settings {
     integration_yozosoft_help_url:                       IntegrationHelpURL;
     introduction_video:                                  Qny1;
     login_agree_terms_of_service:                        Qny1;
-    login_ai_course_url:                                 Qny1;
     login_icp1_url:                                      Qny1;
     login_icp2_url:                                      Qny1;
     login_introduction_video:                            Qny1;

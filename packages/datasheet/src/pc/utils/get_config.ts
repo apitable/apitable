@@ -26,7 +26,7 @@ const getThirdPartyAuthConfigs = (thirdParty: ThirdParty): any => {
         };
       case ThirdParty.Feishu:
         return {
-          appId: envVariables.FEISHU_LOGIN_APPID,
+          appId: envVariables.integration_feishu_login_appid,
           pathname: Url.BASE_URL + Url.FEISHU_LOGIN_CALLBACK,
         };
       case ThirdParty.Wechat:

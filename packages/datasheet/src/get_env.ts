@@ -5,7 +5,7 @@ export const getEnvVars = () => {
   return {
     DINGTALK_LOGIN_APPID: process.env.DINGTALK_LOGIN_APPID,
     QQ_CONNECT_WEB_APPID: process.env.QQ_CONNECT_WEB_APPID,
-    FEISHU_LOGIN_APPID: process.env.FEISHU_LOGIN_APPID,
+    integration_feishu_login_appid: process.env.integration_feishu_login_appid,
     WECHAT_MP_APPID: process.env.WECHAT_MP_APPID,
     WECOM_SHOP_SUITEID: process.env.WECOM_SHOP_SUITEID,
     WECOM_SHOP_CORPID: process.env.WECOM_SHOP_CORPID,

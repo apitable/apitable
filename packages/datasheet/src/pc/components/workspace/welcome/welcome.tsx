@@ -124,7 +124,7 @@ export const Welcome: FC = () => {
                               <span className={styles.moduleImg}>
                                 <Image src={integrateCdnHost(card.img)} alt={card.text} width={34} height={34} />
                               </span>
-                              <Typography variant='body3' className={styles.moduleName} color={colors[card.color]}>
+                              <Typography variant='body3' className={styles.moduleName} color={get(colors, card.color)}>
                                 {t(Strings[card.textKey])}
                               </Typography>
                             </div>;
@@ -175,7 +175,7 @@ export const Welcome: FC = () => {
                         <div className={styles.moduleImg}>
                           <Image src={integrateCdnHost(card.img)} alt={card.name} width={34} height={34} />
                         </div>
-                        <Typography variant='body3' className={styles.moduleName} color={colors[card.color]}>
+                        <Typography variant='body3' className={styles.moduleName} color={get(colors, card.color)}>
                           {t(Strings[card.textKey])}
                         </Typography>
                       </div>

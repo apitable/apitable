@@ -74,6 +74,9 @@
         "assistant_activity_train_camp_start_time": {
             "value": "2022-03-31 00:00"
         },
+        "assistant_ai_course_url": {
+            "value": "https://vika.cn/ai-course/"
+        },
         "assistant_release_history_url": {
             "value": "https://bbs.vika.cn/column/details/13"
         },
@@ -249,13 +252,16 @@
         "integration_feishu_upgrade_url_dev": {
             "value": "https://feishu.cn/admin/appCenter/manage/cli_a28611a8b9e2900d"
         },
-        "integration_feisu_register_link_in_login": {
+        "integration_feisu_register_now_url": {
             "value": "https://u.vika.cn/qmdp3"
         },
         "integration_wecom_bind_help_center": {
             "value": "/help"
         },
-        "integration_wecom_bind_success_icon": {
+        "integration_wecom_bind_help_center_url": {
+            "value": "/help"
+        },
+        "integration_wecom_bind_success_icon_img": {
             "value": "/space/2021/09/16/124e249b651f4934949ae39839e3ee77"
         },
         "integration_wecom_custom_subdomain_help_url": {
@@ -314,9 +320,6 @@
         },
         "login_agree_terms_of_service": {
             "value": "75"
-        },
-        "login_ai_course_url": {
-            "value": "https://vika.cn/ai-course/"
         },
         "login_icp1_url": {
             "value": "https://beian.miit.gov.cn/"
