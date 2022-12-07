@@ -5,7 +5,7 @@
     "plugins": ["@nestjs/swagger/plugin"],
     "assets": [
       {
-        "include": "**/*.yaml",
+        "include": "./shared/**/*.yaml",
         "outDir": "./dist"
       },
       {
@@ -13,11 +13,11 @@
         "outDir": "./dist"
       },
       {
-        "include": "**/*.proto",
+        "include": "./grpc/**/*.proto",
         "outDir": "./dist"
       },
       {
-        "include": "**/*.lua",
+        "include": "./shared/**/*.lua",
         "outDir": "./dist"
       }
     ],
