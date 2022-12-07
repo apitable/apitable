@@ -6,7 +6,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 
 export const useNetwork = (automatic = true, resourceId: string, resourceType: ResourceType) => {
   const [status, setStatus] = useState<Network>(Network.Online);
-  const templateId = useSelector(state => state.pageParams.templateId);
+  const { templateId, nodeId } = useSelector(state => state.pageParams);
   const { syncing, connected } = useSelector(state => {
     const resourceNetwork = Selectors.getResourceNetworking(state, resourceId, resourceType);
     if (!resourceNetwork) {
@@ -21,6 +21,15 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
   }, shallowEqual);
   const { reconnecting: IOConnecting } = useSelector(state => state.space);
   const hideMsgRef = useRef<() => void>(() => { return; });
+
+  useEffect(() => {
+    window.parent.postMessage({
+      message: 'socketStatus', data: {
+        roomId: nodeId,
+        status: status
+      }
+    }, '*');
+  }, [status, nodeId]);
 
   useEffect(() => {
     return () => {
