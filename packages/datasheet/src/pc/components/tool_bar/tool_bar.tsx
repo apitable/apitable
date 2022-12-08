@@ -169,6 +169,7 @@ const ToolbarBase = () => {
   );
   const showIconBarLabel = Boolean(size && size.width && size.width > HIDDEN_TOOLBAR_LEFT_LABEL_WIDTH - offsetWidth);
   const showViewLockModal = useShowViewLockModal();
+  const isLogin = useSelector(state => state.user.isLogin);
 
   const hiddenKanbanGroupCount = useMemo(() => {
     return Object.keys(hiddenGroupMap || {})
@@ -370,16 +371,16 @@ const ToolbarBase = () => {
       return defaultValue;
     } 
     return {
-      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false),
-      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false),
+      basicTools: get(embedInfo, 'viewControl.toolBar.basicTools', false) && isLogin,
+      shareBtn: get(embedInfo, 'viewControl.toolBar.shareBtn', false) && isLogin,
       widgetBtn: get(embedInfo, 'viewControl.toolBar.widgetBtn', false),
-      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false),
-      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false),
-      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false),
-      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false)
+      apiBtn: get(embedInfo, 'viewControl.toolBar.apiBtn', false) && isLogin,
+      formBtn: get(embedInfo, 'viewControl.toolBar.formBtn', false) && isLogin,
+      historyBtn: get(embedInfo, 'viewControl.toolBar.historyBtn', false) && isLogin,
+      robotBtn: get(embedInfo, 'viewControl.toolBar.robotBtn', false) && isLogin
     };
 
-  }, [embedInfo, embedId]);
+  }, [embedInfo, embedId, isLogin]);
 
   // The configuration array traversal for rendering, you need to manually specify a non-repeating key for the component, 
   // usually the component name can be, repeatedly rendered components are followed by a number.
@@ -469,19 +470,19 @@ const ToolbarBase = () => {
         />
       ),
       key: 'timeMachine',
-      show: !mirrorId && !shareId && !templateId && permissions.editable,
+      show: !mirrorId && !shareId && !templateId && permissions.editable && embedSetting.historyBtn,
     },
   ];
 
   return (
     <div className={styles.toolbar} id={DATASHEET_ID.VIEW_TOOL_BAR} ref={toolbarRef}>
-      {!isMobile && !embedId && !isIframe() && <Undo className={styles.toolbarLeft} />}
+      {!isMobile && embedSetting.basicTools && !isIframe() && <Undo className={styles.toolbarLeft} />}
 
       <div className={classNames(styles.toolbarMiddle, { [styles.toolbarOnlyIcon]: !showIconBarLabel })}>
-        {isGalleryView && !embedId && 
+        {isGalleryView && embedSetting.basicTools && 
           !isMobile &&
           GalleryLayoutNode(activeView! as IGalleryViewProperty, showIconBarLabel, !visualizationEditable || disabledWithMirror)}
-        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && !embedId && !isIframe() && (
+        {!isOrgView && !isCalendarView && !isGalleryView && !isKanbanView && !isMobile && embedSetting.basicTools && !isIframe() && (
           <ToolItem
             showLabel={showIconBarLabel}
             disabled={!permissions.rowCreatable}
@@ -492,7 +493,7 @@ const ToolbarBase = () => {
             id={'toolInsertRecord'}
           />
         )}
-        {isKanbanView && kanbanFieldId && !isMobile && !embedId && (
+        {isKanbanView && kanbanFieldId && !isMobile && embedSetting.basicTools && (
           <ToolItem
             showLabel={showIconBarLabel}
             className={styles.toolbarItem}
@@ -507,7 +508,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {isGanttView && !isMobile && !embedId && (
+        {isGanttView && !isMobile && embedSetting.basicTools && (
           <ToolItem
             showLabel={showIconBarLabel}
             className={styles.toolbarItem}
@@ -519,7 +520,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {isCalendarView && !isMobile && !embedId && (
+        {isCalendarView && !isMobile && embedSetting.basicTools && (
           <ToolItem
             showLabel={showIconBarLabel}
             className={styles.toolbarItem}
@@ -531,7 +532,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {isOrgView && !isMobile && !embedId && (
+        {isOrgView && !isMobile && embedSetting.basicTools && (
           <ToolItem
             id={DATASHEET_ID.TOOL_BAR_VIEW_SETTING}
             showLabel={showIconBarLabel}
@@ -544,7 +545,7 @@ const ToolbarBase = () => {
             showViewLockModal={showViewLockModal}
           />
         )}
-        {!((isCalendarView || isGanttView) && isMobile) && !embedId && (
+        {!((isCalendarView || isGanttView) && isMobile) && embedSetting.basicTools && (
           <Display type={ToolHandleType.HideField}>
             {/**
              * Component writing needs to be wrapped under div (rc-trigger restriction used in Display).
@@ -564,7 +565,7 @@ const ToolbarBase = () => {
             </div>
           </Display>
         )}
-        {isGanttView && !embedId && (
+        {isGanttView && embedSetting.basicTools && (
           <Display type={ToolHandleType.HideExclusiveField}>
             <div>
               <HideFieldNode
@@ -600,7 +601,7 @@ const ToolbarBase = () => {
           </Display>
         )}
 
-        {!isOrgView && !embedId && (
+        {!isOrgView && embedSetting.basicTools && (
           <Display type={ToolHandleType.ViewFilter}>
             <div>
               <FilterNode
@@ -612,7 +613,7 @@ const ToolbarBase = () => {
           </Display>
         )}
 
-        {!isOrgView && !isCalendarView && !isKanbanView && !isMobile && !embedId && (
+        {!isOrgView && !isCalendarView && !isKanbanView && !isMobile && embedSetting.basicTools && (
           <Display type={ToolHandleType.ViewGroup}>
             <ToolItem
               id={'toolGroup'}
@@ -636,7 +637,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!isOrgView && !isCalendarView && !embedId && (
+        {!isOrgView && !isCalendarView && embedSetting.basicTools && (
           <Display type={ToolHandleType.ViewSort}>
             <ToolItem
               id={'toolSort'}
@@ -652,7 +653,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!isOrgView && !isCalendarView && !isKanbanView && !isGalleryView && !isMobile && !embedId && (
+        {!isOrgView && !isCalendarView && !isKanbanView && !isGalleryView && !isMobile && embedSetting.basicTools && (
           <Display type={ToolHandleType.ChangeRowHeight}>
             <ToolItem
               id={'toolRowHeight'}

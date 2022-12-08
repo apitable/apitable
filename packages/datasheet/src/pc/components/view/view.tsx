@@ -24,6 +24,7 @@ import { GridViewContainer } from '../multi_grid';
 import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
+import { get } from 'lodash';
 
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC = () => {
@@ -87,6 +88,23 @@ export const View: React.FC = () => {
 
   const isOrgChart = currentView.type === ViewType.OrgChart;
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+  const isLogin = useSelector(state => state.user.isLogin);
+
+  const isShowEmbedToolBar = useMemo(() => {
+ 
+    if(!embedId) {
+      return true;
+    } 
+    return (get(embedInfo, 'viewControl.toolBar.basicTools', false) && isLogin) &&
+      (get(embedInfo, 'viewControl.toolBar.shareBtn', false) && isLogin) &&
+      get(embedInfo, 'viewControl.toolBar.widgetBtn', false) &&
+      (get(embedInfo, 'viewControl.toolBar.apiBtn', false) && isLogin) &&
+      (get(embedInfo, 'viewControl.toolBar.formBtn', false) && isLogin) &&
+      (get(embedInfo, 'viewControl.toolBar.historyBtn', false) && isLogin) &&
+      (get(embedInfo, 'viewControl.toolBar.robotBtn', false) && isLogin);
+
+  }, [embedInfo, embedId, isLogin]);
 
   return (
     <div
@@ -101,9 +119,9 @@ export const View: React.FC = () => {
         background: currentView.type === ViewType.Kanban ? colors.defaultBg : '',
       }}
     >
-      <ComponentDisplay minWidthCompatible={ScreenSize.md}>
+      { isShowEmbedToolBar && <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Toolbar />
-      </ComponentDisplay>
+      </ComponentDisplay> }
       <div style={{ flex: '1 1 auto', height: '100%' }}>
         <AutoSizer className={classNames(styles.viewContainer, 'viewContainer')} style={{ width: '100%', height: '100%' }}>
           {({ height, width }) => {

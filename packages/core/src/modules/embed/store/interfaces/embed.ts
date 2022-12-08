@@ -16,6 +16,13 @@ export interface IEmbedInfo {
   primarySideBar?: boolean, 
   bannerLogo?: boolean,
   spaceId?: string
+  permissionType?: PermissionType
+}
+
+export enum PermissionType {
+  READONLY = 'readOnly',
+  PUBLICEDIT = 'publicEdit',
+  PRIVATEEDIT = 'privateEdit'
 }
 
 export interface IEmbedInfoAction {

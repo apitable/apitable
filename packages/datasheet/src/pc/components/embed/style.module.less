@@ -285,15 +285,49 @@
 
 .brandContainer {
   width: 100%;
-  height: 40px;
+  // height: 40px;
   background-color: var(--bgCommonDefault);
   border-top: 1px solid var(--borderCommon);
   padding: 10px 16px;
   position: fixed;
   bottom: 0;
   img {
-    height: 20px;
+    height: auto;
     width: 75px;
   }
 }
 
+
+
+
+.loginButton {
+  position: absolute;
+  width: 224px;
+  height: 42px;
+  left: calc(50% - 176px/2);
+  bottom: 64px;
+  background-color: var(--bgBrandLightDefault);
+  border: 1px solid var(--borderOnbrandLight);
+  border-radius: 4px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 16px;
+  gap: 16px;
+  p {
+    margin: 0 0;
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--textCommonPrimary);
+  }
+}
+
+.closeBtn {
+  fill: var(--textCommonPrimary);
+  cursor: pointer;
+}

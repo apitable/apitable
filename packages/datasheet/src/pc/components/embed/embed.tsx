@@ -1,4 +1,4 @@
-import { findNode, Navigation, Selectors, StoreActions, Strings, t, Settings, integrateCdnHost, IEmbedInfo, ConfigConstant } from '@apitable/core';
+import { findNode, Navigation, Selectors, StoreActions, Strings, t, Settings, integrateCdnHost, IEmbedInfo, ConfigConstant, PermissionType } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Tooltip } from 'pc/components/common/tooltip';
@@ -14,9 +14,10 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
 import { INodeTree } from '../share/interface';
-import styles from '../share/style.module.less';
+import styles from './style.module.less';
 import { EmbedFail } from './embed_fail';
-
+import { Button } from '@apitable/components';
+import { CloseLargeOutlined } from '@apitable/icons';
 interface IEmbedProps {
   embedId: string;
 }
@@ -34,7 +35,9 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
   const dispatch = useAppDispatch();
   const [embedConfig, setEmbedCofig] = useState<IEmbedInfo>();
   const { data: embedData } = useRequest<any>(() => getEmbedInfoReq(embedId));
-  
+  const isLogin = useSelector(state => state.user.isLogin);
+  const [isShowLoginButton, setIsShowLoginButton] = useState<boolean>(true);
+
   usePageParams();
 
   useEffect(() => {
@@ -80,7 +83,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
     }
     setTimeout(() => {
       Router.push(Navigation.EMBED_SPACE,{
-        params: { embedId: linkId, nodeId },
+        params: { embedId: linkId, nodeId, viewId: embedSetting.viewControl.viewId },
       });
     }, 0);
 
@@ -94,6 +97,11 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
 
   const handleClick = () => {
     setSideBarVisible(!sideBarVisible);
+  };
+
+  const loginHandler = () => {
+    const reference = window.location.href;
+    Router.redirect(Navigation.LOGIN, { query: { reference }});
   };
 
   const getComponent = () => {
@@ -196,6 +204,21 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
         { embedConfig?.bannerLogo && <div className={styles.brandContainer} >
           <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt="vika_brand" />
         </div>}
+        { !isLogin && embedConfig?.permissionType === PermissionType.PUBLICEDIT && isShowLoginButton &&
+          <div className={styles.loginButton} >
+            <p>登录后可编辑</p>
+            <Button
+              color='primary'
+              size='small'
+              className={styles.applicationBtn}
+              onClick={loginHandler}
+            >登录</Button>
+            {/* <div  >
+              
+            </div> */}
+            <CloseLargeOutlined className={styles.closeBtn} onClick={() => setIsShowLoginButton(false)} />
+          </div>
+        }
       </div>
     </>
   );
