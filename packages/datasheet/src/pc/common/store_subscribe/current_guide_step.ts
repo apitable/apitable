@@ -8,11 +8,12 @@ import { Guide, isEqualArr, addWizardNumberAndApiRun, getWizardInfo } from 'ente
 let curSteps: number[] = [];
 
 store.subscribe(function currentStepInHook() {
+  if (!Guide) return;
   const previousCurrentStep = curSteps;
   const state = store.getState();
   const { curGuideStepIds, config, triggeredGuideInfo, curGuideWizardId } = state.hooks;
   curSteps = curGuideStepIds;
-  if (isEqualArr(curSteps, previousCurrentStep) || !config) {
+  if (isEqualArr?.(curSteps, previousCurrentStep) || !config) {
     return;
   }
 
@@ -24,7 +25,7 @@ store.subscribe(function currentStepInHook() {
     store.dispatch(StoreActions.updateTriggeredGuideInfo({}));
     return;
   }
-  const curWizardInfo = getWizardInfo(config, curGuideWizardId as number);
+  const curWizardInfo = getWizardInfo?.(config, curGuideWizardId as number);
   const { steps, completeIndex } = curWizardInfo;
   // Rendering pages
   setTimeout(()=>{
@@ -63,7 +64,7 @@ store.subscribe(function currentStepInHook() {
   if(completeIndex !== -1 && curIndex === completeIndex){
     // This is deliberately triggered as a macro task, in order to avoid two triggers occurring at the same time
     setTimeout(()=>{
-      addWizardNumberAndApiRun(curGuideWizardId);
+      addWizardNumberAndApiRun?.(curGuideWizardId);
     }, 100);
   }
 });

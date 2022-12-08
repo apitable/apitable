@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { isDingtalkSkuPage } from '../home/social_platform';
 import { useWxTitleMap } from '../konva_grid';
+import { IntercomProvider } from 'react-use-intercom';
 // @ts-ignore
 import { IntercomWrapper, WatermarkWrapper } from 'enterprise';
 
@@ -92,8 +93,10 @@ export const SideWrapper = props => {
     </div>
   );
 
+  const Wrapper = IntercomWrapper || IntercomProvider;
+
   return (
-    <IntercomWrapper>
+    <Wrapper>
       {
         WatermarkWrapper ? 
           <WatermarkWrapper unitTitle={unitTitle}>
@@ -101,6 +104,6 @@ export const SideWrapper = props => {
           </WatermarkWrapper> :
           childComponent
       }
-    </IntercomWrapper>
+    </Wrapper>
   );
 };

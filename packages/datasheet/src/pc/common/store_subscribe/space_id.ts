@@ -27,7 +27,7 @@ store.subscribe(function spaceIdChange() {
 
   store.dispatch(StoreActions.resetUnitInfo());
   // Request subscription information
-  getBillingInfo(spaceId).then(data => {
+  getBillingInfo?.(spaceId).then(data => {
     store.dispatch(StoreActions.updateSubscription(data));
   });
 });

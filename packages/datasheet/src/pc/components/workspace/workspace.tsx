@@ -140,14 +140,14 @@ export const Workspace: React.FC = () => {
 
   useEffect(() => {
     if (isMobile || shareId || isHiddenQRCode()) {
-      destroyVikaby();
+      destroyVikaby?.();
       return;
     }
 
     const isVikabyClosed = Boolean(localStorage.getItem('vikaby_closed'));
-    !isVikabyClosed && showVikaby();
+    !isVikabyClosed && showVikaby?.();
     return () => {
-      destroyVikaby();
+      destroyVikaby?.();
     };
   }, [isMobile, shareId]);
 

@@ -44,7 +44,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
   const { rowCount, columnCount, frozenColumnCount } = instance;
 
   const dateAlarmMap = useMemo(() => {
-    if (isScrolling) return { dateAlarms: null, frozenDateAlarms: null };
+    if (isScrolling || !AlarmIcon) return { dateAlarms: null, frozenDateAlarms: null };
     // Alarm clock icon for date
     const dateAlarms: React.ReactNode[] = [];
     const frozenDateAlarms: React.ReactNode[] = [];
@@ -59,7 +59,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
         if (columnIndex > columnCount - 1) break;
         const { fieldId } = visibleColumns[columnIndex];
         if (columnIndex <= frozenColumnCount - 1) {
-          if (fieldMap[fieldId]?.type === FieldType.DateTime && AlarmIcon) {
+          if (fieldMap[fieldId]?.type === FieldType.DateTime ) {
             frozenDateAlarms.push(
               <AlarmIcon
                 key={`${rowIndex}-${columnIndex}`}
@@ -75,7 +75,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
           }
           continue;
         }
-        if (fieldMap[fieldId]?.type === FieldType.DateTime && AlarmIcon) {
+        if (fieldMap[fieldId]?.type === FieldType.DateTime) {
           dateAlarms.push(
             <AlarmIcon
               key={`${rowIndex}-${columnIndex}`}
@@ -106,6 +106,7 @@ export const useCellAlarm = (props: IUseCellAlarmProps) => {
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
   const pointField = fieldMap[pointFieldId];
   if (
+    AlarmIcon &&
     !isScrolling &&
     row?.type === CellType.Record &&
     pointField?.type === FieldType.DateTime

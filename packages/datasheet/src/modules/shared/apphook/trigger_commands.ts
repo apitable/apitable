@@ -17,7 +17,7 @@ import { openVikaby, Guide, getPrevAndNextStepIdsInCurWizard, getPrevAndNextIdIn
 
 export const TriggerCommands = {
   open_vikaby: (props) => {
-    openVikaby({ ...props });
+    openVikaby?.({ ...props });
   },
   open_guide_wizard: (wizardId: number) => {
     const state = store.getState();
@@ -27,7 +27,7 @@ export const TriggerCommands = {
 
     if (!config || !user.info) return;
 
-    const curWizard = getWizardInfo(config, wizardId);
+    const curWizard = getWizardInfo?.(config, wizardId);
 
     if (!curWizard || !isTimeRulePassed(curWizard.startTime, curWizard.endTime)) return;
     if ((!curWizard.repeat) && user.info.wizards.hasOwnProperty(wizardId)) return;
@@ -43,7 +43,7 @@ export const TriggerCommands = {
     const pendingWizardIds: number[] = [];
     // Filter out unqualified wizards
     wizards.forEach(id => {
-      const curWizard = getWizardInfo(config, id);
+      const curWizard = getWizardInfo?.(config, id);
       if (!curWizard || !isTimeRulePassed(curWizard.startTime, curWizard.endTime)) return;
       if (localStorage.getItem(`${id}`)) return;
       if (isMobileApp() && id === ConfigConstant.WizardIdConstant.AGREE_TERMS_OF_SERVICE) return;
@@ -66,7 +66,7 @@ export const TriggerCommands = {
     const state = store.getState();
     const hooks = state.hooks;
     const { curGuideWizardId, config, curGuideStepIds, pendingGuideWizardIds } = hooks;
-    if (!config) return;
+    if (!config || !getPrevAndNextStepIdsInCurWizard) return;
     const nextStepIds = getPrevAndNextStepIdsInCurWizard(config, curGuideWizardId, curGuideStepIds)[2];
     const nextWizardId = getPrevAndNextIdInArr(pendingGuideWizardIds, curGuideWizardId)[2];
     if (nextStepIds.length === 0 && nextWizardId !== -1) {
@@ -77,6 +77,7 @@ export const TriggerCommands = {
   },
   // Skip the current wizard and go to the first steps of the next wizard
   skip_current_wizard: (props?: ISkipCurrentWizardProps) => {
+    if (!getPrevAndNextIdInArr) return;
     const state = store.getState();
     const hooks = state.hooks;
     const { curGuideWizardId, config, pendingGuideWizardIds } = hooks;
@@ -95,7 +96,7 @@ export const TriggerCommands = {
     store.dispatch(StoreActions.updateCurrentGuideStepIds([]));
   },
   clear_guide_uis: (arr: string[]) => {
-    if (arr.length > 0) {
+    if (arr.length > 0 && Guide) {
       arr.forEach(item => {
         Guide.destroyUi(item);
       });
@@ -105,6 +106,7 @@ export const TriggerCommands = {
     TriggerCommands.clear_guide_uis(['notice', 'modal', 'questionnaire', 'popover', 'breath', 'slideout', 'taskList', 'contactUs']);
   },
   set_wizard_completed: (props: ISetWizardCompletedProps) => {
+    if (!addWizardNumberAndApiRun) return;
     const { curWizard, wizardId } = props;
     if (curWizard) {
       const state = store.getState();

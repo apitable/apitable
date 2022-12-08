@@ -155,9 +155,11 @@ store.subscribe(function widgetClient() {
     }
     return false;
   });
+  const getDstIds = (dstId: string) => getDependenceDstIds?.(state, dstId) || [];
+
   if (Object.keys(datasheetSimpleUpdate).length) {
     const datasheetId = datasheetSimpleUpdate.datasheetId;
-    const dstIds = Array.from(new Set([...getDependenceDstIds(state, datasheetId!), datasheetId!]));
+    const dstIds = Array.from(new Set([...getDstIds(datasheetId!), datasheetId!]));
     mainWidgetMessage.datasheetSimpleUpdate(dstIds, { [datasheetSimpleUpdate.datasheetId!]: datasheetSimpleUpdate });
   }
 
@@ -166,7 +168,7 @@ store.subscribe(function widgetClient() {
   Object.keys(datasheetMap).forEach(datasheetId => {
     const { loading, datasheet } = datasheetMap[datasheetId];
     if (!loading && datasheet?.isPartOfData !== preDatasheetPartOfDataMap[datasheetId]) {
-      const dstIds = getDependenceDstIds(state, datasheetId);
+      const dstIds = getDstIds(datasheetId);
       const map = {
         [datasheetId]: datasheetMap[datasheetId]
       };

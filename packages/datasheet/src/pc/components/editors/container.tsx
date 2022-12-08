@@ -669,7 +669,9 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
     } : undefined;
 
     if (
-      field.type === FieldType.DateTime && isEqual(cellValue, value) && !isEqual(alarm, formatCurAlarm)
+      field.type === FieldType.DateTime && isEqual(cellValue, value) &&
+      !isEqual(alarm, formatCurAlarm) &&
+      convertAlarmStructure
     ) {
       resourceService.instance!.commandManager!.execute({
         cmd: CollaCommandName.SetDateTimeCellAlarm,
@@ -678,7 +680,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
       });
  
-    } else {
+    } else if (convertAlarmStructure) {
       resourceService.instance!.commandManager.execute({
         cmd: CollaCommandName.SetRecords,
         datasheetId,

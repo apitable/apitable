@@ -14,7 +14,7 @@ export interface IFormatSelectOptionData extends ISpaceInfo {
 
 export interface IGetUnitNameParams {
   name?: string;
-  type?: WecomOpenDataType;
+  type?: WecomOpenDataType | any;
   isModified?: boolean;
   spaceInfo: ISpaceInfo | ISpaceBasicInfo | null;
 }
@@ -91,7 +91,7 @@ export const isSocialWecom = (space?: ISpaceInfo | ISpaceBasicInfo | null) => {
  */
 export const getSocialWecomUnitName = ({
   name,
-  type = WecomOpenDataType.UserName,
+  type = (WecomOpenDataType?.UserName || 'userName'),
   isModified,
   spaceInfo,
 }: IGetUnitNameParams) => {
