@@ -23,6 +23,7 @@ class MyDocument extends Document<IClientInfo> {
       ...initData,
     };
   }
+
   render() {
     const { env, version, envVars, locale } = this.props;
     return (
@@ -31,7 +32,9 @@ class MyDocument extends Document<IClientInfo> {
           <link rel='apple-touch-icon' href='/logo.png' />
           <link rel='shortcut icon' href={`${publicRuntimeConfig.staticFolder}/favicon.ico`} />
           <link rel='manifest' href={`${publicRuntimeConfig.staticFolder}/manifest.json`} />
-          <script src={`${publicRuntimeConfig.staticFolder}/file/js/browser_check.2.js`} async/>
+          <script src={`${publicRuntimeConfig.staticFolder}/file/js/browser_check.2.js`} async />
+          {/* injection of custom configs of editions, e.g. APITable */}
+          <script src='/custom/custom_config.js' defer/>
         </Head>
         <body>
           <Main />
@@ -51,8 +54,6 @@ class MyDocument extends Document<IClientInfo> {
           `}
             </Script>
           }
-          {/* injection of custom configs of editions, e.g. APITable */}
-          <script src="/custom/custom_config.js" defer />
         </body>
       </Html>
     );

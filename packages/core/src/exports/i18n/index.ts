@@ -5,7 +5,7 @@ import { I18N } from '@apitable/i18n';
 import { StringKeysMapType, StringKeysType } from '../../config/stringkeys.interface';
 export * from '../../config/stringkeys.interface';
 
-// String.key will return key, for compatibility 
+// String.key will return key, for compatibility
 export const Strings = new Proxy({}, {
   get: function(_target, key) {
     return key;
@@ -26,6 +26,19 @@ export function getLanguage() {
 }
 
 require('@apitable/i18n-lang');
+
+const rewriteI18nForEdition = () => {
+  for (const k in _global.vika_i18n) {
+    if (_global.vika_i18n_edition?.[k]) {
+      _global.vika_i18n[k] = {
+        ..._global.vika_i18n[k],
+        ..._global.vika_i18n_edition[k]
+      };
+    }
+  }
+};
+
+rewriteI18nForEdition();
 
 // global singleton of I18N
 const i18n = I18N.createByLanguagePacks(_global.vika_i18n, getLanguage());
