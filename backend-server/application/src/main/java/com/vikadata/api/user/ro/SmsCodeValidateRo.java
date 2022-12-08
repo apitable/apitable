@@ -10,7 +10,7 @@ import lombok.Data;
  * Mobile verification code verification request parameters
  */
 @Data
-@ApiModel("Mobile verification code verification request parameters")
+@ApiModel("Mobile phone verification code verification request parameters")
 public class SmsCodeValidateRo {
 
     @NotBlank(message = "Mobile phone area code cannot be empty")

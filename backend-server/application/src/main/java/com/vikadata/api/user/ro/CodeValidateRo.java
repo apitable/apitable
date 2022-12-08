@@ -12,7 +12,7 @@ import lombok.Data;
  * </p>
  */
 @Data
-@ApiModel("Mobile verification code verification request parameters")
+@ApiModel("Verification code verification request parameters")
 public class CodeValidateRo {
 
     @ApiModelProperty(value = "Verification Code", example = "123456", position = 3, required = true)
