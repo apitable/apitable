@@ -3,8 +3,7 @@ import styles from './style.module.less';
 import { Events, Player, Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import { PermissionDesc } from './permission_desc';
-// @ts-ignore
-import { ScrollBar } from 'enterprise';
+import { ScrollBar } from 'pc/components/scroll_bar';
 
 export const Workbench: FC = () => {
   useMount(() => {

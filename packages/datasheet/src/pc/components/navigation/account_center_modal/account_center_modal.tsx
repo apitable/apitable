@@ -20,6 +20,7 @@ import { PersonalizedSetting } from './personalized_setting';
 import styles from './style.module.less';
 import { TestFunction } from './test_function';
 import { useResponsive } from 'pc/hooks';
+import { compact } from 'lodash';
 // @ts-ignore
 import { AccountWallet } from 'enterprise';
 
@@ -56,7 +57,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
     props.setShowAccountCenter(false);
   };
 
-  const listData = [
+  const listData = compact([
     {
       key: AccountCenterModules.BasicSetting,
       name: t(Strings.user_profile_setting),
@@ -70,7 +71,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       // For accounts that are not bound to a cell phone or email address, the "Change Password" section of the user center is directly blocked
       hidden: !(userInfo?.email || userInfo?.mobile) || env.HIDDEN_USER_CHANGE_PASSWORD,
     },
-    {
+    AccountWallet && {
       key: AccountCenterModules.AccountWallet,
       name: t(Strings.account_wallet),
       component: <AccountWallet />,
@@ -97,7 +98,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       name: t(Strings.test_function),
       component: <TestFunction isUser />,
     },
-  ];
+  ]);
 
   const CustomTitle = ({ title, onClose, onClickNav }) => {
     return (

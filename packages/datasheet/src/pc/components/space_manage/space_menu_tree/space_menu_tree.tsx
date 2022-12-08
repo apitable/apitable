@@ -3,7 +3,7 @@ import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t 
 import { AuditOutlined, ManagePowerOutlined, RocketOutlined, TestOutlined } from '@apitable/icons';
 import { Tree } from 'antd';
 // @ts-ignore
-import { Marketing } from 'enterprise';
+import { Marketing, Log } from 'enterprise';
 import { useRouter } from 'next/router';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
@@ -19,6 +19,7 @@ import DashBoardIcon from 'static/icon/space/space_icon_dashboard_normal.svg';
 import AddressIcon from 'static/icon/space/space_icon_manage_address_normal.svg';
 import WorkBenchIcon from 'static/icon/space/space_icon_manage_workingtable_normal.svg';
 import styles from './style.module.less';
+import { compact } from 'lodash';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -43,7 +44,7 @@ interface ISpaceNavInfo {
   children?: ISpaceNavInfo[];
 }
 
-export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], marketplaceDisable?: boolean, isSelfVika?: boolean) => [
+export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], marketplaceDisable?: boolean, isSelfVika?: boolean) => compact([
   {
     title: t(Strings.space_info),
     key: SPACE_INFO_KEY,
@@ -51,7 +52,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     valid: true,
     routeAddress: '/overview',
   },
-  {
+  Log && {
     title: t(Strings.space_log_title),
     key: 'log',
     icon: <AuditOutlined />,
@@ -123,7 +124,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
     routeAddress: '/test-function',
     valid: true,
   },
-];
+]);
 
 export const SpaceMenuTree: React.FC = () => {
   const { spaceId, spaceResource, userInfo, appType } = useSelector(
