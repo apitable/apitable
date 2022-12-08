@@ -7,7 +7,7 @@
     <changeSet id="V0.14-20221128-001" author="Chambers" labels="space">
         <comment>modify space audit field type</comment>
         <sql>
-            ALTER TABLE `vika_space_audit`
+            ALTER TABLE `${table.prefix}space_audit`
                 MODIFY COLUMN `user_agent` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL AFTER `ip_address`;
         </sql>
     </changeSet>
