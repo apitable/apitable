@@ -121,6 +121,7 @@ vikadata:
     encrypt-key: ${ONEACCESS_ENCRYPT_KEY:123456}
     client-id: ${ONEACCESS_CLIENT_ID:123}
     client-secret: ${ONEACCESS_CLIENT_SECRET:vk-xxxxxx}
+    collaboration-space-id: ${COLLABORATION_SPACE_ID:""}
     we-com:
       corpid: ${ONEACCESS_WECOM_CORPID:wwf4021212121}
       secret: ${ONEACCESS_WECOM_SECRET:wcxxxxx}

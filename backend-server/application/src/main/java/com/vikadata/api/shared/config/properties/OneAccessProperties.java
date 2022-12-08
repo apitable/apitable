@@ -39,6 +39,11 @@ public class OneAccessProperties {
     private String encryptAlg;
 
     /**
+     * Collaboration spaceId
+     */
+    private String collaborationSpaceId;
+
+    /**
      * Government WeCom configuration
      */
     private WeCom weCom;
@@ -90,6 +95,16 @@ public class OneAccessProperties {
     public void setEncryptAlg(String encryptAlg) {
         this.encryptAlg = encryptAlg;
     }
+
+
+    public String getCollaborationSpaceId() {
+        return collaborationSpaceId;
+    }
+
+    public void setCollaborationSpaceId(String collaborationSpaceId) {
+        this.collaborationSpaceId = collaborationSpaceId;
+    }
+
 
     public WeCom getWeCom() {
         return weCom;
