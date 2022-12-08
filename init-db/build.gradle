@@ -21,6 +21,7 @@ liquibase {
       password "${System.getenv("DB_PASSWORD")}"
       changeLogFile "src/main/resources/db/changelog/db.changelog-master.xml"
       logLevel "warning"
+      changeLogParameters(['table.prefix': "${System.getenv("DATABASE_TABLE_PREFIX")}"])
       classpath "src/main/resources/"
       databaseChangeLogTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog"
       databaseChangeLogLockTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog_lock"
