@@ -12,8 +12,9 @@ import { SpaceContext } from './context';
 import { ISpaceLevelType, LevelType } from './interface';
 import { Lg, Md, Sm, Xs } from './layout';
 import { DELETE_SPACE_CONTEXT_MENU_ID } from './utils';
+import { ScrollBar } from 'pc/components/scroll_bar';
 // @ts-ignore
-import { ScrollBar, SubscribeUsageTipType, triggerUsageAlert, subscribeUsageCheck } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert, subscribeUsageCheck } from 'enterprise';
 
 export const SpaceInfo = () => {
   const { spaceInfo, spaceFeatures, subscription, spaceId } = useSelector(
@@ -38,6 +39,7 @@ export const SpaceInfo = () => {
 
   useMount(() => {
     setTimeout(() => {
+      if (!SubscribeUsageTipType || !triggerUsageAlert || !subscribeUsageCheck) return;
       if (subscribeUsageCheck.shouldAlertToUser('maxSheetNums', spaceInfo?.sheetNums, true)) {
         triggerUsageAlert('maxSheetNums', { usage: spaceInfo?.sheetNums }, SubscribeUsageTipType.Alert);
         return;

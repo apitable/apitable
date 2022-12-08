@@ -4,8 +4,7 @@ import { File, Folder, View } from 'pc/components/datasheet_search_panel/compone
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import * as React from 'react';
 import EmptyFolderImg from 'static/icon/datasheet/datasheet_img_folder_default.png';
-// @ts-ignore
-import { ScrollBar } from 'enterprise';
+import { ScrollBar } from 'pc/components/scroll_bar';
 
 export interface IViewNode {
   nodeId: string;
