@@ -26,7 +26,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 @Slf4j
 public class I18nInterceptor extends AbstractServletSupport implements HandlerInterceptor {
 
-    private final Set<String> INCLUDE_SERVLET_PATH = Sets.newHashSet("/client/info", "/client/entry", "/user/me");
+    private final Set<String> INCLUDE_SERVLET_PATH = Sets.newHashSet("/client/info", "/client/entry", "/user/me", "/user/update");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
