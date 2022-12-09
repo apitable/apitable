@@ -1,12 +1,13 @@
 import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } from '@apitable/core';
 import { Popover } from 'antd';
+import { find, isEqual, values } from 'lodash';
 import uniqBy from 'lodash/uniqBy';
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
-import { backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
 import { getSocialWecomUnitName } from 'pc/components/home/social_platform';
+import { backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-import { find, values } from 'lodash';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styles from './style.module.less';
 
 const MAX_SHOW_NUMBER = 3;
@@ -44,9 +45,24 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
     collaborators = uniqBy(collaborators.sort(sortByCreateTime), 'userId');
 
     return [...collaborators, ...anonymous.sort(sortByCreateTime)];
-  }, shallowEqual);
+  }, isEqual);
+  
   const unitMap = useSelector(Selectors.getUnitMap);
   const spaceInfo = useSelector(state => state.space.curSpaceInfo);
+
+  useEffect(() => {
+    window.parent.postMessage({
+      message: 'collaborators', data: {
+        roomId: props.resourceId,
+        collaborators: collaborators.map(item => {
+          return {
+            name: item.userName,
+            avatar: item.avatar
+          };
+        })
+      }
+    }, '*');
+  }, [collaborators, props.resourceId]);
 
   const showCollaborators = collaborators.slice(0, MAX_SHOW_NUMBER);
   const restCollaborators = collaborators.slice(MAX_SHOW_NUMBER);
@@ -80,7 +96,7 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
             >
               <Tooltip
                 title={title}
-                placement="bottom"
+                placement='bottom'
                 align={{
                   offset: [-3, 0],
                 }}
@@ -105,7 +121,7 @@ export const CollaboratorStatus: React.FC<{ resourceType: ResourceType, resource
       </div>
       {isOverMax && (
         <Popover
-          trigger="click"
+          trigger='click'
           content={
             <div className={styles.memberListCard}>
               {restCollaborators.map(c => (
