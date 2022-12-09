@@ -3,20 +3,21 @@ SHELL := /bin/bash
 
 docker_build_app:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
-	export BUILD_ARG="--build-arg JAR_PATH=application/build/libs/*.jar --build-arg PORT=8081"; \
-	export DOCKERFILE=Dockerfile; \
+	env_dotversion;\
+	export BUILD_ARG="--build-arg BUILD_VERSION=$${SEMVER_FULL} --build-arg JAR_PATH=application/build/libs/*.jar --build-arg PORT=8081"; \
+	export DOCKERFILE=../packaging/Dockerfile.backend-server; \
 	build_docker backend-server
 
 docker_build_dingtalk_server:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
 	export BUILD_ARG="--build-arg JAR_PATH=vikadata-project/social-service-dingtalk/build/libs/*.jar --build-arg PORT=9091 --build-arg PORT=9092"; \
-	export DOCKERFILE=Dockerfile; \
+	export DOCKERFILE=../packaging/Dockerfile.backend-server; \
 	build_docker dingtalk-server
 
 docker_build_space_job_executor:
 	eval "$$(curl -fsSL https://vikadata.github.io/semver_ci.sh)"; \
 	export BUILD_ARG="--build-arg JAR_PATH=vikadata-scheduler/scheduler-space/build/libs/*.jar --build-arg PORT=9111"; \
-	export DOCKERFILE=Dockerfile; \
+	export DOCKERFILE=../packaging/Dockerfile.backend-server; \
 	build_docker space-job-executor
       
 

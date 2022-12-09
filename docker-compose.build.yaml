@@ -8,8 +8,8 @@ services:
   backend-server:
     image: ${DISTRO:-apitable}/backend-server:${TAG:-latest}
     build:
-      context: .
-      dockerfile: packaging/Dockerfile.backend-server
+      context: ./backend-server
+      dockerfile: ../packaging/Dockerfile.backend-server
 
   web-server:
     image: ${DISTRO:-apitable}/web-server:${TAG:-latest}

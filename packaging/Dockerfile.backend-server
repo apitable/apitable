@@ -1,11 +1,15 @@
 FROM amazoncorretto:8 AS builder
 
 WORKDIR /app
-COPY ./backend-server/. .
+COPY ./. .
 RUN ./gradlew build -x test
 
 
 FROM amazoncorretto:8
+
+ARG BUILD_VERSION
+ENV BUILD_VERSION ${BUILD_VERSION}
+
 WORKDIR /app
 
 COPY --from=builder /app/application/build/libs/*.jar /app/app.jar
