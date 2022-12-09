@@ -39,12 +39,14 @@ import lombok.extern.slf4j.Slf4j;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
-import com.vikadata.api.enterprise.widget.service.IWidgetService;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
+import com.vikadata.api.interfaces.widget.facade.WidgetServiceFacade;
+import com.vikadata.api.interfaces.widget.model.WidgetCopyOption;
+import com.vikadata.api.organization.entity.TeamMemberRelEntity;
+import com.vikadata.api.organization.entity.UnitEntity;
 import com.vikadata.api.organization.enums.UnitType;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
@@ -52,15 +54,17 @@ import com.vikadata.api.organization.mapper.UnitMapper;
 import com.vikadata.api.organization.service.IRoleService;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.service.IPlayerNotificationService;
-import com.vikadata.api.shared.cache.service.UserSpaceRemindRecordService;
+import com.vikadata.api.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.config.properties.LimitProperties;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.api.shared.util.VikaStrings;
-import com.vikadata.api.organization.entity.UnitEntity;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.workspace.dto.DataSheetRecordDTO;
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
+import com.vikadata.api.workspace.dto.DatasheetWidgetDTO;
+import com.vikadata.api.workspace.dto.NodeCopyDTO;
+import com.vikadata.api.workspace.dto.NodeCopyOptions;
 import com.vikadata.api.workspace.dto.SnapshotDTO;
 import com.vikadata.api.workspace.enums.CellType;
 import com.vikadata.api.workspace.enums.DataSheetException;
@@ -72,8 +76,6 @@ import com.vikadata.api.workspace.mapper.DatasheetMapper;
 import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
 import com.vikadata.api.workspace.mapper.DatasheetRecordMapper;
 import com.vikadata.api.workspace.mapper.NodeMapper;
-import com.vikadata.api.workspace.dto.NodeCopyDTO;
-import com.vikadata.api.workspace.dto.NodeCopyOptions;
 import com.vikadata.api.workspace.observer.DatasheetObserver;
 import com.vikadata.api.workspace.observer.DatasheetRemindObserver;
 import com.vikadata.api.workspace.observer.RemindMemberOpSubject;
@@ -99,7 +101,6 @@ import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.DatasheetEntity;
 import com.vikadata.entity.DatasheetRecordEntity;
-import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -149,13 +150,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     private TeamMemberRelMapper teamMemberRelMapper;
 
     @Resource
-    private UserSpaceRemindRecordService userSpaceRemindRecordService;
+    private UserSpaceRemindRecordCacheService userSpaceRemindRecordCacheService;
 
     @Resource
     private IPlayerNotificationService playerNotificationService;
-
-    @Resource
-    private IWidgetService iWidgetService;
 
     @Resource
     private LimitProperties limitProperties;
@@ -168,6 +166,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
+
+    @Resource
+    private WidgetServiceFacade widgetServiceFacade;
 
     @Override
     public void batchSave(List<DatasheetEntity> entities) {
@@ -544,7 +545,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
 
         metaMapRo.setWidgetPanels(newWidgetPanels);
         // batch generation of new components
-        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
+        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap));
     }
 
     @Override
@@ -748,7 +749,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         units.stream().filter(unit -> unit.getSpaceId().equals(spaceId)).findFirst()
                 .orElseThrow(() -> new BusinessException("submit data across spaces"));
         // refresh the mentioned member record cache
-        userSpaceRemindRecordService.refresh(userId, spaceId, CollUtil.newArrayList(unitIds));
+        userSpaceRemindRecordCacheService.refresh(userId, spaceId, CollUtil.newArrayList(unitIds));
         if (notify) {
             // split roles into members and teams
             Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);

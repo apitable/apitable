@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.vikadata.api.enterprise.control.infrastructure.ExportLevelEnum;
+import com.vikadata.api.control.infrastructure.ExportLevelEnum;
 import com.vikadata.api.space.ro.SpaceSecuritySettingRo;
 import com.vikadata.api.shared.support.serializer.EmptyBooleanSerializer;
 import com.vikadata.api.shared.support.serializer.NullBooleanSerializer;

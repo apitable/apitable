@@ -372,14 +372,6 @@
         LIMIT 0,1
     </select>
 
-    <select id="selectBySpaceIdAndEmailIgnoreDeleted"
-            resultType="com.vikadata.api.organization.entity.MemberEntity">
-        select *
-        from ${tablePrefix}unit_member
-        where email = #{email} and space_id = #{spaceId}
-        LIMIT 0,1
-    </select>
-
     <select id="selectBySpaceIdAndEmailsIgnoreDeleted"
             resultType="com.vikadata.api.organization.entity.MemberEntity">
         select *

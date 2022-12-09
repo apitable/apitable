@@ -138,11 +138,7 @@ ext {
     'jsonassert'                  : 'org.skyscreamer:jsonassert',
     // Spring retry
     'spring-retry'                : "org.springframework.retry:spring-retry",
-    'powermock-junit4'            : "org.powermock:powermock-module-junit4:${powermock_version}",
     'powermock-api-mockito2'      : "org.powermock:powermock-api-mockito2:${powermock_version}",
-    'testcontainers'              : "org.testcontainers:testcontainers",
-    'testcontainers-junit5'       : "org.testcontainers:junit-jupiter",
-    'testcontainers-mysql'        : "org.testcontainers:mysql",
     'awaitility'                  : "org.awaitility:awaitility",
   ]
 }

@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vikadata.api.space.vo.InviteUserInfo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.cursor.Cursor;
 
-import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.model.UserInPausedDto;
+import com.vikadata.api.space.vo.InviteUserInfo;
 import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.model.UserInPausedDto;
+import com.vikadata.api.user.model.UserLangDTO;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ public interface UserMapper extends BaseMapper<UserEntity> {
      * @param userId ID Primary Key
      * @return User Name
      */
-    String selectUserNameById(@Param("userId") Long userId);
+    String selectNickNameById(@Param("userId") Long userId);
 
     /**
      * Query email

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.vikadata.api.enterprise.control.mapper.ControlMapper">
+<mapper namespace="com.vikadata.api.control.mapper.ControlMapper">
 
     <select id="selectByControlId" resultType="com.vikadata.entity.ControlEntity">
         SELECT *
@@ -48,7 +48,7 @@
     </select>
 
     <select id="selectOwnerControlUnitDTO"
-            resultType="com.vikadata.api.enterprise.control.model.ControlUnitDTO">
+            resultType="com.vikadata.api.control.model.ControlUnitDTO">
         SELECT vc.control_id, vu.id AS unitId
         FROM ${tablePrefix}control vc
         JOIN ${tablePrefix}unit_member vum ON vc.updated_by = vum.user_id AND vc.space_id = vum.space_id
@@ -63,7 +63,7 @@
     </select>
 
     <select id="selectControlTypeDTO"
-            resultType="com.vikadata.api.enterprise.control.model.ControlTypeDTO">
+            resultType="com.vikadata.api.control.model.ControlTypeDTO">
         SELECT control_id, control_type
         FROM ${tablePrefix}control
         WHERE space_id = #{spaceId}

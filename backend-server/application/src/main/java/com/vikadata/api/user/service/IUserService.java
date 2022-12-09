@@ -1,16 +1,13 @@
 package com.vikadata.api.user.service;
 
-
 import java.util.Collection;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.vikadata.api.shared.config.security.Auth0UserProfile;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.model.UserInPausedDto;
 import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.ro.DtBindOpRo;
 import com.vikadata.api.user.ro.UserOpRo;
 import com.vikadata.api.user.vo.UserInfoVo;
 
@@ -23,7 +20,7 @@ public interface IUserService extends IService<UserEntity> {
 
     /**
      * Obtain user ID according to mobile number
-     * 
+     *
      * @param mobile cell-phone number
      * @return User ID
      */
@@ -31,7 +28,7 @@ public interface IUserService extends IService<UserEntity> {
 
     /**
      * Obtain user ID according to email address
-     * 
+     *
      * @param email email
      * @return User ID
      */
@@ -109,22 +106,6 @@ public interface IUserService extends IService<UserEntity> {
     boolean saveUser(UserEntity user);
 
     /**
-     * create user by auth0 user profile
-     *
-     * @param userProfile auth0 user profile
-     * @return user id
-     */
-    Long createUserByAuth0IfNotExist(Auth0UserProfile userProfile);
-
-    /**
-     * create user by auth0 user model
-     *
-     * @param user user info from auth0 model
-     * @return user id
-     */
-    Long createUserByAuth0IfNotExist(com.auth0.json.mgmt.users.User user);
-
-    /**
      * Create Account
      *
      * @param areaCode  Area code
@@ -157,35 +138,11 @@ public interface IUserService extends IService<UserEntity> {
     UserEntity createUserByEmail(String email);
 
     /**
-     * Batch create vest numbers
-     */
-    void createUsersByCli();
-
-    /**
-     * Create User
-     * Create operation initiated by CLI tool to create user vest
-     *
-     * @param username User name (email)
-     * @param password Password
-     * @param phone Phone number
-     * @return user entity
-     */
-    UserEntity createUserByCli(String username, String password, String phone);
-
-    /**
      * initial new space for new user
      *
      * @param user user entity
      */
     void initialDefaultSpaceForUser(UserEntity user);
-
-    /**
-     * active space if user has be invited to another space
-     *
-     * @param userId user id
-     * @param memberIds member id list
-     */
-    void activeInvitationSpace(Long userId, List<Long> memberIds);
 
     /**
      * Query whether users bind email
@@ -269,13 +226,6 @@ public interface IUserService extends IService<UserEntity> {
     UserInfoVo getCurrentUserInfo(Long userId, String spaceId, Boolean filter);
 
     /**
-     * Associated DingTalk
-     *
-     * @param opRo Request parameters
-     */
-    void bindDingTalk(DtBindOpRo opRo);
-
-    /**
      * Close the user's multi ended session
      *
      * @param userId   User ID
@@ -284,20 +234,19 @@ public interface IUserService extends IService<UserEntity> {
     void closeMultiSession(Long userId, boolean isRetain);
 
     /**
-     * Unbind Third Party
-     *
-     * @param userId    User ID
-     * @param type      Third party type
-     */
-    void unbind(Long userId, Integer type);
-
-    /**
      * Get UUID
      *
      * @param userId    User ID
      * @return uuid
      */
     String getUuidByUserId(Long userId);
+
+    /**
+     * get username by user id
+     * @param userId user id
+     * @return username
+     */
+    String getNicknameByUserId(Long userId);
 
     /**
      * Log off the user account and enter the calm period.
@@ -362,8 +311,6 @@ public interface IUserService extends IService<UserEntity> {
      * @return List<UserLangDTO>
      */
     List<UserLangDTO> getLangAndEmailByIds(List<Long> userIds, String defaultLocale);
-
-    void useInviteCodeReward(Long userId, String inviteCode);
 
     /**
      * Obtain user ID according to uuid

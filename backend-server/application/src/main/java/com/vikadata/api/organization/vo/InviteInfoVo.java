@@ -1,10 +1,11 @@
 package com.vikadata.api.organization.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.vikadata.api.shared.support.serializer.NullBooleanSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import com.vikadata.api.shared.support.serializer.NullBooleanSerializer;
 
 /**
  * <p>
@@ -35,6 +36,6 @@ public class InviteInfoVo {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isBound;
 
-    @ApiModelProperty(value = "Inviter's personal invitation code", example = "vikatest", position = 7)
+    @ApiModelProperty(value = "Inviter's personal invitation code", example = "test", position = 7)
     private String inviteCode;
 }

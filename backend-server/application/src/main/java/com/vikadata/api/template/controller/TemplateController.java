@@ -17,17 +17,15 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.base.enums.AuthException;
 import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.service.SensorsService;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
-import com.vikadata.api.enterprise.gm.enums.GmAction;
-import com.vikadata.api.enterprise.gm.service.IGmService;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.control.infrastructure.role.ControlRoleManager;
+import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.interfaces.social.event.TemplateQuoteEvent;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
 import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.component.notification.annotation.Notification;
@@ -51,8 +49,6 @@ import com.vikadata.api.template.mapper.TemplateMapper;
 import com.vikadata.api.template.model.TemplateSearchDTO;
 import com.vikadata.api.template.ro.CreateTemplateRo;
 import com.vikadata.api.template.ro.QuoteTemplateRo;
-import com.vikadata.api.template.ro.TemplateCenterConfigRo;
-import com.vikadata.api.template.service.ITemplateCenterConfigService;
 import com.vikadata.api.template.service.ITemplateService;
 import com.vikadata.api.template.vo.RecommendVo;
 import com.vikadata.api.template.vo.TemplateCategoryContentVo;
@@ -98,7 +94,7 @@ public class TemplateController {
     private ControlTemplate controlTemplate;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
     private ConstProperties constProperties;
@@ -111,12 +107,6 @@ public class TemplateController {
 
     @Resource
     private SpaceCapacityCacheService spaceCapacityCacheService;
-
-    @Resource
-    private ITemplateCenterConfigService iTemplateCenterConfigService;
-
-    @Resource
-    private IGmService iGmService;
 
     @GetResource(path = "/template/global/search", requiredLogin = false)
     @ApiOperation(value = "Template Global Search")
@@ -208,7 +198,7 @@ public class TemplateController {
         String spaceId = iNodeService.getSpaceIdByNodeId(ro.getParentId());
         SpaceHolder.set(spaceId);
         // Get the member ID(the method includes judging whether the user is in this space)
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         iNodeService.checkEnableOperateNodeBySpaceFeature(memberId, spaceId, ro.getParentId());
         // Check node permissions
         controlTemplate.checkNodePermission(memberId, ro.getParentId(), NodePermission.CREATE_NODE,
@@ -251,7 +241,7 @@ public class TemplateController {
         String spaceId = iNodeService.getSpaceIdByNodeId(ro.getNodeId());
         SpaceHolder.set(spaceId);
         // Get the member ID(the method includes judging whether the user is in this space)
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // Check node permissions
         controlTemplate.checkNodePermission(memberId, ro.getNodeId(), NodePermission.MANAGE_NODE,
                 status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
@@ -276,7 +266,7 @@ public class TemplateController {
         String spaceId = iTemplateService.getSpaceId(templateId);
         SpaceHolder.set(spaceId);
         // Check if user is in this space
-        UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, spaceId);
+        UserSpaceDto userSpaceDto = userSpaceCacheService.getUserSpace(userId, spaceId);
         // Determine whether it is the main administrator, or a sub-admin with template permissions
         boolean isManager = userSpaceDto.isMainAdmin() ||
                 (userSpaceDto.isAdmin() && userSpaceDto.getResourceCodes().contains("DELETE_TEMPLATE"));
@@ -293,15 +283,6 @@ public class TemplateController {
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_TEMPLATE).userId(userId).spaceId(spaceId)
                 .info(JSONUtil.createObj().set(AuditConstants.TEMPLATE_ID, templateId)).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
-        return ResponseData.success();
-    }
-
-    @PostResource(path = "/template/config", requiredPermission = false)
-    @ApiOperation(value = "Update Template Center Config")
-    public ResponseData<Void> config(@RequestBody @Valid TemplateCenterConfigRo ro) {
-        Long userId = SessionContext.getUserId();
-        iGmService.validPermission(userId, GmAction.TEMPLATE_CENTER_CONFIG);
-        iTemplateCenterConfigService.updateTemplateCenterConfig(userId, ro);
         return ResponseData.success();
     }
 }

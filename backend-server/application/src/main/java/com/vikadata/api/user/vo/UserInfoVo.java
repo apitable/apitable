@@ -182,7 +182,7 @@ public class UserInfoVo implements Serializable {
     private Boolean usedInviteReward;
 
     public UserInfoVo transferDataFromDto(LoginUserDto loginUserDto
-            , UserLinkInfo userLinkInfo, List<UserLinkVo> thirdPartyInformation) {
+            , UserLinkInfo userLinkInfo, List<UserLinkVo> userLinkVos) {
         this.setUserId(loginUserDto.getUuid());
         this.setUuid(loginUserDto.getUuid());
         this.setNickName(loginUserDto.getNickName());
@@ -192,7 +192,7 @@ public class UserInfoVo implements Serializable {
         this.setAvatar(loginUserDto.getAvatar());
         this.setNeedPwd(loginUserDto.getNeedPwd());
         this.setWizards(JSONUtil.parseObj(userLinkInfo.getWizards()));
-        this.setThirdPartyInformation(thirdPartyInformation);
+        this.setThirdPartyInformation(userLinkVos);
         this.setInviteCode(userLinkInfo.getInviteCode());
         this.setSignUpTime(loginUserDto.getSignUpTime());
         this.setLastLoginTime(loginUserDto.getLastLoginTime());

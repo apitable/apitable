@@ -21,6 +21,7 @@ import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.dto.LoadSearchDTO;
 import com.vikadata.api.organization.dto.MemberIsolatedInfo;
 import com.vikadata.api.organization.ro.SearchUnitRo;
+import com.vikadata.api.organization.service.IMemberSearchService;
 import com.vikadata.api.organization.service.IOrganizationService;
 import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.organization.vo.OrganizationUnitVo;
@@ -89,6 +90,9 @@ public class OrganizationController {
     @Resource
     private ITeamService iTeamService;
 
+    @Resource
+    private IMemberSearchService iMemberSearchService;
+
     @GetResource(path = "/search", name = "Global search")
     @ApiOperation(value = "Global search", notes = "fuzzy search department or members", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiImplicitParams({
@@ -111,7 +115,7 @@ public class OrganizationController {
             result.setTeams(teams);
         }
         // fuzzy search members
-        List<SearchMemberResultVo> searchMemberResultVos = memberService.getByName(spaceId, keyword, className);
+        List<SearchMemberResultVo> searchMemberResultVos = iMemberSearchService.getByName(spaceId, keyword, className);
         result.setMembers(searchMemberResultVos);
 
         return ResponseData.success(result);

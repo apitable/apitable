@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.lang.Validator;
@@ -24,7 +23,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.collect.Lists;
@@ -32,19 +30,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.base.service.IAuthService;
-import com.vikadata.api.user.mapper.DeveloperMapper;
-import com.vikadata.api.enterprise.integral.service.IIntegralService;
-import com.vikadata.api.enterprise.vcode.dto.VCodeDTO;
-import com.vikadata.api.enterprise.vcode.enums.VCodeException;
-import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
-import com.vikadata.api.enterprise.vcode.service.IVCodeService;
-import com.vikadata.api.enterprise.vcode.service.IVCodeUsageService;
 import com.vikadata.api.interfaces.social.enums.SocialNameModified;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.interfaces.social.model.SocialUserBind;
+import com.vikadata.api.interfaces.user.facade.UserLinkServiceFacade;
+import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
+import com.vikadata.api.interfaces.user.model.RewardedUser;
 import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.player.ro.NotificationCreateRo;
@@ -54,25 +47,20 @@ import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.bean.OpenedSheet;
 import com.vikadata.api.shared.cache.bean.UserLinkInfo;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
-import com.vikadata.api.shared.cache.service.LoginUserService;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.cache.service.UserLinkInfoService;
-import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.LoginUserCacheService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetCacheService;
 import com.vikadata.api.shared.component.LanguageManager;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.INotificationFactory;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.config.properties.ConstProperties;
-import com.vikadata.api.shared.config.security.Auth0UserProfile;
-import com.vikadata.api.shared.constants.IntegralActionCodeConstants;
 import com.vikadata.api.shared.constants.LanguageConstants;
 import com.vikadata.api.shared.constants.NotificationConstants;
 import com.vikadata.api.shared.context.LoginContext;
-import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
-import com.vikadata.api.shared.util.ApiHelper;
 import com.vikadata.api.shared.util.RandomExtendUtil;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
@@ -82,30 +70,23 @@ import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.entity.UserHistoryEntity;
 import com.vikadata.api.user.enums.UserClosingException;
 import com.vikadata.api.user.enums.UserOperationType;
-import com.vikadata.api.user.mapper.UserLinkMapper;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.user.model.UserInPausedDto;
 import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.ro.DtBindOpRo;
 import com.vikadata.api.user.ro.UserOpRo;
-import com.vikadata.api.enterprise.user.service.IUserBindService;
-import com.vikadata.api.enterprise.user.service.IUserHistoryService;
+import com.vikadata.api.user.service.IUserHistoryService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.user.vo.UserInfoVo;
 import com.vikadata.api.user.vo.UserLinkVo;
 import com.vikadata.api.workspace.service.INodeShareService;
-import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.entity.DeveloperEntity;
-import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
@@ -119,13 +100,9 @@ import static com.vikadata.api.shared.constants.NotificationConstants.EXTRA_TOAS
 import static com.vikadata.api.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
 import static com.vikadata.api.shared.constants.SpaceConstants.SPACE_NAME_DEFAULT_SUFFIX;
 import static com.vikadata.api.user.enums.UserException.LINK_EMAIL_ERROR;
-import static com.vikadata.api.user.enums.UserException.LINK_FAILURE;
-import static com.vikadata.api.user.enums.UserException.MOBILE_NO_EXIST;
 import static com.vikadata.api.user.enums.UserException.MODIFY_PASSWORD_ERROR;
 import static com.vikadata.api.user.enums.UserException.MUST_BIND_EAMIL;
 import static com.vikadata.api.user.enums.UserException.MUST_BIND_MOBILE;
-import static com.vikadata.api.user.enums.UserException.REGISTER_EMAIL_ERROR;
-import static com.vikadata.api.user.enums.UserException.REGISTER_EMAIL_HAS_EXIST;
 import static com.vikadata.api.user.enums.UserException.REGISTER_FAIL;
 import static com.vikadata.api.user.enums.UserException.SIGN_IN_ERROR;
 import static com.vikadata.api.user.enums.UserException.USERNAME_OR_PASSWORD_ERROR;
@@ -143,10 +120,7 @@ import static com.vikadata.api.user.enums.UserOperationType.COMPLETE_CLOSING;
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements IUserService {
 
     @Resource
-    private LoginUserService loginUserService;
-
-    @Resource
-    private UserLinkMapper userLinkMapper;
+    private LoginUserCacheService loginUserCacheService;
 
     @Resource
     private IAssetService iAssetService;
@@ -158,19 +132,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private IPlayerActivityService iPlayerActivityService;
 
     @Resource
-    private IVCodeService ivCodeService;
+    private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
-    private UserLinkInfoService userLinkInfoService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
-    private UserActiveSpaceService userActiveSpaceService;
-
-    @Resource
-    private UserSpaceService userSpaceService;
-
-    @Resource
-    private UserSpaceOpenedSheetService userSpaceOpenedSheetService;
+    private UserSpaceOpenedSheetCacheService userSpaceOpenedSheetCacheService;
 
     @Resource
     private INodeShareService nodeShareService;
@@ -194,21 +162,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private FindByIndexNameSessionRepository<? extends Session> sessions;
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
-
-    @Resource
-    private IIntegralService iIntegralService;
-
-    @Resource
-    private DeveloperMapper developerMapper;
-
-    @Resource
-    private IVCodeUsageService ivCodeUsageService;
-
-    @Resource
-    private IAuthService iAuthService;
-
-    @Resource
     private IUserHistoryService iUserHistoryService;
 
     @Resource
@@ -221,13 +174,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private IMemberService iMemberService;
 
     @Resource
-    private VCodeMapper vCodeMapper;
-
-    @Resource
-    private IUserBindService iUserBindService;
-
-    @Resource
     private INotificationFactory notificationFactory;
+
+    @Resource
+    private UserServiceFacade userServiceFacade;
+
+    @Resource
+    private UserLinkServiceFacade userLinkServiceFacade;
 
     private static final int QUERY_LOCALE_IN_EMAILS_LIMIT = 200;
 
@@ -338,7 +291,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Create user activity record
         iPlayerActivityService.createUserActivityRecord(user.getId());
         // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(user.getId());
+        userServiceFacade.createInvitationCode(user.getId());
         // Create Associated User
         socialServiceFacade.createSocialUser(new SocialUserBind(user.getId(), externalId));
         return user.getId();
@@ -365,64 +318,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                     Collections.singletonList(user.getId()), 0L, null, extras);
         });
         return flag;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long createUserByAuth0IfNotExist(Auth0UserProfile userProfile) {
-        Long userId = iUserBindService.getUserIdByExternalKey(userProfile.getSub());
-        if (userId == null) {
-            // create user bind
-            UserEntity userEntity = buildUserEntity(userProfile.getPicture(), userProfile.getNickname(), userProfile.getEmail());
-            saveUser(userEntity);
-            // Create user activity record
-            iPlayerActivityService.createUserActivityRecord(userEntity.getId());
-            // Create personal invitation code
-            ivCodeService.createPersonalInviteCode(userEntity.getId());
-            // create user bind
-            iUserBindService.create(userEntity.getId(), userProfile.getSub());
-            // init one space for user
-            initialDefaultSpaceForUser(userEntity);
-            userId = userEntity.getId();
-        }
-        List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(userProfile.getEmail());
-        List<Long> memberIds = inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList());
-        activeInvitationSpace(userId, memberIds);
-        return userId;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Long createUserByAuth0IfNotExist(com.auth0.json.mgmt.users.User user) {
-        Long userId = iUserBindService.getUserIdByExternalKey(user.getId());
-        if (userId == null) {
-            // create user bind
-            UserEntity userEntity = buildUserEntity(user.getPicture(), user.getNickname(), user.getEmail());
-            saveUser(userEntity);
-            // Create user activity record
-            iPlayerActivityService.createUserActivityRecord(userEntity.getId());
-            // Create personal invitation code
-            ivCodeService.createPersonalInviteCode(userEntity.getId());
-            // create user bind
-            iUserBindService.create(userEntity.getId(), user.getId());
-            // init one space for user
-            initialDefaultSpaceForUser(userEntity);
-            userId = userEntity.getId();
-        }
-        List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(user.getEmail());
-        List<Long> memberIds = inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList());
-        activeInvitationSpace(userId, memberIds);
-        return userId;
-    }
-
-    private UserEntity buildUserEntity(String picture, String nickname, String email) {
-        String avatar = iAssetService.downloadAndUploadUrl(picture);
-        return UserEntity.builder()
-                .uuid(IdUtil.fastSimpleUUID())
-                .nickName(nickname)
-                .avatar(avatar)
-                .email(email)
-                .build();
     }
 
     @Override
@@ -468,7 +363,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
         // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(entity.getId());
+        userServiceFacade.createInvitationCode(entity.getId());
         return entity.getId();
     }
 
@@ -488,7 +383,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
         // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(entity.getId());
+        userServiceFacade.createInvitationCode(entity.getId());
         return entity;
     }
 
@@ -507,61 +402,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Create user activity record
         iPlayerActivityService.createUserActivityRecord(entity.getId());
         // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(entity.getId());
+        userServiceFacade.createInvitationCode(entity.getId());
         return entity;
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void createUsersByCli() {
-        int size = 50;
-        String u = "test";
-        String p = "13312345";
-        for (int i = 0; i < size; i++) {
-            if (i < 10) {
-                createUserByCli(u + String.format("00%d@vikatest.com", i), "qwer1234", p + String.format("00%d", i));
-            }
-            else {
-                createUserByCli(u + String.format("0%d@vikatest.com", i), "qwer1234", p + String.format("0%d", i));
-            }
-        }
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public UserEntity createUserByCli(String username, String password, String phone) {
-        log.info("Create User");
-        ExceptionUtil.isTrue(Validator.isEmail(username), REGISTER_EMAIL_ERROR);
-        UserEntity user = baseMapper.selectByEmail(username);
-        ExceptionUtil.isNull(user, REGISTER_EMAIL_HAS_EXIST);
-        UserEntity newUser = new UserEntity();
-        newUser.setUuid(IdUtil.fastSimpleUUID());
-        newUser.setEmail(username);
-        newUser.setNickName(StrUtil.subBefore(username, '@', true));
-        PasswordEncoder passwordEncoder = SpringContextHolder.getBean(PasswordEncoder.class);
-        newUser.setPassword(passwordEncoder.encode(password));
-        newUser.setCode("+86");
-        newUser.setMobilePhone(phone);
-        boolean saveFlag = saveUser(newUser);
-        ExceptionUtil.isTrue(saveFlag, REGISTER_FAIL);
-        String spaceName = newUser.getNickName();
-        if (LocaleContextHolder.getLocale().equals(LanguageManager.me().getDefaultLanguage())) {
-            spaceName += SPACE_NAME_DEFAULT_SUFFIX;
-        }
-        iSpaceService.createSpace(newUser, spaceName);
-        // Create personal invitation code
-        ivCodeService.createPersonalInviteCode(newUser.getId());
-        // Create user activity record
-        iPlayerActivityService.createUserActivityRecord(newUser.getId());
-        DeveloperEntity developer = new DeveloperEntity();
-        developer.setId(IdWorker.getId());
-        developer.setUserId(newUser.getId());
-        developer.setApiKey(ApiHelper.createKey());
-        developer.setCreatedBy(0L);
-        developer.setUpdatedBy(0L);
-        developerMapper.insert(developer);
-        return newUser;
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -572,19 +416,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             spaceName += SPACE_NAME_DEFAULT_SUFFIX;
         }
         iSpaceService.createSpace(user, spaceName);
-    }
-
-    @Override
-    public void activeInvitationSpace(Long userId, List<Long> memberIds) {
-        List<MemberEntity> memberEntities = new ArrayList<>();
-        for (Long memberId : memberIds) {
-            MemberEntity member = new MemberEntity();
-            member.setId(memberId);
-            member.setUserId(userId);
-            member.setIsActive(true);
-            memberEntities.add(member);
-        }
-        iMemberService.updateBatchById(memberEntities);
     }
 
     @Override
@@ -626,27 +457,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberByEmails(email);
         this.inactiveMemberProcess(userId, inactiveMembers);
         // Delete Cache
-        loginUserService.delete(userId);
+        loginUserCacheService.delete(userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void unbindEmailByUserId(Long userId) {
         // The user needs to bind at least one contact (mobile phone number, email) to unbind the email
-        LoginUserDto userDto = loginUserService.getLoginUser(userId);
+        LoginUserDto userDto = loginUserCacheService.getLoginUser(userId);
         ExceptionUtil.isNotBlank(userDto.getMobile(), MUST_BIND_MOBILE);
         boolean flag = SqlHelper.retBool(baseMapper.resetEmailByUserId(userId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // Synchronize unbound member information email
         iMemberService.resetEmailByUserId(userId);
         // Delete Cache
-        loginUserService.delete(userId);
+        loginUserCacheService.delete(userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateMobileByUserId(Long userId, String code, String mobile) {
-        LoginUserDto userDto = loginUserService.getLoginUser(userId);
+        LoginUserDto userDto = loginUserCacheService.getLoginUser(userId);
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setCode(code);
@@ -660,31 +491,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         this.inactiveMemberProcess(userId, inactiveMembers);
 
         // Delete Cache
-        loginUserService.delete(userId);
+        loginUserCacheService.delete(userId);
         // Email registration is bound to mobile phones for the first time, and additional invitation rewards are given
         if (userDto.getMobile() == null) {
             TaskManager.me().execute(() -> {
-                // Get the invitation code when registering
-                VCodeDTO vCodeDTO = ivCodeUsageService.getInvitorUserId(userId);
-                if (vCodeDTO == null) {
-                    return;
-                }
-                // Judge the invitation code type
-                boolean isPersonal = vCodeDTO.getType().equals(VCodeType.PERSONAL_INVITATION_CODE.getType());
-                String actionCode = isPersonal ? IntegralActionCodeConstants.BE_INVITED_TO_REWARD
-                        : IntegralActionCodeConstants.OFFICIAL_INVITATION_REWARD;
-                // Each user can only enjoy one point reward
-                int historyNum = iIntegralService.getCountByUserIdAndActionCode(userId, actionCode);
-                if (historyNum >= 1) {
-                    return;
-                }
-                // Personal invitation code reward
-                if (isPersonal) {
-                    iAuthService.personalInvitedReward(userId, userDto.getNickName(), vCodeDTO.getUserId());
-                    return;
-                }
-                // Official invitation code award
-                iAuthService.officialInvitedReward(userId);
+                userServiceFacade.rewardUserInfoUpdateAction(new RewardedUser(userId, userDto.getNickName()));
             });
         }
     }
@@ -693,14 +504,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public void unbindMobileByUserId(Long userId) {
         // The user needs to bind at least one contact (phone number, email) to unbind the mobile phone number
-        LoginUserDto userDto = loginUserService.getLoginUser(userId);
+        LoginUserDto userDto = loginUserCacheService.getLoginUser(userId);
         ExceptionUtil.isNotBlank(userDto.getEmail(), MUST_BIND_EAMIL);
         boolean flag = SqlHelper.retBool(baseMapper.resetMobileByUserId(userId));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // Synchronize the mobile phone number of unbinding member information
         iMemberService.resetMobileByUserId(userId);
         // Delete Cache
-        loginUserService.delete(userId);
+        loginUserCacheService.delete(userId);
     }
 
     @Override
@@ -749,25 +560,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             TaskManager.me().execute(() -> {
                 List<String> spaceIds = iMemberService.getSpaceIdWithoutNameModifiedByUserId(userId);
                 for (String spcId : spaceIds) {
-                    userSpaceService.delete(userId, spcId);
+                    userSpaceCacheService.delete(userId, spcId);
                 }
             });
             user.setNickName(param.getNickName())
                     .setIsSocialNameModified(SocialNameModified.YES.getValue());
             if (BooleanUtil.isTrue(param.getInit())) {
-                // If it is an invitation to reward, modify the user's name
-                String key = RedisConstants.getInviteHistoryKey(userId.toString());
-                if (BooleanUtil.isTrue(redisTemplate.hasKey(key))) {
-                    Long recordId = Long.parseLong(StrUtil.toString(redisTemplate.opsForValue().get(key)));
-                    iIntegralService.updateParameterById(recordId, JSONUtil.createObj().putOnce("userId", userId).putOnce("name", param.getNickName()).toString());
-                    redisTemplate.delete(key);
-                }
+                userServiceFacade.onUserChangeNicknameAction(userId, param.getNickName());
             }
         }
         boolean flag = updateById(user);
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // Delete Cache
-        loginUserService.delete(userId);
+        loginUserCacheService.delete(userId);
         if (StrUtil.isNotBlank(waitDeleteOldAvatar) && StrUtil.startWith(waitDeleteOldAvatar, PUBLIC_PREFIX)) {
             // Delete original cloud files
             iAssetService.delete(waitDeleteOldAvatar);
@@ -785,7 +590,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .build();
 
         // Delete Cache
-        loginUserService.delete(id);
+        loginUserCacheService.delete(id);
         boolean flag = updateById(user);
         ExceptionUtil.isTrue(flag, MODIFY_PASSWORD_ERROR);
     }
@@ -794,23 +599,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     public UserInfoVo getCurrentUserInfo(Long userId, String spaceId, Boolean filter) {
         log.info("Get user information and space content");
         // Query the user's basic information
-        LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
-        UserLinkInfo userLinkInfo = userLinkInfoService.getUserLinkInfo(loginUserDto.getUserId());
-        // Copy third-party account associated information
-        List<UserLinkVo> thirdPartyInformation = new ArrayList<>(userLinkInfo.getAccountLinkList().size());
-        for (int i = 0; i < userLinkInfo.getAccountLinkList().size(); i++) {
-            UserLinkVo linkVo = new UserLinkVo();
-            BeanUtil.copyProperties(userLinkInfo.getAccountLinkList().get(i), linkVo);
-            thirdPartyInformation.add(linkVo);
-        }
         // Whether the invitation code has been used for rewards
-        boolean usedInviteReward = iIntegralService.checkByUserIdAndActionCodes(userId,
-                CollectionUtil.newArrayList(IntegralActionCodeConstants.BE_INVITED_TO_REWARD, IntegralActionCodeConstants.OFFICIAL_INVITATION_REWARD));
+        boolean usedInviteReward = userServiceFacade.getInvitationReward(userId);
         UserInfoVo userInfo = UserInfoVo.builder().sendSubscriptionNotify(constProperties.getSendSubscriptionNotify())
                 .usedInviteReward(usedInviteReward)
-                .build()
-                .transferDataFromDto(loginUserDto, userLinkInfo, thirdPartyInformation);
-
+                .build();
+        LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
+        UserLinkInfo userLinkInfo = userLinkServiceFacade.getUserLinkInfo(userId);
+        if (userLinkInfo != null) {
+            // Copy third-party account associated information
+            List<UserLinkVo> userLinkVos = new ArrayList<>(userLinkInfo.getAccountLinkList().size());
+            for (int i = 0; i < userLinkInfo.getAccountLinkList().size(); i++) {
+                UserLinkVo linkVo = new UserLinkVo();
+                BeanUtil.copyProperties(userLinkInfo.getAccountLinkList().get(i), linkVo);
+                userLinkVos.add(linkVo);
+            }
+            userInfo.transferDataFromDto(loginUserDto, userLinkInfo, userLinkVos);
+        }
         if (userInfo.getIsPaused()) { // Cancel the account during the calm period, and calculate the official cancellation time
             UserHistoryEntity userHistory = iUserHistoryService
                     .getLatestUserHistoryEntity(userId, UserOperationType.APPLY_FOR_CLOSING);
@@ -831,7 +636,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         else if (noSpace) {
             // When the space ID is not transferred, obtain the space ID of the user's recent work
-            String activeSpaceId = userActiveSpaceService.getLastActiveSpace(userId);
+            String activeSpaceId = userActiveSpaceCacheService.getLastActiveSpace(userId);
             if (StrUtil.isBlank(activeSpaceId)) {
                 return userInfo;
             }
@@ -839,11 +644,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
         else {
             // Prevent access to not join spaces
-            userSpaceService.getMemberId(userId, spaceId);
+            userSpaceCacheService.getMemberId(userId, spaceId);
         }
         userInfo.setNeedCreate(false);
         // Cache session
-        UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
+        UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId, spaceId);
         userInfo.setSpaceId(userSpace.getSpaceId());
         userInfo.setSpaceName(userSpace.getSpaceName());
         userInfo.setSpaceLogo(userSpace.getSpaceLogo());
@@ -857,7 +662,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         userInfo.setIsMemberNameModified(userSpace.getIsMemberNameModified());
 
         // Get the last opened data table information
-        OpenedSheet openedSheet = userSpaceOpenedSheetService.getOpenedSheet(userId, spaceId);
+        OpenedSheet openedSheet = userSpaceOpenedSheetCacheService.getOpenedSheet(userId, spaceId);
         if (ObjectUtil.isNotNull(openedSheet) && ObjectUtil.isNotNull(openedSheet.getNodeId())) {
             userInfo.setActiveNodeId(openedSheet.getNodeId());
             userInfo.setActiveViewId(openedSheet.getViewId());
@@ -865,24 +670,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
 
         return userInfo;
-    }
-
-    @Override
-    public void bindDingTalk(DtBindOpRo opRo) {
-        log.info("Associated DingTalk");
-        // Judge whether it exists
-        Long id = baseMapper.selectIdByMobile(opRo.getPhone());
-        ExceptionUtil.isNotNull(id, MOBILE_NO_EXIST);
-        UserEntity user = UserEntity.builder()
-                .id(id)
-                .dingOpenId(opRo.getOpenId())
-                .dingUnionId(opRo.getUnionId())
-                .build();
-
-        boolean flag = updateById(user);
-        ExceptionUtil.isTrue(flag, LINK_FAILURE);
-        // Bind successfully, and automatically log in to save the session
-        SessionContext.setUserId(id);
     }
 
     @Override
@@ -903,17 +690,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     @Override
-    public void unbind(Long userId, Integer type) {
-        String linkUnionId = userLinkMapper.selectUnionIdByUserIdAndType(userId, type);
-        // Delete third-party integration association
-        socialServiceFacade.deleteByUnionId(Collections.singletonList(linkUnionId));
-        // Delete account association
-        userLinkMapper.deleteByUserIdAndType(userId, type);
+    public String getUuidByUserId(Long userId) {
+        return baseMapper.selectUuidById(userId);
     }
 
     @Override
-    public String getUuidByUserId(Long userId) {
-        return baseMapper.selectUuidById(userId);
+    public String getNicknameByUserId(Long userId) {
+        return baseMapper.selectNickNameById(userId);
     }
 
     @Override
@@ -926,8 +709,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Logically delete user share
         nodeShareService.disableNodeSharesByUserId(user.getId());
         // Delete user Login Dto cache
-        loginUserService.delete(user.getId());
-        userActiveSpaceService.delete(user.getId());
+        loginUserCacheService.delete(user.getId());
+        userActiveSpaceCacheService.delete(user.getId());
         // Logical deletion of space invite link
         List<MemberEntity> members = iMemberService.getByUserId(user.getId());
         if (members.size() == 0) {
@@ -995,8 +778,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Restore member information
         iMemberService.cancelPreDelByUserId(user.getId());
         // Delete user Login Dto cache
-        loginUserService.delete(user.getId());
-        userActiveSpaceService.delete(user.getId());
+        loginUserCacheService.delete(user.getId());
+        userActiveSpaceCacheService.delete(user.getId());
         // Add User Operation Record
         UserHistoryEntity userHistory = UserHistoryEntity.builder().userId(user.getId())
                 .userStatus(UserOperationType.CANCEL_CLOSING.getStatusCode())
@@ -1013,7 +796,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         // Clear the user's information in the member table
         memberMapper.clearMemberInfoByUserId(user.getId());
         // Physically delete the user's third-party association binding information
-        userLinkMapper.deleteByUserId(user.getId());
         socialServiceFacade.deleteUser(user.getId());
         // Write the "Logout Completed" record to the history table. 0 represents the system user
         UserHistoryEntity userHistory = UserHistoryEntity.builder()
@@ -1126,29 +908,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 v.setLocale(defaultLocale);
             }
         }).collect(Collectors.toList());
-    }
-
-    @Override
-    public void useInviteCodeReward(Long userId, String inviteCode) {
-        // Query the user's invitation code, and determine that your own invitation code is not available
-        String userInviteCode = ivCodeService.getUserInviteCode(userId);
-        ExceptionUtil.isFalse(inviteCode.equals(userInviteCode), VCodeException.INVITE_CODE_NOT_VALID);
-        // Users have not used invitation rewards
-        boolean usedInviteReward = iIntegralService.checkByUserIdAndActionCodes(userId,
-                CollectionUtil.newArrayList(IntegralActionCodeConstants.BE_INVITED_TO_REWARD, IntegralActionCodeConstants.OFFICIAL_INVITATION_REWARD));
-        ExceptionUtil.isFalse(usedInviteReward, VCodeException.INVITE_CODE_REWARD_ERROR);
-        // Load user information
-        LoginUserDto userDto = loginUserService.getLoginUser(userId);
-        // Save the use record of invitation code
-        ivCodeService.useInviteCode(userId, userDto.getNickName(), inviteCode);
-        // Query the user of the invitation code. If it does not exist, it represents the official invitation code
-        Long inviteUserId = vCodeMapper.selectRefIdByCodeAndType(inviteCode, VCodeType.PERSONAL_INVITATION_CODE.getType());
-        if (inviteUserId == null) {
-            // Non personal invitation code, official invitation code
-            iAuthService.officialInvitedReward(userId);
-            return;
-        }
-        iAuthService.personalInvitedReward(userId, userDto.getNickName(), inviteUserId);
     }
 
     @Override

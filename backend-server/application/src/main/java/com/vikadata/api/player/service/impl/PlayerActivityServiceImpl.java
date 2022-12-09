@@ -1,36 +1,26 @@
 package com.vikadata.api.player.service.impl;
 
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.enterprise.integral.enums.IntegralAlterType;
-import com.vikadata.api.enterprise.integral.mapper.IntegralHistoryMapper;
-import com.vikadata.api.enterprise.integral.service.IIntegralService;
+import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
+import com.vikadata.api.interfaces.user.model.RewardWizardAction;
+import com.vikadata.api.player.entity.PlayerActivityEntity;
 import com.vikadata.api.player.mapper.PlayerActivityMapper;
 import com.vikadata.api.player.service.IPlayerActivityService;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.api.player.entity.PlayerActivityEntity;
-import com.vikadata.api.shared.sysconfig.SystemConfigManager;
-import com.vikadata.api.shared.sysconfig.wizard.Wizard;
 
-import org.springframework.data.redis.core.BoundValueOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.vikadata.core.constants.RedisConstants.GENERAL_LOCKED;
 
 /**
  * <p>
@@ -45,13 +35,7 @@ public class PlayerActivityServiceImpl implements IPlayerActivityService {
     private PlayerActivityMapper playerActivityMapper;
 
     @Resource
-    private IIntegralService iIntegralService;
-
-    @Resource
-    private IntegralHistoryMapper integralHistoryMapper;
-
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private UserServiceFacade userServiceFacade;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -82,26 +66,7 @@ public class PlayerActivityServiceImpl implements IPlayerActivityService {
             boolean flag = SqlHelper.retBool(playerActivityMapper.insert(entity));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         }
-        // Determine whether to trigger the novice guide reward
-        Wizard wizard = SystemConfigManager.getConfig().getGuide().getWizard().get(wizardId.toString());
-        if (wizard == null || wizard.getIntegralAction() == null) {
-            return;
-        }
-        // Avoid concurrent requests causing multiple rewards
-        String lockKey = StrUtil.format(GENERAL_LOCKED, "user:wizard:award", StrUtil.format("{}-{}", userId, wizardId));
-        BoundValueOperations<String, Object> ops = redisTemplate.boundValueOps(lockKey);
-        Boolean result = ops.setIfAbsent("", 10, TimeUnit.SECONDS);
-        if (BooleanUtil.isFalse(result)) {
-            return;
-        }
-        // Send rewards only after the first trigger
-        String key = "wizardId";
-        int count = SqlTool.retCount(integralHistoryMapper.selectCountByUserIdAndKeyValue(userId, key, wizardId));
-        if (count > 0) {
-            return;
-        }
-        iIntegralService.trigger(wizard.getIntegralAction(), IntegralAlterType.INCOME, userId,
-                JSONUtil.createObj().putOnce(key, wizardId));
+        userServiceFacade.rewardWizardAction(new RewardWizardAction(userId, wizardId.toString()));
     }
 
     @Override

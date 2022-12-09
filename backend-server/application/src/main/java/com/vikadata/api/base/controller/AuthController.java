@@ -17,18 +17,21 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.starter.auth0.core.Auth0Template;
 import com.vikadata.api.base.enums.LoginType;
 import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.model.LogoutVO;
 import com.vikadata.api.base.service.IAuthService;
 import com.vikadata.api.base.service.SensorsService;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
-import com.vikadata.api.enterprise.gm.service.IBlackListService;
-import com.vikadata.api.enterprise.k11.template.ConnectorTemplate;
+import com.vikadata.api.interfaces.auth.facade.AuthServiceFacade;
+import com.vikadata.api.interfaces.auth.model.AuthParam;
+import com.vikadata.api.interfaces.auth.model.UserAuth;
+import com.vikadata.api.interfaces.auth.model.UserLogout;
+import com.vikadata.api.interfaces.security.facade.BlackListServiceFacade;
+import com.vikadata.api.interfaces.security.facade.HumanVerificationServiceFacade;
+import com.vikadata.api.interfaces.security.model.NonRobotMetadata;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
@@ -38,7 +41,7 @@ import com.vikadata.api.shared.config.properties.CookieProperties;
 import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.util.information.ClientOriginInfo;
 import com.vikadata.api.shared.util.information.InformationUtil;
-import com.vikadata.api.user.dto.UserLoginResult;
+import com.vikadata.api.user.dto.UserLoginDTO;
 import com.vikadata.api.user.ro.LoginRo;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.user.vo.UserInfoVo;
@@ -46,7 +49,6 @@ import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.HttpContextUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,16 +71,13 @@ public class AuthController {
     private IUserService iUserService;
 
     @Resource
-    private ConnectorTemplate connectorTemplate;
-
-    @Resource
     private SensorsService sensorsService;
 
     @Resource
     private INodeService iNodeService;
 
     @Resource
-    private UserActiveSpaceService userActiveSpaceService;
+    private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
     private IMemberService iMemberService;
@@ -87,10 +86,7 @@ public class AuthController {
     private SocialServiceFacade socialServiceFacade;
 
     @Resource
-    private IBlackListService iBlackListService;
-
-    @Resource
-    private AfsCheckService afsCheckService;
+    private BlackListServiceFacade blackListServiceFacade;
 
     @Resource
     private CookieProperties cookieProperties;
@@ -98,8 +94,11 @@ public class AuthController {
     @Resource
     private ConstProperties constProperties;
 
-    @Autowired(required = false)
-    private Auth0Template auth0Template;
+    @Resource
+    private HumanVerificationServiceFacade humanVerificationServiceFacade;
+
+    @Resource
+    private AuthServiceFacade authServiceFacade;
 
     private static final String AUTH_DESC = "description:\n" +
             "verifyType，available values:\n" +
@@ -116,7 +115,7 @@ public class AuthController {
         // password login
         loginActionFunc.put(LoginType.PASSWORD, loginRo -> {
             // Password login requires human-machine authentication
-            afsCheckService.noTraceCheck(loginRo.getData());
+            humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(loginRo.getData()));
             // Login processing
             Long userId = iAuthService.loginUsingPassword(loginRo);
             // sensors point - password login
@@ -125,7 +124,7 @@ public class AuthController {
         });
         // SMS verification code login
         loginActionFunc.put(LoginType.SMS_CODE, loginRo -> {
-            UserLoginResult result = iAuthService.loginUsingSmsCode(loginRo);
+            UserLoginDTO result = iAuthService.loginUsingSmsCode(loginRo);
             // sensors point - Login or Register
             TrackEventType type = Boolean.TRUE.equals(result.getIsSignUp()) ? TrackEventType.REGISTER : TrackEventType.LOGIN;
             TaskManager.me().execute(() -> sensorsService.track(result.getUserId(), type, "Mobile verification code", origin));
@@ -133,18 +132,21 @@ public class AuthController {
         });
         // Email verification code login
         loginActionFunc.put(LoginType.EMAIL_CODE, loginRo -> {
-            UserLoginResult result = iAuthService.loginUsingEmailCode(loginRo);
+            UserLoginDTO result = iAuthService.loginUsingEmailCode(loginRo);
             // sensors point - Login or Register
             TrackEventType type = Boolean.TRUE.equals(result.getIsSignUp()) ? TrackEventType.REGISTER : TrackEventType.LOGIN;
             TaskManager.me().execute(() -> sensorsService.track(result.getUserId(), type, "Email verification code", origin));
             return result.getUserId();
         });
         // SSO login (private user use)
-        loginActionFunc.put(LoginType.SSO_AUTH, loginRo -> connectorTemplate.loginBySso(data.getUsername(), data.getCredential()));
+        loginActionFunc.put(LoginType.SSO_AUTH, loginRo -> {
+            UserAuth userAuth = authServiceFacade.ssoLogin(new AuthParam(data.getUsername(), data.getCredential()));
+            return userAuth != null ? userAuth.getUserId() : null;
+        });
         // Handling login logic
         Long userId = loginActionFunc.get(data.getType()).apply(data);
         // Banned account verification
-        iBlackListService.checkBlackUser(userId);
+        blackListServiceFacade.checkUser(userId);
         // save session
         SessionContext.setUserId(userId);
         return ResponseData.success();
@@ -153,17 +155,14 @@ public class AuthController {
     @PostResource(name = "sign out", path = "/signOut", requiredPermission = false, method = { RequestMethod.GET, RequestMethod.POST })
     @ApiOperation(value = "sign out", notes = "log out of current user")
     public ResponseData<LogoutVO> logout(HttpServletRequest request, HttpServletResponse response) {
+        LogoutVO logoutVO = new LogoutVO();
+        UserLogout userLogout = authServiceFacade.logout(new UserAuth(SessionContext.getUserId()));
+        if (userLogout != null) {
+            logoutVO.setNeedRedirect(userLogout.isRedirect());
+            logoutVO.setRedirectUri(userLogout.getRedirectUri());
+        }
         SessionContext.cleanContext(request);
         SessionContext.removeCookie(response, cookieProperties.getI18nCookieName(), cookieProperties.getDomainName());
-        LogoutVO logoutVO = new LogoutVO();
-        if (auth0Template != null) {
-            String logoutUrl = auth0Template.buildLogoutUrl(constProperties.getServerDomain());
-            if (log.isDebugEnabled()) {
-                log.debug("logout redirect url: {}", logoutUrl);
-            }
-            logoutVO.setNeedRedirect(true);
-            logoutVO.setRedirectUri(logoutUrl);
-        }
         return ResponseData.success(logoutVO);
     }
 
@@ -210,7 +209,7 @@ public class AuthController {
                 Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, domainBindSpaceId);
                 if (ObjectUtil.isNull(memberId)) {
                     // No operation permission, get the last active node of active users
-                    return userActiveSpaceService.getLastActiveSpace(userId);
+                    return userActiveSpaceCacheService.getLastActiveSpace(userId);
                 }
                 else {
                     return domainBindSpaceId;

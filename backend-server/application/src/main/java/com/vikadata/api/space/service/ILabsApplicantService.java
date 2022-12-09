@@ -6,8 +6,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.space.enums.LabsApplicantTypeEnum;
 import com.vikadata.api.space.vo.LabsFeatureVo;
-import com.vikadata.api.shared.component.notification.NotificationTemplateId;
-import com.vikadata.api.enterprise.gm.ro.GmApplyFeatureRo;
 import com.vikadata.entity.LabsApplicantEntity;
 
 /**
@@ -20,7 +18,7 @@ public interface ILabsApplicantService extends IService<LabsApplicantEntity> {
     /**
      * Query the laboratory functions of the current user and the empty room station according to the user ID and space ID
      *
-     * @param applicants Applicant I Ds, which are user Id or space Id
+     * @param applicants Applicant I Ds, which are user id or space id
      * @return LabsApplicantEntity List
      * */
     LabsFeatureVo getUserCurrentFeatureApplicants(List<String> applicants);
@@ -49,20 +47,4 @@ public interface ILabsApplicantService extends IService<LabsApplicantEntity> {
      * @param featureKey Unique identification of experimental function to be closed
      * */
     void disableLabsFeature(String applicant, String featureKey);
-
-    /**
-     * Send in station notifications
-     *
-     * @param templateId Notification template ID
-     * @param applyUser Applicant user id, the uuid of the front end
-     * @param applyFeatureRo Request object for laboratory function
-     * */
-    void sendNotification(NotificationTemplateId templateId, List<Long> toUserId, Long applyUser, GmApplyFeatureRo applyFeatureRo);
-
-    /**
-     * Enable the function of internal test application laboratory
-     *
-     * @param id Primary key ID
-     * */
-    void openApplicantFeature(Long id);
 }

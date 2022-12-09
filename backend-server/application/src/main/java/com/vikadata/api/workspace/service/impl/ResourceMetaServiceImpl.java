@@ -21,17 +21,18 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
+import com.vikadata.api.interfaces.widget.facade.WidgetServiceFacade;
+import com.vikadata.api.interfaces.widget.model.WidgetCopyOption;
 import com.vikadata.api.shared.constants.NodeDescConstants;
-import com.vikadata.api.workspace.enums.ResourceType;
+import com.vikadata.api.shared.util.IdUtil;
+import com.vikadata.api.workspace.dto.DashboardMeta;
+import com.vikadata.api.workspace.dto.DatasheetWidgetDTO;
 import com.vikadata.api.workspace.dto.NodeDescParseDTO;
-import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
+import com.vikadata.api.workspace.enums.ResourceType;
 import com.vikadata.api.workspace.mapper.DatasheetWidgetMapper;
 import com.vikadata.api.workspace.mapper.ResourceMetaMapper;
-import com.vikadata.api.workspace.dto.DashboardMeta;
 import com.vikadata.api.workspace.service.IDatasheetService;
 import com.vikadata.api.workspace.service.IResourceMetaService;
-import com.vikadata.api.enterprise.widget.service.IWidgetService;
-import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.ResourceMetaEntity;
@@ -55,10 +56,10 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     private IDatasheetService iDatasheetService;
 
     @Resource
-    private IWidgetService iWidgetService;
+    private DatasheetWidgetMapper datasheetWidgetMapper;
 
     @Resource
-    private DatasheetWidgetMapper datasheetWidgetMapper;
+    private WidgetServiceFacade widgetServiceFacade;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -113,7 +114,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
         if (newWidgetIdMap.size() == 0) {
             return;
         }
-        // Query number table component association information
+        // Query table component association information
         List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstIdMap = datasheetWidgetDTOList.stream()
                 .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()),
@@ -121,12 +122,11 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
         // batch generation of new components
         Map<String, String> newNodeMap = new HashMap<>(1);
         newNodeMap.put(originRscId, destRscId);
-        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstIdMap);
+        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstIdMap));
     }
 
     @Override
     public void batchCopyResourceMeta(Long userId, String spaceId, List<String> originRscIds, Map<String, String> newNodeMap, ResourceType type) {
-        log.info("batch copy the metadata of resource", userId, originRscIds);
         List<ResourceMetaEntity> entities = resourceMetaMapper.selectByResourceIds(originRscIds);
         if (CollUtil.isEmpty(entities)) {
             return;
@@ -165,7 +165,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                 }));
 
         // batch generation of new components
-        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
+        widgetServiceFacade.copyWidget(new WidgetCopyOption(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap));
     }
 
     @Override

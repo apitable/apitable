@@ -14,22 +14,23 @@ import com.vikadata.api.base.ro.EmailOpRo;
 import com.vikadata.api.base.ro.SmsOpRo;
 import com.vikadata.api.base.service.IActionService;
 import com.vikadata.api.base.service.SensorsService;
+import com.vikadata.api.interfaces.security.facade.HumanVerificationServiceFacade;
+import com.vikadata.api.interfaces.security.model.NonRobotMetadata;
 import com.vikadata.api.organization.ro.InviteValidRo;
+import com.vikadata.api.organization.vo.InviteInfoVo;
+import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.util.information.ClientOriginInfo;
-import com.vikadata.api.user.ro.EmailCodeValidateRo;
-import com.vikadata.api.user.ro.SmsCodeValidateRo;
-import com.vikadata.api.organization.vo.InviteInfoVo;
-import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.shared.security.CodeValidateScope;
 import com.vikadata.api.shared.security.ValidateCodeProcessor;
 import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
 import com.vikadata.api.shared.security.ValidateCodeType;
 import com.vikadata.api.shared.security.ValidateTarget;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
+import com.vikadata.api.shared.util.information.ClientOriginInfo;
 import com.vikadata.api.shared.util.information.InformationUtil;
+import com.vikadata.api.user.ro.EmailCodeValidateRo;
+import com.vikadata.api.user.ro.SmsCodeValidateRo;
+import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -47,13 +48,13 @@ public class ActionController {
     private IActionService iActionService;
 
     @Resource
-    private AfsCheckService afsCheckService;
-
-    @Resource
     private SensorsService sensorsService;
 
     @Resource
     private IUserService userService;
+
+    @Resource
+    private HumanVerificationServiceFacade humanVerificationServiceFacade;
 
     @PostResource(name = "Send SMS verification code", path = "/sms/code", requiredLogin = false)
     @ApiOperation(value = "Send SMS verification code", notes = "SMS type; 1: Registration, 2:Login, "
@@ -64,7 +65,7 @@ public class ActionController {
     public ResponseData<Void> send(@RequestBody @Valid SmsOpRo smsOpRo) {
         log.info("Send SMS verification code");
         // Ali man-machine verification
-        afsCheckService.noTraceCheck(smsOpRo.getData());
+        humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(smsOpRo.getData()));
         // Code optimization, here is only responsible for sending short messages, and the verification repetition
         // mechanism is handed over to automatic judgment, including the generation of random digits of verification code.
         CodeValidateScope scope = CodeValidateScope.fromName(SmsCodeType.fromName(smsOpRo.getType()).name());

@@ -30,11 +30,6 @@ public enum LoginType {
      */
     EMAIL_CODE("email_code"),
 
-	/**
-	 * WeChat sms code
-	 */
-	WECHAT_SMS_CODE("wechat_sms_code"),
-
     /**
      * sso auth
      */

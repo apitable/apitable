@@ -46,18 +46,18 @@ import org.apache.poi.EncryptedDocumentException;
 import com.vikadata.api.base.enums.ActionException;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.enterprise.control.infrastructure.ControlRoleDict;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRole;
-import com.vikadata.api.enterprise.widget.mapper.WidgetMapper;
+import com.vikadata.api.control.infrastructure.ControlRoleDict;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.control.infrastructure.role.ControlRole;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
+import com.vikadata.api.interfaces.widget.facade.WidgetServiceFacade;
 import com.vikadata.api.organization.dto.MemberDTO;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.adapter.MultiDatasourceAdapterTemplate;
 import com.vikadata.api.shared.config.properties.LimitProperties;
 import com.vikadata.api.shared.constants.AuditConstants;
@@ -75,12 +75,17 @@ import com.vikadata.api.shared.util.VikaStrings;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.space.enums.SpaceException;
 import com.vikadata.api.space.mapper.SpaceAssetMapper;
-import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.space.service.ISpaceAssetService;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.template.enums.TemplateException;
+import com.vikadata.api.workspace.dto.CreateNodeDto;
 import com.vikadata.api.workspace.dto.NodeBaseInfoDTO;
+import com.vikadata.api.workspace.dto.NodeCopyEffectDTO;
+import com.vikadata.api.workspace.dto.NodeCopyOptions;
+import com.vikadata.api.workspace.dto.NodeData;
+import com.vikadata.api.workspace.dto.NodeExtraDTO;
 import com.vikadata.api.workspace.dto.UrlNodeInfoDTO;
 import com.vikadata.api.workspace.enums.FieldType;
 import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
@@ -92,15 +97,9 @@ import com.vikadata.api.workspace.enums.ViewType;
 import com.vikadata.api.workspace.listener.CsvReadListener;
 import com.vikadata.api.workspace.listener.ExcelSheetsDataListener;
 import com.vikadata.api.workspace.listener.MultiSheetReadListener;
-import com.vikadata.api.workspace.dto.NodeData;
-import com.vikadata.api.workspace.mapper.DatasheetMapper;
 import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
 import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.workspace.mapper.NodeShareSettingMapper;
-import com.vikadata.api.workspace.dto.CreateNodeDto;
-import com.vikadata.api.workspace.dto.NodeCopyEffectDTO;
-import com.vikadata.api.workspace.dto.NodeCopyOptions;
-import com.vikadata.api.workspace.dto.NodeExtraDTO;
 import com.vikadata.api.workspace.ro.CreateDatasheetRo;
 import com.vikadata.api.workspace.ro.FieldMapRo;
 import com.vikadata.api.workspace.ro.ImportExcelOpRo;
@@ -186,9 +185,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private DatasheetMetaMapper datasheetMetaMapper;
 
     @Resource
-    private DatasheetMapper datasheetMapper;
-
-    @Resource
     private IResourceMetaService iResourceMetaService;
 
     @Resource
@@ -213,9 +209,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private NodeShareSettingMapper nodeShareSettingMapper;
 
     @Resource
-    private WidgetMapper widgetMapper;
-
-    @Resource
     private LimitProperties limitProperties;
 
     @Resource
@@ -237,13 +230,16 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private ISpaceRoleService iSpaceRoleService;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
     private MultiDatasourceAdapterTemplate multiDatasourceAdapterTemplate;
 
     @Resource
     private IMemberService iMemberService;
+
+    @Resource
+    private WidgetServiceFacade widgetServiceFacade;
 
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
@@ -1296,7 +1292,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
      * processing excel data
      */
     private String processExcel(List<List<Object>> readAll, String parentId, String spaceId, Long userId, String name) {
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         checkEnableOperateNodeBySpaceFeature(memberId, spaceId, parentId);
         // long maxRowLimit = iSubscriptionService.getPlanMaxRows(spaceId);
         // ExceptionUtil.isTrue(readAll != null && readAll.size() <= maxRowLimit + 1, SubscribeFunctionException.ROW_LIMIT);
@@ -1763,7 +1759,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         else if (StrUtil.startWithIgnoreEquals(nodeId, IdRulePrefixEnum.WIDGET.getIdRulePrefixEnum())) {
             // widget id
-            result.setSpaceId(widgetMapper.selectSpaceIdByWidgetIdIncludeDeleted(nodeId));
+            result.setSpaceId(widgetServiceFacade.getSpaceIdByWidgetId(nodeId));
         }
         else {
             // all other condition query node id

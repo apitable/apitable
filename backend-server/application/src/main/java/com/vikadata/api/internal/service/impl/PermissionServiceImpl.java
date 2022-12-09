@@ -10,11 +10,11 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.control.infrastructure.ControlRoleDict;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
-import com.vikadata.api.enterprise.control.infrastructure.role.NodeRole;
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
+import com.vikadata.api.control.infrastructure.ControlRoleDict;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.role.ControlRoleManager;
+import com.vikadata.api.control.infrastructure.role.NodeRole;
+import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.internal.service.IPermissionService;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.space.vo.SpaceGlobalFeature;

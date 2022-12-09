@@ -3,10 +3,8 @@ package com.vikadata.api.asset.service.impl;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,35 +31,31 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.starter.oss.core.UrlFetchResponse;
-import com.apitable.starter.yozo.core.YozoApiException;
-import com.apitable.starter.yozo.core.YozoTemplate;
+import com.vikadata.api.asset.dto.ImageDto;
 import com.vikadata.api.asset.enums.AssetType;
 import com.vikadata.api.asset.enums.DeveloperAssetType;
 import com.vikadata.api.asset.mapper.AssetMapper;
-import com.vikadata.api.asset.ro.AttachOfficePreviewRo;
 import com.vikadata.api.asset.ro.AttachUrlOpRo;
+import com.vikadata.api.asset.service.IAssetAuditService;
+import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.asset.vo.AssetUploadResult;
 import com.vikadata.api.base.enums.ActionException;
 import com.vikadata.api.base.enums.AuthException;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.base.service.IDeveloperAssetService;
-import com.vikadata.api.enterprise.appstore.enums.AppType;
-import com.vikadata.api.enterprise.appstore.service.IAppInstanceService;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
-import com.vikadata.api.asset.dto.ImageDto;
-import com.vikadata.api.asset.service.IAssetAuditService;
-import com.vikadata.api.asset.service.IAssetService;
-import com.vikadata.api.space.dto.SpaceAssetDTO;
-import com.vikadata.api.space.mapper.SpaceAssetMapper;
-import com.vikadata.api.space.service.ISpaceAssetService;
-import com.vikadata.api.workspace.enums.PermissionException;
-import com.vikadata.api.workspace.mapper.NodeMapper;
+import com.vikadata.api.interfaces.security.facade.HumanVerificationServiceFacade;
+import com.vikadata.api.interfaces.security.model.NonRobotMetadata;
 import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
 import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.util.ApiHelper;
 import com.vikadata.api.shared.util.PdfToImageUtil;
+import com.vikadata.api.space.dto.SpaceAssetDTO;
+import com.vikadata.api.space.mapper.SpaceAssetMapper;
+import com.vikadata.api.space.service.ISpaceAssetService;
 import com.vikadata.api.user.service.IDeveloperService;
+import com.vikadata.api.workspace.enums.PermissionException;
+import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.DigestUtil;
 import com.vikadata.core.util.ExceptionUtil;
@@ -79,12 +73,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.client.RestClientException;
 
 import static com.vikadata.api.shared.constants.AssetsPublicConstants.DEVELOP_PREFIX;
 import static com.vikadata.api.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
 import static com.vikadata.api.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.vikadata.api.enterprise.appstore.enums.AppException.APP_NOT_OPEN;
 import static com.vikadata.core.constants.RedisConstants.GENERAL_LOCKED;
 import static org.springframework.util.MimeTypeUtils.IMAGE_GIF;
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
@@ -115,12 +107,6 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     @Resource
     private IAssetAuditService iAssetAuditService;
 
-    @Autowired(required = false)
-    private YozoTemplate yozoTemplate;
-
-    @Resource
-    private IAppInstanceService iAppInstanceService;
-
     @Resource
     private IDeveloperAssetService iDeveloperAssetService;
 
@@ -131,19 +117,16 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     private RedisLockRegistry redisLockRegistry;
 
     @Resource
-    private AfsCheckService afsCheckService;
+    private IDeveloperService iDeveloperService;
 
     @Resource
-    private IDeveloperService iDeveloperService;
+    private HumanVerificationServiceFacade humanVerificationServiceFacade;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public void checkBeforeUpload(String nodeId, String secret) {
-        if (!afsCheckService.getEnabledStatus()) {
-            return;
-        }
         // get api key
         String apiKey = ApiHelper.getApiKey(HttpContextUtil.getRequest());
         // check whether the api key is valid
@@ -165,7 +148,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         if (BooleanUtil.isTrue(redisTemplate.hasKey(nodeKey))) {
             return;
         }
-        afsCheckService.noTraceCheck(secret);
+        humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(secret));
         // The verification is passed, and the timing cache is generated
         redisTemplate.opsForValue().set(key, "", 2, TimeUnit.HOURS);
         redisTemplate.opsForValue().set(nodeKey, "", 2, TimeUnit.HOURS);
@@ -416,38 +399,6 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         boolean flag = this.save(entity);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return entity.getId();
-    }
-
-    @Override
-    public String officePreview(AttachOfficePreviewRo officePreviewRo, String spaceId) {
-        log.info("Office file preview conversion");
-        if (yozoTemplate == null) {
-            throw new BusinessException("File preview component is not enabled");
-        }
-        // Check if the space station has the preview function enabled
-        ExceptionUtil.isTrue(iAppInstanceService.checkInstanceExist(spaceId, AppType.OFFICE_PREVIEW.name()), APP_NOT_OPEN);
-
-        String suffix = baseMapper.selectExtensionNameByFileUrl(officePreviewRo.getToken());
-        ExceptionUtil.isNotNull(suffix, ActionException.FILE_NOT_EXIST);
-        // File source address (no suffix)
-        String fileUrl = constProperties.getOssBucketByAsset().getResourceUrl() + "/%s?attname=%s";
-        // Added URL Ecode encoding to prevent the conversion of special filenames from failing
-        try {
-            String attname = URLEncoder.encode(officePreviewRo.getAttname().replaceAll("\\s|%", ""), "UTF-8");
-            String url = String.format(fileUrl, officePreviewRo.getToken(), attname);
-            return yozoTemplate.preview(url);
-        }
-        catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new BusinessException("Failed to parse filename");
-        }
-        catch (YozoApiException exception) {
-            throw new BusinessException(ActionException.OFFICE_PREVIEW_GET_URL_FAILED);
-        }
-        catch (RestClientException e) {
-            log.error("Failed to request office preview server", e);
-            throw new BusinessException(ActionException.OFFICE_PREVIEW_API_FAILED);
-        }
     }
 
     @Override

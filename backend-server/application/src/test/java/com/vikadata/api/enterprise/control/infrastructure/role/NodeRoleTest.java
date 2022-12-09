@@ -2,7 +2,12 @@ package com.vikadata.api.enterprise.control.infrastructure.role;
 
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.enterprise.control.infrastructure.ExportLevelEnum;
+import com.vikadata.api.control.infrastructure.ExportLevelEnum;
+import com.vikadata.api.control.infrastructure.role.NodeEditorRole;
+import com.vikadata.api.control.infrastructure.role.NodeManagerRole;
+import com.vikadata.api.control.infrastructure.role.NodeReaderRole;
+import com.vikadata.api.control.infrastructure.role.NodeRole;
+import com.vikadata.api.control.infrastructure.role.NodeUpdaterRole;
 import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.workspace.vo.NodePermissionView;
 

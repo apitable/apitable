@@ -1,7 +1,7 @@
 package com.vikadata.api.shared.config;
 
-import com.vikadata.api.shared.cache.service.LoginUserService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.LoginUserCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.context.I18nContext;
 import com.vikadata.api.shared.context.LoginContext;
 
@@ -20,19 +20,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class ContextConfig {
 
-    private final LoginUserService loginUserService;
+    private final LoginUserCacheService loginUserCacheService;
 
-    private final UserSpaceService userSpaceService;
+    private final UserSpaceCacheService userSpaceCacheService;
 
-    public ContextConfig(LoginUserService loginUserService, UserSpaceService userSpaceService) {
-        this.loginUserService = loginUserService;
-        this.userSpaceService = userSpaceService;
+    public ContextConfig(LoginUserCacheService loginUserCacheService, UserSpaceCacheService userSpaceCacheService) {
+        this.loginUserCacheService = loginUserCacheService;
+        this.userSpaceCacheService = userSpaceCacheService;
     }
 
     @Bean
     @ConditionalOnMissingBean
     public LoginContext loginContext() {
-        return new LoginContext(loginUserService, userSpaceService);
+        return new LoginContext(loginUserCacheService, userSpaceCacheService);
     }
 
     @Bean

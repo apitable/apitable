@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.enterprise.AbstractEnterpriseIntegrationTest;
 import com.vikadata.api.enterprise.billing.core.DefaultOrderArguments;
 import com.vikadata.api.enterprise.billing.core.OrderArguments;
 import com.vikadata.api.enterprise.billing.enums.OrderType;
@@ -36,7 +36,7 @@ import static com.vikadata.api.enterprise.billing.util.BillingConfigManager.getP
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
 
-public class BillingOfflineServiceImplTest extends AbstractIntegrationTest {
+public class BillingOfflineServiceImplTest extends AbstractEnterpriseIntegrationTest {
 
     protected static final Logger log = LoggerFactory.getLogger(BillingOfflineServiceImplTest.class);
 

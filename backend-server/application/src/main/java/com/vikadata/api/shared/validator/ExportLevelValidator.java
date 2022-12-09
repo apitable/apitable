@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.control.infrastructure.ExportLevelEnum;
+import com.vikadata.api.control.infrastructure.ExportLevelEnum;
 
 @Slf4j
 public class ExportLevelValidator implements ConstraintValidator<ExportLevelMatch, Integer> {

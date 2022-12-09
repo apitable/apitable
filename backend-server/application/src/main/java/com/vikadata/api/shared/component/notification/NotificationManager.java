@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.apitable.starter.socketio.core.SocketClientTemplate;
 import com.vikadata.api.player.ro.NotificationCreateRo;
 import com.vikadata.api.player.service.impl.PlayerNotificationServiceImpl;
-import com.vikadata.api.shared.cache.service.LoginUserService;
+import com.vikadata.api.shared.cache.service.LoginUserCacheService;
 import com.vikadata.api.shared.component.notification.observer.MessagingCenterNotifyObserver;
 import com.vikadata.api.shared.component.notification.subject.CenterNotifySubject;
 import com.vikadata.api.shared.constants.NotificationConstants;
@@ -48,7 +48,7 @@ public class NotificationManager {
     private SocketClientTemplate socketClientTemplate;
 
     @Resource
-    private LoginUserService loginUserService;
+    private LoginUserCacheService loginUserCacheService;
 
     @Resource
     private MessagingCenterNotifyObserver messagingCenterNotifyObserver;
@@ -113,7 +113,7 @@ public class NotificationManager {
             SpaceNotificationInfo info = SpaceNotificationInfo.builder().spaceId(spaceId).type(StrUtil.toCamelCase(templateId.getValue()))
                     .data(nodeInfoVo).socketId(NotificationHelper.resolvePlayerSocketId(requestWrapper)).build();
             if (templateId == NotificationTemplateId.NODE_FAVORITE) {
-                info.setUuid(loginUserService.getLoginUser(userId).getUuid());
+                info.setUuid(loginUserCacheService.getLoginUser(userId).getUuid());
             }
             socketClientTemplate.emit(EventType.NODE_CHANGE.name(), JSONUtil.parseObj(info));
         }

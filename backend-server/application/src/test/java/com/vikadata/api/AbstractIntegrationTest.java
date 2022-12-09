@@ -1,13 +1,10 @@
 package com.vikadata.api;
 
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,43 +12,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.vikadata.api.base.service.IAuthService;
 import com.vikadata.api.client.service.IClientReleaseVersionService;
-import com.vikadata.api.enterprise.appstore.enums.AppType;
-import com.vikadata.api.enterprise.appstore.service.IAppInstanceService;
-import com.vikadata.api.enterprise.billing.core.Bundle;
-import com.vikadata.api.enterprise.billing.core.OrderArguments;
-import com.vikadata.api.enterprise.billing.core.OrderPrice;
-import com.vikadata.api.enterprise.billing.entity.OrderPaymentEntity;
-import com.vikadata.api.enterprise.billing.entity.SocialWecomOrderEntity;
-import com.vikadata.api.enterprise.billing.enums.OrderChannel;
-import com.vikadata.api.enterprise.billing.enums.OrderPhase;
-import com.vikadata.api.enterprise.billing.enums.OrderStatus;
-import com.vikadata.api.enterprise.billing.enums.OrderType;
-import com.vikadata.api.enterprise.billing.enums.PayChannel;
-import com.vikadata.api.enterprise.billing.model.OrderPaymentVo;
-import com.vikadata.api.enterprise.billing.model.PingChargeSuccess;
-import com.vikadata.api.enterprise.billing.service.IBillingCapacityService;
-import com.vikadata.api.enterprise.billing.service.IBillingOfflineService;
-import com.vikadata.api.enterprise.billing.service.IBundleService;
-import com.vikadata.api.enterprise.billing.service.IOrderPaymentService;
-import com.vikadata.api.enterprise.billing.service.IOrderV2Service;
-import com.vikadata.api.enterprise.billing.service.IShopService;
-import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
-import com.vikadata.api.enterprise.billing.service.ISubscriptionService;
+import com.vikadata.api.enterprise.TestContextConfiguration;
 import com.vikadata.api.enterprise.billing.util.EntitlementChecker;
 import com.vikadata.api.enterprise.billing.util.OrderChecker;
-import com.vikadata.api.enterprise.billing.util.OrderChecker.ExpectedOrderCheck;
-import com.vikadata.api.enterprise.billing.util.OrderUtil;
-import com.vikadata.api.enterprise.billing.util.model.BillingPlanPrice;
-import com.vikadata.api.enterprise.gm.service.IGmService;
-import com.vikadata.api.enterprise.integral.service.IIntegralService;
-import com.vikadata.api.enterprise.social.entity.SocialTenantEntity;
-import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
-import com.vikadata.api.enterprise.social.enums.SocialTenantAuthMode;
-import com.vikadata.api.enterprise.social.service.ISocialCpIsvService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantBindService;
-import com.vikadata.api.enterprise.social.service.ISocialTenantService;
-import com.vikadata.api.enterprise.vcode.service.IVCodeService;
-import com.vikadata.api.enterprise.social.enums.SocialAppType;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
 import com.vikadata.api.internal.service.IFieldService;
 import com.vikadata.api.mock.bean.MockInvitation;
 import com.vikadata.api.mock.bean.MockUserSpace;
@@ -64,19 +28,15 @@ import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.shared.clock.MockClock;
 import com.vikadata.api.shared.clock.spring.ClockManager;
 import com.vikadata.api.shared.holder.UserHolder;
-import com.vikadata.api.shared.sysconfig.billing.Price;
 import com.vikadata.api.shared.util.IdUtil;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.sql.script.enhance.TablePrefixUtil;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.api.workspace.dto.CreateNodeDto;
+import com.vikadata.api.workspace.enums.NodeType;
 import com.vikadata.api.workspace.service.INodeService;
-import com.vikadata.entity.EconomicOrderEntity;
-import com.vikadata.entity.EconomicOrderMetadataEntity;
-import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,9 +47,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
-
-import static com.vikadata.api.enterprise.billing.util.OrderUtil.yuanToCents;
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 
 @SpringBootTest(classes = { Application.class })
@@ -134,43 +91,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected ITeamMemberRelService iTeamMemberRelService;
 
     @Autowired
-    protected IVCodeService ivCodeService;
-
-    @Autowired
-    protected IIntegralService iIntegralService;
-
-    @Autowired
     protected IClientReleaseVersionService iClientReleaseVersionService;
 
     @Autowired
-    protected ISocialTenantBindService iSocialTenantBindService;
-
-    @Autowired
-    protected IShopService isShopService;
-
-    @Autowired
     protected INodeService iNodeService;
-
-    @Autowired
-    protected IOrderV2Service iOrderV2Service;
-
-    @Autowired
-    protected IOrderPaymentService iOrderPaymentService;
-
-    @Autowired
-    protected IGmService iGmService;
-
-    @Autowired
-    protected IBillingOfflineService iBillingOfflineService;
-
-    @Autowired
-    protected IBundleService iBundleService;
-
-    @Autowired
-    protected IBillingCapacityService iBillingCapacityService;
-
-    @Autowired
-    protected ISpaceSubscriptionService iSpaceSubscriptionService;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
@@ -194,16 +118,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected IRoleMemberService iRoleMemberService;
 
     @Autowired
-    protected ISocialTenantService iSocialTenantService;
-
-    @Autowired
-    protected IAppInstanceService iAppInstanceService;
-
-    @Autowired
-    protected ISubscriptionService iSubscriptionService;
-
-    @Autowired
-    protected ISocialCpIsvService iSocialCpIsvService;
+    protected EntitlementServiceFacade entitlementServiceFacade;
 
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
@@ -250,7 +165,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected UserEntity createUserWithEmail(String email) {
-        return iUserService.createUserByCli(email, "123456", RandomUtil.randomNumbers(11));
+        return iUserService.createUserByEmail(email);
     }
 
     protected String createSpaceWithoutName(UserEntity user) {
@@ -289,113 +204,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         UserHolder.set(userId);
     }
 
-    protected void autoOrderPayProcessor(Long userId, OrderArguments orderArguments, OffsetDateTime paidTime) {
-        String orderId = iOrderV2Service.createOrder(orderArguments);
-        // Check Order
-        Price price = orderArguments.getPrice();
-        Bundle actionBundle = iBundleService.getActivatedBundleBySpaceId(orderArguments.getSpaceId());
-        OrderType orderType = iOrderV2Service.parseOrderType(actionBundle, price);
-        BillingPlanPrice planPrice = BillingPlanPrice.of(price, ClockManager.me().getLocalDateNow());
-        OrderPrice orderPrice = orderType == OrderType.UPGRADE ? iOrderV2Service.repairOrderPrice(actionBundle, price) :
-                new OrderPrice(price.getOriginPrice(), planPrice.getDiscount(), planPrice.getDiscount(), planPrice.getActual());
-        ExpectedOrderCheck expected = new ExpectedOrderCheck(null, yuanToCents(orderPrice.getPriceOrigin()),
-                yuanToCents(orderPrice.getPriceDiscount()), yuanToCents(orderPrice.getPricePaid()),
-                OrderStatus.UNPAID, false, null);
-        orderChecker.check(orderId, expected);
-
-        // create pay order for this
-        OrderPaymentVo orderPaymentVo = iOrderV2Service
-                .createOrderPayment(userId, orderId, PayChannel.WX_PUB_QR);
-
-        // trigger pay success event notify without valid pingpp signature
-        OrderPaymentEntity orderPayment = iOrderPaymentService.getByPayTransactionId(orderPaymentVo.getPayTransactionNo());
-        PingChargeSuccess pingChargeSuccess = new PingChargeSuccess();
-        pingChargeSuccess.setId(orderPayment.getPayChannelTransactionId());
-        pingChargeSuccess.setOrderNo(orderPaymentVo.getPayTransactionNo());
-        pingChargeSuccess.setTimePaid(paidTime.toEpochSecond());
-        iOrderPaymentService.retrieveOrderPaidEvent(pingChargeSuccess);
-
-        // check order paid
-        expected = new ExpectedOrderCheck(null, yuanToCents(orderPrice.getPriceOrigin()),
-                yuanToCents(orderPrice.getPriceDiscount()), yuanToCents(orderPrice.getPricePaid()),
-                OrderStatus.FINISHED, true, paidTime.truncatedTo(SECONDS).toLocalDateTime());
-        orderChecker.check(orderId, expected);
-    }
-
-    protected String createWecomIsvTenant(String suiteId, String authCorpId, boolean isPaid) {
-        String authCorpName = "test_corp";
-        SocialTenantEntity tenantEntity = SocialTenantEntity.builder()
-                .appId(suiteId)
-                .appType(SocialAppType.ISV.getType())
-                .tenantId(authCorpId)
-                .contactAuthScope("{}")
-                .authMode(SocialTenantAuthMode.ADMIN.getValue())
-                .permanentCode("")
-                .authInfo("{}")
-                .platform(SocialPlatformType.WECOM.getValue())
-                .status(true)
-                .build();
-        iSocialTenantService.createOrUpdateByTenantAndApp(tenantEntity);
-        SpaceEntity spaceEntity = iSocialCpIsvService.createWeComIsvSpaceWithoutUser(String.format("%s'Space", authCorpName));
-        String spaceId = spaceEntity.getSpaceId();
-        iSocialTenantBindService.addTenantBind(tenantEntity.getAppId(), tenantEntity.getTenantId(), spaceId);
-        String rootNodeId = iNodeService.createChildNode(-1L, CreateNodeDto.builder()
-                .spaceId(spaceId)
-                .newNodeId(IdUtil.createNodeId())
-                .type(NodeType.ROOT.getNodeType())
-                .build());
-        iAppInstanceService.createInstanceByAppType(spaceId, AppType.WECOM_STORE.name());
-        SocialWecomOrderEntity orderWeComEntity = SocialWecomOrderEntity.builder()
-                .orderId("junitTestWecomOrderId")
-                .orderStatus(1)
-                .orderType(0)
-                .paidCorpId(authCorpId)
-                .operatorId("junitTestWecomOperatorId")
-                .suiteId(suiteId)
-                .editionId("junitTestWecomEditionId")
-                .price(10000)
-                .userCount(10L)
-                .orderPeriod(365)
-                .orderTime(getClock().getNow(testTimeZone).toLocalDateTime())
-                .paidTime(getClock().getNow(testTimeZone).toLocalDateTime())
-                .beginTime(getClock().getNow(testTimeZone).toLocalDateTime())
-                .endTime(getClock().getNow(testTimeZone).toLocalDateTime().plusDays(365))
-                .orderFrom(0)
-                .serviceShareAmount(9000)
-                .platformShareAmount(1000)
-                .dealerShareAmount(0)
-                .orderInfo("{}")
-                .build();
-        EconomicOrderEntity orderEntity = new EconomicOrderEntity();
-        orderEntity.setSpaceId(spaceId);
-        orderEntity.setOrderNo(OrderUtil.createOrderId());
-        orderEntity.setOrderChannel(OrderChannel.WECOM.getName());
-        orderEntity.setChannelOrderId(isPaid ? orderWeComEntity.getOrderId() : null);
-        orderEntity.setProduct("Wecom_Standard");
-        orderEntity.setSeat(10);
-        orderEntity.setType(0);
-        orderEntity.setMonth(isPaid ? 12 : 0);
-        orderEntity.setCurrency("CNY");
-        orderEntity.setAmount(isPaid ? orderWeComEntity.getPrice() : 0);
-        orderEntity.setActualAmount(isPaid ? orderWeComEntity.getPrice() : 0);
-        orderEntity.setStatus(OrderStatus.FINISHED.getName());
-        orderEntity.setIsPaid(true);
-        orderEntity.setPaidTime(orderWeComEntity.getPaidTime());
-        orderEntity.setExpireTime(orderWeComEntity.getEndTime());
-        orderEntity.setCreatedTime(orderWeComEntity.getOrderTime());
-        if (!isPaid) {
-            orderEntity.setOrderPhase(OrderPhase.TRIAL.getName());
-        }
-        else {
-            orderEntity.setOrderPhase(OrderPhase.FIXEDTERM.getName());
-        }
-        EconomicOrderMetadataEntity orderMetadata = new EconomicOrderMetadataEntity();
-        orderMetadata.setOrderNo(orderEntity.getOrderNo());
-        orderMetadata.setMetadata(isPaid ? JSONUtil.toJsonStr(orderWeComEntity) : null);
-        orderMetadata.setOrderChannel(OrderChannel.WECOM.getName());
-        return spaceId;
-    }
-
     protected MockInvitation prepareInvitationToken() {
         UserEntity user = createUserWithEmail(IdWorker.getIdStr() + "@test.com");
         String spaceId = createSpaceWithoutName(user);
@@ -416,7 +224,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected Long addRoleMembers(MockUserSpace userSpace) {
-        UserEntity user = iUserService.createUserByCli("vikaboy@vikadata.com", "123456789", "12345678910");
+        UserEntity user = iUserService.createUserByEmail("vikaboy@vikadata.com");
         Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
         Long memberId = iMemberService.createMember(user.getId(), userSpace.getSpaceId(), rootTeamId);
         RoleMemberUnitRo rootTeamUnit = new RoleMemberUnitRo();

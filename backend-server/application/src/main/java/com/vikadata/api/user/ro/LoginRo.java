@@ -30,7 +30,7 @@ public class LoginRo {
     @ApiModelProperty(value = "Password login for man-machine verification, and the front end obtains the value of get NVC Val function", example = "FutureIsComing", position = 4, required = true)
     private String data;
 
-    @ApiModelProperty(value = "The token temporarily saved by the third-party account information is returned when there is no binding to the Vigor account", example = "this_is_token", position = 5)
+    @ApiModelProperty(value = "The token temporarily saved by the third-party account information is returned when there is no binding to the account", example = "this_is_token", position = 5)
     private String token;
 
     @ApiModelProperty(value = "Invite space ID, which is required when new users are invited to join the space station to get free attachment capacity", example = "spcaq8UwsxjAc", position = 6)

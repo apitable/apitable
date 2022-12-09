@@ -144,7 +144,7 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     }
 
     protected String getUserName(Long userId) {
-        return userMapper.selectUserNameById(userId);
+        return userMapper.selectNickNameById(userId);
     }
 
     /**

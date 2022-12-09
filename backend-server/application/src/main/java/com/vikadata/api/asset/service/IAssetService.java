@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.asset.enums.AssetType;
 import com.vikadata.api.asset.enums.DeveloperAssetType;
-import com.vikadata.api.asset.ro.AttachOfficePreviewRo;
 import com.vikadata.api.asset.ro.AttachUrlOpRo;
 import com.vikadata.api.asset.vo.AssetUploadResult;
 import com.vikadata.entity.AssetEntity;
@@ -68,14 +67,6 @@ public interface IAssetService extends IService<AssetEntity> {
      * @return AssetUploadResult
      */
     AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath, String fileOriginalName, long fileSize, String contentType, Long createdBy, DeveloperAssetType developerAssetType);
-
-    /**
-     * file preview
-     *
-     * @param officePreviewRo attachment request parameters
-     * @param spaceId space station id
-     */
-    String officePreview(AttachOfficePreviewRo officePreviewRo, String spaceId);
 
     /**
      * delete cloud s3 files

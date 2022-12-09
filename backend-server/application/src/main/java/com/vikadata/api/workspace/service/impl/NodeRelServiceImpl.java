@@ -17,8 +17,8 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.enterprise.control.infrastructure.ControlRoleDict;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.ControlRoleDict;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
 import com.vikadata.api.workspace.dto.NodeRelDTO;
 import com.vikadata.api.workspace.vo.NodeInfo;
 import com.vikadata.api.workspace.mapper.NodeMapper;

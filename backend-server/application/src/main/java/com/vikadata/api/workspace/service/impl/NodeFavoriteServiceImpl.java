@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
 import com.vikadata.api.workspace.vo.FavoriteNodeInfo;
 import com.vikadata.api.workspace.vo.NodeInfoVo;
 import com.vikadata.api.workspace.mapper.NodeFavoriteMapper;

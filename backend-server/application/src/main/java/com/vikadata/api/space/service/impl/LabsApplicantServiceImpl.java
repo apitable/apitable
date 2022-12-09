@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +19,6 @@ import com.vikadata.api.space.mapper.LabsApplicantMapper;
 import com.vikadata.api.space.service.ILabsApplicantService;
 import com.vikadata.api.space.service.ILabsFeatureService;
 import com.vikadata.api.space.vo.LabsFeatureVo;
-import com.vikadata.api.shared.component.notification.NotificationManager;
-import com.vikadata.api.shared.component.notification.NotificationTemplateId;
-import com.vikadata.api.enterprise.gm.ro.GmApplyFeatureRo;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.LabsApplicantEntity;
 
@@ -50,7 +45,7 @@ public class LabsApplicantServiceImpl extends ServiceImpl<LabsApplicantMapper, L
         List<String> globalApplicants = labsApplicantMapper.selectFeatureKeyByType(LabsFeatureTypeEnum.GLOBAL.getType());
 
         // Judge the applicant as null
-        if(applicants.isEmpty()){
+        if (applicants.isEmpty()) {
             return LabsFeatureVo.builder()
                     .keys(globalApplicants.stream().map(LabsFeatureEnum::ofFeatureKey).collect(Collectors.toList()))
                     .build();
@@ -102,26 +97,6 @@ public class LabsApplicantServiceImpl extends ServiceImpl<LabsApplicantMapper, L
             return;
         }
         labsApplicantMapper.deleteById(existLabsApplicant.getId());
-    }
-
-    @Override
-    public void sendNotification(NotificationTemplateId templateId, List<Long> toUserId, Long applyUser, GmApplyFeatureRo applyFeatureRo) {
-        LabsFeatureEnum featureEnum = LabsFeatureEnum.ofLabsFeature(applyFeatureRo.getFeatureKey());
-        String toastUrl = featureEnum.getToastUrl();
-        NotificationManager.me().playerNotify(
-                templateId,
-                toUserId,
-                applyUser,
-                applyFeatureRo.getSpaceId(),
-                Dict.create()
-                        .set("toast", Dict.create().set("url", StrUtil.isNotBlank(toastUrl) ? toastUrl : null))
-                        .set("featureKey", featureEnum.getFeatureName())
-        );
-    }
-
-    @Override
-    public void openApplicantFeature(Long id) {
-        labsApplicantMapper.updateIsDeletedById(id, false);
     }
 
 }

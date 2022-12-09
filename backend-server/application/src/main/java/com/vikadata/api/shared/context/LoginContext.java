@@ -9,8 +9,8 @@ import cn.hutool.core.util.StrUtil;
 
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
-import com.vikadata.api.shared.cache.service.LoginUserService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.LoginUserCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.LanguageManager;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.holder.LoginUserHolder;
@@ -32,13 +32,13 @@ import static com.vikadata.api.space.enums.SpacePermissionException.ILLEGAL_ASSI
  */
 public class LoginContext {
 
-    private final LoginUserService loginUserService;
+    private final LoginUserCacheService loginUserCacheService;
 
-    private final UserSpaceService userSpaceService;
+    private final UserSpaceCacheService userSpaceCacheService;
 
-    public LoginContext(LoginUserService loginUserService, UserSpaceService userSpaceService) {
-        this.loginUserService = loginUserService;
-        this.userSpaceService = userSpaceService;
+    public LoginContext(LoginUserCacheService loginUserCacheService, UserSpaceCacheService userSpaceCacheService) {
+        this.loginUserCacheService = loginUserCacheService;
+        this.userSpaceCacheService = userSpaceCacheService;
     }
 
     public static LoginContext me() {
@@ -57,7 +57,7 @@ public class LoginContext {
         LoginUserDto loginUserDto = LoginUserHolder.get();
         if (loginUserDto == null) {
             Long userId = SessionContext.getUserId();
-            loginUserDto = loginUserService.getLoginUser(userId);
+            loginUserDto = loginUserCacheService.getLoginUser(userId);
             LoginUserHolder.set(loginUserDto);
         }
         return loginUserDto;
@@ -89,12 +89,12 @@ public class LoginContext {
     }
 
     public Long getMemberId(Long userId, String spaceId) {
-        UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, spaceId);
+        UserSpaceDto userSpaceDto = userSpaceCacheService.getUserSpace(userId, spaceId);
         return userSpaceDto.getMemberId();
     }
 
     public void checkAcrossSpace(Long userId, String spaceId) {
-        userSpaceService.getUserSpace(userId, spaceId);
+        userSpaceCacheService.getUserSpace(userId, spaceId);
     }
 
     /**
@@ -105,7 +105,7 @@ public class LoginContext {
     public void checkSpaceResource(List<String> resourceCodes) {
         String spaceId = LoginContext.me().getSpaceId();
         Long userId = SessionContext.getUserId();
-        UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, spaceId);
+        UserSpaceDto userSpaceDto = userSpaceCacheService.getUserSpace(userId, spaceId);
         if (userSpaceDto.isMainAdmin()) {
             return;
         }
@@ -121,7 +121,7 @@ public class LoginContext {
      */
     public UserSpaceDto getUserSpaceDto(String spaceId) {
         Long userId = SessionContext.getUserId();
-        return userSpaceService.getUserSpace(userId, spaceId);
+        return userSpaceCacheService.getUserSpace(userId, spaceId);
     }
 
     /**

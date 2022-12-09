@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Field;
+import com.vikadata.api.control.infrastructure.role.RoleConstants.Field;
 
 @Slf4j
 public class FieldRoleValidator implements ConstraintValidator<FieldRoleMatch, String> {

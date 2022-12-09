@@ -32,8 +32,6 @@ public interface SocialServiceFacade {
 
     void deleteUser(Long userId);
 
-    void deleteByUnionId(List<String> unionIds);
-
     String getSuiteKeyByDingtalkSuiteId(String suiteId);
 
     List<String> fuzzySearchIfSatisfyCondition(String spaceId, String word);

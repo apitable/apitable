@@ -25,13 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.organization.vo.RoleInfoVo;
 import com.vikadata.api.organization.vo.UnitMemberVo;
 import com.vikadata.api.organization.vo.UnitTeamVo;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.constants.AuditConstants;
-import com.vikadata.api.enterprise.control.infrastructure.ControlType;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRole;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
-import com.vikadata.api.enterprise.control.infrastructure.role.DefaultWorkbenchRole;
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
+import com.vikadata.api.control.infrastructure.ControlType;
+import com.vikadata.api.control.infrastructure.role.ControlRole;
+import com.vikadata.api.control.infrastructure.role.ControlRoleManager;
+import com.vikadata.api.control.infrastructure.role.DefaultWorkbenchRole;
+import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.workspace.enums.PermissionException;
 import com.vikadata.api.organization.enums.UnitType;
@@ -39,8 +39,8 @@ import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.vikadata.api.workspace.vo.NodeRoleMemberVo;
 import com.vikadata.api.workspace.vo.NodeRoleUnit;
-import com.vikadata.api.enterprise.control.service.IControlRoleService;
-import com.vikadata.api.enterprise.control.service.IControlService;
+import com.vikadata.api.control.service.IControlRoleService;
+import com.vikadata.api.control.service.IControlService;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.UnitMapper;
@@ -100,7 +100,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     private IControlRoleService iControlRoleService;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
     private IUnitService iUnitService;
@@ -117,7 +117,7 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void enableNodeRole(Long userId, String spaceId, String nodeId, boolean includeExtend) {
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // Enable the node to specify permissions and set the current member organization unit role to Owner
         Long unitId = iUnitService.getUnitIdByRefId(memberId);
         log.info("「{}」open node「{}」specify permissions，and set up units「{}」role「{}」", userId, nodeId, unitId, Node.OWNER);

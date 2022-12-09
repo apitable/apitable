@@ -13,18 +13,13 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.asset.enums.AssetType;
 import com.vikadata.api.asset.ro.AssetsAuditRo;
 import com.vikadata.api.asset.ro.AttachAuditCallbackRo;
-import com.vikadata.api.asset.ro.AttachOfficePreviewRo;
 import com.vikadata.api.asset.ro.AttachOpRo;
 import com.vikadata.api.asset.ro.AttachUrlOpRo;
+import com.vikadata.api.asset.service.IAssetAuditService;
+import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.asset.vo.AssetUploadResult;
 import com.vikadata.api.asset.vo.AssetsAuditVo;
 import com.vikadata.api.base.enums.AuthException;
-import com.vikadata.api.space.ro.SpaceAssetOpRo;
-import com.vikadata.api.asset.service.IAssetAuditService;
-import com.vikadata.api.asset.service.IAssetService;
-import com.vikadata.api.space.service.ISpaceAssetService;
-import com.vikadata.api.workspace.enums.PermissionException;
-import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
@@ -32,11 +27,14 @@ import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.shared.util.page.PageObjectParam;
+import com.vikadata.api.space.ro.SpaceAssetOpRo;
+import com.vikadata.api.space.service.ISpaceAssetService;
+import com.vikadata.api.workspace.enums.PermissionException;
+import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,12 +81,6 @@ public class AssetController {
             AssetUploadResult result = iAssetService.uploadFile(file.getInputStream(), file.getSize(), file.getContentType());
             return ResponseData.success(result);
         }
-    }
-
-    @PostResource(name = "Office document preview conversion", path = "/officePreview/{spaceId}", requiredPermission = false)
-    @ApiOperation(value = "Office document preview conversion", notes = "Office document preview conversion, call Yongzhong office conversion interface")
-    public ResponseData<String> officePreview(@PathVariable String spaceId, @RequestBody @Valid AttachOfficePreviewRo results) {
-        return ResponseData.success(iAssetService.officePreview(results, spaceId));
     }
 
     @PostResource(name = "Image review result callback", path = "/auditCallback", requiredLogin = false, requiredPermission = false)

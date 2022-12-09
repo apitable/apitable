@@ -29,8 +29,8 @@ import com.vikadata.api.organization.vo.UnitInfoVo;
 import com.vikadata.api.organization.vo.UnitMemberVo;
 import com.vikadata.api.organization.vo.UnitSearchResultVo;
 import com.vikadata.api.organization.vo.UnitTeamVo;
-import com.vikadata.api.shared.cache.service.UserSpaceRemindRecordService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceRemindRecordCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.config.properties.LimitProperties;
 import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.api.workspace.service.impl.NodeRoleServiceImpl;
@@ -57,10 +57,10 @@ public class OrganizationServiceImpl implements IOrganizationService {
     private ITeamService iTeamService;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
-    private UserSpaceRemindRecordService userSpaceRemindRecordService;
+    private UserSpaceRemindRecordCacheService userSpaceRemindRecordCacheService;
 
     @Resource
     private LimitProperties limitProperties;
@@ -243,11 +243,11 @@ public class OrganizationServiceImpl implements IOrganizationService {
             }
             else if (userId != null) {
                 // Load the most recently selected members and departments
-                unitIds = userSpaceRemindRecordService.getRemindUnitIds(userId, spaceId);
+                unitIds = userSpaceRemindRecordCacheService.getRemindUnitIds(userId, spaceId);
                 Integer loadCount = limitProperties.getMemberFieldMaxLoadCount();
                 if (CollUtil.isEmpty(unitIds) || unitIds.size() < loadCount) {
                     // Gets the group members of the latest group that the member joined
-                    Long memberId = userSpaceService.getMemberId(userId, spaceId);
+                    Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
                     List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
                     if (CollUtil.isNotEmpty(teamIds)) {
                         List<Long> ids = teamMemberRelMapper.selectMemberIdsByTeamId(teamIds.get(teamIds.size() - 1));

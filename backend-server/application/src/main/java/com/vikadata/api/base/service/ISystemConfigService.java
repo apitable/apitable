@@ -5,6 +5,14 @@ import com.vikadata.api.base.enums.SystemConfigType;
 public interface ISystemConfigService {
 
     /**
+     * Get generic configuration
+     *
+     * @param lang Language
+     * @return val
+     */
+    Object getWizardConfig(String lang);
+
+    /**
      * get configuration
      *
      * @param type  configuration type

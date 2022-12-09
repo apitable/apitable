@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import com.vikadata.api.shared.listener.enums.FieldPermissionChangeEvent;
-import com.vikadata.api.enterprise.control.model.FieldControlProp;
+import com.vikadata.api.workspace.ro.FieldControlProp;
 
 import org.springframework.context.ApplicationEvent;
 

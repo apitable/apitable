@@ -13,26 +13,25 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
-import com.vikadata.api.space.enums.InviteType;
-import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.space.vo.SpaceGlobalFeature;
-import com.vikadata.api.space.vo.SpaceLinkInfoVo;
-import com.vikadata.api.enterprise.control.service.IControlRoleService;
+import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
+import com.vikadata.api.control.service.IControlRoleService;
+import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.IUnitService;
+import com.vikadata.api.shared.component.TaskManager;
+import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.space.dto.InvitationUserDTO;
+import com.vikadata.api.space.enums.InviteType;
 import com.vikadata.api.space.mapper.InvitationMapper;
 import com.vikadata.api.space.mapper.SpaceApplyMapper;
-import com.vikadata.api.space.dto.InvitationUserDTO;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
+import com.vikadata.api.space.vo.SpaceLinkInfoVo;
 import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
 import com.vikadata.api.workspace.service.INodeRoleService;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.util.ExceptionUtil;
@@ -81,7 +80,7 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     private IUnitService iUnitService;
 
     @Resource
-    private VCodeMapper vCodeMapper;
+    private UserServiceFacade userServiceFacade;
 
     @Resource
     private IControlRoleService iControlRoleService;
@@ -104,7 +103,7 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         }
         Long creatorUserId = memberMapper.selectUserIdByMemberId(creator);
         // get the link creator's personal invitation code
-        String inviteCode = vCodeMapper.selectCodeByTypeAndRefId(VCodeType.PERSONAL_INVITATION_CODE.getType(), creatorUserId);
+        String inviteCode = userServiceFacade.getUserInvitationCode(creatorUserId).getCode();
         infoVo.setInviteCode(inviteCode);
         return infoVo;
     }
@@ -113,7 +112,7 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     public void asyncActionsForSuccessJoinSpace(InvitationUserDTO dto) {
         // Determine whether a new user has joined the space station, and issue rewards, asynchronous operation
         TaskManager.me().execute(() -> {
-            String userName = userMapper.selectUserNameById(dto.getUserId());
+            String userName = userMapper.selectNickNameById(dto.getUserId());
             iSpaceInviteLinkService.checkIsNewUserRewardCapacity(dto.getUserId(), userName, dto.getSpaceId());
         });
         // Send invitation notification, asynchronous operation

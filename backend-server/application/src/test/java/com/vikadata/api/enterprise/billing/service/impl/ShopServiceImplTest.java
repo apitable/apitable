@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.enterprise.AbstractEnterpriseIntegrationTest;
 import com.vikadata.api.enterprise.billing.enums.ProductEnum;
 import com.vikadata.api.enterprise.billing.model.ProductPriceVo;
 
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Shop Service Implement Test
  */
-public class ShopServiceImplTest extends AbstractIntegrationTest {
+public class ShopServiceImplTest extends AbstractEnterpriseIntegrationTest {
 
     @Test
     public void testGetPricesByProductOnSilver() {

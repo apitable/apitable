@@ -14,15 +14,15 @@ import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.notification.annotation.Notification;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.constants.AuditConstants;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
@@ -62,7 +62,7 @@ public class NodeShareController {
     private ControlTemplate controlTemplate;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     private static final String SHARE_PARAM_DESC = "stringObjectParams share setting parameter description: <br/> " +
             "There are three option parameters for sharing settings. Only one can be set true, and more than two cannot be set to true at the same time.<br/>" +
@@ -81,7 +81,7 @@ public class NodeShareController {
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
                 status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
@@ -100,7 +100,7 @@ public class NodeShareController {
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
                 status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
@@ -127,7 +127,7 @@ public class NodeShareController {
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
                 status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));

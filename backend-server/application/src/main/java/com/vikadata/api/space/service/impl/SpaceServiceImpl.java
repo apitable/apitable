@@ -46,8 +46,8 @@ import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
 import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
@@ -137,10 +137,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     private IMemberService iMemberService;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
-    private UserActiveSpaceService userActiveSpaceService;
+    private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
     private ITeamService iTeamService;
@@ -298,7 +298,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // modify spatial logo
         this.updateSpaceLogo(userId, spaceId, spaceOpRo.getLogo(), entity);
         // delete cache
-        TaskManager.me().execute(() -> userSpaceService.delete(spaceId));
+        TaskManager.me().execute(() -> userSpaceCacheService.delete(spaceId));
     }
 
     private void updateSpaceName(Long userId, String spaceId, String spaceName, SpaceEntity entity) {
@@ -367,8 +367,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
         // delete active space cache
         // （After the space is pre-deleted, only the member data of the master management is not logically deleted.
         // If the product logic changes, all members that have not been logically deleted need to be queried to clear the cache.)
-        userActiveSpaceService.delete(userId);
-        spaceIds.forEach(spaceId -> userSpaceService.delete(userId, spaceId));
+        userActiveSpaceCacheService.delete(userId);
+        spaceIds.forEach(spaceId -> userSpaceCacheService.delete(userId, spaceId));
         // delete member（must be after deleting user）
         memberMapper.delBySpaceIds(spaceIds, null);
         // delete space exclusive domain name
@@ -689,7 +689,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     public UserSpaceVo getUserSpaceResource(Long userId, String spaceId) {
         log.info("obtain the space resource permission");
-        UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, spaceId);
+        UserSpaceDto userSpaceDto = userSpaceCacheService.getUserSpace(userId, spaceId);
         UserSpaceVo userSpaceVo = new UserSpaceVo();
         userSpaceVo.setSpaceName(userSpaceDto.getSpaceName());
         userSpaceVo.setMainAdmin(userSpaceDto.isMainAdmin());
@@ -797,11 +797,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity> impl
     @Override
     public void switchSpace(Long userId, String spaceId) {
         // Prevents access to unjoined spaces
-        userSpaceService.getMemberId(userId, spaceId);
+        userSpaceCacheService.getMemberId(userId, spaceId);
         // The database saves the activation state
         iMemberService.updateActiveStatus(spaceId, userId);
         // Cache the space where the user's last action was active
-        userActiveSpaceService.save(userId, spaceId);
+        userActiveSpaceCacheService.save(userId, spaceId);
     }
 
     @Override

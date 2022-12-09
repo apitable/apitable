@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 
+import com.vikadata.api.enterprise.AbstractEnterpriseIntegrationTest;
 import com.vikadata.api.enterprise.social.enums.SocialPlatformType;
 import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.enterprise.appstore.enums.AppType;
@@ -30,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Codeman
  * @date 2022-08-29 18:57:35
  */
-public abstract class AbstractIsvTest extends AbstractIntegrationTest {
+public abstract class AbstractIsvTest extends AbstractEnterpriseIntegrationTest {
     protected static final SocialAppType ISV = SocialAppType.ISV;
 
     @Autowired

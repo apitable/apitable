@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.ActionException;
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.workspace.enums.PermissionException;
 import com.vikadata.api.space.dto.NodeAssetDTO;
 import com.vikadata.api.workspace.ro.DataSheetCreateRo;
@@ -95,7 +95,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
     private PasswordEncoder passwordEncoder;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     private static final String MANIFEST = "manifest.json";
 
@@ -205,7 +205,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             }
         }
         String spaceId = nodeMapper.selectSpaceIdByNodeId(parentId);
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         iNodeService.checkEnableOperateNodeBySpaceFeature(memberId, spaceId, parentId);
         String manifestStr = null;
         String assetsContent = null;

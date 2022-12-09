@@ -13,20 +13,20 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.base.service.IConfigService;
+import com.vikadata.api.base.service.ISystemConfigService;
 import com.vikadata.api.client.model.ClientInfoVO;
 import com.vikadata.api.client.service.IClientReleaseVersionService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.config.FilterConfig;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
-import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.shared.sysconfig.i18n.I18nTypes;
 import com.vikadata.api.shared.util.ClientUriUtil;
+import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.user.vo.UserInfoVo;
+import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
 import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.api.shared.sysconfig.i18n.I18nTypes;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.RedisCallback;
@@ -59,10 +59,10 @@ public class ClientController {
     private IClientReleaseVersionService clientReleaseVersionService;
 
     @Resource
-    private IConfigService iConfigService;
+    private ISpaceService iSpaceService;
 
     @Resource
-    private ISpaceService iSpaceService;
+    private ISystemConfigService iSystemConfigService;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -94,7 +94,7 @@ public class ClientController {
         }
         info.setLocale(LocaleContextHolder.getLocale().toLanguageTag());
         info.setMetaContent(getMetaContent(headers));
-        info.setWizards(StrUtil.toString(iConfigService.getWizardConfig(I18nTypes.ZH_CN.getName())));
+        info.setWizards(StrUtil.toString(iSystemConfigService.getWizardConfig(I18nTypes.ZH_CN.getName())));
         info.setRedirect(this.redirectByAccessRoot(request, userInfoVo));
         return info;
     }

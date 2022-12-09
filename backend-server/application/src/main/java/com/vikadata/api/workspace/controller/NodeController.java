@@ -35,8 +35,8 @@ import com.vikadata.api.shared.component.notification.annotation.Notification;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.cache.bean.OpenedSheet;
 import com.vikadata.api.shared.cache.service.SpaceCapacityCacheService;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetCacheService;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
 import com.vikadata.api.shared.config.properties.LimitProperties;
 import com.vikadata.api.shared.constants.AuditConstants;
@@ -44,12 +44,12 @@ import com.vikadata.api.shared.constants.FileSuffixConstants;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.enterprise.control.infrastructure.ControlRoleDict;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRole;
-import com.vikadata.api.enterprise.control.infrastructure.role.ControlRoleManager;
-import com.vikadata.api.enterprise.control.infrastructure.role.RoleConstants.Node;
+import com.vikadata.api.control.infrastructure.ControlRoleDict;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.control.infrastructure.role.ControlRole;
+import com.vikadata.api.control.infrastructure.role.ControlRoleManager;
+import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.space.enums.AuditSpaceAction;
 import com.vikadata.api.workspace.enums.PermissionException;
 import com.vikadata.api.shared.listener.event.AuditSpaceEvent;
@@ -143,7 +143,7 @@ public class NodeController {
     private NodeShareSettingMapper nodeShareSettingMapper;
 
     @Resource
-    private UserSpaceOpenedSheetService userSpaceOpenedSheetService;
+    private UserSpaceOpenedSheetCacheService userSpaceOpenedSheetCacheService;
 
     @Resource
     private IDatasheetService datasheetService;
@@ -164,7 +164,7 @@ public class NodeController {
     private SpaceCapacityCacheService spaceCapacityCacheService;
 
     @Resource
-    private UserActiveSpaceService userActiveSpaceService;
+    private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     private static final String ROLE_DESC = "<br/>Role Type：<br/>" +
             "1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>" +
@@ -619,18 +619,18 @@ public class NodeController {
         String spaceId;
         if (opRo.getNodeId() == null) {
             spaceId = LoginContext.me().getSpaceId();
-            userSpaceOpenedSheetService.refresh(userId, spaceId, null);
+            userSpaceOpenedSheetCacheService.refresh(userId, spaceId, null);
         }
         else {
             // The method includes determining whether a node exists.
             spaceId = iNodeService.getSpaceIdByNodeId(opRo.getNodeId());
             OpenedSheet openedSheet = OpenedSheet.builder().nodeId(opRo.getNodeId()).viewId(opRo.getViewId()).position(opRo.getPosition()).build();
-            userSpaceOpenedSheetService.refresh(userId, spaceId, openedSheet);
+            userSpaceOpenedSheetCacheService.refresh(userId, spaceId, openedSheet);
         }
         // check if space is spanned
         LoginContext.me().checkAcrossSpace(userId, spaceId);
         // Cache the space activated by the user's last operation
-        userActiveSpaceService.save(userId, spaceId);
+        userActiveSpaceCacheService.save(userId, spaceId);
         return ResponseData.success();
     }
 

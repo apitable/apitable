@@ -8,19 +8,18 @@ import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.service.IActionService;
-import com.vikadata.api.enterprise.vcode.enums.VCodeType;
+import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
 import com.vikadata.api.organization.dto.MemberDTO;
-import com.vikadata.api.organization.vo.InviteInfoVo;
 import com.vikadata.api.organization.mapper.MemberMapper;
+import com.vikadata.api.organization.vo.InviteInfoVo;
 import com.vikadata.api.space.mapper.SpaceInviteRecordMapper;
 import com.vikadata.api.space.mapper.SpaceMapper;
+import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.entity.SpaceInviteRecordEntity;
-import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,7 @@ public class ActionServiceImpl implements IActionService {
     private IUserService iUserService;
 
     @Resource
-    private VCodeMapper vCodeMapper;
+    private UserServiceFacade userServiceFacade;
 
     @Override
     public InviteInfoVo inviteValidate(String inviteToken) {
@@ -77,7 +76,7 @@ public class ActionServiceImpl implements IActionService {
         boolean isLogin = this.checkUserInSession();
         inviteInfoVo.setIsLogin(isLogin);
         // get the link creator's personal invitation code
-        String inviteCode = vCodeMapper.selectCodeByTypeAndRefId(VCodeType.PERSONAL_INVITATION_CODE.getType(), member.getUserId());
+        String inviteCode = userServiceFacade.getUserInvitationCode(member.getUserId()).getCode();
         inviteInfoVo.setInviteCode(inviteCode);
         return inviteInfoVo;
     }

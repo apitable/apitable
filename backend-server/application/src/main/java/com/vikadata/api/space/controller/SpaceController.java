@@ -21,9 +21,9 @@ import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceOpenedSheetCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
@@ -92,13 +92,13 @@ public class SpaceController {
     private MemberMapper memberMapper;
 
     @Resource
-    private UserSpaceOpenedSheetService userSpaceOpenedSheetService;
+    private UserSpaceOpenedSheetCacheService userSpaceOpenedSheetCacheService;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
-    private UserActiveSpaceService userActiveSpaceService;
+    private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
     private IUserService iUserService;
@@ -158,7 +158,7 @@ public class SpaceController {
                 .info(JSONUtil.createObj().set(AuditConstants.SPACE_NAME, spaceOpRo.getName())).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         // Cache the space where the user's last action was active
-        TaskManager.me().execute(() -> userActiveSpaceService.save(userId, spaceId));
+        TaskManager.me().execute(() -> userActiveSpaceCacheService.save(userId, spaceId));
         return ResponseData.success(CreateSpaceResultVo.builder().spaceId(spaceId).build());
     }
 
@@ -199,7 +199,7 @@ public class SpaceController {
         // pre delete
         iSpaceService.preDeleteById(userId, spaceId);
         // delete cache
-        userSpaceService.delete(userId, spaceId);
+        userSpaceCacheService.delete(userId, spaceId);
         // release space audit events
         AuditSpaceArg arg = AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_SPACE).userId(userId).spaceId(spaceId).build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
@@ -234,7 +234,7 @@ public class SpaceController {
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         iSpaceService.cancelDelByIds(userId, spaceId);
         // delete the cache
-        userSpaceService.delete(userId, spaceId);
+        userSpaceCacheService.delete(userId, spaceId);
         // noitfy holder
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().fromUserId(userId).build());
         // release space audit events
@@ -252,12 +252,12 @@ public class SpaceController {
         // This operation cannot be performed when binding to a third party
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         // don't user LoginContext.me()
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         iSpaceService.quit(spaceId, memberId);
         // delete the relevant cache
-        userSpaceOpenedSheetService.delete(userId, spaceId);
-        userActiveSpaceService.delete(userId);
-        userSpaceService.delete(userId, spaceId);
+        userSpaceOpenedSheetCacheService.delete(userId, spaceId);
+        userActiveSpaceCacheService.delete(userId);
+        userSpaceCacheService.delete(userId, spaceId);
         NotificationRenderFieldHolder.set(NotificationRenderField.builder().spaceId(spaceId).fromUserId(userId).build());
         return ResponseData.success();
     }
@@ -277,7 +277,7 @@ public class SpaceController {
     public ResponseData<Void> remove(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         // don't use LoginContext.me()
-        Long memberId = userSpaceService.getMemberId(userId, spaceId);
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         // remove hot point
         memberMapper.updateIsPointById(memberId);
         return ResponseData.success();

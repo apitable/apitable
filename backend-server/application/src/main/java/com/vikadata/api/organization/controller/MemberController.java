@@ -27,10 +27,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.auth0.service.Auth0Service;
-import com.vikadata.api.enterprise.common.afs.AfsCheckService;
-import com.vikadata.api.enterprise.gm.service.IBlackListService;
+import com.vikadata.api.interfaces.security.facade.BlackListServiceFacade;
+import com.vikadata.api.interfaces.security.facade.HumanVerificationServiceFacade;
+import com.vikadata.api.interfaces.security.model.NonRobotMetadata;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.user.facade.InvitationServiceFacade;
+import com.vikadata.api.interfaces.user.model.InvitationMetadata;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.api.organization.enums.DeleteMemberType;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
@@ -44,9 +47,11 @@ import com.vikadata.api.organization.ro.UpdateMemberOpRo;
 import com.vikadata.api.organization.ro.UpdateMemberRo;
 import com.vikadata.api.organization.ro.UpdateMemberTeamRo;
 import com.vikadata.api.organization.ro.UploadMemberTemplateRo;
+import com.vikadata.api.organization.service.IMemberSearchService;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.IRoleService;
 import com.vikadata.api.organization.service.ITeamService;
+import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.organization.vo.MemberInfoVo;
 import com.vikadata.api.organization.vo.MemberPageVo;
 import com.vikadata.api.organization.vo.MemberUnitsVo;
@@ -60,7 +65,6 @@ import com.vikadata.api.shared.component.notification.annotation.Notification;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
@@ -68,21 +72,15 @@ import com.vikadata.api.shared.holder.SpaceHolder;
 import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
 import com.vikadata.api.shared.util.page.PageObjectParam;
-import com.vikadata.api.space.mapper.SpaceMapper;
-import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.space.enums.SpaceUpdateOperate;
+import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.service.ISpaceService;
-import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.api.organization.entity.MemberEntity;
 
-import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
@@ -120,6 +118,9 @@ public class MemberController {
     private IMemberService iMemberService;
 
     @Resource
+    private IMemberSearchService iMemberSearchService;
+
+    @Resource
     private SpaceMapper spaceMapper;
 
     @Resource
@@ -132,10 +133,7 @@ public class MemberController {
     private ISpaceService iSpaceService;
 
     @Resource
-    private AfsCheckService afsCheckService;
-
-    @Resource
-    private IBlackListService iBlackListService;
+    private BlackListServiceFacade blackListServiceFacade;
 
     @Resource
     private IRoleService iRoleService;
@@ -144,19 +142,16 @@ public class MemberController {
     private ITeamService iTeamService;
 
     @Resource
-    private Auth0Service auth0Service;
-
-    @Resource
-    private IUserService iUserService;
-
-    @Resource
-    private ConstProperties constProperties;
-
-    @Resource
-    private ServerProperties serverProperties;
+    private IUnitService iUnitService;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
+
+    @Resource
+    private HumanVerificationServiceFacade humanVerificationServiceFacade;
+
+    @Resource
+    private InvitationServiceFacade invitationServiceFacade;
 
     @GetResource(path = "/search")
     @ApiImplicitParams({
@@ -175,7 +170,7 @@ public class MemberController {
         }
 
         String spaceId = LoginContext.me().getSpaceId();
-        List<SearchMemberVo> resultList = iMemberService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter, className);
+        List<SearchMemberVo> resultList = iMemberSearchService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter, className);
         return ResponseData.success(resultList);
     }
 
@@ -297,11 +292,11 @@ public class MemberController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<MemberUnitsVo> inviteMember(@RequestBody @Valid InviteRo data) {
         // human verification
-        afsCheckService.noTraceCheck(data.getData());
+        humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(data.getData()));
         // space id be invited
         String spaceId = LoginContext.me().getSpaceId();
         // whether in black list
-        iBlackListService.checkBlackSpace(spaceId);
+        blackListServiceFacade.checkSpace(spaceId);
         Long userId = SessionContext.getUserId();
         // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
@@ -316,8 +311,11 @@ public class MemberController {
             return ResponseData.success(unitsVo);
         }
         // invite new members
-        List<Long> unitIds = iMemberService.emailInvitation(userId, spaceId, inviteEmails);
-        unitsVo.setUnitIds(unitIds);
+        List<Long> memberIds = iMemberService.emailInvitation(userId, spaceId, inviteEmails);
+        if (!memberIds.isEmpty()) {
+            List<Long> unitIds = iUnitService.getUnitIdsByRefIds(memberIds);
+            unitsVo.setUnitIds(unitIds);
+        }
         return ResponseData.success(unitsVo);
     }
 
@@ -327,38 +325,19 @@ public class MemberController {
     public ResponseData<Void> inviteMemberSingle(@RequestBody @Valid InviteMemberAgainRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check black space
-        iBlackListService.checkBlackSpace(spaceId);
+        blackListServiceFacade.checkSpace(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         // Again email invite members
         MemberEntity member = memberMapper.selectBySpaceIdAndEmail(spaceId, data.getEmail());
         ExceptionUtil.isNotNull(member, INVITE_EMAIL_NOT_FOUND);
         ExceptionUtil.isFalse(member.getIsActive(), INVITE_EMAIL_HAS_ACTIVE);
-        Long memberId = LoginContext.me().getMemberId();
         // Limit the frequency for 10 minutes
         String lockKey = StrUtil.format(GENERAL_LOCKED, "invite:email", data.getEmail());
         BoundValueOperations<String, String> ops = redisTemplate.boundValueOps(lockKey);
         ExceptionUtil.isNull(ops.get(), INVITE_TOO_OFTEN);
         ops.set("", 10, TimeUnit.MINUTES);
-        String lang = LocaleContextHolder.getLocale().toLanguageTag();
-        UserLangDTO userLangDTO = userMapper.selectLocaleByEmail(data.getEmail());
-        if (ObjectUtil.isNotNull(userLangDTO) && StrUtil.isNotBlank(userLangDTO.getLocale())) {
-            lang = userLangDTO.getLocale();
-        }
-        if (auth0Service.isOpen()) {
-            UserEntity user = iUserService.getByEmail(data.getEmail());
-            if (user == null) {
-                String returnUrl = constProperties.getServerDomain() + serverProperties.getServlet().getContextPath() + "/invitation/callback";
-                String link = auth0Service.createUserInvitationLink(data.getEmail(), returnUrl);
-                iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
-            }
-            else {
-                String link = String.format("%s/workbench?spaceId=%s", constProperties.getServerDomain(), spaceId);
-                iMemberService.sendUserInvitationEmail(lang, spaceId, memberId, link, data.getEmail());
-            }
-        }
-        else {
-            iMemberService.sendInviteEmail(lang, spaceId, memberId, data.getEmail());
-        }
+        Long userId = SessionContext.getUserId();
+        invitationServiceFacade.sendInvitationEmail(new InvitationMetadata(spaceId, userId, data.getEmail()));
         return ResponseData.success();
     }
 
@@ -508,10 +487,10 @@ public class MemberController {
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     public ResponseData<UploadParseResultVO> uploadExcel(UploadMemberTemplateRo data) {
         // human verification
-        afsCheckService.noTraceCheck(data.getData());
+        humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(data.getData()));
         String spaceId = LoginContext.me().getSpaceId();
         // check black space
-        iBlackListService.checkBlackSpace(spaceId);
+        blackListServiceFacade.checkSpace(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         UploadParseResultVO resultVo = iMemberService.parseExcelFile(spaceId, data.getFile());
         return ResponseData.success(resultVo);

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.vikadata.api.workspace.vo.FieldCollaboratorVO;
 import com.vikadata.api.workspace.vo.FieldPermissionInfo;
 import com.vikadata.api.workspace.vo.FieldPermissionView;
-import com.vikadata.api.enterprise.control.model.FieldControlProp;
+import com.vikadata.api.workspace.ro.FieldControlProp;
 
 public interface IFieldRoleService {
 

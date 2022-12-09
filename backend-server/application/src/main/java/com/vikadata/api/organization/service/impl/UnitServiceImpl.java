@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.organization.enums.UnitType;
 import com.vikadata.api.organization.vo.UnitInfoVo;
-import com.vikadata.api.enterprise.control.service.IControlRoleService;
+import com.vikadata.api.control.service.IControlRoleService;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;

@@ -19,12 +19,12 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder;
-import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder.ControlId;
-import com.vikadata.api.enterprise.control.infrastructure.ControlTemplate;
-import com.vikadata.api.enterprise.control.infrastructure.permission.NodePermission;
-import com.vikadata.api.enterprise.control.model.FieldControlProp;
-import com.vikadata.api.enterprise.control.service.IControlService;
+import com.vikadata.api.control.infrastructure.ControlIdBuilder;
+import com.vikadata.api.control.infrastructure.ControlIdBuilder.ControlId;
+import com.vikadata.api.control.infrastructure.ControlTemplate;
+import com.vikadata.api.control.infrastructure.permission.NodePermission;
+import com.vikadata.api.workspace.ro.FieldControlProp;
+import com.vikadata.api.control.service.IControlService;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;

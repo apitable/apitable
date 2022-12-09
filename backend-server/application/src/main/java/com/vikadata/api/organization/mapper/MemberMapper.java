@@ -296,14 +296,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     MemberEntity selectBySpaceIdAndEmail(@Param("spaceId") String spaceId, @Param("email") String email);
 
     /**
-     * select by space id and email with ignore deleted
-     * @param spaceId space id
-     * @param email email
-     * @return entity
-     */
-    MemberEntity selectBySpaceIdAndEmailIgnoreDeleted(@Param("spaceId") String spaceId, @Param("email") String email);
-
-    /**
      * select by space id and email list with ignore deleted
      * @param spaceId space id
      * @param emails email

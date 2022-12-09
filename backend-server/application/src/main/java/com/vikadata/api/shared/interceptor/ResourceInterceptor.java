@@ -15,7 +15,7 @@ import com.vikadata.api.user.mapper.DeveloperMapper;
 import com.vikadata.api.base.enums.AuthException;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.ResourceDefinition;
 import com.vikadata.api.shared.component.scanner.ApiResourceFactory;
 import com.vikadata.api.shared.context.SessionContext;
@@ -45,7 +45,7 @@ import static com.vikadata.api.space.enums.SpaceException.SPACE_NOT_EXIST;
 public class ResourceInterceptor extends AbstractServletSupport implements HandlerInterceptor {
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
     private ApiResourceFactory apiResourceFactory;
@@ -92,7 +92,7 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
             SpaceHolder.set(spaceId);
 
             // Get all the information of the user in the space
-            UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
+            UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId, spaceId);
             MemberHolder.set(userSpace.getMemberId());
             if (userSpace.isMainAdmin()) {
                 // The main admin does not verify

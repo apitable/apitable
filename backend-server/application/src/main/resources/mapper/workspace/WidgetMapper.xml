@@ -56,7 +56,7 @@
         ORDER BY vw.created_at DESC
     </select>
 
-    <select id="selectNodeWidgetDtoByNodeIds" resultType="com.vikadata.api.workspace.dto.NodeWidgetDto">
+    <select id="selectNodeWidgetDtoByNodeIds" resultType="com.vikadata.api.enterprise.widget.dto.NodeWidgetDto">
         SELECT vw.name       AS widgetName,
                vdw.dst_id    AS dstId,
                vw.node_id    AS nodeId

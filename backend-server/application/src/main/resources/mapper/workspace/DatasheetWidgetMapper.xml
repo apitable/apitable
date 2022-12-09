@@ -13,7 +13,7 @@
         WHERE dst_id = #{dstId}
     </select>
 
-    <select id="selectDtoByWidgetIds" resultType="com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO">
+    <select id="selectDtoByWidgetIds" resultType="com.vikadata.api.workspace.dto.DatasheetWidgetDTO">
         SELECT dst_id, widget_id, source_id
         FROM ${tablePrefix}datasheet_widget
         WHERE widget_id IN

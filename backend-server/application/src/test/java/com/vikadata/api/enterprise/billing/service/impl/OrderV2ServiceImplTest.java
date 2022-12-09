@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.enterprise.AbstractEnterpriseIntegrationTest;
 import com.vikadata.api.enterprise.billing.core.DefaultOrderArguments;
 import com.vikadata.api.enterprise.billing.core.OrderArguments;
 import com.vikadata.api.enterprise.billing.enums.ProductEnum;
@@ -21,7 +21,7 @@ import com.vikadata.api.shared.sysconfig.billing.Price;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OrderV2ServiceImplTest extends AbstractIntegrationTest {
+public class OrderV2ServiceImplTest extends AbstractEnterpriseIntegrationTest {
 
     protected static final Logger log = LoggerFactory.getLogger(OrderV2ServiceImplTest.class);
 

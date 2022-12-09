@@ -6,7 +6,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.vikadata.api.enterprise.widget.dto.DatasheetWidgetDTO;
+import com.vikadata.api.workspace.dto.DatasheetWidgetDTO;
 import com.vikadata.entity.DatasheetWidgetEntity;
 
 public interface DatasheetWidgetMapper extends BaseMapper<DatasheetWidgetEntity> {

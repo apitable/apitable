@@ -4,18 +4,17 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.vikadata.api.organization.dto.UploadDataDTO;
 import com.vikadata.api.organization.dto.MemberDTO;
+import com.vikadata.api.organization.dto.TenantMemberDto;
+import com.vikadata.api.organization.dto.UploadDataDTO;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.api.organization.ro.TeamAddMemberRo;
 import com.vikadata.api.organization.ro.UpdateMemberOpRo;
 import com.vikadata.api.organization.ro.UpdateMemberRo;
 import com.vikadata.api.organization.vo.MemberBriefInfoVo;
 import com.vikadata.api.organization.vo.MemberInfoVo;
 import com.vikadata.api.organization.vo.SearchMemberResultVo;
-import com.vikadata.api.organization.vo.SearchMemberVo;
 import com.vikadata.api.organization.vo.UploadParseResultVO;
-import com.vikadata.api.organization.dto.TenantMemberDto;
-import com.vikadata.api.organization.entity.MemberEntity;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -153,14 +152,6 @@ public interface IMemberService extends IService<MemberEntity> {
      * @return MemberEntity
      */
     MemberEntity getBySpaceIdAndEmail(String spaceId, String email);
-
-    /**
-     * get by space id and email with ignore email
-     * @param spaceId space id
-     * @param email email
-     * @return entity
-     */
-    MemberEntity getBySpaceIdAndEmailIgnoreDeleted(String spaceId, String email);
 
     /**
      * get by space id and email list with ignore email
@@ -301,16 +292,6 @@ public interface IMemberService extends IService<MemberEntity> {
     void batchCreate(String spaceId, List<MemberEntity> entities);
 
     /**
-     * email invitate member
-     *
-     * @param spaceId space id
-     * @param teamId team id
-     * @param emails emails
-     */
-    @Deprecated
-    List<Long> userInvitation(String spaceId, Long teamId, List<String> emails);
-
-    /**
      * recovery member
      *
      * @param member member info
@@ -322,7 +303,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param inviteUserId invite user id
      * @param spaceId space id
      * @param emails email list
-     * @return unit ids
+     * @return invite member id list
      */
     List<Long> emailInvitation(Long inviteUserId, String spaceId, List<String> emails);
 
@@ -610,32 +591,17 @@ public interface IMemberService extends IService<MemberEntity> {
     void batchRecoveryMemberFromSpace(String spaceId, List<Long> memberIds);
 
     /**
-     * fuzzy query member by keyword
-     *
-     * @param spaceId space id
-     * @param keyword keywrod
-     * @param highlightClassName the highlight style
-     * @return SearchMemberResultVo
-     */
-    List<SearchMemberResultVo> getByName(String spaceId, String keyword, String highlightClassName);
-
-    /**
-     * fuzzy query member by member name
-     *
-     * @param spaceId space id
-     * @param keyword keywrod
-     * @param filter  whether to filter unadded members
-     * @param highlightClassName the highlight style
-     * @return SearchMemberVos
-     * space id
-     * 
-     */
-    List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter, String highlightClassName);
-
-    /**
      * handle memberInfo's team path name
      *
      * @param memberInfoVo member info view
      */
     void handleMemberTeamInfo(MemberInfoVo memberInfoVo);
+
+    /**
+     * active space if user has be invited to another space
+     *
+     * @param userId user id
+     * @param memberIds member id list
+     */
+    void activeIfExistInvitationSpace(Long userId, List<Long> memberIds);
 }

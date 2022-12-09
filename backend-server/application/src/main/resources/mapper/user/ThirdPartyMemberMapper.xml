@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vikadata.api.user.mapper.ThirdPartyMemberMapper">
+<mapper namespace="com.vikadata.api.enterprise.wechat.mapper.ThirdPartyMemberMapper">
 
     <select id="selectUnionIdByOpenIdAndType" resultType="java.lang.String">
         SELECT union_id
@@ -26,7 +26,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="selectInfo" resultType="com.vikadata.api.user.dto.ThirdPartyMemberInfo">
+    <select id="selectInfo" resultType="com.vikadata.api.enterprise.wechat.dto.ThirdPartyMemberInfo">
         SELECT id, nick_name, avatar
         FROM ${tablePrefix}third_party_member
         WHERE app_id = #{appId} AND union_id = #{unionId} AND type = #{type}
@@ -40,14 +40,14 @@
         WHERE vtpm.id = #{id}
     </select>
 
-    <select id="selectWechatMemberDto" resultType="com.vikadata.api.user.dto.WechatMemberDto">
+    <select id="selectWechatMemberDto" resultType="com.vikadata.api.enterprise.wechat.dto.WechatMemberDto">
         SELECT vtpm.id, IF(vtpm.union_id IS NOT NULL, 1, 0) hasUnion, vul.user_id
         FROM ${tablePrefix}third_party_member vtpm
         LEFT JOIN ${tablePrefix}user_link vul ON vtpm.union_id = vul.union_id AND vul.type = 1
         WHERE vtpm.app_id = #{appId} AND vtpm.type = #{type} AND vtpm.open_id = #{openId}
     </select>
 
-    <select id="selectUserLinkedWechatMemberDto" resultType="com.vikadata.api.user.dto.WechatMemberDto">
+    <select id="selectUserLinkedWechatMemberDto" resultType="com.vikadata.api.enterprise.wechat.dto.WechatMemberDto">
         SELECT vu.id userId, vtpm.id, vtpm.mobile, IF(vul.id IS NULL, 0, 1) hasLink
         FROM ${tablePrefix}user vu
         LEFT JOIN ${tablePrefix}user_link vul ON vu.id = vul.user_id AND vul.type = 1

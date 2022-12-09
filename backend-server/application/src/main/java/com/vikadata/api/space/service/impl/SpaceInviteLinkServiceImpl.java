@@ -20,24 +20,23 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.enterprise.vcode.enums.VCodeType;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeMapper;
 import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
 import com.vikadata.api.interfaces.billing.model.EntitlementRemark;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
+import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
 import com.vikadata.api.organization.mapper.TeamMemberRelMapper;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.ITeamMemberRelService;
 import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.space.dto.InvitationUserDTO;
 import com.vikadata.api.space.dto.SpaceLinkDTO;
+import com.vikadata.api.space.dto.SpaceMemberResourceDto;
 import com.vikadata.api.space.enums.InviteType;
 import com.vikadata.api.space.mapper.SpaceInviteLinkMapper;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.mapper.SpaceResourceMapper;
-import com.vikadata.api.space.dto.InvitationUserDTO;
-import com.vikadata.api.space.dto.SpaceMemberResourceDto;
 import com.vikadata.api.space.service.IAuditInviteRecordService;
 import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
@@ -96,7 +95,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
     private SpaceResourceMapper spaceResourceMapper;
 
     @Resource
-    private VCodeMapper vCodeMapper;
+    private UserServiceFacade userServiceFacade;
 
     @Resource
     private RedisLockRegistry redisLockRegistry;
@@ -175,7 +174,7 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
             infoVo.setIsLogin(true);
         }
         // get the link creator s personal invitation code
-        String inviteCode = vCodeMapper.selectCodeByTypeAndRefId(VCodeType.PERSONAL_INVITATION_CODE.getType(), dto.getUserId());
+        String inviteCode = userServiceFacade.getUserInvitationCode(dto.getUserId()).getCode();
         infoVo.setInviteCode(inviteCode);
         return infoVo;
     }

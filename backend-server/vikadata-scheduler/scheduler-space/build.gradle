@@ -30,7 +30,6 @@ dependencies {
   testAnnotationProcessor rootProject.ext.dependencies["lombok"]
   
   testImplementation rootProject.ext.dependencies['spring-test-starter']
-  testImplementation rootProject.ext.dependencies['powermock-junit4']
   testImplementation rootProject.ext.dependencies['powermock-api-mockito2']
   
 }

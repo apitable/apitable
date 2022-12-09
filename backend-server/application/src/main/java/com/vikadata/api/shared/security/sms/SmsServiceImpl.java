@@ -7,8 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.apitable.starter.sms.core.SmsMessage;
 import com.apitable.starter.sms.core.SmsSenderTemplate;
-import com.vikadata.api.enterprise.k11.template.ConnectorTemplate;
 import com.vikadata.api.base.enums.SmsCodeType;
+import com.vikadata.api.interfaces.security.facade.CaptchaServiceFacade;
+import com.vikadata.api.interfaces.security.model.CaptchaReceiver;
 import com.vikadata.api.shared.security.ValidateTarget;
 import com.vikadata.core.exception.BusinessException;
 
@@ -26,17 +27,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SmsServiceImpl implements ISmsService {
 
-    @Resource
-    private ConnectorTemplate connectorTemplate;
-
     @Autowired(required = false)
     private SmsSenderTemplate smsSenderTemplate;
+
+    @Resource
+    private CaptchaServiceFacade captchaServiceFacade;
 
     @Override
     public void sendValidateCode(ValidateTarget target, String code, SmsCodeType type) {
         if (smsSenderTemplate == null) {
             log.warn("sms service is disabled");
-            connectorTemplate.sendSms(target.getTarget(), code);
+            captchaServiceFacade.sendCaptcha(new CaptchaReceiver(target.getTarget(), code));
             return;
         }
         SmsMessage smsMessage = new SmsMessage();

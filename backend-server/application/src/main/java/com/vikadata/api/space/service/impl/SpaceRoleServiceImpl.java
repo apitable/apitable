@@ -23,7 +23,7 @@ import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.SpaceMenuResourceGroupDto;
 import com.vikadata.api.shared.cache.bean.SpaceResourceGroupDto;
-import com.vikadata.api.shared.cache.service.SpaceResourceService;
+import com.vikadata.api.shared.cache.service.SpaceResourceCacheService;
 import com.vikadata.api.shared.component.notification.NotificationRenderField;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
@@ -93,7 +93,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     private MemberMapper memberMapper;
 
     @Resource
-    private SpaceResourceService spaceResourceFactory;
+    private SpaceResourceCacheService spaceResourceFactory;
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;

@@ -12,13 +12,10 @@ import lombok.Data;
 @Data
 public class SocialAuthInfo {
 
-    @Deprecated
     private String areaCode;
 
-    @Deprecated
     private String mobile;
 
-    @Deprecated
     private String email;
 
     private String unionId;

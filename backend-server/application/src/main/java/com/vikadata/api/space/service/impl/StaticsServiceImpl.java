@@ -16,10 +16,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder;
-import com.vikadata.api.enterprise.control.infrastructure.ControlType;
-import com.vikadata.api.enterprise.control.mapper.ControlMapper;
-import com.vikadata.api.enterprise.control.model.ControlTypeDTO;
+import com.vikadata.api.control.infrastructure.ControlIdBuilder;
+import com.vikadata.api.control.infrastructure.ControlType;
+import com.vikadata.api.control.mapper.ControlMapper;
+import com.vikadata.api.control.model.ControlTypeDTO;
 import com.vikadata.api.space.mapper.StaticsMapper;
 import com.vikadata.api.space.dto.ControlStaticsDTO;
 import com.vikadata.api.space.dto.DatasheetStaticsDTO;

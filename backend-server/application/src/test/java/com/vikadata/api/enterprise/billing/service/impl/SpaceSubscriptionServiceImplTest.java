@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.AbstractIntegrationTest;
+import com.vikadata.api.enterprise.AbstractEnterpriseIntegrationTest;
 import com.vikadata.api.enterprise.billing.entity.BundleEntity;
 import com.vikadata.api.enterprise.billing.enums.BundleState;
 import com.vikadata.api.enterprise.billing.enums.ProductChannel;
@@ -25,8 +25,8 @@ import com.vikadata.api.mock.bean.MockUserSpace;
 import com.vikadata.api.shared.clock.spring.ClockManager;
 import com.vikadata.api.shared.sysconfig.billing.Price;
 import com.vikadata.api.shared.sysconfig.billing.Product;
-import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.dto.SpaceSubscriptionDto;
+import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.vo.SpaceCapacityPageVO;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.mapper.UserMapper;
@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.vikadata.api.shared.constants.AssetsPublicConstants.CAPACITY_HEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpaceSubscriptionServiceImplTest extends AbstractIntegrationTest {
+public class SpaceSubscriptionServiceImplTest extends AbstractEnterpriseIntegrationTest {
 
     @Autowired
     private SpaceMapper spaceMapper;

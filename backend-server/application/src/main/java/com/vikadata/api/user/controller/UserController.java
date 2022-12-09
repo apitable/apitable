@@ -4,84 +4,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
-import com.vikadata.api.shared.component.scanner.annotation.GetResource;
-import com.vikadata.api.enterprise.user.service.IUserHistoryService;
-import com.vikadata.api.user.service.IUserService;
-import com.vikadata.api.shared.util.page.PageObjectParam;
-import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.shared.cache.bean.LoginUserDto;
-import com.vikadata.api.shared.cache.bean.UserSpaceDto;
-import com.vikadata.api.shared.cache.service.UserActiveSpaceService;
-import com.vikadata.api.shared.cache.service.UserLinkInfoService;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
-import com.vikadata.api.shared.component.TaskManager;
-import com.vikadata.api.shared.config.properties.ConstProperties;
-import com.vikadata.api.shared.constants.SessionAttrConstants;
-import com.vikadata.api.shared.context.LoginContext;
-import com.vikadata.api.shared.context.SessionContext;
+import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.enums.ValidateType;
-import com.vikadata.api.base.enums.ParameterException;
-import com.vikadata.api.space.enums.LabsApplicantTypeEnum;
-import com.vikadata.api.shared.util.page.PageHelper;
-import com.vikadata.api.shared.util.page.PageInfo;
-import com.vikadata.api.shared.util.information.ClientOriginInfo;
-import com.vikadata.api.user.ro.UserLabsFeatureRo;
-import com.vikadata.api.organization.ro.CheckUserEmailRo;
-import com.vikadata.api.organization.ro.UserLinkEmailRo;
-import com.vikadata.api.user.ro.CodeValidateRo;
-import com.vikadata.api.user.ro.DtBindOpRo;
-import com.vikadata.api.user.ro.EmailCodeValidateRo;
-import com.vikadata.api.user.ro.InviteCodeRewardRo;
-import com.vikadata.api.user.ro.RetrievePwdOpRo;
-import com.vikadata.api.user.ro.SmsCodeValidateRo;
-import com.vikadata.api.user.ro.UpdatePwdOpRo;
-import com.vikadata.api.user.ro.UserLinkOpRo;
-import com.vikadata.api.user.ro.UserOpRo;
-import com.vikadata.api.user.vo.IntegralRecordVO;
-import com.vikadata.api.space.vo.LabsFeatureVo;
-import com.vikadata.api.user.vo.UserIntegralVo;
 import com.vikadata.api.base.service.ParamVerificationService;
 import com.vikadata.api.base.service.SensorsService;
-import com.vikadata.api.enterprise.integral.service.IIntegralService;
-import com.vikadata.api.space.service.ILabsApplicantService;
-import com.vikadata.api.enterprise.vcode.service.IVCodeService;
+import com.vikadata.api.organization.ro.CheckUserEmailRo;
+import com.vikadata.api.organization.ro.UserLinkEmailRo;
+import com.vikadata.api.shared.cache.bean.LoginUserDto;
+import com.vikadata.api.shared.cache.bean.UserSpaceDto;
+import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
+import com.vikadata.api.shared.component.TaskManager;
+import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
+import com.vikadata.api.shared.component.scanner.annotation.GetResource;
+import com.vikadata.api.shared.component.scanner.annotation.PostResource;
+import com.vikadata.api.shared.config.properties.ConstProperties;
+import com.vikadata.api.shared.context.LoginContext;
+import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.security.CodeValidateScope;
 import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
 import com.vikadata.api.shared.security.ValidateCodeType;
 import com.vikadata.api.shared.security.ValidateTarget;
 import com.vikadata.api.shared.security.sms.ISmsService;
 import com.vikadata.api.shared.security.sms.TencentConstants;
-import com.vikadata.api.shared.util.information.InformationUtil;
 import com.vikadata.api.shared.util.StringUtil;
+import com.vikadata.api.shared.util.information.ClientOriginInfo;
+import com.vikadata.api.shared.util.information.InformationUtil;
+import com.vikadata.api.space.enums.LabsApplicantTypeEnum;
+import com.vikadata.api.space.service.ILabsApplicantService;
+import com.vikadata.api.space.vo.LabsFeatureVo;
+import com.vikadata.api.user.entity.UserEntity;
+import com.vikadata.api.user.ro.CodeValidateRo;
+import com.vikadata.api.user.ro.EmailCodeValidateRo;
+import com.vikadata.api.user.ro.RetrievePwdOpRo;
+import com.vikadata.api.user.ro.SmsCodeValidateRo;
+import com.vikadata.api.user.ro.UpdatePwdOpRo;
+import com.vikadata.api.user.ro.UserLabsFeatureRo;
+import com.vikadata.api.user.ro.UserOpRo;
+import com.vikadata.api.user.service.IUserHistoryService;
+import com.vikadata.api.user.service.IUserService;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
-import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_COMPLEX_EXAMPLE;
-import static com.vikadata.api.shared.constants.PageConstants.PAGE_PARAM;
+import static com.vikadata.api.space.enums.LabsApplicantTypeEnum.SPACE_LEVEL_FEATURE;
+import static com.vikadata.api.space.enums.LabsFeatureEnum.ofLabsFeature;
 import static com.vikadata.api.space.enums.LabsFeatureException.SPACE_ID_NOT_EMPTY;
 import static com.vikadata.api.space.enums.SpaceException.NOT_IN_SPACE;
 import static com.vikadata.api.user.enums.UserClosingException.USER_APPLIED_FOR_CLOSING;
@@ -97,8 +79,6 @@ import static com.vikadata.api.user.enums.UserException.PASSWORD_HAS_SETTING;
 import static com.vikadata.api.user.enums.UserException.USER_NOT_BIND_EMAIL;
 import static com.vikadata.api.user.enums.UserException.USER_NOT_BIND_PHONE;
 import static com.vikadata.api.user.enums.UserException.USER_NOT_EXIST;
-import static com.vikadata.api.space.enums.LabsApplicantTypeEnum.SPACE_LEVEL_FEATURE;
-import static com.vikadata.api.space.enums.LabsFeatureEnum.ofLabsFeature;
 import static com.vikadata.core.constants.RedisConstants.ERROR_PWD_NUM_DIR;
 
 /**
@@ -124,9 +104,6 @@ public class UserController {
     private ISmsService iSmsService;
 
     @Resource
-    private UserLinkInfoService userLinkInfoService;
-
-    @Resource
     private RedisTemplate<String, Integer> redisTemplate;
 
     @Resource
@@ -136,52 +113,16 @@ public class UserController {
     private SensorsService sensorsService;
 
     @Resource
-    private IIntegralService iIntegralService;
-
-    @Resource
     private ILabsApplicantService iLabsApplicantService;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
-    private UserActiveSpaceService userActiveSpaceService;
+    private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
     private IUserHistoryService userHistoryService;
-
-    @Resource
-    private IVCodeService ivCodeService;
-
-    @GetResource(path = "/integral", requiredPermission = false)
-    @ApiOperation(value = "Query account integral information")
-    public ResponseData<UserIntegralVo> integrals() {
-        Long userId = SessionContext.getUserId();
-        int totalIntegral = iIntegralService.getTotalIntegralValueByUserId(userId);
-        UserIntegralVo vo = new UserIntegralVo();
-        vo.setTotalIntegral(totalIntegral);
-        return ResponseData.success(vo);
-    }
-
-    @GetResource(path = "/integral/records", requiredPermission = false)
-    @ApiOperation(value = "Page by page query of integral revenue and expenditure details")
-    @ApiImplicitParam(name = PAGE_PARAM, value = "Page parameter", required = true, dataTypeClass = String.class, paramType = "query", example = PAGE_COMPLEX_EXAMPLE)
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public ResponseData<PageInfo<IntegralRecordVO>> integralRecords(@PageObjectParam Page page) {
-        Long userId = SessionContext.getUserId();
-        IPage<IntegralRecordVO> results = iIntegralService.getIntegralRecordPageByUserId(page, userId);
-        return ResponseData.success(PageHelper.build(results));
-    }
-
-    @PostResource(name = "Unbind the third-party account", path = "/unbind", requiredPermission = false)
-    @ApiOperation(value = "Unbind the third-party account")
-    public ResponseData<Void> unbind(@RequestBody @Valid UserLinkOpRo opRo) {
-        Long userId = SessionContext.getUserId();
-        iUserService.unbind(userId, opRo.getType());
-        // Delete Cache
-        userLinkInfoService.delete(userId);
-        return ResponseData.success();
-    }
 
     @GetResource(name = "Query whether users bind mail", path = "/email/bind", requiredPermission = false)
     @ApiOperation(value = "Query whether users bind mail", notes = "Query whether users bind mail")
@@ -208,15 +149,6 @@ public class UserController {
         String spaceId = data.getSpaceId();
         Long userId = SessionContext.getUserId();
         iUserService.bindMemberByEmail(userId, spaceId, email);
-        return ResponseData.success();
-    }
-
-    @PostResource(name = "Associated DingTalk", path = "/bindDingTalk", requiredPermission = false)
-    @ApiOperation(value = "Associated DingTalk", notes = "Associated DingTalk", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> bindDingTalk(@RequestBody @Valid DtBindOpRo opRo) {
-        ValidateTarget target = ValidateTarget.create(opRo.getPhone(), opRo.getAreaCode());
-        ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS).verifyIsPass(target.getRealTarget());
-        iUserService.bindDingTalk(opRo);
         return ResponseData.success();
     }
 
@@ -369,13 +301,6 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @GetResource(name = "Query whether have logged in", path = "/session", requiredLogin = false)
-    @ApiOperation(value = "Query whether have logged in", notes = "Get necessary information", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Boolean> meSession() {
-        HttpSession session = HttpContextUtil.getSession(false);
-        return ResponseData.success(session != null && session.getAttribute(SessionAttrConstants.LOGIN_USER_ID) != null);
-    }
-
     @PostResource(name = "Apply for cancellation of user account", path = "/applyForClosing", requiredPermission = false)
     @ApiOperation(value = "Apply for cancellation of user account", notes = "Registered login user applies for account cancellation", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseData<Void> applyForClosing() {
@@ -445,7 +370,7 @@ public class UserController {
         LabsApplicantTypeEnum applicantType = ofLabsFeature(featureKey).getApplicantType();
         ExceptionUtil.isFalse(SPACE_LEVEL_FEATURE.equals(applicantType) && StrUtil.isBlank(spaceId), SPACE_ID_NOT_EMPTY);
         // When the operating user does not belong to the space, operation is not allowed
-        UserSpaceDto userSpace = userSpaceService.getUserSpace(userId, spaceId);
+        UserSpaceDto userSpace = userSpaceCacheService.getUserSpace(userId, spaceId);
         ExceptionUtil.isNotNull(userSpace, NOT_IN_SPACE);
         String applicant = StrUtil.isNotBlank(spaceId) ? spaceId : Long.toString(userId);
         if (userLabsFeatureRo.getIsEnabled()) {
@@ -459,23 +384,12 @@ public class UserController {
         return ResponseData.success();
     }
 
-    @PostResource(path = "/invite/reward", requiredPermission = false)
-    @ApiOperation(value = "Fill in invitation code reward", notes = "Users fill in the invitation code and get rewards", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseData<Void> inviteCodeReward(@RequestBody @Validated InviteCodeRewardRo body) {
-        // Verify the validity of the invitation code
-        ivCodeService.checkInviteCode(body.getInviteCode());
-        // Fill in the invitation code and reward integral
-        Long userId = SessionContext.getUserId();
-        iUserService.useInviteCodeReward(userId, body.getInviteCode());
-        return ResponseData.success();
-    }
-
     @PostResource(path = "/delActiveSpaceCache", method = { RequestMethod.GET }, requiredPermission = false)
     @ApiOperation(value = "Delete Active Space Cache")
     public ResponseData<Void> delActiveSpaceCache() {
         // Fill in the invitation code and reward integral
         Long userId = SessionContext.getUserId();
-        userActiveSpaceService.delete(userId);
+        userActiveSpaceCacheService.delete(userId);
         return ResponseData.success();
     }
 }

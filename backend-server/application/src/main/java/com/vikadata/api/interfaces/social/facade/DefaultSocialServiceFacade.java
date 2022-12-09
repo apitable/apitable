@@ -67,11 +67,6 @@ public class DefaultSocialServiceFacade implements SocialServiceFacade {
     }
 
     @Override
-    public void deleteByUnionId(List<String> unionIds) {
-
-    }
-
-    @Override
     public String getSuiteKeyByDingtalkSuiteId(String suiteId) {
         return null;
     }

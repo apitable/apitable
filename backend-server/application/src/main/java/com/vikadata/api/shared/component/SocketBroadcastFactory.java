@@ -2,7 +2,7 @@ package com.vikadata.api.shared.component;
 
 import java.util.List;
 
-import com.vikadata.api.enterprise.control.infrastructure.ControlIdBuilder;
+import com.vikadata.api.control.infrastructure.ControlIdBuilder;
 import com.vikadata.api.shared.listener.event.FieldPermissionEvent;
 import com.vikadata.api.shared.listener.event.FieldPermissionEvent.Arg;
 import com.vikadata.core.util.SpringContextHolder;

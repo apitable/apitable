@@ -34,7 +34,6 @@ dependencies {
   implementation project(':shared:starters:idaas')
   implementation project(':shared:starters:auth0')
   implementation project(':shared:starters:teg')
-  implementation project(':shared:starters:connector-k11')
   
   annotationProcessor rootProject.ext.dependencies['configuration-processor']
   
@@ -83,8 +82,6 @@ dependencies {
   
   testImplementation rootProject.ext.dependencies['spring-test-starter']
   testImplementation rootProject.ext.dependencies['mybatis-plus-starter-test']
-  testImplementation rootProject.ext.dependencies['testcontainers-junit5']
-  testImplementation rootProject.ext.dependencies['testcontainers-mysql']
   testImplementation 'org.rnorth.visible-assertions:visible-assertions:2.1.2'
   testImplementation("org.json:json:${json_java_version}")
   
@@ -99,6 +96,7 @@ dependencies {
 
 jar {
   enabled = false
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 processResources {
@@ -113,7 +111,7 @@ compileJava.dependsOn processResources
 bootJar.dependsOn processResources
 
 // Compile Java Setting
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
   options.encoding = StandardCharsets.UTF_8
   options.warnings = false
   options.compilerArgs += '-Xlint:-deprecation'

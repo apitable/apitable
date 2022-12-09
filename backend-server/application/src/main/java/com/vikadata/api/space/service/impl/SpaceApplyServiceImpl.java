@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
-import com.vikadata.api.shared.cache.service.UserSpaceService;
+import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
 import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.notification.NotificationManager;
 import com.vikadata.api.shared.component.notification.NotificationTemplateId;
@@ -64,7 +64,7 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
     private MemberMapper memberMapper;
 
     @Resource
-    private UserSpaceService userSpaceService;
+    private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
     private PlayerNotificationMapper playerNotificationMapper;
@@ -106,7 +106,7 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
         // Verify the existence of the application and user rights
         ExceptionUtil.isNotNull(apply.getApplyId(), APPLY_NOT_EXIST);
         // check whether the current user is in the space and has permission to manage members
-        UserSpaceDto userSpaceDto = userSpaceService.getUserSpace(userId, apply.getSpaceId());
+        UserSpaceDto userSpaceDto = userSpaceCacheService.getUserSpace(userId, apply.getSpaceId());
         ExceptionUtil.isTrue(CollUtil.contains(userSpaceDto.getResourceCodes(), "INVITE_MEMBER"), INSUFFICIENT_PERMISSIONS);
         // the application status is not pending for review，synchronously updates the application status of the notification body.
         if (!SpaceApplyStatus.PENDING.getStatus().equals(apply.getStatus())) {
