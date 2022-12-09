@@ -1,6 +1,6 @@
 import { Box, IconButton, Loading, Skeleton, TextButton, Tooltip, Typography } from '@apitable/components';
 import {
-  Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, numbersBetween,
+  Api, CollaCommandName, DatasheetApi, fastCloneDeep, getRollbackActions, IChangesetPack, IMemberInfoInAddressList, IRemoteChangeset, 
   PREVIEW_DATASHEET_ID, ResourceType, Selectors, StoreActions, Strings, t
 } from '@apitable/core';
 import { CloseMiddleOutlined, InformationSmallOutlined } from '@apitable/icons';
@@ -53,8 +53,8 @@ export const TimeMachine: React.FC<{ onClose: (visible: boolean) => void }> = ({
 
   const fetchChangesets = (lastRevision) => {
     setFetching(true);
-    const revisions = numbersBetween(lastRevision - 100, lastRevision + 1);
-    DatasheetApi.fetchChangesets<IChangesetPack>(datasheetId, ResourceType.Datasheet, revisions)
+    const startRevision = lastRevision - 99 > 0 ? lastRevision - 99 : 1;
+    DatasheetApi.fetchChangesets<IChangesetPack>(datasheetId, ResourceType.Datasheet, startRevision, lastRevision + 1)
       .then(res => {
         // The returned data is from low to high, when displaying, you need to display the high version first
         const csl = res.data.data.reverse();

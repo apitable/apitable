@@ -61,12 +61,12 @@ export class ChangesetService {
     return count > 0;
   }
 
-  async getChangesetList(resourceId: string, resourceType: ResourceType, revisions: string | number[]): Promise<ChangesetView[]> {
+  async getChangesetList(resourceId: string, resourceType: ResourceType, startRevision: number, endRevision: number): Promise<ChangesetView[]> {
     this.logger.info(`[${resourceId}] Obtain changesets by revisions`);
 
     const spaceId = await this.resourceService.getSpaceIdByResourceId(resourceId);
 
-    const rawResult = await this.getChangesetOrderList(resourceId, resourceType, revisions);
+    const rawResult = await this.getChangesetOrderList(resourceId, resourceType, startRevision, endRevision);
 
     return rawResult.reduce<ChangesetView[]>((pre, cur) => {
       pre.push({
@@ -86,12 +86,12 @@ export class ChangesetService {
   /**
    * Obtain changeset list by revisions, whose order follows that of revisions.
    */
-  async getChangesetOrderList(resourceId: string, resourceType: ResourceType, revisions: string | number[]): Promise<any[]> {
-    this.logger.info(`revision list: ${revisions}`);
+  private async getChangesetOrderList(resourceId: string, resourceType: ResourceType, startRevision: number, endRevision: number): Promise<any[]> {
+    this.logger.info(`revision list: ${startRevision} to ${endRevision}`);
     if (resourceType === ResourceType.Datasheet) {
-      return await this.datasheetChangesetRepository.getChangesetOrderList(resourceId, revisions);
+      return await this.datasheetChangesetRepository.getChangesetOrderList(resourceId, startRevision, endRevision);
     }
-    return await this.resourceChangesetRepository.getChangesetOrderList(resourceId, revisions);
+    return await this.resourceChangesetRepository.getChangesetOrderList(resourceId, startRevision, endRevision);
   }
 
 }

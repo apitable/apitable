@@ -338,7 +338,6 @@ export class RoomService {
           message: t(Strings.changeset_diff_big_tip),
           modalType: ModalType.Info
         });
-
       }
       missVersionEngines.push({ collaEngine, revision });
     }

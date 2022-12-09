@@ -15,6 +15,7 @@ import { ChangesetService } from 'database/services/resource/changeset.service';
 import { ResourceService } from 'database/services/resource/resource.service';
 import { UserService } from 'database/services/user/user.service';
 import { OtService } from 'database/services/ot/ot.service';
+import { ServerException, PermissionException } from 'shared/exception';
 
 @Controller('nest/v1')
 export class ResourceController {
@@ -30,18 +31,38 @@ export class ResourceController {
     private readonly otService: OtService,
   ) {}
 
+  // TODO: deprecate revisions parameter
   @Get(['resources/:resourceId/changesets', 'resource/:resourceId/changesets'])
   async getChangesetList(
-    @Headers('cookie') cookie: string, 
-    @Param('resourceId') resourceId: string,
-    @Query() query: { revisions: string | number[]; resourceType: ResourceType },
+    @Headers('cookie') cookie: string, @Param('resourceId') resourceId: string,
+    @Query() query: { sourceId: string, revisions: string | number[]; resourceType: ResourceType; startRevision: number; endRevision: number },
   ): Promise<ChangesetView[]> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, resourceId);
     // check the user has the privileges of the node
-    await this.nodeService.checkNodePermission(resourceId, { cookie });
-    return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.revisions);
+    await this.nodeService.checkNodePermission(query.sourceId || resourceId, { cookie });
+    await this.resourceService.checkResourceEntry(resourceId, query.resourceType, query.sourceId);
+    if (query.revisions?.length > 0) {
+      return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), 
+        +query.revisions[0], +query.revisions[query.revisions.length-1]);
+    }
+    return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
+  }
+
+  @Get('shares/:shareId/resources/:resourceId/changesets')
+  async getShareChangesetList(
+    @Param('shareId') shareId: string, @Param('resourceId') resourceId: string,
+    @Query() query: { sourceId: string, resourceType: ResourceType; startRevision: number; endRevision: number },
+  ): Promise<ChangesetView[]> {
+    await this.nodeShareSettingService.checkNodeHasOpenShare(shareId, query.sourceId || resourceId);
+    await this.resourceService.checkResourceEntry(resourceId, query.resourceType, query.sourceId);
+    // Share limit can only load the most recent 100 versions
+    const maxRevision = await this.changesetService.getMaxRevision(resourceId, query.resourceType);
+    if (maxRevision - query.startRevision >= 100) {
+      throw new ServerException(PermissionException.OPERATION_DENIED);
+    }
+    return await this.changesetService.getChangesetList(resourceId, Number(query.resourceType), query.startRevision, query.endRevision);
   }
 
   @Get(['resources/:resourceId/foreignDatasheets/:foreignDatasheetId/dataPack', 'resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack'])

@@ -129,12 +129,15 @@ export class GanttCoordinate extends Coordinate {
   // Initialisation of timeline related parameters
   public initTimeline(dateUnitType: DateUnitType, dateTime: DateTimeType = this.nowTime) {
     this.dateUnitType = dateUnitType;
-    const isQuarter = dateUnitType === DateUnitType.Quarter;
     const currentDate = getDayjs(dateTime);
-    const startDate = isQuarter ? currentDate.startOf('week') : currentDate.startOf('month');
-    const diffCount = getDiffCount(startDate, currentDate.startOf('day'));
-    const rangeStartDate = change(change(currentDate, - this.columnThreshold, this.unitType), - diffCount);
-    const rangeEndDate = change(change(currentDate, this.columnThreshold, this.unitType), - diffCount);
+    let rangeStartDate = change(currentDate, - this.columnThreshold, this.unitType);
+    let rangeEndDate = change(currentDate, this.columnThreshold, this.unitType);
+    if ([DateUnitType.Quarter, DateUnitType.Year].includes(dateUnitType)) {
+      const startDate = currentDate.startOf(this.unitType);
+      const diffCount = getDiffCount(startDate, currentDate.startOf('day'));
+      rangeStartDate = change(rangeStartDate, - diffCount);
+      rangeEndDate = change(rangeEndDate, - diffCount);
+    }
     this.startDateIndex = this.getIndexFromUnix(rangeStartDate);
     this.endDateIndex = this.getIndexFromUnix(rangeEndDate);
   }

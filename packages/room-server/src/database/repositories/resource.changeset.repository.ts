@@ -35,17 +35,17 @@ export class ResourceChangesetRepository extends Repository<ResourceChangesetEnt
    * 
    * The order of the returned changeset list follows that of `revisions`.
    */
-  getChangesetOrderList(resourceId: string, revisions: string | number[]): Promise<any[]> {
+  getChangesetOrderList(resourceId: string, startRevision: number, endRevision: number): Promise<any[]> {
     return this.query(
       `
         SELECT vrc.message_id messageId, vu.uuid userId, vrc.revision, 
           vrc.resource_id resourceId, vrc.operations, vrc.created_at createdAt
         FROM vika_resource_changeset vrc
         JOIN vika_user vu ON vrc.created_by = vu.id
-        WHERE vrc.resource_id = ? AND vrc.revision IN (?)
-        ORDER BY FIELD(vrc.revision, ?)
+        WHERE vrc.resource_id = ? AND vrc.revision >= ? AND vrc.revision < ? 
+        ORDER BY vrc.revision
       `,
-      [resourceId, revisions, revisions],
+      [resourceId, startRevision, endRevision],
     );
   }
 }

@@ -68,6 +68,7 @@ export const APPLY_RESOURCE_CHANGESETS = 'resource/apply/changesets';
 // =============== Resource related =======================
 // Get a list of resource-specific changesets
 export const READ_CHANGESET = '/resource/:resourceId/changesets';
+export const READ_SHARE_CHANGESET = '/shares/:shareId/resources/:resourceId/changesets';
 // Get the associated table data of the resource
 export const READ_FOREIGN_DATASHEET_PACK = '/resource/:resourceId/foreignDatasheet/:foreignDatasheetId/dataPack';
 // Get the associated table data of the shared resource

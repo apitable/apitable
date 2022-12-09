@@ -1,15 +1,16 @@
 import { ICollaCommandDef, ICollaCommandExecuteContext, ExecuteResult } from 'command_manager';
-import { getWidgetPanels } from '../../exports/store/selectors';
+import { getResourceWidgetPanels } from '../../exports/store/selectors';
 import { DatasheetActions } from 'model';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';
 
 export interface IChangeWidgetInPanelHeight {
   cmd: CollaCommandName.ChangeWidgetInPanelHeight;
-  datasheetId: string;
   panelId: string;
   widgetId: string;
-  widgetHeight: number
+  widgetHeight: number;
+  resourceId: string;
+  resourceType: ResourceType;
 }
 
 export const changeWidgetInPanelHeight: ICollaCommandDef<IChangeWidgetInPanelHeight> = {
@@ -17,8 +18,8 @@ export const changeWidgetInPanelHeight: ICollaCommandDef<IChangeWidgetInPanelHei
 
   execute(context: ICollaCommandExecuteContext, options) {
     const { model: state } = context;
-    const { widgetId, datasheetId, panelId, widgetHeight } = options;
-    const widgetPanels = getWidgetPanels(state, datasheetId);
+    const { widgetId, resourceId, resourceType, panelId, widgetHeight } = options;
+    const widgetPanels = getResourceWidgetPanels(state, resourceId, resourceType);
 
     if (!widgetPanels) { return null; }
 
@@ -32,7 +33,7 @@ export const changeWidgetInPanelHeight: ICollaCommandDef<IChangeWidgetInPanelHei
     if (widgetIndex < 0) { return null; }
 
     const changeWidgetHeightAction = DatasheetActions.changeWidgetHeight2Action(
-      state, { widgetIndex, widgetPanelIndex, widgetHeight,datasheetId }
+      state, { widgetIndex, widgetPanelIndex, widgetHeight, resourceId, resourceType }
     );
 
     if (!changeWidgetHeightAction) { 
@@ -41,8 +42,8 @@ export const changeWidgetInPanelHeight: ICollaCommandDef<IChangeWidgetInPanelHei
 
     return {
       result: ExecuteResult.Success,
-      resourceId: datasheetId,
-      resourceType: ResourceType.Datasheet,
+      resourceId,
+      resourceType,
       actions: changeWidgetHeightAction,
     };
   },
