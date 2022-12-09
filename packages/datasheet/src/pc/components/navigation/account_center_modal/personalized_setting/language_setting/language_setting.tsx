@@ -38,6 +38,8 @@ export const LanguageSetting: FC = props => {
     tracker.track(TrackEvents.Language, {
       languageType: newValue
     });
+    // cache client locale
+    window.document.cookie = `client-lang=${newValue}`;
     window.location.reload();
   };
 
