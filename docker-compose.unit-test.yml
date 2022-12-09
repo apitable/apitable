@@ -80,7 +80,7 @@ services:
       dockerfile: packaging/Dockerfile.room-server
       target: builder
     volumes:
-      - ./packages/room-server/coverage:/tmp/vikadata/packages/room-server/coverage
+      - ./packages/room-server/coverage:/app/packages/room-server/coverage
     environment:
       - TZ=Asia/Singapore
       - MYSQL_HOST=test-mysql
