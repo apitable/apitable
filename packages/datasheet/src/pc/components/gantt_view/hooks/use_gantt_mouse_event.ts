@@ -258,6 +258,7 @@ export const useGanttMouseEvent = ({
   const onMouseUp = (e: KonvaEventObject<MouseEvent>) => {
     const { x, visible } = dragSplitterInfo;
 
+    setIsTaskLineDrawing(false);
     if (visible) {
       const MAX_WIDTH = Math.round((gridWidth + ganttWidth) * 0.4);
       const curWidth = Math.max(Math.min(x, MAX_WIDTH), 280);
@@ -267,6 +268,7 @@ export const useGanttMouseEvent = ({
       const lastFieldId = visibleColumns[lastColumnIndex].fieldId;
       const lastColumnWidth = gridInstance.getColumnWidth(lastColumnIndex);
       const finalColumnWidth = Math.max(lastColumnWidth + diffWidth, 80);
+      if (finalColumnWidth === lastColumnWidth) return;
       executeCommandWithMirror(() => {
         resourceService.instance!.commandManager.execute({
           cmd: CollaCommandName.SetColumnsProperty,
@@ -285,7 +287,6 @@ export const useGanttMouseEvent = ({
         })
       });
     }
-    setIsTaskLineDrawing(false);
   };
 
   const onMouseMove = (e: KonvaEventObject<MouseEvent>) => {

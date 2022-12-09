@@ -79,7 +79,8 @@ export const WidgetList = () => {
     resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.ChangeWidgetInPanelHeight,
       widgetHeight: widgetHeight,
-      datasheetId: datasheetId!,
+      resourceId: resourceId!,
+      resourceType,
       panelId: activeWidgetPanel.id,
       widgetId,
     });

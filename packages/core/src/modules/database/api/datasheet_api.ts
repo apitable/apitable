@@ -85,15 +85,26 @@ export function fetchShareForeignDatasheetPack(shareId: string, resourceId: stri
  * get changeset list
  * @param resourceId 
  * @param resourceType 
- * @param revisions 
+ * @param startRevision inclusive
+ * @param endRevision   exclusive
  * @returns 
  */
-export function fetchChangesets<T>(resourceId: string, resourceType: ResourceType, revisions: number[]) {
-  return axios.get<T>(urlcat(Url.READ_CHANGESET, { resourceId }), {
+export function fetchChangesets<T>(
+  resourceId: string, 
+  resourceType: ResourceType, 
+  startRevision: number, 
+  endRevision: number, 
+  sourceId?: string,
+  shareId?: string
+) {
+  const url = shareId ? urlcat(Url.READ_SHARE_CHANGESET, { shareId, resourceId }) : urlcat(Url.READ_CHANGESET, { resourceId });
+  return axios.get<T>(url, {
     baseURL,
     params: {
-      revisions,
       resourceType,
+      startRevision,
+      endRevision,
+      sourceId,
     },
     // serialize params revisions: [1,2,3] to normal GET params revisions=1&revisions=2&revisions=3
     paramsSerializer: params => {

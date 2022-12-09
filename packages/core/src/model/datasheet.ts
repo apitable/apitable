@@ -1700,19 +1700,25 @@ export class DatasheetActions {
 
   static changeWidgetHeight2Action(
     state: IReduxState,
-    { widgetPanelIndex, widgetIndex, widgetHeight, datasheetId }: { widgetPanelIndex: number, widgetIndex: number, widgetHeight: number, datasheetId: string }
+    {
+      widgetPanelIndex, widgetIndex, widgetHeight, resourceId, resourceType
+    }: {
+      widgetPanelIndex: number, widgetIndex: number, widgetHeight: number, resourceId: string, resourceType: ResourceType
+    }
   ): IJOTAction[] | null {
-    const activeWidgetPanel = getResourceActiveWidgetPanel(state, datasheetId, ResourceType.Datasheet)!;
+    const activeWidgetPanel = getResourceActiveWidgetPanel(state, resourceId, resourceType)!;
     const widget = activeWidgetPanel.widgets[widgetIndex]!;
+    const path = resourceType === ResourceType.Datasheet ?
+      ['meta', 'widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height'] :
+      ['widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height'];
     return [
       {
         n: OTActionName.ObjectReplace,
-        p: ['meta', 'widgetPanels', widgetPanelIndex, 'widgets', widgetIndex, 'height'],
+        p: path,
         oi: widgetHeight,
         od: widget.height,
       },
     ];
-
   }
 
   static moveWidget2Action(

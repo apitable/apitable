@@ -37,17 +37,17 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
    * @param dstId datasheet ID
    * @param revisions revision number list
    */
-  getChangesetOrderList(dstId: string, revisions: string | number[]): Promise<any[]> {
+  getChangesetOrderList(dstId: string, startRevision: number, endRevision: number): Promise<any[]> {
     return this.query(
       `
         SELECT vdc.message_id messageId, vu.uuid userId, vdc.revision, 
           vdc.dst_id resourceId, vdc.operations, vdc.created_at createdAt
         FROM vika_datasheet_changeset vdc
         LEFT JOIN vika_user vu ON vdc.created_by = vu.id
-        WHERE vdc.is_deleted = 0 AND vdc.dst_id = ? AND vdc.revision IN (?)
-        ORDER BY FIELD(vdc.revision, ?)
+        WHERE vdc.dst_id = ? AND vdc.revision >= ? AND vdc.revision < ? AND vdc.is_deleted = 0
+        ORDER BY vdc.revision
       `,
-      [dstId, revisions, revisions],
+      [dstId, startRevision, endRevision],
     );
   }
 

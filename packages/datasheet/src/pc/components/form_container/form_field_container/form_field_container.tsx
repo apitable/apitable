@@ -6,6 +6,7 @@ import { FormField } from './form_field';
 import { FormFieldUI } from './form_field_ui';
 
 import { FormContext } from '../form_context';
+import { getParentNodeByClass } from 'pc/utils';
 
 import styles from './style.module.less';
 
@@ -32,7 +33,8 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
   const DefaultFieldUI = fieldUI || FormFieldUI;
 
   useEffect(() => {
-    function onMouseDown() {
+    function onMouseDown(e) {
+      if (Boolean(getParentNodeByClass(e.target as HTMLElement, 'ant-drawer'))) return;
       if (clickWithinField.current) {
         clickWithinField.current = false;
         return;
@@ -41,11 +43,15 @@ export const FormFieldContainer: FC<IFormFieldContainerProps> = memo((props) => 
     }
 
     window.addEventListener('mousedown', onMouseDown);
-    return () => window.removeEventListener('mousedown', onMouseDown);
+    window.addEventListener('touchstart', onMouseDown);
+    return () => {
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('touchstart', onMouseDown);
+    };
   }, []);
 
   return (
-    <div className={styles.formFieldContainer}>
+    <div className={styles.formFieldContainer} >
       <TransitionGroup>
         {
           filteredColumns.map((column, index) => {
