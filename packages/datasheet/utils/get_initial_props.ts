@@ -1,8 +1,6 @@
 import { getEnvVars } from 'get_env';
 import { NextPageContext } from 'next';
-import axios from 'axios';
 import { FILTER_HEADERS } from './constant';
-import { Url } from '@apitable/core';
 
 const filterCustomHeader = (headers?: Record<string, string | string[] | undefined>): Record<string, string> => {
   if (!headers) return {};
@@ -35,23 +33,25 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
     };
   }
 
-  axios.defaults.baseURL = host + Url.BASE_URL;
   const language = context.ctx.req?.headers['accept-language'];
   const headers: Record<string, string> = { ...filterHeaders };
 
+  let locale = 'zh-CN';
   if (cookie) {
     headers.cookie = cookie;
+    // server lang
+    const langParts = cookie.split(`; lang=`);
+    // client cache cookie while language toggle
+    const localeParts = cookie.includes('client-lang=') ? cookie.split(`client-lang=`) : null;
+    locale = localeParts?.pop()?.split(';').shift() || langParts.pop()?.split(';').shift() || locale;
   }
 
   if (language) {
     headers['Accept-Language'] = language;
   }
 
-  const spaceId = context.ctx.query?.spaceId || '';
-  const res = await axios.get('/client/info', { params: { spaceId }, headers: headers });
-
   return {
     ...baseResponse,
-    locale: res.data.locale,
+    locale,
   }
 }
