@@ -271,7 +271,8 @@ export class RoomService {
   async watch() {
     const state = this.store.getState();
     const shareId = state.pageParams.shareId;
-    const watchResponse = await this.io.watch<IWatchResponse, any>(this.roomId, shareId).catch(e => {
+    const embedId = state.pageParams.embedId;
+    const watchResponse = await this.io.watch<IWatchResponse, any>(this.roomId, shareId, embedId).catch(e => {
       throw new EnhanceError(e);
     });
 

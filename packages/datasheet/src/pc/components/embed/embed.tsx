@@ -206,16 +206,13 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
         </div>}
         { !isLogin && embedConfig?.permissionType === PermissionType.PUBLICEDIT && isShowLoginButton &&
           <div className={styles.loginButton} >
-            <p>登录后可编辑</p>
+            <p>{t(Strings.share_editor)}</p>
             <Button
               color='primary'
               size='small'
               className={styles.applicationBtn}
               onClick={loginHandler}
-            >登录</Button>
-            {/* <div  >
-              
-            </div> */}
+            >{t(Strings.login)}</Button>
             <CloseLargeOutlined className={styles.closeBtn} onClick={() => setIsShowLoginButton(false)} />
           </div>
         }

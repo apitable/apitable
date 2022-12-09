@@ -96,13 +96,14 @@ export const View: React.FC = () => {
     if(!embedId) {
       return true;
     } 
-    return (get(embedInfo, 'viewControl.toolBar.basicTools', false) && isLogin) &&
-      (get(embedInfo, 'viewControl.toolBar.shareBtn', false) && isLogin) &&
-      get(embedInfo, 'viewControl.toolBar.widgetBtn', false) &&
-      (get(embedInfo, 'viewControl.toolBar.apiBtn', false) && isLogin) &&
-      (get(embedInfo, 'viewControl.toolBar.formBtn', false) && isLogin) &&
-      (get(embedInfo, 'viewControl.toolBar.historyBtn', false) && isLogin) &&
-      (get(embedInfo, 'viewControl.toolBar.robotBtn', false) && isLogin);
+    return (isLogin && (
+      get(embedInfo, 'viewControl.toolBar.basicTools', false) ||
+      get(embedInfo, 'viewControl.toolBar.shareBtn', false) ||
+      get(embedInfo, 'viewControl.toolBar.apiBtn', false) ||
+      get(embedInfo, 'viewControl.toolBar.formBtn', false) ||
+      get(embedInfo, 'viewControl.toolBar.historyBtn', false) ||
+      get(embedInfo, 'viewControl.toolBar.robotBtn', false)
+    )) || get(embedInfo, 'viewControl.toolBar.widgetBtn', false);
 
   }, [embedInfo, embedId, isLogin]);
 
