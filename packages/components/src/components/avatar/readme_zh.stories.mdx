@@ -22,8 +22,8 @@ import { Avatar } from '@apitable/components';
 通过 HTML5 `img` 标签标椎的 `src` 属性传递图片路径，创建图片头像。
 
 <Canvas>
-  <Avatar src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar src="https://s1.vika.cn/space/2021/03/10/61a8aae11da2439ebb4df35b9075587d" alt="vika avatar" />
+  <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="react-window" />
+  <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
 </Canvas>
 
 ### 展示图标头像
@@ -39,8 +39,8 @@ import { Avatar } from '@apitable/components';
 通过传入字符创，创建包含简单字符串的头像。
 
 <Canvas>
-  <Avatar>V</Avatar>
-  <Avatar>VIKA</Avatar>
+  <Avatar>A</Avatar>
+  <Avatar>APITable</Avatar>
 </Canvas>
 
 #### 缩放处理
@@ -48,8 +48,8 @@ import { Avatar } from '@apitable/components';
 受限于展示区域限制，当文本内容较多时会自动缩小文字保证全部展示，当然为了保证视觉可阅读性，建议用户不要使用过长的文本。
 
 <Canvas>
-  <Avatar>维格云</Avatar>
-  <Avatar>VIKADATA</Avatar>
+  <Avatar>A</Avatar>
+  <Avatar>APITable</Avatar>
 </Canvas>
 
 ### 设置尺寸
@@ -57,12 +57,12 @@ import { Avatar } from '@apitable/components';
 通过 `size` 定义了头像尺寸，默认为 `m(40px)`，通过特定字符串指定，可以更细致的划分头像大小，支持的数值有：xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px)。
 
 <Canvas>
-  <Avatar size="xxs" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar size="xs" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar size="s" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar size="m" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar size="l" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar size="xl" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
+  <Avatar size="xxs" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="xs" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="s" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="m" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="l" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="xl" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
 </Canvas>
 
 ### 设置形状
@@ -70,8 +70,8 @@ import { Avatar } from '@apitable/components';
 通过 `shape` 属性设置形状，目前支持圆形（circle 默认）、圆角形状（square）
 
 <Canvas>
-  <Avatar src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
-  <Avatar shape="square" src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
+  <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar shape="square" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
   <Avatar>V</Avatar>
   <Avatar shape="square">V</Avatar>
   <Avatar icon={<ExpandOutlined />} />
@@ -97,25 +97,25 @@ import { Avatar } from '@apitable/components';
 
 <Canvas>
   <AvatarGroup>
-    <Avatar src="https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a" alt="vika logo" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
     <Avatar style={{ color: '#f56a00', background: '#fde3cf' }} icon={<ExpandOutlined />} />
     <Avatar>V</Avatar>
-    <Avatar style={{ color: '#f56a00', background: '#fde3cf' }}>VIKA</Avatar>
-    <Avatar src="https://s1.vika.cn/space/2021/03/10/61a8aae11da2439ebb4df35b9075587d" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/e6aa3037a38f45acb65324ea314aea58" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/41e723917dc742d2974e41abab8cf60b" alt="vika avatar" />
+    <Avatar style={{ color: '#f56a00', background: '#fde3cf' }}>APITable</Avatar>
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
   </AvatarGroup>
 </Canvas>
 
 `AvatarGroup` 组件还支持设置其他属性，设置 `max` 最多展示 3 个头像，设置 `size` 为 `sx` 调整所有头像尺寸，设置 `maxStyle` 调整多余头像样式：
 <Canvas>
   <AvatarGroup max={3} size="xs" maxStyle={{ background: '#ccc' }}>
-    <Avatar src="https://s1.vika.cn/space/2021/03/10/61a8aae11da2439ebb4df35b9075587d" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/e6aa3037a38f45acb65324ea314aea58" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/41e723917dc742d2974e41abab8cf60b" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/4dce50e4ec4649b9a408a494aca28183" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf" alt="vika avatar" />
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e" alt="vika avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
   </AvatarGroup>
 </Canvas>
 

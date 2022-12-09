@@ -1,3 +1,3 @@
-import VikaForm from './rjsf_vika_ui';
+import _Form from './rjsf_ui';
 
-export const Form = VikaForm;
+export const Form = _Form;

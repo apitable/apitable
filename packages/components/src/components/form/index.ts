@@ -1,3 +1,3 @@
 export * from './form';
-export * from './rjsf_vika_ui';
+export * from './rjsf_ui';
 

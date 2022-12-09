@@ -34,8 +34,8 @@ export const Default = Template.bind({});
 
 export const ButtonHref = Template.bind({});
 ButtonHref.args = {
-  href: 'https://vika.cn/',
-  children: 'https://vika.cn/',
+  href: 'https://apitable.com/',
+  children: 'https://apitable.com/',
   target: '_blank'
 };
 
@@ -79,7 +79,7 @@ Click.args = {
 
 export const Href = Template.bind({});
 HideUnderline.args = {
-  href: 'https://vika.cn',
+  href: 'https://apitable.com',
   underline: false,
 };
 

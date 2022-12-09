@@ -16,7 +16,7 @@ const now = Date.now();
 const getUuid = () => {
   const id = seed;
   seed += 1;
-  return `vika-message_${now}_${id}`;
+  return `apitable-message_${now}_${id}`;
 };
 // const uiPropsMap: Record<React.Key,IMessageUIProps> = {}
 
@@ -63,7 +63,7 @@ const MessageUiContainer = (props: IMessageUIProps) => {
 
   return (
     <div style={{ position: 'fixed', top: '80px', textAlign: 'center', width: '100%', pointerEvents: 'none' }}>
-      <CSSMotionList keys={uuids} motionName='vika'>
+      <CSSMotionList keys={uuids} motionName='apitable'>
         {({ key, className: motionClassName }) =>
           <MessageUI
             motionClassName={motionClassName}

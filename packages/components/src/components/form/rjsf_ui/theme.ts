@@ -7,11 +7,11 @@ import { TitleField } from './field';
 const { getDefaultRegistry } = utils;
 const { fields, widgets } = getDefaultRegistry();
 
-const vikaFields = {
+const _fields = {
   TitleField,
 };
 
-const vikaWidgets = {
+const _widgets = {
   TextWidget,
   CheckboxWidget,
   SelectWidget,
@@ -25,7 +25,7 @@ export const theme: ThemeProps = {
   ObjectFieldTemplate,
   ArrayFieldTemplate,
   FieldTemplate,
-  fields: { ...fields, ...vikaFields },
-  widgets: { ...widgets, ...vikaWidgets },
+  fields: { ...fields, ..._fields },
+  widgets: { ...widgets, ..._widgets },
   ErrorList,
 };

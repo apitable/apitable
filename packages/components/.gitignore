@@ -25,3 +25,5 @@ yarn-error.log*
 *.log
 
 **/storybook-static
+
+/sonar-project.properties

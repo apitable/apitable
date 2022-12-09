@@ -6,7 +6,7 @@ import { IAvatarProps } from './interface';
 import { ExpandOutlined } from '@apitable/icons';
 import { AvatarGroup } from './avatar_group';
 
-const LOGO = 'https://s1.vika.cn/space/2021/12/02/645bf8779e814a8c86c6c996ec739f9a';
+const LOGO = 'https://avatars.githubusercontent.com/u/89725681';
 
 const COMPONENT_NAME = 'Avatar';
 
@@ -18,7 +18,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/otoIfiHXPZnVwSp3IavgPm/Vika-Components---01---Web?node-id=2%3A6076',
+      url: '',
     },
   },
 };
@@ -28,20 +28,20 @@ const Template: Story<IAvatarProps> = (args) => <Avatar {...args} />;
 export const Image = Template.bind({});
 Image.args = {
   src: LOGO,
-  alt: 'vika logo'
+  alt: 'apitable logo'
 };
 
 export const SquareShape = Template.bind({});
 SquareShape.args = {
   src: LOGO,
-  alt: 'vika logo',
+  alt: 'apitable logo',
   shape: 'square'
 };
 
 export const ImageSSize = Template.bind({});
 ImageSSize.args = {
   src: LOGO,
-  alt: 'vika logo',
+  alt: 'apitable logo',
   size: 's'
 };
 
@@ -52,7 +52,7 @@ SingleText.args = {
 
 export const CustomTextBackground = Template.bind({});
 CustomTextBackground.args = {
-  children: 'VIKA',
+  children: 'APITable',
   style: { background: '#ccc' }
 };
 
@@ -75,11 +75,11 @@ AvatarGroupSetting.args = {
   size: 'xs',
   maxStyle: { background: '#ccc' },
   children: [
-    <Avatar src="https://s1.vika.cn/space/2021/03/10/61a8aae11da2439ebb4df35b9075587d" alt="vika avatar" />,
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/e6aa3037a38f45acb65324ea314aea58" alt="vika avatar" />,
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/41e723917dc742d2974e41abab8cf60b" alt="vika avatar" />,
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/4dce50e4ec4649b9a408a494aca28183" alt="vika avatar" />,
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf" alt="vika avatar" />,
-    <Avatar src="https://s1.vika.cn/space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e" alt="vika avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />,
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />,
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />,
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />,
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />,
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
   ]
 };
