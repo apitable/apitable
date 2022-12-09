@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS deps
+FROM apitable/node:v16.15.0 AS deps
 
 WORKDIR /workspace-install
 
@@ -12,7 +12,7 @@ COPY packages/socket-server/package.json ./packages/socket-server/
 RUN yarn workspaces focus @apitable/websocket root
 
 # stage builder
-FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS builder
+FROM apitable/node:v16.15.0 AS builder
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ COPY packages/socket-server ./packages/socket-server
 RUN yarn workspace @apitable/websocket build
 
 # stage run
-FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS runner
+FROM apitable/node:v16.15.0 AS runner
 
 WORKDIR /app
 

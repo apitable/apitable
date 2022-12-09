@@ -1,7 +1,7 @@
 # Install dependencies only when needed
-FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS deps
+FROM apitable/node:v16.15.0 AS deps
 
-WORKDIR /tmp/vikadata
+WORKDIR /app
 
 COPY .yarn ./.yarn
 
@@ -17,12 +17,12 @@ COPY packages/room-server/package.json ./packages/room-server/
 RUN yarn workspaces focus @apitable/room-server root
 
 # stage builder
-FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS builder
+FROM apitable/node:v16.15.0 AS builder
 
-WORKDIR /tmp/vikadata
+WORKDIR /app
 
-COPY --from=deps /tmp/vikadata/node_modules ./node_modules
-COPY --from=deps /tmp/vikadata/packages/room-server/node_modules ./packages/room-server/node_modules
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/room-server/node_modules ./packages/room-server/node_modules
 
 COPY .yarn ./.yarn
 
@@ -37,15 +37,15 @@ COPY packages/room-server ./packages/room-server
 RUN yarn build:sr
 
 # stage runner
-FROM docker.vika.ltd/vikadata/vika/alinode:7.6.0 AS runner
+FROM apitable/node:v16.15.0 AS runner
 
-WORKDIR /home/vikadata
+WORKDIR /app
 
 ENV NODE_ENV production
 
 # agenthub
-COPY --from=builder /tmp/vikadata/packages/room-server/app-config.json /root/
-COPY --from=builder /tmp/vikadata /home/vikadata
+COPY --from=builder /app/packages/room-server/app-config.json /root/
+COPY --from=builder /app /app
 
 # pm2
 RUN npm install pm2 --global
@@ -53,7 +53,7 @@ RUN npm install pm2 --global
 # local 
 #ENV APP_ID 87508
 #ENV APP_SECRET f945aafb5a96077fe001b51e445250468da09756
-#ENV NODE_LOG_DIR /home/vikadata/packages/room-server/logs
+#ENV NODE_LOG_DIR /app/packages/room-server/logs
 #ENV ENABLE_NODE_LOG YES
 EXPOSE 3333
 # grpc port

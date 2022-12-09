@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS deps
+FROM apitable/nodepy:16.15.0-alpine AS deps
 
 WORKDIR /workspace-install
 
@@ -19,7 +19,7 @@ COPY packages/datasheet/package.json ./packages/datasheet/
 RUN yarn workspaces focus @apitable/datasheet root
 
 # stage builder
-FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS builder
+FROM apitable/nodepy:16.15.0-alpine AS builder
 
 ARG SEMVER_FULL="development"
 ARG NEXT_ASSET_PREFIX=""
@@ -44,7 +44,7 @@ RUN set -eux; \
 RUN yarn build:dst
 
 # stage runner
-FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS runner
+FROM apitable/nodepy:16.15.0-alpine AS runner
 
 WORKDIR /app
 
@@ -55,7 +55,8 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/.yarn ./.yarn
+COPY --from=builder /app/.yarnrc.yml /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/packages/datasheet/public ./packages/datasheet/public
 COPY --from=builder /app/packages/datasheet/next.config.js \
                     /app/packages/datasheet/font-weight-no-number.js \

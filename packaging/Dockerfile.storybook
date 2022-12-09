@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS deps
+FROM apitable/nodepy:16.15.0-alpine AS deps
 
 WORKDIR /workspace-install
 
@@ -12,7 +12,7 @@ COPY packages/components/package.json ./packages/components/
 RUN yarn workspaces focus @apitable/components root
 
 # Build static files
-FROM docker.vika.ltd/vikadata/vika/node:16.15.0-alpine AS builder
+FROM apitable/nodepy:16.15.0-alpine AS builder
 
 WORKDIR /app
 
