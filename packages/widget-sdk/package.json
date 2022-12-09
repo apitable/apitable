@@ -6,10 +6,10 @@
     "node": ">=8.x"
   },
   "keywords": [
-    "vika",
+    "apitable",
     "widget",
     "sdk",
-    "vika widget sdk"
+    "apitable widget sdk"
   ],
   "main": "./dist/index",
   "module": "./dist/index",

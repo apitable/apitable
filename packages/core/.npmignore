@@ -5,3 +5,7 @@ dist/**/*.js
 dist/**/*.d.ts.map
 tsconfig.json
 coverage/*
+sonar-project.properties
+tsconfig.publish.json
+node_modules
+README.md

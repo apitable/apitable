@@ -8,3 +8,6 @@ dist/**/*.d.ts.map
 tsconfig.json
 coverage
 yarn-error.log
+sonar-project.properties
+babel.config.js
+jest.config.ts

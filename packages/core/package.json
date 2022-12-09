@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist && tsc && tsc-alias",
-    "build:publish": "rm -rf ./dist && tsc -p tsconfig.publish.json && && tsc-alias -p tsconfig.publish.json && mv ./dist/index-publish.d.ts ./dist/index.d.ts",
+    "build:publish": "rm -rf ./dist && tsc -p tsconfig.publish.json && tsc-alias -p tsconfig.publish.json && mv ./dist/index-publish.d.ts ./dist/index.d.ts",
     "start": "concurrently \"tsc -w\" \"tsc-alias -w\"",
     "test": "TZ=UTC-8 jest",
     "test:watch": "TZ=UTC-8 jest --watch",

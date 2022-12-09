@@ -14,3 +14,5 @@ typings/
 .env
 .gitignore
 jest.config.js
+sonar-project.properties
+README.md
