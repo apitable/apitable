@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import Openup from 'static/icon/workbench/openup.svg';
 import Packup from 'static/icon/workbench/packup.svg';
-import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
 import { INodeTree } from '../share/interface';
@@ -172,35 +171,33 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
           [styles.iframeShareContainer]: true
         })}
       >
-        <ComponentDisplay minWidthCompatible={ScreenSize.md}>
-          <SplitPane
-            split='vertical'
-            minSize={320}
-            defaultSize={defaultSize}
-            maxSize={640}
-            style={{ overflow: 'none' }}
-            size={sideBarVisible ? defaultSize : 0}
-            allowResize={sideBarVisible}
-            onChange={() => {
-              window.dispatchEvent(new Event('resize'));
-            }}
-            pane2Style={{ overflow: 'hidden' }}
-            resizerStyle={{ backgroundColor: 'transparent', minWidth: 'auto' }}
-          >
-            <div className={styles.splitLeft}>
-              <Tooltip
-                title={!sideBarVisible ? t(Strings.expand_pane) : t(Strings.hide_pane)}
-                placement={!sideBarVisible ? 'right' : 'bottom'}
-                offset={[0, 0]}
-              >
-                { sideBarVisible && <div className={closeBtnClass} style={closeBtnStyles} onClick={handleClick}>
-                  {!sideBarVisible ? <Openup width={16} height={16} /> : <Packup width={16} height={16} />}
-                </div> }
-              </Tooltip>
-            </div>
-            <DataSheetComponent />
-          </SplitPane>
-        </ComponentDisplay>
+        <SplitPane
+          split='vertical'
+          minSize={320}
+          defaultSize={defaultSize}
+          maxSize={640}
+          style={{ overflow: 'none' }}
+          size={sideBarVisible ? defaultSize : 0}
+          allowResize={sideBarVisible}
+          onChange={() => {
+            window.dispatchEvent(new Event('resize'));
+          }}
+          pane2Style={{ overflow: 'hidden' }}
+          resizerStyle={{ backgroundColor: 'transparent', minWidth: 'auto' }}
+        >
+          <div className={styles.splitLeft}>
+            <Tooltip
+              title={!sideBarVisible ? t(Strings.expand_pane) : t(Strings.hide_pane)}
+              placement={!sideBarVisible ? 'right' : 'bottom'}
+              offset={[0, 0]}
+            >
+              { sideBarVisible && <div className={closeBtnClass} style={closeBtnStyles} onClick={handleClick}>
+                {!sideBarVisible ? <Openup width={16} height={16} /> : <Packup width={16} height={16} />}
+              </div> }
+            </Tooltip>
+          </div>
+          <DataSheetComponent />
+        </SplitPane>
         { embedConfig?.bannerLogo && <div className={styles.brandContainer} >
           <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt="vika_brand" />
         </div>}
