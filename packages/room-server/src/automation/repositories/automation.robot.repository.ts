@@ -41,7 +41,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       trigger_type_id triggerTypeId,
       robot_id robotId
     FROM
-      vika_automation_trigger
+      ${this.manager.connection.options.entityPrefix}automation_trigger
     WHERE
       is_deleted = 0 AND robot_id IN (?)
   `, [robotIds]);
@@ -53,7 +53,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       input_json_schema inputJsonSchema,
       trigger_type_id triggerTypeId
     FROM
-      vika_automation_trigger_type
+      ${this.manager.connection.options.entityPrefix}automation_trigger_type
     WHERE
       is_deleted = 0 AND trigger_type_id = ?
   `, [triggerTypeId]).then(res => res[0]);
@@ -66,7 +66,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       input,
       trigger_type_id triggerTypeId
     FROM
-      vika_automation_trigger
+      ${this.manager.connection.options.entityPrefix}automation_trigger
     WHERE
       is_deleted = 0 AND robot_id = ?
   `, [robotId]).then(res => res[0]);
@@ -80,7 +80,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       input,
       prev_action_id prevActionId
     FROM
-      vika_automation_action
+      ${this.manager.connection.options.entityPrefix}automation_action
     WHERE
       is_deleted = 0 AND robot_id = ?
     `, [robotId]);
@@ -100,8 +100,8 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
         s.logo as serviceLogo,
         s.slug AS serviceSlug,
         s.i18n as serviceI18n
-    FROM vika_automation_trigger_type tt
-          JOIN vika_automation_service s ON s.service_id = tt.service_id
+    FROM ${this.manager.connection.options.entityPrefix}automation_trigger_type tt
+          JOIN ${this.manager.connection.options.entityPrefix}automation_service s ON s.service_id = tt.service_id
     WHERE tt.is_deleted = 0
     `);
     return triggerTypes;
@@ -122,8 +122,8 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       s.logo As serviceLogo,
       s.slug AS serviceSlug,
       s.i18n As serviceI18n
-    FROM vika_automation_action_type aat
-          JOIN vika_automation_service s ON s.service_id = aat.service_id
+    FROM ${this.manager.connection.options.entityPrefix}automation_action_type aat
+          JOIN ${this.manager.connection.options.entityPrefix}automation_service s ON s.service_id = aat.service_id
     WHERE aat.is_deleted = 0
     `);
     return actionTypes;
@@ -181,7 +181,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       prev_action_id prevActionId,
       robot_id robotId
     FROM
-      vika_automation_action
+        ${this.manager.connection.options.entityPrefix}automation_action
     WHERE
       is_deleted = 0 AND robot_id IN (?)
     `, [robotIds]);
@@ -254,7 +254,7 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       input,
       prev_action_id prevActionId
     FROM
-      vika_automation_action
+        ${this.manager.connection.options.entityPrefix}automation_action
     WHERE
       is_deleted = 0 AND robot_id = ?
     `, [robotId]);
@@ -282,8 +282,8 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
       endpoint,
       sv.base_url baseUrl
     FROM
-      vika_automation_action_type actt
-      JOIN vika_automation_service sv ON actt.service_id = sv.service_id
+      ${this.manager.connection.options.entityPrefix}automation_action_type actt
+      JOIN ${this.manager.connection.options.entityPrefix}automation_service sv ON actt.service_id = sv.service_id
     WHERE
       actt.is_deleted = 0 AND actt.action_type_id IN (?)
     `, [[...actionTypeIds.values()]]);

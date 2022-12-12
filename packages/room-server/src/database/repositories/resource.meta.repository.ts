@@ -55,7 +55,7 @@ export class ResourceMetaRepository extends Repository<ResourceMetaEntity> {
     const revisionInfo = await queryRunner.query(
       `
           SELECT resource_id resourceId, revision
-          FROM vika_resource_meta
+          FROM ${this.manager.connection.options.entityPrefix}resource_meta
           WHERE resource_id IN (?) AND is_deleted = 0
         `,
       [resourceIds],

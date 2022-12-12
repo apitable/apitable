@@ -11,6 +11,7 @@ import { NodeShareSettingService } from './node.share.setting.service';
 import { UserService } from '../user/user.service';
 import { IFetchDataOriginOptions } from '../../../shared/interfaces';
 import { RestService } from '../../../shared/services/rest/rest.service';
+import {NodeRepository} from "../../repositories/node.repository";
 
 @Injectable()
 export class NodePermissionService {
@@ -20,6 +21,7 @@ export class NodePermissionService {
     @InjectLogger() private readonly logger: Logger,
     private readonly userService: UserService,
     private readonly nodeShareSettingService: NodeShareSettingService,
+    private readonly nodeRepository: NodeRepository,
   ) {}
 
   /**
@@ -78,7 +80,7 @@ export class NodePermissionService {
   async getNodePermissionSetStatus(nodeId: string): Promise<boolean> {
     const nodePermitSetCount = await getConnection().createQueryBuilder()
       .select('COUNT(1)', 'count')
-      .from('vika_node_permission', 'vnp')
+      .from(`${this.nodeRepository.manager.connection.options.entityPrefix}node_permission`, 'vnp')
       .where('vnp.node_id = :nodeId', { nodeId })
       .getRawOne();
     return +nodePermitSetCount.count > 0;

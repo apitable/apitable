@@ -19,8 +19,8 @@ export class AutomationTriggerTypeRepository extends Repository<AutomationTrigge
       endpoint,
       vas.slug serviceSlug
     FROM
-      vika_automation_trigger_type att
-      JOIN vika_automation_service vas ON vas.service_id = att.service_id
+      ${this.manager.connection.options.entityPrefix}automation_trigger_type att
+      JOIN ${this.manager.connection.options.entityPrefix}automation_service vas ON vas.service_id = att.service_id
         AND vas.slug = ?
     WHERE
       att.is_deleted = 0

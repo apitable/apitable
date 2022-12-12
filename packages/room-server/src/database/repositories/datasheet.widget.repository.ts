@@ -15,7 +15,7 @@ export class DatasheetWidgetRepository extends Repository<DatasheetWidgetEntity>
   async selectDstIdsByNodeId(nodeId: string): Promise<string[] | null> {
     const raws = await this.createQueryBuilder('vdw')
       .select('vdw.dst_id', 'dstId')
-      .innerJoin('vika_widget', 'vw', 'vdw.widget_id = vw.widget_id')
+      .innerJoin(`${this.manager.connection.options.entityPrefix}widget`, 'vw', 'vdw.widget_id = vw.widget_id')
       .andWhere('vw.node_id = :nodeId', { nodeId })
       .andWhere('vw.is_deleted = 0')
       .getRawMany();

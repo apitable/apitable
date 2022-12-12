@@ -42,8 +42,8 @@ export class DatasheetChangesetRepository extends Repository<DatasheetChangesetE
       `
         SELECT vdc.message_id messageId, vu.uuid userId, vdc.revision, 
           vdc.dst_id resourceId, vdc.operations, vdc.created_at createdAt
-        FROM vika_datasheet_changeset vdc
-        LEFT JOIN vika_user vu ON vdc.created_by = vu.id
+        FROM ${this.manager.connection.options.entityPrefix}datasheet_changeset vdc
+        LEFT JOIN ${this.manager.connection.options.entityPrefix}user vu ON vdc.created_by = vu.id
         WHERE vdc.dst_id = ? AND vdc.revision >= ? AND vdc.revision < ? AND vdc.is_deleted = 0
         ORDER BY vdc.revision
       `,

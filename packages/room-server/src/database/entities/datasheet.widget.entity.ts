@@ -10,7 +10,7 @@ export class DatasheetWidgetEntity {
     name: 'dst_id',
     nullable: false,
     unique: true,
-    comment: 'datasheet ID(related#vika_datasheet#dst_id)',
+    comment: 'datasheet ID(related#datasheet#dst_id)',
     length: 50,
   })
     dstId: string;

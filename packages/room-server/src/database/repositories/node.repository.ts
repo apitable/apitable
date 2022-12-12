@@ -46,12 +46,12 @@ export class NodeRepository extends Repository<NodeEntity> {
           WITH RECURSIVE sub_ids (node_id) AS
           (
             SELECT node_id
-            FROM vika_node
+            FROM ${this.manager.connection.options.entityPrefix}node
             WHERE parent_id = ? and is_rubbish = 0
             UNION ALL
             SELECT c.node_id
             FROM sub_ids AS cp
-            JOIN vika_node AS c ON cp.node_id = c.parent_id and c.is_rubbish = 0
+            JOIN ${this.manager.connection.options.entityPrefix}node AS c ON cp.node_id = c.parent_id and c.is_rubbish = 0
           )
           SELECT distinct node_id nodeId
           FROM sub_ids;
@@ -78,12 +78,12 @@ export class NodeRepository extends Repository<NodeEntity> {
           WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS
           (
             SELECT n.node_id, n.node_name, n.parent_id, 0 lvl
-            FROM vika_node n
+            FROM ${this.manager.connection.options.entityPrefix}node n
             WHERE n.node_id = ? AND n.is_rubbish = 0
             UNION ALL
             SELECT c.node_id, c.node_name, c.parent_id, pv.lvl + 1
             FROM parent_view AS pv
-            JOIN vika_node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
+            JOIN ${this.manager.connection.options.entityPrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
           )
           SELECT node_id nodeId
           FROM parent_view

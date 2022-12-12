@@ -41,7 +41,7 @@ export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity>
     return this.query(
       `
        SELECT vdr.data->?  as linkRecordIds
-       FROM vika_datasheet_record vdr
+       FROM ${this.manager.connection.options.entityPrefix}datasheet_record vdr
        WHERE vdr.dst_id = ? AND vdr.record_id = ? AND vdr.is_deleted = 0 limit 1
       `,
       [path, dstId, recordId],

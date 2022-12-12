@@ -2,7 +2,7 @@ import { UnitTeamEntity } from '../entities/unit.team.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 /**
- * Operations on table `vika_unit_team`
+ * Operations on table `unit_team`
  * 
  * @author Zoe zheng
  * @date 2020/7/30 4:09 PM

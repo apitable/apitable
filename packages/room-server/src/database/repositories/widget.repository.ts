@@ -32,7 +32,7 @@ export class WidgetRepository extends Repository<WidgetEntity> {
     return this.query(
       `
           SELECT widget_id resourceId, revision
-          FROM vika_widget
+          FROM ${this.manager.connection.options.entityPrefix}widget
           WHERE widget_id IN (?) AND is_deleted = 0
         `,
       [widgetIds],

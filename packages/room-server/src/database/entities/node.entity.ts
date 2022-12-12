@@ -19,7 +19,7 @@ export class NodeEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: 'space ID(related#vika_space#space_id)',
+    comment: 'space ID(related#space#space_id)',
     length: 50,
   })
     spaceId: string;
@@ -44,7 +44,7 @@ export class NodeEntity extends BaseEntity {
     name: 'node_id',
     nullable: false,
     unique: true,
-    comment: 'node Id(related#vika_node#node_id)',
+    comment: 'node Id(related#node#node_id)',
     length: 50,
   })
     nodeId: string | null;

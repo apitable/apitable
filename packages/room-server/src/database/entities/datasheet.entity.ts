@@ -18,7 +18,7 @@ export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'node_id',
     nullable: true,
-    comment: 'node ID (association#vika_node#node_id)',
+    comment: 'node ID (association#node#node_id)',
     length: 50,
   })
     nodeId: string | null;
@@ -34,7 +34,7 @@ export class DatasheetEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: true,
-    comment: 'space ID(related#vika_space#space_id)',
+    comment: 'space ID(related#space#space_id)',
     length: 50,
   })
     spaceId: string | null;

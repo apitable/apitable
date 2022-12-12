@@ -15,7 +15,7 @@ export class ApiUsageEntity {
     name: 'user_id',
     nullable: false,
     unique: true,
-    comment: 'user ID(related#vika_user#id)',
+    comment: 'user ID(related#user#id)',
     width: 20,
     type: 'bigint',
   })
@@ -24,7 +24,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: 'space ID(related#vika_space#space_id)',
+    comment: 'space ID(related#space#space_id)',
     length: 50,
   })
   spaceId: string | null;
@@ -32,7 +32,7 @@ export class ApiUsageEntity {
   @Column({
     name: 'dst_id',
     nullable: false,
-    comment: 'datasheet ID(related#vika_datasheet#dst_id)',
+    comment: 'datasheet ID(related#datasheet#dst_id)',
     length: 50,
   })
   dstId: string | null;

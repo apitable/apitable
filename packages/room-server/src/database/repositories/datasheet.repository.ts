@@ -34,7 +34,7 @@ export class DatasheetRepository extends Repository<DatasheetEntity> {
     return this.query(
       `
           SELECT dst_id resourceId, revision
-          FROM vika_datasheet 
+          FROM ${this.manager.connection.options.entityPrefix}datasheet 
           WHERE dst_id IN (?) AND is_deleted = 0
         `,
       [dstIds],

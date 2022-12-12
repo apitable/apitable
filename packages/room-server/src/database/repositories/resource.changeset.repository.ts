@@ -40,8 +40,8 @@ export class ResourceChangesetRepository extends Repository<ResourceChangesetEnt
       `
         SELECT vrc.message_id messageId, vu.uuid userId, vrc.revision, 
           vrc.resource_id resourceId, vrc.operations, vrc.created_at createdAt
-        FROM vika_resource_changeset vrc
-        JOIN vika_user vu ON vrc.created_by = vu.id
+        FROM ${this.manager.connection.options.entityPrefix}resource_changeset vrc
+        JOIN ${this.manager.connection.options.entityPrefix}user vu ON vrc.created_by = vu.id
         WHERE vrc.resource_id = ? AND vrc.revision >= ? AND vrc.revision < ? 
         ORDER BY vrc.revision
       `,

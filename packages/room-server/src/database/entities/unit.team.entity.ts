@@ -9,7 +9,7 @@ export class UnitTeamEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: 'space ID(related#vika_space#space_id)',
+    comment: 'space ID(related#space#space_id)',
     length: 50,
     type: 'varchar',
   })

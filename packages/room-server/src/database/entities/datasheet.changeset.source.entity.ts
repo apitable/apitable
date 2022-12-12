@@ -11,7 +11,7 @@ export class DatasheetChangesetSourceEntity {
   @Column({
     name: 'dst_id',
     nullable: false,
-    comment: 'datasheet ID (associated#vika_datasheet#dst_id)',
+    comment: 'datasheet ID (associated#datasheet#dst_id)',
     length: 50,
   })
     dstId: string;

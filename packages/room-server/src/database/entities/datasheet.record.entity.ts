@@ -18,7 +18,7 @@ export class DatasheetRecordEntity extends BaseEntity {
   @Column({
     name: 'dst_id',
     nullable: true,
-    comment: 'datasheet ID(related#vika_datasheet#dst_id)',
+    comment: 'datasheet ID(related#datasheet#dst_id)',
     length: 50,
   })
     dstId: string | null;

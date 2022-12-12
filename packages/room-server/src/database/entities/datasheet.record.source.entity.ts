@@ -11,7 +11,7 @@ export class DatasheetRecordSourceEntity {
   @Column({
     name: 'dst_id',
     nullable: false,
-    comment: 'datasheet ID(related#vika_datasheet#dst_id)',
+    comment: 'datasheet ID(related#datasheet#dst_id)',
     length: 50,
   })
     dstId: string | null;
@@ -27,7 +27,7 @@ export class DatasheetRecordSourceEntity {
   @Column({
     name: 'record_id',
     nullable: false,
-    comment: 'record ID(related#vika_datasheet_record#record_id)',
+    comment: 'record ID(related#datasheet_record#record_id)',
     length: 50,
   })
     recordId: string | null;

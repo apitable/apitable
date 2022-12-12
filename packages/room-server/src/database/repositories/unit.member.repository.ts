@@ -3,7 +3,7 @@ import { omit } from 'lodash';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 /**
- * Operations on table `vika_unit_member`
+ * Operations on table `unit_member`
  * 
  * @author Zoe zheng
  * @date 2020/7/30 4:09 PM
@@ -43,7 +43,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
     memberName: string; id: string; userId: string; isActive: number; isDeleted: boolean; isMemberNameModified?: boolean; unitId: string
   }[]> {
     const query = this.createQueryBuilder('vum')
-      .leftJoin('vika_unit', 'vu', 'vu.unit_ref_id = vum.id')
+      .leftJoin(`${this.manager.connection.options.entityPrefix}unit`, 'vu', 'vu.unit_ref_id = vum.id')
       .select('vum.member_name', 'memberName')
       .addSelect('vum.id', 'id')
       .addSelect('vum.user_id', 'userId')

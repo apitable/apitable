@@ -3,7 +3,7 @@ import { UnitTypeEnum } from '../../shared/enums';
 import { UnitEntity } from '../entities/unit.entity';
 
 /**
- * Operations on table `vika_unit`
+ * Operations on table `unit`
  * 
  * @author Zoe zheng
  * @date 2020/7/30 4:09 PM

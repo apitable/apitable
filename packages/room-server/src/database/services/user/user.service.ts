@@ -20,14 +20,15 @@ export class UserService {
    */
   async getUserInfo(spaceId: string, uuids: string[]): Promise<UnitInfo[]> {
     const queryRunner = getConnection().createQueryRunner();
+    const tableNamePrefix = this.userRepo.manager.connection.options.entityPrefix;
     const users = await queryRunner.query(`
           SELECT vu.uuid userId, vu.uuid uuid, vui.id unitId, vui.is_deleted isDeleted, vui.unit_type type,
           IFNULL(vum.member_name,vu.nick_name) name, vu.avatar avatar, vum.is_active isActive,
           IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
           IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
-          FROM vika_user vu
-          LEFT JOIN vika_unit_member vum ON vum.user_id = vu.id AND vum.space_id = ?
-          LEFT JOIN vika_unit vui ON vui.unit_ref_id = vum.id
+          FROM ${tableNamePrefix}user vu
+          LEFT JOIN ${tableNamePrefix}unit_member vum ON vum.user_id = vu.id AND vum.space_id = ?
+          LEFT JOIN ${tableNamePrefix}unit vui ON vui.unit_ref_id = vum.id
           WHERE uuid IN (?)
         `,
     [spaceId, uuids],

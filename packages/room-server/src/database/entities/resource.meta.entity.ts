@@ -10,7 +10,7 @@ export class ResourceMetaEntity extends BaseEntity {
   @Column({
     name: 'resource_id',
     nullable: false,
-    comment: 'resource ID(related#vika_node#node_id)',
+    comment: 'resource ID(related#node#node_id)',
     length: 50,
   })
     resourceId: string;

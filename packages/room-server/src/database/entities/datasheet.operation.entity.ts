@@ -19,7 +19,7 @@ export class DatasheetOperationEntity extends BaseEntity {
   @Column({
     name: 'dst_id',
     nullable: true,
-    comment: 'datasheet ID(related#vika_datasheet#dst_id)',
+    comment: 'datasheet ID(related#datasheet#dst_id)',
     length: 50,
   })
     dstId: string | null;
@@ -46,7 +46,7 @@ export class DatasheetOperationEntity extends BaseEntity {
   @Column( {
     name: 'member_id',
     nullable: true,
-    comment: 'operating member ID(related#vika_organization_member#id)',
+    comment: 'operating member ID(related#organization_member#id)',
   })
     memberId: string | null;
 

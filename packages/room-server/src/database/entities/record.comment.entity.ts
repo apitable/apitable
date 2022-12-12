@@ -52,7 +52,7 @@ export class RecordCommentEntity extends BaseEntity {
   @Column({
     name: 'unit_id',
     nullable: false,
-    comment: 'operating member unitID(related#vika_unit#id)',
+    comment: 'operating member unitID(related#unit#id)',
     width: 20,
     type: 'bigint',
   })

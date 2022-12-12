@@ -2,7 +2,7 @@ import { UserEntity } from '../entities/user.entity';
 import { EntityRepository, In, Repository } from 'typeorm';
 
 /**
- * Operations on table `vika_developer`
+ * Operations on table `developer`
  * 
  * @author Zoe zheng
  * @date 2020/7/24 3:15 PM

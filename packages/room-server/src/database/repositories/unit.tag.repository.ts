@@ -2,7 +2,7 @@ import { UnitTagEntity } from '../entities/unit.tag.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 /**
- * Operations on table `vika_unit_tag`
+ * Operations on table `unit_tag`
  * 
  * @author Zoe zheng
  * @date 2020/7/30 4:09 PM

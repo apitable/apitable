@@ -27,7 +27,7 @@ export class DatasheetChangesetEntity extends BaseEntity {
   @Column({
     name: 'member_id',
     nullable: true,
-    comment: 'Operating member ID (associated#vika_organization_member#ID)',
+    comment: 'Operating member ID (associated#organization_member#ID)',
   })
     memberId: string | null;
 

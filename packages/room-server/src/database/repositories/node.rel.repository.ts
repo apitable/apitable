@@ -15,7 +15,7 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
   selectRelNodeIdByMainNodeId(mainNodeId: string): Promise<NodeRelEntity[]> {
     return this.createQueryBuilder('vnr')
       .select('vnr.rel_node_id', 'relNodeId')
-      .innerJoin('vika_node', 'vn', 'vnr.rel_node_id = vn.node_id')
+      .innerJoin(`${this.manager.connection.options.entityPrefix}node`, 'vn', 'vnr.rel_node_id = vn.node_id')
       .where('vnr.main_node_id = :mainNodeId', { mainNodeId })
       .andWhere('vn.is_rubbish = 0')
       .getRawMany();
@@ -28,8 +28,8 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
       .addSelect('vn.node_name', 'datasheetName')
       .addSelect('vn.icon', 'datasheetIcon')
       .addSelect('vd.revision', 'datasheetRevision')
-      .innerJoin('vika_node', 'vn', 'vnr.main_node_id = vn.node_id')
-      .leftJoin('vika_datasheet', 'vd', 'vn.node_id = vd.dst_id')
+      .innerJoin(`${this.manager.connection.options.entityPrefix}node`, 'vn', 'vnr.main_node_id = vn.node_id')
+      .leftJoin(`${this.manager.connection.options.entityPrefix}datasheet`, 'vd', 'vn.node_id = vd.dst_id')
       .where('vnr.rel_node_id = :relNodeId', { relNodeId })
       .getRawOne<NodeRelInfo>();
   }
@@ -42,8 +42,8 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
       .addSelect('vn.node_name', 'datasheetName')
       .addSelect('vn.icon', 'datasheetIcon')
       .addSelect('vd.revision', 'datasheetRevision')
-      .innerJoin('vika_node', 'vn', 'vnr.main_node_id = vn.node_id')
-      .leftJoin('vika_datasheet', 'vd', 'vn.node_id = vd.dst_id')
+      .innerJoin(`${this.manager.connection.options.entityPrefix}node`, 'vn', 'vnr.main_node_id = vn.node_id')
+      .leftJoin(`${this.manager.connection.options.entityPrefix}datasheet`, 'vd', 'vn.node_id = vd.dst_id')
       .where('vnr.rel_node_id IN(:...relNodeIds)', { relNodeIds })
       .getRawMany();
   }

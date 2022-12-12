@@ -13,7 +13,7 @@ export class NodeDescEntity {
     name: 'node_id',
     nullable: false,
     unique: true,
-    comment: 'node Id(related#vika_node#node_id)',
+    comment: 'node Id(related#node#node_id)',
     length: 50,
   })
     nodeId: string;

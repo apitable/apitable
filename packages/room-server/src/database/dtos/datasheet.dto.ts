@@ -23,7 +23,7 @@ export class DatasheetDto {
 
   @ApiProperty({
     type: String,
-    description: 'node ID(refer to vika_node#node_id)',
+    description: 'node ID(refer to node#node_id)',
   })
     nodeId: string;
 

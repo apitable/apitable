@@ -27,7 +27,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
     SELECT
       robot_id, prev_action_id
     FROM
-      vika_automation_action
+      ${this.manager.connection.options.entityPrefix}automation_action
     WHERE
       is_deleted = 0 AND action_id = ?
     `, [actionId]);
@@ -40,7 +40,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
       await transactionalEntityManager.query(
         `
       UPDATE
-        vika_automation_action
+        ${this.manager.connection.options.entityPrefix}automation_action
       SET
         prev_action_id = ?,
         updated_by = ?
@@ -50,7 +50,7 @@ export class AutomationActionRepository extends Repository<AutomationActionEntit
 
       await transactionalEntityManager.query(`
     UPDATE
-      vika_automation_action
+      ${this.manager.connection.options.entityPrefix}automation_action
     SET
       is_deleted = 1,
       updated_by = ?

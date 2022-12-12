@@ -6,7 +6,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'user_id',
     nullable: true,
-    comment: 'user ID(related#vika_user#id)',
+    comment: 'user ID(related#user#id)',
     width: 20,
     type: 'bigint',
   })
@@ -15,7 +15,7 @@ export class UnitMemberEntity extends BaseEntity {
   @Column({
     name: 'space_id',
     nullable: false,
-    comment: 'space ID(related#vika_space#space_id)',
+    comment: 'space ID(related#space#space_id)',
     length: 50,
     type: 'varchar',
   })
