@@ -22,9 +22,10 @@ import WecomIcon from 'static/icon/signin/signin_img_wecom.png';
 
 import styles from './style.module.less';
 
-export const ScanLogin = ({
-  afterLogin
-}: { afterLogin?(data: string, loginMode: ConfigConstant.LoginMode): void }): JSX.Element => {
+export const ScanLogin = (
+  {
+    afterLogin
+  }: { afterLogin?(data: string, loginMode: ConfigConstant.LoginMode): void }): JSX.Element => {
   const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteLinkToken = useSelector((state: IReduxState) => state.invite.linkToken);
   const isWecomDomain = useSelector(state => state.space.envs?.weComEnv?.enabled);
@@ -32,7 +33,15 @@ export const ScanLogin = ({
   const query = useQuery();
   const reference = query.get('reference');
 
-  const [currentScan, setCurrentScan] = React.useState('wechat');
+  const [currentScan, setCurrentScan] = React.useState(() => {
+    if (getEnvVariables().SOCIAL_LOGIN_WECHAT_VISIBLE) {
+      return 'wechat';
+    }
+    if (getEnvVariables().SOCIAL_LOGIN_DINGTALK_VISIBLE) {
+      return 'dingding';
+    }
+    return '';
+  });
 
   const isInvitePage = !process.env.SSR && window.location.pathname.startsWith('/invite');
 
@@ -161,7 +170,7 @@ export const ScanLogin = ({
               onClick={item.onClick}
               data-sensors-click
             >
-              <Image src={item.img} alt={item.name} width={32} height={32}/>
+              <Image src={item.img} alt={item.name} width={32} height={32} />
             </div>
           ))
         }

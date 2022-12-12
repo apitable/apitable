@@ -162,6 +162,9 @@ export function cellValueToImageSrc(
 export const integrateCdnHost = (
   pathName: string,
 ): string => {
+  if (!pathName) {
+    return pathName;
+  }
   const host: string = getHostOfAttachment('QNY1');
   // TODO: delete this. Compatible with old version data
   if (pathName.startsWith('http')) {

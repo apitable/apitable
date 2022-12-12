@@ -1,25 +1,24 @@
-import { FC, useState, useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
+import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { CheckOutlined, ColumnUrlOutlined, InformationSmallOutlined, ShareQrcodeOutlined } from '@apitable/icons';
 import { useRequest } from 'ahooks';
 import { Popover, Tooltip } from 'antd';
-
-import { Api, IReduxState, IShareSettings, Settings, StoreActions, Strings, t } from '@apitable/core';
-import { DoubleSelect, IDoubleOptions, LinkButton, Switch, Typography, useThemeColors } from '@apitable/components';
-import { InformationSmallOutlined, ShareQrcodeOutlined, ColumnUrlOutlined, CheckOutlined } from '@apitable/icons';
-
-import { useCatalogTreeRequest } from 'pc/hooks';
-import { copy2clipBoard } from 'pc/utils';
-import { Message, Modal, MobileSelect } from 'pc/components/common';
+import { Message, MobileSelect, Modal } from 'pc/components/common';
 import { TComponent } from 'pc/components/common/t_component';
+import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
+import { useCatalogTreeRequest } from 'pc/hooks';
+import { useInviteRequest } from 'pc/hooks/use_invite_request';
+import { copy2clipBoard } from 'pc/utils';
+import { getEnvVariables } from "pc/utils/env";
+import { FC, useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
+import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareLink } from '../share/share_link';
+import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
 import { DownloadQrCode } from './download_qr_code';
 
 import styles from './style.module.less';
-import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
-import { useInviteRequest } from 'pc/hooks/use_invite_request';
-import { generateInviteLink, ROOT_TEAM_ID } from '../utils';
-import { isSocialPlatformEnabled } from 'pc/components/home/social_platform';
-import PulldownIcon from 'static/icon/common/common_icon_pulldown_line.svg';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -144,7 +143,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
     handleCloseShare();
   };
 
-  const getLink = async() => {
+  const getLink = async () => {
     const token = await generateLinkReq(ROOT_TEAM_ID, nodeId);
     if (token) {
       const _link = generateInviteLink(userInfo, token, nodeId);
@@ -208,7 +207,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
 
   const renderPopover = () => {
     return (
-      <div className={styles.qrCodePopoverContent} id="downloadInviteContainer">
+      <div className={styles.qrCodePopoverContent} id='downloadInviteContainer'>
         <DownloadQrCode isMobile={isMobile} nodeId={nodeId} width={188} />
       </div>
     );
@@ -232,7 +231,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
         <Switch disabled={!spaceFeatures?.fileSharable} checked={shareSettings?.shareOpened} onChange={handleToggle} />
         <Typography variant='h7' className={styles.shareToggleContent}>{t(Strings.publish_share_link_with_anyone)}</Typography>
         <Tooltip title={t(Strings.support)} trigger={'hover'}>
-          <a href={Settings.workbench_node_share_help_url.value} rel="noopener noreferrer" target="_blank">
+          <a href={getEnvVariables().WORKBENCH_NODE_SHARE_HELP_URL} rel='noopener noreferrer' target='_blank'>
             <InformationSmallOutlined currentColor />
           </a>
         </Tooltip>
@@ -273,7 +272,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
                     );
                   }}
                 />
-                ) : (
+              ) : (
                 <DoubleSelect
                   value={value}
                   disabled={false}
@@ -294,7 +293,7 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
       {invitable && (
         <div className={styles.inviteMore}>
           <Typography className={styles.inviteMoreTitle} variant='body3'>{t(Strings.more_invite_ways)}：</Typography>
-          <Tooltip title={t(Strings.default_link_join_tip)} placement="top" overlayStyle={{ width: 190 }}>
+          <Tooltip title={t(Strings.default_link_join_tip)} placement='top' overlayStyle={{ width: 190 }}>
             <LinkButton
               className={styles.inviteMoreMethod}
               underline={false}
@@ -307,10 +306,10 @@ export const PublicShareInviteLink: FC<IPublicShareLinkProps> = ({ nodeId, isMob
           {!isMobile && (
             <Popover
               overlayClassName={styles.qrCodePopover}
-              placement="rightBottom"
+              placement='rightBottom'
               title={null}
               content={renderPopover()}
-              trigger="click"
+              trigger='click'
             >
               {renderInviteByQrCode()}
             </Popover>

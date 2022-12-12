@@ -235,7 +235,7 @@ const IdentifyingCodeLoginBase: FC<IIdentifyingCodeLoginProps> = ({
           {/* For automation testing */}
 
           {
-            !hiddenProtocol &&
+            !hiddenProtocol && getEnvVariables().PRIVACY_POLICY_URL &&
             <div className={styles.protocol}>
               <Checkbox checked={checked} onChange={e => setChecked(e.target.checked)} />
               <div className={styles.protocolText}>

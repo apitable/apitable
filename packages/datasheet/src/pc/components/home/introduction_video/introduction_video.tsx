@@ -10,7 +10,9 @@ import styles from './style.module.less';
 export const IntroductionVideo: FC = () => {
   const env = getEnvVariables();
   const videoSrc = integrateCdnHost(env.LOGIN_INTRODUCTION_VIDEO || '');
-
+  if (!videoSrc) {
+    return null;
+  }
   return (
     <div className={styles.introductionVideo}>
       <div className={styles.titleBar}>
@@ -21,12 +23,10 @@ export const IntroductionVideo: FC = () => {
         </Space>
       </div>
       <div className={styles.videoWrapper}>
-        {
-          videoSrc && <video controls>
-            <source src={videoSrc} type='video/mp4' />
-            {t(Strings.nonsupport_video)}
-          </video>
-        }
+        <video controls>
+          <source src={videoSrc} type='video/mp4' />
+          {t(Strings.nonsupport_video)}
+        </video>
       </div>
       <span className={styles.apiImg}>
         <Image width={40} height={40} src={ApiImg} alt='api' />

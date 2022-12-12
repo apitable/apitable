@@ -126,8 +126,8 @@ export const CellText: FC<ICellProps> = (props) => {
             })
         }
         {
-          isEnhanceText && 
-          <Icon 
+          isEnhanceText &&
+          <Icon
             name={name}
             x={columnWidth - GRID_ICON_COMMON_SIZE - GRID_CELL_VALUE_PADDING - 4}
             y={height - GRID_ICON_COMMON_SIZE}

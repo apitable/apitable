@@ -155,7 +155,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
         timeOpen: true,
       });
     }
-    if (!this.props.showAlarm && !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE) {
+    if (!this.props.showAlarm || !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE) {
       this.setState({
         dateOpen: false,
       });
@@ -445,7 +445,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                   disabled={Boolean(this.props.disabled)}
                   onKeyDown={this.keyDown}
                   renderFooter={() =>
-                    showAlarm && !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && (
+                    showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && DateTimeAlarm && (
                       <DateTimeAlarm
                         datasheetId={datasheetId}
                         recordId={recordId || ''}
@@ -484,7 +484,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
                 />
               )}
             </div>
-            {showAlarm && !getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
+            {showAlarm && getEnvVariables().RECORD_TASK_REMINDER_VISIBLE && Boolean(this.props.curAlarm) && (
               <span className={style.alarm}>
                 <NotificationSmallOutlined color={lightColors.deepPurple[500]} size={14} />
               </span>

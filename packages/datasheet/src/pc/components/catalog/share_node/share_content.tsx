@@ -58,7 +58,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
 
   const optionData = permissionMenuData(data.type);
 
-  const disableRoleExtend = async() => {
+  const disableRoleExtend = async () => {
     if (!roleList?.extend) {
       return true;
     }
@@ -73,7 +73,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
   };
 
   // Select member submission events
-  const onSubmit = async(unitInfos: IUnitValue[], permission: IOption) => {
+  const onSubmit = async (unitInfos: IUnitValue[], permission: IOption) => {
     if (!unitInfos.length) {
       return;
     }
@@ -93,7 +93,7 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
       return;
     }
 
-    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async(res) => {
+    Api.addRole(data.nodeId, unitIds, permission.value + '').then(async (res) => {
       const { success, message } = res.data;
       if (success) {
         Message.success({ content: t(Strings.permission_add_success) });
@@ -121,16 +121,18 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
             </a>
           </Tooltip>
         </Typography>
-        <div className={styles.shareInvite}>
-          <UnitPermissionSelect
-            classNames={styles.permissionSelect}
-            permissionList={optionData}
-            onSubmit={onSubmit}
-            adminAndOwnerUnitIds={adminAndOwnerUnitIds}
-            showTeams
-            searchEmail
-          />
-        </div>
+        {
+          getEnvVariables().FILE_PERMISSION_VISIBLE && <div className={styles.shareInvite}>
+            <UnitPermissionSelect
+              classNames={styles.permissionSelect}
+              permissionList={optionData}
+              onSubmit={onSubmit}
+              adminAndOwnerUnitIds={adminAndOwnerUnitIds}
+              showTeams
+              searchEmail
+            />
+          </div>
+        }
         <div className={cls(styles.shareFloor, styles.collaborator)}>
           <div className={styles.collaboratorStatus} onClick={() => setDetailModalVisible(true)}>
             {roleList && (
@@ -150,14 +152,16 @@ export const ShareContent: FC<IShareContentProps> = ({ data }) => {
               {t(Strings.collaborator_number, { number: roleList?.members.length })}
             </Typography>
           </div>
-          <Typography
-            variant='body3'
-            className={styles.collaboratorAuth}
-            onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}
-          >
-            <span>{t(Strings.setting_permission)}</span>
-            <ChevronRightOutlined />
-          </Typography>
+          {
+            getEnvVariables().FILE_PERMISSION_VISIBLE && <Typography
+              variant='body3'
+              className={styles.collaboratorAuth}
+              onClick={() => dispatch(StoreActions.updatePermissionModalNodeId(data.nodeId))}
+            >
+              <span>{t(Strings.setting_permission)}</span>
+              <ChevronRightOutlined />
+            </Typography>
+          }
         </div>
         <PublicShareInviteLink
           nodeId={data.nodeId}
