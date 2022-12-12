@@ -8,7 +8,7 @@ interface IMobileHeaderBarProps {
 
 export const MobileToolBar: React.FC<IMobileHeaderBarProps & IToolBarWrapperProps> = props => {
   const { loading, ...rest } = props;
-  const embedId = useSelector(state => state.pageParams);
+  const embedId = useSelector(state => state.pageParams.embedId);
   if (loading || embedId) {
     return <></>;
   }

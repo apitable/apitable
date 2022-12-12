@@ -1,4 +1,5 @@
-import { findNode, Navigation, Selectors, StoreActions, Strings, t, Settings, integrateCdnHost, IEmbedInfo, ConfigConstant, PermissionType } from '@apitable/core';
+import { findNode, Navigation, Selectors, StoreActions, Strings, t, Settings, 
+  integrateCdnHost, IEmbedInfo, ConfigConstant, PermissionType } from '@apitable/core';
 import classNames from 'classnames';
 import Head from 'next/head';
 import { Tooltip } from 'pc/components/common/tooltip';
@@ -15,8 +16,13 @@ import { FolderShowcase } from '../folder_showcase';
 import { INodeTree } from '../share/interface';
 import styles from './style.module.less';
 import { EmbedFail } from './embed_fail';
-import { Button } from '@apitable/components';
+import { Button, ThemeName } from '@apitable/components';
 import { CloseLargeOutlined } from '@apitable/icons';
+import { useLocalStorageState } from 'ahooks';
+import { SystemTheme } from 'pc/common/theme';
+import { getEnvVariables } from 'pc/utils/env';
+import Image from 'next/image';
+
 interface IEmbedProps {
   embedId: string;
 }
@@ -36,7 +42,12 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
   const { data: embedData } = useRequest<any>(() => getEmbedInfoReq(embedId));
   const isLogin = useSelector(state => state.user.isLogin);
   const [isShowLoginButton, setIsShowLoginButton] = useState<boolean>(true);
-
+  const themeName = useSelector(state => state.theme);
+  const bannerLogoUrl = themeName === ThemeName.Light ? Settings.share_iframe_brand.value : Settings.share_iframe_brand_dark.value;
+  const [, setTheme] = useLocalStorageState<ThemeName>('theme', {
+    defaultValue: getEnvVariables().SYSTEM_CONFIGURATION_DEFAULT_THEME as ThemeName || ThemeName.Light
+  });
+  const [, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   usePageParams();
 
   useEffect(() => {
@@ -47,17 +58,25 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
     if (!embedData) {
       setEmbedClose(true);
       return;
-    } 
+    }
     setEmbedClose(false);
     const { embedInfo, nodeInfo, spaceId } = embedData;
     const {  
       nodeTree = [], 
       shareNodeIcon = '', 
+      theme,
       payload: embedSetting, 
       linkId
     } = embedInfo;
 
     const { nodeName, id: nodeId, icon } = nodeInfo;
+    if(embedSetting) {
+      dispatch(StoreActions.setTheme(theme));
+      setTheme(theme);
+      setSystemTheme(SystemTheme.Close);
+      const html = document.querySelector('html');
+      html?.setAttribute('data-theme', theme);
+    }
 
     setSideBarVisible(false);
     setNodeTree({
@@ -199,7 +218,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
           <DataSheetComponent />
         </SplitPane>
         { embedConfig?.bannerLogo && <div className={styles.brandContainer} >
-          <img src={integrateCdnHost(Settings.share_iframe_brand.value)} alt="vika_brand" />
+          <Image src={integrateCdnHost(bannerLogoUrl)} alt="vika_brand" width={75} height={20} />
         </div>}
         { !isLogin && embedConfig?.permissionType === PermissionType.PUBLICEDIT && isShowLoginButton &&
           <div className={styles.loginButton} >

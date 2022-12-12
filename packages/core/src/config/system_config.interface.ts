@@ -809,6 +809,7 @@ export interface Settings {
     record_comments_help_url:                            Qny1;
     server_error_page_bg:                                Qny1;
     share_iframe_brand:                                  Qny1;
+    share_iframe_brand_dark:                             Qny1;
     space_enterprise_certification_form:                 Qny1;
     space_setting_integrations_dingtalk:                 Qny1;
     space_setting_integrations_feishu:                   Qny1;

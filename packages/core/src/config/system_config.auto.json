@@ -384,6 +384,9 @@
         "share_iframe_brand": {
             "value": "space/2021/12/09/3b09b857cee04a12b6b02cd63bb90a81?attname=%E7%BB%B4%E6%A0%BC%E8%A1%A8logo.svg"
         },
+        "share_iframe_brand_dark": {
+            "value": "space/2022/11/28/94e87bd1fd25472e99556c9b5f72c62e?attname=logo-reverse.svg"
+        },
         "space_enterprise_certification_form": {
             "value": "https://vika.cn/share/shrQetZLnGRnHXoKfJvTC?fldUC8FmVjHEv={spaceId}"
         },
