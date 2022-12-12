@@ -30,7 +30,6 @@ dependencies {
   implementation project(':shared:starters:wx-mp')
   implementation project(':shared:starters:yozo')
   implementation project(':shared:starters:aegis')
-  implementation project(':shared:starters:pingpp')
   implementation project(':shared:starters:idaas')
   implementation project(':shared:starters:auth0')
   implementation project(':shared:starters:teg')
@@ -92,6 +91,7 @@ dependencies {
   // for enterprise
   implementation rootProject.ext.dependencies['spring-plugin-core']
   implementation rootProject.ext.dependencies['spring-plugin-metadata']
+  implementation rootProject.ext.dependencies['pingpp']
 }
 
 jar {
