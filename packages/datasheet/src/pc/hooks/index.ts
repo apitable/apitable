@@ -17,7 +17,6 @@ export * from './use_select_index';
 export * from './use_billing';
 export * from './use_workbench_side_sync';
 export * from './use_memorize_previous_value';
-export * from './use_weixin_share';
 export * from './use_search_panel';
 export * from './use_space';
 export * from './use_check_input';

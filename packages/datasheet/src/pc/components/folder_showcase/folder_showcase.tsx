@@ -16,7 +16,7 @@ import { IPreviewShape, ISelectInfo } from 'pc/components/common/image_crop_uplo
 import { Router } from 'pc/components/route_manager/router';
 import { Deserializer, SlateEditor } from 'pc/components/slate_editor';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
-import { useCatalogTreeRequest, usePrevious, useRequest, useWeixinShare } from 'pc/hooks';
+import { useCatalogTreeRequest, usePrevious, useRequest } from 'pc/hooks';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
@@ -37,6 +37,8 @@ import { MobileBar } from '../mobile_bar';
 import { NoPermission } from '../no_permission';
 import { DescriptionModal } from './description_modal';
 import { DingTalkDa } from './dingtalk_da';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise';
 import styles from './style.module.less';
 
 export interface IFolderShowcaseProps {
@@ -171,8 +173,6 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showcaseData]);
-
-  useWeixinShare(folderShareInfo);
 
   useEffect(() => {
     setShowcaseData(undefined);
@@ -354,7 +354,8 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
     quality: 100,
     size: 470 * window.devicePixelRatio || 1,
   });
-  return (
+
+  const childComponent = (
     <div id={AutoTestID.SHARE_CONTAINER} className={classNames(styles.folderShowcaseWrapper, readOnly && styles.readOnly)}>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
         <MobileBar />
@@ -504,5 +505,17 @@ export const FolderShowcase: FC<IFolderShowcaseProps> = ({ readOnly, childNodes,
         )}
       />
     </div>
+  );
+
+  return (
+    <>
+      {
+        WeixinShareWrapper ? (
+          <WeixinShareWrapper info={folderShareInfo}>
+            {childComponent}
+          </WeixinShareWrapper>
+        ) : childComponent
+      }
+    </>
   );
 };

@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const WecomAdminWithNoSSR = dynamic(() => import('pc/components/home/social_platform/wecom/admin'), { ssr: false });
+// @ts-ignore
+const WecomAdminWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.WecomAdmin;
+}), { ssr: false });
 
 const App = () => {
-  return <WecomAdminWithNoSSR />;
+  return WecomAdminWithNoSSR && <WecomAdminWithNoSSR />;
 };
 
 export default App;

@@ -9,7 +9,7 @@ import { VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
 import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
-import { useResponsive, useWeixinShare } from 'pc/hooks';
+import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
@@ -30,6 +30,8 @@ import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
 import { get } from 'lodash';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
@@ -212,8 +214,6 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     height: '100%',
   };
 
-  useWeixinShare();
-
   useEffect(() => {
     if (loading) {
       return;
@@ -340,7 +340,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     />
   );
 
-  return (
+  const childComponent = (
     <AutoSizer style={{ width: '100%', height: '100%' }}>
       {({ width, height }) =>
         panelSize ? (
@@ -372,6 +372,18 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
         )
       }
     </AutoSizer>
+  );
+
+  return (
+    <>
+      {
+        WeixinShareWrapper ? (
+          <WeixinShareWrapper>
+            {childComponent}
+          </WeixinShareWrapper>
+        ) : childComponent
+      }
+    </>
   );
 };
 

@@ -114,12 +114,6 @@ export interface IAdData {
   descEn: string;
 }
 
-export interface ISyncMemberRequest {
-  linkId: string;
-  members: { teamId: string; memberId: string; memberName: string }[];
-  teamIds: string[];
-}
-
 export interface INodeInfoWindowResponse {
   nodeId: string;
   nodeName: string;

@@ -1,6 +1,6 @@
 import { Button } from '@apitable/components';
 import {
-  ADDRESS_ID, Api, ConfigConstant, Events, IApi, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player, StoreActions, Strings, t,
+  ADDRESS_ID, Api, ConfigConstant, Events, IMember, IReduxState, isIdassPrivateDeployment, ITeam, Navigation, Player, StoreActions, Strings, t,
 } from '@apitable/core';
 import { AddOutlined, AddressOutlined } from '@apitable/icons';
 import { Input } from 'antd';
@@ -105,7 +105,7 @@ export const AddressSide: React.FC = () => {
                   source: SelectUnitSource.SyncMember,
                   onSubmit: values => {
                     const data = values.reduce(
-                      (prev: IApi.ISyncMemberRequest, cur) => {
+                      (prev: any, cur) => {
                         if ((cur as IMember).memberId) {
                           const { syncingTeamId, memberId, memberName } = cur as IMember & { syncingTeamId: string };
                           prev.members.push({ teamId: syncingTeamId, memberId, memberName });

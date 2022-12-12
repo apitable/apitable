@@ -6,9 +6,10 @@ import { ViewContainer } from './view_container';
 import classNames from 'classnames';
 import styles from './style.module.less';
 import { ServerError } from '../invalid_page/server_error';
-import { useWeixinShare } from 'pc/hooks';
 import { TabBar } from './form_tab';
 import { ShareContext } from 'pc/components/share/share';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise';
 
 const FormPanelBase: FC<{loading?: boolean}> = props => {
   const { shareId, templateId } = useSelector(state => state.pageParams);
@@ -29,11 +30,9 @@ const FormPanelBase: FC<{loading?: boolean}> = props => {
   const { shareInfo } = useContext(ShareContext);
   const userLoading = useSelector(state => state.user.loading);
 
-  useWeixinShare();
-
   const noPermissionDesc = formErrCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ? t(Strings.current_form_is_invalid) : '';
 
-  return (
+  const childComponent = (
     <div
       className={classNames(styles.formSpace, loading && styles.loading)}
       style={{
@@ -51,6 +50,18 @@ const FormPanelBase: FC<{loading?: boolean}> = props => {
         ) : (isNoPermission ? <NoPermission desc={noPermissionDesc} /> : <ServerError />)
       }
     </div>
+  );
+
+  return (
+    <>
+      {
+        WeixinShareWrapper ? (
+          <WeixinShareWrapper>
+            {childComponent}
+          </WeixinShareWrapper>
+        ) : childComponent
+      }
+    </>
   );
 };
 

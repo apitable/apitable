@@ -6,10 +6,12 @@ import { ISpace } from '../../modules/space/store/interfaces/space';
 import { IInvite } from '../../modules/org/store/interface/invite';
 import { ISpacePermissionManage } from '../../modules/org/store/interface/space_permission_manage';
 import { INotification } from '../../modules/user/store/interfaces/notification';
-import { IHooks } from '../../modules/enterprise/store/interfaces/guide';
+// @ts-ignore
+import { IHooks, IBilling } from '../../modules/enterprise';
 import { IToolBar } from '../../modules/org/store/interface/tool_bar';
-import { IBilling } from '../../modules/enterprise/store/interfaces/billing';
-import { IDashboardMap, IDatasheetMap, IPageParams, IWidgetMap, IFormMap, IMirrorMap, ThemeName } from '../../modules/database/store/interfaces/resource';
+import { 
+  IDashboardMap, IDatasheetMap, IPageParams, IWidgetMap, IFormMap, IMirrorMap, ThemeName 
+} from '../../modules/database/store/interfaces/resource';
 import { ITemplateCentre } from '../../modules/space/store/interfaces/template_centre';
 import { IShareInfo } from '../../modules/space/store/interfaces/share';
 import { IUnitInfo } from '../../modules/org/store/interface/unit_info';
@@ -30,10 +32,9 @@ export * from '../../modules/org/store/interface/invite';
 export * from '../../modules/org/store/interface/space_permission_manage';
 export * from '../../modules/user/store/interfaces/notification';
 export * from '../../modules/space/store/interfaces/template_centre';
-export * from '../../modules/enterprise/store/interfaces/guide';
+export * from '../../modules/enterprise';
 export * from '../../modules/org/store/interface/tool_bar';
 export * from '../../modules/database/store/interfaces/kanban';
-export * from '../../modules/enterprise/store/interfaces/billing';
 export * from '../../modules/database/store/interfaces/common';
 export * from '../../modules/database/store/interfaces/resource';
 export * from '../../modules/space/store/interfaces/share';

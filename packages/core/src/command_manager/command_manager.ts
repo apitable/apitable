@@ -18,15 +18,13 @@ import {
   ICollaCommandOptionsBase,
 } from './types';
 import { IOperation } from 'engine/ot/interface';
-import { IReduxState, ISubscription, Selectors } from '../exports/store';
+import { IReduxState, Selectors } from '../exports/store';
 import { AnyAction, Store } from 'redux';
 import { LinkedDataConformanceMaintainer, MemberFieldMaintainer } from 'model';
 import { FieldType, ResourceType } from 'types';
 import { CellFormatChecker } from 'cell_format_checker';
 import { LinkIntegrityChecker } from 'link_integrity_checker/link_integrity_checker';
 import { Events, Player } from '../modules/shared/player';
-import { SubscribeUsageCheck } from 'subscribe_usage_check';
-import { EnhanceError } from 'sync/enhance_error';
 
 export type IResourceOpsCollect = {
   resourceId: string;
@@ -50,7 +48,6 @@ export class CollaCommandManager {
   private _commands: { [name: string]: CollaCommand } = {};
   private cellFormatChecker!: CellFormatChecker;
   private linkIntegrityChecker!: LinkIntegrityChecker;
-  private subscribeUsageCheck!: SubscribeUsageCheck;
 
   addUndoStack?(
     cmd: CollaCommandName,
@@ -68,7 +65,6 @@ export class CollaCommandManager {
     });
     this.cellFormatChecker = new CellFormatChecker(store);
     this.linkIntegrityChecker = new LinkIntegrityChecker(store);
-    this.subscribeUsageCheck = new SubscribeUsageCheck(store);
   }
 
   register(name: string, commandDef: ICollaCommandDef) {
@@ -220,25 +216,6 @@ export class CollaCommandManager {
       ldcMaintainer: new LinkedDataConformanceMaintainer(),
       memberFieldMaintainer: new MemberFieldMaintainer(),
       fieldMapSnapshot: {},
-      subscribeUsageCheck: (functionName: keyof ISubscription, value: any) => {
-        const checkResult = this.subscribeUsageCheck.underUsageLimit(
-          functionName,
-          value
-        );
-        if (checkResult) {
-          return;
-        }
-        if (this._listener.handleCommandExecuteError && !checkResult) {
-          return this._listener.handleCommandExecuteError(
-            new EnhanceError({
-              message: functionName,
-              extra: { usage: value },
-            }) as any,
-            'subscribeUsage'
-          );
-        }
-        throw new Error('subscribeUsage error');
-      },
     };
   }
 

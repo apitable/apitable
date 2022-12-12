@@ -67,36 +67,6 @@ export function signUp(token?: string, inviteCode?: string) {
 }
 
 /**
- * Generate or Refresh wechat public account QR code
- * 
- * @param type 
- * @returns 
- */
-export function getOfficialAccountsQrCode(type: number) {
-  return axios.get(Url.OFFICIAL_ACCOUNTS_QRCODE, {
-    params: {
-      type,
-    },
-  });
-}
-
-/**
- * Poll wechat public account (media platform)
- * 
- * @param mark 
- * @param type 
- * @returns 
- */
-export function officialAccountsPoll(mark: string, type: number) {
-  return axios.get(Url.OFFICIAL_ACCOUNTS_POLL, {
-    params: {
-      mark,
-      type,
-    },
-  });
-}
-
-/**
  * 
  * Get phone verification code
  * 

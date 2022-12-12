@@ -10,7 +10,6 @@ import {
   IAdData,
   ICommitRemind,
   ICreateNotification,
-  ICreateOrderResponse,
   IGetRoleListResponse,
   IGetRoleMemberListResponse,
   IGetSpaceAuditReq,
@@ -19,17 +18,12 @@ import {
   ILoadOrSearchArg,
   INodeInfoWindowResponse,
   INoPermissionMemberResponse,
-  IPayOrderResponse,
-  IQueryOrderDiscountResponse,
-  IQueryOrderPriceResponse,
-  IQueryOrderStatusResponse,
   IRecentlyBrowsedFolder,
   ISubscribeActiveEventResponse,
-  ISyncMemberRequest,
   ITemplateRecommendResponse,
   IUpdateSecuritySetting,
 } from './api.interface';
-export * from '../../enterprise/api/api.enterprise';
+export * from '../../enterprise';
 export * from '../../user/api/api.auth';
 export * from '../../user/api/api.user';
 export * from '../../space/api/api.space';
@@ -130,17 +124,6 @@ export function createReport(nodeId: string, reportReason: string) {
   return axios.post(Url.CREATE_REPORTS, {
     nodeId,
     reportReason,
-  });
-}
-
-/**
- * get wechat share signature
- * @param url
- * @returns
- */
-export function getWechatSignature(url: string) {
-  return axios.post(Url.WECHAT_MP_SIGNATURE, {
-    url,
   });
 }
 
@@ -654,14 +637,6 @@ export function processSpaceJoin(notifyId: string, agree: boolean) {
 }
 
 /**
- * get the social tenant env config
- * @returns
- */
-export function socialTenantEnv() {
-  return axios.get(Url.SOCIAL_TENANT_ENV);
-}
-
-/**
  * get 3rd apps list (marketplace)
  *
  * @param spaceId
@@ -807,10 +782,6 @@ export function updateSecuritySetting(config: IUpdateSecuritySetting) {
   return axios.post<IApiWrapper>(Url.UPDATE_SECURITY_SETTING, config);
 }
 
-export function syncOrgMembers(data: ISyncMemberRequest) {
-  return axios.post<IApiWrapper>(Url.SYNC_ORG_MEMBERS, data);
-}
-
 export function applyResourceChangesets(changesets: ILocalChangeset[], roomId: string) {
   return axios.post<IApiWrapper & { data: IGetCommentsByIdsResponse }>(
     Url.APPLY_RESOURCE_CHANGESETS,
@@ -831,36 +802,6 @@ export function applyResourceChangesets(changesets: ILocalChangeset[], roomId: s
  */
 export function getNodeInfoWindow(nodeId: string) {
   return axios.get<IApiWrapper & { data: INodeInfoWindowResponse }>(urlcat(Url.GET_NODE_INFO_WINDOW, { nodeId }));
-}
-
-// eslint-disable-next-line max-len
-// query all pricing plans https://integration.vika.ltd/api/v1/doc.html#/default/%E8%AE%A2%E5%8D%95%E6%A8%A1%E5%9D%97%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3/getPriceListByProductUsingGET
-export function queryOrderPriceList(product: 'GOLD' | 'SILVER') {
-  return axios.get<IApiWrapper & { data: IQueryOrderPriceResponse[] }>(Url.ORDER_PRICE, {
-    params: {
-      product,
-    },
-  });
-}
-
-export function createOrder(params: { month: number; product: string; seat: number; spaceId: string }) {
-  return axios.post<IApiWrapper & { data: ICreateOrderResponse }>(Url.ORDER_CREATE, params);
-}
-
-export function payOrder(orderId: string, payChannel: 'wx_pub_qr' | 'alipay_pc_direct') {
-  return axios.post<IApiWrapper & { data: IPayOrderResponse }>(urlcat(Url.ORDER_PAYMENT, { orderId }), { payChannel });
-}
-
-export function queryOrderStatus(orderId: string) {
-  return axios.get<IApiWrapper & { data: IQueryOrderStatusResponse }>(urlcat(Url.ORDER_STATUS, { orderId }));
-}
-
-export function queryOrderDiscount(params: any) {
-  return axios.post<IApiWrapper & { data: IQueryOrderDiscountResponse }>(Url.DRY_RUN, params);
-}
-
-export function paidCheck(orderId: string) {
-  return axios.get<IApiWrapper & { data: IQueryOrderStatusResponse }>(urlcat(Url.PAID_CHECK, { orderId }));
 }
 
 /**

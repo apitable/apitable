@@ -1,5 +1,7 @@
 import { AnyAction, Store } from 'redux';
-import { IReduxState, ISubscription } from '../exports/store';
+// @ts-ignore
+import { ISubscription } from '../modules/enterprise';
+import { IReduxState } from '../exports/store';
 
 export class SubscribeUsageCheck {
 

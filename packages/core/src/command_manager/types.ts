@@ -1,5 +1,5 @@
 import { IOperation } from 'engine';
-import { IFieldMap, IReduxState, ISubscription } from '../exports/store/interfaces';
+import { IFieldMap, IReduxState } from '../exports/store/interfaces';
 import { ILinkedActions } from './command';
 import { LinkedDataConformanceMaintainer, MemberFieldMaintainer } from 'model';
 import { ResourceType } from 'types';
@@ -10,7 +10,6 @@ export interface ICollaCommandExecuteContext {
   ldcMaintainer: LinkedDataConformanceMaintainer;
   memberFieldMaintainer: MemberFieldMaintainer;
   fieldMapSnapshot: IFieldMap;
-  subscribeUsageCheck: (functionName: keyof ISubscription, value: any) => any
 }
 
 export enum ExecuteType {

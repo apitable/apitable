@@ -2,7 +2,7 @@ import { Api } from '../../../../exports/api';
 import { ISignIn } from '../../../shared/api/api.interface';
 import { Dispatch } from 'redux';
 import { setActiveSpaceId } from '../../../space/store/actions/space';
-import { BindAccount, QrAction } from '../../../shared/store/constants';
+import { BindAccount } from '../../../shared/store/constants';
 import { ConfigConstant } from '../../../../config';
 import * as actions from '../../../shared/store/action_constants';
 import { IHttpErr, ILocateIdMap, IReduxState, IUserInfo } from '../../../../exports/store/interfaces';
@@ -43,26 +43,6 @@ export const getRegisterCode = (areaCode: string, phone: string) => {
         code,
         msg: message,
       }));
-    });
-  };
-};
-
-/**
- * miniapp qr code poll query
- * @param {(0 | 1 | 2)} type
- * 0：web qrcode login
- * 1：web account binding
- * 2：miniap is waiting to enter workbench
- * @param {string} mark  QRCode ID
- * @returns
- */
-export const poll = (type: QrAction, mark: string) => {
-  return (dispatch: Dispatch) => {
-    Api.poll(type, mark).then(res => {
-      const { success } = res.data;
-      if (success) {
-        dispatch(getUserMe() as any);
-      }
     });
   };
 };

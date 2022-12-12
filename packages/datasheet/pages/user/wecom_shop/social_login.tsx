@@ -1,10 +1,13 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const WecomLoginWithNoSSR = dynamic(() => import('pc/components/home/social_platform/wecom/login'), { ssr: false });
+// @ts-ignore
+const WecomLoginWithNoSSR = dynamic(() => import('enterprise').then((components) => {
+  return components.WecomSocialLogin;
+}), { ssr: false });
 
 const App = () => {
-  return <WecomLoginWithNoSSR />;
+  return WecomLoginWithNoSSR && <WecomLoginWithNoSSR />;
 };
 
 export default App;
