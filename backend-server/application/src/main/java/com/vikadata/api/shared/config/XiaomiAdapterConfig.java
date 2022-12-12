@@ -35,7 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import static com.apitable.starter.aegis.autoconfigure.CasMidunFilter.isIgnoreUrl;
-import static com.vikadata.api.base.enums.AuthException.UNAUTHORIZED;
+import static com.vikadata.api.auth.enums.AuthException.UNAUTHORIZED;
 import static com.xiaomi.aegis.constant.SdkConstants.REQUEST_ATTRIBUTE_USER_INFO_KEY;
 
 /**

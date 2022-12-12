@@ -24,14 +24,14 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
     ThirdPartyMemberMapper thirdPartyMemberMapper;
 
     @Test
-    @Sql("/testdata/third-party-member-data.sql")
+    @Sql("/enterprise/sql/third-party-member-data.sql")
     void testSelectUnionIdByOpenIdAndType() {
         String id = thirdPartyMemberMapper.selectUnionIdByOpenIdAndType("ai41", "oi41", 0);
         assertThat(id).isEqualTo("ui41");
     }
 
     @Test
-    @Sql("/testdata/third-party-member-data.sql")
+    @Sql("/enterprise/sql/third-party-member-data.sql")
     void testSelectNickNameByUnionIdAndType() {
         String name = thirdPartyMemberMapper.selectNickNameByUnionIdAndType("ai41", "ui41", 0);
         assertThat(name).isEqualTo("vika body");
@@ -39,7 +39,7 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/third-party-member-data.sql")
+    @Sql("/enterprise/sql/third-party-member-data.sql")
     void testSelectExtraById() {
         String extra = thirdPartyMemberMapper.selectExtraById(41L);
         assertThat(extra).isEqualTo("{\"city\": \"Shenzhen\", \"gender\": \"2\", \"country\": \"China\", \"language\": \"zh_CN\", \"province\": \"Guangdong\", \"countryCode\": \"86\", \"phoneNumber\": \"18622510531\"}");
@@ -47,7 +47,7 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/third-party-member-data.sql")
+    @Sql("/enterprise/sql/third-party-member-data.sql")
     void testSelectSessionKeyById() {
         String key = thirdPartyMemberMapper.selectSessionKeyById(41L);
         assertThat(key).isEqualTo("sk41");
@@ -55,7 +55,7 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/third-party-member-data.sql")
+    @Sql("/enterprise/sql/third-party-member-data.sql")
     void testSelectInfo() {
         ThirdPartyMemberInfo entity = thirdPartyMemberMapper.selectInfo("ai41", "ui41", 0);
         assertThat(entity).isNotNull();
@@ -63,8 +63,8 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/third-party-member-data.sql", "/testdata/user-data.sql",
-            "/testdata/user-link-data.sql"})
+    @Sql({ "/enterprise/sql/third-party-member-data.sql", "/sql/user-data.sql",
+            "/enterprise/sql/user-link-data.sql" })
     void testSelectUserIdByIdAndLinkType() {
         Long id = thirdPartyMemberMapper.selectUserIdByIdAndLinkType(41L, 0);
         assertThat(id).isEqualTo(41L);
@@ -72,7 +72,7 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/third-party-member-data.sql")
+    @Sql("/enterprise/sql/third-party-member-data.sql")
     void testSelectWechatMemberDto() {
         WechatMemberDto entity = thirdPartyMemberMapper.selectWechatMemberDto(0, "ai41", "oi41");
         assertThat(entity).isNotNull();
@@ -80,7 +80,7 @@ public class ThirdPartyMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectUserLinkedWechatMemberDto() {
         WechatMemberDto entity = thirdPartyMemberMapper.selectUserLinkedWechatMemberDto("ai41", "41");
         assertThat(entity).isNotNull();

@@ -6,8 +6,8 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.api.user.model.UserInPausedDto;
-import com.vikadata.api.user.model.UserLangDTO;
+import com.vikadata.api.user.dto.UserInPausedDto;
+import com.vikadata.api.user.dto.UserLangDTO;
 import com.vikadata.api.user.ro.UserOpRo;
 import com.vikadata.api.user.vo.UserInfoVo;
 

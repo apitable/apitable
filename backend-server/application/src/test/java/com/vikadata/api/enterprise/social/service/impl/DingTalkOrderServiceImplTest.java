@@ -12,7 +12,6 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.FileHelper;
 import com.vikadata.api.enterprise.AbstractEnterpriseIntegrationTest;
 import com.vikadata.api.enterprise.billing.enums.ProductChannel;
@@ -50,7 +49,7 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
 
     @Test
     public void testTrailPlan() {
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         assertThat(event).as("data could not be parsed:base_trail").isNotNull();
         // Payment scheme for order purchase
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());
@@ -59,7 +58,7 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
 
     @Test
     public void testTrailOrder() {
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         String spaceId = "spc" + IdWorker.get32UUID();
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(event).getCorpId(), event.getSuiteId());
         // Purchase trial order
@@ -77,13 +76,13 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTenAndOneYearOrder() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         trailEvent.setServiceStartTime(getClock().getNow(testTimeZone).minusDays(15).toInstant().toEpochMilli());
         trailEvent.setServiceStopTime(getClock().getNow(testTimeZone).minusDays(1).toInstant().toEpochMilli());
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year.json");
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
@@ -96,13 +95,13 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceHundredV1AndOneYearOrder() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         trailEvent.setServiceStartTime(getClock().getNow(testTimeZone).minusDays(15).toInstant().toEpochMilli());
         trailEvent.setServiceStopTime(getClock().getNow(testTimeZone).minusDays(1).toInstant().toEpochMilli());
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_100_1_per_year.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_100_1_per_year.json");
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
@@ -115,18 +114,18 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTenAndOneYearOrderActivity() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         trailEvent.setServiceStartTime(getClock().getNow(testTimeZone).minusYears(1).minusDays(15).toInstant().toEpochMilli());
         trailEvent.setServiceStopTime(getClock().getNow(testTimeZone).minusYears(1).toInstant().toEpochMilli());
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SyncHttpMarketOrderEvent tmpEvent = getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json");
+        SyncHttpMarketOrderEvent tmpEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year.json");
         tmpEvent.setServiceStartTime(getClock().getNow(testTimeZone).minusYears(1).toInstant().toEpochMilli());
         tmpEvent.setServiceStopTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(tmpEvent);
 
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_activity.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_activity.json");
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusMonths(3).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
@@ -139,15 +138,15 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTenAndOneYearOrderRefund() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_activity.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_activity.json"));
 
-        SyncHttpMarketServiceCloseEvent event = getOrderRefundEvent("social/dingtalk/order/base_10_1_per_year_refund.json");
+        SyncHttpMarketServiceCloseEvent event = getOrderRefundEvent("enterprise/social/dingtalk/order/base_10_1_per_year_refund.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
 
         SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
@@ -160,19 +159,19 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTenAndOneYearOrderAgain() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         trailEvent.setServiceStartTime(getClock().getNow(testTimeZone).minusYears(1).minusDays(15).toInstant().toEpochMilli());
         trailEvent.setServiceStopTime(getClock().getNow(testTimeZone).minusYears(1).minusDays(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_activity.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_activity.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(getOrderRefundEvent("social/dingtalk/order/base_10_1_per_year_refund.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(getOrderRefundEvent("enterprise/social/dingtalk/order/base_10_1_per_year_refund.json"));
 
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_twice.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_twice.json");
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
@@ -185,19 +184,19 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTwentyAndOneYearOrderUpgrade() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_activity.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_activity.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(getOrderRefundEvent("social/dingtalk/order/base_10_1_per_year_refund.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(getOrderRefundEvent("enterprise/social/dingtalk/order/base_10_1_per_year_refund.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_twice.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_twice.json"));
 
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/base_20_1_per_year_upgrade.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/base_20_1_per_year_upgrade.json");
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
@@ -210,21 +209,21 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTwentyAndOneYearOrderRefund() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("social/dingtalk/order/base_trail.json");
+        SyncHttpMarketOrderEvent trailEvent = getOrderPaidEvent("enterprise/social/dingtalk/order/base_trail.json");
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(trailEvent).getCorpId(), trailEvent.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(trailEvent);
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_activity.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_activity.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(getOrderRefundEvent("social/dingtalk/order/base_10_1_per_year_refund.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(getOrderRefundEvent("enterprise/social/dingtalk/order/base_10_1_per_year_refund.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_10_1_per_year_twice.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_10_1_per_year_twice.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/base_20_1_per_year_upgrade.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/base_20_1_per_year_upgrade.json"));
 
-        SyncHttpMarketServiceCloseEvent event = getOrderRefundEvent("social/dingtalk/order/base_20_1_per_year_upgrade.json");
+        SyncHttpMarketServiceCloseEvent event = getOrderRefundEvent("enterprise/social/dingtalk/order/base_20_1_per_year_upgrade.json");
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderRefundEvent(event);
 
         SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
@@ -237,18 +236,18 @@ public class DingTalkOrderServiceImplTest extends AbstractEnterpriseIntegrationT
     @Test
     public void testPriceTwoHundredAndOneYearOrder() {
         String spaceId = "spc" + IdWorker.get32UUID();
-        SyncHttpMarketOrderEvent event = getOrderPaidEvent("social/dingtalk/order/standard_200_1_per_year.json");
+        SyncHttpMarketOrderEvent event = getOrderPaidEvent("enterprise/social/dingtalk/order/standard_200_1_per_year.json");
         event.setServiceStartTime(getClock().getNow(testTimeZone).toInstant().toEpochMilli());
         event.setServiceStopTime(getClock().getNow(testTimeZone).plusYears(1).toInstant().toEpochMilli());
 
         prepareSocialBindInfo(spaceId, Objects.requireNonNull(event).getCorpId(), event.getSuiteId());
         SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(event);
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/standard_200_3_per_month.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/standard_200_3_per_month.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/standard_200_1_renew_per_year.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/standard_200_1_renew_per_year.json"));
 
-        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("social/dingtalk/order/standard_200_3_renew_per_month.json"));
+        SocialOrderStrategyFactory.getService(SocialPlatformType.DINGTALK).retrieveOrderPaidEvent(getOrderPaidEvent("enterprise/social/dingtalk/order/standard_200_3_renew_per_month.json"));
 
         SubscriptionInfo subscriptionInfo = iSpaceSubscriptionService.getPlanInfoBySpaceId(spaceId);
         Price price = DingTalkPlanConfigManager.getPriceByItemCodeAndMonth(event.getItemCode());

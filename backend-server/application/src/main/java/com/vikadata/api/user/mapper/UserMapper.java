@@ -10,8 +10,8 @@ import org.apache.ibatis.cursor.Cursor;
 
 import com.vikadata.api.space.vo.InviteUserInfo;
 import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.api.user.model.UserInPausedDto;
-import com.vikadata.api.user.model.UserLangDTO;
+import com.vikadata.api.user.dto.UserInPausedDto;
+import com.vikadata.api.user.dto.UserLangDTO;
 
 /**
  * <p>

@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.internal.model.UrlAwareContentsVo;
+import com.vikadata.api.internal.vo.UrlAwareContentsVo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

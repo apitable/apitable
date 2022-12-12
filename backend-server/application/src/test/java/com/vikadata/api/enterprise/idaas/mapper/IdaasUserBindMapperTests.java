@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.idaas.mapper.IdaasUserBindMapper;
 import com.vikadata.entity.IdaasUserBindEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -26,7 +25,7 @@ class IdaasUserBindMapperTests extends AbstractMyBatisMapperTest {
     private IdaasUserBindMapper idaasUserBindMapper;
 
     @Test
-    @Sql("/testdata/idaas-user-bind-data.sql")
+    @Sql("/enterprise/sql/idaas-user-bind-data.sql")
     void selectByUserIdTest() {
         IdaasUserBindEntity entity = idaasUserBindMapper.selectByUserId("us-fd0a293b0c934707ba744682418d2685");
 
@@ -35,7 +34,7 @@ class IdaasUserBindMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/idaas-user-bind-data.sql")
+    @Sql("/enterprise/sql/idaas-user-bind-data.sql")
     void selectAllByUserIdsIgnoreDeletedTest() {
         List<IdaasUserBindEntity> entities = idaasUserBindMapper
                 .selectAllByUserIdsIgnoreDeleted(Collections.singletonList("us-9bf50b5d19554ae597397ead5e9ebb27"));
@@ -44,7 +43,7 @@ class IdaasUserBindMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/idaas-user-bind-data.sql")
+    @Sql("/enterprise/sql/idaas-user-bind-data.sql")
     void selectAllByVikaUserIdsIgnoreDeletedTest() {
         List<IdaasUserBindEntity> entities = idaasUserBindMapper
                 .selectAllByVikaUserIdsIgnoreDeleted(Collections.singletonList(1537680923105239041L));

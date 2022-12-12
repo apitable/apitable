@@ -31,7 +31,7 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     private TemplateAlbumMapper templateAlbumMapper;
 
     @Test
-    @Sql("/testdata/template/album.sql")
+    @Sql("/sql/template/album.sql")
     void selectAllAlbumIdsByI18nName() {
         List<String> notExistedAlbumIds = templateAlbumMapper.selectAllAlbumIdsByI18nName("xxx");
         assertThat(notExistedAlbumIds).isEmpty();
@@ -42,7 +42,7 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/template/album.sql")
+    @Sql("/sql/template/album.sql")
     void selectAlbumVosByAlbumIds() {
         List<AlbumVo> notExistedAlbum = templateAlbumMapper.selectAlbumVosByAlbumIds(Collections.singletonList("alb4uFzSy2vbg"));
         assertThat(notExistedAlbum).isEmpty();
@@ -56,7 +56,7 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/template/album.sql")
+    @Sql("/sql/template/album.sql")
     void selectAlbumVosByI18nNameAndNameLike() {
         List<AlbumVo> albums = templateAlbumMapper.selectAlbumVosByI18nNameAndNameLike("en_US", "a");
         assertThat(albums).isNotEmpty();
@@ -64,14 +64,14 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/template/album.sql")
+    @Sql("/sql/template/album.sql")
     void selectAlbumContentVoByAlbumId() {
         AlbumContentVo album = templateAlbumMapper.selectAlbumContentVoByAlbumId("albSr5vHPgzGG");
         assertThat(album).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/template/album.sql")
+    @Sql("/sql/template/album.sql")
     void selectAllTemplateAlbumDto() {
         List<TemplateAlbumDto> albums = templateAlbumMapper.selectAllTemplateAlbumDto();
         assertThat(albums).isNotEmpty();
@@ -94,7 +94,7 @@ public class TemplateAlbumMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/template/album.sql")
+    @Sql("/sql/template/album.sql")
     void removeByAlbumIds() {
         int count = templateAlbumMapper.removeByAlbumIds(Collections.singletonList("albNXV6wY6mME"), 0L);
         assertThat(count).isEqualTo(1);

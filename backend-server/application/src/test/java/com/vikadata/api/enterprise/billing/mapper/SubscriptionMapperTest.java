@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.vikadata.api.AbstractIntegrationTest;
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.billing.mapper.SubscriptionMapper;
 import com.vikadata.api.enterprise.billing.enums.SubscriptionState;
 import com.vikadata.api.enterprise.billing.enums.ProductCategory;
 
@@ -27,21 +25,21 @@ public class SubscriptionMapperTest extends AbstractMyBatisMapperTest {
     private SubscriptionMapper subscriptionMapper;
 
     @Test
-    @Sql("/testdata/billing-subscription-data.sql")
+    @Sql("/enterprise/sql/billing-subscription-data.sql")
     public void testSelectUnExpireCapacityBySpaceId(){
         String spaceId = "spcSueRmAkuPP";
         assertThat(subscriptionMapper.selectUnExpireCapacityBySpaceId(spaceId, new Page<>(), SubscriptionState.ACTIVATED)).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/billing-subscription-data.sql")
+    @Sql("/enterprise/sql/billing-subscription-data.sql")
     public void testSelectExpireCapacityBySpaceId(){
         String spaceId = "spcSueRmAkuPP";
         assertThat(subscriptionMapper.selectExpireCapacityBySpaceId(spaceId, new Page<>()).getRecords()).isEmpty();
     }
 
     @Test
-    @Sql("/testdata/billing-subscription-data.sql")
+    @Sql("/enterprise/sql/billing-subscription-data.sql")
     public void testSelectUnExpireGiftCapacityBySpaceId(){
         String spaceId = "spcSueRmAkuPP";
         String planId = "capacity_300_MB";
@@ -49,7 +47,7 @@ public class SubscriptionMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/billing-subscription-data.sql")
+    @Sql("/enterprise/sql/billing-subscription-data.sql")
     public void testSelectUnExpireBaseProductBySpaceId(){
         String spaceId = "spcSueRmAkuPP";
         assertThat(subscriptionMapper.selectUnExpireBaseProductBySpaceId(spaceId, SubscriptionState.ACTIVATED, ProductCategory.BASE)).isEqualTo(0);

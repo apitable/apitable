@@ -12,14 +12,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-import com.vikadata.api.internal.model.InternalPermissionRo;
+import com.vikadata.api.internal.ro.InternalPermissionRo;
 import com.vikadata.api.internal.service.IPermissionService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.workspace.vo.DatasheetPermissionView;
 import com.vikadata.api.workspace.service.INodeService;
+import com.vikadata.api.workspace.vo.DatasheetPermissionView;
 import com.vikadata.core.support.ResponseData;
 
 import org.springframework.web.bind.annotation.PathVariable;

@@ -19,7 +19,7 @@ import com.vikadata.api.asset.service.IAssetAuditService;
 import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.asset.vo.AssetUploadResult;
 import com.vikadata.api.asset.vo.AssetsAuditVo;
-import com.vikadata.api.base.enums.AuthException;
+import com.vikadata.api.auth.enums.AuthException;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;

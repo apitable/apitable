@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.social.mapper.SocialCpUserBindMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -23,31 +22,31 @@ public class SocialCpUserBindMapperTest extends AbstractMyBatisMapperTest {
     SocialCpUserBindMapper socialCpUserBindMapper;
 
     @Test
-    @Sql("/testdata/social-cp-user-bind-data.sql")
+    @Sql("/enterprise/sql/social-cp-user-bind-data.sql")
     void testSelectUserIdByCpTenantUserId() {
         Long id = socialCpUserBindMapper.selectUserIdByCpTenantUserId(41L);
         assertThat(id).isEqualTo(41);
     }
     @Test
-    @Sql({ "/testdata/social-cp-tenant-user-data.sql", "/testdata/social-cp-user-bind-data.sql"})
+    @Sql({ "/enterprise/sql/social-cp-tenant-user-data.sql", "/enterprise/sql/social-cp-user-bind-data.sql" })
     void testSelectUserIdByTenantIdAndCpUserId() {
         Long id = socialCpUserBindMapper.selectUserIdByTenantIdAndCpUserId("ww41", "ui41");
         assertThat(id).isEqualTo(41L);
     }
     @Test
-    @Sql({ "/testdata/social-cp-tenant-user-data.sql", "/testdata/social-cp-user-bind-data.sql"})
+    @Sql({ "/enterprise/sql/social-cp-tenant-user-data.sql", "/enterprise/sql/social-cp-user-bind-data.sql" })
     void testSelectOpenIdByTenantIdAndUserId() {
         String cpUserId = socialCpUserBindMapper.selectOpenIdByTenantIdAndUserId("ww41", 41L);
         assertThat(cpUserId).isEqualTo("ui41");
     }
     @Test
-    @Sql({ "/testdata/social-cp-tenant-user-data.sql", "/testdata/social-cp-user-bind-data.sql"})
+    @Sql({ "/enterprise/sql/social-cp-tenant-user-data.sql", "/enterprise/sql/social-cp-user-bind-data.sql" })
     void testCountTenantBindByUserId() {
         Long count = socialCpUserBindMapper.countTenantBindByUserId("ww41", 41L);
         assertThat(count).isEqualTo(1);
     }
     @Test
-    @Sql({"/testdata/social-cp-user-bind-data.sql"})
+    @Sql({ "/enterprise/sql/social-cp-user-bind-data.sql" })
     void testDeleteByUserId() {
         int res = socialCpUserBindMapper.deleteByUserId(41L);
         assertThat(res).isEqualTo(1);

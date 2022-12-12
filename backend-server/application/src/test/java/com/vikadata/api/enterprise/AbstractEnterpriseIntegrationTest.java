@@ -27,6 +27,8 @@ import com.vikadata.api.enterprise.billing.service.IOrderV2Service;
 import com.vikadata.api.enterprise.billing.service.IShopService;
 import com.vikadata.api.enterprise.billing.service.ISpaceSubscriptionService;
 import com.vikadata.api.enterprise.billing.service.ISubscriptionService;
+import com.vikadata.api.enterprise.billing.util.EntitlementChecker;
+import com.vikadata.api.enterprise.billing.util.OrderChecker;
 import com.vikadata.api.enterprise.billing.util.OrderChecker.ExpectedOrderCheck;
 import com.vikadata.api.enterprise.billing.util.OrderUtil;
 import com.vikadata.api.enterprise.billing.util.model.BillingPlanPrice;
@@ -110,6 +112,12 @@ public class AbstractEnterpriseIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     protected IWidgetPackageService iWidgetPackageService;
+
+    @Autowired
+    protected EntitlementChecker entitlementChecker;
+
+    @Autowired
+    protected OrderChecker orderChecker;
 
     protected void autoOrderPayProcessor(Long userId, OrderArguments orderArguments, OffsetDateTime paidTime) {
         String orderId = iOrderV2Service.createOrder(orderArguments);

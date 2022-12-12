@@ -2,7 +2,7 @@ package com.vikadata.api.internal.service;
 
 import java.util.List;
 
-import com.vikadata.api.internal.model.UrlAwareContentsVo;
+import com.vikadata.api.internal.vo.UrlAwareContentsVo;
 
 /**
  * Field related functions

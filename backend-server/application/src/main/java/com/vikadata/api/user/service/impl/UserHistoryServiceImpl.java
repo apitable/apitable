@@ -17,7 +17,7 @@ import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.user.mapper.UserHistoryMapper;
 import com.vikadata.api.user.service.IUserHistoryService;
-import com.vikadata.api.user.model.PausedUserHistoryDto;
+import com.vikadata.api.user.dto.PausedUserHistoryDto;
 import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceEntity;
 import com.vikadata.api.user.entity.UserEntity;

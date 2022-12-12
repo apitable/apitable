@@ -21,7 +21,7 @@ public class AssetAuditMapperTest extends AbstractMyBatisMapperTest {
     AssetAuditMapper assetAuditMapper;
 
     @Test
-    @Sql("/testdata/asset-audit-data.sql")
+    @Sql("/sql/asset-audit-data.sql")
     public void testGetArtificialAssetsAuditList() {
         IPage<AssetsAuditVo> artificialAssetsAuditList = assetAuditMapper.getArtificialAssetsAuditList(new Page<>());
         assertThat(artificialAssetsAuditList).isNotNull();

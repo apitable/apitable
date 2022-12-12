@@ -10,11 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.vikadata.api.base.service.IAuthService;
+import com.vikadata.api.auth.service.IAuthService;
 import com.vikadata.api.client.service.IClientReleaseVersionService;
-import com.vikadata.api.enterprise.TestContextConfiguration;
-import com.vikadata.api.enterprise.billing.util.EntitlementChecker;
-import com.vikadata.api.enterprise.billing.util.OrderChecker;
 import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
 import com.vikadata.api.internal.service.IFieldService;
 import com.vikadata.api.mock.bean.MockInvitation;
@@ -42,7 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +51,6 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(value = {
         "classpath:test.properties",
 }, properties = { "vikadata.test.test-mode=true" })
-@Import(TestContextConfiguration.class)
 public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     /**
@@ -101,12 +96,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected IFieldService fieldService;
-
-    @Autowired
-    protected EntitlementChecker entitlementChecker;
-
-    @Autowired
-    protected OrderChecker orderChecker;
 
     @Autowired
     protected IInvitationService invitationService;

@@ -22,14 +22,14 @@ public class DatasheetWidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/datasheet-widget-data.sql")
+    @Sql("/sql/datasheet-widget-data.sql")
     void testSelectByWidgetId() {
         DatasheetWidgetEntity entity = datasheetWidgetMapper.selectByWidgetId("wi41");
         assertThat(entity).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/datasheet-widget-data.sql")
+    @Sql("/sql/datasheet-widget-data.sql")
     void testSelectDtoByWidgetIds() {
         List<DatasheetWidgetDTO> entities = datasheetWidgetMapper.selectDtoByWidgetIds(CollUtil.newArrayList("wi41"));
         assertThat(entities).isNotEmpty();

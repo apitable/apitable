@@ -6,10 +6,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
-import com.vikadata.api.internal.model.InternalSpaceApiUsageVo;
-import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
-import com.vikadata.api.internal.model.InternalSpaceSubscriptionVo;
-import com.vikadata.api.internal.model.InternalSpaceUsageVo;
+import com.vikadata.api.internal.vo.InternalSpaceApiUsageVo;
+import com.vikadata.api.internal.vo.InternalSpaceCapacityVo;
+import com.vikadata.api.internal.vo.InternalSpaceSubscriptionVo;
+import com.vikadata.api.internal.vo.InternalSpaceUsageVo;
 import com.vikadata.api.internal.service.InternalSpaceService;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;

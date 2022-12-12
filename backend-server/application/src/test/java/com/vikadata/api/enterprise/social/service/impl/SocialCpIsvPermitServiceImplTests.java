@@ -18,8 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.vikadata.api.AbstractIsvTest;
-import com.vikadata.api.enterprise.social.service.impl.SocialCpIsvPermitServiceImpl;
+import com.vikadata.api.enterprise.AbstractIsvTest;
 import com.vikadata.api.enterprise.billing.core.Bundle;
 import com.vikadata.api.enterprise.billing.service.IBundleService;
 import com.vikadata.api.enterprise.social.service.ISocialCpIsvPermitService;

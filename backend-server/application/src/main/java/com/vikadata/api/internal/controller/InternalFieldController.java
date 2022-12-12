@@ -8,8 +8,8 @@ import javax.validation.Valid;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-import com.vikadata.api.internal.model.UrlAwareContentsVo;
-import com.vikadata.api.internal.model.UrlsWrapperRo;
+import com.vikadata.api.internal.vo.UrlAwareContentsVo;
+import com.vikadata.api.internal.ro.UrlsWrapperRo;
 import com.vikadata.api.internal.service.IFieldService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;

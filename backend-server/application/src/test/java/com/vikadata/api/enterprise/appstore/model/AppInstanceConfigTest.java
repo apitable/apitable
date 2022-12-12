@@ -20,7 +20,7 @@ public class AppInstanceConfigTest {
 
     @Test
     public void testLarkConfigFromString() {
-        InputStream inputStream = FileHelper.getInputStreamFromResource("lark_config.json");
+        InputStream inputStream = FileHelper.getInputStreamFromResource("enterprise/lark_config.json");
         String jsonString = IoUtil.read(inputStream, StandardCharsets.UTF_8);
         InstanceConfig config = LarkInstanceConfig.fromJsonString(jsonString);
         assertThat(config).isNotNull();

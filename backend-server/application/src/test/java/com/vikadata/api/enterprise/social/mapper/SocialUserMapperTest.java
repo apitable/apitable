@@ -3,7 +3,6 @@ package com.vikadata.api.enterprise.social.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.social.mapper.SocialUserMapper;
 import com.vikadata.api.enterprise.social.entity.SocialUserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class SocialUserMapperTest extends AbstractMyBatisMapperTest {
     SocialUserMapper socialUserMapper;
 
     @Test
-    @Sql("/testdata/social-user-data.sql")
+    @Sql("/enterprise/sql/social-user-data.sql")
     void testSelectByUnionId() {
         SocialUserEntity entity = socialUserMapper.selectByUnionId("ui41");
         assertThat(entity).isNotNull();

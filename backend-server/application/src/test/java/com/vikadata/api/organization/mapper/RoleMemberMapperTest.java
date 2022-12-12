@@ -24,7 +24,7 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     RoleMemberMapper roleMemberMapper;
 
     @Test
-    @Sql("/testdata/unit-role-member-data.sql")
+    @Sql("/sql/unit-role-member-data.sql")
     void givenTwoRoleMembersWhenSelectUnitRefIdsByRoleIdThenGetTwoMemberIds() {
         Set<Long> memberIds = roleMemberMapper.selectUnitRefIdsByRoleId(20220824L);
         assertThat(memberIds.size()).isEqualTo(2);
@@ -32,7 +32,7 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/unit-role-member-data.sql")
+    @Sql("/sql/unit-role-member-data.sql")
     void givenTwoRoleMembersWhenDeleteByRoleIdAndUnitRefIdsThenGetZeroMemberIds() {
         Integer count = roleMemberMapper.deleteByRoleIdAndUnitRefIds(20220824L, CollUtil.newArrayList(2022082401L, 2022082402L));
         assertThat(count).isEqualTo(2);
@@ -41,7 +41,7 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/unit-role-member-data.sql")
+    @Sql("/sql/unit-role-member-data.sql")
     void givenRoleWithTwoRoleMembersWhenDeleteByRoleIdThenGetZeroMemberIds() {
         Integer count = roleMemberMapper.deleteByRoleId(20220824L);
         assertThat(count).isEqualTo(2);
@@ -50,14 +50,14 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({"/testdata/unit-role-member-data.sql", "/testdata/unit-data.sql"})
+    @Sql({"/sql/unit-role-member-data.sql", "/sql/unit-data.sql"})
     void givenTwoRoleMembersWhenSelectRoleMembersByRoleIdsThenTwoRoleMebers() {
         List<RoleMemberInfoDTO> roleMembers = roleMemberMapper.selectRoleMembersByRoleIds(CollUtil.newArrayList(20220824L));
         assertThat(roleMembers.size()).isEqualTo(2);
     }
 
     @Test
-    @Sql({"/testdata/unit-role-member-data.sql", "/testdata/unit-data.sql"})
+    @Sql({"/sql/unit-role-member-data.sql", "/sql/unit-data.sql"})
     void givenTwoRoleMembersWhenSelectRoleMembersByRoleIdThenPageRecordsEqualsTwo() {
         Page<Void> page = new Page<>();
         IPage<RoleMemberInfoDTO> roleMemberPage = roleMemberMapper.selectRoleMembersByRoleId(20220824L, page);
@@ -65,7 +65,7 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/unit-role-member-data.sql")
+    @Sql("/sql/unit-role-member-data.sql")
     void givenTowRoleMembersWhenDeleteByUnitRefIdsThenSuccess() {
         int count = roleMemberMapper.deleteByUnitRefIds(CollUtil.newArrayList(2022082401L, 2022082402L));
         assertThat(count).isEqualTo(2);
@@ -74,7 +74,7 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/unit-role-member-data.sql")
+    @Sql("/sql/unit-role-member-data.sql")
     void givenTowRoleMembersWhenSelectRoleIdByUnitRefIdsThenGetOneRoleId() {
         List<Long> roleIds = roleMemberMapper.selectRoleIdsByUnitRefId(2022082401L);
         assertThat(roleIds.size()).isEqualTo(1);
@@ -82,7 +82,7 @@ public class RoleMemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({"/testdata/unit-role-member-data.sql", "/testdata/unit-data.sql"})
+    @Sql({"/sql/unit-role-member-data.sql", "/sql/unit-data.sql"})
     void givenTowRoleMembersWhenSelectRoleMembersByRoleIdAndUnitRefIdsThenRoleMembers() {
         List<RoleMemberInfoDTO> roleMembers = roleMemberMapper.selectRoleMembersByRoleIdAndUnitRefIds(20220824L, CollUtil.newArrayList(2022082401L, 2022082402L));
         assertThat(roleMembers.size()).isEqualTo(2);

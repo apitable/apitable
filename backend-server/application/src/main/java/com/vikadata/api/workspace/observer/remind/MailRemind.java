@@ -23,7 +23,7 @@ import com.vikadata.api.shared.component.notification.NotifyMailFactory;
 import com.vikadata.api.shared.component.notification.NotifyMailFactory.MailWithLang;
 import com.vikadata.api.shared.constants.MailPropConstants;
 import com.vikadata.api.shared.util.VikaStrings;
-import com.vikadata.api.user.model.UserLangDTO;
+import com.vikadata.api.user.dto.UserLangDTO;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.observer.remind.NotifyDataSheetMeta.RemindParameter;
 import com.vikadata.core.exception.BusinessException;

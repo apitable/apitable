@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitActivateStatus;
-import com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountMapper;
 import com.vikadata.api.enterprise.social.entity.SocialWecomPermitOrderAccountEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -29,7 +28,7 @@ class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest
     private SocialWecomPermitOrderAccountMapper socialWecomPermitOrderAccountMapper;
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-data.sql")
     void selectByActiveCodesTest() {
         List<SocialWecomPermitOrderAccountEntity> accountEntities = socialWecomPermitOrderAccountMapper
                 .selectByActiveCodes("wwxxx123", "wwcorpx123123", Arrays.asList("ac1", "ac2"));
@@ -37,7 +36,7 @@ class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-data.sql")
     void selectByExpireTimeTest() {
         LocalDateTime expireTime = LocalDateTime.of(2023, 7, 29, 19, 14, 9);
         List<SocialWecomPermitOrderAccountEntity> accountEntities = socialWecomPermitOrderAccountMapper
@@ -46,7 +45,7 @@ class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-data.sql")
     void selectActiveCodesTest() {
         List<String> activeCodes = socialWecomPermitOrderAccountMapper
                 .selectActiveCodes("wwxxx123", "wwcorpx123123", null);
@@ -59,7 +58,7 @@ class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-data.sql")
     void selectActiveCodesByActiveCodesAndStatusTest() {
         List<String> activeCodes = socialWecomPermitOrderAccountMapper
                 .selectActiveCodesByActiveCodesAndStatus("wwxxx123", "wwcorpx123123", Arrays.asList("ac1", "ac2"), null);
@@ -72,7 +71,7 @@ class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-data.sql")
     void selectCpUserIdsByStatusTest() {
         List<String> cpUserIds = socialWecomPermitOrderAccountMapper.selectCpUserIdsByStatus("wwxxx123", "wwcorpx123123",
                 Collections.singletonList(SocialCpIsvPermitActivateStatus.ACTIVATED.getValue()));
@@ -80,7 +79,7 @@ class SocialWecomPermitOrderAccountMapperTests extends AbstractMyBatisMapperTest
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-data.sql")
     void updateActiveStatusByActiveCodesTest() {
         int result = socialWecomPermitOrderAccountMapper
                 .updateActiveStatusByActiveCodes("wwxxx123", "wwcorpx123123", Arrays.asList("ac1", "ac2"),

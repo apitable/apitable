@@ -20,28 +20,28 @@ public class NodeFavoriteMapperTest extends AbstractMyBatisMapperTest {
     NodeFavoriteMapper nodeFavoriteMapper;
 
     @Test
-    @Sql("/testdata/node-favorite-data.sql")
+    @Sql("/sql/node-favorite-data.sql")
     void testSelectOrderNodeIdByMemberId() {
         List<String> ids = nodeFavoriteMapper.selectOrderNodeIdByMemberId(41L);
         assertThat(ids).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/node-favorite-data.sql")
+    @Sql("/sql/node-favorite-data.sql")
     void testSelectNodeIdByMemberId() {
         List<String> ids = nodeFavoriteMapper.selectNodeIdByMemberId(41L);
         assertThat(ids).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/node-favorite-data.sql")
+    @Sql("/sql/node-favorite-data.sql")
     void testCountByMemberIdAndNodeId() {
         Integer count = nodeFavoriteMapper.countByMemberIdAndNodeId(41L, "ni41");
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql("/testdata/node-favorite-data.sql")
+    @Sql("/sql/node-favorite-data.sql")
     void testSelectPreNodeIdByMemberIdAndNodeId() {
         String id = nodeFavoriteMapper.selectPreNodeIdByMemberIdAndNodeId(41L, "ni41");
         assertThat(id).isNull();

@@ -60,19 +60,20 @@ import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.constants.LanguageConstants;
 import com.vikadata.api.shared.constants.NotificationConstants;
 import com.vikadata.api.shared.context.LoginContext;
+import com.vikadata.api.shared.security.PasswordService;
 import com.vikadata.api.shared.sysconfig.notification.NotificationTemplate;
 import com.vikadata.api.shared.util.RandomExtendUtil;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.space.ro.SpaceUpdateOpRo;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.user.dto.UserInPausedDto;
+import com.vikadata.api.user.dto.UserLangDTO;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.entity.UserHistoryEntity;
 import com.vikadata.api.user.enums.UserClosingException;
 import com.vikadata.api.user.enums.UserOperationType;
 import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.api.user.model.UserInPausedDto;
-import com.vikadata.api.user.model.UserLangDTO;
 import com.vikadata.api.user.ro.UserOpRo;
 import com.vikadata.api.user.service.IUserHistoryService;
 import com.vikadata.api.user.service.IUserService;
@@ -82,12 +83,10 @@ import com.vikadata.api.workspace.service.INodeShareService;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
-import com.vikadata.core.util.SpringContextHolder;
 import com.vikadata.core.util.SqlTool;
 import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
@@ -181,6 +180,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Resource
     private UserLinkServiceFacade userLinkServiceFacade;
+
+    @Resource
+    private PasswordService passwordService;
 
     private static final int QUERY_LOCALE_IN_EMAILS_LIMIT = 200;
 
@@ -583,10 +585,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     public void updatePwd(Long id, String password) {
         log.info("Change Password");
-        PasswordEncoder passwordEncoder = SpringContextHolder.getBean(PasswordEncoder.class);
         UserEntity user = UserEntity.builder()
                 .id(id)
-                .password(passwordEncoder.encode(password))
+                .password(passwordService.encode(password))
                 .build();
 
         // Delete Cache

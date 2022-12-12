@@ -19,14 +19,14 @@ public class SpaceApplyMapperTest extends AbstractMyBatisMapperTest {
     SpaceApplyMapper spaceApplyMapper;
 
     @Test
-    @Sql("/testdata/space-apply-data.sql")
+    @Sql("/sql/space-apply-data.sql")
     void testCountBySpaceIdAndCreatedByAndStatus() {
         Integer count = spaceApplyMapper.countBySpaceIdAndCreatedByAndStatus(45L, "spc41", 0);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql({ "/testdata/space-apply-data.sql", "/testdata/player-notification-data.sql" })
+    @Sql({ "/sql/space-apply-data.sql", "/sql/player-notification-data.sql" })
     void testSelectSpaceApplyDto() {
         SpaceApplyDTO entity = spaceApplyMapper.selectSpaceApplyDto(45L, 41L, "assigned_to_group", "\"id\"", "\"status\"");
         assertThat(entity).isNotNull();

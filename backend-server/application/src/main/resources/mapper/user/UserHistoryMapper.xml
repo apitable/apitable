@@ -18,7 +18,7 @@
         WHERE vuh.user_Id = #{userId}
     </update>
 
-    <select id="selectUserHistoryDtos" resultType="com.vikadata.api.user.model.PausedUserHistoryDto">
+    <select id="selectUserHistoryDtos" resultType="com.vikadata.api.user.dto.PausedUserHistoryDto">
         SELECT vuh.user_id, vuh.nick_name, vuh.created_at FROM ${tablePrefix}user_history vuh
         WHERE
         vuh.created_at between #{createdAtBefore} AND #{createdAtAfter}

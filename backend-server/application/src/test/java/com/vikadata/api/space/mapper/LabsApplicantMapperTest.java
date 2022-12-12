@@ -27,21 +27,21 @@ public class LabsApplicantMapperTest extends AbstractMyBatisMapperTest {
     LabsApplicantMapper labsApplicantMapper;
 
     @Test
-    @Sql("/testdata/labs-applicant-data.sql")
+    @Sql("/sql/labs-applicant-data.sql")
     void testSelectUserFeaturesByApplicant() {
         List<String> entities = labsApplicantMapper.selectUserFeaturesByApplicant(CollUtil.newArrayList("spca33AJDEVhL"));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/labs-features-data.sql")
+    @Sql("/sql/labs-features-data.sql")
     void testSelectFeatureKeyByType() {
         List<String> entities = labsApplicantMapper.selectFeatureKeyByType(3);
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/labs-applicant-data.sql")
+    @Sql("/sql/labs-applicant-data.sql")
     void testSelectApplicantAndFeatureKey() {
         LabsApplicantEntity entity = labsApplicantMapper.selectApplicantAndFeatureKey("spca33AJDEVhL", "ROBOT");
         assertThat(entity).isNotNull();

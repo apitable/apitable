@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeCouponMapper;
 import com.vikadata.api.enterprise.vcode.vo.VCodeCouponPageVo;
 import com.vikadata.api.enterprise.vcode.vo.VCodeCouponVo;
 
@@ -29,21 +28,21 @@ public class VCodeCouponMapperTest extends AbstractMyBatisMapperTest {
     VCodeCouponMapper vCodeCouponMapper;
 
     @Test
-    @Sql("/testdata/code-coupon-template-data.sql")
+    @Sql("/enterprise/sql/code-coupon-template-data.sql")
     void testCountById() {
         Integer count = vCodeCouponMapper.countById(41L);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql("/testdata/code-coupon-template-data.sql")
+    @Sql("/enterprise/sql/code-coupon-template-data.sql")
     void testSelectBaseInfo() {
         List<VCodeCouponVo> entities = vCodeCouponMapper.selectBaseInfo("comment");
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/code-coupon-template-data.sql")
+    @Sql("/enterprise/sql/code-coupon-template-data.sql")
     void testSelectDetailInfo() {
         IPage<VCodeCouponPageVo> page = vCodeCouponMapper.selectDetailInfo(new Page(), "comment");
         assertThat(page.getTotal()).isEqualTo(1);

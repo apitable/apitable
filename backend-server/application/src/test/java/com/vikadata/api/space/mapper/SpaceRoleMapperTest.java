@@ -23,16 +23,16 @@ public class SpaceRoleMapperTest extends AbstractMyBatisMapperTest {
     SpaceRoleMapper spaceRoleMapper;
 
     @Test
-    @Sql({ "/testdata/space-member-role-rel-data.sql", "/testdata/space-role-resource-data.sql",
-            "/testdata/space-resource-data.sql", "/testdata/space-resource-group-data.sql",
-            "/testdata/unit-member-data.sql"})
+    @Sql({ "/sql/space-member-role-rel-data.sql", "/sql/space-role-resource-data.sql",
+            "/sql/space-resource-data.sql", "/sql/space-resource-group-data.sql",
+            "/sql/unit-member-data.sql"})
     void testSelectSpaceRolePage() {
         IPage<SpaceRoleVo> page = spaceRoleMapper.selectSpaceRolePage(new Page<>(), "spa41");
         assertThat(page.getTotal()).isEqualTo(1);
     }
 
     @Test
-    @Sql({ "/testdata/space-member-role-rel-data.sql", "/testdata/space-role-resource-rel-data.sql" })
+    @Sql({ "/sql/space-member-role-rel-data.sql", "/sql/space-role-resource-rel-data.sql" })
     void testSelectResourceCodesById() {
         List<String> roles = spaceRoleMapper.selectResourceCodesById(41L);
         assertThat(roles).isNotEmpty();

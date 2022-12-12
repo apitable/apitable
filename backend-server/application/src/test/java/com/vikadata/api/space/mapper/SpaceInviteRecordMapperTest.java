@@ -21,7 +21,7 @@ public class SpaceInviteRecordMapperTest extends AbstractMyBatisMapperTest {
     SpaceInviteRecordMapper spaceInviteRecordMapper;
 
     @Test
-    @Sql("/testdata/space-invite-record-data.sql")
+    @Sql("/sql/space-invite-record-data.sql")
     void testSelectByInviteToken() {
         SpaceInviteRecordEntity entity = spaceInviteRecordMapper.selectByInviteToken("token");
         assertThat(entity).isNotNull();

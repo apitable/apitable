@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import com.vikadata.api.asset.enums.AssetType;
 import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.asset.service.IAssetUploadTokenService;
-import com.vikadata.api.base.enums.AuthException;
+import com.vikadata.api.auth.enums.AuthException;
 import com.vikadata.api.base.model.AssetUploadCertificateRO;
 import com.vikadata.api.base.model.AssetUploadCertificateVO;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;

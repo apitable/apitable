@@ -1,1 +1,0 @@
-INSERT INTO `economic_bundle` (`id`, `space_id`, `bundle_id`, `base_plan_name`, `start_date`, `is_active`, `is_deleted`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES (1498215185375465473, 'spcM36yMRTtJf', '12ac35d4-ed91-44ff-8d04-653e472e4db0', NULL, '2022-02-28 16:35:10', 0, 0, 4, 4, '2022-02-28 16:35:10', '2022-02-28 16:35:10');

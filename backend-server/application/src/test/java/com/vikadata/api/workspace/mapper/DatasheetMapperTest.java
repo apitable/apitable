@@ -17,7 +17,7 @@ public class DatasheetMapperTest extends AbstractMyBatisMapperTest {
     DatasheetMapper datasheetMapper;
 
     @Test
-    @Sql("/testdata/datasheet-data.sql")
+    @Sql("/sql/datasheet-data.sql")
     void testSelectByDstId() {
         DatasheetEntity entity = datasheetMapper.selectByDstId("ni41");
         assertThat(entity).isNotNull();

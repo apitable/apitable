@@ -3,7 +3,6 @@ package com.vikadata.api.enterprise.billing.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.billing.mapper.OrderMapper;
 import com.vikadata.api.enterprise.billing.entity.OrderEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class OrderMapperTest extends AbstractMyBatisMapperTest {
     OrderMapper orderMapper;
 
     @Test
-    @Sql("/testdata/order-data.sql")
+    @Sql("/enterprise/sql/order-data.sql")
     void testSelectByOrderId() {
         OrderEntity entity = orderMapper.selectByOrderId("20220516231241494813");
         assertThat(entity).isNotNull();

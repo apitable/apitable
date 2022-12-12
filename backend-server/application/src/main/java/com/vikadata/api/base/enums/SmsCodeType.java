@@ -3,7 +3,7 @@ package com.vikadata.api.base.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.vikadata.api.shared.security.sms.TencentConstants;
+import com.vikadata.api.shared.captcha.sms.TencentConstants;
 import com.vikadata.core.support.serializer.IBaseEnum;
 
 /**

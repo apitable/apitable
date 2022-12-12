@@ -27,7 +27,7 @@ public class AssetMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     void testInitAssetExist() {
-        InputStream inputStream = FileHelper.getInputStreamFromResource("vika_asset_exclude_row.txt");
+        InputStream inputStream = FileHelper.getInputStreamFromResource("asset_exclude_row.txt");
         List<String> fileUrls = IoUtil.readLines(inputStream, StandardCharsets.UTF_8, new ArrayList<>());
         List<AssetEntity> assetEntities = assetMapper.selectByFileUrl(fileUrls);
         assertThat(assetEntities).isNotEmpty().hasSameSizeAs(fileUrls);
@@ -36,21 +36,21 @@ public class AssetMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/asset-data.sql")
+    @Sql("/sql/asset-data.sql")
     void tstSelectIdByChecksum() {
         AssetEntity assetEntity = assetMapper.selectByChecksum("DekwyNBgUj3Shi1FzCfl1A==");
         assertThat(assetEntity).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/asset-data.sql")
+    @Sql("/sql/asset-data.sql")
     void tstSelectExtensionNameByFileUrl() {
         String extension = assetMapper.selectExtensionNameByFileUrl("space/2022/03/16/8580516060d04644af837c58d48bc341");
         assertThat(extension).isNotBlank();
     }
 
     @Test
-    @Sql("/testdata/asset-data.sql")
+    @Sql("/sql/asset-data.sql")
     void tstSelectChecksumByFileUrl() {
         List<String> fileUrls = Lists.list("space/2022/03/22/cc3737c2aef54d499502f4941ab81841",
                 "space/2022/03/16/8580516060d04644af837c58d48bc341",
@@ -62,7 +62,7 @@ public class AssetMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/asset-data.sql")
+    @Sql("/sql/asset-data.sql")
     void givenUpdatedInfoWhenUpdateAssetThen() {
         AssetEntity assetEntity = AssetEntity.builder()
                 .id(41L)

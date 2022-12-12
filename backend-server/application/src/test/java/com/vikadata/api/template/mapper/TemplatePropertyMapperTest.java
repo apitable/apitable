@@ -29,36 +29,36 @@ public class TemplatePropertyMapperTest extends AbstractMyBatisMapperTest {
     TemplatePropertyMapper templatePropertyMapper;
 
     @Test
-    @Sql("/testdata/template-property-data.sql")
+    @Sql("/sql/template-property-data.sql")
     void testSelectTemplateProperties() {
         List<TemplatePropertyDto> entities = templatePropertyMapper.selectTemplatePropertiesWithI18n("zh_CN");
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/template-property-data.sql")
+    @Sql("/sql/template-property-data.sql")
     void testSelectTemplatePropertiesWithOrder() {
         List<TemplatePropertyDto> entities = templatePropertyMapper.selectTemplatePropertiesWithI18n(null);
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/template-property-data.sql")
+    @Sql("/sql/template-property-data.sql")
     void testSelectIdByCodeAndType() {
         Long id = templatePropertyMapper.selectIdByCodeAndType("property code", 1);
         assertThat(id).isEqualTo(41L);
     }
 
     @Test
-    @Sql({ "/testdata/template-property-data.sql", "/testdata/template-property-rel-data.sql" })
+    @Sql({ "/sql/template-property-data.sql", "/sql/template-property-rel-data.sql" })
     void testSelectPropertiesByTemplateIdsAndType() {
         List<TemplatePropertyRelDto> entities = templatePropertyMapper.selectPropertiesByTemplateIdsAndType(CollUtil.newArrayList("tp41"), 1);
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql({ "/testdata/template-data.sql", "/testdata/template-property-data.sql",
-            "/testdata/template-property-rel-data.sql" })
+    @Sql({ "/sql/template-data.sql", "/sql/template-property-data.sql",
+            "/sql/template-property-rel-data.sql" })
     void testSelectTemplateByPropertyName() {
         List<TemplateKeyWordSearchDto> entities = templatePropertyMapper.selectTemplateByPropertyNameAndLang("name", "zh_CN");
         assertThat(entities).isNotEmpty();

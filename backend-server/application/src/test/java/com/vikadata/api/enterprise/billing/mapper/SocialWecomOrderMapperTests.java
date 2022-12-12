@@ -26,7 +26,7 @@ class SocialWecomOrderMapperTests extends AbstractMyBatisMapperTest {
     private SocialWecomOrderMapper socialWecomOrderMapper;
 
     @Test
-    @Sql("/testdata/social-wecom-order-data.sql")
+    @Sql("/enterprise/sql/social-wecom-order-data.sql")
     void selectAllOrdersTest() {
         // test without orderStatuses
         List<SocialWecomOrderEntity> orderEntities = socialWecomOrderMapper
@@ -43,7 +43,7 @@ class SocialWecomOrderMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/social-wecom-order-data.sql")
+    @Sql("/enterprise/sql/social-wecom-order-data.sql")
     void selectByOrderIdTest() {
         // test not existed
         SocialWecomOrderEntity orderEntity = socialWecomOrderMapper.selectByOrderId("testOrderId");
@@ -54,7 +54,7 @@ class SocialWecomOrderMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/social-wecom-order-data.sql")
+    @Sql("/enterprise/sql/social-wecom-order-data.sql")
     void selectFirstPaidOrderTest() {
         // test not existed
         SocialWecomOrderEntity orderEntity = socialWecomOrderMapper.selectFirstPaidOrder("testSuiteId", "testPaidCorpId1");
@@ -65,7 +65,7 @@ class SocialWecomOrderMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/social-wecom-order-data.sql")
+    @Sql("/enterprise/sql/social-wecom-order-data.sql")
     void selectLastPaidOrderTest() {
         // test not existed
         SocialWecomOrderEntity orderEntity = socialWecomOrderMapper.selectLastPaidOrder("testSuiteId", "testPaidCorpId1");

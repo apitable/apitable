@@ -36,7 +36,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import static com.vikadata.api.base.enums.AuthException.UNAUTHORIZED;
+import static com.vikadata.api.auth.enums.AuthException.UNAUTHORIZED;
 
 
 /**

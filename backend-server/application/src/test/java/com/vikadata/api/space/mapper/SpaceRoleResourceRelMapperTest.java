@@ -19,14 +19,14 @@ public class SpaceRoleResourceRelMapperTest extends AbstractMyBatisMapperTest {
     SpaceRoleResourceRelMapper spaceRoleResourceRelMapper;
 
     @Test
-    @Sql("/testdata/space-role-resource-rel-data.sql")
+    @Sql("/sql/space-role-resource-rel-data.sql")
     void testSelectRoleCodeByResourceCodes() {
         List<String> roles = spaceRoleResourceRelMapper.selectRoleCodeByResourceCodes(CollUtil.newArrayList("MANAGE_WORKBENCH"));
         assertThat(roles).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/space-role-resource-rel-data.sql")
+    @Sql("/sql/space-role-resource-rel-data.sql")
     void testSelectResourceCodesByRoleCode() {
         List<String> resourceCodes = spaceRoleResourceRelMapper.selectResourceCodesByRoleCode("ROLE_SPCWYNIGV7BQF_95D9F5");
         assertThat(resourceCodes).isNotEmpty();

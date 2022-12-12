@@ -45,6 +45,7 @@ import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
 import com.vikadata.api.interfaces.widget.facade.WidgetServiceFacade;
 import com.vikadata.api.interfaces.widget.model.WidgetCopyOption;
+import com.vikadata.api.internal.dto.SimpleDatasheetMetaDTO;
 import com.vikadata.api.organization.entity.TeamMemberRelEntity;
 import com.vikadata.api.organization.entity.UnitEntity;
 import com.vikadata.api.organization.enums.UnitType;
@@ -94,7 +95,6 @@ import com.vikadata.api.workspace.ro.ViewMapRo;
 import com.vikadata.api.workspace.service.IDatasheetMetaService;
 import com.vikadata.api.workspace.service.IDatasheetRecordService;
 import com.vikadata.api.workspace.service.IDatasheetService;
-import com.vikadata.api.workspace.vo.DatasheetMetaVo;
 import com.vikadata.api.workspace.vo.DatasheetRecordMapVo;
 import com.vikadata.api.workspace.vo.DatasheetRecordVo;
 import com.vikadata.core.exception.BusinessException;
@@ -328,7 +328,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
         // Obtain the information of the original node correspondence datasheet.
-        DatasheetMetaVo metaVo = datasheetMetaService.findByDstId(sourceDstId);
+        SimpleDatasheetMetaDTO metaVo = datasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
         // gets the space id of the original node.
         // If it is inconsistent with the space after replication and storage, you need to clear the data related to the member field.
@@ -371,7 +371,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     }
                     else if (ObjectUtil.isNotNull(options) && options.isAddColumn()) {
                         // Determine whether the columns of the associated datasheet exceed the limit.
-                        DatasheetMetaVo meta = datasheetMetaService.findByDstId(foreignDstId);
+                        SimpleDatasheetMetaDTO meta = datasheetMetaService.findByDstId(foreignDstId);
                         MetaMapRo mapRo = meta.getMeta().toBean(MetaMapRo.class);
                         // Check whether the number of columns in the associated datasheet exceeds the 200 column limit
                         ExceptionUtil.isTrue(mapRo.getFieldMap().size() < limitProperties.getMaxColumnCount(), NodeException.LINK_DATASHEET_COLUMN_EXCEED_LIMIT);
@@ -620,7 +620,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         log.info("Delete the field of the specified association datasheet ");
         if (CollUtil.isNotEmpty(linkDstIds)) {
             // get datasheet information
-            DatasheetMetaVo meta = datasheetMetaService.findByDstId(dstId);
+            SimpleDatasheetMetaDTO meta = datasheetMetaService.findByDstId(dstId);
             MetaMapRo metaMapRo = meta.getMeta().toBean(MetaMapRo.class);
             List<String> delFieldIds = new ArrayList<>();
             // find the field id of the associated datasheet
@@ -655,7 +655,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         List<SnapshotDTO> dtoList = new ArrayList<>();
         List<DatasheetMetaDTO> metaList = iDatasheetMetaService.findMetaDtoByDstIds(dstIds);
         if (CollUtil.isNotEmpty(metaList)) {
-            Map<String, String> dstIdToMetaMap = metaList.stream().collect(Collectors.toMap(DatasheetMetaDTO::getDstId, DatasheetMetaDTO::getMetaData));
+            Map<String, String> dstIdToMetaMap = metaList.stream().collect(Collectors.toMap(DatasheetMetaDTO::getDstId, com.vikadata.api.workspace.dto.DatasheetMetaDTO::getMetaData));
             Map<String, JSONObject> dstIdToRecordMapMap = new HashMap<>(dstIdToMetaMap.size());
             if (hasRecordMap) {
                 List<DatasheetRecordMapVo> mapByDstIds = datasheetRecordService.findMapByDstIds(dstIdToMetaMap.keySet());

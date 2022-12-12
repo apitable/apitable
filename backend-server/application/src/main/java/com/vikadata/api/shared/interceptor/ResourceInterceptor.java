@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.shared.constants.ParamsConstants;
 import com.vikadata.api.user.mapper.DeveloperMapper;
-import com.vikadata.api.base.enums.AuthException;
+import com.vikadata.api.auth.enums.AuthException;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
 import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
@@ -29,7 +29,7 @@ import com.vikadata.core.util.HttpContextUtil;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import static com.vikadata.api.base.enums.AuthException.NONE_RESOURCE;
+import static com.vikadata.api.auth.enums.AuthException.NONE_RESOURCE;
 import static com.vikadata.api.space.enums.SpaceException.SPACE_NOT_EXIST;
 
 /**

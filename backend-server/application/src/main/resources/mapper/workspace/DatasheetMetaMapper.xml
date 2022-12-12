@@ -12,7 +12,7 @@
         </foreach>
     </insert>
 
-    <resultMap id="datasheetMetaVo" type="com.vikadata.api.workspace.vo.DatasheetMetaVo">
+    <resultMap id="datasheetMetaVo" type="com.vikadata.api.internal.dto.SimpleDatasheetMetaDTO">
         <result column="meta_data" property="meta" typeHandler="com.vikadata.api.shared.util.ibatis.JsonHandler"/>
     </resultMap>
 

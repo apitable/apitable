@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.social.mapper.SocialUserBindMapper;
 import com.vikadata.api.enterprise.social.entity.SocialUserBindEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class SocialUserBindMapperTest extends AbstractMyBatisMapperTest {
     SocialUserBindMapper socialUserBindMapper;
 
     @Test
-    @Sql("/testdata/social-user-bind-data.sql")
+    @Sql("/enterprise/sql/social-user-bind-data.sql")
     void testSelectUserIdByUnionId() {
         Long id = socialUserBindMapper.selectUserIdByUnionId("ui41");
         assertThat(id).isEqualTo(41L);
@@ -35,7 +34,7 @@ public class SocialUserBindMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/social-user-bind-data.sql")
+    @Sql("/enterprise/sql/social-user-bind-data.sql")
     void testSelectUnionIdByUserId() {
         List<String> ids = socialUserBindMapper.selectUnionIdByUserId(41L);
         assertThat(ids).isNotEmpty();
@@ -43,7 +42,7 @@ public class SocialUserBindMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/social-user-bind-data.sql")
+    @Sql("/enterprise/sql/social-user-bind-data.sql")
     void testSelectByUnionIds() {
         List<SocialUserBindEntity> entities = socialUserBindMapper.selectByUnionIds(CollUtil.newArrayList("ui41"));
         assertThat(entities).isNotEmpty();
@@ -51,7 +50,7 @@ public class SocialUserBindMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/social-user-bind-data.sql", "/testdata/social-tenant-user-data.sql" })
+    @Sql({ "/enterprise/sql/social-user-bind-data.sql", "/enterprise/sql/social-tenant-user-data.sql" })
     void testSelectOpenIdByTenantIdAndUserId() {
         String id = socialUserBindMapper.selectOpenIdByTenantIdAndUserId("ai41", "ww41", 41L);
         assertThat(id).isEqualTo("oi41");

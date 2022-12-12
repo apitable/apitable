@@ -10,6 +10,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import com.vikadata.api.control.infrastructure.ControlIdBuilder.ControlId;
 import com.vikadata.api.control.infrastructure.PrincipalBuilder.Principal;
 import com.vikadata.api.control.infrastructure.exception.UnknownControlTypeException;
 import com.vikadata.api.control.infrastructure.exception.UnknownPrincipalTypeException;
@@ -20,17 +21,16 @@ import com.vikadata.api.control.infrastructure.request.ControlRequestFactory;
 import com.vikadata.api.control.infrastructure.request.FieldControlRequestFactory;
 import com.vikadata.api.control.infrastructure.request.NodeControlRequest;
 import com.vikadata.api.control.infrastructure.request.NodeControlRequestFactory;
-import com.vikadata.api.control.infrastructure.role.FieldEditorRole;
-import com.vikadata.api.control.infrastructure.ControlIdBuilder.ControlId;
 import com.vikadata.api.control.infrastructure.role.ControlRole;
+import com.vikadata.api.control.infrastructure.role.FieldEditorRole;
 import com.vikadata.api.control.infrastructure.role.NodeManagerRole;
+import com.vikadata.api.organization.entity.UnitEntity;
 import com.vikadata.api.organization.enums.UnitType;
 import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.organization.service.ITeamService;
 import com.vikadata.api.organization.service.IUnitService;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.api.organization.entity.UnitEntity;
 
 import org.springframework.stereotype.Component;
 
@@ -111,16 +111,12 @@ public class ControlTemplate {
      * @return true | false
      */
     public boolean hasNodePermission(Long memberId, String nodeId, NodePermission permission) {
-
         ControlRoleDict controlRoleDict = execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeId(nodeId));
         if (controlRoleDict.isEmpty()) {
             return false;
         }
-
         ControlRole controlRole = controlRoleDict.get(nodeId);
-
         return controlRole.hasPermission(permission);
-
     }
 
     public ControlRoleDict fetchNodeRoleByUnitId(Long unitId, String nodeId) {

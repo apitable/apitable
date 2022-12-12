@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.idaas.mapper.IdaasAppMapper;
 import com.vikadata.entity.IdaasAppEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -22,7 +21,7 @@ class IdaasAppMapperTests extends AbstractMyBatisMapperTest {
     private IdaasAppMapper idaasAppMapper;
 
     @Test
-    @Sql("/testdata/idaas-app-data.sql")
+    @Sql("/enterprise/sql/idaas-app-data.sql")
     void selectByClientIdTest() {
         IdaasAppEntity entity = idaasAppMapper.selectByClientId("ai-cf92ca1c0ac24777a0a13ddc0f49a724");
 

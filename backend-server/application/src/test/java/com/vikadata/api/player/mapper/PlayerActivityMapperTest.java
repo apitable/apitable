@@ -21,21 +21,21 @@ public class PlayerActivityMapperTest extends AbstractMyBatisMapperTest {
     PlayerActivityMapper playerActivityMapper;
 
     @Test
-    @Sql("/testdata/player-activity-data.sql")
+    @Sql("/sql/player-activity-data.sql")
     void testSelectActionsByUserId() {
         String action = playerActivityMapper.selectActionsByUserId(41L);
         assertThat(action).isEqualTo("{\"key\": \"value\"}");
     }
 
     @Test
-    @Sql("/testdata/player-activity-data.sql")
+    @Sql("/sql/player-activity-data.sql")
     void testCountByUserId() {
         Integer count = playerActivityMapper.countByUserId(41L);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql("/testdata/player-activity-data.sql")
+    @Sql("/sql/player-activity-data.sql")
     void testSelectActionsVal() {
         Object key = playerActivityMapper.selectActionsVal(41L, "key");
         assertThat(key).isEqualTo("\"value\"");

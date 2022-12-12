@@ -20,7 +20,7 @@ public class TemplatePropertyRelMapperTest extends AbstractMyBatisMapperTest {
     private TemplatePropertyRelMapper templatePropertyRelMapper;
 
     @Test
-    @Sql("/testdata/template-property-rel-data.sql")
+    @Sql("/sql/template-property-rel-data.sql")
     void testSelectTemplateIdsByPropertyIds() {
         List<String> propertyCodes = CollUtil.newArrayList("pc1", "pc2", "pc3");
         List<TemplatePropertyRelDto> templatePropertyRelDtoList = templatePropertyRelMapper.selectTemplateIdsByPropertyIds(propertyCodes);

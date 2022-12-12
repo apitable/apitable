@@ -6,8 +6,8 @@ import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
 import com.vikadata.api.interfaces.billing.model.SubscriptionFeature;
 import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
 import com.vikadata.api.internal.assembler.BillingAssembler;
-import com.vikadata.api.internal.model.InternalSpaceApiUsageVo;
-import com.vikadata.api.internal.model.InternalSpaceSubscriptionVo;
+import com.vikadata.api.internal.vo.InternalSpaceApiUsageVo;
+import com.vikadata.api.internal.vo.InternalSpaceSubscriptionVo;
 import com.vikadata.api.internal.service.InternalSpaceService;
 import com.vikadata.api.space.service.IStaticsService;
 

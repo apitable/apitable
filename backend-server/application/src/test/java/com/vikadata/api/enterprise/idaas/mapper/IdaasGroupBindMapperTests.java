@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.idaas.mapper.IdaasGroupBindMapper;
 import com.vikadata.entity.IdaasGroupBindEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -25,7 +24,7 @@ class IdaasGroupBindMapperTests extends AbstractMyBatisMapperTest {
     private IdaasGroupBindMapper idaasGroupBindMapper;
 
     @Test
-    @Sql("/testdata/idaas-group-bind-data.sql")
+    @Sql("/enterprise/sql/idaas-group-bind-data.sql")
     void selectAllBySpaceIdTest() {
         List<IdaasGroupBindEntity> entities = idaasGroupBindMapper.selectAllBySpaceId("spc6jJS5lX9UJ");
 
@@ -33,7 +32,7 @@ class IdaasGroupBindMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/idaas-group-bind-data.sql")
+    @Sql("/enterprise/sql/idaas-group-bind-data.sql")
     void selectAllBySpaceIdIgnoreDeletedTest() {
         List<IdaasGroupBindEntity> entities = idaasGroupBindMapper.selectAllBySpaceIdIgnoreDeleted("spc6jJS5lX9UJ");
 

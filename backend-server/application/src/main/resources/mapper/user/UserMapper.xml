@@ -148,7 +148,7 @@
         AND vu.email IS NOT NULL
     </select>
 
-    <select id="selectLocaleInEmailsWithDefaultLocale" resultType="com.vikadata.api.user.model.UserLangDTO">
+    <select id="selectLocaleInEmailsWithDefaultLocale" resultType="com.vikadata.api.user.dto.UserLangDTO">
         SELECT id, IFNULL(locale, #{defaultLocale}) as locale, email FROM ${tablePrefix}user
         WHERE email IN
         <foreach collection="emails" item="email" index="index" open="(" close=")" separator=",">
@@ -157,19 +157,19 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectLocaleByEmail" resultType="com.vikadata.api.user.model.UserLangDTO">
+    <select id="selectLocaleByEmail" resultType="com.vikadata.api.user.dto.UserLangDTO">
         SELECT id, locale, email FROM ${tablePrefix}user
         WHERE email = #{email}
         AND is_deleted = 0
     </select>
 
-    <select id="selectLocaleByEmailWithDefaultLocale" resultType="com.vikadata.api.user.model.UserLangDTO">
+    <select id="selectLocaleByEmailWithDefaultLocale" resultType="com.vikadata.api.user.dto.UserLangDTO">
         SELECT id, IFNULL(locale, #{defaultLocale}) as locale, email FROM ${tablePrefix}user
         WHERE email = #{email}
         AND is_deleted = 0
     </select>
 
-    <select id="selectLocaleAndEmailByIds" resultType="com.vikadata.api.user.model.UserLangDTO">
+    <select id="selectLocaleAndEmailByIds" resultType="com.vikadata.api.user.dto.UserLangDTO">
         SELECT id, locale, email FROM ${tablePrefix}user
         WHERE id IN
         <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
@@ -178,7 +178,7 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectPausedUsers" resultType="com.vikadata.api.user.model.UserInPausedDto">
+    <select id="selectPausedUsers" resultType="com.vikadata.api.user.dto.UserInPausedDto">
         SELECT id as user_id FROM ${tablePrefix}user
         WHERE id IN
         <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.social.mapper.SocialCpTenantUserMapper;
 import com.vikadata.api.enterprise.social.model.CpTenantUserDTO;
 import com.vikadata.api.enterprise.social.entity.SocialCpTenantUserEntity;
 
@@ -27,28 +26,28 @@ public class SocialCpTenantUserMapperTest extends AbstractMyBatisMapperTest {
     SocialCpTenantUserMapper socialCpTenantUserMapper;
 
     @Test
-    @Sql("/testdata/social-cp-tenant-user-data.sql")
+    @Sql("/enterprise/sql/social-cp-tenant-user-data.sql")
     void testSelectOpenIdsByTenantId() {
         List<CpTenantUserDTO> entities = socialCpTenantUserMapper.selectOpenIdsByTenantId("ww41", "ai41");
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/social-cp-tenant-user-data.sql")
+    @Sql("/enterprise/sql/social-cp-tenant-user-data.sql")
     void testSelectByTenantIdAndAppIdAndCpUserId() {
         SocialCpTenantUserEntity entity = socialCpTenantUserMapper.selectByTenantIdAndAppIdAndCpUserId("ww41", "ai41", "ui41");
         assertThat(entity).isNotNull();
     }
 
     @Test
-    @Sql({ "/testdata/social-cp-tenant-user-data.sql", "/testdata/social-cp-user-bind-data.sql"})
+    @Sql({ "/enterprise/sql/social-cp-tenant-user-data.sql", "/enterprise/sql/social-cp-user-bind-data.sql" })
     void testSelectByTenantIdAndAppIdAndUserId() {
         SocialCpTenantUserEntity entity = socialCpTenantUserMapper.selectByTenantIdAndAppIdAndUserId("ww41", "ai41", 41L);
         assertThat(entity).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/social-cp-tenant-user-data.sql")
+    @Sql("/enterprise/sql/social-cp-tenant-user-data.sql")
     void testSelectIdByTenantIdAndAppIdAndCpUserId() {
         Long id = socialCpTenantUserMapper.selectIdByTenantIdAndAppIdAndCpUserId("ww41", "ai41", "ui41");
         assertThat(id).isEqualTo(41L);

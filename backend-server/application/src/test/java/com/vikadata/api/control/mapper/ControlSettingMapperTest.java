@@ -25,7 +25,7 @@ public class ControlSettingMapperTest extends AbstractMyBatisMapperTest {
     ControlSettingMapper controlSettingMapper;
 
     @Test
-    @Sql("/testdata/control-setting-data.sql")
+    @Sql("/sql/control-setting-data.sql")
     void testSelectByControlId() {
         ControlSettingEntity entity = controlSettingMapper.selectByControlId("dsto4uywza5GtqbVXC-fldANfgcPuGVS");
         assertThat(entity).isNotNull();
@@ -33,14 +33,14 @@ public class ControlSettingMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/control-setting-data.sql")
+    @Sql("/sql/control-setting-data.sql")
     void testSelectBatchByControlIds() {
         List<ControlSettingEntity> entities = controlSettingMapper.selectBatchByControlIds(CollUtil.newArrayList("dsto4uywza5GtqbVXC-fldANfgcPuGVS"));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/control-setting-data.sql")
+    @Sql("/sql/control-setting-data.sql")
     void test() {
         ControlSettingEntity entity = controlSettingMapper.selectDeletedByControlId("dstYC0guLbv91jawRb-fld4c0bJCN4Cz");
         assertThat(entity).isNotNull();

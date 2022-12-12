@@ -34,7 +34,7 @@ public class OrganizationServiceImplTest extends AbstractIntegrationTest {
     @Disabled
     void testLoadMemberFirstTeams() throws IOException {
         List<Long> teamIds = CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L, 1283285207447699457L);
-        String resourceName = "testdata/orgIsolated-vut-data.sql";
+        String resourceName = "sql/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         jdbcTemplate.execute(sql);

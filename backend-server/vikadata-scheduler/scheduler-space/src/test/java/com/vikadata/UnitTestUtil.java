@@ -85,7 +85,7 @@ public class UnitTestUtil {
     }
 
     private static List<String> getAssetTableExcludeRows() {
-        String resourceName = "vika_asset_exclude_row.txt";
+        String resourceName = "asset_exclude_row.txt";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
         return IoUtil.readUtf8Lines(inputStream, new ArrayList<>());
     }

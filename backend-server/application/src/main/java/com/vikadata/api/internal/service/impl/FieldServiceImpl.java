@@ -20,8 +20,8 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 
-import com.vikadata.api.internal.model.UrlAwareContentVo;
-import com.vikadata.api.internal.model.UrlAwareContentsVo;
+import com.vikadata.api.internal.vo.UrlAwareContentVo;
+import com.vikadata.api.internal.vo.UrlAwareContentsVo;
 import com.vikadata.api.internal.service.IFieldService;
 import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.workspace.service.INodeService;

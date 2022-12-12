@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.vcode.mapper.VCodeUsageMapper;
 import com.vikadata.api.enterprise.vcode.dto.VCodeDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +23,14 @@ public class VCodeUsageMapperTest extends AbstractMyBatisMapperTest {
     VCodeUsageMapper vCodeUsageMapper;
 
     @Test
-    @Sql("/testdata/code-usage-data.sql")
+    @Sql("/enterprise/sql/code-usage-data.sql")
     void testCountByCodeAndType() {
         Integer count = vCodeUsageMapper.countByCodeAndType("41", 0, 41L);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql({ "/testdata/code-usage-data.sql", "/testdata/code-data.sql" })
+    @Sql({ "/enterprise/sql/code-usage-data.sql", "/enterprise/sql/code-data.sql" })
     void testSelectInvitorUserId() {
         VCodeDTO entity = vCodeUsageMapper.selectInvitorUserId(41L);
         assertThat(entity).isNotNull();

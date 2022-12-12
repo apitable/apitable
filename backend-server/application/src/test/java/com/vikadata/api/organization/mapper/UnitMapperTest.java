@@ -19,56 +19,56 @@ public class UnitMapperTest extends AbstractMyBatisMapperTest {
     UnitMapper unitMapper;
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectCountBySpaceIdAndIds() {
         Integer count = unitMapper.selectCountBySpaceIdAndIds("spc41", CollUtil.newArrayList(41L));
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectUnitIdByRefId() {
         Long id = unitMapper.selectUnitIdByRefId(41L);
         assertThat(id).isEqualTo(41L);
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectRefIdById() {
         Long id = unitMapper.selectRefIdById(41L);
         assertThat(41L).isEqualTo(id);
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectByRefId() {
         UnitEntity entity = unitMapper.selectByRefId(41L);
         assertThat(entity).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectIdBySpaceId() {
         List<Long> ids = unitMapper.selectIdBySpaceId("spc41");
         assertThat(ids).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectIdsByRefIds() {
         List<Long> ids = unitMapper.selectIdsByRefIds(CollUtil.newArrayList(41L));
         assertThat(ids).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectByRefIds() {
         List<UnitEntity> entities = unitMapper.selectByRefIds(CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/unit-data.sql")
+    @Sql("/sql/unit-data.sql")
     void testSelectByUnitIds() {
         List<UnitEntity> entities = unitMapper.selectByUnitIds(CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();

@@ -6,7 +6,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.vikadata.api.user.enums.UserOperationType;
-import com.vikadata.api.user.model.PausedUserHistoryDto;
+import com.vikadata.api.user.dto.PausedUserHistoryDto;
 import com.vikadata.api.user.entity.UserEntity;
 import com.vikadata.api.user.entity.UserHistoryEntity;
 

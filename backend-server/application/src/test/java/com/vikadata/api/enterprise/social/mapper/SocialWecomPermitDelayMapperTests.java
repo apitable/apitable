@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import com.vikadata.api.AbstractMyBatisMapperTest;
 import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitDelayProcessStatus;
 import com.vikadata.api.enterprise.social.enums.SocialCpIsvPermitDelayType;
-import com.vikadata.api.enterprise.social.mapper.SocialWecomPermitDelayMapper;
 import com.vikadata.api.enterprise.social.entity.SocialWecomPermitDelayEntity;
 
 import org.springframework.test.context.jdbc.Sql;
@@ -28,7 +27,7 @@ class SocialWecomPermitDelayMapperTests extends AbstractMyBatisMapperTest {
     private SocialWecomPermitDelayMapper socialWecomPermitDelayMapper;
 
     @Test
-    @Sql("/testdata/social-wecom-permit-delay-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-delay-data.sql")
     void selectByProcessStatusesTest() {
         List<SocialWecomPermitDelayEntity> delayEntities = socialWecomPermitDelayMapper.selectByProcessStatuses("wwxxx123", "wwcorpx123123",
                 SocialCpIsvPermitDelayType.NOTIFY_BEFORE_TRIAL_EXPIRED.getValue(),
@@ -37,7 +36,7 @@ class SocialWecomPermitDelayMapperTests extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-delay-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-delay-data.sql")
     void selectBySuiteIdAndProcessStatusTest() {
         List<SocialWecomPermitDelayEntity> delayEntities = socialWecomPermitDelayMapper.selectBySuiteIdAndProcessStatus("wwxxx123",
                 SocialCpIsvPermitDelayProcessStatus.PENDING.getValue(), 1, 1);

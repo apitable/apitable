@@ -27,7 +27,7 @@ import com.apitable.starter.mail.autoconfigure.MailTemplate;
 import com.apitable.starter.mail.core.CloudEmailMessage;
 import com.apitable.starter.mail.core.CloudMailSender;
 import com.vikadata.api.shared.config.properties.EmailSendProperties;
-import com.vikadata.api.shared.security.email.TencentMailTemplate;
+import com.vikadata.api.shared.captcha.email.TencentMailTemplate;
 import com.vikadata.core.util.SpringContextHolder;
 
 import org.springframework.beans.factory.annotation.Autowired;

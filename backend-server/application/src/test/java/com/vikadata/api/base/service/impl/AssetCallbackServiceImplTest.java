@@ -41,7 +41,7 @@ public class AssetCallbackServiceImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testLoadAssetUploadResultUsingDatasheetAsset() {
-        InputStream inputStream = FileHelper.getInputStreamFromResource("testdata/asset-data.sql");
+        InputStream inputStream = FileHelper.getInputStreamFromResource("sql/asset-data.sql");
         String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
         execute(sql);
 

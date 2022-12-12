@@ -22,14 +22,14 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
     SpaceAssetMapper spaceAssetMapper;
 
     @Test
-    @Sql("/testdata/space-asset-data.sql")
+    @Sql("/sql/space-asset-data.sql")
     void testSelectDistinctAssetIdByNodeIdIn() {
         List<Long> assetIds = spaceAssetMapper.selectDistinctAssetIdByNodeIdIn(Collections.singleton("ni41"));
         assertThat(assetIds).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/space-asset-data.sql")
+    @Sql("/sql/space-asset-data.sql")
     void testSelectDto() {
         SpaceAssetDTO entity = spaceAssetMapper.selectDto("spc41", "ni41", 41L);
         assertThat(entity).isNotNull();
@@ -37,7 +37,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/space-asset-data.sql")
+    @Sql("/sql/space-asset-data.sql")
     void testSelectDtoByAssetIdsAndType() {
         List<SpaceAssetDTO> entities = spaceAssetMapper.selectDtoByAssetIdsAndType("spc41", "ni41", 2, CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
@@ -45,7 +45,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/space-asset-data.sql")
+    @Sql("/sql/space-asset-data.sql")
     void testSelectNodeAssetDto() {
         List<NodeAssetDTO> entities = spaceAssetMapper.selectNodeAssetDto(CollUtil.newArrayList("ni41"));
         assertThat(entities).isNotEmpty();
@@ -53,7 +53,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/space-asset-data.sql")
+    @Sql("/sql/space-asset-data.sql")
     void testCountBySpaceIdAndAssetChecksum() {
         Integer count = spaceAssetMapper.countBySpaceIdAndAssetChecksum("spc41", "checksum");
         assertThat(count).isEqualTo(1);
@@ -61,7 +61,7 @@ public class SpaceAssetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/space-asset-data.sql", "/testdata/asset-data.sql" })
+    @Sql({ "/sql/space-asset-data.sql", "/sql/asset-data.sql" })
     void testSelectFileSizeBySpaceId() {
         List<Integer> entities = spaceAssetMapper.selectFileSizeBySpaceId("spc41");
         assertThat(entities).isNotEmpty();

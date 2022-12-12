@@ -25,7 +25,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     private ClientReleaseVersionMapper clientReleaseVersionMapper;
 
     @Test
-    @Sql("/testdata/client-version-data.sql")
+    @Sql("/sql/client-version-data.sql")
     void testSelectClientEntryDetailByVersion() {
         // The version string specification is consistent with the git tag
         String selectReleaseVersion = "v0.12.2-release.2";
@@ -35,7 +35,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/client-version-data.sql")
+    @Sql("/sql/client-version-data.sql")
     void testSelectClientEntryDetailByErrorVersion() {
         // The version string specification is consistent with the git tag
         String selectReleaseVersion = "0.12.3";
@@ -44,7 +44,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/client-version-data.sql")
+    @Sql("/sql/client-version-data.sql")
     void testSelectClientEntryDetailByPipelineId() {
         // Non production environment storage pipeline Id
         VikaVersion selectPipelineVersion = new VikaVersion(0, 0, 0, "feature", 7446);
@@ -54,7 +54,7 @@ class ClientReleaseVersionMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/client-version-data.sql")
+    @Sql("/sql/client-version-data.sql")
     void testSelectClientLatestVersion() {
         long count = SqlHelper.retCount(clientReleaseVersionMapper.selectTotalCount());
         for (long i = 0; i < count; i++) {

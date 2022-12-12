@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration(proxyBeanMethods = false)
 @EnableTransactionManagement
-@MapperScan(basePackages = { "com.vikadata.api.enterprise.*.mapper", "com.vikadata.api.*.mapper"})
+@MapperScan(basePackages = { "com.vikadata.api.enterprise.*.mapper", "com.vikadata.api.*.mapper" })
 @Slf4j
 public class MybatisPlusConfig {
 
@@ -72,6 +72,7 @@ public class MybatisPlusConfig {
             properties.getGlobalConfig().setBanner(false);
             properties.setCheckConfigLocation(true);
             properties.getGlobalConfig().getDbConfig().setUpdateStrategy(FieldStrategy.NOT_EMPTY);
+            properties.setMapperLocations(new String[] { "classpath*:/mapper/**/*.xml", "classpath*:/enterprise/mapper/**/*.xml" });
         };
     }
 

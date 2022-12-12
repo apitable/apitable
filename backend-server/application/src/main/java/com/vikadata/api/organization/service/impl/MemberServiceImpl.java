@@ -87,7 +87,7 @@ import com.vikadata.api.space.mapper.StaticsMapper;
 import com.vikadata.api.space.service.ISpaceRoleService;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.api.user.model.UserLangDTO;
+import com.vikadata.api.user.dto.UserLangDTO;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.workspace.enums.PermissionException;
 import com.vikadata.core.exception.BusinessException;

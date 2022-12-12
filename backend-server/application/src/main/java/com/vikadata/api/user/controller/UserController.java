@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,8 +21,10 @@ import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.enums.ValidateType;
 import com.vikadata.api.base.service.ParamVerificationService;
 import com.vikadata.api.base.service.SensorsService;
+import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.organization.ro.CheckUserEmailRo;
 import com.vikadata.api.organization.ro.UserLinkEmailRo;
+import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.shared.cache.bean.LoginUserDto;
 import com.vikadata.api.shared.cache.bean.UserSpaceDto;
 import com.vikadata.api.shared.cache.service.UserActiveSpaceCacheService;
@@ -30,12 +36,12 @@ import com.vikadata.api.shared.component.scanner.annotation.PostResource;
 import com.vikadata.api.shared.config.properties.ConstProperties;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.shared.security.CodeValidateScope;
-import com.vikadata.api.shared.security.ValidateCodeProcessorManage;
-import com.vikadata.api.shared.security.ValidateCodeType;
-import com.vikadata.api.shared.security.ValidateTarget;
-import com.vikadata.api.shared.security.sms.ISmsService;
-import com.vikadata.api.shared.security.sms.TencentConstants;
+import com.vikadata.api.shared.captcha.CodeValidateScope;
+import com.vikadata.api.shared.captcha.ValidateCodeProcessorManage;
+import com.vikadata.api.shared.captcha.ValidateCodeType;
+import com.vikadata.api.shared.captcha.ValidateTarget;
+import com.vikadata.api.shared.captcha.sms.ISmsService;
+import com.vikadata.api.shared.captcha.sms.TencentConstants;
 import com.vikadata.api.shared.util.StringUtil;
 import com.vikadata.api.shared.util.information.ClientOriginInfo;
 import com.vikadata.api.shared.util.information.InformationUtil;
@@ -52,8 +58,11 @@ import com.vikadata.api.user.ro.UserLabsFeatureRo;
 import com.vikadata.api.user.ro.UserOpRo;
 import com.vikadata.api.user.service.IUserHistoryService;
 import com.vikadata.api.user.service.IUserService;
+import com.vikadata.api.user.vo.UserInfoVo;
+import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.core.support.ResponseData;
 import com.vikadata.core.util.ExceptionUtil;
+import com.vikadata.core.util.HttpContextUtil;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
@@ -123,6 +132,86 @@ public class UserController {
 
     @Resource
     private IUserHistoryService userHistoryService;
+
+    @Resource
+    private INodeService iNodeService;
+
+    @Resource
+    private SocialServiceFacade socialServiceFacade;
+
+    @Resource
+    private IMemberService iMemberService;
+
+    @GetResource(name = "get personal information", path = "/me", requiredPermission = false)
+    @ApiOperation(value = "get personal information", notes = "get personal information", produces =
+            MediaType.APPLICATION_JSON_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "spaceId", value = "space id", dataTypeClass = String.class, paramType = "query", example = "spc8mXUeiXyVo"),
+            @ApiImplicitParam(name = "nodeId", value = "node id", dataTypeClass = String.class, paramType = "query", example = "dstS94qPZFXjC1LKns"),
+            @ApiImplicitParam(name = "filter", value = "whether to filter space related information", defaultValue = "false", dataTypeClass = Boolean.class, paramType = "query", example = "true")
+    })
+    public ResponseData<UserInfoVo> userInfo(@RequestParam(name = "spaceId", required = false) String spaceId,
+            @RequestParam(name = "nodeId", required = false) String nodeId,
+            @RequestParam(name = "filter", required = false, defaultValue = "false") Boolean filter,
+            HttpServletRequest request) {
+        Long userId = SessionContext.getUserId();
+
+        // try to return SpaceId
+        spaceId = tryReturnSpaceId(nodeId, spaceId, userId, request);
+
+        // Get user information
+        UserInfoVo userInfo = iUserService.getCurrentUserInfo(userId, spaceId, filter);
+
+        // Returns the domain name bound to the space station
+        String spaceDomain = returnSpaceDomain(spaceId, userInfo.getSpaceId());
+        userInfo.setSpaceDomain(spaceDomain);
+        return ResponseData.success(userInfo);
+    }
+
+    // Before getting the user information, try to return the Space id first
+    private String tryReturnSpaceId(String nodeId, String spaceId, Long userId, HttpServletRequest request) {
+        if (StrUtil.isNotBlank(nodeId)) {
+            // 1.Use url - NodeId to locate the space and return the bound domain name
+            return iNodeService.getSpaceIdByNodeIdIncludeDeleted(nodeId);
+        }
+        if (StrUtil.isBlank(spaceId)) {
+            // 2.The user does not actively locate the space station behavior - use the current access domain name to locate the space station
+            String remoteHost = HttpContextUtil.getRemoteHost(request);
+            String domainBindSpaceId = socialServiceFacade.getSpaceIdByDomainName(remoteHost);
+            if (StrUtil.isNotBlank(domainBindSpaceId)) {
+                // Exception: The registrant uses an exclusive domain name, and then logs in with an account and password;
+                // Return to the exclusive domain name space station The current registrant does not have permission to operate the space;
+                // At that time, return the last active space ID of the user
+                Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, domainBindSpaceId);
+                if (ObjectUtil.isNull(memberId)) {
+                    // No operation permission, get the last active node of active users
+                    return userActiveSpaceCacheService.getLastActiveSpace(userId);
+                }
+                else {
+                    return domainBindSpaceId;
+                }
+            }
+        }
+        return spaceId;
+    }
+
+    // Return the space station domain name
+    private String returnSpaceDomain(String spaceId, String userSpaceId) {
+        // Returns the domain name information, and returns the public domain name if there is no credential acquisition or search
+        if (StrUtil.isNotBlank(spaceId)) {
+            // 3.If the precondition space id is not empty, return the bound domain name directly
+            return socialServiceFacade.getDomainNameBySpaceId(spaceId, false);
+        }
+        else {
+            // 4.If there is none, operate according to the last active space
+            if (StrUtil.isBlank(userSpaceId)) {
+                return constProperties.defaultServerDomain();
+            }
+            else {
+                return socialServiceFacade.getDomainNameBySpaceId(userSpaceId, false);
+            }
+        }
+    }
 
     @GetResource(name = "Query whether users bind mail", path = "/email/bind", requiredPermission = false)
     @ApiOperation(value = "Query whether users bind mail", notes = "Query whether users bind mail")

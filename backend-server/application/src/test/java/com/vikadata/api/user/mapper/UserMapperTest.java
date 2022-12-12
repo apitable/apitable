@@ -8,9 +8,8 @@ import org.apache.ibatis.cursor.Cursor;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.user.mapper.UserMapper;
-import com.vikadata.api.user.model.UserLangDTO;
-import com.vikadata.api.user.model.UserInPausedDto;
+import com.vikadata.api.user.dto.UserLangDTO;
+import com.vikadata.api.user.dto.UserInPausedDto;
 import com.vikadata.api.user.entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
     UserMapper userMapper;
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectUserNameById() {
         String name = userMapper.selectNickNameById(41L);
         assertThat(name).isEqualTo("41");
@@ -37,7 +36,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectEmailById() {
         String email = userMapper.selectEmailById(41L);
         assertThat(email).isEqualTo("41@vikadata.com");
@@ -45,7 +44,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectIdByMobile() {
         Long id = userMapper.selectIdByMobile("41");
         assertThat(id).isEqualTo(41L);
@@ -53,7 +52,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectByMobile() {
         UserEntity entity = userMapper.selectByMobile("41");
         assertThat(entity).isNotNull();
@@ -61,7 +60,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectByEmail() {
         UserEntity entity = userMapper.selectByEmail("41@vikadata.com");
         assertThat(entity).isNotNull();
@@ -69,7 +68,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectCountByEmail() {
         Integer count = userMapper.selectCountByEmail("41@vikadata.com");
         assertThat(count).isEqualTo(1);
@@ -77,7 +76,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectByEmails() {
         List<UserEntity> entities = userMapper.selectByEmails(CollUtil.newArrayList("41@vikadata.com"));
         assertThat(entities).isNotEmpty();
@@ -85,7 +84,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectIdByUuid() {
         Long id = userMapper.selectIdByUuid("41");
         assertThat(id).isEqualTo(41L);
@@ -93,7 +92,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectIdByUuidList() {
         List<Long> ids = userMapper.selectIdByUuidList(CollUtil.newArrayList("41"));
         assertThat(ids).isNotEmpty();
@@ -101,7 +100,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectUuidById() {
         String uuid = userMapper.selectUuidById(41L);
         assertThat(uuid).isEqualTo("41");
@@ -109,14 +108,14 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectByIds() {
         List<UserEntity> entities = userMapper.selectByIds(CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectByUuIds() {
         List<UserEntity> entities = userMapper.selectByUuIds(CollUtil.newArrayList("23a5f52cd1ee4e6abdc8a77e9b73cdeb"));
         assertThat(entities).isNotEmpty();
@@ -124,7 +123,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectAllUserIdByIgnoreDelete() {
         Cursor<Long> entities = userMapper.selectAllUserIdByIgnoreDelete(false);
         assertThat(entities).isNotEmpty();
@@ -132,7 +131,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectEmailByUserIds() {
         List<String> emails = userMapper.selectEmailByUserIds(CollUtil.newArrayList(41L));
         assertThat(emails).isNotEmpty();
@@ -140,7 +139,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectLocaleInEmailsWithDefaultLocale() {
         List<UserLangDTO> entities = userMapper.selectLocaleInEmailsWithDefaultLocale("zh-CN", CollUtil.newArrayList("41@vikadata.com"));
         assertThat(entities).isNotEmpty();
@@ -148,7 +147,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectLocaleByEmail() {
         UserLangDTO userLangDTO = userMapper.selectLocaleByEmail("41@vikadata.com");
         assertThat(userLangDTO).isNotNull();
@@ -156,7 +155,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectLocaleByEmailWithDefaultLocale() {
         UserLangDTO entity = userMapper.selectLocaleByEmailWithDefaultLocale("zh-CN", "41@vikadata.com");
         assertThat(entity).isNotNull();
@@ -164,7 +163,7 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectLocaleAndEmailByIds() {
         List<UserLangDTO> entities = userMapper.selectLocaleAndEmailByIds(CollUtil.newArrayList(41L));
         assertThat(entities).isNotEmpty();
@@ -172,14 +171,14 @@ public class UserMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectPausedUsers() {
         List<UserInPausedDto> entities = userMapper.selectPausedUsers(CollUtil.newArrayList(45L));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/user-data.sql")
+    @Sql("/sql/user-data.sql")
     void testSelectInviteUserInfoByUserId(){
         Long userId = 41L;
         InviteUserInfo inviteUserInfo = userMapper.selectInviteUserInfoByUserId(userId);

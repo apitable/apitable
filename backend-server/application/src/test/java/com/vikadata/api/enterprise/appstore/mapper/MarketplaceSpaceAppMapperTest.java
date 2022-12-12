@@ -3,7 +3,6 @@ package com.vikadata.api.enterprise.appstore.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.appstore.mapper.MarketplaceSpaceAppMapper;
 import com.vikadata.entity.MarketplaceSpaceAppRelEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class MarketplaceSpaceAppMapperTest extends AbstractMyBatisMapperTest {
     MarketplaceSpaceAppMapper marketPlaceSpaceAppMapper;
 
     @Test
-    @Sql("/testdata/marketplace-space-app-rel-data.sql")
+    @Sql("/enterprise/sql/marketplace-space-app-rel-data.sql")
     void testSelectBySpaceIdAndAppId() {
         MarketplaceSpaceAppRelEntity entity = marketPlaceSpaceAppMapper.selectBySpaceIdAndAppId("spczdmQDfBAn5", "ina5645957505507647");
         assertThat(entity).isNotNull();

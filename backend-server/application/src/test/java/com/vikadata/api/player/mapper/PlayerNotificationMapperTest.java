@@ -27,7 +27,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     PlayerNotificationMapper playerNotificationMapper;
 
     @Test
-    @Sql("/testdata/player-notification-data.sql")
+    @Sql("/sql/player-notification-data.sql")
     void testSelectPlayerNotificationPage() {
         NotificationPageRo notificationPageRo = new NotificationPageRo();
         notificationPageRo.setIsRead(1);
@@ -38,28 +38,28 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/player-notification-data.sql")
+    @Sql("/sql/player-notification-data.sql")
     void testSelectCountByUserIdAndIsRead() {
         Integer count = playerNotificationMapper.selectCountByUserIdAndIsRead(41L, 1);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql("/testdata/player-notification-data.sql")
+    @Sql("/sql/player-notification-data.sql")
     void testSelectTotalCountByUserIds() {
         Integer count = playerNotificationMapper.selectTotalCountByUserId(41L);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql("/testdata/player-notification-data.sql")
+    @Sql("/sql/player-notification-data.sql")
     void testSelectNotifyBodyById() {
         String body = playerNotificationMapper.selectNotifyBodyById(41L);
         assertThat(body).isEqualTo("{\"key\": \"value\"}");
     }
 
     @Test
-    @Sql("/testdata/player-notification-data.sql")
+    @Sql("/sql/player-notification-data.sql")
     void testSelectTotalCountByRoAndToUser() {
         NotificationPageRo notificationPageRo = new NotificationPageRo();
         notificationPageRo.setIsRead(1);
@@ -69,7 +69,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/player-notification-data.sql")
+    @Sql("/sql/player-notification-data.sql")
     void testSelectDtoByTypeAndIsRead() {
         List<NotificationModelDTO> entities = playerNotificationMapper.selectDtoByTypeAndIsRead(41L, 1);
         assertThat(entities).isNotEmpty();

@@ -40,7 +40,7 @@ import com.vikadata.api.asset.service.IAssetAuditService;
 import com.vikadata.api.asset.service.IAssetService;
 import com.vikadata.api.asset.vo.AssetUploadResult;
 import com.vikadata.api.base.enums.ActionException;
-import com.vikadata.api.base.enums.AuthException;
+import com.vikadata.api.auth.enums.AuthException;
 import com.vikadata.api.base.enums.DatabaseException;
 import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.base.service.IDeveloperAssetService;

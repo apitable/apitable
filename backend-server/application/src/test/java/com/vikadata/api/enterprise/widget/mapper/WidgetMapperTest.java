@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.hutool.core.collection.CollUtil;
 
-import com.vikadata.api.enterprise.widget.mapper.WidgetMapper;
 import com.vikadata.api.enterprise.widget.dto.NodeWidgetDto;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
     WidgetMapper widgetMapper;
 
     @Test
-    @Sql("/testdata/widget-data.sql")
+    @Sql("/enterprise/sql/widget-data.sql")
     void testSelectCountBySpaceIdAndWidgetIds() {
         Integer count = widgetMapper.selectCountBySpaceIdAndWidgetIds("spc41", CollUtil.newArrayList("wi41"));
         assertThat(count).isEqualTo(1);
@@ -35,7 +34,7 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/widget-data.sql")
+    @Sql("/enterprise/sql/widget-data.sql")
     void testSelectWidgetBaseInfoByWidgetIds() {
         List<WidgetBaseInfo> entities = widgetMapper.selectWidgetBaseInfoByWidgetIds(CollUtil.newArrayList("wi41"));
         assertThat(entities).isNotEmpty();
@@ -43,8 +42,8 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/widget-data.sql", "/testdata/widget-package-data.sql",
-            "/testdata/datasheet-widget-data.sql", "/testdata/node-data.sql"})
+    @Sql({ "/enterprise/sql/widget-data.sql", "/enterprise/sql/widget-package-data.sql",
+            "/sql/datasheet-widget-data.sql", "/sql/node-data.sql"})
     void testSelectInfoBySpaceIdAndNodeType() {
         List<WidgetInfo> entity = widgetMapper.selectInfoBySpaceIdAndNodeType("spc41", 0);
         assertThat(entity).isNotNull();
@@ -52,8 +51,8 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/widget-package-data.sql", "/testdata/widget-data.sql",
-            "/testdata/datasheet-widget-data.sql", "/testdata/datasheet-data.sql"})
+    @Sql({ "/enterprise/sql/widget-package-data.sql", "/enterprise/sql/widget-data.sql",
+            "/sql/datasheet-widget-data.sql", "/sql/datasheet-data.sql"})
     void testSelectInfoByNodeId() {
         List<WidgetInfo> entities = widgetMapper.selectInfoByNodeId("ni41");
         assertThat(entities).isNotEmpty();
@@ -61,8 +60,8 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/widget-data.sql", "/testdata/node-data.sql",
-            "/testdata/datasheet-widget-data.sql"})
+    @Sql({ "/enterprise/sql/widget-data.sql", "/sql/node-data.sql",
+            "/sql/datasheet-widget-data.sql"})
     void testSelectWidgetDtoByWidgetIds() {
         List<WidgetDTO> entities = widgetMapper.selectWidgetDtoByWidgetIds(CollUtil.newArrayList("wi41"));
         assertThat(entities).isNotEmpty();
@@ -70,7 +69,7 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/widget-data.sql")
+    @Sql("/enterprise/sql/widget-data.sql")
     void testSelectSpaceIdByWidgetIds() {
         List<String> ids = widgetMapper.selectSpaceIdByWidgetIds(CollUtil.newArrayList("wi41"));
         assertThat(ids).isNotEmpty();
@@ -78,7 +77,7 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/widget-data.sql")
+    @Sql("/enterprise/sql/widget-data.sql")
     void testSelectWidgetIdsByNodeId() {
         List<String> ids = widgetMapper.selectWidgetIdsByNodeId("ni41");
         assertThat(ids).isNotEmpty();
@@ -86,15 +85,15 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql({ "/testdata/widget-data.sql", "/testdata/node-data.sql",
-            "/testdata/datasheet-widget-data.sql"})
+    @Sql({ "/enterprise/sql/widget-data.sql", "/sql/node-data.sql",
+            "/sql/datasheet-widget-data.sql"})
     void testSelectDataSourceDstIdsByNodeIds() {
         List<String> ids = widgetMapper.selectDataSourceDstIdsByNodeIds(CollUtil.newArrayList("ni41"));
         assertThat(ids).isNotEmpty();
     }
 
     @Test
-    @Sql({"/testdata/widget-data.sql", "/testdata/datasheet-widget-data.sql"})
+    @Sql({ "/enterprise/sql/widget-data.sql", "/sql/datasheet-widget-data.sql"})
     void testSelectNodeWidgetDtoByNodeIds(){
         List<String>  nodeIds = new ArrayList<>();
         nodeIds.add("ni41");

@@ -23,7 +23,7 @@ public class TemplateAlbumRelMapperTest extends AbstractMyBatisMapperTest {
     private TemplateAlbumRelMapper templateAlbumRelMapper;
 
     @Test
-    @Sql("/testdata/template/album-rel.sql")
+    @Sql("/sql/template/album-rel.sql")
     void selectAlbumIdByRelateIdAndType() {
         List<String> albumIds = templateAlbumRelMapper.selectAlbumIdByRelateIdAndType("tpcE7fyADP99W", TemplateAlbumRelType.TEMPLATE_CATEGORY.getType());
         assertThat(albumIds).isNotEmpty();
@@ -31,7 +31,7 @@ public class TemplateAlbumRelMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/testdata/template/album-rel.sql")
+    @Sql("/sql/template/album-rel.sql")
     void selectRelateIdByAlbumIdAndType() {
         List<String> relateIds = templateAlbumRelMapper.selectRelateIdByAlbumIdAndType("albSr5vHPgzGG", TemplateAlbumRelType.TEMPLATE_CATEGORY.getType());
         assertThat(relateIds).isNotEmpty();

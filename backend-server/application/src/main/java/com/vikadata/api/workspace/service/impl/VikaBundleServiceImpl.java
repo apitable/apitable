@@ -38,33 +38,33 @@ import lombok.extern.slf4j.Slf4j;
 import com.vikadata.api.base.enums.ActionException;
 import com.vikadata.api.base.enums.ParameterException;
 import com.vikadata.api.shared.cache.service.UserSpaceCacheService;
-import com.vikadata.api.workspace.enums.PermissionException;
+import com.vikadata.api.shared.security.PasswordService;
+import com.vikadata.api.shared.util.ExportUtil;
+import com.vikadata.api.shared.util.IdUtil;
+import com.vikadata.api.shared.util.RandomExtendUtil;
 import com.vikadata.api.space.dto.NodeAssetDTO;
-import com.vikadata.api.workspace.ro.DataSheetCreateRo;
-import com.vikadata.api.workspace.ro.MetaMapRo;
-import com.vikadata.api.workspace.ro.SnapshotMapRo;
-import com.vikadata.api.workspace.vo.NodeShareTree;
 import com.vikadata.api.space.mapper.SpaceAssetMapper;
 import com.vikadata.api.space.service.ISpaceAssetService;
-import com.vikadata.api.workspace.mapper.NodeMapper;
 import com.vikadata.api.workspace.dto.Manifest;
 import com.vikadata.api.workspace.dto.NodeDataFile;
 import com.vikadata.api.workspace.dto.NodeFileTree;
+import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.workspace.enums.PermissionException;
+import com.vikadata.api.workspace.mapper.NodeMapper;
+import com.vikadata.api.workspace.ro.DataSheetCreateRo;
+import com.vikadata.api.workspace.ro.MetaMapRo;
+import com.vikadata.api.workspace.ro.SnapshotMapRo;
 import com.vikadata.api.workspace.service.IDatasheetService;
 import com.vikadata.api.workspace.service.INodeDescService;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.VikaBundleService;
-import com.vikadata.api.shared.util.ExportUtil;
-import com.vikadata.api.shared.util.IdUtil;
-import com.vikadata.api.shared.util.RandomExtendUtil;
-import com.vikadata.api.workspace.enums.NodeType;
+import com.vikadata.api.workspace.vo.NodeShareTree;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.support.tree.DefaultTreeBuildFactory;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.NodeDescEntity;
 import com.vikadata.entity.NodeEntity;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,7 +92,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
     private SpaceAssetMapper spaceAssetMapper;
 
     @Resource
-    private PasswordEncoder passwordEncoder;
+    private PasswordService passwordService;
 
     @Resource
     private UserSpaceCacheService userSpaceCacheService;
@@ -149,7 +149,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             // get snapshot
             Map<String, SnapshotMapRo> snapshotMap = iDatasheetService.findSnapshotMapByDstIds(nodeIds, saveData);
             nodeIds.stream().filter(id -> snapshotMap.get(id) != null || nodeIdToDescMap.get(id) != null).forEach(
-                id -> createDataFile(dir, md5, nodeIdToFileNameMap, files, id, snapshotMap.get(id), nodeIdToDescMap.get(id)));
+                    id -> createDataFile(dir, md5, nodeIdToFileNameMap, files, id, snapshotMap.get(id), nodeIdToDescMap.get(id)));
         }
         // build a file tree and generate manifest
         NodeFileTree root = new NodeFileTree(null, nodeId, node.getNodeName(), node.getIcon(), node.getType(), node.getCover(), nodeIdToFileNameMap.get(nodeId));
@@ -157,7 +157,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             List<NodeFileTree> childList = new ArrayList<>();
             childrenList.forEach(share -> {
                 NodeFileTree nodeFileTree = new NodeFileTree(share.getParentId(), share.getNodeId(), share.getNodeName(),
-                    share.getIcon(), share.getType(), share.getCover(), nodeIdToFileNameMap.get(share.getNodeId()));
+                        share.getIcon(), share.getType(), share.getCover(), nodeIdToFileNameMap.get(share.getNodeId()));
                 childList.add(nodeFileTree);
             });
             List<NodeFileTree> treeList = new DefaultTreeBuildFactory<NodeFileTree>(nodeId).doTreeBuild(childList);
@@ -166,7 +166,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
         String version = DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATE_PATTERN);
         Manifest manifest = Manifest.builder().version(version).root(root).build();
         if (StrUtil.isNotBlank(password)) {
-            String pwdEncode = passwordEncoder.encode(password);
+            String pwdEncode = passwordService.encode(password);
             manifest.setEncryption("password");
             manifest.setPassword(pwdEncode);
         }
@@ -181,10 +181,12 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                 zip.closeEntry();
             }
             ExportUtil.exportBytes(IoUtil.readBytes(new FileInputStream(zipFile)),
-                URLEncoder.encode(zipFile.getName(), StandardCharsets.UTF_8.name()), "application/zip");
-        } catch (IOException e) {
+                    URLEncoder.encode(zipFile.getName(), StandardCharsets.UTF_8.name()), "application/zip");
+        }
+        catch (IOException e) {
             log.error("generation bundle failed", e);
-        } finally {
+        }
+        finally {
             FileUtil.del(dir);
         }
     }
@@ -200,7 +202,8 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             String nodeParentId = nodeMapper.selectParentIdByNodeId(preNodeId);
             if (StrUtil.isBlank(parentId)) {
                 parentId = nodeParentId;
-            } else if (!parentId.equals(nodeParentId)) {
+            }
+            else if (!parentId.equals(nodeParentId)) {
                 preNodeId = null;
             }
         }
@@ -223,13 +226,16 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                 }
                 if (MANIFEST.equals(name)) {
                     manifestStr = content.toString();
-                } else if (name.startsWith(ASSET_DIR)) {
+                }
+                else if (name.startsWith(ASSET_DIR)) {
                     assetsContent = content.toString();
-                } else {
+                }
+                else {
                     fileNameToContentMap.put(name, content.toString());
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             log.info("parsing bundle file failed");
             throw new BusinessException(ActionException.FILE_ERROR_CONTENT);
         }
@@ -239,7 +245,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             Manifest manifest = JSONUtil.parseObj(manifestStr).toBean(Manifest.class);
             // verify parsing password
             ExceptionUtil.isTrue(StrUtil.isBlank(manifest.getEncryption()) ||
-                (StrUtil.isNotBlank(password) && passwordEncoder.matches(password, manifest.getPassword())), ActionException.FILE_ERROR_PASSWORD);
+                    (StrUtil.isNotBlank(password) && passwordService.matches(password, manifest.getPassword())), ActionException.FILE_ERROR_PASSWORD);
             // processing file tree
             List<NodeEntity> nodeList = new ArrayList<>();
             Map<String, String> newNodeIdMap = MapUtil.newHashMap();
@@ -270,7 +276,7 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                             List<String> delFieldIds = iDatasheetService.replaceFieldDstId(userId, same, meta, newNodeIdMap);
                             if (!same && CollUtil.isNotEmpty(delFieldIds)) {
                                 snapshot.getRecordMap().values().forEach(recordMapRo ->
-                                    JSONUtil.parseObj(recordMapRo).getJSONObject("data").keySet().removeIf(delFieldIds::contains));
+                                        JSONUtil.parseObj(recordMapRo).getJSONObject("data").keySet().removeIf(delFieldIds::contains));
                             }
                             iDatasheetService.create(userId, spaceId, createRo.getNodeId(), createRo.getName(), meta, snapshot.getRecordMap());
                         }
@@ -290,7 +296,8 @@ public class VikaBundleServiceImpl implements VikaBundleService {
                 List<NodeAssetDTO> list = JSONUtil.parseArray(Base64.decodeStr(assetsContent)).toList(NodeAssetDTO.class);
                 iSpaceAssetService.processNodeAssets(newNodeIdMap, spaceId, list);
             }
-        } catch (JSONException | NullPointerException e) {
+        }
+        catch (JSONException | NullPointerException e) {
             throw new BusinessException(ActionException.FILE_ERROR_CONTENT);
         }
     }
@@ -299,19 +306,19 @@ public class VikaBundleServiceImpl implements VikaBundleService {
         boolean isDst = node.getType() == NodeType.DATASHEET.getNodeType();
         String nodeId = isDst ? IdUtil.createDstId() : IdUtil.createNodeId();
         NodeEntity nodeEntity = NodeEntity.builder()
-            .id(IdWorker.getId())
-            .isTemplate(false)
-            .spaceId(spaceId)
-            .nodeId(nodeId)
-            .nodeName(node.getNodeName())
-            .parentId(parentId)
-            .type(node.getType())
-            .icon(node.getIcon())
-            .preNodeId(preNodeId)
-            .cover(node.getCover())
-            .createdBy(userId)
-            .updatedBy(userId)
-            .build();
+                .id(IdWorker.getId())
+                .isTemplate(false)
+                .spaceId(spaceId)
+                .nodeId(nodeId)
+                .nodeName(node.getNodeName())
+                .parentId(parentId)
+                .type(node.getType())
+                .icon(node.getIcon())
+                .preNodeId(preNodeId)
+                .cover(node.getCover())
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
         nodeList.add(nodeEntity);
         newNodeIdMap.put(node.getNodeId(), nodeId);
         if (isDst || node.getData() != null) {
@@ -321,7 +328,8 @@ public class VikaBundleServiceImpl implements VikaBundleService {
             if (CollUtil.isNotEmpty(roList)) {
                 // Multiple folders describe the same situation and point to the same data file.
                 roList.add(ro);
-            } else {
+            }
+            else {
                 fileNameToNodeMap.put(fileName, CollUtil.newArrayList(ro));
             }
         }

@@ -43,7 +43,7 @@ class IdaasServiceTests extends AbstractIntegrationTest {
 
     @BeforeAll
     static void init() {
-        InputStream inputStream = FileHelper.getInputStreamFromResource("idaas/system_service_account.json");
+        InputStream inputStream = FileHelper.getInputStreamFromResource("enterprise/idaas/system_service_account.json");
         String jsonString = IoUtil.read(inputStream, StandardCharsets.UTF_8);
         systemServiceAccount = JSONUtil.toBean(jsonString, ServiceAccount.class);
     }

@@ -21,21 +21,21 @@ public class DatasheetMetaMapperTest extends AbstractMyBatisMapperTest {
     DatasheetMetaMapper datasheetMetaMapper;
 
     @Test
-    @Sql("/testdata/datasheet-meta-data.sql")
+    @Sql("/sql/datasheet-meta-data.sql")
     void testSelectByDstId() {
         DatasheetSnapshot entity = datasheetMetaMapper.selectByDstId("ni41");
         assertThat(entity).isNotNull();
     }
 
     @Test
-    @Sql("/testdata/datasheet-meta-data.sql")
+    @Sql("/sql/datasheet-meta-data.sql")
     void testSelectDtoByDstIds() {
         List<DatasheetMetaDTO> entities = datasheetMetaMapper.selectDtoByDstIds(CollUtil.newArrayList("ni41"));
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql("/testdata/datasheet-meta-data.sql")
+    @Sql("/sql/datasheet-meta-data.sql")
     void testCountByMetaData() {
         Integer count = datasheetMetaMapper.countByMetaData(CollUtil.newArrayList("ni41"), "view");
         assertThat(count).isEqualTo(1);

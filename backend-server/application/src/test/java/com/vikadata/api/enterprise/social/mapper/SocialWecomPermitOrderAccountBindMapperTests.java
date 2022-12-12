@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.social.mapper.SocialWecomPermitOrderAccountBindMapper;
 
 import org.springframework.test.context.jdbc.Sql;
 
@@ -24,7 +23,7 @@ class SocialWecomPermitOrderAccountBindMapperTests extends AbstractMyBatisMapper
     private SocialWecomPermitOrderAccountBindMapper socialWecomPermitOrderAccountBindMapper;
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-bind-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-bind-data.sql")
     void selectActiveCodesByOrderIdTest() {
         List<String> activeCodes = socialWecomPermitOrderAccountBindMapper
                 .selectActiveCodesByOrderId("order123xxx");
@@ -32,7 +31,7 @@ class SocialWecomPermitOrderAccountBindMapperTests extends AbstractMyBatisMapper
     }
 
     @Test
-    @Sql("/testdata/social-wecom-permit-order-account-bind-data.sql")
+    @Sql("/enterprise/sql/social-wecom-permit-order-account-bind-data.sql")
     void selectCountByOrderIdTest() {
         int count = socialWecomPermitOrderAccountBindMapper.selectCountByOrderId("order123xxx");
         Assertions.assertNotEquals(0, count);

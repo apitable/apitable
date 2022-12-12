@@ -9,7 +9,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 
 import com.vikadata.api.shared.constants.SessionAttrConstants;
-import com.vikadata.api.base.enums.AuthException;
+import com.vikadata.api.auth.enums.AuthException;
 import com.vikadata.api.shared.holder.UserHolder;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.HttpContextUtil;

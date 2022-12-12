@@ -5,10 +5,10 @@ import java.util.List;
 import cn.hutool.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
 
+import com.vikadata.api.internal.dto.SimpleDatasheetMetaDTO;
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
-import com.vikadata.api.workspace.ro.MetaOpRo;
-import com.vikadata.api.workspace.vo.DatasheetMetaVo;
 import com.vikadata.api.workspace.dto.DatasheetSnapshot;
+import com.vikadata.api.workspace.ro.MetaOpRo;
 import com.vikadata.entity.DatasheetMetaEntity;
 
 public interface IDatasheetMetaService {
@@ -22,7 +22,7 @@ public interface IDatasheetMetaService {
      * @param dstId datasheet id
      * @return DatasheetMetaVo
      */
-    DatasheetMetaVo findByDstId(String dstId);
+    SimpleDatasheetMetaDTO findByDstId(String dstId);
 
     /**
      * @param dstIds datasheet ids

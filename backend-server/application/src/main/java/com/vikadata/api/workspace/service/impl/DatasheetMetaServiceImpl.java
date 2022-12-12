@@ -14,13 +14,13 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.workspace.enums.DataSheetException;
+import com.vikadata.api.internal.dto.SimpleDatasheetMetaDTO;
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
-import com.vikadata.api.workspace.ro.MetaOpRo;
-import com.vikadata.api.workspace.vo.DatasheetMetaVo;
-import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
 import com.vikadata.api.workspace.dto.DatasheetSnapshot;
 import com.vikadata.api.workspace.dto.DatasheetSnapshot.View;
+import com.vikadata.api.workspace.enums.DataSheetException;
+import com.vikadata.api.workspace.mapper.DatasheetMetaMapper;
+import com.vikadata.api.workspace.ro.MetaOpRo;
 import com.vikadata.api.workspace.service.IDatasheetMetaService;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.entity.DatasheetMetaEntity;
@@ -44,9 +44,9 @@ public class DatasheetMetaServiceImpl implements IDatasheetMetaService {
     }
 
     @Override
-    public DatasheetMetaVo findByDstId(String dstId) {
+    public SimpleDatasheetMetaDTO findByDstId(String dstId) {
         log.info("Query the datasheet by ID");
-        DatasheetMetaVo meta = datasheetMetaMapper.selectByNodeId(dstId);
+        SimpleDatasheetMetaDTO meta = datasheetMetaMapper.selectByNodeId(dstId);
         ExceptionUtil.isNotNull(meta, DatabaseException.QUERY_EMPTY_BY_ID);
         return meta;
     }

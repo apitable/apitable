@@ -1,7 +1,7 @@
 package com.vikadata.api.internal.service;
 
-import com.vikadata.api.internal.model.InternalSpaceApiUsageVo;
-import com.vikadata.api.internal.model.InternalSpaceSubscriptionVo;
+import com.vikadata.api.internal.vo.InternalSpaceApiUsageVo;
+import com.vikadata.api.internal.vo.InternalSpaceSubscriptionVo;
 
 public interface InternalSpaceService {
 

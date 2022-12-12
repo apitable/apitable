@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-import com.vikadata.api.base.enums.AuthException;
+import com.vikadata.api.auth.enums.AuthException;
 import com.vikadata.api.base.enums.TrackEventType;
 import com.vikadata.api.base.service.SensorsService;
 import com.vikadata.api.control.infrastructure.ControlTemplate;

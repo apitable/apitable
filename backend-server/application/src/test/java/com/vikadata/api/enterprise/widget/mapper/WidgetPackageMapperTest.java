@@ -3,7 +3,6 @@ package com.vikadata.api.enterprise.widget.mapper;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractMyBatisMapperTest;
-import com.vikadata.api.enterprise.widget.mapper.WidgetPackageMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -21,7 +20,7 @@ public class WidgetPackageMapperTest extends AbstractMyBatisMapperTest {
 
 
     @Test
-    @Sql("/testdata/widget-package-data.sql")
+    @Sql("/enterprise/sql/widget-package-data.sql")
     void givenWidgetBodyWhenUpdateWidgetPackageThen() {
         int count = widgetPackageMapper.updateWidgetBodyById(41L, "{}");
         assertThat(count).isEqualTo(1);

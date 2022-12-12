@@ -342,7 +342,7 @@ vikadata-starter:
     enabled: ${PINGPP_ENABLED:true}
     app-id: ${PINGPP_APP_ID:app_z5qTy9TGqPG4j14O}
     api-key: ${PINGPP_APP_KEY:sk_test_yH8erPj1W1eLKKa9KCij9qPK}
-    private-key-path: ${PINGPP_PRIVATE_KEY_PATH:cert/private_key.pem}
+    private-key-path: ${PINGPP_PRIVATE_KEY_PATH:enterprise/cert/private_key.pem}
   idaas:
     enabled: ${IDAAS_ENABLED:true}
     self-hosted: ${IDAAS_SELF_HOSTED:false}

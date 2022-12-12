@@ -6,8 +6,8 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.vikadata.api.internal.dto.SimpleDatasheetMetaDTO;
 import com.vikadata.api.workspace.dto.DatasheetMetaDTO;
-import com.vikadata.api.workspace.vo.DatasheetMetaVo;
 import com.vikadata.api.workspace.dto.DatasheetSnapshot;
 import com.vikadata.entity.DatasheetMetaEntity;
 
@@ -30,8 +30,7 @@ public interface DatasheetMetaMapper extends BaseMapper<DatasheetMetaEntity> {
      * @param dstId datasheet id
      * @return DatasheetMetaVo
      */
-    @Deprecated
-    DatasheetMetaVo selectByNodeId(@Param("dstId") String dstId);
+    SimpleDatasheetMetaDTO selectByNodeId(@Param("dstId") String dstId);
 
     /**
      * @param dstIdList datasheet ids
@@ -65,7 +64,7 @@ public interface DatasheetMetaMapper extends BaseMapper<DatasheetMetaEntity> {
 
     /**
      * the number of nodes that metadata contains  with keywords.
-     * 
+     *
      * @param nodeIds node ids
      * @param keyword keyword
      * @return count

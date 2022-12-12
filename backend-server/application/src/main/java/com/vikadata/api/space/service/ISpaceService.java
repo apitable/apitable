@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.vikadata.api.internal.model.InternalSpaceCapacityVo;
-import com.vikadata.api.internal.model.InternalSpaceUsageVo;
+import com.vikadata.api.internal.vo.InternalSpaceCapacityVo;
+import com.vikadata.api.internal.vo.InternalSpaceUsageVo;
 import com.vikadata.api.space.dto.GetSpaceListFilterCondition;
 import com.vikadata.api.space.dto.SpaceCapacityUsedInfo;
 import com.vikadata.api.space.vo.SpaceGlobalFeature;

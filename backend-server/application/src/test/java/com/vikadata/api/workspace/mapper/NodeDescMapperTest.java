@@ -20,21 +20,21 @@ public class NodeDescMapperTest extends AbstractMyBatisMapperTest {
     NodeDescMapper nodeDescMapper;
 
     @Test
-    @Sql("/testdata/node-desc-data.sql")
+    @Sql("/sql/node-desc-data.sql")
     void testSelectIdByNodeId() {
         Long id = nodeDescMapper.selectIdByNodeId("dstB6QLFlvNsaZLa7Y");
         assertThat(id).isEqualTo(41);
     }
 
     @Test
-    @Sql("/testdata/node-desc-data.sql")
+    @Sql("/sql/node-desc-data.sql")
     void testSelectDescriptionByNodeId() {
         String description = nodeDescMapper.selectDescriptionByNodeId("dstB6QLFlvNsaZLa7Y");
         assertThat(description).isEqualTo("description");
     }
 
     @Test
-    @Sql("/testdata/node-desc-data.sql")
+    @Sql("/sql/node-desc-data.sql")
     void testSelectByNodeIds() {
         List<NodeDescDTO> entities = nodeDescMapper.selectByNodeIds(CollUtil.newArrayList("dstB6QLFlvNsaZLa7Y"));
         assertThat(entities).isNotEmpty();
