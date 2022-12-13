@@ -66,3 +66,4 @@ export const UPLOAD_CALLBACK = 'asset/upload/callback';
 
 // Get EmbedLink Info
 export const EMBED_LINK_INFO = 'embedlinks';
+export const LOAD_OR_SEARCH_EMBED = 'embedlinks/:embedId/org/loadOrSearch';

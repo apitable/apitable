@@ -70,7 +70,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
     } = embedInfo;
 
     const { nodeName, id: nodeId, icon } = nodeInfo;
-    if(embedSetting) {
+    if(theme) {
       dispatch(StoreActions.setTheme(theme));
       setTheme(theme);
       setSystemTheme(SystemTheme.Close);
@@ -95,7 +95,7 @@ const Embed: React.FC<IEmbedProps> = (embedProps) => {
     dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...nodeTree, { nodeId, nodeName, icon: shareNodeIcon }])));
     dispatch(StoreActions.fetchMarketplaceApps(spaceId as string));
 
-    dispatch(StoreActions.setEmbedInfo({ ...embedSetting }));
+    dispatch(StoreActions.setEmbedInfo({ ...embedSetting, spaceId }));
     if (datasheetId) {
       return;
     }

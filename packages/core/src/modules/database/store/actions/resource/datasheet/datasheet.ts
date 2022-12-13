@@ -1,6 +1,6 @@
 import {
   fetchDatasheetPack, fetchForeignDatasheetPack, fetchShareDatasheetPack, fetchShareForeignDatasheetPack, fetchTemplateDatasheetPack,
-  fetchEmbedDatasheetPack
+  fetchEmbedDatasheetPack, fetchEmbedForeignDatasheetPack
 } from '../../../../api/datasheet_api';
 import { StatusCode } from 'config';
 import { Strings, t } from '../../../../../../exports/i18n';
@@ -223,7 +223,7 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
   return (dispatch: any, getState: () => IReduxState) => {
     const state = getState();
     const foreignDatasheet = getDatasheet(state, foreignDstId);
-    const { shareId } = state.pageParams;
+    const { shareId, embedId } = state.pageParams;
     const datasheetLoading = getDatasheetLoading(state, foreignDstId);
 
     if (datasheetLoading) {
@@ -234,6 +234,11 @@ export function fetchForeignDatasheet(resourceId: string, foreignDstId: string, 
     if (shareId) {
       requestMethod = () => fetchShareForeignDatasheetPack(shareId, resourceId, foreignDstId);
     }
+
+    if(embedId) {
+      requestMethod = () => fetchEmbedForeignDatasheetPack(embedId, foreignDstId);
+    }
+
     if (forceFetch || !foreignDatasheet || foreignDatasheet.isPartOfData) {
       dispatch(requestDatasheetPack(foreignDstId));
       return requestMethod(resourceId, foreignDstId).then(response => {

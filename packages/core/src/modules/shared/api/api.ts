@@ -320,6 +320,10 @@ export function loadOrSearch({ filterIds, keyword, names, unitIds, linkId, all, 
   });
 }
 
+export function loadOrSearchEmbed(embedId: string) {
+  return axios.get(urlcat(Url.LOAD_OR_SEARCH_EMBED, { embedId }), { baseURL: nestBaseURL });
+}
+
 /**
  * Search unit(folder/file) info
  *

@@ -12,8 +12,8 @@ store.subscribe(function spaceIdChange() {
   const previousSpaceId = spaceId;
   spaceId = state.space.activeId;
   const shareId = state.pageParams.shareId;
-
-  if (!spaceId || previousSpaceId === spaceId || shareId) {
+  const embedId = state.pageParams.embedId;
+  if (!spaceId || previousSpaceId === spaceId || shareId || embedId) {
     return;
   }
 

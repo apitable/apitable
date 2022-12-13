@@ -11,14 +11,14 @@ store.subscribe(function datasheetIdChange() {
   const state = store.getState();
   const spaceId = state.space.activeId || state.share.spaceId || state.embedInfo.spaceId;
   const { shareId, templateId, embedId } = state.pageParams;
-  if (!spaceId && !shareId && !templateId) {
+  if (!spaceId && !shareId && !templateId && !embedId) {
     return;
   }
   if ((shareId && (!spaceId || !resourceService.instance?.initialized))) {
     return;
   }
 
-  if ((embedId && (!spaceId || !resourceService.instance?.initialized))) {
+  if ((embedId && (!resourceService.instance?.initialized || !state.embedInfo?.spaceId))) {
     return;
   }
 
@@ -55,8 +55,9 @@ store.subscribe(function datasheetIdChange() {
   if (widgetMapKey.length) {
     store.dispatch(StoreActions.resetWidget(widgetMapKey));
   }
-
+ 
   resourceService.instance?.initialized && resourceService.instance?.switchResource({
-    from: previousDatasheetId, to: datasheetId, resourceType: ResourceType.Datasheet,
+    from: previousDatasheetId, to: datasheetId as string, resourceType: ResourceType.Datasheet,
   });
+ 
 });

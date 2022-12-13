@@ -21,17 +21,26 @@ class MemberStash {
     if (this.stashMap.has(cacheId)) {
       return;
     }
+    console.log('this.isEmbedId(cacheId)', this.isEmbedId(cacheId), cacheId);
+    if(this.isEmbedId(cacheId)) {
+      const res = await Api.loadOrSearchEmbed(
+        cacheId
+      );
 
-    const res = await Api.loadOrSearch(
-      {
-        filterIds: '',
-        keyword: '',
-        linkId: this.isShareId(cacheId) ? cacheId : undefined,
-      }
-    );
+      const { data } = res.data;
+      this.stashMap.set(cacheId, data);
+    } else {
+      const res = await Api.loadOrSearch(
+        {
+          filterIds: '',
+          keyword: '',
+          linkId: this.isShareId(cacheId) ? cacheId : undefined,
+        }
+      );
 
-    const { data } = res.data;
-    this.stashMap.set(cacheId, data);
+      const { data } = res.data;
+      this.stashMap.set(cacheId, data);
+    }
   }
 
   public updateStash(member: IUnitValue) {
@@ -59,6 +68,11 @@ class MemberStash {
   private isShareId(id: string) {
     const shareIdReg = /shr\w+/;
     return shareIdReg.test(id);
+  }
+
+  private isEmbedId(id: string) {
+    const embedReg = /emb\w+/;
+    return embedReg.test(id);
   }
 }
 

@@ -89,7 +89,7 @@ function initAxios(store) {
       data,
       message = 'Error',
     } = response.data;
-    const IGNORE_PATH_REG = /^\/(share|template|notify)/;
+    const IGNORE_PATH_REG = /^\/(share|template|notify|embed)/;
     if (
       success && data && response.config.url?.startsWith('/nest/v1/') &&
       !IGNORE_PATH_REG.test(location.pathname)
@@ -129,7 +129,7 @@ function initAxios(store) {
                 (new URLSearchParams(window.location.search)).get('reference')?.toString() : window.location.href;
               store.dispatch(StoreActions.setUserMe(null));
               store.dispatch(StoreActions.setIsLogin(false));
-              Router.redirect(Navigation.LOGIN, { query: { reference } });
+              Router.redirect(Navigation.LOGIN, { query: { reference }});
             },
           });
         }

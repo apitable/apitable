@@ -19,13 +19,16 @@ store.subscribe(function embedIdChange() {
     if (success) {
       // dispatch(StoreActions.setLoading(false));
       const { 
-        payload: embedSetting, 
-        ...embedSpaceInfo 
+        embedInfo, spaceId
       } = data;
-      store.dispatch(StoreActions.setEmbedInfo({ ...embedSetting, spaceId: embedSpaceInfo.spaceId }));
-      resourceService.instance!.destroy();
-      resourceService.instance!.init();
+      const {  
+        payload: embedSetting, 
+      } = embedInfo;
+      store.dispatch(StoreActions.setEmbedInfo({ ...embedSetting, spaceId }));
     }
+    resourceService.instance!.destroy();
+    resourceService.instance!.init();
+
   });
 
   memberStash.loadMemberList(embedId);
