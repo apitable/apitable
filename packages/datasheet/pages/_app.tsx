@@ -60,7 +60,6 @@ import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
-import { getInitialProps } from '../utils/get_initial_props';
 
 const RouterProvider = dynamic(() => import('pc/components/route_manager/router_provider'), { ssr: true });
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
@@ -417,8 +416,6 @@ const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
 
 export default MyApp;
 reportWebVitals();
-
-MyApp.getInitialProps = getInitialProps;
 
 const beforeCapture = (scope: Scope) => {
   scope.setTag('PageCrash', true);
