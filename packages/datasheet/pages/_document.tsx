@@ -34,26 +34,28 @@ class MyDocument extends Document<IClientInfo> {
           <link rel='manifest' href={`${publicRuntimeConfig.staticFolder}/manifest.json`} />
           <script src={`${publicRuntimeConfig.staticFolder}/file/js/browser_check.2.js`} async />
           {/* injection of custom configs of editions, e.g. APITable */}
-          <script src='/custom/custom_config.js' defer/>
+          <script src='/custom/custom_config.js' defer />
         </Head>
         <body>
-          <Main />
-          <NextScript />
-          <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
-          {
-            <Script id='__initialization_data__' strategy={'beforeInteractive'}>
-              {`
-          window.__initialization_data__ = {
-              env: '${env}',
-              version: '${version}',
-              envVars: ${envVars},
-              locale:'${locale}',
-              userInfo: null,
-              wizards: null,
-            };
-          `}
-            </Script>
-          }
+        <Main />
+        <NextScript />
+        {
+          !JSON.parse(envVars).DISABLE_AWSC  && <Script src='https://g.alicdn.com/AWSC/AWSC/awsc.js' strategy={'beforeInteractive'} />
+        }
+        {
+          <Script id='__initialization_data__' strategy={'beforeInteractive'}>
+            {`
+            window.__initialization_data__ = {
+                env: '${env}',
+                version: '${version}',
+                envVars: ${envVars},
+                locale:'${locale}',
+                userInfo: null,
+                wizards: null,
+              };
+            `}
+          </Script>
+        }
         </body>
       </Html>
     );

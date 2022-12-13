@@ -4,8 +4,16 @@ import { store } from 'pc/store';
 
 export const changeView = (viewId: string) => {
   const state = store.getState();
-  const { shareId, datasheetId, templateId, categoryId, mirrorId, recordId, embedId } = state.pageParams;
+  const { shareId, datasheetId, templateId, categoryId, mirrorId, recordId, embedId, nodeId } = state.pageParams;
   const spaceId = state.space.activeId;
+
+  window.parent.postMessage({
+    message: 'changeView', data: {
+      nextViewId: viewId,
+      roomId: nodeId
+    }
+  }, '*');
+
   if (shareId) {
     Router.replace(Navigation.SHARE_SPACE, {
       params: {
@@ -18,7 +26,7 @@ export const changeView = (viewId: string) => {
     });
     return;
   }
-  if(embedId) {
+  if (embedId) {
     Router.replace(Navigation.EMBED_SPACE, {
       params: {
         embedId,
