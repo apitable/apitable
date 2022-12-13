@@ -17,13 +17,14 @@ import styles from './styles.module.less';
 
 (()=>{
   if(!process.env.SSR){
+    const prefix = getEnvVariables().WIDGET_REPO_PREFIX;
     // Register the widget dependency package to window in order for the widget to load properly.
     window['_React'] = React;
     window['_ReactDom'] = ReactDom;
-    window['_@vikadata/components'] = components;
-    window['_@vikadata/widget-sdk'] = widgetSdk;
-    window['_@vikadata/core'] = core;
-    window['_@vikadata/icons'] = icons;
+    window[`_@${prefix}/components`] = components;
+    window[`_@${prefix}/widget-sdk`] = widgetSdk;
+    window[`_@${prefix}/core`] = core;
+    window[`_@${prefix}/icons`] = icons;
   }
 })();
 

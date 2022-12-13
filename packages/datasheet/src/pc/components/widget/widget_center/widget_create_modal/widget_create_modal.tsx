@@ -290,7 +290,11 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
       desc: t(Strings.widget_step_install_desc),
       content: [
         { label: t(Strings.widget_step_install_content_label1), type: 'info' },
-        { label: t(Strings.widget_step_install_content_label2), type: 'info', value: 'npm install -g @vikadata/widget-cli' },
+        {
+          label: t(Strings.widget_step_install_content_label2),
+          type: 'info',
+          value: `npm install -g @${getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL}/widget-cli`
+        },
       ],
       helpLink: getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL
     },
