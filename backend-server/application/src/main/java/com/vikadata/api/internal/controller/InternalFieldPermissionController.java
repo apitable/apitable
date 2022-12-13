@@ -12,25 +12,24 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import com.vikadata.api.control.infrastructure.ControlIdBuilder;
+import com.vikadata.api.control.infrastructure.ControlIdBuilder.ControlId;
+import com.vikadata.api.control.service.IControlService;
 import com.vikadata.api.internal.ro.InternalPermissionRo;
+import com.vikadata.api.organization.service.IMemberService;
+import com.vikadata.api.shared.component.SocketBroadcastFactory;
+import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
 import com.vikadata.api.shared.component.scanner.annotation.GetResource;
 import com.vikadata.api.shared.component.scanner.annotation.PostResource;
-import com.vikadata.api.shared.component.SocketBroadcastFactory;
-import com.vikadata.api.shared.component.TaskManager;
 import com.vikadata.api.shared.context.LoginContext;
 import com.vikadata.api.shared.context.SessionContext;
-import com.vikadata.api.control.infrastructure.ControlIdBuilder;
-import com.vikadata.api.control.infrastructure.ControlIdBuilder.ControlId;
-import com.vikadata.api.workspace.vo.FieldPermissionView;
-import com.vikadata.api.control.service.IControlService;
-import com.vikadata.api.organization.service.IMemberService;
 import com.vikadata.api.workspace.service.IFieldRoleService;
 import com.vikadata.api.workspace.service.INodeService;
 import com.vikadata.api.workspace.service.INodeShareSettingService;
-import com.vikadata.api.shared.validator.NodeMatch;
+import com.vikadata.api.workspace.vo.FieldPermissionView;
 import com.vikadata.core.support.ResponseData;
-
+import com.vikadata.api.shared.validator.NodeMatch;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,9 +113,14 @@ public class InternalFieldPermissionController {
         String shareId = data.getShareId();
         // get space id
         String spaceId = iNodeService.getSpaceIdByNodeIds(existNodeIds);
+        String userId = data.getUserId();
         // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
-        Long userId = StrUtil.isNotBlank(shareId) ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : SessionContext.getUserId();
-        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+        if (StrUtil.isBlank(userId)) {
+            // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
+            userId = StrUtil.isNotBlank(shareId) ? StrUtil.toString(iNodeShareSettingService.getUpdatedByByShareId(shareId)) :
+                    SessionContext.getUserId().toString();
+        }
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(Long.parseLong(userId), spaceId);
         // get field permissions for all nodes
         List<FieldPermissionView> views = new ArrayList<>();
         for (String nodeId : existNodeIds) {

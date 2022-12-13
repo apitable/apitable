@@ -1,15 +1,35 @@
 import { IRemoteChangeset } from 'engine/ot';
 import { FillDirection, ICell, ICellValue, IFieldRanges, IRange, IRecordRanges, StatType } from 'model';
-import { 
-  CellType, GalleryStyleKeyType, IUnitValue, IUserValue, LayoutType, RowHeightLevel, ViewType, WhyRecordMoveType 
-} from '../../../../../../exports/store';
-import { CalendarColorType, CalendarStyleKeyType, GanttColorType, GanttStyleKeyType, OrgChartStyleKeyType } from '../../../../../shared/store/constants';
 import { IField, IStandardValue } from 'types/field_types';
 import { IFilterInfo, IGroupInfo, ISortedField, ISortInfo } from 'types/view_types';
+import {
+  CellType,
+  GalleryStyleKeyType,
+  IUnitValue,
+  IUserValue,
+  LayoutType,
+  RowHeightLevel,
+  ViewType,
+  WhyRecordMoveType,
+} from '../../../../../../exports/store';
 import * as actions from '../../../../../shared/store/action_constants';
+import {
+  CalendarColorType,
+  CalendarStyleKeyType,
+  GanttColorType,
+  GanttStyleKeyType,
+  OrgChartStyleKeyType,
+} from '../../../../../shared/store/constants';
 import { IPermissions, Role } from '../../../../../space/store/interfaces/catalog_tree';
 import {
-  ICalendarViewStatus, IGanttViewStatus, IGridViewActiveFieldState, IGridViewDragState, IKanbanViewStatus, IOrgChartViewStatus, ISearchResult, IWidgetPanelStatus
+  ICalendarViewStatus,
+  IGanttViewStatus,
+  IGridViewActiveFieldState,
+  IGridViewDragState,
+  IKanbanViewStatus,
+  IOrgChartViewStatus,
+  ISearchResult,
+  IWidgetPanelStatus,
 } from './client';
 
 export interface ISnapshot {
@@ -19,12 +39,12 @@ export interface ISnapshot {
 }
 
 /**
- * 
+ *
  * the minium context snapshot that use the part of table cells.
- * 
+ *
  * fieldMap, it can pass by less data. 1 or more, no need to contain the full datasheet's fields.
  * recordMap, it can pass by less data. 1 or more, no need to contains the full of datasheet's records.
- * 
+ *
  */
 export interface IRecordSnapshot {
   meta: { fieldMap: IFieldMap };
@@ -82,7 +102,7 @@ export interface IFieldExtraMap {
 
 export interface IRecordMeta {
   fieldUpdatedMap?: IFieldUpdatedMap;
-  fieldExtraMap?: IFieldExtraMap,
+  fieldExtraMap?: IFieldExtraMap;
   createdAt?: Date | number;
   updatedAt?: Date | number;
   createdBy?: string;
@@ -96,7 +116,7 @@ export interface IRecord {
   id: string;
 
   /**
-   * 
+   *
    * the data inside the record
    * only the record's some fields with content, `data` will contains the field's fieldId key
    */
@@ -104,7 +124,7 @@ export interface IRecord {
 
   /**
    * the number of records' comments
-   * 
+   *
    * @type {number}
    */
   commentCount: number;
@@ -132,24 +152,24 @@ export interface IRecord {
   /**
    * this array saves the original operation's revisions.
    * the index of array is current record's revision.
-   * 
+   *
    * this field is designed for the feature "change history"
-   * 
+   *
    * every datasheet's modification will produce a new changeset, which maps to on revision(modification version number)
-   * 
+   *
    * for example:
    * - I modify the row `1`, revision `1`
    * - I modify the row `2`, revision `2`
    * - I modify the row `1` again, revision `3`
    * so, the row `1` record's revisionHistory array is [1, 3]
    * the row `2` record's revisionHistory array is [2]
-   * 
+   *
    * when user mouse click and expand the row records `1`, system will read revisionHistory array [1, 3], and get the specified changesets.
    * then show the changeset result on the comments UI panel area.
-   * 
+   *
    * server's storage and broadcast revision must assign the field.
    * client's record don't need this field.
-   * 
+   *
    */
   revisionHistory?: number[];
 
@@ -200,7 +220,6 @@ export interface IComments {
 }
 
 export interface ICommentMsg {
-
   /**
    * editor type
    * @type {string}
@@ -220,7 +239,7 @@ export interface ICommentMsg {
   html: string;
 
   /**
-   * replies for the comment 
+   * replies for the comment
    * @type {any}
    */
   reply?: any;
@@ -230,7 +249,7 @@ export interface ICommentMsg {
    * @type {any}
    */
   emojis?: {
-    [emojiKey: string]: string[]
+    [emojiKey: string]: string[];
   };
 }
 
@@ -283,33 +302,33 @@ export interface IDatasheetState extends INodeMeta {
   snapshot: ISnapshot;
 
   /**
-   * 
+   *
    * whether the current datasheet is partial loaded. (includes only part of data)
    * also can be used to judge whether the current datasheet is loaded by a related datasheet.
-   * 
+   *
    * When we load related-field's data, we can only load the related-datasheet's records(rows) that related to the current datasheet.
    */
   isPartOfData?: boolean;
 
   /**
    * the field to indicate the data source of datasheet.
-   * 
+   *
    * if you just open datasheet and load it, it will not have `sourceId`.
-   * 
+   *
    * this field is used for feature "form". when the related data loaded, it will not affect the next open datasheet's permission and data
-   * when this field is not empty (`sourceId` exists), it means this data is not loaded by original datasheet 
+   * when this field is not empty (`sourceId` exists), it means this data is not loaded by original datasheet
    * so, after open the original datasheet, it will reload all relevant data.
-   * 
+   *
    */
   sourceId?: string;
 
   /**
    * a flag for whether current datasheet is a preview data that rolling back from time machine.
    * and show the current preview of version number.
-   * 
+   *
    * OPTIMIZE: the field is a number.
    */
-  
+
   preview?: string;
 }
 
@@ -318,7 +337,7 @@ export interface ILoadingRecord {
 }
 
 export interface IActiveUpdateRowInfo {
-  type: WhyRecordMoveType.UpdateRecord,
+  type: WhyRecordMoveType.UpdateRecord;
   positionInfo: {
     fieldId: string;
     recordId: string;
@@ -329,7 +348,7 @@ export interface IActiveUpdateRowInfo {
 }
 
 export interface IActiveNewRowInfo {
-  type: WhyRecordMoveType.NewRecord,
+  type: WhyRecordMoveType.NewRecord;
   positionInfo: {
     recordId: string;
     visibleRowIndex: number;
@@ -346,7 +365,7 @@ export interface IDatasheetClientState {
   /**
    * the states of grouping collapsed.
    */
-  groupingCollapseIds?: string[]; 
+  groupingCollapseIds?: string[];
   kanbanGroupCollapse?: string[];
   gridViewDragState: IGridViewDragState;
   gridViewActiveFieldState: IGridViewActiveFieldState;
@@ -376,7 +395,7 @@ export interface INetworking {
   /**
    * the loading state of datasheet's data.
    */
-  loading: boolean; 
+  loading: boolean;
   connected: boolean;
   syncing: boolean;
   errorCode?: number | null;
@@ -402,17 +421,17 @@ export interface IDatasheetPack {
   /**
    * the loading state of datasheet's data
    */
-  loading: boolean; 
+  loading: boolean;
 
   /**
-   * 
+   *
    * whether datasheet connected?
-   * 
+   *
    * the difference between `datasheet connected` and `space connected` is that,
    * if datasheet connected, then we can be sure that datasheet is watched successfully.
-   * 
+   *
    * but, `space connected`, only means the `socket.io` is connected.
-   * 
+   *
    */
   connected: boolean;
   syncing: boolean;
@@ -455,6 +474,12 @@ export interface IFieldPermissionMap {
   [fieldId: string]: IFieldPermissionInfo;
 }
 
+export interface IDatasheetFieldPermission {
+  nodeId: string;
+  datasheetId: string;
+  fieldPermissionMap: IFieldPermissionMap;
+}
+
 /**
  * the basic data structure of datasheet
  */
@@ -489,9 +514,7 @@ export interface IViewPack {
 /**
  * the data structure from server-side datasheet pack.
  */
-export type IServerDatasheetPack = IBaseDatasheetPack &
-  IForeignDatasheetMap &
-  IDatasheetUnits;
+export type IServerDatasheetPack = IBaseDatasheetPack & IForeignDatasheetMap & IDatasheetUnits;
 
 /**
  * the data structure comes from the server's getRecords API
@@ -581,7 +604,7 @@ export interface ICalendarViewStyle {
   endFieldId: string;
   isColNameVisible: boolean;
   colorOption: {
-    type: GanttColorType,
+    type: GanttColorType;
     fieldId: string;
     color: number;
   };
@@ -603,7 +626,7 @@ export interface IGalleryViewStyle {
   /**
    * if true, cardCount will invalid.
    */
-  isAutoLayout: boolean; 
+  isAutoLayout: boolean;
   cardCount: number;
   coverFieldId?: string;
   isCoverFit: boolean;
@@ -629,7 +652,7 @@ export interface IGanttViewStyle {
   startFieldId: string;
   endFieldId: string;
   colorOption: {
-    type: GanttColorType,
+    type: GanttColorType;
     fieldId: string;
     color: number;
   };
@@ -672,16 +695,16 @@ export type IKanbanStyle = Pick<IGalleryViewStyle, 'coverFieldId' | 'isCoverFit'
 export interface IOrgChartViewProperty extends IViewPropertyBase {
   type: ViewType.OrgChart;
   groupInfo?: IGroupInfo;
-  style: IOrgChartViewStyle,
+  style: IOrgChartViewStyle;
 }
 
 export type IViewProperty =
-  IGridViewProperty |
-  IGalleryViewProperty |
-  IKanbanViewProperty |
-  IGanttViewProperty |
-  ICalendarViewProperty |
-  IOrgChartViewProperty;
+  | IGridViewProperty
+  | IGalleryViewProperty
+  | IKanbanViewProperty
+  | IGanttViewProperty
+  | ICalendarViewProperty
+  | IOrgChartViewProperty;
 
 export interface IPageParams {
   // type: PageType;
@@ -943,11 +966,7 @@ export type ILinearRowRecord = ILinearRowBase & {
   displayIndex: number;
 };
 
-export type ILinearRow =
-  | ILinearRowBlank
-  | ILinearRowAdd
-  | ILinearRowGroupTab
-  | ILinearRowRecord;
+export type ILinearRow = ILinearRowBlank | ILinearRowAdd | ILinearRowGroupTab | ILinearRowRecord;
 
 interface ISetGalleryStyleBase {
   viewId: string;
@@ -983,9 +1002,13 @@ interface ISetGalleryStyleIsAutoLayout extends ISetGalleryStyleBase {
   styleValue: boolean;
 }
 
-export type ISetGalleryStyle = ISetGalleryStyleLayoutType | ISetGalleryStyleCardCount |
-  ISetGalleryStyleCoverFieldId | ISetGalleryStyleIsCoverFit | ISetGalleryStyleIsColNameVisible |
-  ISetGalleryStyleIsAutoLayout;
+export type ISetGalleryStyle =
+  | ISetGalleryStyleLayoutType
+  | ISetGalleryStyleCardCount
+  | ISetGalleryStyleCoverFieldId
+  | ISetGalleryStyleIsCoverFit
+  | ISetGalleryStyleIsColNameVisible
+  | ISetGalleryStyleIsAutoLayout;
 
 interface ISetGanttStyleColorOption {
   styleKey: GanttStyleKeyType.ColorOption;
@@ -1025,8 +1048,14 @@ interface ISetGanttStyAutoTaskLayout {
   styleValue: boolean;
 }
 
-export type ISetGanttStyle = ISetGanttStyleColorOption | ISetGanttStyleStartFieldId | ISetGanttStyAutoTaskLayout |
-  ISetGanttStyleEndFieldId | ISetGanttStyleWorkDays | ISetGanttStyleOnlyCalcWorkDay | ISetGanttStyleLinkFieldId;
+export type ISetGanttStyle =
+  | ISetGanttStyleColorOption
+  | ISetGanttStyleStartFieldId
+  | ISetGanttStyAutoTaskLayout
+  | ISetGanttStyleEndFieldId
+  | ISetGanttStyleWorkDays
+  | ISetGanttStyleOnlyCalcWorkDay
+  | ISetGanttStyleLinkFieldId;
 
 interface ISetCalendarStyleColorOption {
   styleKey: CalendarStyleKeyType.ColorOption;
@@ -1051,8 +1080,11 @@ interface ISetCalendarStyleColNameVisible {
   styleValue: boolean;
 }
 
-export type ISetCalendarStyle = ISetCalendarStyleColorOption | ISetCalendarStyleStartFieldId |
-  ISetCalendarStyleEndFieldId | ISetCalendarStyleColNameVisible;
+export type ISetCalendarStyle =
+  | ISetCalendarStyleColorOption
+  | ISetCalendarStyleStartFieldId
+  | ISetCalendarStyleEndFieldId
+  | ISetCalendarStyleColNameVisible;
 
 interface ISetOrgChartStyleBase {
   viewId: string;
@@ -1100,21 +1132,21 @@ export interface IRecordAlarm {
 }
 
 /**
- * 
+ *
  * a data structure for client-side.
  * if you want to change, use re-selector.
- * 
+ *
  * the data structure for server-side use `IRecordAlarm`
  */
 export type IRecordAlarmClient = Omit<IRecordAlarm, 'recordId' | 'fieldId' | 'alarmUsers'> & {
   alarmUsers: string[];
-  target: AlarmUsersType
+  target: AlarmUsersType;
 };
 
 export type IAlarmTypeKeys = keyof IRecordAlarmClient;
 
 export interface IAlarmUser {
-  type: AlarmUsersType,
+  type: AlarmUsersType;
   data: string;
 }
 
@@ -1122,4 +1154,3 @@ export enum AlarmUsersType {
   Field = 'field',
   Member = 'member',
 }
-

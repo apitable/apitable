@@ -1,19 +1,26 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import {
-  FieldType, IBaseDatasheetPack, IDatasheetUnits, IEventResourceMap, IFieldMap, IForeignDatasheetMap, IMeta, IRecordMap, IReduxState
+  FieldType,
+  IBaseDatasheetPack,
+  IDatasheetUnits,
+  IEventResourceMap,
+  IFieldMap,
+  IForeignDatasheetMap,
+  IMeta,
+  IRecordMap,
+  IReduxState,
 } from '@apitable/core';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { CommandService } from 'database/services/command/command.service';
+import { isEmpty } from 'lodash';
+import { Store } from 'redux';
+import { Logger } from 'winston';
 import { InjectLogger } from '../../../shared/common';
-import { DatasheetEntity } from '../../entities/datasheet.entity';
 import { DatasheetException } from '../../../shared/exception/datasheet.exception';
 import { ServerException } from '../../../shared/exception/server.exception';
 import { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, ILinkedRecordMap } from '../../../shared/interfaces';
-import { isEmpty } from 'lodash';
-import { DatasheetPack, ViewPack } from '../../interfaces';
+import { DatasheetEntity } from '../../entities/datasheet.entity';
+import { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import { DatasheetRepository } from '../../repositories/datasheet.repository';
-import { CommandService } from 'database/services/command/command.service';
-import { Store } from 'redux';
-import { Logger } from 'winston';
-import { UnitInfo, UserInfo } from '../../interfaces';
 import { NodeService } from '../node/node.service';
 import { UserService } from '../user/user.service';
 import { DatasheetFieldHandler } from './datasheet.field.handler';
@@ -32,15 +39,14 @@ export class DatasheetService {
     @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly commandService: CommandService,
-  ) { }
+  ) {}
 
   /**
    * Obtain datasheet info, throw exception if not exist
-   * 
+   *
    * @param datasheetId datasheet ID
    * @param throwError if throw error when datasheet not exist
    * @return Promise<DatasheetEntity>
-   * @author Zoe Zheng
    * @date 2020/8/5 12:04 PM
    */
   public getDatasheet(datasheetId: string, throwError?: boolean): Promise<DatasheetEntity | undefined> {
@@ -98,7 +104,7 @@ export class DatasheetService {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
       foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as ((UserInfo | UnitInfo)[]),
+      units: combine.units as (UserInfo | UnitInfo)[],
       fieldPermissionMap,
     };
   }
@@ -131,7 +137,7 @@ export class DatasheetService {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
       foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as ((UserInfo | UnitInfo)[]),
+      units: combine.units as (UserInfo | UnitInfo)[],
       fieldPermissionMap,
     };
   }
@@ -163,7 +169,7 @@ export class DatasheetService {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
       foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as ((UserInfo | UnitInfo)[])
+      units: combine.units as (UserInfo | UnitInfo)[],
     };
   }
 
@@ -179,13 +185,11 @@ export class DatasheetService {
     const beginTime = +new Date();
     this.logger.info(`Start loading form linked datasheet data [${dstId}]`);
     // Query datasheet;
-    const origin = shareId ? { internal: false, main: true, shareId } 
-      : { internal: true, main: true, form: true };
+    const origin = shareId ? { internal: false, main: true, shareId } : { internal: true, main: true, form: true };
     const { node, fieldPermissionMap } = await this.nodeService.getNodeDetailInfo(dstId, auth, origin);
     // Query snapshot
     const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
-    const recordMap = options?.recordIds?.length
-      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options.recordIds) : {};
+    const recordMap = options?.recordIds?.length ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options.recordIds) : {};
     // Query foreignDatasheetMap and unitMap
     const combine = await this.processField(dstId, auth, meta, recordMap, origin, options?.linkedRecordMap);
     const endTime = +new Date();
@@ -194,7 +198,7 @@ export class DatasheetService {
       snapshot: { meta, recordMap, datasheetId: node.id },
       datasheet: node,
       foreignDatasheetMap: combine.foreignDatasheetMap,
-      units: combine.units as ((UserInfo | UnitInfo)[]),
+      units: combine.units as (UserInfo | UnitInfo)[],
       fieldPermissionMap,
     };
   }
@@ -239,14 +243,15 @@ export class DatasheetService {
     return {
       foreignDatasheetMap: combine.foreignDatasheetMap,
       snapshot: { meta: linkMeta, recordMap, datasheetId: node.id },
-      datasheet: node, units: combine.units as ((UserInfo | UnitInfo)[]),
+      datasheet: node,
+      units: combine.units as (UserInfo | UnitInfo)[],
       fieldPermissionMap,
     };
   }
 
   /**
    * Process special fields (link, lookup, and formula), ignoring other fields
-   * 
+   *
    * @param mainDstId main datasheet ID
    * @param auth authorization
    * @param mainMeta datasheet field data
@@ -263,8 +268,7 @@ export class DatasheetService {
     linkedRecordMap?: ILinkedRecordMap,
     withoutPermission?: boolean,
   ): Promise<IForeignDatasheetMap & IDatasheetUnits> {
-    return await this.datasheetFieldHandler.parse(mainDstId, auth, mainMeta,
-      mainRecordMap, origin, linkedRecordMap, undefined, withoutPermission);
+    return await this.datasheetFieldHandler.parse(mainDstId, auth, mainMeta, mainRecordMap, origin, linkedRecordMap, undefined, withoutPermission);
   }
 
   async fetchUsers(nodeId: string, uuids: string[]): Promise<any[]> {
@@ -350,7 +354,7 @@ export class DatasheetService {
 
   /**
    * Fetch datasheet base info map
-   * 
+   *
    * @param dstIds datasheet IDs
    * @param ignoreDeleted if deleted flag is ignored
    * @return
@@ -406,7 +410,7 @@ export class DatasheetService {
           const linkDstId = fieldMap[fieldId].property.foreignDatasheetId;
           if (dstId === linkDstId) {
             Object.keys(recordMap).forEach(recordId => {
-              const cellRecordIds = recordMap[recordId].data[fieldId] as string[] || [];
+              const cellRecordIds = (recordMap[recordId].data[fieldId] as string[]) || [];
               exRecordIds.push(...cellRecordIds);
             });
           }
@@ -420,21 +424,9 @@ export class DatasheetService {
       recordMap = { ...recordMap, ...diffRecordMap };
 
       // Query foreignDatasheetMap and unitMap
-      const linkedRecordMap = this.getLinkedRecordMap(
-        dstId,
-        meta,
-        recordMap
-      );
+      const linkedRecordMap = this.getLinkedRecordMap(dstId, meta, recordMap);
       const origin = { internal: true, main: true };
-      const combine = await this.processField(
-        dstId,
-        {},
-        meta,
-        recordMap,
-        origin,
-        linkedRecordMap,
-        true
-      );
+      const combine = await this.processField(dstId, {}, meta, recordMap, origin, linkedRecordMap, true);
       basePacks.push({
         datasheet: datasheet as any,
         snapshot: {
@@ -443,7 +435,7 @@ export class DatasheetService {
           datasheetId: datasheet.id,
         },
         foreignDatasheetMap: combine.foreignDatasheetMap,
-        units: combine.units as ((UserInfo | UnitInfo)[]),
+        units: combine.units as (UserInfo | UnitInfo)[],
       });
     }
     return basePacks;
@@ -451,7 +443,7 @@ export class DatasheetService {
 
   /**
    * Get linked record data with meta and recordMap
-  */
+   */
   getLinkedRecordMap(dstId: string, meta: IMeta, recordMap: IRecordMap): ILinkedRecordMap {
     const recordIds: string[] = Object.keys(recordMap);
     // Collect record IDs that need loading from corresponding datasheets by linked datasheet IDs
@@ -472,7 +464,7 @@ export class DatasheetService {
     foreignDatasheetIdMap.forEach(item => {
       const { foreignDatasheetId, fieldId } = item!;
       const linkedRecordIds = recordIds.reduce((pre, cur) => {
-        const cellLinkedIds = recordMap[cur].data[fieldId] as string[] || [];
+        const cellLinkedIds = (recordMap[cur].data[fieldId] as string[]) || [];
         pre.push(...cellLinkedIds);
         return pre;
       }, []);

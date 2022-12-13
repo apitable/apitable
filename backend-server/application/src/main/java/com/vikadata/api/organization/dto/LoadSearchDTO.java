@@ -26,4 +26,6 @@ public class LoadSearchDTO {
      * whether to search for emails
      */
     private Boolean searchEmail;
+
+    private String userId;
 }

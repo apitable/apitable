@@ -1,12 +1,15 @@
 import {
+  IDatasheetFieldPermission,
   IFieldPermissionMap,
   IFieldPermissionRoleListData,
   INode,
   INodeRoleMap,
   ISpaceInfo,
   ISpacePermissionManage,
+  IUnitValue,
   IUserInfo,
 } from '@apitable/core';
+import { ILoadOrSearchArg } from '@apitable/core/dist/modules/shared/api/api.interface';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from 'database/interfaces';
@@ -33,6 +36,7 @@ export class RestService {
   private GET_WIDGET = 'widget/get';
   private GET_NODE_PERMISSION = 'internal/node/%(nodeId)s/permission';
   private GET_FIELD_PERMISSION = 'internal/node/%(nodeId)s/field/permission';
+  private GET_MULTI_NODE_PERMISSION = 'internal/node/field/permission';
   private DEL_FIELD_PERMISSION = 'internal/datasheet/%(dstId)s/field/permission/disable';
   private SPACE_CAPACITY = 'internal/space/%(spaceId)s/capacity';
   private SPACE_USAGES = 'internal/space/%(spaceId)s/usages';
@@ -58,6 +62,7 @@ export class RestService {
   private LIST_NODE_ROLES = 'node/listRole?nodeId=%(nodeId)s';
   // List user infos with the given column permission
   private LIST_FIELD_ROLES = 'datasheet/%(dstId)s/field/%(fieldId)s/listRole';
+  private UNIT_LOAD_OR_SEARCH = 'internal/org/loadOrSearch';
 
   constructor(private readonly httpService: HttpService, @InjectLogger() private readonly logger: Logger) {
     // Intercept request
@@ -175,6 +180,19 @@ export class RestService {
       this.logger.debug(`[${nodeId}] Obtain field permission: ${JSON.stringify(response.data)}`);
     }
     return response.data?.fieldPermissionMap;
+  }
+
+  async getNodesFieldPermission(headers: IAuthHeader, nodeIds: string[]): Promise<IDatasheetFieldPermission[]> {
+    const response = await lastValueFrom(
+      this.httpService.post(
+        this.GET_MULTI_NODE_PERMISSION,
+        { nodeIds, userId: headers.userId },
+        {
+          headers: HttpHelper.createAuthHeaders(headers),
+        },
+      ),
+    );
+    return response.data;
   }
 
   async delFieldPermission(headers: IAuthHeader, dstId: string, fieldIds: string[]) {
@@ -513,6 +531,16 @@ export class RestService {
   async getFieldPermissionRoleList(auth: IAuthHeader, dstId: string, fieldId: string): Promise<IFieldPermissionRoleListData> {
     const url = sprintf(this.LIST_FIELD_ROLES, { dstId, fieldId });
     const response = await this.httpService.get(url, { headers: HttpHelper.createAuthHeaders(auth) }).toPromise();
+    return response.data;
+  }
+
+  async unitLoadOrSearch(auth: IAuthHeader, spaceId: string, params: ILoadOrSearchArg & { userId: string }): Promise<IUnitValue[]> {
+    const response = await lastValueFrom(
+      this.httpService.get(this.UNIT_LOAD_OR_SEARCH, {
+        headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId),
+        params,
+      }),
+    );
     return response.data;
   }
 }
