@@ -45,8 +45,6 @@ const canaryTestingByFillUpUrlPathFlag = async (request: NextRequest): Promise<N
     //   headers[k] = v;
     // }
 
-    console.log('middleware request header:', headers);
-
     const host = process.env.API_PROXY || url.origin;
     const clientInfoApi = new URL(host + '/api/v1/client/info');
     const spaceId = searchParams.get(_canaryTestingUrlFlag);

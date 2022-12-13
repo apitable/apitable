@@ -35,7 +35,7 @@ services:
       - HOME=/tmp
     networks:
       - apitable
-    command: sh -c "yarn install && yarn build:dst:pre && yarn sd:r"
+    command: sh -c "yarn install && yarn build:dst:pre && yarn sd"
 
   room-server:
     image: apitable/devenv:latest

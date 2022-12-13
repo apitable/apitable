@@ -294,7 +294,7 @@ _run-local-room-server:
 
 _run-local-web-server:
 	source scripts/export-env.sh $$ENV_FILE;\
-	yarn sd:r
+	yarn sd
 
 _run-local-socket-server:
 	source scripts/export-env.sh $$ENV_FILE;\
@@ -344,7 +344,7 @@ devenv-backend-server:
 
 .PHONY: devenv-web-server
 devenv-web-server:
-	$(RUNNER) web-server sh -c "yarn install && yarn sd:r"
+	$(RUNNER) web-server sh -c "yarn install && yarn sd"
 
 .PHONY: devenv-room-server
 devenv-room-server: 

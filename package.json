@@ -10,7 +10,6 @@
     "sc": "yarn start:core",
     "sd": "yarn start:datasheet dev",
     "sd:private": "REACT_APP_DEPLOYMENT_MODELS=PRIVATE yarn dev:datasheet",
-    "sd:r": "yarn workspace @apitable/datasheet dev:remote-backend",
     "sr": "yarn start:room-server",
     "sss": "yarn workspace @apitable/components dev",
     "start:core": "yarn workspace @apitable/core start",

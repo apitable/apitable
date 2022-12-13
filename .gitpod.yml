@@ -8,7 +8,7 @@ tasks:
       yarn install
       yarn build:dst:pre
     command: |
-      yarn sd:r
+      yarn sd
   - name: command line for free
     command: echo "Welcome to APITable"
     openMode: split-right
