@@ -20,8 +20,6 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.base.enums.DatabaseException;
-import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
-import com.vikadata.api.interfaces.billing.model.EntitlementRemark;
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
 import com.vikadata.api.organization.mapper.MemberMapper;
@@ -42,13 +40,11 @@ import com.vikadata.api.space.service.IInvitationService;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
 import com.vikadata.api.space.service.ISpaceService;
 import com.vikadata.api.space.vo.SpaceLinkInfoVo;
-import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.exception.BusinessException;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.entity.SpaceInviteLinkEntity;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,9 +59,6 @@ import static com.vikadata.api.space.enums.SpaceException.SPACE_NOT_EXIST;
 @Slf4j
 @Service
 public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMapper, SpaceInviteLinkEntity> implements ISpaceInviteLinkService {
-
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
     private ISpaceService iSpaceService;
@@ -102,9 +95,6 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
-
-    @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private IInvitationService invitationService;
@@ -323,16 +313,6 @@ public class SpaceInviteLinkServiceImpl extends ServiceImpl<SpaceInviteLinkMappe
         List<Long> ids = baseMapper.selectIdByTeamIds(teamIds);
         if (!ids.isEmpty()) {
             removeByIds(ids);
-        }
-    }
-
-    @Override
-    public void checkIsNewUserRewardCapacity(Long userId, String userName, String spaceId) {
-        String key = RedisConstants.getUserInvitedJoinSpaceKey(userId, spaceId);
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
-            // Order a 300 MB add-on subscription plan to invite users to increase the capacity of the add-on
-            entitlementServiceFacade.addGiftCapacity(spaceId, new EntitlementRemark(userId, userName));
-            redisTemplate.delete(key);
         }
     }
 }

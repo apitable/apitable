@@ -3,27 +3,23 @@ package com.vikadata.api.auth.service.impl;
 import java.util.concurrent.atomic.AtomicReference;
 
 import cn.hutool.core.util.IdUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.junit.jupiter.api.Test;
 
 import com.vikadata.api.AbstractIntegrationTest;
-import com.vikadata.api.base.enums.EmailCodeType;
 import com.vikadata.api.auth.enums.LoginType;
+import com.vikadata.api.auth.ro.LoginRo;
+import com.vikadata.api.base.enums.EmailCodeType;
 import com.vikadata.api.base.enums.SmsCodeType;
-import com.vikadata.api.interfaces.billing.model.SubscriptionInfo;
-import com.vikadata.api.organization.dto.MemberDTO;
-import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.shared.captcha.CodeValidateScope;
 import com.vikadata.api.shared.captcha.ValidateCodeProcessor;
 import com.vikadata.api.shared.captcha.ValidateCodeProcessorManage;
 import com.vikadata.api.shared.captcha.ValidateCodeType;
 import com.vikadata.api.shared.captcha.ValidateTarget;
+import com.vikadata.api.shared.context.SessionContext;
 import com.vikadata.api.space.mapper.SpaceMapper;
 import com.vikadata.api.user.entity.UserEntity;
-import com.vikadata.api.auth.ro.LoginRo;
 import com.vikadata.api.user.vo.UserInfoVo;
 import com.vikadata.core.exception.BusinessException;
-import com.vikadata.entity.SpaceEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -191,25 +187,6 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         assertThatNoException().isThrownBy(() -> iAuthService.loginUsingEmailCode(loginRo));
     }
 
-    @Test
-    public void testCheckSpaceRewardCapacity() {
-        MemberDTO firstMemberDTO = new MemberDTO();
-        firstMemberDTO.setId(123L);
-        firstMemberDTO.setSpaceId("spc123");
-        firstMemberDTO.setMemberName("firstUser");
-        SpaceEntity space = SpaceEntity.builder()
-                .id(IdWorker.getId())
-                .spaceId("spc123")
-                .name("testSpace")
-                .build();
-        spaceMapper.insert(space);
-        // match space stations and issue rewards
-        iAuthService.checkSpaceRewardCapacity(firstMemberDTO.getUserId(), firstMemberDTO.getMemberName(), "spc123");
-        // query reward records
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription("spc123");
-        assertThat(subscriptionInfo.getGiftCapacity().getValue()).isEqualTo(314572800);
-    }
-
     private String sendLoginSmsCode(String areaCode, String mobile) {
         CodeValidateScope scope = CodeValidateScope.fromName(SmsCodeType.fromName(2).name());
         ValidateTarget target = ValidateTarget.create(mobile, areaCode);
@@ -242,7 +219,6 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         assertThat(userInfoVo.getMemberId()).isNotNull();
         assertThat(userInfoVo.getMemberName()).isNotBlank();
         assertThat(userInfoVo.getUnitId()).isNotNull();
-        assertThat(userInfoVo.getInviteCode()).isNotBlank();
         assertThat(userInfoVo.getIsNewComer()).isNotNull().isTrue();
         assertThat(userInfoVo.getIsNickNameModified()).isNotNull().isTrue();
         assertThat(userInfoVo.getIsMemberNameModified()).isNotNull().isTrue();

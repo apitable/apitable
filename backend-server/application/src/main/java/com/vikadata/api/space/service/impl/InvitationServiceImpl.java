@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.control.service.IControlRoleService;
+import com.vikadata.api.interfaces.billing.facade.EntitlementServiceFacade;
+import com.vikadata.api.interfaces.billing.model.EntitlementRemark;
 import com.vikadata.api.interfaces.user.facade.UserServiceFacade;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.organization.mapper.TeamMapper;
@@ -34,10 +36,12 @@ import com.vikadata.api.space.vo.SpaceLinkInfoVo;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.workspace.service.INodeRoleService;
 import com.vikadata.api.workspace.service.INodeService;
+import com.vikadata.core.constants.RedisConstants;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.HttpContextUtil;
 import com.vikadata.entity.InvitationEntity;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import static com.vikadata.api.organization.enums.OrganizationException.INVITE_EXPIRE;
@@ -85,6 +89,12 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     @Resource
     private IControlRoleService iControlRoleService;
 
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
 
     @Override
     public SpaceLinkInfoVo getInvitationInfo(String spaceId, Long creator) {
@@ -113,7 +123,12 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         // Determine whether a new user has joined the space station, and issue rewards, asynchronous operation
         TaskManager.me().execute(() -> {
             String userName = userMapper.selectNickNameById(dto.getUserId());
-            iSpaceInviteLinkService.checkIsNewUserRewardCapacity(dto.getUserId(), userName, dto.getSpaceId());
+            String key = RedisConstants.getUserInvitedJoinSpaceKey(dto.getUserId(), dto.getSpaceId());
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+                // Order a 300 MB add-on subscription plan to invite users to increase the capacity of the add-on
+                entitlementServiceFacade.rewardGiftCapacity(dto.getSpaceId(), new EntitlementRemark(dto.getUserId(), userName));
+                redisTemplate.delete(key);
+            }
         });
         // Send invitation notification, asynchronous operation
         TaskManager.me().execute(() -> {

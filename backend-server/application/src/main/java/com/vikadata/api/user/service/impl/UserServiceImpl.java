@@ -75,6 +75,7 @@ import com.vikadata.api.user.enums.UserClosingException;
 import com.vikadata.api.user.enums.UserOperationType;
 import com.vikadata.api.user.mapper.UserMapper;
 import com.vikadata.api.user.ro.UserOpRo;
+import com.vikadata.api.user.service.IDeveloperService;
 import com.vikadata.api.user.service.IUserHistoryService;
 import com.vikadata.api.user.service.IUserService;
 import com.vikadata.api.user.vo.UserInfoVo;
@@ -183,6 +184,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Resource
     private PasswordService passwordService;
+
+    @Resource
+    private IDeveloperService iDeveloperService;
 
     private static final int QUERY_LOCALE_IN_EMAILS_LIMIT = 200;
 
@@ -606,6 +610,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 .usedInviteReward(usedInviteReward)
                 .build();
         LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
+        userInfo.transferDataFromLoginUserDto(loginUserDto);
         UserLinkInfo userLinkInfo = userLinkServiceFacade.getUserLinkInfo(userId);
         if (userLinkInfo != null) {
             // Copy third-party account associated information
@@ -615,7 +620,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 BeanUtil.copyProperties(userLinkInfo.getAccountLinkList().get(i), linkVo);
                 userLinkVos.add(linkVo);
             }
-            userInfo.transferDataFromDto(loginUserDto, userLinkInfo, userLinkVos);
+            userInfo.transferDataFromDto(userLinkInfo, userLinkVos);
+        }
+        else {
+            userInfo.setApiKey(iDeveloperService.getApiKeyByUserId(userId));
         }
         if (userInfo.getIsPaused()) { // Cancel the account during the calm period, and calculate the official cancellation time
             UserHistoryEntity userHistory = iUserHistoryService

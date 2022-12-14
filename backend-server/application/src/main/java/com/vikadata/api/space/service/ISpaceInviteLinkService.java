@@ -76,13 +76,4 @@ public interface ISpaceInviteLinkService extends IService<SpaceInviteLinkEntity>
      * @param teamIds teamIds
      */
     void deleteByTeamIds(Collection<Long> teamIds);
-
-    /**
-     * Determine whether a new user has joined the space station, and issue rewards capacity,
-     *
-     * @param userId userId
-     * @param userName userName
-     * @param spaceId space id
-     */
-    void checkIsNewUserRewardCapacity(Long userId, String userName, String spaceId);
 }

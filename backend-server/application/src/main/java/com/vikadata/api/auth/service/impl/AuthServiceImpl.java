@@ -213,7 +213,9 @@ public class AuthServiceImpl implements IAuthService {
         // Query whether there is a space member corresponding to the mailbox, only new registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
         // Invite new users to join the space station to reward attachment capacity, asynchronous operation
-        this.checkSpaceRewardCapacity(user.getId(), user.getNickName(), spaceId);
+        if (spaceId != null) {
+            entitlementServiceFacade.rewardGiftCapacity(spaceId, new EntitlementRemark(user.getId(), user.getNickName()));
+        }
         createOrActiveSpace(user, inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         return user.getId();
     }
@@ -224,14 +226,6 @@ public class AuthServiceImpl implements IAuthService {
         }
         else {
             iMemberService.activeIfExistInvitationSpace(user.getId(), memberIds);
-        }
-    }
-
-    @Override
-    public void checkSpaceRewardCapacity(Long userId, String userName, String spaceId) {
-        // the invited members are successfully activated, and the space station will receive a 300M accessory capacity
-        if (spaceId != null) {
-            entitlementServiceFacade.addGiftCapacity(spaceId, new EntitlementRemark(userId, userName));
         }
     }
 

@@ -135,6 +135,7 @@ public class UserInfoVo implements Serializable {
     @ApiModelProperty(value = "Primary administrator or not", example = "false", position = 15)
     private Boolean isMainAdmin = false;
 
+    @Builder.Default
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     @ApiModelProperty(value = "Whether the account is cancelled during the cooling off period (account recovery is allowed during the cooling off period)", example = "false", position = 16)
     private Boolean isPaused = false;
@@ -181,8 +182,7 @@ public class UserInfoVo implements Serializable {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean usedInviteReward;
 
-    public UserInfoVo transferDataFromDto(LoginUserDto loginUserDto
-            , UserLinkInfo userLinkInfo, List<UserLinkVo> userLinkVos) {
+    public void transferDataFromLoginUserDto(LoginUserDto loginUserDto) {
         this.setUserId(loginUserDto.getUuid());
         this.setUuid(loginUserDto.getUuid());
         this.setNickName(loginUserDto.getNickName());
@@ -191,19 +191,16 @@ public class UserInfoVo implements Serializable {
         this.setEmail(loginUserDto.getEmail());
         this.setAvatar(loginUserDto.getAvatar());
         this.setNeedPwd(loginUserDto.getNeedPwd());
-        this.setWizards(JSONUtil.parseObj(userLinkInfo.getWizards()));
-        this.setThirdPartyInformation(userLinkVos);
-        this.setInviteCode(userLinkInfo.getInviteCode());
         this.setSignUpTime(loginUserDto.getSignUpTime());
         this.setLastLoginTime(loginUserDto.getLastLoginTime());
         this.setIsPaused(loginUserDto.getIsPaused());
-        // Avoid Login User Dto cache the logged in account, which will lead to NPE
-        if (null == this.getIsPaused()) {
-            this.setIsPaused(false);
-        }
-        this.setApiKey(userLinkInfo.getApiKey());
         this.setIsNickNameModified(loginUserDto.getIsNickNameModified());
-        return this;
     }
 
+    public void transferDataFromDto(UserLinkInfo userLinkInfo, List<UserLinkVo> userLinkVos) {
+        this.setWizards(JSONUtil.parseObj(userLinkInfo.getWizards()));
+        this.setThirdPartyInformation(userLinkVos);
+        this.setInviteCode(userLinkInfo.getInviteCode());
+        this.setApiKey(userLinkInfo.getApiKey());
+    }
 }

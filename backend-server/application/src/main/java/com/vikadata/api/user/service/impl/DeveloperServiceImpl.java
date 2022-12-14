@@ -34,6 +34,12 @@ public class DeveloperServiceImpl implements IDeveloperService {
     }
 
     @Override
+    public String getApiKeyByUserId(Long userId) {
+        DeveloperEntity developer = developerMapper.selectByUserId(userId);
+        return developer != null ? developer.getApiKey() : null;
+    }
+
+    @Override
     public boolean validateApiKey(String apiKey) {
         Long userId = developerMapper.selectUserIdByApiKey(apiKey);
         if (userId == null) {

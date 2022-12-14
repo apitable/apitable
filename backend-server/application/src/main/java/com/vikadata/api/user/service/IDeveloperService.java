@@ -11,6 +11,13 @@ public interface IDeveloperService {
     boolean checkHasCreate(Long userId);
 
     /**
+     * get api key
+     * @param userId user id
+     * @return api key
+     */
+    String getApiKeyByUserId(Long userId);
+
+    /**
      * validate api key
      *
      * @param apiKey access token

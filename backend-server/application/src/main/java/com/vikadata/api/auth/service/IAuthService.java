@@ -28,13 +28,4 @@ public interface IAuthService {
      * @return user id
      */
     UserLoginDTO loginUsingEmailCode(LoginRo loginRo);
-
-    /**
-     * invite new user attachment capacity bonus
-     *
-     * @param userId   member id
-     * @param userName member name
-     * @param spaceId  space id
-     */
-    void checkSpaceRewardCapacity(Long userId, String userName, String spaceId);
 }

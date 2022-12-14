@@ -13,7 +13,7 @@ public interface EntitlementServiceFacade {
 
     Map<String, SubscriptionFeature> getSpaceSubscriptions(List<String> spaceIds);
 
-    default void addGiftCapacity(String spaceId, EntitlementRemark remark) {
+    default void rewardGiftCapacity(String spaceId, EntitlementRemark remark) {
         // Nothing to do default
     }
 }
