@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import https from 'https';
-import { IActionResponse, IErrorResponse, ISuccessResponse, ResponseStatusCodeEnums } from '../interface';
+import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
+import {IActionResponse, IErrorResponse, ISuccessResponse} from "../interface/action.response";
 
 interface IHeader {
   key: string;

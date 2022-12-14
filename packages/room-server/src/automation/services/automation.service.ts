@@ -18,9 +18,10 @@ import { ActionTypeCreateRo } from '../ros/action.type.create.ro';
 import { ActionTypeUpdateRo } from '../ros/action.type.update.ro';
 import { TriggerTypeUpdateRo } from '../ros/trigger.type.update.ro';
 import { AutomationServiceUpdateRo } from '../ros/service.update.ro';
-import * as services from '../connectors';
-import { IActionResponse } from '../connectors/interface';
+import * as services from '../actions';
 import { ConfigConstant } from '@apitable/core';
+import {IActionResponse} from "../actions/interface/action.response";
+import {customActionMap, customActionTypeMetas} from "../actions/decorators/automation.action.decorator";
 
 /**
  * handle robot execution scheduling
@@ -96,6 +97,7 @@ export class AutomationService {
     const result = actionTypes.map(actionType => {
       return this.getTypeByItem(actionType, lang);
     });
+    result.push(...customActionTypeMetas.values());
     return result;
   }
 
@@ -173,6 +175,15 @@ export class AutomationService {
         const endpoint = actionType.endpoint;
         const actionFunc: (input: any) => Promise<IActionResponse<any>> = services[serviceSlug][endpoint];
         const resp = await actionFunc(actionRuntimeInput);
+        return {
+          success: resp.success,
+          data: resp.data,
+        };
+      }
+      case 'action:': {
+        const connectorKey = url.hostname;
+        let connector = customActionMap.get(connectorKey);
+        const resp = await connector.endpoint(actionRuntimeInput);
         return {
           success: resp.success,
           data: resp.data,

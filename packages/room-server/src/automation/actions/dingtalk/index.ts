@@ -1,21 +1,21 @@
 import fetch from 'node-fetch';
-import { IActionResponse, IErrorResponse, ResponseStatusCodeEnums } from '../interface';
+import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
+import {IActionResponse, IErrorResponse} from "../interface/action.response";
 
-interface IRuLiuMsgRequest {
+interface IDingTalkMsgRequest {
   type: string;
   content: string;
   webhookUrl: string;
   title?: string;
-  baseUrl?: string; 
 }
 
-interface IRuLiuMsgResponse {
+interface IDingTalkMsgResponse {
   errmsg: string,
   errcode: number
 }
 
-export async function sendRuLiuMsg(request: IRuLiuMsgRequest): Promise<IActionResponse<any>> {
-  const { type, baseUrl, content, webhookUrl, title } = request;
+export async function sendDingtalkMsg(request: IDingTalkMsgRequest): Promise<IActionResponse<any>> {
+  const { type, content, webhookUrl, title } = request;
   let data = {};
   switch (type) {
     case 'text':
@@ -37,15 +37,14 @@ export async function sendRuLiuMsg(request: IRuLiuMsgRequest): Promise<IActionRe
       break;
   }
   try {
-    const targetUrl = `${baseUrl}${webhookUrl}`;
-    const res = await fetch(targetUrl, {
+    const res = await fetch(webhookUrl, {
       body: JSON.stringify(data),
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
     });
-    const resp: IRuLiuMsgResponse = await res.json();
+    const resp: IDingTalkMsgResponse = await res.json();
     if (resp.errcode === 0) {
       return {
         success: true,

@@ -8,7 +8,7 @@ import { ServerException } from '../../../shared/exception/server.exception';
 import { IdWorker } from '../../../shared/helpers';
 import { NodePermission } from 'shared/interfaces/axios.interfaces';
 import { EffectConstantName, ICommonData } from 'database/services/ot/ot.interface';
-// import { ResourceService } from 'modules/connectors/resource/resource.service';
+// import { ResourceService } from 'modules/actions/resource/resource.service';
 import { ResourceMetaRepository } from '../../repositories/resource.meta.repository';
 import { EntityManager } from 'typeorm';
 import { Logger } from 'winston';

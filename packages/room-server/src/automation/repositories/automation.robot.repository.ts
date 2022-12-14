@@ -3,6 +3,7 @@ import { AutomationRobotEntity } from '../entities/automation.robot.entity';
 import { groupBy } from 'lodash';
 import { RobotCreateRo } from '../ros/robot.create.ro';
 import { EntityRepository, Repository, In } from 'typeorm';
+import {customActionNamePrefix, customActionTypeMap} from "../actions/decorators/automation.action.decorator";
 
 @EntityRepository(AutomationRobotEntity)
 export class AutomationRobotRepository extends Repository<AutomationRobotEntity> {
@@ -287,6 +288,12 @@ export class AutomationRobotRepository extends Repository<AutomationRobotEntity>
     WHERE
       actt.is_deleted = 0 AND actt.action_type_id IN (?)
     `, [[...actionTypeIds.values()]]);
+
+    actionTypeIds.forEach(actionTypeId => {
+      if(actionTypeId.startsWith(customActionNamePrefix)) {
+        actionTypes.push(customActionTypeMap.get(actionTypeId));
+      }
+    });
 
     const actionTypesById = actionTypes.reduce((acc, item) => {
       acc[item.id] = item;

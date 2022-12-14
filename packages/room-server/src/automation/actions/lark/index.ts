@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
-import { IActionResponse, ISuccessResponse, IErrorResponse, ResponseStatusCodeEnums } from '../interface';
+import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
+import {IActionResponse, IErrorResponse, ISuccessResponse} from "../interface/action.response";
 interface ILarkMsgRequest {
   type: 'text';
   content: string;

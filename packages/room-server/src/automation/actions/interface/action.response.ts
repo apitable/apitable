@@ -1,11 +1,4 @@
-export enum ResponseStatusCodeEnums {
-  Success = 200, 
-  ClientError = 400,
-  Unauthorized = 401,
-  Forbidden = 403,
-  NotFound = 404,
-  ServerError = 500,
-}
+import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
 
 export interface ISuccessResponse<T> {
   data: T;

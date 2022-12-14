@@ -1,20 +1,21 @@
 import fetch from 'node-fetch';
-import { IActionResponse, IErrorResponse, ResponseStatusCodeEnums } from '../interface';
+import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
+import {IActionResponse, IErrorResponse} from "../interface/action.response";
 
-interface IDingTalkMsgRequest {
+interface IWecomMsgRequest {
   type: string;
   content: string;
   webhookUrl: string;
-  title?: string;
 }
 
-interface IDingTalkMsgResponse {
+interface IWecomMsgResponse {
   errmsg: string,
   errcode: number
 }
 
-export async function sendDingtalkMsg(request: IDingTalkMsgRequest): Promise<IActionResponse<any>> {
-  const { type, content, webhookUrl, title } = request;
+export async function sendWecomMsg(reqData: IWecomMsgRequest): Promise<IActionResponse<any>> {
+  const { type, content, webhookUrl } = reqData;
+
   let data = {};
   switch (type) {
     case 'text':
@@ -29,8 +30,7 @@ export async function sendDingtalkMsg(request: IDingTalkMsgRequest): Promise<IAc
       data = {
         msgtype: 'markdown',
         markdown: {
-          title: title,
-          text: content
+          content: content
         }
       };
       break;
@@ -43,7 +43,7 @@ export async function sendDingtalkMsg(request: IDingTalkMsgRequest): Promise<IAc
         'content-type': 'application/json'
       },
     });
-    const resp: IDingTalkMsgResponse = await res.json();
+    const resp: IWecomMsgResponse = await res.json();
     if (resp.errcode === 0) {
       return {
         success: true,

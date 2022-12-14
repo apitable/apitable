@@ -1,20 +1,22 @@
 import fetch from 'node-fetch';
-import { IActionResponse, IErrorResponse, ResponseStatusCodeEnums } from '../interface';
+import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
+import {IActionResponse, IErrorResponse} from "../interface/action.response";
 
-interface IWecomMsgRequest {
+interface IRuLiuMsgRequest {
   type: string;
   content: string;
   webhookUrl: string;
+  title?: string;
+  baseUrl?: string; 
 }
 
-interface IWecomMsgResponse {
+interface IRuLiuMsgResponse {
   errmsg: string,
   errcode: number
 }
 
-export async function sendWecomMsg(reqData: IWecomMsgRequest): Promise<IActionResponse<any>> {
-  const { type, content, webhookUrl } = reqData;
-
+export async function sendRuLiuMsg(request: IRuLiuMsgRequest): Promise<IActionResponse<any>> {
+  const { type, baseUrl, content, webhookUrl, title } = request;
   let data = {};
   switch (type) {
     case 'text':
@@ -29,20 +31,22 @@ export async function sendWecomMsg(reqData: IWecomMsgRequest): Promise<IActionRe
       data = {
         msgtype: 'markdown',
         markdown: {
-          content: content
+          title: title,
+          text: content
         }
       };
       break;
   }
   try {
-    const res = await fetch(webhookUrl, {
+    const targetUrl = `${baseUrl}${webhookUrl}`;
+    const res = await fetch(targetUrl, {
       body: JSON.stringify(data),
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
     });
-    const resp: IWecomMsgResponse = await res.json();
+    const resp: IRuLiuMsgResponse = await res.json();
     if (resp.errcode === 0) {
       return {
         success: true,
