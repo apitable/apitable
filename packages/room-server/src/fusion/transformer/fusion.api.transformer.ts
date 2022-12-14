@@ -213,9 +213,9 @@ export class FusionApiTransformer implements IFieldTransformInterface {
         updatedAt: recordMap[recordId].updatedAt,
         fields,
       };
-    } else {
-      return null;
-    }
+    } 
+    return null;
+    
   }
 
   // eslint-disable-next-line require-await
@@ -291,6 +291,8 @@ export class FusionApiTransformer implements IFieldTransformInterface {
   }
 
   getViewInfo(options: IViewInfoOptions): IViewProperty {
+    const getViewInfoProfiler = this.logger.startTimer();
+
     const { partialRecordsInDst, viewId, sortRules, snapshot, state } = options;
     if (!partialRecordsInDst && viewId) {
       const view = Selectors.getViewByIdWithDefault(state, snapshot.datasheetId, viewId);
@@ -341,6 +343,11 @@ export class FusionApiTransformer implements IFieldTransformInterface {
     if (partialRecordsInDst) {
       view.rows = this.getRecordRows(snapshot.recordMap);
     }
+
+    getViewInfoProfiler.done({
+      message: `getViewInfo ${snapshot.datasheetId} profiler`
+    });
+
     return view;
   }
 }

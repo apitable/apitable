@@ -5,10 +5,10 @@ import {
 } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { keyBy } from 'lodash';
-import { Store } from 'redux';
+import { InjectLogger } from 'shared/common';
 import { ApiException } from 'shared/exception';
+import { Logger } from 'winston';
 import { FieldQueryRo } from '../ros/field.query.ro';
-import { RecordQueryRo } from '../ros/record.query.ro';
 
 /**
  * Field Conversion Service
@@ -16,6 +16,11 @@ import { RecordQueryRo } from '../ros/record.query.ro';
 @Injectable()
 export class FusionApiFilter {
   private static readonly FIELD_NAME = 'Virtual';
+
+  constructor(
+    @InjectLogger() private readonly logger: Logger,
+  ) {
+  }
 
   /**
    * Filter fieldMap according to the given fields, fields may be IDs or names (currently only names are considered)
@@ -43,6 +48,7 @@ export class FusionApiFilter {
   formulaFilter(expression: string, rows: IViewRow[], snapshot: ISnapshot, state: IReduxState): IViewRow[] {
     // Fictitiously pass in a field for calculation
     // TODO: Here field is only used to filter themselves and get snapshot, you can consider putting forward the parameters to todo optimization?
+    const formulaFilterProfiler = this.logger.startTimer();
     const datasheet = Selectors.getDatasheet(state);
     const field: IFormulaField = {
       id: getNewId(IDPrefix.Field),
@@ -53,7 +59,7 @@ export class FusionApiFilter {
         expression,
       },
     };
-    return rows.filter(row => {
+    const filteredRows = rows.filter(row => {
       const result = evaluate(
         expression,
         {
@@ -69,6 +75,10 @@ export class FusionApiFilter {
       }
       return false;
     });
+    formulaFilterProfiler.done({
+      message: `formulaFilter ${datasheet.id} profiler`,
+    });
+    return filteredRows;
   }
 
   /**
@@ -79,16 +89,24 @@ export class FusionApiFilter {
    * @param store
    */
   getVisibleRows(filterByFormula: string | undefined, view: IViewProperty, state: IReduxState): IViewRow[] {
+    const getVisibleRowsProfiler = this.logger.startTimer();
     const snapshot = Selectors.getSnapshot(state);
     if (filterByFormula) {
       const expression = this.validateExpression(filterByFormula, state);
       view.rows = this.formulaFilter(expression, view.rows, snapshot, state);
 
       if (!view.rows.length) {
+        getVisibleRowsProfiler.done({
+          message: `getVisibleRows ${snapshot.datasheetId} profiler, result: []`,
+        });
+
         return [];
       }
     }
     const rows = Selectors.getVisibleRowsBase(state, snapshot, view);
+    getVisibleRowsProfiler.done({
+      message: `getVisibleRows ${snapshot.datasheetId} profiler`,
+    });
     return rows || [];
   }
 

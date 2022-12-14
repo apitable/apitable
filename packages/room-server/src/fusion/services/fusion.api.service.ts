@@ -49,12 +49,10 @@ import { IAuthHeader, ILinkedRecordMap, IServerConfig } from 'shared/interfaces'
 import { IAPINode, IAPINodeDetail } from 'shared/interfaces/node.interface';
 import { IAPISpace } from 'shared/interfaces/space.interface';
 import { EnvConfigService } from 'shared/services/config/env.config.service';
-import { JavaService } from 'shared/services/java/java.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { Logger } from 'winston';
 import { DatasheetViewDto } from '../dtos/datasheet.view.dto';
 import { FusionApiFilter } from '../filter/fusion.api.filter';
-import { ApiUsageRepository } from '../repositories/api.usage.repository';
 import { DatasheetCreateRo } from '../ros/datasheet.create.ro';
 import { FieldCreateRo } from '../ros/field.create.ro';
 import { FieldQueryRo } from '../ros/field.query.ro';
@@ -83,8 +81,8 @@ export class FusionApiService {
     private readonly fusionApiRecordService: FusionApiRecordService,
     private readonly commandService: CommandService,
     private readonly otService: OtService,
-    private readonly apiUsageRepo: ApiUsageRepository,
-    private readonly javaService: JavaService,
+    // private readonly apiUsageRepo: ApiUsageRepository,
+    // private readonly javaService: JavaService,
     private readonly restService: RestService,
     private readonly envConfigService: EnvConfigService,
     private readonly databusService: DataBusService,
@@ -154,6 +152,8 @@ export class FusionApiService {
    * @param auth  authorization inf
    */
   public async getRecords(dstId: string, query: RecordQueryRo, auth: IAuthHeader): Promise<PageVo> {
+    const getRecordsProfiler = this.logger.startTimer();
+
     const dst = await this.databusService.getDatasheet(dstId, {
       auth,
       recordIds: query.recordIds,
@@ -162,6 +162,8 @@ export class FusionApiService {
         return this.commandService.fullFillStore(dst, userInfo);
       },
     });
+
+    const getViewProfiler = this.logger.startTimer();
 
     const view = await dst.getView({
       getViewInfo: state => {
@@ -219,6 +221,12 @@ export class FusionApiService {
       },
     });
 
+    getViewProfiler.done({
+      message: `getRecords:getView ${dstId} profiler`,
+    });
+
+    const getRecordsVoProfiler = this.logger.startTimer();
+
     const maxRecords = query.maxRecords && query.maxRecords < view.numRows ? query.maxRecords : view.numRows;
 
     const records = await view.getRecords({
@@ -230,6 +238,14 @@ export class FusionApiService {
     });
 
     const recordVos = this.getRecordViewObjects(records, query.cellFormat);
+
+    getRecordsVoProfiler.done({
+      message: `getRecords:getRecordsVo ${dstId} profiler`,
+    });
+
+    getRecordsProfiler.done({
+      message: `getRecords ${dstId} profiler`,
+    });
 
     return {
       total: maxRecords,
@@ -396,6 +412,8 @@ export class FusionApiService {
    * @param viewId  view id
    */
   public async addRecords(dstId: string, body: RecordCreateRo, viewId: string): Promise<ListVo> {
+    const addRecordsProfiler = this.logger.startTimer();
+
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
     const fieldMap = body.fieldKey === FieldKeyEnum.NAME ? keyBy(meta.fieldMap, 'name') : meta.fieldMap;
 
@@ -445,6 +463,10 @@ export class FusionApiService {
     });
 
     const records = await newView.getRecords({});
+
+    addRecordsProfiler.done({
+      message: `addRecordsProfiler ${dstId} profiler`,
+    });
 
     return {
       records: this.getRecordViewObjects(records),
@@ -497,6 +519,7 @@ export class FusionApiService {
    */
   async applyChangeSet(dstId: string, changesets: ILocalChangeset[], auth: IAuthHeader, internalFix?: any): Promise<string> {
     this.logger.info('API:ApplyChangeSet');
+    const applyChangeSetProfiler = this.logger.startTimer();
     let applyAuth = auth;
     const message = {
       roomId: dstId,
@@ -518,6 +541,11 @@ export class FusionApiService {
     await this.changesetSourceService.batchCreateChangesetSource(changeResult, SourceTypeEnum.OPEN_API);
     // Notify Socket Service Broadcast
     await this.otService.nestRoomChange(dstId, changeResult);
+
+    applyChangeSetProfiler.done({
+      message: `applyChangeSet ${dstId} profiler`,
+    });
+
     return changeResult && changeResult[0].userId!;
   }
 
