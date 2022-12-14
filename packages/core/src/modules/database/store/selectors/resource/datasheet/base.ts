@@ -253,7 +253,7 @@ export const getToolbarMenuCardState = (state: IReduxState) => {
 
 export const getLinkId = (state: IReduxState) => {
   const pageParams = state.pageParams;
-  return pageParams.templateId || pageParams.shareId;
+  return pageParams.templateId || pageParams.shareId || pageParams.embedId;
 };
 
 export const allowShowCommentPane = (state: IReduxState) => {

@@ -21,7 +21,6 @@ class MemberStash {
     if (this.stashMap.has(cacheId)) {
       return;
     }
-    console.log('this.isEmbedId(cacheId)', this.isEmbedId(cacheId), cacheId);
     if(this.isEmbedId(cacheId)) {
       const res = await Api.loadOrSearchEmbed(
         cacheId

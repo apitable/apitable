@@ -78,6 +78,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
   const hasChosenMulti = fieldRanges && fieldRanges.length > 1;
   const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
   const isViewLock = Boolean(view.lockInfo);
+  const embedId = useSelector(state => state.pageParams.embedId);
 
   const chosenCount = fieldRanges ?
     fieldRanges.filter(id => id !== visibleColumns[0].fieldId).length
@@ -303,7 +304,7 @@ export const FieldMenu: React.FC<IFieldMenuProps> = memo((
         disabled: !Boolean(fieldPermissionManageable),
         disabledTip: t(Strings.set_field_permission_no_access),
         hidden(arg) {
-          if (!getEnvVariables().FIELD_PERMISSION_VISIBLE) {
+          if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || embedId) {
             return true;
           }
           if (!arg['props']) {

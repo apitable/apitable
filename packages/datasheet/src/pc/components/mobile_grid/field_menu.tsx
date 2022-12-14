@@ -68,6 +68,7 @@ export const FieldMenu: React.FC<IFieldMenu> = (
   const activeFieldSettings = useActiveFieldSetting();
   const deleteField = useDeleteField(field.id, datasheetId);
   const commandManager = resourceService.instance!.commandManager;
+  const embedId = useSelector(state => state.pageParams.embedId);
   /**
    * Give a warning when a field is deleted during collaboration.
    * Ends rendering early.
@@ -223,11 +224,11 @@ export const FieldMenu: React.FC<IFieldMenu> = (
         onClick: () => {
           expandFieldPermission(field);
         },
-        disabled: !fieldPermissionManageable || !getEnvVariables().FIELD_PERMISSION_VISIBLE,
+        disabled: !fieldPermissionManageable || !getEnvVariables().FIELD_PERMISSION_VISIBLE ,
         hidden(arg) {
           const { props: { fieldId }} = arg;
 
-          if (!fieldId) {
+          if (!fieldId || embedId) {
             return true;
           }
 

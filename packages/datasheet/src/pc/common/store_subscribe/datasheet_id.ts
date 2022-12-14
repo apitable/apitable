@@ -17,8 +17,7 @@ store.subscribe(function datasheetIdChange() {
   if ((shareId && (!spaceId || !resourceService.instance?.initialized))) {
     return;
   }
-
-  if ((embedId && (!resourceService.instance?.initialized || !state.embedInfo?.spaceId))) {
+  if ((embedId && (!spaceId || !resourceService.instance?.initialized || !state.embedInfo?.spaceId))) {
     return;
   }
 
@@ -55,9 +54,11 @@ store.subscribe(function datasheetIdChange() {
   if (widgetMapKey.length) {
     store.dispatch(StoreActions.resetWidget(widgetMapKey));
   }
- 
-  resourceService.instance?.initialized && resourceService.instance?.switchResource({
-    from: previousDatasheetId, to: datasheetId as string, resourceType: ResourceType.Datasheet,
-  });
+
+  setTimeout(() => {
+    resourceService.instance?.initialized && resourceService.instance?.switchResource({
+      from: previousDatasheetId, to: datasheetId as string, resourceType: ResourceType.Datasheet,
+    });
+  }, 200);
  
 });
