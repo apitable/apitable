@@ -1,5 +1,5 @@
 // import App from 'next/app'
-import { StoreActions, Strings, t, Api, StatusCode, Navigation } from '@apitable/core';
+import { integrateCdnHost,StoreActions, Strings, t, Api, StatusCode, Navigation } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { Scope } from '@sentry/browser';
 import classNames from 'classnames';
@@ -72,7 +72,7 @@ export interface IUserInfoError {
   message: string;
 }
 
-const initWorker = async() => {
+const initWorker = async () => {
   const comlinkStore = await initWorkerStore();
   // Initialization functions
   initializer(comlinkStore);
@@ -100,7 +100,7 @@ function MyApp(props: AppProps) {
   if (isWidget) {
     return <props.Component {...props.pageProps} />;
   }
-  return MyAppMain(props); 
+  return MyAppMain(props);
 }
 
 function MyAppMain({ Component, pageProps }: AppProps) {
@@ -383,17 +383,29 @@ function MyAppMain({ Component, pageProps }: AppProps) {
         </div>}
         {
           ((loading !== LoadingStatus.Complete) || userLoading) && <div className="main-img-wrap" style={{ height: 'auto' }}>
-            <span className="script-loading-logo-img">
-              <Image src={`${publicRuntimeConfig.staticFolder}/logo.svg`} alt="logo" layout={'fill'}/>
-            </span>
-            <span className="script-loading-vika-img">
-              <Image
-                alt="vika"
-                layout={'fill'}
-                object-fit={'contain'}
-                src={`${publicRuntimeConfig.staticFolder}/logo_text_dark.svg`}
-              />
-            </span>
+            {
+              process.env.NEXT_PUBLIC_CUSTOM_CONFIG_LOGO_URL ?
+                <img src={integrateCdnHost(process.env.NEXT_PUBLIC_CUSTOM_CONFIG_LOGO_URL)} className='script-loading-logo-img' /> :
+                <span className='script-loading-logo-img'>
+                <Image
+                  src={`${publicRuntimeConfig.staticFolder}/logo.svg`}
+                  alt='logo'
+                  layout={'fill'}
+                />
+              </span>
+            }
+            {
+              process.env.NEXT_PUBLIC_CUSTOM_CONFIG_LOGO_TEXT_URL ?
+                <img src={integrateCdnHost(process.env.NEXT_PUBLIC_CUSTOM_CONFIG_LOGO_TEXT_URL)} className='script-loading-vika-img' /> :
+                <span className='script-loading-vika-img'>
+                <Image
+                  alt='vika'
+                  layout={'fill'}
+                  object-fit={'contain'}
+                  src={`${publicRuntimeConfig.staticFolder}/logo_text_dark.svg`}
+                />
+              </span>
+            }
           </div>
         }
       </div>

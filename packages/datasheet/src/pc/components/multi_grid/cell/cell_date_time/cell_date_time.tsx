@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { useThemeColors } from '@apitable/components';
+import { getEnvVariables } from "pc/utils/env";
 import { useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -31,6 +32,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
   const alarm = showAlarm ? Selectors.getDateTimeCellAlarm(snapshot, recordId!, field.id) : undefined;
   const cellString = Field.bindModel(field).cellValueToString(cellValue);
   const [date, time, timeRule] = cellString ? cellString.split(' ') : [];
+  const { RECORD_TASK_REMINDER_VISIBLE } = getEnvVariables();
 
   const alarmRealTime = useMemo(() => {
     let alarmDate = dayjs(cellValue as number);
@@ -50,13 +52,13 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
       onDoubleClick={toggleEdit}
     >
       {cellValue != null && (
-        <div className="dateTimeValue">
+        <div className='dateTimeValue'>
           <div className={classNames(styles.date, !time && styles.single, 'cellDateTimeDate')}>{date}</div>
           {time && <div className={classNames(styles.time, 'time')}>{time}</div>}
           {timeRule && <div className={classNames(styles.time, 'time')}>{timeRule}</div>}
         </div>
       )}
-      {showAlarm && Boolean(alarm) && date && Boolean(snapshot) && (
+      {showAlarm && Boolean(alarm) && date && Boolean(snapshot) && RECORD_TASK_REMINDER_VISIBLE && (
         <Tooltip
           title={AlarmTipText && <AlarmTipText datasheetId={dstId!} recordId={recordId!} dateTimeFieldId={field.id!} />}
         >
@@ -68,7 +70,7 @@ export const CellDateTime: React.FC<ICellDateTime> = props => {
           </span>
         </Tooltip>
       )}
-      {showAlarm && !alarm && date && Boolean(snapshot) && (
+      {showAlarm && !alarm && date && RECORD_TASK_REMINDER_VISIBLE && Boolean(snapshot) && (
         <Tooltip
           title={t(Strings.task_reminder_hover_cell_tooltip)}
         >
