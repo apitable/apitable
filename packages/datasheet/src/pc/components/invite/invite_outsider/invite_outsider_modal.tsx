@@ -56,22 +56,18 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
 
   const { screenIsAtLeast } = useResponsive();
   const isPC = screenIsAtLeast(ScreenSize.md);
-  const innerLabel = CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE ?
-    '(' + t(Strings.private_internal_person_only) + ')' : '';
-  const outerLabel = CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE ?
-    '(' + t(Strings.private_external_person_only) + ')' : '';
 
   return (
     <Tabs defaultActiveKey='inviteViaLink'
-      className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}>
-      <TabPane tab={t(Strings.link_invite) + innerLabel} key='inviteViaLink'>
+          className={classNames({ [styles.showLabel]: CONTACTS_MODAL_BULK_IMPORT_VISIBLE && CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE })}>
+      <TabPane tab={t(Strings.link_invite)} key='inviteViaLink'>
         <LinkInvite shareId={shareId} />
       </TabPane>
       {!emailInvitationDisable && (isAdmin || !isOrgIsolated) && (
         <>
           {
             CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE &&
-            <TabPane tab={t(Strings.email_invite) + outerLabel} key='emailOfTab' style={{ height: '100%' }}>
+            <TabPane tab={t(Strings.email_invite)} key='emailOfTab' style={{ height: '100%' }}>
               <InputEmail
                 cancel={cancelModal}
                 setMemberInvited={setMemberInvited}
@@ -83,7 +79,7 @@ export const InviteOutsiderTabs: FC<IInviteOutsiderTabsProps> = props => {
           }
 
           {isPC && !shareId && CONTACTS_MODAL_BULK_IMPORT_VISIBLE && (
-            <TabPane tab={t(Strings.batch_import) + outerLabel} key='fileOfTab'>
+            <TabPane tab={t(Strings.batch_import)} key='fileOfTab'>
               <ImportFile
                 closeModal={cancelModal}
                 setMemberInvited={setMemberInvited}
@@ -124,7 +120,7 @@ export const expandInviteModal = (data?: { resUpdate?: () => void; shareId?: str
             mode: 'multi', // Mandatory, select mode, single means single, multi means multiple
             selectedContextContact: 0,
           },
-          function(res) {
+          function (res) {
             if (res.err_msg == 'selectPrivilegedContact:ok') {
               const selectedTicket = res.result.selectedTicket;
               Api.postWecomUnauthMemberInvite(spaceId, [selectedTicket]).then(rlt => {
