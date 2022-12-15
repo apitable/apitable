@@ -403,7 +403,7 @@ const ToolbarBase = () => {
     {
       component: <ForeignForm key="foreignForm" className={styles.toolbarItem} showLabel={showIconBarLabel} />,
       key: 'foreignForm',
-      show: isGridView && !shareId && !templateId && !mirrorId && embedSetting.formBtn,
+      show: isGridView && !shareId && !templateId && !mirrorId && !embedId,
     },
     {
       component: <MirrorList key="mirror" className={styles.toolbarItem} showLabel={showIconBarLabel} />,

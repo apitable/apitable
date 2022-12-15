@@ -102,7 +102,9 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
     const { shareId, datasheetId, templateId, mirrorId, embedId } = state.pageParams;
     return { shareId, datasheetId, templateId, mirrorId, embedId };
   }, shallowEqual);
-  const isShareMode = shareId || templateId;
+  const isLogin = useSelector(state => state.user.isLogin);
+
+  const isShareMode = shareId || templateId || (embedId && !isLogin);
   const { isMobile } = useResponsive();
   const rightPanelWidth = useSelector(state => state.rightPane.width);
   const datasheetErrorCode = useSelector(state => Selectors.getDatasheetErrorCode(state));

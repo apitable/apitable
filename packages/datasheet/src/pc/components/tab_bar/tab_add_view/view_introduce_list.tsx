@@ -62,7 +62,7 @@ export const ViewIntroduceList = props => {
   const { addNewView, addNewNode, triggerInfo } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewTypeList = [ViewType.Grid, ViewType.Gallery, ViewType.Kanban, ViewType.Gantt, ViewType.Calendar, ViewType.OrgChart];
-
+  const embedId = useSelector(state => state.pageParams.embedId);
   const nodeTypeList = [ConfigConstant.NodeType.FORM];
   const formCreatable = useSelector(state => {
     const folderId = Selectors.getDatasheetParentId(state)!;
@@ -176,14 +176,14 @@ export const ViewIntroduceList = props => {
         }
       </div>
 
-      <section
+      { !embedId && <section
         className={styles.addNewDatasheet}
         onClick={() => ShortcutActionManager.trigger(ShortcutActionName.NewDatasheet)}
         data-sensors-click
         id={DATASHEET_ID.VIEW_CREATOR_TABLE}
       >
         {t(Strings.tab_add_view_datasheet)}
-      </section>
+      </section>}
     </div>
   );
 };

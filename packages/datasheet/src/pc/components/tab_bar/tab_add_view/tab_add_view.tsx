@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import styles from './style.module.less';
 import { ViewIntroduceList } from './view_introduce_list';
-
+import { get } from 'lodash';
 // const ReactIconAddTag = () => <IconAddTag width={16} height={16} />;
 
 interface ITabAddView {
@@ -43,7 +43,13 @@ export const TabAddView: React.FC<ITabAddView> = props => {
     }, [ref],
   );
   const { info } = useSelector(state => state.user);
-  const emmbedId = useSelector(state => state.pageParams.embedId);
+  const embedId = useSelector(state => state.pageParams.embedId);
+  const isLogin = useSelector(state => state.user.isLogin);
+  const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
+
+  const isOnlyView = embedId ? get(embedInfo, 'viewControl.viewId', false) : false;
+
+  const isHideenAddView = embedId && (isOnlyView || !isLogin);
   const {
     panelVisible,
     panelInfo,
@@ -156,7 +162,7 @@ export const TabAddView: React.FC<ITabAddView> = props => {
 
   return (
     <>
-      { !emmbedId && <RcTrigger
+      { !isHideenAddView && <RcTrigger
         action={permissions.viewCreatable && !disabled ? ['click'] : ['']}
         popup={
           <ViewIntroduceList
