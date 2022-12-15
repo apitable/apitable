@@ -19,12 +19,12 @@ export const getDatasheetOrLoad = (
       store.dispatch(StoreActions.fetchForeignDatasheet(formId, foreignDatasheetId, forceFetch));
       return null;
     }
-    if (assignDstId && datasheetId) {
-      store.dispatch(StoreActions.fetchForeignDatasheet(datasheetId, foreignDatasheetId, forceFetch));
-      return null;
-    }
     if (mirrorId) {
       store.dispatch(StoreActions.fetchForeignDatasheet(mirrorId, foreignDatasheetId, forceFetch));
+      return null;
+    }
+    if (assignDstId && datasheetId) {
+      store.dispatch(StoreActions.fetchForeignDatasheet(datasheetId, foreignDatasheetId, forceFetch));
       return null;
     }
   }

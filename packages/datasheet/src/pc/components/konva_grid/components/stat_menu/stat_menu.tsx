@@ -8,7 +8,7 @@ import { CollaCommandName, Field, getStatTypeList, KONVA_DATASHEET_ID, Selectors
 import { getFieldStatType } from 'pc/components/multi_grid/cell/stat_option';
 import { MouseDownType } from 'pc/components/selection_wrapper';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-import { isIPad13 } from 'react-device-detect';
+import { isTouchDevice } from 'pc/utils';
 // import styles from './style.module.less';
 import { flatContextData } from 'pc/utils';
 
@@ -86,9 +86,9 @@ export const StatMenu: React.FC<IStatMenuProps> = React.memo((props) => {
     };
   });
 
-  // Compatible with iPad not triggering click event issue
+  // Compatible with touch device not triggering click event issue
   useEffect(() => {
-    if (!isIPad13) return;
+    if (!isTouchDevice()) return;
     const element = parentRef?.current;
     if (!element) return;
     element.addEventListener('touchend', showContextMenu);

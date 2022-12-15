@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FieldMenu } from './field_menu';
 import { GRID_RECORD_MENU, RecordMenu } from './record_menu';
 import { useContextMenu } from '@apitable/components';
-import { isIPad13 } from 'react-device-detect';
+import { isTouchDevice } from 'pc/utils';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 
 type IdMap = {
@@ -112,9 +112,9 @@ export const ContextMenuBase: React.FC<IContextFieldOwnProps> = props => {
     };
   });
 
-  // Compatible with iPad not triggering click event issue
+  // Compatible with touch device not triggering click event issue
   useEffect(() => {
-    if (!isIPad13) return;
+    if (!isTouchDevice()) return;
     const element = parentRef!.current;
     if (!element) return;
     element.addEventListener('touchend', showContextMenu);

@@ -32,7 +32,7 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
 import * as React from 'react';
 import { forwardRef, ForwardRefRenderFunction, memo, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
-import { isIPad13 } from 'react-device-detect';
+import { isTouchDevice } from 'pc/utils';
 import { shallowEqual, useSelector } from 'react-redux';
 import { PureEditorContainer } from '../editors';
 import { IContainerEdit } from '../editors/interface';
@@ -521,9 +521,9 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     };
   });
 
-  // Compatible with iPad not triggering click event issue
+  // Compatible with touch device not triggering click event issue
   useEffect(() => {
-    if (!isIPad13) return;
+    if (!isTouchDevice()) return;
     const element = wrapperRef!.current;
     if (!element) return;
     element.addEventListener('touchend', onClick);
