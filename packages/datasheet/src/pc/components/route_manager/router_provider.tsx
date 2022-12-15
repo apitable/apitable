@@ -13,14 +13,13 @@ import { useViewTypeTrack } from 'pc/hooks/use_view_type_track';
 import { ResourceContext, resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getCookie, isTouchDevice } from 'pc/utils';
+import { dndH5Manager, dndTouchManager } from 'pc/utils/dnd_manager';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { comlinkStore } from 'pc/worker';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend'
 import { useDispatch } from 'react-redux';
 import NoDataImg from 'static/icon/workbench/workbench_account_nodata.png';
 
@@ -144,7 +143,7 @@ const RouterProvider = ({ children }) => {
   return (
     <ConfigProvider {...antdConfig}>
       <ResourceContext.Provider value={resourceService.instance}>
-        <DndProvider backend={isTouchDevice() ? TouchBackend : HTML5Backend}>
+        <DndProvider manager={isTouchDevice() ? dndTouchManager : dndH5Manager}>
           <ScrollContext.Provider
             value={{
               cacheScrollMap,

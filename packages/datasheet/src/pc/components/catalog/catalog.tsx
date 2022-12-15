@@ -11,6 +11,8 @@ import { Tree } from './tree';
 import { getContextTypeByNodeType } from 'pc/utils';
 import { Skeleton } from '@apitable/components';
 import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_side_context';
+import { DndProvider } from 'react-dnd';
+import { dndH5Manager } from 'pc/utils/dnd_manager';
 
 export const CatalogBase: React.FC = () => {
   // Whether the node is loaded or not (expand the node)
@@ -117,18 +119,20 @@ export const CatalogBase: React.FC = () => {
 
   return (
     <div className={styles.catalogWrapper}>
-      <div
-        className={styles.treeWrapper}
-        onContextMenu={(event) => {
-          if (rootManageable) {
-            rightClickHandler(event);
-          }
-        }}
-      >
-        <Tree
-          rightClick={rightClickHandler}
-        />
-      </div>
+      <DndProvider manager={dndH5Manager}>
+        <div
+          className={styles.treeWrapper}
+          onContextMenu={(event) => {
+            if (rootManageable) {
+              rightClickHandler(event);
+            }
+          }}
+        >
+          <Tree
+            rightClick={rightClickHandler}
+          />
+        </div>
+      </DndProvider>
     </div>
   );
 };

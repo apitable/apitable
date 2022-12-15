@@ -9,8 +9,6 @@ import { isTouchDevice, UploadManager } from 'pc/utils';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DndProvider, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend'
 import { stopPropagation } from '../../../utils/dom';
 import { PreviewItem } from '../preview_item/preview_item';
 import { UploadItem } from '../upload_item';
@@ -18,6 +16,7 @@ import { UploadTab } from '../upload_tab';
 import styles from './styles.module.less';
 import { IUploadFileList } from './upload_core.interface';
 import withScrolling from 'pc/components/react-dnd-scrolling';
+import { dndH5Manager, dndTouchManager } from 'pc/utils/dnd_manager';
 
 const ScrollingComponent = withScrolling('div');
 
@@ -278,7 +277,7 @@ export const UploadCore: React.FC<IUploadCoreProps> = props => {
           [styles[`columnCount${columnCount}`]]: true,
         })}
       >
-        <DndProvider backend={isTouchDevice() ? TouchBackend : HTML5Backend}>
+        <DndProvider manager={isTouchDevice() ? dndTouchManager : dndH5Manager}>
           <ScrollingComponent className={styles.scrollBox}>
             <SortableList
               cellValue={cellValue}
