@@ -293,7 +293,7 @@ const WidgetCreateModalStep: React.FC<IExpandWidgetCreateStepsProps> = (props) =
         {
           label: t(Strings.widget_step_install_content_label2),
           type: 'info',
-          value: `npm install -g @${getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL}/widget-cli`
+          value: `npm install -g @${getEnvVariables().WIDGET_REPO_PREFIX}/widget-cli`
         },
       ],
       helpLink: getEnvVariables().WIDGET_DEVELOP_INSTALL_HELP_URL
