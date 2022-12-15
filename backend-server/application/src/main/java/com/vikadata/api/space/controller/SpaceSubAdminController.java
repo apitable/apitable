@@ -72,7 +72,6 @@ public class SpaceSubAdminController {
     @GetResource(path = { "/getRoleDetail" }, tags = "UPDATE_SUB_ADMIN")
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     @ApiOperation(value = "query admin detail")
-    @SuppressWarnings("unchecked")
     public ResponseData<SpaceRoleDetailVo> getRoleDetail(@RequestParam(name = "memberId") Long memberId) {
         String spaceId = LoginContext.me().getSpaceId();
         SpaceRoleDetailVo spaceRoleDetailVo = iSpaceRoleService.getRoleDetail(spaceId, memberId);
@@ -83,8 +82,7 @@ public class SpaceSubAdminController {
     @PostResource(path = "/addRole", tags = "CREATE_SUB_ADMIN")
     @ApiImplicitParam(name = ParamsConstants.SPACE_ID, value = "space id", required = true, dataTypeClass = String.class, paramType = "header", example = "spcyQkKp9XJEl")
     @ApiOperation(value = "Create space role")
-    @SuppressWarnings("rawtypes")
-    public ResponseData addRole(@RequestBody @Valid AddSpaceRoleRo data) {
+    public ResponseData<Void> addRole(@RequestBody @Valid AddSpaceRoleRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check whether the resource is disabled
         iSpaceRoleService.checkAdminResourceChangeAllow(spaceId, data.getResourceCodes());

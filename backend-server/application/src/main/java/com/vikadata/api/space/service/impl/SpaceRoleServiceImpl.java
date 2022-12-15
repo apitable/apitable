@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -20,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.vikadata.api.interfaces.social.facade.SocialServiceFacade;
 import com.vikadata.api.interfaces.social.model.SocialConnectInfo;
+import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.api.organization.mapper.MemberMapper;
 import com.vikadata.api.shared.cache.bean.SpaceMenuResourceGroupDto;
 import com.vikadata.api.shared.cache.bean.SpaceResourceGroupDto;
@@ -30,6 +30,7 @@ import com.vikadata.api.shared.holder.NotificationRenderFieldHolder;
 import com.vikadata.api.shared.util.RoleBuildUtil;
 import com.vikadata.api.shared.util.page.PageHelper;
 import com.vikadata.api.shared.util.page.PageInfo;
+import com.vikadata.api.space.dto.SpaceGroupResourceDto;
 import com.vikadata.api.space.enums.SpaceException;
 import com.vikadata.api.space.enums.SpaceResourceGroupCode;
 import com.vikadata.api.space.mapper.SpaceMapper;
@@ -37,7 +38,6 @@ import com.vikadata.api.space.mapper.SpaceMemberRoleRelMapper;
 import com.vikadata.api.space.mapper.SpaceResourceMapper;
 import com.vikadata.api.space.mapper.SpaceRoleMapper;
 import com.vikadata.api.space.mapper.SpaceRoleResourceRelMapper;
-import com.vikadata.api.space.dto.SpaceGroupResourceDto;
 import com.vikadata.api.space.ro.AddSpaceRoleRo;
 import com.vikadata.api.space.ro.UpdateSpaceRoleRo;
 import com.vikadata.api.space.service.ISpaceInviteLinkService;
@@ -51,7 +51,6 @@ import com.vikadata.api.space.vo.SpaceRoleDetailVo;
 import com.vikadata.api.space.vo.SpaceRoleVo;
 import com.vikadata.core.util.ExceptionUtil;
 import com.vikadata.core.util.SqlTool;
-import com.vikadata.api.organization.entity.MemberEntity;
 import com.vikadata.entity.SpaceMemberRoleRelEntity;
 import com.vikadata.entity.SpaceRoleEntity;
 
@@ -354,8 +353,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
         if (bindTenantInfo != null) {
             return bindTenantInfo.getDisableResourceGroupCodes();
         }
-        return Stream.of("MANAGE_NORMAL_MEMBER", "MANAGE_TEAM", "MANAGE_MEMBER")
-                .map(SpaceResourceGroupCode::valueOf).collect(Collectors.toList());
+        return Collections.emptyList();
     }
 
     @Override
@@ -367,5 +365,4 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
             ExceptionUtil.isEmpty(CollUtil.intersection(operateResourceCodes, codes), SpaceException.NO_ALLOW_OPERATE);
         }
     }
-
 }
