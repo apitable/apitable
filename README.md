@@ -1,9 +1,10 @@
 
 
 
-</p>
 <p align="center">
-    <img src="docs/static/cover.png" alt="APITable Cover Image" />
+    <a href="https://apitable.com" target="_blank">
+        <img src="docs/static/cover.png" alt="APITable Cover Image" />
+    </a>
 </p>
 
 
@@ -303,6 +304,7 @@ APITable use these common conventions:
 
 
 ## 📺 Screenshot
+
 <p align="center">
     <img src="docs/static/screenshot-realtime.png" alt="APITable Screenshot Image" />
 </p>
@@ -348,4 +350,4 @@ APITable use these common conventions:
 
 <br/>
 
-[^info]: Licensed with AGPL-3.0. Designed by APITable. PTE. LTD.
+[^info]: Licensed with AGPL-3.0. Designed by [APITable Ltd](https://apitable.com).
