@@ -1,17 +1,6 @@
 import {
-  ConfigConstant,
-  Field,
-  IDatasheetState,
-  ISpaceBasicInfo,
-  ISpaceInfo,
-  ITreeNodesMap,
-  IViewProperty,
-  ResourceType,
-  Selectors,
-  StoreActions,
-  Strings,
-  t,
-  UnitItem,
+  ConfigConstant, Field, IDatasheetState, ISpaceBasicInfo, ISpaceInfo, ITreeNodesMap, IViewProperty, ResourceType, Selectors, StoreActions, Strings,
+  t, UnitItem,
 } from '@apitable/core';
 import { Workbook } from 'exceljs';
 import { browser } from 'modules/shared/browser';
@@ -164,62 +153,66 @@ export const exportMirror = (mirrorId: string, exportType: string) => {
   );
 };
 
+export const exportDatasheetBase = async(datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string, ignorePermission?: boolean } = {}) => {
+  const { view, mirrorId, ignorePermission } = option;
+  const state = store.getState();
+  const datasheet = Selectors.getDatasheet(state, datasheetId)!;
+  const permission = Selectors.getPermissions(state, datasheetId, undefined, mirrorId);
+  const fieldMap = Selectors.getFieldMap(state, datasheetId);
+  const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
+  if (!datasheet || !fieldMap) {
+    return;
+  }
+  if (!ignorePermission && !permission.exportable) {
+    Modal.error({
+      title: t(Strings.no_permission_tips_title),
+      content: t(Strings.no_permission_tips_description),
+      okText: t(Strings.refresh),
+      onOk: () => {
+        window.location.reload();
+      },
+    });
+    return;
+  }
+  const { rows, cols } = getRowsAndCols(datasheet, view);
+  // Filter out fields without permissions
+  const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
+
+  const data = rows.map(row => {
+    return visibleCols.map(col => {
+      const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
+      const propsField = fieldMap[col.fieldId];
+      return Field.bindModel(propsField).cellValueToString(cellValue) || '';
+    });
+  });
+  const Excel = await import('exceljs');
+  const workbook = new Excel.Workbook();
+  const nodeName = datasheet.name;
+  const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
+  const tempWorksheet = workbook.addWorksheet(`${viewName}`);
+  const columnHeader = getColumnHeader(datasheet, visibleCols);
+  tempWorksheet.columns = columnHeader;
+  tempWorksheet.addRows(data);
+  const fileName = `${nodeName}-${viewName}`;
+  switch (exportType) {
+    case ConfigConstant.EXPORT_TYPE_XLSX:
+      exportExcel(workbook, fileName, !!view);
+      break;
+    case ConfigConstant.EXPORT_TYPE_CSV:
+    default:
+      exportCSV(workbook, fileName, !!view);
+  }
+};
+
 /**
  * Export Datasheet
  * Export the full datasheet by default without passing in the view
  * @param exportType csv or xlsx
  */
 export const exportDatasheet = (datasheetId: string, exportType: string, option: { view?: IViewProperty; mirrorId?: string } = {}) => {
-  const { view, mirrorId } = option;
   store.dispatch(
     StoreActions.fetchDatasheet(datasheetId, async() => {
-      const state = store.getState();
-      const datasheet = Selectors.getDatasheet(state, datasheetId)!;
-      const permission = Selectors.getPermissions(state, datasheetId, undefined, mirrorId);
-      const fieldMap = Selectors.getFieldMap(state, datasheetId);
-      const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
-      if (!datasheet || !fieldMap) {
-        return;
-      }
-      if (!permission.exportable) {
-        Modal.error({
-          title: t(Strings.no_permission_tips_title),
-          content: t(Strings.no_permission_tips_description),
-          okText: t(Strings.refresh),
-          onOk: () => {
-            window.location.reload();
-          },
-        });
-        return;
-      }
-      const { rows, cols } = getRowsAndCols(datasheet, view);
-      // Filter out fields without permissions
-      const visibleCols = cols.filter(col => Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId) !== ConfigConstant.Role.None);
-
-      const data = rows.map(row => {
-        return visibleCols.map(col => {
-          const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
-          const propsField = fieldMap[col.fieldId];
-          return Field.bindModel(propsField).cellValueToString(cellValue) || '';
-        });
-      });
-      const Excel = await import('exceljs');
-      const workbook = new Excel.Workbook();
-      const nodeName = datasheet.name;
-      const viewName = view ? view.name : ConfigConstant.EXPORT_ALL_SHEET_NAME;
-      const tempWorksheet = workbook.addWorksheet(`${viewName}`);
-      const columnHeader = getColumnHeader(datasheet, visibleCols);
-      tempWorksheet.columns = columnHeader;
-      tempWorksheet.addRows(data);
-      const fileName = `${nodeName}-${viewName}`;
-      switch (exportType) {
-        case ConfigConstant.EXPORT_TYPE_XLSX:
-          exportExcel(workbook, fileName, !!view);
-          break;
-        case ConfigConstant.EXPORT_TYPE_CSV:
-        default:
-          exportCSV(workbook, fileName, !!view);
-      }
+      await exportDatasheetBase(datasheetId, exportType, option);
     }) as any,
   );
 };

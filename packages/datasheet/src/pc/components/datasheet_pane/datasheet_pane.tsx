@@ -1,9 +1,14 @@
 import { Skeleton } from '@apitable/components';
-import { Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t } from '@apitable/core';
+import {
+  ConfigConstant, Events, Player, PREVIEW_DATASHEET_ID, ResourceType, Selectors, StatusCode, StoreActions, Strings, SystemConfig, t
+} from '@apitable/core';
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
-import dynamic from 'next/dynamic';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise';
+import { get } from 'lodash';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import dynamic from 'next/dynamic';
 import { ApiPanel } from 'pc/components/api_panel';
 import { VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
@@ -12,6 +17,7 @@ import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { exportDatasheetBase } from 'pc/utils';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useMemo } from 'react';
@@ -29,9 +35,6 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 import styles from './style.module.less';
-import { get } from 'lodash';
-// @ts-ignore
-import { WeixinShareWrapper } from 'enterprise';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
@@ -44,11 +47,24 @@ const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_p
   ),
 });
 
-const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, 
-  preview, testFunctions, handleExitTest, mirrorId, embedId }) => {
+const DatasheetMain = ({
+  loading, datasheetErrorCode, isNoPermission, shareId, datasheetId,
+  preview, testFunctions, handleExitTest, mirrorId, embedId
+}) => {
   const embedInfo = useSelector(state => Selectors.getEmbedInfo(state));
 
   const isShowViewbar = embedId ? get(embedInfo, 'viewControl.tabBar', true) : true;
+
+  const exportPreviewCsv = () => {
+    const state = store.getState();
+    const snapshot = Selectors.getSnapshot(state, 'previewDatasheet');
+    if (!snapshot) {
+      return;
+    }
+    const view = Selectors.getViewById(snapshot, state.pageParams.viewId!);
+    exportDatasheetBase('previewDatasheet', ConfigConstant.EXPORT_TYPE_XLSX, { view, ignorePermission: true });
+  };
+
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <div className={classNames(styles.dataspaceRight, 'dataspaceRight', loading && styles.loading)} style={{ height: '100%' }}>
@@ -79,6 +95,9 @@ const DatasheetMain = ({ loading, datasheetErrorCode, isNoPermission, shareId, d
           <div className={styles.previewTip}>
             {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
             {testFunctions && <a onClick={handleExitTest}>{t(Strings.exist_experience)}</a>}
+            {preview &&
+              <span style={{ marginLeft: 14, cursor: 'pointer', textDecoration: 'underline' }}
+                onClick={exportPreviewCsv}>{t(Strings.export_current_preview_view_data)}</span>}
           </div>
         </div>
       )}
@@ -301,7 +320,7 @@ const DataSheetPaneBase: FC<{ panelLeft?: JSX.Element }> = props => {
   useEffect(() => {
     dispatch(StoreActions.setRightPaneWidth(panelSize));
   }, [dispatch, panelSize]);
-  
+
   useEffect(() => {
     const panelVisible = Boolean(panelSize);
     onSetPanelVisible && onSetPanelVisible(panelVisible);

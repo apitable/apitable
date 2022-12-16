@@ -54,6 +54,13 @@
                 "statusCode": 403,
                 "apiTypes": "fusion_api"
             },
+            "api_forbidden_because_of_not_in_space": {
+                "code": 403,
+                "id": "api_forbidden_because_of_not_in_space",
+                "message": "api_forbidden_because_of_not_in_space",
+                "statusCode": 403,
+                "apiTypes": "fusion_api"
+            },
             "api_forbidden_because_of_usage": {
                 "code": 403,
                 "id": "api_forbidden_because_of_usage",
@@ -66,6 +73,13 @@
                 "id": "api_params_instance_space_id_error",
                 "message": "api_params_instance_space_id_error",
                 "statusCode": 200
+            },
+            "api_param_invalid_space_id_value": {
+                "code": 400,
+                "id": "api_param_invalid_space_id_value",
+                "message": "api_param_invalid_space_id_value",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
             },
             "api_not_exists": {
                 "code": 404,
@@ -88,6 +102,14 @@
                 "statusCode": 500,
                 "apiTypes": "fusion_api"
             },
+            "api_param_sort_field_not_exists": {
+                "code": 400,
+                "id": "api_param_sort_field_not_exists",
+                "isRecordTimes": true,
+                "message": "api_param_sort_field_not_exists",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
             "api_params_can_not_operate": {
                 "code": 400,
                 "id": "api_params_can_not_operate",
@@ -101,6 +123,13 @@
                 "id": "api_params_invalid_value",
                 "isRecordTimes": true,
                 "message": "api_params_invalid_value",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_params_record_ids_must_unique": {
+                "code": 400,
+                "id": "api_params_record_ids_must_unique",
+                "isRecordTimes": true,
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
@@ -208,213 +237,6 @@
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
-            "api_params_not_exists": {
-                "code": 400,
-                "id": "api_params_not_exists",
-                "isRecordTimes": true,
-                "message": "api_params_not_exists",
-                "statusCode": 200,
-                "apiTypes": "fusion_api"
-            },
-            "api_param_view_not_exists": {
-                "code": 400,
-                "id": "api_param_view_not_exists",
-                "isRecordTimes": true,
-                "message": "api_param_view_not_exists",
-                "statusCode": 200,
-                "apiTypes": "fusion_api"
-            },
-            "api_params_must_unique": {
-                "code": 400,
-                "id": "api_params_must_unique",
-                "isRecordTimes": true,
-                "message": "api_params_must_unique",
-                "statusCode": 200,
-                "apiTypes": "fusion_api"
-            },
-            "api_param_node_id_not_empty_key": {
-                "code": 400,
-                "id": "api_param_node_id_not_empty_key",
-                "isRecordTimes": true,
-                "message": "api_param_node_id_not_empty_key",
-                "statusCode": 200
-            },
-            "api_param_payload_banner_logo_type_error": {
-                "code": 400,
-                "id": "api_param_payload_banner_logo_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_payload_banner_logo_type_error",
-                "statusCode": 200
-            },
-            "api_param_theme_type_error": {
-                "code": 400,
-                "id": "api_param_theme_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_theme_type_error",
-                "statusCode": 200
-            },
-            "api_param_payload_editable_type_error": {
-                "code": 400,
-                "id": "api_param_payload_editable_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_payload_editable_type_error",
-                "statusCode": 200
-            },
-            "api_param_collapsed_type_error": {
-                "code": 400,
-                "id": "api_param_collapsed_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_collapsed_type_error",
-                "statusCode": 200
-            },
-            "api_param_tabbar_type_error": {
-                "code": 400,
-                "id": "api_param_tabbar_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_tabbar_type_error",
-                "statusCode": 200
-            },
-            "api_param_toolbar_type_error": {
-                "code": 400,
-                "id": "api_param_toolbar_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_toolbar_type_error",
-                "statusCode": 200
-            },
-            "api_param_viewid_type_error": {
-                "code": 400,
-                "id": "api_param_viewid_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_viewid_type_error",
-                "statusCode": 200
-            },
-            "api_param_viewid_empty_error": {
-                "code": 400,
-                "id": "api_param_viewid_empty_error",
-                "isRecordTimes": true,
-                "message": "api_param_viewid_empty_error",
-                "statusCode": 200
-            },
-            "api_param_basic_tools_type_error": {
-                "code": 400,
-                "id": "api_param_basic_tools_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_basic_tools_type_error",
-                "statusCode": 200
-            },
-            "api_param_share_btn_type_error": {
-                "code": 400,
-                "id": "api_param_share_btn_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_share_btn_type_error",
-                "statusCode": 200
-            },
-            "api_param_widget_btn_type_error": {
-                "code": 400,
-                "id": "api_param_widget_btn_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_widget_btn_type_error",
-                "statusCode": 200
-            },
-            "api_param_api_btn_type_error": {
-                "code": 400,
-                "id": "api_param_api_btn_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_api_btn_type_error",
-                "statusCode": 200
-            },
-            "api_param_form_btn_type_error": {
-                "code": 400,
-                "id": "api_param_form_btn_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_form_btn_type_error",
-                "statusCode": 200
-            },
-            "api_param_history_btn_type_error": {
-                "code": 400,
-                "id": "api_param_history_btn_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_history_btn_type_error",
-                "statusCode": 200
-            },
-            "api_param_robot_btn_type_error": {
-                "code": 400,
-                "id": "api_param_robot_btn_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_robot_btn_type_error",
-                "statusCode": 200
-            },
-            "api_param_embed_link_id_not_empty": {
-                "code": 400,
-                "id": "api_param_embed_link_id_not_empty",
-                "isRecordTimes": true,
-                "message": "api_param_embed_link_id_not_empty",
-                "statusCode": 200
-            },
-            "api_enterprise_limit": {
-                "code": 1502,
-                "id": "api_enterprise_limit",
-                "isRecordTimes": true,
-                "message": "api_enterprise_limit",
-                "statusCode": 200
-            },
-            "api_embed_link_id_not_exist": {
-                "code": 1501,
-                "id": "api_embed_link_id_not_exist",
-                "isRecordTimes": true,
-                "message": "api_embed_link_id_not_exist",
-                "statusCode": 200
-            },
-            "api_embed_link_limit": {
-                "code": 400,
-                "id": "api_embed_link_limit",
-                "isRecordTimes": true,
-                "message": "api_embed_link_limit",
-                "statusCode": 200
-            },
-            "api_embed_link_instance_limit": {
-                "code": 400,
-                "id": "api_embed_link_instance_limit",
-                "isRecordTimes": true,
-                "message": "api_embed_link_instance_limit",
-                "statusCode": 200
-            },
-            "api_param_embed_permission_type_error": {
-                "code": 400,
-                "id": "api_param_embed_permission_type_error",
-                "isRecordTimes": true,
-                "message": "api_param_embed_permission_type_error",
-                "statusCode": 200
-            },
-            "api_forbidden_because_of_not_in_space": {
-                "code": 403,
-                "id": "api_forbidden_because_of_not_in_space",
-                "message": "api_forbidden_because_of_not_in_space",
-                "statusCode": 403,
-                "apiTypes": "fusion_api"
-            },
-            "api_param_invalid_space_id_value": {
-                "code": 400,
-                "id": "api_param_invalid_space_id_value",
-                "message": "api_param_invalid_space_id_value",
-                "statusCode": 200,
-                "apiTypes": "fusion_api"
-            },
-            "api_param_sort_field_not_exists": {
-                "code": 400,
-                "id": "api_param_sort_field_not_exists",
-                "isRecordTimes": true,
-                "message": "api_param_sort_field_not_exists",
-                "statusCode": 200,
-                "apiTypes": "fusion_api"
-            },
-            "api_params_record_ids_must_unique": {
-                "code": 400,
-                "id": "api_params_record_ids_must_unique",
-                "isRecordTimes": true,
-                "statusCode": 200,
-                "apiTypes": "fusion_api"
-            },
             "api_datasheet_not_visible": {
                 "code": 301,
                 "id": "api_datasheet_not_visible",
@@ -444,6 +266,22 @@
                 "id": "api_upload_attachment_not_editable",
                 "isRecordTimes": true,
                 "message": "api_upload_attachment_not_editable",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_params_not_exists": {
+                "code": 400,
+                "id": "api_params_not_exists",
+                "isRecordTimes": true,
+                "message": "api_params_not_exists",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_param_view_not_exists": {
+                "code": 400,
+                "id": "api_param_view_not_exists",
+                "isRecordTimes": true,
+                "message": "api_param_view_not_exists",
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
@@ -595,6 +433,14 @@
                 "id": "api_param_invalid_rating_field",
                 "isRecordTimes": true,
                 "message": "api_param_invalid_rating_field",
+                "statusCode": 200,
+                "apiTypes": "fusion_api"
+            },
+            "api_params_must_unique": {
+                "code": 400,
+                "id": "api_params_must_unique",
+                "isRecordTimes": true,
+                "message": "api_params_must_unique",
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
             },
@@ -1046,6 +892,160 @@
                 "message": "api_params_primary_field_not_allowed_to_delete",
                 "statusCode": 200,
                 "apiTypes": "fusion_api"
+            },
+            "api_param_node_id_not_empty_key": {
+                "code": 400,
+                "id": "api_param_node_id_not_empty_key",
+                "isRecordTimes": true,
+                "message": "api_param_node_id_not_empty_key",
+                "statusCode": 200
+            },
+            "api_param_payload_banner_logo_type_error": {
+                "code": 400,
+                "id": "api_param_payload_banner_logo_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_payload_banner_logo_type_error",
+                "statusCode": 200
+            },
+            "api_param_theme_type_error": {
+                "code": 400,
+                "id": "api_param_theme_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_theme_type_error",
+                "statusCode": 200
+            },
+            "api_param_payload_editable_type_error": {
+                "code": 400,
+                "id": "api_param_payload_editable_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_payload_editable_type_error",
+                "statusCode": 200
+            },
+            "api_param_collapsed_type_error": {
+                "code": 400,
+                "id": "api_param_collapsed_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_collapsed_type_error",
+                "statusCode": 200
+            },
+            "api_param_tabbar_type_error": {
+                "code": 400,
+                "id": "api_param_tabbar_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_tabbar_type_error",
+                "statusCode": 200
+            },
+            "api_param_toolbar_type_error": {
+                "code": 400,
+                "id": "api_param_toolbar_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_toolbar_type_error",
+                "statusCode": 200
+            },
+            "api_param_viewid_type_error": {
+                "code": 400,
+                "id": "api_param_viewid_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_viewid_type_error",
+                "statusCode": 200
+            },
+            "api_param_viewid_empty_error": {
+                "code": 400,
+                "id": "api_param_viewid_empty_error",
+                "isRecordTimes": true,
+                "message": "api_param_viewid_empty_error",
+                "statusCode": 200
+            },
+            "api_param_basic_tools_type_error": {
+                "code": 400,
+                "id": "api_param_basic_tools_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_basic_tools_type_error",
+                "statusCode": 200
+            },
+            "api_param_share_btn_type_error": {
+                "code": 400,
+                "id": "api_param_share_btn_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_share_btn_type_error",
+                "statusCode": 200
+            },
+            "api_param_widget_btn_type_error": {
+                "code": 400,
+                "id": "api_param_widget_btn_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_widget_btn_type_error",
+                "statusCode": 200
+            },
+            "api_param_api_btn_type_error": {
+                "code": 400,
+                "id": "api_param_api_btn_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_api_btn_type_error",
+                "statusCode": 200
+            },
+            "api_param_form_btn_type_error": {
+                "code": 400,
+                "id": "api_param_form_btn_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_form_btn_type_error",
+                "statusCode": 200
+            },
+            "api_param_history_btn_type_error": {
+                "code": 400,
+                "id": "api_param_history_btn_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_history_btn_type_error",
+                "statusCode": 200
+            },
+            "api_param_robot_btn_type_error": {
+                "code": 400,
+                "id": "api_param_robot_btn_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_robot_btn_type_error",
+                "statusCode": 200
+            },
+            "api_param_embed_link_id_not_empty": {
+                "code": 400,
+                "id": "api_param_embed_link_id_not_empty",
+                "isRecordTimes": true,
+                "message": "api_param_embed_link_id_not_empty",
+                "statusCode": 200
+            },
+            "api_enterprise_limit": {
+                "code": 1502,
+                "id": "api_enterprise_limit",
+                "isRecordTimes": true,
+                "message": "api_enterprise_limit",
+                "statusCode": 200
+            },
+            "api_embed_link_id_not_exist": {
+                "code": 1501,
+                "id": "api_embed_link_id_not_exist",
+                "isRecordTimes": true,
+                "message": "api_embed_link_id_not_exist",
+                "statusCode": 200
+            },
+            "api_embed_link_limit": {
+                "code": 400,
+                "id": "api_embed_link_limit",
+                "isRecordTimes": true,
+                "message": "api_embed_link_limit",
+                "statusCode": 200
+            },
+            "api_embed_link_instance_limit": {
+                "code": 400,
+                "id": "api_embed_link_instance_limit",
+                "isRecordTimes": true,
+                "message": "api_embed_link_instance_limit",
+                "statusCode": 200
+            },
+            "api_param_embed_permission_type_error": {
+                "code": 400,
+                "id": "api_param_embed_permission_type_error",
+                "isRecordTimes": true,
+                "message": "api_param_embed_permission_type_error",
+                "statusCode": 200
             }
         }
     }
