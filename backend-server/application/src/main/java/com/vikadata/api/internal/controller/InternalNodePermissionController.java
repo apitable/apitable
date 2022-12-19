@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+import com.vikadata.api.control.annotation.ThirdPartControl;
 import com.vikadata.api.internal.ro.InternalPermissionRo;
 import com.vikadata.api.internal.service.IPermissionService;
 import com.vikadata.api.shared.component.scanner.annotation.ApiResource;
@@ -44,6 +45,7 @@ public class InternalNodePermissionController {
             @ApiImplicitParam(name = "nodeId", value = "Node ID", required = true, dataTypeClass = String.class, paramType = "path", example = "dstCgcfixAKyeeNsaP"),
             @ApiImplicitParam(name = "shareId", value = "Share ID", dataTypeClass = String.class, paramType = "query", example = "shrFPXT8qnyFJglX6elJi")
     })
+    @ThirdPartControl()
     public ResponseData<DatasheetPermissionView> getNodePermission(@PathVariable("nodeId") String nodeId,
             @RequestParam(value = "shareId", required = false) String shareId) {
         Long userId = SessionContext.getUserId();

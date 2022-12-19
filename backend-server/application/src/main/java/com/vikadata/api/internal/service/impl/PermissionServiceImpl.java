@@ -17,9 +17,10 @@ import com.vikadata.api.control.infrastructure.role.NodeRole;
 import com.vikadata.api.control.infrastructure.role.RoleConstants.Node;
 import com.vikadata.api.internal.service.IPermissionService;
 import com.vikadata.api.organization.service.IMemberService;
-import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.space.service.ISpaceService;
+import com.vikadata.api.space.vo.SpaceGlobalFeature;
 import com.vikadata.api.user.service.IUserService;
+import com.vikadata.api.workspace.enums.IdRulePrefixEnum;
 import com.vikadata.api.workspace.service.IFieldRoleService;
 import com.vikadata.api.workspace.service.INodeFavoriteService;
 import com.vikadata.api.workspace.service.INodeService;
@@ -84,7 +85,8 @@ public class PermissionServiceImpl implements IPermissionService {
         // Get space ID (multiple spaces trigger exception)
         String spaceId = iNodeService.getSpaceIdByNodeIds(nodeIds);
         // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
-        Long owner = StrUtil.isNotBlank(shareId) ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : userId;
+        Long owner = StrUtil.isNotBlank(shareId) && !shareId.startsWith(IdRulePrefixEnum.EMB.getIdRulePrefixEnum()) ?
+                iNodeShareSettingService.getUpdatedByByShareId(shareId) : userId;
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(owner, spaceId);
         // non space station member
         if (memberId == null) {

@@ -127,6 +127,10 @@ vikadata:
       secret: ${ONEACCESS_WECOM_SECRET:wcxxxxx}
       agent-id: ${ONEACCESS_WECOM_AGENT_ID:1000065}
       base-api-url: ${ONEACCESS_BASE_API_URL:https://exampe.wecom.com}
+  permission-control:
+    infoflow:
+      enabled: ${INFOFLOW_PERMISSIONS_ENABLED:false}
+
 
 mybatis-plus:
   global-config:
