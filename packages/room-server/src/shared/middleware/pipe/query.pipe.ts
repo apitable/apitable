@@ -1,10 +1,13 @@
 import { Inject, Injectable, PipeTransform } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { ApiTipConstant, FieldKeyEnum, IFieldMap, IMeta } from '@apitable/core';
+import { format } from 'logform';
 import { DATASHEET_META_HTTP_DECORATE } from '../../common';
 import { ApiException } from '../../exception/api.exception';
 import { keyBy } from 'lodash';
 import { SortRo } from '../../../database/ros/sort.ro';
+import json = format.json;
+import qs from 'qs';
 
 /**
  * transform json into object
@@ -16,6 +19,7 @@ export class QueryPipe implements PipeTransform {
   constructor(@Inject(REQUEST) private readonly request: any) {}
 
   transform(value: any): any {
+    value = qs.parse(value);
     // transform, validate and sort the parameters
     const meta: IMeta = this.request[DATASHEET_META_HTTP_DECORATE];
     let fieldMap = meta.fieldMap;
