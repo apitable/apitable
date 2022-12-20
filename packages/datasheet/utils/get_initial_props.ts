@@ -39,11 +39,17 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   let locale = 'zh-CN';
   if (cookie) {
     headers.cookie = cookie;
+    const getCookie = (name: string) => {
+      const value = `; ${cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length >= 2) return parts[1].split(';').shift();
+      return null;
+    }
     // server lang
-    const langParts = cookie.split(`; lang=`);
+    const langParts = getCookie('lang');
     // client cache cookie while language toggle
-    const localeParts = cookie.includes('client-lang=') ? cookie.split(`client-lang=`) : null;
-    locale = localeParts?.pop()?.split(';').shift() || langParts.pop()?.split(';').shift() || locale;
+    const localeParts = getCookie('client-lang');
+    locale = localeParts || langParts || locale;
   }
 
   if (language) {
