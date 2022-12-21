@@ -100,7 +100,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
  <tr>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/feature-Powerful Rows:Columns Permissions.gif" />
+            <img src="docs/static/feature-Permissions.gif" />
         </a>
     </td>
     <td width="50%">
