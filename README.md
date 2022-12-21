@@ -105,7 +105,7 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
     </td>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/feature-Embed .gif" />
+            <img src="docs/static/feature-Embed.gif" />
         </a>
     </td>
   </tr>
