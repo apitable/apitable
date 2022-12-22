@@ -31,8 +31,9 @@
     <a href="https://discord.gg/TwNb9nfdBU">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
+    <!-- Twitter -->
     <a href="https://twitter.com/apitable_com">
-        <img src="https://img.shields.io/twitter/follow/apitable_com?style=social " />
+        <img src="https://img.shields.io/twitter/follow/apitable_com?label=Twitter&style=social" />
     </a>
 </p>
 
