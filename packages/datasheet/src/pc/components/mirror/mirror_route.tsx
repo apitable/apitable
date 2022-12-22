@@ -5,7 +5,7 @@ import { Mirror } from 'pc/components/mirror/mirror';
 import styles from 'pc/components/mirror/style.module.less';
 import { NoPermission } from 'pc/components/no_permission';
 import { Router } from 'pc/components/route_manager/router';
-import { useEffect } from 'react';
+import { useUpdateEffect } from 'ahooks';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
@@ -27,11 +27,11 @@ export const MirrorRoute = () => {
     return Selectors.getDatasheet(state, mirror.sourceInfo.datasheetId);
   });
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (!mirrorSourceInfo) {
       return;
     }
-    // The mirror route is special compared to other nodes, in order to maintain the mapping relationship, 
+    // The mirror route is special compared to other nodes, in order to maintain the mapping relationship,
     // an additional datasheetId will be displayed on the route, so here for the mirror jump will do special treatment
     if (shareId) {
       Router.push(Navigation.SHARE_SPACE,{
