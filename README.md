@@ -24,13 +24,15 @@
     </a>
     <!-- Discord -->
     <a href="https://discord.gg/TwNb9nfdBU">
-        <img src="https://img.shields.io/discord/1016320471010115666" />
+        <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
     </a>
     <!-- Render -->
     <a href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/render-deploy-5364e9" />
     </a>
-    
+    <a href="https://twitter.com/apitable_com">
+        <img src="https://img.shields.io/twitter/follow/apitable_com?style=social " />
+    </a>
 </p>
 
 ## ✨ Quick Start
