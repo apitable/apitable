@@ -18,6 +18,11 @@
     <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <!-- Render -->
+    <a href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
+        <img src="https://img.shields.io/badge/render-deploy-5364e9" />
+    </a>
+    <br />
     <!-- LICENSE -->
     <a href="https://github.com/apitable/apitable/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/LICENSE-AGPL--3.0-ff69b4" alt="APITable License Badge AGPL" />
@@ -25,10 +30,6 @@
     <!-- Discord -->
     <a href="https://discord.gg/TwNb9nfdBU">
         <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
-    </a>
-    <!-- Render -->
-    <a href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
-        <img src="https://img.shields.io/badge/render-deploy-5364e9" />
     </a>
     <a href="https://twitter.com/apitable_com">
         <img src="https://img.shields.io/twitter/follow/apitable_com?style=social " />
