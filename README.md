@@ -82,12 +82,12 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
  <tr>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/feature-API-first-Panel.gif" />
+            <img src="docs/static/feature-api-first-panel.gif" />
         </a>
     </td>
     <td width="50%">
       <a href="#">
-        <img src="docs/static/feature-Unlimited-cross-table-links.gif" />
+        <img src="docs/static/feature-unlimited-cross-table-links.gif" />
       </a>
     </td>
  </tr>
@@ -104,12 +104,12 @@ If you want to install APITable on your local or cloud, See [Installation](#inst
  <tr>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/feature-Permissions.gif" />
+            <img src="docs/static/feature-permissions.gif" />
         </a>
     </td>
     <td width="50%">
         <a href="#">
-            <img src="docs/static/feature-Embed.gif" />
+            <img src="docs/static/feature-embed.gif" />
         </a>
     </td>
   </tr>
