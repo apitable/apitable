@@ -270,28 +270,17 @@ APITable use these common conventions:
 
 ## 🛣 Roadmap
 
+### Future Features
 - Heavy-code Interface Builder
 - Embbedable  3rd party documentation components
-- SQL-like Domain-Specific Languages.
-- As an IdP;
+- SQL-like Domain-Specific Languages
+- As an IdP
+- Web 3 features
 - ...
 
 
-## Deployment & Production
-
-
-### 1 Click deploy
-
-- Heroku
-- Digital Ocean
-- Render
-- Microsoft Azure
-- Google Cloud
-- AWS
-
-
-
 ### Hosted and Enterprise versions offer advanced features
+
 
 - As an IdP;
 - SAML
@@ -349,7 +338,7 @@ APITable use these common conventions:
 > 
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
 >
-> See [LICENSE](./LICENSE) for details.
+> See [LICENCING](./LICENCING.md) for details.
 >
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
 
