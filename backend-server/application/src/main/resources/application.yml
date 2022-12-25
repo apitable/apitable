@@ -1,0 +1,165 @@
+server:
+  max-http-header-size: ${MAX_HTTP_HEADER_SIZE:32KB}
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: service-api
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:1GB}
+      max-request-size: ${MAX_REQUEST_SIZE:1GB}
+  session:
+    redis:
+      namespace: ${SESSION_NAMESPACE:apitable:session}
+    timeout: ${SESSION_TIMEOUT:30d}
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable_dev}?characterEncoding=utf8&autoReconnect=true
+    username: ${MYSQL_USERNAME:apitable}
+    password: ${MYSQL_PASSWORD:password}
+  # Redis
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    username: ${REDIS_USERNAME:}
+    password: ${REDIS_PASSWORD:}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:3}
+    timeout: 30000
+  rabbitmq:
+    addresses: amqp://${RABBITMQ_HOST:127.0.0.1}:${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:apitable}
+    password: ${RABBITMQ_PASSWORD:password}
+    publisher-returns: true
+    publisher-confirm-type: correlated
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 5
+    virtual-host: ${RABBITMQ_VHOST:/}
+  mail:
+    host: ${MAIL_HOST:smtp.apitable.com}
+    username: ${MAIL_USERNAME:support@apitable.com}
+    password: ${MAIL_PASSWORD:apitable}
+    protocol: smtp
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    base-url: ${ZIPKIN_BASE_URL}
+    discovery-client-enabled: ${ZIPKIN_DISCOVERY_CLIENT_ENABLED:false}
+    service:
+      name: ${ZIPKIN_SERVICE_NAME:}
+    sender:
+      type: ${ZIPKIN_SENDER_TYPE:web}
+
+cookie:
+  domain-name: ${DOMAIN_NAME:}
+const:
+  language-tag: ${DEFAULT_LOCALE:en-US}
+  server-domain: ${SERVER_DOMAIN:}
+  callback-domain: ${CALLBACK_DOMAIN:}
+  oss-image-audit-creatable: ${OSS_IMAGE_AUDIT_CREATABLE:false}
+  ossBuckets:
+    vk_assets_ltd:
+      resource-url: ${VK_ASSETS_LTD_URL:https://s1.vika.cn}
+      bucket-name: ${VK_ASSETS_LTD_BUCKET:vk-assets-ltd}
+      type: ${VK_ASSETS_LTD_TYPE:QNY1}
+    vk_public_assets_ltd:
+      resource-url: ${VK_PUBLIC_ASSETS_LTD_URL:https://s1-applets.vika.cn}
+      bucket-name: ${VK_PUBLIC_ASSETS_LTD_BUCKET:vk-public-assets-ltd}
+      type: ${VK_PUBLIC_ASSETS_LTD_TYPE:QNY3}
+  login-token: ${LOGIN_TOKEN:FutureIsComing,TheyAreTheFuture}
+  default-avatar-list: ${DEFAULT_AVATARS:space/2020/09/11/e6aa3037a38f45acb65324ea314aea58,space/2021/03/10/61a8aae11da2439ebb4df35b9075587d,space/2020/09/11/41e723917dc742d2974e41abab8cf60b,space/2020/09/11/4dce50e4ec4649b9a408a494aca28183,space/2020/09/11/e4d073b1fa674bc884a8c194e9248ecf,space/2020/09/11/31a1acb4734c4dd3ae9538299282b39e}
+  template-space: ${TEMPLATE_SPACE:spcNA5eN3Sj6Q}
+  quoteTemplateId: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
+  quoteEnTemplateId: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
+  qr-code-reply-id: ${QRCODE_REPLY_ID:HH_VkCYNwTeiuExIgriGZxrjKYxm-SGUCO7DSvPegSE}
+  ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
+limit:
+  space-max-count: ${SPACE_MAX_COUNT:10}
+  max-file-size: ${EXPORT_MAX_FILE_SIZE:20971520}
+  max-column-count: ${MAX_COLUMN_COUNT:200}
+  max-row-count: ${MAX_ROW_COUNT:50000}
+  template-max-count: ${TEMPLATE_MAX_COUNT:20}
+  dsb-widget-max-count: ${DSB_WIDGET_MAX_COUNT:30}
+  dst-robot-max-count: ${DST_ROBOT_MAX_COUNT:10}
+socket:
+  domain: ${SOCKET_DOMAIN:http://127.0.0.1:3001/socket}
+
+email:
+  personal: ${EMAIL_PERSONAL:APITable}
+
+starter:
+  socketio:
+    client:
+      url: ${SOCKET_URL:http://127.0.0.1:3002}
+      path: ${SOCKET_PATH:/notification}
+      reconnection-attempts: ${SOCKET_RECONNECTION_ATTEMPTS:2}
+      reconnection-delay: ${SOCKET_RECONNECTION_DELAY:1000}
+      timeout: ${SOCKET_TIMEOUT:1000}
+  oss:
+    enabled: ${OSS_ENABLED:true}
+    type: ${OSS_TYPE:aws}
+    aws:
+      access-key-id: ${AWS_ACCESS_KEY:}
+      access-key-secret: ${AWS_ACCESS_SECRET:}
+      endpoint: ${AWS_ENDPOINT:s3-cn-south-1.qiniucs.com}
+      region: ${AWS_REGION:cn-south-1}
+    qiniu:
+      access-key: ${QINIU_ACCESS_KEY:' '}
+      secret-key: ${QINIU_SECRET_KEY:' '}
+      region: ${QINIU_REGION:z2}
+      download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
+      upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
+      callback:
+        url: ${QINIU_CALLBACK_URL:http://fktcca.natappfree.cc/api/v1/asset/qiniu/uploadCallback}
+        body-type: ${QINIU_CALLBACK_BODY_TYPE:application/json}
+    minio:
+      endpoint: ${MINIO_ENDPOINT:http://minio:9000}
+      access-key: ${MINIO_ACCESS_KEY:apitable}
+      secret-key: ${MINIO_SECRET_KEY:apitable@com}
+      bucket-policy: ${MINIO_BUCKET_POLICY:'{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::vk-assets-ltd"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::vk-assets-ltd"],"Condition":{"StringEquals":{"s3:prefix":["*.*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::vk-assets-ltd/*.**"]}]}'}
+  sms:
+    enabled: ${SMS_ENABLED:false}
+    local-area-code: ${SMS_LOCAL_AREA_CODE:+86}
+    local:
+      type: ${SMS_LOCAL_TYPE:tencent}
+      tencent:
+        app-id: ${SMS_TENCENT_APP_ID:}
+        app-key: ${SMS_TENCENT_APP_KEY:}
+        sign: ${SMS_TENCENT_SIGN:Cloud}
+    outland:
+      type: ${SMS_OUTLAND_TYPE:yunpian}
+      yunpian:
+        apikey: ${SMS_YUNPIAN_APIKEY:}
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    type: ${MAIL_TYPE:tencent}
+    region: ${MAIL_REGION:ap-hongkong}
+    from: ${MAIL_FROM:noreply@notify.apitable.com}
+    reply: ${MAIL_REPLY:support@apitable.com}
+    tencent:
+      secret-id: ${MAIL_TENCENT_SECRET_ID:}
+      secret-key: ${MAIL_TENCENT_SECRET_KEY:}
+
+
+sentry:
+  dsn: ${SENTRY_DSN:}
+  send-default-pii: true
+  environment: ${ENV}
+  use-git-commit-id-as-release: false
+  max-breadcrumbs: 150
+  traces-sample-rate: 1.0
+  logging:
+    minimum-breadcrumb-level: debug
+    minimum-event-level: info
+
+grpc:
+  server:
+    port: ${BACKEND_GRPC_PORT:0}
+  client:
+    nest-grpc-server:
+      address: ${NEST_GRPC_ADDRESS:static://localhost:3334}
+    dingtalk-grpc-server:
+      address: ${DINGTALK_GRPC_ADDRESS:}
+      security:
+        clientAuthEnabled: false
+        authorityOverride: ${DINGTALK_GRPC_AUTHORITY:}
