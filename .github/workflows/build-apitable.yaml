@@ -7,7 +7,7 @@ on:
 
 jobs:
   buildpush:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
     steps:
