@@ -99,13 +99,13 @@ starter:
     enabled: ${OSS_ENABLED:true}
     type: ${OSS_TYPE:aws}
     aws:
-      access-key-id: ${AWS_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
-      access-key-secret: ${AWS_ACCESS_SECRET:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
+      access-key-id: ${AWS_ACCESS_KEY:}
+      access-key-secret: ${AWS_ACCESS_SECRET:}
       endpoint: ${AWS_ENDPOINT:s3-cn-south-1.qiniucs.com}
       region: ${AWS_REGION:cn-south-1}
     qiniu:
-      access-key: ${QINIU_ACCESS_KEY:B7OyF1ZORX4iHaqJ5uN62qXAgoDnc7Jv7_zf1SpJ}
-      secret-key: ${QINIU_SECRET_KEY:Hp26Vj4D2bv0JQ-qgExXYKlKc5EkFuVVgW1GA1Eh}
+      access-key: ${QINIU_ACCESS_KEY:}
+      secret-key: ${QINIU_SECRET_KEY:}
       region: ${QINIU_REGION:z2}
       download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
       upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
@@ -123,13 +123,13 @@ starter:
     local:
       type: ${SMS_LOCAL_TYPE:tencent}
       tencent:
-        app-id: ${SMS_TENCENT_APP_ID:1400261864}
-        app-key: ${SMS_TENCENT_APP_KEY:393f363b9710ede454eacdc5e6114fb4}
+        app-id: ${SMS_TENCENT_APP_ID:}
+        app-key: ${SMS_TENCENT_APP_KEY:}
         sign: ${SMS_TENCENT_SIGN:Cloud}
     outland:
       type: ${SMS_OUTLAND_TYPE:yunpian}
       yunpian:
-        apikey: ${SMS_YUNPIAN_APIKEY:c62e64fe947c252761f1f6dbd944d288}
+        apikey: ${SMS_YUNPIAN_APIKEY:}
   mail:
     enabled: ${MAIL_ENABLED:false}
     type: ${MAIL_TYPE:tencent}
@@ -137,8 +137,8 @@ starter:
     from: ${MAIL_FROM:noreply@notify.apitable.com}
     reply: ${MAIL_REPLY:support@apitable.com}
     tencent:
-      secret-id: ${MAIL_TENCENT_SECRET_ID:AKIDua7RYR5WihT1KQIuHPIvJRKyOaXHoFcp}
-      secret-key: ${MAIL_TENCENT_SECRET_KEY:3rRlqgHemfLo58wuqfIgplTvAAvQghU2}
+      secret-id: ${MAIL_TENCENT_SECRET_ID:}
+      secret-key: ${MAIL_TENCENT_SECRET_KEY:}
 
 
 sentry:
