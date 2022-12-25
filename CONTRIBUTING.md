@@ -10,17 +10,33 @@ For new contributors, please take a look at issues with a tag called [Good first
 
 ## Providing Feedback
 
+<div>
+    <!-- Discord -->
+    <a target="_blank" href="https://discord.gg/TwNb9nfdBU">
+        <img src="https://img.shields.io/discord/1016320471010115666?label=discord&logo=discord&style=social" />
+    </a>
+    <!-- Twitter -->
+    <a target="_blank" href="https://twitter.com/apitable_com">
+        <img src="https://img.shields.io/twitter/follow/apitable_com?label=Twitter&style=social" />
+    </a>
+</div>
+
+We look forward to receiving your comments and feedback.
+Join [APITable Discord](https://discord.gg/TwNb9nfdBU) and follow [APITable on Twitter](https://twitter.com/apitable_com) to leave some feedback.
 
 
 
 ## Reporting Issues
 
 Have you identified any bugs in APITable?
-Have a feature request?
-Want a feedback?
+Have a feature idea?
 
-Thank you for report it!
-Here's how you can report your issue as effectively as possible.
+Thank you for report new issue!
+
+Do a search in [APITable open issues](https://github.com/apitable/apitable/issues) to see if the issue or feature request has already been filed.
+
+If you cannot find an existing issue that describes your bug or feature, create a new issue.
+
 
 
 ### Security issues
@@ -29,15 +45,27 @@ If you believe you've found a security vulnerability, please read our [security 
 
 ## Answering questions
 
-- [Stack Overflow #apitable](https://stackoverflow.com/questions/tagged/apitable)
+You can help us answer questions through the links below.
 
-## Write Documentation
+- [APITable Discord](https://discord.gg/TwNb9nfdBU)
+- [Stack Overflow #apitable](https://stackoverflow.com/questions/tagged/apitable)
+- [APITable on Twitter](https://twitter.com/apitable_com)
+- [APITable open issues](https://github.com/apitable/apitable/issues)
+
+## Write Documentation, Tweet, Blog
+
+You can write documentation into the [/docs](./docs) directory.
+
+You can write tweets or blogs that share APITable to your friends.
+
 
 ## Contributing Code
 
 See [Developer Guide](./docs/contribute/developer-guide.md) to set up your development environment.
 
 
+
 ## Thank You!
 
+For more information, please contact us at <support@apitable.com>. 
 

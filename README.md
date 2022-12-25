@@ -281,7 +281,6 @@ APITable use these common conventions:
 
 ### Hosted and Enterprise versions offer advanced features
 
-
 - As an IdP;
 - SAML
 - Single-Sign-On
@@ -289,13 +288,13 @@ APITable use these common conventions:
 - Database Backup
 - Watermark
 
+For more information, please contact us at <support@apitable.com>. 
+
 ## 🌏 Why we create APITable and open-source?
 
 - We believe that `Database is the cornerstone` of all the software.
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
 - We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
-
-
 
 
 ## 📺 Screenshot
