@@ -104,8 +104,8 @@ starter:
       endpoint: ${AWS_ENDPOINT:s3-cn-south-1.qiniucs.com}
       region: ${AWS_REGION:cn-south-1}
     qiniu:
-      access-key: ${QINIU_ACCESS_KEY:}
-      secret-key: ${QINIU_SECRET_KEY:}
+      access-key: ${QINIU_ACCESS_KEY:' '}
+      secret-key: ${QINIU_SECRET_KEY:' '}
       region: ${QINIU_REGION:z2}
       download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
       upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
