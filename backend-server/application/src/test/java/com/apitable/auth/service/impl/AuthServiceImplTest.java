@@ -28,27 +28,31 @@ import com.apitable.auth.enums.LoginType;
 import com.apitable.auth.ro.LoginRo;
 import com.apitable.base.enums.EmailCodeType;
 import com.apitable.base.enums.SmsCodeType;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.shared.captcha.CodeValidateScope;
-import com.apitable.shared.captcha.ValidateCodeProcessor;
-import com.apitable.shared.captcha.ValidateCodeProcessorManage;
-import com.apitable.shared.captcha.ValidateCodeType;
 import com.apitable.shared.captcha.ValidateTarget;
+import com.apitable.shared.captcha.email.EmailValidateCodeProcessor;
+import com.apitable.shared.captcha.sms.SmsValidateCodeProcessor;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.vo.UserInfoVo;
-import com.apitable.core.exception.BusinessException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.mockito.BDDMockito.given;
 
 public class AuthServiceImplTest extends AbstractIntegrationTest {
 
-    @Autowired
-    private SpaceMapper spaceMapper;
+    private static final String SOLID_CODE = "123456";
+
+    @MockBean
+    EmailValidateCodeProcessor emailValidateCodeProcessor;
+
+    @MockBean
+    SmsValidateCodeProcessor smsValidateCodeProcessor;
 
     @Test
     public void testLoginUsingPasswordWithMobilePhoneNotExist() {
@@ -208,15 +212,15 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     private String sendLoginSmsCode(String areaCode, String mobile) {
         CodeValidateScope scope = CodeValidateScope.fromName(SmsCodeType.fromName(2).name());
         ValidateTarget target = ValidateTarget.create(mobile, areaCode);
-        ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.SMS);
-        return processor.createAndSend(target, scope, false);
+        given(smsValidateCodeProcessor.createAndSend(target, scope, false)).willReturn(SOLID_CODE);
+        return smsValidateCodeProcessor.createAndSend(target, scope, false);
     }
 
-    private String sendLoginEmailCode(String email) {
+    public String sendLoginEmailCode(String email) {
         CodeValidateScope scope = CodeValidateScope.fromName(EmailCodeType.fromName(2).name());
         ValidateTarget target = ValidateTarget.create(email);
-        ValidateCodeProcessor processor = ValidateCodeProcessorManage.me().findValidateCodeProcessor(ValidateCodeType.EMAIL);
-        return processor.createAndSend(target, scope, false);
+        given(emailValidateCodeProcessor.createAndSend(target, scope, false)).willReturn(SOLID_CODE);
+        return emailValidateCodeProcessor.createAndSend(target, scope, false);
     }
 
     private void checkUserHasSpace(Long userId) {
