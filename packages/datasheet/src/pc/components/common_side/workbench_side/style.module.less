@@ -1,0 +1,296 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.workbenchSide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  @media screen and (max-width: @w-md) {
+    // sidebar input box to prevent Android from squeezing the page for error tolerance, min-height is iPhone 5 height
+    min-height: 568px;
+  }
+
+  width: 100%;
+  // Give the searched nodeList a width reference object to prevent overflow
+  position: relative;
+
+  .header {
+    display: flex;
+    align-items: center;
+    height: 50px;
+
+    .search {
+      padding: 0 12px;
+      flex: 1;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .searchBtn {
+      width: 32px;
+      height: 32px;
+      background-color: var(--fc6);
+
+      svg {
+        fill: var(--fc2);
+      }
+
+      &:hover {
+        background-color: var(--fc5);
+      }
+
+      &:active {
+        background-color: var(--fc4);
+      }
+    }
+  }
+
+  .groups {
+    flex: 1;
+    padding-left: 12px !important;
+    display: flex;
+    flex-direction: column;
+    padding-top: @shadowMaxWidthForGuide; 
+    border-radius: 4px; 
+  }
+
+  .groupName {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    flex-shrink: 0;
+    cursor: pointer;
+    user-select: none;
+
+    .text {
+      font-weight: bold;
+    }
+
+    .arrow {
+      margin-left: 4px;
+      fill: var(--thirdLevelText);
+
+      &.active {
+        transform: rotate(180deg);
+      }
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 2px;
+    }
+  }
+
+  .favorite {
+    height: fit-content;
+    max-height: 40%;
+  }
+
+  .catalog {
+    flex: 1;
+    overflow: hidden;
+
+    :global {
+      .ant-collapse-content {
+        flex: 1;
+
+        .ant-collapse-content-box,
+        .ant-collapse-content-box > div {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .favorite,
+  .catalog {
+    :global {
+      .ant-collapse-content {
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }
+
+      .ant-collapse-header {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .fixedGroup {
+  
+    display: flex;
+    height: 40px;
+    border-top: 1px solid var(--lineColor);
+
+    .groupItem {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--lowestBg);
+      }
+
+      &:not(:last-child)::after {
+        position: absolute;
+        top: 12px;
+        right: 0;
+        display: block;
+        content: "";
+        width: 1px;
+        height: 16px;
+        background: var(--lineColor);
+      }
+
+      svg,
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .name {
+        padding-top: 3px;
+        font-size: 12px;
+        color: var(--secondLevelText);
+      }
+    }
+  }
+
+  .mainContainer {
+    height: 100%;
+    position: relative;
+    flex: 1;
+    border-radius: 4px;
+
+    :global {
+      .ant-collapse {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ant-collapse-item {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  .btnContainer {
+    width: 200px;
+    padding: 24px 0;
+    margin: 0 auto;
+
+    .shortcutCreateBtn {
+      padding: 0;
+    }
+
+    .body {
+      width: 100%;
+      display: flex;
+      background: var(--primaryColor);
+      border-radius: 6px;
+      cursor: pointer;
+      overflow: hidden;
+
+      .left {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .text {
+          padding-left: 10px;
+          font-size: 14px;
+          color: var(--defaultBg);
+        }
+      }
+
+      .right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        background: hsv(249, 57%, 83%);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--defaultBg);
+      }
+    }
+  }
+}
+
+.collapse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  :global {
+    .ant-collapse-item div.ant-collapse-header {
+      display: flex;
+      align-items: center;
+      position: sticky !important;
+      top: 0;
+      height: 40px;
+      flex-shrink: 0;
+      border-bottom: 1px solid transparent;
+      // z-index: 1;
+      border-radius: 8px !important;
+      background: var(--defaultBg);
+      padding: 0 !important;
+      margin-right: 12px;
+
+      &:hover {
+        background: var(--rowSelectedBg);
+      }
+
+      &:nth-child(2) {
+        top: 40px;
+      }
+    }
+
+    .ant-collapse-item.ant-collapse-item-active .ant-collapse-header {
+      position: relative;
+
+      &::after {
+        content: "";
+        display: block;
+        width: calc(100% - 16px);
+        height: 1px;
+        background: var(--lineColor);
+        position: absolute;
+        left: 8px;
+        bottom: -1px;
+      }
+    }
+
+    .ant-collapse-content > .ant-collapse-content-box {
+      padding: 4px 0 0 0 !important;
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .collapse {
+    :global {
+      .ant-collapse-header {
+        margin-right: 0 !important;
+      }
+    }
+  }
+}

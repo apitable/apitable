@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.DatasheetRecordMapper">
+
+    <resultMap id="datasheetRecordVo" type="com.apitable.workspace.vo.DatasheetRecordVo">
+        <result column="record_id" property="id"/>
+        <result column="data" property="data" typeHandler="com.apitable.shared.util.ibatis.JsonHandler"/>
+        <result column="revision_history" property="revisionHistory" typeHandler="com.apitable.shared.util.ibatis.IntArrayTypeHandler"/>
+        <result column="revision" property="revision"/>
+        <result column="recordMeta" property="recordMeta"/>
+    </resultMap>
+
+    <resultMap id="dataSheetRecordDto" type="com.apitable.workspace.dto.DataSheetRecordDTO">
+        <result column="id" property="id"/>
+        <result column="dst_id" property="dstId"/>
+        <result column="record_id" property="recordId"/>
+        <result column="data" property="data" typeHandler="com.apitable.shared.util.ibatis.JsonHandler"/>
+    </resultMap>
+
+    <resultMap id="dataSheetRecordGroupDto" type="com.apitable.workspace.dto.DataSheetRecordGroupDTO">
+        <result column="dst_id" property="dstId"/>
+        <collection property="recordVoList" resultMap="datasheetRecordVo"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, record_id, dst_id, `data`, revision_history, revision, is_deleted, created_at, updated_at
+    </sql>
+
+    <sql id="RecordVo_Column_List">
+        record_id, `data` as data, revision_history, revision, field_updated_info as recordMeta
+    </sql>
+
+    <select id="selectListByDstId" resultMap="datasheetRecordVo">
+        select  <include refid="RecordVo_Column_List"/> from ${tablePrefix}datasheet_record
+        where dst_id = #{dstId} and is_deleted = 0
+    </select>
+
+    <select id="selectListByIds" resultMap="datasheetRecordVo">
+        select  <include refid="RecordVo_Column_List"/> from ${tablePrefix}datasheet_record
+        where dst_id = #{dstId}
+        and record_id in <foreach collection="recordList" item="item" index="index" open="(" separator="," close=")">#{item}</foreach>
+        and is_deleted = 0
+    </select>
+
+    <select id="countBySpaceId" resultType="java.lang.Long">
+        select COUNT(*) from ${tablePrefix}datasheet_record r, ${tablePrefix}datasheet t
+        where r.dst_id = t.dst_id and r.is_deleted = 0 and t.is_deleted = 0 and t.space_id = #{spaceId}
+    </select>
+
+    <select id="countByDstId" resultType="java.lang.Integer">
+        select COUNT(*) from ${tablePrefix}datasheet_record where dst_id = #{dstId} and is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}datasheet_record(id, record_id, dst_id, data, field_updated_info, created_by, updated_by)
+        VALUES
+        <foreach collection="entities" item="element" index="index" separator=",">
+            <trim prefix="(" suffix=")">
+                #{element.id},#{element.recordId},#{element.dstId},#{element.data},#{element.fieldUpdatedInfo},#{element.createdBy},#{element.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectByConditionAndDeleted" resultType="com.apitable.workspace.entity.DatasheetRecordEntity">
+        select  <include refid="Base_Column_List"/> from ${tablePrefix}datasheet_record
+        where dst_id = #{dstId} and record_id = #{recordId}
+    </select>
+
+    <select id="selectRecordVoByConditions"  resultMap="datasheetRecordVo">
+        select  <include refid="RecordVo_Column_List"/> from ${tablePrefix}datasheet_record
+        where dst_id = #{dstId} and record_id = #{recordId} and is_deleted = 0
+    </select>
+
+    <update id="updateByConditions" parameterType="com.apitable.workspace.entity.DatasheetRecordEntity">
+        update ${tablePrefix}datasheet_record rec
+        set
+        <if test="record.data != null">
+            rec.data = #{record.data},
+        </if>
+        <if test="record.isDeleted != null">
+            rec.is_deleted = #{record.isDeleted},
+        </if>
+        rec.revision_history = #{record.revisionHistory}, rec.revision = #{record.revision}, rec.updated_by = #{userId}
+        where rec.id = #{record.id}
+    </update>
+
+    <select id="selectCountByDstId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}datasheet_record
+        WHERE dst_id = #{dstId} and is_deleted = 0
+    </select>
+
+    <select id="selectDtoByDstId" resultMap="dataSheetRecordDto">
+        SELECT id, record_id, `data`
+        FROM ${tablePrefix}datasheet_record
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </select>
+
+    <select id="selectDtoByDstIds" resultMap="dataSheetRecordDto">
+        SELECT id, dst_id, record_id, `data`
+        FROM ${tablePrefix}datasheet_record
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectGroupDtoByDstIds" resultMap="dataSheetRecordGroupDto">
+        SELECT dst_id, record_id, `data`
+        FROM ${tablePrefix}datasheet_record
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+</mapper>

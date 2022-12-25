@@ -1,0 +1,56 @@
+@import "~pc/styles/lib_var.less";
+
+.permissionCard {
+  overflow: hidden;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--lineColor);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .title {
+    font-size: 14px;
+    color: var(--firstLevelText);
+    cursor: default;
+    margin-bottom: 8px;
+    font-weight: bold;
+    svg {
+      fill: var(--thirdLevelText);
+      width: 12px;
+      height: 12px;
+      cursor: pointer;
+      margin-left: 4px;
+      vertical-align: -0.125em;
+    }
+  }
+
+  .checkboxWrap {
+    margin-bottom: 8px;
+  }
+
+  .checkboxItem {
+    display: inline-block;
+    width: 33.3%;
+    padding-right: 8px;
+  }
+  
+  :global {
+    .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+      margin-left: 0;
+    }
+    .ant-checkbox-wrapper span {
+      color: var(--secondLevelText);
+      font-size: 14px;
+    }
+    .ant-checkbox + span{
+      padding: 0;
+    }
+    .ant-checkbox{
+      margin-right: 6px;
+    }
+    .ant-tooltip-open {
+      display: inline-block;
+    }
+  }
+}

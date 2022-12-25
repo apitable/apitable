@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "../../.eslintrc",
+//    "next/core-web-vitals",
+    "next"
+  ],
+  "rules": {
+    "react/display-name": 0,
+    "react/no-find-dom-node": 0
+  }
+}

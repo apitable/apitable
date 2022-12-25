@@ -1,0 +1,28 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import "~pc/styles/lib_screen.less";
+
+.junction {
+  width: 64px;
+  height: 40px;
+  line-height: 40px !important;
+  margin-right: 24px !important;
+  background: var(--lowestBg);
+  border-radius: 4px;
+  justify-content: flex-start;
+  display: flex !important;
+}
+
+.options {
+  .ant-select-option-common();
+}
+
+@media screen and (max-width: @w-md) {
+  .junction {
+    flex-shrink: 0;
+    background: none;
+    // padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+  }
+}

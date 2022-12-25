@@ -1,0 +1,289 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.selectUnitModal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  user-select: none;
+  height: 506px;
+  // padding: 0 24px;
+}
+
+.left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 336px;
+
+  .searchWrapper {
+    padding: 0 24px;
+    span,
+    input {
+      border-radius: 24px;
+    }
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 24px;
+
+    :global {
+      .ant-breadcrumb {
+        white-space: nowrap;
+        line-height: 1;
+        
+        ol {
+          flex-wrap: nowrap;
+
+          li {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+
+  .tabWrap {
+    padding: 0 24px;
+    margin-top: 8px;
+    :global {
+      .ant-tabs-tab {
+        padding: 10px 16px;
+      }
+      .ant-tabs-tab-btn {
+        color: var(--fc3);
+      }
+      .ant-tabs-nav {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .tabWrapRole {
+    margin-bottom: 8px;
+  }
+
+  .allCheck {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 24px;
+
+    & > label {
+      height: 20px;
+    }
+  }
+
+  .dataListWrapper {
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    .light-scroll-bar();
+    flex: 1;
+    :global {
+      .ant-checkbox-group {
+        width: 100%;
+      }
+    }
+
+    .unitType {
+      padding-left: 24px;
+      height: 30px;
+      line-height: 30px;
+      font-size: 12px;
+      color: var(--thirdLevelText);
+      font-weight: normal;
+    }
+  }
+
+  .item {
+    display: flex;
+    padding-left: 24px;
+    padding-right: 14px;
+    flex-direction: row;
+    align-items: center;
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--rowSelectedBg);
+      }
+    }
+
+    // &.searchItem {
+    //   padding-left: 0;
+    // }
+
+    .lowerLevelIcon {
+      display: flex;
+      width: 10px;
+      height: 10px;
+      cursor: pointer;
+    }
+
+    :global {
+      .ant-checkbox {
+        top: 0;
+      }
+    }
+  }
+
+  .checkWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 56px;
+    overflow: hidden;
+    margin-right: 4px;
+
+    & > label {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .itemContent {
+    width: 242px;
+    display: inline-block;
+  }
+
+  .searchListWrapper {
+    position: absolute;
+    top: 32px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--defaultBg);
+    z-index: 1;
+
+    .dataListWrapper {
+      height: 100%;
+      max-height: none;
+    }
+  }
+  .searchListWrapperRoleIsOpen {
+    top: 98px;
+  }
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 2px solid var(--rowSelectedBg);
+  padding: 8px 0 0 16px;
+
+  .title {
+    color: var(--secondLevelText);
+    font-size: 12px;
+    padding-bottom: 16px;
+  }
+
+  .listWrapper {
+    flex: 1;
+    .light-scroll-bar();
+    overflow: auto;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .item {
+      margin-right: 16px;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.invite {
+  color: var(--primaryColor);
+  font-size: 13px;
+  cursor: pointer;
+
+  svg {
+    vertical-align: -0.125em;
+    fill: var(--primaryColor);
+    margin-right: 4px;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+}
+
+.unitPopupWrapper {
+  :global {
+    .ant-drawer-body {
+      min-height: 330px;
+      overflow: hidden;
+    }
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .left {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .searchWrapper {
+      padding: 0;
+    }
+
+    .dataListWrapper {
+      position: static;
+      height: auto;
+      flex: 1;
+      max-height: none;
+
+      .unitType {
+        padding-left: 0;
+      }
+    }
+
+    .searchListWrapper {
+      top: 48px;
+      padding-left: 0;
+    }
+
+    .breadcrumb {
+      padding: 0;
+    }
+
+    .allCheck {
+      padding: 0;
+    }
+
+    .item {
+      padding: 0;
+      justify-content: space-between;
+    }
+  }
+
+  .popupFooter {
+    font-size: 14px;
+  }
+
+  .inviteBtnWrapper {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .invite {
+      font-size: 14px;
+    }
+  }
+}

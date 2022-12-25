@@ -1,0 +1,75 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+@navHeight: 32px;
+@tabWidth: 48px;
+@activeLineWidth: 16px;
+
+.nav {
+  height: @navHeight;
+  display: flex;
+  border-bottom: 1px solid var(--lineColor);
+  position: relative;
+
+  .activeLine {
+    height: 2px;
+    width: 16px;
+    position: absolute;
+    bottom: -1px;
+    background: var(--primaryColor);
+    transition: transform 0.3s;
+
+    &.grayColor {
+      background: var(--fourthLevelText);
+    }
+  }
+
+  .tab {
+    width: 48px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      content: " ";
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 8px;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--lineColor);
+    }
+  }
+}
+
+.uploadTab {
+  border: 1px solid var(--lineColor);
+  border-radius: 4px;
+}
+
+.uploadTabInfo {
+  width: 100%;
+  height: calc(100% - @navHeight);
+  padding: 8px;
+}
+
+:export {
+  activeLineWidth: @activeLineWidth;
+  tabWidth: @tabWidth;
+}
+
+@media screen and(max-width: @w-md) {
+  .uploadTabInfo {
+    height: 100%;
+    padding: 0;
+  }
+  
+  .uploadTab {
+    border: 1px dashed var(--lineColor);
+  }
+}

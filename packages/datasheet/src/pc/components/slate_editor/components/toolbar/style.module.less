@@ -1,0 +1,42 @@
+@import '../../styles/var.less';
+
+.toolbarWrap {
+  display: flex;
+  align-items: center;
+  height: @height-base;
+  border: 1px solid var(--black_200);
+  border-radius: @radius-large;
+
+  &[data-border-less="true"] {
+    border: none;
+  }
+}
+
+.toolbarItem {
+  display: inline-flex;
+  padding: @spacing-small;
+  margin-right: @spacing-base;
+  align-items: center;
+  cursor: pointer;
+  border-radius: @radius-base;
+  &:hover, &.toolbarItemActive {
+    background-color: var(--bg-color-hover);
+  }
+  &[data-active="true"] {
+    color: var(--primaryColor);
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.divider {
+  top: 0 !important;
+  height: @height-base !important;
+  margin: 0 !important;
+}
+
+.markTooltip {
+  display: inline-block;
+  text-align: center;
+}

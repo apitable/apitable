@@ -1,0 +1,117 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.settingNickname {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    color: var(--firstLevelText);
+    font-size: 24px;
+    padding: 40px 0 56px;
+    font-weight: bold;
+  }
+
+  .formContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @keyframes twinkle {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .avatarContainer {
+    height: 80px;
+    position: relative;
+
+    .editAvatarBtn {
+      background: var(--defaultBg);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      animation: twinkle 0.8s ease infinite;
+
+      &:hover {
+        background: var(--lineColor);
+      }
+    }
+  }
+
+  .inputContainer {
+    flex: 1;
+    height: 80px;
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .subTitle {
+      font-size: 14px;
+      color: var(--secondLevelText);
+    }
+  }
+
+  .form {
+    width: 350px;
+  }
+
+  .submit {
+    margin-top: 42px;
+
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & > span:first-child {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  .errorMsg {
+    padding-left: 112px;
+    height: 14px;
+    font-size: 10px;
+    margin: 4px 0 6px 0;
+    color: var(--errorColor);
+  }
+
+  .tip {
+    height: 17px;
+    line-height: 17px;
+    font-size: 12px;
+    color: var(--thirdLevelText);
+    text-align: center;
+    margin-top: 24px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .settingNickname {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: translate(0, 0);
+    padding: 0 24px;
+
+    .form {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+// For use in component boards and dashboard layout components
+.react-resizable-handle::after {
+  border-color: var(--primaryColor) !important;
+}
+
+.react-grid-item.react-grid-placeholder {
+  z-index: 0;
+  border: 1px dashed var(--primaryColor);
+// FIXME:THEME
+  background: rgba(var(--primaryColor-rgb), 10%);
+  opacity: 1;
+  border-radius: 8px;
+}

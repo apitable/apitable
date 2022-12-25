@@ -1,0 +1,26 @@
+@import '~pc/styles/lib_var.less';
+
+.displayImg {
+  max-width: 100%;
+  max-height: 100%;
+  
+  object-fit: contain;
+}
+.overflow {
+  cursor: grab; 
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.imgWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%; 
+}
+
+.transition {
+  transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+}

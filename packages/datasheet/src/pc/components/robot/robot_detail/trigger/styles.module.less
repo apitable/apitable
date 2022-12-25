@@ -1,0 +1,24 @@
+@import "~pc/styles/lib_var.less";
+
+.groupWrapper {
+  display: grid;
+  grid-template-columns: [boolean-start] 80px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];
+  grid-auto-rows: minmax(32px, auto);
+  gap: 8px;
+  place-items: start stretch;
+  align-items: center;
+}
+
+.groupWrapperWithAdd {
+  padding: 8px;
+  border: 1px solid var(--lineColor);
+  overflow: auto;
+  border-radius: 4px;
+}
+.addFilterWrapper {
+  margin-top: 8px;
+}
+.addFilterSelectTrigger {
+  // background-color: unset !important;
+  color: var(--primaryColor);
+}

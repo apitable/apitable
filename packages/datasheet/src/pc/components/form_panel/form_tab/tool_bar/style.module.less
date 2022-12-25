@@ -1,0 +1,148 @@
+@import "~pc/styles/lib_var.less";
+
+.settingPanel {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  width: 240px;
+  height: 268px;
+  background-color: var(--highestBg);
+  box-shadow: var(--shadowCommonHighest);
+  border-radius: 8px;
+  user-select: none;
+
+  .title {
+    color: var(--thirdLevelText);
+  }
+
+  .optionList {
+    margin-top: 16px;
+    .optionItem {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      &:first-child {
+        margin-top: 0;
+      }
+      .iconWrap {
+        margin-left: -3px;
+        width: 16px;
+        height: 16px;
+        svg:hover {
+          fill: var(--primaryColor);
+        }
+      }
+    }
+  }
+}
+
+.shareModal {
+  :global {
+    .ant-modal-close-x svg {
+      fill: var(--defaultBg);
+      &:hover {
+        fill: var(--secondLevelText);
+      }
+    }
+  }
+}
+
+.shareDrawer {
+  :global {
+    .ant-drawer-body {
+      padding: 0;
+    }
+  }
+  .container {
+    padding: 24px 16px;
+  }
+}
+
+.header {
+  width: 100%;
+  .cover {
+    width: 100%;
+  }
+}
+.container {
+  padding: 24px;
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .shareSetting {
+    margin-top: 32px;
+
+    .shareTitle {
+      display: flex;
+
+      .shareTitleText {
+        margin-left: 4px;
+      }
+    }
+    .switcherWrapper {
+      display: flex;
+      align-items: center;
+      .statusSwitcher {
+        width: 28px;
+        margin-right: 8px;
+      }
+    }
+    .shareLink {
+      margin-top: 16px;
+    }
+    .shareContent {
+      margin-top: 24px;
+      border: 1px solid var(--lineColor);
+      border-radius: 4px;
+      padding: 24px;
+      .fillSetting {
+        .fillTitle {
+          font-size: 13px;
+          padding-bottom: 8px;
+          color: var(--thirdLevelText);
+        }
+        .fillRadioDesc {
+          padding: 4px 0 0 24px;
+          color: var(--thirdLevelText);
+        }
+        .submitLimitRadio {
+          :global .ant-radio-wrapper {
+            margin-right: 40px;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+    .shareClosedContent {
+      padding: 48px 0 100px 0;
+      text-align: center;
+      .shareClosedTips {
+        padding-top: 24px;
+        font-size: 13px;
+        color: var(--thirdLevelText);
+        line-height: 20px;
+      }
+    }
+  }
+}
+
+.toolbarItem {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  padding: 4px;
+  height: 30px;
+  font-size: 14px;
+
+  &.active,
+  &.active:hover {
+    color: var(--primaryColor) !important;
+
+    svg {
+      fill: currentColor !important;
+    }
+  }
+}

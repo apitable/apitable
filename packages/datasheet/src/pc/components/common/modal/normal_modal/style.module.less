@@ -1,0 +1,28 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+.normalModal {
+  .subTitle {
+    font-size: 12px;
+    color: var(--thirdLevelText);
+    cursor: default;
+    white-space: nowrap;
+    .ellipsis();
+  }
+
+  @media screen and (max-width: @w-md) {
+    min-width: unset !important;
+  }
+
+  :global {
+    .ant-modal-header {
+      padding: 24px 24px 8px;
+      cursor: default;
+    }
+
+    .ant-modal-footer {
+      padding: 0 24px 24px;
+    }
+  }
+}

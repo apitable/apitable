@@ -1,0 +1,61 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20210123-001" author="Chambers" labels="workbench">
+        <comment>Resource Changeset Table,field resource_type is set to non null</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_changeset`
+            MODIFY COLUMN `resource_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Resource type (0: number table; 1: collection table; 2: dashboard; 3: component)' AFTER `resource_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-002" author="Chambers" labels="workbench">
+        <comment>Resource Changeset Table,field revision is set to non null</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_changeset`
+            MODIFY COLUMN `revision` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Version' AFTER `operations`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-003" author="Chambers" labels="workbench">
+        <comment>Resource Changeset Table,field source_type is set to non null</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_changeset`
+            MODIFY COLUMN `source_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Data source type (0: default)' AFTER `revision`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-004" author="Chambers" labels="workbench">
+        <comment>Resource Meta Table,field resource_id is set to non empty</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_meta`
+            MODIFY COLUMN `resource_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource ID(node_id/..)' AFTER `id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.6-20210123-005" author="Chambers" labels="workbench">
+        <comment>Resource Meta Table,field resource_type is set to non null</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}resource_meta`
+            MODIFY COLUMN `resource_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Resource type (0: number table; 1: collection table; 2: dashboard; 3: component)' AFTER `resource_id`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

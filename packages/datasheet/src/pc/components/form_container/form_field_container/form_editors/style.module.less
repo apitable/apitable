@@ -1,0 +1,45 @@
+@import "~pc/styles/lib_var.less";
+
+.optionEditor {
+  :global {
+    .ant-radio-wrapper {
+      white-space: unset;
+    }
+    .ant-radio-wrapper, .ant-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &.disabled {
+    :global {
+      .ant-radio-wrapper, .ant-radio, .ant-checkbox-wrapper, .ant-radio-input, .ant-checkbox-input {
+        cursor: default;
+      }
+      .ant-checkbox-wrapper:hover :not(.ant-checkbox-disabled) .ant-checkbox-inner {
+        background-color: var(--shadowColor);
+      }
+      .ant-radio-wrapper:hover .ant-radio, .ant-radio:hover .ant-radio-inner, .ant-radio-input:focus + .ant-radio-inner {
+        border-color: #d9d9d9;
+      }
+    }
+  }
+  &.empty {
+    color: var(--thirdLevelText);
+  }
+  .optionItemWrapper {
+    margin-top: 16px;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.addBtn {
+  .inner {
+    vertical-align: middle;
+  }
+
+  .addIcon {
+    margin-right: 5px;
+  }
+}

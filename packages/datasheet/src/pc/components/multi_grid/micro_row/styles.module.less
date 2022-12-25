@@ -1,0 +1,50 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.microRowLine {
+  // display: flex;
+  align-items: center;
+  position: relative;
+  max-height: 38px;
+  overflow: hidden;
+
+  border-top: 1px solid var(--lineColor);
+  border-bottom: 1px solid var(--lineColor);
+  border-left: 1px solid var(--lineColor);
+
+  // max-width: 300px;
+  &:nth-child(1) {
+    position: absolute;
+    display: flex;
+    background: var(--defaultBg);
+  }
+
+  &:nth-child(2) {
+    position: absolute;
+    top: 5px;
+    background: var(--defaultBg);
+    display: flex;
+    transform: rotate(-2deg);
+  }
+
+  &:nth-child(3) {
+    position: absolute;
+    display: flex;
+    top: 10px;
+    background: var(--defaultBg);
+    transform: rotate(-6deg);
+  }
+}
+
+.type {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-right: 1px solid var(--lineColor);
+  padding: 5px 6px;
+  width: 95px;
+  height: 38px;
+  line-height: 38px;
+  overflow: hidden;
+  .ellipsis();
+}

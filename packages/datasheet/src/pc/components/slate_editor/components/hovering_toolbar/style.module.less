@@ -1,0 +1,15 @@
+@import "../../styles/var.less";
+
+.wrap {
+  position: fixed;
+  left: -99999px;
+  top: -99999px;
+  opacity: 0;
+  background: var(--lowestBg);
+  box-shadow: @box-shadow-base;
+  border-radius: @radius-large;
+  padding: 0 @spacing-base;
+  overflow: hidden;
+  // will-change: left,top;
+  // transition: top cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s, left cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
+}

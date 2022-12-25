@@ -1,0 +1,50 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+// There are four types of situations regarding line folding.
+// 1. In the cell, the default row height is not folded
+// 2. In the cell, non-default row height fold
+// 3. Activated cell fold row
+// 4. In the expand record, the default line is folded
+
+.optionCellContainer {
+  display: flex !important;
+  padding: 3px 10px 3px;
+  max-width: 100%;
+  overflow: hidden;
+  line-height: 1.1;
+  flex-grow: 1;
+  align-content: flex-start;
+  align-items: center;
+
+  &.rowHeightHigh {
+    flex-wrap: wrap;
+  }
+}
+
+:global {
+  .displayItem, 
+  .activeCell {
+    .optionCellContainer {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.minWidth {
+  & > div:first-of-type {
+    max-width: calc(100% - 36px);
+  }
+}
+
+.iconAdd {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+  margin-top: 3px;
+
+  svg {
+    fill: currentColor;
+  }
+}

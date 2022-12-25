@@ -1,0 +1,44 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import {
+  CollaCommandManager, ComputeRefManager, Engine, IError, IJOTAction, IReduxState, IResourceOpsCollect, OPEventManager, ResourceType
+} from 'core';
+import { Store } from 'redux';
+
+export interface IResourceService {
+  init (): void;
+  createCollaEngine (resourceId: string, resourceType: ResourceType): boolean;
+  socket: SocketIOClient.Socket;
+  commandManager: CollaCommandManager;
+  opEventManager: OPEventManager;
+  computeRefManager: ComputeRefManager;
+  getCollaEngine(resourceId: string): Engine | undefined;
+  destroy(): void;
+  reset(resourceId: string, resourceType: ResourceType): void
+  getCollaEngineKeys(): IterableIterator<string>
+  checkRoomExist(): boolean;
+  switchResource(params: { from?: string, to: string, resourceType: ResourceType }): void;
+  onNewChanges(resourceType: ResourceType, resourceId: string, actions: IJOTAction[]): any
+  applyOperations(
+    store: Store<IReduxState>,
+    resourceOpsCollects: IResourceOpsCollect[]
+  ): void;
+}
+
+export type IServiceError = (error: IError, type: 'modal' | 'message' | 'subscribeUsage') => void;

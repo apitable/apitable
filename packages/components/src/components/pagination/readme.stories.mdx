@@ -1,0 +1,147 @@
+import { Pagination } from './index';
+import { Canvas, Meta } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/Pagination" />
+
+# Pagination
+
+## Usage
+
+```jsx
+import { Pagination } from '@apitable/components';
+```
+
+A long list can be divided into several pages using `Pagination`.  and only a fixed number of entries and pages are displayed.
+
+## Examples
+
+### Basic pagination.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination total={50} />
+    </ThemeToggle>
+</Canvas>
+
+### Show total count
+
+Display the current range of data and the total number of records.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination lang="en" showTotal total={50} />
+    </ThemeToggle>
+</Canvas>
+
+## Fast Jump
+
+Enter a page number to skip to the specified number of pages.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination lang="en" showQuickJump total={50} />
+    </ThemeToggle>
+</Canvas>
+
+## More
+
+Exceeding 7 pages to display ellipsis.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <div>
+            <Pagination total={71} />
+            <br />
+            <Pagination total={1171} />
+        </div>
+    </ThemeToggle>
+</Canvas>
+
+### Data per page
+
+Change the amount of data per page.
+
+<Canvas>
+  <ThemeToggle lang="en">
+      <Pagination
+          showChangeSize
+          pageSize={10}
+          total={71}
+          lang="en"
+          onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+      />
+  </ThemeToggle>
+</Canvas>
+
+### Disable
+
+Disable flipping.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            disabled
+            lang="en"
+        />
+    </ThemeToggle>
+</Canvas>
+
+### Show all
+
+Show all displayable interactions.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            lang="en"
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
+</Canvas>
+
+### I18n
+
+Component with Chinese.
+
+<Canvas>
+    <ThemeToggle lang="en">
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
+</Canvas>
+
+
+## API
+
+### Pagination
+
+| Name             | Type                                     | Description                      | Default |
+|------------------|------------------------------------------|----------------------------------|---------|
+| className        | string                                   | class name                       | -       |
+| current          | number                                   | current page number              | -       |
+| pageSize         | number                                   | number of entries per page       | -       |
+| total(Required)  | number                                   | total quantity                   | -       |
+| disabled         | boolean                                  | disable action                   | -       |
+| showTotal        | boolean                                  | show total                       | -       |
+| showChangeSize   | boolean                                  | display quantity per page toggle | -       |
+| showQuickJump    | boolean                                  | show quick jump interaction      | -       |
+| lang             | zh / en                                  | i18n                             | -       |
+| onChange         | (page: number, pageSize: number) => void | change action                    | -       |
+| onPageSizeChange | (page: number, pageSize: number) => void | page size change action          | -       |

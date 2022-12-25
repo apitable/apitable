@@ -1,0 +1,42 @@
+node_modules
+**/node_modules
+dist
+scripts
+packages/datasheet/web_build
+
+# All secrets
+**/.env.local
+**/.env.development
+**/.env.*.local
+
+# Docker related
+.dockerignore
+Dockerfile
+Dockerfile.*
+docker-compose.*.yml
+docker-compose.yml
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+
+# By default all git files
+.git
+.gitignore
+.github
+
+# Log files
+logs
+.logs
+*.log
+
+# Temp files
+tmp
+*.tmp
+
+# IDE related
+.idea
+.vscode
+
+# other
+.DS_Store

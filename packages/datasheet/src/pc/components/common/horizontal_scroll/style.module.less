@@ -1,0 +1,118 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.breadCrumbWrapper {
+  position: relative;
+  width: 100%;
+
+  .scrollWrapper {
+    position: relative;
+    height: 28px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .beadCrumb {
+    position: absolute;
+    top: 8px;
+  }
+
+  .leftScrollIcon,
+  .rightScrollIcon {
+    position: absolute;
+    top: 7px;
+    display: flex;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--defaultBg);
+    cursor: pointer;
+
+    svg {
+      z-index: 1;
+    }
+  }
+
+  .leftScrollIcon {
+    left: 0;
+
+    &::after {
+      position: absolute;
+      content: "";
+      display: block;
+      width: 52px;
+      height: 14px;
+      background: -webkit-linear-gradient(left, var(--lowestBg), rgba(255, 255, 255, 0.2));
+      pointer-events: none;
+    }
+  }
+
+  .rightScrollIcon {
+    right: 0;
+
+    &::after {
+      position: absolute;
+      right: 0;
+      content: "";
+      display: block;
+      width: 52px;
+      height: 14px;
+      background: -webkit-linear-gradient(
+        right,
+        var(--lowestBg),
+        rgba(255, 255, 255, 0.2)
+      );
+      pointer-events: none;
+    }
+  }
+
+  :global {
+    .ant-breadcrumb {
+      font-size: 12px;
+      color: var(--secondLevelText);
+      font-weight: normal;
+      display: flex;
+      height: 12px;
+      white-space: nowrap;
+      line-height: 1;
+      & > span {
+        display: flex;
+      }
+    }
+
+    .ant-breadcrumb-separator {
+      display: flex;
+      align-items: center;
+      margin: 0 2px;
+    }
+
+    .ant-breadcrumb-link {
+      display: inline-block;
+      cursor: default;
+    }
+
+    .ant-breadcrumb > span:not(:last-child) .ant-breadcrumb-link {
+      .ellipsis();
+      color: var(--primaryColor);
+      max-width: 150px;
+      cursor: pointer;
+    }
+    .ant-breadcrumb > span:last-child .ant-breadcrumb-link {
+      color: var(--secondLevelText);
+    }
+  }
+}
+@media screen and(max-width: @w-md) {
+  .breadCrumbWrapper {
+    :global {
+      .ant-breadcrumb {
+        font-size: 13px;
+      }
+    }
+  }
+}

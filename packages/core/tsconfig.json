@@ -1,0 +1,42 @@
+{
+  "extends": "../../common-tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "jest",
+      "node"
+    ],
+    // "sourceMap": true,
+    "strict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedParameters": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "allowJs": true,
+    "paths": {
+      "*": ["*"]
+    },
+    "lib": [
+      "esnext",
+      "ESNext.Array",
+      "ES2020.String"
+    ]
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}

@@ -1,0 +1,117 @@
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<code_scheme name="apitable" version="173">
+    <!-- Global - Tabs And Indents Begin -->
+    <option name="AUTODETECT_INDENTS" value="false"/>
+    <!-- Java - Tabs And Indents End -->
+
+    <!-- Java - Imports Begin -->
+    <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="50"/>
+    <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500"/>
+    <option name="IMPORT_LAYOUT_TABLE">
+        <value>
+            <package name="java" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="javax" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="com.apitable" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="org.springframework" withSubpackages="true" static="false"/>
+            <emptyLine/>
+            <package name="" withSubpackages="true" static="true"/>
+        </value>
+    </option>
+    <!-- Java - Imports End -->
+
+    <option name="RIGHT_MARGIN" value="90"/>
+    <!--Java - JavaDoc-->
+    <option name="ENABLE_JAVADOC_FORMATTING" value="false"/>
+    <option name="JD_ALIGN_PARAM_COMMENTS" value="false"/>
+    <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false"/>
+    <option name="JD_KEEP_EMPTY_LINES" value="false"/>
+
+    <JavaCodeStyleSettings>
+        <option name="CLASS_NAMES_IN_JAVADOC" value="3"/>
+        <option name="INSERT_INNER_CLASS_IMPORTS" value="true"/>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="50"/>
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="500"/>
+        <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
+            <value/>
+        </option>
+        <option name="IMPORT_LAYOUT_TABLE">
+            <value>
+                <package name="java" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="javax" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="com.apitable" withSubpackages="true" static="false"/>
+                <emptyLine/>
+                <package name="org.springframework" withSubpackages="true"
+                         static="false"/>
+                <emptyLine/>
+                <package name="" withSubpackages="true" static="true"/>
+            </value>
+        </option>
+        <option name="ENABLE_JAVADOC_FORMATTING" value="false"/>
+        <option name="JD_ALIGN_PARAM_COMMENTS" value="false"/>
+        <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false"/>
+        <option name="JD_KEEP_INVALID_TAGS" value="false"/>
+        <option name="JD_KEEP_EMPTY_LINES" value="false"/>
+    </JavaCodeStyleSettings>
+    <XML>
+        <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true"/>
+    </XML>
+    <editorconfig>
+        <option name="ENABLED" value="false"/>
+    </editorconfig>
+    <codeStyleSettings language="Groovy">
+        <indentOptions>
+            <option name="INDENT_SIZE" value="2"/>
+            <option name="CONTINUATION_INDENT_SIZE" value="2"/>
+            <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="true"/>
+        </indentOptions>
+    </codeStyleSettings>
+    <codeStyleSettings language="JAVA">
+        <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="false"/>
+        <option name="BLOCK_COMMENT_AT_FIRST_COLUMN" value="false"/>
+        <option name="LINE_COMMENT_ADD_SPACE" value="true"/>
+        <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1"/>
+        <option name="BLANK_LINES_AROUND_FIELD" value="1"/>
+        <option name="BLANK_LINES_AROUND_FIELD_IN_INTERFACE" value="1"/>
+        <option name="ELSE_ON_NEW_LINE" value="true"/>
+        <option name="CATCH_ON_NEW_LINE" value="true"/>
+        <option name="FINALLY_ON_NEW_LINE" value="true"/>
+        <option name="ALIGN_MULTILINE_PARAMETERS" value="false"/>
+        <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true"/>
+        <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true"/>
+        <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true"/>
+        <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true"/>
+        <option name="KEEP_MULTIPLE_EXPRESSIONS_IN_ONE_LINE" value="true"/>
+    </codeStyleSettings>
+    <codeStyleSettings language="JSON">
+        <indentOptions>
+            <option name="INDENT_SIZE" value="4"/>
+            <option name="TAB_SIZE" value="2"/>
+        </indentOptions>
+    </codeStyleSettings>
+</code_scheme>

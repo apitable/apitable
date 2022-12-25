@@ -1,0 +1,62 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.expandLink {
+  .addLinkRecord {
+    margin-bottom: 8px;
+    white-space: pre-line;
+  }
+
+  .recordCard {
+    margin-bottom: 8px;
+  }
+}
+
+.showMore {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .showMoreText {
+    color: var(--thirdLevelText);
+    font-size: 13px;
+    text-align: center;
+    padding-left: 4px;
+  }
+}
+
+.addLinkRecordBtn {
+
+  .inner {
+    display: flex;
+    align-items: center;
+    white-space: pre;
+  }
+
+  .addIcon {
+    margin-right: 5px;
+  }
+
+  .datasheetName {
+    display: inline-block;
+    vertical-align: inherit;
+    max-width: 200px;
+    .ellipsis();
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .expandLink {
+    flex: 1;
+  }
+  
+  .addLinkRecordBtn {
+    line-height: 1;
+    font-size: 14px !important;
+
+    .datasheetName {
+      max-width: 90px;
+    }
+  }
+}

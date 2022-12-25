@@ -1,0 +1,56 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.spaceManage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  .spaceTitle {
+    height: 60px;
+    border-bottom: 1px solid var(--lineColor);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    .orgName {
+      display: inline-block;
+      font-size: 16px;
+      color: var(--firstLevelText);
+      font-weight: bold;
+      width: 228px;
+      cursor: default;
+      .ellipsis();
+    }
+  }
+  .spaceConentWrapper {
+    width: 100%;
+  }
+  .navSplit {
+    left: 56px !important;
+    top: 0;
+    & > :global(.Pane2) {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      background: var(--lowestBg);
+      // padding: 20px 20px 14px;
+      &:first-child {
+        flex: 1;
+      }
+    }
+  }
+
+  // Switch style, workbench management page and general members page common
+  :global(.switchWrapper) {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    // FIXME:THEME
+    background: rgba(var(--rowSelectedBg-rgb), 60%);
+    border-radius: 16px;
+    padding: 24px;
+    :global(.ant-skeleton-paragraph) {
+      margin-bottom: 0em;
+    }
+  }
+}

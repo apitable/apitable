@@ -1,0 +1,102 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Room",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "yarn",
+      "args": [
+        "packages/room-server/src/main.ts"
+      ],
+      "runtimeArgs": [
+        "start:debug",
+      ],
+      "cwd": "${workspaceFolder}/packages/room-server",
+      "protocol": "inspector",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "NODE_ENV": "development",
+        "NODE_PORT": "3333"
+      },
+      "sourceMaps": true,
+      "console": "internalConsole",
+      "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "datasheet jest",
+      "cwd": "${workspaceFolder}/packages/datasheet",
+      "args": [
+        "--inspect-brk",
+        "scripts/test.js",
+        "${relativeFile}",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "core jest",
+      "cwd": "${workspaceFolder}/packages/core",
+      "args": [
+        "--inspect-brk",
+        "node_modules/.bin/jest",
+        "${relativeFile}",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "name": "widgetSDK jest",
+      "cwd": "${workspaceFolder}/packages/widget-sdk",
+      "args": [
+        "--inspect-brk",
+        "node_modules/.bin/jest",
+        "${relativeFile}",
+        "--runInBand"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "neverOpen",
+      "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "room-server jest",
+      "cwd": "${workspaceFolder}/packages/room-server",
+      "args": [
+        "--inspect-brk",
+        "node_modules/.bin/jest",
+        "${relativeFile}",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "fusion jest",
+      "cwd": "${workspaceFolder}/packages/room-server",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+          "--runInBand",
+          "--config",
+          // "--detectOpenHandles",
+          "./test/jest-e2e.json"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+    }
+
+  ]
+}

@@ -1,0 +1,118 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.tabBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--lowestBg);
+  border-radius: 8px 8px 0 0;
+  padding: 24px 24px 0;
+  user-select: none;
+
+  .atcButton {
+    color: var(--secondLevelText);
+
+    &:hover {
+      background: var(--fc11);
+    }
+
+    &:active {
+      background: var(--fc4);
+    }
+  }
+
+  .nodeName {
+    margin-bottom: 0;
+    margin-right: 8px;
+    font-size: 21px;
+    font-weight: bold;
+    max-width: 150px;
+  }
+
+  .tabLeft {
+    width: 35%;
+    display: flex;
+    align-items: center;
+  }
+
+  .tabRight {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.addWidgetMenu {
+  width: 240px;
+  background-color: var(--highestBg);
+  box-shadow: var(--shadowCommonHighest);
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  .menuItem {
+    line-height: 40px;
+    padding: 0 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      background: var(--rowSelectedBg);
+      border-radius: 4px;
+    }
+  }
+}
+
+.status {
+  display: flex;
+  align-items: center;
+
+  & > div:nth-child(1) {
+    width: 110px;
+  }
+}
+
+.mobileBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+
+  .side {
+    background-color: var(--primaryColor);
+    width: 32px;
+    height: 32px;
+    border-radius: 0 50% 50% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .nodeName {
+    font-size: 15px;
+    margin-bottom: 0;
+    font-weight: bold;
+    max-width: 150px;
+  }
+
+  .ghost {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.token {
+  padding-left: 4px;
+  flex-shrink: 0;
+}
+
+.shareDoc {
+  color: var(--primaryColor);
+  padding-left: 14px;
+}

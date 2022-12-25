@@ -1,0 +1,129 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-004" author="ShawnDeng" labels="datasheet">
+        <comment>Create datasheet table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Custom ID',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Datasheet Node Id(link#xxxx_node#node_id)',
+            `dst_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Name',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `creator` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `revision` bigint(20) unsigned DEFAULT '0' COMMENT 'Version No',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_dst_id` (`dst_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Data Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-005" author="ShawnDeng" labels="datasheet">
+        <comment>Create datasheet changeset collection table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_changeset` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `message_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The unique ID of the changeset request, which is used to ensure the uniqueness of the changeset',
+            `dst_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Datasheet ID',
+            `member_id` bigint(20) DEFAULT NULL COMMENT 'Action member ID(link#xxxx_organization_member#id)',
+            `operations` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Collection of operation actions',
+            `revision` bigint(20) unsigned DEFAULT '0' COMMENT 'Version No',
+            `is_deleted` tinyint(1) unsigned DEFAULT '0' COMMENT '1:Delete，0:Not Deleted',
+            `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation time',
+            `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Data Table Operation Changeset Collection Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_changeset"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-006" author="ShawnDeng" labels="datasheet">
+        <comment>Create data table metadata table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_meta` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Number table custom ID(link#xxxx_datasheet#dst_id)',
+            `meta_data` json DEFAULT NULL COMMENT 'Metadata',
+            `revision` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Version No',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Data Table Metadata Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_meta"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-007" author="ShawnDeng" labels="datasheet">
+        <comment>Create a datasheet operation table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_operation` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `op_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Operation ID',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Datasheet ID(link#xxxx_datasheet#dst_id)',
+            `action_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Operation name',
+            `actions` json DEFAULT NULL COMMENT 'Collection of operations',
+            `type` tinyint(2) unsigned DEFAULT NULL COMMENT 'Type(1:JOT,2:COT)',
+            `member_id` bigint(20) DEFAULT NULL COMMENT 'Action member ID(link#xxxx_organization_member#id)',
+            `revision` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Version No',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_op_id` (`op_id`) USING BTREE COMMENT 'Operation unique code'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - datasheet operation table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_operation"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-008" author="ShawnDeng" labels="datasheet">
+        <comment>Create datasheet record table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_record` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary key',
+            `record_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Operation ID',
+            `dst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Datasheet ID(link#xxxx_datasheet#dst_id)',
+            `data` json DEFAULT NULL COMMENT 'Data recorded in one row (corresponding to each field)',
+            `revision_history` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT 'The historical version number sorted is the revision of the original operation, and the array subscript is the revision of the current record',
+            `revision` bigint(20) unsigned DEFAULT '0' COMMENT 'Version No',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_dsId_recordId` (`dst_id`,`record_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Datasheet Record Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}datasheet_record"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

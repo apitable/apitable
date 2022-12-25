@@ -1,0 +1,21 @@
+@import "~pc/styles/lib_var.less";
+
+.favoriteStatus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .favorite {
+    fill: var(--warningColor);
+  }
+
+  .unFavorite {
+    fill: var(--thirdLevelText);
+  }
+}

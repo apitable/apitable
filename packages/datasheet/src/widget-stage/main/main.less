@@ -1,0 +1,101 @@
+@import "~pc/styles/lib_mixins.less";
+
+.main {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: var(--defaultBg);
+  display: flex;
+  flex-direction: column;
+}
+
+.errorPage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .errorText {
+    padding: 0 24px 50px 24px;
+  }
+
+  .contactUs {
+    margin-top: 32px;
+  }
+
+  .errorFeedback {
+    position: absolute;
+    bottom: 40px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  background-clip: padding-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+  border-radius: 6px;
+  min-height: 36px;
+}
+
+:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(191, 193, 203, 0.5);
+}
+
+.emptyPlaceholder {
+  text-align: center;
+  padding: 32px 0;
+
+  .img {
+    width: 160px;
+    height: 120px;
+  }
+
+  .title {
+    font-size: 14px;
+    color: var(--secondLevelText);
+    margin-top: 8px;
+  }
+}
+
+// https://www.zhangxinxu.com/wordpress/2020/01/css-any-hover-media/
+@media (any-hover: none) {
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  .ant-tooltip-inner {
+    font-size: 14px;
+    padding: 12px 8px;
+  }
+}
+
+*::selection {
+  color: inherit;
+  background: rgba(var(--primaryColor-rgb), 30%);
+}
+
+.rc-trigger-popup {
+  z-index: 1000;
+}
+

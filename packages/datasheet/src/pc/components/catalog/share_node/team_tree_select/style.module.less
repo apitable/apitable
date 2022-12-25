@@ -1,0 +1,107 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+//pc
+.treeSelect {
+  height: 100%;
+  padding: 4px 0;
+  box-shadow: var(--shadowCommonDefault);
+  border-radius: 8px;
+
+  .treeScrollWrapper {
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+}
+
+.checkedTeamName {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  max-width: 120px;
+  cursor: pointer;
+
+  &.highlight {
+    .name {
+      .text {
+        color: var(--primaryColor);
+      }
+    }
+
+    & > svg {
+      fill: var(--primaryColor);
+    }
+  }
+
+  .name {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    padding-right: 4px;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 12px;
+      background: var(--lineColor);
+      margin-right: 8px;
+    }
+
+    .text {
+      flex: 1;
+      min-width: 0;
+      color: var(--secondLevelText);
+      .ellipsis();
+    }
+  }
+
+  & > svg {
+    fill: var(--secondLevelText);
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+}
+
+.teamTree {
+  .nodeLabel {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .teamName {
+      flex: 1;
+      .ellipsis();
+    }
+  }
+
+  :global {
+    .treeItemRoot .treeItem.selected + .group {
+      background: transparent;
+    }
+
+    .treeItemRoot .treeItem.selected {
+      background: var(--rowSelectedBg);
+    }
+
+    @media (any-hover: hover) {
+      .treeItemRoot .treeItem:hover {
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+// Mobile
+.mobileTeamTree {
+  :global {
+    .treeItemRoot .treeItem.selected {
+      background: transparent;
+    }
+  }
+}

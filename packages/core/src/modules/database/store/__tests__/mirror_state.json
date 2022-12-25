@@ -1,0 +1,639 @@
+{
+  "datasheetMap": {
+    "dstT8XPa51tmphsCt5": {
+      "loading": false,
+      "connected": false,
+      "errorCode": null,
+      "syncing": false,
+      "datasheet": {
+        "id": "dstT8XPa51tmphsCt5",
+        "name": "新建维格表",
+        "description": "{}",
+        "parentId": "fod6sWvMLEtNc",
+        "icon": "",
+        "nodeShared": false,
+        "nodePermitSet": false,
+        "revision": 10,
+        "spaceId": "spcKj6WfL0yGW",
+        "role": "manager",
+        "permissions": {
+          "nodeId": "dstT8XPa51tmphsCt5",
+          "datasheetId": "dstT8XPa51tmphsCt5",
+          "manageable": true,
+          "editable": true,
+          "readable": true,
+          "childCreatable": true,
+          "renamable": true,
+          "iconEditable": true,
+          "descriptionEditable": true,
+          "movable": true,
+          "copyable": true,
+          "importable": true,
+          "exportable": true,
+          "removable": true,
+          "sharable": true,
+          "allowSaveConfigurable": true,
+          "allowEditConfigurable": true,
+          "templateCreatable": true,
+          "viewCreatable": true,
+          "viewRenamable": true,
+          "viewRemovable": true,
+          "viewMovable": true,
+          "viewExportable": true,
+          "viewFilterable": true,
+          "columnSortable": true,
+          "columnHideable": true,
+          "fieldSortable": true,
+          "fieldGroupable": true,
+          "rowHighEditable": true,
+          "columnWidthEditable": true,
+          "columnCountEditable": true,
+          "rowSortable": true,
+          "fieldCreatable": true,
+          "fieldRenamable": true,
+          "fieldPropertyEditable": true,
+          "fieldRemovable": true,
+          "rowCreatable": true,
+          "rowRemovable": true,
+          "cellEditable": true,
+          "fieldPermissionManageable": true,
+          "viewLayoutEditable": true,
+          "viewStyleEditable": true,
+          "viewKeyFieldEditable": true,
+          "viewColorOptionEditable": true,
+          "viewLockManageable": true,
+          "viewManualSaveManageable": true,
+          "viewOptionSaveEditable": true
+        },
+        "nodeFavorite": false,
+        "extra": {
+          "showRecordHistory": true
+        },
+        "isGhostNode": false,
+        "snapshot": {
+          "meta": {
+            "views": [
+              {
+                "id": "viw1euCmpMYrO",
+                "name": "维格视图 2",
+                "rows": [
+                  {
+                    "recordId": "recaPAwcPEtKU"
+                  }
+                ],
+                "type": 1,
+                "columns": [
+                  {
+                    "fieldId": "fldElQLpPuzH9"
+                  },
+                  {
+                    "fieldId": "fldpWlYc2sc37"
+                  },
+                  {
+                    "fieldId": "fldJa0AxxEjeh"
+                  },
+                  {
+                    "fieldId": "fldG4paoiHLAU"
+                  }
+                ],
+                "rowHeightLevel": 1,
+                "frozenColumnCount": 1
+              },
+              {
+                "id": "viwg5kjpdbKkF",
+                "name": "维格视图",
+                "rows": [
+                  {
+                    "recordId": "recaPAwcPEtKU"
+                  }
+                ],
+                "type": 1,
+                "columns": [
+                  {
+                    "fieldId": "fldElQLpPuzH9"
+                  },
+                  {
+                    "fieldId": "fldpWlYc2sc37"
+                  },
+                  {
+                    "fieldId": "fldJa0AxxEjeh"
+                  },
+                  {
+                    "fieldId": "fldG4paoiHLAU"
+                  }
+                ],
+                "autoSave": false,
+                "frozenColumnCount": 1
+              }
+            ],
+            "fieldMap": {
+              "fldElQLpPuzH9": {
+                "id": "fldElQLpPuzH9",
+                "name": "标题",
+                "type": 16,
+                "property": {
+                  "expression": "CONCATENATE({fldpWlYc2sc37},{fldJa0AxxEjeh})",
+                  "datasheetId": "dstT8XPa51tmphsCt5"
+                }
+              },
+              "fldG4paoiHLAU": {
+                "id": "fldG4paoiHLAU",
+                "name": "新建维格表 2",
+                "type": 7,
+                "property": {
+                  "brotherFieldId": "fldGZrNET2StU",
+                  "foreignDatasheetId": "dst20W6iYZfeeGaVzu"
+                }
+              },
+              "fldJa0AxxEjeh": {
+                "id": "fldJa0AxxEjeh",
+                "name": "爱好",
+                "type": 19,
+                "property": {}
+              },
+              "fldpWlYc2sc37": {
+                "id": "fldpWlYc2sc37",
+                "name": "名称",
+                "type": 19,
+                "property": {}
+              }
+            }
+          },
+          "recordMap": {
+            "recaPAwcPEtKU": {
+              "id": "recaPAwcPEtKU",
+              "data": {
+                "fldG4paoiHLAU": [
+                  "recHwtmd2T99W"
+                ],
+                "fldJa0AxxEjeh": [
+                  {
+                    "text": "可乐",
+                    "type": 1
+                  }
+                ],
+                "fldpWlYc2sc37": [
+                  {
+                    "text": "可乐",
+                    "type": 1
+                  }
+                ]
+              },
+              "createdAt": 1648257457000,
+              "updatedAt": 1648257820000,
+              "revisionHistory": [
+                0,
+                3,
+                4,
+                9
+              ],
+              "recordMeta": {
+                "createdAt": 1648257457283,
+                "createdBy": "81129cb05275419fad66de83aec23fa3",
+                "fieldUpdatedMap": {
+                  "fldG4paoiHLAU": {
+                    "at": 1648257820367,
+                    "by": "81129cb05275419fad66de83aec23fa3"
+                  },
+                  "fldJa0AxxEjeh": {
+                    "at": 1648257488467,
+                    "by": "81129cb05275419fad66de83aec23fa3"
+                  },
+                  "fldpWlYc2sc37": {
+                    "at": 1648257485654,
+                    "by": "81129cb05275419fad66de83aec23fa3"
+                  }
+                }
+              },
+              "commentCount": 0
+            }
+          },
+          "datasheetId": "dstT8XPa51tmphsCt5"
+        },
+        "isPartOfData": true,
+        "activeView": "viw1euCmpMYrO"
+      },
+      "client": {
+        "gridViewDragState": {
+          "dragTarget": {},
+          "hoverRecordId": null,
+          "hoverRowOfAddRecord": null
+        },
+        "gridViewActiveFieldState": {
+          "fieldId": "",
+          "fieldRectLeft": 0,
+          "fieldRectBottom": 0,
+          "clickLogOffsetX": 0,
+          "fieldIndex": -1,
+          "tempSelection": [],
+          "operate": null
+        },
+        "selection": null,
+        "collaborators": [],
+        "newRecordExpectIndex": null,
+        "activeRowInfo": {
+          "type": "UpdateRecord",
+          "positionInfo": {
+            "fieldId": "",
+            "recordId": "",
+            "visibleRowIndex": 0,
+            "isInit": true
+          },
+          "recordSnapshot": {
+            "meta": {
+              "fieldMap": {}
+            },
+            "recordMap": {}
+          }
+        },
+        "searchResultCursorIndex": 0,
+        "searchKeyword": "",
+        "groupingCollapseIds": [],
+        "kanbanGroupCollapse": [],
+        "isEditingCell": null,
+        "loadingRecord": {},
+        "widgetPanelStatus": {
+          "opening": false,
+          "width": 320,
+          "activePanelId": null,
+          "loading": false
+        },
+        "ganttViewStatus": {
+          "gridWidth": 256,
+          "gridVisible": true,
+          "settingPanelWidth": 328,
+          "settingPanelVisible": true,
+          "dateUnitType": "Month"
+        },
+        "calendarViewStatus": {
+          "guideStatus": false,
+          "gridWidth": 256,
+          "gridVisible": false,
+          "settingPanelVisible": true,
+          "settingPanelWidth": 328
+        },
+        "orgChartViewStatus": {
+          "guideStatus": false,
+          "rightPanelWidth": 256,
+          "rightPanelVisible": true,
+          "settingPanelVisible": false,
+          "settingPanelWidth": 328
+        },
+        "gridViewHoverFieldId": null,
+        "highlightFiledId": null,
+        "closeSyncViewIds": [],
+        "isRobotPanelOpen": false,
+        "operateViewIds": null,
+        "isTimeMachinePanelOpen": false
+      },
+      "fieldPermissionMap": {},
+      "computedInfo": {},
+      "computedStatus": {}
+    },
+    "dst20W6iYZfeeGaVzu": {
+      "loading": false,
+      "connected": false,
+      "errorCode": null,
+      "syncing": false,
+      "datasheet": {
+        "id": "dst20W6iYZfeeGaVzu",
+        "name": "新建维格表 2",
+        "description": "{}",
+        "parentId": "fod6sWvMLEtNc",
+        "icon": "",
+        "nodeShared": false,
+        "nodePermitSet": false,
+        "revision": 5,
+        "spaceId": "spcKj6WfL0yGW",
+        "role": "manager",
+        "permissions": {
+          "nodeId": "dst20W6iYZfeeGaVzu",
+          "datasheetId": "dst20W6iYZfeeGaVzu",
+          "manageable": true,
+          "editable": true,
+          "readable": true,
+          "childCreatable": true,
+          "renamable": true,
+          "iconEditable": true,
+          "descriptionEditable": true,
+          "movable": true,
+          "copyable": true,
+          "importable": true,
+          "exportable": true,
+          "removable": true,
+          "sharable": true,
+          "allowSaveConfigurable": true,
+          "allowEditConfigurable": true,
+          "templateCreatable": true,
+          "viewCreatable": true,
+          "viewRenamable": true,
+          "viewRemovable": true,
+          "viewMovable": true,
+          "viewExportable": true,
+          "viewFilterable": true,
+          "columnSortable": true,
+          "columnHideable": true,
+          "fieldSortable": true,
+          "fieldGroupable": true,
+          "rowHighEditable": true,
+          "columnWidthEditable": true,
+          "columnCountEditable": true,
+          "rowSortable": true,
+          "fieldCreatable": true,
+          "fieldRenamable": true,
+          "fieldPropertyEditable": true,
+          "fieldRemovable": true,
+          "rowCreatable": true,
+          "rowRemovable": true,
+          "cellEditable": true,
+          "fieldPermissionManageable": true,
+          "viewLayoutEditable": true,
+          "viewStyleEditable": true,
+          "viewKeyFieldEditable": true,
+          "viewColorOptionEditable": true,
+          "viewLockManageable": true,
+          "viewManualSaveManageable": true,
+          "viewOptionSaveEditable": true
+        },
+        "nodeFavorite": false,
+        "extra": {
+          "showRecordHistory": true
+        },
+        "isGhostNode": false,
+        "snapshot": {
+          "meta": {
+            "views": [
+              {
+                "id": "viw6gzALyL0h2",
+                "name": "维格视图 2",
+                "rows": [
+                  {
+                    "recordId": "recHwtmd2T99W"
+                  }
+                ],
+                "type": 1,
+                "columns": [
+                  {
+                    "fieldId": "fldFxC7LS5WbW"
+                  },
+                  {
+                    "fieldId": "fldGZrNET2StU"
+                  },
+                  {
+                    "fieldId": "fldGMW3qV6LuJ"
+                  }
+                ],
+                "rowHeightLevel": 1,
+                "frozenColumnCount": 1
+              },
+              {
+                "id": "viwad48YgQxEY",
+                "name": "维格视图",
+                "rows": [
+                  {
+                    "recordId": "recHwtmd2T99W"
+                  }
+                ],
+                "type": 1,
+                "columns": [
+                  {
+                    "fieldId": "fldFxC7LS5WbW",
+                    "statType": 1
+                  },
+                  {
+                    "fieldId": "fldGZrNET2StU"
+                  },
+                  {
+                    "fieldId": "fldGMW3qV6LuJ"
+                  }
+                ],
+                "autoSave": false,
+                "frozenColumnCount": 1
+              }
+            ],
+            "fieldMap": {
+              "fldFxC7LS5WbW": {
+                "id": "fldFxC7LS5WbW",
+                "name": "标题",
+                "type": 19,
+                "property": {
+                  "defaultValue": ""
+                }
+              },
+              "fldGMW3qV6LuJ": {
+                "id": "fldGMW3qV6LuJ",
+                "name": "附件",
+                "type": 6
+              },
+              "fldGZrNET2StU": {
+                "id": "fldGZrNET2StU",
+                "name": "采购合同",
+                "type": 7,
+                "property": {
+                  "brotherFieldId": "fldG4paoiHLAU",
+                  "foreignDatasheetId": "dstT8XPa51tmphsCt5"
+                }
+              }
+            }
+          },
+          "recordMap": {
+            "recHwtmd2T99W": {
+              "id": "recHwtmd2T99W",
+              "data": {
+                "fldGZrNET2StU": [
+                  "recaPAwcPEtKU"
+                ]
+              },
+              "createdAt": 1648257681000,
+              "updatedAt": 1648257820000,
+              "revisionHistory": [
+                0,
+                3
+              ],
+              "recordMeta": {
+                "createdAt": 1648257681193,
+                "createdBy": "81129cb05275419fad66de83aec23fa3",
+                "fieldUpdatedMap": {
+                  "fldGZrNET2StU": {
+                    "at": 1648257820377,
+                    "by": "81129cb05275419fad66de83aec23fa3"
+                  }
+                }
+              },
+              "commentCount": 0
+            }
+          },
+          "datasheetId": "dst20W6iYZfeeGaVzu"
+        },
+        "isPartOfData": false,
+        "activeView": "viw6gzALyL0h2"
+      },
+      "client": {
+        "gridViewDragState": {
+          "dragTarget": {},
+          "hoverRecordId": null,
+          "hoverRowOfAddRecord": null
+        },
+        "gridViewActiveFieldState": {
+          "fieldId": "",
+          "fieldRectLeft": 0,
+          "fieldRectBottom": 0,
+          "clickLogOffsetX": 0,
+          "fieldIndex": -1,
+          "tempSelection": [],
+          "operate": null
+        },
+        "selection": null,
+        "collaborators": [],
+        "newRecordExpectIndex": null,
+        "activeRowInfo": null,
+        "searchResultCursorIndex": 0,
+        "searchKeyword": "",
+        "groupingCollapseIds": [],
+        "kanbanGroupCollapse": [],
+        "isEditingCell": null,
+        "loadingRecord": {},
+        "widgetPanelStatus": {
+          "opening": false,
+          "width": 320,
+          "activePanelId": null,
+          "loading": false
+        },
+        "ganttViewStatus": {
+          "gridWidth": 256,
+          "gridVisible": true,
+          "settingPanelWidth": 328,
+          "settingPanelVisible": true,
+          "dateUnitType": "Month"
+        },
+        "calendarViewStatus": {
+          "guideStatus": false,
+          "gridWidth": 256,
+          "gridVisible": false,
+          "settingPanelVisible": true,
+          "settingPanelWidth": 328
+        },
+        "orgChartViewStatus": {
+          "guideStatus": false,
+          "rightPanelWidth": 256,
+          "rightPanelVisible": true,
+          "settingPanelVisible": false,
+          "settingPanelWidth": 328
+        },
+        "gridViewHoverFieldId": null,
+        "highlightFiledId": null,
+        "closeSyncViewIds": [],
+        "isRobotPanelOpen": false,
+        "operateViewIds": null,
+        "isTimeMachinePanelOpen": false
+      },
+      "fieldPermissionMap": {},
+      "computedInfo": {},
+      "computedStatus": {}
+    }
+  },
+  "mirrorMap": {
+    "mirlZukK7A2JjaehAA": {
+      "loading": false,
+      "connected": true,
+      "errorCode": null,
+      "syncing": false,
+      "mirror": {
+        "id": "mirlZukK7A2JjaehAA",
+        "name": "维格视图 2的镜像",
+        "description": "{}",
+        "parentId": "fod6sWvMLEtNc",
+        "icon": "",
+        "nodeShared": false,
+        "nodePermitSet": false,
+        "revision": 0,
+        "spaceId": "spcKj6WfL0yGW",
+        "role": "manager",
+        "permissions": {
+          "nodeId": "mirlZukK7A2JjaehAA",
+          "datasheetId": "dst20W6iYZfeeGaVzu",
+          "manageable": true,
+          "editable": true,
+          "readable": true,
+          "childCreatable": true,
+          "renamable": true,
+          "iconEditable": true,
+          "descriptionEditable": false,
+          "movable": true,
+          "copyable": true,
+          "importable": true,
+          "exportable": true,
+          "removable": true,
+          "sharable": true,
+          "allowSaveConfigurable": true,
+          "allowEditConfigurable": true,
+          "templateCreatable": true,
+          "viewCreatable": false,
+          "viewRenamable": false,
+          "viewRemovable": false,
+          "viewMovable": false,
+          "viewExportable": true,
+          "viewFilterable": false,
+          "columnSortable": false,
+          "columnHideable": false,
+          "fieldSortable": false,
+          "fieldGroupable": false,
+          "rowHighEditable": false,
+          "columnWidthEditable": false,
+          "columnCountEditable": true,
+          "rowSortable": true,
+          "fieldCreatable": false,
+          "fieldRenamable": false,
+          "fieldPropertyEditable": false,
+          "fieldRemovable": false,
+          "rowCreatable": true,
+          "rowRemovable": true,
+          "cellEditable": true,
+          "fieldPermissionManageable": false,
+          "viewLayoutEditable": false,
+          "viewStyleEditable": false,
+          "viewKeyFieldEditable": false,
+          "viewColorOptionEditable": false,
+          "viewLockManageable": true,
+          "viewManualSaveManageable": true,
+          "viewOptionSaveEditable": true
+        },
+        "nodeFavorite": false,
+        "isGhostNode": false,
+        "sourceInfo": {
+          "datasheetIcon": null,
+          "datasheetRevision": 5,
+          "datasheetId": "dst20W6iYZfeeGaVzu",
+          "viewId": "viw6gzALyL0h2",
+          "datasheetName": "新建维格表 2"
+        },
+        "snapshot": {}
+      },
+      "client": {
+        "collaborators": [
+          {
+            "socketId": "/room#qWF_5u-83lUBmVpjABA-",
+            "userName": "测试账号",
+            "memberName": "测试账号",
+            "avatar": "https://s1.vika.cn/public/2020/05/22/1263682699186126849",
+            "userId": "81129cb05275419fad66de83aec23fa3",
+            "createTime": 3300664103
+          }
+        ],
+        "widgetPanelStatus": {
+          "opening": false,
+          "width": 320,
+          "activePanelId": null,
+          "loading": false
+        }
+      }
+    }
+  },
+  "pageParams": {
+    "datasheetId": "dst20W6iYZfeeGaVzu",
+    "viewId": "viw6gzALyL0h2",
+    "resourceId": "dst20W6iYZfeeGaVzu",
+    "nodeId": "mirlZukK7A2JjaehAA",
+    "mirrorId": "mirlZukK7A2JjaehAA"
+  }
+}

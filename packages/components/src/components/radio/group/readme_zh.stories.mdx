@@ -1,0 +1,160 @@
+import { ArrowRightOutlined } from '@apitable/icons';
+import { RadioGroup } from './group';
+import { Radio } from '../radio';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../../stories/theme-toggle';
+
+<Meta title="表单组件/RadioGroup 单选组/文档" />
+
+# RadioGroup 单选组
+
+可以通过单选按钮从一组中选择一个选项，当用户想要看到所有的选项时，推荐使用单选按钮组。 如果可用选项很多，应该使用占用空间更少的下拉菜单。
+
+默认情况下，单选按钮应该选择了最常用的选项。
+
+## 使用方式
+
+```jsx
+import { RadioGroup } from '@apitable/components';
+```
+
+## 默认
+
+默认竖向排列，可以通过点击 radio、文本、或文本后面空白部分选中选项。`name` 用于标记唯一性，实现单选切换。
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="column">
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+## 横向排列
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="inline" row>
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 22</Radio>
+    <Radio value="3">单选 333</Radio>
+    <Radio value="4">单选 4444</Radio>
+    <Radio value="5">单选 55555</Radio>
+    <Radio value="6">单选 666666</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+## 横向排列占据整行
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="inline-block" row block>
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+## 提供默认选中项
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="set-default" value="2">
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+## 禁用选项
+
+可以禁用部分或者禁用所有选项
+
+### 禁用部分
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="with-disable">
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2" disabled>单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### 禁用所有
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="disable-all" disabled value="2">
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Button 格式单选
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="btn-group" isBtn>
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+  <RadioGroup name="btn-group-with-default" isBtn value="2">
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+  <RadioGroup name="btn-group-with-default" isBtn>
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2" disabled>单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Button 格式占据整行
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup name="btn-group-with-default" isBtn value="2" block>
+    <Radio value="1">单选 1</Radio>
+    <Radio value="2">单选 2</Radio>
+    <Radio value="3">单选 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### 选项 Options
+
+支持不直接使用 `Radio` 组件，而是通过 `options` 指定多个选项。
+
+<Canvas>
+<ThemeToggle>
+  <RadioGroup
+    name="with-option"
+    value="2"
+    options={[
+      { label: '选项 1', value: '1' },
+      { label: '选项 2', value: '2'},
+      { label: '选项 2', value: '3', disabled: true }
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={RadioGroup} />
+
+
+
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.player.mapper.PlayerNotificationMapper">
+    <select id="selectPlayerNotificationPage" resultType="com.apitable.player.dto.NotificationModelDTO">
+        SELECT vpn.id,vpn.to_user, vpn.notify_body, vpn.is_read, vpn.created_at, vpn.from_user,
+        vpn.notify_type, vpn.template_id, vpn.node_id, vpn.space_id,vpn.updated_at,rowNo
+        FROM ${tablePrefix}player_notification vpn
+        INNER JOIN (
+        (
+        SELECT id, (@rowNum:=@rowNum-1) as rowNo
+        FROM ${tablePrefix}player_notification vp, (SELECT (@rowNum :=#{totalCount}) ) b
+        WHERE vp.to_user = #{toUser}
+        AND vp.is_deleted = 0
+        <if test="notificationPageRo.isRead != null">
+            AND vp.is_read = #{notificationPageRo.isRead}
+        </if>
+        <if test="notificationPageRo.notifyType != null">
+            AND vp.notify_type = #{notificationPageRo.notifyType}
+        </if>
+        <choose>
+            <when test="notificationPageRo.isRead != null and notificationPageRo.isRead.equals(1)">
+                <trim prefix="ORDER BY">
+                    vp.updated_at desc, vp.id desc
+                </trim>
+            </when>
+            <otherwise>
+                <trim prefix="ORDER BY">
+                    vp.id desc
+                </trim>
+            </otherwise>
+        </choose>
+        )
+        ) vpn_join
+        ON vpn.id = vpn_join.id
+        where rowNo &lt; #{notificationPageRo.rowNo}
+        LIMIT #{notificationPageRo.pageSize}
+    </select>
+    <select id="selectTotalCountByRoAndToUser" resultType="integer">
+        SELECT count(*)
+        FROM ${tablePrefix}player_notification vpn
+        WHERE vpn.to_user = #{toUser}
+        AND vpn.is_deleted = 0
+        <if test="notificationPageRo.isRead != null">
+            AND vpn.is_read = #{notificationPageRo.isRead}
+        </if>
+        <if test="notificationPageRo.notifyType != null">
+            AND vpn.notify_type = #{notificationPageRo.notifyType}
+        </if>
+    </select>
+    <select id="selectCountByUserIdAndIsRead" resultType="integer">
+        SELECT count(*)
+        FROM ${tablePrefix}player_notification
+        WHERE to_user = #{toUser}
+        AND is_read = #{isRead}
+        AND is_deleted = 0
+    </select>
+    <select id="selectTotalCountByUserId" resultType="integer">
+        SELECT count(*)
+        FROM ${tablePrefix}player_notification
+        WHERE to_user = #{toUser}
+        AND is_deleted = 0
+    </select>
+    <select id="selectNotifyBodyById" resultType="string">
+        SELECT notify_body
+        FROM ${tablePrefix}player_notification
+        WHERE id = #{id}
+        AND is_deleted = 0
+    </select>
+    <select id="selectDtoByTypeAndIsRead" resultType="com.apitable.player.dto.NotificationModelDTO">
+        SELECT vpn.id,vpn.to_user, vpn.notify_body, vpn.is_read, vpn.created_at, vpn.from_user,
+        vpn.notify_type, vpn.template_id, vpn.node_id, vpn.space_id,vpn.updated_at
+        FROM ${tablePrefix}player_notification vpn
+        WHERE vpn.to_user = #{toUser}
+        AND vpn.is_read = #{isRead}
+        AND vpn.is_deleted = 0
+        ORDER BY vpn.created_at desc
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}player_notification(id,space_id,to_user,from_user,node_id,template_id,notify_type,notify_body)
+        VALUES
+        <foreach item="item" index="index" collection="notificationEntities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.toUser},#{item.fromUser},#{item.nodeId},#{item.templateId},#{item.notifyType},#{item.notifyBody}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateReadIsTrueByIds">
+        UPDATE ${tablePrefix}player_notification
+        SET is_read = 1
+        WHERE id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0;
+    </update>
+    <update id="updateReadIsTrueByUserId">
+        UPDATE ${tablePrefix}player_notification
+        SET is_read = 1
+        where to_user = #{toUser}
+        AND is_deleted = 0
+        AND template_id != 'space_join_apply';
+    </update>
+    <update id="deleteNotificationByIds">
+        UPDATE ${tablePrefix}player_notification
+        SET is_deleted = 1
+        WHERE id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0;
+    </update>
+    <update id="updateNotifyBodyById">
+        UPDATE ${tablePrefix}player_notification
+        SET notify_body = #{body}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateNotifyBodyByIdAndKey">
+        UPDATE ${tablePrefix}player_notification
+        SET notify_body = JSON_REPLACE(notify_body, CONCAT('$.', #{key}), #{val})
+        WHERE id = #{id}
+        AND JSON_EXTRACT(notify_body, CONCAT('$.', #{key})) = 0
+    </update>
+
+    <update id="updateBatchByUserIdsAndTemplateId">
+        UPDATE ${tablePrefix}player_notification
+        <set>
+            <if test="revokeRo != null and revokeRo.revokeType == 1">
+                is_read =1,
+            </if>
+            <if test="revokeRo != null and revokeRo.revokeType == 2">
+                is_deleted = 1
+            </if>
+        </set>
+        WHERE to_user in
+        <foreach collection="userIds" item="item" index="index" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND notify_type = #{notifyType}
+        AND template_id = #{templateId}
+        AND is_deleted = 0
+        <if test="revokeRo != null and revokeRo.revokeType == 1">
+            AND is_read = 0
+        </if>
+        <if test="revokeRo != null and revokeRo.version != null and revokeRo.version != ''">
+            AND notify_body->'$.extras.version' = #{revokeRo.version}
+        </if>
+        <if test="revokeRo != null and revokeRo.expireAt != null and revokeRo.expireAt != ''">
+            AND notify_body->'$.extras.expireAt' = #{revokeRo.expireAt}
+        </if>
+    </update>
+</mapper>

@@ -1,0 +1,9 @@
+{
+    "baseUrl": "https://integration.vika.ltd/",
+    "viewportWidth": 1920,
+    "viewportHeight": 920,
+    "projectId": "efk8au",
+    "env": {
+      "pipeline": 0
+    }
+  }

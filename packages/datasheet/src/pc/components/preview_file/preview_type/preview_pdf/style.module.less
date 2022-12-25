@@ -1,0 +1,92 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.pdf {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  & > div {
+    overflow: auto;
+
+    :global {
+      .annotationLayer {
+        display: none;
+      }
+    }
+  }
+
+  * {
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  &:hover {
+    & + .pagination {
+      display: flex;
+    }
+  }
+}
+
+.loading {
+  font-size: 20px;
+  color: var(--defaultBg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination {
+  position: absolute;
+  display: none;
+  bottom: 26px;
+  background: var(--defaultBg);
+  opacity: 1;
+  transition: opacity ease-in-out 0.2s;
+  box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
+  border-radius: 4px;
+
+  &:hover {
+    display: flex;
+  }
+
+  p {
+    width: 100px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  button {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .pageLeft {
+    width: 100px;
+    height: 44px;
+    background: var(--defaultBg);
+    border: 0;
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .pageRight {
+    width: 100px;
+    height: 44px;
+    background: var(--defaultBg);
+    border: 0;
+    border-radius: 4px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}

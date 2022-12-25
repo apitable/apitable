@@ -1,0 +1,126 @@
+import { TextInput } from './index';
+import { Canvas, ArgsTable } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+import { PhonenumberFilled } from '@apitable/icons';
+
+<Meta title="表单组件/TextInput 文本输入框/文档" />
+
+# TextInput 文本输入框
+
+文本类输入框。输入组件中，最基础的组件。更多的类型参见：https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input
+
+html 的 input 分为很多 type。日期，色彩等高级类型是单独的输入组件，这个组件只实现文本类型输入。涵盖原生 input 的如下类型：
+
+- text
+- email
+- url
+- tel
+- password
+- number
+- search
+
+## 使用方式
+
+```jsx
+import { TextInput } from '@apitable/components';
+```
+
+## 常用
+
+<Canvas>
+<ThemeToggle>
+  <TextInput placeholder="请输入内容" />
+  <TextInput
+    lineStyle
+    placeholder="请输入内容"
+  />
+</ThemeToggle>
+</Canvas>
+
+## 占据整行
+
+<Canvas>
+<ThemeToggle>
+  <TextInput
+    block
+    placeholder="请输入内容"
+  />
+</ThemeToggle>
+</Canvas>
+
+## 大小
+
+<Canvas>
+<ThemeToggle>
+  <TextInput
+    placeholder="请输入内容"
+    size="small"
+  />
+  <TextInput placeholder="请输入内容" />
+  <TextInput
+    placeholder="请输入内容"
+    size="large"
+  />
+</ThemeToggle>
+</Canvas>
+
+## 前缀后缀
+
+<Canvas>
+<ThemeToggle>
+  <TextInput
+    placeholder="请输入内容"
+    prefix={<PhonenumberFilled />}
+  />
+  <TextInput
+    placeholder="请输入内容"
+    suffix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 错误状态
+
+<Canvas>
+<ThemeToggle>
+  <TextInput
+    error
+    placeholder="请输入内容"
+    prefix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 禁用模式
+
+<Canvas>
+<ThemeToggle>
+  <TextInput
+    disabled
+    placeholder="请输入内容"
+    prefix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 前置/后置标签
+
+<Canvas>
+<ThemeToggle>
+  <TextInput
+    addonBefore={<div>http://</div>}
+    placeholder="请输入内容"
+    prefix={<PhonenumberFilled />}
+  />
+  <TextInput
+    addonAfter={<div>.com</div>}
+    placeholder="请输入内容"
+    prefix={<PhonenumberFilled />}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={TextInput} />
+

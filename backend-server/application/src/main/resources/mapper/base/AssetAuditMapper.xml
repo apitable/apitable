@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.asset.mapper.AssetAuditMapper">
+
+    <select id="getArtificialAssetsAuditList" resultType="com.apitable.asset.vo.AssetsAuditVo">
+        SELECT asset_id,
+               asset_file_url,
+               asset_checksum,
+               audit_result_score,
+               audit_result_suggestion,
+               audit_scenes,
+               auditor_openid,
+               auditor_name,
+               is_audited
+        FROM ${tablePrefix}asset_audit
+        WHERE audit_result_suggestion = 'review' and audit_scenes = 'pulp' and is_audited = 0
+    </select>
+
+    <update id="updateByAssetId">
+        update ${tablePrefix}asset_audit
+        set is_audited              = 1,
+            audit_result_suggestion = #{auditResultSuggestion},
+            auditor_name            = #{auditorName},
+            auditor_openid          = #{auditorUserId}
+        where asset_file_url = #{assetFileUrl}
+    </update>
+</mapper>

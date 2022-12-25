@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.template.mapper.TemplatePropertyMapper">
+    <select id="selectPropertyNameByPropertyCodeIn" resultType="java.lang.String">
+        SELECT property_name
+        FROM ${tablePrefix}template_property
+                WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectTemplatePropertiesWithI18n"
+            resultType="com.apitable.template.model.TemplatePropertyDto">
+        SELECT id as property_id, property_name, property_code, property_type, i18n_name
+        FROM ${tablePrefix}template_property vtp
+        WHERE i18n_name = #{lang}
+          and is_deleted = 0
+    </select>
+
+    <select id="selectTemplatePropertiesWithLangAndOrder"
+            resultType="com.apitable.template.model.TemplatePropertyDto">
+        SELECT vtp.id as property_id, vtp.property_name, vtp.property_code,
+        vtp.property_type
+        FROM ${tablePrefix}template_property vtp
+        LEFT JOIN ${tablePrefix}template_property_rel vtpr ON vtp.property_code = vtpr.property_code
+        WHERE vtp.is_deleted = 0
+        AND vtp.i18n_name = #{lang}
+        <if test="type != null">
+            AND vtp.property_type = #{type}
+        </if>
+        GROUP BY vtp.property_code, vtpr.property_order
+        ORDER BY vtpr.property_order ASC
+    </select>
+
+    <select id="selectAllTemplatePropertyDto"
+            resultType="com.apitable.template.model.TemplatePropertyDto">
+        SELECT id AS property_id, property_type, property_code, property_name, i18n_name
+        FROM ${tablePrefix}template_property
+        WHERE is_deleted = 0
+    </select>
+
+    <update id="updateUpdatedByByPropertyCodes">
+        UPDATE ${tablePrefix}template_property
+        SET updated_by = #{updatedBy}
+                WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="removeByPropertyCodes">
+        UPDATE ${tablePrefix}template_property
+        SET is_deleted = 1,
+            updated_by = #{updatedBy}
+                WHERE property_code IN
+        <foreach item="item" index="index" collection="propertyCodes" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}template_property(id, property_name, property_code,
+        property_type, i18n_name, created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.propertyName},#{item.propertyCode},#{item.propertyType},
+                #{item.i18nName}, #{item.createdBy},#{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <delete id="deleteBatchByIds">
+        UPDATE ${tablePrefix}template_property SET is_deleted = 1, updated_by = #{updatedBy}
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectIdByCodeAndType" resultType="java.lang.Long">
+        SELECT id
+        from ${tablePrefix}template_property
+        WHERE property_code = #{code}
+          AND property_type = #{type}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectPropertiesByTemplateIdsAndType"
+            resultType="com.apitable.template.model.TemplatePropertyRelDto">
+        SELECT vtp.id as property_id, vtp.property_name, vtp.property_code,
+        vtp.property_type, vtpr.template_id
+        FROM ${tablePrefix}template_property vtp
+        LEFT JOIN ${tablePrefix}template_property_rel vtpr ON vtp.property_code = vtpr.property_code
+        WHERE vtpr.template_id IN
+        <foreach item="item" index="index" collection="templateIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vtp.property_type = #{type}
+        AND vtp.is_deleted = 0
+        ORDER BY vtpr.property_order ASC
+    </select>
+
+    <select id="selectTemplateByPropertyNameAndLang"
+            resultType="com.apitable.template.model.TemplateKeyWordSearchDto">
+        SELECT vt.template_id,
+               vt.name                               AS template_name,
+               vtp.property_name,
+               vtp.property_code,
+               vtp.property_type,
+               locate(#{keyWord}, vt.name)           as name_index,
+               locate(#{keyWord}, vtp.property_name) as property_name_index
+        FROM ${tablePrefix}template_property_rel vtpr
+                 LEFT JOIN ${tablePrefix}template_property vtp ON vtpr.property_code = vtp.property_code
+                 LEFT JOIN ${tablePrefix}template vt on vtpr.template_id = vt.template_id
+        WHERE vtp.is_deleted = 0
+          AND vtp.i18n_name = #{lang}
+          AND (vt.name LIKE CONCAT('%', #{keyWord}, '%')
+            OR (vtp.property_type = 1 AND
+                (vtp.property_name LIKE CONCAT('%', #{keyWord}, '%'))))
+    </select>
+
+    <delete id="deleteBatch">
+        DELETE
+        FROM ${tablePrefix}template_property;
+    </delete>
+
+    <select id="countByI18n" resultType="java.lang.Integer">
+        select count(*)
+        from ${tablePrefix}template_property
+        where i18n_name = #{lang}
+          and is_deleted = 0;
+    </select>
+</mapper>

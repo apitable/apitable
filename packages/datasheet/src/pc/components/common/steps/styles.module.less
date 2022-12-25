@@ -1,0 +1,60 @@
+@import "~pc/styles/lib_var.less";
+
+.steps {
+  display: flex;
+  margin-top: 60px;
+  .stepItem {
+    position: relative;
+    width: 120px;
+    color: var(--textCommonTertiary);
+    &:not(:last-child):before {
+      content: "";
+      position: absolute;
+      width: 96px;
+      height: 4px;
+      margin: 0 12px;
+      left: 60px;
+      top: -2px;
+      background: var(--bgControlsDefault);
+    }
+    .stepItemIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: -12px 0 0 48px;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      border: 2px solid var(--bgControlsDefault);
+      border-radius: 50%;
+      background: var(--bgControlsDefault);
+      line-height: 24px;
+      cursor: pointer;
+    }
+    .stepItemContent {
+      margin-top: 9px;
+      text-align: center;
+      color: var(--textCommonTertiary);
+    }
+  }
+  .stepItemActive {
+    .stepItemIcon {
+      background: var(--primaryColor);
+      color: var(--staticWhite0);
+      border-width: 0;
+    }
+    .stepItemContent {
+      color: var(--textCommonTertiary);
+    }
+  }
+  .stepItemFinish {
+    &:not(:last-child):before {
+      background: var(--primaryColor);
+    }
+    .stepItemIcon {
+      background: var(--primaryColor);
+      border-width: 0;
+    }
+  }
+}

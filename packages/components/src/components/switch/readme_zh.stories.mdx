@@ -1,0 +1,65 @@
+import { Switch } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="表单组件/Switch 开关/文档" />
+
+# Switch 开关 
+
+开关是用于切换两种互斥状态的交互形式。
+
+## 使用方式
+
+```jsx
+import { Switch } from '@apitable/components';
+```
+
+## 大小
+
+<Canvas>
+<ThemeToggle>
+  <Switch size="small" />
+  <Switch />
+  <Switch size="large" />
+</ThemeToggle>
+</Canvas>
+
+## 默认选中
+
+<Canvas>
+<ThemeToggle>
+  <Switch defaultChecked />
+</ThemeToggle>
+</Canvas>
+
+## 禁用
+
+### 不可操作
+
+<Canvas>
+<ThemeToggle>
+  <Switch disabled />
+  <Switch disabled defaultChecked />
+</ThemeToggle>
+</Canvas>
+
+### 加载时不可操作
+
+<Canvas>
+<ThemeToggle>
+  <Switch loading />
+  <Switch loading defaultChecked />
+</ThemeToggle>
+</Canvas>
+
+## 切换开关
+
+<Canvas>
+<ThemeToggle>
+  <Story id="表单组件-switch-开关--change-status" />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={Switch} />

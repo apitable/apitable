@@ -1,0 +1,97 @@
+@import "~pc/styles/lib_var.less";
+
+.operationCard {
+  position: relative;
+  width: 100%;
+  background: var(--defaultBg);
+  padding: 24px 40px;
+  border-radius: 16px;
+  margin-top: 24px;
+
+  &.compact {
+    padding: 0;
+    background: transparent;
+    width: 200px;
+    margin: 24px auto 0;
+    display: none;
+    position: absolute;
+    bottom: 24px;
+  }
+
+  .closeBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    svg {
+      color: var(--fc3);
+    }
+  }
+
+  .paint {
+    width: 74px;
+    height: 74px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .saveDesc {
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .button {
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+@keyframes looseAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.2);
+    height: 0;
+  }
+}
+
+@keyframes compactAnimation {
+  0% {
+    opacity: 0.5;
+    transform: translateY(100px);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toggleAnimation {
+  display: flex;
+  justify-content: center;
+
+  .loose {
+    transform-origin: center bottom;
+    opacity: 1;
+    display: block;
+    animation: looseAnimation 0.3s ease-out forwards;
+  }
+
+  .compact {
+    display: block;
+    opacity: 0;
+    animation: compactAnimation 0.4s ease-in-out 0.2s forwards;
+  }
+}
