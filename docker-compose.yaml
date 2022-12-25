@@ -1,7 +1,8 @@
+version: '2.4'
+
 services:
   web-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_WEB_SERVER}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     expose:
       - 8080
@@ -15,7 +16,6 @@ services:
 
   imageproxy-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_IMAGEPROXY_SERVER}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     expose:
       - "8080"
@@ -27,7 +27,6 @@ services:
 
   backend-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_BACKEND_SERVER}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     ports:
       - "8081:8081"
@@ -54,7 +53,6 @@ services:
 
   room-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_ROOM_SERVER}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     #ports:
     #  - 3333:3333
@@ -77,7 +75,6 @@ services:
 
   scheduler-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_ROOM_SERVER}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     #ports:
     #  - 3333:3333
@@ -103,7 +100,6 @@ services:
 
   socket-server:
     image: ${IMAGE_REGISTRY}/${IMAGE_SOCKET_SERVER}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     #    ports:
     #      - 3001:3001
@@ -131,7 +127,6 @@ services:
   ### Third Party Dockers
   gateway:
     image: ${IMAGE_GATEWAY}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     ports:
       - ${NGINX_HTTP_PORT:-80}:80
@@ -153,7 +148,6 @@ services:
 
   minio:
     image: ${IMAGE_MINIO}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     user: "${UID}:${GID}"
     command: server /data
@@ -178,7 +172,6 @@ services:
 
   redis:
     image: ${IMAGE_REDIS}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     user: "${UID}:${GID}"
     command:
@@ -202,7 +195,6 @@ services:
 
   mysql:
     image: ${IMAGE_MYSQL}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     user: "${UID}:${GID}"
     volumes:
@@ -230,7 +222,6 @@ services:
 
   rabbitmq:
     image: ${IMAGE_RABBITMQ}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     restart: always
     user: "${UID}:${GID}"
     volumes:
@@ -254,7 +245,6 @@ services:
   # #### init data
   init-db:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     environment:
       - TZ=${TIMEZONE}
       - DB_HOST=${MYSQL_HOST}
@@ -272,7 +262,6 @@ services:
 
   init-data-mysql:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MYSQL}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     environment:
       - TZ=${TIMEZONE}
       - MYSQL_HOST=${MYSQL_HOST}
@@ -288,7 +277,7 @@ services:
       mysql:
         condition: service_healthy
       init-db:
-        condition: service_completed_successfully
+        condition: service_healthy
     command:
       - /bin/bash
       - -c
@@ -297,7 +286,6 @@ services:
 
   init-data-minio:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DATA_MINIO}
-    pull_policy: ${IMAGE_POLL_POLICY:-missing}
     environment:
       - TZ=${TIMEZONE}
     env_file:
