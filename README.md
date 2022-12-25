@@ -225,7 +225,7 @@ If you computer has installed Docker Machine, open your terminal and run this:
 curl https://apitable.github.io/install.sh | bash
 ```
 
-Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
+Then open [https://localhost:80](https://localhost:80) in your browser to visit it. (default username `admin@apitable.com` and password `Apitable2022`)
 
 If you want to set up your local development environment, read our [Developer Guide](./docs/contribute/developer-guide.md)
 
