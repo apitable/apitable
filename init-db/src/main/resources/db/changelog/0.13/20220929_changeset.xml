@@ -1,0 +1,69 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220929-001" author="Chambers" labels="template">
+        <comment>create template album table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}template_album`
+            (
+                `id`          bigint unsigned NOT NULL COMMENT 'Primary Key',
+                `album_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT 'Template Album Custom ID',
+                `i18n_name`   varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL DEFAULT 'en_US' COMMENT 'I18n Key Name',
+                `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Template Album Name',
+                `cover`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT 'Template Album Cover Token(The Relative Path of Asset)',
+                `description` varchar(511) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Template Album Description',
+                `content`     json                                                          NOT NULL DEFAULT ('{}') COMMENT 'Template Album Content',
+                `author_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci           DEFAULT NULL COMMENT 'Author Name',
+                `author_logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT 'Author Logo Token(The Relative Path of Asset)',
+                `author_desc` varchar(511) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci          DEFAULT NULL COMMENT 'Author Description',
+                `is_deleted`  tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Marker(0: no, 1: yes)',
+                `created_by`  bigint                                                                 DEFAULT NULL COMMENT 'Creator User ID',
+                `updated_by`  bigint                                                                 DEFAULT NULL COMMENT 'Last Modified User ID',
+                `created_at`  timestamp                                                     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Time',
+                `updated_at`  timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modified Time',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `uk_album_id` (`album_id`) USING BTREE,
+                KEY           `idx_album_name` (`name`(30)) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Template Center - Template Album Table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220929-002" author="Chambers" labels="template">
+        <comment>create template album rel table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}template_album_rel`
+            (
+                `id`         bigint unsigned NOT NULL COMMENT 'Primary Key',
+                `album_id`   varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Template Album Custom ID',
+                `type`       tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'Relate Type(0: template category, 1: template, 2: template tag)',
+                `relate_id`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Relate Object Custom ID(0: category_code, 1: template_id, 2: tag_code)',
+                `created_at` timestamp                                                    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Time',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY          `idx_album_id` (`album_id`) USING BTREE,
+                KEY          `idx_relate_id` (`relate_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Template Center - Template Album Relation Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

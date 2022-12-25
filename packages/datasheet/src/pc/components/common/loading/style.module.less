@@ -1,0 +1,23 @@
+@import "~pc/styles/lib_var.less";
+
+.loading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--highBg);
+
+  :global {
+    .ant-spin-text {
+      color: var(--secondLevelText);
+      font-size: 15px;
+      font-weight: normal;
+      height: 20px;
+      line-height: 20px;
+    }
+  }
+}

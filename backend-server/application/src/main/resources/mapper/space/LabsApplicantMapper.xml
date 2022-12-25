@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.space.mapper.LabsApplicantMapper">
+
+    <select id="selectUserFeaturesByApplicant" resultType="java.lang.String">
+        SELECT feature_key FROM ${tablePrefix}labs_applicant vla
+        WHERE vla.applicant IN
+        <foreach collection="applicants" index="index" item="item" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vla.is_deleted = 0
+    </select>
+
+    <select id="selectFeatureKeyByType" resultType="java.lang.String">
+        SELECT feature_key
+        FROM ${tablePrefix}labs_features
+        WHERE type = #{type} AND is_deleted = 0
+    </select>
+
+    <select id="selectApplicantAndFeatureKey" resultType="com.apitable.space.entity.LabsApplicantEntity">
+        SELECT * FROM ${tablePrefix}labs_applicant vla WHERE
+        vla.applicant = #{applicant} AND
+        vla.feature_key = #{featureKey} AND
+        vla.is_deleted = 0
+    </select>
+
+    <update id="updateIsDeletedById">
+        UPDATE ${tablePrefix}labs_applicant vla SET vla.is_deleted = #{isDeleted}
+        WHERE vla.id = #{id}
+    </update>
+</mapper>

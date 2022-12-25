@@ -1,0 +1,50 @@
+@import "~pc/styles/lib_var.less";
+
+.delSpaceModal {
+  .tip {
+    font-size: 15px;
+    font-weight: normal;
+    color: var(--firstLevelText);
+    margin-bottom: 20px;
+    margin-top: 2px;
+  }
+
+  .second {
+    color: var(--primaryColor);
+    font-size: 15px;
+  }
+
+  .codeBtnText {
+    color: var(--primaryColor)!important;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .codeBtnText:active {
+    opacity: 0.5;
+  }
+
+  .errText {
+    width: 330px;
+    font-size: 12px;
+    color: var(--errorColor);
+    margin-top: 8px;
+    height: 12px;
+    line-height: 12px;
+  }
+
+  .delBtn {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  :global {
+    .ant-modal-header {
+      padding: 24px;
+    }
+
+    .ant-modal-footer {
+      border-top: none;
+    }
+  }
+}

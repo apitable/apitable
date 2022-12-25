@@ -1,0 +1,124 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.headerIcon {
+  background: var(--defaultBg);
+  width: 70px;
+  height: 100%;
+  border-bottom: 1px solid var(--shadowColor);
+  padding-left: 28px;
+  border-left: 1px solid var(--shadowColor);
+  border-top: 1px solid var(--shadowColor);
+  border-top-left-radius: 8px;
+  cursor: pointer;
+  .displayFlex(center, flex-start);
+}
+
+.rowColumnIndex {
+  height: 31px;
+  width: 100%;
+  padding-right: 2px;
+  .displayFlex(center, space-around);
+
+  & > div {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .dragIcon,
+  .expandIcon {
+    cursor: pointer;
+  }
+
+  .iconCheckWrapper {
+    cursor: pointer;
+  }
+
+  .inner {
+    font-size: 12px;
+    width: 26px;
+    height: 20px;
+    cursor: pointer;
+    .displayFlex(center, center);
+  }
+}
+
+.commentCount {
+  position: relative;
+  width: 16px;
+  height: 16px;
+
+  svg,
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--teal_50);
+  }
+
+  span {
+    font-size: 12px;
+    color: var(--successColor);
+  }
+}
+
+.radioCheck {
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.checked {
+  .radioInner::after {
+    opacity: 1;
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--primaryColor);
+    border-radius: 50%;
+    content: "";
+  }
+}
+
+.radioInner {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: var(--defaultBg);
+  border: 1px solid #d9d9d9;
+  border-radius: 50%;
+  transition: all 0.3s;
+
+  &::after {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    display: table;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primaryColor);
+    border-top: 0;
+    border-left: 0;
+    border-radius: 8px;
+    opacity: 0;
+    content: " ";
+  }
+}

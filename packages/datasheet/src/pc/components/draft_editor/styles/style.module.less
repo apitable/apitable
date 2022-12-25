@@ -1,0 +1,113 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.slateEditor {
+  border-radius: 4px;
+  width: 100%;
+  word-break: normal;
+  word-wrap: break-word;
+  :global(.DraftEditor-root) {
+    height: 100%;
+  }
+}
+
+.seeMore {
+  text-align: center;
+  color: var(--secondLevelText);
+  font-size: 13px;
+  font-weight: normal;
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 30px;
+  box-shadow: var(--shadowCommonHighest);
+  background: var(--defaultBg);
+}
+
+.emojiWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  .emojiUser {
+    margin-right: 4px;
+    margin-bottom: 4px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.emojiUser {
+  display: flex;
+  align-items: center;
+  background-color: var(--fill0);
+  border-radius: 2px;
+  padding: 1px 8px;
+  font-size: 12px;
+  color: var(--fc3);
+  flex-basis: auto;
+  & > span {
+    padding-right: 4px;
+  }
+  .emojiToggle {
+    cursor: pointer;
+    display: flex;
+  }
+  .emojiCount {
+    padding-right: 0;
+    padding-left: 4px;
+    cursor: pointer;
+  }
+}
+
+.wrap {
+  display: inline-block;
+  font-size: 12px;
+  cursor: pointer;
+  margin: 0 4px;
+  line-height: 24px;
+  .mention, .link {
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    &[contentEditable="true"] {
+      user-select: none !important;
+    }
+  }
+}
+
+.link a {
+  user-select: text;
+  -webkit-user-drag: none;
+  color: var(--primaryColor);
+}
+
+.link a:hover{
+  text-decoration: underline;
+}
+
+.members {
+  bottom: -9999px;
+  left: -9999px;
+  position: absolute;
+  z-index: 1060;
+  background-color: var(--highestBg);
+  border-radius: 4px;
+  box-shadow: var(--shadowCommonHighest);
+  height: auto!important;
+  :global(.memberOptionList) {
+    height: calc(100% - 30px);
+    & > div {
+      box-shadow: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

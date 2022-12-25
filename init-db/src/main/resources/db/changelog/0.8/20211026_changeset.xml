@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20211026-001" author="HumphreyHu" labels="labs">
+        <comment>Labs Applicant Table add created_by field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}labs_applicant`
+            ADD COLUMN `created_by` varchar(100) NOT NULL COMMENT 'Application record creator' AFTER `is_deleted`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211026-002" author="HumphreyHu" labels="labs">
+        <comment>Labs Applicant Table add feature_scope field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}labs_features`
+            ADD COLUMN `feature_scope` tinyint(2) NOT NULL COMMENT 'Labs Features Category (user: user level, space: space level)' AFTER `feature_key`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211026-003" author="HumphreyHu" labels="labs">
+        <comment>Labs Applicant Table add is_delete field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}labs_features`
+            ADD COLUMN `is_deleted` tinyint(1) NOT NULL COMMENT 'Delete Tag(0: No, 1: Yes)' AFTER `url`
+        </sql>
+    </changeSet>
+</databaseChangeLog>

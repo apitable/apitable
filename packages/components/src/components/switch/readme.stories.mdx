@@ -1,0 +1,85 @@
+import { Switch } from './index';
+import { Canvas } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/Switch" />
+
+# Switch
+
+Switch is used to toggle two mutually exclusive states
+
+## Usage
+
+```jsx
+import { Switch } from '@apitable/components';
+```
+
+## Size
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Switch size="small" />
+  <Switch />
+  <Switch size="large" />
+</ThemeToggle>
+</Canvas>
+
+## Checked
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Switch defaultChecked />
+</ThemeToggle>
+</Canvas>
+
+## Disabled
+
+### Disable toggle
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Switch disabled />
+  <Switch disabled defaultChecked />
+</ThemeToggle>
+</Canvas>
+
+### Not operational while loading
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Switch loading />
+  <Switch loading defaultChecked />
+</ThemeToggle>
+</Canvas>
+
+## Switch callback
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Switch
+        onClick={(s) => {
+            alert(s);
+        }}
+    />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name              | Type                                     | Description | Default |
+|-------------------|------------------------------------------|-------------|---------|
+| className         | string                                   |             |         |
+| prefixCls         | string                                   |             |         |
+| disabled          | boolean                                  |             |         |
+| checkedChildren   | ReactNode                                |             |         |
+| unCheckedChildren | ReactNode                                |             |         |
+| onChange          | SwitchChangeEventHandler                 |             |         |
+| onKeyDown         | KeyboardEventHandler<HTMLButtonElement\> |             |         |
+| onClick           | SwitchChangeEventHandler                 |             |         |
+| checked           | boolean                                  |             |         |
+| defaultChecked    | boolean                                  |             |         |
+| loading           | boolean                                  |             |         |
+| loadingIcon       | ReactNode                                |             |         |
+| style             | CSSProperties                            |             |         |
+| title             | string                                   |             |         |
+| size              | default / small / large                  |             | default |

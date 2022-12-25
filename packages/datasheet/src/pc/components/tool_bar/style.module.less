@@ -1,0 +1,242 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.toolbar {
+  position: relative;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 13px;
+  color: var(--firstLevelText);
+  z-index: 0;
+
+  svg {
+    fill: currentColor;
+  }
+
+  .toolbarLeft,
+  .toolbarMiddle,
+  .toolbarRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .toolbarLeft {
+    margin-right: 16px;
+    padding-right: 16px;
+    position: relative;
+
+    button {
+      border-radius: 4px;
+    }
+
+    &:after {
+      position: absolute;
+      right: 0;
+      content: " ";
+      display: block;
+      height: 20px;
+      width: 1px;
+      background: var(--shadowColor);
+    }
+  }
+
+  .toolbarRight {
+    height: 100%;
+    flex: 1;
+    width: 0;
+    overflow: hidden;
+    padding: 0 8px;
+    input[type="text"] {
+      width: 100%;
+    }
+  }
+
+  .toolbarItem {
+    margin-right: 8px;
+    height: 30px;
+    padding: 4px;
+    font-size: 14px;
+    transition: all 0.1s;
+
+    &.mobileActive {
+      color: var(--primaryColor);
+    }
+
+    &.pcStyle {
+      color: var(--firstLevelText);
+
+      svg {
+        fill: var(--secondLevelText);
+      }
+    }
+
+    .noSelect();
+
+    .commonButton {
+      width: 100%;
+      height: 100%;
+    }
+
+    .filter,
+    .hide {
+      display: flex;
+      align-items: center;
+    }
+
+    .viewName {
+      max-width: 120px;
+      display: inline-block;
+      .ellipsis();
+    }
+
+    @media screen and (min-width: @w-md) {
+      // Increase the weight of activation
+      &.active {
+        border-radius: 4px;
+        color: var(--primaryColor);
+        background: rgba(127, 99, 231, 0.1);
+        padding: 4px;
+
+        svg {
+          fill: currentColor;
+        }
+      }
+
+      // Increase the weight of activation
+      &.apiActive {
+        color: var(--primaryColor);
+
+        svg {
+          fill: currentColor;
+        }
+      }
+    }
+
+    // Add non-editable weights
+    &:disabled {
+      svg {
+        fill: currentColor;
+      }
+    }
+
+    :global {
+      .btn-icon {
+        margin-right: 2px;
+      }
+    }
+  }
+}
+
+.toolbarOnlyIcon {
+  &:last-child {
+    & > div,
+    & > span {
+      margin-right: 0;
+    }
+  }
+  & > div,
+  & > span {
+    margin-right: 16px;
+  }
+
+  .onlyIcon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.onlyIcon {
+  & > span {
+    margin: 0;
+  }
+}
+
+.notice {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin-right: 35px;
+
+  .noticeNum {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    text-align: center;
+    border-radius: 6px;
+    background-color: var(--errorColor);
+    color: var(--defaultBg);
+    font-size: 9px;
+    font-weight: bold;
+    border: 1px solid;
+    top: -6px;
+    right: -6px;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.collapsePopup {
+  width: 241px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  background-color: var(--highBg);
+  box-shadow: 0px 2px 12px 0px rgba(38, 38, 38, 0.1);
+}
+
+.collapsePopupItem {
+  display: block;
+  width: 100%;
+
+  & > span {
+    display: block;
+    width: 100%;
+    button {
+      width: 100%;
+      height: 40px;
+      border-radius: 4px;
+      justify-content: flex-start;
+      font-size: 14px !important;
+    }
+  }
+}
+
+.viewArrow {
+  transition: all 0.3s;
+  transform: rotateZ(0deg);
+  &.viewArrowActive {
+    transform: rotateZ(-180deg);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .toolbar {
+    width: calc(100% - 104px);
+    overflow: auto;
+
+    .toolbarMiddle {
+      width: 100%;
+    }
+
+    .toolbarItem {
+      flex-shrink: 0;
+
+      // Increase the weight of activation
+      &.active {
+        border-radius: 4px;
+        color: var(--primaryColor) !important;
+        padding: 4px;
+
+        svg {
+          fill: currentColor;
+        }
+      }
+    }
+  }
+}

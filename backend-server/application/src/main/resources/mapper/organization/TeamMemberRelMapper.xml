@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.organization.mapper.TeamMemberRelMapper">
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}unit_team_member_rel(id, team_id, member_id)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.teamId}, #{item.memberId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectTeamIdsByMemberId" resultType="java.lang.Long">
+        SELECT vod.id
+        FROM ${tablePrefix}unit_team_member_rel vodmr,
+             ${tablePrefix}unit_team vod
+        WHERE vod.id = vodmr.team_id
+          AND vod.is_deleted = 0
+          AND vodmr.member_id = #{memberId}
+    </select>
+
+    <select id="countByTeamId" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT vom.id)
+        FROM ${tablePrefix}unit_team_member_rel vodmr
+        JOIN ${tablePrefix}unit_member vom ON vodmr.member_id = vom.id AND vom.is_deleted = 0
+        WHERE vodmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteByTeamId">
+        DELETE
+        FROM ${tablePrefix}unit_team_member_rel
+        WHERE team_id = #{teamId}
+    </delete>
+
+    <delete id="deleteByMemberId">
+        DELETE vodmr FROM ${tablePrefix}unit_team_member_rel vodmr
+        WHERE vodmr.member_id in
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByTeamIdsAndMemberId">
+        <if test="teamIds != null and teamIds.size() != 0">
+            DELETE vodmr FROM ${tablePrefix}unit_team_member_rel vodmr
+            WHERE vodmr.member_id = #{memberId} AND vodmr.team_id IN
+            <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
+    <delete id="deleteBatchMemberByTeams">
+        DELETE vodmr FROM ${tablePrefix}unit_team_member_rel vodmr
+        WHERE vodmr.team_id = #{teamId} AND vodmr.member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectCountByMemberIdsAndTeamId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_team_member_rel
+        WHERE team_id = #{teamId} AND member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectByMemberIds"
+            resultType="com.apitable.organization.entity.TeamMemberRelEntity">
+        SELECT voutmr.*
+        FROM ${tablePrefix}unit_team_member_rel voutmr
+        JOIN ${tablePrefix}unit_team vout ON voutmr.team_id = vout.id AND vout.is_deleted = 0
+        WHERE voutmr.member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByTeamIds" resultType="com.apitable.organization.entity.TeamMemberRelEntity">
+        SELECT vodmr.*
+        FROM ${tablePrefix}unit_team_member_rel vodmr
+        JOIN ${tablePrefix}unit_team vout ON vodmr.team_id = vout.id AND vout.is_deleted = 0
+        WHERE vodmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberIdsByTeamId" resultType="java.lang.Long">
+        SELECT voutmr.member_id
+        FROM ${tablePrefix}unit_team_member_rel voutmr
+        WHERE voutmr.team_id = #{teamId}
+    </select>
+
+    <select id="selectMemberIdsByTeamIds" resultType="java.lang.Long">
+        SELECT voutmr.member_id
+        FROM ${tablePrefix}unit_team_member_rel voutmr
+        JOIN ${tablePrefix}unit_team vut ON voutmr.team_id = vut.id AND vut.is_deleted = 0
+        JOIN ${tablePrefix}unit_member vum ON vum.id = voutmr.member_id AND vum.is_deleted = 0
+        WHERE voutmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectActiveMemberIdsByTeamIds" resultType="java.lang.Long">
+        SELECT voutmr.member_id
+        FROM ${tablePrefix}unit_team_member_rel voutmr
+        JOIN ${tablePrefix}unit_team vut ON voutmr.team_id = vut.id AND vut.is_deleted = 0
+        JOIN ${tablePrefix}unit_member vum ON vum.id = voutmr.member_id AND vum.is_deleted = 0 AND vum.is_active = 1
+        WHERE voutmr.team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectAllTeamIdByMemberId" resultType="java.lang.Long">
+        WITH RECURSIVE team_view (id,  parent_id, lvl) AS
+        (
+            SELECT vut.id,  vut.parent_id,0 lvl
+            FROM ${tablePrefix}unit_team vut
+            WHERE vut.is_deleted = 0 AND vut.id IN (
+                SELECT vutmr.team_id
+                FROM ${tablePrefix}unit_team_member_rel vutmr
+                WHERE vutmr.member_id = #{memberId}
+            )
+            UNION ALL
+            SELECT t.id, t.parent_id, tv.lvl + 1
+            FROM team_view tv
+            JOIN ${tablePrefix}unit_team t ON tv.parent_id = t.id AND t.is_deleted = 0
+        )
+        SELECT DISTINCT id FROM team_view ORDER BY lvl DESC;
+    </select>
+
+    <select id="selectTeamIdAndMemberIds" resultType="java.lang.Long">
+        SELECT voutmr.id
+        FROM ${tablePrefix}unit_team_member_rel voutmr
+        WHERE team_id = #{teamId} AND member_id IN
+        <foreach collection="memberIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMemberIdsByRootTeamId" resultType="java.lang.Long">
+        SELECT tm.member_id
+        FROM ${tablePrefix}unit_team_member_rel tm
+        LEFT JOIN ${tablePrefix}unit_team_member_rel tm1 ON tm1.member_id = tm.member_id
+        LEFT JOIN ${tablePrefix}unit_team t ON t.id = tm1.team_id AND t.is_deleted = 0
+        WHERE tm.team_id = #{rootTeamId}
+        GROUP BY tm.member_id
+        HAVING COUNT(tm1.id) <![CDATA[<]]> 2
+    </select>
+
+    <delete id="deleteByTeamIds">
+        DELETE FROM ${tablePrefix}unit_team_member_rel
+        WHERE team_id IN
+        <foreach collection="teamIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

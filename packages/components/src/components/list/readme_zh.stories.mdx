@@ -1,0 +1,158 @@
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { StoryType } from '../../stories/constants';
+import { List } from './index';
+import { ListItem } from './item';
+import { TextButton } from '../text_button';
+import { Box } from '../box';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title={`${StoryType.BaseComponent}/List 列表/文档`} />
+
+# List 列表
+
+基础的列表展示，可承载一组连续的文本或者图文集合。
+
+## 使用方式
+
+```jsx
+import { List } from '@apitable/components';
+```
+
+## 默认展示
+
+<Canvas>
+<ThemeToggle>
+  <List
+    data={[
+      '列表 1',
+      '列表 2',
+      '列表 3',
+      '列表 4',
+      '列表 5'
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 带边框
+
+设置 `bordered=true` 设置边框
+
+<Canvas>
+<ThemeToggle>
+  <List
+    bordered
+    data={[
+      '列表 1',
+      '列表 2',
+      '列表 3',
+      '列表 4',
+      '列表 5'
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 带头部、底部样式
+
+设置 `header`、`footer` 添加头部、尾部样式
+
+<Canvas>
+<ThemeToggle>
+  <List
+    bordered
+    data={[
+      '列表 1',
+      '列表 2',
+      '列表 3',
+      '列表 4',
+      '列表 5'
+    ]}
+    footer={<div>尾部</div>}
+    header={<div>头部</div>}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 添加子元素操作
+
+通过 `data` 属性设置 `actions` 字段给列表子元素添加操作
+
+<Canvas>
+<ThemeToggle>
+  <List
+    bordered
+    data={[
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">编辑</TextButton>,
+          <TextButton color="danger" size="x-small">删除</TextButton>
+        ],
+        children: '列表 1'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">编辑</TextButton>,
+          <TextButton color="danger" size="x-small">删除</TextButton>
+        ],
+        children: '列表 2'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">编辑</TextButton>,
+          <TextButton color="danger" size="x-small">删除</TextButton>
+        ],
+        children: '列表 3'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">编辑</TextButton>,
+          <TextButton color="danger" size="x-small">删除</TextButton>
+        ],
+        children: '列表 4'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">编辑</TextButton>,
+          <TextButton color="danger" size="x-small">删除</TextButton>
+        ],
+        children: '列表 5'
+      }
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## 自定义列表子元素
+
+通过 `renderItem` 属性修改列表子元素的 UI 样式，比如 `renderItem` 返回 `Box` 组件渲染的 UI：
+
+<Canvas>
+<ThemeToggle>
+  <List
+    data={new Array(5).fill(null).map((_, index) => `列表 ${index + 1}`)}
+    bordered
+    renderItem={(item, index) => (
+      <Box
+        key={index}
+        padding={3}
+        bg="#7B67EE"
+        color="#fff"
+        borderBottom="1px dashed #fff"
+      >
+        {item}
+      </Box>
+    )}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+### IListProps
+
+<ArgsTable of={List} />
+
+### IListItemProps
+
+<ArgsTable of={ListItem} />

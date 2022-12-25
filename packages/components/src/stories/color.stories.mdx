@@ -1,0 +1,323 @@
+import { purple, deepPurple, black, blue, blackBlue, indigo, green, red, yellow, orange, tangerine, pink, brown, teal } from '../colors';
+import {
+  fc0, fc1, fc2, fc3, fc4, fc5, fc6, fc7, fc8, fc9,
+  fc10, fc11, fc13, fc14, fc15, fc16
+} from '../colors/light';
+import { getActionColor, getContrastText, convertHexToRGB } from '../helper/color_helper';
+import { Button } from '../components/button';
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { StoryType } from './constants';
+
+<Meta title="en/components/Color" />
+
+<style>{`
+  .neutral-color {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .neutral-color .normal-color {
+    width: 20%;
+    margin-bottom: 12px;
+  }
+  .normal-color {
+    text-align: center;
+    width: 100px;
+  }
+  .fc-color {
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .bg {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: auto;
+    border: 1px solid #F0F0F6;
+  }
+  .tip-wrapper {
+    white-space: nowrap;
+  }
+  .tip {
+    display: inline-block;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 12px;
+    background: #F0F0F6;
+    padding: 4px;
+    margin-right: 4px;
+  }
+  .color {
+    margin-bottom: 12px;
+  }
+  .container .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    cursor: pointer;
+    transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+  }
+  .item:hover {
+    border-color: #1EA7FD50;
+    transform: translate3d(0, -3px, 0);
+    box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+  }
+  .item .default,
+  .item .hover,
+  .item .active {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 16px;
+  }
+  .item .default {
+    width: 50%;
+  }
+  .item .hover,
+  .item .active {
+    flex: 1;
+  }
+  .item .rgb {
+    font-size: 12px;
+  }
+`}</style>
+
+# Colors
+
+Colors are organized in the pattern of `hue` + `color weight`
+
++ hue
++ Shade to add shadows to existing colors to make them darker.
+
+## Usage
+
+```jsx
+import { purple, deepPurple, black } from '@apitable/components';
+```
+
+Taking `purple` as an example, the color palette divides purple into 11 regions, purple[50], purple[100], purple[200]... purple[1000], from light to dark.
+
+## Color object data structure
+
+Take the theme color system as an example, where `deepPurple[500]` is the theme color:
+
+```ts static
+export const deepPurple = {
+  50: '#EDEAFF',
+  100: '#DCD6FF',
+  200: '#CEC5FF',
+  300: '#A697FB',
+  400: '#8B7AF0',
+  500: '#7B67EE',
+  600: '#6653D1',
+  700: '#5342B4',
+  800: '#413297',
+  900: '#312479',
+  1000: '#160F3F',
+};
+
+```
+
+## Theme color
+
+<div className="normal-color">
+  <div className="bg" style={{ backgroundColor: fc0 }} />
+  <div className="fc-color">{fc0}</div>
+  <div>
+    <span className="tip">FC0</span>
+  </div>
+</div>
+
+## Common color
+
+<div className="neutral-color">
+  {[
+    { fc: fc1, text: 'black[1000]' },
+    { fc: fc2, text: 'black[700]' },
+    { fc: fc3, text: 'black[500]' },
+    { fc: fc4, text: 'black[300]' },
+    { fc: fc5, text: 'blackBlue[200]', desc: 'line color' },
+    { fc: fc6, text: 'black[100]', text: 'background color' },
+    { fc: fc7, text: 'blackBlue[100]', desc: 'row selection color' },
+    { fc: fc8, text: 'black[50]' },
+    { fc: fc9, text: 'deepPurple[100]', desc: 'cell selection color' },
+    { fc: fc10, text: 'red[500]', desc: 'wrong color' },
+    { fc: fc11, text: 'black[200]', desc: 'Projection, table line color' },
+    { fc: convertHexToRGB(black[1000], 0.5), fcPrimary: `${black[1000]} 50%`, text: 'black[1000] 50%', desc: 'mask color' },
+    { fc: fc13, text: 'black[900]', desc: 'bubble color' },
+    { fc: fc14, text: 'orange[500]', desc: 'warning color' },
+    { fc: fc15, text: 'teal[500]', desc: 'success color' },
+    { fc: fc16, text: 'deepPurple[50]', desc: 'directory tree list color' },
+  ].map(({ fc, fcPrimary, text, desc }) => (
+    <div key={fc} className="normal-color">
+      <div className="bg" style={{ backgroundColor: fc }} />
+      <div className="fc-color">{fcPrimary || fc}</div>
+      <div className="tip-wrapper">
+        <span className="tip">{text}</span>
+        {desc && <span className="tip">{desc}</span>}
+      </div>
+    </div>
+  ))}
+</div>
+
+## status color
+
+<div className="neutral-color">
+  {[
+    { fc: fc0, text: 'FC0', desc: 'DEFAULT' },
+    { fc: fc15, text: 'FC15', desc: 'SUCCESS' },
+    { fc: fc14, text: 'FC14', desc: 'WARN' },
+    { fc: fc10, text: 'FC10', desc: 'ERROR' },
+  ].map(({ fc, fcPrimary, text, desc }) => (
+    <div key={fc} className="normal-color">
+      <div className="bg" style={{ backgroundColor: fc }} />
+      <div className="fc-color">{fcPrimary || fc}</div>
+      <div className="tip-wrapper">
+        <span className="tip">{text}</span>
+        {desc && <span className="tip" style={{ backgroundColor: fc }}>{desc}</span>}
+      </div>
+    </div>
+  ))}
+</div>
+
+## Swatches
+
+<div>
+  {[
+    { colorMap: purple, text: 'purple', word: 'purple' },
+    { colorMap: deepPurple, text: 'deep purple', word: 'deepPurple' },
+    { colorMap: indigo, text: 'indigo', word: 'indigo' },
+    { colorMap: blue, text: 'blue', word: 'blue' },
+    { colorMap: teal, text: 'teal', word: 'teal' },
+    { colorMap: green, text: 'green', word: 'green' },
+    { colorMap: yellow, text: 'yellow', word: 'yellow' },
+    { colorMap: orange, text: 'orange', word: 'orange' },
+    { colorMap: tangerine, text: 'tangerine', word: 'tangerine' },
+    { colorMap: pink, text: 'pink', word: 'pink' },
+    { colorMap: red, text: 'red', word: 'red' },
+    { colorMap: brown, text: 'brown', word: 'brown' },
+    { colorMap: black, text: 'black', word: 'black' },
+    { colorMap: blackBlue, text: 'black blue', word: 'blackBlue' },
+  ].map(({ colorMap, text, word }, idx) => {
+    return (
+      <div key={idx} className="color">
+        <h4>{text}</h4>
+        <div className="container">
+          {Object.keys(colorMap).map(level => {
+            const color = colorMap[level];
+            const actionColor = getActionColor(color);
+            const textColor = getContrastText(color, 3)
+            return (
+              <div className="item" key={level} style={{ color: textColor }}>
+                <div className="default" style={{ backgroundColor: color }}>
+                  <span>{word}[{level}]</span>
+                  <div>
+                    <div>{color}</div>
+                    <div className="rgb">{convertHexToRGB(color)}</div>
+                  </div>
+                </div>
+                <div className="hover" style={{ backgroundColor: actionColor.hover }}>
+                  <span>Hover</span>
+                  <div>
+                    <div>{actionColor.hover}</div>
+                    <div className="rgb">{convertHexToRGB(actionColor.hover)}</div>
+                  </div>
+                </div>
+                <div className="active" style={{ backgroundColor: actionColor.active }}>
+                  <span>Active</span>
+                  <div>
+                    <div>{actionColor.active}</div>
+                    <div className="rgb">{convertHexToRGB(actionColor.active)}</div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  })}
+</div>
+
+## Color processing function
+
+### getActionColor
+
+```jsx
+import { getActionColor } from '@apitable/components';
+```
+
+Parse the colors in the palette to get the colors of the hover and active states. For example: `purple[400]` The result calculated by `getActionColor` is as follows:
+
+<Canvas>
+  {JSON.stringify(getActionColor(purple[400]), null, 2)}
+</Canvas>
+
+The effect of using `Button` is as follows:
+
+<Canvas>
+  <Button color={purple[400]}> Default color </Button>
+  <Button color={getActionColor(purple[400]).hover}> hover color </Button>
+  <Button color={getActionColor(purple[400]).active}> active color </Button>
+</Canvas>
+
+### getContrastText
+
+```jsx
+import { getContrastText } from '@apitable/components';
+```
+
+Based on the background color, the foreground text color is automatically generated. Make the overall effect visual experience more comfortable and friendly:
+
+- Light background with black font.
+- Dark backgrounds give white fonts.
+
+<Canvas>
+<div style={{
+  background: purple[100],
+  color: getContrastText(purple[100], 3),
+  padding: '6px 12px'
+}}>
+    purple 100
+</div>
+<div style={{
+  background: purple[600],
+  color: getContrastText(purple[600], 3),
+  padding: '6px 12px'
+}}>
+    purple 600
+</div>
+</Canvas>
+
+## convertHexToRGB
+
+```jsx
+import { convertHexToRGB } from '@apitable/components';
+```
+
+Supports converting color palettes and other colors from `HEX` format to `RGB`, and supports transparency configuration, compatible with the following usages:
+
+- `convertHexToRGB(purple[100])` => rgb(228, 197, 251)
+- `convertHexToRGB('#E4C5FB')` => rgb(228, 197, 251)
+- `convertHexToRGB('#E4C5FB', 0.5)` => rgb(228, 197, 251, 0.5)
+
+<Canvas>
+<div style={{ backgroundColor: convertHexToRGB(purple[100]), padding: '6px 12px' }}>
+  {convertHexToRGB(purple[100])}
+</div>
+<div style={{ backgroundColor: convertHexToRGB('#E4C5FB'), padding: '6px 12px' }}>
+  {convertHexToRGB('#E4C5FB')}
+</div>
+<div style={{ backgroundColor: convertHexToRGB(purple[100], 0.5), padding: '6px 12px' }}>
+  {convertHexToRGB(purple[100], 0.5)}
+</div>
+<div style={{ backgroundColor: convertHexToRGB('#E4C5FB', 0.5), padding: '6px 12px' }}>
+  {convertHexToRGB('#E4C5FB', 0.5)}
+</div>
+</Canvas>
+
+## Related
+
+- [Color in Design Systems](https://eightshapes.com/articles/color-in-design-systems)
+- [TinyColor JS Color Manipulation Detection Library](https://github.com/bgrins/TinyColor)

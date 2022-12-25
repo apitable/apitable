@@ -1,0 +1,35 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.linkInviteLogin {
+  .loginContent {
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+  }
+  .footer {
+    color: var(--thirdLevelText);
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .linkInviteLogin .loginContent {
+    width: calc(100% - 48px);
+  }
+}
+
+.mismatch {
+  h1 {
+    color: var(--firstLevelText);
+    line-height: 28px;
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 50px;
+    text-align: center;
+    max-width: 800px;
+    .highLightText {
+      color: var(--primaryColor);
+    }
+  }
+}

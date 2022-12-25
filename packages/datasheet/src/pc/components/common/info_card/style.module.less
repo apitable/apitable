@@ -1,0 +1,81 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.infoCard {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  line-height: normal;
+  cursor: pointer;
+  .defaultContent {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+  }
+  .avatar,
+  .teamLogo {
+    width: 34px;
+    overflow: hidden;
+    background-color: var(--primaryColor);
+    margin-right: 10px;
+  }
+  .avatar {
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+  }
+  .teamLogo {
+    border-radius: 4px;
+    font-size: 18px;
+    color: var(--defaultBg);
+    text-align: center;
+  }
+  :global(.highLight) {
+    color: var(--primaryColor) !important;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    justify-content: center;
+    width: calc(100% - 44px);
+    margin-left: 10px;
+    position: relative;
+    .title {
+      font-size: 14px;
+      color: var(--firstLevelText);
+    }
+    .title,
+    .description {
+
+      text-align: left;
+      .ellipsis();
+    
+      font-size: 11px;
+      color: var(--thirdLevelText);
+    }
+
+    .name {
+      display: flex;
+
+      .title {
+        display: inline-block;
+        padding-right: 4px;
+      }
+
+      .token {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.isLeave {
+  opacity: 0.5;
+}
+
+

@@ -1,0 +1,453 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.gridCellWrapper {
+  border-bottom: 1px solid var(--shadowColor);
+  border-right: 1px solid var(--shadowColor);
+  box-sizing: border-box;
+  background-color: var(--defaultBg);
+  line-height: 32px;
+  position: relative;
+  font-size: 13px !important;
+  // transition: top 0.2s ease-in-out 0.2s;
+
+  // if (isHovering) {
+  //   customStyle['zIndex'] = 12; // Ensure that the avatar and user name under the cell are not obscured > editorCell (z-index:11)
+  // } else {
+  //   customStyle['zIndex'] = 1; // Ensure that the outline of the cell is not obscured
+  // }
+  .hasCollaborator {
+    &:hover {
+      z-index: 12;
+    }
+
+    z-index: 1;
+  }
+
+  .willFilledCell {
+    background: var(--yellow_200);
+  }
+
+  .selected {
+    background: var(--cellSelectedColor);
+  }
+
+  .isDrag {
+    cursor: crosshair;
+  }
+
+  .gridCell {
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    color: var(--fc1);
+
+    .firstRecord {
+      bottom: -26px;
+      z-index: 1;
+    }
+
+    .otherRecord {
+      top: -26px;
+    }
+
+    &:hover {
+      .cellCollaboratorAvatars {
+        .cellCollaboratorAvatarsBase();
+        .otherRecord();
+
+        & > .avatar {
+          height: 28px;
+          padding-bottom: 4px;
+        }
+
+        .avatarTooltip {
+          top: -22px;
+        }
+      }
+
+      .cellCollaboratorAvatarsUnder {
+        .cellCollaboratorAvatarsBase();
+        .firstRecord();
+
+        & > .avatar {
+          height: 28px;
+          padding-top: 4px;
+        }
+
+        .avatarTooltip {
+          bottom: -22px;
+        }
+      }
+
+      .cellCollaboratorAvatarsBase {
+        display: flex;
+        position: absolute;
+        justify-content: flex-end;
+        right: 0;
+
+        & > .avatar {
+          margin-left: 4px;
+          display: flex;
+          justify-content: center;
+        }
+
+        .avatar:hover .avatarTooltip {
+          visibility: visible;
+        }
+
+        .avatarTooltip {
+          .ellipsis();
+          visibility: hidden;
+          position: absolute;
+          text-align: center;
+          // background: #ff6d8a;
+          color: var(--defaultBg);
+          max-width: 60px;
+          min-width: 31px;
+          height: 18px;
+          z-index: 22;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 1px;
+          padding: 2px 4px;
+
+          span {
+            font-size: 10px;
+            line-height: 14px;
+          }
+        }
+      }
+    }
+
+    .overtopLayer {
+      overflow: hidden;
+      width: 100%;
+      height: auto;
+      position: relative;
+
+      & > div {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &.activeCell {
+      z-index: 10;
+      min-height: 100%;
+      border-radius: 1px;
+      position: relative;
+      box-shadow: 0 0 0 2px var(--primaryColor);
+      background: var(--defaultBg);
+      max-height: 129px;
+      overflow: unset;
+      height: auto;
+    }
+  }
+
+  .cellNumber {
+    text-align: right;
+  }
+}
+
+.addRecordIcon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 28px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.firstHead {
+  display: flex;
+
+  // Compensate for the 1px gap to the right of the first column
+  .selected {
+    box-shadow: 1px 0px 0px var(--cellSelectedColor);
+  }
+
+  & > div {
+    overflow: hidden;
+    // border-bottom: none !important;
+  }
+}
+
+.editActiveLine {
+  background: var(--rowSelectedBg);
+}
+
+.select {
+  background: var(--cellSelectedColor);
+}
+
+.originRow {
+  background: var(--lowestBg) !important;
+}
+
+.operateHead {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  width: 70px;
+  line-height: 31px;
+  // float: left;
+
+  .checkIcon {
+    margin-left: 18px;
+    margin-right: 22px;
+  }
+
+  .rowColumnIndex {
+    display: flex;
+    margin-right: 8px;
+  }
+}
+
+.shallow {
+  box-shadow: 5px -1px 4px -4px var(--shadowColor);
+}
+
+.borderRight {
+  border-right: 1px solid var(--errorColor);
+}
+
+.groupLeft {
+  // border-radius: 5px 0px 0px 0px;
+  // box-sizing: content-box;
+  // border-left: 1px solid @shadowColor ;
+}
+
+.groupRight {
+  border-radius: 0px 5px 0px 0px;
+}
+
+.groupBase {
+  background: var(--defaultBg);
+  box-shadow: 1px 0px 0px 0px var(--shadowColor);
+  overflow: hidden;
+}
+
+.cellLevel1 {
+  margin-left: var(--groupOffset);
+  border-left: 1px solid var(--shadowColor) !important;
+  border-bottom: 1px solid var(--shadowColor) !important;
+  border-top: 1px solid var(--shadowColor) !important;
+}
+
+.groupOffset1 {
+  // border-left: 1px solid var(--shadowColor)!important;
+}
+
+.groupOffset2 {
+  margin-left: @groupOffset;
+  // border-left: 1px solid var(--shadowColor)!important;
+}
+
+.groupOffset3 {
+  margin-left: 2 * @groupOffset;
+  // border-left: 1px solid var(--shadowColor)!important;
+}
+
+.groupTitle {
+  // padding-left: 10px;
+  // border-bottom: 1px solid var(--shadowColor)!important;
+  height: 32px;
+  // line-height: 32px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.groupTitleLeft {
+  // box-shadow: -1px 0px 0px 0px var(--shadowColor) inset;
+}
+
+.groupLevel1 {
+  // margin-left: 10px;
+  // padding-left: 9px;
+  .groupLeft();
+  .groupBase();
+}
+
+.groupLevel2 {
+  .groupOffset2();
+  .groupLeft();
+  // .groupBase();
+  background: var(--defaultBg);
+  margin-left: 0;
+  border-left: none;
+}
+
+.groupLevel3 {
+  .groupOffset3();
+  .groupLeft();
+  // .groupBase();
+  background: var(--defaultBg);
+  margin-left: 0;
+  border-left: none;
+}
+
+.blockStyleCommon {
+  border-bottom: 1px solid var(--shadowColor);
+
+  // box-shadow: -2px 0px 0px -1px var(--shadowColor);
+}
+
+.blockStyleBase {
+  box-shadow: -2px 0px 0px -1px var(--shadowColor);
+  border-radius: 0px 0px 0px 2px;
+  position: relative;
+  left: -9px;
+  .blockStyleCommon();
+
+  &:after {
+    content: " ";
+    background: var(--defaultBg);
+    width: 10px;
+    display: block;
+    height: 100%;
+    position: absolute;
+    right: -9px;
+  }
+}
+
+.blockStyle1 {
+  .blockStyleBase();
+  left: -9px;
+}
+
+.blockStyle2 {
+  .blockStyleBase();
+  left: 0px;
+}
+
+.blockStyle3 {
+  .blockStyleBase();
+  left: 0px;
+}
+
+.activeCollaboratorCursor1 {
+  border: 1px solid var(--errorColor) !important;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cellCollaboratorAvatars,
+.cellCollaboratorAvatarsUnder {
+  display: none;
+}
+
+.fillHandleArea {
+  width: 8px;
+  height: 8px;
+  background: var(--defaultBg);
+  border-radius: 1px;
+  border: 1px solid var(--primaryColor);
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  cursor: crosshair;
+  z-index: var(--fillHandleZIndex);
+}
+
+:global(.ant-tooltip-open) {
+  display: block;
+}
+
+:global(.isEditing) {
+  :local(.fillHandleArea) {
+    display: none;
+  }
+}
+
+.contextMenu {
+  width: 220px;
+  list-style: none;
+  background: var(--defaultBg);
+  box-shadow: 1px 1px 14px var(--shadowColor);
+  padding: 0;
+
+  li {
+    height: 35px;
+    line-height: 35px;
+    padding: 0 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--firstLevelText);
+    display: flex;
+    align-items: center;
+
+    & > div {
+      margin-right: 8px;
+    }
+
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+  }
+}
+
+.cellWrapper {
+  overflow: hidden;
+}
+
+.groupBg40 {
+// FIXME:THEME
+  // background-color: multiply (var(--defaultBg), rgba(var(--lowestBg-rgb), 40%));
+}
+
+.groupBg80 {
+// FIXME:THEME
+  // background-color: multiply (var(--defaultBg), rgba(var(--lowestBg-rgb), 80%));
+}
+
+.groupBg {
+  background-color: var(--defaultBg);
+}
+
+.gc {
+  background: var(--lowestBg);
+}
+
+.currentSearchCell {
+  background-color: var(--orange_100)!important;
+}
+
+.foundMarkCell {
+// FIXME:THEME
+  background-color: rgba(var(--cellSelectedColor-rgb), 40%);
+}
+
+.rowIndex {
+  width: 100%;
+  padding-right: 2px;
+  height: 31px;
+  display: flex;
+  align-items: center;
+  color: var(--fc1);
+
+  & > div {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+.cellValuePart {
+  flex-wrap: nowrap;
+  padding: 0;
+}
+
+.lockedTab {
+  color: var(--thirdLevelText);
+  display: flex;
+  align-items: center;
+}

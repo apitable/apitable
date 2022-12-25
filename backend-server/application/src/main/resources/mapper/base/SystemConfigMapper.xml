@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.base.mapper.SystemConfigMapper">
+
+    <select id="selectIdByTypeAndLang" resultType="java.lang.Long">
+        select id
+        from ${tablePrefix}system_config
+        where type = #{type}
+        <if test="lang != null and lang != ''">
+            and i18n_name = #{lang}
+        </if>
+          and is_deleted = 0
+    </select>
+
+    <select id="selectConfigMapByType" resultType="java.lang.String">
+        select config_map
+        from ${tablePrefix}system_config
+        where type = #{type}
+        <if test="lang != null and lang != ''">
+          and i18n_name = #{lang}
+        </if>
+          and is_deleted = 0
+    </select>
+
+    <select id="selectConfigDtoByType"
+            resultType="com.apitable.base.model.SystemConfigDTO">
+        SELECT id, i18n_name
+        FROM ${tablePrefix}system_config
+        WHERE `type` = #{type}
+          AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}system_config(id, type, i18n_name, config_map, created_by,
+                                       updated_by)
+                VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.type}, #{item.i18nName}, #{item.configMap},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="removeByIds">
+        UPDATE ${tablePrefix}system_config
+        SET is_deleted = 1,
+            updated_by = #{updatedBy}
+                WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,105 @@
+import { DownloadOutlined } from '@apitable/icons';
+import { LinkButton } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+import { colors } from '../../helper';
+
+<Meta title="基础组件/Button 按钮/LinkButton 跳转按钮/文档" />
+
+# LinkButton 跳转按钮 
+
+## 使用方式
+
+```jsx
+import { LinkButton } from '@apitable/components';
+```
+
+默认通过 `a` 标签跳转
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-linkbutton-跳转按钮--default"/>
+</ThemeToggle>
+</Canvas>
+
+设置 `target` 为 `_blank` 浏览器新窗口打开网站 `https://apitable.com`
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-linkbutton-跳转按钮--button-href"/>
+</ThemeToggle>
+</Canvas>
+
+## 颜色
+
+默认是主题色，可以自定义颜色。
+
++ 传入色板中的颜色，会自动处理 hover 、active 的颜色。
++ 非色板颜色，则需要自己覆盖 hover、active 状态下的颜色。
+
+
+<Canvas>
+<ThemeToggle>
+<LinkButton>点我跳转</LinkButton>
+<LinkButton color="#FF7A00">这个颜色 shade 小于 700</LinkButton>
+<LinkButton color={colors.textCommonSecondary}>这个颜色 shade 大于 700</LinkButton>
+<LinkButton className="myLinkButton">自定义 action 颜色</LinkButton>
+</ThemeToggle>
+</Canvas>
+
+## 隐藏下划线
+
+默认会带下划线，也可以通过设置 `underline` 为 `false` 去掉下划线。
+
+<Canvas>
+<ThemeToggle>
+<LinkButton
+  underline={false}
+  href="https://apitable.com/"
+>
+  跳转链接
+</LinkButton>
+</ThemeToggle>
+</Canvas>
+
+## 跳转 Button
+
+通过 `component="button"` 指定将 a 标签改为 button。也可根据需求指定为其他 HTML 标签，比如 `div`。
+
+<Canvas>
+<ThemeToggle>
+<Story id="基础组件-button-按钮-linkbutton-跳转按钮--button-icon"/>
+</ThemeToggle>
+</Canvas>
+
+
+## 设置前、后缀图标
+
+<Canvas>
+<ThemeToggle>
+<Story id="基础组件-button-按钮-linkbutton-跳转按钮--left-icon"/>
+<Story id="基础组件-button-按钮-linkbutton-跳转按钮--right-icon"/>
+</ThemeToggle>
+</Canvas>
+
+## 禁用状态
+
+<Canvas>
+<ThemeToggle>
+<Story id="基础组件-button-按钮-linkbutton-跳转按钮--disabled"/>
+</ThemeToggle>
+</Canvas>
+
+## 占据整行
+
+<Canvas>
+<ThemeToggle>
+<Story id="基础组件-button-按钮-linkbutton-跳转按钮--block"/>
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={LinkButton} />
+
+

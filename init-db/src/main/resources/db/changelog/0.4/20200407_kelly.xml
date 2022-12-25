@@ -1,0 +1,251 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="v0.4.0-20200405-001" author="Kelly" labels="developer">
+        <comment>Create Template Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}developer_template` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `type` tinyint(2) unsigned NOT NULL COMMENT 'Type (0:PreInstall Official Pre Installation,1:Space User own space,2:Marketplace Publish to Market, part of Sku)',
+            `type_id` bigint(20) DEFAULT NULL COMMENT 'Official Pre Installation、Space Code、Corresponding SKU',
+            `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Template name',
+            `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Introduction text for the template,rich text.\nDifferent from node description, it is the description displayed in the interface.',
+            `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The essence of a template is to map a static node and its data',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Template';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-002" author="Kelly" labels="developer">
+        <comment>Create Applet Cloud Program Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}developer_applet` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Associated Workshop ID(link#xxxx_space#space_id, parent!=0 space)',
+            `applet_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Similar to appID of other open platforms, globally unique',
+            `applet_secret` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The secret key is generally semi hidden and can be reset',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_applet_id` (`applet_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cloud Program Applet';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-003" author="Kelly" labels="developer">
+        <comment>Create Develop GM Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}developer_gm` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `user_id` bigint(20) DEFAULT NULL COMMENT 'Correspond user',
+            `phone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Telephone number',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='GM Head Office Administrator, for gm cli';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-004" author="Kelly" labels="developer">
+        <comment>Create Develop Webhook Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}developer_webhook` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `applet_id` bigint(20) DEFAULT NULL COMMENT 'Correspond Cloud Program',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Webhook';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-005" author="Kelly" labels="eco">
+        <comment>Create Account Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}eco_account` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `type` tinyint(2) unsigned NOT NULL COMMENT '0:Accounts belong to Space,Similar to the concept of 「corporate bank account」,The payment based on the space station, such as subscription, template sell and cloud application, takes Space as the main body,and constrained by space management \n 1:Individual Account,similar to personal bank, As most of our transactions are mainly conducted by the space station, if an individual wants to withdraw cash profits, he/she needs to transfer the money in the account',
+            `type_id` bigint(20) DEFAULT NULL COMMENT 'The associated number of the corresponding type (space or user)',
+            `payment_account_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Payment account mapping number of payment system',
+            `billing_account_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Billing account mapping number of billing system',
+            `currency_code` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Currency code\nCNY\nHKD\nUSD\nCurrently, an account only supports one currency type.\n\nFor example, if your user uses RMB, you can not use two currencies at the same time.\nSimilar to the Apple App Store, one user can go to multiple different accounts by switching countries.',
+            `balance` decimal(20,2) NOT NULL DEFAULT '0' COMMENT 'Influence of currency balance, recharge, purchase template, income, etc',
+            `credit` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Integral, unsigned, permanent>0',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Account Table';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-006" author="Kelly" labels="eco">
+        <comment>Create Order Table</comment>
+        <sql>
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-007" author="Kelly" labels="marketplace">
+        <comment>Create SKU Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}marketplace_sku` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `type` tinyint(2) unsigned NOT NULL COMMENT '0:Template，1:Applet',
+            `type_id` bigint(20) DEFAULT NULL COMMENT 'The associated number of the correspond type',
+            `product_id` bigint(20) DEFAULT NULL COMMENT 'The associated number of the correspond SPU (Product)',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='SKU Table';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-008" author="Kelly" labels="marketplace">
+        <comment>Create SPU Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}marketplace_product` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Product Name',
+            `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Product Introduction',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='SPU Table';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-008" author="Kelly" labels="player">
+        <comment>Create Comment Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}player_comment` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+
+            `type` tinyint(2) unsigned NOT NULL COMMENT 'Category of comments, 0:record',
+            `type_id` bigint(20) DEFAULT NULL COMMENT 'The number of the correspond type, such as the correspond record',
+
+            `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Comment Content',
+
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Comment, Comment + Op = Activity';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-009" author="Kelly" labels="player">
+        <comment>Create Notification Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}player_notification` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `user_id` bigint(20) DEFAULT NULL COMMENT 'Notified user',
+            `template` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Notification Template',
+            `format` json DEFAULT NULL COMMENT 'Format String ',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Notification Table';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-010" author="Kelly" labels="space">
+        <comment>Adjust Match Station</comment>
+        <!--
+        node.space_id -> node.station_id
+        -->
+        <sql>
+            ALTER TABLE `${table.prefix}space` ADD COLUMN `parent_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Parent space'
+            AFTER `id`;
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200405-011" author="Kelly" labels="base">
+        <comment>Key-Value Dict Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}dict` (
+            `key` varchar(255) unsigned NOT NULL COMMENT 'Primary Key',
+            `value` json DEFAULT NULL COMMENT 'Value',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+
+            PRIMARY KEY (`key`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            COMMENT='Universal tables, such as caching static data for some third-party systems with low performance requirements,example "payment/user/123/orders":[]\nSimulate key value tables, which are used for some non important data, with large volume and data volume, and low memory requirements (Redis is very memory consuming and expensive)';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200411-001" author="Kelly" labels="eco">
+        <comment>Create Resource File Node Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_asset_file` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Correspond Node',
+            `space_asset_id` bigint(20) DEFAULT NULL COMMENT 'Correspond Space Accessories',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='The node is the actual file, such as PDF';
+        </sql>
+    </changeSet>
+    <changeSet id="v0.4.0-20200420-001" author="Kelly" labels="node">
+        <comment>Create Document Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}doc` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Correspond Node',
+            `data` json DEFAULT NULL COMMENT 'Document Content',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Updated By',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Document Node';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

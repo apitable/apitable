@@ -1,0 +1,40 @@
+@import "~pc/styles/lib_var.less";
+
+.createFieldModal {
+  padding: 24px 24px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .banner {
+    width: 320px;
+    height: 192px;
+    margin-bottom: 24px;
+
+    .bannerImg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .desc {
+    margin-top: 8px;
+    color: var(--thirdLevelText);
+  }
+
+  .createBtn {
+    margin-top: 56px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.modalWrap {
+  position: absolute !important;
+
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+  }
+}

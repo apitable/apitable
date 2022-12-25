@@ -1,0 +1,141 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.userCard {
+  width: 256px;
+ 
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  border-radius: 8px;
+  min-height: 120px;
+  background-color: var(--highBg);
+  box-shadow: var(--shadowCommonDefault);
+  position: relative;
+
+  .avatarWrapper {
+   
+    padding: 16px 16px 0;
+  }
+
+  .permissionWrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+  }
+
+  .cardTool {
+   position: absolute;
+   top: 8px;
+   right: 8px;
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+   cursor: pointer;
+   
+   span {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--textCommonSecondary);
+   }
+  }
+
+  .nameWrapper {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .settingPermissionBtn {
+    margin-left: 8px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .name {
+    margin-right: 4px;
+  }
+  
+  .email {
+    color: var(--textCommonSecondary);
+    padding: 4px 16px 14px;
+    p {
+      margin: 0;
+    }
+  }
+
+  .tag {
+    display: inline-block;
+    border-radius: 2px;
+    padding: 1px 8px;
+    background-color: var(--lowestBg);
+    margin-right: 4px;
+    max-width: 100%;
+  }
+  
+  .dangerTag {
+    display: inline-block;
+    border-radius: 2px;
+    padding: 1px 8px;
+    margin-right: 4px;
+    max-width: 100%;
+    // background-color: var(--lowestBg);
+    border: 1px solid var(--borderDanger);
+  }
+  
+}
+
+.infoContent {
+  max-height: 179px;
+  overflow-y: overlay;
+  padding: 0px 16px;
+  margin-bottom: 16px;
+}
+
+.infoWrapper {
+  
+  p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--textCommonSecondary);
+    margin: 0;
+    margin-bottom: 4px;
+    min-width: 30px;
+  }
+
+  .teamList {
+    color: var(--textCommonSecondary);
+  }
+
+  .teamItem {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    margin-bottom: 8px;
+    color: var(--textCommonPrimary);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    p {
+      margin: 0;
+      min-width: 0;
+      margin-right: 4px;
+      word-wrap: break-word;
+    }
+  }
+  .teamText {
+    color: var(--textCommonPrimary)
+  }
+}
+
+.userCardTrigger:global(.rc-trigger-popup) {
+  z-index: var(--triggerIndex);
+  border-radius: 8px;
+}

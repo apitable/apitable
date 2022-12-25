@@ -1,0 +1,119 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.commentEditWrapper {
+  padding: 16px;
+}
+
+.borderWrapper {
+  border-radius: 4px;
+  position: relative;
+  flex: 1;
+  background: var(--defaultBg);
+  padding-bottom: 0;
+  transition: padding 0.3s;
+  position: relative;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-within {
+    box-shadow: 0px 0px 0px 1px var(--primaryColor);
+  }
+
+  &.focus {
+    padding-bottom: 40px;
+
+    .submitWrapper {
+      height: 40px;
+      opacity: 1;
+    }
+  }
+}
+
+.submitWrapper {
+  transition: opacity 0.3s;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  height: 0;
+  overflow: hidden;
+  display: flex;
+  opacity: 0;
+  justify-content: space-between;
+  padding: 0 8px;
+  width: 100%;
+
+  .shortKeyTip {
+    font-size: 12px;
+    color: var(--fourthLevelText);
+    line-height: 50px;
+  }
+}
+
+.editor {
+  background: var(--defaultBg);
+  max-width: 100%;
+  word-break: break-all;
+}
+
+@media screen and (min-width: @w-md) {
+  .borderWrapper {
+    &.focus {
+      .editor {
+        min-height: 62px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .commentEditWrapper {
+    background: var(--fc6);
+    width: 100%;
+    padding: 16px 24px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+    border-top: 1px solid var(--lineColor);
+    box-shadow: 0px -2px 16px rgba(38, 38, 38, 0.04);
+    .commentEdit {
+      display: flex;
+    }
+  }
+
+  .editor {
+    border-radius: 8px;
+  }
+
+  .borderWrapper {
+    &.focus {
+      padding-bottom: 0;
+    }
+  }
+
+  .submitWrapper {
+    height: 42px;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    position: relative;
+    opacity: 1;
+    right: 0;
+    width: auto;
+
+    button {
+      font-size: 16px !important;
+      padding-right: 0 !important;
+
+      &:hover,
+      &:active {
+        background: none !important;
+      }
+    }
+  }
+}

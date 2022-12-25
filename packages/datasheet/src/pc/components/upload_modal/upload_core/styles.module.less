@@ -1,0 +1,95 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+
+.exitList {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+
+  &.columnCount2 {
+    .sortContainer {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      & > div {
+        width: calc((100% - 16px) / 2);
+        margin-right: 16px;
+        margin-bottom: 16px;
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  &.columnCount3 {
+    .sortContainer {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      & > div {
+        width: calc((100% - 32px) / 3);
+        margin-right: 16px;
+        margin-bottom: 16px;
+
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  &.columnCount4 {
+
+    .sortContainer {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      & > div {
+        width: calc((100% - 48px) / 4);
+        margin-right: 16px;
+        margin-bottom: 16px;
+
+        &:nth-child(4n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+.bigSize {
+  height: 296px;
+}
+
+.normalSize {
+  height: 104px;
+}
+
+@media screen and(max-width: @w-md) {
+  .uploadTabWrapper {
+    width: 100%;
+  }
+
+  .normalSize {
+    margin-top: 8px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .columnCount4 {
+    width: 100% !important;
+  }
+}
+
+.scrollBox {
+  width: 100%;
+}

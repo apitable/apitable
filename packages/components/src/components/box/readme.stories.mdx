@@ -1,0 +1,90 @@
+import { Canvas, Meta } from '@storybook/addon-docs';
+import { Box } from './index';
+import { TextButton } from '../index';
+import { Space } from '../space';
+
+<Meta title="en/components/Box" />
+
+# Box
+
+Box components can handle supplementary UI styling, such as handling component layout.
+
+Supports dynamic generation of a class through attribute introduction.
+
+## Usage
+
+```jsx
+import { Box } from '@apitable/components';
+```
+## Examples
+
+### Change DOM elements
+
+The Box component defaults to `<div>`, which can be changed through attributes, such as changing to `<img>` to render images:
+
+<Canvas>
+  <Box as="img" alt="" src="https://avatars.githubusercontent.com/u/89725681"/>
+</Canvas>
+
+
+### Modify component styles
+
+
+<Canvas>
+<Box as="span" padding="24px" border="1px dashed #ccc">
+  <TextButton>
+    text button
+  </TextButton>
+</Box>
+</Canvas>
+
+### Generate temporary generic components
+
+Defines the temporary Card generic component.
+
+```jsx
+const Card = styled(Box)({
+    borderRadius: '4px',
+    border: '1px solid #f6f6f6',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, .125)',
+    minHeight: '100px',
+    padding: '16px'
+});
+return <Card>Card content</Card>;
+```
+
+
+### Build a simple page framework
+
+Build a basic page framework with the `Space` component.
+
+<Canvas>
+<Box
+  display="flex"
+  flexDirection="column"
+>
+  <Box width="100%" minHeight="80px" lineHeight="80px" bg="#F4E9FE" textAlign="center">header</Box>
+  <Box bg="#E4C5FB" textAlign="center" padding="32px 16px">
+    <Space size={[16, 32]} wrap>
+      {new Array(20).fill(null).map((_, index) => (
+        <Box
+          key={index}
+          width="120px"
+          height="80px"
+          border="1px solid #ccc"
+          textAlign="center"
+          lineHeight="80px"
+          bg="#fff"
+        >
+          Space {index}
+        </Box>
+      ))}
+    </Space>
+  </Box>
+  <Box width="100%"  minHeight="80px" lineHeight="80px" bg="#F4E9FE" textAlign="center">bottom</Box>
+</Box>
+</Canvas>
+
+
+
+

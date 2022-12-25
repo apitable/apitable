@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.space.mapper.SpaceApplyMapper">
+    <select id="countBySpaceIdAndCreatedByAndStatus" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}space_apply
+        WHERE space_id = #{spaceId}
+          AND created_by = #{createdBy}
+          AND status = #{status}
+    </select>
+
+    <select id="selectSpaceApplyDto" resultType="com.apitable.space.dto.SpaceApplyDTO">
+        SELECT vsa.id                                                         AS applyId,
+               vsa.space_id,
+               vsa.`status`,
+               vsa.created_by,
+               JSON_EXTRACT(vpn.notify_body, CONCAT('$.', #{applyStatusKey})) AS notifyApplyStatus
+        FROM ${tablePrefix}player_notification vpn
+                 LEFT JOIN ${tablePrefix}space_apply vsa ON vpn.space_id = vsa.space_id AND vpn.from_user = vsa.created_by AND
+                                                   vsa.id = JSON_EXTRACT(vpn.notify_body, CONCAT('$.', #{applyIdKey}))
+        WHERE vpn.id = #{notifyId}
+          AND vpn.to_user = #{toUser}
+          AND vpn.template_id = #{templateId}
+          AND vpn.is_deleted = 0
+    </select>
+
+    <insert id="insertApply">
+        INSERT INTO ${tablePrefix}space_apply(id, space_id, status, created_by)
+            VALUE (#{entity.id}, #{entity.spaceId}, #{entity.status}, #{entity.createdBy})
+    </insert>
+
+    <update id="updateStatusByApplyIdAndUpdatedBy">
+        UPDATE ${tablePrefix}space_apply
+        SET status     = #{status},
+            updated_by = #{updatedBy}
+        WHERE id = #{applyId}
+    </update>
+
+    <update id="invalidateTheApply">
+        UPDATE ${tablePrefix}space_apply
+        SET status = 3, failure_reason = #{reason}
+        WHERE space_id = #{spaceId} AND status = 0
+        AND created_by IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

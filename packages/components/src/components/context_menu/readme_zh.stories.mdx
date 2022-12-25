@@ -1,0 +1,89 @@
+import { ContextMenu, useContextMenu } from './index';
+import { StyledMenuItem } from './styled';
+import { IContextMenuNewProps } from './interface';
+import { RobotOutlined } from '@apitable/icons';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+
+<Meta title="基础组件/ContextMenu 右键菜单/文档" />
+
+# ContextMenu 右键菜单
+
+## 使用场景
+
+当数据需要以鼠标右键菜单的形式进行展示时
+
+## 基础用法
+
+- 支持使用嵌套方式进行自定义右键菜单展示
+- 支持自定义数据进行菜单列表形式展示
+
+## 默认展示
+
+默认展示组件嵌套模式，开发者可以根据需要自定义展示右键展示内容
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--default" />
+</Canvas>
+
+## 自定义菜单
+
+展示传入的菜单数据
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--overlay-context-menu" />
+</Canvas>
+
+## 自定义级联菜单
+
+对菜单数据进行级联展示
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--cascade-context-menu" />
+</Canvas>
+
+## 自定义图标菜单
+
+展示带有图标的菜单
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--icon-context-menu" />
+</Canvas>
+
+## 禁用自定义菜单
+
+菜单中的项为禁用状态
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--disabled-context-menu" />
+</Canvas>
+
+## 自定义菜单项右侧
+
+对菜单项的右侧进行自定义，当存在自定义时，如果菜单项存在 children 则不会渲染 arrow
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--extra-element-context-menu" />
+</Canvas>
+
+## 隐藏菜单项
+
+对菜单项进行隐藏，隐藏值 hidden 属性可以为 Boolean 值，也可以传入函数进行判断返回 Boolean 值
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--hidden-context-menu" />
+</Canvas>
+
+## 菜单分组
+
+对菜单项进行分组展示，菜单项顺序遍历，存在相同项的 groupId 即为一组
+
+<Canvas>
+  <Story id="基础组件-contextmenu-右键菜单--group-context-menu" />
+</Canvas>
+
+## API
+
+### ContextMenu
+
+<ArgsTable of={ContextMenu} />
+

@@ -1,0 +1,62 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220607-001" author="Chambers" labels="developer">
+        <comment>Create Api Statistic Daily Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}api_statistics_daily`
+            (
+                `id`              bigint unsigned NOT NULL COMMENT 'Primary Key',
+                `space_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Space ID(link#xxxx_space#space_id)',
+                `statistics_time` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'statistic time',
+                `total_count`     bigint unsigned NOT NULL DEFAULT '0' COMMENT 'Total calls',
+                `success_count`   bigint unsigned NOT NULL DEFAULT '0' COMMENT 'Number of successful requests',
+                `failure_count`   bigint unsigned NOT NULL DEFAULT '0' COMMENT 'Number of request failures',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY               `idx_space_id` (`space_id`) USING BTREE,
+                KEY               `idx_time` (`statistics_time` DESC) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Open Platform - Api Statistic Daily Table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220607-002" author="Chambers" labels="developer">
+        <comment>Create Api Statistic Monthly Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}api_statistics_monthly`
+            (
+                `id`              bigint unsigned NOT NULL COMMENT 'Primary Key',
+                `space_id`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Space ID(link#xxxx_space#space_id)',
+                `statistics_time` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL DEFAULT '' COMMENT 'statistic time',
+                `total_count`     bigint unsigned NOT NULL DEFAULT '0' COMMENT 'Total calls',
+                `success_count`   bigint unsigned NOT NULL DEFAULT '0' COMMENT 'Number of successful requests',
+                `failure_count`   bigint unsigned NOT NULL DEFAULT '0' COMMENT 'Number of request failures',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY               `idx_space_id` (`space_id`) USING BTREE,
+                KEY               `idx_time` (`statistics_time` DESC) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Open Platform - Api Statistic Monthly Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

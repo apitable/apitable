@@ -1,0 +1,18 @@
+name: build-apitable
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  buildpush:
+    runs-on: ubuntu-latest
+    env:
+      APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v2
+      - name: Build APITable and Push
+        run: |
+          make buildpush-docker

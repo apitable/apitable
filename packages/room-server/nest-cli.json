@@ -1,0 +1,25 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "assets": [
+      {
+        "include": "./shared/**/*.yaml",
+        "outDir": "./dist"
+      },
+      {
+        "include": "./env/*",
+        "outDir": "./dist"
+      },
+      {
+        "include": "./grpc/**/*.proto",
+        "outDir": "./dist"
+      },
+      {
+        "include": "./shared/**/*.lua",
+        "outDir": "./dist"
+      }
+    ],
+    "watchAssets": true
+  }
+}

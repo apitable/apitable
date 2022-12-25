@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.organization.mapper.UnitMapper">
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}unit(id, space_id, unit_type, unit_ref_id)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.unitType}, #{item.unitRefId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="selectUnitIdByRefId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit
+        WHERE unit_ref_id = #{refId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectRefIdById" resultType="java.lang.Long">
+        SELECT unit_ref_id
+        FROM ${tablePrefix}unit
+        WHERE id = #{unitId} AND is_deleted = 0
+    </select>
+
+
+    <select id="selectByRefId" resultType="com.apitable.organization.entity.UnitEntity">
+        SELECT *
+        FROM ${tablePrefix}unit
+        WHERE unit_ref_id = #{refId} AND is_deleted = 0
+    </select>
+
+    <select id="selectIdBySpaceId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+    </select>
+
+    <select id="selectIdsByRefIds" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}unit
+        WHERE unit_ref_id in
+        <foreach item="item" index="index" collection="refIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectBySpaceIdAndRefId" resultType="java.lang.Long">
+        SELECT vou.id
+        FROM ${tablePrefix}unit vou
+        WHERE vou.space_id = #{spaceId}
+        AND vou.unit_ref_id = #{refId}
+        AND vou.is_deleted = 0
+    </select>
+
+    <update id="deleteBySpaceIdAndId">
+        UPDATE ${tablePrefix}unit
+        SET is_deleted = 1
+        WHERE space_id = #{spaceId}
+        AND id in
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="deleteByUnitRefIds">
+        UPDATE ${tablePrefix}unit
+        SET is_deleted = 1
+        WHERE unit_ref_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectRefIdsByUnitIds" resultType="java.lang.Long">
+        SELECT unit_ref_id
+        FROM ${tablePrefix}unit
+        WHERE id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCountBySpaceIdAndIds" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit
+        WHERE space_id = #{spaceId} AND is_deleted = 0 AND id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="batchRestoreByIds">
+        UPDATE ${tablePrefix}unit
+        SET is_deleted = 0
+        WHERE id in
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectByRefIds" resultType="com.apitable.organization.entity.UnitEntity">
+        SELECT *
+        FROM ${tablePrefix}unit
+        WHERE unit_ref_id IN
+        <foreach item="item" index="index" collection="refIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByUnitIds" resultType="com.apitable.organization.entity.UnitEntity">
+        SELECT *
+        FROM ${tablePrefix}unit
+        WHERE id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteActualByRefId">
+        DELETE FROM ${tablePrefix}unit
+        WHERE unit_ref_id = #{refId}
+    </delete>
+
+    <update id="batchUpdateIsDeletedBySpaceIdAndRefId">
+        UPDATE ${tablePrefix}unit SET is_deleted = #{isDeleted}
+        WHERE space_id = #{spaceId}
+        AND unit_ref_id IN
+        <foreach item="item" index="index" collection="refIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND unit_type = #{unitType.type}
+    </update>
+</mapper>

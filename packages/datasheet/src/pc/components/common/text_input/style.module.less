@@ -1,0 +1,17 @@
+@import "~pc/styles/lib_mixins.less";
+
+.textInput {
+  .errmsg {
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--errorColor);
+    margin-top: 8px;
+    height: 12px;
+    line-height: 12px;
+    text-align: left;
+  }
+
+  :global {
+    .input();
+  }
+}

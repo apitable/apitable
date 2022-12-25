@@ -1,0 +1,46 @@
+import { Loading } from './index';
+import { Canvas, Meta } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/Loading" />
+
+# Loading
+
+## Usage
+
+```jsx
+import { Loading } from '@apitable/components';
+```
+
+## Examples
+
+<Canvas>
+<ThemeToggle lang='en'>
+  <Loading />
+</ThemeToggle>
+</Canvas>
+
+## Inherit parent element color
+
+<Canvas>
+<ThemeToggle lang='en'>
+    <div style={{ color: 'red' }}>
+        <Loading currentColor/>
+    </div>
+</ThemeToggle>
+</Canvas>
+
+## Stroke width
+
+<Canvas>
+<ThemeToggle lang='en'>
+  <Loading strokeWidth={1}/>
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name         | Type    | Description                  | Default |
+|--------------|---------|------------------------------|---------|
+| currentColor | boolean | inherit parent element color | false   |
+| strokeWidth  | number  | stroke width                 | 3       |

@@ -1,0 +1,70 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.4-20200602-001" author="Chambers" labels="template">
+        <comment>Template Center - Template Table Add Category Code Field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template`
+            ADD COLUMN `category_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Category Code' AFTER `type_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.4-20200602-002" author="Chambers" labels="space">
+        <comment>Workbench - Permission Resource Group Table Add Template Related Data</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
+            VALUES (1235489086546259978, 'MANAGE_TEMPLATE', 'Management Template Center', 'You can create templates in the working directory and delete templates in the template center');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.4-20200602-003" author="Chambers" labels="space">
+        <comment>Workbench - Permission Resource Table Add Template Related Data</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1235489086546259979, 'MANAGE_TEMPLATE', 'CREATE_TEMPLATE', 'Create Template', NULL, 'Roles with this resource can create templates in the working directory', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1235489086546259980, 'MANAGE_TEMPLATE', 'DELETE_TEMPLATE', 'Delete Template', NULL, 'Roles with this resource can delete templates in the template center', 1);
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.4-20200602-004" author="Chambers" labels="space">
+        <comment>Workspace - Menu Table Add Template Related Data</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_menu`(id, parent_code, menu_code, menu_name, menu_url, sequence)
+            VALUES (1235489086546259981, NULL, 'ManageTemp', 'Template Management', NULL, 5);
+            INSERT INTO `${table.prefix}space_menu`(id, parent_code, menu_code, menu_name, menu_url, sequence)
+            VALUES (1235489086546259982, 'ManageTemp', 'ManageTemp-TemplateCenter', 'Management Template Center', NULL, 1);
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.4-20200602-005" author="Chambers" labels="space">
+        <comment>Workbench - Menu Resource Association Table Add Template Related Data</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_menu_resource_rel`(id, menu_code, resource_code)
+            VALUES (1235489096457400323, 'ManageTemp-TemplateCenter', 'CREATE_TEMPLATE');
+            INSERT INTO `${table.prefix}space_menu_resource_rel`(id, menu_code, resource_code)
+            VALUES (1235489096457400324, 'ManageTemp-TemplateCenter', 'DELETE_TEMPLATE');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

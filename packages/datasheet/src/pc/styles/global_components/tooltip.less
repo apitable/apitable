@@ -1,0 +1,35 @@
+// Tooltip
+// ---
+// Tooltip max width
+@tooltip-max-width: 320px;
+// Tooltip text color
+@tooltip-color: var(--defaultBg);
+// Tooltip arrow width
+@tooltip-arrow-width: 6px;
+// Tooltip distance with trigger
+@tooltip-distance: @tooltip-arrow-width - 1px + 4px;
+// Tooltip arrow color
+@tooltip-arrow-color: var(--tooltipBg);
+
+
+.ant-tooltip-inner {
+  font-size: 12px;
+  color: var(--defaultBg);
+  background-color: var(--tooltipBg);
+  padding: 8px;
+}
+
+.ant-tooltip-arrow-content::before {
+  background: var(--tooltipBg);
+}
+.ant-tooltip-placement-bottom .ant-tooltip-arrow,
+.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow,
+.ant-tooltip-placement-bottomRight .ant-tooltip-arrow {
+  top: 1px;
+}
+
+.ant-tooltip-placement-right .ant-tooltip-arrow,
+.ant-tooltip-placement-rightTop .ant-tooltip-arrow,
+.ant-tooltip-placement-rightBottom .ant-tooltip-arrow {
+  left: 1px;
+}

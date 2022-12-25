@@ -1,0 +1,138 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.viewSwitcherContainer {
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHigh);
+  border-radius: 8px;
+  width: 560px;
+  position: absolute;
+  left: 0px;
+  z-index: 10;
+  font-size: 14px;
+  cursor: default;
+  .noSelect();
+
+  .viewListText {
+    padding: 16px;
+    color: var(--secondLevelText);
+  }
+
+  .searchField {
+    padding: 8px 16px;
+
+    .searchInput {
+      padding: 16px;
+
+      &,
+      input {
+        border-radius: 25px !important;
+      }
+
+      :global {
+        .ant-input-prefix {
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+
+  .viewListWrapper {
+    .droppable,
+    .viewList {
+      height: 100%;
+      display: block;
+      padding: 0 8px 10px;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+
+    .viewListEmpty {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.addNewViewContainer {
+  border-top: 1px solid var(--lineColor);
+  padding: 16px;
+
+  .addNewText {
+    color: var(--secondLevelText);
+  }
+
+  .viewTypeContainer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    button[disabled] {
+      cursor: not-allowed !important;
+    }
+
+    .viewType {
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 244px;
+      height: 40px;
+      padding: 10px 16px;
+      & > span {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &:nth-child(n + 3) {
+        margin-top: 16px;
+      }
+
+      .text svg {
+        fill: var(--primaryColor);
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      span {
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+.addItem {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--lineColor);
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+}
+
+@media screen and(max-width: @w-md) {
+  .addNewViewContainer {
+    padding: 0 24px 0 0;
+
+    .viewTypeContainer {
+      .viewType {
+        width: calc((100% - 24px) / 2);
+      }
+    }
+  }
+}
+
+.overCount {
+  color: var(--errorColor);
+}

@@ -1,0 +1,185 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.trashWrapper {
+  width: 100%;
+  height: 100%;
+  background: var(--lowestBg);
+  position: absolute;
+  overflow-x: scroll;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 800px;
+  height: 100%;
+  padding: 40px 0px 28px 40px;
+
+  .title {
+    font-size: 32px;
+    height: 45px;
+    line-height: 45px;
+    font-weight: bold;
+    padding-bottom: 8px;
+    :global(.ant-tooltip-open) {
+      display: inline-block;
+    }
+  }
+
+  .tip {
+    height: 18px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--thirdLevelText);
+
+    .maxRemainTrashDays {
+      color: var(--primaryColor);
+      font-weight: bold;
+      padding: 0 4px;
+    }
+  }
+
+  .trashList {
+    flex: 1;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .listTitle {
+    display: flex;
+    padding: 0 24px 8px;
+    font-size: 12px;
+    color: var(--secondLevelText);
+    border-bottom: 1px solid var(--shadowColor);
+    margin-right: 40px;
+
+    & > div:nth-child(1) {
+      width: 25%;
+    }
+    & > div:nth-child(2) {
+      width: 18%;
+    }
+    & > div:nth-child(3) {
+      width: 14%;
+    }
+    & > div:nth-child(4) {
+      width: 14%;
+    }
+    & > div:nth-child(5) {
+      width: 24%;
+    }
+    & > div:nth-child(6) {
+      width: 5%;
+    }
+  }
+
+  .listBody {
+    flex: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 28px;
+    @media (any-hover: none) {
+      padding-right: 40px;
+    }
+    .bottom {
+      text-align: center;
+      .end {
+        font-size: 12px;
+        color: var(--thirdLevelText);
+      }
+    }
+  }
+
+  .trashListItem {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    background: var(--defaultBg);
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+
+  .trashListItem {
+    & > div {
+      padding-right: 24px;
+      .ellipsis();
+      font-size: 14px;
+      color: var(--firstLevelText);
+      flex-shrink: 0;
+      cursor: default;
+    }
+    .nodeName {
+      width: 25%;
+    }
+    .remainingTime {
+      width: 18%;
+      display: flex;
+      white-space: pre;
+      .days {
+        color: var(--primaryColor);
+
+        &.redPrompt {
+          color: var(--errorColor);
+        }
+      }
+    }
+    .user {
+      display: flex;
+      align-items: center;
+      width: 14%;
+    }
+    .expirationTime {
+      width: 14%;
+    }
+    .path {
+      width: 24%;
+    }
+    .operation {
+      width: 5%;
+    }
+  }
+
+  .empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      height: 240px;
+      width: auto;
+    }
+
+    .tip {
+      font-size: 14px;
+      color: var(--thirdLevelText);
+      margin-bottom: 8px;
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .container {
+    padding: 16px;
+  }
+
+  .trashListItem {
+    flex-direction: column;
+    width: 100%;
+    height: 90px;
+    padding: 8px;
+
+    .itemRow {
+      display: flex;
+      width: 100%;
+    }
+  }
+}

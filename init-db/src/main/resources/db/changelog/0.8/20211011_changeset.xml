@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.8-20211011-001" author="HumphreyHu" labels="space">
+        <comment>Workbench - Space Source Group Table add「Enterprise and Security」resource group</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group` (id,group_code,group_name,group_desc) VALUES
+                (1235489086546259979, 'MANAGE_SECURITY', 'Manage Enterprise Security Center', 'Enable and disable the 「Enterprise Security Center」 function for sub administrators');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-002" author="HumphreyHu" labels="space">
+        <comment>Workbench-Space Source Group Table add「Third party application integration」resource group</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group` (id,group_code,group_name,group_desc) VALUES
+                (1235489086546259980, 'MANAGE_INTEGRATION', 'Manage third-party application integration', 'Enable and disable 「Third-party application integration"」for sub administrators');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-003" author="HumphreyHu" labels="space">
+        <comment>Workbench-Space Resource Table add「Share and Invitation」configure resources under「Enterprise Security Center」</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259981, 'MANAGE_SECURITY', 'MANAGE_SHARE_SETTING', 'Manage share setting', 'With the role of this resource, you can set the open and close of 「Share and Invitation」 in the 「Enterprise Security Center」');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-004" author="HumphreyHu" labels="space">
+        <comment>Workbench-Space Resource Table Add the 「File Permission」 configuration resource under the 「Enterprise Security Center」</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259982, 'MANAGE_SECURITY', 'MANAGE_FILE_SETTING', 'Manage file setting', 'With the role of this resource, you can set the open and clos of 「File Permissions」 in the 「Enterprise Security Center」');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-005" author="HumphreyHu" labels="space">
+        <comment>Workbench-Space Resource Table Add the configuration resources of 「Advanced Functions」 under 「Enterprise Security Center」</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259983, 'MANAGE_SECURITY', 'MANAGE_ADVANCE_SETTING', 'advance setting', 'With the role of this resource, you can set the open and close of 「Advanced Functions」 on the 「Enterprise Security Center」 page');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-006" author="HumphreyHu" labels="space">
+        <comment>Workbench-Space Resource Table add 「Third party application integration」 resource configuration item</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource` (id,group_code,resource_code,resource_name,resource_desc) VALUES
+                (1235489086546259984, 'MANAGE_INTEGRATION', 'MANAGE_INTEGRATION_SETTING', 'Manage in setting', 'Roles with this resource can configure the 「Third Party Application Integration」 page');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-007" author="Pengap" labels="space">
+        <comment>Workbench-Space Source Group Table 增加管理组件中心相关数据</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
+            VALUES (1450294475803914241, 'MANAGE_WIDGET', 'Manage Component Center', 'Self built widgets can be removed from the component center or transferred to the release authority of self built widgets');
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20211011-008" author="Pengap" labels="space">
+        <comment>Workbench-Space Resource Table add related data of management widget center</comment>
+        <sql>
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1450294475803914242, 'MANAGE_WIDGET', 'UNPUBLISH_WIDGET', 'Remove widget', NULL, 'With the role of this resource, self built widgets can be removed from the widget center', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1450294475803914243, 'MANAGE_WIDGET', 'TRANSFER_WIDGET', 'Handover widget', NULL, 'The role with this resource can transfer the publish right of self built widgets in the widget center', 1);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

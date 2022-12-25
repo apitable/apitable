@@ -1,0 +1,107 @@
+@import "~pc/styles/lib_var.less";
+
+.inviteOutsiderTabs {
+  :global {
+    // modal
+    .ant-modal-header {
+      padding: 24px 24px 30px;
+    }
+    .ant-modal-content {
+      height: 604px;
+    }
+    .ant-modal-body {
+      height: 528px;
+      padding: 0 !important;
+    }
+
+    // tab
+    .ant-tabs {
+      height: 100%;
+      padding-left: 24px;
+    }
+    .ant-tabs-tab,
+    .ant-tabs-tab:hover {
+      color: var(--secondLevelText);
+    }
+    .ant-tabs-top .ant-tabs-nav {
+      margin: 0 24px 16px 0;
+      &::before {
+        border-bottom: 2px solid var(--lineColor);
+      }
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      padding: 0 13px 5px 13px;
+      margin-right: 29px;
+    }
+    .ant-tabs-tab-active {
+      color: var(--primaryColor) !important;
+    }
+    .ant-tabs-content {
+      height: 465px;
+    }
+    .ant-tabs-bar {
+      margin: 0 24px 20px 0;
+      border-bottom-width: 2px;
+      height: 25px;
+    }
+    .ant-tabs-top .ant-tabs-ink-bar-animated {
+      width: 80px;
+    }
+    .ant-tabs-ink-bar {
+      background-color: var(--primaryColor);
+    }
+    .ant-tabs-tabpane {
+      height: 100%;
+    }
+  }
+
+  .showLabel:global(.ant-tabs) {
+    :global(.ant-tabs-nav .ant-tabs-tab) {
+      margin-right: 0;
+    }
+  }
+}
+
+.inviteDrawer {
+  :global {
+    .ant-tabs {
+      height: 100%;
+    }
+
+    .ant-tabs-content-holder {
+      height: 100%;
+    }
+
+    .ant-tabs-content {
+      height: 100%;
+    }
+
+    .ant-tabs-tabpane {
+      height: 100%;
+    }
+
+    .ant-drawer-content-wrapper,
+    .ant-drawer-content {
+      border-radius: 16px 16px 0 0 !important;
+    }
+
+    .ant-drawer-header {
+      border-bottom: none;
+      padding: 24px 0 0 24px;
+    }
+
+    .ant-drawer-title {
+      font-weight: bold;
+    }
+
+    .ant-drawer-close {
+      padding: 0;
+      top: 24px;
+      right: 20px;
+      svg {
+        background-color: var(--rowSelectedBg);
+        border-radius: 50%;
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+@import "~pc/styles/lib_var.less";
+
+.steps {
+  display: flex;
+  padding-top: 12px;
+  .stepItem {
+    position: relative;
+    width: 110px;
+    color: var(--black_500);
+    &:not(:last-child):before {
+      content: "";
+      position: absolute;
+      width: 92px;
+      height: 4px;
+      left: 65px;
+      top: -2px;
+      z-index: 0;
+      background: var(--black_100);
+    }
+    .stepItemIcon {
+      position: relative;
+      margin: -13px 0 0 44px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Rubik;
+      font-weight: normal;
+      text-align: center;
+      border: 2px solid var(--black_100);
+      border-radius: 50%;
+      background: var(--black_50);
+      line-height: 22px;
+    }
+    .stepItemContent {
+      margin-top: 9px;
+      text-align: center;
+    }
+  }
+  .stepItemActive {
+    .stepItemIcon {
+      background: var(--primaryColor);
+      color: var(--staticWhite0);
+    }
+    .stepItemContent {
+      color: var(--fc1);
+    }
+  }
+  .stepItemFinish {
+    &:not(:last-child):before {
+      background: var(--primaryColor);
+      z-index: 1;
+    }
+    .stepItemIcon {
+      background: var(--primaryColor);
+    }
+  }
+}

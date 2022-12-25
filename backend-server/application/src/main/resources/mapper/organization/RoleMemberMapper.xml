@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.organization.mapper.RoleMemberMapper">
+
+    <select id="selectUnitRefIdsByRoleId" resultType="java.lang.Long">
+        SELECT DISTINCT vurm.unit_ref_id
+        FROM ${tablePrefix}unit_role_member vurm
+        WHERE role_id = #{roleId}
+    </select>
+
+    <delete id="deleteByRoleIdAndUnitRefIds">
+        DELETE
+        FROM ${tablePrefix}unit_role_member
+        WHERE role_id = #{roleId}
+        AND unit_ref_id in
+        <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
+                 close=")">
+            #{unitRefId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByRoleId">
+        DELETE
+        FROM ${tablePrefix}unit_role_member
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="selectRoleMembersByRoleIds"
+            resultType="com.apitable.organization.dto.RoleMemberInfoDTO">
+        SELECT vu.id as unit_id,
+        vurm.role_id as role_id,
+        vurm.unit_ref_id as unit_ref_id,
+        vurm.unit_type as unit_type
+        FROM ${tablePrefix}unit_role_member vurm
+        JOIN ${tablePrefix}unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vurm.role_id in
+        <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+            #{roleId}
+        </foreach>
+    </select>
+
+    <select id="selectRoleMembersByRoleId"
+            resultType="com.apitable.organization.dto.RoleMemberInfoDTO">
+        SELECT vu.id            as unit_id,
+               vurm.unit_ref_id as unit_ref_id,
+               vurm.unit_type   as unit_type
+        FROM ${tablePrefix}unit_role_member vurm
+                 JOIN ${tablePrefix}unit vu
+                      ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vurm.role_id = #{roleId}
+        ORDER BY vurm.unit_ref_id
+    </select>
+
+    <delete id="deleteByUnitRefIds">
+        DELETE
+        FROM ${tablePrefix}unit_role_member
+        WHERE unit_ref_id IN
+        <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
+                 close=")">
+            #{unitRefId}
+        </foreach>
+    </delete>
+
+    <select id="selectRoleIdsByUnitRefId"
+            resultType="java.lang.Long">
+        SELECT role_id
+        FROM ${tablePrefix}unit_role_member
+        WHERE unit_ref_id = #{unitRefId}
+    </select>
+
+    <select id="selectRoleMembersByRoleIdAndUnitRefIds"
+            resultType="com.apitable.organization.dto.RoleMemberInfoDTO">
+        SELECT vu.id as unit_id,
+        vurm.unit_ref_id as unit_ref_id,
+        vurm.unit_type as unit_type
+        FROM ${tablePrefix}unit_role_member vurm
+        JOIN ${tablePrefix}unit vu ON vurm.unit_ref_id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vurm.role_id = #{roleId}
+        AND vurm.unit_ref_id IN
+        <foreach collection="unitRefIds" item="unitRefId" separator="," open="("
+                 close=")">
+            #{unitRefId}
+        </foreach>
+        ORDER BY vurm.unit_ref_id
+    </select>
+
+    <select id="selectCountByRoleId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM ${tablePrefix}unit_role_member
+        WHERE role_id = #{roleId}
+    </select>
+</mapper>

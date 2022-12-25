@@ -1,0 +1,117 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+@keyframes fadeIn {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+.findSearchInput {
+  width: 263px;
+  background: var(--defaultBg);
+  height: 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  padding: 0 8px;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  margin-right: 8px;
+  &.darkBg {
+    background-color: var(--highBg);
+    .searchInput,
+    input {
+      background-color: var(--highBg);
+    }
+  }
+  .searchIcon {
+    display: inline-block;
+    margin-right: 2px;
+    width: 16px;
+    height: 16px;
+    svg {
+      fill: var(--thirdLevelText);
+    }
+  }
+
+  .inputTextGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    overflow: hidden;
+    .searchCountText {
+      display: inline-block;
+      width: max-content;
+      user-select: none;
+      white-space: nowrap;
+      z-index: 1;
+    }
+  }
+
+  .searchInputWrap {
+    position: relative;
+    flex: 1;
+    height: 32px;
+    input {
+      border: none;
+      outline: none;
+      caret-color: var(--primaryColor);
+      position: absolute;
+      left: 0;
+      height: 100%;
+      max-width: 100%;
+      background-color: transparent;
+      color: var(--fc1);
+    }
+  }
+
+  .iconGroup {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    &::before {
+      content: " ";
+      border-left: 1px solid var(--shadowColor);
+      display: inline-block;
+      height: 16px;
+    }
+  }
+
+  .prevBtn,
+  .nextBtn {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+  }
+  .prevBtn {
+    margin: 0 8px;
+  }
+  .nextBtn {
+    margin-right: 16px;
+  }
+  .closeButton {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover svg {
+      fill: var(--black_600);
+    }
+
+    &:active svg {
+      fill: var(--black_700);
+    }
+    svg {
+      fill: var(--black_500);
+      transition: all 0.3s;
+    }
+  }
+}

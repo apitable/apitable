@@ -1,0 +1,54 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.reportReasonWrap {
+  width: 400px;
+  position: absolute;
+  right: 48px;
+  bottom: 0;
+  box-shadow: 0 1px 6px 0 var(--shadowColor);
+  border-radius: 8px;
+  overflow: hidden;
+  img {
+    width: 100%;
+  }
+}
+
+.reportReason {
+  background-color: var(--defaultBg);
+
+  .title {
+    font-size: 16px;
+    color: var(--secondLevelText);
+    height: 48px;
+    line-height: 48px;
+  }
+  .buttonWrap {
+    display: flex;
+    justify-content: flex-end;
+    padding: 40px 0 16px;
+  }
+
+  .title,
+  .buttonWrap,
+  :global(.ant-radio-wrapper) {
+    margin: 0 16px;
+  }
+  :global {
+    .ant-radio-wrapper {
+      display: block;
+      height: 48px;
+      line-height: 48px;
+      font-size: 14px;
+      color: var(--firstLevelText);
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .reportReasonWrap {
+    position: static;
+    width: 100%;
+    max-width: 400px;
+  }
+}

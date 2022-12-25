@@ -1,0 +1,47 @@
+<Meta title="组件开发" />
+
+### 技术选型
+
+- 使用 styled-components 管理组件样式。styled-components 是一种 css-in-js 的解决方案，可以帮助我们轻松构建主题，并且易于覆盖组件样式。
+- UI 部分自己写
+- 逻辑复用可以引入 ahooks、color 等非 UI 库。
+
+### 要求
+
+通用组件需要符合 [w3 规范](https://www.w3.org/TR/wai-aria-practices/) 。满足可访问性中的快捷键要求，其它可访问性要素可以适当满足。
+
+### 组件库文件组织结构
+
+组件统一放在 `src/components` 文件夹下, 以 Button 为例，在 src/components 下新建名为 `button` 的目录。
+
+```shell
+├── button
+│   ├── button.tsx # 组件本体
+│   ├── index.ts # 导出组件
+│   ├── interface.ts # 组件接口
+│   ├── readme.stories.mdx # 组件文档
+│   ├── button.stories.tsx # 组件 stories
+│   └── styled.tsx # styled-component 编写组件样式
+```
+
+### 默认主题
+
+组件内部应该处理好主题配置（目前主要是颜色相关的 css 属性），不应该写死颜色。
+
+```jsx
+import styled, { css } from 'styled-components';
+import { applyDefaultTheme } from 'styles';
+
+const myComponent = styled.div.attrs(applyDefaultTheme)`
+  color: ${(props) => props.theme.palette.primary};
+`;
+```
+
+这样不管组件是否被 `themeProvider` 包裹，都能正常展示主题色。
+
+### 说明文档格式
+
+- 组件 API（由 Typescript interface 自动生成）；
+- 在 mdx 格式文档中简要描述组件的使用场景（设计稿中给出，或者自己总结）；
+- 组件的快捷键支持（w3 文档标准）；
+- 组件常见使用参数的案例编写为 stories，引入到文档中。

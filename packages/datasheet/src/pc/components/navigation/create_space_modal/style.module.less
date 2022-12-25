@@ -1,0 +1,54 @@
+@import "~pc/styles/lib_var.less";
+
+.createSpaceWrapper {
+  &.createSpaceWrapperMobile {
+    .spaceNameImg {
+      text-align: center;
+      img {
+        width: calc(100% - 150px + 48px);
+        height: auto;
+      }
+    }
+  }
+
+  .spaceNameImg {
+    img {
+      height: 275px;
+      width: auto;
+    }
+  }
+
+  .title {
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--firstLevelText);
+    text-align: center;
+    margin-top: 18px;
+  }
+
+  .subTitle {
+    color: var(--secondLevelText);
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+    margin: 16px 0 30px 0;
+  }
+
+  .errorMsg {
+    height: 14px;
+    font-size: 10px;
+    margin: 4px 0 6px 0;
+    color: var(--errorColor);
+  }
+
+  .submit {
+    margin-top: 30px;
+  }
+
+  .tip {
+    color: var(--secondLevelText);
+    font-size: 12px;
+    margin-top: 16px;
+    text-align: center;
+  }
+}

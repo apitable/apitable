@@ -1,0 +1,63 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.container {
+  width: 220px;
+  padding: 8px;
+  box-shadow: var(--shadowCommonHigh);
+  box-sizing: border-box;
+  background: var(--highBg);
+  z-index: var(--changRowHeightBox);
+  border-radius: 4px;
+  overflow: hidden auto;
+  cursor: default;
+  .noSelect();
+}
+
+.section {
+  .title {
+    margin-bottom: 8px;
+    padding: 0 8px;
+    font-size: 12px;
+    color: var(--fc3);
+  }
+
+  .autoHeight {
+    padding: 0 8px;
+    font-size: 13px;
+  }
+
+  .rowHeightItem {
+    display: flex;
+    align-items: center;
+    line-height: 35px;
+    height: 35px;
+    border-radius: 4px;
+    padding: 0 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--rowSelectedBg);
+      cursor: pointer;
+      position: relative;
+    }
+
+    &.active {
+      color: var(--primaryColor);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .icon {
+      display: flex;
+      align-items: center;
+      margin-right: 4px;
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}

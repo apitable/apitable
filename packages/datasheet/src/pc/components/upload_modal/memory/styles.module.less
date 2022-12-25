@@ -1,0 +1,34 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+
+.progress {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  padding: 24px 0 20px;
+  color: var(--fc1);
+
+  .progressWrapper {
+    width: 206px;
+    border-radius: 3px;
+    margin-right: 8px;
+
+    .progressLine {
+      background: #2B68FF;
+      border-radius: 3px;
+      height: 100%;
+    }
+  }
+
+}
+
+.tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    margin-left: 13px;
+    margin-right: 8px;
+  }
+}

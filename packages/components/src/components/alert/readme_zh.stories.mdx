@@ -1,0 +1,65 @@
+import { Alert, showAlert } from './index';
+import { Button } from '../button';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="基础组件/Alert 告警/文档" />
+
+# Alert 告警
+
+默认展示
+<Canvas>
+<ThemeToggle>
+  <Alert content="道路千万条，安全第一条，行车不规范，亲人两行泪"/>
+</ThemeToggle>
+</Canvas>
+
+## 带标题
+
+<Canvas>
+<ThemeToggle>
+<Alert content="道路千万条，安全第一条，行车不规范，亲人两行泪" title="北京第三区交通委，提醒您:"/>
+</ThemeToggle>
+</Canvas>
+
+## 4 种语义状态
+
+默认状态是 info
+
+<Canvas>
+<ThemeToggle>
+<Alert content="道路千万条，安全第一条，行车不规范，亲人两行泪" title="北京第三区交通委，提醒您:"/>
+<Alert type="success" content="道路千万条，安全第一条，行车不规范，亲人两行泪" title="北京第三区交通委，提醒您:"/>
+<Alert type="warning" content="道路千万条，安全第一条，行车不规范，亲人两行泪" title="北京第三区交通委，提醒您:"/>
+<Alert type="error" content="道路千万条，安全第一条，行车不规范，亲人两行泪" title="北京第三区交通委，提醒您:"/>
+</ThemeToggle>
+</Canvas>
+
+## 是否可关闭
+
+<Canvas>
+  <Alert closable content="道路千万条，安全第一条，行车不规范，亲人两行泪"/>
+</Canvas>
+
+## 关闭回掉
+
+<Canvas>
+  <Alert closable content="道路千万条，安全第一条，行车不规范，亲人两行泪" onClose={() => alert('我刚才关闭了这条提醒⏰')} />
+</Canvas>
+
+## 函数式调用
+
+可以通过 `showAlert` 函数调用告警组件
+
+<Canvas>
+<Button color="primary" onClick={() => {
+  showAlert({
+    content: '道路千万条，安全第一条，行车不规范，亲人两行泪',
+    type: 'warning',
+    closable: true,
+    duration: 0,
+  });
+}}>
+  点击触发告警
+</Button>
+</Canvas>

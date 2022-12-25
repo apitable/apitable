@@ -1,0 +1,68 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.modeItem {
+  display: flex;
+  flex-direction: row;
+  padding: 24px;
+  flex: 1;
+  border: 1px solid var(--lineColor);
+  border-radius: 6px;
+  @media screen and (min-width: @w-md) {
+    flex-basis: calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+
+  @media screen and (max-width: @w-md) {
+    width: 100%;
+  }
+
+  .img {
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+  }
+
+  .infoContainer {
+    flex: 1;
+
+    .title {
+      height: 32px;
+      line-height: 32px;
+      font-size: 14px;
+      color: var(--firstLevelText);
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .infoItem {
+      font-size: 14px;
+      color: var(--secondLevelText);
+      display: flex;
+      padding-bottom: 8px;
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+
+      .label {
+        white-space: pre;
+      }
+
+      .value {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .defaultLine {
+      display: inline-block;
+      width: 8px;
+      height: 2px;
+      border-radius: 1px;
+      background-color: var(--fourthLevelText);
+    }
+  }
+}

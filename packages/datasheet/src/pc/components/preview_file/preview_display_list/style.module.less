@@ -1,0 +1,62 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.footer {
+  display: flex;
+  justify-content: center;
+}
+
+.displayList {
+  display: inline-flex;
+  overflow-x: auto;
+  flex-shrink: 0;
+  max-width: 100%;
+  align-items: center;
+  height: 80px;
+  padding: 0 4px;
+
+  img {
+    flex-shrink: 0;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .light-scroll-bar();
+}
+
+.item {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
+  margin-right: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.active {
+  border-radius: 2px;
+  box-shadow: 0px 0px 0px 2px var(--defaultBg);
+  opacity: 1;
+}
+
+.imgWrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-sizing: content-box;
+  margin-right: 16px;
+}
+
+@media screen and(max-width: @w-md) {
+  .displayList {
+    padding-bottom: 8px;
+  }
+}

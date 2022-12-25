@@ -1,0 +1,97 @@
+import { ThemeExample } from './examples/theme';
+import { Meta, Canvas } from '@storybook/addon-docs';
+
+<Meta title="暗黑主题" />
+
+### 暗黑主题
+
+组件库支持两种方式使用多主题颜色变量。
+
+#### React Provider 方式支持
+
+使用 styles-components 的 ThemeProvider、useTheme 支持多主题。
+
+```jsx
+import { ThemeProvider } from '@apitable/components';
+```
+
+**使用**
+
+在单页面入口文件或 ReactDOM.render 使用场景需要单独补充 _ThemeProvider_。
+
+```jsx
+const cacheTheme = useSelector(Selectors.getTheme);
+
+ReactDOM.render((
+  <ThemeProvider theme={theme}>
+    <Components />
+  </ThemeProvider>
+), container);
+```
+
+**示例**
+
+```jsx
+import { useState } from 'react';
+import { 
+  defaultTheme, darkTheme, ThemeProvider, RadioGroup, Radio,
+  Button, Select, Typography, Box, TextInput
+} from '@apitable/components';
+
+export const ThemeExample = () => {
+  const [theme, setTheme] = useState('light');
+  const selectedTheme = theme.includes('light') ? defaultTheme : darkTheme;
+  
+  return (
+    <ThemeProvider theme={selectedTheme}>
+      <Box backgroundColor={selectedTheme.color.defaultBg} padding={16}>
+        <Typography variant="h4">
+          选择主题
+        </Typography>
+        <Select
+          options={[
+            { label: '默认主题', value: 'light' },
+            { label: '暗黑主题', value: 'dark' },
+          ]}
+          value={theme}
+          onSelected={(option) => {
+            setTheme(option.value as string);
+          }}
+          dropdownMatchSelectWidth={false}
+          triggerStyle={{ width: 100 }}
+        />
+        <Button>按钮</Button>
+        <Button color="primary"> 默认 fill Button </Button>
+        <Button variant="jelly" color="primary"> 果冻 Button </Button>
+        <TextInput placeholder="请输入内容" />
+        <RadioGroup name="btn-group" isBtn>
+          <Radio value="1">单选 1</Radio>
+          <Radio value="2">单选 2</Radio>
+          <Radio value="3">单选 3</Radio>
+        </RadioGroup>
+      </Box>
+    </ThemeProvider>
+  );
+};
+```
+
+<ThemeExample />
+
+**获取颜色变量**
+
+通过 `useThemeColors` hooks 在子组件中使用颜色变量。
+
+```js
+const colors = useThemeColors();
+```
+
+#### Javascript 方式支持
+
+适用于纯 JavaScript 场景使用，慎重使用。
+
+```js
+import { colors } from '@apitable/components';
+```
+
+
+

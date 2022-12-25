@@ -1,0 +1,14 @@
+apply plugin: 'me.champeau.gradle.jmh'
+
+dependencies {
+  jmh('org.openjdk.jmh:jmh-core:1.27')
+  jmh('org.openjdk.jmh:jmh-generator-annprocess:1.27')
+}
+
+jmh {
+  duplicateClassesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jmhJar {
+  exclude 'LICENSE'
+}

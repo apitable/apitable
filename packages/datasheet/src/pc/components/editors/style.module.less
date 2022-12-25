@@ -1,0 +1,26 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+
+.editorContainer {
+  position: absolute;
+  z-index: var(--container);
+  background: var(--defaultBg);
+}
+
+.focusHolder {
+  width: 0;
+  height: 1;
+  border: none;
+  outline: none;
+  padding: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.popupWrapper {
+  :global {
+    .ant-drawer-content-wrapper {
+      background-color: var(--defaultBg);
+    }
+  }
+}

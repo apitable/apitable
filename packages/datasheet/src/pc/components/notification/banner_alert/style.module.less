@@ -1,0 +1,74 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+.funcAlert {
+  position: fixed;
+  top: 61px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--funcAlert);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.alert {
+  min-height: 48px;
+  background: var(--deepPurple_100);
+  border-radius: 8px;
+  padding: 12px 24px 12px 24px;
+  display: flex;
+  align-items: center;
+  color: var(--primaryColor);
+  border: 1px solid var(--primaryColor);
+  .img {
+    width: 32px;
+    height: 32px;
+    margin-right: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--staticWhite0);
+  }
+  .body {
+    font-size: 16px;
+    text-align: left;
+    display: flex;
+    flex: 1;
+    cursor: default;
+    * {
+      align-self: center;
+    }
+  }
+  .reloadBtn {
+    margin-left: 24px;
+  }
+  .upgradeBtn {
+    margin-left: 24px;
+  }
+
+  &.hasUpgradeBtn .close {
+    margin-left: 24px;
+  }
+  &:not(.hasUpgradeBtn) .close {
+    margin-left: 80px;
+  }
+  .close {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      color: var(--primaryColor);
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .alert {
+    width: 90vw;
+    padding: 12px 16px 12px 16px;
+    .close {
+      margin-left: 24px;
+    }
+  }
+}
