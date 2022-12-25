@@ -1,0 +1,271 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.filterValue {
+  flex: 1;
+  width: 0;
+  height: 40px;
+  margin-right: 8px;
+
+  .inputContainer {
+    height: 100%;
+
+    .input {
+      border: none;
+      background: var(--lowestBg);
+      height: 100%;
+      flex: 1;
+      width: 100%;
+
+      &:hover,
+      &:focus {
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 0px 1px var(--primaryColor);
+        background: var(--defaultBg);
+      }
+    }
+  }
+
+  :global {
+    .numberEditorInput {
+      min-height: 40px;
+    }
+  }
+}
+
+.select {
+  // width: 200px;
+  height: 40px;
+  background: var(--lowestBg);
+  padding: 8px 10px 8px 0;
+  position: relative;
+  border-radius: 4px;
+
+  & > div {
+    &:last-child {
+      position: unset;
+    }
+  }
+
+  .displayBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    cursor: pointer;
+
+    .content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      margin-right: 5px;
+
+      .items {
+        background: #fedfd7;
+        border-radius: 10px;
+        padding: 3px 10px;
+        margin-right: 10px;
+        flex-shrink: 0;
+      }
+    }
+
+    .iconArrow {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .placeholder {
+      color: #9FA1BB;
+      font-size: 13px;
+      margin-left: 8px;
+    }
+  }
+
+  .selectList {
+    top: 36px;
+    left: 0;
+    max-height: 500px;
+    overflow-y: auto;
+    .light-scroll-bar();
+    box-shadow: 0px 1px 14px 0px var(--shadowColor);
+    border-radius: 4px;
+  }
+}
+
+.filterDate {
+  display: flex;
+  align-items: center;
+
+  & > div {
+    &:nth-child(1) {
+      margin-right: 10px;
+    }
+
+    &:nth-child(2) {
+      //width: 96px;
+      box-shadow: none;
+
+      input {
+        background: var(--lowestBg);
+        border-radius: 4px;
+        height: 40px;
+        line-height: 40px;
+        width: 100%;
+        padding-left: 8px;
+      }
+    }
+  }
+
+  &:focus {
+    outline: none !important;
+    border: none !important;
+  }
+}
+
+.numberContainer {
+  height: 100%;
+
+  & > div {
+    width: 100%;
+    box-shadow: none;
+
+    input {
+      background: var(--lowestBg) !important;
+      border-radius: 4px;
+      height: 100% !important;
+      line-height: 100% !important;
+
+      &:focus {
+        outline: none;
+        border: none;
+        box-shadow: 0px 0px 0px 1px var(--primaryColor);
+        background: var(--defaultBg) !important;
+
+        @media screen and(max-width: @w-md) {
+          appearance: none;
+        }
+      }
+    }
+  }
+}
+
+.ratingContainer {
+  background: var(--lowestBg);
+  border-radius: 4px;
+  height: 100%;
+  padding-top: 4px;
+}
+
+.checkboxContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--lowestBg);
+  border-radius: 4px;
+  height: 40px;
+}
+
+.option {
+  & > div {
+    flex-wrap: nowrap !important;
+    align-self: auto;
+  }
+}
+
+.dataDuration {
+  width: 104px;
+
+  & > div {
+    height: 100% !important;
+    border: none !important;
+    background: var(--lowestBg) !important;
+
+    &:focus {
+      box-shadow: 0px 0px 0px 1px var(--primaryColor);
+    }
+
+    & > div {
+      line-height: 100% !important;
+
+      svg {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .ratingContainer {
+    padding-top: 0;
+  }
+
+  .filterValue {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    margin-top: 8px;
+
+    .select {
+      height: 100%;
+    }
+
+    :global {
+      .numberEditorInput {
+        min-height: 48px;
+      }
+    }
+  }
+
+  .filterDate {
+    height: 100%;
+  }
+
+  .checkboxContainer {
+    height: 100%;
+  }
+
+  .wrapper {
+    height: 100%;
+    background: var(--lowestBg);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    :global {
+      .pickerChildrenWrapper {
+        padding-right: 12px;
+
+        & > span {
+          .ellipsis();
+        }
+      }
+    }
+  }
+}
+
+.dateRange {
+  background: var(--lowestBg) !important;
+  border: none !important;
+  height: 40px !important;
+  width: 220px;
+  padding: 0 8px;
+
+  :global {
+    .ant-picker-input input {
+      padding-left: 0 !important;
+
+      &::-webkit-input-placeholder {
+        color: var(--thirdLevelText) !important;
+      }
+    }
+  }
+}
+
+.mobileRangePicker {
+  display: flex;
+  width: 220px;
+}

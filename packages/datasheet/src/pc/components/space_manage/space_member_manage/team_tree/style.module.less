@@ -1,0 +1,220 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.addressTreeMenuWrapper {
+  position: relative !important;
+  height: 100%;
+  // width: 200px;
+  display: flex;
+  flex-direction: column;
+  background: var(--defaultBg);
+  .originContent {
+    border-right: 1px solid var(--lowestBg);
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .inviteOutsiderBtn {
+      margin: 24px auto;
+      svg {
+        margin-right: 4px;
+      }
+    }
+
+    .treeWrapper {
+      width: 100%;
+      overflow: hidden;
+
+      .light-scroll-bar();
+      &:hover {
+        overflow-y: auto;
+      }
+    }
+  }
+  .searchTitle {
+    padding: 24px 20px 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: var(--firstLevelText);
+    div {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--secondLevelText);
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  .portrait {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .inviteBtn {
+    width: 134px;
+    height: 40px;
+    background: var(--defaultBg);
+    border-radius: 4px;
+    border: 1px solid var(--shadowColor);
+    font-size: 13px;
+    color: var(--secondLevelText);
+    outline: none;
+    margin: 8px auto 26px 33px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+      width: 15px;
+      height: 15px;
+      margin-right: 4px;
+      fill: var(--secondLevelText);
+    }
+  }
+
+  :global {
+    .ant-tree {
+      .ant-tree-treenode {
+        padding: 0;
+      }
+      &.ant-tree-directory .ant-tree-treenode::before {
+        bottom: 0;
+      }
+      span.ant-tree-switcher,
+      span.ant-tree-iconEle {
+        height: 40px;
+        width: 24px;
+        line-height: 40px;
+        svg {
+          fill: var(--fourthLevelText);
+          width: 16px;
+          height: 16px;
+          transform: rotate(90deg);
+        }
+      }
+      span.ant-tree-switcher {
+        margin-left: 20px;
+      }
+      .ant-tree-switcher-icon {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      .ant-tree-switcher_close .ant-tree-switcher-icon svg {
+        transform: rotate(0deg);
+      }
+      span.ant-tree-iconEle {
+        svg {
+          width: 15px;
+          height: 15px;
+        }
+      }
+      .ant-tree-indent-unit {
+        width: 24px;
+      }
+      .ant-tree-node-content-wrapper,
+      .ant-tree-title {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px !important;
+        padding: 0;
+        flex: 1;
+      }
+
+      .ant-tree-title {
+        width: 100%;
+        color: var(--secondLevelText);
+        font-size: 14px;
+        .react-contextmenu-wrapper {
+          display: flex !important;
+          height: 40px;
+          line-height: 40px;
+          justify-content: space-between;
+          align-items: center;
+          div {
+            flex: 1;
+            .ellipsis();
+          }
+          span {
+            display: inline-block;
+            height: 40px;
+            line-height: 44px;
+            margin-right: 13px;
+            visibility: hidden;
+            svg {
+              fill: var(--thirdLevelText);
+              width: 16px;
+              height: 16px;
+            }
+          }
+        }
+        &:hover .react-contextmenu-wrapper span {
+          visibility: visible;
+        }
+      }
+      .ant-tree-node-content-wrapper {
+        width: ~"calc(100% - 24px)";
+        overflow: hidden;
+      }
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      .ant-tree-node-selected {
+        .ant-tree-iconEle {
+          svg {
+            fill: var(--primaryColor);
+          }
+        }
+        .ant-tree-title {
+          color: var(--primaryColor);
+        }
+      }
+      &.ant-tree-directory .ant-tree-treenode:hover::before,
+      .ant-tree-treenode-selected::before,
+      .ant-tree-node-content-wrapper:hover::before {
+        background: var(--rowSelectedBg) !important;
+      }
+    }
+    .react-contextmenu--visible {
+      width: 220px;
+      background: var(--highestBg);
+      z-index: var(--contextmenu);
+      border-radius: 4px;
+      border: 1px solid var(--lineColor);
+      .react-contextmenu-item {
+        height: 40px;
+        line-height: 40px;
+        font-size: 13px;
+        color: var(--firstLevelText);
+        display: flex;
+        align-items: center;
+        padding-left: 13px;
+        svg {
+          width: 16px;
+          height: 16px;
+          fill: var(--thirdLevelText);
+          margin-right: 4px;
+        }
+        &:hover {
+          cursor: pointer;
+          background: var(--rowSelectedBg);
+        }
+      }
+    }
+  }
+}

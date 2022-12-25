@@ -1,0 +1,70 @@
+@import "~pc/styles/lib_var.less";
+
+.quickAppend {
+  position: absolute;
+  transform: translate(-50%, calc(-50% - 1px));
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .quickAppendToolsWrap {
+    display: flex;
+    align-items: center;
+    width: 14px;
+    height: 14px;
+
+    &:active {
+      .iconAddWrap {
+        background: #5f50ba;
+      }
+    }
+
+    .iconAddWrap {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid var(--shadowColor);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--defaultBg);
+      transition: transform 0.3s;
+
+      svg {
+        fill: var(--shadowColor);
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    .quickAppendLine {
+      position: absolute;
+      left: 16px;
+      visibility: hidden;
+      background: var(--primaryColor);
+      height: 1px;
+    }
+  }
+
+  &:hover {
+    .iconAddWrap {
+      transform: scale(1.2);
+      border: 1px solid transparent;
+      background: var(--primaryColor);
+
+      svg {
+        fill: var(--static-white);
+      }
+    }
+
+    .quickAppendLine {
+      visibility: visible;
+    }
+  }
+}

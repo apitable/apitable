@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.control.mapper.ControlMapper">
+    <select id="selectByControlId" resultType="com.apitable.control.entity.ControlEntity">
+        SELECT *
+        FROM ${tablePrefix}control
+        WHERE control_id = #{controlId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByControlIds" resultType="com.apitable.control.entity.ControlEntity">
+        SELECT *
+        FROM ${tablePrefix}control
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectCountByControlId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}control
+        WHERE control_id = #{controlId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectControlIdByControlIdPrefixAndType" resultType="java.lang.String">
+        SELECT DISTINCT control_id
+        FROM ${tablePrefix}control
+        WHERE control_id LIKE CONCAT(#{prefix}, '%')
+        AND control_type = #{type}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectControlIdByControlIds" resultType="java.lang.String">
+        SELECT control_id
+        FROM ${tablePrefix}control
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectOwnerControlUnitDTO"
+            resultType="com.apitable.control.model.ControlUnitDTO">
+        SELECT vc.control_id, vu.id AS unitId
+        FROM ${tablePrefix}control vc
+        JOIN ${tablePrefix}unit_member vum ON vc.updated_by = vum.user_id AND vc.space_id = vum.space_id
+        JOIN ${tablePrefix}unit vu ON vum.id = vu.unit_ref_id AND vu.is_deleted = 0
+        WHERE vc.control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vc.is_deleted = 0
+        AND vum.is_deleted = 0
+    </select>
+
+    <select id="selectControlTypeDTO"
+            resultType="com.apitable.control.model.ControlTypeDTO">
+        SELECT control_id, control_type
+        FROM ${tablePrefix}control
+        WHERE space_id = #{spaceId}
+        AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}control(id, space_id, control_id, control_type, created_by,
+        updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.spaceId}, #{item.controlId}, #{item.controlType},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <delete id="deleteByControlIds">
+        UPDATE ${tablePrefix}control
+        SET is_deleted = 1, updated_by = #{userId}
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectDeletedByControlIdAndSpaceId" resultType="com.apitable.control.entity.ControlEntity">
+        SELECT * FROM ${tablePrefix}control
+        WHERE control_id = #{controlId}
+        AND space_id = #{spaceId}
+        AND control_type = #{controlType.val}
+        AND is_deleted = 1
+    </select>
+
+    <update id="updateIsDeletedByIds">
+        UPDATE ${tablePrefix}control
+        SET is_deleted = #{isDeleted}, updated_by = #{userId}
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

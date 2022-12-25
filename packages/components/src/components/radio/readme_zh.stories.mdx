@@ -1,0 +1,55 @@
+import { ArrowRightOutlined } from '@apitable/icons';
+import { Radio } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="表单组件/Radio 单选/文档" />
+
+# Radio 单选
+
+一般不单独使用，提供了API 对 Radio 单选进行控制。
+
+## 使用方式
+
+```jsx
+import { Radio } from '@apitable/components';
+```
+
+## 默认
+
+<Canvas>
+<ThemeToggle>
+ <Radio />
+</ThemeToggle>
+</Canvas>
+
+## 默认选中
+
+<Canvas>
+<ThemeToggle>
+ <Radio checked />
+</ThemeToggle>
+</Canvas>
+
+## 禁用
+
+<Canvas>
+<ThemeToggle>
+  <Radio disabled />
+  <Radio disabled checked />
+</ThemeToggle>
+</Canvas>
+
+## 回调
+
+<Canvas>
+<ThemeToggle>
+ <Radio onChange={() => {
+    alert('选中了😁');
+  }} />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={Radio} />

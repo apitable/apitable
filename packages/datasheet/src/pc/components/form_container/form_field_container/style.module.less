@@ -1,0 +1,278 @@
+@import "~pc/styles/lib_var.less";
+
+@font-face {
+  font-family: "fieldIndexFamily";
+  src: url("~static/font/Rubik-Bold.ttf");
+}
+
+:global {
+  .form-field-ui-transition-enter {
+    opacity: 0;
+  }
+
+  .form-field-ui-transition-enter-active {
+    opacity: 1;
+    transition: opacity 500ms;
+  }
+}
+
+.formFieldContainer {
+  width: 100%;
+
+  :global {
+    .attachmentPreviewItem {
+      z-index: var(--formAttachment);
+    }
+    .textEditorInput,
+    .numberEditorInput {
+      min-height: 40px;
+    }
+  }
+}
+
+.formField {
+  margin-bottom: 40px;
+
+  &[data-hasError="true"] {
+    .title {
+      color: var(--red_500);
+    }
+    .displayItem {
+      box-shadow: 0px 0px 0px 1px var(--red_500);
+    }
+  }
+
+  &:hover {
+    .title > .buttonsGroup {
+      display: flex;
+    }
+  }
+
+  .title {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 24px;
+    color: var(--firstLevelText);
+    &[data-required="true"] {
+      &::before {
+        content: "*";
+        font-size: 16px;
+        color: var(--red_500);
+        position: absolute;
+        left: -16px;
+        top: -4px;
+        font-family: "Segoe UI Symbol";
+      }
+    }
+
+    .indexClass {
+      margin-right: 8px;
+      font-family: "fieldIndexFamily";
+      font-size: 24px;
+      // Return to initial font style
+      font-feature-settings: "init";
+      font-variant: none;
+    }
+
+    .titleText {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .buttonsGroup {
+      background: linear-gradient(270deg, var(--defaultBg) 83.61%, rgba(var(--fc5-rgb), 0) 100%);
+      display: none;
+      height: 100%;
+      padding-left: 24px;
+      position: absolute;
+      right: 0;
+
+      &.touchDevice {
+        background: var(--defaultBg);
+        display: flex;
+        flex-grow: 1;
+        justify-content: flex-end;
+        padding-left: 16px;
+        position: inherit;
+      }
+    }
+  }
+  .errorMsg {
+    font-size: 14px;
+    color: var(--red_500);
+    padding: 8px 0;
+    margin-top: -16px;
+  }
+  .fieldDesc {
+    margin-top: -12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    word-break: normal;
+    word-wrap: break-word;
+    color: var(--black_500);
+    line-height: 20px;
+    white-space: pre-wrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  }
+}
+
+.displayItem {
+  width: 100%;
+  min-height: 40px;
+  background: var(--lowestBg);
+  border-radius: 4px;
+
+  & > div {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &.editable {
+    transition: all 0.3s ease-in-out;
+    @media (any-hover: hover) {
+      input,
+      textarea {
+        transition: box-shadow 0.3s ease-in-out,
+          background-color 0.3s ease-in-out;
+        border-radius: 4px;
+      }
+
+      &:hover,
+      & > input:hover,
+      & > textarea:hover {
+        box-shadow: 0px 0px 0px 1px var(--fc5);
+      }
+
+      &:focus-within,
+      & > input:focus,
+      textarea:focus {
+        box-shadow: 0px 0px 0px 1px var(--primaryColor);
+        background-color: var(--defaultBg);
+      }
+    }
+  }
+
+  &.disable {
+    transition: all 0.3s ease-in-out;
+
+    @media (any-hover: hover) {
+      input,
+      textarea {
+        transition: all 0.3s ease-in-out;
+        border-radius: 4px;
+      }
+
+      &:hover,
+      & > input:hover,
+      & > textarea:hover {
+        box-shadow: 0px 0px 0px 1px var(--fc5);
+      }
+    }
+  }
+
+  &.needPosition {
+    position: relative;
+  }
+
+  &.active {
+    background: var(--defaultBg);
+    box-shadow: 0px 0px 0px 1px var(--primaryColor) !important;
+  }
+
+  &.autoFit {
+    width: fit-content;
+  }
+
+  &.displayItemMobile {
+    padding: 0 16px 0 6px;
+    min-height: 48px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    // Reset some properties on the edit class component
+    & > div {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.addBtn {
+  background-color: var(--shadowColor);
+  &:active {
+    background-color: var(--shadowColor);
+  }
+  cursor: default;
+  .inner {
+    display: flex;
+    align-items: center;
+  }
+  .addIcon {
+    margin-right: 5px;
+  }
+}
+
+.formFormula {
+  display: flex !important;
+  align-items: center;
+  min-height: 40px;
+  :global {
+    .cellText {
+      padding-top: 0;
+    }
+  }
+}
+
+.formLookup {
+  & > div {
+    line-height: 32px;
+    font-size: 13px;
+  }
+}
+
+.lookupOption {
+  padding: 4px 3px;
+  transition: none !important;
+  :global {
+    .optionCellContainer {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.formFieldItem {
+  :global {
+    .optionCellContainer {
+      flex-wrap: wrap;
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+  }
+}
+
+.formCellNumber {
+  padding: 0 10px !important;
+  line-height: 40px !important;
+}
+
+.formLookUpFieldEmpty {
+  color: var(--fc1);
+  padding: 4px 8px;
+  opacity: 0.4;
+}
+
+@media screen and (max-width: 768px) {
+  .needPosition,
+  .formFieldItem {
+    :global {
+      .ant-drawer-inline {
+        position: fixed !important;
+      }
+    }
+  }
+}

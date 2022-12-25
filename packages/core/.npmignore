@@ -1,0 +1,11 @@
+# if package publish to npm, only d.ts will be published, and sensitive information will be removed
+.yarn
+src
+dist/**/*.js
+dist/**/*.d.ts.map
+tsconfig.json
+coverage/*
+sonar-project.properties
+tsconfig.publish.json
+node_modules
+README.md

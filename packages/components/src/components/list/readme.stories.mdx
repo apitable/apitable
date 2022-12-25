@@ -1,0 +1,167 @@
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { StoryType } from '../../stories/constants';
+import { List } from './index';
+import { ListItem } from './item';
+import { TextButton } from '../text_button';
+import { Box } from '../box';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/List" />
+
+# List
+
+A basic list display that can carry a continuous set of text or graphics.
+
+## Usage
+
+```jsx
+import { List } from '@apitable/components';
+```
+
+## Examples
+
+### Basic
+
+<Canvas>
+<ThemeToggle lang="en">
+  <List
+    data={[
+      'list 1',
+      'list 2',
+      'list 3',
+      'list 4',
+      'list 5'
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+### With border
+
+<Canvas>
+<ThemeToggle lang="en">
+  <List
+    bordered
+    data={[
+      'list 1',
+      'list 2',
+      'list 3',
+      'list 4',
+      'list 5'
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+### With header and bottom styles
+
+<Canvas>
+<ThemeToggle lang="en">
+  <List
+    bordered
+    data={[
+      'list 1',
+      'list 2',
+      'list 3',
+      'list 4',
+      'list 5'
+    ]}
+    footer={<div>footer content</div>}
+    header={<div>header content</div>}
+  />
+</ThemeToggle>
+</Canvas>
+
+### Example of adding child elements
+
+The `data` property sets `actions` field to add actions to the list child elements.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <List
+    bordered
+    data={[
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
+        ],
+        children: 'list 1'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
+        ],
+        children: 'list 2'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
+        ],
+        children: 'list 3'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
+        ],
+        children: 'list 4'
+      },
+      {
+        actions: [
+          <TextButton color="primary" size="x-small">Edit</TextButton>,
+          <TextButton color="danger" size="x-small">Delete</TextButton>
+        ],
+        children: 'list 5'
+      }
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+### Custom list child elements
+
+Modify the UI style of list child elements through the `renderItem` property, for example, `renderItem` returns the UI rendered by the `Box` component:
+
+<Canvas>
+<ThemeToggle lang="en">
+  <List
+    data={new Array(5).fill(null).map((_, index) => `list ${index + 1}`)}
+    bordered
+    renderItem={(item, index) => (
+      <Box
+        key={index}
+        padding={3}
+        bg="#7B67EE"
+        color="#fff"
+        borderBottom="1px dashed #fff"
+      >
+        {item}
+      </Box>
+    )}
+  />
+</ThemeToggle>
+</Canvas>
+
+### API
+
+* IListProps
+
+| Name       | Type                                                        | Description                  | Default |
+|------------|-------------------------------------------------------------|------------------------------|---------|
+| bordered   | boolean                                                     | with or without border style | -       |
+| children   | ReactNode                                                   | child element                | -       |
+| header     | ReactNode                                                   | list header UI               | -       |
+| footer     | ReactNode                                                   | list tail UI                 | -       |
+| data       | (string / object / IListItemProps)[]                        | list data                    | -       |
+| renderItem | (item: string / IListItemProps, index: number) => ReactNode | custom list child element UI | -       |
+
+
+* IListItemProps
+
+| Name     | Type        | Description       | Default |
+|----------|-------------|-------------------|---------|
+| children | ReactNode   | child element     | -       |
+| actions  | ReactNode[] | action collection | -       |

@@ -1,0 +1,23 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.comment {
+  width: 100%;
+  background-color: var(--white);
+  display: inline-block;
+  border-radius: 4px;
+  padding: 8px;
+  .content {
+    background-color: transparent;
+    padding: 0;
+  }
+}
+
+
+@media screen and (max-width:@w-md) {
+  .comment {
+    border-radius: 8px;
+    border-top-left-radius: 0;
+  }
+}

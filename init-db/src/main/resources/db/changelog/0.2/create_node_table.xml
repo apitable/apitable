@@ -1,0 +1,126 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-011" author="ShawnDeng" labels="node">
+        <comment>Create node table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `parent_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT 'Parent Node Id',
+            `pre_node_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'ID of the previous node under the same level',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Node ID',
+            `node_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Node Name',
+            `type` tinyint(2) unsigned NOT NULL COMMENT 'Type (0:Root node,1:Folder,2:Datasheet)',
+            `creator` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_node_id` (`node_id`) USING BTREE COMMENT 'Node unique code'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench -  Node Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-012" author="ShawnDeng" labels="node">
+        <comment>Create node permission setting table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_permission` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID',
+            `node_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Node ID',
+            `unit_id` bigint(20) unsigned NOT NULL COMMENT 'Org Unit ID',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Node Role Code',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_node_id` (`node_id`) USING BTREE,
+            KEY `k_unit_id` (`unit_id`) USING BTREE,
+            KEY `k_role_code` (`role_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Node Role Permission Setting Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_permission"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-013" author="ShawnDeng" labels="node">
+        <comment>Create node resource table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_resource` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `resource_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Code',
+            `resource_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Name',
+            `resource_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Resource Type（0:Node,1:View,2:Field,3:Record）',
+            `resource_desc` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Description',
+            `field_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Field Name',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Node Resource Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_resource"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-014" author="ShawnDeng" labels="node">
+        <comment>Create node role table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_role` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `role_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role Code',
+            `role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role Name',
+            `role_level` int(2) NOT NULL DEFAULT '1' COMMENT 'Priority, the smaller the priority, the higher the priority',
+            `role_desc` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role Description',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_rule_code` (`role_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Node Role Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_role"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-015" author="ShawnDeng" labels="node">
+        <comment>Create node role resource association table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_role_resource_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Node Role Code',
+            `resource_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Node resource code',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_role_code` (`role_code`) USING BTREE,
+            KEY `k_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Node Role Resource Association Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_role_resource_rel"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

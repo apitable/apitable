@@ -1,0 +1,65 @@
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210427-001" author="Chamber" labels="control">
+        <comment>Create Control Role Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}control_role`
+            (
+            `id`         bigint(20) unsigned                                           NOT NULL COMMENT 'Primary Key',
+            `control_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Control Tag',
+            `unit_id`    bigint(20) unsigned                                           NOT NULL COMMENT 'Unit ID',
+            `role_code`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT 'Role Code',
+            `created_by` bigint(20)                                                             DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20)                                                             DEFAULT NULL COMMENT 'Last Update By',
+            `created_at` timestamp                                                     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp                                                     NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `uk_control_unit_role` (`control_id`, `unit_id`, `role_code`) USING BTREE
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT ='Workbench - Control Role Table';
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210427-002" author="Chamber" labels="control">
+        <comment>Control Table delete unique index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}control`
+            DROP INDEX `uk_control_unit_role`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210427-003" author="Chamber" labels="control">
+        <comment>Control Table delete unit_id field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}control`
+            DROP COLUMN `unit_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.7-20210427-004" author="Chamber" labels="control">
+        <comment>Control Table delete role_code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}control`
+            DROP COLUMN `role_code`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

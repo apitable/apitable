@@ -1,0 +1,155 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+:global(.ant-modal-body) {
+  .viewFilter {
+    background: var(--defaultBg);
+  }
+}
+
+.viewFilter {
+  width: 720px;
+  overflow: auto;
+  // height: 242px;
+  box-sizing: border-box;
+  background: var(--highBg);
+  z-index: var(--viewFilterBox);
+  border-radius: 4px;
+  cursor: default;
+  @media screen and(min-width: @w-md) {
+    &.shadow {
+      padding: 24px;
+      box-shadow: var(--shadowCommonHigh);
+    }
+  }
+  .noSelect();
+
+  h4 {
+    font-size: 13px;
+    color: var(--thirdLevelText);
+  }
+
+  .addNewButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: max-content;
+    color: var(--secondLevelText);
+
+    .iconAdd {
+      display: flex;
+      align-items: center;
+      margin-right: 4px;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--primaryColor);
+
+        svg {
+          fill: var(--primaryColor);
+        }
+      }
+    }
+  }
+
+  .condition {
+    padding-top: 2px;
+
+    .conditionItem {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .conditionWarn {
+      position: absolute;
+      left: 8px;
+
+      svg {
+        cursor: pointer;
+        display: block;
+      }
+    }
+  }
+}
+
+:global {
+  .ant-select-selection-selected-valueP {
+    display: none;
+  }
+}
+
+.ant-select-selection-selected-value {
+  width: 100%;
+}
+
+@media screen and (max-width: @w-md) {
+  .viewFilter {
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    padding: 0;
+    background: var(--defaultBg);
+
+    .condition {
+      max-height: calc(100% - 48px);
+
+      .conditionItem {
+        flex-direction: column;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .addNewButton {
+    width: fit-content;
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    padding: 12px 8px;
+
+    span {
+      margin-right: 8px;
+    }
+
+    &:active {
+      color: var(--primaryColor);
+
+      svg {
+        fill: var(--primaryColor);
+      }
+    }
+  }
+}
+
+.boxTop {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+  justify-content: space-between;
+
+  svg {
+    margin-left: 8px;
+    cursor: pointer;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.scrollShadow {
+  position: absolute;
+  left: 0;
+  bottom: 46px;
+  width: 100%;
+  height: 20px;
+  background: var(--bgGradientVertical);
+  pointer-events: none;
+}

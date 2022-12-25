@@ -1,0 +1,52 @@
+
+.spaceBaseInfoPopover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  width: 224px;
+
+  .spaceName {
+    margin-top: 16px;
+    width: 100%;
+    color: var(--firstLevelText);
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  
+  .metaInfo {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 16px;
+  }
+  
+  .sepLine {
+    box-sizing: content-box!important;
+    border-top: 1px solid var(--fc5);
+    width: 100%;
+  }
+  
+  .item {
+    display: flex;
+    margin-top: 16px;
+    width: 100%;
+    font-size: 13px;
+    .label {
+      color: var(--thirdLevelText);
+    }
+  }
+  .copy {
+    width: 16px;
+    height: 16px;
+    fill: --fc3;
+    vertical-align: middle;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+}

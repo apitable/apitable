@@ -1,0 +1,78 @@
+/*
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.apitable.player.service.impl;
+
+import java.util.Collections;
+import java.util.List;
+
+import cn.hutool.core.lang.Dict;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.junit.jupiter.api.Test;
+
+import com.apitable.AbstractIntegrationTest;
+import com.apitable.player.dto.NotificationModelDTO;
+import com.apitable.player.service.IPlayerNotificationService;
+import com.apitable.shared.component.notification.INotificationFactory;
+import com.apitable.shared.component.notification.NotificationManager;
+import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.sysconfig.notification.NotificationTemplate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST;
+import static com.apitable.shared.constants.NotificationConstants.EXTRA_TOAST_URL;
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * <p>
+ * user notification service test
+ * </p>
+ */
+public class PlayerNotificationServiceImplTest extends AbstractIntegrationTest {
+    @Autowired
+    private IPlayerNotificationService iPlayerNotificationService;
+
+    @Autowired
+    private INotificationFactory notificationFactory;
+
+    @Test
+    public void testCreateNewUserWelcomeNotification() {
+        Long userId = IdWorker.getId();
+        // jump to third site
+        NotificationTemplate template =
+                notificationFactory.getTemplateById(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY.getValue());
+        Dict extras = Dict.create();
+        if (StrUtil.isNotBlank(template.getUrl()) && template.getUrl().startsWith("http")) {
+            Dict toast = Dict.create();
+            toast.put(EXTRA_TOAST_URL, template.getUrl());
+            extras.put(EXTRA_TOAST, toast);
+        }
+        NotificationManager.me().playerNotify(NotificationTemplateId.NEW_USER_WELCOME_NOTIFY,
+                Collections.singletonList(userId), 0L, null, extras);
+        List<NotificationModelDTO> notify = iPlayerNotificationService.getUserNotificationByTypeAndIsRead(userId,
+                0);
+        JSONObject extrasObj = JSONUtil.parseObj(notify.get(0).getNotifyBody());
+        assertThat(extrasObj.getByPath(BODY_EXTRAS + "." + EXTRA_TOAST + "." + EXTRA_TOAST_URL)).isEqualTo(template.getUrl());
+
+    }
+}

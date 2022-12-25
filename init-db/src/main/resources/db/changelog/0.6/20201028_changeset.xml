@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.6-20201028-001" author="Chambers" labels="space">
+        <comment>Create Space Apply Table</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_001.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-002" author="Chambers" labels="node">
+        <comment>Node Table add exra field</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_002.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-003" author="Chambers" labels="node">
+        <comment>Node Share Setting Table add field view ID</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_003.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-004" author="Chambers" labels="node">
+        <comment>Node Share Setting Table delete node id unique index</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_004.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-005" author="Chambers" labels="node">
+        <comment>Node Share Setting Table add ndoe ID、view ID unique index</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_005.sql"/>
+    </changeSet>
+    <changeSet id="V0.6-20201028-006" author="Zoe" labels="datasheet">
+        <comment>Create Datasheet Record Comment Table</comment>
+        <sqlFile path="db/changelog/0.6/20201028_changeset_006.sql"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.8-20210907-001" author="Chambers" labels="unit">
+        <comment>Member Table add idx_user_id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}unit_member`
+            ADD INDEX `idx_user_id`(`user_id`) USING BTREE COMMENT 'User ID Index';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.8-20210907-002" author="Chambers" labels="unit">
+        <comment>Member Taable modify status field notes</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}unit_member`
+            MODIFY COLUMN `status` tinyint(2) UNSIGNED NULL DEFAULT 0 COMMENT 'User space status (0: inactive; 1: active; 2: pre delete)' AFTER `open_id`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

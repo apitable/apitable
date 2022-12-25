@@ -1,0 +1,122 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.adjustMemberModal {
+  .portrait {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 50%;
+    text-align: center;
+    margin: 20px auto 15px auto;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .item {
+    .content {
+      width: 100%;
+      height: 42px;
+      position: relative;
+      
+      .wecomLayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        padding: 10px 8px;
+        pointer-events: none;
+      }
+    }
+  }
+  .label {
+    height: 20px;
+    color: var(--thirdLevelText);
+    font-size: 13px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .err {
+    font-size: 12px;
+    color: var(--errorColor);
+    height: 20px;
+  }
+  .deptItem {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 40px;
+    align-items: center;
+    margin-bottom: 12px;
+    .teamWrapper {
+      display: flex;
+      position: relative;
+      font-size: 11px;
+      height: 34px;
+      padding: 0 7px;
+      background-color: var(--lowestBg);
+      border-radius: 2px;
+      margin-right: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      &:hover {
+        cursor: default;
+      }
+      .teamText {
+        .ellipsis();
+        display: inline-block;
+        max-width: 270px;
+      }
+      .teamRemoveIcon {
+        width: 16px;
+        height: 16px;
+        box-sizing: content-box;
+        display: flex;
+        margin-left: 4px;
+        &:hover {
+          cursor: pointer;
+        }
+        svg {
+          width: 16px !important;
+          height: 16px !important;
+          fill: var(--thirdLevelText);
+        }
+      }
+    }
+  }
+  .addBtn {
+    margin-bottom: 8px;
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+  :global {
+    .ant-modal-content {
+      border-radius: 4px;
+      padding: 24px;
+    }
+
+    .ant-modal-header,
+    .ant-modal-body {
+      padding: 0px;
+    }
+
+    .ant-modal-header,
+    .ant-modal-body,
+    .ant-modal-footer {
+      border: none;
+    }
+
+    .ant-modal-title {
+      height: 25px;
+      font-size: 18px !important;
+      color: var(--firstLevelText) !important;
+    }
+    .ant-modal-footer {
+      padding: 0;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# the current package will be published to npm, which only keep d.ts without source code and expels all non-essential sensitive information in
+.yarn
+src
+docs
+docs.js
+dist/**/*.js
+dist/**/*.d.ts.map
+tsconfig.json
+coverage
+yarn-error.log
+sonar-project.properties
+babel.config.js
+jest.config.ts

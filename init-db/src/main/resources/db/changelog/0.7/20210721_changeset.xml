@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.7-20210721-002" author="Pengap" labels="widget">
+        <comment>Create Workbench - Develop Asset Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}developer_asset` (
+            `id` bigint UNSIGNED NOT NULL COMMENT 'Primary Key',
+            `type` tinyint unsigned NOT NULL COMMENT 'Type (0: widget)',
+            `source_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Source file name, the file name of this upload',
+            `asset_id` bigint DEFAULT NULL COMMENT 'Resource ID(link#xxxx_asset#id)',
+            `asset_checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '[Redundancy]md5 Abstract',
+            `file_size` int NOT NULL COMMENT '[Redundancy]File size (unit: byte)',
+            `height` int DEFAULT NULL COMMENT 'Image Height',
+            `width` int DEFAULT NULL COMMENT 'Image Width',
+            `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+            `created_by` bigint(20) DEFAULT NULL COMMENT 'Creator',
+            `updated_by` bigint(20) DEFAULT NULL COMMENT 'Last Update By',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARSET = utf8mb4
+            COLLATE = utf8mb4_unicode_ci COMMENT = 'Workbench-Develop Asset Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,82 @@
+# Install dependencies only when needed
+FROM apitable/nodepy:16.15.0-alpine AS deps
+
+WORKDIR /workspace-install
+
+COPY .yarn/ ./.yarn/
+COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
+
+# datasheet dependencies packages
+COPY packages/components/package.json ./packages/components/
+COPY packages/core/package.json ./packages/core/
+COPY packages/i18n-lang/package.json ./packages/i18n-lang/
+COPY packages/icons/package.json ./packages/icons/
+COPY packages/widget-sdk/package.json ./packages/widget-sdk/
+
+# datasheet main
+COPY packages/datasheet/package.json ./packages/datasheet/
+
+RUN yarn workspaces focus @apitable/datasheet root
+
+# stage builder
+FROM apitable/nodepy:16.15.0-alpine AS builder
+
+ARG SEMVER_FULL="development"
+ARG NEXT_ASSET_PREFIX=""
+ARG NEXT_PUBLIC_ASSET_PREFIX=""
+ENV BUILD_VERSION ${SEMVER_FULL}
+ENV SENTRY_CONFIG_URL='https://sentry.vika.ltd'
+ENV SENTRY_CONFIG_AUTH_TOKEN='8064f23ee6414768883ca149622f3941b2d8a043fc9846cb8d7a4af26feb2879'
+ENV SENTRY_CONFIG_DSN='https://d486e5409b1d4439ad0f250598cde620@sentry.vika.ltd/3'
+
+
+WORKDIR /app
+
+COPY --from=deps /workspace-install/node_modules ./node_modules
+COPY --from=deps /workspace-install/packages/datasheet/node_modules ./packages/datasheet/node_modules
+
+COPY .yarn ./.yarn
+COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
+COPY packages/ ./packages/
+
+RUN set -eux; \
+    sed -i~ '$a\WEB_CLIENT_VERSION='${SEMVER_FULL}'' packages/datasheet/.env; \
+    sed -i~ 's~^NEXT_ASSET_PREFIX=.*~NEXT_ASSET_PREFIX='${NEXT_ASSET_PREFIX}'~' packages/datasheet/.env; \
+    sed -i~ 's~^NEXT_PUBLIC_ASSET_PREFIX=.*~NEXT_PUBLIC_ASSET_PREFIX='${NEXT_PUBLIC_ASSET_PREFIX}'~' packages/datasheet/.env
+
+RUN yarn build:dst
+
+# stage runner
+FROM apitable/nodepy:16.15.0-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV production
+
+# Uncomment the following line in case you want to disable telemetry during runtime.
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/.yarn ./.yarn
+COPY --from=builder /app/.yarnrc.yml /app/package.json /app/yarn.lock ./
+COPY --from=builder /app/packages/datasheet/public ./packages/datasheet/public
+COPY --from=builder /app/packages/datasheet/next.config.js \
+                    /app/packages/datasheet/font-weight-no-number.js \
+                    /app/packages/datasheet/package.json \
+                    ./packages/datasheet/
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/packages/datasheet/web_build/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/packages/datasheet/web_build/static ./packages/datasheet/web_build/static
+
+WORKDIR ./packages/datasheet
+
+USER nextjs
+
+EXPOSE 8080
+
+ENV PORT 8080
+
+CMD [ "node", "server.js" ]

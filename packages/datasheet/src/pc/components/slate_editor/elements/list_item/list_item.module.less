@@ -1,0 +1,109 @@
+@import '../../styles/var.less';
+
+.listItem {
+  line-height: @line-height-base;
+  font-size: @font-size-base;
+  margin-bottom: @spacing-base;
+  padding-left: 24px;
+  &::before {
+    user-select: none;
+    color: var(--black_700);
+    min-width: 24px;
+    margin-left: -24px;
+    margin-right: 4px;
+    text-align: right;
+    display: inline-block;
+  }
+  &.ordered1 {
+    &::before {
+      content: counter(ordered-1,lower-alpha) ".";
+      counter-increment: ordered-1;
+    }
+  }
+  &.ordered2 {
+    &::before {
+      content: counter(ordered-2,lower-roman) ".";
+      counter-increment: ordered-2;
+    }
+  }
+  &.ordered3 {
+    &::before {
+      content: counter(ordered-3) ".";
+      counter-increment: ordered-3;
+    }
+  }
+  &.ordered4 {
+    &::before {
+      content: counter(ordered-4,lower-alpha) ".";
+      counter-increment: ordered-4;
+    }
+  }
+  &.ordered5 {
+    &::before {
+      content: counter(ordered-5,lower-roman) ".";
+      counter-increment: ordered-5;
+    }
+  }
+  &.ordered6 {
+    &::before {
+      content: counter(ordered-6) ".";
+      counter-increment: ordered-6;
+    }
+  }
+  &.ordered7 {
+    &::before {
+      content: counter(ordered-7,lower-alpha) ".";
+      counter-increment: ordered-7;
+    }
+  }
+  &.ordered8 {
+    &::before {
+      content: counter(ordered-8,lower-roman) ".";
+      counter-increment: ordered-8;
+    }
+  }
+  &.ordered9 {
+    &::before {
+      content: counter(ordered-9) ".";
+      counter-increment: ordered-9;
+    }
+  }
+  &.ordered10 {
+    &::before {
+      content: counter(ordered-10,lower-alpha) ".";
+      counter-increment: ordered-10;
+    }
+  }
+}
+
+ul {
+  .listItem {
+    &[data-list-type] {
+      &::before {
+        content: ' ';
+        background: var(--black_700);
+        clip-path: circle(3px at 60% 50%);
+      }
+    }
+    // &[data-list-type="1"] {
+    //   &::before {
+    //     content: '○';
+    //   }
+    // }
+    // &[data-list-type="2"] {
+    //   &::before {
+    //     content: '■';
+    //   }
+    // }
+  }
+}
+
+ol {
+  .listItem {
+    &::before {
+      content: counter(ordered-0) ".";
+      counter-increment: ordered-0;
+      white-space: nowrap;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220121-001" author="HumphreyHu" labels="history">
+       <comment>User History Table add uuid field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `uuid` varchar(32) NOT NULL COMMENT 'User ID' AFTER `user_id`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-002" author="HumphreyHu" labels="history">
+        <comment>User History Table add nick_name field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `nick_name` varchar(50) NULL COMMENT 'Nick Name' AFTER `uuid`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-003" author="HumphreyHu" labels="history">
+        <comment>User History Table add code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `code` varchar(50) NULL COMMENT 'Area Code' AFTER `nick_name`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-004" author="HumphreyHu" labels="history">
+        <comment>User History Table add mobile_phone field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `mobile_phone` varchar(50) NULL COMMENT 'Mobile Phone' AFTER `code`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-005" author="HumphreyHu" labels="history">
+        <comment>User History Table add email field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `email` varchar(100) NULL COMMENT 'Email' AFTER `mobile_phone`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-006" author="HumphreyHu" labels="history">
+        <comment>User History Table add avatar field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `avatar` varchar(255) NULL COMMENT 'Avatar' AFTER `email`
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.10-20220121-007" author="HumphreyHu" labels="history">
+        <comment>User History Table add locale field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}user_history`
+            ADD COLUMN `locale` varchar(50) NULL COMMENT 'Language' AFTER `avatar`
+        </sql>
+    </changeSet>
+</databaseChangeLog>

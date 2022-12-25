@@ -1,0 +1,271 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+@LeftAndRightPadding: 24px;
+@CardAdaptMaxWidth: 1100px;
+@CardAdaptMinWidth: 640px;
+@titleHeight: 125px;
+@tabTitleHeight: 56px;
+
+.cardAdaptWidth() {
+  max-width: @CardAdaptMaxWidth + @LeftAndRightPadding * 2;
+  // min-width: var(--CardAdaptMinWidth);
+  padding: 0 @LeftAndRightPadding;
+  width: 100%;
+}
+
+.cardAdaptWidthNoPadding() {
+  max-width: @CardAdaptMaxWidth;
+  // min-width: var(--CardAdaptMinWidth);
+  width: 100%;
+}
+
+@keyframes go {
+  from {
+    width: 0px;
+  }
+
+  to {
+    width: calc(100% - 56px);
+  }
+}
+
+@media screen and (min-width: @w-md) {
+  .notification {
+    position: absolute;
+    height: 100%;
+    left: 56px;
+    background: var(--lowestBg);
+    background-clip: content-box;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    animation: go 0.3s ease-in 0s 1;
+
+    :global {
+      // tab
+      .ant-tabs {
+        flex: 1;
+        width: 100%;
+        // min-width: 720px;
+        height: calc(100vh - @titleHeight);
+      }
+
+      .ant-tabs-tab,
+      .ant-tabs-tab:hover {
+        color: var(--secondLevelText);
+      }
+
+      .ant-tabs-nav .ant-tabs-tab {
+        padding: 0 0 2px 0;
+        margin-right: 29px;
+        width: 100px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .ant-tabs-tab-active {
+        color: var(--primaryColor) !important;
+      }
+
+      .ant-tabs-nav-container {
+        .cardAdaptWidthNoPadding();
+        margin: 0 40px;
+        border-bottom: 2px solid var(--lineColor);
+        overflow: visible;
+      }
+
+      .ant-tabs-content {
+        height: calc(100vh - @titleHeight - @tabTitleHeight - 25px);
+        overflow: auto;
+      }
+
+      .ant-tabs-nav-wrap {
+        border-bottom-width: 2px;
+        border: none;
+        // height: 25px;
+        height: calc(@tabTitleHeight - 24px);
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .ant-tabs-top > .ant-tabs-nav {
+        margin: 0;
+        margin-bottom: 0;
+      }
+
+      .ant-tabs-top > .ant-tabs-nav::before {
+        border: none;
+      }
+
+      .ant-tabs-nav-list {
+        .cardAdaptWidth();
+
+        &::before {
+          position: absolute;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          content: " ";
+          margin: 0 @LeftAndRightPadding;
+          border-bottom: 2px solid var(--lineColor);
+        }
+      }
+
+      .ant-tabs-top .ant-tabs-ink-bar-animated {
+        width: 100px;
+      }
+
+      .ant-tabs-ink-bar {
+        background-color: var(--primaryColor);
+      }
+
+      .ant-tabs-tabpane {
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+.newMsgFromWs {
+  position: absolute;
+  top: 160px;
+  height: 40px;
+  background: var(--primaryColor);
+  color: var(--defaultBg);
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  box-shadow: 0px 1px 15px 0px rgba(125, 130, 153, 0.2);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.content {
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.top {
+  width: 100%;
+  // min-width: 720px;
+  display: flex;
+  justify-content: center;
+  height: @titleHeight;
+  padding: 40px;
+}
+
+.title {
+  .cardAdaptWidthNoPadding();
+  height: 45px;
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--firstLevelText);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.tabContent {
+  width: 100%;
+  height: 100%;
+  overflow: overlay;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardWrapper {
+  .cardAdaptWidth();
+  z-index: 1;
+}
+
+.tabBottomText {
+  font-size: 12px;
+  color: var(--thirdLevelText);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  :global(.ant-btn::before) {
+    background: transparent;
+  }
+}
+
+.noticeListLoading {
+  height: 100%;
+  background: transparent;
+}
+
+.allToReadWrap {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  z-index: 1;
+}
+
+@media screen and (max-width: @w-md) {
+  .notification {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    // background: var(--rowSelectedBg);
+    overflow: hidden;
+    animation: go 0.3s ease-in 0s 1;
+    padding: 0 24px;
+
+    .content {
+      height: 100%;
+      .top {
+        position: absolute;
+        right: 8px;
+        top: 58px;
+      }
+    }
+
+    .cardWrapper {
+      margin: 0;
+      padding: 0;
+    }
+
+    :global {
+      .ant-tabs {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+      }
+      .ant-tabs-content {
+        height: 100%;
+      }
+      .ant-tabs-content-holder {
+        height: 100%;
+      }
+      .ant-tabs-tabpane {
+        height: 100%;
+      }
+    }
+
+    .tabContent {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+
+  .allToReadWrap {
+    top: 16px;
+    z-index: 1;
+  }
+  .allToReadWrap :global(.btn) {
+    color: var(--secondLevelText);
+  }
+  .allToReadWrap :global(.btn) svg {
+    fill: var(--thirdLevelText);
+  }
+}

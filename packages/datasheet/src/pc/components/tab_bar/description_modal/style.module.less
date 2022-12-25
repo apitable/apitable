@@ -1,0 +1,124 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 24px;
+  height: 80px;
+  align-items: center;
+}
+
+.desc {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  svg {
+    margin-right: 8px;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+    fill: var(--thirdLevelText);
+  }
+
+  .text {
+    font-size: 12px;
+    color: var(--fc2);
+    .ellipsis();
+  }
+}
+
+:global {
+  @media (min-width: 651px) {
+    .codex-editor--narrow .ce-toolbar__plus {
+      left: -28px;
+    }
+  }
+}
+
+.showDesc {
+  padding: 0 24px;
+  height: calc(100% - 80px);
+  overflow: scroll;
+
+  &.noPermission {
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.quill {
+  height: calc(100% - 24px);
+
+  :global(.ql-editor) {
+    line-height: inherit;
+  }
+
+  & > div:nth-of-type(2) {
+    height: calc(100% - 48px);
+    border: none;
+  }
+}
+
+.mobileCloseButton {
+  position: absolute;
+  bottom: -72px;
+  background: var(--defaultBg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
+  svg {
+    fill: var(--fc3);
+  }
+}
+
+.hiddenToolbar {
+  :global {
+    .ql-toolbar {
+      display: none;
+    }
+  }
+}
+
+.descModal {
+  :global {
+    .ant-modal-title {
+      width: 100%;
+
+      div {
+        .ellipsis();
+        padding-right: 48px;
+      }
+    }
+  }
+}
+
+.mobileModal {
+  :global {
+    .ant-modal-title {
+      div {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .desc {
+    position: absolute;
+    width: calc(100% - 32px);
+    height: 44px;
+  }
+}

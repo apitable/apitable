@@ -1,0 +1,22 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.reply {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--fc11);
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  color: var(--fc3);
+  min-height: 28px;
+
+  &.static {
+    background-color: var(--fc6);
+  }
+
+  p {
+    color: var(--fc3) !important;
+  }
+}

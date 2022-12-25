@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.NodeVisitRecordMapper">
+    <select id="selectNodeIdsByMemberIdAndNodeType" resultType="java.lang.String">
+        SELECT node_ids
+        FROM ${tablePrefix}node_visit_record
+        WHERE member_id = #{memberId}
+          AND node_type = #{nodeType} LIMIT 1
+    </select>
+
+    <insert id="insert">
+        INSERT INTO ${tablePrefix}node_visit_record(id, space_id, member_id, node_type, node_ids)
+        VALUES (#{entity.id}, #{entity.spaceId}, #{entity.memberId}, #{entity.nodeType},
+                #{entity.nodeIds})
+    </insert>
+
+    <update id="updateNodeIdsByMemberIdAndNodeType">
+        UPDATE ${tablePrefix}node_visit_record
+        SET node_ids = #{nodeIdsStr}
+        WHERE member_id = #{memberId}
+          AND node_type = #{nodeType}
+    </update>
+</mapper>

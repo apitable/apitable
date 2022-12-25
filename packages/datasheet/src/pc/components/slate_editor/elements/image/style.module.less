@@ -1,0 +1,213 @@
+@import "../../styles/var.less";
+
+@handle-size: 8px;
+
+.imagePickerWrap {
+  position: relative;
+
+  &[data-align="alignLeft"] {
+    text-align: left;
+  }
+
+  &[data-align="alignCenter"] {
+    text-align: center;
+  }
+
+  &[data-align="alignRight"] {
+    text-align: right;
+  }
+
+  .loadingMask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: @radius-base;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .imgPicker {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: @spacing-base;
+    background-color: var(--bg-color-purple);
+    cursor: pointer;
+    user-select: none;
+    color: var(--black_400);
+    overflow: hidden;
+    box-shadow: 0 0 0 2px rgba(var(--primaryColor-rgb), 0.5);
+    border-radius: @radius-base;
+
+    &:hover,
+    &[data-focused="true"] {
+      box-shadow: 0 0 0 2px var(--primaryColor);
+    }
+
+    .deleteBtn {
+      position: absolute;
+      right: @spacing-base;
+      top: 50%;
+      font-size: 14px;
+      margin-top: -8px;
+      display: none;
+    }
+
+    &:hover {
+      .deleteBtn {
+        display: inline-block;
+      }
+    }
+  }
+
+  .imgPlaceholder {
+    padding-left: @spacing-base;
+  }
+
+  .imageWrap {
+    position: relative;
+    display: inline-block;
+    // overflow: hidden;
+    .imageOperationMask {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 9;
+    }
+
+    .embedToolbar {
+      position: absolute;
+      right: @spacing-base;
+      top: @spacing-base;
+      display: none;
+      background: var(--defaultBg);
+      border-radius: @radius-large;
+      box-shadow: @box-shadow-dark;
+      margin: 0;
+      padding: @spacing-small;
+      z-index: 9;
+      overflow: hidden;
+
+      dd {
+        display: flex;
+        margin: 0;
+        margin-right: @spacing-small;
+        padding: @spacing-small;
+        border-radius: @radius-base;
+        cursor: pointer;
+
+        &[data-active="true"],
+        &:hover {
+          background: @bg-color-hover;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+
+      .divider {
+        width: 1px;
+        border-left: 1px solid var(--black_200);
+        padding: 0;
+      }
+    }
+
+    .moveHandle {
+      position: absolute;
+      display: block;
+      height: @handle-size;
+      width: @handle-size;
+      z-index: 8;
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity @ttf 0.3s;
+      background: var(--primaryColor);
+      border-radius: 2px;
+      // &::before {
+      //   content: ' ';
+      //   display: block;
+      //   position: absolute;
+      //   width: 6px;
+      //   top: 40%;
+      //   height: 20%;
+      //   border-radius: 3px;
+      //   left: 7px;
+      //   background: rgba(black, 0.3);
+      //   border: 1px solid white;
+      // }
+
+      &[data-placement="tl"] {
+        top: -@handle-size / 2;
+        left: -@handle-size / 2;
+        cursor: nwse-resize;
+      }
+
+      &[data-placement="tr"] {
+        top: -@handle-size / 2;
+        right: -@handle-size / 2;
+        cursor: nesw-resize;
+      }
+
+      &[data-placement="bl"] {
+        bottom: -@handle-size / 2;
+        left: -@handle-size / 2;
+        cursor: nesw-resize;
+      }
+
+      &[data-placement="br"] {
+        bottom: -@handle-size / 2;
+        right: -@handle-size / 2;
+        cursor: nwse-resize;
+      }
+    }
+
+    &:hover,
+    &[data-focused="true"] {
+      box-shadow: 0 0 0 2px var(--primaryColor);
+
+      .moveHandle {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      .embedToolbar {
+        display: flex;
+      }
+    }
+
+    &[data-read-only="true"] {
+      .imageOperationMask {
+        display: none;
+      }
+
+      &:hover {
+        box-shadow: none;
+      }
+    }
+
+    img {
+      user-select: none;
+    }
+  }
+}
+
+.imgWrapper {
+  & > span {
+    position: unset !important;
+  }
+
+  .img {
+    position: relative !important;
+    width: unset !important;
+    height: unset !important;
+  }
+}

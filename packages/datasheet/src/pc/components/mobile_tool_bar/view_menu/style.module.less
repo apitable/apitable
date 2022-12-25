@@ -1,0 +1,69 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.active {
+  &.viewList {
+    bottom: 0;
+  }
+
+  &.mask {
+    display: block;
+  }
+}
+
+.animation {
+  transition: width 0.3s;
+}
+
+.viewList {
+  .animation();
+
+  h2 {
+    font-size: 15px;
+    line-height: 48px;
+  }
+
+  .viewItem {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      margin-right: 8px;
+    }
+
+    span {
+      flex: 1;
+      font-size: 14px;
+      .ellipsis();
+    }
+
+    &.active {
+      svg:nth-of-type(1) {
+        fill: var(--primaryColor);
+      }
+
+      svg:nth-of-type(2) {
+        margin-left: 8px;
+      }
+
+      span {
+        color: var(--primaryColor);
+      }
+    }
+  }
+}
+
+.mask {
+  position: fixed;
+// FIXME:THEME
+  background: var(--shadowColor);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--zIndex-1)-viewListMaskZIndex;
+  display: none;
+  .animation();
+}

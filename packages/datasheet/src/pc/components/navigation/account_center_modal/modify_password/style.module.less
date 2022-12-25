@@ -1,0 +1,47 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.modifyPasswordWrapper {
+  @media screen and (min-width: @w-md) {
+    padding-left: 40px;
+    .form {
+      margin-top: 52px;
+      width: 320px;
+    }
+  }
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+    height: 48px;
+    line-height: 48px;
+    color: var(--firstLevelText);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+
+    &:nth-child(2),
+    &:nth-child(3) {
+      margin-bottom: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 80px;
+    }
+
+    .label {
+      font-size: 14px;
+      color: var(--secondLevelText);
+      margin-bottom: 8px;
+      height: 20px;
+      line-height: 20px;
+      text-align: left;
+    }
+  }
+
+  .saveBtn {
+    margin-top: 30px;
+  }
+}

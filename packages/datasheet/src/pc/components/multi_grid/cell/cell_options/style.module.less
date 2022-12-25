@@ -1,0 +1,77 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import "~pc/styles/lib_screen.less";
+
+.tabItem {
+  display: inline-block;
+  padding: 0 8px;
+  margin: 3px 8px 2px 0;
+  border-radius: 10px;
+  max-width: 100%;
+  font-size: 12px;
+  height: 20px;
+  line-height: 1;
+
+  .close {
+    background-color: transparent;
+  }
+  
+  &.multi,
+  &.single {
+    display: flex;
+    align-items: center;
+  }
+
+  &.link {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    background-color: var(--defaultTag);
+    cursor: pointer;
+
+    .unnamed {
+      color: var(--thirdLevelText);
+    }
+  }
+
+  .optionText {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    min-width: 20px;
+    text-align: center;
+    .ellipsis();
+    span.name {
+      line-height: 20px;
+      white-space: nowrap;
+    }
+  }
+}
+
+:global {
+  .activeCell {
+    :local {
+      .tabItem {
+        &.link {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+
+.iconDelete {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: @w-md) {
+  .tabItem {
+    height: 24px;
+    font-size: 14px;
+    border-radius: 15px;
+  }
+}

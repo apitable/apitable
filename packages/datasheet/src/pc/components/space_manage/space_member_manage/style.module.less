@@ -1,0 +1,30 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.memberManageWrapper {
+  :global {
+    .SplitPane {
+      padding: 20px 20px 14px;
+      background: var(--lowestBg);
+    }
+  }
+  background: var(--defaultBg);
+  color: var(--firstLevelText);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .loading {
+    flex: 1;
+  }
+  .spaceMemberSplit {
+    overflow: auto !important;
+    .light-scroll-bar();
+    :global {
+      .Pane2 {
+        overflow: hidden;
+        display: flex;
+      }
+    }
+  }
+}

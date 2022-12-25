@@ -1,0 +1,436 @@
+import { Canvas, Meta } from '@storybook/addon-docs';
+import { Space } from './index';
+import { Button } from "../button";
+import { Switch } from "../switch";
+import { Checkbox } from "../checkbox";
+import { Radio } from "../radio";
+import { ColumnLinktableFilled } from "@apitable/icons";
+import { LinkButton } from "../link_button";
+import { Box } from "../box";
+
+<Meta title="en/components/Space" />
+
+<style>{`
+  .stack {
+    display: flex;
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+`}</style>
+
+# Space
+
+Consistent spacing makes the interface layout consistent, clearer, and easier to navigate.
+
+## Usage
+
+```jsx
+import { Space } from '@apitable/components';
+```
+
+## Specification recommendation
+
+Recommended gaps between child elements:
+
+| Name | value（px） | scenes to be used |
+|------|-----------|-------------------|
+| xxxs | 2         ||
+| xxs  | 4         ||
+| xs	  | 8         ||
+| s	   | 16        ||
+| l	   | 32	       ||
+| xl   | 40        ||
+| xxl  | 80        ||
+| xxxl | 120       ||
+
+
+## Default spacing
+
+The default is inline layout, and the spacing between each child element is 8px.
+
+<Canvas>
+ <Space>
+     text
+     <Button color="primary">button</Button>
+     <Switch />
+     <Checkbox>checkbox</Checkbox>
+     <Radio>radio</Radio>
+ </Space>
+</Canvas>
+
+## Custom spacing
+
+The spacing can be customized, such as `size=16` to set the spacing to 16px.
+
+<Canvas>
+    <Space size={16}>
+        text
+        <Button color="primary">button</Button>
+        <Switch />
+        <Checkbox>checkbox</Checkbox>
+        <Radio>radio</Radio>
+    </Space>
+</Canvas>
+
+## Column spacing
+
+The `vertical` property supports column layout. And set the column spacing to 16px.
+
+<Canvas>
+    <Space size={16} vertical>
+        text
+        <Button color="primary">button</Button>
+        <Switch />
+        <Checkbox>checkbox</Checkbox>
+        <Radio>radio</Radio>
+    </Space>
+</Canvas>
+
+## Delimiter
+
+<Canvas>
+ <Space split>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+     <LinkButton underline={false} prefixIcon={<ColumnLinktableFilled currentColor />}>link url</LinkButton>
+ </Space>
+</Canvas>
+
+## Line wrapping
+
+When there are many child elements, set `wrap=true` to support line wrapping
+
+Define the Card component:
+
+```tsx
+import { Box } from '@apitable/components';
+
+const Card = () => (
+  <Box
+    width="120px"
+    height="80px"
+    border="1px solid #ccc"
+    textAlign="center"
+    lineHeight="80px"
+  >
+    120px x 80px
+  </Box>
+);
+```
+
+<Canvas>
+ <Space wrap>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+     <Box
+         width="120px"
+         height="80px"
+         border="1px solid #ccc"
+         textAlign="center"
+         lineHeight="80px"
+     >
+         120px x 80px
+     </Box>
+ </Space>
+</Canvas>
+
+## Set the left and right, top and bottom spacing
+
+You can set different spacing for up and down, left and right. For example, setting `size=[16, 32]` means setting the left and right spacing to 16px, and the top and bottom spacing to 32px.
+
+<Canvas>
+    <Space wrap size={[16, 32]}>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+        <Box
+            width="120px"
+            height="80px"
+            border="1px solid #ccc"
+            textAlign="center"
+            lineHeight="80px"
+        >
+            120px x 80px
+        </Box>
+    </Space>
+</Canvas>
+
+## Set child element alignment
+
+Support setting alignment via align .
+
+Horizontal alignment, as follows: start, center, end, baseline
+
+<Canvas>
+  <div className="stack">
+    <Space align="start">
+        <span>text</span>
+        <Button color="primary">button</Button>
+        <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+    </Space>
+  </div>
+  <div className="stack">
+      <Space align="center">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
+  </div>
+  <div className="stack">
+      <Space align="end">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
+  </div>
+  <div className="stack">
+      <Space align="baseline">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
+  </div>
+</Canvas>
+
+Vertical alignment, as follows: start, center, end. The baseline property is meaningless.
+
+<Canvas>
+  <div className="stack">
+      <Space vertical align="start">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
+  </div>
+  <div className="stack">
+      <Space vertical align="center">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
+  </div>
+  <div className="stack">
+      <Space vertical align="end">
+          <span>text</span>
+          <Button color="primary">button</Button>
+          <Box backgroundColor="#ccc" padding="40px 8px 16px 32px">box</Box>
+      </Space>
+  </div>
+</Canvas>
+
+## custom component label
+
+Customizable component tags, such as `ul`, `li` HTML tags
+
+<Canvas>
+    <Space component="ul" vertical>
+        <Space component="li" style={{ borderBottom: '1px solid #ccc' }}>list item 1</Space>
+        <Space component="li" style={{ borderBottom: '1px solid #ccc' }}>list item 2</Space>
+        <Space component="li" style={{ borderBottom: '1px solid #ccc' }}>list item 3</Space>
+    </Space>
+</Canvas>
+
+## API
+
+| Name      | Type                            | Description      | Default |
+|-----------|---------------------------------|------------------|---------|
+| size      | number / number[]               | spacing          | 8px     |
+| component | ElementType<any\>               | custom HTML tags | div     |
+| vertical  | boolean                         | column layout    | -       |
+| wrap      | boolean                         | whether to wrap  | -       |
+| align     | center / baseline / start / end | alignment        | -       |
+| split     | boolean                         | delimiter        | -       |

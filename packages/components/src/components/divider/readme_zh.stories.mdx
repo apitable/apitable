@@ -1,0 +1,101 @@
+import { Divider } from './index';
+import { Canvas, ArgsTable } from '@storybook/addon-docs';
+import { ExpandOutlined } from '@apitable/icons';
+const content = <p style={{ fontSize: '14px', color: 'rgb(38, 38, 38)' }}>将过去复杂的IT数据库技术，做得像表格一样简单</p>
+
+<Meta title="基础组件/Divider 分割线/文档" />
+
+# Divider 分割线
+
+Divider 组件可以划分内容区域，对模块做分隔。
+
+## 使用方式
+
+```jsx
+import { Divider } from '@apitable/components';
+```
+
+定义一个内容复用到示例中：
+
+```jsx
+const content = <p style={{ fontSize: '14px', color: 'rgb(38, 38, 38)' }}>将过去复杂的IT数据库技术，做得像表格一样简单</p>
+```
+
+## 示例
+
+### 分割线
+
+默认为水平分割线，可在中间加入文字。
+
+<Canvas>
+  <div>
+    {content}
+    <Divider />
+    {content}
+    <Divider />
+    {content}
+  </div>
+</Canvas>
+
+### 带文字的分割线
+
+给子元素添加文本，展示为带文本的分割线，可通过设置 `textAlign` 属性为 `left` 、`right` 改动文本位置。
+
+<Canvas>
+  <div>
+    <Divider>APITable</Divider>
+    {content}
+    <Divider textAlign="left">APITable</Divider>
+    {content}
+    <Divider textAlign="right">APITable</Divider>
+  </div>
+</Canvas>
+
+#### 设置排版
+
+分割线排版同 Typography 排版组件（默认样式与 Typography 排版组件 `variant` 设置为 `body2`一致），调整文字大小、自重、行高等，这里使用 `typography` 设置：
+
+<Canvas>
+  <div>
+    <Divider>APITable</Divider>
+    {content}
+    <Divider typography="h2">APITable</Divider>
+    {content}
+    <Divider typography="body4">APITable</Divider>
+  </div>
+</Canvas>
+
+### 虚线
+
+通过设置 `dashed` 为 `true` 显示虚线。
+
+<Canvas>
+  <div>
+    {content}
+    <Divider dashed />
+    {content}
+    <Divider dashed>APITable</Divider>
+    {content}
+  </div>
+</Canvas>
+
+### 分割线方向
+
+通过 `orientation` 设置分割线是水平方向（horizontal 默认）还是垂直方向（vertical）。这里设置 `orientation` 为 `vertical` 用户横向分隔内容。
+
+<Canvas>
+  <div>
+    <span>知乎</span>
+    <Divider orientation="vertical" />
+    <span>即刻</span>
+    <Divider orientation="vertical" dashed />
+    <span>twitter</span>
+  </div>
+</Canvas>
+
+## API
+
+<ArgsTable of={Divider} />
+
+
+

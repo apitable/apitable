@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "title": "当记录符合匹配条件",
+  "required": [
+    "datasheetId",
+    "datasheetName",
+    "recordId",
+    "recordUrl"
+  ],
+  "properties": {
+    "datasheetId": {
+      "type": "string",
+      "title": "维格表名称"
+    },
+    "datasheetName": {
+      "type": "string",
+      "title": "维格表名称"
+    },
+    "recordId": {
+      "type": "string",
+      "title": "记录ID"
+    },
+    "recordUrl": {
+      "type": "string",
+      "title": "记录URL"
+    }
+  }
+}

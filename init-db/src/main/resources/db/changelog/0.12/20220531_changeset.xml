@@ -1,0 +1,77 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220531-001" author="Chambers" labels="base">
+        <comment>Create System Config Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}system_config`
+            (
+                `id`         bigint unsigned NOT NULL COMMENT 'Primary Key',
+                `type`       tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT 'Type (0: boot configuration; 1: popular recommendation of template center)',
+                `i18n_name`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'i18n key',
+                `config_map` json      NOT NULL                                           DEFAULT ('{}') COMMENT 'Configuration value',
+                `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by` bigint    NOT NULL COMMENT 'Creator',
+                `updated_by` bigint    NOT NULL COMMENT 'Last Update By',
+                `created_at` timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at` timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='System Config Table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220531-002" author="Chambers" labels="template">
+        <comment>Template Property Table add i18n_name field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template_property`
+                ADD COLUMN `i18n_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'zh_CN' COMMENT 'i18n key' AFTER `property_code`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220531-003" author="Chambers" labels="template">
+        <comment>Template Property Rel Table add property_code field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template_property_rel`
+                ADD COLUMN `property_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Property Code' AFTER `property_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220531-004" author="Chambers" labels="template">
+        <comment>Template Property Rel Table add property_code index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template_property_rel`
+                ADD INDEX `idx_property_code`(`property_code`) USING BTREE;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220531-005" author="Chambers" labels="template">
+        <comment>Template Property Rel Table add property_id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template_property_rel`
+            DROP INDEX `idx_property_id`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

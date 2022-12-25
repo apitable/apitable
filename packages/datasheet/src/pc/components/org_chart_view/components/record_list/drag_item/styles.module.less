@@ -1,0 +1,53 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.dragItem {
+  margin-bottom: 8px;
+  border: 1px solid var(--sheetLineColor);
+  border-radius: 4px;
+  color: var(--fc1);
+  font-size: 13px;
+  min-height: 30px;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px solid var(--deepPurple_500);
+  }
+
+  &.highlight {
+    background-color: var(--warnLight);
+  }
+
+  &.disabled {
+    cursor: initial;
+  }
+
+  .date {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  svg {
+    fill: currentcolor;
+  }
+
+  :global {
+    .typography {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight: bold;
+    }
+  }
+}
+
+.cellText {
+  padding: 3px 10px;
+  line-height: 24px;
+  flex-grow: 1;
+
+  >span {
+    font-weight: bold;
+  }
+}

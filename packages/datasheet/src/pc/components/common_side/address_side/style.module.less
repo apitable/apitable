@@ -1,0 +1,93 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.leftContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  // padding: 0 12px;
+
+  button {
+    margin: 8px auto 16px;
+  }
+}
+
+.listWrapper {
+  flex: 1;
+  overflow: hidden;
+  padding: 0 12px;
+}
+
+.filter {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty {
+  height: 40px;
+}
+
+.inviteBtnMobile {
+  width: 100%;
+  height: 40px;
+}
+
+.isSyncingMembers {
+  margin-top: 0; 
+  display: flex;
+  align-items: center;
+  min-width: 192px;
+}
+
+.menu {
+  flex: 1;
+  overflow: hidden;
+}
+
+.searchItem {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 13px;
+  color: var(--secondLevelText);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: default;
+  .noSelect();
+
+  span {
+    display: inline-block;
+    height: 15px;
+  }
+
+  svg {
+    fill: var(--secondLevelText);
+    width: 15px;
+    height: 15px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.searchInputWrapper {
+  width: 100%;
+  height: 32px;
+  margin-bottom: 8px;
+  padding: 0 12px;
+
+  .searchInput {
+    padding: 0 16px;
+    text-indent: 0;
+  }
+  
+  .searchInput,
+  .searchInput input {
+    border-radius: 16px;
+  }
+}

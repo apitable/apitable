@@ -1,0 +1,19 @@
+@import "../../styles/var.less";
+
+.section {
+  position: relative;
+  text-align: left;
+  margin-bottom: @spacing-lx;
+}
+
+div[data-section-spacing="small"] {
+  .section {
+    margin-bottom: @spacing-base;
+  }
+}
+
+div[data-section-spacing="middle"] {
+  .section {
+    margin-bottom: @spacing-large;
+  }
+}

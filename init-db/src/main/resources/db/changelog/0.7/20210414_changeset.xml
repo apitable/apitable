@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.7-20210414-001" author="Zoe" labels="datasheet">
+        <comment>Create Datasheet Changeset Source Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_changeset_source` (
+            `id` BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT 'Primary Key',
+            `dst_id` VARCHAR ( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Datasheet ID(link#xxxx_datasheet#dst_id)',
+            `resource_id` VARCHAR ( 50 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource ID',
+            `message_id` VARCHAR ( 255 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The unique ID of the changeset request, which is used to ensure the uniqueness of the resource changeset',
+            `source_type` TINYINT ( 2 ) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Data source type (0: collection table; 1: API; 2: JAVA)',
+            `created_by` bigint DEFAULT NULL COMMENT 'Creator',
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY ( `id` ) USING BTREE,
+            KEY `idx_dst_id` ( `dst_id` ) USING BTREE,
+            KEY `idx_resource_id` ( `resource_id` ) USING BTREE,
+            KEY `idx_message_id` ( `message_id` ( 50 ) ) USING BTREE
+            ) ENGINE = INNODB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = 'Workbench - Datasheet Changeset Source Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

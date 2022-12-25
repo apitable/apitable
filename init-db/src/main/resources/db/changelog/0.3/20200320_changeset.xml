@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200320-001" author="ShawnDeng" labels="node">
+        <comment>Add Share Node Resources Corresponding To Node Roles</comment>
+        <sql>
+            INSERT INTO `${table.prefix}node_resource`(`id`, `resource_code`, `resource_name`, `resource_type`, `resource_desc`, `field_name`)
+            VALUES (1240944087364255746, 'SHARE_NODE', 'Share Node', 0, 'The role with this resource can be used in the share node', 'sharable');
+            INSERT INTO `${table.prefix}node_role_resource_rel`(`id`, `role_code`, `resource_code`)
+            VALUES (1240944087364255747, 'administrator', 'SHARE_NODE');
+            INSERT INTO `${table.prefix}node_role_resource_rel`(`id`, `role_code`, `resource_code`)
+            VALUES (1240944087364255748, 'manager', 'SHARE_NODE');
+        </sql>
+        <rollback>
+            <delete tableName="${table.prefix}node_resource">
+                <where>
+                    resource_code = 'SHARE_NODE'
+                </where>
+            </delete>
+            <delete tableName="${table.prefix}node_role_resource_rel">
+                <where>
+                    resource_code = 'SHARE_NODE'
+                </where>
+            </delete>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

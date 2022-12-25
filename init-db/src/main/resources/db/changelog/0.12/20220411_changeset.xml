@@ -1,0 +1,61 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220411-001" author="Pengap" labels="developer_asset">
+        <comment>Workbench - Developer Asset Table add space_id field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}developer_asset` ADD COLUMN `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT 'Space ID(link#xxxx_space#space_id)' AFTER `id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220411-002" author="Pengap" labels="developer_asset">
+        <comment>Workbench - Developer Asset Table add node_id field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}developer_asset` ADD COLUMN `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT 'Custom Node ID' AFTER `space_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220411-003" author="Pengap" labels="asset">
+        <comment>Asset Table add bucket_name field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}asset` ADD COLUMN `bucket_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT 'Bucket name' AFTER `bucket`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220411-004" author="Pengap" labels="developer_asset">
+        <comment>Workbench - Developer Asset Table add bucket_name field</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}developer_asset` ADD COLUMN `bucket_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT 'Bucket name' AFTER `node_id`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.12-20220411-005" author="Pengap" labels="developer_asset">
+        <comment>Workbench - Developer Asset Table add space_id and node_id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}developer_asset` ADD INDEX `uk_space_node`(`space_id`, `node_id`) USING BTREE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

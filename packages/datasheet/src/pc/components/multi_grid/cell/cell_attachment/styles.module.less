@@ -1,0 +1,96 @@
+@import "~pc/styles/lib_mixins.less";
+
+.attachmentContainer {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  padding: 3px 10px;
+  align-items: center;
+
+  .imgItem {
+    margin-right: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 1px solid var(--lineColor);
+    box-sizing: content-box;
+
+    &>span{
+      position: unset !important;
+      height: 100% !important;
+    }
+
+    .img {
+      height: 100% !important;
+      width: auto !important;
+      max-width: unset !important;
+      min-width: unset !important;
+      position: unset !important;
+    }
+  }
+
+  :global {
+    .ant-progress-bg {
+      height: 2px !important;
+    }
+  }
+}
+
+.textTip {
+  color: var(--thirdLevelText);
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  line-height: 1;
+  vertical-align: middle;
+  .ellipsis();
+}
+
+// After the loading component is available, delete the style here
+.loadingio {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  overflow: hidden;
+  background: var(--defaultBg);
+  margin-right: 4px;
+  flex-shrink: 0;
+
+  .ldio {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateZ(0) scale(0.16);
+    backface-visibility: hidden;
+    transform-origin: 0 0;
+    /* see note above */
+
+    div {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border: 12px solid #7b67ee;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: ldio-yuzmcl3obb 1s linear infinite;
+      top: 50px;
+      left: 50px;
+      box-sizing: content-box;
+    }
+  }
+}
+
+@keyframes ldio-yuzmcl3obb {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.tooltip {
+  padding: 8px !important;
+  z-index: 1 !important;
+}

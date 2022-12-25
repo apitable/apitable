@@ -1,0 +1,32 @@
+.main {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: var(--defaultBg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .config {
+    display: flex;
+    padding: 16px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    > div {
+      margin: 0 8px;
+    }
+  }
+}
+
+.widgetStage {
+  display: flex;
+  border-radius: 8px;
+  border: solid 1px gainsboro;
+  width: 80%;
+  height: 80%;
+  padding: 0 8px;
+}

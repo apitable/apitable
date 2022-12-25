@@ -1,0 +1,82 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.moreMemberCount {
+  cursor: pointer;
+  user-select: none;
+  margin-left: 8px;
+}
+
+.statusbar {
+  max-width: 110px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .collaboratorsAvatars {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  
+  & > span {
+    height: 24px;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    height: 20px;
+    background: var(--lineColor);
+    width: 1px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+
+.memberListPopover {
+  :global {
+    .ant-popover-arrow {
+      display: none;
+    }
+
+    .ant-popover-inner-content {
+      padding: 0;
+    }
+  }
+}
+
+.memberListCard {
+  overflow-y: auto;
+  width: 180px;
+  max-height: 280px;
+  background: var(--defaultBg);
+  box-shadow: 0px 1px 14px 0px var(--shadowColor);
+  border-radius: 4px;
+  border: 1px solid var(--lineColor);
+  padding-bottom: 3px;
+
+  .light-scroll-bar();
+
+  .avatarListItem {
+    cursor: pointer;
+    height: 35px;
+    display: flex;
+    margin-top: 6px;
+    padding-left: 10px;
+    align-items: center;
+    &:hover {
+      background-color: var(--rowSelectedBg);
+    }
+    .userName {
+      height: 18px;
+      font-size: 13px;
+      font-weight: normal;
+      color: var(--firstLevelText);
+      line-height: 18px;
+      margin-left: 8px;
+      max-width: 125px;
+      .ellipsis();
+    }
+  }
+}

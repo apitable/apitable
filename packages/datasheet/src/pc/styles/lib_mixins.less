@@ -1,0 +1,803 @@
+@import "./lib_var.less";
+
+.ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multiLineEllipsis(@lineCount) {
+  display: -webkit-box;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  -webkit-line-clamp: @lineCount;
+  -webkit-box-orient: vertical;
+}
+
+.antiEllipsis {
+  overflow: initial;
+  text-overflow: initial;
+  white-space: initial;
+  -webkit-line-clamp: initial;
+}
+
+/**
+ * opacity: 0% - 100%
+ */
+.backgroundBlur(@color, @opacity, @blurSize) {
+  background-color: @color;
+  @supports (backdrop-filter: blur(1px)) {
+    background-color: fade(@color, @opacity);
+    backdrop-filter: blur(@blurSize);
+  }
+}
+
+// global style for antd Input
+.input(@color: var(--primaryColor), @error-color: var(--errorColor), @height: 50px) {
+  .ant-input {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--lineColor);
+    padding: 0;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+
+    &::placeholder {
+      color: var(--lineColor) !important;
+    }
+  }
+
+  .err.ant-input,
+  .err .ant-input {
+    border-bottom: 1px solid red;
+  }
+
+  .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+    border-bottom: 1px solid var(--lineColor);
+  }
+
+  .ant-input:focus {
+    border: none;
+    box-shadow: none;
+  }
+
+  .ant-input[disabled] {
+    color: var(--thirdLevelText);
+  }
+}
+
+.light-scroll-bar() {
+  .custom-scroll-bar(12px, 12px);
+}
+
+.mini-scroll-bar() {
+  .custom-scroll-bar(8px, 8px);
+}
+
+.custom-scroll-bar(@width: auto, @height: auto, @color: @scrollbar-thumb) {
+  &::-webkit-scrollbar {
+    width: @width;
+    height: @height;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    background-clip: padding-box;
+    border: 3px solid rgba(0, 0, 0, 0);
+    border-radius: 6px;
+    min-height: 36px;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: @color;
+  }
+}
+
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.ant-select-option-common {
+  ul {
+    .light-scroll-bar();
+  }
+
+  li {
+    .ellipsis();
+  }
+
+  :global {
+    .ant-select-dropdown-menu-item-selected {
+      color: var(--primaryColor);
+      font-weight: normal;
+
+      svg {
+        fill: var(--primaryColor);
+      }
+    }
+
+    .ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
+      background: var(--rowSelectedBg);
+    }
+
+    .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
+      background: none;
+    }
+  }
+}
+
+.flexCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.antTickInCheckbox (@sWidth: 8px; @sHeight: 6px) {
+  .ant-checkbox-inner {
+    background-color: transparent;
+    width: @sWidth;
+    height: @sHeight;
+    border-radius: 0.75px;
+    position: relative;
+    overflow: hidden;
+    transform: rotate(-45deg) scale(1) translateX(1px) translateY(2px);
+
+    &::before {
+      position: absolute;
+      content: " ";
+      display: table;
+      width: 100%;
+      height: 1.5px;
+      background: var(--defaultBg);
+      bottom: 0;
+      border-top-right-radius: 0.75px;
+    }
+
+    &::after {
+      right: 0;
+      border: none;
+      height: 100%;
+      width: 1.5px;
+      background: var(--defaultBg);
+      border-top-right-radius: 0.75px;
+      left: 0;
+      top: 0;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+// @size is the checkbox width and height
+// @sizeSub2 is the checkbox width and height - border width
+// @sWidth and @sHeight are hooks for width and height
+.antdCheckbox(@size: 14px; @sizeSub2: 12px; @sWidth: 8px; @sHeight: 6px) {
+  .ant-checkbox {
+    width: @size;
+    height: @size;
+    border-radius: 2px;
+    border: 1px solid var(--thirdLevelText);
+    overflow: hidden;
+  }
+
+  .ant-checkbox-inner {
+    border: none;
+    width: @sizeSub2;
+    height: @sizeSub2;
+  }
+
+  .ant-checkbox-checked {
+    background: var(--primaryColor);
+    border-color: var(--primaryColor);
+
+    &::after {
+      border: none;
+    }
+
+    .antTickInCheckbox(@sWidth, @sHeight);
+  }
+
+  .ant-checkbox-disabled {
+    background-color: var(--lineColor);
+    border-color: var(--lineColor);
+    .antTickInCheckbox();
+  }
+}
+
+.antdTable() {
+  .ant-table-thead {
+    height: 45px;
+
+    .ant-table-column-title {
+      font-size: 14px;
+      color: var(--firstLevelText);
+    }
+
+    tr > th {
+      background: var(--lowestBg);
+      color: var(--fc1);
+      padding-top: 0;
+      padding-bottom: 0;
+      height: 45px;
+      text-align: center;
+      border: none;
+    }
+
+    tr:first-child > th:first-child,
+    tr:first-child > th:last-child {
+      border-radius: 0;
+    }
+  }
+
+  .ant-table-tbody > tr > td {
+    border: none;
+  }
+
+  .ant-table-tbody {
+    .ant-table-row {
+      td {
+        height: 60px;
+        box-sizing: border-box;
+        padding-top: 0;
+        padding-bottom: 0;
+        font-size: 12px;
+        color: var(--firstLevelText);
+        background-color: var(--defaultBg);
+        text-align: center;
+        border: none;
+      }
+    }
+
+    tr.ant-table-row:hover td,
+    tr.ant-table-row-selected td {
+      background: var(--rowSelectedBg);
+    }
+  }
+
+  .ant-table-placeholder {
+    border: none;
+  }
+}
+
+.inputErrorMsg {
+  height: 14px;
+  font-size: 10px;
+  margin: 4px 0 6px 0;
+  color: var(--errorColor);
+}
+
+.contextMenu(@width: 240px, @height: 40px) {
+  background-color: var(--defaultBg);
+  max-width: @width;
+  width: @width;
+  border-radius: 8px;
+  margin: 0;
+  box-shadow: 0px 8px 24px fade(#000, 16%);
+  z-index: 9999;
+  cursor: pointer;
+
+  .contextMenuItem {
+    height: @height;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 16px;
+    overflow: hidden;
+
+    &:hover {
+      background-color: var(--rowSelectedBg);
+    }
+
+    &:first-child:hover {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    &:last-child:hover {
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      fill: var(--thirdLevelText);
+    }
+
+    .name {
+      flex: 1;
+      font-size: 14px;
+      color: var(--firstLevelText);
+      padding-left: 4px;
+      .ellipsis();
+    }
+  }
+}
+
+.tree {
+  :global {
+    // Clear the default node selection style
+    .ant-tree-treenode-selected .ant-tree-node-content-wrapper::before {
+      background: none !important;
+    }
+
+    // Clear the default style of drag-over
+    .drag-over .ant-tree-node-content-wrapper {
+      background: none !important;
+      opacity: 1 !important;
+      color: var(--firstLevelText) !important;
+    }
+
+    // Expand and collapse icons
+    .ant-tree-switcher {
+      position: relative;
+      width: 32px !important;
+      height: 40px !important;
+      padding-left: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      vertical-align: middle !important;
+
+      .ant-tree-switcher-icon {
+        position: absolute;
+        transform: scale(1) !important;
+        display: flex !important;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s;
+        flex-basis: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        border-radius: 2px;
+
+        &:hover {
+          background-color: var(--shadowColor);
+        }
+      }
+
+      // When expanding a folder
+      &.ant-tree-switcher_open .ant-tree-switcher-icon {
+        svg {
+          transform: rotate(0deg) !important;
+        }
+      }
+    }
+
+    // Child node indentation distance
+    .ant-tree-indent-unit {
+      width: 16px !important;
+    }
+
+    // .ant-tree-switcher-loading-icon {
+    //   top: 50%;
+    //   transform: translateY(-50%) !important;
+    // }
+
+    .ant-tree-node-content-wrapper {
+      width: calc(100% - 28px);
+      height: 40px !important;
+      padding: 0 !important;
+      transition: none !important;
+      position: relative;
+      display: flex;
+
+      // Background color when passing
+      &::before {
+        height: 40px !important;
+        transform: translateY(-2px);
+        transition: none !important;
+        left: 0 !important;
+      }
+
+      &:hover::before {
+        left: -200px !important;
+        background: var(--rowSelectedBg) !important;
+      }
+
+      &.ant-tree-node-selected:before {
+        left: 0 !important;
+        background: none !important;
+      }
+
+      .ant-tree-iconEle {
+        width: 16px !important;
+        height: 36px !important;
+        line-height: 36px;
+        display: flex !important;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-left: 4px;
+      }
+
+      // Node name
+      .ant-tree-title {
+        display: inline-block;
+        width: calc(100% - 20px);
+
+        height: 100%;
+        line-height: 36px;
+      }
+    }
+
+    // Background when mouse passes over and edits
+    .editBgColor,
+    .nodeHover {
+      &::before {
+        background: var(--rowSelectedBg);
+      }
+    }
+
+    // Style when node is selected
+    .ant-tree-treenode-selected {
+      &::before {
+        background-color: var(--rowSelectedBg);
+      }
+    }
+
+    // Add a circle to the border when dragging
+    .drag-over-gap-top > .ant-tree-node-content-wrapper::after,
+    .drag-over-gap-bottom > .ant-tree-node-content-wrapper::after {
+      position: absolute;
+      display: flex;
+      content: "";
+      width: 6px;
+      height: 6px;
+      border: 2px solid var(--primaryColor);
+      border-radius: 50%;
+      z-index: var(--drag-line-circle);
+    }
+
+    // Position the circle in the upper border
+    .drag-over-gap-top > .ant-tree-node-content-wrapper::after {
+      top: 0;
+      left: 0;
+      transform: translate(-5px, -4px);
+    }
+
+    // Position the circle in the lower border
+    .drag-over-gap-bottom > .ant-tree-node-content-wrapper::after {
+      bottom: 0;
+      left: 0;
+      transform: translate(-5px, 4px);
+    }
+
+    // Drag and drop to the node
+    .drag-over {
+      &.floder::before {
+        border: 2px solid var(--primaryColor);
+      }
+    }
+
+    // Disable nodes (i.e. when "no node file")
+    .ant-tree-treenode-disabled {
+      padding: 0 !important;
+      pointer-events: none;
+    }
+
+    .moreBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .emoji-mart-emoji {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.lightTree {
+  :global {
+    .ant-tree.ant-tree-directory {
+      background: transparent;
+
+      .ant-tree-switcher,
+      .ant-tree-iconEle {
+        width: 16px !important;
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .ant-tree-switcher {
+        fill: var(--defaultBg);
+      }
+
+      .ant-tree-iconEle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+          width: 16px;
+          height: 16px;
+          vertical-align: -0.125em;
+        }
+
+        .emoji-mart-emoji {
+          position: relative;
+          display: flex;
+          font-size: 0;
+          margin: 0;
+          padding: 0;
+          border: none;
+          background: none;
+          box-shadow: none;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .ant-tree-treenode {
+        padding: 0;
+
+        &::before {
+          height: 40px !important;
+          border-radius: 8px;
+          transition: none;
+        }
+
+        &:hover {
+          &::before {
+            background: rgba(var(--staticWhite0-rgb), 20%);
+            border-radius: 8px;
+          }
+        }
+      }
+
+      .ant-tree-indent-unit {
+        width: 16px !important;
+      }
+
+      .ant-tree-node-content-wrapper,
+      .ant-tree-title {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px !important;
+        padding: 0;
+        flex: 1;
+        color: var(--staticWhite0);
+        width: calc(100% - 50px);
+      }
+
+      .ant-tree-node-content-wrapper {
+        display: flex;
+        padding-left: 4px;
+      }
+
+      .ant-tree-title {
+        padding-left: 4px;
+        width: 100%;
+        color: var(--staticWhite0);
+        .ellipsis();
+      }
+
+      .ant-tree-switcher {
+        display: inline-block !important;
+        height: 40px !important;
+        line-height: 40px !important;
+
+        .ant-tree-switcher-icon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          border-radius: 2px;
+          transition: all 0.2s;
+          transform: scale(1) !important;
+
+          svg {
+            margin-top: 5px;
+          }
+        }
+      }
+
+      .ant-tree-treenode-selected {
+        &::before {
+          background: var(--staticWhite0) !important;
+          border-radius: 8px;
+        }
+
+        & > .ant-tree-switcher .ant-tree-switcher-icon {
+          svg {
+            fill: var(--primaryColor);
+          }
+        }
+
+        .ant-tree-node-selected {
+          & > .ant-tree-title {
+            color: var(--primaryColor);
+          }
+        }
+      }
+    }
+  }
+}
+
+.darkTree {
+  :global {
+    .ant-tree.ant-tree-directory {
+      background: transparent;
+
+      .ant-tree-switcher,
+      .ant-tree-iconEle {
+        width: 16px !important;
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .ant-tree-switcher {
+        fill: var(--blackBlue_50);
+      }
+
+      .ant-tree-iconEle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+          width: 16px;
+          height: 16px;
+          vertical-align: -0.125em;
+        }
+
+        .emoji-mart-emoji {
+          position: relative;
+          display: flex;
+          font-size: 0;
+          margin: 0;
+          padding: 0;
+          border: none;
+          background: none;
+          box-shadow: none;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .ant-tree-treenode {
+        padding: 0;
+        border-radius: 8px;
+
+        svg {
+          fill: var(--blackBlue_700);
+        }
+
+        &::before {
+          height: 40px !important;
+          border-radius: 8px;
+          transition: none;
+        }
+
+        &:hover {
+          background-color: var(--blackBlue_800);
+          &::before {
+            border-radius: 8px;
+            background-color: transparent !important;
+          }
+        }
+      }
+
+      .ant-tree-indent-unit {
+        width: 16px !important;
+      }
+
+      .ant-tree-node-content-wrapper,
+      .ant-tree-title {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px !important;
+        padding: 0;
+        flex: 1;
+        color: var(--blackBlue_50) !important;
+        width: calc(100% - 50px);
+      }
+
+      .ant-tree-node-content-wrapper {
+        display: flex;
+        padding-left: 4px;
+      }
+
+      .ant-tree-title {
+        padding-left: 4px;
+        width: 100%;
+        .ellipsis();
+      }
+
+      .ant-tree-switcher {
+        display: inline-block !important;
+        height: 40px !important;
+        line-height: 40px !important;
+
+        .ant-tree-switcher-icon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          border-radius: 2px;
+          transition: all 0.2s;
+          transform: scale(1) !important;
+
+          svg {
+            margin-top: 5px;
+            fill: var(--blackBlue_700) !important;
+          }
+        }
+      }
+
+      .ant-tree-node-content-wrapper:hover {
+        .ant-tree-title {
+          color: var(--blackBlue_50) !important;
+        }
+
+        &::before {
+          // FIXME:THEME
+          // background: fade(@defaultBg, 20%);
+          border-radius: 8px;
+        }
+      }
+
+      .ant-tree-treenode-selected {
+        &::before {
+          background: var(--primaryColor) !important;
+          border-radius: 8px;
+        }
+
+        .ant-tree-iconEle,
+        & > .ant-tree-switcher .ant-tree-switcher-icon {
+          svg {
+            fill: var(--blackBlue_50) !important;
+          }
+        }
+
+        .ant-tree-node-selected {
+          & > .ant-tree-title {
+            color: var(--primaryColor);
+          }
+        }
+      }
+    }
+  }
+}
+
+.displayFlex(@align: center, @justify: flex-start) {
+  display: flex;
+  align-items: @align;
+  justify-content: @justify;
+}
+
+@view-width: 375px;
+
+.px2vw(@px) {
+  @res: @px / @view-width * 100vw;
+}

@@ -1,0 +1,160 @@
+import { Button } from './index';
+import { RobotOutlined } from '@apitable/icons';
+import { purple, pink, orange } from '../../colors';
+import { Canvas } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/Button" />
+
+# Button
+
+## Usage
+
+```jsx
+import { Button } from '@apitable/components';
+```
+
+## Scenes
+
+Click a button to perform an action
+
+## Shortcut support
+
+https://www.w3.org/TR/wai-aria-practices/#keyboard-interaction-3
+
+| Key   | Function        |
+|-------|-----------------|
+| Enter | activate button |
+| Space | activate button |
+
+
+### Button type
+
++ Solid button - Contained buttons，Primary button。
++ Jelly button - Light buttons , Secondary button。
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button color="primary"> Default fill Button </Button>
+  <Button variant="jelly" color="primary">Jelly Button </Button>
+</ThemeToggle>
+</Canvas>
+
+
+### Button size
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button color="primary" variant="fill" size="small"> Small Button </Button>
+  <Button color="primary" variant="fill" size="middle"> Medium Button </Button>
+  <Button color="primary" variant="fill" size="large"> Large Button </Button>
+</ThemeToggle>
+</Canvas>
+
+### Button disabled
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="fill" size="middle" disabled> Disabled Button </Button>
+  <Button variant="jelly" color="primary" size="middle" disabled> Disabled Text Button </Button>
+</ThemeToggle>
+</Canvas>
+
+
+### Solid button colors
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button> Default Button </Button>
+  <Button variant="fill" color="danger"> Danger Button </Button>
+  <Button variant="fill" color="primary"> Primary Button</Button>
+  <Button variant="fill" color="warning"> Warning Button </Button>
+</ThemeToggle>
+</Canvas>
+
+### Jelly button colors
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="jelly"> Default Button </Button>
+  <Button variant="jelly" color="danger"> Danger Button </Button>
+  <Button variant="jelly" color="primary"> Primary Button</Button>
+  <Button variant="jelly" color="warning"> Warning Button </Button>
+</ThemeToggle>
+</Canvas>
+
+The text inside the button will be automatically calculated according to the background color (black/white) to satisfy accessibility.
+
+### Rounded button
+
+<Canvas>
+<ThemeToggle lang="en">
+    <Button shape="round" color="primary"> Rounded Button </Button>
+</ThemeToggle>
+</Canvas>
+
+### Prefix Icon or suffix icon
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="fill"  color="primary" prefixIcon={ <RobotOutlined currentColor/>} > RobotOutlined </Button>
+  <Button variant="fill"  color="primary" suffixIcon={ <RobotOutlined currentColor/>}> RobotOutlined </Button>
+</ThemeToggle>
+</Canvas>
+
+### Block button
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="fill" color="primary" block> The block property occupies the entire line </Button>
+</ThemeToggle>
+</Canvas>
+
+### Loading button
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="fill" loading color="primary"> Loading </Button>
+</ThemeToggle>
+</Canvas>
+
+### Custom background color
+
+`Fill Button` support custom background color.
+
++ If the passed in color (6-bit hex string) exists in the palette. Then the background color of the button's hover press will be set automatically.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="fill" color={orange[500]}> orange[500] </Button>
+  <Button variant="fill" color={purple[200]}> purple[200] </Button>
+  <Button variant="fill" color="#D8ACFA"> #D8ACFA（purple[200]） </Button>
+  <Button variant="fill" color={pink[200]}> pink[200] </Button>
+</ThemeToggle>
+</Canvas>
+
++ If the incoming color does not exist in the palette. The background color of the hover press does not change, which requires the user to actively override the style.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Button variant="fill" color="#345"> Custom background color </Button>
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name       | Type                                | Description      | Default |
+|------------|-------------------------------------|------------------|---------|
+| htmlType   | button / submit / reset             | button type      | button  |
+| shape      | round                               | border shape     | -       |
+| children   | ReactNode                           | child element    | -       |
+| className  | string                              | class name       | -       |
+| color      | default / danger / primary / string | background color | default |
+| prefixIcon | ReactElement                        | prefix icon      | -       |
+| suffixIcon | ReactElement                        | suffix icon      | -       |
+| disabled   | boolean                             | disable actions  | -       |
+| block      | boolean                             | fill width       | -       |
+| variant    | fill / jelly                        | variant          | fill    |
+| size       | small / middle / large              | size             | middle  |
+| loading    | boolean                             | border shape     | false   |
+

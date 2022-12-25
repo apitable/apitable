@@ -1,0 +1,30 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+  .searchList{
+    .searchTitle{
+      height:40px;
+      width: 100%;
+      padding-left: 20px;
+      line-height: 40px;
+      font-size: 15px;
+      color: var(--thirdLevelText);
+    }
+    :global{
+      .ant-list-item{
+        &:hover{
+          cursor: pointer;
+        }
+        padding: 0;
+        height:60px;
+        box-sizing: border-box;
+        border: none;
+        background-color: var(--bgCommonHighest);
+      }
+      .ant-list-split .ant-list-item{
+        border-bottom: none;
+        overflow: hidden;
+      }
+  
+    }
+  }
+  

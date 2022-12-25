@@ -1,0 +1,72 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.shareMobileBar {
+  flex-shrink: 0;
+  cursor: pointer;
+  height: 48px;
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--defaultBg);
+  border-bottom: 0.5px solid var(--lineColor);
+}
+
+.middle {
+  display: flex;
+  width: calc(100% - 112px);
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
+
+.nodeInfoWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  span.nodeName {
+    width: 90%;
+    text-align: center;
+    .ellipsis();
+  }
+}
+
+.viewName {
+  cursor: pointer;
+  color: var(--secondLevelText);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88%;
+  position: relative;
+  // Remove the text position offset caused by the drop-down arrow
+  left: 4px;
+
+  span {
+    .ellipsis();
+    position: relative;
+    font-size: 12px;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 56px;
+}
+
+.side {
+  width: 56px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

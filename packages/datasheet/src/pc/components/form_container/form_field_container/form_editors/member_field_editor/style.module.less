@@ -1,0 +1,41 @@
+.iconDelete {
+  cursor: pointer;
+  height: 16px;
+  margin-left: 4px;
+}
+
+.displayBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  &.option {
+    &>div {
+      flex-wrap: nowrap !important;
+      align-self: auto;
+    }
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    margin-right: 5px;
+
+    .items {
+      background: #fedfd7;
+      border-radius: 10px;
+      padding: 3px 10px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+  }
+
+  .iconArrow {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+  }
+}

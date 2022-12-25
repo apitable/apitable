@@ -1,0 +1,59 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.searchContainer {
+  display: flex;
+  margin-top: 10px;
+  padding: 0 24px;
+
+  .inputContainer {
+    position: relative;
+    flex-grow: 1;
+  }
+
+  .searchOption {
+    height: 30px;
+    line-height: 30px;
+    margin-left: 24px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+
+    :global {
+      .ant-switch {
+        margin-left: 6px;
+        vertical-align: inherit;
+      }
+    }
+  }
+
+  .searchIcon {
+    position: absolute;
+    top: 8px;
+    left: 2px;
+  }
+
+  .closeIcon {
+    position: absolute;
+    top: 10px;
+    right: 4px;
+    cursor: pointer;
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .searchContainer {
+    display: block;
+
+    .searchOption {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-left: 0;
+      :global(.ant-switch) {
+        min-width: 34px;
+      }
+    }
+  }
+}

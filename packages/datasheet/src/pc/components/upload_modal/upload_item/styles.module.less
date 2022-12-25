@@ -1,0 +1,102 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+.img {
+  width: 100%;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media screen and (min-width: @w-md) {
+  :global {
+    .uploadTabWrapper {
+      :local {
+        .img {
+          height: 108px;
+        }
+      }
+    }
+  }
+}
+
+.uploadItem {
+  position: relative;
+
+  &:hover {
+    .iconDelete {
+      opacity: 1;
+    }
+  }
+}
+
+.status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 24px);
+  background: var(--deepMaskColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.progress {
+  width: 80%;
+
+  p {
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+.fileName {
+  color: var(--secondLevelText);
+  font-size: 11px;
+  margin-top: 8px;
+  .ellipsis();
+}
+
+.placeholderFile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 24px);
+}
+
+.retryUpload {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconDelete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: var(--zIndex-3-uploadDeleteIcon);
+  opacity: 0;
+  cursor: pointer;
+// FIXME:THEME
+  background: var(--shadowColor);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and(max-width: @w-md) {
+  .img {
+    height: .px2vw(72px)[@res];
+  }
+}
