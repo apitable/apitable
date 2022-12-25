@@ -277,7 +277,7 @@ services:
       mysql:
         condition: service_healthy
       init-db:
-        condition: service_healthy
+        condition: service_started
     command:
       - /bin/bash
       - -c
