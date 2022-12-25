@@ -1,0 +1,149 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.fieldHeader {
+  display: flex;
+  align-items: center;
+  flex: 1 1;
+  padding: 0 10px;
+  box-sizing: border-box;
+  height: 100%;
+  background: var(--defaultBg);
+  border-bottom: 1px solid var(--shadowColor);
+  border-right: 1px solid var(--shadowColor);
+  border-top: 1px solid var(--shadowColor);
+  width: calc(100% - 70px);
+  position: relative;
+
+  .dotOperate {
+    display: none;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transform: rotate(90deg) translateX(4px);
+    width: 16px;
+  }
+
+  &:hover {
+    .dotOperate,
+    .fieldDescIcon {
+      display: flex;
+    }
+  }
+
+  .addIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .iconType {
+    display: flex;
+    align-items: center;
+  }
+
+  .fieldName {
+    font-size: 13px;
+    color: var(--firstLevelText);
+    margin-left: 4px;
+
+    font-weight: bold;
+    .ellipsis();
+  }
+
+  .opacityLine {
+    width: 6px;
+    position: absolute;
+    background: transparent;
+    height: 100%;
+    right: -2px;
+    z-index: var(--dragColumnWidthAfter);
+
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+}
+
+.select {
+  background: var(--cellSelectedColor);
+}
+
+.highLight {
+  position: relative;
+
+  &:after {
+    content: " ";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--primaryColor);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.fieldDescIcon {
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+// FIXME:THEME
+  background: rgba(var(--primaryColor-rgb), 20%);
+  margin-right: 6px;
+  margin-left: 8px;
+
+  svg {
+    fill: var(--primaryColor);
+    vertical-align: -0.125em;
+  }
+
+  .focus {
+    svg {
+// FIXME:THEME
+      fill: rgba(var(--primaryColor-rgb), 50%);
+    }
+  }
+}
+
+.tipPre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 320px;
+  margin-bottom: 0;
+}
+
+.warningIcon {
+  cursor: pointer;
+}
+
+.fieldNameWrapper {
+  flex: 1;
+  .ellipsis();
+}
+
+@media screen and (max-width: @w-md) {
+  .errorTip {
+    left: 24px !important;
+  }
+}
+
+.firstHeaderTip {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 5px;
+  border-color: var(--indigo_100) transparent transparent var(--indigo_100);
+  border-style: solid;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}

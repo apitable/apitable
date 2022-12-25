@@ -1,0 +1,111 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.mirrorListInner {
+  border-radius: 8px;
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHigh);
+  width: 400px;
+  height: 322px;
+  padding: 16px 8px 16px 16px;
+  position: relative;
+
+  .scroll {
+    margin-top: 8px;
+    max-height: 244px;
+    overflow: auto;
+  }
+
+  .operateButton {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--lineColor);
+    cursor: pointer;
+    border-radius: 0px;
+
+    & > span:nth-child(1) {
+      display: flex;
+    }
+  }
+}
+
+.listItem {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: pointer;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background: var(--rowSelectedBg);
+    border-radius: 4px;
+
+    svg {
+      fill: var(--primaryColor);
+    }
+  }
+}
+
+.skeletonWrapper {
+  margin-top: 20px;
+
+  :global {
+    .ant-skeleton-element {
+      display: inline-block;
+      margin-top: 10px;
+      width: 100%;
+    }
+  }
+}
+
+.mirrorItem {
+  &.active,
+  &.active:hover {
+    color: var(--primaryColor) !important;
+
+    svg {
+      fill: currentColor !important;
+    }
+  }
+}
+
+.blackInner {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  overflow: auto;
+
+  .imgBox {
+    width: 160px;
+    height: 120px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+  }
+
+  .emptyText {
+    margin: 0 16px;
+    font-size: 13px;
+    color: var(--secondLevelText);
+  }
+
+  button {
+    margin-top: 24px;
+  }
+}
+
+.boxTop {
+  svg {
+    margin-left: 4px;
+  }
+}

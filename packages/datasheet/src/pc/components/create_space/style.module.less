@@ -1,0 +1,84 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.createSpaceWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    margin: 40px 0 0 40px;
+
+    img {
+      height: 40px;
+      width: auto;
+    }
+  }
+
+  .errorMsg {
+    height: 14px;
+    font-size: 10px;
+    margin: 4px 0 6px 0;
+    color: var(--errorColor);
+  }
+
+  .formBox {
+    width: 390px;
+    margin: 100px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @media screen and(max-height: 700px) {
+    .formBox {
+      margin-top: 0;
+    }
+  }
+
+  @media screen and(max-height: 600px) {
+    .formBox {
+      margin-top: -45px;
+    }
+  }
+
+  .createSpaceIcon {
+    height: 200px;
+    width: auto;
+  }
+
+  .createSpaceBtn,
+  .spaceNameInput {
+    width: 390px;
+    height: 50px;
+  }
+
+  .createSpaceBtn {
+    margin-top: 25px;
+  }
+
+  .spaceNameInput {
+    margin-top: 30px;
+  }
+
+  .tip {
+    color: var(--thirdLevelText);
+    font-size: 12px;
+    margin-top: 15px;
+  }
+
+  .title {
+    margin-top: 18px;
+    color: var(--firstLevelText);
+    font-size: 26px;
+    font-weight: bold;
+  }
+
+  .subTitle {
+    color: var(--secondLevelText);
+    font-size: 16px;
+    font-weight: lighter;
+    margin-top: 15px;
+    margin-bottom: 50px;
+  }
+}

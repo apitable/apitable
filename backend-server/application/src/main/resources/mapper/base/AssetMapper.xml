@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.asset.mapper.AssetMapper">
+    <select id="selectByChecksum" resultType="com.apitable.asset.entity.AssetEntity">
+        SELECT *
+        FROM ${tablePrefix}asset
+        WHERE checksum = #{checksum} AND is_deleted = 0
+    </select>
+
+    <select id="selectExtensionNameByFileUrl" resultType="java.lang.String">
+        SELECT extension_name
+        FROM ${tablePrefix}asset
+        WHERE file_url = #{fileUrl} AND is_deleted = 0
+    </select>
+
+    <select id="selectByFileUrl" resultType="com.apitable.asset.entity.AssetEntity">
+        SELECT *
+        FROM ${tablePrefix}asset
+        WHERE file_url IN
+        <foreach item="item" index="index" collection="fileUrls" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <update id="updateFileSizeById">
+        UPDATE ${tablePrefix}asset
+        SET file_size = file_size + #{incrFileSize}
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+
+    <update id="updateFileSizeMimeTypeById">
+        UPDATE ${tablePrefix}asset
+        SET file_size = #{entity.fileSize}, mime_type = #{entity.mimeType}
+        WHERE id = #{entity.id} AND is_deleted = 0
+    </update>
+</mapper>

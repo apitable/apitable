@@ -1,0 +1,45 @@
+@import "~pc/styles/lib_var.less";
+
+.trigger {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  min-width: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  border-radius: 50%;
+
+  &:focus,
+  &:hover {
+// FIXME:THEME
+    background-color: rgba(var(--defaultBg-rgb), 30%) !important;
+  }
+}
+
+.moreToolItem {
+  display: flex;
+  height: 44px;
+  align-items: center;
+  padding: 0 16px;
+
+  &:active {
+// FIXME:THEME
+    background-color: rgba(var(--defaultBg-rgb), 30%);
+  }
+
+  .moreToolBtn {
+    font-size: 16px;
+    padding: 0;
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+
+  .toolName {
+    color: var(--static-white);
+  }
+}

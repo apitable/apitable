@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.template.mapper.TemplateAlbumRelMapper">
+    <select id="selectAlbumIdByRelateIdAndType" resultType="java.lang.String">
+        SELECT album_id
+        FROM ${tablePrefix}template_album_rel
+        WHERE relate_id = #{relateId}
+          AND `type` = #{type}
+    </select>
+
+    <select id="selectRelateIdByAlbumIdAndType" resultType="java.lang.String">
+        SELECT relate_id
+        FROM ${tablePrefix}template_album_rel
+        WHERE album_id = #{albumId}
+          AND `type` = #{type}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}template_album_rel(id, album_id, type, relate_id)
+                VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.albumId}, #{item.type}, #{item.relateId}
+            </trim>
+        </foreach>
+    </insert>
+
+    <delete id="deleteBatch">
+        DELETE
+        FROM ${tablePrefix}template_album_rel
+    </delete>
+</mapper>

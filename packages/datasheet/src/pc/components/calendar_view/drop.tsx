@@ -1,0 +1,178 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+import { memo, useContext, useState } from 'react';
+import * as React from 'react';
+import { useDrop } from 'react-dnd';
+import { AddOutlined } from '@apitable/icons';
+import { PRE_RECORD, RECORD } from './constants';
+import dayjs from 'dayjs';
+import classNames from 'classnames';
+import styles from './styles.module.less';
+import { CollaCommandName, ExecuteResult, Selectors, StoreActions, WhyRecordMoveType } from '@apitable/core';
+import { resourceService } from 'pc/resource_service';
+import { CalendarContext } from './calendar_context';
+import { getPosition } from './utils';
+import { ITask, useThemeColors } from '@apitable/components';
+import { dispatch } from 'pc/worker/store';
+import { store } from 'pc/store';
+interface IDrop {
+  children: React.ReactElement[];
+  date: Date;
+  update?: (id: number | string, startDate: Date | null, endDate: Date | null) => void;
+  tasks: ITask[];
+  disabled?: boolean;
+}
+
+const DropBase = ({ children, date, update, disabled }: IDrop) => {
+  const colors = useThemeColors();
+  const { 
+    view, calendarStyle, setRecordModal, isStartDateTimeField,
+    isEndDateTimeField, isMobile, tasks, datasheetId,
+    permissions,
+  } = useContext(CalendarContext);
+  const { startFieldId, endFieldId } = calendarStyle;
+  const [showAdd, setShowAdd] = useState(false);
+  const [{ isOver, isOverCurrent }, drop] = useDrop(
+    () => ({
+      accept: [RECORD, PRE_RECORD],
+      drop(item: any, monitor) {
+        const didDrop = monitor.didDrop();
+        if (didDrop) {
+          return;
+        }
+        if (update) {
+          const task = tasks?.filter(t => item.id === t.id)[0];
+          if (task) {
+            let { startDate, endDate } = task;
+            // diff ignores units of time below the day when the unit is a day
+            const formatDate = dayjs(date).format('YYYY/MM/DD');
+            const formatDiff = dayjs(startDate ? startDate : endDate).format('YYYY/MM/DD');
+            const diffDay = dayjs(formatDate).diff(dayjs(formatDiff), 'day');
+            if (diffDay > 0) {
+              endDate = dayjs(endDate).add(diffDay, 'day').toDate();
+              startDate = dayjs(startDate).add(diffDay, 'day').toDate();
+            } else if (diffDay < 0) {
+              endDate = dayjs(endDate).subtract(-diffDay, 'day').toDate();
+              startDate = dayjs(startDate).subtract(-diffDay, 'day').toDate();
+            }
+            update(task.id, startDate, endDate);
+          } else if (isStartDateTimeField) {
+            update(item.id, date, endFieldId && item.type === PRE_RECORD ? date : null);
+          } else {
+            update(item.id, null, date);
+          }
+        }
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        isOverCurrent: monitor.isOver({ shallow: true }),
+      }),
+    }),
+    [tasks],
+  );
+  const active = isOver || isOverCurrent;
+  
+  const addRecord = (e: React.MouseEvent) => {
+    const dateValue = dayjs(date).valueOf();
+    const cellValue: { [x: string]: number; } = {};
+    if (isStartDateTimeField) {
+      cellValue[startFieldId] = dateValue;
+    }
+    if (isEndDateTimeField) {
+      cellValue[endFieldId] = dateValue;
+    }
+    const collaCommandManager = resourceService.instance!.commandManager;
+    const result = collaCommandManager.execute({
+      cmd: CollaCommandName.AddRecords,
+      count: 1,
+      viewId: view.id,
+      index: 0,
+      cellValues: [cellValue]
+    });
+    if (
+      result.result === ExecuteResult.Success
+    ) {
+      const newRecordId = result.data && result.data[0];
+      // move type
+      if (newRecordId) {
+        const state = store.getState();
+        const rowsMap = Selectors.getVisibleRowsIndexMap(state);
+        const isRecordInView = rowsMap.has(newRecordId);
+        if (!isRecordInView) {
+          const newRecordSnapshot = Selectors.getRecordSnapshot(state, newRecordId);
+          if (newRecordSnapshot) {
+            dispatch(
+              StoreActions.setActiveCell(datasheetId, {
+                recordId: newRecordId,
+                fieldId: view.columns[0].fieldId,
+              }),
+            );
+            dispatch(StoreActions.setActiveRowInfo(datasheetId, {
+              type: WhyRecordMoveType.NewRecord,
+              positionInfo: {
+                recordId: newRecordId,
+                visibleRowIndex: 0,
+                isInit: false,
+              },
+              recordSnapshot: newRecordSnapshot
+            }));
+          }
+        }
+      }
+      const position = getPosition(e);
+      /**
+       * Delay setting modal Checked row
+       * When a modal exists, clicking on the + sign to add a new record will first trigger useClickAway to close the modal, 
+       * then set the recordId to open the new record modal
+       */
+      setTimeout(() => {
+        setRecordModal([newRecordId, true, position]);
+      }, 0);
+    }
+  };
+  
+  const isAllowAddRecord = !isMobile && permissions.rowCreatable;
+
+  return (
+    <div
+      ref={drop} 
+      className={classNames(styles.day, {
+        active,
+        [styles.hover]: isAllowAddRecord,
+      })}
+      onMouseOver={() => {
+        !isMobile && setShowAdd(true);
+      }}
+      onMouseLeave={() => {
+        !isMobile && setShowAdd(false);
+      }}
+      onDoubleClick={isAllowAddRecord ? addRecord : undefined}
+    >
+      {isAllowAddRecord && showAdd ? (
+        <span className={styles.add} onClick={addRecord}>
+          <AddOutlined size={14} color={colors.fc0}/>
+        </span>
+      ) : <React.Fragment />}
+      {children}
+    </div>
+  );
+};
+
+export const Drop = memo(DropBase);

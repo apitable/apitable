@@ -1,0 +1,233 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.linearColor(@color) {
+  background: linear-gradient(90deg, rgba(@color, .6) 0%, rgba(@color, 1) 30%, rgba(@color, 1) 100%);
+}
+
+.tabbarItemWrapper {
+  height: 100%;
+  box-sizing: border-box;
+  font-size: 13px;
+  position: relative;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: none !important;
+  border: 1px solid transparent;
+  padding: 0 8px 0 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+
+  .lineBorder {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: transparent;
+  }
+
+  &:hover {
+    background: var(--lowestBg);
+    .lineBorder {
+      background: var(--lineColor);
+    }
+
+    .viewIconArea {
+      .linearColor(var(--lowestBg));
+    }
+
+    &::after {
+      opacity: 0;
+    }
+  }
+
+  &:active {
+    background-color: var(--fc11);
+
+    .viewIconArea {
+      .linearColor(var(--fc11));
+    }
+  }
+
+  svg {
+    vertical-align: -0.125em;
+    fill: var(--fc3);
+  }
+
+  svg path {
+    fill: var(--fc3)
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    height: 20px;
+    background: var(--lineColor);
+    width: 1px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-10px);
+  }
+
+  .inputBox {
+    border: none;
+    outline: none;
+    width: 160px;
+    height: 21px;
+    line-height: 21px;
+    border-radius: 2px;
+    font-size: 14px;
+    padding: 2px 0;
+    z-index: 3;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background: var(--defaultBg);
+    &.lowestBg {
+      background: var(--defaultBg);
+    }
+  }
+
+  .sheetName {
+    display: flex;
+    align-items: center;
+    position: relative;
+    color: var(--fc1);
+
+    .name {
+      display: inline-block;
+      padding-left: 4px;
+      height: 16px;
+      line-height: 15px;
+      user-select: none;
+      max-width: 156px;
+      .ellipsis();
+    }
+  }
+
+  .closeBtn {
+    box-sizing: border-box;
+
+    .circle {
+      display: flex;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      box-sizing: border-box;
+      align-items: center;
+      transform: rotate(90deg);
+    }
+  }
+
+  &.preActive {
+    &:after {
+      opacity: 0;
+    }
+  }
+
+  &.active {
+    border-color: var(--lineColor);
+    background: var(--lowestBg);
+
+    .lineBorder {
+      background: var(--lowestBg);
+    }
+
+    .viewIconArea {
+      .linearColor(var(--lowestBg));
+    }
+
+    &.specialType {
+      background: var(--fc8);
+      .lineBorder {
+        background: var(--fc8);
+      }
+
+      .viewIconArea {
+        .linearColor(var(--fc8));
+      }
+    }
+
+    .name {
+      color: var(--primaryColor);
+    }
+
+    svg, svg path {
+      fill: var(--primaryColor);
+    }
+
+    &::after {
+      opacity: 0;
+    }
+  }
+
+  &.tabbarEditting {
+    &.specialType {
+      .inputBox {
+        background: var(--lowestBg);
+      }
+    }
+  }
+
+  &.activePrev {
+    background: var(--lowestBg);
+    border-bottom: none;
+
+    .item {
+      position: relative;
+      height: 40px;
+      background: var(--defaultBg);
+      border-bottom-right-radius: 10px;
+    }
+  }
+
+  &.activeNext {
+    border-bottom: none;
+    background: var(--lowestBg);
+
+    .item {
+      position: relative;
+      height: 40px;
+      background: var(--defaultBg);
+      border-bottom-left-radius: 10px;
+    }
+  }
+
+  &.err {
+    .inputBox {
+      border: 1px solid var(--errorColor);
+
+      &::selection {
+        background: var(--errorColor);
+      }
+    }
+  }
+
+  .viewIconArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 8px;
+    transition: all .3s;
+    border-radius: 4px;
+    background: transparent;
+    .linearColor(var(--fc8));
+
+    & > span, & > div {
+      transition: all .3s;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--fc11);
+      }
+      &:active {
+        background-color: var(--fc4);
+      }
+    }
+  }
+}

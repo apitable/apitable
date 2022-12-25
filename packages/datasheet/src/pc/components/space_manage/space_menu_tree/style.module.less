@@ -1,0 +1,117 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.spaceSubTitle {
+  color: var(--thirdLevelText) !important;
+  margin: 16px 0 10px 16px !important;
+  cursor: default;
+}
+.inviteBtn {
+  width: 134px;
+  height: 40px;
+  background: var(--defaultBg);
+  border-radius: 4px;
+  border: 1px solid var(--shadowColor);
+  font-size: 13px;
+  color: var(--secondLevelText);
+  outline: none;
+  margin: 10px auto 10px 46px;
+}
+.inviteBtn:hover {
+  cursor: pointer;
+}
+.spaceMenuTree {
+  display: flex;
+  flex-direction: column;
+
+  :global {
+    .ant-tree {
+      .ant-tree-treenode {
+        padding: 0;
+      }
+      &.ant-tree-directory .ant-tree-treenode::before {
+        bottom: 0;
+      }
+      span.ant-tree-switcher,
+      span.ant-tree-iconEle {
+        height: 40px;
+        width: 24px;
+        svg {
+          fill: var(--fourthLevelText);
+          width: 16px;
+          height: 16px;
+          transform: rotate(0deg);
+        }
+      }
+      .ant-tree-switcher-icon {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      .ant-tree-switcher_close .ant-tree-switcher-icon svg {
+        transform: rotate(0deg);
+      }
+      .ant-tree-switcher_open .ant-tree-switcher-icon svg {
+        transform: rotate(90deg);
+      }
+      .ant-tree-switcher-icon svg {
+        transition: transform 0.3s;
+      }
+      span.ant-tree-switcher {
+        line-height: 40px;
+      }
+      .ant-tree-indent-unit {
+        width: 0;
+      }
+      span.ant-tree-iconEle {
+        line-height: 45px;
+        svg {
+          width: 16px;
+          height: 16px;
+          fill: var(--thirdLevelText);
+        }
+      }
+      .ant-tree-node-content-wrapper,
+      .ant-tree-title {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px !important;
+        padding: 0;
+        flex: 1;
+        display: flex;
+      }
+
+      .ant-tree-title {
+        width: ~"calc(100% - 24px)";
+      }
+
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      .ant-tree-node-selected {
+        .ant-tree-iconEle {
+          svg {
+            fill: var(--primaryColor);
+          }
+        }
+        .ant-tree-title {
+          color: var(--primaryColor);
+        }
+      }
+      &.ant-tree-directory .ant-tree-treenode:hover::before,
+      .ant-tree-treenode-selected::before,
+      .ant-tree-node-content-wrapper:hover::before {
+        background: var(--rowSelectedBg) !important;
+      }
+
+      .anticon {
+        display: none;
+      }
+      .ant-tree-child-tree .ant-tree-title {
+        text-indent: -24px;
+      }
+    }
+  }
+}

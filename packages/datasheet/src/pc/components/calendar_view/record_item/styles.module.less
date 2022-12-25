@@ -1,0 +1,100 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+:global(.list.mobile) {
+  .recordItem {
+    padding: 0;
+  }
+  .empty {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+.recordItem {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 4px 0;
+  & > div {
+    width: 100%;
+  }
+  &.high {
+    line-height: 48px;
+    min-height: 48px;
+  }
+  &.bolder {
+    font-weight: bolder;
+  }
+  :global {
+    .checkboxCell {
+      padding-top: 0;
+      justify-self: unset;
+      padding-left: 10px;
+      justify-content: start;
+    }
+    .fieldTitleWrap {
+      padding-right: 8px;
+      .right {
+        padding-bottom: 4px;
+      }
+    }
+    .fieldTitle {
+      line-height: 18px;
+      padding: 0 8px 4px;
+      margin: 0;
+      font-size: 12px;
+    }
+    .ratingCell {
+      height: 18px;
+    }
+    .createdTime,
+    .optionCellContainer,
+    .cellDateTimeDate,
+    .dateTime,
+    .cellAutoNumber,
+    .cellText {
+      line-height: 20px;
+    }
+    .optionCellContainer,
+    .createdTime,
+    .cellText,
+    .dateTime,
+    .cellAutoNumber,
+    .ratingCell,
+    .optionCellContainer,
+    .attachmentContainer {
+      padding-top: 0;
+      padding-bottom: 0;
+      .link,
+      .tabItem {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+    .unitMember {
+      margin: 0;
+    }
+    @media screen and(max-width: @w-md) {
+      .cellText {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+    }
+  }
+}
+
+.empty {
+  line-height: 20px;
+  padding: 4px 10px;
+  font-weight: bolder;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media screen and(max-width: @w-md) {
+  .empty {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}

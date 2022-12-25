@@ -1,0 +1,81 @@
+@import "~pc/styles/lib_var.less";
+
+.fieldDocsCard {
+  color: var(--static-white);
+  padding: 24px;
+  .fieldName {
+    position: relative;
+    color: var(--primaryColor);
+    font-size: 16px;
+    font-weight: normal;
+    border-bottom: 1px solid rgba(var(--static-white-rgb), 20%);
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    svg {
+      vertical-align: text-bottom;
+    }
+    .fieldId {
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      font-size: 12px;
+      color: var(--static-white);
+    }
+  }
+  .splitWrapper {
+    display: flex;
+    .leftPart {
+      width: 33%;
+      flex-shrink: 0;
+    }
+    .rightPart {
+      width: 67%;
+    }
+    .fieldValueDescription {
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--static-white);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+    .fieldValueType {
+      color: var(--successColor);
+      font-size: 14px;
+    }
+    .subTitle {
+      font-weight: normal;
+      font-size: 14px;
+      color: rgba(var(--static-white-rgb), 60%);
+      margin-bottom: 16px;
+    }
+    .fieldValueExample {
+      background-color: var(--dc02);
+      border-radius: 8px;
+      padding: 15px 24px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .largeIconWrapper {
+      display: flex;
+      flex-direction: column;
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--dc02);
+      margin-bottom: 24px;
+      text-align: center;
+      .title {
+        margin-top: 4px;
+        word-break: keep-all;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        color: var(--static-white);
+      }
+    }
+  }
+}

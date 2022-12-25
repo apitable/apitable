@@ -1,0 +1,23 @@
+@import "~pc/styles/lib_mixins.less";
+
+.datasheetInfo {
+  display: flex !important;
+  align-items: center;
+  &.iconEditable {
+    :global(.emoji-mart-emoji) {
+      cursor: pointer;
+    }
+  }
+
+  :global(.emoji-mart-emoji) {
+    margin-right: 2px;
+    line-height: 0;
+  }
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: text;
+  .ellipsis();
+}

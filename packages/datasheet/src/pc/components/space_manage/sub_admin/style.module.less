@@ -1,0 +1,92 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "../common.module.less";
+
+.subAdmin {
+  margin-top: 40px;
+  flex: 1;
+  background: var(--defaultBg);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+
+  .describe {
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+
+  .gradeInfo {
+    .commonTitleDesc();
+  }
+
+  h1 {
+    .commonTitle();
+  }
+
+  .addAdminBtn {
+    width: 116px;
+  }
+
+  .tableWrapper {
+    margin-top: 30px;
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    .light-scroll-bar();
+  }
+
+  .pagination {
+    padding: 30px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .groupName {
+    cursor: default;
+  }
+
+  .groupName:global(.ant-tooltip-open) {
+    display: inline;
+  }
+
+  .operateBtn {
+    display: flex;
+    color: var(--lineColor);
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  :global {
+    .ant-table-wrapper {
+      min-width: 800px;
+    }
+
+    .ant-table {
+      line-height: 1;
+      color: var(--secondLevelText);
+      .antdTable();
+
+      .ant-table-body {
+        overflow-y: hidden !important;
+        .light-scroll-bar();
+
+        &:hover {
+          overflow-y: overlay !important;
+        }
+      }
+
+      .ant-table-hide-scrollbar {
+        overflow-y: overlay !important;
+
+        &:hover {
+          overflow-y: overlay !important;
+        }
+      }
+
+      .ant-table-hide-scrollbar::-webkit-scrollbar {
+        background-color: var(--lowestBg);
+      }
+    }
+  }
+}

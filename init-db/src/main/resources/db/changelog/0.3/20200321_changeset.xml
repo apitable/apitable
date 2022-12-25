@@ -1,0 +1,113 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200321-001" author="Chambers" labels="base">
+        <comment>New Fields and Replacement Index of Attachment Resource Table</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}asset` ADD COLUMN `height` int(11) NULL DEFAULT NULL COMMENT 'Image Height' AFTER `is_template`;
+            ALTER TABLE `${table.prefix}asset` ADD COLUMN `width` int(11) NULL DEFAULT NULL COMMENT 'Image Width' AFTER `height`;
+            ALTER TABLE `${table.prefix}asset` DROP INDEX `idx_digest`;
+            ALTER TABLE `${table.prefix}asset` ADD UNIQUE INDEX `uk_checksum`(`checksum`) USING BTREE;
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE `${table.prefix}asset` DROP COLUMN `height`;
+                ALTER TABLE `${table.prefix}asset` DROP COLUMN `width`;
+                ALTER TABLE `${table.prefix}asset` DROP INDEX `uk_checksum`;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-002" author="Chambers" labels="space">
+        <comment>Delete duplicate records of the same space, the same datasheet and the same file in the space attachment table</comment>
+        <sql>
+            DELETE t FROM `${table.prefix}space_asset` t WHERE t.id NOT IN (SELECT min_id FROM (SELECT MIN(id) as min_id FROM `${table.prefix}space_asset` GROUP BY space_id, node_id, asset_id) AS t);
+        </sql>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-003" author="Chambers" labels="space">
+        <comment>Synchronize basic attachment table data</comment>
+        <sql>
+            UPDATE `${table.prefix}asset` SET width = '300',height = '200' WHERE is_template = 1;
+            UPDATE `${table.prefix}asset` t JOIN `${table.prefix}space_asset` a ON t.id = a.asset_id SET t.width = a.width, t.height = a.height WHERE t.is_template != 1;
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-004" author="Chambers" labels="space">
+        <comment>New Fields and Unique Index of Space Attachment Table</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_asset` ADD COLUMN `cite` int(10) NULL DEFAULT 1 COMMENT 'Number of references' AFTER `asset_checksum`;
+            ALTER TABLE `${table.prefix}space_asset` ADD COLUMN `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT 'Update Time' AFTER `create_time`;
+            ALTER TABLE `${table.prefix}space_asset` ADD UNIQUE INDEX `uk_spc_dst_asset_id`(`space_id`, `node_id`, `asset_id`) USING BTREE;
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE `${table.prefix}space_asset`
+                DROP COLUMN `cite`,
+                DROP COLUMN `update_time`,
+                DROP INDEX `uk_spc_dst_asset_id`;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-005" author="Chambers" labels="node">
+        <comment>Add new field icon in node table</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node` ADD COLUMN `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Node Icon' AFTER `node_name`;
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE `${table.prefix}node`
+                DROP COLUMN `icon`;
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200321-006" author="BensonCheung" labels="node">
+        <comment>Create Assert Audit Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}asset_audit` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `asset_id` bigint(20) NOT NULL COMMENT 'Resource ID(link#xxxx_asset#id)',
+            `asset_file_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Cloud File Storage Path',
+            `asset_checksum` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[Redundancy]md5 Abstract',
+            `audit_result_score` float(8,8) DEFAULT NULL COMMENT 'Audit result score',
+            `audit_result_suggestion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Audit Result Suggestion, include:[“block”,”review”,”pass”]',
+            `audit_scenes` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Audit Scenes,Currently supported:pul/terror/politician/ads',
+            `auditor_openid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Auditor OpenId',
+            `auditor_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Auditor Name',
+            `is_audited` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Is Audited(0:No, 1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `idx_digest` (`asset_checksum`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Basics - Assert Audit Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}asset_audit"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

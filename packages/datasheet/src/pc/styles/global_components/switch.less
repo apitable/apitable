@@ -1,0 +1,31 @@
+// Switch
+// ---
+@switch-height: 20px;
+@switch-sm-height: 14px;
+// @switch-min-width: 44px;
+// The following variable was only added in antd 4.0 and does not work at the moment.
+// @switch-sm-min-width: 21px;
+// @switch-sm-checked-margin-left: - (var(--switch)-sm-height - 3px);
+// @switch-disabled-opacity: 0.4;
+@switch-color: var(--primaryColor);
+// @switch-bg: @component-background;
+// @switch-shadow-color: fade(#00230b, 20%);
+
+.ant-switch-small {
+  &.ant-switch:not(.ant-switch-disabled):active::before,
+  &.ant-switch:not(.ant-switch-disabled):active::after {
+    width: 19px;
+  }
+}
+
+.ant-switch-small::after {
+  width: 9px;
+  height: 9px;
+}
+.ant-switch-small .ant-switch-loading-icon {
+  font-size: 9px;
+}
+.ant-switch-small {
+  min-width: 24px;
+  line-height: 12px;
+}

@@ -1,0 +1,379 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.fieldPermissionModalWrap {
+  border-radius: 8px;
+  padding-bottom: 0 !important;
+  :global {
+    .ant-modal-body {
+      height: 552px;
+    }
+    .ant-modal-close {
+      display: block !important;
+    }
+  }
+}
+
+.fieldPermissionModal {
+  :global {
+    .ant-modal-close {
+      display: none;
+    }
+
+    .ant-modal-header {
+      padding-bottom: 0;
+    }
+
+    .ant-modal-body {
+      padding: 0 0 24px 0;
+    }
+  }
+}
+
+.unOpenPermissionWrapper {
+  font-size: 14px;
+
+  .lockIconWrapper {
+    margin-top: 24px;
+    margin-bottom: 4px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--firstLevelText);
+    margin-top: 8px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  button {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.openPermissionWrapper {
+  .switchWrapper {
+    padding-bottom: 16px;
+    margin: 0 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--lineColor);
+  }
+
+  .permissionStatus {
+    background: transparent;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 20px;
+    border-color: transparent;
+  }
+
+  .permissionSelect {
+    border-top: 1px solid var(--lineColor);
+    padding: 16px 24px 0;
+    border-color: transparent !important;
+  }
+
+  .collaboratorTip {
+    margin: 16px 24px;
+    font-size: 12px;
+    color: var(--thirdLevelText) !important;
+    display: flex;
+    justify-content: space-between;
+
+    .leftTip {
+      svg {
+        margin-right: 4px;
+      }
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+
+      &:nth-child(2) {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .unitPermissionList {
+    width: 100%;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
+    padding: 0 4px 0 24px;
+
+    :global {
+      .ant-skeleton {
+        margin-bottom: 8px;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.unitPermissionSelectWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  .addBtn {
+    flex-shrink: 0;
+  }
+
+  .unitValueWrapper {
+    width: auto;
+    flex: 1;
+    margin-right: 16px;
+    min-height: 40px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 6px 8px;
+    background: var(--lowestBg);
+    border-radius: 4px;
+    position: relative;
+
+    &:focus-within {
+      box-shadow: 0px 0px 0px 1px var(--primaryColor);
+      background: var(--defaultBg);
+    }
+
+    .unitValue {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      height: 100%;
+      max-height: 88px;
+      width: 100%;
+      min-height: 28px;
+      overflow: auto;
+    }
+
+    .memberListWrapper {
+      width: 100%;
+      position: absolute;
+      left: 0;
+    }
+
+    .memberList {
+      position: absolute;
+      width: 100%;
+      z-index: var(--memberOptionListZIndex);
+    }
+  }
+
+  .unitPermission {
+    height: 28px;
+    display: flex;
+    align-items: center;
+  }
+
+  .permissionSelect {
+    height: 20px;
+    padding-top: 0px;
+    padding-bottom: 0;
+    border: none;
+    background: transparent;
+  }
+}
+
+.warningUl {
+  p {
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--firstLevelText);
+
+    .bold {
+      font-weight: bold;
+    }
+  }
+}
+
+.openFormPermission {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px 0;
+}
+
+.placeholder {
+  line-height: 28px !important;
+  height: 28px !important;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+@media screen and (max-width: @w-md) {
+  .openPermissionWrapper {
+    height: 100% !important;
+  }
+
+  .mobileMemberList {
+    color: var(--secondLevelText);
+    font-size: 12px;
+    border-bottom: 1px solid var(--thirdLevelText);
+  }
+
+  .unitValue {
+    height: 27px !important;
+    flex-wrap: nowrap !important;
+    width: 0 !important;
+    flex: 1;
+
+    & > span {
+      margin-bottom: 0px !important;
+    }
+  }
+
+  .collaboratorTip {
+    margin-bottom: 4px !important;
+  }
+
+  .unOpenPermissionWrapper {
+    p {
+      font-size: 14px;
+    }
+  }
+  .fieldPermissionWrapper {
+    .unitPermissionList {
+      padding: 0 16px !important;
+    }
+  }
+}
+
+.permissionDrawer {
+  :global {
+    .ant-drawer-header {
+      padding-bottom: 0;
+    }
+
+    .ant-drawer-body {
+      padding: 0 0 24px;
+    }
+  }
+}
+
+.mobileOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  border-bottom: 1px solid var(--lineColor);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  p {
+    margin-bottom: 0;
+
+    &:nth-child(2) {
+      color: var(--thirdLevelText);
+    }
+  }
+}
+
+.mobileRoleSelect {
+  display: flex;
+  align-items: center;
+// FIXME:THEME
+  border-left: 1px solid var(--shadowColor);
+  padding-left: 10px;
+}
+
+.helpIcon {
+  display: flex;
+  align-items: center;
+}
+
+.customColor {
+  color: var(--thirdLevelText) !important;
+}
+
+.mobileMemberList {
+  margin: 0 24px;
+}
+
+.doubleSelect {
+  border: none !important;
+  height: 20px;
+  padding-right: 32px;
+  background: transparent !important;
+}
+
+.fieldPermissionWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .switchWrapper {
+    padding-bottom: 16px;
+    margin: 0 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--lineColor);
+  }
+
+  .permissionStatus {
+    background: transparent;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 20px;
+    border-color: transparent;
+  }
+
+  .permissionSelect {
+    margin-bottom: 16px;
+    border-top: 1px solid var(--lineColor);
+    padding: 0 24px;
+    border-color: transparent !important;
+  }
+
+  .collaboratorTip {
+    margin: 16px 24px;
+    font-size: 12px;
+    color: var(--thirdLevelText) !important;
+    display: flex;
+    justify-content: space-between;
+
+    .leftTip {
+      svg {
+        margin-right: 4px;
+      }
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+
+      &:nth-child(2) {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .unitPermissionList {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 0 4px 0 16px;
+    flex: 1;
+    :global {
+      .ant-skeleton {
+        margin-bottom: 8px;
+        width: 100%;
+      }
+    }
+  }
+
+  .permissionInfoSetting {
+    padding: 0 24px;
+  }
+  
+}

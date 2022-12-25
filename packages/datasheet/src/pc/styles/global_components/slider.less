@@ -1,0 +1,33 @@
+/*
+* Style overloading of Slider components
+*/
+
+// Here are the names of the overridable variables provided by the antd slider component
+// @slider-margin: 10px 6px 10px;
+@slider-track-background-color: var(--primaryColor);
+@slider-track-background-color-hover: var(--primaryColor);
+// @slider-track-background-color: var(--primary-3);
+// @slider-track-background-color-hover: @primary-4;
+// @slider-handle-border-width: 2px;
+// @slider-handle-background-color: var(--component-background);
+// @slider-handle-color: @primary-3;
+// @slider-handle-color-hover: @primary-4;
+// @slider-handle-color-focus: tint (var(--primaryColor), 20%);
+@slider-handle-color-focus-shadow: none;
+// @slider-handle-color-tooltip-open: var(--primaryColor);
+// @slider-handle-shadow: 0;
+// @slider-dot-border-color: @lineColor-split;
+// @slider-dot-border-color-active: tint (var(--primaryColor), 50%);
+// @slider-disabled-color: @disabled-color;
+// @slider-disabled-background-color: var(--component-background);
+
+// The desired effect cannot be achieved by overriding the above variable names, overloading the style class
+.ant-slider {
+  .ant-slider-track {
+    height: 2px;
+  }
+  .ant-slider-handle {
+    border: 2px solid var(--primaryColor);
+    margin-top: -6px;
+  }
+}

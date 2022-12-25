@@ -1,0 +1,30 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.bubbleBox {
+  position: absolute;
+  top: -30px;
+  right: -50px;
+  padding: 0 4px;
+  border-radius: 4px 4px 4px 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--orange_500);
+  background-color: var(--orange_50);
+  line-height: 24px;
+  height: 24px;
+  .arrow {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    border: 3px solid var(--orange_50);
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+  .goldCoin {
+    display: inline-block;
+    margin-top: -2px;
+    margin-left: 4px;
+    width: 16px;
+  }
+}

@@ -1,0 +1,119 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.3-20200317-001" author="ShawnDeng" labels="node">
+        <comment>Create Workbench Node Share Setting Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_share_setting`  (
+            `id` bigint(20) UNSIGNED NOT NULL COMMENT 'Primary Key',
+            `node_id` varchar(50) NOT NULL COMMENT 'Node ID',
+            `share_id` varchar(64) NULL COMMENT 'Share unique ID',
+            `is_enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Shareable status (0: off, 1: on)',
+            `allow_save` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Allow others to transfer (0: No, 1: Yes)',
+            `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'Create Time',
+            `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT 'Update Time',
+            PRIMARY KEY (`id`),
+            UNIQUE INDEX `k_node_id`(`node_id`) COMMENT 'Unique Node ID'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench Node Share Setting Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_share_setting"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-002" author="ShawnDeng" labels="node">
+        <comment>Create Workbench Node Share Setting Operation Record Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_share_operate`  (
+            `id` bigint(20) UNSIGNED NOT NULL COMMENT 'Primary Key',
+            `share_id` varchar(64) NOT NULL COMMENT 'Node share unique code',
+            `operate_event` tinyint(2) UNSIGNED NOT NULL COMMENT 'Operation event type (0: open share, 1: close share, 2: open transfer, 3: close transfer, 4: refresh link)',
+            `operator` bigint(20) NOT NULL COMMENT 'Operator',
+            `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'Create Time',
+            PRIMARY KEY (`id`)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT = 'Workbench - Node Share Setting Operation Record Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_share_operate"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-003" author="Chambers" labels="node">
+        <comment>Create Node Description Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}node_desc` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary Key',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Custom Node ID',
+            `description` text COLLATE utf8mb4_unicode_ci COMMENT 'Node Description',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_node_id` (`node_id`) USING BTREE COMMENT 'Node Unique Code'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Node Description Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}node_desc"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-004" author="Chambers" labels="space">
+        <comment>Create Space Public Invitation Link Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_invite_link` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `team_id` bigint(20) NOT NULL COMMENT 'Department ID(link#xxxx_unit_team#id)',
+            `creator` bigint(20) NOT NULL COMMENT 'Creator Member ID(link#xxxx_unit_member#id)',
+            `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Invitation token code',
+            `invite_num` int(10) unsigned DEFAULT '0' COMMENT 'Number of successful invitees',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No, 1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `invite_token` (`invite_token`) USING BTREE COMMENT 'Uniqueness Token'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Public Invitation Link Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_invite_link"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.3-20200317-005" author="Chambers" labels="audit">
+        <comment>Create Audit - Invitation Record Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}audit_invite_record` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '[Redundancy]Space ID(link#xxxx_space#space_id)',
+            `inviter` bigint(20) NOT NULL COMMENT 'Inviter Member ID(link#xxxx_unit_member#id)',
+            `accepter` bigint(20) NOT NULL COMMENT 'Invitee Member ID(link#xxxx_unit_member#id)',
+            `type` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT 'Invited Type (0: Email Invitation; 1: File Import; 2: Link Invitation)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Audit - Invitation Record Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}audit_invite_record"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

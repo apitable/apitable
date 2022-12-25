@@ -1,0 +1,73 @@
+@import '~pc/styles/lib_var.less';
+@import "~pc/styles/lib_screen.less";
+
+
+.originImg {
+  cursor: pointer;
+  background-position: center center;
+  background-size: cover;
+
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.imgProcess {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  font-size: 14px;
+  text-align: center;
+  padding: 8px 16px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+}
+
+.displayFile {
+  border-radius: 1px;
+  border: 1px solid var(--lineColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gif {
+  &::after {
+    color: var(--fc8);
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    content: 'GIF';
+    width: 26px;
+    height: 16px;
+    display: table;
+    vertical-align: middle;
+    text-align: center;
+    left: 8px;
+    bottom: 8px;
+    border-radius: 4px;
+    background-color: rgba(var(--fc12-rgb), 50%);
+  }
+}
+
+.imgWrapper{
+  &>span{
+    position: unset !important;
+
+    img{
+      width: 100% !important;
+      height: 100% !important;
+      max-width: unset !important;
+      position: unset !important;
+    }
+  }
+}
+
+.imageWrapper{
+  &>span{
+    position: unset !important;
+
+    &>img{
+      position: unset !important;
+    }
+  }
+}

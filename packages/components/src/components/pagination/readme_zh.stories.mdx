@@ -1,0 +1,130 @@
+import { Pagination } from './index';
+import { Canvas, ArgsTable, Meta } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="基础组件/Pagination 翻页/文档" />
+
+# Pagination 翻页
+
+## 使用场景
+
+展示数据的条数，页数及提供翻页的组件
+
+## 默认展示
+
+默认展示页数
+
+<Canvas>
+    <ThemeToggle>
+        <Pagination total={50} />
+    </ThemeToggle>
+</Canvas>
+
+
+## 展示总数
+
+展示数据当前的范围和总记录条数
+
+<Canvas>
+    <ThemeToggle>
+        <Pagination showTotal total={50} />
+    </ThemeToggle>
+</Canvas>
+
+## 快速跳转
+
+输入页码直接跳到指定页码数
+
+<Canvas>
+    <ThemeToggle>
+        <Pagination showQuickJump total={50} />
+    </ThemeToggle>
+</Canvas>
+
+## 更多
+
+超出 7 页显示省略号
+
+<Canvas>
+    <ThemeToggle>
+        <div>
+            <Pagination total={71} />
+            <br />
+            <Pagination total={1171} />
+        </div>
+    </ThemeToggle>
+</Canvas>
+
+## 改变每页数据量
+
+使用下拉框改变分页的数据量
+
+<Canvas>
+  <ThemeToggle>
+      <Pagination
+          showChangeSize
+          pageSize={10}
+          total={71}
+          onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+      />
+  </ThemeToggle>
+</Canvas>
+
+## 禁用
+
+禁用翻页
+
+<Canvas>
+    <ThemeToggle>
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            disabled
+        />
+    </ThemeToggle>
+</Canvas>
+
+## 全部属性展示
+
+展示所有可展示属性
+
+<Canvas>
+    <ThemeToggle>
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
+</Canvas>
+
+## 国际化
+
+翻页组件国际化展示
+
+<Canvas>
+    <ThemeToggle>
+        <Pagination
+            showChangeSize
+            showQuickJump
+            showTotal
+            pageSize={10}
+            total={171}
+            lang="en"
+            onPageSizeChange={(page, pageSize) => { window.alert(`pageSize: ${pageSize}`) }}
+        />
+    </ThemeToggle>
+</Canvas>
+
+
+## API
+
+### Pagination
+
+<ArgsTable of={Pagination} />

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.DatasheetMapper">
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}datasheet(id, space_id, dst_id, dst_name, node_id, creator, revision, created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.dstId},#{item.dstName},#{item.nodeId},#{item.creator},#{item.revision},#{item.createdBy},#{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateNameByDstId">
+        UPDATE ${tablePrefix}datasheet
+        SET dst_name = #{dstName}, updated_by = #{userId}
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </update>
+
+    <delete id="updateIsDeletedByNodeIds">
+        UPDATE ${tablePrefix}datasheet
+        SET is_deleted = #{isDel}, updated_by = #{userId}
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted != #{isDel}
+    </delete>
+
+    <select id="selectByDstId" resultType="com.apitable.workspace.entity.DatasheetEntity">
+        SELECT *
+        FROM ${tablePrefix}datasheet
+        WHERE dst_id = #{nodeId}
+    </select>
+</mapper>

@@ -1,0 +1,161 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+
+.basicSettingWrapper {
+  position: relative;
+  overflow-x: auto;
+  height: 100%;
+  .title {
+    padding-left: 40px;
+    font-size: 16px;
+    height: 48px;
+    line-height: 48px;
+    font-weight: bold;
+    color: var(--firstLevelText);
+  }
+
+  .setting {
+    margin-top: 80px;
+    @media screen and (min-width: @w-md) {
+      padding-left: 40px;
+      min-width: 720px;
+    }    
+  }
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    margin-bottom: 30px;
+
+    &:not(:first-child) {
+      line-height: 40px;
+    }
+  }
+
+  .label {
+    width: 90px;
+    text-align: left;
+    color: var(--secondLevelText);
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 40px !important;
+    position: relative;
+  }
+
+  .content {
+    width: 240px;
+    margin-left: 30px;
+    color: var(--firstLevelText);
+    .ellipsis();
+  }
+
+  .modifyBtn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--primaryColor);
+    .btnText {
+      font-size: 15px;
+      color: var(--primaryColor);
+    }
+  }
+  .bindEmailMsg {
+    height: 24px;
+// FIXME:THEME
+    background-color: rgba(var(--warningColor-rgb), 20%);
+    margin-top: 8px;
+    border-radius: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    &::before {
+      display: inline-block;
+      content: ' ';
+      width: 14px;
+      height: 8px;
+      background-color: #FFebc8;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transform: skewX(-50deg);
+      border-radius: 1px;
+    }
+
+    span {
+      color: var(--warningColor);
+      font-size: 13px;
+      z-index: 1;
+    }
+
+    img {
+      width: 16px;
+      height: 16px;
+      margin-left: 4px;
+    }
+  }
+}
+
+.logout {
+  position: absolute;
+  left: 24px;
+  bottom: 0;
+}
+
+.statusIcon {
+  display: flex;
+  height: 28px;
+  width: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancelBtn {
+  color: var(--primaryColor) !important;
+  padding: 0 !important;
+  position: absolute;
+  left: 24px;
+  text-decoration: underline;
+  font-size: 14px !important;
+  &:hover {
+    background: none !important;
+    // FIXME:THEME
+    // color: darken(var(--primaryColor-rgb), 5%) !important;
+  }
+}
+
+.mobileSetting {
+  // border: 1px solid red;
+  height: 100%;
+  padding: 0 16px;
+}
+
+.linkItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 0px -1px 0px var(--fc8);
+  width: 100%;
+  height: 56px;
+  &:active {
+    background-color: var(--fc6);
+  }
+}
+
+.label {
+  color: var(--fc1);
+}
+
+.value {
+  display: flex;
+  align-items: center;
+}

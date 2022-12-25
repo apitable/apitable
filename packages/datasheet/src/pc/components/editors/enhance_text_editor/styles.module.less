@@ -1,0 +1,86 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.enhanceText {
+  text-decoration: underline;
+  color: var(--primaryColor);
+  cursor: pointer;
+}
+
+.enhanceTextEditor {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-right: 16px;
+}
+
+.enhanceTextIcon {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.textEditor {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 0px 2px var(--primaryColor);
+  box-sizing: border-box;
+  border-radius: 1px;
+  background: transparent;
+  .light-scroll-bar();
+
+  input {
+    width: 100%;
+    max-height: 200px;
+    height: auto;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    display: block;
+    line-height: 24px;
+    box-sizing: border-box;
+    padding: 3px 10px;
+    font-size: 13px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+.urlTitle {
+  align-items: center;
+  bottom: 4px;
+  display: block;
+  left: 8px;
+  line-height: 34px;
+  max-width: 80%;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 2px;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: @w-md) {
+  .textEditor {
+    input {
+      padding: 0;
+      font-size: 14px;
+    }
+  }
+
+  .enhanceTextEditor {
+    padding-left: 10px;
+  }
+
+  .enhanceTextIcon {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

@@ -1,0 +1,204 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.colorLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--fourthLevelText);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+
+  &.collapse {
+    width: 4px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    height: 100%;
+  }
+}
+
+.boardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 16px 11px 16px;
+  height: 26px;
+  box-sizing: content-box !important;
+  outline: none;
+
+  .innerWrapper {
+    margin-bottom: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    width: calc(100% - 22px);
+    position: relative;
+
+    .noGroupHead {
+      margin-right: 8px;
+    }
+
+    &.collapse {
+      margin-right: 24px;
+      overflow: hidden;
+    }
+  }
+
+  svg {
+    cursor: pointer;
+  }
+}
+
+.count {
+  font-size: 13px;
+  color: var(--thirdLevelText);
+}
+
+.more {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  cursor: pointer;
+}
+
+.noDataTip {
+  font-size: 14px;
+  color: var(--firstLevelText);
+  width: 90px;
+  font-weight: bold;
+}
+
+.contextCard {
+  background: var(--defaultBg);
+  box-shadow: 0px 2px 14px 0px var(--shadowColor);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 240px;
+  padding: 4px 0;
+
+  p {
+    height: 40px;
+    padding: 0 16px;
+    margin-bottom: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    svg {
+      margin-right: 6px;
+      fill: var(--thirdLevelText);
+    }
+
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+  }
+}
+
+.dot {
+  transform: rotate(90deg);
+  margin-left: 4px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+.memberEdit {
+  border: 2px solid var(--primaryColor);
+  border-radius: 4px;
+  min-height: 36px;
+}
+
+.optionEditArea {
+  display: flex;
+  align-items: center;
+
+  input {
+    flex: 1;
+  }
+}
+
+.optionHeader {
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: bold;
+
+  & > div {
+    font-size: 14px !important;
+    height: 24px !important;
+    border-radius: 14px !important;
+    font-weight: normal;
+    margin-right: 0 !important;
+  }
+}
+
+.divider {
+  width: calc(100% - 32px) !important;
+  min-width: calc(100% - 32px) !important;
+  margin: 4px auto !important;
+}
+
+.memberHeader {
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: bold;
+
+  :global {
+    .unitName {
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+
+  & > div {
+// FIXME:THEME
+    background: var(--shadowColor);
+    font-weight: bold;
+  }
+}
+
+.whiteBg {
+  background: var(--defaultBg);
+  height: 32px;
+  border-radius: 4px;
+}
+
+.memberList {
+  position: absolute;
+  top: 34px;
+
+  &.editing {
+    width: calc(100% - 18px)
+  }
+  &.newBoard {
+    width: 80%;
+  }
+}
+
+.noPermission {
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-left: 4px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .memberList {
+    box-shadow: var(--shadowCommonHighest);
+    background: var(--highestBg);
+    height: auto;
+  }
+}

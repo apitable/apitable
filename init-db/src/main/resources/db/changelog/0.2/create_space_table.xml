@@ -1,0 +1,240 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-016" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space unique identifier character',
+            `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space Name',
+            `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Space Icon',
+            `level` bigint(2) DEFAULT NULL COMMENT 'Space Level',
+            `owner_member_id` bigint(20) DEFAULT NULL COMMENT 'Owner User',
+            `creator_member_id` bigint(20) DEFAULT NULL COMMENT 'Creator User',
+            `pre_deletion_time` timestamp NULL DEFAULT NULL COMMENT 'Pre Delete Time',
+            `is_invite` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Whether all members can invite members(0:No,1:Yes)',
+            `is_forbid` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Do you want to prohibit all employees from export table(0:No,1:Yes)',
+            `node_visible` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Whether the node is visible to all(0:No,1:Yes)',
+            `ding_corp_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'DingTalk Enterprise ID',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_space_id` (`space_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-017" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Attachment Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_asset` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Datasheet Node Id(link#xxxx_node#node_id)',
+            `asset_id` bigint(20) DEFAULT NULL COMMENT 'Resource ID(link#xxxx_asset#id)',
+            `asset_checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '[Redundancy]md5 Abstract',
+            `type` tinyint(2) unsigned NOT NULL COMMENT 'Type (0:User Avatar 1:Space Logo 2:Datasheet Attachment 3:Thumbnail)',
+            `source_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Source file name, the file name of this upload',
+            `file_size` int(11) NOT NULL COMMENT '[Redundancy]File Size(Unit: byte)',
+            `height` int(11) DEFAULT NULL COMMENT 'Image Height',
+            `width` int(11) DEFAULT NULL COMMENT 'Image Width',
+            `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `idx_space_id` (`space_id`) USING BTREE,
+            KEY `idx_digest` (`asset_checksum`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Attachment Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_asset"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-018" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Invite Member Record Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_invite_record` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary key',
+            `invite_member_id` bigint(20) DEFAULT NULL COMMENT 'Inviter Member ID',
+            `invite_space_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Invitation Space ID',
+            `invite_space_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Invite Space Name',
+            `invite_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Invite Email',
+            `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Unique token ID of invitation link',
+            `Invite_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Invitation link',
+            `send_status` tinyint(1) unsigned DEFAULT '0' COMMENT 'Mail send status(0:Fail,1:Success)',
+            `status_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Status Description',
+            `is_expired` tinyint(1) unsigned DEFAULT '0' COMMENT 'Is it invalid(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `invite_token` (`invite_token`) COMMENT 'Uniqueness token'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Invite Member Records';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_invite_record"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-019" author="ShawnDeng" labels="space">
+        <comment>Create Role Permission Association Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_member_role_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID',
+            `member_id` bigint(20) unsigned NOT NULL COMMENT 'Member ID',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role Code',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_member_id` (`member_id`) USING BTREE,
+            KEY `k_role_code` (`role_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Role Permission Association Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_member_role_rel"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-020" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Menu Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_menu` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `parent_code` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Parent Code',
+            `menu_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Menu Code',
+            `menu_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Menu Name',
+            `menu_url` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Menu Relative Path',
+            `sequence` int(3) unsigned DEFAULT '1' COMMENT 'Sort',
+            `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Enable(0:No,1:Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_menu_code` (`menu_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Workspace - Menu Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_menu"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-021" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Menu Resource Association Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_menu_resource_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `menu_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Menu Code',
+            `resource_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Code',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_menu_code` (`menu_code`) USING BTREE,
+            KEY `k_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Menu Resource Association Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_menu_resource_rel"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-022" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Permission Resource Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_resource` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `group_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Group Code',
+            `resource_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Code',
+            `resource_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Name',
+            `resource_url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Resource URL',
+            `resource_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Describe',
+            `assignable` tinyint(1) unsigned DEFAULT '1' COMMENT 'Is it assignable(0:No,1:Yes)',
+            `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'State(0:Disable,1:Enable)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Permission Resource Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_resource"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-023" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Permission Resource Grouping Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_resource_group` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `group_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Group Code',
+            `group_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Group Name',
+            `group_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Group Description',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Permission Resource Grouping Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_resource_group"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-024" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Role Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_role` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Code',
+            `role_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name',
+            `role_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Description',
+            `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'State(0:Disable,1:Enable)',
+            `creator` bigint(20) DEFAULT NULL COMMENT 'Creator ID',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_role_code` (`role_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Role Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_role"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-025" author="ShawnDeng" labels="space">
+        <comment>Create Workspace Role Permission Resource Association Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}space_role_resource_rel` (
+            `id` bigint(20) unsigned NOT NULL COMMENT 'Primary key',
+            `role_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role Code',
+            `resource_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Resource Code',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `k_role_code` (`role_code`) USING BTREE,
+            KEY `k_resource_code` (`resource_code`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workspace - Role Permission Resource Association Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}space_role_resource_rel"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

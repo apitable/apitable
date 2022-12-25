@@ -1,0 +1,91 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+
+.cardWrap (@bgColor: var(--defaultBg), @height: 100%) {
+  border-radius: 8px;
+  background-color: var(--bgColor);
+  height: @height;
+}
+
+.advert {
+  background-color: var(--defaultBg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 24px 32px;
+  border-radius: 8px;
+  min-height: 302px;
+  .advertImg {
+    width: 160px;
+    height: 110px;
+    object-fit: cover;
+  }
+
+  .content {
+    margin: 24px 0;
+    text-align: center;
+  }
+}
+.basicInfo {
+  .item {
+    margin-top: 16px;
+    font-size: 13px;
+  }
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .titleText {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .title {
+    display: inline-block !important;
+  }
+  .infoIcon {
+    margin-left: 4px;
+    font-size: 16px;
+    fill: var(--thirdLevelText);
+    display: flex;
+    vertical-align: middle;
+    // cursor: pointer;
+    &:hover {
+      fill: var(--primaryColor);
+    }
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    color: var(--textCommonSecondary);
+  }
+}
+
+.plotTitle {
+  .name {
+    margin-top: 16px;
+    color: var(--thirdLevelText);
+  }
+  .value {
+    margin-top: 8px;
+  }
+}
+
+.infoHighlightTitle {
+  display: flex;
+  align-items: flex-end;
+
+  .unit,
+  .desc {
+    margin-bottom: 7px;
+  }
+
+  .desc {
+    color: var(--thirdLevelText);
+  }
+}

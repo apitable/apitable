@@ -1,0 +1,185 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "vika",
+    "@typescript-eslint",
+    "react-hooks",
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-var-requires": 0,
+    "vika/use-t-function": 0,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/display-name": 0,
+    "no-extra-boolean-cast": 0,
+    "no-case-declarations": 0,
+    "no-multi-spaces": "warn",
+    "no-prototype-builtins": 0,
+    // Direct use of built-in functions on the prototype chain is not allowed
+    "@typescript-eslint/ban-types": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "prefer-spread": 0,
+    "no-async-promise-executor": 0,
+    // Promises are not allowed to wrap async execution functions
+    "prefer-rest-params": 0,
+    // replace arguments with rest
+    "@typescript-eslint/no-inferrable-types": 0,
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-non-null-asserted-optional-chain": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    // Do not allow the use of ts! make assertion
+    "@typescript-eslint/no-explicit-any": 0,
+    // any is not allowed
+    "semi": "off",
+    "@typescript-eslint/semi": 1,
+    "comma-dangle": [
+      "warn",
+      "only-multiline"
+    ],
+    "max-len": [
+      // The maximum number of characters allowed on a single line
+      "warn",
+      {
+        "code": 150
+      }
+    ],
+    "no-console": 0,
+    "no-debugger": 1,
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    // Whether spaces are allowed before the parentheses of the function
+    "space-before-function-paren": [
+      "warn",
+      "never"
+    ],
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "enumMember",
+        "format": [
+          "PascalCase",
+          "UPPER_CASE"
+        ]
+      },
+      {
+        "selector": "interface",
+        "prefix": [
+          "I"
+        ],
+        "format": [
+          "PascalCase"
+        ]
+      },
+      {
+        "selector": "typeLike",
+        // "prefix": [
+        //   "I"
+        // ],
+        "format": [
+          "PascalCase"
+        ]
+      },
+      {
+        "selector": "variable",
+        "format": [
+          "camelCase",
+          "UPPER_CASE",
+          "PascalCase"
+        ],
+        "leadingUnderscore": "allow",
+        // variable names start with _
+        "trailingUnderscore": "forbid"
+        // variable names end with _
+      },
+      {
+        "selector": "parameter",
+        "format": [
+          "camelCase",
+          "PascalCase"
+        ],
+        "leadingUnderscore": "allow"
+      }
+    ],
+    "react/self-closing-comp": [
+      "warn",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    "react/jsx-equals-spacing": [
+      2,
+      "never"
+    ],
+    "react/jsx-wrap-multilines": 0,
+    "no-fallthrough": 1,
+    "no-unused-expressions": 0,
+    // disallow unused expressions
+    "quote-props": [
+      "warn",
+      "as-needed"
+    ],
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 1,
+        "maxEOF": 1
+      }
+    ],
+    "react/jsx-boolean-value": [
+      "warn",
+      "never"
+    ],
+    "indent": [
+      "warn",
+      2,
+      {
+        "SwitchCase": 1,
+        "VariableDeclarator": "first",
+        "MemberExpression": 1,
+        "flatTernaryExpressions": false
+      }
+    ],
+    "no-inner-declarations": 0,
+    // "default-case": 1, // requires a default case in the switch statement
+    "no-else-return": 1,
+    // Prohibit else in the if statement after return
+    "array-bracket-spacing": 1,
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "args": "none"
+      }
+    ],
+    "require-await": 2,
+    "@typescript-eslint/ban-ts-comment": 0,
+    // object
+    "object-curly-spacing": [
+      "warn",
+      "always",
+      {
+        "objectsInObjects": false
+      }
+    ]
+  }
+}

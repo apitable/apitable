@@ -1,0 +1,61 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+
+.field {
+  width: 128px;
+  margin-right: 8px !important;
+}
+
+.options {
+  .ant-select-option-common();
+}
+
+.optionItemWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  svg {
+    flex-shrink: 0;
+
+    &:nth-of-type(1) {
+      margin-right: 4px;
+    }
+
+    &:nth-of-type(2) {
+      margin-left: 4px;
+      fill: var(--warningColor) !important;
+    }
+  }
+}
+
+.label {
+  .ellipsis();
+}
+
+:global {
+  .ant-select-selection-item {
+    line-height: 40px !important;
+  }
+}
+
+.trigger {
+  margin-right: 8px;
+  background: var(--lowestBg);
+  padding: 12px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 4px;
+
+  &.error {
+    span {
+      color: var(--fourthLevelText);
+    }
+  }
+}

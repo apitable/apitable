@@ -1,0 +1,44 @@
+@import '../../styles/var.less';
+
+.codeWrap {
+  position: relative;
+  padding: @spacing-lx;
+  background: var(--bgCommonLower);
+  border-radius: @radius-large;
+}
+
+.codeBlock {
+  display: block;
+  font-size: 13px;
+  font-family: Consolas,"SFMono-Regular", "Liberation Mono", Menlo, Courier, monospace;
+
+  :global {
+    .token.operator {
+      background: none;
+    }
+  }
+}
+
+.codeWrapToolbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: @spacing-base;
+  display: flex;
+  align-items: center;
+  background-color: var(--bgMaskDefault);
+  color: var(--textCommonQuaternary);
+  font-size: 12px;
+  &[contentEditable="false"] {
+    user-select: none !important;
+  }
+
+  .operationBtn {
+    margin-left: @spacing-base;
+    cursor: pointer;
+  }
+}
+
+.languageSelect {
+  color: var(--textCommonQuaternary);
+}

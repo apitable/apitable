@@ -1,0 +1,556 @@
+{
+    "wizard": {
+        "1": {
+            "completeIndex": -1,
+            "steps": "[[2]]",
+            "player": {
+                "action": [
+                    "recH5upxLpgTD"
+                ]
+            }
+        },
+        "2": {
+            "completeIndex": 0
+        },
+        "3": {
+            "repeat": true,
+            "completeIndex": -1
+        },
+        "4": {
+            "completeIndex": 0,
+            "steps": "[[8,9],[12,13],[10,11]]",
+            "player": {
+                "action": [
+                    "recSciFoQEPTM"
+                ]
+            }
+        },
+        "5": {
+            "repeat": true,
+            "completeIndex": -1
+        },
+        "6": {
+            "completeIndex": 0
+        },
+        "7": {
+            "completeIndex": 0
+        },
+        "8": {
+            "completeIndex": 0
+        },
+        "9": {
+            "completeIndex": 0
+        },
+        "10": {
+            "completeIndex": 0
+        },
+        "11": {
+            "completeIndex": 0,
+            "endTime": 1620628680000,
+            "startTime": 1620023880000
+        },
+        "12": {
+            "completeIndex": 0
+        },
+        "13": {
+            "completeIndex": 0,
+            "steps": "[[3]]"
+        },
+        "14": {
+            "repeat": true,
+            "completeIndex": -1,
+            "successMsg": "wizard_14_success_message",
+            "steps": "[[4]]",
+            "freeVCount": 200,
+            "integral_action": "wizard_video_reward"
+        },
+        "15": {
+            "repeat": true,
+            "completeIndex": -1,
+            "successMsg": "wizard_15_success_message",
+            "steps": "[[5]]",
+            "freeVCount": 200,
+            "integral_action": "wizard_video_reward"
+        },
+        "16": {
+            "repeat": true,
+            "completeIndex": -1,
+            "successMsg": "wizard_16_success_message",
+            "steps": "[[6]]",
+            "freeVCount": 200,
+            "integral_action": "wizard_video_reward"
+        },
+        "17": {
+            "repeat": true,
+            "completeIndex": -1,
+            "successMsg": "wizard_17_success_message",
+            "steps": "[[7]]",
+            "freeVCount": 200,
+            "integral_action": "wizard_video_reward"
+        },
+        "18": {
+            "repeat": true,
+            "completeIndex": 1,
+            "successMsg": "wizard_18_success_message",
+            "steps": "[[107,108],[105,106]]",
+            "freeVCount": 200,
+            "integral_action": "wizard_reward",
+            "player": {
+                "action": [
+                    "recMKNK2u3tkA"
+                ]
+            }
+        },
+        "19": {
+            "completeIndex": 0,
+            "steps": "[[14],[15,16],[17],[18],[20,21],[22]]",
+            "player": {
+                "action": [
+                    "recl36N2sBDBe"
+                ]
+            }
+        },
+        "20": {
+            "completeIndex": -1,
+            "successMsg": "wizard_20_success_message",
+            "freeVCount": 1000,
+            "integral_action": "complete_bind_email"
+        },
+        "21": {
+            "completeIndex": -1,
+            "manualActions": [
+                "open_vikaby({\n\"visible\": true,\n\"defaultExpandDialog\": true,\n\"dialogConfig\": {\n\"title\": \"维格表首届模板征集大赛\",\n\"description\":\"分享你的模板，免费获得200G空间赠礼，并有机会获得20人版6个月白银空间站！\",\n\"btnText\":\"查看详情\",\n\"btnUrl\": \"https://u.vika.cn/3pkza\",\n\"wizardId\": 21\n}\n}\n )"
+            ],
+            "player": {
+                "action": [
+                    "rec2I8ZbLDFGw",
+                    "recCrcOjScQhC"
+                ]
+            }
+        },
+        "22": {
+            "completeIndex": 0,
+            "steps": "[[23],[24]]",
+            "player": {
+                "action": [
+                    "recbAdanWwVvE"
+                ]
+            }
+        },
+        "23": {
+            "completeIndex": 0,
+            "steps": "[[40,41],[42]]"
+        },
+        "24": {
+            "completeIndex": 0,
+            "steps": "[[44]]",
+            "player": {
+                "action": [
+                    "recH5upxLpgTD"
+                ]
+            }
+        },
+        "25": {
+            "completeIndex": -1,
+            "steps": "[[43]]",
+            "player": {
+                "action": [
+                    "recpp069I2Fvi"
+                ]
+            }
+        },
+        "26": {
+            "completeIndex": 0,
+            "manualActions": [
+                "open_vikaby({\n\"visible\":true,\n\"defaultExpandTodo\": true,\n\"defaultExpandMenu\": false\n})"
+            ]
+        },
+        "27": {
+            "completeIndex": 0,
+            "steps": "[[45]]"
+        },
+        "28": {
+            "completeIndex": 0,
+            "steps": "[[46]]"
+        },
+        "29": {
+            "completeIndex": 0,
+            "steps": "[[47,48],[49],[50],[51,52],[53],[54]]",
+            "player": {
+                "action": [
+                    "rec7StFCpKkwD",
+                    "recBtbbzXDolQ"
+                ]
+            }
+        },
+        "30": {
+            "completeIndex": 0,
+            "steps": "[[55],[56,57],[58],[50],[51,52],[59],[60],[61]]",
+            "player": {
+                "action": [
+                    "recnbU7bovh9p"
+                ]
+            }
+        },
+        "31": {
+            "completeIndex": 0,
+            "steps": "[[49],[50],[51,52],[53],[54]]",
+            "player": {
+                "action": [
+                    "recH7YVXq8ev2"
+                ]
+            }
+        },
+        "32": {
+            "completeIndex": 0,
+            "steps": "[[62]]"
+        },
+        "33": {
+            "completeIndex": 0,
+            "steps": "[[63]]"
+        },
+        "34": {
+            "repeat": true,
+            "completeIndex": -1,
+            "steps": "[[64]]"
+        },
+        "35": {
+            "completeIndex": 0,
+            "steps": "[[64]]",
+            "player": {
+                "action": [
+                    "recWzFTYL5aqi"
+                ]
+            }
+        },
+        "36": {
+            "completeIndex": 0,
+            "steps": "[[65]]"
+        },
+        "37": {
+            "repeat": true,
+            "completeIndex": -1,
+            "steps": "[[66]]"
+        },
+        "38": {
+            "completeIndex": 0,
+            "steps": "[[66]]",
+            "player": {
+                "action": [
+                    "recUsJf5WI1XK"
+                ]
+            }
+        },
+        "39": {
+            "completeIndex": 0,
+            "steps": "[[67]]"
+        },
+        "40": {
+            "completeIndex": 0,
+            "steps": "[[68],[69],[70]]",
+            "player": {
+                "action": [
+                    "rec3Wfcm2vUu4"
+                ]
+            }
+        },
+        "41": {
+            "repeat": true,
+            "completeIndex": 0,
+            "steps": "[[71]]",
+            "player": {
+                "action": [
+                    "recksrkgpIWGA"
+                ]
+            }
+        },
+        "42": {},
+        "43": {},
+        "44": {
+            "completeIndex": 0,
+            "steps": "[[72]]"
+        },
+        "45": {
+            "completeIndex": 0,
+            "steps": "[[73],[76]]"
+        },
+        "46": {
+            "completeIndex": 0,
+            "steps": "[[74]]",
+            "player": {
+                "action": [
+                    "reczvbPaxSPAU"
+                ]
+            }
+        },
+        "47": {
+            "completeIndex": 0,
+            "steps": "[[75]]",
+            "player": {
+                "action": [
+                    "recV5500IVb6G"
+                ]
+            }
+        },
+        "48": {
+            "completeIndex": 0,
+            "steps": "[[76]]"
+        },
+        "49": {
+            "completeIndex": 0,
+            "steps": "[[77]]"
+        },
+        "50": {
+            "completeIndex": 0,
+            "manualActions": [
+                "open_guide_wizard(50)"
+            ],
+            "steps": "[[78]]",
+            "player": {
+                "action": [
+                    "recepgn7o0mNn"
+                ]
+            }
+        },
+        "51": {
+            "completeIndex": 0,
+            "manualActions": [
+                "open_guide_wizard(51)"
+            ],
+            "steps": "[[79]]",
+            "player": {
+                "action": [
+                    "recnv8Qb15HQI"
+                ]
+            }
+        },
+        "52": {
+            "completeIndex": 0,
+            "manualActions": [
+                "open_guide_wizard(52)"
+            ],
+            "steps": "[[80]]",
+            "player": {
+                "action": [
+                    "recoiIMY1gIXm"
+                ]
+            }
+        },
+        "53": {
+            "completeIndex": 0,
+            "steps": "[[81]]"
+        },
+        "54": {
+            "completeIndex": -1,
+            "steps": "[[82]]"
+        },
+        "55": {
+            "completeIndex": 0,
+            "steps": "[[82]]",
+            "player": {
+                "action": [
+                    "rech73EZuut4l"
+                ]
+            }
+        },
+        "56": {
+            "completeIndex": 0,
+            "steps": "[[83, 84]]"
+        },
+        "57": {
+            "completeIndex": 0,
+            "steps": "[[85]]",
+            "player": {
+                "action": [
+                    "rec7Y8opYoPK5"
+                ]
+            }
+        },
+        "58": {
+            "completeIndex": 0,
+            "steps": "[[86,87],[88,89],[90,91]]",
+            "player": {
+                "action": [
+                    "recNjTOtE8kzG"
+                ]
+            }
+        },
+        "59": {
+            "completeIndex": 0,
+            "steps": "[[92]]"
+        },
+        "60": {
+            "completeIndex": 0
+        },
+        "61": {
+            "completeIndex": -1,
+            "steps": "[[94]]",
+            "player": {
+                "action": [
+                    "recWziPefmN7N"
+                ]
+            }
+        },
+        "62": {
+            "completeIndex": 0,
+            "steps": "[[95]]"
+        },
+        "63": {
+            "completeIndex": 0,
+            "steps": "[[97]]"
+        },
+        "64": {
+            "repeat": true,
+            "completeIndex": -1,
+            "steps": "[[97]]"
+        },
+        "65": {
+            "completeIndex": -1,
+            "steps": "[[98]]"
+        },
+        "66": {
+            "completeIndex": 0,
+            "steps": "[[99]]"
+        },
+        "67": {
+            "repeat": true,
+            "completeIndex": 0,
+            "steps": "[[100,101]]"
+        },
+        "68": {
+            "completeIndex": -1,
+            "steps": "[[93]]"
+        },
+        "69": {
+            "repeat": true,
+            "completeIndex": -1,
+            "steps": "[[103]]"
+        },
+        "70": {
+            "repeat": true,
+            "completeIndex": 1,
+            "successMsg": "wizard_18_success_message",
+            "steps": "[[26,27],[28,29],[30],[32],[35],[37,38],[39]]",
+            "freeVCount": 200,
+            "integral_action": "wizard_reward"
+        },
+        "71": {
+            "completeIndex": -1,
+            "steps": "[[109]]"
+        },
+        "72": {
+            "steps": "[[93]]"
+        },
+        "73": {
+            "steps": "[[93]]"
+        },
+        "74": {
+            "steps": "[[93]]"
+        },
+        "75": {
+            "steps": "[[93]]"
+        },
+        "76": {
+            "steps": "[[93]]",
+            "player": {
+                "action": [
+                    "recBtbbzXDolQ",
+                    "recEIcl9v4jzr",
+                    "recZmyGfgUNR6"
+                ]
+            }
+        },
+        "77": {
+            "steps": "[[111]]"
+        },
+        "78": {
+            "completeIndex": 1,
+            "steps": "[[83],[82]]",
+            "player": {
+                "action": [
+                    "recBEBtlrHNqc"
+                ]
+            }
+        },
+        "79": {
+            "completeIndex": 0,
+            "steps": "[[126,127]]"
+        },
+        "80": {
+            "completeIndex": 0,
+            "steps": "[[128,129]]"
+        },
+        "81": {
+            "completeIndex": 0,
+            "steps": "[[124,125],[88,89]]"
+        },
+        "82": {
+            "completeIndex": -1,
+            "steps": "[[131]]"
+        },
+        "83": {
+            "completeIndex": -1,
+            "steps": "[[132],[137]]"
+        },
+        "84": {
+            "completeIndex": 0,
+            "steps": "[[135,133]]",
+            "player": {
+                "action": [
+                    "rec5MG0Q07sgC"
+                ]
+            }
+        },
+        "85": {
+            "repeat": true,
+            "steps": "[[136]]",
+            "player": {
+                "action": [
+                    "recpiCI64j675"
+                ]
+            }
+        },
+        "86": {
+            "steps": "[[137]]"
+        },
+        "87": {
+            "steps": "[[138]]",
+            "player": {
+                "action": [
+                    "recZmyGfgUNR6"
+                ]
+            }
+        },
+        "88": {
+            "completeIndex": 0,
+            "steps": "[[139,140],[141,143]]",
+            "player": {
+                "action": [
+                    "recGMkwh9WpxC"
+                ]
+            }
+        },
+        "89": {
+            "completeIndex": -1,
+            "steps": "[[144]]"
+        },
+        "90": {
+            "completeIndex": -1,
+            "steps": "[[145]]"
+        },
+        "91": {
+            "completeIndex": -1,
+            "steps": "[[152]]"
+        },
+        "92": {
+            "completeIndex": -1,
+            "steps": "[[153]]",
+            "player": {
+                "action": [
+                    "recBtbbzXDolQ",
+                    "recEIcl9v4jzr"
+                ]
+            }
+        }
+    }
+}

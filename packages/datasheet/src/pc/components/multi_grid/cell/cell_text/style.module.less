@@ -1,0 +1,69 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.cellText {
+  padding: 3px 10px;
+  line-height: 24px;
+  flex-grow: 1;
+  word-break: normal;
+  word-wrap: break-word;
+  .ellipsis();
+
+  .urlIcon {
+    position: absolute;
+    right: 9px;
+    cursor: pointer;
+  }
+}
+
+.url {
+  text-decoration: underline;
+}
+.activeUrl {
+  color: var(--primaryColor);
+  cursor: pointer;
+}
+
+.cellEnhanceText {
+  text-decoration: underline;
+}
+
+.activeText {
+  color: var(--primaryColor);
+}
+
+.numberCell {
+  text-align: right;
+}
+
+.rowHeight2 {
+  .multiLineEllipsis(2);
+}
+
+.rowHeight3 {
+  .multiLineEllipsis(4);
+}
+
+.rowHeight4 {
+  .multiLineEllipsis(6);
+}
+
+.activeCellText {
+  line-height: 24px;
+  .antiEllipsis() !important;
+  white-space: pre-wrap !important;
+}
+
+.currencyFieldWrap {
+  display: flex;
+}
+
+.currencyFieldSymbol {
+  text-align: left;
+  flex: 1;
+  .ellipsis();
+}
+
+.currencyFieldText {
+  flex-shrink: 0;
+}

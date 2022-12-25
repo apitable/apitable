@@ -1,0 +1,303 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+@paddingSize: 24px;
+@fieldSettingBoxWidth: 336px;
+
+.fieldOperateBox {
+  position: fixed;
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHigh);
+  padding: @paddingSize;
+  box-sizing: border-box;
+  border-radius: 4px;
+  z-index: var(--zIndex-10);
+  width: @fieldSettingBoxWidth;
+
+  .buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 32px;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+}
+
+.flowBox {
+  display: block;
+}
+
+.section {
+  margin-bottom: 16px;
+
+  .sectionTitle {
+    font-size: 13px;
+    color: var(--thirdLevelText);
+    margin-bottom: 8px;
+    &.flex {
+      display: flex;
+    }
+
+    &.enhance {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+      & > button[role="switch"] {
+        margin-right: 8px;
+      }
+    }
+    &.sub {
+      font-size: 12px;
+
+      :global(.ant-switch) {
+        float: right;
+        margin-top: 2px;
+      }
+    }
+  }
+
+  .renameWrapper {
+    textarea {
+      padding: 8px;
+      text-indent: 0;
+    }
+  }
+
+  .sectionMultiInfo,
+  .sectionInfo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      background: var(--rowSelectedBg);
+      position: relative;
+
+      &:after {
+        content: " ";
+        display: block;
+        width: @paddingSize;
+        background: var(--rowSelectedBg);
+        position: absolute;
+        top: 0;
+        right: -@paddingSize;
+        height: 100%;
+      }
+
+      &::before {
+        content: " ";
+        display: block;
+        width: @paddingSize;
+        background: var(--rowSelectedBg);
+        position: absolute;
+        top: 0;
+        left: -@paddingSize;
+        height: 100%;
+      }
+    }
+
+    .icon {
+      display: flex;
+    }
+
+    .text {
+      flex: 1;
+      .ellipsis();
+    }
+    .arrow {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .sectionInfo {
+    height: 40px;
+  }
+  .sectionMultiInfo {
+    height: 56px;
+  }
+
+  .sectionClear {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--thirdLevelText);
+    .warningIcon {
+      vertical-align: text-bottom;
+    }
+  }
+}
+
+.wrapperStyle {
+  border: none;
+}
+
+.iconType {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.inputStyle {
+  border: none;
+  background: var(--rowSelectedBg);
+
+  // &:focus {
+  //   border: 1px solid var(--primaryColor);
+  // }
+}
+
+.inputBlur {
+  border: 1px solid #eee !important;
+  box-shadow: none !important;
+
+  &:focus {
+    border: 1px solid var(--primaryColor) !important;
+  }
+}
+
+.inputError {
+  border: 1px solid #ea5d5d !important;
+  box-shadow: none !important;
+}
+
+.modal {
+  width: 433px;
+  height: 196px;
+  background: var(--defaultBg);
+  border-radius: 4px;
+  padding: 30px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+
+  h2 {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  main {
+    color: var(--secondLevelText);
+    font-size: 14px;
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 20px;
+  }
+
+  .operate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .buttonCancel {
+      border: 1px solid rgba(217, 217, 217, 1);
+      margin-right: 30px;
+      justify-content: center;
+    }
+
+    .buttonSubmit {
+      background: var(--primaryColor);
+      color: var(--defaultBg);
+    }
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--deepMaskColor);
+  opacity: 0.7;
+}
+
+.error {
+  color: var(--errorColor);
+  margin-top: 4px;
+}
+
+.subSectionTitle {
+  font-size: 12px;
+  color: var(--thirdLevelText);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+:export {
+  fieldSettingBoxWidth: @fieldSettingBoxWidth;
+}
+
+.requiredBox {
+  display: flex;
+  align-items: center;
+
+  div[role="checkbox"] {
+    padding-left: 0;
+  }
+  div[aria-checked] {
+    span {
+      font-size: 13px;
+      color: var(--black_700);
+    }
+  }
+}
+
+.requiredTip {
+  display: inline-flex !important;
+  margin-left: 8px;
+  color: var(--black_500);
+  &:hover {
+    color: var(--primaryColor);
+  }
+}
+
+.scrollWrapper {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: @w-md) {
+    overflow-x: hidden;
+    // overlay is only available under -webkit, use auto if not recognized
+    overflow-y: auto;
+    overflow-y: overlay;
+    margin: 0 -24px;
+    padding: 0 24px;
+  }
+}
+
+.scrollShadow {
+  position: absolute;
+  left: 0;
+  bottom: 88px;
+  width: 100%;
+  height: 20px;
+  background: var(--bgGradientVertical);
+  pointer-events: none;
+}
+
+.autoLayout {
+  position: absolute;
+  top: 0;
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHigh);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+@media screen and(max-width: @w-md) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}

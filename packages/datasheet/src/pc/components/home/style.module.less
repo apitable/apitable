@@ -1,0 +1,98 @@
+.homeWrapper {
+  width: 100%;
+  height: 100%;
+}
+.pcHome {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bgCommonLower);
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 32px;
+    .linkLine {
+      a {
+        margin-left: 32px;
+      }
+      img {
+        width: 32px;
+      }
+    }
+  }
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 264px;
+    }
+    .loginBox {
+      position: relative;
+      width: 340px;
+      margin: 84px 0;
+      padding: 9px 69px 60px 52px;
+      box-sizing: content-box;
+      .bgBox1 {
+        position: absolute;
+        width: 179px;
+        height: 179px;
+        top: 0;
+        left: 0;
+        background: var(--rainbowPink5);
+        opacity: 0.5;
+        filter: blur(100px);
+      }
+      .bgBox2 {
+        position: absolute;
+        width: 179px;
+        height: 179px;
+        top: 23px;
+        right: 0;
+        background: var(--rainbowIndigo5);
+        filter: blur(100px);
+        opacity: 0.5;
+      }
+      .bgBox3 {
+        position: absolute;
+        width: 179px;
+        height: 179px;
+        bottom: 23px;
+        left: 118px;
+        background: var(--rainbowPurple5);
+        opacity: 0.5;
+        filter: blur(100px);
+      }
+    }
+  }
+  .footer {
+    display: flex;
+    justify-content: center;
+    padding: 37px;
+  }
+}
+
+.mobileHome {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 47px 23px;
+  background-color: var(--bgCommonLower);
+  .header {
+    img {
+      width: 132px;
+    }
+  }
+  .content {
+    padding: 50px 0;
+    flex: 1;
+  }
+  .footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

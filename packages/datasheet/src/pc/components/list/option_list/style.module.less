@@ -1,0 +1,171 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.optionContainer {
+  background: var(--defaultBg);
+  box-shadow: 1px 1px 14px #e5e5e5;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.searchField {
+  padding: 8px;
+}
+
+.displayList {
+  max-height: 200px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  .light-scroll-bar();
+}
+
+.noResult {
+  font-size: 11px;
+  padding-bottom: 8px;
+  padding: 0 10px;
+  height: 30px;
+  line-height: 30px;
+  color: var(--fourthLevelText);
+  text-align: center;
+}
+
+.displayListItem {
+  height: 32px;
+  line-height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  width: 0;
+
+  .iconMove {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    svg {
+      fill: var(--thirdLevelText);
+    }
+
+    &.dragging {
+      display: flex;
+
+      svg {
+        fill: var(--firstLevelText);
+      }
+    }
+  }
+
+  .colorReview {
+    display: flex;
+    align-items: center;
+    left: 10px;
+    flex: 1;
+    width: 0;
+  }
+}
+
+.itemContainer {
+  display: flex;
+  border-radius: 10px;
+  padding: 0 10px;
+  height: 20px;
+  line-height: 20px;
+  align-items: center;
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  max-width: min-content;
+
+  .itemName {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 20px;
+    user-select: none;
+    min-width: 20px;
+    text-align: center;
+
+    &.itemNameEllipsis {
+      .ellipsis();
+    }
+  }
+}
+
+.addNewItem {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
+  margin-left: 10px;
+
+  span {
+    &:nth-of-type(1) {
+      display: inline-block;
+      width: 40px;
+      text-align: center;
+    }
+
+    &:nth-of-type(2) {
+      color: var(--secondLevelText);
+      display: inline-block;
+      width: 76%;
+      text-align: left;
+      .ellipsis();
+    }
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .displayListItem {
+    height: 48px;
+    font-size: 14px;
+
+    .itemContainer {
+      height: 24px;
+      font-size: 14px;
+      border-radius: 16px;
+    }
+
+    &.hoveredFreeze,
+    &.hovered:hover {
+      background: none;
+
+      .iconMove {
+        display: flex;
+      }
+    }
+
+    .colorReview {
+      position: static;
+    }
+  }
+
+  .addNewItem {
+    font-size: inherit;
+  }
+}
+
+.optionItemWrapper {
+  padding: 0 8px;
+  z-index: var(--zIndex-10);
+  display: flex;
+  align-items: center;
+
+  @media (any-hover: hover) {
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+  }
+
+  &:global {
+    &.isChecked {
+      color: inherit;
+    }
+  }
+}

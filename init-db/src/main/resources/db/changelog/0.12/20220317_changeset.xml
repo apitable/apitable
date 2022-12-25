@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220317-001" author="Zoe" labels="datasheet">
+        <comment>Create Workbench - Datasheet Record Alarm Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}datasheet_record_alarm`
+            (
+                `id`           BIGINT ( 20 ) UNSIGNED NOT NULL COMMENT 'Primary Key',
+                `alarm_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Alarm ID',
+                `space_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Space ID(link#space#space_id)',
+                `dst_id`       varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Datasheet ID(link#datasheet#dst_id)',
+                `record_id`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Record ID(link#datasheet_record#record_id)',
+                `field_id`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Field ID',
+                `alarm_at`     timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP COMMENT 'Alarm Time',
+                `alarm_status` tinyint   NOT NULL                                           DEFAULT '0' COMMENT 'Status: 0 - default, 1 - processing, 2 - process succeeded, 3 - process failed',
+                `is_deleted`   tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `created_by`   bigint                                                       DEFAULT NULL COMMENT 'Create User',
+                `updated_by`   bigint                                                       DEFAULT NULL COMMENT 'Last Update By',
+                `created_at`   timestamp NOT NULL                                           DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+                `updated_at`   timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `uk_alarm_id` (`alarm_id`) USING BTREE,
+                KEY            `idx_space_id` (`space_id`) USING BTREE,
+                KEY            `idx_dst_rec_id` (`dst_id`, `record_id`) USING BTREE,
+                KEY            `idx_alarm_at` (`alarm_at`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Workbench - Datasheet Record Alarm Table';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

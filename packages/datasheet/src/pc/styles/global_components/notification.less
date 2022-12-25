@@ -1,0 +1,79 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+@keyframes NotificationFadeIn {
+  0% {
+    //left: @notification-width;
+    opacity: 0;
+  }
+
+  100% {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes NotificationFadeOut {
+  0% {
+    bottom: 50;
+    opacity: 1;
+  }
+
+  100% {
+    bottom: -400px;
+    opacity: 0;
+  }
+}
+
+.ant-notification-notice {
+  width: auto;
+  height: 32px;
+  background: var(--primaryColor);
+  padding: 0;
+
+  &>a {
+    display: none;
+  }
+}
+
+.ant-notification-notice-message {
+  align-items: center;
+  height: 100%;
+  padding-left: 0 !important;
+  padding: 0 16px !important;
+  text-align: left;
+  justify-content: flex-start;
+  width: 100%;
+  color: white;
+  height: 32px;
+  font-size: 13px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.ant-notification {
+  position: absolute;
+
+  .ant-notification-fade-enter.ant-notification-fade-enter-active,
+  .ant-notification-fade-appear.ant-notification-fade-appear-active {
+    animation-name: NotificationLeftFadeIn !important;
+  }
+
+  .ant-notification-fade-enter,
+  .ant-notification-fade-leave {
+    animation-duration: 0.5s !important;
+  }
+}
+
+@keyframes NotificationLeftFadeIn {
+  0% {
+    bottom: -400px;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 50;
+    opacity: 1;
+  }
+}

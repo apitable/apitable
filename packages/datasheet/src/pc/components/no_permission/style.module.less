@@ -1,0 +1,97 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.pageWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--defaultBg);
+}
+
+.noPermissionWrapper {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      height: 190px;
+      width: auto;
+    }
+
+    @media screen and (max-width: @w-md) {
+      img {
+        width: 70%;
+        height: auto;
+      }
+    }
+
+    .tip {
+      font-size: 14px;
+      color: var(--firstLevelText);
+      margin-top: 24px;
+    }
+    .imgContent {
+      position: relative;
+      .imgContentQRcode {
+        position: absolute;
+        right: 32px;
+        bottom: 8px;
+        border: 0.754717px solid #262626;
+       
+        border-radius: 3.01887px;
+        width:  88px;
+        height: 88px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  h6 {
+    padding: 24px 0 16px;
+    margin: 0 0;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--fc1);
+  }
+
+  .tidiv {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--fc1);
+    text-align: center;
+  }
+  .helpText {
+    color: var(--fc3);
+  }
+  .backButton {
+    margin-top: 40px;
+    width: 200px;
+    position: relative;
+  }
+}
+
+.btnWrap {
+  margin-top: 32px;
+  width: 180px;
+  height: 48px;
+  button {
+    width: 100%;
+    height: 100%;
+  }
+}

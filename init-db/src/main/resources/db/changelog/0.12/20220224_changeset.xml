@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220224-006" author="Chambers" labels="space">
+        <comment>Space Apply Table add space_id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_apply`
+                ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220224-007" author="Chambers" labels="space">
+        <comment>Space Invite Link Table add space_id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_invite_link`
+                ADD INDEX `idx_space_id`(`space_id`) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220224-008" author="Chambers" labels="space">
+        <comment>Space Invite Link Table add creator index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}space_invite_link`
+                ADD INDEX `idx_creator`(`creator`) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220224-009" author="Chambers" labels="template">
+        <comment>Template Table add type_id index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}template`
+                ADD INDEX `idx_type_id`(`type_id`) USING BTREE;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

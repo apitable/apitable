@@ -1,0 +1,23 @@
+@import "~pc/styles/lib_screen.less";
+
+.suspensionPanel {
+  position: absolute;
+  bottom: 56px;
+  right: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 1;
+
+  & > :not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .suspensionPanel {
+    bottom: 56px;
+    right: 16px;
+  }
+}

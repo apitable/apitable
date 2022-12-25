@@ -1,0 +1,67 @@
+@import "../../styles/var.less";
+
+.trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 @spacing-small;
+  color: var(--black_1000);
+  cursor: pointer;
+
+  &[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.placeholder {
+  color: @placeholder-color;
+}
+
+.triggerValue {
+  display: inline-flex;
+  &[data-with-arrow="true"] {
+    margin-right: 2px;
+  }
+}
+.triggerIcon {
+  color: var(--black_300) !important;
+  transition: transform 0.3s ease-out;
+}
+
+.triggerIconOpen {
+  transform: rotate(180deg);
+}
+
+.selectPanel {
+  margin: 0;
+  padding: @spacing-small @spacing-base;
+  max-height: @height-base * 8 + @spacing-small * 2;
+  overflow-y: auto;
+  background: var(--lowestBg);
+  box-shadow: @box-shadow-base;
+  border-radius: @radius-base;
+  list-style: none;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  &[data-hide="true"] {
+    display: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: @height-base;
+    padding: 9px @spacing-base;
+    margin: 0;
+    cursor: pointer;
+    border-radius: @radius-base;
+    &:hover,
+    &[data-active="true"] {
+      background: @bg-color-hover;
+    }
+  }
+}

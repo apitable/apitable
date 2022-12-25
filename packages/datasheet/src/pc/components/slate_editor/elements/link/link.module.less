@@ -1,0 +1,59 @@
+@import "../../styles/var.less";
+
+.linkPanel {
+  padding: @spacing-small @spacing-base;
+  background: var(--defaultBg);
+  border-radius: @radius-base;
+  box-shadow: @box-shadow-base;
+}
+
+.linkPanelInline {
+  display: flex;
+  align-items: center;
+
+  input {
+    background: none;
+    border: none;
+  }
+  .divider {
+    display: inline-block;
+    height: 24px;
+    width: 1px;
+    margin-left: @spacing-base;
+    background-color: var(--bg-color-hover);
+  }
+}
+
+.linkOptBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: @spacing-base;
+  width: @size-small;
+  height: @size-small;
+  border-radius: @radius-base;
+  background: var(--defaultBg);
+  overflow: hidden;
+  &:hover {
+    background: @bg-color-hover;
+  }
+}
+
+.linkInputGroup {
+  margin-bottom: @spacing-large;
+}
+
+.footer {
+  text-align: right;
+  button + button {
+    margin-left: @spacing-base;
+  }
+}
+
+.link {
+  text-decoration: none;
+  border-bottom: 1px solid;
+  &:hover {
+    text-decoration: none;
+  }
+}

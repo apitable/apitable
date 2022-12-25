@@ -1,0 +1,23 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.historyDetailList {
+  & > div {
+    margin-bottom: 8px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.arrowIcon {
+  transition: transform 0.3s;
+  cursor: pointer;
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.dropIcon {
+  vertical-align: middle;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="db/changelog/0.7/20210314_changeset.xml"/>
+    <include file="db/changelog/0.7/20210315_changeset.xml"/>
+    <include file="db/changelog/0.7/20210324_changeset.xml"/>
+    <include file="db/changelog/0.7/20210406_changeset.xml"/>
+    <include file="db/changelog/0.7/20210408_changeset.xml"/>
+    <include file="db/changelog/0.7/20210414_changeset.xml"/>
+    <include file="db/changelog/0.7/20210415_changeset.xml"/>
+    <include file="db/changelog/0.7/20210426_changeset.xml"/>
+    <include file="db/changelog/0.7/20210427_changeset.xml"/>
+    <include file="db/changelog/0.7/20210429_changeset.xml"/>
+    <include file="db/changelog/0.7/20210510_changeset.xml"/>
+    <include file="db/changelog/0.7/20210526_changeset.xml"/>
+    <include file="db/changelog/0.7/20210721_changeset.xml"/>
+    <include file="db/changelog/0.7/20210722_changeset.xml"/>
+    <include file="db/changelog/0.7/20210731_changeset.xml"/>
+    <include file="db/changelog/0.7/20210803_changeset.xml"/>
+    <include file="db/changelog/0.7/20210820_changeset.xml"/>
+</databaseChangeLog>

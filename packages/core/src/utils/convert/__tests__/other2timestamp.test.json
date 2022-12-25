@@ -1,0 +1,59 @@
+{
+  "validCases": [{
+    "args": ["2018020"],
+    "expected": 1517328000000
+  }, {
+    "args": ["2018120"],
+    "expected": 1543507200000
+  }, {
+    "args": ["20180101"],
+    "expected": 1514736000000
+  }, {
+    "args": ["2032"],
+    "expected": 1956499200000
+  }, {
+    "args": ["203202"],
+    "expected": 1959177600000
+  }, {
+    "args": ["2018032"],
+    "expected": 1519920000000
+  }],
+  "validDDMMYYCases": [{
+    "args": ["20102020302"],
+    "expected": 1313877720000
+  }, {
+    "args": ["10/10/2022"],
+    "expected": 1665331200000
+  }, {
+    "args": ["10-10-2022"],
+    "expected": 1665331200000
+  }, {
+    "args": ["203202"],
+    "expected": 1959177600000
+  }, {
+    "args": ["2018032"],
+    "expected": 1519920000000
+  }],
+  "invalidCases": [{
+    "args": [""],
+    "expected": null
+  },  {
+    "args": ["abc20181020302"],
+    "expected": null
+  }, {
+    "args": ["测试20181020302中文啊"],
+    "expected": null
+  }, {
+    "args": ["20中文182012"],
+    "expected": null
+  }, {
+    "args": ["hello world"],
+    "expected": null
+  }, {
+    "args": [null],
+    "expected": null
+  }, {
+    "args": ["a"],
+    "expected": null
+  }]
+}

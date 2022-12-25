@@ -1,0 +1,235 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.formatFormula {
+  > input {
+    cursor: pointer;
+  }
+}
+
+@formula-input-height: 204px;
+
+.formulaModalWrapper {
+  :global {
+    .ant-modal-content {
+      box-shadow: 0 3px 6px -4px fade(#000, 12%), 0 6px 16px 0 fade(#000, 8%), 0 9px 28px 8px fade(#000, 5%);
+    }
+  }
+}
+
+.formulaModal {
+  h2 {
+    font-size: 16px;
+    line-height: 1.375em;
+    color: var(--firstLevelText);
+  }
+
+  .formulaInput {
+    position: relative;
+    max-height: @formula-input-height;
+    text-indent: 0;
+    padding: 8px 5px;
+    line-height: 1.5;
+    transition: all 0.3s, height 0s;
+    font-size: 13px;
+    background-color: var(--fc6);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-feature-settings: 'tnum', "tnum";
+    display: inline-block;
+    width: 100%;
+    font-variant: tabular-nums;
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    -webkit-text-fill-color: transparent;
+    -webkit-user-modify: read-write-plaintext-only;
+    .light-scroll-bar();
+
+    &:focus {
+      box-shadow: none;
+      border-color: #7b67ee !important;
+      outline: none;
+      background-color: var(--fc6);
+    }
+  }
+
+  .formulaColorant {
+    position: absolute;
+
+    top: 54px;
+    height: 39px;
+    max-height: @formula-input-height;
+    left: 24px;
+    right: 24px;
+    text-indent: 0;
+    padding: 8px 5px;
+    border: solid 1px transparent;
+    font-size: 13px;
+    pointer-events: none;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    overflow: auto;
+    font-feature-settings: 'tnum', "tnum";
+    font-variant: tabular-nums;
+    list-style: none;
+
+    .light-scroll-bar();
+
+    @media (any-hover: hover) {
+      &:hover::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border: 3px solid rgba(0, 0, 0, 0);
+      }
+    }
+  }
+
+  .error {
+    height: 20px;
+    margin-bottom: 3px;
+    font-size: 12px;
+    color: var(--errorColor);
+    margin-left: 8px;
+
+    .ellipsis();
+  }
+
+  .pickerContainer {
+    height: 367px;
+    display: flex;
+    flex-direction: row;
+    // flex-grow: 1;
+    margin: 0 -24px;
+
+    .leftPane {
+      position: relative;
+      height: 100%;
+      width: 218px;
+      border-right: solid 2px var(--rowSelectedBg);
+      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .rightPane {
+      height: 100%;
+      width: 300px;
+      padding: 0 12px 0 16px;
+      flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      .light-scroll-bar();
+
+      .summary {
+        display: flex;
+        flex-direction: column;
+        color: var(--thirdLevelText);
+        margin-bottom: 24px;
+        font-size: 12px;
+        white-space: pre-wrap;
+
+        .linkUrl {
+          margin-top: 8px;
+        }
+      }
+
+      .subTitle {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      > code {
+        display: block;
+        font-size: 12px;
+        background-color: var(--rowSelectedBg);
+        border-radius: 4px;
+        padding: 8px 12px;
+        margin-bottom: 24px;
+        white-space: pre-wrap;
+      }
+    }
+  }
+
+  .listGroup {
+    color: var(--firstLevelText);
+
+    h3 {
+      color: var(--thirdLevelText);
+      font-size: 12px;
+      line-height: 32px;
+      height: 32px;
+      padding: 0px 24px;
+      margin: 4px 0 0;
+    }
+
+    .listItem {
+      font-size: 13px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      .fieldName {
+        flex: 1;
+        .ellipsis();
+      }
+
+      &.active {
+        background-color: var(--rowSelectedBg);
+      }
+    }
+  }
+
+  .tips {
+    float: left;
+    margin-top: 5px;
+
+    a {
+      color: var(--fourthLevelText);
+      font-size: 13px;
+      text-decoration: underline;
+    }
+  }
+
+  .btnGroup {
+    text-align: right;
+    margin-top: 8px;
+
+    button {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .formulaModal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+    & > * {
+      flex-shrink: 0;
+    }
+
+    .pickerContainer {
+      height: unset;
+      flex: 1;
+      overflow: auto;
+
+      .leftPane {
+        overflow: auto;
+      }
+    }
+
+    .formulaColorant {
+      top: 70px;
+      height: unset !important;
+    }
+  }
+}

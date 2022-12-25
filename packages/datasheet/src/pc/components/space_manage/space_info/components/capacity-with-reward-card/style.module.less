@@ -1,0 +1,132 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+.card {
+  border-radius: 8px;
+  background-color: var(--defaultBg);
+  height: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+
+  .cardNumber {
+    font-family: BebasNeue;
+    letter-spacing: 0.5px;
+    color: var(--fc1);
+    display: flex;
+    align-items: flex-end;
+    height: 48px;
+    .ellipsis();
+
+    .usedNum {
+      font-size: 32px;
+      line-height: 1;
+      margin-right: 1px;
+    }
+    .totalNum {
+      font-size: 18px;
+      position: relative;
+      bottom: -2px;
+    }
+    .unlimited,
+    .totalUnit {
+      font-family: PingFang SC;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+      bottom: 2px;
+    }
+    .numIntro {
+      color: var(--fc3);
+      font-size: 14px;
+      margin: 0 0 4px 4px;
+    }
+  }
+
+  .progressWrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &[data-is-line='true'] {
+      align-items: center;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      :global {
+        .ant-progress-inner {
+          overflow: visible;
+        }
+        .ant-progress-bg {
+          position: relative;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          &::before {
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            content: ' ';
+            display: block;
+            width: 1px;
+            height: 10px;
+            border-radius: 2px;
+            border: 1px solid;
+          }
+        }
+      }
+    }
+  }
+
+  .lineDesc {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .descWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .descItem {
+    color: var(--thirdLevelText);
+    font-size: 13px;
+  }
+
+  .descItem .before {
+    display: inline-block;
+    content: ' ';
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    background-color: var(--lineColor);
+    border-radius: 2px;
+  }
+
+  .descItem span {
+    color: var(--thirdLevelText);
+  }
+
+  .progressFormat {
+    font-family: 'BebasNeue';
+    letter-spacing: 0.5px;
+    font-size: 22px;
+    line-height: 33px;
+    font-weight: normal;
+  }
+
+  .detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.customFont {
+  font-family: BebasNeue;
+  letter-spacing: 0.5px;
+}

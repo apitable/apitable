@@ -1,0 +1,50 @@
+@import '~pc/styles/lib_mixins.less';
+@import "~pc/styles/lib_screen.less";
+
+.textEditor {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 0px 2px var(--primaryColor);
+  box-sizing: border-box;
+  border-radius: 1px;
+  background: transparent;
+  .light-scroll-bar();
+
+  input,
+  textarea {
+    width: 100%;
+    height: auto;
+    border: none;
+    outline: none;
+    resize: none;
+    background: transparent;
+    display: block;
+    line-height: 24px;
+    box-sizing: border-box;
+    padding: 3px 10px;
+    font-size: 13px;
+  }
+
+  textarea {
+    padding-bottom: 0px;
+  }
+}
+
+.tip {
+  padding: 4px 10px;
+  font-size: 12px;
+  text-align: right;
+  color: var(--fourthLevelText);
+  border-radius: 4px;
+  .ellipsis();
+}
+
+@media screen and (max-width: @w-md) {
+  .textEditor {
+    textarea,
+    input {
+      font-size: 14px;
+    }
+  }
+}

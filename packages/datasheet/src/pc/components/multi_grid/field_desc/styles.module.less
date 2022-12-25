@@ -1,0 +1,53 @@
+@import "~pc/styles/lib_var.less";
+
+.fieldDesc {
+  position: fixed;
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHigh);
+  border-radius: 8px;
+  padding: 16px;
+  z-index: var(--zIndex-10-fieldDescBox);
+}
+
+.h3 {
+  font-size: 14px;
+  color: var(--secondLevelText);
+  margin-bottom: 8px;
+}
+
+.textarea {
+  width: 100%;
+  resize: none;
+  max-height: 104px !important;
+  min-height: 73px !important;
+  text-indent: 0 !important;
+
+  &::placeholder {
+    color: var(--fc4) !important;
+  }
+
+  &.error {
+    border-color: var(--errorColor);
+  }
+}
+
+.count {
+  text-align: right;
+  font-size: 13px;
+  color: var(--thirdLevelText);
+  margin-top: 4px;
+  margin-bottom: 0;
+
+  &.error {
+    color: var(--errorColor);
+  }
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--zIndex-10);
+}

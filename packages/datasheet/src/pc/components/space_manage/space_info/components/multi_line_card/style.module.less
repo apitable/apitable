@@ -1,0 +1,71 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.card {
+  border-radius: 8px;
+  background-color: var(--defaultBg);
+  height: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 302px;
+
+  .linesWrap {
+    padding-bottom: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .lineItemWrap {
+    .lineInfo {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .lineLeft {
+      display: flex;
+      align-items: center;
+    }
+    .lineName {
+      margin-left: 8px;
+      color: var(--fc1);
+    }
+    .lineNumInfo {
+      display: flex;
+      align-items: flex-end;
+      color: var(--fc1);
+    }
+    .used {
+      font-size: 24px;
+      position: relative;
+      top: 4px;
+    }
+    .total {
+      position: relative;
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    .highLight {
+      color: var(--orange_500);
+    }
+  }
+
+  .lineProgress {
+    margin-top: 8px;
+  }
+
+  .unit {
+    position: relative;
+    font-size: 13px;
+    top: -4px;
+    font-weight: bold;
+  }
+}
+
+.customFont {
+  font-family: BebasNeue;
+  letter-spacing: 0.5px;
+}

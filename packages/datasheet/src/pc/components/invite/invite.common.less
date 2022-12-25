@@ -1,0 +1,20 @@
+@import "~pc/styles/lib_screen.less";
+
+.invite-children-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: @w-md) {
+  .invite-children-center {
+    position: static;
+    justify-content: flex-start;
+  }
+}

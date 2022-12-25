@@ -1,0 +1,36 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+/* eslint-disable max-len */
+import React from 'react';
+import { makeIcon, IIconProps } from '../utils/icon';
+
+export const ClearOutlined: React.FC<IIconProps> = makeIcon({
+  Path: ({ colors }) => <>
+    <path d="M8 1C6.48122 1 5.25 2.23122 5.25 3.75V4H2C1.58579 4 1.25 4.33579 1.25 4.75C1.25 5.16421 1.58579 5.5 2 5.5H2.75V13.75C2.75 14.4404 3.30964 15 4 15H8H12C12.6904 15 13.25 14.4404 13.25 13.75V5.5H14C14.4142 5.5 14.75 5.16421 14.75 4.75C14.75 4.33579 14.4142 4 14 4H10.75V3.75C10.75 2.23122 9.51878 1 8 1ZM4.25 5.5H6H10H11.75V13.5H8H4.25V5.5ZM6.75 3.75V4H9.25V3.75C9.25 3.05964 8.69036 2.5 8 2.5C7.30964 2.5 6.75 3.05964 6.75 3.75ZM9.78033 7.71967C10.0732 8.01256 10.0732 8.48744 9.78033 8.78033L9.06066 9.5L9.78033 10.2197C10.0732 10.5126 10.0732 10.9874 9.78033 11.2803C9.48744 11.5732 9.01256 11.5732 8.71967 11.2803L8 10.5607L7.28033 11.2803C6.98744 11.5732 6.51256 11.5732 6.21967 11.2803C5.92678 10.9874 5.92678 10.5126 6.21967 10.2197L6.93934 9.5L6.21967 8.78033C5.92678 8.48744 5.92678 8.01256 6.21967 7.71967C6.51256 7.42678 6.98744 7.42678 7.28033 7.71967L8 8.43934L8.71967 7.71967C9.01256 7.42678 9.48744 7.42678 9.78033 7.71967Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
+
+  </>,
+  name: 'clear_outlined',
+  defaultColors: ['#2E2E2E'],
+  colorful: false,
+  allPathData: ['M8 1C6.48122 1 5.25 2.23122 5.25 3.75V4H2C1.58579 4 1.25 4.33579 1.25 4.75C1.25 5.16421 1.58579 5.5 2 5.5H2.75V13.75C2.75 14.4404 3.30964 15 4 15H8H12C12.6904 15 13.25 14.4404 13.25 13.75V5.5H14C14.4142 5.5 14.75 5.16421 14.75 4.75C14.75 4.33579 14.4142 4 14 4H10.75V3.75C10.75 2.23122 9.51878 1 8 1ZM4.25 5.5H6H10H11.75V13.5H8H4.25V5.5ZM6.75 3.75V4H9.25V3.75C9.25 3.05964 8.69036 2.5 8 2.5C7.30964 2.5 6.75 3.05964 6.75 3.75ZM9.78033 7.71967C10.0732 8.01256 10.0732 8.48744 9.78033 8.78033L9.06066 9.5L9.78033 10.2197C10.0732 10.5126 10.0732 10.9874 9.78033 11.2803C9.48744 11.5732 9.01256 11.5732 8.71967 11.2803L8 10.5607L7.28033 11.2803C6.98744 11.5732 6.51256 11.5732 6.21967 11.2803C5.92678 10.9874 5.92678 10.5126 6.21967 10.2197L6.93934 9.5L6.21967 8.78033C5.92678 8.48744 5.92678 8.01256 6.21967 7.71967C6.51256 7.42678 6.98744 7.42678 7.28033 7.71967L8 8.43934L8.71967 7.71967C9.01256 7.42678 9.48744 7.42678 9.78033 7.71967Z'],
+  width: '16',
+  height: '16',
+  viewBox: '0 0 16 16',
+});

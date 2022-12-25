@@ -1,0 +1,40 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.12-20220309-001" author="CodeMan" labels="WeCom Service Provider">
+        <comment>Unit Member Table add is_social_name_modified field</comment>
+        <sql>
+            alter table `${table.prefix}unit_member`
+            add column `is_social_name_modified` tinyint(1) default 2 null comment 'Whether the nickname has been modified as a third-party IM user. 0: No; 1: Yes; 2: Not an IM third-party user' after `name_modified`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.12-20220309-002" author="CodeMan" labels="WeCom Service Provider">
+        <comment>User Table add is_social_name_modified field</comment>
+        <sql>
+            alter table `${table.prefix}user`
+                add column `is_social_name_modified` tinyint(1) default 2 null comment 'Whether the nickname has been modified as a third-party IM user. 0: No; 1: Yes; 2: Not an IM third-party user' after `last_login_time`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

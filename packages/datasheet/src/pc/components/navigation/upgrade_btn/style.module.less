@@ -1,0 +1,37 @@
+@import "~pc/styles/lib_var.less";
+
+.stickyUpgrade {
+  width: 100%;
+  display: flex;
+  .stickyUpgradeContent {
+    border-radius: 0px 16px 16px 0px;
+    background: var(--primaryColor);
+    width: 32px;
+    font-size: 14px;
+    padding: 16px 7px;
+    cursor: pointer;
+    color: var(--static-white);
+    transition: all 0.3s;
+    box-shadow: 0px 2px 16px rgba(38, 38, 38, 0.16);
+  }
+
+  .stickyUpgradeContent:hover {
+    background: var(--deepPurple_600);
+  }
+  .stickyUpgradeContent:active {
+    background: var(--deepPurple_700);
+  }
+
+  .stickyUpgradeText {
+    display: inline-block;
+    font-size: 14px;
+    width: 14px;
+    word-wrap: break-word;
+    word-break: normal;
+    &:global(.rotate) {
+      transform: rotate(90deg);
+      white-space: pre;
+      letter-spacing: 0;
+    }
+  }
+}

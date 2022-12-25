@@ -1,0 +1,90 @@
+@import '~pc/styles/lib_var.less';
+
+.fieldContext {
+  width: 240px;
+  background: var(--defaultBg);
+  padding: 4px 0;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1), 0 -1px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  transform: translate(8px, 8px);
+  z-index: 20;
+  position: fixed;
+}
+
+.modal {
+  width: 285px;
+  height: 152px;
+  background: var(--defaultBg);
+  border-radius: 4px;
+  padding: 20px 23px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+
+  h2 {
+    font-size: 14px;
+    // text-align: center;
+    margin-bottom: 16px;
+  }
+
+  main {
+    font-size: 12px;
+    // text-align: center;
+    margin-top: 16px;
+    margin-bottom: 20px;
+    color: #575e7b;
+  }
+
+  .operate {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+}
+
+.fieldMenu {
+  opacity: 1 !important;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #242533;
+  opacity: 0.7;
+}
+
+.menuRecord,
+.menuField {
+  user-select: none;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+}
+
+.requiredItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuInputItem {
+  display: flex;
+  align-items: center;
+
+  .menuInput {
+    width: 48px;
+    margin: 0 4px;
+    padding: 0;
+  }
+}

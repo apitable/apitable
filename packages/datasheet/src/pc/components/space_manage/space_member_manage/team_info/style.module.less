@@ -1,0 +1,44 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.teamInfo {
+  flex: 1;
+  padding: 24px 24px 0px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--defaultBg);
+
+  .selectTeamInfo {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: var(--firstLevelText);
+    cursor: default;
+
+    .selectTeam {
+      .ellipsis();
+      max-width: 228px;
+      height: 24px;
+    }
+    span {
+      white-space: nowrap;
+    }
+  }
+  .tableWrap {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .btnWTopTable {
+      display: flex;
+      padding-top: 24px;
+
+      button {
+        margin-right: 16px;
+      }
+    }
+  }
+}

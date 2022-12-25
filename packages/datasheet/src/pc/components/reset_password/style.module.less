@@ -1,0 +1,77 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.resetPwdWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resetPwdBox {
+  width: 394px;
+  // FIXME:THEME
+  box-shadow: 0 4px 16px 0 var(--shadowColor);
+  border-radius: 8px;
+  background-color: white;
+  padding: 32px;
+
+  .title {
+    margin-bottom: 24px;
+  }
+
+  .gap {
+    margin-bottom: 8px;
+  }
+
+  .confirmBtn {
+    margin: 8px 0 24px;
+  }
+
+  .backBtn {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--thirdLevelText);
+  }
+}
+
+.tabs {
+  :global {
+    .ant-tabs-nav {
+      margin-top: 24px;
+      line-height: 0;
+    }
+
+    .ant-tabs-tab {
+      font-size: 14px;
+      line-height: 22px;
+      font-weight: normal;
+      color: var(--secondLevelText);
+      padding: 0;
+      padding-bottom: 2px;
+    }
+
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      font-weight: bold;
+      color: var(--primaryColor);
+    }
+
+    div.ant-tabs-nav::before {
+      border: 0;
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .resetPwdWrapper {
+    padding: 8px 24px 24px;
+    align-items: flex-start;
+
+    .resetPwdBox {
+      box-shadow: none;
+      padding: 0 0 32px;
+    }
+  }
+}

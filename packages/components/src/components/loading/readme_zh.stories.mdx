@@ -1,0 +1,41 @@
+import { Loading } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="基础组件/Loading 加载/文档" />
+
+# Loading 加载
+
+## 使用方式
+
+```jsx
+import { Loading } from '@apitable/components';
+```
+
+## 默认展示
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-loading-加载--default" />
+</ThemeToggle>
+</Canvas>
+
+## 继承父元素颜色
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-loading-加载--inherit-color" />
+</ThemeToggle>
+</Canvas>
+
+## 设置 strokeWidth
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-loading-加载--set-stroke-width" />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={Loading} />

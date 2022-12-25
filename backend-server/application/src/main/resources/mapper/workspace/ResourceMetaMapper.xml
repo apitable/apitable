@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.ResourceMetaMapper">
+    <select id="selectByResourceIds" resultType="com.apitable.workspace.entity.ResourceMetaEntity">
+        SELECT *
+        FROM ${tablePrefix}resource_meta
+        WHERE resource_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMetaDataByResourceId" resultType="java.lang.String">
+        SELECT meta_data
+        FROM ${tablePrefix}resource_meta
+        WHERE resource_id = #{resourceId}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}resource_meta(id, resource_id, resource_type, meta_data,
+        created_by, updated_by)
+        VALUE
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.resourceId}, #{item.resourceType}, #{item.metaData},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="countDashboardWidgetNumber" resultType="java.lang.Integer">
+        SELECT
+            COALESCE(MAX(JSON_LENGTH( vrm.meta_data -> '$.layout[*].id' )), 0)
+        FROM
+            ${tablePrefix}resource_meta vrm
+        WHERE
+            vrm.resource_id = #{dashboardId} AND vrm.is_deleted = 0
+    </select>
+</mapper>

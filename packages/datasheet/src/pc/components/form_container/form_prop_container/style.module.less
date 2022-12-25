@@ -1,0 +1,72 @@
+.formPropContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  overflow: hidden;
+
+  &.noRadius {
+    border-radius: 0;
+  }
+
+  .coverImgUploader {
+    width: 100%;
+    height: 240px;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    &.coverImgUploaderMobile {
+      height: 125px;
+    }
+  }
+
+  .limitStyle {
+    position: relative;
+    padding: 100px 64px 0;
+    margin-top: 240px;
+    width: 100%;
+    max-width: 720px;
+    transition: all 0.3s ease-in-out;
+
+    &.limitStyleMobile {
+      margin-top: 125px;
+      padding: 72px 24px 0;
+    }
+
+    &.noCover {
+      margin-top: 100px;
+    }
+
+    &.noLogo {
+      padding-top: 40px;
+    }
+
+    &.onlyTitle {
+      margin-top: 0;
+    }
+
+    &.shareLogoPadding{
+      padding-top: 60px;
+    }
+
+    .logoImgUploader {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      transform: translateX(-50%);
+      border-radius: 8px;
+      overflow: hidden;
+      &.logoImgUploaderMobile {
+        width: 80px;
+        height: 80px;
+        top: -40px;
+      }
+    }
+  }
+}

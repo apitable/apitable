@@ -1,0 +1,44 @@
+/* Auto Layout */
+
+.magicVariableBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 6px 8px;
+  line-height: 28px;
+
+  background: var(--fill0);
+  border-radius: 4px;
+
+  position: relative;
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+
+  p {
+    margin-bottom: 0 !important;
+    span[data-slate-node="text"] {
+      vertical-align: middle;
+    }
+  }
+}
+
+.add {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+.magicVariable {
+  /* Color/Black/Black200 */
+  background: var(--fill0);
+  border-radius: 2px;
+  margin: 0px 4px;
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+}

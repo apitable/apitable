@@ -1,0 +1,25 @@
+@import "~pc/styles/lib_mixins.less";
+
+.createdTime {
+  padding: 3px 10px;
+  line-height: 24px;
+  .ellipsis();
+
+  .date {
+    float: left;
+    margin-right: 8px;
+
+    &.single {
+      width: 100%;
+    }
+  }
+
+  .time {
+    .ellipsis();
+    margin-right: 8px;
+    
+    &:last-child {
+      margin: 0;
+    }
+  }
+}

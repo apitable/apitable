@@ -1,0 +1,95 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.gridViewContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  canvas {
+    .noSelect();
+  }
+}
+
+.verticalScrollBarWrapper,
+.horizontalScrollBarWrapper {
+  position: absolute;
+  will-change: transform;
+  cursor: pointer;
+
+  &::-webkit-scrollbar-thumb,
+  &:hover::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border-radius: 8px;
+    min-height: 36px;
+// FIXME:THEME
+    background-color: var(--shadowColor);
+  }
+
+  .verticalScrollBarInner,
+  .horizontalScrollBarInner {
+    position: absolute;
+  }
+}
+
+.verticalScrollBarWrapper {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 15px;
+  right: 0;
+
+  &.cellVerticalScrollBarWrapper {
+    width: 10px;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 15px;
+  }
+}
+
+.horizontalScrollBarWrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 15px;
+  bottom: 0;
+
+  &::-webkit-scrollbar {
+    height: 15px;
+  }
+}
+
+.domGrid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+
+  .microWrapper {
+    position: fixed;
+    background: var(--defaultBg);
+    box-shadow: 1px 1px 10px #e1e2e9;
+    z-index: 20;
+  }
+}
+
+.tooltip {
+  display: flex;
+
+  .frozenBtn {
+    margin: 1px 8px 0 24px;
+    height: 18px;
+    color: var(--white);
+    border-bottom: 1px solid var(--white);
+    font-size: 12px !important;
+  }
+
+  .closeBtn {
+    cursor: pointer;
+  }
+}
