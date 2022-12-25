@@ -1,0 +1,64 @@
+import { ArrowRightOutlined } from '@apitable/icons';
+import { Radio } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/Radio" />
+
+# Radio
+
+Generally not used alone
+
+## Usage
+
+```jsx
+import { Radio } from '@apitable/components';
+```
+
+## Example
+
+<Canvas>
+<ThemeToggle lang="en">
+ <Radio />
+</ThemeToggle>
+</Canvas>
+
+## Checked
+
+<Canvas>
+<ThemeToggle lang="en">
+ <Radio checked />
+</ThemeToggle>
+</Canvas>
+
+## Disabled
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Radio disabled />
+  <Radio disabled checked />
+</ThemeToggle>
+</Canvas>
+
+## Callback
+
+<Canvas>
+<ThemeToggle lang="en">
+ <Radio onChange={() => {
+    alert('choosed😁');
+  }} />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name              | Type                                     | Description | Default |
+|-------------------|------------------------------------------|-------------|---------|
+| children         | ReactNode  |             |         |
+| name         | string           |             |         |
+| checked         | boolean                                   |             |         |
+| onChange         | (e: ChangeEvent) => void                                   |             |         |
+| readOnly         | boolean                                   |             |         |
+| value         | any                                   |             |         |
+| disabled         | boolean                                   |             |         |
+| isBtn         | boolean                                 |             |         |

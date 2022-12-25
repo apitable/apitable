@@ -1,0 +1,74 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.viewLockModal {
+  :global {
+    .ant-modal-close {
+      display: none;
+    }
+
+    .ant-modal-header {
+      padding: 16px 16px 0;
+    }
+
+    .ant-modal-body {
+      padding: 0 16px 16px;
+    }
+  }
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  
+  svg{
+    cursor: pointer;
+  }
+
+  & > div:first-child, & > div:first-child a {
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    margin-left: 8px;
+  }
+}
+
+.rcTextArea {
+  resize: none !important;
+  margin-top: 8px !important;
+  padding: 8px !important;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+
+  button:first-child {
+    margin-right: 8px;
+  }
+}
+
+.operator {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 8px;
+
+  span {
+    margin-right: 4px;
+  }
+}
+
+.desc {
+  background: var(--lowestBg);
+  padding: 8px !important;
+  max-height: 148px;
+  overflow: auto;
+  border-radius: 4px;
+}

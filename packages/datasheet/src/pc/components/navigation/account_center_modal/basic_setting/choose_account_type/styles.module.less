@@ -1,0 +1,44 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.radio {
+  display: flex !important;
+  align-items: center;
+  border: 1px solid transparent;
+  outline: 1px solid var(--fc11);
+  border-radius: 4px;
+  margin-right: 0 !important;
+  padding-left: 16px !important;
+  width: 352px;
+  &:hover, &.checked {
+    border-color: var(--primaryColor);
+    border-width: 1px;
+    outline: none;
+    transition: all .3s;
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  user-select: none;
+  .icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--fc5);
+    border-radius: 6px;
+    margin-right: 8px;
+    .ellipsis();
+
+    .img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    width: 254px;
+  }
+}

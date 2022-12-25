@@ -1,0 +1,18 @@
+@import '../../styles/var.less';
+
+.quote {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  padding-left: @spacing-large + 3;
+
+  &::before {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--black_700);
+  }
+}

@@ -1,0 +1,38 @@
+@import "~pc/styles/lib_var.less";
+.selectAdmin {
+  .selectedInfo {
+    
+    :global(.ant-input) {
+      &:nth-of-type(1) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .btnWrapper {
+    width: 330px;
+    display: flex;
+
+    .prevBtn,
+    .confirmBtn {
+      margin-top: 30px;
+    }
+    .prevBtn {
+      width: 90px;
+      padding: 0;
+      text-align: left;
+    }
+ 
+    .confirmBtn {
+      width: 240px;
+    }
+  }
+  .label {
+    font-size: 14px;
+    color: var(--secondLevelText);
+    height: 20px;
+    line-height: 20px;
+    margin-bottom: 8px;
+    margin-top: 20px;
+  }
+}

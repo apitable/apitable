@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20211231-001" author="HumphreyHu" labels="history">
+        <comment>Create User History Table(For Account Cancellation)</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}user_history`
+            (
+                `id`                    bigint(20)  UNSIGNED NOT NULL                                                        COMMENT 'Primary Key',
+                `user_id`               bigint(20)  UNSIGNED NOT NULL                                                        COMMENT 'User ID',
+                `user_status`           tinyint(2)           NOT NULL                                                        COMMENT 'User account status (1: Apply for account cancellation, 2: Cancel account cancellation, 3: Complete account cancellation)',
+                `created_by`            bigint(20)  UNSIGNED NOT NULL                                                        COMMENT 'Creator',
+                `updated_by`            bigint(20)  UNSIGNED NOT NULL                                                        COMMENT 'Updater',
+                `created_at`            timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP                              COMMENT 'Create Time',
+                `updated_at`            timestamp                NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT 'Update Time',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY `k_user_id`(`user_id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4
+              COLLATE=utf8mb4_unicode_ci COMMENT = 'User History Table';
+        </sql>
+    </changeSet>
+</databaseChangeLog>

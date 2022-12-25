@@ -1,0 +1,123 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+.dateInputBase {
+  margin-right: 8px;
+
+  &.only {
+    width: 100%;
+  }
+}
+
+//  'YYYY/MM/DD', dateInputSplitBySlash
+//   'YYYY-MM-DD',dateInputSplitByDash
+//   'DD/MM/YYYY', dateInputSplitBySlash
+//   'YYYY-MM', dateInputNoDayByDash
+//   'MM-DD', dateInputNoYearByDash
+//   'YYYY', dateInputYear
+//   'MM', dateInputMonth
+//   'DD', dateInputDay
+
+.dateInputSplitBySlash {
+  .dateInputBase();
+}
+
+.dateInputSplitByDash {
+  .dateInputBase();
+  width: 89px;
+}
+
+.dateInputNoDayByDash {
+  .dateInputBase();
+  width: 68px;
+}
+
+.dateInputNoYearByDash {
+  .dateInputBase();
+  width: 56px;
+}
+
+.dateInputYear {
+  .dateInputBase();
+  width: 46px;
+}
+
+.dateInputMonth {
+  .dateInputBase();
+  width: 28px;
+}
+
+.dateInputDay {
+  .dateInputBase();
+  width: 28px;
+}
+
+.timeInput {
+  width: 33%;
+}
+
+.dateEditor {
+  position: relative;
+  box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 1px;
+  display: flex;
+  justify-content: flex-start;
+  background: transparent;
+
+  :global {
+    input {
+      width: 100%;
+      resize: none;
+      border: none;
+      outline: none;
+      background: transparent;
+      display: block;
+      font-size: 13px;
+      line-height: 24px;
+      box-sizing: border-box;
+      padding: 3px 10px;
+
+      &.cp-calendar-picker-input {
+        padding-right: 0;
+
+        &::-webkit-input-placeholder {
+          color: var(--thirdLevelText) !important;
+        }
+      }
+
+      &.cp-time-picker-input {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+.dateWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .dateContent {
+    display: flex;
+    flex: auto;
+  }
+  .limitDateWidth {
+    :global {
+      .cp-calendar-picker {
+        max-width: 88px;
+      }
+    }
+  }
+  .alarm {
+    margin-right: 8px;
+    display: flex;
+  }
+}
+
+.disabled {
+  input {
+    background: transparent;
+  }
+}

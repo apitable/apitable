@@ -1,0 +1,18 @@
+${MEMBER_NAME} mentioned you in the "${NODE_NAME}" datasheet
+
+--------------------------------------------------------------------------------
+
+From ${MEMBER_NAME}
+${CREATED_AT}
+
+Record: ${RECORD_TITLE}
+
+${CONTENT}
+
+View record
+${URL}
+
+
+copyright © 2022-${YEARS} apitable. All rights reserved.
+
+Contact us (https://apitable.com/)

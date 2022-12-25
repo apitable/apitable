@@ -1,0 +1,96 @@
+import { ArrowRightOutlined } from '@apitable/icons';
+import { IconButton } from './index';
+import { Canvas, ArgsTable } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="基础组件/Button 按钮/IconButton 图标按钮/文档" />
+
+# IconButton 图标按钮
+
+## 使用方式
+
+```jsx
+import { IconButton } from '@apitable/components';
+
+// 引入 ArrowRightOutlined 作为示例图标
+import { ArrowRightOutlined } from '@apitable/icons';
+```
+
+## 大小
+
+<Canvas>
+<ThemeToggle>
+  <IconButton icon={ArrowRightOutlined} />
+  <IconButton icon={ArrowRightOutlined} size="large" />
+</ThemeToggle>
+</Canvas>
+
+## 形状
+
+方型图标按钮
+
+<Canvas>
+<ThemeToggle>
+  <IconButton
+    icon={ArrowRightOutlined}
+    shape="square"
+    variant="background"
+  />
+</ThemeToggle>
+</Canvas>
+
+## 类型
+
++ `default` 默认状态没有背景色。
++ `background` 默认状态有背景色。
++ `blur` 默认透明+模糊背景色。常用用于深色背景上。
+
+<Canvas>
+<ThemeToggle>
+  <IconButton icon={ArrowRightOutlined} />
+  <IconButton
+    icon={ArrowRightOutlined}
+    variant="background"
+  />
+  <IconButton
+    icon={ArrowRightOutlined}
+    variant="blur"
+  />
+</ThemeToggle>
+</Canvas>
+
+## 激活状态
+
+<Canvas>
+<ThemeToggle>
+  <IconButton
+    icon={ArrowRightOutlined}
+    active
+  />
+</ThemeToggle>
+</Canvas>
+
+## 禁用状态
+
+注意：需要设置 `component="button"` 属性才会支持禁用操作
+
+<Canvas>
+<ThemeToggle>
+  <IconButton
+    icon={ArrowRightOutlined}
+    component="button"
+    disabled
+  />
+  <IconButton
+    icon={ArrowRightOutlined}
+    component="button"
+    variant='background'
+    disabled
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={IconButton} />
+

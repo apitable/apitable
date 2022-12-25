@@ -1,0 +1,41 @@
+@import "~pc/styles/lib_var.less";
+
+.recoverSpace {
+  width: 100%;
+  background-color: var(--lowestBg);
+  position: relative;
+  padding: 12px 0 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.mobileRecoverSpace {
+    flex: 1;
+    text-align: center;
+    .tip {
+      color: var(--fc1-rgb);
+      font-size: 16px;
+    }
+  }
+
+  .wrapper {
+    width: 330px;
+    button svg {
+      margin-right: 4px;
+    }
+  }
+
+  .tip, .subTip {
+    color: var(--thirdLevelText);
+    font-size: 14px;
+    margin-top: 16px;
+    margin-bottom: 28px;
+    text-align: center;
+    cursor: default;
+  }
+  .delRightNow {
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,77 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.templatePreview {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .headerBar {
+    display: none;
+  }
+
+  // .templateClass {
+  //   width: 280px;
+  // }
+
+  .templateList {
+    flex: 1;
+    background: var(--blackBlue_1000);
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .templatePreview {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+
+    .headerBar {
+      display: block;
+      height: 48px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 10px;
+      border-bottom: 0.5px solid var(--lineColor);
+
+      .optBtn {
+        width: 24px;
+        height: 24px;
+      }
+
+      .title {
+        flex: 1;
+        text-align: center;
+        font-size: 14px;
+        color: var(--firstLevelText);
+      }
+    }
+
+    // .templateClass {
+    //   position: absolute;
+    //   transition: left 0.3s;
+    //   z-index: 100;
+    // }
+
+    .templateList {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sideBarMask {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: var(--deepMaskColor);
+      z-index: 1;
+    }
+  }
+}

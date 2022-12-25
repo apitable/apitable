@@ -1,0 +1,73 @@
+import { ViewKanbanFilled } from '@apitable/icons';
+import { TextButton } from './index';
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="基础组件/Button 按钮/TextButton 文本按钮/文档" />
+
+# TextButton 文本按钮
+
+## 使用方式
+
+```jsx
+import { TextButton } from '@apitable/components';
+```
+ 
+## 默认按钮
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--default" />
+</ThemeToggle>
+</Canvas>
+
+## 前后缀图标
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--prefix-icon" />
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--suffix-icon" />
+</ThemeToggle>
+</Canvas>
+
+## 不同颜色
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--default" />
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--primary-color" />
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--danger-color" />
+</ThemeToggle>
+</Canvas>
+
+## 不同大小
+
+<Canvas>
+<ThemeToggle>
+  <TextButton size="small" color="primary"> 文本按钮 </TextButton>
+  <TextButton size="middle" color="primary"> 文本按钮 </TextButton>
+  <TextButton size="large" color="primary"> 文本按钮 </TextButton>
+</ThemeToggle>
+</Canvas>
+
+## 禁用
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--disabled" />
+  <TextButton disabled color="primary"> 文本按钮 </TextButton>
+  <TextButton disabled color="danger"> 文本按钮 </TextButton>
+</ThemeToggle>
+</Canvas>
+
+## 占满容器宽度
+
+<Canvas>
+<ThemeToggle>
+  <Story id="基础组件-button-按钮-textbutton-文本按钮--block" />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={TextButton} />

@@ -1,0 +1,263 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.unitItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .unitInfo {
+    flex: 1;
+    overflow: hidden;
+
+    .role {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .permission {
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--secondLevelText);
+    border-radius: 4px;
+    user-select: none;
+    margin-left: 32px;
+  }
+
+  .closeBtn {
+    margin-left: 5px;
+  }
+
+  :global {
+    .ant-select {
+      color: var(--rowSelectedBg);
+      width: 94px;
+    }
+
+    .ant-select-selector {
+      background: var(--lowestBg) !important;
+      border: 0 !important;
+      color: var(--firstLevelText) !important;
+    }
+
+    .ant-select-dropdown {
+      box-shadow: var(--shadowCommonHighest);
+    }
+
+    .ant-select-show-arrow .ant-select-selection-item {
+      padding-right: 8px !important;
+    }
+
+    .ant-select-disabled.ant-select-single:not(.ant-select-customize-input)
+      .ant-select-selector {
+      background: var(--lowestBg);
+      color: var(--firstLevelText);
+      cursor: default;
+    }
+
+    .ant-select-focused.ant-select-single:not(.ant-select-customize-input)
+      .ant-select-selector {
+      box-shadow: none;
+      color: var(--firstLevelText);
+    }
+
+    .ant-select-single.ant-select-open .ant-select-selection-item {
+      opacity: 1;
+    }
+
+    .ant-select-selection__rendered {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      line-height: 32px !important;
+    }
+
+    .ant-select-arrow {
+      margin-top: 0px;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+
+      & > span {
+        padding-left: 4px;
+      }
+
+      .ant-select-arrow-icon {
+        display: flex;
+        align-items: center;
+
+        & svg {
+          width: 16px;
+          height: 16px;
+          fill: var(--fourthLevelText);
+        }
+      }
+    }
+  }
+}
+
+.selectDropdown {
+  :global {
+    .ant-select-dropdown-menu-item {
+      line-height: 32px;
+      padding-top: 0;
+      padding-bottom: 0;
+      color: var(--secondLevelText);
+      text-align: center;
+    }
+
+    .ant-select-dropdown-menu-item-selected {
+      color: var(--primaryColor);
+    }
+
+    .ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
+      background: var(--rowSelectedBg);
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .unitItem {
+    height: 64px;
+
+    :global {
+      .ant-select {
+        width: auto;
+      }
+
+      .ant-select-selector {
+        padding: 0 !important;
+        background: transparent !important;
+      }
+    }
+
+    .selectBtn {
+      &.appoint {
+        position: relative;
+        padding-right: 24px;
+        display: flex;
+        align-items: center;
+
+        .arrowIcon {
+          position: absolute;
+          // top: 8px;
+          right: 0;
+        }
+      }
+    }
+  }
+}
+
+.permissionList {
+  padding: 0 8px;
+
+  .item {
+    padding: 0 8px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+
+    &.itemDisabled {
+      color: var(--fourthLevelText);
+      cursor: not-allowed;
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background: var(--rowSelectedBg);
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.delete {
+  position: relative;
+  margin-top: 8px !important;
+
+  :global {
+    .optionLabel {
+      color: var(--errorColor) !important;
+    }
+  }
+
+  &:before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--lineColor);
+  }
+
+  &.disabled {
+    opacity: 0.5 !important;
+  }
+}
+
+.onlyShowPermission {
+  width: 75px;
+  font-size: 14px;
+  color: var(--firstLevelText);
+  padding-right: 28px;
+}
+
+.selectWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.mobileOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  line-height: 48px;
+
+  &:not(:first-child) {
+    border-top: 1px solid var(--lineColor);
+  }
+}
+
+.mobileRoleSelect {
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-left: 10px;
+  }
+}
+
+.deleteItem {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  color: var(--errorColor);
+}
+
+.group {
+  border-radius: 8px;
+  background: var(--defaultBg);
+  padding: 0 16px;
+
+  &:not(:nth-child(1)) {
+    margin-top: 24px;
+  }
+}
+
+.mobileWrapper {
+  background: var(--defaultBg);
+  border-radius: 8px;
+  padding: 0 16px;
+}
+
+.hoverBg {
+  &:not(:hover) {
+    background: none !important;
+  }
+}

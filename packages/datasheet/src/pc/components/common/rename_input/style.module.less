@@ -1,0 +1,20 @@
+@import "~pc/styles/lib_var.less";
+
+.inputBorderColor {
+
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: var(--primaryColor) !important;
+  }
+}
+
+.inputError {
+  border: 1px solid var(--errorColor)!important;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: var(--errorColor)!important;
+  }
+}

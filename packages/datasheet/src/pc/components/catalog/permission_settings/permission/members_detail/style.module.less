@@ -1,0 +1,36 @@
+@import "~pc/styles/lib_var.less";
+
+.membersDetail {
+  background: var(--primaryColor);
+  min-height: 30vh;
+  max-height: 60vh;
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .container {
+    flex: 1;
+    background: var(--defaultBg);
+    padding: 18px 0 24px 24px;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      height: 56px;
+      color: var(--firstLevelText);
+      padding-bottom: 32px;
+    }
+
+    .scrollWrapper {
+      flex: 1;
+      max-height: calc(60vh - 104px);
+      overflow-y: scroll;
+      overflow-x: visible;
+      padding-right: 12px;
+    }
+  }
+}

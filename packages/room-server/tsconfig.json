@@ -1,0 +1,28 @@
+{
+  "extends": "../../common-tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedParameters": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "experimentalDecorators": true,
+    "target": "es2020",
+    "types": ["jest", "node"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

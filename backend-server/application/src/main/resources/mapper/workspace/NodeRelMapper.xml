@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.NodeRelMapper">
+    <select id="selectMainNodeIdsByRelNodeIds" resultType="java.lang.String">
+        SELECT DISTINCT main_node_id
+        FROM ${tablePrefix}node_rel
+        WHERE rel_node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByRelNodeId" resultType="com.apitable.workspace.entity.NodeRelEntity">
+        SELECT *
+        FROM ${tablePrefix}node_rel
+        WHERE rel_node_id = #{relNodeId}
+    </select>
+
+    <select id="selectByRelNodeIds" resultType="com.apitable.workspace.entity.NodeRelEntity">
+        SELECT *
+        FROM ${tablePrefix}node_rel
+        WHERE rel_node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectNodeRelDTO"
+            resultType="com.apitable.workspace.dto.NodeRelDTO">
+        SELECT vn.type, vnr.rel_node_id, vnr.extra
+        FROM ${tablePrefix}node_rel vnr
+                     JOIN ${tablePrefix}node vn
+                ON vnr.rel_node_id = vn.node_id AND vn.is_rubbish = 0
+        WHERE main_node_id = #{mainNodeId}
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}node_rel(id, main_node_id, rel_node_id, extra, created_by)
+        VALUE
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.mainNodeId}, #{item.relNodeId}, #{item.extra}, #{item.createdBy}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

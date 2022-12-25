@@ -1,0 +1,71 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.inputBorderColor {
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: var(--primaryColor)!important;
+  }
+}
+
+.inputErrorBorderColor {
+  &:hover,
+  &:active,
+  &:focus {
+    border-color: var(--errorColor) !important;
+  }
+}
+
+.baseInput {
+  box-shadow: none !important;
+  .inputBorderColor();
+  input {
+    padding-left: 31px !important;
+    box-shadow: none !important;
+    .inputBorderColor();
+  }
+}
+
+.inputError {
+  input {
+    border: 1px solid var(--errorColor) !important;
+    .inputErrorBorderColor();
+  }
+}
+.inputErrorWithoutIcon {
+  border: 1px solid var(--errorColor) !important;
+  .inputErrorBorderColor();
+}
+
+.popupWrapper {
+  :global {
+    .ant-select-selector {
+      outline: none;
+      box-shadow: none;
+    }
+    .ant-select-selector {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.toolItemWrapper {
+  flex-shrink: 0;
+  :global(.ant-badge-count) {
+    top: 10px;
+    right: 10px;
+    background-color: var(--primaryColor);
+  }
+}
+
+.toolbarItemOpened {
+  color: var(--primaryColor) !important;
+  svg {
+    fill: var(--primaryColor) !important;
+  }
+  button {
+    color: var(--primaryColor) !important;
+  }
+}

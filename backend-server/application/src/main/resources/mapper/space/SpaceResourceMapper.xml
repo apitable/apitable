@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.space.mapper.SpaceResourceMapper">
+
+    <select id="selectAllResource" resultType="com.apitable.shared.cache.bean.SpaceResourceDto">
+        SELECT vr.resource_code,
+               vr.resource_name,
+               vr.resource_desc,
+               vr.assignable,
+               vr.group_code,
+               vsrg.group_name,
+               vsrg.group_desc
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_resource_group vsrg on vsrg.group_code = vr.group_code
+    </select>
+
+    <select id="selectResourceByMemberId" resultType="com.apitable.shared.cache.bean.SpaceResourceDto">
+        SELECT vr.resource_code,
+               vr.resource_name,
+               vr.resource_desc,
+               vr.assignable,
+               vr.group_code,
+               vsrg.group_name,
+               vsrg.group_desc
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_resource_group vsrg on vsrg.group_code = vr.group_code
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr on vr.resource_code = vsrrr.resource_code
+                 JOIN ${tablePrefix}space_role vsr on vsr.role_code = vsrrr.role_code
+                 JOIN ${tablePrefix}space_member_role_rel vsmrrr ON vsmrrr.role_code = vsr.role_code and vsmrrr.member_id = #{memberId}
+    </select>
+
+    <select id="selectAssignableCountInResourceCode" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}space_resource
+        WHERE resource_code IN
+        <foreach collection="resourceCodes" open="(" separator="," close=")" index="index" item="item">
+            #{item}
+        </foreach>
+        AND assignable = 1
+    </select>
+
+    <resultMap id="groupResource" type="com.apitable.space.dto.SpaceGroupResourceDto">
+        <result property="groupCode" column="group_code"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupDesc" column="group_desc"/>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="resource_code"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectGroupResource" resultMap="groupResource">
+        SELECT vsrg.group_code,
+               vsrg.group_name,
+               vsrg.group_desc,
+               vr.resource_code
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_resource_group vsrg on vsrg.group_code = vr.group_code
+        WHERE vr.assignable = 1
+    </select>
+
+    <resultMap id="menuResource" type="com.apitable.space.dto.SpaceMenuResourceDto">
+        <result property="menuCode" column="menu_code"/>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="resource_code"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMenuResource" resultMap="menuResource">
+        SELECT vsm.menu_code,
+               vr.resource_code
+        FROM ${tablePrefix}space_resource vr
+                 JOIN ${tablePrefix}space_menu_resource_rel vsmrr on vr.resource_code = vsmrr.resource_code
+                 JOIN ${tablePrefix}space_menu vsm on vsmrr.menu_code = vsm.menu_code
+        WHERE vr.assignable = 1
+    </select>
+
+    <select id="selectResourceCodesByGroupCode" resultType="java.lang.String">
+        SELECT resource_code
+        FROM ${tablePrefix}space_resource
+        WHERE group_code IN
+        <foreach item="item" index="index" collection="groupCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND assignable = 1
+    </select>
+
+    <select id="selectResourceCodesByMemberId" resultType="java.lang.String">
+        SELECT vsrrr.resource_code
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        WHERE vsmrr.member_id = #{memberId}
+    </select>
+
+    <resultMap id="memberResource" type="com.apitable.space.dto.SpaceMemberResourceDto">
+        <result property="memberId" column="member_id"/>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="resource_code"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMemberResource" resultMap="memberResource">
+        SELECT vsmrr.member_id,
+               vsrrr.resource_code
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr ON vsrrr.role_code = vsmrr.role_code
+        WHERE vsmrr.member_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

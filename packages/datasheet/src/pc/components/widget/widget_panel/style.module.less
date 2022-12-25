@@ -1,0 +1,89 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.widgetPanel {
+  padding-top: 48px;
+  height: 100%;
+}
+
+.widgetPanelContainer {
+  height: 100%;
+  background: var(--defaultBg);
+
+  :global {
+    .react-resizable-handle::after {
+      border-color: var(--primaryColor);
+    }
+  }
+}
+
+.emptyPanel {
+  .ikon {
+    width: 240px;
+    display: block;
+    padding-top: 180px;
+    margin: 0 auto;
+  }
+
+  .desc {
+    text-align: center;
+  }
+
+  .buttonWrapper {
+    margin: 32px auto 0;
+    display: block;
+  }
+}
+
+.skeletonWrapper {
+  padding-top: 10px;
+  background: var(--defaultBg);
+  height: 100%;
+
+  .skeletonHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px 32px;
+
+    & > div:nth-child(2) {
+      width: calc(100% - 46px);
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  .skeletonInput {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 auto 20px;
+  }
+}
+
+.closeIcon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.docTip {
+  font-size: 12px;
+  color: var(--primaryColor);
+  text-align: center;
+  margin-top: 16px;
+
+  a {
+    color: var(--thirdLevelText);
+    border-bottom: 1px solid var(--thirdLevelText);
+  }
+  a:hover {
+    color: var(--black_600);
+    border-color: var(--black_600);
+  }
+  a:active {
+    color: var(--black_700);
+    border-color: var(--black_700);
+  }
+}

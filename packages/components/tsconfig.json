@@ -1,0 +1,33 @@
+{
+  "extends": "../../common-tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "rootDir": "src",
+    "baseUrl": "src",
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "module": "es2015",
+    "jsx": "react",
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "dist",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    }
+  },
+  "include": [
+    "src/*",
+    "./jest.setup.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "setup.ts"
+  ]
+}

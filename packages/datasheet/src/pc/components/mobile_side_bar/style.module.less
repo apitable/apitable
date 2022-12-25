@@ -1,0 +1,28 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.mobileDrawer {
+  height: 100%;
+
+  .mobileSideWrap {
+    display: flex;
+    height: 100%;
+    // sidebar in the input box to prevent Android squeeze page to do fault tolerance, min-height for iPhone 5 height
+    min-height: 568px;
+
+    &.matchedTemplateCentre {
+      background: var(--blackBlue_900);
+      transition: background 0.3s;
+    }
+  }
+
+  :global {
+    .ant-drawer-body {
+      padding: 0;
+      height: 100%;
+    }
+    .ant-drawer-mask {
+      transition: none;
+    }
+  }
+}

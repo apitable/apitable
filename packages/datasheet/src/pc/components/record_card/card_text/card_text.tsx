@@ -1,0 +1,67 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import { Field, FieldType, IField } from '@apitable/core';
+import classnames from 'classnames';
+import { getFieldHeight, getShowFieldType, getVietualFieldHeight } from 'pc/components/gallery_view/utils';
+import * as React from 'react';
+import styles from './style.module.less';
+import { UrlDiscern } from 'pc/components/multi_grid/cell/cell_text/url_discern';
+
+interface ICardTextProps {
+  cellValue: string;
+  field: IField;
+  maxLine: number;
+  autoHeight?: boolean;
+  isColNameVisible?: boolean;
+  isVirtual?: boolean;
+}
+
+export const EACH_TEXT_LINE_HEIGHT = 22;
+
+export const CardText: React.FC<ICardTextProps> = ({ cellValue, field, maxLine, autoHeight, isColNameVisible, isVirtual }) => {
+  const isMultiLine = getShowFieldType(field) === FieldType.Text;
+  const text = Field.bindModel(field).cellValueToString(cellValue);
+  const style: React.CSSProperties = { width: '100%' };
+  if (autoHeight) {
+    const contentHeight = getVietualFieldHeight(field, maxLine);
+    style.height = contentHeight;
+    style.marginTop = isColNameVisible ? 4 : 0;
+    style.marginBottom = 8;
+    style.lineHeight = '21px';
+    style.overflow = 'hidden';
+  } else {
+    const contentHeight = getFieldHeight(field, maxLine);
+    const textFieldHeight = contentHeight + 4 + 12;
+    style.height = textFieldHeight;
+    style.paddingTop = 4;
+    style.paddingBottom = 12;
+  }
+  return (
+    <div
+      className={classnames({
+        [styles.multi]: isMultiLine,
+        [styles.single]: !isMultiLine,
+        [styles.isVirtual]: isVirtual,
+      })}
+      style={style}
+    >
+      <UrlDiscern value={text} />
+    </div>
+  );
+};

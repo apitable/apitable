@@ -1,0 +1,47 @@
+@import "~pc/styles/lib_mixins.less";
+
+.dateTime {
+  padding: 3px 10px;
+  flex-grow: 1;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .ellipsis();
+
+  .date {
+    display: inline;
+    margin-right: 8px;
+    &.single {
+      width: 100%;
+    }
+    .ellipsis();
+  }
+
+  .time {
+    display: inline;
+    .ellipsis();
+    margin-right: 8px;
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  .alarm {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    .alarmTime {
+      color: var(--primaryColor);
+      padding-left: 4px;
+    }
+  }
+  .quickAlarm {
+    cursor: pointer;
+    display: none;
+  }
+  &.hoverAlarm:hover .quickAlarm {
+    display: block;
+  }
+}

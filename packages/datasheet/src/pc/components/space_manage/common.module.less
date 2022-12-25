@@ -1,0 +1,38 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.commonTitle() {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 45px;
+  margin: 32px 0 8px;
+  color: var(--firstLevelText);
+  height: 45px;
+}
+.commonTitleDesc() {
+  font-size: 14px;
+  color: var(--thirdLevelText);
+  text-align: left;
+  margin-bottom: 56px;
+  font-weight: normal;
+}
+.commonSubTitle() {
+  height: 22px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: var(--firstLevelText);
+  text-align: left;
+  font-weight: bold;
+  text-indent: 12px;
+  position: relative;
+  &::before {
+    display: block;
+    content: " ";
+    width: 2px;
+    height: 16px;
+    background: var(--primaryColor);
+    position: absolute;
+    top: 4px;
+    border-radius: 1px;
+  }
+}

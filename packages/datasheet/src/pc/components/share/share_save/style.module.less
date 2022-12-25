@@ -1,0 +1,102 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.spaceListContainer {
+  :global {
+    .ant-modal-body {
+      padding-right: 0;
+    }
+  }
+
+  .buttonWrapper {
+    padding-right: 24px;
+  }
+}
+
+.noSpaceTip {
+  .desc {
+    font-size: 15px;
+    color: var(--secondLevelText);
+    margin-bottom: 48px;
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  .tip {
+    font-size: 14px;
+    color: var(--firstLevelText);
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .button {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 67px - 24px;
+  }
+}
+
+.spaceList {
+  .listContainer {
+    min-height: 10vh;
+    max-height: 50vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .listItem {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding-left: 8px;
+
+    &:hover {
+      background: var(--lowestBg);
+    }
+
+    span:last-child {
+      flex: 1;
+    }
+
+    .content {
+      display: flex;
+      align-items: center;
+    }
+
+    .name {
+      flex: 1;
+      width: 0;
+      padding-left: 8px;
+      .ellipsis();
+    }
+  }
+
+  .desc {
+    font-size: 15px;
+    color: var(--secondLevelText);
+    margin-bottom: 24px;
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  label {
+    .ellipsis();
+  }
+}
+
+.buttonWrapper {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logo {
+  height: 36px;
+  width: auto;
+  margin-bottom: 32px;
+}

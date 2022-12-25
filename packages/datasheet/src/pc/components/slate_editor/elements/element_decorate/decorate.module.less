@@ -1,0 +1,28 @@
+@import '../../styles/var.less';
+
+.elementDecorate {
+  position: relative;
+  text-align: left;
+
+  &[data-align="alignCenter"] {
+    text-align: center;
+  }
+  &[data-align="alignRight"] {
+    text-align: right;
+  }
+}
+
+.placeholder {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--black_500);
+  display: none;
+  pointer-events: none;
+  &[data-visible="true"] {
+    display: inline-block;
+  }
+  &[contentEditable] {
+    user-select: none !important;
+  }
+}

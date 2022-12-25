@@ -1,0 +1,46 @@
+@import "~pc/styles/lib_var.less";
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 48px;
+  height: 192px;
+  padding: 8px 0;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  z-index: 10;
+  background-color: var(--defaultBg);
+  background: var(--defaultBg);
+  border: 1px solid var(--fc5);
+  box-sizing: border-box;
+  box-shadow: 0px 2px 12px rgba(38, 38, 38, 0.1);
+  border-radius: 8px;
+  user-select: none;
+  cursor: default;
+
+  :global {
+    .ant-divider-horizontal {
+      margin: 0;
+      width: 20px;
+      min-width: unset;
+      height: 2px;
+    }
+  }
+
+  .zoomReset {
+    width: 100%;
+    padding: 0;
+
+    &:hover {
+      background-color: var(--defaultBg);
+      color: var(--fc3);
+    }
+
+    &:active {
+      color: var(--primaryColor);
+    }
+  }
+}

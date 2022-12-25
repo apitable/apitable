@@ -1,0 +1,216 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.viewSelectPanel {
+  width: 280px;
+
+  .viewSelect {
+    padding: 0 8px;
+    max-height: 280px;
+    overflow-x: auto;
+    .light-scroll-bar();
+
+    .viewSelectItem {
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      padding: 0 18px;
+      margin: 0 -8px;
+      cursor: pointer;
+      .ellipsis();
+
+      &:hover {
+        background-color: var(--rowSelectedBg);
+      }
+
+      svg {
+        margin-right: 3px;
+        vertical-align: -0.125em;
+      }
+    }
+  }
+}
+
+.text {
+  color: var(--thirdLevelText);
+  .ellipsis();
+
+  &.active {
+    color: var(--primaryColor);
+  }
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .left,
+  .right {
+    display: flex;
+  }
+}
+
+.modelBody {
+  .desc {
+    margin-bottom: 24px;
+    padding: 0 24px;
+    line-height: 20px;
+    font-size: 14px;
+    color: var(--secondLevelText);
+  }
+
+  .searchField {
+    margin: 0 32px;
+  }
+
+  .fieldListWrapper {
+    height: 224px;
+    overflow: auto;
+    margin-bottom: 20px;
+
+    .fieldList {
+      padding: 0 24px;
+    }
+  }
+}
+
+.noResult {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: var(--secondLevelText);
+}
+
+.fieldItem {
+  display: flex;
+  padding: 0 8px;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+
+  .fieldIconAndTitle {
+    display: flex;
+    align-items: center;
+  }
+
+  &:hover {
+    background: var(--rowSelectedBg);
+    position: relative;
+  }
+
+  .iconType {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+  }
+
+  .fieldName {
+    width: 245px;
+    color: var(--secondLevelText);
+    .ellipsis();
+  }
+}
+
+.selectedFieldList {
+  max-height: 132px;
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.selectedFiledItem {
+  margin: 0 8px 8px 0;
+  display: flex;
+  height: 20px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: var(--rowSelectedBg);
+
+  .selectedFieldIconAndTitle {
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .iconType {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+  }
+
+  .fieldName {
+    max-width: 245px;
+    font-size: 12px;
+    .ellipsis();
+  }
+}
+
+.editField {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+
+  .editBtn {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    cursor: pointer;
+    .noSelect();
+
+    svg {
+      fill: var(--thirdLevelText)!important;
+    }
+
+    .editText {
+      margin-left: 3px;
+      font-size: 13px;
+    }
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .flowBox {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+  }
+
+  .fieldListWrapper {
+    flex: 1;
+    overflow: auto;
+    min-height: 240px;
+  }
+
+  .fieldItem {
+    height: 48px;
+    font-size: 14px;
+    :global(.ant-switch) {
+      min-width: 34px;
+    }
+  }
+
+  .btnGroup {
+    display: flex;
+    justify-content: space-between;
+    button:first-child {
+      margin-right: 12px;
+    }
+    button:last-child {
+      margin-left: 12px;
+    }
+  }
+}

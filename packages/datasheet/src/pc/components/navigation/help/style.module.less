@@ -1,0 +1,103 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.helpMenu {
+  background-color: var(--highBg);
+  border-radius: 8px;
+  box-shadow: var(--shadowCommonHigh);
+  padding: 24px 8px 16px;
+
+  .title {
+    padding: 0 0 8px 16px;
+  }
+
+  .wrapper {
+    display: flex;
+
+    .menuItem {
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .dividerWrapper {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+
+      .divider {
+        width: 1px;
+        height: 100%;
+// FIXME:THEME
+        background-color: rgba(var(--fc5-rgb), 70%);
+      }
+    }
+
+    .left,
+    .right {
+      flex: 1;
+    }
+
+    .left {
+      padding-right: 8px;
+    }
+
+    .right {
+      padding-left: 8px;
+    }
+  }
+}
+
+.helpBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--rowSelectedBg);
+  }
+
+  &.active {
+    background-color: var(--rowSelectedBg);
+
+    svg {
+      fill: var(--primaryColor);
+    }
+  }
+}
+
+.templateActived {
+  &:hover {
+    background-color: var(--blackBlue_800);
+  }
+
+  svg {
+    fill: var(--blackBlue_500);
+  }
+
+  &.active {
+    background-color: var(--blackBlue_800);
+
+    svg {
+      fill: var(--defaultBg);
+    }
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .helpMenuWrapper {
+    height: 100%;
+    overflow: auto;
+  }
+  .helpMenuItem {
+    height: 48px;
+    margin: 0 24px;
+    border-bottom: 1px solid var(--lineColor);
+    padding: 0;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+}

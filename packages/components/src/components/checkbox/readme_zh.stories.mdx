@@ -1,0 +1,97 @@
+import { Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+import { Checkbox } from './index';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="表单组件/Checkbox 勾选/文档" />
+
+# Checkbox 勾选
+
+从一组选项中选中一个或多个选项。
+
++ checkbox 单独使用时，和 switch 类似。但是通常用于多选项选择，
++ radio 是在一组选择中，选一个。
++ checkbox 是在一组选择中，选多个。
+
+## 使用方式
+
+```jsx
+import { Checkbox } from '@apitable/components';
+```
+
+
+## 快捷键支持
+
+| Key   | Function                  |
+|-------|---------------------------|
+| Tab   | 移动焦点到 checkbox       |
+| Space | 切换 checkbox 的 2 种状态 |
+
+
+## 默认展示
+
+勾选文本或者复选框可改变状态
+
+<Canvas>
+<ThemeToggle>
+  <Checkbox>
+    默认选项
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## 默认勾选
+
+<Canvas>
+<ThemeToggle>
+  <Checkbox checked>
+    默认勾选项
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## 禁用
+
+<Canvas>
+<ThemeToggle>
+  <Checkbox disabled>
+    禁用选项
+  </Checkbox>
+  <Checkbox checked disabled>
+    禁用勾选项
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## 不同尺寸的 Checkbox
+
+<Canvas>
+<ThemeToggle>
+  <Checkbox size={40}>
+    40px 尺寸选项
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## 不同颜色的 Checkbox
+
+<Canvas>
+<ThemeToggle>
+  <Checkbox color="red">
+    红色勾选项
+  </Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## 回调
+
+<Canvas>
+<ThemeToggle>
+<Checkbox onChange={val => alert(`状态：${val ? '勾选': '取消勾选'}`)}>
+  监听选项
+</Checkbox>
+</ThemeToggle>
+</Canvas>
+
+## API
+
+<ArgsTable of={Checkbox} />

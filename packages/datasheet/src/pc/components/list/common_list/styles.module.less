@@ -1,0 +1,101 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+@media (any-hover: hover) {
+  .hoverBg {
+    background: var(--rowSelectedBg);
+  }
+}
+
+.optionItem {
+  height: 32px;
+  line-height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &.isChecked {
+    color: var(--primaryColor);
+  }
+
+  & > div {
+    &:first-child {
+      flex: 1;
+    }
+  }
+}
+
+.listBox {
+  max-height: 336px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  .mini-scroll-bar();
+}
+
+.listContainer {
+  background: var(--highestBg);
+  box-shadow: var(--shadowCommonHighest);
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.noResult {
+  font-size: 11px;
+  padding-bottom: 8px;
+  padding: 0 10px;
+  height: 30px;
+  line-height: 30px;
+  color: var(--fourthLevelText);
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+}
+
+.footerContainer {
+  &:hover {
+    background: var(--rowSelectedBg);
+  }
+}
+
+.searchField {
+  padding: 8px 16px;
+}
+
+.searchInput {
+  background: var(--defaultBg);
+  border-bottom: 1px solid var(--lineColor);
+  overflow: hidden;
+}
+
+@media screen and(max-width: @w-md) {
+  .listContainer {
+    box-shadow: none;
+    background: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .listBox {
+    overflow: auto;
+    flex: 1;
+    max-height: unset;
+  }
+
+  .optionItem {
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 1px solid var(--lineColor);
+  }
+
+  .footerContainer {
+    font-size: 14px;
+  }
+
+  .noResult {
+    font-size: 14px;
+  }
+}

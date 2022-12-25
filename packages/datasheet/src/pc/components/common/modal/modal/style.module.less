@@ -1,0 +1,69 @@
+.modalBase {
+  :global {
+    .ant-modal-body {
+      padding: 0 24px 24px;
+    }
+
+    .ant-modal-title {
+      font-weight: bold;
+      padding-right: 48px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+.funcModal {
+  :global {
+    .ant-modal-body {
+      padding: 24px 24px 16px;
+    }
+
+    .ant-modal-footer {
+      padding: 24px;
+    }
+  }
+  
+  .iconWrapper {
+    margin-right: 7px;
+    display: flex;
+    align-items: center;
+  }
+  .statusIcon {
+    display: flex;
+    // height: 18px;
+    // width: 18px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .text {
+    flex: 1;
+    overflow: hidden;
+  }
+  .titleContent {
+    display: flex;
+  }
+  .title {
+    font-size: 16px;
+    color: var(--firstLevelText);
+    font-weight: bold;
+    margin: 0;
+  }
+  .content {
+    font-size: 13px;
+    color: var(--fc1);
+    font-weight: normal;
+    line-height: 20px;
+    padding-top: 9px;
+  }
+
+  .body.noTitle {
+    .statusIcon {
+      height: 22px;
+    }
+    .content {
+      margin-top: 0;
+    }
+  }
+}

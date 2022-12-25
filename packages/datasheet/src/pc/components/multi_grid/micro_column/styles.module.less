@@ -1,0 +1,45 @@
+@import "~pc/styles/lib_mixins.less";
+
+.wrapper {
+  display: flex;
+}
+
+.content {
+  cursor: move;
+  border-right: 1px solid var(--sheetLineColor);
+  background-color: var(--defaultBg);
+
+  .head {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e1e2e9;
+    padding: 12px 10px;
+    box-sizing: border-box;
+  }
+}
+
+.type {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #e1e2e9;
+  width: 95px;
+  line-height: 1;
+  box-sizing: border-box;
+  height: 30px;
+  .ellipsis();
+}
+
+.iconType {
+  display: flex;
+  align-items: center;
+}
+
+.fieldName {
+  font-size: 13px;
+  color: var(--firstLevelText);
+  margin-left: 4px;
+
+  font-weight: bold;
+  .ellipsis();
+}

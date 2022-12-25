@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/cf21303edea9abd919ecdab84698c6ab8513b1c2/classnames/index.d.ts",
+    "raw": "registry:dt/classnames#0.0.0+20161113184211",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/cf21303edea9abd919ecdab84698c6ab8513b1c2/classnames/index.d.ts"
+  }
+}

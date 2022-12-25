@@ -1,0 +1,56 @@
+@import "~pc/styles/lib_var.less";
+
+.lineSearchInput {
+  border-bottom: 1px solid var(--lineColor);
+  display: flex;
+  align-items: center;
+  padding: 0 20px 0;
+  position: relative;
+
+  input {
+    background: transparent;
+  }
+
+  &.default {
+    height: 32px;
+  }
+
+  &.large {
+    height: 40px;
+  }
+
+  svg {
+    cursor: pointer;
+  }
+
+  .prefixIcon {
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  input {
+    border: none;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .suffixIcon {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:focus-within {
+    border-bottom: 1px solid var(--primaryColor);
+
+    .prefixIcon {
+      svg {
+        fill: var(--primaryColor);
+      }
+    }
+  }
+}

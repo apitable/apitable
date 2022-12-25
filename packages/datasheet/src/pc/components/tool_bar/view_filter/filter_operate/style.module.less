@@ -1,0 +1,56 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+
+.field {
+  width: 129px;
+  height: 40px;
+  line-height: 40px !important;
+  margin-right: 10px !important;
+  background: var(--lowestBg);
+  border-radius: 2px;
+
+}
+
+.options {
+  .ant-select-option-common();
+}
+
+.iconType {
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.optionItemWrapper {
+  display: flex;
+  align-items: center;
+
+  .label {
+    .ellipsis();
+  }
+}
+
+.optionItem {
+  display: flex;
+  width: 100%;
+}
+
+.con {
+  width: 80px;
+  height: 40px;
+  line-height: 40px !important;
+  background: var(--lowestBg);
+  border-radius: 4px;
+  margin-right: 8px !important;
+
+  &>div {
+    height: 40px !important;
+    line-height: 40px !important;
+  }
+
+  :global {
+    .ant-select-selection-item {
+      line-height: 40px !important;
+    }
+  }
+}

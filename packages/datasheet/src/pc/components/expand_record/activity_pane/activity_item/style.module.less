@@ -1,0 +1,368 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.commentPopover {
+  :global {
+    .ant-popover-inner-content {
+      padding: 8px 8px 4px;
+    }
+  }
+}
+
+.icon {
+  color: var(--fc3) !important;
+}
+
+.changesetAction {
+  font-size: 13px;
+  padding-bottom: 4px;
+
+  :global {
+    .optionCellContainer {
+      .unitMember {
+        margin: 4px 2px;
+        background-color: var(--lowestBg);
+      }
+
+      & > div:not(.link) {
+        border: 1px solid var(--static-white);
+      }
+
+      .link {
+        background-color: var(--lowestBg);
+      }
+    }
+
+    .dateTimeValue {
+      display: inline;
+    }
+
+    img,
+    .link:last-child,
+    .tabItem:last-child,
+    .cellDateTimeDate {
+      margin-right: 0 !important;
+    }
+
+    .time {
+      margin-left: 4px !important;
+    }
+
+    img:not(.image) {
+      object-fit: contain;
+    }
+
+    img {
+      cursor: auto !important;
+      object-fit: cover;
+      width: 28px;
+      height: 28px;
+    }
+
+    .ratingCell > div {
+      cursor: auto;
+    }
+
+    .currencyLeft {
+      display: block !important;
+    }
+
+    .cellText:not(:global(.currencyLeft)) {
+      display: inline !important;
+    }
+
+    .ratingCell,
+    .checkboxCell {
+      display: inline !important;
+      padding-top: 4px !important;
+    }
+
+    .optionCellContainer {
+      display: inline-flex !important;
+    }
+
+    .attachmentContainer {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+    }
+
+    .emoji-mart-emoji {
+      transform: scale(0.86);
+    }
+  }
+
+  .attachment {
+    &.diff,
+    &.old,
+    &.new {
+      margin: 0;
+
+      & > div {
+        padding: 0 !important;
+        background-color: transparent;
+      }
+
+      display: inline-flex;
+
+      :global {
+        .img {
+          border: 0;
+          margin-bottom: 4px;
+        }
+      }
+    }
+
+    &.diff {
+      :global {
+        .img {
+          background-color: var(--defaultBg);
+          padding: 2px;
+          margin-right: 8px !important;
+        }
+      }
+
+    }
+
+    &.old {
+      :global {
+        .img {
+          background-color: rgba(var(--static-delete-bg-rgb), 50%);
+          opacity: 0.8;
+          padding: 2px;
+          margin-right: 8px !important;
+        }
+      }
+    }
+
+    &.new {
+      :global {
+        .img {
+          background-color: rgba(var(--static-add-bg-rgb), 0.7);
+          padding: 2px;
+          margin-right: 8px !important;
+        }
+      }
+    }
+  }
+
+  .text {
+    &.old {
+      display: inline;
+
+      > div {
+        display: inline !important;
+        margin-right: 8px;
+      }
+    }
+
+    &.new {
+      display: inline;
+
+      > div:not(:global(.currencyLeft)) {
+        display: inline !important;
+      }
+    }
+  }
+
+  .header {
+    position: relative;
+    color: var(--secondLevelText);
+    font-size: 12px;
+
+    :global {
+      .fieldTitle {
+        font-size: 12px;
+      }
+    }
+
+    height: 20px;
+  }
+
+  .diff {
+    margin-bottom: 4px;
+
+    & > div {
+      background-color: var(--defaultBg);
+      flex-wrap: wrap;
+      padding: 0 4px;
+      white-space: inherit;
+    }
+  }
+
+  .old {
+    opacity: 0.8;
+    &:not(:global(> .optionCellContainer > .unitMember)) {
+      text-decoration-line: line-through;
+    }
+
+    :global {
+      .optionCellContainer {
+        & > div {
+          opacity: 0.5;
+        }
+      }
+
+      .unitName,
+      .time,
+      .cellDateTimeDate,
+      .link,
+      .optionText,
+      .cellText {
+        text-decoration-line: line-through;
+      }
+
+      .checkboxCell > span,
+      .ratingCell > div {
+        position: relative;
+
+        &::before {
+          position: absolute;
+          content: "";
+          border-top: 1px solid var(--fc2);
+          width: 100%;
+          top: 8px;
+          z-index: 1;
+        }
+      }
+    }
+
+    > div {
+      background-color: rgba(var(--static-delete-bg-rgb), 0.5);
+      color: var(--fc2);
+      display: inline-flex;
+      flex-wrap: wrap;
+      padding: 0 4px;
+      white-space: inherit;
+
+      > div {
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .new {
+    margin-top: 4px;
+
+    > div {
+      background-color: rgba(var(--static-add-bg-rgb), 0.7);
+      color: var(--fc2);
+      display: inline-flex;
+      flex-wrap: wrap;
+      padding: 0 4px;
+      white-space: inherit;
+
+      > div {
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+.activityItem {
+  display: flex;
+  align-self: start;
+  flex-direction: column;
+  padding: 16px 16px 0;
+  width: 100%;
+}
+
+.activityHeader {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.activityBody {
+  width: 100%;
+}
+
+.emojiList {
+  user-select: none;
+
+  & > span {
+    cursor: pointer;
+    margin-left: 12px;
+
+    &:first-child {
+      position: relative;
+      margin-left: 0;
+      margin-right: 12px;
+
+      &::after {
+        content: " ";
+        display: block;
+        width: 1px;
+        height: 20px;
+        position: absolute;
+        top: 50%;
+        right: -13px;
+        background: var(--fc5);
+        z-index: 3;
+        transform: translateY(-50%);
+        opacity: 1 !important;
+      }
+    }
+  }
+}
+
+.activityHeaderLeft {
+  margin-right: 8px;
+}
+
+.activityHeaderRight {
+  flex: 1;
+  width: calc(100% - 40px);
+
+  .nickName {
+    font-size: 13px;
+    color: var(--secondLevelText);
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .name {
+    display: inline-block;
+    max-width: 84px;
+    overflow: hidden;
+    word-break: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .op {
+    white-space: pre-wrap;
+  }
+
+  .activityInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  .relativeTime {
+    font-size: 12px;
+    color: var(--thirdLevelText);
+    cursor: pointer;
+    margin-right: 4px;
+  }
+
+  .activityAction {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+}

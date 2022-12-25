@@ -1,0 +1,35 @@
+@import "~pc/styles/lib_var.less";
+@menuWidth: 200px;
+.dev {
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+  // display: flex;
+  flex-direction: column;
+  .header {
+    height: 40px;
+    margin: 10px 40px;
+  }
+  .logo {
+    height: 100%;
+    width: auto;
+  }
+  .content {
+    display: flex;
+    flex: 1;
+  }
+  .rightContent {
+    padding: 0 10px;
+    flex: 1;
+  }
+  :global {
+    .ant-menu-submenu,
+    .ant-menu-submenu-title {
+      width: @menuWidth;
+    }
+    .ant-menu-inline {
+      width: calc(100% - 1px);
+    }
+  }
+
+}

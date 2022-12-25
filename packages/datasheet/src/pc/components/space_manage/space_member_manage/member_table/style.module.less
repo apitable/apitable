@@ -1,0 +1,115 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+.memberTable {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 24px;
+  display: flex;
+  .light-scroll-bar();
+  :global {
+    .ant-table-wrapper {
+      flex: 1;
+      min-width: 780px;
+    }
+    .ant-table {
+      line-height: 1;
+      color: var(--secondLevelText);
+      .antdTable();
+      .ant-table-body {
+        overflow-y: hidden !important;
+        .light-scroll-bar();
+        &:hover {
+          overflow-y: auto !important; // Firefox compatible, the second overflow in chrome can override the first overflow
+          overflow-y: overlay !important;
+        }
+      }
+      .ant-table-thead > tr > th,
+      .ant-table-tbody > tr > td,
+      .ant-table tfoot > tr > th,
+      .ant-table tfoot > tr > td {
+        padding: 16px 4px;
+      }
+      &.ant-table-ping-left:not(.ant-table-has-fix-left)
+        .ant-table-container::before,
+      &.ant-table-ping-right:not(.ant-table-has-fix-right)
+        .ant-table-container::after {
+        box-shadow: none !important;
+      }
+      .ant-table-hide-scrollbar {
+        overflow-y: overlay !important;
+        &:hover {
+          overflow-y: overlay !important;
+        }
+      }
+      .ant-table-hide-scrollbar::-webkit-scrollbar {
+        background-color: var(--lowestBg);
+      }
+      .ant-table-row td {
+        overflow: hidden;
+        cursor: default;
+        svg {
+          margin-left: 4px;
+          width: 13px;
+          height: 15px;
+          fill: var(--errorColor);
+          vertical-align: middle;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    
+    .ant-table-placeholder {
+      &:hover {
+        td {
+          background-color: var(--primary)!important;
+        }
+      }
+    }
+  }
+}
+
+.pagination {
+  margin-top: 30px;
+  margin-bottom: 29px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.listItem {
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--fc1);
+  cursor: pointer;
+  &:hover {
+    background: var(--rowSelectedBg);
+  }
+}
+
+.tipText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-align: center;
+}
+
+
+.teamItem {
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  p {
+    margin: 0;
+    min-width: 0;
+    margin-right: 4px;
+  }
+}

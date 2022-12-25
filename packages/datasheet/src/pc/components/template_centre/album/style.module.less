@@ -1,0 +1,228 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+@import "~pc/styles/lib_mixins.less";
+
+
+.albumDetail {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  color: var(--blackBlue_50);
+  background: var(--blackBlue_1000);
+  h1, h2, h3, h4, h6 {
+    color: inherit;
+  }
+  .albumHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 32px 16px 8px;
+    .shareBtn {
+      cursor: pointer;
+      max-width: 216px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center;
+      font-size: 13px;
+      padding: 0 16px;
+      color: var(--blackBlue_50);
+      background-color: var(--blackBlue_800);
+      border-radius: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      svg {
+        margin-right: 4px;
+        vertical-align: sub;
+      }
+      &:hover {
+        color: var(--blackBlue_500);
+      }
+    }
+  }
+  .albumCover {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+  }
+  .goBack {
+    color: var(--blackBlue_50);
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 16px;
+    cursor: pointer;
+    height: 36px;
+    &:hover {
+      color: var(--blackBlue_100);
+    }
+    .albumName {
+      font-size: 18px;
+      font-weight: bolder;
+      .ellipsis();
+    }
+
+    &:hover {
+      color: var(--blackBlue_200);
+    }
+  }
+
+  .albumContent {
+    padding: 64px 64px 0 64px;
+    display: flex;
+    max-width: 1180px;
+    margin: 0 auto;
+    .albumContentLeft {
+      width: 260px;
+      .albumAuthor {
+        background: var(--blackBlue_900);
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        .albumAuthorImg {
+          width: 40px;
+          height: 40px;
+          position: relative;
+        }
+        .albumAuthorContent {
+          margin-left: 16px;
+          .albumAuthorTitle {
+            color: var(--blackBlue_500);
+          }
+          h4 {
+            font-weight: 600;
+          }
+        }
+        header {
+          display: flex;
+          margin-bottom: 16px;
+        }
+        .authorDesc {
+          border-top: 1px solid var(--blackBlue_800);
+          padding-top: 16px;
+          display: flex;
+          color: var(--blackBlue_500);
+          svg {
+            margin-top: 2px;
+          }
+          .authorDescContent {
+            margin-left: 8px;
+            font-size: 12px;
+          }
+        }
+      }
+      .albumTags {
+        margin-bottom: 24px;
+        .albumTagItem {
+          padding: 2px 4px;
+          margin: 4px;
+          display: inline-block;
+          font-size: 12px;
+          border-radius: 2px;
+          line-height: 16px;
+          background-color: var(--blackBlue_800);
+          color: var(--blackBlue_400);
+        }
+      }
+      .albumRecommends {
+        background: var(--blackBlue_900);
+        padding: 8px;
+        border-radius: 8px;
+        h3 {
+          margin-bottom: 8px;
+          margin-left: 8px;
+        }
+        .albumRecommendItem {
+          display: flex;
+          padding: 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          &:hover {
+            background: var(--blackBlue_800);
+          }
+          .albumRecommendImg {
+            position: relative;
+            width: 80px;
+            height: 60px;
+            border-radius: 2px;
+            overflow: hidden;
+          }
+          .albumRecommendContent {
+            width: 150px;
+            margin-left: 16px;
+            h6 {
+              margin-bottom: 4px;
+            }
+            .albumRecommendDesc {
+              color: var(--blackBlue_500);
+            }
+          }
+        }
+      }
+    }
+    .albumContentRight {
+      width: calc(100% - 260px);
+      margin: 0 32px;
+      overflow-x: hidden;
+      .albumRightContent {
+        img {
+          max-width: 100%;
+        }
+        :global {
+          .btn {
+            padding: 7px 12px;
+            font-size: 12px;
+            margin: 4px 0;
+            background: var(--primaryColor);
+            color: var(--blackBlue_50);
+            &:hover {
+              background: var(--primaryHover);
+            }
+          }
+        }
+      }
+      p {
+        color: var(--blackBlue_400);
+        margin-bottom: 4px;
+      }
+    }
+  }
+  .albumAdvise {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    margin-bottom: 40px;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .bottomShare {
+    margin: 48px auto 24px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and(max-width: 768px) {
+  .albumDetail {
+    .albumCover {
+      height: 200px;
+    }
+    .albumContent {
+      padding: 16px 16px 0 16px;
+      display: block;
+      .albumContentLeft {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+      .albumContentRight {
+        width: 100%;
+        margin: 0;
+      }
+    }
+    .albumAdvise {
+      margin-bottom: 24px;
+      height: 100px;
+    }
+  }
+}

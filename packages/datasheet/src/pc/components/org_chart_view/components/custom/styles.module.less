@@ -1,0 +1,191 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.outer {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--fc5);
+  border: 1px solid var(--fc5);
+  box-shadow: 0px 1px 14px rgba(38, 38, 38, 0.05);
+  transition: border 0.3s ease;
+
+  &.hover, &:hover {
+    border: 1px solid var(--primaryColor);
+    cursor: pointer;
+  }
+  &.isDragging {
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: grabbing;
+  }
+  &.canDrop {
+    border-radius: 4px;
+// FIXME:THEME
+    box-shadow: 0 0 0 3px rgba(var(--primaryColor-rgb), 30%);
+    border-color: transparent;
+  }
+  &.highlight {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--orange_100);
+      opacity: 0.3;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+  }
+}
+
+.layer {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grabbing !important;
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
+
+.animated {
+  & > path {
+    stroke-dasharray: 5;
+    animation: dashdraw 0.5s linear infinite;
+  }
+}
+
+.cycleNode {
+  width: 108px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--fc5);
+  box-shadow: 0px 1px 14px rgba(38, 38, 38, 0.05);
+  border-radius: 4px;
+  background-color: var(--defaultBg);
+  pointer-events: none;
+  font-size: 14px;
+  font-weight: bold;
+  span {
+    .ellipsis();
+  }
+}
+
+.collapse {
+  height: 24px;
+  position: absolute;
+  left: calc(50% - 8px);
+  transform: translateY(5px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 2px;
+    height: 10px;
+    background-color: var(--primaryColor);
+    transform: translateX(-50%);
+  }
+
+  &.horizontal {
+    left: calc(100% + 6px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 50%;
+      width: 6px;
+      height: 2px;
+      background-color: var(--primaryColor);
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.draggingCard {
+  box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--primaryColor);
+  cursor: grabbing !important;
+}
+
+.ghostWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+}
+
+.ghost {
+  background-color: var(--orange_200);
+  border-radius: 4px;
+  width: 48px;
+  height: 100%;
+
+  &.horizontal {
+    width: 100%;
+  }
+}
+
+.foreignObject {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.deleteButton {
+  border: 1px solid var(--fc5);
+  &:hover {
+    border: 1px solid var(--primaryColor);
+    svg {
+      fill: var(--primaryColor);
+    }
+  }
+}
+
+.handle {
+  background-color: var(--primaryColor) !important;
+  width: 5px !important;
+  height: 2px !important;
+  border: none !important;
+  border-radius: unset !important;
+  opacity: 0;
+  pointer-events: none !important;
+  &.visible {
+    opacity: 1 !important;
+  }
+}
+
+.ghostHandle {
+  background-color: var(--orange_200) !important;
+  width: 5px !important;
+  height: 2px !important;
+  border: none !important;
+  border-radius: unset !important;
+  opacity: 0 !important;
+  &.visible {
+    opacity: 1 !important;
+  }
+}

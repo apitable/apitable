@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.DatasheetMetaMapper">
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}datasheet_meta(id, dst_id, meta_data, revision, created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.dstId},#{item.metaData},#{item.revision},#{item.createdBy},#{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <resultMap id="datasheetMetaVo" type="com.apitable.internal.dto.SimpleDatasheetMetaDTO">
+        <result column="meta_data" property="meta" typeHandler="com.apitable.shared.util.ibatis.JsonHandler"/>
+    </resultMap>
+
+    <select id="selectByNodeId" resultMap="datasheetMetaVo">
+        SELECT meta_data
+        FROM ${tablePrefix}datasheet_meta
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </select>
+
+    <select id="selectDtoByDstIds" resultType="com.apitable.workspace.dto.DatasheetMetaDTO">
+        SELECT dst_id, meta_data
+        FROM ${tablePrefix}datasheet_meta
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach> AND is_deleted = 0
+    </select>
+
+    <insert id="insertMeta">
+        INSERT INTO ${tablePrefix}datasheet_meta(id, dst_id, meta_data, revision, created_by, updated_by)
+            VALUE (#{entity.id}, #{entity.dstId}, #{entity.metaData}, #{entity.revision}, #{entity.createdBy}, #{entity.updatedBy})
+    </insert>
+
+    <update id="updateByDstId">
+        UPDATE ${tablePrefix}datasheet_meta
+        SET meta_data = #{meta}, updated_by = #{userId}
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </update>
+
+    <update id="updateIsDeletedByNodeId">
+        UPDATE ${tablePrefix}datasheet_meta
+        SET is_deleted = #{isDel}, updated_by = #{userId}
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted != #{isDel}
+    </update>
+
+    <select id="countByMetaData" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}datasheet_meta
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND meta_data LIKE CONCAT('%', #{keyword}, '%') AND is_deleted = 0
+    </select>
+
+    <resultMap id="snapshot" type="com.apitable.workspace.dto.DatasheetSnapshot">
+        <result column="meta_data" property="meta" typeHandler="com.apitable.workspace.support.DatasheetMetaTypeHandler"/>
+    </resultMap>
+
+    <select id="selectByDstId" resultMap="snapshot">
+        SELECT meta_data
+        FROM ${tablePrefix}datasheet_meta
+        WHERE dst_id = #{dstId} AND is_deleted = 0
+    </select>
+</mapper>

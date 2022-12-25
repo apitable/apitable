@@ -1,0 +1,219 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.permission {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .permissionHeader {
+    padding: 0 24px;
+  }
+  .toggleSwitchWrapper {
+    display: flex;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--lineColor);
+
+    .switchText {
+      padding-left: 8px;
+    }
+  }
+
+  .permissionSelect {
+    margin-bottom: 16px;
+  }
+
+  .addBtnWrapper {
+    position: relative;
+    margin: 16px 0;
+
+    .addBtn {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .scrollContainer {
+    padding: 0 4px 0 16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    flex: 1;
+  }
+
+  :global {
+    .ant-radio-wrapper-checked {
+      & > span:last-child span {
+        font-weight: bold;
+        color: var(--firstLevelText);
+      }
+    }
+  }
+}
+
+// Mobile
+@media screen and (max-width: @w-md) {
+  .permission {
+    .addBtnWrapper {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .memberDetail {
+      text-decoration: underline;
+
+      &.appointMemberDetail {
+        display: inline-block;
+      }
+    }
+    .scrollContainer {
+      padding: 0 16px;
+    }
+
+    .inviteBtn {
+      width: fit-content;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--primaryColor);
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--primaryColor);
+        margin-right: 4px;
+      }
+    }
+  }
+
+  // Menu for switching permissions (roles)
+  .item {
+    height: 64px;
+    display: flex;
+    align-items: center;
+
+    &:not(:last-child) {
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--lineColor);
+        transform: scaleY(0.5);
+      }
+    }
+
+    .title {
+      font-size: 15px;
+      color: var(--firstLevelText);
+      padding-bottom: 4px;
+    }
+
+    .desc {
+      font-size: 12px;
+      color: var(--thirdLevelText);
+    }
+  }
+}
+
+
+.permissionSettingMenuItem {
+  line-height: 22px;
+  border-radius: 4px;
+  padding: 9px 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--rowSelectedBg);
+    cursor: pointer;
+    position: relative;
+  }
+
+  &.active {
+    color: var(--primaryColor);
+  }
+}
+
+.permissionSettingMenu {
+  padding: 8px;
+  background-color: var(--bgCommonHighest);
+  box-shadow: var(--shadowCommonHighest);
+  border-radius: 8px;
+  color: var(--fc1);
+  .permissionSettingMenuItemActive {
+    color: var(--primaryColor);
+  }
+}
+
+.permissionInfoSetting {
+  .tipContainer {
+    padding-bottom: 8px;
+    .tipIcon {
+      vertical-align: text-bottom;
+      line-height: 20px;
+    }
+    .tip {
+      display: inline;
+      margin-left: 4px;
+    }
+    .hasSettingBox {
+      width: 100%;
+      display: flex;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: var(--bgBrandLightDefault);
+      color: var(--textBrandDefault);
+      .hasSettingIcon {
+        margin-top: 2px;
+        min-width: 16px;
+      }
+      div {
+        margin: 0 4px;
+        color: var(--textBrandDefault);
+        font-size: 13px;
+        line-height: 20px;
+        a {
+          margin-left: 4px;
+          font-weight: bold;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .settingLine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .viewByPersonBtn {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: underline;
+      color: var(--thirdLevelText);
+    }
+  }
+}
+
+.batchDeleteItem {
+  position: relative;
+  color: var(--errorColor);
+  margin-top: 8px;
+  &:before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--lineColor);
+  }
+}

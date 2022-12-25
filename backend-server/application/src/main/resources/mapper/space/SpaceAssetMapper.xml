@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.space.mapper.SpaceAssetMapper">
+
+    <update id="updateIsDeletedByNodeIds">
+        UPDATE ${tablePrefix}space_asset
+        SET is_deleted = #{isDel}
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted != #{isDel}
+    </update>
+
+    <select id="selectDistinctAssetIdByNodeIdIn" resultType="java.lang.Long">
+        SELECT DISTINCT asset_id
+        FROM ${tablePrefix}space_asset
+        WHERE node_id IN
+        <foreach item="item" index="index" collection="nodeIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectDto" resultType="com.apitable.space.dto.SpaceAssetDTO">
+        SELECT id, cite, type
+        FROM ${tablePrefix}space_asset
+        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND asset_id = #{assetId} AND is_deleted = 0
+    </select>
+
+    <select id="selectDtoByAssetIdsAndType" resultType="com.apitable.space.dto.SpaceAssetDTO">
+        SELECT id, cite, asset_checksum, type
+        FROM ${tablePrefix}space_asset t
+        WHERE space_id = #{spaceId} AND node_id = #{nodeId} AND type = #{type}
+        AND t.asset_id IN
+        <foreach item="item" index="index" collection="assetIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+        FOR UPDATE
+    </select>
+
+    <select id="selectNodeAssetDto"
+            resultType="com.apitable.space.dto.NodeAssetDTO">
+        SELECT node_id,
+               asset_id,
+               asset_checksum AS checksum,
+               cite,
+               file_size,
+               `type`,
+               source_name,
+               is_template
+        FROM ${tablePrefix}space_asset
+                WHERE node_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}space_asset(id, space_id, node_id, asset_id, asset_checksum,
+        cite, type, source_name, file_size, is_template)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id},#{item.spaceId},#{item.nodeId},#{item.assetId},#{item.assetChecksum},
+                #{item.cite},#{item.type},#{item.sourceName},#{item.fileSize},#{item.isTemplate}
+            </trim>
+        </foreach>
+    </insert>
+
+    <select id="countBySpaceIdAndAssetChecksum" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}space_asset
+        WHERE space_id = #{spaceId} AND asset_checksum = #{checksum} AND is_deleted = 0
+    </select>
+
+    <update id="updateCiteByNodeIdAndToken">
+        UPDATE ${tablePrefix}space_asset vsa
+        JOIN ${tablePrefix}asset va ON vsa.asset_id = va.id AND va.file_url = #{token}
+        SET vsa.cite = vsa.cite + #{offset}
+        WHERE vsa.node_id = #{nodeId}
+    </update>
+
+    <select id="selectFileSizeBySpaceId" resultType="java.lang.Integer">
+        SELECT file_size
+        FROM ${tablePrefix}space_asset
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+          AND is_template = 0
+        GROUP BY asset_id
+    </select>
+
+    <delete id="deleteBatchByIds">
+        DELETE
+        FROM ${tablePrefix}space_asset
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateIsTemplateByAssetChecksumIn">
+        UPDATE ${tablePrefix}space_asset
+        SET is_template = #{isTemplate}
+        WHERE asset_checksum IN
+        <foreach item="item" index="index" collection="assetChecksums" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

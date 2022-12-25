@@ -1,0 +1,30 @@
+# Install dependencies only when needed
+FROM apitable/nodepy:16.15.0-alpine AS deps
+
+WORKDIR /workspace-install
+
+COPY .yarn/ ./.yarn/
+COPY ./.yarnrc.yml ./yarn.lock ./package.json ./
+
+# components
+COPY packages/components/package.json ./packages/components/
+
+RUN yarn workspaces focus @apitable/components root
+
+# Build static files
+FROM apitable/nodepy:16.15.0-alpine AS builder
+
+WORKDIR /app
+
+COPY --from=deps /workspace-install/node_modules ./node_modules
+COPY --from=deps /workspace-install/packages/components/node_modules ./packages/components/node_modules
+
+COPY .yarn ./.yarn
+COPY ./.yarnrc.yml ./package.json ./yarn.lock ./common-tsconfig.json ./
+COPY packages/ ./packages/
+
+RUN yarn build:components:doc
+
+FROM nginx:1.23.1
+COPY --from=builder /app/packages/components/storybook-static  /usr/share/nginx/html
+RUN find /usr/share/nginx/html

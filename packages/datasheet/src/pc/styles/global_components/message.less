@@ -1,0 +1,70 @@
+@import "../lib_var.less";
+
+.ant-message {
+  font-size: 14px;
+
+  .ant-message-notice-content {
+    padding: 0;
+    height: 40px !important;
+    box-sizing: border-box;
+    text-align: left;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+
+    .ant-message-custom-content {
+      padding: 8px 32px;
+      border-radius: 4px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .ant-message-custom-content svg {
+      fill: var(--staticWhite0);
+    }
+    .ant-message-custom-content:not(.ant-message-loading) svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .ant-message-custom-content.ant-message-loading svg {
+      height: 18px;
+      width: 18px;
+    }
+    .ant-message-custom-content span {
+      display: inline-block;
+      overflow: hidden;
+      font-size: 14px !important;
+      color: var(--staticWhite0);
+      margin-left: 8px;
+
+      i {
+        font-size: 13px;
+        margin-left: 8px;
+        font-style: normal;
+        text-decoration: none;
+        border-bottom: 1px solid;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .anticon {
+    position: initial;
+    top: initial;
+    vertical-align: initial;
+    color: var(--primaryColor);
+  }
+}
+
+.ant-message-custom-content.ant-message-error {
+  background: var(--errorColor);
+}
+.ant-message-custom-content.ant-message-loading,
+.ant-message-custom-content.ant-message-info {
+  background: var(--primaryColor);
+}
+.ant-message-custom-content.ant-message-success {
+  background: var(--successColor);
+}
+.ant-message-custom-content.ant-message-warning {
+  background: var(--warningColor);
+}
