@@ -1,0 +1,229 @@
+@import "./global_components/index.less";
+@import "./z_index.less";
+@import "./lib_var.less";
+
+@font-face {
+  font-family: "BebasNeue";
+  src: url("~static/font/BebasNeue-Regular.ttf");
+}
+
+.flex {
+  display: flex;
+}
+
+.item-center {
+  align-items: center;
+}
+
+.keyword {
+  color: var(--primaryColor);
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.f-g-1 {
+  flex-grow: 1;
+}
+
+.layout {
+  &-row {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+
+    > .flex {
+      min-width: 0;
+    }
+  }
+
+  &-column {
+    display: flex;
+    flex-direction: column;
+
+    > .flex {
+      min-height: 0;
+    }
+  }
+
+  &-main-center {
+    justify-content: center;
+  }
+
+  &-main-end {
+    justify-content: flex-end;
+  }
+
+  &-main-space-around {
+    justify-content: space-around;
+  }
+
+  &-main-space-between {
+    justify-content: space-between;
+  }
+
+  &-cross-center {
+    align-items: center;
+  }
+
+  &-cross-end {
+    align-items: flex-end;
+  }
+
+  &-main-cross-center {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition-delay: 99999s;
+  transition: color 99999s ease-out, background-color 99999s ease-out;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code,
+code {
+  font-family: iawriter-mono, Nitti, Consolas, Menlo, Courier, monospace;
+
+  &::selection {
+    color: inherit;
+    background: #d4ccff;
+  }
+
+  span::selection {
+    color: inherit;
+    background: #d4ccff;
+  }
+}
+
+
+.ant-input-affix-wrapper-lg {
+  background-color: var(--lowestBg);
+  height: 48px !important;
+  border-radius: 24px !important;
+
+  .ant-input {
+    border-radius: 24px !important;
+    background-color: var(--lowestBg);
+  }
+
+  .ant-input-prefix {
+    margin-left: 8px;
+  }
+
+  .ant-input-suffix {
+    margin-right: 8px;
+  }
+}
+
+@supports (bottom: constant(safe-area-inset-bottom)) or
+  (bottom: env(safe-area-inset-bottom)) {
+  #DATASHEET_VIEW_CONTAINER_ID {
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.rc-trigger-popup-mask {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--zIndex-10) !important;
+  background: unset !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single):not(.ant-picker-cell-range-end) .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single):not(.ant-picker-cell-range-start) .ant-picker-cell-inner {
+  border-radius: 4px !important;
+}
+
+.xgplayer-skin-default {
+  overflow: hidden;
+  background-color: fade(#000, 54%) !important;
+}
+
+.xgplayer-progress-played {
+  background-color: var(--primaryColor);
+  background-image: none !important;
+}
+
+.xgplayer-skin-default .xgplayer-controls .xgplayer-playbackrate {
+  left: -4px;
+
+  .name {
+    width: 48px;
+    background: rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  & > ul {
+    width: 64px;
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.scroll-after {
+  content: '';
+  display: block;
+  bottom: 0;
+  left: 1px;
+  width: calc(100% - 2px);
+  padding: 10px;
+  pointer-events: none;
+  background: var(--bgGradientVertical);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.scroll-color-relative-absolute {
+  position: relative;
+  &::after {
+    position: absolute;
+    .scroll-after();
+  }
+}
+
+.light {
+  .scroll-color-relative-absolute::after {
+    background: linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+  }
+}
+
+.scroll-color-fixed {
+  position: fixed;
+  &::after {
+    position: absolute;
+    .scroll-after();
+  }
+}
+
+.scroll-color-absolute {
+  position: absolute;
+  &::after {
+    position: absolute;
+    .scroll-after();
+  }
+}
+.scroll-color-sticky {
+  position: relative;
+  &::after {
+    position: sticky;
+    .scroll-after();
+  }
+}

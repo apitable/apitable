@@ -1,0 +1,54 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.gridView {
+  background-color: var(--lowestBg);
+  padding-left: 32px;
+}
+
+.gridCell {
+  border-bottom: 1px solid var(--primaryColor);
+  border-right: 1px solid var(--primaryColor);
+  border-left: none;
+  border-top: none;
+  .ellipsis();
+  box-sizing: border-box;
+}
+
+.selectedCell {
+  background-color: var(--errorColor);
+}
+
+.viewContainer {
+  position: absolute;
+}
+
+.updatingTip {
+  position: absolute;
+  right: 16px;
+  bottom: 0;
+  background: var(--defaultBg);
+  color: var(--primaryColor);
+}
+
+.orgChart {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 100%;
+    background-color: var(--lowestBg);
+  }
+
+  :global {
+    #DATASHEET_TOOL_BAR {
+      background-color: var(--defaultBg);
+      margin-left: -32px;
+      padding-left: 32px;
+      border-bottom: 1px solid var(--fc11);
+    }
+  }
+}

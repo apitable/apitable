@@ -1,0 +1,91 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.accountManagerWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-x: auto;
+
+  .title {
+    padding-left: 40px;
+    font-size: 16px;
+    height: 48px;
+    line-height: 48px;
+    font-weight: bold;
+    color: var(--firstLevelText);
+  }
+
+  .tipWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 144px;
+
+    img {
+      height: 48px;
+      width: auto;
+    }
+
+    .tip {
+      padding-top: 60px;
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--firstLevelText);
+    }
+
+    .subTip {
+      display: flex;
+      padding-top: 16px;
+      font-size: 13px;
+      color: var(--firstLevelText);
+
+      .spaceName {
+        max-width: 160px;
+        .ellipsis();
+      }
+    }
+  }
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .bottomSpacing {
+      margin-bottom: 40px;
+    }
+
+    @media screen and (min-width: @w-md) {
+      padding: 0 40px;
+      min-width: 800px;
+      margin-top: 18px;
+    
+      .rightSpacing {
+        margin-right: 40px;
+      }
+    }
+  }
+}
+
+.codeWrapper {
+  .title {
+    font-size: 18px;
+    color: var(--firstLevelText);
+    font-weight: bold;
+    margin-bottom: 18px;
+  }
+
+  .tip {
+    font-size: 14px;
+    color: var(--secondLevelText);
+    margin-bottom: 30px;
+  }
+
+  .codeImg {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+  }
+}

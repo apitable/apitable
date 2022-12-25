@@ -1,0 +1,218 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.linkEditorPortalContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: var(--linkEditorZIndex);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+}
+
+.linkCard {
+  width: 540px;
+  height: 630px;
+  background: var(--highBg);
+  box-shadow: var(--shadowCommonHigh);
+  border-radius: 8px;
+  padding-top: 24px;
+  overflow: hidden;
+  position: relative;
+
+  &.rightLayout {
+    transform: translateX(50%);
+  }
+
+  .iconClose {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    cursor: pointer;
+  }
+
+  .linkCardTitle {
+    height: 22px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 22px;
+    padding: 0 24px;
+    margin-bottom: 16px;
+    color: var(--fc1);
+    .ellipsis();
+  }
+
+  .addRecord {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    padding-top: 6px;
+    border-top: solid 1px var(--lineColor);
+
+    &.active {
+      button {
+        color: var(--secondLevelText);
+      }
+    }
+  }
+
+  .searchValue {
+    display: inline-block;
+    max-width: 230px;
+    vertical-align: bottom;
+    .ellipsis();
+  }
+}
+
+.cardMiddle {
+  height: 486px;
+  position: relative;
+  padding-top: 8px;
+  overflow: hidden;
+
+  .loading {
+    background-color: white;
+  }
+
+  .empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .text {
+      text-align: center;
+      color: var(--thirdLevelText);
+      font-size: 13px;
+      margin-top: 16px;
+      margin-bottom: 32px;
+    }
+  }
+}
+
+.recordListContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  > div > div {
+    .light-scroll-bar();
+    overflow-y: scroll !important;
+  }
+
+  .selectWrapper {
+    margin: 1px 12px 7px 24px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 4px;
+
+    &.selected {
+      box-shadow: 0px 0px 0px 1px var(--primaryColor);
+
+      &::before {
+        content: " ";
+        z-index: 1;
+        width: 31px;
+        height: 31px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: translate(-50%, -50%) rotate(45deg);
+        background-color: var(--primaryColor);
+      }
+
+      &::after {
+        content: " ";
+        z-index: 1;
+        left: 3px;
+        top: 6px;
+        width: 5px;
+        height: 8px;
+        position: absolute;
+        display: table;
+        border: 1px solid #fff;
+        border-top: 0;
+        border-left: 0;
+        transform: rotate(45deg) scale(1) translate(-50%, -50%);
+        opacity: 1;
+        transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+      }
+    }
+  }
+}
+
+.mobileCard {
+  background: var(--defaultBg) !important;
+  border-radius: 8px !important;
+}
+
+.cardHighlight {
+  background-color: var(--orange_100)!important;
+}
+
+.linkTitle {
+  display: inline-block;
+  max-width: 320px;
+  vertical-align: bottom;
+  .ellipsis();
+}
+
+@media screen and(max-width: @w-md) {
+  .linkCard {
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    border-radius: 0;
+
+    &.rightLayout {
+      transform: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .addRecord {
+      position: static;
+    }
+  }
+
+  .linkTitle {
+    max-width: 90px;
+  }
+
+  .cardMiddle {
+    flex: 1;
+    min-height: 308px;
+  }
+
+  .drawerPopup {
+    :global {
+      .ant-drawer-body {
+        padding: 0 !important;
+      }
+    }
+  }
+
+  .iconClose {
+    background-color: var(--rowSelectedBg);
+    border-radius: 50%;
+  }
+
+  .recordListContainer {
+    .selectWrapper {
+      margin-right: 24px;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.loadingWrap {
+  padding: 16px;
+}

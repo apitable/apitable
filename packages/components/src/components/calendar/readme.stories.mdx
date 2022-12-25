@@ -1,0 +1,120 @@
+import { Calendar } from './index';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<style>{`
+  
+`}</style>
+
+<Meta title="en/components/Calendar" />
+
+# Calendar
+
+## Usage
+
+When data is date or divided by date, such as schedule, class schedule, event calendar, etc.
+
+## Basic usage scenarios
+
+- The calendar component supports month switching and returns to today (current month);
+- Support stretching task adjustment time;
+- The mobile terminal supports sliding to switch months;
+- Internationalization: Chinese and English are supported.
+
+## Instructions for use
+
+- The calendar view of the current month is displayed by default. If `defaultDate` is set, the view of the corresponding month is displayed;
+- When calculating the task length, the unit is days, and the time below days (hours, minutes) is ignored;
+- When the task has no start time or end time, the length is 1 day.
+- When the start time is greater than the end time, the task is abnormal, an alarm icon appears, the task is displayed in the interface until the start time is unknown, and the length is 1 day.
+
+## Examples
+
+When there are no tasks, the calendar looks like this:
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Calendar lang="en" />
+</ThemeToggle>
+</Canvas>
+
+## Have tasks and allow for stretching
+
+Setting `resizable` to true allows both ends of the stretch task to adjust the timing:
+
+<Canvas>
+<Story id="基础组件-calendar-日历--resizable-with-en" />
+</Canvas>
+
+## Custom task style
+
+The task style is defined by `listStyle`, and the calendar will adapt to the height according to the `listStyle` height property.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <Calendar
+    defaultDate={new Date('2021/07/01')}
+    lang="en"
+    listStyle={{
+      border: '1px dashed #AB45FB',
+      height: '60px',
+      lineHeight: '60px'
+    }}
+    tasks={[
+      {
+        endDate: new Date('2021-07-18T16:00:00.000Z'),
+        id: 1,
+        startDate: new Date('2021-07-14T16:00:00.000Z'),
+        title: 'Have a meal 🍚'
+      },
+      {
+        endDate: new Date('2021-07-16T16:00:00.000Z'),
+        id: 2,
+        startDate: new Date('2021-07-16T16:00:00.000Z'),
+        title: 'Sleep 😴'
+      }
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## Unusual task warning
+
+When the start time is greater than the end time, the task is abnormal, and an alarm is displayed. The task is displayed in the interface until the start time is unknown, and the length is 1 day.
+
+<Canvas>
+  <ThemeToggle lang="en">
+  <Calendar
+    defaultDate={new Date('2021/07/01')}
+    lang="en"
+    tasks={[
+      {
+        endDate: new Date('2021-07-05T16:00:00.000Z'),
+        id: 1,
+        startDate: new Date('2021-07-14T16:00:00.000Z'),
+        title: 'Have a meal 🍚'
+      }
+    ]}
+    warnText={<Tooltip content="End date is less than start date"><span className="warning"><IconComponent color="#FFAB00" size={14}/></span></Tooltip>}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name           | Type                                                    | Description                                                                                                                                       | Default |
+|----------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| defaultDate    | Date                                                    | the default time, the first time the calendar is opened is the current month                                                                      |         |
+| tasks          | ITask[]                                                 | task list, the data structure is: ITask { id: Id; title: string; startDate: Date; endDate: Date; startDisabled?: boolean, endDisabled?: boolean } |         |
+| update         | (id: Id, startDate: Date, endDate: Date) => void        | update task function                                                                                                                              |         |
+| lang           | en / zh                                                 | international configuration                                                                                                                       |         |
+| dnd            | any[]                                                   | Drag and drop component (beta version)                                                                                                            |         |
+| listStyle      | CSSProperties                                           | task style                                                                                                                                        |         |
+| startListStyle | CSSProperties                                           | mark task start time location style                                                                                                               |         |
+| warnText       | ReactElement<any, string / JSXElementConstructor<any\>> | alarm information                                                                                                                                 |         |
+| rowMixCount    | number                                                  | the minimum number of display rows in a calendar row                                                                                              |         |
+| disabled       | boolean                                                 | disable                                                                                                                                           |         |
+| resizable      | boolean                                                 | support stretching, allowing to adjust the task time by pulling both ends of the task                                                             |         |
+| moreText       | string                                                  | -                                                                                                                                                 |         |
+| moveTaskId     | string                                                  | -                                                                                                                                                 |         |
+| monthPicker    | (showValue: string) => Element                          | -                                                                                                                                                 |         |

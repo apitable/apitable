@@ -1,0 +1,106 @@
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+
+@offset: 68px;
+
+.mobileDatePicker {
+  position: relative;
+  .alarm {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    .alarmTime {
+      color: var(--primaryColor);
+      padding-left: 4px;
+    }
+  }
+}
+
+.datePicker {
+  border-radius: 16px 16px 0 0;
+
+  :global {
+    .am-picker {
+      background-color: var(--lowestBg);
+      padding-top: 16px;
+    }
+
+    .am-picker-popup-item {
+      user-select: none;
+      color: var(--secondLevelText);
+      &:active {
+        color: var(--firstLevelText);
+      }
+      font-size: 15px;
+      height: 56px;
+      &.am-picker-popup-header-right {
+        color: var(--primaryColor);
+      }
+    }
+
+    .am-picker-popup-header-left.am-picker-popup-item-active,
+    .am-picker-popup-header-right.am-picker-popup-item-active {
+      border-radius: none;
+      background: none;
+    }
+
+    .am-picker-popup-title {
+      color: var(--primaryColor);
+      height: 56px;
+    }
+
+    .am-picker-col {
+      &:first-child {
+        border-radius: 16px 0 0 16px;
+      }
+
+      &:last-child {
+        border-radius: 0 16px 16px 0;
+      }
+    }
+
+    .am-picker-col-item {
+      font-size: 15px;
+    }
+
+    .am-picker-col-indicator {
+      &::before,
+      &::after {
+        background: unset !important;
+      }
+    }
+  }
+}
+
+.backToNow {
+  color: var(--secondLevelText);
+  position: absolute;
+  right: @offset;
+  top: 12px;
+  &:active {
+    color: var(--firstLevelText);
+  }
+}
+
+.pickerChildrenWrapper {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clear {
+  position: absolute;
+  left: @offset;
+  top: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: var(--secondLevelText);
+  &:active {
+    color: var(--firstLevelText);
+  }
+}

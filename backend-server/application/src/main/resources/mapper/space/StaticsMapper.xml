@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.space.mapper.StaticsMapper">
+    <select id="countSubAdminBySpaceId" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT vsmrr.id)
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+        JOIN ${tablePrefix}space_role_resource_rel vsrrr ON vsmrr.role_code = vsrrr.role_code
+        WHERE vsmrr.space_id = #{spaceId}
+    </select>
+
+    <select id="countMemberBySpaceId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="countTeamBySpaceId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}unit_team
+        WHERE space_id = #{spaceId}
+        and is_deleted = 0
+        and parent_id > 0
+    </select>
+
+    <select id="countDstBySpaceId" resultType="java.lang.Long">
+        select COUNT(*)
+        from ${tablePrefix}node
+        where space_id = #{spaceId}
+          and `type` in (2, 3, 4)
+          and is_template = 0
+          and is_rubbish = 0
+    </select>
+
+    <select id="countRecordsBySpaceId" resultType="java.lang.Long">
+        SELECT SUM(JSON_LENGTH(vdm.meta_data -> '$.views[0].rows'))
+        FROM ${tablePrefix}datasheet_meta vdm,
+             ${tablePrefix}datasheet vd
+        WHERE vdm.dst_id = vd.dst_id
+          AND vdm.is_deleted = 0
+          AND vd.is_deleted = 0
+          AND vd.space_id = #{spaceId}
+    </select>
+
+    <select id="countApiUsageBySpaceId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}api_usage vau
+        WHERE vau.space_id = #{spaceId} AND vau.id >= #{minId}
+    </select>
+
+    <select id="selectApiUsageMinIdByCreatedAt" resultType="java.lang.Long">
+        SELECT MIN(id)
+        FROM ${tablePrefix}api_usage
+        WHERE
+        <if test="minId != null">
+            id > #{minId} AND
+        </if>
+        created_at >= #{startTime}
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT MAX(id)
+        FROM ${tablePrefix}api_usage
+    </select>
+
+    <select id="selectFileSizeBySpaceId" resultType="java.lang.Integer">
+        SELECT file_size
+        FROM ${tablePrefix}space_asset
+        WHERE space_id = #{spaceId}
+        AND cite > 0
+        AND is_deleted = 0
+        GROUP BY asset_id
+    </select>
+
+    <select id="countFieldControlBySpaceId" resultType="com.apitable.space.dto.ControlStaticsDTO">
+        SELECT
+        SUM(IF(control_type = 0, 1, 0)) AS nodeRoleCount,
+        SUM(IF(control_type = 1, 1, 0)) AS fieldRoleCount
+        FROM ${tablePrefix}control
+        WHERE space_id = #{spaceId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeStaticsBySpaceId"
+            resultType="com.apitable.space.dto.NodeStaticsDTO">
+        SELECT
+            SUM(IF(`type` = 2, 1, 0)) AS fileCount,
+            SUM(IF(`type` = 3, 1, 0)) AS formCount
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId} AND is_rubbish = 0 AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeTypeStaticsBySpaceId"
+            resultType="com.apitable.space.dto.NodeTypeStaticsDTO">
+        SELECT
+            type, COUNT(*) AS total
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId} AND is_rubbish = 0 AND is_deleted = 0
+        GROUP BY type
+    </select>
+
+    <select id="selectDstViewStaticsBySpaceId" resultType="java.lang.String">
+        SELECT JSON_EXTRACT(vdm.meta_data, '$.views[*].type') AS types
+        FROM ${tablePrefix}datasheet_meta vdm, ${tablePrefix}datasheet vd
+        WHERE vdm.dst_id = vd.dst_id AND vd.space_id = #{spaceId} AND vdm.is_deleted = 0 AND vd.is_deleted = 0;
+    </select>
+
+    <select id="selectMaxIdByTime" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}api_usage
+        WHERE DATE_FORMAT(created_at, '%Y-%m-%d') = #{time}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="countByIdGreaterThanAndSpaceId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}api_usage
+        WHERE id > #{id}
+          AND space_id = #{spaceId}
+    </select>
+
+    <select id="selectTotalSumBySpaceIdAndTimeBetween" resultType="java.lang.Long">
+        SELECT SUM(total_count)
+        FROM ${tablePrefix}api_statistics_daily
+        WHERE space_id = #{spaceId}
+          AND statistics_time BETWEEN #{startTime} AND #{endTime}
+    </select>
+</mapper>

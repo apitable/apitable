@@ -1,0 +1,173 @@
+/* PrismJS 1.21.0
+https://prismjs.com/download.html#themes=prism-okaidia&languages=clike+javascript+bash&plugins=treeview */
+/**
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
+ */
+
+.highlight() {
+  :global {
+    code[class*="language-"],
+    pre[class*="language-"] {
+      color: #ccc;
+      background: none;
+      font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+      font-size: 1em;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      word-wrap: normal;
+      line-height: 1.5;
+      text-shadow: none;
+
+      -moz-tab-size: 4;
+      -o-tab-size: 4;
+      tab-size: 4;
+
+      -webkit-hyphens: none;
+      -moz-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none;
+    }
+
+    /* Code blocks */
+    pre[class*="language-"] {
+      padding: 50px 1em 1em;
+      margin: 0.5em 0;
+      overflow: auto;
+    }
+
+    .markdown-it-code-button-wrap {
+      position: absolute;
+      top: 7.5px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Code block copy button */
+    button[class*="markdown-it-code-button-"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 8px;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      color: #616161;
+      font-size: 12px;
+      line-height: 20px;
+      letter-spacing: 0px;
+      user-select: none;
+      border-radius: 4px;
+      background-color: transparent;
+      svg {
+        margin-right: 4px;
+        path {
+          fill: var(--thirdLevelText);
+        }
+      }
+    }
+
+    button[class*="markdown-it-code-button-"]:hover {
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 4px;
+    }
+
+    button[class*="markdown-it-code-button-"]:active {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+    }
+
+    :not(pre) > code[class*="language-"],
+    pre[class*="language-"] {
+      background: var(--dc02);
+      border-radius: 4px;
+    }
+
+    /* Inline code */
+    :not(pre) > code[class*="language-"] {
+      padding: 0.1em;
+      border-radius: 0.3em;
+      white-space: normal;
+    }
+
+    .token.comment,
+    .token.block-comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: #999;
+    }
+
+    .token.punctuation {
+      color: #ccc;
+    }
+
+    .token.tag,
+    .token.attr-name,
+    .token.namespace,
+    .token.deleted {
+      color: #e2777a;
+    }
+
+    .token.function-name {
+      color: #6196cc;
+    }
+
+    .token.boolean,
+    .token.number,
+    .token.function {
+      color: #f08d49;
+    }
+
+    .token.property,
+    .token.class-name,
+    .token.constant,
+    .token.symbol {
+      color: #f8c555;
+    }
+
+    .token.selector,
+    .token.important,
+    .token.atrule,
+    .token.keyword,
+    .token.builtin {
+      color: #cc99cd;
+    }
+
+    .token.string,
+    .token.char,
+    .token.attr-value,
+    .token.regex,
+    .token.variable {
+      color: #7ec699;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url {
+      color: #67cdcc;
+      background: none;
+    }
+
+    .token.important,
+    .token.bold {
+      font-weight: bold;
+    }
+    .token.italic {
+      font-style: italic;
+    }
+
+    .token.entity {
+      cursor: help;
+    }
+
+    .token.inserted {
+      color: green;
+    }
+  }
+}

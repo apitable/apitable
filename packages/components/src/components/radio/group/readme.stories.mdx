@@ -1,0 +1,168 @@
+import { RadioGroup } from './group';
+import { Radio } from '../radio';
+import { Canvas } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../../stories/theme-toggle';
+
+<Meta title="en/components/RadioGroup" />
+
+# RadioGroup
+
+Use radio buttons to select an option from a group. When the user wants to see all options, the radio button group is recommended. If there are many options available, you should use a drop-down menu that takes up less space.
+
+By default, radio buttons should select commonly used options.
+
+## Usage
+
+```jsx
+import { RadioGroup } from '@apitable/components';
+```
+
+## Examples
+
+### Default
+
+The default vertical arrangement, by clicking on the radio, text, or the blank space after the text to select the option. `name` is used to mark uniqueness and implement radio switching.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="column">
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Horizontal
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="inline" row>
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 22</Radio>
+    <Radio value="3">option 333</Radio>
+    <Radio value="4">option 4444</Radio>
+    <Radio value="5">option 55555</Radio>
+    <Radio value="6">option 666666</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Horizontally occupy the entire row
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="inline-block" row block>
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Provide default selection
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="set-default" value="2">
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Disable some options
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="with-disable">
+    <Radio value="1">option 1</Radio>
+    <Radio value="2" disabled>option 2</Radio>
+    <Radio value="3">option 3</Radio>
+      <Radio value="4" disabled>option 4</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Disable all
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="disable-all" disabled value="2">
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Button style options
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="btn-group" isBtn>
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+  <RadioGroup name="btn-group-with-default" isBtn value="2">
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+  <RadioGroup name="btn-group-with-default" isBtn>
+    <Radio value="1">option 1</Radio>
+    <Radio value="2" disabled>option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Button style options take up the entire row
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup name="btn-group-with-default" isBtn value="2" block>
+    <Radio value="1">option 1</Radio>
+    <Radio value="2">option 2</Radio>
+    <Radio value="3">option 3</Radio>
+  </RadioGroup>
+</ThemeToggle>
+</Canvas>
+
+### Options
+
+Supports not using the `Radio` component directly, but specifying multiple options via the `options` array.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <RadioGroup
+    name="with-option"
+    value="2"
+    options={[
+      { label: 'option 1', value: '1' },
+      { label: 'option 2', value: '2'},
+      { label: 'option 2', value: '3', disabled: true }
+    ]}
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name     | Type                                           | Description                            | Default |
+|----------|------------------------------------------------|----------------------------------------|--------:|
+| isBtn    | boolean                                        | whether to use the Button style option |   false |
+| children | ReactNode                                      | child element                          |       - |
+| disabled | boolean                                        | disable action                         |       - |
+| name     | string                                         | radio name                             |       - |
+| value    | any                                            | selected value                         |       - |
+| onChange | (e: ChangeEvent<Element\>, value: any) => void | listen to the Change event             |       _ |
+| block    | boolean                                        | whether to occupy the entire line      |       _ |
+| row      | boolean                                        | whether to arrange by row              |       - |
+| options  | IRadioGroupOption[]                            | array of options                       |       - |
+
+
+
+

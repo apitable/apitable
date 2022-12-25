@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.template.mapper.TemplateMapper">
+    <resultMap id="TemplateDtoMap" type="com.apitable.template.dto.TemplateDto">
+        <result column="template_id" property="templateId"/>
+        <result column="node_id" property="nodeId"/>
+        <result column="name" property="name"/>
+        <result column="type_id" property="typeId"/>
+        <result column="uuid" property="uuid"/>
+        <result column="cover" property="cover"/>
+        <result column="type" property="type"/>
+        <result column="node_name" property="nodeName"/>
+        <result column="icon" property="icon"/>
+        <result column="avatar" property="avatar"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="space_name" property="spaceName"/>
+        <result column="isNickNameModified" property="isNickNameModified"/>
+    </resultMap>
+
+    <select id="countByTypeId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}template
+        WHERE type_id = #{typeId} AND is_deleted = 0
+    </select>
+
+    <select id="selectIdByTypeIdAndName" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}template
+        WHERE type_id = #{typeId} AND `name` = #{name} AND is_deleted = 0
+        LIMIT 1
+    </select>
+
+    <select id="selectNodeIdByTempId" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}template
+        WHERE template_id = #{templateId} AND is_deleted = 0
+    </select>
+
+    <select id="selectNameByTemplateIdIncludeDelete" resultType="java.lang.String">
+        SELECT name
+        FROM ${tablePrefix}template
+        WHERE template_id = #{templateId}
+    </select>
+
+    <select id="selectUpdatersByTempId" resultType="java.lang.Long">
+        SELECT updated_by
+        FROM ${tablePrefix}template
+        WHERE template_id = #{templateId} AND is_deleted = 0
+    </select>
+
+    <select id="selectTypeIdByTempId" resultType="java.lang.String">
+        SELECT type_id
+        FROM ${tablePrefix}template
+        WHERE template_id = #{templateId} AND is_deleted = 0
+    </select>
+
+    <update id="updateUsedTimesByTempId">
+        UPDATE ${tablePrefix}template
+        SET used_times = used_times + #{offset}, updated_at = updated_at
+        WHERE template_id = #{templateId} AND is_deleted = 0
+    </update>
+
+    <update id="updateIsDeletedByTempId">
+        UPDATE ${tablePrefix}template
+        SET is_deleted = 1
+        WHERE template_id = #{templateId} AND is_deleted = 0
+    </update>
+
+    <select id="selectDtoByTypeId" resultMap="TemplateDtoMap">
+        SELECT vt.template_id, vt.node_id, vt.name,
+        vn.cover, vn.type, vu.avatar, vu.nick_name, vu.uuid,
+        IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified
+        FROM ${tablePrefix}template vt
+        JOIN ${tablePrefix}node vn ON vt.node_id = vn.node_id AND vn.is_template = 1 AND vn.is_deleted = 0
+        LEFT JOIN ${tablePrefix}user vu ON vt.updated_by = vu.id AND vu.is_deleted = 0
+        WHERE vt.type_id = #{typeId} AND vt.is_deleted = 0
+        <if test="list != null and list.size() != 0">
+            AND vt.template_id IN
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectDtoByTempId" resultMap="TemplateDtoMap">
+        SELECT vt.template_id, vt.node_id, vt.name, vt.type_id,
+        vn.type, vn.node_name, vn.icon, vu.avatar, vu.nick_name, vu.uuid, vs.name space_name
+        FROM ${tablePrefix}template vt
+        JOIN ${tablePrefix}node vn ON vt.node_id = vn.node_id AND vn.is_template = 1 AND vn.is_deleted = 0
+        LEFT JOIN ${tablePrefix}user vu ON vt.updated_by = vu.id AND vu.is_deleted = 0
+        LEFT JOIN ${tablePrefix}space vs ON vt.type_id = vs.space_id AND vs.is_deleted = 0
+        WHERE vt.template_id = #{templateId} AND vt.is_deleted = 0
+    </select>
+
+    <select id="selectInfoByTempId" resultType="com.apitable.template.dto.TemplateInfo">
+        SELECT node_id, type_id, `name`, template_id
+        FROM ${tablePrefix}template
+        WHERE template_id = #{templateId} AND is_deleted = 0
+    </select>
+
+    <select id="selectInfoById" resultType="com.apitable.template.dto.TemplateInfo">
+        SELECT template_id, node_id
+        FROM ${tablePrefix}template
+        WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <select id="selectInfoByTypeId" resultType="com.apitable.template.dto.TemplateInfo">
+        SELECT id, template_id, node_id, `name`
+        FROM ${tablePrefix}template
+        WHERE type_id = #{typeId} AND is_deleted = 0
+    </select>
+
+    <select id="selectNodeIdByTempIdAndType" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}template
+        WHERE template_id = #{tempId} AND type = #{type} AND is_deleted = 0
+    </select>
+
+    <select id="selectByTemplateIds" resultType="com.apitable.template.model.OnlineTemplateDto">
+        SELECT vt.template_id, vt.name AS template_name, vtp.property_name, vtp.property_code, vtp.property_type
+        FROM ${tablePrefix}template vt
+        LEFT JOIN ${tablePrefix}template_property_rel vtpr ON vt.template_id = vtpr.template_id
+        LEFT JOIN ${tablePrefix}template_property vtp ON vtpr.property_code = vtp.property_code
+        WHERE vt.template_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND vt.is_deleted = 0
+        AND vtp.is_deleted = 0
+    </select>
+</mapper>

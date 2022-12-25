@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.5-20200917-001" author="Shawn" labels="player">
+        <comment>Delete player_answer Table</comment>
+        <dropTable tableName="${table.prefix}player_answer"/>
+    </changeSet>
+    <changeSet id="V0.5-20200917-003" author="Shawn" labels="datasheet">
+        <comment>Datasheet Table add index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}datasheet` ADD INDEX `IX_Space_Id`(`space_id`) USING BTREE;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20200917-004" author="Shawn" labels="node">
+        <comment>Delete node_favorite Table index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_favorite` DROP INDEX `fk_member_id`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.5-20200917-005" author="Shawn" labels="node">
+        <comment>Add node_favorite index</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}node_favorite` ADD UNIQUE INDEX `uk_member_node_id`(`member_id`, `node_id`) USING BTREE;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

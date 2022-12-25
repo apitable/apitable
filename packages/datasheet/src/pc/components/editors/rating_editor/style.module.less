@@ -1,0 +1,60 @@
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
+
+.ratingEditor {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 1px;
+  max-height: 200px;
+  background: transparent;
+  align-items: flex-start;
+  padding-left: 9px;
+  padding-top: 7px;
+  overflow: hidden;
+  line-height: initial;
+  display: flex;
+  
+  :global(.ant-rate) {
+    display: inline-flex;
+  }
+  :global(.ant-rate-star-zero) {
+    opacity: 0.3;
+  }
+  :global(.ant-rate-star):not(:last-child){
+    margin-right: 3px;
+  }
+  :global(.ant-rate-star){
+    transition: none;
+  }
+}
+
+.editorContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filtering {
+  padding-right: 8px;
+}
+
+.rateItemWrapper {
+  width: 100%;
+  height: 48px;
+  border-bottom: 1px solid var(--lowestBg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 15px;
+}
+
+@media screen and(max-width: @w-md) {
+  .ratingEditor {
+    padding-top: 0;
+    border-radius: 4px;
+  }
+}

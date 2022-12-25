@@ -1,0 +1,18 @@
+.ant-radio-group {
+  width: 100%;
+}
+
+.ant-radio {
+  color: var(--firstLevelText);
+}
+
+.ant-radio-disabled .ant-radio-inner {
+  border-color: var(--lineColor) !important;
+  background-color: var(--lowestBg);
+  &::after {
+    background-color: var(--lineColor);
+  }
+}
+.ant-radio-input:focus + .ant-radio-inner {
+  box-shadow: none;
+}

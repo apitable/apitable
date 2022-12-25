@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.2-20200312-001" author="ShawnDeng" labels="base">
+        <comment>Create Table: Attachments Assets</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}asset` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary key',
+            `checksum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Hash and MD5 summary of the whole file',
+            `head_sum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Base64 of the first 32 bytes of the resource file',
+            `file_size` int(11) NOT NULL COMMENT 'File size (unit: byte)',
+            `file_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Cloud file storage path',
+            `extension_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'File extension',
+            `is_template` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Is it a template attachment(0:No,1:Yes)',
+            `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Delete tag(0:No,1:Yes)',
+            `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT 'Create time',
+            PRIMARY KEY (`id`) USING BTREE,
+            INDEX `idx_digest`(`checksum`) USING BTREE
+            ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = 'Basic - Resource File Table' ROW_FORMAT = Dynamic;
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}asset"/>
+        </rollback>
+    </changeSet>
+    <changeSet id="V0.2-20200312-002" author="ShawnDeng" labels="base">
+        <comment>Create address book file upload resolution record table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}audit_upload_parse_record` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary key',
+            `space_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Space ID',
+            `file_save_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'File save relative path',
+            `row_size` tinyint(3) DEFAULT NULL COMMENT 'Number of file lines',
+            `success_count` int(11) DEFAULT NULL COMMENT 'Number of lines successfully parsed',
+            `error_count` int(11) DEFAULT NULL COMMENT 'Number of lines failed to parse',
+            `error_msg` json DEFAULT NULL COMMENT 'Resolution failure details',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Audit module - address book file upload analysis record';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}audit_upload_parse_record"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

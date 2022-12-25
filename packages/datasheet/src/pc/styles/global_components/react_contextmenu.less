@@ -1,0 +1,45 @@
+@import "~pc/styles/lib_var.less";
+
+.react-contextmenu {
+  opacity: 0;
+  width: 240px;
+  background: var(--defaultBg);
+  padding: 4px 0;
+  z-index: var(--contextmenu);
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1), 0 -1px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  transform: translate(8px, 8px);
+
+  .react-contextmenu-item {
+    padding: 0;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--rowSelectedBg);
+    }
+  }
+
+  .react-contextmenu-item--divider {
+    height: 9px;
+    background: var(--lineColor);
+    padding: 4px 16px;
+    background-clip: content-box;
+    pointer-events: none;
+  }
+
+  .react-contextmenu--visible {
+    opacity: 1;
+  }
+
+  .react-contextmenu-submenu {
+    & > .react-contextmenu-item {
+      padding: 0;
+    }
+
+    & .react-contextmenu {
+      transform: translate(0, 0);
+    }
+  }
+}

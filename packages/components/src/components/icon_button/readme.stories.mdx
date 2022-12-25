@@ -1,0 +1,104 @@
+import { ArrowRightOutlined } from '@apitable/icons';
+import { IconButton } from './index';
+import { Canvas, Meta } from '@storybook/addon-docs';
+import { ThemeToggle } from '../../stories/theme-toggle';
+
+<Meta title="en/components/IconButton" />
+
+# IconButton
+
+## Usage
+
+```jsx
+import { IconButton } from '@apitable/components';
+```
+
+## Size
+
+<Canvas>
+<ThemeToggle lang="en">
+  <IconButton icon={ArrowRightOutlined} />
+  <IconButton icon={ArrowRightOutlined} size="large" />
+</ThemeToggle>
+</Canvas>
+
+## Shape
+
+Square icon button
+
+<Canvas>
+<ThemeToggle lang="en">
+  <IconButton
+    icon={ArrowRightOutlined}
+    shape="square"
+    variant="background"
+  />
+</ThemeToggle>
+</Canvas>
+
+## Type
+
++ `default` default without background color.
++ `background` default with background color.
++ `blur` Default transparent + blur background color. often used on dark backgrounds.
+
+<Canvas>
+<ThemeToggle lang="en">
+  <IconButton icon={ArrowRightOutlined} />
+  <IconButton
+    icon={ArrowRightOutlined}
+    variant="background"
+  />
+  <IconButton
+    icon={ArrowRightOutlined}
+    variant="blur"
+  />
+</ThemeToggle>
+</Canvas>
+
+## Active status
+
+<Canvas>
+<ThemeToggle lang="en">
+  <IconButton
+    icon={ArrowRightOutlined}
+    active
+  />
+</ThemeToggle>
+</Canvas>
+
+## Disabled
+
+Note: The `component="button"` attribute needs to be set to support the disable operation
+
+<Canvas>
+<ThemeToggle lang="en">
+  <IconButton
+    icon={ArrowRightOutlined}
+    component="button"
+    disabled
+  />
+  <IconButton
+    icon={ArrowRightOutlined}
+    component="button"
+    variant='background'
+    disabled
+  />
+</ThemeToggle>
+</Canvas>
+
+## API
+
+| Name           | Type                        | Description                                            | Default |
+|----------------|-----------------------------|--------------------------------------------------------|---------|
+| style          | CSSProperties               | inline style                                           | -       |
+| shape          | square                      | shape                                                  | -       |
+| component      | ElementType                 | Renders the component using the specified HTML element | div     |
+| className      | string                      | class name                                             | -       |
+| variant        | default / background / blur | variant                                                | default |
+| icon(Required) | ReactNode                   | icon component                                         | -       |
+| size           | small / large               | size                                                   | small   |
+| onClick        | ((e: any) => void)          | click action                                           | -       |
+| disabled       | boolean                     | disabled status                                        | false   |
+| active         | boolean                     | active status                                          | false   |
+

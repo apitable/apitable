@@ -1,0 +1,69 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.4-20200520-001" author="Shawn" labels="open">
+        <comment>Create Developer Configuration Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_001.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-002" author="Shawn" labels="base">
+        <comment>Modify Table Comments</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_002.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-003" author="Benson" labels="content">
+        <comment>Create Content Report Record Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_003.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-005" author="Chambers" labels="node">
+        <comment>New cover page and template identification field of node table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_005.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-006" author="Zoe" labels="notification">
+        <comment>Create Message Notification Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_006.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-007" author="Kelly" labels="template">
+        <comment>Create Template Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_007.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-008" author="Kelly" labels="developer">
+        <comment>Create Open Platform SKU Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_008.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-009" author="Kelly" labels="developer">
+        <comment>Create Open Production Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_009.sql"/>
+    </changeSet>
+
+    <changeSet id="V0.4-20200520-010" author="Kelly" labels="developer">
+        <comment>Create Open Platform Cloud Program Table</comment>
+        <sqlFile path="db/changelog/0.4/20200520_changeset_010.sql"/>
+    </changeSet>
+</databaseChangeLog>

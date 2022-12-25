@@ -1,0 +1,33 @@
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.numberEditor {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1px;
+
+  .numberInput {
+    text-align: right;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    display: block;
+    line-height: 21px;
+    box-sizing: border-box;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: @w-md) {
+  .numberEditor {
+    .numberInput {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+}

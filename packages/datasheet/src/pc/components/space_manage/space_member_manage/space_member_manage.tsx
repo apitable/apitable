@@ -1,0 +1,64 @@
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import { FC, useState } from 'react';
+import {
+  // IReduxState,
+  IMemberInfoInSpace,
+  Player, Events,
+} from '@apitable/core';
+// import { useSelector, shallowEqual } from 'react-redux';
+import { TeamTree } from './team_tree';
+import SplitPane from 'react-split-pane';
+// import { EditMemberModal, ChangeMemberTeam, AddMember } from './modal';
+import styles from './style.module.less';
+import { Loading } from './loading';
+import { useMount } from 'ahooks';
+import { TeamInfo } from './team_info';
+
+export const SpaceMemberManage: FC = () => {
+  const [rightLoading, setRightLoading] = useState(false);
+  const [searchMemberRes, setSearchMemberRes] = useState<IMemberInfoInSpace[]>([]);
+  useMount(() => {
+    Player.doTrigger(Events.space_setting_member_manage_shown);
+  });
+
+  return (
+    <div className={styles.memberManageWrapper}>
+      {
+        (
+          <SplitPane
+            minSize={199}
+            maxSize={800}
+            defaultSize={199}
+            className={styles.spaceMemberSplit}
+          >
+            <TeamTree
+              setSearchMemberRes={data => setSearchMemberRes(data)}
+              setRightLoading={setRightLoading}
+            />
+            {
+              rightLoading ? <div className={styles.loading}><Loading /></div> :
+                <TeamInfo searchMemberRes={searchMemberRes} setSearchMemberRes={setSearchMemberRes} />
+            }
+          </SplitPane>
+        ) 
+      }
+    </div>
+  );
+};

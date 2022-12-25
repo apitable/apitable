@@ -1,0 +1,26 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.expandNumber {
+  position: relative;
+  flex: 1;
+}
+
+.cellNumber {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--lowestBg);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: text;
+}
+
+@media screen and (max-width: @w-md) {
+  .cellNumber {
+    font-size: 14px;
+    top: 1px;
+  }
+}

@@ -1,0 +1,168 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.2-20200312-026" author="ShawnDeng" labels="unit">
+        <comment>Create Organization Structure Organization Unit Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `unit_type` tinyint(2) unsigned NOT NULL COMMENT 'Type (1: Department, 2: Label, 3: Member)',
+            `unit_ref_id` bigint(20) NOT NULL COMMENT 'Organization Unit Association ID',
+            `is_deleted` tinyint(1) unsigned DEFAULT '0' COMMENT 'Delete Tag (0: No, 1: Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_unit_ref_id` (`unit_ref_id`) USING BTREE COMMENT 'Unique ID of organization unit association'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organization Structure - Organization Unit Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-027" author="ShawnDeng" labels="unit">
+        <comment>Create Organization Structure Member Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_member` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `user_id` bigint(20) DEFAULT NULL COMMENT 'User ID(link#xxxx_user#id)',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `member_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Member Name',
+            `job_number` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Job Number',
+            `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Position',
+            `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Phone Number',
+            `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Email',
+            `ding_user_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'DingTalk User ID',
+            `status` tinyint(2) unsigned DEFAULT '0' COMMENT 'User space status(0: inactive, 1: active, 2: pre deleted, 3: not active)',
+            `is_point` tinyint(1) unsigned DEFAULT '0' COMMENT 'Whether there are small red dots (0: No, 1: Yes)',
+            `is_active` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Activate or not (0: No, 1: Yes)',
+            `is_admin` tinyint(1) unsigned DEFAULT '0' COMMENT 'Administrator or not (0: No, 1: Yes)',
+            `is_deleted` tinyint(1) unsigned DEFAULT '0' COMMENT 'Delete Tag (0: No, 1: Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organizational Structure - Member Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit_member"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-028" author="ShawnDeng" labels="unit">
+        <comment>Create Organization Structure Tag Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_tag` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `group_id` bigint(20) DEFAULT NULL COMMENT 'Tag Group ID(link#xxxx_org_tag_group#id)',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `tag_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Tag Name',
+            `sequence` int(11) unsigned DEFAULT '1' COMMENT 'Sort in space (default starts from 1)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organization Structure - Tag Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit_tag"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-029" author="ShawnDeng" labels="unit">
+        <comment>Create Organization Structure Tag Group Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_tag_group` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `group_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Tag Group Name',
+            `sequence` int(11) unsigned DEFAULT '1' COMMENT 'Sort in space (default starts from 1)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organization Structure - Tag Group Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit_tag_group"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-030" author="ShawnDeng" labels="unit">
+        <comment>Create Organization Structure Tag Member Association Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_tag_member_rel` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `tag_id` bigint(20) NOT NULL COMMENT 'Tag ID(link#xxxx_org_tag#id)',
+            `member_id` bigint(20) NOT NULL COMMENT 'Member ID(link#xxxx_org_member#id)',
+            `creator` bigint(20) DEFAULT NULL COMMENT 'Creator(link#xxxx_user#id)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `tag_id` (`tag_id`) USING BTREE,
+            KEY `member_id` (`member_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organization Structure - Tag Member Association Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit_tag_member_rel"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-031" author="ShawnDeng" labels="unit">
+        <comment>Create Organizational Structure Department Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_team` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+            `parent_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Parent ID, 0 if it is root department',
+            `team_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Department Name',
+            `team_level` int(5) unsigned DEFAULT '1' COMMENT 'Level, starting from 1 by default',
+            `sequence` int(11) unsigned DEFAULT '1' COMMENT 'Sort (sibling starts from 1 by default)',
+            `is_deleted` tinyint(1) unsigned DEFAULT '0' COMMENT 'Delete Tag (0: No, 1: Yes)',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+            PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organizational Structure - Department Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit_team"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="V0.2-20200312-032" author="ShawnDeng" labels="unit">
+        <comment>Create Organization Structure Department Member Association Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_team_member_rel` (
+            `id` bigint(20) NOT NULL COMMENT 'Primary Key',
+            `team_id` bigint(20) NOT NULL COMMENT 'Department ID',
+            `member_id` bigint(20) NOT NULL COMMENT 'Member ID',
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Create Time',
+            PRIMARY KEY (`id`) USING BTREE,
+            KEY `team_id_key` (`team_id`) USING BTREE,
+            KEY `member_id_key` (`member_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Organization Structure - Department Member Association Table';
+        </sql>
+        <rollback>
+            <dropTable tableName="${table.prefix}unit_team_member_rel"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

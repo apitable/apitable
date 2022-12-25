@@ -1,0 +1,71 @@
+import { Dropdown } from './index';
+import { ContextMenu } from '../context_menu';
+import { ViewKanbanFilled } from '@apitable/icons';
+import { Canvas, ArgsTable, Story, Meta } from '@storybook/addon-docs';
+
+<Meta title="基础组件/Dropdown 下拉菜单/文档" />
+
+# Dropdown 下拉菜单
+
+当页面上的操作命令过多时，用此组件可以收纳操作元素。点击或移入触点，会出现一个下拉菜单。可在列表中进行选择，并执行相应的命令。
+
+- 用于收罗一组命令操作。
+
+- `Select` 用于选择，而 `Dropdown` 是命令集合。
+
+## 使用方式
+
+```jsx
+import { Dropdown } from '@apitable/components';
+```
+
+## 默认展示
+
+默认点击展开操作集合，同层级下放在数组中，会使用中划线进行分组隔离。
+
+<Canvas>
+ <Story id="基础组件-dropdown-下拉菜单--default" />
+</Canvas>
+
+## 隐藏箭头
+
+<Canvas>
+ <Story id="基础组件-dropdown-下拉菜单--hide-arrow" />
+</Canvas>
+
+## 支持右键
+
+<Canvas>
+ <Story id="基础组件-dropdown-下拉菜单--right-click" />
+</Canvas>
+
+## 支持多层菜单
+
+可以通过 `children` 属性支持多层菜单
+
+<Canvas>
+ <Story id="基础组件-dropdown-下拉菜单--secondary-menu" />
+</Canvas>
+
+## 禁用部分操作
+
+<Canvas>
+ <Story id="基础组件-dropdown-下拉菜单--disabled-menu" />
+</Canvas>
+
+## 选择选项数据
+
+<Canvas>
+ <Story id="基础组件-dropdown-下拉菜单--select-menu-value" />
+</Canvas>
+
+## API
+
+### Dropdown Props
+
+<ArgsTable of={Dropdown} />
+
+### IDropdownData
+
+<ArgsTable of={ContextMenu} />
+

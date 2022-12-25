@@ -1,0 +1,166 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.mirrorContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabBarWrapper {
+  height: 50px;
+  background-color: var(--defaultBg);
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  border-bottom: 1px solid var(--lowestBg);
+  .noSelect();
+}
+
+.tab {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--defaultBg);
+
+  .right {
+    display: flex;
+    align-items: center;
+    padding-right: 24px;
+  }
+}
+
+.nav {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  :global {
+    .react-contextmenu {
+      z-index: var(--contextmenu);
+    }
+
+    .tab-context-menu {
+      background: var(--defaultBg);
+      box-shadow: 0px 1px 14px 0px var(--shadowColor);
+      border-radius: 4px;
+      border: 2px solid var(--lineColor);
+
+      .react-contextmenu-item {
+        width: 220px;
+        height: 35px;
+        line-height: 35px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .react-contextmenu-item:hover {
+        background: var(--rowSelectedBg);
+      }
+    }
+
+    .ant-modal-confirm-content {
+      margin: 20px 0 0 0 !important;
+    }
+  }
+}
+
+.status {
+  max-width: 320px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 32px;
+  height: 100%;
+  padding-top: 10px;
+  margin-left: 32px;
+}
+
+.skeletonWrapper {
+  margin: 0 20px 20px;
+  padding-top: 20px;
+
+  :global {
+    .ant-skeleton-element {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+}
+
+.breadcrumbsBar {
+  padding-left: 32px;
+  position: relative;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .sourceInfo {
+      display: flex;
+      flex-shrink: 0;
+      font-size: 13px;
+      margin-left: 16px;
+      color: var(--fc1);
+
+      .datasheetInfo {
+        max-width: 120px;
+      }
+
+      .datasheetInfo {
+        margin-right: 4px;
+      }
+
+      .viewInfo {
+        display: flex;
+        align-items: center;
+        margin-left: 4px;
+        cursor: pointer;
+        position: relative;
+        padding-left: 12px;
+
+        &:before {
+          content: " ";
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: var(--fourthLevelText);
+          position: absolute;
+          left: 0;
+        }
+
+        &:hover {
+          color: var(--primaryColor);
+
+          svg {
+            fill: var(--primaryColor);
+          }
+        }
+
+        .viewName {
+          max-width: 120px;
+          margin-left: 4px;
+          .ellipsis();
+        }
+
+        .viewIcon {
+          display: flex;
+          align-items: center;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}

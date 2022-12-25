@@ -1,0 +1,26 @@
+@import "~pc/styles/lib_var.less";
+
+.memberTag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  font-size: 8px;
+  height: 20px;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+.primaryTag {
+// FIXME:THEME
+  border: 1px solid rgba(var(--primaryColor-rgb), 70%);
+  color: var(--primaryColor);
+}
+.subTag {
+  color: var(--rc02);
+// FIXME:THEME
+  border: 1px solid rgba(var(--rc02-rgb), 70%);
+}
+.inactiveTag {
+  border: 1px solid var(--errorColor);
+  color: var(--errorColor);
+}

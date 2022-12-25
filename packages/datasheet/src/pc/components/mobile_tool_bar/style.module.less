@@ -1,0 +1,248 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.mobileToolBar {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  background-color: var(--defaultBg);
+  border-bottom: 1px solid var(--lineColor);
+
+  .side {
+    background-color: var(--primaryColor);
+    width: 32px;
+    height: 32px;
+    border-radius: 0 50% 50% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: .px2vw(16px) [ @res];
+    flex-shrink: 0;
+  }
+}
+
+.toolRight {
+  height: 30px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  align-content: flex-end;
+  margin-right: 8px;
+
+  .trigger {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    min-width: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: 4px;
+
+    &:first-child {
+      margin-right: 4px;
+    }
+  }
+
+  .find {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+.content {
+  padding: 4px 16px;
+}
+
+.moreToolItem {
+  display: flex;
+  width: 104px;
+  height: 44px;
+  align-items: center;
+
+  .moreToolBtn {
+    font-size: 16px;
+  }
+
+  :global(.ant-btn) {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border: none;
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+
+  .toolName {
+    color: var(--static-white);
+  }
+}
+
+.viewList {
+  display: flex;
+  align-items: center;
+  overflow: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  transform: all 0.3s;
+  height: 40px;
+
+  .viewItem {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    flex-shrink: 0;
+    color: var(--secondLevelText);
+    border-radius: 4px;
+
+    &.active {
+      color: var(--static-white);
+      position: relative;
+      background-color: var(--primaryColor);
+    }
+
+    .viewItemName {
+      margin-left: 4px;
+      max-width: 120px;
+      .ellipsis();
+    }
+  }
+}
+
+.viewToolsWrapper {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  background-color: var(--defaultBg);
+  border-top: 1px solid var(--lineColor);
+}
+
+@supports (bottom: constant(safe-area-inset-bottom)) or
+  (bottom: env(safe-area-inset-bottom)) {
+  .viewToolsWrapper {
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.menuOpenContainer {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuIconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-left: 16px;
+  margin-right: 8px;
+  background-color: var(--rowSelectedBg);
+}
+
+.wrapper {
+  position: absolute;
+  left: 32px;
+  top: 6px;
+  z-index: 1;
+  width: calc(100% - 32px);
+  background-color: var(--defaultBg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  animation: expand ease 0.3s;
+  transform-origin: right center;
+  @keyframes expand {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  border-radius: 16px !important;
+  background-color: var(--fc6);
+  padding: 0 8px;
+  flex: 1;
+
+  input {
+    border-radius: 16px !important;
+  }
+}
+
+.iconGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+
+  & > svg {
+    margin-left: 24px;
+    cursor: pointer;
+  }
+
+  &::before {
+    content: " ";
+    border-left: 1px solid var(--shadowColor);
+  }
+}
+
+.slash {
+  height: 16px;
+  width: 1px;
+  margin: 0 8px;
+  opacity: 0.1;
+  background-color: black;
+}
+
+.searchCountText {
+  display: inline-block;
+  width: max-content;
+  user-select: none;
+}
+
+.clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > svg {
+    fill: var(--fc4);
+  }
+}
+
+.cancel {
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widgetTool {
+  margin-left: 4px;
+}

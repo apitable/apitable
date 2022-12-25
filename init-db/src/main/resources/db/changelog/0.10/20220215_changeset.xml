@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="V0.10-20220215-007" author="zoe" labels="control">
+        <comment>Workbench - Control Table - add is_deleted</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}control`
+                ADD COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Delete Tag(0: No, 1: Yes)' AFTER `control_type`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-008" author="zoe" labels="control">
+        <comment>Workbench - Control Role Table - add is_deleted</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}control_role`
+                ADD COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Delete Tag(0: No, 1: Yes)' AFTER `role_code`;
+        </sql>
+    </changeSet>
+    <changeSet id="V0.10-20220215-009" author="zoe" labels="control">
+        <comment>Workbench - Control Setting Table - add is_deleted</comment>
+        <sql>
+            ALTER TABLE `${table.prefix}control_setting`
+                ADD COLUMN `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Delete Tag(0: No, 1: Yes)' AFTER `props`;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

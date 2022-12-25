@@ -1,0 +1,84 @@
+import { Canvas, Story } from '@storybook/addon-docs';
+import { StoryType } from '../../stories/constants';
+import { Box } from './index';
+import { TextButton } from '../index';
+import { Space } from '../space';
+
+<Meta title={`${StoryType.BaseComponent}/Box 盒子/文档`} />
+
+# Box 盒子
+
+Box 盒子组件可以处理 UI 细节样式，比如包装组件。
+
+支持通过属性引入的属性动态生成一个 class。
+
+## 使用方式
+
+```jsx
+import { Box } from '@apitable/components';
+```
+## 示例
+
+### 更改 DOM 元素
+
+Box 组件默认为 `<div>`，可以通过属性更改，比如改为 `<img>`渲染图片：
+<Canvas>
+  <Box as="img" alt="首页火箭.png" src="https://avatars.githubusercontent.com/u/89725681"/>
+</Canvas>
+
+
+### 包装组件
+
+Box 组件可以包装其他组件。
+
+<Canvas>
+<Box as="span" padding="24px" border="1px dashed #ccc">
+  <TextButton>
+    文本按钮
+  </TextButton>
+</Box>
+</Canvas>
+
+### 生成临时通用组件
+
+快速定义 Card 通用组件。
+
+<Canvas>
+<Story id="基础组件-box-盒子--tmp-component" />
+</Canvas>
+
+
+### 搭建简单的页面框架
+
+配合 `Space` 搭建基本的页面框架。
+
+<Canvas>
+<Box
+  display="flex"
+  flexDirection="column"
+>
+  <Box width="100%" minHeight="80px" lineHeight="80px" bg="#F4E9FE" textAlign="center">头部</Box>
+  <Box bg="#E4C5FB" textAlign="center" padding="32px 16px">
+    <Space size={[16, 32]} wrap>
+      {new Array(20).fill(null).map((_, index) => (
+        <Box
+          key={index}
+          width="120px"
+          height="80px"
+          border="1px solid #ccc"
+          textAlign="center"
+          lineHeight="80px"
+          bg="#fff"
+        >
+          Space {index}
+        </Box>
+      ))}
+    </Space>
+  </Box>
+  <Box width="100%"  minHeight="80px" lineHeight="80px" bg="#F4E9FE" textAlign="center">底部</Box>
+</Box>
+</Canvas>
+
+
+
+

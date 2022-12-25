@@ -1,0 +1,104 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.hideAfter() {
+  &::after {
+    display: none !important;
+  }
+}
+
+.itemWrapper {
+  &.scrollAnimation {
+    transition: all 0.6s;
+  }
+}
+
+.trigger {
+  max-width: 125px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border: 1px solid transparent;
+  overflow: hidden;
+  position: relative;
+  transition: all .3s;
+  z-index: 0 !important;
+
+  &.triggerLastChild {
+    .triggerView,
+    .viewMoreBtn {
+      .hideAfter();
+    }
+  }
+
+  input[type="text"] {
+    background: var(--defaultBg) !important;
+  }
+
+  span {
+    max-width: 64px !important;
+    font-size: 14px;
+    box-sizing: border-box;
+    padding-right: 8px;
+  }
+
+  button div {
+    height: 16px;
+    margin-left: 4px;
+    svg {
+      fill: var(--fc1);
+    }
+  }
+}
+
+.extra {
+  z-index: 0 !important;
+}
+
+.scrollBox {
+  flex: 1;
+  overflow: hidden;
+  margin-top: 1px;
+}
+
+.viewArrow {
+  transition: all 0.3s;
+  transform: rotateZ(0deg);
+  border-radius: 2px;
+  &:hover {
+    background: var(--black_200);
+  }
+  &.viewArrowActive {
+    transform: rotateZ(180deg);
+  }
+}
+
+.viewBar {
+  height: 40px;
+  margin-top: 9px;
+}
+
+.viewBarItem {
+  height: 100%;
+}
+
+.viewMoreBtn {
+  height: 100%;
+  background-color: none;
+
+  &:hover {
+    background: var(--lowestBg) !important;
+  }
+  &:active {
+    background: var(--fc11) !important;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    background: var(--lineColor);
+  }
+}

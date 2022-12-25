@@ -1,0 +1,25 @@
+@import '../../styles/var.less';
+
+.taskItem {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  margin-bottom: @spacing-base;
+  line-height: @line-height-base;
+  font-size: @font-size-base;
+  padding-left: 24px;
+  &[data-completed="true"] {
+    text-decoration: line-through;
+    color: var(--black_500);
+  }
+}
+
+.checkboxWrap {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 3px;
+  &[contentEditable="false"] {
+    user-select: none !important;
+  }
+}

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.space.mapper.SpaceInviteLinkMapper">
+
+    <select id="selectLinkVo" resultType="com.apitable.space.vo.SpaceLinkVo">
+        SELECT IF(vut.parent_id = 0, 0, t.team_id) AS team_id,
+        t.invite_token AS token,
+        vut.team_name,
+        vut2.team_name AS parent_team_name
+        FROM ${tablePrefix}space_invite_link t
+        LEFT JOIN ${tablePrefix}unit_team vut ON vut.id = t.team_id AND vut.is_deleted = 0
+        LEFT JOIN ${tablePrefix}unit_team vut2 ON vut2.id = vut.parent_id AND vut2.is_deleted = 0
+        WHERE t.creator = #{memberId} AND t.is_deleted = 0
+        ORDER BY t.created_at DESC
+    </select>
+
+    <select id="selectIdByTeamIdAndMemberId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}space_invite_link
+        WHERE team_id = #{teamId} AND creator = #{memberId}
+    </select>
+
+    <update id="updateInviteTokenById">
+        UPDATE ${tablePrefix}space_invite_link
+        SET invite_token = #{token}, is_deleted = 0
+        WHERE id = #{id}
+    </update>
+
+    <update id="delByTeamIdAndMemberId">
+        UPDATE ${tablePrefix}space_invite_link
+        SET is_deleted = 1
+        WHERE creator IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="teamId != null">
+            AND team_id = #{teamId}
+        </if>
+        AND is_deleted = 0
+    </update>
+
+    <select id="selectDtoByToken" resultType="com.apitable.space.dto.SpaceLinkDTO">
+        SELECT t.id,
+        vs.space_id,
+        vs.name AS space_name,
+        vut.id AS team_id,
+        vut.team_name,
+        vum.user_id,
+        vum.id AS member_id,
+        vum.member_name,
+        vum.is_admin AS isMainAdmin,
+        if(vsmrr.id IS NULL, 0, 1) AS isAdmin
+        FROM ${tablePrefix}space_invite_link t
+        LEFT JOIN ${tablePrefix}space vs ON vs.space_id = t.space_id AND vs.is_deleted = 0 AND vs.pre_deletion_time IS NULL
+        LEFT JOIN ${tablePrefix}unit_team vut ON vut.id = t.team_id AND vut.is_deleted = 0
+        LEFT JOIN ${tablePrefix}unit_member vum ON vum.id = t.creator AND vum.is_deleted = 0
+        LEFT JOIN ${tablePrefix}space_member_role_rel vsmrr ON vsmrr.member_id = t.creator
+        WHERE t.invite_token = #{token} AND t.is_deleted = 0
+    </select>
+
+    <update id="updateInviteNumByInviteToken">
+        UPDATE ${tablePrefix}space_invite_link
+        SET invite_num = invite_num + 1
+        WHERE invite_token = #{token} AND is_deleted = 0
+    </update>
+
+    <select id="selectCreatorBySpaceId" resultType="java.lang.Long">
+        SELECT DISTINCT creator
+        FROM ${tablePrefix}space_invite_link
+        WHERE space_id = #{spaceId} AND is_deleted = 0
+    </select>
+
+    <update id="updateByTeamIdAndCreators">
+        UPDATE ${tablePrefix}space_invite_link
+        SET is_deleted = 1
+        WHERE team_id = #{teamId} and creator IN
+        <foreach item="item" index="index" collection="creators" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateByTeamIdsAndCreator">
+        UPDATE ${tablePrefix}space_invite_link
+        SET is_deleted = 1
+        WHERE creator = #{creator} and team_id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateByCreators">
+        UPDATE ${tablePrefix}space_invite_link
+        SET is_deleted = 1
+        WHERE creator IN
+        <foreach item="item" index="index" collection="creators" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateByTeamId">
+        UPDATE ${tablePrefix}space_invite_link
+        SET is_deleted = 1
+        WHERE team_id = #{teamId}
+    </update>
+
+    <update id="updateBatchByTeamId">
+        UPDATE ${tablePrefix}space_invite_link
+        SET is_deleted = 1
+        WHERE team_id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectIdByTeamId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}space_invite_link
+        WHERE team_id = #{teamId} AND is_deleted = 0
+    </select>
+
+    <select id="selectIdByTeamIds" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}space_invite_link
+        WHERE team_id IN
+        <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+</mapper>

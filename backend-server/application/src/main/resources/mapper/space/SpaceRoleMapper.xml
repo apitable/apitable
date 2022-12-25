@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.space.mapper.SpaceRoleMapper">
+    <select id="selectSpaceRolePage" resultType="com.apitable.space.vo.SpaceRoleVo">
+        SELECT vsmrr.id,
+               vsmrr.member_id,
+               vu.avatar,
+               vu.color as avatarColor,
+               vu.nick_name as nickName,
+               vm.member_name,
+               GROUP_CONCAT(DISTINCT vod.team_name ORDER BY vodmr.created_at DESC SEPARATOR ' | ') as team,
+               vm.mobile,
+               vm.is_active,
+               GROUP_CONCAT(DISTINCT vsrg.group_code)                                              as tempResourceGroupCodes,
+               vsmrr.created_at,
+               IFNULL(vu.is_social_name_modified, 2) > 0  AS isNickNameModified,
+               IFNULL(vm.is_social_name_modified, 2) > 0 AS isMemberNameModified
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+        JOIN ${tablePrefix}unit_member vm on vsmrr.member_id = vm.id and vm.space_id = #{spaceId} and vm.is_deleted = 0
+        LEFT JOIN ${tablePrefix}user vu on vm.user_id = vu.id
+        JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        JOIN ${tablePrefix}space_resource vsr on vsrrr.resource_code = vsr.resource_code
+        JOIN ${tablePrefix}space_resource_group vsrg on vsr.group_code = vsrg.group_code
+        LEFT JOIN ${tablePrefix}unit_team_member_rel vodmr on vodmr.member_id = vsmrr.member_id
+        LEFT JOIN ${tablePrefix}unit_team vod on vod.id = vodmr.team_id and vod.is_deleted = 0 and vod.parent_id != 0
+        GROUP BY vsmrr.member_id
+    </select>
+
+    <delete id="deleteByRoleCode">
+        DELETE
+        FROM ${tablePrefix}space_role
+        WHERE role_code = #{roleCode}
+    </delete>
+
+    <select id="selectResourceCodesById" resultType="java.lang.String">
+        SELECT vsrrr.resource_code
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        WHERE vsmrr.id = #{id}
+    </select>
+
+    <delete id="batchDeleteByRoleCode">
+        DELETE
+        FROM ${tablePrefix}space_role
+        WHERE role_code IN
+        <foreach collection="roleCodes" index="index" item="iteam" open="(" close=")" separator=",">
+            #{iteam}
+        </foreach>
+    </delete>
+
+    <select id="selectResourceCodesBySpaceIdAndMemberId" resultType="java.lang.String">
+        SELECT vsrrr.resource_code
+        FROM ${tablePrefix}space_member_role_rel vsmrr
+                 JOIN ${tablePrefix}space_role_resource_rel vsrrr on vsmrr.role_code = vsrrr.role_code
+        WHERE vsmrr.space_id = #{spaceId}
+          AND vsmrr.member_id = #{memberId}
+    </select>
+</mapper>

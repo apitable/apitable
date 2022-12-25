@@ -1,0 +1,22 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.public-DraftStyleDefault-block {
+  line-height: 24px;
+  font-size: 13px;
+}
+
+.public-DraftEditorPlaceholder-inner {
+  line-height: 24px;
+  color: var(--fourthLevelText);
+  font-size: 13px;
+}
+
+@media screen and (max-width:@w-md) {
+
+  .public-DraftStyleDefault-block,
+  .public-DraftEditorPlaceholder-inner {
+    font-size: 14px;
+  }
+}

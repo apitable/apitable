@@ -1,0 +1,22 @@
+@import "~pc/styles/lib_screen.less";
+
+.invalidMsg {
+  .img {
+    position: relative;
+    height: 240px;
+    width: 320px;
+    margin: 16px auto;
+  }
+
+  @media screen and (max-width: @w-md) {
+    .img {
+      width: 240px;
+      height: 180px;
+    }
+  }
+
+  .text {
+    text-align: center;
+    color: var(--fc1);
+  }
+}

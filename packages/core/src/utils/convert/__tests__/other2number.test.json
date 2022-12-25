@@ -1,0 +1,68 @@
+[
+  {
+    "args": [
+      "12345"
+    ],
+    "expected": 12345
+  },
+  {
+    "args": [
+      "12.5"
+    ],
+    "expected": 12.5
+  },
+  {
+    "args": [
+      "-1"
+    ],
+    "expected": -1
+  },
+  {
+    "args": [
+      "0"
+    ],
+    "expected": 0
+  },
+  {
+    "args": [
+      ""
+    ],
+    "expected": null
+  },
+  {
+    "args": [
+      "Infinity"
+    ],
+    "expected": null
+  },
+  {
+    "args": [
+      "-Infinity"
+    ],
+    "expected": null
+  },
+  {
+    "args": [
+      "text 1"
+    ],
+    "expected": null
+  },
+  {
+    "args": [
+      "a"
+    ],
+    "expected": null
+  },
+  {
+    "args": [
+      "测试20181020302中文啊"
+    ],
+    "expected": null
+  },
+  {
+    "args": [
+      "🐂🍺"
+    ],
+    "expected": null
+  }
+]

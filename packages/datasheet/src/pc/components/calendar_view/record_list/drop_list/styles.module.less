@@ -1,0 +1,29 @@
+@import "~pc/styles/lib_var.less";
+
+.dropList {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  padding: 8px;
+  .dropMask {
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 2px dashed var(--fc9);
+    box-sizing: border-box;
+    border-radius: 0 8px 8px 0;
+    z-index: 13;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .dropMaskText {
+      width: 118px;
+      font-size: 12px;
+      text-align: center;
+      color: var(--fc1)
+    }
+  }
+}

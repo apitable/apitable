@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.workspace.mapper.NodeFavoriteMapper">
+
+    <select id="selectOrderNodeIdByMemberId" resultType="java.lang.String">
+        WITH RECURSIVE pre (node_id) AS (
+        SELECT node_id FROM ${tablePrefix}node_favorite WHERE member_id = #{memberId} AND pre_node_id IS NULL
+        UNION
+        SELECT vnf.node_id FROM pre p
+        JOIN ${tablePrefix}node_favorite vnf ON p.node_id = vnf.pre_node_id AND vnf.member_id = #{memberId}
+        ) SELECT * FROM pre
+    </select>
+
+    <select id="selectNodeIdByMemberId" resultType="java.lang.String">
+        SELECT node_id
+        FROM ${tablePrefix}node_favorite
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="countByMemberIdAndNodeId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}node_favorite
+        WHERE member_id = #{memberId} AND node_id = #{nodeId}
+    </select>
+
+    <select id="selectPreNodeIdByMemberIdAndNodeId" resultType="java.lang.String">
+        SELECT pre_node_id
+        FROM ${tablePrefix}node_favorite
+        WHERE member_id = #{memberId} AND node_id = #{nodeId}
+    </select>
+
+    <update id="updatePreNodeIdByMemberIdAndPreNodeId">
+        UPDATE ${tablePrefix}node_favorite
+        SET pre_node_id = #{newPreNodeId}
+        WHERE member_id = #{memberId}
+        <choose>
+            <when test="originPreNodeId != null">
+                AND pre_node_id = #{originPreNodeId}
+            </when>
+            <otherwise>AND pre_node_id IS NULL</otherwise>
+        </choose>
+    </update>
+
+    <update id="updatePreNodeIdByMemberIdAndNodeId">
+        UPDATE ${tablePrefix}node_favorite
+        SET pre_node_id = #{preNodeId}
+        WHERE member_id = #{memberId} AND node_id = #{nodeId}
+    </update>
+
+    <delete id="deleteByMemberIdAndNodeId">
+        DELETE FROM ${tablePrefix}node_favorite
+        WHERE member_id = #{memberId} AND node_id = #{nodeId}
+    </delete>
+</mapper>

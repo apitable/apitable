@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.apitable.template.mapper.TemplateAlbumMapper">
+    <select id="selectAllAlbumIdsByI18nName" resultType="java.lang.String">
+        SELECT album_id
+        FROM ${tablePrefix}template_album
+        WHERE i18n_name = #{i18nName}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectAlbumVosByAlbumIds"
+            resultType="com.apitable.template.vo.AlbumVo">
+        SELECT album_id, name, cover, description
+        FROM ${tablePrefix}template_album
+                WHERE album_id IN
+        <foreach item="item" index="index" collection="albumIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectAlbumVosByI18nNameAndNameLike"
+            resultType="com.apitable.template.vo.AlbumVo">
+        SELECT album_id, name, cover, description
+        FROM ${tablePrefix}template_album
+        WHERE `name` LIKE concat('%', #{likeName}, '%')
+          AND i18n_name = #{i18nName}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectAlbumContentVoByAlbumId"
+            resultType="com.apitable.template.vo.AlbumContentVo">
+        SELECT album_id,
+               name,
+               cover,
+               description,
+               content,
+               author_name,
+               author_logo,
+               author_desc,
+               created_at
+        FROM ${tablePrefix}template_album
+        WHERE album_id = #{albumId}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectAllTemplateAlbumDto"
+            resultType="com.apitable.template.model.TemplateAlbumDto">
+        SELECT id, album_id, i18n_name, name
+        FROM ${tablePrefix}template_album
+        WHERE is_deleted = 0
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}template_album(id, album_id, i18n_name, name, cover, description,
+                                        content, author_name, author_logo, author_desc,
+                                        created_by, updated_by)
+                VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.albumId}, #{item.i18nName}, #{item.name},
+                #{item.cover}, #{item.description}, #{item.content},
+                #{item.authorName}, #{item.authorLogo}, #{item.authorDesc},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="removeByAlbumIds">
+        UPDATE ${tablePrefix}template_album
+        SET is_deleted = 1,
+            updated_by = #{updatedBy}
+                WHERE album_id IN
+        <foreach item="item" index="index" collection="albumIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

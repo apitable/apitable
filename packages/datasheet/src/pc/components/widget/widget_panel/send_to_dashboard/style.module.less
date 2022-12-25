@@ -1,0 +1,87 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.sendToDashboard {
+  .nodeItemSelected {
+    cursor: pointer;
+    background: var(--rowSelectedBg);
+    border-radius: 4px;
+  }
+
+  .nodeItem {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+
+    svg {
+      margin-right: 8px;
+      // fill: var(--thirdLevelText);
+      position: relative;
+    }
+
+    &:hover {
+      .nodeItemSelected();
+    }
+
+    &.active {
+      color: var(--primaryColor);
+      .nodeItemSelected();
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    //padding: 0 16px;
+    margin-top: 16px;
+
+    button {
+      &:nth-child(1) {
+        margin-right: 8px;
+
+      }
+    }
+  }
+
+  .scroll {
+    min-height: 240px;
+    max-height: 70vh;
+    overflow-y: auto;
+
+    .loading {
+      width: calc(100% - 16px);
+      padding-left: 16px;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.modal {
+  :global {
+    .ant-modal-body {
+      padding: 0 8px 24px;
+    }
+  }
+}
+
+.empty {
+  width: 100%;
+  height: 100%;
+
+  p {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+
+    a{
+      padding-bottom: 2px;
+      border-bottom: 1px solid var(--primaryColor);
+    }
+  }
+
+  img {
+    margin: 0 auto 24px;
+    display: block;
+  }
+}

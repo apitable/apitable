@@ -1,0 +1,54 @@
+@import "../../../styles/var.less";
+
+.trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: @spacing-small;
+  margin-right: @spacing-base;
+  cursor: pointer;
+  border-radius: @radius-base;
+  &:hover,
+  &[data-active="true"] {
+    background: @bg-color-hover;
+  }
+
+  &[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.linkInputPanel {
+  padding: @spacing-small;
+  background: var(--defaultBg);
+  border-radius: @radius-base;
+  box-shadow: @box-shadow-dark;
+  input {
+    flex: 1;
+  }
+}
+
+.linkInputPanelInline {
+  display: flex;
+  align-items: center;
+  width: 258px;
+
+  input {
+    height: 32px;
+    margin-right: 8px;
+    background: none;
+    border: none;
+  }
+}
+
+.inputGroup {
+  margin-bottom: @spacing-large;
+}
+
+.footer {
+  text-align: right;
+  button + button {
+    margin-left: @spacing-base;
+  }
+}

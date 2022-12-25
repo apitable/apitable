@@ -1,0 +1,79 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.contextmenuItem {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px;
+  cursor: pointer;
+
+  &:global(.disabled) {
+    .name {
+      color: var(--fc3);
+    }
+  }
+
+  &:hover {
+    background: var(--rowSelectedBg);
+  }
+
+  svg {
+    fill: var(--thirdLevelText);
+    margin-right: 4px;
+  }
+
+  .arrow {
+    width: 10px;
+    height: 10px;
+    fill: var(--thirdLevelText);
+  }
+
+  .name {
+    color: var(--firstLevelText);
+    font-size: 13px;
+  }
+
+  .shortcutKey {
+    flex: 1;
+    color: var(--thirdLevelText);
+    font-size: 13px;
+    text-align: right;
+    text-transform: capitalize;
+  }
+}
+
+.contextmenuDivider {
+  height: 9px;
+  background: var(--lineColor);
+  padding: 4px 16px;
+  background-clip: content-box;
+  pointer-events: none;
+}
+
+@media screen and (max-width: @w-md) {
+  .contextmenuItem {
+    padding: 0 40px 0 24px;
+
+    &:hover {
+      background: transparent;
+    }
+
+    svg {
+      margin-right: 8px;
+    }
+
+    .name {
+      height: 100%;
+      flex: 1;
+    }
+
+    .shortcutKey {
+      display: none;
+    }
+  }
+}

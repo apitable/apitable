@@ -1,0 +1,35 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.checkboxCell {
+  width: 100%;
+  line-height: initial;
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  pointer-events: none;
+  .unChecked {
+    opacity: 0.2;
+  }
+  .hidden {
+    opacity: 0;
+  }
+  :global(.emoji-mart-emoji) {
+    cursor: pointer;
+  }
+}
+
+:global(.activeCell) {
+  :local(.checkboxCell) {
+    pointer-events: initial;
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .checkboxCell {
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+}

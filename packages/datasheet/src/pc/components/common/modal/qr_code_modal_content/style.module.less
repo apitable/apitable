@@ -1,0 +1,71 @@
+@import "~pc/styles/lib_var.less";
+
+.qrcodeContent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 110px;
+  height: 100%;
+  background: var(--fill0);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  .qrcode {
+    width:  88px;
+    height: auto;
+    // transform: scale(0.5, 0.5);
+    margin: 40px auto 15px;
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  p {
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--fc1);
+  }
+}
+
+.modalContent {
+  padding-right: 110px;
+  height: 133px;
+}
+
+.modalContentText {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--fc1);
+}
+
+.modalTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .statusIcon {
+    margin-right: 7px;
+    display: flex;
+    // height: 18px;
+    // width: 18px;
+    align-items: center;
+    justify-content: center;
+  }
+  p {
+    margin: 0;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--fc1);
+  }
+}
+
+.modalbutton {
+  position: absolute;
+  right: 134px;
+  bottom: 24px;
+}

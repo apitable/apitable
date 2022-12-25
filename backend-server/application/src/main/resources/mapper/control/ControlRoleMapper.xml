@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.apitable.control.mapper.ControlRoleMapper">
+    <select id="selectByControlId" resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByControlIds" resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByControlIdAndUnitId"
+            resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id = #{unitId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectUnitIdAndControlIdAndRoleCode" resultType="java.lang.Long">
+        SELECT unit_id
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND role_code = #{roleCode}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectRoleCodeByControlIdAndUnitId" resultType="java.lang.String">
+        SELECT role_code
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id = #{unitId}
+        AND is_deleted = 0
+        LIMIT 1
+    </select>
+
+    <select id="selectControlRoleInfoByControlIdAndUnitIds"
+            resultType="com.apitable.workspace.dto.ControlRoleInfo">
+        SELECT unit_id, role_code as role
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id in
+            <foreach collection="unitIds" item="unitId" open="(" close=")" separator=",">
+                #{unitId}
+            </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectControlRoleInfoByControlIds"
+            resultType="com.apitable.workspace.dto.ControlRoleInfo">
+        SELECT control_id, unit_id, role_code role
+        FROM ${tablePrefix}control_role vnp
+        WHERE vnp.control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND vnp.is_deleted = 0
+    </select>
+
+    <select id="selectControlRoleUnitDtoByControlId"
+            resultType="com.apitable.workspace.dto.ControlRoleUnitDTO">
+        SELECT vcr.unit_id, vu.unit_type, vu.unit_ref_id, vcr.role_code role
+        FROM ${tablePrefix}control_role vcr
+        JOIN ${tablePrefix}unit vu on vcr.unit_id = vu.id AND vu.is_deleted = 0
+        WHERE vcr.control_id = #{controlId}
+        AND vcr.is_deleted = 0
+        ORDER BY vcr.created_at
+    </select>
+
+    <insert id="insertBatch">
+        INSERT INTO ${tablePrefix}control_role(id, control_id, unit_id, role_code,
+        created_by, updated_by)
+        VALUES
+        <foreach item="item" index="index" collection="entities" separator=",">
+            <trim prefix="(" suffix=")">
+                #{item.id}, #{item.controlId}, #{item.unitId}, #{item.roleCode},
+                #{item.createdBy}, #{item.updatedBy}
+            </trim>
+        </foreach>
+    </insert>
+
+    <update id="updateRoleCodeByControlIdAndUnitIds">
+        UPDATE ${tablePrefix}control_role
+        SET role_code = #{role}, updated_by = #{userId}
+        WHERE control_id = #{controlId} AND unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </update>
+
+    <update id="updateRoleCodeByIds">
+        UPDATE ${tablePrefix}control_role
+        SET role_code = #{role}, updated_by = #{userId}
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </update>
+
+    <delete id="deleteByIds">
+        UPDATE ${tablePrefix}control_role
+        SET is_deleted = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByControlIds">
+        UPDATE ${tablePrefix}control_role
+        SET is_deleted = 1, updated_by = #{userId}
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByUnitIds">
+        UPDATE ${tablePrefix}control_role
+        SET is_deleted = 1
+        WHERE unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByControlIdAndUnitId">
+        UPDATE ${tablePrefix}control_role
+        SET is_deleted = 1
+        WHERE control_id = #{controlId}
+        AND unit_id = #{unitId}
+    </delete>
+
+    <select id="selectDeletedRole" resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND role_code = #{roleCode}
+        AND is_deleted = 1
+    </select>
+
+    <update id="updateIsDeletedByIds">
+        UPDATE ${tablePrefix}control_role
+        SET is_deleted = #{isDeleted}, updated_by = #{userId}
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectDeletedRoleByRoleCodes" resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND role_code IN
+        <foreach item="code" index="index" collection="roleCodes" open="(" separator=","
+                 close=")">
+            #{code}
+        </foreach>
+        AND is_deleted = 1
+    </select>
+
+    <select id="selectByControlIdAndUnitIdAndRoleCode" resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id = #{unitId}
+        AND role_code = #{roleCode}
+        <if test="!ignoreDeleted">
+            AND is_deleted = 0
+        </if>
+    </select>
+
+    <select id="selectByControlIdAndUnitIds" resultType="com.apitable.control.entity.ControlRoleEntity">
+        SELECT *
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id IN
+        <foreach item="unitId" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{unitId}
+        </foreach>
+        <if test="!ignoreDeleted">
+            AND is_deleted = 0
+        </if>
+    </select>
+
+    <select id="selectIdByControlIds" resultType="java.lang.Long">
+        SELECT id from ${tablePrefix}control_role
+        WHERE control_id IN
+        <foreach item="item" index="index" collection="controlIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectIdByUnitIds" resultType="java.lang.Long">
+        SELECT id from ${tablePrefix}control_role
+        WHERE unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectIdByControlIdAndUnitIds" resultType="java.lang.Long">
+        SELECT id from ${tablePrefix}control_role
+        WHERE control_id = #{controlId} AND unit_id IN
+        <foreach item="item" index="index" collection="unitIds" open="(" separator=","
+                 close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectIdByControlIdAndUnitId" resultType="java.lang.Long">
+        SELECT id
+        FROM ${tablePrefix}control_role
+        WHERE control_id = #{controlId}
+        AND unit_id = #{unitId}
+        AND is_deleted = 0
+    </select>
+</mapper>

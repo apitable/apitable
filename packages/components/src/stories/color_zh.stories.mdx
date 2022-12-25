@@ -1,0 +1,321 @@
+import { purple, deepPurple, black, blue, blackBlue, indigo, green, red, yellow, orange, tangerine, pink, brown, teal } from '../colors';
+import {
+  fc0, fc1, fc2, fc3, fc4, fc5, fc6, fc7, fc8, fc9,
+  fc10, fc11, fc13, fc14, fc15, fc16
+} from '../colors/light';
+import { getActionColor, getContrastText, convertHexToRGB } from '../helper/color_helper';
+import { Button } from '../components/button';
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { StoryType } from './constants';
+
+<Meta title={`${StoryType.Design}/Colors 颜色`} />
+
+<style>{`
+  .neutral-color {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .neutral-color .normal-color {
+    width: 20%;
+    margin-bottom: 12px;
+  }
+  .normal-color {
+    text-align: center;
+    width: 100px;
+  }
+  .fc-color {
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .bg {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: auto;
+    border: 1px solid #F0F0F6;
+  }
+  .tip-wrapper {
+    white-space: nowrap;
+  }
+  .tip {
+    display: inline-block;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 12px;
+    background: #F0F0F6;
+    padding: 4px;
+    margin-right: 4px;
+  }
+  .color {
+    margin-bottom: 12px;
+  }
+  .container .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    cursor: pointer;
+    transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+  }
+  .item:hover {
+    border-color: #1EA7FD50;
+    transform: translate3d(0, -3px, 0);
+    box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+  }
+  .item .default,
+  .item .hover,
+  .item .active {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 16px;
+  }
+  .item .default {
+    width: 50%;
+  }
+  .item .hover,
+  .item .active {
+    flex: 1;
+  }
+  .item .rgb {
+    font-size: 12px;
+  }
+`}</style>
+
+# 颜色
+
+颜色采用 `色相`+`色重` 的模式组织
+
++ 色相 hue
++ 色重 shade，向已有颜色中添加暗影，使颜色变暗。
+
+## 使用
+
+```jsx
+import { purple, deepPurple, black } from '@apitable/components';
+```
+
+以 `purple` 举例，色板将紫色分为了 11 个区域，purple[50]、purple[100]、purple[200]... purple[1000]，浅色到深色。
+
+## 颜色对象数据结构
+
+以主题色系为例，其中 `deepPurple[500]` 为主题色：
+```ts static
+export const deepPurple = {
+  50: '#EDEAFF',
+  100: '#DCD6FF',
+  200: '#CEC5FF',
+  300: '#A697FB',
+  400: '#8B7AF0',
+  500: '#7B67EE',
+  600: '#6653D1',
+  700: '#5342B4',
+  800: '#413297',
+  900: '#312479',
+  1000: '#160F3F',
+};
+
+```
+
+## 主题色
+
+<div className="normal-color">
+  <div className="bg" style={{ backgroundColor: fc0 }} />
+  <div className="fc-color">{fc0}</div>
+  <div>
+    <span className="tip">FC0</span>
+  </div>
+</div>
+
+## 通用颜色
+
+<div className="neutral-color">
+  {[
+    { fc: fc1, text: 'black[1000]' },
+    { fc: fc2, text: 'black[700]' },
+    { fc: fc3, text: 'black[500]' },
+    { fc: fc4, text: 'black[300]' },
+    { fc: fc5, text: 'blackBlue[200]', desc: '线条颜色' },
+    { fc: fc6, text: 'black[100]', text: '背景色' },
+    { fc: fc7, text: 'blackBlue[100]', desc: '行选中色' },
+    { fc: fc8, text: 'black[50]' },
+    { fc: fc9, text: 'deepPurple[100]', desc: '单元格选中色' },
+    { fc: fc10, text: 'red[500]', desc: '错误色' },
+    { fc: fc11, text: 'black[200]', desc: '投影、表格线色' },
+    { fc: convertHexToRGB(black[1000], 0.5), fcPrimary: `${black[1000]} 50%`, text: 'black[1000] 50%', desc: '蒙层色' },
+    { fc: fc13, text: 'black[900]', desc: '气泡色' },
+    { fc: fc14, text: 'orange[500]', desc: '警告色' },
+    { fc: fc15, text: 'teal[500]', desc: '成功色' },
+    { fc: fc16, text: 'deepPurple[50]', desc: '目录树列表色' },
+  ].map(({ fc, fcPrimary, text, desc }) => (
+    <div key={fc} className="normal-color">
+      <div className="bg" style={{ backgroundColor: fc }} />
+      <div className="fc-color">{fcPrimary || fc}</div>
+      <div className="tip-wrapper">
+        <span className="tip">{text}</span>
+        {desc && <span className="tip">{desc}</span>}
+      </div>
+    </div>
+  ))}
+</div>
+
+## 状态色
+<div className="neutral-color">
+  {[
+    { fc: fc0, text: 'FC0', desc: 'DEFAULT' },
+    { fc: fc15, text: 'FC15', desc: 'SUCCESS' },
+    { fc: fc14, text: 'FC14', desc: 'WARN' },
+    { fc: fc10, text: 'FC10', desc: 'ERROR' },
+  ].map(({ fc, fcPrimary, text, desc }) => (
+    <div key={fc} className="normal-color">
+      <div className="bg" style={{ backgroundColor: fc }} />
+      <div className="fc-color">{fcPrimary || fc}</div>
+      <div className="tip-wrapper">
+        <span className="tip">{text}</span>
+        {desc && <span className="tip" style={{ backgroundColor: fc }}>{desc}</span>}
+      </div>
+    </div>
+  ))}
+</div>
+
+## 色板
+
+<div>
+  {[
+    { colorMap: purple, text: '紫色', word: 'purple' },
+    { colorMap: deepPurple, text: '深紫', word: 'deepPurple' },
+    { colorMap: indigo, text: '靛蓝', word: 'indigo' },
+    { colorMap: blue, text: '蓝色', word: 'blue' },
+    { colorMap: teal, text: '蓝绿', word: 'teal' },
+    { colorMap: green, text: '绿色', word: 'green' },
+    { colorMap: yellow, text: '黄色', word: 'yellow' },
+    { colorMap: orange, text: '橘色', word: 'orange' },
+    { colorMap: tangerine, text: '橘红', word: 'tangerine' },
+    { colorMap: pink, text: '粉色', word: 'pink' },
+    { colorMap: red, text: '红色', word: 'red' },
+    { colorMap: brown, text: '棕色', word: 'brown' },
+    { colorMap: black, text: '黑色', word: 'black' },
+    { colorMap: blackBlue, text: '黑蓝', word: 'blackBlue' },
+  ].map(({ colorMap, text, word }, idx) => {
+    return (
+      <div key={idx} className="color">
+        <h4>{text}</h4>
+        <div className="container">
+          {Object.keys(colorMap).map(level => {
+            const color = colorMap[level];
+            const actionColor = getActionColor(color);
+            const textColor = getContrastText(color, 3)
+            return (
+              <div className="item" key={level} style={{ color: textColor }}>
+                <div className="default" style={{ backgroundColor: color }}>
+                  <span>{word}[{level}]</span>
+                  <div>
+                    <div>{color}</div>
+                    <div className="rgb">{convertHexToRGB(color)}</div>
+                  </div>
+                </div>
+                <div className="hover" style={{ backgroundColor: actionColor.hover }}>
+                  <span>Hover</span>
+                  <div>
+                    <div>{actionColor.hover}</div>
+                    <div className="rgb">{convertHexToRGB(actionColor.hover)}</div>
+                  </div>
+                </div>
+                <div className="active" style={{ backgroundColor: actionColor.active }}>
+                  <span>Active</span>
+                  <div>
+                    <div>{actionColor.active}</div>
+                    <div className="rgb">{convertHexToRGB(actionColor.active)}</div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  })}
+</div>
+
+## 颜色处理函数
+
+### getActionColor
+
+```jsx
+import { getActionColor } from '@apitable/components';
+```
+
+解析调色板中的颜色获取 hover、active 状态的颜色。例如：`purple[400]` 通过 `getActionColor` 计算的结果如下：
+
+<Canvas>
+  {JSON.stringify(getActionColor(purple[400]), null, 2)}
+</Canvas>
+
+在 `Button` 上使用效果如下：
+
+<Canvas>
+  <Button color={purple[400]}> 默认颜色 </Button>
+  <Button color={getActionColor(purple[400]).hover}> hover 颜色 </Button>
+  <Button color={getActionColor(purple[400]).active}> active 颜色 </Button>
+</Canvas>
+
+### getContrastText
+
+```jsx
+import { getContrastText } from '@apitable/components';
+```
+
+根据背景色，自动生成前景文字颜色。让整体效果视觉体验更加舒适、友好：
+
+- 浅色背景赋予黑色字体；
+- 深色背景赋予白色字体。
+
+<Canvas>
+<div style={{
+  background: purple[100],
+  color: getContrastText(purple[100], 3),
+  padding: '6px 12px'
+}}>
+  紫色 100
+</div>
+<div style={{
+  background: purple[600],
+  color: getContrastText(purple[600], 3),
+  padding: '6px 12px'
+}}>
+  紫色 600
+</div>
+</Canvas>
+
+## convertHexToRGB
+
+```jsx
+import { convertHexToRGB } from '@apitable/components';
+```
+
+支持对调色板和其他颜色从 `HEX` 格式颜色转成 `RGB`，并且支持透明度配置，兼容以下用法：
+
+- `convertHexToRGB(purple[100])` => rgb(228, 197, 251)
+- `convertHexToRGB('#E4C5FB')` => rgb(228, 197, 251)
+- `convertHexToRGB('#E4C5FB', 0.5)` => rgb(228, 197, 251, 0.5)
+
+<Canvas>
+<div style={{ backgroundColor: convertHexToRGB(purple[100]), padding: '6px 12px' }}>
+  {convertHexToRGB(purple[100])}
+</div>
+<div style={{ backgroundColor: convertHexToRGB('#E4C5FB'), padding: '6px 12px' }}>
+  {convertHexToRGB('#E4C5FB')}
+</div>
+<div style={{ backgroundColor: convertHexToRGB(purple[100], 0.5), padding: '6px 12px' }}>
+  {convertHexToRGB(purple[100], 0.5)}
+</div>
+<div style={{ backgroundColor: convertHexToRGB('#E4C5FB', 0.5), padding: '6px 12px' }}>
+  {convertHexToRGB('#E4C5FB', 0.5)}
+</div>
+</Canvas>
+
+## 相关
+
+- [Color in Design Systems](https://eightshapes.com/articles/color-in-design-systems)
+- [TinyColor JS 颜色操作检测库](https://github.com/bgrins/TinyColor)

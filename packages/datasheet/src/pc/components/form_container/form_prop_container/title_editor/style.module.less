@@ -1,0 +1,36 @@
+@import "~pc/styles/lib_var.less";
+
+.titleEditor {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  line-height: 48px;
+  font-size: 32px;
+  text-align: center;
+
+  &.titleEditorMobile {
+    line-height: 36px;
+    font-size: 24px;
+
+    .titleInput {
+      padding: 0;
+    }
+  }
+
+  .titleInput {
+    width: 100%;
+    padding: 6px 0;
+    border: none;
+    text-align: center;
+    border-radius: 4px;
+    background-color: transparent;
+    transition: background-color 0.3s linear;
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: var(--lowestBg);
+      }
+    }
+  }
+}

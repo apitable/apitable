@@ -1,0 +1,46 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.unitTag {
+  display: inline-block;
+  user-select: none;
+  vertical-align: middle;
+
+  &.isLeave {
+    opacity: 0.5;
+  }
+  &:not(.isLeave):hover {
+    opacity: 0.8;
+  }
+
+  .circle {
+    border-radius: 16px;
+  }
+
+  .rect {
+    border-radius: 4px;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    line-height: 24px;
+    background-color: var(--lowestBg);
+    padding: 0 8px 0 2px;
+
+    .name {
+      font-size: 12px;
+      color: var(--firstLevelText);
+      padding-left: 4px;
+      max-width: 140px;
+      .ellipsis();
+    }
+
+    .closeBtn {
+      fill: var(--thirdLevelText);
+      margin-left: 4px;
+      cursor: pointer;
+    }
+  }
+}

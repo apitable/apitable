@@ -1,0 +1,27 @@
+@import '~pc/styles/lib_mixins.less';
+
+.checkboxBase {
+  position: relative;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 0px 2px var(--primaryColor);
+  border-radius: 1px;
+  max-height: 200px;
+  background: transparent;
+  
+  overflow-y: hidden;
+  line-height: initial;
+  display: flex;
+  align-items: center;
+  // padding-top: 5px;
+  justify-content: center;
+}
+
+.unChecked{
+  opacity: 0.2;
+}
+
+.iconContainer{
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

@@ -1,0 +1,39 @@
+@import "~pc/styles/lib_var.less";
+
+.searchTeamAndMember {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: var(--userMenu);
+  position: absolute;
+  top: 48px;
+  left: 0;
+  height: 100%;
+
+  .searchInputWrapper {
+    padding: 0 19px;
+    width: 100%;
+
+    &.inputWrapperMobile {
+      padding: 0 12px;
+
+      .searchInput {
+        padding: 0 16px;
+        text-indent: 0;
+      }
+
+      .searchInput,
+      .searchInput input {
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .searchResultWrapper {
+    background: var(--defaultBg);
+    height: 100%;
+    // margin-top: 5px;
+    width: 100%;
+  }
+}

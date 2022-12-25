@@ -1,0 +1,133 @@
+import { Avatar } from './index';
+import { AvatarGroup } from './avatar_group';
+import { Canvas, ArgsTable } from '@storybook/addon-docs';
+import { ExpandOutlined } from '@apitable/icons';
+
+<Meta title="基础组件/Avatar 头像/文档" />
+
+# Avatar 头像
+
+将用户（人）、团队（空间站）用作头像显示，可以为图片、图标或字符形式展示。
+
+## 使用方式
+
+```jsx
+import { Avatar } from '@apitable/components';
+```
+
+## 示例
+
+### 展示图片头像
+
+通过 HTML5 `img` 标签标椎的 `src` 属性传递图片路径，创建图片头像。
+
+<Canvas>
+  <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="react-window" />
+  <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+</Canvas>
+
+### 展示图标头像
+
+通过 `icon` 属性制定图标展示图标头像，从图标组件库中 `@apitable/icons` 获取图标。
+
+<Canvas>
+  <Avatar icon={<ExpandOutlined />} />
+</Canvas>
+
+### 展示文本头像
+
+通过传入字符创，创建包含简单字符串的头像。
+
+<Canvas>
+  <Avatar>A</Avatar>
+  <Avatar>APITable</Avatar>
+</Canvas>
+
+#### 缩放处理
+
+受限于展示区域限制，当文本内容较多时会自动缩小文字保证全部展示，当然为了保证视觉可阅读性，建议用户不要使用过长的文本。
+
+<Canvas>
+  <Avatar>A</Avatar>
+  <Avatar>APITable</Avatar>
+</Canvas>
+
+### 设置尺寸
+
+通过 `size` 定义了头像尺寸，默认为 `m(40px)`，通过特定字符串指定，可以更细致的划分头像大小，支持的数值有：xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px)。
+
+<Canvas>
+  <Avatar size="xxs" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="xs" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="s" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="m" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="l" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar size="xl" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+</Canvas>
+
+### 设置形状
+
+通过 `shape` 属性设置形状，目前支持圆形（circle 默认）、圆角形状（square）
+
+<Canvas>
+  <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar shape="square" src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+  <Avatar>V</Avatar>
+  <Avatar shape="square">V</Avatar>
+  <Avatar icon={<ExpandOutlined />} />
+  <Avatar shape="square" icon={<ExpandOutlined />} />
+</Canvas>
+
+### 设置颜色
+
+通过 HTML5 `style` 属性定制背景、字符串、图标颜色。
+
+<Canvas>
+  <Avatar>V</Avatar>
+  <Avatar icon={<ExpandOutlined />} />
+  <Avatar style={{ background: '#ccc' }}>V</Avatar>
+  <Avatar style={{ background: '#ccc' }} icon={<ExpandOutlined />} />
+  <Avatar style={{ color: '#f56a00', background: '#fde3cf' }}>V</Avatar>
+  <Avatar style={{ color: '#f56a00', background: '#fde3cf' }} icon={<ExpandOutlined />} />
+</Canvas>
+
+### 分组
+
+`AvatarGroup` 组件支持头像组合展示，通过 `max` 设置默认展示数量，默认展示数量为 5 个，超出使用数值展示。
+
+<Canvas>
+  <AvatarGroup>
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable logo" />
+    <Avatar style={{ color: '#f56a00', background: '#fde3cf' }} icon={<ExpandOutlined />} />
+    <Avatar>V</Avatar>
+    <Avatar style={{ color: '#f56a00', background: '#fde3cf' }}>APITable</Avatar>
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+  </AvatarGroup>
+</Canvas>
+
+`AvatarGroup` 组件还支持设置其他属性，设置 `max` 最多展示 3 个头像，设置 `size` 为 `sx` 调整所有头像尺寸，设置 `maxStyle` 调整多余头像样式：
+<Canvas>
+  <AvatarGroup max={3} size="xs" maxStyle={{ background: '#ccc' }}>
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+    <Avatar src="https://avatars.githubusercontent.com/u/89725681" alt="apitable avatar" />
+  </AvatarGroup>
+</Canvas>
+
+## API
+
+### Avatar 头像 API 
+
+<ArgsTable of={Avatar} />
+
+### AvatarGroup 头像分组 API
+
+<ArgsTable of={AvatarGroup} />
+
+
+

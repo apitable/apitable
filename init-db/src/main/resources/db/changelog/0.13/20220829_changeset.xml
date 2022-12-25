@@ -1,0 +1,107 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+ APITable <https://github.com/apitable/apitable>
+ Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+	  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V0.13-20220829-001" author="Zoe" labels="workbench">
+        <comment>workbench-create an invited link table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}invitation` (
+              `id` bigint(20) NOT NULL COMMENT 'primary key',
+              `space_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'space id',
+              `team_id` bigint NOT NULL COMMENT 'team id',
+              `node_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'node id',
+              `creator` bigint NOT NULL COMMENT 'the creator member id',
+              `invite_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'invite token',
+              `invite_num` int(11) unsigned DEFAULT '0' COMMENT 'number of successful invitees',
+              `status` tinyint(2) unsigned DEFAULT '1' COMMENT 'link status(0:inactivated, 1:activation)',
+              `is_deleted` tinyint unsigned NOT NULL DEFAULT '0' COMMENT 'delete marker(0:false,1:true)',
+              `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'creation time',
+              `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `idx_invite_token` (`invite_token`) USING BTREE COMMENT 'unique token',
+              KEY `idx_creator` (`creator`) USING BTREE,
+              KEY `idx_space_node_id` (`space_id`, `node_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='workbench-invitation table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220829-002" author="wuyitao" labels="unit">
+        <comment>Create Unit Role Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_role`(
+                `id`         bigint                                               NOT NULL COMMENT 'Primary Key',
+                `space_id`   varchar(50)                                          NOT NULL COMMENT 'Space ID(link#xxxx_space#space_id)',
+                `role_name`  varchar(100)                                         NOT NULL COMMENT 'Role Name',
+                `position`   int unsigned            DEFAULT '2000'               NOT NULL COMMENT 'Role sorting position (the default is 2000. For new roles, this value is the maximum space position multiplied by 2)',
+                `is_deleted` tinyint(1) unsigned     DEFAULT '0'                  NOT NULL COMMENT 'Delete Tag(0: No, 1: Yes)',
+                `create_by`  bigint                                               NOT NULL COMMENT 'Creator',
+                `update_by`  bigint                                               NULL COMMENT 'Updater',
+                `create_at`  timestamp               DEFAULT CURRENT_TIMESTAMP    NOT NULL COMMENT 'Create Time',
+                `update_at`  timestamp               DEFAULT CURRENT_TIMESTAMP    NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update Time',
+                PRIMARY KEY (`id`) using BTREE,
+                KEY `k_space_id` (`space_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Unit Role Table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220829-003" author="wuyitao" labels="unit">
+        <comment>Create Unit Role Member Table</comment>
+        <sql>
+            CREATE TABLE `${table.prefix}unit_role_member`(
+                `id`          bigint                                             NOT NULL COMMENT 'Primary Key',
+                `role_id`     bigint                                             NOT NULL COMMENT 'Role ID(link#xxxx_unit_role#id)',
+                `unit_ref_id` bigint                                             NOT NULL COMMENT 'Member/Department ID(link#xxxx_unit_team#id | #xxxx_unit_member#id)',
+                `unit_type`   tinyint(1) unsigned                                NOT NULL COMMENT '1: Department；3: Member',
+                `created_at`  timestamp             DEFAULT CURRENT_TIMESTAMP    NOT NULL COMMENT 'Create Time',
+                PRIMARY KEY (`id`) USING BTREE,
+                KEY `k_role_id` (`role_id`) USING BTREE,
+                KEY `k_unit_ref_id` (`unit_ref_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Unit Role Member Table';
+        </sql>
+    </changeSet>
+
+    <changeSet id="V0.13-20220829-004" author="wuyitao" labels="unit">
+        <comment>Add space role management resource data</comment>
+        <sql>
+            BEGIN;
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862018, 'MANAGE_ROLE', 'CREATE_ROLE', 'Add Role', NULL, 'Roles with this resource can add role in the directory tree', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862020, 'MANAGE_ROLE', 'READ_ROLE', 'Read Role', NULL, 'The role with this resource can read the role data in the directory tree', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862023, 'MANAGE_ROLE', 'UPDATE_ROLE', 'Update Roles', NULL, 'The role with this resource can edited role and update role name', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862025, 'MANAGE_ROLE', 'DELETE_ROLE', 'Delete Role', NULL, 'Roles with this resource can delete role', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862027, 'MANAGE_ROLE', 'ADD_ROLE_MEMBER', 'Add role members', NULL, 'Roles with this resource can add members or departments to the role', 1);
+            INSERT INTO `${table.prefix}space_resource`(id, group_code, resource_code, resource_name, resource_url, resource_desc, assignable)
+            VALUES (1560560432907862030, 'MANAGE_ROLE', 'REMOVE_ROLE_MEMBER', 'Remove role members', NULL, 'Roles with this resource can remove members or departments from the role', 1);
+
+
+            INSERT INTO `${table.prefix}space_resource_group`(id, group_code, group_name, group_desc)
+            VALUES (1560560432907862035 , 'MANAGE_ROLE', 'Management role', 'You can add, update, and delete roles');
+            COMMIT;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

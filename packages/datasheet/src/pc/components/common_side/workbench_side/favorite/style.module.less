@@ -1,0 +1,50 @@
+@import "~pc/styles/lib_var.less";
+
+.favorite {
+  .empty {
+    height: 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .emptyFavoritePng {
+      height: 44px;
+      width: auto;
+      margin-bottom: 2px;
+    }
+
+    .tip {
+      font-size: 12px;
+      color: var(--secondLevelText);
+    }
+  }
+
+  .emptyNodes {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--fourthLevelText);
+  }
+
+  .errorTip {
+    cursor: pointer;
+    color: var(--fc3);
+  }
+
+  :global {
+    .treeItem {
+      height: 40px;
+
+      &.operationBg {
+        background: var(--rowSelectedBg);
+        border-radius: 4px;
+      }
+
+      &.selected {
+        border-radius: 4px;
+      }
+    }
+  }
+}

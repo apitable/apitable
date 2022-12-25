@@ -1,0 +1,20 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+
+.single {
+  .ellipsis();
+}
+
+.multi {
+  line-height: 24px;
+  .multiLineEllipsis(4)
+}
+
+.isVirtual {
+  font-size: 13px;
+}
+
+.url {
+  text-decoration: underline;
+  width: max-content!important;
+}

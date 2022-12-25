@@ -1,0 +1,53 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
+@import "~pc/styles/lib_screen.less";
+
+.flexAlign {
+  display: flex;
+  align-items: center;
+}
+
+.modalHeader {
+  width: 100%;
+  .flexAlign();
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  svg {
+    cursor: pointer;
+  }
+}
+
+.text {
+  white-space: nowrap;
+  .flexAlign();
+  width: max-content;
+  margin-right: 8px !important;
+}
+
+.leftWrapper {
+  .flexAlign();
+  flex: 1;
+  width: 0;
+
+  .infoIcon {
+    margin-left: 4px;
+  }
+}
+
+.targetClx {
+  margin: 0 4px;
+  .flexAlign();
+
+  svg {
+    margin-right: 4px;
+    cursor: default !important;
+  }
+
+  :global {
+    .emoji-mart-emoji {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

@@ -1,0 +1,6 @@
+.storybook
+es
+lib
+dist
+.doc
+package-lock.json

@@ -1,0 +1,254 @@
+@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_screen.less";
+
+.mobile {
+  width: 100%;
+  height: 100%;
+  margin-top: 25%;
+  .mobileEmpty {
+    width: 100%;
+    text-align: center;
+  }
+  img {
+    width: 240px;
+  }
+  h6 {
+    width: 100%;
+    text-align: center;
+    margin: 16px 0 8px;
+  }
+  .mobileEmptyWords {
+    width: 100%;
+    font-size: 12px;
+    color: var(--fc3);
+    text-align: center;
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.calendarView {
+  width: 100%;
+  height: 100%;
+  background-color: var(--defaultBg);
+  border: 1px solid var(--sheetLineColor);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  :global {
+    @media screen and(min-width: @w-md) {
+      .Pane {
+        overflow: hidden;
+      }
+    }
+    .Resizer.disabled {
+      cursor: auto;
+    }
+    .pickerChildrenWrapper {
+      padding: 0;
+    }
+  }
+}
+
+.left {
+  display: flex;
+  height: 100%;
+  position: relative;
+  .toggleBtn {
+    position: absolute;
+    top: 9px;
+    right: 12px;
+    z-index: 1;
+    font-size: 12px;
+    &.active button {
+      background-color: var(--primaryLight);
+      color: var(--deepPurple_500);
+    }
+    button {
+      background-color: inherit;
+      color: var(--fc2);
+      padding: 4px 8px;
+      height: auto;
+      display: flex;
+      align-items: center;
+      &:hover {
+        background-color: var(--primaryLightHover);
+      }
+      svg {
+        vertical-align: bottom;
+      }
+    }
+  }
+  :global {
+    .calendar {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      flex: 1;
+      .btn-pre-month,
+      .btn-next-month {
+        display: flex;
+        align-items: center;
+      }
+      .cp-calendar-picker input {
+        cursor: pointer;
+        font-weight: bold;
+        width: 88px;
+        text-align: center;
+        display: inline-block;
+        background-color: transparent;
+      }
+      .endClose .list {
+        border-right: 0;
+        &:hover {
+          border-right: 0;
+        }
+      }
+      .startClose .list {
+        border-left: 0;
+        &:hover {
+          border-left: 0;
+        }
+      }
+      .right-resize,
+      .left-resize {
+        &:hover ~ .list {
+          border: 1px solid var(--deepPurple_500);
+          background-color: var(--defaultBg);
+        }
+      }
+      .list {
+        min-height: 24px;
+        padding: 2px 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 28px;
+        font-size: 12px;
+        border: 1px solid transparent;
+        &.mobile {
+          line-height: 24px;
+          padding: 0;
+        }
+        &:hover {
+          border: 1px solid var(--deepPurple_500);
+          background-color: var(--bgCommonHigh);
+        }
+        &.highlight {
+          background-color: var(--warnLight);
+        }
+      }
+      .task {
+        .mobile + .warning {
+          right: 4px;
+          top: 4px;
+        }
+        .warning {
+          top: 6px;
+          right: 12px;
+        }
+        &.isMove .list {
+          background-color: var(--bgWarnLightDefault);
+        }
+      }
+    }
+    .months {
+      border-right: 0;
+      height: calc(100% - 72px);
+      overflow-x: hidden;
+      overflow-y: overlay;
+      .day {
+        .active {
+          background-color: var(--fc16);
+        }
+      }
+    }
+    @media screen and(min-width: @w-md) {
+      .calendar {
+        overflow-x: overlay;
+      }
+      .weeks,
+      .months {
+        min-width: 800px;
+      }
+    }
+    @media screen and(max-width: @w-md) {
+      .outer-months {
+        height: calc(100% - 110px);
+      }
+      .months {
+        height: 100%;
+        .today .day-value {
+          top: 4px !important;
+        }
+        .day-value {
+          font-size: 12px;
+          top: 7px;
+          left: 4px;
+          letter-spacing: -1px;
+        }
+      }
+    }
+  }
+}
+
+.day {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  &.hover:hover {
+    background-color: var(--fill0);
+  }
+  .add {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    right: 4px;
+    top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      background-color: var(--fill1);
+    }
+  }
+}
+
+.dragTitle {
+  font-weight: bolder;
+  font-size: 13px;
+}
+
+.dragTip {
+  header {
+    font-weight: bold;
+    & > div {
+      padding-left: 0;
+      line-height: unset;
+    }
+    :global {
+      .cellText {
+        padding: 0;
+      }
+    }
+  }
+  .dragTipDate {
+    font-size: 12px;
+  }
+}
+
+.duration {
+  color: var(--fc3);
+  padding-left: 8px;
+  span {
+    padding: 0 8px;
+  }
+}
+
+@media screen and(max-width: @w-md) {
+  .calendarView {
+    border-radius: 0;
+  }
+}
