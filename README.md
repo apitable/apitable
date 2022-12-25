@@ -222,7 +222,7 @@ Make sure you have `docker` & `curl` installed locally.
 If you computer has installed Docker Machine, open your terminal and run this:
 
 ```
-curl https://apitable.github.io/install.sh | bash -c
+curl https://apitable.github.io/install.sh | bash
 ```
 
 Then open [https://localhost:80](https://localhost:80) in your browser to visit it.
