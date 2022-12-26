@@ -1,4 +1,5 @@
-version: '3.9'
+version: '3'
+
 services:
   test-mysql:
     container_name: test-mysql
