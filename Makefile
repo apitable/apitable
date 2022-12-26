@@ -198,7 +198,6 @@ buildpush-docker: ## build all and push all to hub.docker.io registry
 build-docker: ## build all containers
 	$(BUILDER)
 
-
 .PHONY: _build-socket-server
 _build-docker-socket-server:
 	$(BUILDER) socket-server 
@@ -211,7 +210,6 @@ _build-docker-backend-server:
 	$(BUILDER) backend-server
 
 ###### development environtments ######
-
 
 define RUN_LOCAL_TXT
 Which service do you want to start run?
@@ -258,7 +256,6 @@ _run-local-socket-server:
 	source scripts/export-env.sh $$ENV_FILE;\
 	cd packages/socket-server ;\
 	yarn run start:dev
-
 
 
 define DEVENV_TXT
