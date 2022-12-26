@@ -6,7 +6,6 @@
     "packages/*"
   ],
   "scripts": {
-    "publish": "lerna publish",
     "sc": "yarn start:core",
     "sd": "yarn start:datasheet dev",
     "sd:private": "REACT_APP_DEPLOYMENT_MODELS=PRIVATE yarn dev:datasheet",
@@ -85,7 +84,6 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-vika": "0.0.1",
     "husky": "8.0.1",
-    "lerna": "^3.22.1",
     "lint-staged": "13.0.3",
     "lodash": "^4.17.20",
     "pretty-quick": "^3.1.3",
