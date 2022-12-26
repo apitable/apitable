@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import dayjs, { OpUnitType, Dayjs, isDayjs } from 'dayjs';
+import dayjs, { OpUnitType, Dayjs, isDayjs, ManipulateType } from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 dayjs.extend(dayOfYear);
 
@@ -85,14 +85,14 @@ export const getDiffCountByWorkdays = (startTime: DateTimeType, endTime: DateTim
   return startDays + middleDays + endDays;
 };
 
-export const change = (markDay: DateTimeType, num: number, unit: OpUnitType = 'day') => {
+export const change = (markDay: DateTimeType, num: number, unit: ManipulateType = 'day') => {
   if (num >= 0) {
     return getStartOfDate(markDay).add(num, unit);
   }
   return getStartOfDate(markDay).subtract(Math.abs(num), unit);
 };
 
-export const originalChange = (markDay: DateTimeType, num: number, unit: OpUnitType = 'day') => {
+export const originalChange = (markDay: DateTimeType, num: number, unit: ManipulateType = 'day') => {
   if (num >= 0) {
     return getDayjs(markDay).add(num, unit);
   }
