@@ -20,6 +20,11 @@ import { getEnvVars } from 'get_env';
 import { NextPageContext } from 'next';
 import { FILTER_HEADERS } from './constant';
 
+const LANG_MAP = {
+  en_US: 'en-US',
+  zh_CN: 'zh-CN',
+}
+
 const filterCustomHeader = (headers?: Record<string, string | string[] | undefined>): Record<string, string> => {
   if (!headers) return {};
   const _headers = {};
@@ -54,7 +59,8 @@ export const getInitialProps = async(context: { ctx: NextPageContext }) => {
   const language = context.ctx.req?.headers['accept-language'];
   const headers: Record<string, string> = { ...filterHeaders };
 
-  let locale = 'zh-CN';
+  const defaultLang = envVars.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE;
+  let locale = defaultLang ? LANG_MAP[defaultLang] : 'zh-CN';
   if (cookie) {
     headers.cookie = cookie;
     const getCookie = (name: string) => {
