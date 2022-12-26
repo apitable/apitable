@@ -29,8 +29,6 @@ import cn.hutool.core.util.StrUtil;
  */
 public class RedisConstants {
 
-    public static final String REDIS_ENV = "redis_env";
-
     /**
      * login user information
      */
