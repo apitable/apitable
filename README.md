@@ -357,7 +357,7 @@ Regardless of time and conditions, if you want to get involved to the team of AP
 > 
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
 >
-> See [LICENCING](./LICENCING.md) for details.
+> See [LICENSING](./LICENSING.md) for details.
 >
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
 
