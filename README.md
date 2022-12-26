@@ -35,6 +35,10 @@
     <a target="_blank" href="https://twitter.com/apitable_com">
         <img src="https://img.shields.io/twitter/follow/apitable_com?label=Twitter&style=social" />
     </a>
+    <!-- Github Action Build-->
+    <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
+        <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
+    </a>
 </p>
 
 ## ✨ Quick Start
