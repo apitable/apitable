@@ -61,7 +61,7 @@
     "classnames": "2.2.6",
     "comlink": "^4.3.1",
     "cookies-next": "^2.1.1",
-    "dayjs": "^1.9.6",
+    "dayjs": "^1.11.7",
     "dingtalk-design-libs": "^0.0.20",
     "dingtalk-jsapi": "^2.13.71",
     "dom-to-image": "^2.6.0",
