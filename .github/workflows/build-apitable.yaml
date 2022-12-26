@@ -8,6 +8,7 @@ on:
 jobs:
   buildpush:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
       APITABLE_DOCKER_HUB_TOKEN: ${{ secrets.APITABLE_DOCKER_HUB_TOKEN }}
     steps:
