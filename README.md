@@ -18,6 +18,10 @@
     <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <!-- hub.docker.com-->
+    <a target="_blank" href="#installation">
+        <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
+    </a>
     <!-- Render -->
     <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/render-deploy-5364e9" />
@@ -34,6 +38,10 @@
     <!-- Twitter -->
     <a target="_blank" href="https://twitter.com/apitable_com">
         <img src="https://img.shields.io/twitter/follow/apitable_com?label=Twitter&style=social" />
+    </a>
+    <!-- Github Action Build-->
+    <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
+        <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
 </p>
 
