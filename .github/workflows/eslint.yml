@@ -32,8 +32,8 @@ jobs:
           node-version: '16.15.0'
       - name: Install ESLint
         run: |
-          npm install eslint
-          npm install @microsoft/eslint-formatter-sarif
+          yarn add eslint
+          yarn add @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint
         run: npx eslint .
