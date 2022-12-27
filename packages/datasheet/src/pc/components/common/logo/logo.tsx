@@ -69,7 +69,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
         <img
           alt="logo"
           height={logoSize.logoSize}
-          src="/logo.svg"
+          src={integrateCdnHost(getEnvVariables().LOGO!)}
           style={{ display: 'block' }}
           width={logoSize.logoSize}
         />
@@ -80,7 +80,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
       <img
         alt="logo"
         height={logoSize.logoSize}
-        src={integrateCdnHost(getEnvVariables().LOGO!)}
+        src="/logo.svg"
         style={{ display: 'block' }}
         width={logoSize.logoSize}
       />
@@ -91,21 +91,21 @@ export const Logo: React.FC<ILogoProps> = (props) => {
     if (!text) return null;
 
     if (envVars.USE_CUSTOM_PUBLIC_FILES) {
-      return (
-        <img
-          alt="logoText"
-          className={styles.logoText}
+      return LogoText && (
+        <LogoText
+          fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
+          width={undefined}
           height={logoSize.logoTextHeight}
-          src={isLightTheme ? '/logo_text_light.svg' : '/logo_text_dark.svg'}
         />
       );
     }
 
-    return LogoText && (
-      <LogoText
-        fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
-        width={undefined}
+    return (
+      <img
+        alt="logoText"
+        className={styles.logoText}
         height={logoSize.logoTextHeight}
+        src={isLightTheme ? '/logo_text_light.svg' : '/logo_text_dark.svg'}
       />
     );
   };
