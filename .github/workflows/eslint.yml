@@ -15,8 +15,6 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ "develop" ]
-  schedule:
-    - cron: '27 7 * * 3'
 
 jobs:
   eslint:
@@ -29,7 +27,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
       - name: Install ESLint
         run: |
           npm install eslint@8.10.0
