@@ -31,6 +31,7 @@ import classnames from 'classnames';
 import styles from './style.module.less';
 import CorpCertifiedTag from './corp_certified_tag';
 import { flatContextData } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface IInfoProps {
   showContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
@@ -51,6 +52,8 @@ export const Info = (props: IInfoProps) => {
   const { spaceLevelTag:{ label }} = SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
   const [visible, setVisible] = React.useState(false);
 
+  const env = getEnvVariables();
+
   const style: React.CSSProperties = useMemo(() => {
     if (!minHeight) return {};
     return { minHeight };
@@ -65,9 +68,9 @@ export const Info = (props: IInfoProps) => {
   };
 
   return <div className={classnames(styles.card, className)} style={{ ...style, transform: 'none' }}>
-    <div className={styles.moreMenuWrap} onClick={handleClick}>
+    {env.DELETE_SPACE_VISIBLE && <div className={styles.moreMenuWrap} onClick={handleClick}>
       <IconButton icon={SettingOutlined} size="small" />
-    </div>
+    </div>}
     {
       isMobile && <Drawer
         visible={visible}
