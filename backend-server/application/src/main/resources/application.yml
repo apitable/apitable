@@ -86,6 +86,9 @@ socket:
 
 email:
   personal: ${EMAIL_PERSONAL:APITable}
+permission-control:
+  infoflow:
+    enabled: ${INFOFLOW_PERMISSIONS_ENABLED:false}
 
 starter:
   socketio:
