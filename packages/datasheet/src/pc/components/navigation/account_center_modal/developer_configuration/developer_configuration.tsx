@@ -34,6 +34,7 @@ import RefreshIcon from 'static/icon/common/common_icon_fresh.svg';
 import CopyIcon from 'static/icon/datasheet/rightclick/datasheet_icon_copy.svg';
 import { getMaskToken, getVerifyData, IRefreshConfigConfig, VerifyTypes } from '../utils';
 import styles from './style.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 export interface IDeveloperConfigProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
@@ -147,6 +148,8 @@ export const DeveloperConfiguration: FC<IDeveloperConfigProps> = ({ setActiveIte
 
   const maskAPIToken = getMaskToken(inputValue);
 
+  const env = getEnvVariables();
+
   return (
     <div className={styles.developerConfiguration}>
       <div className={styles.title}>{t(Strings.developer_configuration)}</div>
@@ -160,7 +163,7 @@ export const DeveloperConfiguration: FC<IDeveloperConfigProps> = ({ setActiveIte
           disabled
         />
         <ButtonGroup withSeparate>
-          <Tooltip
+          {env.REGENERATE_API_TOKEN_VISIBLE && <Tooltip
             title={!user!.apiKey ? t(Strings.generating_token_value) : t(Strings.rebuild_token_value)}
             placement="top"
           >
@@ -170,11 +173,11 @@ export const DeveloperConfiguration: FC<IDeveloperConfigProps> = ({ setActiveIte
             >
               {
                 !user!.apiKey ?
-                  <AddIcon fill={colors.thirdLevelText} width={15} height={15} /> :
-                  <RefreshIcon fill={colors.thirdLevelText} width={15} height={15} />
+                  <AddIcon fill={colors.thirdLevelText} width={15} height={15}/> :
+                  <RefreshIcon fill={colors.thirdLevelText} width={15} height={15}/>
               }
             </Button>
-          </Tooltip>
+          </Tooltip>}
           <Tooltip title={t(Strings.copy_token)} placement="top">
             <Button
               onClick={copyToken}
