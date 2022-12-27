@@ -7,7 +7,7 @@ tasks:
     init: |
       make install
     command: |
-      echo "Welcome to APITable"
+      echo "Happy Coding"
   - name: start APITable
     command: |
       make up
