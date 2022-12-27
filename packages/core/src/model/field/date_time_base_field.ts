@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import dayjs from 'dayjs';
+import dayjs, { PluginFunc } from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
@@ -39,9 +39,66 @@ import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
 
+const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
+  // The original version of the functions `getDateTimeFormat` and `tz` comes from
+  // https://github.com/iamkun/dayjs/blob/dev/src/plugin/timezone/index.js
+  // which is published under the MIT license. See https://github.com/iamkun/dayjs/blob/dev/LICENSE for more information.
+
+  const dtfCache: { [timezone: string]: Intl.DateTimeFormat } = {};
+  const getDateTimeFormat = (timezone: string, options: { timeZoneName?: Intl.DateTimeFormatOptions['timeZoneName'] } = {}) => {
+    const timeZoneName = options.timeZoneName || 'short';
+    const key = `${timezone}|${timeZoneName}`;
+    let dtf = dtfCache[key];
+    if (!dtf) {
+      dtf = new Intl.DateTimeFormat('en-US', {
+        // hour12: false,
+        hour12: true,
+        timeZone: timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        // timeZoneName
+      });
+      dtfCache[key] = dtf;
+    }
+    return dtf;
+  };
+
+  const MS = 'millisecond';
+  const MIN = 'minute';
+
+  return (o, c, d) => {
+    let defaultTimezone: string | undefined;
+    timezone(o, c, d);
+    // The following function integrates a performance tuning from https://github.com/iamkun/dayjs/issues/1236#issuecomment-1262907180
+    c.prototype.tz = function(this: dayjs.Dayjs, timezone = defaultTimezone, keepLocalTime = undefined) {
+      const oldOffset = this.utcOffset();
+      const date = this.toDate();
+      const target = getDateTimeFormat(timezone!).format(date);
+      const diff = Math.round((+date - +new Date(target)) / 1000 / 60);
+      let ins = (d(target) as any).$set(MS, (this as any).$ms)
+        .utcOffset((-Math.round(date.getTimezoneOffset() / 15) * 15) - diff, true);
+      if (keepLocalTime) {
+        const newOffset = ins.utcOffset();
+        ins = ins.add(oldOffset - newOffset, MIN);
+      }
+      ins.$x.$timezone = timezone;
+      return ins;
+    };
+
+    const setDefaultTimezone = d.tz.setDefault;
+    d.tz.setDefault = (timezone) => {
+      setDefaultTimezone(timezone);
+      defaultTimezone = timezone;
+    };
+  };};
+
 // plugin before import, prevent circular import
 dayjs.extend(utc);
-dayjs.extend(timezone);
+dayjs.extend(patchDayjsTimezone(timezone));
 declare const window: any;
 
 export interface IOptionalDateTimeFieldProperty {
@@ -86,7 +143,8 @@ export const dateTimeFormat = (
   }
   // server-side
   if (typeof window === 'undefined' && typeof global === 'object' && global.process) {
-    return dayjs(Number(timestamp)).tz(DEFAULT_TIMEZONE).format(format);
+    const date = dayjs(Number(timestamp)).tz(DEFAULT_TIMEZONE);
+    return date.format(format);
   }
   return dayjs(Number(timestamp)).format(format);
 };

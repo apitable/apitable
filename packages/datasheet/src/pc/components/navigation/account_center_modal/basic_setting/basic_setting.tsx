@@ -277,7 +277,7 @@ export const BasicSetting: FC = () => {
                 </LinkButton>
               )}
             </div>
-            {!hiddenMobileRes && !env.HIDDEN_BIND_PHONE && (
+            {!hiddenMobileRes && env.USER_BIND_PHONE_VISIBLE && (
               <div className={styles.item}>
                 <div className={styles.label}>{t(Strings.label_bind_phone)}:</div>
                 <div className={styles.content}>{mobileContent()}</div>
@@ -295,7 +295,7 @@ export const BasicSetting: FC = () => {
                 )}
               </div>
             )}
-            {!env.HIDDEN_BIND_MAIL && (
+            {env.DELETE_ACCOUNT_VISIBLE && (
               <div className={styles.item}>
                 <div className={styles.label}>{t(Strings.label_bind_email)}:</div>
                 <div className={styles.content}>{user?.email || t(Strings.unbound)}</div>

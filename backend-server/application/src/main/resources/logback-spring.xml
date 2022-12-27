@@ -21,7 +21,7 @@
     <springProperty scope="context" name="LOG_FILE_NAME" source="spring.application.name" defaultValue="apitable"/>
 
     <property name="CONSOLE_LOG_PATTERN"
-              value="%d{ISO8601} %-5level [%t] %C{1.}: %msg%n%throwable"/>
+              value="%yellow(%d{ISO8601}) %highlight(%-5level) %green([%t] %C{1.}): %blue(%msg%n%throwable)"/>
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/${LOG_FILE_NAME}_error.log</file>
@@ -79,13 +79,13 @@
         </encoder>
     </appender>
 
-    <appender name="SENTRY" class="io.sentry.logback.SentryAppender" />
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender"/>
 
     <root level="info">
         <appender-ref ref="ASYNC_FILE_ERROR"/>
         <appender-ref ref="ASYNC_FILE_TOTAL"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="SENTRY" />
+        <appender-ref ref="SENTRY"/>
     </root>
 </configuration>
 

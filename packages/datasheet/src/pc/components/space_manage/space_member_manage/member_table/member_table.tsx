@@ -233,7 +233,7 @@ export const MemberTable: FC<IMemberTable> = (props) => {
     },
   ];
 
-  if (!env.HIDDEN_BIND_PHONE) {
+  if (env.USER_BIND_PHONE_VISIBLE) {
     columns.splice(2, 0, {
       title: t(Strings.phone_number),
       dataIndex: 'mobile',
