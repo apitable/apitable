@@ -4,5 +4,7 @@
 .yarn
 src
 dist/**/*.d.ts.map
+.gitignore
 tsconfig.json
 publish.sh
+sonar-project.properties
