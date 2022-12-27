@@ -31,6 +31,8 @@ export const enableScheduler = Object.is(process.env.ENABLE_SCHED, 'true');
 // whether or not enable queue worker. (individual instances in worker queue mode to handle messages)
 export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'true');
 
+export const disableHSTS = Object.is(process.env.STRICT_TRANSPORT_SECURITY, 'false');
+
 export default {
   isDevMode,
   isProdMode,

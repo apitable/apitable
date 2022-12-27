@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { OpUnitType } from 'dayjs';
+import { ManipulateType, OpUnitType } from 'dayjs';
 import { DateUnitType, DEFAULT_WORK_DAYS } from '@apitable/core';
 import { IGanttCoordinate } from '../interface';
 import { Coordinate } from 'pc/components/konva_grid';
@@ -182,18 +182,18 @@ export class GanttCoordinate extends Coordinate {
   }
 
   // Date from "1970-01-01", based on index
-  public getDateFromUnix = (diffIndex: number, unit: OpUnitType = 'day') => {
+  public getDateFromUnix = (diffIndex: number, unit: ManipulateType = 'day') => {
     return change(unixDate, diffIndex, unit);
   };
 
   // Get index from range time
-  public getIndexFromStartDate(current: DateTimeType, unit: OpUnitType = 'day') {
+  public getIndexFromStartDate(current: DateTimeType, unit: ManipulateType = 'day') {
     const startDate = this.getDateFromUnix(this.startDateIndex);
     return getDayjs(current).diff(startDate, unit);
   }
 
   // Get time from range time
-  public getDateFromStartDate(diffIndex: number, unit: OpUnitType = 'day') {
+  public getDateFromStartDate(diffIndex: number, unit: ManipulateType = 'day') {
     const startDate = change(unixDate, this.startDateIndex, 'day');
     return change(startDate, diffIndex, unit);
   }
