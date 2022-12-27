@@ -88,7 +88,7 @@ export const AccountCenterModal: FC<IAccountCenterModalProps> = props => {
       name: userInfo!.needPwd ? t(Strings.set_password) : t(Strings.change_password),
       component: <ModifyPassword setActiveItem={setActiveItem} />,
       // For accounts that are not bound to a cell phone or email address, the "Change Password" section of the user center is directly blocked
-      hidden: !(userInfo?.email || userInfo?.mobile) || env.HIDDEN_USER_CHANGE_PASSWORD,
+      hidden: !(userInfo?.email || userInfo?.mobile) || !env.ACCOUNT_RESET_PASSWORD_VISIBLE,
     },
     AccountWallet && {
       key: AccountCenterModules.AccountWallet,
