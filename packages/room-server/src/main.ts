@@ -24,12 +24,13 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { Client } from '@sentry/types';
-import { environment, isDevMode } from 'app.environment';
+import { environment, isDevMode, disableHSTS } from 'app.environment';
 import { AppModule } from 'app.module';
 import { useContainer } from 'class-validator';
 import helmet from 'fastify-helmet';
 import fastifyMultipart from 'fastify-multipart';
 import { protobufPackage } from 'grpc/generated/serving/SocketServingService';
+import { HelmetOptions } from 'helmet';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { I18nService } from 'nestjs-i18n';
 import { join } from 'path';
@@ -51,7 +52,7 @@ async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
   fastifyAdapter.register(fastifyMultipart);
   // registe helmet in fastify to avoid conflict with swagger
-  fastifyAdapter.register(helmet, {
+  let helmetOptions: HelmetOptions = {
     // update script-src to be compatible with swagger
     contentSecurityPolicy: {
       directives: {
@@ -68,7 +69,11 @@ async function bootstrap() {
         'upgrade-insecure-requests': [],
       },
     },
-  });
+  };
+  if (disableHSTS) {
+    helmetOptions = { ...helmetOptions, hsts: false };
+  }
+  fastifyAdapter.register(helmet, helmetOptions);
 
   const nestApp = await NestFactory.create<NestFastifyApplication>(AppModule, fastifyAdapter);
 

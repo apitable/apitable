@@ -18,11 +18,6 @@
 
 package com.apitable.shared.config;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
-import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -30,16 +25,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.core.constants.RedisConstants;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.integration.redis.util.RedisLockRegistry;
-import org.springframework.lang.Nullable;
 
 /**
  * <p>
@@ -65,7 +57,7 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
-        template.setKeySerializer(new MagicalKeyStringRedisSerializer(StandardCharsets.UTF_8));
+        template.setKeySerializer(RedisSerializer.string());
         template.setValueSerializer(json());
         template.afterPropertiesSet();
         return template;
@@ -74,31 +66,5 @@ public class RedisConfig {
     @Bean
     public RedisLockRegistry redisLockRegistry(RedisConnectionFactory redisConnectionFactory) {
         return new RedisLockRegistry(redisConnectionFactory, "apitable:concurrent");
-    }
-
-    private static class MagicalKeyStringRedisSerializer extends StringRedisSerializer {
-
-        public MagicalKeyStringRedisSerializer(Charset charset) {
-            super(charset);
-        }
-
-        @Override
-        public String deserialize(@Nullable byte[] bytes) {
-            return super.deserialize(bytes);
-        }
-
-        @Override
-        public byte[] serialize(@Nullable String string) {
-            // replace magic value
-            string = StrUtil.format(string, this.getAllMagicalValue());
-            return super.serialize(string);
-        }
-
-        private Dict getAllMagicalValue() {
-            String env = System.getenv("ENV");
-            log.info("Magical Key String Redis Serializer Load Environment: {}", env);
-            return Dict.create().set(RedisConstants.REDIS_ENV, env);
-        }
-
     }
 }
