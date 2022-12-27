@@ -20,11 +20,10 @@ package com.apitable.template.mapper;
 
 import java.util.List;
 
+import com.apitable.template.entity.TemplatePropertyRelEntity;
+import com.apitable.template.model.TemplatePropertyRelDto;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-
-import com.apitable.template.model.TemplatePropertyRelDto;
-import com.apitable.template.entity.TemplatePropertyRelEntity;
 
 /**
  * <p>
@@ -44,14 +43,9 @@ public interface TemplatePropertyRelMapper extends BaseMapper<TemplatePropertyRe
     int insertBatch(@Param("entities") List<TemplatePropertyRelEntity> entities);
 
     /**
-     * Query template id list by property id
+     * Query template id list by property code
      */
-    List<String> selectTemplateIdsByPropertyId(@Param("propertyId") Long propertyId);
-
-    /**
-     * Batch delete by id list
-     */
-    int deleteBatchIn(@Param("propertyIds") List<Long> propertyIds);
+    List<String> selectTemplateIdsByPropertyCode(@Param("propertyCode") String propertyCode);
 
     /**
      * Query template ids by property id list

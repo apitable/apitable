@@ -19,7 +19,6 @@
 package com.apitable.template.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +27,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.shared.component.LanguageManager;
 import com.apitable.template.entity.TemplatePropertyEntity;
@@ -41,6 +37,8 @@ import com.apitable.template.model.TemplateKeyWordSearchDto;
 import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
 import com.apitable.template.service.ITemplatePropertyService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
@@ -66,17 +64,8 @@ public class TemplatePropertyServiceImpl extends ServiceImpl<TemplatePropertyMap
     }
 
     @Override
-    public Long getIdByCodeAndType(String code, TemplatePropertyType propertyType) {
-        return baseMapper.selectIdByCodeAndType(code, propertyType.getType());
-    }
-
-    @Override
     public List<String> getTemplateIdsByPropertyCodeAndType(String code, TemplatePropertyType type) {
-        Long propertyId = getIdByCodeAndType(code, type);
-        if (propertyId != null) {
-            return propertyRelMapper.selectTemplateIdsByPropertyId(propertyId);
-        }
-        return Collections.emptyList();
+        return propertyRelMapper.selectTemplateIdsByPropertyCode(code);
     }
 
     @Override
