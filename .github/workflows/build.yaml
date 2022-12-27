@@ -2,7 +2,13 @@ name: build
 
 on:
   push:
+    branches:
+      - "develop"
+      - "release/**"
+    tags:
+      - "v*"
   pull_request:
+    branches: [ "develop" ]
   workflow_dispatch:
 
 jobs:
