@@ -18,6 +18,10 @@
     <img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript Language, NestJS Framework" />
     <!-- Java -->
     <img src="https://img.shields.io/badge/Java-ED8B00?logo=spring&logoColor=white" alt="Java Language, Spring Framework" />
+    <!-- hub.docker.com-->
+    <a target="_blank" href="#installation">
+        <img src="https://img.shields.io/docker/pulls/apitable/init-db" />
+    </a>
     <!-- Render -->
     <a target="_blank" href="https://render.com/deploy?repo=https://github.com/apitable/apitable">
         <img src="https://img.shields.io/badge/render-deploy-5364e9" />
@@ -34,6 +38,10 @@
     <!-- Twitter -->
     <a target="_blank" href="https://twitter.com/apitable_com">
         <img src="https://img.shields.io/twitter/follow/apitable_com?label=Twitter&style=social" />
+    </a>
+    <!-- Github Action Build-->
+    <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
+        <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
 </p>
 
@@ -290,11 +298,23 @@ APITable use these common conventions:
 
 For more information, please contact us at <support@apitable.com>. 
 
-## 🌏 Why we create APITable and open-source?
+## 👫 Get Involved
+
+### 🌏 Why we create APITable and open-source?
 
 - We believe that `Database is the cornerstone` of all the software.
 - We believe that making a `Visual Database with rich and easy user interface for everyone` can reduce the difficulty of software industry and increase the world's digitalization adoption.
 - We believe that open-sourcing `APITable` work can `Push Human Beings Forward`.
+
+### We are hiring remotely!
+
+We always search for good talents for APITable:
+
+- **Full-stack developer**: You have experience with React, NestJS, TypeScript, Spring Boot, Java, Terraform. And you like to write high quality code with clear documentation and unit tests.
+- **Back-end developer**: You have experience with NestJS, TypeScript, Spring Boot, Java, SQL, Kubernetes, Terraform. And you like to write high quality code with clear documentation and unit tests.
+- **Front-end developer**: You have experience with React, NextJS, TypeScript, WebPack. And you like to write high quality code with clear documentation and unit tests.
+
+Regardless of time and conditions, if you want to get involved to the team of APITable, do not hesitate and send your CV to <talent@apitable.com>.
 
 
 ## 📺 Screenshot
@@ -337,7 +357,7 @@ For more information, please contact us at <support@apitable.com>.
 > 
 > If you'd like to run your own copy of APITable or contribute to development then this is the place for you.
 >
-> See [LICENCING](./LICENCING.md) for details.
+> See [LICENSING](./LICENSING.md) for details.
 >
 > If you want to use APITable online then you don't need to run this code, we offer a hosted version of the app at [APITable.com](https://apitable.com) which optimized for global accelerator.
 
