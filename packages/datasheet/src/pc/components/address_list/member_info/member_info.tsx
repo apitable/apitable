@@ -162,7 +162,7 @@ export const MemberInfo: FC = () => {
         </div>
       </div>
       {
-        !env.HIDDEN_BIND_PHONE && <div className={styles.infoItem}>
+        env.USER_BIND_PHONE_VISIBLE && <div className={styles.infoItem}>
           <span className={styles.infoTitle}>{t(Strings.phone_number)}</span>
           <span className={classNames(styles.infoDetail, { [styles.emptyDetail]: !mobile })}>
             {mobile || '-'}
