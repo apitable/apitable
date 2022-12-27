@@ -43,7 +43,7 @@ export class Datasheet implements IResource {
   /**
    * Create a `Datasheet` instance from a datasheet pack and a store.
    *
-   * This constructor is not intended for public use.
+   * @deprecated This constructor is not intended for public use.
    */
   public constructor(datasheetPack: IBaseDatasheetPack, private readonly store: Store<IReduxState>, private readonly saver: IDataSaver) {
     this.id = datasheetPack.datasheet.id;
@@ -98,6 +98,8 @@ export class Datasheet implements IResource {
    *
    * @param command The command that will be executed.
    * @param saveOptions The options that will be passed to the data saver.
+   * 
+   * @deprecated This method is not intended for public use.
    */
   public async doCommand<R>(command: ICollaCommandOptions, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<R>> {
     const result = this.commandManager.execute<R>(command);

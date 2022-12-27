@@ -37,7 +37,7 @@ export class View {
   /**
    * Create a `View` instance from `IViewInfo`.
    * 
-   * This constructor is not intended for public use.
+   * @deprecated This constructor is not intended for public use.
    */
   constructor(private readonly datasheet: Datasheet, private readonly store: Store<IReduxState>, info: IViewInfo) {
     const { name, type, viewId, rows, columns, fieldMap } = info;
@@ -119,8 +119,7 @@ export class View {
   }
 
   /**
-   * Add records to the datasheet via this view. This method delegates the command execution to the
-   * `doCommand` method of the datasheet.
+   * Add records to the datasheet via this view.
    * 
    * @param options options for adding records
    * @param saveOptions options for the data saver.
