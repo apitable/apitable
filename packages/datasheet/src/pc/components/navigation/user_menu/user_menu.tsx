@@ -71,7 +71,7 @@ const customTips = {
 
 export const UserMenu: FC<IUserMenuProps> = props => {
   const colors = useThemeColors();
-  const { ACCOUNT_LOGOUT_VISIBLE, HIDDEN_BIND_PHONE, ACCOUNT_VCOIN_VISIBLE } = getEnvVariables();
+  const { ACCOUNT_LOGOUT_VISIBLE, USER_BIND_PHONE_VISIBLE, INVITATION_CODE_VISIBLE } = getEnvVariables();
   const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
     (state: IReduxState) => ({
       userInfo: state.user.info,
@@ -360,7 +360,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
       <div className={styles.userMenuCenter}>
         <div className={styles.menuListWrapper}>
           <div className={styles.centerTitle}>{t(Strings.personal_info)}</div>
-          {!hiddenMobileRes && !HIDDEN_BIND_PHONE && (
+          {!hiddenMobileRes && USER_BIND_PHONE_VISIBLE && (
             <div className={styles.centerItem}>
               <span className={styles.label}>{t(Strings.phone_number)}</span>
               {mobile ? hiddenMobile(mobile) : t(Strings.unbound)}
@@ -384,7 +384,7 @@ export const UserMenu: FC<IUserMenuProps> = props => {
             </div>
           )}
           {isMobile && items.filter(item => item.visible).map(item => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
-          {!isMobile && !isMobileApp() && !isWecomSpace && ACCOUNT_VCOIN_VISIBLE && isEnterprise && (
+          {!isMobile && !isMobileApp() && !isWecomSpace && INVITATION_CODE_VISIBLE && isEnterprise && (
             <div className={styles.inviteCodeBtnWrap}>
               <div
                 className={styles.inviteCodeBtn}
