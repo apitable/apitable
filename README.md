@@ -43,6 +43,10 @@
     <a target="_blank" href="https://github.com/apitable/apitable/actions/workflows/build.yaml">
         <img src="https://github.com/apitable/apitable/actions/workflows/build.yaml/badge.svg" />
     </a>
+    <!-- Track Git-->
+    <a target="_blank" href="https://trackgit.com">
+        <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lc5vrue757xuvrj5fprl" alt="trackgit-views" />
+    </a>
 </p>
 
 ## ✨ Quick Start
