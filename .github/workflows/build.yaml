@@ -18,7 +18,7 @@ jobs:
       - name: Running Test
         shell: bash
         run: |
-          make ${{ matrix.scan_project }}
+          make ${{ matrix.command }}
 
   buildpush:
     needs: test
