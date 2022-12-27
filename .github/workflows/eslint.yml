@@ -32,15 +32,18 @@ jobs:
           node-version: '16.15.0'
       - name: Install ESLint
         run: |
-          yarn add eslint
-          yarn add @microsoft/eslint-formatter-sarif
+          yarn
+        # yarn add eslint
+        # yarn add @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint
-        run: npx eslint .
-          --config .eslintrc
-          --ext .js,.jsx,.ts,.tsx
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
+        run: |
+          yarn lint
+        # run: npx eslint .
+        #   --config .eslintrc
+        #   --ext .js,.jsx,.ts,.tsx
+        #   --format @microsoft/eslint-formatter-sarif
+        #   --output-file eslint-results.sarif
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
