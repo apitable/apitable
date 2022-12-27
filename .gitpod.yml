@@ -11,6 +11,7 @@ tasks:
   - name: start APITable
     command: |
       make up
+      echo "Welcome to APITable"
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
