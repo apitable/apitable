@@ -45,7 +45,7 @@ export const MainAdmin: FC = () => {
 
     const env = getEnvVariables();
 
-    if (env.HIDDEN_CHANGE_SPACE_ADMIN) {
+    if (!env.CHANGE_SPACE_ADMIN_VISIBLE) {
       return null;
     }
 

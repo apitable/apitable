@@ -256,7 +256,7 @@ export const EditMemberModal: FC<IModalProps> = ({ cancelModalVisible, pageNo, r
             )}
           </div>
         </div>
-        {!env.HIDDEN_BIND_PHONE && (
+        {env.USER_BIND_PHONE_VISIBLE && (
           <div className={styles.item}>
             <label className={styles.label}>{t(Strings.phone_number)}</label>
             <TextInput value={form.mobile} disabled block />
