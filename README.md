@@ -49,6 +49,9 @@
 
 <!-- If you just want try out APITable[^info], using our hosted version at [apitable.com](https://apitable.com). -->
 
+> APITable is currently a `Work In Progress`. We will publish the first release in late January 2023.
+> Join [Discord](https://discord.gg/TwNb9nfdBU) or [Twitter](https://twitter.com/apitable_com) to keep in touch.
+
 If you just want to try out APITable[^info], click here for [⚡️Gitpod Online Demo](https://gitpod.io/#https://github.com/apitable/apitable).
 
 If you want to install APITable in your local or cloud computing environment, see [💾 Installation](#installation)
