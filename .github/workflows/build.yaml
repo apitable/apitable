@@ -6,7 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
+    name: test
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        command: [ test-ut-backend-docker, test-ut-room-docker, _test-ut-core ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Running Test
+        shell: bash
+        run: |
+          make ${{ matrix.scan_project }}
+
   buildpush:
+    needs: test
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
@@ -14,6 +29,8 @@ jobs:
     steps:
       - name: Fetch Sources
         uses: actions/checkout@v2
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
       - name: Build APITable and Push
         run: |
           make buildpush-docker
