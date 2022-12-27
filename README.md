@@ -276,6 +276,15 @@ APITable use these common conventions:
 - What is the Java Coding Guideline? [Java Coding Guideline](https://github.com/alibaba/Alibaba-Java-Coding-Guidelines) | [Intellij IDEA Plugin](https://plugins.jetbrains.com/plugin/10046-alibaba-java-coding-guidelines)
 - What is the TypeScript Coding Guideline? -> [TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html) | [ESLint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
 
+### Documentations
+
+- Help Center (coming soon...)
+- [👩‍💻 Developer Center](https://developers.apitable.com/)
+  - [🪡 REST API Docs](https://developers.apitable.com/api/introduction/)
+  - Widget SDK (Coming soon...)
+  - Scripting (Coming soon...)
+
+
 ## 🛣 Roadmap
 
 ### Future Features
