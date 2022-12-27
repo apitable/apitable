@@ -22,13 +22,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.shared.cache.bean.CategoryDto;
+import com.apitable.template.entity.TemplatePropertyEntity;
 import com.apitable.template.enums.TemplatePropertyType;
 import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
-import com.apitable.template.entity.TemplatePropertyEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -41,11 +40,6 @@ public interface ITemplatePropertyService extends IService<TemplatePropertyEntit
      * Get the basic information of the online template after sorting
      */
     List<TemplatePropertyDto> getTemplatePropertiesWithLangAndOrder(TemplatePropertyType type, String lang);
-
-    /**
-     * Get property id by property code and type
-     */
-    Long getIdByCodeAndType(String code, TemplatePropertyType type);
 
     /**
      * Get template id list by property code and type
