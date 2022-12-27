@@ -25,7 +25,7 @@ export class Record {
   /**
    * Create a `Record` instance from an `IRecord` object.
    * 
-   * This constructor is not intended for public use.
+   * @deprecated This constructor is not intended for public use.
    */
   constructor(private readonly record: IRecord, options: IRecordOptions) {
     const { voTransformOptions } = options;
