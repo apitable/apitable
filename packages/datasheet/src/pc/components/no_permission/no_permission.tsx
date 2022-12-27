@@ -78,11 +78,11 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
                 {t(Strings.qrcode_help)} 
                 <a href={env.HELP_MENU_USER_COMMUNITY_URL} target="_blank" rel="noreferrer">{t(Strings.join_discord_community)}</a></div>
             }
-            <div className={styles.backButton}>
+            {!pageParams.embedId && <div className={styles.backButton}>
               <Button color='primary' size='middle' block onClick={returnHome}>
                 {t(Strings.back_workbench)} 
               </Button>
-            </div>
+            </div>}
           </div>
         </div>
       </ComponentDisplay>
@@ -104,11 +104,11 @@ export const NoPermission: FC<{ desc?: string }> = ({ desc }) => {
               { qrcodeVisible ? <></> :
                 <a href={env.HELP_MENU_USER_COMMUNITY_URL} target="_blank" rel="noreferrer"><br/>{t(Strings.join_discord_community)}</a>}
             </div> 
-            <div className={styles.btnWrap}>
+            {!pageParams.embedId && <div className={styles.btnWrap}>
               <Button color='primary' onClick={() => setSideBarVisible(true)}>
                 {t(Strings.open_workbench)}
               </Button>
-            </div>
+            </div>}
           </div>
         </div>
       </ComponentDisplay>
