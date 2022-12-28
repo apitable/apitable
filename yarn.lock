@@ -42574,11 +42574,11 @@ resolve@^2.0.0-next.3:
   linkType: hard
 
 "thenify@npm:>= 3.1.0 < 4":
-  version: 3.3.0
-  resolution: "thenify@npm:3.3.0"
+  version: 3.3.1
+  resolution: "thenify@npm:3.3.1"
   dependencies:
     any-promise: ^1.0.0
-  checksum: 5ba001d4017ecfce5b4cc358a64587d68122bd52a1e8fd837dd23d720ae434e4a4eeac61aa3568f27add1677a0997d3c15ae43112e326a8f329e08482df00b04
+  checksum: 84e1b804bfec49f3531215f17b4a6e50fd4397b5f7c1bccc427b9c656e1ecfb13ea79d899930184f78bc2f57285c54d9a50a590c8868f4f0cef5c1d9f898b05e
   languageName: node
   linkType: hard
 
