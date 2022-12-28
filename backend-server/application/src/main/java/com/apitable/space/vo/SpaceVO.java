@@ -18,6 +18,7 @@
 
 package com.apitable.space.vo;
 
+import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -58,21 +59,17 @@ public class SpaceVO {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean admin;
 
-    @ApiModelProperty(value = "Whether it is a paid space", example = "false", position = 6)
-    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean charge;
-
     @ApiModelProperty(value = "Whether it is in pre deletion status", example = "false", position = 7)
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean preDeleted;
 
     @ApiModelProperty(value = "Maximum total number of subscription plan members", position = 8)
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxSeat;
 
     @ApiModelProperty(value = "Space domain name", position = 9)
     private String spaceDomain;
 
-    @Deprecated
     @ApiModelProperty(value = "Third party integration binding information", position = 10)
     private SpaceSocialConfig social;
 }
