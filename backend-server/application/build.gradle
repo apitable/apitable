@@ -51,8 +51,11 @@ dependencies {
   implementation rootProject.ext.dependencies['grpc-server-spring-boot']
   implementation rootProject.ext.dependencies['pdf']
   implementation rootProject.ext.dependencies['sentry']
-  implementation rootProject.ext.dependencies['spring-cloud-starter-sleuth']
-  implementation rootProject.ext.dependencies['spring-cloud-sleuth-zipkin']
+  implementation (rootProject.ext.dependencies['spring-cloud-starter-sleuth']){
+    exclude group: 'org.springframework.cloud', module: 'spring-cloud-sleuth-brave'
+  }
+  implementation rootProject.ext.dependencies['spring-cloud-sleuth-otel']
+  implementation rootProject.ext.dependencies['opentelemetry-exporter-jaeger']
   implementation rootProject.ext.dependencies['okhttp3']
   implementation rootProject.ext.dependencies['jsoup']
   implementation rootProject.ext.dependencies['protobuf-java']

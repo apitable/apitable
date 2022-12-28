@@ -1383,6 +1383,21 @@
             "zh_HK": "你可以自由創建角色，並將任意部門/成員添加到一個或多個角色內。 <a target=\"_blank\" href=\"${url}\">幫助文檔</a>",
             "en_US": "You can freely create roles and add any teams / members to one or more roles.<a target=\"_blank\" href=\"${url}\"> Learn more</a>",
             "zh_CN": "你可以自由创建角色，并将任意部门/成员添加到一个或多个角色内。<a target=\"_blank\" href=\"${url}\">帮助文档</a>"
+        },
+        "welcome_module4": {
+            "zh_HK": "內容日曆",
+            "en_US": "Content Calendar",
+            "zh_CN": "内容日历"
+        },
+        "welcome_module5": {
+            "zh_HK": "項目管理",
+            "en_US": "Project Management",
+            "zh_CN": "项目管理"
+        },
+        "welcome_module6": {
+            "zh_HK": "房地產客戶關係管理",
+            "en_US": "Real Estate CRM",
+            "zh_CN": "房地产客户关系管理"
         }
     }
 }

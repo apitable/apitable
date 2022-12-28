@@ -18,10 +18,14 @@
 -->
 
 <configuration debug="false">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
     <springProperty scope="context" name="LOG_FILE_NAME" source="spring.application.name" defaultValue="apitable"/>
 
     <property name="CONSOLE_LOG_PATTERN"
-              value="%yellow(%d{ISO8601}) %highlight(%-5level) %green([%t] %C{1.}): %blue(%msg%n%throwable)"/>
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/${LOG_FILE_NAME}_error.log</file>
@@ -34,7 +38,7 @@
         </rollingPolicy>
         <append>true</append>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>Log >>> %d{ISO8601} %-5level [%t] %C{1.}: %msg%n%throwable</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
             <charset>utf-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -61,7 +65,7 @@
         </rollingPolicy>
         <append>true</append>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>Log >>> %d{ISO8601} %-5level [%t] %C{1.}: %msg%n%throwable</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
             <charset>utf-8</charset>
         </encoder>
     </appender>
@@ -74,7 +78,7 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>「Log」>>> ${CONSOLE_LOG_PATTERN}</pattern>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
             <charset>utf-8</charset>
         </encoder>
     </appender>
