@@ -92,8 +92,12 @@ build: ## build
 	make build-local
 
 build-local:
+	make _build-java
 	make _build-core
 	make _build-room
+
+_build-java:
+	cd backend-server && ./gradlew build -x test
 
 _build-core: ## build core
 	yarn workspaces focus @apitable/core @apitable/i18n-lang root
