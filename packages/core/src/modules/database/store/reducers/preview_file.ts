@@ -17,8 +17,8 @@
  */
 
 import { produce } from 'immer';
-import { SET_PREVIEW_FILE, SET_PREVIEW_FILE_CELL_ACTIVE, SET_PREVIEW_DEFAULT_ACTIVE } from '../../../shared/store/action_constants';
 import { IPreviewFile, ISetPreviewDefaultAction, ISetPreviewFileAction, ISetPreviewFileCellValueAction } from '../../../../exports/store/interfaces';
+import { SET_PREVIEW_DEFAULT_ACTIVE, SET_PREVIEW_FILE, SET_PREVIEW_FILE_CELL_ACTIVE } from '../../../shared/store/action_constants';
 
 const defaultState: IPreviewFile = {
   datasheetId: undefined,
@@ -39,12 +39,12 @@ export const previewFile = produce(
       case SET_PREVIEW_FILE:
         return { ...action.payload };
       case SET_PREVIEW_FILE_CELL_ACTIVE:
-        state.cellValue = action.payload;      
+        state.cellValue = action.payload;
         return state;
       case SET_PREVIEW_DEFAULT_ACTIVE:
         return defaultState;
       default:
         return state;
     }
-  }
+  }, defaultState
 );

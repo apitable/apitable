@@ -16,24 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import { CollaCommandName, FieldType, ISortInfo, Selectors, Strings, t } from '@apitable/core';
+import { InformationLargeOutlined } from '@apitable/icons';
 import { Col, Row, Switch } from 'antd';
 import produce from 'immer';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
-import { useCallback, useMemo, useRef } from 'react';
+import { resourceService } from 'pc/resource_service';
+import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import * as React from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
+import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
 import { ViewFieldOptionsMobile } from '../view_field_options/view_field_options_mobile';
-import { SyncViewTip } from '../../sync_view_tip';
-import { Button, IUseListenTriggerInfo, TextButton, Typography, useListenVisualHeight, useThemeColors } from '@apitable/components';
-import { InformationLargeOutlined } from '@apitable/icons';
-import { resourceService } from 'pc/resource_service';
-import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
 interface IViewSetting {
   close(e: React.MouseEvent): void;
@@ -134,7 +134,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
   }
 
   function setSortRules(index: number, desc: boolean) {
-    const newSortInfo = produce(sortInfo, draft => {
+    const newSortInfo = produce(sortInfo, (draft: ISortInfo) => {
       draft!.rules.map((item, idx) => {
         if (idx === index) {
           item.desc = desc;
@@ -143,11 +143,11 @@ export const ViewSort: React.FC<IViewSetting> = props => {
       });
       return draft!;
     });
-    submitSort(newSortInfo);
+    submitSort(newSortInfo!);
   }
 
   function setSortField(index: number, fieldId: string) {
-    const newSortIno = produce(sortInfo, draft => {
+    const newSortInfo = produce(sortInfo, (draft: ISortInfo) => {
       if (!draft) {
         return {
           keepSort: true,
@@ -157,7 +157,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
       draft.rules[index] = { fieldId, desc: false };
       return draft;
     });
-    submitSort(newSortIno);
+    submitSort(newSortInfo!);
   }
 
   function onChange(check: boolean) {
@@ -186,7 +186,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
         {!isMobile && (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant={'h7'}>{t(Strings.set_sort)}</Typography>
-            <a href={t(Strings.sort_help_url)} target="_blank" rel="noopener noreferrer">
+            <a href={t(Strings.sort_help_url)} target='_blank' rel='noopener noreferrer'>
               <InformationLargeOutlined color={colors.thirdLevelText} />
             </a>
           </div>
@@ -225,7 +225,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
           />
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-          <Row align="middle" style={{ width: '100%' }}>
+          <Row align='middle' style={{ width: '100%' }}>
             <Col span={sortInfo ? 9 : 10} offset={sortInfo ? 1 : 0}>
               <div style={{ paddingLeft: sortInfo ? 8 : 0, paddingRight: 8 }}>
                 <ViewFieldOptionsMobile
@@ -243,7 +243,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
           {isMobile ? (
             <Button
               style={{ marginRight: '16px' }}
-              size="large"
+              size='large'
               onClick={e => {
                 props.close((e as any) as React.MouseEvent);
               }}
@@ -254,7 +254,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
           ) : (
             <TextButton
               style={{ marginRight: '16px' }}
-              size="small"
+              size='small'
               onClick={e => {
                 props.close((e as any) as React.MouseEvent);
               }}
@@ -263,7 +263,7 @@ export const ViewSort: React.FC<IViewSetting> = props => {
             </TextButton>
           )}
           <Button
-            color="primary"
+            color='primary'
             size={isMobile ? 'large' : 'small'}
             onClick={e => {
               sortInfo && submitSort(sortInfo, true);

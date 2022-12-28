@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import produce from 'immer';
 import * as actions from '../action_constants';
 import { IEmbedInfo, IEmbedInfoAction } from '../interfaces/embed';
@@ -34,4 +33,4 @@ export const embedInfo = produce((embedInfoDraft: IEmbedInfo = defaultEmbedInfo,
     default:
       return embedInfoDraft;
   }
-});
+}, defaultEmbedInfo);
