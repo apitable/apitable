@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { subscribeWidgetMap } from '@apitable/widget-sdk';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

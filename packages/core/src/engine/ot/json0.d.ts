@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-declare module "ot-json0/lib/json0" {
-  export default json0
+declare module 'ot-json0/lib/json0' {
+  export default json0;
 }

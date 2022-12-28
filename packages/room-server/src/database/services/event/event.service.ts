@@ -393,7 +393,7 @@ export class EventService {
     this.logger.debug(`In this batch, changeset triggers ${events.length} events: `, events.map(item => item.eventName));
     this.logger.debug('dstIdTriggersMap', dstIdTriggersMap);
     this.logger.debug('triggerSlugTypeIdMap', triggerSlugTypeIdMap);
-    this.logger.info('handle events', { msgIds, dstIdTriggersMap, triggerSlugTypeIdMap })
+    this.logger.info('handle events', { msgIds, dstIdTriggersMap, triggerSlugTypeIdMap });
     this.opEventManager.handleEvents(events, false, { dstIdTriggersMap, triggerSlugTypeIdMap, msgIds });
   }
 }

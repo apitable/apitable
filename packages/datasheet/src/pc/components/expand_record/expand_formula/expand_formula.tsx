@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { IFormulaField, Field, BasicValueType, FormulaBaseError } from '@apitable/core';
 import { useComputeCellValue } from 'pc/hooks/use_cellvalue';
 import * as React from 'react';

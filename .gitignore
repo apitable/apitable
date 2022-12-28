@@ -74,3 +74,6 @@ scripts/design_token/__pycache__
 /backend-server/?
 # backend proto generated class
 /backend-server/**/generated
+
+# eslint results
+eslint-results.sarif

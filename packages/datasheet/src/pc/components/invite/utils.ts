@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { StatusCode, t, Strings } from '@apitable/core';
 
 const InviteInvalidReasonObj = {

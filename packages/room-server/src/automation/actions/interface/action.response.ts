@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
+import { ResponseStatusCodeEnums } from '../enum/response.status.code.enums';
 
 export interface ISuccessResponse<T> {
   data: T;
