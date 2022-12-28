@@ -17,8 +17,8 @@
  */
 
 import { Module } from '@nestjs/common';
-import path from "path";
-import fs from "fs";
+import path from 'path';
+import fs from 'fs';
 
 export * as webhook from './webhook';
 export * as ruliu from './ruliu';
@@ -27,7 +27,7 @@ const actionEnterpriseModulePath = path.join(__dirname, '../../enterprise/automa
 const isEnterpriseLevel: boolean = fs.existsSync(actionEnterpriseModulePath);
 if (isEnterpriseLevel) {
   import(`${actionEnterpriseModulePath}/index`).then((module) => {
-    let keys = Object.keys(module);
+    const keys = Object.keys(module);
     for(const key of keys) {
       exports[key] = module[key];
     }

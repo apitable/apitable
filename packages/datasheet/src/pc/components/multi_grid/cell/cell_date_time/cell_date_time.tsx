@@ -23,7 +23,7 @@ import dayjs from 'dayjs';
 import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
 import { useThemeColors } from '@apitable/components';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import { useMemo } from 'react';
 import * as React from 'react';
 import { useSelector } from 'react-redux';

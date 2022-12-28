@@ -36,7 +36,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
   }
 
   selectIdBySpaceIdAndName(spaceId: string, memberName: string): Promise<{ id: string } | undefined> {
-    return this.findOne({ select: ['id'], where: { spaceId, memberName, isDeleted: false } });
+    return this.findOne({ select: ['id'], where: { spaceId, memberName, isDeleted: false }});
   }
 
   selectSpaceIdsByUserId(userId: string): Promise<string[]> {
@@ -50,7 +50,7 @@ export class UnitMemberRepository extends Repository<UnitMemberEntity> {
   }
 
   selectCountByIdAndSpaceId(id: string, spaceId: string): Promise<number> {
-    return this.count({ where: { id, spaceId, isDeleted: false } });
+    return this.count({ where: { id, spaceId, isDeleted: false }});
   }
 
   async selectMembersBySpaceIdAndUserIds(

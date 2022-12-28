@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {DynamicModule, Module} from "@nestjs/common";
-import path from "path";
-import fs from "fs";
-import {RobotActionTypeBaseService, RobotActionTypeService} from "./robot.action.type.base.service";
-import {AutomationActionTypeRepository} from "../repositories/automation.action.type.repository";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {AutomationServiceRepository} from "../repositories/automation.service.repository";
+import { DynamicModule, Module } from '@nestjs/common';
+import path from 'path';
+import fs from 'fs';
+import { RobotActionTypeBaseService, RobotActionTypeService } from './robot.action.type.base.service';
+import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AutomationServiceRepository } from '../repositories/automation.service.repository';
 
 @Module({
   imports: [

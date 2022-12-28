@@ -16,30 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {ActionTypeCreateRo} from "../ros/action.type.create.ro";
-import {IUserBaseInfo} from "../../shared/interfaces";
-import {AutomationActionTypeRepository} from "../repositories/automation.action.type.repository";
-import {customActionTypeMetas} from "../actions/decorators/automation.action.decorator";
-import {ActionTypeUpdateRo} from "../ros/action.type.update.ro";
-import {getTypeByItem} from "../util";
-import {AutomationActionTypeEntity} from "../entities/automation.action.type.entity";
-import {AutomationServiceRepository} from "../repositories/automation.service.repository";
-import {AutomationServiceEntity} from "../entities/automation.service.entity";
-import {ActionTypeDetailVo} from "../vos/action.type.detail.vo";
-import { Injectable } from "@nestjs/common";
+import { ActionTypeCreateRo } from '../ros/action.type.create.ro';
+import { IUserBaseInfo } from '../../shared/interfaces';
+import { AutomationActionTypeRepository } from '../repositories/automation.action.type.repository';
+import { customActionTypeMetas } from '../actions/decorators/automation.action.decorator';
+import { ActionTypeUpdateRo } from '../ros/action.type.update.ro';
+import { getTypeByItem } from '../util';
+import { AutomationActionTypeEntity } from '../entities/automation.action.type.entity';
+import { AutomationServiceRepository } from '../repositories/automation.service.repository';
+import { AutomationServiceEntity } from '../entities/automation.service.entity';
+import { ActionTypeDetailVo } from '../vos/action.type.detail.vo';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export abstract class RobotActionTypeBaseService {
 
-  async createActionType(_props: ActionTypeCreateRo, _user: IUserBaseInfo): Promise<AutomationActionTypeEntity | null> {
+  createActionType(_props: ActionTypeCreateRo, _user: IUserBaseInfo): Promise<AutomationActionTypeEntity | null> {
     return Promise.resolve(null);
   }
 
-  async getActionType(_lang = 'zh'): Promise<ActionTypeDetailVo[]> {
+  getActionType(_lang = 'zh'): Promise<ActionTypeDetailVo[]> {
     return Promise.resolve([]);
   }
 
-  async updateActionType(_actionTypeId: string, _data: ActionTypeUpdateRo, _user: IUserBaseInfo): Promise<number> {
+  updateActionType(_actionTypeId: string, _data: ActionTypeUpdateRo, _user: IUserBaseInfo): Promise<number> {
     return Promise.resolve(0);
   }
 }
@@ -56,11 +56,11 @@ export class RobotActionTypeService extends RobotActionTypeBaseService {
   override async getActionType(lang = 'zh'): Promise<ActionTypeDetailVo[]> {
     const result = [];
     const webhookActionType: AutomationActionTypeEntity = await this.automationActionTypeRepository.findOneOrFail({
-      where: {actionTypeId: 'aatSSHdFkR7B7197Is', isDeleted: 0}
+      where: { actionTypeId: 'aatSSHdFkR7B7197Is', isDeleted: 0 }
     });
     if (webhookActionType) {
       const webhookService: AutomationServiceEntity = await this.automationServiceRepository.findOneOrFail({
-        where: {serviceId: webhookActionType.serviceId}
+        where: { serviceId: webhookActionType.serviceId }
       });
       const webhookActionTypeVo = getTypeByItem({
         actionTypeId: webhookActionType.actionTypeId,

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // WARN: this color file is generated and synced by script, DO NOT modify it manually!!!
 export const COLOR_MAP = {
   black: '#8C8C8C',
