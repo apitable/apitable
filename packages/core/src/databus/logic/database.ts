@@ -17,38 +17,26 @@
  */
 
 import { IBaseDatasheetPack } from 'exports/store';
-import { IDataLoader } from './data.loader.interface';
-import { IDataSaver } from './data.saver.interface';
+import { IDataStorageProvider, IStoreProvider } from '../providers';
 import { Datasheet, IDatasheetOptions } from './datasheet';
-import { IStoreProvider } from './store.provider.interface';
 
 /**
  * A database is responsible for providing `Datasheet` instances.
- * 
+ *
  * Conceptually, one database corresponds to one space in APITable.
  */
 export class Database {
-  private loader!: IDataLoader;
-  private saver!: IDataSaver;
+  private storageProvider!: IDataStorageProvider;
   private stores: WeakMap<IBaseDatasheetPack, Datasheet> = new WeakMap();
   private storeProvider!: IStoreProvider;
 
   /**
-   * Set the data loader that is responsible for loading internal datasheet packs for datasheets in this database.
+   * Set the data storage provider for the database.
    *
-   * A data loader must be set before loading datasheets.
+   * A data storage provider must be set before loading datasheets.
    */
-  setDataLoader(loader: IDataLoader): void {
-    this.loader = loader;
-  }
-
-  /**
-   * Set the data saver that is responsible for saving changesets resulted from executing commands.
-   *
-   * A data saver must be set before loading datasheets.
-   */
-  setDataSaver(saver: IDataSaver): void {
-    this.saver = saver;
+  setDataStorageProvider(provider: IDataStorageProvider): void {
+    this.storageProvider = provider;
   }
 
   /**
@@ -64,7 +52,7 @@ export class Database {
    * Load a datasheet in the database.
    */
   async getDatasheet(dstId: string, options: IDatasheetOptions): Promise<Datasheet | null> {
-    const datasheetPack = await this.loader.loadDatasheetPack(dstId, options);
+    const datasheetPack = await this.storageProvider.loadDatasheetPack(dstId, options);
     if (datasheetPack === null) {
       return null;
     }
@@ -72,7 +60,7 @@ export class Database {
       return this.stores.get(datasheetPack)!;
     }
     const store = options.createStore ? await options.createStore(datasheetPack) : await this.storeProvider.createStore(datasheetPack);
-    const datasheet = new Datasheet(datasheetPack, store, this.saver);
+    const datasheet = new Datasheet(datasheetPack, store, this.storageProvider);
     this.stores.set(datasheetPack, datasheet);
     return datasheet;
   }

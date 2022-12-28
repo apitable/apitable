@@ -17,12 +17,11 @@
  */
 
 import { IResourceOpsCollect, resourceOpsToChangesets } from 'command_manager';
-import { IDataSaver, ISaveOpsOptions } from 'databus/data.saver.interface';
+import { IDataStorageProvider, ISaveOpsOptions } from '../providers';
 import { IBaseDatasheetPack, Selectors, StoreActions } from 'exports/store';
-import { IDataLoader } from '../data.loader.interface';
 import { mockDatasheetMap } from './mock.datasheets';
 
-export class MockDataLoaderSaver implements IDataLoader, IDataSaver {
+export class MockDataStorageProvider implements IDataStorageProvider {
   datasheets!: Record<string, IBaseDatasheetPack>;
 
   constructor() {

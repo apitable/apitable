@@ -19,7 +19,7 @@
 import { IResourceOpsCollect } from 'command_manager';
 import { IReduxState } from 'exports/store';
 import { Store } from 'redux';
-import { Datasheet } from './datasheet';
+import { Datasheet } from '../logic';
 
 /**
  * A data saver is responsible for saving the results of executing commands into various data storage system.
