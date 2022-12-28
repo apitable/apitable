@@ -26,6 +26,7 @@ import classnames from 'classnames';
 import { isSocialWecom } from 'enterprise';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 import * as React from 'react';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -33,8 +34,6 @@ import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import { IWidgetLoaderRefs } from '../../widget_loader';
 import styles from './style.module.less';
-// @ts-ignore
-import { getDependenceByDstIds } from 'enterprise';
 
 interface IWidgetTask {
   widgetId: string;

@@ -22,8 +22,7 @@ import {
   IDatasheetClient, IDatasheetMainSimple, mainWidgetMessage, IWidgetDashboardState, iframeWidgetDashboardSelector
 } from '@apitable/widget-sdk';
 import { updateCache } from './visible_rows_base';
-// @ts-ignore
-import { getDependenceDstIds } from 'enterprise';
+import { getDependenceDstIds } from 'pc/utils/dependence_dst';
 
 let client: IDatasheetClient = {
   selection: undefined,
