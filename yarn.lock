@@ -44344,17 +44344,7 @@ typescript@~3.2.1:
   languageName: node
   linkType: hard
 
-"url-parse@npm:^1.2.0":
-  version: 1.5.3
-  resolution: "url-parse@npm:1.5.3"
-  dependencies:
-    querystringify: ^2.1.1
-    requires-port: ^1.0.0
-  checksum: c6b32fff835e43f3b1b4150239f459744f0ab1a908841dbfecbfc79bf67f4d6c8d9af1841d0c6d814d45bfa08525cc29312a0bef31db7aa894306b3db07e4ee0
-  languageName: node
-  linkType: hard
-
-"url-parse@npm:^1.5.3, url-parse@npm:~1.5.1":
+"url-parse@npm:^1.2.0, url-parse@npm:^1.5.3, url-parse@npm:~1.5.1":
   version: 1.5.10
   resolution: "url-parse@npm:1.5.10"
   dependencies:
