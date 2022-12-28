@@ -18,20 +18,18 @@
 
 package com.apitable.space.mapper;
 
-import java.util.List;
-
 import cn.hutool.core.collection.CollUtil;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.dto.BaseSpaceInfoDTO;
 import com.apitable.space.dto.SpaceAdminInfoDTO;
-import com.apitable.space.vo.SpaceVO;
+import com.apitable.space.dto.SpaceDTO;
 import com.apitable.space.entity.SpaceEntity;
-
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,21 +61,21 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({ "/sql/space-data.sql", "/sql/unit-member-data.sql" })
+    @Sql({"/sql/space-data.sql", "/sql/unit-member-data.sql"})
     void testSelectListByUserId() {
-        List<SpaceVO> entities = spaceMapper.selectListByUserId(41L);
+        List<SpaceDTO> entities = spaceMapper.selectListByUserId(41L);
         assertThat(entities).isNotEmpty();
     }
 
     @Test
-    @Sql({ "/sql/space-data.sql", "/sql/unit-member-data.sql" })
+    @Sql({"/sql/space-data.sql", "/sql/unit-member-data.sql"})
     void testGetAdminSpaceCount() {
         Integer count = spaceMapper.getAdminSpaceCount(41L);
         assertThat(count).isEqualTo(1);
     }
 
     @Test
-    @Sql({ "/sql/space-data.sql", "/sql/unit-member-data.sql", "/sql/user-data.sql"})
+    @Sql({"/sql/space-data.sql", "/sql/unit-member-data.sql", "/sql/user-data.sql"})
     void testSelectAdminInfoDto() {
         SpaceAdminInfoDTO entity = spaceMapper.selectAdminInfoDto("spc41");
         assertThat(entity).isNotNull();
@@ -105,7 +103,7 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({ "/sql/space-data.sql", "/sql/unit-member-data.sql" })
+    @Sql({"/sql/space-data.sql", "/sql/unit-member-data.sql"})
     void testSelectSpaceIdByUserIdAndName() {
         String id = spaceMapper.selectSpaceIdByUserIdAndName(41L, "41");
         assertThat(id).isEqualTo("spc41");
@@ -119,7 +117,7 @@ public class SpaceMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql({ "/sql/space-data.sql", "/sql/unit-member-data.sql" })
+    @Sql({"/sql/space-data.sql", "/sql/unit-member-data.sql"})
     void testSelectByUserId() {
         List<SpaceEntity> entities = spaceMapper.selectByUserId(41L);
         assertThat(entities).isNotEmpty();

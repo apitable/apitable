@@ -18,13 +18,13 @@
 
 package com.apitable.space.mapper;
 
+import com.apitable.space.dto.BaseSpaceInfoDTO;
+import com.apitable.space.dto.MapDTO;
+import com.apitable.space.dto.SpaceAdminInfoDTO;
+import com.apitable.space.dto.SpaceDTO;
+import com.apitable.space.entity.SpaceEntity;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.apitable.space.dto.MapDTO;
-import com.apitable.space.dto.BaseSpaceInfoDTO;
-import com.apitable.space.dto.SpaceAdminInfoDTO;
-import com.apitable.space.vo.SpaceVO;
-import com.apitable.space.entity.SpaceEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
@@ -61,7 +61,7 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
      * @return the user's space infos.
      */
     @InterceptorIgnore(illegalSql = "true")
-    List<SpaceVO> selectListByUserId(@Param("userId") Long userId);
+    List<SpaceDTO> selectListByUserId(@Param("userId") Long userId);
 
     /**
      * @param userId user id
