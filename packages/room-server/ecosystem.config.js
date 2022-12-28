@@ -29,7 +29,6 @@ module.exports = {
       cwd: 'packages/room-server',
       // restart from memory
       max_memory_restart: maxMemoryRestart,
-      log_date_format: 'YYYY-MM-DD HH:mm:ss',
       exec_mode: 'cluster',
       instances: instanceCount,
       // exponential backoff restart delay
