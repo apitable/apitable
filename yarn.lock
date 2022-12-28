@@ -673,7 +673,7 @@ __metadata:
     piscina: ^3.2.0
     prettier: ^1.19.1
     pump: ^3.0.0
-    qs: ^6.9.4
+    qs: ^6.9.7
     rate-limiter-flexible: ^2.1.10
     redux: 4.2.0
     redux-batched-actions: 0.5.0
@@ -36229,6 +36229,15 @@ fsevents@^1.2.7:
   version: 6.9.4
   resolution: "qs@npm:6.9.4"
   checksum: 5ac0bd145f32d346d20c2fdcf19c8e548c5916458851e32527efb25be0c2cff8a3a81140c145c98a1184779b5b625c91bc7c50e147073bffb978fb7f4a9c8c8a
+  languageName: node
+  linkType: hard
+
+"qs@npm:^6.9.7":
+  version: 6.11.0
+  resolution: "qs@npm:6.11.0"
+  dependencies:
+    side-channel: ^1.0.4
+  checksum: 6e1f29dd5385f7488ec74ac7b6c92f4d09a90408882d0c208414a34dd33badc1a621019d4c799a3df15ab9b1d0292f97c1dd71dc7c045e69f81a8064e5af7297
   languageName: node
   linkType: hard
 
