@@ -29,6 +29,7 @@ subprojects {
       mavenBom("com.amazonaws:aws-java-sdk-bom:${aws_java_sdk_version}")
       mavenBom("io.grpc:grpc-bom:${io_grpc_version}")
       mavenBom("com.google.protobuf:protobuf-bom:${protobuf_java_version}")
+      mavenBom("org.springframework.cloud:spring-cloud-sleuth-otel-dependencies:${spring_cloud_sleuth_otel_version}")
     }
   }
   
