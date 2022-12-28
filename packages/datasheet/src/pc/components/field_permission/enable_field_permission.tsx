@@ -25,12 +25,22 @@ import { Switch } from 'antd';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useMount, useToggle } from 'ahooks';
 import { useRequest } from 'pc/hooks';
-import { DatasheetApi, IFieldPermissionMember, IFieldPermissionRole, IMember, IUnitValue, MemberType, Selectors, Strings, t } from '@apitable/core';
+import {
+  DatasheetApi,
+  IFieldPermissionMember,
+  IFieldPermissionRole,
+  IMember,
+  IUnitValue,
+  MemberType,
+  Selectors,
+  Strings,
+  t,
+  ConfigConstant,
+} from '@apitable/core';
 import { UnitItem } from 'pc/components/catalog/permission_settings/permission/unit_item';
 import { IOption, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import ArrowRightIcon from 'static/icon/common/common_icon_right_line.svg';
 import { useSelector } from 'react-redux';
-import { permission } from '@apitable/core/dist/config/constant';
 import { MembersDetail } from 'pc/components/catalog/permission_settings/permission/members_detail';
 import { MultiplemembersFilled } from '@apitable/icons';
 import { useResponsive } from 'pc/hooks';
@@ -90,12 +100,12 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
 
   const permissionList = [
     {
-      value: permission.editor,
+      value: ConfigConstant.permission.editor,
       label: t(Strings.field_permission_add_editor),
       subLabel: t(Strings.field_permission_edit_sub_label),
     },
     {
-      value: permission.reader,
+      value: ConfigConstant.permission.reader,
       label: t(Strings.field_permission_add_reader),
       subLabel: t(Strings.field_permission_read_sub_label),
     },
@@ -226,13 +236,13 @@ export const EnableFieldPermission: React.FC<IEnablePermission> = props => {
         {roleList.map(item => {
           const roleOptions = [
             {
-              value: permission.editor,
+              value: ConfigConstant.permission.editor,
               label: t(Strings.can_edit),
               disabled: !item.canEdit,
               disabledTip: t(Strings.cannot_switch_field_permission),
             },
             {
-              value: permission.reader,
+              value: ConfigConstant.permission.reader,
               label: t(Strings.can_read),
               disabled: !item.canRead,
               disabledTip: t(Strings.cannot_switch_field_permission),

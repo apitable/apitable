@@ -16,8 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant, databus, ILocalChangeset, IOperation, IResourceOpsCollect, resourceOpsToChangesets, StoreActions } from '@apitable/core';
-import { IInternalFix } from '@apitable/core/dist/commands/common/field';
+import {
+  ApiTipConstant,
+  databus,
+  ILocalChangeset,
+  IOperation,
+  IResourceOpsCollect,
+  resourceOpsToChangesets,
+  StoreActions,
+  IInternalFix,
+} from '@apitable/core';
 import { DatasheetChangesetSourceService } from 'database/datasheet/services/datasheet.changeset.source.service';
 import { OtService } from 'database/ot/services/ot.service';
 import { pick } from 'lodash';
@@ -129,5 +137,4 @@ export interface IServerSaveOptions extends databus.ISaveOptions {
   auth: IAuthHeader;
 }
 
-export interface IServerSaveOpsOptions extends IServerSaveOptions, databus.ISaveOpsOptions {
-}
+export interface IServerSaveOpsOptions extends IServerSaveOptions, databus.ISaveOpsOptions {}
