@@ -60,21 +60,7 @@ services:
 
   test-initdb:
     container_name: test-initdb
-    image: ${INITDB_IMAGE:-docker.vika.ltd/vikadata/vika/init-db:latest-alpha}
-    networks:
-      - unit-test
-    environment:
-      - TZ=Asia/Singapore
-      - ACTION=update
-      - DB_HOST=test-mysql
-      - DB_PORT=3306
-      - DB_NAME=apitable_test
-      - DB_USERNAME=apitable
-      - DB_PASSWORD=password
-
-  test-initdb-enterprise:
-    container_name: test-initdb
-    image: ${INITDB_IMAGE:-docker.vika.ltd/vikadata/vika/init-db-enterprise:latest-alpha}
+    image: ${INITDB_IMAGE:-docker.io/apitable/init-db:latest}
     networks:
       - unit-test
     environment:
