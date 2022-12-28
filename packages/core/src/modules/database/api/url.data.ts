@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // =============== Dashboard related =======================
 export const FETCH_DASHBOARD = '/dashboard/:dashboardId/dataPack';
 export const FETCH_SHARE_DASHBOARD = '/share/:shareId/dashboard/:dashboardId/dataPck';

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { getNewIds, IDPrefix } from 'utils';
 import { ResourceType } from 'types';
 import { CollaCommandName } from 'commands';

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // https://storybook.js.org/docs/react/essentials/controls
 
 import React from 'react';

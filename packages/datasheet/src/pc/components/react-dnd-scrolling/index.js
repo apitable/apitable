@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, {Component} from 'react';
-import {DndContext} from 'react-dnd';
-import {findDOMNode} from 'react-dom';
-import {throttle} from 'lodash';
+import React, { Component } from 'react';
+import { DndContext } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
+import { throttle } from 'lodash';
 import raf from 'raf';
 import getDisplayName from 'react-display-name';
 import hoist from 'hoist-non-react-statics';
-import {noop, intBetween, getCoords} from './utils';
+import { noop, intBetween, getCoords } from './utils';
 
 const DEFAULT_BUFFER = 150;
 
 export function createHorizontalStrength(_buffer) {
-  return function defaultHorizontalStrength({x, w, y, h}, point) {
+  return function defaultHorizontalStrength({ x, w, y, h }, point) {
     const buffer = Math.min(w / 2, _buffer);
     const inRange = point.x >= x && point.x <= x + w;
     const inBox = inRange && point.y >= y && point.y <= y + h;
@@ -46,7 +46,7 @@ export function createHorizontalStrength(_buffer) {
 }
 
 export function createVerticalStrength(_buffer) {
-  return function defaultVerticalStrength({y, h, x, w}, point) {
+  return function defaultVerticalStrength({ y, h, x, w }, point) {
     const buffer = Math.min(h / 2, _buffer);
     const inRange = point.y >= y && point.y <= y + h;
     const inBox = inRange && point.x >= x && point.x <= x + w;
@@ -150,7 +150,7 @@ export default function createScrollingComponent(WrappedComponent) {
           width: w,
           height: h
         } = this.container.getBoundingClientRect();
-        const box = {x, y, w, h};
+        const box = { x, y, w, h };
         const coords = getCoords(evt);
 
         // calculate strength
@@ -163,14 +163,14 @@ export default function createScrollingComponent(WrappedComponent) {
         }
       },
       100,
-      {trailing: false}
+      { trailing: false }
     );
 
     startScrolling() {
       let i = 0;
       const tick = () => {
-        const {scaleX, scaleY, container} = this;
-        const {strengthMultiplier, onScrollChange} = this.props;
+        const { scaleX, scaleY, container } = this;
+        const { strengthMultiplier, onScrollChange } = this.props;
 
         // stop scrolling if there's nothing to do
         if (strengthMultiplier === 0 || scaleX + scaleY === 0) {

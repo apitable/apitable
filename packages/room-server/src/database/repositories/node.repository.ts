@@ -27,21 +27,21 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the number of nodes with the given node ID
    */
   selectCountByNodeId(nodeId: string): Promise<number> {
-    return this.count({ where: { nodeId, isRubbish: false } });
+    return this.count({ where: { nodeId, isRubbish: false }});
   }
 
   /**
    * Obtain the number of templates with the given node ID
    */
   selectTemplateCountByNodeId(nodeId: string): Promise<number> {
-    return this.count({ where: { nodeId, isTemplate: true, isRubbish: false } });
+    return this.count({ where: { nodeId, isTemplate: true, isRubbish: false }});
   }
 
   /**
    * Obtain the number of nodes with the given parent node ID
    */
   selectCountByParentId(parentId: string): Promise<number> {
-    return this.count({ where: { parentId, isRubbish: false } });
+    return this.count({ where: { parentId, isRubbish: false }});
   }
 
   /**
