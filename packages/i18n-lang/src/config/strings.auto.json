@@ -114,26 +114,6 @@
             "en_US": "New dashboard",
             "zh_HK": "新建儀錶盤"
         },
-        "add_datasheet_editor": {
-            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
-            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
-            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
-        },
-        "add_datasheet_manager": {
-            "zh_CN": "拥有该表格的所有操作权限",
-            "en_US": "Can perform all actions on the file",
-            "zh_HK": "擁有該表格的所有操作權限"
-        },
-        "add_datasheet_reader": {
-            "zh_CN": "可查看该表格内容或进行评论",
-            "en_US": "Can read data or comment on the datasheet",
-            "zh_HK": "可查看該表格內容或進行評論"
-        },
-        "add_datasheet_updater": {
-            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
-            "en_US": "Can read, add and edit records except deleting records",
-            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
-        },
         "add_favorite_success": {
             "zh_CN": "星标成功，可以前往星标栏查看",
             "en_US": "Pinned to top successfully",
@@ -153,26 +133,6 @@
             "zh_CN": "请选择一列进行筛选",
             "en_US": "Pick another field to Filter",
             "zh_HK": "請選擇一列進行篩選"
-        },
-        "add_folder_editor": {
-            "zh_CN": "在「只可更新」基础上，还可以编辑和分享文件",
-            "en_US": "In addition to \"Update-only\", can also edit and share files",
-            "zh_HK": "在「只可更新」基礎上，還可以編輯和分享文件"
-        },
-        "add_folder_manager": {
-            "zh_CN": "拥有该文件的所有操作权限",
-            "en_US": "Can perform all actions to the file",
-            "zh_HK": "擁有該文件的所有操作權限"
-        },
-        "add_folder_reader": {
-            "zh_CN": "只可查看该文件夹下的内容",
-            "en_US": "Can read files in the folder",
-            "zh_HK": "只可查看該文件夾下的內容"
-        },
-        "add_folder_updater": {
-            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
-            "en_US": "Can read, add and edit records except deleting records",
-            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
         },
         "add_form": {
             "zh_CN": "新建神奇表单",
@@ -304,11 +264,6 @@
         "add_role_error_limit": {
             "zh_CN": "角色的名称不能超过 ${max} 字",
             "en_US": "The name of the role cannot exceed ${max} characters"
-        },
-        "add_role_success": {
-            "zh_CN": "添加权限成功",
-            "en_US": "Permission added successfully",
-            "zh_HK": "添加權限成功"
         },
         "add_role_success_message": {
             "zh_CN": "角色创建成功",
@@ -2087,20 +2042,10 @@
             "en_US": "Cameroon",
             "zh_HK": "喀麥隆"
         },
-        "can_control": {
-            "zh_CN": "可以管理",
-            "en_US": "Manager",
-            "zh_HK": "可以管理"
-        },
         "can_duplicate": {
             "zh_CN": "可另存为副本",
             "en_US": "can save as copy",
             "zh_HK": "可另存為副本"
-        },
-        "can_edit": {
-            "zh_CN": "可以编辑",
-            "en_US": "can edit",
-            "zh_HK": "可以編輯"
         },
         "can_manage": {
             "zh_CN": "可管理",
@@ -2111,16 +2056,6 @@
             "zh_CN": "无法解绑",
             "en_US": "Can't unbind",
             "zh_HK": "無法解綁"
-        },
-        "can_read": {
-            "zh_CN": "只可阅读",
-            "en_US": "Read only",
-            "zh_HK": "只可閱讀"
-        },
-        "can_updater": {
-            "zh_CN": "只可更新",
-            "en_US": "Update-only",
-            "zh_HK": "只可更新"
         },
         "can_view": {
             "zh_CN": "可查看",
@@ -2757,11 +2692,6 @@
             "en_US": " pasted record",
             "zh_HK": "粘貼了記錄"
         },
-        "command_rollback": {
-            "zh_CN": "回滚了记录",
-            "en_US": " rolled back record",
-            "zh_HK": "回滾了記錄"
-        },
         "command_set_field_attr": {
             "zh_CN": "修改了列配置",
             "en_US": " modified field settings",
@@ -2796,11 +2726,6 @@
             "zh_CN": "撤销了粘贴",
             "en_US": " canceled pasting",
             "zh_HK": "撤銷了粘貼"
-        },
-        "command_undo_rollback": {
-            "zh_CN": "撤销了回滚",
-            "en_US": " canceled rolling back",
-            "zh_HK": "撤銷了回滾"
         },
         "command_undo_set_field_attr": {
             "zh_CN": "撤销了修改列配置",
@@ -3327,6 +3252,11 @@
             "en_US": "Croatia",
             "zh_HK": "克羅地亞"
         },
+        "crypto_field": {
+            "zh_CN": "该列无权访问",
+            "en_US": "You have no access to the field",
+            "zh_HK": "該列無權訪問"
+        },
         "csv": {
             "zh_CN": "CSV 文件",
             "en_US": "As .csv format",
@@ -3492,26 +3422,6 @@
             "en_US": "Dashboard",
             "zh_HK": "儀錶盤"
         },
-        "dashboard_editor_label": {
-            "zh_CN": "在「只可阅读」基础上，还可以编辑小程序和分享仪表盘",
-            "en_US": "In addition to \"Read-only\", can also edit widget and share dashboard",
-            "zh_HK": "在「只可閱讀」基礎上，還可以編輯小程序和分享儀錶盤"
-        },
-        "dashboard_manager_label": {
-            "zh_CN": "在「可以编辑」基础上，还可以删除和配置仪表盘",
-            "en_US": "In addition to \"Editor\",  can also  add or delete dashboard",
-            "zh_HK": "在「可以編輯」基礎上，還可以刪除和配置儀錶盤"
-        },
-        "dashboard_reader_label": {
-            "zh_CN": "只可查看该仪表盘内容",
-            "en_US": "Can read widget in the dashboard",
-            "zh_HK": "只可查看該儀錶盤內容"
-        },
-        "dashboard_updater_label": {
-            "zh_CN": "与「只可阅读」一致",
-            "en_US": "Same as \"Read-only\"",
-            "zh_HK": "與「只可閱讀」一致"
-        },
         "data_calculating": {
             "zh_CN": "数据计算中...",
             "en_US": "Computing...",
@@ -3527,20 +3437,10 @@
             "en_US": "Loading...",
             "zh_HK": "數據加載中..."
         },
-        "datasheet": {
-            "zh_CN": "维格表",
-            "en_US": "Datasheet",
-            "zh_HK": "維格表"
-        },
         "datasheet_count": {
             "zh_CN": "文件节点数量",
             "en_US": "Total Files",
             "zh_HK": "文件節點數量"
-        },
-        "datasheet_editor_label": {
-            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
-            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
-            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
         },
         "datasheet_exist_widget": {
             "zh_CN": "此表包含的小程序：",
@@ -3551,16 +3451,6 @@
             "zh_CN": "当前处于模板体验中，需要使用模板才能正常写入数据",
             "en_US": "Use the template first, then you can modify or write data",
             "zh_HK": "當前處於模板體驗中，需要使用模板才能正常寫入數據"
-        },
-        "datasheet_manager_label": {
-            "zh_CN": "在「可以编辑」基础上，还可以配置字段和表格",
-            "en_US": "In addition to \"Editor\",  can also configure datasheet and fields",
-            "zh_HK": "在「可以編輯」基礎上，還可以配置字段和表格"
-        },
-        "datasheet_reader_label": {
-            "zh_CN": "你仅可查看此表格的内容",
-            "en_US": " You can only view the datasheet but cannot edit it.\n",
-            "zh_HK": "你僅可查看此表格的內容"
         },
         "date_after_or_equal": {
             "zh_CN": "晚于等于",
@@ -3756,11 +3646,6 @@
             "zh_CN": "删除列",
             "en_US": "Delete field",
             "zh_HK": "刪除列"
-        },
-        "delete_field_tips_content": {
-            "zh_CN": "确定删除维格列「${field_title}」吗？",
-            "en_US": "Are you sure you want to delete the \"${field_title}\" field?",
-            "zh_HK": "確定刪除維格列「${field_title}」嗎？"
         },
         "delete_file_message_content": {
             "zh_CN": "该文件已被删除，你无法继续访问当前文件。\n",
@@ -3999,11 +3884,6 @@
             "zh_CN": "停用",
             "en_US": "Disable",
             "zh_HK": "停用"
-        },
-        "disabled_expand_link_record": {
-            "zh_CN": "没有关联表的查看权限，无法展开标签",
-            "en_US": "You don't have the permission to view the related datasheet, you can't expand the record",
-            "zh_HK": "沒有關聯表的查看權限，無法展開標籤"
         },
         "disabled_file_shared": {
             "zh_CN": "已禁止公开链接分享",
@@ -4963,11 +4843,6 @@
             "en_US": "Feedback",
             "zh_HK": "意見反饋"
         },
-        "field": {
-            "zh_CN": "维格列",
-            "en_US": "Field",
-            "zh_HK": "維格列"
-        },
         "field_circular_err": {
             "zh_CN": "选择的引用列会导致循环引用，请修改。",
             "en_US": "The selected field will cause a circular reference. Please correct.",
@@ -5027,11 +4902,6 @@
             "zh_CN": "你可以在单元格内输入或者从日历面板选择日期",
             "en_US": "Enter a date or pick one from the calendar, and define its format (such as Year/Month/Day) and whether to include time",
             "zh_HK": "你可以在單元格內輸入或者從日曆面板選擇日期"
-        },
-        "field_desc_denied": {
-            "zh_CN": "无该列的访问权限",
-            "en_US": "Access denied for this field",
-            "zh_HK": "無該列的訪問權限"
         },
         "field_desc_email": {
             "zh_CN": "你可以在单元格内添加邮箱",
@@ -5238,11 +5108,6 @@
             "en_US": "https://help.vika.cn/docs/guide/manual-field-text",
             "zh_HK": "https://help.vika.cn/docs/guide/manual-field-text"
         },
-        "field_help_tree_select": {
-            "zh_CN": "这里是多级联动的帮助页面",
-            "en_US": "This is the help page of tree select",
-            "zh_HK": "這裡是多級聯動的幫助頁面"
-        },
         "field_help_url": {
             "zh_CN": "https://help.vika.cn/docs/guide/manual-field-url",
             "en_US": "https://help.vika.cn/docs/guide/manual-field-url",
@@ -5278,11 +5143,6 @@
             "en_US": "Please fill in this field",
             "zh_HK": "請填寫該字段"
         },
-        "field_title": {
-            "zh_CN": "维格列名",
-            "en_US": "Field name",
-            "zh_HK": "維格列名"
-        },
         "field_title_attachment": {
             "zh_CN": "附件",
             "en_US": "Attachment",
@@ -5317,11 +5177,6 @@
             "zh_CN": "日期",
             "en_US": "Date",
             "zh_HK": "日期"
-        },
-        "field_title_denied": {
-            "zh_CN": "无权限",
-            "en_US": "Denied",
-            "zh_HK": "無權限"
         },
         "field_title_email": {
             "zh_CN": "邮箱",
@@ -5553,25 +5408,10 @@
             "en_US": "Enter a title",
             "zh_HK": "請輸入標題"
         },
-        "folder_editor_label": {
-            "zh_CN": "在「只可更新」基础上，还可以编辑和分享文件",
-            "en_US": "In addition to \"Update-only\", can also edit and share files",
-            "zh_HK": "在「只可更新」基礎上，還可以編輯和分享文件"
-        },
         "folder_level_2_limit_tips": {
             "zh_CN": "哟，你的文件夹层级已经达到了 2 级的限制",
             "en_US": "Hey, the level of your folder has reached the limit of level-2.",
             "zh_HK": "喲，你的文件夾層級已經達到了 2 級的限制"
-        },
-        "folder_manager_label": {
-            "zh_CN": "在「可以编辑」基础上，还可以增删和配置文件",
-            "en_US": "In addition to \"Editor\", can also add or delete files",
-            "zh_HK": "在「可以編輯」基礎上，還可以增刪和配置文件"
-        },
-        "folder_reader_label": {
-            "zh_CN": "你仅可查看此文件夹下的文件",
-            "en_US": " You can only view the files under this folder and can't edit them.",
-            "zh_HK": "你僅可查看此文件夾下的文件"
         },
         "folds_hidden_fields_by_count": {
             "zh_CN": "收起 ${count} 个隐藏字段",
@@ -5637,11 +5477,6 @@
             "zh_CN": "请输入描述",
             "en_US": "Enter a description",
             "zh_HK": "請輸入描述"
-        },
-        "form_editor_label": {
-            "zh_CN": "在「只可更新」基础上，还可以设置和分享神奇表单",
-            "en_US": "In addition to \"Update-only\", can also configure or share form",
-            "zh_HK": "在「只可更新」基礎上，還可以設置和分享神奇表單"
         },
         "form_empty_tip": {
             "zh_CN": "你还未填写内容，请填写后再提交",
@@ -5718,11 +5553,6 @@
             "en_US": "Show logo",
             "zh_HK": "顯示 Logo"
         },
-        "form_manager_label": {
-            "zh_CN": "在「可以编辑」基础上，还可以删除神奇表单",
-            "en_US": "In addition to \"Editor\", can also configure form",
-            "zh_HK": "在「可以編輯」基礎上，還可以刪除神奇表單"
-        },
         "form_network_error_tip": {
             "zh_CN": "当前网络存在异常，请稍后再试",
             "en_US": "Network disconnected. Please try again later.",
@@ -5737,11 +5567,6 @@
             "zh_CN": "当前文件夹没有被设置为允许编辑，所以该表单无法填写",
             "en_US": "The form can't be filled because its folder is not editable",
             "zh_HK": "當前文件夾沒有被設置為允許編輯，所以該表單無法填寫"
-        },
-        "form_reader_label": {
-            "zh_CN": "只可查看该神奇表单，不允许提交",
-            "en_US": "Can read the form,not submit it",
-            "zh_HK": "只可查看該神奇表單，不允許提交"
         },
         "form_setting": {
             "zh_CN": "神奇表单设置",
@@ -5857,11 +5682,6 @@
             "zh_CN": "使用教程",
             "en_US": "User guide",
             "zh_HK": "使用教程"
-        },
-        "form_updater_label": {
-            "zh_CN": "在「只可阅读」基础上，还可以提交神奇表单",
-            "en_US": "Can read, can also submit form",
-            "zh_HK": "在「只可閱讀」基礎上，還可以提交神奇表單"
         },
         "form_view": {
             "zh_CN": "神奇表单",
@@ -6028,50 +5848,25 @@
             "en_US": "AND(3>2, 4>3)\n=> true",
             "zh_HK": "AND(3>2, 4>3)\n=> true"
         },
-        "function_and_summary": {
-            "zh_CN": "如果所有参数均为真（true），则返回真（true），否则返回假（false）。\n\n【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列",
-            "en_US": "Returns true if all the arguments are true, returns false otherwise.",
-            "zh_HK": "如果所有參數均為真（true），則返回真（true），否則返回假（false）。\n\n【logical】是邏輯參數，可以是邏輯值、數組或引用的維格列"
-        },
         "function_arraycompact_example": {
             "zh_CN": "ARRAYCOMPACT([1,2,\"\",3,false,\" \", null])\n=> [1,2,3,false,\" \"]",
             "en_US": "ARRAYCOMPACT([1,2,\"\",3,false,\" \", null])\n=> [1,2,3,false,\" \"]",
             "zh_HK": "ARRAYCOMPACT([1,2,\"\",3,false,\" \", null])\n=> [1,2,3,false,\" \"]"
-        },
-        "function_arraycompact_summary": {
-            "zh_CN": "从数组中删除空字符串和空值。\n\n【item】表示数组值，比如多选、附件、神奇关联和神奇引用维格列类型的单元格值。\n\n本函数会保留“ false”值和空白字符的字符串",
-            "en_US": "Removes empty strings and null values from the array. Keeps \"false\" and strings that contain one or more blank characters.",
-            "zh_HK": "從數組中刪除空字符串和空值。\n\n【item】表示數組值，比如多選、附件、神奇關聯和神奇引用維格列類型的單元格值。\n\n本函數會保留“ false”值和空白字符的字符串"
         },
         "function_arrayflatten_example": {
             "zh_CN": "ARRAYFLATTEN([1, 2, \" \", 3, ],[false])\n=> [1, 2, 3 ,false]",
             "en_US": "ARRAYFLATTEN([1, 2, \" \", 3, ],[false])\n=> [1, 2, 3 ,false]",
             "zh_HK": "ARRAYFLATTEN([1, 2, \" \", 3, ],[false])\n=> [1, 2, 3 ,false]"
         },
-        "function_arrayflatten_summary": {
-            "zh_CN": "通过删除任何数组嵌套来平铺数组。 所有数据都成为同一个数组的元素。\n\n【item】表示数组值，比如多选、附件、神奇关联和神奇引用维格列类型的单元格值。",
-            "en_US": "Flattens the array by removing any array nesting. All items become elements of a single array.",
-            "zh_HK": "通過刪除任何數組嵌套來平鋪數組。所有數據都成為同一個數組的元素。\n\n【item】表示數組值，比如多選、附件、神奇關聯和神奇引用維格列類型的單元格值。"
-        },
         "function_arrayjoin_example": {
             "zh_CN": "ARRAYJOIN({兴趣爱好} , \"; \")",
             "en_US": "ARRAYJOIN(values, \"; \") ",
             "zh_HK": "ARRAYJOIN({興趣愛好} , \"; \")"
         },
-        "function_arrayjoin_summary": {
-            "zh_CN": "将汇总数组中的所有值拼接成一个带分隔符的字符串。\n\n【item】表示数组值，比如多选、附件、神奇关联和神奇引用维格列类型的单元格值。",
-            "en_US": "Join the array of rollup items into a string with a separator.",
-            "zh_HK": "將匯總數組中的所有值拼接成一個帶分隔符的字符串。\n\n【item】表示數組值，比如多選、附件、神奇關聯和神奇引用維格列類型的單元格值。"
-        },
         "function_arrayunique_example": {
             "zh_CN": "ARRAYUNIQUE([1,2,3,3,1])\n=> \"[1,2,3]\"",
             "en_US": "ARRAYUNIQUE([1,2,3,3,1])\n=> \"[1,2,3]\"",
             "zh_HK": "ARRAYUNIQUE([1,2,3,3,1])\n=> \"[1,2,3]\""
-        },
-        "function_arrayunique_summary": {
-            "zh_CN": "仅返回数组中的唯一项。\n\n【item】表示数组值，比如多选、附件、神奇关联和神奇引用维格列类型的单元格值。",
-            "en_US": "Returns only unique items in the array.",
-            "zh_HK": "僅返回數組中的唯一項。\n\n【item】表示數組值，比如多選、附件、神奇關聯和神奇引用維格列類型的單元格值。"
         },
         "function_associate_sheet": {
             "zh_CN": "关联表${datasheetname}的记录",
@@ -6153,11 +5948,6 @@
             "en_US": "Returns the number of all elements including text and blanks.",
             "zh_HK": "統計所有值的數量，包括空值。\n\n【textOrNumber】可以是輸入的參數或引用的列。\n\n本函數可以計算輸入的參數和單元格內包含了多少個值，包括空值。"
         },
-        "function_countif_example": {
-            "zh_CN": "COUNTIF({评级}, \"A\")\n=> 2\n// 其中{评级}为”神奇引用“类型的维格列，数据格式为数组。\n\nCOUNTIF({得分}, 3, \">\")\n=> 2\n// 其中{得分}为”神奇引用“类型的维格列，数据格式为数组。\n\nCOUNTIF({顺口溜}, \"葡萄\")\n=> 2\n// 其中{顺口溜}为”文本“类型的维格列，数据格式为文本字符串。\n",
-            "en_US": "COUNTIF({rating}, \"A\") => 2 \n// where {Ratings} is a \"magic quote\" type of dimension column, and the data format is an array. \n\nCOUNTIF({Score}, 3, \">\") => 2 \n// where {score} is a \"magic quote\" type of dimensional column, and the data format is array. \n\nCOUNTIF({smoothie}, \"grapes\") => 2\n// where {jingle} is a dimension column of type \"text\", and the data format is text string.",
-            "zh_HK": "COUNTIF({評級}, \"A\")\n=> 2\n// 其中{評級}為”神奇引用“類型的維格列，數據格式為數組。\n\nCOUNTIF({得分}, 3, \">\")\n=> 2\n// 其中{得分}為”神奇引用“類型的維格列，數據格式為數組。\n\nCOUNTIF({順口溜}, \"葡萄\")\n=> 2\n// 其中{順口溜}為”文本“類型的維格列，數據格式為文本字符串。\n"
-        },
         "function_countif_summary": {
             "zh_CN": "在values中统计keyword出现的次数。\n\nvalues：指定从哪里查找数据。支持数组类型或文本类型的数据。\nkeyword：要查找并统计的关键词。\noperation：比较符，非必填项。你可以填入条件符号大于\">\"，小于\"<\"，等于\"=\"，不等于\"!=\"，如果不填写默认为等于。\n例子一中没有填写比较符，默认统计等于\"A\"的值出现的次数。\n例子二中填写了比较符\">\"，意味统计大于\"2\"的值出现的次数。\n\n使用场景：\n1）可以统计一串文本数组[A, B , C , D, A]中，字符\"A\"出现的数量为2，见例子一。\n2）可以统计一串数字数组[1, 2, 3, 4, 5]中，大于3的数字数量为2，见例子二。\n3)可以统计一串文本字符串\"吃葡萄不吐葡萄皮\"中，\"葡萄\"出现的次数为2，见例子三。",
             "en_US": "Count the number of keyword occurrences in values. \n\nValues: specify where to find the data from. Supports data of array type or text type. \nKeyword: the keyword to be looked up and counted. \nOperation: comparator, not required. You can fill in the condition symbols greater than \">\", less than \"<\", equal to \"=\", not equal to \"! =\", if not filled in the default is equal to. \nExample 1 does not fill in the comparison character, the default count is equal to the number of times the value of \"A\" appears. \nExample 2 is filled with the comparator \">\", which means that the number of occurrences of values greater than \"2\" is counted. \n\nUsage scenarios. \n1) You can count the number of occurrences of the character \"A\" in a string of text arrays [A, B, C, D, A] as 2, see example 1. \n2) You can count the number of numbers greater than 3 in an array of numbers [1, 2, 3, 4, 5] as 2, see example 2. \n3) You can count the number of occurrences of \"grape\" in a string of text \"eat grapes without spitting out the skin\" as 2, see example 3.",
@@ -6198,21 +5988,6 @@
             "en_US": "Adds specified \"count\" units to a datetime.",
             "zh_HK": "簡介\n為指定的日期增加固定的時間間隔。\n\n參數說明\ndate：是你指定的日期。本函數將在該日期基礎上增加一定的時間間隔。\ncount：是時間間隔，支持輸入帶正負號的數字。如果為正數，即表示增加幾天（可自定義計時單位），見例子一；如果為負數，即表示減少幾天，見例子二；\nunits：是計時單位，即增加時間間隔的單位。比如按 “天” 計算也可以轉換為按 “年” 計算。\n\n計時單位包括以下符號，兩種格式都可以使用：「單位說明符 」→ 「縮寫」\n毫秒：「milliseconds」 → 「ms」\n秒：「seconds」 → 「s」\n分鐘：「minutes」 → 「m」\n小時：“hours” → “h”\n天：“days” → “d”\n週：“weeks” → “w”\n月：“months” → “M”\n季度：“quarters” → “Q”\n年：“years” → “y”\n\n點擊下方鏈接可查看全部計時單位。"
         },
-        "function_dateadd_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "en_US": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function"
-        },
-        "function_datestr_example": {
-            "zh_CN": "DATESTR(\"2020/10/01\")\n=> 2020-10-01\n\nDATESTR({启动时间})\n=> 2020-06-10",
-            "en_US": "DATESTR({date of begin})\n=> 2020-06-10",
-            "zh_HK": "DATESTR(\"2020/10/01\")\n=> 2020-10-01\n\nDATESTR({啟動時間})\n=> 2020-06-10"
-        },
-        "function_datestr_summary": {
-            "zh_CN": "将日期格式化为“年-月-日”形式的文本（固定格式为YYYY-MM-DD）\n\n【date】是被格式化的日期\n\n日期经过格式化后，将变为一串文本，不再具有日期数据的属性。",
-            "en_US": "Formats a datetime into a string (YYYY-MM-DD).",
-            "zh_HK": "將日期格式化為“年-月-日”形式的文本（固定格式為YYYY-MM-DD）\n\n【date】是被格式化的日期\n\n日期經過格式化後，將變為一串文本，不再具有日期數據的屬性。"
-        },
         "function_datetime_diff_example": {
             "zh_CN": "DATETIME_DIFF( \"2020-08-11\"  ,\"2020-08-10\", \"days\")\n=> 1\n\nDATETIME_DIFF( \"2020-08-9\" ,\"2020-08-10\", \"days\")\n=> -1      \n\nDATETIME_DIFF( {截止时间} , TODAY(), \"hours\")\n=> 48",
             "en_US": "DATETIME_DIFF( TODAY(), {date of begin},  \"days\")\n=> 15",
@@ -6222,11 +5997,6 @@
             "zh_CN": "返回两个日期之间的差值（有正负），即日期1减去日期2。\n\n【date1】日期1\n【date2】日期2\n【units】计时单位，日期1与日期2差值的计算单位。比如按“天”计算也可以转换为按“年”计算。\n\n计时单位包括以下符号，两种格式都可以使用：「单位说明符 」→ 「缩写」\n毫秒：\"milliseconds\" → \"ms\"\n秒：\"seconds\" → \"s\"\n分钟：\"minutes\" → \"m\"\n小时：\"hours\" → \"h\"\n天：\"days\" → \"d\"\n周：\"weeks\" → \"w\"\n月：\"months\" → \"M\"\n季度：\"quarters\" → \"Q\"\n年：\"years\" → \"y\"\n\n点击下方链接可查看全部计时单位。",
             "en_US": "Returns the difference between datetimes in specified units. Default units are seconds.\nThe difference between datetimes is determined by subtracting [date2] from [date1]. This means that if [date2] is later than [date1], the resulting value will be negative.",
             "zh_HK": "返回兩個日期之間的差值（有正負），即日期1減去日期2。\n\n【date1】日期1\n【date2】日期2\n【units】計時單位，日期1與日期2差值的計算單位。比如按“天”計算也可以轉換為按“年”計算。\n\n計時單位包括以下符號，兩種格式都可以使用：「單位說明符 」→ 「縮寫」\n毫秒：\"milliseconds\" → \"ms\"\n秒：\"seconds\" → \"s\"\n分鐘：\"minutes\" → \"m\"\n小時：\"hours\" → \"h\"\n天：\"days\" → \"d\"\n週：\"weeks\" → \"w\"\n月：\"months\" → \"M\"\n季度：\"quarters\" → \"Q\"\n年：\"years\" → \"y\"\n\n點擊下方鏈接可查看全部計時單位。"
-        },
-        "function_datetime_diff_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "en_US": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function"
         },
         "function_datetime_format_example": {
             "zh_CN": "DATETIME_FORMAT(\"2020-10-01\", \"DD-MM-YYYY\")\n=> 01-10-2020\n\nDATETIME_FORMAT(\"2020-10-01\", \"YYYY / MM / DD\")\n=>2020/10/01\n\nDATETIME_FORMAT(\"2020-10-01\", \"MM.DD\")\n=>10.01\n\nDATETIME_FORMAT(TODAY(), \"DD-MM-YYYY\")\n=> 01-10-2020",
@@ -6238,11 +6008,6 @@
             "en_US": "Formats a datetime into a specified string. For a list of supported format specifiers, please click here.",
             "zh_HK": "將日期以自定義的形式格式化為文本。\n\n【date】是需要被格式化的日期。\n【specified_output_format】是選擇的格式化說明符。比如說明符可以是：\n\"DD-MM-YYYY\"表示\"日-月-年\"，見例子一；\n\" YYYY / MM / DD\"表示\"年/月/日\"，見例子二；\n\"MM.DD\"表示\"月.日\"，見例子三。\n\n日期經過格式化後，將變為一串文本。\n\n本函數支持的日期格式化說明符請看下方鏈接。"
         },
-        "function_datetime_format_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/datetime-format-specified-output-format",
-            "en_US": "https://help.vika.cn/docs/guide/datetime-format-specified-output-format",
-            "zh_HK": "https://help.vika.cn/docs/guide/datetime-format-specified-output-format"
-        },
         "function_datetime_parse_example": {
             "zh_CN": "DATETIME_PARSE(\"20201001\")\n=> \"2020/10/01\"\n\nDATETIME_PARSE(\"01 10 2020 18:00\", \"DD MM YYYY HH:mm\")\n=> \"2020/10/01 18:00\"\n\nDATETIME_PARSE(\"01号10月2020年18:00时\", \"DD号MM月YYYY年HH:mm时\")\n=> \"2020/10/01 18:00\"",
             "en_US": "DATETIME_PARSE(\"10 Jan 2020 18:00\", \"D MMM YYYY HH:mm\")\n=> \"2020/01/10 06:00\"",
@@ -6252,11 +6017,6 @@
             "zh_CN": "将文本转换为结构化日期类型。\n\n【date】是要被格式化为日期的文本。\n【input_format】非必填，本参数是日期格式化说明符。对于系统无法识别的文本日期内容，你可以自己解释为结构化的日期。见例子二。\n\n本函数支持的日期格式化说明符和语言环境请查看下方链接。",
             "en_US": "Interprets a text string as a structured date, with optional input format and locale parameters. The output format will always be formatted 'M/D/YYYY h:mm a'.",
             "zh_HK": "將文本轉換為結構化日期類型。\n\n【date】是要被格式化為日期的文本。\n【input_format】非必填，本參數是日期格式化說明符。對於系統無法識別的文本日期內容，你可以自己解釋為結構化的日期。見例子二。\n\n本函數支持的日期格式化說明符和語言環境請查看下方鏈接。"
-        },
-        "function_datetime_parse_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/datetime-format-specified-output-format/",
-            "en_US": "https://help.vika.cn/docs/guide/datetime-format-specified-output-format/",
-            "zh_HK": "https://help.vika.cn/docs/guide/datetime-format-specified-output-format/"
         },
         "function_day_example": {
             "zh_CN": "DAY(\"2020.10.01\")\n=>1\n\nDAY({完成日期})\n=>5",
@@ -6268,11 +6028,6 @@
             "en_US": "Returns the day of the month of a datetime in the form of a number between 1-31.",
             "zh_HK": "返回指定日期屬於當月的第幾號，輸出格式為1-31之間的整數。\n\n【date】是指定的日期。\n比如，數字1表示日期屬於當月的第1號。"
         },
-        "function_encode_url_component_example": {
-            "zh_CN": "\"https://www.baidu.com/s?wd=\" & ENCODE_URL_COMPONENT（{搜索关键词}）",
-            "en_US": "ENCODE_URL_COMPONENT({Search Phrase})",
-            "zh_HK": "\"https://www.baidu.com/s?wd=\" & ENCODE_URL_COMPONENT（{搜索關鍵詞}）"
-        },
         "function_encode_url_component_summary": {
             "zh_CN": "把文本编码为 URL的格式。\n\n【component_string】是需要被编码的文本。不编码以下字符：- _ . ~\n\n比如将第一个例子的输出值复制到浏览器地址栏，就相当于在百度里搜索”苹果“的URL",
             "en_US": "Replaces certain characters with encoded equivalents for use in constructing URLs or URIs. Does not encode the following characters: - _ . ~",
@@ -6282,11 +6037,6 @@
             "zh_CN": "函数需要以 ) 结尾",
             "en_US": "Function needs to end with \")\"",
             "zh_HK": "函數需要以 ) 結尾"
-        },
-        "function_err_invalid_field_name": {
-            "zh_CN": "无效的维格列或函数名称：${fieldId}",
-            "en_US": "Invalid column or function name: ${fieldId}",
-            "zh_HK": "無效的維格列或函數名稱：${fieldId}"
         },
         "function_err_no_left_bracket": {
             "zh_CN": "函数名右侧缺少 (",
@@ -6368,11 +6118,6 @@
             "en_US": "Fill in variables, operational characters, and functions to form formulas for calculations",
             "zh_HK": "填寫變量、運算符和函數來組成公式進行運算"
         },
-        "function_example_usage": {
-            "zh_CN": "引用维格列：{列名}\n使用运算符：2 * 5\n使用函数：AVERAGE({数字列1}, {数字列2})\n使用IF语句：IF(逻辑条件, \"值1\", \"值2\")",
-            "en_US": "Quoting the Column: {Columns name} \nUsing operator: 2 * 5 \nUsing function: AVERAGE({Number Columns 1}, {Number Columns 2}) \nUsing IF statement: IF(logical condition, \"value 1\", \"value 2 \")",
-            "zh_HK": "引用維格列：{列名}\n使用運算符：2 * 5\n使用函數：AVERAGE({數字列1}, {數字列2})\n使用IF語句：IF(邏輯條件, \"值1\", \"值2\")"
-        },
         "function_exp_example": {
             "zh_CN": "EXP(1)\n=> 2.72\n\nEXP(2)\n=> 7.40",
             "en_US": "EXP(1)\n=> 2.72\n\nEXP(2)\n=> 7.40",
@@ -6388,20 +6133,10 @@
             "en_US": "IF({average score} > 60, TRUE(), FALSE())",
             "zh_HK": "IF({完成狀態(勾選)}= FALSE(), \"未完成\"， \"已完成\")\n\nIF({平均成績} >60, TRUE(), FALSE())"
         },
-        "function_false_summary": {
-            "zh_CN": "返回逻辑值false\n\n可以判断勾选类型的维格列中单元格是否为”未选中状态“，见例子一； \n\n可以和FALSE一起使用输出为真和假的布尔值，见例子二；",
-            "en_US": "Logical value false.",
-            "zh_HK": "返回邏輯值false\n\n可以判斷勾選類型的維格列中單元格是否為”未選中狀態“，見例子一； \n\n可以和FALSE一起使用輸出為真和假的布爾值，見例子二；"
-        },
         "function_find_example": {
             "zh_CN": "FIND(\"苹果\", \"这个苹果又大又圆，要买两斤苹果吗？\")\n=> 3\n\nFIND(\"香蕉\", \"这个苹果又大又圆，要买两斤苹果吗？\")\n=> 0\n\nFIND(\"苹果\", \"这个苹果又大又圆，买两斤苹果吗？\"，10)\n=> 13",
             "en_US": "FIND(\"apple\", \"This is an apple\")\n=> 12",
             "zh_HK": "FIND(\"蘋果\", \"這個蘋果又大又圓，要買兩斤蘋果嗎？\")\n=> 3\n\nFIND(\"香蕉\", \"這個蘋果又大又圓，要買兩斤蘋果嗎？\")\n=> 0\n\nFIND(\"蘋果\", \"這個蘋果又大又圓，買兩斤蘋果嗎？\"，10)\n=> 13"
-        },
-        "function_find_summary": {
-            "zh_CN": "查找特定的文本在内容中第一次出现的位置。\n\n【stringToFind】是要查找到的特定文本。\n【whereToSearch】指定从哪段内容内查找文本。可以输入文本参数或者引用维格列。\n【startFromPosition】非必填，指定从内容的哪个位置开始查找（用数字表示第几个字符）。\n\n本函数可以在一大段内容中快速查找特定文本出现的位置。\n如果返回数字3，表示文本出现在该内容的第3个字符。\n如果未找到匹配的文本，则结果将为0。\n\n其效果与SEARCH()类似，但是未找到匹配项时，SEARCH()返回值为空而不是0。",
-            "en_US": "Finds an occurrence of stringToFind in whereToSearch string starting from an optional startFromPosition.(startFromPosition is 0 by default.) If no occurrence of stringToFind is found, the result will be 0.",
-            "zh_HK": "查找特定的文本在內容中第一次出現的位置。\n\n【stringToFind】是要查找到的特定文本。\n【whereToSearch】指定從哪段內容內查找文本。可以輸入文本參數或者引用維格列。\n【startFromPosition】非必填，指定從內容的哪個位置開始查找（用數字表示第幾個字符）。\n\n本函數可以在一大段內容中快速查找特定文本出現的位置。\n如果返回數字3，表示文本出現在該內容的第3個字符。\n如果未找到匹配的文本，則結果將為0。\n\n其效果與SEARCH()類似，但是未找到匹配項時，SEARCH()返回值為空而不是0。"
         },
         "function_floor_example": {
             "zh_CN": "FLOOR(1.01, 0.1)\n=> 1.0\n\nFLOOR(-1.99, 0.1)\n=> -2.0",
@@ -6422,11 +6157,6 @@
             "zh_CN": "返回当前日期和指定日期之间的差值（无正负）。\n\n【date】是指定日期，即用指定日期减去当前日期，计算两个日期相差的多少天（自定义计时单位），无正负。\n【units】计时单位，即指定日期与当前日期差值的计算单位，比如按”天“计算也可以转换为按”年“计算。\n\n计时单位包括以下符号，两种格式都可以使用：\n「单位说明符 」→ 「缩写」\n毫秒：\"milliseconds\" → \"ms\"\n秒：\"seconds\" → \"s\"\n分钟：\"minutes\" → \"m\"\n小时：\"hours\" → \"h\"\n天：\"days\" → \"d\"\n周：\"weeks\" → \"w\"\n月：\"months\" → \"M\"\n季度：\"quarters\" → \"Q\"\n年：\"years\" → \"y\"\n点击下方链接可查看全部计时单位。",
             "en_US": "Calculates the number of days between the current date and another date.",
             "zh_HK": "返回當前日期和指定日期之間的差值（無正負）。\n\n【date】是指定日期，即用指定日期減去當前日期，計算兩個日期相差的多少天（自定義計時單位），無正負。\n【units】計時單位，即指定日期與當前日期差值的計算單位，比如按”天“計算也可以轉換為按”年“計算。\n\n計時單位包括以下符號，兩種格式都可以使用：\n「單位說明符 」→ 「縮寫」\n毫秒：\"milliseconds\" → \"ms\"\n秒：\"seconds\" → \"s\"\n分鐘：\"minutes\" → \"m\"\n小時：\"hours\" → \"h\"\n天：\"days\" → \"d\"\n週：\"weeks\" → \"w\"\n月：\"months\" → \"M\"\n季度：\"quarters\" → \"Q\"\n年：\"years\" → \"y\"\n點擊下方鏈接可查看全部計時單位。"
-        },
-        "function_fromnow_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "en_US": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function"
         },
         "function_guidance": {
             "zh_CN": "智能引导",
@@ -6468,20 +6198,10 @@
             "en_US": "IS_AFTER({deadline}, TODAY())\n=> 0",
             "zh_HK": "IS_AFTER(\"2020-10-02\" , \"2020-10-01\")\n=> TRUE\n\nIS_AFTER({截止時間}, TODAY())\n=> TRUE\n\nIS_AFTER({截止時間}, \"2020-10-01\")\n=> TRUE"
         },
-        "function_is_after_summary": {
-            "zh_CN": "比较日期1是否晚于日期2，如果晚于则返回真（true），否则返回假（false）。\n\n【date1】是日期1。\n【date2】是日期2。\n\n日期可以是输入的参数，见用例一；\n日期也可以是引用日期类型的维格列，见用例二。\n\n在单元格内真和假用\"已勾选\"和\"未勾选\"表示。",
-            "en_US": "Determines if [date1] is later than [date2]. Returns 1 if yes, 0 if no.",
-            "zh_HK": "比較日期1是否晚於日期2，如果晚於則返回真（true），否則返回假（false）。\n\n【date1】是日期1。\n【date2】是日期2。\n\n日期可以是輸入的參數，見用例一；\n日期也可以是引用日期類型的維格列，見用例二。\n\n在單元格內真和假用\"已勾選\"和\"未勾選\"表示。"
-        },
         "function_is_before_example": {
             "zh_CN": "IS_BEFORE(\"2020-10-01\" , \"2020-10-02\")\n=> TRUE\n\nIS_BEFORE({截止时间}, TODAY())\n=> TRUE\n\nIS_BEFORE({截止时间}, \"2020-10-01\")\n=> TRUE",
             "en_US": "IS_BEFORE({deadline}, TODAY())\n=> TRUE",
             "zh_HK": "IS_BEFORE(\"2020-10-01\" , \"2020-10-02\")\n=> TRUE\n\nIS_BEFORE({截止時間}, TODAY())\n=> TRUE\n\nIS_BEFORE({截止時間}, \"2020-10-01\")\n=> TRUE"
-        },
-        "function_is_before_summary": {
-            "zh_CN": "比较日期1是否早于日期2，如果早于则返回真（true），否则返回假（false）。\n\n【date1】是日期1。\n【date2】是日期2。\n\n日期可以是输入的参数，见用例一；\n日期也可以是引用日期类型的维格列，见用例二。\n在单元格内真和假用\"已勾选\"和\"未勾选\"表示。",
-            "en_US": "Determines if [date1] is earlier than [date2]. Returns 1 if yes, 0 if no.",
-            "zh_HK": "比較日期1是否早於日期2，如果早於則返回真（true），否則返回假（false）。\n\n【date1】是日期1。\n【date2】是日期2。\n\n日期可以是輸入的參數，見用例一；\n日期也可以是引用日期類型的維格列，見用例二。\n在單元格內真和假用\"已勾選\"和\"未勾選\"表示。"
         },
         "function_is_error_example": {
             "zh_CN": "IS_ERROR(2/0)\n=> TRUE\n\nIS_ERROR(\"哈哈\"*2)\n=> TRUE",
@@ -6498,16 +6218,6 @@
             "en_US": "IS_SAME({Date 1}, {Date 2}, \"hour\")\n=> 0",
             "zh_HK": "IS_SAME(\"2020-10-01\" , \"2020-10-01\")\n=> TRUE\n\nIS_SAME(\"2020-10-01\" , \"2020-11-11\", \"years\")\n=> TRUE\n\nIS_SAME(\"2020-10-01\" , \"2020-11-11\", \"months\")\n=> FALSE\n\nIS_SAME({截止時間}, {完工時間}, \"days\")\n=> TRUE\n\nIS_SAME(\"2020-10-01\", {完工時間}, \"days\")\n=> TRUE"
         },
-        "function_is_same_summary": {
-            "zh_CN": "确定日期1是否等于日期2，如果等于则返回真（true），否则返回假（false）。\n\n【date1】是日期1。\n【date2】是日期2。\n【units】非必填， 是比较的时间单位。比如比较两个日期是否相等，一直对比到分钟单位。\n\n日期可以是输入的参数，见用例一；\n日期也可以是引用日期类型的维格列，见用例四。\n在单元格内真和假用\"已勾选\"和\"未勾选\"表示。\n\n点击下方链接可查看全部计时单位。",
-            "en_US": "Compares two dates up to a unit and determines whether they are identical. Returns 1 if yes, 0 if no.",
-            "zh_HK": "確定日期1是否等於日期2，如果等於則返回真（true），否則返回假（false）。\n\n【date1】是日期1。\n【date2】是日期2。\n【units】非必填， 是比較的時間單位。比如比較兩個日期是否相等，一直對比到分鐘單位。\n\n日期可以是輸入的參數，見用例一；\n日期也可以是引用日期類型的維格列，見用例四。\n在單元格內真和假用\"已勾選\"和\"未勾選\"表示。\n\n點擊下方鏈接可查看全部計時單位。"
-        },
-        "function_is_same_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "en_US": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function"
-        },
         "function_iserror_example": {
             "zh_CN": "ISERROR(2/0)\n=> TRUE\n\nISERROR(\"哈哈\"*2)\n=> TRUE",
             "en_US": "ISERROR(2/0)",
@@ -6522,16 +6232,6 @@
             "zh_CN": "LAST_MODIFIED_TIME()\n=> \"2020-06-10 6:27 下午.\"\n\nLAST_MODIFIED_TIME({项目进度})\n=> \"2020-06-09 1:27 上午\"\n\nLAST_MODIFIED_TIME({项目进度}, {任务分配})\n=> \"2020-06-09 1:27 上午\"",
             "en_US": "LAST_MODIFIED_TIME()\n=> \"2020-06-10 6:27 p.m.\"\n\nLAST_MODIFIED_TIME({date of begin})\n=> \"2020-06-09 1:27 p.m.\"",
             "zh_HK": "LAST_MODIFIED_TIME()\n=> \"2020-06-10 6:27 下午.\"\n\nLAST_MODIFIED_TIME({項目進度})\n=> \"2020-06-09 1:27 上午\"\n\nLAST_MODIFIED_TIME({項目進度}, {任務分配})\n=> \"2020-06-09 1:27 上午\""
-        },
-        "function_last_modified_time_summary": {
-            "zh_CN": "返回每一行的单元格中进行最后一次修改的时间 。\n注意：系统只会返回计算类型列的单元格的修改。\n\n如果你只关心特定维格列的单元格的更新时间，你可以指定一个或多个列，见例子二和三。",
-            "en_US": "Returns the date and time of the most recent modification made by a user in a non-computed field in the table. If you only care about changes made to specific fields, you can include one or more field names, and the function will just return the date and time of the most recent change made to any of the specified fields.",
-            "zh_HK": "返回每一行的單元格中進行最後一次修改的時間 。\n注意：系統只會返回計算類型列的單元格的修改。\n\n如果你只關心特定維格列的單元格的更新時間，你可以指定一個或多個列，見例子二和三。"
-        },
-        "function_left_example": {
-            "zh_CN": "LEFT(\"维格表：支持API，随意DIY\", 3)\n=> 维格表\n\nLEFT({出生年月}, 4)\n=> 1994",
-            "en_US": "LEFT({date of birth}, 4)\n=> 1994",
-            "zh_HK": "LEFT(\"維格表：支持API，隨意DIY\", 3)\n=> 維格表\n\nLEFT({出生年月}, 4)\n=> 1994"
         },
         "function_left_summary": {
             "zh_CN": "从文本的开头提取多个字符。\n\n【string】是要被提取字符的文本。\n【howMany】是提取的字符数量。用数字表示，比如\"3\"，代表从左到右提取3个字符。",
@@ -6582,11 +6282,6 @@
             "zh_CN": "MID(\"这个苹果又大又圆\", 3, 2)\n=> 苹果\n\nMID(\"这个苹果又大又圆\", 99, 2)\n=> 空值\n\nMID(\"这个苹果又大又圆\", 3, 99)\n=> 苹果又大又圆\n\nMID({嘉宾姓名}, 2, 99)\n=> 彦祖",
             "en_US": "MID(\"This is an apple\", 12, 5)\n=> apple",
             "zh_HK": "MID(\"這個蘋果又大又圓\", 3, 2)\n=> 蘋果\n\nMID(\"這個蘋果又大又圓\", 99, 2)\n=> 空值\n\nMID(\"這個蘋果又大又圓\", 3, 99)\n=> 蘋果又大又圓\n\nMID({嘉賓姓名}, 2, 99)\n=> 彥祖"
-        },
-        "function_mid_summary": {
-            "zh_CN": "从内容中特定位置提取一段固定长度的文本。\n\n【string】是你输入的一段内容，其中包含了被提取的文本。该内容可以是输入的文本或者引用的维格列数据。\n【whereToSearch】是你指定从哪儿提取文本，用数字表示。比如数字\"3\"表示从内容的第3个字符开始提取。\n【count】是提取的文本长度，用数字表示。比如数字\"2\"表示从指定位置提取2个字符。",
-            "en_US": "Extract a substring of count characters starting at whereToStart.",
-            "zh_HK": "從內容中特定位置提取一段固定長度的文本。\n\n【string】是你輸入的一段內容，其中包含了被提取的文本。該內容可以是輸入的文本或者引用的維格列數據。\n【whereToSearch】是你指定從哪兒提取文本，用數字表示。比如數字\"3\"表示從內容的第3個字符開始提取。\n【count】是提取的文本長度，用數字表示。比如數字\"2\"表示從指定位置提取2個字符。"
         },
         "function_min_example": {
             "zh_CN": "MIN({数学成绩}, {英语成绩}, {语文成绩})",
@@ -6663,11 +6358,6 @@
             "en_US": "OR(3>2, 2>3)\n=>  true",
             "zh_HK": "OR(3>2, 2>3)\n=>  true"
         },
-        "function_or_summary": {
-            "zh_CN": "如果任何一个参数为真（true），则返回真（true），否则返回假（false）。\n\n【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列。",
-            "en_US": "Returns true if any one of the arguments is true.",
-            "zh_HK": "如果任何一個參數為真（true），則返回真（true），否則返回假（false）。\n\n【logical】是邏輯參數，可以是邏輯值、數組或引用的維格列。"
-        },
         "function_power_example": {
             "zh_CN": "POWER(2, 5)\n=> 32\n\nPOWER(-5, 3)\n=> -125",
             "en_US": "POWER(2, 5)\n=> 32\n\nPOWER(-5, 3)\n=> -125",
@@ -6703,11 +6393,6 @@
             "en_US": "REPLACE(\"This is an apple\", 12, 8, \"elephant\")\n=> This is an elephant",
             "zh_HK": "REPLACE(\"這個蘋果又大又圓\", 3, 2, \"桃子\")\n=> 這個桃子又大又圓\n\nREPLACE(\"這個蘋果又大又圓\", 3, 99, \"榴蓮又香又甜\")\n=> 這個榴蓮又香又甜\n\nREPLACE({嘉賓姓名}, 1, 1, \"X\")\n=> X彥祖"
         },
-        "function_replace_summary": {
-            "zh_CN": "将内容中特定位置的一段文本替换为新文本。\n\n【string】是你输入的一段内容，其中包含了被替换的文本。该内容可以是输入的文本或者引用的维格列数据。\n【start_character】是你指定从哪儿替换文本，用数字表示。比如数字\"3\"表示从内容的第3个字符开始替换。\n【number_of_characters】是你指定要替换掉多少个字符，用数字表示。比如数字\"2\"表示替换掉指定位置的2个字符。\n【replacement】是替换原文本的新文本。\n\n（如果你想将内容中所有出现的原文本替换为新文本，请参见SUBSTITUTE。）",
-            "en_US": "Replaces the number of characters beginning with the start character with the replacement text.\n(If you're looking for a way to find and replace all occurrences of old_text with new_text, see SUBSTITUTE().)",
-            "zh_HK": "將內容中特定位置的一段文本替換為新文本。\n\n【string】是你輸入的一段內容，其中包含了被替換的文本。該內容可以是輸入的文本或者引用的維格列數據。\n【start_character】是你指定從哪兒替換文本，用數字表示。比如數字\"3\"表示從內容的第3個字符開始替換。\n【number_of_characters】是你指定要替換掉多少個字符，用數字表示。比如數字\"2\"表示替換掉指定位置的2個字符。\n【replacement】是替換原文本的新文本。\n\n（如果你想將內容中所有出現的原文本替換為新文本，請參見SUBSTITUTE。）"
-        },
         "function_rept_example": {
             "zh_CN": "REPT(\"哈\", 2)\n=> 哈哈",
             "en_US": "REPT(\"Hi! \", 3)\n\n=> Hi! Hi! Hi!",
@@ -6717,11 +6402,6 @@
             "zh_CN": "根据指定次数重复文本。\n\n【string】是需要重复的文本。\n【mumber】是指定的重复次数。用数字表示，比如”2“，表示重复2次。",
             "en_US": "Repeats string by the specified number of times.",
             "zh_HK": "根據指定次數重複文本。\n\n【string】是需要重複的文本。\n【mumber】是指定的重複次數。用數字表示，比如”2“，表示重複2次。"
-        },
-        "function_right_example": {
-            "zh_CN": "RIGHT(\"维格表：支持API，随意DIY\", 5)\n=> 随意DIY\n\nRIGHT({出生年月}, 5)\n=> 07-13",
-            "en_US": "RIGHT({date of birth}, 5)\n=> 07-13",
-            "zh_HK": "RIGHT(\"維格表：支持API，隨意DIY\", 5)\n=> 隨意DIY\n\nRIGHT({出生年月}, 5)\n=> 07-13"
         },
         "function_right_summary": {
             "zh_CN": "从文本的末尾提取出多个字符。\n\n【string】是要被提取字符的文本。\n【howMany】是提取的字符数量。用数字表示，比如\"5\"，代表从右到左提取5个字符。",
@@ -6763,11 +6443,6 @@
             "en_US": "SEARCH(\"apple\", \"This is an apple\")\n=> 12",
             "zh_HK": "SEARCH(\"蘋果\", \"這個蘋果又大又圓，要買兩斤蘋果嗎？\") \n=> 3\n\nSEARCH(\"香蕉\", \"這個蘋果又大又圓，要買兩斤蘋果嗎？\")\n=> 空值\n\nSEARCH(\"蘋果\", \"這個蘋果又大又圓，買兩斤蘋果嗎？\"，10)\n=> 13"
         },
-        "function_search_summary": {
-            "zh_CN": "搜索特定的文本在内容中第一次出现的位置。\n\n【stringToFind】是要搜索到的特定文本。\n【whereToSearch】指定从哪段内容搜索文本。可以输入文本参数或者引用维格列。\n【startFromPosition】非必填，指定从内容的哪个位置开始搜索（用数字表示第几个字符）。\n\n本函数可以在一大段内容中快速搜索特定文本出现的位置。 \n如果返回数字3，表示文本出现在该内容的第3个字符。\n如果未找到匹配的文本，则结果将为空值。\n\n其效果与FIND()类似，但是未找到匹配项时，FIND()返回值为0而不是空值。",
-            "en_US": "Searches for an occurrence of stringToFind in whereToSearch string starting from an optional startFromPosition. (startFromPosition is 0 by default.) If no occurrence of stringToFind is found, the result will be empty.\nSimilar to FIND(), FIND() returns 0 rather than empty if no occurrence of stringToFind is found.",
-            "zh_HK": "搜索特定的文本在內容中第一次出現的位置。\n\n【stringToFind】是要搜索到的特定文本。\n【whereToSearch】指定從哪段內容搜索文本。可以輸入文本參數或者引用維格列。\n【startFromPosition】非必填，指定從內容的哪個位置開始搜索（用數字表示第幾個字符）。\n\n本函數可以在一大段內容中快速搜索特定文本出現的位置。\n如果返回數字3，表示文本出現在該內容的第3個字符。\n如果未找到匹配的文本，則結果將為空值。\n\n其效果與FIND()類似，但是未找到匹配項時，FIND()返回值為0而不是空值。"
-        },
         "function_second_example": {
             "zh_CN": "SECOND({打卡时间})\n=> 1",
             "en_US": "SECOND({date of begin})\n=> 1",
@@ -6787,11 +6462,6 @@
             "zh_CN": "为指定日期时间设置特定的语言环境。 \n\n【date】是指定日期。\n【ocale_modifier】是语言环境说明符。\n\n本函数必须与DATETIME_FORMAT结合使用。可以点击下方链接查看支持的语言环境说明符。",
             "en_US": "Sets a specific locale for a datetime. Must be used in conjunction with DATETIME_FORMAT.",
             "zh_HK": "為指定日期時間設置特定的語言環境。\n\n【date】是指定日期。\n【ocale_modifier】是語言環境說明符。\n\n本函數必須與DATETIME_FORMAT結合使用。可以點擊下方鏈接查看支持的語言環境說明符。"
-        },
-        "function_set_locale_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/set-locale-specified-output-format",
-            "en_US": "https://help.vika.cn/docs/guide/set-locale-specified-output-format",
-            "zh_HK": "https://help.vika.cn/docs/guide/set-locale-specified-output-format"
         },
         "function_set_timezone_example": {
             "zh_CN": "DATETIME_FORMAT(SET_TIMEZONE(NOW(), -8), \"M/D/YYYY h:mm\")\n=> 9/20/2021 2:30",
@@ -6818,11 +6488,6 @@
             "en_US": "SUBSTITUTE(\"gold mold\", \"old\", \"et\")\n=> get met\n\nSUBSTITUTE(\"gold mold\", \"old\", \"et\", 1)\n=> get mold",
             "zh_HK": "SUBSTITUTE(\"小胡，小張，小王\", \"小\", \"老\")\n=> 老胡，老張，老王\n\nSUBSTITUTE(\"小胡，小張，小王\", \"小\", \"老\", 3)\n=> 小胡，老張，小王"
         },
-        "function_substitute_summary": {
-            "zh_CN": "将内容中特定的文本全部替换为新文本。\n\n【string】是你输入的一段内容，其中包含了被替换的文本。该内容可以是输入的文本或者引用的维格列数据。\n【old_text】要被替换的原文本。\n【new_text】替换原文本的新文本。\n【index】非必填，是索引号，指定索引号后系统仅会替换特定位置的原文本。\n\n本函数将文本中的原字符替换为新字符，在没有特别声明的情况下，新字符将替换所有出现的原字符。\n\n（如果你想替换指定起点位置和终点位置之间的字符，请参见REPLACE。）",
-            "en_US": "Replaces occurrences of old_text with new_text.\nYou can optionally specify an index number (starting from 1) to replace just a specific occurrence of old_text. If no index number is specified, then all occurrences of old_text will be replaced.",
-            "zh_HK": "將內容中特定的文本全部替換為新文本。\n\n【string】是你輸入的一段內容，其中包含了被替換的文本。該內容可以是輸入的文本或者引用的維格列數據。\n【old_text】要被替換的原文本。\n【new_text】替換原文本的新文本。\n【index】非必填，是索引號，指定索引號後系統僅會替換特定位置的原文本。\n\n本函數將文本中的原字符替換為新字符，在沒有特別聲明的情況下，新字符將替換所有出現的原字符。\n\n（如果你想替換指定起點位置和終點位置之間的字符，請參見REPLACE。）"
-        },
         "function_sum_example": {
             "zh_CN": "SUM(1, 2, \"3\", \"四\")\n=> 1 + 2 + 3 =6\n\nSUM({数学成绩}, {英语成绩}, {语文成绩})",
             "en_US": "SUM(1, 3, 5, \"\", \"VI\")\n=> 1 + 3 + 5 = 9",
@@ -6842,16 +6507,6 @@
             "zh_CN": "本函数为多分支选择函数，它由表达式和多个分支+返回值组成，如果表达式等于某个分支值，则函数输出该分支对应的返回值。\n\n【expression】是表达式，其运算的结果会与每个分支进行匹配。\n【pattern】是分支，每个分支代表表达式的可能运算结果。每一个分支都有对应的返回值。\n【result】是返回值，如果表达式的运算结果匹配了一个分支，则输出对应的返回值。\n【default】是默认值，如果运算结果没有匹配任何一个分支，则函数输出默认值。默认值未填写时为空值。\n\n比如例子一，{国家}是引用的一列数据，其输出值可能是成千上万个国家名称，它是该函数中的表达式。“中国”和“中文”分别为其中一条分支和返回值，它表示如果{国家}的输出值为“中国”时，则返回“中文”。而“通用英语”为默认值，它表示{国家}的输出值没有匹配任何分支时，则输出“通用英语”",
             "en_US": "Takes an expression, a list of possible values for that expression, and for each one, a value that the expression should take in that case. It can also take a default value if the expression input doesn't match any of the defined patterns. In many cases, SWITCH() can be used instead of a nested IF() formula.",
             "zh_HK": "本函數為多分支選擇函數，它由表達式和多個分支+返回值組成，如果表達式等於某個分支值，則函數輸出該分支對應的返回值。\n\n【expression】是表達式，其運算的結果會與每個分支進行匹配。\n【pattern】是分支，每個分支代表表達式的可能運算結果。每一個分支都有對應的返回值。\n【result】是返回值，如果表達式的運算結果匹配了一個分支，則輸出對應的返回值。\n【default】是默認值，如果運算結果沒有匹配任何一個分支，則函數輸出默認值。默認值未填寫時為空值。\n\n比如例子一，{國家}是引用的一列數據，其輸出值可能是成千上萬個國家名稱，它是該函數中的表達式。 “中國”和“中文”分別為其中一條分支和返回值，它表示如果{國家}的輸出值為“中國”時，則返回“中文”。而“通用英語”為默認值，它表示{國家}的輸出值沒有匹配任何分支時，則輸出“通用英語”"
-        },
-        "function_t_example": {
-            "zh_CN": "T(\"维格表\")\n=> 维格表 \n\nT(\"55\")\n=> 55 \n\nT(55)\n=> 空值\n\nT({数学成绩})\n=> 空值    ",
-            "en_US": "T({name})\n=> kelly\n\nT(3.2)\n=> BLANK",
-            "zh_HK": "T(\"維格表\")\n=> 維格表 \n\nT(\"55\")\n=> 55 \n\nT(55)\n=> 空值\n\nT({數學成績})\n=> 空值    "
-        },
-        "function_t_summary": {
-            "zh_CN": "如果输入值为文本类型，则返回原文本，如果非文本类型则返回空值。\n\n【value】是被检查是否为文本的值。\n\n比如，输入值引用数字、日期等类型的维格列，那么将会返回空值。",
-            "en_US": "Returns the argument if it is text and blank otherwise.",
-            "zh_HK": "如果輸入值為文本類型，則返回原文本，如果非文本類型則返回空值。\n\n【value】是被檢查是否為文本的值。\n\n比如，輸入值引用數字、日期等類型的維格列，那麼將會返回空值。"
         },
         "function_timestr_example": {
             "zh_CN": "TIMESTR(NOW())\n=> \"04:52:12\"",
@@ -6883,11 +6538,6 @@
             "en_US": "Calculates the number of days between the current date and another date.",
             "zh_HK": "返回當前日期和指定日期之間的差值（無正負）。\n\n【date】是指定日期，即用指定日期減去當前日期，計算兩個日期相差的多少天（自定義計時單位），無正負。\n【units】計時單位，即指定日期與當前日期差值的計算單位，比如按”天“計算也可以轉換為按”年“計算。\n\n計時單位包括以下符號，兩種格式都可以使用：\n「單位說明符 」→ 「縮寫」\n毫秒：\"milliseconds\" → \"ms\"\n秒：\"seconds\" → \"s\"\n分鐘：\"minutes\" → \"m\"\n小時：\"hours\" → \"h\"\n天：\"days\" → \"d\"\n週：\"weeks\" → \"w\"\n月：\"months\" → \"M\"\n季度：\"quarters\" → \"Q\"\n年：\"years\" → \"y\"\n點擊下方鏈接可查看全部計時單位。"
         },
-        "function_tonow_url": {
-            "zh_CN": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "en_US": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function",
-            "zh_HK": "https://help.vika.cn/docs/guide/manual-supported-unit-specifiers-for-date-function"
-        },
         "function_trim_example": {
             "zh_CN": "TRIM(\" 两边空格会被清除! \")\n=>两边空格会被清除!",
             "en_US": "TRIM(\" Hello! \")\n\n=> Hello!",
@@ -6902,11 +6552,6 @@
             "zh_CN": "// 判断勾选类型的字段的状态。例如下列 {是否完成} 字段为勾选类型且单元格值为 \"已勾选\"时：\n公式：IF({是否完成} = TRUE(), \"已完成\"， \"未完成\")\n运算结果：\"已完成\"\n\n// TRUE() 和 FALSE() 一起使用输出布尔值。例如下列 {成绩} 字段为数字类型且单元格值为 70 时：\n公式：IF({成绩} > 60, TRUE(), FALSE())\n运算结果：true",
             "en_US": "IF({average score} > 60, TRUE(), FALSE())",
             "zh_HK": "// 判斷勾選類型的字段的狀態。例如下列 {是否完成} 字段為勾選類型且單元格值為 \"已勾選\"時：\n公式：IF({是否完成} = TRUE(), \"已完成\"， \"未完成\")\n運算結果：\"已完成\"\n\n// TRUE() 和 FALSE() 一起使用輸出布爾值。例如下列 {成績} 字段為數字類型且單元格值為 70 時：\n公式：IF({成績} > 60, TRUE(), FALSE())\n運算結果：true"
-        },
-        "function_true_summary": {
-            "zh_CN": "【简介】\n返回逻辑值真（ true ）。\n\n【参数说明】\n该函数不需要填写参数。\n该函数可以判断勾选类型的维格列是否为 “已选中状态” ，见例子一；\n该函数和 FALSE() 一起使用可以输出为真和假的布尔值，见例子二。",
-            "en_US": "Logical value true.",
-            "zh_HK": "【簡介】\n返回邏輯值真（ true ）。\n\n【參數說明】\n該函數不需要填寫參數。\n該函數可以判斷勾選類型的維格列是否為 “已選中狀態” ，見例子一；\n該函數和 FALSE() 一起使用可以輸出為真和假的布爾值，見例子二。"
         },
         "function_upper_example": {
             "zh_CN": "UPPER(\"Hello!\")\n=> HELLO!",
@@ -6987,11 +6632,6 @@
             "zh_CN": "XOR(3>2, 2>3, 4>3)\n=> false",
             "en_US": "XOR(3>2, 2>3, 4>3)\n=> false",
             "zh_HK": "XOR(3>2, 2>3, 4>3)\n=> false"
-        },
-        "function_xor_summary": {
-            "zh_CN": "如果奇数个参数为真（true），则返回真（true），否则返回假（false）。\n\n【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列。",
-            "en_US": "Returns true if an odd number of arguments are true.",
-            "zh_HK": "如果奇數個參數為真（true），則返回真（true），否則返回假（false）。\n\n【logical】是邏輯參數，可以是邏輯值、數組或引用的維格列。"
         },
         "function_year_example": {
             "zh_CN": "YEAR(\"2020/10/01\")\n=> 2020\n\nYEAR({毕业时间})\n=> 2020",
@@ -7333,11 +6973,6 @@
             "en_US": "The dependent relationship field does not allow linking to multiple records. Please modify the field configuration and try it again",
             "zh_HK": "當前依賴關係字段的配置不允許多選記錄，請在字段配置中修改後再試"
         },
-        "gantt_not_rights_to_link_warning": {
-            "zh_CN": "没有依赖关系字段的权限，无法设置依赖关系",
-            "en_US": "You do not have permission for the dependency field and can not set the dependency",
-            "zh_HK": "沒有依賴關係字段的權限，無法設置依賴關係"
-        },
         "gantt_open_auto_schedule_switch": {
             "zh_CN": "任务自动编排",
             "en_US": "Auto schedule",
@@ -7487,11 +7122,6 @@
             "zh_CN": "加纳",
             "en_US": "Ghana",
             "zh_HK": "加納"
-        },
-        "ghost_node_no_access": {
-            "zh_CN": "无访问原表的权限",
-            "en_US": "No permission to access the source datasheet",
-            "zh_HK": "無訪問原表的權限"
         },
         "gibraltar": {
             "zh_CN": "直布罗陀",
@@ -9515,11 +9145,6 @@
             "en_US": "Please call the sharing function of your browser",
             "zh_HK": "請調用瀏覽器的分享功能"
         },
-        "message_can_not_associated_because_of_no_editable": {
-            "zh_CN": "无该维格表的「可以编辑」权限，无法进行关联",
-            "en_US": "You're not allowed to edit this datasheet, so you can't link to it",
-            "zh_HK": "無該維格表的「可以編輯」權限，無法進行關聯"
-        },
         "message_coping": {
             "zh_CN": "正在粘贴...",
             "en_US": "Pasting...",
@@ -9650,25 +9275,10 @@
             "en_US": "Mirror",
             "zh_HK": "鏡像"
         },
-        "mirror_editor_label": {
-            "zh_CN": "在「只可更新」基础上，还可以删除记录和增删视图",
-            "en_US": "In addition to \"Update-only\", can also add or delete views and delete records",
-            "zh_HK": "在「只可更新」基礎上，還可以刪除記錄和增刪視圖"
-        },
         "mirror_from": {
             "zh_CN": "镜像来自：",
             "en_US": "Mirror from: ",
             "zh_HK": "鏡像來自："
-        },
-        "mirror_manager_label": {
-            "zh_CN": "在「可以编辑」基础上，还可以删除和配置镜像",
-            "en_US": "In addition to \"Editor\", can also configure mirror",
-            "zh_HK": "在「可以編輯」基礎上，還可以刪除和配置鏡像"
-        },
-        "mirror_reader_label": {
-            "zh_CN": "只可查看该镜像内容或进行评论",
-            "en_US": "Can read data or comment on the mirror",
-            "zh_HK": "只可查看該鏡像內容或進行評論"
         },
         "mirror_resource_dst_been_deleted": {
             "zh_CN": "生成当前镜像的原表已被删除，无法继续访问",
@@ -9679,11 +9289,6 @@
             "zh_CN": "生成该镜像的视图已被删除，无法访问镜像",
             "en_US": "Failed to access this mirror because the original view was deleted",
             "zh_HK": "生成該鏡像的視圖已被刪除，無法訪問鏡像"
-        },
-        "mirror_uploader_label": {
-            "zh_CN": "在「只可阅读」基础上，还可以新增和编辑记录",
-            "en_US": "Can read, add and edit records except deleting records",
-            "zh_HK": "在「只可閱讀」基礎上，還可以新增和編輯記錄"
         },
         "mobile_space_list_tip": {
             "zh_CN": "更多「空间站管理」的功能请前往电脑网页端操作",
@@ -9804,11 +9409,6 @@
             "zh_CN": "+ ${count}",
             "en_US": "+ ${count}",
             "zh_HK": "+ ${count}"
-        },
-        "more_setting": {
-            "zh_CN": "更多权限",
-            "en_US": "More",
-            "zh_HK": "更多權限"
         },
         "more_template": {
             "zh_CN": "更多模板",
@@ -10129,11 +9729,6 @@
             "zh_CN": "暂无数据",
             "en_US": "No data",
             "zh_HK": "暫無數據"
-        },
-        "no_foreign_dst_readable": {
-            "zh_CN": "没有关联表的查看权限，无法引用数据",
-            "en_US": "No permission to view the related datasheet",
-            "zh_HK": "沒有關聯表的查看權限，無法引用數據"
         },
         "no_foreignDstId": {
             "zh_CN": "请选择关联表",
@@ -11119,16 +10714,6 @@
             "en_US": "Percent Stacked Line Chart",
             "zh_HK": "百分比堆疊折線圖"
         },
-        "permission_fields_count_up_to_bound": {
-            "zh_CN": "列数Max",
-            "en_US": "Number of column max",
-            "zh_HK": "列數Max"
-        },
-        "permission_no_permission_access": {
-            "zh_CN": "权限受限",
-            "en_US": "Uneditable",
-            "zh_HK": "權限受限"
-        },
         "permission_template_visitor": {
             "zh_CN": "体验中",
             "en_US": "Experiencing",
@@ -11959,11 +11544,6 @@
             "en_US": "Remove members",
             "zh_HK": "移除成員"
         },
-        "remove_role": {
-            "zh_CN": "移除权限",
-            "en_US": "Remove permission",
-            "zh_HK": "移除權限"
-        },
         "removed_member_tomyself": {
             "zh_CN": "<a class=\"involveMemberArr\"></a> 被你移出空间站「<a class=\"spaceName\"></a>」",
             "en_US": "You removed <a class=\"involveMemberArr\"></a> from the \"<a class=\"spaceName\"></a>\" Space.",
@@ -12026,21 +11606,6 @@
             "zh_CN": "https://github.com/apitable/apitable/issues",
             "en_US": "https://github.com/apitable/apitable/issues",
             "zh_HK": "https://github.com/apitable/apitable/issues"
-        },
-        "report_reason_1": {
-            "zh_CN": "违反国家法规定",
-            "en_US": "Violation of national law",
-            "zh_HK": "違反國家法規定"
-        },
-        "report_reason_3": {
-            "zh_CN": "泄漏商业机密",
-            "en_US": "Leak commercial secrets",
-            "zh_HK": "洩漏商業機密"
-        },
-        "report_reason_5": {
-            "zh_CN": "垃圾信息骚扰",
-            "en_US": "Spam harassment",
-            "zh_HK": "垃圾信息騷擾"
         },
         "report_success_tip": {
             "zh_CN": "举报成功",
@@ -13869,16 +13434,6 @@
             "zh_CN": "通过二维码分享",
             "en_US": "Share via QR code",
             "zh_HK": "通過二維碼分享"
-        },
-        "share_reader": {
-            "zh_CN": "只可阅读",
-            "en_US": "read-only",
-            "zh_HK": "只可閱讀"
-        },
-        "share_reader_label": {
-            "zh_CN": "该分享内容仅可查看",
-            "en_US": "This shared content can be viewed only",
-            "zh_HK": "該分享內容僅可查看"
         },
         "share_save": {
             "zh_CN": "可另存副本",
@@ -16861,11 +16416,6 @@
             "zh_CN": "全员设置",
             "en_US": "Global settings",
             "zh_HK": "全員設置"
-        },
-        "workbench_setting_cannot_export_datasheet_tips": {
-            "zh_CN": "拥有文件管理权限的成员可以导出文件到本地",
-            "en_US": "If members have the \"manageable\" permission to a datasheet, they can export it to a local file.",
-            "zh_HK": "擁有文件管理權限的成員可以導出文件到本地"
         },
         "workbench_side_space_template": {
             "zh_CN": "空间站模版",
