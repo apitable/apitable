@@ -45,7 +45,7 @@ export const updateMailToken = (token: string) => {
   };
 };
 export const getMailLinkData = (token: string): any => {
-  return async (dispatch: any) => {
+  return async(dispatch: any) => {
     const { data } = await Api.inviteEmailVerify(token);
     dispatch(updateInviteEmailInfo(data));
     if (!data.success) {
@@ -78,7 +78,7 @@ export const updateLinkInviteList = (list: IInviteLink[]) => {
   };
 };
 export const getSubTeamInvite = (teamId: string): any => {
-  return async (dispatch: any) => {
+  return async(dispatch: any) => {
     const subTree = await Api.getSubTeams(teamId);
     dispatch(updateSubTeamTreeInvite(teamId, subTree.data.data));
   };
@@ -86,7 +86,7 @@ export const getSubTeamInvite = (teamId: string): any => {
 
 // TODO: to be delete by yudongdong
 export const getLinkInviteList = (): any => {
-  return async (dispatch: any) => {
+  return async(dispatch: any) => {
     const { data: { success, data }} = await Api.getLinkList();
     if (success) {
       dispatch(updateLinkInviteList(data));
@@ -113,7 +113,7 @@ export const updateLinkToken = (token: string) => {
 };
 
 export const verifyLink = (token: string): any => {
-  return async (dispatch: any) => {
+  return async(dispatch: any) => {
     const { data } = await Api.linkValid(token);
     dispatch(updateInviteLinkInfo(data));
   };

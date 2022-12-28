@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { useTheme } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { useMemo } from 'react';
