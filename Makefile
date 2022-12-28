@@ -153,6 +153,11 @@ endif
 _test_clean: ## clean the docker in test step
 	docker rm -fv $$(docker ps -a --filter "name=test-.*-"$${CI_GROUP_TAG:-0} --format "{{.ID}}") || true
 
+_test_dockers: ## run depends container in test step
+	docker-compose -f docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql ;\
+	docker-compose -f docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis ;\
+	docker-compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+
 test-ut-room-local:
 	make _test_clean
 	docker-compose -f docker-compose.unit-test.yml up -d test-redis test-mysql test-rabbitmq
@@ -172,9 +177,7 @@ test-ut-room-docker:
 	@echo "${LIGHTPURPLE}Working dir, $(shell pwd)${RESET}"
 	@echo "${LIGHTPURPLE}$$(docker-compose --version)${RESET}"
 	make _test_clean
-	docker-compose -f docker-compose.unit-test.yml run -d --name test-mysql-$${CI_GROUP_TAG:-0} test-mysql
-	docker-compose -f docker-compose.unit-test.yml run -d --name test-redis-$${CI_GROUP_TAG:-0} test-redis
-	docker-compose -f docker-compose.unit-test.yml run -d --name test-rabbitmq-$${CI_GROUP_TAG:-0} test-rabbitmq
+	make _test_dockers
 	sleep 20
 	make _test_init_db RUN_TEST_ROOM_MODE=docker
 	docker-compose -f docker-compose.unit-test.yml build unit-test-room
@@ -192,7 +195,27 @@ test-ut-room-docker:
 _clean_room_jest_coverage:
 	rm -fr ./packages/room-server/coverage || true
 
+###### 【backend server unit test】 ######
 
+_test_backend_unit_test: ## backend server unit test
+	docker-compose -f docker-compose.unit-test.yml run -u $(shell id -u):$(shell id -g) --rm \
+		-e MYSQL_HOST=test-mysql-$${CI_GROUP_TAG:-0} \
+		-e REDIS_HOST=test-redis-$${CI_GROUP_TAG:-0} \
+		-e RABBITMQ_HOST=test-rabbitmq-$${CI_GROUP_TAG:-0} \
+		-e BACKEND_GRPC_PORT=0 \
+		unit-test-backend
+
+test-ut-backend-docker:
+	@echo "$$(docker-compose --version)"
+	make _test_clean
+	make _test_dockers
+	sleep 20
+	make _test_init_db RUN_TEST_ROOM_MODE=docker
+	make _test_backend_unit_test
+	@echo "${GREEN}finished unit test, clean up images...${RESET}"
+	make _test_clean
+
+###### 【backend server unit test】 ######
 
 buildpush-docker: ## build all and push all to hub.docker.io registry
 	echo $$APITABLE_DOCKER_HUB_TOKEN | docker login -u apitable --password-stdin ;\
