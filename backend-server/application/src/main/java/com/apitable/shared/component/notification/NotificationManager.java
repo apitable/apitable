@@ -106,11 +106,7 @@ public class NotificationManager {
 
     public void spaceNotify(NotificationTemplateId templateId, Long userId, String spaceId, Object result) {
         HttpServletRequest request = HttpContextUtil.getRequest();
-        ContentCachingRequestWrapper requestWrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
-        if (requestWrapper == null) {
-            log.error("Request Wrapper is null");
-            return;
-        }
+        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
         Object nodeId = NotificationHelper.resolveNodeId(requestWrapper, result);
         if (ObjectUtil.isNotNull(nodeId)) {
             String nodeIdStr = nodeId.toString();
