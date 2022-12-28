@@ -89,7 +89,7 @@ export const Logo: React.FC<ILogoProps> = (props) => {
 
   const renderLogoText = () => {
     if (!text) return null;
-
+    
     if (envVars.USE_CUSTOM_PUBLIC_FILES) {
       const lightSrc = integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!) || '/logo_text_light.svg';
       const darkSrc = integrateCdnHost(getEnvVariables().LOGO_TEXT_DARK!) || '/logo_text_dark.svg';
@@ -108,15 +108,6 @@ export const Logo: React.FC<ILogoProps> = (props) => {
         fill={isLightTheme ? colors.staticWhite0 : colors.primaryColor}
         width={undefined}
         height={logoSize.logoTextHeight}
-      />
-    );
-
-    return (
-      <img
-        alt="logoText"
-        className={styles.logoText}
-        height={logoSize.logoTextHeight}
-        src={isLightTheme ? '/logo_text_light.svg' : '/logo_text_dark.svg'}
       />
     );
   };

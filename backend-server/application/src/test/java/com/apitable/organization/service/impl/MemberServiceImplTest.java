@@ -18,16 +18,15 @@
 
 package com.apitable.organization.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import com.apitable.AbstractIntegrationTest;
-import com.apitable.organization.enums.UserSpaceStatus;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.organization.entity.MemberEntity;
+import com.apitable.organization.enums.UserSpaceStatus;
 import com.apitable.user.entity.UserEntity;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.Lists.list;
@@ -42,11 +41,11 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
     public void testInvitationWithoutExistUser() {
         MockUserSpace mockUserSpace = createSingleUserAndSpace();
 
-        List<String> emails = list("shawndgh@163.com");
+        List<String> emails = list("test@apitable.com");
         iMemberService.emailInvitation(mockUserSpace.getUserId(), mockUserSpace.getSpaceId(), emails);
 
         // check this member should join this space again
-        MemberEntity member = iMemberService.getBySpaceIdAndEmail(mockUserSpace.getSpaceId(), "shawndgh@163.com");
+        MemberEntity member = iMemberService.getBySpaceIdAndEmail(mockUserSpace.getSpaceId(), "test@apitable.com");
         assertThat(member).isNotNull();
         assertThat(member.getIsActive()).isNotNull().isFalse();
         assertThat(member.getIsPoint()).isNotNull().isTrue();
