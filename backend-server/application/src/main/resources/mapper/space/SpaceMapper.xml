@@ -47,33 +47,24 @@
         </foreach>
     </select>
 
-    <resultMap id="spaceVO" type="com.apitable.space.vo.SpaceVO">
+    <resultMap id="spaceDTO" type="com.apitable.space.dto.SpaceDTO">
         <result column="space_id" property="spaceId"/>
         <result column="name" property="name"/>
         <result column="logo" property="logo"/>
         <result column="point" property="point"/>
         <result column="admin" property="admin"/>
         <result column="pre_deleted" property="preDeleted"/>
-        <result column="enabled" property="social.enabled"/>
-        <result column="platform" property="social.platform"/>
-        <result column="app_type" property="social.appType"/>
     </resultMap>
 
-    <select id="selectListByUserId" resultMap="spaceVO">
+    <select id="selectListByUserId" resultMap="spaceDTO">
         SELECT vs.space_id,
         vs.name,
         vs.logo,
-        vst.app_type,
         if(vs.pre_deletion_time IS NULL, 0, 1) pre_deleted,
         IF(vs.owner = m.id, 1, 0) admin,
-        IF(m.`is_point` = 1, 1, 0) point,
-        IF(vstb.id IS NOT NULL, 1, 0) enabled,
-        IF(vst.id IS NOT NULL, vst.platform, 0) AS platform
+        IF(m.`is_point` = 1, 1, 0) point
         FROM ${tablePrefix}space vs
         JOIN ${tablePrefix}unit_member m ON vs.space_id = m.space_id AND m.is_deleted = 0 AND m.user_id = #{userId}
-        LEFT JOIN ${tablePrefix}social_tenant_bind vstb ON vstb.space_id = vs.space_id
-        LEFT JOIN ${tablePrefix}social_tenant vst ON vst.tenant_id = vstb.tenant_id AND vst.`status` = 1 AND ((vstb.app_id is
-        NULL ) OR (vst.app_id = vstb.app_id))
         WHERE vs.is_deleted = 0
         GROUP BY m.updated_at, m.`status`, vs.space_id
         ORDER BY m.updated_at DESC, m.`status` DESC

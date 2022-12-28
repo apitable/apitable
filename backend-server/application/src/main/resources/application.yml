@@ -124,10 +124,10 @@ starter:
         apikey: ${SMS_YUNPIAN_APIKEY:}
   mail:
     enabled: ${MAIL_ENABLED:false}
-    type: ${MAIL_TYPE:tencent}
-    region: ${MAIL_REGION:ap-hongkong}
-    from: ${MAIL_FROM:noreply@notify.apitable.com}
-    reply: ${MAIL_REPLY:support@apitable.com}
+    type: ${MAIL_TYPE:}
+    region: ${MAIL_REGION:}
+    from: ${MAIL_FROM:}
+    reply: ${MAIL_REPLY:}
     tencent:
       secret-id: ${MAIL_TENCENT_SECRET_ID:}
       secret-key: ${MAIL_TENCENT_SECRET_KEY:}

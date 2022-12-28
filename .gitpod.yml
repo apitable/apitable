@@ -3,21 +3,17 @@ image:
   file: packaging/.gitpod.Dockerfile
 
 tasks:
-  - name: init and run
+  - name: install dependency
     init: |
-      yarn install
-      yarn build:dst:pre
+      make install
     command: |
-      yarn sd
-  - name: command line for free
-    command: echo "Welcome to APITable"
-    openMode: split-right
-  - name: startup APITable
+      echo "Happy Coding"
+  - name: start APITable
     command: |
       make up
-              
+      echo "Welcome to APITable"
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
-  - port: 3000
-    onOpen: open-preview
+  - port: 80
+    onOpen: open-browser
