@@ -2,16 +2,23 @@
 
 ## Structure
 
-all modules based
-
-- shared
-- datasheet
-- fusion 
-- automation
-- actuator
-
-
-`shared` and `datasheet` is the cornerstone module that others depend on.
+```mermaid
+graph TD;
+        Database-->Application;
+        Actuator-->Application;
+        automation-->Application;
+        Fusion-->Application;
+        Grpc-->Application;
+        Socket-->Application;
+        Shared-->Database;
+        Shared-->Actuator;
+        Shared-->automation;
+        Shared-->Fusion;
+        Shared-->Grpc;
+        Shared-->Socket;
+```
+TODO(Troy): split `Database module` into multiple submodules.
+`shared module` is a shared and global module that other modules depend on in default.
 ## Description
 
 TypeScript server project based on [Nest](https://github.com/nestjs/nest) framework
