@@ -32,5 +32,5 @@ export const rightPane = produce(
       default:
         return state;
     }
-  }
+  }, defaultState
 );

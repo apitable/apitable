@@ -17,8 +17,8 @@
  */
 
 import produce from 'immer';
-import * as actions from '../../../shared/store/action_constants';
 import { IShareInfo, IShareInfoAction } from '../../../../exports/store/interfaces';
+import * as actions from '../../../shared/store/action_constants';
 
 const defaultShareInfo = {};
 
@@ -34,4 +34,4 @@ export const share = produce((shareInfoDraft: IShareInfo = defaultShareInfo, act
     default:
       return shareInfoDraft;
   }
-});
+}, defaultShareInfo);

@@ -18,17 +18,17 @@
 
 import { compensator } from 'compensator';
 import { IJOTAction } from 'engine/ot';
-import { Strings, t } from '../../../../../../exports/i18n';
 import produce from 'immer';
-import { Events, Player } from '../../../../../shared/player';
+import { fieldPermissionMap } from 'modules/database/store/reducers/resource/datasheet/field_permission_map';
 import { AnyAction, combineReducers } from 'redux';
-import * as actions from '../../../../../shared/store/action_constants';
+import { Strings, t } from '../../../../../../exports/i18n';
 import {
   IAddDatasheetAction, IChangeViewAction, IComputedInfo, IComputedStatus, IDatasheetMap, IDatasheetPack, IDatasheetState, IJOTActionPayload,
   ILoadedDataPackAction, IRecordNodeDesc, IRecordNodeShared, IRefreshSnapshotAction, IResetDatasheetAction, ISetNodeIcon, IUpdateDatasheetAction,
   IUpdateDatasheetNameAction, IUpdateRevision, IUpdateSnapShotAction
 } from '../../../../../../exports/store/interfaces';
-import { fieldPermissionMap } from 'modules/database/store/reducers/resource/datasheet/field_permission_map';
+import { Events, Player } from '../../../../../shared/player';
+import * as actions from '../../../../../shared/store/action_constants';
 import { JOTApply } from '../index';
 import { client } from './client';
 
@@ -68,7 +68,7 @@ export const datasheet = produce((
   action: IDatasheetAction,
 ): IDatasheetState | null => {
   if (action.type === actions.DATAPACK_LOADED) {
-    // only include part of the data payload 
+    // only include part of the data payload
     // can not cover the state that contains all the data
     if (state && action.payload.isPartOfData && !state.isPartOfData) {
       console.log('datasheet with part of data ignored');
@@ -137,7 +137,7 @@ export const datasheet = produce((
     }
   }
   return state;
-});
+}, null);
 
 export const datasheetMap = (
   state: IDatasheetMap = {},
