@@ -17,8 +17,8 @@
  */
 
 import fetch from 'node-fetch';
-import {ResponseStatusCodeEnums} from "../enum/response.status.code.enums";
-import {IActionResponse, IErrorResponse} from "../interface/action.response";
+import { ResponseStatusCodeEnums } from '../enum/response.status.code.enums';
+import { IActionResponse, IErrorResponse } from '../interface/action.response';
 
 interface IRuLiuMsgRequest {
   type: string;

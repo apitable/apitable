@@ -102,7 +102,7 @@ export class MirrorOtService {
     resultSet.deleteWidgetIds.push(...ids);
   }
 
-  transaction = async (
+  transaction = async(
     manager: EntityManager,
     effectMap: Map<string, any>,
     commonData: ICommonData,

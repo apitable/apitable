@@ -31,7 +31,7 @@ import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_it
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { DEFAULT_CHECK_ICON, emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
 import { getOptionNameColor, inquiryValueByKey } from '../components/cell';

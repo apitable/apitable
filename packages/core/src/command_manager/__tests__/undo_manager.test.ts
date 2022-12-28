@@ -41,12 +41,12 @@ describe('add undo stack', () => {
       }, ExecuteType.Execute);
 
       expect(undoManager.getStockLength('undo')).toBe(1);
-    })
+    });
   });
 
   describe('add redo cmd', () => {
-  })
+  });
 
   it('should delete old elements if undo stack size exceeds limit', () => {
-  })
+  });
 });

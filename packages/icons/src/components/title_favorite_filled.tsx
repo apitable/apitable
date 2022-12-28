@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /* eslint-disable max-len */
 import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';

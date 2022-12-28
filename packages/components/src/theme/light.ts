@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 import { black, blackBlue, deepPurple, orange, red, teal, lightColors } from '../colors';
 import { ITheme, ThemeName } from './theme.interface';
 

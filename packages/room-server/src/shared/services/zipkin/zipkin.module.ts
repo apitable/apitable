@@ -31,7 +31,7 @@ import { ZipkinService } from './zipkin.service';
 @Module({
   providers: [ZipkinService],
   exports: [ZipkinService],
-  })
+})
 export class ZipkinModule {
 
   static forRoot(options: IZipkinModuleOptions): DynamicModule {
