@@ -37,7 +37,7 @@ export class View {
   /**
    * Create a `View` instance from `IViewInfo`.
    * 
-   * @deprecated This constructor is not intended for public use.
+   * @internal This constructor is not intended for public use.
    */
   constructor(private readonly datasheet: Datasheet, private readonly store: Store<IReduxState>, info: IViewInfo) {
     const { name, type, viewId, rows, columns, fieldMap } = info;
