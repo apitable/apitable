@@ -21,7 +21,7 @@ import { Strings, t } from '@apitable/core';
 import { useMount } from 'ahooks';
 import domtoimage from 'dom-to-image';
 import { Logo, Message } from 'pc/components/common';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import QRCode from 'qrcode';
 import { FC } from 'react';
 import CloseIcon from 'static/icon/common/common_icon_close_large.svg';
@@ -91,7 +91,7 @@ export const ShareQrCode: FC<IShareQrCodeProps> = ({ url, user, nodeName, onClos
     <div id="downloadContainer" className={styles.downloadContainer}>
       <div className={styles.contentContainer}>
         {
-          getEnvVariables().SHARE_PUBLIC_LINK_QRCODE_ASSISTANT_VISIBLE &&     <div className={styles.mascot}>
+          getEnvVariables().SHARE_PUBLIC_LINK_QRCODE_ASSISTANT_VISIBLE && <div className={styles.mascot}>
             <img src={DuckPng.src} alt="vika mascot" />
           </div>
         }

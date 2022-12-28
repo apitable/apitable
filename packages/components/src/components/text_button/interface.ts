@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 type IButtonHTMLAttributes = Omit<React.ButtonHTMLAttributes<any>, 'color'>;
 
 export interface ITextButtonProps extends IButtonHTMLAttributes {

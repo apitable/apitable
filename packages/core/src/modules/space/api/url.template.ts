@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // =============== Template related =======================
 export const CREATE_TEMPLATE = '/template/create';
 export const OFFICIAL_TEMPLATE_CATEGORY = '/template/categoryList';

@@ -161,7 +161,7 @@ function getDefaultNewRecordDataByFilter(
      */
     const pass = conditionGroup.every(condition => doFilter(state, condition, field, result));
     if (pass) {
-      // different fields of `And`, only need to assign the values ​​that have values ​​to them.
+      // different fields of `And`, only need to assign the values that have values to them.
       recordData[fieldId] = result;
     }
   }

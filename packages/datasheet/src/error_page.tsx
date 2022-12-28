@@ -22,7 +22,7 @@
 import { Button, colorVars, LinkButton, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { getEnvVariables } from "pc/utils/env";
+import { getEnvVariables } from 'pc/utils/env';
 import * as React from 'react';
 
 const ErrorPage = () => {

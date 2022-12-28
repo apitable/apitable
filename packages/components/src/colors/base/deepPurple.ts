@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 export const deepPurple = {
   50: '#EDEAFF',
   100: '#DCD6FF',
