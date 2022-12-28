@@ -106,7 +106,7 @@ const AvatarHoc = Component => {
       size: size * ratio,
     }) : src;
     const firstWord = getFirstWordFromString(title);
-    const avatarBg = avatarSrc ? colors.defaultBg : (avatarColor ? bgColorList[avatarColor] : getAvatarRandomColor(id));
+    const avatarBg = avatarSrc ? colors.defaultBg : (avatarColor != null ? bgColorList[avatarColor] : getAvatarRandomColor(id));
     if (type === AvatarType.Space) {
       return (
         <Component
@@ -131,7 +131,7 @@ const AvatarHoc = Component => {
         src={avatarSrc}
         style={{
           backgroundColor: defaultIcon ? colors.rc01 : avatarBg,
-          color: colors.defaultBg,
+          color: colors.textStaticPrimary,
           border: !src && '0px',
           ...style,
         }}

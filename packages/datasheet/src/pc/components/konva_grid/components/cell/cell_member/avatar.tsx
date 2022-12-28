@@ -70,7 +70,7 @@ export const Avatar: FC<IAvatarProps> = memo((props) => {
   const avatarBg = (
     avatarSrc ? 
       colors.defaultBg : 
-      (bgColor ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
+      (bgColor != null ? createAvatarRainbowColorsArr(cacheTheme)[bgColor] : getAvatarRandomColor(id))
   );
 
   const renderer = () => {
@@ -150,7 +150,7 @@ export const Avatar: FC<IAvatarProps> = memo((props) => {
                 height={size}
                 align={'center'}
                 text={getFirstWordFromString(title)}
-                fill={colors.defaultBg}
+                fill={colors.textStaticPrimary}
               />
             </>
           );
