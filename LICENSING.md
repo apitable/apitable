@@ -8,9 +8,9 @@ Here are the main licenses of note.
 
 If you remove the “Powered by APITable” logo on embedded APITable page, you’d then need to release your own embedding application under the AGPL. To avoid this, you can instead purchase an Enterprise Edition package.
 
-##### [Contributor License Agreement](./licenses/LICENSE-CLA.md) (CLA)
+##### [Contributor License Agreement](https://cla-assistant.io/apitable/apitable) (CLA)
 
-You must [sign a Contribution License Agreement (CLA)](https://cla-assistant.io/apitable/apitable) before your PR will be merged. This a one-time requirement for APITable on GitHub. You can read more about [Contribution License Agreements](https://en.wikipedia.org/wiki/Contributor_License_Agreement) on Wikipedia.
+You must sign a [Contribution License Agreement (CLA)](https://cla-assistant.io/apitable/apitable) before your PR will be merged. This a one-time requirement for APITable on GitHub. You can read more about [Contribution License Agreements](https://en.wikipedia.org/wiki/Contributor_License_Agreement) on Wikipedia.
 
 However, you don't have to do this up-front; you can simply clone, fork, and submit your pull-request as usual.
 

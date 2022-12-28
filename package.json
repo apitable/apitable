@@ -43,7 +43,7 @@
     "link:widget": "yarn workspace @apitable/core link && yarn workspace @apitable/widget-sdk link && yarn workspace @apitable/components link && yarn workspace @apitable/icons",
     "postinstall": "cd .. && husky install apitable/.husky",
     "stylelint:datasheet": "yarn workspace @apitable/datasheet stylelint",
-    "lint": "eslint --fix --ext packages/*/src/**/!(*system_config.interface|strings.interface).{js,ts,tsx}",
+    "lint": "eslint --config .eslintrc --fix --ext packages/*/src/**/!(*system_config.interface|strings.interface).{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "yarn workspace @apitable/cypress cy:open",
     "cy:run": "yarn workspace @apitable/cypress cy:run",
     "check": "eslint --print-config packages/*/src/**/!(*system_config.interface|strings.interface).{js,ts,tsx}"
@@ -62,6 +62,7 @@
     "@babel/core": "7.11.6",
     "@commitlint/cli": "8.1.0",
     "@commitlint/config-conventional": "8.1.0",
+    "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@types/dot-object": "^2.1.2",
     "@types/lru-cache": "^5.1.0",
     "@types/node": "12.7.3",

@@ -6,7 +6,7 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
     expose:
-      - 8080
+      - "8080"
     env_file:
       - "${ENV_FILE:-.env}"
     networks:
@@ -31,8 +31,6 @@ services:
     image: ${IMAGE_REGISTRY}/${IMAGE_BACKEND_SERVER}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    ports:
-      - "8081:8081"
     env_file:
       - "${ENV_FILE:-.env}"
     expose:
@@ -58,9 +56,6 @@ services:
     image: ${IMAGE_REGISTRY}/${IMAGE_ROOM_SERVER}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    #ports:
-    #  - 3333:3333
-    #  - 3334:3334
     expose:
       - "3333"
       - "3334"
@@ -81,9 +76,6 @@ services:
     image: ${IMAGE_REGISTRY}/${IMAGE_ROOM_SERVER}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    #ports:
-    #  - 3333:3333
-    #  - 3334:3334
     expose:
       - "3333"
       - "3334"
@@ -107,10 +99,6 @@ services:
     image: ${IMAGE_REGISTRY}/${IMAGE_SOCKET_SERVER}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    #    ports:
-    #      - 3001:3001
-    #      - 3002:3002
-    #      - 3005:3005
     expose:
       - "3001"
       - "3002"
@@ -130,7 +118,7 @@ services:
       - redis
       - rabbitmq
 
-  ### Third Party Dockers
+  # Third Party Dockers
   gateway:
     image: ${IMAGE_GATEWAY}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
@@ -168,10 +156,7 @@ services:
     image: ${IMAGE_MINIO}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    user: "${UID}:${GID}"
     command: server /data
-    ports:
-      - "9000:9000"
     expose:
       - "9000"
     volumes:
@@ -193,7 +178,6 @@ services:
     image: ${IMAGE_REDIS}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    user: "${UID}:${GID}"
     command:
       [
           "redis-server",
@@ -202,8 +186,6 @@ services:
           "--requirepass",
           "${REDIS_PASSWORD}",
       ]
-    ports:
-      - "6379:6379"
     expose:
       - "6379"
     volumes:
@@ -217,11 +199,8 @@ services:
     image: ${IMAGE_MYSQL}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    user: "${UID}:${GID}"
     volumes:
       - ${DATA_PATH}/.data/mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
     expose:
       - "3306"
     environment:
@@ -245,13 +224,8 @@ services:
     image: ${IMAGE_RABBITMQ}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
     restart: always
-    user: "${UID}:${GID}"
     volumes:
       - ${DATA_PATH}/.data/rabbitmq:/var/lib/rabbitmq
-    ports:
-      - "5671:5671"
-      - "5672:5672"
-      - "15672:15672"
     expose:
       - "5671"
       - "5672"
@@ -264,7 +238,7 @@ services:
     networks:
       - apitable
 
-  # #### init data
+  # init data
   init-db:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
     pull_policy: ${IMAGE_PULL_POLICY:-missing}
