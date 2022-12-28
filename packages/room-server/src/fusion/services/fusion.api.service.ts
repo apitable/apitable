@@ -17,11 +17,30 @@
  */
 
 import {
-  ApiTipConstant, CacheManager, CellFormatEnum, CollaCommandName, Conversion, databus, ExecuteResult, FieldKeyEnum, getViewTypeString,
-  IAddFieldOptions, ICollaCommandOptions, IDeleteFieldData, IFieldMap, ILocalChangeset, IMeta, IOperation, IReduxState, IServerDatasheetPack,
-  ISortedField, IViewRow, NoticeTemplatesConstant, Selectors,
+  ApiTipConstant,
+  CacheManager,
+  CellFormatEnum,
+  CollaCommandName,
+  Conversion,
+  databus,
+  ExecuteResult,
+  FieldKeyEnum,
+  getViewTypeString,
+  IAddFieldOptions,
+  ICollaCommandOptions,
+  IDeleteFieldData,
+  IFieldMap,
+  ILocalChangeset,
+  IMeta,
+  IOperation,
+  IReduxState,
+  IServerDatasheetPack,
+  ISortedField,
+  IViewRow,
+  NoticeTemplatesConstant,
+  Selectors,
+  IInternalFix,
 } from '@apitable/core';
-import { IInternalFix } from '@apitable/core/dist/commands/common/field';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { CommandService } from 'database/command/services/command.service';
@@ -36,7 +55,13 @@ import { FusionApiTransformer } from 'fusion/transformer/fusion.api.transformer'
 import { keyBy } from 'lodash';
 import { Store } from 'redux';
 import {
-  CommonStatusCode, DATASHEET_ENRICH_SELECT_FIELD, DATASHEET_LINKED, DATASHEET_META_HTTP_DECORATE, EnvConfigKey, InjectLogger, SPACE_ID_HTTP_DECORATE,
+  CommonStatusCode,
+  DATASHEET_ENRICH_SELECT_FIELD,
+  DATASHEET_LINKED,
+  DATASHEET_META_HTTP_DECORATE,
+  EnvConfigKey,
+  InjectLogger,
+  SPACE_ID_HTTP_DECORATE,
   USER_HTTP_DECORATE,
 } from 'shared/common';
 import { OrderEnum } from 'shared/enums';
@@ -397,9 +422,9 @@ export class FusionApiService {
     const recordIdSet: Set<string> = new Set(body.records.map(record => record.recordId));
     const linkedRecordMap = Object.keys(linkDatasheet).length ? linkDatasheet : undefined;
     linkedRecordMap &&
-    linkedRecordMap[dstId]?.forEach(recordId => {
-      recordIdSet.add(recordId);
-    });
+      linkedRecordMap[dstId]?.forEach(recordId => {
+        recordIdSet.add(recordId);
+      });
     const recordIds = Array.from(recordIdSet);
     const rows: IViewRow[] = recordIds.map(recordId => {
       return { recordId };

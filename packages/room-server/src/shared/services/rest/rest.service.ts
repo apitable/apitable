@@ -26,8 +26,8 @@ import {
   ISpacePermissionManage,
   IUnitValue,
   IUserInfo,
+  api
 } from '@apitable/core';
-import { ILoadOrSearchArg } from '@apitable/core/dist/modules/shared/api/api.interface';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InternalCreateDatasheetVo, InternalSpaceSubscriptionView, InternalSpaceUsageView, WidgetMap } from 'database/interfaces';
@@ -552,7 +552,7 @@ export class RestService {
     return response!.data;
   }
 
-  async unitLoadOrSearch(auth: IAuthHeader, spaceId: string, params: ILoadOrSearchArg & { userId: string }): Promise<IUnitValue[]> {
+  async unitLoadOrSearch(auth: IAuthHeader, spaceId: string, params: api.ILoadOrSearchArg & { userId: string }): Promise<IUnitValue[]> {
     const response = await lastValueFrom(
       this.httpService.get(this.UNIT_LOAD_OR_SEARCH, {
         headers: HttpHelper.withSpaceIdHeader(HttpHelper.createAuthHeaders(auth), spaceId),

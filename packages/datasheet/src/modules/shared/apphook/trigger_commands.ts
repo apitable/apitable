@@ -24,12 +24,11 @@
  * @Last Modified by: skyhuang
  * @Last Modified time: 2022-12-17 13:30:18
  */
-import { Api } from '@apitable/core';
 // @ts-ignore
 import { openVikaby, openGuideWizard, openGuideWizards, openGuideNextStep, skipCurrentWizard } from 'enterprise';
 // @ts-ignore
 import { skipAllWizards, clearGuideUis, clearGuideAllUi, setWizardCompleted } from 'enterprise';
-import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide } from '@apitable/core/dist/config/system_config.interface';
+import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide, Api } from '@apitable/core';
 
 interface IWizardsConfig {
   player: SystemConfigInterfacePlayer;
@@ -50,7 +49,7 @@ interface ISetWizardCompletedProps {
 }
 
 export const TriggerCommands: any = {
-  open_vikaby: (props) => {
+  open_vikaby: props => {
     openVikaby?.({ ...props });
   },
   open_guide_wizard: (wizardId: number) => {

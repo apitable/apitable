@@ -40,6 +40,7 @@ import {
 import { IUpdateFormProps, updateFormProps } from './form';
 import { IManualSaveView, manualSaveView } from 'commands/datasheet/manual_save_view';
 import { ISetViewAutoSave, setViewAutoSave } from 'commands/datasheet/set_view_auto_save';
+export { IInternalFix } from 'commands/common/field';
 
 export enum CollaCommandName {
   AddFields = 'AddFields',
