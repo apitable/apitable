@@ -1235,7 +1235,7 @@ export class DatasheetOtService {
     // ===== Comment collection operation END ====
   }
 
-  transaction = async (manager: EntityManager, effectMap: Map<string, any>, commonData: ICommonData, resultSet: { [key: string]: any }) => {
+  transaction = async(manager: EntityManager, effectMap: Map<string, any>, commonData: ICommonData, resultSet: { [key: string]: any }) => {
     const beginTime = +new Date();
     this.logger.info(`[${commonData.dstId}] ====> transaction start......`);
     // ======== Fix comment time BEGIN ========

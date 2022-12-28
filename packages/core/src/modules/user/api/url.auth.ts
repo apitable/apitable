@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // login signin, register
 export const SIGN_IN_OR_SIGN_UP = '/signIn';
 

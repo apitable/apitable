@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC, useRef, useLayoutEffect, useState } from "react";
-import { IAvatarProps } from "./interface";
-import { Box } from "components";
-import { AvatarWrapper, AvatarChildWrapper, AvatarSizeConfig } from "./styled";
+import React, { FC, useRef, useLayoutEffect, useState } from 'react';
+import { IAvatarProps } from './interface';
+import { Box } from 'components';
+import { AvatarWrapper, AvatarChildWrapper, AvatarSizeConfig } from './styled';
 
 export const Avatar: FC<IAvatarProps> = ({
-  size = "m",
+  size = 'm',
   icon,
   src,
   alt,
   children,
   style,
-  shape = "circle"
+  shape = 'circle'
 }) => {
   const avatarNodeRef = useRef<HTMLSpanElement>(null);
   const avatarChildrenRef = useRef<HTMLElement>(null);
   const [scale, setScale] = useState(1);
   let childrenToRender;
-  if (typeof src === "string") {
+  if (typeof src === 'string') {
     childrenToRender = (
       <Box
         as="img"
@@ -48,10 +48,10 @@ export const Avatar: FC<IAvatarProps> = ({
   } else if (icon) {
     const finalIcon = React.isValidElement(icon)
       ? React.cloneElement<any>(icon, {
-          size: AvatarSizeConfig[size].size * 0.6,
-          color: (style && style.color) || "#fff",
-          className: "avatar-icon"
-        })
+        size: AvatarSizeConfig[size].size * 0.6,
+        color: (style && style.color) || '#fff',
+        className: 'avatar-icon'
+      })
       : icon;
     childrenToRender = finalIcon;
   } else {
@@ -67,7 +67,7 @@ export const Avatar: FC<IAvatarProps> = ({
 
   useLayoutEffect(() => {
     const scale = () => {
-      if (typeof src === "string" || icon) return 1;
+      if (typeof src === 'string' || icon) return 1;
       if (!avatarChildrenRef.current || !avatarNodeRef.current) return 1;
       const childrenWidth = avatarChildrenRef.current?.offsetWidth;
       const gap = AvatarSizeConfig[size].gap;

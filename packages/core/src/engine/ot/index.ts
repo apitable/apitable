@@ -30,7 +30,7 @@ export const jot: IJot = {
   ...json0,
   apply(json, actions) {
     try {
-      return json0.apply(json, actions)
+      return json0.apply(json, actions);
     } catch (e) {
       if ((e as Error).message === 'invalid / missing instruction in op') {
         throw new Error(t(Strings.missing_instruction_op_error), { cause: e });
@@ -39,4 +39,4 @@ export const jot: IJot = {
       }
     }
   }
-}
+};
