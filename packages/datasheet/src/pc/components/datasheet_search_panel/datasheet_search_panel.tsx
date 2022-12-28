@@ -134,6 +134,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
   const mirror = useSelector(state => {
     return currentMirrorId ? Selectors.getMirror(state, currentMirrorId) : undefined;
   });
+  const isEmbed = useSelector(state => Boolean(state.pageParams.embedId));
 
   const search = useMemo(() => {
     return throttle((spaceId: string, val: string) => {
@@ -394,7 +395,7 @@ const SearchPanelBase: React.FC<ISearchPanelProps> = props => {
         value={searchValue}
         switchVisible={!showSubColumnWithView}
       />
-      {!showSearch && <FolderBreadcrumb parents={parents} onNodeClick={onNodeClick} />}
+      {!showSearch && !isEmbed && <FolderBreadcrumb parents={parents} onNodeClick={onNodeClick} />}
       {showSearch ? (
         <SearchResult
           searchResult={searchResult}
