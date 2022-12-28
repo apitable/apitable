@@ -275,7 +275,7 @@ __metadata:
     jest: ^29.2.2
     jest-environment-jsdom: ^29.2.2
     joi: ^17.4.2
-    json-schema: ^0.3.0
+    json-schema: ^0.4.0
     lodash: 4.17.20
     lru-cache: ^5.1.1
     mockjs: 1.1.0
@@ -29619,10 +29619,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"json-schema@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "json-schema@npm:0.3.0"
-  checksum: 5287563499c05e156b88fd3998b53fc4bccd29a6233c9b4417d36f8f34bf56d586388745a92a9dccd15822f63c360c045973c12eb4a6a4b4f3fd8fb864d80a14
+"json-schema@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "json-schema@npm:0.4.0"
+  checksum: 66389434c3469e698da0df2e7ac5a3281bcff75e797a5c127db7c5b56270e01ae13d9afa3c03344f76e32e81678337a8c912bdbb75101c62e487dc3778461d72
   languageName: node
   linkType: hard
 
