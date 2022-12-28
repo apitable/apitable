@@ -17,7 +17,7 @@
  */
 
 import { IReduxState, Selectors } from 'exports/store';
-import { IViewInfo } from '../view';
+import { IViewInfo } from '../logic';
 
 export const mockGetViewInfo = (dstId: string, viewId: string) => (state: IReduxState): IViewInfo | null => {
   const snapshot = Selectors.getSnapshot(state, dstId)!;

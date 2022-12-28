@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEventHandler, IDatasheetEvent, ILoadDatasheetPackOptions, Field } from '.';
+import { DatasheetEventType, IDatasheetEventHandler, IDatasheetEvent } from '../common/event';
+import { Field } from '.';
+import { ILoadDatasheetPackOptions } from '../providers';
 import { Store } from 'redux';
 import { IViewOptions, View } from './view';
 import { IResource } from './resource.interface';
@@ -31,7 +33,8 @@ import {
 import { ResourceType } from 'types';
 import { IBaseDatasheetPack, IReduxState, ISnapshot, Selectors } from 'exports/store';
 import { ICollaCommandOptions } from 'commands';
-import { IDataSaver, ISaveOpsOptions } from './data.saver.interface';
+import { ISaveOpsOptions } from '../providers';
+import { IDataSaver } from '../providers/data.saver.interface';
 
 export class Datasheet implements IResource {
   private commandManager: CollaCommandManager;
@@ -98,7 +101,7 @@ export class Datasheet implements IResource {
    *
    * @param command The command that will be executed.
    * @param saveOptions The options that will be passed to the data saver.
-   * 
+   *
    * @deprecated This method is not intended for public use.
    */
   public async doCommand<R>(command: ICollaCommandOptions, saveOptions: ISaveOptions): Promise<ICommandExecutionResult<R>> {

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from '..';
+import { DatasheetEventType, IDatasheetEvent, IDatasheetEventHandler } from '../common/event';
 import { mockDatasheetMap, mockOpsCollectOfAddOneDefaultRecord } from './mock.datasheets';
 import { mockGetViewInfo } from './mock.view';
 import { MockDataBus, resetDataLoader } from './mock.databus';

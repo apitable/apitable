@@ -17,7 +17,7 @@
  */
 
 import { ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
-import { ICommandExecutionSuccessResult } from 'databus/datasheet';
+import { ICommandExecutionSuccessResult } from '../logic';
 import { ViewType } from 'exports/store';
 import { ResourceType } from 'types';
 import { MockDataBus, resetDataLoader } from './mock.databus';
