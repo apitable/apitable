@@ -14848,7 +14848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:3.2.0, async@npm:^3.1.0, async@npm:^3.2.0":
+"async@npm:3.2.0":
   version: 3.2.0
   resolution: "async@npm:3.2.0"
   checksum: 6739fae769e6c9f76b272558f118ef041d45c979c573a8fe93f8cfbc32eb9c92da032e9effe6bbcc9b1131292cde6c4a9e61a442894aa06a262addd8dd3adda1
@@ -14856,15 +14856,15 @@ __metadata:
   linkType: hard
 
 "async@npm:^2.6.3":
-  version: 2.6.3
-  resolution: "async@npm:2.6.3"
+  version: 2.6.4
+  resolution: "async@npm:2.6.4"
   dependencies:
     lodash: ^4.17.14
-  checksum: 5e5561ff8fca807e88738533d620488ac03a5c43fce6c937451f7e35f943d33ad06c24af3f681a48cca3d2b0002b3118faff0a128dc89438a9bf0226f712c499
+  checksum: a52083fb32e1ebe1d63e5c5624038bb30be68ff07a6c8d7dfe35e47c93fc144bd8652cbec869e0ac07d57dde387aa5f1386be3559cdee799cb1f789678d88e19
   languageName: node
   linkType: hard
 
-"async@npm:^3.2.3":
+"async@npm:^3.1.0, async@npm:^3.2.0, async@npm:^3.2.3":
   version: 3.2.4
   resolution: "async@npm:3.2.4"
   checksum: 43d07459a4e1d09b84a20772414aa684ff4de085cbcaec6eea3c7a8f8150e8c62aa6cd4e699fe8ee93c3a5b324e777d34642531875a0817a35697522c1b02e89
