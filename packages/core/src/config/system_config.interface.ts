@@ -610,6 +610,9 @@ export interface AddressShown {
     name: string;
 }
 
+export interface Icp1 {
+}
+
 export interface DatasheetFieldSettingHidden {
     module: string;
     name: string;
