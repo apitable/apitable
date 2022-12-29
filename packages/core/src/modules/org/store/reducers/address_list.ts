@@ -16,17 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { produce } from 'immer';
 import {
-  IAddressList,
-  IUpdateTeamListAction,
-  IUpdateMemberListAction,
-  IUpdateSelectedTeamInfoAction,
-  IUpdateMemberInfoAction,
-  IMemberInfoInAddressList,
-  IUpdateSingleMemberInMemberListAction,
+  IAddressList, IMemberInfoInAddressList, IUpdateMemberInfoAction, IUpdateMemberListAction, IUpdateSelectedTeamInfoAction,
+  IUpdateSingleMemberInMemberListAction, IUpdateTeamListAction,
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
-import { produce } from 'immer';
+
 const defaultState: IAddressList = {
   teamList: [],
   // selected team
@@ -54,10 +50,10 @@ const updateMemberInList = (state: IMemberInfoInAddressList[], payload: Partial<
     if (cur.memberId === payload.memberId) {
       prev.push({ ...cur, ...payload });
       return prev;
-    } 
+    }
     prev.push({ ...cur });
     return prev;
-    
+
   }, []);
 };
 export const addressList = produce((data: IAddressList = defaultState, action: IAddressListActions) => {
@@ -85,4 +81,4 @@ export const addressList = produce((data: IAddressList = defaultState, action: I
     default:
       return data;
   }
-});
+}, defaultState);
