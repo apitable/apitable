@@ -65,7 +65,7 @@
     "immer": "9.0.16",
     "ioredis": "^4.24.6",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "logform": "^2.2.0",
     "minio": "^7.0.26",
     "moment-timezone": "^0.5.31",
