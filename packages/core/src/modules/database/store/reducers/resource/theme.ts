@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { SET_THEME } from '../../../../shared/store/action_constants';
-import { IThemeAction, ThemeName } from '../../../../../exports/store/interfaces';
 import produce from 'immer';
+import { IThemeAction, ThemeName } from '../../../../../exports/store/interfaces';
+import { SET_THEME } from '../../../../shared/store/action_constants';
 
 export const theme = produce((themeDraft: ThemeName = ThemeName.Light, action: IThemeAction) => {
   if (action.type === SET_THEME) {
@@ -26,4 +26,4 @@ export const theme = produce((themeDraft: ThemeName = ThemeName.Light, action: I
     return action.payload;
   }
   return themeDraft;
-});
+}, ThemeName.Light);

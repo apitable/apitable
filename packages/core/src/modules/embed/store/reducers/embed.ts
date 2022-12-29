@@ -33,4 +33,4 @@ export const embedInfo = produce((embedInfoDraft: IEmbedInfo = defaultEmbedInfo,
     default:
       return embedInfoDraft;
   }
-});
+}, defaultEmbedInfo);

@@ -62,7 +62,7 @@
     "fastify-swagger": "^4.3.3",
     "form-data": "^3.0.0",
     "getmac": "^5.20.0",
-    "immer": "7.0.9",
+    "immer": "9.0.16",
     "ioredis": "^4.24.6",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.20",

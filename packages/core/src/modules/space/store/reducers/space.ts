@@ -18,11 +18,10 @@
 
 import { produce } from 'immer';
 import {
-  ISpace, ISpaceListAction, ISetQuitSpaceIdAction,
-  ISetSpaceLoadingAction, ISetSpaceErrAction, ISetSpaceInfoAction, ISetShortcutKeyPanelVisibleAction,
-  ISetSpaceReconnectingAction, ISetSpaceConnectedAction, ISetScreenWidth, ISetSideBarVisibleAction, IToggleApiPanelAction,
-  ISetMarketplaceAppsAction,ISetSpaceFeaturesAction,
-  ISetPreviewModalVisibleAction, ISetActiveSpaceIdAction, ISetEnvs, IToggleSideRecordPanelAction, IToggleRecordFullScreen
+  ISetActiveSpaceIdAction, ISetEnvs, ISetMarketplaceAppsAction, ISetPreviewModalVisibleAction, ISetQuitSpaceIdAction, ISetScreenWidth,
+  ISetShortcutKeyPanelVisibleAction, ISetSideBarVisibleAction, ISetSpaceConnectedAction, ISetSpaceErrAction, ISetSpaceFeaturesAction,
+  ISetSpaceInfoAction, ISetSpaceLoadingAction, ISetSpaceReconnectingAction, ISpace, ISpaceListAction, IToggleApiPanelAction, IToggleRecordFullScreen,
+  IToggleSideRecordPanelAction
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 
@@ -50,7 +49,7 @@ const defaultSpace = {
 type SpaceAction = ISpaceListAction | ISetQuitSpaceIdAction | ISetSpaceErrAction |
   ISetSpaceLoadingAction | ISetSpaceInfoAction | ISetSpaceReconnectingAction |
   ISetSpaceConnectedAction | ISetScreenWidth | ISetSideBarVisibleAction | ISetShortcutKeyPanelVisibleAction
-  | IToggleApiPanelAction | IToggleSideRecordPanelAction | ISetMarketplaceAppsAction | ISetPreviewModalVisibleAction | ISetActiveSpaceIdAction | 
+  | IToggleApiPanelAction | IToggleSideRecordPanelAction | ISetMarketplaceAppsAction | ISetPreviewModalVisibleAction | ISetActiveSpaceIdAction |
   ISetSpaceFeaturesAction | ISetEnvs | IToggleRecordFullScreen;
 
 export const space = produce((spaceDraft: ISpace = defaultSpace, action: SpaceAction) => {
@@ -133,4 +132,4 @@ export const space = produce((spaceDraft: ISpace = defaultSpace, action: SpaceAc
     default:
       return spaceDraft;
   }
-});
+}, defaultSpace);
